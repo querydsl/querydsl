@@ -14,6 +14,7 @@ import com.mysema.query.grammar.GrammarTypes.OrderSpecifier;
 public interface Query<A extends Query<?>>{
     A select(Expr... objects);
     A from(DomainType<?>... objects);
+    A innerJoin(DomainType<?>... objects);
     A leftJoin(DomainType<?>... objects);
     A with(BooleanExpr... objects);
     A where(BooleanExpr... objects);

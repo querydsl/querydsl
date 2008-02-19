@@ -2,7 +2,7 @@ package com.mysema.query.grammar;
 
 
 import com.mysema.query.grammar.GrammarTypes.BooleanExpr;
-import com.mysema.query.grammar.GrammarTypes.BooleanExprType;
+import com.mysema.query.grammar.GrammarTypes.Op;
 import com.mysema.query.grammar.GrammarTypes.Expr;
 import com.mysema.query.grammar.GrammarTypes.Order;
 import com.mysema.query.grammar.GrammarTypes.OrderSpecifier;
@@ -33,32 +33,44 @@ public class Grammar {
         
     // boolean
     
-    public static BooleanExpr and(Object left, Object right){
-        return bbe(BooleanExprType.AND, left, right);
+    public static BooleanExpr and(BooleanExpr left, BooleanExpr right){
+        return bbe(Op.AND, left, right);
     }    
-    public static BooleanExpr eq(Object left, Object right){
-        return bbe(BooleanExprType.EQ, left, right);
-    }
-    public static BooleanExpr goe(Object left, Object right){
-        return bbe(BooleanExprType.GOE, left, right);
-    }
-    public static BooleanExpr gt(Object left, Object right){
-        return bbe(BooleanExprType.GT, left, right);
-    }    
-    public static BooleanExpr loe(Object left, Object right){
-        return bbe(BooleanExprType.LOE, left, right);
-    }      
-    public static BooleanExpr lt(Object left, Object right){
-        return bbe(BooleanExprType.LT, left, right);
-    }     
-    public static BooleanExpr ne(Object left, Object right){
-        return bbe(BooleanExprType.NE, left, right);
-    }     
     public static BooleanExpr not(BooleanExpr left){
-        return bue(BooleanExprType.NE, left);
+        return bue(Op.NE, left);
+    }    
+    public static BooleanExpr or(BooleanExpr left, BooleanExpr right){
+        return bbe(Op.OR, left, right);
     }
     
-    // arithmetic
+    // number compariosn
+    
+    public static BooleanExpr eq(Object left, Object right){
+        return bbe(Op.EQ, left, right);
+    }
+    public static BooleanExpr goe(Object left, Object right){
+        return bbe(Op.GOE, left, right);
+    }
+    public static BooleanExpr gt(Object left, Object right){
+        return bbe(Op.GT, left, right);
+    }    
+    public static BooleanExpr loe(Object left, Object right){
+        return bbe(Op.LOE, left, right);
+    }      
+    public static BooleanExpr lt(Object left, Object right){
+        return bbe(Op.LT, left, right);
+    }     
+    public static BooleanExpr ne(Object left, Object right){
+        return bbe(Op.NE, left, right);
+    }     
+
+    // string comparison
+    
+    public static BooleanExpr like(Object left, String right){
+        return bbe(Op.LIKE, left, right);
+    }
+    
+    // arithmetic operations
     
     // TODO
     

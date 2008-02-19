@@ -33,15 +33,15 @@ public class GrammarTypes {
 
     public interface BooleanExpr extends Expr{ }
     
-    public enum BooleanExprType { AND, EQ, GOE, GT,LOE, LT, NE, NOT, OR, XOR }
+    public enum Op { AND, EQ, GOE, GT,LOE, LT, NE, NOT, OR, XOR, LIKE }
 
     public static class BooleanUnaryExpr implements BooleanExpr{
-        public BooleanExprType type;
+        public Op type;
         public Expr left;                
     }
     
     public static class BooleanBinaryExpr implements BooleanExpr{
-        public BooleanExprType type;
+        public Op type;
         public Expr left; public Expr right;        
     }
     
@@ -51,13 +51,13 @@ public class GrammarTypes {
         public Reference(String path) {
             this._path = path;
         }
-        protected CharProperty charProp(String path) {
+        protected CharProperty ch(String path) {
             return new CharProperty(this._path+"."+path);
         }
-        protected StringProperty stringProp(String path) {
+        protected StringProperty str(String path) {
             return new StringProperty(this._path+"."+path);
         }
-        protected NumberProperty numberProp(String path) {
+        protected NumberProperty num(String path) {
             return new NumberProperty(this._path+"."+path);
         }
 //        protected CollectionProperty colProp(String path) {

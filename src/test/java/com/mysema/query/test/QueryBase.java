@@ -42,4 +42,8 @@ public class QueryBase implements Query<QueryBase> {
         return this;
     }
 
+    public QueryBase innerJoin(DomainType<?>... objects) {
+        return this;
+    }
+
 }
