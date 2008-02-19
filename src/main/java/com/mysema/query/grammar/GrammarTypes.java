@@ -1,4 +1,4 @@
-package com.mysema.query;
+package com.mysema.query.grammar;
 
 
 
@@ -8,7 +8,7 @@ package com.mysema.query;
  * @author tiwe
  * @version $Id$
  */
-public class QueryDsl {
+public class GrammarTypes {
     
     // order
     
@@ -79,6 +79,10 @@ public class QueryDsl {
 //    }
     public static class DomainType<D> extends Reference<D>{
         public DomainType(String path) {super(path);} 
+        public DomainType<D> as(DomainType<D> d){
+            // TODO
+            return d;
+        }
     }
 
 }

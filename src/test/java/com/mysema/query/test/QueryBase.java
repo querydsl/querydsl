@@ -1,10 +1,10 @@
 package com.mysema.query.test;
 
 import com.mysema.query.Query;
-import com.mysema.query.QueryDsl.BooleanExpr;
-import com.mysema.query.QueryDsl.DomainType;
-import com.mysema.query.QueryDsl.Expr;
-import com.mysema.query.QueryDsl.OrderSpecifier;
+import com.mysema.query.grammar.GrammarTypes.BooleanExpr;
+import com.mysema.query.grammar.GrammarTypes.DomainType;
+import com.mysema.query.grammar.GrammarTypes.Expr;
+import com.mysema.query.grammar.GrammarTypes.OrderSpecifier;
 
 /**
  * QueryBase provides
@@ -14,7 +14,7 @@ import com.mysema.query.QueryDsl.OrderSpecifier;
  */
 public class QueryBase implements Query<QueryBase> {
 
-    public QueryBase from(DomainType... objects) {
+    public QueryBase from(DomainType<?>... objects) {
         return this;
     }
 
@@ -34,7 +34,7 @@ public class QueryBase implements Query<QueryBase> {
         return this;
     }
 
-    public QueryBase leftJoin(DomainType... objects) {
+    public QueryBase leftJoin(DomainType<?>... objects) {
         return this;
     }
 

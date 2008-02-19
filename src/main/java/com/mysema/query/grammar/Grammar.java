@@ -1,15 +1,13 @@
-package com.mysema.query;
+package com.mysema.query.grammar;
 
-import com.mysema.query.QueryDsl.BooleanBinaryExpr;
-import com.mysema.query.QueryDsl.BooleanExpr;
-import com.mysema.query.QueryDsl.BooleanExprType;
-import com.mysema.query.QueryDsl.BooleanUnaryExpr;
-import com.mysema.query.QueryDsl.ConstantExpr;
-import com.mysema.query.QueryDsl.DomainType;
-import com.mysema.query.QueryDsl.Expr;
-import com.mysema.query.QueryDsl.Order;
-import com.mysema.query.QueryDsl.OrderSpecifier;
-import com.mysema.query.QueryDsl.Reference;
+
+import com.mysema.query.grammar.GrammarTypes.BooleanExpr;
+import com.mysema.query.grammar.GrammarTypes.BooleanExprType;
+import com.mysema.query.grammar.GrammarTypes.Expr;
+import com.mysema.query.grammar.GrammarTypes.Order;
+import com.mysema.query.grammar.GrammarTypes.OrderSpecifier;
+
+import static com.mysema.query.grammar.InternalGrammar.*;
 
 /**
  * Grammar provides
@@ -18,28 +16,6 @@ import com.mysema.query.QueryDsl.Reference;
  * @version $Id$
  */
 public class Grammar {
-    
-    // internal
-    
-    private static Expr co(Object str){
-        ConstantExpr e = new ConstantExpr();
-        e.constant = str;
-        return e;
-    }    
-    private static BooleanBinaryExpr bbe(BooleanExprType type,Object left, Object right){
-        BooleanBinaryExpr bbe = new BooleanBinaryExpr();
-        bbe.type = type;
-        bbe.left = left instanceof Expr ? (Expr)left : co(left);
-        bbe.right = right instanceof Expr ? (Expr)right : co(left);
-        return bbe;        
-    }
-    private static BooleanUnaryExpr bue(BooleanExprType type, BooleanExpr left){
-        BooleanUnaryExpr bue = new BooleanUnaryExpr();
-        bue.type = type;
-        bue.left = left;
-        return bue;
-    }
-        
     // order
     
     public static OrderSpecifier asc(Expr target){
@@ -86,15 +62,4 @@ public class Grammar {
     
     // TODO
     
-    // expressions
-    
-    public static <A> DomainType<A> as(DomainType<A> r1, DomainType<A> r2){
-        // ?
-        return r2;
-    }
-    
-    public static <A> Reference<A> as(Reference<A> r1, Reference<A> r2){
-        // ?
-        return r2;
-    }
 }

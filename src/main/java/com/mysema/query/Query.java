@@ -1,9 +1,9 @@
 package com.mysema.query;
 
-import com.mysema.query.QueryDsl.BooleanExpr;
-import com.mysema.query.QueryDsl.DomainType;
-import com.mysema.query.QueryDsl.Expr;
-import com.mysema.query.QueryDsl.OrderSpecifier;
+import com.mysema.query.grammar.GrammarTypes.BooleanExpr;
+import com.mysema.query.grammar.GrammarTypes.DomainType;
+import com.mysema.query.grammar.GrammarTypes.Expr;
+import com.mysema.query.grammar.GrammarTypes.OrderSpecifier;
 
 /**
  * Query provides

@@ -1,8 +1,8 @@
 package com.mysema.query.test;
 
-import com.mysema.query.QueryDsl.DomainType;
-import com.mysema.query.QueryDsl.NumberProperty;
-import com.mysema.query.QueryDsl.StringProperty;
+import com.mysema.query.grammar.GrammarTypes.DomainType;
+import com.mysema.query.grammar.GrammarTypes.NumberProperty;
+import com.mysema.query.grammar.GrammarTypes.StringProperty;
 
 
 /**
@@ -45,7 +45,7 @@ public class Domain {
         Cat(String path) {super(path);}
         public final NumberProperty bodyWeight = numberProp("bodyWeight");
         public final Cat kittens = new Cat(_path+".kittens");
-        
+        public final Cat mate = new Cat(_path+".mate");
     }
 
 }

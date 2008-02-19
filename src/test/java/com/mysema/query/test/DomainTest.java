@@ -1,10 +1,7 @@
 package com.mysema.query.test;
 
-import static com.mysema.query.Grammar.as;
-import static com.mysema.query.Grammar.gt;
-import static com.mysema.query.test.Domain.cat;
-import static com.mysema.query.test.Domain.kitten;
-
+import static com.mysema.query.grammar.Grammar.*;
+import static com.mysema.query.test.Domain.*;
 import org.junit.Test;
 
 
@@ -23,9 +20,20 @@ public class DomainTest extends QueryBase{
 //        left join cat.kittens as kitten 
 //            with kitten.bodyWeight > 10.0
         from(cat)
-        .leftJoin(as(cat.kittens,kitten))
+        .leftJoin(cat.kittens.as(kitten))
             .with(gt(kitten.bodyWeight,10));
             
+    }
+    
+    @Test
+    public void testQuery2(){
+//        from Cat as cat 
+//            inner join fetch cat.mate
+//            left join fetch cat.kittens child
+//            left join fetch child.kittens
+        from(cat)
+            .innerJoin(cat.mate)
+            .leftJoin()
     }
 
 }
