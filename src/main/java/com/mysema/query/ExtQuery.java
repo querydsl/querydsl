@@ -8,7 +8,7 @@ package com.mysema.query;
 import com.mysema.query.grammar.Types.*;
 
 /**
- * ExtQuery provides
+ * ExtQuery externds the Query interface to provide innerJoin, leftJoin and with methods
  *
  * @author tiwe
  * @version $Id$

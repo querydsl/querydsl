@@ -32,7 +32,9 @@ public class Grammar {
         return op;
     }
     
+    @SuppressWarnings("unchecked")
     static <A> Expr<A> _const(A obj){
+        if (obj instanceof Expr) return (Expr<A>)obj;
         ConstantExpr<A> e = new ConstantExpr<A>();
         e.constant = obj;
         return e;
