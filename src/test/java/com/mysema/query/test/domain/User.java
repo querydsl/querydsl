@@ -1,7 +1,5 @@
 package com.mysema.query.test.domain;
 
-import com.mysema.query.grammar.Types.NumberProperty;
-import com.mysema.query.grammar.Types.StringProperty;
 import com.mysema.query.test.domain.Domain.qCompany;
 
 /**

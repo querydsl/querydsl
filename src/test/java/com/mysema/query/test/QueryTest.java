@@ -8,7 +8,7 @@ import org.junit.Test;
 
 
 /**
- * DomainTest provides
+ * QueryTest provides
  *
  * @author tiwe
  * @version $Id$
