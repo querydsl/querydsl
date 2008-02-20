@@ -1,9 +1,6 @@
 package com.mysema.query;
 
-import com.mysema.query.grammar.GrammarTypes.BooleanExpr;
-import com.mysema.query.grammar.GrammarTypes.DomainType;
-import com.mysema.query.grammar.GrammarTypes.Expr;
-import com.mysema.query.grammar.GrammarTypes.OrderSpecifier;
+import com.mysema.query.grammar.Types.*;
 
 /**
  * Query provides
@@ -12,12 +9,14 @@ import com.mysema.query.grammar.GrammarTypes.OrderSpecifier;
  * @version $Id$
  */
 public interface Query<A extends Query<?>>{
-    A select(Expr... objects);
-    A from(DomainType<?>... objects);
-    A innerJoin(DomainType<?>... objects);
-    A leftJoin(DomainType<?>... objects);
-    A with(BooleanExpr... objects);
-    A where(BooleanExpr... objects);
-    A groupBy(Expr... objects);
-    A orderBy(OrderSpecifier... objects);                        
+    A select(Expr<?>... objects);
+    A from(EntityPathExpr<?>... objects);    
+    A where(Expr<Boolean>... objects);
+    A groupBy(Expr<?>... objects);
+    A orderBy(OrderSpecifier<?>... objects);
+    
+    // TODO : move back to ExtQuery when querydsl has stabilized
+    A innerJoin(EntityPathExpr<?>... objects);
+    A leftJoin(EntityPathExpr<?>... objects); 
+    A with(Expr<Boolean>... objects);
 }

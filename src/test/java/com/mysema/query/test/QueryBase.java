@@ -1,49 +1,47 @@
 package com.mysema.query.test;
 
-import com.mysema.query.Query;
-import com.mysema.query.grammar.GrammarTypes.BooleanExpr;
-import com.mysema.query.grammar.GrammarTypes.DomainType;
-import com.mysema.query.grammar.GrammarTypes.Expr;
-import com.mysema.query.grammar.GrammarTypes.OrderSpecifier;
-
+import com.mysema.query.*;
+import com.mysema.query.grammar.Types.*;
 /**
  * QueryBase provides
  *
  * @author tiwe
  * @version $Id$
  */
-public class QueryBase implements Query<QueryBase> {
+public class QueryBase implements ExtQuery<QueryBase> {
 
-    public QueryBase from(DomainType<?>... objects) {
+    public QueryBase from(EntityPathExpr<?>... objects) {
+       return this;
+    }
+
+    public QueryBase groupBy(Expr<?>... objects) {
         return this;
     }
 
-    public QueryBase groupBy(Expr... objects) {
+    public QueryBase orderBy(OrderSpecifier<?>... objects) {
         return this;
     }
 
-    public QueryBase orderBy(OrderSpecifier... objects) {
+    public QueryBase select(Expr<?>... objects) {
         return this;
     }
 
-    public QueryBase select(Expr... objects) {
+    public QueryBase where(Expr<Boolean>... objects) {
         return this;
     }
 
-    public QueryBase where(BooleanExpr... objects) {
+    public QueryBase innerJoin(EntityPathExpr<?>... objects) {
         return this;
     }
 
-    public QueryBase leftJoin(DomainType<?>... objects) {
+    public QueryBase leftJoin(EntityPathExpr<?>... objects) {
         return this;
     }
 
-    public QueryBase with(BooleanExpr... objects) {
+    public QueryBase with(Expr<Boolean>... objects) {
         return this;
     }
 
-    public QueryBase innerJoin(DomainType<?>... objects) {
-        return this;
-    }
+   
 
 }

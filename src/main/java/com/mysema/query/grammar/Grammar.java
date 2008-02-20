@@ -1,13 +1,7 @@
 package com.mysema.query.grammar;
 
 
-import com.mysema.query.grammar.GrammarTypes.BooleanExpr;
-import com.mysema.query.grammar.GrammarTypes.Op;
-import com.mysema.query.grammar.GrammarTypes.Expr;
-import com.mysema.query.grammar.GrammarTypes.Order;
-import com.mysema.query.grammar.GrammarTypes.OrderSpecifier;
-
-import static com.mysema.query.grammar.InternalGrammar.*;
+import com.mysema.query.grammar.Types.*;
 
 /**
  * Grammar provides
@@ -18,60 +12,99 @@ import static com.mysema.query.grammar.InternalGrammar.*;
 public class Grammar {
     // order
     
-    public static OrderSpecifier asc(Expr target){
-        OrderSpecifier os = new OrderSpecifier();
-        os.order = Order.ASC;
-        os.target = target;
-        return os;
-    }    
-    public static OrderSpecifier desc(Expr target){
-        OrderSpecifier os = new OrderSpecifier();
-        os.order = Order.DESC;
-        os.target = target;
-        return os;
+    public static <A> OrderSpecifier<A> asc(Expr<A> target){
+        return _asc(target);
+    }
+    public static <A> OrderSpecifier<A> desc(Expr<A> target){
+        return _desc(target);
     }
         
     // boolean
     
-    public static BooleanExpr and(BooleanExpr left, BooleanExpr right){
-        return bbe(Op.AND, left, right);
+    public static Expr<Boolean> and(Expr<Boolean> left, Expr<Boolean> right){
+        return _bbe(BoOp.AND, left, right);
     }    
-    public static BooleanExpr not(BooleanExpr left){
-        return bue(Op.NE, left);
+    public static Expr<Boolean> not(Expr<Boolean> left){
+        return _bue(BoOp.NE, left);
     }    
-    public static BooleanExpr or(BooleanExpr left, BooleanExpr right){
-        return bbe(Op.OR, left, right);
+    public static Expr<Boolean> or(Expr<Boolean> left, Expr<Boolean> right){
+        return _bbe(BoOp.OR, left, right);
     }
     
     // number compariosn
     
-    public static BooleanExpr eq(Object left, Object right){
-        return bbe(Op.EQ, left, right);
+    public static Expr<Boolean> eq(Object left, Object right){
+        return _bbe(BoOp.EQ, left, right);
     }
-    public static BooleanExpr goe(Object left, Object right){
-        return bbe(Op.GOE, left, right);
+    public static Expr<Boolean> goe(Object left, Object right){
+        return _bbe(BoOp.GOE, left, right);
     }
-    public static BooleanExpr gt(Object left, Object right){
-        return bbe(Op.GT, left, right);
+    public static Expr<Boolean> gt(Object left, Object right){
+        return _bbe(BoOp.GT, left, right);
     }    
-    public static BooleanExpr loe(Object left, Object right){
-        return bbe(Op.LOE, left, right);
+    public static Expr<Boolean> loe(Object left, Object right){
+        return _bbe(BoOp.LOE, left, right);
     }      
-    public static BooleanExpr lt(Object left, Object right){
-        return bbe(Op.LT, left, right);
+    public static Expr<Boolean> lt(Object left, Object right){
+        return _bbe(BoOp.LT, left, right);
     }     
-    public static BooleanExpr ne(Object left, Object right){
-        return bbe(Op.NE, left, right);
+    public static Expr<Boolean> ne(Object left, Object right){
+        return _bbe(BoOp.NE, left, right);
     }     
 
     // string comparison
     
-    public static BooleanExpr like(Object left, String right){
-        return bbe(Op.LIKE, left, right);
+    public static Expr<Boolean> like(Expr<String> left, String right){
+        return _bbe(BoOp.LIKE, left, right);
+    }
+    
+    public static Expr<String> lower(Expr<String> path){
+        return null; 
     }
     
     // arithmetic operations
     
-    // TODO
+    // TODO : +,-,*,/,mod,div
+    
+    // order
+    
+    static <A> OrderSpecifier<A> _asc(Expr<A> target) {
+        OrderSpecifier<A> os = new OrderSpecifier<A>();
+        os.order = Order.ASC;
+        os.target = target;
+        return os;
+    }
+    
+    static <A> OrderSpecifier<A> _desc(Expr<A> target) {
+        OrderSpecifier<A> os = new OrderSpecifier<A>();
+        os.order = Order.DESC;
+        os.target = target;
+        return os;
+    }
+    
+    // constants
+    
+    static <A> Expr<A> _co(A obj){
+        ConstantExpr<A> e = new ConstantExpr<A>();
+        e.constant = obj;
+        return e;
+    }    
+    
+    // boolean
+    
+    static BooleanBinaryExpr _bbe(BoOp type,Object left, Object right){
+        BooleanBinaryExpr bbe = new BooleanBinaryExpr();
+        bbe.type = type;
+        bbe.left = left instanceof Expr ? (Expr)left : _co(left);
+        bbe.right = right instanceof Expr ? (Expr)right : _co(left);
+        return bbe;        
+    }
+    static BooleanUnaryExpr _bue(BoOp type, Expr<Boolean> left){
+        BooleanUnaryExpr bue = new BooleanUnaryExpr();
+        bue.type = type;
+        bue.left = left;
+        return bue;
+    }
+
     
 }
