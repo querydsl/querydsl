@@ -10,7 +10,7 @@ import com.mysema.query.grammar.Types.*;
  */
 public class QueryBase implements ExtQuery<QueryBase> {
     
-    public QueryBase from(EntityPathExpr<?>... objects) {
+    public QueryBase from(EntityExpr<?>... objects) {
        return this;
     }
 
@@ -26,20 +26,19 @@ public class QueryBase implements ExtQuery<QueryBase> {
         return this;
     }
 
-    public QueryBase where(Expr<Boolean>... objects) {
-        
+    public QueryBase where(BooleanExpr... objects) {        
         return this;
     }
 
-    public QueryBase innerJoin(EntityPathExpr<?>... objects) {
+    public QueryBase innerJoin(EntityExpr<?>... objects) {
         return this;
     }
 
-    public QueryBase leftJoin(EntityPathExpr<?>... objects) {
+    public QueryBase leftJoin(EntityExpr<?>... objects) {
         return this;
     }
 
-    public QueryBase with(Expr<Boolean>... objects) {
+    public QueryBase with(BooleanExpr... objects) {
         return this;
     }
 

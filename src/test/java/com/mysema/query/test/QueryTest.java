@@ -1,9 +1,21 @@
 package com.mysema.query.test;
 
-import static com.mysema.query.grammar.Grammar.*;
-import static com.mysema.query.test.domain.Domain.*;
+import static com.mysema.query.grammar.Grammar.concat;
+import static com.mysema.query.grammar.Grammar.eq;
+import static com.mysema.query.grammar.Grammar.gt;
+import static com.mysema.query.grammar.Grammar.like;
+import static com.mysema.query.grammar.Grammar.lower;
+import static com.mysema.query.grammar.Grammar.substr;
+import static com.mysema.query.grammar.Grammar.upper;
+import static com.mysema.query.test.domain.Domain.cat;
+import static com.mysema.query.test.domain.Domain.child;
+import static com.mysema.query.test.domain.Domain.cust;
+import static com.mysema.query.test.domain.Domain.doc;
+import static com.mysema.query.test.domain.Domain.kitten;
 
 import org.junit.Test;
+
+import com.mysema.query.grammar.Types.BooleanExpr;
 
 
 
@@ -14,10 +26,13 @@ import org.junit.Test;
  * @version $Id$
  */
 public class QueryTest extends QueryBase{
-    
+       
     @Test
-    public void testSimple(){
+    public void testVarious(){
         from(cat);
+        BooleanExpr be = eq(cat.name,cust.name().firstName); 
+        where(be);
+        with(be);
         from(cat,cust).where(gt(cat.name,cust.name().firstName));
         select(lower(cat.name)).from(cat).where(eq(substr(cat.name,0,2),"Mi"));
         select(upper(cat.name)).from(cat);

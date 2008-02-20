@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.grammar;
 
 /**
@@ -8,9 +13,9 @@ package com.mysema.query.grammar;
  */
 public class Types {
     
-    public static class AsExpr<D> extends Reference<D> implements EntityPathExpr<D>{
+    public static class Alias<D> extends Reference<D> implements EntityExpr<D>{
         public Reference<D> from, to;
-        AsExpr(Reference<D> from, Reference<D> to) {
+        Alias(Reference<D> from, Reference<D> to) {
             super(to._path);
         }        
     }
@@ -24,7 +29,12 @@ public class Types {
         public Op<RT> type; 
     }
     
-    public static class BooleanProperty extends Reference<Boolean>{
+    public static class BinaryBooleanOperation<L,R> extends BinaryOperation<Boolean,L,R> 
+        implements BooleanOperation {
+        
+    }
+    
+    public static class BooleanProperty extends Reference<Boolean> implements BooleanExpr{
         public BooleanProperty(String path) {super(path);}
     }
     
@@ -49,20 +59,41 @@ public class Types {
         public A constant;
     }
     
-    public static class DomainType<D> extends Reference<D> implements EntityPathExpr<D>{
+    public static class DomainType<D> extends Reference<D> implements EntityExpr<D>{
         protected DomainType(DomainType<?> type, String path) {
             super(type._path+"."+path);
         } 
         protected DomainType(String path) {super(path);}
-        public EntityPathExpr<D> as(DomainType<D> to){
-            return new AsExpr<D>(this, to);
+        public EntityExpr<D> as(DomainType<D> to){
+            return new Alias<D>(this, to);
+        }
+        protected BooleanProperty bool(String path){
+            return new BooleanProperty(this._path+"."+_path);
+        }
+        protected CharProperty ch(String path) {
+            return new CharProperty(this._path+"."+path);
+        }
+        protected NumberProperty num(String path) {
+            return new NumberProperty(this._path+"."+path);
+        }
+        protected StringProperty str(String path) {
+            return new StringProperty(this._path+"."+path);
         }
     }
     
-    public static interface EntityPathExpr<T> extends Expr<T>{}
+    /**
+     * Reference to an entity
+     */
+    public static interface EntityExpr<T> extends Expr<T>{}
     
     public interface Expr<A> { }    
         
+    /**
+     * NOTE : BooleanExpr as a concrete interface instead of Expr<Boolean> avoids
+     * compiler warnings when used in Query#where(BooleanExpr... objects);
+     */
+    public interface BooleanExpr extends Expr<Boolean>{ }
+    
     public static class NumberProperty extends Reference<Number>{
         public NumberProperty(String path) {super(path);} 
     }
@@ -93,6 +124,9 @@ public class Types {
     }
        
     public interface Operation<RT> extends Expr<RT> {}
+    
+    public interface BooleanOperation extends Operation<Boolean>, BooleanExpr {}
+    
     static class OpImpl<RT> implements Op<RT> {}
     
     public enum Order{ ASC,DESC }
@@ -106,18 +140,6 @@ public class Types {
         public final String _path;
         public Reference(String path) {
             this._path = path;
-        }
-        protected BooleanProperty bool(String path){
-            return new BooleanProperty(this._path+"."+_path);
-        }
-        protected CharProperty ch(String path) {
-            return new CharProperty(this._path+"."+path);
-        }
-        protected NumberProperty num(String path) {
-            return new NumberProperty(this._path+"."+path);
-        }
-        protected StringProperty str(String path) {
-            return new StringProperty(this._path+"."+path);
         }
     }       
     
@@ -148,12 +170,22 @@ public class Types {
         public Op<RT> type; 
     }
     
+    public static class TertiaryBooleanOperation<F,S,T> extends TertiaryOperation<Boolean,F,S,T>
+        implements BooleanOperation{
+        
+    }
+    
     public static class UnaryOperation<RT,A> implements Operation<RT>{
         /**
          * argument doesn't need to be of same type as return type
          */
         public Expr<A> left;
         public Op<RT> type;                
+    }
+    
+    public static class UnaryBooleanOperation<A> extends UnaryOperation<Boolean,A>
+        implements BooleanOperation{
+        
     }
 
 }

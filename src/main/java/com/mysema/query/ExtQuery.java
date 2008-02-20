@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query;
 
 import com.mysema.query.grammar.Types.*;
@@ -9,7 +14,7 @@ import com.mysema.query.grammar.Types.*;
  * @version $Id$
  */
 public interface ExtQuery<A extends ExtQuery<?>> extends Query<A> {
-//    A innerJoin(EntityPathExpr<?>... objects);
-//    A leftJoin(EntityPathExpr<?>... objects); 
-//    A with(Expr<Boolean>... objects);
+    A innerJoin(EntityExpr<?>... objects);
+    A leftJoin(EntityExpr<?>... objects); 
+    A with(BooleanExpr... objects);
 }
