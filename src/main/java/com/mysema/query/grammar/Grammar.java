@@ -4,7 +4,7 @@ package com.mysema.query.grammar;
 import com.mysema.query.grammar.Types.*;
 
 /**
- * Grammar provides
+ * Grammar provides a fluent grammar for operation and order specifier creation
  *
  * @author tiwe
  * @version $Id$

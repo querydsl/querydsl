@@ -3,8 +3,10 @@ package com.mysema.query;
 import com.mysema.query.grammar.Types.*;
 
 /**
- * Query provides
+ * Query provides a fluent query interface, operations can be constructed via the 
+ * static methods of Grammar
  *
+ * @see Grammar
  * @author tiwe
  * @version $Id$
  */

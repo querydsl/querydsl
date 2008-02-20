@@ -1,9 +1,7 @@
 package com.mysema.query.grammar;
 
-
-
 /**
- * Types provides
+ * Types provides the types of the fluent grammar
  *
  * @author tiwe
  * @version $Id$
