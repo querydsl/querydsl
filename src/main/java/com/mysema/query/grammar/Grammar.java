@@ -11,17 +11,25 @@ import com.mysema.query.grammar.Types.*;
  */
 public class Grammar {
     
+    static <RT,L,R> Operation<RT> _binOp(Op<RT> type, Expr<L> left, Expr<R> right) {
+        BinaryOperation<RT,L,R> op = new BinaryOperation<RT,L,R>();
+        op.type = type;
+        op.left = left;
+        op.right = right;
+        return op;
+    }
+    
+    static <A> Expr<A> _const(A obj){
+        ConstantExpr<A> e = new ConstantExpr<A>();
+        e.constant = obj;
+        return e;
+    }
+    
     static <A> OrderSpecifier<A> _orderAsc(Expr<A> target) {
         OrderSpecifier<A> os = new OrderSpecifier<A>();
         os.order = Order.ASC;
         os.target = target;
         return os;
-    }
-    
-    static <A> Expr<A> _asConst(A obj){
-        ConstantExpr<A> e = new ConstantExpr<A>();
-        e.constant = obj;
-        return e;
     }   
     
     static <A> OrderSpecifier<A> _orderDesc(Expr<A> target) {
@@ -30,58 +38,109 @@ public class Grammar {
         os.target = target;
         return os;
     }
-    
-    public static Expr<Boolean> and(Expr<Boolean> left, Expr<Boolean> right){
-        return _bbe(BoOp.AND, left, right);
+        
+    static <RT,F,S,T> Operation<RT> _terOp(Op<RT> type, Expr<F> fst, Expr<S> snd, Expr<T> trd){
+        TertiaryOperation<RT,F,S,T> op = new TertiaryOperation<RT,F,S,T>();
+        op.type = type;
+        op.first = fst;
+        op.second = snd;
+        op.third = trd;
+        return op;
     }
     
+    static <RT,A> Operation<RT> _unOp(Op<RT> type, Expr<A> left) {
+        UnaryOperation<RT,A> op = new UnaryOperation<RT,A>();
+        op.type = type;
+        op.left = left;
+        return op;
+    }
+    
+    public static Expr<Boolean> and(Expr<Boolean> left, Expr<Boolean> right){
+        return _binOp(BoOp.AND, left, right);
+    }
+
     public static <A> OrderSpecifier<A> asc(Expr<A> target){
         return _orderAsc(target);
     }
     
+    public static Expr<String> concat(Expr<String> left, Expr<String> right){
+        return _binOp(StrOp.CONCAT, left, right);
+    }  
+    
     public static <A> OrderSpecifier<A> desc(Expr<A> target){
         return _orderDesc(target);
-    }  
-    
-    public static Expr<Boolean> eq(Object left, Object right){
-        return _bbe(NumOp.EQ, left, right);
     }    
     
-    public static Expr<Boolean> goe(Object left, Object right){
-        return _bbe(NumOp.GOE, left, right);
+    public static <A> Expr<Boolean> eq(Expr<A> left, Expr<A> right){
+        return _binOp(NumOp.EQ, left, right);
     }  
     
-    public static Expr<Boolean> gt(Object left, Object right){
-        return _bbe(NumOp.GT, left, right);
-    }     
+    public static <A> Expr<Boolean> eq(Expr<A> left, A right){
+        return _binOp(NumOp.EQ, left, _const(right));
+    }  
+    
+    public static <A> Expr<Boolean> goe(Expr<A> left, A right){
+        return _binOp(NumOp.GOE, left, _const(right));
+    } 
+    
+    public static <A> Expr<Boolean> goe(Expr<A> left, Expr<A> right){
+        return _binOp(NumOp.GOE, left, right);
+    }
+    
+    public static <A> Expr<Boolean> gt(Expr<A> left, A right){
+        return _binOp(NumOp.GT, left, _const(right));
+    }    
+    
+    public static <A> Expr<Boolean> gt(Expr<A> left, Expr<A> right){
+        return _binOp(NumOp.GT, left, right);
+    }
     
     public static Expr<Boolean> like(Expr<String> left, String right){
-        return _bbe(StrOp.LIKE, left, right);
+        return _binOp(StrOp.LIKE, left, _const(right));
     }
     
-    public static Expr<Boolean> loe(Object left, Object right){
-        return _bbe(NumOp.LOE, left, right);
+    public static <A> Expr<Boolean> loe(Expr<A> left, Expr<A> right){
+        return _binOp(NumOp.LOE, left, right);
     }
     
-    public static Expr<String> lower(Expr<String> path){
-        return null; 
+    public static Expr<String> lower(Expr<String> left){
+        return _unOp(StrOp.LOWER, left); 
     }
     
-    public static Expr<Boolean> lt(Object left, Object right){
-        return _bbe(NumOp.LT, left, right);
+    public static <A> Expr<Boolean> lt(Expr<A> left, A right){
+        return _binOp(NumOp.LT, left, _const(right));
     }
     
-    public static Expr<Boolean> ne(Object left, Object right){
-        return _bbe(NumOp.NE, left, right);
+    public static <A> Expr<Boolean> lt(Expr<A> left, Expr<A> right){
+        return _binOp(NumOp.LT, left, right);
+    }
+    
+    public static <A> Expr<Boolean> ne(Expr<A> left, A right){
+        return _binOp(NumOp.NE, left, _const(right));
+    }
+    
+    public static <A> Expr<Boolean> ne(Expr<A> left, Expr<A> right){
+        return _binOp(NumOp.NE, left, right);
     }    
     
     public static Expr<Boolean> not(Expr<Boolean> left){
-        return _bue(BoOp.NE, left);
-    }
+        return _unOp(BoOp.NOT, left);
+    } 
     
     public static Expr<Boolean> or(Expr<Boolean> left, Expr<Boolean> right){
-        return _bbe(BoOp.OR, left, right);
+        return _binOp(BoOp.OR, left, right);
     }
 
+    public static Expr<String> substr(Expr<String> left, int start){
+        return _binOp(StrOp.SUBSTRING, left, _const(start));
+    }
+    
+    public static Expr<String> substr(Expr<String> left, int start, int offset){
+        return _terOp(StrOp.SUBSTRING, left, _const(start), _const(offset));
+    }
+
+    public static Expr<String> upper(Expr<String> left){
+        return _unOp(StrOp.UPPER, left); 
+    }
     
 }

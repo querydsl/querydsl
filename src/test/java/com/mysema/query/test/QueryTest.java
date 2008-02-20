@@ -15,6 +15,15 @@ import org.junit.Test;
  */
 public class QueryTest extends QueryBase{
     
+    @Test
+    public void testSimple(){
+        from(cat);
+        from(cat,cust).where(gt(cat.name,cust.name().firstName));
+        select(lower(cat.name)).from(cat).where(eq(substr(cat.name,0,2),"Mi"));
+        select(upper(cat.name)).from(cat);
+        select(concat(lower(cat.name),cat.mate().name)).from(cat);
+    }
+    
     // cats
     
     @Test

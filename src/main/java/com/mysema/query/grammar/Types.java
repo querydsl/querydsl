@@ -17,25 +17,17 @@ public class Types {
         }        
     }
     
-    /**
-     * Binary boolean expression (expression with two arguments and boolean type)
-     */
-    public static class BooleanBinaryExpr implements Expr<Boolean>{
-        public Expr<Boolean> left;
-        public Expr<Boolean> right; 
-        public Op<Boolean> type;        
+    public static class BinaryOperation<RT,L,R> implements Operation<RT>{
+        /**
+         * arguments don't need to be of same type as return type
+         */
+        public Expr<L> left;
+        public Expr<R> right; 
+        public Op<RT> type; 
     }
     
     public static class BooleanProperty extends Reference<Boolean>{
         public BooleanProperty(String path) {super(path);}
-    }
-    
-    /**
-     * Unary boolean expression (expression with one argument and boolean type)
-     */
-    public static class BooleanUnaryExpr implements Expr<Boolean>{
-        public Expr<Boolean> left;
-        public Op<Boolean> type;                
     }
     
     /**
@@ -49,6 +41,8 @@ public class Types {
         BoOp<Boolean> XOR = new BoOpImpl<Boolean>();
     }
     
+    static class BoOpImpl<RT> implements BoOp<RT>{}
+        
     public static class CharProperty extends Reference<Character>{
         public CharProperty(String path) {super(path);}        
     }
@@ -65,16 +59,16 @@ public class Types {
         public EntityPathExpr<D> as(DomainType<D> to){
             return new AsExpr<D>(this, to);
         }
-    }    
-        
+    }
+    
     public static interface EntityPathExpr<T> extends Expr<T>{}
     
-    public interface Expr<A> { }
-    
+    public interface Expr<A> { }    
+        
     public static class NumberProperty extends Reference<Number>{
         public NumberProperty(String path) {super(path);} 
     }
-       
+    
     /**
      * Numeric Operators (operators used with numeric operands)
      */
@@ -90,15 +84,20 @@ public class Types {
         NumOp<Number> SUB = new NumOpImpl<Number>();
     }
     
+    static class NumOpImpl<A> implements Types.NumOp<A> {}
+    
     /**
-     * Operators (the return type is encoded in the generic parameter)
+     * Operators (the return type is encoded in the 1st generic parameter)
      */
     public interface Op<RT> {
         Op<Boolean> EQ = new OpImpl<Boolean>();
         Op<Boolean> NE = new OpImpl<Boolean>();
     }
+       
+    public interface Operation<RT> extends Expr<RT> {}
+    static class OpImpl<RT> implements Op<RT> {}
     
-    public enum Order{ ASC,DESC }       
+    public enum Order{ ASC,DESC }
     
     public static class OrderSpecifier<A>{
         public Order order; 
@@ -122,7 +121,7 @@ public class Types {
         protected StringProperty str(String path) {
             return new StringProperty(this._path+"."+path);
         }
-    }
+    }       
     
     public static class StringProperty extends Reference<String>{
         public StringProperty(String path) {super(path);}        
@@ -137,6 +136,26 @@ public class Types {
         StrOp<String> LOWER = new StrOpImpl<String>();
         StrOp<String> SUBSTRING = new StrOpImpl<String>();
         StrOp<String> UPPER = new StrOpImpl<String>();
+    }
+    
+    static class StrOpImpl<RT> implements StrOp<RT>{}
+    
+    public static class TertiaryOperation<RT,F,S,T> implements Operation<RT>{
+        /**
+         * arguments don't need to be of same type as return type
+         */
+        public Expr<F> first;
+        public Expr<S> second;
+        public Expr<T> third;
+        public Op<RT> type; 
+    }
+    
+    public static class UnaryOperation<RT,A> implements Operation<RT>{
+        /**
+         * argument doesn't need to be of same type as return type
+         */
+        public Expr<A> left;
+        public Op<RT> type;                
     }
 
 }

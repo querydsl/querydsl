@@ -9,7 +9,7 @@ import com.mysema.query.grammar.Types.*;
  * @version $Id$
  */
 public class QueryBase implements ExtQuery<QueryBase> {
-
+    
     public QueryBase from(EntityPathExpr<?>... objects) {
        return this;
     }
@@ -27,6 +27,7 @@ public class QueryBase implements ExtQuery<QueryBase> {
     }
 
     public QueryBase where(Expr<Boolean>... objects) {
+        
         return this;
     }
 
