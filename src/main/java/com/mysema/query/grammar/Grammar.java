@@ -5,8 +5,6 @@
  */
 package com.mysema.query.grammar;
 
-import java.util.Date;
-
 import com.mysema.query.grammar.Types.*;
 
 /**
@@ -87,12 +85,14 @@ public class Grammar {
         return op;
     }
     
-    public static BooleanExpr after(Expr<Date> left, Date right){
+    public static <A extends Comparable<A>> BooleanExpr after(Expr<A> left, A right){
+        // NOTE : signature is for Comparables to support other than Java's date types
         // NOTE : basically same as gt
         return _binOp(DateOp.AFTER, left, _const(right));
     }
 
-    public static BooleanExpr after(Expr<Date> left, Expr<Date> right){
+    public static <A extends Comparable<A>> BooleanExpr after(Expr<A> left, Expr<A> right){
+        // NOTE : signature is for Comparables to support other than Java's date types
         // NOTE : basically same as gt
         return _binOp(DateOp.AFTER, left, right);
     }
@@ -105,12 +105,14 @@ public class Grammar {
         return _orderAsc(target);
     }  
     
-    public static BooleanExpr before(Expr<Date> left, Date right){
+    public static <A extends Comparable<A>> BooleanExpr before(Expr<A> left, A right){
+        // NOTE : signature is for Comparables to support other than Java's date types
         // NOTE : basically same as lt
         return _binOp(DateOp.BEFORE, left, _const(right));
     }  
     
-    public static BooleanExpr before(Expr<Date> left, Expr<Date> right){
+    public static <A extends Comparable<A>> BooleanExpr before(Expr<A> left, Expr<A> right){
+        // NOTE : signature is for Comparables to support other than Java's date types
         // NOTE : basically same as lt
         return _binOp(DateOp.BEFORE, left, right);
     } 
@@ -151,7 +153,7 @@ public class Grammar {
         return _binOp(NumOp.GT, left, right);
     }   
     
-    public static <A> BooleanExpr in(Expr<A> left, A... rest){
+    public static <A extends Comparable<A>> BooleanExpr in(Expr<A> left, A... rest){
         // TODO
         return null;
     }

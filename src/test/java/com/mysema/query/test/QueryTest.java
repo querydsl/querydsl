@@ -1,7 +1,7 @@
 package com.mysema.query.test;
 
 import static com.mysema.query.grammar.Grammar.*;
-import static com.mysema.query.test.domain.Domain.*;
+import static com.mysema.query.test.domain.Instances.*;
 
 import java.util.Date;
 
