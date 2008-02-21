@@ -5,7 +5,10 @@
  */
 package com.mysema.query;
 
-import com.mysema.query.grammar.Types.*;
+import com.mysema.query.grammar.Types.BooleanExpr;
+import com.mysema.query.grammar.Types.EntityExpr;
+import com.mysema.query.grammar.Types.Expr;
+import com.mysema.query.grammar.Types.OrderSpecifier;
 
 /**
  * Query provides a fluent query interface, operations can be constructed via the 

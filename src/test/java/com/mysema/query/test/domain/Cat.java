@@ -16,6 +16,7 @@ public class Cat {
     private Cat mate;
     private int bodyWeight;
     private String name;
+    private boolean alive;
     public Collection<Cat> getKittens() {
         return kittens;
     }
@@ -39,6 +40,12 @@ public class Cat {
     }
     public void setName(String name) {
         this.name = name;
+    }
+    public boolean isAlive() {
+        return alive;
+    }
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
     
 }

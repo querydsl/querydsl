@@ -5,7 +5,8 @@
  */
 package com.mysema.query;
 
-import com.mysema.query.grammar.Types.*;
+import com.mysema.query.grammar.Types.BooleanExpr;
+import com.mysema.query.grammar.Types.EntityExpr;
 
 /**
  * ExtQuery externds the Query interface to provide innerJoin, leftJoin and with methods

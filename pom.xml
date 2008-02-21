@@ -16,7 +16,11 @@
   <packaging>jar</packaging>
 
   <dependencies>
-
+    <dependency>
+      <groupId>com.mysema.commons</groupId>
+      <artifactId>mysema-core</artifactId>
+      <version>0.3.2</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -30,5 +34,5 @@
       </exclusions>
     </dependency>
   </dependencies>
-  
+
 </project>

@@ -1,8 +1,10 @@
 package com.mysema.query.test.domain;
 
+import java.util.Date;
+
+import com.mysema.query.grammar.Types.BooleanProperty;
 import com.mysema.query.grammar.Types.DomainType;
-import com.mysema.query.grammar.Types.NumberProperty;
-import com.mysema.query.grammar.Types.StringProperty;
+import com.mysema.query.grammar.Types.Reference;
 
 
 /**
@@ -12,98 +14,139 @@ import com.mysema.query.grammar.Types.StringProperty;
  * @version $Id$
  */
 public class Domain {
-   
-    // Cat
-    public static final qCat cat = new qCat("cat");
-    public static final qCat cat1 = new qCat("cat1");
-    public static final qCat cat2 = new qCat("cat2");
-    public static final qCat cat3 = new qCat("cat3");
-    public static final qCat cat4 = new qCat("cat4");
-    public static final qCat cat5 = new qCat("cat5");
+    // AuditLog
+    public static final qAuditLog<AuditLog> log = new qAuditLog<AuditLog>("log");
     
-    public static final qCat kitten = new qCat("kitten");
-    public static final qCat child = new qCat("child");
-    public static final qCat mate = new qCat("mate"); 
+    // Cat
+    public static final qCat<Cat> cat = new qCat<Cat>("cat");
+    public static final qCat<Cat> cat1 = new qCat<Cat>("cat1");
+    public static final qCat<Cat> cat2 = new qCat<Cat>("cat2");
+    public static final qCat<Cat> cat3 = new qCat<Cat>("cat3");
+    public static final qCat<Cat> cat4 = new qCat<Cat>("cat4");
+    public static final qCat<Cat> cat5 = new qCat<Cat>("cat5");
+    
+    public static final qCat<Cat> kitten = new qCat<Cat>("kitten");
+    public static final qCat<Cat> child = new qCat<Cat>("child");
+    public static final qCat<Cat> mate = new qCat<Cat>("mate"); 
     
     // Company
-    public static final qCompany company = new qCompany("company");
-    public static final qCompany company1 = new qCompany("company1");
-    public static final qCompany company2 = new qCompany("company2");
-    public static final qCompany company3 = new qCompany("company3");
-    public static final qCompany company4 = new qCompany("company4");
-    public static final qCompany company5 = new qCompany("company5");
+    public static final qCompany<Company> company = new qCompany<Company>("company");
+    public static final qCompany<Company> company1 = new qCompany<Company>("company1");
+    public static final qCompany<Company> company2 = new qCompany<Company>("company2");
+    public static final qCompany<Company> company3 = new qCompany<Company>("company3");
+    public static final qCompany<Company> company4 = new qCompany<Company>("company4");
+    public static final qCompany<Company> company5 = new qCompany<Company>("company5");
     
     // Customer
-    public static final qCustomer cust = new qCustomer("cust");
+    public static final qCustomer<Customer> cust = new qCustomer<Customer>("cust");
     
     // Document
-    public static final qDocument doc = new qDocument("doc");
+    public static final qDocument<Document> doc = new qDocument<Document>("doc");
+    
+    // DomesticCat
+    public static final qDomesticCat<DomesticCat> domesticCat = new qDomesticCat<DomesticCat>("domesticCat");
+    
+    // Payment
+    public static final qPayment<Payment> payment = new qPayment<Payment>("payment");
     
     // User
-    public static final qUser user = new qUser("user");
-    public static final qUser user1 = new qUser("user1");
-    public static final qUser user2 = new qUser("user2");
-    public static final qUser user3 = new qUser("user3");
-    public static final qUser user4 = new qUser("user4");
-    public static final qUser user5 = new qUser("user5");
+    public static final qUser<User> user = new qUser<User>("user");
+    public static final qUser<User> user1 = new qUser<User>("user1");
+    public static final qUser<User> user2 = new qUser<User>("user2");
+    public static final qUser<User> user3 = new qUser<User>("user3");
+    public static final qUser<User> user4 = new qUser<User>("user4");
+    public static final qUser<User> user5 = new qUser<User>("user5");
         
     // type declarations
     
-    public static class qCat extends DomainType<Cat>{
+    public static class qAuditLog<T extends AuditLog> extends DomainType<T>{
+        qAuditLog(String path) {super(path);}
+        qAuditLog(DomainType<?> type, String path) {super(type,path);}
+        
+        private qItem<Item> item;
+        public qItem<Item> item() {
+            if (item == null) item = new qItem<Item>(this,"item");
+            return item;
+        }   
+    }
+    
+    public static class qCat<T extends Cat> extends DomainType<T>{
         qCat(String path) {super(path);}
-        qCat(DomainType<?> type, String path) {super(type,path);}
-        private qCat kittens, mate;
-        public final NumberProperty bodyWeight = num("bodyWeight");
-        public final StringProperty name = str("name");
-        public final qCat kittens(){
-            if (kittens == null) kittens = new qCat(this,"kittens"); 
+        qCat(DomainType<?> type, String path) {super(type,path);}        
+        public final BooleanProperty alive = _boolean("alive");
+        public final Reference<Integer> bodyWeight = _prop("bodyWeight",Integer.class);
+        public final Reference<String> name = _prop("name",String.class);
+        
+        private qCat<Cat> kittens;
+        public final qCat<Cat> kittens(){
+            if (kittens == null) kittens = new qCat<Cat>(this,"kittens"); 
             return kittens;
-        }
-        public final qCat mate(){
-            if (mate == null) mate = new qCat(this,"mate");
+        }        
+        private qCat<Cat> mate;
+        public final qCat<Cat> mate(){
+            if (mate == null) mate = new qCat<Cat>(this,"mate");
             return mate;
         }        
     }
     
-    public static class qCustomer extends DomainType<Customer>{
+    public static class qDomesticCat<T extends DomesticCat> extends qCat<T>{
+        qDomesticCat(String path) {super(path);}
+        qDomesticCat(DomainType<?> type, String path) {super(type,path);}
+    }
+    
+    public static class qCustomer<T extends Customer> extends DomainType<T>{
         qCustomer(String path) {super(path);}
         qCustomer(DomainType<?> type, String path) {super(type,path);}
-        private qName name;
-        public final qName name(){
-            if (name == null) name = new qName(this, "name");
+        
+        private qName<Name> name;
+        public final qName<Name> name(){
+            if (name == null) name = new qName<Name>(this, "name");
             return name;
         }
     }
     
-    public static class qCompany extends DomainType<Company>{
+    public static class qCompany<T extends Company> extends DomainType<T>{
         qCompany(String path) {super(path);}
         qCompany(DomainType<?> type, String path) {super(type,path);}
-        public final NumberProperty id = num("id");
-        public final StringProperty name = str("name");
+        public final Reference<Long> id = _prop("id",Long.class);
+        public final Reference<String> name = _prop("name",String.class);
     }
     
-    public static class qDocument extends DomainType<Document>{
+    public static class qDocument<T extends Document> extends DomainType<T>{
         qDocument(String path){super(path);}
         qDocument(DomainType<?> type, String path) {super(type,path);}
-        public final StringProperty name = str("name");
+        public final Reference<String> name = _prop("name",String.class);
+        public final Reference<Date> validTo = _prop("validTo",Date.class);
     }
     
-    public static class qName extends DomainType<Name>{
+    public static class qItem<T extends Item> extends DomainType<T>{
+        qItem(String path){super(path);}
+        qItem(DomainType<?> type, String path) {super(type,path);}
+        public Reference<String> id = _prop("id",String.class);
+    }
+    
+    public static class qName<T extends Name> extends DomainType<T>{
         qName(String path){super(path);}
         qName(DomainType<?> type, String path) {super(type,path);}
-        public final StringProperty firstName = str("firstName");
+        public final Reference<String> firstName = _prop("firstName",String.class);
     }
     
-    public static class qUser extends DomainType<User>{
+    public static class qPayment<T extends Payment> extends qItem<T>{
+        qPayment(String path){super(path);}
+        qPayment(DomainType<?> type, String path) {super(type,path);}
+    }
+    
+    public static class qUser<T extends User> extends DomainType<T>{
         qUser(String path) {super(path);}
-        qUser(DomainType<?> type, String path) {super(type,path);}
-        private qCompany company;
-        public final NumberProperty id = num("id");
-        public final StringProperty userName = str("userName");
-        public final StringProperty firstName = str("firstName");
-        public final StringProperty lastName = str("lastName");
-        public final qCompany company(){
-            if (company == null) company = new qCompany(this,"company");
+        qUser(DomainType<?> type, String path) {super(type,path);}        
+        public final Reference<Long> id = _prop("id",Long.class);
+        public final Reference<String> userName = _prop("userName",String.class);
+        public final Reference<String> firstName = _prop("firstName",String.class);
+        public final Reference<String> lastName = _prop("lastName",String.class);
+        
+        private qCompany<Company> company;
+        public final qCompany<Company> company(){
+            if (company == null) company = new qCompany<Company>(this,"company");
             return company;
         }        
     }

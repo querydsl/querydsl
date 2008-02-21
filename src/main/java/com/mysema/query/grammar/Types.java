@@ -16,8 +16,13 @@ public class Types {
     public static class Alias<D> extends Reference<D> implements EntityExpr<D>{
         public Reference<D> from, to;
         Alias(Reference<D> from, Reference<D> to) {
-            super(to._path);
+            super(to.toString());
         }        
+    }
+    
+    public static class BinaryBooleanOperation<L,R> extends BinaryOperation<Boolean,L,R> 
+        implements BooleanOperation {
+        
     }
     
     public static class BinaryOperation<RT,L,R> implements Operation<RT>{
@@ -29,19 +34,22 @@ public class Types {
         public Op<RT> type; 
     }
     
-    public static class BinaryBooleanOperation<L,R> extends BinaryOperation<Boolean,L,R> 
-        implements BooleanOperation {
-        
-    }
+    /**
+     * NOTE : BooleanExpr as a concrete interface instead of Expr<Boolean> avoids
+     * compiler warnings when used in Query#where(BooleanExpr... objects);
+     */
+    public interface BooleanExpr extends Expr<Boolean>{ }
+    
+    public interface BooleanOperation extends Operation<Boolean>, BooleanExpr {}
     
     public static class BooleanProperty extends Reference<Boolean> implements BooleanExpr{
         public BooleanProperty(String path) {super(path);}
     }
-    
+        
     /**
      * Boolean operators (operators used with boolean operands)
      */
-    public interface BoOp<RT> extends Op<RT>{ 
+    public interface BoOp<RT> extends CompOp<RT>{ 
         BoOp<Boolean> AND = new BoOpImpl<Boolean>(); 
         BoOp<Boolean> NOT = new BoOpImpl<Boolean>();
         BoOp<Boolean> OR = new BoOpImpl<Boolean>();
@@ -50,34 +58,47 @@ public class Types {
     }
     
     static class BoOpImpl<RT> implements BoOp<RT>{}
-        
-    public static class CharProperty extends Reference<Character>{
-        public CharProperty(String path) {super(path);}        
+       
+    /**
+     * Operators for Comparable objects
+     */
+    public interface CompOp<RT> extends Op<RT>{
+        CompOp<Boolean> BETWEEN = new CompOpImpl<Boolean>();
+        CompOp<Boolean> GOE = new CompOpImpl<Boolean>();
+        CompOp<Boolean> GT = new CompOpImpl<Boolean>();
+        CompOp<Boolean> LOE = new CompOpImpl<Boolean>();
+        CompOp<Boolean> LT = new CompOpImpl<Boolean>();
     }
     
+    static class CompOpImpl<RT> implements CompOp<RT> {}    
+        
     public static class ConstantExpr<A> implements Expr<A>{
         public A constant;
     }
     
+    /**
+     * Date Operators (operators used with Date operands)
+     */
+    public interface DateOp<RT> extends CompOp<RT>{       
+        DateOp<Boolean> AFTER = new DateOpImpl<Boolean>();
+        DateOp<Boolean> BEFORE = new DateOpImpl<Boolean>();        
+    }
+    
+    static class DateOpImpl<RT> implements DateOp<RT>{}
+    
     public static class DomainType<D> extends Reference<D> implements EntityExpr<D>{
         protected DomainType(DomainType<?> type, String path) {
-            super(type._path+"."+path);
+            super(type+"."+path);
         } 
         protected DomainType(String path) {super(path);}
         public EntityExpr<D> as(DomainType<D> to){
             return new Alias<D>(this, to);
         }
-        protected BooleanProperty bool(String path){
-            return new BooleanProperty(this._path+"."+_path);
+        protected BooleanProperty _boolean(String path){
+            return new BooleanProperty(this+"."+path);
         }
-        protected CharProperty ch(String path) {
-            return new CharProperty(this._path+"."+path);
-        }
-        protected NumberProperty num(String path) {
-            return new NumberProperty(this._path+"."+path);
-        }
-        protected StringProperty str(String path) {
-            return new StringProperty(this._path+"."+path);
+        protected <A> Reference<A> _prop(String path,Class<A> type) {
+            return new Reference<A>(this+"."+path);
         }
     }
     
@@ -86,28 +107,14 @@ public class Types {
      */
     public static interface EntityExpr<T> extends Expr<T>{}
     
-    public interface Expr<A> { }    
-        
-    /**
-     * NOTE : BooleanExpr as a concrete interface instead of Expr<Boolean> avoids
-     * compiler warnings when used in Query#where(BooleanExpr... objects);
-     */
-    public interface BooleanExpr extends Expr<Boolean>{ }
-    
-    public static class NumberProperty extends Reference<Number>{
-        public NumberProperty(String path) {super(path);} 
-    }
-    
+    public interface Expr<A> { }
+           
     /**
      * Numeric Operators (operators used with numeric operands)
      */
-    public interface NumOp<RT> extends Op<RT>{
+    public interface NumOp<RT> extends CompOp<RT>{
         NumOp<Number> ADD = new NumOpImpl<Number>();   
-        NumOp<Number> DIV = new NumOpImpl<Number>();
-        NumOp<Boolean> GOE = new NumOpImpl<Boolean>();
-        NumOp<Boolean> GT = new NumOpImpl<Boolean>();
-        NumOp<Boolean> LOE = new NumOpImpl<Boolean>();
-        NumOp<Boolean> LT = new NumOpImpl<Boolean>();
+        NumOp<Number> DIV = new NumOpImpl<Number>();        
         NumOp<Number> MOD = new NumOpImpl<Number>();
         NumOp<Number> MULT = new NumOpImpl<Number>();
         NumOp<Number> SUB = new NumOpImpl<Number>();
@@ -120,45 +127,47 @@ public class Types {
      */
     public interface Op<RT> {
         Op<Boolean> EQ = new OpImpl<Boolean>();
-        Op<Boolean> NE = new OpImpl<Boolean>();
+        Op<Boolean> ISTYPEOF = new OpImpl<Boolean>();
+        Op<Boolean> NE = new OpImpl<Boolean>();        
     }
-       
-    public interface Operation<RT> extends Expr<RT> {}
     
-    public interface BooleanOperation extends Operation<Boolean>, BooleanExpr {}
+    public interface Operation<RT> extends Expr<RT> {}
     
     static class OpImpl<RT> implements Op<RT> {}
     
-    public enum Order{ ASC,DESC }
+    public enum Order{ ASC,DESC }       
     
-    public static class OrderSpecifier<A>{
+    public static class OrderSpecifier<A extends Comparable<A>>{
         public Order order; 
         public Expr<A> target;       
     }
     
-    public static class Reference<T> implements Expr<T>{        
-        public final String _path;
-        public Reference(String path) {
-            this._path = path;
+    public static class Reference<T> implements Expr<T>{
+        // _path is hidden to not pollute the namespace of the domain types
+        private final String path;
+        public Reference(String p) {
+            path = p;
         }
-    }       
-    
-    public static class StringProperty extends Reference<String>{
-        public StringProperty(String path) {super(path);}        
+        public final String toString(){ return path; }
     }
-    
+        
     /**
      * String Operators (operators used with String operands)
      */
-    public interface StrOp<RT> extends Op<RT>{       
+    public interface StrOp<RT> extends CompOp<RT>{       
         StrOp<String> CONCAT = new StrOpImpl<String>();
         StrOp<Boolean> LIKE = new StrOpImpl<Boolean>();
         StrOp<String> LOWER = new StrOpImpl<String>();
-        StrOp<String> SUBSTRING = new StrOpImpl<String>();
+        StrOp<String> SUBSTR = new StrOpImpl<String>();
         StrOp<String> UPPER = new StrOpImpl<String>();
     }
     
     static class StrOpImpl<RT> implements StrOp<RT>{}
+    
+    public static class TertiaryBooleanOperation<F,S,T> extends TertiaryOperation<Boolean,F,S,T>
+        implements BooleanOperation{
+        
+    }
     
     public static class TertiaryOperation<RT,F,S,T> implements Operation<RT>{
         /**
@@ -170,7 +179,7 @@ public class Types {
         public Op<RT> type; 
     }
     
-    public static class TertiaryBooleanOperation<F,S,T> extends TertiaryOperation<Boolean,F,S,T>
+    public static class UnaryBooleanOperation<A> extends UnaryOperation<Boolean,A>
         implements BooleanOperation{
         
     }
@@ -181,11 +190,6 @@ public class Types {
          */
         public Expr<A> left;
         public Op<RT> type;                
-    }
-    
-    public static class UnaryBooleanOperation<A> extends UnaryOperation<Boolean,A>
-        implements BooleanOperation{
-        
     }
 
 }

@@ -1,6 +1,5 @@
 package com.mysema.query.test.domain;
 
-import com.mysema.query.test.domain.Domain.qCompany;
 
 /**
  * User provides
@@ -14,13 +13,13 @@ public class User {
 //    public final StringProperty userName = str("userName");
 //    public final StringProperty firstName = str("firstName");
 //    public final StringProperty lastName = str("lastName");
-    private qCompany company;
+    private Company company;
     private long id;
     private String userName, firstName, lastName;
-    public qCompany getCompany() {
+    public Company getCompany() {
         return company;
     }
-    public void setCompany(qCompany company) {
+    public void setCompany(Company company) {
         this.company = company;
     }
     public long getId() {
