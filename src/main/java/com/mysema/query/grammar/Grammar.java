@@ -90,15 +90,19 @@ public class Grammar {
         // NOTE : basically same as gt
         return _binOp(DateOp.AFTER, left, _const(right));
     }
-
+    
     public static <A extends Comparable<A>> BooleanExpr after(Expr<A> left, Expr<A> right){
         // NOTE : signature is for Comparables to support other than Java's date types
         // NOTE : basically same as gt
         return _binOp(DateOp.AFTER, left, right);
     }
-    
+
     public static BooleanExpr and(BooleanExpr left, BooleanExpr right){
         return _binOp(BoOp.AND, left, right);
+    }
+    
+    public static <D> EntityExpr<D> as(DomainType<D> from, DomainType<D> to){
+        return new Alias<D>(from, to);
     }    
     
     public static <A extends Comparable<A>> OrderSpecifier<A> asc(Expr<A> target){

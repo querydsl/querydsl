@@ -38,7 +38,7 @@ public class QueryTest extends QueryBase{
         select(lower(cat.name)).from(cat).where(eq(substr(cat.name,0,2),"Mi"));
         select(upper(cat.name)).from(cat);
         select(concat(lower(cat.name),cat.mate().name)).from(cat);
-        cat.as(kitten);
+        as(cat,kitten);
 //        cat.as(company); // not allowed
 //        asc(cust.name()); // not allowed
         asc(cust.name().firstName);
@@ -68,7 +68,7 @@ public class QueryTest extends QueryBase{
     public void testCat1(){
 //      from Cat as cat left join cat.kittens as kitten 
 //          with kitten.bodyWeight > 10.0
-        from(cat).leftJoin(cat.kittens().as(kitten))
+        from(cat).leftJoin(as(cat.kittens(),kitten))
             .with(gt(kitten.bodyWeight,10));            
     }
     
@@ -77,7 +77,7 @@ public class QueryTest extends QueryBase{
 //      from Cat as cat inner join fetch cat.mate
 //          left join fetch cat.kittens child left join fetch child.kittens
         from(cat).innerJoin(cat.mate())
-            .leftJoin(cat.kittens().as(child)).leftJoin(child.kittens());
+            .leftJoin(as(cat.kittens(),child)).leftJoin(child.kittens());
     }
    
     @Test

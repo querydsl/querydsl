@@ -91,9 +91,9 @@ public class Types {
             super(type+"."+path);
         } 
         protected DomainType(String path) {super(path);}
-        public EntityExpr<D> as(DomainType<D> to){
-            return new Alias<D>(this, to);
-        }
+//        public EntityExpr<D> as(DomainType<D> to){
+//            return new Alias<D>(this, to);
+//        }
         protected BooleanProperty _boolean(String path){
             return new BooleanProperty(this+"."+path);
         }

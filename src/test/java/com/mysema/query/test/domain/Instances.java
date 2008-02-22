@@ -11,46 +11,46 @@ import com.mysema.query.test.domain.Domain.*;
 public class Instances {
 
     // AuditLog
-    public static final qAuditLog<AuditLog> log = new qAuditLog<AuditLog>("log");
+    public static final _AuditLog<AuditLog> log = new _AuditLog<AuditLog>("log");
     
     // Cat
-    public static final qCat<Cat> cat = new qCat<Cat>("cat");
-    public static final qCat<Cat> cat1 = new qCat<Cat>("cat1");
-    public static final qCat<Cat> cat2 = new qCat<Cat>("cat2");
-    public static final qCat<Cat> cat3 = new qCat<Cat>("cat3");
-    public static final qCat<Cat> cat4 = new qCat<Cat>("cat4");
-    public static final qCat<Cat> cat5 = new qCat<Cat>("cat5");
+    public static final _Cat<Cat> cat = new _Cat<Cat>("cat");
+    public static final _Cat<Cat> cat1 = new _Cat<Cat>("cat1");
+    public static final _Cat<Cat> cat2 = new _Cat<Cat>("cat2");
+    public static final _Cat<Cat> cat3 = new _Cat<Cat>("cat3");
+    public static final _Cat<Cat> cat4 = new _Cat<Cat>("cat4");
+    public static final _Cat<Cat> cat5 = new _Cat<Cat>("cat5");
     
-    public static final qCat<Cat> kitten = new qCat<Cat>("kitten");
-    public static final qCat<Cat> child = new qCat<Cat>("child");
-    public static final qCat<Cat> mate = new qCat<Cat>("mate"); 
+    public static final _Cat<Cat> kitten = new _Cat<Cat>("kitten");
+    public static final _Cat<Cat> child = new _Cat<Cat>("child");
+    public static final _Cat<Cat> mate = new _Cat<Cat>("mate"); 
     
     // Company
-    public static final qCompany<Company> company = new qCompany<Company>("company");
-    public static final qCompany<Company> company1 = new qCompany<Company>("company1");
-    public static final qCompany<Company> company2 = new qCompany<Company>("company2");
-    public static final qCompany<Company> company3 = new qCompany<Company>("company3");
-    public static final qCompany<Company> company4 = new qCompany<Company>("company4");
-    public static final qCompany<Company> company5 = new qCompany<Company>("company5");
+    public static final _Company<Company> company = new _Company<Company>("company");
+    public static final _Company<Company> company1 = new _Company<Company>("company1");
+    public static final _Company<Company> company2 = new _Company<Company>("company2");
+    public static final _Company<Company> company3 = new _Company<Company>("company3");
+    public static final _Company<Company> company4 = new _Company<Company>("company4");
+    public static final _Company<Company> company5 = new _Company<Company>("company5");
     
     // Customer
-    public static final qCustomer<Customer> cust = new qCustomer<Customer>("cust");
+    public static final _Customer<Customer> cust = new _Customer<Customer>("cust");
     
     // Document
-    public static final qDocument<Document> doc = new qDocument<Document>("doc");
+    public static final _Document<Document> doc = new _Document<Document>("doc");
     
     // DomesticCat
-    public static final qDomesticCat<DomesticCat> domesticCat = new qDomesticCat<DomesticCat>("domesticCat");
+    public static final _DomesticCat<DomesticCat> domesticCat = new _DomesticCat<DomesticCat>("domesticCat");
     
     // Payment
-    public static final qPayment<Payment> payment = new qPayment<Payment>("payment");
+    public static final _Payment<Payment> payment = new _Payment<Payment>("payment");
     
     // User
-    public static final qUser<User> user = new qUser<User>("user");
-    public static final qUser<User> user1 = new qUser<User>("user1");
-    public static final qUser<User> user2 = new qUser<User>("user2");
-    public static final qUser<User> user3 = new qUser<User>("user3");
-    public static final qUser<User> user4 = new qUser<User>("user4");
-    public static final qUser<User> user5 = new qUser<User>("user5");
+    public static final _User<User> user = new _User<User>("user");
+    public static final _User<User> user1 = new _User<User>("user1");
+    public static final _User<User> user2 = new _User<User>("user2");
+    public static final _User<User> user3 = new _User<User>("user3");
+    public static final _User<User> user4 = new _User<User>("user4");
+    public static final _User<User> user5 = new _User<User>("user5");
 
 }
