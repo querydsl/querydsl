@@ -128,7 +128,8 @@ public class Types {
     public interface Op<RT> {
         Op<Boolean> EQ = new OpImpl<Boolean>();
         Op<Boolean> ISTYPEOF = new OpImpl<Boolean>();
-        Op<Boolean> NE = new OpImpl<Boolean>();        
+        Op<Boolean> NE = new OpImpl<Boolean>();
+        Op<Boolean> IN = new OpImpl<Boolean>();
     }
     
     public interface Operation<RT> extends Expr<RT> {}

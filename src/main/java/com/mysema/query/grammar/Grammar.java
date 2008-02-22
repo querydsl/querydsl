@@ -158,8 +158,7 @@ public class Grammar {
     }   
     
     public static <A extends Comparable<A>> BooleanExpr in(Expr<A> left, A... rest){
-        // TODO
-        return null;
+        return _binOp(Op.IN, left, _const(rest));
     }
     
     public static BooleanExpr like(Expr<String> left, String right){
