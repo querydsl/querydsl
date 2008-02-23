@@ -22,5 +22,6 @@ public interface Query<A extends Query<?>>{
     A from(EntityExpr<?>... objects);    
     A where(BooleanExpr... objects);
     A groupBy(Expr<?>... objects);
+    A having(BooleanExpr... objects);
     A orderBy(OrderSpecifier<?>... objects);
 }

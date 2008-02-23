@@ -14,24 +14,26 @@ package com.mysema.query.grammar;
 public class Types {
     
     public static class Alias<D> extends Reference<D> implements EntityExpr<D>{
-        public Reference<D> from, to;
+        public final Reference<D> from, to;
         Alias(Reference<D> from, Reference<D> to) {
             super(to.toString());
+            this.from = from;
+            this.to = to;
         }        
     }
     
-    public static class BinaryBooleanOperation<L,R> extends BinaryOperation<Boolean,L,R> 
+    public static class BinaryBooleanOperation<L,R> extends BinaryOperation<Boolean,Boolean,L,R> 
         implements BooleanOperation {
         
     }
     
-    public static class BinaryOperation<RT,L,R> implements Operation<RT>{
+    public static class BinaryOperation<OP,RT extends OP,L,R> implements Operation<RT>{
         /**
          * arguments don't need to be of same type as return type
          */
         public Expr<L> left;
         public Expr<R> right; 
-        public Op<RT> type; 
+        public Op<OP> operator; 
     }
     
     /**
@@ -91,9 +93,6 @@ public class Types {
             super(type+"."+path);
         } 
         protected DomainType(String path) {super(path);}
-//        public EntityExpr<D> as(DomainType<D> to){
-//            return new Alias<D>(this, to);
-//        }
         protected BooleanProperty _boolean(String path){
             return new BooleanProperty(this+"."+path);
         }
@@ -130,6 +129,8 @@ public class Types {
         Op<Boolean> ISTYPEOF = new OpImpl<Boolean>();
         Op<Boolean> NE = new OpImpl<Boolean>();
         Op<Boolean> IN = new OpImpl<Boolean>();
+        Op<Boolean> ISNULL = new OpImpl<Boolean>();
+        Op<Boolean> ISNOTNULL = new OpImpl<Boolean>();
     }
     
     public interface Operation<RT> extends Expr<RT> {}
@@ -166,32 +167,32 @@ public class Types {
     
     static class StrOpImpl<RT> implements StrOp<RT>{}
     
-    public static class TertiaryBooleanOperation<F,S,T> extends TertiaryOperation<Boolean,F,S,T>
+    public static class TertiaryBooleanOperation<F,S,T> extends TertiaryOperation<Boolean,Boolean,F,S,T>
         implements BooleanOperation{
         
     }
     
-    public static class TertiaryOperation<RT,F,S,T> implements Operation<RT>{
+    public static class TertiaryOperation<OP,RT extends OP,F,S,T> implements Operation<RT>{
         /**
          * arguments don't need to be of same type as return type
          */
         public Expr<F> first;
         public Expr<S> second;
         public Expr<T> third;
-        public Op<RT> type; 
+        public Op<OP> operator; 
     }
     
-    public static class UnaryBooleanOperation<A> extends UnaryOperation<Boolean,A>
+    public static class UnaryBooleanOperation<A> extends UnaryOperation<Boolean,Boolean,A>
         implements BooleanOperation{
         
     }
     
-    public static class UnaryOperation<RT,A> implements Operation<RT>{
+    public static class UnaryOperation<OP,RT extends OP,A> implements Operation<RT>{
         /**
          * argument doesn't need to be of same type as return type
          */
         public Expr<A> left;
-        public Op<RT> type;                
+        public Op<OP> operator;                
     }
 
 }
