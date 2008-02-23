@@ -121,6 +121,10 @@ public class Grammar {
     public static <D> EntityExpr<D> as(DomainType<D> from, DomainType<D> to) {
         return new Alias<D>(from, to);
     }
+    
+    public static <D> EntityExpr<D> as(CollectionReference<D> from, DomainType<D> to) {
+        return new CollectionAlias<D>(from, to);
+    }
 
     public static <A extends Comparable<A>> OrderSpecifier<A> asc(Expr<A> target) {
         return _orderAsc(target);

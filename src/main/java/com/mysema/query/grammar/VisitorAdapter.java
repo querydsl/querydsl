@@ -26,6 +26,16 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visito
     }
     
     @Override
+    protected void visit(CollectionAlias<?> expr){
+        visit((Reference<?>)expr);
+    }
+    
+    @Override
+    protected void visit(CollectionReference<?> expr){
+        visit((Reference<?>)expr);
+    }
+    
+    @Override
     protected void visit(DomainType<?> expr) {
         visit((Reference<?>)expr);        
     }

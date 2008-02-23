@@ -5,6 +5,9 @@
  */
 package com.mysema.query.grammar;
 
+import java.util.Collection;
+
+
 /**
  * Types provides the types of the fluent grammar
  *
@@ -32,8 +35,8 @@ public class Types {
          * arguments don't need to be of same type as return type
          */
         public Expr<L> left;
-        public Expr<R> right; 
         public Op<OP> operator; 
+        public Expr<R> right; 
     }
     
     /**
@@ -47,7 +50,7 @@ public class Types {
     public static class BooleanProperty extends Reference<Boolean> implements BooleanExpr{
         public BooleanProperty(String path) {super(path);}
     }
-        
+    
     /**
      * Boolean operators (operators used with boolean operands)
      */
@@ -58,9 +61,26 @@ public class Types {
         BoOp<Boolean> XNOR = new BoOpImpl<Boolean>();
         BoOp<Boolean> XOR = new BoOpImpl<Boolean>();
     }
-    
+        
     static class BoOpImpl<RT> implements BoOp<RT>{}
+    
+    public static class CollectionAlias<D> extends Reference<D> implements EntityExpr<D>{
+        public final CollectionReference<D> from;
+        public final Reference<D> to;
+        CollectionAlias(CollectionReference<D> from, Reference<D> to) {
+            super(to.toString());
+            this.from = from;
+            this.to = to;
+        }        
+    }
        
+    public static class CollectionReference<A> extends Reference<Collection<A>> implements 
+        EntityExpr<Collection<A>>{
+        public CollectionReference(String p) {
+            super(p);
+        }        
+    }
+    
     /**
      * Operators for Comparable objects
      */
@@ -70,10 +90,10 @@ public class Types {
         CompOp<Boolean> GT = new CompOpImpl<Boolean>();
         CompOp<Boolean> LOE = new CompOpImpl<Boolean>();
         CompOp<Boolean> LT = new CompOpImpl<Boolean>();
-    }
-    
-    static class CompOpImpl<RT> implements CompOp<RT> {}    
+    }    
         
+    static class CompOpImpl<RT> implements CompOp<RT> {}
+    
     public static class ConstantExpr<A> implements Expr<A>{
         public A constant;
     }
@@ -95,6 +115,9 @@ public class Types {
         protected DomainType(String path) {super(path);}
         protected BooleanProperty _boolean(String path){
             return new BooleanProperty(this+"."+path);
+        }
+        protected <A>CollectionReference<A> _collection(String path,Class<A> type) {
+            return new CollectionReference<A>(this+"."+path);
         }
         protected <A> Reference<A> _prop(String path,Class<A> type) {
             return new Reference<A>(this+"."+path);
@@ -126,11 +149,11 @@ public class Types {
      */
     public interface Op<RT> {
         Op<Boolean> EQ = new OpImpl<Boolean>();
+        Op<Boolean> IN = new OpImpl<Boolean>();
+        Op<Boolean> ISNOTNULL = new OpImpl<Boolean>();
+        Op<Boolean> ISNULL = new OpImpl<Boolean>();
         Op<Boolean> ISTYPEOF = new OpImpl<Boolean>();
         Op<Boolean> NE = new OpImpl<Boolean>();
-        Op<Boolean> IN = new OpImpl<Boolean>();
-        Op<Boolean> ISNULL = new OpImpl<Boolean>();
-        Op<Boolean> ISNOTNULL = new OpImpl<Boolean>();
     }
     
     public interface Operation<RT> extends Expr<RT> {}
@@ -177,9 +200,9 @@ public class Types {
          * arguments don't need to be of same type as return type
          */
         public Expr<F> first;
+        public Op<OP> operator;
         public Expr<S> second;
-        public Expr<T> third;
-        public Op<OP> operator; 
+        public Expr<T> third; 
     }
     
     public static class UnaryBooleanOperation<A> extends UnaryOperation<Boolean,Boolean,A>

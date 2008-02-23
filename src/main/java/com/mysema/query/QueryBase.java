@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query;
 
 import java.util.ArrayList;
@@ -14,7 +19,7 @@ import com.mysema.query.grammar.Types.OrderSpecifier;
  * @version $Id$
  */
 @SuppressWarnings("unchecked")
-public class QueryBase<A extends QueryBase<A>> implements ExtQuery<A> {
+public class QueryBase<A extends QueryBase<A>> implements Query<A> {
     public enum JoinType{
         DEFAULT,IJ,LJ,J
     }
@@ -35,7 +40,6 @@ public class QueryBase<A extends QueryBase<A>> implements ExtQuery<A> {
     protected OrderSpecifier<?>[] orderBy;
     protected Expr<?>[] select;
     protected BooleanExpr[] where;
-    protected BooleanExpr[] with;
     
     protected void clear(){
         joins.clear();
@@ -47,7 +51,9 @@ public class QueryBase<A extends QueryBase<A>> implements ExtQuery<A> {
     }
     
     public A from(EntityExpr<?>... objects) {
-        // TODO
+        for (EntityExpr<?> expr : objects){
+            joins.add(new JoinExpression(JoinType.DEFAULT,expr));
+        }
         return (A) this;
     }
 
@@ -61,20 +67,6 @@ public class QueryBase<A extends QueryBase<A>> implements ExtQuery<A> {
         return (A) this;
     }
 
-    public A innerJoin(EntityExpr<?> object) {
-//        innerJoin = objects;
-        return (A) this;
-    }
-    
-    public A join(EntityExpr<?> object) {
-//        join = objects;
-        return (A) this;
-    }
-
-    public A leftJoin(EntityExpr<?> object) {
-//        leftJoin = objects;
-        return (A) this;
-    }
 
     public A orderBy(OrderSpecifier<?>... objects) {
         orderBy = objects;
@@ -91,9 +83,4 @@ public class QueryBase<A extends QueryBase<A>> implements ExtQuery<A> {
         return (A) this;
     }
     
-    public A with(BooleanExpr... objects) {
-        with = objects;
-        return (A) this;
-    }
-
 }

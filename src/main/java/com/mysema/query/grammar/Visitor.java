@@ -64,6 +64,10 @@ public abstract class Visitor<T extends Visitor<T>> {
     
     protected abstract void visit(BooleanProperty expr);
     
+    protected abstract void visit(CollectionAlias<?> expr);
+    
+    protected abstract void visit(CollectionReference<?> expr);
+    
     protected abstract void visit(ConstantExpr<?> expr);
     
     protected abstract void visit(DomainType<?> expr);
