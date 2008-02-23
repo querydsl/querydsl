@@ -14,7 +14,7 @@ import com.mysema.query.grammar.Types.EntityExpr;
  * @author tiwe
  * @version $Id$
  */
-public interface ExtQuery<A extends ExtQuery<?>> extends Query<A> {
+public interface ExtQuery<A extends ExtQuery<A>> extends Query<A> {
     A innerJoin(EntityExpr<?> object);
     A join(EntityExpr<?> object);
     A leftJoin(EntityExpr<?> object); 

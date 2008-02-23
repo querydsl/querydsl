@@ -35,7 +35,9 @@ public abstract class Visitor<T extends Visitor<T>> {
                         sigClass = sigClass.getSuperclass();
                     }                       
                 }
-                method.setAccessible(true);
+                if (method != null){
+                    method.setAccessible(true);    
+                }                
                 return method;
             } catch (Exception e) {
                 throw new RuntimeException(e);

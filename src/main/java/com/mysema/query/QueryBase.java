@@ -1,5 +1,8 @@
 package com.mysema.query;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.mysema.query.grammar.Types.BooleanExpr;
 import com.mysema.query.grammar.Types.EntityExpr;
 import com.mysema.query.grammar.Types.Expr;
@@ -10,80 +13,87 @@ import com.mysema.query.grammar.Types.OrderSpecifier;
  * @author tiwe
  * @version $Id$
  */
-public class QueryBase implements ExtQuery<QueryBase> {
+@SuppressWarnings("unchecked")
+public class QueryBase<A extends QueryBase<A>> implements ExtQuery<A> {
+    public enum JoinType{
+        DEFAULT,IJ,LJ,J
+    }
     
-    protected EntityExpr<?>[] from;
+    public class JoinExpression{
+        public final JoinType type;
+        public final EntityExpr<?> target;
+        JoinExpression(JoinType type, EntityExpr<?> target){
+            this.type = type;
+            this.target = target;
+        }
+        public BooleanExpr[] conditions;
+    }
+    
+    protected List<JoinExpression> joins = new ArrayList<JoinExpression>();
     protected Expr<?>[] groupBy;
     protected BooleanExpr[] having;
-//    protected EntityExpr<?>[] innerJoin;
-//    protected EntityExpr<?>[] join;
-//    protected EntityExpr<?>[] leftJoin;
     protected OrderSpecifier<?>[] orderBy;
     protected Expr<?>[] select;
     protected BooleanExpr[] where;
     protected BooleanExpr[] with;
     
     protected void clear(){
-        from = null;
+        joins.clear();
         groupBy = null;
         having = null;
-//        innerJoin = null;
-//        join = null;
-//        leftJoin = null;
         orderBy = null;
         select = null;
         where = null;
-        with = null;
     }
     
-    public QueryBase from(EntityExpr<?>... objects) {
-        from = objects;
-        return this;
+    public A from(EntityExpr<?>... objects) {
+        // TODO
+        return (A) this;
     }
 
-    public QueryBase groupBy(Expr<?>... objects) {
+    public A groupBy(Expr<?>... objects) {
         groupBy = objects;
-        return this;
+        return (A) this;
     }
 
-    public QueryBase having(BooleanExpr... objects) {
+    public A having(BooleanExpr... objects) {
         having = objects;
-        return this;
+        return (A) this;
     }
 
-    public QueryBase innerJoin(EntityExpr<?> object) {
+    public A innerJoin(EntityExpr<?> object) {
 //        innerJoin = objects;
-        return this;
+        return (A) this;
     }
     
-    public QueryBase join(EntityExpr<?> object) {
+    public A join(EntityExpr<?> object) {
 //        join = objects;
-        return this;
+        return (A) this;
     }
 
-    public QueryBase leftJoin(EntityExpr<?> object) {
+    public A leftJoin(EntityExpr<?> object) {
 //        leftJoin = objects;
-        return this;
+        return (A) this;
     }
 
-    public QueryBase orderBy(OrderSpecifier<?>... objects) {
+    public A orderBy(OrderSpecifier<?>... objects) {
         orderBy = objects;
-        return this;
+        return (A) this;
     }
 
-    public QueryBase select(Expr<?>... objects) {
+    public A select(Expr<?>... objects) {
         select = objects;
-        return this;
+        return (A) this;
     }
     
-    public QueryBase where(BooleanExpr... objects) {
+    public A where(BooleanExpr... objects) {
         where = objects;
-        return this;
+        return (A) this;
     }
     
-    public QueryBase with(BooleanExpr... objects) {
+    public A with(BooleanExpr... objects) {
         with = objects;
-        return this;
+        return (A) this;
     }
 
 }

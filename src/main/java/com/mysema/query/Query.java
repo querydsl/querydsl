@@ -17,7 +17,7 @@ import com.mysema.query.grammar.Types.OrderSpecifier;
  * @author tiwe
  * @version $Id$
  */
-public interface Query<A extends Query<?>>{
+public interface Query<A extends Query<A>>{
     A select(Expr<?>... objects);
     A from(EntityExpr<?>... objects);    
     A where(BooleanExpr... objects);
