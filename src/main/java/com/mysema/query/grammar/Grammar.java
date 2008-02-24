@@ -131,7 +131,7 @@ public class Grammar {
         return new AliasForEntity<D>(from, to);
     }
     
-    public static <D> AliasForAnything<D> as(Path<D> from, String to) {
+    public static <D> AliasForAnything<D> as(Expr<D> from, String to) {
         // NOTE : maybe this needs to be possible for all expressions
         return new AliasForAnything<D>(from, to);
     }

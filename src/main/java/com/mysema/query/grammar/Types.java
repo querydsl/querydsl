@@ -60,9 +60,23 @@ public class Types {
         public <B extends A> ExprBoolean eq(Expr<B> right);
         public <B extends A> ExprBoolean ne(B right);
         public <B extends A> ExprBoolean ne(Expr<B> right);
+        public Expr<A> as(String to);
     }
     
     public interface ExprBoolean extends Expr<Boolean>{ }
+    
+//    public interface ExprComparable<A extends Comparable<A>> extends Expr<A>{
+//        ExprBoolean between(A start, A end);
+//        ExprBoolean between(Expr<A> start, Expr<A> end);
+//        ExprBoolean goe(A right);
+//        ExprBoolean goe(Expr<A> right);
+//        ExprBoolean gt(A right);
+//        ExprBoolean gt(Expr<A> right);
+//        ExprBoolean loe(A right);
+//        ExprBoolean loe(Expr<A> right);
+//        ExprBoolean lt(A right);
+//        ExprBoolean lt(Expr<A> right);
+//    }
         
     /**
      * Reference to an entity
@@ -70,10 +84,13 @@ public class Types {
     public interface ExprEntity<T> extends Expr<T>{}
     
     static class ExprImpl<T> implements Expr<T>{
+        // equals REQ-002 
         public <B extends T> ExprBoolean eq(B right){return Grammar.eq(this, right);}        
         public <B extends T> ExprBoolean eq(Expr<B> right){return Grammar.eq(this, right);}
         public <B extends T> ExprBoolean ne(B right){return Grammar.ne(this, right);}
         public <B extends T> ExprBoolean ne(Expr<B> right){return Grammar.ne(this, right);}
+        // alias REQ-007
+        public ExprImpl<T> as(String to) {return Grammar.as(this, to);}
     }  
     
     public static class Operation<RT> extends ExprImpl<RT> {}
@@ -158,25 +175,23 @@ public class Types {
         }
     }
     
-    public static class PathComparable<A extends Comparable<A>> extends Path<A>{
-        PathComparable(String p) {
-            super(p);
-        }
-        
-        // convenience methods
-        public ExprBoolean between(A start, A end){ 
-            return Grammar.between(this,start, end);}
-        public ExprBoolean between(Expr<A> start, Expr<A> end){ 
-            return Grammar.between(this,start, end);}
-        public ExprBoolean goe(A right){ return Grammar.goe(this, right);}
-        public ExprBoolean goe(Expr<A> right){ return Grammar.goe(this, right);}
-        public ExprBoolean gt(A right){ return Grammar.gt(this, right);}
-        public ExprBoolean gt(Expr<A> right){ return Grammar.gt(this, right);}
-        public ExprBoolean loe(A right){ return Grammar.loe(this, right);}
-        public ExprBoolean loe(Expr<A> right){ return Grammar.loe(this, right);}
-        public ExprBoolean lt(A right){ return Grammar.lt(this, right);}
-        public ExprBoolean lt(Expr<A> right){ return Grammar.lt(this, right);}
-    }
+//    public static class PathComparable<A extends Comparable<A>> extends Path<A>
+//        implements ExprComparable<A>{
+//        PathComparable(String p) {
+//            super(p);
+//        }
+//        
+//        public ExprBoolean between(A start, A end){ return Grammar.between(this,start, end);}
+//        public ExprBoolean between(Expr<A> start, Expr<A> end){ return Grammar.between(this,start, end);}
+//        public ExprBoolean goe(A right){ return Grammar.goe(this, right);}
+//        public ExprBoolean goe(Expr<A> right){ return Grammar.goe(this, right);}
+//        public ExprBoolean gt(A right){ return Grammar.gt(this, right);}
+//        public ExprBoolean gt(Expr<A> right){ return Grammar.gt(this, right);}
+//        public ExprBoolean loe(A right){ return Grammar.loe(this, right);}
+//        public ExprBoolean loe(Expr<A> right){ return Grammar.loe(this, right);}
+//        public ExprBoolean lt(A right){ return Grammar.lt(this, right);}
+//        public ExprBoolean lt(Expr<A> right){ return Grammar.lt(this, right);}
+//    }
     
     public static class PathDomainType<D> extends Path<D> implements ExprEntity<D>{
         protected PathDomainType(PathDomainType<?> type, String path) {
