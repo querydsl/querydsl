@@ -37,7 +37,9 @@ public abstract class Visitor<T extends Visitor<T>> {
                 }
                 if (method != null){
                     method.setAccessible(true);    
-                }                
+                }else{
+                    throw new IllegalArgumentException("No method found for " + cl.getSimpleName());
+                }
                 return method;
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -58,7 +60,7 @@ public abstract class Visitor<T extends Visitor<T>> {
     
     protected abstract void visit(Alias<?> expr);
     
-    protected abstract void visit(AliasForAnything<?> expr);
+    protected abstract void visit(AliasForNoEntity<?> expr);
     
     protected abstract void visit(AliasForCollection<?> expr);
     
@@ -82,9 +84,12 @@ public abstract class Visitor<T extends Visitor<T>> {
     
     protected abstract void visit(Path<?> expr);
     
-    protected abstract void visit(PathBoolean expr);
+    protected abstract void visit(PathForBoolean expr);
     
-    protected abstract void visit(PathCollection<?> expr);
+    protected abstract void visit(PathForEntityCollection<?> expr);
     
-    protected abstract void visit(PathDomainType<?> expr);
+    protected abstract void visit(PathForEntity<?> expr);
+    
+    protected abstract void visit(PathForNoEntity<?> expr);
+    
 }
