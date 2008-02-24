@@ -58,19 +58,25 @@ public abstract class Visitor<T extends Visitor<T>> {
     
     protected abstract void visit(Alias<?> expr);
     
+    protected abstract void visit(AliasForAnything<?> expr);
+    
+    protected abstract void visit(AliasForCollection<?> expr);
+    
+    protected abstract void visit(AliasForEntity<?> expr);
+    
     protected abstract void visit(BinaryBooleanOperation<?,?> expr);
     
     protected abstract void visit(BinaryOperation<?,?,?,?> expr);
     
-    protected abstract void visit(BooleanProperty expr);
+    protected abstract void visit(RefBoolean expr);
     
-    protected abstract void visit(CollectionAlias<?> expr);
-    
-    protected abstract void visit(CollectionReference<?> expr);
+    protected abstract void visit(RefCollection<?> expr);
     
     protected abstract void visit(ConstantExpr<?> expr);
     
-    protected abstract void visit(DomainType<?> expr);
+    protected abstract void visit(CountExpr<?> expr);
+    
+    protected abstract void visit(RefDomainType<?> expr);
     
     protected abstract void visit(Reference<?> expr);
     

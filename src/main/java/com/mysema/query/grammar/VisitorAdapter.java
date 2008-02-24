@@ -16,27 +16,37 @@ import com.mysema.query.grammar.Types.*;
 public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visitor<V>{
     
     @Override
+    protected void visit(AliasForAnything<?> expr) {
+        visit((Alias<?>)expr);        
+    }
+    
+    @Override
+    protected void visit(AliasForCollection<?> expr){
+        visit((Alias<?>)expr);
+    }
+    
+    @Override
+    protected void visit(AliasForEntity<?> expr) {
+        visit((Alias<?>)expr);        
+    }
+    
+    @Override
     protected void visit(BinaryBooleanOperation<?,?> expr) {
         visit((BinaryOperation<?,?,?,?>)expr);
     }
-
+    
     @Override
-    protected void visit(BooleanProperty expr) {
+    protected void visit(RefBoolean expr) {
         visit((Reference<?>)expr);     
     }
     
     @Override
-    protected void visit(CollectionAlias<?> expr){
+    protected void visit(RefCollection<?> expr){
         visit((Reference<?>)expr);
     }
     
     @Override
-    protected void visit(CollectionReference<?> expr){
-        visit((Reference<?>)expr);
-    }
-    
-    @Override
-    protected void visit(DomainType<?> expr) {
+    protected void visit(RefDomainType<?> expr) {
         visit((Reference<?>)expr);        
     }
     

@@ -118,12 +118,21 @@ public class Grammar {
         return _binOp(BoOp.AND, left, right);
     }
 
-    public static <D> EntityExpr<D> as(DomainType<D> from, DomainType<D> to) {
-        return new Alias<D>(from, to);
+    public static <D> AliasForCollection<D> as(RefCollection<D> from, RefDomainType<D> to) {
+        return new AliasForCollection<D>(from, to);
     }
     
-    public static <D> EntityExpr<D> as(CollectionReference<D> from, DomainType<D> to) {
-        return new CollectionAlias<D>(from, to);
+    public static <D> AliasForEntity<D> as(RefDomainType<D> from, RefDomainType<D> to) {
+        return new AliasForEntity<D>(from, to);
+    }
+    
+    public static <D> AliasForEntity<D> as(RefDomainType<D> from, String to) {
+        return new AliasForEntity<D>(from, to);
+    }
+    
+    public static <D> AliasForAnything<D> as(Reference<D> from, String to) {
+        // NOTE : maybe this needs to be possible for all expressions
+        return new AliasForAnything<D>(from, to);
     }
 
     public static <A extends Comparable<A>> OrderSpecifier<A> asc(Expr<A> target) {
@@ -145,25 +154,38 @@ public class Grammar {
         // NOTE : basically same as lt
         return _binOp(DateOp.BEFORE, left, right);
     }
-
+    
     public static <A extends Comparable<A>> BooleanExpr between(Expr<A> left,
             A start, A end) {
         return _terOp(CompOp.BETWEEN, left, _const(start), _const(end));
+    }
+
+    public static <A extends Comparable<A>> BooleanExpr between(Expr<A> left,
+            Expr<A> start, Expr<A> end) {
+        return _terOp(CompOp.BETWEEN, left, start, end);
     }
 
     public static Expr<String> concat(Expr<String> left, Expr<String> right) {
         return _binOp(StrOp.CONCAT, left, right);
     }
 
+    public static Expr<Long> count(){
+        return new CountExpr<Long>();
+    }
+    
     public static <A extends Comparable<A>> OrderSpecifier<A> desc(
             Expr<A> target) {
         return _orderDesc(target);
     }
 
+    public static <A extends Number> Expr<A> div(Expr<A> left, A right) {
+        return _binOp(NumOp.DIV, left, _const(right));
+    }
+    
     public static <A extends Number> Expr<A> div(Expr<A> left, Expr<A> right) {
         return _binOp(NumOp.DIV, left, right);
     }
-    
+
     public static <A, B extends A> BooleanExpr eq(Expr<A> left, B right) {
         return _binOp(Op.EQ, left, _const(right));
     }
@@ -231,6 +253,10 @@ public class Grammar {
         return _binOp(NumOp.LT, left, right);
     }
 
+    public static <A extends Number> Expr<A> mult(Expr<A> left, A right) {
+        return _binOp(NumOp.MULT, left, _const(right));
+    }
+
     public static <A extends Number> Expr<A> mult(Expr<A> left, Expr<A> right) {
         return _binOp(NumOp.MULT, left, right);
     }
@@ -274,13 +300,5 @@ public class Grammar {
 
     public static Expr<String> upper(Expr<String> left) {
         return _unOp(StrOp.UPPER, left);
-    }
-
-    public static <A extends Number> Expr<A> div(Expr<A> left, A right) {
-        return _binOp(NumOp.DIV, left, _const(right));
-    }
-
-    public static <A extends Number> Expr<A> mult(Expr<A> left, A right) {
-        return _binOp(NumOp.MULT, left, _const(right));
     }
 }

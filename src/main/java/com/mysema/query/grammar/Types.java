@@ -16,13 +16,34 @@ import java.util.Collection;
  */
 public class Types {
     
-    public static class Alias<D> extends Reference<D> implements EntityExpr<D>{
-        public final Reference<D> from, to;
-        Alias(Reference<D> from, Reference<D> to) {
-            super(to.toString());
+    public static class Alias<D> implements Expr<D>{ 
+        public final Expr<?> from;
+        public final String to;
+        Alias(Expr<?> from, String to) {
             this.from = from;
             this.to = to;
+        }
+    }
+        
+    public static class AliasForAnything<D> extends Alias<D>{       
+        AliasForAnything(Expr<D> from, String to) {
+            super(from,to);
         }        
+    }
+    
+    public static class AliasForCollection<D> extends Alias<D> implements EntityExpr<D>{
+        AliasForCollection(RefCollection<D> from, Reference<D> to) {
+            super(from,to.toString());
+        }        
+    }
+    
+    public static class AliasForEntity<D> extends Alias<D> implements EntityExpr<D>{
+        AliasForEntity(RefDomainType<D> from, RefDomainType<D> to) {
+            super(from,to.toString());
+        }
+        AliasForEntity(RefDomainType<D> from, String to) {
+            super(from,to.toString());
+        }
     }
     
     public static class BinaryBooleanOperation<L,R> extends BinaryOperation<Boolean,Boolean,L,R> 
@@ -47,10 +68,6 @@ public class Types {
     
     public interface BooleanOperation extends Operation<Boolean>, BooleanExpr {}
     
-    public static class BooleanProperty extends Reference<Boolean> implements BooleanExpr{
-        public BooleanProperty(String path) {super(path);}
-    }
-    
     /**
      * Boolean operators (operators used with boolean operands)
      */
@@ -64,23 +81,6 @@ public class Types {
         
     static class BoOpImpl<RT> implements BoOp<RT>{}
     
-    public static class CollectionAlias<D> extends Reference<D> implements EntityExpr<D>{
-        public final CollectionReference<D> from;
-        public final Reference<D> to;
-        CollectionAlias(CollectionReference<D> from, Reference<D> to) {
-            super(to.toString());
-            this.from = from;
-            this.to = to;
-        }        
-    }
-       
-    public static class CollectionReference<A> extends Reference<Collection<A>> implements 
-        EntityExpr<Collection<A>>{
-        public CollectionReference(String p) {
-            super(p);
-        }        
-    }
-    
     /**
      * Operators for Comparable objects
      */
@@ -90,12 +90,16 @@ public class Types {
         CompOp<Boolean> GT = new CompOpImpl<Boolean>();
         CompOp<Boolean> LOE = new CompOpImpl<Boolean>();
         CompOp<Boolean> LT = new CompOpImpl<Boolean>();
-    }    
-        
+    }
+       
     static class CompOpImpl<RT> implements CompOp<RT> {}
     
     public static class ConstantExpr<A> implements Expr<A>{
         public A constant;
+    }    
+        
+    public static class CountExpr<D> implements Expr<D>{
+        // TODO : add count selection etc
     }
     
     /**
@@ -108,29 +112,13 @@ public class Types {
     
     static class DateOpImpl<RT> implements DateOp<RT>{}
     
-    public static class DomainType<D> extends Reference<D> implements EntityExpr<D>{
-        protected DomainType(DomainType<?> type, String path) {
-            super(type+"."+path);
-        } 
-        protected DomainType(String path) {super(path);}
-        protected BooleanProperty _boolean(String path){
-            return new BooleanProperty(this+"."+path);
-        }
-        protected <A>CollectionReference<A> _collection(String path,Class<A> type) {
-            return new CollectionReference<A>(this+"."+path);
-        }
-        protected <A> Reference<A> _prop(String path,Class<A> type) {
-            return new Reference<A>(this+"."+path);
-        }
-    }
-    
     /**
      * Reference to an entity
      */
     public static interface EntityExpr<T> extends Expr<T>{}
     
     public interface Expr<A> { }
-           
+    
     /**
      * Numeric Operators (operators used with numeric operands)
      */
@@ -155,16 +143,73 @@ public class Types {
         Op<Boolean> ISTYPEOF = new OpImpl<Boolean>();
         Op<Boolean> NE = new OpImpl<Boolean>();
     }
-    
+           
     public interface Operation<RT> extends Expr<RT> {}
     
     static class OpImpl<RT> implements Op<RT> {}
     
-    public enum Order{ ASC,DESC }       
+    public enum Order{ ASC,DESC }
     
     public static class OrderSpecifier<A extends Comparable<A>>{
         public Order order; 
         public Expr<A> target;       
+    }
+    
+    public static class RefBoolean extends Reference<Boolean> implements BooleanExpr{
+        RefBoolean(String path) {super(path);}
+    }
+    
+    public static class RefCollection<A> extends Reference<Collection<A>> implements 
+        EntityExpr<Collection<A>>{
+        RefCollection(String p) {
+            super(p);
+        }        
+        // convenience
+        public AliasForCollection<A> as(RefDomainType<A> to) {
+            return Grammar.as(this, to);
+        }
+    }       
+    
+    public static class RefComparable<A extends Comparable<A>> extends Reference<A>{
+        RefComparable(String p) {
+            super(p);
+        }
+        
+        // convenience methods
+        public BooleanExpr between(A start, A end){ 
+            return Grammar.between(this,start, end);}
+        public BooleanExpr between(Expr<A> start, Expr<A> end){ 
+            return Grammar.between(this,start, end);}
+        public BooleanExpr goe(A right){ return Grammar.goe(this, right);}
+        public BooleanExpr goe(Expr<A> right){ return Grammar.goe(this, right);}
+        public BooleanExpr gt(A right){ return Grammar.gt(this, right);}
+        public BooleanExpr gt(Expr<A> right){ return Grammar.gt(this, right);}
+        public BooleanExpr loe(A right){ return Grammar.loe(this, right);}
+        public BooleanExpr loe(Expr<A> right){ return Grammar.loe(this, right);}
+        public BooleanExpr lt(A right){ return Grammar.lt(this, right);}
+        public BooleanExpr lt(Expr<A> right){ return Grammar.lt(this, right);}
+        
+        // asc + desc
+    }
+    
+    public static class RefDomainType<D> extends Reference<D> implements EntityExpr<D>{
+        protected RefDomainType(RefDomainType<?> type, String path) {
+            super(type+"."+path);
+        } 
+        protected RefDomainType(String path) {super(path);}
+        protected RefBoolean _boolean(String path){
+            return new RefBoolean(this+"."+path);
+        }
+        protected <A>RefCollection<A> _collection(String path,Class<A> type) {
+            return new RefCollection<A>(this+"."+path);
+        }
+        protected <A> Reference<A> _prop(String path,Class<A> type) {
+            return new Reference<A>(this+"."+path);
+        }
+        
+        // convenience
+        public AliasForEntity<D> as(RefDomainType<D> to) {return Grammar.as(this, to);}
+        public AliasForEntity<D> as(String to) {return Grammar.as(this, to);}
     }
     
     public static class Reference<T> implements Expr<T>{
@@ -173,6 +218,19 @@ public class Types {
         public Reference(String p) {
             path = p;
         }
+        // convenience (these can be applied to all expressions)               
+        public Alias<T> as(String to) {return Grammar.as(this, to);}
+        public <B extends T> BooleanExpr eq(Expr<T> right){return Grammar.eq(this, right);}        
+        public <B extends T> BooleanExpr eq(T right){return Grammar.eq(this, right);}
+        public <B extends T> BooleanExpr ne(Expr<T> right){return Grammar.ne(this, right);}
+        public <B extends T> BooleanExpr ne(T right){return Grammar.ne(this, right);}
+        
+        // these should only be applied to paths
+        public BooleanExpr isnull(){return Grammar.isnull(this);}
+        public BooleanExpr isnotnull(){return Grammar.isnotnull(this);}
+//        Op<Boolean> IN = new OpImpl<Boolean>();
+//        Op<Boolean> ISTYPEOF = new OpImpl<Boolean>();
+        
         @Override
         public final String toString(){ return path; }
     }
