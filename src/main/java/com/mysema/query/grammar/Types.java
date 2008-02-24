@@ -64,20 +64,7 @@ public class Types {
     }
     
     public interface ExprBoolean extends Expr<Boolean>{ }
-    
-//    public interface ExprComparable<A extends Comparable<A>> extends Expr<A>{
-//        ExprBoolean between(A start, A end);
-//        ExprBoolean between(Expr<A> start, Expr<A> end);
-//        ExprBoolean goe(A right);
-//        ExprBoolean goe(Expr<A> right);
-//        ExprBoolean gt(A right);
-//        ExprBoolean gt(Expr<A> right);
-//        ExprBoolean loe(A right);
-//        ExprBoolean loe(Expr<A> right);
-//        ExprBoolean lt(A right);
-//        ExprBoolean lt(Expr<A> right);
-//    }
-        
+            
     /**
      * Reference to an entity
      */
@@ -152,9 +139,6 @@ public class Types {
         }
         
         public ExprBoolean isnotnull(){return Grammar.isnotnull(this);}
-//        Op<Boolean> IN = new OpImpl<Boolean>();
-//        Op<Boolean> ISTYPEOF = new OpImpl<Boolean>();
-        // these should only be applied to paths
         public ExprBoolean isnull(){return Grammar.isnull(this);}
         
         @Override
@@ -175,24 +159,6 @@ public class Types {
         }
     }
     
-//    public static class PathComparable<A extends Comparable<A>> extends Path<A>
-//        implements ExprComparable<A>{
-//        PathComparable(String p) {
-//            super(p);
-//        }
-//        
-//        public ExprBoolean between(A start, A end){ return Grammar.between(this,start, end);}
-//        public ExprBoolean between(Expr<A> start, Expr<A> end){ return Grammar.between(this,start, end);}
-//        public ExprBoolean goe(A right){ return Grammar.goe(this, right);}
-//        public ExprBoolean goe(Expr<A> right){ return Grammar.goe(this, right);}
-//        public ExprBoolean gt(A right){ return Grammar.gt(this, right);}
-//        public ExprBoolean gt(Expr<A> right){ return Grammar.gt(this, right);}
-//        public ExprBoolean loe(A right){ return Grammar.loe(this, right);}
-//        public ExprBoolean loe(Expr<A> right){ return Grammar.loe(this, right);}
-//        public ExprBoolean lt(A right){ return Grammar.lt(this, right);}
-//        public ExprBoolean lt(Expr<A> right){ return Grammar.lt(this, right);}
-//    }
-    
     public static class PathDomainType<D> extends Path<D> implements ExprEntity<D>{
         protected PathDomainType(PathDomainType<?> type, String path) {
             super(type+"."+path);
@@ -208,7 +174,6 @@ public class Types {
             return new Path<A>(this+"."+path);
         }
         
-        // convenience
         public AliasForEntity<D> as(PathDomainType<D> to) {return Grammar.as(this, to);}
         public AliasForEntity<D> as(String to) {return Grammar.as(this, to);}
     }
