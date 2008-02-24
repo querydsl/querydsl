@@ -5,8 +5,8 @@
  */
 package com.mysema.query;
 
-import com.mysema.query.grammar.Types.BooleanExpr;
-import com.mysema.query.grammar.Types.EntityExpr;
+import com.mysema.query.grammar.Types.ExprBoolean;
+import com.mysema.query.grammar.Types.ExprEntity;
 
 /**
  * ExtQueryBased provides
@@ -17,22 +17,22 @@ import com.mysema.query.grammar.Types.EntityExpr;
 @SuppressWarnings("unchecked")
 public class ExtQueryBase<A extends ExtQueryBase<A>> extends QueryBase<A> implements ExtQuery<A> { 
 
-    public A innerJoin(EntityExpr<?> object) {
+    public A innerJoin(ExprEntity<?> object) {
         joins.add(new JoinExpression(JoinType.IJ,object));
         return (A) this;
     }
     
-    public A join(EntityExpr<?> object) {
+    public A join(ExprEntity<?> object) {
         joins.add(new JoinExpression(JoinType.J,object));
         return (A) this;
     }
 
-    public A leftJoin(EntityExpr<?> object) {
+    public A leftJoin(ExprEntity<?> object) {
         joins.add(new JoinExpression(JoinType.LJ,object));
         return (A) this;
     }
     
-    public A with(BooleanExpr... objects) {
+    public A with(ExprBoolean... objects) {
         if (!joins.isEmpty()){
             joins.get(joins.size()-1).conditions = objects;
         }

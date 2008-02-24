@@ -8,8 +8,8 @@ package com.mysema.query;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysema.query.grammar.Types.BooleanExpr;
-import com.mysema.query.grammar.Types.EntityExpr;
+import com.mysema.query.grammar.Types.ExprBoolean;
+import com.mysema.query.grammar.Types.ExprEntity;
 import com.mysema.query.grammar.Types.Expr;
 import com.mysema.query.grammar.Types.OrderSpecifier;
 /**
@@ -26,20 +26,20 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
     
     public class JoinExpression{
         public final JoinType type;
-        public final EntityExpr<?> target;
-        JoinExpression(JoinType type, EntityExpr<?> target){
+        public final ExprEntity<?> target;
+        JoinExpression(JoinType type, ExprEntity<?> target){
             this.type = type;
             this.target = target;
         }
-        public BooleanExpr[] conditions;
+        public ExprBoolean[] conditions;
     }
     
     protected List<JoinExpression> joins = new ArrayList<JoinExpression>();
     protected Expr<?>[] groupBy;
-    protected BooleanExpr[] having;
+    protected ExprBoolean[] having;
     protected OrderSpecifier<?>[] orderBy;
     protected Expr<?>[] select;
-    protected BooleanExpr[] where;
+    protected ExprBoolean[] where;
     
     protected void clear(){
         joins.clear();
@@ -50,8 +50,8 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         where = null;
     }
     
-    public A from(EntityExpr<?>... objects) {
-        for (EntityExpr<?> expr : objects){
+    public A from(ExprEntity<?>... objects) {
+        for (ExprEntity<?> expr : objects){
             joins.add(new JoinExpression(JoinType.DEFAULT,expr));
         }
         return (A) this;
@@ -62,7 +62,7 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         return (A) this;
     }
 
-    public A having(BooleanExpr... objects) {
+    public A having(ExprBoolean... objects) {
         having = objects;
         return (A) this;
     }
@@ -78,7 +78,7 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         return (A) this;
     }
     
-    public A where(BooleanExpr... objects) {
+    public A where(ExprBoolean... objects) {
         where = objects;
         return (A) this;
     }

@@ -6,6 +6,7 @@
 package com.mysema.query.grammar;
 
 import java.util.Collection;
+import com.mysema.query.grammar.Ops.*;
 
 
 /**
@@ -16,7 +17,7 @@ import java.util.Collection;
  */
 public class Types {
     
-    public static class Alias<D> implements Expr<D>{ 
+    public static class Alias<D> extends ExprImpl<D>{ 
         public final Expr<?> from;
         public final String to;
         Alias(Expr<?> from, String to) {
@@ -31,27 +32,53 @@ public class Types {
         }        
     }
     
-    public static class AliasForCollection<D> extends Alias<D> implements EntityExpr<D>{
-        AliasForCollection(RefCollection<D> from, Reference<D> to) {
+    public static class AliasForCollection<D> extends Alias<D> implements ExprEntity<D>{
+        AliasForCollection(PathCollection<D> from, Path<D> to) {
             super(from,to.toString());
         }        
     }
     
-    public static class AliasForEntity<D> extends Alias<D> implements EntityExpr<D>{
-        AliasForEntity(RefDomainType<D> from, RefDomainType<D> to) {
+    public static class AliasForEntity<D> extends Alias<D> implements ExprEntity<D>{
+        AliasForEntity(PathDomainType<D> from, PathDomainType<D> to) {
             super(from,to.toString());
         }
-        AliasForEntity(RefDomainType<D> from, String to) {
-            super(from,to.toString());
+        AliasForEntity(PathDomainType<D> from, String to) {
+            super(from,to);
         }
     }
     
-    public static class BinaryBooleanOperation<L,R> extends BinaryOperation<Boolean,Boolean,L,R> 
-        implements BooleanOperation {
+    public static class ConstantExpr<A> extends ExprImpl<A>{
+        public A constant;
+    }
+    
+    public static class CountExpr<D> extends ExprImpl<D>{
+        // TODO : add count selection etc
+    }
+    
+    public interface Expr<A> { 
+        public <B extends A> ExprBoolean eq(B right);        
+        public <B extends A> ExprBoolean eq(Expr<B> right);
+        public <B extends A> ExprBoolean ne(B right);
+        public <B extends A> ExprBoolean ne(Expr<B> right);
+    }
+    
+    public interface ExprBoolean extends Expr<Boolean>{ }
         
-    }
+    /**
+     * Reference to an entity
+     */
+    public interface ExprEntity<T> extends Expr<T>{}
     
-    public static class BinaryOperation<OP,RT extends OP,L,R> implements Operation<RT>{
+    static class ExprImpl<T> implements Expr<T>{
+        public <B extends T> ExprBoolean eq(B right){return Grammar.eq(this, right);}        
+        public <B extends T> ExprBoolean eq(Expr<B> right){return Grammar.eq(this, right);}
+        public <B extends T> ExprBoolean ne(B right){return Grammar.ne(this, right);}
+        public <B extends T> ExprBoolean ne(Expr<B> right){return Grammar.ne(this, right);}
+    }  
+    
+    public static class Operation<RT> extends ExprImpl<RT> {}
+    
+    public static class OperationBinary<OP,RT extends OP,L,R> extends Operation<RT>{
         /**
          * arguments don't need to be of same type as return type
          */
@@ -60,200 +87,12 @@ public class Types {
         public Expr<R> right; 
     }
     
-    /**
-     * NOTE : BooleanExpr as a concrete interface instead of Expr<Boolean> avoids
-     * compiler warnings when used in Query#where(BooleanExpr... objects);
-     */
-    public interface BooleanExpr extends Expr<Boolean>{ }
-    
-    public interface BooleanOperation extends Operation<Boolean>, BooleanExpr {}
-    
-    /**
-     * Boolean operators (operators used with boolean operands)
-     */
-    public interface BoOp<RT> extends CompOp<RT>{ 
-        BoOp<Boolean> AND = new BoOpImpl<Boolean>(); 
-        BoOp<Boolean> NOT = new BoOpImpl<Boolean>();
-        BoOp<Boolean> OR = new BoOpImpl<Boolean>();
-        BoOp<Boolean> XNOR = new BoOpImpl<Boolean>();
-        BoOp<Boolean> XOR = new BoOpImpl<Boolean>();
-    }
-        
-    static class BoOpImpl<RT> implements BoOp<RT>{}
-    
-    /**
-     * Operators for Comparable objects
-     */
-    public interface CompOp<RT> extends Op<RT>{
-        CompOp<Boolean> BETWEEN = new CompOpImpl<Boolean>();
-        CompOp<Boolean> GOE = new CompOpImpl<Boolean>();
-        CompOp<Boolean> GT = new CompOpImpl<Boolean>();
-        CompOp<Boolean> LOE = new CompOpImpl<Boolean>();
-        CompOp<Boolean> LT = new CompOpImpl<Boolean>();
-    }
-       
-    static class CompOpImpl<RT> implements CompOp<RT> {}
-    
-    public static class ConstantExpr<A> implements Expr<A>{
-        public A constant;
-    }    
-        
-    public static class CountExpr<D> implements Expr<D>{
-        // TODO : add count selection etc
-    }
-    
-    /**
-     * Date Operators (operators used with Date operands)
-     */
-    public interface DateOp<RT> extends CompOp<RT>{       
-        DateOp<Boolean> AFTER = new DateOpImpl<Boolean>();
-        DateOp<Boolean> BEFORE = new DateOpImpl<Boolean>();        
-    }
-    
-    static class DateOpImpl<RT> implements DateOp<RT>{}
-    
-    /**
-     * Reference to an entity
-     */
-    public static interface EntityExpr<T> extends Expr<T>{}
-    
-    public interface Expr<A> { }
-    
-    /**
-     * Numeric Operators (operators used with numeric operands)
-     */
-    public interface NumOp<RT> extends CompOp<RT>{
-        NumOp<Number> ADD = new NumOpImpl<Number>();   
-        NumOp<Number> DIV = new NumOpImpl<Number>();        
-        NumOp<Number> MOD = new NumOpImpl<Number>();
-        NumOp<Number> MULT = new NumOpImpl<Number>();
-        NumOp<Number> SUB = new NumOpImpl<Number>();
-    }
-    
-    static class NumOpImpl<A> implements Types.NumOp<A> {}
-    
-    /**
-     * Operators (the return type is encoded in the 1st generic parameter)
-     */
-    public interface Op<RT> {
-        Op<Boolean> EQ = new OpImpl<Boolean>();
-        Op<Boolean> IN = new OpImpl<Boolean>();
-        Op<Boolean> ISNOTNULL = new OpImpl<Boolean>();
-        Op<Boolean> ISNULL = new OpImpl<Boolean>();
-        Op<Boolean> ISTYPEOF = new OpImpl<Boolean>();
-        Op<Boolean> NE = new OpImpl<Boolean>();
-    }
-           
-    public interface Operation<RT> extends Expr<RT> {}
-    
-    static class OpImpl<RT> implements Op<RT> {}
-    
-    public enum Order{ ASC,DESC }
-    
-    public static class OrderSpecifier<A extends Comparable<A>>{
-        public Order order; 
-        public Expr<A> target;       
-    }
-    
-    public static class RefBoolean extends Reference<Boolean> implements BooleanExpr{
-        RefBoolean(String path) {super(path);}
-    }
-    
-    public static class RefCollection<A> extends Reference<Collection<A>> implements 
-        EntityExpr<Collection<A>>{
-        RefCollection(String p) {
-            super(p);
-        }        
-        // convenience
-        public AliasForCollection<A> as(RefDomainType<A> to) {
-            return Grammar.as(this, to);
-        }
-    }       
-    
-    public static class RefComparable<A extends Comparable<A>> extends Reference<A>{
-        RefComparable(String p) {
-            super(p);
-        }
-        
-        // convenience methods
-        public BooleanExpr between(A start, A end){ 
-            return Grammar.between(this,start, end);}
-        public BooleanExpr between(Expr<A> start, Expr<A> end){ 
-            return Grammar.between(this,start, end);}
-        public BooleanExpr goe(A right){ return Grammar.goe(this, right);}
-        public BooleanExpr goe(Expr<A> right){ return Grammar.goe(this, right);}
-        public BooleanExpr gt(A right){ return Grammar.gt(this, right);}
-        public BooleanExpr gt(Expr<A> right){ return Grammar.gt(this, right);}
-        public BooleanExpr loe(A right){ return Grammar.loe(this, right);}
-        public BooleanExpr loe(Expr<A> right){ return Grammar.loe(this, right);}
-        public BooleanExpr lt(A right){ return Grammar.lt(this, right);}
-        public BooleanExpr lt(Expr<A> right){ return Grammar.lt(this, right);}
-        
-        // asc + desc
-    }
-    
-    public static class RefDomainType<D> extends Reference<D> implements EntityExpr<D>{
-        protected RefDomainType(RefDomainType<?> type, String path) {
-            super(type+"."+path);
-        } 
-        protected RefDomainType(String path) {super(path);}
-        protected RefBoolean _boolean(String path){
-            return new RefBoolean(this+"."+path);
-        }
-        protected <A>RefCollection<A> _collection(String path,Class<A> type) {
-            return new RefCollection<A>(this+"."+path);
-        }
-        protected <A> Reference<A> _prop(String path,Class<A> type) {
-            return new Reference<A>(this+"."+path);
-        }
-        
-        // convenience
-        public AliasForEntity<D> as(RefDomainType<D> to) {return Grammar.as(this, to);}
-        public AliasForEntity<D> as(String to) {return Grammar.as(this, to);}
-    }
-    
-    public static class Reference<T> implements Expr<T>{
-        // _path is hidden to not pollute the namespace of the domain types
-        private final String path;
-        public Reference(String p) {
-            path = p;
-        }
-        // convenience (these can be applied to all expressions)               
-        public Alias<T> as(String to) {return Grammar.as(this, to);}
-        public <B extends T> BooleanExpr eq(Expr<T> right){return Grammar.eq(this, right);}        
-        public <B extends T> BooleanExpr eq(T right){return Grammar.eq(this, right);}
-        public <B extends T> BooleanExpr ne(Expr<T> right){return Grammar.ne(this, right);}
-        public <B extends T> BooleanExpr ne(T right){return Grammar.ne(this, right);}
-        
-        // these should only be applied to paths
-        public BooleanExpr isnull(){return Grammar.isnull(this);}
-        public BooleanExpr isnotnull(){return Grammar.isnotnull(this);}
-//        Op<Boolean> IN = new OpImpl<Boolean>();
-//        Op<Boolean> ISTYPEOF = new OpImpl<Boolean>();
-        
-        @Override
-        public final String toString(){ return path; }
-    }
-        
-    /**
-     * String Operators (operators used with String operands)
-     */
-    public interface StrOp<RT> extends CompOp<RT>{       
-        StrOp<String> CONCAT = new StrOpImpl<String>();
-        StrOp<Boolean> LIKE = new StrOpImpl<Boolean>();
-        StrOp<String> LOWER = new StrOpImpl<String>();
-        StrOp<String> SUBSTR = new StrOpImpl<String>();
-        StrOp<String> UPPER = new StrOpImpl<String>();
-    }
-    
-    static class StrOpImpl<RT> implements StrOp<RT>{}
-    
-    public static class TertiaryBooleanOperation<F,S,T> extends TertiaryOperation<Boolean,Boolean,F,S,T>
-        implements BooleanOperation{
+    public static class OperationBinaryBoolean<L,R> extends OperationBinary<Boolean,Boolean,L,R> 
+        implements ExprBoolean {
         
     }
     
-    public static class TertiaryOperation<OP,RT extends OP,F,S,T> implements Operation<RT>{
+    public static class OperationTertiary<OP,RT extends OP,F,S,T> extends Operation<RT>{
         /**
          * arguments don't need to be of same type as return type
          */
@@ -262,18 +101,101 @@ public class Types {
         public Expr<S> second;
         public Expr<T> third; 
     }
-    
-    public static class UnaryBooleanOperation<A> extends UnaryOperation<Boolean,Boolean,A>
-        implements BooleanOperation{
+           
+    public static class OperationTertiaryBoolean<F,S,T> extends OperationTertiary<Boolean,Boolean,F,S,T>
+        implements ExprBoolean{
         
     }
     
-    public static class UnaryOperation<OP,RT extends OP,A> implements Operation<RT>{
+    public static class OperationUnary<OP,RT extends OP,A> extends Operation<RT>{
         /**
          * argument doesn't need to be of same type as return type
          */
         public Expr<A> left;
         public Op<OP> operator;                
+    }
+    
+    public static class OperationUnaryBoolean<A> extends OperationUnary<Boolean,Boolean,A>
+        implements ExprBoolean{
+        
+    }
+    
+    public enum Order{ ASC,DESC }
+        
+    public static class OrderSpecifier<A extends Comparable<A>>{
+        public Order order; 
+        public Expr<A> target;       
+    }
+    
+    public static class Path<T> extends ExprImpl<T>{
+        // _path is hidden to not pollute the namespace of the domain types
+        private final String path;
+        public Path(String p) {
+            path = p;
+        }
+        
+        public ExprBoolean isnotnull(){return Grammar.isnotnull(this);}
+//        Op<Boolean> IN = new OpImpl<Boolean>();
+//        Op<Boolean> ISTYPEOF = new OpImpl<Boolean>();
+        // these should only be applied to paths
+        public ExprBoolean isnull(){return Grammar.isnull(this);}
+        
+        @Override
+        public final String toString(){ return path; }
+    }
+    
+    public static class PathBoolean extends Path<Boolean> implements ExprBoolean{
+        PathBoolean(String path) {super(path);}
+    }
+    
+    public static class PathCollection<A> extends Path<Collection<A>> implements 
+        ExprEntity<Collection<A>>{
+        PathCollection(String p) {
+            super(p);
+        }        
+        public AliasForCollection<A> as(PathDomainType<A> to) {
+            return Grammar.as(this, to);
+        }
+    }
+    
+    public static class PathComparable<A extends Comparable<A>> extends Path<A>{
+        PathComparable(String p) {
+            super(p);
+        }
+        
+        // convenience methods
+        public ExprBoolean between(A start, A end){ 
+            return Grammar.between(this,start, end);}
+        public ExprBoolean between(Expr<A> start, Expr<A> end){ 
+            return Grammar.between(this,start, end);}
+        public ExprBoolean goe(A right){ return Grammar.goe(this, right);}
+        public ExprBoolean goe(Expr<A> right){ return Grammar.goe(this, right);}
+        public ExprBoolean gt(A right){ return Grammar.gt(this, right);}
+        public ExprBoolean gt(Expr<A> right){ return Grammar.gt(this, right);}
+        public ExprBoolean loe(A right){ return Grammar.loe(this, right);}
+        public ExprBoolean loe(Expr<A> right){ return Grammar.loe(this, right);}
+        public ExprBoolean lt(A right){ return Grammar.lt(this, right);}
+        public ExprBoolean lt(Expr<A> right){ return Grammar.lt(this, right);}
+    }
+    
+    public static class PathDomainType<D> extends Path<D> implements ExprEntity<D>{
+        protected PathDomainType(PathDomainType<?> type, String path) {
+            super(type+"."+path);
+        } 
+        protected PathDomainType(String path) {super(path);}
+        protected PathBoolean _boolean(String path){
+            return new PathBoolean(this+"."+path);
+        }
+        protected <A>PathCollection<A> _collection(String path,Class<A> type) {
+            return new PathCollection<A>(this+"."+path);
+        }
+        protected <A> Path<A> _prop(String path,Class<A> type) {
+            return new Path<A>(this+"."+path);
+        }
+        
+        // convenience
+        public AliasForEntity<D> as(PathDomainType<D> to) {return Grammar.as(this, to);}
+        public AliasForEntity<D> as(String to) {return Grammar.as(this, to);}
     }
 
 }

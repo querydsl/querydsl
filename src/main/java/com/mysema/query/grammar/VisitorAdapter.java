@@ -31,33 +31,33 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visito
     }
     
     @Override
-    protected void visit(BinaryBooleanOperation<?,?> expr) {
-        visit((BinaryOperation<?,?,?,?>)expr);
+    protected void visit(OperationBinaryBoolean<?,?> expr) {
+        visit((OperationBinary<?,?,?,?>)expr);
     }
     
     @Override
-    protected void visit(RefBoolean expr) {
-        visit((Reference<?>)expr);     
+    protected void visit(PathBoolean expr) {
+        visit((Path<?>)expr);     
     }
     
     @Override
-    protected void visit(RefCollection<?> expr){
-        visit((Reference<?>)expr);
+    protected void visit(PathCollection<?> expr){
+        visit((Path<?>)expr);
     }
     
     @Override
-    protected void visit(RefDomainType<?> expr) {
-        visit((Reference<?>)expr);        
+    protected void visit(PathDomainType<?> expr) {
+        visit((Path<?>)expr);        
     }
     
     @Override
-    protected void visit(TertiaryBooleanOperation<?,?,?> expr) {
-        visit((TertiaryOperation<?,?,?,?,?>)expr);
+    protected void visit(OperationTertiaryBoolean<?,?,?> expr) {
+        visit((OperationTertiary<?,?,?,?,?>)expr);
     }
     
     @Override
-    protected void visit(UnaryBooleanOperation<?> expr) {
-        visit((UnaryOperation<?,?,?>)expr);        
+    protected void visit(OperationUnaryBoolean<?> expr) {
+        visit((OperationUnary<?,?,?>)expr);        
     }
     
 }

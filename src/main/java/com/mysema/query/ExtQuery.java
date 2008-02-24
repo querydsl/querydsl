@@ -5,8 +5,8 @@
  */
 package com.mysema.query;
 
-import com.mysema.query.grammar.Types.BooleanExpr;
-import com.mysema.query.grammar.Types.EntityExpr;
+import com.mysema.query.grammar.Types.ExprBoolean;
+import com.mysema.query.grammar.Types.ExprEntity;
 
 /**
  * ExtQuery externds the Query interface to provide innerJoin, leftJoin and with methods
@@ -15,8 +15,8 @@ import com.mysema.query.grammar.Types.EntityExpr;
  * @version $Id$
  */
 public interface ExtQuery<A extends ExtQuery<A>> extends Query<A> {
-    A innerJoin(EntityExpr<?> object);
-    A join(EntityExpr<?> object);
-    A leftJoin(EntityExpr<?> object); 
-    A with(BooleanExpr... objects);
+    A innerJoin(ExprEntity<?> object);
+    A join(ExprEntity<?> object);
+    A leftJoin(ExprEntity<?> object); 
+    A with(ExprBoolean... objects);
 }

@@ -6,6 +6,7 @@
 package com.mysema.query.grammar;
 
 import com.mysema.query.grammar.Types.*;
+import com.mysema.query.grammar.Ops.*;
 
 /**
  * Grammar provides a fluent grammar for operation and order specifier creation
@@ -15,9 +16,9 @@ import com.mysema.query.grammar.Types.*;
  */
 public class Grammar {
 
-    static <L, R> BooleanOperation _binOp(Op<Boolean> operator, Expr<L> left,
+    static <L, R> ExprBoolean _binOp(Op<Boolean> operator, Expr<L> left,
             Expr<R> right) {
-        BinaryBooleanOperation<L, R> op = new BinaryBooleanOperation<L, R>();
+        OperationBinaryBoolean<L, R> op = new OperationBinaryBoolean<L, R>();
         op.operator = operator;
         op.left = left;
         op.right = right;
@@ -26,7 +27,7 @@ public class Grammar {
 
     static <OP, RT extends OP, L, R> Operation<RT> _binOp(Op<OP> operator,
             Expr<L> left, Expr<R> right) {
-        BinaryOperation<OP, RT, L, R> op = new BinaryOperation<OP, RT, L, R>();
+        OperationBinary<OP, RT, L, R> op = new OperationBinary<OP, RT, L, R>();
         op.operator = operator;
         op.left = left;
         op.right = right;
@@ -56,9 +57,9 @@ public class Grammar {
         return os;
     }
 
-    static <F, S, T> BooleanOperation _terOp(Op<Boolean> type, Expr<F> fst,
+    static <F, S, T> ExprBoolean _terOp(Op<Boolean> type, Expr<F> fst,
             Expr<S> snd, Expr<T> trd) {
-        TertiaryBooleanOperation<F, S, T> op = new TertiaryBooleanOperation<F, S, T>();
+        OperationTertiaryBoolean<F, S, T> op = new OperationTertiaryBoolean<F, S, T>();
         op.operator = type;
         op.first = fst;
         op.second = snd;
@@ -68,7 +69,7 @@ public class Grammar {
 
     static <OP, RT extends OP, F, S, T> Operation<RT> _terOp(Op<OP> type,
             Expr<F> fst, Expr<S> snd, Expr<T> trd) {
-        TertiaryOperation<OP, RT, F, S, T> op = new TertiaryOperation<OP, RT, F, S, T>();
+        OperationTertiary<OP, RT, F, S, T> op = new OperationTertiary<OP, RT, F, S, T>();
         op.operator = type;
         op.first = fst;
         op.second = snd;
@@ -76,61 +77,61 @@ public class Grammar {
         return op;
     }
 
-    static <A> BooleanOperation _unOp(Op<Boolean> type, Expr<A> left) {
-        UnaryBooleanOperation<A> op = new UnaryBooleanOperation<A>();
+    static <A> ExprBoolean _unOp(Op<Boolean> type, Expr<A> left) {
+        OperationUnaryBoolean<A> op = new OperationUnaryBoolean<A>();
         op.operator = type;
         op.left = left;
         return op;
     }
 
     static <OP, RT extends OP, A> Operation<RT> _unOp(Op<OP> type, Expr<A> left) {
-        UnaryOperation<OP, RT, A> op = new UnaryOperation<OP, RT, A>();
+        OperationUnary<OP, RT, A> op = new OperationUnary<OP, RT, A>();
         op.operator = type;
         op.left = left;
         return op;
     }
 
     public static <A extends Number> Expr<A> add(Expr<A> left, A right) {
-        return _binOp(NumOp.ADD, left, _const(right));
+        return _binOp(OpNumber.ADD, left, _const(right));
     }
 
     public static <A extends Number> Expr<A> add(Expr<A> left, Expr<A> right) {
-        return _binOp(NumOp.ADD, left, right);
+        return _binOp(OpNumber.ADD, left, right);
     }
 
-    public static <A extends Comparable<A>> BooleanExpr after(Expr<A> left,
+    public static <A extends Comparable<A>> ExprBoolean after(Expr<A> left,
             A right) {
         // NOTE : signature is for Comparables to support other than Java's date
         // types
         // NOTE : basically same as gt
-        return _binOp(DateOp.AFTER, left, _const(right));
+        return _binOp(OpDate.AFTER, left, _const(right));
     }
 
-    public static <A extends Comparable<A>> BooleanExpr after(Expr<A> left,
+    public static <A extends Comparable<A>> ExprBoolean after(Expr<A> left,
             Expr<A> right) {
         // NOTE : signature is for Comparables to support other than Java's date
         // types
         // NOTE : basically same as gt
-        return _binOp(DateOp.AFTER, left, right);
+        return _binOp(OpDate.AFTER, left, right);
     }
 
-    public static BooleanExpr and(BooleanExpr left, BooleanExpr right) {
-        return _binOp(BoOp.AND, left, right);
+    public static ExprBoolean and(ExprBoolean left, ExprBoolean right) {
+        return _binOp(OpBoolean.AND, left, right);
     }
 
-    public static <D> AliasForCollection<D> as(RefCollection<D> from, RefDomainType<D> to) {
+    public static <D> AliasForCollection<D> as(PathCollection<D> from, PathDomainType<D> to) {
         return new AliasForCollection<D>(from, to);
     }
     
-    public static <D> AliasForEntity<D> as(RefDomainType<D> from, RefDomainType<D> to) {
+    public static <D> AliasForEntity<D> as(PathDomainType<D> from, PathDomainType<D> to) {
         return new AliasForEntity<D>(from, to);
     }
     
-    public static <D> AliasForEntity<D> as(RefDomainType<D> from, String to) {
+    public static <D> AliasForEntity<D> as(PathDomainType<D> from, String to) {
         return new AliasForEntity<D>(from, to);
     }
     
-    public static <D> AliasForAnything<D> as(Reference<D> from, String to) {
+    public static <D> AliasForAnything<D> as(Path<D> from, String to) {
         // NOTE : maybe this needs to be possible for all expressions
         return new AliasForAnything<D>(from, to);
     }
@@ -139,34 +140,34 @@ public class Grammar {
         return _orderAsc(target);
     }
 
-    public static <A extends Comparable<A>> BooleanExpr before(Expr<A> left,
+    public static <A extends Comparable<A>> ExprBoolean before(Expr<A> left,
             A right) {
         // NOTE : signature is for Comparables to support other than Java's date
         // types
         // NOTE : basically same as lt
-        return _binOp(DateOp.BEFORE, left, _const(right));
+        return _binOp(OpDate.BEFORE, left, _const(right));
     }
 
-    public static <A extends Comparable<A>> BooleanExpr before(Expr<A> left,
+    public static <A extends Comparable<A>> ExprBoolean before(Expr<A> left,
             Expr<A> right) {
         // NOTE : signature is for Comparables to support other than Java's date
         // types
         // NOTE : basically same as lt
-        return _binOp(DateOp.BEFORE, left, right);
+        return _binOp(OpDate.BEFORE, left, right);
     }
     
-    public static <A extends Comparable<A>> BooleanExpr between(Expr<A> left,
+    public static <A extends Comparable<A>> ExprBoolean between(Expr<A> left,
             A start, A end) {
-        return _terOp(CompOp.BETWEEN, left, _const(start), _const(end));
+        return _terOp(OpComparable.BETWEEN, left, _const(start), _const(end));
     }
 
-    public static <A extends Comparable<A>> BooleanExpr between(Expr<A> left,
+    public static <A extends Comparable<A>> ExprBoolean between(Expr<A> left,
             Expr<A> start, Expr<A> end) {
-        return _terOp(CompOp.BETWEEN, left, start, end);
+        return _terOp(OpComparable.BETWEEN, left, start, end);
     }
 
     public static Expr<String> concat(Expr<String> left, Expr<String> right) {
-        return _binOp(StrOp.CONCAT, left, right);
+        return _binOp(OpString.CONCAT, left, right);
     }
 
     public static Expr<Long> count(){
@@ -179,126 +180,126 @@ public class Grammar {
     }
 
     public static <A extends Number> Expr<A> div(Expr<A> left, A right) {
-        return _binOp(NumOp.DIV, left, _const(right));
+        return _binOp(OpNumber.DIV, left, _const(right));
     }
     
     public static <A extends Number> Expr<A> div(Expr<A> left, Expr<A> right) {
-        return _binOp(NumOp.DIV, left, right);
+        return _binOp(OpNumber.DIV, left, right);
     }
 
-    public static <A, B extends A> BooleanExpr eq(Expr<A> left, B right) {
+    public static <A, B extends A> ExprBoolean eq(Expr<A> left, B right) {
         return _binOp(Op.EQ, left, _const(right));
     }
 
-    public static <A, B extends A> BooleanExpr eq(Expr<A> left, Expr<B> right) {
+    public static <A, B extends A> ExprBoolean eq(Expr<A> left, Expr<B> right) {
         return _binOp(Op.EQ, left, right);
     }
 
-    public static <A extends Comparable<A>> BooleanExpr goe(Expr<A> left,
+    public static <A extends Comparable<A>> ExprBoolean goe(Expr<A> left,
             A right) {
-        return _binOp(NumOp.GOE, left, _const(right));
+        return _binOp(OpNumber.GOE, left, _const(right));
     }
 
-    public static <A extends Comparable<A>> BooleanExpr goe(Expr<A> left,
+    public static <A extends Comparable<A>> ExprBoolean goe(Expr<A> left,
             Expr<A> right) {
-        return _binOp(NumOp.GOE, left, right);
+        return _binOp(OpNumber.GOE, left, right);
     }
 
-    public static <A extends Comparable<A>> BooleanExpr gt(Expr<A> left, A right) {
-        return _binOp(NumOp.GT, left, _const(right));
+    public static <A extends Comparable<A>> ExprBoolean gt(Expr<A> left, A right) {
+        return _binOp(OpNumber.GT, left, _const(right));
     }
 
-    public static <A extends Comparable<A>> BooleanExpr gt(Expr<A> left,
+    public static <A extends Comparable<A>> ExprBoolean gt(Expr<A> left,
             Expr<A> right) {
-        return _binOp(NumOp.GT, left, right);
+        return _binOp(OpNumber.GT, left, right);
     }
 
-    public static <A extends Comparable<A>> BooleanExpr in(Expr<A> left,
+    public static <A extends Comparable<A>> ExprBoolean in(Expr<A> left,
             A... rest) {
         return _binOp(Op.IN, left, _const(rest));
     }
 
-    public static <A> BooleanExpr isnotnull(Expr<A> left) {
+    public static <A> ExprBoolean isnotnull(Expr<A> left) {
         return _unOp(Op.ISNOTNULL, left);
     }
 
-    public static <A> BooleanExpr isnull(Expr<A> left) {
+    public static <A> ExprBoolean isnull(Expr<A> left) {
         return _unOp(Op.ISNULL, left);
     }
 
-    public static BooleanExpr like(Expr<String> left, String right) {
-        return _binOp(StrOp.LIKE, left, _const(right));
+    public static ExprBoolean like(Expr<String> left, String right) {
+        return _binOp(OpString.LIKE, left, _const(right));
     }
 
-    public static <A extends Comparable<A>> BooleanExpr loe(Expr<A> left,
+    public static <A extends Comparable<A>> ExprBoolean loe(Expr<A> left,
             A right) {
-        return _binOp(NumOp.LOE, left, _const(right));
+        return _binOp(OpNumber.LOE, left, _const(right));
     }
 
-    public static <A extends Comparable<A>> BooleanExpr loe(Expr<A> left,
+    public static <A extends Comparable<A>> ExprBoolean loe(Expr<A> left,
             Expr<A> right) {
-        return _binOp(NumOp.LOE, left, right);
+        return _binOp(OpNumber.LOE, left, right);
     }
 
     public static Expr<String> lower(Expr<String> left) {
-        return _unOp(StrOp.LOWER, left);
+        return _unOp(OpString.LOWER, left);
     }
 
-    public static <A extends Comparable<A>> BooleanExpr lt(Expr<A> left, A right) {
-        return _binOp(NumOp.LT, left, _const(right));
+    public static <A extends Comparable<A>> ExprBoolean lt(Expr<A> left, A right) {
+        return _binOp(OpNumber.LT, left, _const(right));
     }
 
-    public static <A extends Comparable<A>> BooleanExpr lt(Expr<A> left,
+    public static <A extends Comparable<A>> ExprBoolean lt(Expr<A> left,
             Expr<A> right) {
-        return _binOp(NumOp.LT, left, right);
+        return _binOp(OpNumber.LT, left, right);
     }
 
     public static <A extends Number> Expr<A> mult(Expr<A> left, A right) {
-        return _binOp(NumOp.MULT, left, _const(right));
+        return _binOp(OpNumber.MULT, left, _const(right));
     }
 
     public static <A extends Number> Expr<A> mult(Expr<A> left, Expr<A> right) {
-        return _binOp(NumOp.MULT, left, right);
+        return _binOp(OpNumber.MULT, left, right);
     }
 
-    public static <A, B extends A> BooleanExpr ne(Expr<A> left, B right) {
+    public static <A, B extends A> ExprBoolean ne(Expr<A> left, B right) {
         return _binOp(Op.NE, left, _const(right));
     }
 
-    public static <A, B extends A> BooleanExpr ne(Expr<A> left, Expr<B> right) {
+    public static <A, B extends A> ExprBoolean ne(Expr<A> left, Expr<B> right) {
         return _binOp(Op.NE, left, right);
     }
 
-    public static BooleanExpr not(BooleanExpr left) {
-        return _unOp(BoOp.NOT, left);
+    public static ExprBoolean not(ExprBoolean left) {
+        return _unOp(OpBoolean.NOT, left);
     }
 
-    public static BooleanExpr or(BooleanExpr left, BooleanExpr right) {
-        return _binOp(BoOp.OR, left, right);
+    public static ExprBoolean or(ExprBoolean left, ExprBoolean right) {
+        return _binOp(OpBoolean.OR, left, right);
     }
 
     public static <A extends Number> Expr<A> sub(Expr<A> left, A right) {
-        return _binOp(NumOp.SUB, left, _const(right));
+        return _binOp(OpNumber.SUB, left, _const(right));
     }
 
     public static <A extends Number> Expr<A> sub(Expr<A> left, Expr<A> right) {
-        return _binOp(NumOp.SUB, left, right);
+        return _binOp(OpNumber.SUB, left, right);
     }
 
     public static Expr<String> substr(Expr<String> left, int start) {
-        return _binOp(StrOp.SUBSTR, left, _const(start));
+        return _binOp(OpString.SUBSTR, left, _const(start));
     }
 
     public static Expr<String> substr(Expr<String> left, int start, int offset) {
-        return _terOp(StrOp.SUBSTR, left, _const(start), _const(offset));
+        return _terOp(OpString.SUBSTR, left, _const(start), _const(offset));
     }
 
-    public static <A, B extends A> BooleanExpr typeOf(Expr<A> left,
+    public static <A, B extends A> ExprBoolean typeOf(Expr<A> left,
             Class<B> right) {
         return _binOp(Op.ISTYPEOF, left, _const(right));
     }
 
     public static Expr<String> upper(Expr<String> left) {
-        return _unOp(StrOp.UPPER, left);
+        return _unOp(OpString.UPPER, left);
     }
 }
