@@ -9,7 +9,7 @@ import com.mysema.query.grammar.Types.ExprBoolean;
 import com.mysema.query.grammar.Types.ExprEntity;
 
 /**
- * ExtQueryBased provides
+ * ExtQueryBased provides a basic implementation of the ExtQuery interface
  *
  * @author tiwe
  * @version $Id$

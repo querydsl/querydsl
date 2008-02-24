@@ -13,7 +13,7 @@ import com.mysema.query.grammar.Types.ExprEntity;
 import com.mysema.query.grammar.Types.Expr;
 import com.mysema.query.grammar.Types.OrderSpecifier;
 /**
- * QueryBase provides
+ * QueryBase provides a basic implementation of the Query interface
  *
  * @author tiwe
  * @version $Id$

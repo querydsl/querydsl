@@ -11,8 +11,7 @@ import com.mysema.query.grammar.Types.Expr;
 import com.mysema.query.grammar.Types.OrderSpecifier;
 
 /**
- * Query provides a fluent query interface, operations can be constructed via the 
- * static methods of Grammar
+ * Query provides a the query interface of the fluent query DSL
  *
  * @author tiwe
  * @version $Id$

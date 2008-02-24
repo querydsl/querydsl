@@ -10,8 +10,8 @@ import java.lang.reflect.Method;
 import com.mysema.core.collection.FactoryMap;
 import com.mysema.query.grammar.Types.*;
 
-/**
- * Visitor provides
+/** 
+ * Visitor provides a dispatching Visitor for Expr instances
  *
  * @author tiwe
  * @version $Id$

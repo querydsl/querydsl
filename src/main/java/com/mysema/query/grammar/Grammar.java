@@ -9,7 +9,7 @@ import com.mysema.query.grammar.Types.*;
 import com.mysema.query.grammar.Ops.*;
 
 /**
- * Grammar provides a fluent grammar for operation and order specifier creation
+ * Grammar provides the factory methods for the fluent grammar
  * 
  * @author tiwe
  * @version $Id$

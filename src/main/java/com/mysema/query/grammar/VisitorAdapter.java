@@ -8,7 +8,8 @@ package com.mysema.query.grammar;
 import com.mysema.query.grammar.Types.*;
 
 /**
- * VisitorAdapter provides
+ * VisitorAdapter provides a base implementation where invocations are dispatched
+ * to supertypes when available and visible
  *
  * @author tiwe
  * @version $Id$

@@ -6,7 +6,7 @@
 package com.mysema.query.grammar;
 
 /**
- * Ops provides
+ * Ops provides the operators for the fluent query grammar
  *
  * @author tiwe
  * @version $Id$
