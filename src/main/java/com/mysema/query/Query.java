@@ -5,8 +5,8 @@
  */
 package com.mysema.query;
 
-import com.mysema.query.grammar.Types.ExprForBoolean;
-import com.mysema.query.grammar.Types.ExprForEntity;
+import com.mysema.query.grammar.Types.ExprBoolean;
+import com.mysema.query.grammar.Types.ExprEntity;
 import com.mysema.query.grammar.Types.Expr;
 import com.mysema.query.grammar.Types.OrderSpecifier;
 
@@ -17,10 +17,10 @@ import com.mysema.query.grammar.Types.OrderSpecifier;
  * @version $Id$
  */
 public interface Query<A extends Query<A>>{
-    A select(Expr<?>... objects);
-    A from(ExprForEntity<?>... objects);    
-    A where(ExprForBoolean... objects);
-    A groupBy(Expr<?>... objects);
-    A having(ExprForBoolean... objects);
-    A orderBy(OrderSpecifier<?>... objects);
+    A select(Expr<?>... o);
+    A from(ExprEntity<?>... o);    
+    A where(ExprBoolean... o);
+    A groupBy(Expr<?>... o);
+    A having(ExprBoolean... o);
+    A orderBy(OrderSpecifier<?>... o);
 }

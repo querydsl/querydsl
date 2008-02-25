@@ -5,8 +5,8 @@
  */
 package com.mysema.query;
 
-import com.mysema.query.grammar.Types.ExprForBoolean;
-import com.mysema.query.grammar.Types.ExprForEntity;
+import com.mysema.query.grammar.Types.ExprBoolean;
+import com.mysema.query.grammar.Types.ExprEntity;
 
 /**
  * ExtQueryBased provides a basic implementation of the ExtQuery interface
@@ -17,24 +17,24 @@ import com.mysema.query.grammar.Types.ExprForEntity;
 @SuppressWarnings("unchecked")
 public class ExtQueryBase<A extends ExtQueryBase<A>> extends QueryBase<A> implements ExtQuery<A> { 
 
-    public A innerJoin(ExprForEntity<?> object) {
-        joins.add(new JoinExpression(JoinType.IJ,object));
+    public A innerJoin(ExprEntity<?> o) {
+        joins.add(new JoinExpression(JoinType.IJ,o));
         return (A) this;
     }
     
-    public A join(ExprForEntity<?> object) {
-        joins.add(new JoinExpression(JoinType.J,object));
+    public A join(ExprEntity<?> o) {
+        joins.add(new JoinExpression(JoinType.J,o));
         return (A) this;
     }
 
-    public A leftJoin(ExprForEntity<?> object) {
-        joins.add(new JoinExpression(JoinType.LJ,object));
+    public A leftJoin(ExprEntity<?> o) {
+        joins.add(new JoinExpression(JoinType.LJ,o));
         return (A) this;
     }
     
-    public A with(ExprForBoolean... objects) {
+    public A with(ExprBoolean... o) {
         if (!joins.isEmpty()){
-            joins.get(joins.size()-1).conditions = objects;
+            joins.get(joins.size()-1).conditions = o;
         }
         return (A) this;
     }

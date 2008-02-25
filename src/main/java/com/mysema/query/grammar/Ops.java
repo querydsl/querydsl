@@ -18,7 +18,8 @@ public class Ops {
      */
     public interface Op<RT> {
         Op<Boolean> EQ = new OpImpl<Boolean>();
-        Op<Boolean> IN = new OpImpl<Boolean>();
+        Op<Boolean> INARRAY = new OpImpl<Boolean>();
+        Op<Boolean> INELEMENTS = new OpImpl<Boolean>();
         Op<Boolean> ISNOTNULL = new OpImpl<Boolean>();
         Op<Boolean> ISNULL = new OpImpl<Boolean>();
         Op<Boolean> ISTYPEOF = new OpImpl<Boolean>();

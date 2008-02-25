@@ -17,17 +17,17 @@ import com.mysema.query.grammar.Types.*;
 public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visitor<V>{
     
     @Override
-    protected void visit(AliasForNoEntity<?> expr) {
+    protected void visit(AliasNoEntity<?> expr) {
         visit((Alias<?>)expr);        
     }
     
     @Override
-    protected void visit(AliasForCollection<?> expr){
+    protected void visit(AliasCollection<?> expr){
         visit((Alias<?>)expr);
     }
     
     @Override
-    protected void visit(AliasForEntity<?> expr) {
+    protected void visit(AliasEntity<?> expr) {
         visit((Alias<?>)expr);        
     }
     
@@ -37,22 +37,22 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visito
     }
     
     @Override
-    protected void visit(PathForBoolean expr) {
+    protected void visit(PathBoolean expr) {
         visit((Path<?>)expr);     
     }
     
     @Override
-    protected void visit(PathForEntityCollection<?> expr){
+    protected void visit(PathEntityCollection<?> expr){
         visit((Path<?>)expr);
     }
     
     @Override
-    protected void visit(PathForEntity<?> expr) {
+    protected void visit(PathEntity<?> expr) {
         visit((Path<?>)expr);        
     }
     
     @Override
-    protected void visit(PathForNoEntity<?> expr) {
+    protected void visit(PathNoEntity<?> expr) {
         visit((Path<?>)expr);        
     }
     

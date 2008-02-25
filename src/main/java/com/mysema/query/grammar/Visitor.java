@@ -22,10 +22,10 @@ public abstract class Visitor<T extends Visitor<T>> {
 
         @Override
         protected Method create(Class<?> cl) {
-            while (!Types.class.equals(cl.getEnclosingClass())){
-                cl = cl.getSuperclass();
-            }
             try {
+                if (PathEntity.class.isAssignableFrom(cl)){
+                    cl = PathEntity.class;
+                }
                 Method method = null;
                 Class<?> sigClass = Visitor.this.getClass();
                 while (method == null && !sigClass.equals(Visitor.class)){
@@ -60,15 +60,13 @@ public abstract class Visitor<T extends Visitor<T>> {
     
     protected abstract void visit(Alias<?> expr);
     
-    protected abstract void visit(AliasForNoEntity<?> expr);
+    protected abstract void visit(AliasNoEntity<?> expr);
     
-    protected abstract void visit(AliasForCollection<?> expr);
+    protected abstract void visit(AliasCollection<?> expr);
     
-    protected abstract void visit(AliasForEntity<?> expr);
+    protected abstract void visit(AliasEntity<?> expr);
     
     protected abstract void visit(ConstantExpr<?> expr);
-    
-    protected abstract void visit(CountExpr<?> expr);
     
     protected abstract void visit(OperationBinary<?,?,?,?> expr);
     
@@ -84,12 +82,12 @@ public abstract class Visitor<T extends Visitor<T>> {
     
     protected abstract void visit(Path<?> expr);
     
-    protected abstract void visit(PathForBoolean expr);
+    protected abstract void visit(PathBoolean expr);
     
-    protected abstract void visit(PathForEntityCollection<?> expr);
+    protected abstract void visit(PathEntityCollection<?> expr);
     
-    protected abstract void visit(PathForEntity<?> expr);
+    protected abstract void visit(PathEntity<?> expr);
     
-    protected abstract void visit(PathForNoEntity<?> expr);
+    protected abstract void visit(PathNoEntity<?> expr);
     
 }

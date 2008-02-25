@@ -18,7 +18,7 @@ import com.mysema.query.grammar.Ops.Op;
  */
 public class Types {
     
-    public abstract static class Alias<D> extends ExprImpl<D>{ 
+    public abstract static class Alias<D> extends ExprNonFinalImpl<D>{ 
         public final Expr<?> from;
         public final String to;
         Alias(Expr<?> from, String to) {
@@ -27,23 +27,23 @@ public class Types {
         }
     }
         
-    public static class AliasForCollection<D> extends Alias<D> implements ExprForEntity<D>{
-        AliasForCollection(PathForEntityCollection<D> from, Path<D> to) {
+    public static class AliasCollection<D> extends Alias<D> implements ExprEntity<D>{
+        AliasCollection(PathEntityCollection<D> from, Path<D> to) {
             super(from,to.toString());
         }        
     }
     
-    public static class AliasForEntity<D> extends Alias<D> implements ExprForEntity<D>{
-        AliasForEntity(PathForEntity<D> from, PathForEntity<D> to) {
+    public static class AliasEntity<D> extends Alias<D> implements ExprEntity<D>{
+        AliasEntity(PathEntity<D> from, PathEntity<D> to) {
             super(from,to.toString());
         }
-        AliasForEntity(PathForEntity<D> from, String to) {
+        AliasEntity(PathEntity<D> from, String to) {
             super(from,to);
         }
     }
     
-    public static class AliasForNoEntity<D> extends Alias<D> implements ExprForNoEntity<D>{       
-        AliasForNoEntity(Expr<D> from, String to) {
+    public static class AliasNoEntity<D> extends Alias<D> implements ExprNoEntity<D>{       
+        AliasNoEntity(Expr<D> from, String to) {
             super(from,to);
         }
         public Expr<D> as(String to) {
@@ -51,44 +51,44 @@ public class Types {
         }        
     }
     
-    public static class ConstantExpr<D> extends ExprImpl<D>{
+    public static class ConstantExpr<D> extends ExprNonFinalImpl<D>{
         public D constant;
     }
     
-    public static class CountExpr<D> extends ExprForNoEntityImpl<D>{
-        // TODO : move to querydsl-hibernate
+    public interface Expr<D> {
+                
     }
     
-    public interface Expr<D> { 
-        public <B extends D> ExprForBoolean eq(B right);        
-        public <B extends D> ExprForBoolean eq(Expr<B> right);
-        public <B extends D> ExprForBoolean ne(B right);
-        public <B extends D> ExprForBoolean ne(Expr<B> right);        
+    public interface ExprNonFinal<D> extends Expr<D> {
+        public <B extends D> ExprBoolean eq(B right);        
+        public <B extends D> ExprBoolean eq(Expr<B> right);
+        public <B extends D> ExprBoolean ne(B right);
+        public <B extends D> ExprBoolean ne(Expr<B> right);
     }
     
-    static abstract class ExprImpl<D> implements Expr<D>{
-        public <B extends D> ExprForBoolean eq(B right){return Grammar.eq(this, right);}        
-        public <B extends D> ExprForBoolean eq(Expr<B> right){return Grammar.eq(this, right);}
-        public <B extends D> ExprForBoolean ne(B right){return Grammar.ne(this, right);}
-        public <B extends D> ExprForBoolean ne(Expr<B> right){return Grammar.ne(this, right);}
-    }
-    
-    public interface ExprForBoolean extends ExprForNoEntity<Boolean>{ }  
+    public interface ExprBoolean extends ExprNoEntity<Boolean>{ }
     
     /**
      * Reference to an entity
      */
-    public interface ExprForEntity<D> extends Expr<D>{}
+    public interface ExprEntity<D> extends Expr<D>{}  
+    
+    static abstract class ExprNonFinalImpl<D> implements ExprNonFinal<D>{
+        public <B extends D> ExprBoolean eq(B right){return Grammar.eq(this, right);}        
+        public <B extends D> ExprBoolean eq(Expr<B> right){return Grammar.eq(this, right);}
+        public <B extends D> ExprBoolean ne(B right){return Grammar.ne(this, right);}
+        public <B extends D> ExprBoolean ne(Expr<B> right){return Grammar.ne(this, right);}
+    }
             
-    public interface ExprForNoEntity<D> extends Expr<D>{
+    public interface ExprNoEntity<D> extends ExprNonFinal<D>{
         public Expr<D> as(String to);
     }
     
-    static abstract class ExprForNoEntityImpl<D> extends ExprImpl<D> implements ExprForNoEntity<D>{
+    public static abstract class ExprNoEntityImpl<D> extends ExprNonFinalImpl<D> implements ExprNoEntity<D>{
         public Expr<D> as(String to){return Grammar.as(this, to);}
     }  
     
-    public abstract static class Operation<RT> extends ExprForNoEntityImpl<RT> {
+    public abstract static class Operation<RT> extends ExprNoEntityImpl<RT> {
         public Expr<RT> as(String to) {
             return Grammar.as(this, to);
         }  
@@ -104,7 +104,7 @@ public class Types {
     }
     
     public static class OperationBinaryBoolean<L,R> extends OperationBinary<Boolean,Boolean,L,R> 
-        implements ExprForBoolean {
+        implements ExprBoolean {
         public Expr<Boolean> as(String to) {
             return Grammar.as(this, to);
         }        
@@ -121,7 +121,7 @@ public class Types {
     }
            
     public static class OperationTertiaryBoolean<F,S,T> extends OperationTertiary<Boolean,Boolean,F,S,T>
-        implements ExprForBoolean{  
+        implements ExprBoolean{  
     }
     
     public static class OperationUnary<OP,RT extends OP,A> extends Operation<RT>{
@@ -133,7 +133,7 @@ public class Types {
     }
     
     public static class OperationUnaryBoolean<A> extends OperationUnary<Boolean,Boolean,A>
-        implements ExprForBoolean{
+        implements ExprBoolean{
     }
     
     public enum Order{ ASC,DESC }
@@ -143,7 +143,7 @@ public class Types {
         public Expr<A> target;       
     }
     
-    public abstract static class Path<D> extends ExprImpl<D>{
+    public abstract static class Path<D> extends ExprNonFinalImpl<D>{
         // path is hidden to not pollute the namespace of the domain types
         private final String path;
         public Path(String p) {
@@ -153,40 +153,40 @@ public class Types {
         public final String toString(){ return path; }
     }
     
-    public static class PathForBoolean extends PathForNoEntity<Boolean> implements ExprForBoolean{
-        PathForBoolean(String path) {super(path);}
+    public static class PathBoolean extends PathNoEntity<Boolean> implements ExprBoolean{
+        PathBoolean(String path) {super(path);}
     }
     
-    public static class PathForEntity<D> extends Path<D> implements ExprForEntity<D>{
-        protected PathForEntity(PathForEntity<?> type, String path) {
+    public static class PathEntity<D> extends Path<D> implements ExprEntity<D>{
+        protected PathEntity(PathEntity<?> type, String path) {
             super(type+"."+path);
         } 
-        protected PathForEntity(String path) {super(path);}
-        protected PathForBoolean _boolean(String path){
-            return new PathForBoolean(this+"."+path);
+        protected PathEntity(String path) {super(path);}
+        protected PathBoolean _boolean(String path){
+            return new PathBoolean(this+"."+path);
         }
-        protected <A>PathForEntityCollection<A> _collection(String path,Class<A> type) {
-            return new PathForEntityCollection<A>(this+"."+path);
+        protected <A>PathEntityCollection<A> _collection(String path,Class<A> type) {
+            return new PathEntityCollection<A>(this+"."+path);
         }
-        protected <A> PathForNoEntity<A> _prop(String path,Class<A> type) {
-            return new PathForNoEntity<A>(this+"."+path);
+        protected <A> PathNoEntity<A> _prop(String path,Class<A> type) {
+            return new PathNoEntity<A>(this+"."+path);
         }
         
-        public AliasForEntity<D> as(PathForEntity<D> to) {return Grammar.as(this, to);}
+        public AliasEntity<D> as(PathEntity<D> to) {return Grammar.as(this, to);}
     }
     
-    public static class PathForEntityCollection<D> extends Path<Collection<D>> implements 
-        ExprForEntity<Collection<D>>{
-        PathForEntityCollection(String p) {
+    public static class PathEntityCollection<D> extends Path<Collection<D>> implements 
+        ExprEntity<Collection<D>>{
+        PathEntityCollection(String p) {
             super(p);
         }        
-        public AliasForCollection<D> as(PathForEntity<D> to) {
+        public AliasCollection<D> as(PathEntity<D> to) {
             return Grammar.as(this, to);
         }
     }
     
-    public static class PathForNoEntity<D> extends Path<D> implements ExprForNoEntity<D>{
-        public PathForNoEntity(String p) {
+    public static class PathNoEntity<D> extends Path<D> implements ExprNoEntity<D>{
+        public PathNoEntity(String p) {
             super(p);
         }
         public Expr<D> as(String to) {
