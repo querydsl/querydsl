@@ -6,11 +6,12 @@
 package com.mysema.query;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import com.mysema.query.grammar.Types.Expr;
 import com.mysema.query.grammar.Types.ExprBoolean;
 import com.mysema.query.grammar.Types.ExprEntity;
-import com.mysema.query.grammar.Types.Expr;
 import com.mysema.query.grammar.Types.OrderSpecifier;
 /**
  * QueryBase provides a basic implementation of the Query interface
@@ -34,20 +35,20 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         public ExprBoolean[] conditions;
     }
     
-    protected List<JoinExpression> joins = new ArrayList<JoinExpression>();
-    protected Expr<?>[] groupBy;
-    protected ExprBoolean[] having;
-    protected OrderSpecifier<?>[] orderBy;
-    protected Expr<?>[] select;
-    protected ExprBoolean[] where;
+    protected final List<JoinExpression> joins = new ArrayList<JoinExpression>();
+    protected final List<Expr> groupBy = new ArrayList<Expr>();
+    protected final List<ExprBoolean> having = new ArrayList<ExprBoolean>();
+    protected final List<OrderSpecifier> orderBy = new ArrayList<OrderSpecifier>();
+    protected final List<Expr> select = new ArrayList<Expr>();
+    protected final List<ExprBoolean> where = new ArrayList<ExprBoolean>();
     
     protected void clear(){
         joins.clear();
-        groupBy = null;
-        having = null;
-        orderBy = null;
-        select = null;
-        where = null;
+        groupBy.clear();
+        having.clear();
+        orderBy.clear();
+        select.clear();
+        where.clear();
     }
     
     public A from(ExprEntity<?>... o) {
@@ -58,28 +59,28 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
     }
 
     public A groupBy(Expr<?>... o) {
-        groupBy = o;
+        groupBy.addAll(Arrays.asList(o));
         return (A) this;
     }
 
     public A having(ExprBoolean... o) {
-        having = o;
+        having.addAll(Arrays.asList(o));
         return (A) this;
     }
 
 
     public A orderBy(OrderSpecifier<?>... o) {
-        orderBy = o;
+        orderBy.addAll(Arrays.asList(o));
         return (A) this;
     }
 
     public A select(Expr<?>... o) {
-        select = o;
+        select.addAll(Arrays.asList(o));
         return (A) this;
     }
     
     public A where(ExprBoolean... o) {
-        where = o;
+        where.addAll(Arrays.asList(o));
         return (A) this;
     }
     
