@@ -66,7 +66,10 @@ public class Types {
         public <B extends D> ExprBoolean ne(Expr<B> right);
     }
     
-    public interface ExprBoolean extends ExprNoEntity<Boolean>{ }
+    public interface ExprBoolean extends ExprNoEntity<Boolean>{ 
+        ExprBoolean and(ExprBoolean right);
+        ExprBoolean or(ExprBoolean right);
+    }
     
     /**
      * Reference to an entity
@@ -104,10 +107,9 @@ public class Types {
     }
     
     public static class OperationBinaryBoolean<L,R> extends OperationBinary<Boolean,Boolean,L,R> 
-        implements ExprBoolean {
-        public Expr<Boolean> as(String to) {
-            return Grammar.as(this, to);
-        }        
+        implements ExprBoolean {    
+        public ExprBoolean and(ExprBoolean right) {return Grammar.and(this, right);}
+        public ExprBoolean or(ExprBoolean right) {return Grammar.and(this, right);}
     }
     
     public static class OperationTertiary<OP,RT extends OP,F,S,T> extends Operation<RT>{
@@ -122,6 +124,8 @@ public class Types {
            
     public static class OperationTertiaryBoolean<F,S,T> extends OperationTertiary<Boolean,Boolean,F,S,T>
         implements ExprBoolean{  
+        public ExprBoolean and(ExprBoolean right) {return Grammar.and(this, right);}
+        public ExprBoolean or(ExprBoolean right) {return Grammar.and(this, right);}
     }
     
     public static class OperationUnary<OP,RT extends OP,A> extends Operation<RT>{
@@ -134,6 +138,8 @@ public class Types {
     
     public static class OperationUnaryBoolean<A> extends OperationUnary<Boolean,Boolean,A>
         implements ExprBoolean{
+        public ExprBoolean and(ExprBoolean right) {return Grammar.and(this, right);}
+        public ExprBoolean or(ExprBoolean right) {return Grammar.and(this, right);}
     }
     
     public enum Order{ ASC,DESC }
@@ -155,6 +161,8 @@ public class Types {
     
     public static class PathBoolean extends PathNoEntity<Boolean> implements ExprBoolean{
         PathBoolean(String path) {super(path);}
+        public ExprBoolean and(ExprBoolean right) {return Grammar.and(this, right);}
+        public ExprBoolean or(ExprBoolean right) {return Grammar.and(this, right);}        
     }
     
     public static class PathEntity<D> extends Path<D> implements ExprEntity<D>{
