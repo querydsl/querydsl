@@ -125,7 +125,7 @@ public class Types {
     public static class OperationTertiaryBoolean<F,S,T> extends OperationTertiary<Boolean,Boolean,F,S,T>
         implements ExprBoolean{  
         public ExprBoolean and(ExprBoolean right) {return Grammar.and(this, right);}
-        public ExprBoolean or(ExprBoolean right) {return Grammar.and(this, right);}
+        public ExprBoolean or(ExprBoolean right) {return Grammar.or(this, right);}
     }
     
     public static class OperationUnary<OP,RT extends OP,A> extends Operation<RT>{
@@ -139,7 +139,7 @@ public class Types {
     public static class OperationUnaryBoolean<A> extends OperationUnary<Boolean,Boolean,A>
         implements ExprBoolean{
         public ExprBoolean and(ExprBoolean right) {return Grammar.and(this, right);}
-        public ExprBoolean or(ExprBoolean right) {return Grammar.and(this, right);}
+        public ExprBoolean or(ExprBoolean right) {return Grammar.or(this, right);}
     }
     
     public enum Order{ ASC,DESC }
@@ -162,7 +162,7 @@ public class Types {
     public static class PathBoolean extends PathNoEntity<Boolean> implements ExprBoolean{
         PathBoolean(String path) {super(path);}
         public ExprBoolean and(ExprBoolean right) {return Grammar.and(this, right);}
-        public ExprBoolean or(ExprBoolean right) {return Grammar.and(this, right);}        
+        public ExprBoolean or(ExprBoolean right) {return Grammar.or(this, right);}        
     }
     
     public static class PathEntity<D> extends Path<D> implements ExprEntity<D>{
