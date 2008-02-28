@@ -84,6 +84,7 @@ public class Grammar {
     }
 
     static <A> ExprBoolean _unOp(Op<Boolean> type, Expr<A> left) {
+        // TODO : unop call results should be cached
         OperationUnaryBoolean<A> op = new OperationUnaryBoolean<A>();
         op.operator = type;
         op.left = left;
