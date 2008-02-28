@@ -202,23 +202,23 @@ public class Grammar {
 
     public static <A extends Comparable<A>> ExprBoolean goe(Expr<A> left,
             A right) {
-        return _binOp(OpNumber.GOE, left, _const(right));
+        return _binOp(OpComparable.GOE, left, _const(right));
     }
 
     public static <A extends Comparable<A>> ExprBoolean goe(Expr<A> left,
             Expr<A> right) {
-        return _binOp(OpNumber.GOE, left, right);
+        return _binOp(OpComparable.GOE, left, right);
     }
 
     public static <A extends Comparable<A>> ExprBoolean gt(Expr<A> left, A right) {
-        return _binOp(OpNumber.GT, left, _const(right));
+        return _binOp(OpComparable.GT, left, _const(right));
     }
 
     public static <A extends Comparable<A>> ExprBoolean gt(Expr<A> left,
             Expr<A> right) {
-        return _binOp(OpNumber.GT, left, right);
+        return _binOp(OpComparable.GT, left, right);
     }
-
+                
     public static <A> ExprBoolean in(A left, ExprEntity<Collection<A>> right){
         return _binOp(Op.INELEMENTS, _const(left), right);
     }
@@ -246,12 +246,12 @@ public class Grammar {
 
     public static <A extends Comparable<A>> ExprBoolean loe(Expr<A> left,
             A right) {
-        return _binOp(OpNumber.LOE, left, _const(right));
+        return _binOp(OpComparable.LOE, left, _const(right));
     }
 
     public static <A extends Comparable<A>> ExprBoolean loe(Expr<A> left,
             Expr<A> right) {
-        return _binOp(OpNumber.LOE, left, right);
+        return _binOp(OpComparable.LOE, left, right);
     }
 
     public static ExprNoEntity<String> lower(Expr<String> left) {
@@ -259,12 +259,12 @@ public class Grammar {
     }
 
     public static <A extends Comparable<A>> ExprBoolean lt(Expr<A> left, A right) {
-        return _binOp(OpNumber.LT, left, _const(right));
+        return _binOp(OpComparable.LT, left, _const(right));
     }
 
     public static <A extends Comparable<A>> ExprBoolean lt(Expr<A> left,
             Expr<A> right) {
-        return _binOp(OpNumber.LT, left, right);
+        return _binOp(OpComparable.LT, left, right);
     }
 
     public static <A extends Number> ExprNoEntity<A> mult(Expr<A> left, A right) {

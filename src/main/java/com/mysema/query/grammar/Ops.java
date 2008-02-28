@@ -29,66 +29,55 @@ public class Ops {
     /**
      * Boolean operators (operators used with boolean operands)
      */
-    public interface OpBoolean<RT> extends OpComparable<RT>{ 
-        OpBoolean<Boolean> AND = new OpBooleanImpl<Boolean>(); 
-        OpBoolean<Boolean> NOT = new OpBooleanImpl<Boolean>();
-        OpBoolean<Boolean> OR = new OpBooleanImpl<Boolean>();
-        OpBoolean<Boolean> XNOR = new OpBooleanImpl<Boolean>();
-        OpBoolean<Boolean> XOR = new OpBooleanImpl<Boolean>();
+    public interface OpBoolean{ 
+        Op<Boolean> AND = new OpImpl<Boolean>(); 
+        Op<Boolean> NOT = new OpImpl<Boolean>();
+        Op<Boolean> OR = new OpImpl<Boolean>();
+        Op<Boolean> XNOR = new OpImpl<Boolean>();
+        Op<Boolean> XOR = new OpImpl<Boolean>();
     }    
         
-    static class OpBooleanImpl<RT> implements OpBoolean<RT>{}
-    
     /**
      * Operators for Comparable objects
      */
-    public interface OpComparable<RT> extends Op<RT>{
-        OpComparable<Boolean> BETWEEN = new OpComparableImpl<Boolean>();
-        OpComparable<Boolean> GOE = new OpComparableImpl<Boolean>();
-        OpComparable<Boolean> GT = new OpComparableImpl<Boolean>();
-        OpComparable<Boolean> LOE = new OpComparableImpl<Boolean>();
-        OpComparable<Boolean> LT = new OpComparableImpl<Boolean>();
+    public interface OpComparable{
+        Op<Boolean> BETWEEN = new OpImpl<Boolean>();
+        Op<Boolean> GOE = new OpImpl<Boolean>();
+        Op<Boolean> GT = new OpImpl<Boolean>();
+        Op<Boolean> LOE = new OpImpl<Boolean>();
+        Op<Boolean> LT = new OpImpl<Boolean>();
     }
-    
-    static class OpComparableImpl<RT> implements OpComparable<RT> {}
     
     /**
      * Date Operators (operators used with Date operands)
      */
-    public interface OpDate<RT> extends OpComparable<RT>{       
-        OpDate<Boolean> AFTER = new OpDateImpl<Boolean>();
-        OpDate<Boolean> BEFORE = new OpDateImpl<Boolean>();        
+    public interface OpDate{       
+        Op<Boolean> AFTER = new OpImpl<Boolean>();
+        Op<Boolean> BEFORE = new OpImpl<Boolean>();        
     }
-    
-    static class OpDateImpl<RT> implements OpDate<RT>{}
-    
-
-    static class OpImpl<RT> implements Op<RT> {}
+   
+    public static final class OpImpl<RT> implements Op<RT> {}
     
     /**
      * Numeric Operators (operators used with numeric operands)
      */
-    public interface OpNumber<RT> extends OpComparable<RT>{
-        OpNumber<Number> ADD = new OpNumberImpl<Number>();   
-        OpNumber<Number> DIV = new OpNumberImpl<Number>();        
-        OpNumber<Number> MOD = new OpNumberImpl<Number>();
-        OpNumber<Number> MULT = new OpNumberImpl<Number>();
-        OpNumber<Number> SUB = new OpNumberImpl<Number>();
+    public interface OpNumber{
+        Op<Number> ADD = new OpImpl<Number>();   
+        Op<Number> DIV = new OpImpl<Number>();        
+        Op<Number> MOD = new OpImpl<Number>();
+        Op<Number> MULT = new OpImpl<Number>();
+        Op<Number> SUB = new OpImpl<Number>();
     }
-    
-    static class OpNumberImpl<A> implements OpNumber<A> {}       
     
     /**
      * String Operators (operators used with String operands)
      */
-    public interface OpString<RT> extends OpComparable<RT>{       
-        OpString<String> CONCAT = new OpStringImpl<String>();
-        OpString<Boolean> LIKE = new OpStringImpl<Boolean>();
-        OpString<String> LOWER = new OpStringImpl<String>();
-        OpString<String> SUBSTR = new OpStringImpl<String>();
-        OpString<String> UPPER = new OpStringImpl<String>();
+    public interface OpString{       
+        Op<String> CONCAT = new OpImpl<String>();
+        Op<Boolean> LIKE = new OpImpl<Boolean>();
+        Op<String> LOWER = new OpImpl<String>();
+        Op<String> SUBSTR = new OpImpl<String>();
+        Op<String> UPPER = new OpImpl<String>();
     }
     
-    static class OpStringImpl<RT> implements OpString<RT>{}
-
 }
