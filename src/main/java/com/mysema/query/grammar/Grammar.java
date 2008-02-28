@@ -20,6 +20,7 @@ public class Grammar {
 
     static <L, R> ExprBoolean _binOp(Op<Boolean> operator, Expr<L> left,
             Expr<R> right) {
+        // TODO : should be cached if both arguments are paths
         OperationBinaryBoolean<L, R> op = new OperationBinaryBoolean<L, R>();
         op.operator = operator;
         op.left = left;
@@ -29,6 +30,7 @@ public class Grammar {
 
     static <OP, RT extends OP, L, R> Operation<RT> _binOp(Op<OP> operator,
             Expr<L> left, Expr<R> right) {
+        // TODO : should be cached if both arguments are paths
         OperationBinary<OP, RT, L, R> op = new OperationBinary<OP, RT, L, R>();
         op.operator = operator;
         op.left = left;
@@ -46,6 +48,7 @@ public class Grammar {
     }
 
     static <A extends Comparable<A>> OrderSpecifier<A> _orderAsc(Expr<A> target) {
+        // TODO : should be cached if argument is path
         OrderSpecifier<A> os = new OrderSpecifier<A>();
         os.order = Order.ASC;
         os.target = target;
@@ -53,6 +56,7 @@ public class Grammar {
     }
 
     static <A extends Comparable<A>> OrderSpecifier<A> _orderDesc(Expr<A> target) {
+        // TODO : should be cached if argument is path
         OrderSpecifier<A> os = new OrderSpecifier<A>();
         os.order = Order.DESC;
         os.target = target;
