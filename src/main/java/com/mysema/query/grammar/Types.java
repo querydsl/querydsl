@@ -59,13 +59,6 @@ public class Types {
                 
     }
     
-    public interface ExprNonFinal<D> extends Expr<D> {
-        public <B extends D> ExprBoolean eq(B right);        
-        public <B extends D> ExprBoolean eq(Expr<B> right);
-        public <B extends D> ExprBoolean ne(B right);
-        public <B extends D> ExprBoolean ne(Expr<B> right);
-    }
-    
     public interface ExprBoolean extends ExprNoEntity<Boolean>{ 
         ExprBoolean and(ExprBoolean right);
         ExprBoolean or(ExprBoolean right);
@@ -74,21 +67,28 @@ public class Types {
     /**
      * Reference to an entity
      */
-    public interface ExprEntity<D> extends Expr<D>{}  
+    public interface ExprEntity<D> extends Expr<D>{}
+    
+    public interface ExprNoEntity<D> extends ExprNonFinal<D>{
+        public Expr<D> as(String to);
+    }  
+    
+    public static abstract class ExprNoEntityImpl<D> extends ExprNonFinalImpl<D> implements ExprNoEntity<D>{
+        public Expr<D> as(String to){return Grammar.as(this, to);}
+    }
+            
+    public interface ExprNonFinal<D> extends Expr<D> {
+        public <B extends D> ExprBoolean eq(B right);        
+        public <B extends D> ExprBoolean eq(Expr<B> right);
+        public <B extends D> ExprBoolean ne(B right);
+        public <B extends D> ExprBoolean ne(Expr<B> right);
+    }
     
     static abstract class ExprNonFinalImpl<D> implements ExprNonFinal<D>{
         public <B extends D> ExprBoolean eq(B right){return Grammar.eq(this, right);}        
         public <B extends D> ExprBoolean eq(Expr<B> right){return Grammar.eq(this, right);}
         public <B extends D> ExprBoolean ne(B right){return Grammar.ne(this, right);}
         public <B extends D> ExprBoolean ne(Expr<B> right){return Grammar.ne(this, right);}
-    }
-            
-    public interface ExprNoEntity<D> extends ExprNonFinal<D>{
-        public Expr<D> as(String to);
-    }
-    
-    public static abstract class ExprNoEntityImpl<D> extends ExprNonFinalImpl<D> implements ExprNoEntity<D>{
-        public Expr<D> as(String to){return Grammar.as(this, to);}
     }  
     
     public abstract static class Operation<RT> extends ExprNoEntityImpl<RT> {
@@ -109,7 +109,11 @@ public class Types {
     public static class OperationBinaryBoolean<L,R> extends OperationBinary<Boolean,Boolean,L,R> 
         implements ExprBoolean {    
         public ExprBoolean and(ExprBoolean right) {return Grammar.and(this, right);}
-        public ExprBoolean or(ExprBoolean right) {return Grammar.and(this, right);}
+        public ExprBoolean or(ExprBoolean right) {return Grammar.or(this, right);}
+    }
+    
+    public static class OperationNoArg<OP,RT extends OP> extends Operation<RT>{
+        public Op<OP> operator; 
     }
     
     public static class OperationTertiary<OP,RT extends OP,F,S,T> extends Operation<RT>{
