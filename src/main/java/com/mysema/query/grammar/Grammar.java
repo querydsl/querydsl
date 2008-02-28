@@ -5,10 +5,6 @@
  */
 package com.mysema.query.grammar;
 
-import static com.mysema.query.grammar.Grammar._binOp;
-import static com.mysema.query.grammar.Grammar._terOp;
-import static com.mysema.query.grammar.Grammar._unOp;
-
 import java.util.Collection;
 
 import com.mysema.query.grammar.Ops.*;
