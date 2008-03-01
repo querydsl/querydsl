@@ -68,19 +68,9 @@ public abstract class Visitor<T extends Visitor<T>> {
     
     protected abstract void visit(ConstantExpr<?> expr);
     
-    protected abstract void visit(OperationBinary<?,?,?,?> expr);
+    protected abstract void visit(Operation<?,?> expr);
     
-    protected abstract void visit(OperationBinaryBoolean<?,?> expr);
-    
-    protected abstract void visit(OperationNoArg<?,?> expr);
-    
-    protected abstract void visit(OperationTertiary<?,?,?,?,?> expr);
-    
-    protected abstract void visit(OperationTertiaryBoolean<?,?,?> expr);
-    
-    protected abstract void visit(OperationUnary<?,?,?> expr);
-    
-    protected abstract void visit(OperationUnaryBoolean<?> expr);
+    protected abstract void visit(OperationBoolean expr);
     
     protected abstract void visit(Path<?> expr);
     

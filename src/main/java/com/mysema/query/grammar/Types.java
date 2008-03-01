@@ -91,60 +91,23 @@ public class Types {
         public <B extends D> ExprBoolean ne(Expr<B> right){return Grammar.ne(this, right);}
     }  
     
-    public abstract static class Operation<RT> extends ExprNoEntityImpl<RT> {
+    public static class Operation<OP,RT extends OP> extends ExprNoEntityImpl<RT>{
+        /**
+         * arguments don't need to be of same type as return type
+         */
+        public Op<OP> operator;
+        public Expr<?>[] args;
         public Expr<RT> as(String to) {
             return Grammar.as(this, to);
         }  
     }
     
-    public static class OperationBinary<OP,RT extends OP,L,R> extends Operation<RT>{
-        /**
-         * arguments don't need to be of same type as return type
-         */
-        public Expr<L> left;
-        public Op<OP> operator; 
-        public Expr<R> right; 
-    }
-    
-    public static class OperationBinaryBoolean<L,R> extends OperationBinary<Boolean,Boolean,L,R> 
+    public static class OperationBoolean extends Operation<Boolean,Boolean> 
         implements ExprBoolean {    
         public ExprBoolean and(ExprBoolean right) {return Grammar.and(this, right);}
         public ExprBoolean or(ExprBoolean right) {return Grammar.or(this, right);}
     }
     
-    public static class OperationNoArg<OP,RT extends OP> extends Operation<RT>{
-        public Op<OP> operator; 
-    }
-    
-    public static class OperationTertiary<OP,RT extends OP,F,S,T> extends Operation<RT>{
-        /**
-         * arguments don't need to be of same type as return type
-         */
-        public Expr<F> first;
-        public Op<OP> operator;
-        public Expr<S> second;
-        public Expr<T> third; 
-    }
-           
-    public static class OperationTertiaryBoolean<F,S,T> extends OperationTertiary<Boolean,Boolean,F,S,T>
-        implements ExprBoolean{  
-        public ExprBoolean and(ExprBoolean right) {return Grammar.and(this, right);}
-        public ExprBoolean or(ExprBoolean right) {return Grammar.or(this, right);}
-    }
-    
-    public static class OperationUnary<OP,RT extends OP,A> extends Operation<RT>{
-        /**
-         * argument doesn't need to be of same type as return type
-         */
-        public Expr<A> left;
-        public Op<OP> operator;                
-    }
-    
-    public static class OperationUnaryBoolean<A> extends OperationUnary<Boolean,Boolean,A>
-        implements ExprBoolean{
-        public ExprBoolean and(ExprBoolean right) {return Grammar.and(this, right);}
-        public ExprBoolean or(ExprBoolean right) {return Grammar.or(this, right);}
-    }
     
     public enum Order{ ASC,DESC }
         

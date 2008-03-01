@@ -17,11 +17,6 @@ import com.mysema.query.grammar.Types.*;
 public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visitor<V>{
     
     @Override
-    protected void visit(AliasNoEntity<?> expr) {
-        visit((Alias<?>)expr);        
-    }
-    
-    @Override
     protected void visit(AliasCollection<?> expr){
         visit((Alias<?>)expr);
     }
@@ -32,8 +27,13 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visito
     }
     
     @Override
-    protected void visit(OperationBinaryBoolean<?,?> expr) {
-        visit((OperationBinary<?,?,?,?>)expr);
+    protected void visit(AliasNoEntity<?> expr) {
+        visit((Alias<?>)expr);        
+    }
+    
+    @Override
+    protected void visit(OperationBoolean expr) {
+        visit((Operation<Boolean,Boolean>)expr);
     }
     
     @Override
@@ -42,28 +42,18 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visito
     }
     
     @Override
-    protected void visit(PathEntityCollection<?> expr){
-        visit((Path<?>)expr);
-    }
-    
-    @Override
     protected void visit(PathEntity<?> expr) {
         visit((Path<?>)expr);        
     }
     
     @Override
+    protected void visit(PathEntityCollection<?> expr){
+        visit((Path<?>)expr);
+    }
+    
+    @Override
     protected void visit(PathNoEntity<?> expr) {
         visit((Path<?>)expr);        
-    }
-    
-    @Override
-    protected void visit(OperationTertiaryBoolean<?,?,?> expr) {
-        visit((OperationTertiary<?,?,?,?,?>)expr);
-    }
-    
-    @Override
-    protected void visit(OperationUnaryBoolean<?> expr) {
-        visit((OperationUnary<?,?,?>)expr);        
     }
     
 }
