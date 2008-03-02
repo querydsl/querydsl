@@ -20,7 +20,7 @@
       <groupId>com.mysema.commons</groupId>
       <artifactId>mysema-core</artifactId>
       <version>0.3.3</version>
-    </dependency>      
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

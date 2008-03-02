@@ -67,16 +67,14 @@ public class Grammar {
 
     public static <A extends Comparable<A>> ExprBoolean after(Expr<A> left,
             A right) {
-        // NOTE : signature is for Comparables to support other than Java's date
-        // types
+        // NOTE : signature is for Comparables to support other than Java's date types
         // NOTE : basically same as gt
         return _op(OpDate.AFTER, left, _const(right));
     }
 
     public static <A extends Comparable<A>> ExprBoolean after(Expr<A> left,
             Expr<A> right) {
-        // NOTE : signature is for Comparables to support other than Java's date
-        // types
+        // NOTE : signature is for Comparables to support other than Java's date types
         // NOTE : basically same as gt
         return _op(OpDate.AFTER, left, right);
     }
@@ -90,11 +88,11 @@ public class Grammar {
         return new AliasNoEntity<D>(from, to);
     }
     
-    public static <D> AliasEntity<D> as(PathEntity<D> from, PathEntity<D> to) {
+    static <D> AliasEntity<D> as(PathEntity<D> from, PathEntity<D> to) {
         return new AliasEntity<D>(from, to);
     }
     
-    public static <D> AliasCollection<D> as(PathEntityCollection<D> from, PathEntity<D> to) {
+    static <D> AliasCollection<D> as(PathEntityCollection<D> from, PathEntity<D> to) {
         return new AliasCollection<D>(from, to);
     }
 
@@ -143,11 +141,11 @@ public class Grammar {
         return _op(OpNumber.DIV, left, right);
     }
 
-    public static <A, B extends A> ExprBoolean eq(Expr<A> left, B right) {
+    static <A, B extends A> ExprBoolean eq(Expr<A> left, B right) {
         return _op(Op.EQ, left, _const(right));
     }
 
-    public static <A, B extends A> ExprBoolean eq(Expr<A> left, Expr<B> right) {
+    static <A, B extends A> ExprBoolean eq(Expr<A> left, Expr<B> right) {
         return _op(Op.EQ, left, right);
     }
 
@@ -226,11 +224,11 @@ public class Grammar {
         return _op(OpNumber.MULT, left, right);
     }
 
-    public static <A, B extends A> ExprBoolean ne(Expr<A> left, B right) {
+    static <A, B extends A> ExprBoolean ne(Expr<A> left, B right) {
         return _op(Op.NE, left, _const(right));
     }
 
-    public static <A, B extends A> ExprBoolean ne(Expr<A> left, Expr<B> right) {
+    static <A, B extends A> ExprBoolean ne(Expr<A> left, Expr<B> right) {
         return _op(Op.NE, left, right);
     }
 

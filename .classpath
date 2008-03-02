@@ -6,5 +6,6 @@
   <classpathentry kind="var" path="M2_REPO/com/mysema/commons/mysema-core/0.3.3/mysema-core-0.3.3.jar" sourcepath="M2_REPO/com/mysema/commons/mysema-core/0.3.3/mysema-core-0.3.3-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/1.4-SNAPSHOT/commons-io-1.4-SNAPSHOT.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.3/commons-lang-2.3.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.3/commons-lang-2.3-sources.jar"/>
+  <classpathentry kind="lib" path="C:/Program Files/Java/jdk1.6.0_04/lib/tools.jar"/>
   <classpathentry kind="var" path="M2_REPO/junit/junit/4.4/junit-4.4.jar" sourcepath="M2_REPO/junit/junit/4.4/junit-4.4-sources.jar"/>
 </classpath>
