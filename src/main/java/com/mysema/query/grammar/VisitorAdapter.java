@@ -43,6 +43,16 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends
     }
 
     @Override
+    protected void visit(PathComparable<?> expr) {
+        visit((Path<?>) expr);
+    }
+    
+    @Override
+    protected void visit(PathString expr) {
+        visit((Path<?>) expr);
+    }
+    
+    @Override
     protected void visit(PathEntity<?> expr) {
         visit((Path<?>) expr);
     }
