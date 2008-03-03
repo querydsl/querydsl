@@ -79,12 +79,14 @@ public abstract class Visitor<T extends Visitor<T>> {
 
     protected abstract void visit(PathComparable<?> expr);
 
-    protected abstract void visit(PathString expr);
-
     protected abstract void visit(PathEntity<?> expr);
 
     protected abstract void visit(PathEntityCollection<?> expr);
 
+    protected abstract void visit(PathEntityRenamable<?> expr);
+    
     protected abstract void visit(PathNoEntity<?> expr);
+
+    protected abstract void visit(PathString expr);
 
 }

@@ -56,6 +56,11 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends
     protected void visit(PathEntity<?> expr) {
         visit((Path<?>) expr);
     }
+    
+    @Override
+    protected void visit(PathEntityRenamable<?> expr) {
+        visit((PathEntity<?>) expr);
+    }
 
     @Override
     protected void visit(PathEntityCollection<?> expr) {

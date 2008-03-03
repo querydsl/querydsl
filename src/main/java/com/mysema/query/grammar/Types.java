@@ -90,36 +90,36 @@ public class Types {
         ExprBoolean lt(Expr<D> right);
     }
     
-    public interface ExprString extends ExprComparable<String>{
-        
-    }
-    
-    
     /**
      * Reference to an entity
      */
     public interface ExprEntity<D> extends Expr<D>{}
-            
+    
+    
     public interface ExprNoEntity<D> extends ExprNonFinal<D>{
         public Expr<D> as(String to);
     }
-    
+            
     public static abstract class ExprNoEntityImpl<D> extends ExprNonFinalImpl<D> implements ExprNoEntity<D>{
         public Expr<D> as(String to){return Grammar.as(this, to);}
-    }  
+    }
     
     public interface ExprNonFinal<D> extends Expr<D> {
         <B extends D> ExprBoolean eq(B right);        
         <B extends D> ExprBoolean eq(Expr<B> right);
         <B extends D> ExprBoolean ne(B right);
         <B extends D> ExprBoolean ne(Expr<B> right);
-    }
+    }  
     
     static abstract class ExprNonFinalImpl<D> implements ExprNonFinal<D>{
         public <B extends D> ExprBoolean eq(B right){return Grammar.eq(this, right);}        
         public <B extends D> ExprBoolean eq(Expr<B> right){return Grammar.eq(this, right);}
         public <B extends D> ExprBoolean ne(B right){return Grammar.ne(this, right);}
         public <B extends D> ExprBoolean ne(Expr<B> right){return Grammar.ne(this, right);}
+    }
+    
+    public interface ExprString extends ExprComparable<String>{
+        
     }  
     
     public static class Operation<OP,RT extends OP> extends ExprNoEntityImpl<RT>{
@@ -191,15 +191,12 @@ public class Types {
         protected <A extends Comparable<A>> PathComparable<A> _comparable(String path,Class<A> type) {
             return new PathComparable<A>(type, this+"."+path);
         }
-        protected <A> PathEntity<A> _entity(String path, Class<A> type){
-            return new PathEntity<A>(type, this+"."+path); 
+        protected <A> PathEntityRenamable<A> _entity(String path, Class<A> type){
+            return new PathEntityRenamable<A>(type, this+"."+path); 
         }
         protected PathString _string(String path){
             return new PathString(this+"."+path);
-        }
-
-        
-        public AliasEntity<D> as(PathEntity<D> to) {return Grammar.as(this, to);}
+        }        
     }
     
     public static class PathEntityCollection<D> extends Path<Collection<D>> implements 
@@ -210,6 +207,11 @@ public class Types {
         public AliasCollection<D> as(PathEntity<D> to) {
             return Grammar.as(this, to);
         }
+    }
+    
+    public static class PathEntityRenamable<D> extends PathEntity<D>{
+        protected PathEntityRenamable(Class<D> type, String path) {super(type,path);}
+        public AliasEntity<D> as(PathEntity<D> to) {return Grammar.as(this, to);}
     }
     
     public static class PathNoEntity<D> extends Path<D> implements ExprNoEntity<D>{
