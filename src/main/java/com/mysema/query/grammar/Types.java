@@ -33,6 +33,21 @@ public class Types {
         }        
     }
     
+    public static class AliasComparable<D extends Comparable<D>> extends AliasNoEntity<D> 
+        implements ExprComparable<D>{
+        AliasComparable(Expr<D> from, String to) {
+            super(from,to);
+        }
+        public ExprBoolean goe(D right) {return Grammar.goe(this,right);}       
+        public ExprBoolean goe(Expr<D> right) {return Grammar.goe(this,right);}  
+        public ExprBoolean gt(D right) {return Grammar.gt(this,right);}  
+        public ExprBoolean gt(Expr<D> right) {return Grammar.gt(this,right);}  
+        public ExprBoolean loe(D right) {return Grammar.loe(this,right);}         
+        public ExprBoolean loe(Expr<D> right) {return Grammar.loe(this,right);}  
+        public ExprBoolean lt(D right) {return Grammar.lt(this,right);}  
+        public ExprBoolean lt(Expr<D> right) {return Grammar.lt(this,right);}  
+    }
+    
     public static class AliasEntity<D> extends Alias<D> implements ExprEntity<D>{
         AliasEntity(PathEntity<D> from, PathEntity<D> to) {
             super(from,to.toString());
@@ -49,21 +64,6 @@ public class Types {
         public Expr<D> as(String to) {
             return Grammar.as(this, to);
         }        
-    }
-    
-    public static class AliasComparable<D extends Comparable<D>> extends AliasNoEntity<D> 
-        implements ExprComparable<D>{
-        AliasComparable(Expr<D> from, String to) {
-            super(from,to);
-        }
-        public ExprBoolean goe(D right) {return Grammar.goe(this,right);}       
-        public ExprBoolean goe(Expr<D> right) {return Grammar.goe(this,right);}  
-        public ExprBoolean gt(D right) {return Grammar.gt(this,right);}  
-        public ExprBoolean gt(Expr<D> right) {return Grammar.gt(this,right);}  
-        public ExprBoolean loe(D right) {return Grammar.loe(this,right);}         
-        public ExprBoolean loe(Expr<D> right) {return Grammar.loe(this,right);}  
-        public ExprBoolean lt(D right) {return Grammar.lt(this,right);}  
-        public ExprBoolean lt(Expr<D> right) {return Grammar.lt(this,right);}  
     }
     
     public static class ConstantExpr<D> extends ExprNonFinalImpl<D>{
@@ -90,16 +90,6 @@ public class Types {
         ExprBoolean lt(Expr<D> right);
     }
     
-    static abstract class ExprComparableImpl<D extends Comparable<D>> extends ExprNoEntityImpl<D> implements ExprComparable<D>{
-        public ExprBoolean goe(D right) {return Grammar.goe(this,right);}       
-        public ExprBoolean goe(Expr<D> right) {return Grammar.goe(this,right);}  
-        public ExprBoolean gt(D right) {return Grammar.gt(this,right);}  
-        public ExprBoolean gt(Expr<D> right) {return Grammar.gt(this,right);}  
-        public ExprBoolean loe(D right) {return Grammar.loe(this,right);}         
-        public ExprBoolean loe(Expr<D> right) {return Grammar.loe(this,right);}  
-        public ExprBoolean lt(D right) {return Grammar.lt(this,right);}  
-        public ExprBoolean lt(Expr<D> right) {return Grammar.lt(this,right);}  
-    }  
     
     /**
      * Reference to an entity
@@ -154,10 +144,10 @@ public class Types {
     }
     
     public abstract static class Path<D> extends ExprNonFinalImpl<D>{
+        private final String path;
         @SuppressWarnings("unused")
         // this field can be accessed via reflection
         private final Class<D> type;
-        private final String path;
         Path(Class<D> type, String path) {
             this.type = type;
             this.path = path;
@@ -172,10 +162,22 @@ public class Types {
         public ExprBoolean or(ExprBoolean right) {return Grammar.or(this, right);}        
     }
     
+    public static class PathComparable<D extends Comparable<D>> extends PathNoEntity<D>
+        implements ExprComparable<D>{
+        public PathComparable(Class<D> type, String p) {
+            super(type, p);
+        }
+        public ExprBoolean goe(D right) {return Grammar.goe(this,right);}       
+        public ExprBoolean goe(Expr<D> right) {return Grammar.goe(this,right);}  
+        public ExprBoolean gt(D right) {return Grammar.gt(this,right);}  
+        public ExprBoolean gt(Expr<D> right) {return Grammar.gt(this,right);}  
+        public ExprBoolean loe(D right) {return Grammar.loe(this,right);}         
+        public ExprBoolean loe(Expr<D> right) {return Grammar.loe(this,right);}  
+        public ExprBoolean lt(D right) {return Grammar.lt(this,right);}  
+        public ExprBoolean lt(Expr<D> right) {return Grammar.lt(this,right);}  
+    }
+    
     public static class PathEntity<D> extends Path<D> implements ExprEntity<D>{
-        protected PathEntity(PathEntity<?> parent, Class<D> type, String path) {
-            super(type,parent+"."+path);
-        } 
         protected PathEntity(Class<D> type, String path) {super(type,path);}
         protected PathBoolean _boolean(String path){
             return new PathBoolean(this+"."+path);
@@ -183,9 +185,16 @@ public class Types {
         protected <A>PathEntityCollection<A> _collection(String path,Class<A> type) {
             return new PathEntityCollection<A>(type, this+"."+path);
         }
-        protected <A extends Comparable<A>> PathComparable<A> _prop(String path,Class<A> type) {
+        protected <A extends Comparable<A>> PathComparable<A> _comparable(String path,Class<A> type) {
             return new PathComparable<A>(type, this+"."+path);
         }
+        protected <A> PathEntity<A> _entity(String path, Class<A> type){
+            return new PathEntity<A>(type, this+"."+path); 
+        }
+        protected PathString _string(String path){
+            return new PathString(this+"."+path);
+        }
+
         
         public AliasEntity<D> as(PathEntity<D> to) {return Grammar.as(this, to);}
     }
@@ -210,19 +219,10 @@ public class Types {
         }        
     }
     
-    public static class PathComparable<D extends Comparable<D>> extends PathNoEntity<D>
-        implements ExprComparable<D>{
-        public PathComparable(Class<D> type, String p) {
-            super(type, p);
+    public static class PathString extends PathComparable<String>{
+        public PathString(String p) {
+            super(String.class, p);
         }
-        public ExprBoolean goe(D right) {return Grammar.goe(this,right);}       
-        public ExprBoolean goe(Expr<D> right) {return Grammar.goe(this,right);}  
-        public ExprBoolean gt(D right) {return Grammar.gt(this,right);}  
-        public ExprBoolean gt(Expr<D> right) {return Grammar.gt(this,right);}  
-        public ExprBoolean loe(D right) {return Grammar.loe(this,right);}         
-        public ExprBoolean loe(Expr<D> right) {return Grammar.loe(this,right);}  
-        public ExprBoolean lt(D right) {return Grammar.lt(this,right);}  
-        public ExprBoolean lt(Expr<D> right) {return Grammar.lt(this,right);}  
     }
 
 }

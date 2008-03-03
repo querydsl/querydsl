@@ -10,46 +10,47 @@ import java.lang.reflect.Method;
 import com.mysema.core.collection.FactoryMap;
 import com.mysema.query.grammar.Types.*;
 
-/** 
+/**
  * Visitor provides a dispatching Visitor for Expr instances
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
 public abstract class Visitor<T extends Visitor<T>> {
-    
-    private final FactoryMap<Class<?>,Method> methodMap = new FactoryMap<Class<?>,Method>(){
+
+    private final FactoryMap<Class<?>, Method> methodMap = new FactoryMap<Class<?>, Method>() {
 
         @Override
         protected Method create(Class<?> cl) {
             try {
-                if (PathEntity.class.isAssignableFrom(cl)){
+                if (PathEntity.class.isAssignableFrom(cl)) {
                     cl = PathEntity.class;
                 }
                 Method method = null;
                 Class<?> sigClass = Visitor.this.getClass();
-                while (method == null && !sigClass.equals(Visitor.class)){
-                    try{
-                        method = sigClass.getDeclaredMethod("visit", cl);    
-                    }catch(NoSuchMethodException nsme){
+                while (method == null && !sigClass.equals(Visitor.class)) {
+                    try {
+                        method = sigClass.getDeclaredMethod("visit", cl);
+                    } catch (NoSuchMethodException nsme) {
                         sigClass = sigClass.getSuperclass();
-                    }                       
+                    }
                 }
-                if (method != null){
-                    method.setAccessible(true);    
-                }else{
-                    throw new IllegalArgumentException("No method found for " + cl.getSimpleName());
+                if (method != null) {
+                    method.setAccessible(true);
+                } else {
+                    throw new IllegalArgumentException("No method found for "
+                            + cl.getSimpleName());
                 }
                 return method;
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
-        
+
     };
-    
+
     @SuppressWarnings("unchecked")
-    public final T handle(Expr<?> expr){
+    public final T handle(Expr<?> expr) {
         try {
             methodMap.get(expr.getClass()).invoke(this, expr);
         } catch (Exception e) {
@@ -57,29 +58,33 @@ public abstract class Visitor<T extends Visitor<T>> {
         }
         return (T) this;
     }
-    
+
     protected abstract void visit(Alias<?> expr);
-    
+
     protected abstract void visit(AliasCollection<?> expr);
-    
+
     protected abstract void visit(AliasEntity<?> expr);
-    
+
     protected abstract void visit(AliasNoEntity<?> expr);
-    
+
     protected abstract void visit(ConstantExpr<?> expr);
-    
-    protected abstract void visit(Operation<?,?> expr);
-    
+
+    protected abstract void visit(Operation<?, ?> expr);
+
     protected abstract void visit(OperationBoolean expr);
-    
+
     protected abstract void visit(Path<?> expr);
-    
+
     protected abstract void visit(PathBoolean expr);
-    
+
+    protected abstract void visit(PathComparable<?> expr);
+
+    protected abstract void visit(PathString expr);
+
     protected abstract void visit(PathEntity<?> expr);
-    
+
     protected abstract void visit(PathEntityCollection<?> expr);
-    
+
     protected abstract void visit(PathNoEntity<?> expr);
-    
+
 }
