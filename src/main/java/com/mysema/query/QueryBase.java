@@ -25,7 +25,7 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         DEFAULT,IJ,LJ,J
     }
     
-    public class JoinExpression{
+    public static class JoinExpression{
         public final JoinType type;
         public final ExprEntity<?> target;
         JoinExpression(JoinType type, ExprEntity<?> target){
@@ -36,10 +36,10 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
     }
     
     protected final List<JoinExpression> joins = new ArrayList<JoinExpression>();
-    protected final List<Expr> groupBy = new ArrayList<Expr>();
+    protected final List<Expr<?>> groupBy = new ArrayList<Expr<?>>();
     protected final List<ExprBoolean> having = new ArrayList<ExprBoolean>();
-    protected final List<OrderSpecifier> orderBy = new ArrayList<OrderSpecifier>();
-    protected final List<Expr> select = new ArrayList<Expr>();
+    protected final List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
+    protected final List<Expr<?>> select = new ArrayList<Expr<?>>();
     protected final List<ExprBoolean> where = new ArrayList<ExprBoolean>();
     
     protected void clear(){
@@ -50,7 +50,7 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         select.clear();
         where.clear();
     }
-    
+        
     public A from(ExprEntity<?>... o) {
         for (ExprEntity<?> expr : o){
             joins.add(new JoinExpression(JoinType.DEFAULT,expr));

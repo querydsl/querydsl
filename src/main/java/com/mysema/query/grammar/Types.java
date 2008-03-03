@@ -90,6 +90,10 @@ public class Types {
         ExprBoolean lt(Expr<D> right);
     }
     
+    public interface ExprString extends ExprComparable<String>{
+        
+    }
+    
     
     /**
      * Reference to an entity
@@ -133,8 +137,7 @@ public class Types {
         implements ExprBoolean {    
         public ExprBoolean and(ExprBoolean right) {return Grammar.and(this, right);}
         public ExprBoolean or(ExprBoolean right) {return Grammar.or(this, right);}
-    }
-    
+    }    
     
     public enum Order{ ASC,DESC }
         
@@ -202,7 +205,6 @@ public class Types {
     public static class PathEntityCollection<D> extends Path<Collection<D>> implements 
         ExprEntity<Collection<D>>{
         PathEntityCollection(Class<D> type, String p) {
-            // FIXME
             super(null, p);
         }        
         public AliasCollection<D> as(PathEntity<D> to) {
@@ -219,7 +221,7 @@ public class Types {
         }        
     }
     
-    public static class PathString extends PathComparable<String>{
+    public static class PathString extends PathComparable<String> implements ExprString{
         public PathString(String p) {
             super(String.class, p);
         }
