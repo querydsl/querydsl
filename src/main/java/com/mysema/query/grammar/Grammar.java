@@ -18,14 +18,14 @@ import com.mysema.query.grammar.Types.*;
  */
 public class Grammar {
 
-    static ExprBoolean _op(Op<Boolean> operator, Expr<?>... args) {
+    static final ExprBoolean _op(Op<Boolean> operator, Expr<?>... args) {
         OperationBoolean op = new OperationBoolean();
         op.operator = operator;
         op.args = args;
         return op;
     }
 
-    static <OP, RT extends OP> Operation<OP,RT> _op(Op<OP> operator, Expr<?>... args) {
+    static final <OP, RT extends OP> Operation<OP,RT> _op(Op<OP> operator, Expr<?>... args) {
         Operation<OP, RT> op = new Operation<OP, RT>();
         op.operator = operator;
         op.args = args;
@@ -33,7 +33,7 @@ public class Grammar {
     }
 
     @SuppressWarnings("unchecked")
-    static <A> Expr<A> _const(A obj) {
+    static final <A> Expr<A> _const(A obj) {
         if (obj instanceof Expr)
             return (Expr<A>) obj;
         ConstantExpr<A> e = new ConstantExpr<A>();
@@ -41,16 +41,14 @@ public class Grammar {
         return e;
     }
 
-    static <A extends Comparable<A>> OrderSpecifier<A> _orderAsc(Expr<A> target) {
-        // TODO : should be cached if argument is path
+    static final <A extends Comparable<A>> OrderSpecifier<A> _orderAsc(Expr<A> target) {
         OrderSpecifier<A> os = new OrderSpecifier<A>();
         os.order = Order.ASC;
         os.target = target;
         return os;
     }
 
-    static <A extends Comparable<A>> OrderSpecifier<A> _orderDesc(Expr<A> target) {
-        // TODO : should be cached if argument is path
+    static final <A extends Comparable<A>> OrderSpecifier<A> _orderDesc(Expr<A> target) {
         OrderSpecifier<A> os = new OrderSpecifier<A>();
         os.order = Order.DESC;
         os.target = target;
@@ -68,14 +66,12 @@ public class Grammar {
     public static <A extends Comparable<A>> ExprBoolean after(Expr<A> left,
             A right) {
         // NOTE : signature is for Comparables to support other than Java's date types
-        // NOTE : basically same as gt
         return _op(OpDate.AFTER, left, _const(right));
     }
 
     public static <A extends Comparable<A>> ExprBoolean after(Expr<A> left,
             Expr<A> right) {
         // NOTE : signature is for Comparables to support other than Java's date types
-        // NOTE : basically same as gt
         return _op(OpDate.AFTER, left, right);
     }
 
@@ -83,8 +79,7 @@ public class Grammar {
         return _op(OpBoolean.AND, left, right);
     }
 
-    public static <D> AliasNoEntity<D> as(ExprNoEntity<D> from, String to) {
-        // NOTE : maybe this needs to be possible for all expressions
+    static <D> AliasNoEntity<D> as(ExprNoEntity<D> from, String to) {
         return new AliasNoEntity<D>(from, to);
     }
     
