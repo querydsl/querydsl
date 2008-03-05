@@ -122,7 +122,7 @@ public class Types {
         
     }  
     
-    public static class Operation<OP,RT extends OP> extends ExprNoEntityImpl<RT>{
+    public static class Operation<OP,RT> extends ExprNoEntityImpl<RT>{
         public Expr<?>[] args;
         /**
          * arguments don't need to be of same type as return type
@@ -138,6 +138,26 @@ public class Types {
         public ExprBoolean and(ExprBoolean right) {return Grammar.and(this, right);}
         public ExprBoolean or(ExprBoolean right) {return Grammar.or(this, right);}
     }    
+    
+    public static class OperationComparable<OpType,D extends Comparable<D>> 
+        extends Operation<OpType,D> implements ExprComparable<D>{
+        public ExprBoolean goe(D right) {return Grammar.goe(this,right);}       
+        public ExprBoolean goe(Expr<D> right) {return Grammar.goe(this,right);}  
+        public ExprBoolean gt(D right) {return Grammar.gt(this,right);}  
+        public ExprBoolean gt(Expr<D> right) {return Grammar.gt(this,right);}  
+        public ExprBoolean loe(D right) {return Grammar.loe(this,right);}         
+        public ExprBoolean loe(Expr<D> right) {return Grammar.loe(this,right);}  
+        public ExprBoolean lt(D right) {return Grammar.lt(this,right);}  
+        public ExprBoolean lt(Expr<D> right) {return Grammar.lt(this,right);}  
+    }
+    
+    public static class OperationNumber<D extends Comparable<D>> 
+        extends OperationComparable<Number,D>{
+        
+    }
+    
+    public static class OperationString extends OperationComparable<String,String>
+        implements ExprString{}
     
     public enum Order{ ASC,DESC }
         
@@ -155,6 +175,8 @@ public class Types {
             this.type = type;
             this.path = path;
         }        
+        public ExprBoolean isnotnull(){ return Grammar.isnotnull(this);}
+        public ExprBoolean isnull(){ return Grammar.isnull(this);}
         @Override
         public final String toString(){ return path; }
     }
