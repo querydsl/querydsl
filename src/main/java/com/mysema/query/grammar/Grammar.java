@@ -20,35 +20,24 @@ import com.mysema.query.grammar.Types.*;
 public class Grammar {
 
     static final ExprBoolean _boolean(Op<Boolean> operator, Expr<?>... args) {
-        OperationBoolean op = new OperationBoolean();
-        op.operator = operator;
-        op.args = args;
-        return op;
+        return new OperationBoolean(operator, args);
     }
     
     @SuppressWarnings("unchecked")
     static final <A> Expr<A> _const(A obj) {
         if (obj instanceof Expr)
             return (Expr<A>) obj;
-        ConstantExpr<A> e = new ConstantExpr<A>();
-        e.constant = obj;
-        return e;
+        return new ConstantExpr<A>(obj);
     }
     
     static final <D extends Comparable<D>> ExprComparable<D> _number(Op<Number> operator, Expr<?>... args) {
-        OperationNumber<D> op = new OperationNumber<D>();
-        op.operator = operator;
-        op.args = args;
-        return op;
+        return new OperationNumber<D>(operator, args);
     }
     
-    static <OP, RT extends OP> Operation<OP,RT> _op(Op<OP> operator, Expr<?>... args) {
-        Operation<OP, RT> op = new Operation<OP, RT>();
-        op.operator = operator;
-        op.args = args;
-        return op;
+    static final <OP, RT extends Comparable<RT>> ExprComparable<RT> _comparable(Op<OP> operator, Expr<?>... args) {
+        return new OperationComparable<OP,RT>(operator, args);
     }
-
+    
     static final <A extends Comparable<A>> OrderSpecifier<A> _orderAsc(Expr<A> target) {
         OrderSpecifier<A> os = new OrderSpecifier<A>();
         os.order = Order.ASC;
@@ -64,10 +53,7 @@ public class Grammar {
     }
 
     static final ExprString _string(Op<String> operator, Expr<?>... args) {
-        OperationString op = new OperationString();
-        op.operator = operator;
-        op.args = args;
-        return op;
+        return new OperationString(operator, args);
     }
 
     public static <A extends Comparable<A>> ExprComparable<A> add(Expr<A> left, A right) {
@@ -78,13 +64,13 @@ public class Grammar {
         return _number(OpNumber.ADD, left, right);
     }
 
-    public static <A extends Comparable<A>> ExprBoolean after(Expr<A> left,
+    static <A extends Comparable<A>> ExprBoolean after(Expr<A> left,
             A right) {
         // NOTE : signature is for Comparables to support other than Java's date types
         return _boolean(OpDate.AFTER, left, _const(right));
     }
 
-    public static <A extends Comparable<A>> ExprBoolean after(Expr<A> left,
+    static <A extends Comparable<A>> ExprBoolean after(Expr<A> left,
             Expr<A> right) {
         // NOTE : signature is for Comparables to support other than Java's date types
         return _boolean(OpDate.AFTER, left, right);
@@ -106,30 +92,30 @@ public class Grammar {
         return new AliasCollection<D>(from, to);
     }
 
-    public static <A extends Comparable<A>> OrderSpecifier<A> asc(Expr<A> target) {
+    static <A extends Comparable<A>> OrderSpecifier<A> asc(Expr<A> target) {
         return _orderAsc(target);
     }
 
-    public static <A extends Comparable<A>> ExprBoolean before(Expr<A> left,
+    static <A extends Comparable<A>> ExprBoolean before(Expr<A> left,
             A right) {
         // NOTE : signature is for Comparables to support other than Java's date types
         // NOTE : basically same as lt
         return _boolean(OpDate.BEFORE, left, _const(right));
     }
 
-    public static <A extends Comparable<A>> ExprBoolean before(Expr<A> left,
+    static <A extends Comparable<A>> ExprBoolean before(Expr<A> left,
             Expr<A> right) {
         // NOTE : signature is for Comparables to support other than Java's date types
         // NOTE : basically same as lt
         return _boolean(OpDate.BEFORE, left, right);
     }
     
-    public static <A extends Comparable<A>> ExprBoolean between(Expr<A> left,
+    static <A extends Comparable<A>> ExprBoolean between(Expr<A> left,
             A start, A end) {
         return _boolean(OpComparable.BETWEEN, left, _const(start), _const(end));
     }
 
-    public static <A extends Comparable<A>> ExprBoolean between(Expr<A> left,
+    static <A extends Comparable<A>> ExprBoolean between(Expr<A> left,
             Expr<A> start, Expr<A> end) {
         return _boolean(OpComparable.BETWEEN, left, start, end);
     }
@@ -138,7 +124,7 @@ public class Grammar {
         return _string(OpString.CONCAT, left, right);
     }
     
-    public static <A extends Comparable<A>> OrderSpecifier<A> desc(
+    static <A extends Comparable<A>> OrderSpecifier<A> desc(
             Expr<A> target) {
         return _orderDesc(target);
     }
@@ -182,12 +168,12 @@ public class Grammar {
         return _boolean(Op.INELEMENTS, _const(left), right);
     }
     
-    public static <A extends Comparable<A>> ExprBoolean in(Expr<A> left,
+    static <A extends Comparable<A>> ExprBoolean in(Expr<A> left,
             A... rest) {
         return _boolean(Op.INARRAY, left, _const(rest));
     }
     
-    public static <A> ExprBoolean in(ExprEntity<A> left, ExprEntity<Collection<A>> right){
+    static <A> ExprBoolean in(ExprEntity<A> left, ExprEntity<Collection<A>> right){
         return _boolean(Op.INELEMENTS, left, right);
     }
 
@@ -199,29 +185,29 @@ public class Grammar {
         return _boolean(Op.ISNULL, left);
     }
 
-    public static ExprBoolean like(Expr<String> left, String right) {
+    static ExprBoolean like(Expr<String> left, String right) {
         return _boolean(OpString.LIKE, left, _const(right));
     }
 
-    public static <A extends Comparable<A>> ExprBoolean loe(Expr<A> left,
+    static <A extends Comparable<A>> ExprBoolean loe(Expr<A> left,
             A right) {
         return _boolean(OpComparable.LOE, left, _const(right));
     }
 
-    public static <A extends Comparable<A>> ExprBoolean loe(Expr<A> left,
+    static <A extends Comparable<A>> ExprBoolean loe(Expr<A> left,
             Expr<A> right) {
         return _boolean(OpComparable.LOE, left, right);
     }
 
-    public static ExprNoEntity<String> lower(Expr<String> left) {
+    static ExprString lower(Expr<String> left) {
         return _string(OpString.LOWER, left);
     }
 
-    public static <A extends Comparable<A>> ExprBoolean lt(Expr<A> left, A right) {
+    static <A extends Comparable<A>> ExprBoolean lt(Expr<A> left, A right) {
         return _boolean(OpComparable.LT, left, _const(right));
     }
 
-    public static <A extends Comparable<A>> ExprBoolean lt(Expr<A> left,
+    static <A extends Comparable<A>> ExprBoolean lt(Expr<A> left,
             Expr<A> right) {
         return _boolean(OpComparable.LT, left, right);
     }
@@ -258,19 +244,23 @@ public class Grammar {
         return _number(OpNumber.SUB, left, right);
     }
 
-    public static ExprString substr(Expr<String> left, int start) {
-        return _string(OpString.SUBSTR, left, _const(start));
+    static ExprString substring(Expr<String> left, int beginIndex) {
+        return _string(OpString.SUBSTR1ARG, left, _const(beginIndex));
     }
 
-    public static ExprString substr(Expr<String> left, int start, int offset) {
-        return _string(OpString.SUBSTR, left, _const(start), _const(offset));
+    static ExprString substring(Expr<String> left, int beginIndex, int endIndex) {
+        return _string(OpString.SUBSTR2ARGS, left, _const(beginIndex), _const(endIndex));
     }
 
-    public static <A, B extends A> ExprBoolean typeOf(Expr<A> left, Class<B> right) {
+    static <A, B extends A> ExprBoolean typeOf(Expr<A> left, Class<B> right) {
         return _boolean(Op.ISTYPEOF, left, _const(right));
     }
+    
+    static ExprString trim(Expr<String> left) {
+        return _string(OpString.TRIM, left);
+    }
 
-    public static ExprString upper(Expr<String> left) {
+    static ExprString upper(Expr<String> left) {
         return _string(OpString.UPPER, left);
     }
 }

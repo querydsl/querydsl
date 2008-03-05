@@ -60,7 +60,7 @@ public abstract class Visitor<T extends Visitor<T>> {
     }
 
     protected abstract void visit(Alias<?> expr);
-
+    
     protected abstract void visit(AliasCollection<?> expr);
 
     protected abstract void visit(AliasEntity<?> expr);
@@ -72,6 +72,12 @@ public abstract class Visitor<T extends Visitor<T>> {
     protected abstract void visit(Operation<?, ?> expr);
 
     protected abstract void visit(OperationBoolean expr);
+    
+    protected abstract void visit(OperationComparable<?,?> expr);
+    
+    protected abstract void visit(OperationNumber<?> expr);
+    
+    protected abstract void visit(OperationString expr);
 
     protected abstract void visit(Path<?> expr);
 
@@ -86,6 +92,8 @@ public abstract class Visitor<T extends Visitor<T>> {
     protected abstract void visit(PathEntityRenamable<?> expr);
     
     protected abstract void visit(PathNoEntity<?> expr);
+    
+    protected abstract void visit(PathNoEntitySimple<?> expr);
 
     protected abstract void visit(PathString expr);
 

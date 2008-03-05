@@ -56,7 +56,7 @@ public class Ops {
         Op<Boolean> BEFORE = new OpImpl<Boolean>();        
     }
    
-    public static final class OpImpl<RT> implements Op<RT> {}
+    public static final class OpImpl<RT> implements Op<RT>{}
     
     /**
      * Numeric Operators (operators used with numeric operands)
@@ -76,7 +76,9 @@ public class Ops {
         Op<String> CONCAT = new OpImpl<String>();
         Op<Boolean> LIKE = new OpImpl<Boolean>();
         Op<String> LOWER = new OpImpl<String>();
-        Op<String> SUBSTR = new OpImpl<String>();
+        Op<String> SUBSTR1ARG = new OpImpl<String>();
+        Op<String> SUBSTR2ARGS = new OpImpl<String>();
+        Op<String> TRIM = new OpImpl<String>();
         Op<String> UPPER = new OpImpl<String>();
     }
     
