@@ -1,0 +1,43 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
+package com.mysema.query.apt.hibernate;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.mysema.query.apt.TypeDecl;
+import com.sun.mirror.declaration.ClassDeclaration;
+import com.sun.mirror.declaration.FieldDeclaration;
+import com.sun.mirror.declaration.Modifier;
+import com.sun.mirror.util.SimpleDeclarationVisitor;
+
+/**
+ * 
+ * EntityVisitor provides
+ *
+ * @author tiwe
+ * @version $Id$
+ *
+ */
+public class EntityVisitor extends SimpleDeclarationVisitor {
+    public final Map<String,TypeDecl> types = new HashMap<String,TypeDecl>();
+
+    private TypeDecl last;
+
+    @Override
+    public void visitClassDeclaration(ClassDeclaration d) {
+        last = new TypeDecl(d);
+        types.put(d.getQualifiedName(), last);
+    }
+
+    @Override
+    public void visitFieldDeclaration(FieldDeclaration d) {
+        if (!d.getModifiers().contains(Modifier.STATIC)){
+            last.addField(d);    
+        }        
+    }
+
+}
