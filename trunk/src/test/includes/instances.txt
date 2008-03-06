@@ -1,0 +1,58 @@
+  // AuditLog
+    public static final AuditLog log = new AuditLog("log");
+    
+    // Cat
+    public static final Cat cat = new Cat("cat");
+    public static final Cat cat1 = new Cat("cat1");
+    public static final Cat cat2 = new Cat("cat2");
+    public static final Cat cat3 = new Cat("cat3");
+    public static final Cat cat4 = new Cat("cat4");
+    public static final Cat cat5 = new Cat("cat5");
+    
+    public static final Cat kitten = new Cat("kitten");
+    public static final Cat kitten2 = new Cat("kitten2");
+    public static final Cat child = new Cat("child");
+    public static final Cat mate = new Cat("mate"); 
+    
+    // Catalog
+    public static final Catalog catalog = new Catalog("catalog");
+    
+    // Company
+    public static final Company company = new Company("company");
+    public static final Company company1 = new Company("company1");
+    public static final Company company2 = new Company("company2");
+    public static final Company company3 = new Company("company3");
+    public static final Company company4 = new Company("company4");
+    public static final Company company5 = new Company("company5");
+    
+    // Customer
+    public static final Customer cust = new Customer("cust");
+    
+    // Document
+    public static final Document doc = new Document("doc");
+    
+    // DomesticCat
+    public static final DomesticCat domesticCat = new DomesticCat("domesticCat");
+    
+    // Item
+    public static final Item item = new Item("item");
+    
+    // Order
+    public static final Order order = new Order("order");
+    
+    // Payment
+    public static final Payment payment = new Payment("payment");
+    
+    // Price
+    public static final Price price = new Price("price");
+    
+    // Product
+    public static final Product product= new Product("product");
+    
+    // User
+    public static final User user = new User("user");
+    public static final User user1 = new User("user1");
+    public static final User user2 = new User("user2");
+    public static final User user3 = new User("user3");
+    public static final User user4 = new User("user4");
+    public static final User user5 = new User("user5");

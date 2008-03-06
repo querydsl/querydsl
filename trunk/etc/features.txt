@@ -1,0 +1,39 @@
+* mathematical operators +, -, *, /
+
+* binary comparison operators =, >=, <=, <>, !=, like
+
+* logical operations and, or, not
+
+* Parentheses ( ), indicating grouping
+
+* in, not in, between, is null, is not null, is empty, is not empty, member of and not member of
+
+* "Simple" case, case ... when ... then ... else ... end, and "searched" case, case when ... then ... else ... end
+
+* string concatenation ...||... or concat(...,...)
+
+* current_date(), current_time(), current_timestamp()
+
+* second(...), minute(...), hour(...), day(...), month(...), year(...),
+
+* Any function or operator defined by EJB-QL 3.0: substring(), trim(), lower(), upper(), length(), locate(), abs(), sqrt(), bit_length(), mod()
+
+* coalesce() and nullif()
+
+* str() for converting numeric or temporal values to a readable string
+
+* cast(... as ...), where the second argument is the name of a Hibernate type, and extract(... from ...) if ANSI cast() and extract() is supported by the underlying database
+
+* the HQL index() function, that applies to aliases of a joined indexed collection
+
+* HQL functions that take collection-valued path expressions: size(), minelement(), maxelement(), minindex(), maxindex(), along with the special elements() and indices functions which may be quantified using some, all, exists, any, in.
+
+* Any database-supported SQL scalar function like sign(), trunc(), rtrim(), sin()
+
+* JDBC-style positional parameters ?
+
+* named parameters :name, :start_date, :x1
+
+* SQL literals 'foo', 69, 6.66E+2, '1970-01-01 10:00:01.0'
+
+* Java public static final constants eg.Color.TABBY 
