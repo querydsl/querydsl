@@ -33,15 +33,15 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     
     @Test
     public void testArithmeticOperationsInFunctionalWay(){
-        add(cat.bodyWeight,10);
-        sub(cat.bodyWeight,10);
-        mult(cat.bodyWeight,10);
-        div(cat.bodyWeight,10);
+        toString("(cat.bodyWeight + :a1)",add(cat.bodyWeight,10));
+        toString("(cat.bodyWeight - :a1)",sub(cat.bodyWeight,10));
+        toString("(cat.bodyWeight * :a1)",mult(cat.bodyWeight,10));
+        toString("(cat.bodyWeight / :a1)",div(cat.bodyWeight,10));
         
-        add(cat.bodyWeight,10).lt(10);
-        sub(cat.bodyWeight,10).lt(10);
-        mult(cat.bodyWeight,10).lt(10);
-        div(cat.bodyWeight,10).lt(10);
+        toString("(cat.bodyWeight + :a1) < :a1",add(cat.bodyWeight,10).lt(10));
+        toString("(cat.bodyWeight - :a1) < :a1",sub(cat.bodyWeight,10).lt(10));
+        toString("(cat.bodyWeight * :a1) < :a1",mult(cat.bodyWeight,10).lt(10));
+        toString("(cat.bodyWeight / :a1) < :a1",div(cat.bodyWeight,10).lt(10));
     }
     
     @Test
@@ -56,13 +56,13 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     @Test
     public void testBinaryComparisonOperations(){
         // binary comparison operators =, >=, <=, <>, !=, like        
-        cat.bodyWeight.eq(kitten.bodyWeight);
-        cat.bodyWeight.goe(kitten.bodyWeight); 
-        cat.bodyWeight.gt(kitten.bodyWeight); 
-        cat.bodyWeight.loe(kitten.bodyWeight);
-        cat.bodyWeight.lt(kitten.bodyWeight); 
-        cat.bodyWeight.ne(kitten.bodyWeight);
-        cat.name.like("Kitty");        
+        toString("cat.bodyWeight = kitten.bodyWeight",cat.bodyWeight.eq(kitten.bodyWeight));
+        toString("cat.bodyWeight >= kitten.bodyWeight",cat.bodyWeight.goe(kitten.bodyWeight)); 
+        toString("cat.bodyWeight > kitten.bodyWeight",cat.bodyWeight.gt(kitten.bodyWeight)); 
+        toString("cat.bodyWeight <= kitten.bodyWeight",cat.bodyWeight.loe(kitten.bodyWeight));
+        toString("cat.bodyWeight < kitten.bodyWeight",cat.bodyWeight.lt(kitten.bodyWeight)); 
+        toString("cat.bodyWeight != kitten.bodyWeight",cat.bodyWeight.ne(kitten.bodyWeight));
+        toString("cat.name like :a1", cat.name.like("Kitty"));        
     }
     
     @Test
@@ -138,16 +138,16 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
 //        sqrt(), 
 //        bit_length(), 
 //        mod()    
-        cat.name.trim();
-        cat.name.lower();
-        cat.name.upper();
+        toString("trim(cat.name)",cat.name.trim());
+        toString("lower(cat.name)",cat.name.lower());
+        toString("upper(cat.name)",cat.name.upper());
 //        cat.name.length();
     }
     
     @Test
     public void testEqualsAndNotEqualsForAllExpressions(){
-        cat.name.eq(cust.name().firstName);        
-        cat.name.ne(cust.name().firstName);
+        toString("cat.name = cust.name.firstName",cat.name.eq(cust.name().firstName));        
+        toString("cat.name != cust.name.firstName",cat.name.ne(cust.name().firstName));
     }
     
     @Test
@@ -176,14 +176,14 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     
     @Test
     public void testIsNullAndIsNotNullInFunctionalWay(){
-        cat.bodyWeight.isnull();
+        toString("cat.bodyWeight is null",cat.bodyWeight.isnull());
     }
 
     @Test
     public void testLogicalOperations(){
         // logical operations and, or, not        
-        cat.eq(kitten).or(kitten.eq(cat));
-        cat.eq(kitten).and(kitten.eq(cat));
+        toString("(cat = kitten or kitten = cat)",cat.eq(kitten).or(kitten.eq(cat)));
+        toString("(cat = kitten and kitten = cat)", cat.eq(kitten).and(kitten.eq(cat)));
     }
     
     @Test
