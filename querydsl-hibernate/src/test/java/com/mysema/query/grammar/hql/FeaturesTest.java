@@ -91,6 +91,8 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
 //        maxelement(cat.kittens()); 
 //        minindex(cat.kittens()); 
 //        maxindex(cat.kittens());
+        toString("cat.kittens[0]",cat.kittens(0));
+        toString("cat.kittens[0]",cat.kittens.get(0));
     }
     
     @SuppressWarnings("unchecked")
@@ -167,6 +169,13 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
 //        is not empty, 
 //        member of
 //        not member of 
+        kitten.in(cat.kittens);
+        not(kitten.in(cat.kittens));
+        kitten.bodyWeight.between(10, 20);
+        kitten.bodyWeight.isnull();
+        kitten.bodyWeight.isnotnull();
+//        cat.kittens.isEmpty();
+//        cat.kittens.isNotEmpty();
     }
     
     @Test
