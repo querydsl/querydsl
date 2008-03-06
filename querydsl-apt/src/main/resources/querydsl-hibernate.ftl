@@ -1,3 +1,4 @@
+<#assign reserved = ["isnull", "isnotnull", "toString", "hashCode", "getClass", "notify", "notifyAll", "wait"]>
 package ${package};
 
 <#if (dtoTypes?size > 0)>
@@ -36,17 +37,22 @@ ${include}
     </#list>
     <#list decl.collectionFields as field>
     	public final PathEntityCollection<${field.typeName}> ${field.name} = _collection("${field.name}",${field.typeName}.class);
+    	public ${pre}${field.simpleTypeName} ${field.name}(int index) {
+    		return new ${pre}${field.simpleTypeName}(this+".${field.name}["+index+"]");
+    	}
     </#list>
   	<#list decl.entityFields as field>
         public final PathEntityRenamable<${field.typeName}> ${field.name} = _entity("${field.name}",${field.typeName}.class);
 	</#list>     
         ${pre}${decl.simpleName}(String path) {super(${decl.name}.class,path);}
   	<#list decl.entityFields as field>
+  	<#if !reserved?seq_contains(field.name)>
   	    private ${pre}${field.simpleTypeName} _${field.name};
         public ${pre}${field.simpleTypeName} ${field.name}() {
             if (_${field.name} == null) _${field.name} = new ${pre}${field.simpleTypeName}(this+".${field.name}");
             return _${field.name};
         }
+    </#if>
 	</#list>  
     }
         
