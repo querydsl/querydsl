@@ -23,9 +23,9 @@ public abstract class Visitor<T extends Visitor<T>> {
         @Override
         protected Method create(Class<?> cl) {
             try {
-                if (PathEntity.class.isAssignableFrom(cl)) {
-                    cl = PathEntity.class;
-                }
+                while (!cl.getPackage().equals(Types.class.getPackage())){
+                    cl = cl.getSuperclass();
+                }                     
                 Method method = null;
                 Class<?> sigClass = Visitor.this.getClass();
                 while (method == null && !sigClass.equals(Visitor.class)) {
@@ -38,8 +38,7 @@ public abstract class Visitor<T extends Visitor<T>> {
                 if (method != null) {
                     method.setAccessible(true);
                 } else {
-                    throw new IllegalArgumentException("No method found for "
-                            + cl.getSimpleName());
+                    throw new IllegalArgumentException("No method found for " + cl.getName());
                 }
                 return method;
             } catch (Exception e) {
