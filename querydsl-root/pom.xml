@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-root</artifactId>
+  <version>0.2.0</version>
+  <parent>
+    <groupId>com.mysema</groupId>
+    <artifactId>maven-parent</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+  </parent>
+  <packaging>pom</packaging>
+
+  <inceptionYear>2006</inceptionYear>
+
+  <modules>
+    <module>../querydsl-core</module>
+    <module>../querydsl-apt</module>
+    <module>../querydsl-hibernate</module>
+  </modules>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jdepend-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
+
+</project>
