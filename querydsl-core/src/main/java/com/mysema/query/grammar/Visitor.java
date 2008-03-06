@@ -17,13 +17,15 @@ import com.mysema.query.grammar.Types.*;
  * @version $Id$
  */
 public abstract class Visitor<T extends Visitor<T>> {
+    
+    private static final Package PACKAGE = Visitor.class.getPackage();
 
     private final FactoryMap<Class<?>, Method> methodMap = new FactoryMap<Class<?>, Method>() {
 
         @Override
         protected Method create(Class<?> cl) {
             try {
-                while (!cl.getPackage().equals(Types.class.getPackage())){
+                while (!cl.getPackage().equals(PACKAGE)){
                     cl = cl.getSuperclass();
                 }                     
                 Method method = null;

@@ -20,25 +20,37 @@ import com.mysema.query.grammar.Types.*;
 public class Grammar {
 
     static final ExprBoolean _boolean(Op<Boolean> operator, Expr<?>... args) {
+        _check("operator",operator);
+        _check("args",args);
         return new OperationBoolean(operator, args);
+    }
+    
+    private static void _check(String name, Object obj) {
+        if (obj == null) throw new IllegalArgumentException(name + " was null");        
+    }
+    
+    static final <OP, RT extends Comparable<RT>> ExprComparable<RT> _comparable(Op<OP> operator, Expr<?>... args) {
+        _check("operator",operator);
+        _check("args",args);
+        return new OperationComparable<OP,RT>(operator, args);
     }
     
     @SuppressWarnings("unchecked")
     static final <A> Expr<A> _const(A obj) {
+        _check("constant",obj);
         if (obj instanceof Expr)
             return (Expr<A>) obj;
         return new ConstantExpr<A>(obj);
     }
-    
+
     static final <D extends Comparable<D>> ExprComparable<D> _number(Op<Number> operator, Expr<?>... args) {
+        _check("operator",operator);
+        _check("args",args);
         return new OperationNumber<D>(operator, args);
     }
     
-    static final <OP, RT extends Comparable<RT>> ExprComparable<RT> _comparable(Op<OP> operator, Expr<?>... args) {
-        return new OperationComparable<OP,RT>(operator, args);
-    }
-    
     static final <A extends Comparable<A>> OrderSpecifier<A> _orderAsc(Expr<A> target) {
+        _check("target",target);
         OrderSpecifier<A> os = new OrderSpecifier<A>();
         os.order = Order.ASC;
         os.target = target;
@@ -46,6 +58,7 @@ public class Grammar {
     }
 
     static final <A extends Comparable<A>> OrderSpecifier<A> _orderDesc(Expr<A> target) {
+        _check("target",target);
         OrderSpecifier<A> os = new OrderSpecifier<A>();
         os.order = Order.DESC;
         os.target = target;
@@ -53,6 +66,8 @@ public class Grammar {
     }
 
     static final ExprString _string(Op<String> operator, Expr<?>... args) {
+        _check("operator",operator);
+        _check("args",args);
         return new OperationString(operator, args);
     }
 
@@ -81,14 +96,20 @@ public class Grammar {
     }
 
     static <D> AliasNoEntity<D> as(ExprNoEntity<D> from, String to) {
+        _check("from",from);
+        _check("to",to);
         return new AliasNoEntity<D>(from, to);
     }
     
     static <D> AliasEntity<D> as(PathEntity<D> from, PathEntity<D> to) {
+        _check("from",from);
+        _check("to",to);
         return new AliasEntity<D>(from, to);
     }
     
     static <D> AliasCollection<D> as(PathEntityCollection<D> from, PathEntity<D> to) {
+        _check("from",from);
+        _check("to",to);
         return new AliasCollection<D>(from, to);
     }
 
@@ -252,12 +273,12 @@ public class Grammar {
         return _string(OpString.SUBSTR2ARGS, left, _const(beginIndex), _const(endIndex));
     }
 
-    static <A, B extends A> ExprBoolean typeOf(Expr<A> left, Class<B> right) {
-        return _boolean(Op.ISTYPEOF, left, _const(right));
-    }
-    
     static ExprString trim(Expr<String> left) {
         return _string(OpString.TRIM, left);
+    }
+    
+    static <A, B extends A> ExprBoolean typeOf(Expr<A> left, Class<B> right) {
+        return _boolean(Op.ISTYPEOF, left, _const(right));
     }
 
     static ExprString upper(Expr<String> left) {
