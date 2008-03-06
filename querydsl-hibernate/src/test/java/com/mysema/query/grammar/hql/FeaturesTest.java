@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.HqlSerializer;
+import com.mysema.query.grammar.HqlGrammar.Constructor;
 import com.mysema.query.grammar.Types.Expr;
 
 /**
@@ -28,7 +29,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
             cat.name.eq("Kitty")
             .or(cust.name().firstName.eq("Hans"))
             .or(kitten.name.eq("Kitty")));
-    }    
+    }
     
     @Test
     public void testArithmeticOperationsInFunctionalWay(){
@@ -49,7 +50,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         cat.bodyWeight.ne(kitten.bodyWeight);
         
         add(cat.bodyWeight,kitten.bodyWeight).eq(kitten.bodyWeight);
-    }
+    }    
     
     @Test
     public void testBinaryComparisonOperations(){
@@ -89,6 +90,19 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
 //        maxelement(cat.kittens()); 
 //        minindex(cat.kittens()); 
 //        maxindex(cat.kittens());
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testConstructors(){
+        Constructor c = new Constructor(com.mysema.query.grammar.hql.domain.Cat.class, cat.name);
+        toString("new com.mysema.query.grammar.hql.domain.Cat(cat.name)", c);
+    }
+    
+    @Test
+    public void testConstructors2(){
+        toString("new "+getClass().getName()+"$BookmarkDTO()", new _BookmarkDTO());
+        toString("new "+getClass().getName()+"$BookmarkDTO(cat.name)", new _BookmarkDTO(cat.name));   
     }
     
     @Test
@@ -153,7 +167,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
 //        member of
 //        not member of 
     }
-
+    
     @Test
     public void testHQLIndexOperations(){
         // the HQL index() function, that applies to aliases of a joined indexed collection    
@@ -163,8 +177,6 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     public void testIsNullAndIsNotNullInFunctionalWay(){
         cat.bodyWeight.isnull();
     }
-    
-    // Parentheses ( ), indicating grouping
 
     @Test
     public void testLogicalOperations(){
@@ -173,8 +185,6 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         cat.eq(kitten).and(kitten.eq(cat));
     }
     
-    // "Simple" case, case ... when ... then ... else ... end, and "searched" case, case when ... then ... else ... end
-
     @Test
     public void testMathematicalOperations(){
         // mathematical operators +, -, *, /    
@@ -184,12 +194,16 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         div(cat.bodyWeight, kitten.bodyWeight);
     }
     
+    // Parentheses ( ), indicating grouping
+
     @Test
     public void testOrderExpressionInFunctionalWay(){
         cat.bodyWeight.asc();
         add(cat.bodyWeight,kitten.bodyWeight).asc();
     }
     
+    // "Simple" case, case ... when ... then ... else ... end, and "searched" case, case when ... then ... else ... end
+
     @Test
     public void testPublicStaticFinalConstants(){
         // Java public static final constants eg.Color.TABBY    
@@ -197,13 +211,11 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     
     @Test
     public void testSimpleAliasForNonEntityPaths(){
-        cat.bodyWeight.as("catbodyWeight");
-        count().as("numPosts");
-        add(cat.bodyWeight,kitten.bodyWeight).as("abc");
+        toString("cat.bodyWeight as catbodyWeight", cat.bodyWeight.as("catbodyWeight"));
+        toString("count(*) as numPosts", count().as("numPosts"));
+        toString("(cat.bodyWeight + kitten.bodyWeight) as abc", add(cat.bodyWeight,kitten.bodyWeight).as("abc"));
     }
     
-    // coalesce() and nullif()
-
     @Test
     public void testSQLScalarOperations(){
         // Any database-supported SQL scalar function like sign(), trunc(), rtrim(), sin()    
@@ -215,16 +227,18 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         toString("cat.name || kitten.name", concat(cat.name, kitten.name));
     }
     
+    // coalesce() and nullif()
+
     @Test
     public void testStringConversionOperations(){
         // str() for converting numeric or temporal values to a readable string
     }
-       
+    
     @Test
     public void testStringOperationsInFunctionalWay(){
-        concat(cat.name,cust.name().firstName);
-        cat.name.like("A%");
-        cat.name.lower();
+        toString("cat.name || cust.name.firstName", concat(cat.name,cust.name().firstName));
+        toString("cat.name like :a1",cat.name.like("A%"));
+        toString("lower(cat.name)",cat.name.lower());
     }
     
     @Test
@@ -239,10 +253,10 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         
         toString("cat.kittens as kitten", cat.kittens.as(kitten));
         
-        toString("cat.bodyWeight + :a1", add(cat.bodyWeight,10));
-        toString("cat.bodyWeight - :a1", sub(cat.bodyWeight,10));
-        toString("cat.bodyWeight * :a1", mult(cat.bodyWeight,10));
-        toString("cat.bodyWeight / :a1", div(cat.bodyWeight,10));        
+        toString("(cat.bodyWeight + :a1)", add(cat.bodyWeight,10));
+        toString("(cat.bodyWeight - :a1)", sub(cat.bodyWeight,10));
+        toString("(cat.bodyWeight * :a1)", mult(cat.bodyWeight,10));
+        toString("(cat.bodyWeight / :a1)", div(cat.bodyWeight,10));        
         
         toString("cat.bodyWeight as bw", cat.bodyWeight.as("bw"));
         
@@ -254,16 +268,24 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         toString("count(distinct cat.bodyWeight)", count(distinct(cat.bodyWeight)));
         toString("count(cat)", count(cat));
     }
-    
-    // JDBC-style positional parameters ?
-    
-    // named parameters :name, :start_date, :x1
-    
-    // SQL literals 'foo', 69, 6.66E+2, '1970-01-01 10:00:01.0'
-     
+       
     private void toString(String expected, Expr<?> expr) {
         assertEquals(expected, visitor.handle(expr).toString());
 //        visitor.clear();
         visitor = new HqlSerializer();
     }
+    
+    public static final class BookmarkDTO{
+        
+    }
+    
+    public static final class _BookmarkDTO extends Constructor<BookmarkDTO>{
+        public _BookmarkDTO(){
+            super(BookmarkDTO.class);
+        }
+        public _BookmarkDTO(Expr<java.lang.String> address){
+            super(BookmarkDTO.class,address);
+        }
+    }
+    
 }

@@ -36,11 +36,11 @@ public class HqlOps extends Ops {
         patterns.put(OpDate.BEFORE, "%s < %s");
         
         // arithmetic
-        patterns.put(OpNumber.ADD, "%s + %s");        
-        patterns.put(OpNumber.DIV, "%s / %s");
-        patterns.put(OpNumber.MOD, "%s % %s");
-        patterns.put(OpNumber.MULT, "%s * %s");
-        patterns.put(OpNumber.SUB, "%s - %s");
+        patterns.put(OpNumber.ADD, "(%s + %s)");        
+        patterns.put(OpNumber.DIV, "(%s / %s)");
+        patterns.put(OpNumber.MOD, "(%s % %s)");
+        patterns.put(OpNumber.MULT,"(%s * %s)");
+        patterns.put(OpNumber.SUB, "(%s - %s)");
         
         // various
         patterns.put(Op.EQ, "%s = %s");
