@@ -94,14 +94,14 @@ public class Types {
     
     public static abstract class ExprComparable<D extends Comparable<D>> extends ExprNoEntity<D>{
         ExprComparable(Class<D> type) {super(type);}
-        public ExprBoolean after(Expr<D> right) {return Grammar.after(this,right);}
-        public ExprBoolean after(D right) {return Grammar.after(this,right);}
         public OrderSpecifier<D> asc() {return Grammar.asc(this);}
+        public OrderSpecifier<D> desc() {return Grammar.desc(this);}  
+        public ExprBoolean after(Expr<D> right) {return Grammar.after(this,right);}
+        public ExprBoolean after(D right) {return Grammar.after(this,right);}        
         public ExprBoolean before(Expr<D> right) {return Grammar.before(this,right);}
         public ExprBoolean before(D right) {return Grammar.before(this,right);}       
         public ExprBoolean between(Expr<D> first, Expr<D> second) {return Grammar.between(this,first,second);}  
-        public ExprBoolean between(D first, D second) {return Grammar.between(this,first,second);}
-        public OrderSpecifier<D> desc() {return Grammar.desc(this);}  
+        public ExprBoolean between(D first, D second) {return Grammar.between(this,first,second);}        
         public ExprBoolean goe(D right) {return Grammar.goe(this,right);}  
         public ExprBoolean goe(Expr<D> right) {return Grammar.goe(this,right);}         
         public ExprBoolean gt(D right) {return Grammar.gt(this,right);}  
@@ -241,14 +241,17 @@ public class Types {
     
     public static class PathEntityCollection<D> extends ExprEntity<Collection<D>> implements Path<Collection<D>>{
         private final String path;
+        private final Class<D> type;
         PathEntityCollection(Class<D> type, String path) {
             super(null);
+            this.type = type;
             this.path = path;
         }        
         public AliasCollection<D> as(PathEntity<D> to) {return Grammar.as(this, to);}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
         public String toString() {return path;}
+        public ExprEntity<D> get(int index) {return new PathEntity<D>(type,path+"["+index+"]");}
     }
     
     public static class PathEntityRenamable<D> extends PathEntity<D>{
