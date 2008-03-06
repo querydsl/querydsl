@@ -46,10 +46,11 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     
     @Test
     public void testBasicOperations(){
-        cat.bodyWeight.eq(kitten.bodyWeight);
-        cat.bodyWeight.ne(kitten.bodyWeight);
+        toString("cat.bodyWeight = kitten.bodyWeight", cat.bodyWeight.eq(kitten.bodyWeight));
+        toString("cat.bodyWeight != kitten.bodyWeight",cat.bodyWeight.ne(kitten.bodyWeight));
         
-        add(cat.bodyWeight,kitten.bodyWeight).eq(kitten.bodyWeight);
+        toString("(cat.bodyWeight + kitten.bodyWeight) = kitten.bodyWeight", 
+            add(cat.bodyWeight,kitten.bodyWeight).eq(kitten.bodyWeight));
     }    
     
     @Test

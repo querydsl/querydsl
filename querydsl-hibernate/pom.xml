@@ -46,12 +46,6 @@
       <artifactId>junit</artifactId>
       <version>4.4</version>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>servlet-api</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
