@@ -12,7 +12,7 @@
 
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-hibernate</artifactId>
-  <version>0.1.1</version>
+  <version>0.2.0</version>
   <packaging>jar</packaging>
 
   <dependencies>
@@ -30,8 +30,8 @@
     </dependency>
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl</artifactId>
-      <version>0.1.1</version>
+      <artifactId>querydsl-core</artifactId>
+      <version>0.2.0</version>
     </dependency>
     
     <!-- test -->
@@ -56,7 +56,7 @@
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-apt</artifactId>
-      <version>0.1.1</version>
+      <version>0.2.0</version>
       <scope>provided</scope>
     </dependency>
 

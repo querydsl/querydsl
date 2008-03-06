@@ -5,13 +5,13 @@
   <classpathentry kind="output" path="target/classes"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
   <classpathentry kind="var" path="M2_REPO/com/mysema/commons/mysema-test/0.3.3/mysema-test-0.3.3.jar" sourcepath="M2_REPO/com/mysema/commons/mysema-test/0.3.3/mysema-test-0.3.3-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/mysema/querydsl/querydsl/0.1.1/querydsl-0.1.1.jar" sourcepath="M2_REPO/com/mysema/querydsl/querydsl/0.1.1/querydsl-0.1.1-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/mysema/commons/mysema-core/0.3.3/mysema-core-0.3.3.jar" sourcepath="M2_REPO/com/mysema/commons/mysema-core/0.3.3/mysema-core-0.3.3-sources.jar"/>
+  <classpathentry kind="src" path="/querydsl-apt"/>
   <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/1.4-SNAPSHOT/commons-io-1.4-SNAPSHOT.jar"/>
-  <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.3/commons-lang-2.3.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.3/commons-lang-2.3-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/mysema/querydsl/querydsl-apt/0.1.1/querydsl-apt-0.1.1.jar" sourcepath="M2_REPO/com/mysema/querydsl/querydsl-apt/0.1.1/querydsl-apt-0.1.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/freemarker/freemarker/2.3.12/freemarker-2.3.12.jar" sourcepath="M2_REPO/org/freemarker/freemarker/2.3.12/freemarker-2.3.12-sources.jar"/>
   <classpathentry kind="lib" path="C:/Program Files/Java/jdk1.6.0_04/lib/tools.jar"/>
+  <classpathentry kind="src" path="/querydsl-core"/>
+  <classpathentry kind="var" path="M2_REPO/com/mysema/commons/mysema-core/0.3.3/mysema-core-0.3.3.jar" sourcepath="M2_REPO/com/mysema/commons/mysema-core/0.3.3/mysema-core-0.3.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.3/commons-lang-2.3.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.3/commons-lang-2.3-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/junit/junit/4.4/junit-4.4.jar" sourcepath="M2_REPO/junit/junit/4.4/junit-4.4-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.14/log4j-1.2.14.jar" sourcepath="M2_REPO/log4j/log4j/1.2.14/log4j-1.2.14-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate/3.2.1.ga/hibernate-3.2.1.ga.jar" sourcepath="M2_REPO/org/hibernate/hibernate/3.2.1.ga/hibernate-3.2.1.ga-sources.jar"/>
