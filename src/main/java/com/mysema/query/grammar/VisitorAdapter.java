@@ -21,10 +21,6 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends
     protected void visit(AliasCollection<?> expr) {
         visit((Alias<?>) expr);
     }
-//    @Override
-//    protected void visit(AliasComparable<?> expr) {
-//        visit((Alias<?>) expr);
-//    }
     @Override
     protected void visit(AliasEntity<?> expr) {
         visit((Alias<?>) expr);

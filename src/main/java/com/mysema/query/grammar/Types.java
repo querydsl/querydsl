@@ -86,13 +86,13 @@ public class Types {
         public <B extends D> ExprBoolean ne(Expr<B> right){return Grammar.ne(this, right);}        
     }
     
-    public static class ExprBoolean extends ExprNoEntity<Boolean>{
+    public static abstract class ExprBoolean extends ExprNoEntity<Boolean>{
         ExprBoolean() {super(Boolean.class);}
         public ExprBoolean and(ExprBoolean right) {return Grammar.and(this, right);}
         public ExprBoolean or(ExprBoolean right) {return Grammar.or(this, right);}
     }
     
-    public static class ExprComparable<D extends Comparable<D>> extends ExprNoEntity<D>{
+    public static abstract class ExprComparable<D extends Comparable<D>> extends ExprNoEntity<D>{
         ExprComparable(Class<D> type) {super(type);}
         public ExprBoolean after(Expr<D> right) {return Grammar.after(this,right);}
         public ExprBoolean after(D right) {return Grammar.after(this,right);}
@@ -113,7 +113,7 @@ public class Types {
         public ExprBoolean in(D... args) {return Grammar.in(this,args);}
     }
     
-    public static class ExprEntity<D> extends Expr<D>{
+    public static abstract class ExprEntity<D> extends Expr<D>{
         ExprEntity(Class<D> type) {super(type);}        
     }        
             
