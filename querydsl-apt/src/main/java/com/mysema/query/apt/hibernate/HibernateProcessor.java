@@ -139,7 +139,9 @@ public class HibernateProcessor implements AnnotationProcessor {
         // serialize it
         String path = destClass.replace('.', '/') + ".java";
         File file = new File(targetFolder, path);
-        file.getParentFile().mkdirs();
+        if (!file.getParentFile().mkdirs()){
+            System.err.println("Folder " + file.getParent() + " could not be created");
+        }
         try {
             Writer out = new OutputStreamWriter(new FileOutputStream(file));
             new FreeMarkerSerializer("/querydsl-hibernate.ftl").serialize(

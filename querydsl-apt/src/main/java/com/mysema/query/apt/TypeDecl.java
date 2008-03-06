@@ -76,19 +76,21 @@ public class TypeDecl implements Comparable<TypeDecl>{
     public int compareTo(TypeDecl o) {
         return simpleName.compareTo(o.simpleName);
     }
-
+    public boolean equals(Object o){
+        return o instanceof TypeDecl && simpleName.equals(((TypeDecl)o).simpleName);
+    }
     public Collection<FieldDecl> getBooleanFields() {
         return booleanFields;
     }
-        
+
     public Collection<FieldDecl> getCollectionFields() {
         return collectionFields;
     }
-    
+        
     public Collection<ConstructorDecl> getConstructors(){
         return constructors;
     }
-
+    
     public Collection<FieldDecl> getEntityFields() {
         return entityFields;
     }
@@ -96,7 +98,7 @@ public class TypeDecl implements Comparable<TypeDecl>{
     public String getName() {
         return name;
     }
-    
+
     public Collection<FieldDecl> getSimpleFields() {
         return simpleFields;
     }
@@ -104,13 +106,17 @@ public class TypeDecl implements Comparable<TypeDecl>{
     public String getSimpleName() {
         return simpleName;
     }
-
+    
     public Collection<FieldDecl> getStringFields() {
         return stringFields;
     }
-    
+
     public String getSupertypeName(){
         return superType;
+    }
+    
+    public int hashCode(){
+        return name.hashCode();
     }
     
     public void include(TypeDecl decl) {
@@ -164,7 +170,9 @@ public class TypeDecl implements Comparable<TypeDecl>{
         public int compareTo(FieldDecl o) {
             return name.compareTo(o.name);
         }
-        
+        public boolean equals(Object o){
+            return o instanceof FieldDecl && name.equals(((FieldDecl)o).name);
+        }
         private FieldType forType(String cl){
             if (cl.equals(Boolean.class.getName())) return FieldType.BOOLEAN;
             else if (cl.equals(String.class.getName())) return FieldType.STRING;
@@ -183,9 +191,13 @@ public class TypeDecl implements Comparable<TypeDecl>{
         public String getSimpleTypeName(){
             return simpleTypeName;
         }
-
+        
         public String getTypeName(){
             return typeName;
+        }
+
+        public int hashCode(){
+            return name.hashCode();
         }
         
     }
@@ -209,12 +221,19 @@ public class TypeDecl implements Comparable<TypeDecl>{
         public int compareTo(ParameterDecl o) {
             return name.compareTo(o.name);
         }
+        public boolean equals(Object o){
+            return o instanceof ParameterDecl && name.equals(((ParameterDecl)o).name);
+        }
         public String getName(){
             return name;
         }
-
+        
         public String getTypeName(){
             return typeName;
+        }
+
+        public int hashCode(){
+            return name.hashCode();
         }
     }
 
