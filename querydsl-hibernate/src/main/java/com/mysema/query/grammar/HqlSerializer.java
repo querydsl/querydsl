@@ -5,7 +5,6 @@
  */
 package com.mysema.query.grammar;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,19 +21,7 @@ import com.mysema.query.grammar.Types.*;
  * @version $Id$
  */
 public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
-    
-    private static final Field typeField;
-    
-    static{
-        try {
-            typeField = Expr.class.getDeclaredField("type");
-            typeField.setAccessible(true);
-        } catch (Exception e) {
-            String error = "Caught " + e.getClass().getName();
-            throw new RuntimeException(error, e);
-        }
-    }
-    
+        
     private StringBuilder builder = new StringBuilder();
 
     private List<Object> constants = new ArrayList<Object>();
@@ -51,15 +38,6 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
             handle(expr); first = false;
         }
         return this;
-    }
-
-    private Class<?> _getType(PathEntity<?> expr) {
-        try {
-            return (Class<?>) typeField.get(expr);
-        } catch (Exception e) {
-            String error = "Caught " + e.getClass().getName();
-            throw new RuntimeException(error, e);
-        }
     }
     
     private String _toString(Expr<?> expr) {
@@ -97,7 +75,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
             }
             // type specifier
             if (je.target instanceof PathEntity && !je.target.toString().contains(".")){
-                _append(_getType((PathEntity<?>)je.target).getSimpleName())._append(" ");
+                _append(((PathEntity<?>)je.target)._type().getSimpleName())._append(" ");
             }            
             handle(je.target);
             if (je.conditions != null){
@@ -148,7 +126,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
     }
 
     protected void visit(Constructor<?> expr){
-        _append("new ")._append(expr.type.getName())._append("(");
+        _append("new ")._append(expr._type().getName())._append("(");
         _append(", ",Arrays.asList(expr.args))._append(")");
     }
     

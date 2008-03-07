@@ -98,7 +98,6 @@ public class HqlGrammar extends Grammar{
             super(type);
             this.args = args;
         }
-        public Class<D> getType(){ return type;}
     }
     
     public static class CountExpr extends ExprComparable<Long>{

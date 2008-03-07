@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.grammar.Ops.Op;
+import com.mysema.query.grammar.Ops;
 
 /**
  * Ops provides

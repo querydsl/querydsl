@@ -16,7 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.grammar.HqlQueryBase;
-import com.mysema.query.grammar.Types.*;
+import com.mysema.query.grammar.Types.ExprBoolean;
+import com.mysema.query.grammar.Types.PathEntity;
+import com.mysema.query.grammar.Types.PathNoEntitySimple;
 
 /**
  * HqlQuery provides a fluent statically typed interface for creating HQL queries
@@ -65,7 +67,7 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
                         && !entry.getKey().equals("class")
                         && !entry.getKey().equals("created")
                         && !entry.getKey().equals("modified")){
-                    PathNoEntitySimple path = new PathNoEntitySimple(Object.class,entity+"."+entry.getKey());
+                    PathNoEntitySimple path = new PathNoEntitySimple(Object.class, entity, entry.getKey());
                     if (entry.getValue() != null){
                         conds.add(path.eq(entry.getValue()));
                     }else{
