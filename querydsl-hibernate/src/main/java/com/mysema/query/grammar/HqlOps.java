@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mysema.query.grammar.Ops.Op;
+
 /**
  * Ops provides
  *
@@ -68,6 +70,12 @@ public class HqlOps extends Ops {
         patterns.put(OpHql.CURRENT_DATE, "current_date()");
         patterns.put(OpHql.CURRENT_TIME, "current_time()");
         patterns.put(OpHql.CURRENT_TIMESTAMP, "current_timestamp()");
+        patterns.put(OpHql.SECOND, "second(%s)");
+        patterns.put(OpHql.MINUTE, "minute(%s)");
+        patterns.put(OpHql.HOUR, "hour(%s)");
+        patterns.put(OpHql.DAY, "day(%s)");
+        patterns.put(OpHql.MONTH, "month(%s)");
+        patterns.put(OpHql.YEAR, "year(%s)");
     }
     
     public static String getPattern(Op<?> op){
@@ -81,6 +89,16 @@ public class HqlOps extends Ops {
         Op<Comparable<?>> DISTINCT = new OpImpl<Comparable<?>>();
         Op<Number> SUM = new OpImpl<Number>();
         Op<Date> SYSDATE = new OpImpl<Date>();
+        Op<Date> SECOND = new OpImpl<Date>();
+        Op<Date> MINUTE = new OpImpl<Date>();
+        Op<Date> HOUR = new OpImpl<Date>();
+        Op<Date> DAY = new OpImpl<Date>();
+        Op<Date> MONTH = new OpImpl<Date>();
+        Op<Date> YEAR = new OpImpl<Date>();
+        Op<Object> MAXINDEX = new OpImpl<Object>();
+        Op<Object> MININDEX = new OpImpl<Object>();
+        Op<Boolean> ISNOTEMPTY = new OpImpl<Boolean>();
+        Op<Boolean> ISEMPTY = new OpImpl<Boolean>();
     }
     
 }

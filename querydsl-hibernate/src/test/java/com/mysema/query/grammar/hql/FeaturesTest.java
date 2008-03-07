@@ -11,6 +11,8 @@ import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.HqlSerializer;
 import com.mysema.query.grammar.HqlGrammar.Constructor;
 import com.mysema.query.grammar.Types.Expr;
+import com.mysema.query.grammar.Types.PathEntityCollection;
+import com.mysema.query.grammar.hql.domain.Cat;
 
 /**
  * FeaturesTest provides
@@ -86,13 +88,13 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     @Test
     public void testCollectionOperations(){
         // HQL functions that take collection-valued path expressions: size(), minelement(), maxelement(), minindex(), maxindex(), along with the special elements() and indices functions which may be quantified using some, all, exists, any, in.
-//        size(cat.kittens());
-//        minelement(cat.kittens()); 
-//        maxelement(cat.kittens()); 
-//        minindex(cat.kittens()); 
-//        maxindex(cat.kittens());
+//        size(cat.kittens);
+//        minelement(cat.kittens); 
+//        maxelement(cat.kittens); 
+        minindex(cat.kittens); 
+        maxindex(cat.kittens);
         toString("cat.kittens[0]",cat.kittens(0));
-        toString("cat.kittens[0]",cat.kittens.get(0));
+        toString("cat.kittens[0]",cat.kittens.get(0));        
     }
     
     @SuppressWarnings("unchecked")
@@ -119,12 +121,12 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     @Test
     public void testDateOperations2(){
         // second(...), minute(...), hour(...), day(...), month(...), year(...),
-//        second(catalog.effectiveDate);
-//        minute(catalog.effectiveDate);
-//        hour(catalog.effectiveDate);
-//        day(catalog.effectiveDate);
-//        month(catalog.effectiveDate);
-//        year(catalog.effectiveDate);
+        second(catalog.effectiveDate);
+        minute(catalog.effectiveDate);
+        hour(catalog.effectiveDate);
+        day(catalog.effectiveDate);
+        month(catalog.effectiveDate);
+        year(catalog.effectiveDate);
     }
     
     @Test
@@ -174,8 +176,8 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         kitten.bodyWeight.between(10, 20);
         kitten.bodyWeight.isnull();
         kitten.bodyWeight.isnotnull();
-//        cat.kittens.isEmpty();
-//        cat.kittens.isNotEmpty();
+        isempty(cat.kittens);
+        isnotempty(cat.kittens);
     }
     
     @Test
