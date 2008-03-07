@@ -39,12 +39,12 @@ public class Types {
         private final Expr<?> from;
         private final String to;
         AliasEntity(PathEntity<D> from, PathEntity<D> to) {
-            super(from.type);
+            super(from._type());
             this.from = from;
             this.to = to.toString();
         }
         AliasEntity(PathEntity<D> from, String to) {
-            super(from.type);
+            super(from._type());
             this.from = from;
             this.to = to;
         }
@@ -78,12 +78,13 @@ public class Types {
     }
     
     public static abstract class Expr<D>{
-        protected final Class<D> type;
-        Expr(Class<D> type){this.type = type;}
+        private final Class<D> type;
+        Expr(Class<D> type){this.type = type;}        
         public <B extends D> ExprBoolean eq(B right){return Grammar.eq(this, right);}        
         public <B extends D> ExprBoolean eq(Expr<B> right){return Grammar.eq(this, right);}
         public <B extends D> ExprBoolean ne(B right){return Grammar.ne(this, right);}
-        public <B extends D> ExprBoolean ne(Expr<B> right){return Grammar.ne(this, right);}        
+        public <B extends D> ExprBoolean ne(Expr<B> right){return Grammar.ne(this, right);}
+        protected Class<D> _type(){ return type;}
     }
     
     public static abstract class ExprBoolean extends ExprNoEntity<Boolean>{
@@ -94,23 +95,23 @@ public class Types {
     
     public static abstract class ExprComparable<D extends Comparable<D>> extends ExprNoEntity<D>{
         ExprComparable(Class<D> type) {super(type);}
+        public ExprBoolean after(D right) {return Grammar.after(this,right);}
+        public ExprBoolean after(Expr<D> right) {return Grammar.after(this,right);}  
         public OrderSpecifier<D> asc() {return Grammar.asc(this);}
-        public OrderSpecifier<D> desc() {return Grammar.desc(this);}  
-        public ExprBoolean after(Expr<D> right) {return Grammar.after(this,right);}
-        public ExprBoolean after(D right) {return Grammar.after(this,right);}        
+        public ExprBoolean before(D right) {return Grammar.before(this,right);}        
         public ExprBoolean before(Expr<D> right) {return Grammar.before(this,right);}
-        public ExprBoolean before(D right) {return Grammar.before(this,right);}       
+        public ExprBoolean between(D first, D second) {return Grammar.between(this,first,second);}       
         public ExprBoolean between(Expr<D> first, Expr<D> second) {return Grammar.between(this,first,second);}  
-        public ExprBoolean between(D first, D second) {return Grammar.between(this,first,second);}        
+        public OrderSpecifier<D> desc() {return Grammar.desc(this);}        
         public ExprBoolean goe(D right) {return Grammar.goe(this,right);}  
         public ExprBoolean goe(Expr<D> right) {return Grammar.goe(this,right);}         
         public ExprBoolean gt(D right) {return Grammar.gt(this,right);}  
         public ExprBoolean gt(Expr<D> right) {return Grammar.gt(this,right);}  
-        public ExprBoolean loe(D right) {return Grammar.loe(this,right);}  
+        public ExprBoolean in(D... args) {return Grammar.in(this,args);}  
+        public ExprBoolean loe(D right) {return Grammar.loe(this,right);}
         public ExprBoolean loe(Expr<D> right) {return Grammar.loe(this,right);}
         public ExprBoolean lt(D right) {return Grammar.lt(this,right);}
         public ExprBoolean lt(Expr<D> right) {return Grammar.lt(this,right);}
-        public ExprBoolean in(D... args) {return Grammar.in(this,args);}
     }
     
     public static abstract class ExprEntity<D> extends Expr<D>{
@@ -184,54 +185,71 @@ public class Types {
         public Expr<A> target;       
     }
         
-    public interface Path<D>{
+    public interface Path<C>{
+        Path<?> _parent();
         ExprBoolean isnotnull();
         ExprBoolean isnull();
     }
     
     public static class PathBoolean extends ExprBoolean implements PathNoEntity<Boolean>{
+        private final Path<?> parent;
         private final  String path;
-        PathBoolean(String path) {this.path = path;}        
+        PathBoolean(Path<?> parent,String path) {
+            this.parent = parent;
+            this.path = parent.toString()+"."+path;
+        }        
+        public Path<?> _parent() {return parent;}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
-        public String toString(){ return path;}
+        public String toString(){ return path;}        
     }
     
     public static class PathComparable<D extends Comparable<D>> extends ExprComparable<D> implements PathNoEntity<D>{
+        private final Path<?> parent;
         private final String path;
-        public PathComparable(Class<D> type, String path) {
+        public PathComparable(Class<D> type, Path<?> parent, String path) {
             super(type);
-            this.path = path;
+            this.parent = parent;
+            this.path = parent.toString()+"."+path;
         }
+        public Path<?> _parent() {return parent;}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
         public String toString() {return path;}
     }
     
     public static class PathEntity<D> extends ExprEntity<D> implements Path<D>{
+        private final Path<?> parent;
         private final String path;
         protected PathEntity(Class<D> type, String path) {
             super(type);
+            this.parent = null;
             this.path = path;
         }
+        protected PathEntity(Class<D> type, Path<?> parent, String path) {
+            super(type);
+            this.parent = parent;
+            this.path = parent.toString()+"."+path;
+        }
         protected PathBoolean _boolean(String path){
-            return new PathBoolean(this+"."+path);
+            return new PathBoolean(this, path);
         }
         protected <A>PathEntityCollection<A> _collection(String path,Class<A> type) {
-            return new PathEntityCollection<A>(type, this+"."+path);
+            return new PathEntityCollection<A>(type, this, path);
         }
         protected <A extends Comparable<A>> PathComparable<A> _comparable(String path,Class<A> type) {
-            return new PathComparable<A>(type, this+"."+path);
+            return new PathComparable<A>(type, this, path);
         }
         protected <A> PathEntityRenamable<A> _entity(String path, Class<A> type){
-            return new PathEntityRenamable<A>(type, this+"."+path); 
+            return new PathEntityRenamable<A>(type, this, path); 
         }
+        public Path<?> _parent() {return parent;}
         protected <A> PathNoEntitySimple<A> _simple(String path, Class<A> type){
-            return new PathNoEntitySimple<A>(type, this+"."+path);
-        }
-        protected PathString _string(String path){
-            return new PathString(this+"."+path);
+            return new PathNoEntitySimple<A>(type, this, path);
         }        
+        protected PathString _string(String path){
+            return new PathString(this, path);
+        }
         public ExprBoolean in(ExprEntity<Collection<D>> right){return Grammar.in(this, right);}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
@@ -240,22 +258,27 @@ public class Types {
     }
     
     public static class PathEntityCollection<D> extends ExprEntity<Collection<D>> implements Path<Collection<D>>{
-        private final String path;
+        private final Path<?> parent;
+        private final String property, path;
         private final Class<D> type;
-        PathEntityCollection(Class<D> type, String path) {
-            super(null);
+        PathEntityCollection(Class<D> type, Path<?> parent, String path) {
+            super(null);            
             this.type = type;
-            this.path = path;
+            this.parent = parent;
+            this.property = path;
+            this.path = parent.toString()+"."+path;
         }        
+        public Path<?> _parent() {return parent;}
         public AliasCollection<D> as(PathEntity<D> to) {return Grammar.as(this, to);}
+        public ExprEntity<D> get(int index) {return new PathEntity<D>(type, _parent(), property + "["+index+"]");}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
         public String toString() {return path;}
-        public ExprEntity<D> get(int index) {return new PathEntity<D>(type,path+"["+index+"]");}
+        
     }
     
     public static class PathEntityRenamable<D> extends PathEntity<D>{
-        protected PathEntityRenamable(Class<D> type, String path) {super(type,path);}
+        protected PathEntityRenamable(Class<D> type, Path<?> parent, String path) {super(type, parent, path);}
         public AliasEntity<D> as(PathEntity<D> to) {return Grammar.as(this, to);}
     }
     
@@ -264,21 +287,27 @@ public class Types {
     }
     
     public static class PathNoEntitySimple<D> extends ExprNoEntity<D> implements PathNoEntity<D>{
-        private final String path;
-        public PathNoEntitySimple(Class<D> type, String path) {
+        private final Path<?> parent;
+        private final String path;        
+        public PathNoEntitySimple(Class<D> type, Path<?> parent, String path) {
             super(type);
-            this.path = path;
+            this.parent = parent;
+            this.path = parent.toString()+"."+path;
         }
+        public Path<?> _parent() {return parent;}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
         public String toString() {return path;}
     }
     
     public static class PathString extends ExprString implements PathNoEntity<String>{
+        private final Path<?> parent;
         private final String path;
-        public PathString(String path) {            
-            this.path = path;
+        public PathString(Path<?> parent, String path) {
+            this.parent = parent;
+            this.path = parent.toString()+"."+path;
         }
+        public Path<?> _parent() {return parent;}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
         public String toString() {return path;}
