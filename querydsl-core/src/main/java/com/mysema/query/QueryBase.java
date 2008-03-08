@@ -12,7 +12,7 @@ import java.util.List;
 import com.mysema.query.grammar.Types.Expr;
 import com.mysema.query.grammar.Types.ExprBoolean;
 import com.mysema.query.grammar.Types.ExprEntity;
-import com.mysema.query.grammar.Types.OrderSpecifier;
+import com.mysema.query.grammar.OrderSpecifier;
 /**
  * QueryBase provides a basic implementation of the Query interface
  *
@@ -53,17 +53,18 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         having.addAll(Arrays.asList(o));
         return (A) this;
     }
-    @Deprecated
+    
+    @Deprecated 
     public A innerJoin(ExprEntity<?> o) {
         joins.add(new JoinExpression(JoinType.IJ,o));
         return (A) this;
     }
-    @Deprecated
+    @Deprecated 
     public A join(ExprEntity<?> o) {
         joins.add(new JoinExpression(JoinType.J,o));
         return (A) this;
     }
-    @Deprecated
+    @Deprecated 
     public A leftJoin(ExprEntity<?> o) {
         joins.add(new JoinExpression(JoinType.LJ,o));
         return (A) this;
@@ -83,27 +84,12 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         where.addAll(Arrays.asList(o));
         return (A) this;
     }
-
-    @Deprecated
+    @Deprecated 
     public A with(ExprBoolean... o) {
         if (!joins.isEmpty()){
             joins.get(joins.size()-1).conditions = o;
         }
         return (A) this;
-    }
-
-    public static class JoinExpression{
-        public ExprBoolean[] conditions;
-        public final ExprEntity<?> target;
-        public final JoinType type;
-        JoinExpression(JoinType type, ExprEntity<?> target){
-            this.type = type;
-            this.target = target;
-        }
-    }
-    
-    public enum JoinType{
-        DEFAULT,IJ,J,LJ
     }
     
 }

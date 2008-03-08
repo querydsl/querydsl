@@ -18,7 +18,7 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends
         Visitor<V> {
 
     @Override
-    protected void visit(AliasCollection<?> expr) {
+    protected void visit(AliasEntityCollection<?> expr) {
         visit((Alias<?>) expr);
     }
     @Override
@@ -51,6 +51,10 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends
     }
     @Override
     protected void visit(PathComparable<?> expr) {
+        visit((Path<?>) expr);
+    }
+    @Override
+    protected void visit(PathComponentCollection<?> expr) {
         visit((Path<?>) expr);
     }    
     @Override

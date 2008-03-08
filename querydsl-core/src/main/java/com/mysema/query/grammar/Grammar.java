@@ -107,10 +107,10 @@ public class Grammar {
         return new AliasEntity<D>(from, to);
     }
     
-    static <D> AliasCollection<D> as(PathEntityCollection<D> from, PathEntity<D> to) {
+    static <D> AliasEntityCollection<D> as(PathEntityCollection<D> from, PathEntity<D> to) {
         _check("from",from);
         _check("to",to);
-        return new AliasCollection<D>(from, to);
+        return new AliasEntityCollection<D>(from, to);
     }
 
     static <A extends Comparable<A>> OrderSpecifier<A> asc(Expr<A> target) {
@@ -141,8 +141,12 @@ public class Grammar {
         return _boolean(OpComparable.BETWEEN, left, start, end);
     }
 
-    public static ExprNoEntity<String> concat(Expr<String> left, Expr<String> right) {
+    static ExprString concat(Expr<String> left, Expr<String> right) {
         return _string(OpString.CONCAT, left, right);
+    }
+    
+    static ExprString concat(Expr<String> left, String right) {
+        return _string(OpString.CONCAT, left, _const(right));
     }
     
     static <A extends Comparable<A>> OrderSpecifier<A> desc(
@@ -166,21 +170,21 @@ public class Grammar {
         return _boolean(Op.EQ, left, right);
     }
 
-    public static <A extends Comparable<A>> ExprBoolean goe(Expr<A> left,
+    static <A extends Comparable<A>> ExprBoolean goe(Expr<A> left,
             A right) {
         return _boolean(OpComparable.GOE, left, _const(right));
     }
 
-    public static <A extends Comparable<A>> ExprBoolean goe(Expr<A> left,
+    static <A extends Comparable<A>> ExprBoolean goe(Expr<A> left,
             Expr<A> right) {
         return _boolean(OpComparable.GOE, left, right);
     }
 
-    public static <A extends Comparable<A>> ExprBoolean gt(Expr<A> left, A right) {
+    static <A extends Comparable<A>> ExprBoolean gt(Expr<A> left, A right) {
         return _boolean(OpComparable.GT, left, _const(right));
     }
 
-    public static <A extends Comparable<A>> ExprBoolean gt(Expr<A> left,
+    static <A extends Comparable<A>> ExprBoolean gt(Expr<A> left,
             Expr<A> right) {
         return _boolean(OpComparable.GT, left, right);
     }
@@ -256,7 +260,11 @@ public class Grammar {
     static ExprBoolean or(ExprBoolean left, ExprBoolean right) {
         return _boolean(OpBoolean.OR, left, right);
     }
-
+    
+    public static <A> SubQuery<A> select(Expr<A> select){
+        return new SubQuery<A>(select);
+    }
+    
     public static <A extends Comparable<A>> ExprComparable<A> sub(Expr<A> left, A right) {
         return _number(OpNumber.SUB, left, _const(right));
     }
