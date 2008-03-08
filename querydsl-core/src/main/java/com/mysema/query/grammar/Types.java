@@ -196,9 +196,9 @@ public class Types {
             this.path = localName;
             this.localName = localName;
         }
-        public Path<?> parent(){ return parent; }
-        public String localName(){ return localName; }
-        public String path(){ return path;}
+        public Path<?> getParent(){ return parent; }
+        public String getLocalName(){ return localName; }
+        public String getPath(){ return path;}
         public String toString(){ return path; }
     }
             
