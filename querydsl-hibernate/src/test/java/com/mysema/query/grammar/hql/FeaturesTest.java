@@ -2,17 +2,17 @@ package com.mysema.query.grammar.hql;
 
 import static com.mysema.query.grammar.Grammar.*;
 import static com.mysema.query.grammar.HqlGrammar.*;
-import static com.mysema.query.grammar.hql.domain.Domain.*;
+import static com.mysema.query.Domain1.*;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.HqlSerializer;
 import com.mysema.query.grammar.HqlGrammar.Constructor;
 import com.mysema.query.grammar.Types.Expr;
-import com.mysema.query.grammar.Types.PathEntityCollection;
-import com.mysema.query.grammar.hql.domain.Cat;
+
 
 /**
  * FeaturesTest provides
@@ -236,7 +236,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     @Test
     public void testStringConcatenations(){
         // string concatenation ...||... or concat(...,...)        
-        toString("cat.name || kitten.name", concat(cat.name, kitten.name));
+        toString("cat.name || kitten.name", cat.name.concat(kitten.name));
     }
     
     // coalesce() and nullif()
@@ -248,9 +248,19 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     
     @Test
     public void testStringOperationsInFunctionalWay(){
-        toString("cat.name || cust.name.firstName", concat(cat.name,cust.name().firstName));
+        toString("cat.name || cust.name.firstName", cat.name.concat(cust.name().firstName));
         toString("cat.name like :a1",cat.name.like("A%"));
         toString("lower(cat.name)",cat.name.lower());
+    }
+    
+    @Test
+    public void testSubQuery(){
+        StringBuilder b = new StringBuilder();
+        b.append("(");
+        b.append("\n    select cust.name");
+        b.append("\n    from cust");
+        b.append("\n    where cust.name is not null)");
+        toString(b.toString(), HqlGrammar.select(cust.name).from(cust).where(cust.name.isnotnull()));
     }
     
     @Test

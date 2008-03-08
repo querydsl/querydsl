@@ -1,10 +1,19 @@
 package com.mysema.query.grammar.hql;
 
-import static com.mysema.query.grammar.HqlGrammar.*;
-import static com.mysema.query.grammar.hql.domain.Domain.*;
+import static com.mysema.query.Domain1.catalog;
+import static com.mysema.query.Domain1.item;
+import static com.mysema.query.Domain1.order;
+import static com.mysema.query.Domain1.price;
+import static com.mysema.query.Domain1.product;
+import static com.mysema.query.grammar.Grammar.not;
+import static com.mysema.query.grammar.HqlGrammar.count;
+import static com.mysema.query.grammar.HqlGrammar.sum;
+import static com.mysema.query.grammar.HqlGrammar.sysdate;
+
 import org.junit.Test;
 
 import com.mysema.query.grammar.HqlQueryBase;
+import com.mysema.query.grammar.hql.domain.Catalog;
 import com.mysema.query.grammar.hql.domain.Customer;
 import com.mysema.query.grammar.hql.domain.Product;
 
@@ -52,7 +61,7 @@ public class ComplexQueriesTest extends HqlQueryBase<ComplexQueriesTest>{
             catalog.effectiveDate.lt(sysdate()), // lt as static method
             catalog.effectiveDate.goe(sysdate())) // goe as static method
         .groupBy(order)
-        .having(gt(sum(price.amount), minAmount))
+        .having(sum(price.amount).gt(minAmount))
         .orderBy(sum(price.amount).desc());            
     }
     
@@ -70,7 +79,25 @@ public class ComplexQueriesTest extends HqlQueryBase<ComplexQueriesTest>{
 //            and catalog = :currentCatalog
 //        group by order
 //        having sum(price.amount) > :minAmount
-//        order by sum(price.amount) desc
+//        order by sum(price.amount) desc        
+        Customer c = new Customer();
+        Product p = new Product();
+        Catalog currentCatalog = new Catalog();
+        long minAmount = 0l;
+        
+        select(order.id, sum(price.amount), count(item))
+        .from(order)
+            .innerJoin(order.lineItems.as(item))
+            .innerJoin(item.product.as(product))
+            .join(catalog)
+            .innerJoin(catalog.prices.as(price))
+        .where(not(order.paid),
+            order.customer.eq(c),
+            price.product.eq(p),
+            catalog.eq(currentCatalog))
+        .groupBy(order)
+        .having(sum(price.amount).gt(minAmount))
+        .orderBy(sum(price.amount).desc());
     }
     
     @Test
@@ -89,7 +116,7 @@ public class ComplexQueriesTest extends HqlQueryBase<ComplexQueriesTest>{
 //                and statusChange.user <> :currentUser
 //            )
 //        group by status.name, status.sortOrder
-//        order by status.sortOrder
+//        order by status.sortOrder        
     }
     
     @Test
@@ -115,6 +142,7 @@ public class ComplexQueriesTest extends HqlQueryBase<ComplexQueriesTest>{
     
     @Test
     public void testExample6(){
+        
 //        select account, payment
 //        from Account as account
 //            join account.holder.users as user

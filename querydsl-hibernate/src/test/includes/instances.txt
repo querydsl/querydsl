@@ -1,4 +1,5 @@
-  // AuditLog
+
+    // AuditLog
     public static final AuditLog log = new AuditLog("log");
     
     // Cat
@@ -56,3 +57,4 @@
     public static final User user3 = new User("user3");
     public static final User user4 = new User("user4");
     public static final User user5 = new User("user5");
+    

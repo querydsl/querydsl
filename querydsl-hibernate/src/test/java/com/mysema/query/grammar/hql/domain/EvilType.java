@@ -10,6 +10,6 @@ import javax.persistence.Entity;
  */
 @Entity
 public class EvilType {
-    protected EvilType isnull, isnotnull, asc, desc, get, _type, path, _parent;
+    protected EvilType isnull, isnotnull, asc, desc, get, getType, getMetadata;
     protected EvilType toString, hashCode, getClass, notify, notifyAll, wait;
 }

@@ -75,6 +75,7 @@
         <version>1.0.15</version>
         <executions>
           <execution>
+            <id>dummy-domain</id>
             <phase>generate-test-sources</phase>
             <goals>
               <goal>testExecute</goal>
@@ -90,16 +91,38 @@
               <nocompile>true</nocompile>
               <A>
                 -Ainclude=src/test/includes/instances.txt,
-                -AdestClass=com.mysema.query.grammar.hql.domain.Domain,
+                -AdestClass=com.mysema.query.Domain1,
                 -AnamePrefix=
               </A>
-              <includes>
-                <include>
-                  com/mysema/query/grammar/hql/domain/*.java
-                </include>
-              </includes>
+              <testIncludes>
+                <testInclude>com/mysema/query/grammar/hql/domain/*.java</testInclude>
+              </testIncludes>
             </configuration>
           </execution>
+          <execution>
+            <id>thinglink-domain</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>testExecute</goal>
+            </goals>
+            <configuration>
+              <aptSourceRoots>
+                <aptSourceRoot>src/test/java</aptSourceRoot>
+              </aptSourceRoots>
+              <force>true</force>
+              <fork>true</fork>
+              <factory>com.mysema.query.apt.APTFactory</factory>
+              <testGenerated>target/generated-test-sources/java</testGenerated>
+              <nocompile>true</nocompile>
+              <A>
+                -AdestClass=com.mysema.query.Domain2,
+                -AnamePrefix=
+              </A>
+              <testIncludes>
+                <testInclude>com/mysema/query/grammar/hql/domain2/*.java</testInclude>
+              </testIncludes>
+            </configuration>
+          </execution>      
         </executions>
       </plugin>
     </plugins>

@@ -1,7 +1,7 @@
 package com.mysema.query.grammar.hql;
 
 import static com.mysema.query.grammar.HqlGrammar.*;
-import static com.mysema.query.grammar.hql.domain.Domain.*;
+import static com.mysema.query.Domain1.*;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
@@ -41,10 +41,10 @@ public class SimpleQueriesTest extends HqlQueryBase<SimpleQueriesTest>{
         where(be);
         with(be);
 //        select(cat.name.as("cat_name")); // not allowed
-        from(cat,cust).where(gt(cat.name,cust.name().firstName));
+        from(cat,cust).where(cat.name.gt(cust.name().firstName));
         select(cat.name.lower()).from(cat).where(cat.name.substring(0,2).eq("Mi"));
         select(cat.name.upper()).from(cat);
-        select(concat(cat.name.lower(),cat.mate().name)).from(cat);
+        select(cat.name.lower().concat(cat.mate().name)).from(cat);
 //        cat.as(company); // not allowed
 //        asc(cust.name()); // not allowed
         cust.name().firstName.asc();
@@ -57,12 +57,12 @@ public class SimpleQueriesTest extends HqlQueryBase<SimpleQueriesTest>{
     
     @Test
     public void testOperations(){
-        gt(kitten.bodyWeight, 10);
+        kitten.bodyWeight.gt(10);
         kitten.bodyWeight.lt(10);
-        goe(kitten.bodyWeight, 10);
+        kitten.bodyWeight.goe(10);
         kitten.bodyWeight.loe(10);
         
-        gt(cat.name, "ABC");        
+        cat.name.gt("ABC");        
         cust.name().firstName.lt("Albert");
         cust.name().firstName.lower();
         cust.name().firstName.upper();
@@ -76,7 +76,7 @@ public class SimpleQueriesTest extends HqlQueryBase<SimpleQueriesTest>{
 //      from Cat as cat left join cat.kittens as kitten 
 //          with kitten.bodyWeight > 10.0
         from(cat).leftJoin(cat.kittens.as(kitten))
-            .with(gt(kitten.bodyWeight,10));     
+            .with(kitten.bodyWeight.gt(10));     
         expect("from Cat cat\nleft join cat.kittens as kitten\n"+
            "with kitten.bodyWeight > :a1");
     }

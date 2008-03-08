@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mysema.query.QueryBase.JoinExpression;
+import com.mysema.query.JoinExpression;
 import com.mysema.query.grammar.HqlGrammar.Constructor;
 import com.mysema.query.grammar.HqlGrammar.CountExpr;
 import com.mysema.query.grammar.Types.*;
@@ -75,7 +75,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
             }
             // type specifier
             if (je.target instanceof PathEntity && !je.target.toString().contains(".")){
-                _append(((PathEntity<?>)je.target)._type().getSimpleName())._append(" ");
+                _append(((PathEntity<?>)je.target).getType().getSimpleName())._append(" ");
             }            
             handle(je.target);
             if (je.conditions != null){
@@ -126,7 +126,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
     }
 
     protected void visit(Constructor<?> expr){
-        _append("new ")._append(expr._type().getName())._append("(");
+        _append("new ")._append(expr.getType().getName())._append("(");
         _append(", ",Arrays.asList(expr.args))._append(")");
     }
     
@@ -151,6 +151,16 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
     @Override
     protected void visit(Path<?> expr) {
         _append(expr.toString());        
+    }
+
+    @Override
+    protected void visit(SubQuery<?> subQuery) {
+        _append("(");
+        _append("\n    select ").handle(subQuery._select());
+        _append("\n    from ")._append(", ", subQuery._from());
+        _append("\n    where ")._append(" and ", subQuery._where());
+        _append(")");
+        
     }
 
 }
