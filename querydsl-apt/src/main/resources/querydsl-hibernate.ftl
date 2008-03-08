@@ -1,4 +1,4 @@
-<#assign reserved = ["isnull", "isnotnull", "_type", "toString", "hashCode", "getClass", "notify", "notifyAll", "wait"]>
+<#assign reserved = ["isnull", "isnotnull", "getType", "getMetadata", "toString", "hashCode", "getClass", "notify", "notifyAll", "wait"]>
 package ${package};
 
 <#if (dtoTypes?size > 0)>
@@ -11,9 +11,7 @@ import static com.mysema.query.grammar.Types.*;
  *
  */
 public class ${classSimpleName} {
-
 ${include}
-
 <#list dtoTypes as decl>
     public static final class ${pre}${decl.simpleName} extends Constructor<${decl.name}>{
     <#list decl.constructors as co>    
@@ -35,17 +33,23 @@ ${include}
     <#list decl.simpleFields as field>
 		public final PathComparable<${field.typeName}> ${field.name} = _comparable("${field.name}",${field.typeName}.class);
     </#list>
-    <#list decl.collectionFields as field>
-    	public final PathEntityCollection<${field.typeName}> ${field.name} = _collection("${field.name}",${field.typeName}.class);
+    <#list decl.entityCollections as field>
+    	public final PathEntityCollection<${field.typeName}> ${field.name} = _entitycol("${field.name}",${field.typeName}.class);
     	public ${pre}${field.simpleTypeName} ${field.name}(int index) {
     		return new ${pre}${field.simpleTypeName}(this,"${field.name}["+index+"]");
     	}
     </#list>
+	<#list decl.simpleCollections as field>
+    	public final PathComponentCollection<${field.typeName}> ${field.name} = _simplecol("${field.name}",${field.typeName}.class);
+    	public PathNoEntity<${field.typeName}> ${field.name}(int index) {
+    		return new PathNoEntitySimple<${field.typeName}>(${field.typeName}.class,this,"${field.name}["+index+"]");
+    	}
+    </#list>    
   	<#list decl.entityFields as field>
         public final PathEntityRenamable<${field.typeName}> ${field.name} = _entity("${field.name}",${field.typeName}.class);
 	</#list>     
-        ${pre}${decl.simpleName}(String path) {super(${decl.name}.class,path);}
-        ${pre}${decl.simpleName}(Path<?> parent, String path) {super(${decl.name}.class, parent, path);}
+        public ${pre}${decl.simpleName}(String path) {super(${decl.name}.class,path);}
+        public ${pre}${decl.simpleName}(Path<?> parent, String path) {super(${decl.name}.class, parent, path);}
   	<#list decl.entityFields as field>
   	<#if !reserved?seq_contains(field.name)>
   	    private ${pre}${field.simpleTypeName} _${field.name};
