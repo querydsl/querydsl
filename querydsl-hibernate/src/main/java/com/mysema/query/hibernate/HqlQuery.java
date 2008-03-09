@@ -58,10 +58,6 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
         return query;
     }
     
-    /**
-     * TODO : replace this with Hibernate Criteria based usage
-     */
-    @Deprecated
     public HqlQuery forExample(PathEntity<?> entity, Map<String, Object> map) {
         select(entity).from(entity);
         try {            
