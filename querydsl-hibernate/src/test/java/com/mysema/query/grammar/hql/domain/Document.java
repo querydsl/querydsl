@@ -12,6 +12,6 @@ import javax.persistence.Entity;
  */
 @Entity
 public class Document {
-    protected String name;
-    protected Date validTo;
+    String name;
+    Date validTo;
 }

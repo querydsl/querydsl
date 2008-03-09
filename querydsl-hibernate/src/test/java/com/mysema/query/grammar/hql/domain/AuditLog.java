@@ -10,5 +10,5 @@ import javax.persistence.Entity;
  */
 @Entity
 public class AuditLog {
-    protected Item item;
+    Item item;
 }

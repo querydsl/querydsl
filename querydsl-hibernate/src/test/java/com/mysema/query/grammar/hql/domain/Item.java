@@ -10,6 +10,6 @@ import javax.persistence.Entity;
  */
 @Entity
 public class Item {
-    protected long id;
-    protected Product product;    
+    long id;
+    Product product;    
 }

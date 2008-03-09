@@ -222,6 +222,17 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     }
     
     @Test
+    public void testShortCuts(){
+        Company c = new Company("c");
+        Department d = new Department("d");
+        Employee e = new Employee("e");
+//        select(c.name, d.name, e.firstName, e.lastName).from(c.join().departments.as(d).join().employees.as(e));
+        // join        -> PathEntityRelations (foreign key fields)
+        // departments -> PathEntityRelations
+        // as(d)       -> sets alias
+    }
+    
+    @Test
     public void testSimpleAliasForNonEntityPaths(){
         toString("cat.bodyWeight as catbodyWeight", cat.bodyWeight.as("catbodyWeight"));
         toString("count(*) as numPosts", count().as("numPosts"));
@@ -297,10 +308,6 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         visitor = new HqlSerializer();
     }
     
-    public static final class BookmarkDTO{
-        
-    }
-    
     public static final class _BookmarkDTO extends Constructor<BookmarkDTO>{
         public _BookmarkDTO(){
             super(BookmarkDTO.class);
@@ -308,6 +315,10 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         public _BookmarkDTO(Expr<java.lang.String> address){
             super(BookmarkDTO.class,address);
         }
+    }
+    
+    public static final class BookmarkDTO{
+        
     }
     
 }

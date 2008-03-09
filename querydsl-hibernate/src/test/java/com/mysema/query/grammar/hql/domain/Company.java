@@ -1,5 +1,7 @@
 package com.mysema.query.grammar.hql.domain;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 
 
@@ -11,6 +13,8 @@ import javax.persistence.Entity;
  */
 @Entity
 public class Company {
-    protected long id;
-    protected String name;
+    long id;
+    String name;
+    List<Department> departments;
+    Employee ceo;
 }

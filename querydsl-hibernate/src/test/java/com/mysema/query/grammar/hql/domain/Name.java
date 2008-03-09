@@ -10,5 +10,5 @@ import javax.persistence.Entity;
  */
 @Entity
 public class Name {
-    protected String firstName, lastName;    
+    String firstName, lastName;    
 }

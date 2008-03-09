@@ -13,6 +13,6 @@ import javax.persistence.Entity;
  */
 @Entity
 public class Catalog {
-    protected Collection<Price> prices;
-    protected Date effectiveDate;
+    Collection<Price> prices;
+    Date effectiveDate;
 }

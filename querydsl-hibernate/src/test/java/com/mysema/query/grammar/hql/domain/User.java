@@ -11,7 +11,7 @@ import javax.persistence.Entity;
  */
 @Entity
 public class User {
-    protected Company company;
-    protected long id;
-    protected String userName, firstName, lastName;    
+    Company company;
+    long id;
+    String userName, firstName, lastName;    
 }

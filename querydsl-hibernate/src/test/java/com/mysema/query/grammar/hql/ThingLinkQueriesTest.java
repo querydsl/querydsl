@@ -34,6 +34,7 @@ public class ThingLinkQueriesTest extends HqlQueryBase<ComplexQueriesTest>{
         
     }
     
+    @Test
     public void testQuery2(){
 //        "select g._keyword, count(g._keyword) from "
 //        + Thing.class.getName()

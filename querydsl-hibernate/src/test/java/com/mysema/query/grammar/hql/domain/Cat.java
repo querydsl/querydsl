@@ -12,9 +12,9 @@ import javax.persistence.Entity;
  */
 @Entity
 public class Cat {
-    protected Collection<Cat> kittens;
-    protected Cat mate;
-    protected int bodyWeight;
-    protected String name;
-    protected boolean alive;    
+    Collection<Cat> kittens;
+    Cat mate;
+    int bodyWeight;
+    String name;
+    boolean alive;    
 }

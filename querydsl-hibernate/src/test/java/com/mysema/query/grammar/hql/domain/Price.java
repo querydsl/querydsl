@@ -10,6 +10,6 @@ import javax.persistence.Entity;
  */
 @Entity
 public class Price {
-    protected long amount;
-    protected Product product;
+    long amount;
+    Product product;
 }

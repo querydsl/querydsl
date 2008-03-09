@@ -12,8 +12,8 @@ import javax.persistence.Entity;
  */
 @Entity
 public class Order {
-    protected long id;
-    protected List<Item> items, lineItems;    
-    protected boolean paid;
-    protected Customer customer;
+    long id;
+    List<Item> items, lineItems;    
+    boolean paid;
+    Customer customer;
 }
