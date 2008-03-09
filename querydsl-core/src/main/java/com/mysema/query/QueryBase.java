@@ -54,17 +54,16 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         return (A) this;
     }
     
-    @Deprecated 
     public A innerJoin(ExprEntity<?> o) {
         joins.add(new JoinExpression(JoinType.IJ,o));
         return (A) this;
     }
-    @Deprecated 
+ 
     public A join(ExprEntity<?> o) {
         joins.add(new JoinExpression(JoinType.J,o));
         return (A) this;
     }
-    @Deprecated 
+ 
     public A leftJoin(ExprEntity<?> o) {
         joins.add(new JoinExpression(JoinType.LJ,o));
         return (A) this;
@@ -84,7 +83,7 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         where.addAll(Arrays.asList(o));
         return (A) this;
     }
-    @Deprecated 
+
     public A with(ExprBoolean... o) {
         if (!joins.isEmpty()){
             joins.get(joins.size()-1).conditions = o;

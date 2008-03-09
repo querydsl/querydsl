@@ -19,10 +19,10 @@ import com.mysema.query.grammar.OrderSpecifier;
 public interface Query<A extends Query<A>>{
     A select(Expr<?>... o);
     A from(ExprEntity<?>... o);  
-    @Deprecated A innerJoin(ExprEntity<?> o);
-    @Deprecated A join(ExprEntity<?> o);
-    @Deprecated A leftJoin(ExprEntity<?> o);
-    @Deprecated A with(ExprBoolean... o);
+    A innerJoin(ExprEntity<?> o);
+    A join(ExprEntity<?> o);
+    A leftJoin(ExprEntity<?> o);
+    A with(ExprBoolean... o);
     A where(ExprBoolean... o);
     A groupBy(Expr<?>... o);
     A having(ExprBoolean... o);
