@@ -42,9 +42,13 @@ public class TypeDecl implements Comparable<TypeDecl>{
     
     private final Set<FieldDecl> entityCollections = new TreeSet<FieldDecl>();
     
+    private final Set<FieldDecl> entityMaps = new TreeSet<FieldDecl>();
+    
     private final Set<FieldDecl> entityFields = new TreeSet<FieldDecl>();
 
     private final Set<FieldDecl> simpleCollections = new TreeSet<FieldDecl>();
+    
+    private final Set<FieldDecl> simpleMaps = new TreeSet<FieldDecl>();
     
     private final Set<FieldDecl> simpleFields = new TreeSet<FieldDecl>();
     
@@ -73,6 +77,8 @@ public class TypeDecl implements Comparable<TypeDecl>{
           case ENTITY : entityFields.add(fieldDecl); break;         
           case ENTITYCOLLECTION : entityCollections.add(fieldDecl); break;
           case SIMPLECOLLECTION : simpleCollections.add(fieldDecl); break;
+          case ENTITYMAP : entityMaps.add(fieldDecl); break;
+          case SIMPLEMAP : simpleMaps.add(fieldDecl); break;
         }
     }
     
@@ -93,6 +99,10 @@ public class TypeDecl implements Comparable<TypeDecl>{
     public Collection<FieldDecl> getEntityCollections() {
         return entityCollections;
     }
+    
+    public Collection<FieldDecl> getEntityMaps() {
+        return entityMaps;
+    }
         
     public Collection<FieldDecl> getEntityFields() {
         return entityFields;
@@ -104,6 +114,10 @@ public class TypeDecl implements Comparable<TypeDecl>{
 
     public Collection<FieldDecl> getSimpleCollections() {
         return simpleCollections;
+    }
+    
+    public Collection<FieldDecl> getSimpleMaps() {
+        return simpleMaps;
     }
 
     public Collection<FieldDecl> getSimpleFields() {
@@ -130,6 +144,8 @@ public class TypeDecl implements Comparable<TypeDecl>{
         booleanFields.addAll(decl.booleanFields);
         entityCollections.addAll(decl.entityCollections);
         simpleCollections.addAll(decl.simpleCollections);
+        entityMaps.addAll(decl.entityMaps);
+        simpleMaps.addAll(decl.simpleMaps);
         entityFields.addAll(decl.entityFields);
         simpleFields.addAll(decl.simpleFields);
         stringFields.addAll(decl.stringFields);
@@ -152,7 +168,7 @@ public class TypeDecl implements Comparable<TypeDecl>{
     
     public static class FieldDecl implements Comparable<FieldDecl>{
         private final FieldType fieldType;
-        private String name, typeName, simpleTypeName;
+        private String name, keyTypeName, typeName, simpleTypeName;
         public FieldDecl(FieldDeclaration field) {
             name = field.getSimpleName();     
             String type = field.getType().toString();
@@ -160,11 +176,21 @@ public class TypeDecl implements Comparable<TypeDecl>{
                 typeName = field.getType().toString();                
                 if (typeName.contains("<")){                    
                     typeName = typeName.substring(typeName.lastIndexOf('<')+1, typeName.length()-1);
-                    if (forType(typeName) == FieldType.ENTITY){
-                        fieldType = FieldType.ENTITYCOLLECTION;
+                    if (typeName.contains(",")){
+                        keyTypeName = typeName.substring(0, typeName.indexOf(','));
+                        typeName = typeName.substring(keyTypeName.length()+1);                        
+                        if (forType(typeName) == FieldType.ENTITY){
+                            fieldType = FieldType.ENTITYMAP;
+                        }else{
+                            fieldType = FieldType.SIMPLEMAP;
+                        }
                     }else{
-                        fieldType = FieldType.SIMPLECOLLECTION;    
-                    }                    
+                        if (forType(typeName) == FieldType.ENTITY){
+                            fieldType = FieldType.ENTITYCOLLECTION;
+                        }else{
+                            fieldType = FieldType.SIMPLECOLLECTION;    
+                        }    
+                    }                                                            
                 }else{
                     fieldType = forType(typeName);
                 }
@@ -204,6 +230,10 @@ public class TypeDecl implements Comparable<TypeDecl>{
             return simpleTypeName;
         }
         
+        public String getKeyTypeName(){
+            return keyTypeName;
+        }
+        
         public String getTypeName(){
             return typeName;
         }
@@ -215,7 +245,10 @@ public class TypeDecl implements Comparable<TypeDecl>{
     }
     
     public enum FieldType{
-        BOOLEAN, ENTITY, ENTITYCOLLECTION, SIMPLE, SIMPLECOLLECTION, STRING
+        BOOLEAN, 
+        ENTITY, ENTITYCOLLECTION, ENTITYMAP, 
+        SIMPLE, SIMPLECOLLECTION, SIMPLEMAP, 
+        STRING
     }
     
     public static class ParameterDecl implements Comparable<ParameterDecl>{

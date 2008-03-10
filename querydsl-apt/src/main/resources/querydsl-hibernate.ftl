@@ -33,6 +33,12 @@ ${include}
     <#list decl.simpleFields as field>
 		public final PathComparable<${field.typeName}> ${field.name} = _comparable("${field.name}",${field.typeName}.class);
     </#list>
+    <#list decl.entityMaps as field>
+    	public final PathEntityMap<${field.keyTypeName},${field.typeName}> ${field.name} = _entitymap("${field.name}",${field.keyTypeName}.class,${field.typeName}.class);
+    </#list>
+	<#list decl.simpleMaps as field>
+    	public final PathComponentMap<${field.keyTypeName},${field.typeName}> ${field.name} = _simplemap("${field.name}",${field.keyTypeName}.class,${field.typeName}.class);
+    </#list>     
     <#list decl.entityCollections as field>
     	public final PathEntityCollection<${field.typeName}> ${field.name} = _entitycol("${field.name}",${field.typeName}.class);
     	public ${pre}${field.simpleTypeName} ${field.name}(int index) {
