@@ -29,6 +29,7 @@ public class HqlOps extends Ops {
         
         // comparison
         patterns.put(OpComparable.BETWEEN, "%s between %s and %s");
+        patterns.put(OpComparable.NOTBETWEEN, "%s not between %s and %s");
         patterns.put(OpComparable.GOE, "%s >= %s");
         patterns.put(OpComparable.GT, "%s > %s");
         patterns.put(OpComparable.LOE, "%s <= %s");
@@ -37,21 +38,27 @@ public class HqlOps extends Ops {
         patterns.put(OpDate.AFTER, "%s > %s");
         patterns.put(OpDate.BEFORE, "%s < %s");
         
-        // arithmetic
+        // numeric
         patterns.put(OpNumber.ADD, "(%s + %s)");        
         patterns.put(OpNumber.DIV, "(%s / %s)");
         patterns.put(OpNumber.MOD, "(%s % %s)");
         patterns.put(OpNumber.MULT,"(%s * %s)");
         patterns.put(OpNumber.SUB, "(%s - %s)");
         
+        patterns.put(OpNumber.AVG, "avg(%s)");
+        patterns.put(OpNumber.MAX, "max(%s)");
+        patterns.put(OpNumber.MIN, "min(%s)");
+        
         // various
         patterns.put(Op.EQ, "%s = %s");
         patterns.put(Op.ISTYPEOF, "%s.class = %s");
         patterns.put(Op.NE, "%s != %s");
         patterns.put(Op.INARRAY, "%s in (%s)");
+        patterns.put(Op.NOTINARRAY, "%s not in (%s)");
         patterns.put(Op.INELEMENTS, "%s in elements(%s)");
         patterns.put(Op.ISNULL, "%s is null");
         patterns.put(Op.ISNOTNULL, "%s is not null");
+        patterns.put(Op.SIZE, "size(%s)");
         
         // string
         patterns.put(OpString.CONCAT, "%s || %s");
@@ -76,6 +83,8 @@ public class HqlOps extends Ops {
         patterns.put(OpHql.DAY, "day(%s)");
         patterns.put(OpHql.MONTH, "month(%s)");
         patterns.put(OpHql.YEAR, "year(%s)");
+        patterns.put(OpHql.MAXINDEX, "maxindex(%s)");
+        patterns.put(OpHql.MININDEX, "minindex(%s)");
     }
     
     public static String getPattern(Op<?> op){

@@ -99,7 +99,7 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
 
     public SearchResults<?> listResults() {
         Query query = createQuery(toCountRowsString(), null, null);
-        long total = (Long) query.list().get(0);
+        long total = (Long) query.uniqueResult();
         if (total > 0) {
             String queryString = toString();
             logger.debug("query : {}", queryString);

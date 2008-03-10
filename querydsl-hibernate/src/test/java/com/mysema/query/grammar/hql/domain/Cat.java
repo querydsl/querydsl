@@ -14,7 +14,7 @@ import javax.persistence.Entity;
 public class Cat {
     Collection<Cat> kittens;
     Cat mate;
-    int bodyWeight;
+    int bodyWeight, id, weight;
     String name;
     boolean alive;    
 }

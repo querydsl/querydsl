@@ -36,6 +36,13 @@ public class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<A>{
     }
 
     @Override
+    protected void clear(){
+        super.clear();
+        queryString = null;
+        countRowsString = null;
+    }
+    
+    @Override
     public String toString(){
         if (queryString == null){
             queryString = buildQueryString(false);    

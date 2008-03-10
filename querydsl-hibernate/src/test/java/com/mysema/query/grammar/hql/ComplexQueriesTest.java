@@ -5,13 +5,11 @@ import static com.mysema.query.Domain1.item;
 import static com.mysema.query.Domain1.order;
 import static com.mysema.query.Domain1.price;
 import static com.mysema.query.Domain1.product;
-import static com.mysema.query.grammar.Grammar.not;
-import static com.mysema.query.grammar.HqlGrammar.count;
-import static com.mysema.query.grammar.HqlGrammar.sum;
-import static com.mysema.query.grammar.HqlGrammar.sysdate;
+import static com.mysema.query.grammar.HqlGrammar.*;
 
 import org.junit.Test;
 
+import com.mysema.query.Domain2;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.hql.domain.Catalog;
 import com.mysema.query.grammar.hql.domain.Customer;
@@ -25,9 +23,13 @@ import com.mysema.query.grammar.hql.domain.Product;
  */
 public class ComplexQueriesTest extends HqlQueryBase<ComplexQueriesTest>{
     
+    private Domain2.Association a = new Domain2.Association("a");
     private Customer c = new Customer();
-    private Product p = new Product();
-    private long minAmount = 0;
+    private Domain2.Tag g = new Domain2.Tag("g");    
+    private Domain2.Thing h = new Domain2.Thing("h");    
+    private long minAmount = 0;    
+    private Product p = new Product();    
+    private Domain2.Thing t = new Domain2.Thing("t");
     
     @Test
     public void testExample1(){
@@ -118,7 +120,6 @@ public class ComplexQueriesTest extends HqlQueryBase<ComplexQueriesTest>{
 //        group by status.name, status.sortOrder
 //        order by status.sortOrder        
     }
-    
     @Test
     public void testExample4(){
 //        select count(payment), status.name 
@@ -129,7 +130,6 @@ public class ComplexQueriesTest extends HqlQueryBase<ComplexQueriesTest>{
 //        group by status.name, status.sortOrder
 //        order by status.sortOrder
     }
-    
     @Test
     public void testExample5(){
 //        select account, payment
@@ -139,7 +139,6 @@ public class ComplexQueriesTest extends HqlQueryBase<ComplexQueriesTest>{
 //            and PaymentStatus.UNPAID = isNull(payment.currentStatus.name, PaymentStatus.UNPAID)
 //        order by account.type.sortOrder, account.accountNumber, payment.dueDate
     }
-    
     @Test
     public void testExample6(){
         
@@ -150,6 +149,34 @@ public class ComplexQueriesTest extends HqlQueryBase<ComplexQueriesTest>{
 //        where :currentUser = user
 //            and PaymentStatus.UNPAID = isNull(payment.currentStatus.name, PaymentStatus.UNPAID)
 //        order by account.type.sortOrder, account.accountNumber, payment.dueDate
+    }
+    
+    @Test
+    public void testQuery1(){
+//        "select g._keyword, count(g._keyword) from " + Thing.class.getName()
+//        + " h inner join h._tags as g where h._code in" + "(select t._code from "
+//        + Association.class.getName() + " a " + "inner join a._thing as t "
+//        + "where a._association = :association "
+//        + "and t._isHidden = :hidden) group by g._keyword order by count(g._keyword) desc");
+        
+//        select(g._keyword, count(g._keyword))
+//        .from(h).innerJoin(h._tags.as(g))
+//        .where(h._code.in(
+//                select(t._code).from(a
+        
+    }
+    
+    public void testQuery2(){
+//        "select g._keyword, count(g._keyword) from "
+//        + Thing.class.getName()
+//        + " h inner join h._tags as g where h._code in"
+//        + "(select t._code from "
+//        + Association.class.getName()
+//        + " a "
+//        + "inner join a._thing as t "
+//        + "where a._association = :association "
+//        + "and t._isHidden = :hidden and t._timeStamp > :lastweek) 
+//        group by g._keyword order by count(g._keyword) desc");
     }
 
 }

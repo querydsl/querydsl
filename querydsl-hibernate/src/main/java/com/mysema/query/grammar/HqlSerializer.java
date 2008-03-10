@@ -67,9 +67,10 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
             if (i > 0){
                 String sep = ", ";
                 switch(je.type){
-                case IJ:      sep = "\ninner join "; break;
-                case LJ:      sep = "\nleft join "; break;
-                case J:       sep = "\njoin "; break;
+                case FULLJOIN:  sep = "\nfull join "; break;
+                case INNERJOIN: sep = "\ninner join "; break;
+                case JOIN:      sep = "\njoin "; break;
+                case LEFTJOIN:  sep = "\nleft join "; break;                                
                 }
                 _append(sep);
             }
@@ -141,6 +142,8 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
     @Override
     protected void visit(Operation<?,?> expr) {
         String pattern = HqlOps.getPattern(expr.getOperator());
+        if (pattern == null)
+            throw new IllegalArgumentException("Got no operation pattern for " + expr);
         Object[] args = new Object[expr.getArgs().length];
         for (int i = 0; i < args.length; i++){
             args[i] = _toString(expr.getArgs()[i]);

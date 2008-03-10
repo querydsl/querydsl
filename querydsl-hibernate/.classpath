@@ -5,11 +5,11 @@
   <classpathentry kind="output" path="target/classes"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
   <classpathentry kind="var" path="M2_REPO/com/mysema/commons/mysema-test/0.3.3/mysema-test-0.3.3.jar" sourcepath="M2_REPO/com/mysema/commons/mysema-test/0.3.3/mysema-test-0.3.3-sources.jar"/>
-  <classpathentry kind="src" path="/querydsl-apt"/>
-  <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/1.4-SNAPSHOT/commons-io-1.4-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/mysema/querydsl/querydsl-apt/0.2.0/querydsl-apt-0.2.0.jar" sourcepath="M2_REPO/com/mysema/querydsl/querydsl-apt/0.2.0/querydsl-apt-0.2.0-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/freemarker/freemarker/2.3.12/freemarker-2.3.12.jar" sourcepath="M2_REPO/org/freemarker/freemarker/2.3.12/freemarker-2.3.12-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/1.4-SNAPSHOT/commons-io-1.4-SNAPSHOT.jar"/>
   <classpathentry kind="lib" path="C:/Program Files/Java/jdk1.6.0_04/lib/tools.jar"/>
-  <classpathentry kind="src" path="/querydsl-core"/>
+  <classpathentry kind="var" path="M2_REPO/com/mysema/querydsl/querydsl-core/0.2.0/querydsl-core-0.2.0.jar" sourcepath="M2_REPO/com/mysema/querydsl/querydsl-core/0.2.0/querydsl-core-0.2.0-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/mysema/commons/mysema-core/0.3.3/mysema-core-0.3.3.jar" sourcepath="M2_REPO/com/mysema/commons/mysema-core/0.3.3/mysema-core-0.3.3-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.3/commons-lang-2.3.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.3/commons-lang-2.3-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/junit/junit/4.4/junit-4.4.jar" sourcepath="M2_REPO/junit/junit/4.4/junit-4.4-sources.jar"/>
