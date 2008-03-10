@@ -38,7 +38,7 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends
         visit((Operation<?, ?>) expr);
     }
     @Override
-    protected void visit(OperationNumber<?> expr) {
+    protected void visit(OperationNumber<?,?> expr) {
         visit((Operation<?, ?>) expr);
     }
     @Override
@@ -56,6 +56,10 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends
     @Override
     protected void visit(PathComponentCollection<?> expr) {
         visit((Path<?>) expr);
+    }
+    @Override
+    protected void visit(PathComponentMap<?,?> expr) {
+        visit((Path<?>) expr);
     }    
     @Override
     protected void visit(PathString expr) {
@@ -71,6 +75,10 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends
     }
     @Override
     protected void visit(PathEntityCollection<?> expr) {
+        visit((Path<?>) expr);
+    }
+    @Override
+    protected void visit(PathEntityMap<?,?> expr) {
         visit((Path<?>) expr);
     }
     @Override

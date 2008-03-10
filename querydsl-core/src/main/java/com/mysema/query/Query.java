@@ -21,6 +21,7 @@ public interface Query<A extends Query<A>>{
     A from(ExprEntity<?>... o);  
     A innerJoin(ExprEntity<?> o);
     A join(ExprEntity<?> o);
+    A fullJoin(ExprEntity<?> o);
     A leftJoin(ExprEntity<?> o);
     A with(ExprBoolean... o);
     A where(ExprBoolean... o);

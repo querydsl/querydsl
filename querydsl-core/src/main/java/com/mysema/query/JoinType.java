@@ -6,5 +6,5 @@
 package com.mysema.query;
 
 public enum JoinType {
-    DEFAULT, IJ, J, LJ
+    DEFAULT, INNERJOIN, JOIN, LEFTJOIN, FULLJOIN
 }

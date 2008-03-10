@@ -55,17 +55,22 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
     }
     
     public A innerJoin(ExprEntity<?> o) {
-        joins.add(new JoinExpression(JoinType.IJ,o));
+        joins.add(new JoinExpression(JoinType.INNERJOIN,o));
+        return (A) this;
+    }
+    
+    public A fullJoin(ExprEntity<?> o) {
+        joins.add(new JoinExpression(JoinType.FULLJOIN,o));
         return (A) this;
     }
  
     public A join(ExprEntity<?> o) {
-        joins.add(new JoinExpression(JoinType.J,o));
+        joins.add(new JoinExpression(JoinType.JOIN,o));
         return (A) this;
     }
  
     public A leftJoin(ExprEntity<?> o) {
-        joins.add(new JoinExpression(JoinType.LJ,o));
+        joins.add(new JoinExpression(JoinType.LEFTJOIN,o));
         return (A) this;
     }
     

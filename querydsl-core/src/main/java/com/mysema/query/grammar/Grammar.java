@@ -43,10 +43,10 @@ public class Grammar {
         return new ConstantExpr<A>(obj);
     }
 
-    static final <D extends Comparable<D>> ExprComparable<D> _number(Op<Number> operator, Expr<?>... args) {
+    static final <N extends Number,D extends Comparable<D>> ExprComparable<D> _number(Op<N> operator, Expr<?>... args) {
         _check("operator",operator);
         _check("args",args);
-        return new OperationNumber<D>(operator, args);
+        return new OperationNumber<N,D>(operator, args);
     }
     
     static final <A extends Comparable<A>> OrderSpecifier<A> _orderAsc(Expr<A> target) {
@@ -135,12 +135,22 @@ public class Grammar {
             A start, A end) {
         return _boolean(OpComparable.BETWEEN, left, _const(start), _const(end));
     }
+    
+    static <A extends Comparable<A>> ExprBoolean notBetween(Expr<A> left,
+            A start, A end) {
+        return _boolean(OpComparable.NOTBETWEEN, left, _const(start), _const(end));
+    }
 
     static <A extends Comparable<A>> ExprBoolean between(Expr<A> left,
             Expr<A> start, Expr<A> end) {
         return _boolean(OpComparable.BETWEEN, left, start, end);
     }
 
+    static <A extends Comparable<A>> ExprBoolean notBetween(Expr<A> left,
+            Expr<A> start, Expr<A> end) {
+        return _boolean(OpComparable.NOTBETWEEN, left, start, end);
+    }
+    
     static ExprString concat(Expr<String> left, Expr<String> right) {
         return _string(OpString.CONCAT, left, right);
     }
@@ -189,13 +199,18 @@ public class Grammar {
         return _boolean(OpComparable.GT, left, right);
     }
                 
-    public static <A> ExprBoolean in(A left, ExprEntity<Collection<A>> right){
+    static <A> ExprBoolean in(A left, ExprEntity<Collection<A>> right){
         return _boolean(Op.INELEMENTS, _const(left), right);
     }
     
     static <A extends Comparable<A>> ExprBoolean in(Expr<A> left,
             A... rest) {
         return _boolean(Op.INARRAY, left, _const(rest));
+    }
+    
+    static <A extends Comparable<A>> ExprBoolean notIn(Expr<A> left,
+            A... rest) {
+        return _boolean(Op.NOTINARRAY, left, _const(rest));
     }
     
     static <A> ExprBoolean in(ExprEntity<A> left, ExprEntity<Collection<A>> right){
@@ -240,6 +255,18 @@ public class Grammar {
     public static <A extends Comparable<A>> ExprComparable<A> mult(Expr<A> left, A right) {
         return _number(OpNumber.MULT, left, _const(right));
     }
+    
+    public static <A extends Comparable<A>> ExprComparable<A> avg(Expr<A> left){
+        return _number(OpNumber.AVG, left);
+    }
+    
+    public static <A extends Comparable<A>> ExprComparable<A> min(Expr<A> left){
+        return _number(OpNumber.MIN, left);
+    }
+    
+    public static <A extends Comparable<A>> ExprComparable<A> max(Expr<A> left){
+        return _number(OpNumber.MAX, left);
+    }
 
     public static <A extends Comparable<A>> ExprComparable<A> mult(Expr<A> left, Expr<A> right) {
         return _number(OpNumber.MULT, left, right);
@@ -263,6 +290,10 @@ public class Grammar {
     
     public static <A> SubQuery<A> select(Expr<A> select){
         return new SubQuery<A>(select);
+    }
+    
+    static <A> ExprComparable<Integer> size(Expr<Collection<A>> col){
+        return _number(Op.SIZE, col);
     }
     
     public static <A extends Comparable<A>> ExprComparable<A> sub(Expr<A> left, A right) {

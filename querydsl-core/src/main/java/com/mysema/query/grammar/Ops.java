@@ -24,6 +24,9 @@ public class Ops {
         Op<Boolean> ISNULL = new OpImpl<Boolean>();
         Op<Boolean> ISTYPEOF = new OpImpl<Boolean>();
         Op<Boolean> NE = new OpImpl<Boolean>();
+        Op<Boolean> NOTINARRAY =  new OpImpl<Boolean>();
+        Op<Integer> SIZE = new OpImpl<Integer>();
+        Op<?> MAPGET = new OpImpl<Object>();
     }
     
     /**
@@ -46,6 +49,7 @@ public class Ops {
         Op<Boolean> GT = new OpImpl<Boolean>();
         Op<Boolean> LOE = new OpImpl<Boolean>();
         Op<Boolean> LT = new OpImpl<Boolean>();
+        Op<Boolean> NOTBETWEEN = new OpImpl<Boolean>();
     }
     
     /**
@@ -63,7 +67,10 @@ public class Ops {
      */
     public interface OpNumber{
         Op<Number> ADD = new OpImpl<Number>();   
-        Op<Number> DIV = new OpImpl<Number>();        
+        Op<Number> AVG = new OpImpl<Number>();
+        Op<Number> DIV = new OpImpl<Number>();
+        Op<Number> MAX = new OpImpl<Number>();
+        Op<Number> MIN = new OpImpl<Number>();
         Op<Number> MOD = new OpImpl<Number>();
         Op<Number> MULT = new OpImpl<Number>();
         Op<Number> SUB = new OpImpl<Number>();
