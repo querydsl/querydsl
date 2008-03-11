@@ -8,7 +8,7 @@ import com.mysema.query.dto.DTO;
  * @author tiwe
  * @version $Id$
  */
-@DTO(domainType=Cat.class)
+@DTO
 public class Family {
     public Family(Cat mother, Cat mate, Cat offspr){
         

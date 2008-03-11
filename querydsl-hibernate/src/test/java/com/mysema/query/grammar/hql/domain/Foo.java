@@ -11,7 +11,7 @@ import com.mysema.query.dto.DTO;
  * @version $Id$
  */
 @Entity
-@DTO(domainType=Foo.class)
+@DTO
 public class Foo {
     java.util.Date startDate;
     String bar;
