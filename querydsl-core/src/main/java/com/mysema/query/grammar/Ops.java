@@ -73,6 +73,7 @@ public class Ops {
         Op<Number> MIN = new OpImpl<Number>();
         Op<Number> MOD = new OpImpl<Number>();
         Op<Number> MULT = new OpImpl<Number>();
+        Op<Number> SQRT = new OpImpl<Number>();
         Op<Number> SUB = new OpImpl<Number>();
     }
     

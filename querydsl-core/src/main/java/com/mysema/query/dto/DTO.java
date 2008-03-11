@@ -14,5 +14,4 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 
 public @interface DTO {    
-    Class<?> domainType();
 }
