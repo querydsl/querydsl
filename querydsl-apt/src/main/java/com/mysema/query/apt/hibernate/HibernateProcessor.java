@@ -157,12 +157,8 @@ public class HibernateProcessor implements AnnotationProcessor {
     }
 
     public void process() {
-        if (!"".equals(destClass)){
-            createDomainClasses();
-        }        
-        if (!"".equals(dtoClass)){
-            createDTOClasses();   
-        }       
+        if (!"".equals(destClass)) createDomainClasses();
+        if (!"".equals(dtoClass))  createDTOClasses();                 
     }
 
     private void serialize(File file, String template, Map<String,Object> model){

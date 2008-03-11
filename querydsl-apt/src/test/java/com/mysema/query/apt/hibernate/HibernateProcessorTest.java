@@ -8,9 +8,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.mysema.query.apt.FreeMarkerSerializer;
-import com.mysema.query.apt.TypeDecl;
-import com.mysema.query.apt.TypeDecl.FieldType;
+import com.mysema.query.apt.*;
 
 import freemarker.template.TemplateException;
 
@@ -47,11 +45,10 @@ public class HibernateProcessorTest  {
     
     private TypeDecl createTypeDecl() {
         TypeDecl typeDecl = new TypeDecl("com.mysema.query.DomainSuperClass","com.mysema.query.DomainClass","DomainClass");
-        TypeDecl.FieldDecl field = new TypeDecl.FieldDecl("field",null,"java.lang.String","java.lang.String",FieldType.STRING);
+        FieldDecl field = new FieldDecl("field",null,"java.lang.String","java.lang.String",FieldType.STRING);
         typeDecl.addField(field);
-        TypeDecl.ParameterDecl param = new TypeDecl.ParameterDecl("name","java.lang.String");
-        TypeDecl.ConstructorDecl constructor = new TypeDecl.ConstructorDecl(Collections.singleton(param));
-        typeDecl.addConstructor(constructor);
+        ParameterDecl param = new ParameterDecl("name","java.lang.String");
+        typeDecl.addConstructor( new ConstructorDecl(Collections.singleton(param)));
         return typeDecl;
     }
 }

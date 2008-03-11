@@ -1,4 +1,3 @@
-<#assign reserved = ["isnull", "isnotnull", "getType", "getMetadata", "toString", "hashCode", "getClass", "notify", "notifyAll", "wait"]>
 package ${package};
 
 import static com.mysema.query.grammar.HqlGrammar.*;
@@ -9,6 +8,7 @@ import static com.mysema.query.grammar.Types.*;
  *
  */
 public class ${classSimpleName} {
+
 <#list dtoTypes as decl>
     public static final class ${pre}${decl.simpleName} extends Constructor<${decl.name}>{
     <#list decl.constructors as co>    
