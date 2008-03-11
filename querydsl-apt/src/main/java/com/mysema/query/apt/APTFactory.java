@@ -32,7 +32,7 @@ public class APTFactory implements AnnotationProcessorFactory {
             .asList("*"));
 
     private static final Collection<String> supportedOptions = 
-        Arrays.asList("-AdestClass","-Ainclude", "-AnamePrefix");
+        Arrays.asList("-AdestClass","-AdtoClass","-Ainclude", "-AnamePrefix");
 
     public Collection<String> supportedAnnotationTypes() {
         return supportedAnnotations;

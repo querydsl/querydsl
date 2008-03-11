@@ -1,9 +1,6 @@
 <#assign reserved = ["isnull", "isnotnull", "getType", "getMetadata", "toString", "hashCode", "getClass", "notify", "notifyAll", "wait"]>
 package ${package};
 
-<#if (dtoTypes?size > 0)>
-import static com.mysema.query.grammar.HqlGrammar.*;
-</#if>
 import static com.mysema.query.grammar.Types.*;
 
 /**
@@ -11,17 +8,7 @@ import static com.mysema.query.grammar.Types.*;
  *
  */
 public class ${classSimpleName} {
-${include}
-<#list dtoTypes as decl>
-    public static final class ${pre}${decl.simpleName} extends Constructor<${decl.name}>{
-    <#list decl.constructors as co>    
-        public ${pre}${decl.simpleName}(<#list co.parameters as pa>Expr<${pa.typeName}> ${pa.name}<#if pa_has_next>,</#if></#list>){
-            super(${decl.name}.class<#list co.parameters as pa>,${pa.name}</#list>);
-        }
-    </#list>            
-    }
-    
-</#list>               
+${include}             
 <#list domainTypes as decl>               
     public static final class ${pre}${decl.simpleName} extends PathEntity<${decl.name}>{
 	<#list decl.stringFields as field>

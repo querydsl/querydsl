@@ -35,22 +35,18 @@ import com.sun.mirror.declaration.Declaration;
  *
  */
 public class HibernateProcessor implements AnnotationProcessor {
-    private final String destClass;
+
+    private final String destClass, dtoClass, include, namePrefix, targetFolder;
 
     private final AnnotationProcessorEnvironment env;
-
-    private final String include;
-
-    private final String namePrefix;
-
-    private final String targetFolder;
 
     public HibernateProcessor(AnnotationProcessorEnvironment env) throws IOException {
         this.env = env;
         this.targetFolder = env.getOptions().get("-s");
         this.destClass = getString(env.getOptions(), "-AdestClass=", "");
+        this.dtoClass = getString(env.getOptions(), "-AdtoClass=", "");
         this.include = getFileContent(env.getOptions(), "-Ainclude=", "");
-        this.namePrefix = getString(env.getOptions(), "-AnamePrefix=", "_");
+        this.namePrefix = getString(env.getOptions(), "-AnamePrefix=", "");
     }
 
     private void addSupertypeFields(TypeDecl typeDecl,
@@ -71,34 +67,11 @@ public class HibernateProcessor implements AnnotationProcessor {
         }        
     }
 
-    private String getFileContent(Map<String, String> options, String prefix,
-            String defaultValue) throws IOException {
-        for (Map.Entry<String, String> entry : options.entrySet()) {
-            if (entry.getKey().startsWith(prefix)) {
-                String fileName = entry.getKey().substring(prefix.length());
-                return FileUtils.readFileToString(new File(fileName), "UTF-8");
-            }
-        }
-        return defaultValue;
-    }
-
-    private String getString(Map<String, String> options, String prefix,
-            String defaultValue) {
-        for (Map.Entry<String, String> entry : options.entrySet()) {
-            if (entry.getKey().startsWith(prefix)) {
-                return entry.getKey().substring(prefix.length());
-            }
-        }
-        return defaultValue;
-    }
-
-    public void process() {
-        AnnotationTypeDeclaration a;
-        Map<String, Object> model = new HashMap<String, Object>();
+    private void createDomainClasses() {
         EntityVisitor visitor1 = new EntityVisitor(); 
         
         // mapped superclass
-        a = (AnnotationTypeDeclaration) env
+        AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env
         .getTypeDeclaration("javax.persistence.Entity");        
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
             typeDecl.accept(getDeclarationScanner(visitor1, NO_OP));
@@ -119,18 +92,10 @@ public class HibernateProcessor implements AnnotationProcessor {
         for (TypeDecl typeDecl : entityTypes.values()){
             addSupertypeFields(typeDecl, entityTypes, mappedSupertypes);
         }
-
-        // DTOs
-        a = (AnnotationTypeDeclaration) env
-                .getTypeDeclaration("com.mysema.query.dto.DTO");
-        DTOVisitor visitor2 = new DTOVisitor();
-        for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
-            typeDecl.accept(getDeclarationScanner(visitor2, NO_OP));
-        }
         
         // populate model
+        Map<String, Object> model = new HashMap<String, Object>();
         model.put("domainTypes", new TreeSet<TypeDecl>(entityTypes.values()));
-        model.put("dtoTypes", visitor2.types);
         model.put("pre", namePrefix);
         model.put("include", include);
         model.put("package", destClass.substring(0, destClass.lastIndexOf('.')));
@@ -142,10 +107,68 @@ public class HibernateProcessor implements AnnotationProcessor {
         if (!file.getParentFile().mkdirs()){
             System.err.println("Folder " + file.getParent() + " could not be created");
         }
+        serialize(file, "/querydsl-hibernate.ftl", model);
+        
+    }
+
+    private void createDTOClasses() {        
+        AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env
+                .getTypeDeclaration("com.mysema.query.dto.DTO");
+        DTOVisitor visitor2 = new DTOVisitor();
+        for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
+            typeDecl.accept(getDeclarationScanner(visitor2, NO_OP));
+        }         
+        
+        // populate model
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("dtoTypes", visitor2.types);
+        model.put("pre", namePrefix);
+        model.put("package", dtoClass.substring(0, dtoClass.lastIndexOf('.')));
+        model.put("classSimpleName", dtoClass.substring(dtoClass.lastIndexOf('.') + 1));
+        
+        // serialize it
+        String path = dtoClass.replace('.', '/') + ".java";
+        File file = new File(targetFolder, path);
+        if (!file.getParentFile().mkdirs()){
+            System.err.println("Folder " + file.getParent() + " could not be created");
+        }
+        serialize(file, "/querydsl-dto-hibernate.ftl", model);
+    }
+
+    private String getFileContent(Map<String, String> options, String prefix,
+            String defaultValue) throws IOException {
+        for (Map.Entry<String, String> entry : options.entrySet()) {
+            if (entry.getKey().startsWith(prefix)) {
+                String fileName = entry.getKey().substring(prefix.length());
+                return FileUtils.readFileToString(new File(fileName), "UTF-8");
+            }
+        }
+        return defaultValue;
+    }
+    
+    private String getString(Map<String, String> options, String prefix,
+            String defaultValue) {
+        for (Map.Entry<String, String> entry : options.entrySet()) {
+            if (entry.getKey().startsWith(prefix)) {
+                return entry.getKey().substring(prefix.length());
+            }
+        }
+        return defaultValue;
+    }
+
+    public void process() {
+        if (!"".equals(destClass)){
+            createDomainClasses();
+        }        
+        if (!"".equals(dtoClass)){
+            createDTOClasses();   
+        }       
+    }
+
+    private void serialize(File file, String template, Map<String,Object> model){
         try {
             Writer out = new OutputStreamWriter(new FileOutputStream(file));
-            new FreeMarkerSerializer("/querydsl-hibernate.ftl").serialize(
-                    model, out);
+            new FreeMarkerSerializer(template).serialize(model, out);
         } catch (Exception e) {
             String error = "Caught " + e.getClass().getName();
             throw new RuntimeException(error, e);

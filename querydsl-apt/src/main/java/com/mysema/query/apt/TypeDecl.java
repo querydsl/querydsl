@@ -64,22 +64,35 @@ public class TypeDecl implements Comparable<TypeDecl>{
         this.superType = d.getSuperclass().getDeclaration().getQualifiedName();
     }
     
+    public TypeDecl(String superType, String name, String simpleName){
+        this.superType = superType;
+        this.name = name;
+        this.simpleName = simpleName;
+    }
+    
     public void addConstructor(ConstructorDeclaration co) {
-        constructors.add(new ConstructorDecl(co));          
+        addConstructor(new ConstructorDecl(co));
+    }
+    
+    public void addConstructor(ConstructorDecl co){
+        constructors.add(co);     
     }
 
     public void addField(FieldDeclaration field){
-        FieldDecl fieldDecl = new FieldDecl(field);
+        addField(new FieldDecl(field));
+    }
+    
+    public void addField(FieldDecl fieldDecl){
         switch(fieldDecl.fieldType){
-          case BOOLEAN : booleanFields.add(fieldDecl); break;
-          case STRING : stringFields.add(fieldDecl); break;
-          case SIMPLE : simpleFields.add(fieldDecl); break;
-          case ENTITY : entityFields.add(fieldDecl); break;         
-          case ENTITYCOLLECTION : entityCollections.add(fieldDecl); break;
-          case SIMPLECOLLECTION : simpleCollections.add(fieldDecl); break;
-          case ENTITYMAP : entityMaps.add(fieldDecl); break;
-          case SIMPLEMAP : simpleMaps.add(fieldDecl); break;
-        }
+        case BOOLEAN : booleanFields.add(fieldDecl); break;
+        case STRING : stringFields.add(fieldDecl); break;
+        case SIMPLE : simpleFields.add(fieldDecl); break;
+        case ENTITY : entityFields.add(fieldDecl); break;         
+        case ENTITYCOLLECTION : entityCollections.add(fieldDecl); break;
+        case SIMPLECOLLECTION : simpleCollections.add(fieldDecl); break;
+        case ENTITYMAP : entityMaps.add(fieldDecl); break;
+        case SIMPLEMAP : simpleMaps.add(fieldDecl); break;
+      }
     }
     
     public int compareTo(TypeDecl o) {
@@ -152,7 +165,10 @@ public class TypeDecl implements Comparable<TypeDecl>{
     }
     
     public static class ConstructorDecl{
-        private Collection<ParameterDecl> parameters;
+        private Collection<ParameterDecl> parameters = Collections.emptyList();
+        public ConstructorDecl(Collection<ParameterDecl> params){
+            parameters = params;
+        }
         public ConstructorDecl(ConstructorDeclaration co) {
             parameters = new ArrayList<ParameterDecl>(co.getParameters().size());
             for (ParameterDeclaration pa : co.getParameters()){
@@ -169,6 +185,16 @@ public class TypeDecl implements Comparable<TypeDecl>{
     public static class FieldDecl implements Comparable<FieldDecl>{
         private final FieldType fieldType;
         private String name, keyTypeName, typeName, simpleTypeName;
+        
+        public FieldDecl(String name, String keyTypeName, String typeName, 
+                String simpleTypeName, FieldType fieldType){
+            this.name = name;
+            this.keyTypeName = keyTypeName;
+            this.typeName = typeName;
+            this.simpleTypeName = simpleTypeName;
+            this.fieldType = fieldType;
+        }
+        
         public FieldDecl(FieldDeclaration field) {
             name = field.getSimpleName();     
             String type = field.getType().toString();
@@ -253,6 +279,12 @@ public class TypeDecl implements Comparable<TypeDecl>{
     
     public static class ParameterDecl implements Comparable<ParameterDecl>{
         private final String name, typeName;
+        
+        public ParameterDecl(String name, String typeName){
+            this.name = name;
+            this.typeName = typeName;
+        }
+        
         public ParameterDecl(ParameterDeclaration pa) {
             name = pa.getSimpleName();
             String type = pa.getType().toString();
