@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 public class Order {
     long id;
     List<Item> items, lineItems;    
+    List<Integer> deliveredItemIndices;
     boolean paid;
     Customer customer;
 }

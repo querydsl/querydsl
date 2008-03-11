@@ -22,7 +22,7 @@ public class HqlGrammar extends Grammar{
         return new CountExpr(null);
     }
     
-    public static ExprNoEntity<Long> count(Expr<?> expr){
+    public static ExprComparable<Long> count(Expr<?> expr){
         return new CountExpr(expr);
     }
     

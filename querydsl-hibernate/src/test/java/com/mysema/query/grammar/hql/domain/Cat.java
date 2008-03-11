@@ -11,10 +11,9 @@ import javax.persistence.Entity;
  * @version $Id$
  */
 @Entity
-public class Cat {
+public class Cat extends Animal{
     Collection<Cat> kittens;
-    Cat mate;
-    int bodyWeight, id, weight;
-    String name;
-    boolean alive;    
+    Cat mate;   
+    Color eyecolor;
+    int breed;
 }

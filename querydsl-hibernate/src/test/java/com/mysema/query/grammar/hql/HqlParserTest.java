@@ -2,6 +2,10 @@ package com.mysema.query.grammar.hql;
 
 import static com.mysema.query.grammar.Grammar.avg;
 import static com.mysema.query.grammar.Grammar.max;
+import static com.mysema.query.grammar.Grammar.not;
+import static com.mysema.query.grammar.Grammar.sub;
+import static com.mysema.query.grammar.Grammar.div;
+import static com.mysema.query.grammar.Grammar.sqrt;
 import static com.mysema.query.grammar.HqlGrammar.count;
 import static com.mysema.query.grammar.HqlGrammar.distinct;
 import static com.mysema.query.grammar.HqlGrammar.maxindex;
@@ -19,9 +23,12 @@ import antlr.TokenStreamException;
 import antlr.collections.AST;
 
 import com.mysema.query.Domain1;
+import com.mysema.query.Domain1Dtos;
 import com.mysema.query.grammar.HqlQueryBase;
+import com.mysema.query.grammar.hql.domain.Color;
 import com.mysema.query.grammar.hql.domain.DomesticCat;
 import com.mysema.query.grammar.hql.domain.Payment;
+
 
 
 /**
@@ -34,6 +41,8 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     
     private Domain1.Account account = new Domain1.Account("account");
     
+    private Domain1.Animal an = new Domain1.Animal("an");
+    
     private Domain1.AuditLog log = new Domain1.AuditLog("log");
     
     private Domain1.Bar bar = new Domain1.Bar("bar");
@@ -41,12 +50,14 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     private Domain1.Calendar calendar = new Domain1.Calendar("calendar");
     
     private Domain1.Cat cat = new Domain1.Cat("cat");
+    private Domain1.Cat fatcat = new Domain1.Cat("fatcat");
     private Domain1.Cat kittens = new Domain1.Cat("kittens");
     private Domain1.Cat kitten = new Domain1.Cat("kitten");
     private Domain1.Cat kit = new Domain1.Cat("kit");
     private Domain1.Cat mate = new Domain1.Cat("mate");
     private Domain1.Cat mother = new Domain1.Cat("mother");
     private Domain1.Cat offspr = new Domain1.Cat("offspr");
+    private Domain1.Cat qat = new Domain1.Cat("qat");
     private Domain1.Cat rival = new Domain1.Cat("rival");
     
     private Domain1.Customer cust = new Domain1.Customer("cust");
@@ -54,6 +65,8 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     private Domain1.Foo foo = new Domain1.Foo("foo");
     
     private Domain1.Formula form = new Domain1.Formula("form");
+    
+    private Domain1.Item item = new Domain1.Item("item");
     
     private Domain1.Order ord = new Domain1.Order("ord");
     
@@ -119,7 +132,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
 //                + "from eg.DomesticCat as mother\n"
 //                + "join mother.mate as mate\n"
 //                + "left join mother.kittens as offspr\n" );
-        select(new Domain1.Family(mother, mate, offspr))
+        select(new Domain1Dtos.Family(mother, mate, offspr))
             .from(mother).innerJoin(mother.mate.as(mate))
             .leftJoin(mother.kittens.as(offspr)).parse();
     }
@@ -232,52 +245,68 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
         // TODO
 //        parse( "select item from Item item, Order ord\n"
 //                + "where ord.items[ ord.deliveredItemIndices[0] ] = item and ord.id = 11" );
+        select(item).from(item, ord).where(ord.items(ord.deliveredItemIndices(0)).eq(item).and(ord.id.eq(1l))).parse();
 //        parse( "select item from Item item, Order ord\n"
 //                + "where ord.items[ maxindex(ord.items) ] = item and ord.id = 11" );
+        select(item).from(item, ord).where(ord.items(maxindex(ord.items)).eq(item).and(ord.id.eq(1l))).parse();
 //
 //        parse( "select item from Item item, Order ord\n"
 //                + "where ord.items[ size(ord.items) - 1 ] = item" );
+        select(item).from(item, ord).where(ord.items(sub(ord.items.size(),1)).eq(item)).parse();
 //
 //        parse( "from eg.DomesticCat cat where upper(cat.name) like 'FRI%'" );
+        from(cat).where(cat.name.upper().like("FRI%")).parse();
 //
 //        parse( "select cust from Product prod, Store store\n"
 //                + "inner join store.customers cust\n"
 //                + "where prod.name = 'widget'\n"
 //                + "and store.location.name in ( 'Melbourne', 'Sydney' )\n"
 //                + "and prod = all elements(cust.currentOrder.lineItems)" );
-
+        // TODO                               
     }
 
     @Test
     public void testDocoExamples99() throws Exception {
 //        parse( "from eg.DomesticCat cat\n"
 //                + "order by cat.name asc, cat.weight desc, cat.birthdate" );
+        from(cat).orderBy(cat.name.asc(), cat.weight.desc(), cat.birthdate.asc()).parse();
     }
 
     @Test
     public void testDocoExamples910() throws Exception {
 //        parse( "select cat.color, sum(cat.weight), count(cat)\n"
 //                + "from eg.Cat cat group by cat.color" );
+        select(cat.color, sum(cat.weight), count(cat)).from(cat).groupBy(cat.color).parse();
 //        parse( "select foo.id, avg( elements(foo.names) ), max( indices(foo.names) )\n"
 //                + "from eg.Foo foo group by foo.id" );
+        // TODO
 //        parse( "select cat.color, sum(cat.weight), count(cat)\n"
 //                + "from eg.Cat cat group by cat.color\n"
 //                + "having cat.color in (eg.Color.TABBY, eg.Color.BLACK)" );
+        select(cat.color, sum(cat.weight), count(cat)).from(cat).groupBy(cat.color)
+            .having(cat.color.in(Color.TABBY, Color.BLACK)).parse();
 //        parse( "select cat from eg.Cat cat join cat.kittens kitten\n"
 //                + "group by cat having avg(kitten.weight) > 100\n"
 //                + "order by count(kitten) asc, sum(kitten.weight) desc" );
+        select(cat).from(cat).join(cat.kittens.as(kitten))
+            .groupBy(cat).having(avg(kitten.weight).gt(100))
+            .orderBy(count(kitten).asc(), sum(kitten.weight).desc()).parse();
     }
 
     @Test
     public void testDocoExamples911() throws Exception {
 //        parse( "from eg.Cat as fatcat where fatcat.weight > (\n"
 //                + "select avg(cat.weight) from eg.DomesticCat cat)" );
+        // TODO
 //        parse( "from eg.DomesticCat as cat where cat.name = some (\n"
 //                + "select name.nickName from eg.Name as name)\n" );
+        // TODO
 //        parse( "from eg.Cat as cat where not exists (\n"
 //                + "from eg.Cat as mate where mate.mate = cat)" );
+        // TODO
 //        parse( "from eg.DomesticCat as cat where cat.name not in (\n"
 //                + "select name.nickName from eg.Name as name)" );
+        // TODO
     }
 
     @Test
@@ -342,84 +371,92 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     }
 
     @Test
-    public void testExamples1() throws Exception {
-//        parse( "select new org.hibernate.test.S(s.count, s.address)\n"
-//                + "from s in class Simple" );
-//        parse( "select s.name, sysdate, trunc(s.pay), round(s.pay) from s in class Simple" );
-//        parse( "select round(s.pay, 2) from s" );
-//        parse( "select abs(round(s.pay)) from s in class Simple" );
-//        parse( "select trunc(round(sysdate)) from s in class Simple" );
-    }
-
-    @Test
     public void testArrayExpr() throws Exception {
 //        parse( "from Order ord where ord.items[0].id = 1234" );
-    }
-
-    @Test
-    public void testMultipleActualParameters() throws Exception {
-//        parse( "select round(s.pay, 2) from s" );
+        from(ord).where(ord.items(0).id.eq(1234l)).parse();
     }
 
     @Test
     public void testMultipleFromClasses() throws Exception {
 //        parse( "FROM eg.mypackage.Cat qat, com.toadstool.Foo f" );
+        from(qat,foo).parse();
 //        parse( "FROM eg.mypackage.Cat qat, org.jabberwocky.Dipstick" );
     }
 
     @Test
     public void testFromWithJoin() throws Exception {
 //        parse( "FROM eg.mypackage.Cat qat, com.toadstool.Foo f join net.sf.blurb.Blurb" );
+        from(qat,foo).join(cust).parse();
 //        parse( "FROM eg.mypackage.Cat qat  left join com.multijoin.JoinORama , com.toadstool.Foo f join net.sf.blurb.Blurb" );
+        // TODO
     }
 
     @Test
     public void testSelect() throws Exception {
 //        parse( "SELECT f FROM eg.mypackage.Cat qat, com.toadstool.Foo f join net.sf.blurb.Blurb" );
-//        parse( "SELECT DISTINCT bar FROM eg.mypackage.Cat qat  left join com.multijoin.JoinORama as bar, com.toadstool.Foo f join net.sf.blurb.Blurb" );
+//        parse( "SELECT DISTINCT bar FROM eg.mypackage.Cat qat  left join com.multijoin.JoinORama as bar, com.toadstool.Foo f join net.sf.blurb.Blurb" );        
 //        parse( "SELECT count(*) FROM eg.mypackage.Cat qat" );
+        select(count()).from(qat).parse();
 //        parse( "SELECT avg(qat.weight) FROM eg.mypackage.Cat qat" );
+        select(avg(qat.weight)).from(qat).parse();
     }
 
     @Test
     public void testWhere() throws Exception {
 //        parse( "FROM eg.mypackage.Cat qat where qat.name like '%fluffy%' or qat.toes > 5" );
+        from(qat).where(qat.name.like("%fluffy%").or(qat.toes.gt(5))).parse();
 //        parse( "FROM eg.mypackage.Cat qat where not qat.name like '%fluffy%' or qat.toes > 5" );
+        from(qat).where(not(qat.name.like("%fluffy%")).or(qat.toes.gt(5))).parse();
 //        parse( "FROM eg.mypackage.Cat qat where not qat.name not like '%fluffy%'" );
+        from(qat).where(not(qat.name.like("%fluffy%"))).parse();
 //        parse( "FROM eg.mypackage.Cat qat where qat.name in ('crater','bean','fluffy')" );
+        from(qat).where(qat.name.in("crater","bean","fluffy")).parse();
 //        parse( "FROM eg.mypackage.Cat qat where qat.name not in ('crater','bean','fluffy')" );
+        from(qat).where(qat.name.notIn("crater","bean","fluffy")).parse();
 //        parse( "from Animal an where sqrt(an.bodyWeight)/2 > 10" );
+        from(an).where(div(sqrt(an.bodyWeight),2).gt(10)).parse();
 //        parse( "from Animal an where (an.bodyWeight > 10 and an.bodyWeight < 100) or an.bodyWeight is null" );
+        from(an).where(an.bodyWeight.gt(10).and(an.bodyWeight.lt(100).or(an.bodyWeight.isnull()))).parse();
     }
 
     @Test
     public void testGroupBy() throws Exception {
 //        parse( "FROM eg.mypackage.Cat qat group by qat.breed" );
+        from(qat).groupBy(qat.breed).parse();
 //        parse( "FROM eg.mypackage.Cat qat group by qat.breed, qat.eyecolor" );
+        from(qat).groupBy(qat.breed, qat.eyecolor);
     }
 
     @Test
     public void testOrderBy() throws Exception {
 //        parse( "FROM eg.mypackage.Cat qat order by avg(qat.toes)" );
+        from(qat).orderBy(avg(qat.toes).asc()).parse();
 //        parse( "from Animal an order by sqrt(an.bodyWeight)/2" );
+        from(qat).orderBy(sqrt(div(an.bodyWeight,2)).asc()).parse();
     }
 
     @Test
     public void testDoubleLiteral() throws Exception {
 //        parse( "from eg.Cat as tinycat where fatcat.weight < 3.1415" );
+        from(cat).where(cat.weight.lt((int)3.1415));
 //        parse( "from eg.Cat as enormouscat where fatcat.weight > 3.1415e3" );
+        from(cat).where(cat.weight.gt((int)3.1415e3)).parse();
     }
 
     @Test
     public void testComplexConstructor() throws Exception {
-//        parse( "select new Foo(count(bar)) from bar" );
+//        parse( "select new Foo(count(bar)) from bar" );    
+        // TODO
 //        parse( "select new Foo(count(bar),(select count(*) from doofus d where d.gob = 'fat' )) from bar" );
+        // TODO
     }
 
     @Test
     public void testInNotIn() throws Exception {
 //        parse( "from foo where foo.bar in ('a' , 'b', 'c')" );
+        from(foo).where(foo.bar.in("a","b","c")).parse();
 //        parse( "from foo where foo.bar not in ('a' , 'b', 'c')" );
+        from(foo).where(foo.bar.notIn("a","b","c")).parse();
     }
 
     @Test
@@ -455,13 +492,21 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     public void testNot() throws Exception {
         // Cover NOT optimization in HqlParser
 //        parse( "from eg.Cat cat where not ( cat.kittens.size < 1 )" );
+        from(cat).where(not(cat.kittens.size().lt(1))).parse();
 //        parse( "from eg.Cat cat where not ( cat.kittens.size > 1 )" );
+        from(cat).where(not(cat.kittens.size().gt(1))).parse();
 //        parse( "from eg.Cat cat where not ( cat.kittens.size >= 1 )" );
+        from(cat).where(not(cat.kittens.size().goe(1))).parse();
 //        parse( "from eg.Cat cat where not ( cat.kittens.size <= 1 )" );
+        from(cat).where(not(cat.kittens.size().loe(1))).parse();
 //        parse( "from eg.DomesticCat cat where not ( cat.name between 'A' and 'B' ) " );
+        from(cat).where(not(cat.name.between("A", "B"))).parse();
 //        parse( "from eg.DomesticCat cat where not ( cat.name not between 'A' and 'B' ) " );
+        from(cat).where(not(cat.name.notBetween("A", "B"))).parse();
 //        parse( "from eg.Cat cat where not ( not cat.kittens.size <= 1 )" );
+        from(cat).where(not(not(cat.kittens.size().loe(1)))).parse();
 //        parse( "from eg.Cat cat where not  not ( not cat.kittens.size <= 1 )" );
+        from(cat).where(not(not(not(cat.kittens.size().loe(1))))).parse();
     }
 
     @Test
@@ -492,18 +537,6 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     @Test
     public void testHB1042() throws Exception {
 //        parse( "select x from fmc_web.pool.Pool x left join x.containers c0 where (upper(x.name) = upper(':') and c0.id = 1)" );
-    }
-
-    @Test
-    public void testKeywordInPath() throws Exception {
-//        // The keyword 'order' used as a property name.
-//        parse( "from Customer c where c.order.status = 'argh'" );
-//        // The keyword 'order' and 'count' used as a property name.
-//        parse( "from Customer c where c.order.count > 3" );
-//        // The keywords 'where', 'order' and 'count' used as a property name.
-//        parse( "select c.where from Customer c where c.order.count > 3" );
-//        parse( "from Interval i where i.end <:end" );
-//        parse( "from Letter l where l.case = :case" );
     }
 
     @Test

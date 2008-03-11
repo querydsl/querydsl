@@ -92,7 +92,7 @@
               <A>
                 -Ainclude=src/test/includes/instances.txt,
                 -AdestClass=com.mysema.query.Domain1,
-                -AnamePrefix=
+                -AdtoClass=com.mysema.query.Domain1Dtos
               </A>
               <testIncludes>
                 <testInclude>com/mysema/query/grammar/hql/domain/*.java</testInclude>
@@ -115,8 +115,7 @@
               <testGenerated>target/generated-test-sources/java</testGenerated>
               <nocompile>true</nocompile>
               <A>
-                -AdestClass=com.mysema.query.Domain2,
-                -AnamePrefix=
+                -AdestClass=com.mysema.query.Domain2
               </A>
               <testIncludes>
                 <testInclude>com/mysema/query/grammar/hql/domain2/*.java</testInclude>

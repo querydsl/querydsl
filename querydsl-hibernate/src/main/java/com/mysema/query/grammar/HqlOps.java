@@ -44,6 +44,7 @@ public class HqlOps extends Ops {
         patterns.put(OpNumber.MOD, "(%s % %s)");
         patterns.put(OpNumber.MULT,"(%s * %s)");
         patterns.put(OpNumber.SUB, "(%s - %s)");
+        patterns.put(OpNumber.SQRT, "sqrt(%s)");
         
         patterns.put(OpNumber.AVG, "avg(%s)");
         patterns.put(OpNumber.MAX, "max(%s)");
