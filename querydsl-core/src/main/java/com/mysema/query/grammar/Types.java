@@ -200,7 +200,7 @@ public class Types {
         public PathMetadata getMetadata() {return metadata;}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
-        public String toString(){ return metadata.path;}                
+        public String toString(){ return metadata.getPath();}                
     }
     
     public static class PathComparable<D extends Comparable<D>> extends ExprComparable<D> implements PathNoEntity<D>{
@@ -212,7 +212,7 @@ public class Types {
         public PathMetadata getMetadata() {return metadata;}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
-        public String toString() {return metadata.path;}
+        public String toString() {return metadata.getPath();}
     }
     
     public static class PathComponentCollection<D> extends ExprNoEntity<Collection<D>> implements Path<Collection<D>>{
@@ -224,12 +224,12 @@ public class Types {
             metadata = new PathMetadata(parent, localName);
         }        
         public ExprNoEntity<D> get(int index) {
-            return new PathNoEntitySimple<D>(type, metadata.parent, metadata.localName + "["+index+"]");}
+            return new PathNoEntitySimple<D>(type, metadata.getParent(), metadata.getLocalName() + "["+index+"]");}
         public PathMetadata getMetadata() {return metadata;}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
         public ExprComparable<Integer> size() { return Grammar.size(this);}
-        public String toString() {return metadata.path;}
+        public String toString() {return metadata.getPath();}
     }
     
     public static class PathComponentMap<K,V> extends ExprNoEntity<Map<K,V>> implements Path<Map<K,V>>{
@@ -244,7 +244,7 @@ public class Types {
         public PathMetadata getMetadata() {return metadata;}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
-        public String toString() {return metadata.path;}
+        public String toString() {return metadata.getPath();}
     }
     
     public static class PathEntity<D> extends ExprEntity<D> implements Path<D>{
@@ -285,7 +285,7 @@ public class Types {
         public ExprBoolean in(ExprEntity<Collection<D>> right){return Grammar.in(this, right);}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
-        public String toString() {return metadata.path;}
+        public String toString() {return metadata.getPath();}
         public <B extends D> ExprBoolean typeOf(Class<B> type) {return Grammar.typeOf(this, type);}
     }
     
@@ -298,12 +298,12 @@ public class Types {
             metadata = new PathMetadata(parent, localName);
         }        
         public AliasEntityCollection<D> as(PathEntity<D> to) {return Grammar.as(this, to);}
-        public ExprEntity<D> get(int index) {return new PathEntity<D>(type, metadata.parent, metadata.localName + "["+index+"]");}
+        public ExprEntity<D> get(int index) {return new PathEntity<D>(type, metadata.getParent(), metadata.getLocalName() + "["+index+"]");}
         public PathMetadata getMetadata() {return metadata;}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}    
         public ExprComparable<Integer> size() { return Grammar.size(this);}
-        public String toString() {return metadata.path;}
+        public String toString() {return metadata.getPath();}
     }
     
     public static class PathEntityMap<K,V> extends ExprEntity<Map<K,V>> implements Path<Map<K,V>>{
@@ -324,25 +324,7 @@ public class Types {
         public AliasEntity<D> as(PathEntity<D> to) {return Grammar.as(this, to);}
     }
     
-    public static final class PathMetadata{
-        private final String localName;
-        private final Path<?> parent;
-        private final String path;
-        PathMetadata(Path<?> parent, String localName){
-            this.parent = parent;
-            this.path = parent.getMetadata().path + "." + localName;
-            this.localName = localName;
-        }
-        PathMetadata(String localName) {
-            this.parent = null;
-            this.path = localName;
-            this.localName = localName;
-        }
-        public String getLocalName(){ return localName; }
-        public Path<?> getParent(){ return parent; }
-        public String getPath(){ return path;}
-        public String toString(){ return path; }
-    }
+
     
     public interface PathNoEntity<D> extends Path<D>{
         Expr<D> as(String to);              
@@ -357,7 +339,7 @@ public class Types {
         public PathMetadata getMetadata() {return metadata;}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
-        public String toString() {return metadata.path;}
+        public String toString() {return metadata.getPath();}
     }
     
     public static class PathString extends ExprString implements PathNoEntity<String>{
@@ -368,7 +350,7 @@ public class Types {
         public PathMetadata getMetadata() {return metadata;}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
-        public String toString() {return metadata.path;}
+        public String toString() {return metadata.getPath();}
     }
     
     public static class SubQuery<A> extends Expr<Collection<A>>{
