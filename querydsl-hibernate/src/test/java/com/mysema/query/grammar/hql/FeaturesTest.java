@@ -10,14 +10,11 @@ import static com.mysema.query.grammar.Grammar.mult;
 import static com.mysema.query.grammar.Grammar.not;
 import static com.mysema.query.grammar.Grammar.sub;
 import static com.mysema.query.grammar.HqlGrammar.*;
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import com.mysema.query.Domain1.Company;
-import com.mysema.query.Domain1.Department;
-import com.mysema.query.Domain1.Employee;
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.HqlSerializer;
@@ -113,8 +110,8 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     
     @Test
     public void testConstructors(){
-        Constructor<com.mysema.query.grammar.hql.domain.Cat> c = new Constructor<com.mysema.query.grammar.hql.domain.Cat>(com.mysema.query.grammar.hql.domain.Cat.class, cat.name);
-        toString("new com.mysema.query.grammar.hql.domain.Cat(cat.name)", c);
+        Constructor<com.mysema.query.grammar.hql.HqlDomain.Cat> c = new Constructor<com.mysema.query.grammar.hql.HqlDomain.Cat>(com.mysema.query.grammar.hql.HqlDomain.Cat.class, cat.name);
+        toString("new "+com.mysema.query.grammar.hql.HqlDomain.Cat.class.getName()+"(cat.name)", c);
         toString("new "+getClass().getName()+"$BookmarkDTO()", new _BookmarkDTO());
         toString("new "+getClass().getName()+"$BookmarkDTO(cat.name)", new _BookmarkDTO(cat.name));
     }
@@ -220,18 +217,6 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     }
     
     // "Simple" case, case ... when ... then ... else ... end, and "searched" case, case when ... then ... else ... end
-
-    
-    @Test
-    public void testShortCuts(){
-        Company c = new Company("c");
-        Department d = new Department("d");
-        Employee e = new Employee("e");
-//        select(c.name, d.name, e.firstName, e.lastName).from(c.join().departments.as(d).join().employees.as(e));
-        // join        -> PathEntityRelations (foreign key fields)
-        // departments -> PathEntityRelations
-        // as(d)       -> sets alias
-    }
     
     @Test
     public void testSimpleAliasForNonEntityPaths(){

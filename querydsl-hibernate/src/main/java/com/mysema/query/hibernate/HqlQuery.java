@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.grammar.HqlQueryBase;
+import com.mysema.query.grammar.PathMetadata;
 import com.mysema.query.grammar.Types.ExprBoolean;
 import com.mysema.query.grammar.Types.PathEntity;
 import com.mysema.query.grammar.Types.PathNoEntitySimple;
@@ -33,7 +34,7 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
 
     private Integer limit, offset;
     
-    private Session session;
+    private final Session session;
 
     public HqlQuery(Session session) {
         this.session = session;
@@ -67,7 +68,8 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
                         && !entry.getKey().equals("class")
                         && !entry.getKey().equals("created")
                         && !entry.getKey().equals("modified")){
-                    PathNoEntitySimple path = new PathNoEntitySimple(Object.class, entity, entry.getKey());
+                    PathMetadata md = PathMetadata.forProperty(entity, entry.getKey());
+                    PathNoEntitySimple path = new PathNoEntitySimple(Object.class, md);
                     if (entry.getValue() != null){
                         conds.add(path.eq(entry.getValue()));
                     }else{

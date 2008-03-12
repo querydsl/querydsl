@@ -95,7 +95,7 @@
                 -AdtoClass=com.mysema.query.Domain1Dtos
               </A>
               <testIncludes>
-                <testInclude>com/mysema/query/grammar/hql/domain/*.java</testInclude>
+                <testInclude>com/mysema/query/grammar/hql/*.java</testInclude>
               </testIncludes>
             </configuration>
           </execution>      

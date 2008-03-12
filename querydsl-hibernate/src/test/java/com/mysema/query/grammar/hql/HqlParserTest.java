@@ -16,9 +16,9 @@ import antlr.collections.AST;
 import com.mysema.query.Domain1;
 import com.mysema.query.Domain1Dtos;
 import com.mysema.query.grammar.HqlQueryBase;
-import com.mysema.query.grammar.hql.domain.Color;
-import com.mysema.query.grammar.hql.domain.DomesticCat;
-import com.mysema.query.grammar.hql.domain.Payment;
+import com.mysema.query.grammar.hql.HqlDomain.Color;
+import com.mysema.query.grammar.hql.HqlDomain.DomesticCat;
+import com.mysema.query.grammar.hql.HqlDomain.Payment;
 
 
 
@@ -41,7 +41,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     private Domain1.Calendar calendar = new Domain1.Calendar("calendar");
     
     private Domain1.Cat cat = new Domain1.Cat("cat");
-    private Domain1.Cat fatcat = new Domain1.Cat("fatcat");
+//    private Domain1.Cat fatcat = new Domain1.Cat("fatcat");
     private Domain1.Cat kittens = new Domain1.Cat("kittens");
     private Domain1.Cat kitten = new Domain1.Cat("kitten");
     private Domain1.Cat kit = new Domain1.Cat("kit");
