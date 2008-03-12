@@ -91,7 +91,7 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
 
     public A with(ExprBoolean... o) {
         if (!joins.isEmpty()){
-            joins.get(joins.size()-1).conditions = o;
+            joins.get(joins.size()-1).setConditions(o);
         }
         return (A) this;
     }
