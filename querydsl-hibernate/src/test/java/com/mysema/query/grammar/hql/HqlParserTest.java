@@ -73,6 +73,11 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     private Domain1.Product prod = new Domain1.Product("prod");
     
     private Domain1.Store store = new Domain1.Store("store");
+        
+    private HqlParserTest expect(String string) {
+        assertEquals(string, toString().replace('\n',' '));
+        return this;
+    }
     
     /**
      * Section 9.2 - from *
@@ -80,13 +85,13 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     @Test
     public void testDocoExamples92() throws Exception {        
 //        parse( "from eg.Cat" );
-        from(cat).parse();
+        from(cat).expect("from Cat cat").parse();
 //        parse( "from eg.Cat as cat" );
         from(cat).parse();
 //        parse( "from eg.Cat cat" );
         from(cat).parse();
 //        parse( "from Formula, Parameter" );
-        from(form, param).parse();
+        from(form, param).expect("from Formula form, Parameter param").parse();
 //        parse( "from Formula as form, Parameter as param" );
         from(form, param).parse();
     }
