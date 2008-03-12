@@ -6,7 +6,6 @@
 package com.mysema.query.grammar;
 
 import static com.mysema.query.grammar.Grammar.*;
-import com.mysema.query.grammar.Types.ConstantExpr;
 import com.mysema.query.grammar.Types.Expr;
 import com.mysema.query.grammar.Types.Path;
 
