@@ -60,13 +60,15 @@ public abstract class Visitor<T extends Visitor<T>> {
         return (T) this;
     }
 
-    protected abstract void visit(Alias<?> expr);
+    protected abstract void visit(AliasEntity<?> expr);
     
     protected abstract void visit(AliasEntityCollection<?> expr);
-
-    protected abstract void visit(AliasEntity<?> expr);
-
+    
     protected abstract void visit(AliasNoEntity<?> expr);
+
+    protected abstract void visit(AliasSimple expr);
+
+    protected abstract void visit(AliasToPath expr);
 
     protected abstract void visit(ConstantExpr<?> expr);
 

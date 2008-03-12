@@ -327,4 +327,5 @@ public class Grammar {
     static ExprString upper(Expr<String> left) {
         return _string(OpString.UPPER, left);
     }
+    
 }

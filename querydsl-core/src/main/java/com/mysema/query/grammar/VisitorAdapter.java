@@ -19,15 +19,15 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends
 
     @Override
     protected void visit(AliasEntityCollection<?> expr) {
-        visit((Alias<?>) expr);
+        visit((AliasToPath) expr);
     }
     @Override
     protected void visit(AliasEntity<?> expr) {
-        visit((Alias<?>) expr);
+        visit((AliasToPath) expr);
     }
     @Override
     protected void visit(AliasNoEntity<?> expr) {
-        visit((Alias<?>) expr);
+        visit((AliasSimple) expr);
     }
     @Override
     protected void visit(OperationBoolean expr) {

@@ -5,6 +5,9 @@
  */
 package com.mysema.query.grammar;
 
+import static com.mysema.query.grammar.Grammar.*;
+import com.mysema.query.grammar.Types.ConstantExpr;
+import com.mysema.query.grammar.Types.Expr;
 import com.mysema.query.grammar.Types.Path;
 
 /**
@@ -15,22 +18,49 @@ import com.mysema.query.grammar.Types.Path;
  * @version $Id$
  *
  */
-public final class PathMetadata{
-    private final String localName;
+public final class PathMetadata<T>{
+    private final Expr<T> expression;
     private final Path<?> parent;
-    private final String path;
-    PathMetadata(Path<?> parent, String localName){
+    private final Type type;    
+    
+    private PathMetadata(Path<?> parent, Expr<T> expression, Type type){
         this.parent = parent;
-        this.path = parent.getMetadata().getPath() + "." + localName;
-        this.localName = localName;
+        this.expression = expression;
+        this.type = type;
     }
-    PathMetadata(String localName) {
-        this.parent = null;
-        this.path = localName;
-        this.localName = localName;
+    
+    public static PathMetadata<Integer> forListAccess(Path<?> parent, Expr<Integer> index){
+        return new PathMetadata<Integer>(parent,index,Type.LISTACCESS);
     }
-    public String getLocalName(){ return localName; }
+    
+    public static PathMetadata<Integer> forListAccess(Path<?> parent, int index){
+        return new PathMetadata<Integer>(parent,_const(index),Type.LISTACCESSC);
+    }
+    
+    public static <KT> PathMetadata<KT> forMapAccess(Path<?> parent, Expr<KT> key){
+        return new PathMetadata<KT>(parent,key,Type.MAPACCESS);
+    }
+    
+    public static <KT> PathMetadata<KT> forMapAccess(Path<?> parent, KT key){
+        return new PathMetadata<KT>(parent,_const(key),Type.MAPACCESSC);
+    }
+    
+    public static PathMetadata<String> forProperty(Path<?> parent, String property){
+        return new PathMetadata<String>(parent,_const(property),Type.PROPERTY);
+    }
+    
+    public static PathMetadata<String> forVariable(String variable){
+        return new PathMetadata<String>(null,_const(variable),Type.VARIABLE);
+    }
+    
+    public Expr<T> getExpression() {return expression;}
+    
     public Path<?> getParent(){ return parent; }
-    public String getPath(){ return path;}
-    public String toString(){ return path; }
+    
+    public Type getType() {return type;}  
+    
+    public enum Type{
+        LISTACCESS,LISTACCESSC,MAPACCESS,MAPACCESSC,PROPERTY,VARIABLE
+    }    
+    
 }
