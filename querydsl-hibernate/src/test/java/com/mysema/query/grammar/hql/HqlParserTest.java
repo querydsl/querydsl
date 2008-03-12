@@ -59,6 +59,9 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     
     private Domain1.Item item = new Domain1.Item("item");
     
+    private Domain1.Named m = new Domain1.Named("m");
+    private Domain1.Named n = new Domain1.Named("n");
+    
     private Domain1.Order ord = new Domain1.Order("ord");
     
     private Domain1.Payment payment = new Domain1.Payment("payment");
@@ -66,6 +69,10 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     private Domain1.Parameter param = new Domain1.Parameter("param");
     
     private Domain1.Person person = new Domain1.Person("person");
+    
+    private Domain1.Product prod = new Domain1.Product("prod");
+    
+    private Domain1.Store store = new Domain1.Store("store");
     
     /**
      * Section 9.2 - from *
@@ -75,7 +82,9 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
 //        parse( "from eg.Cat" );
         from(cat).parse();
 //        parse( "from eg.Cat as cat" );
+        from(cat).parse();
 //        parse( "from eg.Cat cat" );
+        from(cat).parse();
 //        parse( "from Formula, Parameter" );
         from(form, param).parse();
 //        parse( "from Formula as form, Parameter as param" );
@@ -154,6 +163,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
         from(cat).parse();
 //        parse( "from java.lang.Object o" );
 //        parse( "from eg.Named n, eg.Named m where n.name = m.name" );
+        from(m,n).where(n.name.eq(m.name)).parse();
     }
 
     /**
@@ -233,7 +243,9 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
 //        parse( "select person from Person person, Calendar calendar\n"
 //                + "where calendar.holidays['national day'] = person.birthDay\n"
 //                + "and person.nationality.calendar = calendar" );
-        // TODO
+        select(person).from(person, calendar)
+            .where(calendar.holidays("national holiday").eq(person.birthDay)
+            .and(person.nationality().calendar.eq(calendar))).parse();
 //        parse( "select item from Item item, Order ord\n"
 //                + "where ord.items[ ord.deliveredItemIndices[0] ] = item and ord.id = 11" );
         select(item).from(item, ord).where(ord.items(ord.deliveredItemIndices(0)).eq(item).and(ord.id.eq(1l))).parse();
@@ -253,7 +265,11 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
 //                + "where prod.name = 'widget'\n"
 //                + "and store.location.name in ( 'Melbourne', 'Sydney' )\n"
 //                + "and prod = all elements(cust.currentOrder.lineItems)" );
-        // TODO                               
+        select(cust).from(prod, store).innerJoin(store.customers.as(cust))
+            .where(prod.name.eq("widget")
+            .and(store.location().name.in("Melbourne","Sydney"))
+//            .and()
+            ).parse();
     }
 
     @Test
@@ -415,7 +431,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
 //        parse( "FROM eg.mypackage.Cat qat group by qat.breed" );
         from(qat).groupBy(qat.breed).parse();
 //        parse( "FROM eg.mypackage.Cat qat group by qat.breed, qat.eyecolor" );
-        from(qat).groupBy(qat.breed, qat.eyecolor);
+        from(qat).groupBy(qat.breed, qat.eyecolor).parse();
     }
 
     @Test
@@ -429,7 +445,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     @Test
     public void testDoubleLiteral() throws Exception {
 //        parse( "from eg.Cat as tinycat where fatcat.weight < 3.1415" );
-        from(cat).where(cat.weight.lt((int)3.1415));
+        from(cat).where(cat.weight.lt((int)3.1415)).parse();
 //        parse( "from eg.Cat as enormouscat where fatcat.weight > 3.1415e3" );
         from(cat).where(cat.weight.gt((int)3.1415e3)).parse();
     }
@@ -437,7 +453,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     @Test
     public void testComplexConstructor() throws Exception {
 //        parse( "select new Foo(count(bar)) from bar" );    
-        // TODO
+        select(new Domain1Dtos.Foo(count(bar))).from(bar).parse();
 //        parse( "select new Foo(count(bar),(select count(*) from doofus d where d.gob = 'fat' )) from bar" );
         // TODO
     }

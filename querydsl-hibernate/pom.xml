@@ -98,29 +98,6 @@
                 <testInclude>com/mysema/query/grammar/hql/domain/*.java</testInclude>
               </testIncludes>
             </configuration>
-          </execution>
-          <execution>
-            <id>thinglink-domain</id>
-            <phase>generate-test-sources</phase>
-            <goals>
-              <goal>testExecute</goal>
-            </goals>
-            <configuration>
-              <aptSourceRoots>
-                <aptSourceRoot>src/test/java</aptSourceRoot>
-              </aptSourceRoots>
-              <force>true</force>
-              <fork>true</fork>
-              <factory>com.mysema.query.apt.APTFactory</factory>
-              <testGenerated>target/generated-test-sources/java</testGenerated>
-              <nocompile>true</nocompile>
-              <A>
-                -AdestClass=com.mysema.query.Domain2
-              </A>
-              <testIncludes>
-                <testInclude>com/mysema/query/grammar/hql/domain2/*.java</testInclude>
-              </testIncludes>
-            </configuration>
           </execution>      
         </executions>
       </plugin>

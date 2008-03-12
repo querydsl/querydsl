@@ -3,12 +3,12 @@ package com.mysema.query.grammar.hql.domain;
 import javax.persistence.Entity;
 
 /**
- * Product provides
+ * Location provides
  *
  * @author tiwe
  * @version $Id$
  */
 @Entity
-public class Product {
+public class Location {
     String name;
 }

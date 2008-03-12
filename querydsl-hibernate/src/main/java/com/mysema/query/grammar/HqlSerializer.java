@@ -165,8 +165,8 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
         switch(path.getMetadata().getType()){
             case LISTACCESS :             
             case MAPACCESS : _append("[").handle(expr)._append("]"); break;
-            case LISTACCESSC : 
-            case MAPACCESSC : _append("[")._append(expr.toString())._append("]"); break;
+            case LISTACCESSC : _append("[")._append(expr.toString())._append("]"); break;
+            case MAPACCESSC : _append("[").handle(expr)._append("]"); break;
             case PROPERTY : _append(".")._append(expr.toString()); break;
             case VARIABLE : _append(expr.toString()); break;
         }

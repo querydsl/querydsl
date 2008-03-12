@@ -1,14 +1,17 @@
 package com.mysema.query.grammar.hql.domain;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 
 /**
- * Product provides
+ * Store provides
  *
  * @author tiwe
  * @version $Id$
  */
 @Entity
-public class Product {
-    String name;
+public class Store {
+    List<Customer> customers;
+    Location location;
 }
