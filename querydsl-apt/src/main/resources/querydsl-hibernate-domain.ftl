@@ -24,9 +24,21 @@ ${include}
     </#list>
     <#list decl.entityMaps as field>
     	public final PathEntityMap<${field.keyTypeName},${field.typeName}> ${field.name} = _entitymap("${field.name}",${field.keyTypeName}.class,${field.typeName}.class);
+    	public ${pre}${field.simpleTypeName} ${field.name}(${field.keyTypeName} key) {
+    		return new ${pre}${field.simpleTypeName}(forMapAccess(${field.name},key));
+    	}
+    	public ${pre}${field.simpleTypeName} ${field.name}(Expr<${field.keyTypeName}> key) {
+    		return new ${pre}${field.simpleTypeName}(forMapAccess(${field.name},key));
+    	}
     </#list>
 	<#list decl.simpleMaps as field>
     	public final PathComponentMap<${field.keyTypeName},${field.typeName}> ${field.name} = _simplemap("${field.name}",${field.keyTypeName}.class,${field.typeName}.class);
+    	public PathNoEntitySimple<${field.typeName}> ${field.name}(${field.keyTypeName} key) {
+    		return new PathNoEntitySimple<${field.typeName}>(${field.typeName}.class,forMapAccess(${field.name},key));
+    	}
+    	public PathNoEntitySimple<${field.typeName}> ${field.name}(Expr<${field.keyTypeName}> key) {
+    		return new PathNoEntitySimple<${field.typeName}>(${field.typeName}.class,forMapAccess(${field.name},key));
+    	}
     </#list>     
     <#list decl.entityCollections as field>
     	public final PathEntityCollection<${field.typeName}> ${field.name} = _entitycol("${field.name}",${field.typeName}.class);
