@@ -29,7 +29,7 @@ public class HibernateProcessorTest  {
         model.put("package",  "com.mysema.query");
         model.put("classSimpleName", "Test");
         StringWriter writer = new StringWriter();
-        new FreeMarkerSerializer("/querydsl-hibernate.ftl").serialize(model, writer);
+        new FreeMarkerSerializer("/querydsl-hibernate-domain.ftl").serialize(model, writer);
     }
 
     @Test
@@ -40,7 +40,7 @@ public class HibernateProcessorTest  {
         model.put("package", "com.mysema.query");
         model.put("classSimpleName", "Test");
         StringWriter writer = new StringWriter();
-        new FreeMarkerSerializer("/querydsl-dto-hibernate.ftl").serialize(model, writer);
+        new FreeMarkerSerializer("/querydsl-hibernate-dto.ftl").serialize(model, writer);
     }
     
     private TypeDecl createTypeDecl() {

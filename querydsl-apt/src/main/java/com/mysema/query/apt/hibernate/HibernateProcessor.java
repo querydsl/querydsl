@@ -107,7 +107,7 @@ public class HibernateProcessor implements AnnotationProcessor {
         if (!file.getParentFile().mkdirs()){
             System.err.println("Folder " + file.getParent() + " could not be created");
         }
-        serialize(file, "/querydsl-hibernate.ftl", model);
+        serialize(file, "/querydsl-hibernate-domain.ftl", model);
         
     }
 
@@ -132,7 +132,7 @@ public class HibernateProcessor implements AnnotationProcessor {
         if (!file.getParentFile().mkdirs()){
             System.err.println("Folder " + file.getParent() + " could not be created");
         }
-        serialize(file, "/querydsl-dto-hibernate.ftl", model);
+        serialize(file, "/querydsl-hibernate-dto.ftl", model);
     }
 
     private String getFileContent(Map<String, String> options, String prefix,
