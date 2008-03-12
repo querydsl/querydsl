@@ -1,15 +1,6 @@
 package com.mysema.query.grammar.hql;
 
-import static com.mysema.query.grammar.Grammar.avg;
-import static com.mysema.query.grammar.Grammar.max;
-import static com.mysema.query.grammar.Grammar.not;
-import static com.mysema.query.grammar.Grammar.sub;
-import static com.mysema.query.grammar.Grammar.div;
-import static com.mysema.query.grammar.Grammar.sqrt;
-import static com.mysema.query.grammar.HqlGrammar.count;
-import static com.mysema.query.grammar.HqlGrammar.distinct;
-import static com.mysema.query.grammar.HqlGrammar.maxindex;
-import static com.mysema.query.grammar.HqlGrammar.sum;
+import static com.mysema.query.grammar.HqlGrammar.*;
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
@@ -32,7 +23,7 @@ import com.mysema.query.grammar.hql.domain.Payment;
 
 
 /**
- * QueryTest provides
+ * HqlParserTest provides
  *
  * @author tiwe
  * @version $Id$
@@ -232,7 +223,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
 //                + "where p.name = some elements(list.names)" );
         // TODO
 //        parse( "from eg.Cat cat where exists elements(cat.kittens)" );
-        // TODO
+        from(cat).where(exists(cat.kittens)).parse();
 //        parse( "from eg.Player p where 3 > all elements(p.scores)" );
         // TODO
 //        parse( "from eg.Show show where 'fizard' in indices(show.acts)" );
@@ -510,24 +501,6 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     }
 
     @Test
-    public void testOtherSyntax() throws Exception {
-//        parse( "select bar from org.hibernate.test.Bar bar order by ((bar.x - :valueX)*(bar.x - :valueX))" );
-//        parse( "from bar in class org.hibernate.test.Bar, foo in elements(bar.baz.fooSet)" );
-//        parse( "from one in class org.hibernate.test.One, many in elements(one.manies) where one.id = 1 and many.id = 1" );
-//        parse( "from org.hibernate.test.Inner _inner join _inner.middles middle" );
-//        parse( "FROM m IN CLASS org.hibernate.test.Master WHERE NOT EXISTS ( FROM d IN elements(m.details) WHERE NOT d.i=5 )" );
-//        parse( "FROM m IN CLASS org.hibernate.test.Master WHERE NOT 5 IN ( SELECT d.i FROM d IN elements(m.details) )" );
-//        parse( "SELECT m FROM m IN CLASS org.hibernate.test.Master, d IN elements(m.details) WHERE d.i=5" );
-//        parse( "SELECT m FROM m IN CLASS org.hibernate.test.Master, d IN elements(m.details) WHERE d.i=5" );
-//        parse( "SELECT m.id FROM m IN CLASS org.hibernate.test.Master, d IN elements(m.details) WHERE d.i=5" );
-        // I'm not sure about these... [jsd]
-//        parse("select bar.string, foo.string from bar in class org.hibernate.test.Bar inner join bar.baz as baz inner join elements(baz.fooSet) as foo where baz.name = 'name'");
-//        parse("select bar.string, foo.string from bar in class org.hibernate.test.Bar, bar.baz as baz, elements(baz.fooSet) as foo where baz.name = 'name'");
-//        parse("select count(*) where this.amount>-1 and this.name is null");
-//        parse("from sm in class org.hibernate.test.SubMulti where exists sm.children.elements");
-    }
-
-    @Test
     public void testEjbqlExtensions() throws Exception {
 //        parse( "select object(a) from Animal a where a.mother member of a.offspring" );
 //        parse( "select object(a) from Animal a where a.mother member a.offspring" ); //no member of
@@ -583,9 +556,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
             assertEquals( "At least one error occurred during parsing " + input, 0, parser.getParseErrorHandler().getErrorCount() );            
         }finally{
             clear();
-        }
-        
-    }
-    
+        }        
+    }    
 
 }

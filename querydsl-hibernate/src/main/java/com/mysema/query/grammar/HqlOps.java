@@ -73,6 +73,7 @@ public class HqlOps extends Ops {
         
         // HQL specific
         patterns.put(OpHql.DISTINCT, "distinct %s");
+        patterns.put(OpHql.EXISTS, "exists elements(%s)");
         patterns.put(OpHql.SUM, "sum(%s)");
         patterns.put(OpHql.SYSDATE, "sysdate");
         patterns.put(OpHql.CURRENT_DATE, "current_date()");
@@ -109,6 +110,7 @@ public class HqlOps extends Ops {
         Op<Object> MININDEX = new OpImpl<Object>();
         Op<Boolean> ISNOTEMPTY = new OpImpl<Boolean>();
         Op<Boolean> ISEMPTY = new OpImpl<Boolean>();
+        Op<Boolean> EXISTS = new OpImpl<Boolean>();
     }
     
 }

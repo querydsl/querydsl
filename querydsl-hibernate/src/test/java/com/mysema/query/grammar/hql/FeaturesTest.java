@@ -1,12 +1,23 @@
 package com.mysema.query.grammar.hql;
 
-import static com.mysema.query.grammar.Grammar.*;
+import static com.mysema.query.Domain1.cat;
+import static com.mysema.query.Domain1.catalog;
+import static com.mysema.query.Domain1.cust;
+import static com.mysema.query.Domain1.kitten;
+import static com.mysema.query.grammar.Grammar.add;
+import static com.mysema.query.grammar.Grammar.div;
+import static com.mysema.query.grammar.Grammar.mult;
+import static com.mysema.query.grammar.Grammar.not;
+import static com.mysema.query.grammar.Grammar.sub;
 import static com.mysema.query.grammar.HqlGrammar.*;
-import static com.mysema.query.Domain1.*;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.mysema.query.Domain1.Company;
+import com.mysema.query.Domain1.Department;
+import com.mysema.query.Domain1.Employee;
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.HqlSerializer;
@@ -23,6 +34,13 @@ import com.mysema.query.grammar.Types.Expr;
 public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     
     private HqlSerializer visitor = new HqlSerializer();
+    
+    @Test
+    public void testBasicStructure(){
+        assertNull(cat.getMetadata().getParent());
+        assertEquals(cat, cat.alive.getMetadata().getParent());
+        assertEquals("cat", cat.getMetadata().getExpression().toString());
+    }
     
     @Test
     public void testArgumentHandling(){
@@ -72,10 +90,6 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         toString("(cust is null or cat is null)", cust.isnull().or(cat.isnull()));
         toString("(cust is null and cat is null)", cust.isnull().and(cat.isnull()));
         toString("not cust is null", not(cust.isnull()));
-    }
-    
-    @Test
-    public void testBooleanOperationsInOOPWay(){
         cat.name.eq(cust.name().firstName).and(cat.bodyWeight.eq(kitten.bodyWeight));
         cat.name.eq(cust.name().firstName).or(cat.bodyWeight.eq(kitten.bodyWeight));
     }
@@ -97,17 +111,12 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         toString("cat.kittens[0]",cat.kittens.get(0));        
     }
     
-    @SuppressWarnings("unchecked")
     @Test
     public void testConstructors(){
-        Constructor c = new Constructor(com.mysema.query.grammar.hql.domain.Cat.class, cat.name);
+        Constructor<com.mysema.query.grammar.hql.domain.Cat> c = new Constructor<com.mysema.query.grammar.hql.domain.Cat>(com.mysema.query.grammar.hql.domain.Cat.class, cat.name);
         toString("new com.mysema.query.grammar.hql.domain.Cat(cat.name)", c);
-    }
-    
-    @Test
-    public void testConstructors2(){
         toString("new "+getClass().getName()+"$BookmarkDTO()", new _BookmarkDTO());
-        toString("new "+getClass().getName()+"$BookmarkDTO(cat.name)", new _BookmarkDTO(cat.name));   
+        toString("new "+getClass().getName()+"$BookmarkDTO(cat.name)", new _BookmarkDTO(cat.name));
     }
     
     @Test
@@ -116,10 +125,6 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         toString("current_date()", current_date());
         toString("current_time()", current_time());
         toString("current_timestamp()", current_timestamp());
-    }
-    
-    @Test
-    public void testDateOperations2(){
         // second(...), minute(...), hour(...), day(...), month(...), year(...),
         second(catalog.effectiveDate);
         minute(catalog.effectiveDate);
@@ -128,7 +133,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         month(catalog.effectiveDate);
         year(catalog.effectiveDate);
     }
-    
+        
     @Test
     public void testEJBQL3Functions(){
         // Any function or operator defined by EJB-QL 3.0: substring(), trim(), lower(), upper(), length(), locate(), abs(), sqrt(), bit_length(), mod()    
@@ -216,10 +221,6 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     
     // "Simple" case, case ... when ... then ... else ... end, and "searched" case, case when ... then ... else ... end
 
-    @Test
-    public void testPublicStaticFinalConstants(){
-        // Java public static final constants eg.Color.TABBY    
-    }
     
     @Test
     public void testShortCuts(){

@@ -8,7 +8,11 @@ package com.mysema.query.grammar;
 import java.util.Date;
 
 import com.mysema.query.grammar.HqlOps.OpHql;
-import com.mysema.query.grammar.Types.*;
+import com.mysema.query.grammar.Types.Expr;
+import com.mysema.query.grammar.Types.ExprBoolean;
+import com.mysema.query.grammar.Types.ExprComparable;
+import com.mysema.query.grammar.Types.ExprNoEntity;
+import com.mysema.query.grammar.Types.PathEntityCollection;
 
 /**
  * HqlGrammar extends the Query DSL base grammar to provide HQL specific syntax elements
@@ -45,16 +49,12 @@ public class HqlGrammar extends Grammar{
         return _comparable(OpHql.DISTINCT, left);
     }
     
+    public static ExprBoolean exists(PathEntityCollection<?> col) {
+       return _boolean(OpHql.EXISTS, col);
+    }
+    
     public static ExprComparable<Date> hour(Expr<Date> date){
         return _comparable(OpHql.HOUR, date);
-    }
-    
-    public static ExprComparable<Integer> maxindex(PathEntityCollection<?> collection) {
-        return _comparable(OpHql.MAXINDEX, collection);        
-    }
-    
-    public static ExprComparable<Integer> minindex(PathEntityCollection<?> collection) {
-        return _comparable(OpHql.MININDEX, collection);        
     }
     
     public static ExprBoolean isempty(PathEntityCollection<?> collection) {
@@ -65,6 +65,14 @@ public class HqlGrammar extends Grammar{
         return _boolean(OpHql.ISNOTEMPTY, collection);        
     }
     
+    public static ExprComparable<Integer> maxindex(PathEntityCollection<?> collection) {
+        return _comparable(OpHql.MAXINDEX, collection);        
+    }
+    
+    public static ExprComparable<Integer> minindex(PathEntityCollection<?> collection) {
+        return _comparable(OpHql.MININDEX, collection);        
+    }
+    
     public static ExprComparable<Date> minute(Expr<Date> date){
         return _comparable(OpHql.MINUTE, date);
     }
@@ -72,18 +80,18 @@ public class HqlGrammar extends Grammar{
     public static ExprComparable<Date> month(Expr<Date> date){
         return _comparable(OpHql.MONTH, date);
     }
-    
     public static <A> Expr<A> newInstance(Class<A> a, Expr<?>... args){
         return new Constructor<A>(a,args);
     }
+    
     public static ExprComparable<Date> second(Expr<Date> date){
         return _comparable(OpHql.SECOND, date);
     }
-    
+        
     public static <D extends Comparable<D>> ExprComparable<D> sum(Expr<D> left){ 
         return _number(OpHql.SUM, left);
     }
-        
+    
     public static ExprComparable<Date> sysdate(){
         return _comparable(OpHql.SYSDATE);
     }

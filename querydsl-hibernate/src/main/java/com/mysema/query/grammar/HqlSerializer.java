@@ -94,7 +94,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
             if (groupBy.isEmpty()) {
                 throw new IllegalArgumentException("having, but not groupBy was given");
             }                
-            _append("\nhaving ")._append(" and ", where);
+            _append("\nhaving ")._append(" and ", having);
         }
         if (!orderBy.isEmpty() && !forCountRow){
             _append("\norder by ");
@@ -111,8 +111,13 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
     public String toString(){ return builder.toString(); }
 
     @Override
-    protected void visit(Alias<?> expr) {
+    protected void visit(AliasSimple expr) {
         handle(expr.getFrom())._append(" as ")._append(expr.getTo());        
+    }
+    
+    @Override
+    protected void visit(AliasToPath expr) {
+        handle(expr.getFrom())._append(" as ").visit(expr.getTo());        
     }
     
     @Override
@@ -152,18 +157,29 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
     }
 
     @Override
-    protected void visit(Path<?> expr) {
-        _append(expr.toString());        
+    protected void visit(Path<?> path) {
+        if (path.getMetadata().getParent() != null){
+            visit(path.getMetadata().getParent());
+        }
+        Expr<?> expr = path.getMetadata().getExpression();
+        switch(path.getMetadata().getType()){
+            case LISTACCESS :             
+            case MAPACCESS : _append("[").handle(expr)._append("]"); break;
+            case LISTACCESSC : 
+            case MAPACCESSC : _append("[")._append(expr.toString())._append("]"); break;
+            case PROPERTY : _append(".")._append(expr.toString()); break;
+            case VARIABLE : _append(expr.toString()); break;
+        }
     }
 
     @Override
     protected void visit(SubQuery<?> subQuery) {
+        // TODO : replace this with a full sub query support
         _append("(");
         _append("\n    select ").handle(subQuery._select());
         _append("\n    from ")._append(", ", subQuery._from());
         _append("\n    where ")._append(" and ", subQuery._where());
-        _append(")");
-        
+        _append(")");        
     }
 
 }
