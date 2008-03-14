@@ -37,6 +37,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         assertNull(cat.getMetadata().getParent());
         assertEquals(cat, cat.alive.getMetadata().getParent());
         assertEquals("cat", cat.getMetadata().getExpression().toString());
+        
     }
     
     @Test

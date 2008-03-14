@@ -74,24 +74,20 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     
     private Domain1.Store store = new Domain1.Store("store");
         
-    private HqlParserTest expect(String string) {
-        assertEquals(string, toString().replace('\n',' '));
-        return this;
-    }
     
     /**
      * Section 9.2 - from *
      */
     @Test
-    public void testDocoExamples92() throws Exception {        
+    public void testDocoExamples92() throws Exception {       
 //        parse( "from eg.Cat" );
-        from(cat).expect("from Cat cat").parse();
+        from(cat).parse();
 //        parse( "from eg.Cat as cat" );
         from(cat).parse();
 //        parse( "from eg.Cat cat" );
         from(cat).parse();
 //        parse( "from Formula, Parameter" );
-        from(form, param).expect("from Formula form, Parameter param").parse();
+        from(form, param).parse();
 //        parse( "from Formula as form, Parameter as param" );
         from(form, param).parse();
     }
@@ -564,7 +560,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
 //        parse("select distinct user.party from com.itf.iceclaims.domain.party.user.UserImpl user inner join user.party.$RelatedWorkgroups relatedWorkgroups where relatedWorkgroups.workgroup.id = :workgroup and relatedWorkgroups.effectiveTime.start <= :datesnow and relatedWorkgroups.effectiveTime.end > :dateenow ");
     }
     
-    private void parse() throws RecognitionException, TokenStreamException{
+    protected void parse() throws RecognitionException, TokenStreamException{
         String input = toString();
         System.out.println( "input: " + input.replace('\n', ' '));
         HqlParser parser = HqlParser.getInstance( input );

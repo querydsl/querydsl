@@ -33,7 +33,7 @@
       <artifactId>querydsl-core</artifactId>
       <version>0.2.1</version>
     </dependency>
-    
+
     <!-- test -->
     <dependency>
       <groupId>com.mysema.commons</groupId>
@@ -47,6 +47,12 @@
       <version>4.4</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.0.2</version>
+      <scope>test</scope>      
+    </dependency>   
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-apt</artifactId>
@@ -87,7 +93,9 @@
               <force>true</force>
               <fork>true</fork>
               <factory>com.mysema.query.apt.APTFactory</factory>
-              <testGenerated>target/generated-test-sources/java</testGenerated>
+              <testGenerated>
+                target/generated-test-sources/java
+              </testGenerated>
               <nocompile>true</nocompile>
               <A>
                 -Ainclude=src/test/includes/instances.txt,
@@ -95,10 +103,12 @@
                 -AdtoClass=com.mysema.query.Domain1Dtos
               </A>
               <testIncludes>
-                <testInclude>com/mysema/query/grammar/hql/*.java</testInclude>
+                <testInclude>
+                  com/mysema/query/grammar/hql/*.java
+                </testInclude>
               </testIncludes>
             </configuration>
-          </execution>      
+          </execution>
         </executions>
       </plugin>
     </plugins>

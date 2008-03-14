@@ -5,8 +5,6 @@
  */
 package com.mysema.query.hibernate;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -16,10 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.grammar.HqlQueryBase;
-import com.mysema.query.grammar.PathMetadata;
 import com.mysema.query.grammar.Types.ExprBoolean;
 import com.mysema.query.grammar.Types.PathEntity;
-import com.mysema.query.grammar.Types.PathNoEntitySimple;
 
 /**
  * HqlQuery provides a fluent statically typed interface for creating HQL queries
@@ -42,18 +38,8 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
 
     private Query createQuery(String queryString, Integer limit, Integer offset) {
         Query query = session.createQuery(queryString);
-        List<?> constants = getConstants();
-        for (int i=0; i < constants.size(); i++){
-            String key = "a"+(i+1);
-            Object val = constants.get(i);            
-            if (val instanceof Collection<?>){
-                query.setParameterList(key,(Collection<?>)val);
-            }else if (val.getClass().isArray()){
-                query.setParameterList(key,(Object[])val);
-            }else{
-                query.setParameter(key,val);    
-            }
-        }
+        QueryUtil.setConstants(query, getConstants());
+        
         if (limit != null) query.setMaxResults(limit);
         if (offset != null) query.setFirstResult(offset);
         return query;
@@ -62,21 +48,7 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
     public HqlQuery forExample(PathEntity<?> entity, Map<String, Object> map) {
         select(entity).from(entity);
         try {            
-            List<ExprBoolean> conds = new ArrayList<ExprBoolean>(map.size());  
-            for (Map.Entry<String, Object> entry : map.entrySet()){                
-                if (!entry.getKey().equals("id") 
-                        && !entry.getKey().equals("class")
-                        && !entry.getKey().equals("created")
-                        && !entry.getKey().equals("modified")){
-                    PathMetadata md = PathMetadata.forProperty(entity, entry.getKey());
-                    PathNoEntitySimple path = new PathNoEntitySimple(Object.class, md);
-                    if (entry.getValue() != null){
-                        conds.add(path.eq(entry.getValue()));
-                    }else{
-                        conds.add(path.isnull());                        
-                    }                    
-                }
-            }            
+            List<ExprBoolean> conds = QueryUtil.createQBEConditions(entity,map);
             where(conds.toArray(new ExprBoolean[conds.size()]));
             return this;
         } catch (Exception e) {

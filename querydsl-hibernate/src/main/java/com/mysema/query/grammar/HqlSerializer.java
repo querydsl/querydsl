@@ -66,17 +66,24 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
             JoinExpression je = joins.get(i);            
             if (i > 0){
                 String sep = ", ";
-                switch(je.getType()){
-                case FULLJOIN:  sep = "\nfull join "; break;
-                case INNERJOIN: sep = "\ninner join "; break;
-                case JOIN:      sep = "\njoin "; break;
-                case LEFTJOIN:  sep = "\nleft join "; break;                                
-                }
+                if (je.getTarget() instanceof AliasToPath){
+                    switch(je.getType()){
+                    case FULLJOIN:  sep = "\nfull join "; break;
+                    case INNERJOIN: sep = "\ninner join "; break;
+                    case JOIN:      sep = "\njoin "; break;
+                    case LEFTJOIN:  sep = "\nleft join "; break;                                
+                    }    
+                }                
                 _append(sep);
             }
             // type specifier
-            if (je.getTarget() instanceof PathEntity && ((Path<?>)je.getTarget()).getMetadata().getParent() == null){
-                _append(((PathEntity<?>)je.getTarget()).getType().getSimpleName())._append(" ");
+            if (je.getTarget() instanceof PathEntity){
+                PathEntity<?> pe = (PathEntity<?>)je.getTarget();
+                if (pe.getMetadata().getParent() == null){
+                    String pn = pe.getType().getPackage().getName();
+                    String typeName = pe.getType().getName().substring(pn.length()+1); 
+                    _append(typeName)._append(" ");    
+                }                
             }            
             handle(je.getTarget());
             if (je.getConditions() != null){

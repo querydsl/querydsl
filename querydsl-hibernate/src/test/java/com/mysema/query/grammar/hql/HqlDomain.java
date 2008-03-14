@@ -6,6 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.annotations.IndexColumn;
 
 import com.mysema.query.dto.DTO;
 
@@ -18,46 +25,52 @@ import com.mysema.query.dto.DTO;
 public class HqlDomain {
     
     @Entity
-    public class Account {
-        Person owner;
+    public static class Account {
+        @Id long id;
+        @ManyToOne Person owner;
     }
     
     @Entity
-    public class Animal {
+    public static class Animal {
         boolean alive;
         java.util.Date birthdate;
-        int bodyWeight, id, weight, toes;
-        Color color;    
+        int bodyWeight, weight, toes;
+        Color color;
+        @Id int id;    
         String name;
     }
     
     @Entity
-    public class AuditLog {
-        Item item;
+    public static class AuditLog {
+        @Id int id;
+        @ManyToOne Item item;
     }
     
     @Entity
-    public class Bar {
+    public static class Bar {
         java.util.Date date;
+        @Id int id;
     }
     
     @Entity
-    public class Calendar {
-        Map<String,java.util.Date> holidays;
+    public static class Calendar {
+        @CollectionOfElements Map<String,java.util.Date> holidays;
+        @Id int id;
     }
     
     @Entity
-    public class Cat extends Animal{
+    public static class Cat extends Animal{
         int breed;
         Color eyecolor;   
-        Collection<Cat> kittens;
-        Cat mate;
+        @OneToMany Collection<Cat> kittens;
+        @ManyToOne Cat mate;
     }
     
     @Entity
-    public class Catalog {
+    public static class Catalog {
         Date effectiveDate;
-        Collection<Price> prices;
+        @Id int id;
+        @OneToMany Collection<Price> prices;
     }
     
     public enum Color {
@@ -65,50 +78,57 @@ public class HqlDomain {
     }
     
     @Entity
-    public class Company {
-        Employee ceo;
-        List<Department> departments;
-        long id;
+    public static class Company {
+        @ManyToOne Employee ceo;
+        @OneToMany @IndexColumn(name="_index") List<Department> departments;
+        @Id int id;
         String name;
     }
     
     @Entity
-    public class Customer {
-        Name name;    
+    public static class Customer {
+        @Id int id;
+        @ManyToOne Name name;    
     }
     
     @Entity
-    public class Department {
-        Company company; 
-        List<Employee> employees; 
+    public static class Department {
+        @ManyToOne Company company;
+        @OneToMany @IndexColumn(name="_index") List<Employee> employees; 
+        @Id int id; 
         String name;
     }
     
     @Entity
-    public class Document {
+    public static class Document {
+        @Id int id;
         String name;
         Date validTo;
     }
     
     @Entity
-    public class DomesticCat extends Cat{
+    public static class DomesticCat extends Cat{
 
     }
     
     @Entity
-    public class Employee {
-        Company company; 
-        String firstName, lastName;
+    public static class Employee {
+        @ManyToOne Company company;
+        String firstName, lastName; 
+        @Id int id;
     }
     
     @Entity
-    public class EvilType {
-        EvilType isnull, isnotnull, asc, desc, get, getType, getMetadata;
-        EvilType toString, hashCode, getClass, notify, notifyAll, wait;
+    public static class EvilType {
+        @Id int id;
+        @ManyToOne EvilType isnull, isnotnull, get, getType, getMetadata;
+        @ManyToOne EvilType toString, hashCode, getClass, notify, notifyAll, wait;
+        @ManyToOne @JoinColumn(name="_asc") EvilType asc;
+        @ManyToOne @JoinColumn(name="_desc") EvilType desc;
     }
     
     @DTO
-    public class Family {
+    public static class Family {
         public Family(Cat mother, Cat mate, Cat offspr){
             
         }
@@ -116,97 +136,108 @@ public class HqlDomain {
     
     @Entity
     @DTO
-    public class Foo {
+    public static class Foo {
         String bar;
+        @Id int id;
         java.util.Date startDate;
         public Foo(){}
         public Foo(long l){}
     }
     
     @Entity
-    public class Formula {
-        Parameter parameter;
+    public static class Formula {
+        @Id int id;
+        @ManyToOne Parameter parameter;
     }
     
     @Entity
-    public class Item {
-        long id;
-        Product product;    
+    public static class Item {
+        @Id long id;
+        @ManyToOne Product product;    
     }
     
     @Entity
-    public class Location {
+    public static class Location {
+        @Id long id;
         String name;
     }
     
     @Entity
-    public class Name {
-        String firstName, lastName;    
+    public static class Name {
+        String firstName, lastName;
+        @Id long id;    
     }
     
     @Entity
-    public class Named {
+    public static class Named {
+        @Id long id;
         String name;
     }
     
     @Entity
-    public class Nationality {
-        Calendar calendar;
+    public static class Nationality {
+        @ManyToOne Calendar calendar;
+        @Id long id;
     }
     
     @Entity
-    public class Order {
-        Customer customer;
-        List<Integer> deliveredItemIndices;    
-        long id;
-        List<Item> items, lineItems;
+    public static class Order {
+        @ManyToOne Customer customer;
+        @CollectionOfElements List<Integer> deliveredItemIndices;    
+        @Id long id;
+        @OneToMany @IndexColumn(name="_index") List<Item> items, lineItems;
         boolean paid;
     }
     
     @Entity
-    public class Parameter {
+    public static class Parameter {
+        @Id long id;
+    }
+    
+    @Entity
+    public static class Payment extends Item{
 
     }
     
     @Entity
-    public class Payment extends Item{
-
-    }
-    
-    @Entity
-    public class Person {
+    public static class Person {
         java.util.Date birthDay;
-        PersonId id;
-        Nationality nationality;
+        @Id long i;
+        @ManyToOne PersonId id;
+        @ManyToOne Nationality nationality;
     }
     
     @Entity
-    public class PersonId {
+    public static class PersonId {
         String country;
+        @Id long id;
         int medicareNumber;
     }
     
     @Entity
-    public class Price {
+    public static class Price {
         long amount;
-        Product product;
+        @Id long id;
+        @ManyToOne Product product;
     }
     
     @Entity
-    public class Product {
+    public static class Product {
+        @Id long id;
         String name;
     }
     
     @Entity
-    public class Store {
-        List<Customer> customers;
-        Location location;
+    public static class Store {
+        @OneToMany List<Customer> customers;
+        @Id long id;
+        @ManyToOne Location location;
     }
     
     @Entity
-    public class User {
-        Company company;
-        long id;
+    public static class User {
+        @ManyToOne Company company;
+        @Id long id;        
         String userName, firstName, lastName;    
     }
 
