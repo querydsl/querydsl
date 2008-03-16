@@ -41,10 +41,12 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
         return this;
     }
     
-    private String _toString(Expr<?> expr) {
+    private String _toString(Expr<?> expr, boolean wrap) {
         StringBuilder old = builder;
         builder = new StringBuilder();
+        if (wrap) builder.append("(");
         handle(expr);
+        if (wrap) builder.append(")");
         String ret = builder.toString();
         builder = old;
         return ret;
@@ -92,8 +94,8 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
             }
         }
         
-        if (!where.isEmpty()){
-            _append("\nwhere ")._append(" and ",where);
+        if (!where.isEmpty()){            
+            _append("\nwhere ")._append(" and ", where);
         }
         if (!groupBy.isEmpty()){
             _append("\ngroup by ")._append(", ",groupBy);
@@ -162,8 +164,14 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
         if (pattern == null)
             throw new IllegalArgumentException("Got no operation pattern for " + expr);
         Object[] args = new Object[expr.getArgs().length];
+        int precedence = HqlOps.getPrecedence(expr.getOperator());
         for (int i = 0; i < args.length; i++){
-            args[i] = _toString(expr.getArgs()[i]);
+            boolean wrap = false;
+            if (expr.getArgs()[i] instanceof Operation){
+                // wrap if outer operator precedes
+                wrap = precedence < HqlOps.getPrecedence(((Operation<?,?>)expr.getArgs()[i]).getOperator());
+            }
+            args[i] = _toString(expr.getArgs()[i],wrap);
         }
         _append(String.format(pattern, args));
     }

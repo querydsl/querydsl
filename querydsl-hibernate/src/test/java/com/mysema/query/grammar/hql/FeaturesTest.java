@@ -15,6 +15,7 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
+import com.mysema.query.Domain1;
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.HqlSerializer;
@@ -43,7 +44,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     @Test
     public void testArgumentHandling(){
         // Kitty is reused, so it should be used via one named parameter
-        toString("((cat.name = :a1 or cust.name.firstName = :a2) or kitten.name = :a1)",
+        toString("cat.name = :a1 or cust.name.firstName = :a2 or kitten.name = :a1",
             cat.name.eq("Kitty")
             .or(cust.name().firstName.eq("Hans"))
             .or(kitten.name.eq("Kitty")));
@@ -51,15 +52,27 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     
     @Test
     public void testArithmeticOperationsInFunctionalWay(){
-        toString("(cat.bodyWeight + :a1)",add(cat.bodyWeight,10));
-        toString("(cat.bodyWeight - :a1)",sub(cat.bodyWeight,10));
-        toString("(cat.bodyWeight * :a1)",mult(cat.bodyWeight,10));
-        toString("(cat.bodyWeight / :a1)",div(cat.bodyWeight,10));
+        toString("cat.bodyWeight + :a1",add(cat.bodyWeight,10));
+        toString("cat.bodyWeight - :a1",sub(cat.bodyWeight,10));
+        toString("cat.bodyWeight * :a1",mult(cat.bodyWeight,10));
+        toString("cat.bodyWeight / :a1",div(cat.bodyWeight,10));
         
-        toString("(cat.bodyWeight + :a1) < :a1",add(cat.bodyWeight,10).lt(10));
-        toString("(cat.bodyWeight - :a1) < :a1",sub(cat.bodyWeight,10).lt(10));
-        toString("(cat.bodyWeight * :a1) < :a1",mult(cat.bodyWeight,10).lt(10));
-        toString("(cat.bodyWeight / :a1) < :a1",div(cat.bodyWeight,10).lt(10));
+        toString("cat.bodyWeight + :a1 < :a1",add(cat.bodyWeight,10).lt(10));
+        toString("cat.bodyWeight - :a1 < :a1",sub(cat.bodyWeight,10).lt(10));
+        toString("cat.bodyWeight * :a1 < :a1",mult(cat.bodyWeight,10).lt(10));
+        toString("cat.bodyWeight / :a1 < :a1",div(cat.bodyWeight,10).lt(10));
+        
+        toString("(cat.bodyWeight + :a1) * :a2", mult(add(cat.bodyWeight,10),20));
+        toString("(cat.bodyWeight - :a1) * :a2", mult(sub(cat.bodyWeight,10),20));        
+        toString("cat.bodyWeight * :a1 + :a2", add(mult(cat.bodyWeight,10),20));
+        toString("cat.bodyWeight * :a1 - :a2", sub(mult(cat.bodyWeight,10),20));
+        
+        Domain1.Cat c1 = new Domain1.Cat("c1");
+        Domain1.Cat c2 = new Domain1.Cat("c2");
+        Domain1.Cat c3 = new Domain1.Cat("c3");
+        toString("c1.id + c2.id * c3.id", add(c1.id, mult(c2.id,c3.id)));
+        toString("c1.id * (c2.id + c3.id)", mult(c1.id, add(c2.id,c3.id)));
+        toString("(c1.id + c2.id) * c3.id", mult(add(c1.id,c2.id),c3.id));
     }
     
     @Test
@@ -67,7 +80,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         toString("cat.bodyWeight = kitten.bodyWeight", cat.bodyWeight.eq(kitten.bodyWeight));
         toString("cat.bodyWeight != kitten.bodyWeight",cat.bodyWeight.ne(kitten.bodyWeight));
         
-        toString("(cat.bodyWeight + kitten.bodyWeight) = kitten.bodyWeight", 
+        toString("cat.bodyWeight + kitten.bodyWeight = kitten.bodyWeight", 
             add(cat.bodyWeight,kitten.bodyWeight).eq(kitten.bodyWeight));
     }    
     
@@ -85,9 +98,9 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     
     @Test
     public void testBooleanOpeations(){
-        toString("(cust is null or cat is null)", cust.isnull().or(cat.isnull()));
-        toString("(cust is null and cat is null)", cust.isnull().and(cat.isnull()));
-        toString("not cust is null", not(cust.isnull()));
+        toString("cust is null or cat is null", cust.isnull().or(cat.isnull()));
+        toString("cust is null and cat is null", cust.isnull().and(cat.isnull()));
+        toString("not (cust is null)", not(cust.isnull()));
         cat.name.eq(cust.name().firstName).and(cat.bodyWeight.eq(kitten.bodyWeight));
         cat.name.eq(cust.name().firstName).or(cat.bodyWeight.eq(kitten.bodyWeight));
     }
@@ -196,8 +209,9 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     @Test
     public void testLogicalOperations(){
         // logical operations and, or, not        
-        toString("(cat = kitten or kitten = cat)",cat.eq(kitten).or(kitten.eq(cat)));
-        toString("(cat = kitten and kitten = cat)", cat.eq(kitten).and(kitten.eq(cat)));
+        toString("cat = kitten or kitten = cat",cat.eq(kitten).or(kitten.eq(cat)));
+        toString("cat = kitten and kitten = cat", cat.eq(kitten).and(kitten.eq(cat)));
+        toString("cat is null and (kitten is null or kitten.bodyWeight > :a1)", cat.isnull().and(kitten.isnull().or(kitten.bodyWeight.gt(10))));
     }
     
     @Test
@@ -223,7 +237,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     public void testSimpleAliasForNonEntityPaths(){
         toString("cat.bodyWeight as catbodyWeight", cat.bodyWeight.as("catbodyWeight"));
         toString("count(*) as numPosts", count().as("numPosts"));
-        toString("(cat.bodyWeight + kitten.bodyWeight) as abc", add(cat.bodyWeight,kitten.bodyWeight).as("abc"));
+        toString("cat.bodyWeight + kitten.bodyWeight as abc", add(cat.bodyWeight,kitten.bodyWeight).as("abc"));
     }
     
     @Test
@@ -273,10 +287,10 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         
         toString("cat.kittens as kitten", cat.kittens.as(kitten));
         
-        toString("(cat.bodyWeight + :a1)", add(cat.bodyWeight,10));
-        toString("(cat.bodyWeight - :a1)", sub(cat.bodyWeight,10));
-        toString("(cat.bodyWeight * :a1)", mult(cat.bodyWeight,10));
-        toString("(cat.bodyWeight / :a1)", div(cat.bodyWeight,10));        
+        toString("cat.bodyWeight + :a1", add(cat.bodyWeight,10));
+        toString("cat.bodyWeight - :a1", sub(cat.bodyWeight,10));
+        toString("cat.bodyWeight * :a1", mult(cat.bodyWeight,10));
+        toString("cat.bodyWeight / :a1", div(cat.bodyWeight,10));        
         
         toString("cat.bodyWeight as bw", cat.bodyWeight.as("bw"));
         
