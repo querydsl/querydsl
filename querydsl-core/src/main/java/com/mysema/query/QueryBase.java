@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.Types.Expr;
 import com.mysema.query.grammar.Types.ExprBoolean;
 import com.mysema.query.grammar.Types.ExprEntity;
-import com.mysema.query.grammar.OrderSpecifier;
 /**
  * QueryBase provides a basic implementation of the Query interface
  *
