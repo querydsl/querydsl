@@ -88,12 +88,13 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         where.addAll(Arrays.asList(o));
         return (A) this;
     }
-
+    
     public A with(ExprBoolean... o) {
         if (!joins.isEmpty()){
             joins.get(joins.size()-1).setConditions(o);
         }
         return (A) this;
     }
+
     
 }
