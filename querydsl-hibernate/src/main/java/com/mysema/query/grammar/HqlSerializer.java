@@ -12,6 +12,7 @@ import java.util.List;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.grammar.HqlGrammar.Constructor;
 import com.mysema.query.grammar.HqlGrammar.CountExpr;
+import com.mysema.query.grammar.HqlGrammar.DistinctPath;
 import com.mysema.query.grammar.Types.*;
 
 /**
@@ -68,10 +69,10 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
                 String sep = ", ";
                 if (je.getTarget() instanceof AliasToPath){
                     switch(je.getType()){
-                    case FULLJOIN:  sep = "\nfull join "; break;
-                    case INNERJOIN: sep = "\ninner join "; break;
-                    case JOIN:      sep = "\njoin "; break;
-                    case LEFTJOIN:  sep = "\nleft join "; break;                                
+                    case FULLJOIN:  sep = "\n  full join "; break;
+                    case INNERJOIN: sep = "\n  inner join "; break;
+                    case JOIN:      sep = "\n  join "; break;
+                    case LEFTJOIN:  sep = "\n  left join "; break;                                
                     }    
                 }                
                 _append(sep);
@@ -87,7 +88,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
             }            
             handle(je.getTarget());
             if (je.getConditions() != null){
-                _append("\nwith ")._append(" and ", Arrays.asList(je.getConditions()));
+                _append(" with ")._append(" and ", Arrays.asList(je.getConditions()));
             }
         }
         
@@ -140,15 +141,19 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
 
     protected void visit(Constructor<?> expr){
         _append("new ")._append(expr.getType().getName())._append("(");
-        _append(", ",Arrays.asList(expr.args))._append(")");
+        _append(", ",Arrays.asList(expr.getArgs()))._append(")");
     }
     
     protected void visit(CountExpr expr) {
-        if (expr.target == null){
+        if (expr.getTarget() == null){
             _append("count(*)");    
         }else{
-            _append("count(").handle(expr.target)._append(")");
+            _append("count(").handle(expr.getTarget())._append(")");
         }                
+    }
+    
+    protected void visit(DistinctPath<?> expr){
+        _append("distinct ").visit(expr.getPath());
     }
     
     @Override

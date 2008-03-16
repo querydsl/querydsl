@@ -1,0 +1,32 @@
+package com.mysema.query.util;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import org.hibernate.cfg.DefaultNamingStrategy;
+import org.hibernate.cfg.NamingStrategy;
+
+/**
+ * Hibernate provides
+ *
+ * @author tiwe
+ * @version $Id$
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@Inherited
+public @interface Hibernate {
+    /**
+     * 
+     * @return
+     */
+    Class<? extends NamingStrategy> namingStrategy() default DefaultNamingStrategy.class;
+    /**
+     * 
+     * @return
+     */
+    String properties();
+}

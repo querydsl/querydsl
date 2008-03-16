@@ -8,6 +8,8 @@ import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
 import com.mysema.query.hibernate.QueryUtil;
+import com.mysema.query.util.CustomNamingStrategy;
+import com.mysema.query.util.Hibernate;
 import com.mysema.query.util.HibernateTestRunner;
 
 
@@ -18,6 +20,7 @@ import com.mysema.query.util.HibernateTestRunner;
  * @version $Id$
  */
 @RunWith(HibernateTestRunner.class)
+@Hibernate(namingStrategy=CustomNamingStrategy.class, properties="default.properties")
 public class HqlIntegrationTest extends HqlParserTest{
     
     private Session session;

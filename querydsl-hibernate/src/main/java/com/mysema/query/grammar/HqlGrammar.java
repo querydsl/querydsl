@@ -8,11 +8,7 @@ package com.mysema.query.grammar;
 import java.util.Date;
 
 import com.mysema.query.grammar.HqlOps.OpHql;
-import com.mysema.query.grammar.Types.Expr;
-import com.mysema.query.grammar.Types.ExprBoolean;
-import com.mysema.query.grammar.Types.ExprComparable;
-import com.mysema.query.grammar.Types.ExprNoEntity;
-import com.mysema.query.grammar.Types.PathEntityCollection;
+import com.mysema.query.grammar.Types.*;
 
 /**
  * HqlGrammar extends the Query DSL base grammar to provide HQL specific syntax elements
@@ -45,8 +41,12 @@ public class HqlGrammar extends Grammar{
         return _comparable(OpHql.DAY, date);
     }
     
-    public static <D extends Comparable<D>> ExprNoEntity<D> distinct(ExprNoEntity<D> left){
-        return _comparable(OpHql.DISTINCT, left);
+    public static <T> Expr<T> distinct(PathEntity<T> left){
+        return new DistinctPath<T>(left);
+    }
+    
+    public static <T> Expr<T> distinct(PathNoEntity<T> left){
+        return new DistinctPath<T>(left);
     }
     
     public static ExprBoolean exists(PathEntityCollection<?> col) {
@@ -101,19 +101,30 @@ public class HqlGrammar extends Grammar{
     }
     
     public static class Constructor<D> extends Expr<D>{
-        public final Expr<?>[] args;
+        private final Expr<?>[] args;
         public Constructor(Class<D> type, Expr<?>... args){
             super(type);
             this.args = args;
         }
+        public Expr<?>[] getArgs(){ return args; }
     }
     
     public static class CountExpr extends ExprComparable<Long>{
-        public final Expr<?> target;
+        private final Expr<?> target;
         CountExpr(Expr<?> expr) {
             super(Long.class);
             this.target = expr;
         }
+        public Expr<?> getTarget(){ return target; }
+    }
+    
+    public static class DistinctPath<T> extends Expr<T>{
+        private final Path<T> path;
+        public DistinctPath(Path<T> path) {
+            super(((Expr<T>)path).getType());
+            this.path = path;
+        }
+        public Path<T> getPath(){ return path; }
     }
         
 }

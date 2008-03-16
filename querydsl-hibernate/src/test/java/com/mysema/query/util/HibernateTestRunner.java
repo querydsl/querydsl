@@ -1,6 +1,5 @@
 package com.mysema.query.util;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Properties;
 
@@ -32,7 +31,7 @@ public class HibernateTestRunner extends JUnit4ClassRunner{
     
     protected Object createTest() throws Exception {
         Object o = getTestClass().getConstructor().newInstance();
-        o.getClass().getMethod("setSession", Session.class).invoke(o, session);
+        o.getClass().getMethod("setSession", Session.class).invoke(o, session);        
         return o;
     }
     
@@ -49,19 +48,20 @@ public class HibernateTestRunner extends JUnit4ClassRunner{
     public void run(final RunNotifier notifier) {
         try{
             AnnotationConfiguration cfg = new AnnotationConfiguration();
+            
             // TODO : make this configurable
             for (Class<?> cl : HqlDomain.class.getDeclaredClasses()){
                 cfg.addAnnotatedClass(cl);
             }
-            // TODO : make this configurable
-            cfg.setNamingStrategy(new CustomNamingStrategy());
+            
+            Hibernate config = getTestClass().getJavaClass().getAnnotation(Hibernate.class);            
+            cfg.setNamingStrategy(config.namingStrategy().newInstance());
             Properties props = new Properties();
-            // TODO : make this configurable
-            props.load(HqlIntegrationTest.class.getResourceAsStream("default.properties"));
+            props.load(HqlIntegrationTest.class.getResourceAsStream(config.properties()));
             cfg.setProperties(props);
             sessionFactory = cfg.buildSessionFactory();    
             super.run(notifier);            
-        } catch (IOException e) {
+        } catch (Exception e) {
                 String error = "Caught " + e.getClass().getName();
                 throw new RuntimeException(error, e);
         }finally{

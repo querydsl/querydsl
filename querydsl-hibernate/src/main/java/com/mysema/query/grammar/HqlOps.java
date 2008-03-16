@@ -72,7 +72,7 @@ public class HqlOps extends Ops {
         
         
         // HQL specific
-        patterns.put(OpHql.DISTINCT, "distinct %s");
+//        patterns.put(OpHql.DISTINCT, "distinct %s");
         patterns.put(OpHql.EXISTS, "exists elements(%s)");
         patterns.put(OpHql.SUM, "sum(%s)");
         patterns.put(OpHql.SYSDATE, "sysdate");
@@ -97,7 +97,7 @@ public class HqlOps extends Ops {
         Op<Date> CURRENT_DATE = new OpImpl<Date>();
         Op<Date> CURRENT_TIME = new OpImpl<Date>();
         Op<Date> CURRENT_TIMESTAMP = new OpImpl<Date>();
-        Op<Comparable<?>> DISTINCT = new OpImpl<Comparable<?>>();
+//        Op<Comparable<?>> DISTINCT = new OpImpl<Comparable<?>>();
         Op<Number> SUM = new OpImpl<Number>();
         Op<Date> SYSDATE = new OpImpl<Date>();
         Op<Date> SECOND = new OpImpl<Date>();

@@ -154,6 +154,11 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
 //        parse( "select count(distinct cat.name), count(cat) from eg.Cat cat" );
         select(count(distinct(cat.name)), count(cat)).from(cat).parse();
     }
+    
+    @Test
+    public void test_own_DistinctEntities() throws Exception{
+        select(distinct(cat)).from(cat).innerJoin(cat.kittens.as(kitten)).parse();
+    }
 
     /**
      * Section 9.6 - Polymorphism *
