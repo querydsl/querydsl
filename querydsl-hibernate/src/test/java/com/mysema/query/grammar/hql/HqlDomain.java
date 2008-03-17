@@ -89,6 +89,7 @@ public class HqlDomain {
     public static class Customer {
         @Id int id;
         @ManyToOne Name name;    
+        @ManyToOne Order currentOrder;
     }
     
     @Entity
@@ -142,6 +143,7 @@ public class HqlDomain {
         java.util.Date startDate;
         public Foo(){}
         public Foo(long l){}
+        public Foo(long l, long r){}
     }
     
     @Entity
@@ -164,8 +166,14 @@ public class HqlDomain {
     
     @Entity
     public static class Name {
-        String firstName, lastName;
+        String firstName, lastName, nickName;
         @Id long id;    
+    }
+    
+    @Entity
+    public static class NameList{
+        @Id long id;
+        @CollectionOfElements Collection<String> names;
     }
     
     @Entity
@@ -205,6 +213,7 @@ public class HqlDomain {
         @Id long i;
         @ManyToOne PersonId id;
         @ManyToOne Nationality nationality;
+        String name;
     }
     
     @Entity
@@ -212,6 +221,12 @@ public class HqlDomain {
         String country;
         @Id long id;
         int medicareNumber;
+    }
+    
+    @Entity
+    public static class Player{
+        @Id long id;
+        @CollectionOfElements List<Integer> scores;
     }
     
     @Entity
@@ -232,6 +247,12 @@ public class HqlDomain {
         @OneToMany List<Customer> customers;
         @Id long id;
         @ManyToOne Location location;
+    }
+    
+    @Entity
+    public static class doofus{
+        @Id long id;
+        String gob;
     }
     
     @Entity

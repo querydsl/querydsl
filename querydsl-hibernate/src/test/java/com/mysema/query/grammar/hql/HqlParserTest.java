@@ -1,5 +1,6 @@
 package com.mysema.query.grammar.hql;
 
+import static com.mysema.query.grammar.Grammar.*;
 import static com.mysema.query.grammar.HqlGrammar.*;
 import static org.junit.Assert.assertEquals;
 
@@ -15,7 +16,10 @@ import antlr.collections.AST;
 
 import com.mysema.query.Domain1;
 import com.mysema.query.Domain1Dtos;
+import com.mysema.query.Domain1.Item;
+import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlQueryBase;
+import com.mysema.query.grammar.Types.Expr;
 import com.mysema.query.grammar.hql.HqlDomain.Color;
 import com.mysema.query.grammar.hql.HqlDomain.DomesticCat;
 import com.mysema.query.grammar.hql.HqlDomain.Payment;
@@ -41,7 +45,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     private Domain1.Calendar calendar = new Domain1.Calendar("calendar");
     
     private Domain1.Cat cat = new Domain1.Cat("cat");
-//    private Domain1.Cat fatcat = new Domain1.Cat("fatcat");
+    private Domain1.Cat fatcat = new Domain1.Cat("fatcat");
     private Domain1.Cat kittens = new Domain1.Cat("kittens");
     private Domain1.Cat kitten = new Domain1.Cat("kitten");
     private Domain1.Cat kit = new Domain1.Cat("kit");
@@ -51,6 +55,8 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     private Domain1.Cat qat = new Domain1.Cat("qat");
     private Domain1.Cat rival = new Domain1.Cat("rival");
     
+    private Domain1.doofus d = new Domain1.doofus("d");
+    
     private Domain1.Customer cust = new Domain1.Customer("cust");
     
     private Domain1.Foo foo = new Domain1.Foo("foo");
@@ -59,8 +65,12 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     
     private Domain1.Item item = new Domain1.Item("item");
     
+    private Domain1.Name name = new Domain1.Name("name");
+    
     private Domain1.Named m = new Domain1.Named("m");
     private Domain1.Named n = new Domain1.Named("n");
+    
+    private Domain1.NameList list = new Domain1.NameList("list");
     
     private Domain1.Order ord = new Domain1.Order("ord");
     
@@ -68,7 +78,10 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     
     private Domain1.Parameter param = new Domain1.Parameter("param");
     
-    private Domain1.Person person = new Domain1.Person("person");
+    private Domain1.Person person = new Domain1.Person("person");    
+    private Domain1.Person p = new Domain1.Person("p");
+    
+    private Domain1.Player player = new Domain1.Player("player");
     
     private Domain1.Product prod = new Domain1.Product("prod");
     
@@ -230,18 +243,18 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
 //        parse( "from Order ord where maxindex(ord.items) > 100" );
         from(ord).where(maxindex(ord.items).gt(100)).parse();
 //        parse( "from Order ord where minelement(ord.items) > 10000" );
-        // TODO
+//        from(ord).where(ord.items.minelement().gt(10000)).parse();
 //
 //        parse( "select mother from eg.Cat as mother, eg.Cat as kit\n"
 //                + "where kit in elements(foo.kittens)" );
         select(mother).from(mother, kit).where(kit.in(mother.kittens)).parse();
 //        parse( "select p from eg.NameList list, eg.Person p\n"
 //                + "where p.name = some elements(list.names)" );
-        // TODO
+        select(p).from(list,p).where(p.name.eq(some(list.names))).parse();
 //        parse( "from eg.Cat cat where exists elements(cat.kittens)" );
         from(cat).where(exists(cat.kittens)).parse();
 //        parse( "from eg.Player p where 3 > all elements(p.scores)" );
-        // TODO
+        from(player).where(all(player.scores).lt(3)).parse();
 //        parse( "from eg.Show show where 'fizard' in indices(show.acts)" );
         // TODO
 //        parse( "from Order ord where ord.items[0].id = 1234" );
@@ -271,11 +284,11 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
 //                + "where prod.name = 'widget'\n"
 //                + "and store.location.name in ( 'Melbourne', 'Sydney' )\n"
 //                + "and prod = all elements(cust.currentOrder.lineItems)" );
-        select(cust).from(prod, store).innerJoin(store.customers.as(cust))
-            .where(prod.name.eq("widget")
-            .and(store.location().name.in("Melbourne","Sydney"))
-//            .and()
-            ).parse();
+//        select(cust).from(prod, store).innerJoin(store.customers.as(cust))
+//            .where(prod.name.eq("widget")
+//            .and(store.location().name.in("Melbourne","Sydney"))
+//            .and(prod.eq(all(cust.currentOrder().lineItems)))
+//            ).parse();
     }
 
     @Test
@@ -310,16 +323,18 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
     public void testDocoExamples911() throws Exception {
 //        parse( "from eg.Cat as fatcat where fatcat.weight > (\n"
 //                + "select avg(cat.weight) from eg.DomesticCat cat)" );
-        // TODO
+        from(fatcat).where(fatcat.weight.gt(
+                HqlGrammar.select(avg(cat.weight)).from(cat))).parse();
 //        parse( "from eg.DomesticCat as cat where cat.name = some (\n"
 //                + "select name.nickName from eg.Name as name)\n" );
-        // TODO
+        from(cat).where(cat.name.eq(some(
+                HqlGrammar.select(name.nickName).from(name)))).parse();
 //        parse( "from eg.Cat as cat where not exists (\n"
 //                + "from eg.Cat as mate where mate.mate = cat)" );
-        // TODO
+        from(cat).where(notExists(HqlGrammar.from(mate).where(mate.mate.eq(cat)))).parse();
 //        parse( "from eg.DomesticCat as cat where cat.name not in (\n"
 //                + "select name.nickName from eg.Name as name)" );
-        // TODO
+        from(cat).where(cat.name.notIn(HqlGrammar.select(name.nickName).from(name))).parse();
     }
 
     @Test
@@ -461,7 +476,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
 //        parse( "select new Foo(count(bar)) from bar" );    
         select(new Domain1Dtos.Foo(count(bar))).from(bar).parse();
 //        parse( "select new Foo(count(bar),(select count(*) from doofus d where d.gob = 'fat' )) from bar" );
-        // TODO
+        select(new Domain1Dtos.Foo(count(bar), HqlGrammar.select(count()).from(d).where(d.gob.eq("fat")))).from(bar).parse();
     }
 
     @Test

@@ -56,9 +56,8 @@ public class HqlOps extends Ops {
         add(Op.EQ, "%s = %s",18);
         add(Op.ISTYPEOF, "%s.class = %s");
         add(Op.NE, "%s != %s",25);
-        add(Op.INARRAY, "%s in (%s)");
-        add(Op.NOTINARRAY, "%s not in (%s)");
-        add(Op.INELEMENTS, "%s in elements(%s)");
+        add(Op.IN, "%s in %s");
+        add(Op.NOTIN, "%s not in %s");        
         add(Op.ISNULL, "%s is null",26);
         add(Op.ISNOTNULL, "%s is not null",26);
         add(Op.SIZE, "size(%s)");
@@ -71,10 +70,8 @@ public class HqlOps extends Ops {
         add(OpString.SUBSTR2ARGS, "substring(%s,%s,%s)");
         add(OpString.TRIM, "trim(%s)");
         add(OpString.UPPER, "upper(%s)");
-        
-        
+                
         // HQL specific
-        add(OpHql.EXISTS, "exists elements(%s)");
         add(OpHql.SUM, "sum(%s)");
         add(OpHql.SYSDATE, "sysdate");
         add(OpHql.CURRENT_DATE, "current_date()");
@@ -88,6 +85,12 @@ public class HqlOps extends Ops {
         add(OpHql.YEAR, "year(%s)");
         add(OpHql.MAXINDEX, "maxindex(%s)");
         add(OpHql.MININDEX, "minindex(%s)");
+        
+        // quantified expressions
+        add(OpQuant.ANY, "any %s");
+        add(OpQuant.ALL, "all %s");
+        add(OpQuant.EXISTS, "exists %s");
+        add(OpQuant.NOTEXISTS, "not exists %s");        
     }
     
     private static void add(Op<?> op, String pattern){
@@ -116,7 +119,6 @@ public class HqlOps extends Ops {
         Op<Date> CURRENT_TIME = new OpImpl<Date>();
         Op<Date> CURRENT_TIMESTAMP = new OpImpl<Date>();
         Op<Date> DAY = new OpImpl<Date>();
-        Op<Boolean> EXISTS = new OpImpl<Boolean>();
         Op<Date> HOUR = new OpImpl<Date>();
         Op<Boolean> ISEMPTY = new OpImpl<Boolean>();
         Op<Boolean> ISNOTEMPTY = new OpImpl<Boolean>();
@@ -128,6 +130,18 @@ public class HqlOps extends Ops {
         Op<Number> SUM = new OpImpl<Number>();
         Op<Date> SYSDATE = new OpImpl<Date>();
         Op<Date> YEAR = new OpImpl<Date>();
+    }
+    
+    @SuppressWarnings("unchecked")
+    public interface OpQuant<RT>{
+//        some / any = true for any
+//        all        = true for all
+//        exists     = true is subselect matches
+//        not exists = true if subselect doesn't match
+        Op<?> ANY = new OpImpl();
+        Op<?> ALL = new OpImpl();
+        Op<?> EXISTS = new OpImpl();
+        Op<?> NOTEXISTS = new OpImpl();
     }
     
 }
