@@ -5,11 +5,7 @@
  */
 package com.mysema.query.grammar;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.mysema.query.grammar.Ops;
+import java.util.*;
 
 /**
  * Ops provides
@@ -18,7 +14,22 @@ import com.mysema.query.grammar.Ops;
  * @version $Id$
  */
 public class HqlOps extends Ops {
+    
+    public static final Set<Op<?>> wrapCollectionsForOp;
+    
+    static{
+        Set<Op<?>> ops = new HashSet<Op<?>>();
+        ops.add(Op.IN);
+        ops.add(Op.NOTIN);
+        ops.add(OpQuant.ALL);
+        ops.add(OpQuant.ANY);
+        ops.add(OpQuant.EXISTS);
+        ops.add(OpQuant.NOTEXISTS);
+        wrapCollectionsForOp = Collections.unmodifiableSet(ops);
+    }
+    
     private static final Map<Op<?>,String> patterns = new HashMap<Op<?>,String>();
+    
     private static final Map<Op<?>,Integer> precedence = new HashMap<Op<?>,Integer>();
     
     static{            

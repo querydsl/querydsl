@@ -5,12 +5,13 @@
  */
 package com.mysema.query.grammar;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.HqlGrammar.*;
-import com.mysema.query.grammar.HqlOps.OpQuant;
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.Types.*;
 
@@ -21,19 +22,6 @@ import com.mysema.query.grammar.Types.*;
  * @version $Id$
  */
 public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
-    
-    private static final Set<Op<?>> wrapForOp;
-    
-    static{
-        Set<Op<?>> ops = new HashSet<Op<?>>();
-        ops.add(Op.IN);
-        ops.add(Op.NOTIN);
-        ops.add(OpQuant.ALL);
-        ops.add(OpQuant.ANY);
-        ops.add(OpQuant.EXISTS);
-        ops.add(OpQuant.NOTEXISTS);
-        wrapForOp = Collections.unmodifiableSet(ops);
-    }
         
     private StringBuilder builder = new StringBuilder();
 
@@ -232,7 +220,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
 
     private void visitOperation(Op<?> operator, Expr<?>... args) {
         boolean old = wrapElements;
-        wrapElements = wrapForOp.contains(operator);
+        wrapElements = HqlOps.wrapCollectionsForOp.contains(operator);
         String pattern = HqlOps.getPattern(operator);
         if (pattern == null)
             throw new IllegalArgumentException("Got no operation pattern for " + operator);
