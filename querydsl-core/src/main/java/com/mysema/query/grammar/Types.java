@@ -6,11 +6,10 @@
 package com.mysema.query.grammar;
 
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 import static com.mysema.query.grammar.PathMetadata.*;
+
+import java.util.Collection;
+import java.util.Map;
 
 import com.mysema.query.grammar.Ops.Op;
 
@@ -50,7 +49,7 @@ public class Types {
         private final Expr<?> from;
         private final String to;
         AliasNoEntity(Expr<D> from, String to) {
-            super(from.type);
+            super(from.getType());
             this.from = from;
             this.to = to;
         }
@@ -87,7 +86,7 @@ public class Types {
         Expr(Class<D> type){this.type = type;}        
         public <B extends D> ExprBoolean eq(B right){return Grammar.eq(this, right);}        
         public <B extends D> ExprBoolean eq(Expr<B> right){return Grammar.eq(this, right);}
-        protected Class<D> getType(){ return type;}
+        public Class<D> getType(){ return type;}
         public <B extends D> ExprBoolean ne(B right){return Grammar.ne(this, right);}
         public <B extends D> ExprBoolean ne(Expr<B> right){return Grammar.ne(this, right);}
     }
@@ -113,6 +112,7 @@ public class Types {
         public ExprBoolean gt(D right) {return Grammar.gt(this,right);}  
         public ExprBoolean gt(Expr<D> right) {return Grammar.gt(this,right);}
         public ExprBoolean in(D... args) {return Grammar.in(this,args);}
+        public ExprBoolean in(CollectionType<D> arg) {return Grammar.in(this, arg);}
         public ExprBoolean loe(D right) {return Grammar.loe(this,right);}
         public ExprBoolean loe(Expr<D> right) {return Grammar.loe(this,right);}
         public ExprBoolean lt(D right) {return Grammar.lt(this,right);}  
@@ -120,7 +120,16 @@ public class Types {
         public ExprBoolean notBetween(D first, D second) {return Grammar.notBetween(this, first, second);}
         public ExprBoolean notBetween(Expr<D> first, Expr<D> second) {return Grammar.notBetween(this,first,second);}
         public ExprBoolean notIn(D...args) {return Grammar.notIn(this, args);}
+        public ExprBoolean notIn(CollectionType<D> arg) {return Grammar.notIn(this, arg);}
     }
+    
+//    *, 
+//    /, 
+//    DIV, 
+//    %, 
+//    MOD
+//    -, 
+//    +
     
     public static abstract class ExprEntity<D> extends Expr<D>{
         ExprEntity(Class<D> type) {super(type);}        
@@ -204,6 +213,18 @@ public class Types {
         public ExprBoolean isnull() {return Grammar.isnull(this);}          
     }
     
+    public interface CollectionType<D>{
+        
+    }
+    
+    public interface PathCollection<D> extends Path<Collection<D>>, CollectionType<D>{
+        Expr<D> get(Expr<Integer> index);        
+        Expr<D> get(int index);
+        Expr<D> maxelement();
+        Expr<D> minelement();
+        ExprComparable<Integer> size();
+    }
+    
     public static class PathComparable<D extends Comparable<D>> extends ExprComparable<D> implements PathNoEntity<D>{
         private final PathMetadata<String> metadata;
         public PathComparable(Class<D> type, PathMetadata<String> metadata) {
@@ -215,7 +236,7 @@ public class Types {
         public ExprBoolean isnull() {return Grammar.isnull(this);}
     }
     
-    public static class PathComponentCollection<D> extends ExprNoEntity<Collection<D>> implements Path<Collection<D>>{
+    public static class PathComponentCollection<D> extends ExprNoEntity<Collection<D>> implements PathCollection<D>{
         private final PathMetadata<String> metadata;
         private final Class<D> type;
         PathComponentCollection(Class<D> type, PathMetadata<String> metadata) {
@@ -223,15 +244,25 @@ public class Types {
             this.type = type;
             this.metadata = metadata;
         }        
+        public ExprNoEntity<D> get(Expr<Integer> index) {
+            return new PathNoEntitySimple<D>(type, forListAccess(this, index));
+        }
         public ExprNoEntity<D> get(int index) {
-            return new PathNoEntitySimple<D>(type, forListAccess(this, index));}
+            return new PathNoEntitySimple<D>(type, forListAccess(this, index));
+        }
         public PathMetadata<String> getMetadata() {return metadata;}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
+        public ExprEntity<D> maxelement() {
+            return new PathEntity<D>(type, forMaxElement(this)); 
+        }
+        public ExprEntity<D> minelement() {
+            return new PathEntity<D>(type, forMinElement(this)); 
+        }
         public ExprComparable<Integer> size() { return Grammar.size(this);}
     }
     
-    public static class PathComponentMap<K,V> extends ExprNoEntity<Map<K,V>> implements Path<Map<K,V>>{
+    public static class PathComponentMap<K,V> extends ExprNoEntity<Map<K,V>> implements PathMap<K,V>{
         private final PathMetadata<String> metadata;
         private final Class<V> type;
         PathComponentMap(Class<V> type, PathMetadata<String> metadata) {
@@ -240,6 +271,9 @@ public class Types {
             this.metadata = metadata;
         }
         public ExprNoEntity<V> get(Expr<K> key) { 
+            return new PathNoEntitySimple<V>(type, forMapAccess(this, key));
+        }
+        public ExprNoEntity<V> get(K key) { 
             return new PathNoEntitySimple<V>(type, forMapAccess(this, key));
         }
         public PathMetadata<String> getMetadata() {return metadata;}
@@ -282,13 +316,13 @@ public class Types {
             return new PathString(forProperty(this, path));
         }
         public PathMetadata<?> getMetadata() {return metadata;}
-        public ExprBoolean in(ExprEntity<Collection<D>> right){return Grammar.in(this, right);}
+        public ExprBoolean in(CollectionType<D> right){return Grammar.in(this, right);}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
         public <B extends D> ExprBoolean typeOf(Class<B> type) {return Grammar.typeOf(this, type);}
     }
     
-    public static class PathEntityCollection<D> extends ExprEntity<Collection<D>> implements Path<Collection<D>>{
+    public static class PathEntityCollection<D> extends ExprEntity<Collection<D>> implements PathCollection<D>{
         private final PathMetadata<String> metadata;
         private final Class<D> type;
         PathEntityCollection(Class<D> type, PathMetadata<String> metadata) {
@@ -297,15 +331,25 @@ public class Types {
             this.metadata = metadata;
         }        
         public AliasEntityCollection<D> as(PathEntity<D> to) {return Grammar.as(this, to);}
+        public ExprEntity<D> get(Expr<Integer> index) {
+            return new PathEntity<D>(type, forListAccess(this,index));
+        }
         public ExprEntity<D> get(int index) {
-            return new PathEntity<D>(type, forListAccess(this,index));}
+            return new PathEntity<D>(type, forListAccess(this,index));
+        }
         public PathMetadata<String> getMetadata() {return metadata;}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}    
-        public ExprComparable<Integer> size() { return Grammar.size(this);}
+        public ExprEntity<D> maxelement() {
+            return new PathEntity<D>(type, forMaxElement(this)); 
+        }
+        public ExprEntity<D> minelement() {
+            return new PathEntity<D>(type, forMinElement(this)); 
+        }
+        public ExprComparable<Integer> size() { return Grammar.size(this); }
     }
     
-    public static class PathEntityMap<K,V> extends ExprEntity<Map<K,V>> implements Path<Map<K,V>>{
+    public static class PathEntityMap<K,V> extends ExprEntity<Map<K,V>> implements PathMap<K,V>{
         private final PathMetadata<String> metadata;
         private final Class<V> type;
         PathEntityMap(Class<V> type, PathMetadata<String> metadata) {
@@ -313,14 +357,25 @@ public class Types {
             this.type = type;
             this.metadata = metadata;
         } 
-        public PathMetadata<String> getMetadata() {return metadata;}
+        public ExprEntity<V> get(Expr<K> key) { 
+            return new PathEntity<V>(type, forMapAccess(this, key));
+        }
+        public ExprEntity<V> get(K key) { 
+            return new PathEntity<V>(type, forMapAccess(this, key));
+        }
+        public PathMetadata<String> getMetadata() {return metadata;}    
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
-        public ExprBoolean isnull() {return Grammar.isnull(this);}    
+        public ExprBoolean isnull() {return Grammar.isnull(this);}
     }
     
     public static class PathEntityRenamable<D> extends PathEntity<D>{
         protected PathEntityRenamable(Class<D> type, PathMetadata<?> metadata) {super(type, metadata);}
         public AliasEntity<D> as(PathEntity<D> to) {return Grammar.as(this, to);}
+    }
+    
+    public interface PathMap<K,V> extends Path<Map<K,V>>{
+        Expr<V> get(Expr<K> key);
+        Expr<V> get(K key);
     }
     
     public interface PathNoEntity<D> extends Path<D>{
@@ -347,20 +402,5 @@ public class Types {
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
     }
-    
-    public static class SubQuery<A> extends Expr<Collection<A>>{
-        private List<ExprEntity<?>> from;
-        private final Expr<A> select;
-        private List<ExprBoolean> where;
-        SubQuery(Expr<A> select) {
-            super(null);
-            this.select = select;
-        }    
-        List<ExprEntity<?>> _from() {return from;}
-        Expr<A> _select() {return select;}
-        List<ExprBoolean> _where() {return where;}
-        public SubQuery<A> from(ExprEntity<?>... o){this.from = Arrays.asList(o); return this;}
-        public SubQuery<A> where(ExprBoolean... o){this.where = Arrays.asList(o); return this;}        
-    }
-    
+        
 }

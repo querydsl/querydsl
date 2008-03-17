@@ -18,11 +18,11 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends
         Visitor<V> {
 
     @Override
-    protected void visit(AliasEntityCollection<?> expr) {
+    protected void visit(AliasEntity<?> expr) {
         visit((AliasToPath) expr);
     }
     @Override
-    protected void visit(AliasEntity<?> expr) {
+    protected void visit(AliasEntityCollection<?> expr) {
         visit((AliasToPath) expr);
     }
     @Override
@@ -49,36 +49,38 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends
     protected void visit(PathBoolean expr) {
         visit((Path<?>) expr);
     }
+    protected void visit(PathCollection<?> expr){
+        visit((Path<?>) expr);
+    }
     @Override
     protected void visit(PathComparable<?> expr) {
         visit((Path<?>) expr);
     }
     @Override
     protected void visit(PathComponentCollection<?> expr) {
-        visit((Path<?>) expr);
-    }
-    @Override
-    protected void visit(PathComponentMap<?,?> expr) {
-        visit((Path<?>) expr);
+        visit((PathCollection<?>) expr);
     }    
     @Override
-    protected void visit(PathString expr) {
-        visit((Path<?>) expr);
+    protected void visit(PathComponentMap<?,?> expr) {
+        visit((PathMap<?,?>) expr);
     }    
     @Override
     protected void visit(PathEntity<?> expr) {
         visit((Path<?>) expr);
     }    
     @Override
-    protected void visit(PathEntityRenamable<?> expr) {
-        visit((PathEntity<?>) expr);
-    }
-    @Override
     protected void visit(PathEntityCollection<?> expr) {
-        visit((Path<?>) expr);
+        visit((PathCollection<?>) expr);
     }
     @Override
     protected void visit(PathEntityMap<?,?> expr) {
+        visit((PathMap<?,?>) expr);
+    }
+    @Override
+    protected void visit(PathEntityRenamable<?> expr) {
+        visit((PathEntity<?>) expr);
+    }
+    protected void visit(PathMap<?,?> expr){
         visit((Path<?>) expr);
     }
     @Override
@@ -87,6 +89,10 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends
     }
     @Override
     protected void visit(PathNoEntitySimple<?> expr) {
+        visit((Path<?>) expr);
+    }
+    @Override
+    protected void visit(PathString expr) {
         visit((Path<?>) expr);
     }
 }

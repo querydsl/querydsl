@@ -106,6 +106,4 @@ public abstract class Visitor<T extends Visitor<T>> {
 
     protected abstract void visit(PathString expr);
     
-    protected abstract void visit(SubQuery<?> subQuery);
-
 }

@@ -37,6 +37,9 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         select.clear();
         where.clear();
     }
+    
+    private final Metadata metadata = new Metadata();
+    
     public A from(ExprEntity<?>... o) {
         for (ExprEntity<?> expr : o){
             joins.add(new JoinExpression(JoinType.DEFAULT,expr));
@@ -95,6 +98,30 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         }
         return (A) this;
     }
-
     
+    public Metadata getMetadata(){
+        return metadata;
+    }
+
+    public class Metadata{
+        public List<Expr<?>> getGroupBy() {
+            return groupBy;
+        }
+        public List<ExprBoolean> getHaving() {
+            return having;
+        }
+        public List<JoinExpression> getJoins() {
+            return joins;
+        }
+        public List<OrderSpecifier<?>> getOrderBy() {
+            return orderBy;
+        }
+        public List<Expr<?>> getSelect() {
+            return select;
+        }
+        public List<ExprBoolean> getWhere() {
+            return where;
+        }
+    }
+
 }
