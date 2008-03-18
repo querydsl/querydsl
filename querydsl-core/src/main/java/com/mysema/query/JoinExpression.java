@@ -5,11 +5,11 @@
  */
 package com.mysema.query;
 
-import com.mysema.query.grammar.Types.Expr;
+import com.mysema.query.grammar.Types.ExprBoolean;
 import com.mysema.query.grammar.Types.ExprEntity;
 
 public class JoinExpression {
-    private Expr<Boolean>[] conditions;
+    private ExprBoolean condition;
     private final ExprEntity<?> target;
     private final JoinType type;
     
@@ -18,12 +18,12 @@ public class JoinExpression {
         this.target = target;
     }
     
-    public Expr<Boolean>[] getConditions() {
-        return conditions;
+    public ExprBoolean getCondition() {
+        return condition;
     }
     
-    public void setConditions(Expr<Boolean>[] conditions) {
-        this.conditions = conditions;
+    public void setCondition(ExprBoolean condition) {
+        this.condition = condition;
     }
     
     public ExprEntity<?> getTarget() {

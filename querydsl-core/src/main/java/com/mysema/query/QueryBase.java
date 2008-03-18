@@ -28,7 +28,7 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
     protected final List<JoinExpression> joins = new ArrayList<JoinExpression>();
     protected final List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
     protected final List<Expr<?>> select = new ArrayList<Expr<?>>();
-    protected final List<ExprBoolean> where = new ArrayList<ExprBoolean>();
+    protected final CascadingBoolean where = new CascadingBoolean();
     protected void clear(){
         joins.clear();
         groupBy.clear();
@@ -88,13 +88,17 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
     }
 
     public A where(ExprBoolean... o) {
-        where.addAll(Arrays.asList(o));
+        for (ExprBoolean expr : o){
+            where.and(expr);
+        }
         return (A) this;
     }
     
     public A with(ExprBoolean... o) {
         if (!joins.isEmpty()){
-            joins.get(joins.size()-1).setConditions(o);
+            CascadingBoolean cb = new CascadingBoolean();
+            for (ExprBoolean expr : o) cb.and(expr);
+            joins.get(joins.size()-1).setCondition(cb.self());
         }
         return (A) this;
     }
@@ -119,8 +123,8 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         public List<Expr<?>> getSelect() {
             return select;
         }
-        public List<ExprBoolean> getWhere() {
-            return where;
+        public ExprBoolean getWhere() {
+            return where.self();
         }
     }
 
