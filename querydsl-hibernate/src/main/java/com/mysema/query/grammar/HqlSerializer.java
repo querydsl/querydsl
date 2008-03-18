@@ -59,7 +59,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
     }
     
     public void serialize(List<Expr<?>> select, List<JoinExpression> joins,
-        List<ExprBoolean> where, List<Expr<?>> groupBy, List<ExprBoolean> having,
+        ExprBoolean where, List<Expr<?>> groupBy, List<ExprBoolean> having,
         List<OrderSpecifier<?>> orderBy, boolean forCountRow){
          if (forCountRow){
             _append("select count(*)\n");
@@ -91,13 +91,13 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
                 }                
             }            
             handle(je.getTarget());
-            if (je.getConditions() != null){
-                _append(" with ")._append(" and ", Arrays.asList(je.getConditions()));
+            if (je.getCondition() != null){
+                _append(" with ").handle(je.getCondition());
             }
         }
         
-        if (!where.isEmpty()){            
-            _append("\nwhere ")._append(" and ", where);
+        if (where != null){            
+            _append("\nwhere ").handle(where);
         }
         if (!groupBy.isEmpty()){
             _append("\ngroup by ")._append(", ",groupBy);

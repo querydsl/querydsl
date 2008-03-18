@@ -26,7 +26,7 @@ public class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<A>{
             throw new IllegalArgumentException("No where clause given");
         }
         HqlSerializer serializer = new HqlSerializer();
-        serializer.serialize(select, joins, where, groupBy, having, orderBy, forCountRow);               
+        serializer.serialize(select, joins, where.self(), groupBy, having, orderBy, forCountRow);               
         constants = serializer.getConstants();      
         return serializer.toString();
     }
