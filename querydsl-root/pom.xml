@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>0.2.1</version>
+  <version>0.2.2</version>
   <parent>
     <groupId>com.mysema</groupId>
     <artifactId>maven-parent</artifactId>
@@ -15,12 +15,21 @@
   </parent>
   <packaging>pom</packaging>
 
-  <inceptionYear>2006</inceptionYear>
+  <inceptionYear>2007</inceptionYear>
 
   <modules>
     <module>../querydsl-core</module>
     <module>../querydsl-apt</module>
     <module>../querydsl-hibernate</module>
   </modules>
+  
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.4</version>
+      <scope>test</scope>
+    </dependency>  
+  </dependencies>
 
 </project>
