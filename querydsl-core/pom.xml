@@ -19,6 +19,7 @@
       <groupId>net.sourceforge.collections</groupId>
       <artifactId>collections-generic</artifactId>
       <version>4.01</version>
+      <!-- license : Apache License 2.0 -->
     </dependency>
   </dependencies>
 
