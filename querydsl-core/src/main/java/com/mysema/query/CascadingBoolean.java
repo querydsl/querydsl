@@ -5,8 +5,6 @@
  */
 package com.mysema.query;
 
-import java.util.List;
-
 import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.Types.ExprBoolean;
 
@@ -20,8 +18,7 @@ public class CascadingBoolean {
     private ExprBoolean expr;
 
     public CascadingBoolean and(ExprBoolean right) {
-        if (expr == null) expr = right;
-        else expr = expr.and(right);
+        expr = (expr == null) ? right : expr.and(right);
         return this;
     }
     public void clear(){
@@ -32,8 +29,7 @@ public class CascadingBoolean {
     }
     
     public CascadingBoolean or(ExprBoolean right) {
-        if (expr == null) expr = right;
-        else expr = expr.or(right);
+        expr = (expr == null) ? right : expr.or(right);
         return this;
     }
     
