@@ -6,8 +6,12 @@
 package com.mysema.query.grammar;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.mysema.core.collection.FactoryMap;
+import org.apache.commons.collections15.Transformer;
+import org.apache.commons.collections15.map.LazyMap;
+
 import com.mysema.query.grammar.Types.*;
 
 /**
@@ -20,10 +24,10 @@ public abstract class Visitor<T extends Visitor<T>> {
     
     private static final Package PACKAGE = Visitor.class.getPackage();
 
-    private final FactoryMap<Class<?>, Method> methodMap = new FactoryMap<Class<?>, Method>() {
+    private final Map<Class<?>, Method> methodMap = LazyMap.decorate(new HashMap<Class<?>,Method>(), 
+            new Transformer<Class<?>,Method>(){
 
-        @Override
-        protected Method create(Class<?> cl) {
+        public Method transform(Class<?> cl) {
             try {
                 while (!cl.getPackage().equals(PACKAGE)){
                     cl = cl.getSuperclass();
@@ -48,7 +52,7 @@ public abstract class Visitor<T extends Visitor<T>> {
             }
         }
 
-    };
+    });
 
     @SuppressWarnings("unchecked")
     public final T handle(Expr<?> expr) {
