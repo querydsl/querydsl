@@ -20,12 +20,14 @@
       <artifactId>hibernate</artifactId>
       <version>3.2.1.ga</version>
       <scope>provided</scope>
+      <!-- license : LGPL v2.1 -->
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-annotations</artifactId>
       <version>3.2.1.ga</version>
       <scope>provided</scope>
+      <!-- license : LGPL v2.1 -->      
     </dependency>
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
@@ -40,13 +42,15 @@
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>5.0.2</version>
-      <scope>test</scope>      
+      <scope>test</scope>    
+      <!-- license : TODO -->  
     </dependency>   
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-apt</artifactId>
       <version>${project.parent.version}</version>
       <scope>provided</scope>
+      <!-- license : TODO -->
     </dependency>
 
     <!-- logging -->
@@ -54,11 +58,13 @@
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>1.2.14</version>
+      <!-- license : Apache License 2.0 -->
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
       <version>1.3.1</version>
+      <!-- license : http://www.slf4j.org/license.html -->
     </dependency>
   </dependencies>
 
