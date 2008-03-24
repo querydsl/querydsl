@@ -24,7 +24,7 @@ import com.mysema.query.grammar.Types.PathEntity;
  * @version $Id$
  */
 @SuppressWarnings("unchecked")
-public class HqlQuery extends HqlQueryBase<HqlQuery>{
+public class HqlQuery<RT> extends HqlQueryBase<HqlQuery<RT>>{
 
     private static final Logger logger = LoggerFactory.getLogger(HqlQuery.class);
 
@@ -63,7 +63,7 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
         return this;
     }
     
-    public List list() {
+    public List<RT> list() {
         String queryString = toString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, limit, offset);
@@ -71,7 +71,7 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
     }    
 
 
-    public SearchResults<?> listResults() {
+    public SearchResults<RT> listResults() {
         Query query = createQuery(toCountRowsString(), null, null);
         long total = (Long) query.uniqueResult();
         if (total > 0) {
