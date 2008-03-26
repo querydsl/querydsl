@@ -32,6 +32,13 @@ public final class SearchResults<T> {
         this.results = results;
     }
     
+    public SearchResults(List<T> results, QueryModifiers mod, long total){
+        this.limit = mod.getLimit();
+        this.offset = mod.getOffset();
+        this.total = results.size();
+        this.results = results;
+    }
+    
     public List<T> getResults() {
         return results;
     }
@@ -43,14 +50,13 @@ public final class SearchResults<T> {
     public boolean isEmpty() {
         return results.isEmpty();
     }
-    
-    // TODO : get this into a taglib
-    public long getPrevPage(){
-        return offset / limit;
+
+    public long getLimit() {
+        return limit;
+    }
+
+    public long getOffset() {
+        return offset;
     }
     
-    // TODO : get this into a taglib
-    public long getNextPage(){
-        return offset + limit < total ? offset / limit + 2l : 0l;
-    }
 }

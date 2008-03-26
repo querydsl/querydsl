@@ -1,10 +1,7 @@
 <projectDescription>
   <name>querydsl-hibernate</name>
   <comment>Default Mysema project template</comment>
-  <projects>
-    <project>querydsl-apt</project>
-    <project>querydsl-core</project>
-  </projects>
+  <projects/>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>

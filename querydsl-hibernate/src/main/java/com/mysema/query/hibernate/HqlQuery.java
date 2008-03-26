@@ -23,7 +23,6 @@ import com.mysema.query.grammar.Types.PathEntity;
  * @author tiwe
  * @version $Id$
  */
-@SuppressWarnings("unchecked")
 public class HqlQuery<RT> extends HqlQueryBase<HqlQuery<RT>>{
 
     private static final Logger logger = LoggerFactory.getLogger(HqlQuery.class);
@@ -45,7 +44,7 @@ public class HqlQuery<RT> extends HqlQueryBase<HqlQuery<RT>>{
         return query;
     }
     
-    public HqlQuery forExample(PathEntity<?> entity, Map<String, Object> map) {
+    public HqlQuery<RT> forExample(PathEntity<?> entity, Map<String, Object> map) {
         select(entity).from(entity);
         try {            
             List<ExprBoolean> conds = QueryUtil.createQBEConditions(entity,map);
@@ -58,7 +57,7 @@ public class HqlQuery<RT> extends HqlQueryBase<HqlQuery<RT>>{
         }
     }
 
-    public HqlQuery limit(int limit) {
+    public HqlQuery<RT> limit(int limit) {
         this.limit = limit;
         return this;
     }
@@ -78,8 +77,8 @@ public class HqlQuery<RT> extends HqlQueryBase<HqlQuery<RT>>{
             String queryString = toString();
             logger.debug("query : {}", queryString);
             query = createQuery(queryString, limit, offset);
-            List list = query.list();
-            return new SearchResults(list,
+            List<RT> list = query.list();
+            return new SearchResults<RT>(list,
                     limit == null ? Long.MAX_VALUE : limit.longValue(),
                     offset == null ? 0l : offset.longValue(), total);
         } else {
@@ -87,22 +86,22 @@ public class HqlQuery<RT> extends HqlQueryBase<HqlQuery<RT>>{
         }
     }
 
-    public HqlQuery offset(int offset) {
+    public HqlQuery<RT> offset(int offset) {
         this.offset = offset;
         return this;
     }
 
-    public HqlQuery restrict(QueryModifiers mod) {
+    public HqlQuery<RT> restrict(QueryModifiers mod) {
         this.limit = mod.getLimit();
         this.offset = mod.getOffset();
         return this;
     }
 
-    public Object uniqueResult() {
+    public RT uniqueResult() {
         String queryString = toString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, 1, null);
-        return query.uniqueResult();
+        return (RT)query.uniqueResult();
     }
 
 }
