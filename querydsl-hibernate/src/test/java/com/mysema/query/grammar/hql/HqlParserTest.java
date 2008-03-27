@@ -14,7 +14,6 @@ import antlr.RecognitionException;
 import antlr.TokenStreamException;
 import antlr.collections.AST;
 
-import com.mysema.query.Domain1;
 import com.mysema.query.Domain1Dtos;
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlQueryBase;
@@ -30,61 +29,7 @@ import com.mysema.query.grammar.hql.HqlDomain.Payment;
  * @author tiwe
  * @version $Id$
  */
-public class HqlParserTest extends HqlQueryBase<HqlParserTest>{
-    
-    private Domain1.Account account = new Domain1.Account("account");
-    
-    private Domain1.Animal an = new Domain1.Animal("an");
-    
-    private Domain1.AuditLog log = new Domain1.AuditLog("log");
-    
-    private Domain1.Bar bar = new Domain1.Bar("bar");
-    
-    private Domain1.Calendar calendar = new Domain1.Calendar("calendar");
-    
-    private Domain1.Cat cat = new Domain1.Cat("cat");
-    private Domain1.Cat fatcat = new Domain1.Cat("fatcat");
-    private Domain1.Cat kittens = new Domain1.Cat("kittens");
-    private Domain1.Cat kitten = new Domain1.Cat("kitten");
-    private Domain1.Cat kit = new Domain1.Cat("kit");
-    private Domain1.Cat mate = new Domain1.Cat("mate");
-    private Domain1.Cat mother = new Domain1.Cat("mother");
-    private Domain1.Cat offspr = new Domain1.Cat("offspr");
-    private Domain1.Cat qat = new Domain1.Cat("qat");
-    private Domain1.Cat rival = new Domain1.Cat("rival");
-    
-    private Domain1.doofus d = new Domain1.doofus("d");
-    
-    private Domain1.Customer cust = new Domain1.Customer("cust");
-    
-    private Domain1.Foo foo = new Domain1.Foo("foo");
-    
-    private Domain1.Formula form = new Domain1.Formula("form");
-    
-    private Domain1.Item item = new Domain1.Item("item");
-    
-    private Domain1.Name name = new Domain1.Name("name");
-    
-    private Domain1.Named m = new Domain1.Named("m");
-    private Domain1.Named n = new Domain1.Named("n");
-    
-    private Domain1.NameList list = new Domain1.NameList("list");
-    
-    private Domain1.Order ord = new Domain1.Order("ord");
-    
-    private Domain1.Payment payment = new Domain1.Payment("payment");
-    
-    private Domain1.Parameter param = new Domain1.Parameter("param");
-    
-    private Domain1.Person person = new Domain1.Person("person");    
-    private Domain1.Person p = new Domain1.Person("p");
-    
-    private Domain1.Player player = new Domain1.Player("player");
-    
-    private Domain1.Product prod = new Domain1.Product("prod");
-    
-    private Domain1.Store store = new Domain1.Store("store");
-        
+public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain1Instances{
     
     /**
      * Section 9.2 - from *
