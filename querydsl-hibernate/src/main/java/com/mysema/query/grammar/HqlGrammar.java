@@ -84,7 +84,8 @@ public class HqlGrammar extends Grammar{
     
     public static ExprComparable<Date> hour(Expr<Date> date){
         return _comparable(OpHql.HOUR, date);
-    }        
+    }  
+
     public static PathComponentCollection<Integer> indices(PathCollection<?> col){
         return new PathComponentCollection<Integer>(Integer.class, new PathMetadata<Collection<Integer>>(col, null, HqlPathType.LISTINDICES));
     }
@@ -112,6 +113,7 @@ public class HqlGrammar extends Grammar{
     public static <A extends Comparable<A>> ExprComparable<A> max(Expr<A> left){
         return _number(OpNumberAgg.MAX, left);
     }
+    
     public static <A extends Comparable<A>> ExprComparable<A> max(PathCollection<A> left){
         return new ExprQuantComparable<A>(OpQuant.MAX_IN_COL, left);
     } 
@@ -126,7 +128,8 @@ public class HqlGrammar extends Grammar{
     
     public static <A> PathComparable<Integer> maxindex(PathEntityCollection<A> col) {
         return new PathComparable<Integer>(Integer.class, new PathMetadata<Integer>(col, null, HqlPathType.MAXINDEX));
-    }        
+    }  
+    
     public static <A extends Comparable<A>> ExprComparable<A> min(Expr<A> left){
         return _number(OpNumberAgg.MIN, left);
     }
