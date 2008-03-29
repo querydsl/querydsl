@@ -8,6 +8,14 @@ package com.mysema.query;
 import com.mysema.query.grammar.Types.ExprBoolean;
 import com.mysema.query.grammar.Types.ExprEntity;
 
+/**
+ * 
+ * JoinExpression provides
+ *
+ * @author tiwe
+ * @version $Id$
+ *
+ */
 public class JoinExpression {
     private ExprBoolean condition;
     private final ExprEntity<?> target;

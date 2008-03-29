@@ -13,5 +13,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(TYPE) 
 @Retention(RUNTIME)
 
+// TODO : move this somewhere else
 public @interface DTO {    
 }

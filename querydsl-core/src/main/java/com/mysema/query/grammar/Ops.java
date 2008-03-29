@@ -24,7 +24,7 @@ public class Ops {
         Op<Boolean> ISTYPEOF = new OpImpl<Boolean>();
         Op<Boolean> NE = new OpImpl<Boolean>();
         Op<Boolean> NOTIN =  new OpImpl<Boolean>();
-        Op<Integer> SIZE = new OpImpl<Integer>();
+//        Op<Integer> SIZE = new OpImpl<Integer>();
     }
     
     /**
@@ -64,17 +64,14 @@ public class Ops {
      * Numeric Operators (operators used with numeric operands)
      */
     public interface OpNumber{
-        Op<Number> ADD = new OpImpl<Number>();   
-        Op<Number> AVG = new OpImpl<Number>();
-        Op<Number> DIV = new OpImpl<Number>();
-        Op<Number> MAX = new OpImpl<Number>();
-        Op<Number> MIN = new OpImpl<Number>();
+        Op<Number> ADD = new OpImpl<Number>();          
+        Op<Number> DIV = new OpImpl<Number>();        
         Op<Number> MOD = new OpImpl<Number>();
         Op<Number> MULT = new OpImpl<Number>();
         Op<Number> SQRT = new OpImpl<Number>();
         Op<Number> SUB = new OpImpl<Number>();
     }
-    
+        
     /**
      * String Operators (operators used with String operands)
      */

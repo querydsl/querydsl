@@ -6,8 +6,6 @@
 package com.mysema.query.grammar;
 
 
-import java.util.Collection;
-
 import com.mysema.query.grammar.Ops.*;
 import com.mysema.query.grammar.Types.*;
 
@@ -117,10 +115,6 @@ public class Grammar {
         return _orderAsc(target);
     }
 
-    public static <A extends Comparable<A>> ExprComparable<A> avg(Expr<A> left){
-        return _number(OpNumber.AVG, left);
-    }
-
     static <A extends Comparable<A>> ExprBoolean before(Expr<A> left,
             A right) {
         // NOTE : signature is for Comparables to support other than Java's date types
@@ -166,11 +160,11 @@ public class Grammar {
         return _number(OpNumber.DIV, left, right);
     }
     
-    static <A, B extends A> ExprBoolean eq(Expr<A> left, B right) {
+    static <A> ExprBoolean eq(Expr<A> left, A right) {
         return _boolean(Op.EQ, left, _const(right));
     }
 
-    static <A, B extends A> ExprBoolean eq(Expr<A> left, Expr<B> right) {
+    static <A> ExprBoolean eq(Expr<A> left, Expr<? super A> right) {
         return _boolean(Op.EQ, left, right);
     }
 
@@ -196,6 +190,10 @@ public class Grammar {
     static <A extends Comparable<A>> ExprBoolean in(Expr<A> left,
             A... rest) {
         return _boolean(Op.IN, left, _const(rest));
+    }
+    
+    public static <A> ExprBoolean in(A left, CollectionType<A> right){
+        return _boolean(Op.IN, _const(left), (Expr<?>)right);
     }
     
     static <A> ExprBoolean in(Expr<A> left, CollectionType<A> right){
@@ -236,14 +234,6 @@ public class Grammar {
             Expr<A> right) {
         return _boolean(OpComparable.LT, left, right);
     }
-
-    public static <A extends Comparable<A>> ExprComparable<A> max(Expr<A> left){
-        return _number(OpNumber.MAX, left);
-    }
-    
-    public static <A extends Comparable<A>> ExprComparable<A> min(Expr<A> left){
-        return _number(OpNumber.MIN, left);
-    }
     
     public static <A extends Comparable<A>> ExprComparable<A> mult(Expr<A> left, A right) {
         return _number(OpNumber.MULT, left, _const(right));
@@ -253,11 +243,11 @@ public class Grammar {
         return _number(OpNumber.MULT, left, right);
     }
     
-    static <A, B extends A> ExprBoolean ne(Expr<A> left, B right) {
+    static <A> ExprBoolean ne(Expr<A> left, A right) {
         return _boolean(Op.NE, left, _const(right));
     }
     
-    static <A, B extends A> ExprBoolean ne(Expr<A> left, Expr<B> right) {
+    static <A> ExprBoolean ne(Expr<A> left, Expr<? super A> right) {
         return _boolean(Op.NE, left, right);
     } 
     
@@ -287,11 +277,7 @@ public class Grammar {
     static ExprBoolean or(ExprBoolean left, ExprBoolean right) {
         return _boolean(OpBoolean.OR, left, right);
     }
-    
-    static <A> ExprComparable<Integer> size(Expr<Collection<A>> col){
-        return _number(Op.SIZE, col);
-    }
-    
+      
     public static <A extends Comparable<A>> ExprComparable<A> sqrt(Expr<A> left) {
         return _number(OpNumber.SQRT, left);
     }

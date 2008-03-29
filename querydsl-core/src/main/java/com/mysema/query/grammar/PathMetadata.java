@@ -14,7 +14,7 @@ import com.mysema.query.grammar.Types.PathMap;
 
 /**
  * 
- * PathMetadata provides
+ * PathMetadata provides metadata for Path expressions
  * 
  * @author tiwe
  * @version $Id$
@@ -25,54 +25,46 @@ public final class PathMetadata<T> {
 
     private final Path<?> parent;
 
-    private final Type type;
+    private final PathType pathType;
 
-    private PathMetadata(Path<?> parent, Expr<T> expression, Type type) {
+    public PathMetadata(Path<?> parent, Expr<T> expression, PathType type) {
         this.parent = parent;
         this.expression = expression;
-        this.type = type;
+        this.pathType = type;
     }
 
     public static PathMetadata<Integer> forListAccess(PathCollection<?> parent,
             Expr<Integer> index) {
-        return new PathMetadata<Integer>(parent, index, Type.LISTACCESS);
+        return new PathMetadata<Integer>(parent, index, PathType.LISTVALUE);
     }
 
     public static PathMetadata<Integer> forListAccess(PathCollection<?> parent,
             int index) {
         return new PathMetadata<Integer>(parent, _const(index),
-                Type.LISTACCESSC);
+                PathType.LISTVALUE_CONSTANT);
     }
 
-    public static PathMetadata<Integer> forMinElement(PathCollection<?> parent) {
-        return new PathMetadata<Integer>(parent, null, Type.MINELEMENT);
-    }
-    
     public static PathMetadata<Integer> forSize(PathCollection<?> parent) {
-        return new PathMetadata<Integer>(parent, null, Type.SIZE);
-    }
-
-    public static PathMetadata<Integer> forMaxElement(PathCollection<?> parent) {
-        return new PathMetadata<Integer>(parent, null, Type.MAXELEMENT);
+        return new PathMetadata<Integer>(parent, null, PathType.SIZE);
     }
 
     public static <KT> PathMetadata<KT> forMapAccess(PathMap<?, ?> parent,
             Expr<KT> key) {
-        return new PathMetadata<KT>(parent, key, Type.MAPACCESS);
+        return new PathMetadata<KT>(parent, key, PathType.MAPVALUE);
     }
 
     public static <KT> PathMetadata<KT> forMapAccess(PathMap<?, ?> parent,
             KT key) {
-        return new PathMetadata<KT>(parent, _const(key), Type.MAPACCESSC);
+        return new PathMetadata<KT>(parent, _const(key), PathType.MAPVALUE_CONSTANT);
     }
 
     public static PathMetadata<String> forProperty(Path<?> parent,
             String property) {
-        return new PathMetadata<String>(parent, _const(property), Type.PROPERTY);
+        return new PathMetadata<String>(parent, _const(property), PathType.PROPERTY);
     }
 
     public static PathMetadata<String> forVariable(String variable) {
-        return new PathMetadata<String>(null, _const(variable), Type.VARIABLE);
+        return new PathMetadata<String>(null, _const(variable), PathType.VARIABLE);
     }
 
     public Expr<T> getExpression() {
@@ -83,12 +75,24 @@ public final class PathMetadata<T> {
         return parent;
     }
 
-    public Type getType() {
-        return type;
+    public PathType getPathType() {
+        return pathType;
     }
+    
+    public static final class PathTypeImpl implements PathType{ }
 
-    public enum Type {
-        LISTACCESS, LISTACCESSC, MAPACCESS, MAPACCESSC, PROPERTY, VARIABLE, MINELEMENT, MAXELEMENT, SIZE
+    /**
+     * Type provides
+     *
+     */
+    public interface PathType extends Ops.Op<Path<?>> {
+        PathType LISTVALUE = new PathTypeImpl(); 
+        PathType LISTVALUE_CONSTANT = new PathTypeImpl();
+        PathType MAPVALUE = new PathTypeImpl();
+        PathType MAPVALUE_CONSTANT = new PathTypeImpl();
+        PathType PROPERTY = new PathTypeImpl();
+        PathType VARIABLE = new PathTypeImpl();
+        PathType SIZE = new PathTypeImpl();
     }
 
 }

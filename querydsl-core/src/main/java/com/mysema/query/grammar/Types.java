@@ -84,11 +84,11 @@ public class Types {
     public static abstract class Expr<D>{
         private final Class<D> type;
         Expr(Class<D> type){this.type = type;}        
-        public <B extends D> ExprBoolean eq(B right){return Grammar.eq(this, right);}        
-        public <B extends D> ExprBoolean eq(Expr<B> right){return Grammar.eq(this, right);}
+        public ExprBoolean eq(D right){return Grammar.eq(this, right);}        
+        public ExprBoolean eq(Expr<? super D> right){return Grammar.eq(this, right);}
         public Class<D> getType(){ return type;}
-        public <B extends D> ExprBoolean ne(B right){return Grammar.ne(this, right);}
-        public <B extends D> ExprBoolean ne(Expr<B> right){return Grammar.ne(this, right);}
+        public ExprBoolean ne(D right){return Grammar.ne(this, right);}
+        public ExprBoolean ne(Expr<? super D> right){return Grammar.ne(this, right);}
     }
     
     public static abstract class ExprBoolean extends ExprNoEntity<Boolean>{
@@ -220,26 +220,25 @@ public class Types {
     public interface PathCollection<D> extends Path<Collection<D>>, CollectionType<D>{
         Expr<D> get(Expr<Integer> index);        
         Expr<D> get(int index);
-        Expr<D> maxelement();
-        Expr<D> minelement();
+        Class<D> getElementType();
         ExprComparable<Integer> size();
     }
     
     public static class PathComparable<D extends Comparable<D>> extends ExprComparable<D> implements PathNoEntity<D>{
-        private final PathMetadata<String> metadata;
-        public PathComparable(Class<D> type, PathMetadata<String> metadata) {
+        private final PathMetadata<?> metadata;
+        public PathComparable(Class<D> type, PathMetadata<?> metadata) {
             super(type);
             this.metadata = metadata;
         }
-        public PathMetadata<String> getMetadata() {return metadata;}
+        public PathMetadata<?> getMetadata() {return metadata;}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
     }
     
     public static class PathComponentCollection<D> extends ExprNoEntity<Collection<D>> implements PathCollection<D>{
-        private final PathMetadata<String> metadata;
+        private final PathMetadata<?> metadata;
         private final Class<D> type;
-        PathComponentCollection(Class<D> type, PathMetadata<String> metadata) {
+        PathComponentCollection(Class<D> type, PathMetadata<?> metadata) {
             super(null);            
             this.type = type;
             this.metadata = metadata;
@@ -250,35 +249,37 @@ public class Types {
         public ExprNoEntity<D> get(int index) {
             return new PathNoEntitySimple<D>(type, forListAccess(this, index));
         }
-        public PathMetadata<String> getMetadata() {return metadata;}
+        public PathMetadata<?> getMetadata() {return metadata;}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
-        public ExprEntity<D> maxelement() {
-            return new PathEntity<D>(type, forMaxElement(this)); 
+        public ExprComparable<Integer> size() { 
+//            return Grammar.size(this);
+            return new PathComparable<Integer>(Integer.class, forSize(this));
         }
-        public ExprEntity<D> minelement() {
-            return new PathEntity<D>(type, forMinElement(this)); 
-        }
-        public ExprComparable<Integer> size() { return Grammar.size(this);}
+        public Class<D> getElementType() {return type;}
     }
     
     public static class PathComponentMap<K,V> extends ExprNoEntity<Map<K,V>> implements PathMap<K,V>{
-        private final PathMetadata<String> metadata;
-        private final Class<V> type;
-        PathComponentMap(Class<V> type, PathMetadata<String> metadata) {
+        private final PathMetadata<?> metadata;
+        private final Class<K> keyType;
+        private final Class<V> valueType;
+        PathComponentMap(Class<K> keyType, Class<V> valueType, PathMetadata<?> metadata) {
             super(null);            
-            this.type = type;
+            this.keyType = keyType;
+            this.valueType = valueType;
             this.metadata = metadata;
         }
         public ExprNoEntity<V> get(Expr<K> key) { 
-            return new PathNoEntitySimple<V>(type, forMapAccess(this, key));
+            return new PathNoEntitySimple<V>(valueType, forMapAccess(this, key));
         }
         public ExprNoEntity<V> get(K key) { 
-            return new PathNoEntitySimple<V>(type, forMapAccess(this, key));
+            return new PathNoEntitySimple<V>(valueType, forMapAccess(this, key));
         }
-        public PathMetadata<String> getMetadata() {return metadata;}
+        public PathMetadata<?> getMetadata() {return metadata;}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
+        public Class<K> getKeyType() {return keyType; }
+        public Class<V> getValueType() {return valueType; }
     }
     
     public static class PathEntity<D> extends ExprEntity<D> implements Path<D>{
@@ -310,7 +311,7 @@ public class Types {
             return new PathComponentCollection<A>(type, forProperty(this, path));
         }        
         protected <K,V> PathComponentMap<K,V> _simplemap(String path, Class<K> key, Class<V> value){
-            return new PathComponentMap<K,V>(value, forProperty(this, path));
+            return new PathComponentMap<K,V>(key, value, forProperty(this, path));
         }
         protected PathString _string(String path){
             return new PathString(forProperty(this, path));
@@ -323,9 +324,9 @@ public class Types {
     }
     
     public static class PathEntityCollection<D> extends ExprEntity<Collection<D>> implements PathCollection<D>{
-        private final PathMetadata<String> metadata;
+        private final PathMetadata<?> metadata;
         private final Class<D> type;
-        PathEntityCollection(Class<D> type, PathMetadata<String> metadata) {
+        PathEntityCollection(Class<D> type, PathMetadata<?> metadata) {
             super(null);            
             this.type = type;
             this.metadata = metadata;
@@ -337,35 +338,37 @@ public class Types {
         public ExprEntity<D> get(int index) {
             return new PathEntity<D>(type, forListAccess(this,index));
         }
-        public PathMetadata<String> getMetadata() {return metadata;}
+        public PathMetadata<?> getMetadata() {return metadata;}
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}    
-        public ExprEntity<D> maxelement() {
-            return new PathEntity<D>(type, forMaxElement(this)); 
+        public ExprComparable<Integer> size() { 
+//            return Grammar.size(this);
+            return new PathComparable<Integer>(Integer.class, forSize(this));
         }
-        public ExprEntity<D> minelement() {
-            return new PathEntity<D>(type, forMinElement(this)); 
-        }
-        public ExprComparable<Integer> size() { return Grammar.size(this); }
+        public Class<D> getElementType() {return type;}
     }
     
     public static class PathEntityMap<K,V> extends ExprEntity<Map<K,V>> implements PathMap<K,V>{
-        private final PathMetadata<String> metadata;
-        private final Class<V> type;
-        PathEntityMap(Class<V> type, PathMetadata<String> metadata) {
+        private final PathMetadata<?> metadata;
+        private final Class<K> keyType;
+        private final Class<V> valueType;
+        PathEntityMap(Class<K> keyType, Class<V> valueType, PathMetadata<?> metadata) {
             super(null);            
-            this.type = type;
+            this.keyType = keyType;
+            this.valueType = valueType;
             this.metadata = metadata;
         } 
         public ExprEntity<V> get(Expr<K> key) { 
-            return new PathEntity<V>(type, forMapAccess(this, key));
+            return new PathEntity<V>(valueType, forMapAccess(this, key));
         }
         public ExprEntity<V> get(K key) { 
-            return new PathEntity<V>(type, forMapAccess(this, key));
+            return new PathEntity<V>(valueType, forMapAccess(this, key));
         }
-        public PathMetadata<String> getMetadata() {return metadata;}    
+        public PathMetadata<?> getMetadata() {return metadata;}    
         public ExprBoolean isnotnull() {return Grammar.isnotnull(this);}
         public ExprBoolean isnull() {return Grammar.isnull(this);}
+        public Class<K> getKeyType() {return keyType; }
+        public Class<V> getValueType() {return valueType; }
     }
     
     public static class PathEntityRenamable<D> extends PathEntity<D>{
@@ -376,6 +379,8 @@ public class Types {
     public interface PathMap<K,V> extends Path<Map<K,V>>{
         Expr<V> get(Expr<K> key);
         Expr<V> get(K key);
+        Class<K> getKeyType();
+        Class<V> getValueType();
     }
     
     public interface PathNoEntity<D> extends Path<D>{

@@ -56,6 +56,7 @@ public abstract class Visitor<T extends Visitor<T>> {
 
     @SuppressWarnings("unchecked")
     public final T handle(Expr<?> expr) {
+        assert expr != null;
         try {
             methodMap.get(expr.getClass()).invoke(this, expr);
         } catch (Exception e) {
