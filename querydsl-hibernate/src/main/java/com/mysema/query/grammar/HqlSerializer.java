@@ -15,6 +15,8 @@ import com.mysema.query.grammar.HqlGrammar.*;
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.Types.*;
 
+import com.mysema.query.grammar.PathMetadata.PathType;
+
 /**
  * HqlSerializer provides
  *
@@ -71,14 +73,12 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
             JoinExpression je = joins.get(i);            
             if (i > 0){
                 String sep = ", ";
-                if (je.getTarget() instanceof AliasToPath){
                     switch(je.getType()){
                     case FULLJOIN:  sep = "\n  full join "; break;
                     case INNERJOIN: sep = "\n  inner join "; break;
                     case JOIN:      sep = "\n  join "; break;
                     case LEFTJOIN:  sep = "\n  left join "; break;                                
                     }    
-                }
                 _append(sep);
             }
             // type specifier
@@ -186,20 +186,26 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
     
     @Override
     protected void visit(Path<?> path) {
+        PathType pathType = path.getMetadata().getPathType();
+        String parentAsString = null, exprAsString = null;
+        
         if (path.getMetadata().getParent() != null){
-            visit(path.getMetadata().getParent());
+            parentAsString = _toString((Expr<?>)path.getMetadata().getParent(),false);    
+        }        
+        if (pathType == PathType.PROPERTY || pathType == PathType.VARIABLE ||
+              pathType == PathType.LISTVALUE_CONSTANT){
+            exprAsString = path.getMetadata().getExpression().toString();
+        }else if (path.getMetadata().getExpression() != null){
+            exprAsString = _toString(path.getMetadata().getExpression(),false);
         }
-        Expr<?> expr = path.getMetadata().getExpression();
-        switch(path.getMetadata().getType()){
-            case LISTACCESS :             
-            case MAPACCESS : _append("[").handle(expr)._append("]"); break;
-            case LISTACCESSC : _append("[")._append(expr.toString())._append("]"); break;
-            case MAPACCESSC : _append("[").handle(expr)._append("]"); break;
-            case MAXELEMENT : handle(expr)._append(".maxelement()"); break;
-            case MINELEMENT : handle(expr)._append(".minelement()"); break;
-            case PROPERTY : _append(".")._append(expr.toString()); break;
-            case VARIABLE : _append(expr.toString()); break;
+        
+        String pattern = HqlOps.getPattern(pathType);
+        if (parentAsString != null){
+            _append(String.format(pattern, parentAsString, exprAsString));    
+        }else{
+            _append(String.format(pattern, exprAsString));
         }
+        
     }
 
     @Override

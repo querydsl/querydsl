@@ -87,9 +87,9 @@ public class HqlDomain {
     
     @Entity
     public static class Customer {
-        @Id int id;
-        @ManyToOne Name name;    
         @ManyToOne Order currentOrder;
+        @Id int id;    
+        @ManyToOne Name name;
     }
     
     @Entity
@@ -113,6 +113,12 @@ public class HqlDomain {
     }
     
     @Entity
+    public static class doofus{
+        String gob;
+        @Id long id;
+    }
+    
+    @Entity
     public static class Employee {
         @ManyToOne Company company;
         String firstName, lastName; 
@@ -121,11 +127,11 @@ public class HqlDomain {
     
     @Entity
     public static class EvilType {
+        @ManyToOne @JoinColumn(name="_asc") EvilType asc;
+        @ManyToOne @JoinColumn(name="_desc") EvilType desc;
         @Id int id;
         @ManyToOne EvilType isnull, isnotnull, get, getType, getMetadata;
         @ManyToOne EvilType toString, hashCode, getClass, notify, notifyAll, wait;
-        @ManyToOne @JoinColumn(name="_asc") EvilType asc;
-        @ManyToOne @JoinColumn(name="_desc") EvilType desc;
     }
     
     @DTO
@@ -140,6 +146,7 @@ public class HqlDomain {
     public static class Foo {
         String bar;
         @Id int id;
+        @CollectionOfElements List<String> names;
         java.util.Date startDate;
         public Foo(){}
         public Foo(long l){}
@@ -171,15 +178,15 @@ public class HqlDomain {
     }
     
     @Entity
-    public static class NameList{
-        @Id long id;
-        @CollectionOfElements Collection<String> names;
-    }
-    
-    @Entity
     public static class Named {
         @Id long id;
         String name;
+    }
+    
+    @Entity
+    public static class NameList{
+        @Id long id;
+        @CollectionOfElements Collection<String> names;
     }
     
     @Entity
@@ -204,7 +211,13 @@ public class HqlDomain {
     
     @Entity
     public static class Payment extends Item{
-
+        @ManyToOne Status currentStatus, status;
+        PaymentStatus name;
+        @OneToMany Collection<StatusChange> statusChanges;
+    }
+    
+    public enum PaymentStatus{
+        AWAITING_APPROVAL
     }
     
     @Entity
@@ -212,8 +225,8 @@ public class HqlDomain {
         java.util.Date birthDay;
         @Id long i;
         @ManyToOne PersonId id;
-        @ManyToOne Nationality nationality;
         String name;
+        @ManyToOne Nationality nationality;
     }
     
     @Entity
@@ -237,9 +250,27 @@ public class HqlDomain {
     }
     
     @Entity
-    public static class Product {
+    public static class Product extends Item{
+//        @Id long id;
+        String name;
+    }
+    
+    @Entity
+    public static class Show {
+        @CollectionOfElements Map<String,String> acts;
+        @Id int id;
+    }
+    
+    @Entity
+    public static class Status {
         @Id long id;
         String name;
+    }
+    
+    @Entity
+    public static class StatusChange {
+        @Id long id;
+        java.util.Date timeStamp;
     }
     
     @Entity
@@ -247,12 +278,6 @@ public class HqlDomain {
         @OneToMany List<Customer> customers;
         @Id long id;
         @ManyToOne Location location;
-    }
-    
-    @Entity
-    public static class doofus{
-        @Id long id;
-        String gob;
     }
     
     @Entity

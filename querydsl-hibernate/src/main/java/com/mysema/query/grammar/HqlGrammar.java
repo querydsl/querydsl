@@ -5,11 +5,14 @@
  */
 package com.mysema.query.grammar;
 
+import java.util.Collection;
 import java.util.Date;
 
 import com.mysema.query.Query;
 import com.mysema.query.QueryBase;
+import com.mysema.query.grammar.HqlOps.HqlPathType;
 import com.mysema.query.grammar.HqlOps.OpHql;
+import com.mysema.query.grammar.HqlOps.OpNumberAgg;
 import com.mysema.query.grammar.HqlOps.OpQuant;
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.Types.*;
@@ -21,7 +24,7 @@ import com.mysema.query.grammar.Types.*;
  * @version $Id$
  */
 public class HqlGrammar extends Grammar{
-        
+            
     public static <D> Expr<D> all(CollectionType<D> col){
         return new ExprQuantSimple<D>(OpQuant.ALL, col);
     }    
@@ -36,36 +39,44 @@ public class HqlGrammar extends Grammar{
         return new ExprQuantComparable<D>(OpQuant.ANY, col);
     }    
     
+    public static <A extends Comparable<A>> ExprComparable<A> avg(Expr<A> left){
+        return _number(OpNumberAgg.AVG, left);
+    }    
+    public static <A extends Comparable<A>> ExprComparable<A> avg(PathCollection<A> left){
+        return new ExprQuantComparable<A>(OpQuant.AVG_IN_COL, left);
+    }        
+    
     public static ExprComparable<Long> count(){
         return new CountExpr(null);
-    }    
+    }
+    
     public static ExprComparable<Long> count(Expr<?> expr){
         return new CountExpr(expr);
     }
-    
     public static ExprComparable<Date> current_date(){
         return _comparable(OpHql.CURRENT_DATE);
-    }
+    }    
     public static ExprComparable<Date> current_time(){
         return _comparable(OpHql.CURRENT_TIME);
     }    
     public static ExprComparable<Date> current_timestamp(){
         return _comparable(OpHql.CURRENT_TIMESTAMP);
-    }    
-    public static ExprComparable<Date> day(Expr<Date> date){
-        return _comparable(OpHql.DAY, date);
     }
     
+    public static ExprComparable<Date> day(Expr<Date> date){
+        return _comparable(OpHql.DAY, date);
+    }    
     public static <T> Expr<T> distinct(PathEntity<T> left){
         return new DistinctPath<T>(left);
-    }    
+    }
+    
     public static <T> Expr<T> distinct(PathNoEntity<T> left){
         return new DistinctPath<T>(left);
-    }
+    }    
     
     public static <D> ExprBoolean exists(CollectionType<D> col){
         return new ExprQuantBoolean<D>(OpQuant.EXISTS, col);
-    }    
+    }
     
     public static <A> SubQuery<A> from(ExprEntity<A> select){
         return new SubQuery<A>(select).from(select);
@@ -73,26 +84,72 @@ public class HqlGrammar extends Grammar{
     
     public static ExprComparable<Date> hour(Expr<Date> date){
         return _comparable(OpHql.HOUR, date);
+    }        
+    public static PathComponentCollection<Integer> indices(PathCollection<?> col){
+        return new PathComponentCollection<Integer>(Integer.class, new PathMetadata<Collection<Integer>>(col, null, HqlPathType.LISTINDICES));
     }
     
+    public static <K,V> PathComponentCollection<K> indices(PathMap<K,V> col){
+        return new PathComponentCollection<K>(col.getKeyType(), new PathMetadata<Collection<Integer>>(col, null, HqlPathType.LISTINDICES));
+    }
+    
+    public static ExprBoolean isempty(PathComponentCollection<?> collection) {
+        return _boolean(OpHql.ISEMPTY, collection);        
+    }
+               
     public static ExprBoolean isempty(PathEntityCollection<?> collection) {
         return _boolean(OpHql.ISEMPTY, collection);        
-    }    
+    }
+    
+    public static ExprBoolean isnotempty(PathComponentCollection<?> collection) {
+        return _boolean(OpHql.ISNOTEMPTY, collection);        
+    }
+    
     public static ExprBoolean isnotempty(PathEntityCollection<?> collection) {
         return _boolean(OpHql.ISNOTEMPTY, collection);        
     }
     
-    public static ExprComparable<Integer> maxindex(PathEntityCollection<?> collection) {
-        return _comparable(OpHql.MAXINDEX, collection);        
+    public static <A extends Comparable<A>> ExprComparable<A> max(Expr<A> left){
+        return _number(OpNumberAgg.MAX, left);
+    }
+    public static <A extends Comparable<A>> ExprComparable<A> max(PathCollection<A> left){
+        return new ExprQuantComparable<A>(OpQuant.MAX_IN_COL, left);
+    } 
+    
+    public static <A> PathEntity<A> maxelement(PathEntityCollection<A> col) {
+        return new PathEntity<A>(col.getElementType(), new PathMetadata<A>(col, null, HqlPathType.MINELEMENT));
     }
     
-    public static ExprComparable<Integer> minindex(PathEntityCollection<?> collection) {
-        return _comparable(OpHql.MININDEX, collection);        
+    public static <A> PathComparable<Integer> maxindex(PathComponentCollection<A> col) {
+        return new PathComparable<Integer>(Integer.class, new PathMetadata<Integer>(col, null, HqlPathType.MAXINDEX));
     }
-        
+    
+    public static <A> PathComparable<Integer> maxindex(PathEntityCollection<A> col) {
+        return new PathComparable<Integer>(Integer.class, new PathMetadata<Integer>(col, null, HqlPathType.MAXINDEX));
+    }        
+    public static <A extends Comparable<A>> ExprComparable<A> min(Expr<A> left){
+        return _number(OpNumberAgg.MIN, left);
+    }
+    
+    public static <A extends Comparable<A>> ExprComparable<A> min(PathCollection<A> left){
+        return new ExprQuantComparable<A>(OpQuant.MIN_IN_COL, left);
+    }       
+    
+    public static <A> PathEntity<A> minelement(PathEntityCollection<A> col) {
+        return new PathEntity<A>(col.getElementType(), new PathMetadata<A>(col, null, HqlPathType.MINELEMENT));
+    } 
+    
+    public static <A> PathComparable<Integer> minindex(PathComponentCollection<A> col) {
+        return new PathComparable<Integer>(Integer.class, new PathMetadata<Integer>(col, null, HqlPathType.MININDEX));
+    }
+    
+    public static <A> PathComparable<Integer> minindex(PathEntityCollection<A> col) {
+        return new PathComparable<Integer>(Integer.class, new PathMetadata<Integer>(col, null, HqlPathType.MININDEX));
+    }        
+    
     public static ExprComparable<Date> minute(Expr<Date> date){
         return _comparable(OpHql.MINUTE, date);
-    }
+    }    
     
     public static ExprComparable<Date> month(Expr<Date> date){
         return _comparable(OpHql.MONTH, date);

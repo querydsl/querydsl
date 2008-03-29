@@ -7,6 +7,9 @@ package com.mysema.query.grammar;
 
 import java.util.*;
 
+import com.mysema.query.grammar.PathMetadata.PathType;
+import com.mysema.query.grammar.PathMetadata.PathTypeImpl;
+
 /**
  * Ops provides
  *
@@ -59,9 +62,10 @@ public class HqlOps extends Ops {
         add(OpNumber.SUB, "%s - %s",12);
         add(OpNumber.SQRT, "sqrt(%s)");
         
-        add(OpNumber.AVG, "avg(%s)");
-        add(OpNumber.MAX, "max(%s)");
-        add(OpNumber.MIN, "min(%s)");
+        // numeric aggregates
+        add(OpNumberAgg.AVG, "avg(%s)");
+        add(OpNumberAgg.MAX, "max(%s)");
+        add(OpNumberAgg.MIN, "min(%s)");
         
         // various
         add(Op.EQ, "%s = %s",18);
@@ -71,7 +75,7 @@ public class HqlOps extends Ops {
         add(Op.NOTIN, "%s not in %s");        
         add(Op.ISNULL, "%s is null",26);
         add(Op.ISNOTNULL, "%s is not null",26);
-        add(Op.SIZE, "size(%s)");
+//        add(Op.SIZE, "size(%s)");
         
         // string
         add(OpString.CONCAT, "%s || %s",37);
@@ -94,14 +98,32 @@ public class HqlOps extends Ops {
         add(OpHql.DAY, "day(%s)");
         add(OpHql.MONTH, "month(%s)");
         add(OpHql.YEAR, "year(%s)");
-        add(OpHql.MAXINDEX, "maxindex(%s)");
-        add(OpHql.MININDEX, "minindex(%s)");
         
         // quantified expressions
+        add(OpQuant.AVG_IN_COL, "avg(%s)");
+        add(OpQuant.MAX_IN_COL, "max(%s)");
+        add(OpQuant.MIN_IN_COL, "min(%s)");
+        
         add(OpQuant.ANY, "any %s");
         add(OpQuant.ALL, "all %s");
         add(OpQuant.EXISTS, "exists %s");
         add(OpQuant.NOTEXISTS, "not exists %s");        
+        
+        // path types
+        for (PathType type : new PathType[]{PathType.LISTVALUE, PathType.LISTVALUE_CONSTANT, PathType.MAPVALUE, PathType.MAPVALUE_CONSTANT}){
+            add(type,"%s[%s]");    
+        }
+        add(PathType.PROPERTY,"%s.%s"); // TODO : as string
+        add(PathType.SIZE,"%s.size");
+        add(PathType.VARIABLE,"%s"); // TODO : as string
+        
+        // HQL types
+        add(HqlPathType.MINELEMENT, "minelement(%s)");
+        add(HqlPathType.MAXELEMENT, "max(%s");
+        add(HqlPathType.MININDEX, "minelement(%s)");
+        add(HqlPathType.MAXINDEX, "minelement(%s)");
+        add(HqlPathType.LISTINDICES, "indices(%s)");
+        add(HqlPathType.MAPINDICES, "indices(%s)");
     }
     
     private static void add(Op<?> op, String pattern){
@@ -124,8 +146,8 @@ public class HqlOps extends Ops {
             return -1;
         }
     }
-
-    public interface OpHql<RT>{
+    
+    public interface OpHql{
         Op<Date> CURRENT_DATE = new OpImpl<Date>();
         Op<Date> CURRENT_TIME = new OpImpl<Date>();
         Op<Date> CURRENT_TIMESTAMP = new OpImpl<Date>();
@@ -133,8 +155,6 @@ public class HqlOps extends Ops {
         Op<Date> HOUR = new OpImpl<Date>();
         Op<Boolean> ISEMPTY = new OpImpl<Boolean>();
         Op<Boolean> ISNOTEMPTY = new OpImpl<Boolean>();
-        Op<Object> MAXINDEX = new OpImpl<Object>();
-        Op<Object> MININDEX = new OpImpl<Object>();
         Op<Date> MINUTE = new OpImpl<Date>();
         Op<Date> MONTH = new OpImpl<Date>();
         Op<Date> SECOND = new OpImpl<Date>();
@@ -143,16 +163,34 @@ public class HqlOps extends Ops {
         Op<Date> YEAR = new OpImpl<Date>();
     }
     
-    @SuppressWarnings("unchecked")
-    public interface OpQuant<RT>{
+    public interface OpNumberAgg{
+        Op<Number> AVG = new OpImpl<Number>();
+        Op<Number> MAX = new OpImpl<Number>();
+        Op<Number> MIN = new OpImpl<Number>();   
+    }
+    
+    public interface OpQuant{
+        Op<Number> AVG_IN_COL = new OpImpl<Number>();
+        Op<Number> MAX_IN_COL = new OpImpl<Number>();
+        Op<Number> MIN_IN_COL = new OpImpl<Number>();   
+        
 //        some / any = true for any
 //        all        = true for all
 //        exists     = true is subselect matches
 //        not exists = true if subselect doesn't match
-        Op<?> ANY = new OpImpl();
-        Op<?> ALL = new OpImpl();
-        Op<?> EXISTS = new OpImpl();
-        Op<?> NOTEXISTS = new OpImpl();
+        Op<?> ANY = new OpImpl<Object>();
+        Op<?> ALL = new OpImpl<Object>();
+        Op<?> EXISTS = new OpImpl<Object>();
+        Op<?> NOTEXISTS = new OpImpl<Object>();
     }
+    
+    public interface HqlPathType{
+        PathType MINELEMENT = new PathTypeImpl(); 
+        PathType MAXELEMENT = new PathTypeImpl();
+        PathType MININDEX =  new PathTypeImpl();
+        PathType MAXINDEX = new PathTypeImpl();
+        PathType LISTINDICES = new PathTypeImpl();
+        PathType MAPINDICES = new PathTypeImpl();    
+    } 
     
 }

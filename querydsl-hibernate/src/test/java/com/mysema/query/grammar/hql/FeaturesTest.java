@@ -38,8 +38,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     public void testBasicStructure(){
         assertNull(cat.getMetadata().getParent());
         assertEquals(cat, cat.alive.getMetadata().getParent());
-        assertEquals("cat", cat.getMetadata().getExpression().toString());
-        
+        assertEquals("cat", cat.getMetadata().getExpression().toString());        
     }
     
     @Test
@@ -114,13 +113,15 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     @Test
     public void testCollectionOperations(){
         // HQL functions that take collection-valued path expressions: size(), minelement(), maxelement(), minindex(), maxindex(), along with the special elements() and indices functions which may be quantified using some, all, exists, any, in.
-//        size(cat.kittens);
-//        minelement(cat.kittens); 
-//        maxelement(cat.kittens); 
+        cat.kittens.size();
+        minelement(cat.kittens); 
+        maxelement(cat.kittens); 
         minindex(cat.kittens); 
         maxindex(cat.kittens);
         toString("cat.kittens[0]",cat.kittens(0));
-        toString("cat.kittens[0]",cat.kittens.get(0));        
+        toString("cat.kittens[0]",cat.kittens.get(0));
+        
+//        some, all, exists, any, in.
     }
     
     @Test

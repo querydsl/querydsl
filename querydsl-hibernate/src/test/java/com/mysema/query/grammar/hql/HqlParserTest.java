@@ -1,6 +1,10 @@
 package com.mysema.query.grammar.hql;
 
-import static com.mysema.query.grammar.Grammar.*;
+import static com.mysema.query.grammar.Grammar.div;
+import static com.mysema.query.grammar.Grammar.in;
+import static com.mysema.query.grammar.Grammar.not;
+import static com.mysema.query.grammar.Grammar.sqrt;
+import static com.mysema.query.grammar.Grammar.sub;
 import static com.mysema.query.grammar.HqlGrammar.*;
 import static org.junit.Assert.assertEquals;
 
@@ -14,7 +18,9 @@ import antlr.RecognitionException;
 import antlr.TokenStreamException;
 import antlr.collections.AST;
 
+import com.mysema.query.Domain1;
 import com.mysema.query.Domain1Dtos;
+import com.mysema.query.Domain1.Catalog;
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.hql.HqlDomain.Color;
@@ -185,9 +191,10 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
         from(cat).where(cat.kittens.size().gt(0)).parse();
 //        parse( "from Order ord where maxindex(ord.items) > 100" );
         from(ord).where(maxindex(ord.items).gt(100)).parse();
+        
 //        parse( "from Order ord where minelement(ord.items) > 10000" );
-//        from(ord).where(ord.items.minelement().gt(10000)).parse();
-//
+//        NOTE : Invalid query
+        
 //        parse( "select mother from eg.Cat as mother, eg.Cat as kit\n"
 //                + "where kit in elements(foo.kittens)" );
         select(mother).from(mother, kit).where(kit.in(mother.kittens)).parse();
@@ -199,7 +206,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
 //        parse( "from eg.Player p where 3 > all elements(p.scores)" );
         from(player).where(all(player.scores).lt(3)).parse();
 //        parse( "from eg.Show show where 'fizard' in indices(show.acts)" );
-        // TODO
+        from(show).where(in("fizard",indices(show.acts))).parse();
 //        parse( "from Order ord where ord.items[0].id = 1234" );
         from(ord).where(ord.items(0).id.eq(1234l)).parse();
 //        parse( "select person from Person person, Calendar calendar\n"
@@ -227,11 +234,16 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
 //                + "where prod.name = 'widget'\n"
 //                + "and store.location.name in ( 'Melbourne', 'Sydney' )\n"
 //                + "and prod = all elements(cust.currentOrder.lineItems)" );
-//        select(cust).from(prod, store).innerJoin(store.customers.as(cust))
-//            .where(prod.name.eq("widget")
-//            .and(store.location().name.in("Melbourne","Sydney"))
-//            .and(prod.eq(all(cust.currentOrder().lineItems)))
-//            ).parse();
+        select(cust).from(prod, store).innerJoin(store.customers.as(cust))
+            .where(prod.name.eq("widget")
+            .and(store.location().name.in("Melbourne","Sydney"))
+            .and(prod.eq(all(cust.currentOrder().lineItems)))
+            ).parse();
+        
+        prod.eq(new HqlDomain.Product());
+        prod.eq(new Domain1.Product("p"));
+        prod.eq(new Domain1.Item("p"));
+        
     }
 
     @Test
@@ -248,7 +260,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
         select(cat.color, sum(cat.weight), count(cat)).from(cat).groupBy(cat.color).parse();
 //        parse( "select foo.id, avg( elements(foo.names) ), max( indices(foo.names) )\n"
 //                + "from eg.Foo foo group by foo.id" );
-        // TODO
+        select(foo.id, avg(foo.names), max(indices(foo.names))).from(foo).groupBy(foo.id);
 //        parse( "select cat.color, sum(cat.weight), count(cat)\n"
 //                + "from eg.Cat cat group by cat.color\n"
 //                + "having cat.color in (eg.Color.TABBY, eg.Color.BLACK)" );
@@ -295,7 +307,24 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
 //                + "group by ord\n"
 //                + "having sum(price.amount) > :minAmount\n"
 //                + "order by sum(price.amount) desc" );
-//
+        Catalog cat = new Catalog("cat");
+        select(ord.id, sum(price.amount), count(item))
+            .from(ord).join(ord.lineItems.as(item))
+                .join(item.product.as(product)).from(catalog)
+                .join(catalog.prices.as(price))
+            .where(not(ord.paid)
+                .and(ord.customer.eq(cust))
+                .and(price.product.eq(product))
+                .and(catalog.effectiveDate.lt(sysdate()))
+                .and(catalog.effectiveDate.gt(all(
+                    HqlGrammar.select(catalog.effectiveDate).from(catalog)
+                    .where(catalog.effectiveDate.lt(sysdate()))
+                ))))
+            .groupBy(ord)
+            .having(sum(price.amount).gt(0l))
+            .orderBy(sum(price.amount).desc());
+                    
+                    
 //        parse( "select ord.id, sum(price.amount), count(item)\n"
 //                + "from Order as ord join ord.lineItems as item join item.product as product,\n"
 //                + "Catalog as catalog join catalog.prices as price\n"
@@ -303,7 +332,17 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
 //                + "and price.product = product and catalog = :currentCatalog\n"
 //                + "group by ord having sum(price.amount) > :minAmount\n"
 //                + "order by sum(price.amount) desc" );
-//
+        HqlDomain.Customer c1 = new HqlDomain.Customer();
+        HqlDomain.Catalog c2 = new HqlDomain.Catalog();
+        
+        select(ord.id, sum(price.amount), count(item))
+            .from(ord).join(ord.lineItems.as(item)).join(item.product.as(product))
+            .from(catalog).join(catalog.prices.as(price))
+            .where(not(ord.paid).and(ord.customer.eq(c1))
+                .and(price.product.eq(product)).and(catalog.eq(c2)))
+            .groupBy(ord).having(sum(price.amount).gt(0l))
+            .orderBy(sum(price.amount).desc());
+        
 //        parse( "select count(payment), status.name \n"
 //                + "from Payment as payment \n"
 //                + "    join payment.currentStatus as status\n"
@@ -319,6 +358,17 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
 //                + "    )\n"
 //                + "group by status.name, status.sortOrder\n"
 //                + "order by status.sortOrder" );
+//        select(count(payment), status.name)
+//            .from(payment).join(payment.currentStatus.as(status))
+//                .join(payment.statusChanges.as(statusChange))
+//            .where(payment.status().name.ne(PaymentStatus.AWAITING_APPROVAL)
+//                .or(
+//                    statusChange.timeStamp.eq(select(max(change.timestamp))
+//                    .from(change).where(change.payment.eq(null)
+//                )))
+//            .groupBy(status.name.asc(), status.sortOrder.asc())
+//            .orderBy(status.sortOrder);        
+        
 //        parse( "select count(payment), status.name \n"
 //                + "from Payment as payment\n"
 //                + "    join payment.currentStatus as status\n"
@@ -326,12 +376,25 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
 //                + "    or payment.statusChanges[ maxIndex(payment.statusChanges) ].user <> :currentUser\n"
 //                + "group by status.name, status.sortOrder\n"
 //                + "order by status.sortOrder" );
+        HqlDomain.User currentUser = new HqlDomain.User();
+        
+//        select(count(payment), status.name)
+//            .from(payment).join(payment.currentStatus.as(status))
+//            .where(payment.status().name.ne(PaymentStatus.AWAITING_APPROVAL)
+//                    .or(payment.statusChanges(maxindex(payment.statusChanges)).user.ne(currentUser)))
+//            .groupBy(status.name, status.sortOrder)
+//            .orderBy(status.sortOrder);            
+        
 //        parse( "select account, payment\n"
 //                + "from Account as account\n"
 //                + "    left outer join account.payments as payment\n"
 //                + "where :currentUser in elements(account.holder.users)\n"
 //                + "    and PaymentStatus.UNPAID = isNull(payment.currentStatus.name, PaymentStatus.UNPAID)\n"
 //                + "order by account.type.sortOrder, account.accountNumber, payment.dueDate" );
+//        select(account, payment).from(account)
+//            .leftJoin(account.payments.as(payment))
+//        .where(in(currentUser, account.holder().users).and())
+        
 //        parse( "select account, payment\n"
 //                + "from Account as account\n"
 //                + "    join account.holder.users as user\n"
@@ -357,7 +420,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
     @Test
     public void testFromWithJoin() throws Exception {
 //        parse( "FROM eg.mypackage.Cat qat, com.toadstool.Foo f join net.sf.blurb.Blurb" );
-        from(qat,foo).join(cust).parse();
+        // NOTE : invalid query!
 //        parse( "FROM eg.mypackage.Cat qat  left join com.multijoin.JoinORama , com.toadstool.Foo f join net.sf.blurb.Blurb" );
         // TODO
     }

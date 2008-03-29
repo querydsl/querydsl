@@ -15,7 +15,10 @@ import com.mysema.query.grammar.hql.HqlParserTest;
  * @version $Id$
  */
 @RunWith(Suite.class)
-@SuiteClasses({FeaturesTest.class,HqlIntegrationTest.class,HqlParserTest.class}) 
+@SuiteClasses({
+    FeaturesTest.class,
+    HqlIntegrationTest.class,
+    HqlParserTest.class}) 
 public class AllTests {
 
 }

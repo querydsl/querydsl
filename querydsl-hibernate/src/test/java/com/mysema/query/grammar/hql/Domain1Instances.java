@@ -31,9 +31,11 @@ public interface Domain1Instances {
     Cat qat = new Cat("qat");
     Cat rival = new Cat("rival");
     
-    doofus d = new doofus("d");
+    Catalog catalog = new Catalog("catalog");
     
     Customer cust = new Customer("cust");
+    
+    doofus d = new doofus("d");
     
     Foo foo = new Foo("foo");
     
@@ -59,7 +61,16 @@ public interface Domain1Instances {
     
     Player player = new Player("player");
     
+    Price price = new Price("price");
+    
     Product prod = new Product("prod");
+    Product product = new Product("product");
+    
+    Show show = new Show("show");
+    
+    Status status = new Status("status");
+    
+    StatusChange statusChange = new StatusChange("statusChange");
     
     Store store = new Store("store");
 
