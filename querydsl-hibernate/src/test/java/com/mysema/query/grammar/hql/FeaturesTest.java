@@ -302,7 +302,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         
         toString("count(*)", count());
         toString("count(distinct cat.bodyWeight)", count(distinct(cat.bodyWeight)));
-        toString("count(cat)", count(cat));
+        toString("count(cat)", count(cat));        
     }
        
     private void toString(String expected, Expr<?> expr) {

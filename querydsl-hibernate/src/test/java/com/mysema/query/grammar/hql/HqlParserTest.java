@@ -176,6 +176,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
      * Section 9.8 - Expressions *
      */
     @Test
+    
     public void testDocoExamples98() throws Exception {
 //        parse( "from eg.DomesticCat cat where cat.name between 'A' and 'B'" );
         from(cat).where(cat.name.between("A", "B")).parse();
@@ -206,7 +207,9 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
 //        parse( "from eg.Player p where 3 > all elements(p.scores)" );
         from(player).where(all(player.scores).lt(3)).parse();
 //        parse( "from eg.Show show where 'fizard' in indices(show.acts)" );
-        from(show).where(in("fizard",indices(show.acts))).parse();
+        // FIXME
+//        from(show).where(in("fizard",indices(show.acts))).parse();
+        
 //        parse( "from Order ord where ord.items[0].id = 1234" );
         from(ord).where(ord.items(0).id.eq(1234l)).parse();
 //        parse( "select person from Person person, Calendar calendar\n"
