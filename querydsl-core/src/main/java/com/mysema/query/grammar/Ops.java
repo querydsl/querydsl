@@ -24,7 +24,6 @@ public class Ops {
         Op<Boolean> ISTYPEOF = new OpImpl<Boolean>();
         Op<Boolean> NE = new OpImpl<Boolean>();
         Op<Boolean> NOTIN =  new OpImpl<Boolean>();
-//        Op<Integer> SIZE = new OpImpl<Integer>();
     }
     
     /**
