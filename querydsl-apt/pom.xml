@@ -12,6 +12,7 @@
 
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-apt</artifactId>
+  <name>querydsl apt</name>
   <packaging>jar</packaging>
 
   <dependencies>

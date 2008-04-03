@@ -1,6 +1,6 @@
 package ${package};
 
-import static com.mysema.query.grammar.HqlGrammar.*;
+import static com.mysema.query.grammar.types.HqlTypes.*;
 import com.mysema.query.grammar.types.*;
 
 /**
