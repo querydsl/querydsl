@@ -8,6 +8,7 @@
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
   <version>0.2.4</version>
+  <name>querydsl root</name>
   <parent>
     <groupId>com.mysema</groupId>
     <artifactId>maven-parent</artifactId>
