@@ -5,10 +5,8 @@
  */
 package com.mysema.query;
 
-import com.mysema.query.grammar.Types.ExprBoolean;
-import com.mysema.query.grammar.Types.ExprEntity;
-import com.mysema.query.grammar.Types.Expr;
 import com.mysema.query.grammar.OrderSpecifier;
+import com.mysema.query.grammar.types.Expr;
 
 /**
  * Query provides a the query interface of the fluent query DSL
@@ -18,14 +16,14 @@ import com.mysema.query.grammar.OrderSpecifier;
  */
 public interface Query<A extends Query<A>>{
     A select(Expr<?>... o);
-    A from(ExprEntity<?>... o);  
-    @Deprecated A innerJoin(ExprEntity<?> o);
-    @Deprecated A join(ExprEntity<?> o);
-    @Deprecated A fullJoin(ExprEntity<?> o);
-    @Deprecated A leftJoin(ExprEntity<?> o);
-    @Deprecated A with(ExprBoolean... o);
-    A where(ExprBoolean... o);
+    A from(Expr.Entity<?>... o);  
+    @Deprecated A innerJoin(Expr.Entity<?> o);
+    @Deprecated A join(Expr.Entity<?> o);
+    @Deprecated A fullJoin(Expr.Entity<?> o);
+    @Deprecated A leftJoin(Expr.Entity<?> o);
+    @Deprecated A with(Expr.Boolean... o);
+    A where(Expr.Boolean... o);
     A groupBy(Expr<?>... o);
-    A having(ExprBoolean... o);
+    A having(Expr.Boolean... o);
     A orderBy(OrderSpecifier<?>... o);
 }

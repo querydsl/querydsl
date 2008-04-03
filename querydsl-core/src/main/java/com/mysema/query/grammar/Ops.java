@@ -11,77 +11,57 @@ package com.mysema.query.grammar;
  * @author tiwe
  * @version $Id$
  */
-public class Ops {
+public interface Ops {
 
     /**
      * Operators (the return type is encoded in the 1st generic parameter)
      */
     public interface Op<RT> {
-        Op<Boolean> EQ = new OpImpl<Boolean>();
-        Op<Boolean> IN = new OpImpl<Boolean>();
-        Op<Boolean> ISNOTNULL = new OpImpl<Boolean>();
-        Op<Boolean> ISNULL = new OpImpl<Boolean>();
-        Op<Boolean> ISTYPEOF = new OpImpl<Boolean>();
-        Op<Boolean> NE = new OpImpl<Boolean>();
-        Op<Boolean> NOTIN =  new OpImpl<Boolean>();
+        Op<java.lang.Boolean> EQ = new OpImpl<java.lang.Boolean>();
+        Op<java.lang.Boolean> IN = new OpImpl<java.lang.Boolean>();
+        Op<java.lang.Boolean> ISNOTNULL = new OpImpl<java.lang.Boolean>();
+        Op<java.lang.Boolean> ISNULL = new OpImpl<java.lang.Boolean>();
+        Op<java.lang.Boolean> ISTYPEOF = new OpImpl<java.lang.Boolean>();
+        Op<java.lang.Boolean> NE = new OpImpl<java.lang.Boolean>();
+        Op<java.lang.Boolean> NOTIN =  new OpImpl<java.lang.Boolean>();
     }
     
-    /**
-     * Boolean operators (operators used with boolean operands)
-     */
-    public interface OpBoolean{ 
-        Op<Boolean> AND = new OpImpl<Boolean>(); 
-        Op<Boolean> NOT = new OpImpl<Boolean>();
-        Op<Boolean> OR = new OpImpl<Boolean>();
-        Op<Boolean> XNOR = new OpImpl<Boolean>();
-        Op<Boolean> XOR = new OpImpl<Boolean>();
-    }    
-        
-    /**
-     * Operators for Comparable objects
-     */
-    public interface OpComparable{
-        Op<Boolean> BETWEEN = new OpImpl<Boolean>();
-        Op<Boolean> GOE = new OpImpl<Boolean>();
-        Op<Boolean> GT = new OpImpl<Boolean>();
-        Op<Boolean> LOE = new OpImpl<Boolean>();
-        Op<Boolean> LT = new OpImpl<Boolean>();
-        Op<Boolean> NOTBETWEEN = new OpImpl<Boolean>();
-    }
-    
-    /**
-     * Date Operators (operators used with Date operands)
-     */
-    public interface OpDate{       
-        Op<Boolean> AFTER = new OpImpl<Boolean>();
-        Op<Boolean> BEFORE = new OpImpl<Boolean>();        
-    }
-   
     public static final class OpImpl<RT> implements Op<RT>{}
     
-    /**
-     * Numeric Operators (operators used with numeric operands)
-     */
-    public interface OpNumber{
-        Op<Number> ADD = new OpImpl<Number>();          
-        Op<Number> DIV = new OpImpl<Number>();        
-        Op<Number> MOD = new OpImpl<Number>();
-        Op<Number> MULT = new OpImpl<Number>();
-        Op<Number> SQRT = new OpImpl<Number>();
-        Op<Number> SUB = new OpImpl<Number>();
-    }
-        
-    /**
-     * String Operators (operators used with String operands)
-     */
-    public interface OpString{       
-        Op<String> CONCAT = new OpImpl<String>();
-        Op<Boolean> LIKE = new OpImpl<Boolean>();
-        Op<String> LOWER = new OpImpl<String>();
-        Op<String> SUBSTR1ARG = new OpImpl<String>();
-        Op<String> SUBSTR2ARGS = new OpImpl<String>();
-        Op<String> TRIM = new OpImpl<String>();
-        Op<String> UPPER = new OpImpl<String>();
-    }
+    // Boolean
+    Op<java.lang.Boolean> AND = new OpImpl<java.lang.Boolean>(); 
+    Op<java.lang.Boolean> NOT = new OpImpl<java.lang.Boolean>();
+    Op<java.lang.Boolean> OR = new OpImpl<java.lang.Boolean>();
+    Op<java.lang.Boolean> XNOR = new OpImpl<java.lang.Boolean>();
+    Op<java.lang.Boolean> XOR = new OpImpl<java.lang.Boolean>();
+     
+    // Comparable
+    Op<java.lang.Boolean> BETWEEN = new OpImpl<java.lang.Boolean>();
+    Op<java.lang.Boolean> GOE = new OpImpl<java.lang.Boolean>();
+    Op<java.lang.Boolean> GT = new OpImpl<java.lang.Boolean>();
+    Op<java.lang.Boolean> LOE = new OpImpl<java.lang.Boolean>();
+    Op<java.lang.Boolean> LT = new OpImpl<java.lang.Boolean>();
+    Op<java.lang.Boolean> NOTBETWEEN = new OpImpl<java.lang.Boolean>();
     
+    // Date
+    Op<java.lang.Boolean> AFTER = new OpImpl<java.lang.Boolean>();
+    Op<java.lang.Boolean> BEFORE = new OpImpl<java.lang.Boolean>();    
+     
+    // Number
+    Op<java.lang.Number> ADD = new OpImpl<java.lang.Number>();          
+    Op<java.lang.Number> DIV = new OpImpl<java.lang.Number>();        
+    Op<java.lang.Number> MOD = new OpImpl<java.lang.Number>();
+    Op<java.lang.Number> MULT = new OpImpl<java.lang.Number>();
+    Op<java.lang.Number> SQRT = new OpImpl<java.lang.Number>();
+    Op<java.lang.Number> SUB = new OpImpl<java.lang.Number>();
+    
+    // String
+    Op<java.lang.String> CONCAT = new OpImpl<java.lang.String>();
+    Op<java.lang.Boolean> LIKE = new OpImpl<java.lang.Boolean>();
+    Op<java.lang.String> LOWER = new OpImpl<java.lang.String>();
+    Op<java.lang.String> SUBSTR1ARG = new OpImpl<java.lang.String>();
+    Op<java.lang.String> SUBSTR2ARGS = new OpImpl<java.lang.String>();
+    Op<java.lang.String> TRIM = new OpImpl<java.lang.String>();
+    Op<java.lang.String> UPPER = new OpImpl<java.lang.String>();
+       
 }

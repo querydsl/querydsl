@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.grammar;
+package com.mysema.query.grammar.types;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -11,8 +11,6 @@ import java.util.Map;
 
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.map.LazyMap;
-
-import com.mysema.query.grammar.Types.*;
 
 /**
  * Visitor provides a dispatching Visitor for Expr instances
@@ -65,50 +63,50 @@ public abstract class Visitor<T extends Visitor<T>> {
         return (T) this;
     }
 
-    protected abstract void visit(AliasEntity<?> expr);
+    protected abstract void visit(Alias.Entity<?> expr);
     
-    protected abstract void visit(AliasEntityCollection<?> expr);
+    protected abstract void visit(Alias.EntityCollection<?> expr);
     
-    protected abstract void visit(AliasNoEntity<?> expr);
+    protected abstract void visit(Alias.NoEntity<?> expr);
 
-    protected abstract void visit(AliasSimple expr);
+    protected abstract void visit(Alias.Simple expr);
 
-    protected abstract void visit(AliasToPath expr);
+    protected abstract void visit(Alias.ToPath expr);
 
-    protected abstract void visit(ConstantExpr<?> expr);
+    protected abstract void visit(Expr.Constant<?> expr);
 
     protected abstract void visit(Operation<?, ?> expr);
 
-    protected abstract void visit(OperationBoolean expr);
+    protected abstract void visit(Operation.Boolean expr);
     
-    protected abstract void visit(OperationComparable<?,?> expr);
+    protected abstract void visit(Operation.Comparable<?,?> expr);
     
-    protected abstract void visit(OperationNumber<?,?> expr);
+    protected abstract void visit(Operation.Number<?,?> expr);
     
-    protected abstract void visit(OperationString expr);
+    protected abstract void visit(Operation.String expr);
 
     protected abstract void visit(Path<?> expr);
 
-    protected abstract void visit(PathBoolean expr);
+    protected abstract void visit(Path.Boolean expr);
 
-    protected abstract void visit(PathComparable<?> expr);
+    protected abstract void visit(Path.Comparable<?> expr);
     
-    protected abstract void visit(PathComponentCollection<?> expr);
+    protected abstract void visit(Path.ComponentCollection<?> expr);
     
-    protected abstract void visit(PathComponentMap<?,?> expr);
+    protected abstract void visit(Path.ComponentMap<?,?> expr);
 
-    protected abstract void visit(PathEntity<?> expr);
+    protected abstract void visit(Path.Entity<?> expr);
 
-    protected abstract void visit(PathEntityCollection<?> expr);
+    protected abstract void visit(Path.EntityCollection<?> expr);
     
-    protected abstract void visit(PathEntityMap<?,?> expr);
+    protected abstract void visit(Path.EntityMap<?,?> expr);
 
-    protected abstract void visit(PathEntityRenamable<?> expr);
+    protected abstract void visit(Path.EntityRenamable<?> expr);
     
-    protected abstract void visit(PathNoEntity<?> expr);
+    protected abstract void visit(Path.NoEntity<?> expr);
     
-    protected abstract void visit(PathNoEntitySimple<?> expr);
+    protected abstract void visit(Path.NoEntitySimple<?> expr);
 
-    protected abstract void visit(PathString expr);
+    protected abstract void visit(Path.String expr);
     
 }

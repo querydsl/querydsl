@@ -6,7 +6,7 @@
 package com.mysema.query;
 
 import com.mysema.query.grammar.Grammar;
-import com.mysema.query.grammar.Types.ExprBoolean;
+import com.mysema.query.grammar.types.Expr;
 
 /**
  * CascadingBoolean provides
@@ -15,25 +15,25 @@ import com.mysema.query.grammar.Types.ExprBoolean;
  * @version $Id$
  */
 public class CascadingBoolean {
-    private ExprBoolean expr;
+    private Expr.Boolean expr;
 
-    public CascadingBoolean and(ExprBoolean right) {
+    public CascadingBoolean and(Expr.Boolean right) {
         expr = (expr == null) ? right : expr.and(right);
         return this;
     }
     public void clear(){
         expr = null;
     }
-    public CascadingBoolean not(ExprBoolean right){
+    public CascadingBoolean not(Expr.Boolean right){
         return and(Grammar.not(right));
     }
     
-    public CascadingBoolean or(ExprBoolean right) {
+    public CascadingBoolean or(Expr.Boolean right) {
         expr = (expr == null) ? right : expr.or(right);
         return this;
     }
     
-    public ExprBoolean self(){
+    public Expr.Boolean self(){
         return expr;
     }
 

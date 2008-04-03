@@ -3,14 +3,9 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.grammar;
+package com.mysema.query.grammar.types;
 
-import static com.mysema.query.grammar.Grammar._const;
-
-import com.mysema.query.grammar.Types.Expr;
-import com.mysema.query.grammar.Types.Path;
-import com.mysema.query.grammar.Types.PathCollection;
-import com.mysema.query.grammar.Types.PathMap;
+import com.mysema.query.grammar.Ops;
 
 /**
  * 
@@ -33,38 +28,38 @@ public final class PathMetadata<T> {
         this.pathType = type;
     }
 
-    public static PathMetadata<Integer> forListAccess(PathCollection<?> parent,
+    public static PathMetadata<Integer> forListAccess(Path.Collection<?> parent,
             Expr<Integer> index) {
         return new PathMetadata<Integer>(parent, index, PathType.LISTVALUE);
     }
 
-    public static PathMetadata<Integer> forListAccess(PathCollection<?> parent,
+    public static PathMetadata<Integer> forListAccess(Path.Collection<?> parent,
             int index) {
-        return new PathMetadata<Integer>(parent, _const(index),
+        return new PathMetadata<Integer>(parent, Factory.createConstant(index),
                 PathType.LISTVALUE_CONSTANT);
     }
 
-    public static PathMetadata<Integer> forSize(PathCollection<?> parent) {
+    public static PathMetadata<Integer> forSize(Path.Collection<?> parent) {
         return new PathMetadata<Integer>(parent, null, PathType.SIZE);
     }
 
-    public static <KT> PathMetadata<KT> forMapAccess(PathMap<?, ?> parent,
+    public static <KT> PathMetadata<KT> forMapAccess(Path.Map<?, ?> parent,
             Expr<KT> key) {
         return new PathMetadata<KT>(parent, key, PathType.MAPVALUE);
     }
 
-    public static <KT> PathMetadata<KT> forMapAccess(PathMap<?, ?> parent,
+    public static <KT> PathMetadata<KT> forMapAccess(Path.Map<?, ?> parent,
             KT key) {
-        return new PathMetadata<KT>(parent, _const(key), PathType.MAPVALUE_CONSTANT);
+        return new PathMetadata<KT>(parent, Factory.createConstant(key), PathType.MAPVALUE_CONSTANT);
     }
 
     public static PathMetadata<String> forProperty(Path<?> parent,
             String property) {
-        return new PathMetadata<String>(parent, _const(property), PathType.PROPERTY);
+        return new PathMetadata<String>(parent, Factory.createConstant(property), PathType.PROPERTY);
     }
 
     public static PathMetadata<String> forVariable(String variable) {
-        return new PathMetadata<String>(null, _const(variable), PathType.VARIABLE);
+        return new PathMetadata<String>(null, Factory.createConstant(variable), PathType.VARIABLE);
     }
 
     public Expr<T> getExpression() {

@@ -5,8 +5,7 @@
  */
 package com.mysema.query;
 
-import com.mysema.query.grammar.Types.ExprBoolean;
-import com.mysema.query.grammar.Types.ExprEntity;
+import com.mysema.query.grammar.types.Expr;
 
 /**
  * 
@@ -17,24 +16,24 @@ import com.mysema.query.grammar.Types.ExprEntity;
  *
  */
 public class JoinExpression {
-    private ExprBoolean condition;
-    private final ExprEntity<?> target;
+    private Expr.Boolean condition;
+    private final Expr.Entity<?> target;
     private final JoinType type;
     
-    JoinExpression(JoinType type, ExprEntity<?> target) {
+    JoinExpression(JoinType type, Expr.Entity<?> target) {
         this.type = type;
         this.target = target;
     }
     
-    public ExprBoolean getCondition() {
+    public Expr.Boolean getCondition() {
         return condition;
     }
     
-    public void setCondition(ExprBoolean condition) {
+    public void setCondition(Expr.Boolean condition) {
         this.condition = condition;
     }
     
-    public ExprEntity<?> getTarget() {
+    public Expr.Entity<?> getTarget() {
         return target;
     }
     

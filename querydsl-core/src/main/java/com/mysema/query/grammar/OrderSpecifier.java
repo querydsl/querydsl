@@ -5,6 +5,9 @@
  */
 package com.mysema.query.grammar;
 
+import com.mysema.query.grammar.types.Expr;
+
+
 /**
  * 
  * OrderSpecifier provides
@@ -16,5 +19,5 @@ package com.mysema.query.grammar;
  */
 public class OrderSpecifier<A extends Comparable<A>> {
     public Order order;
-    public Types.Expr<A> target;
+    public Expr<A> target;
 }
