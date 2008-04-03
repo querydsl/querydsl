@@ -12,10 +12,9 @@ import java.util.Map;
 
 import org.hibernate.Query;
 
-import com.mysema.query.grammar.PathMetadata;
-import com.mysema.query.grammar.Types.ExprBoolean;
-import com.mysema.query.grammar.Types.PathEntity;
-import com.mysema.query.grammar.Types.PathNoEntitySimple;
+import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.Path;
+import com.mysema.query.grammar.types.PathMetadata;
 
 
 /**
@@ -40,12 +39,12 @@ public class QueryUtil {
         }
     }
 
-    public static List<ExprBoolean> createQBEConditions(PathEntity<?> entity,
+    public static List<Expr.Boolean> createQBEConditions(Path.Entity<?> entity,
             Map<String, Object> map) {
-        List<ExprBoolean> conds = new ArrayList<ExprBoolean>(map.size());  
+        List<Expr.Boolean> conds = new ArrayList<Expr.Boolean>(map.size());  
         for (Map.Entry<String, Object> entry : map.entrySet()){                
             PathMetadata<String> md = PathMetadata.forProperty(entity, entry.getKey());
-            PathNoEntitySimple<Object> path = new PathNoEntitySimple<Object>(Object.class, md);
+            Path.NoEntitySimple<Object> path = new Path.NoEntitySimple<Object>(Object.class, md);
             if (entry.getValue() != null){
                 conds.add(path.eq(entry.getValue()));
             }else{

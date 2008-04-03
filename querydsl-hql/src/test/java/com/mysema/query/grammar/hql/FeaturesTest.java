@@ -21,7 +21,7 @@ import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.HqlSerializer;
 import com.mysema.query.grammar.HqlGrammar.Constructor;
-import com.mysema.query.grammar.Types.Expr;
+import com.mysema.query.grammar.types.Expr;
 
 
 /**

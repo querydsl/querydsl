@@ -14,8 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.grammar.HqlQueryBase;
-import com.mysema.query.grammar.Types.ExprBoolean;
-import com.mysema.query.grammar.Types.PathEntity;
+import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.Path;
 
 /**
  * HqlQuery provides a fluent statically typed interface for creating HQL queries
@@ -44,11 +44,11 @@ public class HqlQuery<RT> extends HqlQueryBase<HqlQuery<RT>>{
         return query;
     }
     
-    public HqlQuery<RT> forExample(PathEntity<?> entity, Map<String, Object> map) {
+    public HqlQuery<RT> forExample(Path.Entity<?> entity, Map<String, Object> map) {
         select(entity).from(entity);
         try {            
-            List<ExprBoolean> conds = QueryUtil.createQBEConditions(entity,map);
-            where(conds.toArray(new ExprBoolean[conds.size()]));
+            List<Expr.Boolean> conds = QueryUtil.createQBEConditions(entity,map);
+            where(conds.toArray(new Expr.Boolean[conds.size()]));
             return this;
         } catch (Exception e) {
             String error = "Caught " + e.getClass().getName();

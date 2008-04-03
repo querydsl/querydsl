@@ -13,9 +13,13 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.HqlGrammar.*;
 import com.mysema.query.grammar.Ops.Op;
-import com.mysema.query.grammar.Types.*;
+import com.mysema.query.grammar.types.Alias;
+import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.Operation;
+import com.mysema.query.grammar.types.Path;
+import com.mysema.query.grammar.types.VisitorAdapter;
+import com.mysema.query.grammar.types.PathMetadata.PathType;
 
-import com.mysema.query.grammar.PathMetadata.PathType;
 
 /**
  * HqlSerializer provides
@@ -61,7 +65,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
     }
     
     public void serialize(List<Expr<?>> select, List<JoinExpression> joins,
-        ExprBoolean where, List<Expr<?>> groupBy, List<ExprBoolean> having,
+        Expr.Boolean where, List<Expr<?>> groupBy, List<Expr.Boolean> having,
         List<OrderSpecifier<?>> orderBy, boolean forCountRow){
          if (forCountRow){
             _append("select count(*)\n");
@@ -82,8 +86,8 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
                 _append(sep);
             }
             // type specifier
-            if (je.getTarget() instanceof PathEntity){
-                PathEntity<?> pe = (PathEntity<?>)je.getTarget();
+            if (je.getTarget() instanceof Path.Entity){
+                Path.Entity<?> pe = (Path.Entity<?>)je.getTarget();
                 if (pe.getMetadata().getParent() == null){
                     String pn = pe.getType().getPackage().getName();
                     String typeName = pe.getType().getName().substring(pn.length()+1); 
@@ -123,17 +127,17 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
     public String toString(){ return builder.toString(); }
     
     @Override
-    protected void visit(AliasSimple expr) {
+    protected void visit(Alias.Simple expr) {
         handle(expr.getFrom())._append(" as ")._append(expr.getTo());        
     }
     
     @Override
-    protected void visit(AliasToPath expr) {
+    protected void visit(Alias.ToPath expr) {
         handle(expr.getFrom())._append(" as ").visit(expr.getTo());
     }
     
     @Override
-    protected void visit(ConstantExpr<?> expr) {
+    protected void visit(Expr.Constant<?> expr) {
         boolean wrap = expr.getConstant().getClass().isArray();
         if (wrap) _append("(");
         _append(":a");
@@ -209,7 +213,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
     }
 
     @Override
-    protected void visit(PathCollection<?> expr){
+    protected void visit(Path.Collection<?> expr){
         // only wrap a PathCollection, if it the pathType is PROPERTY
         boolean wrap = wrapElements && expr.getMetadata().getPathType().equals(PathType.PROPERTY);
         if (wrap) _append("elements(");
