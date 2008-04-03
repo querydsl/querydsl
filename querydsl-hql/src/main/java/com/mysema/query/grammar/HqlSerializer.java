@@ -210,9 +210,11 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
 
     @Override
     protected void visit(PathCollection<?> expr){
-        if (wrapElements) _append("elements(");
+        // only wrap a PathCollection, if it the pathType is PROPERTY
+        boolean wrap = wrapElements && expr.getMetadata().getPathType().equals(PathType.PROPERTY);
+        if (wrap) _append("elements(");
         visit((Path<?>)expr);
-        if (wrapElements) _append(")");
+        if (wrap) _append(")");
     }
 
     protected void visit(SubQuery<?> query) {

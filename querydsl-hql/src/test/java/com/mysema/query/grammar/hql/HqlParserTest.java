@@ -207,8 +207,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
 //        parse( "from eg.Player p where 3 > all elements(p.scores)" );
         from(player).where(all(player.scores).lt(3)).parse();
 //        parse( "from eg.Show show where 'fizard' in indices(show.acts)" );
-        // FIXME
-//        from(show).where(in("fizard",indices(show.acts))).parse();
+        from(show).where(in("fizard",indices(show.acts))).parse();
         
 //        parse( "from Order ord where ord.items[0].id = 1234" );
         from(ord).where(ord.items(0).id.eq(1234l)).parse();
