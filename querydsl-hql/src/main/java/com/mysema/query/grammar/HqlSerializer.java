@@ -11,13 +11,13 @@ import java.util.List;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryBase;
-import com.mysema.query.grammar.HqlGrammar.*;
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Alias;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Operation;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.VisitorAdapter;
+import com.mysema.query.grammar.types.HqlTypes.*;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
 
 

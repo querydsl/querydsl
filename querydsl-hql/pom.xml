@@ -12,6 +12,7 @@
 
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-hql</artifactId>
+  <name>querydsl hql</name>
   <packaging>jar</packaging>
 
   <dependencies>
