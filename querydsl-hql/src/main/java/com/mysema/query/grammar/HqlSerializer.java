@@ -20,6 +20,8 @@ import com.mysema.query.grammar.types.VisitorAdapter;
 import com.mysema.query.grammar.types.HqlTypes.*;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
 
+import static com.mysema.query.grammar.types.PathMetadata.*;
+
 
 /**
  * HqlSerializer provides
@@ -196,8 +198,8 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
         if (path.getMetadata().getParent() != null){
             parentAsString = _toString((Expr<?>)path.getMetadata().getParent(),false);    
         }        
-        if (pathType == PathType.PROPERTY || pathType == PathType.VARIABLE ||
-              pathType == PathType.LISTVALUE_CONSTANT){
+        if (pathType == PROPERTY || pathType == VARIABLE ||
+              pathType == LISTVALUE_CONSTANT){
             exprAsString = path.getMetadata().getExpression().toString();
         }else if (path.getMetadata().getExpression() != null){
             exprAsString = _toString(path.getMetadata().getExpression(),false);
@@ -215,7 +217,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
     @Override
     protected void visit(Path.Collection<?> expr){
         // only wrap a PathCollection, if it the pathType is PROPERTY
-        boolean wrap = wrapElements && expr.getMetadata().getPathType().equals(PathType.PROPERTY);
+        boolean wrap = wrapElements && expr.getMetadata().getPathType().equals(PROPERTY);
         if (wrap) _append("elements(");
         visit((Path<?>)expr);
         if (wrap) _append(")");

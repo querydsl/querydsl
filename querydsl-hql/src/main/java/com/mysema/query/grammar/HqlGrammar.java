@@ -193,7 +193,6 @@ public class HqlGrammar extends Grammar{
     public static Expr.Comparable<Date> year(Expr<Date> date){
         return createComparable(OpHql.YEAR, date);
     }
-    
-    
+      
         
 }
