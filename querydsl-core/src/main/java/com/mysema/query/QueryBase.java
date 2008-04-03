@@ -11,6 +11,8 @@ import java.util.List;
 
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
+import static com.mysema.query.grammar.types.Expr.*;
+
 /**
  * QueryBase provides a basic implementation of the Query interface
  *
@@ -38,8 +40,8 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
     
     private final Metadata metadata = new Metadata();
     
-    public A from(Expr.Entity<?>... o) {
-        for (Expr.Entity<?> expr : o){
+    public A from(Entity<?>... o) {
+        for (Entity<?> expr : o){
             joins.add(new JoinExpression(JoinType.DEFAULT,expr));
         }
         return (A) this;
@@ -55,22 +57,22 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         return (A) this;
     }
     
-    public A innerJoin(Expr.Entity<?> o) {
+    public A innerJoin(Entity<?> o) {
         joins.add(new JoinExpression(JoinType.INNERJOIN,o));
         return (A) this;
     }
     
-    public A fullJoin(Expr.Entity<?> o) {
+    public A fullJoin(Entity<?> o) {
         joins.add(new JoinExpression(JoinType.FULLJOIN,o));
         return (A) this;
     }
  
-    public A join(Expr.Entity<?> o) {
+    public A join(Entity<?> o) {
         joins.add(new JoinExpression(JoinType.JOIN,o));
         return (A) this;
     }
  
-    public A leftJoin(Expr.Entity<?> o) {
+    public A leftJoin(Entity<?> o) {
         joins.add(new JoinExpression(JoinType.LEFTJOIN,o));
         return (A) this;
     }

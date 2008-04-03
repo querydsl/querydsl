@@ -15,14 +15,14 @@ import com.mysema.query.grammar.Ops.Op;
  */
 public class Factory {
     
+    public static void checkArg(String name, Object obj) {
+        if (obj == null) throw new IllegalArgumentException(name + " was null");        
+    }
+    
     public static final Expr.Boolean createBoolean(Op<Boolean> operator, Expr<?>... args) {
         checkArg("operator",operator);
         checkArg("args",args);
         return new Operation.Boolean(operator, args);
-    }
-    
-    public static void checkArg(String name, Object obj) {
-        if (obj == null) throw new IllegalArgumentException(name + " was null");        
     }
     
     public static final <OP, RT extends Comparable<RT>> Expr.Comparable<RT> createComparable(Op<OP> operator, Expr<?>... args) {

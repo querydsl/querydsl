@@ -12,6 +12,7 @@
 
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-core</artifactId>
+  <name>querydsl core</name>
   <packaging>jar</packaging>
 
   <dependencies>
