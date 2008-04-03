@@ -1,7 +1,7 @@
 package ${package};
 
 import static com.mysema.query.grammar.HqlGrammar.*;
-import static com.mysema.query.grammar.Types.*;
+import com.mysema.query.grammar.types.*;
 
 /**
  * ${classSimpleName} provides types for use in Query DSL constructs
