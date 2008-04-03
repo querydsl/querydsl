@@ -13,7 +13,6 @@ import static com.mysema.query.grammar.types.Factory.createString;
 import com.mysema.query.grammar.Ops;
 import com.mysema.query.grammar.Order;
 import com.mysema.query.grammar.OrderSpecifier;
-import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Expr.CollectionType;
 
 /**
@@ -124,11 +123,11 @@ class IntGrammar{
     }
         
     static <A> Expr.Boolean eq(Expr<A> left, A right) {
-        return createBoolean(Op.EQ, left, createConstant(right));
+        return createBoolean(Ops.EQ, left, createConstant(right));
     }
 
     static <A> Expr.Boolean eq(Expr<A> left, Expr<? super A> right) {
-        return createBoolean(Op.EQ, left, right);
+        return createBoolean(Ops.EQ, left, right);
     }
 
     static <A extends Comparable<A>> Expr.Boolean goe(Expr<A> left,
@@ -152,21 +151,21 @@ class IntGrammar{
     
     static <A extends Comparable<A>> Expr.Boolean in(Expr<A> left,
             A... rest) {
-        return createBoolean(Op.IN, left, createConstant(rest));
+        return createBoolean(Ops.IN, left, createConstant(rest));
     }
     
 
     
     static <A> Expr.Boolean in(Expr<A> left, CollectionType<A> right){
-        return createBoolean(Op.IN, left, (Expr<?>)right);
+        return createBoolean(Ops.IN, left, (Expr<?>)right);
     }
         
     static <A> Expr.Boolean isnotnull(Expr<A> left) {
-        return createBoolean(Op.ISNOTNULL, left);
+        return createBoolean(Ops.ISNOTNULL, left);
     }
 
     static <A> Expr.Boolean isnull(Expr<A> left) {
-        return createBoolean(Op.ISNULL, left);
+        return createBoolean(Ops.ISNULL, left);
     }
 
     static Expr.Boolean like(Expr<String> left, String right) {
@@ -197,11 +196,11 @@ class IntGrammar{
     }
         
     static <A> Expr.Boolean ne(Expr<A> left, A right) {
-        return createBoolean(Op.NE, left, createConstant(right));
+        return createBoolean(Ops.NE, left, createConstant(right));
     }
     
     static <A> Expr.Boolean ne(Expr<A> left, Expr<? super A> right) {
-        return createBoolean(Op.NE, left, right);
+        return createBoolean(Ops.NE, left, right);
     } 
     
     static <A extends Comparable<A>> Expr.Boolean notBetween(Expr<A> left,
@@ -216,11 +215,11 @@ class IntGrammar{
     
     static <A extends Comparable<A>> Expr.Boolean notIn(Expr<A> left,
             A... rest) {
-        return createBoolean(Op.NOTIN, left, createConstant(rest));
+        return createBoolean(Ops.NOTIN, left, createConstant(rest));
     }
 
     static <A> Expr.Boolean notIn(Expr<A> left, CollectionType<A> right){
-        return createBoolean(Op.NOTIN, left, (Expr<?>)right);
+        return createBoolean(Ops.NOTIN, left, (Expr<?>)right);
     }
     
     static Expr.Boolean or(Expr.Boolean left, Expr.Boolean right) {
@@ -240,7 +239,7 @@ class IntGrammar{
     }
     
     static <A, B extends A> Expr.Boolean typeOf(Expr<A> left, Class<B> right) {
-        return createBoolean(Op.ISTYPEOF, left, createConstant(right));
+        return createBoolean(Ops.ISTYPEOF, left, createConstant(right));
     }
 
     static Expr.String upper(Expr<String> left) {

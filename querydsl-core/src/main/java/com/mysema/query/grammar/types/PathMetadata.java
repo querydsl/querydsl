@@ -30,36 +30,36 @@ public final class PathMetadata<T> {
 
     public static PathMetadata<Integer> forListAccess(Path.Collection<?> parent,
             Expr<Integer> index) {
-        return new PathMetadata<Integer>(parent, index, PathType.LISTVALUE);
+        return new PathMetadata<Integer>(parent, index, LISTVALUE);
     }
 
     public static PathMetadata<Integer> forListAccess(Path.Collection<?> parent,
             int index) {
         return new PathMetadata<Integer>(parent, Factory.createConstant(index),
-                PathType.LISTVALUE_CONSTANT);
+                LISTVALUE_CONSTANT);
     }
 
     public static PathMetadata<Integer> forSize(Path.Collection<?> parent) {
-        return new PathMetadata<Integer>(parent, null, PathType.SIZE);
+        return new PathMetadata<Integer>(parent, null, SIZE);
     }
 
     public static <KT> PathMetadata<KT> forMapAccess(Path.Map<?, ?> parent,
             Expr<KT> key) {
-        return new PathMetadata<KT>(parent, key, PathType.MAPVALUE);
+        return new PathMetadata<KT>(parent, key, MAPVALUE);
     }
 
     public static <KT> PathMetadata<KT> forMapAccess(Path.Map<?, ?> parent,
             KT key) {
-        return new PathMetadata<KT>(parent, Factory.createConstant(key), PathType.MAPVALUE_CONSTANT);
+        return new PathMetadata<KT>(parent, Factory.createConstant(key), MAPVALUE_CONSTANT);
     }
 
     public static PathMetadata<String> forProperty(Path<?> parent,
             String property) {
-        return new PathMetadata<String>(parent, Factory.createConstant(property), PathType.PROPERTY);
+        return new PathMetadata<String>(parent, Factory.createConstant(property), PROPERTY);
     }
 
     public static PathMetadata<String> forVariable(String variable) {
-        return new PathMetadata<String>(null, Factory.createConstant(variable), PathType.VARIABLE);
+        return new PathMetadata<String>(null, Factory.createConstant(variable), VARIABLE);
     }
 
     public Expr<T> getExpression() {
@@ -74,20 +74,18 @@ public final class PathMetadata<T> {
         return pathType;
     }
     
-    public static final class PathTypeImpl implements PathType{ }
-
     /**
      * Type provides
      *
      */
-    public interface PathType extends Ops.Op<Path<?>> {
-        PathType LISTVALUE = new PathTypeImpl(); 
-        PathType LISTVALUE_CONSTANT = new PathTypeImpl();
-        PathType MAPVALUE = new PathTypeImpl();
-        PathType MAPVALUE_CONSTANT = new PathTypeImpl();
-        PathType PROPERTY = new PathTypeImpl();
-        PathType VARIABLE = new PathTypeImpl();
-        PathType SIZE = new PathTypeImpl();
-    }
+    public static class PathType extends Ops.Op<Path<?>> {}
+    
+    public static PathType LISTVALUE = new PathType(); 
+    public static PathType LISTVALUE_CONSTANT = new PathType();
+    public static PathType MAPVALUE = new PathType();
+    public static PathType MAPVALUE_CONSTANT = new PathType();
+    public static PathType PROPERTY = new PathType();
+    public static PathType VARIABLE = new PathType();
+    public static PathType SIZE = new PathType();
 
 }

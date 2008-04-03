@@ -39,7 +39,7 @@ public class Grammar {
     }
     
     public static <A> Expr.Boolean in(A left, CollectionType<A> right){
-        return createBoolean(Op.IN, createConstant(left), (Expr<?>)right);
+        return createBoolean(Ops.IN, createConstant(left), (Expr<?>)right);
     }
 
     public static <A extends Comparable<A>> Expr.Comparable<A> mult(Expr<A> left, A right) {
