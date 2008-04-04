@@ -40,7 +40,7 @@ public class HqlGrammar extends Grammar{
         return new Quant.Comparable<D>(OpQuant.ALL, col);
     }
     
-    public static <D> Expr<D> any(Expr.CollectionType<D> col){
+    public static <D> Expr.Simple<D> any(Expr.CollectionType<D> col){
         return new Quant.Simple<D>(OpQuant.ANY, col);
     }    
     public static <D extends Comparable<D>> Expr.Comparable<D> any(Expr.CollectionType<D> col){

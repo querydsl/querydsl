@@ -15,12 +15,7 @@ public interface Custom<T> {
 
     Expr<?>[] getArgs();
     java.lang.String getPattern();
-    
-//    public interface CustomExpression<T>{
-//        Expr<?>[] getArgs();
-//        java.lang.String getPattern();
-//    } 
-   
+       
     public static abstract class Boolean extends Expr.Boolean implements Custom<java.lang.Boolean>{ }
     
     public static abstract class Comparable<T extends java.lang.Comparable<T>> 

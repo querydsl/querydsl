@@ -17,12 +17,7 @@ public interface Quant {
     
     Op<?> getOperator();
     Expr<?> getTarget();
-    
-//    public interface Quant{
-//        Op<?> getOperator();
-//        Expr<?> getTarget();
-//    }
-    
+        
     public static class Boolean<Q> extends Expr.Boolean implements Quant{
         private final Expr<?> col;
         private final Op<?> op;
@@ -46,7 +41,7 @@ public interface Quant {
         public Expr<?> getTarget() {return col;}                          
     }
         
-    public static class Simple<Q> extends Expr<Q> implements Quant{
+    public static class Simple<Q> extends Expr.Simple<Q> implements Quant{
         private final Expr<?> col;
         private final Op<?> op;
         public Simple(Op<?> op, CollectionType<Q> col) {

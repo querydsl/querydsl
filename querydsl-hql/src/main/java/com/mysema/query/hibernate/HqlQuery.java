@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.grammar.HqlQueryBase;
-import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 
 /**
