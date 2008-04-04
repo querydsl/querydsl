@@ -47,8 +47,7 @@ public class HqlQuery<RT> extends HqlQueryBase<HqlQuery<RT>>{
     public HqlQuery<RT> forExample(Path.Entity<?> entity, Map<String, Object> map) {
         select(entity).from(entity);
         try {            
-            List<Expr.Boolean> conds = QueryUtil.createQBEConditions(entity,map);
-            where(conds.toArray(new Expr.Boolean[conds.size()]));
+            where(QueryUtil.createQBECondition(entity,map));
             return this;
         } catch (Exception e) {
             String error = "Caught " + e.getClass().getName();
@@ -62,6 +61,7 @@ public class HqlQuery<RT> extends HqlQueryBase<HqlQuery<RT>>{
         return this;
     }
     
+    @SuppressWarnings("unchecked")
     public List<RT> list() {
         String queryString = toString();
         logger.debug("query : {}", queryString);
@@ -77,6 +77,7 @@ public class HqlQuery<RT> extends HqlQueryBase<HqlQuery<RT>>{
             String queryString = toString();
             logger.debug("query : {}", queryString);
             query = createQuery(queryString, limit, offset);
+            @SuppressWarnings("unchecked")
             List<RT> list = query.list();
             return new SearchResults<RT>(list,
                     limit == null ? Long.MAX_VALUE : limit.longValue(),
@@ -97,6 +98,7 @@ public class HqlQuery<RT> extends HqlQueryBase<HqlQuery<RT>>{
         return this;
     }
 
+    @SuppressWarnings("unchecked")
     public RT uniqueResult() {
         String queryString = toString();
         logger.debug("query : {}", queryString);

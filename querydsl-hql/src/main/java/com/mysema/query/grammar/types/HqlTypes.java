@@ -94,18 +94,19 @@ public class HqlTypes {
             super(null);
             query.select(select);
         }
+        @SuppressWarnings("unchecked")
         public SubQuery<A> from(Entity... o) {query.from(o); return this;}
         public SubQuery<A> fullJoin(Entity<?> o) {query.fullJoin(o); return this;}
         public QueryBase<?> getQuery(){ return query;}
         public SubQuery<A> groupBy(Expr<?>... o) {query.groupBy(o); return this;}
-        public SubQuery<A> having(Expr.Boolean... o) {query.having(o); return this;}
+        public SubQuery<A> having(Boolean o) {query.having(o); return this;}
         public SubQuery<A> innerJoin(Entity<?> o) {query.innerJoin(o); return this;}
         public SubQuery<A> join(Entity<?> o) {query.join(o); return this;}
         public SubQuery<A> leftJoin(Entity<?> o) {query.leftJoin(o); return this;}
         public SubQuery<A> orderBy(OrderSpecifier<?>... o) {query.orderBy(o); return this;}
         public SubQuery<A> select(Expr<?>... o) {query.select(o); return this;}
-        public SubQuery<A> where(Boolean... o) {query.where(o); return this;}
-        public SubQuery<A> with(Boolean... o) {query.with(o); return this;}
+        public SubQuery<A> where(Boolean o) {query.where(o); return this;}
+        public SubQuery<A> with(Boolean o) {query.with(o); return this;}
         
     }
 

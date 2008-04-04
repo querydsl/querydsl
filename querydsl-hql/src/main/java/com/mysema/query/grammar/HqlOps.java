@@ -118,9 +118,9 @@ public class HqlOps  {
         for (PathType type : new PathType[]{PathMetadata.LISTVALUE, PathMetadata.LISTVALUE_CONSTANT, PathMetadata.MAPVALUE, PathMetadata.MAPVALUE_CONSTANT}){
             add(type,"%s[%s]");    
         }
-        add(PathMetadata.PROPERTY,"%s.%s"); // TODO : as string
+        add(PathMetadata.PROPERTY,"%s.%s"); 
         add(PathMetadata.SIZE,"%s.size");
-        add(PathMetadata.VARIABLE,"%s"); // TODO : as string
+        add(PathMetadata.VARIABLE,"%s"); 
         
         // HQL types
         add(HqlPathType.MINELEMENT, "minelement(%s)");

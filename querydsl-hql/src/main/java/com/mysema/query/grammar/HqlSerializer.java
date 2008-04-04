@@ -67,7 +67,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
     }
     
     public void serialize(List<Expr<?>> select, List<JoinExpression> joins,
-        Expr.Boolean where, List<Expr<?>> groupBy, List<Expr.Boolean> having,
+        Expr.Boolean where, List<Expr<?>> groupBy, Expr.Boolean having,
         List<OrderSpecifier<?>> orderBy, boolean forCountRow){
          if (forCountRow){
             _append("select count(*)\n");
@@ -108,11 +108,11 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
         if (!groupBy.isEmpty()){
             _append("\ngroup by ")._append(", ",groupBy);
         }
-        if (!having.isEmpty()){
+        if (having != null){
             if (groupBy.isEmpty()) {
                 throw new IllegalArgumentException("having, but not groupBy was given");
             }                
-            _append("\nhaving ")._append(" and ", having);
+            _append("\nhaving ").handle(having);
         }
         if (!orderBy.isEmpty() && !forCountRow){
             _append("\norder by ");
@@ -129,7 +129,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
     public String toString(){ return builder.toString(); }
     
     @Override
-    protected void visit(Alias.Simple expr) {
+    protected void visit(Alias.Literal<?> expr) {
         handle(expr.getFrom())._append(" as ")._append(expr.getTo());        
     }
     

@@ -74,7 +74,7 @@ public class HqlGrammar extends Grammar{
         return new DistinctPath<T>(left);
     }
     
-    public static <T> Expr<T> distinct(Path.NoEntity<T> left){
+    public static <T> Expr<T> distinct(Path.Literal<T> left){
         return new DistinctPath<T>(left);
     }    
     

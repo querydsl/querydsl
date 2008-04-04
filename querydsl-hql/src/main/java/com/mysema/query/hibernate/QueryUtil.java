@@ -5,13 +5,13 @@
  */
 package com.mysema.query.hibernate;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Query;
 
+import com.mysema.query.CascadingBoolean;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathMetadata;
@@ -39,19 +39,19 @@ public class QueryUtil {
         }
     }
 
-    public static List<Expr.Boolean> createQBEConditions(Path.Entity<?> entity,
+    public static Expr.Boolean createQBECondition(Path.Entity<?> entity,
             Map<String, Object> map) {
-        List<Expr.Boolean> conds = new ArrayList<Expr.Boolean>(map.size());  
+        CascadingBoolean expr = new CascadingBoolean();  
         for (Map.Entry<String, Object> entry : map.entrySet()){                
             PathMetadata<String> md = PathMetadata.forProperty(entity, entry.getKey());
-            Path.NoEntitySimple<Object> path = new Path.NoEntitySimple<Object>(Object.class, md);
+            Path.SimpleLiteral<Object> path = new Path.SimpleLiteral<Object>(Object.class, md);
             if (entry.getValue() != null){
-                conds.add(path.eq(entry.getValue()));
+                expr.and(path.eq(entry.getValue()));
             }else{
-                conds.add(path.isnull());                        
+                expr.and(path.isnull());                        
             }                    
         } 
-        return conds;
+        return expr.self();
     }
 
 }
