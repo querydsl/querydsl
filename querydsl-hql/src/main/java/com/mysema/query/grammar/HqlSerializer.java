@@ -130,7 +130,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
     public String toString(){ return builder.toString(); }
     
     @Override
-    protected void visit(Alias.Literal<?> expr) {
+    protected void visit(Alias.Simple<?> expr) {
         handle(expr.getFrom())._append(" as ")._append(expr.getTo());        
     }
     

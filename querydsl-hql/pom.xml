@@ -35,6 +35,11 @@
       <artifactId>querydsl-core</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-annotations</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>    
 
     <!-- test -->
     

@@ -14,7 +14,8 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.IndexColumn;
 
-import com.mysema.query.dto.DTO;
+import com.mysema.query.annotations.DTO;
+
 
 /**
  * HqlDomain provides
