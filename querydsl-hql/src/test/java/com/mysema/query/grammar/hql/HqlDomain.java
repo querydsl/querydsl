@@ -1,5 +1,6 @@
 package com.mysema.query.grammar.hql;
 
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.IndexColumn;
 
 import com.mysema.query.annotations.DTO;
+
 
 
 /**
