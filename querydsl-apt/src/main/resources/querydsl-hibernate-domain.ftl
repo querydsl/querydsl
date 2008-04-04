@@ -32,11 +32,11 @@ ${include}
     </#list>
 	<#list decl.simpleMaps as field>
     	public final Path.ComponentMap<${field.keyTypeName},${field.typeName}> ${field.name} = _simplemap("${field.name}",${field.keyTypeName}.class,${field.typeName}.class);
-    	public Path.Literal<${field.typeName}> ${field.name}(${field.keyTypeName} key) {
-    		return new Path.Literal<${field.typeName}>(${field.typeName}.class,forMapAccess(${field.name},key));
+    	public Path.Simple<${field.typeName}> ${field.name}(${field.keyTypeName} key) {
+    		return new Path.Simple<${field.typeName}>(${field.typeName}.class,forMapAccess(${field.name},key));
     	}
-    	public Path.Literal<${field.typeName}> ${field.name}(Expr<${field.keyTypeName}> key) {
-    		return new Path.Literal<${field.typeName}>(${field.typeName}.class,forMapAccess(${field.name},key));
+    	public Path.Simple<${field.typeName}> ${field.name}(Expr<${field.keyTypeName}> key) {
+    		return new Path.Simple<${field.typeName}>(${field.typeName}.class,forMapAccess(${field.name},key));
     	}
     </#list>     
     <#list decl.entityCollections as field>
@@ -50,11 +50,11 @@ ${include}
     </#list>
 	<#list decl.simpleCollections as field>
     	public final Path.ComponentCollection<${field.typeName}> ${field.name} = _simplecol("${field.name}",${field.typeName}.class);
-    	public Path.Literal<${field.typeName}> ${field.name}(int index) {
-    		return new Path.Literal<${field.typeName}>(${field.typeName}.class,forListAccess(${field.name},index));
+    	public Path.Simple<${field.typeName}> ${field.name}(int index) {
+    		return new Path.Simple<${field.typeName}>(${field.typeName}.class,forListAccess(${field.name},index));
     	}
-    	public Path.Literal<${field.typeName}> ${field.name}(Expr<Integer> index) {
-    		return new Path.Literal<${field.typeName}>(${field.typeName}.class,forListAccess(${field.name},index));
+    	public Path.Simple<${field.typeName}> ${field.name}(Expr<Integer> index) {
+    		return new Path.Simple<${field.typeName}>(${field.typeName}.class,forListAccess(${field.name},index));
     	}
     </#list>    
   	<#list decl.entityFields as field>
