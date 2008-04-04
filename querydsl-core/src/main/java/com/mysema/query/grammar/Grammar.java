@@ -10,8 +10,8 @@ import static com.mysema.query.grammar.types.Factory.createBoolean;
 import static com.mysema.query.grammar.types.Factory.createConstant;
 import static com.mysema.query.grammar.types.Factory.createNumber;
 
+import com.mysema.query.grammar.types.CollectionType;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.CollectionType;
 
 /**
  * Grammar provides the factory methods for the fluent grammar

@@ -13,7 +13,6 @@ import static com.mysema.query.grammar.types.Factory.createString;
 import com.mysema.query.grammar.Ops;
 import com.mysema.query.grammar.Order;
 import com.mysema.query.grammar.OrderSpecifier;
-import com.mysema.query.grammar.types.Expr.CollectionType;
 
 /**
  * InternalGrammar provides

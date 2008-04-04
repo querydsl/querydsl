@@ -11,7 +11,9 @@ package com.mysema.query.grammar.types;
  * @author tiwe
  * @version $Id$
  */
-public class Alias {
+public interface Alias {
+    
+    Expr<?> getFrom();
     
     public static class Entity<D> extends Expr.Entity<D> implements ToPath{
         private final Expr<?> from;
@@ -37,7 +39,7 @@ public class Alias {
         public  Path<?> getTo() {return to;}        
     }
             
-    public static class Simple<D> extends Expr.Simple<D>{     
+    public static class Simple<D> extends Expr.Simple<D> implements Alias{     
         private final Expr<?> from;
         private final java.lang.String to;
         public Simple(Expr<D> from, java.lang.String to) {
@@ -52,8 +54,7 @@ public class Alias {
         public java.lang.String getTo() {return to;}  
     }
     
-    public interface ToPath{
-        Expr<?> getFrom();
+    public interface ToPath extends Alias{        
         Path<?> getTo();
     }
 

@@ -24,7 +24,7 @@ public interface Path<C> {
     Expr.Boolean isnotnull();
     Expr.Boolean isnull();
             
-    public static class Boolean extends Expr.Boolean implements Simple<java.lang.Boolean>{
+    public static class Boolean extends Expr.Boolean implements Path<java.lang.Boolean>{
         private final PathMetadata<java.lang.String> metadata;
         public Boolean(PathMetadata<java.lang.String> metadata) {
             this.metadata = metadata;
@@ -34,14 +34,14 @@ public interface Path<C> {
         public Expr.Boolean isnull() {return IntGrammar.isnull(this);}          
     }
         
-    public interface Collection<D> extends Path<java.util.Collection<D>>, Expr.CollectionType<D>{
+    public interface Collection<D> extends Path<java.util.Collection<D>>, CollectionType<D>{
         Expr<D> get(Expr<Integer> index);        
         Expr<D> get(int index);
         Class<D> getElementType();
         Expr.Comparable<Integer> size();
     }
     
-    public static class Comparable<D extends java.lang.Comparable<D>> extends Expr.Comparable<D> implements Simple<D>{
+    public static class Comparable<D extends java.lang.Comparable<D>> extends Expr.Comparable<D> implements Path<D>{
         private final PathMetadata<?> metadata;
         public Comparable(Class<D> type, PathMetadata<?> metadata) {
             super(type);
@@ -60,17 +60,16 @@ public interface Path<C> {
             this.type = type;
             this.metadata = metadata;
         }        
-        public Expr.Literal<D> get(Expr<Integer> index) {
-            return new Path.Literal<D>(type, forListAccess(this, index));
+        public Expr.Simple<D> get(Expr<Integer> index) {
+            return new Path.Simple<D>(type, forListAccess(this, index));
         }
-        public Expr.Literal<D> get(int index) {
-            return new Path.Literal<D>(type, forListAccess(this, index));
+        public Expr.Simple<D> get(int index) {
+            return new Path.Simple<D>(type, forListAccess(this, index));
         }
         public PathMetadata<?> getMetadata() {return metadata;}
         public Expr.Boolean isnotnull() {return IntGrammar.isnotnull(this);}
         public Expr.Boolean isnull() {return IntGrammar.isnull(this);}
         public Expr.Comparable<Integer> size() { 
-//            return IntGrammar.size(this);
             return new Path.Comparable<Integer>(Integer.class, forSize(this));
         }
         public Class<D> getElementType() {return type;}
@@ -86,11 +85,11 @@ public interface Path<C> {
             this.valueType = valueType;
             this.metadata = metadata;
         }
-        public Expr.Literal<V> get(Expr<K> key) { 
-            return new Path.Literal<V>(valueType, forMapAccess(this, key));
+        public Expr.Simple<V> get(Expr<K> key) { 
+            return new Path.Simple<V>(valueType, forMapAccess(this, key));
         }
-        public Expr.Literal<V> get(K key) { 
-            return new Path.Literal<V>(valueType, forMapAccess(this, key));
+        public Expr.Simple<V> get(K key) { 
+            return new Path.Simple<V>(valueType, forMapAccess(this, key));
         }
         public PathMetadata<?> getMetadata() {return metadata;}
         public Expr.Boolean isnotnull() {return IntGrammar.isnotnull(this);}
@@ -121,8 +120,8 @@ public interface Path<C> {
         protected <A> EntityCollection<A> _entitycol(java.lang.String path,Class<A> type) {
             return new EntityCollection<A>(type, forProperty(this, path));
         }
-        protected <A> Expr.Literal<A> _simple(java.lang.String path, Class<A> type){
-            return new Path.Literal<A>(type, forProperty(this, path));
+        protected <A> Expr.Simple<A> _simple(java.lang.String path, Class<A> type){
+            return new Path.Simple<A>(type, forProperty(this, path));
         }
         protected <A> ComponentCollection<A> _simplecol(java.lang.String path,Class<A> type) {
             return new ComponentCollection<A>(type, forProperty(this, path));
@@ -198,14 +197,10 @@ public interface Path<C> {
         Class<K> getKeyType();
         Class<V> getValueType();
     }
-    
-    public interface Simple<D> extends Path<D>{
-        Expr<D> as(java.lang.String to);              
-    }
-    
-    public static class Literal<D> extends Expr.Literal<D> implements Simple<D>{
+        
+    public static class Simple<D> extends Expr.Simple<D> implements Path<D>{
         private final PathMetadata<?> metadata;
-        public <T> Literal(Class<D> type, PathMetadata<?> metadata) {
+        public <T> Simple(Class<D> type, PathMetadata<?> metadata) {
             super(type);
             this.metadata = metadata;
         }
@@ -214,7 +209,7 @@ public interface Path<C> {
         public Expr.Boolean isnull() {return IntGrammar.isnull(this);}
     }
     
-    public static class String extends Expr.String implements Simple<java.lang.String>{
+    public static class String extends Expr.String implements Path<java.lang.String>{
         private final PathMetadata<java.lang.String> metadata;
         public String(PathMetadata<java.lang.String> metadata) {
             this.metadata = metadata;

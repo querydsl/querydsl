@@ -87,10 +87,6 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visito
         visit((Path<?>) expr);
     }
     @Override
-    protected void visit(Path.Literal<?> expr) {
-        visit((Path<?>) expr);
-    }
-    @Override
     protected void visit(Path.String expr) {
         visit((Path<?>) expr);
     }

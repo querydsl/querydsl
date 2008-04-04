@@ -29,8 +29,6 @@ public abstract class Expr<D> {
         public Boolean or(Boolean right) {return IntGrammar.or(this, right);}
     }
     
-    public interface CollectionType<D>{ }
-    
     public static abstract class Comparable<D extends java.lang.Comparable<D>> extends Literal<D>{
         public Comparable(Class<D> type) {super(type);}
         public Boolean after(D right) {return IntGrammar.after(this,right);}
