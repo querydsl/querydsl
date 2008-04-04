@@ -44,7 +44,7 @@ public class QueryUtil {
         CascadingBoolean expr = new CascadingBoolean();  
         for (Map.Entry<String, Object> entry : map.entrySet()){                
             PathMetadata<String> md = PathMetadata.forProperty(entity, entry.getKey());
-            Path.Literal<Object> path = new Path.Literal<Object>(Object.class, md);
+            Path.Simple<Object> path = new Path.Simple<Object>(Object.class, md);
             if (entry.getValue() != null){
                 expr.and(path.eq(entry.getValue()));
             }else{

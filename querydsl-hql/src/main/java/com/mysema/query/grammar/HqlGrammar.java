@@ -16,6 +16,7 @@ import com.mysema.query.grammar.HqlOps.HqlPathType;
 import com.mysema.query.grammar.HqlOps.OpHql;
 import com.mysema.query.grammar.HqlOps.OpNumberAgg;
 import com.mysema.query.grammar.HqlOps.OpQuant;
+import com.mysema.query.grammar.types.CollectionType;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathMetadata;
@@ -33,17 +34,17 @@ import com.mysema.query.grammar.types.HqlTypes.SubQuery;
  */
 public class HqlGrammar extends Grammar{
             
-    public static <D> Expr<D> all(Expr.CollectionType<D> col){
+    public static <D> Expr<D> all(CollectionType<D> col){
         return new Quant.Simple<D>(OpQuant.ALL, col);
     }    
-    public static <D extends Comparable<D>> Expr.Comparable<D> all(Expr.CollectionType<D> col){
+    public static <D extends Comparable<D>> Expr.Comparable<D> all(CollectionType<D> col){
         return new Quant.Comparable<D>(OpQuant.ALL, col);
     }
     
-    public static <D> Expr.Simple<D> any(Expr.CollectionType<D> col){
+    public static <D> Expr.Simple<D> any(CollectionType<D> col){
         return new Quant.Simple<D>(OpQuant.ANY, col);
     }    
-    public static <D extends Comparable<D>> Expr.Comparable<D> any(Expr.CollectionType<D> col){
+    public static <D extends Comparable<D>> Expr.Comparable<D> any(CollectionType<D> col){
         return new Quant.Comparable<D>(OpQuant.ANY, col);
     }    
     
@@ -74,15 +75,12 @@ public class HqlGrammar extends Grammar{
     public static Expr.Comparable<Date> day(Expr<Date> date){
         return createComparable(OpHql.DAY, date);
     }    
-    public static <T> Expr<T> distinct(Path.Entity<T> left){
-        return new DistinctPath<T>(left);
-    }
     
-    public static <T> Expr<T> distinct(Path.Simple<T> left){
+    public static <T> Expr<T> distinct(Path<T> left){
         return new DistinctPath<T>(left);
     }    
     
-    public static <D> Expr.Boolean exists(Expr.CollectionType<D> col){
+    public static <D> Expr.Boolean exists(CollectionType<D> col){
         return new Quant.Boolean<D>(OpQuant.EXISTS, col);
     }
     
@@ -170,7 +168,7 @@ public class HqlGrammar extends Grammar{
         return new Constructor<A>(a,args);
     }
     
-    public static <D> Expr.Boolean notExists(Expr.CollectionType<D> col){
+    public static <D> Expr.Boolean notExists(CollectionType<D> col){
         return new Quant.Boolean<D>(OpQuant.NOTEXISTS, col);
     }
         
@@ -182,7 +180,7 @@ public class HqlGrammar extends Grammar{
         return new SubQuery<A>(select);
     }
     
-    public static <D> Expr<D> some(Expr.CollectionType<D> col){
+    public static <D> Expr<D> some(CollectionType<D> col){
         return any(col);
     }
         

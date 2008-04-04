@@ -8,7 +8,6 @@ package com.mysema.query.grammar.types;
 import com.mysema.query.Query;
 import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.OrderSpecifier;
-import com.mysema.query.grammar.types.Expr.CollectionType;
 
 /**
  * HqlTypes provides
