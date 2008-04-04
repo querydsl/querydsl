@@ -23,7 +23,7 @@ import static com.mysema.query.grammar.types.Expr.*;
 public class QueryBase<A extends QueryBase<A>> implements Query<A> {
     protected final List<Expr<?>> groupBy = new ArrayList<Expr<?>>();
     
-    protected final List<Expr.Boolean> having = new ArrayList<Expr.Boolean>();
+    protected final CascadingBoolean having = new CascadingBoolean();
     
     protected final List<JoinExpression> joins = new ArrayList<JoinExpression>();
     protected final List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
@@ -52,8 +52,8 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         return (A) this;
     }
         
-    public A having(Expr.Boolean... o) {
-        having.addAll(Arrays.asList(o));
+    public A having(Expr.Boolean o) {
+        having.and(o);
         return (A) this;
     }
     
@@ -87,18 +87,14 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         return (A) this;
     }
 
-    public A where(Expr.Boolean... o) {
-        for (Expr.Boolean expr : o){
-            where.and(expr);
-        }
+    public A where(Expr.Boolean o) {
+        where.and(o);
         return (A) this;
     }
     
-    public A with(Expr.Boolean... o) {
+    public A with(Expr.Boolean o) {
         if (!joins.isEmpty()){
-            CascadingBoolean cb = new CascadingBoolean();
-            for (Expr.Boolean expr : o) cb.and(expr);
-            joins.get(joins.size()-1).setCondition(cb.self());
+            joins.get(joins.size()-1).setCondition(o);
         }
         return (A) this;
     }
@@ -111,8 +107,8 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         public List<Expr<?>> getGroupBy() {
             return groupBy;
         }
-        public List<Expr.Boolean> getHaving() {
-            return having;
+        public Expr.Boolean getHaving() {
+            return having.self();
         }
         public List<JoinExpression> getJoins() {
             return joins;

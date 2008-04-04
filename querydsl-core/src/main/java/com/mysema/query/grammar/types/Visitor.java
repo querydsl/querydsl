@@ -67,9 +67,9 @@ public abstract class Visitor<T extends Visitor<T>> {
     
     protected abstract void visit(Alias.EntityCollection<?> expr);
     
-    protected abstract void visit(Alias.NoEntity<?> expr);
+    protected abstract void visit(Alias.Literal<?> expr);
 
-    protected abstract void visit(Alias.Simple expr);
+//    protected abstract void visit(Alias.Simple expr);
 
     protected abstract void visit(Alias.ToPath expr);
 
@@ -101,11 +101,11 @@ public abstract class Visitor<T extends Visitor<T>> {
     
     protected abstract void visit(Path.EntityMap<?,?> expr);
 
-    protected abstract void visit(Path.EntityRenamable<?> expr);
+    protected abstract void visit(Path.RenamableEntity<?> expr);
     
-    protected abstract void visit(Path.NoEntity<?> expr);
+    protected abstract void visit(Path.Literal<?> expr);
     
-    protected abstract void visit(Path.NoEntitySimple<?> expr);
+    protected abstract void visit(Path.SimpleLiteral<?> expr);
 
     protected abstract void visit(Path.String expr);
     

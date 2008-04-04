@@ -10,7 +10,6 @@ import static com.mysema.query.grammar.types.Factory.createBoolean;
 import static com.mysema.query.grammar.types.Factory.createConstant;
 import static com.mysema.query.grammar.types.Factory.createNumber;
 
-import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.CollectionType;
 

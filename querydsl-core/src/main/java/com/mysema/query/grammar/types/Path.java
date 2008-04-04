@@ -30,7 +30,7 @@ public interface Path<C> {
 //        ExprBoolean isnull();
 //    }
             
-    public static class Boolean extends Expr.Boolean implements NoEntity<java.lang.Boolean>{
+    public static class Boolean extends Expr.Boolean implements Literal<java.lang.Boolean>{
         private final PathMetadata<java.lang.String> metadata;
         public Boolean(PathMetadata<java.lang.String> metadata) {
             this.metadata = metadata;
@@ -47,7 +47,7 @@ public interface Path<C> {
         Expr.Comparable<Integer> size();
     }
     
-    public static class Comparable<D extends java.lang.Comparable<D>> extends Expr.Comparable<D> implements NoEntity<D>{
+    public static class Comparable<D extends java.lang.Comparable<D>> extends Expr.Comparable<D> implements Literal<D>{
         private final PathMetadata<?> metadata;
         public Comparable(Class<D> type, PathMetadata<?> metadata) {
             super(type);
@@ -58,7 +58,7 @@ public interface Path<C> {
         public Expr.Boolean isnull() {return IntGrammar.isnull(this);}
     }
     
-    public static class ComponentCollection<D> extends Expr.NoEntity<java.util.Collection<D>> implements Collection<D>{
+    public static class ComponentCollection<D> extends Expr.Literal<java.util.Collection<D>> implements Collection<D>{
         private final PathMetadata<?> metadata;
         private final Class<D> type;
         public ComponentCollection(Class<D> type, PathMetadata<?> metadata) {
@@ -66,11 +66,11 @@ public interface Path<C> {
             this.type = type;
             this.metadata = metadata;
         }        
-        public Expr.NoEntity<D> get(Expr<Integer> index) {
-            return new NoEntitySimple<D>(type, forListAccess(this, index));
+        public Expr.Literal<D> get(Expr<Integer> index) {
+            return new SimpleLiteral<D>(type, forListAccess(this, index));
         }
-        public Expr.NoEntity<D> get(int index) {
-            return new NoEntitySimple<D>(type, forListAccess(this, index));
+        public Expr.Literal<D> get(int index) {
+            return new SimpleLiteral<D>(type, forListAccess(this, index));
         }
         public PathMetadata<?> getMetadata() {return metadata;}
         public Expr.Boolean isnotnull() {return IntGrammar.isnotnull(this);}
@@ -82,7 +82,7 @@ public interface Path<C> {
         public Class<D> getElementType() {return type;}
     }
     
-    public static class ComponentMap<K,V> extends Expr.NoEntity<java.util.Map<K,V>> implements Map<K,V>{
+    public static class ComponentMap<K,V> extends Expr.Literal<java.util.Map<K,V>> implements Map<K,V>{
         private final PathMetadata<?> metadata;
         private final Class<K> keyType;
         private final Class<V> valueType;
@@ -92,11 +92,11 @@ public interface Path<C> {
             this.valueType = valueType;
             this.metadata = metadata;
         }
-        public Expr.NoEntity<V> get(Expr<K> key) { 
-            return new NoEntitySimple<V>(valueType, forMapAccess(this, key));
+        public Expr.Literal<V> get(Expr<K> key) { 
+            return new SimpleLiteral<V>(valueType, forMapAccess(this, key));
         }
-        public Expr.NoEntity<V> get(K key) { 
-            return new NoEntitySimple<V>(valueType, forMapAccess(this, key));
+        public Expr.Literal<V> get(K key) { 
+            return new SimpleLiteral<V>(valueType, forMapAccess(this, key));
         }
         public PathMetadata<?> getMetadata() {return metadata;}
         public Expr.Boolean isnotnull() {return IntGrammar.isnotnull(this);}
@@ -121,14 +121,14 @@ public interface Path<C> {
         protected <A extends java.lang.Comparable<A>> Path.Comparable<A> _comparable(java.lang.String path,Class<A> type) {
             return new Path.Comparable<A>(type, forProperty(this, path));
         }
-        protected <A> EntityRenamable<A> _entity(java.lang.String path, Class<A> type){
-            return new EntityRenamable<A>(type, forProperty(this, path)); 
+        protected <A> RenamableEntity<A> _entity(java.lang.String path, Class<A> type){
+            return new RenamableEntity<A>(type, forProperty(this, path)); 
         }        
         protected <A> EntityCollection<A> _entitycol(java.lang.String path,Class<A> type) {
             return new EntityCollection<A>(type, forProperty(this, path));
         }
-        protected <A> NoEntitySimple<A> _simple(java.lang.String path, Class<A> type){
-            return new NoEntitySimple<A>(type, forProperty(this, path));
+        protected <A> SimpleLiteral<A> _simple(java.lang.String path, Class<A> type){
+            return new SimpleLiteral<A>(type, forProperty(this, path));
         }
         protected <A> ComponentCollection<A> _simplecol(java.lang.String path,Class<A> type) {
             return new ComponentCollection<A>(type, forProperty(this, path));
@@ -193,8 +193,8 @@ public interface Path<C> {
         public Class<V> getValueType() {return valueType; }
     }
     
-    public static class EntityRenamable<D> extends Entity<D>{
-        protected EntityRenamable(Class<D> type, PathMetadata<?> metadata) {super(type, metadata);}
+    public static class RenamableEntity<D> extends Entity<D>{
+        protected RenamableEntity(Class<D> type, PathMetadata<?> metadata) {super(type, metadata);}
         public Alias.Entity<D> as(Path.Entity<D> to) {return IntGrammar.as(this, to);}
     }
     
@@ -205,13 +205,13 @@ public interface Path<C> {
         Class<V> getValueType();
     }
     
-    public interface NoEntity<D> extends Path<D>{
+    public interface Literal<D> extends Path<D>{
         Expr<D> as(java.lang.String to);              
     }
     
-    public static class NoEntitySimple<D> extends Expr.NoEntity<D> implements NoEntity<D>{
+    public static class SimpleLiteral<D> extends Expr.Literal<D> implements Literal<D>{
         private final PathMetadata<?> metadata;
-        public <T> NoEntitySimple(Class<D> type, PathMetadata<?> metadata) {
+        public <T> SimpleLiteral(Class<D> type, PathMetadata<?> metadata) {
             super(type);
             this.metadata = metadata;
         }
@@ -220,7 +220,7 @@ public interface Path<C> {
         public Expr.Boolean isnull() {return IntGrammar.isnull(this);}
     }
     
-    public static class String extends Expr.String implements NoEntity<java.lang.String>{
+    public static class String extends Expr.String implements Literal<java.lang.String>{
         private final PathMetadata<java.lang.String> metadata;
         public String(PathMetadata<java.lang.String> metadata) {
             this.metadata = metadata;

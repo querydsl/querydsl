@@ -37,10 +37,10 @@ public class Alias {
         public  Path<?> getTo() {return to;}        
     }
             
-    public static class NoEntity<D> extends Expr.NoEntity<D> implements Simple{     
+    public static class Literal<D> extends Expr.Literal<D>{     
         private final Expr<?> from;
         private final java.lang.String to;
-        public NoEntity(Expr<D> from, java.lang.String to) {
+        public Literal(Expr<D> from, java.lang.String to) {
             super(from.getType());
             this.from = from;
             this.to = to;
@@ -52,10 +52,10 @@ public class Alias {
         public java.lang.String getTo() {return to;}  
     }
         
-    public interface Simple{ 
-        Expr<?> getFrom();
-        String getTo();
-    }
+//    public interface Simple{ 
+//        Expr<?> getFrom();
+//        String getTo();
+//    }
     
     public interface ToPath{
         Expr<?> getFrom();

@@ -24,10 +24,10 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visito
     protected void visit(Alias.EntityCollection<?> expr) {
         visit((Alias.ToPath) expr);
     }
-    @Override
-    protected void visit(Alias.NoEntity<?> expr) {
-        visit((Alias.Simple) expr);
-    }
+//    @Override
+//    protected void visit(Alias.Literal<?> expr) {
+//        visit((Alias.Simple) expr);
+//    }
     @Override
     protected void visit(Operation.Boolean expr) {
         visit((Operation<?, ?>) expr);
@@ -76,18 +76,18 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visito
         visit((Path.Map<?,?>) expr);
     }
     @Override
-    protected void visit(Path.EntityRenamable<?> expr) {
+    protected void visit(Path.RenamableEntity<?> expr) {
         visit((Path.Entity<?>) expr);
     }
     protected void visit(Path.Map<?,?> expr){
         visit((Path<?>) expr);
     }
     @Override
-    protected void visit(Path.NoEntity<?> expr) {
+    protected void visit(Path.Literal<?> expr) {
         visit((Path<?>) expr);
     }
     @Override
-    protected void visit(Path.NoEntitySimple<?> expr) {
+    protected void visit(Path.SimpleLiteral<?> expr) {
         visit((Path<?>) expr);
     }
     @Override

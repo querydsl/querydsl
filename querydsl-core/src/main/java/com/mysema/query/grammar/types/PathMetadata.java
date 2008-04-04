@@ -72,20 +72,18 @@ public final class PathMetadata<T> {
 
     public PathType getPathType() {
         return pathType;
-    }
-    
-    /**
-     * Type provides
-     *
-     */
+    }    
+
     public static class PathType extends Ops.Op<Path<?>> {}
     
-    public static PathType LISTVALUE = new PathType(); 
-    public static PathType LISTVALUE_CONSTANT = new PathType();
-    public static PathType MAPVALUE = new PathType();
-    public static PathType MAPVALUE_CONSTANT = new PathType();
-    public static PathType PROPERTY = new PathType();
-    public static PathType VARIABLE = new PathType();
-    public static PathType SIZE = new PathType();
+    // bookmark.tags.size
+    
+    public static final PathType LISTVALUE = new PathType(); 
+    public static final PathType LISTVALUE_CONSTANT = new PathType();
+    public static final PathType MAPVALUE = new PathType();
+    public static final PathType MAPVALUE_CONSTANT = new PathType();
+    public static final PathType PROPERTY = new PathType();
+    public static final PathType VARIABLE = new PathType();
+    public static final PathType SIZE = new PathType();
 
 }

@@ -23,9 +23,9 @@ public interface Query<A extends Query<A>>{
     @Deprecated A join(Entity<?> o);
     @Deprecated A fullJoin(Entity<?> o);
     @Deprecated A leftJoin(Entity<?> o);
-    @Deprecated A with(Expr.Boolean... o);
-    A where(Expr.Boolean... o);
+    @Deprecated A with(Expr.Boolean o);
+    A where(Expr.Boolean o);
     A groupBy(Expr<?>... o);
-    A having(Expr.Boolean... o);
+    A having(Expr.Boolean o);
     A orderBy(OrderSpecifier<?>... o);
 }

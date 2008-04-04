@@ -7,8 +7,6 @@ package com.mysema.query.grammar.types;
 
 import com.mysema.query.grammar.OrderSpecifier;
 
-
-
 /**
  * Expr provides
  *
@@ -35,7 +33,7 @@ public abstract class Expr<D> {
 //        public Boolean ne(Expr<? super D> right){return IntGrammar.ne(this, right);}
 //    }
     
-    public static abstract class Boolean extends NoEntity<java.lang.Boolean>{
+    public static abstract class Boolean extends Literal<java.lang.Boolean>{
         public Boolean() {super(java.lang.Boolean.class);}
         public Boolean and(Boolean right) {return IntGrammar.and(this, right);}
         public Boolean or(Boolean right) {return IntGrammar.or(this, right);}
@@ -45,7 +43,7 @@ public abstract class Expr<D> {
         
     }
     
-    public static abstract class Comparable<D extends java.lang.Comparable<D>> extends NoEntity<D>{
+    public static abstract class Comparable<D extends java.lang.Comparable<D>> extends Literal<D>{
         public Comparable(Class<D> type) {super(type);}
         public Boolean after(D right) {return IntGrammar.after(this,right);}
         public Boolean after(Expr<D> right) {return IntGrammar.after(this,right);}  
@@ -94,8 +92,8 @@ public abstract class Expr<D> {
         public Entity(Class<D> type) {super(type);}        
     }        
             
-    public static abstract class NoEntity<D> extends Expr<D>{
-        public NoEntity(Class<D> type) {super(type);}
+    public static abstract class Literal<D> extends Expr<D>{
+        public Literal(Class<D> type) {super(type);}
         public Expr<D> as(java.lang.String to){return IntGrammar.as(this, to);}
     }
         

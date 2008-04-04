@@ -55,10 +55,10 @@ class IntGrammar{
         return createBoolean(Ops.AND, left, right);
     }
 
-    static <D> Alias.NoEntity<D> as(Expr.NoEntity<D> from, String to) {
+    static <D> Alias.Literal<D> as(Expr.Literal<D> from, String to) {
         checkArg("from",from);
         checkArg("to",to);
-        return new Alias.NoEntity<D>(from, to);
+        return new Alias.Literal<D>(from, to);
     }
     
     static <D> Alias.Entity<D> as(Path.Entity<D> from, Path.Entity<D> to) {
