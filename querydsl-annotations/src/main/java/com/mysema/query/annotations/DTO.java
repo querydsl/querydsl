@@ -1,3 +1,4 @@
+package com.mysema.query.annotations;
 
 
 import static java.lang.annotation.ElementType.TYPE;
