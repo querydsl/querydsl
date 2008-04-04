@@ -19,7 +19,11 @@ import com.mysema.query.grammar.HqlOps.OpQuant;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathMetadata;
-import com.mysema.query.grammar.types.HqlTypes.*;
+import com.mysema.query.grammar.types.Quant;
+import com.mysema.query.grammar.types.HqlTypes.Constructor;
+import com.mysema.query.grammar.types.HqlTypes.CountExpression;
+import com.mysema.query.grammar.types.HqlTypes.DistinctPath;
+import com.mysema.query.grammar.types.HqlTypes.SubQuery;
 
 /**
  * HqlGrammar extends the Query DSL base grammar to provide HQL specific syntax elements
@@ -30,32 +34,32 @@ import com.mysema.query.grammar.types.HqlTypes.*;
 public class HqlGrammar extends Grammar{
             
     public static <D> Expr<D> all(Expr.CollectionType<D> col){
-        return new ExprQuantSimple<D>(OpQuant.ALL, col);
+        return new Quant.Simple<D>(OpQuant.ALL, col);
     }    
     public static <D extends Comparable<D>> Expr.Comparable<D> all(Expr.CollectionType<D> col){
-        return new ExprQuantComparable<D>(OpQuant.ALL, col);
+        return new Quant.Comparable<D>(OpQuant.ALL, col);
     }
     
     public static <D> Expr<D> any(Expr.CollectionType<D> col){
-        return new ExprQuantSimple<D>(OpQuant.ANY, col);
+        return new Quant.Simple<D>(OpQuant.ANY, col);
     }    
     public static <D extends Comparable<D>> Expr.Comparable<D> any(Expr.CollectionType<D> col){
-        return new ExprQuantComparable<D>(OpQuant.ANY, col);
+        return new Quant.Comparable<D>(OpQuant.ANY, col);
     }    
     
     public static <A extends Comparable<A>> Expr.Comparable<A> avg(Expr<A> left){
         return createNumber(OpNumberAgg.AVG, left);
     }    
     public static <A extends Comparable<A>> Expr.Comparable<A> avg(Path.Collection<A> left){
-        return new ExprQuantComparable<A>(OpQuant.AVG_IN_COL, left);
+        return new Quant.Comparable<A>(OpQuant.AVG_IN_COL, left);
     }        
     
     public static Expr.Comparable<Long> count(){
-        return new CountExpr(null);
+        return new CountExpression(null);
     }
     
     public static Expr.Comparable<Long> count(Expr<?> expr){
-        return new CountExpr(expr);
+        return new CountExpression(expr);
     }
     public static Expr.Comparable<Date> current_date(){
         return createComparable(OpHql.CURRENT_DATE);
@@ -79,7 +83,7 @@ public class HqlGrammar extends Grammar{
     }    
     
     public static <D> Expr.Boolean exists(Expr.CollectionType<D> col){
-        return new ExprQuantBoolean<D>(OpQuant.EXISTS, col);
+        return new Quant.Boolean<D>(OpQuant.EXISTS, col);
     }
     
     public static <A> SubQuery<A> from(Expr.Entity<A> select){
@@ -119,7 +123,7 @@ public class HqlGrammar extends Grammar{
     }
     
     public static <A extends Comparable<A>> Expr.Comparable<A> max(Path.Collection<A> left){
-        return new ExprQuantComparable<A>(OpQuant.MAX_IN_COL, left);
+        return new Quant.Comparable<A>(OpQuant.MAX_IN_COL, left);
     } 
     
     public static <A> Path.Entity<A> maxelement(Path.EntityCollection<A> col) {
@@ -139,7 +143,7 @@ public class HqlGrammar extends Grammar{
     }
     
     public static <A extends Comparable<A>> Expr.Comparable<A> min(Path.Collection<A> left){
-        return new ExprQuantComparable<A>(OpQuant.MIN_IN_COL, left);
+        return new Quant.Comparable<A>(OpQuant.MIN_IN_COL, left);
     }       
     
     public static <A> Path.Entity<A> minelement(Path.EntityCollection<A> col) {
@@ -167,7 +171,7 @@ public class HqlGrammar extends Grammar{
     }
     
     public static <D> Expr.Boolean notExists(Expr.CollectionType<D> col){
-        return new ExprQuantBoolean<D>(OpQuant.NOTEXISTS, col);
+        return new Quant.Boolean<D>(OpQuant.NOTEXISTS, col);
     }
         
     public static Expr.Comparable<Date> second(Expr<Date> date){

@@ -8,8 +8,7 @@ package com.mysema.query.grammar.types;
 import com.mysema.query.Query;
 import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.OrderSpecifier;
-import com.mysema.query.grammar.Ops.Op;
-import com.mysema.query.grammar.types.Expr.*;
+import com.mysema.query.grammar.types.Expr.CollectionType;
 
 /**
  * HqlTypes provides
@@ -28,9 +27,9 @@ public class HqlTypes {
         public Expr<?>[] getArgs(){ return args; }
     }
     
-    public static class CountExpr extends Expr.Comparable<Long>{
+    public static class CountExpression extends Expr.Comparable<Long>{
         private final Expr<?> target;
-        public CountExpr(Expr<?> expr) {
+        public CountExpression(Expr<?> expr) {
             super(Long.class);
             this.target = expr;
         }
@@ -45,46 +44,6 @@ public class HqlTypes {
             this.path = path;
         }
         public Path<T> getPath(){ return path; }
-    }
-    
-    public interface ExprQuant{
-        Op<?> getOperator();
-        Expr<?> getTarget();
-    }
-    
-    public static class ExprQuantBoolean<Q> extends Expr.Boolean implements ExprQuant{
-        private final Expr<?> col;
-        private final Op<?> op;
-        public ExprQuantBoolean(Op<?> op, CollectionType<Q> col) {
-            this.op = op;
-            this.col = (Expr<?>) col;
-        }
-        public Op<?> getOperator() {return op;}
-        public Expr<?> getTarget() {return col;}                           
-    }
-    
-    public static class ExprQuantComparable<Q extends java.lang.Comparable<Q>> extends Expr.Comparable<Q> implements ExprQuant{
-        private final Expr<?> col;
-        private final Op<?> op;
-        public ExprQuantComparable(Op<?> op, CollectionType<Q> col) {
-            super(null);
-            this.op = op;
-            this.col = (Expr<?>)col;
-        }
-        public Op<?> getOperator() {return op;}
-        public Expr<?> getTarget() {return col;}                          
-    }
-        
-    public static class ExprQuantSimple<Q> extends Expr<Q> implements ExprQuant{
-        private final Expr<?> col;
-        private final Op<?> op;
-        public ExprQuantSimple(Op<?> op, CollectionType<Q> col) {
-            super(null);
-            this.op = op;
-            this.col = (Expr<?>)col;
-        }
-        public Op<?> getOperator() {return op;}
-        public Expr<?> getTarget() {return col;}                       
     }
     
     public static class SubQuery<A> extends Expr<A> implements Query<SubQuery<A>>, CollectionType<A>{

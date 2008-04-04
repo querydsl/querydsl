@@ -20,6 +20,7 @@ import com.mysema.query.Domain1;
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.HqlSerializer;
+import com.mysema.query.grammar.types.Custom;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.HqlTypes.Constructor;
 
@@ -103,6 +104,20 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         toString("not (cust is null)", not(cust.isnull()));
         cat.name.eq(cust.name().firstName).and(cat.bodyWeight.eq(kitten.bodyWeight));
         cat.name.eq(cust.name().firstName).or(cat.bodyWeight.eq(kitten.bodyWeight));
+    }
+    
+    public class MyCustomExpr extends Custom.String{
+        private Expr<?>[] args;
+        public MyCustomExpr(Expr<?>... args) {
+            this.args = args;
+        }
+        public Expr<?>[] getArgs() {return args;}
+        public java.lang.String getPattern() {return "myCustom(%s,%s)";}        
+    }
+    
+    @Test
+    public void testCustomExpressions(){
+        toString("myCustom(cust,cat)", new MyCustomExpr(cust, cat));
     }
     
     @Test
