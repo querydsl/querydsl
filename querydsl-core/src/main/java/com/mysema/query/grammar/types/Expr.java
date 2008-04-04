@@ -79,7 +79,7 @@ public abstract class Expr<D> {
         public D getConstant(){ return constant;}
         @Override public java.lang.String toString(){ return constant.toString(); }
     }
-    
+        
 //    *, 
 //    /, 
 //    DIV, 
