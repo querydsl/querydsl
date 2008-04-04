@@ -20,8 +20,10 @@
 
   <modules>
     <module>../querydsl-core</module>
+    <module>../querydsl-annotations</module>
     <module>../querydsl-apt</module>
     <module>../querydsl-hql</module>
+    <module>../querydsl-sql</module>
   </modules>
   
   <dependencies>
