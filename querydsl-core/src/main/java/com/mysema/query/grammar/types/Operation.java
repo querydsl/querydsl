@@ -20,11 +20,6 @@ public interface Operation<OP,RT> {
     Expr<?>[] getArgs();
     Op<OP> getOperator();
     
-//    public interface Operation<OP,RT>{
-//        Expr<?>[] getArgs();
-//        Op<OP> getOperator();
-//    }
-    
     public static class Boolean extends Expr.Boolean implements Operation<java.lang.Boolean,java.lang.Boolean>{
         private final Expr<?>[] args;
         private final Op<java.lang.Boolean> op;

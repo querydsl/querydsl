@@ -69,8 +69,6 @@ public abstract class Visitor<T extends Visitor<T>> {
     
     protected abstract void visit(Alias.Simple<?> expr);
 
-//    protected abstract void visit(Alias.Simple expr);
-
     protected abstract void visit(Alias.ToPath expr);
 
     protected abstract void visit(Expr.Constant<?> expr);

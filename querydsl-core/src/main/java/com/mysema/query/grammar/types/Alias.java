@@ -51,11 +51,6 @@ public class Alias {
         public Expr<?> getFrom() {return from;}
         public java.lang.String getTo() {return to;}  
     }
-        
-//    public interface Simple{ 
-//        Expr<?> getFrom();
-//        String getTo();
-//    }
     
     public interface ToPath{
         Expr<?> getFrom();

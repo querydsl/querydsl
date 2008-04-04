@@ -22,22 +22,6 @@ import com.mysema.query.grammar.types.Expr.CollectionType;
  * @version $Id$
  */
 class IntGrammar{
-    
-//    static final <A extends Comparable<A>> OrderSpecifier<A> _orderAsc(Expr<A> target) {
-//        checkArg("target",target);
-//        OrderSpecifier<A> os = new OrderSpecifier<A>();
-//        os.order = Order.ASC;
-//        os.target = target;
-//        return os;
-//    }
-
-//    static final <A extends Comparable<A>> OrderSpecifier<A> _orderDesc(Expr<A> target) {
-//        checkArg("target",target);
-//        OrderSpecifier<A> os = new OrderSpecifier<A>();
-//        os.order = Order.DESC;
-//        os.target = target;
-//        return os;
-//    }
    
     static <A extends Comparable<A>> Expr.Boolean after(Expr<A> left,
             A right) {

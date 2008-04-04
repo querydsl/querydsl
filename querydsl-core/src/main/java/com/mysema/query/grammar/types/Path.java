@@ -23,12 +23,6 @@ public interface Path<C> {
     PathMetadata<?> getMetadata();
     Expr.Boolean isnotnull();
     Expr.Boolean isnull();
-    
-//    public interface Path<C>{
-//        PathMetadata<?> getMetadata();
-//        ExprBoolean isnotnull();
-//        ExprBoolean isnull();
-//    }
             
     public static class Boolean extends Expr.Boolean implements Simple<java.lang.Boolean>{
         private final PathMetadata<java.lang.String> metadata;
@@ -66,11 +60,11 @@ public interface Path<C> {
             this.type = type;
             this.metadata = metadata;
         }        
-        public Expr.Simple<D> get(Expr<Integer> index) {
-            return new Literal<D>(type, forListAccess(this, index));
+        public Expr.Literal<D> get(Expr<Integer> index) {
+            return new Path.Literal<D>(type, forListAccess(this, index));
         }
-        public Expr.Simple<D> get(int index) {
-            return new Literal<D>(type, forListAccess(this, index));
+        public Expr.Literal<D> get(int index) {
+            return new Path.Literal<D>(type, forListAccess(this, index));
         }
         public PathMetadata<?> getMetadata() {return metadata;}
         public Expr.Boolean isnotnull() {return IntGrammar.isnotnull(this);}
@@ -92,11 +86,11 @@ public interface Path<C> {
             this.valueType = valueType;
             this.metadata = metadata;
         }
-        public Expr.Simple<V> get(Expr<K> key) { 
-            return new Literal<V>(valueType, forMapAccess(this, key));
+        public Expr.Literal<V> get(Expr<K> key) { 
+            return new Path.Literal<V>(valueType, forMapAccess(this, key));
         }
-        public Expr.Simple<V> get(K key) { 
-            return new Literal<V>(valueType, forMapAccess(this, key));
+        public Expr.Literal<V> get(K key) { 
+            return new Path.Literal<V>(valueType, forMapAccess(this, key));
         }
         public PathMetadata<?> getMetadata() {return metadata;}
         public Expr.Boolean isnotnull() {return IntGrammar.isnotnull(this);}
@@ -127,8 +121,8 @@ public interface Path<C> {
         protected <A> EntityCollection<A> _entitycol(java.lang.String path,Class<A> type) {
             return new EntityCollection<A>(type, forProperty(this, path));
         }
-        protected <A> Literal<A> _simple(java.lang.String path, Class<A> type){
-            return new Literal<A>(type, forProperty(this, path));
+        protected <A> Expr.Literal<A> _simple(java.lang.String path, Class<A> type){
+            return new Path.Literal<A>(type, forProperty(this, path));
         }
         protected <A> ComponentCollection<A> _simplecol(java.lang.String path,Class<A> type) {
             return new ComponentCollection<A>(type, forProperty(this, path));
@@ -209,7 +203,7 @@ public interface Path<C> {
         Expr<D> as(java.lang.String to);              
     }
     
-    public static class Literal<D> extends Expr.Simple<D> implements Simple<D>{
+    public static class Literal<D> extends Expr.Literal<D> implements Simple<D>{
         private final PathMetadata<?> metadata;
         public <T> Literal(Class<D> type, PathMetadata<?> metadata) {
             super(type);
