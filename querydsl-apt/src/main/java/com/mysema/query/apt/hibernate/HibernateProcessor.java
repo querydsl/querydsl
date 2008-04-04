@@ -113,7 +113,7 @@ public class HibernateProcessor implements AnnotationProcessor {
 
     private void createDTOClasses() {        
         AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env
-                .getTypeDeclaration("com.mysema.query.dto.DTO");
+                .getTypeDeclaration("com.mysema.query.annotations.DTO");
         DTOVisitor visitor2 = new DTOVisitor();
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
             typeDecl.accept(getDeclarationScanner(visitor2, NO_OP));
