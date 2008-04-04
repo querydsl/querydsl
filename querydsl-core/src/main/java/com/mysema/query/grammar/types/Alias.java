@@ -37,10 +37,10 @@ public class Alias {
         public  Path<?> getTo() {return to;}        
     }
             
-    public static class Literal<D> extends Expr.Literal<D>{     
+    public static class Simple<D> extends Expr.Simple<D>{     
         private final Expr<?> from;
         private final java.lang.String to;
-        public Literal(Expr<D> from, java.lang.String to) {
+        public Simple(Expr<D> from, java.lang.String to) {
             super(from.getType());
             this.from = from;
             this.to = to;
