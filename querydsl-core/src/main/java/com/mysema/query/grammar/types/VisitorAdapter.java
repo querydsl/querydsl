@@ -51,6 +51,9 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visito
     protected void visit(Path.Collection<?> expr){
         visit((Path<?>) expr);
     }
+    protected void visit(Path.List<?> expr){
+        visit((Path.Collection<?>) expr);
+    }
     @Override
     protected void visit(Path.Comparable<?> expr) {
         visit((Path<?>) expr);
@@ -58,6 +61,10 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visito
     @Override
     protected void visit(Path.ComponentCollection<?> expr) {
         visit((Path.Collection<?>) expr);
+    }
+    @Override
+    protected void visit(Path.ComponentList<?> expr) {
+        visit((Path.List<?>) expr);
     }    
     @Override
     protected void visit(Path.ComponentMap<?,?> expr) {
@@ -70,6 +77,10 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visito
     @Override
     protected void visit(Path.EntityCollection<?> expr) {
         visit((Path.Collection<?>) expr);
+    }
+    @Override
+    protected void visit(Path.EntityList<?> expr) {
+        visit((Path.List<?>) expr);
     }
     @Override
     protected void visit(Path.EntityMap<?,?> expr) {

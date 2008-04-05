@@ -73,36 +73,40 @@ public abstract class Visitor<T extends Visitor<T>> {
 
     protected abstract void visit(Expr.Constant<?> expr);
 
-    protected abstract void visit(Operation<?, ?> expr);
-
     protected abstract void visit(Operation.Boolean expr);
-    
+
     protected abstract void visit(Operation.Comparable<?,?> expr);
     
     protected abstract void visit(Operation.Number<?,?> expr);
     
     protected abstract void visit(Operation.String expr);
-
-    protected abstract void visit(Path<?> expr);
+    
+    protected abstract void visit(Operation<?, ?> expr);
 
     protected abstract void visit(Path.Boolean expr);
 
     protected abstract void visit(Path.Comparable<?> expr);
-    
+
     protected abstract void visit(Path.ComponentCollection<?> expr);
     
+    protected abstract void visit(Path.ComponentList<?> expr);
+    
     protected abstract void visit(Path.ComponentMap<?,?> expr);
-
+    
     protected abstract void visit(Path.Entity<?> expr);
 
     protected abstract void visit(Path.EntityCollection<?> expr);
+
+    protected abstract void visit(Path.EntityList<?> expr);
     
     protected abstract void visit(Path.EntityMap<?,?> expr);
-
-    protected abstract void visit(Path.RenamableEntity<?> expr);
     
+    protected abstract void visit(Path.RenamableEntity<?> expr);
+
     protected abstract void visit(Path.Simple<?> expr);
     
     protected abstract void visit(Path.String expr);
+    
+    protected abstract void visit(Path<?> expr);
     
 }
