@@ -1,3 +1,4 @@
+//$Id: SessionFactory.java 8754 2005-12-05 23:36:59Z steveebersole $
 /*
  * Copyright (c) 2008 Mysema Ltd.
  * All rights reserved.
