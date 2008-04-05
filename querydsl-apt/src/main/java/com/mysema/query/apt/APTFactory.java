@@ -24,7 +24,7 @@ import com.sun.mirror.declaration.AnnotationTypeDeclaration;
  * APTFactory provides
  * 
  * @author tiwe
- * @version $Id$
+ * @version $Id$ $Revision $
  * 
  */
 public class APTFactory implements AnnotationProcessorFactory {
