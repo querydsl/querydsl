@@ -41,6 +41,12 @@ ${include}
     </#list>     
     <#list decl.entityCollections as field>
     	public final Path.EntityCollection<${field.typeName}> ${field.name} = _entitycol("${field.name}",${field.typeName}.class);
+    </#list>
+	<#list decl.simpleCollections as field>
+    	public final Path.ComponentCollection<${field.typeName}> ${field.name} = _simplecol("${field.name}",${field.typeName}.class);
+    </#list>    
+    <#list decl.entityLists as field>
+    	public final Path.EntityList<${field.typeName}> ${field.name} = _entitylist("${field.name}",${field.typeName}.class);
     	public ${pre}${field.simpleTypeName} ${field.name}(int index) {
     		return new ${pre}${field.simpleTypeName}(forListAccess(${field.name},index));
     	}
@@ -48,15 +54,15 @@ ${include}
     		return new ${pre}${field.simpleTypeName}(forListAccess(${field.name},index));
     	}
     </#list>
-	<#list decl.simpleCollections as field>
-    	public final Path.ComponentCollection<${field.typeName}> ${field.name} = _simplecol("${field.name}",${field.typeName}.class);
+	<#list decl.simpleLists as field>
+    	public final Path.ComponentList<${field.typeName}> ${field.name} = _simplelist("${field.name}",${field.typeName}.class);
     	public Path.Simple<${field.typeName}> ${field.name}(int index) {
     		return new Path.Simple<${field.typeName}>(${field.typeName}.class,forListAccess(${field.name},index));
     	}
     	public Path.Simple<${field.typeName}> ${field.name}(Expr<Integer> index) {
     		return new Path.Simple<${field.typeName}>(${field.typeName}.class,forListAccess(${field.name},index));
     	}
-    </#list>    
+    </#list>        
   	<#list decl.entityFields as field>
         public final Path.RenamableEntity<${field.typeName}> ${field.name} = _entity("${field.name}",${field.typeName}.class);
 	</#list>     

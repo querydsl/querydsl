@@ -43,12 +43,12 @@ public class HibernateProcessorTest  {
         new FreeMarkerSerializer("/querydsl-hibernate-dto.ftl").serialize(model, writer);
     }
     
-    private TypeDecl createTypeDecl() {
-        TypeDecl typeDecl = new TypeDecl("com.mysema.query.DomainSuperClass","com.mysema.query.DomainClass","DomainClass");
-        FieldDecl field = new FieldDecl("field",null,"java.lang.String","java.lang.String",FieldType.STRING);
+    private Type createTypeDecl() {
+        Type typeDecl = new Type("com.mysema.query.DomainSuperClass","com.mysema.query.DomainClass","DomainClass");
+        Field field = new Field("field",null,"java.lang.String","java.lang.String",Field.Type.STRING);
         typeDecl.addField(field);
-        ParameterDecl param = new ParameterDecl("name","java.lang.String");
-        typeDecl.addConstructor( new ConstructorDecl(Collections.singleton(param)));
+        Parameter param = new Parameter("name","java.lang.String");
+        typeDecl.addConstructor( new Constructor(Collections.singleton(param)));
         return typeDecl;
     }
 }

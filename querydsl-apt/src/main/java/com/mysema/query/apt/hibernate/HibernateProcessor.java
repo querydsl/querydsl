@@ -20,7 +20,7 @@ import java.util.TreeSet;
 import org.apache.commons.io.FileUtils;
 
 import com.mysema.query.apt.FreeMarkerSerializer;
-import com.mysema.query.apt.TypeDecl;
+import com.mysema.query.apt.Type;
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
@@ -49,12 +49,12 @@ public class HibernateProcessor implements AnnotationProcessor {
         this.namePrefix = getString(env.getOptions(), "-AnamePrefix=", "");
     }
 
-    private void addSupertypeFields(TypeDecl typeDecl,
-            Map<String, TypeDecl> entityTypes,
-            Map<String, TypeDecl> mappedSupertypes) {
+    private void addSupertypeFields(Type typeDecl,
+            Map<String, Type> entityTypes,
+            Map<String, Type> mappedSupertypes) {
         String stype = typeDecl.getSupertypeName();
         while (true){
-            TypeDecl sdecl;
+            Type sdecl;
             if (entityTypes.containsKey(stype)){
                 sdecl = entityTypes.get(stype);
             }else if (mappedSupertypes.containsKey(stype)){
@@ -76,7 +76,7 @@ public class HibernateProcessor implements AnnotationProcessor {
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
             typeDecl.accept(getDeclarationScanner(visitor1, NO_OP));
         }
-        Map<String,TypeDecl> mappedSupertypes = visitor1.types;
+        Map<String,Type> mappedSupertypes = visitor1.types;
                 
         // TODO : embeddable types
 
@@ -87,15 +87,15 @@ public class HibernateProcessor implements AnnotationProcessor {
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
             typeDecl.accept(getDeclarationScanner(visitor1, NO_OP));
         }
-        Map<String,TypeDecl> entityTypes = visitor1.types;
+        Map<String,Type> entityTypes = visitor1.types;
         
-        for (TypeDecl typeDecl : entityTypes.values()){
+        for (Type typeDecl : entityTypes.values()){
             addSupertypeFields(typeDecl, entityTypes, mappedSupertypes);
         }
         
         // populate model
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("domainTypes", new TreeSet<TypeDecl>(entityTypes.values()));
+        model.put("domainTypes", new TreeSet<Type>(entityTypes.values()));
         model.put("pre", namePrefix);
         model.put("include", include);
         model.put("package", destClass.substring(0, destClass.lastIndexOf('.')));

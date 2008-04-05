@@ -14,25 +14,25 @@ import com.sun.mirror.declaration.ParameterDeclaration;
  * @author tiwe
  * @version $Id$
  */
-public class ParameterDecl implements Comparable<ParameterDecl> {
+public class Parameter implements Comparable<Parameter> {
     private final String name, typeName;
 
-    public ParameterDecl(String name, String typeName) {
+    public Parameter(String name, String typeName) {
         this.name = name;
         this.typeName = typeName;
     }
 
-    public ParameterDecl(ParameterDeclaration pa) {
+    public Parameter(ParameterDeclaration pa) {
         name = pa.getSimpleName();
         typeName = new TypeInfo(pa.getType()).getFullName();
     }
 
-    public int compareTo(ParameterDecl o) {
+    public int compareTo(Parameter o) {
         return name.compareTo(o.name);
     }
 
     public boolean equals(Object o) {
-        return o instanceof ParameterDecl && name.equals(((ParameterDecl) o).name);
+        return o instanceof Parameter && name.equals(((Parameter) o).name);
     }
 
     public String getName() {

@@ -14,13 +14,26 @@ import com.sun.mirror.declaration.FieldDeclaration;
  * @author tiwe
  * @version $Id$
  */
-public class FieldDecl implements Comparable<FieldDecl>{
+public class Field implements Comparable<Field>{
     
-    private final FieldType fieldType;
+    public enum Type {
+        BOOLEAN, 
+        ENTITY, 
+        ENTITYLIST, 
+        ENTITYCOLLECTION, 
+        ENTITYMAP, 
+        SIMPLE, 
+        SIMPLELIST, 
+        SIMPLECOLLECTION, 
+        SIMPLEMAP, 
+        STRING
+    }
+    
+    private final Type fieldType;
     
     private String name, keyTypeName, typeName, simpleTypeName;
 
-    public FieldDecl(FieldDeclaration field) {
+    public Field(FieldDeclaration field) {
         TypeInfo typeInfo = new TypeInfo(field.getType());
         this.name = field.getSimpleName();
         this.keyTypeName = typeInfo.getKeyTypeName();
@@ -29,8 +42,8 @@ public class FieldDecl implements Comparable<FieldDecl>{
         this.fieldType = typeInfo.getFieldType();        
     }
     
-    public FieldDecl(String name, String keyTypeName, String typeName, 
-            String simpleTypeName, FieldType fieldType){
+    public Field(String name, String keyTypeName, String typeName, 
+            String simpleTypeName, Type fieldType){
         this.name = name;
         this.keyTypeName = keyTypeName;
         this.typeName = typeName;
@@ -38,15 +51,15 @@ public class FieldDecl implements Comparable<FieldDecl>{
         this.fieldType = fieldType;
     }
     
-    public int compareTo(FieldDecl o) {
+    public int compareTo(Field o) {
         return name.compareTo(o.name);
     }
     
     public boolean equals(Object o){
-        return o instanceof FieldDecl && name.equals(((FieldDecl)o).name);
+        return o instanceof Field && name.equals(((Field)o).name);
     }
     
-    public FieldType getFieldType(){
+    public Type getFieldType(){
         return fieldType;
     }
     

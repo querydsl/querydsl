@@ -7,7 +7,7 @@ package com.mysema.query.apt.util;
 
 import java.util.Iterator;
 
-import com.mysema.query.apt.FieldType;
+import com.mysema.query.apt.Field;
 import com.sun.mirror.type.*;
 import com.sun.mirror.util.SimpleTypeVisitor;
 
@@ -19,7 +19,7 @@ import com.sun.mirror.util.SimpleTypeVisitor;
  */
 public class TypeInfo {
 
-    private FieldType fieldType;
+    private Field.Type fieldType;
     
     private String simpleName, fullName, keyTypeName;
     
@@ -28,7 +28,7 @@ public class TypeInfo {
     public TypeInfo(TypeMirror type){
         type.accept(visitor);
         if (fieldType == null){
-            fieldType = FieldType.ENTITY;
+            fieldType = Field.Type.ENTITY;
         }
         if (fullName == null){
             fullName = type.toString();
@@ -38,7 +38,7 @@ public class TypeInfo {
         }
     }
     
-    public FieldType getFieldType() {
+    public Field.Type getFieldType() {
         return fieldType;
     }
 
@@ -70,50 +70,62 @@ public class TypeInfo {
         public void visitArrayType(ArrayType arg0) {            
             TypeInfo valueInfo = new TypeInfo(arg0.getComponentType());
             fullName = valueInfo.getFullName();
-            if (valueInfo.fieldType == FieldType.ENTITY){
-                fieldType = FieldType.ENTITYCOLLECTION;
+            if (valueInfo.fieldType == Field.Type.ENTITY){
+                fieldType = Field.Type.ENTITYCOLLECTION;
             }else{
-                fieldType = FieldType.SIMPLECOLLECTION;
+                fieldType = Field.Type.SIMPLECOLLECTION;
             }
         }
 
         public void visitClassType(ClassType arg0) {
             fullName = arg0.toString();
             if (fullName.equals(String.class.getName())){
-                fieldType = FieldType.STRING;
+                fieldType = Field.Type.STRING;
             }else if (fullName.equals(Boolean.class.getName())){
-                fieldType = FieldType.BOOLEAN;
+                fieldType = Field.Type.BOOLEAN;
             }else if (fullName.startsWith("java")){
-                fieldType = FieldType.SIMPLE;
+                fieldType = Field.Type.SIMPLE;
             }
         }
 
         public void visitEnumType(EnumType arg0) {
-            fieldType = FieldType.SIMPLE;
+            fieldType = Field.Type.SIMPLE;
         }
 
         public void visitInterfaceType(InterfaceType arg0) {
             Iterator<TypeMirror> i = arg0.getActualTypeArguments().iterator();
-            // map
-            if (arg0.getActualTypeArguments().size() == 2){                
+            String typeName = arg0.toString();
+            if (arg0.getActualTypeArguments().size() > 0){
+                typeName = typeName.substring(0, typeName.indexOf('<'));
+            }
+            
+            if (typeName.equals("java.util.Map")){     
                 TypeInfo keyInfo = new TypeInfo(i.next());
                 keyTypeName = keyInfo.getFullName();
                 TypeInfo valueInfo = new TypeInfo(i.next());
                 fullName = valueInfo.getFullName();
-                if (valueInfo.fieldType == FieldType.ENTITY){
-                    fieldType = FieldType.ENTITYMAP;
+                if (valueInfo.fieldType == Field.Type.ENTITY){
+                    fieldType = Field.Type.ENTITYMAP;
                 }else{
-                    fieldType = FieldType.SIMPLEMAP;
+                    fieldType = Field.Type.SIMPLEMAP;
                 }
                 
-            // collection
-            }else{
+            }else if (typeName.equals("java.util.Collection")){                
                 TypeInfo valueInfo = new TypeInfo(i.next());
                 fullName = valueInfo.getFullName();
-                if (valueInfo.fieldType == FieldType.ENTITY){
-                    fieldType = FieldType.ENTITYCOLLECTION;
+                if (valueInfo.fieldType == Field.Type.ENTITY){
+                    fieldType = Field.Type.ENTITYCOLLECTION;
                 }else{
-                    fieldType = FieldType.SIMPLECOLLECTION;
+                    fieldType = Field.Type.SIMPLECOLLECTION;
+                }
+                
+            }else if (typeName.equals("java.util.List")){
+                TypeInfo valueInfo = new TypeInfo(i.next());
+                fullName = valueInfo.getFullName();
+                if (valueInfo.fieldType == Field.Type.ENTITY){
+                    fieldType = Field.Type.ENTITYLIST;
+                }else{
+                    fieldType = Field.Type.SIMPLELIST;
                 }
             }
         }
@@ -131,9 +143,9 @@ public class TypeInfo {
             case SHORT:    cl = Short.class; break;
             }
             if (cl.equals(Boolean.class)){
-                fieldType = FieldType.BOOLEAN;
+                fieldType = Field.Type.BOOLEAN;
             }else{
-                fieldType = FieldType.SIMPLE;
+                fieldType = Field.Type.SIMPLE;
             }
             fullName = cl.getName();
             simpleName = cl.getSimpleName();

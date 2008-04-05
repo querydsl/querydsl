@@ -8,7 +8,7 @@ package com.mysema.query.apt.hibernate;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.apt.TypeDecl;
+import com.mysema.query.apt.Type;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.Modifier;
@@ -23,13 +23,13 @@ import com.sun.mirror.util.SimpleDeclarationVisitor;
  *
  */
 public class EntityVisitor extends SimpleDeclarationVisitor {
-    public final Map<String,TypeDecl> types = new HashMap<String,TypeDecl>();
+    public final Map<String,Type> types = new HashMap<String,Type>();
 
-    private TypeDecl last;
+    private Type last;
 
     @Override
     public void visitClassDeclaration(ClassDeclaration d) {
-        last = new TypeDecl(d);
+        last = new Type(d);
         types.put(d.getQualifiedName(), last);
     }
 

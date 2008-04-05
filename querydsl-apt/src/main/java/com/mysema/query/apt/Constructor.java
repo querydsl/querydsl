@@ -19,21 +19,21 @@ import com.sun.mirror.declaration.ParameterDeclaration;
  * @version $Id$
  * 
  */
-public class ConstructorDecl {
-    private final Collection<ParameterDecl> parameters;
+public class Constructor {
+    private final Collection<Parameter> parameters;
 
-    public ConstructorDecl(Collection<ParameterDecl> params) {
+    public Constructor(Collection<Parameter> params) {
         parameters = params;
     }
 
-    public ConstructorDecl(ConstructorDeclaration co) {
-        parameters = new ArrayList<ParameterDecl>(co.getParameters().size());
+    public Constructor(ConstructorDeclaration co) {
+        parameters = new ArrayList<Parameter>(co.getParameters().size());
         for (ParameterDeclaration pa : co.getParameters()) {
-            parameters.add(new ParameterDecl(pa));
+            parameters.add(new Parameter(pa));
         }
     }
 
-    public Collection<ParameterDecl> getParameters() {
+    public Collection<Parameter> getParameters() {
         return parameters;
     }
 

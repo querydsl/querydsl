@@ -8,7 +8,7 @@ package com.mysema.query.apt.hibernate;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.mysema.query.apt.TypeDecl;
+import com.mysema.query.apt.Type;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.util.SimpleDeclarationVisitor;
@@ -20,13 +20,13 @@ import com.sun.mirror.util.SimpleDeclarationVisitor;
  * @version $Id$
  */
 public class DTOVisitor extends SimpleDeclarationVisitor {
-    public final Set<TypeDecl> types = new TreeSet<TypeDecl>();
+    public final Set<Type> types = new TreeSet<Type>();
 
-    private TypeDecl last;
+    private Type last;
 
     @Override
     public void visitClassDeclaration(ClassDeclaration d) {
-        last = new TypeDecl(d);
+        last = new Type(d);
         types.add(last);
     }
     @Override

@@ -19,56 +19,60 @@ import com.sun.mirror.declaration.FieldDeclaration;
  * @version $Id$
  *
  */
-public class TypeDecl implements Comparable<TypeDecl>{
+public class Type implements Comparable<Type>{
         
-    private final Set<FieldDecl> booleanFields = new TreeSet<FieldDecl>();
+    private final Set<Field> booleanFields = new TreeSet<Field>();
     
     // not sorted
-    private final Set<ConstructorDecl> constructors = new HashSet<ConstructorDecl>();
+    private final Set<Constructor> constructors = new HashSet<Constructor>();
     
-    private final Set<FieldDecl> entityCollections = new TreeSet<FieldDecl>();
+    private final Set<Field> entityCollections = new TreeSet<Field>();
     
-    private final Set<FieldDecl> entityMaps = new TreeSet<FieldDecl>();
+    private final Set<Field> entityLists = new TreeSet<Field>();
     
-    private final Set<FieldDecl> entityFields = new TreeSet<FieldDecl>();
+    private final Set<Field> entityMaps = new TreeSet<Field>();
+    
+    private final Set<Field> entityFields = new TreeSet<Field>();
 
-    private final Set<FieldDecl> simpleCollections = new TreeSet<FieldDecl>();
+    private final Set<Field> simpleCollections = new TreeSet<Field>();
     
-    private final Set<FieldDecl> simpleMaps = new TreeSet<FieldDecl>();
+    private final Set<Field> simpleLists = new TreeSet<Field>();
     
-    private final Set<FieldDecl> simpleFields = new TreeSet<FieldDecl>();
+    private final Set<Field> simpleMaps = new TreeSet<Field>();
+    
+    private final Set<Field> simpleFields = new TreeSet<Field>();
     
     private final String simpleName, name;
 
-    private final Set<FieldDecl> stringFields = new TreeSet<FieldDecl>();
+    private final Set<Field> stringFields = new TreeSet<Field>();
     
     private final String superType;
     
-    public TypeDecl(ClassDeclaration d) {
+    public Type(ClassDeclaration d) {
         this.simpleName = d.getSimpleName();
         this.name = d.getQualifiedName();
         this.superType = d.getSuperclass().getDeclaration().getQualifiedName();
     }
     
-    public TypeDecl(String superType, String name, String simpleName){
+    public Type(String superType, String name, String simpleName){
         this.superType = superType;
         this.name = name;
         this.simpleName = simpleName;
     }
     
     public void addConstructor(ConstructorDeclaration co) {
-        addConstructor(new ConstructorDecl(co));
+        addConstructor(new Constructor(co));
     }
     
-    public void addConstructor(ConstructorDecl co){
+    public void addConstructor(Constructor co){
         constructors.add(co);     
     }
 
     public void addField(FieldDeclaration field){
-        addField(new FieldDecl(field));
+        addField(new Field(field));
     }
     
-    public void addField(FieldDecl fieldDecl){
+    public void addField(Field fieldDecl){
         switch(fieldDecl.getFieldType()){
         case BOOLEAN : booleanFields.add(fieldDecl); break;
         case STRING : stringFields.add(fieldDecl); break;
@@ -76,36 +80,42 @@ public class TypeDecl implements Comparable<TypeDecl>{
         case ENTITY : entityFields.add(fieldDecl); break;         
         case ENTITYCOLLECTION : entityCollections.add(fieldDecl); break;
         case SIMPLECOLLECTION : simpleCollections.add(fieldDecl); break;
+        case ENTITYLIST : entityLists.add(fieldDecl); break;
+        case SIMPLELIST : simpleLists.add(fieldDecl); break;
         case ENTITYMAP : entityMaps.add(fieldDecl); break;
         case SIMPLEMAP : simpleMaps.add(fieldDecl); break;
       }
     }
     
-    public int compareTo(TypeDecl o) {
+    public int compareTo(Type o) {
         return simpleName.compareTo(o.simpleName);
     }
     
     public boolean equals(Object o){
-        return o instanceof TypeDecl && simpleName.equals(((TypeDecl)o).simpleName);
+        return o instanceof Type && simpleName.equals(((Type)o).simpleName);
     }
     
-    public Collection<FieldDecl> getBooleanFields() {
+    public Collection<Field> getBooleanFields() {
         return booleanFields;
     }
 
-    public Collection<ConstructorDecl> getConstructors(){
+    public Collection<Constructor> getConstructors(){
         return constructors;
     }
     
-    public Collection<FieldDecl> getEntityCollections() {
+    public Collection<Field> getEntityCollections() {
         return entityCollections;
     }
     
-    public Collection<FieldDecl> getEntityMaps() {
+    public Collection<Field> getEntityLists() {
+        return entityLists;
+    }
+    
+    public Collection<Field> getEntityMaps() {
         return entityMaps;
     }
         
-    public Collection<FieldDecl> getEntityFields() {
+    public Collection<Field> getEntityFields() {
         return entityFields;
     }
     
@@ -113,15 +123,19 @@ public class TypeDecl implements Comparable<TypeDecl>{
         return name;
     }
 
-    public Collection<FieldDecl> getSimpleCollections() {
+    public Collection<Field> getSimpleCollections() {
         return simpleCollections;
     }
     
-    public Collection<FieldDecl> getSimpleMaps() {
+    public Collection<Field> getSimpleLists() {
+        return simpleLists;
+    }
+    
+    public Collection<Field> getSimpleMaps() {
         return simpleMaps;
     }
 
-    public Collection<FieldDecl> getSimpleFields() {
+    public Collection<Field> getSimpleFields() {
         return simpleFields;
     }
     
@@ -129,7 +143,7 @@ public class TypeDecl implements Comparable<TypeDecl>{
         return simpleName;
     }
     
-    public Collection<FieldDecl> getStringFields() {
+    public Collection<Field> getStringFields() {
         return stringFields;
     }
 
@@ -141,10 +155,12 @@ public class TypeDecl implements Comparable<TypeDecl>{
         return name.hashCode();
     }
     
-    public void include(TypeDecl decl) {
+    public void include(Type decl) {
         booleanFields.addAll(decl.booleanFields);
         entityCollections.addAll(decl.entityCollections);
         simpleCollections.addAll(decl.simpleCollections);
+        entityLists.addAll(decl.entityLists);
+        simpleLists.addAll(decl.simpleLists);
         entityMaps.addAll(decl.entityMaps);
         simpleMaps.addAll(decl.simpleMaps);
         entityFields.addAll(decl.entityFields);
