@@ -65,7 +65,7 @@ public class HqlDomain {
     public static class Cat extends Animal{
         int breed;
         Color eyecolor;   
-        @OneToMany Collection<Cat> kittens;
+        @OneToMany List<Cat> kittens;
         @ManyToOne Cat mate;
     }
     
