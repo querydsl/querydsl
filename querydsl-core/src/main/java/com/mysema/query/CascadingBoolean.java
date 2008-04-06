@@ -9,8 +9,8 @@ import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.types.Expr;
 
 /**
- * CascadingBoolean provides
- *
+ * CascadingBoolean provides.
+ * 
  * @author tiwe
  * @version $Id$
  */

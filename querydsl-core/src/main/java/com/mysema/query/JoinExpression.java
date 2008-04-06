@@ -8,12 +8,10 @@ package com.mysema.query;
 import com.mysema.query.grammar.types.Expr;
 
 /**
+ * JoinExpression provides.
  * 
- * JoinExpression provides
- *
  * @author tiwe
  * @version $Id$
- *
  */
 public class JoinExpression {
     private Expr.Boolean condition;

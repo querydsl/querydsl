@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.grammar.types;
 
 import static org.junit.Assert.*;
@@ -6,8 +11,8 @@ import org.junit.Test;
 
 
 /**
- * TypesTest provides
- *
+ * TypesTest provides.
+ * 
  * @author tiwe
  * @version $Id$
  */

@@ -13,7 +13,7 @@ import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.map.LazyMap;
 
 /**
- * Visitor provides a dispatching Visitor for Expr instances
+ * Visitor provides a dispatching Visitor for Expr instances.
  * 
  * @author tiwe
  * @version $Id$

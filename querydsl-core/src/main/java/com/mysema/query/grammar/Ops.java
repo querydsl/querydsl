@@ -6,13 +6,16 @@
 package com.mysema.query.grammar;
 
 /**
- * Ops provides the operators for the fluent query grammar
- *
+ * Ops provides the operators for the fluent query grammar.
+ * 
  * @author tiwe
  * @version $Id$
  */
 public interface Ops {
 
+    /**
+     * The Class Op.
+     */
     public static class Op<RT>{}
     
     // general

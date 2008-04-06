@@ -13,8 +13,8 @@ import static com.mysema.query.grammar.types.PathMetadata.forVariable;
 
 
 /**
- * Path provides
- *
+ * Path provides.
+ * 
  * @author tiwe
  * @version $Id$
  */
@@ -24,6 +24,9 @@ public interface Path<C> {
     Expr.Boolean isnotnull();
     Expr.Boolean isnull();
             
+    /**
+     * The Class Boolean.
+     */
     public static class Boolean extends Expr.Boolean implements Path<java.lang.Boolean>{
         private final PathMetadata<java.lang.String> metadata;
         public Boolean(PathMetadata<java.lang.String> metadata) {
@@ -34,11 +37,17 @@ public interface Path<C> {
         public Expr.Boolean isnull() {return IntGrammar.isnull(this);}          
     }
         
+    /**
+     * The Interface Collection.
+     */
     public interface Collection<D> extends Path<java.util.Collection<D>>, CollectionType<D>{
         Class<D> getElementType();
         Expr.Comparable<Integer> size();
     }
     
+    /**
+     * The Class Comparable.
+     */
     public static class Comparable<D extends java.lang.Comparable<D>> extends Expr.Comparable<D> implements Path<D>{
         private final PathMetadata<?> metadata;
         public Comparable(Class<D> type, PathMetadata<?> metadata) {
@@ -50,6 +59,9 @@ public interface Path<C> {
         public Expr.Boolean isnull() {return IntGrammar.isnull(this);}
     }
     
+    /**
+     * The Class ComponentCollection.
+     */
     public static class ComponentCollection<D> extends Expr.Simple<java.util.Collection<D>> implements Collection<D>{
         private final PathMetadata<?> metadata;
         protected final Class<D> type;
@@ -67,6 +79,9 @@ public interface Path<C> {
         }
     }
     
+    /**
+     * The Class ComponentList.
+     */
     public static class ComponentList<D> extends ComponentCollection<D> implements List<D>{        
         public ComponentList(Class<D> type, PathMetadata<?> metadata) {
             super(type, metadata);
@@ -79,6 +94,9 @@ public interface Path<C> {
         }
     }
     
+    /**
+     * The Class ComponentMap.
+     */
     public static class ComponentMap<K,V> extends Expr.Simple<java.util.Map<K,V>> implements Map<K,V>{
         private final Class<K> keyType;
         private final PathMetadata<?> metadata;
@@ -102,6 +120,9 @@ public interface Path<C> {
         public Expr.Boolean isnull() {return IntGrammar.isnull(this);}
     }
     
+    /**
+     * The Class Entity.
+     */
     public static class Entity<D> extends Expr.Entity<D> implements Path<D>{
         private final PathMetadata<?> metadata;        
         public Entity(Class<D> type, java.lang.String localName) {
@@ -149,6 +170,9 @@ public interface Path<C> {
         public <B extends D> Expr.Boolean typeOf(Class<B> type) {return IntGrammar.typeOf(this, type);}
     }
     
+    /**
+     * The Class EntityCollection.
+     */
     public static class EntityCollection<D> extends Expr.Entity<java.util.Collection<D>> implements Collection<D>{
         private final PathMetadata<?> metadata;
         protected final Class<D> type;
@@ -168,6 +192,9 @@ public interface Path<C> {
         }
     }
     
+    /**
+     * The Class EntityList.
+     */
     public static class EntityList<D> extends EntityCollection<D> implements List<D>{
         public EntityList(Class<D> type, PathMetadata<?> metadata) {
             super(type, metadata);
@@ -180,6 +207,9 @@ public interface Path<C> {
         }
     }
     
+    /**
+     * The Class EntityMap.
+     */
     public static class EntityMap<K,V> extends Expr.Entity<Map<K,V>> implements Map<K,V>{
         private final Class<K> keyType;
         private final PathMetadata<?> metadata;
@@ -203,11 +233,17 @@ public interface Path<C> {
         public Expr.Boolean isnull() {return IntGrammar.isnull(this);}
     }
     
+    /**
+     * The Interface List.
+     */
     public interface List<D> extends Collection<D>{
         Expr<D> get(Expr<Integer> index);        
         Expr<D> get(int index);
     }
     
+    /**
+     * The Interface Map.
+     */
     public interface Map<K,V> extends Path<java.util.Map<K,V>>{
         Expr<V> get(Expr<K> key);
         Expr<V> get(K key);
@@ -215,11 +251,17 @@ public interface Path<C> {
         Class<V> getValueType();
     }
     
+    /**
+     * The Class RenamableEntity.
+     */
     public static class RenamableEntity<D> extends Entity<D>{
         protected RenamableEntity(Class<D> type, PathMetadata<?> metadata) {super(type, metadata);}
         public Alias.Entity<D> as(Path.Entity<D> to) {return IntGrammar.as(this, to);}
     }
         
+    /**
+     * The Class Simple.
+     */
     public static class Simple<D> extends Expr.Simple<D> implements Path<D>{
         private final PathMetadata<?> metadata;
         public <T> Simple(Class<D> type, PathMetadata<?> metadata) {
@@ -231,6 +273,9 @@ public interface Path<C> {
         public Expr.Boolean isnull() {return IntGrammar.isnull(this);}
     }
     
+    /**
+     * The Class String.
+     */
     public static class String extends Expr.String implements Path<java.lang.String>{
         private final PathMetadata<java.lang.String> metadata;
         public String(PathMetadata<java.lang.String> metadata) {

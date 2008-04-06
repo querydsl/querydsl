@@ -14,8 +14,8 @@ import com.mysema.query.grammar.types.Expr;
 import static com.mysema.query.grammar.types.Expr.*;
 
 /**
- * QueryBase provides a basic implementation of the Query interface
- *
+ * QueryBase provides a basic implementation of the Query interface.
+ * 
  * @author tiwe
  * @version $Id$
  */
@@ -103,6 +103,9 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         return metadata;
     }
 
+    /**
+     * The Class Metadata.
+     */
     public class Metadata{
         public List<Expr<?>> getGroupBy() {
             return groupBy;

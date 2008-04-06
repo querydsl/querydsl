@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.grammar;
 
 import java.util.ArrayList;
@@ -14,8 +19,8 @@ import com.mysema.query.grammar.types.Visitor;
 
 
 /**
- * VisitorTest provides
- *
+ * VisitorTest provides.
+ * 
  * @author tiwe
  * @version $Id$
  */

@@ -6,8 +6,8 @@
 package com.mysema.query.grammar.types;
 
 /**
- * Alias provides
- *
+ * Alias provides.
+ * 
  * @author tiwe
  * @version $Id$
  */
@@ -15,6 +15,9 @@ public interface Alias {
     
     Expr<?> getFrom();
     
+    /**
+     * The Class Entity.
+     */
     public static class Entity<D> extends Expr.Entity<D> implements ToPath{
         private final Expr<?> from;
         private final Path<?> to;
@@ -27,6 +30,9 @@ public interface Alias {
         public  Path<?> getTo() {return to;}  
     }
     
+    /**
+     * The Class EntityCollection.
+     */
     public static class EntityCollection<D> extends Expr.Entity<D> implements ToPath{
         private final Expr<?> from;
         private final Path<?> to;
@@ -39,6 +45,9 @@ public interface Alias {
         public  Path<?> getTo() {return to;}        
     }
             
+    /**
+     * The Class Simple.
+     */
     public static class Simple<D> extends Expr.Simple<D> implements Alias{     
         private final Expr<?> from;
         private final java.lang.String to;
@@ -54,6 +63,9 @@ public interface Alias {
         public java.lang.String getTo() {return to;}  
     }
     
+    /**
+     * The Interface ToPath.
+     */
     public interface ToPath extends Alias{        
         Path<?> getTo();
     }

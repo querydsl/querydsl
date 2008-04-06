@@ -6,8 +6,8 @@
 package com.mysema.query.grammar.types;
 
 /**
- * CollectionType provides
- *
+ * CollectionType provides.
+ * 
  * @author tiwe
  * @version $Id$
  */

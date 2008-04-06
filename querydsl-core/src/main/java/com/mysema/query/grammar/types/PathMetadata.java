@@ -8,12 +8,10 @@ package com.mysema.query.grammar.types;
 import com.mysema.query.grammar.Ops;
 
 /**
- * 
- * PathMetadata provides metadata for Path expressions
+ * PathMetadata provides metadata for Path expressions.
  * 
  * @author tiwe
  * @version $Id$
- * 
  */
 public final class PathMetadata<T> {
     private final Expr<T> expression;
@@ -74,6 +72,9 @@ public final class PathMetadata<T> {
         return pathType;
     }    
 
+    /**
+     * The Class PathType.
+     */
     public static class PathType extends Ops.Op<Path<?>> {}
     
     // bookmark.tags.size

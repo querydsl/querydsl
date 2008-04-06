@@ -9,7 +9,7 @@ package com.mysema.query.grammar.types;
 
 /**
  * VisitorAdapter provides a base implementation where invocations are
- * dispatched to supertypes when available and visible
+ * dispatched to supertypes when available and visible.
  * 
  * @author tiwe
  * @version $Id$
@@ -24,10 +24,6 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visito
     protected void visit(Alias.EntityCollection<?> expr) {
         visit((Alias.ToPath) expr);
     }
-//    @Override
-//    protected void visit(Alias.Literal<?> expr) {
-//        visit((Alias.Simple) expr);
-//    }
     @Override
     protected void visit(Operation.Boolean expr) {
         visit((Operation<?, ?>) expr);

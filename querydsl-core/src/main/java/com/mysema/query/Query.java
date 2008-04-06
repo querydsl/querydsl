@@ -11,8 +11,8 @@ import com.mysema.query.grammar.types.Expr;
 import static com.mysema.query.grammar.types.Expr.*;
 
 /**
- * Query provides a the query interface of the fluent query DSL
- *
+ * Query provides a the query interface of the fluent query DSL.
+ * 
  * @author tiwe
  * @version $Id$
  */

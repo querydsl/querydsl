@@ -8,8 +8,8 @@ package com.mysema.query.grammar.types;
 import com.mysema.query.grammar.OrderSpecifier;
 
 /**
- * Expr provides
- *
+ * Expr provides.
+ * 
  * @author tiwe
  * @version $Id$
  */
@@ -23,12 +23,18 @@ public abstract class Expr<D> {
     public Boolean ne(D right){return IntGrammar.ne(this, right);}
     public Boolean ne(Expr<? super D> right){return IntGrammar.ne(this, right);}
     
+    /**
+     * The Class Boolean.
+     */
     public static abstract class Boolean extends Literal<java.lang.Boolean>{
         public Boolean() {super(java.lang.Boolean.class);}
         public Boolean and(Boolean right) {return IntGrammar.and(this, right);}
         public Boolean or(Boolean right) {return IntGrammar.or(this, right);}
     }
     
+    /**
+     * The Class Comparable.
+     */
     public static abstract class Comparable<D extends java.lang.Comparable<D>> extends Literal<D>{
         public Comparable(Class<D> type) {super(type);}
         public Boolean after(D right) {return IntGrammar.after(this,right);}
@@ -55,6 +61,9 @@ public abstract class Expr<D> {
         public Boolean notIn(CollectionType<D> arg) {return IntGrammar.notIn(this, arg);}
     }
     
+    /**
+     * The Class Constant.
+     */
     public static class Constant<D> extends Expr<D>{
         private final D constant;
         @SuppressWarnings("unchecked")
@@ -74,23 +83,38 @@ public abstract class Expr<D> {
 //    -, 
 //    +
     
+    /**
+     * The Class Entity.
+     */
     public static abstract class Entity<D> extends Expr<D>{
         public Entity(Class<D> type) {super(type);}        
     }        
             
+    /**
+     * The Class Simple.
+     */
     public static abstract class Simple<D> extends Expr<D>{
         public Simple(Class<D> type) {super(type);}
         public Expr<D> as(java.lang.String to){return IntGrammar.as(this, to);}
     }
     
+    /**
+     * The Class Embeddable.
+     */
     public static abstract class Embeddable<D> extends Simple<D>{
         public Embeddable(Class<D> type) {super(type);}
     }
     
+    /**
+     * The Class Literal.
+     */
     public static abstract class Literal<D> extends Simple<D>{
         public Literal(Class<D> type) {super(type);}
     }
         
+    /**
+     * The Class String.
+     */
     public static abstract class String extends Comparable<java.lang.String>{
         public String() {super(java.lang.String.class);}
         public String concat(Expr<java.lang.String> str) {return IntGrammar.concat(this, str);}

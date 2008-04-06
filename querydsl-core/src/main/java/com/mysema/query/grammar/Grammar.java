@@ -14,7 +14,7 @@ import com.mysema.query.grammar.types.CollectionType;
 import com.mysema.query.grammar.types.Expr;
 
 /**
- * Grammar provides the factory methods for the fluent grammar
+ * Grammar provides the factory methods for the fluent grammar.
  * 
  * @author tiwe
  * @version $Id$

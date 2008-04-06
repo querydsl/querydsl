@@ -9,13 +9,11 @@ import com.mysema.query.grammar.types.Expr;
 
 
 /**
+ * OrderSpecifier provides.
  * 
- * OrderSpecifier provides
- *
+ * @param <A>  * 
  * @author tiwe
  * @version $Id$
- *
- * @param <A>
  */
 public class OrderSpecifier<A extends Comparable<A>> {
     public Order order;
