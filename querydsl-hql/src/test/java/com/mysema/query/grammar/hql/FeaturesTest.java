@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.grammar.hql;
 
 import static com.mysema.query.Domain1.cat;
@@ -26,8 +31,8 @@ import com.mysema.query.grammar.types.HqlTypes.Constructor;
 
 
 /**
- * FeaturesTest provides
- *
+ * FeaturesTest provides.
+ * 
  * @author tiwe
  * @version $Id$
  */
@@ -106,6 +111,9 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         cat.name.eq(cust.name().firstName).or(cat.bodyWeight.eq(kitten.bodyWeight));
     }
     
+    /**
+     * The Class MyCustomExpr.
+     */
     public class MyCustomExpr extends Custom.String{
         private Expr<?>[] args;
         public MyCustomExpr(Expr<?>... args) {
@@ -326,6 +334,9 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         visitor = new HqlSerializer();
     }
     
+    /**
+     * The Class _BookmarkDTO.
+     */
     public static final class _BookmarkDTO extends Constructor<BookmarkDTO>{
         public _BookmarkDTO(){
             super(BookmarkDTO.class);
@@ -335,6 +346,9 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         }
     }
     
+    /**
+     * The Class BookmarkDTO.
+     */
     public static final class BookmarkDTO{
         
     }

@@ -16,8 +16,8 @@ import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
 
 /**
- * HqlOps provides
- *
+ * HqlOps provides.
+ * 
  * @author tiwe
  * @version $Id$
  */
@@ -152,6 +152,9 @@ public class HqlOps  {
         }
     }
     
+    /**
+     * The Interface OpHql.
+     */
     public interface OpHql{
         Op<java.util.Date> CURRENT_DATE = new Op<java.util.Date>();
         Op<java.util.Date> CURRENT_TIME = new Op<java.util.Date>();
@@ -168,12 +171,18 @@ public class HqlOps  {
         Op<java.util.Date> YEAR = new Op<java.util.Date>();
     }
     
+    /**
+     * The Interface OpNumberAgg.
+     */
     public interface OpNumberAgg{
         Op<java.lang.Number> AVG = new Op<java.lang.Number>();
         Op<java.lang.Number> MAX = new Op<java.lang.Number>();
         Op<java.lang.Number> MIN = new Op<java.lang.Number>();   
     }
     
+    /**
+     * The Interface OpQuant.
+     */
     public interface OpQuant{
         Op<java.lang.Number> AVG_IN_COL = new Op<java.lang.Number>();
         Op<java.lang.Number> MAX_IN_COL = new Op<java.lang.Number>();
@@ -189,6 +198,9 @@ public class HqlOps  {
         Op<?> NOTEXISTS = new Op<Object>();
     }
     
+    /**
+     * The Interface HqlPathType.
+     */
     public interface HqlPathType{
         PathType MINELEMENT = new PathType(); 
         PathType MAXELEMENT = new PathType();

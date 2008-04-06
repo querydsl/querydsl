@@ -27,8 +27,8 @@ import com.mysema.query.grammar.types.HqlTypes.DistinctPath;
 import com.mysema.query.grammar.types.HqlTypes.SubQuery;
 
 /**
- * HqlGrammar extends the Query DSL base grammar to provide HQL specific syntax elements
- *
+ * HqlGrammar extends the Query DSL base grammar to provide HQL specific syntax elements.
+ * 
  * @author tiwe
  * @version $Id$
  */

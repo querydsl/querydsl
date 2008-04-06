@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.util;
 
 import java.lang.reflect.Method;
@@ -14,8 +19,8 @@ import com.mysema.query.grammar.hql.HqlDomain;
 import com.mysema.query.grammar.hql.HqlIntegrationTest;
 
 /**
- * HibernateTestRunner provides
- *
+ * HibernateTestRunner provides.
+ * 
  * @author tiwe
  * @version $Id$
  */

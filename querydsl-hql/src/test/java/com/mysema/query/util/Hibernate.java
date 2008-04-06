@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.util;
 
 import java.lang.annotation.ElementType;
@@ -10,8 +15,8 @@ import org.hibernate.cfg.DefaultNamingStrategy;
 import org.hibernate.cfg.NamingStrategy;
 
 /**
- * Hibernate provides
- *
+ * Hibernate provides.
+ * 
  * @author tiwe
  * @version $Id$
  */

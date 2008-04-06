@@ -7,8 +7,8 @@
 package com.mysema.query.hibernate;
 
 /**
- * QueryModifiers provides
- *
+ * QueryModifiers provides.
+ * 
  * @author Timo Westkamper
  * @version $Id$
  */

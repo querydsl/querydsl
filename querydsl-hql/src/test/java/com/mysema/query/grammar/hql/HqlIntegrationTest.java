@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.grammar.hql;
 
 import org.hibernate.Query;
@@ -14,8 +19,8 @@ import com.mysema.query.util.HibernateTestRunner;
 
 
 /**
- * HibernatePersistenceTest provides
- *
+ * HibernatePersistenceTest provides.
+ * 
  * @author tiwe
  * @version $Id$
  */

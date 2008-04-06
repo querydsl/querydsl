@@ -8,8 +8,8 @@ package com.mysema.query.grammar.types;
 import com.mysema.query.grammar.Ops.Op;
 
 /**
- * Quant provides
- *
+ * Quant provides.
+ * 
  * @author tiwe
  * @version $Id$
  */
@@ -18,6 +18,9 @@ public interface Quant {
     Op<?> getOperator();
     Expr<?> getTarget();
         
+    /**
+     * The Class Boolean.
+     */
     public static class Boolean<Q> extends Expr.Boolean implements Quant{
         private final Expr<?> col;
         private final Op<?> op;
@@ -29,6 +32,9 @@ public interface Quant {
         public Expr<?> getTarget() {return col;}                           
     }
     
+    /**
+     * The Class Comparable.
+     */
     public static class Comparable<Q extends java.lang.Comparable<Q>> extends Expr.Comparable<Q> implements Quant{
         private final Expr<?> col;
         private final Op<?> op;
@@ -41,6 +47,9 @@ public interface Quant {
         public Expr<?> getTarget() {return col;}                          
     }
         
+    /**
+     * The Class Simple.
+     */
     public static class Simple<Q> extends Expr.Simple<Q> implements Quant{
         private final Expr<?> col;
         private final Op<?> op;

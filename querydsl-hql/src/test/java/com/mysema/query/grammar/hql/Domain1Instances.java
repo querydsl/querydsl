@@ -1,10 +1,15 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.grammar.hql;
 
 import static com.mysema.query.Domain1.*;
 
 /**
- * Domain1Instances provides
- *
+ * Domain1Instances provides.
+ * 
  * @author tiwe
  * @version $Id$
  */

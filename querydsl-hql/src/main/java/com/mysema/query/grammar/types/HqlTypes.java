@@ -10,13 +10,16 @@ import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.OrderSpecifier;
 
 /**
- * HqlTypes provides
- *
+ * HqlTypes provides.
+ * 
  * @author tiwe
  * @version $Id$
  */
 public class HqlTypes {
     
+    /**
+     * The Class Constructor.
+     */
     public static class Constructor<D> extends Expr<D>{
         private final Expr<?>[] args;
         public Constructor(Class<D> type, Expr<?>... args){
@@ -26,6 +29,9 @@ public class HqlTypes {
         public Expr<?>[] getArgs(){ return args; }
     }
     
+    /**
+     * The Class CountExpression.
+     */
     public static class CountExpression extends Expr.Comparable<Long>{
         private final Expr<?> target;
         public CountExpression(Expr<?> expr) {
@@ -35,6 +41,9 @@ public class HqlTypes {
         public Expr<?> getTarget(){ return target; }
     }
     
+    /**
+     * The Class DistinctPath.
+     */
     public static class DistinctPath<T> extends Expr<T>{
         private final Path<T> path;
         @SuppressWarnings("unchecked")
@@ -45,6 +54,9 @@ public class HqlTypes {
         public Path<T> getPath(){ return path; }
     }
     
+    /**
+     * The Class SubQuery.
+     */
     public static class SubQuery<A> extends Expr<A> implements Query<SubQuery<A>>, CollectionType<A>{
         @SuppressWarnings("unchecked")
         private QueryBase<?> query = new QueryBase();

@@ -25,8 +25,8 @@ import com.mysema.query.grammar.types.PathMetadata.PathType;
 
 
 /**
- * HqlSerializer provides
- *
+ * HqlSerializer provides.
+ * 
  * @author tiwe
  * @version $Id$
  */

@@ -18,8 +18,8 @@ import com.mysema.query.grammar.types.PathMetadata;
 
 
 /**
- * QueryUtil provides
- *
+ * QueryUtil provides.
+ * 
  * @author tiwe
  * @version $Id$
  */

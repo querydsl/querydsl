@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.grammar.hql;
 
 import static com.mysema.query.grammar.Grammar.div;
@@ -30,8 +35,8 @@ import com.mysema.query.grammar.hql.HqlDomain.Payment;
 
 
 /**
- * HqlParserTest provides
- *
+ * HqlParserTest provides.
+ * 
  * @author tiwe
  * @version $Id$
  */

@@ -10,8 +10,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * SearchResults provides
- *
+ * SearchResults provides.
+ * 
  * @author Timo Westkamper
  * @version $Id$
  */

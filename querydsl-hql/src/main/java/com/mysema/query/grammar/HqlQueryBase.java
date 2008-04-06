@@ -10,8 +10,8 @@ import java.util.List;
 import com.mysema.query.QueryBase;
 
 /**
- * HqlQueryBase provides
- *
+ * HqlQueryBase provides.
+ * 
  * @author tiwe
  * @version $Id$
  */

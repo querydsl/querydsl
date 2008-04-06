@@ -17,8 +17,8 @@ import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.types.Path;
 
 /**
- * HqlQuery provides a fluent statically typed interface for creating HQL queries
- *
+ * HqlQuery provides a fluent statically typed interface for creating HQL queries.
+ * 
  * @author tiwe
  * @version $Id$
  */

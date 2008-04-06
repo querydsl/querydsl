@@ -1,10 +1,15 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.util;
 
 import org.hibernate.cfg.ImprovedNamingStrategy;
 
 /**
- * CustomNamingStrategy provides
- *
+ * CustomNamingStrategy provides.
+ * 
  * @author tiwe
  * @version $Id$
  */
