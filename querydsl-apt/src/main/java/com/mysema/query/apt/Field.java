@@ -9,13 +9,16 @@ import com.mysema.query.apt.util.TypeInfo;
 import com.sun.mirror.declaration.FieldDeclaration;
 
 /**
- * FieldDecl provides
- *
+ * FieldDecl provides.
+ * 
  * @author tiwe
  * @version $Id$
  */
 public class Field implements Comparable<Field>{
     
+    /**
+     * The Enum Type.
+     */
     public enum Type {
         BOOLEAN, 
         ENTITY, 

@@ -15,8 +15,8 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 /**
- * FreeMarkerSerializer provides
- *
+ * FreeMarkerSerializer provides.
+ * 
  * @author tiwe
  * @version $Id$
  */

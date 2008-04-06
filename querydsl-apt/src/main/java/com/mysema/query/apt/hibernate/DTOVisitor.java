@@ -14,8 +14,8 @@ import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.util.SimpleDeclarationVisitor;
 
 /**
- * DTOVisitor provides
- *
+ * DTOVisitor provides.
+ * 
  * @author tiwe
  * @version $Id$
  */

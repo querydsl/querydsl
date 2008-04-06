@@ -9,7 +9,7 @@ import com.mysema.query.apt.util.TypeInfo;
 import com.sun.mirror.declaration.ParameterDeclaration;
 
 /**
- * ParameterDecl provides
+ * ParameterDecl provides.
  * 
  * @author tiwe
  * @version $Id$

@@ -15,12 +15,10 @@ import com.sun.mirror.declaration.Modifier;
 import com.sun.mirror.util.SimpleDeclarationVisitor;
 
 /**
+ * EntityVisitor provides.
  * 
- * EntityVisitor provides
- *
  * @author tiwe
  * @version $Id$
- *
  */
 public class EntityVisitor extends SimpleDeclarationVisitor {
     public final Map<String,Type> types = new HashMap<String,Type>();

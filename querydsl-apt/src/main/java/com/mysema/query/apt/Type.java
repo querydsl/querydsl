@@ -12,12 +12,10 @@ import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;
 
 /**
+ * TypeDecl provides.
  * 
- * TypeDecl provides
- *
  * @author tiwe
  * @version $Id$
- *
  */
 public class Type implements Comparable<Type>{
         

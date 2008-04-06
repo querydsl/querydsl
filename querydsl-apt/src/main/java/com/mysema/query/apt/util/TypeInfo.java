@@ -12,8 +12,8 @@ import com.sun.mirror.type.*;
 import com.sun.mirror.util.SimpleTypeVisitor;
 
 /**
- * TypeVisitorUtil provides
- *
+ * TypeVisitorUtil provides.
+ * 
  * @author tiwe
  * @version $Id$
  */

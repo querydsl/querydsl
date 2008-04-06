@@ -27,12 +27,10 @@ import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.Declaration;
 
 /**
+ * HibernateProcessor provides.
  * 
- * HibernateProcessor provides
- *
  * @author tiwe
  * @version $Id$
- *
  */
 public class HibernateProcessor implements AnnotationProcessor {
 

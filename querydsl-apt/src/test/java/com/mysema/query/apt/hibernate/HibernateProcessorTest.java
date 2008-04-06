@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.apt.hibernate;
 
 import java.io.IOException;
@@ -13,8 +18,8 @@ import com.mysema.query.apt.*;
 import freemarker.template.TemplateException;
 
 /**
- * HibernateProcessorTest provides
- *
+ * HibernateProcessorTest provides.
+ * 
  * @author tiwe
  * @version $Id$
  */

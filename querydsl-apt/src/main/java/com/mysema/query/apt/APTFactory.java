@@ -19,12 +19,10 @@ import com.sun.mirror.apt.AnnotationProcessorFactory;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 
 /**
- * 
- * APTFactory provides
+ * APTFactory provides.
  * 
  * @author tiwe
- * @version $Id$ 
- * 
+ * @version $Id$
  */
 public class APTFactory implements AnnotationProcessorFactory {
     

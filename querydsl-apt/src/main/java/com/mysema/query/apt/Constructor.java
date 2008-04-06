@@ -12,12 +12,10 @@ import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
 
 /**
- * 
- * ConstructorDecl provides
+ * ConstructorDecl provides.
  * 
  * @author tiwe
  * @version $Id$
- * 
  */
 public class Constructor {
     private final Collection<Parameter> parameters;
