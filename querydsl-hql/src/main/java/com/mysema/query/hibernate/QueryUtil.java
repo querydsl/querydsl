@@ -30,10 +30,13 @@ public class QueryUtil {
             String key = "a"+(i+1);
             Object val = constants.get(i);            
             if (val instanceof Collection<?>){
+                // NOTE : parameter types should be given explicitly
                 query.setParameterList(key,(Collection<?>)val);
             }else if (val.getClass().isArray()){
+                // NOTE : parameter types should be given explicitly
                 query.setParameterList(key,(Object[])val);
             }else{
+                // NOTE : parameter types should be given explicitly
                 query.setParameter(key,val);    
             }
         }
