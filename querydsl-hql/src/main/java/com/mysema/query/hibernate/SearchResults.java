@@ -33,10 +33,7 @@ public final class SearchResults<T> {
     }
     
     public SearchResults(List<T> results, QueryModifiers mod, long total){
-        this.limit = mod.getLimit();
-        this.offset = mod.getOffset();
-        this.total = results.size();
-        this.results = results;
+        this(results, mod.getLimit(), mod.getOffset(), total);
     }
     
     public List<T> getResults() {
