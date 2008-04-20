@@ -110,7 +110,7 @@ public class TypeInfo {
                     fieldType = Field.Type.SIMPLEMAP;
                 }
                 
-            }else if (typeName.equals("java.util.Collection")){                
+            }else if (typeName.equals("java.util.Collection") || typeName.equals("java.util.Set")){                
                 TypeInfo valueInfo = new TypeInfo(i.next());
                 fullName = valueInfo.getFullName();
                 if (valueInfo.fieldType == Field.Type.ENTITY){
