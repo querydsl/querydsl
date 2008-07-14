@@ -7,6 +7,7 @@ package com.mysema.query.grammar.types;
 
 import com.mysema.query.Query;
 import com.mysema.query.QueryBase;
+import com.mysema.query.grammar.JoinMeta;
 import com.mysema.query.grammar.OrderSpecifier;
 
 /**
@@ -59,7 +60,7 @@ public class HqlTypes {
      */
     public static class SubQuery<A> extends Expr<A> implements Query<SubQuery<A>>, CollectionType<A>{
         @SuppressWarnings("unchecked")
-        private QueryBase<?> query = new QueryBase();
+        private QueryBase<JoinMeta,?> query = new QueryBase();
         public SubQuery(Expr<A> select) {
             super(null);
             query.select(select);
@@ -67,7 +68,7 @@ public class HqlTypes {
         @SuppressWarnings("unchecked")
         public SubQuery<A> from(Entity... o) {query.from(o); return this;}
         public SubQuery<A> fullJoin(Entity<?> o) {query.fullJoin(o); return this;}
-        public QueryBase<?> getQuery(){ return query;}
+        public QueryBase<JoinMeta,?> getQuery(){ return query;}
         public SubQuery<A> groupBy(Expr<?>... o) {query.groupBy(o); return this;}
         public SubQuery<A> having(Boolean o) {query.having(o); return this;}
         public SubQuery<A> innerJoin(Entity<?> o) {query.innerJoin(o); return this;}

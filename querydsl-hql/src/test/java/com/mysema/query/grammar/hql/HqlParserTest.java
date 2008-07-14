@@ -28,6 +28,7 @@ import com.mysema.query.Domain1Dtos;
 import com.mysema.query.Domain1.Catalog;
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlQueryBase;
+import com.mysema.query.grammar.JoinMeta;
 import com.mysema.query.grammar.hql.HqlDomain.Color;
 import com.mysema.query.grammar.hql.HqlDomain.DomesticCat;
 import com.mysema.query.grammar.hql.HqlDomain.Payment;
@@ -73,7 +74,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
 //        parse( "from eg.Cat as cat join cat.mate as mate left join cat.kittens as kitten" );
         from(cat).join(cat.mate.as(mate)).leftJoin(cat.kittens.as(kitten)).parse();
 //        parse( "from eg.Cat as cat\ninner join fetch cat.mate\nleft join fetch cat.kittens" );
-        from(cat).innerJoin(cat.mate).leftJoin(cat.kittens).parse();
+        from(cat).innerJoin(cat.mate).leftJoin(JoinMeta.FETCH, cat.kittens).parse();
     }
 
     /**

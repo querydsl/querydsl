@@ -67,7 +67,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
         return constants;
     }
     
-    public void serialize(List<Expr<?>> select, List<JoinExpression> joins,
+    public void serialize(List<Expr<?>> select, List<JoinExpression<JoinMeta>> joins,
         Expr.Boolean where, List<Expr<?>> groupBy, Expr.Boolean having,
         List<OrderSpecifier<?>> orderBy, boolean forCountRow){
          if (forCountRow){
@@ -77,7 +77,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
         }
         _append("from ");
         for (int i=0; i < joins.size(); i++){
-            JoinExpression je = joins.get(i);            
+            JoinExpression<JoinMeta> je = joins.get(i);            
             if (i > 0){
                 String sep = ", ";
                     switch(je.getType()){
@@ -88,6 +88,12 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
                     }    
                 _append(sep);
             }
+            if (je.getMetadata() != null){
+                switch(je.getMetadata()){
+                case FETCH: _append("fetch "); break;
+                }
+            }
+            
             // type specifier
             if (je.getTarget() instanceof Path.Entity){
                 Path.Entity<?> pe = (Path.Entity<?>)je.getTarget();
@@ -245,7 +251,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
     }
 
     protected void visit(SubQuery<?> query) {
-        QueryBase<?>.Metadata md = query.getQuery().getMetadata();
+        QueryBase<JoinMeta,?>.Metadata md = query.getQuery().getMetadata();
         _append("(");
         serialize(md.getSelect(), md.getJoins(),
             md.getWhere(), md.getGroupBy(), md.getHaving(), 

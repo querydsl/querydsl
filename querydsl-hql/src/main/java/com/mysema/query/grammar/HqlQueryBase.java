@@ -7,7 +7,10 @@ package com.mysema.query.grammar;
 
 import java.util.List;
 
+import com.mysema.query.JoinExpression;
+import com.mysema.query.JoinType;
 import com.mysema.query.QueryBase;
+import com.mysema.query.grammar.types.Expr.Entity;
 
 /**
  * HqlQueryBase provides.
@@ -15,7 +18,7 @@ import com.mysema.query.QueryBase;
  * @author tiwe
  * @version $Id$
  */
-public class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<A>{
+public class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<JoinMeta,A>{
     
     private List<Object> constants;
     
@@ -29,6 +32,16 @@ public class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<A>{
         serializer.serialize(select, joins, where.self(), groupBy, having.self(), orderBy, forCountRow);               
         constants = serializer.getConstants();      
         return serializer.toString();
+    }
+    
+    public A innerJoin(JoinMeta meta, Entity<?> o) {
+        joins.add(new JoinExpression<JoinMeta>(JoinType.INNERJOIN, o, meta));
+        return (A) this;
+    }
+    
+    public A leftJoin(JoinMeta meta, Entity<?> o) {
+        joins.add(new JoinExpression<JoinMeta>(JoinType.LEFTJOIN, o, meta));
+        return (A) this;
     }
     
     public List<Object> getConstants() {
