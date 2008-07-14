@@ -13,14 +13,22 @@ import com.mysema.query.grammar.types.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class JoinExpression {
+public class JoinExpression<T> {
     private Expr.Boolean condition;
     private final Expr.Entity<?> target;
     private final JoinType type;
+    private final T metadata;
     
     JoinExpression(JoinType type, Expr.Entity<?> target) {
         this.type = type;
         this.target = target;
+        this.metadata = null;
+    }
+    
+    public JoinExpression(JoinType type, Expr.Entity<?> target, T metadata) {
+        this.type = type;
+        this.target = target;
+        this.metadata = metadata;
     }
     
     public Expr.Boolean getCondition() {
@@ -37,6 +45,10 @@ public class JoinExpression {
     
     public JoinType getType() {
         return type;
+    }
+
+    public T getMetadata() {
+        return metadata;
     }
     
 }

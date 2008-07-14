@@ -20,12 +20,12 @@ import static com.mysema.query.grammar.types.Expr.*;
  * @version $Id$
  */
 @SuppressWarnings("unchecked")
-public class QueryBase<A extends QueryBase<A>> implements Query<A> {
+public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Query<A> {
     protected final List<Expr<?>> groupBy = new ArrayList<Expr<?>>();
     
     protected final CascadingBoolean having = new CascadingBoolean();
     
-    protected final List<JoinExpression> joins = new ArrayList<JoinExpression>();
+    protected final List<JoinExpression<JoinMeta>> joins = new ArrayList<JoinExpression<JoinMeta>>();
     protected final List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
     protected final List<Expr<?>> select = new ArrayList<Expr<?>>();
     protected final CascadingBoolean where = new CascadingBoolean();
@@ -42,7 +42,7 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
     
     public A from(Entity<?>... o) {
         for (Entity<?> expr : o){
-            joins.add(new JoinExpression(JoinType.DEFAULT,expr));
+            joins.add(new JoinExpression<JoinMeta>(JoinType.DEFAULT,expr));
         }
         return (A) this;
     }
@@ -58,22 +58,22 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
     }
     
     public A innerJoin(Entity<?> o) {
-        joins.add(new JoinExpression(JoinType.INNERJOIN,o));
+        joins.add(new JoinExpression<JoinMeta>(JoinType.INNERJOIN,o));
         return (A) this;
     }
     
     public A fullJoin(Entity<?> o) {
-        joins.add(new JoinExpression(JoinType.FULLJOIN,o));
+        joins.add(new JoinExpression<JoinMeta>(JoinType.FULLJOIN,o));
         return (A) this;
     }
  
     public A join(Entity<?> o) {
-        joins.add(new JoinExpression(JoinType.JOIN,o));
+        joins.add(new JoinExpression<JoinMeta>(JoinType.JOIN,o));
         return (A) this;
     }
  
     public A leftJoin(Entity<?> o) {
-        joins.add(new JoinExpression(JoinType.LEFTJOIN,o));
+        joins.add(new JoinExpression<JoinMeta>(JoinType.LEFTJOIN,o));
         return (A) this;
     }
     
@@ -113,7 +113,7 @@ public class QueryBase<A extends QueryBase<A>> implements Query<A> {
         public Expr.Boolean getHaving() {
             return having.self();
         }
-        public List<JoinExpression> getJoins() {
+        public List<JoinExpression<JoinMeta>> getJoins() {
             return joins;
         }
         public List<OrderSpecifier<?>> getOrderBy() {
