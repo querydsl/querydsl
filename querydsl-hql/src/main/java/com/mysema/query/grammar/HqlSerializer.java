@@ -90,7 +90,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
             }
             if (je.getMetadata() != null){
                 switch(je.getMetadata()){
-                case FETCH: _append("fetch "); break;
+                case FETCH: if (!forCountRow) _append("fetch "); break;
                 }
             }
             
