@@ -27,45 +27,45 @@
     <module>../querydsl-hql</module>
     <module>../querydsl-sql</module>
   </modules>
-  
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.4</version>
       <scope>test</scope>
-    </dependency>  
+    </dependency>
   </dependencies>
-  
-   <developers>
-      <developer>
-         <id>tiwe</id>
-         <name>Timo Westkämper</name>
-         <email>timo.westkamper@mysema.com</email>
-         <roles>
-            <role>Project Manager</role>
-            <role>Architect</role>
-         </roles>
-       </developer>
-       <developer>
-         <id>sasa</id>
-         <name>Samppa Saarela</name>
-         <email>samppa.saarela@mysema.com</email>
-         <roles>
-            <role>Architect</role>
-         </roles>
-       </developer>
-       <developer>
-         <id>laim</id>
-         <name>Lassi Immonen</name>
-         <email>lassi.immonen@mysema.com</email>
-         <roles>
-            <role>Architect</role>
-         </roles>
-       </developer>
-   </developers>
-   
-   <distributionManagement>
+
+  <developers>
+    <developer>
+      <id>tiwe</id>
+      <name>Timo Westkämper</name>
+      <email>timo.westkamper@mysema.com</email>
+      <roles>
+        <role>Project Manager</role>
+        <role>Architect</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>sasa</id>
+      <name>Samppa Saarela</name>
+      <email>samppa.saarela@mysema.com</email>
+      <roles>
+        <role>Architect</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>laim</id>
+      <name>Lassi Immonen</name>
+      <email>lassi.immonen@mysema.com</email>
+      <roles>
+        <role>Architect</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <distributionManagement>
     <repository>
       <id>source-maven-releases</id>
       <url>scp://www.mysema.com/var/www/source/maven2/releases</url>
@@ -73,12 +73,19 @@
     <snapshotRepository>
       <uniqueVersion>false</uniqueVersion>
       <id>source-maven-snapshots</id>
-      <url>scp://www.mysema.com/var/www/source/maven2/snapshots</url>    
+      <url>scp://www.mysema.com/var/www/source/maven2/snapshots</url>
     </snapshotRepository>
     <site>
       <id>website</id>
       <url>scp://www.mysema.com/var/www/source/projects/querydsl</url>
-    </site>   
-   </distributionManagement>
-  
+    </site>
+  </distributionManagement>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+    </license>
+  </licenses>
+
 </project>
