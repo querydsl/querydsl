@@ -83,8 +83,8 @@
 
   <licenses>
     <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <name>GNU Lesser General Public License, Version 3</name>
+      <url>LICENSE.txt</url>
     </license>
   </licenses>
 
