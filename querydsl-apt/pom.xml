@@ -13,6 +13,8 @@
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-apt</artifactId>
   <name>querydsl apt</name>
+  <url>http://source.mysema.com/projects/querydsl-apt</url>
+  <description>source code generation for querydsl</description>
   <packaging>jar</packaging>
 
   <dependencies>
