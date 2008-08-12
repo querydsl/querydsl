@@ -7,12 +7,14 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>0.2.5</version>
+    <version>0.2.6</version>
   </parent>
 
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-sql</artifactId>
   <name>querydsl sql</name>
+  <url>http://source.mysema.com/projects/querydsl-sql</url>
+  <description>SQL support for querydsl</description>
   <packaging>jar</packaging>
 
 </project>
