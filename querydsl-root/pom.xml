@@ -8,7 +8,9 @@
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
   <version>0.2.6</version>
-  <name>querydsl root</name>
+  <name>querydsl</name>
+  <url>http://source.mysema.com/projects/querydsl-root</url>
+  <description>parent project for querydsl modules</description>
   <parent>
     <groupId>com.mysema</groupId>
     <artifactId>maven-parent</artifactId>
@@ -34,5 +36,40 @@
       <scope>test</scope>
     </dependency>  
   </dependencies>
-
+  
+   <developers>
+      <developer>
+         <id>tiwe</id>
+         <name>Timo Westkämper</name>
+         <email>timo.westkamper@mysema.com</email>
+         <roles>
+            <role>Project Manager</role>
+            <role>Architect</role>
+         </roles>
+       </developer>
+       <developer>
+         <id>sasa</id>
+         <name>Samppa Saarela</name>
+         <email>samppa.saarela@mysema.com</email>
+         <roles>
+            <role>Architect</role>
+         </roles>
+       </developer>
+       <developer>
+         <id>laim</id>
+         <name>Lassi Immonen</name>
+         <email>lassi.immonen@mysema.com</email>
+         <roles>
+            <role>Architect</role>
+         </roles>
+       </developer>
+   </developers>
+   
+   <distributionManagement>
+    <site>
+      <id>website</id>
+      <url>scp://www.mysema.com/var/www/source/projects/querydsl</url>
+    </site>   
+   </distributionManagement>
+  
 </project>

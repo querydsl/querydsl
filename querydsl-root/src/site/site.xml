@@ -1,0 +1,25 @@
+ <project name="querydsl">
+
+  <bannerLeft>
+    <name>querydsl</name>
+    <href>http://source.mysema.com/projects/querydsl</href>
+  </bannerLeft>
+<!-- 
+  <bannerRight>
+    <src>http://www.mysema.com/public/img/layout/header_mysema_logo.gif</src>
+  </bannerRight>
+-->   
+  <body>
+    <links>
+      <item name="Mysema" href="http://www.mysema.com"/>
+      <item name="Maven" href="http://maven.apache.org/"/>
+      <item name="Apache" href="http://www.apache.org/"/>
+    </links>
+
+    <menu ref="modules"/>
+    
+    <menu ref="reports"/>
+    
+  </body>
+
+</project>
