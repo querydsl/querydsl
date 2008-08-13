@@ -12,9 +12,9 @@
   <url>http://source.mysema.com/projects/querydsl-root</url>
   <description>parent project for querydsl modules</description>
   <parent>
-    <groupId>com.mysema</groupId>
-    <artifactId>maven-parent</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <groupId>com.mysema.home</groupId>
+    <artifactId>mysema-source</artifactId>
+    <version>0.1.0</version>
   </parent>
   <packaging>pom</packaging>
 
@@ -77,7 +77,7 @@
     </snapshotRepository>
     <site>
       <id>website</id>
-      <url>scp://www.mysema.com/var/www/source/projects/querydsl</url>
+      <url>scp://www.mysema.com/var/www/source/projects/querydsl-root</url>
     </site>
   </distributionManagement>
 

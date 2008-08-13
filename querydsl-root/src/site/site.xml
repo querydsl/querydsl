@@ -11,22 +11,13 @@
     <href>/index.html</href>
   </bannerLeft>
 
-  <bannerRight>
-    <name>Mysema</name>
-    <src>http://www.mysema.com/public/img/layout/header_mysema_logo.gif</src>
-    <href>http://www.mysema.com</href>
-  </bannerRight>
-     
   <body>
-    <links>
-      <item name="Mysema Source" href="http://source.mysema.com"/>
-      <item name="Maven" href="http://maven.apache.org/"/>
-      <item name="Apache" href="http://www.apache.org/"/>
-    </links>
-
-    <menu name="Home">
-      <item name="Project home" href="http://source.mysema.com/projects/querydsl"/>
-    </menu>
+    <breadcrumbs>
+      <item name="Projects" href="http://source.mysema.com/projects/"/>
+      <item name="querydsl" href="http://source.mysema.com/projects/querydsl-root"/>
+    </breadcrumbs>
+      
+    <menu ref="parent"/>
 
     <menu ref="modules"/>
     
