@@ -1,20 +1,32 @@
  <project name="querydsl">
-
+  
+  <skin>
+    <groupId>com.mysema.home</groupId>
+    <artifactId>mysema-source-site-skin</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </skin>
+ 
   <bannerLeft>
-    <name>querydsl</name>
-    <href>http://source.mysema.com/projects/querydsl</href>
+    <name>${project.name}</name>
+    <href>/index.html</href>
   </bannerLeft>
-<!-- 
+
   <bannerRight>
+    <name>Mysema</name>
     <src>http://www.mysema.com/public/img/layout/header_mysema_logo.gif</src>
+    <href>http://www.mysema.com</href>
   </bannerRight>
--->   
+     
   <body>
     <links>
       <item name="Mysema Source" href="http://source.mysema.com"/>
       <item name="Maven" href="http://maven.apache.org/"/>
       <item name="Apache" href="http://www.apache.org/"/>
     </links>
+
+    <menu name="Home">
+      <item name="Project home" href="http://source.mysema.com/projects/querydsl"/>
+    </menu>
 
     <menu ref="modules"/>
     
