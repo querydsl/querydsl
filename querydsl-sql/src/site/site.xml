@@ -1,6 +1,10 @@
  <project>
   
   <body>      
+    <breadcrumbs>
+      <item name="querydsl-sql" href="../querydsl-sql"/>
+    </breadcrumbs>  
+      
     <menu ref="parent"/> 
     <menu name="User docs">
       <item name="Getting started" href="getting-started.html"/>
