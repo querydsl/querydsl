@@ -1,7 +1,9 @@
-<project>
+<project name="querydsl-apt">
   <body>
     <breadcrumbs>
-      <item name="querydsl-apt" href="../querydsl-apt"/>
+      <item name="querydsl-apt" href="${project.url}"/>
     </breadcrumbs>
+    <menu ref="parent"/>    
+    <menu ref="reports"/>    
   </body>
 </project>
