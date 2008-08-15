@@ -14,13 +14,11 @@
   <body>
     <breadcrumbs>
       <item name="Projects" href="../../projects/"/>
-      <item name="querydsl" href="../querydsl-root/"/>
+      <item name="querydsl" href="${project.url}"/>
     </breadcrumbs>
       
     <menu ref="parent"/>
-
-    <menu ref="modules"/>
-    
+    <menu ref="modules"/>    
     <menu ref="reports"/>
     
   </body>
