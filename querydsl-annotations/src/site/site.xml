@@ -1,7 +1,9 @@
-<project>
+<project name="querydsl-annotations">
   <body>
     <breadcrumbs>
-      <item name="querydsl-annoations" href="../querydsl-annotations"/>
+      <item name="querydsl-annoations" href="${project.url}"/>
     </breadcrumbs>
+    <menu ref="parent"/>    
+    <menu ref="reports"/>
   </body>
 </project>
