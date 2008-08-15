@@ -4,7 +4,7 @@
     <title>querydsl</title>
   </properties>
   <body>
-    <section name="Intro">
+    <section name="Writing queries safely">
       <p>
       querydsl is a framework which enables the construction of statically typed SQL-like queries. 
       Instead of writing queries as inline strings or externalizing them into XML files they can be constructed via a 
