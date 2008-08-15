@@ -1,0 +1,7 @@
+<project>
+  <body>
+    <breadcrumbs>
+      <item name="querydsl-annoations" href="../querydsl-annotations"/>
+    </breadcrumbs>
+  </body>
+</project>
