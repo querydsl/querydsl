@@ -92,8 +92,8 @@
   </licenses>
   
    <scm>
-    <connection>scm:svn:https://source.mysema.com/svn/projects/querydsl/trunk</connection>
-    <developerConnection>scm:svn:https://source.mysema.com/svn/projects/querydsl/trunk</developerConnection>
+    <connection>scm:svn:https://source.mysema.com/svn/mysema/projects/querydsl/trunk/${project.artifactId}</connection>
+    <developerConnection>scm:svn:https://source.mysema.com/svn/mysema/projects/querydsl/trunk/${project.artifactId}</developerConnection>
   </scm>
   
 </project>
