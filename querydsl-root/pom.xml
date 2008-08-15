@@ -42,6 +42,8 @@
       <id>tiwe</id>
       <name>Timo Westkämper</name>
       <email>timo.westkamper@mysema.com</email>
+      <organization>Mysema Ltd</organization>
+      </organization>
       <roles>
         <role>Project Manager</role>
         <role>Architect</role>
@@ -51,6 +53,7 @@
       <id>sasa</id>
       <name>Samppa Saarela</name>
       <email>samppa.saarela@mysema.com</email>
+      <organization>Mysema Ltd</organization>
       <roles>
         <role>Architect</role>
       </roles>
@@ -59,6 +62,7 @@
       <id>laim</id>
       <name>Lassi Immonen</name>
       <email>lassi.immonen@mysema.com</email>
+      <organization>Mysema Ltd</organization>
       <roles>
         <role>Architect</role>
       </roles>
