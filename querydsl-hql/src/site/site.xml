@@ -1,0 +1,11 @@
+ <project>
+  
+  <body>      
+    <menu ref="parent"/> 
+    <menu name="User docs">
+      <item name="Getting started" href="getting-started.html"/>
+    </menu>   
+    <menu ref="reports"/>    
+  </body>
+
+</project>
