@@ -43,7 +43,6 @@
       <name>Timo Westkämper</name>
       <email>timo.westkamper@mysema.com</email>
       <organization>Mysema Ltd</organization>
-      </organization>
       <roles>
         <role>Project Manager</role>
         <role>Architect</role>
@@ -91,5 +90,10 @@
       <url>LICENSE.txt</url>
     </license>
   </licenses>
-
+  
+   <scm>
+    <connection>scm:svn:https://source.mysema.com/svn/projects/querydsl/trunk</connection>
+    <developerConnection>scm:svn:https://source.mysema.com/svn/projects/querydsl/trunk</developerConnection>
+  </scm>
+  
 </project>
