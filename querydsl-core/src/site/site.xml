@@ -1,6 +1,10 @@
  <project>
   
-  <body>      
+  <body>
+    <breadcrumbs>
+      <item name="querydsl-core" href="../querydsl-core"/>
+    </breadcrumbs>  
+        
     <menu ref="parent"/> 
     <menu name="User docs">
       <item name="Grammar features" href="grammar-features.html"/>
