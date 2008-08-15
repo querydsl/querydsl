@@ -13,8 +13,8 @@
 
   <body>
     <breadcrumbs>
-      <item name="Projects" href="http://source.mysema.com/projects/"/>
-      <item name="querydsl" href="http://source.mysema.com/projects/querydsl-root"/>
+      <item name="Projects" href="../../projects/"/>
+      <item name="querydsl" href="../querydsl-root/"/>
     </breadcrumbs>
       
     <menu ref="parent"/>
