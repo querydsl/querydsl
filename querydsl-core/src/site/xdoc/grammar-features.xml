@@ -1,0 +1,38 @@
+<document>
+  <properties>
+    <author email="timo@mysema.com">Timo Westkämper</author>
+    <title>Grammar Features</title>
+  </properties>
+  <body>
+   
+   <section name="Grammar Features">
+     <subsection name="Arithmetic operations">
+       <p>Arithmetic operations (add, sub, div, mult etc) are accessible in functional way (can be accessed as static methods from the main Grammar class)</p>
+     </subsection>
+
+     <subsection name="Boolean operations">
+       <p>Boolean operations (add, or, xor, xnor) can be applied to all BooleanExpr objects</p>
+     </subsection>
+
+     <subsection name="Equals and not equals">
+       <p>Equality checks (eq, ne) can be applied to all expressions</p>
+     </subsection>       
+              
+     <subsection name="Null checks">
+       <p>Null checks can be applied to all path expressions</p>
+     </subsection> 
+
+     <subsection name="Simple alias for non-entity paths">
+       <p>All non-entity property paths provide a as (alias) method with a String argument</p>
+     </subsection>
+       
+     <subsection name="String operations">
+       <p>String operations (lower, upper, substring) can be applied to all String expressions.</p>
+     </subsection>
+   </section>
+   
+  </body>
+</document> 
+
+
+
