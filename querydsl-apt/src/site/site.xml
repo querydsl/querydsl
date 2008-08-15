@@ -1,0 +1,7 @@
+<project>
+  <body>
+    <breadcrumbs>
+      <item name="querydsl-apt" href="../querydsl-apt"/>
+    </breadcrumbs>
+  </body>
+</project>
