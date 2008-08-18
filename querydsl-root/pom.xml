@@ -71,16 +71,16 @@
   <distributionManagement>
     <repository>
       <id>source-maven-releases</id>
-      <url>scp://www.mysema.com/var/www/source/maven2/releases</url>
+      <url>scp://source.mysema.com/var/www/source/maven2/releases</url>
     </repository>
     <snapshotRepository>
       <uniqueVersion>false</uniqueVersion>
       <id>source-maven-snapshots</id>
-      <url>scp://www.mysema.com/var/www/source/maven2/snapshots</url>
+      <url>scp://source.mysema.com/var/www/source/maven2/snapshots</url>
     </snapshotRepository>
     <site>
       <id>website</id>
-      <url>scp://www.mysema.com/var/www/source/projects/querydsl-root</url>
+      <url>scp://source.mysema.com/var/www/source/projects/querydsl-root</url>
     </site>
   </distributionManagement>
 
@@ -91,9 +91,16 @@
     </license>
   </licenses>
   
+  <properties>
+    <svn.path>scm:svn:https://source.mysema.com/svn/mysema</svn.path>
+    <viewvc.path>http://source.mysema.com/viewvc/mysema</viewvc.path>
+    <path.suffix>projects/querydsl/trunk/${project.artifactId}</path.suffix>
+  </properties>
+  
    <scm>
-    <connection>scm:svn:https://source.mysema.com/svn/mysema/projects/querydsl/trunk/${project.artifactId}</connection>
-    <developerConnection>scm:svn:https://source.mysema.com/svn/mysema/projects/querydsl/trunk/${project.artifactId}</developerConnection>
+    <connection>${svn.path}/${path.suffix}</connection>
+    <developerConnection>${svn.path}/${path.suffix}</developerConnection>
+    <url>${viewvc.path}/${path.suffix}</url>
   </scm>
   
 </project>
