@@ -1,0 +1,21 @@
+<document>
+  <properties>
+    <author email="timo@mysema.com">Timo Westkämper</author>
+    <title>Getting started</title>
+  </properties>
+  <body>  
+    
+    <section name="Getting started">
+      TODO
+
+    <subsection name="HQL">
+    TODO
+    </subsection>
+    
+    <subsection name="SQL">
+    TODO
+    </subsection>
+    </section>
+  
+  </body>
+</document>

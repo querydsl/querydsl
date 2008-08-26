@@ -4,11 +4,11 @@
     <title>querydsl</title>
   </properties>
   <body>
-    <section name="Introduction">
+    <section name="querydsl">
       <p>
       querydsl is a framework which enables the construction of statically typed SQL-like queries. 
       Instead of writing queries as inline strings or externalizing them into XML files they can be constructed via a 
-      <a href="http://www.martinfowler.com/bliki/FluentInterface.html">fluent</a> API.
+      <a href="http://www.martinfowler.com/bliki/FluentInterface.html">fluent</a> API using this API.
       </p>
       
       <p>
@@ -21,26 +21,6 @@
       </ul>
       </p>
     </section>
-    
-    <section name="Modules">
-      <p>
-      querydsl is based on various modules with different purposes. The modules are
-      <ul>
-        <li><a href="../querydsl-core">querydsl-core</a> with the basic constructs used in various query language specific versions of the API</li>
-        <li><a href="../querydsl-annotations">querydsl-annotations</a> with Java annotations for domain and DTO types</li>
-        <li><a href="../querydsl-apt">querydsl-apt</a> for code generation via <a href="http://java.sun.com/j2se/1.5.0/docs/guide/apt/GettingStarted.html">APT</a></li>
-        <li><a href="../querydsl-hql">querydsl-hql</a> as a fluent API for <a href="http://www.hibernate.org/hib_docs/reference/en/html/queryhql.html">Hibernate HQL</a></li>
-        <li><a href="../querydsl-sql">querydsl-sql</a> as a fluent API for SQL</li>
-      </ul>
-      </p>
-    </section>
-    
-    <section name="Getting started">
-      <p>
-       Read the Getting started guides of <a href="../querydsl-hql/getting-started.html">querydsl-hql</a> 
-       if HQL is your target language or <a href="../querydsl-sql/getting-started.html">querydsl-sql</a> for SQL.
-      </p>
-    </section>
-  
+     
   </body>
 </document>

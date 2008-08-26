@@ -1,7 +1,7 @@
  <project name="querydsl">
   
   <bannerLeft>
-    <src>/images/logos/mysema-source_logo.gif</src>
+    <src>/images/logos/header_mysema_logo.png</src>
     <href>http://source.mysema.com</href>  
   </bannerLeft>
  
@@ -11,6 +11,13 @@
   </bannerRight>  
   
   <body>      
+    <menu name="Documentation">
+      <item name="Getting started" href="/getting-started.html"/>
+      <item name="Modules" href="/modules.html"/>
+    </menu>
+    <menu name="Download">
+      <item name="Binaries" href="http://source.mysema.com/maven2/releases/com/mysema/querydsl/"/>
+    </menu>
     <menu ref="modules"/>    
     <menu ref="reports"/>
     

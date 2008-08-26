@@ -1,0 +1,22 @@
+<document>
+  <properties>
+    <author email="timo@mysema.com">Timo Westkämper</author>
+    <title>Modules</title>
+  </properties>
+  <body>
+    
+    <section name="Modules">
+      <p>
+      querydsl is based on various modules with different purposes. The modules are
+      <ul>
+        <li><a href="../querydsl-core">querydsl-core</a> with the basic constructs used in various query language specific versions of the API</li>
+        <li><a href="../querydsl-annotations">querydsl-annotations</a> with Java annotations for domain and DTO types</li>
+        <li><a href="../querydsl-apt">querydsl-apt</a> for code generation via <a href="http://java.sun.com/j2se/1.5.0/docs/guide/apt/GettingStarted.html">APT</a></li>
+        <li><a href="../querydsl-hql">querydsl-hql</a> as a fluent API for <a href="http://www.hibernate.org/hib_docs/reference/en/html/queryhql.html">Hibernate HQL</a></li>
+        <li><a href="../querydsl-sql">querydsl-sql</a> as a fluent API for SQL</li>
+      </ul>
+      </p>
+    </section>
+    
+  </body>
+</document>
