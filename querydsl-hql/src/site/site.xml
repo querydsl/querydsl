@@ -1,0 +1,18 @@
+ <project name="querydsl-core">
+
+  <bannerLeft>
+    <src>/images/logos/header_mysema_logo.png</src>
+    <href>http://source.mysema.com</href>  
+  </bannerLeft>
+ 
+  <bannerRight>
+    <name>${project.name}</name>
+    <href>/index.html</href>
+  </bannerRight>
+  
+  <body>
+    <menu ref="parent"/>    
+    <menu ref="reports"/>             
+  </body>
+
+</project>
