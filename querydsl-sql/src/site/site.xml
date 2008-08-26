@@ -1,14 +1,18 @@
  <project name="querydsl-sql">
+
+  <bannerLeft>
+    <src>/images/logos/header_mysema_logo.png</src>
+    <href>http://source.mysema.com</href>  
+  </bannerLeft>
+ 
+  <bannerRight>
+    <name>${project.name}</name>
+    <href>/index.html</href>
+  </bannerRight>
   
-  <body>      
-    <breadcrumbs>
-      <item name="querydsl-sql" href="${project.url}"/>
-    </breadcrumbs>  
+  <body>       
     <menu ref="parent"/>    
-    <menu ref="reports"/>       
-    <menu name="User docs">
-      <item name="Getting started" href="getting-started.html"/>
-    </menu>       
+    <menu ref="reports"/>             
   </body>
 
 </project>
