@@ -1,23 +1,16 @@
  <project name="querydsl">
   
-  <skin>
-    <groupId>com.mysema.home</groupId>
-    <artifactId>mysema-source-site-skin</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-  </skin>
- 
   <bannerLeft>
+    <src>/images/logos/mysema-source_logo.gif</src>
+    <href>http://source.mysema.com</href>  
+  </bannerLeft>
+ 
+  <bannerRight>
     <name>${project.name}</name>
     <href>/index.html</href>
-  </bannerLeft>
-
-  <body>
-    <breadcrumbs>
-      <item name="Projects" href="../../projects/"/>
-      <item name="querydsl" href="${project.url}"/>
-    </breadcrumbs>
-      
-    <menu ref="parent"/>
+  </bannerRight>  
+  
+  <body>      
     <menu ref="modules"/>    
     <menu ref="reports"/>
     
