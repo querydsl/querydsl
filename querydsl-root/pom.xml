@@ -102,5 +102,28 @@
     <developerConnection>${svn.path}/${path.suffix}</developerConnection>
     <url>${viewvc.path}/${path.suffix}</url>
   </scm>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>junit-report-maven-plugin</artifactId>
+        <version>devel</version>
+        <configuration>
+          <testFailureIgnore>true</testFailureIgnore>
+        </configuration>
+      </plugin>      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <configuration>
+          <aggregate>true</aggregate>
+        </configuration>
+      </plugin>
+    </plugins>    
+  </reporting>  
   
 </project>

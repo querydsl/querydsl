@@ -88,7 +88,12 @@
       </p>
       
       <p>
-      For more insight on how to use the querydsl API visit the API docs of the querydsl-core and querydsl-hql modules or contact us.
+      For more examples on how to use the querydsl API visit the API docs of the querydsl-core and querydsl-hql modules 
+      or look through the examples in the <a href="xref/index.html">source code</a>.
+      </p>
+      
+      <p>
+      Feel also free to contact us if you need any help.      
       </p>
     </section>
   
