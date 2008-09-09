@@ -12,6 +12,7 @@
   
   <body>      
     <menu name="Documentation">
+      <item name="Overview" href="/index.html"/>
       <item name="Getting started" href="/getting-started.html"/>
       <item name="Modules" href="/modules.html"/>
     </menu>

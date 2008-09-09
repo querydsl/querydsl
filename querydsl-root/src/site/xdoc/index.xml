@@ -6,9 +6,10 @@
   <body>
     <section name="querydsl">
       <p>
-      querydsl is a framework which enables the construction of statically typed SQL-like queries. 
+      querydsl (spell: querydiesel) is a framework which enables the construction of statically typed SQL-like queries. 
       Instead of writing queries as inline strings or externalizing them into XML files they can be constructed via a 
-      <a href="http://www.martinfowler.com/bliki/FluentInterface.html">fluent</a> API using this API.
+      <a href="http://www.martinfowler.com/bliki/FluentInterface.html">fluent</a> 
+      <a href="http://www.martinfowler.com/bliki/DomainSpecificLanguage.html">DSL</a>/API like querydsl.
       </p>
       
       <p>
@@ -19,6 +20,25 @@
         <li>domain types and properties can be referenced safely</li>
         <li>adopts better to refactoring changes in domain types</li>        
       </ul>
+      </p>
+
+      <p>
+      Here a quick example for the impatient ones :
+<source>
+    public SearchResults&lt;Bookmark&gt; findBookmarksWithTags(String[] tagNames,
+            QueryModifiers mod) {
+        return select(distinct(bookmark)).from(bookmark)
+                .innerJoin(FETCH, bookmark.address)
+                .innerJoin(bookmark.tags.as(tag1))
+                .where(tag1.name.in(tagNames))
+            .orderBy(bookmark.created.desc()).restrict(mod).listResults();
+    }
+</source>      
+      </p>
+      
+      <p>
+      More examples of Hibernate queries and their querydsl equivalents can be found 
+      <a href="xref-test/com/mysema/query/grammar/hql/HqlParserTest.html">here</a>.
       </p>
     </section>
      
