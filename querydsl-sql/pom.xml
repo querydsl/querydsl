@@ -12,7 +12,7 @@
 
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-sql</artifactId>
-  <name>querydsl sql</name>
+  <name>Querydsl sql</name>
   <url>http://source.mysema.com/projects/querydsl-sql</url>
   <description>SQL support for querydsl</description>
   <packaging>jar</packaging>
