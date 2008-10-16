@@ -12,7 +12,7 @@
 
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-annotations</artifactId>
-  <name>querydsl annotations</name>
+  <name>Querydsl annotations</name>
   <url>http://source.mysema.com/projects/querydsl-annotations</url>
   <description>annotations for querydsl</description>
   <packaging>jar</packaging>
