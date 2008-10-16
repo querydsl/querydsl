@@ -1,15 +1,15 @@
 <document>
   <properties>
     <author email="timo@mysema.com">Timo Westkämper</author>
-    <title>querydsl</title>
+    <title>Querydsl</title>
   </properties>
   <body>
-    <section name="querydsl">
+    <section name="Querydsl">
       <p>
-      querydsl (spell: querydiesel) is a framework which enables the construction of statically typed SQL-like queries. 
+      Querydsl (spell: query diesel) is a framework which enables the construction of statically typed SQL-like queries. 
       Instead of writing queries as inline strings or externalizing them into XML files they can be constructed via a 
       <a href="http://www.martinfowler.com/bliki/FluentInterface.html">fluent</a> 
-      <a href="http://www.martinfowler.com/bliki/DomainSpecificLanguage.html">DSL</a>/API like querydsl.
+      <a href="http://www.martinfowler.com/bliki/DomainSpecificLanguage.html">DSL</a>/API like Querydsl.
       </p>
       
       <p>
@@ -25,15 +25,25 @@
       <p>
       Here a quick example for the impatient ones :
 <source>
-    public SearchResults&lt;Bookmark&gt; findBookmarksWithTags(String[] tagNames,
+    <span style="font-weight:bold;">public</span> SearchResults&lt;Bookmark&gt; findBookmarksWithTags(String[] tagNames,
             QueryModifiers mod) {
-        return select(distinct(bookmark)).from(bookmark)
-                .innerJoin(FETCH, bookmark.address)
-                .innerJoin(bookmark.tags.as(tag1))
-                .where(tag1.name.in(tagNames))
-            .orderBy(bookmark.created.desc()).restrict(mod).listResults();
+        <span style="font-weight:bold;">return</span> select(distinct(<span style="color:blue;">bookmark</span>)).from(<span style="color:blue;">bookmark</span>)
+                .innerJoin(<span style="color:blue;">FETCH</span>, <span style="color:blue;">bookmark.address</span>)
+                .innerJoin(<span style="color:blue;">bookmark.tags</span>.as(<span style="color:blue;">tag1</span>))
+                .where(<span style="color:blue;">tag1.name</span>.in(tagNames))
+            .orderBy(<span style="color:blue;">bookmark.created</span>.desc()).restrict(mod).listResults();
     }
 </source>      
+     which represents the followoing HQL query
+     
+<source>
+  select distinct bookmark from Bookmark bookmark
+  inner join fetch bookmark.address
+  inner join bookmark.tags as tag1
+  where tag1.name in :tagNames
+  oirder by bookmark.created desc
+</source>     
+      
       </p>
       
       <p>
