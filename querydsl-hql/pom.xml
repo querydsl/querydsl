@@ -12,7 +12,7 @@
 
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-hql</artifactId>
-  <name>querydsl hql</name>
+  <name>Querydsl hql</name>
   <url>http://source.mysema.com/projects/querydsl-hql</url>
   <description>Hibernate / HQL support for querydsl</description>
   <packaging>jar</packaging>
