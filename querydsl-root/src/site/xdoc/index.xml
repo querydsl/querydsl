@@ -41,13 +41,13 @@
   inner join fetch bookmark.address
   inner join bookmark.tags as tag1
   where tag1.name in :tagNames
-  oirder by bookmark.created desc
+  order by bookmark.created desc
 </source>     
       
       </p>
       
       <p>
-      More examples of Hibernate queries and their querydsl equivalents can be found 
+      More examples of Hibernate queries and their Querydsl equivalents can be found 
       <a href="xref-test/com/mysema/query/grammar/hql/HqlParserTest.html">here</a>.
       </p>
     </section>

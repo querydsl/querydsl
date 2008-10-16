@@ -7,9 +7,9 @@
     
     <section name="Getting started">
       <p>
-      The basic steps to get querydsl working in your project are the following :
+      The basic steps to get Querydsl working in your project are the following :
       <ul>
-        <li>Add the main querydsl dependencies into your project pom : querydsl-hql (default scope) and querydsl-apt (provided scope)</li>
+        <li>Add the main Querydsl dependencies into your project pom : querydsl-hql (default scope) and querydsl-apt (provided scope)</li>
 
         <li>Add the following plugin configuration
 <source>        
@@ -44,13 +44,13 @@
         &lt;/executions&gt;
       &lt;/plugin&gt;
 </source>      
-        The APT-plugin generates querydsl domain types into the class specified after -AdestClass= and querydsl DTO types
+        The APT-plugin generates Querydsl domain types into the class specified after -AdestClass= and Querydsl DTO types
         into -AdtoClass=. DTO types in your project domain need to be annotated with com.mysema.query.annotations.DTO and 
         for project domain types standard Hibernate annotations are used.        
         </li>        
 
         <li>
-        You can now create querydsl domain type instances like this :
+        You can now create Querydsl domain type instances like this :
 
 <source>
     protected final Domain.Address address = new Domain.Address("address");
@@ -88,7 +88,7 @@
       </p>
       
       <p>
-      For more examples on how to use the querydsl API visit the API docs of the querydsl-core and querydsl-hql modules 
+      For more examples on how to use the Querydsl API visit the API docs of the querydsl-core and querydsl-hql modules 
       or look through the examples in the <a href="xref/index.html">source code</a>.
       </p>
       
