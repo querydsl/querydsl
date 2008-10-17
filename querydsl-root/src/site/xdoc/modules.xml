@@ -7,7 +7,7 @@
     
     <section name="Modules">
       <p>
-      querydsl is based on various modules with different purposes. The modules are
+      Querydsl is based on various modules with different purposes. The modules are
       <ul>
         <li><a href="../querydsl-core">querydsl-core</a> with the basic constructs used in various query language specific versions of the API</li>
         <li><a href="../querydsl-annotations">querydsl-annotations</a> with Java annotations for domain and DTO types</li>
