@@ -82,10 +82,10 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visito
     protected void visit(Path.EntityMap<?,?> expr) {
         visit((Path.Map<?,?>) expr);
     }
-    @Override
-    protected void visit(Path.RenamableEntity<?> expr) {
-        visit((Path.Entity<?>) expr);
-    }
+//    @Override
+//    protected void visit(Path.RenamableEntity<?> expr) {
+//        visit((Path.Entity<?>) expr);
+//    }
     protected void visit(Path.Map<?,?> expr){
         visit((Path<?>) expr);
     }

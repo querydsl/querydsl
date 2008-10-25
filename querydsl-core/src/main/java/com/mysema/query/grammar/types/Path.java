@@ -124,7 +124,7 @@ public interface Path<C> {
      * The Class Entity.
      */
     public static class Entity<D> extends Expr.Entity<D> implements Path<D>{
-        private final PathMetadata<?> metadata;        
+        private final PathMetadata<?> metadata;          
         public Entity(Class<D> type, java.lang.String localName) {
             super(type);
             metadata = forVariable(localName);
@@ -139,8 +139,8 @@ public interface Path<C> {
         protected <A extends java.lang.Comparable<A>> Path.Comparable<A> _comparable(java.lang.String path,Class<A> type) {
             return new Path.Comparable<A>(type, forProperty(this, path));
         }
-        protected <A> RenamableEntity<A> _entity(java.lang.String path, Class<A> type){
-            return new RenamableEntity<A>(type, forProperty(this, path)); 
+        protected <A> Path.Entity<A> _entity(java.lang.String path, Class<A> type){
+            return new Path.Entity<A>(type, forProperty(this, path)); 
         }        
         protected <A> EntityCollection<A> _entitycol(java.lang.String path,Class<A> type) {
             return new EntityCollection<A>(type, forProperty(this, path));
@@ -164,6 +164,7 @@ public interface Path<C> {
             return new Path.String(forProperty(this, path));
         }
         public PathMetadata<?> getMetadata() {return metadata;}
+        public Alias.Entity<D> as(Path.Entity<D> to) {return IntGrammar.as(this, to);}
         public Expr.Boolean in(CollectionType<D> right){return IntGrammar.in(this, right);}
         public Expr.Boolean isnotnull() {return IntGrammar.isnotnull(this);}
         public Expr.Boolean isnull() {return IntGrammar.isnull(this);}
@@ -251,13 +252,13 @@ public interface Path<C> {
         Class<V> getValueType();
     }
     
-    /**
-     * The Class RenamableEntity.
-     */
-    public static class RenamableEntity<D> extends Entity<D>{
-        protected RenamableEntity(Class<D> type, PathMetadata<?> metadata) {super(type, metadata);}
-        public Alias.Entity<D> as(Path.Entity<D> to) {return IntGrammar.as(this, to);}
-    }
+//    /**
+//     * The Class RenamableEntity.
+//     */
+//    public static class RenamableEntity<D> extends Entity<D>{
+//        protected RenamableEntity(Class<D> type, PathMetadata<?> metadata) {super(type, metadata);}
+//        public Alias.Entity<D> as(Path.Entity<D> to) {return IntGrammar.as(this, to);}
+//    }
         
     /**
      * The Class Simple.

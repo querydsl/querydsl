@@ -101,7 +101,7 @@ public abstract class Visitor<T extends Visitor<T>> {
     
     protected abstract void visit(Path.EntityMap<?,?> expr);
     
-    protected abstract void visit(Path.RenamableEntity<?> expr);
+//    protected abstract void visit(Path.RenamableEntity<?> expr);
 
     protected abstract void visit(Path.Simple<?> expr);
     
