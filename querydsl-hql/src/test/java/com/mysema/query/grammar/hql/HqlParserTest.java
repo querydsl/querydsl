@@ -68,7 +68,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
 //        parse( "from eg.Cat as cat inner join cat.mate as mate left outer join cat.kittens as kitten" );
         from(cat).innerJoin(cat.mate.as(mate)).leftJoin(cat.kittens.as(kitten)).parse();
 //        parse( "from eg.Cat as cat left join cat.mate.kittens as kittens" );
-        from(cat).leftJoin(cat.mate().kittens.as(kittens)).parse();
+        from(cat).leftJoin(cat.mate.kittens.as(kittens)).parse();
 //        parse( "from Formula form full join form.parameter param" );
         from(form).fullJoin(form.parameter.as(param)).parse();
 //        parse( "from eg.Cat as cat join cat.mate as mate left join cat.kittens as kitten" );
@@ -91,7 +91,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
 //        parse( "select cat.name from eg.DomesticCat cat where cat.name like 'fri%'" );
         select(cat.name).from(cat).where(cat.name.like("fri%")).parse();
 //        parse( "select cust.name.firstName from Customer as cust" );
-        select(cust.name().firstName).from(cust).parse();
+        select(cust.name.firstName).from(cust).parse();
 //        parse( "select mother, offspr, mate.name from eg.DomesticCat\n"
 //                + " as mother inner join mother.mate as mate left outer join\n"
 //                + "mother.kittens as offspr" );
@@ -145,6 +145,9 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
      */
     @Test
     public void testDocoExamples97() throws Exception {
+        // init deep path        
+        account._owner()._id();
+        
 //        parse( "from eg.Cat as cat where cat.name='Fritz'" );
         from(cat).where(cat.name.like("Fritz")).parse();
 //        parse( "select foo\n"
@@ -152,7 +155,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
 //                + "where foo.startDate = bar.date\n" );
         select(foo).from(foo, bar).where(foo.startDate.eq(bar.date)).parse();
 //        parse( "from eg.Cat cat where cat.mate.name is not null" );
-        from(cat).where(cat.mate().name.isnotnull()).parse();
+        from(cat).where(cat.mate.name.isnotnull()).parse();
 //        parse( "from eg.Cat cat, eg.Cat rival where cat.mate = rival.mate" );
         from(cat, rival).where(cat.mate.eq(rival.mate)).parse();
 //        parse( "select cat, mate\n"
@@ -162,20 +165,20 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
 //        parse( "from eg.Cat as cat where cat.id = 123" );
         from(cat).where(cat.id.eq(123)).parse();
 //        parse( "from eg.Cat as cat where cat.mate.id = 69" );
-        from(cat).where(cat.mate().id.eq(69)).parse();
+        from(cat).where(cat.mate.id.eq(69)).parse();
 //        parse( "from bank.Person person\n"
 //                + "where person.id.country = 'AU'\n"
 //                + "and person.id.medicareNumber = 123456" );
-        from(person).where(person.id().country.eq("AU").and(person.id().medicareNumber.eq(123456))).parse();
+        from(person).where(person.id.country.eq("AU").and(person.id.medicareNumber.eq(123456))).parse();
 //        parse( "from bank.Account account\n"
 //                + "where account.owner.id.country = 'AU'\n"
 //                + "and account.owner.id.medicareNumber = 123456" );
-        from(account).where(account.owner().id().medicareNumber.eq(123456)).parse();
+        from(account).where(account.owner.id.medicareNumber.eq(123456)).parse();
 //        parse( "from eg.Cat cat where cat.class = eg.DomesticCat" );
         from(cat).where(cat.typeOf(DomesticCat.class)).parse();
 //        parse( "from eg.AuditLog log, eg.Payment payment\n"
 //                + "where log.item.class = 'eg.Payment' and log.item.id = payment.id" );
-        from(log, payment).where(log.item.typeOf(Payment.class).and(log.item().id.eq(payment.id))).parse();
+        from(log, payment).where(log.item.typeOf(Payment.class).and(log.item.id.eq(payment.id))).parse();
     }
 
     /**
@@ -184,6 +187,9 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
     @Test
     
     public void testDocoExamples98() throws Exception {
+        // init deep path
+        person._nationality()._calendar();
+        
 //        parse( "from eg.DomesticCat cat where cat.name between 'A' and 'B'" );
         from(cat).where(cat.name.between("A", "B")).parse();
 //        parse( "from eg.DomesticCat cat where cat.name in ( 'Foo', 'Bar', 'Baz' )" );
@@ -222,7 +228,7 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
 //                + "and person.nationality.calendar = calendar" );
         select(person).from(person, calendar)
             .where(calendar.holidays("national holiday").eq(person.birthDay)
-            .and(person.nationality().calendar.eq(calendar))).parse();
+            .and(person.nationality.calendar.eq(calendar))).parse();
 //        parse( "select item from Item item, Order ord\n"
 //                + "where ord.items[ ord.deliveredItemIndices[0] ] = item and ord.id = 11" );
         select(item).from(item, ord).where(ord.items(ord.deliveredItemIndices(0)).eq(item).and(ord.id.eq(1l))).parse();
@@ -244,8 +250,8 @@ public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain
 //                + "and prod = all elements(cust.currentOrder.lineItems)" );
         select(cust).from(prod, store).innerJoin(store.customers.as(cust))
             .where(prod.name.eq("widget")
-            .and(store.location().name.in("Melbourne","Sydney"))
-            .and(prod.eq(all(cust.currentOrder().lineItems)))
+            .and(store.location.name.in("Melbourne","Sydney"))
+            .and(prod.eq(all(cust.currentOrder.lineItems)))
             ).parse();
         
         prod.eq(new HqlDomain.Product());

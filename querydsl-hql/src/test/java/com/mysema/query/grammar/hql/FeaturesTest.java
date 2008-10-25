@@ -52,7 +52,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         // Kitty is reused, so it should be used via one named parameter
         toString("cat.name = :a1 or cust.name.firstName = :a2 or kitten.name = :a1",
             cat.name.eq("Kitty")
-            .or(cust.name().firstName.eq("Hans"))
+            .or(cust.name.firstName.eq("Hans"))
             .or(kitten.name.eq("Kitty")));
     }
     
@@ -107,8 +107,8 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         toString("cust is null or cat is null", cust.isnull().or(cat.isnull()));
         toString("cust is null and cat is null", cust.isnull().and(cat.isnull()));
         toString("not (cust is null)", not(cust.isnull()));
-        cat.name.eq(cust.name().firstName).and(cat.bodyWeight.eq(kitten.bodyWeight));
-        cat.name.eq(cust.name().firstName).or(cat.bodyWeight.eq(kitten.bodyWeight));
+        cat.name.eq(cust.name.firstName).and(cat.bodyWeight.eq(kitten.bodyWeight));
+        cat.name.eq(cust.name.firstName).or(cat.bodyWeight.eq(kitten.bodyWeight));
     }
     
     /**
@@ -191,8 +191,8 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     
     @Test
     public void testEqualsAndNotEqualsForAllExpressions(){
-        toString("cat.name = cust.name.firstName",cat.name.eq(cust.name().firstName));        
-        toString("cat.name != cust.name.firstName",cat.name.ne(cust.name().firstName));
+        toString("cat.name = cust.name.firstName",cat.name.eq(cust.name.firstName));        
+        toString("cat.name != cust.name.firstName",cat.name.ne(cust.name.firstName));
     }
     
     @Test
@@ -285,7 +285,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     
     @Test
     public void testStringOperationsInFunctionalWay(){
-        toString("cat.name || cust.name.firstName", cat.name.concat(cust.name().firstName));
+        toString("cat.name || cust.name.firstName", cat.name.concat(cust.name.firstName));
         toString("cat.name like :a1",cat.name.like("A%"));
         toString("lower(cat.name)",cat.name.lower());
     }
@@ -307,8 +307,8 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         toString("cat.bodyWeight",cat.bodyWeight);
         toString("cat.name",cat.name);
         
-        toString("cust.name",cust.name());                     
-        toString("cust.name.firstName = :a1", cust.name().firstName.eq("Martin"));
+        toString("cust.name",cust.name);                     
+        toString("cust.name.firstName = :a1", cust.name.firstName.eq("Martin"));
         
         toString("cat.kittens as kitten", cat.kittens.as(kitten));
         
