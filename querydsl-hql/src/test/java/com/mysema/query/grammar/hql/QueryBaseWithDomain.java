@@ -1,19 +1,16 @@
-/*
- * Copyright (c) 2008 Mysema Ltd.
- * All rights reserved.
- * 
- */
 package com.mysema.query.grammar.hql;
 
-import static com.mysema.query.Domain1.*;
+import com.mysema.query.Domain1.*;
+import com.mysema.query.grammar.HqlQueryBase;
 
 /**
- * Domain1Instances provides.
- * 
+ * QueryBaseWithDomain provides
+ *
  * @author tiwe
  * @version $Id$
  */
-public interface Domain1Instances {
+public abstract class QueryBaseWithDomain<A extends QueryBaseWithDomain<A>> 
+    extends HqlQueryBase<A>{
     
     Account account = new Account("account");
     

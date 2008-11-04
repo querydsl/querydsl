@@ -27,7 +27,6 @@ import com.mysema.query.Domain1;
 import com.mysema.query.Domain1Dtos;
 import com.mysema.query.Domain1.Catalog;
 import com.mysema.query.grammar.HqlGrammar;
-import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.JoinMeta;
 import com.mysema.query.grammar.hql.HqlDomain.Color;
 import com.mysema.query.grammar.hql.HqlDomain.DomesticCat;
@@ -41,7 +40,7 @@ import com.mysema.query.grammar.hql.HqlDomain.Payment;
  * @author tiwe
  * @version $Id$
  */
-public class HqlParserTest extends HqlQueryBase<HqlParserTest> implements Domain1Instances{
+public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
     
     /**
      * Section 9.2 - from *
