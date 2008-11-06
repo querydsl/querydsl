@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.grammar.HqlQueryBase;
+import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 
 /**
@@ -22,7 +23,7 @@ import com.mysema.query.grammar.types.Path;
  * @author tiwe
  * @version $Id$
  */
-public class HqlQuery<RT> extends HqlQueryBase<HqlQuery<RT>>{
+public class HqlQuery extends HqlQueryBase<HqlQuery>{
 
     private static final Logger logger = LoggerFactory.getLogger(HqlQuery.class);
 
@@ -43,7 +44,7 @@ public class HqlQuery<RT> extends HqlQueryBase<HqlQuery<RT>>{
         return query;
     }
     
-    public HqlQuery<RT> forExample(Path.Entity<?> entity, Map<String, Object> map) {
+    public HqlQuery forExample(Path.Entity<?> entity, Map<String, Object> map) {
         select(entity).from(entity);
         try {            
             where(QueryUtil.createQBECondition(entity,map));
@@ -55,21 +56,22 @@ public class HqlQuery<RT> extends HqlQueryBase<HqlQuery<RT>>{
         }
     }
 
-    public HqlQuery<RT> limit(int limit) {
+    public HqlQuery limit(int limit) {
         this.limit = limit;
         return this;
     }
     
     @SuppressWarnings("unchecked")
-    public List<RT> list() {
+    public <RT> List<RT> selectList(Expr<RT> expr) {
+        select(expr);
         String queryString = toString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, limit, offset);
         return query.list();
-    }    
-
-
-    public SearchResults<RT> listResults() {
+    }  
+    
+    public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
+        select(expr);
         Query query = createQuery(toCountRowsString(), null, null);
         long total = (Long) query.uniqueResult();
         if (total > 0) {
@@ -85,24 +87,25 @@ public class HqlQuery<RT> extends HqlQueryBase<HqlQuery<RT>>{
             return SearchResults.emptyResults();
         }
     }
-
-    public HqlQuery<RT> offset(int offset) {
-        this.offset = offset;
-        return this;
-    }
-
-    public HqlQuery<RT> restrict(QueryModifiers mod) {
-        this.limit = mod.getLimit();
-        this.offset = mod.getOffset();
-        return this;
-    }
-
+    
     @SuppressWarnings("unchecked")
-    public RT uniqueResult() {
+    public <RT> RT unique(Expr<RT> expr) {
+        select(expr);
         String queryString = toString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, 1, null);
         return (RT)query.uniqueResult();
+    }
+
+    public HqlQuery offset(int offset) {
+        this.offset = offset;
+        return this;
+    }
+
+    public HqlQuery restrict(QueryModifiers mod) {
+        this.limit = mod.getLimit();
+        this.offset = mod.getOffset();
+        return this;
     }
 
 }

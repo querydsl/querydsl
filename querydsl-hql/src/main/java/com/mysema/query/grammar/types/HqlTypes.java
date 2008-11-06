@@ -60,10 +60,10 @@ public class HqlTypes {
      */
     public static class SubQuery<A> extends Expr<A> implements Query<SubQuery<A>>, CollectionType<A>{
         @SuppressWarnings("unchecked")
-        private QueryBase<JoinMeta,?> query = new QueryBase();
+        private QueryWithPublicSelect query = new QueryWithPublicSelect();
         public SubQuery(Expr<A> select) {
             super(null);
-            query.select(select);
+            query.s(select);
         }
         @SuppressWarnings("unchecked")
         public SubQuery<A> from(Entity... o) {query.from(o); return this;}
@@ -75,10 +75,15 @@ public class HqlTypes {
         public SubQuery<A> join(Entity<?> o) {query.join(o); return this;}
         public SubQuery<A> leftJoin(Entity<?> o) {query.leftJoin(o); return this;}
         public SubQuery<A> orderBy(OrderSpecifier<?>... o) {query.orderBy(o); return this;}
-        public SubQuery<A> select(Expr<?>... o) {query.select(o); return this;}
+        public SubQuery<A> select(Expr<?>... o) {query.s(o); return this;}
         public SubQuery<A> where(Boolean o) {query.where(o); return this;}
-        public SubQuery<A> with(Boolean o) {query.with(o); return this;}
-        
+        public SubQuery<A> with(Boolean o) {query.with(o); return this;}        
     }
-
+    
+    private static class QueryWithPublicSelect extends QueryBase<JoinMeta,QueryWithPublicSelect>{
+        public void s(Expr<?>... expr){
+            select(expr);
+        }
+    }
+    
 }
