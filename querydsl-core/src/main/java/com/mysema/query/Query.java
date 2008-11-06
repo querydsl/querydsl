@@ -17,7 +17,7 @@ import static com.mysema.query.grammar.types.Expr.*;
  * @version $Id$
  */
 public interface Query<A extends Query<A>>{
-    A select(Expr<?>... o);
+    //A select(Expr<?>... o);
     A from(Entity<?>... o);  
     @Deprecated A innerJoin(Entity<?> o);
     @Deprecated A join(Entity<?> o);

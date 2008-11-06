@@ -82,7 +82,7 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
         return (A) this;
     }
 
-    public A select(Expr<?>... o) {
+    protected A select(Expr<?>... o) {
         select.addAll(Arrays.asList(o));
         return (A) this;
     }
