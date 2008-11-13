@@ -78,6 +78,15 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
         return query.list();
     }
     
+    public <RT> List<RT[]> list(Expr<RT> expr1, Expr<RT> expr2, Expr<RT>...rest){
+        select(expr1, expr2);
+        select(rest);
+        String queryString = toString();
+        logger.debug("query : {}", queryString);
+        Query query = createQuery(queryString, limit, offset);
+        return query.list();
+    }
+    
     public <RT> SearchResults<RT> selectResults(Expr<RT> expr) {
         select(expr);
         Query query = createQuery(toCountRowsString(), null, null);
