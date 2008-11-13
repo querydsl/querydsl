@@ -70,7 +70,7 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
         return query.list();
     }  
     
-    public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
+    public <RT> SearchResults<RT> selectResults(Expr<RT> expr) {
         select(expr);
         Query query = createQuery(toCountRowsString(), null, null);
         long total = (Long) query.uniqueResult();
@@ -89,7 +89,7 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
     }
     
     @SuppressWarnings("unchecked")
-    public <RT> RT unique(Expr<RT> expr) {
+    public <RT> RT selectUnique(Expr<RT> expr) {
         select(expr);
         String queryString = toString();
         logger.debug("query : {}", queryString);
