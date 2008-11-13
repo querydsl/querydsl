@@ -34,7 +34,9 @@ import com.sun.mirror.declaration.Declaration;
  */
 public class HibernateProcessor implements AnnotationProcessor {
 
-    private final String destClass, dtoClass, include, namePrefix, targetFolder;
+    private final String destClass, destPackage, dtoClass, dtoPackage;
+    
+    private final String include, namePrefix, targetFolder;
 
     private final AnnotationProcessorEnvironment env;
 
@@ -42,7 +44,9 @@ public class HibernateProcessor implements AnnotationProcessor {
         this.env = env;
         this.targetFolder = env.getOptions().get("-s");
         this.destClass = getString(env.getOptions(), "-AdestClass=", "");
+        this.destPackage = getString(env.getOptions(), "-AdestPackage=", "");
         this.dtoClass = getString(env.getOptions(), "-AdtoClass=", "");
+        this.dtoPackage = getString(env.getOptions(), "-AdtoPackage=", ""); 
         this.include = getFileContent(env.getOptions(), "-Ainclude=", "");
         this.namePrefix = getString(env.getOptions(), "-AnamePrefix=", "");
     }
