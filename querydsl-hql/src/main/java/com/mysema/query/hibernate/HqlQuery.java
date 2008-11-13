@@ -70,6 +70,10 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
         return query.list();
     }  
     
+    public <RT> List<RT> list(Expr<RT> expr){
+        return selectList(expr);
+    }
+    
     public <RT> SearchResults<RT> selectResults(Expr<RT> expr) {
         selectList(expr);
         Query query = createQuery(toCountRowsString(), null, null);
