@@ -61,21 +61,25 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
         return this;
     }
     
-    @SuppressWarnings("unchecked")
-    public <RT> List<RT> selectList(Expr<RT> expr) {
+//    @SuppressWarnings("unchecked")
+//    public <RT> List<RT> selectList(Expr<RT> expr) {
+//        select(expr);
+//        String queryString = toString();
+//        logger.debug("query : {}", queryString);
+//        Query query = createQuery(queryString, limit, offset);
+//        return query.list();
+//    }  
+    
+    public <RT> List<RT> list(Expr<RT> expr){
         select(expr);
         String queryString = toString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, limit, offset);
         return query.list();
-    }  
-    
-    public <RT> List<RT> list(Expr<RT> expr){
-        return selectList(expr);
     }
     
     public <RT> SearchResults<RT> selectResults(Expr<RT> expr) {
-        selectList(expr);
+        select(expr);
         Query query = createQuery(toCountRowsString(), null, null);
         long total = (Long) query.uniqueResult();
         if (total > 0) {
@@ -94,7 +98,7 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
     
     @SuppressWarnings("unchecked")
     public <RT> RT selectUnique(Expr<RT> expr) {
-        selectList(expr);
+        select(expr);
         String queryString = toString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, 1, null);
