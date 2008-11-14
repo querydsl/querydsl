@@ -61,15 +61,6 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
         return this;
     }
     
-//    @SuppressWarnings("unchecked")
-//    public <RT> List<RT> selectList(Expr<RT> expr) {
-//        select(expr);
-//        String queryString = toString();
-//        logger.debug("query : {}", queryString);
-//        Query query = createQuery(queryString, limit, offset);
-//        return query.list();
-//    }  
-    
     public <RT> List<RT> list(Expr<RT> expr){
         select(expr);
         String queryString = toString();
@@ -78,7 +69,7 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
         return query.list();
     }
     
-    public <RT> List<RT[]> list(Expr<RT> expr1, Expr<RT> expr2, Expr<RT>...rest){
+    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>...rest){
         select(expr1, expr2);
         select(rest);
         String queryString = toString();
