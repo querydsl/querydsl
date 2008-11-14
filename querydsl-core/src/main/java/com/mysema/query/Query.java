@@ -17,13 +17,12 @@ import static com.mysema.query.grammar.types.Expr.*;
  * @version $Id$
  */
 public interface Query<A extends Query<A>>{
-    //A select(Expr<?>... o);
     A from(Entity<?>... o);  
-    @Deprecated A innerJoin(Entity<?> o);
-    @Deprecated A join(Entity<?> o);
-    @Deprecated A fullJoin(Entity<?> o);
-    @Deprecated A leftJoin(Entity<?> o);
-    @Deprecated A with(Expr.Boolean o);
+    A innerJoin(Entity<?> o);
+    A join(Entity<?> o);
+    A fullJoin(Entity<?> o);
+    A leftJoin(Entity<?> o);
+    A with(Expr.Boolean o);
     A where(Expr.Boolean o);
     A groupBy(Expr<?>... o);
     A having(Expr.Boolean o);
