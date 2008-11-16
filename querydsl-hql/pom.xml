@@ -84,7 +84,7 @@
         <version>1.0.15</version>
         <executions>
           <execution>
-            <id>dummy-domain</id>
+            <id>dummy-domain-into-class</id>
             <phase>generate-test-sources</phase>
             <goals>
               <goal>testExecute</goal>
@@ -102,16 +102,47 @@
               <nocompile>true</nocompile>
               <A>
                 -Ainclude=src/test/includes/instances.txt,
-                -AdestClass=com.mysema.query.Domain1,
-                -AdtoClass=com.mysema.query.Domain1Dtos
+                -AdestClass=com.mysema.query.domain1.Domain1,
+                -AdtoClass=com.mysema.query.domain1.Domain1Dtos
               </A>
               <testIncludes>
                 <testInclude>
                   com/mysema/query/grammar/hql/*.java
                 </testInclude>
               </testIncludes>
+              <showWarnings>true</showWarnings>
             </configuration>
           </execution>
+
+          <execution>
+            <id>dummy-domain-into-package</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>testExecute</goal>
+            </goals>
+            <configuration>
+              <aptSourceRoots>
+                <aptSourceRoot>src/test/java</aptSourceRoot>
+              </aptSourceRoots>
+              <force>true</force>
+              <fork>true</fork>
+              <factory>com.mysema.query.apt.APTFactory</factory>
+              <testGenerated>
+                target/generated-test-sources/java
+              </testGenerated>
+              <nocompile>true</nocompile>
+              <A>
+                -AnamePrefix=Q,
+                -AdestPackage=com.mysema.query.domain2
+              </A>
+              <testIncludes>
+                <testInclude>
+                  com/mysema/query/grammar/hql/*.java
+                </testInclude>
+              </testIncludes>
+              <showWarnings>true</showWarnings>
+            </configuration>
+          </execution>          
         </executions>
       </plugin>
     </plugins>

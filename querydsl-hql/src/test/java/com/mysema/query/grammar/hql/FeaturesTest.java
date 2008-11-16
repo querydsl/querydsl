@@ -5,10 +5,10 @@
  */
 package com.mysema.query.grammar.hql;
 
-import static com.mysema.query.Domain1.cat;
-import static com.mysema.query.Domain1.catalog;
-import static com.mysema.query.Domain1.cust;
-import static com.mysema.query.Domain1.kitten;
+import static com.mysema.query.domain1.Domain1.cat;
+import static com.mysema.query.domain1.Domain1.catalog;
+import static com.mysema.query.domain1.Domain1.cust;
+import static com.mysema.query.domain1.Domain1.kitten;
 import static com.mysema.query.grammar.Grammar.add;
 import static com.mysema.query.grammar.Grammar.div;
 import static com.mysema.query.grammar.Grammar.mult;
@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNull;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.mysema.query.Domain1;
+import com.mysema.query.domain1.Domain1;
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.HqlSerializer;

@@ -5,7 +5,7 @@
  */
 package com.mysema.query.grammar.hql;
 
-import com.mysema.query.Domain1.*;
+import com.mysema.query.domain1.Domain1.*;
 import com.mysema.query.grammar.HqlQueryBase;
 
 /**

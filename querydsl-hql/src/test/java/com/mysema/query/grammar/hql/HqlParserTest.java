@@ -23,9 +23,9 @@ import antlr.RecognitionException;
 import antlr.TokenStreamException;
 import antlr.collections.AST;
 
-import com.mysema.query.Domain1;
-import com.mysema.query.Domain1Dtos;
-import com.mysema.query.Domain1.Catalog;
+import com.mysema.query.domain1.Domain1;
+import com.mysema.query.domain1.Domain1Dtos;
+import com.mysema.query.domain1.Domain1.Catalog;
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.JoinMeta;
 import com.mysema.query.grammar.hql.HqlDomain.Color;
