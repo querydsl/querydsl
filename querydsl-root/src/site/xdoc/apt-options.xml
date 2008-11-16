@@ -23,6 +23,8 @@
           <li>include : file path for class content of destClass</li>
           <li>namePrefix : prefix for query domain type simplenames</li>  
         </ul>        
+        
+        <!-- TODO : examples -->
     </section>
         
   </body>
