@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.apt.hibernate;
+package com.mysema.query.apt.impl;
 
 import static com.sun.mirror.util.DeclarationVisitors.NO_OP;
 import static com.sun.mirror.util.DeclarationVisitors.getDeclarationScanner;
@@ -18,6 +18,8 @@ import org.apache.commons.io.FileUtils;
 
 import com.mysema.query.apt.Serializer;
 import com.mysema.query.apt.Type;
+import com.mysema.query.apt.impl.DTOVisitor;
+import com.mysema.query.apt.impl.EntityVisitor;
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;

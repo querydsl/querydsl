@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.apt.hibernate;
+package com.mysema.query.apt.impl;
 
 import java.util.Set;
 import java.util.TreeSet;
