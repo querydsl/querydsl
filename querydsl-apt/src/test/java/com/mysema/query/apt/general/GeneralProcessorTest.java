@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.apt.hibernate;
+package com.mysema.query.apt.general;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -17,6 +17,7 @@ import com.mysema.query.apt.Constructor;
 import com.mysema.query.apt.Field;
 import com.mysema.query.apt.Parameter;
 import com.mysema.query.apt.Type;
+import com.mysema.query.apt.general.GeneralProcessor;
 
 /**
  * HibernateProcessorTest provides.
@@ -24,7 +25,7 @@ import com.mysema.query.apt.Type;
  * @author tiwe
  * @version $Id$
  */
-public class HibernateProcessorTest  {
+public class GeneralProcessorTest  {
     
     private Type type;
     
@@ -32,7 +33,7 @@ public class HibernateProcessorTest  {
     
     private Map<String, Object> model = new HashMap<String, Object>();
         
-    public HibernateProcessorTest(){
+    public GeneralProcessorTest(){
         type = new Type("com.mysema.query.DomainSuperClass","com.mysema.query.DomainClass","DomainClass");
         Field field = new Field("field",null,"java.lang.String","java.lang.String",Field.Type.STRING);
         type.addField(field);
@@ -49,7 +50,7 @@ public class HibernateProcessorTest  {
         model.put("classSimpleName", "Test");
         
         // as inner classes        
-        HibernateProcessor.DOMAIN_INNER_TMPL.serialize(model, writer);
+        GeneralProcessor.DOMAIN_INNER_TMPL.serialize(model, writer);
     }
     
     @Test
@@ -61,7 +62,7 @@ public class HibernateProcessorTest  {
         model.put("classSimpleName", "Test");
         
         // as outer classes        
-        HibernateProcessor.DOMAIN_OUTER_TMPL.serialize(model, writer);
+        GeneralProcessor.DOMAIN_OUTER_TMPL.serialize(model, writer);
     }
 
     @Test
@@ -72,7 +73,7 @@ public class HibernateProcessorTest  {
         model.put("classSimpleName", "Test");
         
         // as inner classes        
-        HibernateProcessor.DTO_INNER_TMPL.serialize(model, writer);
+        GeneralProcessor.DTO_INNER_TMPL.serialize(model, writer);
     }
         
 }

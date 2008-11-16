@@ -1,9 +1,4 @@
-/*
- * Copyright (c) 2008 Mysema Ltd.
- * All rights reserved.
- * 
- */
-package com.mysema.query.apt.impl;
+package com.mysema.query.apt.general;
 
 import static com.sun.mirror.util.DeclarationVisitors.NO_OP;
 import static com.sun.mirror.util.DeclarationVisitors.getDeclarationScanner;
@@ -18,21 +13,19 @@ import org.apache.commons.io.FileUtils;
 
 import com.mysema.query.apt.Serializer;
 import com.mysema.query.apt.Type;
-import com.mysema.query.apt.impl.DTOVisitor;
-import com.mysema.query.apt.impl.EntityVisitor;
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.Declaration;
 
 /**
- * HibernateProcessor provides.
- * 
+ * GeneralProcessor provides
+ *
  * @author tiwe
  * @version $Id$
  */
-public class HibernateProcessor implements AnnotationProcessor {
-    
+public class GeneralProcessor implements AnnotationProcessor{
+
     static final Serializer 
         DOMAIN_INNER_TMPL = new Serializer.FreeMarker("/domain-as-inner-classes.ftl"),
         DOMAIN_OUTER_TMPL = new Serializer.FreeMarker("/domain-as-outer-classes.ftl"),
@@ -45,7 +38,10 @@ public class HibernateProcessor implements AnnotationProcessor {
 
     private final String include, namePrefix, targetFolder;
     
-    public HibernateProcessor(AnnotationProcessorEnvironment env) throws IOException {
+    private final String domainAnnotation;
+    
+    public GeneralProcessor(AnnotationProcessorEnvironment env, 
+            String domainAnnotation) throws IOException {
         this.env = env;
         this.targetFolder = env.getOptions().get("-s");
         this.destClass = getString(env.getOptions(), "-AdestClass=", null);
@@ -54,6 +50,8 @@ public class HibernateProcessor implements AnnotationProcessor {
         this.dtoPackage = getString(env.getOptions(), "-AdtoPackage=", null); 
         this.include = getFileContent(env.getOptions(), "-Ainclude=", "");
         this.namePrefix = getString(env.getOptions(), "-AnamePrefix=", "");
+        
+        this.domainAnnotation = domainAnnotation;
     }
 
     private void addSupertypeFields(Type typeDecl,
@@ -79,7 +77,7 @@ public class HibernateProcessor implements AnnotationProcessor {
         
         // mapped superclass
         AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env
-        .getTypeDeclaration("javax.persistence.Entity");        
+        .getTypeDeclaration(domainAnnotation);        
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
             typeDecl.accept(getDeclarationScanner(visitor1, NO_OP));
         }
