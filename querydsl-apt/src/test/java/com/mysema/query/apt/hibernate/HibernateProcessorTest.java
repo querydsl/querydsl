@@ -5,17 +5,18 @@
  */
 package com.mysema.query.apt.hibernate;
 
-import java.io.IOException;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
 
-import com.mysema.query.apt.*;
-
-import freemarker.template.TemplateException;
+import com.mysema.query.apt.Constructor;
+import com.mysema.query.apt.Field;
+import com.mysema.query.apt.Parameter;
+import com.mysema.query.apt.Type;
 
 /**
  * HibernateProcessorTest provides.
@@ -24,36 +25,54 @@ import freemarker.template.TemplateException;
  * @version $Id$
  */
 public class HibernateProcessorTest  {
+    
+    private Type type;
+    
+    private Writer writer = new StringWriter();
+    
+    private Map<String, Object> model = new HashMap<String, Object>();
         
+    public HibernateProcessorTest(){
+        type = new Type("com.mysema.query.DomainSuperClass","com.mysema.query.DomainClass","DomainClass");
+        Field field = new Field("field",null,"java.lang.String","java.lang.String",Field.Type.STRING);
+        type.addField(field);
+        Parameter param = new Parameter("name","java.lang.String");
+        type.addConstructor( new Constructor(Collections.singleton(param)));
+    }
+    
     @Test
-    public void testDomainTypes() throws IOException, TemplateException{        
-        Map<String, Object> model = new HashMap<String, Object>();
-        model.put("domainTypes", Collections.singleton(createTypeDecl()));
+    public void testDomainTypesAsInnerClass() throws Exception{        
+        model.put("domainTypes", Collections.singleton(type));
         model.put("pre", "");
         model.put("include", "");
         model.put("package",  "com.mysema.query");
         model.put("classSimpleName", "Test");
-        StringWriter writer = new StringWriter();
-        new FreeMarkerSerializer("/querydsl-hibernate-domain.ftl").serialize(model, writer);
+        
+        // as inner classes        
+        HibernateProcessor.DOMAIN_INNER_TMPL.serialize(model, writer);
+    }
+    
+    @Test
+    public void testDomainTypesAsOuterClasses() throws Exception{
+        model.put("type", type);
+        model.put("pre", "");
+        model.put("include", "");
+        model.put("package",  "com.mysema.query");
+        model.put("classSimpleName", "Test");
+        
+        // as outer classes        
+        HibernateProcessor.DOMAIN_OUTER_TMPL.serialize(model, writer);
     }
 
     @Test
-    public void testDTOTypes() throws IOException, TemplateException{
-        Map<String, Object> model = new HashMap<String, Object>();
-        model.put("dtoTypes", Collections.singleton(createTypeDecl()));
+    public void testDTOTypes() throws Exception{
+        model.put("dtoTypes", Collections.singleton(type));
         model.put("pre", "");
         model.put("package", "com.mysema.query");
         model.put("classSimpleName", "Test");
-        StringWriter writer = new StringWriter();
-        new FreeMarkerSerializer("/querydsl-hibernate-dto.ftl").serialize(model, writer);
+        
+        // as inner classes        
+        HibernateProcessor.DTO_INNER_TMPL.serialize(model, writer);
     }
-    
-    private Type createTypeDecl() {
-        Type typeDecl = new Type("com.mysema.query.DomainSuperClass","com.mysema.query.DomainClass","DomainClass");
-        Field field = new Field("field",null,"java.lang.String","java.lang.String",Field.Type.STRING);
-        typeDecl.addField(field);
-        Parameter param = new Parameter("name","java.lang.String");
-        typeDecl.addConstructor( new Constructor(Collections.singleton(param)));
-        return typeDecl;
-    }
+        
 }

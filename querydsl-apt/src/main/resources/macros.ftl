@@ -1,26 +1,13 @@
-<#assign reserved = ["isnull", "isnotnull", "getType", "getMetadata", "toString", "hashCode", "getClass", "notify", "notifyAll", "wait"]>
-package ${package};
-
-import com.mysema.query.grammar.types.*;
-import static com.mysema.query.grammar.types.PathMetadata.*;
-
-/**
- * ${classSimpleName} provides types for use in Query DSL constructs
- *
- */
-public class ${classSimpleName} {
-${include}             
-<#list domainTypes as decl>               
-    public static final class ${pre}${decl.simpleName} extends Path.Entity<${decl.name}>{
-	<#list decl.stringFields as field>
+<#macro classContent decl>
+  <#assign reserved = ["isnull", "isnotnull", "getType", "getMetadata", "toString", "hashCode", "getClass", "notify", "notifyAll", "wait"]>
+  <#list decl.stringFields as field>
     	public final Path.String ${field.name} = _string("${field.name}");
     </#list>    
     <#list decl.booleanFields as field>
     	public final Path.Boolean ${field.name} = _boolean("${field.name}");
     </#list>
-<#-- 
-	simple fields
---> 
+    
+  <#-- simple fields --> 
     <#list decl.simpleFields as field>
 		public final Path.Comparable<${field.typeName}> ${field.name} = _comparable("${field.name}",${field.typeName}.class);
     	</#list>
@@ -45,9 +32,8 @@ ${include}
     		return new Path.Simple<${field.typeName}>(${field.typeName}.class,forListAccess(${field.name},index));
     	}
     </#list>             
-<#-- 
-	entity fields
--->           
+    
+  <#-- entity fields -->           
     <#list decl.entityMaps as field>
     	public final Path.EntityMap<${field.keyTypeName},${field.typeName}> ${field.name} = _entitymap("${field.name}",${field.keyTypeName}.class,${field.typeName}.class);
     	public ${pre}${field.simpleTypeName} ${field.name}(${field.keyTypeName} key) {
@@ -78,9 +64,8 @@ ${include}
         }
     	</#if>
 	</#list>
-<#-- 
-	constructors
--->  	     
+	
+  <#-- constructors -->  	     
         public ${pre}${decl.simpleName}(java.lang.String path) {
         	super(${decl.name}.class, path);
         <#list decl.entityFields as field>
@@ -92,8 +77,4 @@ ${include}
         public ${pre}${decl.simpleName}(PathMetadata<?> metadata) {
         	super(${decl.name}.class, metadata);
         }
-    }
-        
-</#list>
-    
-}
+</#macro>        

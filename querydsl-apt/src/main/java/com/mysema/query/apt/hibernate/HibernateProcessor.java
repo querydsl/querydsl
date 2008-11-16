@@ -8,18 +8,15 @@ package com.mysema.query.apt.hibernate;
 import static com.sun.mirror.util.DeclarationVisitors.NO_OP;
 import static com.sun.mirror.util.DeclarationVisitors.getDeclarationScanner;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeSet;
 
 import org.apache.commons.io.FileUtils;
 
-import com.mysema.query.apt.FreeMarkerSerializer;
+import com.mysema.query.apt.Serializer;
 import com.mysema.query.apt.Type;
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
@@ -33,20 +30,26 @@ import com.sun.mirror.declaration.Declaration;
  * @version $Id$
  */
 public class HibernateProcessor implements AnnotationProcessor {
+    
+    static final Serializer 
+        DOMAIN_INNER_TMPL = new Serializer.FreeMarker("/domain-as-inner-classes.ftl"),
+        DOMAIN_OUTER_TMPL = new Serializer.FreeMarker("/domain-as-outer-classes.ftl"),
+        DTO_INNER_TMPL = new Serializer.FreeMarker("/dto-as-inner-classes.ftl"),
+        DTO_OUTER_TMPL = new Serializer.FreeMarker("/dto-as-outer-classes.ftl");
 
     private final String destClass, destPackage, dtoClass, dtoPackage;
     
-    private final String include, namePrefix, targetFolder;
-
     private final AnnotationProcessorEnvironment env;
 
+    private final String include, namePrefix, targetFolder;
+    
     public HibernateProcessor(AnnotationProcessorEnvironment env) throws IOException {
         this.env = env;
         this.targetFolder = env.getOptions().get("-s");
-        this.destClass = getString(env.getOptions(), "-AdestClass=", "");
-        this.destPackage = getString(env.getOptions(), "-AdestPackage=", "");
-        this.dtoClass = getString(env.getOptions(), "-AdtoClass=", "");
-        this.dtoPackage = getString(env.getOptions(), "-AdtoPackage=", ""); 
+        this.destClass = getString(env.getOptions(), "-AdestClass=", null);
+        this.destPackage = getString(env.getOptions(), "-AdestPackage=", null);
+        this.dtoClass = getString(env.getOptions(), "-AdtoClass=", null);
+        this.dtoPackage = getString(env.getOptions(), "-AdtoPackage=", null); 
         this.include = getFileContent(env.getOptions(), "-Ainclude=", "");
         this.namePrefix = getString(env.getOptions(), "-AnamePrefix=", "");
     }
@@ -84,8 +87,7 @@ public class HibernateProcessor implements AnnotationProcessor {
 
         // domain types
         visitor1 = new EntityVisitor();
-        a = (AnnotationTypeDeclaration) env
-                .getTypeDeclaration("javax.persistence.Entity");        
+        a = (AnnotationTypeDeclaration) env.getTypeDeclaration("javax.persistence.Entity");        
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
             typeDecl.accept(getDeclarationScanner(visitor1, NO_OP));
         }
@@ -95,21 +97,13 @@ public class HibernateProcessor implements AnnotationProcessor {
             addSupertypeFields(typeDecl, entityTypes, mappedSupertypes);
         }
         
-        // populate model
-        Map<String, Object> model = new HashMap<String, Object>();
-        model.put("domainTypes", new TreeSet<Type>(entityTypes.values()));
-        model.put("pre", namePrefix);
-        model.put("include", include);
-        model.put("package", destClass.substring(0, destClass.lastIndexOf('.')));
-        model.put("classSimpleName", destClass.substring(destClass.lastIndexOf('.') + 1));
-        
-        // serialize it
-        String path = destClass.replace('.', '/') + ".java";
-        File file = new File(targetFolder, path);
-        if (!file.getParentFile().mkdirs()){
-            System.err.println("Folder " + file.getParent() + " could not be created");
+        if (destClass != null){
+            serializeAsInnerClasses(entityTypes.values());
+        }else if (destPackage != null){
+            serializeAsOuterClasses(entityTypes.values());
+        }else{
+            System.err.print("No class generation for domain types");
         }
-        serialize(file, "/querydsl-hibernate-domain.ftl", model);
         
     }
 
@@ -121,22 +115,15 @@ public class HibernateProcessor implements AnnotationProcessor {
             typeDecl.accept(getDeclarationScanner(visitor2, NO_OP));
         }         
         
-        // populate model
-        Map<String, Object> model = new HashMap<String, Object>();
-        model.put("dtoTypes", visitor2.types);
-        model.put("pre", namePrefix);
-        model.put("package", dtoClass.substring(0, dtoClass.lastIndexOf('.')));
-        model.put("classSimpleName", dtoClass.substring(dtoClass.lastIndexOf('.') + 1));
-        
-        // serialize it
-        String path = dtoClass.replace('.', '/') + ".java";
-        File file = new File(targetFolder, path);
-        if (!file.getParentFile().mkdirs()){
-            System.err.println("Folder " + file.getParent() + " could not be created");
+        if (dtoClass != null){
+            serializeDTOsAsInnerClasses(visitor2.types);                       
+        }else if (dtoPackage != null){
+            serializeDTOsAsOuterClasses(visitor2.types);
+        }else{
+            System.err.print("No class generation for DTO types");
         }
-        serialize(file, "/querydsl-hibernate-dto.ftl", model);
     }
-
+    
     private String getFileContent(Map<String, String> options, String prefix,
             String defaultValue) throws IOException {
         for (Map.Entry<String, String> entry : options.entrySet()) {
@@ -147,7 +134,8 @@ public class HibernateProcessor implements AnnotationProcessor {
         }
         return defaultValue;
     }
-    
+
+
     private String getString(Map<String, String> options, String prefix,
             String defaultValue) {
         for (Map.Entry<String, String> entry : options.entrySet()) {
@@ -163,14 +151,108 @@ public class HibernateProcessor implements AnnotationProcessor {
         if (!"".equals(dtoClass))  createDTOClasses();                 
     }
 
-    private void serialize(File file, String template, Map<String,Object> model){
+    private void serializeAsInnerClasses(Collection<Type> entityTypes) {
+        // populate model
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("domainTypes", new TreeSet<Type>(entityTypes));
+        model.put("pre", namePrefix);
+        model.put("include", include);
+        model.put("package", destClass.substring(0, destClass.lastIndexOf('.')));
+        model.put("classSimpleName", destClass.substring(destClass.lastIndexOf('.') + 1));
+        
+        // serialize it
+        String path = destClass.replace('.', '/') + ".java";
+        File file = new File(targetFolder, path);
+        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()){
+            System.err.println("Folder " + file.getParent() + " could not be created");
+        }
         try {
-            Writer out = new OutputStreamWriter(new FileOutputStream(file));
-            new FreeMarkerSerializer(template).serialize(model, out);
-        } catch (Exception e) {
+            DOMAIN_INNER_TMPL.serialize(model, writerFor(file));
+        } catch (Exception e) {                
+            throw new RuntimeException("Caught exception",e);
+        }
+    }
+    
+
+    private void serializeAsOuterClasses(Collection<Type> entityTypes) {
+        // populate model
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("pre", namePrefix);
+        model.put("include", include);
+        model.put("package", destPackage);
+        
+        for (Type type : entityTypes){
+            model.put("type", type);
+            model.put("classSimpleName", type.getSimpleName());
+            
+            // serialize it
+            String path = destPackage.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
+            File file = new File(targetFolder, path);
+            if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()){
+                System.err.println("Folder " + file.getParent() + " could not be created");
+            }
+            try {
+                DOMAIN_OUTER_TMPL.serialize(model, writerFor(file));
+            } catch (Exception e) {                
+                throw new RuntimeException("Caught exception",e);
+            }
+        }        
+    }
+    
+    private void serializeDTOsAsInnerClasses(Collection<Type> types) {
+        // populate model
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("dtoTypes", types);
+        model.put("pre", namePrefix);
+        model.put("package", dtoClass.substring(0, dtoClass.lastIndexOf('.')));
+        model.put("classSimpleName", dtoClass.substring(dtoClass.lastIndexOf('.') + 1));
+        
+        // serialize it
+        String path = dtoClass.replace('.', '/') + ".java";
+        File file = new File(targetFolder, path);
+        if (!file.getParentFile().mkdirs()){
+            System.err.println("Folder " + file.getParent() + " could not be created");
+        }
+        try {
+            DTO_INNER_TMPL.serialize(model, writerFor(file));
+        } catch (Exception e) {                
+            throw new RuntimeException("Caught exception",e);
+        }        
+    }
+
+    private void serializeDTOsAsOuterClasses(Collection<Type> types){
+        // populate model
+           Map<String, Object> model = new HashMap<String, Object>();        
+           model.put("pre", namePrefix);
+           model.put("include", include);
+           model.put("package", dtoPackage);
+           
+           for (Type type : types){
+               model.put("type", type);
+               model.put("classSimpleName", type.getSimpleName());
+               
+               // serialize it
+               String path = dtoPackage.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
+               File file = new File(targetFolder, path);
+               if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()){
+                   System.err.println("Folder " + file.getParent() + " could not be created");
+               }
+               try {
+                   DTO_OUTER_TMPL.serialize(model, writerFor(file));
+               } catch (Exception e) {                
+                   throw new RuntimeException("Caught exception",e);
+               }   
+           }
+          
+       }
+
+    private Writer writerFor(File file){
+        try {
+            return new OutputStreamWriter(new FileOutputStream(file));
+        } catch (FileNotFoundException e) {
             String error = "Caught " + e.getClass().getName();
             throw new RuntimeException(error, e);
         }
     }
-    
+       
 }
