@@ -16,6 +16,7 @@
     <menu name="Documentation">
       <item name="Overview" href="/index.html"/>
       <item name="Getting started" href="/getting-started.html"/>
+      <item name="APT options" href="/apt-options.html"/>
       <item name="Modules" href="/modules.html"/>
     </menu>
     <menu name="Download">
