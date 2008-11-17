@@ -1,7 +1,13 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.apt.general;
 
 import static com.sun.mirror.util.DeclarationVisitors.NO_OP;
 import static com.sun.mirror.util.DeclarationVisitors.getDeclarationScanner;
+import static com.mysema.query.apt.APTUtils.*;
 
 import java.io.*;
 import java.util.Collection;
@@ -135,20 +141,9 @@ public class GeneralProcessor implements AnnotationProcessor{
         return defaultValue;
     }
 
-
-    private String getString(Map<String, String> options, String prefix,
-            String defaultValue) {
-        for (Map.Entry<String, String> entry : options.entrySet()) {
-            if (entry.getKey().startsWith(prefix)) {
-                return entry.getKey().substring(prefix.length());
-            }
-        }
-        return defaultValue;
-    }
-
     public void process() {
-        if (!"".equals(destClass)) createDomainClasses();
-        if (!"".equals(dtoClass))  createDTOClasses();                 
+        createDomainClasses();
+        createDTOClasses();                 
     }
 
     private void serializeAsInnerClasses(Collection<Type> entityTypes) {
@@ -161,13 +156,9 @@ public class GeneralProcessor implements AnnotationProcessor{
         model.put("classSimpleName", destClass.substring(destClass.lastIndexOf('.') + 1));
         
         // serialize it
-        String path = destClass.replace('.', '/') + ".java";
-        File file = new File(targetFolder, path);
-        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()){
-            System.err.println("Folder " + file.getParent() + " could not be created");
-        }
         try {
-            DOMAIN_INNER_TMPL.serialize(model, writerFor(file));
+            String path = destClass.replace('.', '/') + ".java";
+            DOMAIN_INNER_TMPL.serialize(model, writerFor(new File(targetFolder, path)));
         } catch (Exception e) {                
             throw new RuntimeException("Caught exception",e);
         }
@@ -186,13 +177,9 @@ public class GeneralProcessor implements AnnotationProcessor{
             model.put("classSimpleName", type.getSimpleName());
             
             // serialize it
-            String path = destPackage.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
-            File file = new File(targetFolder, path);
-            if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()){
-                System.err.println("Folder " + file.getParent() + " could not be created");
-            }
             try {
-                DOMAIN_OUTER_TMPL.serialize(model, writerFor(file));
+                String path = destPackage.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
+                DOMAIN_OUTER_TMPL.serialize(model, writerFor(new File(targetFolder, path)));
             } catch (Exception e) {                
                 throw new RuntimeException("Caught exception",e);
             }
@@ -207,14 +194,10 @@ public class GeneralProcessor implements AnnotationProcessor{
         model.put("package", dtoClass.substring(0, dtoClass.lastIndexOf('.')));
         model.put("classSimpleName", dtoClass.substring(dtoClass.lastIndexOf('.') + 1));
         
-        // serialize it
-        String path = dtoClass.replace('.', '/') + ".java";
-        File file = new File(targetFolder, path);
-        if (!file.getParentFile().mkdirs()){
-            System.err.println("Folder " + file.getParent() + " could not be created");
-        }
+        // serialize it        
         try {
-            DTO_INNER_TMPL.serialize(model, writerFor(file));
+            String path = dtoClass.replace('.', '/') + ".java";
+            DTO_INNER_TMPL.serialize(model, writerFor(new File(targetFolder, path)));
         } catch (Exception e) {                
             throw new RuntimeException("Caught exception",e);
         }        
@@ -232,13 +215,9 @@ public class GeneralProcessor implements AnnotationProcessor{
                model.put("classSimpleName", type.getSimpleName());
                
                // serialize it
-               String path = dtoPackage.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
-               File file = new File(targetFolder, path);
-               if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()){
-                   System.err.println("Folder " + file.getParent() + " could not be created");
-               }
                try {
-                   DTO_OUTER_TMPL.serialize(model, writerFor(file));
+                   String path = dtoPackage.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
+                   DTO_OUTER_TMPL.serialize(model, writerFor(new File(targetFolder, path)));
                } catch (Exception e) {                
                    throw new RuntimeException("Caught exception",e);
                }   
@@ -247,6 +226,9 @@ public class GeneralProcessor implements AnnotationProcessor{
        }
 
     private Writer writerFor(File file){
+        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()){
+            System.err.println("Folder " + file.getParent() + " could not be created");
+        }
         try {
             return new OutputStreamWriter(new FileOutputStream(file));
         } catch (FileNotFoundException e) {
