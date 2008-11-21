@@ -9,8 +9,11 @@
     
   <#-- simple fields --> 
     <#list decl.simpleFields as field>
+		public final Path.Simple<${field.typeName}> ${field.name} = _simple("${field.name}",${field.typeName}.class);
+    </#list>
+    <#list decl.comparableFields as field>
 		public final Path.Comparable<${field.typeName}> ${field.name} = _comparable("${field.name}",${field.typeName}.class);
-    	</#list>
+    </#list>
 	<#list decl.simpleMaps as field>
     	public final Path.ComponentMap<${field.keyTypeName},${field.typeName}> ${field.name} = _simplemap("${field.name}",${field.keyTypeName}.class,${field.typeName}.class);
     	public Path.Simple<${field.typeName}> ${field.name}(${field.keyTypeName} key) {

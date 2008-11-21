@@ -6,6 +6,7 @@
 package com.mysema.query.apt.util;
 
 import java.util.Iterator;
+import java.util.Locale;
 
 import com.mysema.query.apt.Field;
 import com.sun.mirror.type.*;
@@ -83,8 +84,10 @@ public class TypeInfo {
                 fieldType = Field.Type.STRING;
             }else if (fullName.equals(Boolean.class.getName())){
                 fieldType = Field.Type.BOOLEAN;
-            }else if (fullName.startsWith("java")){
+            }else if (fullName.equals(Locale.class.getName())){    
                 fieldType = Field.Type.SIMPLE;
+            }else if (fullName.startsWith("java")){
+                fieldType = Field.Type.COMPARABLE;
             }
         }
 
@@ -144,8 +147,8 @@ public class TypeInfo {
             }
             if (cl.equals(Boolean.class)){
                 fieldType = Field.Type.BOOLEAN;
-            }else{
-                fieldType = Field.Type.SIMPLE;
+            }else {
+                fieldType = Field.Type.COMPARABLE;
             }
             fullName = cl.getName();
             simpleName = cl.getSimpleName();

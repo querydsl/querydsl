@@ -21,6 +21,7 @@ public class Field implements Comparable<Field>{
      */
     public enum Type {
         BOOLEAN, 
+        COMPARABLE,
         ENTITY, 
         ENTITYLIST, 
         ENTITYCOLLECTION, 

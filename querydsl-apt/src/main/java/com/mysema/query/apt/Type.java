@@ -40,6 +40,8 @@ public class Type implements Comparable<Type>{
     
     private final Set<Field> simpleFields = new TreeSet<Field>();
     
+    private final Set<Field> comparableFields = new TreeSet<Field>();
+    
     private final String simpleName, name;
 
     private final Set<Field> stringFields = new TreeSet<Field>();
@@ -75,6 +77,7 @@ public class Type implements Comparable<Type>{
         case BOOLEAN : booleanFields.add(fieldDecl); break;
         case STRING : stringFields.add(fieldDecl); break;
         case SIMPLE : simpleFields.add(fieldDecl); break;
+        case COMPARABLE: comparableFields.add(fieldDecl); break;
         case ENTITY : entityFields.add(fieldDecl); break;         
         case ENTITYCOLLECTION : entityCollections.add(fieldDecl); break;
         case SIMPLECOLLECTION : simpleCollections.add(fieldDecl); break;
@@ -137,6 +140,10 @@ public class Type implements Comparable<Type>{
         return simpleFields;
     }
     
+    public Collection<Field> getComparableFields(){
+        return comparableFields;
+    }
+    
     public String getSimpleName() {
         return simpleName;
     }
@@ -156,14 +163,15 @@ public class Type implements Comparable<Type>{
     public void include(Type decl) {
         booleanFields.addAll(decl.booleanFields);
         entityCollections.addAll(decl.entityCollections);
-        simpleCollections.addAll(decl.simpleCollections);
-        entityLists.addAll(decl.entityLists);
-        simpleLists.addAll(decl.simpleLists);
-        entityMaps.addAll(decl.entityMaps);
-        simpleMaps.addAll(decl.simpleMaps);
         entityFields.addAll(decl.entityFields);
+        entityLists.addAll(decl.entityLists);
+        entityMaps.addAll(decl.entityMaps);
+        comparableFields.addAll(decl.comparableFields);
+        simpleCollections.addAll(decl.simpleCollections);        
         simpleFields.addAll(decl.simpleFields);
-        stringFields.addAll(decl.stringFields);
+        simpleLists.addAll(decl.simpleLists);        
+        simpleMaps.addAll(decl.simpleMaps);
+        stringFields.addAll(decl.stringFields);        
     }
     
 }
