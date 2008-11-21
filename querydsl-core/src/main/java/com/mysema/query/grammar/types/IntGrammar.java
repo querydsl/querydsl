@@ -132,13 +132,11 @@ class IntGrammar{
         return createBoolean(Ops.GT, left, right);
     }
     
-    static <A extends Comparable<A>> Expr.Boolean in(Expr<A> left,
+    static <A> Expr.Boolean in(Expr<A> left,
             A... rest) {
         return createBoolean(Ops.IN, left, createConstant(rest));
     }
-    
-
-    
+        
     static <A> Expr.Boolean in(Expr<A> left, CollectionType<A> right){
         return createBoolean(Ops.IN, left, (Expr<?>)right);
     }

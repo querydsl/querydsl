@@ -96,6 +96,8 @@ public abstract class Expr<D> {
     public static abstract class Simple<D> extends Expr<D>{
         public Simple(Class<D> type) {super(type);}
         public Expr<D> as(java.lang.String to){return IntGrammar.as(this, to);}
+        public Boolean in(D... args) {return IntGrammar.in(this,args);}
+        public Boolean in(CollectionType<D> arg) {return IntGrammar.in(this, arg);}
     }
     
     /**

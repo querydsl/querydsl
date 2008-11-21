@@ -148,7 +148,7 @@ public interface Path<C> {
         protected <A> EntityList<A> _entitylist(java.lang.String path,Class<A> type) {
             return new EntityList<A>(type, forProperty(this, path));
         }
-        protected <A> Expr.Simple<A> _simple(java.lang.String path, Class<A> type){
+        protected <A> Path.Simple<A> _simple(java.lang.String path, Class<A> type){
             return new Path.Simple<A>(type, forProperty(this, path));
         }
         protected <A> ComponentCollection<A> _simplecol(java.lang.String path,Class<A> type) {
