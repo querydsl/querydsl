@@ -6,9 +6,11 @@
 package com.mysema.query.grammar.hql;
 
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.persistence.Entity;
@@ -32,13 +34,33 @@ import com.mysema.query.annotations.DTO;
  */
 public class HqlDomain {
     
+    @Entity
+    public static class SimpleTypes{
+        @Id long id;
+        BigDecimal bigDecimal;
+        Byte bbyte;
+        byte bbyte2;
+        Character cchar;
+        char cchar2;
+        Double ddouble;
+        double ddouble2;
+        Float ffloat;
+        float ffloat2;
+        Integer iint;
+        int iint2;
+        Locale llocale;
+        Long llong;
+        long llong2;
+        String sstring;
+    }
+    
     /**
      * The Class Account.
      */
     @Entity
     public static class Account {
         @Id long id;
-        @ManyToOne Person owner;
+        @ManyToOne Person owner;        
     }
     
     /**
