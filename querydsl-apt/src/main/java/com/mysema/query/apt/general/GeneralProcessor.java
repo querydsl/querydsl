@@ -50,12 +50,12 @@ public class GeneralProcessor implements AnnotationProcessor{
             String domainAnnotation) throws IOException {
         this.env = env;
         this.targetFolder = env.getOptions().get("-s");
-        this.destClass = getString(env.getOptions(), "-AdestClass=", null);
-        this.destPackage = getString(env.getOptions(), "-AdestPackage=", null);
-        this.dtoClass = getString(env.getOptions(), "-AdtoClass=", null);
-        this.dtoPackage = getString(env.getOptions(), "-AdtoPackage=", null); 
-        this.include = getFileContent(env.getOptions(), "-Ainclude=", "");
-        this.namePrefix = getString(env.getOptions(), "-AnamePrefix=", "");
+        this.destClass = getString(env.getOptions(), "destClass", null);
+        this.destPackage = getString(env.getOptions(), "destPackage", null);
+        this.dtoClass = getString(env.getOptions(), "dtoClass", null);
+        this.dtoPackage = getString(env.getOptions(), "dtoPackage", null); 
+        this.include = getFileContent(env.getOptions(), "include", "");
+        this.namePrefix = getString(env.getOptions(), "namePrefix", "");
         
         this.domainAnnotation = domainAnnotation;
     }

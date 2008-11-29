@@ -15,11 +15,14 @@ import java.util.Map;
  */
 public class APTUtils {
     
-    public static String getString(Map<String, String> options, String prefix,
+    public static String getString(Map<String, String> options, String key,
             String defaultValue) {
+        String prefix = "-A" + key + "="; 
         for (Map.Entry<String, String> entry : options.entrySet()) {
             if (entry.getKey().startsWith(prefix)) {
                 return entry.getKey().substring(prefix.length());
+            }else if (entry.getKey().equals(key)){
+                return entry.getValue();
             }
         }
         return defaultValue;

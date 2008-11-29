@@ -1,0 +1,25 @@
+<assembly>
+  <id>one-jar</id>
+  <formats>
+    <format>jar</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <dependencySets>
+    <dependencySet>
+      <outputDirectory />
+      <unpack>true</unpack>
+    </dependencySet>
+  </dependencySets>
+  <files>
+    <file>
+      <source>src/assembly/plugin.xml</source>
+      <outputDirectory />
+    </file>
+  </files>
+  <fileSets>
+    <fileSet>
+      <directory>target/classes</directory>
+      <outputDirectory />
+    </fileSet>
+  </fileSets>
+</assembly>
