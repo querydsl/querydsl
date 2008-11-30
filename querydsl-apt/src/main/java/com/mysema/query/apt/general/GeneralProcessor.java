@@ -5,7 +5,7 @@
  */
 package com.mysema.query.apt.general;
 
-import static com.mysema.query.apt.APTUtils.getString;
+import static com.mysema.query.apt.APTUtils.*;
 import static com.sun.mirror.util.DeclarationVisitors.NO_OP;
 import static com.sun.mirror.util.DeclarationVisitors.getDeclarationScanner;
 
@@ -14,8 +14,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeSet;
-
-import org.apache.commons.io.FileUtils;
 
 import com.mysema.query.apt.Serializer;
 import com.mysema.query.apt.Type;
@@ -26,11 +24,11 @@ import com.sun.mirror.declaration.Declaration;
 
 /**
  * GeneralProcessor provides
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
-public class GeneralProcessor implements AnnotationProcessor{
+public class GeneralProcessor implements AnnotationProcessor {
 
     static final Serializer 
         DOMAIN_INNER_TMPL = new Serializer.FreeMarker("/domain-as-inner-classes.ftl"),
@@ -39,130 +37,120 @@ public class GeneralProcessor implements AnnotationProcessor{
         DTO_OUTER_TMPL = new Serializer.FreeMarker("/dto-as-outer-classes.ftl");
 
     private final String destClass, destPackage, dtoClass, dtoPackage;
-    
+
     private final AnnotationProcessorEnvironment env;
 
     private final String include, namePrefix, targetFolder;
-    
+
     private final String superClassAnnotation, domainAnnotation, dtoAnnotation;
-    
-    public GeneralProcessor(AnnotationProcessorEnvironment env, 
-            String superClassAnnotation,
-            String domainAnnotation, String dtoAnnotation) throws IOException {
+
+    public GeneralProcessor(AnnotationProcessorEnvironment env,
+            String superClassAnnotation, String domainAnnotation,
+            String dtoAnnotation) throws IOException {
         this.env = env;
         this.targetFolder = env.getOptions().get("-s");
         this.destClass = getString(env.getOptions(), "destClass", null);
         this.destPackage = getString(env.getOptions(), "destPackage", null);
         this.dtoClass = getString(env.getOptions(), "dtoClass", null);
-        this.dtoPackage = getString(env.getOptions(), "dtoPackage", null); 
+        this.dtoPackage = getString(env.getOptions(), "dtoPackage", null);
         this.include = getFileContent(env.getOptions(), "include", "");
         this.namePrefix = getString(env.getOptions(), "namePrefix", "");
-        
+
         this.superClassAnnotation = superClassAnnotation;
         this.domainAnnotation = domainAnnotation;
         this.dtoAnnotation = dtoAnnotation;
     }
 
     private void addSupertypeFields(Type typeDecl,
-            Map<String, Type> entityTypes,
-            Map<String, Type> mappedSupertypes) {
+            Map<String, Type> entityTypes, Map<String, Type> mappedSupertypes) {
         String stype = typeDecl.getSupertypeName();
-        while (true){
+        while (true) {
             Type sdecl;
-            if (entityTypes.containsKey(stype)){
+            if (entityTypes.containsKey(stype)) {
                 sdecl = entityTypes.get(stype);
-            }else if (mappedSupertypes.containsKey(stype)){
+            } else if (mappedSupertypes.containsKey(stype)) {
                 sdecl = mappedSupertypes.get(stype);
-            }else{
+            } else {
                 return;
             }
             typeDecl.include(sdecl);
             stype = sdecl.getSupertypeName();
-        }        
-    }
-    
-    private void createDomainClasses() {
-        EntityVisitor visitor1 = new EntityVisitor(); 
-        
-        // mapped superclass
-        AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env.getTypeDeclaration(superClassAnnotation);        
-        for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {            
-            typeDecl.accept(getDeclarationScanner(visitor1, NO_OP));
         }
-        Map<String,Type> mappedSupertypes = visitor1.types;
-                
+    }
+
+    private void createDomainClasses() {
+        EntityVisitor superclassVisitor = new EntityVisitor();
+
+        // mapped superclass
+        AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env
+                .getTypeDeclaration(superClassAnnotation);
+        for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
+            typeDecl.accept(getDeclarationScanner(superclassVisitor, NO_OP));
+        }
+        Map<String, Type> mappedSupertypes = superclassVisitor.types;
+
         // TODO : embeddable types
 
         // domain types
-        visitor1 = new EntityVisitor();
-        a = (AnnotationTypeDeclaration) env.getTypeDeclaration(domainAnnotation);        
+        EntityVisitor entityVisitor = new EntityVisitor();
+        a = (AnnotationTypeDeclaration) env
+                .getTypeDeclaration(domainAnnotation);
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
-            typeDecl.accept(getDeclarationScanner(visitor1, NO_OP));
+            typeDecl.accept(getDeclarationScanner(entityVisitor, NO_OP));
         }
-        Map<String,Type> entityTypes = visitor1.types;
-        
-        for (Type typeDecl : entityTypes.values()){
+        Map<String, Type> entityTypes = entityVisitor.types;
+
+        for (Type typeDecl : entityTypes.values()) {
             addSupertypeFields(typeDecl, entityTypes, mappedSupertypes);
         }
-        
-        if (entityTypes.isEmpty()){
+
+        if (entityTypes.isEmpty()) {
             String error = "No class generation for domain types";
             System.err.print(error);
             env.getMessager().printError(error);
-        }else{
-            if (destClass != null){
+        } else {
+            if (destClass != null) {
                 serializeAsInnerClasses(entityTypes.values());
-            }else if (destPackage != null){
+            } else if (destPackage != null) {
                 serializeAsOuterClasses(entityTypes.values());
-            }else{
+            } else {
                 String error = "No class generation for domain types";
                 System.err.print(error);
                 env.getMessager().printError(error);
-            }    
+            }
         }
-        
+
     }
 
-    private void createDTOClasses() {        
+    private void createDTOClasses() {
         AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env
                 .getTypeDeclaration(dtoAnnotation);
-        DTOVisitor visitor2 = new DTOVisitor();
+        DTOVisitor dtoVisitor = new DTOVisitor();
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
-            typeDecl.accept(getDeclarationScanner(visitor2, NO_OP));
-        }         
-        
-        if (visitor2.types.isEmpty()){
+            typeDecl.accept(getDeclarationScanner(dtoVisitor, NO_OP));
+        }
+
+        if (dtoVisitor.types.isEmpty()) {
             String error = "No class generation for DTO types";
             System.err.print(error);
             env.getMessager().printError(error);
-        }else{
-            if (dtoClass != null){
-                serializeDTOsAsInnerClasses(visitor2.types);                       
-            }else if (dtoPackage != null){
-                serializeDTOsAsOuterClasses(visitor2.types);
-            }else{
+        } else {
+            if (dtoClass != null) {
+                serializeDTOsAsInnerClasses(dtoVisitor.types);
+            } else if (dtoPackage != null) {
+                serializeDTOsAsOuterClasses(dtoVisitor.types);
+            } else {
                 String error = "No class generation for DTO types";
                 System.err.print(error);
                 env.getMessager().printError(error);
-            }    
-        }       
-        
-    }
-    
-    private String getFileContent(Map<String, String> options, String prefix,
-            String defaultValue) throws IOException {
-        for (Map.Entry<String, String> entry : options.entrySet()) {
-            if (entry.getKey().startsWith(prefix)) {
-                String fileName = entry.getKey().substring(prefix.length());
-                return FileUtils.readFileToString(new File(fileName), "UTF-8");
             }
         }
-        return defaultValue;
+
     }
 
     public void process() {
         createDomainClasses();
-        createDTOClasses();                 
+        createDTOClasses();
     }
 
     private void serializeAsInnerClasses(Collection<Type> entityTypes) {
@@ -171,18 +159,21 @@ public class GeneralProcessor implements AnnotationProcessor{
         model.put("domainTypes", new TreeSet<Type>(entityTypes));
         model.put("pre", namePrefix);
         model.put("include", include);
-        model.put("package", destClass.substring(0, destClass.lastIndexOf('.')));
-        model.put("classSimpleName", destClass.substring(destClass.lastIndexOf('.') + 1));
-        
+        model
+                .put("package", destClass.substring(0, destClass
+                        .lastIndexOf('.')));
+        model.put("classSimpleName", destClass.substring(destClass
+                .lastIndexOf('.') + 1));
+
         // serialize it
         try {
             String path = destClass.replace('.', '/') + ".java";
-            DOMAIN_INNER_TMPL.serialize(model, writerFor(new File(targetFolder, path)));
-        } catch (Exception e) {                
-            throw new RuntimeException("Caught exception",e);
+            DOMAIN_INNER_TMPL.serialize(model, writerFor(new File(targetFolder,
+                    path)));
+        } catch (Exception e) {
+            throw new RuntimeException("Caught exception", e);
         }
     }
-    
 
     private void serializeAsOuterClasses(Collection<Type> entityTypes) {
         // populate model
@@ -190,70 +181,66 @@ public class GeneralProcessor implements AnnotationProcessor{
         model.put("pre", namePrefix);
         model.put("include", include);
         model.put("package", destPackage);
-        
-        for (Type type : entityTypes){
+
+        for (Type type : entityTypes) {
             model.put("type", type);
             model.put("classSimpleName", type.getSimpleName());
-            
+
             // serialize it
             try {
-                String path = destPackage.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
-                DOMAIN_OUTER_TMPL.serialize(model, writerFor(new File(targetFolder, path)));
-            } catch (Exception e) {                
-                throw new RuntimeException("Caught exception",e);
+                String path = destPackage.replace('.', '/') + "/" + namePrefix
+                        + type.getSimpleName() + ".java";
+                DOMAIN_OUTER_TMPL.serialize(model, writerFor(new File(
+                        targetFolder, path)));
+            } catch (Exception e) {
+                throw new RuntimeException("Caught exception", e);
             }
-        }        
+        }
     }
-    
+
     private void serializeDTOsAsInnerClasses(Collection<Type> types) {
         // populate model
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("dtoTypes", types);
         model.put("pre", namePrefix);
         model.put("package", dtoClass.substring(0, dtoClass.lastIndexOf('.')));
-        model.put("classSimpleName", dtoClass.substring(dtoClass.lastIndexOf('.') + 1));
-        
-        // serialize it        
+        model.put("classSimpleName", dtoClass.substring(dtoClass
+                .lastIndexOf('.') + 1));
+
+        // serialize it
         try {
             String path = dtoClass.replace('.', '/') + ".java";
-            DTO_INNER_TMPL.serialize(model, writerFor(new File(targetFolder, path)));
-        } catch (Exception e) {                
-            throw new RuntimeException("Caught exception",e);
-        }        
+            DTO_INNER_TMPL.serialize(model, writerFor(new File(targetFolder,
+                    path)));
+        } catch (Exception e) {
+            throw new RuntimeException("Caught exception", e);
+        }
     }
 
-    private void serializeDTOsAsOuterClasses(Collection<Type> types){
+    private void serializeDTOsAsOuterClasses(Collection<Type> types) {
         // populate model
-           Map<String, Object> model = new HashMap<String, Object>();        
-           model.put("pre", namePrefix);
-           model.put("include", include);
-           model.put("package", dtoPackage);
-           
-           for (Type type : types){
-               model.put("type", type);
-               model.put("classSimpleName", type.getSimpleName());
-               
-               // serialize it
-               try {
-                   String path = dtoPackage.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
-                   DTO_OUTER_TMPL.serialize(model, writerFor(new File(targetFolder, path)));
-               } catch (Exception e) {                
-                   throw new RuntimeException("Caught exception",e);
-               }   
-           }
-          
-       }
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("pre", namePrefix);
+        model.put("include", include);
+        model.put("package", dtoPackage);
 
-    private Writer writerFor(File file){
-        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()){
-            System.err.println("Folder " + file.getParent() + " could not be created");
+        for (Type type : types) {
+            model.put("type", type);
+            model.put("classSimpleName", type.getSimpleName());
+
+            // serialize it
+            try {
+                String path = dtoPackage.replace('.', '/') + "/" + namePrefix
+                        + type.getSimpleName() + ".java";
+                DTO_OUTER_TMPL.serialize(model, writerFor(new File(
+                        targetFolder, path)));
+            } catch (Exception e) {
+                throw new RuntimeException("Caught exception", e);
+            }
         }
-        try {
-            return new OutputStreamWriter(new FileOutputStream(file));
-        } catch (FileNotFoundException e) {
-            String error = "Caught " + e.getClass().getName();
-            throw new RuntimeException(error, e);
-        }
+
     }
-       
+
+
+
 }

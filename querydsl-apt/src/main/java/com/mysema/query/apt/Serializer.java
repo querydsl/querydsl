@@ -15,40 +15,44 @@ import freemarker.template.TemplateException;
 
 /**
  * Serializer provides
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
 public interface Serializer {
-    
+
     /**
      * 
      * @param model
      * @param writer
      * @throws Exception
      */
-    public void serialize(Map<String,Object> model, Writer writer) throws Exception;
-    
-    public final class FreeMarker implements Serializer{
-        
+    public void serialize(Map<String, Object> model, Writer writer)
+            throws Exception;
+
+    public final class FreeMarker implements Serializer {
+
         private static final Configuration cfg;
-        
+
         static {
             cfg = new Configuration();
             cfg.setClassForTemplateLoading(Serializer.class, "/");
             cfg.setObjectWrapper(new DefaultObjectWrapper());
         }
-        
+
         private final String templateLocation;
-        
-        public FreeMarker(String template){
-            if (template == null) throw new IllegalArgumentException("template was null");            
+
+        public FreeMarker(String template) {
+            if (template == null)
+                throw new IllegalArgumentException("template was null");
             templateLocation = template;
         }
-        
-        public void serialize(Map<String,Object> model, Writer writer) throws IOException, TemplateException{
+
+        public void serialize(Map<String, Object> model, Writer writer)
+                throws IOException, TemplateException {
             cfg.getTemplate(templateLocation).process(model, writer);
-            writer.flush();          }
+            writer.flush();
+        }
 
     }
 

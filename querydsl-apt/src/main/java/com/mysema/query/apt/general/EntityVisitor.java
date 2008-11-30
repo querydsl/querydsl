@@ -21,7 +21,7 @@ import com.sun.mirror.util.SimpleDeclarationVisitor;
  * @version $Id$
  */
 public class EntityVisitor extends SimpleDeclarationVisitor {
-    public final Map<String,Type> types = new HashMap<String,Type>();
+    public final Map<String, Type> types = new HashMap<String, Type>();
 
     private Type last;
 
@@ -33,9 +33,9 @@ public class EntityVisitor extends SimpleDeclarationVisitor {
 
     @Override
     public void visitFieldDeclaration(FieldDeclaration d) {
-        if (!d.getModifiers().contains(Modifier.STATIC)){
-            last.addField(d);    
-        }        
+        if (!d.getModifiers().contains(Modifier.STATIC)) {
+            last.addField(d);
+        }
     }
 
 }

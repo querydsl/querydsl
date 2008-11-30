@@ -14,27 +14,17 @@ import com.sun.mirror.declaration.FieldDeclaration;
  * @author tiwe
  * @version $Id$
  */
-public class Field implements Comparable<Field>{
-    
+public class Field implements Comparable<Field> {
+
     /**
      * The Enum Type.
      */
     public enum Type {
-        BOOLEAN, 
-        COMPARABLE,
-        ENTITY, 
-        ENTITYLIST, 
-        ENTITYCOLLECTION, 
-        ENTITYMAP, 
-        SIMPLE, 
-        SIMPLELIST, 
-        SIMPLECOLLECTION, 
-        SIMPLEMAP, 
-        STRING
+        BOOLEAN, COMPARABLE, ENTITY, ENTITYLIST, ENTITYCOLLECTION, ENTITYMAP, SIMPLE, SIMPLELIST, SIMPLECOLLECTION, SIMPLEMAP, STRING
     }
-    
+
     private final Type fieldType;
-    
+
     private String name, keyTypeName, typeName, simpleTypeName;
 
     public Field(FieldDeclaration field) {
@@ -43,48 +33,48 @@ public class Field implements Comparable<Field>{
         this.keyTypeName = typeInfo.getKeyTypeName();
         this.typeName = typeInfo.getFullName();
         this.simpleTypeName = typeInfo.getSimpleName();
-        this.fieldType = typeInfo.getFieldType();        
+        this.fieldType = typeInfo.getFieldType();
     }
-    
-    public Field(String name, String keyTypeName, String typeName, 
-            String simpleTypeName, Type fieldType){
+
+    public Field(String name, String keyTypeName, String typeName,
+            String simpleTypeName, Type fieldType) {
         this.name = name;
         this.keyTypeName = keyTypeName;
         this.typeName = typeName;
         this.simpleTypeName = simpleTypeName;
         this.fieldType = fieldType;
     }
-    
+
     public int compareTo(Field o) {
         return name.compareTo(o.name);
     }
-    
-    public boolean equals(Object o){
-        return o instanceof Field && name.equals(((Field)o).name);
+
+    public boolean equals(Object o) {
+        return o instanceof Field && name.equals(((Field) o).name);
     }
-    
-    public Type getFieldType(){
+
+    public Type getFieldType() {
         return fieldType;
     }
-    
-    public String getKeyTypeName(){
+
+    public String getKeyTypeName() {
         return keyTypeName;
     }
-    
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-    
-    public String getSimpleTypeName(){
+
+    public String getSimpleTypeName() {
         return simpleTypeName;
     }
-    
-    public String getTypeName(){
+
+    public String getTypeName() {
         return typeName;
     }
-    
-    public int hashCode(){
+
+    public int hashCode() {
         return name.hashCode();
     }
-    
+
 }

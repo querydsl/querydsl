@@ -24,20 +24,20 @@ import com.sun.mirror.declaration.AnnotationTypeDeclaration;
  * @version $Id$
  */
 public class APTFactory implements AnnotationProcessorFactory {
-    
+
     static final String superClass = "javax.persistence.MappedSuperclass",
-                        entity = "javax.persistence.Entity", 
+                        entity = "javax.persistence.Entity",
                         dto = "com.mysema.query.annotations.DTO";
-    
+
     static final Collection<String> supportedAnnotations = asList(superClass, entity, dto);
 
     static final Collection<String> supportedOptions = asList(
-            "-AdestClass","destClass",
-            "-AdestPackage","destPackage",
-            "-AdtoClass","dtoClass",
-            "-AdtoPackage","dtoPackage",
-            "-Ainclude","include",  
-            "-AnamePrefix","namePrefix");
+                        "-AdestClass", "destClass", 
+                        "-AdestPackage", "destPackage", 
+                        "-AdtoClass", "dtoClass", 
+                        "-AdtoPackage", "dtoPackage", 
+                        "-Ainclude", "include",
+                        "-AnamePrefix", "namePrefix");
 
     public Collection<String> supportedAnnotationTypes() {
         return supportedAnnotations;
@@ -58,6 +58,4 @@ public class APTFactory implements AnnotationProcessorFactory {
         }
     }
 
-   
-    
 }

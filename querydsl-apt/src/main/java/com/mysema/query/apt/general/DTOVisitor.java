@@ -29,9 +29,10 @@ public class DTOVisitor extends SimpleDeclarationVisitor {
         last = new Type(d);
         types.add(last);
     }
+
     @Override
-    public void visitConstructorDeclaration(ConstructorDeclaration d){
+    public void visitConstructorDeclaration(ConstructorDeclaration d) {
         last.addConstructor(d);
     }
-    
+
 }
