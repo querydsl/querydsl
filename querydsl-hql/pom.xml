@@ -94,7 +94,7 @@
                 <aptSourceRoot>src/test/java</aptSourceRoot>
               </aptSourceRoots>
               <force>true</force>
-              <fork>true</fork>
+              <fork>false</fork><!-- NOTE : this was true before -->
               <factory>com.mysema.query.apt.APTFactory</factory>
               <testGenerated>
                 target/generated-test-sources/java
@@ -107,7 +107,7 @@
               </A>
               <testIncludes>
                 <testInclude>
-                  com/mysema/query/grammar/hql/*.java
+                  com/mysema/query/grammar/hql/HqlDomain*.java
                 </testInclude>
               </testIncludes>
               <showWarnings>true</showWarnings>
@@ -125,7 +125,7 @@
                 <aptSourceRoot>src/test/java</aptSourceRoot>
               </aptSourceRoots>
               <force>true</force>
-              <fork>true</fork>
+              <fork>false</fork><!-- NOTE : this was true before -->
               <factory>com.mysema.query.apt.APTFactory</factory>
               <testGenerated>
                 target/generated-test-sources/java
@@ -133,11 +133,12 @@
               <nocompile>true</nocompile>
               <A>
                 -AnamePrefix=Q,
-                -AdestPackage=com.mysema.query.domain2
+                -AdestPackage=com.mysema.query.domain2,
+                -AdtoPackage=com.mysema.query.domain2
               </A>
               <testIncludes>
                 <testInclude>
-                  com/mysema/query/grammar/hql/*.java
+                  com/mysema/query/grammar/hql/HqlDomain*.java
                 </testInclude>
               </testIncludes>
               <showWarnings>true</showWarnings>

@@ -13,11 +13,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.IndexColumn;
@@ -33,6 +29,16 @@ import com.mysema.query.annotations.DTO;
  * @version $Id$
  */
 public class HqlDomain {
+    
+    @MappedSuperclass
+    public static class Superclass{
+        String superclassProperty;
+    }
+    
+    @Entity
+    public static class InheritatedProperties extends Superclass{
+        String classProperty;
+    }
     
     @Entity
     public static class SimpleTypes{
