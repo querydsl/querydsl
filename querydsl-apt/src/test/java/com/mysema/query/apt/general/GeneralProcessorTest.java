@@ -43,18 +43,6 @@ public class GeneralProcessorTest {
     }
 
     @Test
-    public void testDomainTypesAsInnerClass() throws Exception {
-        model.put("domainTypes", Collections.singleton(type));
-        model.put("pre", "");
-        model.put("include", "");
-        model.put("package", "com.mysema.query");
-        model.put("classSimpleName", "Test");
-
-        // as inner classes
-        GeneralProcessor.DOMAIN_INNER_TMPL.serialize(model, writer);
-    }
-
-    @Test
     public void testDomainTypesAsOuterClasses() throws Exception {
         model.put("type", type);
         model.put("pre", "");
@@ -66,15 +54,5 @@ public class GeneralProcessorTest {
         GeneralProcessor.DOMAIN_OUTER_TMPL.serialize(model, writer);
     }
 
-    @Test
-    public void testDTOTypes() throws Exception {
-        model.put("dtoTypes", Collections.singleton(type));
-        model.put("pre", "");
-        model.put("package", "com.mysema.query");
-        model.put("classSimpleName", "Test");
-
-        // as inner classes
-        GeneralProcessor.DTO_INNER_TMPL.serialize(model, writer);
-    }
 
 }

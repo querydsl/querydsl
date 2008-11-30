@@ -5,10 +5,10 @@
  */
 package com.mysema.query.apt;
 
-import static java.util.Arrays.asList;
-
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 import com.mysema.query.apt.general.GeneralProcessor;
@@ -29,15 +29,9 @@ public class APTFactory implements AnnotationProcessorFactory {
                         entity = "javax.persistence.Entity",
                         dto = "com.mysema.query.annotations.DTO";
 
-    static final Collection<String> supportedAnnotations = asList(superClass, entity, dto);
+    static final Collection<String> supportedAnnotations = Arrays.asList(superClass, entity, dto);
 
-    static final Collection<String> supportedOptions = asList(
-                        "-AdestClass", "destClass", 
-                        "-AdestPackage", "destPackage", 
-                        "-AdtoClass", "dtoClass", 
-                        "-AdtoPackage", "dtoPackage", 
-                        "-Ainclude", "include",
-                        "-AnamePrefix", "namePrefix");
+    static final Collection<String> supportedOptions = Collections.emptySet();
 
     public Collection<String> supportedAnnotationTypes() {
         return supportedAnnotations;

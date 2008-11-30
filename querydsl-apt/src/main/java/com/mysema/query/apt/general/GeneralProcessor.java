@@ -31,29 +31,22 @@ import com.sun.mirror.declaration.Declaration;
 public class GeneralProcessor implements AnnotationProcessor {
 
     static final Serializer 
-        DOMAIN_INNER_TMPL = new Serializer.FreeMarker("/domain-as-inner-classes.ftl"),
         DOMAIN_OUTER_TMPL = new Serializer.FreeMarker("/domain-as-outer-classes.ftl"),
-        DTO_INNER_TMPL = new Serializer.FreeMarker("/dto-as-inner-classes.ftl"),
         DTO_OUTER_TMPL = new Serializer.FreeMarker("/dto-as-outer-classes.ftl");
 
-    private final String destClass, destPackage, dtoClass, dtoPackage;
+    final String  destPackage,  dtoPackage, namePrefix, targetFolder;
 
-    private final AnnotationProcessorEnvironment env;
+    final AnnotationProcessorEnvironment env;
 
-    private final String include, namePrefix, targetFolder;
-
-    private final String superClassAnnotation, domainAnnotation, dtoAnnotation;
+    final String superClassAnnotation, domainAnnotation, dtoAnnotation;
 
     public GeneralProcessor(AnnotationProcessorEnvironment env,
             String superClassAnnotation, String domainAnnotation,
             String dtoAnnotation) throws IOException {
         this.env = env;
         this.targetFolder = env.getOptions().get("-s");
-        this.destClass = getString(env.getOptions(), "destClass", null);
         this.destPackage = getString(env.getOptions(), "destPackage", null);
-        this.dtoClass = getString(env.getOptions(), "dtoClass", null);
         this.dtoPackage = getString(env.getOptions(), "dtoPackage", null);
-        this.include = getFileContent(env.getOptions(), "include", "");
         this.namePrefix = getString(env.getOptions(), "namePrefix", "");
 
         this.superClassAnnotation = superClassAnnotation;
@@ -104,20 +97,10 @@ public class GeneralProcessor implements AnnotationProcessor {
             addSupertypeFields(typeDecl, entityTypes, mappedSupertypes);
         }
 
-        if (entityTypes.isEmpty()) {
-            String error = "No class generation for domain types";
-            System.err.print(error);
-            env.getMessager().printError(error);
+        if (entityTypes.isEmpty() || destPackage == null) {
+            env.getMessager().printNotice("No class generation for domain types");
         } else {
-            if (destClass != null) {
-                serializeAsInnerClasses(entityTypes.values());
-            } else if (destPackage != null) {
-                serializeAsOuterClasses(entityTypes.values());
-            } else {
-                String error = "No class generation for domain types";
-                System.err.print(error);
-                env.getMessager().printError(error);
-            }
+            serializeAsOuterClasses(entityTypes.values());
         }
 
     }
@@ -130,20 +113,10 @@ public class GeneralProcessor implements AnnotationProcessor {
             typeDecl.accept(getDeclarationScanner(dtoVisitor, NO_OP));
         }
 
-        if (dtoVisitor.types.isEmpty()) {
-            String error = "No class generation for DTO types";
-            System.err.print(error);
-            env.getMessager().printError(error);
+        if (dtoVisitor.types.isEmpty() || dtoPackage == null) {
+//            env.getMessager().printNotice("No class generation for DTO types");
         } else {
-            if (dtoClass != null) {
-                serializeDTOsAsInnerClasses(dtoVisitor.types);
-            } else if (dtoPackage != null) {
-                serializeDTOsAsOuterClasses(dtoVisitor.types);
-            } else {
-                String error = "No class generation for DTO types";
-                System.err.print(error);
-                env.getMessager().printError(error);
-            }
+            serializeDTOsAsOuterClasses(dtoVisitor.types);
         }
 
     }
@@ -153,33 +126,10 @@ public class GeneralProcessor implements AnnotationProcessor {
         createDTOClasses();
     }
 
-    private void serializeAsInnerClasses(Collection<Type> entityTypes) {
-        // populate model
-        Map<String, Object> model = new HashMap<String, Object>();
-        model.put("domainTypes", new TreeSet<Type>(entityTypes));
-        model.put("pre", namePrefix);
-        model.put("include", include);
-        model
-                .put("package", destClass.substring(0, destClass
-                        .lastIndexOf('.')));
-        model.put("classSimpleName", destClass.substring(destClass
-                .lastIndexOf('.') + 1));
-
-        // serialize it
-        try {
-            String path = destClass.replace('.', '/') + ".java";
-            DOMAIN_INNER_TMPL.serialize(model, writerFor(new File(targetFolder,
-                    path)));
-        } catch (Exception e) {
-            throw new RuntimeException("Caught exception", e);
-        }
-    }
-
     private void serializeAsOuterClasses(Collection<Type> entityTypes) {
         // populate model
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("pre", namePrefix);
-        model.put("include", include);
         model.put("package", destPackage);
 
         for (Type type : entityTypes) {
@@ -198,30 +148,10 @@ public class GeneralProcessor implements AnnotationProcessor {
         }
     }
 
-    private void serializeDTOsAsInnerClasses(Collection<Type> types) {
-        // populate model
-        Map<String, Object> model = new HashMap<String, Object>();
-        model.put("dtoTypes", types);
-        model.put("pre", namePrefix);
-        model.put("package", dtoClass.substring(0, dtoClass.lastIndexOf('.')));
-        model.put("classSimpleName", dtoClass.substring(dtoClass
-                .lastIndexOf('.') + 1));
-
-        // serialize it
-        try {
-            String path = dtoClass.replace('.', '/') + ".java";
-            DTO_INNER_TMPL.serialize(model, writerFor(new File(targetFolder,
-                    path)));
-        } catch (Exception e) {
-            throw new RuntimeException("Caught exception", e);
-        }
-    }
-
     private void serializeDTOsAsOuterClasses(Collection<Type> types) {
         // populate model
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("pre", namePrefix);
-        model.put("include", include);
         model.put("package", dtoPackage);
 
         for (Type type : types) {

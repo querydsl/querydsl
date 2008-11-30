@@ -21,7 +21,7 @@ import com.sun.mirror.util.SimpleDeclarationVisitor;
  * @version $Id$
  */
 public class EntityVisitor extends SimpleDeclarationVisitor {
-    public final Map<String, Type> types = new HashMap<String, Type>();
+    final Map<String, Type> types = new HashMap<String, Type>();
 
     private Type last;
 
