@@ -102,7 +102,7 @@ public class TypeInfo {
                 typeName = typeName.substring(0, typeName.indexOf('<'));
             }
             
-            if (typeName.equals("java.util.Map")){     
+            if (typeName.equals(java.util.Map.class.getName())){     
                 TypeInfo keyInfo = new TypeInfo(i.next());
                 keyTypeName = keyInfo.getFullName();
                 TypeInfo valueInfo = new TypeInfo(i.next());
@@ -113,7 +113,7 @@ public class TypeInfo {
                     fieldType = Field.Type.SIMPLEMAP;
                 }
                 
-            }else if (typeName.equals("java.util.Collection") || typeName.equals("java.util.Set")){                
+            }else if (typeName.equals(java.util.Collection.class.getName()) || typeName.equals(java.util.Set.class.getName())){                
                 TypeInfo valueInfo = new TypeInfo(i.next());
                 fullName = valueInfo.getFullName();
                 if (valueInfo.fieldType == Field.Type.ENTITY){
@@ -122,7 +122,7 @@ public class TypeInfo {
                     fieldType = Field.Type.SIMPLECOLLECTION;
                 }
                 
-            }else if (typeName.equals("java.util.List")){
+            }else if (typeName.equals(java.util.List.class.getName())){
                 TypeInfo valueInfo = new TypeInfo(i.next());
                 fullName = valueInfo.getFullName();
                 if (valueInfo.fieldType == Field.Type.ENTITY){

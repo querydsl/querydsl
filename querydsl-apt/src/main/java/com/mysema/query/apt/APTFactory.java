@@ -5,14 +5,13 @@
  */
 package com.mysema.query.apt;
 
-import static java.util.Collections.unmodifiableList;
+import static java.util.Arrays.asList;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
 
-import com.mysema.query.apt.hibernate.HibernateProcessor;
+import com.mysema.query.apt.general.GeneralProcessor;
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.apt.AnnotationProcessorFactory;
@@ -26,11 +25,19 @@ import com.sun.mirror.declaration.AnnotationTypeDeclaration;
  */
 public class APTFactory implements AnnotationProcessorFactory {
     
-    private static final Collection<String> supportedAnnotations = unmodifiableList(Arrays
-            .asList("*"));
+    static final String superClass = "javax.persistence.MappedSuperclass",
+                        entity = "javax.persistence.Entity", 
+                        dto = "com.mysema.query.annotations.DTO";
+    
+    static final Collection<String> supportedAnnotations = asList(superClass, entity, dto);
 
-    private static final Collection<String> supportedOptions = 
-        Arrays.asList("-AdestClass","-AdtoClass","-Ainclude", "-AnamePrefix");
+    static final Collection<String> supportedOptions = asList(
+            "-AdestClass","destClass",
+            "-AdestPackage","destPackage",
+            "-AdtoClass","dtoClass",
+            "-AdtoPackage","dtoPackage",
+            "-Ainclude","include",  
+            "-AnamePrefix","namePrefix");
 
     public Collection<String> supportedAnnotationTypes() {
         return supportedAnnotations;
@@ -44,8 +51,7 @@ public class APTFactory implements AnnotationProcessorFactory {
             Set<AnnotationTypeDeclaration> atds,
             AnnotationProcessorEnvironment env) {
         try {
-            // TODO : creator processor based on profile
-            return new HibernateProcessor(env);
+            return new GeneralProcessor(env, superClass, entity, dto);
         } catch (IOException e) {
             String error = "Caught " + e.getClass().getName();
             throw new RuntimeException(error, e);

@@ -5,9 +5,9 @@
  */
 package com.mysema.query.apt.general;
 
+import static com.mysema.query.apt.APTUtils.getString;
 import static com.sun.mirror.util.DeclarationVisitors.NO_OP;
 import static com.sun.mirror.util.DeclarationVisitors.getDeclarationScanner;
-import static com.mysema.query.apt.APTUtils.*;
 
 import java.io.*;
 import java.util.Collection;
@@ -44,10 +44,11 @@ public class GeneralProcessor implements AnnotationProcessor{
 
     private final String include, namePrefix, targetFolder;
     
-    private final String domainAnnotation;
+    private final String superClassAnnotation, domainAnnotation, dtoAnnotation;
     
     public GeneralProcessor(AnnotationProcessorEnvironment env, 
-            String domainAnnotation) throws IOException {
+            String superClassAnnotation,
+            String domainAnnotation, String dtoAnnotation) throws IOException {
         this.env = env;
         this.targetFolder = env.getOptions().get("-s");
         this.destClass = getString(env.getOptions(), "destClass", null);
@@ -57,7 +58,9 @@ public class GeneralProcessor implements AnnotationProcessor{
         this.include = getFileContent(env.getOptions(), "include", "");
         this.namePrefix = getString(env.getOptions(), "namePrefix", "");
         
+        this.superClassAnnotation = superClassAnnotation;
         this.domainAnnotation = domainAnnotation;
+        this.dtoAnnotation = dtoAnnotation;
     }
 
     private void addSupertypeFields(Type typeDecl,
@@ -77,14 +80,13 @@ public class GeneralProcessor implements AnnotationProcessor{
             stype = sdecl.getSupertypeName();
         }        
     }
-
+    
     private void createDomainClasses() {
         EntityVisitor visitor1 = new EntityVisitor(); 
         
         // mapped superclass
-        AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env
-        .getTypeDeclaration(domainAnnotation);        
-        for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
+        AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env.getTypeDeclaration(superClassAnnotation);        
+        for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {            
             typeDecl.accept(getDeclarationScanner(visitor1, NO_OP));
         }
         Map<String,Type> mappedSupertypes = visitor1.types;
@@ -93,7 +95,7 @@ public class GeneralProcessor implements AnnotationProcessor{
 
         // domain types
         visitor1 = new EntityVisitor();
-        a = (AnnotationTypeDeclaration) env.getTypeDeclaration("javax.persistence.Entity");        
+        a = (AnnotationTypeDeclaration) env.getTypeDeclaration(domainAnnotation);        
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
             typeDecl.accept(getDeclarationScanner(visitor1, NO_OP));
         }
@@ -103,31 +105,48 @@ public class GeneralProcessor implements AnnotationProcessor{
             addSupertypeFields(typeDecl, entityTypes, mappedSupertypes);
         }
         
-        if (destClass != null){
-            serializeAsInnerClasses(entityTypes.values());
-        }else if (destPackage != null){
-            serializeAsOuterClasses(entityTypes.values());
+        if (entityTypes.isEmpty()){
+            String error = "No class generation for domain types";
+            System.err.print(error);
+            env.getMessager().printError(error);
         }else{
-            System.err.print("No class generation for domain types");
+            if (destClass != null){
+                serializeAsInnerClasses(entityTypes.values());
+            }else if (destPackage != null){
+                serializeAsOuterClasses(entityTypes.values());
+            }else{
+                String error = "No class generation for domain types";
+                System.err.print(error);
+                env.getMessager().printError(error);
+            }    
         }
         
     }
 
     private void createDTOClasses() {        
         AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env
-                .getTypeDeclaration("com.mysema.query.annotations.DTO");
+                .getTypeDeclaration(dtoAnnotation);
         DTOVisitor visitor2 = new DTOVisitor();
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
             typeDecl.accept(getDeclarationScanner(visitor2, NO_OP));
         }         
         
-        if (dtoClass != null){
-            serializeDTOsAsInnerClasses(visitor2.types);                       
-        }else if (dtoPackage != null){
-            serializeDTOsAsOuterClasses(visitor2.types);
+        if (visitor2.types.isEmpty()){
+            String error = "No class generation for DTO types";
+            System.err.print(error);
+            env.getMessager().printError(error);
         }else{
-            System.err.print("No class generation for DTO types");
-        }
+            if (dtoClass != null){
+                serializeDTOsAsInnerClasses(visitor2.types);                       
+            }else if (dtoPackage != null){
+                serializeDTOsAsOuterClasses(visitor2.types);
+            }else{
+                String error = "No class generation for DTO types";
+                System.err.print(error);
+                env.getMessager().printError(error);
+            }    
+        }       
+        
     }
     
     private String getFileContent(Map<String, String> options, String prefix,

@@ -10,12 +10,14 @@
       <unpack>true</unpack>
     </dependencySet>
   </dependencySets>
+<!--   
   <files>
     <file>
       <source>src/assembly/plugin.xml</source>
       <outputDirectory />
     </file>
   </files>
+ -->  
   <fileSets>
     <fileSet>
       <directory>target/classes</directory>
