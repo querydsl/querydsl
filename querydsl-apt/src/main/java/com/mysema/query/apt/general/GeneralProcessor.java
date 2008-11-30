@@ -5,15 +5,16 @@
  */
 package com.mysema.query.apt.general;
 
-import static com.mysema.query.apt.APTUtils.*;
+import static com.mysema.query.apt.APTUtils.getString;
+import static com.mysema.query.apt.APTUtils.writerFor;
 import static com.sun.mirror.util.DeclarationVisitors.NO_OP;
 import static com.sun.mirror.util.DeclarationVisitors.getDeclarationScanner;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeSet;
 
 import com.mysema.query.apt.Serializer;
 import com.mysema.query.apt.Type;
