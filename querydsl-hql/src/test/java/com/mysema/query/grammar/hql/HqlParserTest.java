@@ -23,9 +23,6 @@ import antlr.RecognitionException;
 import antlr.TokenStreamException;
 import antlr.collections.AST;
 
-import com.mysema.query.domain1.Domain1;
-import com.mysema.query.domain1.Domain1Dtos;
-import com.mysema.query.domain1.Domain1.Catalog;
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.JoinMeta;
 import com.mysema.query.grammar.hql.HqlDomain.Color;
@@ -100,7 +97,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
 //                + "from eg.DomesticCat as mother\n"
 //                + "join mother.mate as mate\n"
 //                + "left join mother.kittens as offspr\n" );
-        select(new Domain1Dtos.Family(mother, mate, offspr))
+        select(new QFamily(mother, mate, offspr))
             .from(mother).innerJoin(mother.mate.as(mate))
             .leftJoin(mother.kittens.as(offspr)).parse();
     }
@@ -254,8 +251,8 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
             ).parse();
         
         prod.eq(new HqlDomain.Product());
-        prod.eq(new Domain1.Product("p"));
-        prod.eq(new Domain1.Item("p"));
+        prod.eq(new QProduct("p"));
+        prod.eq(new QItem("p"));
         
     }
 
@@ -320,7 +317,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
 //                + "group by ord\n"
 //                + "having sum(price.amount) > :minAmount\n"
 //                + "order by sum(price.amount) desc" );
-        Catalog cat = new Catalog("cat");
+        QCatalog cat = new QCatalog("cat");
         select(ord.id, sum(price.amount), count(item))
             .from(ord).join(ord.lineItems.as(item))
                 .join(item.product.as(product)).from(catalog)
@@ -493,9 +490,9 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
     @Test
     public void testComplexConstructor() throws Exception {
 //        parse( "select new Foo(count(bar)) from bar" );    
-        select(new Domain1Dtos.Foo(count(bar))).from(bar).parse();
+        select(new QFooDTO(count(bar))).from(bar).parse();
 //        parse( "select new Foo(count(bar),(select count(*) from doofus d where d.gob = 'fat' )) from bar" );
-        select(new Domain1Dtos.Foo(count(bar), HqlGrammar.select(count()).from(d).where(d.gob.eq("fat")))).from(bar).parse();
+        select(new QFooDTO(count(bar), HqlGrammar.select(count()).from(d).where(d.gob.eq("fat")))).from(bar).parse();
     }
 
     @Test

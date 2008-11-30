@@ -5,7 +5,6 @@
  */
 package com.mysema.query.grammar.hql;
 
-import com.mysema.query.domain1.Domain1.*;
 import com.mysema.query.grammar.HqlQueryBase;
 
 /**
@@ -17,68 +16,68 @@ import com.mysema.query.grammar.HqlQueryBase;
 public abstract class QueryBaseWithDomain<A extends QueryBaseWithDomain<A>> 
     extends HqlQueryBase<A>{
     
-    Account account = new Account("account");
+    QAccount account = new QAccount("account");
     
-    Animal an = new Animal("an");
+    QAnimal an = new QAnimal("an");
     
-    AuditLog log = new AuditLog("log");
+    QAuditLog log = new QAuditLog("log");
     
-    Bar bar = new Bar("bar");
+    QBar bar = new QBar("bar");
     
-    Calendar calendar = new Calendar("calendar");
+    QCalendar calendar = new QCalendar("calendar");
     
-    Cat cat = new Cat("cat");
-    Cat fatcat = new Cat("fatcat");
-    Cat kittens = new Cat("kittens");
-    Cat kitten = new Cat("kitten");
-    Cat kit = new Cat("kit");
-    Cat mate = new Cat("mate");
-    Cat mother = new Cat("mother");
-    Cat offspr = new Cat("offspr");
-    Cat qat = new Cat("qat");
-    Cat rival = new Cat("rival");
+    QCat cat = new QCat("cat");
+    QCat fatcat = new QCat("fatcat");
+    QCat kittens = new QCat("kittens");
+    QCat kitten = new QCat("kitten");
+    QCat kit = new QCat("kit");
+    QCat mate = new QCat("mate");
+    QCat mother = new QCat("mother");
+    QCat offspr = new QCat("offspr");
+    QCat qat = new QCat("qat");
+    QCat rival = new QCat("rival");
     
-    Catalog catalog = new Catalog("catalog");
+    QCatalog catalog = new QCatalog("catalog");
     
-    Customer cust = new Customer("cust");
+    QCustomer cust = new QCustomer("cust");
     
-    doofus d = new doofus("d");
+    Qdoofus d = new Qdoofus("d");
     
-    Foo foo = new Foo("foo");
+    QFoo foo = new QFoo("foo");
     
-    Formula form = new Formula("form");
+    QFormula form = new QFormula("form");
     
-    Item item = new Item("item");
+    QItem item = new QItem("item");
     
-    Name name = new Name("name");
+    QName name = new QName("name");
     
-    Named m = new Named("m");
-    Named n = new Named("n");
+    QNamed m = new QNamed("m");
+    QNamed n = new QNamed("n");
     
-    NameList list = new NameList("list");
+    QNameList list = new QNameList("list");
     
-    Order ord = new Order("ord");
+    QOrder ord = new QOrder("ord");
     
-    Payment payment = new Payment("payment");
+    QPayment payment = new QPayment("payment");
     
-    Parameter param = new Parameter("param");
+    QParameter param = new QParameter("param");
     
-    Person person = new Person("person");    
-    Person p = new Person("p");
+    QPerson person = new QPerson("person");    
+    QPerson p = new QPerson("p");
     
-    Player player = new Player("player");
+    QPlayer player = new QPlayer("player");
     
-    Price price = new Price("price");
+    QPrice price = new QPrice("price");
     
-    Product prod = new Product("prod");
-    Product product = new Product("product");
+    QProduct prod = new QProduct("prod");
+    QProduct product = new QProduct("product");
     
-    Show show = new Show("show");
+    QShow show = new QShow("show");
     
-    Status status = new Status("status");
+    QStatus status = new QStatus("status");
     
-    StatusChange statusChange = new StatusChange("statusChange");
+    QStatusChange statusChange = new QStatusChange("statusChange");
     
-    Store store = new Store("store");
+    QStore store = new QStore("store");
 
 }

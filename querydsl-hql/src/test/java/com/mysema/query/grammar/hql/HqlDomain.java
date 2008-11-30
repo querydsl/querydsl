@@ -37,6 +37,7 @@ public class HqlDomain {
     
     @Entity
     public static class InheritatedProperties extends Superclass{
+        @Id long id;
         String classProperty;
     }
     
@@ -232,15 +233,22 @@ public class HqlDomain {
      * The Class Foo.
      */
     @Entity
-    @DTO
     public static class Foo {
         String bar;
         @Id int id;
         @CollectionOfElements List<String> names;
         java.util.Date startDate;
-        public Foo(){}
-        public Foo(long l){}
-        public Foo(long l, long r){}
+    }
+    
+    @DTO
+    public static class FooDTO {
+        String bar;
+        @Id int id;
+        @CollectionOfElements List<String> names;
+        java.util.Date startDate;
+        public FooDTO(){}
+        public FooDTO(long l){}
+        public FooDTO(long l, long r){}
     }
     
     /**

@@ -5,10 +5,6 @@
  */
 package com.mysema.query.grammar.hql;
 
-import static com.mysema.query.domain1.Domain1.cat;
-import static com.mysema.query.domain1.Domain1.catalog;
-import static com.mysema.query.domain1.Domain1.cust;
-import static com.mysema.query.domain1.Domain1.kitten;
 import static com.mysema.query.grammar.Grammar.add;
 import static com.mysema.query.grammar.Grammar.div;
 import static com.mysema.query.grammar.Grammar.mult;
@@ -16,12 +12,14 @@ import static com.mysema.query.grammar.Grammar.not;
 import static com.mysema.query.grammar.Grammar.sub;
 import static com.mysema.query.grammar.HqlGrammar.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.mysema.query.domain1.Domain1;
+
+
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.HqlSerializer;
@@ -38,7 +36,73 @@ import com.mysema.query.grammar.types.HqlTypes.Constructor;
  */
 public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     
+ // AuditLog
+    QAuditLog log = new QAuditLog("log");
+   
+   // QCat
+    QCat cat = new QCat("cat");
+    QCat cat1 = new QCat("cat1");
+    QCat cat2 = new QCat("cat2");
+    QCat cat3 = new QCat("cat3");
+    QCat cat4 = new QCat("cat4");
+    QCat cat5 = new QCat("cat5");
+   
+    QCat kitten = new QCat("kitten");
+    QCat kitten2 = new QCat("kitten2");
+    QCat child = new QCat("child");
+    QCat mate = new QCat("mate"); 
+   
+   // QCatalog
+    QCatalog catalog = new QCatalog("catalog");
+   
+   // QCompany
+    QCompany company = new QCompany("company");
+    QCompany company1 = new QCompany("company1");
+    QCompany company2 = new QCompany("company2");
+    QCompany company3 = new QCompany("company3");
+    QCompany company4 = new QCompany("company4");
+    QCompany company5 = new QCompany("company5");
+   
+   // Customer
+    QCustomer cust = new QCustomer("cust");
+   
+   // QDocument
+    QDocument doc = new QDocument("doc");
+   
+   // DomesticQCat
+    QDomesticCat domesticCat = new QDomesticCat("domesticCat");
+   
+   // QItem
+    QItem item = new QItem("item");
+   
+   // Order
+    QOrder order = new QOrder("order");
+   
+   // Payment
+    QPayment payment = new QPayment("payment");
+   
+   // Price
+    QPrice price = new QPrice("price");
+   
+   // Product
+    QProduct product= new QProduct("product");
+   
+   // User
+    QUser user = new QUser("user");
+    QUser user1 = new QUser("user1");
+    QUser user2 = new QUser("user2");
+    QUser user3 = new QUser("user3");
+    QUser user4 = new QUser("user4");
+    QUser user5 = new QUser("user5");
+    
     private HqlSerializer visitor = new HqlSerializer();
+    
+    @Test
+    public void testInheritance(){
+        QInheritatedProperties i = new QInheritatedProperties("i");
+        assertNotNull(i.superclassProperty);
+        assertNotNull(i.classProperty);
+    }
     
     @Test
     public void testBasicStructure(){
@@ -73,9 +137,9 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         toString("cat.bodyWeight * :a1 + :a2", add(mult(cat.bodyWeight,10),20));
         toString("cat.bodyWeight * :a1 - :a2", sub(mult(cat.bodyWeight,10),20));
         
-        Domain1.Cat c1 = new Domain1.Cat("c1");
-        Domain1.Cat c2 = new Domain1.Cat("c2");
-        Domain1.Cat c3 = new Domain1.Cat("c3");
+        QCat c1 = new QCat("c1");
+        QCat c2 = new QCat("c2");
+        QCat c3 = new QCat("c3");
         toString("c1.id + c2.id * c3.id", add(c1.id, mult(c2.id,c3.id)));
         toString("c1.id * (c2.id + c3.id)", mult(c1.id, add(c2.id,c3.id)));
         toString("(c1.id + c2.id) * c3.id", mult(add(c1.id,c2.id),c3.id));

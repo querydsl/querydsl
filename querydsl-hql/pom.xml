@@ -84,37 +84,6 @@
         <version>1.0.15</version>
         <executions>
           <execution>
-            <id>dummy-domain-into-class</id>
-            <phase>generate-test-sources</phase>
-            <goals>
-              <goal>testExecute</goal>
-            </goals>
-            <configuration>
-              <aptSourceRoots>
-                <aptSourceRoot>src/test/java</aptSourceRoot>
-              </aptSourceRoots>
-              <force>true</force>
-              <fork>false</fork><!-- NOTE : this was true before -->
-              <factory>com.mysema.query.apt.APTFactory</factory>
-              <testGenerated>
-                target/generated-test-sources/java
-              </testGenerated>
-              <nocompile>true</nocompile>
-              <A>
-                -Ainclude=src/test/includes/instances.txt,
-                -AdestClass=com.mysema.query.domain1.Domain1,
-                -AdtoClass=com.mysema.query.domain1.Domain1Dtos
-              </A>
-              <testIncludes>
-                <testInclude>
-                  com/mysema/query/grammar/hql/HqlDomain*.java
-                </testInclude>
-              </testIncludes>
-              <showWarnings>true</showWarnings>
-            </configuration>
-          </execution>
-
-          <execution>
             <id>dummy-domain-into-package</id>
             <phase>generate-test-sources</phase>
             <goals>
@@ -125,7 +94,7 @@
                 <aptSourceRoot>src/test/java</aptSourceRoot>
               </aptSourceRoots>
               <force>true</force>
-              <fork>false</fork><!-- NOTE : this was true before -->
+              <fork>true</fork>
               <factory>com.mysema.query.apt.APTFactory</factory>
               <testGenerated>
                 target/generated-test-sources/java
@@ -133,8 +102,8 @@
               <nocompile>true</nocompile>
               <A>
                 -AnamePrefix=Q,
-                -AdestPackage=com.mysema.query.domain2,
-                -AdtoPackage=com.mysema.query.domain2
+                -AdestPackage=com.mysema.query.grammar.hql,
+                -AdtoPackage=com.mysema.query.grammar.hql
               </A>
               <testIncludes>
                 <testInclude>
@@ -143,7 +112,7 @@
               </testIncludes>
               <showWarnings>true</showWarnings>
             </configuration>
-          </execution>          
+          </execution>       
         </executions>
       </plugin>
     </plugins>
