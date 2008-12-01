@@ -68,6 +68,12 @@ public class HqlDomain {
     public static class Account {
         @Id long id;
         @ManyToOne Person owner;        
+        @Embedded EmbeddedType embeddedData;
+    }
+    
+    @Embeddable 
+    public static class EmbeddedType {
+        String someData;
     }
     
     /**
