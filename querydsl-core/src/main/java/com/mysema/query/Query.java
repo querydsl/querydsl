@@ -7,8 +7,7 @@ package com.mysema.query;
 
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
-
-import static com.mysema.query.grammar.types.Expr.*;
+import com.mysema.query.grammar.types.Expr.Entity;
 
 /**
  * Query provides a the query interface of the fluent query DSL.

@@ -11,7 +11,7 @@ import java.util.List;
 
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
-import static com.mysema.query.grammar.types.Expr.*;
+import com.mysema.query.grammar.types.Expr.Entity;
 
 /**
  * QueryBase provides a basic implementation of the Query interface.
