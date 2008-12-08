@@ -13,7 +13,6 @@
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-core</artifactId>
   <name>Querydsl core</name>
-  <url>http://source.mysema.com/projects/querydsl-core</url>
   <description>core module for querydsl</description>
   <packaging>jar</packaging>
 
