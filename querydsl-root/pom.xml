@@ -9,7 +9,6 @@
   <artifactId>querydsl-root</artifactId>
   <version>0.2.8-SNAPSHOT</version>
   <name>Querydsl</name>
-  <url>http://source.mysema.com/projects/querydsl-root</url>
   <description>parent project for querydsl modules</description>
   <parent>
     <groupId>com.mysema.home</groupId>
@@ -24,6 +23,7 @@
     <module>../querydsl-core</module>
     <module>../querydsl-annotations</module>
     <module>../querydsl-apt</module>
+    <module>../querydsl-collections</module>
     <module>../querydsl-hql</module>
     <module>../querydsl-sql</module>
   </modules>
