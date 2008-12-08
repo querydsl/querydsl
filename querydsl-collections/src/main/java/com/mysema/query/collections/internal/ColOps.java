@@ -13,7 +13,7 @@ import com.mysema.query.grammar.types.PathMetadata.PathType;
 import com.mysema.query.serialization.BaseOps;
 
 /**
- * HqlOps provides.
+ * ColOps extends BaseOps to add Java syntax specific operation templates.
  * 
  * @author tiwe
  * @version $Id$

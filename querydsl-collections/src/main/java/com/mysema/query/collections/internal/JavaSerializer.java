@@ -12,8 +12,10 @@ import static com.mysema.query.grammar.types.PathMetadata.VARIABLE;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.janino.CompileException;
 import org.codehaus.janino.ExpressionEvaluator;
 import org.codehaus.janino.Parser.ParseException;
+import org.codehaus.janino.Scanner.ScanException;
 
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Expr;
@@ -21,6 +23,7 @@ import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.Alias.Simple;
 import com.mysema.query.grammar.types.Alias.ToPath;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
+import com.mysema.query.serialization.BaseOps;
 import com.mysema.query.serialization.BaseSerializer;
 
 
@@ -32,8 +35,11 @@ import com.mysema.query.serialization.BaseSerializer;
  */
 public class JavaSerializer extends BaseSerializer<JavaSerializer>{
             
-    // TODO : refactor to DI style
-    private static final ColOps ops = new ColOps();
+    private final BaseOps ops;
+    
+    public JavaSerializer(BaseOps ops){
+        this.ops = ops;
+    }
     
     @Override
     protected void visit(Path<?> path) {
@@ -88,7 +94,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
         _append(String.format(pattern, strings));
     }
     
-    public ExpressionEvaluator createExpressionEvaluator(Expr<?> source, Class<?> targetType) throws Exception{
+    public ExpressionEvaluator createExpressionEvaluator(Expr<?> source, Class<?> targetType) throws CompileException, ParseException, ScanException{
         if (targetType == null) throw new IllegalArgumentException("targetType was null");
         String expr = builder.toString();
         System.out.println(expr);

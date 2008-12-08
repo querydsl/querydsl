@@ -10,19 +10,33 @@ import java.util.*;
 import org.codehaus.janino.ExpressionEvaluator;
 
 import com.mysema.query.QueryBase;
+import com.mysema.query.collections.internal.ColOps;
 import com.mysema.query.collections.internal.JavaSerializer;
 import com.mysema.query.collections.internal.Iterators.FilteringIterator;
 import com.mysema.query.collections.internal.Iterators.ProjectingIterator;
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.serialization.BaseOps;
 
 
 /**
- * ColQuery provides
+ * ColQuery is a Query implementation for querying on Java collections
  *
  * @author tiwe
  * @version $Id$
  */
 public class ColQuery<S extends ColQuery<S>> extends QueryBase<Object,S>{
+    
+    private static final BaseOps OPS_DEFAULT = new ColOps();
+    
+    private final BaseOps ops;
+    
+    public ColQuery(){
+        ops = OPS_DEFAULT;
+    }
+    
+    public ColQuery(BaseOps ops){
+        this.ops = ops;
+    }
     
     private Map<Expr<?>, Iterable<?>> entityToIterable = new HashMap<Expr<?>,Iterable<?>>();
     
@@ -44,7 +58,7 @@ public class ColQuery<S extends ColQuery<S>> extends QueryBase<Object,S>{
         // where                   
         if (where.self() != null){            
             try {
-                ExpressionEvaluator ev = new JavaSerializer().handle(where.self())
+                ExpressionEvaluator ev = new JavaSerializer(ops).handle(where.self())
                     .createExpressionEvaluator(source, boolean.class);
                 it = new FilteringIterator<RT>(it, ev);
             } catch (Exception e) {
@@ -61,7 +75,7 @@ public class ColQuery<S extends ColQuery<S>> extends QueryBase<Object,S>{
             return (Iterator<RT>)it;    
         }else{
             try {
-                ExpressionEvaluator ev = new JavaSerializer().handle(projection)
+                ExpressionEvaluator ev = new JavaSerializer(ops).handle(projection)
                     .createExpressionEvaluator(source, projection);
                 return new ProjectingIterator<RT>(it, ev);
             } catch (Exception e) {
