@@ -1,4 +1,4 @@
-<#macro classContent decl>
+<#macro classContent decl embeddable>
   <#assign reserved = ["isnull", "isnotnull", "getType", "getMetadata", "toString", "hashCode", "getClass", "notify", "notifyAll", "wait"]>
   <#list decl.stringFields as field>
     	public final Path.String ${field.name} = _string("${field.name}");
@@ -69,6 +69,7 @@
 	</#list>
 	
   <#-- constructors -->  	     
+    <#if !embeddable>
         public ${pre}${decl.simpleName}(java.lang.String path) {
         	super(${decl.name}.class, path);
         <#list decl.entityFields as field>
@@ -77,6 +78,7 @@
         	</#if>	
         </#list>     
         }
+    </#if>     
         public ${pre}${decl.simpleName}(PathMetadata<?> metadata) {
         	super(${decl.name}.class, metadata);
         }

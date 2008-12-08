@@ -9,5 +9,5 @@ import static com.mysema.query.grammar.types.PathMetadata.*;
  *
  */
 public class ${pre}${classSimpleName} extends Path.Entity<${type.name}>{
-<@cl.classContent decl=type embeddable=false/>
+<@cl.classContent decl=type embeddable=true/>
 }

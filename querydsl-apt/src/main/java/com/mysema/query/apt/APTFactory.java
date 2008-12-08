@@ -27,9 +27,10 @@ public class APTFactory implements AnnotationProcessorFactory {
 
     static final String superClass = "javax.persistence.MappedSuperclass",
                         entity = "javax.persistence.Entity",
-                        dto = "com.mysema.query.annotations.DTO";
+                        dto = "com.mysema.query.annotations.DTO",
+                        embeddable = "javax.persistence.Embeddable";
 
-    static final Collection<String> supportedAnnotations = Arrays.asList(superClass, entity, dto);
+    static final Collection<String> supportedAnnotations = Arrays.asList(superClass, entity, dto, embeddable);
 
     static final Collection<String> supportedOptions = Collections.emptySet();
 
@@ -45,7 +46,7 @@ public class APTFactory implements AnnotationProcessorFactory {
             Set<AnnotationTypeDeclaration> atds,
             AnnotationProcessorEnvironment env) {
         try {
-            return new GeneralProcessor(env, superClass, entity, dto);
+            return new GeneralProcessor(env, superClass, entity, dto, embeddable);
         } catch (IOException e) {
             String error = "Caught " + e.getClass().getName();
             throw new RuntimeException(error, e);
