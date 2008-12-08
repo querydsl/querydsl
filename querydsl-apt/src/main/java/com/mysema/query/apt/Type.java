@@ -15,7 +15,7 @@ import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;
 
 /**
- * TypeDecl provides.
+ * TypeDecl represents a query domain type.
  * 
  * @author tiwe
  * @version $Id$

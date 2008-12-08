@@ -9,7 +9,7 @@ import com.mysema.query.apt.util.TypeInfo;
 import com.sun.mirror.declaration.FieldDeclaration;
 
 /**
- * FieldDecl provides.
+ * FieldDecl represents a field / property in a query domain type.
  * 
  * @author tiwe
  * @version $Id$

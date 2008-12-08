@@ -11,7 +11,7 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 
 /**
- * APUtils provides
+ * APUtils provides utilities for APT code generation in Querydsl
  * 
  * @author tiwe
  * @version $Id$

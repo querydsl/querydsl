@@ -14,7 +14,7 @@ import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.util.SimpleDeclarationVisitor;
 
 /**
- * DTOVisitor provides.
+ * DTOVisitor is a visitor for DTO types.
  * 
  * @author tiwe
  * @version $Id$

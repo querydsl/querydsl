@@ -12,7 +12,7 @@ import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
 
 /**
- * ConstructorDecl provides.
+ * ConstructorDecl represents a constructor for a DTO query type.
  * 
  * @author tiwe
  * @version $Id$

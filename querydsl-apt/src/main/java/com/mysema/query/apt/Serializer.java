@@ -14,7 +14,7 @@ import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.TemplateException;
 
 /**
- * Serializer provides
+ * Serializer is the main interface to be implemented for code generating serializers.
  * 
  * @author tiwe
  * @version $Id$
@@ -22,6 +22,7 @@ import freemarker.template.TemplateException;
 public interface Serializer {
 
     /**
+     * Serialize the given context to the given Writer instance
      * 
      * @param model
      * @param writer

@@ -15,7 +15,7 @@ import com.sun.mirror.declaration.Modifier;
 import com.sun.mirror.util.SimpleDeclarationVisitor;
 
 /**
- * EntityVisitor provides.
+ * EntityVisitor is a visitor for entity and embeddable types.
  * 
  * @author tiwe
  * @version $Id$

@@ -24,7 +24,7 @@ import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.Declaration;
 
 /**
- * GeneralProcessor provides
+ * GeneralProcessor is the main processor for APT code generation.
  * 
  * @author tiwe
  * @version $Id$

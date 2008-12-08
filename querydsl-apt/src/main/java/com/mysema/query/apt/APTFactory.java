@@ -18,7 +18,7 @@ import com.sun.mirror.apt.AnnotationProcessorFactory;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 
 /**
- * APTFactory provides.
+ * APTFactory is the main APT factory for Querydsl code generation
  * 
  * @author tiwe
  * @version $Id$
