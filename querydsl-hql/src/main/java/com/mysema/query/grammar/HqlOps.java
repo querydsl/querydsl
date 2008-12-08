@@ -14,6 +14,7 @@ import java.util.Set;
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
+import com.mysema.query.serialization.BaseOps;
 
 /**
  * HqlOps provides.
@@ -21,7 +22,7 @@ import com.mysema.query.grammar.types.PathMetadata.PathType;
  * @author tiwe
  * @version $Id$
  */
-public class HqlOps  {
+public class HqlOps  extends BaseOps {
     
     public static final Set<Op<?>> wrapCollectionsForOp;
     
@@ -36,11 +37,9 @@ public class HqlOps  {
         wrapCollectionsForOp = Collections.unmodifiableSet(ops);
     }
     
-    private static final Map<Op<?>,java.lang.String> patterns = new HashMap<Op<?>,java.lang.String>();
+    private final Map<Op<?>,Integer> precedence = new HashMap<Op<?>,Integer>();
     
-    private static final Map<Op<?>,Integer> precedence = new HashMap<Op<?>,Integer>();
-    
-    static{            
+    public HqlOps(){            
         // boolean
         add(Ops.AND, "%s and %s",36);
         add(Ops.NOT, "not %s",3);
@@ -131,20 +130,20 @@ public class HqlOps  {
         add(HqlPathType.MAPINDICES, "indices(%s)");
     }
     
-    private static void add(Op<?> op, java.lang.String pattern){
+    private void add(Op<?> op, java.lang.String pattern){
         patterns.put(op, pattern);             
     }
     
-    private static void add(Op<?> op, java.lang.String pattern, int pre){
+    private void add(Op<?> op, java.lang.String pattern, int pre){
         patterns.put(op, pattern);
         precedence.put(op,pre);     
     }
     
-    public static java.lang.String getPattern(Op<?> op){
+    public java.lang.String getPattern(Op<?> op){
         return patterns.get(op);
     }
     
-    public static int getPrecedence(Op<?> operator) {
+    public int getPrecedence(Op<?> operator) {
         if (precedence.containsKey(operator)){
             return precedence.get(operator);
         }else{

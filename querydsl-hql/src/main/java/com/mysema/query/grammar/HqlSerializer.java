@@ -9,7 +9,6 @@ import static com.mysema.query.grammar.types.PathMetadata.LISTVALUE_CONSTANT;
 import static com.mysema.query.grammar.types.PathMetadata.PROPERTY;
 import static com.mysema.query.grammar.types.PathMetadata.VARIABLE;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,6 +21,7 @@ import com.mysema.query.grammar.types.HqlTypes.CountExpression;
 import com.mysema.query.grammar.types.HqlTypes.DistinctPath;
 import com.mysema.query.grammar.types.HqlTypes.SubQuery;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
+import com.mysema.query.serialization.BaseSerializer;
 
 
 /**
@@ -30,18 +30,12 @@ import com.mysema.query.grammar.types.PathMetadata.PathType;
  * @author tiwe
  * @version $Id$
  */
-public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
-        
-    private StringBuilder builder = new StringBuilder();
-
-    private List<Object> constants = new ArrayList<Object>();
+public class HqlSerializer extends BaseSerializer<HqlSerializer>{
     
+    // TODO : refactor to DI style
+    private HqlOps ops = new HqlOps();
+            
     private boolean wrapElements = false;
-
-    private HqlSerializer _append(String str) {
-        builder.append(str);
-        return this;
-    }
     
     private HqlSerializer _append(String sep, List<? extends Expr<?>> expressions) {
         boolean first = true;
@@ -51,22 +45,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
         }
         return this;
     }
-
-    private String _toString(Expr<?> expr, boolean wrap) {
-        StringBuilder old = builder;
-        builder = new StringBuilder();
-        if (wrap) builder.append("(");
-        handle(expr);
-        if (wrap) builder.append(")");
-        String ret = builder.toString();
-        builder = old;
-        return ret;
-    }
-    
-    public List<Object> getConstants(){
-        return constants;
-    }
-    
+       
     public void serialize(List<Expr<?>> select, List<JoinExpression<JoinMeta>> joins,
         Expr.Boolean where, List<Expr<?>> groupBy, Expr.Boolean having,
         List<OrderSpecifier<?>> orderBy, boolean forCountRow){
@@ -132,8 +111,6 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
             }
         }
     }
-
-    public String toString(){ return builder.toString(); }
     
     @Override
     protected void visit(Alias.Simple<?> expr) {
@@ -195,12 +172,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
         }        
         if (wrap) _append(")");
     }
-    
-    @Override
-    protected void visit(Operation<?,?> expr) {
-        visitOperation(expr.getOperator(), expr.getArgs());
-    }
-    
+        
     @Override
     protected void visit(Path.Collection<?> expr){
         // only wrap a PathCollection, if it the pathType is PROPERTY
@@ -225,7 +197,7 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
             exprAsString = _toString(path.getMetadata().getExpression(),false);
         }
         
-        String pattern = HqlOps.getPattern(pathType);
+        String pattern = ops.getPattern(pathType);
         if (parentAsString != null){
             _append(String.format(pattern, parentAsString, exprAsString));    
         }else{
@@ -259,19 +231,19 @@ public class HqlSerializer extends VisitorAdapter<HqlSerializer>{
         _append(")");
     }
 
-    private void visitOperation(Op<?> operator, Expr<?>... args) {
+    protected void visitOperation(Op<?> operator, Expr<?>... args) {
         boolean old = wrapElements;
         wrapElements = HqlOps.wrapCollectionsForOp.contains(operator);
-        String pattern = HqlOps.getPattern(operator);
+        String pattern = ops.getPattern(operator);
         if (pattern == null)
             throw new IllegalArgumentException("Got no operation pattern for " + operator);
         Object[] strings = new String[args.length];
-        int precedence = HqlOps.getPrecedence(operator);
+        int precedence = ops.getPrecedence(operator);
         for (int i = 0; i < strings.length; i++){
             boolean wrap = false;
             if (args[i] instanceof Operation){
                 // wrap if outer operator precedes
-                wrap = precedence < HqlOps.getPrecedence(((Operation<?,?>)args[i]).getOperator());
+                wrap = precedence < ops.getPrecedence(((Operation<?,?>)args[i]).getOperator());
             }
             strings[i] = _toString(args[i],wrap);
         }

@@ -18,8 +18,6 @@ import static org.junit.Assert.assertNull;
 import org.junit.Ignore;
 import org.junit.Test;
 
-
-
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.HqlSerializer;
