@@ -10,21 +10,18 @@ import static com.mysema.query.grammar.types.PathMetadata.PROPERTY;
 import static com.mysema.query.grammar.types.PathMetadata.VARIABLE;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.janino.ExpressionEvaluator;
+import org.codehaus.janino.Parser.ParseException;
 
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Operation;
 import com.mysema.query.grammar.types.Path;
-import com.mysema.query.grammar.types.VisitorAdapter;
 import com.mysema.query.grammar.types.Alias.Simple;
 import com.mysema.query.grammar.types.Alias.ToPath;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
+import com.mysema.query.serialization.BaseSerializer;
 
 
 /**
@@ -33,43 +30,10 @@ import com.mysema.query.grammar.types.PathMetadata.PathType;
  * @author tiwe
  * @version $Id$
  */
-public class JavaSerializer extends VisitorAdapter<JavaSerializer>{
-    
-    private StringBuilder builder = new StringBuilder();
-        
-    private List<Object> constants = new ArrayList<Object>();
-    
-    private JavaSerializer _append(String str) {
-        builder.append(str);
-        return this;
-    }
-    
-    private String _toString(Expr<?> expr, boolean wrap) {
-        StringBuilder old = builder;
-        builder = new StringBuilder();
-        if (wrap) builder.append("(");
-        handle(expr);
-        if (wrap) builder.append(")");
-        String ret = builder.toString();
-        builder = old;
-        return ret;
-    }
-        
-    @Override
-    protected void visit(Expr.Constant<?> expr) {
-        _append("a");
-        if (!constants.contains(expr.getConstant())){
-            constants.add(expr.getConstant());
-            _append(Integer.toString(constants.size()));
-        }else{
-            _append(Integer.toString(constants.indexOf(expr.getConstant())+1));
-        }     
-    }
-
-    @Override
-    protected void visit(Operation<?,?> expr) {
-        visitOperation(expr.getOperator(), expr.getArgs());
-    }
+public class JavaSerializer extends BaseSerializer<JavaSerializer>{
+            
+    // TODO : refactor to DI style
+    private static final ColOps ops = new ColOps();
     
     @Override
     protected void visit(Path<?> path) {
@@ -95,7 +59,7 @@ public class JavaSerializer extends VisitorAdapter<JavaSerializer>{
             exprAsString = _toString(path.getMetadata().getExpression(), false);
         }
         
-        String pattern = ColOps.getPattern(pathType);
+        String pattern = ops.getPattern(pathType);
         if (parentAsString != null){
             _append(String.format(pattern, parentAsString, exprAsString));    
         }else{
@@ -113,8 +77,8 @@ public class JavaSerializer extends VisitorAdapter<JavaSerializer>{
         // TODO Auto-generated method stub        
     }
     
-    private void visitOperation(Op<?> operator, Expr<?>... args) {
-        String pattern = ColOps.getPattern(operator);
+    protected void visitOperation(Op<?> operator, Expr<?>... args) {
+        String pattern = ops.getPattern(operator);
         if (pattern == null)
             throw new IllegalArgumentException("Got no operation pattern for " + operator);
         Object[] strings = new String[args.length];
@@ -156,6 +120,4 @@ public class JavaSerializer extends VisitorAdapter<JavaSerializer>{
         return createExpressionEvaluator(source, targetType);
     }
     
-    public String toString(){ return builder.toString(); }
-
 }

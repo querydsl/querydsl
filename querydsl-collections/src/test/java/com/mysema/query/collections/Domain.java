@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.collections;
 
 import static com.mysema.query.grammar.types.PathMetadata.forListAccess;
