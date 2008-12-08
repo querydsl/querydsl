@@ -98,10 +98,13 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     private HqlSerializer visitor = new HqlSerializer();
     
     @Test
-    public void testInheritance(){
+    public void tstDomainConstruction(){
         QInheritatedProperties i = new QInheritatedProperties("i");
         assertNotNull(i.superclassProperty);
         assertNotNull(i.classProperty);
+        
+        QAccount a = new QAccount("a");
+        assertNotNull(a.embeddedData.someData);
     }
     
     @Test
