@@ -19,6 +19,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.grammar.HqlGrammar;
+import com.mysema.query.grammar.HqlOps;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.HqlSerializer;
 import com.mysema.query.grammar.types.Custom;
@@ -93,7 +94,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     QUser user4 = new QUser("user4");
     QUser user5 = new QUser("user5");
     
-    private HqlSerializer visitor = new HqlSerializer();
+    private HqlSerializer visitor = new HqlSerializer(new HqlOps());
     
     @Test
     public void tstDomainConstruction(){
@@ -396,7 +397,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     private void toString(String expected, Expr<?> expr) {
         assertEquals(expected, visitor.handle(expr).toString());
 //        visitor.clear();
-        visitor = new HqlSerializer();
+        visitor = new HqlSerializer(new HqlOps());
     }
     
     /**

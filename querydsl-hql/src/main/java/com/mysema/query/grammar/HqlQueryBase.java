@@ -20,15 +20,27 @@ import com.mysema.query.grammar.types.Expr.Entity;
  */
 public class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<JoinMeta,A>{
     
+    private static final HqlOps OPS_DEFAULT = new HqlOps();
+    
+    private final HqlOps ops;
+    
     private List<Object> constants;
     
     private String countRowsString, queryString;
+    
+    public HqlQueryBase(HqlOps ops){
+        this.ops = ops;
+    }
+    
+    public HqlQueryBase(){
+        this.ops = OPS_DEFAULT;
+    }
     
     private String buildQueryString(boolean forCountRow) {
         if (joins.isEmpty()){
             throw new IllegalArgumentException("No where clause given");
         }
-        HqlSerializer serializer = new HqlSerializer();
+        HqlSerializer serializer = new HqlSerializer(ops);
         serializer.serialize(select, joins, where.self(), groupBy, having.self(), orderBy, forCountRow);               
         constants = serializer.getConstants();      
         return serializer.toString();

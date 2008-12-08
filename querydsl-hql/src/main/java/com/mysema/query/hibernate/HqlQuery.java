@@ -13,6 +13,7 @@ import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.grammar.HqlOps;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
@@ -35,6 +36,11 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
         this.session = session;
     }
 
+    public HqlQuery(Session session, HqlOps ops) {
+        super(ops);
+        this.session = session;
+    }
+    
     private Query createQuery(String queryString, Integer limit, Integer offset) {
         Query query = session.createQuery(queryString);
         QueryUtil.setConstants(query, getConstants());

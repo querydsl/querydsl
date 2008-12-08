@@ -32,10 +32,13 @@ import com.mysema.query.serialization.BaseSerializer;
  */
 public class HqlSerializer extends BaseSerializer<HqlSerializer>{
     
-    // TODO : refactor to DI style
-    private HqlOps ops = new HqlOps();
+    private final HqlOps ops;
             
     private boolean wrapElements = false;
+    
+    public HqlSerializer(HqlOps ops){
+        this.ops = ops;
+    }
     
     private HqlSerializer _append(String sep, List<? extends Expr<?>> expressions) {
         boolean first = true;
