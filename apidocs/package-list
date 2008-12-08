@@ -1,0 +1,8 @@
+com.mysema.query
+com.mysema.query.annotations
+com.mysema.query.apt
+com.mysema.query.apt.hibernate
+com.mysema.query.apt.util
+com.mysema.query.grammar
+com.mysema.query.grammar.types
+com.mysema.query.hibernate
