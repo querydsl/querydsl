@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.grammar.hql;
+package com.mysema.query.hql;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
-import com.mysema.query.hibernate.QueryUtil;
+import com.mysema.query.hql.QueryUtil;
 import com.mysema.query.util.CustomNamingStrategy;
 import com.mysema.query.util.Hibernate;
 import com.mysema.query.util.HibernateTestRunner;

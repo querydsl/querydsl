@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.grammar.hql;
+package com.mysema.query.hql;
 
 import static com.mysema.query.grammar.Grammar.div;
 import static com.mysema.query.grammar.Grammar.in;
@@ -25,9 +25,14 @@ import antlr.collections.AST;
 
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.JoinMeta;
-import com.mysema.query.grammar.hql.HqlDomain.Color;
-import com.mysema.query.grammar.hql.HqlDomain.DomesticCat;
-import com.mysema.query.grammar.hql.HqlDomain.Payment;
+import com.mysema.query.grammar.hql.QCatalog;
+import com.mysema.query.grammar.hql.QFamily;
+import com.mysema.query.grammar.hql.QFooDTO;
+import com.mysema.query.grammar.hql.QItem;
+import com.mysema.query.grammar.hql.QProduct;
+import com.mysema.query.hql.HqlDomain.Color;
+import com.mysema.query.hql.HqlDomain.DomesticCat;
+import com.mysema.query.hql.HqlDomain.Payment;
 
 
 

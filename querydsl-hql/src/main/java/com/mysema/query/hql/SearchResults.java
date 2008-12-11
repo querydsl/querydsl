@@ -4,7 +4,7 @@
  * 
  * originally developed in Bookmarks project
  */
-package com.mysema.query.hibernate;
+package com.mysema.query.hql;
 
 import java.util.Collections;
 import java.util.List;

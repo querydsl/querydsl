@@ -4,7 +4,7 @@
  * 
  * originally developed in Bookmarks project
  */
-package com.mysema.query.hibernate;
+package com.mysema.query.hql;
 
 /**
  * QueryModifiers provides.

@@ -3,9 +3,10 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.grammar.hql;
+package com.mysema.query.hql;
 
 import com.mysema.query.grammar.HqlQueryBase;
+import com.mysema.query.grammar.hql.*;
 
 /**
  * QueryBaseWithDomain provides

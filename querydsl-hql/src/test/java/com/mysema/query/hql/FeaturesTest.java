@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.grammar.hql;
+package com.mysema.query.hql;
 
 import static com.mysema.query.grammar.Grammar.add;
 import static com.mysema.query.grammar.Grammar.div;
@@ -22,6 +22,7 @@ import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlOps;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.HqlSerializer;
+import com.mysema.query.grammar.hql.*;
 import com.mysema.query.grammar.types.Custom;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.HqlTypes.Constructor;
@@ -215,8 +216,8 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     
     @Test
     public void testConstructors(){
-        Constructor<com.mysema.query.grammar.hql.HqlDomain.Cat> c = new Constructor<com.mysema.query.grammar.hql.HqlDomain.Cat>(com.mysema.query.grammar.hql.HqlDomain.Cat.class, cat.name);
-        toString("new "+com.mysema.query.grammar.hql.HqlDomain.Cat.class.getName()+"(cat.name)", c);
+        Constructor<com.mysema.query.hql.HqlDomain.Cat> c = new Constructor<com.mysema.query.hql.HqlDomain.Cat>(com.mysema.query.hql.HqlDomain.Cat.class, cat.name);
+        toString("new "+com.mysema.query.hql.HqlDomain.Cat.class.getName()+"(cat.name)", c);
         toString("new "+getClass().getName()+"$BookmarkDTO()", new _BookmarkDTO());
         toString("new "+getClass().getName()+"$BookmarkDTO(cat.name)", new _BookmarkDTO(cat.name));
     }

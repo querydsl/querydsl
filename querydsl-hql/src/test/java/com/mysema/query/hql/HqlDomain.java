@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.grammar.hql;
+package com.mysema.query.hql;
 
 
 import java.math.BigDecimal;

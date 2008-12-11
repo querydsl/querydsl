@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.hibernate;
+package com.mysema.query.hql;
 
 import java.util.Collection;
 import java.util.List;
