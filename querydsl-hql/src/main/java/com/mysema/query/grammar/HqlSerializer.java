@@ -39,16 +39,7 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
     public HqlSerializer(HqlOps ops){
         this.ops = ops;
     }
-    
-    private HqlSerializer _append(String sep, List<? extends Expr<?>> expressions) {
-        boolean first = true;
-        for (Expr<?> expr : expressions){
-            if (!first) builder.append(sep);
-            handle(expr); first = false;
-        }
-        return this;
-    }
-       
+           
     public void serialize(List<Expr<?>> select, List<JoinExpression<JoinMeta>> joins,
         Expr.Boolean where, List<Expr<?>> groupBy, Expr.Boolean having,
         List<OrderSpecifier<?>> orderBy, boolean forCountRow){
