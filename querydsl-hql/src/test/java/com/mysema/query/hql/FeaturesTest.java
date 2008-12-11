@@ -26,6 +26,7 @@ import com.mysema.query.grammar.hql.*;
 import com.mysema.query.grammar.types.Custom;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.HqlTypes.Constructor;
+import com.mysema.query.hql.*;
 
 
 /**
