@@ -30,6 +30,15 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
         return (A)this;
     }
     
+    protected final A _append(String sep, List<? extends Expr<?>> expressions) {
+        boolean first = true;
+        for (Expr<?> expr : expressions){
+            if (!first) builder.append(sep);
+            handle(expr); first = false;
+        }
+        return (A)this;
+    }
+    
     protected final String _toString(Expr<?> expr, boolean wrap) {
         StringBuilder old = builder;
         builder = new StringBuilder();
