@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.collections.iterators;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -58,7 +63,7 @@ public class MultiIteratorTest {
             for (Object b : row(10, 20, 30)){
                 for (Object c : row(100, 200, 300, 400)){
                     for (Object d : row(1000, 2000, 3000, 4000, 5000)){
-                        list.add(row(a,b,c, d));    
+                        list.add(row(a, b, c, d));    
                     }                    
                 }
             }
