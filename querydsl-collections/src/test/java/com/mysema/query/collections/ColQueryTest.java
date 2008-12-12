@@ -77,6 +77,20 @@ public class ColQueryTest {
         assertTrue(last.res.size() == 4 * 3);
     }
     
+    @Test
+    public void testJoins(){
+        // TODO
+        // innerJoin
+        // leftJoin
+    }
+    
+    @Test
+    public void testAggregation(){
+        // TODO
+        // groupBy
+        // having
+    }
+    
     private TestQuery query(){
         last = new TestQuery();
         return last;
