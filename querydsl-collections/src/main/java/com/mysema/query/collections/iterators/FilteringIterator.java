@@ -11,7 +11,8 @@ import org.apache.commons.collections15.iterators.FilterIterator;
 import org.codehaus.janino.ExpressionEvaluator;
 
 /**
- * FilteringIterator provides
+ * FilteringIterator is an Iterator implementation which filters items via
+ * the given ExpressionEvaluator
  *
  * @author tiwe
  * @version $Id$

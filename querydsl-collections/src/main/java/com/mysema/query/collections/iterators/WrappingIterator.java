@@ -6,7 +6,7 @@ package com.mysema.query.collections.iterators;
 import java.util.Iterator;
 
 /**
- * WrappingIt provides
+ * WrappingIt is an abstract adapting iterator
  *
  * @author tiwe
  * @version $Id$

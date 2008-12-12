@@ -31,7 +31,7 @@ import com.mysema.query.serialization.BaseSerializer;
 
 
 /**
- * HqlSerializer provides.
+ * JavaSerializer is a Serializer implementation for the Java language 
  * 
  * @author tiwe
  * @version $Id$

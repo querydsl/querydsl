@@ -3,7 +3,7 @@ package com.mysema.query.grammar.types;
 import com.mysema.query.grammar.types.Expr;
 
 /**
- * ObjectArray provides
+ * ObjectArray represents an Object array expression
  * 
  * @author tiwe
  * @version $Id$

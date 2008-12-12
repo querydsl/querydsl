@@ -6,7 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * MultiIterator provides
+ * MultiIterator provides a cartesian view on the given iterators
+ * 
+ * <pre>
+ * e.g. (1,2) and (100, 200, 300)
+ * are expanded to (1, 100) (1, 200) (1, 300) (2, 100) (2, 200) (2, 300) 
+ * </pre>
  *
  * @author tiwe
  * @version $Id$

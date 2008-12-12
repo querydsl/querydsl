@@ -18,6 +18,7 @@ import com.mysema.query.grammar.ColOps;
 import com.mysema.query.grammar.JavaSerializer;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.ObjectArray;
+import com.mysema.query.grammar.types.Expr.Entity;
 import com.mysema.query.serialization.BaseOps;
 
 
@@ -116,5 +117,21 @@ public class ColQuery<S extends ColQuery<S>> extends QueryBase<Object,S>{
             }            
         };               
     }  
+    
+    public S groupBy(Expr<?>... o) {
+        throw new UnsupportedOperationException();
+    }
+        
+    public S having(Expr.Boolean o) {
+        throw new UnsupportedOperationException();
+    }
+    
+    public S innerJoin(Entity<?> o) {
+        throw new UnsupportedOperationException();
+    }
+    
+    public S fullJoin(Entity<?> o) {
+        throw new UnsupportedOperationException();
+    }
     
 }

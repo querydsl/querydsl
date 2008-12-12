@@ -10,7 +10,7 @@ import org.codehaus.janino.ExpressionEvaluator;
 
 
 /**
- * ProjectingIterator provides
+ * ProjectingIterator is a projecting iterator, which projects a 
  *
  * @author tiwe
  * @version $Id$

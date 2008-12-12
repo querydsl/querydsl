@@ -6,7 +6,7 @@ package com.mysema.query.collections.iterators;
 import java.util.Iterator;
 
 /**
- * ItBase provides
+ * IteratorBase is an abstract base class for iterators
  *
  * @author tiwe
  * @version $Id$
