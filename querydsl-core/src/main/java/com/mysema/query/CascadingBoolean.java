@@ -9,7 +9,7 @@ import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.types.Expr;
 
 /**
- * CascadingBoolean provides.
+ * CascadingBoolean is a cascading builder for Boolean expressions
  * 
  * @author tiwe
  * @version $Id$

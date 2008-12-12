@@ -15,7 +15,7 @@ import com.mysema.query.grammar.Order;
 import com.mysema.query.grammar.OrderSpecifier;
 
 /**
- * InternalGrammar provides
+ * InternalGrammar is the internal grammar for Expr instances
  *
  * @author tiwe
  * @version $Id$

@@ -8,7 +8,7 @@ package com.mysema.query.grammar.types;
 import com.mysema.query.grammar.Ops.Op;
 
 /**
- * Factory provides.
+ * Factory provides factory methods for various needs
  * 
  * @author tiwe
  * @version $Id$

@@ -6,7 +6,7 @@
 package com.mysema.query.grammar;
 
 /**
- * Order provides.
+ * Order represents ascending and descending order
  * 
  * @author tiwe
  * @version $Id$

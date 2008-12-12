@@ -9,7 +9,7 @@ import com.mysema.query.grammar.types.Expr;
 
 
 /**
- * OrderSpecifier provides.
+ * OrderSpecifier represents an order by element in a Query instance
  * 
  * @param <A>  * 
  * @author tiwe

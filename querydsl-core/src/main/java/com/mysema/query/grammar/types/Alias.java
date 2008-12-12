@@ -6,7 +6,7 @@
 package com.mysema.query.grammar.types;
 
 /**
- * Alias provides.
+ * Alias represents alias expressions
  * 
  * @author tiwe
  * @version $Id$

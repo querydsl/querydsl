@@ -8,7 +8,7 @@ package com.mysema.query.grammar.types;
 import com.mysema.query.grammar.OrderSpecifier;
 
 /**
- * Expr provides.
+ * Expr represents a general typed expression in a Query instance
  * 
  * @author tiwe
  * @version $Id$

@@ -10,7 +10,7 @@ import com.mysema.query.grammar.Ops.Op;
 
 
 /**
- * Operation provides.
+ * Operation represents an operation with operator and arguments
  * 
  * @author tiwe
  * @version $Id$

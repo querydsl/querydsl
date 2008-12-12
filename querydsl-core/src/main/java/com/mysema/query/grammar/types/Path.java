@@ -13,7 +13,7 @@ import static com.mysema.query.grammar.types.PathMetadata.forVariable;
 
 
 /**
- * Path provides.
+ * Path represents a path expression
  * 
  * @author tiwe
  * @version $Id$

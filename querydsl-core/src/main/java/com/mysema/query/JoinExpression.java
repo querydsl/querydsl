@@ -8,7 +8,7 @@ package com.mysema.query;
 import com.mysema.query.grammar.types.Expr;
 
 /**
- * JoinExpression provides.
+ * JoinExpression represents a join element in a Query instance
  * 
  * @author tiwe
  * @version $Id$
