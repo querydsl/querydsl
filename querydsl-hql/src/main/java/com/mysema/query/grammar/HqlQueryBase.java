@@ -13,7 +13,7 @@ import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.types.Expr.Entity;
 
 /**
- * HqlQueryBase provides.
+ * HqlQueryBase is a base Query class for HQL
  * 
  * @author tiwe
  * @version $Id$

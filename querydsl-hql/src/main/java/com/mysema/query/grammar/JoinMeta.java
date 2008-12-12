@@ -6,7 +6,7 @@
 package com.mysema.query.grammar;
 
 /**
- * JoinMeta provides
+ * JoinMeta provied join metadata in the form of flags
  *
  * @author tiwe
  * @version $Id$

@@ -6,7 +6,7 @@
 package com.mysema.query.grammar.types;
 
 /**
- * Custom provides.
+ * Custom provides base types for custom expresions with integrated HQL based serialization patterns
  * 
  * @author tiwe
  * @version $Id$

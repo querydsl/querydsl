@@ -8,7 +8,7 @@ package com.mysema.query.grammar.types;
 import com.mysema.query.grammar.Ops.Op;
 
 /**
- * Quant provides.
+ * Quant provides expressions for quantification.
  * 
  * @author tiwe
  * @version $Id$

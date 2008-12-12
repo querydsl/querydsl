@@ -11,7 +11,7 @@ import com.mysema.query.grammar.JoinMeta;
 import com.mysema.query.grammar.OrderSpecifier;
 
 /**
- * HqlTypes provides.
+ * HqlTypes provides general HQL specific types
  * 
  * @author tiwe
  * @version $Id$
@@ -21,6 +21,7 @@ public class HqlTypes {
     /**
      * The Class Constructor.
      */
+    // TODO : generalize ?!?
     public static class Constructor<D> extends Expr<D>{
         private final Expr<?>[] args;
         public Constructor(Class<D> type, Expr<?>... args){

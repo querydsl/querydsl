@@ -25,7 +25,7 @@ import com.mysema.query.serialization.BaseSerializer;
 
 
 /**
- * HqlSerializer provides.
+ * HqlSerializer serializes querydsl expressions into HQL syntax.
  * 
  * @author tiwe
  * @version $Id$
