@@ -18,16 +18,16 @@ import org.codehaus.janino.CompileException;
 import org.codehaus.janino.ExpressionEvaluator;
 import org.codehaus.janino.Parser.ParseException;
 import org.codehaus.janino.Scanner.ScanException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.ObjectArray;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.Alias.Simple;
 import com.mysema.query.grammar.types.Alias.ToPath;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
-import com.mysema.query.serialization.BaseOps;
 import com.mysema.query.serialization.BaseSerializer;
+import com.mysema.query.serialization.OperationPatterns;
 
 
 /**
@@ -38,17 +38,12 @@ import com.mysema.query.serialization.BaseSerializer;
  */
 public class JavaSerializer extends BaseSerializer<JavaSerializer>{
             
-    private final BaseOps ops;
+    private static final Logger logger = LoggerFactory.getLogger(JavaSerializer.class);
     
-    public JavaSerializer(BaseOps ops){
-        this.ops = ops;
+    public JavaSerializer(OperationPatterns ops){
+        super(ops);
     }
-    
-    protected void visit(ObjectArray oa) {
-        _append("new Object[]{");
-        _append(", ",Arrays.asList(oa.getArgs()))._append("}");
-    }
-    
+        
     @Override
     protected void visit(Path<?> path) {
         PathType pathType = path.getMetadata().getPathType();
@@ -82,31 +77,17 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
     }
 
     @Override
-    protected void visit(Simple<?> expr) {
-        // TODO Auto-generated method stub        
+    protected void visit(Simple<?> expr) {        
     }
     
     @Override
-    protected void visit(ToPath expr) {
-        // TODO Auto-generated method stub        
-    }
-    
-    protected void visitOperation(Op<?> operator, Expr<?>... args) {
-        String pattern = ops.getPattern(operator);
-        if (pattern == null)
-            throw new IllegalArgumentException("Got no operation pattern for " + operator);
-        Object[] strings = new String[args.length];
-        for (int i = 0; i < strings.length; i++){
-            strings[i] = _toString(args[i], true);
-        }
-        _append(String.format(pattern, strings));
+    protected void visit(ToPath expr) {          
     }
     
     public ExpressionEvaluator createExpressionEvaluator(List<Expr<?>> sources, Class<?> targetType) throws CompileException, ParseException, ScanException{
         if (targetType == null) throw new IllegalArgumentException("targetType was null");
         String expr = builder.toString();
-        System.out.println(expr);
-        
+                
         final Object[] constArray = constants.toArray();
         Class<?>[] types = new Class<?>[constArray.length + sources.size()];
         String[] names = new String[constArray.length + sources.size()];
@@ -120,6 +101,8 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
             types[off + i] = sources.get(i).getType();
             names[off + i] = ((Path<?>)sources.get(i)).getMetadata().getExpression().toString();    
         }         
+        
+        logger.info(expr + " "+Arrays.asList(names) +" "+ Arrays.asList(types));
         
         return new ExpressionEvaluator(expr, targetType, names, types){
             @Override
