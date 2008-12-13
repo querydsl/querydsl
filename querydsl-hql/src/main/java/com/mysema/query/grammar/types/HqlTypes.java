@@ -19,19 +19,6 @@ import com.mysema.query.grammar.OrderSpecifier;
 public class HqlTypes {
     
     /**
-     * The Class Constructor.
-     */
-    // TODO : generalize ?!?
-    public static class Constructor<D> extends Expr<D>{
-        private final Expr<?>[] args;
-        public Constructor(Class<D> type, Expr<?>... args){
-            super(type);
-            this.args = args;
-        }
-        public Expr<?>[] getArgs(){ return args; }
-    }
-    
-    /**
      * The Class CountExpression.
      */
     public static class CountExpression extends Expr.Comparable<Long>{

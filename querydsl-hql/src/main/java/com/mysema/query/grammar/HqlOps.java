@@ -6,15 +6,13 @@
 package com.mysema.query.grammar;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
-import com.mysema.query.serialization.BaseOps;
+import com.mysema.query.serialization.OperationPatterns;
 
 /**
  * HqlOps provides operator patterns for HQL serialization
@@ -22,7 +20,7 @@ import com.mysema.query.serialization.BaseOps;
  * @author tiwe
  * @version $Id$
  */
-public class HqlOps  extends BaseOps {
+public class HqlOps extends OperationPatterns {
     
     public static final Set<Op<?>> wrapCollectionsForOp;
     
@@ -37,8 +35,6 @@ public class HqlOps  extends BaseOps {
         wrapCollectionsForOp = Collections.unmodifiableSet(ops);
     }
     
-    private final Map<Op<?>,Integer> precedence = new HashMap<Op<?>,Integer>();
-    
     public HqlOps(){            
         // boolean
         add(Ops.AND, "%s and %s",36);
@@ -50,20 +46,8 @@ public class HqlOps  extends BaseOps {
         // comparison
         add(Ops.BETWEEN, "%s between %s and %s",30);
         add(Ops.NOTBETWEEN, "%s not between %s and %s",30);
-        add(Ops.GOE, "%s >= %s",20);
-        add(Ops.GT, "%s > %s",21);
-        add(Ops.LOE, "%s <= %s",22);
-        add(Ops.LT, "%s < %s",23);
-           
-        add(Ops.AFTER, "%s > %s",21);
-        add(Ops.BEFORE, "%s < %s",23);
         
         // numeric
-        add(Ops.ADD, "%s + %s",13);        
-        add(Ops.DIV, "%s / %s",8);
-        add(Ops.MOD, "%s % %s",10);
-        add(Ops.MULT,"%s * %s",7);
-        add(Ops.SUB, "%s - %s",12);
         add(Ops.SQRT, "sqrt(%s)");
         
         // numeric aggregates
@@ -72,16 +56,10 @@ public class HqlOps  extends BaseOps {
         add(OpNumberAgg.MIN, "min(%s)");
         
         // various
-        add(Ops.EQ_PRIMITIVE, "%s = %s",18);
-        add(Ops.EQ_OBJECT, "%s = %s",18);
-        add(Ops.ISTYPEOF, "%s.class = %s");
-        add(Ops.NE_PRIMITIVE, "%s != %s",25);
-        add(Ops.NE_OBJECT, "%s != %s",25);
         add(Ops.IN, "%s in %s");
         add(Ops.NOTIN, "%s not in %s");        
         add(Ops.ISNULL, "%s is null",26);
         add(Ops.ISNOTNULL, "%s is not null",26);
-//        add(Op.SIZE, "size(%s)");
         
         // string
         add(Ops.CONCAT, "%s || %s",37);
@@ -131,28 +109,7 @@ public class HqlOps  extends BaseOps {
         add(HqlPathType.LISTINDICES, "indices(%s)");
         add(HqlPathType.MAPINDICES, "indices(%s)");
     }
-    
-    private void add(Op<?> op, java.lang.String pattern){
-        patterns.put(op, pattern);             
-    }
-    
-    private void add(Op<?> op, java.lang.String pattern, int pre){
-        patterns.put(op, pattern);
-        precedence.put(op,pre);     
-    }
-    
-    public java.lang.String getPattern(Op<?> op){
-        return patterns.get(op);
-    }
-    
-    public int getPrecedence(Op<?> operator) {
-        if (precedence.containsKey(operator)){
-            return precedence.get(operator);
-        }else{
-            return -1;
-        }
-    }
-    
+        
     /**
      * The Interface OpHql.
      */

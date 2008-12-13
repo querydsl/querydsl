@@ -9,14 +9,16 @@ import static com.mysema.query.grammar.types.PathMetadata.LISTVALUE_CONSTANT;
 import static com.mysema.query.grammar.types.PathMetadata.PROPERTY;
 import static com.mysema.query.grammar.types.PathMetadata.VARIABLE;
 
-import java.util.Arrays;
 import java.util.List;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.Ops.Op;
-import com.mysema.query.grammar.types.*;
-import com.mysema.query.grammar.types.HqlTypes.Constructor;
+import com.mysema.query.grammar.types.Alias;
+import com.mysema.query.grammar.types.Custom;
+import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.Path;
+import com.mysema.query.grammar.types.Quant;
 import com.mysema.query.grammar.types.HqlTypes.CountExpression;
 import com.mysema.query.grammar.types.HqlTypes.DistinctPath;
 import com.mysema.query.grammar.types.HqlTypes.SubQuery;
@@ -32,12 +34,10 @@ import com.mysema.query.serialization.BaseSerializer;
  */
 public class HqlSerializer extends BaseSerializer<HqlSerializer>{
     
-    private final HqlOps ops;
-            
     private boolean wrapElements = false;
-    
+        
     public HqlSerializer(HqlOps ops){
-        this.ops = ops;
+        super(ops);
     }
            
     public void serialize(List<Expr<?>> select, List<JoinExpression<JoinMeta>> joins,
@@ -116,11 +116,6 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         handle(expr.getFrom())._append(" as ").visit(expr.getTo());
     }
     
-    protected void visit(Constructor<?> expr){
-        _append("new ")._append(expr.getType().getName())._append("(");
-        _append(", ",Arrays.asList(expr.getArgs()))._append(")");
-    }
-
     protected void visit(CountExpression expr) {
         if (expr.getTarget() == null){
             _append("count(*)");    
@@ -224,25 +219,16 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
             md.getOrderBy(), false);
         _append(")");
     }
-
-    protected void visitOperation(Op<?> operator, Expr<?>... args) {
+    
+    protected void visitOperation(Op<?> operator, Expr<?>... args) {    
         boolean old = wrapElements;
-        wrapElements = HqlOps.wrapCollectionsForOp.contains(operator);
-        String pattern = ops.getPattern(operator);
-        if (pattern == null)
-            throw new IllegalArgumentException("Got no operation pattern for " + operator);
-        Object[] strings = new String[args.length];
-        int precedence = ops.getPrecedence(operator);
-        for (int i = 0; i < strings.length; i++){
-            boolean wrap = false;
-            if (args[i] instanceof Operation){
-                // wrap if outer operator precedes
-                wrap = precedence < ops.getPrecedence(((Operation<?,?>)args[i]).getOperator());
-            }
-            strings[i] = _toString(args[i],wrap);
-        }
-        _append(String.format(pattern, strings));
+        wrapElements = HqlOps.wrapCollectionsForOp.contains(operator);    
+        // 
+        super.visitOperation(operator, args);
+        //
         wrapElements = old;
     }
+    
+    
 
 }

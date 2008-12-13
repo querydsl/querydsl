@@ -46,11 +46,13 @@ public class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<JoinMeta,
         return serializer.toString();
     }
     
+    @SuppressWarnings("unchecked")
     public A innerJoin(JoinMeta meta, Entity<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.INNERJOIN, o, meta));
         return (A) this;
     }
     
+    @SuppressWarnings("unchecked")
     public A leftJoin(JoinMeta meta, Entity<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.LEFTJOIN, o, meta));
         return (A) this;
