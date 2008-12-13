@@ -40,7 +40,7 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
     
     private final Metadata metadata = new Metadata();
     
-    public A from(Entity<?>... o) {
+    public A from(Expr.Entity<?>... o) {
         for (Entity<?> expr : o){
             joins.add(new JoinExpression<JoinMeta>(JoinType.DEFAULT,expr));
         }

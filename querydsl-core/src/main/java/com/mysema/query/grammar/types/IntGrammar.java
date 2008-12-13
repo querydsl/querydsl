@@ -21,7 +21,13 @@ import com.mysema.query.grammar.OrderSpecifier;
  * @version $Id$
  */
 class IntGrammar{
-   
+    
+    private static boolean isPrimitive(Class<? extends Object> class1) {
+        if (class1 == null) return false;
+        return class1.isPrimitive() || Number.class.isAssignableFrom(class1)
+            || Boolean.class.equals(class1);
+    }
+    
     static <A extends Comparable<A>> Expr.Boolean after(Expr<A> left,
             A right) {
         // NOTE : signature is for Comparables to support other than Java's date types
@@ -106,16 +112,15 @@ class IntGrammar{
     }
         
     static <A> Expr.Boolean eq(Expr<A> left, A right) {
-        if (Number.class.isAssignableFrom(right.getClass()) || Boolean.class.isAssignableFrom(right.getClass())){
+        if (isPrimitive(left.getType())){
             return createBoolean(Ops.EQ_PRIMITIVE, left, createConstant(right));
         }else{
             return createBoolean(Ops.EQ_OBJECT, left, createConstant(right));
         }        
     }
-
+    
     static <A> Expr.Boolean eq(Expr<A> left, Expr<? super A> right) {
-        if (left.getType() != null && (Number.class.isAssignableFrom(left.getType()) ||
-            Boolean.class.equals(left.getType()))){
+        if (isPrimitive(left.getType())){
             return createBoolean(Ops.EQ_PRIMITIVE, left, right);
         }else{
             return createBoolean(Ops.EQ_OBJECT, left, right);
@@ -186,9 +191,7 @@ class IntGrammar{
     }
         
     static <A> Expr.Boolean ne(Expr<A> left, A right) {
-//        return createBoolean(Ops.NE, left, createConstant(right));
-        if (Number.class.isAssignableFrom(right.getClass()) || 
-            Boolean.class.equals(right.getClass())){
+        if (isPrimitive(left.getType())){
             return createBoolean(Ops.NE_PRIMITIVE, left, createConstant(right));
         }else{
             return createBoolean(Ops.NE_OBJECT, left, createConstant(right));
@@ -196,9 +199,7 @@ class IntGrammar{
     }
     
     static <A> Expr.Boolean ne(Expr<A> left, Expr<? super A> right) {
-//      return createBoolean(Ops.NE, left, right);
-        if (left.getType() != null && (Number.class.isAssignableFrom(left.getType()) ||
-            Boolean.class.equals(left.getType()))){
+        if (isPrimitive(left.getType())){
             return createBoolean(Ops.NE_PRIMITIVE, left, right);
         }else{
             return createBoolean(Ops.NE_OBJECT, left, right);
