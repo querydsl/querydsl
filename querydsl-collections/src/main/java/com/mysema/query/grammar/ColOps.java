@@ -26,9 +26,10 @@ public class ColOps extends BaseOps {
         patterns.put(Ops.BETWEEN, functions+".between(%s,%s,%s)");
         patterns.put(Ops.NOTBETWEEN, "!"+functions+".between(%s,%s,%s)");
         patterns.put(Ops.SQRT, "Math.sqrt(%s)");
+                
+        patterns.put(Ops.EQ_OBJECT, "%s.equals(%s)");      
+        patterns.put(Ops.NE_OBJECT, "!%s.equals(%s)");  
         
-        patterns.put(Ops.EQ, "%s.equals(%s)");
-        patterns.put(Ops.NE, "!%s.equals(%s)");  
         
         patterns.put(Ops.ISTYPEOF, "%s.class.equals(%s)");
         patterns.put(Ops.IN, "%2$s.contains(%1$s)"); 
