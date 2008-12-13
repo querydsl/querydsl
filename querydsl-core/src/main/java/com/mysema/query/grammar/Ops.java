@@ -19,12 +19,14 @@ public interface Ops {
     public static class Op<RT>{}
     
     // general
-    Op<java.lang.Boolean> EQ = new Op<java.lang.Boolean>();
+    Op<java.lang.Boolean> EQ_PRIMITIVE = new Op<java.lang.Boolean>();
+    Op<java.lang.Boolean> EQ_OBJECT = new Op<java.lang.Boolean>();
     Op<java.lang.Boolean> IN = new Op<java.lang.Boolean>();
     Op<java.lang.Boolean> ISNOTNULL = new Op<java.lang.Boolean>();
     Op<java.lang.Boolean> ISNULL = new Op<java.lang.Boolean>();
     Op<java.lang.Boolean> ISTYPEOF = new Op<java.lang.Boolean>();
-    Op<java.lang.Boolean> NE = new Op<java.lang.Boolean>();
+    Op<java.lang.Boolean> NE_PRIMITIVE = new Op<java.lang.Boolean>();
+    Op<java.lang.Boolean> NE_OBJECT = new Op<java.lang.Boolean>();
     Op<java.lang.Boolean> NOTIN =  new Op<java.lang.Boolean>();
     
     // Boolean

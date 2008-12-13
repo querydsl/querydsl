@@ -47,8 +47,10 @@ public class BaseOps  {
         patterns.put(Ops.SUB, "%s - %s");
         
         // various
-        patterns.put(Ops.EQ, "%s == %s");
-        patterns.put(Ops.NE, "%s != %s");        
+        patterns.put(Ops.EQ_PRIMITIVE, "%s == %s");
+        patterns.put(Ops.EQ_OBJECT, "%s == %s");
+        patterns.put(Ops.NE_PRIMITIVE, "%s != %s");        
+        patterns.put(Ops.NE_OBJECT, "%s != %s");
         patterns.put(Ops.ISNULL, "%s == null");
         patterns.put(Ops.ISNOTNULL, "%s != null");
         

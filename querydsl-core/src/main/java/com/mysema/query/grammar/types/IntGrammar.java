@@ -106,11 +106,20 @@ class IntGrammar{
     }
         
     static <A> Expr.Boolean eq(Expr<A> left, A right) {
-        return createBoolean(Ops.EQ, left, createConstant(right));
+        if (Number.class.isAssignableFrom(right.getClass()) || Boolean.class.isAssignableFrom(right.getClass())){
+            return createBoolean(Ops.EQ_PRIMITIVE, left, createConstant(right));
+        }else{
+            return createBoolean(Ops.EQ_OBJECT, left, createConstant(right));
+        }        
     }
 
     static <A> Expr.Boolean eq(Expr<A> left, Expr<? super A> right) {
-        return createBoolean(Ops.EQ, left, right);
+        if (left.getType() != null && (Number.class.isAssignableFrom(left.getType()) ||
+            Boolean.class.equals(left.getType()))){
+            return createBoolean(Ops.EQ_PRIMITIVE, left, right);
+        }else{
+            return createBoolean(Ops.EQ_OBJECT, left, right);
+        }    
     }
 
     static <A extends Comparable<A>> Expr.Boolean goe(Expr<A> left,
@@ -177,11 +186,23 @@ class IntGrammar{
     }
         
     static <A> Expr.Boolean ne(Expr<A> left, A right) {
-        return createBoolean(Ops.NE, left, createConstant(right));
+//        return createBoolean(Ops.NE, left, createConstant(right));
+        if (Number.class.isAssignableFrom(right.getClass()) || 
+            Boolean.class.equals(right.getClass())){
+            return createBoolean(Ops.NE_PRIMITIVE, left, createConstant(right));
+        }else{
+            return createBoolean(Ops.NE_OBJECT, left, createConstant(right));
+        }   
     }
     
     static <A> Expr.Boolean ne(Expr<A> left, Expr<? super A> right) {
-        return createBoolean(Ops.NE, left, right);
+//      return createBoolean(Ops.NE, left, right);
+        if (left.getType() != null && (Number.class.isAssignableFrom(left.getType()) ||
+            Boolean.class.equals(left.getType()))){
+            return createBoolean(Ops.NE_PRIMITIVE, left, right);
+        }else{
+            return createBoolean(Ops.NE_OBJECT, left, right);
+        }    
     } 
     
     static <A extends Comparable<A>> Expr.Boolean notBetween(Expr<A> left,
