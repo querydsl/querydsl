@@ -36,15 +36,10 @@
       <artifactId>querydsl-core</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
-    <dependency>
-      <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-annotations</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>    
-
+ 
     <!-- test -->
     
-    <!-- TODO : replace MySQL dependency with something else -->
+    <!-- TODO : replace MySQL dependency with embedded database -->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -101,12 +96,12 @@
               <nocompile>true</nocompile>
               <A>
                 -AnamePrefix=Q,
-                -AdestPackage=com.mysema.query.grammar.hql,
-                -AdtoPackage=com.mysema.query.grammar.hql
+                -AdestPackage=com.mysema.query.hql,
+                -AdtoPackage=com.mysema.query.hql
               </A>
               <testIncludes>
                 <testInclude>
-                  com/mysema/query/grammar/hql/HqlDomain*.java
+                  com/mysema/query/hql/HqlDomain*.java
                 </testInclude>
               </testIncludes>
               <showWarnings>true</showWarnings>

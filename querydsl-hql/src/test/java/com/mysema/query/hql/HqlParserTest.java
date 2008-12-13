@@ -25,11 +25,6 @@ import antlr.collections.AST;
 
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.JoinMeta;
-import com.mysema.query.grammar.hql.QCatalog;
-import com.mysema.query.grammar.hql.QFamily;
-import com.mysema.query.grammar.hql.QFooDTO;
-import com.mysema.query.grammar.hql.QItem;
-import com.mysema.query.grammar.hql.QProduct;
 import com.mysema.query.hql.HqlDomain.Color;
 import com.mysema.query.hql.HqlDomain.DomesticCat;
 import com.mysema.query.hql.HqlDomain.Payment;

@@ -6,8 +6,6 @@
 package com.mysema.query.hql;
 
 import com.mysema.query.grammar.HqlQueryBase;
-import com.mysema.query.grammar.hql.*;
-import com.mysema.query.hql.*;
 
 /**
  * QueryBaseWithDomain provides

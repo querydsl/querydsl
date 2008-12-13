@@ -72,9 +72,11 @@ public class HqlOps  extends BaseOps {
         add(OpNumberAgg.MIN, "min(%s)");
         
         // various
-        add(Ops.EQ, "%s = %s",18);
+        add(Ops.EQ_PRIMITIVE, "%s = %s",18);
+        add(Ops.EQ_OBJECT, "%s = %s",18);
         add(Ops.ISTYPEOF, "%s.class = %s");
-        add(Ops.NE, "%s != %s",25);
+        add(Ops.NE_PRIMITIVE, "%s != %s",25);
+        add(Ops.NE_OBJECT, "%s != %s",25);
         add(Ops.IN, "%s in %s");
         add(Ops.NOTIN, "%s not in %s");        
         add(Ops.ISNULL, "%s is null",26);
