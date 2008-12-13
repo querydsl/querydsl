@@ -25,12 +25,14 @@ import com.sun.mirror.declaration.AnnotationTypeDeclaration;
  */
 public class APTFactory implements AnnotationProcessorFactory {
 
-    static final String superClass = "javax.persistence.MappedSuperclass",
-                        entity = "javax.persistence.Entity",
-                        dto = "com.mysema.query.annotations.DTO",
-                        embeddable = "javax.persistence.Embeddable";
+    static final String jpaSuperClass = "javax.persistence.MappedSuperclass",
+                        jpaEntity = "javax.persistence.Entity",                        
+                        jpaEmbeddable = "javax.persistence.Embeddable",
+                        qdEntity= "com.mysema.query.annotations.Domain",
+                        qdDto = "com.mysema.query.annotations.DTO";
 
-    static final Collection<String> supportedAnnotations = Arrays.asList(superClass, entity, dto, embeddable);
+    static final Collection<String> supportedAnnotations = 
+        Arrays.asList(jpaSuperClass, jpaEntity, jpaEmbeddable, qdEntity, qdDto);
 
     static final Collection<String> supportedOptions = Collections.emptySet();
 
@@ -46,7 +48,7 @@ public class APTFactory implements AnnotationProcessorFactory {
             Set<AnnotationTypeDeclaration> atds,
             AnnotationProcessorEnvironment env) {
         try {
-            return new GeneralProcessor(env, superClass, entity, dto, embeddable);
+            return new GeneralProcessor(env, jpaSuperClass, jpaEntity, qdDto, jpaEmbeddable);
         } catch (IOException e) {
             String error = "Caught " + e.getClass().getName();
             throw new RuntimeException(error, e);
