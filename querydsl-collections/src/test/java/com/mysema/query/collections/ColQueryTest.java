@@ -55,7 +55,13 @@ public class ColQueryTest {
         }
         MiniApi.select(cats, cat.kittens.size().gt(0)).iterator();
         MiniApi.select(cats, cat.mate.isnotnull()).iterator();
-        MiniApi.select(cats, cat.alive.and(cat.birthdate.isnotnull())).iterator();        
+        MiniApi.select(cats, cat.alive.and(cat.birthdate.isnotnull())).iterator();       
+        MiniApi.select(cats, cat.bodyWeight.lt(cat.weight)).iterator();
+        MiniApi.select(cats, cat.color.isnull().or(cat.eyecolor.eq(cat.color))).iterator();
+        MiniApi.select(cats, cat.bodyWeight.between(1, 2)).iterator();
+        
+        // from where order
+        MiniApi.select(cats, cat.name.eq("Kitty"), cat.name.asc()).iterator();
     }
     
     @Test

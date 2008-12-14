@@ -56,7 +56,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
             exprAsString = path.getMetadata().getExpression().toString();
         }else if (pathType == PROPERTY ){
             String prefix = "get";
-            if (((Expr)path).getType() != null && ((Expr)path).getType().equals(Boolean.class)){
+            if (((Expr<?>)path).getType() != null && ((Expr<?>)path).getType().equals(Boolean.class)){
                 prefix = "is";    
             }
             exprAsString = prefix+StringUtils.capitalize(path.getMetadata().getExpression().toString())+"()";

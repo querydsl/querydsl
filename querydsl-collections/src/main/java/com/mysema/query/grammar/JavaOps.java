@@ -12,7 +12,7 @@ import com.mysema.query.grammar.types.PathMetadata.PathType;
 import com.mysema.query.serialization.OperationPatterns;
 
 /**
- * ColOps extends BaseOps to add Java syntax specific operation templates.
+ * JavaOps extends OperationPatterns to add Java syntax specific operation templates.
  * 
  * @author tiwe
  * @version $Id$

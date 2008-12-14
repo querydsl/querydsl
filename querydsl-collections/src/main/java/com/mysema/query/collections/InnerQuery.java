@@ -26,7 +26,7 @@ import com.mysema.query.grammar.types.Path;
 import com.mysema.query.serialization.OperationPatterns;
 
 /**
- * InnerQuery provides
+ * InnerQuery is used internally in ColQuery as the backend Query instance
  * 
  * @author tiwe
  * @version $Id$
@@ -61,9 +61,7 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
         return target;
     }
 
-    private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
-        // order by
-        
+    private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {        
         // from
         List<Expr<?>> sources = new ArrayList<Expr<?>>();
         MultiIterator multiIt = new MultiIterator();
