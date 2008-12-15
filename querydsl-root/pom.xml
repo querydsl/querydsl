@@ -10,6 +10,7 @@
   <version>0.2.8-SNAPSHOT</version>
   <name>Querydsl</name>
   <description>parent project for querydsl modules</description>
+  <url>http://source.mysema.com/display/querydsl</url>
   <parent>
     <groupId>com.mysema.home</groupId>
     <artifactId>mysema-source</artifactId>
@@ -34,6 +35,11 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
+  <organization>
+    <name>Mysema Ltd</name>
+    <url>http://www.mysema.com</url>
+  </organization>
 
   <developers>
     <developer>
