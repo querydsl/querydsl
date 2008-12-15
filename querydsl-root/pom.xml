@@ -72,22 +72,6 @@
     </developer>
   </developers>
 
-  <distributionManagement>
-    <repository>
-      <id>source-maven-releases</id>
-      <url>scp://source.mysema.com/var/www/source/maven2/releases</url>
-    </repository>
-    <snapshotRepository>
-      <uniqueVersion>false</uniqueVersion>
-      <id>source-maven-snapshots</id>
-      <url>scp://source.mysema.com/var/www/source/maven2/snapshots</url>
-    </snapshotRepository>
-    <site>
-      <id>website</id>
-      <url>scp://source.mysema.com/var/www/source/projects/querydsl-root</url>
-    </site>
-  </distributionManagement>
-
   <licenses>
     <license>
       <name>GNU Lesser General Public License, Version 2.1</name>
