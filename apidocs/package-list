@@ -1,0 +1,11 @@
+com.mysema.query
+com.mysema.query.annotations
+com.mysema.query.apt
+com.mysema.query.apt.general
+com.mysema.query.apt.util
+com.mysema.query.collections
+com.mysema.query.collections.iterators
+com.mysema.query.grammar
+com.mysema.query.grammar.types
+com.mysema.query.hql
+com.mysema.query.serialization
