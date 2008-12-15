@@ -12,6 +12,7 @@ import java.util.List;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.ObjectArray;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.serialization.OperationPatterns;
 
@@ -34,6 +35,13 @@ public class ColQuery<S extends ColQuery<S>> {
     public ColQuery(OperationPatterns ops) {
         query = new InnerQuery(ops);
     }
+    
+    private <A> A[] asArray(A[] target, A first, A second, A... rest) {
+        target[0] = first;
+        target[1] = second;
+        System.arraycopy(rest, 0, target, 2, rest.length);
+        return target;
+    }
 
     public <A> S from(Path<A> entity, A first, A... rest) {
         List<A> list = new ArrayList<A>(rest.length + 1);
@@ -49,7 +57,8 @@ public class ColQuery<S extends ColQuery<S>> {
     }
     
     public Iterable<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
-        return query.iterate(e1, e2, rest);
+        final Expr<?>[] full = asArray(new Expr[rest.length + 2], e1, e2, rest);
+        return query.iterate(new ObjectArray(full));
     }
     
     public <RT> Iterable<RT> iterate(Expr<RT> projection) {
@@ -67,5 +76,7 @@ public class ColQuery<S extends ColQuery<S>> {
         query.where(o);
         return (S)this;
     }
+    
+    
 
 }

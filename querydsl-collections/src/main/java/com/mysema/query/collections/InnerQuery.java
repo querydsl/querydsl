@@ -21,7 +21,6 @@ import com.mysema.query.collections.iterators.MultiIterator;
 import com.mysema.query.collections.iterators.ProjectingIterator;
 import com.mysema.query.grammar.JavaSerializer;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.ObjectArray;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.serialization.OperationPatterns;
 
@@ -54,13 +53,6 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
         return this;
     }
 
-    private <A> A[] asArray(A[] target, A first, A second, A... rest) {
-        target[0] = first;
-        target[1] = second;
-        System.arraycopy(rest, 0, target, 2, rest.length);
-        return target;
-    }
-
     private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {        
         // from
         List<Expr<?>> sources = new ArrayList<Expr<?>>();
@@ -84,19 +76,6 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
                 projection).createExpressionEvaluator(sources,
                 projection);
         return new ProjectingIterator<RT>(it, ev);
-    }
-    
-    public Iterable<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
-        final Expr<?>[] full = asArray(new Expr[rest.length + 2], e1, e2, rest);
-        return new Iterable<Object[]>() {
-            public Iterator<Object[]> iterator() {
-                try {
-                    return createIterator(new ObjectArray(full));
-                } catch (Exception e) {
-                    throw new RuntimeException("error", e);
-                }
-            }
-        };
     }
 
     public <RT> Iterable<RT> iterate(final Expr<RT> projection) {
