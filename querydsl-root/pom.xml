@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>0.2.8-SNAPSHOT</version>
+  <version>0.2.9</version>
   <name>Querydsl</name>
   <description>parent project for querydsl modules</description>
   <url>http://source.mysema.com/display/querydsl</url>
@@ -90,14 +90,14 @@
 
   <licenses>
     <license>
-      <name>GNU Lesser General Public License, Version 3</name>
+      <name>GNU Lesser General Public License, Version 2.1</name>
       <url>LICENSE.txt</url>
     </license>
   </licenses>
   
   <properties>
     <svn.path>scm:svn:https://source.mysema.com/svn/mysema</svn.path>
-    <viewvc.path>http://source.mysema.com/viewvc/mysema</viewvc.path>
+    <viewvc.path>https://source.mysema.com/viewvc/mysema</viewvc.path>
     <path.suffix>projects/querydsl/trunk/${project.artifactId}</path.suffix>
   </properties>
   
