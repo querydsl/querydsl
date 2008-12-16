@@ -6,11 +6,20 @@
 package com.mysema.query.grammar;
 
 import java.util.List;
+import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.mysema.query.CascadingBoolean;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryBase;
+import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.Path;
+import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.Expr.Entity;
+import com.mysema.query.hql.QueryModifiers;
 
 /**
  * HqlQueryBase is a base Query class for HQL
@@ -18,22 +27,21 @@ import com.mysema.query.grammar.types.Expr.Entity;
  * @author tiwe
  * @version $Id$
  */
-public class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<JoinMeta,A>{
+public abstract class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<JoinMeta,A>{
     
-    private static final HqlOps OPS_DEFAULT = new HqlOps();
-    
-    private final HqlOps ops;
-    
+    private static final Logger logger = LoggerFactory
+            .getLogger(HqlQueryBase.class);
+        
     private List<Object> constants;
     
     private String countRowsString, queryString;
     
+    protected Integer limit, offset;
+    
+    private final HqlOps ops;
+    
     public HqlQueryBase(HqlOps ops){
         this.ops = ops;
-    }
-    
-    public HqlQueryBase(){
-        this.ops = OPS_DEFAULT;
     }
     
     private String buildQueryString(boolean forCountRow) {
@@ -46,22 +54,6 @@ public class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<JoinMeta,
         return serializer.toString();
     }
     
-    @SuppressWarnings("unchecked")
-    public A innerJoin(JoinMeta meta, Entity<?> o) {
-        joins.add(new JoinExpression<JoinMeta>(JoinType.INNERJOIN, o, meta));
-        return (A) this;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public A leftJoin(JoinMeta meta, Entity<?> o) {
-        joins.add(new JoinExpression<JoinMeta>(JoinType.LEFTJOIN, o, meta));
-        return (A) this;
-    }
-    
-    public List<Object> getConstants() {
-        return constants;
-    }
-
     @Override
     protected void clear(){
         super.clear();
@@ -69,19 +61,76 @@ public class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<JoinMeta,
         countRowsString = null;
     }
     
+    protected Expr.Boolean createQBECondition(Path.Entity<?> entity,
+            Map<String, Object> map) {
+        CascadingBoolean expr = new CascadingBoolean();  
+        for (Map.Entry<String, Object> entry : map.entrySet()){                
+            PathMetadata<String> md = PathMetadata.forProperty(entity, entry.getKey());
+            Path.Simple<Object> path = new Path.Simple<Object>(Object.class, md);
+            if (entry.getValue() != null){
+                expr.and(path.eq(entry.getValue()));
+            }else{
+                expr.and(path.isnull());                        
+            }                    
+        } 
+        return expr.self();
+    }
+    
+    public A forExample(Path.Entity<?> entity, Map<String, Object> map) {
+        select(entity).from(entity);
+        try {            
+            where(createQBECondition(entity,map));
+            return (A)this;
+        } catch (Exception e) {
+            String error = "Caught " + e.getClass().getName();
+            logger.error(error, e);
+            throw new RuntimeException(error, e);
+        }
+    }
+    
+    public List<Object> getConstants() {
+        return constants;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public A innerJoin(JoinMeta meta, Entity<?> o) {
+        joins.add(new JoinExpression<JoinMeta>(JoinType.INNERJOIN, o, meta));
+        return (A) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public A leftJoin(JoinMeta meta, Entity<?> o) {
+        joins.add(new JoinExpression<JoinMeta>(JoinType.LEFTJOIN, o, meta));
+        return (A) this;
+    }
+    
+    public A limit(int limit) {
+        this.limit = limit;
+        return (A)this;
+    }
+    
+    public A offset(int offset) {
+        this.offset = offset;
+        return (A)this;
+    }
+    
+    public A restrict(QueryModifiers mod) {
+        return limit(mod.getLimit()).offset(mod.getOffset());
+    }    
+
+    public String toCountRowsString(){
+        if (countRowsString == null){
+            countRowsString = buildQueryString(true);    
+        }        
+        return countRowsString;
+    }
+
     @Override
     public String toString(){
         if (queryString == null){
             queryString = buildQueryString(false);    
         }        
         return queryString;
-    }
-    
-    public String toCountRowsString(){
-        if (countRowsString == null){
-            countRowsString = buildQueryString(true);    
-        }        
-        return countRowsString;
     }
 
 }

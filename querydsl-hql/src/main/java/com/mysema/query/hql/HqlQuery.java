@@ -5,8 +5,8 @@
  */
 package com.mysema.query.hql;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import com.mysema.query.grammar.HqlOps;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Path;
 
 /**
  * HqlQuery provides a fluent statically typed interface for creating HQL queries.
@@ -28,12 +27,14 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
 
     private static final Logger logger = LoggerFactory.getLogger(HqlQuery.class);
 
+    private static final HqlOps OPS_DEFAULT = new HqlOps();
+        
     private Integer limit, offset;
     
     private final Session session;
-
+    
     public HqlQuery(Session session) {
-        this.session = session;
+        this(session, OPS_DEFAULT);
     }
 
     public HqlQuery(Session session, HqlOps ops) {
@@ -43,30 +44,29 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
     
     private Query createQuery(String queryString, Integer limit, Integer offset) {
         Query query = session.createQuery(queryString);
-        QueryUtil.setConstants(query, getConstants());
-        
+        setConstants(query, getConstants());        
         if (limit != null) query.setMaxResults(limit);
         if (offset != null) query.setFirstResult(offset);
         return query;
     }
     
-    public HqlQuery forExample(Path.Entity<?> entity, Map<String, Object> map) {
-        select(entity).from(entity);
-        try {            
-            where(QueryUtil.createQBECondition(entity,map));
-            return this;
-        } catch (Exception e) {
-            String error = "Caught " + e.getClass().getName();
-            logger.error(error, e);
-            throw new RuntimeException(error, e);
+    public static void setConstants(Query query, List<?> constants){
+        for (int i=0; i < constants.size(); i++){
+            String key = "a"+(i+1);
+            Object val = constants.get(i);            
+            if (val instanceof Collection<?>){
+                // NOTE : parameter types should be given explicitly
+                query.setParameterList(key,(Collection<?>)val);
+            }else if (val.getClass().isArray()){
+                // NOTE : parameter types should be given explicitly
+                query.setParameterList(key,(Object[])val);
+            }else{
+                // NOTE : parameter types should be given explicitly
+                query.setParameter(key,val);    
+            }
         }
     }
-
-    public HqlQuery limit(int limit) {
-        this.limit = limit;
-        return this;
-    }
-    
+        
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expr<RT> expr){
         select(expr);
@@ -113,15 +113,6 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
         return (RT)query.uniqueResult();
     }
 
-    public HqlQuery offset(int offset) {
-        this.offset = offset;
-        return this;
-    }
 
-    public HqlQuery restrict(QueryModifiers mod) {
-        this.limit = mod.getLimit();
-        this.offset = mod.getOffset();
-        return this;
-    }
 
 }

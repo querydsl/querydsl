@@ -35,6 +35,8 @@ import com.mysema.query.grammar.types.Expr;
  */
 public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     
+    public FeaturesTest(){super(new HqlOps());}
+    
  // AuditLog
     QAuditLog log = new QAuditLog("log");
    

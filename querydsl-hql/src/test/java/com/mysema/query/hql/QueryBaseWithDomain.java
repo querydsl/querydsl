@@ -5,6 +5,7 @@
  */
 package com.mysema.query.hql;
 
+import com.mysema.query.grammar.HqlOps;
 import com.mysema.query.grammar.HqlQueryBase;
 
 /**
@@ -15,6 +16,8 @@ import com.mysema.query.grammar.HqlQueryBase;
  */
 public abstract class QueryBaseWithDomain<A extends QueryBaseWithDomain<A>> 
     extends HqlQueryBase<A>{
+    
+    public QueryBaseWithDomain(){super(new HqlOps());}
     
     QAccount account = new QAccount("account");
     
