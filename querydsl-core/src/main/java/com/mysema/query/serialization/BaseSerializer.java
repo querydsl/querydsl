@@ -17,7 +17,7 @@ import com.mysema.query.grammar.types.Operation;
 import com.mysema.query.grammar.types.VisitorAdapter;
 
 /**
- * BaseSerializer provides
+ * BaseSerializer is a stub for Serializer implementations
  *
  * @author tiwe
  * @version $Id$
