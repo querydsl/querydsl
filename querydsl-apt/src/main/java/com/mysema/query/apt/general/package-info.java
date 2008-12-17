@@ -1,0 +1,11 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
+
+/**
+ * APT implementation classes
+ */
+package com.mysema.query.apt.general;
+
