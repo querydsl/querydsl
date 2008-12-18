@@ -28,8 +28,6 @@ public class HqlQuery extends HqlQueryBase<HqlQuery>{
     private static final Logger logger = LoggerFactory.getLogger(HqlQuery.class);
 
     private static final HqlOps OPS_DEFAULT = new HqlOps();
-        
-    private Integer limit, offset;
     
     private final Session session;
     
