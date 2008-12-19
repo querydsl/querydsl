@@ -123,10 +123,11 @@ public abstract class Expr<D> {
         public String concat(java.lang.String str) {return IntGrammar.concat(this, str);}
         public Boolean like(java.lang.String str) { return IntGrammar.like(this, str); }
         public String lower() { return IntGrammar.lower(this); }
+        public Expr<java.lang.String[]> split(java.lang.String regex) { return IntGrammar.split(this, regex);}
         public String substring(int beginIndex) { return IntGrammar.substring(this, beginIndex);}
         public String substring(int beginIndex, int endIndex) { return IntGrammar.substring(this, beginIndex, endIndex);}
         public String trim() { return IntGrammar.trim(this); }
-        public String upper() { return IntGrammar.upper(this); }
+        public String upper() { return IntGrammar.upper(this); }        
     }  
 
 }

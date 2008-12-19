@@ -62,6 +62,7 @@ public interface Ops {
     Op<java.lang.String> LOWER = new Op<java.lang.String>();
     Op<java.lang.String> SUBSTR1ARG = new Op<java.lang.String>();
     Op<java.lang.String> SUBSTR2ARGS = new Op<java.lang.String>();
+    Op<java.lang.String> SPLIT = new Op<java.lang.String>();
     Op<java.lang.String> TRIM = new Op<java.lang.String>();
     Op<java.lang.String> UPPER = new Op<java.lang.String>();
        

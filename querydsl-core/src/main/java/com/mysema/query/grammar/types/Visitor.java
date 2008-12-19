@@ -81,6 +81,8 @@ public abstract class Visitor<T extends Visitor<T>> {
     
     protected abstract void visit(Operation.String expr);
     
+    protected abstract void visit(Operation.StringArray expr);
+    
     protected abstract void visit(Operation<?, ?> expr);
 
     protected abstract void visit(Path.Boolean expr);

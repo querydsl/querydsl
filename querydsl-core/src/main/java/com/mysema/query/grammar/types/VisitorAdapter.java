@@ -41,6 +41,10 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visito
         visit((Operation<?, ?>) expr);
     }
     @Override
+    protected void visit(Operation.StringArray expr) {
+        visit((Operation<?, ?>) expr);
+    }
+    @Override
     protected void visit(Path.Boolean expr) {
         visit((Path<?>) expr);
     }

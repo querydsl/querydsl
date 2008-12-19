@@ -71,5 +71,17 @@ public interface Operation<OP,RT> {
         public Expr<?>[] getArgs() {return args;}
         public Op<java.lang.String> getOperator() {return op;}    
     }
+    
+    public static class StringArray extends Expr<java.lang.String[]> implements Operation<java.lang.String,java.lang.String[]>{
+        private final Expr<?>[] args;
+        private final Op<java.lang.String> op;
+        public StringArray(Op<java.lang.String> op, Expr<?>... args){
+            super(null);
+            this.op = op;
+            this.args = args;
+        }
+        public Expr<?>[] getArgs() {return args;}
+        public Op<java.lang.String> getOperator() {return op;}
+    }
 
 }

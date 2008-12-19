@@ -50,5 +50,11 @@ public class Factory {
         checkArg("args",args);
         return new Operation.String(operator, args);
     }
+    
+    public static final Expr<String[]> createStringArray(Op<String> operator, Expr<?>... args) {
+        checkArg("operator",operator);
+        checkArg("args",args);
+        return new Operation.StringArray(operator, args);
+    }
 
 }

@@ -9,6 +9,7 @@ import static com.mysema.query.grammar.types.Factory.checkArg;
 import static com.mysema.query.grammar.types.Factory.createBoolean;
 import static com.mysema.query.grammar.types.Factory.createConstant;
 import static com.mysema.query.grammar.types.Factory.createString;
+import static com.mysema.query.grammar.types.Factory.createStringArray;
 
 import com.mysema.query.grammar.Ops;
 import com.mysema.query.grammar.Order;
@@ -227,6 +228,10 @@ class IntGrammar{
     
     static Expr.Boolean or(Expr.Boolean left, Expr.Boolean right) {
         return createBoolean(Ops.OR, left, right);
+    }
+    
+    static Expr<String[]> split(Expr<String> left, String regex){
+        return createStringArray(Ops.SPLIT, left, createConstant(regex));
     }
       
     static Expr.String substring(Expr<String> left, int beginIndex) {
