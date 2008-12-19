@@ -73,6 +73,13 @@ public class ColQueryTest {
                 System.out.println(col);
             }
         }
+        
+        // TODO : support for array expressions
+        /*        
+        Iterable<String[]> csvData1 = query().from(str, lines).iterate(str.split(";"));
+        // 2nd level
+        for (String s : query().from(strArray, csvData1
+        */
     }
     
     @Test
