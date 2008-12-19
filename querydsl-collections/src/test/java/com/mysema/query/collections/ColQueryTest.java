@@ -5,6 +5,7 @@
  */
 package com.mysema.query.collections;
 
+import static com.mysema.query.collections.MiniApi.str;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -18,9 +19,6 @@ import org.junit.Test;
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.Domain.QCat;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Path;
-
-import static com.mysema.query.collections.MiniApi.*;
 
 /**
  * ColQueryTest provides
@@ -68,6 +66,7 @@ public class ColQueryTest {
     
     @Test
     public void testCSVIteration(){
+        // 1st level
         List<String> lines = Arrays.asList("1;10;100","2;20;200","3;30;300");
         for (String[] row : query().from(str, lines).iterate(str.split(";"))){
             for (String col : row){
