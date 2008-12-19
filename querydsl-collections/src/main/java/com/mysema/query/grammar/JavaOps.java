@@ -37,7 +37,8 @@ public class JavaOps extends OperationPatterns {
         add(Ops.IN, "%2$s.contains(%1$s)"); 
         add(Ops.NOTIN, "!%2$s.contains(%1$s)");        
         add(Ops.LIKE, functions+".like(%s,%s)");
-        add(Ops.LOWER, "%s.toLowerCase()");        
+        add(Ops.LOWER, "%s.toLowerCase()");     
+        add(Ops.SPLIT, "%s.split(%s)");
         add(Ops.SUBSTR1ARG, "%s.substring(%s)");
         add(Ops.SUBSTR2ARGS, "%s.substring(%s,%s)");
         add(Ops.TRIM, "%s.trim()");

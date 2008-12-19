@@ -31,7 +31,7 @@ public class MiniApi {
     public static final Path.Comparable<Double> doubleVal = new Path.Comparable<Double>(Double.class, pm);
     
     public static final Path.String stringVal = new Path.String(pm), str = stringVal;
-    
+        
     @SuppressWarnings("unchecked")
     public static <A> Iterable<A> select(Iterable<A> from, Expr.Boolean where, OrderSpecifier<?>... order){
         Path<?> path = new PathExtractor().handle(where).getPath();
@@ -42,5 +42,7 @@ public class MiniApi {
     public static <A> Iterable<A> reject(Iterable<A> from, Expr.Boolean where, OrderSpecifier<?>...order){
         return select(from, Grammar.not(where), order);
     }
+    
+
      
 }
