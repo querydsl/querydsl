@@ -5,6 +5,7 @@
  */
 package com.mysema.query.util;
 
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.Properties;
 
@@ -62,8 +63,9 @@ public class HibernateTestRunner extends JUnit4ClassRunner{
             Hibernate config = getTestClass().getJavaClass().getAnnotation(Hibernate.class);            
             cfg.setNamingStrategy(config.namingStrategy().newInstance());
             Properties props = new Properties();
-            // TODO : null check and error message
-            props.load(HqlIntegrationTest.class.getResourceAsStream(config.properties()));
+            InputStream is = HqlIntegrationTest.class.getResourceAsStream(config.properties());
+            if (is == null) throw new IllegalArgumentException("No configuration available at classpath:" + config.properties());
+            props.load(is);
             cfg.setProperties(props);
             sessionFactory = cfg.buildSessionFactory();    
             super.run(notifier);            

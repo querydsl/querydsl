@@ -357,17 +357,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         toString("cat.name like :a1",cat.name.like("A%"));
         toString("lower(cat.name)",cat.name.lower());
     }
-    
-    @Test
-    @Ignore
-    public void testSubQuery(){
-        // TODO : make the comparison work again
-        StringBuilder b = new StringBuilder();
-        b.append("(select cust.name from cust");
-        b.append(" where cust.name is not null)");
-        toString(b.toString(), HqlGrammar.select(cust.name).from(cust).where(cust.name.isnotnull()));
-    }
-    
+        
     @Test
     public void testToString(){
         toString("cat", cat);
