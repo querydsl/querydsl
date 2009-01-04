@@ -52,8 +52,8 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
         return (A) this;
     }
         
-    public A having(Expr.EBoolean o) {
-        having.and(o);
+    public A having(Expr.EBoolean... o) {
+        for (Expr.EBoolean b : o) having.and(b);
         return (A) this;
     }
     
@@ -87,8 +87,8 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
         return (A) this;
     }
 
-    public A where(Expr.EBoolean o) {
-        where.and(o);
+    public A where(Expr.EBoolean... o) {
+        for (Expr.EBoolean b : o) where.and(b);
         return (A) this;
     }
     

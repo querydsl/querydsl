@@ -22,8 +22,8 @@ public interface Query<A extends Query<A>>{
     A fullJoin(EEntity<?> o);
     A leftJoin(EEntity<?> o);
     A with(Expr.EBoolean o);
-    A where(Expr.EBoolean o);
+    A where(Expr.EBoolean... o);
     A groupBy(Expr<?>... o);
-    A having(Expr.EBoolean o);
+    A having(Expr.EBoolean... o);
     A orderBy(OrderSpecifier<?>... o);
 }
