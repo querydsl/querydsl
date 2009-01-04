@@ -60,13 +60,13 @@ public class HqlTypes {
         public SubQuery<A> fullJoin(EEntity<?> o) {query.fullJoin(o); return this;}
         public QueryBase<JoinMeta,?> getQuery(){ return query;}
         public SubQuery<A> groupBy(Expr<?>... o) {query.groupBy(o); return this;}
-        public SubQuery<A> having(EBoolean o) {query.having(o); return this;}
+        public SubQuery<A> having(EBoolean... o) {query.having(o); return this;}
         public SubQuery<A> innerJoin(EEntity<?> o) {query.innerJoin(o); return this;}
         public SubQuery<A> join(EEntity<?> o) {query.join(o); return this;}
         public SubQuery<A> leftJoin(EEntity<?> o) {query.leftJoin(o); return this;}
         public SubQuery<A> orderBy(OrderSpecifier<?>... o) {query.orderBy(o); return this;}
         public SubQuery<A> select(Expr<?>... o) {query.s(o); return this;}
-        public SubQuery<A> where(EBoolean o) {query.where(o); return this;}
+        public SubQuery<A> where(EBoolean... o) {query.where(o); return this;}
         public SubQuery<A> with(EBoolean o) {query.with(o); return this;}        
     }
     
