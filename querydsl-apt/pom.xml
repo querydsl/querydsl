@@ -26,7 +26,7 @@
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>1.4-SNAPSHOT</version>
+      <version>1.4</version>
       <!-- license : Apache License 2.0 -->
     </dependency>
     <dependency>
