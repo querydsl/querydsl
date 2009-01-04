@@ -62,6 +62,7 @@ public class HibernateTestRunner extends JUnit4ClassRunner{
             Hibernate config = getTestClass().getJavaClass().getAnnotation(Hibernate.class);            
             cfg.setNamingStrategy(config.namingStrategy().newInstance());
             Properties props = new Properties();
+            // TODO : null check and error message
             props.load(HqlIntegrationTest.class.getResourceAsStream(config.properties()));
             cfg.setProperties(props);
             sessionFactory = cfg.buildSessionFactory();    

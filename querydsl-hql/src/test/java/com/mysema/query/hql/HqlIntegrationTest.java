@@ -5,8 +5,13 @@
  */
 package com.mysema.query.hql;
 
+import static com.mysema.query.grammar.Grammar.div;
+import static com.mysema.query.grammar.Grammar.sqrt;
+import static com.mysema.query.grammar.HqlGrammar.avg;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import antlr.RecognitionException;
@@ -42,6 +47,16 @@ public class HqlIntegrationTest extends HqlParserTest{
             e.printStackTrace();
             throw new RuntimeException(e);
         }        
+    }
+    
+    @Test
+    public void testGroupBy() throws Exception {
+        // do nothing
+    }
+
+    @Test
+    public void testOrderBy() throws Exception {
+        // do nothing
     }
 
     public void setSession(Session session) {

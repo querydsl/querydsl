@@ -5,9 +5,9 @@
  */
 package com.mysema.query.grammar;
 
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.PathMetadata;
@@ -22,17 +22,13 @@ import com.mysema.query.serialization.OperationPatterns;
  */
 public class HqlOps extends OperationPatterns {
     
-    public static final Set<Op<?>> wrapCollectionsForOp;
+    public static final List<Op<?>> wrapCollectionsForOp;
     
     static{
-        Set<Op<?>> ops = new HashSet<Op<?>>();
-        ops.add(Ops.IN);
-        ops.add(Ops.NOTIN);
-        ops.add(OpQuant.ALL);
-        ops.add(OpQuant.ANY);
-        ops.add(OpQuant.EXISTS);
-        ops.add(OpQuant.NOTEXISTS);
-        wrapCollectionsForOp = Collections.unmodifiableSet(ops);
+        wrapCollectionsForOp = Collections.<Op<?>>unmodifiableList(Arrays.<Op<?>>asList(
+                Ops.IN, Ops.NOTIN, 
+                OpQuant.ALL, OpQuant.ANY, 
+                OpQuant.EXISTS, OpQuant.NOTEXISTS));
     }
     
     public HqlOps(){            

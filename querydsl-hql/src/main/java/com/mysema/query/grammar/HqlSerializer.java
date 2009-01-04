@@ -41,7 +41,7 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
     }
            
     public void serialize(List<Expr<?>> select, List<JoinExpression<JoinMeta>> joins,
-        Expr.Boolean where, List<Expr<?>> groupBy, Expr.Boolean having,
+        Expr.EBoolean where, List<Expr<?>> groupBy, Expr.EBoolean having,
         List<OrderSpecifier<?>> orderBy, boolean forCountRow){
          if (forCountRow){
             _append("select count(*)\n");
@@ -68,8 +68,8 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
             }
             
             // type specifier
-            if (je.getTarget() instanceof Path.Entity){
-                Path.Entity<?> pe = (Path.Entity<?>)je.getTarget();
+            if (je.getTarget() instanceof Path.PEntity){
+                Path.PEntity<?> pe = (Path.PEntity<?>)je.getTarget();
                 if (pe.getMetadata().getParent() == null){
                     String pn = pe.getType().getPackage().getName();
                     String typeName = pe.getType().getName().substring(pn.length()+1); 
@@ -107,12 +107,12 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
     }
     
     @Override
-    protected void visit(Alias.Simple<?> expr) {
+    protected void visit(Alias.ASimple<?> expr) {
         handle(expr.getFrom())._append(" as ")._append(expr.getTo());        
     }
     
     @Override
-    protected void visit(Alias.ToPath expr) {
+    protected void visit(Alias.AToPath expr) {
         handle(expr.getFrom())._append(" as ").visit(expr.getTo());
     }
     
@@ -149,7 +149,7 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
     }
     
     @Override
-    protected void visit(Expr.Constant<?> expr) {
+    protected void visit(Expr.EConstant<?> expr) {
         boolean wrap = expr.getConstant().getClass().isArray();
         if (wrap) _append("(");
         _append(":a");
@@ -163,7 +163,7 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
     }
         
     @Override
-    protected void visit(Path.Collection<?> expr){
+    protected void visit(Path.PCollection<?> expr){
         // only wrap a PathCollection, if it the pathType is PROPERTY
         boolean wrap = wrapElements && expr.getMetadata().getPathType().equals(PROPERTY);
         if (wrap) _append("elements(");

@@ -18,10 +18,12 @@ import com.mysema.query.grammar.OrderSpecifier;
  */
 public class HqlTypes {
     
+    private HqlTypes(){}
+    
     /**
      * The Class CountExpression.
      */
-    public static class CountExpression extends Expr.Comparable<Long>{
+    public static class CountExpression extends Expr.EComparable<Long>{
         private final Expr<?> target;
         public CountExpression(Expr<?> expr) {
             super(Long.class);
@@ -54,18 +56,18 @@ public class HqlTypes {
             query.s(select);
         }
         @SuppressWarnings("unchecked")
-        public SubQuery<A> from(Entity... o) {query.from(o); return this;}
-        public SubQuery<A> fullJoin(Entity<?> o) {query.fullJoin(o); return this;}
+        public SubQuery<A> from(EEntity... o) {query.from(o); return this;}
+        public SubQuery<A> fullJoin(EEntity<?> o) {query.fullJoin(o); return this;}
         public QueryBase<JoinMeta,?> getQuery(){ return query;}
         public SubQuery<A> groupBy(Expr<?>... o) {query.groupBy(o); return this;}
-        public SubQuery<A> having(Boolean o) {query.having(o); return this;}
-        public SubQuery<A> innerJoin(Entity<?> o) {query.innerJoin(o); return this;}
-        public SubQuery<A> join(Entity<?> o) {query.join(o); return this;}
-        public SubQuery<A> leftJoin(Entity<?> o) {query.leftJoin(o); return this;}
+        public SubQuery<A> having(EBoolean o) {query.having(o); return this;}
+        public SubQuery<A> innerJoin(EEntity<?> o) {query.innerJoin(o); return this;}
+        public SubQuery<A> join(EEntity<?> o) {query.join(o); return this;}
+        public SubQuery<A> leftJoin(EEntity<?> o) {query.leftJoin(o); return this;}
         public SubQuery<A> orderBy(OrderSpecifier<?>... o) {query.orderBy(o); return this;}
         public SubQuery<A> select(Expr<?>... o) {query.s(o); return this;}
-        public SubQuery<A> where(Boolean o) {query.where(o); return this;}
-        public SubQuery<A> with(Boolean o) {query.with(o); return this;}        
+        public SubQuery<A> where(EBoolean o) {query.where(o); return this;}
+        public SubQuery<A> with(EBoolean o) {query.with(o); return this;}        
     }
     
     private static class QueryWithPublicSelect extends QueryBase<JoinMeta,QueryWithPublicSelect>{

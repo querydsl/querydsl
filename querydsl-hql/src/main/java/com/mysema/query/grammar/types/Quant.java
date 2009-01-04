@@ -21,7 +21,7 @@ public interface Quant {
     /**
      * The Class Boolean.
      */
-    public static class Boolean<Q> extends Expr.Boolean implements Quant{
+    public static class Boolean<Q> extends Expr.EBoolean implements Quant{
         private final Expr<?> col;
         private final Op<?> op;
         public Boolean(Op<?> op, CollectionType<Q> col) {
@@ -35,7 +35,7 @@ public interface Quant {
     /**
      * The Class Comparable.
      */
-    public static class Comparable<Q extends java.lang.Comparable<Q>> extends Expr.Comparable<Q> implements Quant{
+    public static class Comparable<Q extends java.lang.Comparable<Q>> extends Expr.EComparable<Q> implements Quant{
         private final Expr<?> col;
         private final Op<?> op;
         public Comparable(Op<?> op, CollectionType<Q> col) {
@@ -50,7 +50,7 @@ public interface Quant {
     /**
      * The Class Simple.
      */
-    public static class Simple<Q> extends Expr.Simple<Q> implements Quant{
+    public static class Simple<Q> extends Expr.ESimple<Q> implements Quant{
         private final Expr<?> col;
         private final Op<?> op;
         public Simple(Op<?> op, CollectionType<Q> col) {

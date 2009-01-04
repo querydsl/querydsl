@@ -18,7 +18,7 @@ import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathMetadata;
-import com.mysema.query.grammar.types.Expr.Entity;
+import com.mysema.query.grammar.types.Expr.EEntity;
 import com.mysema.query.hql.QueryModifiers;
 
 /**
@@ -61,12 +61,12 @@ public abstract class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<
         countRowsString = null;
     }
     
-    protected Expr.Boolean createQBECondition(Path.Entity<?> entity,
+    protected Expr.EBoolean createQBECondition(Path.PEntity<?> entity,
             Map<String, Object> map) {
         CascadingBoolean expr = new CascadingBoolean();  
         for (Map.Entry<String, Object> entry : map.entrySet()){                
             PathMetadata<String> md = PathMetadata.forProperty(entity, entry.getKey());
-            Path.Simple<Object> path = new Path.Simple<Object>(Object.class, md);
+            Path.PSimple<Object> path = new Path.PSimple<Object>(Object.class, md);
             if (entry.getValue() != null){
                 expr.and(path.eq(entry.getValue()));
             }else{
@@ -76,7 +76,7 @@ public abstract class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<
         return expr.self();
     }
     
-    public A forExample(Path.Entity<?> entity, Map<String, Object> map) {
+    public A forExample(Path.PEntity<?> entity, Map<String, Object> map) {
         select(entity).from(entity);
         try {            
             where(createQBECondition(entity,map));
@@ -93,13 +93,13 @@ public abstract class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<
     }
     
     @SuppressWarnings("unchecked")
-    public A innerJoin(JoinMeta meta, Entity<?> o) {
+    public A innerJoin(JoinMeta meta, EEntity<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.INNERJOIN, o, meta));
         return (A) this;
     }
 
     @SuppressWarnings("unchecked")
-    public A leftJoin(JoinMeta meta, Entity<?> o) {
+    public A leftJoin(JoinMeta meta, EEntity<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.LEFTJOIN, o, meta));
         return (A) this;
     }
