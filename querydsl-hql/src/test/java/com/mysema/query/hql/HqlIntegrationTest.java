@@ -5,10 +5,6 @@
  */
 package com.mysema.query.hql;
 
-import static com.mysema.query.grammar.Grammar.div;
-import static com.mysema.query.grammar.Grammar.sqrt;
-import static com.mysema.query.grammar.HqlGrammar.avg;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.junit.Test;

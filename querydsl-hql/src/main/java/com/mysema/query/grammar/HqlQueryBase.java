@@ -76,6 +76,7 @@ public abstract class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<
         return expr.self();
     }
     
+    @SuppressWarnings("unchecked")
     public A forExample(Path.PEntity<?> entity, Map<String, Object> map) {
         select(entity).from(entity);
         try {            
@@ -104,11 +105,13 @@ public abstract class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<
         return (A) this;
     }
     
+    @SuppressWarnings("unchecked")
     public A limit(int limit) {
         this.limit = limit;
         return (A)this;
     }
     
+    @SuppressWarnings("unchecked")
     public A offset(int offset) {
         this.offset = offset;
         return (A)this;

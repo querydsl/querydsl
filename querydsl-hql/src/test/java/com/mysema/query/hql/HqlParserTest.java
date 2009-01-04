@@ -317,7 +317,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
 //                + "group by ord\n"
 //                + "having sum(price.amount) > :minAmount\n"
 //                + "order by sum(price.amount) desc" );
-        QCatalog cat = new QCatalog("cat");
+//        QCatalog cat = new QCatalog("cat");
         select(ord.id, sum(price.amount), count(item))
             .from(ord).join(ord.lineItems.as(item))
                 .join(item.product.as(product)).from(catalog)
@@ -386,7 +386,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
 //                + "    or payment.statusChanges[ maxIndex(payment.statusChanges) ].user <> :currentUser\n"
 //                + "group by status.name, status.sortOrder\n"
 //                + "order by status.sortOrder" );
-        HqlDomain.User currentUser = new HqlDomain.User();
+//        HqlDomain.User currentUser = new HqlDomain.User();
         
 //        select(count(payment), status.name)
 //            .from(payment).join(payment.currentStatus.as(status))
