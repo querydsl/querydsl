@@ -71,7 +71,7 @@ public class ColQuery<S extends ColQuery<S>>{
     }
     
     @SuppressWarnings("unchecked")
-    public S where(Expr.EBoolean o) {
+    public S where(Expr.EBoolean... o) {
         query.where(o);
         return (S)this;
     }

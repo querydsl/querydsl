@@ -39,20 +39,30 @@ public class MiniApiTest {
         myInts.add(4);        
     }
     
+
     @Test
-    public void testVarious(){
+    public void testVarious1(){
         for(String s : from($("str"), "a","ab","cd","de")
-                      .where($("str").startsWith("a"))
-                      .iterate($("str"))){
+                .where($("str").startsWith("a"))
+                .iterate($("str"))){
             assertTrue(s.equals("a") || s.equals("ab"));
             System.out.println(s);
         }
-        
-        for (Object o : from(1,2,"abc",5,3).where($().ne("abc"))
-                       .iterate($())){
+    }
+    
+    @Test
+    public void testVarious2(){
+        for (Object o : from(1,2,"abc",5,3).where($().ne("abc")).iterate($())){
             int i = (Integer)o;
             assertTrue(i > 0 && i < 6);
             System.out.println(o);
+        }                
+    }
+    
+    @Test
+    public void testVarious3(){
+        for (Integer i : from($(0),1,2,3,4).where($(0).lt(4)).iterate($(0))){
+            System.out.println(i);
         }
     }
     

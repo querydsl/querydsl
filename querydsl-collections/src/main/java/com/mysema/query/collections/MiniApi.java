@@ -7,8 +7,6 @@ package com.mysema.query.collections;
 
 import java.util.Arrays;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
@@ -30,10 +28,24 @@ public class MiniApi {
     
     private static final Path.PSimple<Object> it = new Path.PSimple<Object>(Object.class,PathMetadata.forVariable("it"));
     
+    /**
+     * Create a new ColQuery instance with the given array bound to the default variable, which can be accessed via $()
+     * 
+     * @param <A>
+     * @param arr
+     * @return
+     */
     public static <A> ColQuery<?> from(A... arr){
         return from(Arrays.asList(arr));
     }
     
+    /**
+     * Create a new ColQuery instance with the given collection bound to the default variable, which can be accessed via $()
+     * 
+     * @param <A>
+     * @param col
+     * @return
+     */
     public static <A> ColQuery<?> from(Iterable<A> col){
         return from(MiniApi.<A>$(), col);
     }
@@ -67,7 +79,7 @@ public class MiniApi {
     }
     
     public static ExtString $(String arg){
-        return exprFactory.createExt(arg);
+        return exprFactory.create(arg);
     }
 
     public static Path.PBooleanArray $(Boolean[] args){

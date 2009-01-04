@@ -22,38 +22,28 @@ import com.mysema.query.grammar.types.Path.*;
  * @author tiwe
  * @version $Id$
  */
+// TODO : consider moving this later to querydsl-core
 class ExprFactory {
     
-    private static final PString str = new PString(PathMetadata.forVariable("str"));
-    
     private static final ExtString strExt = new ExtString(PathMetadata.forVariable("str"));
-    
-    private final Map<String,PString> strToPath = new PathFactory<String,PString>(new Transformer<String,PString>(){
-        public PString transform(String str) {
-            return new PString(md());
-        }        
-    });
-    
+        
     private final Map<Object,PSimple<?>> simToPath = new PathFactory<Object,PSimple<?>>(new Transformer<Object,PSimple<?>>(){
         public PSimple<?> transform(Object arg) {
             return new PSimple(arg.getClass(), md());
         }    
     });
-
     
     private final Map<Object,PComparable<?>> comToPath = new PathFactory<Object,PComparable<?>>(new Transformer<Object,PComparable<?>>(){
         public PComparable<?> transform(Object arg) {
             return new PComparable(arg.getClass(), md());
         }    
     });
-
     
     private final Map<String,ExtString> strToExtPath = new PathFactory<String,ExtString>(new Transformer<String,ExtString>(){
         public ExtString transform(String str) {
             return new ExtString(md());
         }        
     });
-
     
     private static long counter = 0;
         
@@ -68,13 +58,8 @@ class ExprFactory {
         return (PComparable<D>) comToPath.get(arg);
     }
     
-    public PString create(String arg){
-        return strToPath.get(arg);
-    }
-    
-    public ExtString createExt(String arg){
+    public ExtString create(String arg){
         return StringUtils.isEmpty(arg) ? strExt : strToExtPath.get(arg);
-//        return strToExtget(arg);
     }
     
     @SuppressWarnings("unchecked")
