@@ -56,6 +56,7 @@ public class ColQuery<S extends ColQuery<S>>{
         return (S)this;
     }
     
+    @SuppressWarnings("unchecked")
     public <RT> Iterable<RT[]> iterate(Expr<RT> e1, Expr<RT> e2, Expr<RT>... rest) {
         final Expr<RT>[] full = asArray(new Expr[rest.length + 2], e1, e2, rest);
         return query.iterate(new Constructor.CArray<RT>(e1.getType(), full));

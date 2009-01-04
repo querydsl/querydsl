@@ -28,12 +28,14 @@ class ExprFactory {
     private static final ExtString strExt = new ExtString(PathMetadata.forVariable("str"));
         
     private final Map<Object,PSimple<?>> simToPath = new PathFactory<Object,PSimple<?>>(new Transformer<Object,PSimple<?>>(){
+        @SuppressWarnings("unchecked")
         public PSimple<?> transform(Object arg) {
             return new PSimple(arg.getClass(), md());
         }    
     });
     
     private final Map<Object,PComparable<?>> comToPath = new PathFactory<Object,PComparable<?>>(new Transformer<Object,PComparable<?>>(){
+        @SuppressWarnings("unchecked")
         public PComparable<?> transform(Object arg) {
             return new PComparable(arg.getClass(), md());
         }    

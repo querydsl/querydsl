@@ -98,6 +98,7 @@ public class MiniApi {
         return exprFactory.create(arg);
     }
     
+    @SuppressWarnings("unchecked")
     public static <D> Path.PSimple<D> $(){
         return (PSimple<D>) it;
     }

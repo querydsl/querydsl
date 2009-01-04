@@ -39,8 +39,8 @@ public class ColQueryTest {
     List<Cat> cats = Arrays.asList(c1, c2, c3, c4);
     
     QCat cat = new QCat("cat");    
-    QCat mate = new QCat("mate");
-    QCat offspr = new QCat("offspr");
+//    QCat mate = new QCat("mate");
+//    QCat offspr = new QCat("offspr");
     QCat otherCat = new QCat("otherCat");
     
     TestQuery last;
@@ -173,7 +173,7 @@ public class ColQueryTest {
         return last;
     }
     
-    private class TestQuery extends ColQuery<TestQuery>{
+    private static class TestQuery extends ColQuery<TestQuery>{
         List<Object> res = new ArrayList<Object>();
         <RT> void select(Expr<RT> projection){
             for (Object o : iterate(projection)){
