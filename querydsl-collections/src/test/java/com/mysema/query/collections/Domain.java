@@ -83,21 +83,21 @@ public class Domain {
         BLACK, TABBY
     }
     
-    public static class QCat extends Path.Entity<Cat>{
-        public final Path.Boolean alive = _boolean("alive");
-        public final Path.Comparable<java.util.Date> birthdate = _comparable("birthdate",java.util.Date.class);
+    public static class QCat extends Path.PEntity<Cat>{
+        public final Path.PBoolean alive = _boolean("alive");
+        public final Path.PComparable<java.util.Date> birthdate = _comparable("birthdate",java.util.Date.class);
     
-        public final Path.Comparable<java.lang.Integer> bodyWeight = _comparable("bodyWeight",java.lang.Integer.class);
-        public final Path.Comparable<java.lang.Integer> breed = _comparable("breed",java.lang.Integer.class);
-        public final Path.Simple<Color> color = _simple("color",Color.class);
-        public final Path.Simple<Color> eyecolor = _simple("eyecolor",Color.class);
-        public final Path.Comparable<java.lang.Integer> id = _comparable("id",java.lang.Integer.class);
-        public final Path.EntityList<Cat> kittens = _entitylist("kittens",Cat.class);
+        public final Path.PComparable<java.lang.Integer> bodyWeight = _comparable("bodyWeight",java.lang.Integer.class);
+        public final Path.PComparable<java.lang.Integer> breed = _comparable("breed",java.lang.Integer.class);
+        public final Path.PSimple<Color> color = _simple("color",Color.class);
+        public final Path.PSimple<Color> eyecolor = _simple("eyecolor",Color.class);
+        public final Path.PComparable<java.lang.Integer> id = _comparable("id",java.lang.Integer.class);
+        public final Path.PEntityList<Cat> kittens = _entitylist("kittens",Cat.class);
         public QCat mate;
-        public final Path.String name = _string("name");
+        public final Path.PString name = _string("name");
     
-        public final Path.Comparable<java.lang.Integer> toes = _comparable("toes",java.lang.Integer.class);
-        public final Path.Comparable<java.lang.Integer> weight = _comparable("weight",java.lang.Integer.class);
+        public final Path.PComparable<java.lang.Integer> toes = _comparable("toes",java.lang.Integer.class);
+        public final Path.PComparable<java.lang.Integer> weight = _comparable("weight",java.lang.Integer.class);
         public QCat(java.lang.String path) {
             super(Cat.class, path);
             _mate();

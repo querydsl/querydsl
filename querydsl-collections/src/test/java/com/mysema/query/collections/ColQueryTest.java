@@ -5,12 +5,14 @@
  */
 package com.mysema.query.collections;
 
-import static com.mysema.query.collections.MiniApi.str;
+import static com.mysema.query.collections.MiniApi.$;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Ignore;
@@ -18,7 +20,9 @@ import org.junit.Test;
 
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.Domain.QCat;
+import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.Path;
 
 /**
  * ColQueryTest provides
@@ -65,21 +69,33 @@ public class ColQueryTest {
     }
     
     @Test
-    public void testCSVIteration(){
-        // 1st level
+    public void testCSVIteration(){       
         List<String> lines = Arrays.asList("1;10;100","2;20;200","3;30;300");
-        for (String[] row : query().from(str, lines).iterate(str.split(";"))){
+        
+        // 1st
+        for (String[] row : query().from($(""), lines).iterate($("").split(";"))){
             for (String col : row){
                 System.out.println(col);
             }
         }
         
-        // TODO : support for array expressions
-        /*        
-        Iterable<String[]> csvData1 = query().from(str, lines).iterate(str.split(";"));
-        // 2nd level
-        for (String s : query().from(strArray, csvData1
-        */
+        // 2nd
+        Path.PStringArray strs = $(new String[]{});
+        Iterable<String[]> csvData1 = query().from($(""), lines).iterate($("").split(";"));
+        for (String s : query().from(strs, csvData1).iterate(strs.get(0).add("-").add(strs.get(1)))){
+            System.out.println(s);
+        }         
+    }
+    
+    @Test
+    public void testStringHandling(){
+        Iterable<String> data1 = Arrays.asList("petER", "THomas", "joHAN");
+        Iterable<String> data2 = Arrays.asList("PETer", "thOMAS", "JOhan");
+        
+        Iterator<String> res = Arrays.asList("petER - PETer","THomas - thOMAS", "joHAN - JOhan").iterator();
+        for (String[] arr : query().from($("a"), data1).from($("b"), data2).where($("a").equalsIgnoreCase($("b"))).iterate($("a"),$("b"))){
+            assertEquals(res.next(), arr[0]+" - "+arr[1]);
+        }
     }
     
     @Test
@@ -103,8 +119,10 @@ public class ColQueryTest {
         // select cats named Kitt%
         query().from(cat,cats).where(cat.name.like("Kitt%")).select(cat.name);
         assertTrue(last.res.size() == 1);        
+        
+        query().from(cat,cats).select(Grammar.add(cat.bodyWeight, cat.weight));        
     }
-    
+
     @Test
     public void testPrimitives(){
         // select cats with kittens
@@ -147,6 +165,7 @@ public class ColQueryTest {
 //        select(new QFamily(mother, mate, offspr))
 //            .from(mother).innerJoin(mother.mate.as(mate))
 //            .leftJoin(mother.kittens.as(offspr)).parse();
+        
     }
     
     private TestQuery query(){
@@ -156,15 +175,15 @@ public class ColQueryTest {
     
     private class TestQuery extends ColQuery<TestQuery>{
         List<Object> res = new ArrayList<Object>();
-        <RT> void select(final Expr<RT> projection){
+        <RT> void select(Expr<RT> projection){
             for (Object o : iterate(projection)){
                 System.out.println(o);
                 res.add(o);
             }
             System.out.println();
         }
-        void select(final Expr<?> p1, final Expr<?> p2, final Expr<?>... rest){
-            for (Object[] o : iterate(p1, p2, rest)){
+        <RT> void select(Expr<RT> p1, Expr<RT> p2, Expr<RT>... rest){
+            for (RT[] o : iterate(p1, p2, rest)){
                 System.out.println(Arrays.asList(o));
                 res.add(o);
             }

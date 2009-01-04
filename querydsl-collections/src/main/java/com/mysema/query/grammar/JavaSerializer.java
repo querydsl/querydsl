@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.janino.CompileException;
 import org.codehaus.janino.ExpressionEvaluator;
@@ -23,8 +24,9 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
-import com.mysema.query.grammar.types.Alias.Simple;
-import com.mysema.query.grammar.types.Alias.ToPath;
+import com.mysema.query.grammar.types.Alias.ASimple;
+import com.mysema.query.grammar.types.Alias.AToPath;
+import com.mysema.query.grammar.types.ColTypes.ExtString;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
 import com.mysema.query.serialization.BaseSerializer;
 import com.mysema.query.serialization.OperationPatterns;
@@ -37,11 +39,15 @@ import com.mysema.query.serialization.OperationPatterns;
  * @version $Id$
  */
 public class JavaSerializer extends BaseSerializer<JavaSerializer>{
-            
+        
     private static final Logger logger = LoggerFactory.getLogger(JavaSerializer.class);
     
     public JavaSerializer(OperationPatterns ops){
         super(ops);
+    }
+    
+    protected void visit(ExtString stringPath){
+        visit((Path<String>)stringPath);
     }
         
     @Override
@@ -77,11 +83,11 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
     }
 
     @Override
-    protected void visit(Simple<?> expr) {        
+    protected void visit(ASimple<?> expr) {        
     }
     
     @Override
-    protected void visit(ToPath expr) {          
+    protected void visit(AToPath expr) {          
     }
     
     public ExpressionEvaluator createExpressionEvaluator(List<Expr<?>> sources, Class<?> targetType) throws CompileException, ParseException, ScanException{
@@ -92,13 +98,13 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
         Class<?>[] types = new Class<?>[constArray.length + sources.size()];
         String[] names = new String[constArray.length + sources.size()];
         for (int i = 0; i < constArray.length; i++){
-            types[i] = constArray[i].getClass();
+            types[i] = normalize(constArray[i].getClass());
             names[i] = "a" + (i+1);
         }
         
         int off = constArray.length;
         for (int i = 0; i < sources.size(); i++){
-            types[off + i] = sources.get(i).getType();
+            types[off + i] = normalize(sources.get(i).getType());            
             names[off + i] = ((Path<?>)sources.get(i)).getMetadata().getExpression().toString();    
         }         
         
@@ -115,6 +121,11 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
         };
     }
     
+    private Class<?> normalize(Class<?> type) {
+        Class<?> newType = ClassUtils.wrapperToPrimitive(type);
+        return newType != null ? newType : type;
+    }
+
     public ExpressionEvaluator createExpressionEvaluator(List<Expr<?>> sources, Expr<?> projection) throws Exception{
         Class<?> targetType = projection.getType();
         if (targetType == null) targetType = Object.class;

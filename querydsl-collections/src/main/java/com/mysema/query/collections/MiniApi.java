@@ -5,12 +5,18 @@
  */
 package com.mysema.query.collections;
 
+import java.util.Arrays;
+
+import org.apache.commons.lang.StringUtils;
+
 import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathExtractor;
 import com.mysema.query.grammar.types.PathMetadata;
+import com.mysema.query.grammar.types.ColTypes.ExtString;
+import com.mysema.query.grammar.types.Path.PSimple;
 
 /**
  * MiniApi provides static convenience methods for query construction
@@ -20,27 +26,68 @@ import com.mysema.query.grammar.types.PathMetadata;
  */
 public class MiniApi {
     
-    private static final PathMetadata<String> pm = PathMetadata.forVariable("it");
+    private static final ExprFactory exprFactory = new ExprFactory();
     
-    public static final Path<Object> it = new Path.Entity<Object>(Object.class,"it");
+    private static final Path.PSimple<Object> it = new Path.PSimple<Object>(Object.class,PathMetadata.forVariable("it"));
     
-    public static final Path.Comparable<Byte> byteVal = new Path.Comparable<Byte>(Byte.class, pm);
-    public static final Path.Comparable<Integer> intVal = new Path.Comparable<Integer>(Integer.class, pm);   
-    public static final Path.Comparable<Long> longVal = new Path.Comparable<Long>(Long.class, pm);
-    public static final Path.Comparable<Float> floatVal = new Path.Comparable<Float>(Float.class, pm);
-    public static final Path.Comparable<Double> doubleVal = new Path.Comparable<Double>(Double.class, pm);
+    public static <A> ColQuery<?> from(A... arr){
+        return from(Arrays.asList(arr));
+    }
     
-    public static final Path.String stringVal = new Path.String(pm), str = stringVal;
+    public static <A> ColQuery<?> from(Iterable<A> col){
+        return from(MiniApi.<A>$(), col);
+    }
+    
+    public static <A> ColQuery<?> from(Path<A> path, A... arr){
+        return from(path, Arrays.asList(arr));
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static <A> ColQuery<?> from(Path<A> path, Iterable<A> col){
+        return new ColQuery().from(path, col);
+    }
         
     @SuppressWarnings("unchecked")
-    public static <A> Iterable<A> select(Iterable<A> from, Expr.Boolean where, OrderSpecifier<?>... order){
-        Path<?> path = new PathExtractor().handle(where).getPath();
+    public static <A> Iterable<A> select(Iterable<A> from, Expr.EBoolean where, OrderSpecifier<?>... order){
+        Path<A> path = (Path<A>) new PathExtractor().handle(where).getPath();
         ColQuery query = new ColQuery().from(path, from).where(where).orderBy(order);
         return query.iterate((Expr<A>)path);
     }
                 
-    public static <A> Iterable<A> reject(Iterable<A> from, Expr.Boolean where, OrderSpecifier<?>...order){
+    public static <A> Iterable<A> reject(Iterable<A> from, Expr.EBoolean where, OrderSpecifier<?>...order){
         return select(from, Grammar.not(where), order);
+    }
+    
+    public static Path.PBoolean $(Boolean arg){
+        return exprFactory.create(arg);
+    }
+    
+    public static <D extends Comparable<D>> Path.PComparable<D> $(D arg){
+        return exprFactory.create(arg);
+    }
+    
+    public static ExtString $(String arg){
+        return exprFactory.createExt(arg);
+    }
+
+    public static Path.PBooleanArray $(Boolean[] args){
+        return exprFactory.create(args);
+    }
+    
+    public static <D extends Comparable<D>> Path.PComparableArray<D> $(D[] args){
+        return exprFactory.create(args);
+    }
+    
+    public static Path.PStringArray $(String[] args){
+        return exprFactory.create(args);
+    }
+    
+    public static <D> Path.PSimple<D> $(D arg){
+        return exprFactory.create(arg);
+    }
+    
+    public static <D> Path.PSimple<D> $(){
+        return (PSimple<D>) it;
     }
     
 

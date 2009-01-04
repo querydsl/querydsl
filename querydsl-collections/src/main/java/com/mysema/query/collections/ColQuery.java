@@ -11,8 +11,8 @@ import java.util.List;
 
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.OrderSpecifier;
+import com.mysema.query.grammar.types.Constructor;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.ObjectArray;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.serialization.OperationPatterns;
 
@@ -22,7 +22,7 @@ import com.mysema.query.serialization.OperationPatterns;
  * @author tiwe
  * @version $Id$
  */
-public class ColQuery<S extends ColQuery<S>> {
+public class ColQuery<S extends ColQuery<S>>{
 
     private static final OperationPatterns OPS_DEFAULT = new JavaOps();
 
@@ -56,11 +56,10 @@ public class ColQuery<S extends ColQuery<S>> {
         return (S)this;
     }
     
-    public Iterable<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
-        final Expr<?>[] full = asArray(new Expr[rest.length + 2], e1, e2, rest);
-        return query.iterate(new ObjectArray(full));
-    }
-    
+    public <RT> Iterable<RT[]> iterate(Expr<RT> e1, Expr<RT> e2, Expr<RT>... rest) {
+        final Expr<RT>[] full = asArray(new Expr[rest.length + 2], e1, e2, rest);
+        return query.iterate(new Constructor.CArray<RT>(e1.getType(), full));
+    }    
     public <RT> Iterable<RT> iterate(Expr<RT> projection) {
         return query.iterate(projection);
     }
@@ -68,11 +67,11 @@ public class ColQuery<S extends ColQuery<S>> {
     @SuppressWarnings("unchecked")
     public S orderBy(OrderSpecifier<?>... o) {
         query.orderBy(o);
-        return (S) this;
+        return (S)this;
     }
     
     @SuppressWarnings("unchecked")
-    public S where(Expr.Boolean o) {
+    public S where(Expr.EBoolean o) {
         query.where(o);
         return (S)this;
     }

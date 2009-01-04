@@ -37,17 +37,35 @@ public class JavaOps extends OperationPatterns {
         add(Ops.IN, "%2$s.contains(%1$s)"); 
         add(Ops.NOTIN, "!%2$s.contains(%1$s)");        
         add(Ops.LIKE, functions+".like(%s,%s)");
+        
+        // java.lang.String
+        add(Ops.CHAR_AT, "%s.charAt(%s)");
         add(Ops.LOWER, "%s.toLowerCase()");     
         add(Ops.SPLIT, "%s.split(%s)");
         add(Ops.SUBSTR1ARG, "%s.substring(%s)");
         add(Ops.SUBSTR2ARGS, "%s.substring(%s,%s)");
         add(Ops.TRIM, "%s.trim()");
-        add(Ops.UPPER, "%s.toUpperCase()");
+        add(Ops.UPPER, "%s.toUpperCase()");        
+        add(Ops.MATCHES, "%s.matches(%s)");
+        add(Ops.STRING_LENGTH, "%s.length(%s)");
+        add(Ops.LAST_INDEX_2ARGS, "%s.lastIndex(%s)");
+        add(Ops.LAST_INDEX, "%s.lastIndex(%s,%s)");
+        add(Ops.ISEMPTY, "%s.isEmpty()");
+        add(Ops.STARTSWITH, "%s.startsWith(%s)");
+        add(Ops.INDEXOF_2ARGS, "%s.indexOf(%s,%s)");
+        add(Ops.INDEXOF, "%s.indexOf(%s)");
+        add(Ops.EQ_IGNORECASE, "%s.equalsIgnoreCase(%s)");
+        add(Ops.ENDSWITH, "%s.endsWith(%s)");
+        add(Ops.CONTAINS, "%s.contains(%s)");
         
         // path types
         for (PathType type : new PathType[]{PathMetadata.LISTVALUE, PathMetadata.LISTVALUE_CONSTANT, PathMetadata.MAPVALUE, PathMetadata.MAPVALUE_CONSTANT}){
             add(type,"%s.get(%s)");    
-        }
+        }        
+        add(PathMetadata.ARRAYVALUE, "%s[%s]");
+        add(PathMetadata.ARRAYVALUE_CONSTANT, "%s[%s]");
+        
+        add(PathMetadata.ARRAY_SIZE,"%s.length");
         add(PathMetadata.SIZE,"%s.size()");
         
     }
