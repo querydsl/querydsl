@@ -47,12 +47,12 @@ public class HqlIntegrationTest extends HqlParserTest{
     
     @Test
     public void testGroupBy() throws Exception {
-        // do nothing
+        // NOTE : commented out, because HQLSDB doesn't support these queries
     }
 
     @Test
     public void testOrderBy() throws Exception {
-        // do nothing
+        // NOTE : commented out, because HQLSDB doesn't support these queries
     }
 
     public void setSession(Session session) {
