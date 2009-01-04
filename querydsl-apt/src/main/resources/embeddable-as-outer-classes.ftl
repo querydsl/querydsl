@@ -8,6 +8,6 @@ import static com.mysema.query.grammar.types.PathMetadata.*;
  * ${classSimpleName} provides types for use in Query DSL constructs
  *
  */
-public class ${pre}${classSimpleName} extends Path.Entity<${type.name}>{
+public class ${pre}${classSimpleName} extends Path.PEntity<${type.name}>{
 <@cl.classContent decl=type embeddable=true/>
 }

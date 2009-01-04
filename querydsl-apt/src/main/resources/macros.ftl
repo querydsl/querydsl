@@ -1,44 +1,44 @@
 <#macro classContent decl embeddable>
   <#assign reserved = ["isnull", "isnotnull", "getType", "getMetadata", "toString", "hashCode", "getClass", "notify", "notifyAll", "wait"]>
   <#list decl.stringFields as field>
-    	public final Path.String ${field.name} = _string("${field.name}");
+    	public final Path.PString ${field.name} = _string("${field.name}");
     </#list>    
     <#list decl.booleanFields as field>
-    	public final Path.Boolean ${field.name} = _boolean("${field.name}");
+    	public final Path.PBoolean ${field.name} = _boolean("${field.name}");
     </#list>
     
   <#-- simple fields --> 
     <#list decl.simpleFields as field>
-		public final Path.Simple<${field.typeName}> ${field.name} = _simple("${field.name}",${field.typeName}.class);
+		public final Path.PSimple<${field.typeName}> ${field.name} = _simple("${field.name}",${field.typeName}.class);
     </#list>
     <#list decl.comparableFields as field>
-		public final Path.Comparable<${field.typeName}> ${field.name} = _comparable("${field.name}",${field.typeName}.class);
+		public final Path.PComparable<${field.typeName}> ${field.name} = _comparable("${field.name}",${field.typeName}.class);
     </#list>
 	<#list decl.simpleMaps as field>
-    	public final Path.ComponentMap<${field.keyTypeName},${field.typeName}> ${field.name} = _simplemap("${field.name}",${field.keyTypeName}.class,${field.typeName}.class);
-    	public Path.Simple<${field.typeName}> ${field.name}(${field.keyTypeName} key) {
-    		return new Path.Simple<${field.typeName}>(${field.typeName}.class,forMapAccess(${field.name},key));
+    	public final Path.PComponentMap<${field.keyTypeName},${field.typeName}> ${field.name} = _simplemap("${field.name}",${field.keyTypeName}.class,${field.typeName}.class);
+    	public Path.PSimple<${field.typeName}> ${field.name}(${field.keyTypeName} key) {
+    		return new Path.PSimple<${field.typeName}>(${field.typeName}.class,forMapAccess(${field.name},key));
     	}
-    	public Path.Simple<${field.typeName}> ${field.name}(Expr<${field.keyTypeName}> key) {
-    		return new Path.Simple<${field.typeName}>(${field.typeName}.class,forMapAccess(${field.name},key));
+    	public Path.PSimple<${field.typeName}> ${field.name}(Expr<${field.keyTypeName}> key) {
+    		return new Path.PSimple<${field.typeName}>(${field.typeName}.class,forMapAccess(${field.name},key));
     	}
    	</#list>  
 	<#list decl.simpleCollections as field>
-    	public final Path.ComponentCollection<${field.typeName}> ${field.name} = _simplecol("${field.name}",${field.typeName}.class);
+    	public final Path.PComponentCollection<${field.typeName}> ${field.name} = _simplecol("${field.name}",${field.typeName}.class);
     </#list>  
 	<#list decl.simpleLists as field>
-    	public final Path.ComponentList<${field.typeName}> ${field.name} = _simplelist("${field.name}",${field.typeName}.class);
-    	public Path.Simple<${field.typeName}> ${field.name}(int index) {
-    		return new Path.Simple<${field.typeName}>(${field.typeName}.class,forListAccess(${field.name},index));
+    	public final Path.PComponentList<${field.typeName}> ${field.name} = _simplelist("${field.name}",${field.typeName}.class);
+    	public Path.PSimple<${field.typeName}> ${field.name}(int index) {
+    		return new Path.PSimple<${field.typeName}>(${field.typeName}.class,forListAccess(${field.name},index));
     	}
-    	public Path.Simple<${field.typeName}> ${field.name}(Expr<Integer> index) {
-    		return new Path.Simple<${field.typeName}>(${field.typeName}.class,forListAccess(${field.name},index));
+    	public Path.PSimple<${field.typeName}> ${field.name}(Expr<Integer> index) {
+    		return new Path.PSimple<${field.typeName}>(${field.typeName}.class,forListAccess(${field.name},index));
     	}
     </#list>             
     
   <#-- entity fields -->           
     <#list decl.entityMaps as field>
-    	public final Path.EntityMap<${field.keyTypeName},${field.typeName}> ${field.name} = _entitymap("${field.name}",${field.keyTypeName}.class,${field.typeName}.class);
+    	public final Path.PEntityMap<${field.keyTypeName},${field.typeName}> ${field.name} = _entitymap("${field.name}",${field.keyTypeName}.class,${field.typeName}.class);
     	public ${pre}${field.simpleTypeName} ${field.name}(${field.keyTypeName} key) {
     		return new ${pre}${field.simpleTypeName}(forMapAccess(${field.name},key));
     	}
@@ -47,10 +47,10 @@
     	}
     </#list> 
     <#list decl.entityCollections as field>
-    	public final Path.EntityCollection<${field.typeName}> ${field.name} = _entitycol("${field.name}",${field.typeName}.class);
+    	public final Path.PEntityCollection<${field.typeName}> ${field.name} = _entitycol("${field.name}",${field.typeName}.class);
     </#list>
     <#list decl.entityLists as field>
-    	public final Path.EntityList<${field.typeName}> ${field.name} = _entitylist("${field.name}",${field.typeName}.class);
+    	public final Path.PEntityList<${field.typeName}> ${field.name} = _entitylist("${field.name}",${field.typeName}.class);
     	public ${pre}${field.simpleTypeName} ${field.name}(int index) {
     		return new ${pre}${field.simpleTypeName}(forListAccess(${field.name},index));
     	}
