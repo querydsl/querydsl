@@ -15,25 +15,25 @@ import com.mysema.query.grammar.types.Expr;
  * @version $Id$
  */
 public class CascadingBoolean {
-    private Expr.Boolean expr;
+    private Expr.EBoolean expr;
 
-    public CascadingBoolean and(Expr.Boolean right) {
+    public CascadingBoolean and(Expr.EBoolean right) {
         expr = (expr == null) ? right : expr.and(right);
         return this;
     }
     public void clear(){
         expr = null;
     }
-    public CascadingBoolean not(Expr.Boolean right){
+    public CascadingBoolean not(Expr.EBoolean right){
         return and(Grammar.not(right));
     }
     
-    public CascadingBoolean or(Expr.Boolean right) {
+    public CascadingBoolean or(Expr.EBoolean right) {
         expr = (expr == null) ? right : expr.or(right);
         return this;
     }
     
-    public Expr.Boolean self(){
+    public Expr.EBoolean self(){
         return expr;
     }
 

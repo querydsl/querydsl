@@ -11,7 +11,7 @@ import java.util.List;
 
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.Entity;
+import com.mysema.query.grammar.types.Expr.EEntity;
 
 /**
  * QueryBase provides a basic implementation of the Query interface.
@@ -40,8 +40,8 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
     
     private final Metadata metadata = new Metadata();
     
-    public A from(Expr.Entity<?>... o) {
-        for (Entity<?> expr : o){
+    public A from(Expr.EEntity<?>... o) {
+        for (EEntity<?> expr : o){
             joins.add(new JoinExpression<JoinMeta>(JoinType.DEFAULT,expr));
         }
         return (A) this;
@@ -52,27 +52,27 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
         return (A) this;
     }
         
-    public A having(Expr.Boolean o) {
+    public A having(Expr.EBoolean o) {
         having.and(o);
         return (A) this;
     }
     
-    public A innerJoin(Entity<?> o) {
+    public A innerJoin(EEntity<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.INNERJOIN,o));
         return (A) this;
     }
     
-    public A fullJoin(Entity<?> o) {
+    public A fullJoin(EEntity<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.FULLJOIN,o));
         return (A) this;
     }
  
-    public A join(Entity<?> o) {
+    public A join(EEntity<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.JOIN,o));
         return (A) this;
     }
  
-    public A leftJoin(Entity<?> o) {
+    public A leftJoin(EEntity<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.LEFTJOIN,o));
         return (A) this;
     }
@@ -87,12 +87,12 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
         return (A) this;
     }
 
-    public A where(Expr.Boolean o) {
+    public A where(Expr.EBoolean o) {
         where.and(o);
         return (A) this;
     }
     
-    public A with(Expr.Boolean o) {
+    public A with(Expr.EBoolean o) {
         if (!joins.isEmpty()){
             joins.get(joins.size()-1).setCondition(o);
         }
@@ -110,7 +110,7 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
         public List<Expr<?>> getGroupBy() {
             return groupBy;
         }
-        public Expr.Boolean getHaving() {
+        public Expr.EBoolean getHaving() {
             return having.self();
         }
         public List<JoinExpression<JoinMeta>> getJoins() {
@@ -122,7 +122,7 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
         public List<Expr<?>> getSelect() {
             return select;
         }
-        public Expr.Boolean getWhere() {
+        public Expr.EBoolean getWhere() {
             return where.self();
         }
     }

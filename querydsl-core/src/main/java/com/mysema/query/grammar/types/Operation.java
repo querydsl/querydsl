@@ -6,6 +6,9 @@
 package com.mysema.query.grammar.types;
 
 import com.mysema.query.grammar.Ops.Op;
+import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.grammar.types.Expr.EComparable;
+import com.mysema.query.grammar.types.Expr.EString;
 
 
 
@@ -23,24 +26,24 @@ public interface Operation<OP,RT> {
     /**
      * The Class Boolean.
      */
-    public static class Boolean extends Expr.Boolean implements Operation<java.lang.Boolean,java.lang.Boolean>{
+    public static class OBoolean extends EBoolean implements Operation<Boolean,Boolean>{
         private final Expr<?>[] args;
-        private final Op<java.lang.Boolean> op;
-        public Boolean(Op<java.lang.Boolean> op, Expr<?>... args){
+        private final Op<Boolean> op;
+        public OBoolean(Op<Boolean> op, Expr<?>... args){
             this.op = op;
             this.args = args;
         }
         public Expr<?>[] getArgs() {return args;}
-        public Op<java.lang.Boolean> getOperator() {return op;}    
+        public Op<Boolean> getOperator() {return op;}    
     }    
     
     /**
      * The Class Comparable.
      */
-    public static class Comparable<OpType,D extends java.lang.Comparable<D>> extends Expr.Comparable<D> implements Operation<OpType,D> {
+    public static class OComparable<OpType,D extends Comparable<D>> extends EComparable<D> implements Operation<OpType,D> {
         private final Expr<?>[] args;
         private final Op<OpType> op;
-        public Comparable(Op<OpType> op, Expr<?>... args){
+        public OComparable(Op<OpType> op, Expr<?>... args){
             super(null);
             this.op = op;
             this.args = args;
@@ -52,8 +55,8 @@ public interface Operation<OP,RT> {
     /**
      * The Class Number.
      */
-    public static class Number<N extends java.lang.Number,D extends java.lang.Comparable<D>> extends Comparable<N,D>{
-        public Number(Op<N> op, Expr<?>[] args) {
+    public static class ONumber<N extends Number,D extends Comparable<D>> extends OComparable<N,D>{
+        public ONumber(Op<N> op, Expr<?>[] args) {
             super(op, args);
         }        
     }
@@ -61,27 +64,27 @@ public interface Operation<OP,RT> {
     /**
      * The Class String.
      */
-    public static class String extends Expr.String implements Operation<java.lang.String,java.lang.String>{
+    public static class OString extends EString implements Operation<String,String>{
         private final Expr<?>[] args;
-        private final Op<java.lang.String> op;
-        public String(Op<java.lang.String> op, Expr<?>... args){
+        private final Op<String> op;
+        public OString(Op<String> op, Expr<?>... args){
             this.op = op;
             this.args = args;
         }
         public Expr<?>[] getArgs() {return args;}
-        public Op<java.lang.String> getOperator() {return op;}    
+        public Op<String> getOperator() {return op;}    
     }
     
-    public static class StringArray extends Expr<java.lang.String[]> implements Operation<java.lang.String,java.lang.String[]>{
+    public static class OStringArray extends Expr<String[]> implements Operation<String,String[]>{
         private final Expr<?>[] args;
-        private final Op<java.lang.String> op;
-        public StringArray(Op<java.lang.String> op, Expr<?>... args){
+        private final Op<String> op;
+        public OStringArray(Op<String> op, Expr<?>... args){
             super(null);
             this.op = op;
             this.args = args;
         }
         public Expr<?>[] getArgs() {return args;}
-        public Op<java.lang.String> getOperator() {return op;}
+        public Op<String> getOperator() {return op;}
     }
 
 }

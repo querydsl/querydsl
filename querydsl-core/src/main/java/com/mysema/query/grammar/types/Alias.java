@@ -5,6 +5,11 @@
  */
 package com.mysema.query.grammar.types;
 
+import com.mysema.query.grammar.types.Expr.EEntity;
+import com.mysema.query.grammar.types.Expr.ESimple;
+import com.mysema.query.grammar.types.Path.PEntity;
+import com.mysema.query.grammar.types.Path.PEntityCollection;
+
 /**
  * Alias represents alias expressions
  * 
@@ -18,10 +23,10 @@ public interface Alias {
     /**
      * The Class Entity.
      */
-    public static class Entity<D> extends Expr.Entity<D> implements ToPath{
+    public static class AEntity<D> extends EEntity<D> implements AToPath{
         private final Expr<?> from;
         private final Path<?> to;
-        public Entity(Path.Entity<D> from, Path.Entity<D> to) {
+        public AEntity(PEntity<D> from, PEntity<D> to) {
             super(from.getType());
             this.from = from;
             this.to = to;
@@ -33,10 +38,10 @@ public interface Alias {
     /**
      * The Class EntityCollection.
      */
-    public static class EntityCollection<D> extends Expr.Entity<D> implements ToPath{
+    public static class AEntityCollection<D> extends EEntity<D> implements AToPath{
         private final Expr<?> from;
         private final Path<?> to;
-        public EntityCollection(Path.EntityCollection<D> from, Path<D> to) {
+        public AEntityCollection(PEntityCollection<D> from, Path<D> to) {
             super(null);
             this.from = from;
             this.to = to;
@@ -48,25 +53,25 @@ public interface Alias {
     /**
      * The Class Simple.
      */
-    public static class Simple<D> extends Expr.Simple<D> implements Alias{     
+    public static class ASimple<D> extends ESimple<D> implements Alias{     
         private final Expr<?> from;
-        private final java.lang.String to;
-        public Simple(Expr<D> from, java.lang.String to) {
+        private final String to;
+        public ASimple(Expr<D> from, String to) {
             super(from.getType());
             this.from = from;
             this.to = to;
         }
-        public Expr<D> as(java.lang.String to) {
+        public Expr<D> as(String to) {
             return IntGrammar.as(this, to);
         }   
         public Expr<?> getFrom() {return from;}
-        public java.lang.String getTo() {return to;}  
+        public String getTo() {return to;}  
     }
     
     /**
-     * The Interface ToPath.
+     * The Interface To
      */
-    public interface ToPath extends Alias{        
+    public interface AToPath extends Alias{        
         Path<?> getTo();
     }
 

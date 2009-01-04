@@ -12,7 +12,6 @@ import java.util.List;
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Constructor;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.ObjectArray;
 import com.mysema.query.grammar.types.Operation;
 import com.mysema.query.grammar.types.VisitorAdapter;
 
@@ -74,7 +73,7 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
     }
         
     @Override
-    protected void visit(Expr.Constant<?> expr) {
+    protected void visit(Expr.EConstant<?> expr) {
         _append("a");
         if (!constants.contains(expr.getConstant())){
             constants.add(expr.getConstant());
@@ -84,8 +83,9 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
         }     
     }
     
-    protected void visit(ObjectArray oa) {
-        _append("new Object[]{");
+    protected void visit(Constructor.CArray<?> oa) {
+//        _append("new Object[]{");
+        _append("new ")._append(oa.getElementType().getName())._append("[]{");
         _append(", ",Arrays.asList(oa.getArgs()))._append("}");
     }
         

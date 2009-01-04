@@ -17,88 +17,101 @@ package com.mysema.query.grammar.types;
 public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visitor<V> {
 
     @Override
-    protected void visit(Alias.Entity<?> expr) {
-        visit((Alias.ToPath) expr);
+    protected void visit(Alias.AEntity<?> expr) {
+        visit((Alias.AToPath) expr);
     }
     @Override
-    protected void visit(Alias.EntityCollection<?> expr) {
-        visit((Alias.ToPath) expr);
+    protected void visit(Alias.AEntityCollection<?> expr) {
+        visit((Alias.AToPath) expr);
     }
     @Override
-    protected void visit(Operation.Boolean expr) {
+    protected void visit(Operation.OBoolean expr) {
         visit((Operation<?, ?>) expr);
     }
     @Override
-    protected void visit(Operation.Comparable<?,?> expr) {
+    protected void visit(Operation.OComparable<?,?> expr) {
         visit((Operation<?, ?>) expr);
     }
     @Override
-    protected void visit(Operation.Number<?,?> expr) {
+    protected void visit(Operation.ONumber<?,?> expr) {
         visit((Operation<?, ?>) expr);
     }
     @Override
-    protected void visit(Operation.String expr) {
+    protected void visit(Operation.OString expr) {
         visit((Operation<?, ?>) expr);
     }
     @Override
-    protected void visit(Operation.StringArray expr) {
+    protected void visit(Operation.OStringArray expr) {
         visit((Operation<?, ?>) expr);
     }
     @Override
-    protected void visit(Path.Boolean expr) {
-        visit((Path<?>) expr);
-    }
-    protected void visit(Path.Collection<?> expr){
-        visit((Path<?>) expr);
-    }
-    protected void visit(Path.List<?> expr){
-        visit((Path.Collection<?>) expr);
-    }
-    @Override
-    protected void visit(Path.Comparable<?> expr) {
+    protected void visit(Path.PArray<?> expr) {
         visit((Path<?>) expr);
     }
     @Override
-    protected void visit(Path.ComponentCollection<?> expr) {
-        visit((Path.Collection<?>) expr);
+    protected void visit(Path.PBoolean expr) {
+        visit((Path<?>) expr);
     }
     @Override
-    protected void visit(Path.ComponentList<?> expr) {
-        visit((Path.List<?>) expr);
+    protected void visit(Path.PBooleanArray expr) {
+        visit((Path.PArray<?>) expr);
+    }
+    protected void visit(Path.PCollection<?> expr){
+        visit((Path<?>) expr);
+    }
+    protected void visit(Path.PList<?> expr){
+        visit((Path.PCollection<?>) expr);
+    }
+    @Override
+    protected void visit(Path.PComparable<?> expr) {
+        visit((Path<?>) expr);
+    }
+    @Override
+    protected void visit(Path.PComparableArray<?> expr) {
+        visit((Path.PArray<?>) expr);
+    }
+    @Override
+    protected void visit(Path.PComponentCollection<?> expr) {
+        visit((Path.PCollection<?>) expr);
+    }
+    @Override
+    protected void visit(Path.PComponentList<?> expr) {
+        visit((Path.PList<?>) expr);
     }    
     @Override
-    protected void visit(Path.ComponentMap<?,?> expr) {
-        visit((Path.Map<?,?>) expr);
+    protected void visit(Path.PComponentMap<?,?> expr) {
+        visit((Path.PMap<?,?>) expr);
     }    
     @Override
-    protected void visit(Path.Entity<?> expr) {
+    protected void visit(Path.PEntity<?> expr) {
         visit((Path<?>) expr);
     }    
     @Override
-    protected void visit(Path.EntityCollection<?> expr) {
-        visit((Path.Collection<?>) expr);
+    protected void visit(Path.PEntityCollection<?> expr) {
+        visit((Path.PCollection<?>) expr);
     }
     @Override
-    protected void visit(Path.EntityList<?> expr) {
-        visit((Path.List<?>) expr);
+    protected void visit(Path.PEntityList<?> expr) {
+        visit((Path.PList<?>) expr);
     }
     @Override
-    protected void visit(Path.EntityMap<?,?> expr) {
-        visit((Path.Map<?,?>) expr);
+    protected void visit(Path.PEntityMap<?,?> expr) {
+        visit((Path.PMap<?,?>) expr);
     }
-//    @Override
-//    protected void visit(Path.RenamableEntity<?> expr) {
-//        visit((Path.Entity<?>) expr);
-//    }
-    protected void visit(Path.Map<?,?> expr){
+    @Override
+    protected void visit(Path.PMap<?,?> expr){
         visit((Path<?>) expr);
     }
     @Override
-    protected void visit(Path.Simple<?> expr) {
+    protected void visit(Path.PSimple<?> expr) {
         visit((Path<?>) expr);
     }
     @Override
-    protected void visit(Path.String expr) {
+    protected void visit(Path.PString expr) {
         visit((Path<?>) expr);
+    }
+    @Override
+    protected void visit(Path.PStringArray expr) {
+        visit((Path.PArray<?>) expr);
     }
 }

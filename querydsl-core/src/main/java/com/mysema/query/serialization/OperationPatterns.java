@@ -21,7 +21,7 @@ import com.mysema.query.grammar.types.PathMetadata.PathType;
  */
 public abstract class OperationPatterns{
    
-    private final Map<Op<?>,java.lang.String> patterns = new HashMap<Op<?>,java.lang.String>();
+    private final Map<Op<?>,String> patterns = new HashMap<Op<?>,String>();
         
     private final Map<Op<?>,Integer> precedence = new HashMap<Op<?>,Integer>();
     
@@ -82,16 +82,16 @@ public abstract class OperationPatterns{
         
     }
     
-    protected void add(Op<?> op, java.lang.String pattern){
+    protected void add(Op<?> op, String pattern){
         patterns.put(op, pattern);             
     }
     
-    protected void add(Op<?> op, java.lang.String pattern, int pre){
+    protected void add(Op<?> op, String pattern, int pre){
         patterns.put(op, pattern);
         precedence.put(op,pre);     
     }
     
-    public java.lang.String getPattern(Op<?> op){
+    public String getPattern(Op<?> op){
         return patterns.get(op);
     }
     

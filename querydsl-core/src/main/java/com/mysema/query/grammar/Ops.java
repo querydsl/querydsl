@@ -19,51 +19,62 @@ public interface Ops {
     public static class Op<RT>{}
     
     // general
-    Op<java.lang.Boolean> EQ_PRIMITIVE = new Op<java.lang.Boolean>();
-    Op<java.lang.Boolean> EQ_OBJECT = new Op<java.lang.Boolean>();
-    Op<java.lang.Boolean> IN = new Op<java.lang.Boolean>();
-    Op<java.lang.Boolean> ISNOTNULL = new Op<java.lang.Boolean>();
-    Op<java.lang.Boolean> ISNULL = new Op<java.lang.Boolean>();
-    Op<java.lang.Boolean> ISTYPEOF = new Op<java.lang.Boolean>();
-    Op<java.lang.Boolean> NE_PRIMITIVE = new Op<java.lang.Boolean>();
-    Op<java.lang.Boolean> NE_OBJECT = new Op<java.lang.Boolean>();
-    Op<java.lang.Boolean> NOTIN =  new Op<java.lang.Boolean>();
+    Op<Boolean> EQ_PRIMITIVE = new Op<Boolean>();
+    Op<Boolean> EQ_OBJECT = new Op<Boolean>();
+    Op<Boolean> IN = new Op<Boolean>();
+    Op<Boolean> ISNOTNULL = new Op<Boolean>();
+    Op<Boolean> ISNULL = new Op<Boolean>();
+    Op<Boolean> ISTYPEOF = new Op<Boolean>();
+    Op<Boolean> NE_PRIMITIVE = new Op<Boolean>();
+    Op<Boolean> NE_OBJECT = new Op<Boolean>();
+    Op<Boolean> NOTIN =  new Op<Boolean>();
     
     // Boolean
-    Op<java.lang.Boolean> AND = new Op<java.lang.Boolean>(); 
-    Op<java.lang.Boolean> NOT = new Op<java.lang.Boolean>();
-    Op<java.lang.Boolean> OR = new Op<java.lang.Boolean>();
-    Op<java.lang.Boolean> XNOR = new Op<java.lang.Boolean>();
-    Op<java.lang.Boolean> XOR = new Op<java.lang.Boolean>();
+    Op<Boolean> AND = new Op<Boolean>(); 
+    Op<Boolean> NOT = new Op<Boolean>();
+    Op<Boolean> OR = new Op<Boolean>();
+    Op<Boolean> XNOR = new Op<Boolean>();
+    Op<Boolean> XOR = new Op<Boolean>();
      
     // Comparable
-    Op<java.lang.Boolean> BETWEEN = new Op<java.lang.Boolean>();
-    Op<java.lang.Boolean> GOE = new Op<java.lang.Boolean>();
-    Op<java.lang.Boolean> GT = new Op<java.lang.Boolean>();
-    Op<java.lang.Boolean> LOE = new Op<java.lang.Boolean>();
-    Op<java.lang.Boolean> LT = new Op<java.lang.Boolean>();
-    Op<java.lang.Boolean> NOTBETWEEN = new Op<java.lang.Boolean>();
+    Op<Boolean> BETWEEN = new Op<Boolean>();
+    Op<Boolean> GOE = new Op<Boolean>();
+    Op<Boolean> GT = new Op<Boolean>();
+    Op<Boolean> LOE = new Op<Boolean>();
+    Op<Boolean> LT = new Op<Boolean>();
+    Op<Boolean> NOTBETWEEN = new Op<Boolean>();
     
     // Date
-    Op<java.lang.Boolean> AFTER = new Op<java.lang.Boolean>();
-    Op<java.lang.Boolean> BEFORE = new Op<java.lang.Boolean>();    
+    Op<Boolean> AFTER = new Op<Boolean>();
+    Op<Boolean> BEFORE = new Op<Boolean>();    
      
     // Number
-    Op<java.lang.Number> ADD = new Op<java.lang.Number>();          
-    Op<java.lang.Number> DIV = new Op<java.lang.Number>();        
-    Op<java.lang.Number> MOD = new Op<java.lang.Number>();
-    Op<java.lang.Number> MULT = new Op<java.lang.Number>();
-    Op<java.lang.Number> SQRT = new Op<java.lang.Number>();
-    Op<java.lang.Number> SUB = new Op<java.lang.Number>();
+    Op<Number> ADD = new Op<Number>();          
+    Op<Number> DIV = new Op<Number>();        
+    Op<Number> MOD = new Op<Number>();
+    Op<Number> MULT = new Op<Number>();
+    Op<Number> SQRT = new Op<Number>();
+    Op<Number> SUB = new Op<Number>();
     
     // String
-    Op<java.lang.String> CONCAT = new Op<java.lang.String>();
-    Op<java.lang.Boolean> LIKE = new Op<java.lang.Boolean>();
-    Op<java.lang.String> LOWER = new Op<java.lang.String>();
-    Op<java.lang.String> SUBSTR1ARG = new Op<java.lang.String>();
-    Op<java.lang.String> SUBSTR2ARGS = new Op<java.lang.String>();
-    Op<java.lang.String> SPLIT = new Op<java.lang.String>();
-    Op<java.lang.String> TRIM = new Op<java.lang.String>();
-    Op<java.lang.String> UPPER = new Op<java.lang.String>();
-       
+    Op<Character> CHAR_AT = new Op<Character>();
+    Op<String> CONCAT = new Op<String>();
+    Op<Boolean> LIKE = new Op<Boolean>();
+    Op<String> LOWER = new Op<String>();
+    Op<String> SUBSTR1ARG = new Op<String>();
+    Op<String> SUBSTR2ARGS = new Op<String>();
+    Op<String> SPLIT = new Op<String>();
+    Op<String> TRIM = new Op<String>();
+    Op<String> UPPER = new Op<String>();
+    Op<Boolean> MATCHES = new Op<Boolean>();
+    Op<Number> STRING_LENGTH = new Op<Number>();  
+    Op<Number> LAST_INDEX_2ARGS = new Op<Number>();  
+    Op<Number> LAST_INDEX = new Op<Number>();  
+    Op<Boolean> ISEMPTY = new Op<Boolean>();
+    Op<Boolean> STARTSWITH = new Op<Boolean>();
+    Op<Number> INDEXOF_2ARGS = new Op<Number>();  
+    Op<Number> INDEXOF = new Op<Number>();  
+    Op<Boolean> EQ_IGNORECASE = new Op<Boolean>();
+    Op<Boolean> ENDSWITH = new Op<Boolean>();
+    Op<Boolean> CONTAINS = new Op<Boolean>();
 }

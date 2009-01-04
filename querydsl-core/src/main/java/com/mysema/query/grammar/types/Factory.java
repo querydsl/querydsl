@@ -19,16 +19,16 @@ public class Factory {
         if (obj == null) throw new IllegalArgumentException(name + " was null");        
     }
     
-    public static final Expr.Boolean createBoolean(Op<Boolean> operator, Expr<?>... args) {
+    public static final Expr.EBoolean createBoolean(Op<Boolean> operator, Expr<?>... args) {
         checkArg("operator",operator);
         checkArg("args",args);
-        return new Operation.Boolean(operator, args);
+        return new Operation.OBoolean(operator, args);
     }
     
-    public static final <OP, RT extends Comparable<RT>> Expr.Comparable<RT> createComparable(Op<OP> operator, Expr<?>... args) {
+    public static final <OP, RT extends Comparable<RT>> Expr.EComparable<RT> createComparable(Op<OP> operator, Expr<?>... args) {
         checkArg("operator",operator);
         checkArg("args",args);
-        return new Operation.Comparable<OP,RT>(operator, args);
+        return new Operation.OComparable<OP,RT>(operator, args);
     }
     
     @SuppressWarnings("unchecked")
@@ -36,25 +36,25 @@ public class Factory {
         checkArg("constant",obj);
         if (obj instanceof Expr)
             return (Expr<A>) obj;
-        return new Expr.Constant<A>(obj);
+        return new Expr.EConstant<A>(obj);
     }
 
-    public static final <N extends Number,D extends Comparable<D>> Expr.Comparable<D> createNumber(Op<N> operator, Expr<?>... args) {
+    public static final <N extends Number,D extends Comparable<D>> Expr.EComparable<D> createNumber(Op<N> operator, Expr<?>... args) {
         checkArg("operator",operator);
         checkArg("args",args);
-        return new Operation.Number<N,D>(operator, args);
+        return new Operation.ONumber<N,D>(operator, args);
     }
     
-    public static final Expr.String createString(Op<String> operator, Expr<?>... args) {
+    public static final Expr.EString createString(Op<String> operator, Expr<?>... args) {
         checkArg("operator",operator);
         checkArg("args",args);
-        return new Operation.String(operator, args);
+        return new Operation.OString(operator, args);
     }
     
     public static final Expr<String[]> createStringArray(Op<String> operator, Expr<?>... args) {
         checkArg("operator",operator);
         checkArg("args",args);
-        return new Operation.StringArray(operator, args);
+        return new Operation.OStringArray(operator, args);
     }
 
 }

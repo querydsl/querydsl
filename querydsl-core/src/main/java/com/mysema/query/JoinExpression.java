@@ -14,7 +14,7 @@ import com.mysema.query.grammar.types.Expr;
  * @version $Id$
  */
 public class JoinExpression<T> {
-    private Expr.Boolean condition;
+    private Expr.EBoolean condition;
     private final Expr<?> target;
     private final JoinType type;
     private final T metadata;
@@ -31,11 +31,11 @@ public class JoinExpression<T> {
         this.metadata = metadata;
     }
     
-    public Expr.Boolean getCondition() {
+    public Expr.EBoolean getCondition() {
         return condition;
     }
     
-    public void setCondition(Expr.Boolean condition) {
+    public void setCondition(Expr.EBoolean condition) {
         this.condition = condition;
     }
     

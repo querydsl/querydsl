@@ -5,11 +5,15 @@
  */
 package com.mysema.query.grammar.types;
 
-import static com.mysema.query.grammar.types.PathMetadata.forListAccess;
-import static com.mysema.query.grammar.types.PathMetadata.forMapAccess;
-import static com.mysema.query.grammar.types.PathMetadata.forProperty;
-import static com.mysema.query.grammar.types.PathMetadata.forSize;
-import static com.mysema.query.grammar.types.PathMetadata.forVariable;
+import static com.mysema.query.grammar.types.PathMetadata.*;
+
+import java.lang.reflect.Array;
+
+import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.grammar.types.Expr.EComparable;
+import com.mysema.query.grammar.types.Expr.EEntity;
+import com.mysema.query.grammar.types.Expr.ESimple;
+import com.mysema.query.grammar.types.Expr.EString;
 
 
 /**
@@ -19,225 +23,284 @@ import static com.mysema.query.grammar.types.PathMetadata.forVariable;
  * @version $Id$
  */
 public interface Path<C> {
-    
+        
     PathMetadata<?> getMetadata();
-    Expr.Boolean isnotnull();
-    Expr.Boolean isnull();
+    EBoolean isnotnull();
+    EBoolean isnull();
             
+    public static abstract class PArray<D> extends Expr<D[]> implements Path<D[]>, CollectionType<D>{
+        private final PathMetadata<?> metadata;
+        protected final Class<D> componentType;
+        protected final Class<D[]> arrayType;
+        @SuppressWarnings("unchecked")
+        public PArray(Class<D> type, PathMetadata<?> metadata) {
+            super(null);
+            this.arrayType = (Class<D[]>) Array.newInstance(type, 0).getClass();
+            this.componentType = type;
+            this.metadata = metadata;            
+        }        
+        public Class<D> getElementType() {return componentType;}
+        public PathMetadata<?> getMetadata() {return metadata;}
+        public EBoolean isnotnull() {return IntGrammar.isnotnull(this);}    
+        public EBoolean isnull() {return IntGrammar.isnull(this);}
+        public EComparable<Integer> size() { 
+            return new PComparable<Integer>(Integer.class, forSize(this));
+        }
+        public Class<D[]> getType(){ return arrayType;}
+        public abstract Expr<D> get(Expr<Integer> index);        
+        public abstract Expr<D> get(int index);
+    }
+    
+    public static class PBooleanArray extends PArray<Boolean>{
+        public PBooleanArray(PathMetadata<?> metadata) {
+            super(Boolean.class, metadata);
+        }
+        public EBoolean get(Expr<Integer> index) {
+            return new PBoolean(forArrayAccess(this, index));
+        }
+        public EBoolean get(int index) {
+            return new PBoolean(forArrayAccess(this, index));
+        }        
+    }
+    
+    public static class PStringArray extends PArray<String>{
+        public PStringArray(PathMetadata<?> metadata) {
+            super(String.class, metadata);
+        }
+        public EString get(Expr<Integer> index) {
+            return new PString(forArrayAccess(this, index));
+        }
+        public EString get(int index) {
+            return new PString(forArrayAccess(this, index));
+        }      
+    }
+    
+    public static class PComparableArray<D extends Comparable<D>> extends PArray<D>{
+        public PComparableArray(Class<D> type, PathMetadata<?> metadata) {
+            super(type, metadata);
+        }
+        public EComparable<D> get(Expr<Integer> index) {
+            return new PComparable<D>(componentType, forArrayAccess(this, index));
+        }
+        public EComparable<D> get(int index) {
+            return new PComparable<D>(componentType, forArrayAccess(this, index));
+        }  
+    }
+    
     /**
      * The Class Boolean.
      */
-    public static class Boolean extends Expr.Boolean implements Path<java.lang.Boolean>{
-        private final PathMetadata<java.lang.String> metadata;
-        public Boolean(PathMetadata<java.lang.String> metadata) {
+    public static class PBoolean extends EBoolean implements Path<Boolean>{
+        private final PathMetadata<?> metadata;
+        public PBoolean(PathMetadata<?> metadata) {
             this.metadata = metadata;
         }        
-        public PathMetadata<java.lang.String> getMetadata() {return metadata;}
-        public Expr.Boolean isnotnull() {return IntGrammar.isnotnull(this);}
-        public Expr.Boolean isnull() {return IntGrammar.isnull(this);}          
+        public PathMetadata<?> getMetadata() {return metadata;}
+        public EBoolean isnotnull() {return IntGrammar.isnotnull(this);}
+        public EBoolean isnull() {return IntGrammar.isnull(this);}          
     }
         
     /**
      * The Interface Collection.
      */
-    public interface Collection<D> extends Path<java.util.Collection<D>>, CollectionType<D>{
+    public interface PCollection<D> extends Path<java.util.Collection<D>>, CollectionType<D>{        
         Class<D> getElementType();
-        Expr.Comparable<Integer> size();
+        EComparable<Integer> size();
     }
     
     /**
      * The Class Comparable.
      */
-    public static class Comparable<D extends java.lang.Comparable<D>> extends Expr.Comparable<D> implements Path<D>{
+    public static class PComparable<D extends Comparable<D>> extends EComparable<D> implements Path<D>{
         private final PathMetadata<?> metadata;
-        public Comparable(Class<D> type, PathMetadata<?> metadata) {
+        public PComparable(Class<D> type, PathMetadata<?> metadata) {
             super(type);
             this.metadata = metadata;
         }
         public PathMetadata<?> getMetadata() {return metadata;}
-        public Expr.Boolean isnotnull() {return IntGrammar.isnotnull(this);}
-        public Expr.Boolean isnull() {return IntGrammar.isnull(this);}
+        public EBoolean isnotnull() {return IntGrammar.isnotnull(this);}
+        public EBoolean isnull() {return IntGrammar.isnull(this);}
     }
     
     /**
      * The Class ComponentCollection.
      */
-    public static class ComponentCollection<D> extends Expr.Simple<java.util.Collection<D>> implements Collection<D>{
+    public static class PComponentCollection<D> extends ESimple<java.util.Collection<D>> implements PCollection<D>{
         private final PathMetadata<?> metadata;
         protected final Class<D> type;
-        public ComponentCollection(Class<D> type, PathMetadata<?> metadata) {
+        public PComponentCollection(Class<D> type, PathMetadata<?> metadata) {
             super(null);            
             this.type = type;
             this.metadata = metadata;
         }
         public Class<D> getElementType() {return type;}
         public PathMetadata<?> getMetadata() {return metadata;}
-        public Expr.Boolean isnotnull() {return IntGrammar.isnotnull(this);}
-        public Expr.Boolean isnull() {return IntGrammar.isnull(this);}
-        public Expr.Comparable<Integer> size() { 
-            return new Path.Comparable<Integer>(Integer.class, forSize(this));
+        public EBoolean isnotnull() {return IntGrammar.isnotnull(this);}
+        public EBoolean isnull() {return IntGrammar.isnull(this);}
+        public EComparable<Integer> size() { 
+            return new PComparable<Integer>(Integer.class, forSize(this));
         }
     }
     
     /**
      * The Class ComponentList.
      */
-    public static class ComponentList<D> extends ComponentCollection<D> implements List<D>{        
-        public ComponentList(Class<D> type, PathMetadata<?> metadata) {
+    public static class PComponentList<D> extends PComponentCollection<D> implements PList<D>{        
+        public PComponentList(Class<D> type, PathMetadata<?> metadata) {
             super(type, metadata);
         }
-        public Expr.Simple<D> get(Expr<Integer> index) {
-            return new Path.Simple<D>(type, forListAccess(this, index));
+        public ESimple<D> get(Expr<Integer> index) {
+            return new PSimple<D>(type, forListAccess(this, index));
         }
-        public Expr.Simple<D> get(int index) {
-            return new Path.Simple<D>(type, forListAccess(this, index));
+        public ESimple<D> get(int index) {
+            return new PSimple<D>(type, forListAccess(this, index));
         }
     }
     
     /**
      * The Class ComponentMap.
      */
-    public static class ComponentMap<K,V> extends Expr.Simple<java.util.Map<K,V>> implements Map<K,V>{
+    public static class PComponentMap<K,V> extends ESimple<java.util.Map<K,V>> implements PMap<K,V>{
         private final Class<K> keyType;
         private final PathMetadata<?> metadata;
         private final Class<V> valueType;
-        public ComponentMap(Class<K> keyType, Class<V> valueType, PathMetadata<?> metadata) {
+        public PComponentMap(Class<K> keyType, Class<V> valueType, PathMetadata<?> metadata) {
             super(null);            
             this.keyType = keyType;
             this.valueType = valueType;
             this.metadata = metadata;
         }
-        public Expr.Simple<V> get(Expr<K> key) { 
-            return new Path.Simple<V>(valueType, forMapAccess(this, key));
+        public ESimple<V> get(Expr<K> key) { 
+            return new PSimple<V>(valueType, forMapAccess(this, key));
         }
-        public Expr.Simple<V> get(K key) { 
-            return new Path.Simple<V>(valueType, forMapAccess(this, key));
+        public ESimple<V> get(K key) { 
+            return new PSimple<V>(valueType, forMapAccess(this, key));
         }
         public Class<K> getKeyType() {return keyType; }
         public PathMetadata<?> getMetadata() {return metadata;}
         public Class<V> getValueType() {return valueType; }
-        public Expr.Boolean isnotnull() {return IntGrammar.isnotnull(this);}
-        public Expr.Boolean isnull() {return IntGrammar.isnull(this);}
+        public EBoolean isnotnull() {return IntGrammar.isnotnull(this);}
+        public EBoolean isnull() {return IntGrammar.isnull(this);}
     }
     
     /**
      * The Class Entity.
      */
-    public static class Entity<D> extends Expr.Entity<D> implements Path<D>{
+    public static class PEntity<D> extends EEntity<D> implements Path<D>{
         private final PathMetadata<?> metadata;          
-        public Entity(Class<D> type, java.lang.String localName) {
+        public PEntity(Class<D> type, String localName) {
             super(type);
             metadata = forVariable(localName);
         }
-        public Entity(Class<D> type, PathMetadata<?> metadata) {
+        public PEntity(Class<D> type, PathMetadata<?> metadata) {
             super(type);
             this.metadata = metadata;
         }
-        protected Path.Boolean _boolean(java.lang.String path){
-            return new Path.Boolean(forProperty(this, path));
+        protected PBoolean _boolean(String path){
+            return new PBoolean(forProperty(this, path));
         }
-        protected <A extends java.lang.Comparable<A>> Path.Comparable<A> _comparable(java.lang.String path,Class<A> type) {
-            return new Path.Comparable<A>(type, forProperty(this, path));
+        protected <A extends Comparable<A>> PComparable<A> _comparable(String path,Class<A> type) {
+            return new PComparable<A>(type, forProperty(this, path));
         }
-        protected <A> Path.Entity<A> _entity(java.lang.String path, Class<A> type){
-            return new Path.Entity<A>(type, forProperty(this, path)); 
+        protected <A> PEntity<A> _entity(String path, Class<A> type){
+            return new PEntity<A>(type, forProperty(this, path)); 
         }        
-        protected <A> EntityCollection<A> _entitycol(java.lang.String path,Class<A> type) {
-            return new EntityCollection<A>(type, forProperty(this, path));
+        protected <A> PEntityCollection<A> _entitycol(String path,Class<A> type) {
+            return new PEntityCollection<A>(type, forProperty(this, path));
         }
-        protected <A> EntityList<A> _entitylist(java.lang.String path,Class<A> type) {
-            return new EntityList<A>(type, forProperty(this, path));
+        protected <A> PEntityList<A> _entitylist(String path,Class<A> type) {
+            return new PEntityList<A>(type, forProperty(this, path));
         }
-        protected <A> Path.Simple<A> _simple(java.lang.String path, Class<A> type){
-            return new Path.Simple<A>(type, forProperty(this, path));
+        protected <A> PSimple<A> _simple(String path, Class<A> type){
+            return new PSimple<A>(type, forProperty(this, path));
         }
-        protected <A> ComponentCollection<A> _simplecol(java.lang.String path,Class<A> type) {
-            return new ComponentCollection<A>(type, forProperty(this, path));
+        protected <A> PComponentCollection<A> _simplecol(String path,Class<A> type) {
+            return new PComponentCollection<A>(type, forProperty(this, path));
         }        
-        protected <A> ComponentList<A> _simplelist(java.lang.String path,Class<A> type) {
-            return new ComponentList<A>(type, forProperty(this, path));
+        protected <A> PComponentList<A> _simplelist(String path,Class<A> type) {
+            return new PComponentList<A>(type, forProperty(this, path));
         }  
-        protected <K,V> ComponentMap<K,V> _simplemap(java.lang.String path, Class<K> key, Class<V> value){
-            return new ComponentMap<K,V>(key, value, forProperty(this, path));
+        protected <K,V> PComponentMap<K,V> _simplemap(String path, Class<K> key, Class<V> value){
+            return new PComponentMap<K,V>(key, value, forProperty(this, path));
         }
-        protected Path.String _string(java.lang.String path){
-            return new Path.String(forProperty(this, path));
+        protected PString _string(String path){
+            return new PString(forProperty(this, path));
         }
         public PathMetadata<?> getMetadata() {return metadata;}
-        public Alias.Entity<D> as(Path.Entity<D> to) {return IntGrammar.as(this, to);}
-        public Expr.Boolean in(CollectionType<D> right){return IntGrammar.in(this, right);}
-        public Expr.Boolean isnotnull() {return IntGrammar.isnotnull(this);}
-        public Expr.Boolean isnull() {return IntGrammar.isnull(this);}
-        public <B extends D> Expr.Boolean typeOf(Class<B> type) {return IntGrammar.typeOf(this, type);}
+        public Alias.AEntity<D> as(PEntity<D> to) {return IntGrammar.as(this, to);}
+        public EBoolean in(CollectionType<D> right){return IntGrammar.in(this, right);}
+        public EBoolean isnotnull() {return IntGrammar.isnotnull(this);}
+        public EBoolean isnull() {return IntGrammar.isnull(this);}
+        public <B extends D> EBoolean typeOf(Class<B> type) {return IntGrammar.typeOf(this, type);}
     }
     
     /**
      * The Class EntityCollection.
      */
-    public static class EntityCollection<D> extends Expr.Entity<java.util.Collection<D>> implements Collection<D>{
+    public static class PEntityCollection<D> extends EEntity<java.util.Collection<D>> implements PCollection<D>{
         private final PathMetadata<?> metadata;
         protected final Class<D> type;
-        public EntityCollection(Class<D> type, PathMetadata<?> metadata) {
+        public PEntityCollection(Class<D> type, PathMetadata<?> metadata) {
             super(null);            
             this.type = type;
             this.metadata = metadata;
         }        
-        public Alias.EntityCollection<D> as(Path.Entity<D> to) {return IntGrammar.as(this, to);}
+        public Alias.AEntityCollection<D> as(PEntity<D> to) {return IntGrammar.as(this, to);}
 
         public Class<D> getElementType() {return type;}
         public PathMetadata<?> getMetadata() {return metadata;}
-        public Expr.Boolean isnotnull() {return IntGrammar.isnotnull(this);}    
-        public Expr.Boolean isnull() {return IntGrammar.isnull(this);}
-        public Expr.Comparable<Integer> size() { 
-            return new Path.Comparable<Integer>(Integer.class, forSize(this));
+        public EBoolean isnotnull() {return IntGrammar.isnotnull(this);}    
+        public EBoolean isnull() {return IntGrammar.isnull(this);}
+        public EComparable<Integer> size() { 
+            return new PComparable<Integer>(Integer.class, forSize(this));
         }
     }
     
     /**
      * The Class EntityList.
      */
-    public static class EntityList<D> extends EntityCollection<D> implements List<D>{
-        public EntityList(Class<D> type, PathMetadata<?> metadata) {
+    public static class PEntityList<D> extends PEntityCollection<D> implements PList<D>{
+        public PEntityList(Class<D> type, PathMetadata<?> metadata) {
             super(type, metadata);
         }
-        public Expr.Entity<D> get(Expr<Integer> index) {
-            return new Path.Entity<D>(type, forListAccess(this,index));
+        public EEntity<D> get(Expr<Integer> index) {
+            return new PEntity<D>(type, forListAccess(this,index));
         }
-        public Expr.Entity<D> get(int index) {
-            return new Path.Entity<D>(type, forListAccess(this,index));
+        public EEntity<D> get(int index) {
+            return new PEntity<D>(type, forListAccess(this,index));
         }
     }
     
     /**
      * The Class EntityMap.
      */
-    public static class EntityMap<K,V> extends Expr.Entity<Map<K,V>> implements Map<K,V>{
+    public static class PEntityMap<K,V> extends EEntity<PMap<K,V>> implements PMap<K,V>{
         private final Class<K> keyType;
         private final PathMetadata<?> metadata;
         private final Class<V> valueType;
-        public EntityMap(Class<K> keyType, Class<V> valueType, PathMetadata<?> metadata) {
+        public PEntityMap(Class<K> keyType, Class<V> valueType, PathMetadata<?> metadata) {
             super(null);            
             this.keyType = keyType;
             this.valueType = valueType;
             this.metadata = metadata;
         } 
-        public Expr.Entity<V> get(Expr<K> key) { 
-            return new Path.Entity<V>(valueType, forMapAccess(this, key));
+        public EEntity<V> get(Expr<K> key) { 
+            return new PEntity<V>(valueType, forMapAccess(this, key));
         }
-        public Expr.Entity<V> get(K key) { 
-            return new Path.Entity<V>(valueType, forMapAccess(this, key));
+        public EEntity<V> get(K key) { 
+            return new PEntity<V>(valueType, forMapAccess(this, key));
         }
         public Class<K> getKeyType() {return keyType; }    
         public PathMetadata<?> getMetadata() {return metadata;}
         public Class<V> getValueType() {return valueType; }
-        public Expr.Boolean isnotnull() {return IntGrammar.isnotnull(this);}
-        public Expr.Boolean isnull() {return IntGrammar.isnull(this);}
+        public EBoolean isnotnull() {return IntGrammar.isnotnull(this);}
+        public EBoolean isnull() {return IntGrammar.isnull(this);}
     }
     
     /**
      * The Interface List.
      */
-    public interface List<D> extends Collection<D>{
+    public interface PList<D> extends PCollection<D>{
         Expr<D> get(Expr<Integer> index);        
         Expr<D> get(int index);
     }
@@ -245,7 +308,7 @@ public interface Path<C> {
     /**
      * The Interface Map.
      */
-    public interface Map<K,V> extends Path<java.util.Map<K,V>>{
+    public interface PMap<K,V> extends Path<java.util.Map<K,V>>{
         Expr<V> get(Expr<K> key);
         Expr<V> get(K key);
         Class<K> getKeyType();
@@ -257,34 +320,34 @@ public interface Path<C> {
 //     */
 //    public static class RenamableEntity<D> extends Entity<D>{
 //        protected RenamableEntity(Class<D> type, PathMetadata<?> metadata) {super(type, metadata);}
-//        public Alias.Entity<D> as(Path.Entity<D> to) {return IntGrammar.as(this, to);}
+//        public Alias.Entity<D> as(Entity<D> to) {return IntGrammar.as(this, to);}
 //    }
         
     /**
      * The Class Simple.
      */
-    public static class Simple<D> extends Expr.Simple<D> implements Path<D>{
+    public static class PSimple<D> extends ESimple<D> implements Path<D>{
         private final PathMetadata<?> metadata;
-        public <T> Simple(Class<D> type, PathMetadata<?> metadata) {
+        public PSimple(Class<D> type, PathMetadata<?> metadata) {
             super(type);
             this.metadata = metadata;
         }
         public PathMetadata<?> getMetadata() {return metadata;}
-        public Expr.Boolean isnotnull() {return IntGrammar.isnotnull(this);}
-        public Expr.Boolean isnull() {return IntGrammar.isnull(this);}
+        public EBoolean isnotnull() {return IntGrammar.isnotnull(this);}
+        public EBoolean isnull() {return IntGrammar.isnull(this);}
     }
     
     /**
      * The Class String.
      */
-    public static class String extends Expr.String implements Path<java.lang.String>{
-        private final PathMetadata<java.lang.String> metadata;
-        public String(PathMetadata<java.lang.String> metadata) {
+    public static class PString extends EString implements Path<String>{
+        private final PathMetadata<?> metadata;
+        public PString(PathMetadata<?> metadata) {
             this.metadata = metadata;
         }
-        public PathMetadata<java.lang.String> getMetadata() {return metadata;}
-        public Expr.Boolean isnotnull() {return IntGrammar.isnotnull(this);}
-        public Expr.Boolean isnull() {return IntGrammar.isnull(this);}
+        public PathMetadata<?> getMetadata() {return metadata;}
+        public EBoolean isnotnull() {return IntGrammar.isnotnull(this);}
+        public EBoolean isnull() {return IntGrammar.isnull(this);}
     }
 
 }

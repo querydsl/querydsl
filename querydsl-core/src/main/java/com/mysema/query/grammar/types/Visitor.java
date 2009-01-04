@@ -63,49 +63,59 @@ public abstract class Visitor<T extends Visitor<T>> {
         return (T) this;
     }
 
-    protected abstract void visit(Alias.Entity<?> expr);
+    protected abstract void visit(Alias.AEntity<?> expr);
     
-    protected abstract void visit(Alias.EntityCollection<?> expr);
+    protected abstract void visit(Alias.AEntityCollection<?> expr);
     
-    protected abstract void visit(Alias.Simple<?> expr);
+    protected abstract void visit(Alias.ASimple<?> expr);
 
-    protected abstract void visit(Alias.ToPath expr);
+    protected abstract void visit(Alias.AToPath expr);
 
-    protected abstract void visit(Expr.Constant<?> expr);
+    protected abstract void visit(Expr.EConstant<?> expr);
 
-    protected abstract void visit(Operation.Boolean expr);
+    protected abstract void visit(Operation.OBoolean expr);
 
-    protected abstract void visit(Operation.Comparable<?,?> expr);
+    protected abstract void visit(Operation.OComparable<?,?> expr);
     
-    protected abstract void visit(Operation.Number<?,?> expr);
+    protected abstract void visit(Operation.ONumber<?,?> expr);
     
-    protected abstract void visit(Operation.String expr);
+    protected abstract void visit(Operation.OString expr);
     
-    protected abstract void visit(Operation.StringArray expr);
+    protected abstract void visit(Operation.OStringArray expr);
     
     protected abstract void visit(Operation<?, ?> expr);
 
-    protected abstract void visit(Path.Boolean expr);
+    protected abstract void visit(Path.PArray<?> expr);
+    
+    protected abstract void visit(Path.PBoolean expr);
+    
+    protected abstract void visit(Path.PBooleanArray expr);
 
-    protected abstract void visit(Path.Comparable<?> expr);
+    protected abstract void visit(Path.PComparable<?> expr);
+    
+    protected abstract void visit(Path.PComparableArray<?> expr);
 
-    protected abstract void visit(Path.ComponentCollection<?> expr);
+    protected abstract void visit(Path.PComponentCollection<?> expr);
     
-    protected abstract void visit(Path.ComponentList<?> expr);
+    protected abstract void visit(Path.PComponentList<?> expr);
     
-    protected abstract void visit(Path.ComponentMap<?,?> expr);
+    protected abstract void visit(Path.PComponentMap<?,?> expr);
     
-    protected abstract void visit(Path.Entity<?> expr);
+    protected abstract void visit(Path.PEntity<?> expr);
 
-    protected abstract void visit(Path.EntityCollection<?> expr);
+    protected abstract void visit(Path.PEntityCollection<?> expr);
 
-    protected abstract void visit(Path.EntityList<?> expr);
+    protected abstract void visit(Path.PEntityList<?> expr);
     
-    protected abstract void visit(Path.EntityMap<?,?> expr);
+    protected abstract void visit(Path.PEntityMap<?,?> expr);
     
-    protected abstract void visit(Path.Simple<?> expr);
+    protected abstract void visit(Path.PMap<?,?> expr);
     
-    protected abstract void visit(Path.String expr);
+    protected abstract void visit(Path.PSimple<?> expr);
+    
+    protected abstract void visit(Path.PString expr);
+    
+    protected abstract void visit(Path.PStringArray expr);
     
     protected abstract void visit(Path<?> expr);
     

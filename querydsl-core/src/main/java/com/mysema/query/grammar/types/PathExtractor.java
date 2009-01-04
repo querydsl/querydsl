@@ -1,7 +1,12 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.grammar.types;
 
-import com.mysema.query.grammar.types.Alias.ToPath;
-import com.mysema.query.grammar.types.Expr.Constant;
+import com.mysema.query.grammar.types.Alias.AToPath;
+import com.mysema.query.grammar.types.Expr.EConstant;
 
 
 /**
@@ -15,15 +20,15 @@ public class PathExtractor extends VisitorAdapter<PathExtractor>{
     private Path<?> path;
     
     @Override
-    protected void visit(Alias.Simple<?> expr) {        
+    protected void visit(Alias.ASimple<?> expr) {        
     }
 
     @Override
-    protected void visit(ToPath expr) {        
+    protected void visit(AToPath expr) {        
     }
 
     @Override
-    protected void visit(Constant<?> expr) {        
+    protected void visit(EConstant<?> expr) {        
     }
 
     @Override

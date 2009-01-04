@@ -25,28 +25,43 @@ public final class PathMetadata<T> {
         this.expression = expression;
         this.pathType = type;
     }
+    
+    public static PathMetadata<Integer> forArrayAccess(Path.PArray<?> parent,
+            Expr<Integer> index) {
+        return new PathMetadata<Integer>(parent, index, ARRAYVALUE);
+    }
 
-    public static PathMetadata<Integer> forListAccess(Path.Collection<?> parent,
+    public static PathMetadata<Integer> forArrayAccess(Path.PArray<?> parent,
+            int index) {
+        return new PathMetadata<Integer>(parent, Factory.createConstant(index),
+                ARRAYVALUE_CONSTANT);
+    }
+
+    public static PathMetadata<Integer> forListAccess(Path.PCollection<?> parent,
             Expr<Integer> index) {
         return new PathMetadata<Integer>(parent, index, LISTVALUE);
     }
 
-    public static PathMetadata<Integer> forListAccess(Path.Collection<?> parent,
+    public static PathMetadata<Integer> forListAccess(Path.PCollection<?> parent,
             int index) {
         return new PathMetadata<Integer>(parent, Factory.createConstant(index),
                 LISTVALUE_CONSTANT);
     }
 
-    public static PathMetadata<Integer> forSize(Path.Collection<?> parent) {
+    public static PathMetadata<Integer> forSize(Path.PCollection<?> parent) {
         return new PathMetadata<Integer>(parent, null, SIZE);
     }
 
-    public static <KT> PathMetadata<KT> forMapAccess(Path.Map<?, ?> parent,
+    public static PathMetadata<Integer> forSize(Path.PArray<?> parent) {
+        return new PathMetadata<Integer>(parent, null, ARRAY_SIZE);
+    }
+    
+    public static <KT> PathMetadata<KT> forMapAccess(Path.PMap<?, ?> parent,
             Expr<KT> key) {
         return new PathMetadata<KT>(parent, key, MAPVALUE);
     }
 
-    public static <KT> PathMetadata<KT> forMapAccess(Path.Map<?, ?> parent,
+    public static <KT> PathMetadata<KT> forMapAccess(Path.PMap<?, ?> parent,
             KT key) {
         return new PathMetadata<KT>(parent, Factory.createConstant(key), MAPVALUE_CONSTANT);
     }
@@ -79,6 +94,9 @@ public final class PathMetadata<T> {
     
     // bookmark.tags.size
     
+    public static final PathType ARRAY_SIZE = new PathType();
+    public static final PathType ARRAYVALUE = new PathType();
+    public static final PathType ARRAYVALUE_CONSTANT = new PathType();
     public static final PathType LISTVALUE = new PathType(); 
     public static final PathType LISTVALUE_CONSTANT = new PathType();
     public static final PathType MAPVALUE = new PathType();

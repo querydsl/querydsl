@@ -11,4 +11,5 @@ package com.mysema.query.grammar.types;
  * @author tiwe
  * @version $Id$
  */
-public interface CollectionType<D>{ }
+public interface CollectionType<D>{ 
+}
