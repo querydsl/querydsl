@@ -33,9 +33,9 @@ public class MiniApi {
         return from(path, Arrays.asList(arr));
     }
     
-    public static <K,V> ColQuery<?> from(Path<K> k, Path<V> v, Map<K,V> map){
-        return new ColQuery().from(k,v,map);
-    }
+//    public static <K,V> ColQuery<?> from(Path<K> k, Path<V> v, Map<K,V> map){
+//        return new ColQuery().from(k,v,map);
+//    }
     
     @SuppressWarnings("unchecked")
     public static <A> ColQuery<?> from(Path<A> path, Iterable<A> col){

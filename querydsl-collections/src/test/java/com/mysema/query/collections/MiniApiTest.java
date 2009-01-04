@@ -85,9 +85,9 @@ public class MiniApiTest {
         }
         
         // 2nd
-        for (String[] kv : from($("k"), $("v"), map).iterate($("k"),$("v"))){
-            System.out.println(kv[0] + " > " + kv[1]);
-        }
+//        for (String[] kv : from($("k"), $("v"), map).iterate($("k"),$("v"))){
+//            System.out.println(kv[0] + " > " + kv[1]);
+//        }
     }
     
     @Test public void testSimpleSelect() {
