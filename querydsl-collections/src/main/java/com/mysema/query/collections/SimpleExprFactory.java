@@ -29,6 +29,8 @@ class SimpleExprFactory implements ExprFactory {
     
     private long counter = 0;
     
+    private final PBoolean btrue = new PBoolean(md()), bfalse = new PBoolean(md());
+    
     private final ExtString strExt = new ExtString(PathMetadata.forVariable("str"));
     
     private final Map<Object,PBooleanArray> baToPath = new PathFactory<Object,PBooleanArray>(new Transformer<Object,PBooleanArray>(){
@@ -75,9 +77,7 @@ class SimpleExprFactory implements ExprFactory {
      * @see com.mysema.query.collections.ExprFactory#create(java.lang.Boolean)
      */
     public PBoolean create(Boolean arg){
-        // NOTE : we can't really cache Booleans, since there are only two values,
-        // but possibly more variables to be tracked
-        return new PBoolean(md());
+        return arg.booleanValue() ? btrue : bfalse;
     }
     
     /* (non-Javadoc)
@@ -126,7 +126,7 @@ class SimpleExprFactory implements ExprFactory {
     }
     
     private PathMetadata<String> md(){
-        return PathMetadata.forVariable("var"+String.valueOf(++counter));
+        return PathMetadata.forVariable("v"+String.valueOf(++counter));
     }
     
     private static class PathFactory<K,V> extends LazyMap<K,V>{
