@@ -25,7 +25,7 @@ import com.mysema.query.grammar.types.Path.*;
 // TODO : consider moving this later to querydsl-core
 class ExprFactory {
     
-    private static final ExtString strExt = new ExtString(PathMetadata.forVariable("str"));
+    final ExtString strExt = new ExtString(PathMetadata.forVariable("str"));
         
     private final Map<Object,PSimple<?>> simToPath = new PathFactory<Object,PSimple<?>>(new Transformer<Object,PSimple<?>>(){
         @SuppressWarnings("unchecked")
@@ -47,7 +47,7 @@ class ExprFactory {
         }        
     });
     
-    private static long counter = 0;
+    private long counter = 0;
         
     public PBoolean create(Boolean arg){
         // NOTE : we can't really cache Booleans, since there are only two values,

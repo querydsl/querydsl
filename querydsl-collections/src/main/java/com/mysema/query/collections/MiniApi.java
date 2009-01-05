@@ -6,7 +6,6 @@
 package com.mysema.query.collections;
 
 import java.util.Arrays;
-import java.util.Map;
 
 import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.OrderSpecifier;
@@ -80,7 +79,7 @@ public class MiniApi {
     public static <D> Path.PSimple<D> $(D arg){
         return exprFactory.create(arg);
     }
-    
+
     @SuppressWarnings("unchecked")
     public static <D> Path.PSimple<D> $(){
         return (PSimple<D>) it;
