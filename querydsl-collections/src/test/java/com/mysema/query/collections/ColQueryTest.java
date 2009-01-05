@@ -145,7 +145,7 @@ public class ColQueryTest {
     @Test
     @Ignore
     public void testOrder(){
-        // TODO
+        // TODO : implement order
         query().from(cat,cats).orderBy(cat.name.asc()).select(cat.name);
         assertArrayEquals(new Object[]{"Alex","Bob","Francis","Kitty"}, last.res.toArray());
     }

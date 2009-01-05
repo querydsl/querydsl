@@ -60,10 +60,12 @@ public class Domain {
         Color eyecolor;   
         List<Cat> kittens;
         Cat mate;
-        public Cat() {}
+        public Cat() {            
+        }
         public Cat(String name){
-            this.name = name;
             this.kittens = Arrays.asList(new Cat());
+            this.name = name;
+            
         }
         public int getBreed() {
             return breed;

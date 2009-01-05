@@ -5,6 +5,9 @@
  */
 package com.mysema.query.collections;
 
+import java.util.Collection;
+import java.util.List;
+
 import com.mysema.query.grammar.types.ColTypes.ExtString;
 import com.mysema.query.grammar.types.Path.*;
 
@@ -23,6 +26,10 @@ public interface ExprFactory {
     <D extends Comparable<D>> PComparable<D> create(D arg);
 
     <D> PSimple<D> create(D arg);
+    
+    <D> PComponentList<D> create(List<D> arg);
+    
+    <D> PComponentCollection<D> create(Collection<D> arg);
 
     <D extends Comparable<D>> PComparableArray<D> create(D[] args);
 

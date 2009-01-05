@@ -7,6 +7,7 @@ package com.mysema.query.collections;
 
 
 import static com.mysema.query.collections.MiniApi.$;
+import static com.mysema.query.collections.MiniApi.alias;
 import static com.mysema.query.collections.MiniApi.from;
 import static com.mysema.query.collections.MiniApi.reject;
 import static com.mysema.query.collections.MiniApi.select;
@@ -20,8 +21,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import com.mysema.query.collections.Domain.Cat;
+import com.mysema.query.collections.Domain.QCat;
 import com.mysema.query.grammar.types.Path;
 
 /**
@@ -76,6 +80,49 @@ public class MiniApiTest {
         for (Integer i : from($(0),1,2,3,4).where($(0).lt(4)).iterate($(0))){
             System.out.println(i);
         }
+    }
+    
+    @Test
+    @Ignore
+    public void testAlias(){
+        // TODO
+        List<Cat> cats = Arrays.asList(new Cat("Kitty"), new Cat("Bob"), new Cat("Alex"), new Cat("Francis"));       
+        
+        // 1st
+        QCat cat = new QCat("cat");  
+        for (String name : from(cat,cats).where(cat.kittens.size().gt(0))
+                          .iterate(cat.name)){
+            System.out.println(name);
+        }        
+        
+        // 2nd
+        Cat c = alias(Cat.class, "cat");
+        for (String name : from($(c),cats).where($(c.getKittens()).size().gt(0))
+                          .iterate($(c.getName()))){
+            System.out.println(name);
+        }                
+                   
+    }
+    
+    @Test
+    @Ignore
+    public void testAlias2(){        
+        // TODO
+        List<Cat> cats = Arrays.asList(new Cat("Kitty"), new Cat("Bob"), new Cat("Alex"), new Cat("Francis"));
+        
+        // 1st
+        QCat cat = new QCat("cat");  
+        for (String name : from(cat,cats).where(cat.name.like("fri%"))
+                          .iterate(cat.name)){
+            System.out.println(name);
+        }
+        
+        // 2nd
+        Cat c = alias(Cat.class, "cat");        
+        for (String name : from($(c),cats).where($(c.getName()).like("fri%"))
+                          .iterate($(c.getName()))){
+            System.out.println(name);
+        }      
     }
     
     @Test

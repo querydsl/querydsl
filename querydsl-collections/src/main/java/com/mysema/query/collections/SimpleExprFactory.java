@@ -6,6 +6,7 @@
 package com.mysema.query.collections;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -27,11 +28,11 @@ import com.mysema.query.grammar.types.Path.*;
 // TODO : consider moving this later to querydsl-core
 class SimpleExprFactory implements ExprFactory {
     
-    private long counter = 0;
+    private final ExtString strExt = new ExtString(PathMetadata.forVariable("str"));
     
     private final PBoolean btrue = new PBoolean(md()), bfalse = new PBoolean(md());
     
-    private final ExtString strExt = new ExtString(PathMetadata.forVariable("str"));
+    private long counter = 0;
     
     private final Map<Object,PBooleanArray> baToPath = new PathFactory<Object,PBooleanArray>(new Transformer<Object,PBooleanArray>(){
         @SuppressWarnings("unchecked")
@@ -39,11 +40,33 @@ class SimpleExprFactory implements ExprFactory {
             return new PBooleanArray(md());
         }    
     });
-        
+    
     private final Map<Object,PComparableArray<?>> caToPath = new PathFactory<Object,PComparableArray<?>>(new Transformer<Object,PComparableArray<?>>(){
         @SuppressWarnings("unchecked")
         public PComparableArray<?> transform(Object arg) {
             return new PComparableArray(((List)arg).get(0).getClass(), md());
+        }    
+    });
+    
+    private final Map<Collection<?>,PComponentCollection<?>> ccToPath = new PathFactory<Collection<?>,PComponentCollection<?>>(new Transformer<Collection<?>,PComponentCollection<?>>(){
+        @SuppressWarnings("unchecked")
+        public PComponentCollection<?> transform(Collection<?> arg) {
+            if (!arg.isEmpty()){
+                return new PComponentCollection(((Collection)arg).iterator().next().getClass(), md());    
+            }else{
+                return new PComponentCollection(null, md());
+            }            
+        }    
+    });
+        
+    private final Map<List<?>,PComponentList<?>> clToPath = new PathFactory<List<?>,PComponentList<?>>(new Transformer<List<?>,PComponentList<?>>(){
+        @SuppressWarnings("unchecked")
+        public PComponentList<?> transform(List<?> arg) {
+            if (!arg.isEmpty()){
+                return new PComponentList(arg.get(0).getClass(), md());    
+            }else{
+                return new PComponentList(null, md());
+            }            
         }    
     });
     
@@ -53,13 +76,13 @@ class SimpleExprFactory implements ExprFactory {
             return new PComparable(arg.getClass(), md());
         }    
     });
-    
+        
     private final Map<Object,PStringArray> saToPath = new PathFactory<Object,PStringArray>(new Transformer<Object,PStringArray>(){
         public PStringArray transform(Object arg) {
             return new PStringArray(md());
         }    
     });
-        
+    
     private final Map<Object,PSimple<?>> simToPath = new PathFactory<Object,PSimple<?>>(new Transformer<Object,PSimple<?>>(){
         @SuppressWarnings("unchecked")
         public PSimple<?> transform(Object arg) {
@@ -87,6 +110,11 @@ class SimpleExprFactory implements ExprFactory {
         return baToPath.get(Arrays.asList(args));
     }
     
+    @SuppressWarnings("unchecked")
+    public <D> PComponentCollection<D> create(Collection<D> arg) {
+        return (PComponentCollection<D>) ccToPath.get(arg);
+    }
+    
     /* (non-Javadoc)
      * @see com.mysema.query.collections.ExprFactory#create(D)
      */
@@ -109,6 +137,11 @@ class SimpleExprFactory implements ExprFactory {
     @SuppressWarnings("unchecked")
     public <D extends Comparable<D>> PComparableArray<D> create(D[] args){
         return (PComparableArray<D>) caToPath.get(Arrays.asList(args));
+    }
+
+    @SuppressWarnings("unchecked")
+    public <D> PComponentList<D> create(List<D> arg) {
+        return (PComponentList<D>) clToPath.get(arg);
     }
     
     /* (non-Javadoc)

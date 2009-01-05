@@ -6,6 +6,8 @@
 package com.mysema.query.collections;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.OrderSpecifier;
@@ -14,7 +16,7 @@ import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathExtractor;
 import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.ColTypes.ExtString;
-import com.mysema.query.grammar.types.Path.PSimple;
+import com.mysema.query.grammar.types.Path.*;
 
 /**
  * MiniApi provides static convenience methods for query construction
@@ -26,7 +28,13 @@ public class MiniApi {
     
     private static final ExprFactory exprFactory = new SimpleExprFactory();
     
-    private static final Path.PSimple<Object> it = new Path.PSimple<Object>(Object.class,PathMetadata.forVariable("it"));
+    private static final AliasFactory aliasFactory = new AliasFactory();
+    
+    private static final PSimple<Object> it = new PSimple<Object>(Object.class,PathMetadata.forVariable("it"));
+    
+    public static <A> A alias(Class<A> cl, String var){
+        return aliasFactory.createAlias(cl, var);
+    }
     
     public static <A> ColQuery<?> from(Path<A> path, A... arr){
         return from(path, Arrays.asList(arr));
@@ -52,11 +60,11 @@ public class MiniApi {
         return select(from, Grammar.not(where), order);
     }
     
-    public static Path.PBoolean $(Boolean arg){
+    public static PBoolean $(Boolean arg){
         return exprFactory.create(arg);
     }
     
-    public static <D extends Comparable<D>> Path.PComparable<D> $(D arg){
+    public static <D extends Comparable<D>> PComparable<D> $(D arg){
         return exprFactory.create(arg);
     }
     
@@ -64,24 +72,32 @@ public class MiniApi {
         return exprFactory.create(arg);
     }
 
-    public static Path.PBooleanArray $(Boolean[] args){
+    public static PBooleanArray $(Boolean[] args){
         return exprFactory.create(args);
     }
     
-    public static <D extends Comparable<D>> Path.PComparableArray<D> $(D[] args){
+    public static <D extends Comparable<D>> PComparableArray<D> $(D[] args){
         return exprFactory.create(args);
     }
     
-    public static Path.PStringArray $(String[] args){
+    public static PStringArray $(String[] args){
         return exprFactory.create(args);
     }
     
-    public static <D> Path.PSimple<D> $(D arg){
+    public static <D> PComponentCollection<D> $(Collection<D> args){
+        return exprFactory.create(args);
+    }
+    
+    public static <D> PComponentList<D> $(List<D> args){
+        return exprFactory.create(args);
+    }
+    
+    public static <D> PSimple<D> $(D arg){
         return exprFactory.create(arg);
     }
 
     @SuppressWarnings("unchecked")
-    public static <D> Path.PSimple<D> $(){
+    public static <D> PSimple<D> $(){
         return (PSimple<D>) it;
     }
     
