@@ -43,6 +43,14 @@ public class MiniApiTest {
         myInts.add(4);        
     }
     
+    @Test
+    public void testVarious(){
+        for(String[] strs : from($("a"), "aa","bb","cc").from($("b"), "a","b")
+                .where($("a").startsWith($("b")))
+                .iterate($("a"),$("b"))){
+            System.out.println(Arrays.asList(strs));
+        }
+    }
 
     @Test
     public void testVarious1(){
