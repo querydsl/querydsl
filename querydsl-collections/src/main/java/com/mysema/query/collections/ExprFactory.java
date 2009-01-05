@@ -5,6 +5,8 @@
  */
 package com.mysema.query.collections;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -25,12 +27,21 @@ import com.mysema.query.grammar.types.Path.*;
 // TODO : consider moving this later to querydsl-core
 class ExprFactory {
     
-    final ExtString strExt = new ExtString(PathMetadata.forVariable("str"));
-        
-    private final Map<Object,PSimple<?>> simToPath = new PathFactory<Object,PSimple<?>>(new Transformer<Object,PSimple<?>>(){
+    private long counter = 0;
+    
+    private final ExtString strExt = new ExtString(PathMetadata.forVariable("str"));
+    
+    private final Map<Object,PBooleanArray> baToPath = new PathFactory<Object,PBooleanArray>(new Transformer<Object,PBooleanArray>(){
         @SuppressWarnings("unchecked")
-        public PSimple<?> transform(Object arg) {
-            return new PSimple(arg.getClass(), md());
+        public PBooleanArray transform(Object arg) {
+            return new PBooleanArray(md());
+        }    
+    });
+        
+    private final Map<Object,PComparableArray<?>> caToPath = new PathFactory<Object,PComparableArray<?>>(new Transformer<Object,PComparableArray<?>>(){
+        @SuppressWarnings("unchecked")
+        public PComparableArray<?> transform(Object arg) {
+            return new PComparableArray(((List)arg).get(0).getClass(), md());
         }    
     });
     
@@ -41,18 +52,33 @@ class ExprFactory {
         }    
     });
     
+    private final Map<Object,PStringArray> saToPath = new PathFactory<Object,PStringArray>(new Transformer<Object,PStringArray>(){
+        public PStringArray transform(Object arg) {
+            return new PStringArray(md());
+        }    
+    });
+        
+    private final Map<Object,PSimple<?>> simToPath = new PathFactory<Object,PSimple<?>>(new Transformer<Object,PSimple<?>>(){
+        @SuppressWarnings("unchecked")
+        public PSimple<?> transform(Object arg) {
+            return new PSimple(arg.getClass(), md());
+        }    
+    });
+    
     private final Map<String,ExtString> strToExtPath = new PathFactory<String,ExtString>(new Transformer<String,ExtString>(){
         public ExtString transform(String str) {
             return new ExtString(md());
         }        
     });
     
-    private long counter = 0;
-        
     public PBoolean create(Boolean arg){
         // NOTE : we can't really cache Booleans, since there are only two values,
         // but possibly more variables to be tracked
         return new PBoolean(md());
+    }
+    
+    public PBooleanArray create(Boolean[] args){
+        return baToPath.get(Arrays.asList(args));
     }
     
     @SuppressWarnings("unchecked")
@@ -60,29 +86,22 @@ class ExprFactory {
         return (PComparable<D>) comToPath.get(arg);
     }
     
-    public ExtString create(String arg){
-        return StringUtils.isEmpty(arg) ? strExt : strToExtPath.get(arg);
-    }
-    
     @SuppressWarnings("unchecked")
     public <D> PSimple<D> create(D arg){
         return (PSimple<D>) simToPath.get(arg);
     }
     
-    public PBooleanArray create(Boolean[] args){
-        // TODO : cache
-        return new PBooleanArray(md());
-    }
-    
     @SuppressWarnings("unchecked")
     public <D extends Comparable<D>> PComparableArray<D> create(D[] args){
-        // TODO : cache
-        return new PComparableArray(args[0].getClass(),md());
+        return (PComparableArray<D>) caToPath.get(Arrays.asList(args));
+    }
+    
+    public ExtString create(String arg){
+        return StringUtils.isEmpty(arg) ? strExt : strToExtPath.get(arg);
     }
     
     public PStringArray create(String[] args){
-        // TODO : cache
-        return new PStringArray(md());
+        return saToPath.get(Arrays.asList(args));
     }
     
     private PathMetadata<String> md(){
