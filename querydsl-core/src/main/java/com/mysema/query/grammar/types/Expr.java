@@ -13,6 +13,7 @@ import com.mysema.query.grammar.OrderSpecifier;
  * @author tiwe
  * @version $Id$
  */
+//TODO : add equals and hashCode
 public abstract class Expr<D> {
         
     private final Class<D> type;
@@ -49,16 +50,16 @@ public abstract class Expr<D> {
         public EBoolean goe(Expr<D> right) {return IntGrammar.goe(this,right);}         
         public EBoolean gt(D right) {return IntGrammar.gt(this,right);}  
         public EBoolean gt(Expr<D> right) {return IntGrammar.gt(this,right);}
-        public EBoolean in(D... args) {return IntGrammar.in(this,args);}
         public EBoolean in(CollectionType<D> arg) {return IntGrammar.in(this, arg);}
+        public EBoolean in(D... args) {return IntGrammar.in(this,args);}
         public EBoolean loe(D right) {return IntGrammar.loe(this,right);}
         public EBoolean loe(Expr<D> right) {return IntGrammar.loe(this,right);}
         public EBoolean lt(D right) {return IntGrammar.lt(this,right);}  
         public EBoolean lt(Expr<D> right) {return IntGrammar.lt(this,right);}
         public EBoolean notBetween(D first, D second) {return IntGrammar.notBetween(this, first, second);}
         public EBoolean notBetween(Expr<D> first, Expr<D> second) {return IntGrammar.notBetween(this,first,second);}
-        public EBoolean notIn(D...args) {return IntGrammar.notIn(this, args);}
         public EBoolean notIn(CollectionType<D> arg) {return IntGrammar.notIn(this, arg);}
+        public EBoolean notIn(D...args) {return IntGrammar.notIn(this, args);}
     }
     
     /**
@@ -84,27 +85,17 @@ public abstract class Expr<D> {
 //    +
     
     /**
-     * The Class Entity.
-     */
-    public static abstract class EEntity<D> extends Expr<D>{
-        public EEntity(Class<D> type) {super(type);}        
-    }        
-            
-    /**
-     * The Class Simple.
-     */
-    public static abstract class ESimple<D> extends Expr<D>{
-        public ESimple(Class<D> type) {super(type);}
-        public Expr<D> as(String to){return IntGrammar.as(this, to);}
-        public EBoolean in(D... args) {return IntGrammar.in(this,args);}
-        public EBoolean in(CollectionType<D> arg) {return IntGrammar.in(this, arg);}
-    }
-    
-    /**
      * The Class Embeddable.
      */
     public static abstract class EEmbeddable<D> extends ESimple<D>{
         public EEmbeddable(Class<D> type) {super(type);}
+    }        
+            
+    /**
+     * The Class Entity.
+     */
+    public static abstract class EEntity<D> extends Expr<D>{
+        public EEntity(Class<D> type) {super(type);}        
     }
     
     /**
@@ -113,22 +104,33 @@ public abstract class Expr<D> {
     public static abstract class ELiteral<D> extends ESimple<D>{
         public ELiteral(Class<D> type) {super(type);}
     }
+    
+    /**
+     * The Class Simple.
+     */
+    public static abstract class ESimple<D> extends Expr<D>{
+        public ESimple(Class<D> type) {super(type);}
+        public Expr<D> as(String to){return IntGrammar.as(this, to);}
+        public EBoolean in(CollectionType<D> arg) {return IntGrammar.in(this, arg);}
+        public EBoolean in(D... args) {return IntGrammar.in(this,args);}
+    }
         
     /**
      * The Class String.
      */
     public static abstract class EString extends EComparable<String>{
+        private EString lower, trim, upper;
         public EString() {super(String.class);}
         public EString add(Expr<String> str) {return IntGrammar.concat(this, str);}
         public EString add(String str) {return IntGrammar.concat(this, str);}
-        public EString concat(Expr<String> str) {return IntGrammar.concat(this, str);}
-        public EString concat(String str) {return IntGrammar.concat(this, str);}        
+        public EString concat(Expr<String> str) {return IntGrammar.concat(this, str);}        
+        public EString concat(String str) {return IntGrammar.concat(this, str);}
         public EBoolean like(String str) { return IntGrammar.like(this, str); }
-        public EString lower() { return IntGrammar.lower(this); }        
+        public EString lower() { return lower == null ? lower = IntGrammar.lower(this) : lower; }        
         public EString substring(int beginIndex) { return IntGrammar.substring(this, beginIndex);}
         public EString substring(int beginIndex, int endIndex) { return IntGrammar.substring(this, beginIndex, endIndex);}
-        public EString trim() { return IntGrammar.trim(this); }
-        public EString upper() { return IntGrammar.upper(this); }        
+        public EString trim() { return trim == null ? trim = IntGrammar.trim(this) : trim; }
+        public EString upper() { return upper == null ? upper = IntGrammar.upper(this) : upper; }        
     }  
 
 }
