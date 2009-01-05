@@ -24,7 +24,7 @@ import com.mysema.query.grammar.types.Path.PSimple;
  */
 public class MiniApi {
     
-    private static final ExprFactory exprFactory = new ExprFactory();
+    private static final ExprFactory exprFactory = new SimpleExprFactory();
     
     private static final Path.PSimple<Object> it = new Path.PSimple<Object>(Object.class,PathMetadata.forVariable("it"));
     

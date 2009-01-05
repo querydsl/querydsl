@@ -19,13 +19,13 @@ import com.mysema.query.grammar.types.ColTypes.ExtString;
 import com.mysema.query.grammar.types.Path.*;
 
 /**
- * ExprFactory is a factory implementation for the creation of Path instances
+ * SimpleExprFactory is a factory implementation for the creation of Path instances
  *
  * @author tiwe
  * @version $Id$
  */
 // TODO : consider moving this later to querydsl-core
-class ExprFactory {
+class SimpleExprFactory implements ExprFactory {
     
     private long counter = 0;
     
@@ -71,35 +71,56 @@ class ExprFactory {
         }        
     });
     
+    /* (non-Javadoc)
+     * @see com.mysema.query.collections.ExprFactory#create(java.lang.Boolean)
+     */
     public PBoolean create(Boolean arg){
         // NOTE : we can't really cache Booleans, since there are only two values,
         // but possibly more variables to be tracked
         return new PBoolean(md());
     }
     
+    /* (non-Javadoc)
+     * @see com.mysema.query.collections.ExprFactory#create(java.lang.Boolean[])
+     */
     public PBooleanArray create(Boolean[] args){
         return baToPath.get(Arrays.asList(args));
     }
     
+    /* (non-Javadoc)
+     * @see com.mysema.query.collections.ExprFactory#create(D)
+     */
     @SuppressWarnings("unchecked")
     public <D extends Comparable<D>> PComparable<D> create(D arg){
         return (PComparable<D>) comToPath.get(arg);
     }
     
+    /* (non-Javadoc)
+     * @see com.mysema.query.collections.ExprFactory#create(D)
+     */
     @SuppressWarnings("unchecked")
     public <D> PSimple<D> create(D arg){
         return (PSimple<D>) simToPath.get(arg);
     }
     
+    /* (non-Javadoc)
+     * @see com.mysema.query.collections.ExprFactory#create(D[])
+     */
     @SuppressWarnings("unchecked")
     public <D extends Comparable<D>> PComparableArray<D> create(D[] args){
         return (PComparableArray<D>) caToPath.get(Arrays.asList(args));
     }
     
+    /* (non-Javadoc)
+     * @see com.mysema.query.collections.ExprFactory#create(java.lang.String)
+     */
     public ExtString create(String arg){
         return StringUtils.isEmpty(arg) ? strExt : strToExtPath.get(arg);
     }
     
+    /* (non-Javadoc)
+     * @see com.mysema.query.collections.ExprFactory#create(java.lang.String[])
+     */
     public PStringArray create(String[] args){
         return saToPath.get(Arrays.asList(args));
     }
