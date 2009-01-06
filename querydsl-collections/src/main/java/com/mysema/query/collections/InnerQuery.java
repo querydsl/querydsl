@@ -56,7 +56,7 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
     private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {        
         // from
         List<Expr<?>> sources = new ArrayList<Expr<?>>();
-        MultiIterator multiIt = new MultiIterator();
+        MultiIterator multiIt = new MultiIterator();        
         for (JoinExpression<?> join : joins) {
             sources.add(join.getTarget());
             multiIt.add(pathToIterable.get(join.getTarget()));

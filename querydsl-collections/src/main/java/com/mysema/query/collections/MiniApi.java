@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import com.mysema.query.collections.alias.AliasAwareExprFactory;
+import com.mysema.query.collections.alias.AliasFactory;
 import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
@@ -26,14 +28,14 @@ import com.mysema.query.grammar.types.Path.*;
  */
 public class MiniApi {
     
-    private static final ExprFactory exprFactory = new SimpleExprFactory();
-    
     private static final AliasFactory aliasFactory = new AliasFactory();
+    
+    private static final ExprFactory exprFactory = new AliasAwareExprFactory(aliasFactory);
     
     private static final PSimple<Object> it = new PSimple<Object>(Object.class,PathMetadata.forVariable("it"));
     
     public static <A> A alias(Class<A> cl, String var){
-        return aliasFactory.createAlias(cl, var);
+        return aliasFactory.createAliasForVar(cl, var);
     }
     
     public static <A> ColQuery<?> from(Path<A> path, A... arr){

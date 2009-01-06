@@ -26,7 +26,7 @@ import com.mysema.query.grammar.types.Path.*;
  * @version $Id$
  */
 // TODO : consider moving this later to querydsl-core
-class SimpleExprFactory implements ExprFactory {
+public class SimpleExprFactory implements ExprFactory {
     
     private final ExtString strExt = new ExtString(PathMetadata.forVariable("str"));
     

@@ -14,11 +14,7 @@ import static com.mysema.query.collections.MiniApi.select;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -83,9 +79,7 @@ public class MiniApiTest {
     }
     
     @Test
-    @Ignore
     public void testAlias(){
-        // TODO
         List<Cat> cats = Arrays.asList(new Cat("Kitty"), new Cat("Bob"), new Cat("Alex"), new Cat("Francis"));       
         
         // 1st
@@ -100,14 +94,18 @@ public class MiniApiTest {
         for (String name : from($(c),cats).where($(c.getKittens()).size().gt(0))
                           .iterate($(c.getName()))){
             System.out.println(name);
+        }
+        
+        // 2nd - variation
+        for (String name : from($(c),cats).where($(c.getKittens().size()).gt(0))
+                          .iterate($(c.getName()))){
+            System.out.println(name);
         }                
                    
     }
     
     @Test
-    @Ignore
     public void testAlias2(){        
-        // TODO
         List<Cat> cats = Arrays.asList(new Cat("Kitty"), new Cat("Bob"), new Cat("Alex"), new Cat("Francis"));
         
         // 1st
@@ -123,6 +121,18 @@ public class MiniApiTest {
                           .iterate($(c.getName()))){
             System.out.println(name);
         }      
+    }
+    
+    @Test
+    @Ignore
+    public void testVariousAlias(){
+        // TODO : FIXME
+        Cat c = alias(Cat.class, "cat");
+        
+        // 1
+        from($(c))
+        .where($(c.getMate().getBirthdate()).after(new Date()))
+        .iterate($(c)).iterator();
     }
     
     @Test

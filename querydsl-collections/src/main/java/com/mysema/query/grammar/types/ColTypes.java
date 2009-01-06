@@ -25,7 +25,7 @@ public class ColTypes {
     
     public static class ExtString extends Path.PString{
 
-        public ExtString(PathMetadata<String> arg0) {
+        public ExtString(PathMetadata<?> arg0) {
             super(arg0);
         }
         public Expr<String[]> split(String regex) { 
