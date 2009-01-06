@@ -10,5 +10,9 @@ package com.mysema.query.collections.alias;
 public interface ManagedObject {
     
     void setElementType(Class<?> type);
+    
+    void setKeyType(Class<?> type);
+    
+    void setValueType(Class<?> type);
         
 }

@@ -36,7 +36,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
     
     private AliasFactory aliasFactory;
     
-    private Class<?> elementType;
+    private Class<?> elementType, keyType, valueType;
     
     private final Map<String,Expr<?>> propToExpr = new HashMap<String,Expr<?>>();
     
@@ -68,7 +68,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             }else{                
                 if (parent == null) throw new IllegalArgumentException("No path for " + proxy);
                 PathMetadata<String> pm = PathMetadata.forProperty((Path<?>) parent, ptyName);
-                rv = makeNew(ptyClass, proxy, ptyName, pm);            
+                rv = newInstance(ptyClass, proxy, ptyName, pm);            
                 if (Collection.class.isAssignableFrom(ptyClass)){
                     ((ManagedObject)rv).setElementType(getFirstTypeParameter(method.getGenericReturnType()));
                 }
@@ -82,7 +82,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
                 rv = propToObj.get(ptyName);
             }else{
                 PathMetadata<Integer> pm = PathMetadata.forSize((PCollection<?>) parent);
-                rv = makeNew(Integer.class, proxy, ptyName, pm);            
+                rv = newInstance(Integer.class, proxy, ptyName, pm);            
             }       
             aliasFactory.setCurrent(propToExpr.get(ptyName));
             
@@ -93,9 +93,9 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             }else{
                 PathMetadata<Integer> pm = PathMetadata.forListAccess((PList<?>)parent, (Integer)args[0]);
                 if (elementType != null){
-                    rv = makeNew(elementType, proxy, ptyName, pm);    
+                    rv = newInstance(elementType, proxy, ptyName, pm);    
                 }else{
-                    rv = makeNew(method.getReturnType(), proxy, ptyName, pm);
+                    rv = newInstance(method.getReturnType(), proxy, ptyName, pm);
                 }                            
             }       
             aliasFactory.setCurrent(propToExpr.get(ptyName)); 
@@ -110,6 +110,12 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
                         
         }else if (method.getName().equals("setElementType")){    
             elementType = (Class<?>) args[0];
+        
+        }else if (method.getName().equals("setKeyType")){    
+            keyType = (Class<?>) args[0];
+            
+        }else if (method.getName().equals("setValueType")){    
+            valueType = (Class<?>) args[0];
             
         }else{
             rv = methodProxy.invokeSuper(proxy, args);    
@@ -148,7 +154,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T makeNew(Class<T> type, Object parent, String prop, PathMetadata<?> pm) {        
+    private <T> T newInstance(Class<T> type, Object parent, String prop, PathMetadata<?> pm) {        
         Expr<?> path;
         T rv;
         
@@ -197,19 +203,19 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         // Collection API types
             
         } else if (List.class.isAssignableFrom(type)) {
-            path = new Path.PComponentList(null,pm);
+            path = new Path.PComponentList(elementType,pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
             
         } else if (Set.class.isAssignableFrom(type)) {
-            path = new Path.PComponentCollection(null,pm);
+            path = new Path.PComponentCollection(elementType,pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
             
         } else if (Collection.class.isAssignableFrom(type)) {
-            path = new Path.PComponentCollection(null,pm);
+            path = new Path.PComponentCollection(elementType,pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
             
         } else if (Map.class.isAssignableFrom(type)) {
-            path = new Path.PComponentMap(null,null,pm);
+            path = new Path.PComponentMap(keyType,valueType,pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
                         
         // enums    

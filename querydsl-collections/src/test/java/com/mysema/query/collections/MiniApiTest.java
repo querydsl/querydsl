@@ -96,12 +96,17 @@ public class MiniApiTest {
             System.out.println(name);
         }
         
-        // 2nd - variation
+        // 2nd - variation 1
         for (String name : from($(c),cats).where($(c.getKittens().size()).gt(0))
                           .iterate($(c.getName()))){
             System.out.println(name);
         }                
-                   
+        
+        // 2nd - variation 2
+        for (String name : from($(c),cats).where($(c.getKittens().size()).gt(0))
+                          .iterate($(c.getName()))){
+            System.out.println(name);
+        }                           
     }
     
     @Test
@@ -129,9 +134,7 @@ public class MiniApiTest {
         
         from($(c),cats)
         .where($(c.getMate().getBirthdate()).after(new Date()))
-        .iterate($(c)).iterator();
-        
-        
+        .iterate($(c)).iterator();              
     }
     
     @Test

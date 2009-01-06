@@ -66,7 +66,7 @@ public class AliasFactory {
         return (A) current.get();
     }
 
-    public boolean isBound() {
+    public boolean hasCurrent() {
         return current.get() != null;
     }
     
