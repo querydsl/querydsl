@@ -20,6 +20,8 @@ import com.mysema.query.collections.iterators.FilteringIterator;
 import com.mysema.query.collections.iterators.MultiIterator;
 import com.mysema.query.collections.iterators.ProjectingIterator;
 import com.mysema.query.grammar.JavaSerializer;
+import com.mysema.query.grammar.Order;
+import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.serialization.OperationPatterns;
@@ -56,11 +58,35 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
     private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {        
         // from
         List<Expr<?>> sources = new ArrayList<Expr<?>>();
-        MultiIterator multiIt = new MultiIterator();        
+        MultiIterator multiIt = new MultiIterator();
+        
+        // order
+        Map<Path<?>,Order> orders = null;
+        boolean sortOnIterate = !orderBy.isEmpty();
+        if (sortOnIterate){
+            orders = new HashMap<Path<?>,Order>();
+            for (OrderSpecifier<?> order : orderBy){
+                if (!(order.target instanceof Path)) sortOnIterate = false;
+                orders.put((Path<?>)order.target, order.order);
+            }            
+        }               
+        
         for (JoinExpression<?> join : joins) {
             sources.add(join.getTarget());
-            multiIt.add(pathToIterable.get(join.getTarget()));
         }
+        if (sortOnIterate){
+            for (JoinExpression<?> join : joins) {
+                Iterable<?> iterable = pathToIterable.get(join.getTarget());
+                if (orders.containsKey(join.getTarget())){
+                    // TODO : reorder the iterable instance
+                }
+                multiIt.add(iterable);
+            }
+        }else{
+            for (JoinExpression<?> join : joins) {
+                multiIt.add(pathToIterable.get(join.getTarget()));
+            }    
+        }               
         Iterator<?> it = multiIt.init();
 
         // where
@@ -70,7 +96,7 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
                     boolean.class);
             it = new FilteringIterator<Object>(it, ev);
         }
-
+        
         // select
         ExpressionEvaluator ev = new JavaSerializer(ops).handle(
                 projection).createExpressionEvaluator(sources,

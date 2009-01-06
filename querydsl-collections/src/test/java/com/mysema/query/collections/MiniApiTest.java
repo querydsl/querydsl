@@ -180,6 +180,16 @@ public class MiniApiTest {
     }
     
     @Test
+    public void testAlias8(){
+        Cat c = alias(Cat.class, "cat");
+        
+        from($(c),cats)
+        .where($(c.getMate().getName()).startsWith("B"))
+        .orderBy($(c.getName()).desc())
+        .iterate($(c)).iterator();        
+    }
+    
+    @Test
     public void testMapUsage(){        
         Map<String,String> map = new HashMap<String,String>();      
         map.put("1","one");

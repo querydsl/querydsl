@@ -22,7 +22,6 @@ import org.codehaus.janino.Scanner.ScanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.Alias.ASimple;
