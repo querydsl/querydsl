@@ -126,13 +126,17 @@ public class MiniApiTest {
     @Test
     @Ignore
     public void testVariousAlias(){
-        // TODO : FIXME
         Cat c = alias(Cat.class, "cat");
         
         // 1
         from($(c))
         .where($(c.getMate().getBirthdate()).after(new Date()))
         .iterate($(c)).iterator();
+        
+        // 2
+        from($(c))
+        .where($(c.getKittens().get(0).getBodyWeight()).gt(12))
+        .iterate($(c.getName())).iterator();
     }
     
     @Test

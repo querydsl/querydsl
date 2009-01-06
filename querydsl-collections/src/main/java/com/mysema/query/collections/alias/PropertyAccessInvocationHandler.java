@@ -19,6 +19,7 @@ import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.ColTypes.ExtString;
 import com.mysema.query.grammar.types.Path.PCollection;
+import com.mysema.query.grammar.types.Path.PList;
 
 /**
  * PropertyAccessInvocationHandler provides
@@ -48,36 +49,63 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             if (propToObj.containsKey(ptyName)){
                 rv = propToObj.get(ptyName);
             }else{
-                Path<?> parentPath = aliasFactory.pathForAlias(proxy);
-                if (parentPath == null) throw new IllegalArgumentException("No path for " + proxy);
-                PathMetadata<String> pm = PathMetadata.forProperty(parentPath, ptyName);
+                Path<?> parent = aliasFactory.pathForAlias(proxy);
+                if (parent == null) throw new IllegalArgumentException("No path for " + proxy);
+                PathMetadata<String> pm = PathMetadata.forProperty(parent, ptyName);
                 rv = makeNew(ptyClass, proxy, ptyName, pm);            
             }       
             aliasFactory.setCurrent(propToPath.get(ptyName));                        
             return rv; 
             
-        }else if (method.getName().equals("size")){
+        }else if (isSizeAccessor(method)){
             String ptyName = "_size";
             Object rv;
             if (propToObj.containsKey(ptyName)){
                 rv = propToObj.get(ptyName);
             }else{
-                Path<?> parentPath = aliasFactory.pathForAlias(proxy);
-                if (parentPath == null) throw new IllegalArgumentException("No path for " + proxy);
-                PathMetadata<Integer> pm = PathMetadata.forSize((PCollection<?>) parentPath);
+                Path<?> parent = aliasFactory.pathForAlias(proxy);
+                if (parent == null) throw new IllegalArgumentException("No path for " + proxy);
+                PathMetadata<Integer> pm = PathMetadata.forSize((PCollection<?>) parent);
                 rv = makeNew(Integer.class, proxy, ptyName, pm);            
             }       
             aliasFactory.setCurrent(propToPath.get(ptyName));
             return rv; 
+            
+//        }else if (isElementAccess(method)){
+//            String ptyName = "_get";
+//            Object rv;
+//            if (propToObj.containsKey(ptyName)){
+//                rv = propToObj.get(ptyName);
+//            }else{
+//                Path<?> parent = aliasFactory.pathForAlias(proxy);
+//                if (parent == null) throw new IllegalArgumentException("No path for " + proxy);
+//                PathMetadata<Integer> pm = PathMetadata.forListAccess((PList<?>)parent, (Integer)args[0]);
+//                rv = makeNew(Integer.class, proxy, ptyName, pm);            
+//            }       
+//            aliasFactory.setCurrent(propToPath.get(ptyName));
+//            return rv; 
             
         }else{
             return methodProxy.invokeSuper(proxy, args);    
         }        
     }
     
-    private boolean isGetter(Method m){
-        return m.getParameterTypes().length == 0 && 
-            (m.getName().startsWith("is") || m.getName().startsWith("get"));
+//    private boolean isElementAccess(Method method) {
+//        return method.getName().equals("get") 
+//            && method.getParameterTypes().length == 1 
+//            && method.getParameterTypes()[0].equals(int.class);
+//    }
+
+    private boolean isSizeAccessor(Method method) {
+        return method.getName().equals("size") 
+            && method.getParameterTypes().length == 0
+            && method.getReturnType().equals(int.class);
+    }
+
+    private boolean isGetter(Method method){
+        return method.getParameterTypes().length == 0 
+            && (method.getName().startsWith("is") 
+            || method.getName().startsWith("get"));
     }
 
     @SuppressWarnings("unchecked")

@@ -30,7 +30,9 @@ public class AliasFactory {
     
     public <A> A createAliasForProp(Class<A> cl, Object parent, String prop, Path<?> path){        
         A proxy = createProxy(cl);
-        bindings.get().put(proxy, path);
+        if (!cl.getPackage().getName().equals("java.lang")){
+            bindings.get().put(proxy, path);    
+        }
         return proxy;
     }
     
