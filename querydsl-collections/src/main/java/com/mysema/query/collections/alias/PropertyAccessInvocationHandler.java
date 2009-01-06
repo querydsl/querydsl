@@ -160,7 +160,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             
         } else if (Integer.class.equals(type) || int.class.equals(type)) {
             path = new Path.PComparable<Integer>(Integer.class,pm);
-            rv =  (T) new Integer(42);
+            rv =  (T) Integer.valueOf(42);
             
         } else if (Date.class.equals(type)) {
             path = new Path.PComparable<Date>(Date.class,pm);
@@ -168,31 +168,31 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             
         } else if (Long.class.equals(type) || long.class.equals(type)) {
             path = new Path.PComparable<Long>(Long.class,pm);
-            rv =  (T) new Long(42);
+            rv =  (T) Long.valueOf(42l);
             
         } else if (Short.class.equals(type) || short.class.equals(type)) {
             path = new Path.PComparable<Short>(Short.class,pm);
-            rv =  (T) new Short((short) 42);
+            rv =  (T) Short.valueOf((short)42);
             
         } else if (Double.class.equals(type) || double.class.equals(type)) {
             path = new Path.PComparable<Double>(Double.class,pm);
-            rv =  (T) new Double(42);
+            rv =  (T) Double.valueOf(42d);
             
         } else if (Float.class.equals(type) || float.class.equals(type)) {
             path = new Path.PComparable<Float>(Float.class,pm);
-            rv =  (T) new Float(42);
+            rv =  (T) Float.valueOf(42f);
             
         } else if (BigInteger.class.equals(type)) {
             path = new Path.PComparable<BigInteger>(BigInteger.class,pm);
-            rv =  (T) new BigInteger("42");
+            rv =  (T) BigInteger.valueOf(42l);
             
         } else if (BigDecimal.class.equals(type)) {
             path = new Path.PComparable<BigDecimal>(BigDecimal.class,pm);
-            rv =  (T) new BigDecimal(42);
+            rv =  (T) BigDecimal.valueOf(42d);
             
         } else if (Boolean.class.equals(type) || boolean.class.equals(type)) {
             path = new Path.PBoolean(pm);
-            rv =  (T) new Boolean(true);
+            rv =  (T) Boolean.TRUE;
             
         // Collection API types
             
