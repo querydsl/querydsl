@@ -39,8 +39,8 @@ public abstract class OperationPatterns{
         add(Ops.GOE, "%s >= %s",20);
         add(Ops.GT, "%s > %s",21);
         add(Ops.LOE, "%s <= %s",22);
-        add(Ops.LT, "%s < %s",23);
-           
+        add(Ops.LT, "%s < %s",23);        
+        
         add(Ops.AFTER, "%s > %s",21);
         add(Ops.BEFORE, "%s < %s",23);
         
