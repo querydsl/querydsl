@@ -123,16 +123,20 @@ public class MiniApiTest {
     
     @Test
     public void testAlias3(){
+        new QCat("cat").birthdate.after(new Date());
+        
         Cat c = alias(Cat.class, "cat");
         
         from($(c),cats)
         .where($(c.getMate().getBirthdate()).after(new Date()))
-        .iterate($(c)).iterator();        
+        .iterate($(c)).iterator();
+        
+        
     }
     
     @Test
     @Ignore
-    public void testAlias4(){
+    public void testAlias4(){        
         Cat c = alias(Cat.class, "cat");
         
         // TODO : FIXME : Janino compiler doesn't handle generic collections
@@ -152,7 +156,9 @@ public class MiniApiTest {
     }
     
     @Test
-    public void testAlias6(){
+    public void testAlias6(){        
+        new QCat("cat").kittens.contains(new QCat("other"));
+        
         Cat c = alias(Cat.class, "cat");
         Cat other = new Cat();
         
