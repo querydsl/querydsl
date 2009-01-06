@@ -58,6 +58,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             MethodProxy methodProxy) throws Throwable {        
         Expr<?> parent = aliasFactory.pathForAlias(proxy);
         Object rv = null;
+        
         if (isGetter(method)){
             String ptyName = propertyNameForGetter(method);
             Class<?> ptyClass = method.getReturnType();
@@ -133,7 +134,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             && method.getReturnType().equals(boolean.class)
             && method.getParameterTypes().length == 1;
     }
-    
+        
     private boolean isGetter(Method method){
         return method.getParameterTypes().length == 0 
             && (method.getName().startsWith("is") 
@@ -190,7 +191,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             rv =  (T) new BigDecimal(42);
             
         } else if (Boolean.class.equals(type) || boolean.class.equals(type)) {
-            path = new Path.PComparable<Boolean>(Boolean.class,pm);
+            path = new Path.PBoolean(pm);
             rv =  (T) new Boolean(true);
             
         // Collection API types
