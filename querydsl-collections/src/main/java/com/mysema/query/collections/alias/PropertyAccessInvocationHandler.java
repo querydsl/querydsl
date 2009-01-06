@@ -6,6 +6,7 @@
 package com.mysema.query.collections.alias;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
@@ -71,30 +72,36 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             aliasFactory.setCurrent(propToPath.get(ptyName));
             return rv; 
             
-//        }else if (isElementAccess(method)){
-//            String ptyName = "_get";
-//            Object rv;
-//            if (propToObj.containsKey(ptyName)){
-//                rv = propToObj.get(ptyName);
-//            }else{
-//                Path<?> parent = aliasFactory.pathForAlias(proxy);
-//                if (parent == null) throw new IllegalArgumentException("No path for " + proxy);
-//                PathMetadata<Integer> pm = PathMetadata.forListAccess((PList<?>)parent, (Integer)args[0]);
-//                rv = makeNew(Integer.class, proxy, ptyName, pm);            
-//            }       
-//            aliasFactory.setCurrent(propToPath.get(ptyName));
-//            return rv; 
+        }else if (isElementAccess(method)){
+            String ptyName = "_get";
+            Object rv;
+            if (propToObj.containsKey(ptyName)){
+                rv = propToObj.get(ptyName);
+            }else{
+                Path<?> parent = aliasFactory.pathForAlias(proxy);
+                if (parent == null) throw new IllegalArgumentException("No path for " + proxy);
+                PathMetadata<Integer> pm = PathMetadata.forListAccess((PList<?>)parent, (Integer)args[0]);
+                Class<?> rvType = (Class<?>) method.getGenericParameterTypes()[0]; 
+                rv = makeNew(rvType, proxy, ptyName, pm);            
+            }       
+            aliasFactory.setCurrent(propToPath.get(ptyName));
+            return rv; 
             
         }else{
             return methodProxy.invokeSuper(proxy, args);    
         }        
     }
     
-//    private boolean isElementAccess(Method method) {
-//        return method.getName().equals("get") 
-//            && method.getParameterTypes().length == 1 
-//            && method.getParameterTypes()[0].equals(int.class);
-//    }
+    private Class<?> getFirstTypeParameter(Class<?> cl) {
+        return (Class<?>)((ParameterizedType) cl.getGenericSuperclass())
+                .getActualTypeArguments()[0];
+    }
+    
+    private boolean isElementAccess(Method method) {
+        return method.getName().equals("get") 
+            && method.getParameterTypes().length == 1 
+            && method.getParameterTypes()[0].equals(int.class);
+    }
 
     private boolean isSizeAccessor(Method method) {
         return method.getName().equals("size") 
@@ -117,7 +124,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             path = new ExtString(pm);
             rv = (T) new String();
             
-        } else if (Integer.class.equals(type)) {
+        } else if (Integer.class.equals(type) || int.class.equals(type)) {
             path = new Path.PComparable<Integer>(Integer.class,pm);
             rv =  (T) new Integer(42);
             
@@ -125,19 +132,19 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             path = new Path.PComparable<Date>(Date.class,pm);
             rv =  (T) new Date();
             
-        } else if (Long.class.equals(type)) {
+        } else if (Long.class.equals(type) || long.class.equals(type)) {
             path = new Path.PComparable<Long>(Long.class,pm);
             rv =  (T) new Long(42);
             
-        } else if (Short.class.equals(type)) {
+        } else if (Short.class.equals(type) || short.class.equals(type)) {
             path = new Path.PComparable<Short>(Short.class,pm);
             rv =  (T) new Short((short) 42);
             
-        } else if (Double.class.equals(type)) {
+        } else if (Double.class.equals(type) || double.class.equals(type)) {
             path = new Path.PComparable<Double>(Double.class,pm);
             rv =  (T) new Double(42);
             
-        } else if (Float.class.equals(type)) {
+        } else if (Float.class.equals(type) || float.class.equals(type)) {
             path = new Path.PComparable<Float>(Float.class,pm);
             rv =  (T) new Float(42);
             
@@ -149,7 +156,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             path = new Path.PComparable<BigDecimal>(BigDecimal.class,pm);
             rv =  (T) new BigDecimal(42);
             
-        } else if (Boolean.class.equals(type)) {
+        } else if (Boolean.class.equals(type) || boolean.class.equals(type)) {
             path = new Path.PComparable<Boolean>(Boolean.class,pm);
             rv =  (T) new Boolean(true);
             

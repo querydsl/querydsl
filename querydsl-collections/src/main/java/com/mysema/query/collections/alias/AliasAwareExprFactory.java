@@ -27,41 +27,77 @@ public class AliasAwareExprFactory extends SimpleExprFactory{
     }
     
     public PBoolean create(Boolean arg){
-        return aliasFactory.isBound() ? aliasFactory.<PBoolean>getCurrent() : super.create(arg);
+        try{
+            return aliasFactory.isBound() ? aliasFactory.<PBoolean>getCurrent() : super.create(arg);    
+        }finally{
+            aliasFactory.setCurrent(null);
+        }        
     }
     
     public PBooleanArray create(Boolean[] args){
-        return aliasFactory.isBound() ? aliasFactory.<PBooleanArray>getCurrent() : super.create(args);
+        try{
+            return aliasFactory.isBound() ? aliasFactory.<PBooleanArray>getCurrent() : super.create(args);
+        }finally{
+            aliasFactory.setCurrent(null);
+        }        
     }
     
     public <D> PComponentCollection<D> create(Collection<D> arg) {
-        return aliasFactory.isBound() ? aliasFactory.<PComponentCollection<D>>getCurrent() : super.create(arg);
+        try{
+            return aliasFactory.isBound() ? aliasFactory.<PComponentCollection<D>>getCurrent() : super.create(arg);
+        }finally{
+            aliasFactory.setCurrent(null);
+        }        
     }
     
     public <D extends Comparable<D>> PComparable<D> create(D arg){
-        return aliasFactory.isBound() ? aliasFactory.<PComparable<D>>getCurrent() : super.create(arg);
+        try{
+            return aliasFactory.isBound() ? aliasFactory.<PComparable<D>>getCurrent() : super.create(arg);
+        }finally{
+            aliasFactory.setCurrent(null);
+        }        
     }
     
     @SuppressWarnings("unchecked")
     public <D> PSimple<D> create(D arg){
-        PSimple<D> path = (PSimple<D>) aliasFactory.pathForAlias(arg);
-        return path != null ? path : super.create(arg);        
+        try{
+            PSimple<D> path = (PSimple<D>) aliasFactory.pathForAlias(arg);
+            return path != null ? path : super.create(arg);
+        }finally{
+            aliasFactory.setCurrent(null);
+        }        
     }
     
     public <D extends Comparable<D>> PComparableArray<D> create(D[] args){
-        return aliasFactory.isBound() ? aliasFactory.<PComparableArray<D>>getCurrent() : super.create(args);
+        try{
+            return aliasFactory.isBound() ? aliasFactory.<PComparableArray<D>>getCurrent() : super.create(args);
+        }finally{
+            aliasFactory.setCurrent(null);
+        }        
     }
 
     public <D> PComponentList<D> create(List<D> arg) {
-        return aliasFactory.isBound() ? aliasFactory.<PComponentList<D>>getCurrent() : super.create(arg);
+        try{
+            return aliasFactory.isBound() ? aliasFactory.<PComponentList<D>>getCurrent() : super.create(arg);
+        }finally{
+            aliasFactory.setCurrent(null);
+        }        
     }
     
     public ExtString create(String arg){
-        return aliasFactory.isBound() ? aliasFactory.<ExtString>getCurrent() : super.create(arg);
+        try{
+            return aliasFactory.isBound() ? aliasFactory.<ExtString>getCurrent() : super.create(arg);
+        }finally{
+            aliasFactory.setCurrent(null);
+        }        
     }
     
     public PStringArray create(String[] args){
-        return aliasFactory.isBound() ? aliasFactory.<PStringArray>getCurrent() : super.create(args);
+        try{
+            return aliasFactory.isBound() ? aliasFactory.<PStringArray>getCurrent() : super.create(args);
+        }finally{
+            aliasFactory.setCurrent(null);
+        }        
     }
 
 }

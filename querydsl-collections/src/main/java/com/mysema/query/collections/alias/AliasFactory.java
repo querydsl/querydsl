@@ -61,9 +61,7 @@ public class AliasFactory {
     
     @SuppressWarnings("unchecked")
     public <A extends Path<?>> A getCurrent() {
-        A rv = (A)current.get();
-        current.remove();
-        return rv;
+        return (A) current.get();
     }
 
     public boolean isBound() {
