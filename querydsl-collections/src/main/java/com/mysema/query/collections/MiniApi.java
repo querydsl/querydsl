@@ -18,6 +18,9 @@ import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathExtractor;
 import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.ColTypes.ExtString;
+import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.grammar.types.Expr.EComparable;
+import com.mysema.query.grammar.types.Expr.ESimple;
 import com.mysema.query.grammar.types.Path.*;
 
 /**
@@ -38,17 +41,13 @@ public class MiniApi {
         return aliasFactory.createAliasForVar(cl, var);
     }
     
-    public static <A> ColQuery<?> from(Path<A> path, A... arr){
+    public static <A> ColQuery<?> from(Expr<A> path, A... arr){
         return from(path, Arrays.asList(arr));
     }
     
-//    public static <K,V> ColQuery<?> from(Path<K> k, Path<V> v, Map<K,V> map){
-//        return new ColQuery().from(k,v,map);
-//    }
-    
     @SuppressWarnings("unchecked")
-    public static <A> ColQuery<?> from(Path<A> path, Iterable<A> col){
-        return new ColQuery().from(path, col);
+    public static <A> ColQuery<?> from(Expr<A> path, Iterable<A> col){
+        return new ColQuery().from((Path<?>)path, col);
     }
             
     @SuppressWarnings("unchecked")
@@ -62,11 +61,11 @@ public class MiniApi {
         return select(from, Grammar.not(where), order);
     }
     
-    public static PBoolean $(Boolean arg){
+    public static EBoolean $(Boolean arg){
         return exprFactory.create(arg);
     }
     
-    public static <D extends Comparable<D>> PComparable<D> $(D arg){
+    public static <D extends Comparable<D>> EComparable<D> $(D arg){
         return exprFactory.create(arg);
     }
     
@@ -94,7 +93,7 @@ public class MiniApi {
         return exprFactory.create(args);
     }
     
-    public static <D> PSimple<D> $(D arg){
+    public static <D> ESimple<D> $(D arg){
         return exprFactory.create(arg);
     }
 

@@ -22,6 +22,9 @@ public class JavaOps extends OperationPatterns {
     public JavaOps(){       
         String functions = JavaOps.class.getName();
         
+        add(Ops.AFTER, "%s.compareTo(%s) > 0");
+        add(Ops.BEFORE, "%s.compareTo(%s) < 0");
+        
         add(Ops.BETWEEN, functions+".between(%s,%s,%s)");
         add(Ops.NOTBETWEEN, "!"+functions+".between(%s,%s,%s)");
         add(Ops.SQRT, "Math.sqrt(%s)");

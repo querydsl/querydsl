@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.Domain.QCat;
-import com.mysema.query.grammar.types.Path;
+import com.mysema.query.grammar.types.Expr.ESimple;
 
 /**
  * MiniApiTest provides
@@ -31,6 +31,8 @@ import com.mysema.query.grammar.types.Path;
  * @version $Id$
  */
 public class MiniApiTest {
+    
+    List<Cat> cats = Arrays.asList(new Cat("Kitty"), new Cat("Bob"), new Cat("Alex"), new Cat("Francis"));
 
     List<Integer> myInts = new ArrayList<Integer>();   
     
@@ -80,8 +82,6 @@ public class MiniApiTest {
     
     @Test
     public void testAlias(){
-        List<Cat> cats = Arrays.asList(new Cat("Kitty"), new Cat("Bob"), new Cat("Alex"), new Cat("Francis"));       
-        
         // 1st
         QCat cat = new QCat("cat");  
         for (String name : from(cat,cats).where(cat.kittens.size().gt(0))
@@ -106,8 +106,6 @@ public class MiniApiTest {
     
     @Test
     public void testAlias2(){        
-        List<Cat> cats = Arrays.asList(new Cat("Kitty"), new Cat("Bob"), new Cat("Alex"), new Cat("Francis"));
-        
         // 1st
         QCat cat = new QCat("cat");  
         for (String name : from(cat,cats).where(cat.name.like("fri%"))
@@ -124,12 +122,10 @@ public class MiniApiTest {
     }
     
     @Test
-    @Ignore
     public void testAlias3(){
-        // TODO : FIXME
         Cat c = alias(Cat.class, "cat");
         
-        from($(c))
+        from($(c),cats)
         .where($(c.getMate().getBirthdate()).after(new Date()))
         .iterate($(c)).iterator();        
     }
@@ -137,12 +133,32 @@ public class MiniApiTest {
     @Test
     @Ignore
     public void testAlias4(){
-        // TODO : FIXME
         Cat c = alias(Cat.class, "cat");
         
-        from($(c))
+        // TODO : FIXME : Janino compiler doesn't handle generic collections
+        from($(c),cats)
         .where($(c.getKittens().get(0).getBodyWeight()).gt(12))
         .iterate($(c.getName())).iterator();
+    }
+    
+    @Test
+    public void testAlias5(){
+        Cat c = alias(Cat.class, "cat");
+        Cat other = new Cat();
+        
+        from($(c),cats)
+        .where($(c.equals(other)))
+        .iterate($(c)).iterator();
+    }
+    
+    @Test
+    public void testAlias6(){
+        Cat c = alias(Cat.class, "cat");
+        Cat other = new Cat();
+        
+        from($(c),cats)
+        .where($(c.getKittens().contains(other)))
+        .iterate($(c)).iterator();
     }
     
     @Test
@@ -154,7 +170,7 @@ public class MiniApiTest {
         map.put("4","four");
         
         // 1st 
-        Path.PSimple<Map.Entry<String,String>> e = $(map.entrySet().iterator().next());
+        ESimple<Map.Entry<String,String>> e = $(map.entrySet().iterator().next());
         for (Map.Entry<String,String> entry : from(e, map.entrySet()).iterate(e)){
             System.out.println(entry.getKey() + " > " + entry.getValue());
         }

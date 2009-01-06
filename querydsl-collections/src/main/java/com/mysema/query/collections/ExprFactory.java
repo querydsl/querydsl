@@ -9,7 +9,14 @@ import java.util.Collection;
 import java.util.List;
 
 import com.mysema.query.grammar.types.ColTypes.ExtString;
-import com.mysema.query.grammar.types.Path.*;
+import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.grammar.types.Expr.EComparable;
+import com.mysema.query.grammar.types.Expr.ESimple;
+import com.mysema.query.grammar.types.Path.PBooleanArray;
+import com.mysema.query.grammar.types.Path.PComparableArray;
+import com.mysema.query.grammar.types.Path.PComponentCollection;
+import com.mysema.query.grammar.types.Path.PComponentList;
+import com.mysema.query.grammar.types.Path.PStringArray;
 
 /**
  * ExprFactory provides
@@ -19,13 +26,13 @@ import com.mysema.query.grammar.types.Path.*;
  */
 public interface ExprFactory {
 
-    PBoolean create(Boolean arg);
+    EBoolean create(Boolean arg);
 
     PBooleanArray create(Boolean[] args);
 
-    <D extends Comparable<D>> PComparable<D> create(D arg);
+    <D extends Comparable<D>> EComparable<D> create(D arg);
 
-    <D> PSimple<D> create(D arg);
+    <D> ESimple<D> create(D arg);
     
     <D> PComponentList<D> create(List<D> arg);
     

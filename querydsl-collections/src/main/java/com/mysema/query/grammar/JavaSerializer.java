@@ -22,6 +22,7 @@ import org.codehaus.janino.Scanner.ScanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.Alias.ASimple;
@@ -68,7 +69,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
             exprAsString = prefix+StringUtils.capitalize(path.getMetadata().getExpression().toString())+"()";
             
         }else if (pathType == LISTVALUE_CONSTANT){
-            // ?!?
+            exprAsString = path.getMetadata().getExpression().toString();
             
         }else if (path.getMetadata().getExpression() != null){
             exprAsString = _toString(path.getMetadata().getExpression(), false);
@@ -131,5 +132,5 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
         if (targetType == null) targetType = Object.class;
         return createExpressionEvaluator(sources, targetType);
     }
-    
+        
 }

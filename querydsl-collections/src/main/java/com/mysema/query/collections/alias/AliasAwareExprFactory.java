@@ -10,6 +10,9 @@ import java.util.List;
 
 import com.mysema.query.collections.SimpleExprFactory;
 import com.mysema.query.grammar.types.ColTypes.ExtString;
+import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.grammar.types.Expr.EComparable;
+import com.mysema.query.grammar.types.Expr.ESimple;
 import com.mysema.query.grammar.types.Path.*;
 
 /**
@@ -26,7 +29,7 @@ public class AliasAwareExprFactory extends SimpleExprFactory{
         this.aliasFactory = aliasFactory;
     }
     
-    public PBoolean create(Boolean arg){
+    public EBoolean create(Boolean arg){
         try{
             return aliasFactory.isBound() ? aliasFactory.<PBoolean>getCurrent() : super.create(arg);    
         }finally{
@@ -50,19 +53,23 @@ public class AliasAwareExprFactory extends SimpleExprFactory{
         }        
     }
     
-    public <D extends Comparable<D>> PComparable<D> create(D arg){
+    public <D extends Comparable<D>> EComparable<D> create(D arg){
         try{
-            return aliasFactory.isBound() ? aliasFactory.<PComparable<D>>getCurrent() : super.create(arg);
+            return aliasFactory.isBound() ? aliasFactory.<EComparable<D>>getCurrent() : super.create(arg);
         }finally{
             aliasFactory.setCurrent(null);
         }        
     }
     
     @SuppressWarnings("unchecked")
-    public <D> PSimple<D> create(D arg){
+    public <D> ESimple<D> create(D arg){
         try{
-            PSimple<D> path = (PSimple<D>) aliasFactory.pathForAlias(arg);
-            return path != null ? path : super.create(arg);
+            if (arg instanceof ManagedObject){
+                PSimple<D> path = (PSimple<D>) aliasFactory.pathForAlias(arg);
+                return path != null ? path : super.create(arg);    
+            }else{
+                return super.create(arg);
+            }            
         }finally{
             aliasFactory.setCurrent(null);
         }        

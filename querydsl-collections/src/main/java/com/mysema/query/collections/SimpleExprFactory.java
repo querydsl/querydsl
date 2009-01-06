@@ -17,6 +17,9 @@ import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.ColTypes.ExtString;
+import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.grammar.types.Expr.EComparable;
+import com.mysema.query.grammar.types.Expr.ESimple;
 import com.mysema.query.grammar.types.Path.*;
 
 /**
@@ -99,7 +102,7 @@ public class SimpleExprFactory implements ExprFactory {
     /* (non-Javadoc)
      * @see com.mysema.query.collections.ExprFactory#create(java.lang.Boolean)
      */
-    public PBoolean create(Boolean arg){
+    public EBoolean create(Boolean arg){
         return arg.booleanValue() ? btrue : bfalse;
     }
     
@@ -119,16 +122,16 @@ public class SimpleExprFactory implements ExprFactory {
      * @see com.mysema.query.collections.ExprFactory#create(D)
      */
     @SuppressWarnings("unchecked")
-    public <D extends Comparable<D>> PComparable<D> create(D arg){
-        return (PComparable<D>) comToPath.get(arg);
+    public <D extends Comparable<D>> EComparable<D> create(D arg){
+        return (EComparable<D>) comToPath.get(arg);
     }
     
     /* (non-Javadoc)
      * @see com.mysema.query.collections.ExprFactory#create(D)
      */
     @SuppressWarnings("unchecked")
-    public <D> PSimple<D> create(D arg){
-        return (PSimple<D>) simToPath.get(arg);
+    public <D> ESimple<D> create(D arg){
+        return (ESimple<D>) simToPath.get(arg);
     }
     
     /* (non-Javadoc)

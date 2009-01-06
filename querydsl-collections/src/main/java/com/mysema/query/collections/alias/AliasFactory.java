@@ -8,6 +8,7 @@ package com.mysema.query.collections.alias;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 
+import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathMetadata;
 
@@ -19,16 +20,16 @@ import com.mysema.query.grammar.types.PathMetadata;
  */
 public class AliasFactory {
     
-    private final ThreadLocal<WeakIdentityHashMap<Object, Path<?>>> bindings = new ThreadLocal<WeakIdentityHashMap<Object, Path<?>>>() {
+    private final ThreadLocal<WeakIdentityHashMap<Object, Expr<?>>> bindings = new ThreadLocal<WeakIdentityHashMap<Object, Expr<?>>>() {
         @Override
-        protected WeakIdentityHashMap<Object, Path<?>> initialValue() {
-                return new WeakIdentityHashMap<Object, Path<?>>();
+        protected WeakIdentityHashMap<Object, Expr<?>> initialValue() {
+                return new WeakIdentityHashMap<Object, Expr<?>>();
         }
     };
     
-    private final ThreadLocal<Path<?>> current = new ThreadLocal<Path<?>>();
+    private final ThreadLocal<Expr<?>> current = new ThreadLocal<Expr<?>>();
     
-    public <A> A createAliasForProp(Class<A> cl, Object parent, String prop, Path<?> path){        
+    public <A> A createAliasForProp(Class<A> cl, Object parent, Expr<?> path){        
         A proxy = createProxy(cl);
         if (!cl.getPackage().getName().equals("java.lang")){
             bindings.get().put(proxy, path);    
@@ -37,7 +38,7 @@ public class AliasFactory {
     }
     
     public <A> A createAliasForVar(Class<A> cl, String var){        
-        Path<?> path = new Path.PSimple<A>(cl, PathMetadata.forVariable(var));
+        Expr<?> path = new Path.PSimple<A>(cl, PathMetadata.forVariable(var));
         A proxy = createProxy(cl);
         bindings.get().put(proxy, path);
         return proxy;
@@ -48,9 +49,10 @@ public class AliasFactory {
         Enhancer enhancer = new Enhancer();
         enhancer.setClassLoader(AliasFactory.class.getClassLoader());
         if (cl.isInterface()){
-            enhancer.setInterfaces(new Class[]{cl});
+            enhancer.setInterfaces(new Class[]{cl,ManagedObject.class});
         }else{
             enhancer.setSuperclass(cl);    
+            enhancer.setInterfaces(new Class[]{ManagedObject.class});
         }         
         // creates one handler per proxy
         MethodInterceptor handler = new PropertyAccessInvocationHandler(this);
@@ -60,7 +62,7 @@ public class AliasFactory {
     }
     
     @SuppressWarnings("unchecked")
-    public <A extends Path<?>> A getCurrent() {
+    public <A extends Expr<?>> A getCurrent() {
         return (A) current.get();
     }
 
@@ -68,11 +70,11 @@ public class AliasFactory {
         return current.get() != null;
     }
     
-    public Path<?> pathForAlias(Object key){
+    public Expr<?> pathForAlias(Object key){
         return bindings.get().get(key);
     }
 
-    public void setCurrent(Path<?> path){
+    public void setCurrent(Expr<?> path){
         current.set(path);
     }
     
