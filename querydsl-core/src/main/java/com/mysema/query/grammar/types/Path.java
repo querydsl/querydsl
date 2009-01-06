@@ -9,6 +9,7 @@ import static com.mysema.query.grammar.types.PathMetadata.*;
 
 import java.lang.reflect.Array;
 
+import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.EEntity;
@@ -92,6 +93,8 @@ public interface Path<C> {
      */
     public interface PCollection<D> extends Path<java.util.Collection<D>>, CollectionType<D>{        
         Class<D> getElementType();
+        EBoolean contains(D child);
+        EBoolean contains(Expr<D> child);
         EComparable<Integer> size();
     }
     
@@ -149,6 +152,12 @@ public interface Path<C> {
         }
         public EComparable<Integer> size() { 
             return size == null ? size = new PComparable<Integer>(Integer.class, forSize(this)) : size;
+        }
+        public EBoolean contains(D child) {
+            return Grammar.in(child, this);
+        }
+        public EBoolean contains(Expr<D> child) {
+            return IntGrammar.in(child, this);
         }
     }
     
@@ -279,6 +288,12 @@ public interface Path<C> {
         }
         public EComparable<Integer> size() { 
             return size == null ? size = new PComparable<Integer>(Integer.class, forSize(this)) : size;
+        }
+        public EBoolean contains(D child) {
+            return Grammar.in(child, this);
+        }
+        public EBoolean contains(Expr<D> child) {
+            return IntGrammar.in(child, this);
         }
     }
     
