@@ -72,6 +72,23 @@
   <build>
     <plugins>
       <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>src/assembly/zip-release.xml</descriptor>
+          </descriptors>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+          </execution>
+        </executions>          
+      </plugin>      
+      <plugin>
         <groupId>org.apache.myfaces.tobago</groupId>
         <artifactId>maven-apt-plugin</artifactId>
         <version>1.0.15</version>
