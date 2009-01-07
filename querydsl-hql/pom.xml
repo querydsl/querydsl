@@ -75,7 +75,7 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
-            <descriptor>src/assembly/zip-release.xml</descriptor>
+            <descriptor>src/assembly/release.xml</descriptor>
           </descriptors>
         </configuration>
         <executions>

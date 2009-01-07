@@ -1,5 +1,5 @@
 <assembly>
-  <id>zip-release</id>
+  <id>release</id>
   <formats>
     <format>zip</format>
   </formats>
