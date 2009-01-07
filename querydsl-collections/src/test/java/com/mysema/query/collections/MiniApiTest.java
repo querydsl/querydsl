@@ -154,7 +154,7 @@ public class MiniApiTest {
         Cat other = new Cat();
         
         from($(c),cats)
-        .where($(c.equals(other)))
+        .where($(c).eq(other))
         .iterate($(c)).iterator();
     }
     

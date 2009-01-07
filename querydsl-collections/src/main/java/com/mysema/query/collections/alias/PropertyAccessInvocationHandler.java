@@ -100,10 +100,6 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             }       
             aliasFactory.setCurrent(propToExpr.get(ptyName)); 
             
-        }else if (isEquals(method)){    
-            rv = methodProxy.invokeSuper(proxy, args);    
-            aliasFactory.setCurrent(((Expr<Object>)parent).eq(args[0]));
-            
         }else if (isContains(method)){    
             rv = false;
             aliasFactory.setCurrent(Grammar.in(args[0], (CollectionType<Object>)parent));
@@ -118,7 +114,8 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             valueType = (Class<?>) args[0];
             
         }else{
-            rv = methodProxy.invokeSuper(proxy, args);    
+//            rv = methodProxy.invokeSuper(proxy, args);
+            throw new IllegalArgumentException("Invocation of " + method.getName() + " not supported");
         }        
         return rv; 
     }
@@ -133,12 +130,6 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         return method.getName().equals("get") 
             && method.getParameterTypes().length == 1 
             && method.getParameterTypes()[0].equals(int.class);
-    }
-
-    private boolean isEquals(Method method){
-        return method.getName().equals("equals")
-            && method.getReturnType().equals(boolean.class)
-            && method.getParameterTypes().length == 1;
     }
         
     private boolean isGetter(Method method){
