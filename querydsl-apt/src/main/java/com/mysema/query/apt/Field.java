@@ -64,6 +64,17 @@ public class Field implements Comparable<Field> {
     public String getName() {
         return name;
     }
+    
+    // TODO : improve this name normalization
+    public String getRealName(){
+        if (name.equals("prvate")){
+            return "private";
+        }else if (name.equals("pblic")){
+            return "public";
+        }else{
+            return name;
+        }
+    }
 
     public String getSimpleTypeName() {
         return simpleTypeName;
