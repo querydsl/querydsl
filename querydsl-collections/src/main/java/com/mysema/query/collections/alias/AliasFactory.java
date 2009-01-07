@@ -37,7 +37,8 @@ public class AliasFactory {
         return proxy;
     }
     
-    public <A> A createAliasForVar(Class<A> cl, String var){        
+    public <A> A createAliasForVar(Class<A> cl, String var){    
+        // TODO : cache cl, var pairs
         Expr<?> path = new Path.PSimple<A>(cl, PathMetadata.forVariable(var));
         A proxy = createProxy(cl);
         bindings.get().put(proxy, path);

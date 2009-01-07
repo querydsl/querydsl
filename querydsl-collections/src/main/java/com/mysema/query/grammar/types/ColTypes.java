@@ -11,12 +11,6 @@ package com.mysema.query.grammar.types;
  *
  * @author tiwe
  * @version $Id$
- */
-/**
- * ColTypes provides
- *
- * @author tiwe
- * @version $Id$
  *
  */
 public class ColTypes {
