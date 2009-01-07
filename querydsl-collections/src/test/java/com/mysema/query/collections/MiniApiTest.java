@@ -185,7 +185,15 @@ public class MiniApiTest {
         
         from($(c),cats)
         .where($(c.getMate().getName()).startsWith("B"))
-        .orderBy($(c.getName()).desc())
+        .iterate($(c)).iterator();        
+    }
+    
+    @Test
+    public void testAlias9(){
+        Cat c = alias(Cat.class, "cat");
+        
+        from($(c),cats)
+        .where($(c.getMate().getName()).toUpperCase().eq("MOE"))
         .iterate($(c)).iterator();        
     }
     
