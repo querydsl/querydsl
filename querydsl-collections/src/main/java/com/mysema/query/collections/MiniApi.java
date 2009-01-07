@@ -101,7 +101,5 @@ public class MiniApi {
     public static <D> PSimple<D> $(){
         return (PSimple<D>) it;
     }
-    
-
-     
+         
 }
