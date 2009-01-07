@@ -106,7 +106,7 @@ public class MiniApiTest {
         for (String name : from($(c),cats).where($(c.getKittens().size()).gt(0))
                           .iterate($(c.getName()))){
             System.out.println(name);
-        }                           
+        }                              
     }
     
     @Test
@@ -195,6 +195,19 @@ public class MiniApiTest {
         from($(c),cats)
         .where($(c.getMate().getName()).toUpperCase().eq("MOE"))
         .iterate($(c)).iterator();        
+    }
+    
+    @Test
+    public void testAliasToString(){
+        Cat c = alias(Cat.class, "c");
+        
+        assertEquals("c", c.toString());
+        assertEquals("c.getMate()", c.getMate().toString());
+        assertEquals("c.getMate().getKittens().get(0)", c.getMate().getKittens().get(0).toString());
+        
+        assertEquals("c.getKittens().get(0)", c.getKittens().get(0).toString());
+        assertEquals("c.getKittens().get(1)", c.getKittens().get(1).toString());
+        assertEquals("c.getKittens().get(0).getMate()", c.getKittens().get(0).getMate().toString());        
     }
     
     @Test

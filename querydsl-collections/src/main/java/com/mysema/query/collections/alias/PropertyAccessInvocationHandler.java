@@ -18,6 +18,8 @@ import net.sf.cglib.proxy.MethodProxy;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.grammar.Grammar;
+import com.mysema.query.grammar.JavaOps;
+import com.mysema.query.grammar.JavaSerializer;
 import com.mysema.query.grammar.types.CollectionType;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
@@ -34,7 +36,11 @@ import com.mysema.query.grammar.types.Path.PList;
  */
 class PropertyAccessInvocationHandler implements MethodInterceptor{
     
-    private AliasFactory aliasFactory;
+    private final AliasFactory aliasFactory;
+    
+    private final JavaSerializer serializer = new JavaSerializer(new JavaOps());
+    
+    private String toString;
     
     private Class<?> elementType, keyType, valueType;
     
@@ -104,6 +110,10 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             rv = false;
             aliasFactory.setCurrent(Grammar.in(args[0], (CollectionType<Object>)parent));
                         
+        }else if (isToString(method)){
+            if (toString == null) toString = serializer.handle((Expr<?>)parent).toString();
+            rv = toString;
+            
         }else if (method.getName().equals("setElementType")){    
             elementType = (Class<?>) args[0];
         
@@ -118,6 +128,12 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             throw new IllegalArgumentException("Invocation of " + method.getName() + " not supported");
         }        
         return rv; 
+    }
+    
+    private boolean isToString(Method method){
+        return method.getName().equals("toString")
+            && method.getParameterTypes().length == 0
+            && method.getReturnType().equals(String.class);
     }
     
     private boolean isContains(Method method){
