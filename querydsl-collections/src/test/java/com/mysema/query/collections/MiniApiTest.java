@@ -101,12 +101,7 @@ public class MiniApiTest {
                           .iterate($(c.getName()))){
             System.out.println(name);
         }                
-        
-        // 2nd - variation 2
-        for (String name : from($(c),cats).where($(c.getKittens().size()).gt(0))
-                          .iterate($(c.getName()))){
-            System.out.println(name);
-        }                              
+                            
     }
     
     @Test
