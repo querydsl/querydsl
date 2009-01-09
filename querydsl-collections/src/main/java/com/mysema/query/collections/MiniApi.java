@@ -49,7 +49,7 @@ public class MiniApi {
     public static <A> ColQuery<?> from(Expr<A> path, Iterable<A> col){
         return new ColQuery().from((Path<?>)path, col);
     }
-            
+    
     @SuppressWarnings("unchecked")
     public static <A> Iterable<A> select(Iterable<A> from, Expr.EBoolean where, OrderSpecifier<?>... order){
         Path<A> path = (Path<A>) new PathExtractor().handle(where).getPath();
