@@ -94,18 +94,18 @@ public class Domain {
         public final Path.PSimple<Color> color = _simple("color",Color.class);
         public final Path.PSimple<Color> eyecolor = _simple("eyecolor",Color.class);
         public final Path.PComparable<java.lang.Integer> id = _comparable("id",java.lang.Integer.class);
-        public final Path.PEntityList<Cat> kittens = _entitylist("kittens",Cat.class);
+        public final Path.PEntityList<Cat> kittens = _entitylist("kittens",Cat.class,"Cat");
         public QCat mate;
         public final Path.PString name = _string("name");
     
         public final Path.PComparable<java.lang.Integer> toes = _comparable("toes",java.lang.Integer.class);
         public final Path.PComparable<java.lang.Integer> weight = _comparable("weight",java.lang.Integer.class);
         public QCat(java.lang.String path) {
-            super(Cat.class, path);
+            super(Cat.class, "Cat", path);
             _mate();
         }
         public QCat(PathMetadata<?> metadata) {
-            super(Cat.class, metadata);
+            super(Cat.class, "Cat", metadata);
         }
         public QCat _mate() {
             if (mate == null) mate = new QCat(forProperty(this,"mate"));

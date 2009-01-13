@@ -24,8 +24,6 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
-import com.mysema.query.grammar.types.Alias.ASimple;
-import com.mysema.query.grammar.types.Alias.AToPath;
 import com.mysema.query.grammar.types.ColTypes.ExtString;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
 import com.mysema.query.serialization.BaseSerializer;
@@ -80,14 +78,6 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
         }else{
             _append(String.format(pattern, exprAsString));
         }        
-    }
-
-    @Override
-    protected void visit(ASimple<?> expr) {        
-    }
-    
-    @Override
-    protected void visit(AToPath expr) {          
     }
     
     public ExpressionEvaluator createExpressionEvaluator(List<Expr<?>> sources, Class<?> targetType) throws CompileException, ParseException, ScanException{
