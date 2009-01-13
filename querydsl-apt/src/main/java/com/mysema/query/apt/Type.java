@@ -11,8 +11,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.sun.mirror.declaration.ClassDeclaration;
-import com.sun.mirror.declaration.ConstructorDeclaration;
-import com.sun.mirror.declaration.FieldDeclaration;
 
 /**
  * TypeDecl represents a query domain type.
@@ -62,16 +60,8 @@ public class Type implements Comparable<Type> {
         this.simpleName = simpleName;
     }
 
-    public void addConstructor(ConstructorDeclaration co) {
-        addConstructor(new Constructor(co));
-    }
-
     public void addConstructor(Constructor co) {
         constructors.add(co);
-    }
-
-    public void addField(FieldDeclaration field) {
-        addField(new Field(field));
     }
 
     public void addField(Field fieldDecl) {

@@ -37,14 +37,14 @@
 	
   <#-- constructors -->  	     
     <#if !embeddable>
-        public ${pre}${decl.simpleName}(java.lang.String path) {
-        	super(${decl.name}.class, path);
-        <#list decl.entityFields as field>
-        	<#if !reserved?seq_contains(field.name)>
-        	_${field.name}();
-        	</#if>	
-        </#list>     
-        }
+    public ${pre}${decl.simpleName}(java.lang.String path) {
+      	super(${decl.name}.class, path);
+    <#list decl.entityFields as field>
+      	<#if !reserved?seq_contains(field.name)>
+      	_${field.name}();
+      	</#if>	
+    </#list>     
+    }
     </#if>     
     public ${pre}${decl.simpleName}(PathMetadata<?> metadata) {
      	super(${decl.name}.class, metadata);

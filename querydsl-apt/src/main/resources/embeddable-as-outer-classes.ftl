@@ -5,7 +5,7 @@ import com.mysema.query.grammar.types.*;
 import static com.mysema.query.grammar.types.PathMetadata.*;
 
 /**
- * ${classSimpleName} provides types for use in Query DSL constructs
+ * ${pre}${classSimpleName} is a Querydsl embeddable type
  *
  */
 public class ${pre}${classSimpleName} extends Path.PEntity<${type.name}>{

@@ -8,6 +8,7 @@ package com.mysema.query.apt.general;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.mysema.query.apt.Constructor;
 import com.mysema.query.apt.Type;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;
@@ -32,7 +33,7 @@ public class DTOVisitor extends SimpleDeclarationVisitor {
 
     @Override
     public void visitConstructorDeclaration(ConstructorDeclaration d) {
-        last.addConstructor(d);
+        last.addConstructor(new Constructor(d));
     }
 
 }

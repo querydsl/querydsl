@@ -8,6 +8,7 @@ package com.mysema.query.apt.general;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mysema.query.apt.Field;
 import com.mysema.query.apt.Type;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;
@@ -34,7 +35,7 @@ public class EntityVisitor extends SimpleDeclarationVisitor {
     @Override
     public void visitFieldDeclaration(FieldDeclaration d) {
         if (!d.getModifiers().contains(Modifier.STATIC)) {
-            last.addField(d);
+            last.addField(new Field(d));
         }
     }
 

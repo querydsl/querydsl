@@ -31,7 +31,7 @@ import com.sun.mirror.declaration.Declaration;
  */
 public class GeneralProcessor implements AnnotationProcessor {
 
-    static final Serializer 
+    public static final Serializer 
         DOMAIN_OUTER_TMPL = new Serializer.FreeMarker("/domain-as-outer-classes.ftl"),
         EMBEDDABLE_OUTER_TMPL = new Serializer.FreeMarker("/embeddable-as-outer-classes.ftl"),
         DTO_OUTER_TMPL = new Serializer.FreeMarker("/dto-as-outer-classes.ftl");
