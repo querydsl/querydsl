@@ -5,6 +5,11 @@
  */
 package com.mysema.query.sql;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -29,31 +34,71 @@ public class SqlQuery extends QueryBase<Object,SqlQuery>{
     
     private List<Object> constants;
     
+    private final Connection conn;
+    
     private final SqlOps ops;
     
-    public SqlQuery(SqlOps ops){
+    public SqlQuery(Connection conn, SqlOps ops){
+        this.conn = conn;
         this.ops = ops;
     }
     
     @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>...rest){
+    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>...rest) throws SQLException{
         select(expr1, expr2);
         select(rest);
         String queryString = toString();
         logger.debug("query : {}", queryString);
-//        Query query = createQuery(queryString, limit, offset);
-//        return query.list();
-        return null;
+        PreparedStatement stmt = conn.prepareStatement(queryString);
+        int counter = 1;
+        for (Object o : constants){
+            stmt.setObject(counter++, o);    
+        }
+        ResultSet rs = stmt.executeQuery();   
+        try{
+            List<Object[]> rv = new ArrayList<Object[]>();
+            while(rs.next()){
+                Object[] objects = new Object[rs.getMetaData().getColumnCount()];
+                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++){
+                    objects[i] = rs.getObject(i+1);
+                }
+                rv.add(objects);
+            }
+            return rv;
+        }finally{
+            try{
+                rs.close();    
+            }finally{
+                stmt.close();    
+            }                        
+        }
     }
     
     @SuppressWarnings("unchecked")
-    public <RT> List<RT> list(Expr<RT> expr){
+    public <RT> List<RT> list(Expr<RT> expr) throws SQLException{
         select(expr);
         String queryString = toString();
         logger.debug("query : {}", queryString);
-//        Query query = createQuery(queryString, limit, offset);
-//        return query.list();
-        return null;
+        PreparedStatement stmt = conn.prepareStatement(queryString);
+        int counter = 1;
+        for (Object o : constants){
+            stmt.setObject(counter++, o);    
+        }        
+        ResultSet rs = stmt.executeQuery();        
+        try{
+            List<RT> rv = new ArrayList<RT>();
+            while(rs.next()){
+                rv.add((RT)rs.getObject(1));
+            }
+            return rv;
+        }finally{
+            try{
+                rs.close();    
+            }finally{
+                stmt.close();
+            }
+            
+        }
     }
     
     @Override

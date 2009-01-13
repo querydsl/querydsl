@@ -26,6 +26,12 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
         super(ops);
         this.ops = ops;
     }
+    
+    @Override
+    protected void visit(Expr.EConstant<?> expr) {
+        _append("?");
+        constants.add(expr.getConstant());
+    }
                
     public void serialize(List<Expr<?>> select, List<JoinExpression<Object>> joins,
         Expr.EBoolean where, List<Expr<?>> groupBy, Expr.EBoolean having,
@@ -51,7 +57,7 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
             }
             
             // type specifier
-            if (je.getTarget() instanceof Path.PEntity){
+            if (je.getTarget() instanceof Path.PEntity && ops.supportsAlias()){
                 Path.PEntity<?> pe = (Path.PEntity<?>)je.getTarget();
                 if (pe.getMetadata().getParent() == null){ 
                     _append(pe.getEntityName())._append(ops.aliasAs());    

@@ -192,11 +192,9 @@ public class SqlOps extends OperationPatterns {
     public void leftJoin(String leftJoin) {
         this.leftJoin = leftJoin;
     }
-    
-    
-    
-    
-    
-    
+
+    public boolean supportsAlias() {
+        return true;
+    }
 
 }

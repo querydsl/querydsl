@@ -5,11 +5,16 @@
  */
 package com.mysema.query.sql;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.mysema.query.grammar.SqlOps;
+import com.mysema.query.grammar.Dialects;
 import com.mysema.query.sql.domain.QSURVEY;
-import com.mysema.query.sql.domain.QSYSTEM_ALLTYPEINFO;
 
 
 /**
@@ -21,19 +26,53 @@ import com.mysema.query.sql.domain.QSYSTEM_ALLTYPEINFO;
 public class SqlQueryTest {
     
     private QSURVEY survey = new QSURVEY("survey");
-    private QSURVEY survey2 = new QSURVEY("survey2");
-    private QSYSTEM_ALLTYPEINFO allTypeInfo = new QSYSTEM_ALLTYPEINFO("systemAllTypeInfo");
+    
+    private static Connection c;
+    
+    private static Statement stmt;
+    
+    @BeforeClass
+    public static void setUp() throws Exception{
+        c = getHSQLConnection();
+        stmt = c.createStatement();
+        stmt.executeUpdate("create table survey (id int,name varchar(30));");
+        stmt.execute("insert into survey values (1, 'Hello World');");
+    }
+    
+    @AfterClass
+    public static void tearDown() throws Exception{
+        stmt.close();
+        c.close();
+    }
     
     @Test
-    public void testQuery(){               
-        SqlQuery query = new SqlQuery(new SqlOps());
-        query.from(survey, allTypeInfo).where(survey.id.eq(12)).list(survey.id);
-        System.out.println(query);
-        System.out.println();
-                
-        query = new SqlQuery(new SqlOps().toUpperCase());
-        query.from(survey, allTypeInfo).where(survey.id.eq(12)).list(survey.id);
-        System.out.println(query);
+    public void testQuery1() throws Exception{                
+        SqlQuery query = new SqlQuery(c,Dialects.HSQLDB);
+        for (String s : query.from(survey).list(survey.name)){
+            System.out.println(s);
+        }        
+    }
+    
+    @Test
+    public void testQuery2() throws Exception{              
+        SqlQuery query = new SqlQuery(c,Dialects.HSQLDB);
+        for (Object[] row : query.from(survey).list(survey.id, survey.name)){
+            System.out.println(row[0]+", " + row[1]);
+        }        
+    }
+    
+    @Test
+    public void testQueryWithConstant() throws Exception{
+        SqlQuery query = new SqlQuery(c,Dialects.HSQLDB);
+        for (Object[] row : query.from(survey).where(survey.id.eq(1)).list(survey.id, survey.name)){
+            System.out.println(row[0]+", " + row[1]);
+        }
+    }
+    
+    private static Connection getHSQLConnection() throws Exception{
+        Class.forName("org.hsqldb.jdbcDriver");
+        String url = "jdbc:hsqldb:data/tutorial";
+        return DriverManager.getConnection(url, "sa", "");
     }
 
 }
