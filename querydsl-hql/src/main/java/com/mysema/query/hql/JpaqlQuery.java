@@ -23,7 +23,7 @@ import com.mysema.query.grammar.types.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class JpaqlQuery extends HqlQueryBase<JpaqlQuery>{
+public class JpaqlQuery<A extends JpaqlQuery<A>> extends HqlQueryBase<A>{
     
     private static final Logger logger = LoggerFactory.getLogger(JpaqlQuery.class);
 
