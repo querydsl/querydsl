@@ -213,12 +213,15 @@ public interface Path<C> {
     public static class PEntity<D> extends EEntity<D> implements Path<D>{
         private EBoolean isnull, isnotnull;          
         private final PathMetadata<?> metadata;
-        public PEntity(Class<D> type, PathMetadata<?> metadata) {
+        private final String entityName;
+        public PEntity(Class<D> type, String entityName, PathMetadata<?> metadata) {
             super(type);
+            this.entityName = entityName;
             this.metadata = metadata;
         }
-        public PEntity(Class<D> type, String localName) {
+        public PEntity(Class<D> type, String entityName, String localName) {
             super(type);
+            this.entityName = entityName;
             metadata = forVariable(localName);
         }
         protected PBoolean _boolean(String path){
@@ -227,14 +230,14 @@ public interface Path<C> {
         protected <A extends Comparable<A>> PComparable<A> _comparable(String path,Class<A> type) {
             return new PComparable<A>(type, forProperty(this, path));
         }        
-        protected <A> PEntity<A> _entity(String path, Class<A> type){
-            return new PEntity<A>(type, forProperty(this, path)); 
+        protected <A> PEntity<A> _entity(String path, String entityName, Class<A> type){
+            return new PEntity<A>(type, entityName, forProperty(this, path)); 
         }
-        protected <A> PEntityCollection<A> _entitycol(String path,Class<A> type) {
-            return new PEntityCollection<A>(type, forProperty(this, path));
+        protected <A> PEntityCollection<A> _entitycol(String path, Class<A> type, String entityName) {
+            return new PEntityCollection<A>(type, entityName, forProperty(this, path));
         }
-        protected <A> PEntityList<A> _entitylist(String path,Class<A> type) {
-            return new PEntityList<A>(type, forProperty(this, path));
+        protected <A> PEntityList<A> _entitylist(String path, Class<A> type, String entityName) {
+            return new PEntityList<A>(type, entityName, forProperty(this,  path));
         }
         protected <A> PSimple<A> _simple(String path, Class<A> type){
             return new PSimple<A>(type, forProperty(this, path));
@@ -252,6 +255,7 @@ public interface Path<C> {
             return new PString(forProperty(this, path));
         }
         public Alias.AEntity<D> as(PEntity<D> to) {return IntGrammar.as(this, to);}
+        public String getEntityName(){ return entityName; }
         public PathMetadata<?> getMetadata() {return metadata;}
         public EBoolean in(CollectionType<D> right){return IntGrammar.in(this, right);}
         public EBoolean isnotnull() {
@@ -271,14 +275,16 @@ public interface Path<C> {
         private final PathMetadata<?> metadata;
         private EComparable<Integer> size;        
         protected final Class<D> type;
-
-        public PEntityCollection(Class<D> type, PathMetadata<?> metadata) {
+        protected final String entityName;
+        public PEntityCollection(Class<D> type, String entityName, PathMetadata<?> metadata) {
             super(null);            
             this.type = type;
             this.metadata = metadata;
+            this.entityName = entityName;
         }
         public Alias.AEntityCollection<D> as(PEntity<D> to) {return IntGrammar.as(this, to);}
         public Class<D> getElementType() {return type;}
+        public String getEntityName() { return entityName; }
         public PathMetadata<?> getMetadata() {return metadata;}
         public EBoolean isnotnull() {
             return isnotnull == null ? isnotnull = IntGrammar.isnotnull(this) : isnotnull; 
@@ -301,14 +307,14 @@ public interface Path<C> {
      * The Class EntityList.
      */
     public static class PEntityList<D> extends PEntityCollection<D> implements PList<D>{
-        public PEntityList(Class<D> type, PathMetadata<?> metadata) {
-            super(type, metadata);
+        public PEntityList(Class<D> type, String entityName, PathMetadata<?> metadata) {
+            super(type, entityName, metadata);
         }
         public EEntity<D> get(Expr<Integer> index) {
-            return new PEntity<D>(type, forListAccess(this,index));
+            return new PEntity<D>(type, entityName, forListAccess(this,index));
         }
         public EEntity<D> get(int index) {
-            return new PEntity<D>(type, forListAccess(this,index));
+            return new PEntity<D>(type, entityName, forListAccess(this,index));
         }
     }
     
@@ -320,17 +326,19 @@ public interface Path<C> {
         private final Class<K> keyType;
         private final PathMetadata<?> metadata;
         private final Class<V> valueType; 
-        public PEntityMap(Class<K> keyType, Class<V> valueType, PathMetadata<?> metadata) {
+        private final String entityName;
+        public PEntityMap(Class<K> keyType, Class<V> valueType, String entityName, PathMetadata<?> metadata) {
             super(null);            
             this.keyType = keyType;
             this.valueType = valueType;
+            this.entityName = entityName;
             this.metadata = metadata;
         }
         public EEntity<V> get(Expr<K> key) { 
-            return new PEntity<V>(valueType, forMapAccess(this, key));
+            return new PEntity<V>(valueType, entityName, forMapAccess(this, key));
         }
         public EEntity<V> get(K key) { 
-            return new PEntity<V>(valueType, forMapAccess(this, key));
+            return new PEntity<V>(valueType, entityName, forMapAccess(this, key));
         }    
         public Class<K> getKeyType() {return keyType; }
         public PathMetadata<?> getMetadata() {return metadata;}

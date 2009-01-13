@@ -5,6 +5,10 @@
  */
 package com.mysema.query.serialization;
 
+import static com.mysema.query.grammar.types.PathMetadata.LISTVALUE_CONSTANT;
+import static com.mysema.query.grammar.types.PathMetadata.PROPERTY;
+import static com.mysema.query.grammar.types.PathMetadata.VARIABLE;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +17,11 @@ import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Constructor;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Operation;
+import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.VisitorAdapter;
+import com.mysema.query.grammar.types.Alias.ASimple;
+import com.mysema.query.grammar.types.Alias.AToPath;
+import com.mysema.query.grammar.types.PathMetadata.PathType;
 
 /**
  * BaseSerializer is a stub for Serializer implementations
@@ -35,8 +43,10 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
     }
     
     @SuppressWarnings("unchecked")
-    protected final A _append(String str) {
-        builder.append(str);
+    protected final A _append(String... str) {
+        for (String s : str){
+            builder.append(s);    
+        }        
         return (A)this;
     }
     
@@ -48,6 +58,30 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
             handle(expr); first = false;
         }
         return (A)this;
+    }
+    
+    @Override
+    protected void visit(Path<?> path) {
+        PathType pathType = path.getMetadata().getPathType();
+        String parentAsString = null, exprAsString = null;
+        
+        if (path.getMetadata().getParent() != null){
+            parentAsString = _toString((Expr<?>)path.getMetadata().getParent(),false);    
+        }        
+        if (pathType == PROPERTY || pathType == VARIABLE ||
+              pathType == LISTVALUE_CONSTANT){
+            exprAsString = path.getMetadata().getExpression().toString();
+        }else if (path.getMetadata().getExpression() != null){
+            exprAsString = _toString(path.getMetadata().getExpression(),false);
+        }
+        
+        String pattern = ops.getPattern(pathType);
+        if (parentAsString != null){
+            _append(String.format(pattern, parentAsString, exprAsString));    
+        }else{
+            _append(String.format(pattern, exprAsString));
+        }
+        
     }
     
     protected final String _toString(Expr<?> expr, boolean wrap) {
@@ -92,6 +126,16 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
     @Override
     protected final void visit(Operation<?,?> expr) {
         visitOperation(expr.getOperator(), expr.getArgs());
+    }
+    
+    @Override
+    protected void visit(ASimple<?> expr) {
+        throw new UnsupportedOperationException("not implemented");        
+    }
+
+    @Override
+    protected void visit(AToPath expr) {
+        throw new UnsupportedOperationException("not implemented");        
     }
     
     protected void visitOperation(Op<?> operator, Expr<?>... args) {        

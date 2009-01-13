@@ -102,5 +102,19 @@ public abstract class OperationPatterns{
             return -1;
         }
     }
+
+    public OperationPatterns toUpperCase() {
+        for (Map.Entry<Op<?>,String> entry : patterns.entrySet()){
+            patterns.put(entry.getKey(), entry.getValue().toUpperCase());
+        }
+        return this;
+    }
+
+    public OperationPatterns toLowerCase() {
+        for (Map.Entry<Op<?>,String> entry : patterns.entrySet()){
+            patterns.put(entry.getKey(), entry.getValue().toLowerCase());
+        }        
+        return this;
+    }
     
 }
