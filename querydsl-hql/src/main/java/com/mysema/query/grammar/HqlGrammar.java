@@ -120,7 +120,7 @@ public class HqlGrammar extends Grammar{
     } 
     
     public static <A> Path.PEntity<A> maxelement(Path.PEntityCollection<A> col) {
-        return new Path.PEntity<A>(col.getElementType(), new PathMetadata<A>(col, null, HqlPathType.MINELEMENT));
+        return new Path.PEntity<A>(col.getElementType(), col.getEntityName(), new PathMetadata<A>(col, null, HqlPathType.MINELEMENT));
     }
     
     public static <A> Path.PComparable<Integer> maxindex(Path.PComponentCollection<A> col) {
@@ -140,7 +140,7 @@ public class HqlGrammar extends Grammar{
     }       
     
     public static <A> Path.PEntity<A> minelement(Path.PEntityCollection<A> col) {
-        return new Path.PEntity<A>(col.getElementType(), new PathMetadata<A>(col, null, HqlPathType.MINELEMENT));
+        return new Path.PEntity<A>(col.getElementType(), col.getEntityName(), new PathMetadata<A>(col, null, HqlPathType.MINELEMENT));
     } 
     
     public static <A> Path.PComparable<Integer> minindex(Path.PComponentCollection<A> col) {

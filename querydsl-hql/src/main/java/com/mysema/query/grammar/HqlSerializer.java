@@ -5,9 +5,7 @@
  */
 package com.mysema.query.grammar;
 
-import static com.mysema.query.grammar.types.PathMetadata.LISTVALUE_CONSTANT;
 import static com.mysema.query.grammar.types.PathMetadata.PROPERTY;
-import static com.mysema.query.grammar.types.PathMetadata.VARIABLE;
 
 import java.util.List;
 
@@ -22,7 +20,6 @@ import com.mysema.query.grammar.types.Quant;
 import com.mysema.query.grammar.types.HqlTypes.CountExpression;
 import com.mysema.query.grammar.types.HqlTypes.DistinctPath;
 import com.mysema.query.grammar.types.HqlTypes.SubQuery;
-import com.mysema.query.grammar.types.PathMetadata.PathType;
 import com.mysema.query.serialization.BaseSerializer;
 
 
@@ -169,30 +166,6 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         if (wrap) _append("elements(");
         visit((Path<?>)expr);
         if (wrap) _append(")");
-    }
-
-    @Override
-    protected void visit(Path<?> path) {
-        PathType pathType = path.getMetadata().getPathType();
-        String parentAsString = null, exprAsString = null;
-        
-        if (path.getMetadata().getParent() != null){
-            parentAsString = _toString((Expr<?>)path.getMetadata().getParent(),false);    
-        }        
-        if (pathType == PROPERTY || pathType == VARIABLE ||
-              pathType == LISTVALUE_CONSTANT){
-            exprAsString = path.getMetadata().getExpression().toString();
-        }else if (path.getMetadata().getExpression() != null){
-            exprAsString = _toString(path.getMetadata().getExpression(),false);
-        }
-        
-        String pattern = ops.getPattern(pathType);
-        if (parentAsString != null){
-            _append(String.format(pattern, parentAsString, exprAsString));    
-        }else{
-            _append(String.format(pattern, exprAsString));
-        }
-        
     }
     
     protected void visit(Quant q){        
