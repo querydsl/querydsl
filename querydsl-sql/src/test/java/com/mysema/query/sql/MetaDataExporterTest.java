@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.sql;
 
 import java.sql.Connection;
@@ -14,7 +19,7 @@ import org.junit.Test;
  * @author tiwe
  * @version $Id$
  */                
-public class DomainGenerationTest {
+public class MetaDataExporterTest {
     
     @Test
     public void testGeneration() throws Exception{

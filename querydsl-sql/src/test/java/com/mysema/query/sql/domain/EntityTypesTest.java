@@ -1,4 +1,11 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.sql.domain;
+
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -21,6 +28,9 @@ public class EntityTypesTest {
         
         allTypeInfo.asProcCol.eq(true);
         allTypeInfo.createParams.lower().eq("ES");
+        
+        assertEquals("SURVEY", survey.getEntityName());
+        assertEquals("SYSTEM_ALLTYPEINFO", allTypeInfo.getEntityName());
     }
 
 }

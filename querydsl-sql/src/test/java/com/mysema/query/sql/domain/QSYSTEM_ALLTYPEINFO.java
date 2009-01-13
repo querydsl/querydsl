@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.sql.domain;
 
 import com.mysema.query.grammar.types.Path;
@@ -41,9 +46,9 @@ public class QSYSTEM_ALLTYPEINFO extends Path.PEntity<java.lang.Object>{
 	public final Path.PComparable<java.lang.Integer> typeSub = _comparable("TYPE_SUB",java.lang.Integer.class);
 	
     public QSYSTEM_ALLTYPEINFO(java.lang.String path) {
-      	super(java.lang.Object.class, path);
+      	super(java.lang.Object.class, "SYSTEM_ALLTYPEINFO", path);
     }
     public QSYSTEM_ALLTYPEINFO(PathMetadata<?> metadata) {
-     	super(java.lang.Object.class, metadata);
+     	super(java.lang.Object.class, "SYSTEM_ALLTYPEINFO", metadata);
     }
 }
