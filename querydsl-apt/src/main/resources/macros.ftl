@@ -38,7 +38,7 @@
   <#-- constructors -->  	     
     <#if !embeddable>
     public ${pre}${decl.simpleName}(java.lang.String path) {
-      	super(${decl.name}.class, path);
+      	super(${decl.name}.class, "${decl.simpleName}", path);
     <#list decl.entityFields as field>
       	<#if !reserved?seq_contains(field.name)>
       	_${field.name}();
@@ -47,7 +47,7 @@
     }
     </#if>     
     public ${pre}${decl.simpleName}(PathMetadata<?> metadata) {
-     	super(${decl.name}.class, metadata);
+     	super(${decl.name}.class, "${decl.simpleName}", metadata);
     }
 </#macro>   
 
@@ -60,7 +60,7 @@
 </#macro>
 
 <#macro entityCollection field>
-	public final Path.PEntityCollection<${field.typeName}> ${field.name} = _entitycol("${field.realName}",${field.typeName}.class);
+	public final Path.PEntityCollection<${field.typeName}> ${field.name} = _entitycol("${field.realName}",${field.typeName}.class, "${field.simpleTypeName}");
 </#macro>
 
 <#macro entityField field>
@@ -74,7 +74,7 @@
 </#macro>
 
 <#macro entityList field>
-	public final Path.PEntityList<${field.typeName}> ${field.name} = _entitylist("${field.realName}",${field.typeName}.class);
+	public final Path.PEntityList<${field.typeName}> ${field.name} = _entitylist("${field.realName}",${field.typeName}.class,"${field.simpleTypeName}");
     public ${pre}${field.simpleTypeName} ${field.name}(int index) {
     	return new ${pre}${field.simpleTypeName}(forListAccess(${field.name},index));
     }
@@ -84,7 +84,7 @@
 </#macro>
 
 <#macro entityMap field>
-	public final Path.PEntityMap<${field.keyTypeName},${field.typeName}> ${field.name} = _entitymap("${field.realName}",${field.keyTypeName}.class,${field.typeName}.class);
+	public final Path.PEntityMap<${field.keyTypeName},${field.typeName}> ${field.name} = _entitymap("${field.realName}",${field.keyTypeName}.class,${field.typeName}.class,"${field.simpleTypeName}");
     public ${pre}${field.simpleTypeName} ${field.name}(${field.keyTypeName} key) {
     	return new ${pre}${field.simpleTypeName}(forMapAccess(${field.name},key));
     }
