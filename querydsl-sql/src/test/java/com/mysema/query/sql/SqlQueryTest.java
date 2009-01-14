@@ -27,6 +27,8 @@ public class SqlQueryTest {
     
     private QSURVEY survey = new QSURVEY("survey");
     
+    private QSURVEY survey2 = new QSURVEY("survey2");
+    
     private static Connection c;
     
     private static Statement stmt;
@@ -64,8 +66,20 @@ public class SqlQueryTest {
     @Test
     public void testQueryWithConstant() throws Exception{
         SqlQuery query = new SqlQuery(c,Dialects.HSQLDB);
-        for (Object[] row : query.from(survey).where(survey.id.eq(1)).list(survey.id, survey.name)){
+        for (Object[] row : query.from(survey)
+                           .where(survey.id.eq(1))
+                           .list(survey.id, survey.name)){
             System.out.println(row[0]+", " + row[1]);
+        }
+    }
+    
+    @Test
+    public void testJoin() throws Exception{
+        SqlQuery query = new SqlQuery(c,Dialects.HSQLDB);
+        for (String name : query.from(survey, survey2)
+                          .where(survey.id.eq(survey2.id))
+                          .list(survey.name)){
+            System.out.println(name);
         }
     }
     

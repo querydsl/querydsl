@@ -8,6 +8,6 @@ package com.mysema.query.grammar;
  */
 public class Dialects {
     
-    public static final SqlOps HSQLDB = new SqlOps().toUpperCase();
+    public static final SqlOps HSQLDB = new SqlOps();
 
 }
