@@ -89,7 +89,7 @@ public class SqlQueryTest {
     public void testConstructor() throws Exception{
         SqlQuery query = new SqlQuery(c,Dialects.HSQLDB);
         for (IdName idName : query.from(survey)
-                               .list(new QIdName(survey.id, survey.name))){
+                            .list(new QIdName(survey.id, survey.name))){
             System.out.println("id and name : " + idName.getId()+ ","+idName.getName());
         }
     }
