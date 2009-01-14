@@ -7,6 +7,7 @@ package com.mysema.query.sql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.junit.AfterClass;
@@ -14,6 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.mysema.query.grammar.Dialects;
+import com.mysema.query.grammar.Grammar;
 import com.mysema.query.sql.domain.QSURVEY;
 import com.mysema.query.sql.dto.IdName;
 import com.mysema.query.sql.dto.QIdName;
@@ -45,30 +47,27 @@ public class SqlQueryTest {
     
     @AfterClass
     public static void tearDown() throws Exception{
-        stmt.close();
-        c.close();
+        if (stmt != null) stmt.close();
+        if (c != null) c.close();
     }
     
     @Test
     public void testQuery1() throws Exception{                
-        SqlQuery query = new SqlQuery(c,Dialects.HSQLDB);
-        for (String s : query.from(survey).list(survey.name)){
+        for (String s : q().from(survey).list(survey.name)){
             System.out.println(s);
         }        
     }
     
     @Test
     public void testQuery2() throws Exception{              
-        SqlQuery query = new SqlQuery(c,Dialects.HSQLDB);
-        for (Object[] row : query.from(survey).list(survey.id, survey.name)){
+        for (Object[] row : q().from(survey).list(survey.id, survey.name)){
             System.out.println(row[0]+", " + row[1]);
         }        
     }
     
     @Test
     public void testQueryWithConstant() throws Exception{
-        SqlQuery query = new SqlQuery(c,Dialects.HSQLDB);
-        for (Object[] row : query.from(survey)
+        for (Object[] row : q().from(survey)
                            .where(survey.id.eq(1))
                            .list(survey.id, survey.name)){
             System.out.println(row[0]+", " + row[1]);
@@ -77,8 +76,7 @@ public class SqlQueryTest {
     
     @Test
     public void testJoin() throws Exception{
-        SqlQuery query = new SqlQuery(c,Dialects.HSQLDB);
-        for (String name : query.from(survey, survey2)
+        for (String name : q().from(survey, survey2)
                           .where(survey.id.eq(survey2.id))
                           .list(survey.name)){
             System.out.println(name);
@@ -87,11 +85,26 @@ public class SqlQueryTest {
     
     @Test
     public void testConstructor() throws Exception{
-        SqlQuery query = new SqlQuery(c,Dialects.HSQLDB);
-        for (IdName idName : query.from(survey)
+        for (IdName idName : q().from(survey)
                             .list(new QIdName(survey.id, survey.name))){
             System.out.println("id and name : " + idName.getId()+ ","+idName.getName());
         }
+    }
+    
+    @Test
+    public void testSyntax() throws SQLException{
+        System.out.println(q().from(survey).list(survey.name.lower()));
+        System.out.println(q().from(survey).list(survey.name.add("abc")));
+        System.out.println(q().from(survey).list(survey.id.eq(0)));        
+        System.out.println(q().from(survey).list(Grammar.sqrt(survey.id)));
+        
+        // TODO : support for union
+        // TODO : support for aggregators
+        // TODO : support for wildcard
+    }
+    
+    private SqlQuery q(){
+        return new SqlQuery(c, Dialects.HSQLDB);
     }
     
     private static Connection getHSQLConnection() throws Exception{
