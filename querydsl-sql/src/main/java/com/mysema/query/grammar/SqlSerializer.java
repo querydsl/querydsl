@@ -5,9 +5,12 @@
  */
 package com.mysema.query.grammar;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.mysema.query.JoinExpression;
+import com.mysema.query.grammar.types.Constructor;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.serialization.BaseSerializer;
@@ -40,7 +43,18 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
 //            _append("select count(*)\n");
              _append(ops.selectCountStar());
         }else if (!select.isEmpty()){
-            _append(ops.select())._append(", ", select);
+            _append(ops.select());           
+            List<Expr<?>> sqlSelect = new ArrayList<Expr<?>>();
+            for (Expr<?> selectExpr : select){
+                if (selectExpr instanceof Constructor){
+                    // transforms constructor arguments into individual select
+                    // expressions
+                    sqlSelect.addAll(Arrays.<Expr<?>>asList(((Constructor<?>)selectExpr).getArgs()));
+                }else{
+                    sqlSelect.add(selectExpr);
+                }
+            }
+            _append(", ", sqlSelect);
         }
         _append(ops.from());
         for (int i=0; i < joins.size(); i++){

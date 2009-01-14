@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.SqlOps;
 import com.mysema.query.grammar.SqlSerializer;
+import com.mysema.query.grammar.types.Constructor;
 import com.mysema.query.grammar.types.Expr;
 
 /**
@@ -42,7 +43,7 @@ public class SqlQuery extends QueryBase<Object,SqlQuery>{
         this.conn = conn;
         this.ops = ops;
     }
-    
+        
     @SuppressWarnings("unchecked")
     public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>...rest) throws SQLException{
         select(expr1, expr2);
@@ -58,6 +59,7 @@ public class SqlQuery extends QueryBase<Object,SqlQuery>{
         try{
             List<Object[]> rv = new ArrayList<Object[]>();
             while(rs.next()){
+                // TODO : take constructors into account
                 Object[] objects = new Object[rs.getMetaData().getColumnCount()];
                 for (int i = 0; i < rs.getMetaData().getColumnCount(); i++){
                     objects[i] = rs.getObject(i+1);
@@ -87,17 +89,34 @@ public class SqlQuery extends QueryBase<Object,SqlQuery>{
         ResultSet rs = stmt.executeQuery();        
         try{
             List<RT> rv = new ArrayList<RT>();
-            while(rs.next()){
-                rv.add((RT)rs.getObject(1));
-            }
+            if (expr instanceof Constructor){                
+                Constructor<RT> c = (Constructor<RT>)expr;
+                java.lang.reflect.Constructor<RT> cc =  c.getJavaConstructor();
+                while (rs.next()){
+                    List args = new ArrayList();
+                    for (int i=0; i < c.getArgs().length; i++){
+                        args.add(rs.getObject(i+1));
+                    }
+                    try {
+                        rv.add(cc.newInstance(args.toArray()));
+                    } catch (Exception e) {
+                        String error = "Caught " + e.getClass().getName();
+                        logger.error(error, e);
+                        throw new RuntimeException(error, e);
+                    }
+                }
+            }else{
+                while(rs.next()){
+                    rv.add((RT)rs.getObject(1));
+                }    
+            }            
             return rv;
         }finally{
             try{
                 rs.close();    
             }finally{
                 stmt.close();
-            }
-            
+            }            
         }
     }
     

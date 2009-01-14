@@ -15,6 +15,8 @@ import org.junit.Test;
 
 import com.mysema.query.grammar.Dialects;
 import com.mysema.query.sql.domain.QSURVEY;
+import com.mysema.query.sql.dto.IdName;
+import com.mysema.query.sql.dto.QIdName;
 
 
 /**
@@ -80,6 +82,15 @@ public class SqlQueryTest {
                           .where(survey.id.eq(survey2.id))
                           .list(survey.name)){
             System.out.println(name);
+        }
+    }
+    
+    @Test
+    public void testConstructor() throws Exception{
+        SqlQuery query = new SqlQuery(c,Dialects.HSQLDB);
+        for (IdName idName : query.from(survey)
+                               .list(new QIdName(survey.id, survey.name))){
+            System.out.println("id and name : " + idName.getId()+ ","+idName.getName());
         }
     }
     
