@@ -22,7 +22,7 @@ import com.mysema.query.grammar.types.Constructor;
 import com.mysema.query.grammar.types.Expr;
 
 /**
- * SqlQuery provides
+ * SqlQuery is a JDBC based implementation of the Querydsl Query interface
  *
  * @author tiwe
  * @version $Id$

@@ -1,7 +1,7 @@
 package com.mysema.query.grammar;
 
 /**
- * Dialects provides
+ * Dialects provides different SQL dialects for querydsl-sql
  *
  * @author tiwe
  * @version $Id$
@@ -9,5 +9,5 @@ package com.mysema.query.grammar;
 public class Dialects {
     
     public static final SqlOps HSQLDB = new SqlOps();
-
+    
 }

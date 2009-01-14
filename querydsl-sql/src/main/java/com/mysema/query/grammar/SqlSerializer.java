@@ -16,7 +16,7 @@ import com.mysema.query.grammar.types.Path;
 import com.mysema.query.serialization.BaseSerializer;
 
 /**
- * SqlSerializer provides
+ * SqlSerializer serializes Querydsl queries into SQL
  *
  * @author tiwe
  * @version $Id$

@@ -23,7 +23,7 @@ import com.mysema.query.apt.Type;
 import com.mysema.query.apt.general.GeneralProcessor;
 
 /**
- * MetadataExporter provides
+ * MetadataExporter exports JDBC metadata to Querydsl query types
  *
  * @author tiwe
  * @version $Id$

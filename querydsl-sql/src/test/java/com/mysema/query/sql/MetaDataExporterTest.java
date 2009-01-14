@@ -14,7 +14,7 @@ import org.junit.Test;
 
 
 /**
- * DomainGenerationTest provides
+ * MetaDataExporterTest provides
  *
  * @author tiwe
  * @version $Id$
