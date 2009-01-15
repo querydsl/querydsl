@@ -39,6 +39,8 @@ public class SqlQuery extends QueryBase<Object,SqlQuery>{
     
     private final SqlOps ops;
     
+    private boolean forCountRow = false;
+    
     public SqlQuery(Connection conn, SqlOps ops){
         this.conn = conn;
         this.ops = ops;
@@ -128,14 +130,39 @@ public class SqlQuery extends QueryBase<Object,SqlQuery>{
         return queryString;
     }
 
-    private String buildQueryString() {
+    protected String buildQueryString() {
         if (joins.isEmpty()){
             throw new IllegalArgumentException("No where clause given");
         }
         SqlSerializer serializer = new SqlSerializer(ops);
-        serializer.serialize(select, joins, where.self(), groupBy, having.self(), orderBy, false);               
+        serializer.serialize(select, joins, where.self(), groupBy, having.self(), orderBy, forCountRow);               
         constants = serializer.getConstants();      
         return serializer.toString();
+    }
+
+    public long count() throws SQLException {
+        forCountRow = true;  
+        String queryString = toString();
+        logger.debug("query : {}", queryString);
+        System.out.println(queryString);
+        PreparedStatement stmt = conn.prepareStatement(queryString);
+        ResultSet rs = null;
+        try{
+            int counter = 1;
+            for (Object o : constants){
+                stmt.setObject(counter++, o);    
+            }        
+            rs = stmt.executeQuery();   
+            rs.next();
+            long rv = rs.getLong(1);
+            return rv;   
+        }finally{
+            try{
+                if (rs != null) rs.close();    
+            }finally{
+                stmt.close();
+            }            
+        }        
     }
 
 }

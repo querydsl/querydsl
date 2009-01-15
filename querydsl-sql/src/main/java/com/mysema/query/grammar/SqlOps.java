@@ -17,14 +17,14 @@ import com.mysema.query.serialization.OperationPatterns;
  */
 public class SqlOps extends OperationPatterns {
     
-    private String selectCountStar = "select count(*) ", 
+    private String selectCountStar = "select count(*)", 
         select = "select ",
         from = "\nfrom ",
         aliasAs = " ",
-        fullJoin = "\n  full join ",
-        innerJoin = "\n  inner join ",
-        join = "\n  join ",
-        leftJoin = "\n  left join ",
+        fullJoin = "\nfull join ",
+        innerJoin = "\ninner join ",
+        join = "\njoin ",
+        leftJoin = "\nleft join ",
         with = "\nwith ",
         where = "\nwhere ",
         groupBy = "\ngroup by ",
@@ -35,7 +35,7 @@ public class SqlOps extends OperationPatterns {
     
     @Override
     public SqlOps toUpperCase(){
-        super.toUpperCase();        
+        super.toUpperCase();     
         for (Field field : SqlOps.class.getDeclaredFields()){            
             try {
                 field.set(this, field.get(this).toString().toUpperCase());
@@ -52,6 +52,17 @@ public class SqlOps extends OperationPatterns {
         for (Field field : SqlOps.class.getDeclaredFields()){            
             try {
                 field.set(this, field.get(this).toString().toUpperCase());
+            } catch (Exception e) {
+                throw new RuntimeException("error", e);
+            }
+        }
+        return this;
+    }
+    
+    public SqlOps newLineToSingleSpace(){
+        for (Field field : SqlOps.class.getDeclaredFields()){            
+            try {
+                field.set(this, field.get(this).toString().replace('\n', ' '));
             } catch (Exception e) {
                 throw new RuntimeException("error", e);
             }

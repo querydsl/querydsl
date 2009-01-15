@@ -7,7 +7,6 @@ package com.mysema.query.sql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.junit.Test;
@@ -25,12 +24,8 @@ public class MetaDataExporterTest {
     public void testGeneration() throws Exception{
         Connection conn = getHSQLConnection();
         Statement st = conn.createStatement();
-        try{
-            st.executeUpdate("drop table survey;");    
-        }catch(SQLException e){
-            if (!e.getMessage().startsWith("Table not found")) throw e;
-        }        
-        st.executeUpdate("create table survey (id int,name varchar(30));");
+        st.execute("drop table survey if exists");
+        st.execute("create table survey (id int,name varchar(30));");
         try{
             MetaDataExporter e = new MetaDataExporter();
             e.setTargetFolder("target");

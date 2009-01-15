@@ -11,9 +11,11 @@ package com.mysema.query.grammar;
  * @author tiwe
  * @version $Id$
  */
-public class Dialects {
+public class Dialect {
     
-    public static final SqlOps HSQLDB = new SqlOps();
+    public static SqlOps forHqlsdb(){
+        return new SqlOps();
+    }
     
     // TODO : MySQL, PostgreSQL, Microsoft SQL Server, Oracle 9-11
         
