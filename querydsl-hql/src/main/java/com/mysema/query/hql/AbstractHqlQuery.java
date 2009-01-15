@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlOps;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.types.Expr;
@@ -96,6 +97,14 @@ public class AbstractHqlQuery<A extends AbstractHqlQuery<A>> extends HqlQueryBas
         } else {
             return SearchResults.emptyResults();
         }
+    }
+    
+    public long count(){
+        return uniqueResult(HqlGrammar.count());
+    }
+    
+    public long count(Expr<?> expr){
+        return uniqueResult(HqlGrammar.count(expr));
     }
     
     @SuppressWarnings("unchecked")
