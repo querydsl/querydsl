@@ -39,28 +39,26 @@ public class AliasFactory {
     };
     
     // cahces top level proxies (class/var as key)
-    private FactoryMap<Object> proxyCache = new FactoryMap<Object>(){
-        public <A> Object create(Class<A> cl, String var){
-            return createProxy(cl);
+    private FactoryMap<ManagedObject> proxyCache = new FactoryMap<ManagedObject>(){
+        public ManagedObject create(Class<?> cl, Expr<?> path){
+            return (ManagedObject) createProxy(cl, path);
         }
     };
     
     public <A> A createAliasForProp(Class<A> cl, Object parent, Expr<?> path){        
-        A proxy = createProxy(cl);
-        bindings.get().put(proxy, path);    
+        A proxy = createProxy(cl, path);    
         return proxy;
     }
         
     @SuppressWarnings("unchecked")
     public <A> A createAliasForVar(Class<A> cl, String var){    
         Expr<?> path = pathCache.get(cl,var);
-        A proxy = (A) proxyCache.get(cl, var);
-        bindings.get().put(proxy, path);
+        A proxy = (A) proxyCache.get(cl,path);        
         return proxy;
     }
     
     @SuppressWarnings("unchecked")
-    private <A> A createProxy(Class<A> cl) {
+    private <A> A createProxy(Class<A> cl, Expr<?> path) {
         Enhancer enhancer = new Enhancer();
         enhancer.setClassLoader(AliasFactory.class.getClassLoader());
         if (cl.isInterface()){
@@ -70,9 +68,10 @@ public class AliasFactory {
             enhancer.setInterfaces(new Class[]{ManagedObject.class});
         }         
         // creates one handler per proxy
-        MethodInterceptor handler = new PropertyAccessInvocationHandler(this);
+        MethodInterceptor handler = new PropertyAccessInvocationHandler(path,this);
         enhancer.setCallback(handler);
         A rv = (A)enhancer.create();
+        bindings.get().put(rv, path);
         return rv;
     }
     

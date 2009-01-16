@@ -36,6 +36,8 @@ import com.mysema.query.grammar.types.Path.PList;
  */
 class PropertyAccessInvocationHandler implements MethodInterceptor{
     
+    private final Expr<?> path;
+    
     private final AliasFactory aliasFactory;
     
     private final JavaSerializer serializer = new JavaSerializer(new JavaOps());
@@ -48,11 +50,12 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
     
     private final Map<String,Object> propToObj = new HashMap<String,Object>();
     
-    public PropertyAccessInvocationHandler(AliasFactory aliasFactory){       
+    public PropertyAccessInvocationHandler(Expr<?> path, AliasFactory aliasFactory){     
+        this.path = path;
         this.aliasFactory = aliasFactory;
     }
     
-    private Class<?> getFirstTypeParameter(Type type) {
+    private Class<?> get1stTypeParameter(Type type) {
         if (type instanceof ParameterizedType){
             return (Class<?>)((ParameterizedType)type).getActualTypeArguments()[0];
         }else{
@@ -60,9 +63,16 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         }
     }
     
+    private Class<?> get2ndTypeParameter(Type type) {
+        if (type instanceof ParameterizedType){
+            return (Class<?>)((ParameterizedType)type).getActualTypeArguments()[1];
+        }else{
+            return null;
+        }
+    }
+    
     public Object intercept(Object proxy, Method method, Object[] args,
-            MethodProxy methodProxy) throws Throwable {        
-        Expr<?> parent = aliasFactory.pathForAlias(proxy);
+            MethodProxy methodProxy) throws Throwable {      
         Object rv = null;
         
         if (isGetter(method)){
@@ -72,11 +82,13 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             if (propToObj.containsKey(ptyName)){
                 rv = propToObj.get(ptyName);
             }else{                
-                if (parent == null) throw new IllegalArgumentException("No path for " + proxy);
-                PathMetadata<String> pm = PathMetadata.forProperty((Path<?>) parent, ptyName);
+                PathMetadata<String> pm = PathMetadata.forProperty((Path<?>) path, ptyName);
                 rv = newInstance(ptyClass, proxy, ptyName, pm);            
                 if (Collection.class.isAssignableFrom(ptyClass)){
-                    ((ManagedObject)rv).setElementType(getFirstTypeParameter(method.getGenericReturnType()));
+                    ((ManagedObject)rv).setElementType(get1stTypeParameter(method.getGenericReturnType()));
+                }else if (Map.class.isAssignableFrom(ptyClass)){
+                    ((ManagedObject)rv).setKeyType(get1stTypeParameter(method.getGenericReturnType()));
+                    ((ManagedObject)rv).setValueType(get2ndTypeParameter(method.getGenericReturnType()));
                 }
             }       
             aliasFactory.setCurrent(propToExpr.get(ptyName));                        
@@ -87,17 +99,17 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             if (propToObj.containsKey(ptyName)){
                 rv = propToObj.get(ptyName);
             }else{
-                PathMetadata<Integer> pm = PathMetadata.forSize((PCollection<?>) parent);
+                PathMetadata<Integer> pm = PathMetadata.forSize((PCollection<?>) path);
                 rv = newInstance(Integer.class, proxy, ptyName, pm);            
             }       
             aliasFactory.setCurrent(propToExpr.get(ptyName));
             
-        }else if (isElementAccess(method)){
+        }else if (isListElementAccess(method)){
             String ptyName = "_get" + args[0];
             if (propToObj.containsKey(ptyName)){
                 rv = propToObj.get(ptyName);
             }else{
-                PathMetadata<Integer> pm = PathMetadata.forListAccess((PList<?>)parent, (Integer)args[0]);
+                PathMetadata<Integer> pm = PathMetadata.forListAccess((PList<?>)path, (Integer)args[0]);
                 if (elementType != null){
                     rv = newInstance(elementType, proxy, ptyName, pm);    
                 }else{
@@ -106,12 +118,15 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             }       
             aliasFactory.setCurrent(propToExpr.get(ptyName)); 
             
+        }else if (isMapElementAccess(method)){
+           // TODO
+            
         }else if (isContains(method)){    
             rv = false;
-            aliasFactory.setCurrent(Grammar.in(args[0], (CollectionType<Object>)parent));
+            aliasFactory.setCurrent(Grammar.in(args[0], (CollectionType<Object>)path));
                         
         }else if (isToString(method)){
-            if (toString == null) toString = serializer.handle((Expr<?>)parent).toString();
+            if (toString == null) toString = serializer.handle(path).toString();
             rv = toString;
             
         }else if (method.getName().equals("setElementType")){    
@@ -142,10 +157,16 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             && method.getReturnType().equals(boolean.class);
     }
 
-    private boolean isElementAccess(Method method) {
+    private boolean isListElementAccess(Method method) {
         return method.getName().equals("get") 
             && method.getParameterTypes().length == 1 
             && method.getParameterTypes()[0].equals(int.class);
+    }
+    
+    private boolean isMapElementAccess(Method method) {
+        return method.getName().equals("get") 
+            && method.getParameterTypes().length == 1 
+            && method.getParameterTypes()[0].equals(Object.class);
     }
         
     private boolean isGetter(Method method){
