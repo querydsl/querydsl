@@ -6,7 +6,11 @@
 package com.mysema.query.collections;
 
 
-import static com.mysema.query.collections.MiniApi.*;
+import static com.mysema.query.collections.MiniApi.from;
+import static com.mysema.query.collections.MiniApi.reject;
+import static com.mysema.query.collections.MiniApi.select;
+import static com.mysema.query.grammar.GrammarWithAlias.$;
+import static com.mysema.query.grammar.GrammarWithAlias.alias;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -18,7 +22,7 @@ import org.junit.Test;
 
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.Domain.QCat;
-import com.mysema.query.grammar.types.Expr.ESimple;
+import com.mysema.query.grammar.types.Path.PEntity;
 
 /**
  * MiniApiTest provides
@@ -212,7 +216,7 @@ public class MiniApiTest {
         map.put("4","four");
         
         // 1st 
-        ESimple<Map.Entry<String,String>> e = $(map.entrySet().iterator().next());
+        PEntity<Map.Entry<String,String>> e = $(map.entrySet().iterator().next());
         for (Map.Entry<String,String> entry : from(e, map.entrySet()).iterate(e)){
             System.out.println(entry.getKey() + " > " + entry.getValue());
         }
