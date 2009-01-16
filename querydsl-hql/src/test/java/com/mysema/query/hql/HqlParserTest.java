@@ -80,8 +80,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
         
 //        parse( "from eg.Cat as cat inner join cat.mate as mate left outer join cat.kittens as kitten" );
         from($(c)).innerJoin($(c.getMate()).as($(m)))
-            .leftJoin($(c.getKittens()).as($(k)))
-            .parse();
+            .leftJoin($(c.getKittens()).as($(k))).parse();
 //        parse( "from eg.Cat as cat left join cat.mate.kittens as kittens" );
         from($(c)).leftJoin($(c.getMate().getKittens()).as($(k))).parse();
 //        parse( "from Formula form full join form.parameter param" );
