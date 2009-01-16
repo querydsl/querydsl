@@ -5,6 +5,8 @@
  */
 package com.mysema.query.grammar.types;
 
+import com.mysema.query.grammar.Grammar;
+
 
 /**
  * ColTypes provides
@@ -23,64 +25,64 @@ public class ExtTypes {
             super(arg0);
         }
         public Expr<Character> charAt(Expr<Integer> i) {
-            return IntGrammar.charAt(this, i);
+            return Grammar.charAt(this, i);
         }
         public Expr<Character> charAt(int i) {
-            return IntGrammar.charAt(this, i);
+            return Grammar.charAt(this, i);
         }
         public EBoolean contains(Expr<String> str) {
-            return IntGrammar.contains(this, str);
+            return Grammar.contains(this, str);
         }
         public EBoolean contains(String str) {
-            return IntGrammar.contains(this, str);
+            return Grammar.contains(this, str);
         }
         public EBoolean endsWith(Expr<String> str) {
-            return IntGrammar.endsWith(this, str);
+            return Grammar.endsWith(this, str);
         }
         public EBoolean endsWith(String str) {
-            return IntGrammar.endsWith(this, str);
+            return Grammar.endsWith(this, str);
         }
         public EBoolean equalsIgnoreCase(Expr<String> str) {
-            return IntGrammar.equalsIgnoreCase(this, str);
+            return Grammar.equalsIgnoreCase(this, str);
         }
         public EBoolean equalsIgnoreCase(String str) {
-            return IntGrammar.equalsIgnoreCase(this, str);
+            return Grammar.equalsIgnoreCase(this, str);
         }
         public EComparable<Integer> indexOf(Expr<String> str) {
-            return IntGrammar.indexOf(this, str);
+            return Grammar.indexOf(this, str);
         }
         public EComparable<Integer> indexOf(String str) {
-            return IntGrammar.indexOf(this, str);
+            return Grammar.indexOf(this, str);
         }
         public EComparable<Integer> indexOf(String str, int i) {
-            return IntGrammar.indexOf(this, str, i);
+            return Grammar.indexOf(this, str, i);
         }
         public EBoolean isEmpty() {
-            return IntGrammar.isEmpty(this);
+            return Grammar.isEmpty(this);
         }
         public EComparable<Integer> lastIndex(String str, int i) {
-            return IntGrammar.lastIndex(this, str, i);
+            return Grammar.lastIndex(this, str, i);
         }
         public EComparable<Integer> lastIndexOf(String str) {
-            return IntGrammar.lastIndexOf(this, str);
+            return Grammar.lastIndexOf(this, str);
         }
         public EComparable<Integer> length() {
-            return IntGrammar.length(this);
+            return Grammar.length(this);
         }
         public EBoolean matches(Expr<String> str) {
-            return IntGrammar.matches(this, str);
+            return Grammar.matches(this, str);
         }
         public EBoolean matches(String str) {
-            return IntGrammar.matches(this, str);
+            return Grammar.matches(this, str);
         }
         public Expr<String[]> split(String regex) { 
-            return IntGrammar.split(this, regex);
+            return Grammar.split(this, regex);
         }
         public EBoolean startsWith(Expr<String> str) {
-            return IntGrammar.startsWith(this, str);
+            return Grammar.startsWith(this, str);
         }
         public EBoolean startsWith(String str) {
-            return IntGrammar.startsWith(this, str);
+            return Grammar.startsWith(this, str);
         }
         public EString toLowerCase(){ return lower(); }
         public EString toUpperCase(){ return upper(); }

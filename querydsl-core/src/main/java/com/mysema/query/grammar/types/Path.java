@@ -48,10 +48,10 @@ public interface Path<C> {
         public PathMetadata<?> getMetadata() {return metadata;}
         public Class<D[]> getType(){ return arrayType;}
         public EBoolean isnotnull() {
-            return isnotnull == null ? isnotnull = IntGrammar.isnotnull(this) : isnotnull; 
+            return isnotnull == null ? isnotnull = Grammar.isnotnull(this) : isnotnull; 
         }
         public EBoolean isnull() {
-            return isnull == null ? isnull = IntGrammar.isnull(this) : isnull; 
+            return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }        
         public EComparable<Integer> size() { 
             return size == null ? size = new PComparable<Integer>(Integer.class, forSize(this)) : size;
@@ -69,10 +69,10 @@ public interface Path<C> {
         }
         public PathMetadata<?> getMetadata() {return metadata;}
         public EBoolean isnotnull() {
-            return isnotnull == null ? isnotnull = IntGrammar.isnotnull(this) : isnotnull; 
+            return isnotnull == null ? isnotnull = Grammar.isnotnull(this) : isnotnull; 
         }
         public EBoolean isnull() {
-            return isnull == null ? isnull = IntGrammar.isnull(this) : isnull; 
+            return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }         
     }
     
@@ -110,10 +110,10 @@ public interface Path<C> {
         }
         public PathMetadata<?> getMetadata() {return metadata;}
         public EBoolean isnotnull() {
-            return isnotnull == null ? isnotnull = IntGrammar.isnotnull(this) : isnotnull; 
+            return isnotnull == null ? isnotnull = Grammar.isnotnull(this) : isnotnull; 
         }
         public EBoolean isnull() {
-            return isnull == null ? isnull = IntGrammar.isnull(this) : isnull; 
+            return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
     }
         
@@ -145,10 +145,10 @@ public interface Path<C> {
         public Class<D> getElementType() {return type;}
         public PathMetadata<?> getMetadata() {return metadata;}
         public EBoolean isnotnull() {
-            return isnotnull == null ? isnotnull = IntGrammar.isnotnull(this) : isnotnull; 
+            return isnotnull == null ? isnotnull = Grammar.isnotnull(this) : isnotnull; 
         }
         public EBoolean isnull() {
-            return isnull == null ? isnull = IntGrammar.isnull(this) : isnull; 
+            return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
         public EComparable<Integer> size() { 
             return size == null ? size = new PComparable<Integer>(Integer.class, forSize(this)) : size;
@@ -157,7 +157,7 @@ public interface Path<C> {
             return Grammar.in(child, this);
         }
         public EBoolean contains(Expr<D> child) {
-            return IntGrammar.in(child, this);
+            return Grammar.in(child, this);
         }
     }
     
@@ -200,10 +200,10 @@ public interface Path<C> {
         public PathMetadata<?> getMetadata() {return metadata;}
         public Class<V> getValueType() {return valueType; }
         public EBoolean isnotnull() {
-            return isnotnull == null ? isnotnull = IntGrammar.isnotnull(this) : isnotnull; 
+            return isnotnull == null ? isnotnull = Grammar.isnotnull(this) : isnotnull; 
         }
         public EBoolean isnull() {
-            return isnull == null ? isnull = IntGrammar.isnull(this) : isnull; 
+            return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
     }
     
@@ -254,17 +254,17 @@ public interface Path<C> {
         protected PString _string(String path){
             return new PString(forProperty(this, path));
         }
-        public Alias.AEntity<D> as(PEntity<D> to) {return IntGrammar.as(this, to);}
+        public Alias.AEntity<D> as(PEntity<D> to) {return Grammar.as(this, to);}
         public String getEntityName(){ return entityName; }
         public PathMetadata<?> getMetadata() {return metadata;}
-        public EBoolean in(CollectionType<D> right){return IntGrammar.in(this, right);}
+        public EBoolean in(CollectionType<D> right){return Grammar.in(this, right);}
         public EBoolean isnotnull() {
-            return isnotnull == null ? isnotnull = IntGrammar.isnotnull(this) : isnotnull; 
+            return isnotnull == null ? isnotnull = Grammar.isnotnull(this) : isnotnull; 
         }
         public EBoolean isnull() {
-            return isnull == null ? isnull = IntGrammar.isnull(this) : isnull; 
+            return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
-        public <B extends D> EBoolean typeOf(Class<B> type) {return IntGrammar.typeOf(this, type);}
+        public <B extends D> EBoolean typeOf(Class<B> type) {return Grammar.typeOf(this, type);}
     }
     
     /**
@@ -282,15 +282,15 @@ public interface Path<C> {
             this.metadata = metadata;
             this.entityName = entityName;
         }
-        public Alias.AEntityCollection<D> as(PEntity<D> to) {return IntGrammar.as(this, to);}
+        public Alias.AEntityCollection<D> as(PEntity<D> to) {return Grammar.as(this, to);}
         public Class<D> getElementType() {return type;}
         public String getEntityName() { return entityName; }
         public PathMetadata<?> getMetadata() {return metadata;}
         public EBoolean isnotnull() {
-            return isnotnull == null ? isnotnull = IntGrammar.isnotnull(this) : isnotnull; 
+            return isnotnull == null ? isnotnull = Grammar.isnotnull(this) : isnotnull; 
         }
         public EBoolean isnull() {
-            return isnull == null ? isnull = IntGrammar.isnull(this) : isnull; 
+            return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
         public EComparable<Integer> size() { 
             return size == null ? size = new PComparable<Integer>(Integer.class, forSize(this)) : size;
@@ -299,7 +299,7 @@ public interface Path<C> {
             return Grammar.in(child, this);
         }
         public EBoolean contains(Expr<D> child) {
-            return IntGrammar.in(child, this);
+            return Grammar.in(child, this);
         }
     }
     
@@ -344,10 +344,10 @@ public interface Path<C> {
         public PathMetadata<?> getMetadata() {return metadata;}
         public Class<V> getValueType() {return valueType; }
         public EBoolean isnotnull() {
-            return isnotnull == null ? isnotnull = IntGrammar.isnotnull(this) : isnotnull; 
+            return isnotnull == null ? isnotnull = Grammar.isnotnull(this) : isnotnull; 
         }
         public EBoolean isnull() {
-            return isnull == null ? isnull = IntGrammar.isnull(this) : isnull; 
+            return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
     }
     
@@ -381,10 +381,10 @@ public interface Path<C> {
         }
         public PathMetadata<?> getMetadata() {return metadata;}
         public EBoolean isnotnull() {
-            return isnotnull == null ? isnotnull = IntGrammar.isnotnull(this) : isnotnull; 
+            return isnotnull == null ? isnotnull = Grammar.isnotnull(this) : isnotnull; 
         }
         public EBoolean isnull() {
-            return isnull == null ? isnull = IntGrammar.isnull(this) : isnull; 
+            return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
     }
     
@@ -393,7 +393,7 @@ public interface Path<C> {
 //     */
 //    public static class RenamableEntity<D> extends Entity<D>{
 //        protected RenamableEntity(Class<D> type, PathMetadata<?> metadata) {super(type, metadata);}
-//        public Alias.Entity<D> as(Entity<D> to) {return IntGrammar.as(this, to);}
+//        public Alias.Entity<D> as(Entity<D> to) {return Grammar.as(this, to);}
 //    }
         
     /**
@@ -407,10 +407,10 @@ public interface Path<C> {
         }
         public PathMetadata<?> getMetadata() {return metadata;}
         public EBoolean isnotnull() {
-            return isnotnull == null ? isnotnull = IntGrammar.isnotnull(this) : isnotnull; 
+            return isnotnull == null ? isnotnull = Grammar.isnotnull(this) : isnotnull; 
         }
         public EBoolean isnull() {
-            return isnull == null ? isnull = IntGrammar.isnull(this) : isnull; 
+            return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
     }
     
