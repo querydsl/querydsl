@@ -5,6 +5,11 @@
  */
 package com.mysema.query.sql;
 
+import static com.mysema.query.grammar.Grammar.avg;
+import static com.mysema.query.grammar.Grammar.max;
+import static com.mysema.query.grammar.Grammar.sqrt;
+
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,7 +21,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.mysema.query.grammar.Dialect;
-import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.SqlOps;
 import com.mysema.query.sql.domain.QEMPLOYEE;
 import com.mysema.query.sql.domain.QSURVEY;
@@ -39,7 +43,6 @@ public class SqlQueryTest {
     private QSURVEY survey = new QSURVEY("survey");    
     private QSURVEY survey2 = new QSURVEY("survey2");    
     private QTEST test = new QTEST("test");
-    private QTEST test2 = new QTEST("test2");
     
     private static Connection c;
     
@@ -157,12 +160,12 @@ public class SqlQueryTest {
         System.out.println(q().from(survey).list(survey.name.lower()));
         System.out.println(q().from(survey).list(survey.name.add("abc")));
         System.out.println(q().from(survey).list(survey.id.eq(0)));        
-        System.out.println(q().from(survey).list(Grammar.sqrt(survey.id)));
+        System.out.println(q().from(survey).list(sqrt(survey.id)));
         
     }
     
     @Test
-    public void testSyntax() throws SQLException{        
+    public void testSyntaxForTest() throws SQLException{        
         // TEST        
         // select count(*) from test where name = null
         q().from(test).where(test.name.isnull()).count();
@@ -186,30 +189,34 @@ public class SqlQueryTest {
         // TODO
         // select count(*) from test where name like 'name4%5'
         q().from(test).where(test.name.like("name4%5")).count();
-        
+    }
+    
+    @Test
+    public void testSyntaxForEmployee() throws SQLException{
         // EMPLOYEE
 //        "select avg(salary), max(id) from employee "
 //        + "group by superior_id " + "order by superior_id " + "";
-        // TODO
+        q().from(employee)
+           .groupBy(employee.superiorId)
+           .orderBy(employee.superiorId.asc())
+           .list(avg(employee.salary), max(employee.id));
         
 //        "select avg(salary), max(id) from employee "
 //        + "group by superior_id " + "having max(id) > 5 "
 //        + "order by superior_id " + "";
-        // TODO
+        q().from(employee)
+           .groupBy(employee.superiorId).having(max(employee.id).gt(5))
+           .orderBy(employee.superiorId.asc())
+           .list(avg(employee.salary), max(employee.id));
         
 //        "select avg(salary), max(id) from employee "
 //        + "group by superior_id "
 //        + "having superior_id is not null "
 //        + "order by superior_id " + "";
-        // TODO
-        
-//        "select avg(salary), max(id) from employee "
-//        + "having avg(salary) > 1000 " + "";
-        // TODO
-        
-//        "select avg(salary), max(id) from employee "
-//        + "having avg(salary) > 1000000 " + "";
-        // TODO
+        q().from(employee)
+           .groupBy(employee.superiorId).having(employee.superiorId.isnotnull())
+           .orderBy(employee.superiorId.asc())
+           .list(avg(employee.salary),max(employee.id));        
     }
     
     private SqlQuery q(){
