@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
-import com.mysema.query.grammar.types.ColTypes.ExtString;
+import com.mysema.query.grammar.types.ExtTypes.ExtString;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
 import com.mysema.query.serialization.BaseSerializer;
 import com.mysema.query.serialization.OperationPatterns;

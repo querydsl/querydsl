@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.mysema.query.collections.MiniApi;
-import com.mysema.query.grammar.types.ColTypes.ExtString;
+import com.mysema.query.grammar.types.ExtTypes.ExtString;
 
 
 /**
