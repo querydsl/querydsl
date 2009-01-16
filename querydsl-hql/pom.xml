@@ -23,29 +23,39 @@
       <version>3.2.1.ga</version>
       <scope>provided</scope>
       <!-- license : LGPL v2.1 -->
+      <exclusions>
+        <exclusion>
+          <groupId>cglib</groupId>
+          <artifactId>cglib</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>asm</groupId>
+          <artifactId>asm</artifactId>
+        </exclusion>
+      </exclusions>    
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-annotations</artifactId>
       <version>3.2.1.ga</version>
       <scope>provided</scope>
-      <!-- license : LGPL v2.1 -->      
+      <!-- license : LGPL v2.1 -->
     </dependency>
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
- 
+
     <!-- test -->
-    
+
     <dependency>
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
-      <version>1.8.0.7</version> 
-      <scope>test</scope>    
-      <!-- license : TODO -->  
-    </dependency>   
+      <version>1.8.0.7</version>
+      <scope>test</scope>
+      <!-- license : TODO -->
+    </dependency>
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-apt</artifactId>
@@ -86,8 +96,8 @@
               <goal>attached</goal>
             </goals>
           </execution>
-        </executions>          
-      </plugin>      
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.myfaces.tobago</groupId>
         <artifactId>maven-apt-plugin</artifactId>
@@ -111,8 +121,7 @@
               </testGenerated>
               <nocompile>true</nocompile>
               <A>
-                -AnamePrefix=Q,
-                -AdestPackage=com.mysema.query.hql,
+                -AnamePrefix=Q, -AdestPackage=com.mysema.query.hql,
                 -AdtoPackage=com.mysema.query.hql
               </A>
               <testIncludes>
@@ -122,7 +131,7 @@
               </testIncludes>
               <showWarnings>true</showWarnings>
             </configuration>
-          </execution>       
+          </execution>
         </executions>
       </plugin>
     </plugins>

@@ -6,6 +6,7 @@
 package com.mysema.query.hql;
 
 import static com.mysema.query.grammar.Grammar.*;
+import static com.mysema.query.grammar.GrammarWithAlias.$;
 import static com.mysema.query.grammar.GrammarWithAlias.alias;
 import static com.mysema.query.grammar.HqlGrammar.*;
 import static org.junit.Assert.assertEquals;
@@ -22,10 +23,7 @@ import antlr.collections.AST;
 
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.JoinMeta;
-import com.mysema.query.hql.HqlDomain.Cat;
-import com.mysema.query.hql.HqlDomain.Color;
-import com.mysema.query.hql.HqlDomain.DomesticCat;
-import com.mysema.query.hql.HqlDomain.Payment;
+import com.mysema.query.hql.HqlDomain.*;
 
 
 
@@ -74,17 +72,26 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
     @Test
     public void testDocoExamples93_viaAlias() throws Exception {
         Cat c = alias(Cat.class, "cat");
+        Cat k = alias(Cat.class, "kittens");
         Cat m = alias(Cat.class, "mate");
+        
+        Formula f = alias(Formula.class, "formula"); 
+        Parameter p = alias(Parameter.class, "param");
+        
 //        parse( "from eg.Cat as cat inner join cat.mate as mate left outer join cat.kittens as kitten" );
-        // TODO
+        from($(c)).innerJoin($(c.getMate()).as($(m)))
+            .leftJoin($(c.getKittens()).as($(k)))
+            .parse();
 //        parse( "from eg.Cat as cat left join cat.mate.kittens as kittens" );
-        // TODO        
+        from($(c)).leftJoin($(c.getMate().getKittens()).as($(k))).parse();
 //        parse( "from Formula form full join form.parameter param" );
-        // TODO
+        from($(f)).fullJoin($(f.getParameter()).as($(p))).parse();
 //        parse( "from eg.Cat as cat join cat.mate as mate left join cat.kittens as kitten" );
-        // TODO
+        from($(f)).innerJoin($(c.getMate()).as($(m)))
+            .leftJoin($(c.getKittens()).as($(k))).parse();
 //        parse( "from eg.Cat as cat\ninner join fetch cat.mate\nleft join fetch cat.kittens" );
-        // TODO
+        from($(f)).innerJoin(JoinMeta.FETCH, $(c.getMate()).as($(m)))
+            .leftJoin(JoinMeta.FETCH, $(c.getKittens()).as($(k))).parse();
     }
     
     /**

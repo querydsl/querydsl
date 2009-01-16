@@ -276,6 +276,13 @@ public class HqlDomain {
     public static class Formula {
         @Id int id;
         @ManyToOne Parameter parameter;
+        public int getId() {
+            return id;
+        }
+        public Parameter getParameter() {
+            return parameter;
+        }
+        
     }
     
     /**
