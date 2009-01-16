@@ -123,8 +123,20 @@ public class HqlDomain {
     public static class Cat extends Animal{
         int breed;
         Color eyecolor;   
-        @OneToMany List<Cat> kittens;
+        @OneToMany List<Cat> kittens;        
         @ManyToOne Cat mate;
+        public int getBreed() {
+            return breed;
+        }
+        public Color getEyecolor() {
+            return eyecolor;
+        }
+        public List<Cat> getKittens() {
+            return kittens;
+        }
+        public Cat getMate() {
+            return mate;
+        }        
     }
     
     /**

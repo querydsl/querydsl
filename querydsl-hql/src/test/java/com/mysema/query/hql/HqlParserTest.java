@@ -5,11 +5,8 @@
  */
 package com.mysema.query.hql;
 
-import static com.mysema.query.grammar.Grammar.div;
-import static com.mysema.query.grammar.Grammar.in;
-import static com.mysema.query.grammar.Grammar.not;
-import static com.mysema.query.grammar.Grammar.sqrt;
-import static com.mysema.query.grammar.Grammar.sub;
+import static com.mysema.query.grammar.Grammar.*;
+import static com.mysema.query.grammar.GrammarWithAlias.alias;
 import static com.mysema.query.grammar.HqlGrammar.*;
 import static org.junit.Assert.assertEquals;
 
@@ -25,6 +22,7 @@ import antlr.collections.AST;
 
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.JoinMeta;
+import com.mysema.query.hql.HqlDomain.Cat;
 import com.mysema.query.hql.HqlDomain.Color;
 import com.mysema.query.hql.HqlDomain.DomesticCat;
 import com.mysema.query.hql.HqlDomain.Payment;
@@ -73,6 +71,22 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
         from(cat).innerJoin(cat.mate).leftJoin(JoinMeta.FETCH, cat.kittens).parse();
     }
 
+    @Test
+    public void testDocoExamples93_viaAlias() throws Exception {
+        Cat c = alias(Cat.class, "cat");
+        Cat m = alias(Cat.class, "mate");
+//        parse( "from eg.Cat as cat inner join cat.mate as mate left outer join cat.kittens as kitten" );
+        // TODO
+//        parse( "from eg.Cat as cat left join cat.mate.kittens as kittens" );
+        // TODO        
+//        parse( "from Formula form full join form.parameter param" );
+        // TODO
+//        parse( "from eg.Cat as cat join cat.mate as mate left join cat.kittens as kitten" );
+        // TODO
+//        parse( "from eg.Cat as cat\ninner join fetch cat.mate\nleft join fetch cat.kittens" );
+        // TODO
+    }
+    
     /**
      * Section 9.4 - Select *
      */

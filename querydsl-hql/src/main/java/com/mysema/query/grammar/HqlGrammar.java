@@ -25,11 +25,12 @@ import com.mysema.query.grammar.types.HqlTypes.SubQuery;
  * @author tiwe
  * @version $Id$
  */
-public class HqlGrammar extends Grammar{
+public class HqlGrammar extends GrammarWithAlias{
             
     public static <D> Expr<D> all(CollectionType<D> col){
         return new Quant.Simple<D>(OpQuant.ALL, col);
     }    
+    
     public static <D extends Comparable<D>> Expr.EComparable<D> all(CollectionType<D> col){
         return new Quant.Comparable<D>(OpQuant.ALL, col);
     }
@@ -37,6 +38,7 @@ public class HqlGrammar extends Grammar{
     public static <D> Expr.ESimple<D> any(CollectionType<D> col){
         return new Quant.Simple<D>(OpQuant.ANY, col);
     }    
+    
     public static <D extends Comparable<D>> Expr.EComparable<D> any(CollectionType<D> col){
         return new Quant.Comparable<D>(OpQuant.ANY, col);
     }    
@@ -48,9 +50,11 @@ public class HqlGrammar extends Grammar{
     public static Expr.EComparable<Date> current_date(){
         return createComparable(OpHql.CURRENT_DATE);
     }    
+    
     public static Expr.EComparable<Date> current_time(){
         return createComparable(OpHql.CURRENT_TIME);
     }    
+    
     public static Expr.EComparable<Date> current_timestamp(){
         return createComparable(OpHql.CURRENT_TIMESTAMP);
     }
@@ -97,8 +101,7 @@ public class HqlGrammar extends Grammar{
     
     public static Expr.EBoolean isnotempty(Path.PEntityCollection<?> collection) {
         return createBoolean(OpHql.ISNOTEMPTY, collection);        
-    }
-    
+    }    
     
     public static <A extends Comparable<A>> Expr.EComparable<A> max(Path.PCollection<A> left){
         return new Quant.Comparable<A>(OpQuant.MAX_IN_COL, left);
