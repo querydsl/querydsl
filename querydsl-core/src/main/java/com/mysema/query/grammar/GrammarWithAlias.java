@@ -14,7 +14,6 @@ import com.mysema.query.alias.AliasFactory;
 import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
-import com.mysema.query.grammar.types.Expr.ESimple;
 import com.mysema.query.grammar.types.ExtTypes.ExtString;
 import com.mysema.query.grammar.types.Path.*;
 
@@ -60,15 +59,15 @@ public class GrammarWithAlias extends Grammar{
         return exprFactory.create(args);
     }
     
-    public static <D> PComponentCollection<D> $(Collection<D> args){
+    public static <D> PEntityCollection<D> $(Collection<D> args){
         return exprFactory.create(args);
     }
     
-    public static <D> PComponentList<D> $(List<D> args){
+    public static <D> PEntityList<D> $(List<D> args){
         return exprFactory.create(args);
     }
     
-    public static <D> ESimple<D> $(D arg){
+    public static <D> PEntity<D> $(D arg){
         return exprFactory.create(arg);
     }
 

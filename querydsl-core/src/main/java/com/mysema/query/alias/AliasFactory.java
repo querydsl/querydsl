@@ -11,7 +11,7 @@ import net.sf.cglib.proxy.MethodInterceptor;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathMetadata;
-import com.mysema.query.grammar.types.Path.PSimple;
+import com.mysema.query.grammar.types.Path.PEntity;
 import com.mysema.query.util.FactoryMap;
 
 /**
@@ -32,9 +32,9 @@ public class AliasFactory {
     private final ThreadLocal<Expr<?>> current = new ThreadLocal<Expr<?>>();
     
     // caches top level paths (class/var as key)
-    private FactoryMap<PSimple<?>> pathCache = new FactoryMap<PSimple<?>>(){
-        public <A> PSimple<A> create(Class<A> cl, String var){
-            return new Path.PSimple<A>(cl, PathMetadata.forVariable(var));
+    private FactoryMap<PEntity<?>> pathCache = new FactoryMap<PEntity<?>>(){
+        public <A> PEntity<A> create(Class<A> cl, String var){
+            return new Path.PEntity<A>(cl, cl.getSimpleName(), PathMetadata.forVariable(var));
         }
     };
     

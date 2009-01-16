@@ -45,9 +45,9 @@ public class AliasAwareExprFactory extends SimpleExprFactory{
         }        
     }
     
-    public <D> PComponentCollection<D> create(Collection<D> arg) {
+    public <D> PEntityCollection<D> create(Collection<D> arg) {
         try{
-            return aliasFactory.hasCurrent() ? aliasFactory.<PComponentCollection<D>>getCurrent() : super.create(arg);
+            return aliasFactory.hasCurrent() ? aliasFactory.<PEntityCollection<D>>getCurrent() : super.create(arg);
         }finally{
             aliasFactory.setCurrent(null);
         }        
@@ -62,10 +62,10 @@ public class AliasAwareExprFactory extends SimpleExprFactory{
     }
     
     @SuppressWarnings("unchecked")
-    public <D> ESimple<D> create(D arg){
+    public <D> PEntity<D> create(D arg){
         try{
             if (arg instanceof ManagedObject){
-                PSimple<D> path = (PSimple<D>) aliasFactory.pathForAlias(arg);
+                PEntity<D> path = (PEntity<D>) aliasFactory.pathForAlias(arg);
                 return path != null ? path : super.create(arg);    
             }else{
                 return super.create(arg);
@@ -83,9 +83,9 @@ public class AliasAwareExprFactory extends SimpleExprFactory{
         }        
     }
 
-    public <D> PComponentList<D> create(List<D> arg) {
+    public <D> PEntityList<D> create(List<D> arg) {
         try{
-            return aliasFactory.hasCurrent() ? aliasFactory.<PComponentList<D>>getCurrent() : super.create(arg);
+            return aliasFactory.hasCurrent() ? aliasFactory.<PEntityList<D>>getCurrent() : super.create(arg);
         }finally{
             aliasFactory.setCurrent(null);
         }        

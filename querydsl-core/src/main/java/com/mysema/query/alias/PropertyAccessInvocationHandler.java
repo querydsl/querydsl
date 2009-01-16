@@ -76,18 +76,13 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         if (isGetter(method)){
             String ptyName = propertyNameForGetter(method);
             Class<?> ptyClass = method.getReturnType();
+            Type genericType = method.getGenericReturnType();
             
             if (propToObj.containsKey(ptyName)){
                 rv = propToObj.get(ptyName);
             }else{                
                 PathMetadata<String> pm = PathMetadata.forProperty((Path<?>) path, ptyName);
-                rv = newInstance(ptyClass, proxy, ptyName, pm);            
-                if (Collection.class.isAssignableFrom(ptyClass)){
-                    ((ManagedObject)rv).setElementType(get1stTypeParameter(method.getGenericReturnType()));
-                }else if (Map.class.isAssignableFrom(ptyClass)){
-                    ((ManagedObject)rv).setKeyType(get1stTypeParameter(method.getGenericReturnType()));
-                    ((ManagedObject)rv).setValueType(get2ndTypeParameter(method.getGenericReturnType()));
-                }
+                rv = newInstance(ptyClass, genericType, proxy, ptyName, pm);            
             }       
             aliasFactory.setCurrent(propToExpr.get(ptyName));                        
             
@@ -98,7 +93,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
                 rv = propToObj.get(ptyName);
             }else{
                 PathMetadata<Integer> pm = PathMetadata.forSize((PCollection<?>) path);
-                rv = newInstance(Integer.class, proxy, ptyName, pm);            
+                rv = newInstance(Integer.class, Integer.class, proxy, ptyName, pm);            
             }       
             aliasFactory.setCurrent(propToExpr.get(ptyName));
             
@@ -109,9 +104,9 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             }else{
                 PathMetadata<Integer> pm = PathMetadata.forListAccess((PList<?>)path, (Integer)args[0]);
                 if (elementType != null){
-                    rv = newInstance(elementType, proxy, ptyName, pm);    
+                    rv = newInstance(elementType, elementType, proxy, ptyName, pm);    
                 }else{
-                    rv = newInstance(method.getReturnType(), proxy, ptyName, pm);
+                    rv = newInstance(method.getReturnType(), method.getGenericReturnType(), proxy, ptyName, pm);
                 }                            
             }       
             aliasFactory.setCurrent(propToExpr.get(ptyName)); 
@@ -181,7 +176,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T newInstance(Class<T> type, Object parent, String prop, PathMetadata<?> pm) {        
+    private <T> T newInstance(Class<T> type, Type genericType, Object parent, String prop, PathMetadata<?> pm) {        
         Expr<?> path;
         T rv;
         
@@ -230,19 +225,24 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         // Collection API types
             
         } else if (List.class.isAssignableFrom(type)) {
-            path = new Path.PComponentList(elementType,pm);
+            Class<?> _elementType = get1stTypeParameter(genericType);
+            path = new Path.PEntityList(_elementType, _elementType.getSimpleName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
             
         } else if (Set.class.isAssignableFrom(type)) {
-            path = new Path.PComponentCollection(elementType,pm);
+            Class<?> _elementType = get1stTypeParameter(genericType);
+            path = new Path.PEntityCollection(_elementType, _elementType.getName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
             
         } else if (Collection.class.isAssignableFrom(type)) {
-            path = new Path.PComponentCollection(elementType,pm);
+            Class<?> _elementType = get1stTypeParameter(genericType);
+            path = new Path.PEntityCollection(_elementType, _elementType.getSimpleName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
             
         } else if (Map.class.isAssignableFrom(type)) {
-            path = new Path.PComponentMap(keyType,valueType,pm);
+            Class<?> _keyType = get1stTypeParameter(genericType);
+            Class<?> _valueType = get2ndTypeParameter(genericType);
+            path = new Path.PEntityMap(_keyType,_valueType,_valueType.getSimpleName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
                         
         // enums    
@@ -252,7 +252,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             rv =  type.getEnumConstants()[0];
             
         } else {
-            path = new Path.PSimple<T>((Class<T>)type, pm);
+            path = new Path.PEntity<T>((Class<T>)type, type.getSimpleName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);            
         }
         propToObj.put(prop, rv);

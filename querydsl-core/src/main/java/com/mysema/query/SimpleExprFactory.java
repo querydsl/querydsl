@@ -16,10 +16,9 @@ import org.apache.commons.collections15.map.LazyMap;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.grammar.types.PathMetadata;
-import com.mysema.query.grammar.types.ExtTypes.ExtString;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
-import com.mysema.query.grammar.types.Expr.ESimple;
+import com.mysema.query.grammar.types.ExtTypes.ExtString;
 import com.mysema.query.grammar.types.Path.*;
 
 /**
@@ -51,24 +50,26 @@ public class SimpleExprFactory implements ExprFactory {
         }    
     });
     
-    private final Map<Collection<?>,PComponentCollection<?>> ccToPath = new PathFactory<Collection<?>,PComponentCollection<?>>(new Transformer<Collection<?>,PComponentCollection<?>>(){
+    private final Map<Collection<?>,PEntityCollection<?>> ecToPath = new PathFactory<Collection<?>,PEntityCollection<?>>(new Transformer<Collection<?>,PEntityCollection<?>>(){
         @SuppressWarnings("unchecked")
-        public PComponentCollection<?> transform(Collection<?> arg) {
+        public PEntityCollection<?> transform(Collection<?> arg) {
             if (!arg.isEmpty()){
-                return new PComponentCollection(((Collection)arg).iterator().next().getClass(), md());    
+                Class<?> cl = ((Collection)arg).iterator().next().getClass();
+                return new PEntityCollection(cl, cl.getSimpleName(), md());    
             }else{
-                return new PComponentCollection(null, md());
+                return new PEntityCollection(null, null, md());
             }            
         }    
     });
         
-    private final Map<List<?>,PComponentList<?>> clToPath = new PathFactory<List<?>,PComponentList<?>>(new Transformer<List<?>,PComponentList<?>>(){
+    private final Map<List<?>,PEntityList<?>> elToPath = new PathFactory<List<?>,PEntityList<?>>(new Transformer<List<?>,PEntityList<?>>(){
         @SuppressWarnings("unchecked")
-        public PComponentList<?> transform(List<?> arg) {
+        public PEntityList<?> transform(List<?> arg) {
             if (!arg.isEmpty()){
-                return new PComponentList(arg.get(0).getClass(), md());    
+                Class<?> cl = arg.get(0).getClass();
+                return new PEntityList(cl, cl.getSimpleName(), md());    
             }else{
-                return new PComponentList(null, md());
+                return new PEntityList(null, null, md());
             }            
         }    
     });
@@ -85,11 +86,11 @@ public class SimpleExprFactory implements ExprFactory {
             return new PStringArray(md());
         }    
     });
-    
-    private final Map<Object,PSimple<?>> simToPath = new PathFactory<Object,PSimple<?>>(new Transformer<Object,PSimple<?>>(){
+        
+    private final Map<Object,PEntity<?>> entityToPath = new PathFactory<Object,PEntity<?>>(new Transformer<Object,PEntity<?>>(){
         @SuppressWarnings("unchecked")
-        public PSimple<?> transform(Object arg) {
-            return new PSimple(arg.getClass(), md());
+        public PEntity<?> transform(Object arg) {
+            return new PEntity(arg.getClass(), arg.getClass().getSimpleName(), md());
         }    
     });
     
@@ -114,8 +115,8 @@ public class SimpleExprFactory implements ExprFactory {
     }
     
     @SuppressWarnings("unchecked")
-    public <D> PComponentCollection<D> create(Collection<D> arg) {
-        return (PComponentCollection<D>) ccToPath.get(arg);
+    public <D> PEntityCollection<D> create(Collection<D> arg) {
+        return (PEntityCollection<D>) ecToPath.get(arg);
     }
     
     /* (non-Javadoc)
@@ -130,8 +131,8 @@ public class SimpleExprFactory implements ExprFactory {
      * @see com.mysema.query.collections.ExprFactory#create(D)
      */
     @SuppressWarnings("unchecked")
-    public <D> ESimple<D> create(D arg){
-        return (ESimple<D>) simToPath.get(arg);
+    public <D> PEntity<D> create(D arg){
+        return (PEntity<D>) entityToPath.get(arg);
     }
     
     /* (non-Javadoc)
@@ -143,8 +144,8 @@ public class SimpleExprFactory implements ExprFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public <D> PComponentList<D> create(List<D> arg) {
-        return (PComponentList<D>) clToPath.get(arg);
+    public <D> PEntityList<D> create(List<D> arg) {
+        return (PEntityList<D>) elToPath.get(arg);
     }
     
     /* (non-Javadoc)

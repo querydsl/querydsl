@@ -8,15 +8,10 @@ package com.mysema.query;
 import java.util.Collection;
 import java.util.List;
 
-import com.mysema.query.grammar.types.ExtTypes.ExtString;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
-import com.mysema.query.grammar.types.Expr.ESimple;
-import com.mysema.query.grammar.types.Path.PBooleanArray;
-import com.mysema.query.grammar.types.Path.PComparableArray;
-import com.mysema.query.grammar.types.Path.PComponentCollection;
-import com.mysema.query.grammar.types.Path.PComponentList;
-import com.mysema.query.grammar.types.Path.PStringArray;
+import com.mysema.query.grammar.types.ExtTypes.ExtString;
+import com.mysema.query.grammar.types.Path.*;
 
 /**
  * ExprFactory provides
@@ -32,11 +27,11 @@ public interface ExprFactory {
 
     <D extends Comparable<D>> EComparable<D> create(D arg);
 
-    <D> ESimple<D> create(D arg);
+    <D> PEntity<D> create(D arg);
     
-    <D> PComponentList<D> create(List<D> arg);
+    <D> PEntityList<D> create(List<D> arg);
     
-    <D> PComponentCollection<D> create(Collection<D> arg);
+    <D> PEntityCollection<D> create(Collection<D> arg);
 
     <D extends Comparable<D>> PComparableArray<D> create(D[] args);
 
