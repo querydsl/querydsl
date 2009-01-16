@@ -9,7 +9,6 @@ import static com.mysema.query.grammar.Grammar.avg;
 import static com.mysema.query.grammar.Grammar.max;
 import static com.mysema.query.grammar.Grammar.sqrt;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
