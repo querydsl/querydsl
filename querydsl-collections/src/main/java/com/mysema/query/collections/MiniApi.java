@@ -26,6 +26,10 @@ public class MiniApi extends GrammarWithAlias{
         return from(path, Arrays.asList(arr));
     }
     
+    public static <A> ColQuery<?> from(A alias, Iterable<A> col){
+        return new ColQuery().from($(alias), col);
+    }
+    
     @SuppressWarnings("unchecked")
     public static <A> ColQuery<?> from(Expr<A> path, Iterable<A> col){
         return new ColQuery().from((Path<?>)path, col);

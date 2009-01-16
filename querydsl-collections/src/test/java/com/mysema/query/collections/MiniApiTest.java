@@ -91,13 +91,13 @@ public class MiniApiTest {
         
         // 2nd
         Cat c = alias(Cat.class, "cat");
-        for (String name : from($(c),cats).where($(c.getKittens()).size().gt(0))
+        for (String name : from(c,cats).where($(c.getKittens()).size().gt(0))
                           .iterate($(c.getName()))){
             System.out.println(name);
         }
         
         // 2nd - variation 1
-        for (String name : from($(c),cats).where($(c.getKittens().size()).gt(0))
+        for (String name : from(c,cats).where($(c.getKittens().size()).gt(0))
                           .iterate($(c.getName()))){
             System.out.println(name);
         }                
@@ -115,7 +115,7 @@ public class MiniApiTest {
         
         // 2nd
         Cat c = alias(Cat.class, "cat");        
-        for (String name : from($(c),cats).where($(c.getName()).like("fri%"))
+        for (String name : from(c,cats).where($(c.getName()).like("fri%"))
                           .iterate($(c.getName()))){
             System.out.println(name);
         }      
@@ -127,7 +127,7 @@ public class MiniApiTest {
         
         Cat c = alias(Cat.class, "cat");
         
-        from($(c),cats)
+        from(c,cats)
         .where($(c.getMate().getBirthdate()).after(new Date()))
         .iterate($(c)).iterator();              
     }
@@ -138,7 +138,7 @@ public class MiniApiTest {
         Cat c = alias(Cat.class, "cat");
         
         // TODO : FIXME : Janino compiler doesn't handle generic collections
-        from($(c),cats)
+        from(c,cats)
         .where($(c.getKittens().get(0).getBodyWeight()).gt(12))
         .iterate($(c.getName())).iterator();
     }
@@ -148,7 +148,7 @@ public class MiniApiTest {
         Cat c = alias(Cat.class, "cat");
         Cat other = new Cat();
         
-        from($(c),cats)
+        from(c,cats)
         .where($(c).eq(other))
         .iterate($(c)).iterator();
     }
@@ -160,7 +160,7 @@ public class MiniApiTest {
         Cat c = alias(Cat.class, "cat");
         Cat other = new Cat();
         
-        from($(c),cats)
+        from(c,cats)
         .where($(c.getKittens().contains(other)))
         .iterate($(c)).iterator();
     }
@@ -169,7 +169,7 @@ public class MiniApiTest {
     public void testAlias7(){
         Cat c = alias(Cat.class, "cat");
         
-        from($(c),cats)
+        from(c,cats)
         .where($(c.getKittens().isEmpty()))
         .iterate($(c)).iterator();
     }
@@ -178,7 +178,7 @@ public class MiniApiTest {
     public void testAlias8(){
         Cat c = alias(Cat.class, "cat");
         
-        from($(c),cats)
+        from(c,cats)
         .where($(c.getMate().getName()).startsWith("B"))
         .iterate($(c)).iterator();        
     }
@@ -187,7 +187,7 @@ public class MiniApiTest {
     public void testAlias9(){
         Cat c = alias(Cat.class, "cat");
         
-        from($(c),cats)
+        from(c,cats)
         .where($(c.getMate().getName()).toUpperCase().eq("MOE"))
         .iterate($(c)).iterator();        
     }
