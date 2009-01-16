@@ -77,4 +77,14 @@ public interface Ops {
     Op<Boolean> EQ_IGNORECASE = new Op<Boolean>();
     Op<Boolean> ENDSWITH = new Op<Boolean>();
     Op<Boolean> CONTAINS = new Op<Boolean>();
+    
+
+    /**
+     * The Interface OpNumberAgg.
+     */
+    public interface OpNumberAgg{
+        Op<java.lang.Number> AVG = new Op<java.lang.Number>();
+        Op<java.lang.Number> MAX = new Op<java.lang.Number>();
+        Op<java.lang.Number> MIN = new Op<java.lang.Number>();   
+    }
 }

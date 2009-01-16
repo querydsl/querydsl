@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.mysema.query.grammar.Ops;
 import com.mysema.query.grammar.Ops.Op;
+import com.mysema.query.grammar.Ops.OpNumberAgg;
 import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
 
@@ -79,6 +80,12 @@ public abstract class OperationPatterns{
         add(PathMetadata.PROPERTY,"%s.%s"); 
         add(PathMetadata.SIZE,"%s.size");
         add(PathMetadata.VARIABLE,"%s"); 
+        
+
+        // numeric aggregates
+        add(OpNumberAgg.AVG, "avg(%s)");
+        add(OpNumberAgg.MAX, "max(%s)");
+        add(OpNumberAgg.MIN, "min(%s)");
         
     }
     

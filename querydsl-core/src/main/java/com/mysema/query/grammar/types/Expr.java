@@ -23,7 +23,7 @@ public abstract class Expr<D> {
     public Class<D> getType(){ return type;}
     public EBoolean ne(D right){return IntGrammar.ne(this, right);}
     public EBoolean ne(Expr<? super D> right){return IntGrammar.ne(this, right);}
-    
+        
     /**
      * The Class Boolean.
      */
