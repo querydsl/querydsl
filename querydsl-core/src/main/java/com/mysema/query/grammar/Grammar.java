@@ -22,7 +22,7 @@ import com.mysema.query.grammar.types.Expr;
  * @version $Id$
  */
 public class Grammar {
-   
+       
     public static <A extends Number & Comparable<A>> Expr.EComparable<A> add(Expr<A> left, A right) {
         return createNumber(Ops.ADD, left, createConstant(right));
     }
