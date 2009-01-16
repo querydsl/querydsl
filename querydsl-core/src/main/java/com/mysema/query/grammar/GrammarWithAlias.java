@@ -19,7 +19,7 @@ import com.mysema.query.grammar.types.ExtTypes.ExtString;
 import com.mysema.query.grammar.types.Path.*;
 
 /**
- * GrammarWithAlias provides
+ * GrammarWithAlias extends the base grammar to include alias factory methods
  *
  * @author tiwe
  * @version $Id$
