@@ -24,7 +24,7 @@ public class EntityTypesTest {
         QSURVEY survey2 = new QSURVEY("survey2");
         
         survey.id.eq(survey2.id);        
-        assertEquals("SURVEY", survey.getEntityName());
+        assertEquals("survey", survey.getEntityName());
     }
 
 }

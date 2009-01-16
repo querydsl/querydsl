@@ -18,6 +18,7 @@ import org.junit.Test;
 import com.mysema.query.grammar.Dialect;
 import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.SqlOps;
+import com.mysema.query.sql.domain.QEMPLOYEE;
 import com.mysema.query.sql.domain.QSURVEY;
 import com.mysema.query.sql.domain.QTEST;
 import com.mysema.query.sql.dto.IdName;
@@ -34,6 +35,7 @@ public class SqlQueryTest {
     
     private static final SqlOps dialect = Dialect.forHqlsdb().newLineToSingleSpace();
     
+    private QEMPLOYEE employee = new QEMPLOYEE("employee");
     private QSURVEY survey = new QSURVEY("survey");    
     private QSURVEY survey2 = new QSURVEY("survey2");    
     private QTEST test = new QTEST("test");
@@ -188,22 +190,26 @@ public class SqlQueryTest {
         // EMPLOYEE
 //        "select avg(salary), max(id) from employee "
 //        + "group by superior_id " + "order by superior_id " + "";
+        // TODO
         
 //        "select avg(salary), max(id) from employee "
 //        + "group by superior_id " + "having max(id) > 5 "
 //        + "order by superior_id " + "";
+        // TODO
         
 //        "select avg(salary), max(id) from employee "
 //        + "group by superior_id "
 //        + "having superior_id is not null "
 //        + "order by superior_id " + "";
+        // TODO
         
 //        "select avg(salary), max(id) from employee "
 //        + "having avg(salary) > 1000 " + "";
+        // TODO
         
 //        "select avg(salary), max(id) from employee "
 //        + "having avg(salary) > 1000000 " + "";
-
+        // TODO
     }
     
     private SqlQuery q(){

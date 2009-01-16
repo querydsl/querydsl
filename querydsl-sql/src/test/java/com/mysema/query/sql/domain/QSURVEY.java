@@ -9,13 +9,13 @@ import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathMetadata;
 
 public class QSURVEY extends Path.PEntity<java.lang.Object>{
-	public final Path.PString name = _string("NAME");
-	public final Path.PComparable<java.lang.Integer> id = _comparable("ID",java.lang.Integer.class);
+	public final Path.PString name = _string("name");
+	public final Path.PComparable<java.lang.Integer> id = _comparable("id",java.lang.Integer.class);
 	
     public QSURVEY(java.lang.String path) {
-      	super(java.lang.Object.class, "SURVEY", path);
+      	super(java.lang.Object.class, "survey", path);
     }
     public QSURVEY(PathMetadata<?> metadata) {
-     	super(java.lang.Object.class, "SURVEY", metadata);
+     	super(java.lang.Object.class, "survey", metadata);
     }
 }

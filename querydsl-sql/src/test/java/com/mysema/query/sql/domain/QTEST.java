@@ -9,12 +9,12 @@ import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathMetadata;
 
 public class QTEST extends Path.PEntity<java.lang.Object>{
-	public final Path.PString name = _string("NAME");	
+	public final Path.PString name = _string("name");	
 	
     public QTEST(java.lang.String path) {
-      	super(java.lang.Object.class, "TEST", path);
+      	super(java.lang.Object.class, "test", path);
     }
     public QTEST(PathMetadata<?> metadata) {
-     	super(java.lang.Object.class, "TEST", metadata);
+     	super(java.lang.Object.class, "test", metadata);
     }
 }
