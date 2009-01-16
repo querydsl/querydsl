@@ -14,10 +14,8 @@ import java.util.Date;
 
 import com.mysema.query.grammar.HqlOps.HqlPathType;
 import com.mysema.query.grammar.HqlOps.OpHql;
-import com.mysema.query.grammar.HqlOps.OpNumberAgg;
 import com.mysema.query.grammar.HqlOps.OpQuant;
 import com.mysema.query.grammar.types.*;
-import com.mysema.query.grammar.types.HqlTypes.CountExpression;
 import com.mysema.query.grammar.types.HqlTypes.DistinctPath;
 import com.mysema.query.grammar.types.HqlTypes.SubQuery;
 
@@ -43,20 +41,10 @@ public class HqlGrammar extends Grammar{
         return new Quant.Comparable<D>(OpQuant.ANY, col);
     }    
     
-    public static <A extends Comparable<A>> Expr.EComparable<A> avg(Expr<A> left){
-        return createNumber(OpNumberAgg.AVG, left);
-    }    
     public static <A extends Comparable<A>> Expr.EComparable<A> avg(Path.PCollection<A> left){
         return new Quant.Comparable<A>(OpQuant.AVG_IN_COL, left);
     }        
     
-    public static Expr.EComparable<Long> count(){
-        return new CountExpression(null);
-    }
-    
-    public static Expr.EComparable<Long> count(Expr<?> expr){
-        return new CountExpression(expr);
-    }
     public static Expr.EComparable<Date> current_date(){
         return createComparable(OpHql.CURRENT_DATE);
     }    
@@ -111,9 +99,6 @@ public class HqlGrammar extends Grammar{
         return createBoolean(OpHql.ISNOTEMPTY, collection);        
     }
     
-    public static <A extends Comparable<A>> Expr.EComparable<A> max(Expr<A> left){
-        return createNumber(OpNumberAgg.MAX, left);
-    }
     
     public static <A extends Comparable<A>> Expr.EComparable<A> max(Path.PCollection<A> left){
         return new Quant.Comparable<A>(OpQuant.MAX_IN_COL, left);
@@ -130,11 +115,7 @@ public class HqlGrammar extends Grammar{
     public static <A> Path.PComparable<Integer> maxindex(Path.PEntityCollection<A> col) {
         return new Path.PComparable<Integer>(Integer.class, new PathMetadata<Integer>(col, null, HqlPathType.MAXINDEX));
     }  
-    
-    public static <A extends Comparable<A>> Expr.EComparable<A> min(Expr<A> left){
-        return createNumber(OpNumberAgg.MIN, left);
-    }
-    
+        
     public static <A extends Comparable<A>> Expr.EComparable<A> min(Path.PCollection<A> left){
         return new Quant.Comparable<A>(OpQuant.MIN_IN_COL, left);
     }       

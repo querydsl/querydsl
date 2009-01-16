@@ -21,18 +21,6 @@ public class HqlTypes {
     private HqlTypes(){}
     
     /**
-     * The Class CountExpression.
-     */
-    public static class CountExpression extends Expr.EComparable<Long>{
-        private final Expr<?> target;
-        public CountExpression(Expr<?> expr) {
-            super(Long.class);
-            this.target = expr;
-        }
-        public Expr<?> getTarget(){ return target; }
-    }
-    
-    /**
      * The Class DistinctPath.
      */
     public static class DistinctPath<T> extends Expr<T>{

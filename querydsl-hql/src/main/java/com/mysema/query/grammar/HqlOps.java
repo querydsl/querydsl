@@ -45,12 +45,7 @@ public class HqlOps extends OperationPatterns {
         
         // numeric
         add(Ops.SQRT, "sqrt(%s)");
-        
-        // numeric aggregates
-        add(OpNumberAgg.AVG, "avg(%s)");
-        add(OpNumberAgg.MAX, "max(%s)");
-        add(OpNumberAgg.MIN, "min(%s)");
-        
+                
         // various
         add(Ops.IN, "%s in %s");
         add(Ops.NOTIN, "%s not in %s");        
@@ -124,16 +119,7 @@ public class HqlOps extends OperationPatterns {
         Op<java.util.Date> SYSDATE = new Op<java.util.Date>();
         Op<java.util.Date> YEAR = new Op<java.util.Date>();
     }
-    
-    /**
-     * The Interface OpNumberAgg.
-     */
-    public interface OpNumberAgg{
-        Op<java.lang.Number> AVG = new Op<java.lang.Number>();
-        Op<java.lang.Number> MAX = new Op<java.lang.Number>();
-        Op<java.lang.Number> MIN = new Op<java.lang.Number>();   
-    }
-    
+        
     /**
      * The Interface OpQuant.
      */
