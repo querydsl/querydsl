@@ -44,7 +44,7 @@ public class HqlOps extends OperationPatterns {
         add(Ops.NOTBETWEEN, "%s not between %s and %s",30);
         
         // numeric
-        add(Ops.SQRT, "sqrt(%s)");
+        add(Ops.OpMath.SQRT, "sqrt(%s)");
                 
         // various
         add(Ops.IN, "%s in %s");

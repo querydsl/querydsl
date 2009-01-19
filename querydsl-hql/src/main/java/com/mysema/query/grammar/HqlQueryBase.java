@@ -27,7 +27,7 @@ import com.mysema.query.hql.QueryModifiers;
  * @author tiwe
  * @version $Id$
  */
-public abstract class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<JoinMeta,A>{
+public abstract class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<HqlJoinMeta,A>{
     
     private static final Logger logger = LoggerFactory
             .getLogger(HqlQueryBase.class);
@@ -46,7 +46,7 @@ public abstract class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<
     
     private String buildQueryString(boolean forCountRow) {
         if (joins.isEmpty()){
-            throw new IllegalArgumentException("No where clause given");
+            throw new IllegalArgumentException("No joins given");
         }
         HqlSerializer serializer = new HqlSerializer(ops);
         serializer.serialize(select, joins, where.self(), groupBy, having.self(), orderBy, forCountRow);               
@@ -94,14 +94,14 @@ public abstract class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<
     }
     
     @SuppressWarnings("unchecked")
-    public A innerJoin(JoinMeta meta, EEntity<?> o) {
-        joins.add(new JoinExpression<JoinMeta>(JoinType.INNERJOIN, o, meta));
+    public A innerJoin(HqlJoinMeta meta, EEntity<?> o) {
+        joins.add(new JoinExpression<HqlJoinMeta>(JoinType.INNERJOIN, o, meta));
         return (A) this;
     }
 
     @SuppressWarnings("unchecked")
-    public A leftJoin(JoinMeta meta, EEntity<?> o) {
-        joins.add(new JoinExpression<JoinMeta>(JoinType.LEFTJOIN, o, meta));
+    public A leftJoin(HqlJoinMeta meta, EEntity<?> o) {
+        joins.add(new JoinExpression<HqlJoinMeta>(JoinType.LEFTJOIN, o, meta));
         return (A) this;
     }
     

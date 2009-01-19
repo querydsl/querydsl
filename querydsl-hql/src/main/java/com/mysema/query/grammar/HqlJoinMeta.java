@@ -11,6 +11,6 @@ package com.mysema.query.grammar;
  * @author tiwe
  * @version $Id$
  */
-public enum JoinMeta {
+public enum HqlJoinMeta {
     FETCH
 }

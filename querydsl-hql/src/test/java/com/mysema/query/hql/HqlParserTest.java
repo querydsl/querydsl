@@ -22,7 +22,8 @@ import antlr.TokenStreamException;
 import antlr.collections.AST;
 
 import com.mysema.query.grammar.HqlGrammar;
-import com.mysema.query.grammar.JoinMeta;
+import com.mysema.query.grammar.HqlJoinMeta;
+import com.mysema.query.grammar.QMath;
 import com.mysema.query.hql.HqlDomain.*;
 
 
@@ -66,7 +67,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
 //        parse( "from eg.Cat as cat join cat.mate as mate left join cat.kittens as kitten" );
         from(cat).join(cat.mate.as(mate)).leftJoin(cat.kittens.as(kitten)).parse();
 //        parse( "from eg.Cat as cat\ninner join fetch cat.mate\nleft join fetch cat.kittens" );
-        from(cat).innerJoin(cat.mate).leftJoin(JoinMeta.FETCH, cat.kittens).parse();
+        from(cat).innerJoin(cat.mate).leftJoin(HqlJoinMeta.FETCH, cat.kittens).parse();
     }
 
     @Test
@@ -89,8 +90,8 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
         from($(f)).innerJoin($(c.getMate()).as($(m)))
             .leftJoin($(c.getKittens()).as($(k))).parse();
 //        parse( "from eg.Cat as cat\ninner join fetch cat.mate\nleft join fetch cat.kittens" );
-        from($(f)).innerJoin(JoinMeta.FETCH, $(c.getMate()).as($(m)))
-            .leftJoin(JoinMeta.FETCH, $(c.getKittens()).as($(k))).parse();
+        from($(f)).innerJoin(HqlJoinMeta.FETCH, $(c.getMate()).as($(m)))
+            .leftJoin(HqlJoinMeta.FETCH, $(c.getKittens()).as($(k))).parse();
     }
     
     /**
@@ -478,7 +479,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
 //        parse( "FROM eg.mypackage.Cat qat where qat.name not in ('crater','bean','fluffy')" );
         from(qat).where(qat.name.notIn("crater","bean","fluffy")).parse();
 //        parse( "from Animal an where sqrt(an.bodyWeight)/2 > 10" );
-        from(an).where(div(sqrt(an.bodyWeight),2).gt(10)).parse();
+        from(an).where(div(QMath.sqrt(an.bodyWeight),2).gt(10)).parse();
 //        parse( "from Animal an where (an.bodyWeight > 10 and an.bodyWeight < 100) or an.bodyWeight is null" );
         from(an).where(an.bodyWeight.gt(10).and(an.bodyWeight.lt(100).or(an.bodyWeight.isnull()))).parse();
     }
@@ -496,7 +497,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
 //        parse( "FROM eg.mypackage.Cat qat order by avg(qat.toes)" );
         from(qat).orderBy(avg(qat.toes).asc()).parse();
 //        parse( "from Animal an order by sqrt(an.bodyWeight)/2" );
-        from(qat).orderBy(sqrt(div(an.bodyWeight,2)).asc()).parse();
+        from(qat).orderBy(QMath.sqrt(div(an.bodyWeight,2)).asc()).parse();
     }
 
     @Test

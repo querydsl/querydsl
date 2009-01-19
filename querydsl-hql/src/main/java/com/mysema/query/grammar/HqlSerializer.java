@@ -14,7 +14,6 @@ import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.*;
 import com.mysema.query.grammar.types.HqlTypes.DistinctPath;
-import com.mysema.query.grammar.types.HqlTypes.SubQuery;
 import com.mysema.query.serialization.BaseSerializer;
 
 
@@ -32,7 +31,7 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         super(ops);
     }
            
-    public void serialize(List<Expr<?>> select, List<JoinExpression<JoinMeta>> joins,
+    public void serialize(List<Expr<?>> select, List<JoinExpression<HqlJoinMeta>> joins,
         Expr.EBoolean where, List<Expr<?>> groupBy, Expr.EBoolean having,
         List<OrderSpecifier<?>> orderBy, boolean forCountRow){
          if (forCountRow){
@@ -42,7 +41,7 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         }
         _append("from ");
         for (int i=0; i < joins.size(); i++){
-            JoinExpression<JoinMeta> je = joins.get(i);            
+            JoinExpression<HqlJoinMeta> je = joins.get(i);            
             if (i > 0){
                 String sep = ", ";
                     switch(je.getType()){
@@ -179,8 +178,8 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         visit((Quant)q);
     }
 
-    protected void visit(SubQuery<?> query) {
-        QueryBase<JoinMeta,?>.Metadata md = query.getQuery().getMetadata();
+    protected void visit(SubQuery<HqlJoinMeta,?> query) {
+        QueryBase<HqlJoinMeta,?>.Metadata md = query.getQuery().getMetadata();
         _append("(");
         serialize(md.getSelect(), md.getJoins(),
             md.getWhere(), md.getGroupBy(), md.getHaving(), 

@@ -17,7 +17,6 @@ import com.mysema.query.grammar.HqlOps.OpHql;
 import com.mysema.query.grammar.HqlOps.OpQuant;
 import com.mysema.query.grammar.types.*;
 import com.mysema.query.grammar.types.HqlTypes.DistinctPath;
-import com.mysema.query.grammar.types.HqlTypes.SubQuery;
 
 /**
  * HqlGrammar extends the Query DSL base grammar to provide HQL specific syntax elements.
@@ -71,8 +70,8 @@ public class HqlGrammar extends GrammarWithAlias{
         return new Quant.Boolean<D>(OpQuant.EXISTS, col);
     }
     
-    public static <A> SubQuery<A> from(Expr.EEntity<A> select){
-        return new SubQuery<A>(select).from(select);
+    public static <A> SubQuery<HqlJoinMeta,A> from(Expr.EEntity<A> select){
+        return new SubQuery<HqlJoinMeta,A>(select).from(select);
     }
     
     public static Expr.EComparable<Date> hour(Expr<Date> date){
@@ -155,8 +154,8 @@ public class HqlGrammar extends GrammarWithAlias{
         return createComparable(OpHql.SECOND, date);
     }
     
-    public static <A> SubQuery<A> select(Expr<A> select){
-        return new SubQuery<A>(select);
+    public static <A> SubQuery<HqlJoinMeta,A> select(Expr<A> select){
+        return new SubQuery<HqlJoinMeta,A>(select);
     }
     
     public static <D> Expr<D> some(CollectionType<D> col){
