@@ -25,6 +25,8 @@ import com.mysema.query.grammar.types.Expr.EComparable;
  */
 public class Grammar {
     
+    protected Grammar(){};
+    
     public static <A extends Number & Comparable<A>> Expr.EComparable<A> add(Expr<A> left, A right) {
         return createNumber(Ops.ADD, left, createConstant(right));
     }
@@ -360,10 +362,6 @@ public class Grammar {
         return createStringArray(Ops.SPLIT, left, createConstant(regex));
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> sqrt(Expr<A> left) {
-        return createNumber(Ops.SQRT, left);
-    }
-
     public static EBoolean startsWith(Expr<String> left, Expr<String> right) {
         return createBoolean(Ops.STARTSWITH, left, right);
     }

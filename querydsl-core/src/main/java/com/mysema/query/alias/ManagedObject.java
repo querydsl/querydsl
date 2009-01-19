@@ -14,10 +14,4 @@ package com.mysema.query.alias;
  */
 public interface ManagedObject {
     
-    void setElementType(Class<?> type);
-    
-    void setKeyType(Class<?> type);
-    
-    void setValueType(Class<?> type);
-        
 }

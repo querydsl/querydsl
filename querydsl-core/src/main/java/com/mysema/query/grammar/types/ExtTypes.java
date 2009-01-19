@@ -5,7 +5,10 @@
  */
 package com.mysema.query.grammar.types;
 
+import com.mysema.query.Query;
+import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.Grammar;
+import com.mysema.query.grammar.OrderSpecifier;
 
 
 /**
@@ -87,5 +90,5 @@ public class ExtTypes {
         public EString toLowerCase(){ return lower(); }
         public EString toUpperCase(){ return upper(); }
     }
-    
+        
 }

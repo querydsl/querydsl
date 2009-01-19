@@ -53,7 +53,7 @@ public interface Ops {
     Op<Number> DIV = new Op<Number>();        
     Op<Number> MOD = new Op<Number>();
     Op<Number> MULT = new Op<Number>();
-    Op<Number> SQRT = new Op<Number>();
+//    Op<Number> SQRT = new Op<Number>();
     Op<Number> SUB = new Op<Number>();
     
     // String
@@ -83,8 +83,31 @@ public interface Ops {
      * The Interface OpNumberAgg.
      */
     public interface OpNumberAgg{
-        Op<java.lang.Number> AVG = new Op<java.lang.Number>();
-        Op<java.lang.Number> MAX = new Op<java.lang.Number>();
-        Op<java.lang.Number> MIN = new Op<java.lang.Number>();   
+        Op<Number> AVG = new Op<Number>();
+        Op<Number> MAX = new Op<Number>();
+        Op<Number> MIN = new Op<Number>();   
+    }
+    
+    public interface OpMath{
+        Op<Number> ABS = new Op<Number>();
+        Op<Number> ACOS = new Op<Number>();
+        Op<Number> ASIN = new Op<Number>();
+        Op<Number> ATAN = new Op<Number>();
+        Op<Number> CEIL = new Op<Number>();
+        Op<Number> COS = new Op<Number>();
+        Op<Number> TAN = new Op<Number>();
+        Op<Number> SQRT = new Op<Number>();
+        Op<Number> SIN = new Op<Number>();
+        Op<Number> ROUND = new Op<Number>();
+        Op<Number> RANDOM = new Op<Number>();
+        Op<Number> POWER = new Op<Number>();
+        Op<Number> MIN = new Op<Number>();
+        Op<Number> MAX = new Op<Number>();
+        Op<Number> MOD = new Op<Number>();
+        Op<Number> LOG10 = new Op<Number>();
+        Op<Number> LOG = new Op<Number>();
+        Op<Number> FLOOR = new Op<Number>();
+        Op<Number> EXP = new Op<Number>();
+        
     }
 }

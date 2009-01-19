@@ -51,7 +51,7 @@ public abstract class OperationPatterns{
         add(Ops.MOD, "%s % %s",10);
         add(Ops.MULT,"%s * %s",7);
         add(Ops.SUB, "%s - %s",12);
-        add(Ops.SQRT, "sqrt(%s)");
+//        add(Ops.SQRT, "sqrt(%s)");
         
         // various
         add(Ops.EQ_PRIMITIVE, "%s = %s",18);
@@ -72,6 +72,27 @@ public abstract class OperationPatterns{
         add(Ops.SUBSTR2ARGS, "substring(%s,%s,%s)");
         add(Ops.TRIM, "trim(%s)");
         add(Ops.UPPER, "upper(%s)");
+        
+        // math
+        add(Ops.OpMath.ABS,"abs(%s)");
+        add(Ops.OpMath.ACOS,"acos(%s)");
+        add(Ops.OpMath.ASIN,"asin(%s)");
+        add(Ops.OpMath.ATAN,"atan(%s)");
+        add(Ops.OpMath.CEIL,"ceil(%s)");
+        add(Ops.OpMath.COS,"cos(%s)");
+        add(Ops.OpMath.TAN,"tan(%s)");
+        add(Ops.OpMath.SQRT,"sqrt(%s)");
+        add(Ops.OpMath.SIN,"sin(%s)");
+        add(Ops.OpMath.ROUND,"round(%s)");
+        add(Ops.OpMath.RANDOM,"random(%s)");
+        add(Ops.OpMath.POWER,"%s^%s");
+        add(Ops.OpMath.MIN,"min(%s,%s)");
+        add(Ops.OpMath.MAX,"max(%s,%s)");
+        add(Ops.OpMath.MOD,"mod(%s,%s)");
+        add(Ops.OpMath.LOG10,"log(%s)");
+        add(Ops.OpMath.LOG,"log(%s)");
+        add(Ops.OpMath.FLOOR,"floor(%s)");
+        add(Ops.OpMath.EXP,"exp(%s)");
                 
         // path types
         for (PathType type : new PathType[]{PathMetadata.LISTVALUE, PathMetadata.LISTVALUE_CONSTANT, PathMetadata.MAPVALUE, PathMetadata.MAPVALUE_CONSTANT}){

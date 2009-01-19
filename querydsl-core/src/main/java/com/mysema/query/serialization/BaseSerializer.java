@@ -49,7 +49,7 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
         }        
         return (A)this;
     }
-    
+        
     @SuppressWarnings("unchecked")
     protected final A _append(String sep, List<? extends Expr<?>> expressions) {
         boolean first = true;

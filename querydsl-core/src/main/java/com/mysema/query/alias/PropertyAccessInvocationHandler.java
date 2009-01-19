@@ -38,11 +38,8 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
     
     private final AliasFactory aliasFactory;
     
-//    private final JavaSerializer serializer = new JavaSerializer(new JavaOps());
-    
+//    private final JavaSerializer serializer = new JavaSerializer(new JavaOps());    
     private String toString;
-    
-    private Class<?> elementType, keyType, valueType;
     
     private final Map<String,Expr<?>> propToExpr = new HashMap<String,Expr<?>>();
     
@@ -98,11 +95,13 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             aliasFactory.setCurrent(propToExpr.get(ptyName));
             
         }else if (isListElementAccess(method)){
+            // TODO : manage cases where the argument is based on a property invocation
             String ptyName = "_get" + args[0];
             if (propToObj.containsKey(ptyName)){
                 rv = propToObj.get(ptyName);
             }else{
                 PathMetadata<Integer> pm = PathMetadata.forListAccess((PList<?>)path, (Integer)args[0]);
+                Class<?> elementType = ((PCollection<?>)path).getElementType();
                 if (elementType != null){
                     rv = newInstance(elementType, elementType, proxy, ptyName, pm);    
                 }else{
@@ -119,18 +118,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             aliasFactory.setCurrent(Grammar.in(args[0], (CollectionType<Object>)path));
                         
         }else if (isToString(method)){
-//            TODO
-//            if (toString == null) toString = serializer.handle(path).toString();
-//            rv = toString;
-            
-        }else if (method.getName().equals("setElementType")){    
-            elementType = (Class<?>) args[0];
-        
-        }else if (method.getName().equals("setKeyType")){    
-            keyType = (Class<?>) args[0];
-            
-        }else if (method.getName().equals("setValueType")){    
-            valueType = (Class<?>) args[0];
+            rv = path.toString();
             
         }else{
 //            rv = methodProxy.invokeSuper(proxy, args);
