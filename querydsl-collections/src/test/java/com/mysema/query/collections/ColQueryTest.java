@@ -46,10 +46,15 @@ public class ColQueryTest {
     TestQuery last;
          
     @Test
+    public void testAPIMethods(){
+        query().from(cat, c1, c2).list(cat);
+        query().from(cat, c1, c2).iterate(cat).iterator();
+    }
+    
+    @Test
     public void testAlias(){
         query().from(cat, c1, c2).from(otherCat, c2, c3)
             .where(cat.name.eq(otherCat.name)).select(cat.name); 
-        
     }
     
     @Test

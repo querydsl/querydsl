@@ -61,10 +61,27 @@ public class ColQuery<S extends ColQuery<S>>{
         final Expr<RT>[] full = asArray(new Expr[rest.length + 2], e1, e2, rest);
         return query.iterate(new Constructor.CArray<RT>(e1.getType(), full));
     }    
+    
     public <RT> Iterable<RT> iterate(Expr<RT> projection) {
         return query.iterate(projection);
     }
     
+    public <RT> List<RT[]> list(Expr<RT> e1, Expr<RT> e2, Expr<RT>... rest) {
+        ArrayList<RT[]> rv = new ArrayList<RT[]>();
+        for (RT[] v : iterate(e1, e2, rest)){
+            rv.add(v);
+        }
+        return rv;
+    }
+    
+    public <RT> List<RT> list(Expr<RT> projection) {
+        ArrayList<RT> rv = new ArrayList<RT>();
+        for (RT v : iterate(projection)){
+            rv.add(v);
+        }
+        return rv;
+    }
+        
     @SuppressWarnings("unchecked")
     public S orderBy(OrderSpecifier<?>... o) {
         query.orderBy(o);

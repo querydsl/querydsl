@@ -6,11 +6,7 @@
 package com.mysema.query.collections;
 
 
-import static com.mysema.query.collections.MiniApi.from;
-import static com.mysema.query.collections.MiniApi.reject;
-import static com.mysema.query.collections.MiniApi.select;
-import static com.mysema.query.grammar.GrammarWithAlias.$;
-import static com.mysema.query.grammar.GrammarWithAlias.alias;
+import static com.mysema.query.collections.MiniApi.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -85,6 +81,12 @@ public class MiniApiTest {
         // 1st
         QCat cat = new QCat("cat");  
         for (String name : from(cat,cats).where(cat.kittens.size().gt(0))
+                          .iterate(cat.name)){
+            System.out.println(name);
+        }        
+        
+        // 1st - variation 1        
+        for (String name : from(cat,cats).where(gt(cat.kittens.size(),0))
                           .iterate(cat.name)){
             System.out.println(name);
         }        
