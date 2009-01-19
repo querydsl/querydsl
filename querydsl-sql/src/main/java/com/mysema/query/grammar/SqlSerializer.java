@@ -10,9 +10,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.mysema.query.JoinExpression;
+import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.types.Constructor;
+import com.mysema.query.grammar.types.CountExpression;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
+import com.mysema.query.grammar.types.SubQuery;
+import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.serialization.BaseSerializer;
 
 /**
@@ -30,18 +34,12 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
         this.ops = ops;
     }
     
-    @Override
-    protected void visit(Expr.EConstant<?> expr) {
-        _append("?");
-        constants.add(expr.getConstant());
-    }
-               
-    public void serialize(List<Expr<?>> select, List<JoinExpression<Object>> joins,
+    public void serialize(List<Expr<?>> select, List<JoinExpression<SqlJoinMeta>> joins,
         Expr.EBoolean where, List<Expr<?>> groupBy, Expr.EBoolean having,
-        List<OrderSpecifier<?>> orderBy, boolean forCountRow){
+        List<OrderSpecifier<?>> orderBy, int limit, int offset, boolean forCountRow){
          if (forCountRow){
 //            _append("select count(*)\n");
-             _append(ops.selectCountStar());
+             _append(ops.select())._append(ops.countStar());
         }else if (!select.isEmpty()){
             _append(ops.select());           
             List<Expr<?>> sqlSelect = new ArrayList<Expr<?>>();
@@ -57,8 +55,13 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
             _append(", ", sqlSelect);
         }
         _append(ops.from());
+        if (joins.isEmpty()){
+            // TODO : disallow usage of dummy table ?!?
+            _append(ops.dummyTable());
+            
+        }        
         for (int i=0; i < joins.size(); i++){
-            JoinExpression<Object> je = joins.get(i);            
+            JoinExpression<SqlJoinMeta> je = joins.get(i);            
             if (i > 0){
                 String sep = ", ";
                     switch(je.getType()){
@@ -105,6 +108,59 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
                 first = false;
             }
         }
+        // TODO : take dialect into account
+        if (limit > 0){
+            _append(ops.limit())._append(String.valueOf(limit));
+        }
+        // TODO : take dialect into account
+        if (offset > 0){
+            _append(ops.offset())._append(String.valueOf(offset));
+        }
+        
+    }
+    
+    public void serializeUnion(List<Expr<?>> select,
+            SubQuery<SqlJoinMeta, ?>[] sqs, EBoolean self,
+            List<OrderSpecifier<?>> orderBy) {
+        // union
+        _append(ops.union(), Arrays.asList(sqs));
+        
+        
+        // order by
+        if (!orderBy.isEmpty()){
+            _append(ops.orderBy());
+            boolean first = true;
+            for (OrderSpecifier<?> os : orderBy){            
+                if (!first) builder.append(", ");
+                handle(os.target);
+                _append(os.order == Order.ASC ? ops.asc() : ops.desc());
+                first = false;
+            }
+        }
+        
+    }
+    
+    protected void visit(CountExpression expr) {
+        if (expr.getTarget() == null){
+            _append(ops.countStar());    
+        }else{
+            _append(ops.count())._append("(").handle(expr.getTarget())._append(")");
+        }                
+    }
+               
+    @Override
+    protected void visit(Expr.EConstant<?> expr) {
+        _append("?");
+        constants.add(expr.getConstant());
+    }
+
+    protected void visit(SubQuery<SqlJoinMeta,?> query) {
+        QueryBase<SqlJoinMeta,?>.Metadata md = query.getQuery().getMetadata();
+        _append("(");
+        serialize(md.getSelect(), md.getJoins(),
+            md.getWhere(), md.getGroupBy(), md.getHaving(), 
+            md.getOrderBy(), 0, 0, false);
+        _append(")");
     }
 
 }

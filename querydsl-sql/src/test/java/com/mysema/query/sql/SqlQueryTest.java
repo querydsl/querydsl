@@ -5,22 +5,30 @@
  */
 package com.mysema.query.sql;
 
-import static com.mysema.query.grammar.Grammar.avg;
-import static com.mysema.query.grammar.Grammar.max;
-import static com.mysema.query.grammar.Grammar.sqrt;
+import static com.mysema.query.grammar.Grammar.*;
+import static com.mysema.query.grammar.SqlGrammar.select;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.grammar.Dialect;
+import com.mysema.query.grammar.QMath;
+import com.mysema.query.grammar.SqlJoinMeta;
 import com.mysema.query.grammar.SqlOps;
+import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.SubQuery;
 import com.mysema.query.sql.domain.QEMPLOYEE;
 import com.mysema.query.sql.domain.QSURVEY;
 import com.mysema.query.sql.domain.QTEST;
@@ -46,6 +54,8 @@ public class SqlQueryTest {
     private static Connection c;
     
     private static Statement stmt;
+    
+    private String expectedQuery;
     
     @BeforeClass
     public static void setUp() throws Exception{
@@ -159,7 +169,7 @@ public class SqlQueryTest {
         System.out.println(q().from(survey).list(survey.name.lower()));
         System.out.println(q().from(survey).list(survey.name.add("abc")));
         System.out.println(q().from(survey).list(survey.id.eq(0)));        
-        System.out.println(q().from(survey).list(sqrt(survey.id)));
+        System.out.println(q().from(survey).list(QMath.sqrt(survey.id)));
         
     }
     
@@ -167,11 +177,12 @@ public class SqlQueryTest {
     public void testSyntaxForTest() throws SQLException{        
         // TEST        
         // select count(*) from test where name = null
-        q().from(test).where(test.name.isnull()).count();
+        expectedQuery = "select count(*) from test test where test.name is null";
+        q().from(test).where(test.name.isnull()).count();        
         // select count(*) from test where name like null
 //        q().from(test).where(test.name.like(null)).count();
         // select count(*) from test where name = ''
-        q().from(test).where(test.name.like("")).count();
+        q().from(test).where(test.name.like("")).count();        
         // select count(*) from test where name is not null
         q().from(test).where(test.name.isnotnull()).count();
         // select count(*) from test where name like '%'
@@ -218,11 +229,85 @@ public class SqlQueryTest {
            .list(avg(employee.salary),max(employee.id));        
     }
     
+    @Test
+    public void testIllegal() throws SQLException{
+//        q().from(employee).list(employee);
+    }
+    
+    @Test
+    public void testLimitAndOffset() throws SQLException{
+        // limit offset
+        expectedQuery = "select employee.id from employee employee limit 4 offset 3";
+        q().from(employee).limit(4).offset(3).list(employee.id);        
+    }
+    
+    @Test
+    public void testSubQueries() throws SQLException{
+     // subquery in where block
+        expectedQuery = "select employee.id from employee employee " +
+            "where employee.id = (select max(employee.id) " + 
+            "from employee employee)";
+        List<Integer> list = q().from(employee).where(employee.id.eq(
+                select(max(employee.id)).from(employee)))
+            .list(employee.id);
+        assertFalse(list.isEmpty());
+    }
+    
+    @Test
+    public void testIllegalUnion() throws SQLException{
+        SubQuery<SqlJoinMeta,Integer> sq1 = select(max(employee.id)).from(employee);
+        SubQuery<SqlJoinMeta,Integer> sq2 = select(min(employee.id)).from(employee);
+        try{
+            q().from(employee).union(sq1, sq2).list();
+            fail();
+        }catch(IllegalArgumentException e){
+            // expected
+        }
+        
+    }
+    
+    @Test
+    public void testUnion() throws SQLException{
+        // union
+        SubQuery<SqlJoinMeta,Integer> sq1 = select(max(employee.id)).from(employee);
+        SubQuery<SqlJoinMeta,Integer> sq2 = select(min(employee.id)).from(employee);
+        List<Integer> list = q().union(sq1, sq2).list(); 
+        assertFalse(list.isEmpty());
+        
+        // variation 1
+        list = q().union(
+            select(max(employee.id)).from(employee), 
+            select(min(employee.id)).from(employee)).list();
+        assertFalse(list.isEmpty());
+    
+        // union #2
+        SubQuery<SqlJoinMeta,Object[]> sq3 = select(count(), max(employee.id)).from(employee);
+        SubQuery<SqlJoinMeta,Object[]> sq4 = select(count(), min(employee.id)).from(employee);
+        List<Object[]> list2 = q().union(sq3, sq4).list();
+        assertFalse(list2.isEmpty());
+    }
+    
+    @Test
+    @Ignore
+    public void testQueryWithoutFrom() throws SQLException{
+        // NOTE : doesn't work in HSQLDB
+        q().list(add(new Expr.EConstant<Integer>(1),1));
+    }
+    
+    @Test
+    public void testWhereExists(){
+//        q().from(employee).where(exists()
+    }
+    
     private SqlQuery q(){
         return new SqlQuery(c, dialect){
             @Override
             protected String buildQueryString() {
                 String rv = super.buildQueryString();
+                if (expectedQuery != null){
+                   assertEquals(expectedQuery, rv);
+                   expectedQuery = null;
+                }
                 System.out.println(rv);
                 return rv;
             }

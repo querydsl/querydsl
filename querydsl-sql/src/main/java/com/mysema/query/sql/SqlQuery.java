@@ -16,10 +16,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.QueryBase;
+import com.mysema.query.grammar.OrderSpecifier;
+import com.mysema.query.grammar.SqlJoinMeta;
 import com.mysema.query.grammar.SqlOps;
 import com.mysema.query.grammar.SqlSerializer;
 import com.mysema.query.grammar.types.Constructor;
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.SubQuery;
 
 /**
  * SqlQuery is a JDBC based implementation of the Querydsl Query interface
@@ -27,11 +30,13 @@ import com.mysema.query.grammar.types.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class SqlQuery extends QueryBase<Object,SqlQuery>{
+public class SqlQuery extends QueryBase<SqlJoinMeta,SqlQuery>{
     
     private static final Logger logger = LoggerFactory.getLogger(SqlQuery.class);
     
     private String queryString;
+    
+    private int limit, offset;
     
     private List<Object> constants;
     
@@ -40,6 +45,8 @@ public class SqlQuery extends QueryBase<Object,SqlQuery>{
     private final SqlOps ops;
     
     private boolean forCountRow = false;
+    
+    private SubQuery<SqlJoinMeta, ?>[] sq;
     
     public SqlQuery(Connection conn, SqlOps ops){
         this.conn = conn;
@@ -50,6 +57,10 @@ public class SqlQuery extends QueryBase<Object,SqlQuery>{
     public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>...rest) throws SQLException{
         select(expr1, expr2);
         select(rest);
+        return listMultiple();
+    }
+    
+    private List<Object[]> listMultiple() throws SQLException{
         String queryString = toString();
         logger.debug("query : {}", queryString);
         PreparedStatement stmt = conn.prepareStatement(queryString);
@@ -77,10 +88,18 @@ public class SqlQuery extends QueryBase<Object,SqlQuery>{
             }                        
         }
     }
-    
-    @SuppressWarnings("unchecked")
-    public <RT> List<RT> list(Expr<RT> expr) throws SQLException{
+        
+    public <RT extends Comparable<RT>> List<RT> list(Expr<RT> expr) throws SQLException{
         select(expr);
+        return listSingle(expr);
+    }
+    
+    public <RT> List<RT> list(Constructor<RT> expr) throws SQLException{
+        select(expr);
+        return listSingle(expr);
+    }
+    
+    private <RT> List<RT> listSingle(Expr<RT> expr) throws SQLException{        
         String queryString = toString();
         logger.debug("query : {}", queryString);
         PreparedStatement stmt = conn.prepareStatement(queryString);
@@ -95,7 +114,7 @@ public class SqlQuery extends QueryBase<Object,SqlQuery>{
                 Constructor<RT> c = (Constructor<RT>)expr;
                 java.lang.reflect.Constructor<RT> cc =  c.getJavaConstructor();
                 while (rs.next()){
-                    List args = new ArrayList();
+                    List<Object> args = new ArrayList<Object>();
                     for (int i=0; i < c.getArgs().length; i++){
                         args.add(rs.getObject(i+1));
                     }
@@ -129,13 +148,21 @@ public class SqlQuery extends QueryBase<Object,SqlQuery>{
         }        
         return queryString;
     }
+    
+    @SuppressWarnings("unchecked")
+    public <RT> UnionBuilder<RT> union(SubQuery<SqlJoinMeta,RT>... sq){
+        if (!joins.isEmpty()) throw new IllegalArgumentException("Don't mix union and from");
+        this.sq = sq;
+        return new UnionBuilder();
+    }
 
     protected String buildQueryString() {
-        if (joins.isEmpty()){
-            throw new IllegalArgumentException("No where clause given");
-        }
         SqlSerializer serializer = new SqlSerializer(ops);
-        serializer.serialize(select, joins, where.self(), groupBy, having.self(), orderBy, forCountRow);               
+        if (sq != null){
+            serializer.serializeUnion(select, sq, where.self(), orderBy);
+        }else{
+            serializer.serialize(select, joins, where.self(), groupBy, having.self(), orderBy, limit, offset, forCountRow);    
+        }                       
         constants = serializer.getConstants();      
         return serializer.toString();
     }
@@ -163,6 +190,34 @@ public class SqlQuery extends QueryBase<Object,SqlQuery>{
                 stmt.close();
             }            
         }        
+    }
+
+    public SqlQuery limit(int i) {
+        this.limit = i;
+        return this;
+    }
+    
+    public SqlQuery offset(int o) {
+        this.offset = o;
+        return this;
+    }
+    
+    public class UnionBuilder<RT>{
+        
+        public UnionBuilder<RT> orderBy(OrderSpecifier<?>... o) {
+            SqlQuery.this.orderBy(o);
+            return this;
+        }
+        
+        public List<RT> list() throws SQLException {
+            if (sq[0].getQuery().getMetadata().getSelect().size() == 1){
+                return SqlQuery.this.listSingle(null);    
+            }else{
+                return (List<RT>) SqlQuery.this.listMultiple();
+            }
+            
+        }
+        
     }
 
 }
