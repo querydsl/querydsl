@@ -5,8 +5,10 @@
  */
 package com.mysema.query.grammar;
 
+import java.lang.reflect.Field;
 import java.util.regex.Pattern;
 
+import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
 import com.mysema.query.serialization.OperationPatterns;
@@ -26,8 +28,7 @@ public class JavaOps extends OperationPatterns {
         add(Ops.BEFORE, "%s.compareTo(%s) < 0");
         
         add(Ops.BETWEEN, functions+".between(%s,%s,%s)");
-        add(Ops.NOTBETWEEN, "!"+functions+".between(%s,%s,%s)");
-        add(Ops.SQRT, "Math.sqrt(%s)");
+        add(Ops.NOTBETWEEN, "!"+functions+".between(%s,%s,%s)");        
                 
         add(Ops.EQ_PRIMITIVE, "%s == %s");
         add(Ops.EQ_OBJECT, "%s.equals(%s)");      
@@ -60,6 +61,17 @@ public class JavaOps extends OperationPatterns {
         add(Ops.EQ_IGNORECASE, "%s.equalsIgnoreCase(%s)");
         add(Ops.ENDSWITH, "%s.endsWith(%s)");
         add(Ops.CONTAINS, "%s.contains(%s)");
+        
+        // math        
+        try {
+            for (Field f : Ops.OpMath.class.getFields()){
+                Op<?> op = (Op<?>) f.get(null);
+                add(op, "Math."+getPattern(op));
+            }
+        } catch (Exception e) {
+            String error = "Caught " + e.getClass().getName();
+            throw new RuntimeException(error, e);
+        }        
         
         // path types
         for (PathType type : new PathType[]{PathMetadata.LISTVALUE, PathMetadata.LISTVALUE_CONSTANT, PathMetadata.MAPVALUE, PathMetadata.MAPVALUE_CONSTANT}){
