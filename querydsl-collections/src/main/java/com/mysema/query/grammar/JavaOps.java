@@ -72,6 +72,7 @@ public class JavaOps extends OperationPatterns {
             String error = "Caught " + e.getClass().getName();
             throw new RuntimeException(error, e);
         }        
+        add(Ops.OpMath.MOD, functions+".mod(%s,%s)");
         
         // path types
         for (PathType type : new PathType[]{PathMetadata.LISTVALUE, PathMetadata.LISTVALUE_CONSTANT, PathMetadata.MAPVALUE, PathMetadata.MAPVALUE_CONSTANT}){
@@ -83,6 +84,14 @@ public class JavaOps extends OperationPatterns {
         add(PathMetadata.ARRAY_SIZE,"%s.length");
         add(PathMetadata.SIZE,"%s.size()");
         
+    }
+    
+    public static long mod(long left, long right){
+        return left % right;
+    }
+    
+    public static int mod(int left, int right){
+        return left % right;
     }
     
     public static <A extends Comparable<A>> boolean between(A a, A b, A c){

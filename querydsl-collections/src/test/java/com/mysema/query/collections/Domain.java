@@ -89,7 +89,7 @@ public class Domain {
         public final Path.PBoolean alive = _boolean("alive");
         public final Path.PComparable<java.util.Date> birthdate = _comparable("birthdate",java.util.Date.class);
     
-        public final Path.PComparable<java.lang.Integer> bodyWeight = _comparable("bodyWeight",java.lang.Integer.class);
+        public final Path.PNumber<java.lang.Integer> bodyWeight = _number("bodyWeight",java.lang.Integer.class);
         public final Path.PComparable<java.lang.Integer> breed = _comparable("breed",java.lang.Integer.class);
         public final Path.PSimple<Color> color = _simple("color",Color.class);
         public final Path.PSimple<Color> eyecolor = _simple("eyecolor",Color.class);

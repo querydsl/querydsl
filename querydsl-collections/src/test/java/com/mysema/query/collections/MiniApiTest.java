@@ -6,7 +6,12 @@
 package com.mysema.query.collections;
 
 
-import static com.mysema.query.collections.MiniApi.*;
+import static com.mysema.query.collections.MiniApi.from;
+import static com.mysema.query.collections.MiniApi.reject;
+import static com.mysema.query.collections.MiniApi.select;
+import static com.mysema.query.grammar.Grammar.gt;
+import static com.mysema.query.grammar.GrammarWithAlias.$;
+import static com.mysema.query.grammar.GrammarWithAlias.alias;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -18,6 +23,8 @@ import org.junit.Test;
 
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.Domain.QCat;
+import com.mysema.query.grammar.QMath;
+import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path.PEntity;
 
 /**
@@ -43,7 +50,7 @@ public class MiniApiTest {
     
     @Test
     public void testVarious(){
-        for(String[] strs : from($("a"), "aa","bb","cc").from($("b"), "a","b")
+        for(Object[] strs : from($("a"), "aa","bb","cc").from($("b"), "a","b")
                 .where($("a").startsWith($("b")))
                 .iterate($("a"),$("b"))){
             System.out.println(Arrays.asList(strs));
@@ -229,6 +236,36 @@ public class MiniApiTest {
 //        }
     }
     
+
+    @SuppressWarnings("unchecked")
+    @Test public void testMathFunctions(){
+        Cat c = alias(Cat.class,"c");
+        Expr<Integer> i = new Expr.EConstant<Integer>(1);
+        Expr<Double> d = new Expr.EConstant<Double>(1.0);
+        from(c, cats)
+        .iterate(
+                QMath.abs(i),
+                QMath.acos(d),
+                QMath.asin(d),
+                QMath.atan(d),
+                QMath.ceil(d),
+                QMath.cos(d),
+                QMath.tan(d),
+                QMath.sqrt(i),
+                QMath.sin(d),
+                QMath.round(d),
+                QMath.random(),
+                QMath.pow(d,d),
+                QMath.min(i,i),
+                QMath.max(i,i),
+                QMath.mod(i,i),
+                QMath.log10(d),
+                QMath.log(d),
+                QMath.floor(d),
+                QMath.exp(d)).iterator();
+          
+    }
+    
     @Test public void testSimpleSelect() {
     //  Iterable<Integer> threeAndFour = select(myInts, greaterThan(2));
         Iterable<Integer> threeAndFour = select(myInts, $(0).gt(2));  
@@ -244,5 +281,6 @@ public class MiniApiTest {
         for (Integer i : oneAndTwo) ints.add(i);
         assertEquals(Arrays.asList(1,2), ints);
     }
+    
     
 }

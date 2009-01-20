@@ -5,7 +5,7 @@
  */
 package com.mysema.query.collections;
 
-import static com.mysema.query.collections.MiniApi.$;
+import static com.mysema.query.grammar.GrammarWithAlias.$;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -20,7 +20,7 @@ import org.junit.Test;
 
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.Domain.QCat;
-import com.mysema.query.grammar.Grammar;
+import com.mysema.query.grammar.QMath;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 
@@ -98,7 +98,7 @@ public class ColQueryTest {
         Iterable<String> data2 = Arrays.asList("PETer", "thOMAS", "JOhan");
         
         Iterator<String> res = Arrays.asList("petER - PETer","THomas - thOMAS", "joHAN - JOhan").iterator();
-        for (String[] arr : query().from($("a"), data1).from($("b"), data2).where($("a").equalsIgnoreCase($("b"))).iterate($("a"),$("b"))){
+        for (Object[] arr : query().from($("a"), data1).from($("b"), data2).where($("a").equalsIgnoreCase($("b"))).iterate($("a"),$("b"))){
             assertEquals(res.next(), arr[0]+" - "+arr[1]);
         }
     }
@@ -125,7 +125,7 @@ public class ColQueryTest {
         query().from(cat,cats).where(cat.name.like("Kitt%")).select(cat.name);
         assertTrue(last.res.size() == 1);        
         
-        query().from(cat,cats).select(Grammar.add(cat.bodyWeight, cat.weight));        
+        query().from(cat,cats).select(QMath.add(cat.bodyWeight, cat.weight));        
     }
 
     @Test
@@ -188,7 +188,7 @@ public class ColQueryTest {
             System.out.println();
         }
         <RT> void select(Expr<RT> p1, Expr<RT> p2, Expr<RT>... rest){
-            for (RT[] o : iterate(p1, p2, rest)){
+            for (Object[] o : iterate(p1, p2, rest)){
                 System.out.println(Arrays.asList(o));
                 res.add(o);
             }

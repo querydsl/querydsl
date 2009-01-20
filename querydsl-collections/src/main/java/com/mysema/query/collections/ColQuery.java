@@ -57,18 +57,32 @@ public class ColQuery<S extends ColQuery<S>>{
     }
     
     @SuppressWarnings("unchecked")
-    public <RT> Iterable<RT[]> iterate(Expr<RT> e1, Expr<RT> e2, Expr<RT>... rest) {
-        final Expr<RT>[] full = asArray(new Expr[rest.length + 2], e1, e2, rest);
-        return query.iterate(new Constructor.CArray<RT>(e1.getType(), full));
+    public Iterable<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
+        final Expr<?>[] full = asArray(new Expr[rest.length + 2], e1, e2, rest);
+        boolean oneType = true;
+        if (e1.getType().isAssignableFrom((e2.getType()))){
+            for (Expr<?> e : rest){
+                if (!e1.getType().isAssignableFrom(e.getType())){
+                    oneType = false;
+                }
+            }
+        }else{
+            oneType = false;
+        }
+        Class<?> type = e1.getType();
+        if (!oneType){
+            type = Object.class;    
+        }  
+        return query.iterate(new Constructor.CArray(type, full));
     }    
     
     public <RT> Iterable<RT> iterate(Expr<RT> projection) {
         return query.iterate(projection);
     }
     
-    public <RT> List<RT[]> list(Expr<RT> e1, Expr<RT> e2, Expr<RT>... rest) {
-        ArrayList<RT[]> rv = new ArrayList<RT[]>();
-        for (RT[] v : iterate(e1, e2, rest)){
+    public List<Object[]> list(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
+        ArrayList<Object[]> rv = new ArrayList<Object[]>();
+        for (Object[] v : iterate(e1, e2, rest)){
             rv.add(v);
         }
         return rv;
