@@ -15,13 +15,9 @@ package com.mysema.query.grammar;
 public class Dialect {
     
     public static SqlOps forHqlsdb(){
-        return new SqlOps(){{
-            add(Ops.OpMath.CEIL, "ceiling(%s)");
-            add(Ops.OpMath.POWER, "power(%s,%s)");
+        return new SqlOps(){{                                  
             add(Ops.OpMath.ROUND, "round(%s,0)");
-            add(Ops.TRIM, "trim(both from %s)");
-            add(Ops.OpDateTime.CURRENT_DATE, "curdate()");
-            add(Ops.OpDateTime.CURRENT_TIME, "curtime()");
+            add(Ops.TRIM, "trim(both from %s)");            
         }};        
     }
     

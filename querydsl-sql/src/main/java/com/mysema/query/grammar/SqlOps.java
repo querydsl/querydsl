@@ -40,7 +40,15 @@ public class SqlOps extends OperationPatterns {
     
     {
         add(Ops.NOT, "not %s");
+        
+        // math
         add(Ops.OpMath.RANDOM, "rand()");
+        add(Ops.OpMath.CEIL, "ceiling(%s)");
+        add(Ops.OpMath.POWER, "power(%s,%s)");
+        
+        // date time
+        add(Ops.OpDateTime.CURRENT_DATE, "curdate()");
+        add(Ops.OpDateTime.CURRENT_TIME, "curtime()");        
     }
     
     public String aliasAs(){
