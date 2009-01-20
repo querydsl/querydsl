@@ -63,16 +63,18 @@ public class HqlOps extends OperationPatterns {
                 
         // HQL specific
         add(OpHql.SUM, "sum(%s)");
-        add(OpHql.SYSDATE, "sysdate");
-        add(OpHql.CURRENT_DATE, "current_date()");
-        add(OpHql.CURRENT_TIME, "current_time()");
-        add(OpHql.CURRENT_TIMESTAMP, "current_timestamp()");
-        add(OpHql.SECOND, "second(%s)");
-        add(OpHql.MINUTE, "minute(%s)");
-        add(OpHql.HOUR, "hour(%s)");
-        add(OpHql.DAY, "day(%s)");
-        add(OpHql.MONTH, "month(%s)");
-        add(OpHql.YEAR, "year(%s)");
+        
+        // date time
+        add(Ops.OpDateTime.SYSDATE, "sysdate");
+        add(Ops.OpDateTime.CURRENT_DATE, "current_date()");
+        add(Ops.OpDateTime.CURRENT_TIME, "current_time()");
+        add(Ops.OpDateTime.CURRENT_TIMESTAMP, "current_timestamp()");
+        add(Ops.OpDateTime.SECOND, "second(%s)");
+        add(Ops.OpDateTime.MINUTE, "minute(%s)");
+        add(Ops.OpDateTime.HOUR, "hour(%s)");
+        add(Ops.OpDateTime.DAY, "day(%s)");
+        add(Ops.OpDateTime.MONTH, "month(%s)");
+        add(Ops.OpDateTime.YEAR, "year(%s)");
         
         // quantified expressions
         add(OpQuant.AVG_IN_COL, "avg(%s)");
@@ -105,19 +107,9 @@ public class HqlOps extends OperationPatterns {
      * The Interface OpHql.
      */
     public interface OpHql{
-        Op<java.util.Date> CURRENT_DATE = new Op<java.util.Date>();
-        Op<java.util.Date> CURRENT_TIME = new Op<java.util.Date>();
-        Op<java.util.Date> CURRENT_TIMESTAMP = new Op<java.util.Date>();
-        Op<java.util.Date> DAY = new Op<java.util.Date>();
-        Op<java.util.Date> HOUR = new Op<java.util.Date>();
         Op<java.lang.Boolean> ISEMPTY = new Op<java.lang.Boolean>();
         Op<java.lang.Boolean> ISNOTEMPTY = new Op<java.lang.Boolean>();
-        Op<java.util.Date> MINUTE = new Op<java.util.Date>();
-        Op<java.util.Date> MONTH = new Op<java.util.Date>();
-        Op<java.util.Date> SECOND = new Op<java.util.Date>();
-        Op<java.lang.Number> SUM = new Op<java.lang.Number>();
-        Op<java.util.Date> SYSDATE = new Op<java.util.Date>();
-        Op<java.util.Date> YEAR = new Op<java.util.Date>();
+        Op<Number> SUM = new Op<Number>();
     }
         
     /**

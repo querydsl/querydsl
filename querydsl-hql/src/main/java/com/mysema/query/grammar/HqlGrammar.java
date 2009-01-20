@@ -57,19 +57,19 @@ public class HqlGrammar extends GrammarWithAlias{
     }        
     
     public static EComparable<Date> current_date(){
-        return createComparable(OpHql.CURRENT_DATE);
+        return createComparable(Date.class,Ops.OpDateTime.CURRENT_DATE);
     }    
     
     public static EComparable<Date> current_time(){
-        return createComparable(OpHql.CURRENT_TIME);
+        return createComparable(Date.class,Ops.OpDateTime.CURRENT_TIME);
     }    
     
     public static EComparable<Date> current_timestamp(){
-        return createComparable(OpHql.CURRENT_TIMESTAMP);
+        return createComparable(Date.class,Ops.OpDateTime.CURRENT_TIMESTAMP);
     }
     
     public static EComparable<Date> day(Expr<Date> date){
-        return createComparable(OpHql.DAY, date);
+        return createComparable(Date.class,Ops.OpDateTime.DAY, date);
     }    
     
     public static <T> Expr<T> distinct(Path<T> left){
@@ -85,7 +85,7 @@ public class HqlGrammar extends GrammarWithAlias{
     }
     
     public static EComparable<Date> hour(Expr<Date> date){
-        return createComparable(OpHql.HOUR, date);
+        return createComparable(Date.class,Ops.OpDateTime.HOUR, date);
     }  
 
     public static PComponentCollection<Integer> indices(PCollection<?> col){
@@ -145,11 +145,11 @@ public class HqlGrammar extends GrammarWithAlias{
     }        
     
     public static EComparable<Date> minute(Expr<Date> date){
-        return createComparable(OpHql.MINUTE, date);
+        return createComparable(Date.class,Ops.OpDateTime.MINUTE, date);
     }    
     
     public static EComparable<Date> month(Expr<Date> date){
-        return createComparable(OpHql.MONTH, date);
+        return createComparable(Date.class,Ops.OpDateTime.MONTH, date);
     }
     
     public static <A> Expr<A> newInstance(Class<A> a, Expr<?>... args){
@@ -161,7 +161,7 @@ public class HqlGrammar extends GrammarWithAlias{
     }
         
     public static EComparable<Date> second(Expr<Date> date){
-        return createComparable(OpHql.SECOND, date);
+        return createComparable(Date.class,Ops.OpDateTime.SECOND, date);
     }
     
     public static <A> SubQuery<HqlJoinMeta,A> select(Expr<A> select){
@@ -173,15 +173,15 @@ public class HqlGrammar extends GrammarWithAlias{
     }
         
     public static <D extends Number & Comparable<D>> ENumber<D> sum(Expr<D> left){ 
-        return createNumber(left.getType(), OpHql.SUM, left);
+        return createNumber(left.getType(), HqlOps.OpHql.SUM, left);
     }
     
     public static EComparable<Date> sysdate(){
-        return createComparable(OpHql.SYSDATE);
+        return createComparable(Date.class,Ops.OpDateTime.SYSDATE);
     }
     
     public static EComparable<Date> year(Expr<Date> date){
-        return createComparable(OpHql.YEAR, date);
+        return createComparable(Date.class,Ops.OpDateTime.YEAR, date);
     }
               
 }
