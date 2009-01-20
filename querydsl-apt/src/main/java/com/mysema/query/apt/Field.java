@@ -26,6 +26,7 @@ public class Field implements Comparable<Field> {
         ENTITYLIST, 
         ENTITYCOLLECTION, 
         ENTITYMAP, 
+        NUMERIC,
         SIMPLE, 
         SIMPLELIST, 
         SIMPLECOLLECTION, 

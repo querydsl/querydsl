@@ -41,6 +41,8 @@ public class Type implements Comparable<Type> {
     Set<Field> simpleFields = new TreeSet<Field>();
 
     Set<Field> comparableFields = new TreeSet<Field>();
+    
+    Set<Field> numericFields = new TreeSet<Field>();
 
     String simpleName, name;
 
@@ -77,6 +79,9 @@ public class Type implements Comparable<Type> {
             break;
         case COMPARABLE:
             comparableFields.add(fieldDecl);
+            break;
+        case NUMERIC:
+            numericFields.add(fieldDecl);
             break;
         case ENTITY:
             entityFields.add(fieldDecl);
@@ -158,6 +163,10 @@ public class Type implements Comparable<Type> {
         return comparableFields;
     }
 
+    public Collection<Field> getNumericFields(){
+        return numericFields;
+    }
+    
     public String getSimpleName() {
         return simpleName;
     }
@@ -181,6 +190,7 @@ public class Type implements Comparable<Type> {
         entityLists.addAll(decl.entityLists);
         entityMaps.addAll(decl.entityMaps);
         comparableFields.addAll(decl.comparableFields);
+        numericFields.addAll(decl.numericFields);
         simpleCollections.addAll(decl.simpleCollections);
         simpleFields.addAll(decl.simpleFields);
         simpleLists.addAll(decl.simpleLists);

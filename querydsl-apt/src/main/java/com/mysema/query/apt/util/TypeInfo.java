@@ -78,17 +78,23 @@ public class TypeInfo {
             }
         }
 
-        public void visitClassType(ClassType arg0) {
-            fullName = arg0.toString();
-            if (fullName.equals(String.class.getName())) {
-                fieldType = Field.Type.STRING;
-            } else if (fullName.equals(Boolean.class.getName())) {
-                fieldType = Field.Type.BOOLEAN;
-            } else if (fullName.equals(Locale.class.getName())) {
-                fieldType = Field.Type.SIMPLE;
-            } else if (fullName.startsWith("java")) {
-                fieldType = Field.Type.COMPARABLE;
-            }
+        public void visitClassType(ClassType arg0){
+            try {
+                fullName = arg0.toString();
+                if (fullName.equals(String.class.getName())) {
+                    fieldType = Field.Type.STRING;
+                } else if (fullName.equals(Boolean.class.getName())) {
+                    fieldType = Field.Type.BOOLEAN;
+                } else if (fullName.equals(Locale.class.getName())) {
+                    fieldType = Field.Type.SIMPLE;
+                } else if (fullName.startsWith("java") && Number.class.isAssignableFrom(Class.forName(fullName))) {
+                    fieldType = Field.Type.NUMERIC;
+                } else if (fullName.startsWith("java") && Comparable.class.isAssignableFrom(Class.forName(fullName))) {
+                    fieldType = Field.Type.COMPARABLE;
+                }    
+            }catch(Exception e){
+                throw new RuntimeException("error", e);
+            }            
         }
 
         public void visitEnumType(EnumType arg0) {
@@ -164,8 +170,12 @@ public class TypeInfo {
             }
             if (cl.equals(Boolean.class)) {
                 fieldType = Field.Type.BOOLEAN;
-            } else {
+            }else if (Number.class.isAssignableFrom(cl)){
+                fieldType = Field.Type.NUMERIC;
+            }else if (Comparable.class.isAssignableFrom(cl)){
                 fieldType = Field.Type.COMPARABLE;
+            } else {                               
+                fieldType = Field.Type.SIMPLE;
             }
             fullName = cl.getName();
             simpleName = cl.getSimpleName();

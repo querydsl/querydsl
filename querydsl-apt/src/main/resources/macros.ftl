@@ -13,6 +13,9 @@
     <#list decl.comparableFields as field>
 		<@comparableField field=field/>
     </#list>
+    <#list decl.numericFields as field>
+		<@numericField field=field/>
+    </#list>
 	<#list decl.simpleMaps as field>
     	<@simpleMap field=field/>
    	</#list>  
@@ -93,6 +96,10 @@
     }
 </#macro>
      
+<#macro numericField field>
+	public final Path.PNumber<${field.typeName}> ${field.name} = _number("${field.realName}",${field.typeName}.class);
+</#macro>
+         
 <#macro simpleField field>
 	public final Path.PSimple<${field.typeName}> ${field.name} = _simple("${field.realName}",${field.typeName}.class);
 </#macro>
