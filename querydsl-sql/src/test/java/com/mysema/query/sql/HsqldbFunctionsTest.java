@@ -22,7 +22,7 @@ public class HsqldbFunctionsTest {
     @Test
     public void testNumeric(){
         Expr<Integer> i = new Expr.EConstant<Integer>(1);
-        Expr<Double> d = new Expr.EConstant<Double>(1.0);
+        Expr<Double>  d = new Expr.EConstant<Double>(1.0);
 //    ABS(d)        returns the absolute value of a double value
         QMath.abs(i);
 //    ACOS(d)       returns the arc cosine of an angle

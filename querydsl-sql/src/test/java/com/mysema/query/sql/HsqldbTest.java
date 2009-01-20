@@ -7,7 +7,10 @@ import java.sql.Statement;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
+import com.mysema.query.Label;
+import com.mysema.query.FilteringTestRunner;
 import com.mysema.query.grammar.Dialect;
 
 /**
@@ -16,6 +19,8 @@ import com.mysema.query.grammar.Dialect;
  * @author tiwe
  * @version $Id$
  */
+@RunWith(FilteringTestRunner.class)
+@Label("hsqldb")
 public class HsqldbTest extends SqlQueryTest {
     
     @BeforeClass

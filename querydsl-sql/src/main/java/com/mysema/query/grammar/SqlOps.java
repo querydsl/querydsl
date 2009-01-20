@@ -27,7 +27,7 @@ public class SqlOps extends OperationPatterns {
         innerJoin = "\ninner join ",
         join = "\njoin ",
         leftJoin = "\nleft join ",
-        with = "\nwith ",
+        on = "\non ",
         where = "\nwhere ",
         groupBy = "\ngroup by ",
         having = "\nhaving ",
@@ -207,12 +207,12 @@ public class SqlOps extends OperationPatterns {
         return this;
     }
     
-    public String with() {
-        return with;
+    public String on() {
+        return on;
     }
        
-    public SqlOps with(String s){
-        with = s;
+    public SqlOps on(String s){
+        on = s;
         return this;
     }
 

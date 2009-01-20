@@ -9,8 +9,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
+import com.mysema.query.Label;
 import com.mysema.query.ResourceCheck;
-import com.mysema.query.ResourceCheckTestRunner;
+import com.mysema.query.FilteringTestRunner;
 import com.mysema.query.grammar.Dialect;
 
 /**
@@ -19,8 +20,9 @@ import com.mysema.query.grammar.Dialect;
  * @author tiwe
  * @version $Id$
  */
-@RunWith(ResourceCheckTestRunner.class)
+@RunWith(FilteringTestRunner.class)
 @ResourceCheck("/mysql.run")
+@Label("mysql")
 public class MySqlTest extends SqlQueryTest{
 
     @BeforeClass

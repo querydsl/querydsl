@@ -82,7 +82,7 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
             }            
             handle(je.getTarget());
             if (je.getCondition() != null){
-                _append(ops.with()).handle(je.getCondition());
+                _append(ops.on()).handle(je.getCondition());
             }
         }
         

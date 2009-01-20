@@ -10,7 +10,7 @@ import static com.mysema.query.grammar.Grammar.count;
 import static com.mysema.query.grammar.QMath.add;
 import static com.mysema.query.grammar.QMath.max;
 import static com.mysema.query.grammar.QMath.min;
-import static com.mysema.query.grammar.SqlGrammar.select;
+import static com.mysema.query.grammar.SqlGrammar.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
@@ -24,9 +24,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.AfterClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import com.mysema.query.ExcludeIn;
 import com.mysema.query.grammar.QDateTime;
 import com.mysema.query.grammar.QMath;
 import com.mysema.query.grammar.QString;
@@ -234,18 +234,17 @@ public abstract class SqlQueryTest {
     }
     
     @Test
-    @Ignore
+    @ExcludeIn("hsqldb")
     public void testQueryWithoutFrom() throws SQLException{
-        // NOTE : doesn't work in HSQLDB
         q().list(add(new Expr.EConstant<Integer>(1),1));
     }
     
     @Test
-    public void testWhereExists(){
-//        q().from(employee).where(exists()
+    public void testWhereExists() throws SQLException{
+        SubQuery<SqlJoinMeta,Integer> sq1 = select(max(employee.id)).from(employee);
+        q().from(employee).where(exists(sq1)).count();
     }
     
-    @SuppressWarnings("unchecked")
     @Test
     public void testMathFunctions() throws SQLException{
         Expr<Integer> i = new Expr.EConstant<Integer>(1);
