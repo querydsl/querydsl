@@ -5,7 +5,7 @@
  */
 package com.mysema.query.hql;
 
-import static com.mysema.query.grammar.Grammar.*;
+import static com.mysema.query.grammar.QMath.*;
 import static com.mysema.query.grammar.GrammarWithAlias.$;
 import static com.mysema.query.grammar.GrammarWithAlias.alias;
 import static com.mysema.query.grammar.HqlGrammar.*;
@@ -130,7 +130,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
     public void testDocoExamples95() throws Exception {
 //        parse( "select avg(cat.weight), sum(cat.weight), max(cat.weight), count(cat)\n"
 //                + "from eg.Cat cat" );
-        select(avg(cat.weight), sum(cat.weight), max(cat.weight), count(cat)).from(cat).parse();
+        select(avg(cat.weight), sum(cat.weight), QMath.max(cat.weight), count(cat)).from(cat).parse();
 //        parse( "select cat, count( elements(cat.kittens) )\n"
 //                + " from eg.Cat cat group by cat" );
         select(cat, count(cat.kittens)).from(cat).groupBy(cat).parse();
@@ -255,7 +255,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
 //
 //        parse( "select item from Item item, Order ord\n"
 //                + "where ord.items[ size(ord.items) - 1 ] = item" );
-        select(item).from(item, ord).where(ord.items(sub(ord.items.size(),1)).eq(item)).parse();
+        select(item).from(item, ord).where(ord.items(QMath.sub(ord.items.size(),1)).eq(item)).parse();
 //
 //        parse( "from eg.DomesticCat cat where upper(cat.name) like 'FRI%'" );
         from(cat).where(cat.name.upper().like("FRI%")).parse();
@@ -301,7 +301,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
 //                + "group by cat having avg(kitten.weight) > 100\n"
 //                + "order by count(kitten) asc, sum(kitten.weight) desc" );
         select(cat).from(cat).join(cat.kittens.as(kitten))
-            .groupBy(cat).having(avg(kitten.weight).gt(100))
+            .groupBy(cat).having(avg(kitten.weight).gt(100.0))
             .orderBy(count(kitten).asc(), sum(kitten.weight).desc()).parse();
     }
 
@@ -346,10 +346,10 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
             .where(not(ord.paid)
                 .and(ord.customer.eq(cust))
                 .and(price.product.eq(product))
-                .and(catalog.effectiveDate.lt(sysdate()))
-                .and(catalog.effectiveDate.gt(all(
+                .and(catalog.effectiveDate.after(sysdate()))
+                .and(catalog.effectiveDate.after(all(
                     HqlGrammar.select(catalog.effectiveDate).from(catalog)
-                    .where(catalog.effectiveDate.lt(sysdate()))
+                    .where(catalog.effectiveDate.before(sysdate()))
                 ))))
             .groupBy(ord)
             .having(sum(price.amount).gt(0l))
@@ -479,7 +479,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
 //        parse( "FROM eg.mypackage.Cat qat where qat.name not in ('crater','bean','fluffy')" );
         from(qat).where(qat.name.notIn("crater","bean","fluffy")).parse();
 //        parse( "from Animal an where sqrt(an.bodyWeight)/2 > 10" );
-        from(an).where(div(QMath.sqrt(an.bodyWeight),2).gt(10)).parse();
+        from(an).where(div(QMath.sqrt(an.bodyWeight),2).gt(10.0)).parse();
 //        parse( "from Animal an where (an.bodyWeight > 10 and an.bodyWeight < 100) or an.bodyWeight is null" );
         from(an).where(an.bodyWeight.gt(10).and(an.bodyWeight.lt(100).or(an.bodyWeight.isnull()))).parse();
     }

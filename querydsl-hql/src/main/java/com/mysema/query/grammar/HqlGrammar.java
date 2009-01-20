@@ -16,7 +16,17 @@ import com.mysema.query.grammar.HqlOps.HqlPathType;
 import com.mysema.query.grammar.HqlOps.OpHql;
 import com.mysema.query.grammar.HqlOps.OpQuant;
 import com.mysema.query.grammar.types.*;
+import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.grammar.types.Expr.EComparable;
+import com.mysema.query.grammar.types.Expr.EEntity;
+import com.mysema.query.grammar.types.Expr.ENumber;
+import com.mysema.query.grammar.types.Expr.ESimple;
 import com.mysema.query.grammar.types.HqlTypes.DistinctPath;
+import com.mysema.query.grammar.types.Path.*;
+import com.mysema.query.grammar.types.Quant.QBoolean;
+import com.mysema.query.grammar.types.Quant.QComparable;
+import com.mysema.query.grammar.types.Quant.QNumber;
+import com.mysema.query.grammar.types.Quant.QSimple;
 
 /**
  * HqlGrammar extends the Query DSL base grammar to provide HQL specific syntax elements.
@@ -27,38 +37,38 @@ import com.mysema.query.grammar.types.HqlTypes.DistinctPath;
 public class HqlGrammar extends GrammarWithAlias{
             
     public static <D> Expr<D> all(CollectionType<D> col){
-        return new Quant.Simple<D>(OpQuant.ALL, col);
+        return new QSimple<D>(OpQuant.ALL, col);
     }    
     
-    public static <D extends Comparable<D>> Expr.EComparable<D> all(CollectionType<D> col){
-        return new Quant.Comparable<D>(OpQuant.ALL, col);
+    public static <D extends Number & Comparable<D>> ENumber<D> all(CollectionType<D> col){
+        return new QNumber<D>(OpQuant.ALL, col);
     }
-    
-    public static <D> Expr.ESimple<D> any(CollectionType<D> col){
-        return new Quant.Simple<D>(OpQuant.ANY, col);
+        
+    public static <D> ESimple<D> any(CollectionType<D> col){
+        return new QSimple<D>(OpQuant.ANY, col);
     }    
     
-    public static <D extends Comparable<D>> Expr.EComparable<D> any(CollectionType<D> col){
-        return new Quant.Comparable<D>(OpQuant.ANY, col);
+    public static <D extends Number & Comparable<D>> ENumber<D> any(CollectionType<D> col){
+        return new QNumber<D>(OpQuant.ANY, col);
     }    
     
-    public static <A extends Comparable<A>> Expr.EComparable<A> avg(Path.PCollection<A> left){
-        return new Quant.Comparable<A>(OpQuant.AVG_IN_COL, left);
+    public static <A extends Comparable<A>> EComparable<A> avg(PCollection<A> left){
+        return new QComparable<A>(OpQuant.AVG_IN_COL, left);
     }        
     
-    public static Expr.EComparable<Date> current_date(){
+    public static EComparable<Date> current_date(){
         return createComparable(OpHql.CURRENT_DATE);
     }    
     
-    public static Expr.EComparable<Date> current_time(){
+    public static EComparable<Date> current_time(){
         return createComparable(OpHql.CURRENT_TIME);
     }    
     
-    public static Expr.EComparable<Date> current_timestamp(){
+    public static EComparable<Date> current_timestamp(){
         return createComparable(OpHql.CURRENT_TIMESTAMP);
     }
     
-    public static Expr.EComparable<Date> day(Expr<Date> date){
+    public static EComparable<Date> day(Expr<Date> date){
         return createComparable(OpHql.DAY, date);
     }    
     
@@ -66,79 +76,79 @@ public class HqlGrammar extends GrammarWithAlias{
         return new DistinctPath<T>(left);
     }    
     
-    public static <D> Expr.EBoolean exists(CollectionType<D> col){
-        return new Quant.Boolean<D>(OpQuant.EXISTS, col);
+    public static <D> EBoolean exists(CollectionType<D> col){
+        return new QBoolean<D>(OpQuant.EXISTS, col);
     }
     
-    public static <A> SubQuery<HqlJoinMeta,A> from(Expr.EEntity<A> select){
+    public static <A> SubQuery<HqlJoinMeta,A> from(EEntity<A> select){
         return new SubQuery<HqlJoinMeta,A>(select).from(select);
     }
     
-    public static Expr.EComparable<Date> hour(Expr<Date> date){
+    public static EComparable<Date> hour(Expr<Date> date){
         return createComparable(OpHql.HOUR, date);
     }  
 
-    public static Path.PComponentCollection<Integer> indices(Path.PCollection<?> col){
-        return new Path.PComponentCollection<Integer>(Integer.class, new PathMetadata<Collection<Integer>>(col, null, HqlPathType.LISTINDICES));
+    public static PComponentCollection<Integer> indices(PCollection<?> col){
+        return new PComponentCollection<Integer>(Integer.class, new PathMetadata<Collection<Integer>>(col, null, HqlPathType.LISTINDICES));
     }
     
-    public static <K,V> Path.PComponentCollection<K> indices(Path.PMap<K,V> col){
-        return new Path.PComponentCollection<K>(col.getKeyType(), new PathMetadata<Collection<Integer>>(col, null, HqlPathType.LISTINDICES));
+    public static <K,V> PComponentCollection<K> indices(PMap<K,V> col){
+        return new PComponentCollection<K>(col.getKeyType(), new PathMetadata<Collection<Integer>>(col, null, HqlPathType.LISTINDICES));
     }
     
-    public static Expr.EBoolean isempty(Path.PComponentCollection<?> collection) {
+    public static EBoolean isempty(PComponentCollection<?> collection) {
         return createBoolean(OpHql.ISEMPTY, collection);        
     }
                
-    public static Expr.EBoolean isempty(Path.PEntityCollection<?> collection) {
+    public static EBoolean isempty(PEntityCollection<?> collection) {
         return createBoolean(OpHql.ISEMPTY, collection);        
     }
     
-    public static Expr.EBoolean isnotempty(Path.PComponentCollection<?> collection) {
+    public static EBoolean isnotempty(PComponentCollection<?> collection) {
         return createBoolean(OpHql.ISNOTEMPTY, collection);        
     }
     
-    public static Expr.EBoolean isnotempty(Path.PEntityCollection<?> collection) {
+    public static EBoolean isnotempty(PEntityCollection<?> collection) {
         return createBoolean(OpHql.ISNOTEMPTY, collection);        
     }    
     
-    public static <A extends Comparable<A>> Expr.EComparable<A> max(Path.PCollection<A> left){
-        return new Quant.Comparable<A>(OpQuant.MAX_IN_COL, left);
+    public static <A extends Comparable<A>> EComparable<A> max(PCollection<A> left){
+        return new QComparable<A>(OpQuant.MAX_IN_COL, left);
     } 
     
-    public static <A> Path.PEntity<A> maxelement(Path.PEntityCollection<A> col) {
-        return new Path.PEntity<A>(col.getElementType(), col.getEntityName(), new PathMetadata<A>(col, null, HqlPathType.MINELEMENT));
+    public static <A> PEntity<A> maxelement(PEntityCollection<A> col) {
+        return new PEntity<A>(col.getElementType(), col.getEntityName(), new PathMetadata<A>(col, null, HqlPathType.MINELEMENT));
     }
     
-    public static <A> Path.PComparable<Integer> maxindex(Path.PComponentCollection<A> col) {
-        return new Path.PComparable<Integer>(Integer.class, new PathMetadata<Integer>(col, null, HqlPathType.MAXINDEX));
+    public static <A> PComparable<Integer> maxindex(PComponentCollection<A> col) {
+        return new PComparable<Integer>(Integer.class, new PathMetadata<Integer>(col, null, HqlPathType.MAXINDEX));
     }
     
-    public static <A> Path.PComparable<Integer> maxindex(Path.PEntityCollection<A> col) {
-        return new Path.PComparable<Integer>(Integer.class, new PathMetadata<Integer>(col, null, HqlPathType.MAXINDEX));
+    public static <A> PNumber<Integer> maxindex(PEntityCollection<A> col) {
+        return new PNumber<Integer>(Integer.class, new PathMetadata<Integer>(col, null, HqlPathType.MAXINDEX));
     }  
         
-    public static <A extends Comparable<A>> Expr.EComparable<A> min(Path.PCollection<A> left){
-        return new Quant.Comparable<A>(OpQuant.MIN_IN_COL, left);
+    public static <A extends Comparable<A>> EComparable<A> min(PCollection<A> left){
+        return new QComparable<A>(OpQuant.MIN_IN_COL, left);
     }       
     
-    public static <A> Path.PEntity<A> minelement(Path.PEntityCollection<A> col) {
-        return new Path.PEntity<A>(col.getElementType(), col.getEntityName(), new PathMetadata<A>(col, null, HqlPathType.MINELEMENT));
+    public static <A> PEntity<A> minelement(PEntityCollection<A> col) {
+        return new PEntity<A>(col.getElementType(), col.getEntityName(), new PathMetadata<A>(col, null, HqlPathType.MINELEMENT));
     } 
     
-    public static <A> Path.PComparable<Integer> minindex(Path.PComponentCollection<A> col) {
-        return new Path.PComparable<Integer>(Integer.class, new PathMetadata<Integer>(col, null, HqlPathType.MININDEX));
+    public static <A> PComparable<Integer> minindex(PComponentCollection<A> col) {
+        return new PComparable<Integer>(Integer.class, new PathMetadata<Integer>(col, null, HqlPathType.MININDEX));
     }
     
-    public static <A> Path.PComparable<Integer> minindex(Path.PEntityCollection<A> col) {
-        return new Path.PComparable<Integer>(Integer.class, new PathMetadata<Integer>(col, null, HqlPathType.MININDEX));
+    public static <A> PComparable<Integer> minindex(PEntityCollection<A> col) {
+        return new PComparable<Integer>(Integer.class, new PathMetadata<Integer>(col, null, HqlPathType.MININDEX));
     }        
     
-    public static Expr.EComparable<Date> minute(Expr<Date> date){
+    public static EComparable<Date> minute(Expr<Date> date){
         return createComparable(OpHql.MINUTE, date);
     }    
     
-    public static Expr.EComparable<Date> month(Expr<Date> date){
+    public static EComparable<Date> month(Expr<Date> date){
         return createComparable(OpHql.MONTH, date);
     }
     
@@ -146,11 +156,11 @@ public class HqlGrammar extends GrammarWithAlias{
         return new Constructor<A>(a,args);
     }
     
-    public static <D> Expr.EBoolean notExists(CollectionType<D> col){
-        return new Quant.Boolean<D>(OpQuant.NOTEXISTS, col);
+    public static <D> EBoolean notExists(CollectionType<D> col){
+        return new QBoolean<D>(OpQuant.NOTEXISTS, col);
     }
         
-    public static Expr.EComparable<Date> second(Expr<Date> date){
+    public static EComparable<Date> second(Expr<Date> date){
         return createComparable(OpHql.SECOND, date);
     }
     
@@ -162,15 +172,15 @@ public class HqlGrammar extends GrammarWithAlias{
         return any(col);
     }
         
-    public static <D extends Comparable<D>> Expr.EComparable<D> sum(Expr<D> left){ 
-        return createNumber(OpHql.SUM, left);
+    public static <D extends Number & Comparable<D>> ENumber<D> sum(Expr<D> left){ 
+        return createNumber(left.getType(), OpHql.SUM, left);
     }
     
-    public static Expr.EComparable<Date> sysdate(){
+    public static EComparable<Date> sysdate(){
         return createComparable(OpHql.SYSDATE);
     }
     
-    public static Expr.EComparable<Date> year(Expr<Date> date){
+    public static EComparable<Date> year(Expr<Date> date){
         return createComparable(OpHql.YEAR, date);
     }
               

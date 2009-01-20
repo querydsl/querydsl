@@ -14,6 +14,10 @@ import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.*;
 import com.mysema.query.grammar.types.HqlTypes.DistinctPath;
+import com.mysema.query.grammar.types.Quant.QBoolean;
+import com.mysema.query.grammar.types.Quant.QComparable;
+import com.mysema.query.grammar.types.Quant.QNumber;
+import com.mysema.query.grammar.types.Quant.QSimple;
 import com.mysema.query.serialization.BaseSerializer;
 
 
@@ -166,15 +170,19 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         visitOperation(q.getOperator(), q.getTarget());
     }
 
-    protected void visit(Quant.Boolean<?> q){
+    protected void visit(QBoolean<?> q){
         visit((Quant)q);
     }
     
-    protected void visit(Quant.Comparable<?> q){
+    protected void visit(QComparable<?> q){
+        visit((Quant)q);
+    }
+    
+    protected void visit(QNumber<?> q){
         visit((Quant)q);
     }
 
-    protected void visit(Quant.Simple<?> q){
+    protected void visit(QSimple<?> q){
         visit((Quant)q);
     }
 

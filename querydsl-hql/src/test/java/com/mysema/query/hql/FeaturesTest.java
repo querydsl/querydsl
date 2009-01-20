@@ -5,11 +5,7 @@
  */
 package com.mysema.query.hql;
 
-import static com.mysema.query.grammar.Grammar.add;
-import static com.mysema.query.grammar.Grammar.div;
-import static com.mysema.query.grammar.Grammar.mult;
-import static com.mysema.query.grammar.Grammar.not;
-import static com.mysema.query.grammar.Grammar.sub;
+import static com.mysema.query.grammar.QMath.*;
 import static com.mysema.query.grammar.HqlGrammar.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

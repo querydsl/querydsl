@@ -21,10 +21,10 @@ public interface Quant {
     /**
      * The Class Boolean.
      */
-    public static class Boolean<Q> extends Expr.EBoolean implements Quant{
+    public static class QBoolean<Q> extends Expr.EBoolean implements Quant{
         private final Expr<?> col;
         private final Op<?> op;
-        public Boolean(Op<?> op, CollectionType<Q> col) {
+        public QBoolean(Op<?> op, CollectionType<Q> col) {
             this.op = op;
             this.col = (Expr<?>) col;
         }
@@ -35,10 +35,22 @@ public interface Quant {
     /**
      * The Class Comparable.
      */
-    public static class Comparable<Q extends java.lang.Comparable<Q>> extends Expr.EComparable<Q> implements Quant{
+    public static class QComparable<Q extends java.lang.Comparable<Q>> extends Expr.EComparable<Q> implements Quant{
         private final Expr<?> col;
         private final Op<?> op;
-        public Comparable(Op<?> op, CollectionType<Q> col) {
+        public QComparable(Op<?> op, CollectionType<Q> col) {
+            super(null);
+            this.op = op;
+            this.col = (Expr<?>)col;
+        }
+        public Op<?> getOperator() {return op;}
+        public Expr<?> getTarget() {return col;}                          
+    }
+    
+    public static class QNumber<Q extends  Number & java.lang.Comparable<Q>> extends Expr.ENumber<Q> implements Quant{
+        private final Expr<?> col;
+        private final Op<?> op;
+        public QNumber(Op<?> op, CollectionType<Q> col) {
             super(null);
             this.op = op;
             this.col = (Expr<?>)col;
@@ -50,10 +62,10 @@ public interface Quant {
     /**
      * The Class Simple.
      */
-    public static class Simple<Q> extends Expr.ESimple<Q> implements Quant{
+    public static class QSimple<Q> extends Expr.ESimple<Q> implements Quant{
         private final Expr<?> col;
         private final Op<?> op;
-        public Simple(Op<?> op, CollectionType<Q> col) {
+        public QSimple(Op<?> op, CollectionType<Q> col) {
             super(null);
             this.op = op;
             this.col = (Expr<?>)col;
