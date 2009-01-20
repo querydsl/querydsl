@@ -96,11 +96,11 @@ public class Grammar {
     }
     
     public static Expr<Character> charAt(Expr<String> left, Expr<Integer> right) {
-        return createComparable(Ops.CHAR_AT, left, right);
+        return createComparable(Character.class, Ops.CHAR_AT, left, right);
     }
         
     public static Expr<Character> charAt(Expr<String> left, int right) {
-        return createComparable(Ops.CHAR_AT, left, createConstant(right));
+        return createComparable(Character.class, Ops.CHAR_AT, left, createConstant(right));
     }
     
     public static EString concat(Expr<String> left, Expr<String> right) {

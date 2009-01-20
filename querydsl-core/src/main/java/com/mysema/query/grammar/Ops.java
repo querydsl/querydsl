@@ -78,14 +78,27 @@ public interface Ops {
     Op<Boolean> ENDSWITH = new Op<Boolean>();
     Op<Boolean> CONTAINS = new Op<Boolean>();
     
-
-    /**
-     * The Interface OpNumberAgg.
-     */
     public interface OpNumberAgg{
         Op<Number> AVG = new Op<Number>();
         Op<Number> MAX = new Op<Number>();
         Op<Number> MIN = new Op<Number>();   
+    }
+    
+    public interface OpDateTime{
+        Op<java.util.Date> CURRENT_DATE = new Op<java.util.Date>();
+        Op<java.util.Date> CURRENT_TIME = new Op<java.util.Date>();
+        Op<java.util.Date> CURRENT_TIMESTAMP = new Op<java.util.Date>();
+        Op<Integer> DAY = new Op<Integer>();
+        Op<Integer> HOUR = new Op<Integer>();        
+        Op<Integer> MINUTE = new Op<Integer>();
+        Op<Integer> MONTH = new Op<Integer>();
+        Op<Integer> SECOND = new Op<Integer>();        
+        Op<java.util.Date> SYSDATE = new Op<java.util.Date>();
+        Op<Integer> YEAR = new Op<Integer>();
+        Op<Integer> WEEK = new Op<Integer>();
+        Op<Integer> DAY_OF_WEEK = new Op<Integer>();
+        Op<Integer> DAY_OF_MONTH = new Op<Integer>();
+        Op<Integer> DAY_OF_YEAR =new Op<Integer>();
     }
     
     public interface OpMath{
@@ -107,7 +120,13 @@ public interface Ops {
         Op<Number> LOG10 = new Op<Number>();
         Op<Number> LOG = new Op<Number>();
         Op<Number> FLOOR = new Op<Number>();
-        Op<Number> EXP = new Op<Number>();
-        
+        Op<Number> EXP = new Op<Number>();        
+    }
+    
+    public interface OpString{
+        Op<Number> LENGTH = new Op<Number>();
+        Op<String> LTRIM = new Op<String>();
+        Op<String> RTRIM = new Op<String>();
+        Op<String> SPACE = new Op<String>();
     }
 }

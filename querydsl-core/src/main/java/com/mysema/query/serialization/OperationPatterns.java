@@ -73,6 +73,22 @@ public abstract class OperationPatterns{
         add(Ops.TRIM, "trim(%s)");
         add(Ops.UPPER, "upper(%s)");
         
+        // date time
+        add(Ops.OpDateTime.SYSDATE, "sysdate");
+        add(Ops.OpDateTime.CURRENT_DATE, "current_date()");
+        add(Ops.OpDateTime.CURRENT_TIME, "current_time()");
+        add(Ops.OpDateTime.CURRENT_TIMESTAMP, "current_timestamp()");
+        add(Ops.OpDateTime.SECOND, "second(%s)");
+        add(Ops.OpDateTime.MINUTE, "minute(%s)");
+        add(Ops.OpDateTime.HOUR, "hour(%s)");
+        add(Ops.OpDateTime.DAY, "day(%s)");
+        add(Ops.OpDateTime.WEEK, "week(%s)");
+        add(Ops.OpDateTime.MONTH, "month(%s)");
+        add(Ops.OpDateTime.YEAR, "year(%s)");
+        add(Ops.OpDateTime.DAY_OF_WEEK, "dayofweek(%s)");
+        add(Ops.OpDateTime.DAY_OF_MONTH, "dayofmonth(%s)");
+        add(Ops.OpDateTime.DAY_OF_YEAR, "dayofyear(%s)");
+        
         // math
         add(Ops.OpMath.ABS,"abs(%s)");
         add(Ops.OpMath.ACOS,"acos(%s)");
@@ -91,8 +107,14 @@ public abstract class OperationPatterns{
         add(Ops.OpMath.MOD,"mod(%s,%s)");
         add(Ops.OpMath.LOG10,"log10(%s)");
         add(Ops.OpMath.LOG,"log(%s)");
-        add(Ops.OpMath.FLOOR,"floor(%s)");
+        add(Ops.OpMath.FLOOR,"floor(%s)");               
         add(Ops.OpMath.EXP,"exp(%s)");
+        
+        // string 
+        add(Ops.OpString.LENGTH, "length(%s)");
+        add(Ops.OpString.LTRIM, "ltrim(%s)");
+        add(Ops.OpString.RTRIM, "rtrim(%s)");
+        add(Ops.OpString.SPACE, "space(%s)");
                 
         // path types
         for (PathType type : new PathType[]{PathMetadata.LISTVALUE, PathMetadata.LISTVALUE_CONSTANT, PathMetadata.MAPVALUE, PathMetadata.MAPVALUE_CONSTANT}){

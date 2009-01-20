@@ -25,10 +25,10 @@ public class Factory {
         return new Operation.OBoolean(operator, args);
     }
     
-    public static final <OpType, RT extends Comparable<RT>> Expr.EComparable<RT> createComparable(Op<OpType> operator, Expr<?>... args) {
+    public static final <OpType, RT extends Comparable<RT>> Expr.EComparable<RT> createComparable(Class<RT> type, Op<OpType> operator, Expr<?>... args) {
         checkArg("operator",operator);
         checkArg("args",args);
-        return new Operation.OComparable<OpType,RT>(operator, args);
+        return new Operation.OComparable<OpType,RT>(type, operator, args);
     }
     
     @SuppressWarnings("unchecked")

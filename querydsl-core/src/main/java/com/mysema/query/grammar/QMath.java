@@ -1,11 +1,14 @@
+/*
+ * Copyright (c) 2008 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.grammar;
-
-import static com.mysema.query.grammar.types.Factory.createConstant;
-import static com.mysema.query.grammar.types.Factory.createNumber;
 
 import com.mysema.query.grammar.Ops.OpMath;
 import com.mysema.query.grammar.Ops.OpNumberAgg;
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.Factory;
 import com.mysema.query.grammar.types.Expr.ENumber;
 
 /**
@@ -14,7 +17,7 @@ import com.mysema.query.grammar.types.Expr.ENumber;
  * @author tiwe
  * @version $Id$
  */
-public class QMath {
+public class QMath extends Factory{
         
     public static <A extends Number & Comparable<A>> ENumber<A> mult(Expr<A> left, A right) {
         return createNumber(left.getType(), Ops.MULT, left, createConstant(right));
