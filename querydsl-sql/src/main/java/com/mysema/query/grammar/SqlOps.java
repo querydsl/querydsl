@@ -38,6 +38,10 @@ public class SqlOps extends OperationPatterns {
         offset = "\noffset ",
         union = "\nunion\n";
     
+    {
+        add(Ops.OpMath.RANDOM, "rand()");
+    }
+    
     public String aliasAs(){
         return aliasAs;
     }

@@ -1,7 +1,11 @@
 package com.mysema.query.sql;
 
+import java.sql.Time;
+import java.util.Date;
+
 import org.junit.Test;
 
+import com.mysema.query.grammar.QDateTime;
 import com.mysema.query.grammar.QMath;
 import com.mysema.query.grammar.QString;
 import com.mysema.query.grammar.types.Expr;
@@ -120,27 +124,40 @@ public class HsqldbFunctionsTest {
     
     @Test
     public void testDateTimeFunctions(){
+        Expr<Date> d = new Expr.EConstant<Date>(new Date());
+        Expr<Time> t = new Expr.EConstant<Time>(new Time(0));
 //
 //    Date/Time built-in Functions / Stored Procedures
 //
 //    CURDATE()             returns the current date
-        
+        QDateTime.currentDate();
 //    CURTIME()             returns the current time
+        QDateTime.currentTime();
 //    DATEDIFF(string, datetime1, datetime2)[2]
 //        returns the count of units of time elapsed from datetime1 to datetime2. The string indicates the unit of time and can have the following values 'ms'='millisecond', 'ss'='second','mi'='minute','hh'='hour', 'dd'='day', 'mm'='month', 'yy' = 'year'. Both the long and short form of the strings can be used.
 //    DAYNAME(date)         returns the name of the day
 //    DAYOFMONTH(date)      returns the day of the month (1-31)
+        QDateTime.dayOfMonth(d);
 //    DAYOFWEEK(date)       returns the day of the week (1 means Sunday)
+        QDateTime.dayOfWeek(d);
 //    DAYOFYEAR(date)       returns the day of the year (1-366)
+        QDateTime.dayOfYear(d);
 //    HOUR(time)            return the hour (0-23)
+        QDateTime.hour(t);
 //    MINUTE(time)          returns the minute (0-59)
+        QDateTime.minute(t);
 //    MONTH(date)           returns the month (1-12)
+        QDateTime.month(d);
 //    MONTHNAME(date)       returns the name of the month
 //    NOW()                 returns the current date and time as a timestamp) - use CURRENT_TIMESTAMP instead
-//    QUARTER(date)         returns the quarter (1-4)
+        QDateTime.now();
+//    QUARTER(date)         returns the quarter (1-4)        
 //    SECOND(time)          returns the second (0-59)
+        QDateTime.second(t);
 //    WEEK(date)            returns the week of this year (1-53)
+        QDateTime.week(d);
 //    YEAR(date)            returns the year
+        QDateTime.year(d);
 //    CURRENT_DATE[2]       returns the current date
 //    CURRENT_TIME[2]       returns the current time
 //    CURRENT_TIMESTAMP[2]  returns the current timestamp

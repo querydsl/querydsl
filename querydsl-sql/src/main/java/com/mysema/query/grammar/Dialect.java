@@ -18,15 +18,16 @@ public class Dialect {
         return new SqlOps(){{
             add(Ops.OpMath.CEIL, "ceiling(%s)");
             add(Ops.OpMath.POWER, "power(%s,%s)");
-            add(Ops.OpMath.RANDOM, "rand()");
             add(Ops.OpMath.ROUND, "round(%s,0)");
             add(Ops.TRIM, "trim(both from %s)");
+            add(Ops.OpDateTime.CURRENT_DATE, "curdate()");
+            add(Ops.OpDateTime.CURRENT_TIME, "curtime()");
         }};        
     }
     
     public static SqlOps forMySQL(){
         return new SqlOps(){{
-            add(Ops.OpMath.RANDOM, "rand()");
+            
         }};
     }
     

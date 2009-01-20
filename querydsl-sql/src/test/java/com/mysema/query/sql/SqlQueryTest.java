@@ -18,19 +18,23 @@ import static org.junit.Assert.fail;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.mysema.query.grammar.QDateTime;
 import com.mysema.query.grammar.QMath;
 import com.mysema.query.grammar.QString;
 import com.mysema.query.grammar.SqlJoinMeta;
 import com.mysema.query.grammar.SqlOps;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.SubQuery;
+import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.EString;
 import com.mysema.query.sql.domain.QEMPLOYEE;
 import com.mysema.query.sql.domain.QSURVEY;
@@ -286,6 +290,28 @@ public abstract class SqlQueryTest {
             q().from(employee).list(e);
         }    
     }
+    
+    @Test
+    public void testDateTimeFunctions() throws SQLException{
+        Expr<Date> d = new Expr.EConstant<Date>(new Date());
+        Expr<Time> t = new Expr.EConstant<Time>(new Time(0));
+        for (EComparable<?> e : Arrays.<EComparable<?>>asList(
+                QDateTime.currentDate(),
+                QDateTime.currentTime(),
+                QDateTime.dayOfMonth(d),
+                QDateTime.dayOfWeek(d),
+                QDateTime.dayOfYear(d),
+                QDateTime.hour(t),
+                QDateTime.minute(t),
+                QDateTime.month(d),
+                QDateTime.now(),
+                QDateTime.second(t),
+                QDateTime.week(d),
+                QDateTime.year(d))){
+            q().from(employee).list(e);
+        }    
+    }
+        
     
     protected final SqlQuery q(){
         return new SqlQuery(connHolder.get(), dialect){
