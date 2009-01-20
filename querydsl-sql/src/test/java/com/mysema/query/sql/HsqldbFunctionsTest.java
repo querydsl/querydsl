@@ -166,77 +166,44 @@ public class HsqldbFunctionsTest {
 //    Date/Time built-in Functions / Stored Procedures
 //
 //    CURDATE()
-//
 //        returns the current date
+        
 //    CURTIME()
-//
 //        returns the current time
 //    DATEDIFF(string, datetime1, datetime2)[2]
-//
 //        returns the count of units of time elapsed from datetime1 to datetime2. The string indicates the unit of time and can have the following values 'ms'='millisecond', 'ss'='second','mi'='minute','hh'='hour', 'dd'='day', 'mm'='month', 'yy' = 'year'. Both the long and short form of the strings can be used.
 //    DAYNAME(date)
-//
 //        returns the name of the day
 //    DAYOFMONTH(date)
-//
 //        returns the day of the month (1-31)
 //    DAYOFWEEK(date)
-//
 //        returns the day of the week (1 means Sunday)
 //    DAYOFYEAR(date)
-//
 //        returns the day of the year (1-366)
 //    HOUR(time)
-//
 //        return the hour (0-23)
 //    MINUTE(time)
-//
 //        returns the minute (0-59)
 //    MONTH(date)
-//
 //        returns the month (1-12)
 //    MONTHNAME(date)
-//
 //        returns the name of the month
 //    NOW()
-//
 //        returns the current date and time as a timestamp) - use CURRENT_TIMESTAMP instead
 //    QUARTER(date)
-//
 //        returns the quarter (1-4)
 //    SECOND(time)
-//
 //        returns the second (0-59)
 //    WEEK(date)
-//
 //        returns the week of this year (1-53)
 //    YEAR(date)
-//
 //        returns the year
 //    CURRENT_DATE[2]
-//
 //        returns the current date
 //    CURRENT_TIME[2]
-//
 //        returns the current time
 //    CURRENT_TIMESTAMP[2]
-//
 //        returns the current timestamp
-//
-//    System/Connection built-in Functions / Stored Procedures
-//
-//    DATABASE()
-//
-//        returns the name of the database of this connection
-//    USER()
-//
-//        returns the user name of this connection
-//    CURRENT_USER
-//
-//        SQL standard function, returns the user name of this connection
-//    IDENTITY()
-//
-//        returns the last identity values that was inserted by this connection
     }   
     
     @Test

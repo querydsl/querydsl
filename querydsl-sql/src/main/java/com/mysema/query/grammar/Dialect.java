@@ -23,6 +23,12 @@ public class Dialect {
         }};        
     }
     
-    // TODO : MySQL, PostgreSQL, Microsoft SQL Server, Oracle 9-11
+    public static SqlOps forMySQL(){
+        return new SqlOps(){{
+            add(Ops.OpMath.RANDOM, "rand()");
+        }};
+    }
+    
+    // TODO : PostgreSQL, Microsoft SQL Server, Oracle 9-11
         
 }
