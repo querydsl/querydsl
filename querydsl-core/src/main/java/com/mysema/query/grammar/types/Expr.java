@@ -5,7 +5,11 @@
  */
 package com.mysema.query.grammar.types;
 
+import static com.mysema.query.grammar.types.Factory.createBoolean;
+import static com.mysema.query.grammar.types.Factory.createConstant;
+
 import com.mysema.query.grammar.Grammar;
+import com.mysema.query.grammar.Ops;
 import com.mysema.query.grammar.OrderSpecifier;
 
 /**
@@ -14,7 +18,6 @@ import com.mysema.query.grammar.OrderSpecifier;
  * @author tiwe
  * @version $Id$
  */
-//TODO : add equals and hashCode
 public abstract class Expr<D> {
         
     private final Class<D> type;
@@ -47,16 +50,8 @@ public abstract class Expr<D> {
         public EBoolean between(D first, D second) {return Grammar.between(this,first,second);}       
         public EBoolean between(Expr<D> first, Expr<D> second) {return Grammar.between(this,first,second);}  
         public OrderSpecifier<D> desc() {return Grammar.desc(this);}        
-        public EBoolean goe(D right) {return Grammar.goe(this,right);}  
-        public EBoolean goe(Expr<D> right) {return Grammar.goe(this,right);}         
-        public EBoolean gt(D right) {return Grammar.gt(this,right);}  
-        public EBoolean gt(Expr<D> right) {return Grammar.gt(this,right);}
         public EBoolean in(CollectionType<D> arg) {return Grammar.in(this, arg);}
         public EBoolean in(D... args) {return Grammar.in(this,args);}
-        public EBoolean loe(D right) {return Grammar.loe(this,right);}
-        public EBoolean loe(Expr<D> right) {return Grammar.loe(this,right);}
-        public EBoolean lt(D right) {return Grammar.lt(this,right);}  
-        public EBoolean lt(Expr<D> right) {return Grammar.lt(this,right);}
         public EBoolean notBetween(D first, D second) {return Grammar.notBetween(this, first, second);}
         public EBoolean notBetween(Expr<D> first, Expr<D> second) {return Grammar.notBetween(this,first,second);}
         public EBoolean notIn(CollectionType<D> arg) {return Grammar.notIn(this, arg);}
@@ -104,6 +99,22 @@ public abstract class Expr<D> {
      */
     public static abstract class ELiteral<D> extends ESimple<D>{
         public ELiteral(Class<D> type) {super(type);}
+    }
+    
+    /**
+     * The Class Number.
+     */
+    public static abstract class ENumber<D extends Number & Comparable<D>> extends EComparable<D>{
+        public ENumber(Class<D> type) {super(type);}
+        public <A extends Number & Comparable<A>> EBoolean goe(A right) {return createBoolean(Ops.GOE, this, createConstant(right));}  
+        public <A extends Number & Comparable<A>> EBoolean goe(Expr<A> right) {return createBoolean(Ops.GOE, this, right);}         
+        public <A extends Number & Comparable<A>> EBoolean gt(A right) {return createBoolean(Ops.GT, this, createConstant(right));}  
+        public <A extends Number & Comparable<A>> EBoolean gt(Expr<A> right) {return createBoolean(Ops.GT, this, right);}
+        public <A extends Number & Comparable<A>> EBoolean loe(A right) {return createBoolean(Ops.LOE, this, createConstant(right));}
+        public <A extends Number & Comparable<A>> EBoolean loe(Expr<A> right) {return createBoolean(Ops.LOE, this, right);}
+        public <A extends Number & Comparable<A>> EBoolean lt(A right) {return createBoolean(Ops.LT, this, createConstant(right));}  
+        public <A extends Number & Comparable<A>> EBoolean lt(Expr<A> right) {return createBoolean(Ops.LT, this, right);}
+        
     }
     
     /**

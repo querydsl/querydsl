@@ -84,12 +84,12 @@ public abstract class OperationPatterns{
         add(Ops.OpMath.SQRT,"sqrt(%s)");
         add(Ops.OpMath.SIN,"sin(%s)");
         add(Ops.OpMath.ROUND,"round(%s)");
-        add(Ops.OpMath.RANDOM,"random(%s)");
-        add(Ops.OpMath.POWER,"%s^%s");
+        add(Ops.OpMath.RANDOM,"random()");
+        add(Ops.OpMath.POWER,"pow(%s,%s)");
         add(Ops.OpMath.MIN,"min(%s,%s)");
         add(Ops.OpMath.MAX,"max(%s,%s)");
         add(Ops.OpMath.MOD,"mod(%s,%s)");
-        add(Ops.OpMath.LOG10,"log(%s)");
+        add(Ops.OpMath.LOG10,"log10(%s)");
         add(Ops.OpMath.LOG,"log(%s)");
         add(Ops.OpMath.FLOOR,"floor(%s)");
         add(Ops.OpMath.EXP,"exp(%s)");

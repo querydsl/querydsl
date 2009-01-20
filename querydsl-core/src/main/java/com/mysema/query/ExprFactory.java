@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
+import com.mysema.query.grammar.types.Expr.ENumber;
 import com.mysema.query.grammar.types.ExtTypes.ExtString;
 import com.mysema.query.grammar.types.Path.*;
 
@@ -21,22 +22,24 @@ import com.mysema.query.grammar.types.Path.*;
  */
 public interface ExprFactory {
 
-    EBoolean create(Boolean arg);
+    EBoolean createBoolean(Boolean arg);
 
-    PBooleanArray create(Boolean[] args);
-
-    <D extends Comparable<D>> EComparable<D> create(D arg);
-
-    <D> PEntity<D> create(D arg);
+    PBooleanArray createBooleanArray(Boolean[] args);
     
-    <D> PEntityList<D> create(List<D> arg);
+    <D extends Number & Comparable<D>> ENumber<D> createNumber(D arg);
+
+    <D extends Comparable<D>> EComparable<D> createComparable(D arg);
+
+    <D> PEntity<D> createEntity(D arg);
     
-    <D> PEntityCollection<D> create(Collection<D> arg);
+    <D> PEntityList<D> createEntityList(List<D> arg);
+    
+    <D> PEntityCollection<D> createEntityCollection(Collection<D> arg);
 
-    <D extends Comparable<D>> PComparableArray<D> create(D[] args);
+    <D extends Comparable<D>> PComparableArray<D> createComparableArray(D[] args);
 
-    ExtString create(String arg);
+    ExtString createString(String arg);
 
-    PStringArray create(String[] args);
+    PStringArray createStringArray(String[] args);
 
 }

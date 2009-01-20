@@ -175,7 +175,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         // primitive types   
             
         } else if (Integer.class.equals(type) || int.class.equals(type)) {
-            path = new Path.PComparable<Integer>(Integer.class,pm);
+            path = new Path.PNumber<Integer>(Integer.class,pm);
             rv =  (T) Integer.valueOf(42);
             
         } else if (Date.class.equals(type)) {
@@ -183,7 +183,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             rv =  (T) new Date();
             
         } else if (Long.class.equals(type) || long.class.equals(type)) {
-            path = new Path.PComparable<Long>(Long.class,pm);
+            path = new Path.PNumber<Long>(Long.class,pm);
             rv =  (T) Long.valueOf(42l);
             
         } else if (Short.class.equals(type) || short.class.equals(type)) {
@@ -191,19 +191,19 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             rv =  (T) Short.valueOf((short)42);
             
         } else if (Double.class.equals(type) || double.class.equals(type)) {
-            path = new Path.PComparable<Double>(Double.class,pm);
+            path = new Path.PNumber<Double>(Double.class,pm);
             rv =  (T) Double.valueOf(42d);
             
         } else if (Float.class.equals(type) || float.class.equals(type)) {
-            path = new Path.PComparable<Float>(Float.class,pm);
+            path = new Path.PNumber<Float>(Float.class,pm);
             rv =  (T) Float.valueOf(42f);
             
         } else if (BigInteger.class.equals(type)) {
-            path = new Path.PComparable<BigInteger>(BigInteger.class,pm);
+            path = new Path.PNumber<BigInteger>(BigInteger.class,pm);
             rv =  (T) BigInteger.valueOf(42l);
             
         } else if (BigDecimal.class.equals(type)) {
-            path = new Path.PComparable<BigDecimal>(BigDecimal.class,pm);
+            path = new Path.PNumber<BigDecimal>(BigDecimal.class,pm);
             rv =  (T) BigDecimal.valueOf(42d);
             
         } else if (Boolean.class.equals(type) || boolean.class.equals(type)) {

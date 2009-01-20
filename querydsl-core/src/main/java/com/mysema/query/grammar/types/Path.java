@@ -10,11 +10,7 @@ import static com.mysema.query.grammar.types.PathMetadata.*;
 import java.lang.reflect.Array;
 
 import com.mysema.query.grammar.Grammar;
-import com.mysema.query.grammar.types.Expr.EBoolean;
-import com.mysema.query.grammar.types.Expr.EComparable;
-import com.mysema.query.grammar.types.Expr.EEntity;
-import com.mysema.query.grammar.types.Expr.ESimple;
-import com.mysema.query.grammar.types.Expr.EString;
+import com.mysema.query.grammar.types.Expr.*;
 
 
 /**
@@ -105,6 +101,22 @@ public interface Path<C> {
         private EBoolean isnull, isnotnull;
         private final PathMetadata<?> metadata;
         public PComparable(Class<D> type, PathMetadata<?> metadata) {
+            super(type);
+            this.metadata = metadata;
+        }
+        public PathMetadata<?> getMetadata() {return metadata;}
+        public EBoolean isnotnull() {
+            return isnotnull == null ? isnotnull = Grammar.isnotnull(this) : isnotnull; 
+        }
+        public EBoolean isnull() {
+            return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
+        }
+    }
+    
+    public static class PNumber<D extends Number & Comparable<D>> extends ENumber<D> implements Path<D>{
+        private EBoolean isnull, isnotnull;
+        private final PathMetadata<?> metadata;
+        public PNumber(Class<D> type, PathMetadata<?> metadata) {
             super(type);
             this.metadata = metadata;
         }
@@ -229,7 +241,10 @@ public interface Path<C> {
         }
         protected <A extends Comparable<A>> PComparable<A> _comparable(String path,Class<A> type) {
             return new PComparable<A>(type, forProperty(this, path));
-        }        
+        }    
+        protected <A extends Number & Comparable<A>> PNumber<A> _number(String path,Class<A> type) {
+            return new PNumber<A>(type, forProperty(this, path));
+        }   
         protected <A> PEntity<A> _entity(String path, String entityName, Class<A> type){
             return new PEntity<A>(type, entityName, forProperty(this, path)); 
         }
@@ -273,7 +288,7 @@ public interface Path<C> {
     public static class PEntityCollection<D> extends EEntity<java.util.Collection<D>> implements PCollection<D>{
         private EBoolean isnull, isnotnull;
         private final PathMetadata<?> metadata;
-        private EComparable<Integer> size;        
+        private ENumber<Integer> size;        
         protected final Class<D> type;
         protected final String entityName;
         public PEntityCollection(Class<D> type, String entityName, PathMetadata<?> metadata) {
@@ -292,8 +307,8 @@ public interface Path<C> {
         public EBoolean isnull() {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
-        public EComparable<Integer> size() { 
-            return size == null ? size = new PComparable<Integer>(Integer.class, forSize(this)) : size;
+        public ENumber<Integer> size() { 
+            return size == null ? size = new PNumber<Integer>(Integer.class, forSize(this)) : size;
         }
         public EBoolean contains(D child) {
             return Grammar.in(child, this);

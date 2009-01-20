@@ -18,6 +18,7 @@ import org.apache.commons.lang.StringUtils;
 import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
+import com.mysema.query.grammar.types.Expr.ENumber;
 import com.mysema.query.grammar.types.ExtTypes.ExtString;
 import com.mysema.query.grammar.types.Path.*;
 
@@ -80,6 +81,13 @@ public class SimpleExprFactory implements ExprFactory {
             return new PComparable(arg.getClass(), md());
         }    
     });
+    
+    private final Map<Object,PNumber<?>> numToPath = new PathFactory<Object,PNumber<?>>(new Transformer<Object,PNumber<?>>(){
+        @SuppressWarnings("unchecked")
+        public PNumber<?> transform(Object arg) {
+            return new PNumber(arg.getClass(), md());
+        }    
+    });
         
     private final Map<Object,PStringArray> saToPath = new PathFactory<Object,PStringArray>(new Transformer<Object,PStringArray>(){
         public PStringArray transform(Object arg) {
@@ -100,65 +108,49 @@ public class SimpleExprFactory implements ExprFactory {
         }        
     });
     
-    /* (non-Javadoc)
-     * @see com.mysema.query.collections.ExprFactory#create(java.lang.Boolean)
-     */
-    public EBoolean create(Boolean arg){
+    public EBoolean createBoolean(Boolean arg){
         return arg.booleanValue() ? btrue : bfalse;
     }
     
-    /* (non-Javadoc)
-     * @see com.mysema.query.collections.ExprFactory#create(java.lang.Boolean[])
-     */
-    public PBooleanArray create(Boolean[] args){
+    public PBooleanArray createBooleanArray(Boolean[] args){
         return baToPath.get(Arrays.asList(args));
     }
     
     @SuppressWarnings("unchecked")
-    public <D> PEntityCollection<D> create(Collection<D> arg) {
+    public <D> PEntityCollection<D> createEntityCollection(Collection<D> arg) {
         return (PEntityCollection<D>) ecToPath.get(arg);
     }
     
-    /* (non-Javadoc)
-     * @see com.mysema.query.collections.ExprFactory#create(D)
-     */
     @SuppressWarnings("unchecked")
-    public <D extends Comparable<D>> EComparable<D> create(D arg){
+    public <D extends Comparable<D>> EComparable<D> createComparable(D arg){
         return (EComparable<D>) comToPath.get(arg);
     }
     
-    /* (non-Javadoc)
-     * @see com.mysema.query.collections.ExprFactory#create(D)
-     */
     @SuppressWarnings("unchecked")
-    public <D> PEntity<D> create(D arg){
-        return (PEntity<D>) entityToPath.get(arg);
+    public <D extends Number & Comparable<D>> ENumber<D> createNumber(D arg) {
+        return (ENumber<D>) numToPath.get(arg);
     }
     
-    /* (non-Javadoc)
-     * @see com.mysema.query.collections.ExprFactory#create(D[])
-     */
     @SuppressWarnings("unchecked")
-    public <D extends Comparable<D>> PComparableArray<D> create(D[] args){
+    public <D> PEntity<D> createEntity(D arg){
+        return (PEntity<D>) entityToPath.get(arg);
+    }
+ 
+    @SuppressWarnings("unchecked")
+    public <D extends Comparable<D>> PComparableArray<D> createComparableArray(D[] args){
         return (PComparableArray<D>) caToPath.get(Arrays.asList(args));
     }
 
     @SuppressWarnings("unchecked")
-    public <D> PEntityList<D> create(List<D> arg) {
+    public <D> PEntityList<D> createEntityList(List<D> arg) {
         return (PEntityList<D>) elToPath.get(arg);
     }
-    
-    /* (non-Javadoc)
-     * @see com.mysema.query.collections.ExprFactory#create(java.lang.String)
-     */
-    public ExtString create(String arg){
+
+    public ExtString createString(String arg){
         return StringUtils.isEmpty(arg) ? strExt : strToExtPath.get(arg);
     }
     
-    /* (non-Javadoc)
-     * @see com.mysema.query.collections.ExprFactory#create(java.lang.String[])
-     */
-    public PStringArray create(String[] args){
+    public PStringArray createStringArray(String[] args){
         return saToPath.get(Arrays.asList(args));
     }
     
@@ -175,5 +167,7 @@ public class SimpleExprFactory implements ExprFactory {
         }
                 
     }
+
+
    
 }

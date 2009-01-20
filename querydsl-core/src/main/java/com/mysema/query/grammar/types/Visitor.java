@@ -111,6 +111,8 @@ public abstract class Visitor<T extends Visitor<T>> {
     
     protected abstract void visit(Path.PMap<?,?> expr);
     
+    protected abstract void visit(Path.PNumber<?> expr);
+    
     protected abstract void visit(Path.PSimple<?> expr);
     
     protected abstract void visit(Path.PString expr);

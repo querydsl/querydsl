@@ -8,6 +8,7 @@ package com.mysema.query.grammar.types;
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
+import com.mysema.query.grammar.types.Expr.ENumber;
 import com.mysema.query.grammar.types.Expr.EString;
 
 
@@ -43,10 +44,14 @@ public interface Operation<OP,RT> {
     public static class OComparable<OpType,D extends Comparable<D>> extends EComparable<D> implements Operation<OpType,D> {
         private final Expr<?>[] args;
         private final Op<OpType> op;
-        public OComparable(Op<OpType> op, Expr<?>... args){
-            super(null);
+        public OComparable(Class<D> type, Op<OpType> op, Expr<?>... args){
+            super(type);
             this.op = op;
             this.args = args;
+        }
+        
+        public OComparable(Op<OpType> op, Expr<?>... args){
+            this(null, op, args);
         }
         public Expr<?>[] getArgs() {return args;}
         public Op<OpType> getOperator() {return op;}    
@@ -55,10 +60,20 @@ public interface Operation<OP,RT> {
     /**
      * The Class Number.
      */
-    public static class ONumber<N extends Number,D extends Comparable<D>> extends OComparable<N,D>{
-        public ONumber(Op<N> op, Expr<?>[] args) {
-            super(op, args);
-        }        
+    public static class ONumber<OpType extends Number, D extends Number & Comparable<D>> extends ENumber<D> implements Operation<OpType,D>{
+        private final Expr<?>[] args;
+        private final Op<OpType> op;
+        public ONumber(Class<D> type, Op<OpType> op, Expr<?>... args){
+            super(type);
+            this.op = op;
+            this.args = args;
+        }
+        
+        public ONumber(Op<OpType> op, Expr<?>... args){
+            this(null, op, args);
+        }
+        public Expr<?>[] getArgs() {return args;}
+        public Op<OpType> getOperator() {return op;}        
     }
     
     /**

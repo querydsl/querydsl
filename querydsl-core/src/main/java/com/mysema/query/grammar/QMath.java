@@ -1,9 +1,12 @@
 package com.mysema.query.grammar;
 
-import com.mysema.query.grammar.Ops.OpMath;
-import com.mysema.query.grammar.types.Expr;
+import static com.mysema.query.grammar.types.Factory.createConstant;
+import static com.mysema.query.grammar.types.Factory.createNumber;
 
-import static com.mysema.query.grammar.types.Factory.*;
+import com.mysema.query.grammar.Ops.OpMath;
+import com.mysema.query.grammar.Ops.OpNumberAgg;
+import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.Expr.ENumber;
 
 /**
  * QMath provides
@@ -12,80 +15,120 @@ import static com.mysema.query.grammar.types.Factory.*;
  * @version $Id$
  */
 public class QMath {
+        
+    public static <A extends Number & Comparable<A>> ENumber<A> mult(Expr<A> left, A right) {
+        return createNumber(left.getType(), Ops.MULT, left, createConstant(right));
+    }
 
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> abs(Expr<A> left){
-        return createNumber(OpMath.ABS, left);
+    public static <A extends Number & Comparable<A>> ENumber<A> mult(Expr<A> left, Expr<A> right) {
+        return createNumber(left.getType(), Ops.MULT, left, right);
+    }
+        
+    public static <A extends Number & Comparable<A>> ENumber<Double> div(Expr<A> left, A right) {
+        return createNumber(Double.class,Ops.DIV, left, createConstant(right));
+    }
+
+    public static <A extends Number & Comparable<A>> ENumber<Double> div(Expr<A> left, Expr<A> right) {
+        return createNumber(Double.class,Ops.DIV, left, right);
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> acos(Expr<A> left){
-        return createNumber(OpMath.ACOS, left);
+    public static <A extends Number & Comparable<A>> ENumber<A> add(Expr<A> left, A right) {
+        return createNumber(left.getType(), Ops.ADD, left, createConstant(right));
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> asin(Expr<A> left){
-        return createNumber(OpMath.ASIN, left);
+    public static <A extends Number & Comparable<A>> ENumber<A> add(Expr<A> left, Expr<A> right) {
+        return createNumber(left.getType(), Ops.ADD, left, right);
+    }
+
+    public static <A extends Number & Comparable<A>> ENumber<A> sub(Expr<A> left, A right) {
+        return createNumber(left.getType(), Ops.SUB, left, createConstant(right));
+    }
+
+    public static <A extends Number & Comparable<A>> ENumber<A> sub(Expr<A> left, Expr<A> right) {
+        return createNumber(left.getType(), Ops.SUB, left, right);
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> atan(Expr<A> left){
-        return createNumber(OpMath.ATAN, left);
+    public static <A extends Number & Comparable<A>> ENumber<A> abs(Expr<A> left){
+        return createNumber(left.getType(), OpMath.ABS, left);
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> ceil(Expr<A> left){
-        return createNumber(OpMath.CEIL, left);
+    public static ENumber<Double> acos(Expr<Double> left){
+        return createNumber(left.getType(), OpMath.ACOS, left);
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> cos(Expr<A> left){
-        return createNumber(OpMath.COS, left);
+    public static ENumber<Double> asin(Expr<Double> left){
+        return createNumber(left.getType(),OpMath.ASIN, left);
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> exp(Expr<A> left){
-        return createNumber(OpMath.EXP, left);
+    public static ENumber<Double> atan(Expr<Double> left){
+        return createNumber(left.getType(),OpMath.ATAN, left);
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> floor(Expr<A> left){
-        return createNumber(OpMath.FLOOR, left);
+    public static ENumber<Double> ceil(Expr<Double> left){
+        return createNumber(left.getType(),OpMath.CEIL, left);
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> log(Expr<A> left){
-        return createNumber(OpMath.LOG, left);
+    public static ENumber<Double> cos(Expr<Double> left){
+        return createNumber(left.getType(),OpMath.COS, left);
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> log10(Expr<A> left){
-        return createNumber(OpMath.LOG10, left);
+    public static ENumber<Double> exp(Expr<Double> left){
+        return createNumber(left.getType(),OpMath.EXP, left);
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> max(Expr<A> left, Expr<A> right){
-        return createNumber(OpMath.MAX, left, right);
+    public static ENumber<Double> floor(Expr<Double> left){
+        return createNumber(left.getType(),OpMath.FLOOR, left);
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> min(Expr<A> left, Expr<A> right){
-        return createNumber(OpMath.MIN, left, right);
+    public static ENumber<Double> log(Expr<Double> left){
+        return createNumber(left.getType(),OpMath.LOG, left);
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> mod(Expr<A> left, Expr<A> right){
-        return createNumber(OpMath.MOD, left, right);
+    public static ENumber<Double> log10(Expr<Double> left){
+        return createNumber(left.getType(),OpMath.LOG10, left);
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> pow(Expr<A> left, Expr<A> right){
-        return createNumber(OpMath.POWER, left, right);
+    public static <A extends Number & Comparable<A>> ENumber<A> max(Expr<A> left, Expr<A> right){
+        return createNumber(left.getType(),OpMath.MAX, left, right);
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> random(){
-        return createNumber(OpMath.RANDOM);
+    public static <A extends Number & Comparable<A>> ENumber<A> min(Expr<A> left, Expr<A> right){
+        return createNumber(left.getType(),OpMath.MIN, left, right);
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> round(Expr<A> left){
-        return createNumber(OpMath.ROUND, left);
+    public static ENumber<Integer> mod(Expr<Integer> left, Expr<Integer> right){
+        return createNumber(left.getType(),OpMath.MOD, left, right);
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> sin(Expr<A> left){
-        return createNumber(OpMath.SIN, left);
+    public static ENumber<Double> pow(Expr<Double> left, Expr<Double> right){
+        return createNumber(left.getType(),OpMath.POWER, left, right);
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> sqrt(Expr<A> left){
-        return createNumber(OpMath.SQRT, left);
+    public static ENumber<Double> random(){
+        return createNumber(Double.class,OpMath.RANDOM);
     }
     
-    public static <A extends Number & Comparable<A>> Expr.EComparable<A> tan(Expr<A> left){
-        return createNumber(OpMath.TAN, left);
+    public static ENumber<Double> round(Expr<Double> left){
+        return createNumber(left.getType(),OpMath.ROUND, left);
+    }
+    
+    public static ENumber<Double> sin(Expr<Double> left){
+        return createNumber(left.getType(),OpMath.SIN, left);
+    }
+    
+    public static <A extends Number & Comparable<A>> ENumber<A> sqrt(Expr<A> left){
+        return createNumber(left.getType(),OpMath.SQRT, left);
+    }
+    
+    public static ENumber<Double> tan(Expr<Double> left){
+        return createNumber(left.getType(),OpMath.TAN, left);
+    }
+    
+    public static <A extends Number & Comparable<A>> ENumber<A> max(Expr<A> left){
+        return createNumber(left.getType(), OpNumberAgg.MAX, left);
+    }
+
+    public static <A extends Number & Comparable<A>> ENumber<A> min(Expr<A> left){
+        return createNumber(left.getType(), OpNumberAgg.MIN, left);
     }
 }
