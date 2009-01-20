@@ -15,10 +15,12 @@ package com.mysema.query.grammar;
 public class Dialect {
     
     public static SqlOps forHqlsdb(){
-        return new SqlOps(){
-//            add(Ops.OpMath.CEIL, "ceiling(%s)");
-            
-        };
+        return new SqlOps(){{
+            add(Ops.OpMath.CEIL, "ceiling(%s)");
+            add(Ops.OpMath.POWER, "power(%s,%s)");
+            add(Ops.OpMath.RANDOM, "rand()");
+            add(Ops.OpMath.ROUND, "round(%s,0)");
+        }};        
     }
     
     // TODO : MySQL, PostgreSQL, Microsoft SQL Server, Oracle 9-11

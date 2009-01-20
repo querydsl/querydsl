@@ -17,18 +17,19 @@ public class HsqldbFunctionsTest {
     @Test
     public void testNumeric(){
         Expr<Integer> i = new Expr.EConstant<Integer>(1);
+        Expr<Double> d = new Expr.EConstant<Double>(1.0);
 //    ABS(d)
 //        returns the absolute value of a double value
         QMath.abs(i);
 //    ACOS(d)
 //        returns the arc cosine of an angle
-        QMath.acos(i);
+        QMath.acos(d);
 //    ASIN(d)
 //        returns the arc sine of an angle
-        QMath.asin(i);
+        QMath.asin(d);
 //    ATAN(d)
 //        returns the arc tangent of an angle
-        QMath.atan(i);
+        QMath.atan(d);
 //    ATAN2(a,b)
 //        returns the tangent of a/b
         
@@ -40,10 +41,10 @@ public class HsqldbFunctionsTest {
         
 //    CEILING(d)
 //        returns the smallest integer that is not less than d
-        QMath.ceil(i);
+        QMath.ceil(d);
 //    COS(d)
 //        returns the cosine of an angle
-        QMath.cos(i);
+        QMath.cos(d);
 //    COT(d)
 //        returns the cotangent of an angle
         
@@ -52,16 +53,16 @@ public class HsqldbFunctionsTest {
         
 //    EXP(d)
 //        returns e (2.718...) raised to the power of d
-        QMath.exp(i);
+        QMath.exp(d);
 //    FLOOR(d)
 //        returns the largest integer that is not greater than d
-        QMath.floor(i);
+        QMath.floor(d);
 //    LOG(d)
 //        returns the natural logarithm (base e)
-        QMath.log(i);
+        QMath.log(d);
 //    LOG10(d)
 //        returns the logarithm (base 10)
-        QMath.log10(i);
+        QMath.log10(d);
 //    MOD(a,b)
 //        returns a modulo b
         QMath.mod(i,i);
@@ -70,16 +71,16 @@ public class HsqldbFunctionsTest {
         
 //    POWER(a,b)
 //        returns a raised to the power of b
-        QMath.pow(i,i);
+        QMath.pow(d,d);
 //    RADIANS(d)
 //        converts degrees to radians
         
 //    RAND()
 //        returns a random number x bigger or equal to 0.0 and smaller than 1.0
-        QMath.<Integer>random();
+        QMath.random();
 //    ROUND(a,b)
 //        rounds a to b digits after the decimal point
-        QMath.round(i);
+        QMath.round(d);
 //    ROUNDMAGIC(d)
 //        solves rounding problems such as 3.11-3.1-0.01
         
@@ -88,13 +89,13 @@ public class HsqldbFunctionsTest {
         
 //    SIN(d)//
 //        returns the sine of an angle
-        QMath.sin(i);        
+        QMath.sin(d);        
 //    SQRT(d)
 //        returns the square root
         QMath.sqrt(i);
 //    TAN(A)
 //        returns the trigonometric tangent of an angle
-        QMath.tan(i);
+        QMath.tan(d);
 //    TRUNCATE(a,b)
 //        truncates a to b digits after the decimal point
     }   

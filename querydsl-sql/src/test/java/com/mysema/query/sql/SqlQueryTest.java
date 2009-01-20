@@ -5,7 +5,11 @@
  */
 package com.mysema.query.sql;
 
-import static com.mysema.query.grammar.Grammar.*;
+import static com.mysema.query.grammar.Grammar.avg;
+import static com.mysema.query.grammar.Grammar.count;
+import static com.mysema.query.grammar.QMath.add;
+import static com.mysema.query.grammar.QMath.max;
+import static com.mysema.query.grammar.QMath.min;
 import static com.mysema.query.grammar.SqlGrammar.select;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -16,6 +20,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.AfterClass;
@@ -297,6 +302,35 @@ public class SqlQueryTest {
     @Test
     public void testWhereExists(){
 //        q().from(employee).where(exists()
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testFunctions() throws SQLException{
+        Expr<Integer> i = new Expr.EConstant<Integer>(1);
+        Expr<Double> d = new Expr.EConstant<Double>(1.0);
+        for (Expr<?> e : Arrays.<Expr<?>>asList(
+                QMath.abs(i),
+                QMath.acos(d),
+                QMath.asin(d),
+                QMath.atan(d),
+                QMath.ceil(d),
+                QMath.cos(d),
+                QMath.tan(d),
+                QMath.sqrt(i),
+                QMath.sin(d),
+                QMath.round(d),
+                QMath.random(),
+                QMath.pow(d,d),
+//                QMath.min(i,i),
+//                QMath.max(i,i),
+                QMath.mod(i,i),
+                QMath.log10(d),
+                QMath.log(d),
+                QMath.floor(d),
+                QMath.exp(d))){
+            q().from(employee).list((Expr<? extends Comparable>)e);
+        }
     }
     
     private SqlQuery q(){
