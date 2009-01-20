@@ -64,6 +64,8 @@ public abstract class OperationPatterns{
         add(Ops.ISNULL, "%s is null",26);
         add(Ops.ISNOTNULL, "%s is not null",26);
         
+        add(Ops.EXISTS, "exists(%s)");
+        
         // string
         add(Ops.CONCAT, "%s + %s",37);
         add(Ops.LIKE, "%s like %s",27);

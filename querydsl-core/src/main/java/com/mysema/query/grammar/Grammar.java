@@ -5,14 +5,12 @@
  */
 package com.mysema.query.grammar;
 
-
-import static com.mysema.query.grammar.types.Factory.*;
-
 import com.mysema.query.grammar.Ops.OpNumberAgg;
 import com.mysema.query.grammar.types.Alias;
 import com.mysema.query.grammar.types.CollectionType;
 import com.mysema.query.grammar.types.CountExpression;
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.Factory;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.ENumber;
@@ -27,7 +25,7 @@ import com.mysema.query.grammar.types.Path.PEntityCollection;
  * @author tiwe
  * @version $Id$
  */
-public class Grammar {
+public class Grammar extends Factory{
     
     protected Grammar(){};
     

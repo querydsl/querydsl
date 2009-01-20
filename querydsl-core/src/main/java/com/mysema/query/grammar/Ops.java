@@ -78,6 +78,9 @@ public interface Ops {
     Op<Boolean> ENDSWITH = new Op<Boolean>();
     Op<Boolean> CONTAINS = new Op<Boolean>();
     
+    // subquery operations
+    Op<Boolean> EXISTS = new Op<Boolean>();
+    
     public interface OpNumberAgg{
         Op<Number> AVG = new Op<Number>();
         Op<Number> MAX = new Op<Number>();
