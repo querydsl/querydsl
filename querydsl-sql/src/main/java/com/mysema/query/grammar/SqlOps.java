@@ -39,6 +39,7 @@ public class SqlOps extends OperationPatterns {
         union = "\nunion\n";
     
     {
+        add(Ops.NOT, "not %s");
         add(Ops.OpMath.RANDOM, "rand()");
     }
     

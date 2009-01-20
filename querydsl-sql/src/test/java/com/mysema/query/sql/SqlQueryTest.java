@@ -243,6 +243,7 @@ public abstract class SqlQueryTest {
     public void testWhereExists() throws SQLException{
         SubQuery<SqlJoinMeta,Integer> sq1 = select(max(employee.id)).from(employee);
         q().from(employee).where(exists(sq1)).count();
+        q().from(employee).where(not(exists(sq1))).count();
     }
     
     @Test
