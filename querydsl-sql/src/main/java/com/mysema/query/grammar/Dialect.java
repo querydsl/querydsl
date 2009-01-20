@@ -20,6 +20,7 @@ public class Dialect {
             add(Ops.OpMath.POWER, "power(%s,%s)");
             add(Ops.OpMath.RANDOM, "rand()");
             add(Ops.OpMath.ROUND, "round(%s,0)");
+            add(Ops.TRIM, "trim(both from %s)");
         }};        
     }
     

@@ -26,10 +26,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.grammar.QMath;
+import com.mysema.query.grammar.QString;
 import com.mysema.query.grammar.SqlJoinMeta;
 import com.mysema.query.grammar.SqlOps;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.SubQuery;
+import com.mysema.query.grammar.types.Expr.EString;
 import com.mysema.query.sql.domain.QEMPLOYEE;
 import com.mysema.query.sql.domain.QSURVEY;
 import com.mysema.query.sql.domain.QTEST;
@@ -241,7 +243,7 @@ public abstract class SqlQueryTest {
     
     @SuppressWarnings("unchecked")
     @Test
-    public void testFunctions() throws SQLException{
+    public void testMathFunctions() throws SQLException{
         Expr<Integer> i = new Expr.EConstant<Integer>(1);
         Expr<Double> d = new Expr.EConstant<Double>(1.0);
         for (Expr<?> e : Arrays.<Expr<?>>asList(
@@ -268,7 +270,24 @@ public abstract class SqlQueryTest {
         }
     }
     
-    private SqlQuery q(){
+    @Test
+    public void testStringFunctions() throws SQLException{
+        EString s = employee.firstname;
+        for (EString e : Arrays.<EString>asList(
+                s.lower(),
+                s.upper(),
+                s.substring(1),
+                s.trim(),
+                s.concat("abc"),
+                QString.ltrim(s),
+                QString.rtrim(s),
+//                QString.length(s),
+                QString.space(4))){
+            q().from(employee).list(e);
+        }    
+    }
+    
+    protected final SqlQuery q(){
         return new SqlQuery(connHolder.get(), dialect){
             @Override
             protected String buildQueryString() {

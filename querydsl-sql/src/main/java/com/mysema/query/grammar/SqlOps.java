@@ -154,17 +154,6 @@ public class SqlOps extends OperationPatterns {
         return this;
     }
 
-    public SqlOps newLineToSingleSpace(){
-        for (Field field : SqlOps.class.getDeclaredFields()){            
-            try {
-                field.set(this, field.get(this).toString().replace('\n', ' '));
-            } catch (Exception e) {
-                throw new RuntimeException("error", e);
-            }
-        }
-        return this;
-    }
-
     public String offset() {
         return offset;
     }
@@ -194,32 +183,6 @@ public class SqlOps extends OperationPatterns {
     
     public boolean supportsAlias() {
         return true;
-    }
-
-    @Override
-    public SqlOps toLowerCase(){
-        super.toLowerCase();
-        for (Field field : SqlOps.class.getDeclaredFields()){            
-            try {
-                field.set(this, field.get(this).toString().toUpperCase());
-            } catch (Exception e) {
-                throw new RuntimeException("error", e);
-            }
-        }
-        return this;
-    }
-
-    @Override
-    public SqlOps toUpperCase(){
-        super.toUpperCase();     
-        for (Field field : SqlOps.class.getDeclaredFields()){            
-            try {
-                field.set(this, field.get(this).toString().toUpperCase());
-            } catch (Exception e) {
-                throw new RuntimeException("error", e);
-            }
-        }
-        return this;
     }
 
     public String union() {
@@ -255,6 +218,43 @@ public class SqlOps extends OperationPatterns {
     
     public SqlOps dummyTable(String dt){
         dummyTable = dt;
+        return this;
+    }
+    
+    public SqlOps newLineToSingleSpace(){
+        for (Field field : SqlOps.class.getDeclaredFields()){            
+            try {
+                field.set(this, field.get(this).toString().replace('\n', ' '));
+            } catch (Exception e) {
+                throw new RuntimeException("error", e);
+            }
+        }
+        return this;
+    }
+    
+    @Override
+    public SqlOps toLowerCase(){
+        super.toLowerCase();
+        for (Field field : SqlOps.class.getDeclaredFields()){            
+            try {
+                field.set(this, field.get(this).toString().toUpperCase());
+            } catch (Exception e) {
+                throw new RuntimeException("error", e);
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public SqlOps toUpperCase(){
+        super.toUpperCase();     
+        for (Field field : SqlOps.class.getDeclaredFields()){            
+            try {
+                field.set(this, field.get(this).toString().toUpperCase());
+            } catch (Exception e) {
+                throw new RuntimeException("error", e);
+            }
+        }
         return this;
     }
 
