@@ -14,6 +14,7 @@ package com.mysema.query.grammar;
  */
 public class Dialect {
     
+    // tested
     public static SqlOps forHqlsdb(){
         return new SqlOps(){{                                  
             add(Ops.OpMath.ROUND, "round(%s,0)");
@@ -21,12 +22,24 @@ public class Dialect {
         }};        
     }
     
+    // tested
     public static SqlOps forMySQL(){
-        return new SqlOps(){{
-            
-        }};
+        return new SqlOps();
     }
     
-    // TODO : PostgreSQL, Microsoft SQL Server, Oracle 9-11
+    // TODO : test
+    public static SqlOps forPostgreSQL(){
+        return new SqlOps();
+    }
+
+    // TODO : test
+    public static SqlOps forSQLServer(){
+        return new SqlOps();
+    }
         
+    // TODO : test
+    public static SqlOps forOracle(){
+        return new SqlOps();
+    }
+           
 }
