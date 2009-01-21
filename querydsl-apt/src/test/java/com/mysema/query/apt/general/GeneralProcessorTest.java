@@ -35,7 +35,7 @@ public class GeneralProcessorTest {
     public GeneralProcessorTest() {
         type = new Type("com.mysema.query.DomainSuperClass",
                 "com.mysema.query.DomainClass", "DomainClass");
-        Field field = new Field("field", null, "java.lang.String",
+        Field field = new Field("field", "field", null, "java.lang.String",
                 "java.lang.String", Field.Type.STRING);
         type.addField(field);
         Parameter param = new Parameter("name", "java.lang.String");

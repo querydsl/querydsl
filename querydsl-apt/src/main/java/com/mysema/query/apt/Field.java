@@ -44,26 +44,12 @@ public class Field implements Comparable<Field> {
      */
     public Field(FieldDeclaration field) {
         TypeInfo typeInfo = new TypeInfo(field.getType());
-        this.name = field.getSimpleName();
-        this.realName = getRealName(name);
+        this.name = javaSafe(field.getSimpleName());
+        this.realName = realName(name);
         this.keyTypeName = typeInfo.getKeyTypeName();
         this.typeName = typeInfo.getFullName();
         this.simpleTypeName = typeInfo.getSimpleName();
         this.fieldType = typeInfo.getFieldType();
-    }
-
-    /**
-     * Construct a new Field instance
-     * @param name normalized field name
-     * @param keyTypeName key type name for Map types
-     * @param typeName full type name (with package)
-     * @param simpleTypeName simple type name (local)
-     * @param fieldType
-     */
-    public Field(String name, String keyTypeName, String typeName,
-            String simpleTypeName, Type fieldType) {
-        this(name, getRealName(name), keyTypeName, typeName,
-                simpleTypeName, fieldType);
     }
 
     /**
@@ -77,15 +63,25 @@ public class Field implements Comparable<Field> {
      */
     public Field(String name, String realName, String keyTypeName, String typeName,
             String simpleTypeName, Type fieldType){
-        this.name = name;
-        this.realName = realName;
+        this.name = javaSafe(name);
+        this.realName = realName(realName);
         this.keyTypeName = keyTypeName;
         this.typeName = typeName;
         this.simpleTypeName = simpleTypeName;
         this.fieldType = fieldType;
     }
     
-    private static String getRealName(String name){
+    private static String javaSafe(String name){
+        if (name.equals("private")){
+            return "prvate";
+        }else if (name.equals("public")){
+            return "pblic";
+        }else{
+            return name;
+        }
+    }
+    
+    private static String realName(String name){
         if (name.equals("prvate")){
             return "private";
         }else if (name.equals("pblic")){
