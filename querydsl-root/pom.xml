@@ -26,6 +26,7 @@
     <module>../querydsl-collections</module>
     <module>../querydsl-hql</module>
     <module>../querydsl-sql</module>
+    <module>../querydsl-maven-plugin</module>
   </modules>
 
   <dependencies>
