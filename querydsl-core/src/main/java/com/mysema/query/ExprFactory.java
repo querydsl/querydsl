@@ -15,7 +15,7 @@ import com.mysema.query.grammar.types.ExtTypes.ExtString;
 import com.mysema.query.grammar.types.Path.*;
 
 /**
- * ExprFactory provides
+ * ExprFactory creates path expressions for domain type instances
  *
  * @author tiwe
  * @version $Id$

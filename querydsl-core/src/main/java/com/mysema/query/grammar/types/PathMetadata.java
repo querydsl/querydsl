@@ -5,6 +5,9 @@
  */
 package com.mysema.query.grammar.types;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import com.mysema.query.grammar.Ops;
 
 /**
@@ -13,7 +16,6 @@ import com.mysema.query.grammar.Ops;
  * @author tiwe
  * @version $Id$
  */
-// TODO : add equals and hashCode
 public final class PathMetadata<T> {
     public static final PathType ARRAY_SIZE = new PathType();
 
@@ -46,7 +48,7 @@ public final class PathMetadata<T> {
         this.expression = expression;
         this.pathType = type;
     }
-
+    
     public static PathMetadata<Integer> forArrayAccess(Path.PArray<?> parent,
             Expr<Integer> index) {
         return new PathMetadata<Integer>(parent, index, ARRAYVALUE);
@@ -101,6 +103,27 @@ public final class PathMetadata<T> {
     public PathType getPathType() {
         return pathType;
     }
+    
+    public int hashCode(){
+        return new HashCodeBuilder()
+            .append(expression)
+            .append(parent)
+            .append(pathType)
+            .hashCode();
+    }
+    
+    public boolean equals(Object obj){
+        if (obj == null) return false;
+        if (obj == this) return true; 
+        if (obj.getClass() != getClass()) return false;
+        PathMetadata<?> p = (PathMetadata<?>)obj;
+        return new EqualsBuilder()
+            .append(expression, p.expression)
+            .append(parent, p.parent)
+            .append(pathType, p.pathType)
+            .isEquals();
+    }
+    
     /**
      * The Class PathType.
      */

@@ -27,7 +27,11 @@ public abstract class Expr<D> {
     public Class<D> getType(){ return type;}
     public EBoolean ne(D right){return Grammar.ne(this, right);}
     public EBoolean ne(Expr<? super D> right){return Grammar.ne(this, right);}
-        
+    
+    public int hashCode(){
+        return type != null ? type.hashCode() : super.hashCode();
+    }
+    
     /**
      * The Class Boolean.
      */
