@@ -12,8 +12,8 @@
 
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-maven-plugin</artifactId>
-  <name>Querydsl sql</name>
-  <description>SQL support for querydsl</description>
+  <name>Querydsl maven plugin</name>
+  <description>Querydsl Maven Plugin</description>
   <packaging>maven-plugin</packaging>
   
   <dependencies>
@@ -28,6 +28,11 @@
       <version>2.0</version>
     </dependency>
     
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-apt</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>    
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-sql</artifactId>

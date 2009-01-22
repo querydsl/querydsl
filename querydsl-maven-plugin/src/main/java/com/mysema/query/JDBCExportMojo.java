@@ -9,23 +9,34 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Properties;
 
+import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 import com.mysema.query.sql.MetaDataExporter;
 
 /**
- * Maven plugin for Jdbc Metadata export
+ * Maven plugin for JDBC Metadata export
  *
  * @goal jdbc-export
  * @phase generate-sources
  */
-public class JdbcMdExportMojo extends AbstractExportMojo{
+public class JDBCExportMojo extends AbstractMojo{
     
     /** @parameter */
-    private File props;
+    private File hibernateProps;
+
+    /** @parameter */
+    protected String namePrefix;
+
+    /** @parameter */
+    protected String packageName;
     
+    /** @parameter */
+    protected boolean camelCase;
+        
     /** @parameter */
     private String dsUrl;
     
@@ -39,8 +50,15 @@ public class JdbcMdExportMojo extends AbstractExportMojo{
     private String dsDriverClassName;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
-        try {            
-            expandProperties(new FileInputStream(props));
+        try {           
+            if (hibernateProps != null){
+                Properties p = new Properties();
+                p.load(new FileInputStream(hibernateProps));
+                dsUrl = p.getProperty("hibernate.connection.url");
+                dsUsername = p.getProperty("hibernate.connection.username");
+                dsPassword = p.getProperty("hibernate.connection.password");
+                dsDriverClassName = p.getProperty("hibernate.connection.driver_class");
+            }            
             executeInternal();
         } catch (Exception e) {
             String error = "Caught " + e.getClass().getName();
