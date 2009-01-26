@@ -44,7 +44,7 @@ import com.mysema.query.sql.dto.QIdName;
 
 
 /**
- * SqlQueryTest provides
+ * SqlQueryTest provides SQL query tests for different DB types
  *
  * @author tiwe
  * @version $Id$
