@@ -38,6 +38,8 @@ public class SqlOps extends OperationPatterns {
         offset = "\noffset ",
         union = "\nunion\n";
     
+    private boolean limitAndOffsetSymbols = true;
+    
     {
         add(Ops.NOT, "not %s");
         
@@ -234,10 +236,21 @@ public class SqlOps extends OperationPatterns {
         return this;
     }
     
+    public boolean limitAndOffsetSymbols() {
+        return limitAndOffsetSymbols;
+    }
+
+    public SqlOps limitAndOffsetSymbols(boolean limitAndOffsetSymbols) {
+        this.limitAndOffsetSymbols = limitAndOffsetSymbols;
+        return this;
+    }
+    
     public SqlOps newLineToSingleSpace(){
         for (Field field : SqlOps.class.getDeclaredFields()){            
             try {
-                field.set(this, field.get(this).toString().replace('\n', ' '));
+                if (field.getType().equals(String.class)){
+                    field.set(this, field.get(this).toString().replace('\n', ' '));    
+                }                
             } catch (Exception e) {
                 throw new RuntimeException("error", e);
             }
@@ -270,5 +283,7 @@ public class SqlOps extends OperationPatterns {
         }
         return this;
     }
+    
+    
 
 }

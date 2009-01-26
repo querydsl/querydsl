@@ -27,6 +27,22 @@ public class Dialect {
         return new SqlOps();
     }
     
+    // tested
+    public static SqlOps forOracle(){
+        return new SqlOps(){{
+            add(Ops.OpMath.CEIL, "ceil(%s)");  
+            add(Ops.OpMath.RANDOM, "dbms_random.value");
+            add(Ops.OpMath.LOG, "ln(%s)");  
+            add(Ops.OpMath.LOG10, "log(10,%s)");
+            add(Ops.SUBSTR1ARG, "substr(%s,%s)");
+            add(Ops.SUBSTR2ARGS, "substr(%s,%s,%s)");
+            add(Ops.CONCAT, "%s || %s");
+            add(Ops.OpString.SPACE, "lpad('',%s,' ')");
+            add(Ops.OpDateTime.CURRENT_DATE, "sysdate");            
+            limitAndOffsetSymbols(false);
+        }};
+    }
+    
     // TODO : test
     public static SqlOps forPostgreSQL(){
         return new SqlOps();
@@ -36,10 +52,6 @@ public class Dialect {
     public static SqlOps forSQLServer(){
         return new SqlOps();
     }
-        
-    // TODO : test
-    public static SqlOps forOracle(){
-        return new SqlOps();
-    }
+    
            
 }

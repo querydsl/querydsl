@@ -113,10 +113,13 @@ public abstract class SqlQueryTest {
     @Test
     public void testVarious() throws SQLException{
         System.out.println(q().from(survey).list(survey.name.lower()));
-        System.out.println(q().from(survey).list(survey.name.add("abc")));
-        System.out.println(q().from(survey).list(survey.id.eq(0)));        
-        System.out.println(q().from(survey).list(QMath.sqrt(survey.id)));
-        
+        System.out.println(q().from(survey).list(survey.name.add("abc")));                
+        System.out.println(q().from(survey).list(QMath.sqrt(survey.id)));        
+    }
+    
+    @Test
+    public void testSelectBooleanExpr() throws SQLException{
+        System.out.println(q().from(survey).list(survey.id.eq(0)));
     }
     
     @Test
@@ -311,7 +314,14 @@ public abstract class SqlQueryTest {
             q().from(employee).list(e);
         }    
     }
-        
+    
+    protected static void executeSafe(String sql){
+        try {
+            stmtHolder.get().execute(sql);
+        } catch (SQLException e) {
+            // do nothing
+        }
+    }
     
     protected final SqlQuery q(){
         return new SqlQuery(connHolder.get(), dialect){

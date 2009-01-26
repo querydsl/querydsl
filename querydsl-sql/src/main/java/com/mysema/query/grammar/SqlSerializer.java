@@ -108,15 +108,14 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
                 first = false;
             }
         }
-        // TODO : take dialect into account
-        if (limit > 0){
-            _append(ops.limit())._append(String.valueOf(limit));
-        }
-        // TODO : take dialect into account
-        if (offset > 0){
-            _append(ops.offset())._append(String.valueOf(offset));
-        }
-        
+        if (ops.limitAndOffsetSymbols()){
+            if (limit > 0){
+                _append(ops.limit())._append(String.valueOf(limit));
+            }
+            if (offset > 0){
+                _append(ops.offset())._append(String.valueOf(offset));
+            }    
+        }               
     }
     
     public void serializeUnion(List<Expr<?>> select,
