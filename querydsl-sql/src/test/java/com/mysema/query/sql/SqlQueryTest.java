@@ -301,16 +301,19 @@ public abstract class SqlQueryTest {
         for (EComparable<?> e : Arrays.<EComparable<?>>asList(
                 QDateTime.currentDate(),
                 QDateTime.currentTime(),
-                QDateTime.dayOfMonth(d),
-                QDateTime.dayOfWeek(d),
-                QDateTime.dayOfYear(d),
+                QDateTime.now(),
+                
+                QDateTime.year(d),
+                QDateTime.month(d),
+                QDateTime.week(d),
                 QDateTime.hour(t),
                 QDateTime.minute(t),
-                QDateTime.month(d),
-                QDateTime.now(),
                 QDateTime.second(t),
-                QDateTime.week(d),
-                QDateTime.year(d))){
+                
+                QDateTime.dayOfMonth(d),
+                QDateTime.dayOfWeek(d),
+                QDateTime.dayOfYear(d)
+        )){
             q().from(employee).list(e);
         }    
     }

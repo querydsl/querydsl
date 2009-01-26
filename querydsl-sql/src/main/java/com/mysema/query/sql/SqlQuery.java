@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +67,13 @@ public class SqlQuery extends QueryBase<SqlJoinMeta,SqlQuery>{
         PreparedStatement stmt = conn.prepareStatement(queryString);
         int counter = 1;
         for (Object o : constants){
-            stmt.setObject(counter++, o);    
+            try {
+                set(stmt, counter++, o);
+            } catch (Exception e) {
+                String error = "Caught " + e.getClass().getName();
+                logger.error(error, e);
+                throw new RuntimeException(error, e);
+            }
         }
         ResultSet rs = stmt.executeQuery();   
         try{
@@ -210,7 +215,13 @@ public class SqlQuery extends QueryBase<SqlJoinMeta,SqlQuery>{
         try{
             int counter = 1;
             for (Object o : constants){
-                stmt.setObject(counter++, o);    
+                try {
+                    set(stmt, counter++, o);
+                } catch (Exception e) {
+                    String error = "Caught " + e.getClass().getName();
+                    logger.error(error, e);
+                    throw new RuntimeException(error, e);
+                }
             }        
             rs = stmt.executeQuery();   
             rs.next();
