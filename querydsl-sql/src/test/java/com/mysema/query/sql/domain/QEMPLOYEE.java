@@ -17,11 +17,11 @@ public class QEMPLOYEE extends Path.PEntity<java.lang.Object>{
 //            + "CONSTRAINT PK_employee PRIMARY KEY (id), "
 //            + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) "
 //            + "REFERENCES employee(ID))");
-    public final Path.PComparable<java.lang.Integer> id = _comparable("id",java.lang.Integer.class);
+    public final Path.PNumber<java.lang.Integer> id = _number("id",java.lang.Integer.class);
     public final Path.PString firstname = _string("firstname");
     public final Path.PString lastname = _string("lastname");
-	public final Path.PComparable<BigDecimal> salary = _comparable("salary",BigDecimal.class);
-	public final Path.PComparable<java.lang.Integer> superiorId = _comparable("superior_id",java.lang.Integer.class);
+	public final Path.PNumber<BigDecimal> salary = _number("salary",BigDecimal.class);
+	public final Path.PNumber<java.lang.Integer> superiorId = _number("superior_id",java.lang.Integer.class);
 	
     public QEMPLOYEE(java.lang.String path) {
       	super(java.lang.Object.class, "employee", path);

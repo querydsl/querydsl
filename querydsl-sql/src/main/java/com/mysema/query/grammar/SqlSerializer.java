@@ -33,7 +33,7 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
         super(ops);
         this.ops = ops;
     }
-    
+        
     public void serialize(List<Expr<?>> select, List<JoinExpression<SqlJoinMeta>> joins,
         Expr.EBoolean where, List<Expr<?>> groupBy, Expr.EBoolean having,
         List<OrderSpecifier<?>> orderBy, int limit, int offset, boolean forCountRow){
@@ -87,7 +87,7 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
         }
         
         if (where != null){            
-            _append(ops.where()).handle(where);
+            _append(ops.where()).handle(where);                        
         }
         if (!groupBy.isEmpty()){
             _append(ops.groupBy())._append(", ",groupBy);
@@ -98,6 +98,12 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
             }                
             _append(ops.having()).handle(having);
         }
+        
+        if (!ops.limitAndOffsetSymbols() && (limit > 0 || offset > 0)){
+            if (where == null) _append(ops.where());
+            _append(ops.limitOffsetCondition(limit, offset));
+        }
+        
         if (!orderBy.isEmpty() && !forCountRow){
             _append(ops.orderBy());
             boolean first = true;

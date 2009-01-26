@@ -38,6 +38,10 @@ public class SqlOps extends OperationPatterns {
         offset = "\noffset ",
         union = "\nunion\n";
     
+    private String limitTemplate, 
+        offsetTemplate, 
+        limitOffsetTemplate;
+    
     private boolean limitAndOffsetSymbols = true;
     
     {
@@ -236,6 +240,17 @@ public class SqlOps extends OperationPatterns {
         return this;
     }
     
+    public String limitOffsetCondition(int limit, int offset){    
+        if (limitTemplate == null) throw new UnsupportedOperationException();
+        if (offset == 0){
+            return String.format(limitTemplate, limit);
+        }else if (limit == 0){
+            return String.format(offsetTemplate, offset);
+        }else{
+            return String.format(limitOffsetTemplate, limit, offset, limit + offset);    
+        }            
+    }
+    
     public boolean limitAndOffsetSymbols() {
         return limitAndOffsetSymbols;
     }
@@ -245,6 +260,41 @@ public class SqlOps extends OperationPatterns {
         return this;
     }
     
+    public String offsetTemplate() {
+        return offsetTemplate;
+    }
+
+    public SqlOps offsetTemplate(String offsetTemplate) {
+        this.offsetTemplate = offsetTemplate;
+        return this;
+    }
+
+    public String limitTemplate() {
+        return limitTemplate;
+    }
+
+    public SqlOps limitTemplate(String limitTemplate) {
+        this.limitTemplate = limitTemplate;
+        return this;
+    }
+
+    public String limitOffsetTemplate() {
+        return limitOffsetTemplate;
+    }
+
+    public SqlOps limitOffsetTemplate(String limitOffsetTemplate) {
+        this.limitOffsetTemplate = limitOffsetTemplate;
+        return this;
+    }
+
+    public boolean isLimitAndOffsetSymbols() {
+        return limitAndOffsetSymbols;
+    }
+
+    public void setLimitAndOffsetSymbols(boolean limitAndOffsetSymbols) {
+        this.limitAndOffsetSymbols = limitAndOffsetSymbols;
+    }
+
     public SqlOps newLineToSingleSpace(){
         for (Field field : SqlOps.class.getDeclaredFields()){            
             try {

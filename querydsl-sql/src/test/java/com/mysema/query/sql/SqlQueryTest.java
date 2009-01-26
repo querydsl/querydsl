@@ -7,10 +7,12 @@ package com.mysema.query.sql;
 
 import static com.mysema.query.grammar.Grammar.avg;
 import static com.mysema.query.grammar.Grammar.count;
+import static com.mysema.query.grammar.Grammar.not;
 import static com.mysema.query.grammar.QMath.add;
 import static com.mysema.query.grammar.QMath.max;
 import static com.mysema.query.grammar.QMath.min;
-import static com.mysema.query.grammar.SqlGrammar.*;
+import static com.mysema.query.grammar.SqlGrammar.exists;
+import static com.mysema.query.grammar.SqlGrammar.select;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
@@ -27,6 +29,7 @@ import org.junit.AfterClass;
 import org.junit.Test;
 
 import com.mysema.query.ExcludeIn;
+import com.mysema.query.IncludeIn;
 import com.mysema.query.grammar.QDateTime;
 import com.mysema.query.grammar.QMath;
 import com.mysema.query.grammar.QString;
@@ -58,6 +61,7 @@ public abstract class SqlQueryTest {
     protected SqlOps dialect;
     
     private QEMPLOYEE employee = new QEMPLOYEE("employee");
+    private QEMPLOYEE employee2 = new QEMPLOYEE("employee2");
     private QSURVEY survey = new QSURVEY("survey");    
     private QSURVEY survey2 = new QSURVEY("survey2");    
     private QTEST test = new QTEST("test");
@@ -118,8 +122,18 @@ public abstract class SqlQueryTest {
     }
     
     @Test
+    public void testSelectConcat() throws SQLException{
+        System.out.println(q().from(survey).list(survey.name.add("Hello World")));
+    }
+    
+    @Test
     public void testSelectBooleanExpr() throws SQLException{
         System.out.println(q().from(survey).list(survey.id.eq(0)));
+    }
+    
+    @Test
+    public void testSelectBooleanExpr2() throws SQLException{
+        System.out.println(q().from(survey).list(survey.id.gt(0)));
     }
     
     @Test
@@ -179,14 +193,43 @@ public abstract class SqlQueryTest {
     }
     
     @Test
+    public void testJoins() throws SQLException{
+        for (Object[] row : q().from(employee).innerJoin(employee2)
+           .with(employee.superiorId.eq(employee2.superiorId))
+           .where(employee2.id.eq(10))
+           .list(employee.id, employee2.id)){
+            System.out.println(row[0] + ", " + row[1]);
+        }
+    }
+    
+    @Test
     public void testIllegal() throws SQLException{
 //        q().from(employee).list(employee);
     }
     
     @Test
+    @ExcludeIn("oracle")
     public void testLimitAndOffset() throws SQLException{
         // limit offset
         expectedQuery = "select employee.id from employee employee limit 4 offset 3";
+        q().from(employee).limit(4).offset(3).list(employee.id);        
+    }
+    
+    @Test
+    @IncludeIn("oracle")
+    public void testLimitAndOffsetInOracle() throws SQLException{
+        String prefix = "select employee.id from employee employee ";
+
+        // limit 
+        expectedQuery = prefix + "where rownum < 4";
+        q().from(employee).limit(4).list(employee.id);
+        
+        // offset
+        expectedQuery = prefix + "where rownum > 3";
+        q().from(employee).offset(3).list(employee.id);
+        
+        // limit offset
+        expectedQuery = prefix + "where rownum between 4 and 7";
         q().from(employee).limit(4).offset(3).list(employee.id);        
     }
     

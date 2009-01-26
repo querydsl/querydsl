@@ -48,7 +48,11 @@ public class Dialect {
             add(Ops.OpDateTime.HOUR, "extract(hour from %s)");
             add(Ops.OpDateTime.MINUTE, "extract(minute from %s)");
             add(Ops.OpDateTime.SECOND, "extract(second from %s)");
+            
             limitAndOffsetSymbols(false);
+            limitTemplate("rownum < %s");
+            offsetTemplate("rownum > %s");
+            limitOffsetTemplate("rownum between %1$s and %3$s");
         }};
     }
     
