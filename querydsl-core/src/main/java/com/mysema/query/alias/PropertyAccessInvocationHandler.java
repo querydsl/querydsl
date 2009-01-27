@@ -170,7 +170,9 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         
         if (String.class.equals(type)) {
             path = new ExtString(pm);
-            rv = (T) new String();
+//            rv = (T) new String();
+            // TODO : null is used as a return value to block method invocations on Strings
+            rv = null;
         
         // primitive types   
             
