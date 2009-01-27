@@ -38,9 +38,9 @@ public class SqlOps extends OperationPatterns {
         offset = "\noffset ",
         union = "\nunion\n";
     
-    private String limitTemplate, 
-        offsetTemplate, 
-        limitOffsetTemplate;
+    private String limitTemplate = "", 
+        offsetTemplate = "", 
+        limitOffsetTemplate = "";
     
     private boolean limitAndOffsetSymbols = true;
     
@@ -53,8 +53,12 @@ public class SqlOps extends OperationPatterns {
         add(Ops.OpMath.POWER, "power(%s,%s)");
         
         // date time
-        add(Ops.OpDateTime.CURRENT_DATE, "curdate()");
-        add(Ops.OpDateTime.CURRENT_TIME, "curtime()");        
+        add(Ops.OpDateTime.CURRENT_DATE, "current_date");
+        add(Ops.OpDateTime.CURRENT_TIME, "current_timestamp");       
+        
+        // string
+        add(Ops.SUBSTR1ARG, "substr(%s,%s)");
+        add(Ops.SUBSTR2ARGS, "substr(%s,%s,%s)");               
     }
     
     public String aliasAs(){
@@ -241,7 +245,6 @@ public class SqlOps extends OperationPatterns {
     }
     
     public String limitOffsetCondition(int limit, int offset){    
-        if (limitTemplate == null) throw new UnsupportedOperationException();
         if (offset == 0){
             return String.format(limitTemplate, limit);
         }else if (limit == 0){
@@ -313,7 +316,9 @@ public class SqlOps extends OperationPatterns {
         super.toLowerCase();
         for (Field field : SqlOps.class.getDeclaredFields()){            
             try {
-                field.set(this, field.get(this).toString().toUpperCase());
+                if (field.getType().equals(String.class)){
+                    field.set(this, field.get(this).toString().toUpperCase());    
+                }                
             } catch (Exception e) {
                 throw new RuntimeException("error", e);
             }
@@ -326,7 +331,9 @@ public class SqlOps extends OperationPatterns {
         super.toUpperCase();     
         for (Field field : SqlOps.class.getDeclaredFields()){            
             try {
-                field.set(this, field.get(this).toString().toUpperCase());
+                if (field.getType().equals(String.class)){
+                    field.set(this, field.get(this).toString().toUpperCase());    
+                }                
             } catch (Exception e) {
                 throw new RuntimeException("error", e);
             }

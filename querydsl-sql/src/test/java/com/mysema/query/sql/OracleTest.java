@@ -1,4 +1,11 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.sql;
+
+import static org.junit.Assert.assertEquals;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -83,6 +90,21 @@ public class OracleTest extends SqlQueryTest{
     @Before
     public void setUpForTest(){
         dialect = Dialect.forOracle().newLineToSingleSpace();
+    }
+    
+    protected OracleQuery qo(){
+        return new OracleQuery(connHolder.get(), dialect){
+            @Override
+            protected String buildQueryString() {
+                String rv = super.buildQueryString();
+                if (expectedQuery != null){
+                   assertEquals(expectedQuery, rv);
+                   expectedQuery = null;
+                }
+                System.out.println(rv);
+                return rv;
+            }
+        };
     }
     
     private static void addEmployee(int id, String firstName, String lastName, double salary,

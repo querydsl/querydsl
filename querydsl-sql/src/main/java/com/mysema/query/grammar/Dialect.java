@@ -27,6 +27,10 @@ public class Dialect {
         return new SqlOps();
     }
     
+    public static SqlOps forOracle10(){
+        return forOracle();
+    }
+    
     // tested
     public static SqlOps forOracle(){
         return new SqlOps(){{
@@ -35,19 +39,21 @@ public class Dialect {
             add(Ops.OpMath.LOG, "ln(%s)");  
             add(Ops.OpMath.LOG10, "log(10,%s)");
             
-            add(Ops.SUBSTR1ARG, "substr(%s,%s)");
-            add(Ops.SUBSTR2ARGS, "substr(%s,%s,%s)");
             add(Ops.CONCAT, "%s || %s");
             add(Ops.OpString.SPACE, "lpad('',%s,' ')");
-            
-            add(Ops.OpDateTime.CURRENT_DATE, "sysdate");
-            add(Ops.OpDateTime.CURRENT_TIME, "sysdate");            
+                      
             add(Ops.OpDateTime.YEAR, "extract(year from %s)");
             add(Ops.OpDateTime.MONTH, "extract(month from %s)");
+            add(Ops.OpDateTime.WEEK, "to_number(to_char(%s,'WW'))");
             add(Ops.OpDateTime.DAY, "extract(day from %s)");
-            add(Ops.OpDateTime.HOUR, "extract(hour from %s)");
-            add(Ops.OpDateTime.MINUTE, "extract(minute from %s)");
-            add(Ops.OpDateTime.SECOND, "extract(second from %s)");
+            
+            add(Ops.OpDateTime.HOUR, "to_number(to_char(%s,'HH24'))");
+            add(Ops.OpDateTime.MINUTE, "to_number(to_char(%s,'MI'))");
+            add(Ops.OpDateTime.SECOND, "to_number(to_char(%s,'SS'))");
+            
+            add(Ops.OpDateTime.DAY_OF_MONTH, "to_number(to_char(%s,'DD'))");
+            add(Ops.OpDateTime.DAY_OF_WEEK, "to_number(to_char(%s,'D'))");
+            add(Ops.OpDateTime.DAY_OF_YEAR, "to_number(to_char(%s,'DDD'))");
             
             limitAndOffsetSymbols(false);
             limitTemplate("rownum < %s");
