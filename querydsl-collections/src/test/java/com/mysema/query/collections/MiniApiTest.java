@@ -12,8 +12,7 @@ import static com.mysema.query.collections.MiniApi.select;
 import static com.mysema.query.grammar.Grammar.gt;
 import static com.mysema.query.grammar.GrammarWithAlias.$;
 import static com.mysema.query.grammar.GrammarWithAlias.alias;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.*;
 
@@ -199,6 +198,19 @@ public class MiniApiTest {
         from(c,cats)
         .where($(c.getMate().getName()).toUpperCase().eq("MOE"))
         .iterate($(c)).iterator();        
+    }
+    
+    @Test
+    public void testAlias10(){
+        Cat c = alias(Cat.class, "cat");
+        
+        try{
+            from(c,cats).where($(c.getMate().getName().toUpperCase()).eq("MOE"));
+            fail("expected NPE");
+        }catch(NullPointerException ne){
+            // expected
+        }
+        
     }
     
     @Test
