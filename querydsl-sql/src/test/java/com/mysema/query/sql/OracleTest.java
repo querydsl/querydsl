@@ -10,10 +10,12 @@ import static org.junit.Assert.assertEquals;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.mysema.query.FilteringTestRunner;
@@ -31,6 +33,56 @@ import com.mysema.query.grammar.Dialect;
 @ResourceCheck("/oracle.run")
 @Label("oracle")
 public class OracleTest extends SqlQueryTest{
+    
+    @Test
+    public void testConnectByPrior() throws SQLException{
+        expectedQuery = 
+                "select employee.id, employee.lastname, employee.superior_id " +
+        		"from employee employee " +
+        		"connect by prior employee.id = employee.superior_id";
+        qo().from(employee)
+            .connectByPrior(employee.id.eq(employee.superiorId))
+            .list(employee.id, employee.lastname, employee.superiorId);
+    }
+    
+    @Test
+    public void testConnectByPrior2() throws SQLException{
+        expectedQuery = 
+                "select employee.id, employee.lastname, employee.superior_id " +
+                "from employee employee " +
+                "start with employee.id = ? " +
+                "connect by prior employee.id = employee.superior_id";
+        qo().from(employee)
+            .startWith(employee.id.eq(1))
+            .connectByPrior(employee.id.eq(employee.superiorId))
+            .list(employee.id, employee.lastname, employee.superiorId);
+    }
+    
+    @Test
+    public void testConnectByPrior3() throws SQLException{
+        expectedQuery = 
+                "select employee.id, employee.lastname, employee.superior_id " +
+                "from employee employee " +
+                "start with employee.id = ? " +                
+                "connect by prior employee.id = employee.superior_id " +
+                "order siblings by employee.lastname";
+        qo().from(employee)
+            .startWith(employee.id.eq(1))
+            .connectByPrior(employee.id.eq(employee.superiorId))
+            .orderSiblingsBy(employee.lastname)
+            .list(employee.id, employee.lastname, employee.superiorId);
+    }
+    
+    @Test
+    public void testConnectByPrior4() throws SQLException{
+        expectedQuery = 
+                "select employee.id, employee.lastname, employee.superior_id " +
+                "from employee employee " +
+                "connect by nocycle prior employee.id = employee.superior_id";
+        qo().from(employee)
+            .connectByNocyclePrior(employee.id.eq(employee.superiorId))
+            .list(employee.id, employee.lastname, employee.superiorId);
+    }
         
     @BeforeClass
     public static void setUp() throws Exception{

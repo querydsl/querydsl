@@ -43,7 +43,7 @@ public class AbstractSqlQuery<MyType extends AbstractSqlQuery<MyType>> extends Q
     
     private final Connection conn;
     
-    private final SqlOps ops;
+    protected final SqlOps ops;
     
     private boolean forCountRow = false;
     
@@ -194,8 +194,12 @@ public class AbstractSqlQuery<MyType extends AbstractSqlQuery<MyType>> extends Q
         return new UnionBuilder();
     }
 
+    protected SqlSerializer createSerializer(){
+        return new SqlSerializer(ops);
+    }
+    
     protected String buildQueryString() {
-        SqlSerializer serializer = new SqlSerializer(ops);
+        SqlSerializer serializer = createSerializer();
         if (sq != null){
             serializer.serializeUnion(select, sq, where.self(), orderBy);
         }else{

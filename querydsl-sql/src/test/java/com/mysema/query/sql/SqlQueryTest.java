@@ -60,11 +60,11 @@ public abstract class SqlQueryTest {
     
     protected SqlOps dialect;
     
-    private QEMPLOYEE employee = new QEMPLOYEE("employee");
-    private QEMPLOYEE employee2 = new QEMPLOYEE("employee2");
-    private QSURVEY survey = new QSURVEY("survey");    
-    private QSURVEY survey2 = new QSURVEY("survey2");    
-    private QTEST test = new QTEST("test");
+    protected final QEMPLOYEE employee = new QEMPLOYEE("employee");
+    protected final QEMPLOYEE employee2 = new QEMPLOYEE("employee2");
+    protected final QSURVEY survey = new QSURVEY("survey");    
+    protected final QSURVEY survey2 = new QSURVEY("survey2");    
+    protected final QTEST test = new QTEST("test");
     
     protected String expectedQuery;
         

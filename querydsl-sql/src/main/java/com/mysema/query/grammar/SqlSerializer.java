@@ -27,16 +27,23 @@ import com.mysema.query.serialization.BaseSerializer;
  */
 public class SqlSerializer extends BaseSerializer<SqlSerializer>{
     
-    private SqlOps ops;
+    protected final SqlOps ops;
     
     public SqlSerializer(SqlOps ops){
         super(ops);
         this.ops = ops;
     }
         
-    public void serialize(List<Expr<?>> select, List<JoinExpression<SqlJoinMeta>> joins,
-        Expr.EBoolean where, List<Expr<?>> groupBy, Expr.EBoolean having,
-        List<OrderSpecifier<?>> orderBy, int limit, int offset, boolean forCountRow){
+    public void serialize(
+            List<Expr<?>> select, 
+            List<JoinExpression<SqlJoinMeta>> joins,
+            Expr.EBoolean where, 
+            List<Expr<?>> groupBy, 
+            Expr.EBoolean having,
+            List<OrderSpecifier<?>> orderBy, 
+            int limit, 
+            int offset, 
+            boolean forCountRow){
          if (forCountRow){
 //            _append("select count(*)\n");
              _append(ops.select())._append(ops.countStar());
@@ -99,6 +106,8 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
             _append(ops.having()).handle(having);
         }
         
+        beforeOrderBy();
+        
         if (!ops.limitAndOffsetSymbols() && (limit > 0 || offset > 0)){
             if (where == null) _append(ops.where());
             _append(ops.limitOffsetCondition(limit, offset));
@@ -124,6 +133,11 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
         }               
     }
     
+    protected void beforeOrderBy() {
+        // template method, for subclasses do override
+        
+    }
+
     public void serializeUnion(List<Expr<?>> select,
             SubQuery<SqlJoinMeta, ?>[] sqs, EBoolean self,
             List<OrderSpecifier<?>> orderBy) {

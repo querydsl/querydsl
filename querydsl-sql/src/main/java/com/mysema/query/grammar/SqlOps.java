@@ -38,6 +38,13 @@ public class SqlOps extends OperationPatterns {
         offset = "\noffset ",
         union = "\nunion\n";
     
+    // oracle specific
+    private String startWith = "\nstart with ",
+        connectByPrior = "\nconnect by prior ",
+        connectByNocyclePrior = "\nconnect by nocycle prior ",
+        orderSiblingsBy = "\norder siblings by ";
+    
+    
     private String limitTemplate = "", 
         offsetTemplate = "", 
         limitOffsetTemplate = "";
@@ -289,13 +296,41 @@ public class SqlOps extends OperationPatterns {
         this.limitOffsetTemplate = limitOffsetTemplate;
         return this;
     }
-
-    public boolean isLimitAndOffsetSymbols() {
-        return limitAndOffsetSymbols;
+    
+    public String startWith() {
+        return startWith;
+    }
+    
+    public SqlOps startWith(String sw){
+        this.startWith = sw;
+        return this;
+    }
+    
+    public String connectByPrior() {
+        return connectByPrior;
     }
 
-    public void setLimitAndOffsetSymbols(boolean limitAndOffsetSymbols) {
-        this.limitAndOffsetSymbols = limitAndOffsetSymbols;
+    public SqlOps connectByPrior(String connectByPrior) {
+        this.connectByPrior = connectByPrior;
+        return this;
+    }
+    
+    public String connectByNocyclePrior() {
+        return connectByNocyclePrior;
+    }
+
+    public SqlOps connectByNocyclePrior(String connectByNocyclePrior) {
+        this.connectByNocyclePrior = connectByNocyclePrior;
+        return this;
+    }
+
+    public String orderSiblingsBy() {
+        return orderSiblingsBy;
+    }
+
+    public SqlOps orderSiblingsBy(String orderSiblingsBy) {
+        this.orderSiblingsBy = orderSiblingsBy;
+        return this;
     }
 
     public SqlOps newLineToSingleSpace(){
@@ -340,6 +375,8 @@ public class SqlOps extends OperationPatterns {
         }
         return this;
     }
+
+
     
     
 
