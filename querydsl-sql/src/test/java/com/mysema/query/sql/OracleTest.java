@@ -83,7 +83,10 @@ public class OracleTest extends SqlQueryTest{
             .connectByNocyclePrior(employee.id.eq(employee.superiorId))
             .list(employee.id, employee.lastname, employee.superiorId);
     }
-        
+    
+    // TODO : sum over partition by
+    
+            
     @BeforeClass
     public static void setUp() throws Exception{
         String sql;

@@ -74,7 +74,5 @@ public class OracleQuery extends AbstractSqlQuery<OracleQuery>{
     
     // TODO : connect by isleaf (pseudocolumn)
     
-    // TODO : level (pseudocolumn)
-    
     // TODO : sys connect path
 }
