@@ -62,12 +62,12 @@ public class Dialect {
         }};
     }
     
-    // TODO : test
+    // TODO : to be tested
     public static SqlOps forPostgreSQL(){
         return new SqlOps();
     }
 
-    // TODO : test
+    // TODO : to be tested
     public static SqlOps forSQLServer(){
         return new SqlOps();
     }
