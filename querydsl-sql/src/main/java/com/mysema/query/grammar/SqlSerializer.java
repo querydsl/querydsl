@@ -11,11 +11,7 @@ import java.util.List;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryBase;
-import com.mysema.query.grammar.types.Constructor;
-import com.mysema.query.grammar.types.CountExpression;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Path;
-import com.mysema.query.grammar.types.SubQuery;
+import com.mysema.query.grammar.types.*;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.serialization.BaseSerializer;
 
@@ -46,9 +42,9 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
             boolean forCountRow){
          if (forCountRow){
 //            _append("select count(*)\n");
-             _append(ops.select())._append(ops.countStar());
+             append(ops.select()).append(ops.countStar());
         }else if (!select.isEmpty()){
-            _append(ops.select());           
+            append(ops.select());           
             List<Expr<?>> sqlSelect = new ArrayList<Expr<?>>();
             for (Expr<?> selectExpr : select){
                 if (selectExpr instanceof Constructor){
@@ -59,12 +55,12 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
                     sqlSelect.add(selectExpr);
                 }
             }
-            _append(", ", sqlSelect);
+            append(", ", sqlSelect);
         }
-        _append(ops.from());
+        append(ops.from());
         if (joins.isEmpty()){
             // TODO : disallow usage of dummy table ?!?
-            _append(ops.dummyTable());
+            append(ops.dummyTable());
             
         }        
         for (int i=0; i < joins.size(); i++){
@@ -77,58 +73,58 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
                     case JOIN:      sep = ops.join(); break;
                     case LEFTJOIN:  sep = ops.leftJoin(); break;                                
                     }    
-                _append(sep);
+                append(sep);
             }
             
             // type specifier
             if (je.getTarget() instanceof Path.PEntity && ops.supportsAlias()){
                 Path.PEntity<?> pe = (Path.PEntity<?>)je.getTarget();
                 if (pe.getMetadata().getParent() == null){ 
-                    _append(pe.getEntityName())._append(ops.aliasAs());    
+                    append(pe.getEntityName()).append(ops.aliasAs());    
                 }                
             }            
             handle(je.getTarget());
             if (je.getCondition() != null){
-                _append(ops.on()).handle(je.getCondition());
+                append(ops.on()).handle(je.getCondition());
             }
         }
         
         if (where != null){            
-            _append(ops.where()).handle(where);                        
+            append(ops.where()).handle(where);                        
         }
         if (!groupBy.isEmpty()){
-            _append(ops.groupBy())._append(", ",groupBy);
+            append(ops.groupBy()).append(", ",groupBy);
         }
         if (having != null){
             if (groupBy.isEmpty()) {
                 throw new IllegalArgumentException("having, but not groupBy was given");
             }                
-            _append(ops.having()).handle(having);
+            append(ops.having()).handle(having);
         }
         
         beforeOrderBy();
         
         if (!ops.limitAndOffsetSymbols() && (limit > 0 || offset > 0)){
-            if (where == null) _append(ops.where());
-            _append(ops.limitOffsetCondition(limit, offset));
+            if (where == null) append(ops.where());
+            append(ops.limitOffsetCondition(limit, offset));
         }
         
         if (!orderBy.isEmpty() && !forCountRow){
-            _append(ops.orderBy());
+            append(ops.orderBy());
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy){            
                 if (!first) builder.append(", ");
                 handle(os.target);
-                _append(os.order == Order.ASC ? ops.asc() : ops.desc());
+                append(os.order == Order.ASC ? ops.asc() : ops.desc());
                 first = false;
             }
         }
         if (ops.limitAndOffsetSymbols()){
             if (limit > 0){
-                _append(ops.limit())._append(String.valueOf(limit));
+                append(ops.limit()).append(String.valueOf(limit));
             }
             if (offset > 0){
-                _append(ops.offset())._append(String.valueOf(offset));
+                append(ops.offset()).append(String.valueOf(offset));
             }    
         }               
     }
@@ -142,17 +138,17 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
             SubQuery<SqlJoinMeta, ?>[] sqs, EBoolean self,
             List<OrderSpecifier<?>> orderBy) {
         // union
-        _append(ops.union(), Arrays.asList(sqs));
+        append(ops.union(), Arrays.asList(sqs));
         
         
         // order by
         if (!orderBy.isEmpty()){
-            _append(ops.orderBy());
+            append(ops.orderBy());
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy){            
                 if (!first) builder.append(", ");
                 handle(os.target);
-                _append(os.order == Order.ASC ? ops.asc() : ops.desc());
+                append(os.order == Order.ASC ? ops.asc() : ops.desc());
                 first = false;
             }
         }
@@ -161,25 +157,38 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
     
     protected void visit(CountExpression expr) {
         if (expr.getTarget() == null){
-            _append(ops.countStar());    
+            append(ops.countStar());    
         }else{
-            _append(ops.count())._append("(").handle(expr.getTarget())._append(")");
+            append(ops.count()).append("(").handle(expr.getTarget()).append(")");
         }                
     }
                
     @Override
     protected void visit(Expr.EConstant<?> expr) {
-        _append("?");
+        append("?");
         constants.add(expr.getConstant());
+    }
+    
+    protected void visit(SumOver<?> expr) {
+        append(ops.sum()).append("(").handle(expr.getTarget()).append(") ");
+        append(ops.over());
+        append(" (");
+        if (expr.getPartitionBy() != null){
+            append(ops.partitionBy()).handle(expr.getPartitionBy());
+        }
+        if (!expr.getOrderBy().isEmpty()){
+            append(ops.orderBy()).append(", ", expr.getOrderBy());
+        }
+        append(")");        
     }
 
     protected void visit(SubQuery<SqlJoinMeta,?> query) {
         QueryBase<SqlJoinMeta,?>.Metadata md = query.getQuery().getMetadata();
-        _append("(");
+        append("(");
         serialize(md.getSelect(), md.getJoins(),
             md.getWhere(), md.getGroupBy(), md.getHaving(), 
             md.getOrderBy(), 0, 0, false);
-        _append(")");
+        append(")");
     }
 
 }

@@ -32,17 +32,21 @@ public class SqlOps extends OperationPatterns {
         groupBy = "\ngroup by ",
         having = "\nhaving ",
         orderBy = "\norder by ",
-        desc = " desc ",
-        asc = " asc ",
+        desc = " desc",
+        asc = " asc",
         limit = "\nlimit ",
         offset = "\noffset ",
         union = "\nunion\n";
     
     // oracle specific
     private String startWith = "\nstart with ",
+        connectBy = "\nconnect by ",
         connectByPrior = "\nconnect by prior ",
         connectByNocyclePrior = "\nconnect by nocycle prior ",
-        orderSiblingsBy = "\norder siblings by ";
+        orderSiblingsBy = "\norder siblings by ",
+        sum = "sum",
+        over = "over",
+        partitionBy = "partition by ";
     
     
     private String limitTemplate = "", 
@@ -306,6 +310,15 @@ public class SqlOps extends OperationPatterns {
         return this;
     }
     
+    public String connectBy() {
+        return connectBy;
+    }
+
+    public SqlOps connectBy(String connectBy) {
+        this.connectBy = connectBy;
+        return this;
+    }
+
     public String connectByPrior() {
         return connectByPrior;
     }
@@ -330,6 +343,33 @@ public class SqlOps extends OperationPatterns {
 
     public SqlOps orderSiblingsBy(String orderSiblingsBy) {
         this.orderSiblingsBy = orderSiblingsBy;
+        return this;
+    }
+    
+    public String sum() {
+        return sum;
+    }
+
+    public SqlOps sum(String sum) {
+        this.sum = sum;
+        return this;
+    }
+
+    public String over() {
+        return over;
+    }
+
+    public SqlOps over(String over) {
+        this.over = over;
+        return this;
+    }
+
+    public String partitionBy() {
+        return partitionBy;
+    }
+
+    public SqlOps partitionBy(String partitionBy) {
+        this.partitionBy = partitionBy;
         return this;
     }
 

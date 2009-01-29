@@ -7,6 +7,7 @@ package com.mysema.query.sql;
 
 import java.sql.Connection;
 
+import com.mysema.query.grammar.OracleSerializer;
 import com.mysema.query.grammar.SqlOps;
 import com.mysema.query.grammar.SqlSerializer;
 import com.mysema.query.grammar.types.Expr;
@@ -20,16 +21,23 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
  */
 public class OracleQuery extends AbstractSqlQuery<OracleQuery>{
 
-    private EBoolean connectByPrior, connectByNocyclePrior, startWith;
-    
+    private EBoolean connectBy, connectByPrior, connectByNocyclePrior;
+
     private Expr<?> orderSiblingsBy;
     
+    private EBoolean startWith;
+        
     public OracleQuery(Connection conn, SqlOps ops) {
         super(conn, ops);    
     }    
     
     public OracleQuery connectByPrior(EBoolean cond){
         connectByPrior = cond;
+        return this;
+    }
+    
+    public OracleQuery connectBy(EBoolean cond) {
+        connectBy = cond;
         return this;
     }
     
@@ -49,23 +57,9 @@ public class OracleQuery extends AbstractSqlQuery<OracleQuery>{
     }
     
     protected SqlSerializer createSerializer(){
-        return new SqlSerializer(ops){
-            @Override
-            protected void beforeOrderBy() {
-                if (startWith != null){
-                    _append(ops.startWith()).handle(startWith);
-                }
-                if (connectByPrior != null){
-                    _append(ops.connectByPrior()).handle(connectByPrior);
-                }
-                if (connectByNocyclePrior != null){
-                    _append(ops.connectByNocyclePrior()).handle(connectByNocyclePrior);
-                }                
-                if (orderSiblingsBy != null){
-                    _append(ops.orderSiblingsBy()).handle(orderSiblingsBy);
-                }
-            }
-        };
+        return new OracleSerializer(ops, 
+            connectBy, connectByNocyclePrior, connectByPrior, 
+            orderSiblingsBy, startWith);
     }
     
     // TODO : connect by root

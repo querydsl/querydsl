@@ -6,6 +6,7 @@
 package com.mysema.query.sql;
 
 import static org.junit.Assert.assertEquals;
+import static com.mysema.query.grammar.OracleGrammar.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,6 +16,7 @@ import java.sql.Statement;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -84,8 +86,42 @@ public class OracleTest extends SqlQueryTest{
             .list(employee.id, employee.lastname, employee.superiorId);
     }
     
-    // TODO : sum over partition by
+    @Test
+    @Ignore
+    public void testConnectBy() throws SQLException{
+        // TODO : come up with a legal case
+        qo().from(employee)
+            .where(level.eq(-1))
+            .connectBy(level.lt(1000))            
+            .list(employee.id);
+    }
     
+    @Test
+    public void testSumOver() throws SQLException{
+//        SQL> select deptno,
+//        2  ename,
+//        3  sal,
+//        4  sum(sal) over (partition by deptno
+//        5  order by sal,ename) CumDeptTot,
+//        6  sum(sal) over (partition by deptno) SalByDept,
+//        7  sum(sal) over (order by deptno, sal) CumTot,
+//        8  sum(sal) over () TotSal
+//        9  from emp
+//       10  order by deptno, sal;
+        expectedQuery = "select employee.lastname, employee.salary, " +
+        		"sum(employee.salary) over (partition by employee.superior_id order by employee.lastname, employee.salary), " +
+        		"sum(employee.salary) over ( order by employee.superior_id, employee.salary), " +
+        		"sum(employee.salary) over () from employee employee order by employee.salary asc, employee.superior_id asc";
+        qo().from(employee)
+            .orderBy(employee.salary.asc(), employee.superiorId.asc())
+            .list(
+               employee.lastname,
+               employee.salary,
+               sumOver(employee.salary).partition(employee.superiorId).order(employee.lastname, employee.salary),
+               sumOver(employee.salary).order(employee.superiorId, employee.salary),
+               sumOver(employee.salary));
+
+    }
             
     @BeforeClass
     public static void setUp() throws Exception{
