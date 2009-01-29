@@ -43,7 +43,7 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
     }
     
     @SuppressWarnings("unchecked")
-    protected final A _append(String... str) {
+    protected final A append(String... str) {
         for (String s : str){
             builder.append(s);    
         }        
@@ -51,7 +51,7 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
     }
         
     @SuppressWarnings("unchecked")
-    protected final A _append(String sep, List<? extends Expr<?>> expressions) {
+    protected final A append(String sep, List<? extends Expr<?>> expressions) {
         boolean first = true;
         for (Expr<?> expr : expressions){
             if (!first) builder.append(sep);
@@ -77,9 +77,9 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
         
         String pattern = ops.getPattern(pathType);
         if (parentAsString != null){
-            _append(String.format(pattern, parentAsString, exprAsString));    
+            append(String.format(pattern, parentAsString, exprAsString));    
         }else{
-            _append(String.format(pattern, exprAsString));
+            append(String.format(pattern, exprAsString));
         }
         
     }
@@ -102,25 +102,25 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
     public String toString(){ return builder.toString(); }
 
     protected void visit(Constructor<?> expr){
-        _append("new ")._append(expr.getType().getName())._append("(");
-        _append(", ",Arrays.asList(expr.getArgs()))._append(")");
+        append("new ").append(expr.getType().getName()).append("(");
+        append(", ",Arrays.asList(expr.getArgs())).append(")");
     }
         
     @Override
     protected void visit(Expr.EConstant<?> expr) {
-        _append("a");
+        append("a");
         if (!constants.contains(expr.getConstant())){
             constants.add(expr.getConstant());
-            _append(Integer.toString(constants.size()));
+            append(Integer.toString(constants.size()));
         }else{
-            _append(Integer.toString(constants.indexOf(expr.getConstant())+1));
+            append(Integer.toString(constants.indexOf(expr.getConstant())+1));
         }     
     }
     
     protected void visit(Constructor.CArray<?> oa) {
 //        _append("new Object[]{");
-        _append("new ")._append(oa.getElementType().getName())._append("[]{");
-        _append(", ",Arrays.asList(oa.getArgs()))._append("}");
+        append("new ").append(oa.getElementType().getName()).append("[]{");
+        append(", ",Arrays.asList(oa.getArgs())).append("}");
     }
         
     @Override
@@ -152,7 +152,7 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
             }
             strings[i] = _toString(args[i],wrap);
         }
-        _append(String.format(pattern, strings));
+        append(String.format(pattern, strings));
     }
 
 }
