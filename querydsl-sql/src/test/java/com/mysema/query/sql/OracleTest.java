@@ -24,6 +24,7 @@ import com.mysema.query.FilteringTestRunner;
 import com.mysema.query.Label;
 import com.mysema.query.ResourceCheck;
 import com.mysema.query.grammar.Dialect;
+import com.mysema.query.sql.domain.QEMPLOYEE;
 
 /**
  * MySqlTest provides
@@ -120,7 +121,15 @@ public class OracleTest extends SqlQueryTest{
                sumOver(employee.salary).partition(employee.superiorId).order(employee.lastname, employee.salary),
                sumOver(employee.salary).order(employee.superiorId, employee.salary),
                sumOver(employee.salary));
-
+        
+        // shorter version
+        QEMPLOYEE e = employee;
+        qo().from(e)
+            .orderBy(e.salary.asc(), e.superiorId.asc())
+            .list(e.lastname, e.salary,
+               sumOver(e.salary).partition(e.superiorId).order(e.lastname, e.salary),
+               sumOver(e.salary).order(e.superiorId, e.salary),
+               sumOver(e.salary));
     }
             
     @BeforeClass
