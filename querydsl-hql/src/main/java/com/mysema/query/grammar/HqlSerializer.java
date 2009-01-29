@@ -39,11 +39,11 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         Expr.EBoolean where, List<Expr<?>> groupBy, Expr.EBoolean having,
         List<OrderSpecifier<?>> orderBy, boolean forCountRow){
          if (forCountRow){
-            _append("select count(*)\n");
+            append("select count(*)\n");
         }else if (!select.isEmpty()){
-            _append("select ")._append(", ", select)._append("\n");
+            append("select ").append(", ", select).append("\n");
         }
-        _append("from ");
+        append("from ");
         for (int i=0; i < joins.size(); i++){
             JoinExpression<HqlJoinMeta> je = joins.get(i);            
             if (i > 0){
@@ -54,11 +54,11 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
                     case JOIN:      sep = "\n  join "; break;
                     case LEFTJOIN:  sep = "\n  left join "; break;                                
                     }    
-                _append(sep);
+                append(sep);
             }
             if (je.getMetadata() != null){
                 switch(je.getMetadata()){
-                case FETCH: if (!forCountRow) _append("fetch "); break;
+                case FETCH: if (!forCountRow) append("fetch "); break;
                 }
             }
             
@@ -68,34 +68,34 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
                 if (pe.getMetadata().getParent() == null){
                     String pn = pe.getType().getPackage().getName();
                     String typeName = pe.getType().getName().substring(pn.length()+1); 
-                    _append(typeName)._append(" ");    
+                    append(typeName).append(" ");    
                 }                
             }            
             handle(je.getTarget());
             if (je.getCondition() != null){
-                _append(" with ").handle(je.getCondition());
+                append(" with ").handle(je.getCondition());
             }
         }
         
         if (where != null){            
-            _append("\nwhere ").handle(where);
+            append("\nwhere ").handle(where);
         }
         if (!groupBy.isEmpty()){
-            _append("\ngroup by ")._append(", ",groupBy);
+            append("\ngroup by ").append(", ",groupBy);
         }
         if (having != null){
             if (groupBy.isEmpty()) {
                 throw new IllegalArgumentException("having, but not groupBy was given");
             }                
-            _append("\nhaving ").handle(having);
+            append("\nhaving ").handle(having);
         }
         if (!orderBy.isEmpty() && !forCountRow){
-            _append("\norder by ");
+            append("\norder by ");
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy){            
                 if (!first) builder.append(", ");
                 handle(os.target);
-                _append(os.order == Order.ASC ? " asc" : " desc");
+                append(os.order == Order.ASC ? " asc" : " desc");
                 first = false;
             }
         }
@@ -103,19 +103,19 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
     
     @Override
     protected void visit(Alias.ASimple<?> expr) {
-        handle(expr.getFrom())._append(" as ")._append(expr.getTo());        
+        handle(expr.getFrom()).append(" as ").append(expr.getTo());        
     }
     
     @Override
     protected void visit(Alias.AToPath expr) {
-        handle(expr.getFrom())._append(" as ").visit(expr.getTo());
+        handle(expr.getFrom()).append(" as ").visit(expr.getTo());
     }
     
     protected void visit(CountExpression expr) {
         if (expr.getTarget() == null){
-            _append("count(*)");    
+            append("count(*)");    
         }else{
-            _append("count(").handle(expr.getTarget())._append(")");
+            append("count(").handle(expr.getTarget()).append(")");
         }                
     }
     
@@ -136,34 +136,34 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         for (int i = 0; i < strings.length; i++){
             strings[i] = _toString(expr.getArgs()[i],false);
         }
-        _append(String.format(expr.getPattern(), strings));
+        append(String.format(expr.getPattern(), strings));
     }
     
     protected void visit(DistinctPath<?> expr){
-        _append("distinct ").visit(expr.getPath());
+        append("distinct ").visit(expr.getPath());
     }
     
     @Override
     protected void visit(Expr.EConstant<?> expr) {
         boolean wrap = expr.getConstant().getClass().isArray();
-        if (wrap) _append("(");
-        _append(":a");
+        if (wrap) append("(");
+        append(":a");
         if (!constants.contains(expr.getConstant())){
             constants.add(expr.getConstant());
-            _append(Integer.toString(constants.size()));
+            append(Integer.toString(constants.size()));
         }else{
-            _append(Integer.toString(constants.indexOf(expr.getConstant())+1));
+            append(Integer.toString(constants.indexOf(expr.getConstant())+1));
         }        
-        if (wrap) _append(")");
+        if (wrap) append(")");
     }
         
     @Override
     protected void visit(Path.PCollection<?> expr){
         // only wrap a PathCollection, if it the pathType is PROPERTY
         boolean wrap = wrapElements && expr.getMetadata().getPathType().equals(PROPERTY);
-        if (wrap) _append("elements(");
+        if (wrap) append("elements(");
         visit((Path<?>)expr);
-        if (wrap) _append(")");
+        if (wrap) append(")");
     }
     
     protected void visit(Quant q){        
@@ -188,11 +188,11 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
 
     protected void visit(SubQuery<HqlJoinMeta,?> query) {
         QueryBase<HqlJoinMeta,?>.Metadata md = query.getQuery().getMetadata();
-        _append("(");
+        append("(");
         serialize(md.getSelect(), md.getJoins(),
             md.getWhere(), md.getGroupBy(), md.getHaving(), 
             md.getOrderBy(), false);
-        _append(")");
+        append(")");
     }
     
     protected void visitOperation(Op<?> operator, Expr<?>... args) {    
