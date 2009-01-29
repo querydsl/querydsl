@@ -74,9 +74,9 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
         
         String pattern = ops.getPattern(pathType);
         if (parentAsString != null){
-            _append(String.format(pattern, parentAsString, exprAsString));    
+            append(String.format(pattern, parentAsString, exprAsString));    
         }else{
-            _append(String.format(pattern, exprAsString));
+            append(String.format(pattern, exprAsString));
         }        
     }
     
