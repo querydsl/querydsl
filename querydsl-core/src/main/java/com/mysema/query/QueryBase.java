@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EEntity;
 
 /**
@@ -42,7 +43,7 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
     
     private final Metadata metadata = new Metadata();
     
-    public A from(Expr.EEntity<?>... o) {
+    public A from(EEntity<?>... o) {
         for (EEntity<?> expr : o){
             joins.add(new JoinExpression<JoinMeta>(JoinType.DEFAULT,expr));
         }
@@ -51,56 +52,56 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
     
     public A groupBy(Expr<?>... o) {
         groupBy.addAll(Arrays.asList(o));
-        return (A) this;
+        return self;
     }
         
-    public A having(Expr.EBoolean... o) {
-        for (Expr.EBoolean b : o) having.and(b);
-        return (A) this;
+    public A having(EBoolean... o) {
+        for (EBoolean b : o) having.and(b);
+        return self;
     }
     
     public A innerJoin(EEntity<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.INNERJOIN,o));
-        return (A) this;
+        return self;
     }
     
     public A fullJoin(EEntity<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.FULLJOIN,o));
-        return (A) this;
+        return self;
     }
  
     public A join(EEntity<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.JOIN,o));
-        return (A) this;
+        return self;
     }
  
     public A leftJoin(EEntity<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.LEFTJOIN,o));
-        return (A) this;
+        return self;
+    }
+    
+    public A on(EBoolean o) {
+        if (!joins.isEmpty()){
+            joins.get(joins.size()-1).setCondition(o);
+        }
+        return self;
     }
     
     public A orderBy(OrderSpecifier<?>... o) {
         orderBy.addAll(Arrays.asList(o));
-        return (A) this;
+        return self;
     }
 
     protected A select(Expr<?>... o) {
         select.addAll(Arrays.asList(o));
-        return (A) this;
+        return self;
     }
 
-    public A where(Expr.EBoolean... o) {
-        for (Expr.EBoolean b : o) where.and(b);
-        return (A) this;
+    public A where(EBoolean... o) {
+        for (EBoolean b : o) where.and(b);
+        return self;
     }
-    
-    public A with(Expr.EBoolean o) {
-        if (!joins.isEmpty()){
-            joins.get(joins.size()-1).setCondition(o);
-        }
-        return (A) this;
-    }
-    
+        
     public Metadata getMetadata(){
         return metadata;
     }
@@ -112,7 +113,7 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
         public List<Expr<?>> getGroupBy() {
             return groupBy;
         }
-        public Expr.EBoolean getHaving() {
+        public EBoolean getHaving() {
             return having.self();
         }
         public List<JoinExpression<JoinMeta>> getJoins() {
@@ -124,7 +125,7 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
         public List<Expr<?>> getSelect() {
             return select;
         }
-        public Expr.EBoolean getWhere() {
+        public EBoolean getWhere() {
             return where.self();
         }
     }

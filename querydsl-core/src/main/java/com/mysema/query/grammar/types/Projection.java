@@ -63,7 +63,7 @@ public class Projection extends Path.PEntity<Object>{
         ParameterizedType type = (ParameterizedType) field.getGenericType();
         Class<?> exprType = (Class<?>) type.getActualTypeArguments()[0];
         Expr<?> fieldVal;
-        if (Boolean.class.isAssignableFrom(exprType)){
+        if (Boolean.class.isAssignableFrom(exprType)){            
             fieldVal = _boolean(field.getName());
         }else if (Number.class.isAssignableFrom(exprType)){
             fieldVal = (Expr<?>) _numberMethod.invoke(this, field.getName(), exprType);            
@@ -74,7 +74,11 @@ public class Projection extends Path.PEntity<Object>{
         }else{
             fieldVal = _simple(field.getName(), exprType);
         }
-        field.set(this, fieldVal);
+        if (field.getType().isAssignableFrom(fieldVal.getClass())){
+            field.set(this, fieldVal);    
+        }else{
+            // unsupported
+        }
     }
         
     public String getName(){
