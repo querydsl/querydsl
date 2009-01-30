@@ -121,4 +121,6 @@ public abstract class Visitor<T extends Visitor<T>> {
     
     protected abstract void visit(Path<?> expr);
     
+    protected abstract void visit(Projection expr);
+    
 }

@@ -90,7 +90,7 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visito
     @Override
     protected void visit(PComponentMap<?,?> expr) {
         visit((PMap<?,?>) expr);
-    }    
+    }
     @Override
     protected void visit(PEntity<?> expr) {
         visit((Path<?>) expr);
@@ -122,5 +122,9 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visito
     @Override
     protected void visit(PStringArray expr) {
         visit((PArray<?>) expr);
+    }
+    @Override
+    protected void visit(Projection expr){
+        visit((PEntity<?>)expr);
     }
 }

@@ -38,13 +38,15 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
         where.clear();
     }
     
+    private A self = (A)this;
+    
     private final Metadata metadata = new Metadata();
     
     public A from(Expr.EEntity<?>... o) {
         for (EEntity<?> expr : o){
             joins.add(new JoinExpression<JoinMeta>(JoinType.DEFAULT,expr));
         }
-        return (A) this;
+        return self;
     }
     
     public A groupBy(Expr<?>... o) {
