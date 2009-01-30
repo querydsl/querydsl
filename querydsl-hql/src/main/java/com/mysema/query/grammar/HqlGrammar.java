@@ -5,10 +5,6 @@
  */
 package com.mysema.query.grammar;
 
-import static com.mysema.query.grammar.types.Factory.createBoolean;
-import static com.mysema.query.grammar.types.Factory.createComparable;
-import static com.mysema.query.grammar.types.Factory.createNumber;
-
 import java.util.Collection;
 import java.util.Date;
 
