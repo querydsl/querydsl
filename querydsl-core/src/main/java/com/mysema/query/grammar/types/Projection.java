@@ -74,10 +74,11 @@ public class Projection extends Path.PEntity<Object>{
         }else{
             fieldVal = _simple(field.getName(), exprType);
         }
+        
         if (field.getType().isAssignableFrom(fieldVal.getClass())){
             field.set(this, fieldVal);    
         }else{
-            // unsupported
+            // unsupported type
         }
     }
         
