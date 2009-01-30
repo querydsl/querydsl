@@ -1,9 +1,16 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.grammar.types;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Projection provides
@@ -12,6 +19,8 @@ import java.lang.reflect.ParameterizedType;
  * @version $Id$
  */
 public class Projection extends Path.PEntity<Object>{
+    
+    private Set<String> fields = new HashSet<String>();
     
     private String entityName;
     
@@ -37,6 +46,7 @@ public class Projection extends Path.PEntity<Object>{
                 for (Field field : cl.getDeclaredFields()){
                     if (Expr.class.isAssignableFrom(field.getType()) && field.getGenericType() instanceof ParameterizedType){
                         field.setAccessible(true);
+                        fields.add(field.getName());
                         handleField(field);                    
                     }                              
                 }    
@@ -69,6 +79,10 @@ public class Projection extends Path.PEntity<Object>{
         
     public String getName(){
         return entityName;
+    }
+    
+    public void accept(SubQuery<?,?> query){
+        // TODO : validate that the given SubQuery can be projected        
     }
     
 }

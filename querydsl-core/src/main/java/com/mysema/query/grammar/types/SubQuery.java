@@ -38,11 +38,15 @@ public class SubQuery<JM,A> extends Expr<A> implements Query<SubQuery<JM,A>>, Co
     public SubQuery<JM,A> join(EEntity<?> o) {query.join(o); return this;}
     public SubQuery<JM,A> leftJoin(EEntity<?> o) {query.leftJoin(o); return this;}
     public SubQuery<JM,A> orderBy(OrderSpecifier<?>... o) {query.orderBy(o); return this;}
-    public SubQuery<JM,A> select(Expr<?>... o) {query.s(o); return this;}
+    public SubQuery<JM,A> select(Expr<?>... o) {
+        query.s(o); return this;}
     public SubQuery<JM,A> where(EBoolean... o) {query.where(o); return this;}
     public SubQuery<JM,A> with(EBoolean o) {query.with(o); return this;}
     // TODO : add some validation that the given Projection is valid for this subquery
-    public Alias.ASimple<A> as(Projection to) { return new Alias.ASimple<A>(this, to.getName()); }
+    public Alias.ASimple<A> as(Projection to) {
+        to.accept(this);
+        return new Alias.ASimple<A>(this, to.getName()); 
+    }
     public Alias.ASimple<A> as(String to) { return new Alias.ASimple<A>(this, to); }
     
     private static class QueryWithPublicSelect<JM> extends QueryBase<JM,QueryWithPublicSelect<JM>>{
