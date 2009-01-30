@@ -207,19 +207,28 @@ public abstract class SqlQueryTest {
     @Test
     public void testJoins() throws SQLException{
         for (Object[] row : q().from(employee).innerJoin(employee2)
-           .with(employee.superiorId.eq(employee2.superiorId))
+           .on(employee.superiorId.eq(employee2.superiorId))
            .where(employee2.id.eq(10))
            .list(employee.id, employee2.id)){
             System.out.println(row[0] + ", " + row[1]);
         }
     }
     
-    class EmployeeInQuery extends Projection{
-        public EmployeeInQuery(String entityName) {
+    class EmployeeProjection extends Projection{
+        public EmployeeProjection(String entityName) {
             super(entityName);
         }
         Expr<Integer> id;
         Expr<String> firstname;
+    }
+    
+    class EmpProjWithSubQuery extends EmployeeProjection{
+        public EmpProjWithSubQuery(String entityName) {
+            super(entityName);
+        }
+        SubQuery<SqlJoinMeta,Object[]> sq = 
+             select(employee2.id,employee2.firstname)
+            .from(employee2);
     }
     
     
@@ -228,17 +237,25 @@ public abstract class SqlQueryTest {
         // 1st : unsafe
         for (Object[] row : q().from(employee).leftJoin(
            select(employee2.id,employee2.firstname).from(employee2).as("employee2"))
-               .with(employee2.id.eq(employee.superiorId))
+               .on(employee2.id.eq(employee.superiorId))
            .list(employee.id, employee2.id)){
            System.out.println(row[0] + ", " + row[1]);
         }
         
         // 2nd : safe
-        EmployeeInQuery proj = new EmployeeInQuery("proj");
+        EmployeeProjection proj = new EmployeeProjection("proj");
         for (Object[] row : q().from(employee).leftJoin(
                 select(employee2.id,employee2.firstname).from(employee2).as(proj))
-                    .with(proj.id.eq(employee.superiorId))
+                    .on(proj.id.eq(employee.superiorId))
                 .list(employee.id, proj.id)){
+                System.out.println(row[0] + ", " + row[1]);
+        }
+        
+        // 3rd : safe & compact
+        EmpProjWithSubQuery proj2 = new EmpProjWithSubQuery("proj");
+        for (Object[] row : q().from(employee)
+                .leftJoin(proj2.sq.as(proj2)).on(proj2.id.eq(employee.superiorId))
+                .list(employee.id, proj2.id)){
                 System.out.println(row[0] + ", " + row[1]);
         }
     }
