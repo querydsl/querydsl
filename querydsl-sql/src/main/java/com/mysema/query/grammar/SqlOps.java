@@ -22,7 +22,7 @@ public class SqlOps extends OperationPatterns {
         dummyTable = "dual",
         select = "select ",
         from = "\nfrom ",
-        aliasAs = " ",
+        tableAlias = " ",
         fullJoin = "\nfull join ",
         innerJoin = "\ninner join ",
         join = "\njoin ",
@@ -36,7 +36,8 @@ public class SqlOps extends OperationPatterns {
         asc = " asc",
         limit = "\nlimit ",
         offset = "\noffset ",
-        union = "\nunion\n";
+        union = "\nunion\n",
+        columnAlias = " ";
     
     // oracle specific
     private String startWith = "\nstart with ",
@@ -72,12 +73,21 @@ public class SqlOps extends OperationPatterns {
         add(Ops.SUBSTR2ARGS, "substr(%s,%s,%s)");               
     }
     
-    public String aliasAs(){
-        return aliasAs;
+    public String tableAlias(){
+        return tableAlias;
     }
     
-    public SqlOps aliasAs(String s){
-        aliasAs = s;
+    public SqlOps tableAlias(String s){
+        tableAlias = s;
+        return this;
+    }
+    
+    public String columnAlias(){
+        return columnAlias;
+    }
+    
+    public SqlOps columnAlias(String s){
+        columnAlias = s;
         return this;
     }
     

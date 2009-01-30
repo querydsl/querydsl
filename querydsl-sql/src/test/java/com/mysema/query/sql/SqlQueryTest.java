@@ -36,6 +36,7 @@ import com.mysema.query.grammar.QString;
 import com.mysema.query.grammar.SqlJoinMeta;
 import com.mysema.query.grammar.SqlOps;
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.Projection;
 import com.mysema.query.grammar.types.SubQuery;
 import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.EString;
@@ -122,6 +123,13 @@ public abstract class SqlQueryTest {
     }
     
     @Test
+    public void testColumnAlias() throws SQLException{
+        q().from(employee).list(
+            employee.firstname.as("fn"),
+            employee.firstname.lower().as("fnLc"));
+    }
+        
+    @Test
     public void testSelectConcat() throws SQLException{
         System.out.println(q().from(survey).list(survey.name.add("Hello World")));
     }
@@ -205,6 +213,36 @@ public abstract class SqlQueryTest {
             System.out.println(row[0] + ", " + row[1]);
         }
     }
+    
+    class EmployeeInQuery extends Projection{
+        public EmployeeInQuery(String entityName) {
+            super(entityName);
+        }
+        Expr<Integer> id;
+        Expr<String> firstname;
+    }
+    
+    
+    @Test
+    public void testJoinSubQuery() throws SQLException{
+        // 1st : unsafe
+        for (Object[] row : q().from(employee).leftJoin(
+           select(employee2.id,employee2.firstname).from(employee2).as("employee2"))
+               .with(employee2.id.eq(employee.superiorId))
+           .list(employee.id, employee2.id)){
+           System.out.println(row[0] + ", " + row[1]);
+        }
+        
+        // 2nd : safe
+        EmployeeInQuery proj = new EmployeeInQuery("proj");
+        for (Object[] row : q().from(employee).leftJoin(
+                select(employee2.id,employee2.firstname).from(employee2).as(proj))
+                    .with(proj.id.eq(employee.superiorId))
+                .list(employee.id, proj.id)){
+                System.out.println(row[0] + ", " + row[1]);
+        }
+    }
+    
     
     @Test
     public void testIllegal() throws SQLException{

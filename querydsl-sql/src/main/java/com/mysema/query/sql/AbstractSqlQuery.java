@@ -16,11 +16,14 @@ import org.apache.commons.lang.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.JoinExpression;
+import com.mysema.query.JoinType;
 import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.SqlJoinMeta;
 import com.mysema.query.grammar.SqlOps;
 import com.mysema.query.grammar.SqlSerializer;
+import com.mysema.query.grammar.types.Alias;
 import com.mysema.query.grammar.types.Constructor;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.SubQuery;
@@ -48,6 +51,8 @@ public class AbstractSqlQuery<MyType extends AbstractSqlQuery<MyType>> extends Q
     private boolean forCountRow = false;
     
     private SubQuery<SqlJoinMeta, ?>[] sq;
+    
+    private MyType self = (MyType)this;
     
     public AbstractSqlQuery(Connection conn, SqlOps ops){
         this.conn = conn;
@@ -242,12 +247,48 @@ public class AbstractSqlQuery<MyType extends AbstractSqlQuery<MyType>> extends Q
 
     public MyType limit(int i) {
         this.limit = i;
-        return (MyType) this;
+        return self;
     }
     
     public MyType offset(int o) {
         this.offset = o;
-        return (MyType) this;
+        return self;
+    }
+    
+    public MyType innerJoin(Alias.ASimple<?> o) {
+        joins.add(new JoinExpression<SqlJoinMeta>(JoinType.INNERJOIN,o));
+        return self;
+    }    
+    public MyType innerJoin(SubQuery<SqlJoinMeta,?> o) {
+        joins.add(new JoinExpression<SqlJoinMeta>(JoinType.INNERJOIN,o));
+        return self;
+    }
+    
+    public MyType fullJoin(Alias.ASimple<?> o) {
+        joins.add(new JoinExpression<SqlJoinMeta>(JoinType.FULLJOIN,o));
+        return self;
+    }    
+    public MyType fullJoin(SubQuery<SqlJoinMeta,?> o) {
+        joins.add(new JoinExpression<SqlJoinMeta>(JoinType.FULLJOIN,o));
+        return self;
+    }
+    
+    public MyType join(Alias.ASimple<?> o) {
+        joins.add(new JoinExpression<SqlJoinMeta>(JoinType.JOIN,o));
+        return self;
+    } 
+    public MyType join(SubQuery<SqlJoinMeta,?> o) {
+        joins.add(new JoinExpression<SqlJoinMeta>(JoinType.JOIN,o));
+        return self;
+    }
+    
+    public MyType leftJoin(Alias.ASimple<?> o) {
+        joins.add(new JoinExpression<SqlJoinMeta>(JoinType.LEFTJOIN,o));
+        return self;
+    } 
+    public MyType leftJoin(SubQuery<SqlJoinMeta,?> o) {
+        joins.add(new JoinExpression<SqlJoinMeta>(JoinType.LEFTJOIN,o));
+        return self;
     }
     
     public class UnionBuilder<RT>{

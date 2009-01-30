@@ -12,6 +12,7 @@ import java.util.List;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.types.*;
+import com.mysema.query.grammar.types.Alias.ASimple;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.serialization.BaseSerializer;
 
@@ -80,7 +81,7 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
             if (je.getTarget() instanceof Path.PEntity && ops.supportsAlias()){
                 Path.PEntity<?> pe = (Path.PEntity<?>)je.getTarget();
                 if (pe.getMetadata().getParent() == null){ 
-                    append(pe.getEntityName()).append(ops.aliasAs());    
+                    append(pe.getEntityName()).append(ops.tableAlias());    
                 }                
             }            
             handle(je.getTarget());
@@ -167,6 +168,11 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
     protected void visit(Expr.EConstant<?> expr) {
         append("?");
         constants.add(expr.getConstant());
+    }
+    
+    @Override
+    protected void visit(ASimple<?> expr) {
+        handle(expr.getFrom()).append(ops.columnAlias()).append(expr.getTo());
     }
     
     protected void visit(SumOver<?> expr) {
