@@ -7,7 +7,7 @@
 package com.mysema.query.hql;
 
 /**
- * QueryModifiers provides.
+ * QueryModifiers combines limit and offset info into a single type
  * 
  * @author Timo Westkamper
  * @version $Id$

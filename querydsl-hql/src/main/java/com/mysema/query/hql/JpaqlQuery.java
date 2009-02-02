@@ -18,7 +18,7 @@ import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.types.Expr;
 
 /**
- * JpaqlQuery provides
+ * JpaqlQuery provides a fluent statically typed interface for creating JPAQL queries.
  *
  * @author tiwe
  * @version $Id$

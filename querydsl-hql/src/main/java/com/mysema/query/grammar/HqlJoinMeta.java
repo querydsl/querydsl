@@ -6,7 +6,7 @@
 package com.mysema.query.grammar;
 
 /**
- * JoinMeta provied join metadata in the form of flags
+ * HqlJoinMeta provides join metadata in the form of flags for HQL queries
  *
  * @author tiwe
  * @version $Id$

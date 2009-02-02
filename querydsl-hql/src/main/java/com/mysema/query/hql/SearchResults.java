@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * SearchResults provides.
+ * SearchResults bundles data for paged search results
  * 
  * @author Timo Westkamper
  * @version $Id$
