@@ -176,7 +176,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     /**
      * The Class MyCustomExpr.
      */
-    public class MyCustomExpr extends Custom.String{
+    public class MyCustomExpr extends Custom.CString{
         private Expr<?>[] args;
         public MyCustomExpr(Expr<?>... args) {
             this.args = args;
