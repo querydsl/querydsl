@@ -124,7 +124,16 @@ public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visito
         visit((PArray<?>) expr);
     }
     @Override
-    protected void visit(Projection expr){
-        visit((PEntity<?>)expr);
+    protected void visit(Custom.Boolean expr){
+        visit((Custom<?>)expr);
     }
+    @Override
+    protected void visit(Custom.Comparable<?> expr){
+        visit((Custom<?>)expr);
+    }
+    @Override
+    protected void visit(Custom.String expr){
+        visit((Custom<?>)expr);
+    }
+    
 }

@@ -52,6 +52,9 @@ public interface Path<C> {
         public EComparable<Integer> size() { 
             return size == null ? size = new PComparable<Integer>(Integer.class, forSize(this)) : size;
         }
+        public String toString(){
+            return metadata.toString();
+        }
     }
     
     /**
@@ -70,6 +73,9 @@ public interface Path<C> {
         public EBoolean isnull() {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }         
+        public String toString(){
+            return metadata.toString();
+        }
     }
     
     public static class PBooleanArray extends PArray<Boolean>{
@@ -111,6 +117,9 @@ public interface Path<C> {
         public EBoolean isnull() {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
+        public String toString(){
+            return metadata.toString();
+        }
     }
     
     public static class PNumber<D extends Number & Comparable<D>> extends ENumber<D> implements Path<D>{
@@ -126,6 +135,9 @@ public interface Path<C> {
         }
         public EBoolean isnull() {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
+        }
+        public String toString(){
+            return metadata.toString();
         }
     }
         
@@ -171,6 +183,9 @@ public interface Path<C> {
         public EBoolean contains(Expr<D> child) {
             return Grammar.in(child, this);
         }
+        public String toString(){
+            return metadata.toString();
+        }
     }
     
     /**
@@ -185,7 +200,7 @@ public interface Path<C> {
         }
         public ESimple<D> get(int index) {
             return new PSimple<D>(type, forListAccess(this, index));
-        }
+        }        
     }
     
     /**
@@ -216,6 +231,9 @@ public interface Path<C> {
         }
         public EBoolean isnull() {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
+        }
+        public String toString(){
+            return metadata.toString();
         }
     }
     
@@ -280,6 +298,9 @@ public interface Path<C> {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
         public <B extends D> EBoolean typeOf(Class<B> type) {return Grammar.typeOf(this, type);}
+        public String toString(){
+            return metadata.toString();
+        }
     }
     
     /**
@@ -316,6 +337,9 @@ public interface Path<C> {
         public EBoolean contains(Expr<D> child) {
             return Grammar.in(child, this);
         }
+        public String toString(){
+            return metadata.toString();
+        }
     }
     
     /**
@@ -331,6 +355,7 @@ public interface Path<C> {
         public EEntity<D> get(int index) {
             return new PEntity<D>(type, entityName, forListAccess(this,index));
         }
+        
     }
     
     /**
@@ -363,6 +388,9 @@ public interface Path<C> {
         }
         public EBoolean isnull() {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
+        }
+        public String toString(){
+            return metadata.toString();
         }
     }
     
@@ -401,6 +429,9 @@ public interface Path<C> {
         public EBoolean isnull() {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
+        public String toString(){
+            return metadata.toString();
+        }
     }
     
 //    /**
@@ -425,7 +456,10 @@ public interface Path<C> {
             return isnotnull == null ? isnotnull = Grammar.isnotnull(this) : isnotnull; 
         }
         public EBoolean isnull() {
-            return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
+            return isnull == null ? isnull = Grammar.isnull(this) : isnull;            
+        }
+        public String toString(){
+            return metadata.toString();
         }
     }
     
@@ -439,6 +473,7 @@ public interface Path<C> {
         public EString get(int index) {
             return new PString(forArrayAccess(this, index));
         }      
+        
     }
 
 }

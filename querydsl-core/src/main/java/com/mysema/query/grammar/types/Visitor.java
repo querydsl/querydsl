@@ -71,40 +71,48 @@ public abstract class Visitor<T extends Visitor<T>> {
 
     protected abstract void visit(Alias.AToPath expr);
 
-    protected abstract void visit(Expr.EConstant<?> expr);
+    protected abstract void visit(Custom.Boolean expr);
 
-    protected abstract void visit(Operation.OBoolean expr);
+    protected abstract void visit(Custom.Comparable<?> expr);
 
-    protected abstract void visit(Operation.OComparable<?,?> expr);
+    protected abstract void visit(Custom.String expr);
     
+    protected abstract void visit(Custom<?> expr);
+    
+    protected abstract void visit(Expr.EConstant<?> expr);
+    
+    protected abstract void visit(Operation.OBoolean expr);
+    
+    protected abstract void visit(Operation.OComparable<?,?> expr);
+
     protected abstract void visit(Operation.ONumber<?,?> expr);
     
     protected abstract void visit(Operation.OString expr);
     
     protected abstract void visit(Operation.OStringArray expr);
-    
-    protected abstract void visit(Operation<?, ?> expr);
 
-    protected abstract void visit(Path.PArray<?> expr);
+    protected abstract void visit(Operation<?, ?> expr);
     
+    protected abstract void visit(Path.PArray<?> expr);
+
     protected abstract void visit(Path.PBoolean expr);
     
     protected abstract void visit(Path.PBooleanArray expr);
-
+    
     protected abstract void visit(Path.PComparable<?> expr);
     
     protected abstract void visit(Path.PComparableArray<?> expr);
 
     protected abstract void visit(Path.PComponentCollection<?> expr);
-    
+
     protected abstract void visit(Path.PComponentList<?> expr);
     
     protected abstract void visit(Path.PComponentMap<?,?> expr);
     
     protected abstract void visit(Path.PEntity<?> expr);
-
+    
     protected abstract void visit(Path.PEntityCollection<?> expr);
-
+    
     protected abstract void visit(Path.PEntityList<?> expr);
     
     protected abstract void visit(Path.PEntityMap<?,?> expr);
@@ -120,7 +128,5 @@ public abstract class Visitor<T extends Visitor<T>> {
     protected abstract void visit(Path.PStringArray expr);
     
     protected abstract void visit(Path<?> expr);
-    
-    protected abstract void visit(Projection expr);
-    
+        
 }

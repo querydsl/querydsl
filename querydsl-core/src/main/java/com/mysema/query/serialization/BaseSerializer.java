@@ -14,11 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.mysema.query.grammar.Ops.Op;
-import com.mysema.query.grammar.types.Constructor;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Operation;
-import com.mysema.query.grammar.types.Path;
-import com.mysema.query.grammar.types.VisitorAdapter;
+import com.mysema.query.grammar.types.*;
 import com.mysema.query.grammar.types.Alias.ASimple;
 import com.mysema.query.grammar.types.Alias.AToPath;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
@@ -66,13 +62,13 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
         String parentAsString = null, exprAsString = null;
         
         if (path.getMetadata().getParent() != null){
-            parentAsString = _toString((Expr<?>)path.getMetadata().getParent(),false);    
+            parentAsString = toString((Expr<?>)path.getMetadata().getParent(),false);    
         }        
         if (pathType == PROPERTY || pathType == VARIABLE ||
               pathType == LISTVALUE_CONSTANT){
             exprAsString = path.getMetadata().getExpression().toString();
         }else if (path.getMetadata().getExpression() != null){
-            exprAsString = _toString(path.getMetadata().getExpression(),false);
+            exprAsString = toString(path.getMetadata().getExpression(),false);
         }
         
         String pattern = ops.getPattern(pathType);
@@ -84,7 +80,7 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
         
     }
     
-    protected final String _toString(Expr<?> expr, boolean wrap) {
+    protected final String toString(Expr<?> expr, boolean wrap) {
         StringBuilder old = builder;
         builder = new StringBuilder();
         if (wrap) builder.append("(");
@@ -93,6 +89,14 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
         String ret = builder.toString();
         builder = old;
         return ret;
+    }
+    
+    protected void visit(Custom<?> expr){
+        Object[] strings = new String[expr.getArgs().length];
+        for (int i = 0; i < strings.length; i++){
+            strings[i] = toString(expr.getArgs()[i],false);
+        }
+        append(String.format(expr.getPattern(), strings));
     }
     
     public List<Object> getConstants(){
@@ -150,7 +154,7 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
                 // wrap if outer operator precedes
                 wrap = precedence < ops.getPrecedence(((Operation<?,?>)args[i]).getOperator());
             }
-            strings[i] = _toString(args[i],wrap);
+            strings[i] = toString(args[i],wrap);
         }
         append(String.format(pattern, strings));
     }

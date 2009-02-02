@@ -124,6 +124,14 @@ public final class PathMetadata<T> {
             .isEquals();
     }
     
+    public String toString(){
+        if (expression != null){
+            return expression.toString();
+        }else{
+            return super.toString();
+        }
+    }
+    
     /**
      * The Class PathType.
      */
