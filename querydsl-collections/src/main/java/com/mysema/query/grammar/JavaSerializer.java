@@ -54,7 +54,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
         String parentAsString = null, exprAsString = null;
         
         if (path.getMetadata().getParent() != null){
-            parentAsString = _toString((Expr<?>)path.getMetadata().getParent(), false);    
+            parentAsString = toString((Expr<?>)path.getMetadata().getParent(), false);    
         }        
         if (pathType == VARIABLE){
             exprAsString = path.getMetadata().getExpression().toString();
@@ -69,7 +69,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
             exprAsString = path.getMetadata().getExpression().toString();
             
         }else if (path.getMetadata().getExpression() != null){
-            exprAsString = _toString(path.getMetadata().getExpression(), false);
+            exprAsString = toString(path.getMetadata().getExpression(), false);
         }
         
         String pattern = ops.getPattern(pathType);

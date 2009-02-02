@@ -108,6 +108,4 @@ public class ColQuery<S extends ColQuery<S>>{
         return (S)this;
     }
     
-    
-
 }
