@@ -13,7 +13,7 @@ import com.sun.mirror.type.*;
 import com.sun.mirror.util.SimpleTypeVisitor;
 
 /**
- * TypeVisitorUtil provides.
+ * TypeInfo represents a single type
  * 
  * @author tiwe
  * @version $Id$
