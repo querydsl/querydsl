@@ -14,6 +14,7 @@ import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.types.*;
 import com.mysema.query.grammar.types.Alias.ASimple;
 import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.grammar.types.Path.PEntity;
 import com.mysema.query.serialization.BaseSerializer;
 
 /**
@@ -156,6 +157,10 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
         
     }
     
+    protected void visit(Projection expr){
+        visit((PEntity<?>)expr);
+    }
+    
     protected void visit(CountExpression expr) {
         if (expr.getTarget() == null){
             append(ops.countStar());    
@@ -173,6 +178,10 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
     @Override
     protected void visit(ASimple<?> expr) {
         handle(expr.getFrom()).append(ops.columnAlias()).append(expr.getTo());
+    }
+    
+    protected void visit(Alias.AToPath expr) {
+        handle(expr.getFrom()).append(ops.tableAlias()).visit(expr.getTo());
     }
     
     protected void visit(SumOver<?> expr) {

@@ -220,44 +220,29 @@ public abstract class SqlQueryTest {
         }
         Expr<Integer> id;
         Expr<String> firstname;
+        Expr<Integer> superiorId;
     }
-    
-    class EmpProjWithSubQuery extends EmployeeProjection{
-        public EmpProjWithSubQuery(String entityName) {
-            super(entityName);
+        
+    @Test
+    public void testProjectionFromEntity() throws SQLException{
+        EmployeeProjection proj = new EmployeeProjection("proj");
+        for (Object[] row : q().from(employee).leftJoin(proj.from(employee2))                
+                .on(proj.id.eq(employee.superiorId))
+            .list(employee.id, proj.id, proj.superiorId)){
+            System.out.println(row[0] + ", " + row[1]);
         }
-        SubQuery<SqlJoinMeta,Object[]> sq = 
-             select(employee2.id,employee2.firstname)
-            .from(employee2);
     }
-    
+       
     
     @Test
-    public void testJoinSubQuery() throws SQLException{
-        // 1st : unsafe
-        for (Object[] row : q().from(employee).leftJoin(
-           select(employee2.id,employee2.firstname).from(employee2).as("employee2"))
-               .on(employee2.id.eq(employee.superiorId))
-           .list(employee.id, employee2.id)){
-           System.out.println(row[0] + ", " + row[1]);
-        }
-        
-        // 2nd : safe
+    public void testProjectionFromSubQuery() throws SQLException{
         EmployeeProjection proj = new EmployeeProjection("proj");
         for (Object[] row : q().from(employee).leftJoin(
-                select(employee2.id,employee2.firstname).from(employee2).as(proj))
-                    .on(proj.id.eq(employee.superiorId))
-                .list(employee.id, proj.id)){
-                System.out.println(row[0] + ", " + row[1]);
-        }
-        
-        // 3rd : safe & compact
-        EmpProjWithSubQuery proj2 = new EmpProjWithSubQuery("proj");
-        for (Object[] row : q().from(employee)
-                .leftJoin(proj2.sq.as(proj2)).on(proj2.id.eq(employee.superiorId))
-                .list(employee.id, proj2.id)){
-                System.out.println(row[0] + ", " + row[1]);
-        }
+            proj.from(select(employee2.id,employee2.firstname).from(employee2)))
+                .on(proj.id.eq(employee.superiorId))
+            .list(employee.id, proj.id)){
+            System.out.println(row[0] + ", " + row[1]);
+        }        
     }
     
     

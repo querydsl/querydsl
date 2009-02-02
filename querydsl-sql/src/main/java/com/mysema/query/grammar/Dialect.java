@@ -7,7 +7,15 @@ package com.mysema.query.grammar;
 
 
 /**
- * Dialects provides different SQL dialects for querydsl-sql
+ * Dialects provides different SQL dialects for querydsl-sql.
+ * Querydsl SQL supports the following database systems :
+ * <ul>
+ *   <li>HSQLDB</li>
+ *   <li>MySQL</li>
+ *   <li>Oracle</li>
+ *   <li>PostgreSQL</li>
+ *   <li>SQL Server</li>
+ * </ul>
  *
  * @author tiwe
  * @version $Id$

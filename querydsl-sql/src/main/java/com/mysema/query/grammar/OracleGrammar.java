@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.grammar;
 
 
@@ -19,17 +24,25 @@ import com.mysema.query.grammar.types.Path.PNumber;
  */
 public class OracleGrammar extends SqlGrammar{
     
+    // global columns
+    
     public static ENumber<Integer> level = new PNumber<Integer>(Integer.class, md("level"));
     
     public static ENumber<Integer> rownum = new PNumber<Integer>(Integer.class, md("rownum"));
     
     public static EComparable<Date> sysdate = new PComparable<Date>(Date.class, md("sysdate"));
     
+    // custom functions
+    
+    public static <A extends Number & Comparable<A>> SumOver<A> sumOver(Expr<A> expr){
+        return new SumOver<A>(expr);
+    }
+    
+    // internal
+    
     private static PathMetadata<String> md(String var){
         return PathMetadata.forVariable(var);
     }
 
-    public static <A extends Number & Comparable<A>> SumOver<A> sumOver(Expr<A> expr){
-        return new SumOver<A>(expr);
-    }
+    
 }
