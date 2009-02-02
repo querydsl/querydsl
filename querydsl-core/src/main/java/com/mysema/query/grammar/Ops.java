@@ -81,12 +81,19 @@ public interface Ops {
     // subquery operations
     Op<Boolean> EXISTS = new Op<Boolean>();
     
+    /**
+     * Aggreate operators
+     *
+     */
     public interface OpNumberAgg{
         Op<Number> AVG = new Op<Number>();
         Op<Number> MAX = new Op<Number>();
         Op<Number> MIN = new Op<Number>();   
     }
     
+    /**
+     * Date and time operators
+     */
     public interface OpDateTime{
         Op<java.util.Date> CURRENT_DATE = new Op<java.util.Date>();
         Op<java.util.Date> CURRENT_TIME = new Op<java.util.Date>();
@@ -104,6 +111,10 @@ public interface Ops {
         Op<Integer> DAY_OF_YEAR =new Op<Integer>();
     }
     
+    /**
+     * Math operators
+     *
+     */
     public interface OpMath{
         Op<Number> ABS = new Op<Number>();
         Op<Number> ACOS = new Op<Number>();
@@ -126,6 +137,9 @@ public interface Ops {
         Op<Number> EXP = new Op<Number>();        
     }
     
+    /**
+     * String operators
+     */
     public interface OpString{
         Op<Number> LENGTH = new Op<Number>();
         Op<String> LTRIM = new Op<String>();
