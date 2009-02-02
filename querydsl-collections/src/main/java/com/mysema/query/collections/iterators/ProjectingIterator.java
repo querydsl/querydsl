@@ -12,7 +12,8 @@ import org.codehaus.janino.ExpressionEvaluator;
 
 
 /**
- * ProjectingIterator is a projecting iterator, which projects a 
+ * ProjectingIterator is a projecting iterator, which projects an Object array via the given
+ * ExpressionEvaluator
  *
  * @author tiwe
  * @version $Id$
