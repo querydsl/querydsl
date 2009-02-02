@@ -119,26 +119,6 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         }                
     }
     
-    protected void visit(Custom.Boolean expr){
-        visit((Custom<?>)expr);
-    }
-    
-    protected void visit(Custom.Comparable<?> expr){
-        visit((Custom<?>)expr);
-    }
-    
-    protected void visit(Custom.String expr){
-        visit((Custom<?>)expr);
-    }
-    
-    protected void visit(Custom<?> expr){
-        Object[] strings = new String[expr.getArgs().length];
-        for (int i = 0; i < strings.length; i++){
-            strings[i] = _toString(expr.getArgs()[i],false);
-        }
-        append(String.format(expr.getPattern(), strings));
-    }
-    
     protected void visit(DistinctPath<?> expr){
         append("distinct ").visit(expr.getPath());
     }
