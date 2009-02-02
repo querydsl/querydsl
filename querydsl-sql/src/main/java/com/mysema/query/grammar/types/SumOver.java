@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mysema.query.grammar.types;
 
 import java.util.ArrayList;
@@ -11,7 +8,7 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.ENumber;
 
 /**
- * SumOver provides
+ * SumOver is a fluent type for Oracle specific sum over / partition by / order by constructs
  *
  * @author tiwe
  * @version $Id$

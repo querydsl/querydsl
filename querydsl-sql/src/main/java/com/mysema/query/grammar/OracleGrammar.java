@@ -17,7 +17,7 @@ import com.mysema.query.grammar.types.Path.PComparable;
 import com.mysema.query.grammar.types.Path.PNumber;
 
 /**
- * OracleGrammar provides
+ * OracleGrammar provides Oracle specific extensions to the SqlGrammar
  *
  * @author tiwe
  * @version $Id$

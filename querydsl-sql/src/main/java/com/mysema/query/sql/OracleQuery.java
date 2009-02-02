@@ -14,7 +14,7 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 
 /**
- * OracleQuery provides Oracle specific extensions 
+ * OracleQuery provides Oracle specific extensions to the base SQL query type
  *
  * @author tiwe
  * @version $Id$

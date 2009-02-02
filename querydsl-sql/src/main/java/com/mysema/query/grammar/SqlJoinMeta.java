@@ -6,7 +6,7 @@
 package com.mysema.query.grammar;
 
 /**
- * SqlJoinMeta provides
+ * SqlJoinMeta provides Sql specific join metadata in the form of enumerated flags
  *
  * @author tiwe
  * @version $Id$

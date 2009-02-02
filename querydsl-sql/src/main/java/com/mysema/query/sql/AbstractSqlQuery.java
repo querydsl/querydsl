@@ -29,7 +29,7 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.SubQuery;
 
 /**
- * AbstractSqlQuery provides
+ * AbstractSqlQuery is the base type for SQL query implementations
  *
  * @author tiwe
  * @version $Id$

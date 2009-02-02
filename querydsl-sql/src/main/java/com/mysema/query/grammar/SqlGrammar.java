@@ -10,7 +10,7 @@ import com.mysema.query.grammar.types.SubQuery;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 
 /**
- * SqlGrammar provides
+ * SqlGrammar provides SQL specific extensions to the general Querydsl Grammar
  *
  * @author tiwe
  * @version $Id$

@@ -10,7 +10,8 @@ import java.lang.reflect.Field;
 import com.mysema.query.serialization.OperationPatterns;
 
 /**
- * SqlOps represents an SQL dialect for querydsl-sql
+ * SqlOps extended OperationPatterns to provided SQL specific extensions and acts
+ * as database specific Dialect for Querydsl SQL
  *
  * @author tiwe
  * @version $Id$

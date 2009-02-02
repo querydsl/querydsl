@@ -6,7 +6,6 @@
 package com.mysema.query.grammar.types;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.HashSet;
@@ -83,11 +82,9 @@ public class Projection extends Path.PEntity<Projection>{
      * Add the given field into the projection
      * 
      * @param field
-     * @throws IllegalArgumentException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
+     * @throws Exception
      */
-    private void handleField(Field field) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+    private void handleField(Field field) throws Exception{
         ParameterizedType type = (ParameterizedType) field.getGenericType();
         Class<?> exprType = (Class<?>) type.getActualTypeArguments()[0];
         Expr<?> fieldVal;

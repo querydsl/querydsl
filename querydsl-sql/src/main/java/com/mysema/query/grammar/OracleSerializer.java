@@ -7,7 +7,7 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 
 /**
- * OracleSerializer provides
+ * OracleSerializer extended the SqlSerializer to support Oracle specific constructs
  *
  * @author tiwe
  * @version $Id$
