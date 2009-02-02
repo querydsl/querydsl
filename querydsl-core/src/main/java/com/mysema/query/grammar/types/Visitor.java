@@ -71,11 +71,11 @@ public abstract class Visitor<T extends Visitor<T>> {
 
     protected abstract void visit(Alias.AToPath expr);
 
-    protected abstract void visit(Custom.Boolean expr);
+    protected abstract void visit(Custom.CBoolean expr);
 
-    protected abstract void visit(Custom.Comparable<?> expr);
+    protected abstract void visit(Custom.CComparable<?> expr);
 
-    protected abstract void visit(Custom.String expr);
+    protected abstract void visit(Custom.CString expr);
     
     protected abstract void visit(Custom<?> expr);
     

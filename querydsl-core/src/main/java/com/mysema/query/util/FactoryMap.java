@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * FactoryMap provides
+ * FactoryMap is a factory which lazily creates values via the given create method
  *
  * @author Timo Westk&auml;mper
  * @version $Id: FactoryMap.java 3549 2008-06-10 17:56:47Z tiwe $

@@ -7,6 +7,13 @@ package com.mysema.query.grammar.types;
 
 import com.mysema.query.grammar.types.Expr.EComparable;
 
+/**
+ * CountExpression represents a count expression
+ *
+ * @author tiwe
+ * @version $Id$
+ *
+ */
 public class CountExpression extends EComparable<Long> {
     private final Expr<?> target;
 

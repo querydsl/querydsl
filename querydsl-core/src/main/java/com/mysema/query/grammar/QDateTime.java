@@ -14,7 +14,7 @@ import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.ENumber;
 
 /**
- * QDateTime provides
+ * QDateTime provides date and time functions
  *
  * @author tiwe
  * @version $Id$

@@ -7,6 +7,14 @@ package com.mysema.query.grammar.types;
 
 import org.apache.commons.lang.ClassUtils;
 
+/**
+ * Constructor represents a constructor invocation in a projection
+ *
+ * @author tiwe
+ * @version $Id$
+ *
+ * @param <D>
+ */
 public class Constructor<D> extends Expr<D> {
     private final Expr<?>[] args;
     private java.lang.reflect.Constructor<D> javaConstructor;
@@ -29,6 +37,10 @@ public class Constructor<D> extends Expr<D> {
         }
     }
     
+    /**
+     * Returns the "real" constructor that matches the Constructor expression
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public java.lang.reflect.Constructor<D> getJavaConstructor(){   
         if (javaConstructor == null){

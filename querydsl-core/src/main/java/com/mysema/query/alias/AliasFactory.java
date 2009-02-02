@@ -15,7 +15,7 @@ import com.mysema.query.grammar.types.Path.PEntity;
 import com.mysema.query.util.FactoryMap;
 
 /**
- * AliasFactory provides
+ * AliasFactory creates CGLIB based alias proxy instances and keeps track of them
  *
  * @author tiwe
  * @version $Id$

@@ -15,7 +15,7 @@ import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
 
 /**
- * HqlOps provides operator patterns for HQL serialization
+ * OperationPatterns provides operator patterns for SQL/HQL serialization
  * 
  * @author tiwe
  * @version $Id$

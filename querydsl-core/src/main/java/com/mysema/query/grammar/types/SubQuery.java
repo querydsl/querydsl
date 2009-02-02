@@ -11,7 +11,7 @@ import com.mysema.query.grammar.OrderSpecifier;
 
 /**
  * 
- * SubQuery provides
+ * SubQuery is a sub query
  *
  * @author tiwe
  * @version $Id$

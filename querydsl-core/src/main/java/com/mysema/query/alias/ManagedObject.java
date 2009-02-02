@@ -7,9 +7,8 @@ package com.mysema.query.alias;
 
 
 /**
- * MagagedObject provides
- *
- * @author tiwe
+ * MagagedObject is a tagging interface for CGLIB alias proxies
+ * 
  * @version $Id$
  */
 public interface ManagedObject {

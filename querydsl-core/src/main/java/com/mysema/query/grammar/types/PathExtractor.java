@@ -10,7 +10,7 @@ import com.mysema.query.grammar.types.Expr.EConstant;
 
 
 /**
- * PathExtractor provides
+ * PathExtractor is a visitor implementation which returns the top level path from a single Expr instance
  *
  * @author tiwe
  * @version $Id$

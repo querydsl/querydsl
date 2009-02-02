@@ -16,7 +16,7 @@ import com.mysema.query.grammar.types.ExtTypes.ExtString;
 import com.mysema.query.grammar.types.Path.*;
 
 /**
- * AliasAwareExprFactory provides
+ * AliasAwareExprFactory extends the SimpleExprFactory to return thread bound alias expressions, when present
  *
  * @author tiwe
  * @version $Id$

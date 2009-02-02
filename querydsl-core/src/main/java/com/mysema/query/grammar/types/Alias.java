@@ -22,7 +22,7 @@ public interface Alias {
     Expr<?> getFrom();
     
     /**
-     * The Class Entity.
+     * Entity as alias
      */
     public static class AEntity<D> extends EEntity<D> implements AToPath{
         private final Expr<?> from;
@@ -37,7 +37,7 @@ public interface Alias {
     }
     
     /**
-     * The Class EntityCollection.
+     * Entity collection as alias
      */
     public static class AEntityCollection<D> extends EEntity<D> implements AToPath{
         private final Expr<?> from;
@@ -52,7 +52,7 @@ public interface Alias {
     }
             
     /**
-     * The Class Simple.
+     * Alias to symbol
      */
     public static class ASimple<D> extends ESimple<D> implements Alias{     
         private final Expr<?> from;
@@ -70,7 +70,7 @@ public interface Alias {
     }
     
     /**
-     * The Interface To
+     * Alias to path
      */
     public interface AToPath extends Alias{        
         Path<?> getTo();

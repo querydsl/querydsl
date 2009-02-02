@@ -12,7 +12,7 @@ import com.mysema.query.grammar.types.Factory;
 import com.mysema.query.grammar.types.Expr.ENumber;
 
 /**
- * QMath provides
+ * QMath provides math functions
  *
  * @author tiwe
  * @version $Id$

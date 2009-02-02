@@ -27,7 +27,7 @@ import com.mysema.query.grammar.types.Path.PCollection;
 import com.mysema.query.grammar.types.Path.PList;
 
 /**
- * PropertyAccessInvocationHandler provides
+ * PropertyAccessInvocationHandler is the main InvocationHandler class for the CGLIB alias proxies
  *
  * @author tiwe
  * @version $Id$

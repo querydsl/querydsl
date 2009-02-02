@@ -9,7 +9,7 @@ import com.mysema.query.grammar.Grammar;
 
 
 /**
- * ExtTypes provides
+ * ExtTypes provides extended versions of the basic types
  *
  * @author tiwe
  * @version $Id$

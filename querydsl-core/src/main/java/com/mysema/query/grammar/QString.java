@@ -11,7 +11,7 @@ import com.mysema.query.grammar.types.Expr.ENumber;
 import com.mysema.query.grammar.types.Expr.EString;
 
 /**
- * QString provides
+ * QString provides string functions
  *
  * @author tiwe
  * @version $Id$
