@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.collections15.IteratorUtils;
 import org.junit.Test;
 
 /**
@@ -24,6 +25,7 @@ import org.junit.Test;
 public class MultiIteratorTest {
 
     private MultiIterator it = new MultiIterator();
+    
     
     @Test
     public void testOneLevel(){

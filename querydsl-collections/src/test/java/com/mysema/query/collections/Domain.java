@@ -78,7 +78,10 @@ public class Domain {
         }
         public Cat getMate() {
             return mate;
-        }        
+        }     
+        public String toString(){
+            return name;
+        }
     }
 
     public enum Color {

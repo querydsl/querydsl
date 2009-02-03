@@ -47,7 +47,7 @@ public class MultiIterator extends IteratorBase<Object[]>{
         }        
         index = iterators.length -1;
         while (lastEntry[index] && index > 0) index--;
-        return values;
+        return values.clone();
     }
         
     public MultiIterator add(Iterable<?> iterable) {

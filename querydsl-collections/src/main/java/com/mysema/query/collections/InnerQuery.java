@@ -5,25 +5,23 @@
  */
 package com.mysema.query.collections;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import org.apache.commons.collections15.IteratorUtils;
 import org.codehaus.janino.ExpressionEvaluator;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryBase;
+import com.mysema.query.collections.comparators.MultiComparator;
 import com.mysema.query.collections.iterators.FilteringIterator;
 import com.mysema.query.collections.iterators.MultiIterator;
 import com.mysema.query.collections.iterators.ProjectingIterator;
 import com.mysema.query.grammar.JavaSerializer;
 import com.mysema.query.grammar.Order;
-import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
+import com.mysema.query.grammar.types.Constructor.CArray;
 import com.mysema.query.serialization.OperationPatterns;
 
 /**
@@ -60,34 +58,13 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
         List<Expr<?>> sources = new ArrayList<Expr<?>>();
         MultiIterator multiIt = new MultiIterator();
         
-        // order
-        Map<Path<?>,Order> orders = null;
-        boolean sortOnIterate = !orderBy.isEmpty();
-        if (sortOnIterate){
-            orders = new HashMap<Path<?>,Order>();
-            for (OrderSpecifier<?> order : orderBy){
-                if (!(order.target instanceof Path)) sortOnIterate = false;
-                orders.put((Path<?>)order.target, order.order);
-            }            
-        }               
-        
         for (JoinExpression<?> join : joins) {
             sources.add(join.getTarget());
-        }
-        if (sortOnIterate){
-            for (JoinExpression<?> join : joins) {
-                Iterable<?> iterable = pathToIterable.get(join.getTarget());
-                if (orders.containsKey(join.getTarget())){
-                    // TODO : reorder the iterable instance
-                }
-                multiIt.add(iterable);
-            }
-        }else{
-            for (JoinExpression<?> join : joins) {
-                multiIt.add(pathToIterable.get(join.getTarget()));
-            }    
-        }               
+            multiIt.add(pathToIterable.get(join.getTarget()));
+        }              
         Iterator<?> it = multiIt.init();
+        
+        // TODO : joins
 
         // where
         if (where.self() != null) {
@@ -97,11 +74,29 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
             it = new FilteringIterator<Object>(it, ev);
         }
         
+        // order
+        if (!orderBy.isEmpty()){
+            // create a projection for the order
+            Expr<Object>[] orderByExpr = new Expr[orderBy.size()];
+            boolean[] directions = new boolean[orderBy.size()];
+            for (int i = 0; i < orderBy.size(); i++){
+                orderByExpr[i] = (Expr<Object>)orderBy.get(i).target;
+                directions[i] = orderBy.get(i).order == Order.ASC;
+            }
+            Expr<?> expr = new CArray<Object>(Object.class, orderByExpr);
+            ExpressionEvaluator ev = new JavaSerializer(ops).handle(expr)
+                .createExpressionEvaluator(sources, expr);
+            
+            // transform the iterator to list
+            List<Object[]> itAsList = IteratorUtils.toList((Iterator<Object[]>)it);               
+            Collections.sort(itAsList, new MultiComparator(ev, directions));
+            it = itAsList.iterator();
+        }
+        
         // select
-        ExpressionEvaluator ev = new JavaSerializer(ops).handle(
-                projection).createExpressionEvaluator(sources,
-                projection);
-        return new ProjectingIterator<RT>(it, ev);
+        ExpressionEvaluator ev = new JavaSerializer(ops).handle(projection)
+            .createExpressionEvaluator(sources,projection);        
+        return new ProjectingIterator<RT>(it, ev);                   
     }
 
     public <RT> Iterable<RT> iterate(final Expr<RT> projection) {
