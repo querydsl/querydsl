@@ -80,7 +80,7 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
             Expr<Object>[] orderByExpr = new Expr[orderBy.size()];
             boolean[] directions = new boolean[orderBy.size()];
             for (int i = 0; i < orderBy.size(); i++){
-                orderByExpr[i] = (Expr<Object>)orderBy.get(i).target;
+                orderByExpr[i] = (Expr)orderBy.get(i).target;
                 directions[i] = orderBy.get(i).order == Order.ASC;
             }
             Expr<?> expr = new CArray<Object>(Object.class, orderByExpr);
