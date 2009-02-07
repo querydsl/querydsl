@@ -168,8 +168,17 @@ public class HqlGrammar extends GrammarWithAlias{
         return any(col);
     }
         
-    public static <D extends Number & Comparable<D>> ENumber<D> sum(Expr<D> left){ 
-        return createNumber(left.getType(), HqlOps.OpHql.SUM, left);
+    /**
+     * SUM returns Long when applied to state-fields of integral types (other than BigInteger); 
+     *             Double when applied to state-fields of floating point types; 
+     *             BigInteger when applied to state-fields of type BigInteger; 
+     *             and BigDecimal when applied to state-fields of type BigDecimal. 
+     */   
+    public static <D extends Number & Comparable<D>> ENumber<?> sum(Expr<D> left){ 
+        Class<?> type = left.getType();
+        if (type.equals(Byte.class) || type.equals(Integer.class) || type.equals(Short.class)) type = Long.class;
+        if (type.equals(Float.class)) type = Double.class;
+        return createNumber((Class<D>)type, HqlOps.OpHql.SUM, left);
     }
     
     public static EComparable<Date> sysdate(){

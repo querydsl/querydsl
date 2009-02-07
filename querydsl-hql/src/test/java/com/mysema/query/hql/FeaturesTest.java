@@ -5,14 +5,24 @@
  */
 package com.mysema.query.hql;
 
-import static com.mysema.query.grammar.QMath.*;
+import static com.mysema.query.grammar.Grammar.count;
+import static com.mysema.query.grammar.Grammar.not;
 import static com.mysema.query.grammar.HqlGrammar.*;
+import static com.mysema.query.grammar.QMath.add;
+import static com.mysema.query.grammar.QMath.div;
+import static com.mysema.query.grammar.QMath.mult;
+import static com.mysema.query.grammar.QMath.sub;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import org.junit.Test;
 
+import com.mysema.query.grammar.GrammarWithAlias;
+import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlOps;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.HqlSerializer;
@@ -378,6 +388,29 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         toString("count(*)", count());
         toString("count(distinct cat.bodyWeight)", count(distinct(cat.bodyWeight)));
         toString("count(cat)", count(cat));        
+    }
+    
+    /**
+     * specs : http://opensource.atlassian.com/projects/hibernate/browse/HHH-1538
+     */
+    @Test
+    public void testBug326650(){
+        assertEquals(Long.class, HqlGrammar.sum(GrammarWithAlias.$((byte)0)).getType());
+        assertEquals(Long.class, HqlGrammar.sum(GrammarWithAlias.$((short)0)).getType());
+        assertEquals(Long.class, HqlGrammar.sum(GrammarWithAlias.$((int)0)).getType());
+        assertEquals(Long.class, HqlGrammar.sum(GrammarWithAlias.$((long)0)).getType());
+        
+        
+        assertEquals(Double.class, HqlGrammar.sum(GrammarWithAlias.$((float)0)).getType());
+        assertEquals(Double.class, HqlGrammar.sum(GrammarWithAlias.$((double)0)).getType());
+        
+        assertEquals(BigInteger.class, HqlGrammar.sum(GrammarWithAlias.$(new BigInteger("0"))).getType());
+        assertEquals(BigDecimal.class, HqlGrammar.sum(GrammarWithAlias.$(new BigDecimal("0"))).getType());
+    
+        // sum comparison
+        
+        sum(GrammarWithAlias.$(0)).gt(0);
+    
     }
        
     private void toString(String expected, Expr<?> expr) {

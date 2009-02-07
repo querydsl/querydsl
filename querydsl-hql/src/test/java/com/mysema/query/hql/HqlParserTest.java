@@ -36,6 +36,11 @@ import com.mysema.query.hql.HqlDomain.*;
  */
 public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
     
+    @Test
+    public void testSum(){
+        from(cat).select(sum(cat.kittens.size()));
+    }
+    
     /**
      * Section 9.2 - from *
      */
@@ -616,6 +621,8 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
     public void testHHH1247() throws Exception {
 //        parse("select distinct user.party from com.itf.iceclaims.domain.party.user.UserImpl user inner join user.party.$RelatedWorkgroups relatedWorkgroups where relatedWorkgroups.workgroup.id = :workgroup and relatedWorkgroups.effectiveTime.start <= :datesnow and relatedWorkgroups.effectiveTime.end > :dateenow ");
     }
+    
+    
     
     protected void parse() throws RecognitionException, TokenStreamException{
         String input = toString();
