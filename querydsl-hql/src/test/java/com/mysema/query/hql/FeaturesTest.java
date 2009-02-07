@@ -7,6 +7,7 @@ package com.mysema.query.hql;
 
 import static com.mysema.query.grammar.Grammar.count;
 import static com.mysema.query.grammar.Grammar.not;
+import static com.mysema.query.grammar.GrammarWithAlias.$;
 import static com.mysema.query.grammar.HqlGrammar.*;
 import static com.mysema.query.grammar.QMath.add;
 import static com.mysema.query.grammar.QMath.div;
@@ -21,14 +22,13 @@ import java.math.BigInteger;
 
 import org.junit.Test;
 
-import com.mysema.query.grammar.GrammarWithAlias;
-import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlOps;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.HqlSerializer;
 import com.mysema.query.grammar.types.Constructor;
 import com.mysema.query.grammar.types.Custom;
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.Expr.ENumber;
 
 
 /**
@@ -395,21 +395,25 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
      */
     @Test
     public void testBug326650(){
-        assertEquals(Long.class, HqlGrammar.sum(GrammarWithAlias.$((byte)0)).getType());
-        assertEquals(Long.class, HqlGrammar.sum(GrammarWithAlias.$((short)0)).getType());
-        assertEquals(Long.class, HqlGrammar.sum(GrammarWithAlias.$((int)0)).getType());
-        assertEquals(Long.class, HqlGrammar.sum(GrammarWithAlias.$((long)0)).getType());
+        assertEquals(Long.class, sum($((byte)0)).getType());
+        assertEquals(Long.class, sum($((short)0)).getType());
+        assertEquals(Long.class, sum($((int)0)).getType());
+        assertEquals(Long.class, sum($((long)0)).getType());
         
         
-        assertEquals(Double.class, HqlGrammar.sum(GrammarWithAlias.$((float)0)).getType());
-        assertEquals(Double.class, HqlGrammar.sum(GrammarWithAlias.$((double)0)).getType());
+        assertEquals(Double.class, sum($((float)0)).getType());
+        assertEquals(Double.class, sum($((double)0)).getType());
         
-        assertEquals(BigInteger.class, HqlGrammar.sum(GrammarWithAlias.$(new BigInteger("0"))).getType());
-        assertEquals(BigDecimal.class, HqlGrammar.sum(GrammarWithAlias.$(new BigDecimal("0"))).getType());
+        assertEquals(BigInteger.class, sum($(new BigInteger("0"))).getType());
+        assertEquals(BigDecimal.class, sum($(new BigDecimal("0"))).getType());
     
+        // sum to var
+        
+        ENumber<Long> sum = (ENumber) sum($(0));
+        
         // sum comparison
         
-        sum(GrammarWithAlias.$(0)).gt(0);
+        sum($(0)).gt(0);
     
     }
        
