@@ -59,6 +59,9 @@ public class HqlDomain {
         Long llong;
         long llong2;
         String sstring;
+        Date date;
+        java.sql.Time time;
+        java.sql.Timestamp timestamp;
     }
     
     /**

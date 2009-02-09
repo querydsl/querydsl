@@ -47,7 +47,7 @@ public interface Quant {
         public Expr<?> getTarget() {return col;}                          
     }
     
-    public static class QNumber<Q extends  Number & java.lang.Comparable<Q>> extends Expr.ENumber<Q> implements Quant{
+    public static class QNumber<Q extends  Number & Comparable<? super Q>> extends Expr.ENumber<Q> implements Quant{
         private final Expr<?> col;
         private final Op<?> op;
         public QNumber(Op<?> op, CollectionType<Q> col) {

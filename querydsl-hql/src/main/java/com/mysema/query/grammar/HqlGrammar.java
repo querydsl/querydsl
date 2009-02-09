@@ -36,7 +36,7 @@ public class HqlGrammar extends GrammarWithAlias{
         return new QSimple<D>(OpQuant.ALL, col);
     }    
     
-    public static <D extends Number & Comparable<D>> ENumber<D> all(CollectionType<D> col){
+    public static <D extends Number & Comparable<? super D>> ENumber<D> all(CollectionType<D> col){
         return new QNumber<D>(OpQuant.ALL, col);
     }
         
@@ -44,7 +44,7 @@ public class HqlGrammar extends GrammarWithAlias{
         return new QSimple<D>(OpQuant.ANY, col);
     }    
     
-    public static <D extends Number & Comparable<D>> ENumber<D> any(CollectionType<D> col){
+    public static <D extends Number & Comparable<? super D>> ENumber<D> any(CollectionType<D> col){
         return new QNumber<D>(OpQuant.ANY, col);
     }    
     
