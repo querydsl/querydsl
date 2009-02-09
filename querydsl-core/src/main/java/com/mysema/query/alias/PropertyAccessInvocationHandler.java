@@ -8,6 +8,8 @@ package com.mysema.query.alias;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
@@ -50,20 +52,26 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         this.aliasFactory = aliasFactory;
     }
     
-    private Class<?> get1stTypeParameter(Type type) {
+    private Class<?> getTypeParameter(Type type, int index) {
         if (type instanceof ParameterizedType){
-            return (Class<?>)((ParameterizedType)type).getActualTypeArguments()[0];
-        }else{
-            return null;
+            ParameterizedType ptype = (ParameterizedType) type;
+            Type[] targs = ptype.getActualTypeArguments();
+            if (targs[index] instanceof WildcardType) {
+                WildcardType wildcardType = (WildcardType) targs[index]; 
+                return (Class<?>) wildcardType.getUpperBounds()[0];
+            } else if (targs[index] instanceof TypeVariable) {
+                return (Class<?>) ((TypeVariable) targs[index]).getGenericDeclaration();
+            } else if (targs[index] instanceof ParameterizedType) {
+                return (Class<?>) ((ParameterizedType) targs[index]).getRawType();
+            } else {
+                try {
+                    return (Class<?>) targs[index];
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
-    }
-    
-    private Class<?> get2ndTypeParameter(Type type) {
-        if (type instanceof ParameterizedType){
-            return (Class<?>)((ParameterizedType)type).getActualTypeArguments()[1];
-        }else{
-            return null;
-        }
+        return null;
     }
     
     public Object intercept(Object proxy, Method method, Object[] args,
@@ -215,23 +223,23 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         // Collection API types
             
         } else if (List.class.isAssignableFrom(type)) {
-            Class<?> _elementType = get1stTypeParameter(genericType);
+            Class<?> _elementType = getTypeParameter(genericType, 0);
             path = new Path.PEntityList(_elementType, _elementType.getSimpleName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
             
         } else if (Set.class.isAssignableFrom(type)) {
-            Class<?> _elementType = get1stTypeParameter(genericType);
+            Class<?> _elementType = getTypeParameter(genericType, 0);
             path = new Path.PEntityCollection(_elementType, _elementType.getName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
             
         } else if (Collection.class.isAssignableFrom(type)) {
-            Class<?> _elementType = get1stTypeParameter(genericType);
+            Class<?> _elementType = getTypeParameter(genericType, 0);
             path = new Path.PEntityCollection(_elementType, _elementType.getSimpleName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
             
         } else if (Map.class.isAssignableFrom(type)) {
-            Class<?> _keyType = get1stTypeParameter(genericType);
-            Class<?> _valueType = get2ndTypeParameter(genericType);
+            Class<?> _keyType = getTypeParameter(genericType, 0);
+            Class<?> _valueType = getTypeParameter(genericType, 1);
             path = new Path.PEntityMap(_keyType,_valueType,_valueType.getSimpleName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
                         

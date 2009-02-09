@@ -25,7 +25,7 @@ public class Factory {
         return new Operation.OBoolean(operator, args);
     }
     
-    public static final <OpType, RT extends Comparable<RT>> Expr.EComparable<RT> createComparable(Class<RT> type, Op<OpType> operator, Expr<?>... args) {
+    public static final <OpType, RT extends Comparable<? super RT>> Expr.EComparable<RT> createComparable(Class<RT> type, Op<OpType> operator, Expr<?>... args) {
         checkArg("operator",operator);
         checkArg("args",args);
         return new Operation.OComparable<OpType,RT>(type, operator, args);
@@ -39,7 +39,7 @@ public class Factory {
         return new Expr.EConstant<A>(obj);
     }
 
-    public static final <OpType extends Number,D extends Number & Comparable<D>> Expr.ENumber<D> createNumber(Class<D> type, Op<OpType> operator, Expr<?>... args) {
+    public static final <OpType extends Number,D extends Number & Comparable<? super D>> Expr.ENumber<D> createNumber(Class<D> type, Op<OpType> operator, Expr<?>... args) {
         checkArg("operator",operator);
         checkArg("args",args);
         return new Operation.ONumber<OpType,D>(type, operator, args);

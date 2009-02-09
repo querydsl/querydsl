@@ -26,9 +26,9 @@ public interface ExprFactory {
 
     PBooleanArray createBooleanArray(Boolean[] args);
     
-    <D extends Number & Comparable<D>> ENumber<D> createNumber(D arg);
+    <D extends Number & Comparable<? super D>> ENumber<D> createNumber(D arg);
 
-    <D extends Comparable<D>> EComparable<D> createComparable(D arg);
+    <D extends Comparable<? super D>> EComparable<D> createComparable(D arg);
 
     <D> PEntity<D> createEntity(D arg);
     
@@ -36,7 +36,7 @@ public interface ExprFactory {
     
     <D> PEntityCollection<D> createEntityCollection(Collection<D> arg);
 
-    <D extends Comparable<D>> PComparableArray<D> createComparableArray(D[] args);
+    <D extends Comparable<? super D>> PComparableArray<D> createComparableArray(D[] args);
 
     ExtString createString(String arg);
 

@@ -42,7 +42,7 @@ public class GrammarWithAlias extends Grammar{
         return exprFactory.createBoolean(arg);
     }
     
-    public static <D extends Comparable<D>> EComparable<D> $(D arg){
+    public static <D extends Comparable<? super D>> EComparable<D> $(D arg){
         return exprFactory.createComparable(arg);
     }
     

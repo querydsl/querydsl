@@ -15,7 +15,7 @@ import com.mysema.query.grammar.types.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class OrderSpecifier<A extends Comparable<A>> {
+public class OrderSpecifier<A extends Comparable<? super A>> {
     public Order order;
     public Expr<A> target;
 }

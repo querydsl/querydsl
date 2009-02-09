@@ -28,14 +28,14 @@ public interface Custom<T> {
     /**
      * Custom comparable expression
      */
-    public static abstract class CComparable<T extends java.lang.Comparable<T>>
+    public static abstract class CComparable<T extends java.lang.Comparable<? super T>>
             extends Expr.EComparable<T> implements Custom<T> {
         public CComparable(Class<T> type) {
             super(type);
         }
     }
 
-    public static abstract class CNumber<T extends java.lang.Number & java.lang.Comparable<T>>
+    public static abstract class CNumber<T extends java.lang.Number & java.lang.Comparable<? super T>>
             extends Expr.ENumber<T> implements Custom<T> {
         public CNumber(Class<T> type) {
             super(type);

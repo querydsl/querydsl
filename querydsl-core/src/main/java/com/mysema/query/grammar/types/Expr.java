@@ -44,7 +44,7 @@ public abstract class Expr<D> {
     /**
      * The Class Comparable.
      */
-    public static abstract class EComparable<D extends Comparable<D>> extends ELiteral<D>{
+    public static abstract class EComparable<D extends Comparable<? super D>> extends ELiteral<D>{
         public EComparable(Class<D> type) {super(type);}
         public EBoolean after(D right) {return Grammar.after(this,right);}
         public EBoolean after(Expr<D> right) {return Grammar.after(this,right);}  
@@ -108,7 +108,7 @@ public abstract class Expr<D> {
     /**
      * The Class Number.
      */
-    public static abstract class ENumber<D extends Number & Comparable<D>> extends EComparable<D>{
+    public static abstract class ENumber<D extends Number & Comparable<? super D>> extends EComparable<D>{
         public ENumber(Class<D> type) {super(type);}
         public <A extends Number & Comparable<A>> EBoolean goe(A right) {return createBoolean(Ops.GOE, this, createConstant(right));}  
         public <A extends Number & Comparable<A>> EBoolean goe(Expr<A> right) {return createBoolean(Ops.GOE, this, right);}         

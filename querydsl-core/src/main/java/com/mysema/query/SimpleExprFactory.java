@@ -121,12 +121,12 @@ public class SimpleExprFactory implements ExprFactory {
     }
     
     @SuppressWarnings("unchecked")
-    public <D extends Comparable<D>> EComparable<D> createComparable(D arg){
+    public <D extends Comparable<? super D>> EComparable<D> createComparable(D arg){
         return (EComparable<D>) comToPath.get(arg);
     }
     
     @SuppressWarnings("unchecked")
-    public <D extends Number & Comparable<D>> ENumber<D> createNumber(D arg) {
+    public <D extends Number & Comparable<? super D>> ENumber<D> createNumber(D arg) {
         return (ENumber<D>) numToPath.get(arg);
     }
     
@@ -136,7 +136,7 @@ public class SimpleExprFactory implements ExprFactory {
     }
  
     @SuppressWarnings("unchecked")
-    public <D extends Comparable<D>> PComparableArray<D> createComparableArray(D[] args){
+    public <D extends Comparable<? super D>> PComparableArray<D> createComparableArray(D[] args){
         return (PComparableArray<D>) caToPath.get(Arrays.asList(args));
     }
 

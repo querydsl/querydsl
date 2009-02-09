@@ -41,7 +41,7 @@ public interface Operation<OP,RT> {
     /**
      * The Class Comparable.
      */
-    public static class OComparable<OpType,D extends Comparable<D>> extends EComparable<D> implements Operation<OpType,D> {
+    public static class OComparable<OpType,D extends Comparable<? super D>> extends EComparable<D> implements Operation<OpType,D> {
         private final Expr<?>[] args;
         private final Op<OpType> op;
         public OComparable(Class<D> type, Op<OpType> op, Expr<?>... args){
@@ -60,7 +60,7 @@ public interface Operation<OP,RT> {
     /**
      * The Class Number.
      */
-    public static class ONumber<OpType extends Number, D extends Number & Comparable<D>> extends ENumber<D> implements Operation<OpType,D>{
+    public static class ONumber<OpType extends Number, D extends Number & Comparable<? super D>> extends ENumber<D> implements Operation<OpType,D>{
         private final Expr<?>[] args;
         private final Op<OpType> op;
         public ONumber(Class<D> type, Op<OpType> op, Expr<?>... args){

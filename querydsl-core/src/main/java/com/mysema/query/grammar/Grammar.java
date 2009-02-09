@@ -37,7 +37,7 @@ public class Grammar extends Factory{
      * @param right
      * @return
      */
-    public static <A extends Comparable<A>> EBoolean after(Expr<A> left, A right) {
+    public static <A extends Comparable<? super A>> EBoolean after(Expr<A> left, A right) {
         // NOTE : signature is for Comparables to support other than Java's date types
         return createBoolean(Ops.AFTER, left, createConstant(right));
     }
@@ -51,7 +51,7 @@ public class Grammar extends Factory{
      * @return
      */
     
-    public static <A extends Comparable<A>> EBoolean after(Expr<A> left, Expr<A> right) {
+    public static <A extends Comparable<? super A>> EBoolean after(Expr<A> left, Expr<A> right) {
         // NOTE : signature is for Comparables to support other than Java's date types
         return createBoolean(Ops.AFTER, left, right);
     }
@@ -116,7 +116,7 @@ public class Grammar extends Factory{
      * @param target
      * @return
      */
-    public static <A extends Comparable<A>> OrderSpecifier<A> asc(Expr<A> target) {
+    public static <A extends Comparable<? super A>> OrderSpecifier<A> asc(Expr<A> target) {
         checkArg("target",target);
         OrderSpecifier<A> os = new OrderSpecifier<A>();
         os.order = Order.ASC;
@@ -143,7 +143,7 @@ public class Grammar extends Factory{
      * @param right
      * @return
      */
-    public static <A extends Comparable<A>> EBoolean before(Expr<A> left, A right) {
+    public static <A extends Comparable<? super A>> EBoolean before(Expr<A> left, A right) {
         // NOTE : signature is for Comparables to support other than Java's date types
         // NOTE : basically same as lt
         return createBoolean(Ops.BEFORE, left, createConstant(right));
@@ -157,7 +157,7 @@ public class Grammar extends Factory{
      * @param right
      * @return
      */
-    public static <A extends Comparable<A>> EBoolean before(Expr<A> left, Expr<A> right) {
+    public static <A extends Comparable<? super A>> EBoolean before(Expr<A> left, Expr<A> right) {
         // NOTE : signature is for Comparables to support other than Java's date types
         // NOTE : basically same as lt
         return createBoolean(Ops.BEFORE, left, right);
@@ -172,7 +172,7 @@ public class Grammar extends Factory{
      * @param end
      * @return
      */    
-    public static <A extends Comparable<A>> EBoolean between(Expr<A> left, A start, A end) {
+    public static <A extends Comparable<? super A>> EBoolean between(Expr<A> left, A start, A end) {
         return createBoolean(Ops.BETWEEN, left, createConstant(start), createConstant(end));
     }
     
@@ -185,7 +185,7 @@ public class Grammar extends Factory{
      * @param end
      * @return
      */
-    public static <A extends Comparable<A>> EBoolean between(Expr<A> left, Expr<A> start, Expr<A> end) {
+    public static <A extends Comparable<? super A>> EBoolean between(Expr<A> left, Expr<A> start, Expr<A> end) {
         return createBoolean(Ops.BETWEEN, left, start, end);
     }
         
@@ -282,7 +282,7 @@ public class Grammar extends Factory{
      * @param target
      * @return
      */
-    public static <A extends Comparable<A>> OrderSpecifier<A> desc(Expr<A> target) {
+    public static <A extends Comparable<? super A>> OrderSpecifier<A> desc(Expr<A> target) {
         checkArg("target",target);
         OrderSpecifier<A> os = new OrderSpecifier<A>();
         os.order = Order.DESC;
@@ -714,7 +714,7 @@ public class Grammar extends Factory{
      * @param end
      * @return
      */
-    public static <A extends Comparable<A>> EBoolean notBetween(Expr<A> left, A start, A end) {
+    public static <A extends Comparable<? super A>> EBoolean notBetween(Expr<A> left, A start, A end) {
         return createBoolean(Ops.NOTBETWEEN, left, createConstant(start), createConstant(end));
     }
     
@@ -727,7 +727,7 @@ public class Grammar extends Factory{
      * @param end
      * @return
      */
-    public static <A extends Comparable<A>> EBoolean notBetween(Expr<A> left, Expr<A> start, Expr<A> end) {
+    public static <A extends Comparable<? super A>> EBoolean notBetween(Expr<A> left, Expr<A> start, Expr<A> end) {
         return createBoolean(Ops.NOTBETWEEN, left, start, end);
     }
     
@@ -739,7 +739,7 @@ public class Grammar extends Factory{
      * @param rest
      * @return
      */    
-    public static <A extends Comparable<A>> EBoolean notIn(Expr<A> left, A... rest) {
+    public static <A extends Comparable<? super A>> EBoolean notIn(Expr<A> left, A... rest) {
         return createBoolean(Ops.NOTIN, left, createConstant(rest));
     }
     

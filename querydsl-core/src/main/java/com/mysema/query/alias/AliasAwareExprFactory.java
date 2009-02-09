@@ -53,7 +53,7 @@ public class AliasAwareExprFactory extends SimpleExprFactory{
         }        
     }
     
-    public <D extends Comparable<D>> EComparable<D> createComparable(D arg){
+    public <D extends Comparable<? super D>> EComparable<D> createComparable(D arg){
         try{
             return aliasFactory.hasCurrent() ? aliasFactory.<EComparable<D>>getCurrent() : super.createComparable(arg);
         }finally{
@@ -61,7 +61,7 @@ public class AliasAwareExprFactory extends SimpleExprFactory{
         }        
     }
     
-    public <D extends Number & Comparable<D>> ENumber<D> createNumber(D arg){
+    public <D extends Number & Comparable<? super D>> ENumber<D> createNumber(D arg){
         try{
             return aliasFactory.hasCurrent() ? aliasFactory.<ENumber<D>>getCurrent() : super.createNumber(arg);
         }finally{
@@ -83,7 +83,7 @@ public class AliasAwareExprFactory extends SimpleExprFactory{
         }        
     }
     
-    public <D extends Comparable<D>> PComparableArray<D> createComparableArray(D[] args){
+    public <D extends Comparable<? super D>> PComparableArray<D> createComparableArray(D[] args){
         try{
             return aliasFactory.hasCurrent() ? aliasFactory.<PComparableArray<D>>getCurrent() : super.createComparableArray(args);
         }finally{
