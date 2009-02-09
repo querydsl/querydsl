@@ -48,7 +48,7 @@ public class HqlGrammar extends GrammarWithAlias{
         return new QNumber<D>(OpQuant.ANY, col);
     }    
     
-    public static <A extends Comparable<A>> EComparable<A> avg(PCollection<A> left){
+    public static <A extends Comparable<? super A>> EComparable<A> avg(PCollection<A> left){
         return new QComparable<A>(OpQuant.AVG_IN_COL, left);
     }        
     
@@ -108,7 +108,7 @@ public class HqlGrammar extends GrammarWithAlias{
         return createBoolean(OpHql.ISNOTEMPTY, collection);        
     }    
     
-    public static <A extends Comparable<A>> EComparable<A> max(PCollection<A> left){
+    public static <A extends Comparable<? super A>> EComparable<A> max(PCollection<A> left){
         return new QComparable<A>(OpQuant.MAX_IN_COL, left);
     } 
     
@@ -124,7 +124,7 @@ public class HqlGrammar extends GrammarWithAlias{
         return new PNumber<Integer>(Integer.class, new PathMetadata<Integer>(col, null, HqlPathType.MAXINDEX));
     }  
         
-    public static <A extends Comparable<A>> EComparable<A> min(PCollection<A> left){
+    public static <A extends Comparable<? super A>> EComparable<A> min(PCollection<A> left){
         return new QComparable<A>(OpQuant.MIN_IN_COL, left);
     }       
     
@@ -174,7 +174,7 @@ public class HqlGrammar extends GrammarWithAlias{
      *             BigInteger when applied to state-fields of type BigInteger; 
      *             and BigDecimal when applied to state-fields of type BigDecimal. 
      */   
-    public static <D extends Number & Comparable<D>> ENumber<?> sum(Expr<D> left){ 
+    public static <D extends Number & Comparable<? super D>> ENumber<?> sum(Expr<D> left){ 
         Class<?> type = left.getType();
         if (type.equals(Byte.class) || type.equals(Integer.class) || type.equals(Short.class)) type = Long.class;
         if (type.equals(Float.class)) type = Double.class;

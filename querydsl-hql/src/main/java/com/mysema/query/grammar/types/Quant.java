@@ -35,7 +35,7 @@ public interface Quant {
     /**
      * The Class Comparable.
      */
-    public static class QComparable<Q extends java.lang.Comparable<Q>> extends Expr.EComparable<Q> implements Quant{
+    public static class QComparable<Q extends Comparable<? super Q>> extends Expr.EComparable<Q> implements Quant{
         private final Expr<?> col;
         private final Op<?> op;
         public QComparable(Op<?> op, CollectionType<Q> col) {
