@@ -187,7 +187,7 @@ public class ColQueryTest {
         return last;
     }
     
-    private static class TestQuery extends ColQuery<TestQuery>{
+    private static class TestQuery extends AbstractColQuery<TestQuery>{
         List<Object> res = new ArrayList<Object>();
         <RT> void select(Expr<RT> projection){
             for (Object o : iterate(projection)){

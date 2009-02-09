@@ -94,7 +94,7 @@ public class JavaOps extends OperationPatterns {
         return left % right;
     }
     
-    public static <A extends Comparable<A>> boolean between(A a, A b, A c){
+    public static <A extends Comparable<? super A>> boolean between(A a, A b, A c){
         return a.compareTo(b) > 0 && a.compareTo(c) < 0;
     }
         

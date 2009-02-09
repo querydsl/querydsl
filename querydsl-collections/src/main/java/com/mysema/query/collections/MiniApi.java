@@ -22,18 +22,16 @@ import com.mysema.query.grammar.types.PathExtractor;
  */
 public class MiniApi extends GrammarWithAlias{
     
-    public static <A> ColQuery<?> from(Expr<A> path, A... arr){
+    public static <A> ColQuery from(Expr<A> path, A... arr){
         return from(path, Arrays.asList(arr));
     }
     
-    @SuppressWarnings("unchecked")
-    public static <A> ColQuery<?> from(A alias, Iterable<A> col){
+    public static <A> ColQuery from(A alias, Iterable<A> col){
         return new ColQuery().from($(alias), col);
     }
     
-    @SuppressWarnings("unchecked")
-    public static <A> ColQuery<?> from(Expr<A> path, Iterable<A> col){
-        return new ColQuery().from((Path<?>)path, col);
+    public static <A> ColQuery from(Expr<A> path, Iterable<A> col){
+        return new ColQuery().from((Path<A>)path, col);
     }
     
     @SuppressWarnings("unchecked")
