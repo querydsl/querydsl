@@ -39,13 +39,15 @@
       <version>5.1.6</version>
       <scope>test</scope>
     </dependency>
+<!--     
     <dependency>
       <groupId>oracle</groupId>
       <artifactId>ojdbc5</artifactId>
       <version>11.1.0.6</version>
       <scope>test</scope>
       <optional>true</optional>
-    </dependency>  
+    </dependency>
+ -->      
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-apt</artifactId>

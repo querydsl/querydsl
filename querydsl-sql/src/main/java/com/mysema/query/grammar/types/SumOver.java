@@ -13,7 +13,7 @@ import com.mysema.query.grammar.types.Expr.ENumber;
  * @author tiwe
  * @version $Id$
  */
-public class SumOver<A extends Number & Comparable<A>> extends ENumber<A>{
+public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A>{
     private Expr<A> target;        
     private Expr<?> partitionBy;
     private List<Expr<?>> orderBy = new ArrayList<Expr<?>>();

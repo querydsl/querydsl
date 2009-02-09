@@ -101,15 +101,15 @@ public class AbstractSqlQuery<MyType extends AbstractSqlQuery<MyType>> extends Q
         }
     }
         
-    public <RT extends Comparable<RT>> List<RT> list(Expr<RT> expr) throws SQLException{
+    public <RT> List<RT> list(Expr<RT> expr) throws SQLException{
         select(expr);
         return listSingle(expr);
     }
     
-    public <RT> List<RT> list(Constructor<RT> expr) throws SQLException{
-        select(expr);
-        return listSingle(expr);
-    }
+//    public <RT> List<RT> list(Constructor<RT> expr) throws SQLException{
+//        select(expr);
+//        return listSingle(expr);
+//    }
     
     private <RT> List<RT> listSingle(Expr<RT> expr) throws SQLException{        
         String queryString = toString();

@@ -34,7 +34,7 @@ public class OracleGrammar extends SqlGrammar{
     
     // custom functions
     
-    public static <A extends Number & Comparable<A>> SumOver<A> sumOver(Expr<A> expr){
+    public static <A extends Number & Comparable<? super A>> SumOver<A> sumOver(Expr<A> expr){
         return new SumOver<A>(expr);
     }
     
