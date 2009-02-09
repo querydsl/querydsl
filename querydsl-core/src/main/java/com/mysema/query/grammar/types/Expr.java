@@ -110,14 +110,14 @@ public abstract class Expr<D> {
      */
     public static abstract class ENumber<D extends Number & Comparable<? super D>> extends EComparable<D>{
         public ENumber(Class<D> type) {super(type);}
-        public <A extends Number & Comparable<A>> EBoolean goe(A right) {return createBoolean(Ops.GOE, this, createConstant(right));}  
-        public <A extends Number & Comparable<A>> EBoolean goe(Expr<A> right) {return createBoolean(Ops.GOE, this, right);}         
-        public <A extends Number & Comparable<A>> EBoolean gt(A right) {return createBoolean(Ops.GT, this, createConstant(right));}  
-        public <A extends Number & Comparable<A>> EBoolean gt(Expr<A> right) {return createBoolean(Ops.GT, this, right);}
-        public <A extends Number & Comparable<A>> EBoolean loe(A right) {return createBoolean(Ops.LOE, this, createConstant(right));}
-        public <A extends Number & Comparable<A>> EBoolean loe(Expr<A> right) {return createBoolean(Ops.LOE, this, right);}
-        public <A extends Number & Comparable<A>> EBoolean lt(A right) {return createBoolean(Ops.LT, this, createConstant(right));}  
-        public <A extends Number & Comparable<A>> EBoolean lt(Expr<A> right) {return createBoolean(Ops.LT, this, right);}
+        public <A extends Number & Comparable<? super A>> EBoolean goe(A right) {return createBoolean(Ops.GOE, this, createConstant(right));}  
+        public <A extends Number & Comparable<? super A>> EBoolean goe(Expr<A> right) {return createBoolean(Ops.GOE, this, right);}         
+        public <A extends Number & Comparable<? super A>> EBoolean gt(A right) {return createBoolean(Ops.GT, this, createConstant(right));}  
+        public <A extends Number & Comparable<? super A>> EBoolean gt(Expr<A> right) {return createBoolean(Ops.GT, this, right);}
+        public <A extends Number & Comparable<? super A>> EBoolean loe(A right) {return createBoolean(Ops.LOE, this, createConstant(right));}
+        public <A extends Number & Comparable<? super A>> EBoolean loe(Expr<A> right) {return createBoolean(Ops.LOE, this, right);}
+        public <A extends Number & Comparable<? super A>> EBoolean lt(A right) {return createBoolean(Ops.LT, this, createConstant(right));}  
+        public <A extends Number & Comparable<? super A>> EBoolean lt(Expr<A> right) {return createBoolean(Ops.LT, this, right);}
         
     }
     

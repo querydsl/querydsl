@@ -131,7 +131,7 @@ public class Grammar extends Factory{
      * @param left
      * @return
      */    
-    public static <A extends Number & Comparable<A>> ENumber<Double> avg(Expr<A> left){
+    public static <A extends Number & Comparable<? super A>> ENumber<Double> avg(Expr<A> left){
         return createNumber(Double.class, OpNumberAgg.AVG, left);
     }
     
@@ -374,7 +374,7 @@ public class Grammar extends Factory{
      * @param right
      * @return
      */
-    public static <A extends Comparable<A>> EBoolean goe(Expr<A> left, A right) {
+    public static <A extends Comparable<? super A>> EBoolean goe(Expr<A> left, A right) {
         return createBoolean(Ops.GOE, left, createConstant(right));
     }
     
@@ -386,7 +386,7 @@ public class Grammar extends Factory{
      * @param right
      * @return
      */
-    public static <A extends Comparable<A>> EBoolean goe(Expr<A> left, Expr<A> right) {
+    public static <A extends Comparable<? super A>> EBoolean goe(Expr<A> left, Expr<A> right) {
         return createBoolean(Ops.GOE, left, right);
     } 
     
@@ -398,7 +398,7 @@ public class Grammar extends Factory{
      * @param right
      * @return
      */
-    public static <A extends Comparable<A>> EBoolean gt(Expr<A> left, A right) {
+    public static <A extends Comparable<? super A>> EBoolean gt(Expr<A> left, A right) {
         return createBoolean(Ops.GT, left, createConstant(right));
     }
     
@@ -410,7 +410,7 @@ public class Grammar extends Factory{
      * @param right
      * @return
      */
-    public static <A extends Comparable<A>> EBoolean gt(Expr<A> left, Expr<A> right) {
+    public static <A extends Comparable<? super A>> EBoolean gt(Expr<A> left, Expr<A> right) {
         return createBoolean(Ops.GT, left, right);
     }
     
@@ -591,7 +591,7 @@ public class Grammar extends Factory{
      * @param right
      * @return
      */
-    public static <A extends Comparable<A>> EBoolean loe(Expr<A> left, A right) {
+    public static <A extends Comparable<? super A>> EBoolean loe(Expr<A> left, A right) {
         return createBoolean(Ops.LOE, left, createConstant(right));
     }
     
@@ -603,7 +603,7 @@ public class Grammar extends Factory{
      * @param right
      * @return
      */
-    public static <A extends Comparable<A>> EBoolean loe(Expr<A> left, Expr<A> right) {
+    public static <A extends Comparable<? super A>> EBoolean loe(Expr<A> left, Expr<A> right) {
         return createBoolean(Ops.LOE, left, right);
     }
 
@@ -625,7 +625,7 @@ public class Grammar extends Factory{
      * @param right
      * @return
      */
-    public static <A extends Comparable<A>> EBoolean lt(Expr<A> left, A right) {
+    public static <A extends Comparable<? super A>> EBoolean lt(Expr<A> left, A right) {
         return createBoolean(Ops.LT, left, createConstant(right));
     }
 
@@ -637,7 +637,7 @@ public class Grammar extends Factory{
      * @param right
      * @return
      */    
-    public static <A extends Comparable<A>> EBoolean lt(Expr<A> left, Expr<A> right) {
+    public static <A extends Comparable<? super A>> EBoolean lt(Expr<A> left, Expr<A> right) {
         return createBoolean(Ops.LT, left, right);
     }
 

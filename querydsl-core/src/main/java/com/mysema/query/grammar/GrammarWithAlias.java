@@ -95,7 +95,7 @@ public class GrammarWithAlias extends Grammar{
         return exprFactory.createBooleanArray(args);
     }
     
-    public static <D extends Comparable<D>> PComparableArray<D> $(D[] args){
+    public static <D extends Comparable<? super D>> PComparableArray<D> $(D[] args){
         return exprFactory.createComparableArray(args);
     }
     

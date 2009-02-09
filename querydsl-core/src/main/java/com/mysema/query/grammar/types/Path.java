@@ -260,7 +260,7 @@ public interface Path<C> {
         protected <A extends Comparable<? super A>> PComparable<A> _comparable(String path,Class<A> type) {
             return new PComparable<A>(type, forProperty(this, path));
         }    
-        protected <A extends Number & Comparable<A>> PNumber<A> _number(String path,Class<A> type) {
+        protected <A extends Number & Comparable<? super A>> PNumber<A> _number(String path,Class<A> type) {
             return new PNumber<A>(type, forProperty(this, path));
         }   
         protected <A> PEntity<A> _entity(String path, String entityName, Class<A> type){
