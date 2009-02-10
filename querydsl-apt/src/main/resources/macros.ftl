@@ -70,7 +70,7 @@
 	public ${pre}${field.simpleTypeName} ${field.name};
 	<#if !reserved?seq_contains(field.name)>
     public ${pre}${field.simpleTypeName} _${field.name}() {
-         if (${field.name} == null) ${field.name} = new ${pre}${field.simpleTypeName}(forProperty(this,"${field.realName}"));
+         if (${field.name} == null) ${field.name} = new ${pre}${field.simpleTypeName}(PathMetadata.forProperty(this,"${field.realName}"));
          return ${field.name};
     }
     </#if>
@@ -79,20 +79,20 @@
 <#macro entityList field>
 	public final Path.PEntityList<${field.typeName}> ${field.name} = _entitylist("${field.realName}",${field.typeName}.class,"${field.simpleTypeName}");
     public ${pre}${field.simpleTypeName} ${field.name}(int index) {
-    	return new ${pre}${field.simpleTypeName}(forListAccess(${field.name},index));
+    	return new ${pre}${field.simpleTypeName}(PathMetadata.forListAccess(${field.name},index));
     }
     public ${pre}${field.simpleTypeName} ${field.name}(Expr<Integer> index) {
-    	return new ${pre}${field.simpleTypeName}(forListAccess(${field.name},index));
+    	return new ${pre}${field.simpleTypeName}(PathMetadata.forListAccess(${field.name},index));
     }
 </#macro>
 
 <#macro entityMap field>
 	public final Path.PEntityMap<${field.keyTypeName},${field.typeName}> ${field.name} = _entitymap("${field.realName}",${field.keyTypeName}.class,${field.typeName}.class,"${field.simpleTypeName}");
     public ${pre}${field.simpleTypeName} ${field.name}(${field.keyTypeName} key) {
-    	return new ${pre}${field.simpleTypeName}(forMapAccess(${field.name},key));
+    	return new ${pre}${field.simpleTypeName}(PathMetadata.forMapAccess(${field.name},key));
     }
     public ${pre}${field.simpleTypeName} ${field.name}(Expr<${field.keyTypeName}> key) {
-    	return new ${pre}${field.simpleTypeName}(forMapAccess(${field.name},key));
+    	return new ${pre}${field.simpleTypeName}(PathMetadata.forMapAccess(${field.name},key));
     }
 </#macro>
      
@@ -107,10 +107,10 @@
 <#macro simpleMap field>
 	public final Path.PComponentMap<${field.keyTypeName},${field.typeName}> ${field.name} = _simplemap("${field.realName}",${field.keyTypeName}.class,${field.typeName}.class);
     public Path.PSimple<${field.typeName}> ${field.name}(${field.keyTypeName} key) {
-    	return new Path.PSimple<${field.typeName}>(${field.typeName}.class,forMapAccess(${field.name},key));
+    	return new Path.PSimple<${field.typeName}>(${field.typeName}.class,PathMetadata.forMapAccess(${field.name},key));
     }
     public Path.PSimple<${field.typeName}> ${field.name}(Expr<${field.keyTypeName}> key) {
-    	return new Path.PSimple<${field.typeName}>(${field.typeName}.class,forMapAccess(${field.name},key));
+    	return new Path.PSimple<${field.typeName}>(${field.typeName}.class,PathMetadata.forMapAccess(${field.name},key));
     }
 </#macro>     
 
@@ -121,10 +121,10 @@
 <#macro simpleList field>
 	public final Path.PComponentList<${field.typeName}> ${field.name} = _simplelist("${field.realName}",${field.typeName}.class);
     public Path.PSimple<${field.typeName}> ${field.name}(int index) {
-    	return new Path.PSimple<${field.typeName}>(${field.typeName}.class,forListAccess(${field.name},index));
+    	return new Path.PSimple<${field.typeName}>(${field.typeName}.class,PathMetadata.forListAccess(${field.name},index));
     }
     public Path.PSimple<${field.typeName}> ${field.name}(Expr<Integer> index) {
-    	return new Path.PSimple<${field.typeName}>(${field.typeName}.class,forListAccess(${field.name},index));
+    	return new Path.PSimple<${field.typeName}>(${field.typeName}.class,PathMetadata.forListAccess(${field.name},index));
     }
 </#macro>
 

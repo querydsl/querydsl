@@ -2,7 +2,6 @@
 package ${package};
 
 import com.mysema.query.grammar.types.*;
-import static com.mysema.query.grammar.types.PathMetadata.*;
 
 /**
  * ${pre}${classSimpleName} is a Querydsl query type
