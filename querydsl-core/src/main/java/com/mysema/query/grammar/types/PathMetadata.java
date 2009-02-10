@@ -71,35 +71,41 @@ public final class PathMetadata<T> {
                 LISTVALUE_CONSTANT);
     }
     
-    // bookmark.tags.size
-    
     public static <KT> PathMetadata<KT> forMapAccess(Path.PMap<?, ?> parent,
             Expr<KT> key) {
         return new PathMetadata<KT>(parent, key, MAPVALUE);
     }
+    
     public static <KT> PathMetadata<KT> forMapAccess(Path.PMap<?, ?> parent,
             KT key) {
         return new PathMetadata<KT>(parent, Factory.createConstant(key), MAPVALUE_CONSTANT);
     }
+    
     public static PathMetadata<String> forProperty(Path<?> parent,
             String property) {
         return new PathMetadata<String>(parent, Factory.createConstant(property), PROPERTY);
     }
+    
     public static PathMetadata<Integer> forSize(Path.PArray<?> parent) {
         return new PathMetadata<Integer>(parent, null, ARRAY_SIZE);
     } 
+    
     public static PathMetadata<Integer> forSize(Path.PCollection<?> parent) {
         return new PathMetadata<Integer>(parent, null, SIZE);
     }
+    
     public static PathMetadata<String> forVariable(String variable) {
         return new PathMetadata<String>(null, Factory.createConstant(variable), VARIABLE);
     }
+    
     public Expr<T> getExpression() {
         return expression;
     }
+    
     public Path<?> getParent() {
         return parent;
     }
+    
     public PathType getPathType() {
         return pathType;
     }
