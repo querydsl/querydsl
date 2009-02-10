@@ -152,14 +152,10 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         if (wrap) append(")");
     }
     
-    protected void visit(Quant q){        
-        visitOperation(q.getOperator(), q.getTarget());
-    }
-
     protected void visit(QBoolean<?> q){
         visit((Quant)q);
     }
-    
+
     protected void visit(QComparable<?> q){
         visit((Quant)q);
     }
@@ -167,9 +163,13 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
     protected void visit(QNumber<?> q){
         visit((Quant)q);
     }
-
+    
     protected void visit(QSimple<?> q){
         visit((Quant)q);
+    }
+
+    protected void visit(Quant q){        
+        visitOperation(q.getOperator(), q.getTarget());
     }
 
     protected void visit(SubQuery<HqlJoinMeta,?> query) {
@@ -181,6 +181,13 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         append(")");
     }
     
+    private void visitCast(Op<?> operator, Expr<?> source, Class<?> targetType) {
+        append("cast(").handle(source);
+        append(" as ");
+        append(targetType.getSimpleName().toLowerCase()).append(")");
+        
+    }
+
     protected void visitOperation(Op<?> operator, Expr<?>... args) {    
         boolean old = wrapElements;
         wrapElements = HqlOps.wrapCollectionsForOp.contains(operator);    
@@ -194,13 +201,6 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         }        
         //
         wrapElements = old;
-    }
-
-    private void visitCast(Op<?> operator, Expr<?> source, Class<?> targetType) {
-        append("cast(").handle(source);
-        append(" as ");
-        append(targetType.getSimpleName().toLowerCase()).append(")");
-        
     }
     
     
