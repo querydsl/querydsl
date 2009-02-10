@@ -6,6 +6,7 @@
 package com.mysema.query.hql;
 
 //import static com.mysema.query.grammar.Grammar.avg;
+import static com.mysema.query.grammar.Grammar.avg;
 import static com.mysema.query.grammar.Grammar.count;
 import static com.mysema.query.grammar.Grammar.in;
 import static com.mysema.query.grammar.Grammar.not;
@@ -17,7 +18,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.sql.Date;
 
 import org.hibernate.hql.ast.HqlParser;
 import org.junit.Test;
