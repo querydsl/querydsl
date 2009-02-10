@@ -78,12 +78,17 @@ public class GeneralProcessor implements AnnotationProcessor {
         EntityVisitor superclassVisitor = new EntityVisitor();
 
         // mapped superclass
-        AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env
-                .getTypeDeclaration(superClassAnnotation);
-        for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
-            typeDecl.accept(getDeclarationScanner(superclassVisitor, NO_OP));
-        }
-        Map<String, Type> mappedSupertypes = superclassVisitor.types;
+        AnnotationTypeDeclaration a;
+        Map<String, Type> mappedSupertypes;
+        if (superClassAnnotation != null){
+            a = (AnnotationTypeDeclaration) env.getTypeDeclaration(superClassAnnotation);
+            for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
+                typeDecl.accept(getDeclarationScanner(superclassVisitor, NO_OP));
+            }
+            mappedSupertypes = superclassVisitor.types;    
+        }else{
+            mappedSupertypes = new HashMap<String,Type>();
+        }        
 
         // domain types
         EntityVisitor entityVisitor = new EntityVisitor();

@@ -48,7 +48,15 @@ public class APTFactory implements AnnotationProcessorFactory {
             Set<AnnotationTypeDeclaration> atds,
             AnnotationProcessorEnvironment env) {
         try {
-            return new GeneralProcessor(env, jpaSuperClass, jpaEntity, qdDto, jpaEmbeddable);
+            try {
+                // try JPA first
+                Class.forName(jpaSuperClass);
+                return new GeneralProcessor(env, jpaSuperClass, jpaEntity, qdDto, jpaEmbeddable);
+            } catch (ClassNotFoundException e) {
+                // try Querydsl specific next
+                return new GeneralProcessor(env, null, qdEntity, qdDto, null);
+            }            
+            
         } catch (IOException e) {
             String error = "Caught " + e.getClass().getName();
             throw new RuntimeException(error, e);
