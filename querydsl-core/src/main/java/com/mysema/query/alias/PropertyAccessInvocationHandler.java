@@ -128,6 +128,9 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         }else if (isToString(method)){
             rv = path.toString();
             
+        }else if (isHashCode(method)){    
+            rv = path.hashCode();
+            
         }else{
 //            rv = methodProxy.invokeSuper(proxy, args);
             throw new IllegalArgumentException("Invocation of " + method.getName() + " not supported");
@@ -151,6 +154,12 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         return method.getName().equals("get") 
             && method.getParameterTypes().length == 1 
             && method.getParameterTypes()[0].equals(int.class);
+    }
+    
+    private boolean isHashCode(Method method){
+        return method.getName().equals("hashCode") 
+            && method.getParameterTypes().length == 0
+            && method.getReturnType().equals(int.class);
     }
     
     private boolean isMapElementAccess(Method method) {
