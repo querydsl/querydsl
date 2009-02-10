@@ -374,7 +374,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
 //        parse( "select foo.id, avg( elements(foo.names) ), max( indices(foo.names) )\n"
 //                + "from eg.Foo foo group by foo.id" );
         
-        select(foo.id, avg(foo.names), max(indices(foo.names))).from(foo).groupBy(foo.id).parse();
+        select(foo.id, HqlGrammar.avg(foo.names), max(indices(foo.names))).from(foo).groupBy(foo.id).parse();
         
 //        parse( "select cat.color, sum(cat.weight), count(cat)\n"
 //                + "from eg.Cat cat group by cat.color\n"
