@@ -26,6 +26,8 @@ public class JavaOps extends OperationPatterns {
         
         add(Ops.AFTER, "%s.compareTo(%s) > 0");
         add(Ops.BEFORE, "%s.compareTo(%s) < 0");
+        add(Ops.AOE, "%s.compareTo(%s) >= 0");
+        add(Ops.BOE, "%s.compareTo(%s) <= 0");
         
         add(Ops.BETWEEN, functions+".between(%s,%s,%s)");
         add(Ops.NOTBETWEEN, "!"+functions+".between(%s,%s,%s)");        

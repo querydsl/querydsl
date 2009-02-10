@@ -24,7 +24,7 @@ import com.mysema.query.grammar.types.PathMetadata;
 public class Domain {
     public static class Animal {
         boolean alive;
-        java.util.Date birthdate;
+        java.util.Date birthdate = new java.util.Date();
         int bodyWeight, weight, toes;
         Color color;
         int id;    

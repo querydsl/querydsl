@@ -12,10 +12,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.collections.Domain.Cat;
@@ -50,6 +50,15 @@ public class ColQueryTest {
     public void testAPIMethods(){
         query().from(cat, c1, c2).list(cat);
         query().from(cat, c1, c2).iterate(cat).iterator();
+    }
+    
+    @Test
+    public void testAfterAndBefore(){
+        query().from(cat, c1, c2).where(
+                cat.birthdate.before(new Date()),
+                cat.birthdate.boe(new Date()),
+                cat.birthdate.after(new Date()),
+                cat.birthdate.aoe(new Date())).list(cat);
     }
     
     @Test
