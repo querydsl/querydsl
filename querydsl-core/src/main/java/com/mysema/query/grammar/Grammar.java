@@ -59,7 +59,7 @@ public class Grammar extends Factory{
     }
     
     /**
-     * Expr : left after right
+     * Expr : left > right
      * 
      * @param <A>
      * @param left
@@ -70,9 +70,21 @@ public class Grammar extends Factory{
         // NOTE : signature is for Comparables to support other than Java's date types
         return createBoolean(Ops.AFTER, left, createConstant(right));
     }
+    
+    /**
+     * Expr : left >= right (after or equals)
+     * 
+     * @param <A>
+     * @param left
+     * @param right
+     * @return
+     */
+    public static <A extends Comparable<? super A>> EBoolean aoe(Expr<A> left, A right) {
+        return createBoolean(Ops.AOE, left, createConstant(right));
+    }
 
     /**
-     * Expr : left after right
+     * Expr : left > right
      * 
      * @param <A>
      * @param left
@@ -83,6 +95,18 @@ public class Grammar extends Factory{
     public static <A extends Comparable<? super A>> EBoolean after(Expr<A> left, Expr<A> right) {
         // NOTE : signature is for Comparables to support other than Java's date types
         return createBoolean(Ops.AFTER, left, right);
+    }
+    
+    /**
+     * Expr : left >= right
+     * 
+     * @param <A>
+     * @param left
+     * @param right
+     * @return
+     */
+    public static <A extends Comparable<? super A>> EBoolean aoe(Expr<A> left, Expr<A> right) {
+        return createBoolean(Ops.AOE, left, right);
     }
 
     /**
@@ -165,7 +189,7 @@ public class Grammar extends Factory{
     }
     
     /**
-     * Expr : left before right
+     * Expr : left < right
      * 
      * @param <A>
      * @param left
@@ -177,9 +201,21 @@ public class Grammar extends Factory{
         // NOTE : basically same as lt
         return createBoolean(Ops.BEFORE, left, createConstant(right));
     }
+    
+    /**
+     * Expr : left <= right (before or equals)
+     * 
+     * @param <A>
+     * @param left
+     * @param right
+     * @return
+     */
+    public static <A extends Comparable<? super A>> EBoolean boe(Expr<A> left, A right) {
+        return createBoolean(Ops.BOE, left, createConstant(right));
+    }
 
     /**
-     * Expr : left before right
+     * Expr : left < right
      * 
      * @param <A>
      * @param left
@@ -190,6 +226,18 @@ public class Grammar extends Factory{
         // NOTE : signature is for Comparables to support other than Java's date types
         // NOTE : basically same as lt
         return createBoolean(Ops.BEFORE, left, right);
+    }
+    
+    /**
+     * Expr : left <= right
+     * 
+     * @param <A>
+     * @param left
+     * @param right
+     * @return
+     */
+    public static <A extends Comparable<? super A>> EBoolean boe(Expr<A> left, Expr<A> right) {
+        return createBoolean(Ops.BOE, left, right);
     }
 
     /**

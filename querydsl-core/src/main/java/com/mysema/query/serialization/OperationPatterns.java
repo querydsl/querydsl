@@ -44,6 +44,8 @@ public abstract class OperationPatterns{
         
         add(Ops.AFTER, "%s > %s",21);
         add(Ops.BEFORE, "%s < %s",23);
+        add(Ops.AOE, "%s >= %s",21);
+        add(Ops.BOE, "%s <= %s",23);
         
         // numeric
         add(Ops.ADD, "%s + %s",13);        

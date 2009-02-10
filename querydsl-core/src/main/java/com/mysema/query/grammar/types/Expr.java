@@ -48,11 +48,18 @@ public abstract class Expr<D> {
         public EComparable(Class<D> type) {super(type);}
         public EBoolean after(D right) {return Grammar.after(this,right);}
         public EBoolean after(Expr<D> right) {return Grammar.after(this,right);}  
-        public OrderSpecifier<D> asc() {return Grammar.asc(this);}
+        public EBoolean aoe(D right) {return Grammar.aoe(this,right);}
+        public EBoolean aoe(Expr<D> right) {return Grammar.aoe(this,right);}  
+                
         public EBoolean before(D right) {return Grammar.before(this,right);}        
         public EBoolean before(Expr<D> right) {return Grammar.before(this,right);}
+        public EBoolean boe(D right) {return Grammar.boe(this,right);}        
+        public EBoolean boe(Expr<D> right) {return Grammar.boe(this,right);}
+        
         public EBoolean between(D first, D second) {return Grammar.between(this,first,second);}       
         public EBoolean between(Expr<D> first, Expr<D> second) {return Grammar.between(this,first,second);}  
+        
+        public OrderSpecifier<D> asc() {return Grammar.asc(this);}
         public OrderSpecifier<D> desc() {return Grammar.desc(this);}        
         public EBoolean in(CollectionType<D> arg) {return Grammar.in(this, arg);}
         public EBoolean in(D... args) {return Grammar.in(this,args);}

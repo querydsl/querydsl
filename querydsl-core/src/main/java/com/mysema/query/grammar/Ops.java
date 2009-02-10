@@ -46,9 +46,11 @@ public interface Ops {
     Op<Number> NUMCAST = new Op<Number>();
     Op<String> STRING_CAST = new Op<String>();
     
-    // Date
+    // Date / Comparable
     Op<Boolean> AFTER = new Op<Boolean>();
-    Op<Boolean> BEFORE = new Op<Boolean>();    
+    Op<Boolean> BEFORE = new Op<Boolean>();
+    Op<Boolean> AOE = new Op<Boolean>();
+    Op<Boolean> BOE = new Op<Boolean>();
      
     // Number
     Op<Number> ADD = new Op<Number>();          
