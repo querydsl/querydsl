@@ -550,6 +550,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
 //        parse( "SELECT DISTINCT bar FROM eg.mypackage.Cat qat  left join com.multijoin.JoinORama as bar, com.toadstool.Foo f join net.sf.blurb.Blurb" );        
 //        parse( "SELECT count(*) FROM eg.mypackage.Cat qat" );
         select(count()).from(qat).parse();
+        
 //        parse( "SELECT avg(qat.weight) FROM eg.mypackage.Cat qat" );
         select(avg(qat.weight)).from(qat).parse();
     }
@@ -558,16 +559,22 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
     public void testWhere() throws Exception {
 //        parse( "FROM eg.mypackage.Cat qat where qat.name like '%fluffy%' or qat.toes > 5" );
         from(qat).where(qat.name.like("%fluffy%").or(qat.toes.gt(5))).parse();
+        
 //        parse( "FROM eg.mypackage.Cat qat where not qat.name like '%fluffy%' or qat.toes > 5" );
         from(qat).where(not(qat.name.like("%fluffy%")).or(qat.toes.gt(5))).parse();
+        
 //        parse( "FROM eg.mypackage.Cat qat where not qat.name not like '%fluffy%'" );
         from(qat).where(not(qat.name.like("%fluffy%"))).parse();
+        
 //        parse( "FROM eg.mypackage.Cat qat where qat.name in ('crater','bean','fluffy')" );
         from(qat).where(qat.name.in("crater","bean","fluffy")).parse();
+        
 //        parse( "FROM eg.mypackage.Cat qat where qat.name not in ('crater','bean','fluffy')" );
         from(qat).where(qat.name.notIn("crater","bean","fluffy")).parse();
+        
 //        parse( "from Animal an where sqrt(an.bodyWeight)/2 > 10" );
         from(an).where(QMath.sqrt(an.bodyWeight).gt(10.0)).parse();
+        
         from(an).where(div(QMath.sqrt(an.bodyWeight),2d).gt(10.0)).parse();
 //        parse( "from Animal an where (an.bodyWeight > 10 and an.bodyWeight < 100) or an.bodyWeight is null" );
         from(an).where(an.bodyWeight.gt(10).and(an.bodyWeight.lt(100).or(an.bodyWeight.isnull()))).parse();
@@ -577,6 +584,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
     public void testGroupBy() throws Exception {
 //        parse( "FROM eg.mypackage.Cat qat group by qat.breed" );
         from(qat).groupBy(qat.breed).parse();
+        
 //        parse( "FROM eg.mypackage.Cat qat group by qat.breed, qat.eyecolor" );
         from(qat).groupBy(qat.breed, qat.eyecolor).parse();
     }
@@ -585,6 +593,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
     public void testOrderBy() throws Exception {
 //        parse( "FROM eg.mypackage.Cat qat order by avg(qat.toes)" );
         from(qat).orderBy(avg(qat.toes).asc()).parse();
+        
 //        parse( "from Animal an order by sqrt(an.bodyWeight)/2" );
         from(qat).orderBy(QMath.sqrt(div(an.bodyWeight,2)).asc()).parse();
     }
@@ -593,6 +602,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
     public void testDoubleLiteral() throws Exception {
 //        parse( "from eg.Cat as tinycat where fatcat.weight < 3.1415" );
         from(cat).where(cat.weight.lt((int)3.1415)).parse();
+        
 //        parse( "from eg.Cat as enormouscat where fatcat.weight > 3.1415e3" );
         from(cat).where(cat.weight.gt((int)3.1415e3)).parse();
     }
@@ -601,6 +611,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
     public void testComplexConstructor() throws Exception {
 //        parse( "select new Foo(count(bar)) from bar" );    
         select(new QFooDTO(count(bar))).from(bar).parse();
+        
 //        parse( "select new Foo(count(bar),(select count(*) from doofus d where d.gob = 'fat' )) from bar" );
         select(new QFooDTO(count(bar), HqlGrammar.select(count()).from(d).where(d.gob.eq("fat")))).from(bar).parse();
     }
@@ -609,6 +620,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
     public void testInNotIn() throws Exception {
 //        parse( "from foo where foo.bar in ('a' , 'b', 'c')" );
         from(foo).where(foo.bar.in("a","b","c")).parse();
+        
 //        parse( "from foo where foo.bar not in ('a' , 'b', 'c')" );
         from(foo).where(foo.bar.notIn("a","b","c")).parse();
     }
@@ -647,18 +659,25 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
         // Cover NOT optimization in HqlParser
 //        parse( "from eg.Cat cat where not ( cat.kittens.size < 1 )" );
         from(cat).where(not(cat.kittens.size().lt(1))).parse();
+        
 //        parse( "from eg.Cat cat where not ( cat.kittens.size > 1 )" );
         from(cat).where(not(cat.kittens.size().gt(1))).parse();
+        
 //        parse( "from eg.Cat cat where not ( cat.kittens.size >= 1 )" );
         from(cat).where(not(cat.kittens.size().goe(1))).parse();
+        
 //        parse( "from eg.Cat cat where not ( cat.kittens.size <= 1 )" );
         from(cat).where(not(cat.kittens.size().loe(1))).parse();
+        
 //        parse( "from eg.DomesticCat cat where not ( cat.name between 'A' and 'B' ) " );
         from(cat).where(not(cat.name.between("A", "B"))).parse();
+        
 //        parse( "from eg.DomesticCat cat where not ( cat.name not between 'A' and 'B' ) " );
         from(cat).where(not(cat.name.notBetween("A", "B"))).parse();
+        
 //        parse( "from eg.Cat cat where not ( not cat.kittens.size <= 1 )" );
         from(cat).where(not(not(cat.kittens.size().loe(1)))).parse();
+        
 //        parse( "from eg.Cat cat where not  not ( not cat.kittens.size <= 1 )" );
         from(cat).where(not(not(not(cat.kittens.size().loe(1))))).parse();
     }
