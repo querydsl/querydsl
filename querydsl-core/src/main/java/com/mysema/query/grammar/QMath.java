@@ -27,7 +27,7 @@ public class QMath extends Factory{
         return createNumber(left.getType(), Ops.MULT, left, right);
     }
         
-    public static <A extends Number & Comparable<? super A>> ENumber<Double> div(Expr<A> left, A right) {
+    public static <A extends Number & Comparable<? super A>> ENumber<Double> div(ENumber<A> left, A right) {
         return createNumber(Double.class,Ops.DIV, left, createConstant(right));
     }
 
@@ -119,8 +119,8 @@ public class QMath extends Factory{
         return createNumber(left.getType(),OpMath.SIN, left);
     }
     
-    public static <A extends Number & Comparable<? super A>> ENumber<A> sqrt(Expr<A> left){
-        return createNumber(left.getType(),OpMath.SQRT, left);
+    public static <A extends Number & Comparable<? super A>> ENumber<Double> sqrt(Expr<A> left){
+        return createNumber(Double.class,OpMath.SQRT, left);
     }
     
     public static ENumber<Double> tan(Expr<Double> left){

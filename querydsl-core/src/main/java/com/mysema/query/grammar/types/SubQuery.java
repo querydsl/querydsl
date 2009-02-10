@@ -47,4 +47,7 @@ public class SubQuery<JM,A> extends Expr<A> implements Query<SubQuery<JM,A>>, Co
             select(expr);
         }
     }
+    public Class<A> getElementType() {
+        return null;
+    }
 }

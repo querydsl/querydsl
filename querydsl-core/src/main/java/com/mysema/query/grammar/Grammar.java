@@ -5,6 +5,9 @@
  */
 package com.mysema.query.grammar;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import com.mysema.query.grammar.Ops.OpNumberAgg;
 import com.mysema.query.grammar.types.Alias;
 import com.mysema.query.grammar.types.CollectionType;
@@ -28,6 +31,32 @@ import com.mysema.query.grammar.types.Path.PEntityCollection;
 public class Grammar extends Factory{
     
     protected Grammar(){};
+    
+    @SuppressWarnings("unchecked")
+    public static <A extends Number> A castTo(Number number, Class<A> type){
+        if (type.equals(number.getClass())){
+            return (A)number;
+        }else if (Byte.class.equals(type)){
+            return (A)Byte.valueOf(number.byteValue());
+        }else if (Double.class.equals(type)){
+            return (A)Double.valueOf(number.doubleValue());
+        }else if (Float.class.equals(type)){
+            return (A)Float.valueOf(number.floatValue());
+        }else if (Integer.class.equals(type)){
+            return (A)Integer.valueOf(number.intValue());
+        }else if (Long.class.equals(type)){
+            return (A)Long.valueOf(number.longValue());
+        }else if (Short.class.equals(type)){
+            return (A)Short.valueOf(number.shortValue());
+        }else if (BigInteger.class.equals(type)){
+            return (A)new BigInteger(String.valueOf(number.longValue()));
+        }else if (BigDecimal.class.equals(type)){
+            return (A)new BigDecimal(number.toString());
+        }else{
+            throw new IllegalArgumentException("Unsupported target type : " + 
+                    type.getName());
+        }
+    }
     
     /**
      * Expr : left after right
@@ -756,6 +785,32 @@ public class Grammar extends Factory{
     }
 
     /**
+     * Expr : cast(source as targetType)
+     * 
+     * @param <A>
+     * @param source
+     * @param targetType
+     * @return
+     */
+    public static <A extends Number & Comparable<? super A>> ENumber<A> numericCast(EComparable<?> source, Class<A> targetType){
+        if (targetType.isAssignableFrom(source.getType()) && ENumber.class.isAssignableFrom(source.getClass())){
+            return (ENumber)source;
+        }else{
+            return createNumber(targetType, Ops.NUMCAST, source, createConstant(targetType));
+        }
+    }
+    
+    /**
+     * Expr : cast(source as String)
+     * 
+     * @param source
+     * @return
+     */
+    public static EString stringCast(EComparable<?> source){
+        return createString(Ops.STRING_CAST, source);
+    }
+    
+    /**
      * Expr : left or right
      * 
      * @param left
@@ -842,7 +897,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static <A, B extends A> EBoolean typeOf(Expr<A> left, Class<B> right) {
-        return createBoolean(Ops.ISTYPEOF, left, createConstant(right));
+        return createBoolean(Ops.ISTYPEOF, left, createConstant(right.getName()));
     }    
     
     /**

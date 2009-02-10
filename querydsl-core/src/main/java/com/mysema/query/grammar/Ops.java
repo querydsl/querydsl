@@ -43,6 +43,8 @@ public interface Ops {
     Op<Boolean> LOE = new Op<Boolean>();
     Op<Boolean> LT = new Op<Boolean>();
     Op<Boolean> NOTBETWEEN = new Op<Boolean>();
+    Op<Number> NUMCAST = new Op<Number>();
+    Op<String> STRING_CAST = new Op<String>();
     
     // Date
     Op<Boolean> AFTER = new Op<Boolean>();
@@ -55,7 +57,7 @@ public interface Ops {
     Op<Number> MULT = new Op<Number>();
 //    Op<Number> SQRT = new Op<Number>();
     Op<Number> SUB = new Op<Number>();
-    
+        
     // String
     Op<Character> CHAR_AT = new Op<Character>();
     Op<String> CONCAT = new Op<String>();
@@ -78,8 +80,11 @@ public interface Ops {
     Op<Boolean> ENDSWITH = new Op<Boolean>();
     Op<Boolean> CONTAINS = new Op<Boolean>();
     
+    
     // subquery operations
     Op<Boolean> EXISTS = new Op<Boolean>();
+    
+    
     
     /**
      * Aggreate operators

@@ -60,6 +60,16 @@ public abstract class Expr<D> {
         public EBoolean notBetween(Expr<D> first, Expr<D> second) {return Grammar.notBetween(this,first,second);}
         public EBoolean notIn(CollectionType<D> arg) {return Grammar.notIn(this, arg);}
         public EBoolean notIn(D...args) {return Grammar.notIn(this, args);}
+
+        // cast methods
+       public <A extends Number & Comparable<? super A>> ENumber<A> castToNum(Class<A> type){
+           return Grammar.numericCast(this, type);
+       }
+       
+       public EString stringValue(){
+           return Grammar.stringCast(this);
+       }
+       
     }
     
     /**
@@ -110,15 +120,25 @@ public abstract class Expr<D> {
      */
     public static abstract class ENumber<D extends Number & Comparable<? super D>> extends EComparable<D>{
         public ENumber(Class<D> type) {super(type);}
-        public <A extends Number & Comparable<? super A>> EBoolean goe(A right) {return createBoolean(Ops.GOE, this, createConstant(right));}  
-        public <A extends Number & Comparable<? super A>> EBoolean goe(Expr<A> right) {return createBoolean(Ops.GOE, this, right);}         
-        public <A extends Number & Comparable<? super A>> EBoolean gt(A right) {return createBoolean(Ops.GT, this, createConstant(right));}  
-        public <A extends Number & Comparable<? super A>> EBoolean gt(Expr<A> right) {return createBoolean(Ops.GT, this, right);}
-        public <A extends Number & Comparable<? super A>> EBoolean loe(A right) {return createBoolean(Ops.LOE, this, createConstant(right));}
-        public <A extends Number & Comparable<? super A>> EBoolean loe(Expr<A> right) {return createBoolean(Ops.LOE, this, right);}
-        public <A extends Number & Comparable<? super A>> EBoolean lt(A right) {return createBoolean(Ops.LT, this, createConstant(right));}  
+        
+        // with Java level cast
+        public <A extends Number & Comparable<? super A>> EBoolean goe(A right) { return createBoolean(Ops.GOE, this, createConstant(Grammar.castTo(right,getType())));}  
+        public <A extends Number & Comparable<? super A>> EBoolean gt(A right) { return createBoolean(Ops.GT, this, createConstant(Grammar.castTo(right,getType())));}                
+        public <A extends Number & Comparable<? super A>> EBoolean loe(A right) { return createBoolean(Ops.LOE, this, createConstant(Grammar.castTo(right,getType())));}
+        public <A extends Number & Comparable<? super A>> EBoolean lt(A right) {  return createBoolean(Ops.LT, this, createConstant(Grammar.castTo(right,getType())));}
+        
+        // without cast
+        public <A extends Number & Comparable<? super A>> EBoolean goe(Expr<A> right) {return createBoolean(Ops.GOE, this, right);}                
+        public <A extends Number & Comparable<? super A>> EBoolean gt(Expr<A> right) {return createBoolean(Ops.GT, this, right);}        
+        public <A extends Number & Comparable<? super A>> EBoolean loe(Expr<A> right) {return createBoolean(Ops.LOE, this, right);}          
         public <A extends Number & Comparable<? super A>> EBoolean lt(Expr<A> right) {return createBoolean(Ops.LT, this, right);}
         
+        public ENumber<Byte> byteValue() { return castToNum(Byte.class); }
+        public ENumber<Double> doubleValue() { return castToNum(Double.class); }
+        public ENumber<Float> floatValue() { return castToNum(Float.class); }
+        public ENumber<Integer> intValue() { return castToNum(Integer.class); }
+        public ENumber<Long> longValue() { return castToNum(Long.class); }
+        public ENumber<Short> shortValue() { return castToNum(Short.class); }
     }
     
     /**
