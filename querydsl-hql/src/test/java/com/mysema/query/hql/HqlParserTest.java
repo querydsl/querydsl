@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.sql.Date;
 
 import org.hibernate.hql.ast.HqlParser;
 import org.junit.Test;
@@ -28,6 +29,7 @@ import antlr.collections.AST;
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlJoinMeta;
 import com.mysema.query.grammar.QMath;
+import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.ENumber;
 import com.mysema.query.hql.HqlDomain.*;
 
@@ -40,6 +42,18 @@ import com.mysema.query.hql.HqlDomain.*;
  * @version $Id$
  */
 public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
+    
+    @Test
+    public void testBeforeAndAfter() throws RecognitionException, TokenStreamException{
+        EComparable<java.util.Date> ed = catalog.effectiveDate;
+        from(catalog)
+            .where(
+                ed.after(sysdate()), 
+                ed.aoe(sysdate()),
+                ed.before(sysdate()), 
+                ed.boe(sysdate()))                
+            .select(catalog).parse();
+    }
     
     @Test
     public void testSum() throws RecognitionException, TokenStreamException{
