@@ -39,6 +39,7 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Projection;
 import com.mysema.query.grammar.types.SubQuery;
 import com.mysema.query.grammar.types.Expr.EComparable;
+import com.mysema.query.grammar.types.Expr.ENumber;
 import com.mysema.query.grammar.types.Expr.EString;
 import com.mysema.query.sql.domain.QEMPLOYEE;
 import com.mysema.query.sql.domain.QSURVEY;
@@ -404,6 +405,24 @@ public abstract class SqlQueryTest {
         )){
             q().from(employee).list(e);
         }    
+    }
+    
+    @Test
+    public void testCasts() throws SQLException{        
+        ENumber<?> num = employee.id;
+        Expr<?>[] expr = new Expr[]{
+                num.byteValue(), 
+                num.doubleValue(),
+                num.floatValue(),
+                num.intValue(),
+                num.longValue(),
+                num.shortValue(),
+                num.stringValue()};
+        
+        for (Expr<?> e : expr){
+            q().from(employee).list(e);    
+        }        
+        
     }
     
     protected static void executeSafe(String sql){

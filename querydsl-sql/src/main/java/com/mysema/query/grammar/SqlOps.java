@@ -6,6 +6,8 @@
 package com.mysema.query.grammar;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.mysema.query.serialization.OperationPatterns;
 
@@ -55,6 +57,8 @@ public class SqlOps extends OperationPatterns {
         offsetTemplate = "", 
         limitOffsetTemplate = "";
     
+    private Map<Class<?>,String> class2type = new HashMap<Class<?>,String>();
+    
     private boolean limitAndOffsetSymbols = true;
     
     {
@@ -71,7 +75,35 @@ public class SqlOps extends OperationPatterns {
         
         // string
         add(Ops.SUBSTR1ARG, "substr(%s,%s)");
-        add(Ops.SUBSTR2ARGS, "substr(%s,%s,%s)");               
+        add(Ops.SUBSTR2ARGS, "substr(%s,%s,%s)");
+        
+        for (Class<?> cl : new Class[]{
+                Boolean.class, 
+                Byte.class, 
+                Double.class, 
+                Float.class, 
+                Integer.class, 
+                Long.class, 
+                Short.class, 
+                String.class}){
+            class2type.put(cl, cl.getSimpleName().toLowerCase());
+        }
+        
+        class2type.put(Boolean.class, "bit");
+        class2type.put(Byte.class, "tinyint");
+        class2type.put(Long.class, "bigint");
+        class2type.put(Short.class, "smallint");
+        class2type.put(String.class, "varchar");
+    }
+    
+    public Map<Class<?>,String> getClass2Type(){
+        return class2type;
+    }
+    
+    public void addClass2TypeMappings(String type, Class<?>... classes){
+        for (Class<?> cl : classes){
+            class2type.put(cl, type);
+        }
     }
     
     public String tableAlias(){

@@ -5,6 +5,9 @@
  */
 package com.mysema.query.grammar;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 
 /**
  * Dialect provides different SQL dialects for querydsl-sql.
@@ -26,13 +29,18 @@ public class Dialect {
     public static SqlOps forHqlsdb(){
         return new SqlOps(){{                                  
             add(Ops.OpMath.ROUND, "round(%s,0)");
-            add(Ops.TRIM, "trim(both from %s)");            
+            add(Ops.TRIM, "trim(both from %s)");
         }};        
     }
     
     // tested
     public static SqlOps forMySQL(){
-        return new SqlOps();
+        return new SqlOps(){{
+            addClass2TypeMappings("signed", Byte.class, Integer.class, Long.class,
+                    Short.class, BigInteger.class);
+            addClass2TypeMappings("decimal", Double.class, Float.class, BigDecimal.class);
+            addClass2TypeMappings("char(256)", String.class);
+        }};
     }
     
     public static SqlOps forOracle10(){

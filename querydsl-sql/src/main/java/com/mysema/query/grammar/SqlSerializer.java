@@ -11,9 +11,11 @@ import java.util.List;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryBase;
+import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.*;
 import com.mysema.query.grammar.types.Alias.ASimple;
 import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.grammar.types.Expr.EConstant;
 import com.mysema.query.grammar.types.Path.PEntity;
 import com.mysema.query.serialization.BaseSerializer;
 
@@ -32,6 +34,11 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
         this.ops = ops;
     }
         
+    protected void beforeOrderBy() {
+        // template method, for subclasses do override
+        
+    }
+    
     public void serialize(
             List<Expr<?>> select, 
             List<JoinExpression<SqlJoinMeta>> joins,
@@ -130,11 +137,6 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
             }    
         }               
     }
-    
-    protected void beforeOrderBy() {
-        // template method, for subclasses do override
-        
-    }
 
     public void serializeUnion(List<Expr<?>> select,
             SubQuery<SqlJoinMeta, ?>[] sqs, EBoolean self,
@@ -157,10 +159,15 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
         
     }
     
-    protected void visit(Projection expr){
-        visit((PEntity<?>)expr);
+    protected void visit(Alias.AToPath expr) {
+        handle(expr.getFrom()).append(ops.tableAlias()).visit(expr.getTo());
     }
     
+    @Override
+    protected void visit(ASimple<?> expr) {
+        handle(expr.getFrom()).append(ops.columnAlias()).append(expr.getTo());
+    }
+               
     protected void visit(CountExpression expr) {
         if (expr.getTarget() == null){
             append(ops.countStar());    
@@ -168,22 +175,45 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
             append(ops.count()).append("(").handle(expr.getTarget()).append(")");
         }                
     }
-               
+    
     @Override
     protected void visit(Expr.EConstant<?> expr) {
         append("?");
         constants.add(expr.getConstant());
     }
     
+    private void visitCast(Op<?> operator, Expr<?> source, Class<?> targetType) {
+        // TODO : move constants to SqlOps
+        append("cast(").handle(source);
+        append(" as ");
+        append(ops.getClass2Type().get(targetType)).append(")");
+        
+    }
+    
     @Override
-    protected void visit(ASimple<?> expr) {
-        handle(expr.getFrom()).append(ops.columnAlias()).append(expr.getTo());
+    protected void visitOperation(Op<?> operator, Expr<?>... args) {
+        if (operator.equals(Ops.STRING_CAST)){
+            visitCast(operator, args[0], String.class);
+        }else if (operator.equals(Ops.NUMCAST)){
+            visitCast(operator, args[0], (Class<?>) ((EConstant<?>)args[1]).getConstant());
+        }else{
+            super.visitOperation(operator, args);    
+        }  
     }
     
-    protected void visit(Alias.AToPath expr) {
-        handle(expr.getFrom()).append(ops.tableAlias()).visit(expr.getTo());
+    protected void visit(Projection expr){
+        visit((PEntity<?>)expr);
     }
     
+    protected void visit(SubQuery<SqlJoinMeta,?> query) {
+        QueryBase<SqlJoinMeta,?>.Metadata md = query.getQuery().getMetadata();
+        append("(");
+        serialize(md.getSelect(), md.getJoins(),
+            md.getWhere(), md.getGroupBy(), md.getHaving(), 
+            md.getOrderBy(), 0, 0, false);
+        append(")");
+    }
+
     protected void visit(SumOver<?> expr) {
         append(ops.sum()).append("(").handle(expr.getTarget()).append(") ");
         append(ops.over());
@@ -195,15 +225,6 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
             append(ops.orderBy()).append(", ", expr.getOrderBy());
         }
         append(")");        
-    }
-
-    protected void visit(SubQuery<SqlJoinMeta,?> query) {
-        QueryBase<SqlJoinMeta,?>.Metadata md = query.getQuery().getMetadata();
-        append("(");
-        serialize(md.getSelect(), md.getJoins(),
-            md.getWhere(), md.getGroupBy(), md.getHaving(), 
-            md.getOrderBy(), 0, 0, false);
-        append(")");
     }
 
 }
