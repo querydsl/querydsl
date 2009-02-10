@@ -96,7 +96,7 @@ public class Domain {
         public final Path.PComparable<java.lang.Integer> breed = _comparable("breed",java.lang.Integer.class);
         public final Path.PSimple<Color> color = _simple("color",Color.class);
         public final Path.PSimple<Color> eyecolor = _simple("eyecolor",Color.class);
-        public final Path.PComparable<java.lang.Integer> id = _comparable("id",java.lang.Integer.class);
+        public final Path.PNumber<java.lang.Integer> id = _number("id",java.lang.Integer.class);
         public final Path.PEntityList<Cat> kittens = _entitylist("kittens",Cat.class,"Cat");
         public QCat mate;
         public final Path.PString name = _string("name");

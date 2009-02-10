@@ -23,6 +23,7 @@ import com.mysema.query.collections.Domain.QCat;
 import com.mysema.query.grammar.QMath;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
+import com.mysema.query.grammar.types.Expr.ENumber;
 
 /**
  * ColQueryTest provides
@@ -49,6 +50,24 @@ public class ColQueryTest {
     public void testAPIMethods(){
         query().from(cat, c1, c2).list(cat);
         query().from(cat, c1, c2).iterate(cat).iterator();
+    }
+    
+    @Test
+    public void testCast(){
+        ENumber<?> num = cat.id;
+        Expr<?>[] expr = new Expr[]{
+                num.byteValue(), 
+                num.doubleValue(),
+                num.floatValue(),
+                num.intValue(),
+                num.longValue(),
+                num.shortValue(),
+                num.stringValue()};
+        
+        for (Expr<?> e : expr){
+            query().from(cat, c1, c2).list(e);    
+        }        
+                
     }
     
     @Test

@@ -22,8 +22,10 @@ import org.codehaus.janino.Scanner.ScanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
+import com.mysema.query.grammar.types.Expr.EConstant;
 import com.mysema.query.grammar.types.ExtTypes.ExtString;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
 import com.mysema.query.serialization.BaseSerializer;
@@ -42,42 +44,6 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
     
     public JavaSerializer(OperationPatterns ops){
         super(ops);
-    }
-    
-    protected void visit(ExtString stringPath){
-        visit((Path<String>)stringPath);
-    }
-        
-    @Override
-    protected void visit(Path<?> path) {
-        PathType pathType = path.getMetadata().getPathType();
-        String parentAsString = null, exprAsString = null;
-        
-        if (path.getMetadata().getParent() != null){
-            parentAsString = toString((Expr<?>)path.getMetadata().getParent(), false);    
-        }        
-        if (pathType == VARIABLE){
-            exprAsString = path.getMetadata().getExpression().toString();
-        }else if (pathType == PROPERTY ){
-            String prefix = "get";
-            if (((Expr<?>)path).getType() != null && ((Expr<?>)path).getType().equals(Boolean.class)){
-                prefix = "is";    
-            }
-            exprAsString = prefix+StringUtils.capitalize(path.getMetadata().getExpression().toString())+"()";
-            
-        }else if (pathType == LISTVALUE_CONSTANT){
-            exprAsString = path.getMetadata().getExpression().toString();
-            
-        }else if (path.getMetadata().getExpression() != null){
-            exprAsString = toString(path.getMetadata().getExpression(), false);
-        }
-        
-        String pattern = ops.getPattern(pathType);
-        if (parentAsString != null){
-            append(String.format(pattern, parentAsString, exprAsString));    
-        }else{
-            append(String.format(pattern, exprAsString));
-        }        
     }
     
     public ExpressionEvaluator createExpressionEvaluator(List<Expr<?>> sources, Class<?> targetType) throws CompileException, ParseException, ScanException{
@@ -110,16 +76,97 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
             }
         };
     }
+        
+    public ExpressionEvaluator createExpressionEvaluator(List<Expr<?>> sources, Expr<?> projection) throws Exception{
+        Class<?> targetType = projection.getType();
+        if (targetType == null) targetType = Object.class;
+        return createExpressionEvaluator(sources, targetType);
+    }
     
     private Class<?> normalize(Class<?> type) {
         Class<?> newType = ClassUtils.wrapperToPrimitive(type);
         return newType != null ? newType : type;
     }
+    
+    protected void visit(ExtString stringPath){
+        visit((Path<String>)stringPath);
+    }
 
-    public ExpressionEvaluator createExpressionEvaluator(List<Expr<?>> sources, Expr<?> projection) throws Exception{
-        Class<?> targetType = projection.getType();
-        if (targetType == null) targetType = Object.class;
-        return createExpressionEvaluator(sources, targetType);
+    @Override
+    protected void visitOperation(Op<?> operator, Expr<?>... args) {
+        if (operator.equals(Ops.STRING_CAST)){
+            visitCast(operator, args[0], String.class);
+        }else if (operator.equals(Ops.NUMCAST)){
+            visitCast(operator, args[0], (Class<?>) ((EConstant<?>)args[1]).getConstant());
+        }else{
+            super.visitOperation(operator, args);    
+        }  
+    }
+    
+    private void visitCast(Op<?> operator, Expr<?> source, Class<?> targetType) {
+        if (Number.class.isAssignableFrom(source.getType())){
+            append("new ").append(source.getType().getSimpleName()).append("(");
+            handle(source);
+            append(")");
+        }else{
+            handle(source);    
+        }
+//        num.byteValue() 
+//        num.doubleValue()
+//        num.floatValue()
+//        num.intValue()
+//        num.longValue()
+//        num.shortValue()
+//        num.stringValue()
+        if (Byte.class.equals(targetType)){
+            append(".byteValue()");
+        }else if (Double.class.equals(targetType)){
+            append(".doubleValue()");
+        }else if (Float.class.equals(targetType)){
+            append(".floatValue()");
+        }else if (Integer.class.equals(targetType)){
+            append(".intValue()");
+        }else if (Long.class.equals(targetType)){
+            append(".longValue()");
+        }else if (Short.class.equals(targetType)){
+            append(".shortValue()");
+        }else if (String.class.equals(targetType)){
+            append(".toString()");
+        }else{
+            throw new IllegalArgumentException("Unsupported cast type " + targetType.getName());
+        }
+    }
+    
+    @Override
+    protected void visit(Path<?> path) {
+        PathType pathType = path.getMetadata().getPathType();
+        String parentAsString = null, exprAsString = null;
+        
+        if (path.getMetadata().getParent() != null){
+            parentAsString = toString((Expr<?>)path.getMetadata().getParent(), false);    
+        }        
+        if (pathType == VARIABLE){
+            exprAsString = path.getMetadata().getExpression().toString();
+        }else if (pathType == PROPERTY ){
+            String prefix = "get";
+            if (((Expr<?>)path).getType() != null && ((Expr<?>)path).getType().equals(Boolean.class)){
+                prefix = "is";    
+            }
+            exprAsString = prefix+StringUtils.capitalize(path.getMetadata().getExpression().toString())+"()";
+            
+        }else if (pathType == LISTVALUE_CONSTANT){
+            exprAsString = path.getMetadata().getExpression().toString();
+            
+        }else if (path.getMetadata().getExpression() != null){
+            exprAsString = toString(path.getMetadata().getExpression(), false);
+        }
+        
+        String pattern = ops.getPattern(pathType);
+        if (parentAsString != null){
+            append(String.format(pattern, parentAsString, exprAsString));    
+        }else{
+            append(String.format(pattern, exprAsString));
+        }        
     }
         
 }
