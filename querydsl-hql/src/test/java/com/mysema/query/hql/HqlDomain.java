@@ -257,7 +257,7 @@ public class HqlDomain {
     public static class Foo {
         String bar;
         @Id int id;
-        @CollectionOfElements List<String> names;
+        @CollectionOfElements @IndexColumn(name="_index") List<String> names;
         java.util.Date startDate;
     }
     
@@ -348,7 +348,7 @@ public class HqlDomain {
     @Entity
     public static class Order {
         @ManyToOne Customer customer;
-        @CollectionOfElements List<Integer> deliveredItemIndices;    
+        @CollectionOfElements @IndexColumn(name="_index") List<Integer> deliveredItemIndices;    
         @Id long id;
         @OneToMany @IndexColumn(name="_index") List<Item> items, lineItems;
         boolean paid;
@@ -386,7 +386,7 @@ public class HqlDomain {
     public static class Person {
         java.util.Date birthDay;
         @Id long i;
-        @ManyToOne PersonId id;
+        @ManyToOne PersonId pid;
         String name;
         @ManyToOne Nationality nationality;
     }

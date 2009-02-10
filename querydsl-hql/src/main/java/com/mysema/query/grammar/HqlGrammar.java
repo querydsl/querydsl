@@ -33,23 +33,23 @@ import com.mysema.query.grammar.types.Quant.QSimple;
 public class HqlGrammar extends GrammarWithAlias{
             
     public static <D> Expr<D> all(CollectionType<D> col){
-        return new QSimple<D>(OpQuant.ALL, col);
+        return new QSimple<D>(col.getElementType(), OpQuant.ALL, col);
     }    
     
     public static <D extends Number & Comparable<? super D>> ENumber<D> all(CollectionType<D> col){
-        return new QNumber<D>(OpQuant.ALL, col);
+        return new QNumber<D>(col.getElementType(), OpQuant.ALL, col);
     }
         
     public static <D> ESimple<D> any(CollectionType<D> col){
-        return new QSimple<D>(OpQuant.ANY, col);
+        return new QSimple<D>(col.getElementType(), OpQuant.ANY, col);
     }    
     
     public static <D extends Number & Comparable<? super D>> ENumber<D> any(CollectionType<D> col){
-        return new QNumber<D>(OpQuant.ANY, col);
+        return new QNumber<D>(col.getElementType(), OpQuant.ANY, col);
     }    
     
-    public static <A extends Comparable<? super A>> EComparable<A> avg(PCollection<A> left){
-        return new QComparable<A>(OpQuant.AVG_IN_COL, left);
+    public static <A extends Comparable<? super A>> EComparable<A> avg(PCollection<A> col){
+        return new QComparable<A>(col.getElementType(), OpQuant.AVG_IN_COL, col);
     }        
     
     public static EComparable<Date> current_date(){
@@ -109,7 +109,7 @@ public class HqlGrammar extends GrammarWithAlias{
     }    
     
     public static <A extends Comparable<? super A>> EComparable<A> max(PCollection<A> left){
-        return new QComparable<A>(OpQuant.MAX_IN_COL, left);
+        return new QComparable<A>(left.getElementType(), OpQuant.MAX_IN_COL, left);
     } 
     
     public static <A> PEntity<A> maxelement(PEntityCollection<A> col) {
@@ -125,7 +125,7 @@ public class HqlGrammar extends GrammarWithAlias{
     }  
         
     public static <A extends Comparable<? super A>> EComparable<A> min(PCollection<A> left){
-        return new QComparable<A>(OpQuant.MIN_IN_COL, left);
+        return new QComparable<A>(left.getElementType(), OpQuant.MIN_IN_COL, left);
     }       
     
     public static <A> PEntity<A> minelement(PEntityCollection<A> col) {
@@ -179,6 +179,14 @@ public class HqlGrammar extends GrammarWithAlias{
         if (type.equals(Byte.class) || type.equals(Integer.class) || type.equals(Short.class)) type = Long.class;
         if (type.equals(Float.class)) type = Double.class;
         return createNumber((Class<D>)type, HqlOps.OpHql.SUM, left);
+    }
+    
+    public static <D extends Number & Comparable<? super D>> ENumber<Long> sumAsLong(Expr<D> left){
+        return sum(left).longValue();
+    }
+    
+    public static <D extends Number & Comparable<? super D>> ENumber<Double> sumAsDouble(Expr<D> left){
+        return sum(left).doubleValue();
     }
     
     public static EComparable<Date> sysdate(){

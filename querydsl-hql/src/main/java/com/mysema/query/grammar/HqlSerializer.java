@@ -13,6 +13,7 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.*;
+import com.mysema.query.grammar.types.Expr.EConstant;
 import com.mysema.query.grammar.types.HqlTypes.DistinctPath;
 import com.mysema.query.grammar.types.Quant.QBoolean;
 import com.mysema.query.grammar.types.Quant.QComparable;
@@ -115,7 +116,12 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         if (expr.getTarget() == null){
             append("count(*)");    
         }else{
-            append("count(").handle(expr.getTarget()).append(")");
+            append("count(");
+            boolean old = wrapElements;
+            wrapElements = true;
+            handle(expr.getTarget());
+            wrapElements = old;
+            append(")");
         }                
     }
     
@@ -179,9 +185,22 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         boolean old = wrapElements;
         wrapElements = HqlOps.wrapCollectionsForOp.contains(operator);    
         // 
-        super.visitOperation(operator, args);
+        if (operator.equals(Ops.STRING_CAST)){
+            visitCast(operator, args[0], String.class);
+        }else if (operator.equals(Ops.NUMCAST)){
+            visitCast(operator, args[0], (Class<?>) ((EConstant<?>)args[1]).getConstant());
+        }else{
+            super.visitOperation(operator, args);    
+        }        
         //
         wrapElements = old;
+    }
+
+    private void visitCast(Op<?> operator, Expr<?> source, Class<?> targetType) {
+        append("cast(").handle(source);
+        append(" as ");
+        append(targetType.getSimpleName().toLowerCase()).append(")");
+        
     }
     
     

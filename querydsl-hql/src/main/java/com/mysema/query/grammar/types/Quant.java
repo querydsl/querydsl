@@ -38,8 +38,8 @@ public interface Quant {
     public static class QComparable<Q extends Comparable<? super Q>> extends Expr.EComparable<Q> implements Quant{
         private final Expr<?> col;
         private final Op<?> op;
-        public QComparable(Op<?> op, CollectionType<Q> col) {
-            super(null);
+        public QComparable(Class<Q> type, Op<?> op, CollectionType<Q> col) {
+            super(type);
             this.op = op;
             this.col = (Expr<?>)col;
         }
@@ -50,8 +50,8 @@ public interface Quant {
     public static class QNumber<Q extends  Number & Comparable<? super Q>> extends Expr.ENumber<Q> implements Quant{
         private final Expr<?> col;
         private final Op<?> op;
-        public QNumber(Op<?> op, CollectionType<Q> col) {
-            super(null);
+        public QNumber(Class<Q> type, Op<?> op, CollectionType<Q> col) {
+            super(type);
             this.op = op;
             this.col = (Expr<?>)col;
         }
@@ -65,8 +65,8 @@ public interface Quant {
     public static class QSimple<Q> extends Expr.ESimple<Q> implements Quant{
         private final Expr<?> col;
         private final Op<?> op;
-        public QSimple(Op<?> op, CollectionType<Q> col) {
-            super(null);
+        public QSimple(Class<Q> type, Op<?> op, CollectionType<Q> col) {
+            super(type);
             this.op = op;
             this.col = (Expr<?>)col;
         }

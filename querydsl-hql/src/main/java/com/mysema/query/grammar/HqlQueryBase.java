@@ -98,6 +98,12 @@ public abstract class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<
         joins.add(new JoinExpression<HqlJoinMeta>(JoinType.INNERJOIN, o, meta));
         return (A) this;
     }
+    
+    public A fullJoin(EEntity<?> o) {
+        // ?!?
+        joins.add(new JoinExpression<HqlJoinMeta>(JoinType.INNERJOIN,o));
+        return (A) this;
+    }
 
     @SuppressWarnings("unchecked")
     public A leftJoin(HqlJoinMeta meta, EEntity<?> o) {

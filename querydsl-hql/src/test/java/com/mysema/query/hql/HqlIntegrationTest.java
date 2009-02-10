@@ -32,17 +32,23 @@ public class HqlIntegrationTest extends HqlParserTest{
         
     @Override
     protected void parse() throws RecognitionException, TokenStreamException{
-        System.out.println("query : " + toString().replace('\n', ' '));
-
-        // create Query and execute it
-        Query query = session.createQuery(toString());
-        HqlQuery.setConstants(query, getConstants());
         try{
-            query.list();    
-        }catch(Exception e){
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }        
+            System.out.println("query : " + toString().replace('\n', ' '));
+
+            // create Query and execute it
+            Query query = session.createQuery(toString());
+            HqlQuery.setConstants(query, getConstants());
+            try{
+                query.list();    
+            }catch(Exception e){
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }    
+        }finally{            
+            clear();
+            System.out.println();
+        }
+                
     }
     
     @Test
@@ -53,6 +59,11 @@ public class HqlIntegrationTest extends HqlParserTest{
     @Test
     public void testOrderBy() throws Exception {
         // NOTE : commented out, because HQLSDB doesn't support these queries
+    }
+    
+    @Test
+    public void testDocoExamples910() throws Exception {
+     // NOTE : commented out, because HQLSDB doesn't support these queries
     }
 
     public void setSession(Session session) {

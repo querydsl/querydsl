@@ -138,7 +138,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         toString("cat.bodyWeight + :a1 < :a1",add(cat.bodyWeight,10).lt(10));
         toString("cat.bodyWeight - :a1 < :a1",sub(cat.bodyWeight,10).lt(10));
         toString("cat.bodyWeight * :a1 < :a1",mult(cat.bodyWeight,10).lt(10));
-        toString("cat.bodyWeight / :a1 < :a1",div(cat.bodyWeight,10).lt(10));
+        toString("cat.bodyWeight / :a1 < :a2",div(cat.bodyWeight,10).lt(10d));
         
         toString("(cat.bodyWeight + :a1) * :a2", mult(add(cat.bodyWeight,10),20));
         toString("(cat.bodyWeight - :a1) * :a2", mult(sub(cat.bodyWeight,10),20));        
@@ -409,12 +409,31 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     
         // sum to var
         
-        ENumber<Long> sum = (ENumber) sum($(0));
+        ENumber<Long> sum = (ENumber) sum($(0)); // via Java level cast
+        sum = sum($(0)).longValue();
         
         // sum comparison
         
         sum($(0)).gt(0);
+        sum($(0)).intValue().gt(0);
     
+    }
+    
+    @Test
+    public void testNumericCast(){
+        ENumber<Integer> expr = $(0);
+        assertEquals(Byte.class, expr.byteValue().getType());
+        assertEquals(Double.class, expr.doubleValue().getType());
+        assertEquals(Float.class, expr.floatValue().getType());
+        assertEquals(Integer.class, expr.intValue().getType());
+        assertEquals(Long.class, expr.longValue().getType());
+        assertEquals(Short.class, expr.shortValue().getType());        
+    }
+    
+    @Test
+    public void testStringCast(){
+        ENumber<Integer> expr = $(0);
+        assertEquals(String.class, expr.stringValue().getType());
     }
        
     private void toString(String expected, Expr<?> expr) {

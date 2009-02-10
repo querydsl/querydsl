@@ -80,7 +80,7 @@
   </dependencies>
 
   <build>
-    <plugins>
+    <plugins>          
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
@@ -105,7 +105,7 @@
         <executions>
           <execution>
             <id>dummy-domain-into-package</id>
-            <phase>generate-test-sources</phase>
+            <phase>generate-sources</phase>
             <goals>
               <goal>testExecute</goal>
             </goals>

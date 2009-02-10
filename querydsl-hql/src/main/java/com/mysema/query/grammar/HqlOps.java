@@ -26,9 +26,13 @@ public class HqlOps extends OperationPatterns {
     
     static{
         wrapCollectionsForOp = Collections.<Op<?>>unmodifiableList(Arrays.<Op<?>>asList(
-                Ops.IN, Ops.NOTIN, 
-                OpQuant.ALL, OpQuant.ANY, 
-                OpQuant.EXISTS, OpQuant.NOTEXISTS));
+                Ops.IN, 
+                Ops.NOTIN,                
+                OpQuant.ALL, 
+                OpQuant.ANY,
+                OpQuant.AVG_IN_COL,
+                OpQuant.EXISTS, 
+                OpQuant.NOTEXISTS));
     }
     
     public HqlOps(){            
@@ -96,9 +100,9 @@ public class HqlOps extends OperationPatterns {
         
         // HQL types
         add(HqlPathType.MINELEMENT, "minelement(%s)");
-        add(HqlPathType.MAXELEMENT, "max(%s");
-        add(HqlPathType.MININDEX, "minelement(%s)");
-        add(HqlPathType.MAXINDEX, "minelement(%s)");
+        add(HqlPathType.MAXELEMENT, "maxelement(%s");
+        add(HqlPathType.MININDEX, "minindex(%s)");
+        add(HqlPathType.MAXINDEX, "maxindex(%s)");
         add(HqlPathType.LISTINDICES, "indices(%s)");
         add(HqlPathType.MAPINDICES, "indices(%s)");
     }
