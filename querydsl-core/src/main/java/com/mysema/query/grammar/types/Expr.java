@@ -11,6 +11,7 @@ import static com.mysema.query.grammar.types.Factory.createConstant;
 import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.Ops;
 import com.mysema.query.grammar.OrderSpecifier;
+import com.mysema.query.util.NumberUtil;
 
 /**
  * Expr represents a general typed expression in a Query instance
@@ -129,10 +130,10 @@ public abstract class Expr<D> {
         public ENumber(Class<D> type) {super(type);}
         
         // with Java level cast
-        public <A extends Number & Comparable<? super A>> EBoolean goe(A right) { return createBoolean(Ops.GOE, this, createConstant(Grammar.castTo(right,getType())));}  
-        public <A extends Number & Comparable<? super A>> EBoolean gt(A right) { return createBoolean(Ops.GT, this, createConstant(Grammar.castTo(right,getType())));}                
-        public <A extends Number & Comparable<? super A>> EBoolean loe(A right) { return createBoolean(Ops.LOE, this, createConstant(Grammar.castTo(right,getType())));}
-        public <A extends Number & Comparable<? super A>> EBoolean lt(A right) {  return createBoolean(Ops.LT, this, createConstant(Grammar.castTo(right,getType())));}
+        public <A extends Number & Comparable<? super A>> EBoolean goe(A right) { return createBoolean(Ops.GOE, this, createConstant(NumberUtil.castTo(right,getType())));}  
+        public <A extends Number & Comparable<? super A>> EBoolean gt(A right) { return createBoolean(Ops.GT, this, createConstant(NumberUtil.castTo(right,getType())));}                
+        public <A extends Number & Comparable<? super A>> EBoolean loe(A right) { return createBoolean(Ops.LOE, this, createConstant(NumberUtil.castTo(right,getType())));}
+        public <A extends Number & Comparable<? super A>> EBoolean lt(A right) {  return createBoolean(Ops.LT, this, createConstant(NumberUtil.castTo(right,getType())));}
         
         // without cast
         public <A extends Number & Comparable<? super A>> EBoolean goe(Expr<A> right) {return createBoolean(Ops.GOE, this, right);}                
