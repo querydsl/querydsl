@@ -30,6 +30,7 @@ public class MiniApi extends GrammarWithAlias{
         return new ColQuery().from($(alias), col);
     }
     
+    @SuppressWarnings("unchecked")
     public static <A> ColQuery from(Expr<A> path, Iterable<A> col){
         return new ColQuery().from((Path<A>)path, col);
     }

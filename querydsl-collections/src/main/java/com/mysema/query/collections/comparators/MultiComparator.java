@@ -17,8 +17,10 @@ import org.codehaus.janino.ExpressionEvaluator;
  * @author tiwe
  * @version $Id$
  */
+
 public class MultiComparator implements Comparator<Object[]> {
-    
+
+    @SuppressWarnings("unchecked")
     private Comparator<Object> naturalOrder = ComparatorUtils.naturalComparator();
 
     private ExpressionEvaluator ev;
