@@ -12,7 +12,9 @@ import static com.mysema.query.collections.MiniApi.select;
 import static com.mysema.query.grammar.Grammar.gt;
 import static com.mysema.query.grammar.GrammarWithAlias.$;
 import static com.mysema.query.grammar.GrammarWithAlias.alias;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.*;
 
@@ -22,6 +24,7 @@ import org.junit.Test;
 
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.Domain.QCat;
+import com.mysema.query.grammar.GrammarWithAlias;
 import com.mysema.query.grammar.QMath;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path.PEntity;
@@ -45,6 +48,8 @@ public class MiniApiTest {
         myInts.add(2);
         myInts.add(3);
         myInts.add(4);        
+        
+        GrammarWithAlias.resetAlias();
     }
     
     @Test
@@ -229,7 +234,8 @@ public class MiniApiTest {
     }
     
     @Test
-    public void testMapUsage(){        
+    public void testMapUsage(){
+        // FIXME
         Map<String,String> map = new HashMap<String,String>();      
         map.put("1","one");
         map.put("2","two");
