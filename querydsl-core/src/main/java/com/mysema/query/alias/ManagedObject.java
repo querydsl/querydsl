@@ -5,6 +5,8 @@
  */
 package com.mysema.query.alias;
 
+import com.mysema.query.grammar.types.Path.PEntity;
+
 
 /**
  * MagagedObject is a tagging interface for CGLIB alias proxies
@@ -12,5 +14,5 @@ package com.mysema.query.alias;
  * @version $Id$
  */
 public interface ManagedObject {
-    
+    PEntity<?> __mappedPath(); 
 }

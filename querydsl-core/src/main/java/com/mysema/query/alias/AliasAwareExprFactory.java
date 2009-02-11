@@ -30,89 +30,60 @@ public class AliasAwareExprFactory extends SimpleExprFactory{
     }
     
     public EBoolean createBoolean(Boolean arg){
-        try{
-            return aliasFactory.hasCurrent() ? aliasFactory.<PBoolean>getCurrent() : super.createBoolean(arg);    
-        }finally{
-            aliasFactory.setCurrent(null);
-        }        
+        EBoolean rv = aliasFactory.<PBoolean>getCurrentAndReset();
+        return rv != null ? rv : super.createBoolean(arg);
     }
     
     public PBooleanArray createBooleanArray(Boolean[] args){
-        try{
-            return aliasFactory.hasCurrent() ? aliasFactory.<PBooleanArray>getCurrent() : super.createBooleanArray(args);
-        }finally{
-            aliasFactory.setCurrent(null);
-        }        
+        PBooleanArray rv = aliasFactory.<PBooleanArray>getCurrentAndReset();
+        return rv != null ? rv : super.createBooleanArray(args);
     }
     
     public <D> PEntityCollection<D> createEntityCollection(Collection<D> arg) {
-        try{
-            return aliasFactory.hasCurrent() ? aliasFactory.<PEntityCollection<D>>getCurrent() : super.createEntityCollection(arg);
-        }finally{
-            aliasFactory.setCurrent(null);
-        }        
+        PEntityCollection<D> rv = aliasFactory.<PEntityCollection<D>>getCurrentAndReset();
+        return rv != null ? rv : super.createEntityCollection(arg);
     }
     
     public <D extends Comparable<? super D>> EComparable<D> createComparable(D arg){
-        try{
-            return aliasFactory.hasCurrent() ? aliasFactory.<EComparable<D>>getCurrent() : super.createComparable(arg);
-        }finally{
-            aliasFactory.setCurrent(null);
-        }        
+        EComparable<D> rv = aliasFactory.<EComparable<D>>getCurrentAndReset();
+        return rv != null ? rv : super.createComparable(arg);
     }
     
     public <D extends Number & Comparable<? super D>> ENumber<D> createNumber(D arg){
-        try{
-            return aliasFactory.hasCurrent() ? aliasFactory.<ENumber<D>>getCurrent() : super.createNumber(arg);
-        }finally{
-            aliasFactory.setCurrent(null);
-        }        
+        ENumber<D> rv = aliasFactory.<ENumber<D>>getCurrentAndReset();
+        return rv != null ? rv : super.createNumber(arg);
     }
     
     @SuppressWarnings("unchecked")
     public <D> PEntity<D> createEntity(D arg){
-        try{
-            if (arg instanceof ManagedObject){
-                PEntity<D> path = (PEntity<D>) aliasFactory.pathForAlias(arg);
-                return path != null ? path : super.createEntity(arg);    
-            }else{
-                return super.createEntity(arg);
-            }            
-        }finally{
-            aliasFactory.setCurrent(null);
-        }        
+        PEntity<D> rv = aliasFactory.<PEntity<D>>getCurrentAndReset();
+        if (rv != null){
+            return rv;
+        }else if (arg instanceof ManagedObject){
+            return (PEntity<D>)((ManagedObject)arg).__mappedPath(); 
+        }else{
+            return super.createEntity(arg);
+        }                 
     }
     
     public <D extends Comparable<? super D>> PComparableArray<D> createComparableArray(D[] args){
-        try{
-            return aliasFactory.hasCurrent() ? aliasFactory.<PComparableArray<D>>getCurrent() : super.createComparableArray(args);
-        }finally{
-            aliasFactory.setCurrent(null);
-        }        
+        PComparableArray<D> rv = aliasFactory.<PComparableArray<D>>getCurrentAndReset();
+        return rv != null ? rv : super.createComparableArray(args);
     }
 
     public <D> PEntityList<D> createEntityList(List<D> arg) {
-        try{
-            return aliasFactory.hasCurrent() ? aliasFactory.<PEntityList<D>>getCurrent() : super.createEntityList(arg);
-        }finally{
-            aliasFactory.setCurrent(null);
-        }        
+        PEntityList<D> rv = aliasFactory.<PEntityList<D>>getCurrentAndReset();
+        return rv != null ? rv : super.createEntityList(arg);
     }
     
     public ExtString createString(String arg){
-        try{
-            return aliasFactory.hasCurrent() ? aliasFactory.<ExtString>getCurrent() : super.createString(arg);
-        }finally{
-            aliasFactory.setCurrent(null);
-        }        
+        ExtString rv = aliasFactory.<ExtString>getCurrentAndReset();
+        return rv != null ? rv : super.createString(arg);
     }
     
     public PStringArray createStringArray(String[] args){
-        try{
-            return aliasFactory.hasCurrent() ? aliasFactory.<PStringArray>getCurrent() : super.createStringArray(args);
-        }finally{
-            aliasFactory.setCurrent(null);
-        }        
+        PStringArray rv = aliasFactory.<PStringArray>getCurrentAndReset();
+        return rv != null ? rv : super.createStringArray(args);
     }
 
 }

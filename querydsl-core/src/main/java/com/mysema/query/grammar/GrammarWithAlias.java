@@ -13,6 +13,7 @@ import java.util.List;
 import com.mysema.query.ExprFactory;
 import com.mysema.query.alias.AliasAwareExprFactory;
 import com.mysema.query.alias.AliasFactory;
+import com.mysema.query.alias.SimpleAliasFactory;
 import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
@@ -28,7 +29,7 @@ import com.mysema.query.grammar.types.Path.*;
  */
 public class GrammarWithAlias extends Grammar{
 
-    private static final AliasFactory aliasFactory = new AliasFactory();
+    private static final AliasFactory aliasFactory = new SimpleAliasFactory();
     
     private static final ExprFactory exprFactory = new AliasAwareExprFactory(aliasFactory);
     
@@ -38,6 +39,10 @@ public class GrammarWithAlias extends Grammar{
         return aliasFactory.createAliasForVar(cl, var);
     }
         
+    public static void resetAlias(){
+        aliasFactory.reset();        
+    }
+    
     public static EBoolean $(Boolean arg){
         return exprFactory.createBoolean(arg);
     }

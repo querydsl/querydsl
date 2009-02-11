@@ -26,6 +26,7 @@ import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.ExtTypes.ExtString;
 import com.mysema.query.grammar.types.Path.PCollection;
+import com.mysema.query.grammar.types.Path.PEntity;
 import com.mysema.query.grammar.types.Path.PList;
 
 /**
@@ -39,15 +40,12 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
     private final Expr<?> path;
     
     private final AliasFactory aliasFactory;
-    
-//    private final JavaSerializer serializer = new JavaSerializer(new JavaOps());    
-    private String toString;
-    
+        
     private final Map<String,Expr<?>> propToExpr = new HashMap<String,Expr<?>>();
     
     private final Map<String,Object> propToObj = new HashMap<String,Object>();
     
-    public PropertyAccessInvocationHandler(Expr<?> path, AliasFactory aliasFactory){     
+    public PropertyAccessInvocationHandler(Expr<?> path, AliasFactory aliasFactory){    
         this.path = path;
         this.aliasFactory = aliasFactory;
     }
@@ -131,6 +129,9 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         }else if (isHashCode(method)){    
             rv = path.hashCode();
             
+        }else if (isGetMappedPath(method)){
+            rv = path;
+            
         }else{
 //            rv = methodProxy.invokeSuper(proxy, args);
             throw new IllegalArgumentException("Invocation of " + method.getName() + " not supported");
@@ -139,33 +140,27 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
     }
     
     private boolean isToString(Method method){
-        return method.getName().equals("toString")
-            && method.getParameterTypes().length == 0
-            && method.getReturnType().equals(String.class);
+        return checkMethod(method, "toString", 0, String.class);
     }
     
     private boolean isContains(Method method){
-        return method.getName().equals("contains")
-            && method.getParameterTypes().length == 1
-            && method.getReturnType().equals(boolean.class);
+        return checkMethod(method, "contains", 1, boolean.class);
     }
 
+    private boolean isGetMappedPath(Method method){
+        return checkMethod(method, "__mappedPath", 0, PEntity.class);
+    }
+    
     private boolean isListElementAccess(Method method) {
-        return method.getName().equals("get") 
-            && method.getParameterTypes().length == 1 
-            && method.getParameterTypes()[0].equals(int.class);
+        return checkMethod(method, "get", 1, int.class);        
     }
     
     private boolean isHashCode(Method method){
-        return method.getName().equals("hashCode") 
-            && method.getParameterTypes().length == 0
-            && method.getReturnType().equals(int.class);
+        return checkMethod(method, "hashCode", 0, int.class);        
     }
     
     private boolean isMapElementAccess(Method method) {
-        return method.getName().equals("get") 
-            && method.getParameterTypes().length == 1 
-            && method.getParameterTypes()[0].equals(Object.class);
+        return checkMethod(method, "get", 1, Object.class);        
     }
         
     private boolean isGetter(Method method){
@@ -175,9 +170,14 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
     }
     
     private boolean isSizeAccessor(Method method) {
-        return method.getName().equals("size") 
-            && method.getParameterTypes().length == 0
-            && method.getReturnType().equals(int.class);
+        return checkMethod(method, "size", 0, int.class);        
+    }
+    
+    private boolean checkMethod(Method method, String name, int paramCount, Class<?> returnType){
+        boolean rv = method.getName().equals(name);
+        rv &= method.getParameterTypes().length == paramCount;
+        rv &= method.getReturnType().equals(returnType);
+        return rv;        
     }
 
     @SuppressWarnings("unchecked")
@@ -187,11 +187,8 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         
         if (String.class.equals(type)) {
             path = new ExtString(pm);
-//            rv = (T) new String();
-            // TODO : null is used as a return value to block method invocations on Strings
+            // null is used as a return value to block method invocations on Strings
             rv = null;
-        
-        // primitive types   
             
         } else if (Integer.class.equals(type) || int.class.equals(type)) {
             path = new Path.PNumber<Integer>(Integer.class,pm);

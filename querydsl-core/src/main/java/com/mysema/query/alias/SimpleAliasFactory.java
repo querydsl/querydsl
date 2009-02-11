@@ -20,14 +20,7 @@ import com.mysema.query.util.FactoryMap;
  * @author tiwe
  * @version $Id$
  */
-public class AliasFactory {
-    
-    private final ThreadLocal<WeakIdentityHashMap<Object, Expr<?>>> bindings = new ThreadLocal<WeakIdentityHashMap<Object, Expr<?>>>() {
-        @Override
-        protected WeakIdentityHashMap<Object, Expr<?>> initialValue() {
-                return new WeakIdentityHashMap<Object, Expr<?>>();
-        }
-    };
+public class SimpleAliasFactory implements AliasFactory {
     
     private final ThreadLocal<Expr<?>> current = new ThreadLocal<Expr<?>>();
     
@@ -45,11 +38,17 @@ public class AliasFactory {
         }
     };
     
+    /* (non-Javadoc)
+     * @see com.mysema.query.alias.AliasFactory#createAliasForProp(java.lang.Class, java.lang.Object, com.mysema.query.grammar.types.Expr)
+     */
     public <A> A createAliasForProp(Class<A> cl, Object parent, Expr<?> path){        
         A proxy = createProxy(cl, path);    
         return proxy;
     }
         
+    /* (non-Javadoc)
+     * @see com.mysema.query.alias.AliasFactory#createAliasForVar(java.lang.Class, java.lang.String)
+     */
     @SuppressWarnings("unchecked")
     public <A> A createAliasForVar(Class<A> cl, String var){    
         Expr<?> path = pathCache.get(cl,var);
@@ -60,7 +59,7 @@ public class AliasFactory {
     @SuppressWarnings("unchecked")
     private <A> A createProxy(Class<A> cl, Expr<?> path) {
         Enhancer enhancer = new Enhancer();
-        enhancer.setClassLoader(AliasFactory.class.getClassLoader());
+        enhancer.setClassLoader(SimpleAliasFactory.class.getClassLoader());
         if (cl.isInterface()){
             enhancer.setInterfaces(new Class[]{cl,ManagedObject.class});
         }else{
@@ -71,23 +70,30 @@ public class AliasFactory {
         MethodInterceptor handler = new PropertyAccessInvocationHandler(path,this);
         enhancer.setCallback(handler);
         A rv = (A)enhancer.create();
-        bindings.get().put(rv, path);
         return rv;
     }
-    
+
+    /* (non-Javadoc)
+     * @see com.mysema.query.alias.AliasFactory#getCurrent()
+     */
     @SuppressWarnings("unchecked")
     public <A extends Expr<?>> A getCurrent() {
         return (A) current.get();
     }
-
-    public boolean hasCurrent() {
-        return current.get() != null;
+    
+    public <A extends Expr<?>> A getCurrentAndReset(){
+        A rv = this.<A>getCurrent();
+        reset();
+        return rv;
     }
     
-    public Expr<?> pathForAlias(Object key){
-        return bindings.get().get(key);
+    public void reset() {
+        current.set(null);
     }
 
+    /* (non-Javadoc)
+     * @see com.mysema.query.alias.AliasFactory#setCurrent(com.mysema.query.grammar.types.Expr)
+     */
     public void setCurrent(Expr<?> path){
         current.set(path);
     }
