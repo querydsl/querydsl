@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.util;
 
 import java.math.BigDecimal;
@@ -32,8 +37,7 @@ public class NumberUtil {
         }else if (BigDecimal.class.equals(type)){
             return (A)new BigDecimal(number.toString());
         }else{
-            throw new IllegalArgumentException("Unsupported target type : " + 
-                    type.getName());
+            throw new IllegalArgumentException("Unsupported target type : " + type.getName());
         }
     }
 }
