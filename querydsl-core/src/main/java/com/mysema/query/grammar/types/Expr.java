@@ -36,7 +36,7 @@ public abstract class Expr<D> {
     /**
      * The Class Boolean.
      */
-    public static abstract class EBoolean extends ELiteral<Boolean>{
+    public static abstract class EBoolean extends EComparable<Boolean>{
         public EBoolean() {super(Boolean.class);}
         public EBoolean and(EBoolean right) {return Grammar.and(this, right);}
         public EBoolean or(EBoolean right) {return Grammar.or(this, right);}
@@ -45,7 +45,7 @@ public abstract class Expr<D> {
     /**
      * The Class Comparable.
      */
-    public static abstract class EComparable<D extends Comparable<? super D>> extends ELiteral<D>{
+    public static abstract class EComparable<D extends Comparable<? super D>> extends ESimple<D>{
         public EComparable(Class<D> type) {super(type);}
         public EBoolean after(D right) {return Grammar.after(this,right);}
         public EBoolean after(Expr<D> right) {return Grammar.after(this,right);}  
@@ -116,12 +116,12 @@ public abstract class Expr<D> {
         public EEntity(Class<D> type) {super(type);}        
     }
     
-    /**
-     * The Class Literal.
-     */
-    public static abstract class ELiteral<D> extends ESimple<D>{
-        public ELiteral(Class<D> type) {super(type);}
-    }
+//    /**
+//     * The Class Literal.
+//     */
+//    public static abstract class ELiteral<D> extends ESimple<D>{
+//        public ELiteral(Class<D> type) {super(type);}
+//    }
     
     /**
      * The Class Number.
