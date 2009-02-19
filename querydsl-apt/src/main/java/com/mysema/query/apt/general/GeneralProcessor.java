@@ -44,7 +44,7 @@ public class GeneralProcessor implements AnnotationProcessor {
 
     public GeneralProcessor(AnnotationProcessorEnvironment env,
             String superClassAnnotation, String domainAnnotation,
-            String dtoAnnotation, String embeddableAnnotation) throws IOException {
+            String dtoAnnotation, String embeddableAnnotation) {
         this.env = env;
         this.targetFolder = env.getOptions().get("-s");
         this.destPackage = getString(env.getOptions(), "destPackage", null);

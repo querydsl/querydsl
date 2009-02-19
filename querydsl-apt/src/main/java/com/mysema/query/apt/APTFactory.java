@@ -5,7 +5,8 @@
  */
 package com.mysema.query.apt;
 
-import java.io.IOException;
+import static com.mysema.query.apt.APTUtils.getString;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -47,19 +48,13 @@ public class APTFactory implements AnnotationProcessorFactory {
     public AnnotationProcessor getProcessorFor(
             Set<AnnotationTypeDeclaration> atds,
             AnnotationProcessorEnvironment env) {
-        try {
-            try {
-                // try JPA first
-                Class.forName(jpaSuperClass);
-                return new GeneralProcessor(env, jpaSuperClass, jpaEntity, qdDto, jpaEmbeddable);
-            } catch (ClassNotFoundException e) {
-                // try Querydsl specific next
-                return new GeneralProcessor(env, null, qdEntity, qdDto, null);
-            }            
-            
-        } catch (IOException e) {
-            String error = "Caught " + e.getClass().getName();
-            throw new RuntimeException(error, e);
+        String profile = getString(env.getOptions(), "profile", "jpa");
+        if ("jpa".equals(profile)){
+            return new GeneralProcessor(env, jpaSuperClass, jpaEntity, qdDto, jpaEmbeddable);
+        }else if ("querydsl".equals(profile)){
+            return new GeneralProcessor(env, jpaSuperClass, qdEntity, qdDto, jpaEmbeddable);
+        }else{
+            throw new IllegalArgumentException("Unknown profile " + profile);
         }
     }
 
