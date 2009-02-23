@@ -76,7 +76,7 @@ public class HqlGrammar extends GrammarWithAlias{
         return new QBoolean<D>(OpQuant.EXISTS, col);
     }
     
-    public static <A> SubQuery<HqlJoinMeta,A> from(EEntity<A> select){
+    public static <A> SubQuery<HqlJoinMeta,A> from(PEntity<A> select){
         return new SubQuery<HqlJoinMeta,A>(select).from(select);
     }
     
