@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EEntity;
 
@@ -43,8 +44,8 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
     
     private final Metadata metadata = new Metadata();
     
-    public A from(EEntity<?>... o) {
-        for (EEntity<?> expr : o){
+    public A from(Expr<?>... o) {
+        for (Expr<?> expr : o){
             joins.add(new JoinExpression<JoinMeta>(JoinType.DEFAULT,expr));
         }
         return self;
@@ -60,22 +61,22 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
         return self;
     }
     
-    public A innerJoin(EEntity<?> o) {
+    public A innerJoin(Expr<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.INNERJOIN,o));
         return self;
     }
     
-    public A fullJoin(EEntity<?> o) {
+    public A fullJoin(Expr<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.FULLJOIN,o));
         return self;
     }
  
-    public A join(EEntity<?> o) {
+    public A join(Expr<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.JOIN,o));
         return self;
     }
  
-    public A leftJoin(EEntity<?> o) {
+    public A leftJoin(Expr<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.LEFTJOIN,o));
         return self;
     }

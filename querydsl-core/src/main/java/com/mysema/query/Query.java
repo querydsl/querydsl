@@ -7,7 +7,6 @@ package com.mysema.query;
 
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.EEntity;
 
 /**
  * Query provides a the query interface of the fluent query DSL.
@@ -16,11 +15,11 @@ import com.mysema.query.grammar.types.Expr.EEntity;
  * @version $Id$
  */
 public interface Query<A extends Query<A>>{
-    A from(EEntity<?>... o);  
-    A innerJoin(EEntity<?> o);
-    A join(EEntity<?> o);
-    A fullJoin(EEntity<?> o);
-    A leftJoin(EEntity<?> o);
+    A from(Expr<?>... o);  
+    A innerJoin(Expr<?> o);
+    A join(Expr<?> o);
+    A fullJoin(Expr<?> o);
+    A leftJoin(Expr<?> o);
     A on(Expr.EBoolean o);
     A groupBy(Expr<?>... o);
     A having(Expr.EBoolean... o);

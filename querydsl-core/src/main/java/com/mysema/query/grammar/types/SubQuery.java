@@ -29,14 +29,14 @@ public class SubQuery<JM,A> extends Expr<A> implements Query<SubQuery<JM,A>>, Co
         super(null);
     }
     @SuppressWarnings("unchecked")
-    public SubQuery<JM,A> from(EEntity... o) {query.from(o); return this;}
-    public SubQuery<JM,A> fullJoin(EEntity<?> o) {query.fullJoin(o); return this;}
+    public SubQuery<JM,A> from(Expr<?>... o) {query.from(o); return this;}
+    public SubQuery<JM,A> fullJoin(Expr<?> o) {query.fullJoin(o); return this;}
     public QueryBase<JM,?> getQuery(){ return query;}
     public SubQuery<JM,A> groupBy(Expr<?>... o) {query.groupBy(o); return this;}
     public SubQuery<JM,A> having(EBoolean... o) {query.having(o); return this;}
-    public SubQuery<JM,A> innerJoin(EEntity<?> o) {query.innerJoin(o); return this;}
-    public SubQuery<JM,A> join(EEntity<?> o) {query.join(o); return this;}
-    public SubQuery<JM,A> leftJoin(EEntity<?> o) {query.leftJoin(o); return this;}
+    public SubQuery<JM,A> innerJoin(Expr<?> o) {query.innerJoin(o); return this;}
+    public SubQuery<JM,A> join(Expr<?> o) {query.join(o); return this;}
+    public SubQuery<JM,A> leftJoin(Expr<?> o) {query.leftJoin(o); return this;}
     public SubQuery<JM,A> on(EBoolean o) {query.on(o); return this;}
     public SubQuery<JM,A> orderBy(OrderSpecifier<?>... o) {query.orderBy(o); return this;}
     public SubQuery<JM,A> select(Expr<?>... o) {
