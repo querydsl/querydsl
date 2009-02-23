@@ -29,6 +29,9 @@ public class AbstractColQuery<S extends AbstractColQuery<S>> {
 
     private final InnerQuery query;
 
+    @SuppressWarnings("unchecked")
+    private S self = (S)this;
+
     public AbstractColQuery() {
         this(OPS_DEFAULT);
     }
@@ -53,8 +56,26 @@ public class AbstractColQuery<S extends AbstractColQuery<S>> {
 
     @SuppressWarnings("unchecked")
     public <A> S from(Path<A> path, Iterable<A> col) {
-        query.alias(path, col).from(path);
-        return (S)this;
+        query.alias(path, col).from((Expr<?>)path);
+        return self;
+    }
+    
+    public <A> S innerJoin(Path<A> path, Iterable<A> col){
+        query.alias(path, col).innerJoin((Expr<?>)path);
+        return self;
+    }    
+    public <A> S fullJoin(Path<A> path, Iterable<A> col){
+        query.alias(path, col).fullJoin((Expr<?>)path);
+        return self;
+    }
+    public <A> S leftJoin(Path<A> path, Iterable<A> col){
+        query.alias(path, col).leftJoin((Expr<?>)path);
+        return self;
+    }
+    
+    public S on(Expr.EBoolean o){
+        query.on(o);
+        return self;
     }
     
     @SuppressWarnings("unchecked")
@@ -105,13 +126,13 @@ public class AbstractColQuery<S extends AbstractColQuery<S>> {
     @SuppressWarnings("unchecked")
     public S orderBy(OrderSpecifier<?>... o) {
         query.orderBy(o);
-        return (S)this;
+        return self;
     }
     
     @SuppressWarnings("unchecked")
     public S where(Expr.EBoolean... o) {
         query.where(o);
-        return (S)this;
+        return self;
     }
 
 }

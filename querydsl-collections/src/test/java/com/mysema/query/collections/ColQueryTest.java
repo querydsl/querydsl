@@ -157,6 +157,17 @@ public class ColQueryTest {
     }
 
     @Test
+    public void testJoins(){
+        query().from(cat, cats)
+            .innerJoin(otherCat, cats).on(cat.mate.eq(otherCat))
+            .select(cat, otherCat);
+        
+        query().from(cat, cats)
+            .innerJoin(otherCat, cats).on(cat.id.eq(otherCat.id))
+            .select(cat, otherCat);               
+    }
+    
+    @Test
     public void testPrimitives(){
         // select cats with kittens
         query().from(cat,cats).where(cat.kittens.size().ne(0)).select(cat.name);

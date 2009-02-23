@@ -11,7 +11,6 @@ import org.apache.commons.collections15.IteratorUtils;
 import org.codehaus.janino.ExpressionEvaluator;
 
 import com.mysema.query.JoinExpression;
-import com.mysema.query.JoinType;
 import com.mysema.query.QueryBase;
 import com.mysema.query.collections.comparators.MultiComparator;
 import com.mysema.query.collections.iterators.FilteringIterator;
@@ -46,13 +45,6 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
         return this;
     }
     
-    public InnerQuery from(Path<?>... o) {
-        for (Path<?> expr : o){
-            joins.add(new JoinExpression<Object>(JoinType.DEFAULT, (Expr<?>) expr));
-        }
-        return this;
-    }
-
     private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {        
         // from
         List<Expr<?>> sources = new ArrayList<Expr<?>>();
@@ -62,10 +54,11 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
             sources.add(join.getTarget());
             multiIt.add(pathToIterable.get(join.getTarget()));
         }              
-        Iterator<?> it = multiIt.init();
         
         // TODO : joins
 
+        Iterator<?> it = multiIt.init();
+        
         // where
         if (where.self() != null) {
             ExpressionEvaluator ev = new JavaSerializer(ops).handle(
