@@ -56,11 +56,10 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
         if (!orderBy.isEmpty()) it = handleOrderBy(sources, it);
         
         // select
-        ExpressionEvaluator ev = new JavaSerializer(ops).handle(projection)
-            .createExpressionEvaluator(sources,projection);        
-        return new ProjectingIterator<RT>(it, ev);                   
+        return handleSelect(it, sources, projection);                   
     }
     
+
     /**
      * creates an iterator based on the given sources and filters it based on the constraints
      * of the where block
@@ -108,8 +107,8 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
      * constraints out
      * 
      * @param sources
-     * @param it
-     * @return
+     * @param it source iterator
+     * @return 
      * @throws CompileException
      * @throws ParseException
      * @throws ScanException
@@ -127,7 +126,7 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
      * transforms the given iterator into a sorted view based on the ordering data
      * 
      * @param sources
-     * @param it
+     * @param it source iterator
      * @return
      * @throws Exception
      */
@@ -149,6 +148,22 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
         Collections.sort(itAsList, new MultiComparator(ev, directions));
         it = itAsList.iterator();
         return it;
+    }
+    
+    /**
+     * create the final projecting iterator
+     * 
+     * @param <RT>
+     * @param it source iterator
+     * @param sources
+     * @param projection
+     * @return
+     * @throws Exception
+     */
+    protected <RT> Iterator<RT> handleSelect(Iterator<?> it, List<Expr<?>> sources, Expr<RT> projection) throws Exception {
+        ExpressionEvaluator ev = new JavaSerializer(ops).handle(projection)
+            .createExpressionEvaluator(sources,projection);        
+        return new ProjectingIterator<RT>(it, ev);
     }
 
     public <RT> Iterable<RT> iterate(final Expr<RT> projection) {
