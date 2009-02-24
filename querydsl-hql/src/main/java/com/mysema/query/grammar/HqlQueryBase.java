@@ -73,7 +73,7 @@ public abstract class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<
                 expr.and(path.isnull());                        
             }                    
         } 
-        return expr.self();
+        return expr.create();
     }
     
     @SuppressWarnings("unchecked")
