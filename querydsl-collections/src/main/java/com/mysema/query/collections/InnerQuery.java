@@ -8,7 +8,10 @@ package com.mysema.query.collections;
 import java.util.*;
 
 import org.apache.commons.collections15.IteratorUtils;
+import org.codehaus.janino.CompileException;
 import org.codehaus.janino.ExpressionEvaluator;
+import org.codehaus.janino.Parser.ParseException;
+import org.codehaus.janino.Scanner.ScanException;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryBase;
@@ -45,51 +48,108 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
         return this;
     }
     
-    private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {        
-        // from
+    private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
         List<Expr<?>> sources = new ArrayList<Expr<?>>();
-        MultiIterator multiIt = new MultiIterator();
-        
-        for (JoinExpression<?> join : joins) {
-            sources.add(join.getTarget());
-            multiIt.add(pathToIterable.get(join.getTarget()));
-        }              
-        
-        // TODO : joins
-
-        Iterator<?> it = multiIt.init();
-        
-        // where
-        if (where.self() != null) {
-            ExpressionEvaluator ev = new JavaSerializer(ops).handle(
-                    where.self()).createExpressionEvaluator(sources,
-                    boolean.class);
-            it = new FilteringIterator<Object>(it, ev);
-        }
+        // from  / where       
+        Iterator<?> it = handleFromAndWhere(sources);
         
         // order
-        if (!orderBy.isEmpty()){
-            // create a projection for the order
-            Expr<Object>[] orderByExpr = new Expr[orderBy.size()];
-            boolean[] directions = new boolean[orderBy.size()];
-            for (int i = 0; i < orderBy.size(); i++){
-                orderByExpr[i] = (Expr)orderBy.get(i).target;
-                directions[i] = orderBy.get(i).order == Order.ASC;
-            }
-            Expr<?> expr = new CArray<Object>(Object.class, orderByExpr);
-            ExpressionEvaluator ev = new JavaSerializer(ops).handle(expr)
-                .createExpressionEvaluator(sources, expr);
-            
-            // transform the iterator to list
-            List<Object[]> itAsList = IteratorUtils.toList((Iterator<Object[]>)it);               
-            Collections.sort(itAsList, new MultiComparator(ev, directions));
-            it = itAsList.iterator();
-        }
+        if (!orderBy.isEmpty()) it = handleOrderBy(sources, it);
         
         // select
         ExpressionEvaluator ev = new JavaSerializer(ops).handle(projection)
             .createExpressionEvaluator(sources,projection);        
         return new ProjectingIterator<RT>(it, ev);                   
+    }
+    
+    /**
+     * creates an iterator based on the given sources and filters it based on the constraints
+     * of the where block
+     * 
+     * @param sources
+     * @return
+     * @throws CompileException
+     * @throws ParseException
+     * @throws ScanException
+     */
+    protected Iterator<?> handleFromAndWhere(List<Expr<?>> sources) throws CompileException, ParseException, ScanException{
+        // from
+        Iterator<?> it = handleFrom(sources);
+        
+        // where
+        if (where.create() != null) it = handleWhere(sources, it);
+        return it;
+    }
+    
+    /**
+     * creates an Iterator that projects all the sources into a cartesian view
+     * 
+     * @param sources
+     * @return
+     */
+    protected Iterator<?> handleFrom(List<Expr<?>> sources){        
+        MultiIterator multiIt = new MultiIterator();        
+        for (JoinExpression<?> join : joins) {
+            sources.add(join.getTarget());
+            // TODO : handle joins properly
+            multiIt.add(pathToIterable.get(join.getTarget()));
+            switch(join.getType()){
+            case JOIN :       
+            case INNERJOIN :  // TODO
+            case LEFTJOIN :   // TODO
+            case FULLJOIN :   // TODO
+            case DEFAULT :    // do nothing
+            }
+        }   
+        return multiIt.init();
+    }
+
+    /**
+     * creates a wrapped iterator that filters the the rows not matched by the where
+     * constraints out
+     * 
+     * @param sources
+     * @param it
+     * @return
+     * @throws CompileException
+     * @throws ParseException
+     * @throws ScanException
+     */
+    protected Iterator<?> handleWhere(List<Expr<?>> sources, Iterator<?> it)
+            throws CompileException, ParseException, ScanException {
+        ExpressionEvaluator ev = new JavaSerializer(ops).handle(
+                where.create()).createExpressionEvaluator(sources,
+                boolean.class);
+        it = new FilteringIterator<Object>(it, ev);
+        return it;
+    }
+
+    /**
+     * transforms the given iterator into a sorted view based on the ordering data
+     * 
+     * @param sources
+     * @param it
+     * @return
+     * @throws Exception
+     */
+    protected Iterator<?> handleOrderBy(List<Expr<?>> sources, Iterator<?> it)
+            throws Exception {
+        // create a projection for the order
+        Expr<Object>[] orderByExpr = new Expr[orderBy.size()];
+        boolean[] directions = new boolean[orderBy.size()];
+        for (int i = 0; i < orderBy.size(); i++){
+            orderByExpr[i] = (Expr)orderBy.get(i).target;
+            directions[i] = orderBy.get(i).order == Order.ASC;
+        }
+        Expr<?> expr = new CArray<Object>(Object.class, orderByExpr);
+        ExpressionEvaluator ev = new JavaSerializer(ops).handle(expr)
+            .createExpressionEvaluator(sources, expr);
+        
+        // transform the iterator to list
+        List<Object[]> itAsList = IteratorUtils.toList((Iterator<Object[]>)it);               
+        Collections.sort(itAsList, new MultiComparator(ev, directions));
+        it = itAsList.iterator();
+        return it;
     }
 
     public <RT> Iterable<RT> iterate(final Expr<RT> projection) {

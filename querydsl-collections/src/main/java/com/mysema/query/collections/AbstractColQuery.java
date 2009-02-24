@@ -37,7 +37,11 @@ public class AbstractColQuery<S extends AbstractColQuery<S>> {
     }
 
     public AbstractColQuery(OperationPatterns ops) {
-        query = new InnerQuery(ops);
+        query = createInnerQuery(ops);
+    }
+    
+    protected InnerQuery createInnerQuery(OperationPatterns ops){
+        return new InnerQuery(ops);
     }
     
     private <A> A[] asArray(A[] target, A first, A second, A... rest) {
@@ -54,12 +58,10 @@ public class AbstractColQuery<S extends AbstractColQuery<S>> {
         return from(entity, list);
     }
 
-    @SuppressWarnings("unchecked")
     public <A> S from(Path<A> path, Iterable<A> col) {
         query.alias(path, col).from((Expr<?>)path);
         return self;
     }
-    
     public <A> S innerJoin(Path<A> path, Iterable<A> col){
         query.alias(path, col).innerJoin((Expr<?>)path);
         return self;
