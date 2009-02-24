@@ -8,7 +8,7 @@ package com.mysema.query.collections.comparators;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
 
-import org.apache.commons.collections15.ComparatorUtils;
+import org.apache.commons.collections15.comparators.ComparableComparator;
 import org.codehaus.janino.ExpressionEvaluator;
 
 /**
@@ -20,8 +20,7 @@ import org.codehaus.janino.ExpressionEvaluator;
 
 public class MultiComparator implements Comparator<Object[]> {
 
-    @SuppressWarnings("unchecked")
-    private Comparator<Object> naturalOrder = ComparatorUtils.naturalComparator();
+    private Comparator<Object> naturalOrder = ComparableComparator.getInstance();
 
     private ExpressionEvaluator ev;
     

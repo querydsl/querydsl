@@ -22,7 +22,6 @@ import com.mysema.query.collections.iterators.ProjectingIterator;
 import com.mysema.query.grammar.JavaSerializer;
 import com.mysema.query.grammar.Order;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.Constructor.CArray;
 import com.mysema.query.serialization.OperationPatterns;
 
@@ -34,7 +33,7 @@ import com.mysema.query.serialization.OperationPatterns;
  */
 public class InnerQuery extends QueryBase<Object, InnerQuery> {
 
-    private Map<Expr<?>, Iterable<?>> pathToIterable = new HashMap<Expr<?>, Iterable<?>>();
+    private Map<Expr<?>, Iterable<?>> exprToIterable = new HashMap<Expr<?>, Iterable<?>>();
 
     private final OperationPatterns ops;
 
@@ -43,8 +42,8 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
         this.ops = ops;
     }
 
-    public <A> InnerQuery alias(Path<A> path, Iterable<A> col) {
-        pathToIterable.put((Expr<?>) path, col);
+    public <A> InnerQuery alias(Expr<A> path, Iterable<A> col) {
+        exprToIterable.put(path, col);
         return this;
     }
     
@@ -92,7 +91,7 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
         for (JoinExpression<?> join : joins) {
             sources.add(join.getTarget());
             // TODO : handle joins properly
-            multiIt.add(pathToIterable.get(join.getTarget()));
+            multiIt.add(exprToIterable.get(join.getTarget()));
             switch(join.getType()){
             case JOIN :       
             case INNERJOIN :  // TODO

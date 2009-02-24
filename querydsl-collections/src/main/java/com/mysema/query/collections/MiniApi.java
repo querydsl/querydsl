@@ -30,14 +30,13 @@ public class MiniApi extends GrammarWithAlias{
         return new ColQuery().from($(alias), col);
     }
     
-    @SuppressWarnings("unchecked")
+
     public static <A> ColQuery from(Expr<A> path, Iterable<A> col){
-        return new ColQuery().from((Path<A>)path, col);
+        return new ColQuery().from(path, col);
     }
     
-    @SuppressWarnings("unchecked")
     public static <A> Iterable<A> select(Iterable<A> from, Expr.EBoolean where, OrderSpecifier<?>... order){
-        Path<A> path = (Path<A>) new PathExtractor().handle(where).getPath();
+        Expr<A> path = (Expr<A>) new PathExtractor().handle(where).getPath();
         ColQuery query = new ColQuery().from(path, from).where(where).orderBy(order);
         return query.iterate((Expr<A>)path);
     }

@@ -20,9 +20,9 @@ import org.codehaus.janino.ExpressionEvaluator;
  * @version $Id$
  */
 public class FilteringIterator<RT> extends FilterIterator<RT>{
-    @SuppressWarnings("unchecked")
+    
     public FilteringIterator(Iterator<?> it,  final ExpressionEvaluator ev) {
-        super((Iterator<RT>)it, new Predicate<RT>(){
+        super((Iterator<RT>) it, new Predicate<RT>(){
             public boolean evaluate(RT object) {
                 try {
                     return (Boolean) ev.evaluate((Object[])object);

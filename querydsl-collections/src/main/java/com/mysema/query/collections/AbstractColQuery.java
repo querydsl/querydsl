@@ -51,27 +51,27 @@ public class AbstractColQuery<S extends AbstractColQuery<S>> {
         return target;
     }
 
-    public <A> S from(Path<A> entity, A first, A... rest) {
+    public <A> S from(Expr<A> entity, A first, A... rest) {
         List<A> list = new ArrayList<A>(rest.length + 1);
         list.add(first);
         list.addAll(Arrays.asList(rest));
         return from(entity, list);
     }
 
-    public <A> S from(Path<A> path, Iterable<A> col) {
-        query.alias(path, col).from((Expr<?>)path);
+    public <A> S from(Expr<A> entity, Iterable<A> col) {
+        query.alias(entity, col).from((Expr<?>)entity);
         return self;
     }
-    public <A> S innerJoin(Path<A> path, Iterable<A> col){
-        query.alias(path, col).innerJoin((Expr<?>)path);
+    public <A> S innerJoin(Expr<A> entity, Iterable<A> col){
+        query.alias(entity, col).innerJoin((Expr<?>)entity);
         return self;
     }    
-    public <A> S fullJoin(Path<A> path, Iterable<A> col){
-        query.alias(path, col).fullJoin((Expr<?>)path);
+    public <A> S fullJoin(Expr<A> entity, Iterable<A> col){
+        query.alias(entity, col).fullJoin((Expr<?>)entity);
         return self;
     }
-    public <A> S leftJoin(Path<A> path, Iterable<A> col){
-        query.alias(path, col).leftJoin((Expr<?>)path);
+    public <A> S leftJoin(Expr<A> entity, Iterable<A> col){
+        query.alias(entity, col).leftJoin((Expr<?>)entity);
         return self;
     }
     
