@@ -19,7 +19,7 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
  * @author tiwe
  * @version $Id$
  */
-public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Query<A> {
+public class QueryBase<JoinMeta,SubType extends QueryBase<JoinMeta,SubType>> implements Query<SubType> {
     protected final List<Expr<?>> groupBy = new ArrayList<Expr<?>>();
     
     protected final CascadingBoolean having = new CascadingBoolean();
@@ -38,67 +38,67 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
     }
 
     @SuppressWarnings("unchecked")
-    private A self = (A)this;
+    private SubType _this = (SubType)this;
     
     private final Metadata metadata = new Metadata();
     
-    public A from(Expr<?>... o) {
+    public SubType from(Expr<?>... o) {
         for (Expr<?> expr : o){
             joins.add(new JoinExpression<JoinMeta>(JoinType.DEFAULT,expr));
         }
-        return self;
+        return _this;
     }
     
-    public A groupBy(Expr<?>... o) {
+    public SubType groupBy(Expr<?>... o) {
         groupBy.addAll(Arrays.asList(o));
-        return self;
+        return _this;
     }
         
-    public A having(EBoolean... o) {
+    public SubType having(EBoolean... o) {
         for (EBoolean b : o) having.and(b);
-        return self;
+        return _this;
     }
     
-    public A innerJoin(Expr<?> o) {
+    public SubType innerJoin(Expr<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.INNERJOIN,o));
-        return self;
+        return _this;
     }
     
-    public A fullJoin(Expr<?> o) {
+    public SubType fullJoin(Expr<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.FULLJOIN,o));
-        return self;
+        return _this;
     }
  
-    public A join(Expr<?> o) {
+    public SubType join(Expr<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.JOIN,o));
-        return self;
+        return _this;
     }
  
-    public A leftJoin(Expr<?> o) {
+    public SubType leftJoin(Expr<?> o) {
         joins.add(new JoinExpression<JoinMeta>(JoinType.LEFTJOIN,o));
-        return self;
+        return _this;
     }
     
-    public A on(EBoolean o) {
+    public SubType on(EBoolean o) {
         if (!joins.isEmpty()){
             joins.get(joins.size()-1).setCondition(o);
         }
-        return self;
+        return _this;
     }
     
-    public A orderBy(OrderSpecifier<?>... o) {
+    public SubType orderBy(OrderSpecifier<?>... o) {
         orderBy.addAll(Arrays.asList(o));
-        return self;
+        return _this;
     }
 
-    protected A select(Expr<?>... o) {
+    protected SubType select(Expr<?>... o) {
         select.addAll(Arrays.asList(o));
-        return self;
+        return _this;
     }
 
-    public A where(EBoolean... o) {
+    public SubType where(EBoolean... o) {
         for (EBoolean b : o) where.and(b);
-        return self;
+        return _this;
     }
         
     public Metadata getMetadata(){

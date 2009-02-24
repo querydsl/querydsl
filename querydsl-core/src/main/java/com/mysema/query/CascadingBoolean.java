@@ -36,6 +36,9 @@ public class CascadingBoolean {
     public Expr.EBoolean create(){
         return expr;
     }
+    /**
+     * use create instead
+     */
     @Deprecated
     public Expr.EBoolean self(){
         return create();

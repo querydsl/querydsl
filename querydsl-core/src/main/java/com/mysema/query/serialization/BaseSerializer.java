@@ -25,7 +25,7 @@ import com.mysema.query.grammar.types.PathMetadata.PathType;
  * @author tiwe
  * @version $Id$
  */
-public abstract class BaseSerializer<A extends BaseSerializer<A>> extends VisitorAdapter<A>{
+public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> extends VisitorAdapter<SubType>{
     
     protected StringBuilder builder = new StringBuilder();
     
@@ -33,30 +33,30 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
     
     protected final OperationPatterns ops;
     
+    @SuppressWarnings("unchecked")
+    private final SubType _this = (SubType)this;
+    
     public BaseSerializer(OperationPatterns ops){
         if (ops == null) throw new IllegalArgumentException("ops was null");
         this.ops = ops;
     }
     
-    @SuppressWarnings("unchecked")
-    protected final A append(String... str) {
+    protected final SubType append(String... str) {
         for (String s : str){
             builder.append(s);    
         }        
-        return (A)this;
+        return _this;
     }
         
-    @SuppressWarnings("unchecked")
-    protected final A append(String sep, List<? extends Expr<?>> expressions) {
+    protected final SubType append(String sep, List<? extends Expr<?>> expressions) {
         boolean first = true;
         for (Expr<?> expr : expressions){
             if (!first) builder.append(sep);
             handle(expr); first = false;
         }
-        return (A)this;
+        return _this;
     }
     
-    @Override
     protected void visit(Path<?> path) {
         PathType pathType = path.getMetadata().getPathType();
         String parentAsString = null, exprAsString = null;

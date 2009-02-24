@@ -14,14 +14,14 @@ import com.mysema.query.grammar.types.Expr;
  * @author tiwe
  * @version $Id$
  */
-public interface Query<A extends Query<A>>{
-    A from(Expr<?>... o);  
-    A innerJoin(Expr<?> o);
-    A join(Expr<?> o);
-    A fullJoin(Expr<?> o);
-    A leftJoin(Expr<?> o);
-    A on(Expr.EBoolean o);
-    A groupBy(Expr<?>... o);
-    A having(Expr.EBoolean... o);
-    A orderBy(OrderSpecifier<?>... o);
+public interface Query<SubType extends Query<SubType>>{
+    SubType from(Expr<?>... o);  
+    SubType innerJoin(Expr<?> o);
+    SubType join(Expr<?> o);
+    SubType fullJoin(Expr<?> o);
+    SubType leftJoin(Expr<?> o);
+    SubType on(Expr.EBoolean o);
+    SubType groupBy(Expr<?>... o);
+    SubType having(Expr.EBoolean... o);
+    SubType orderBy(OrderSpecifier<?>... o);
 }
