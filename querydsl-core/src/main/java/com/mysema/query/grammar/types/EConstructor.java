@@ -5,6 +5,8 @@
  */
 package com.mysema.query.grammar.types;
 
+import java.lang.reflect.Constructor;
+
 import org.apache.commons.lang.ClassUtils;
 
 /**
@@ -15,10 +17,10 @@ import org.apache.commons.lang.ClassUtils;
  *
  * @param <D>
  */
-public class Constructor<D> extends Expr<D> {
+public class EConstructor<D> extends Expr<D> {
     private final Expr<?>[] args;
     private java.lang.reflect.Constructor<D> javaConstructor;
-    public Constructor(Class<D> type, Expr<?>... args) {
+    public EConstructor(Class<D> type, Expr<?>... args) {
         super(type);
         this.args = args;
     }
@@ -26,7 +28,7 @@ public class Constructor<D> extends Expr<D> {
         return args;
     }
     
-    public static class CArray<D> extends Constructor<D[]> {
+    public static class CArray<D> extends EConstructor<D[]> {
         private Class<D> elementType;
         public CArray(Class<D> type, Expr<D>... args) {
             super(null, args);
@@ -42,11 +44,11 @@ public class Constructor<D> extends Expr<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public java.lang.reflect.Constructor<D> getJavaConstructor(){   
+    public Constructor<D> getJavaConstructor(){   
         if (javaConstructor == null){
             Class<D> type = getType();
             Expr<?>[] args = getArgs();
-            for (java.lang.reflect.Constructor<?> c : type.getConstructors()){
+            for (Constructor<?> c : type.getConstructors()){
                 if (c.getParameterTypes().length == args.length){
                     boolean match = true;
                     for (int i = 0; i < args.length && match; i++){
@@ -57,7 +59,7 @@ public class Constructor<D> extends Expr<D> {
                         match &= ptype.isAssignableFrom(args[i].getType());                                        
                     }
                     if (match){
-                        javaConstructor = (java.lang.reflect.Constructor<D>)c;
+                        javaConstructor = (Constructor<D>)c;
                         return javaConstructor;
                     }
                 }

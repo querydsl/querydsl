@@ -105,7 +105,7 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
         
     public String toString(){ return builder.toString(); }
 
-    protected void visit(Constructor<?> expr){
+    protected void visit(EConstructor<?> expr){
         append("new ").append(expr.getType().getName()).append("(");
         append(", ",Arrays.asList(expr.getArgs())).append(")");
     }
@@ -121,7 +121,7 @@ public abstract class BaseSerializer<A extends BaseSerializer<A>> extends Visito
         }     
     }
     
-    protected void visit(Constructor.CArray<?> oa) {
+    protected void visit(EConstructor.CArray<?> oa) {
 //        _append("new Object[]{");
         append("new ").append(oa.getElementType().getName()).append("[]{");
         append(", ",Arrays.asList(oa.getArgs())).append("}");
