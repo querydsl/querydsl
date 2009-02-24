@@ -19,7 +19,6 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
  * @author tiwe
  * @version $Id$
  */
-@SuppressWarnings("unchecked")
 public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Query<A> {
     protected final List<Expr<?>> groupBy = new ArrayList<Expr<?>>();
     
@@ -37,7 +36,8 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
         select.clear();
         where.clear();
     }
-    
+
+    @SuppressWarnings("unchecked")
     private A self = (A)this;
     
     private final Metadata metadata = new Metadata();
