@@ -12,9 +12,8 @@ import java.util.List;
 
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.OrderSpecifier;
-import com.mysema.query.grammar.types.Constructor;
+import com.mysema.query.grammar.types.EConstructor;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Path;
 import com.mysema.query.serialization.OperationPatterns;
 
 /**
@@ -79,8 +78,7 @@ public class AbstractColQuery<S extends AbstractColQuery<S>> {
         query.on(o);
         return self;
     }
-    
-    @SuppressWarnings("unchecked")
+        
     public Iterable<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
         final Expr<?>[] full = asArray(new Expr[rest.length + 2], e1, e2, rest);
         boolean oneType = true;
@@ -97,7 +95,7 @@ public class AbstractColQuery<S extends AbstractColQuery<S>> {
         if (!oneType){
             type = Object.class;    
         }  
-        return query.iterate(new Constructor.CArray(type, full));
+        return query.iterate(new EConstructor.CArray(type, full));
     }    
     
     public <RT> Iterable<RT> iterate(Expr<RT> projection) {
@@ -125,13 +123,11 @@ public class AbstractColQuery<S extends AbstractColQuery<S>> {
         return it.hasNext() ? it.next() : null;
     }
         
-    @SuppressWarnings("unchecked")
     public S orderBy(OrderSpecifier<?>... o) {
         query.orderBy(o);
         return self;
     }
     
-    @SuppressWarnings("unchecked")
     public S where(Expr.EBoolean... o) {
         query.where(o);
         return self;

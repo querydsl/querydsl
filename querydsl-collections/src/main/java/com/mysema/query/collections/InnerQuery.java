@@ -22,7 +22,7 @@ import com.mysema.query.collections.iterators.ProjectingIterator;
 import com.mysema.query.grammar.JavaSerializer;
 import com.mysema.query.grammar.Order;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Constructor.CArray;
+import com.mysema.query.grammar.types.EConstructor.CArray;
 import com.mysema.query.serialization.OperationPatterns;
 
 /**

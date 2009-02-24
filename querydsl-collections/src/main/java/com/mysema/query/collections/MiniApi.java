@@ -11,7 +11,6 @@ import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.GrammarWithAlias;
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathExtractor;
 
 /**
