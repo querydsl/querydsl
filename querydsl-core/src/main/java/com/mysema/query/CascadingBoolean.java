@@ -33,8 +33,12 @@ public class CascadingBoolean {
         return this;
     }
     
-    public Expr.EBoolean self(){
+    public Expr.EBoolean create(){
         return expr;
+    }
+    @Deprecated
+    public Expr.EBoolean self(){
+        return create();
     }
 
 }

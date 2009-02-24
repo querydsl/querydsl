@@ -47,6 +47,10 @@ public class PathExtractor extends VisitorAdapter<PathExtractor>{
     public Path<?> getPath(){
         return path;
     }
+    
+    public Expr<?> getPathAsExpression(){
+        return (Expr<?>)path;
+    }
 
     @Override
     protected void visit(Custom<?> expr) {

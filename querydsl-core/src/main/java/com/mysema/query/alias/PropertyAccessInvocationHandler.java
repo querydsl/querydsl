@@ -179,8 +179,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         rv &= method.getReturnType().equals(returnType);
         return rv;        
     }
-
-    @SuppressWarnings("unchecked")
+    
     private <T> T newInstance(Class<T> type, Type genericType, Object parent, String prop, PathMetadata<?> pm) {        
         Expr<?> path;
         T rv;

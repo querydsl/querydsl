@@ -11,9 +11,7 @@ import java.util.List;
 
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.Expr.EBoolean;
-import com.mysema.query.grammar.types.Expr.EEntity;
 
 /**
  * QueryBase provides a basic implementation of the Query interface.
@@ -115,7 +113,7 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
             return groupBy;
         }
         public EBoolean getHaving() {
-            return having.self();
+            return having.create();
         }
         public List<JoinExpression<JoinMeta>> getJoins() {
             return joins;
@@ -127,7 +125,7 @@ public class QueryBase<JoinMeta,A extends QueryBase<JoinMeta,A>> implements Quer
             return select;
         }
         public EBoolean getWhere() {
-            return where.self();
+            return where.create();
         }
     }
 
