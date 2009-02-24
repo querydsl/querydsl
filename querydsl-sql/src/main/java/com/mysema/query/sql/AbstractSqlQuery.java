@@ -16,14 +16,11 @@ import org.apache.commons.lang.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysema.query.JoinExpression;
-import com.mysema.query.JoinType;
 import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.SqlJoinMeta;
 import com.mysema.query.grammar.SqlOps;
 import com.mysema.query.grammar.SqlSerializer;
-import com.mysema.query.grammar.types.Alias;
 import com.mysema.query.grammar.types.EConstructor;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.SubQuery;
@@ -34,7 +31,7 @@ import com.mysema.query.grammar.types.SubQuery;
  * @author tiwe
  * @version $Id$
  */
-public class AbstractSqlQuery<MyType extends AbstractSqlQuery<MyType>> extends QueryBase<SqlJoinMeta,MyType>{
+public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends QueryBase<SqlJoinMeta,SubType>{
     
     private static final Logger logger = LoggerFactory.getLogger(AbstractSqlQuery.class);
     
@@ -52,14 +49,14 @@ public class AbstractSqlQuery<MyType extends AbstractSqlQuery<MyType>> extends Q
     
     private SubQuery<SqlJoinMeta, ?>[] sq;
     
-    private MyType self = (MyType)this;
+    @SuppressWarnings("unchecked")
+    private SubType _this = (SubType)this;
     
     public AbstractSqlQuery(Connection conn, SqlOps ops){
         this.conn = conn;
         this.ops = ops;
     }
-        
-    @SuppressWarnings("unchecked")
+    
     public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>...rest) throws SQLException{
         select(expr1, expr2);
         select(rest);
@@ -105,11 +102,6 @@ public class AbstractSqlQuery<MyType extends AbstractSqlQuery<MyType>> extends Q
         select(expr);
         return listSingle(expr);
     }
-    
-//    public <RT> List<RT> list(Constructor<RT> expr) throws SQLException{
-//        select(expr);
-//        return listSingle(expr);
-//    }
     
     private <RT> List<RT> listSingle(Expr<RT> expr) throws SQLException{        
         String queryString = toString();
@@ -206,9 +198,9 @@ public class AbstractSqlQuery<MyType extends AbstractSqlQuery<MyType>> extends Q
     protected String buildQueryString() {
         SqlSerializer serializer = createSerializer();
         if (sq != null){
-            serializer.serializeUnion(select, sq, where.self(), orderBy);
+            serializer.serializeUnion(select, sq, where.create(), orderBy);
         }else{
-            serializer.serialize(select, joins, where.self(), groupBy, having.self(), orderBy, limit, offset, forCountRow);    
+            serializer.serialize(select, joins, where.create(), groupBy, having.create(), orderBy, limit, offset, forCountRow);    
         }                       
         constants = serializer.getConstants();      
         return serializer.toString();
@@ -245,50 +237,14 @@ public class AbstractSqlQuery<MyType extends AbstractSqlQuery<MyType>> extends Q
         }        
     }
 
-    public MyType limit(int i) {
+    public SubType limit(int i) {
         this.limit = i;
-        return self;
+        return _this;
     }
     
-    public MyType offset(int o) {
+    public SubType offset(int o) {
         this.offset = o;
-        return self;
-    }
-    
-    public MyType innerJoin(Alias.ASimple<?> o) {
-        joins.add(new JoinExpression<SqlJoinMeta>(JoinType.INNERJOIN,o));
-        return self;
-    }    
-    public MyType innerJoin(SubQuery<SqlJoinMeta,?> o) {
-        joins.add(new JoinExpression<SqlJoinMeta>(JoinType.INNERJOIN,o));
-        return self;
-    }
-    
-    public MyType fullJoin(Alias.ASimple<?> o) {
-        joins.add(new JoinExpression<SqlJoinMeta>(JoinType.FULLJOIN,o));
-        return self;
-    }    
-    public MyType fullJoin(SubQuery<SqlJoinMeta,?> o) {
-        joins.add(new JoinExpression<SqlJoinMeta>(JoinType.FULLJOIN,o));
-        return self;
-    }
-    
-    public MyType join(Alias.ASimple<?> o) {
-        joins.add(new JoinExpression<SqlJoinMeta>(JoinType.JOIN,o));
-        return self;
-    } 
-    public MyType join(SubQuery<SqlJoinMeta,?> o) {
-        joins.add(new JoinExpression<SqlJoinMeta>(JoinType.JOIN,o));
-        return self;
-    }
-    
-    public MyType leftJoin(Alias.ASimple<?> o) {
-        joins.add(new JoinExpression<SqlJoinMeta>(JoinType.LEFTJOIN,o));
-        return self;
-    } 
-    public MyType leftJoin(SubQuery<SqlJoinMeta,?> o) {
-        joins.add(new JoinExpression<SqlJoinMeta>(JoinType.LEFTJOIN,o));
-        return self;
+        return _this;
     }
     
     public class UnionBuilder<RT>{
