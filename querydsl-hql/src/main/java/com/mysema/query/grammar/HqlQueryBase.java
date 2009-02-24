@@ -27,7 +27,7 @@ import com.mysema.query.hql.QueryModifiers;
  * @author tiwe
  * @version $Id$
  */
-public abstract class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<HqlJoinMeta,A>{
+public abstract class HqlQueryBase<SubType extends HqlQueryBase<SubType>> extends QueryBase<HqlJoinMeta,SubType>{
     
     private static final Logger logger = LoggerFactory
             .getLogger(HqlQueryBase.class);
@@ -40,6 +40,9 @@ public abstract class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<
     
     private final HqlOps ops;
     
+    @SuppressWarnings("unchecked")
+    private SubType _this = (SubType)this;
+    
     public HqlQueryBase(HqlOps ops){
         this.ops = ops;
     }
@@ -49,7 +52,7 @@ public abstract class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<
             throw new IllegalArgumentException("No joins given");
         }
         HqlSerializer serializer = new HqlSerializer(ops);
-        serializer.serialize(select, joins, where.self(), groupBy, having.self(), orderBy, forCountRow);               
+        serializer.serialize(select, joins, where.create(), groupBy, having.create(), orderBy, forCountRow);               
         constants = serializer.getConstants();      
         return serializer.toString();
     }
@@ -76,12 +79,11 @@ public abstract class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<
         return expr.create();
     }
     
-    @SuppressWarnings("unchecked")
-    public A forExample(Path.PEntity<?> entity, Map<String, Object> map) {
+    public SubType forExample(Path.PEntity<?> entity, Map<String, Object> map) {
         select(entity).from(entity);
         try {            
             where(createQBECondition(entity,map));
-            return (A)this;
+            return _this;
         } catch (Exception e) {
             String error = "Caught " + e.getClass().getName();
             logger.error(error, e);
@@ -93,37 +95,33 @@ public abstract class HqlQueryBase<A extends HqlQueryBase<A>> extends QueryBase<
         return constants;
     }
     
-    @SuppressWarnings("unchecked")
-    public A innerJoin(HqlJoinMeta meta, EEntity<?> o) {
+    public SubType innerJoin(HqlJoinMeta meta, EEntity<?> o) {
         joins.add(new JoinExpression<HqlJoinMeta>(JoinType.INNERJOIN, o, meta));
-        return (A) this;
+        return _this;
     }
     
-    public A fullJoin(EEntity<?> o) {
+    public SubType fullJoin(EEntity<?> o) {
         // ?!?
         joins.add(new JoinExpression<HqlJoinMeta>(JoinType.INNERJOIN,o));
-        return (A) this;
+        return _this;
     }
 
-    @SuppressWarnings("unchecked")
-    public A leftJoin(HqlJoinMeta meta, EEntity<?> o) {
+    public SubType leftJoin(HqlJoinMeta meta, EEntity<?> o) {
         joins.add(new JoinExpression<HqlJoinMeta>(JoinType.LEFTJOIN, o, meta));
-        return (A) this;
+        return _this;
     }
     
-    @SuppressWarnings("unchecked")
-    public A limit(int limit) {
+    public SubType limit(int limit) {
         this.limit = limit;
-        return (A)this;
+        return _this;
     }
     
-    @SuppressWarnings("unchecked")
-    public A offset(int offset) {
+    public SubType offset(int offset) {
         this.offset = offset;
-        return (A)this;
+        return _this;
     }
     
-    public A restrict(QueryModifiers mod) {
+    public SubType restrict(QueryModifiers mod) {
         return limit(mod.getLimit()).offset(mod.getOffset());
     }    
 
