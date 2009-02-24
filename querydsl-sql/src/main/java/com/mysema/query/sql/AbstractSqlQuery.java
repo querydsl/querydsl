@@ -24,7 +24,7 @@ import com.mysema.query.grammar.SqlJoinMeta;
 import com.mysema.query.grammar.SqlOps;
 import com.mysema.query.grammar.SqlSerializer;
 import com.mysema.query.grammar.types.Alias;
-import com.mysema.query.grammar.types.Constructor;
+import com.mysema.query.grammar.types.EConstructor;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.SubQuery;
 
@@ -128,8 +128,8 @@ public class AbstractSqlQuery<MyType extends AbstractSqlQuery<MyType>> extends Q
         ResultSet rs = stmt.executeQuery();        
         try{
             List<RT> rv = new ArrayList<RT>();
-            if (expr instanceof Constructor){                
-                Constructor<RT> c = (Constructor<RT>)expr;
+            if (expr instanceof EConstructor){                
+                EConstructor<RT> c = (EConstructor<RT>)expr;
                 java.lang.reflect.Constructor<RT> cc =  c.getJavaConstructor();
                 while (rs.next()){                    
                     try {

@@ -56,10 +56,10 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
             append(ops.select());           
             List<Expr<?>> sqlSelect = new ArrayList<Expr<?>>();
             for (Expr<?> selectExpr : select){
-                if (selectExpr instanceof Constructor){
+                if (selectExpr instanceof EConstructor){
                     // transforms constructor arguments into individual select
                     // expressions
-                    sqlSelect.addAll(Arrays.<Expr<?>>asList(((Constructor<?>)selectExpr).getArgs()));
+                    sqlSelect.addAll(Arrays.<Expr<?>>asList(((EConstructor<?>)selectExpr).getArgs()));
                 }else{
                     sqlSelect.add(selectExpr);
                 }
