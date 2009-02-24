@@ -25,7 +25,7 @@ import org.junit.Test;
 import com.mysema.query.grammar.HqlOps;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.HqlSerializer;
-import com.mysema.query.grammar.types.Constructor;
+import com.mysema.query.grammar.types.EConstructor;
 import com.mysema.query.grammar.types.Custom;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.ENumber;
@@ -221,7 +221,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     
     @Test
     public void testConstructors(){
-        Constructor<com.mysema.query.hql.HqlDomain.Cat> c = new Constructor<com.mysema.query.hql.HqlDomain.Cat>(com.mysema.query.hql.HqlDomain.Cat.class, cat.name);
+        EConstructor<com.mysema.query.hql.HqlDomain.Cat> c = new EConstructor<com.mysema.query.hql.HqlDomain.Cat>(com.mysema.query.hql.HqlDomain.Cat.class, cat.name);
         toString("new "+com.mysema.query.hql.HqlDomain.Cat.class.getName()+"(cat.name)", c);
         toString("new "+getClass().getName()+"$BookmarkDTO()", new _BookmarkDTO());
         toString("new "+getClass().getName()+"$BookmarkDTO(cat.name)", new _BookmarkDTO(cat.name));
@@ -445,7 +445,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     /**
      * The Class _BookmarkDTO.
      */
-    public static final class _BookmarkDTO extends Constructor<BookmarkDTO>{
+    public static final class _BookmarkDTO extends EConstructor<BookmarkDTO>{
         public _BookmarkDTO(){
             super(BookmarkDTO.class);
         }

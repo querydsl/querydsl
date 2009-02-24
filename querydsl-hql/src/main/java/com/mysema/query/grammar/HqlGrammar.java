@@ -149,7 +149,7 @@ public class HqlGrammar extends GrammarWithAlias{
     }
     
     public static <A> Expr<A> newInstance(Class<A> a, Expr<?>... args){
-        return new Constructor<A>(a,args);
+        return new EConstructor<A>(a,args);
     }
     
     public static <D> EBoolean notExists(CollectionType<D> col){
