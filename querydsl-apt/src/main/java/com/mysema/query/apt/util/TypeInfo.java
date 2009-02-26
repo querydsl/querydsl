@@ -79,8 +79,8 @@ public class TypeInfo {
         }
 
         public void visitClassType(ClassType arg0){
-            try {
-                fullName = arg0.toString();
+            try {                
+                fullName = arg0.getDeclaration().getQualifiedName();
                 if (fullName.equals(String.class.getName())) {
                     fieldType = Field.Type.STRING;
                 } else if (fullName.equals(Boolean.class.getName())) {
@@ -103,10 +103,7 @@ public class TypeInfo {
 
         public void visitInterfaceType(InterfaceType arg0) {
             Iterator<TypeMirror> i = arg0.getActualTypeArguments().iterator();
-            String typeName = arg0.toString();
-            if (arg0.getActualTypeArguments().size() > 0) {
-                typeName = typeName.substring(0, typeName.indexOf('<'));
-            }
+            String typeName = arg0.getDeclaration().getQualifiedName();
 
             if (typeName.equals(java.util.Map.class.getName())) {
                 TypeInfo keyInfo = new TypeInfo(i.next());
