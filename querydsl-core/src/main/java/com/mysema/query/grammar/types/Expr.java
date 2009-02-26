@@ -48,18 +48,16 @@ public abstract class Expr<D> {
         }
     }
     
-    /**
-     * The Class Boolean.
-     */
     public static abstract class EBoolean extends EComparable<Boolean>{
+        private EBoolean not;
         public EBoolean() {super(Boolean.class);}
         public EBoolean and(EBoolean right) {return Grammar.and(this, right);}
-        public EBoolean or(EBoolean right) {return Grammar.or(this, right);}
+        public EBoolean or(EBoolean right) {return Grammar.or(this, right);}        
+        public EBoolean not(){
+            return not == null ? not = Grammar.not(this) : not;
+        }
     }
-    
-    /**
-     * The Class Comparable.
-     */
+
     public static abstract class EComparable<D extends Comparable<? super D>> extends ESimple<D>{
         public EComparable(Class<D> type) {super(type);}
         public EBoolean after(D right) {return Grammar.after(this,right);}
@@ -137,10 +135,7 @@ public abstract class Expr<D> {
             }             
         }
     }
-    
-    /**
-     * The Class Constant.
-     */
+
     public static class EConstant<D> extends Expr<D>{
         private final D constant;
         @SuppressWarnings("unchecked")
@@ -159,31 +154,15 @@ public abstract class Expr<D> {
 //    MOD
 //    -, 
 //    +
-    
-    /**
-     * The Class Embeddable.
-     */
+
     public static abstract class EEmbeddable<D> extends ESimple<D>{
         public EEmbeddable(Class<D> type) {super(type);}
     }        
-            
-    /**
-     * The Class Entity.
-     */
+
     public static abstract class EEntity<D> extends Expr<D>{
         public EEntity(Class<D> type) {super(type);}        
     }
-    
-//    /**
-//     * The Class Literal.
-//     */
-//    public static abstract class ELiteral<D> extends ESimple<D>{
-//        public ELiteral(Class<D> type) {super(type);}
-//    }
-    
-    /**
-     * The Class Number.
-     */
+
     public static abstract class ENumber<D extends Number & Comparable<? super D>> extends EComparable<D>{
         public ENumber(Class<D> type) {super(type);}
         
@@ -206,20 +185,14 @@ public abstract class Expr<D> {
         public ENumber<Long> longValue() { return castToNum(Long.class); }
         public ENumber<Short> shortValue() { return castToNum(Short.class); }
     }
-    
-    /**
-     * The Class Simple.
-     */
+
     public static abstract class ESimple<D> extends Expr<D>{
         public ESimple(Class<D> type) {super(type);}
         public Expr<D> as(String to){return Grammar.as(this, to);}
         public EBoolean in(CollectionType<D> arg) {return Grammar.in(this, arg);}
         public EBoolean in(D... args) {return Grammar.in(this,args);}
     }
-        
-    /**
-     * The Class String.
-     */
+
     public static abstract class EString extends EComparable<String>{
         private EString lower, trim, upper;
         public EString() {super(String.class);}

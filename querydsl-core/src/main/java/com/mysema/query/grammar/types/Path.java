@@ -73,7 +73,7 @@ public interface Path<C> {
         }
         public EBoolean isnull() {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
-        }         
+        }
         public Path<?> getRoot(){
             return metadata.getRoot() != null ? metadata.getRoot() : this;
         }
