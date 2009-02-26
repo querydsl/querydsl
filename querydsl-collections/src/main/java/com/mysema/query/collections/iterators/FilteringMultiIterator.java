@@ -18,9 +18,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.grammar.FilteredJavaSerializer;
+import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
-import com.mysema.query.serialization.OperationPatterns;
 
 /**
  * FilteringMultiIterator extends the MultiIterator to provide a filtered view 
@@ -35,11 +35,11 @@ public class FilteringMultiIterator extends MultiIterator{
     
     private List<Expr<?>> expressions = new ArrayList<Expr<?>>();
     
-    private OperationPatterns ops;
+    private JavaOps ops;
     
     private EBoolean where;
 
-    public FilteringMultiIterator(OperationPatterns ops, EBoolean where){
+    public FilteringMultiIterator(JavaOps ops, EBoolean where){
         this.ops = ops;
         this.where = where;
     }

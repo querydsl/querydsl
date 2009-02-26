@@ -7,10 +7,11 @@ package com.mysema.query.grammar;
 
 import java.util.List;
 
+import sun.tools.jstat.Operator;
+
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
-import com.mysema.query.serialization.OperationPatterns;
 
 /**
  * FilteredJavaSerializer provides
@@ -24,9 +25,7 @@ public class FilteredJavaSerializer extends JavaSerializer{
     
     private List<Expr<?>> exprs;
     
-    private String replacement = "true";
-
-    public FilteredJavaSerializer(OperationPatterns ops, List<Expr<?>> expressions) {
+    public FilteredJavaSerializer(JavaOps ops, List<Expr<?>> expressions) {
         super(ops);
         this.exprs = expressions;
     }
@@ -48,7 +47,12 @@ public class FilteredJavaSerializer extends JavaSerializer{
         }
         if (skipPath){        
             if (type.equals(Boolean.class)){
-                append(replacement);
+                if (operator == Ops.NOT){
+                    append("false");
+                }else{
+                    append("true");
+                }
+//                append(operator == Ops.NOT ? "false" : "true");
                 skipPath = false;
             }
         }        

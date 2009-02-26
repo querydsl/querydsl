@@ -13,7 +13,6 @@ import java.util.List;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.serialization.OperationPatterns;
 
 /**
  * AbstractColQuery provides
@@ -23,7 +22,7 @@ import com.mysema.query.serialization.OperationPatterns;
  */
 public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     
-    private static final OperationPatterns OPS_DEFAULT = new JavaOps();
+    private static final JavaOps OPS_DEFAULT = new JavaOps();
 
     private final InnerQuery query;
 
@@ -34,11 +33,11 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         this(OPS_DEFAULT);
     }
 
-    public AbstractColQuery(OperationPatterns ops) {
+    public AbstractColQuery(JavaOps ops) {
         query = createInnerQuery(ops);
     }
     
-    protected InnerQuery createInnerQuery(OperationPatterns ops){
+    protected InnerQuery createInnerQuery(JavaOps ops){
         return new InnerQuery(ops);
     }
     
@@ -60,6 +59,9 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         query.alias(entity, col).from((Expr<?>)entity);
         return _this;
     }
+    
+    // TODO : implement joins
+    
 //    public <A> SubType innerJoin(Expr<A> entity, Iterable<A> col){
 //        query.alias(entity, col).innerJoin((Expr<?>)entity);
 //        return _this;

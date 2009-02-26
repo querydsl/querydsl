@@ -29,7 +29,6 @@ import com.mysema.query.grammar.types.Expr.EConstant;
 import com.mysema.query.grammar.types.ExtTypes.ExtString;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
 import com.mysema.query.serialization.BaseSerializer;
-import com.mysema.query.serialization.OperationPatterns;
 
 
 /**
@@ -42,10 +41,20 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
         
     private static final Logger logger = LoggerFactory.getLogger(JavaSerializer.class);
     
-    public JavaSerializer(OperationPatterns ops){
+    public JavaSerializer(JavaOps ops){
         super(ops);
     }
     
+    protected static Object[] combine(int size, Object[]... arrays){
+        int offset = 0;
+        Object[] target = new Object[size];
+        for(Object[] arr : arrays){
+            System.arraycopy(arr, 0, target, offset, arr.length);
+            offset += arr.length;
+        }
+        return target;
+    }
+
     /**
      * Create an ExpressionEvaluator for the given sources and targetType 
      * 
@@ -81,7 +90,21 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
         return instantiateExpressionEvaluator(targetType, expr, constArray,
                 types, names);
     }
-
+    
+    /**
+     * Create an ExpressionEvaluator for the given sources and projection
+     * 
+     * @param sources
+     * @param projection
+     * @return
+     * @throws Exception
+     */
+    public ExpressionEvaluator createExpressionEvaluator(List<Expr<?>> sources, Expr<?> projection) throws Exception{
+        Class<?> targetType = projection.getType();
+        if (targetType == null) targetType = Object.class;
+        return createExpressionEvaluator(sources, targetType);
+    }
+        
     /**
      * Instantiate a new ExpressionEvaluator
      * 
@@ -102,26 +125,9 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
         return new ExpressionEvaluator(expr, targetType, names, types){
             @Override
             public Object evaluate(Object[] origArgs) throws InvocationTargetException{
-                Object[] args = new Object[constArray.length + origArgs.length];
-                System.arraycopy(constArray, 0, args, 0, constArray.length);
-                System.arraycopy(origArgs, 0, args, constArray.length, origArgs.length);
-                return super.evaluate(args);
+                return super.evaluate(combine(constArray.length + origArgs.length, constArray, origArgs));
             }
         };
-    }
-        
-    /**
-     * Create an ExpressionEvaluator for the given sources and projection
-     * 
-     * @param sources
-     * @param projection
-     * @return
-     * @throws Exception
-     */
-    public ExpressionEvaluator createExpressionEvaluator(List<Expr<?>> sources, Expr<?> projection) throws Exception{
-        Class<?> targetType = projection.getType();
-        if (targetType == null) targetType = Object.class;
-        return createExpressionEvaluator(sources, targetType);
     }
     
     /**
@@ -140,14 +146,35 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
     }
 
     @Override
-    protected void visitOperation(Class<?> type, Op<?> operator, Expr<?>... args) {
-        if (operator.equals(Ops.STRING_CAST)){
-            visitCast(operator, args[0], String.class);
-        }else if (operator.equals(Ops.NUMCAST)){
-            visitCast(operator, args[0], (Class<?>) ((EConstant<?>)args[1]).getConstant());
+    protected void visit(Path<?> path) {
+        PathType pathType = path.getMetadata().getPathType();
+        String parentAsString = null, exprAsString = null;
+        
+        if (path.getMetadata().getParent() != null){
+            parentAsString = toString((Expr<?>)path.getMetadata().getParent(), false);    
+        }        
+        if (pathType == VARIABLE){
+            exprAsString = path.getMetadata().getExpression().toString();
+        }else if (pathType == PROPERTY ){
+            String prefix = "get";
+            if (((Expr<?>)path).getType() != null && ((Expr<?>)path).getType().equals(Boolean.class)){
+                prefix = "is";    
+            }
+            exprAsString = prefix+StringUtils.capitalize(path.getMetadata().getExpression().toString())+"()";
+            
+        }else if (pathType == LISTVALUE_CONSTANT){
+            exprAsString = path.getMetadata().getExpression().toString();
+            
+        }else if (path.getMetadata().getExpression() != null){
+            exprAsString = toString(path.getMetadata().getExpression(), false);
+        }
+        
+        String pattern = ops.getPattern(pathType);
+        if (parentAsString != null){
+            append(String.format(pattern, parentAsString, exprAsString));    
         }else{
-            super.visitOperation(type, operator, args);    
-        }  
+            append(String.format(pattern, exprAsString));
+        }        
     }
     
     private void visitCast(Op<?> operator, Expr<?> source, Class<?> targetType) {
@@ -185,35 +212,14 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
     }
     
     @Override
-    protected void visit(Path<?> path) {
-        PathType pathType = path.getMetadata().getPathType();
-        String parentAsString = null, exprAsString = null;
-        
-        if (path.getMetadata().getParent() != null){
-            parentAsString = toString((Expr<?>)path.getMetadata().getParent(), false);    
-        }        
-        if (pathType == VARIABLE){
-            exprAsString = path.getMetadata().getExpression().toString();
-        }else if (pathType == PROPERTY ){
-            String prefix = "get";
-            if (((Expr<?>)path).getType() != null && ((Expr<?>)path).getType().equals(Boolean.class)){
-                prefix = "is";    
-            }
-            exprAsString = prefix+StringUtils.capitalize(path.getMetadata().getExpression().toString())+"()";
-            
-        }else if (pathType == LISTVALUE_CONSTANT){
-            exprAsString = path.getMetadata().getExpression().toString();
-            
-        }else if (path.getMetadata().getExpression() != null){
-            exprAsString = toString(path.getMetadata().getExpression(), false);
-        }
-        
-        String pattern = ops.getPattern(pathType);
-        if (parentAsString != null){
-            append(String.format(pattern, parentAsString, exprAsString));    
+    protected void visitOperation(Class<?> type, Op<?> operator, Expr<?>... args) {
+        if (operator.equals(Ops.STRING_CAST)){
+            visitCast(operator, args[0], String.class);
+        }else if (operator.equals(Ops.NUMCAST)){
+            visitCast(operator, args[0], (Class<?>) ((EConstant<?>)args[1]).getConstant());
         }else{
-            append(String.format(pattern, exprAsString));
-        }        
+            super.visitOperation(type, operator, args);    
+        }  
     }
         
 }

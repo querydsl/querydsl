@@ -18,10 +18,10 @@ import com.mysema.query.collections.iterators.MultiArgFilteringIterator;
 import com.mysema.query.collections.iterators.MultiIterator;
 import com.mysema.query.collections.iterators.ProjectingIterator;
 import com.mysema.query.collections.iterators.WrappingIterator;
+import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.JavaSerializer;
 import com.mysema.query.grammar.Order;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.serialization.OperationPatterns;
 
 /**
  * InnerQuery is used internally in ColQuery as the backend Query instance
@@ -33,9 +33,9 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
 
     private Map<Expr<?>, Iterable<?>> exprToIterable = new HashMap<Expr<?>, Iterable<?>>();
 
-    private final OperationPatterns ops;
+    private final JavaOps ops;
 
-    public InnerQuery(OperationPatterns ops) {
+    public InnerQuery(JavaOps ops) {
         if (ops == null) throw new IllegalArgumentException("ops was null");
         this.ops = ops;
     }
