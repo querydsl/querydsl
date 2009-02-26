@@ -169,7 +169,7 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
     }
 
     protected void visit(Quant q){        
-        visitOperation(q.getOperator(), q.getTarget());
+        visitOperation(null, q.getOperator(), q.getTarget());
     }
 
     protected void visit(SubQuery<HqlJoinMeta,?> query) {
@@ -188,7 +188,7 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         
     }
 
-    protected void visitOperation(Op<?> operator, Expr<?>... args) {    
+    protected void visitOperation(Class<?> type, Op<?> operator, Expr<?>... args) {    
         boolean old = wrapElements;
         wrapElements = HqlOps.wrapCollectionsForOp.contains(operator);    
         // 
@@ -197,7 +197,7 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         }else if (operator.equals(Ops.NUMCAST)){
             visitCast(operator, args[0], (Class<?>) ((EConstant<?>)args[1]).getConstant());
         }else{
-            super.visitOperation(operator, args);    
+            super.visitOperation(type, operator, args);    
         }        
         //
         wrapElements = old;
