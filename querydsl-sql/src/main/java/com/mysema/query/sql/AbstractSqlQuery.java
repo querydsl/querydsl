@@ -21,7 +21,6 @@ import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.SqlJoinMeta;
 import com.mysema.query.grammar.SqlOps;
 import com.mysema.query.grammar.SqlSerializer;
-import com.mysema.query.grammar.types.EConstructor;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.SubQuery;
 
@@ -120,8 +119,8 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
         ResultSet rs = stmt.executeQuery();        
         try{
             List<RT> rv = new ArrayList<RT>();
-            if (expr instanceof EConstructor){                
-                EConstructor<RT> c = (EConstructor<RT>)expr;
+            if (expr instanceof Expr.EConstructor){                
+                Expr.EConstructor<RT> c = (Expr.EConstructor<RT>)expr;
                 java.lang.reflect.Constructor<RT> cc =  c.getJavaConstructor();
                 while (rs.next()){                    
                     try {

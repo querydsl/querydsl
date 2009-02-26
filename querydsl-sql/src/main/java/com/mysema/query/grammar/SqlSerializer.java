@@ -56,10 +56,10 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
             append(ops.select());           
             List<Expr<?>> sqlSelect = new ArrayList<Expr<?>>();
             for (Expr<?> selectExpr : select){
-                if (selectExpr instanceof EConstructor){
+                if (selectExpr instanceof Expr.EConstructor){
                     // transforms constructor arguments into individual select
                     // expressions
-                    sqlSelect.addAll(Arrays.<Expr<?>>asList(((EConstructor<?>)selectExpr).getArgs()));
+                    sqlSelect.addAll(Arrays.<Expr<?>>asList(((Expr.EConstructor<?>)selectExpr).getArgs()));
                 }else{
                     sqlSelect.add(selectExpr);
                 }
@@ -191,13 +191,13 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
     }
     
     @Override
-    protected void visitOperation(Op<?> operator, Expr<?>... args) {
+    protected void visitOperation(Class<?> type, Op<?> operator, Expr<?>... args) {
         if (operator.equals(Ops.STRING_CAST)){
             visitCast(operator, args[0], String.class);
         }else if (operator.equals(Ops.NUMCAST)){
             visitCast(operator, args[0], (Class<?>) ((EConstant<?>)args[1]).getConstant());
         }else{
-            super.visitOperation(operator, args);    
+            super.visitOperation(type, operator, args);    
         }  
     }
     
