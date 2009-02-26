@@ -19,9 +19,9 @@ import org.codehaus.janino.ExpressionEvaluator;
  * @author tiwe
  * @version $Id$
  */
-public class FilteringIterator<RT> extends FilterIterator<RT>{
+public class MultiArgFilteringIterator<RT> extends FilterIterator<RT>{
     
-    public FilteringIterator(Iterator<?> it,  final ExpressionEvaluator ev) {
+    public MultiArgFilteringIterator(Iterator<?> it,  final ExpressionEvaluator ev) {
         super((Iterator<RT>) it, new Predicate<RT>(){
             public boolean evaluate(RT object) {
                 try {

@@ -12,7 +12,6 @@ import java.util.List;
 
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.OrderSpecifier;
-import com.mysema.query.grammar.types.EConstructor;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.serialization.OperationPatterns;
 
@@ -61,23 +60,23 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         query.alias(entity, col).from((Expr<?>)entity);
         return _this;
     }
-    public <A> SubType innerJoin(Expr<A> entity, Iterable<A> col){
-        query.alias(entity, col).innerJoin((Expr<?>)entity);
-        return _this;
-    }    
-    public <A> SubType fullJoin(Expr<A> entity, Iterable<A> col){
-        query.alias(entity, col).fullJoin((Expr<?>)entity);
-        return _this;
-    }
-    public <A> SubType leftJoin(Expr<A> entity, Iterable<A> col){
-        query.alias(entity, col).leftJoin((Expr<?>)entity);
-        return _this;
-    }
+//    public <A> SubType innerJoin(Expr<A> entity, Iterable<A> col){
+//        query.alias(entity, col).innerJoin((Expr<?>)entity);
+//        return _this;
+//    }    
+//    public <A> SubType fullJoin(Expr<A> entity, Iterable<A> col){
+//        query.alias(entity, col).fullJoin((Expr<?>)entity);
+//        return _this;
+//    }
+//    public <A> SubType leftJoin(Expr<A> entity, Iterable<A> col){
+//        query.alias(entity, col).leftJoin((Expr<?>)entity);
+//        return _this;
+//    }
     
-    public SubType on(Expr.EBoolean o){
-        query.on(o);
-        return _this;
-    }
+//    public SubType on(Expr.EBoolean o){
+//        query.on(o);
+//        return _this;
+//    }
         
     public Iterable<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
         final Expr<?>[] full = asArray(new Expr[rest.length + 2], e1, e2, rest);
@@ -95,7 +94,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         if (!oneType){
             type = Object.class;    
         }  
-        return query.iterate(new EConstructor.CArray(type, full));
+        return query.iterate(new Expr.EArrayConstructor(type, full));
     }    
     
     public <RT> Iterable<RT> iterate(Expr<RT> projection) {

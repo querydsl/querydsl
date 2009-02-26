@@ -13,7 +13,7 @@ import java.util.Iterator;
  * @author tiwe
  * @version $Id$
  */
-public abstract class WrappingIterator<RT> extends IteratorBase<RT>{
+public abstract class WrappingIterator<RT> implements Iterator<RT>{
     private Iterator<?> it;  
     public WrappingIterator(Iterator<?> it) {
         this.it = it;
@@ -23,6 +23,9 @@ public abstract class WrappingIterator<RT> extends IteratorBase<RT>{
     }
     protected Object nextFromOrig() {
         return it.next();
+    }
+    public void remove(){
+        
     }
     
 }

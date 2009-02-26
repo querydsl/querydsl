@@ -8,21 +8,19 @@ package com.mysema.query.collections;
 import java.util.*;
 
 import org.apache.commons.collections15.IteratorUtils;
-import org.codehaus.janino.CompileException;
 import org.codehaus.janino.ExpressionEvaluator;
-import org.codehaus.janino.Parser.ParseException;
-import org.codehaus.janino.Scanner.ScanException;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryBase;
 import com.mysema.query.collections.comparators.MultiComparator;
-import com.mysema.query.collections.iterators.FilteringIterator;
+import com.mysema.query.collections.iterators.FilteringMultiIterator;
+import com.mysema.query.collections.iterators.MultiArgFilteringIterator;
 import com.mysema.query.collections.iterators.MultiIterator;
 import com.mysema.query.collections.iterators.ProjectingIterator;
+import com.mysema.query.collections.iterators.WrappingIterator;
 import com.mysema.query.grammar.JavaSerializer;
 import com.mysema.query.grammar.Order;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.EConstructor.CArray;
 import com.mysema.query.serialization.OperationPatterns;
 
 /**
@@ -37,7 +35,7 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
 
     private final OperationPatterns ops;
 
-    InnerQuery(OperationPatterns ops) {
+    public InnerQuery(OperationPatterns ops) {
         if (ops == null) throw new IllegalArgumentException("ops was null");
         this.ops = ops;
     }
@@ -66,11 +64,8 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
      * 
      * @param sources
      * @return
-     * @throws CompileException
-     * @throws ParseException
-     * @throws ScanException
      */
-    protected Iterator<?> handleFromAndWhere(List<Expr<?>> sources) throws CompileException, ParseException, ScanException{
+    protected Iterator<?> handleFromAndWhere(List<Expr<?>> sources){
         // from
         Iterator<?> it = handleFrom(sources);
         
@@ -85,21 +80,35 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
      * @param sources
      * @return
      */
-    protected Iterator<?> handleFrom(List<Expr<?>> sources){        
-        MultiIterator multiIt = new MultiIterator();        
-        for (JoinExpression<?> join : joins) {
+    protected Iterator<?> handleFrom(List<Expr<?>> sources){          
+        if (joins.size() == 1){
+            JoinExpression<?> join = joins.get(0);
             sources.add(join.getTarget());
-            // TODO : handle joins properly
-            multiIt.add(exprToIterable.get(join.getTarget()));
-            switch(join.getType()){
-            case JOIN :       
-            case INNERJOIN :  // TODO
-            case LEFTJOIN :   // TODO
-            case FULLJOIN :   // TODO
-            case DEFAULT :    // do nothing
-            }
-        }   
-        return multiIt.init();
+            return new WrappingIterator<Object[]>(exprToIterable.get(join.getTarget()).iterator()){
+               public Object[] next() {
+                   return new Object[]{nextFromOrig()};
+               }               
+           };
+        }else{
+            MultiIterator multiIt;
+            if (where.create() == null){
+                multiIt = new MultiIterator();
+            }else{
+                multiIt = new FilteringMultiIterator(ops, where.create());
+            }        
+            for (JoinExpression<?> join : joins) {
+                sources.add(join.getTarget());
+                multiIt.add(join.getTarget(), exprToIterable.get(join.getTarget()));
+                switch(join.getType()){
+                case JOIN :       
+                case INNERJOIN :  // TODO
+                case LEFTJOIN :   // TODO
+                case FULLJOIN :   // TODO
+                case DEFAULT :    // do nothing
+                }
+            }   
+            return multiIt.init();
+        }            
     }
 
     /**
@@ -109,17 +118,18 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
      * @param sources
      * @param it source iterator
      * @return 
-     * @throws CompileException
-     * @throws ParseException
-     * @throws ScanException
      */
-    protected Iterator<?> handleWhere(List<Expr<?>> sources, Iterator<?> it)
-            throws CompileException, ParseException, ScanException {
-        ExpressionEvaluator ev = new JavaSerializer(ops).handle(
-                where.create()).createExpressionEvaluator(sources,
-                boolean.class);
-        it = new FilteringIterator<Object>(it, ev);
-        return it;
+    protected Iterator<?> handleWhere(List<Expr<?>> sources, Iterator<?> it){
+        try {
+            ExpressionEvaluator ev = new JavaSerializer(ops).handle(
+                    where.create()).createExpressionEvaluator(sources,
+                    boolean.class);
+            it = new MultiArgFilteringIterator<Object>(it, ev);
+            return it;
+        } catch (Exception e) {
+            String error = "Caught " + e.getClass().getName();
+            throw new RuntimeException(error, e);
+        }        
     }
 
     /**
@@ -139,7 +149,7 @@ public class InnerQuery extends QueryBase<Object, InnerQuery> {
             orderByExpr[i] = (Expr)orderBy.get(i).target;
             directions[i] = orderBy.get(i).order == Order.ASC;
         }
-        Expr<?> expr = new CArray<Object>(Object.class, orderByExpr);
+        Expr<?> expr = new Expr.EArrayConstructor<Object>(Object.class, orderByExpr);
         ExpressionEvaluator ev = new JavaSerializer(ops).handle(expr)
             .createExpressionEvaluator(sources, expr);
         

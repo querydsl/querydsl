@@ -5,25 +5,31 @@
  */
 package com.mysema.query.collections;
 
+import static com.mysema.query.collections.MiniApi.from;
+import static com.mysema.query.collections.MiniApi.reject;
+import static com.mysema.query.collections.MiniApi.select;
+import static com.mysema.query.grammar.Grammar.gt;
 import static com.mysema.query.grammar.GrammarWithAlias.$;
+import static com.mysema.query.grammar.GrammarWithAlias.alias;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
+import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.Domain.QCat;
+import com.mysema.query.grammar.GrammarWithAlias;
 import com.mysema.query.grammar.QMath;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.Expr.ENumber;
+import com.mysema.query.grammar.types.Path.PEntity;
 
 /**
  * ColQueryTest provides
@@ -37,19 +43,32 @@ public class ColQueryTest {
     Cat c3 = new Cat("Alex");
     Cat c4 = new Cat("Francis");
     
+    QCat cat = new QCat("cat");
+    
     List<Cat> cats = Arrays.asList(c1, c2, c3, c4);
     
-    QCat cat = new QCat("cat");    
-//    QCat mate = new QCat("mate");
+    List<Integer> ints = new ArrayList<Integer>();
+    
+    TestQuery last;
+
+    List<Integer> myInts = new ArrayList<Integer>();
+    
+    //    QCat mate = new QCat("mate");
 //    QCat offspr = new QCat("offspr");
     QCat otherCat = new QCat("otherCat");
     
-    TestQuery last;
-         
-    @Test
-    public void testAPIMethods(){
-        query().from(cat, c1, c2).list(cat);
-        query().from(cat, c1, c2).iterate(cat).iterator();
+    private TestQuery query(){
+        last = new TestQuery();
+        return last;
+    }
+    
+    @Before public void setUp(){
+        myInts.add(1);
+        myInts.add(2);
+        myInts.add(3);
+        myInts.add(4);        
+        
+        GrammarWithAlias.resetAlias();
     }
     
     @Test
@@ -59,6 +78,170 @@ public class ColQueryTest {
                 cat.birthdate.boe(new Date()),
                 cat.birthdate.after(new Date()),
                 cat.birthdate.aoe(new Date())).list(cat);
+    }
+    
+    @Test
+    public void testAlias1(){
+        // 1st
+        QCat cat = new QCat("cat");  
+        for (String name : from(cat,cats).where(cat.kittens.size().gt(0))
+                          .iterate(cat.name)){
+            System.out.println(name);
+        }        
+        
+        // 1st - variation 1        
+        for (String name : from(cat,cats).where(gt(cat.kittens.size(),0))
+                          .iterate(cat.name)){
+            System.out.println(name);
+        }        
+        
+        // 2nd
+        Cat c = alias(Cat.class, "cat");
+        for (String name : from(c,cats).where($(c.getKittens()).size().gt(0))
+                          .iterate($(c.getName()))){
+            System.out.println(name);
+        }
+        
+        // 2nd - variation 1
+        for (String name : from(c,cats).where($(c.getKittens().size()).gt(0))
+                          .iterate($(c.getName()))){
+            System.out.println(name);
+        }                
+                            
+    }
+    
+    @Test
+    public void testAlias10(){
+        Cat c = alias(Cat.class, "cat");
+        
+        try{
+            from(c,cats).where($(c.getMate().getName().toUpperCase()).eq("MOE"));
+            fail("expected NPE");
+        }catch(NullPointerException ne){
+            // expected
+        }
+        
+    }
+    
+    @Test
+    public void testAlias2(){        
+        query().from(cat, c1, c2).from(otherCat, c2, c3)
+            .where(cat.name.eq(otherCat.name)).select(cat.name);
+        
+        // 1st
+        QCat cat = new QCat("cat");  
+        for (String name : from(cat,cats).where(cat.name.like("fri%"))
+                          .iterate(cat.name)){
+            System.out.println(name);
+        }
+        
+        // 2nd
+        Cat c = alias(Cat.class, "cat");        
+        for (String name : from(c,cats).where($(c.getName()).like("fri%"))
+                          .iterate($(c.getName()))){
+            System.out.println(name);
+        }      
+    }
+    
+    @Test
+    public void testAlias3(){
+        new QCat("cat").birthdate.after(new Date());
+        
+        Cat c = alias(Cat.class, "cat");
+        
+        from(c,cats)
+        .where($(c.getMate().getBirthdate()).after(new Date()))
+        .iterate($(c)).iterator();              
+    }
+    
+    @Test
+    @Ignore
+    public void testAlias4(){        
+        Cat c = alias(Cat.class, "cat");
+        
+        // TODO : FIXME : Janino compiler doesn't handle generic collections
+        from(c,cats)
+        .where($(c.getKittens().get(0).getBodyWeight()).gt(12))
+        .iterate($(c.getName())).iterator();
+    }
+    
+    @Test
+    public void testAlias5(){
+        Cat c = alias(Cat.class, "cat");
+        Cat other = new Cat();
+        
+        from(c,cats)
+        .where($(c).eq(other))
+        .iterate($(c)).iterator();
+    }
+    
+    @Test
+    public void testAlias6(){        
+        new QCat("cat").kittens.contains(new QCat("other"));
+        
+        Cat c = alias(Cat.class, "cat");
+        Cat other = new Cat();
+        
+        from(c,cats)
+        .where($(c.getKittens().contains(other)))
+        .iterate($(c)).iterator();
+    }
+    
+    @Test
+    public void testAlias7(){
+        Cat c = alias(Cat.class, "cat");
+        
+        from(c,cats)
+        .where($(c.getKittens().isEmpty()))
+        .iterate($(c)).iterator();
+    }
+    
+    @Test
+    public void testAlias8(){
+        Cat c = alias(Cat.class, "cat");
+        
+        from(c,cats)
+        .where($(c.getMate().getName()).startsWith("B"))
+        .iterate($(c)).iterator();        
+    }
+    
+
+    @Test
+    public void testAlias9(){
+        Cat c = alias(Cat.class, "cat");
+        
+        from(c,cats)
+        .where($(c.getMate().getName()).toUpperCase().eq("MOE"))
+        .iterate($(c)).iterator();        
+    }
+    
+    @Test
+    @Ignore
+    public void testAliasToString(){
+        // NOTE : temporarily commented out, since alias features have been moved to querydsl-core
+        Cat c = alias(Cat.class, "c");
+        
+        assertEquals("c", c.toString());
+        assertEquals("c.getMate()", c.getMate().toString());
+        assertEquals("c.getMate().getKittens().get(0)", c.getMate().getKittens().get(0).toString());
+        
+        assertEquals("c.getKittens().get(0)", c.getKittens().get(0).toString());
+        assertEquals("c.getKittens().get(1)", c.getKittens().get(1).toString());
+        assertEquals("c.getKittens().get(0).getMate()", c.getKittens().get(0).getMate().toString());        
+    }
+
+    @Test
+    public void testAPIMethods(){
+        query().from(cat, c1, c2).list(cat);
+        query().from(cat, c1, c2).iterate(cat).iterator();
+    }
+    
+    @Test
+    public void testArrayProjection(){
+        // select pairs of cats with different names
+        query().from(cat,cats).from(otherCat,cats)
+            .where(cat.name.ne(otherCat.name)).select(cat.name, otherCat.name);
+        assertTrue(last.res.size() == 4 * 3);
     }
     
     @Test
@@ -77,31 +260,8 @@ public class ColQueryTest {
             query().from(cat, c1, c2).list(e);    
         }        
                 
-    }
-    
-    @Test
-    public void testAlias(){
-        query().from(cat, c1, c2).from(otherCat, c2, c3)
-            .where(cat.name.eq(otherCat.name)).select(cat.name); 
-    }
-    
-    @Test
-    public void testMiniApiUsage(){        
-        for (Cat c : MiniApi.select(cats, cat.name.eq("Kitty"))){
-            System.out.println(c.getName());
-        }
-        MiniApi.select(cats, cat.kittens.size().gt(0)).iterator();
-        MiniApi.select(cats, cat.mate.isnotnull()).iterator();
-        MiniApi.select(cats, cat.alive.and(cat.birthdate.isnotnull())).iterator();       
-        MiniApi.select(cats, cat.bodyWeight.lt(cat.weight)).iterator();
-        MiniApi.select(cats, cat.color.isnull().or(cat.eyecolor.eq(cat.color))).iterator();
-        MiniApi.select(cats, cat.bodyWeight.between(1, 2)).iterator();
-        
-        // from where order
-        MiniApi.select(cats, cat.name.eq("Kitty"), cat.name.asc()).iterator();
-    }
-    
-    @Test
+    }    
+@Test
     public void testCSVIteration(){       
         List<String> lines = Arrays.asList("1;10;100","2;20;200","3;30;300");
         
@@ -121,14 +281,109 @@ public class ColQueryTest {
     }
     
     @Test
-    public void testStringHandling(){
-        Iterable<String> data1 = Arrays.asList("petER", "THomas", "joHAN");
-        Iterable<String> data2 = Arrays.asList("PETer", "thOMAS", "JOhan");
+    public void testJoins(){
+        // TOOD : coming soon!
+//        query().from(cat, cats)
+//            .innerJoin(otherCat, cats).on(cat.mate.eq(otherCat))
+//            .select(cat, otherCat);
+//        
+//        query().from(cat, cats)
+//            .innerJoin(otherCat, cats).on(cat.id.eq(otherCat.id))
+//            .select(cat, otherCat);               
+    }
+         
+    @Test
+    public void testMapUsage(){
+        // FIXME
+        Map<String,String> map = new HashMap<String,String>();      
+        map.put("1","one");
+        map.put("2","two");
+        map.put("3","three");
+        map.put("4","four");
         
-        Iterator<String> res = Arrays.asList("petER - PETer","THomas - thOMAS", "joHAN - JOhan").iterator();
-        for (Object[] arr : query().from($("a"), data1).from($("b"), data2).where($("a").equalsIgnoreCase($("b"))).iterate($("a"),$("b"))){
-            assertEquals(res.next(), arr[0]+" - "+arr[1]);
+        // 1st 
+        PEntity<Map.Entry<String,String>> e = $(map.entrySet().iterator().next());
+        for (Map.Entry<String,String> entry : from(e, map.entrySet()).iterate(e)){
+            System.out.println(entry.getKey() + " > " + entry.getValue());
         }
+        
+        // 2nd
+//        for (String[] kv : from($("k"), $("v"), map).iterate($("k"),$("v"))){
+//            System.out.println(kv[0] + " > " + kv[1]);
+//        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test public void testMathFunctions(){
+        Cat c = alias(Cat.class,"c");
+        Expr<Integer> i = new Expr.EConstant<Integer>(1);
+        Expr<Double> d = new Expr.EConstant<Double>(1.0);
+        from(c, cats)
+        .iterate(
+                QMath.abs(i),
+                QMath.acos(d),
+                QMath.asin(d),
+                QMath.atan(d),
+                QMath.ceil(d),
+                QMath.cos(d),
+                QMath.tan(d),
+                QMath.sqrt(i),
+                QMath.sin(d),
+                QMath.round(d),
+                QMath.random(),
+                QMath.pow(d,d),
+                QMath.min(i,i),
+                QMath.max(i,i),
+                QMath.mod(i,i),
+                QMath.log10(d),
+                QMath.log(d),
+                QMath.floor(d),
+                QMath.exp(d)).iterator();
+          
+    }
+    
+    @Test
+    public void testMiniApiUsage(){        
+        for (Cat c : MiniApi.select(cats, cat.name.eq("Kitty"))){
+            System.out.println(c.getName());
+        }
+        MiniApi.select(cats, cat.kittens.size().gt(0)).iterator();
+        MiniApi.select(cats, cat.mate.isnotnull()).iterator();
+        MiniApi.select(cats, cat.alive.and(cat.birthdate.isnotnull())).iterator();       
+        MiniApi.select(cats, cat.bodyWeight.lt(cat.weight)).iterator();
+        MiniApi.select(cats, cat.color.isnull().or(cat.eyecolor.eq(cat.color))).iterator();
+        MiniApi.select(cats, cat.bodyWeight.between(1, 2)).iterator();
+        
+        // from where order
+        MiniApi.select(cats, cat.name.eq("Kitty"), cat.name.asc()).iterator();
+    }
+    
+    @Test
+    public void testOrder(){
+        query().from(cat,cats).orderBy(cat.name.asc()).select(cat.name);
+        assertArrayEquals(new Object[]{"Alex","Bob","Francis","Kitty"}, last.res.toArray());
+        
+        query().from(cat,cats).orderBy(cat.name.desc()).select(cat.name);
+        assertArrayEquals(new Object[]{"Kitty","Francis","Bob","Alex"}, last.res.toArray());
+        
+        query().from(cat,cats).orderBy(cat.name.substring(1).asc()).select(cat.name);
+        assertArrayEquals(new Object[]{"Kitty","Alex","Bob","Francis"}, last.res.toArray());
+        
+        query().from(cat,cats).from(otherCat,cats)
+            .orderBy(cat.name.asc(), otherCat.name.desc()).select(cat.name, otherCat.name);
+
+        // TODO : more tests
+    }
+    
+    @Test
+    public void testPrimitives(){
+        // select cats with kittens
+        query().from(cat,cats).where(cat.kittens.size().ne(0)).select(cat.name);
+        assertTrue(last.res.size() == 4);
+        
+        // select cats without kittens
+        query().from(cat,cats).where(cat.kittens.size().eq(0)).select(cat.name);
+        assertTrue(last.res.size() == 0);
     }
     
     @Test
@@ -155,57 +410,42 @@ public class ColQueryTest {
         
         query().from(cat,cats).select(QMath.add(cat.bodyWeight, cat.weight));        
     }
+    
+    @Test public void testSimpleReject() {
+    //  Iterable<Integer> oneAndTwo = reject(myInts, greaterThan(2));
+        Iterable<Integer> oneAndTwo = reject(myInts, $(0).gt(2));
+        
+        for (Integer i : oneAndTwo) ints.add(i);
+        assertEquals(Arrays.asList(1,2), ints);
+    }
+    
+    @Test public void testSimpleSelect() {
+    //  Iterable<Integer> threeAndFour = select(myInts, greaterThan(2));
+        Iterable<Integer> threeAndFour = select(myInts, $(0).gt(2));  
+        
+        for (Integer i : threeAndFour) ints.add(i);
+        assertEquals(Arrays.asList(3,4), ints);
+    }
 
     @Test
-    public void testJoins(){
-        query().from(cat, cats)
-            .innerJoin(otherCat, cats).on(cat.mate.eq(otherCat))
-            .select(cat, otherCat);
+    public void testStringHandling(){
+        Iterable<String> data1 = Arrays.asList("petER", "THomas", "joHAN");
+        Iterable<String> data2 = Arrays.asList("PETer", "thOMAS", "JOhan");
         
-        query().from(cat, cats)
-            .innerJoin(otherCat, cats).on(cat.id.eq(otherCat.id))
-            .select(cat, otherCat);               
-    }
-    
-    @Test
-    public void testPrimitives(){
-        // select cats with kittens
-        query().from(cat,cats).where(cat.kittens.size().ne(0)).select(cat.name);
-        assertTrue(last.res.size() == 4);
-        
-        // select cats without kittens
-        query().from(cat,cats).where(cat.kittens.size().eq(0)).select(cat.name);
-        assertTrue(last.res.size() == 0);
-    }
-    
-    @Test
-    public void testArrayProjection(){
-        // select pairs of cats with different names
-        query().from(cat,cats).from(otherCat,cats)
-            .where(cat.name.ne(otherCat.name)).select(cat.name, otherCat.name);
-        assertTrue(last.res.size() == 4 * 3);
-    }
-    
-    @Test
-    public void testOrder(){
-        query().from(cat,cats).orderBy(cat.name.asc()).select(cat.name);
-        assertArrayEquals(new Object[]{"Alex","Bob","Francis","Kitty"}, last.res.toArray());
-        
-        query().from(cat,cats).orderBy(cat.name.desc()).select(cat.name);
-        assertArrayEquals(new Object[]{"Kitty","Francis","Bob","Alex"}, last.res.toArray());
-        
-        query().from(cat,cats).orderBy(cat.name.substring(1).asc()).select(cat.name);
-        assertArrayEquals(new Object[]{"Kitty","Alex","Bob","Francis"}, last.res.toArray());
-        
-        query().from(cat,cats).from(otherCat,cats)
-            .orderBy(cat.name.asc(), otherCat.name.desc()).select(cat.name, otherCat.name);
-
-        // TODO : more tests
+        Iterator<String> res = Arrays.asList("petER - PETer","THomas - thOMAS", "joHAN - JOhan").iterator();
+        for (Object[] arr : query().from($("a"), data1).from($("b"), data2).where($("a").equalsIgnoreCase($("b"))).iterate($("a"),$("b"))){
+            assertEquals(res.next(), arr[0]+" - "+arr[1]);
+        }
     }
     
     @Test
     public void testVarious(){
-
+        for(Object[] strs : from($("a"), "aa","bb","cc").from($("b"), "a","b")
+                .where($("a").startsWith($("b")))
+                .iterate($("a"),$("b"))){
+            System.out.println(Arrays.asList(strs));
+        }
+        
         query().from(cat,cats).select(cat.mate);
         
         query().from(cat,cats).select(cat.kittens);
@@ -221,9 +461,30 @@ public class ColQueryTest {
         
     }
     
-    private TestQuery query(){
-        last = new TestQuery();
-        return last;
+    @Test
+    public void testVarious1(){
+        for(String s : from($("str"), "a","ab","cd","de")
+                .where($("str").startsWith("a"))
+                .iterate($("str"))){
+            assertTrue(s.equals("a") || s.equals("ab"));
+            System.out.println(s);
+        }
+    }
+    
+    @Test
+    public void testVarious2(){
+        for (Object o : from($(),1,2,"abc",5,3).where($().ne("abc")).iterate($())){
+            int i = (Integer)o;
+            assertTrue(i > 0 && i < 6);
+            System.out.println(o);
+        }                
+    }
+    
+    @Test
+    public void testVarious3(){
+        for (Integer i : from($(0),1,2,3,4).where($(0).lt(4)).iterate($(0))){
+            System.out.println(i);
+        }
     }
     
     private static class TestQuery extends AbstractColQuery<TestQuery>{

@@ -6,9 +6,11 @@
 package com.mysema.query.collections.iterators;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
+
+import com.mysema.query.grammar.types.Expr;
 
 /**
  * MultiIterator provides a cartesian view on the given iterators
@@ -21,44 +23,32 @@ import java.util.List;
  * @author tiwe
  * @version $Id$
  */
-public class MultiIterator extends IteratorBase<Object[]>{
+public class MultiIterator implements Iterator<Object[]>{
 
+    private Boolean hasNext;
+    
+    protected int index = 0;
+    
     private final List<Iterable<?>> iterables = new ArrayList<Iterable<?>>();
     
-    private Iterator<?>[] iterators;
+    protected Iterator<?>[] iterators;
     
-    private Object[] values;
+    protected boolean[] lastEntry;
     
-    private boolean[] lastEntry;
+    protected Object[] values;
     
-    private int index = 0;
-        
-    public boolean hasNext() {
-        return iterators[index].hasNext();
-    }
-
-    public Object[] next() {
-        for (int i = index; i < iterators.length; i++){
-            values[i] = iterators[i].next();
-            lastEntry[i] = !iterators[i].hasNext();
-            if (!iterators[i].hasNext() && i > 0){     
-                iterators[i] = iterables.get(i).iterator();                
-            }            
-        }        
-        index = iterators.length -1;
-        while (lastEntry[index] && index > 0) index--;
-        return values.clone();
-    }
-        
-    public MultiIterator add(Iterable<?> iterable) {
+    public MultiIterator add(Expr<?> expr, final Iterable<?> iterable) {
         iterables.add(iterable);
         return this;
     }
     
-    public MultiIterator add(Object... instances) {
-        return add(Arrays.asList(instances));
-    }    
-    
+    public boolean hasNext() {
+        if (hasNext == null){
+            produceNext();
+        }
+        return hasNext.booleanValue();                
+    }
+
     public MultiIterator init(){
         iterators = new Iterator<?>[iterables.size()];
         for (int i = 0; i < iterators.length; i++){
@@ -68,6 +58,38 @@ public class MultiIterator extends IteratorBase<Object[]>{
         values = new Object[iterators.length];
         return this;
     }
-   
+                
+    public Object[] next() {
+        if (hasNext == null){
+            produceNext();
+        }
+        if (hasNext.booleanValue()){
+            hasNext = null;
+            return values.clone();
+        }else{
+            throw new NoSuchElementException();
+        }
+    }
+    
+    private void produceNext(){
+        for (int i = index; i < iterators.length; i++){   
+            if (!iterators[i].hasNext()){
+                hasNext = Boolean.FALSE;
+                return;
+            }
+            values[i] = iterators[i].next();
+            lastEntry[i] = !iterators[i].hasNext();
+            if (!iterators[i].hasNext() && i > 0){     
+                iterators[i] = iterables.get(i).iterator();                
+            }            
+            hasNext = Boolean.TRUE;
+        }        
+        index = iterators.length -1;
+        while (lastEntry[index] && index > 0) index--;
+    }
+
+    public void remove() {
+        
+    }   
 
 }

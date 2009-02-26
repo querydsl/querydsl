@@ -46,6 +46,16 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
         super(ops);
     }
     
+    /**
+     * Create an ExpressionEvaluator for the given sources and targetType 
+     * 
+     * @param sources
+     * @param targetType
+     * @return
+     * @throws CompileException
+     * @throws ParseException
+     * @throws ScanException
+     */
     public ExpressionEvaluator createExpressionEvaluator(List<Expr<?>> sources, Class<?> targetType) throws CompileException, ParseException, ScanException{
         if (targetType == null) throw new IllegalArgumentException("targetType was null");
         String expr = builder.toString();
@@ -64,8 +74,31 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
             names[off + i] = ((Path<?>)sources.get(i)).getMetadata().getExpression().toString();    
         }         
         
-        logger.info(expr + " "+Arrays.asList(names) +" "+ Arrays.asList(types));
+        if (logger.isInfoEnabled()){
+            logger.info(expr + " "+Arrays.asList(names) +" "+ Arrays.asList(types));    
+        }        
         
+        return instantiateExpressionEvaluator(targetType, expr, constArray,
+                types, names);
+    }
+
+    /**
+     * Instantiate a new ExpressionEvaluator
+     * 
+     * @param targetType
+     * @param expr
+     * @param constArray
+     * @param types
+     * @param names
+     * @return
+     * @throws CompileException
+     * @throws ParseException
+     * @throws ScanException
+     */
+    protected ExpressionEvaluator instantiateExpressionEvaluator(
+            Class<?> targetType, String expr, final Object[] constArray,
+            Class<?>[] types, String[] names) throws CompileException,
+            ParseException, ScanException {
         return new ExpressionEvaluator(expr, targetType, names, types){
             @Override
             public Object evaluate(Object[] origArgs) throws InvocationTargetException{
@@ -77,12 +110,26 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
         };
     }
         
+    /**
+     * Create an ExpressionEvaluator for the given sources and projection
+     * 
+     * @param sources
+     * @param projection
+     * @return
+     * @throws Exception
+     */
     public ExpressionEvaluator createExpressionEvaluator(List<Expr<?>> sources, Expr<?> projection) throws Exception{
         Class<?> targetType = projection.getType();
         if (targetType == null) targetType = Object.class;
         return createExpressionEvaluator(sources, targetType);
     }
     
+    /**
+     * Changes wrapper types to primitive types
+     * 
+     * @param type
+     * @return
+     */
     private Class<?> normalize(Class<?> type) {
         Class<?> newType = ClassUtils.wrapperToPrimitive(type);
         return newType != null ? newType : type;
@@ -93,13 +140,13 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
     }
 
     @Override
-    protected void visitOperation(Op<?> operator, Expr<?>... args) {
+    protected void visitOperation(Class<?> type, Op<?> operator, Expr<?>... args) {
         if (operator.equals(Ops.STRING_CAST)){
             visitCast(operator, args[0], String.class);
         }else if (operator.equals(Ops.NUMCAST)){
             visitCast(operator, args[0], (Class<?>) ((EConstant<?>)args[1]).getConstant());
         }else{
-            super.visitOperation(operator, args);    
+            super.visitOperation(type, operator, args);    
         }  
     }
     
