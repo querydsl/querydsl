@@ -43,6 +43,7 @@ public class HqlDomain {
     
     @Entity
     public static class SimpleTypes{
+        transient int test;
         @Id long id;
         BigDecimal bigDecimal;
         Byte bbyte;
