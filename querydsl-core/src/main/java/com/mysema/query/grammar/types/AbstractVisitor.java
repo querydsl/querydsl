@@ -19,7 +19,7 @@ import com.mysema.query.grammar.types.Path.*;
  * @author tiwe
  * @version $Id$
  */
-public abstract class VisitorAdapter<V extends VisitorAdapter<V>> extends Visitor<V> {
+public abstract class AbstractVisitor<SubType extends AbstractVisitor<SubType>> extends Visitor<SubType> {
 
     @Override
     protected void visit(AEntity<?> expr) {

@@ -25,7 +25,7 @@ import com.mysema.query.grammar.types.PathMetadata.PathType;
  * @author tiwe
  * @version $Id$
  */
-public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> extends VisitorAdapter<SubType>{
+public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> extends AbstractVisitor<SubType>{
     
     protected StringBuilder builder = new StringBuilder();
     
@@ -105,7 +105,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
         
     public String toString(){ return builder.toString(); }
 
-    protected void visit(EConstructor<?> expr){
+    protected void visit(Expr.EConstructor<?> expr){
         append("new ").append(expr.getType().getName()).append("(");
         append(", ",Arrays.asList(expr.getArgs())).append(")");
     }
@@ -121,7 +121,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
         }     
     }
     
-    protected void visit(EConstructor.CArray<?> oa) {
+    protected void visit(Expr.EArrayConstructor<?> oa) {
 //        _append("new Object[]{");
         append("new ").append(oa.getElementType().getName()).append("[]{");
         append(", ",Arrays.asList(oa.getArgs())).append("}");
@@ -129,7 +129,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
         
     @Override
     protected final void visit(Operation<?,?> expr) {
-        visitOperation(expr.getOperator(), expr.getArgs());
+        visitOperation(expr.getType(), expr.getOperator(), expr.getArgs());
     }
     
     @Override
@@ -142,7 +142,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
         throw new UnsupportedOperationException("not implemented");        
     }
     
-    protected void visitOperation(Op<?> operator, Expr<?>... args) {        
+    protected void visitOperation(Class<?> type, Op<?> operator, Expr<?>... args) {        
         String pattern = ops.getPattern(operator);
         if (pattern == null)
             throw new IllegalArgumentException("Got no operation pattern for " + operator);

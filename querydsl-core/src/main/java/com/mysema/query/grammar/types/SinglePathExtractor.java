@@ -15,7 +15,7 @@ import com.mysema.query.grammar.types.Expr.EConstant;
  * @author tiwe
  * @version $Id$
  */
-public class PathExtractor extends VisitorAdapter<PathExtractor>{
+public class SinglePathExtractor extends AbstractVisitor<SinglePathExtractor>{
 
     private Path<?> path;
     
@@ -40,16 +40,11 @@ public class PathExtractor extends VisitorAdapter<PathExtractor>{
 
     @Override
     protected void visit(Path<?> expr) {
-        path = expr;        
-        while (path.getMetadata().getParent() != null) path = path.getMetadata().getParent();
+        path = expr.getRoot();         
     }
     
     public Path<?> getPath(){
         return path;
-    }
-    
-    public Expr<?> getPathAsExpression(){
-        return (Expr<?>)path;
     }
 
     @Override

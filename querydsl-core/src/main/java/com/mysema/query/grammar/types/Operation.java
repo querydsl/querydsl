@@ -21,6 +21,7 @@ import com.mysema.query.grammar.types.Expr.EString;
  */
 public interface Operation<OP,RT> {
     
+    Class<RT> getType();
     Expr<?>[] getArgs();
     Op<OP> getOperator();
     

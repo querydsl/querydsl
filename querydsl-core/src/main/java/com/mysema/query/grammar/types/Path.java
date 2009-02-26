@@ -22,6 +22,7 @@ import com.mysema.query.grammar.types.Expr.*;
 public interface Path<C> {
         
     PathMetadata<?> getMetadata();
+    Path<?> getRoot();
     EBoolean isnotnull();
     EBoolean isnull();
             
@@ -29,14 +30,14 @@ public interface Path<C> {
         protected final Class<D[]> arrayType;
         protected final Class<D> componentType;
         private EBoolean isnull, isnotnull;
-        private final PathMetadata<?> metadata;        
+        private final PathMetadata<?> metadata;
         private EComparable<Integer> size;
         @SuppressWarnings("unchecked")
         public PArray(Class<D> type, PathMetadata<?> metadata) {
             super(null);
             this.arrayType = (Class<D[]>) Array.newInstance(type, 0).getClass();
             this.componentType = type;
-            this.metadata = metadata;            
+            this.metadata = metadata;    
         }
         public abstract Expr<D> get(Expr<Integer> index);
         public abstract Expr<D> get(int index);
@@ -52,17 +53,17 @@ public interface Path<C> {
         public EComparable<Integer> size() { 
             return size == null ? size = new PComparable<Integer>(Integer.class, forSize(this)) : size;
         }
+        public Path<?> getRoot(){
+            return metadata.getRoot() != null ? metadata.getRoot() : this;
+        }
         public String toString(){
             return metadata.toString();
         }
     }
-    
-    /**
-     * The Class Boolean.
-     */
+
     public static class PBoolean extends EBoolean implements Path<Boolean>{
         private EBoolean isnull, isnotnull;
-        private final PathMetadata<?> metadata;        
+        private final PathMetadata<?> metadata;
         public PBoolean(PathMetadata<?> metadata) {
             this.metadata = metadata;
         }
@@ -73,9 +74,12 @@ public interface Path<C> {
         public EBoolean isnull() {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }         
+        public Path<?> getRoot(){
+            return metadata.getRoot() != null ? metadata.getRoot() : this;
+        }
         public String toString(){
             return metadata.toString();
-        }
+        }        
     }
     
     public static class PBooleanArray extends PArray<Boolean>{
@@ -89,20 +93,14 @@ public interface Path<C> {
             return new PBoolean(forArrayAccess(this, index));
         }        
     }
-    
-    /**
-     * The Interface Collection.
-     */
+
     public interface PCollection<D> extends Path<java.util.Collection<D>>, CollectionType<D>{        
         Class<D> getElementType();
         EBoolean contains(D child);
         EBoolean contains(Expr<D> child);
         EComparable<Integer> size();
     }
-    
-    /**
-     * The Class Comparable.
-     */
+
     public static class PComparable<D extends Comparable<? super D>> extends EComparable<D> implements Path<D>{
         private EBoolean isnull, isnotnull;
         private final PathMetadata<?> metadata;
@@ -116,6 +114,9 @@ public interface Path<C> {
         }
         public EBoolean isnull() {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
+        }
+        public Path<?> getRoot(){
+            return metadata.getRoot() != null ? metadata.getRoot() : this;
         }
         public String toString(){
             return metadata.toString();
@@ -136,6 +137,9 @@ public interface Path<C> {
         public EBoolean isnull() {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
+        public Path<?> getRoot(){
+            return metadata.getRoot() != null ? metadata.getRoot() : this;
+        }
         public String toString(){
             return metadata.toString();
         }
@@ -152,10 +156,7 @@ public interface Path<C> {
             return new PComparable<D>(componentType, forArrayAccess(this, index));
         }  
     }
-    
-    /**
-     * The Class ComponentCollection.
-     */
+
     public static class PComponentCollection<D> extends ESimple<java.util.Collection<D>> implements PCollection<D>{
         private EBoolean isnull, isnotnull;
         private final PathMetadata<?> metadata;
@@ -183,14 +184,14 @@ public interface Path<C> {
         public EBoolean contains(Expr<D> child) {
             return Grammar.in(child, this);
         }
+        public Path<?> getRoot(){
+            return metadata.getRoot() != null ? metadata.getRoot() : this;
+        }
         public String toString(){
             return metadata.toString();
         }
     }
-    
-    /**
-     * The Class ComponentList.
-     */
+ 
     public static class PComponentList<D> extends PComponentCollection<D> implements PList<D>{        
         public PComponentList(Class<D> type, PathMetadata<?> metadata) {
             super(type, metadata);
@@ -202,10 +203,7 @@ public interface Path<C> {
             return new PSimple<D>(type, forListAccess(this, index));
         }        
     }
-    
-    /**
-     * The Class ComponentMap.
-     */
+
     public static class PComponentMap<K,V> extends ESimple<java.util.Map<K,V>> implements PMap<K,V>{
         private EBoolean isnull, isnotnull;
         private final Class<K> keyType;
@@ -232,14 +230,14 @@ public interface Path<C> {
         public EBoolean isnull() {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
+        public Path<?> getRoot(){
+            return metadata.getRoot() != null ? metadata.getRoot() : this;
+        }
         public String toString(){
             return metadata.toString();
         }
     }
-    
-    /**
-     * The Class Entity.
-     */
+
     public static class PEntity<D> extends EEntity<D> implements Path<D>{
         private EBoolean isnull, isnotnull;          
         private final PathMetadata<?> metadata;
@@ -298,14 +296,14 @@ public interface Path<C> {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
         public <B extends D> EBoolean typeOf(Class<B> type) {return Grammar.typeOf(this, type);}
+        public Path<?> getRoot(){
+            return metadata.getRoot() != null ? metadata.getRoot() : this;
+        }
         public String toString(){
             return metadata.toString();
         }
     }
-    
-    /**
-     * The Class EntityCollection.
-     */
+
     public static class PEntityCollection<D> extends EEntity<java.util.Collection<D>> implements PCollection<D>{
         private EBoolean isnull, isnotnull;
         private final PathMetadata<?> metadata;
@@ -337,14 +335,14 @@ public interface Path<C> {
         public EBoolean contains(Expr<D> child) {
             return Grammar.in(child, this);
         }
+        public Path<?> getRoot(){
+            return metadata.getRoot() != null ? metadata.getRoot() : this;
+        }
         public String toString(){
             return metadata.toString();
         }
     }
-    
-    /**
-     * The Class EntityList.
-     */
+
     public static class PEntityList<D> extends PEntityCollection<D> implements PList<D>{
         public PEntityList(Class<D> type, String entityName, PathMetadata<?> metadata) {
             super(type, entityName, metadata);
@@ -357,10 +355,7 @@ public interface Path<C> {
         }
         
     }
-    
-    /**
-     * The Class EntityMap.
-     */
+
     public static class PEntityMap<K,V> extends EEntity<PMap<K,V>> implements PMap<K,V>{
         private EBoolean isnull, isnotnull;
         private final Class<K> keyType;
@@ -389,32 +384,26 @@ public interface Path<C> {
         public EBoolean isnull() {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
+        public Path<?> getRoot(){
+            return metadata.getRoot() != null ? metadata.getRoot() : this;
+        }
         public String toString(){
             return metadata.toString();
         }
     }
-    
-    /**
-     * The Interface List.
-     */
+
     public interface PList<D> extends PCollection<D>{
         Expr<D> get(Expr<Integer> index);        
         Expr<D> get(int index);
     }
-    
-    /**
-     * The Interface Map.
-     */
+
     public interface PMap<K,V> extends Path<java.util.Map<K,V>>{
         Expr<V> get(Expr<K> key);
         Expr<V> get(K key);
         Class<K> getKeyType();
         Class<V> getValueType();
     }
-    
-    /**
-     * The Class Simple.
-     */
+
     public static class PSimple<D> extends ESimple<D> implements Path<D>{
         private EBoolean isnull, isnotnull;
         private final PathMetadata<?> metadata;
@@ -429,22 +418,14 @@ public interface Path<C> {
         public EBoolean isnull() {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
+        public Path<?> getRoot(){
+            return metadata.getRoot() != null ? metadata.getRoot() : this;
+        }
         public String toString(){
             return metadata.toString();
         }
-    }
-    
-//    /**
-//     * The Class RenamableEntity.
-//     */
-//    public static class RenamableEntity<D> extends Entity<D>{
-//        protected RenamableEntity(Class<D> type, PathMetadata<?> metadata) {super(type, metadata);}
-//        public Alias.Entity<D> as(Entity<D> to) {return Grammar.as(this, to);}
-//    }
-        
-    /**
-     * The Class String.
-     */
+    }    
+
     public static class PString extends EString implements Path<String>{
         private EBoolean isnull, isnotnull;        
         private final PathMetadata<?> metadata;
@@ -457,6 +438,9 @@ public interface Path<C> {
         }
         public EBoolean isnull() {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull;            
+        }
+        public Path<?> getRoot(){
+            return metadata.getRoot() != null ? metadata.getRoot() : this;
         }
         public String toString(){
             return metadata.toString();

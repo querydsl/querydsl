@@ -39,14 +39,15 @@ public final class PathMetadata<T> {
     
     private final Expr<T> expression;
 
-    private final Path<?> parent;
-
+    private final Path<?> parent, root;
+    
     private final PathType pathType;
 
     public PathMetadata(Path<?> parent, Expr<T> expression, PathType type) {
         this.parent = parent;
         this.expression = expression;
         this.pathType = type;
+        this.root = parent != null ? parent.getRoot() : null;
     }
     
     public static PathMetadata<Integer> forArrayAccess(Path.PArray<?> parent,
@@ -104,6 +105,10 @@ public final class PathMetadata<T> {
     
     public Path<?> getParent() {
         return parent;
+    }
+    
+    public Path<?> getRoot(){
+        return root;
     }
     
     public PathType getPathType() {
