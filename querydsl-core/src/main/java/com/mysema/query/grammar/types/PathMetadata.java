@@ -17,25 +17,25 @@ import com.mysema.query.grammar.Ops;
  * @version $Id$
  */
 public final class PathMetadata<T> {
-    public static final PathType ARRAY_SIZE = new PathType();
+    public static final PathType ARRAY_SIZE = new PathType("array size");
 
-    public static final PathType ARRAYVALUE = new PathType();
+    public static final PathType ARRAYVALUE = new PathType("array value");
 
-    public static final PathType ARRAYVALUE_CONSTANT = new PathType();
+    public static final PathType ARRAYVALUE_CONSTANT = new PathType("array value constant");
 
-    public static final PathType LISTVALUE = new PathType();
+    public static final PathType LISTVALUE = new PathType("list value");
     
-    public static final PathType LISTVALUE_CONSTANT = new PathType();
+    public static final PathType LISTVALUE_CONSTANT = new PathType("list value constant");
 
-    public static final PathType MAPVALUE = new PathType();
+    public static final PathType MAPVALUE = new PathType("map value");
 
-    public static final PathType MAPVALUE_CONSTANT = new PathType();
+    public static final PathType MAPVALUE_CONSTANT = new PathType("map value constant");
 
-    public static final PathType PROPERTY = new PathType();
+    public static final PathType PROPERTY = new PathType("propery");
 
-    public static final PathType SIZE = new PathType();
+    public static final PathType SIZE = new PathType("size");
 
-    public static final PathType VARIABLE = new PathType();
+    public static final PathType VARIABLE = new PathType("variable");
     
     private final Expr<T> expression;
 
@@ -146,6 +146,10 @@ public final class PathMetadata<T> {
     /**
      * The Class PathType.
      */
-    public static class PathType extends Ops.Op<Path<?>> {}
+    public static class PathType extends Ops.Op<Path<?>> {
+        public PathType(String symbol){
+            super(symbol);
+        }
+    }
 
 }

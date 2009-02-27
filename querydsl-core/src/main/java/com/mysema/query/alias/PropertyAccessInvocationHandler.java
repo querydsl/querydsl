@@ -174,10 +174,10 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
     }
     
     private boolean checkMethod(Method method, String name, int paramCount, Class<?> returnType){
-        boolean rv = method.getName().equals(name);
-        rv &= method.getParameterTypes().length == paramCount;
-        rv &= method.getReturnType().equals(returnType);
-        return rv;        
+        if (!method.getName().equals(name)) return false;
+        if (!(method.getParameterTypes().length == paramCount)) return false;
+        if (!method.getReturnType().equals(returnType)) return false;
+        return true;        
     }
     
     private <T> T newInstance(Class<T> type, Type genericType, Object parent, String prop, PathMetadata<?> pm) {        
