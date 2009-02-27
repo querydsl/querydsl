@@ -120,10 +120,7 @@
                 target/generated-test-sources/java
               </testGenerated>
               <nocompile>true</nocompile>
-              <A>
-                -AnamePrefix=Q, -AdestPackage=com.mysema.query.hql,
-                -AdtoPackage=com.mysema.query.hql
-              </A>
+              <A>-AnamePrefix=Q</A>
               <testIncludes>
                 <testInclude>
                   com/mysema/query/hql/HqlDomain*.java
