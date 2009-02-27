@@ -111,39 +111,39 @@ public class HqlOps extends OperationPatterns {
      * The Interface OpHql.
      */
     public interface OpHql{
-        Op<java.lang.Boolean> ISEMPTY = new Op<java.lang.Boolean>();
-        Op<java.lang.Boolean> ISNOTEMPTY = new Op<java.lang.Boolean>();
-        Op<Number> SUM = new Op<Number>();
+        Op<java.lang.Boolean> ISEMPTY = new Op<java.lang.Boolean>("is empty");
+        Op<java.lang.Boolean> ISNOTEMPTY = new Op<java.lang.Boolean>("is not empty");
+        Op<Number> SUM = new Op<Number>("sum");
     }
         
     /**
      * The Interface OpQuant.
      */
     public interface OpQuant{
-        Op<java.lang.Number> AVG_IN_COL = new Op<java.lang.Number>();
-        Op<java.lang.Number> MAX_IN_COL = new Op<java.lang.Number>();
-        Op<java.lang.Number> MIN_IN_COL = new Op<java.lang.Number>();   
+        Op<java.lang.Number> AVG_IN_COL = new Op<java.lang.Number>("avg in col");
+        Op<java.lang.Number> MAX_IN_COL = new Op<java.lang.Number>("max in col");
+        Op<java.lang.Number> MIN_IN_COL = new Op<java.lang.Number>("min in col");   
         
 //        some / any = true for any
 //        all        = true for all
 //        exists     = true is subselect matches
 //        not exists = true if subselect doesn't match
-        Op<?> ANY = new Op<Object>();
-        Op<?> ALL = new Op<Object>();
-        Op<?> EXISTS = new Op<Object>();
-        Op<?> NOTEXISTS = new Op<Object>();
+        Op<?> ANY = new Op<Object>("any");
+        Op<?> ALL = new Op<Object>("all");
+        Op<?> EXISTS = new Op<Object>("exists");
+        Op<?> NOTEXISTS = new Op<Object>("not exists");
     }
     
     /**
      * The Interface HqlPathType.
      */
     public interface HqlPathType{
-        PathType MINELEMENT = new PathType(); 
-        PathType MAXELEMENT = new PathType();
-        PathType MININDEX =  new PathType();
-        PathType MAXINDEX = new PathType();
-        PathType LISTINDICES = new PathType();
-        PathType MAPINDICES = new PathType();    
+        PathType MINELEMENT = new PathType("min element"); 
+        PathType MAXELEMENT = new PathType("max element");
+        PathType MININDEX =  new PathType("min index");
+        PathType MAXINDEX = new PathType("max index");
+        PathType LISTINDICES = new PathType("list indices");
+        PathType MAPINDICES = new PathType("map indices");    
     } 
     
 }

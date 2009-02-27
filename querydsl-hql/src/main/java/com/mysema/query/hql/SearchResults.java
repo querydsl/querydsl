@@ -15,6 +15,7 @@ import java.util.List;
  * @author Timo Westkamper
  * @version $Id$
  */
+//TODO : move these to querydsl-core
 public final class SearchResults<T> {
     
     public static <T> SearchResults<T> emptyResults(){

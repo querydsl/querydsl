@@ -12,6 +12,7 @@ package com.mysema.query.hql;
  * @author Timo Westkamper
  * @version $Id$
  */
+// TODO : move these to querydsl-core
 public final class QueryModifiers {
     
     private static final QueryModifiers DEFAULT = new QueryModifiers(Integer.MAX_VALUE,0);
