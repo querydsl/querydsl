@@ -22,7 +22,7 @@ public class TypeInfo {
 
     private Field.Type fieldType;
 
-    private String simpleName, fullName, keyTypeName;
+    private String simpleName, fullName, packageName, keyTypeName;
 
     private final TypeInfoVisitor visitor = new TypeInfoVisitor();
 
@@ -45,6 +45,10 @@ public class TypeInfo {
 
     public String getFullName() {
         return fullName;
+    }
+    
+    public String getPackageName(){
+        return packageName;
     }
 
     public String getKeyTypeName() {
@@ -71,6 +75,7 @@ public class TypeInfo {
         public void visitArrayType(ArrayType arg0) {
             TypeInfo valueInfo = new TypeInfo(arg0.getComponentType());
             fullName = valueInfo.getFullName();
+            packageName = valueInfo.getPackageName();
             if (valueInfo.fieldType == Field.Type.ENTITY) {
                 fieldType = Field.Type.ENTITYCOLLECTION;
             } else {
@@ -79,8 +84,9 @@ public class TypeInfo {
         }
 
         public void visitClassType(ClassType arg0){
-            try {                
+            try {                               
                 fullName = arg0.getDeclaration().getQualifiedName();
+                packageName = arg0.getDeclaration().getPackage().getQualifiedName();
                 if (fullName.equals(String.class.getName())) {
                     fieldType = Field.Type.STRING;
                 } else if (fullName.equals(Boolean.class.getName())) {
@@ -110,6 +116,7 @@ public class TypeInfo {
                 keyTypeName = keyInfo.getFullName();
                 TypeInfo valueInfo = new TypeInfo(i.next());
                 fullName = valueInfo.getFullName();
+                packageName = valueInfo.getPackageName();
                 if (valueInfo.fieldType == Field.Type.ENTITY) {
                     fieldType = Field.Type.ENTITYMAP;
                 } else {
@@ -120,6 +127,7 @@ public class TypeInfo {
                     || typeName.equals(java.util.Set.class.getName())) {
                 TypeInfo valueInfo = new TypeInfo(i.next());
                 fullName = valueInfo.getFullName();
+                packageName = valueInfo.getPackageName();
                 if (valueInfo.fieldType == Field.Type.ENTITY) {
                     fieldType = Field.Type.ENTITYCOLLECTION;
                 } else {
@@ -129,6 +137,7 @@ public class TypeInfo {
             } else if (typeName.equals(java.util.List.class.getName())) {
                 TypeInfo valueInfo = new TypeInfo(i.next());
                 fullName = valueInfo.getFullName();
+                packageName = valueInfo.getPackageName();
                 if (valueInfo.fieldType == Field.Type.ENTITY) {
                     fieldType = Field.Type.ENTITYLIST;
                 } else {

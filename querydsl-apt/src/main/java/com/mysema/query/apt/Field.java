@@ -36,7 +36,7 @@ public class Field implements Comparable<Field> {
 
     private final Type fieldType;
 
-    private String name, realName, keyTypeName, typeName, simpleTypeName;
+    private String name, realName, keyTypeName, typeName, typePackage, simpleTypeName;
 
     /**
      * Construct a Field instance from the given FieldDeclaration instance
@@ -46,10 +46,11 @@ public class Field implements Comparable<Field> {
         TypeInfo typeInfo = new TypeInfo(field.getType());
         this.name = javaSafe(field.getSimpleName());
         this.realName = realName(name);
-        this.keyTypeName = typeInfo.getKeyTypeName();
+        this.keyTypeName = typeInfo.getKeyTypeName();        
         this.typeName = typeInfo.getFullName();
+        this.typePackage = typeInfo.getPackageName();
         this.simpleTypeName = typeInfo.getSimpleName();
-        this.fieldType = typeInfo.getFieldType();
+        this.fieldType = typeInfo.getFieldType();        
     }
 
     /**
@@ -133,6 +134,10 @@ public class Field implements Comparable<Field> {
      */
     public String getTypeName() {
         return typeName;
+    }
+    
+    public String getTypePackage(){
+        return typePackage;
     }
 
     public int hashCode() {

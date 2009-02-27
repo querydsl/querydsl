@@ -67,10 +67,10 @@
 </#macro>
 
 <#macro entityField field>
-	public ${pre}${field.simpleTypeName} ${field.name};
+	public ${field.typePackage}.${pre}${field.simpleTypeName} ${field.name};
 	<#if !reserved?seq_contains(field.name)>
-    public ${pre}${field.simpleTypeName} _${field.name}() {
-         if (${field.name} == null) ${field.name} = new ${pre}${field.simpleTypeName}(PathMetadata.forProperty(this,"${field.realName}"));
+    public ${field.typePackage}.${pre}${field.simpleTypeName} _${field.name}() {
+         if (${field.name} == null) ${field.name} = new ${field.typePackage}.${pre}${field.simpleTypeName}(PathMetadata.forProperty(this,"${field.realName}"));
          return ${field.name};
     }
     </#if>
@@ -78,21 +78,21 @@
 
 <#macro entityList field>
 	public final Path.PEntityList<${field.typeName}> ${field.name} = _entitylist("${field.realName}",${field.typeName}.class,"${field.simpleTypeName}");
-    public ${pre}${field.simpleTypeName} ${field.name}(int index) {
-    	return new ${pre}${field.simpleTypeName}(PathMetadata.forListAccess(${field.name},index));
+    public ${field.typePackage}.${pre}${field.simpleTypeName} ${field.name}(int index) {
+    	return new ${field.typePackage}.${pre}${field.simpleTypeName}(PathMetadata.forListAccess(${field.name},index));
     }
-    public ${pre}${field.simpleTypeName} ${field.name}(Expr<Integer> index) {
-    	return new ${pre}${field.simpleTypeName}(PathMetadata.forListAccess(${field.name},index));
+    public ${field.typePackage}.${pre}${field.simpleTypeName} ${field.name}(Expr<Integer> index) {
+    	return new ${field.typePackage}.${pre}${field.simpleTypeName}(PathMetadata.forListAccess(${field.name},index));
     }
 </#macro>
 
 <#macro entityMap field>
 	public final Path.PEntityMap<${field.keyTypeName},${field.typeName}> ${field.name} = _entitymap("${field.realName}",${field.keyTypeName}.class,${field.typeName}.class,"${field.simpleTypeName}");
-    public ${pre}${field.simpleTypeName} ${field.name}(${field.keyTypeName} key) {
-    	return new ${pre}${field.simpleTypeName}(PathMetadata.forMapAccess(${field.name},key));
+    public ${field.typePackage}.${pre}${field.simpleTypeName} ${field.name}(${field.keyTypeName} key) {
+    	return new ${field.typePackage}.${pre}${field.simpleTypeName}(PathMetadata.forMapAccess(${field.name},key));
     }
-    public ${pre}${field.simpleTypeName} ${field.name}(Expr<${field.keyTypeName}> key) {
-    	return new ${pre}${field.simpleTypeName}(PathMetadata.forMapAccess(${field.name},key));
+    public ${field.typePackage}.${pre}${field.simpleTypeName} ${field.name}(Expr<${field.keyTypeName}> key) {
+    	return new ${field.typePackage}.${pre}${field.simpleTypeName}(PathMetadata.forMapAccess(${field.name},key));
     }
 </#macro>
      

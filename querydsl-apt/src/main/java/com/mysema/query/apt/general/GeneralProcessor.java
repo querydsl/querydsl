@@ -11,7 +11,6 @@ import static com.sun.mirror.util.DeclarationVisitors.NO_OP;
 import static com.sun.mirror.util.DeclarationVisitors.getDeclarationScanner;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +35,7 @@ public class GeneralProcessor implements AnnotationProcessor {
         EMBEDDABLE_OUTER_TMPL = new Serializer.FreeMarker("/embeddable-as-outer-classes.ftl"),
         DTO_OUTER_TMPL = new Serializer.FreeMarker("/dto-as-outer-classes.ftl");
 
-    final String  destPackage,  dtoPackage, namePrefix, targetFolder;
+    final String namePrefix, targetFolder;
 
     final AnnotationProcessorEnvironment env;
 
@@ -47,8 +46,6 @@ public class GeneralProcessor implements AnnotationProcessor {
             String dtoAnnotation, String embeddableAnnotation) {
         this.env = env;
         this.targetFolder = env.getOptions().get("-s");
-        this.destPackage = getString(env.getOptions(), "destPackage", null);
-        this.dtoPackage = getString(env.getOptions(), "dtoPackage", null);
         this.namePrefix = getString(env.getOptions(), "namePrefix", "");
 
         this.superClassAnnotation = superClassAnnotation;
@@ -103,10 +100,10 @@ public class GeneralProcessor implements AnnotationProcessor {
             addSupertypeFields(typeDecl, entityTypes, mappedSupertypes);
         }
 
-        if (entityTypes.isEmpty() || destPackage == null) {
+        if (entityTypes.isEmpty()) {
             env.getMessager().printNotice("No class generation for domain types");
         } else {
-            serializeAsOuterClasses(entityTypes.values(), destPackage, DOMAIN_OUTER_TMPL);
+            serializeAsOuterClasses(entityTypes.values(), DOMAIN_OUTER_TMPL);
         }
 
     }
@@ -118,12 +115,12 @@ public class GeneralProcessor implements AnnotationProcessor {
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
             typeDecl.accept(getDeclarationScanner(entityVisitor, NO_OP));
         }
+        
         Map<String, Type> entityTypes = entityVisitor.types;
-
-        if (entityTypes.isEmpty() || destPackage == null) {
+        if (entityTypes.isEmpty()) {
             env.getMessager().printNotice("No class generation for domain types");
         } else {
-            serializeAsOuterClasses(entityTypes.values(), destPackage, EMBEDDABLE_OUTER_TMPL);
+            serializeAsOuterClasses(entityTypes.values(), EMBEDDABLE_OUTER_TMPL);
         }
 
     }
@@ -136,10 +133,10 @@ public class GeneralProcessor implements AnnotationProcessor {
             typeDecl.accept(getDeclarationScanner(dtoVisitor, NO_OP));
         }
 
-        if (dtoVisitor.types.isEmpty() || dtoPackage == null) {
-//            env.getMessager().printNotice("No class generation for DTO types");
+        if (dtoVisitor.types.isEmpty()) {
+            env.getMessager().printNotice("No class generation for DTO types");
         } else {
-            serializeAsOuterClasses(dtoVisitor.types, dtoPackage, DTO_OUTER_TMPL);
+            serializeAsOuterClasses(dtoVisitor.types, DTO_OUTER_TMPL);
         }
 
     }
@@ -150,14 +147,15 @@ public class GeneralProcessor implements AnnotationProcessor {
         if (dtoAnnotation != null) createDTOClasses();
     }
 
-    private void serializeAsOuterClasses(Collection<Type> entityTypes, String packageName,
+    private void serializeAsOuterClasses(Collection<Type> entityTypes, 
             Serializer serializer) {
         // populate model
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("pre", namePrefix);
-        model.put("package", packageName);
-
+        
         for (Type type : entityTypes) {
+            String packageName = type.getPackageName();
+            model.put("package", packageName);
             model.put("type", type);
             model.put("classSimpleName", type.getSimpleName());
 

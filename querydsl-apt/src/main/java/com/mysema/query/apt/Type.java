@@ -44,7 +44,7 @@ public class Type implements Comparable<Type> {
     
     Set<Field> numericFields = new TreeSet<Field>();
 
-    String simpleName, name;
+    String simpleName, name, packageName;
 
     Set<Field> stringFields = new TreeSet<Field>();
 
@@ -53,12 +53,14 @@ public class Type implements Comparable<Type> {
     public Type(ClassDeclaration d) {
         this.simpleName = d.getSimpleName();
         this.name = d.getQualifiedName();
+        this.packageName = d.getPackage().getQualifiedName();
         this.superType = d.getSuperclass().getDeclaration().getQualifiedName();
     }
 
     public Type(String superType, String name, String simpleName) {
         this.superType = superType;
         this.name = name;
+        this.packageName = name.substring(0, name.lastIndexOf('.'));
         this.simpleName = simpleName;
     }
 
@@ -142,6 +144,10 @@ public class Type implements Comparable<Type> {
     public String getName() {
         return name;
     }
+    
+    public String getPackageName(){
+        return packageName;
+    }
 
     public Collection<Field> getSimpleCollections() {
         return simpleCollections;
@@ -198,4 +204,5 @@ public class Type implements Comparable<Type> {
         stringFields.addAll(decl.stringFields);
     }
 
+    
 }
