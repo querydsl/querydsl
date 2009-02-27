@@ -33,6 +33,7 @@ import com.mysema.query.grammar.types.Alias.ASimple;
  * @author tiwe
  * @version $Id$
  */
+// TODO : move this to querydsl-core
 public class Projection extends Path.PEntity<Projection>{
     
     private Set<String> fieldNames = new HashSet<String>();
