@@ -23,7 +23,7 @@ public class FilteredJavaSerializer extends JavaSerializer{
     
     private List<Expr<?>> exprs;
     
-    private String replacement = "true";
+    private boolean inNotOperation = false;
     
     public FilteredJavaSerializer(JavaOps ops, List<Expr<?>> expressions) {
         super(ops);
@@ -42,12 +42,15 @@ public class FilteredJavaSerializer extends JavaSerializer{
             if (skip){
                 skipPath = true;    
             }else{
+                boolean old = inNotOperation;
+                inNotOperation = (operator == Ops.NOT) ? !old : old;
                 super.visitOperation(type, operator, args);
+                inNotOperation = old;
             }                
         }
         if (skipPath){        
             if (type.equals(Boolean.class)){
-                append(replacement);
+                append(inNotOperation ? "false" : "true");
                 skipPath = false;
             }
         }        
