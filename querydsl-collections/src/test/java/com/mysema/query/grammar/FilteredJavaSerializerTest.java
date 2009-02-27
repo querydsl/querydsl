@@ -28,9 +28,9 @@ public class FilteredJavaSerializerTest {
     @Ignore
     public void testSerialization(){
         assertMatches("cat.getName().equals(a1) && true",       cat.name.eq("Test").and(otherCat.isnull()));
-        assertMatches("cat.getName().equals(a1) && !(false)",    cat.name.eq("Test").and(otherCat.isnull().not()));
+        assertMatches("cat.getName().equals(a1) && !(true)",    cat.name.eq("Test").and(otherCat.isnull().not()));
         assertMatches("!(cat.getName().equals(a1)) && !(true)", cat.name.eq("Test").not().and(otherCat.isnull().not()));
-        assertMatches("cat.getName().equals(a1) && !(false)",    cat.name.eq("Test").and(otherCat.isnull().not()));
+        assertMatches("cat.getName().equals(a1) && !(true)",    cat.name.eq("Test").and(otherCat.isnull().not()));
     }
 
     private void assertMatches(String expected, EBoolean where) {

@@ -7,8 +7,6 @@ package com.mysema.query.grammar;
 
 import java.util.List;
 
-import sun.tools.jstat.Operator;
-
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
@@ -24,6 +22,8 @@ public class FilteredJavaSerializer extends JavaSerializer{
     private boolean skipPath = false;
     
     private List<Expr<?>> exprs;
+    
+    private String replacement = "true";
     
     public FilteredJavaSerializer(JavaOps ops, List<Expr<?>> expressions) {
         super(ops);
@@ -47,12 +47,7 @@ public class FilteredJavaSerializer extends JavaSerializer{
         }
         if (skipPath){        
             if (type.equals(Boolean.class)){
-                if (operator == Ops.NOT){
-                    append("false");
-                }else{
-                    append("true");
-                }
-//                append(operator == Ops.NOT ? "false" : "true");
+                append(replacement);
                 skipPath = false;
             }
         }        
