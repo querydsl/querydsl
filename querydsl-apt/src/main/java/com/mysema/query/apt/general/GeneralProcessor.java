@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.apt.Serializer;
+import com.mysema.query.apt.FreeMarkerSerializer;
 import com.mysema.query.apt.Type;
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
@@ -30,10 +30,10 @@ import com.sun.mirror.declaration.Declaration;
  */
 public class GeneralProcessor implements AnnotationProcessor {
 
-    public static final Serializer 
-        DOMAIN_OUTER_TMPL = new Serializer.FreeMarker("/domain-as-outer-classes.ftl"),
-        EMBEDDABLE_OUTER_TMPL = new Serializer.FreeMarker("/embeddable-as-outer-classes.ftl"),
-        DTO_OUTER_TMPL = new Serializer.FreeMarker("/dto-as-outer-classes.ftl");
+    public static final FreeMarkerSerializer 
+        DOMAIN_OUTER_TMPL = new FreeMarkerSerializer("/domain-as-outer-classes.ftl"),
+        EMBEDDABLE_OUTER_TMPL = new FreeMarkerSerializer("/embeddable-as-outer-classes.ftl"),
+        DTO_OUTER_TMPL = new FreeMarkerSerializer("/dto-as-outer-classes.ftl");
 
     final String namePrefix, targetFolder;
 
@@ -148,7 +148,7 @@ public class GeneralProcessor implements AnnotationProcessor {
     }
 
     private void serializeAsOuterClasses(Collection<Type> entityTypes, 
-            Serializer serializer) {
+            FreeMarkerSerializer serializer) {
         // populate model
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("pre", namePrefix);
