@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mysema.query.apt.Field;
-import com.mysema.query.apt.Serializer;
+import com.mysema.query.apt.FreeMarkerSerializer;
 import com.mysema.query.apt.Type;
 import com.mysema.query.apt.general.GeneralProcessor;
 
@@ -79,7 +79,7 @@ public class MetaDataExporter {
     
     private String schemaPattern, tableNamePattern;
     
-    private Serializer serializer = GeneralProcessor.DOMAIN_OUTER_TMPL;
+    private FreeMarkerSerializer serializer = GeneralProcessor.DOMAIN_OUTER_TMPL;
     
     public void export(DatabaseMetaData md) throws SQLException{
         if (targetFolder == null) throw new IllegalArgumentException("targetFolder needs to be set");
