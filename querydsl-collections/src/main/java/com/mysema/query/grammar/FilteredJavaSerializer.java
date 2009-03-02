@@ -51,6 +51,8 @@ public class FilteredJavaSerializer extends JavaSerializer{
             }
             if (unknownPaths){
                 skipPath = true;    
+//            }else if (!targetIncluded){
+//                skipPath = true;
             }else{
                 boolean old = inNotOperation;
                 inNotOperation = (operator == Ops.NOT) ? !old : old;

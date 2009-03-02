@@ -47,7 +47,6 @@ public class FilteringMultiIterator extends MultiIterator{
     @Override
     public MultiIterator add(Expr<?> expr, final Iterable<?> iterable) {        
         try {
-            // TOOD : consider indexed lookup as a second option
             return addFiltered(expr, iterable);
         } catch (Exception e) {
             String error = "Caught " + e.getClass().getName();

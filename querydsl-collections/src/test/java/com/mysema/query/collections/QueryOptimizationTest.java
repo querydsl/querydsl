@@ -25,6 +25,8 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
  * @version $Id$
  */
 public class QueryOptimizationTest extends AbstractQueryTest{
+   
+//    private static final JavaOps ops = new JavaOps();
     
     private long testIterations = 40;
     
@@ -124,7 +126,7 @@ public class QueryOptimizationTest extends AbstractQueryTest{
         runTest(1000);       
         runTest(5000);        
         runTest(10000);
-        runTest(50000);        
+//        runTest(50000);        
         
         for (String line : resultLog){
             System.out.println(line);
@@ -141,28 +143,38 @@ public class QueryOptimizationTest extends AbstractQueryTest{
         for (int i=0; i < size; i++){
             cats2.add(new Cat("Kate" + i));
         }
-        ColQuery query;
-        for (long j=0; j < testIterations; j++){            
-            // without wrapped iterators
-            query = new ColQuery();
-            query.setWrapIterators(false);                       
-            level1 += query(query, cats1, cats2);
-            
-            // without reordering
-            query = new ColQuery();
-            query.setSortSources(false);            
-            level2 += query(query, cats1, cats2);
-            
-            // with reordering and iterator wrapping
-            query = new ColQuery();            
-            level3 += query(query, cats1, cats2);            
-            
+        List<EBoolean> conditions = Arrays.asList(
+                cat.name.eq(otherCat.name).and(otherCat.name.eq("Kate5")),
+                cat.bodyWeight.gt(0).and(cat.name.eq(otherCat.name)).and(otherCat.name.eq("Kate5")),
+                cat.name.eq(otherCat.name).and(otherCat.name.like("Kate5%")),
+                cat.eq(otherCat)
+        );
+        resultLog.add(size + " * " + size + " items");
+        for (EBoolean condition : conditions){
+            ColQuery query;
+            for (long j=0; j < testIterations; j++){            
+                // without wrapped iterators
+                query = new ColQuery();
+                query.setWrapIterators(false);                       
+                level1 += query(query, cats1, cats2);
+                
+                // without reordering
+                query = new ColQuery();
+                query.setSortSources(false);            
+                level2 += query(query, cats1, cats2);
+                
+                // with reordering and iterator wrapping
+                query = new ColQuery();            
+                level3 += query(query, cats1, cats2);            
+                
+            }
+            resultLog.add(" condition #" + (conditions.indexOf(condition)+1));            
+            resultLog.add("  unfiltered query took              " + (level1 / testIterations) +" ms");
+            resultLog.add("  filtered, but unordered query took " + (level2 / testIterations) +" ms");
+            resultLog.add("  filtered and ordered query took    " + (level3 / testIterations) +" ms");
+            resultLog.add("");    
         }
-        resultLog.add(size + " items");
-        resultLog.add(" unfiltered query took              " + (level1 / testIterations) +" ms");
-        resultLog.add(" filtered, but unordered query took " + (level2 / testIterations) +" ms");
-        resultLog.add(" filtered and ordered query took    " + (level3 / testIterations) +" ms");
-        resultLog.add("");
+        
     }
     
     private long query(ColQuery query, List<Cat> cats1, List<Cat> cats2){
