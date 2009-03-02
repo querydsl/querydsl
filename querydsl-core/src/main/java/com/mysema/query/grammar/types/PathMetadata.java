@@ -42,12 +42,15 @@ public final class PathMetadata<T> {
     private final Path<?> parent, root;
     
     private final PathType pathType;
+    
+    private final int hashCode;
 
     public PathMetadata(Path<?> parent, Expr<T> expression, PathType type) {
         this.parent = parent;
         this.expression = expression;
         this.pathType = type;
         this.root = parent != null ? parent.getRoot() : null;
+        this.hashCode = new HashCodeBuilder().append(expression).append(parent).append(pathType).hashCode();
     }
     
     public static PathMetadata<Integer> forArrayAccess(Path.PArray<?> parent,
@@ -116,11 +119,7 @@ public final class PathMetadata<T> {
     }
     
     public int hashCode(){
-        return new HashCodeBuilder()
-            .append(expression)
-            .append(parent)
-            .append(pathType)
-            .hashCode();
+        return hashCode;
     }
     
     public boolean equals(Object obj){
