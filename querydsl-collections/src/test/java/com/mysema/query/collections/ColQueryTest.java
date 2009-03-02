@@ -37,25 +37,8 @@ import com.mysema.query.grammar.types.Path.PEntity;
  * @author tiwe
  * @version $Id$
  */
-public class ColQueryTest {
-    Cat c1 = new Cat("Kitty");
-    Cat c2 = new Cat("Bob");
-    Cat c3 = new Cat("Alex");
-    Cat c4 = new Cat("Francis");
-    
-    QCat cat = new QCat("cat");
-    
-    List<Cat> cats = Arrays.asList(c1, c2, c3, c4);
-    
-    List<Integer> ints = new ArrayList<Integer>();
-    
-    TestQuery last;
-
-    List<Integer> myInts = new ArrayList<Integer>();
-    
-    //    QCat mate = new QCat("mate");
-//    QCat offspr = new QCat("offspr");
-    QCat otherCat = new QCat("otherCat");
+public class ColQueryTest extends AbstractQueryTest{
+    private TestQuery last;
     
     private TestQuery query(){
         last = new TestQuery();
@@ -341,23 +324,7 @@ public class ColQueryTest {
                 QMath.exp(d)).iterator();
           
     }
-    
-    @Test
-    public void testMiniApiUsage(){        
-        for (Cat c : MiniApi.select(cats, cat.name.eq("Kitty"))){
-            System.out.println(c.getName());
-        }
-        MiniApi.select(cats, cat.kittens.size().gt(0)).iterator();
-        MiniApi.select(cats, cat.mate.isnotnull()).iterator();
-        MiniApi.select(cats, cat.alive.and(cat.birthdate.isnotnull())).iterator();       
-        MiniApi.select(cats, cat.bodyWeight.lt(cat.weight)).iterator();
-        MiniApi.select(cats, cat.color.isnull().or(cat.eyecolor.eq(cat.color))).iterator();
-        MiniApi.select(cats, cat.bodyWeight.between(1, 2)).iterator();
         
-        // from where order
-        MiniApi.select(cats, cat.name.eq("Kitty"), cat.name.asc()).iterator();
-    }
-    
     @Test
     public void testOrder(){
         query().from(cat,cats).orderBy(cat.name.asc()).select(cat.name);

@@ -5,12 +5,23 @@
  */
 package com.mysema.query.collections;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
+import org.apache.commons.collections15.IteratorUtils;
+import org.codehaus.janino.ExpressionEvaluator;
+
+import com.mysema.query.JoinExpression;
+import com.mysema.query.QueryBase;
+import com.mysema.query.collections.comparators.JoinExpressionComparator;
+import com.mysema.query.collections.comparators.MultiComparator;
+import com.mysema.query.collections.iterators.FilteringMultiIterator;
+import com.mysema.query.collections.iterators.MultiArgFilteringIterator;
+import com.mysema.query.collections.iterators.MultiIterator;
+import com.mysema.query.collections.iterators.ProjectingIterator;
+import com.mysema.query.collections.iterators.WrappingIterator;
 import com.mysema.query.grammar.JavaOps;
+import com.mysema.query.grammar.JavaSerializer;
+import com.mysema.query.grammar.Order;
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
 
@@ -24,21 +35,23 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     
     private static final JavaOps OPS_DEFAULT = new JavaOps();
 
-    private final InnerQuery query;
+    private final Map<Expr<?>, Iterable<?>> exprToIterable = new HashMap<Expr<?>, Iterable<?>>();
+    
+    private final InnerQuery query = new InnerQuery();
 
+    private final JavaOps ops;
+    
+    private boolean sortSources = true, wrapIterators = true;
+    
     @SuppressWarnings("unchecked")
-    private SubType _this = (SubType)this;
+    private final SubType _this = (SubType)this;
 
     public AbstractColQuery() {
         this(OPS_DEFAULT);
     }
 
     public AbstractColQuery(JavaOps ops) {
-        query = createInnerQuery(ops);
-    }
-    
-    protected InnerQuery createInnerQuery(JavaOps ops){
-        return new InnerQuery(ops);
+        this.ops = ops;
     }
     
     private <A> A[] asArray(A[] target, A first, A second, A... rest) {
@@ -56,30 +69,16 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     }
 
     public <A> SubType from(Expr<A> entity, Iterable<A> col) {
-        query.alias(entity, col).from((Expr<?>)entity);
+        alias(entity, col);
+        query.from((Expr<?>)entity);
         return _this;
     }
     
-    // TODO : implement joins
-    
-//    public <A> SubType innerJoin(Expr<A> entity, Iterable<A> col){
-//        query.alias(entity, col).innerJoin((Expr<?>)entity);
-//        return _this;
-//    }    
-//    public <A> SubType fullJoin(Expr<A> entity, Iterable<A> col){
-//        query.alias(entity, col).fullJoin((Expr<?>)entity);
-//        return _this;
-//    }
-//    public <A> SubType leftJoin(Expr<A> entity, Iterable<A> col){
-//        query.alias(entity, col).leftJoin((Expr<?>)entity);
-//        return _this;
-//    }
-    
-//    public SubType on(Expr.EBoolean o){
-//        query.on(o);
-//        return _this;
-//    }
-        
+    public <A> SubType alias(Expr<A> path, Iterable<A> col) {
+        exprToIterable.put(path, col);
+        return _this;
+    }
+         
     public Iterable<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
         final Expr<?>[] full = asArray(new Expr[rest.length + 2], e1, e2, rest);
         boolean oneType = true;
@@ -96,7 +95,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         if (!oneType){
             type = Object.class;    
         }  
-        return query.iterate(new Expr.EArrayConstructor(type, full));
+        return iterate(new Expr.EArrayConstructor(type, full));
     }    
     
     public <RT> Iterable<RT> iterate(Expr<RT> projection) {
@@ -113,14 +112,14 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     
     public <RT> List<RT> list(Expr<RT> projection) {
         ArrayList<RT> rv = new ArrayList<RT>();
-        for (RT v : iterate(projection)){
+        for (RT v : query.iterate(projection)){
             rv.add(v);
         }
         return rv;
     }
     
     public <RT> RT uniqueResult(Expr<RT> expr) {
-        Iterator<RT> it = iterate(expr).iterator();
+        Iterator<RT> it = query.iterate(expr).iterator();
         return it.hasNext() ? it.next() : null;
     }
         
@@ -132,6 +131,125 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     public SubType where(Expr.EBoolean... o) {
         query.where(o);
         return _this;
+    }
+    
+    public void setSortSources(boolean s){
+        this.sortSources = s;
+    }
+    
+    public void setWrapIterators(boolean w){
+        this.wrapIterators = true;
+    }
+    
+    public class InnerQuery extends QueryBase<Object, InnerQuery> {
+        
+        private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
+            List<Expr<?>> sources = new ArrayList<Expr<?>>();
+            // from  / where       
+            Iterator<?> it;
+            if (joins.size() == 1){
+                it = handleFromWhereSingleSource(sources);
+            }else{
+                it = handleFromAndWhere(sources);   
+            }
+                    
+            // order
+            if (!orderBy.isEmpty()) it = handleOrderBy(sources, it);
+            
+            // select
+            return handleSelect(it, sources, projection);                   
+        }
+        
+        protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources) throws Exception{
+            JoinExpression<?> join = joins.get(0);
+            sources.add(join.getTarget());
+            // create a simple projecting iterator for Object -> Object[]
+            Iterator<?> it = new WrappingIterator<Object[]>(exprToIterable.get(join.getTarget()).iterator()){
+               public Object[] next() {
+                   return new Object[]{nextFromOrig()};
+               }               
+            };
+            if (where.create() != null){
+                // wrap the iterator if a where constraint is available
+                ExpressionEvaluator ev = new JavaSerializer(ops).handle(
+                        where.create()).createExpressionEvaluator(sources,
+                        boolean.class);
+                it = new MultiArgFilteringIterator<Object>(it, ev);    
+            }
+            return it;
+        }
+        
+        protected Iterator<?> handleFromAndWhere(List<Expr<?>> sources) throws Exception{
+            MultiIterator multiIt;
+            if (where.create() == null || !wrapIterators){
+                // cartesian view
+                multiIt = new MultiIterator();
+            }else{
+                // filtered cartesian view
+                multiIt = new FilteringMultiIterator(ops, where.create());
+                if (sortSources){                    
+                    JoinExpressionComparator comp = new JoinExpressionComparator(where.create(), exprToIterable);
+                    Collections.sort(joins, comp);
+                }
+            }        
+            for (JoinExpression<?> join : joins) {
+                sources.add(join.getTarget());
+                multiIt.add(join.getTarget(), exprToIterable.get(join.getTarget()));
+                switch(join.getType()){
+                case JOIN :       
+                case INNERJOIN :  // TODO
+                case LEFTJOIN :   // TODO
+                case FULLJOIN :   // TODO
+                case DEFAULT :    // do nothing
+                }
+            }   
+            if (!wrapIterators && (where.create() != null)){
+                ExpressionEvaluator ev = new JavaSerializer(ops).handle(where.create())
+                    .createExpressionEvaluator(sources, boolean.class);
+                return new MultiArgFilteringIterator<Object>(multiIt.init(), ev);    
+            }else{
+                return multiIt.init();    
+            }            
+        }
+
+        protected Iterator<?> handleOrderBy(List<Expr<?>> sources, Iterator<?> it)
+                throws Exception {
+            // create a projection for the order
+            Expr<Object>[] orderByExpr = new Expr[orderBy.size()];
+            boolean[] directions = new boolean[orderBy.size()];
+            for (int i = 0; i < orderBy.size(); i++){
+                orderByExpr[i] = (Expr)orderBy.get(i).target;
+                directions[i] = orderBy.get(i).order == Order.ASC;
+            }
+            Expr<?> expr = new Expr.EArrayConstructor<Object>(Object.class, orderByExpr);
+            ExpressionEvaluator ev = new JavaSerializer(ops).handle(expr)
+                .createExpressionEvaluator(sources, expr);
+            
+            // transform the iterator to list
+            List<Object[]> itAsList = IteratorUtils.toList((Iterator<Object[]>)it);               
+            Collections.sort(itAsList, new MultiComparator(ev, directions));
+            it = itAsList.iterator();
+            return it;
+        }
+
+        protected <RT> Iterator<RT> handleSelect(Iterator<?> it, List<Expr<?>> sources, Expr<RT> projection) throws Exception {
+            ExpressionEvaluator ev = new JavaSerializer(ops).handle(projection)
+                .createExpressionEvaluator(sources,projection);        
+            return new ProjectingIterator<RT>(it, ev);
+        }
+
+        public <RT> Iterable<RT> iterate(final Expr<RT> projection) {
+            select(projection);
+            return new Iterable<RT>() {
+                public Iterator<RT> iterator() {
+                    try {
+                        return createIterator(projection);
+                    } catch (Exception e) {
+                        throw new RuntimeException("error", e);
+                    }
+                }
+            };
+        }
     }
 
 }

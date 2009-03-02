@@ -5,6 +5,8 @@
  */
 package com.mysema.query.collections;
 
+import com.mysema.query.grammar.JavaOps;
+
 
 /**
  * ColQuery is a Query implementation for querying on Java collections
@@ -14,6 +16,12 @@ package com.mysema.query.collections;
  */
 public class ColQuery extends AbstractColQuery<ColQuery>{
 
+    public ColQuery(){
+        super();
+    }
     
+    public ColQuery(JavaOps ops){
+        super(ops);
+    }
     
 }

@@ -23,23 +23,33 @@ public class FilteredJavaSerializer extends JavaSerializer{
     
     private List<Expr<?>> exprs;
     
+    private Expr<?> last;
+    
     private boolean inNotOperation = false;
     
     public FilteredJavaSerializer(JavaOps ops, List<Expr<?>> expressions) {
         super(ops);
         this.exprs = expressions;
+        this.last = exprs.get(exprs.size()-1);
     }
     
     @Override
     protected void visitOperation(Class<?> type, Op<?> operator, Expr<?>... args) {
         if (!skipPath){
-            boolean skip = false;
+            boolean unknownPaths = false;
+            boolean targetIncluded = false;
+            // iterate over arguments
             for (Expr<?> expr : args){
                 if (expr instanceof Path){
-                    if (!exprs.contains(((Path<?>)expr).getRoot())) skip = true;
+                    Path<?> path = ((Path<?>)expr).getRoot();
+                    if (!exprs.contains(path)){
+                        unknownPaths = true;
+                    }else if (exprs.equals(last)){
+                        targetIncluded = true;
+                    }
                 }
             }
-            if (skip){
+            if (unknownPaths){
                 skipPath = true;    
             }else{
                 boolean old = inNotOperation;
@@ -54,6 +64,13 @@ public class FilteredJavaSerializer extends JavaSerializer{
                 skipPath = false;
             }
         }        
+    }
+    
+    @Override
+    protected void appendOperationResult(Op<?> operator, String result){
+        if (!skipPath){
+            super.appendOperationResult(operator, result);
+        }
     }
     
 }

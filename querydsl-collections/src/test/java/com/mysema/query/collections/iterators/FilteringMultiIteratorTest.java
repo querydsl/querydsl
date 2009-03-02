@@ -5,8 +5,10 @@
  */
 package com.mysema.query.collections.iterators;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -28,11 +30,15 @@ import com.mysema.query.grammar.types.Expr.EString;
 public class FilteringMultiIteratorTest extends AbstractIteratorTest{
     
     private FilteringMultiIterator it;
-    
-    private ENumber<Integer> int1 = MiniApi.$(0);    
+     
     private EString str1 = MiniApi.$("str1");   
     private EString str2 = MiniApi.$("str2");
     private EString str3 = MiniApi.$("str3");
+    
+    private ENumber<Integer> int1 = MiniApi.$(1);
+    private ENumber<Integer> int2 = MiniApi.$(2); 
+    private ENumber<Integer> int3 = MiniApi.$(3);
+    private ENumber<Integer> int4 = MiniApi.$(4); 
     
     Cat c1 = new Cat("Kitty");
     Cat c2 = new Cat("Bob");
@@ -90,10 +96,27 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
             it.init();
             
             while (it.hasNext()){
-                System.out.println(Arrays.asList(it.next()));
-            }
-            
-        }
+                it.next();
+            }            
+        }        
     }
-    
+        
+    @Test
+    public void testFourLevels(){
+        it = new FilteringMultiIterator(new JavaOps(), 
+                int1.eq(int2).and(int2.eq(int3)).and(int3.eq(int4)));
+        
+        List<Integer> ints = new ArrayList<Integer>(100);
+        for (int i = 0; i < 100; i++) ints.add(i + 1);
+        it.add(int1, ints).add(int2, ints).add(int3, ints).add(int4, ints);
+        it.init();
+        long start = System.currentTimeMillis();
+        while (it.hasNext()){
+            it.next();
+//            System.out.println(Arrays.asList(it.next()));
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("Iteration took " + (end-start) + " ms.");                
+    }
+       
 }

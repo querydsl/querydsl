@@ -45,44 +45,50 @@ public class FilteringMultiIterator extends MultiIterator{
     }
         
     @Override
-    public MultiIterator add(Expr<?> expr, final Iterable<?> iterable) {
-        expressions.add(expr);
-        // each iterator needs own copy of expressions
-        final List<Expr<?>> exprCopy = new ArrayList<Expr<?>>(expressions);
-        try {            
-            final ExpressionEvaluator ev = new FilteredJavaSerializer(ops, exprCopy){
-                
-                @Override
-                protected ExpressionEvaluator instantiateExpressionEvaluator(
-                        Class<?> targetType, String expr, final Object[] constArray,
-                        Class<?>[] types, String[] names) throws CompileException,
-                        ParseException, ScanException {
-                    
-                    return new ExpressionEvaluator(expr, targetType, names, types){
-                        @Override
-                        public Object evaluate(Object[] origArgs) throws InvocationTargetException{
-                            Object[] args = new Object[constArray.length + exprCopy.size()];
-                            System.arraycopy(constArray, 0, args, 0, constArray.length);
-                            System.arraycopy(values, 0, args, constArray.length, exprCopy.size());
-                            args[args.length - 1] = origArgs[0];
-                            return super.evaluate(args);
-                        }
-                    };
-                }
-                
-                }.handle(where)
-                .createExpressionEvaluator(exprCopy, boolean.class);
-            
-            return super.add(expr, new Iterable<Object>(){
-                public Iterator<Object> iterator() {
-                    return new SingleArgFilteringIterator<Object>(iterable.iterator(), ev);
-                }            
-            });
+    public MultiIterator add(Expr<?> expr, final Iterable<?> iterable) {        
+        try {
+            // TOOD : consider indexed lookup as a second option
+            return addFiltered(expr, iterable);
         } catch (Exception e) {
             String error = "Caught " + e.getClass().getName();
             logger.error(error, e);
             throw new RuntimeException(error, e);
         }        
+    }
+    
+    private MultiIterator addFiltered(Expr<?> expr, final Iterable<?> iterable)
+            throws CompileException, ParseException, ScanException {
+        expressions.add(expr);
+        // each iterator needs own copy of expressions
+        List<Expr<?>> exprCopy = new ArrayList<Expr<?>>(expressions);
+        final int extraArgsSize = exprCopy.size();
+        final ExpressionEvaluator ev = new FilteredJavaSerializer(ops, exprCopy){
+            
+            @Override
+            protected ExpressionEvaluator instantiateExpressionEvaluator(
+                    Class<?> targetType, String expr, final Object[] constArray,
+                    Class<?>[] types, String[] names) throws CompileException,
+                    ParseException, ScanException {
+                
+                return new ExpressionEvaluator(expr, targetType, names, types){
+                    @Override
+                    public Object evaluate(Object[] origArgs) throws InvocationTargetException{
+                        Object[] args = new Object[constArray.length + extraArgsSize];
+                        System.arraycopy(constArray, 0, args, 0, constArray.length);
+                        System.arraycopy(values, 0, args, constArray.length, extraArgsSize);
+                        args[args.length - 1] = origArgs[0];
+                        return super.evaluate(args);
+                    }
+                };
+            }
+            
+        }.handle(where).createExpressionEvaluator(exprCopy, boolean.class);
+            
+        return super.add(expr, new Iterable<Object>(){
+            public Iterator<Object> iterator() {
+                return new SingleArgFilteringIterator<Object>(iterable.iterator(), ev);
+            }            
+        });
     }    
     
 }
