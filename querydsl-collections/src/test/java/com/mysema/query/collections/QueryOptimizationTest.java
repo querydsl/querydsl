@@ -31,7 +31,6 @@ public class QueryOptimizationTest extends AbstractQueryTest{
     private List<String> resultLog = new ArrayList<String>(30);
     
     private EBoolean where = cat.name.eq(otherCat.name).and(otherCat.name.eq("Kate5"));
-//    private EBoolean where = cat.name.eq(otherCat.name).and(otherCat.name.like("Bob5"));
     
     @Test
     public void testOptimizationOptions(){

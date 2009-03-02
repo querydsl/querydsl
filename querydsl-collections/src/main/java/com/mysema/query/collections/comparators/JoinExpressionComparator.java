@@ -45,15 +45,13 @@ public class JoinExpressionComparator implements Comparator<JoinExpression<?>>{
     public int compare(JoinExpression<?> o1, JoinExpression<?> o2) {
         MutableInt p1 = priorities.get(o1.getTarget());
         MutableInt p2 = priorities.get(o2.getTarget());
+        int rv;
         if (!p1.equals(p2)){
-            if (!invert){
-                return p2.intValue() - p1.intValue();    
-            }else{
-                return p1.intValue() - p2.intValue();
-            }            
+            rv = p2.intValue() - p1.intValue();  
         }else{
-            return o1.hashCode() - o2.hashCode();
-        }        
+            rv = o1.hashCode() - o2.hashCode();
+        }       
+        return invert ? - rv : rv;
     }
 
     protected void visitOperation(Operation<?, ?> op) {         
