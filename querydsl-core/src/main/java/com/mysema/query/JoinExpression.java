@@ -51,4 +51,8 @@ public class JoinExpression<T> {
         return metadata;
     }
     
+    public String toString(){
+        return type + " " + target;
+    }
+    
 }

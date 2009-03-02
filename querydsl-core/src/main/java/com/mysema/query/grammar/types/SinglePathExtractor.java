@@ -5,8 +5,6 @@
  */
 package com.mysema.query.grammar.types;
 
-import com.mysema.query.grammar.types.Alias.AToPath;
-import com.mysema.query.grammar.types.Expr.EConstant;
 
 
 /**
@@ -15,28 +13,9 @@ import com.mysema.query.grammar.types.Expr.EConstant;
  * @author tiwe
  * @version $Id$
  */
-public class SinglePathExtractor extends AbstractVisitor<SinglePathExtractor>{
+public class SinglePathExtractor extends DeepVisitor<SinglePathExtractor>{
 
     private Path<?> path;
-    
-    @Override
-    protected void visit(Alias.ASimple<?> expr) {        
-    }
-
-    @Override
-    protected void visit(AToPath expr) {        
-    }
-
-    @Override
-    protected void visit(EConstant<?> expr) {        
-    }
-
-    @Override
-    protected void visit(Operation<?, ?> expr) {
-        for (Expr<?> arg : expr.getArgs()){
-            this.handle(arg);
-        }        
-    }
 
     @Override
     protected void visit(Path<?> expr) {
@@ -45,11 +24,6 @@ public class SinglePathExtractor extends AbstractVisitor<SinglePathExtractor>{
     
     public Path<?> getPath(){
         return path;
-    }
-
-    @Override
-    protected void visit(Custom<?> expr) {
-        
     }
 
 }

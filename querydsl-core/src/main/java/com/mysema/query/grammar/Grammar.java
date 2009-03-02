@@ -5,9 +5,6 @@
  */
 package com.mysema.query.grammar;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
 import com.mysema.query.grammar.Ops.OpNumberAgg;
 import com.mysema.query.grammar.types.Alias;
 import com.mysema.query.grammar.types.CollectionType;
@@ -19,6 +16,7 @@ import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.ENumber;
 import com.mysema.query.grammar.types.Expr.ESimple;
 import com.mysema.query.grammar.types.Expr.EString;
+import com.mysema.query.grammar.types.Operation.OBoolean;
 import com.mysema.query.grammar.types.Path.PEntity;
 import com.mysema.query.grammar.types.Path.PEntityCollection;
 
@@ -753,6 +751,10 @@ public class Grammar extends Factory{
      * @return
      */
     public static EBoolean not(EBoolean left) {
+        if (left instanceof OBoolean){
+            OBoolean o = (OBoolean)left;
+            if (o.getOperator() == Ops.NOT) return (EBoolean) o.getArgs()[0];
+        }        
         return createBoolean(Ops.NOT, left);
     }
        

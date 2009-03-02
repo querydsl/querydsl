@@ -145,7 +145,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
     protected void visitOperation(Class<?> type, Op<?> operator, Expr<?>... args) {        
         String pattern = ops.getPattern(operator);
         if (pattern == null)
-            throw new IllegalArgumentException("Got no operation pattern for " + operator);
+            throw new IllegalArgumentException("Got no pattern for " + operator);
         Object[] strings = new String[args.length];
         int precedence = ops.getPrecedence(operator);
         for (int i = 0; i < strings.length; i++){
@@ -156,7 +156,10 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
             }
             strings[i] = toString(args[i],wrap);
         }
-        append(String.format(pattern, strings));
+        appendOperationResult(operator, String.format(pattern, strings));
     }
-
+    
+    protected void appendOperationResult(Op<?> operator, String result){
+        append(result);
+    }
 }

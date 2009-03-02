@@ -12,6 +12,8 @@ import java.util.Map;
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.map.LazyMap;
 
+import com.mysema.query.grammar.types.ExtTypes.ExtString;
+
 /**
  * Visitor provides a dispatching Visitor for Expr instances.
  * 
@@ -80,6 +82,8 @@ public abstract class Visitor<T extends Visitor<T>> {
     protected abstract void visit(Custom<?> expr);
     
     protected abstract void visit(Expr.EConstant<?> expr);
+    
+    protected abstract void visit(ExtString expr);
     
     protected abstract void visit(Operation.OBoolean expr);
     

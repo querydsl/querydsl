@@ -32,12 +32,14 @@ public interface Path<C> {
         private EBoolean isnull, isnotnull;
         private final PathMetadata<?> metadata;
         private EComparable<Integer> size;
+        private final Path<?> root;
         @SuppressWarnings("unchecked")
         public PArray(Class<D> type, PathMetadata<?> metadata) {
             super(null);
             this.arrayType = (Class<D[]>) Array.newInstance(type, 0).getClass();
             this.componentType = type;
             this.metadata = metadata;    
+            this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
         public abstract Expr<D> get(Expr<Integer> index);
         public abstract Expr<D> get(int index);
@@ -54,7 +56,7 @@ public interface Path<C> {
             return size == null ? size = new PComparable<Integer>(Integer.class, forSize(this)) : size;
         }
         public Path<?> getRoot(){
-            return metadata.getRoot() != null ? metadata.getRoot() : this;
+            return root;
         }
         public String toString(){
             return metadata.toString();
@@ -64,8 +66,10 @@ public interface Path<C> {
     public static class PBoolean extends EBoolean implements Path<Boolean>{
         private EBoolean isnull, isnotnull;
         private final PathMetadata<?> metadata;
+        private final Path<?> root;
         public PBoolean(PathMetadata<?> metadata) {
             this.metadata = metadata;
+            this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
         public PathMetadata<?> getMetadata() {return metadata;}
         public EBoolean isnotnull() {
@@ -75,7 +79,7 @@ public interface Path<C> {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
         public Path<?> getRoot(){
-            return metadata.getRoot() != null ? metadata.getRoot() : this;
+            return root;
         }
         public String toString(){
             return metadata.toString();
@@ -104,9 +108,11 @@ public interface Path<C> {
     public static class PComparable<D extends Comparable<? super D>> extends EComparable<D> implements Path<D>{
         private EBoolean isnull, isnotnull;
         private final PathMetadata<?> metadata;
+        private final Path<?> root;
         public PComparable(Class<D> type, PathMetadata<?> metadata) {
             super(type);
             this.metadata = metadata;
+            this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
         public PathMetadata<?> getMetadata() {return metadata;}
         public EBoolean isnotnull() {
@@ -116,7 +122,7 @@ public interface Path<C> {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
         public Path<?> getRoot(){
-            return metadata.getRoot() != null ? metadata.getRoot() : this;
+            return root;
         }
         public String toString(){
             return metadata.toString();
@@ -126,9 +132,11 @@ public interface Path<C> {
     public static class PNumber<D extends Number & Comparable<? super D>> extends ENumber<D> implements Path<D>{
         private EBoolean isnull, isnotnull;
         private final PathMetadata<?> metadata;
+        private final Path<?> root;
         public PNumber(Class<D> type, PathMetadata<?> metadata) {
             super(type);
             this.metadata = metadata;
+            this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
         public PathMetadata<?> getMetadata() {return metadata;}
         public EBoolean isnotnull() {
@@ -138,7 +146,7 @@ public interface Path<C> {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
         public Path<?> getRoot(){
-            return metadata.getRoot() != null ? metadata.getRoot() : this;
+            return root;
         }
         public String toString(){
             return metadata.toString();
@@ -162,10 +170,12 @@ public interface Path<C> {
         private final PathMetadata<?> metadata;
         private EComparable<Integer> size;
         protected final Class<D> type;
+        private final Path<?> root;
         public PComponentCollection(Class<D> type, PathMetadata<?> metadata) {
             super(null);            
             this.type = type;
             this.metadata = metadata;
+            this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
         public Class<D> getElementType() {return type;}
         public PathMetadata<?> getMetadata() {return metadata;}
@@ -185,7 +195,7 @@ public interface Path<C> {
             return Grammar.in(child, this);
         }
         public Path<?> getRoot(){
-            return metadata.getRoot() != null ? metadata.getRoot() : this;
+            return root;
         }
         public String toString(){
             return metadata.toString();
@@ -209,11 +219,13 @@ public interface Path<C> {
         private final Class<K> keyType;
         private final PathMetadata<?> metadata;
         private final Class<V> valueType;
+        private final Path<?> root;
         public PComponentMap(Class<K> keyType, Class<V> valueType, PathMetadata<?> metadata) {
             super(null);            
             this.keyType = keyType;
             this.valueType = valueType;
             this.metadata = metadata;
+            this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
         public ESimple<V> get(Expr<K> key) { 
             return new PSimple<V>(valueType, forMapAccess(this, key));
@@ -231,7 +243,7 @@ public interface Path<C> {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
         public Path<?> getRoot(){
-            return metadata.getRoot() != null ? metadata.getRoot() : this;
+            return root;
         }
         public String toString(){
             return metadata.toString();
@@ -242,15 +254,18 @@ public interface Path<C> {
         private EBoolean isnull, isnotnull;          
         private final PathMetadata<?> metadata;
         private final String entityName;
+        private final Path<?> root;
         public PEntity(Class<D> type, String entityName, PathMetadata<?> metadata) {
             super(type);
             this.entityName = entityName;
             this.metadata = metadata;
+            this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
         public PEntity(Class<D> type, String entityName, String localName) {
             super(type);
             this.entityName = entityName;
             metadata = forVariable(localName);
+            this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
         protected PBoolean _boolean(String path){
             return new PBoolean(forProperty(this, path));
@@ -297,7 +312,7 @@ public interface Path<C> {
         }
         public <B extends D> EBoolean typeOf(Class<B> type) {return Grammar.typeOf(this, type);}
         public Path<?> getRoot(){
-            return metadata.getRoot() != null ? metadata.getRoot() : this;
+            return root;
         }
         public String toString(){
             return metadata.toString();
@@ -310,11 +325,13 @@ public interface Path<C> {
         private ENumber<Integer> size;        
         protected final Class<D> type;
         protected final String entityName;
+        private final Path<?> root;
         public PEntityCollection(Class<D> type, String entityName, PathMetadata<?> metadata) {
             super(null);            
             this.type = type;
             this.metadata = metadata;
             this.entityName = entityName;
+            this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
         public Alias.AEntityCollection<D> as(PEntity<D> to) {return Grammar.as(this, to);}
         public Class<D> getElementType() {return type;}
@@ -336,7 +353,7 @@ public interface Path<C> {
             return Grammar.in(child, this);
         }
         public Path<?> getRoot(){
-            return metadata.getRoot() != null ? metadata.getRoot() : this;
+            return root;
         }
         public String toString(){
             return metadata.toString();
@@ -362,12 +379,14 @@ public interface Path<C> {
         private final PathMetadata<?> metadata;
         private final Class<V> valueType; 
         private final String entityName;
+        private final Path<?> root;
         public PEntityMap(Class<K> keyType, Class<V> valueType, String entityName, PathMetadata<?> metadata) {
             super(null);            
             this.keyType = keyType;
             this.valueType = valueType;
             this.entityName = entityName;
             this.metadata = metadata;
+            this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
         public EEntity<V> get(Expr<K> key) { 
             return new PEntity<V>(valueType, entityName, forMapAccess(this, key));
@@ -385,7 +404,7 @@ public interface Path<C> {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
         public Path<?> getRoot(){
-            return metadata.getRoot() != null ? metadata.getRoot() : this;
+            return root;
         }
         public String toString(){
             return metadata.toString();
@@ -407,9 +426,11 @@ public interface Path<C> {
     public static class PSimple<D> extends ESimple<D> implements Path<D>{
         private EBoolean isnull, isnotnull;
         private final PathMetadata<?> metadata;
+        private final Path<?> root;
         public PSimple(Class<D> type, PathMetadata<?> metadata) {
             super(type);
             this.metadata = metadata;
+            this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
         public PathMetadata<?> getMetadata() {return metadata;}
         public EBoolean isnotnull() {
@@ -419,7 +440,7 @@ public interface Path<C> {
             return isnull == null ? isnull = Grammar.isnull(this) : isnull; 
         }
         public Path<?> getRoot(){
-            return metadata.getRoot() != null ? metadata.getRoot() : this;
+            return root;
         }
         public String toString(){
             return metadata.toString();

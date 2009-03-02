@@ -5,6 +5,8 @@
  */
 package com.mysema.query.grammar.types;
 
+import java.util.Arrays;
+
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
@@ -37,6 +39,9 @@ public interface Operation<OP,RT> {
         }
         public Expr<?>[] getArgs() {return args;}
         public Op<Boolean> getOperator() {return op;}    
+        public String toString(){
+            return op + " ("+Arrays.asList(args)+")";
+        }
     }    
     
     /**
@@ -56,6 +61,9 @@ public interface Operation<OP,RT> {
         }
         public Expr<?>[] getArgs() {return args;}
         public Op<OpType> getOperator() {return op;}    
+        public String toString(){
+            return op + " ("+Arrays.asList(args)+")";
+        }
     }
         
     /**
@@ -74,7 +82,10 @@ public interface Operation<OP,RT> {
             this(null, op, args);
         }
         public Expr<?>[] getArgs() {return args;}
-        public Op<OpType> getOperator() {return op;}        
+        public Op<OpType> getOperator() {return op;}       
+        public String toString(){
+            return op + " ("+Arrays.asList(args)+")";
+        }
     }
     
     /**
@@ -89,6 +100,9 @@ public interface Operation<OP,RT> {
         }
         public Expr<?>[] getArgs() {return args;}
         public Op<String> getOperator() {return op;}    
+        public String toString(){
+            return op + " ("+Arrays.asList(args)+")";
+        }
     }
     
     public static class OStringArray extends Expr<String[]> implements Operation<String,String[]>{
@@ -101,6 +115,9 @@ public interface Operation<OP,RT> {
         }
         public Expr<?>[] getArgs() {return args;}
         public Op<String> getOperator() {return op;}
+        public String toString(){
+            return op + " ("+Arrays.asList(args)+")";
+        }
     }
 
 }
