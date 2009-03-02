@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.collections.Domain.QCat;
@@ -76,9 +75,12 @@ public class FilteredJavaSerializerTest {
         assertMatches1Expr("true && true",                            otherCat.name.lower().eq(cat.name.lower()).and(otherCat.name.like("Bob5%")));
     }
     @Test
-    @Ignore
     public void test12(){
-        assertMatche2Expr("true && otherCat.getName().equals(a2)",    cat.name.eq("Bob").and(otherCat.name.eq("Kate")));
+        assertMatche2Expr("true && otherCat.getName().equals(a1)",    cat.name.eq("Bob").and(otherCat.name.eq("Kate")));
+    }
+    @Test
+    public void test13(){
+        assertMatche2Expr("true && otherCat.getName().equals(a2)",    cat.name.lower().eq("Bob").and(otherCat.name.eq("Kate")));
     }    
     
     private void assertMatches1Expr(String expected, EBoolean where) {

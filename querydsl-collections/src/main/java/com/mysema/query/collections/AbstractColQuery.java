@@ -26,7 +26,14 @@ import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
 
 /**
- * AbstractColQuery provides
+ * AbstractColQuery provides a base class for Collection query implementations.
+ * Extend it like this
+ * 
+ * <pre>
+ * public class MyType extends AbstractColQuery<MyType>{
+ *   ...
+ * }
+ * </pre>
  *
  * @author tiwe
  * @version $Id$
@@ -163,12 +170,14 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources) throws Exception{
             JoinExpression<?> join = joins.get(0);
             sources.add(join.getTarget());
+            
             // create a simple projecting iterator for Object -> Object[]
             Iterator<?> it = new WrappingIterator<Object[]>(exprToIterable.get(join.getTarget()).iterator()){
                public Object[] next() {
                    return new Object[]{nextFromOrig()};
                }               
             };
+            
             if (where.create() != null){
                 // wrap the iterator if a where constraint is available
                 ExpressionEvaluator ev = new JavaSerializer(ops).handle(
@@ -189,7 +198,14 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
                 multiIt = new FilteringMultiIterator(ops, where.create());
                 if (sortSources){                    
                     JoinExpressionComparator comp = new JoinExpressionComparator(where.create(), exprToIterable);
-                    Collections.sort(joins, comp);
+                    if (joins.size() == 2){
+                        if (comp.comparePrioritiesOnly(joins.get(0), joins.get(1)) > 0){
+                            JoinExpression<Object> je = joins.set(0, joins.get(1));
+                            joins.set(1, je);
+                        }                         
+                    }else{
+                        Collections.sort(joins, comp);
+                    }                    
                 }
             }        
             for (JoinExpression<?> join : joins) {

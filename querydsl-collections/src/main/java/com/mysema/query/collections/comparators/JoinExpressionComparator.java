@@ -22,7 +22,7 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EConstant;
 
 /**
- * JoinExpressionComparator provides
+ * JoinExpressionComparator is a comparator for Join expressions
  *
  * @author tiwe
  * @version $Id$
@@ -41,14 +41,16 @@ public class JoinExpressionComparator implements Comparator<JoinExpression<?>>{
             visitOperation((Operation<?,?>)where);    
         }        
     }
-
-    public int compare(JoinExpression<?> o1, JoinExpression<?> o2) {
+    
+    public int comparePrioritiesOnly(JoinExpression<?> o1, JoinExpression<?> o2) {
         MutableInt p1 = priorities.get(o1.getTarget());
         MutableInt p2 = priorities.get(o2.getTarget());
-        int rv;
-        if (!p1.equals(p2)){
-            rv = p2.intValue() - p1.intValue();  
-        }else{
+        return p2.intValue() - p1.intValue();
+    }    
+
+    public int compare(JoinExpression<?> o1, JoinExpression<?> o2) {
+        int rv = comparePrioritiesOnly(o1,o2);        
+        if (rv == 0){
             rv = o1.hashCode() - o2.hashCode();
         }       
         return invert ? - rv : rv;

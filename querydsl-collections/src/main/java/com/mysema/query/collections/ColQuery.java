@@ -9,7 +9,7 @@ import com.mysema.query.grammar.JavaOps;
 
 
 /**
- * ColQuery is a Query implementation for querying on Java collections
+ * ColQuery is the default implementation for Collection queries
  * 
  * @author tiwe
  * @version $Id$

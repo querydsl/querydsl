@@ -37,6 +37,7 @@ public class FilteredJavaSerializer extends JavaSerializer{
     protected void visitOperation(Class<?> type, Op<?> operator, Expr<?>... args) {
         if (!skipPath){
             boolean unknownPaths = false;
+            boolean knownPaths = false;
             boolean targetIncluded = false;
             // iterate over arguments
             for (Expr<?> expr : args){
@@ -44,15 +45,17 @@ public class FilteredJavaSerializer extends JavaSerializer{
                     Path<?> path = ((Path<?>)expr).getRoot();
                     if (!exprs.contains(path)){
                         unknownPaths = true;
-                    }else if (exprs.equals(last)){
+                    }else if (path.equals(last)){
                         targetIncluded = true;
+                    }else{
+                        knownPaths = true;
                     }
                 }
             }
             if (unknownPaths){
                 skipPath = true;    
-//            }else if (!targetIncluded){
-//                skipPath = true;
+            }else if (!targetIncluded && knownPaths){
+                skipPath = true;
             }else{
                 boolean old = inNotOperation;
                 inNotOperation = (operator == Ops.NOT) ? !old : old;

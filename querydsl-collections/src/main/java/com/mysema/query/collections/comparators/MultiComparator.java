@@ -12,7 +12,7 @@ import org.apache.commons.collections15.comparators.ComparableComparator;
 import org.codehaus.janino.ExpressionEvaluator;
 
 /**
- * MultiComparator provides
+ * MultiComparator compares 
  *
  * @author tiwe
  * @version $Id$

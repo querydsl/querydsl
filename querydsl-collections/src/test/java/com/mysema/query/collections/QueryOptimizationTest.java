@@ -125,7 +125,7 @@ public class QueryOptimizationTest extends AbstractQueryTest{
         runTest(500);        
         runTest(1000);       
         runTest(5000);        
-        runTest(10000);
+//        runTest(10000);
 //        runTest(50000);        
         
         for (String line : resultLog){
