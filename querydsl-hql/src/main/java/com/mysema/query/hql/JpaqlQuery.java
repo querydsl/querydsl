@@ -26,13 +26,11 @@ import com.mysema.query.grammar.types.Expr;
 public class JpaqlQuery<A extends JpaqlQuery<A>> extends HqlQueryBase<A>{
     
     private static final Logger logger = LoggerFactory.getLogger(JpaqlQuery.class);
-
-    private static final HqlOps OPS_DEFAULT = new HqlOps();
     
     private final EntityManager em;
 
     public JpaqlQuery(EntityManager em) {
-        this(em, OPS_DEFAULT);
+        this(em, HqlOps.DEFAULT);
     }
 
     public JpaqlQuery(EntityManager em, HqlOps ops) {

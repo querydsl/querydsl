@@ -28,13 +28,11 @@ import com.mysema.query.grammar.types.Expr;
 public class AbstractHqlQuery<A extends AbstractHqlQuery<A>> extends HqlQueryBase<A> {
     
     private static final Logger logger = LoggerFactory.getLogger(HqlQuery.class);
-
-    private static final HqlOps OPS_DEFAULT = new HqlOps();
     
     private final Session session;
     
     public AbstractHqlQuery(Session session) {
-        this(session, OPS_DEFAULT);
+        this(session, HqlOps.DEFAULT);
     }
 
     public AbstractHqlQuery(Session session, HqlOps ops) {

@@ -22,6 +22,8 @@ import com.mysema.query.serialization.OperationPatterns;
  */
 public class HqlOps extends OperationPatterns {
     
+    public static final HqlOps DEFAULT = new HqlOps();
+    
     public static final List<Op<?>> wrapCollectionsForOp;
     
     static{
