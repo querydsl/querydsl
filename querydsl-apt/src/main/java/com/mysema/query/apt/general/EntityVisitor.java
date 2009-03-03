@@ -34,7 +34,8 @@ public class EntityVisitor extends SimpleDeclarationVisitor {
 
     @Override
     public void visitFieldDeclaration(FieldDeclaration d) {
-        if (!d.getModifiers().contains(Modifier.STATIC) && !d.getModifiers().contains(Modifier.TRANSIENT)) {
+        if (!d.getModifiers().contains(Modifier.STATIC) 
+         && !d.getModifiers().contains(Modifier.TRANSIENT)) {
             last.addField(new Field(d));
         }
     }
