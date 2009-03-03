@@ -7,15 +7,12 @@ package com.mysema.query.collections.iterators;
 
 import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.junit.Test;
 
-import com.mysema.query.collections.IteratorFactory;
+import com.mysema.query.JoinExpression;
+import com.mysema.query.collections.IndexSupport;
 import com.mysema.query.collections.MiniApi;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
@@ -45,7 +42,7 @@ public class MultiIteratorTest extends AbstractIteratorTest {
 
     private ENumber<Integer> int4 = MiniApi.$(4);
 
-    private IteratorFactory iteratorFactory = new IteratorFactory() {
+    private IndexSupport iteratorFactory = new IndexSupport() {
 
         public <A> Iterator<A> getIterator(Expr<A> expr) {
             if (expr == int1)
@@ -65,6 +62,12 @@ public class MultiIteratorTest extends AbstractIteratorTest {
 
         public void init(List<Expr<?>> sources, EBoolean where) {
             // TODO Auto-generated method stub
+        }
+
+        public Comparator<JoinExpression<?>> getComparator(
+                List<Expr<?>> sources, EBoolean condition) {
+            // TODO Auto-generated method stub
+            return null;
         }
     };
 

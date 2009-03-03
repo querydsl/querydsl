@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.comparators;
+package com.mysema.query.collections.support;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;

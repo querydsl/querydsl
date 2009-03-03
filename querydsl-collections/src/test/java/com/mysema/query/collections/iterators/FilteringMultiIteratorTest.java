@@ -9,11 +9,11 @@ import java.util.*;
 
 import org.junit.Test;
 
-import com.mysema.query.collections.DefaultIteratorFactory;
-import com.mysema.query.collections.IteratorFactory;
+import com.mysema.query.collections.IndexSupport;
 import com.mysema.query.collections.MiniApi;
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.Domain.QCat;
+import com.mysema.query.collections.support.DefaultIndexSupport;
 import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
@@ -33,7 +33,7 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
     
     private Map<Expr<?>,Iterable<?>> exprToIt = new HashMap<Expr<?>,Iterable<?>>();
     
-    private IteratorFactory iteratorFactory = new DefaultIteratorFactory(exprToIt);
+    private IndexSupport iteratorFactory = new DefaultIndexSupport(exprToIt);
     
     private EString str1 = MiniApi.$("str1");   
     private EString str2 = MiniApi.$("str2");

@@ -3,9 +3,13 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.comparators;
+package com.mysema.query.collections.support;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.mutable.MutableInt;
 
@@ -29,10 +33,7 @@ public class JoinExpressionComparator implements Comparator<JoinExpression<?>>{
     
     private boolean invert = false;
     
-    public JoinExpressionComparator(EBoolean where, Collection<Expr<?>> sources) {
-        for (Expr<?> expr : sources){
-            priorities.put(expr, new MutableInt());
-        }        
+    public JoinExpressionComparator(EBoolean where) {
         if (where instanceof Operation){
             visitOperation((Operation<?,?>)where);    
         }        
@@ -41,7 +42,11 @@ public class JoinExpressionComparator implements Comparator<JoinExpression<?>>{
     public int comparePrioritiesOnly(JoinExpression<?> o1, JoinExpression<?> o2) {
         MutableInt p1 = priorities.get(o1.getTarget());
         MutableInt p2 = priorities.get(o2.getTarget());
-        return p2.intValue() - p1.intValue();
+        if (p1 == null || p2 == null){
+            return 0;
+        }else{
+            return p2.intValue() - p1.intValue();    
+        }        
     }    
 
     public int compare(JoinExpression<?> o1, JoinExpression<?> o2) {
@@ -79,7 +84,12 @@ public class JoinExpressionComparator implements Comparator<JoinExpression<?>>{
             
             // update priorities
             for (Expr<?> expr : involved){
-                priorities.get(expr).add(addition);
+                MutableInt mint = priorities.get(expr);
+                if (mint == null){
+                    mint = new MutableInt();
+                    priorities.put(expr, mint);
+                }
+                mint.add(addition);
             }    
         }                                    
     }

@@ -12,13 +12,14 @@ import org.codehaus.janino.ExpressionEvaluator;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryBase;
-import com.mysema.query.collections.comparators.JoinExpressionComparator;
-import com.mysema.query.collections.comparators.MultiComparator;
 import com.mysema.query.collections.iterators.FilteringMultiIterator;
 import com.mysema.query.collections.iterators.MultiArgFilteringIterator;
 import com.mysema.query.collections.iterators.MultiIterator;
 import com.mysema.query.collections.iterators.ProjectingIterator;
 import com.mysema.query.collections.iterators.WrappingIterator;
+import com.mysema.query.collections.support.DefaultIndexSupport;
+import com.mysema.query.collections.support.DefaultSourceSortingSupport;
+import com.mysema.query.collections.support.MultiComparator;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.JavaSerializer;
 import com.mysema.query.grammar.Order;
@@ -45,7 +46,9 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     
     private final Map<Expr<?>, Iterable<?>> exprToIt = new HashMap<Expr<?>, Iterable<?>>();
     
-    private IteratorFactory iteratorFactory;
+    private IndexSupport indexSupport;
+    
+    private SourceSortingSupport sourceSortingSupport;
 
     private final JavaOps ops;
     
@@ -59,16 +62,8 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     
     public AbstractColQuery(JavaOps ops) {
         this.ops = ops;
-        this.iteratorFactory = new DefaultIteratorFactory(exprToIt);
-    }
-    
-    public AbstractColQuery(IteratorFactory iteratorFactory){
-        this(JavaOps.DEFAULT, iteratorFactory);
-    }
-    
-    public AbstractColQuery(JavaOps ops, IteratorFactory iteratorFactory) {
-        this.ops = ops;
-        this.iteratorFactory = iteratorFactory;
+        this.indexSupport = new DefaultIndexSupport(exprToIt);
+        this.sourceSortingSupport = new DefaultSourceSortingSupport();
     }
     
     public <A> SubType alias(Expr<A> path, Iterable<A> col) {
@@ -164,6 +159,14 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         this.wrapIterators = true;
     }
     
+    public void setIndexSupport(IndexSupport indexSupport) {
+        this.indexSupport = indexSupport;
+    }
+
+    public void setSourceSortingSupport(SourceSortingSupport sourceSortingSupport) {
+        this.sourceSortingSupport = sourceSortingSupport;
+    }
+
     public <RT> RT uniqueResult(Expr<RT> expr) {
         Iterator<RT> it = query.iterate(expr).iterator();
         return it.hasNext() ? it.next() : null;
@@ -185,12 +188,20 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
             }else{
                 it = handleFromAndWhere(sources);   
             }
-                    
-            // order
-            if (!orderBy.isEmpty()) it = handleOrderBy(sources, it);
-            
-            // select
-            return handleSelect(it, sources, projection);                   
+
+            if (it.hasNext()){
+                // order
+                if (!orderBy.isEmpty()){
+                    it = handleOrderBy(sources, it);
+                }
+                
+                // select    
+                return handleSelect(it, sources, projection);
+                
+            }else{
+                return Collections.<RT>emptyList().iterator();
+            }
+                               
         }
         
         protected Iterator<?> handleFromAndWhere(List<Expr<?>> sources) throws Exception{
@@ -201,16 +212,8 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
             }else{
                 // filtered cartesian view
                 multiIt = new FilteringMultiIterator(ops, where.create());
-                if (sortSources){                    
-                    JoinExpressionComparator comp = new JoinExpressionComparator(where.create(), exprToIt.keySet());
-                    if (joins.size() == 2){
-                        if (comp.comparePrioritiesOnly(joins.get(0), joins.get(1)) > 0){
-                            JoinExpression<Object> je = joins.set(0, joins.get(1));
-                            joins.set(1, je);
-                        }                         
-                    }else{
-                        Collections.sort(joins, comp);
-                    }                    
+                if (sortSources){               
+                    sourceSortingSupport.sortSources(joins, where.create());               
                 }
             }        
             for (JoinExpression<?> join : joins) {
@@ -224,8 +227,8 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
                 case DEFAULT :    // do nothing
                 }
             }   
-            iteratorFactory.init(sources, where.create());
-            multiIt.init(iteratorFactory);
+            indexSupport.init(sources, where.create());
+            multiIt.init(indexSupport);
             
             if (!wrapIterators && (where.create() != null)){
                 ExpressionEvaluator ev = new JavaSerializer(ops).handle(where.create())
@@ -239,10 +242,10 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources) throws Exception{
             JoinExpression<?> join = joins.get(0);
             sources.add(join.getTarget());
-            iteratorFactory.init(sources, where.create());
+            indexSupport.init(sources, where.create());
             
             // create a simple projecting iterator for Object -> Object[]
-            Iterator<?> it = new WrappingIterator<Object[]>(iteratorFactory.getIterator(join.getTarget())){
+            Iterator<?> it = new WrappingIterator<Object[]>(indexSupport.getIterator(join.getTarget())){
                public Object[] next() {
                    return new Object[]{nextFromOrig()};
                }               

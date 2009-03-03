@@ -19,7 +19,7 @@ import org.codehaus.janino.Scanner.ScanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysema.query.collections.IteratorFactory;
+import com.mysema.query.collections.IndexSupport;
 import com.mysema.query.grammar.FilteredJavaSerializer;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.JavaSerializer;
@@ -33,13 +33,13 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
  * @author tiwe
  * @version $Id$
  */
-public class FilteringMultiIterator extends MultiIterator implements IteratorFactory{
+public class FilteringMultiIterator extends MultiIterator implements IndexSupport{
     
     private static final Logger logger = LoggerFactory.getLogger(FilteringMultiIterator.class);
     
     private Map<Expr<?>,ExpressionEvaluator> exprToEvaluator = new HashMap<Expr<?>,ExpressionEvaluator>();
     
-    private IteratorFactory iteratorFactory;
+    private IndexSupport indexSupport;
     
     private JavaOps ops;
     
@@ -96,27 +96,27 @@ public class FilteringMultiIterator extends MultiIterator implements IteratorFac
     }
     
     public <A> Iterator<A> getIterator(Expr<A> expr) {
-        return iteratorFactory.getIterator(expr);
+        return indexSupport.getIterator(expr);
     }
 
     public <A> Iterator<A> getIterator(Expr<A> expr, Object[] bindings) {
-        Iterator<A> it = iteratorFactory.getIterator(expr, bindings);
+        Iterator<A> it = indexSupport.getIterator(expr, bindings);
         ExpressionEvaluator ev = exprToEvaluator.get(expr);        
         if (ev != null){
-            it = new SingleArgFilteringIterator<A>(iteratorFactory.getIterator(expr, bindings), ev);
+            it = new SingleArgFilteringIterator<A>(indexSupport.getIterator(expr, bindings), ev);
         }
         return it;        
     }
     
     @Override
-    public MultiIterator init(IteratorFactory iteratorFactory){
-        this.iteratorFactory = iteratorFactory;
+    public MultiIterator init(IndexSupport iteratorFactory){
+        this.indexSupport = iteratorFactory;
         super.init(this);
         return this;
     }
 
     public void init(List<Expr<?>> orderedSources, EBoolean condition) {
-        iteratorFactory.init(orderedSources, condition);
+        indexSupport.init(orderedSources, condition);
     }
     
 }

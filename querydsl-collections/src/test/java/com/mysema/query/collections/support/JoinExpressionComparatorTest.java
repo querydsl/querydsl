@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.comparators;
+package com.mysema.query.collections.support;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -18,6 +18,7 @@ import org.junit.Test;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.collections.AbstractQueryTest;
+import com.mysema.query.collections.support.JoinExpressionComparator;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 
@@ -32,14 +33,8 @@ public class JoinExpressionComparatorTest extends AbstractQueryTest{
     
     private JoinExpression<?> catJoin, otherCatJoin, mateJoin;
     
-    private Map<Expr<?>,Iterable<?>> exprToIt;
-    
     @Before
     public void setUp(){
-        exprToIt = new HashMap<Expr<?>,Iterable<?>>();
-        exprToIt.put(cat, Collections.emptyList());
-        exprToIt.put(otherCat, Collections.emptyList());
-        exprToIt.put(mate, Collections.emptyList());
         catJoin = new JoinExpression<Object>(JoinType.DEFAULT, cat);
         otherCatJoin = new JoinExpression<Object>(JoinType.DEFAULT, otherCat);
         mateJoin = new JoinExpression<Object>(JoinType.DEFAULT, mate);
@@ -49,7 +44,7 @@ public class JoinExpressionComparatorTest extends AbstractQueryTest{
     public void test1(){        
         EBoolean where = cat.name.eq(otherCat.name).and(otherCat.name.eq("Bob"));
         
-        JoinExpressionComparator comp = new JoinExpressionComparator(where, exprToIt.keySet());        
+        JoinExpressionComparator comp = new JoinExpressionComparator(where);        
         assertTrue( comp.compare(otherCatJoin, catJoin) < 0);
         assertTrue( comp.compare(catJoin, otherCatJoin) > 0);
         assertEquals(0, comp.compare(catJoin, catJoin));
@@ -63,7 +58,7 @@ public class JoinExpressionComparatorTest extends AbstractQueryTest{
             .and(cat.eq(mate.kittens(0)))
             .and(otherCat.name.eq("Bob"));
         
-        JoinExpressionComparator comp = new JoinExpressionComparator(where, exprToIt.keySet());        
+        JoinExpressionComparator comp = new JoinExpressionComparator(where);        
         assertTrue( comp.compare(otherCatJoin, catJoin) < 0);
         assertTrue( comp.compare(catJoin, mateJoin) < 0);
     }

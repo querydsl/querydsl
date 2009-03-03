@@ -128,12 +128,10 @@ public class ColQueryTest extends AbstractQueryTest{
     
     @Test
     public void testAlias3(){
-        new QCat("cat").birthdate.after(new Date());
-        
         Cat c = alias(Cat.class, "cat");
         
         from(c,cats)
-        .where($(c.getMate().getBirthdate()).after(new Date()))
+        .where($(c.getBirthdate()).after(new Date()))
         .iterate($(c)).iterator();              
     }
     
@@ -184,7 +182,7 @@ public class ColQueryTest extends AbstractQueryTest{
         Cat c = alias(Cat.class, "cat");
         
         from(c,cats)
-        .where($(c.getMate().getName()).startsWith("B"))
+        .where($(c.getName()).startsWith("B"))
         .iterate($(c)).iterator();        
     }
     
@@ -194,7 +192,7 @@ public class ColQueryTest extends AbstractQueryTest{
         Cat c = alias(Cat.class, "cat");
         
         from(c,cats)
-        .where($(c.getMate().getName()).toUpperCase().eq("MOE"))
+        .where($(c.getName()).toUpperCase().eq("MOE"))
         .iterate($(c)).iterator();        
     }
     

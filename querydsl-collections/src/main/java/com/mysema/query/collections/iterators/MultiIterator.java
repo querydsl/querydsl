@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import com.mysema.query.collections.IteratorFactory;
+import com.mysema.query.collections.IndexSupport;
 import com.mysema.query.grammar.types.Expr;
 
 /**
@@ -32,7 +32,7 @@ public class MultiIterator implements Iterator<Object[]>{
     
     private boolean initialized;
     
-    private IteratorFactory iteratorFactory;
+    private IndexSupport indexSupport;
     
     protected Iterator<?>[] iterators;
     
@@ -57,11 +57,11 @@ public class MultiIterator implements Iterator<Object[]>{
     /**
      * Initialize the MultiIterator instance
      * 
-     * @param iteratorFactory
+     * @param indexSupport
      * @return
      */
-    public MultiIterator init(IteratorFactory iteratorFactory){
-        this.iteratorFactory = iteratorFactory;
+    public MultiIterator init(IndexSupport indexSupport){
+        this.indexSupport = indexSupport;
         this.iterators = new Iterator<?>[sources.size()];
         this.lastEntry = new boolean[iterators.length];
         this.values = new Object[iterators.length];
@@ -83,7 +83,7 @@ public class MultiIterator implements Iterator<Object[]>{
     private void produceNext(){
         for (int i = index; i < iterators.length; i++){   
             if (!initialized){
-                iterators[i] = iteratorFactory.getIterator(sources.get(i), values);
+                iterators[i] = indexSupport.getIterator(sources.get(i), values);
             }            
             if (!iterators[i].hasNext()){
                 hasNext = Boolean.FALSE;
@@ -92,7 +92,7 @@ public class MultiIterator implements Iterator<Object[]>{
             values[i] = iterators[i].next();
             lastEntry[i] = !iterators[i].hasNext();
             if (!iterators[i].hasNext() && i > 0){     
-                iterators[i] = iteratorFactory.getIterator(sources.get(i), values);                
+                iterators[i] = indexSupport.getIterator(sources.get(i), values);                
             }            
             hasNext = Boolean.TRUE;
         }        

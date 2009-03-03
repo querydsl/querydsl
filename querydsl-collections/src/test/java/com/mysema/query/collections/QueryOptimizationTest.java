@@ -7,16 +7,13 @@ package com.mysema.query.collections;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Test;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
-import com.mysema.query.collections.comparators.JoinExpressionComparator;
-import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.collections.support.JoinExpressionComparator;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 
 /**
@@ -49,16 +46,12 @@ public class QueryOptimizationTest extends AbstractQueryTest{
     
     @SuppressWarnings("unchecked")
     @Test
-    public void testOrderingPenalty(){
-        Map<Expr<?>,Iterable<?>> exprToIt = new HashMap<Expr<?>,Iterable<?>>();
-        exprToIt.put(cat, Collections.emptySet());
-        exprToIt.put(otherCat, Collections.emptySet());
-        
+    public void testOrderingPenalty(){        
         long total = 0;
         for (long i = 0; i < testIterations; i++){
             List<JoinExpression<?>> joins = Arrays.<JoinExpression<?>>asList(new JoinExpression(JoinType.DEFAULT, cat), new JoinExpression(JoinType.DEFAULT, otherCat));
             long start = System.currentTimeMillis();
-            JoinExpressionComparator comp = new JoinExpressionComparator(where, exprToIt.keySet());
+            JoinExpressionComparator comp = new JoinExpressionComparator(where);
             Collections.sort(joins, comp);
             total += (System.currentTimeMillis() - start);
         }
