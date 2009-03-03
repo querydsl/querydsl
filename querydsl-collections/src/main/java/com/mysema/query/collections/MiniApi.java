@@ -33,6 +33,7 @@ public class MiniApi extends GrammarWithAlias{
         return new ColQuery().from(path, col);
     }
     
+    @SuppressWarnings("unchecked")
     public static <A> Iterable<A> select(Iterable<A> from, Expr.EBoolean where, OrderSpecifier<?>... order){
         Expr<A> path = (Expr<A>) new SinglePathExtractor().handle(where).getPath();
         ColQuery query = new ColQuery().from(path, from).where(where).orderBy(order);

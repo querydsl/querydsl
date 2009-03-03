@@ -96,6 +96,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         return _this;
     }
          
+    @SuppressWarnings("unchecked")
     public Iterable<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
         final Expr<?>[] full = asArray(new Expr[rest.length + 2], e1, e2, rest);
         boolean oneType = true;
@@ -257,6 +258,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
             return it;
         }
 
+        @SuppressWarnings("unchecked")
         protected Iterator<?> handleOrderBy(List<Expr<?>> sources, Iterator<?> it)
                 throws Exception {
             // create a projection for the order

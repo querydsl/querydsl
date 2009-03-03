@@ -20,6 +20,7 @@ import org.codehaus.janino.ExpressionEvaluator;
  */
 public class ProjectingIterator<RT> extends WrappingIterator<RT>{
     private ExpressionEvaluator ev;
+    
     public ProjectingIterator(Iterator<?> it,  ExpressionEvaluator ev) {
         super(it);
         try {
@@ -29,6 +30,8 @@ public class ProjectingIterator<RT> extends WrappingIterator<RT>{
             throw new RuntimeException(error, e);
         }
     }
+    
+    @SuppressWarnings("unchecked")
     public RT next() {
         try {
             return (RT) ev.evaluate((Object[]) nextFromOrig());

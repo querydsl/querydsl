@@ -21,6 +21,7 @@ import org.codehaus.janino.ExpressionEvaluator;
  */
 public class MultiArgFilteringIterator<RT> extends FilterIterator<RT>{
     
+    @SuppressWarnings("unchecked")
     public MultiArgFilteringIterator(Iterator<?> it,  final ExpressionEvaluator ev) {
         super((Iterator<RT>) it, new Predicate<RT>(){
             public boolean evaluate(RT object) {

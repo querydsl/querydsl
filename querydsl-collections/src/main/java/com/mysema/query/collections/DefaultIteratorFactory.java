@@ -26,10 +26,12 @@ public class DefaultIteratorFactory implements IteratorFactory{
         this.exprToIt = exprToIt;
     }
 
+    @SuppressWarnings("unchecked")
     public <A> Iterator<A> getIterator(Expr<A> expr) {
         return (Iterator<A>)exprToIt.get(expr).iterator();
     }
 
+    @SuppressWarnings("unchecked")
     public <A> Iterator<A> getIterator(Expr<A> expr, Object[] bindings) {
         return (Iterator<A>)exprToIt.get(expr).iterator();
     }
