@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>0.2.9-SNAPSHOT</version>
+  <version>0.3.0</version>
   <name>Querydsl</name>
   <description>parent project for querydsl modules</description>
   <url>http://source.mysema.com/display/querydsl</url>
