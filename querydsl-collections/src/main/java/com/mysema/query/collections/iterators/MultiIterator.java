@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.mysema.query.collections.IteratorFactory;
 import com.mysema.query.grammar.types.Expr;
 
 /**
@@ -29,16 +30,20 @@ public class MultiIterator implements Iterator<Object[]>{
     
     protected int index = 0;
     
-    private final List<Iterable<?>> iterables = new ArrayList<Iterable<?>>();
+    private boolean initialized;
+    
+    private IteratorFactory iteratorFactory;
     
     protected Iterator<?>[] iterators;
     
     protected boolean[] lastEntry;
     
+    protected final List<Expr<?>> sources = new ArrayList<Expr<?>>();
+    
     protected Object[] values;
     
-    public MultiIterator add(Expr<?> expr, final Iterable<?> iterable) {
-        iterables.add(iterable);
+    public MultiIterator add(Expr<?> expr) {
+        sources.add(expr);
         return this;
     }
     
@@ -49,13 +54,17 @@ public class MultiIterator implements Iterator<Object[]>{
         return hasNext.booleanValue();                
     }
 
-    public MultiIterator init(){
-        iterators = new Iterator<?>[iterables.size()];
-        for (int i = 0; i < iterators.length; i++){
-            iterators[i] = iterables.get(i).iterator();
-        }
-        lastEntry = new boolean[iterators.length];
-        values = new Object[iterators.length];
+    /**
+     * Initialize the MultiIterator instance
+     * 
+     * @param iteratorFactory
+     * @return
+     */
+    public MultiIterator init(IteratorFactory iteratorFactory){
+        this.iteratorFactory = iteratorFactory;
+        this.iterators = new Iterator<?>[sources.size()];
+        this.lastEntry = new boolean[iterators.length];
+        this.values = new Object[iterators.length];
         return this;
     }
                 
@@ -73,6 +82,9 @@ public class MultiIterator implements Iterator<Object[]>{
     
     private void produceNext(){
         for (int i = index; i < iterators.length; i++){   
+            if (!initialized){
+                iterators[i] = iteratorFactory.getIterator(sources.get(i), values);
+            }            
             if (!iterators[i].hasNext()){
                 hasNext = Boolean.FALSE;
                 return;
@@ -80,16 +92,17 @@ public class MultiIterator implements Iterator<Object[]>{
             values[i] = iterators[i].next();
             lastEntry[i] = !iterators[i].hasNext();
             if (!iterators[i].hasNext() && i > 0){     
-                iterators[i] = iterables.get(i).iterator();                
+                iterators[i] = iteratorFactory.getIterator(sources.get(i), values);                
             }            
             hasNext = Boolean.TRUE;
         }        
         index = iterators.length -1;
         while (lastEntry[index] && index > 0) index--;
+        initialized = true;
     }
 
     public void remove() {
-        
+        // do nothing
     }   
 
 }

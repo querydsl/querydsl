@@ -5,11 +5,7 @@
  */
 package com.mysema.query.collections.comparators;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.lang.mutable.MutableInt;
 
@@ -33,8 +29,8 @@ public class JoinExpressionComparator implements Comparator<JoinExpression<?>>{
     
     private boolean invert = false;
     
-    public JoinExpressionComparator(EBoolean where, Map<Expr<?>, Iterable<?>> exprToIterable) {
-        for (Expr<?> expr : exprToIterable.keySet()){
+    public JoinExpressionComparator(EBoolean where, Collection<Expr<?>> sources) {
+        for (Expr<?> expr : sources){
             priorities.put(expr, new MutableInt());
         }        
         if (where instanceof Operation){

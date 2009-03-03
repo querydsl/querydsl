@@ -5,18 +5,18 @@
  */
 package com.mysema.query.collections.iterators;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import org.junit.Test;
 
+import com.mysema.query.collections.DefaultIteratorFactory;
+import com.mysema.query.collections.IteratorFactory;
 import com.mysema.query.collections.MiniApi;
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.Domain.QCat;
 import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.JavaOps;
+import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.ENumber;
 import com.mysema.query.grammar.types.Expr.EString;
@@ -30,7 +30,11 @@ import com.mysema.query.grammar.types.Expr.EString;
 public class FilteringMultiIteratorTest extends AbstractIteratorTest{
     
     private FilteringMultiIterator it;
-     
+    
+    private Map<Expr<?>,Iterable<?>> exprToIt = new HashMap<Expr<?>,Iterable<?>>();
+    
+    private IteratorFactory iteratorFactory = new DefaultIteratorFactory(exprToIt);
+    
     private EString str1 = MiniApi.$("str1");   
     private EString str2 = MiniApi.$("str2");
     private EString str3 = MiniApi.$("str3");
@@ -51,8 +55,9 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
     public void testSimpleCase1(){           
         EBoolean where = str1.eq("one").and(str2.eq("two"));
         it = new FilteringMultiIterator(new JavaOps(), where);        
-        it.add(str1, Arrays.asList("one","two","three"));
-        it.init();
+        it.add(str1);
+        exprToIt.put(str1, Arrays.asList("one","two","three"));
+        it.init(iteratorFactory);
         
         assertIteratorEquals(Collections.singletonList(row("one")).iterator(), it);
     }
@@ -61,9 +66,11 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
     public void testSimpleCase2(){
         EBoolean where = str1.eq("one").and(str2.eq("two"));
         it = new FilteringMultiIterator(new JavaOps(), where);        
-        it.add(str1, Arrays.asList("one","two","three"));
-        it.add(str2, Arrays.asList("two","three","four"));
-        it.init();
+        it.add(str1);
+        exprToIt.put(str1, Arrays.asList("one","two","three"));
+        it.add(str2);
+        exprToIt.put(str2, Arrays.asList("two","three","four"));
+        it.init(iteratorFactory);
         
         assertIteratorEquals(Collections.singletonList(row("one","two")).iterator(), it);
     }
@@ -72,10 +79,13 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
     public void testMoreComplexCases(){
         EBoolean where = str1.eq("one").and(str2.eq("two")).or(str3.eq("three"));
         it = new FilteringMultiIterator(new JavaOps(), where);        
-        it.add(str1, Arrays.asList("one","two","three"));
-        it.add(str2, Arrays.asList("two","three","four","five","six","seven"));
-        it.add(str3, Arrays.asList("three","four","five"));
-        it.init();
+        it.add(str1);
+        exprToIt.put(str1, Arrays.asList("one","two","three"));
+        it.add(str2);
+        exprToIt.put(str2, Arrays.asList("two","three","four","five","six","seven"));
+        it.add(str3);
+        exprToIt.put(str3, Arrays.asList("three","four","five"));
+        it.init(iteratorFactory);
         
         while (it.hasNext()){
             System.out.println(Arrays.asList(it.next()));
@@ -90,10 +100,12 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
                 cat.name.eq("Kitty").and(otherCat.name.eq("Bob")),
                 cat.name.eq("Kitty").and(Grammar.not(otherCat.name.eq("Bob"))))){
             it = new FilteringMultiIterator(new JavaOps(), where);            
-            it.add(cat, Arrays.asList(c1, c2));
-            it.add(otherCat, Arrays.asList(c2, c3));        
+            it.add(cat);
+            exprToIt.put(cat, Arrays.asList(c1, c2));
+            it.add(otherCat);
+            exprToIt.put(otherCat, Arrays.asList(c2, c3));
 //            initAndDisplay(it);    
-            it.init();
+            it.init(iteratorFactory);
             
             while (it.hasNext()){
                 it.next();
@@ -108,8 +120,13 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
         
         List<Integer> ints = new ArrayList<Integer>(100);
         for (int i = 0; i < 100; i++) ints.add(i + 1);
-        it.add(int1, ints).add(int2, ints).add(int3, ints).add(int4, ints);
-        it.init();
+//        it.add(int1, ints).add(int2, ints).add(int3, ints).add(int4, ints);
+        it.add(int1).add(int2).add(int3).add(int4);
+        exprToIt.put(int1, ints);
+        exprToIt.put(int2, ints);
+        exprToIt.put(int3, ints);
+        exprToIt.put(int4, ints);
+        it.init(iteratorFactory);
         long start = System.currentTimeMillis();
         while (it.hasNext()){
             it.next();

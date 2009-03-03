@@ -39,28 +39,43 @@ import com.mysema.query.grammar.types.Expr;
  * @version $Id$
  */
 public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
+        
+    @SuppressWarnings("unchecked")
+    private final SubType _this = (SubType)this;
     
-    private static final JavaOps OPS_DEFAULT = new JavaOps();
-
-    private final Map<Expr<?>, Iterable<?>> exprToIterable = new HashMap<Expr<?>, Iterable<?>>();
+    private final Map<Expr<?>, Iterable<?>> exprToIt = new HashMap<Expr<?>, Iterable<?>>();
     
-    private final InnerQuery query = new InnerQuery();
+    private IteratorFactory iteratorFactory;
 
     private final JavaOps ops;
     
-    private boolean sortSources = true, wrapIterators = true;
+    private final InnerQuery query = new InnerQuery();
     
-    @SuppressWarnings("unchecked")
-    private final SubType _this = (SubType)this;
+    private boolean sortSources = true, wrapIterators = true;
 
     public AbstractColQuery() {
-        this(OPS_DEFAULT);
-    }
-
-    public AbstractColQuery(JavaOps ops) {
-        this.ops = ops;
+        this(JavaOps.DEFAULT);
     }
     
+    public AbstractColQuery(JavaOps ops) {
+        this.ops = ops;
+        this.iteratorFactory = new DefaultIteratorFactory(exprToIt);
+    }
+    
+    public AbstractColQuery(IteratorFactory iteratorFactory){
+        this(JavaOps.DEFAULT, iteratorFactory);
+    }
+    
+    public AbstractColQuery(JavaOps ops, IteratorFactory iteratorFactory) {
+        this.ops = ops;
+        this.iteratorFactory = iteratorFactory;
+    }
+    
+    public <A> SubType alias(Expr<A> path, Iterable<A> col) {
+        exprToIt.put(path, col);
+        return _this;
+    }
+
     private <A> A[] asArray(A[] target, A first, A second, A... rest) {
         target[0] = first;
         target[1] = second;
@@ -74,15 +89,10 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         list.addAll(Arrays.asList(rest));
         return from(entity, list);
     }
-
+    
     public <A> SubType from(Expr<A> entity, Iterable<A> col) {
         alias(entity, col);
         query.from((Expr<?>)entity);
-        return _this;
-    }
-    
-    public <A> SubType alias(Expr<A> path, Iterable<A> col) {
-        exprToIterable.put(path, col);
         return _this;
     }
          
@@ -109,6 +119,14 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         return query.iterate(projection);
     }
     
+    /**
+     * NOTE : use iterate for huge projections
+     * 
+     * @param e1
+     * @param e2
+     * @param rest
+     * @return
+     */
     public List<Object[]> list(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
         ArrayList<Object[]> rv = new ArrayList<Object[]>();
         for (Object[] v : iterate(e1, e2, rest)){
@@ -117,6 +135,13 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         return rv;
     }
     
+    /**
+     * NOTE : use iterate for huge projections
+     * 
+     * @param <RT>
+     * @param projection
+     * @return
+     */
     public <RT> List<RT> list(Expr<RT> projection) {
         ArrayList<RT> rv = new ArrayList<RT>();
         for (RT v : query.iterate(projection)){
@@ -125,27 +150,27 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         return rv;
     }
     
-    public <RT> RT uniqueResult(Expr<RT> expr) {
-        Iterator<RT> it = query.iterate(expr).iterator();
-        return it.hasNext() ? it.next() : null;
-    }
-        
     public SubType orderBy(OrderSpecifier<?>... o) {
         query.orderBy(o);
         return _this;
     }
-    
-    public SubType where(Expr.EBoolean... o) {
-        query.where(o);
-        return _this;
-    }
-    
+        
     public void setSortSources(boolean s){
         this.sortSources = s;
     }
     
     public void setWrapIterators(boolean w){
         this.wrapIterators = true;
+    }
+    
+    public <RT> RT uniqueResult(Expr<RT> expr) {
+        Iterator<RT> it = query.iterate(expr).iterator();
+        return it.hasNext() ? it.next() : null;
+    }
+    
+    public SubType where(Expr.EBoolean... o) {
+        query.where(o);
+        return _this;
     }
     
     public class InnerQuery extends QueryBase<Object, InnerQuery> {
@@ -167,12 +192,56 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
             return handleSelect(it, sources, projection);                   
         }
         
+        protected Iterator<?> handleFromAndWhere(List<Expr<?>> sources) throws Exception{
+            MultiIterator multiIt;
+            if (where.create() == null || !wrapIterators){
+                // cartesian view
+                multiIt = new MultiIterator();
+            }else{
+                // filtered cartesian view
+                multiIt = new FilteringMultiIterator(ops, where.create());
+                if (sortSources){                    
+                    JoinExpressionComparator comp = new JoinExpressionComparator(where.create(), exprToIt.keySet());
+                    if (joins.size() == 2){
+                        if (comp.comparePrioritiesOnly(joins.get(0), joins.get(1)) > 0){
+                            JoinExpression<Object> je = joins.set(0, joins.get(1));
+                            joins.set(1, je);
+                        }                         
+                    }else{
+                        Collections.sort(joins, comp);
+                    }                    
+                }
+            }        
+            for (JoinExpression<?> join : joins) {
+                sources.add(join.getTarget());
+                multiIt.add(join.getTarget());
+                switch(join.getType()){
+                case JOIN :       
+                case INNERJOIN :  // TODO
+                case LEFTJOIN :   // TODO
+                case FULLJOIN :   // TODO
+                case DEFAULT :    // do nothing
+                }
+            }   
+            iteratorFactory.init(sources, where.create());
+            multiIt.init(iteratorFactory);
+            
+            if (!wrapIterators && (where.create() != null)){
+                ExpressionEvaluator ev = new JavaSerializer(ops).handle(where.create())
+                    .createExpressionEvaluator(sources, boolean.class);
+                return new MultiArgFilteringIterator<Object>(multiIt, ev);    
+            }else{
+                return multiIt;    
+            }            
+        }
+        
         protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources) throws Exception{
             JoinExpression<?> join = joins.get(0);
             sources.add(join.getTarget());
+            iteratorFactory.init(sources, where.create());
             
             // create a simple projecting iterator for Object -> Object[]
-            Iterator<?> it = new WrappingIterator<Object[]>(exprToIterable.get(join.getTarget()).iterator()){
+            Iterator<?> it = new WrappingIterator<Object[]>(iteratorFactory.getIterator(join.getTarget())){
                public Object[] next() {
                    return new Object[]{nextFromOrig()};
                }               
@@ -186,46 +255,6 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
                 it = new MultiArgFilteringIterator<Object>(it, ev);    
             }
             return it;
-        }
-        
-        protected Iterator<?> handleFromAndWhere(List<Expr<?>> sources) throws Exception{
-            MultiIterator multiIt;
-            if (where.create() == null || !wrapIterators){
-                // cartesian view
-                multiIt = new MultiIterator();
-            }else{
-                // filtered cartesian view
-                multiIt = new FilteringMultiIterator(ops, where.create());
-                if (sortSources){                    
-                    JoinExpressionComparator comp = new JoinExpressionComparator(where.create(), exprToIterable);
-                    if (joins.size() == 2){
-                        if (comp.comparePrioritiesOnly(joins.get(0), joins.get(1)) > 0){
-                            JoinExpression<Object> je = joins.set(0, joins.get(1));
-                            joins.set(1, je);
-                        }                         
-                    }else{
-                        Collections.sort(joins, comp);
-                    }                    
-                }
-            }        
-            for (JoinExpression<?> join : joins) {
-                sources.add(join.getTarget());
-                multiIt.add(join.getTarget(), exprToIterable.get(join.getTarget()));
-                switch(join.getType()){
-                case JOIN :       
-                case INNERJOIN :  // TODO
-                case LEFTJOIN :   // TODO
-                case FULLJOIN :   // TODO
-                case DEFAULT :    // do nothing
-                }
-            }   
-            if (!wrapIterators && (where.create() != null)){
-                ExpressionEvaluator ev = new JavaSerializer(ops).handle(where.create())
-                    .createExpressionEvaluator(sources, boolean.class);
-                return new MultiArgFilteringIterator<Object>(multiIt.init(), ev);    
-            }else{
-                return multiIt.init();    
-            }            
         }
 
         protected Iterator<?> handleOrderBy(List<Expr<?>> sources, Iterator<?> it)

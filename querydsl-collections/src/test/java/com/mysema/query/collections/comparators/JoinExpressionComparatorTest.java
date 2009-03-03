@@ -49,7 +49,7 @@ public class JoinExpressionComparatorTest extends AbstractQueryTest{
     public void test1(){        
         EBoolean where = cat.name.eq(otherCat.name).and(otherCat.name.eq("Bob"));
         
-        JoinExpressionComparator comp = new JoinExpressionComparator(where, exprToIt);        
+        JoinExpressionComparator comp = new JoinExpressionComparator(where, exprToIt.keySet());        
         assertTrue( comp.compare(otherCatJoin, catJoin) < 0);
         assertTrue( comp.compare(catJoin, otherCatJoin) > 0);
         assertEquals(0, comp.compare(catJoin, catJoin));
@@ -63,7 +63,7 @@ public class JoinExpressionComparatorTest extends AbstractQueryTest{
             .and(cat.eq(mate.kittens(0)))
             .and(otherCat.name.eq("Bob"));
         
-        JoinExpressionComparator comp = new JoinExpressionComparator(where, exprToIt);        
+        JoinExpressionComparator comp = new JoinExpressionComparator(where, exprToIt.keySet());        
         assertTrue( comp.compare(otherCatJoin, catJoin) < 0);
         assertTrue( comp.compare(catJoin, mateJoin) < 0);
     }

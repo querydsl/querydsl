@@ -21,6 +21,8 @@ import com.mysema.query.serialization.OperationPatterns;
  */
 public class JavaOps extends OperationPatterns {
     
+    public static final JavaOps DEFAULT = new JavaOps();
+    
     public JavaOps(){       
         String functions = JavaOps.class.getName();
         

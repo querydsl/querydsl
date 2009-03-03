@@ -24,4 +24,12 @@ public class ColQuery extends AbstractColQuery<ColQuery>{
         super(ops);
     }
     
+    public ColQuery(IteratorFactory iteratorFactory){
+        super(iteratorFactory);
+    }
+    
+    public ColQuery(JavaOps ops, IteratorFactory iteratorFactory){
+        super(ops, iteratorFactory);
+    }
+    
 }
