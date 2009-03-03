@@ -7,16 +7,14 @@ package com.mysema.query.hql;
 
 
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import javax.persistence.*;
 
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.Sort;
+import org.hibernate.annotations.SortType;
 
 import com.mysema.query.annotations.DTO;
 
@@ -150,7 +148,7 @@ public class HqlDomain {
     public static class Catalog {
         Date effectiveDate;
         @Id int id;
-        @OneToMany Collection<Price> prices;
+        @OneToMany @Sort(type=SortType.NATURAL) SortedSet<Price> prices;
     }
     
     /**
