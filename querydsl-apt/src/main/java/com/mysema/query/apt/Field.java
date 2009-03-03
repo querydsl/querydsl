@@ -73,6 +73,7 @@ public class Field implements Comparable<Field> {
     }
     
     private static String javaSafe(String name){
+        // TODO : improve this
         if (name.equals("private")){
             return "prvate";
         }else if (name.equals("public")){
@@ -83,6 +84,7 @@ public class Field implements Comparable<Field> {
     }
     
     private static String realName(String name){
+        // TODO : improve this
         if (name.equals("prvate")){
             return "private";
         }else if (name.equals("pblic")){
