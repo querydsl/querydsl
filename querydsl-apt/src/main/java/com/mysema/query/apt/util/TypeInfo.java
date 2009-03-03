@@ -124,7 +124,8 @@ public class TypeInfo {
                 }
 
             } else if (typeName.equals(java.util.Collection.class.getName())
-                    || typeName.equals(java.util.Set.class.getName())) {
+                    || typeName.equals(java.util.Set.class.getName()) 
+                    || typeName.equals(java.util.SortedSet.class.getName())) {
                 TypeInfo valueInfo = new TypeInfo(i.next());
                 fullName = valueInfo.getFullName();
                 packageName = valueInfo.getPackageName();
