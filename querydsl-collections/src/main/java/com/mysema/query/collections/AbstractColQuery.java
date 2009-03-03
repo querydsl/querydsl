@@ -48,13 +48,13 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     
     private IndexSupport indexSupport;
     
-    private SourceSortingSupport sourceSortingSupport;
-
     private final JavaOps ops;
-    
+
     private final InnerQuery query = new InnerQuery();
     
     private boolean sortSources = true, wrapIterators = true;
+    
+    private SourceSortingSupport sourceSortingSupport;
 
     public AbstractColQuery() {
         this(JavaOps.DEFAULT);
@@ -151,20 +151,20 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         return _this;
     }
         
+    public void setIndexSupport(IndexSupport indexSupport) {
+        this.indexSupport = indexSupport;
+    }
+    
     public void setSortSources(boolean s){
         this.sortSources = s;
     }
     
-    public void setWrapIterators(boolean w){
-        this.wrapIterators = true;
-    }
-    
-    public void setIndexSupport(IndexSupport indexSupport) {
-        this.indexSupport = indexSupport;
-    }
-
     public void setSourceSortingSupport(SourceSortingSupport sourceSortingSupport) {
         this.sourceSortingSupport = sourceSortingSupport;
+    }
+
+    public void setWrapIterators(boolean w){
+        this.wrapIterators = true;
     }
 
     public <RT> RT uniqueResult(Expr<RT> expr) {
