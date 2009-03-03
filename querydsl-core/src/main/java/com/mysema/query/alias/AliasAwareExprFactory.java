@@ -54,6 +54,7 @@ public class AliasAwareExprFactory extends SimpleExprFactory{
         return rv != null ? rv : super.createNumber(arg);
     }
     
+    @SuppressWarnings("unchecked")
     public <D> PEntity<D> createEntity(D arg){
         PEntity<D> rv = aliasFactory.<PEntity<D>>getCurrentAndReset();
         if (rv != null){
