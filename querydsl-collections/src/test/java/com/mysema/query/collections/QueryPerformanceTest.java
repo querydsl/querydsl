@@ -33,10 +33,11 @@ public class QueryPerformanceTest extends AbstractQueryTest{
     private List<String> resultLog = new ArrayList<String>(30);
     
     private List<EBoolean> conditions = Arrays.asList(
-//            cat.ne(otherCat),
+            cat.ne(otherCat),
             cat.name.ne(otherCat.name).and(otherCat.name.eq("Kate5")),
             cat.bodyWeight.eq(0).and(otherCat.name.eq("Kate5")),
-            cat.name.ne(otherCat.name).and(otherCat.name.like("Kate5%"))            
+            cat.name.ne(otherCat.name).and(otherCat.name.like("Kate5%")),
+            cat.name.like("Bob5%").and(otherCat.name.like("Kate5%"))         
     );
         
     @Test
@@ -57,14 +58,13 @@ public class QueryPerformanceTest extends AbstractQueryTest{
                 System.out.println("#" + (i+1) + " order preserved");
             }
         }
-        System.out.println();
-        System.out.println("Times are for " + testIterations + " iterations");
+
         System.out.println();
          
         runTest(100);
         runTest(500);        
         runTest(1000);       
-        runTest(5000);        
+//        runTest(5000);        
 //        runTest(10000);
 //        runTest(50000);        
         
@@ -116,9 +116,9 @@ public class QueryPerformanceTest extends AbstractQueryTest{
             }
             StringBuilder builder = new StringBuilder();
             builder.append(" #").append(conditions.indexOf(condition)+1).append("          ");
-            builder.append(StringUtils.leftPad(String.valueOf(level1), 5)).append(" ms");
-            builder.append(StringUtils.leftPad(String.valueOf(level2), 5)).append(" ms");
-            builder.append(StringUtils.leftPad(String.valueOf(level3), 5)).append(" ms");            
+            builder.append(StringUtils.leftPad(String.valueOf(level1 / testIterations), 10)).append(" ms");
+            builder.append(StringUtils.leftPad(String.valueOf(level2 / testIterations), 10)).append(" ms");
+            builder.append(StringUtils.leftPad(String.valueOf(level3 / testIterations), 10)).append(" ms");            
             resultLog.add(builder.toString());    
         }
         resultLog.add("");

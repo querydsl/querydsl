@@ -76,19 +76,24 @@ public class FilteredJavaSerializerTest {
     }
     @Test
     public void test12(){
-        assertMatche2Expr("true && otherCat.getName().equals(a1)",    cat.name.eq("Bob").and(otherCat.name.eq("Kate")));
+        assertMatches2Expr("true && otherCat.getName().equals(a1)",    cat.name.eq("Bob").and(otherCat.name.eq("Kate")));
     }
     @Test
     public void test13(){
-        assertMatche2Expr("true && otherCat.getName().equals(a2)",    cat.name.lower().eq("Bob").and(otherCat.name.eq("Kate")));
-    }    
+        assertMatches2Expr("true && otherCat.getName().equals(a2)",    cat.name.lower().eq("Bob").and(otherCat.name.eq("Kate")));
+    }   
+    @Test
+    public void test14(){
+        assertMatches1Expr("true && true", cat.name.ne(otherCat.name).and(otherCat.name.like("Kate5%")));
+        assertMatches1Expr("true && com.mysema.query.grammar.JavaOps.like(cat.getName(),a1)", otherCat.name.ne(cat.name).and(cat.name.like("Kate5%")));
+    }
     
     private void assertMatches1Expr(String expected, EBoolean where) {
         JavaSerializer ser = new FilteredJavaSerializer(ops, Collections.<Expr<?>>singletonList(cat));
         ser.handle(where);
         Assert.assertEquals(expected, ser.toString());
     }
-    private void assertMatche2Expr(String expected, EBoolean where) {
+    private void assertMatches2Expr(String expected, EBoolean where) {
         JavaSerializer ser = new FilteredJavaSerializer(ops, Arrays.<Expr<?>>asList(cat,otherCat));
         ser.handle(where);
         Assert.assertEquals(expected, ser.toString());
