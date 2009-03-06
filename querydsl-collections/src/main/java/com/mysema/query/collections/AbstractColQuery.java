@@ -164,7 +164,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     }
 
     public void setWrapIterators(boolean w){
-        this.wrapIterators = true;
+        this.wrapIterators = w;
     }
 
     public <RT> RT uniqueResult(Expr<RT> expr) {

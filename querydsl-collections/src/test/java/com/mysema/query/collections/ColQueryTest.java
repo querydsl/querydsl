@@ -28,6 +28,7 @@ import com.mysema.query.grammar.GrammarWithAlias;
 import com.mysema.query.grammar.QMath;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
+import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.ENumber;
 import com.mysema.query.grammar.types.Path.PEntity;
 
@@ -450,6 +451,27 @@ public class ColQueryTest extends AbstractQueryTest{
         for (Integer i : from($(0),1,2,3,4).where($(0).lt(4)).iterate($(0))){
             System.out.println(i);
         }
+    }
+    
+    @Test
+    public void testCats(){
+        EBoolean where = cat.name.like("Bob5%").and(otherCat.name.like("Kate5%"));
+        int size = 100;
+        List<Cat> cats1 = new ArrayList<Cat>(size);
+        for (int i= 0; i < size; i++){
+            cats1.add(new Cat("Bob" + i));
+        }
+        List<Cat> cats2 = new ArrayList<Cat>(size);
+        for (int i=0; i < size; i++){
+            cats2.add(new Cat("Kate" + i));
+        }
+        
+        ColQuery query = new ColQuery().from(cat, cats1).from(otherCat, cats2);
+        query.setWrapIterators(false);
+        for (Object[] objects : MiniApi.from(cat, cats1).from(otherCat, cats2).where(where).iterate(cat, otherCat)){
+            System.out.println(Arrays.asList(objects));
+        }
+                   
     }
     
     private static class TestQuery extends AbstractColQuery<TestQuery>{

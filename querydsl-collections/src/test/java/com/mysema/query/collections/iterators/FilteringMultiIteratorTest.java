@@ -112,7 +112,7 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
             }            
         }        
     }
-        
+            
     @Test
     public void testFourLevels(){
         it = new FilteringMultiIterator(new JavaOps(), 
