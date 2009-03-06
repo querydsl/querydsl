@@ -16,6 +16,9 @@ import org.codehaus.janino.ExpressionEvaluator;
  * FilteringIterator is an Iterator implementation which filters items via
  * the given ExpressionEvaluator
  *
+ * @see SingleArgFilteringIterator
+ * @see FilteringMultiIterator
+ *
  * @author tiwe
  * @version $Id$
  */

@@ -24,6 +24,9 @@ import com.mysema.query.grammar.types.Expr.EConstant;
 /**
  * JoinExpressionComparator is a comparator for Join expressions
  *
+ * @see DefaultSourceSortingSupport
+ * @see SourceSortingSupport
+ *
  * @author tiwe
  * @version $Id$
  */

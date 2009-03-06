@@ -11,7 +11,11 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 
 /**
- * SourceSortingSupport provides
+ * SourceSortingSupport enables the injection of source sorting functionality 
+ * into ColQuery queries
+ * 
+ * @see DefaultSourceSortingSupport
+ * @see JoinExpressionComparator
  *
  * @author tiwe
  * @version $Id$

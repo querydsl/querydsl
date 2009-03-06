@@ -35,6 +35,8 @@ import com.mysema.query.grammar.types.Expr;
  *   ...
  * }
  * </pre>
+ * 
+ * @see ColQuery
  *
  * @author tiwe
  * @version $Id$

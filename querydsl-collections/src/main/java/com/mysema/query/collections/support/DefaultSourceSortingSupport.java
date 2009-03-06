@@ -15,6 +15,8 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
 /**
  * DefaultSourceSortingSupport provides
  *
+ * @see SourceSortingSupport
+ *
  * @author tiwe
  * @version $Id$
  */

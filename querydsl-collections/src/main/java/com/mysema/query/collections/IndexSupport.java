@@ -15,6 +15,8 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
  * IndexSupport enables the injection of indexed query source lookup into 
  * collection query instances
  *
+ * @see DefaultIndexSupport
+ *
  * @author tiwe
  * @version $Id$
  */

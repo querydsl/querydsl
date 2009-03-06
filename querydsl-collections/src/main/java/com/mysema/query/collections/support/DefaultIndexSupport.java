@@ -16,6 +16,8 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
 /**
  * DefaultIndexSupport is the default implementation of the IndexSupport interface
  *
+ * @see IndexSupport
+ *
  * @author tiwe
  * @version $Id$
  */

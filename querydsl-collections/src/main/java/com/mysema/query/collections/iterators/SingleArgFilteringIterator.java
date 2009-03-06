@@ -15,6 +15,9 @@ import org.codehaus.janino.ExpressionEvaluator;
 /**
  * SingleArgFilteringIterator provides
  *
+ * @see MultiArgFilteringIterator
+ * @see FilteringMultiIterator
+ *
  * @author tiwe
  * @version $Id$
  */
