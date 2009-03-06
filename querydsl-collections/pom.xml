@@ -47,5 +47,44 @@
       <!-- license : http://www.slf4j.org/license.html -->
     </dependency>
   </dependencies>
+  
+  <build>
+    <plugins>
+  
+      <plugin>
+        <groupId>org.apache.myfaces.tobago</groupId>
+        <artifactId>maven-apt-plugin</artifactId>
+        <version>1.0.15</version>
+        <executions>
+          <execution>
+            <id>dummy-domain-into-package</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>testExecute</goal>
+            </goals>
+            <configuration>
+              <aptSourceRoots>
+                <aptSourceRoot>src/test/java</aptSourceRoot>
+              </aptSourceRoots>
+              <force>true</force>
+              <factory>com.mysema.query.apt.APTFactory</factory>
+              <testGenerated>
+                target/generated-test-sources/java
+              </testGenerated>
+              <nocompile>true</nocompile>
+              <A>-Aprofile=querydsl,
+                 -AnamePrefix=Q</A>
+              <testIncludes>
+                <testInclude>
+                  com/mysema/query/DomainTest*.java
+                </testInclude>
+              </testIncludes>
+              <showWarnings>true</showWarnings>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>        
+    </plugins>
+  </build>
 
 </project>
