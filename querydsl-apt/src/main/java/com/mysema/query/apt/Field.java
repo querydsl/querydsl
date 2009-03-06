@@ -68,6 +68,7 @@ public class Field implements Comparable<Field> {
         this.realName = realName(realName);
         this.keyTypeName = keyTypeName;
         this.typeName = typeName;
+        this.typePackage = typeName.substring(0, typeName.lastIndexOf('.'));
         this.simpleTypeName = simpleTypeName;
         this.fieldType = fieldType;
     }

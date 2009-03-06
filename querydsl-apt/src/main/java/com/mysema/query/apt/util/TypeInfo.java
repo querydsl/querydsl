@@ -22,7 +22,7 @@ public class TypeInfo {
 
     private Field.Type fieldType;
 
-    private String simpleName, fullName, packageName, keyTypeName;
+    private String simpleName, fullName, packageName = "", keyTypeName;
 
     private final TypeInfoVisitor visitor = new TypeInfoVisitor();
 
@@ -47,12 +47,12 @@ public class TypeInfo {
         return fullName;
     }
     
-    public String getPackageName(){
-        return packageName;
-    }
-
     public String getKeyTypeName() {
         return keyTypeName;
+    }
+
+    public String getPackageName(){
+        return packageName;
     }
 
     public String getSimpleName() {
@@ -68,10 +68,13 @@ public class TypeInfo {
     }
 
     private class TypeInfoVisitor extends SimpleTypeVisitor {
+        
+        @Override
         public void visitAnnotationType(AnnotationType arg0) {
             //            
         }
 
+        @Override
         public void visitArrayType(ArrayType arg0) {
             TypeInfo valueInfo = new TypeInfo(arg0.getComponentType());
             fullName = valueInfo.getFullName();
@@ -83,10 +86,11 @@ public class TypeInfo {
             }
         }
 
+        @Override
         public void visitClassType(ClassType arg0){
             try {                               
                 fullName = arg0.getDeclaration().getQualifiedName();
-                packageName = arg0.getDeclaration().getPackage().getQualifiedName();
+                packageName = arg0.getDeclaration().getPackage().getQualifiedName();                    
                 if (fullName.equals(String.class.getName())) {
                     fieldType = Field.Type.STRING;
                 } else if (fullName.equals(Boolean.class.getName())) {
@@ -103,10 +107,12 @@ public class TypeInfo {
             }            
         }
 
+        @Override
         public void visitEnumType(EnumType arg0) {
             fieldType = Field.Type.SIMPLE;
         }
 
+        @Override
         public void visitInterfaceType(InterfaceType arg0) {
             Iterator<TypeMirror> i = arg0.getActualTypeArguments().iterator();
             String typeName = arg0.getDeclaration().getQualifiedName();
@@ -147,6 +153,7 @@ public class TypeInfo {
             }
         }
 
+        @Override
         public void visitPrimitiveType(PrimitiveType arg0) {
             Class<?> cl = null;
             switch (arg0.getKind()) {
@@ -187,6 +194,26 @@ public class TypeInfo {
             fullName = cl.getName();
             simpleName = cl.getSimpleName();
 
+        }
+        
+        @Override
+        public void visitTypeVariable(TypeVariable arg0){
+            if (!arg0.getDeclaration().getBounds().isEmpty()){
+                TypeInfo lb = new TypeInfo(arg0.getDeclaration().getBounds().iterator().next());
+                fullName = lb.getFullName();
+                packageName = lb.getPackageName();     
+                simpleName = lb.getSimpleName();
+            }
+        }
+        
+        @Override
+        public void visitWildcardType(WildcardType arg0){
+            if (!arg0.getUpperBounds().isEmpty()){
+                TypeInfo lb = new TypeInfo(arg0.getUpperBounds().iterator().next());
+                fullName = lb.getFullName();
+                packageName = lb.getPackageName();     
+                simpleName = lb.getSimpleName();
+            }
         }
 
     }
