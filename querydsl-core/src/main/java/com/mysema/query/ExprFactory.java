@@ -8,6 +8,7 @@ package com.mysema.query;
 import java.util.Collection;
 import java.util.List;
 
+import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.ENumber;
@@ -21,6 +22,8 @@ import com.mysema.query.grammar.types.Path.*;
  * @version $Id$
  */
 public interface ExprFactory {
+    
+    <D> Expr<D> createAny(D arg);
 
     EBoolean createBoolean(Boolean arg);
 

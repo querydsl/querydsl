@@ -15,6 +15,7 @@ import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.map.LazyMap;
 import org.apache.commons.lang.StringUtils;
 
+import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
@@ -106,6 +107,10 @@ public class SimpleExprFactory implements ExprFactory {
             return new ExtString(md());
         }        
     });
+    
+    public <D> Expr<D> createAny(D arg){
+        throw new UnsupportedOperationException();
+    }
     
     public EBoolean createBoolean(Boolean arg){
         return arg.booleanValue() ? btrue : bfalse;

@@ -14,6 +14,7 @@ import com.mysema.query.ExprFactory;
 import com.mysema.query.alias.AliasAwareExprFactory;
 import com.mysema.query.alias.AliasFactory;
 import com.mysema.query.alias.SimpleAliasFactory;
+import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
@@ -38,7 +39,7 @@ public class GrammarWithAlias extends Grammar{
     public static <A> A alias(Class<A> cl, String var){
         return aliasFactory.createAliasForVar(cl, var);
     }
-        
+            
     public static void resetAlias(){
         aliasFactory.reset();        
     }
@@ -119,7 +120,11 @@ public class GrammarWithAlias extends Grammar{
     public static <D> PEntity<D> $(D arg){
         return exprFactory.createEntity(arg);
     }
-
+    
+    public static <D> Expr<D> getAny(D arg){
+        return exprFactory.createAny(arg);
+    }
+            
     @SuppressWarnings("unchecked")
     public static <D> PSimple<D> $(){
         return (PSimple<D>) it;

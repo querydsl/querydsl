@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.List;
 
 import com.mysema.query.SimpleExprFactory;
+import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.ENumber;
@@ -27,6 +29,18 @@ public class AliasAwareExprFactory extends SimpleExprFactory{
     
     public AliasAwareExprFactory(AliasFactory aliasFactory){
         this.aliasFactory = aliasFactory;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public <D> Expr<D> createAny(D arg){
+        Expr<D> current = (Expr<D>)aliasFactory.getCurrentAndReset();
+        if (current != null){
+            return current;
+        }else if (arg instanceof ManagedObject){
+            return (Expr<D>)((ManagedObject)arg).__mappedPath();
+        }else{
+            throw new IllegalArgumentException("No path mapped to " + arg);
+        }        
     }
     
     public EBoolean createBoolean(Boolean arg){
