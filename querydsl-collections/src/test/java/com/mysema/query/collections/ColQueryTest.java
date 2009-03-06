@@ -91,12 +91,6 @@ public class ColQueryTest extends AbstractQueryTest{
                           .iterate(c.getName())){
             System.out.println(name);
         }   
-        
-        // 2nd - variation 2
-        for (String name : from(c,cats).where(!c.getKittens().isEmpty())
-                          .iterate(c.getName())){
-            System.out.println(name);
-        }   
                             
     }
     
@@ -191,6 +185,7 @@ public class ColQueryTest extends AbstractQueryTest{
         from(c,cats)
         .where($(c.getName()).startsWith("B"))
         .iterate(c).iterator();        
+        
     }
     
 

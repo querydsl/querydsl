@@ -177,10 +177,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     }
     // alias variant
     public SubType where(boolean alias){
-        EBoolean condition = MiniApi.$(alias);
-        if (!alias) 
-            condition = condition.not();
-        return where(condition);
+        return where( MiniApi.$(alias));
     }
     
     public void setIndexSupport(IndexSupport indexSupport) {
