@@ -24,13 +24,13 @@ public class MiniApi extends GrammarWithAlias{
     public static <A> ColQuery from(Expr<A> path, A... arr){
         return from(path, Arrays.asList(arr));
     }
+
+    public static <A> ColQuery from(Expr<A> path, Iterable<A> col){
+        return new ColQuery().from(path, col);
+    }
     
     public static <A> ColQuery from(A alias, Iterable<A> col){
         return new ColQuery().from($(alias), col);
-    }
-    
-    public static <A> ColQuery from(Expr<A> path, Iterable<A> col){
-        return new ColQuery().from(path, col);
     }
     
     @SuppressWarnings("unchecked")

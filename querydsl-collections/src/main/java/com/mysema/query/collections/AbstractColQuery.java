@@ -66,7 +66,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
     }
     
-    public <A> SubType alias(Expr<A> path, Iterable<A> col) {
+    protected <A> SubType alias(Expr<A> path, Iterable<A> col) {
         exprToIt.put(path, col);
         return _this;
     }
@@ -114,6 +114,10 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     public <RT> Iterable<RT> iterate(Expr<RT> projection) {
         return query.iterate(projection);
     }
+    // alias variant
+    public <RT> Iterable<RT> iterate(RT alias) {
+        return iterate(MiniApi.getAny(alias));
+    }
     
     /**
      * NOTE : use iterate for huge projections
@@ -145,12 +149,34 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         }
         return rv;
     }
+    // alias variant
+    public <RT> List<RT> list(RT alias) {
+        return list(MiniApi.getAny(alias));
+    }
     
     public SubType orderBy(OrderSpecifier<?>... o) {
         query.orderBy(o);
         return _this;
+    }   
+    
+    public <RT> RT uniqueResult(Expr<RT> expr) {
+        Iterator<RT> it = query.iterate(expr).iterator();
+        return it.hasNext() ? it.next() : null;
+    }
+    // alias variant
+    public <RT> RT uniqueResult(RT alias) {
+        return uniqueResult(MiniApi.getAny(alias));
     }
         
+    public SubType where(Expr.EBoolean... o) {
+        query.where(o);
+        return _this;
+    }
+    // alias variant
+    public SubType where(boolean alias){
+        return where(MiniApi.$(alias));
+    }
+    
     public void setIndexSupport(IndexSupport indexSupport) {
         this.indexSupport = indexSupport;
     }
@@ -165,16 +191,6 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
 
     public void setWrapIterators(boolean w){
         this.wrapIterators = w;
-    }
-
-    public <RT> RT uniqueResult(Expr<RT> expr) {
-        Iterator<RT> it = query.iterate(expr).iterator();
-        return it.hasNext() ? it.next() : null;
-    }
-    
-    public SubType where(Expr.EBoolean... o) {
-        query.where(o);
-        return _this;
     }
     
     public class InnerQuery extends QueryBase<Object, InnerQuery> {

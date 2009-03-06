@@ -32,5 +32,5 @@ public class MiniApiTest extends AbstractQueryTest {
         // from where order
         MiniApi.select(cats, cat.name.eq("Kitty"), cat.name.asc()).iterator();
     }
-    
+        
 }

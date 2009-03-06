@@ -76,7 +76,7 @@ public class JavaOps extends OperationPatterns {
             String error = "Caught " + e.getClass().getName();
             throw new RuntimeException(error, e);
         }        
-        add(Ops.OpMath.MOD, functions+".mod(%s,%s)");
+        add(Ops.OpMath.MOD, "%s %% %s");
         
         // path types
         for (PathType type : new PathType[]{PathMetadata.LISTVALUE, PathMetadata.LISTVALUE_CONSTANT, PathMetadata.MAPVALUE, PathMetadata.MAPVALUE_CONSTANT}){
@@ -90,18 +90,10 @@ public class JavaOps extends OperationPatterns {
         
     }
     
-    public static long mod(long left, long right){
-        return left % right;
-    }
-    
-    public static int mod(int left, int right){
-        return left % right;
-    }
-    
     public static <A extends Comparable<? super A>> boolean between(A a, A b, A c){
         return a.compareTo(b) > 0 && a.compareTo(c) < 0;
     }
-        
+            
     public static boolean like(String source, String pattern){
         return Pattern.compile(pattern.replace("%", ".*")).matcher(source).matches();
     }

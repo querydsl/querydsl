@@ -82,13 +82,13 @@ public class ColQueryTest extends AbstractQueryTest{
         // 2nd
         Cat c = alias(Cat.class, "cat");
         for (String name : from(c,cats).where($(c.getKittens()).size().gt(0))
-                          .iterate($(c.getName()))){
+                          .iterate(c.getName())){
             System.out.println(name);
         }
         
         // 2nd - variation 1
         for (String name : from(c,cats).where($(c.getKittens().size()).gt(0))
-                          .iterate($(c.getName()))){
+                          .iterate(c.getName())){
             System.out.println(name);
         }                
                             
@@ -122,7 +122,7 @@ public class ColQueryTest extends AbstractQueryTest{
         // 2nd
         Cat c = alias(Cat.class, "cat");        
         for (String name : from(c,cats).where($(c.getName()).like("fri%"))
-                          .iterate($(c.getName()))){
+                          .iterate(c.getName())){
             System.out.println(name);
         }      
     }
@@ -133,7 +133,7 @@ public class ColQueryTest extends AbstractQueryTest{
         
         from(c,cats)
         .where($(c.getBirthdate()).after(new Date()))
-        .iterate($(c)).iterator();              
+        .iterate(c).iterator();              
     }
     
     @Test
@@ -144,7 +144,7 @@ public class ColQueryTest extends AbstractQueryTest{
         // TODO : FIXME : Janino compiler doesn't handle generic collections
         from(c,cats)
         .where($(c.getKittens().get(0).getBodyWeight()).gt(12))
-        .iterate($(c.getName())).iterator();
+        .iterate(c.getName()).iterator();
     }
     
     @Test
@@ -154,7 +154,7 @@ public class ColQueryTest extends AbstractQueryTest{
         
         from(c,cats)
         .where($(c).eq(other))
-        .iterate($(c)).iterator();
+        .iterate(c).iterator();
     }
     
     @Test
@@ -166,7 +166,7 @@ public class ColQueryTest extends AbstractQueryTest{
         
         from(c,cats)
         .where($(c.getKittens().contains(other)))
-        .iterate($(c)).iterator();
+        .iterate(c).iterator();
     }
     
     @Test
@@ -174,8 +174,8 @@ public class ColQueryTest extends AbstractQueryTest{
         Cat c = alias(Cat.class, "cat");
         
         from(c,cats)
-        .where($(c.getKittens().isEmpty()))
-        .iterate($(c)).iterator();
+        .where(c.getKittens().isEmpty())
+        .iterate(c).iterator();
     }
     
     @Test
@@ -184,7 +184,7 @@ public class ColQueryTest extends AbstractQueryTest{
         
         from(c,cats)
         .where($(c.getName()).startsWith("B"))
-        .iterate($(c)).iterator();        
+        .iterate(c).iterator();        
     }
     
 
@@ -194,7 +194,7 @@ public class ColQueryTest extends AbstractQueryTest{
         
         from(c,cats)
         .where($(c.getName()).toUpperCase().eq("MOE"))
-        .iterate($(c)).iterator();        
+        .iterate(c).iterator();        
     }
     
     @Test
