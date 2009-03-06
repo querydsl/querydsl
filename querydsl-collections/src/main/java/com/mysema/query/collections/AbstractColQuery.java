@@ -25,6 +25,7 @@ import com.mysema.query.grammar.JavaSerializer;
 import com.mysema.query.grammar.Order;
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.Expr.EBoolean;
 
 /**
  * AbstractColQuery provides a base class for Collection query implementations.
@@ -176,7 +177,10 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     }
     // alias variant
     public SubType where(boolean alias){
-        return where(MiniApi.$(alias));
+        EBoolean condition = MiniApi.$(alias);
+        if (!alias) 
+            condition = condition.not();
+        return where(condition);
     }
     
     public void setIndexSupport(IndexSupport indexSupport) {
