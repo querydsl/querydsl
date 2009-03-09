@@ -29,6 +29,7 @@ import com.mysema.query.grammar.types.Expr.EConstant;
 import com.mysema.query.grammar.types.ExtTypes.ExtString;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
 import com.mysema.query.serialization.BaseSerializer;
+import com.mysema.query.util.Assert;
 
 
 /**
@@ -66,7 +67,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
      * @throws ScanException
      */
     public ExpressionEvaluator createExpressionEvaluator(List<Expr<?>> sources, Class<?> targetType) throws CompileException, ParseException, ScanException{
-        if (targetType == null) throw new IllegalArgumentException("targetType was null");
+        Assert.notNull(targetType);
         String expr = builder.toString();
                 
         final Object[] constArray = constants.toArray();
