@@ -19,6 +19,7 @@ import com.mysema.query.grammar.types.Expr.EString;
 import com.mysema.query.grammar.types.Operation.OBoolean;
 import com.mysema.query.grammar.types.Path.PEntity;
 import com.mysema.query.grammar.types.Path.PEntityCollection;
+import com.mysema.query.util.Assert;
 
 /**
  * Grammar provides the factory methods for the fluent grammar.
@@ -101,9 +102,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static <D> Alias.ASimple<D> as(ESimple<D> from, String to) {
-        checkArg("from",from);
-        checkArg("to",to);
-        return new Alias.ASimple<D>(from, to);
+        return new Alias.ASimple<D>(Assert.notNull(from), Assert.notNull(to));
     }
     
     /**
@@ -115,9 +114,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <D> Alias.AEntity<D> as(PEntity<D> from, PEntity<D> to) {
-        checkArg("from",from);
-        checkArg("to",to);
-        return new Alias.AEntity<D>(from, to);
+        return new Alias.AEntity<D>(Assert.notNull(from), Assert.notNull(to));
     }
 
     /**
@@ -129,9 +126,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <D> Alias.AEntityCollection<D> as(PEntityCollection<D> from, PEntity<D> to) {
-        checkArg("from",from);
-        checkArg("to",to);
-        return new Alias.AEntityCollection<D>(from, to);
+        return new Alias.AEntityCollection<D>(Assert.notNull(from), Assert.notNull(to));
     }
 
     /**
@@ -142,10 +137,9 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A extends Comparable<? super A>> OrderSpecifier<A> asc(Expr<A> target) {
-        checkArg("target",target);
         OrderSpecifier<A> os = new OrderSpecifier<A>();
         os.order = Order.ASC;
-        os.target = target;
+        os.target = Assert.notNull(target);
         return os;
     }
     
@@ -332,10 +326,9 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A extends Comparable<? super A>> OrderSpecifier<A> desc(Expr<A> target) {
-        checkArg("target",target);
         OrderSpecifier<A> os = new OrderSpecifier<A>();
         os.order = Order.DESC;
-        os.target = target;
+        os.target = Assert.notNull(target);
         return os;
     }
         
