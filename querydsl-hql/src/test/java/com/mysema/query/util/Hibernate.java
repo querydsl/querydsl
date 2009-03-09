@@ -24,14 +24,8 @@ import org.hibernate.cfg.NamingStrategy;
 @Target(ElementType.TYPE)
 @Inherited
 public @interface Hibernate {
-    /**
-     * 
-     * @return
-     */
+
     Class<? extends NamingStrategy> namingStrategy() default DefaultNamingStrategy.class;
-    /**
-     * 
-     * @return
-     */
+
     String properties();
 }
