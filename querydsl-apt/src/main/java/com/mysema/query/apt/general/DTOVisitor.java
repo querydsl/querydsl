@@ -8,8 +8,8 @@ package com.mysema.query.apt.general;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.mysema.query.apt.Constructor;
-import com.mysema.query.apt.Type;
+import com.mysema.query.apt.model.Constructor;
+import com.mysema.query.apt.model.Type;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.util.SimpleDeclarationVisitor;

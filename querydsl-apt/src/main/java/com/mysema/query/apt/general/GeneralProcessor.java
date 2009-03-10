@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mysema.query.apt.FreeMarkerSerializer;
-import com.mysema.query.apt.Type;
+import com.mysema.query.apt.model.Type;
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;

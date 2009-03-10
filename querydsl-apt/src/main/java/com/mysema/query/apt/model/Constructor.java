@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.apt;
+package com.mysema.query.apt.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,6 +25,7 @@ public class Constructor {
     }
 
     public Constructor(ConstructorDeclaration co) {
+        // TODO : remove Declaration dependency
         parameters = new ArrayList<Parameter>(co.getParameters().size());
         for (ParameterDeclaration pa : co.getParameters()) {
             parameters.add(new Parameter(pa));

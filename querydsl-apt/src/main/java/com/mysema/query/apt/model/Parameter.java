@@ -3,9 +3,9 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.apt;
+package com.mysema.query.apt.model;
 
-import com.mysema.query.apt.util.TypeInfo;
+import com.mysema.query.apt.general.TypeInfo;
 import com.sun.mirror.declaration.ParameterDeclaration;
 
 /**
@@ -23,6 +23,7 @@ public class Parameter implements Comparable<Parameter> {
     }
 
     public Parameter(ParameterDeclaration pa) {
+        // TODO : remove Declaration dependency
         name = pa.getSimpleName();
         typeName = new TypeInfo(pa.getType()).getFullName();
     }

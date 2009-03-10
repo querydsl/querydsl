@@ -3,9 +3,9 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.apt;
+package com.mysema.query.apt.model;
 
-import com.mysema.query.apt.util.TypeInfo;
+import com.mysema.query.apt.general.TypeInfo;
 import com.sun.mirror.declaration.FieldDeclaration;
 
 /**
@@ -43,6 +43,7 @@ public class Field implements Comparable<Field> {
      * @param field
      */
     public Field(FieldDeclaration field) {
+        // TODO : remove Declaration dependency
         TypeInfo typeInfo = new TypeInfo(field.getType());
         this.name = javaSafe(field.getSimpleName());
         this.realName = realName(name);

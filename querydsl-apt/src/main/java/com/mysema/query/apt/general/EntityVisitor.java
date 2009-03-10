@@ -8,10 +8,12 @@ package com.mysema.query.apt.general;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.apt.Field;
-import com.mysema.query.apt.Type;
+import com.mysema.query.apt.model.Field;
+import com.mysema.query.apt.model.Type;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;
+import com.sun.mirror.declaration.InterfaceDeclaration;
+import com.sun.mirror.declaration.MethodDeclaration;
 import com.sun.mirror.declaration.Modifier;
 import com.sun.mirror.util.SimpleDeclarationVisitor;
 
@@ -31,12 +33,25 @@ public class EntityVisitor extends SimpleDeclarationVisitor {
         last = new Type(d);
         types.put(d.getQualifiedName(), last);
     }
+    
+    @Override
+    public void visitInterfaceDeclaration(InterfaceDeclaration d){
+        last = new Type(d);
+        types.put(d.getQualifiedName(), last);
+    }
 
     @Override
     public void visitFieldDeclaration(FieldDeclaration d) {
         if (!d.getModifiers().contains(Modifier.STATIC) 
          && !d.getModifiers().contains(Modifier.TRANSIENT)) {
             last.addField(new Field(d));
+        }
+    }
+    
+    @Override
+    public void visitMethodDeclaration(MethodDeclaration d) {
+        if (!d.getModifiers().contains(Modifier.STATIC)){
+            // TODO
         }
     }
 

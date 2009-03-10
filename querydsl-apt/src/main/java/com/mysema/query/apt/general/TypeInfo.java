@@ -3,12 +3,13 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.apt.util;
+package com.mysema.query.apt.general;
 
 import java.util.Iterator;
 import java.util.Locale;
 
-import com.mysema.query.apt.Field;
+import com.mysema.query.apt.model.Field;
+import com.mysema.query.apt.model.Field.Type;
 import com.sun.mirror.type.*;
 import com.sun.mirror.util.SimpleTypeVisitor;
 

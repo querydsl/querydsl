@@ -3,14 +3,12 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.apt;
+package com.mysema.query.apt.model;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import com.sun.mirror.declaration.ClassDeclaration;
+import com.sun.mirror.declaration.InterfaceDeclaration;
 
 /**
  * TypeDecl represents a query domain type.
@@ -51,10 +49,21 @@ public class Type implements Comparable<Type> {
     String superType;
 
     public Type(ClassDeclaration d) {
+        // TODO : remove Declaration dependency
         this.simpleName = d.getSimpleName();
         this.name = d.getQualifiedName();
         this.packageName = d.getPackage().getQualifiedName();
         this.superType = d.getSuperclass().getDeclaration().getQualifiedName();
+    }
+    
+    public Type(InterfaceDeclaration d){
+        // TODO : remove Declaration dependency
+        this.simpleName = d.getSimpleName();
+        this.name = d.getQualifiedName();
+        this.packageName = d.getPackage().getQualifiedName();
+        if (!d.getSuperinterfaces().isEmpty()){
+            this.superType = d.getSuperinterfaces().iterator().next().getDeclaration().getQualifiedName();    
+        }        
     }
 
     public Type(String superType, String name, String simpleName) {

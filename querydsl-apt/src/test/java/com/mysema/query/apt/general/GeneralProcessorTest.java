@@ -13,10 +13,10 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.mysema.query.apt.Constructor;
-import com.mysema.query.apt.Field;
-import com.mysema.query.apt.Parameter;
-import com.mysema.query.apt.Type;
+import com.mysema.query.apt.model.Constructor;
+import com.mysema.query.apt.model.Field;
+import com.mysema.query.apt.model.Parameter;
+import com.mysema.query.apt.model.Type;
 
 /**
  * HibernateProcessorTest provides.
