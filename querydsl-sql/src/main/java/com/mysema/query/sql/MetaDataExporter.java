@@ -17,10 +17,10 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.apt.Field;
 import com.mysema.query.apt.FreeMarkerSerializer;
-import com.mysema.query.apt.Type;
 import com.mysema.query.apt.general.GeneralProcessor;
+import com.mysema.query.apt.model.Field;
+import com.mysema.query.apt.model.Type;
 
 /**
  * MetadataExporter exports JDBC metadata to Querydsl query types
