@@ -88,8 +88,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
             logger.info(expr + " "+Arrays.asList(names) +" "+ Arrays.asList(types));    
         }        
         
-        return instantiateExpressionEvaluator(targetType, expr, constArray,
-                types, names);
+        return instantiateExpressionEvaluator(targetType, expr, constArray, types, names);
     }
     
     /**
@@ -186,13 +185,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
         }else{
             handle(source);    
         }
-//        num.byteValue() 
-//        num.doubleValue()
-//        num.floatValue()
-//        num.intValue()
-//        num.longValue()
-//        num.shortValue()
-//        num.stringValue()
+
         if (Byte.class.equals(targetType)){
             append(".byteValue()");
         }else if (Double.class.equals(targetType)){

@@ -13,19 +13,16 @@ import org.codehaus.janino.ExpressionEvaluator;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryBase;
 import com.mysema.query.collections.iterators.FilteringMultiIterator;
-import com.mysema.query.collections.iterators.MultiArgFilteringIterator;
 import com.mysema.query.collections.iterators.MultiIterator;
-import com.mysema.query.collections.iterators.ProjectingIterator;
-import com.mysema.query.collections.iterators.WrappingIterator;
 import com.mysema.query.collections.support.DefaultIndexSupport;
 import com.mysema.query.collections.support.DefaultSourceSortingSupport;
 import com.mysema.query.collections.support.MultiComparator;
+import com.mysema.query.collections.utils.EvaluatorUtils;
+import com.mysema.query.collections.utils.QueryIteratorUtils;
 import com.mysema.query.grammar.JavaOps;
-import com.mysema.query.grammar.JavaSerializer;
 import com.mysema.query.grammar.Order;
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.EBoolean;
 
 /**
  * AbstractColQuery provides a base class for Collection query implementations.
@@ -250,9 +247,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
             multiIt.init(indexSupport);
             
             if (!wrapIterators && (where.create() != null)){
-                ExpressionEvaluator ev = new JavaSerializer(ops).handle(where.create())
-                    .createExpressionEvaluator(sources, boolean.class);
-                return new MultiArgFilteringIterator<Object>(multiIt, ev);    
+                return QueryIteratorUtils.multiArgFilter(ops, multiIt, sources, where.create());
             }else{
                 return multiIt;    
             }            
@@ -264,18 +259,11 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
             indexSupport.init(sources, where.create());
             
             // create a simple projecting iterator for Object -> Object[]
-            Iterator<?> it = new WrappingIterator<Object[]>(indexSupport.getIterator(join.getTarget())){
-               public Object[] next() {
-                   return new Object[]{nextFromOrig()};
-               }               
-            };
+            Iterator<?> it = QueryIteratorUtils.toArrayIterator(indexSupport.getIterator(join.getTarget()));
             
             if (where.create() != null){
                 // wrap the iterator if a where constraint is available
-                ExpressionEvaluator ev = new JavaSerializer(ops).handle(
-                        where.create()).createExpressionEvaluator(sources,
-                        boolean.class);
-                it = new MultiArgFilteringIterator<Object>(it, ev);    
+                it = QueryIteratorUtils.multiArgFilter(ops, it, sources, where.create());
             }
             return it;
         }
@@ -291,8 +279,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
                 directions[i] = orderBy.get(i).order == Order.ASC;
             }
             Expr<?> expr = new Expr.EArrayConstructor<Object>(Object.class, orderByExpr);
-            ExpressionEvaluator ev = new JavaSerializer(ops).handle(expr)
-                .createExpressionEvaluator(sources, expr);
+            ExpressionEvaluator ev = EvaluatorUtils.create(ops, sources, expr);
             
             // transform the iterator to list
             List<Object[]> itAsList = IteratorUtils.toList((Iterator<Object[]>)it);               
@@ -302,9 +289,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         }
 
         protected <RT> Iterator<RT> handleSelect(Iterator<?> it, List<Expr<?>> sources, Expr<RT> projection) throws Exception {
-            ExpressionEvaluator ev = new JavaSerializer(ops).handle(projection)
-                .createExpressionEvaluator(sources,projection);        
-            return new ProjectingIterator<RT>(it, ev);
+            return QueryIteratorUtils.project(ops, it, sources, projection);
         }
 
         public <RT> Iterable<RT> iterate(final Expr<RT> projection) {

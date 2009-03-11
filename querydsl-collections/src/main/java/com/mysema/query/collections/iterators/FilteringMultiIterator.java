@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.collections.IndexSupport;
+import com.mysema.query.collections.utils.QueryIteratorUtils;
 import com.mysema.query.grammar.FilteredJavaSerializer;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.JavaSerializer;
@@ -103,7 +104,7 @@ public class FilteringMultiIterator extends MultiIterator implements IndexSuppor
         Iterator<A> it = indexSupport.getIterator(expr, bindings);
         ExpressionEvaluator ev = exprToEvaluator.get(expr);        
         if (ev != null){
-            it = new SingleArgFilteringIterator<A>(indexSupport.getIterator(expr, bindings), ev);
+            it = QueryIteratorUtils.singleArgFilter(indexSupport.getIterator(expr, bindings), ev);
         }
         return it;        
     }
