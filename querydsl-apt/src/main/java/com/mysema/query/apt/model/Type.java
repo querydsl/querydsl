@@ -5,10 +5,10 @@
  */
 package com.mysema.query.apt.model;
 
-import java.util.*;
-
-import com.sun.mirror.declaration.ClassDeclaration;
-import com.sun.mirror.declaration.InterfaceDeclaration;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * TypeDecl represents a query domain type.
@@ -18,58 +18,40 @@ import com.sun.mirror.declaration.InterfaceDeclaration;
  */
 public class Type implements Comparable<Type> {
 
-    Set<Field> booleanFields = new TreeSet<Field>();
+    private Set<Field> booleanFields = new TreeSet<Field>();
 
-    Set<Constructor> constructors = new HashSet<Constructor>();
+    private Set<Field> comparableFields = new TreeSet<Field>();
 
-    Set<Field> entityCollections = new TreeSet<Field>();
+    private Set<Constructor> constructors = new HashSet<Constructor>();
 
-    Set<Field> entityLists = new TreeSet<Field>();
+    private Set<Field> entityCollections = new TreeSet<Field>();
 
-    Set<Field> entityMaps = new TreeSet<Field>();
+    private Set<Field> entityFields = new TreeSet<Field>();
 
-    Set<Field> entityFields = new TreeSet<Field>();
+    private Set<Field> entityLists = new TreeSet<Field>();
 
-    Set<Field> simpleCollections = new TreeSet<Field>();
+    private Set<Field> entityMaps = new TreeSet<Field>();
 
-    Set<Field> simpleLists = new TreeSet<Field>();
+    private Set<Field> numericFields = new TreeSet<Field>();
 
-    Set<Field> simpleMaps = new TreeSet<Field>();
+    private Set<Field> simpleCollections = new TreeSet<Field>();
 
-    Set<Field> simpleFields = new TreeSet<Field>();
+    private Set<Field> simpleFields = new TreeSet<Field>();
 
-    Set<Field> comparableFields = new TreeSet<Field>();
+    private Set<Field> simpleLists = new TreeSet<Field>();
     
-    Set<Field> numericFields = new TreeSet<Field>();
+    private Set<Field> simpleMaps = new TreeSet<Field>();
 
-    String simpleName, name, packageName;
+    private String simpleName, name, packageName;
 
-    Set<Field> stringFields = new TreeSet<Field>();
+    private Set<Field> stringFields = new TreeSet<Field>();
 
-    String superType;
-
-    public Type(ClassDeclaration d) {
-        // TODO : remove Declaration dependency
-        this.simpleName = d.getSimpleName();
-        this.name = d.getQualifiedName();
-        this.packageName = d.getPackage().getQualifiedName();
-        this.superType = d.getSuperclass().getDeclaration().getQualifiedName();
-    }
+    private String superType;
     
-    public Type(InterfaceDeclaration d){
-        // TODO : remove Declaration dependency
-        this.simpleName = d.getSimpleName();
-        this.name = d.getQualifiedName();
-        this.packageName = d.getPackage().getQualifiedName();
-        if (!d.getSuperinterfaces().isEmpty()){
-            this.superType = d.getSuperinterfaces().iterator().next().getDeclaration().getQualifiedName();    
-        }        
-    }
-
-    public Type(String superType, String name, String simpleName) {
+    public Type(String superType, String packageName, String name, String simpleName) {
         this.superType = superType;
-        this.name = name;
-        this.packageName = name.substring(0, name.lastIndexOf('.'));
+        this.packageName = packageName;
+        this.name = name;        
         this.simpleName = simpleName;
     }
 
@@ -130,12 +112,20 @@ public class Type implements Comparable<Type> {
         return booleanFields;
     }
 
+    public Collection<Field> getComparableFields() {
+        return comparableFields;
+    }
+
     public Collection<Constructor> getConstructors() {
         return constructors;
     }
 
     public Collection<Field> getEntityCollections() {
         return entityCollections;
+    }
+
+    public Collection<Field> getEntityFields() {
+        return entityFields;
     }
 
     public Collection<Field> getEntityLists() {
@@ -145,15 +135,15 @@ public class Type implements Comparable<Type> {
     public Collection<Field> getEntityMaps() {
         return entityMaps;
     }
-
-    public Collection<Field> getEntityFields() {
-        return entityFields;
-    }
-
+    
     public String getName() {
         return name;
     }
-    
+
+    public Collection<Field> getNumericFields(){
+        return numericFields;
+    }
+
     public String getPackageName(){
         return packageName;
     }
@@ -162,24 +152,16 @@ public class Type implements Comparable<Type> {
         return simpleCollections;
     }
 
+    public Collection<Field> getSimpleFields() {
+        return simpleFields;
+    }
+
     public Collection<Field> getSimpleLists() {
         return simpleLists;
     }
 
     public Collection<Field> getSimpleMaps() {
         return simpleMaps;
-    }
-
-    public Collection<Field> getSimpleFields() {
-        return simpleFields;
-    }
-
-    public Collection<Field> getComparableFields() {
-        return comparableFields;
-    }
-
-    public Collection<Field> getNumericFields(){
-        return numericFields;
     }
     
     public String getSimpleName() {

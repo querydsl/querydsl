@@ -30,13 +30,24 @@ public class EntityVisitor extends SimpleDeclarationVisitor {
 
     @Override
     public void visitClassDeclaration(ClassDeclaration d) {
-        last = new Type(d);
+        String simpleName = d.getSimpleName();
+        String name = d.getQualifiedName();
+        String packageName = d.getPackage().getQualifiedName();
+        String superType = d.getSuperclass().getDeclaration().getQualifiedName();
+        last = new Type(superType, packageName, name, simpleName);
         types.put(d.getQualifiedName(), last);
     }
     
     @Override
     public void visitInterfaceDeclaration(InterfaceDeclaration d){
-        last = new Type(d);
+        String simpleName = d.getSimpleName();
+        String name = d.getQualifiedName();
+        String packageName = d.getPackage().getQualifiedName();
+        String superType = null;
+        if (!d.getSuperinterfaces().isEmpty()){
+            superType = d.getSuperinterfaces().iterator().next().getDeclaration().getQualifiedName();    
+        }        
+        last = new Type(superType, packageName, name, simpleName);
         types.put(d.getQualifiedName(), last);
     }
 
@@ -44,7 +55,16 @@ public class EntityVisitor extends SimpleDeclarationVisitor {
     public void visitFieldDeclaration(FieldDeclaration d) {
         if (!d.getModifiers().contains(Modifier.STATIC) 
          && !d.getModifiers().contains(Modifier.TRANSIENT)) {
-            last.addField(new Field(d));
+            TypeHelper typeInfo = new TypeHelper(d.getType());
+            String name = FieldHelper.javaSafe(d.getSimpleName());
+            String realName = FieldHelper.realName(name);
+            String keyTypeName = typeInfo.getKeyTypeName();        
+            String typeName = typeInfo.getFullName();
+            String typePackage = typeInfo.getPackageName();
+            String simpleTypeName = typeInfo.getSimpleName();
+            Field.Type fieldType = typeInfo.getFieldType();   
+            last.addField(new Field(name, realName, keyTypeName, typePackage, 
+                    typeName, simpleTypeName, fieldType));
         }
     }
     

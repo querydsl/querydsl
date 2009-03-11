@@ -171,6 +171,4 @@ public class GeneralProcessor implements AnnotationProcessor {
         }
     }
 
-
-
 }

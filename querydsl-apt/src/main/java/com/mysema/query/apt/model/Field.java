@@ -5,8 +5,6 @@
  */
 package com.mysema.query.apt.model;
 
-import com.mysema.query.apt.general.TypeInfo;
-import com.sun.mirror.declaration.FieldDeclaration;
 
 /**
  * FieldDecl represents a field / property in a query domain type.
@@ -39,61 +37,24 @@ public class Field implements Comparable<Field> {
     private String name, realName, keyTypeName, typeName, typePackage, simpleTypeName;
 
     /**
-     * Construct a Field instance from the given FieldDeclaration instance
-     * @param field
-     */
-    public Field(FieldDeclaration field) {
-        // TODO : remove Declaration dependency
-        TypeInfo typeInfo = new TypeInfo(field.getType());
-        this.name = javaSafe(field.getSimpleName());
-        this.realName = realName(name);
-        this.keyTypeName = typeInfo.getKeyTypeName();        
-        this.typeName = typeInfo.getFullName();
-        this.typePackage = typeInfo.getPackageName();
-        this.simpleTypeName = typeInfo.getSimpleName();
-        this.fieldType = typeInfo.getFieldType();        
-    }
-
-    /**
      * Construct a new Field instance
      * @param name normalized field name
      * @param realName real fieldName
      * @param keyTypeName key type name for Map types
+     * @param typePackage
      * @param typeName full type name (with package)
      * @param simpleTypeName simple type name (local)
      * @param fieldType
      */
-    public Field(String name, String realName, String keyTypeName, String typeName,
+    public Field(String name, String realName, String keyTypeName, String typePackage, String typeName,
             String simpleTypeName, Type fieldType){
-        this.name = javaSafe(name);
-        this.realName = realName(realName);
+        this.name = name;
+        this.realName = realName;
         this.keyTypeName = keyTypeName;
+        this.typePackage = typePackage;
         this.typeName = typeName;
-        this.typePackage = typeName.substring(0, typeName.lastIndexOf('.'));
         this.simpleTypeName = simpleTypeName;
         this.fieldType = fieldType;
-    }
-    
-    private static String javaSafe(String name){
-        // TODO : improve this
-        if (name.equals("private")){
-            return "prvate";
-        }else if (name.equals("public")){
-            return "pblic";
-        }else{
-            return name;
-        }
-    }
-    
-    private static String realName(String name){
-        // TODO : improve this
-        if (name.equals("prvate")){
-            return "private";
-        }else if (name.equals("pblic")){
-            return "public";
-        }else{
-            return name;
-        }
     }
     
     public int compareTo(Field o) {

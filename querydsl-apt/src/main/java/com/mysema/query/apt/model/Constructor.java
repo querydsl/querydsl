@@ -5,11 +5,7 @@
  */
 package com.mysema.query.apt.model;
 
-import java.util.ArrayList;
 import java.util.Collection;
-
-import com.sun.mirror.declaration.ConstructorDeclaration;
-import com.sun.mirror.declaration.ParameterDeclaration;
 
 /**
  * ConstructorDecl represents a constructor for a DTO query type.
@@ -22,14 +18,6 @@ public class Constructor {
 
     public Constructor(Collection<Parameter> params) {
         parameters = params;
-    }
-
-    public Constructor(ConstructorDeclaration co) {
-        // TODO : remove Declaration dependency
-        parameters = new ArrayList<Parameter>(co.getParameters().size());
-        for (ParameterDeclaration pa : co.getParameters()) {
-            parameters.add(new Parameter(pa));
-        }
     }
 
     public Collection<Parameter> getParameters() {

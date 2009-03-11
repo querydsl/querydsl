@@ -5,8 +5,6 @@
  */
 package com.mysema.query.apt.model;
 
-import com.mysema.query.apt.general.TypeInfo;
-import com.sun.mirror.declaration.ParameterDeclaration;
 
 /**
  * ParameterDecl represents a parameter 
@@ -20,12 +18,6 @@ public class Parameter implements Comparable<Parameter> {
     public Parameter(String name, String typeName) {
         this.name = name;
         this.typeName = typeName;
-    }
-
-    public Parameter(ParameterDeclaration pa) {
-        // TODO : remove Declaration dependency
-        name = pa.getSimpleName();
-        typeName = new TypeInfo(pa.getType()).getFullName();
     }
 
     public int compareTo(Parameter o) {

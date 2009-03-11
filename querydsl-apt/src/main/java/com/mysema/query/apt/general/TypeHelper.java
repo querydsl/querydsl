@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.Locale;
 
 import com.mysema.query.apt.model.Field;
-import com.mysema.query.apt.model.Field.Type;
 import com.sun.mirror.type.*;
 import com.sun.mirror.util.SimpleTypeVisitor;
 
@@ -19,7 +18,7 @@ import com.sun.mirror.util.SimpleTypeVisitor;
  * @author tiwe
  * @version $Id$
  */
-public class TypeInfo {
+public class TypeHelper {
 
     private Field.Type fieldType;
 
@@ -27,7 +26,7 @@ public class TypeInfo {
 
     private final TypeInfoVisitor visitor = new TypeInfoVisitor();
 
-    public TypeInfo(TypeMirror type) {
+    public TypeHelper(TypeMirror type) {
         type.accept(visitor);
         if (fieldType == null) {
             fieldType = Field.Type.ENTITY;
@@ -77,7 +76,7 @@ public class TypeInfo {
 
         @Override
         public void visitArrayType(ArrayType arg0) {
-            TypeInfo valueInfo = new TypeInfo(arg0.getComponentType());
+            TypeHelper valueInfo = new TypeHelper(arg0.getComponentType());
             fullName = valueInfo.getFullName();
             packageName = valueInfo.getPackageName();
             if (valueInfo.fieldType == Field.Type.ENTITY) {
@@ -119,9 +118,9 @@ public class TypeInfo {
             String typeName = arg0.getDeclaration().getQualifiedName();
 
             if (typeName.equals(java.util.Map.class.getName())) {
-                TypeInfo keyInfo = new TypeInfo(i.next());
+                TypeHelper keyInfo = new TypeHelper(i.next());
                 keyTypeName = keyInfo.getFullName();
-                TypeInfo valueInfo = new TypeInfo(i.next());
+                TypeHelper valueInfo = new TypeHelper(i.next());
                 fullName = valueInfo.getFullName();
                 packageName = valueInfo.getPackageName();
                 if (valueInfo.fieldType == Field.Type.ENTITY) {
@@ -133,7 +132,7 @@ public class TypeInfo {
             } else if (typeName.equals(java.util.Collection.class.getName())
                     || typeName.equals(java.util.Set.class.getName()) 
                     || typeName.equals(java.util.SortedSet.class.getName())) {
-                TypeInfo valueInfo = new TypeInfo(i.next());
+                TypeHelper valueInfo = new TypeHelper(i.next());
                 fullName = valueInfo.getFullName();
                 packageName = valueInfo.getPackageName();
                 if (valueInfo.fieldType == Field.Type.ENTITY) {
@@ -143,7 +142,7 @@ public class TypeInfo {
                 }
 
             } else if (typeName.equals(java.util.List.class.getName())) {
-                TypeInfo valueInfo = new TypeInfo(i.next());
+                TypeHelper valueInfo = new TypeHelper(i.next());
                 fullName = valueInfo.getFullName();
                 packageName = valueInfo.getPackageName();
                 if (valueInfo.fieldType == Field.Type.ENTITY) {
@@ -200,7 +199,7 @@ public class TypeInfo {
         @Override
         public void visitTypeVariable(TypeVariable arg0){
             if (!arg0.getDeclaration().getBounds().isEmpty()){
-                TypeInfo lb = new TypeInfo(arg0.getDeclaration().getBounds().iterator().next());
+                TypeHelper lb = new TypeHelper(arg0.getDeclaration().getBounds().iterator().next());
                 fullName = lb.getFullName();
                 packageName = lb.getPackageName();     
                 simpleName = lb.getSimpleName();
@@ -210,7 +209,7 @@ public class TypeInfo {
         @Override
         public void visitWildcardType(WildcardType arg0){
             if (!arg0.getUpperBounds().isEmpty()){
-                TypeInfo lb = new TypeInfo(arg0.getUpperBounds().iterator().next());
+                TypeHelper lb = new TypeHelper(arg0.getUpperBounds().iterator().next());
                 fullName = lb.getFullName();
                 packageName = lb.getPackageName();     
                 simpleName = lb.getSimpleName();
