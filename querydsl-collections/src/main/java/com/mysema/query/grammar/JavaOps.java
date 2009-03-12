@@ -59,7 +59,7 @@ public class JavaOps extends OperationPatterns {
         add(Ops.LAST_INDEX_2ARGS, "%s.lastIndex(%s)");
         add(Ops.LAST_INDEX, "%s.lastIndex(%s,%s)");
         add(Ops.ISEMPTY, "%s.isEmpty()");
-        add(Ops.STARTSWITH, "%s.startsWith(%s)");
+        add(Ops.STARTSWITH, "%s.startsWith(%s, 0)");
         add(Ops.INDEXOF_2ARGS, "%s.indexOf(%s,%s)");
         add(Ops.INDEXOF, "%s.indexOf(%s)");
         add(Ops.EQ_IGNORECASE, "%s.equalsIgnoreCase(%s)");
@@ -95,7 +95,7 @@ public class JavaOps extends OperationPatterns {
     }
             
     public static boolean like(String source, String pattern){
-        return Pattern.compile(pattern.replace("%", ".*")).matcher(source).matches();
+        return Pattern.compile(pattern.replace("%", ".*").replace("_",".")).matcher(source).matches();
     }
     
 }

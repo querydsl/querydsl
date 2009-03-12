@@ -1,6 +1,10 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.collections.utils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.codehaus.janino.ExpressionEvaluator;
@@ -17,14 +21,6 @@ import com.mysema.query.grammar.types.Expr;
  */
 public class EvaluatorUtils {
 
-    public static <T> T evaluate(ExpressionEvaluator ev, Object... args){
-        try {
-            return (T) ev.evaluate(args);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
     public static ExpressionEvaluator create(JavaOps ops, List<Expr<?>> sources, Expr<?> expr){
         try {
             return new JavaSerializer(ops).handle(expr).createExpressionEvaluator(sources, expr);

@@ -7,6 +7,7 @@ package com.mysema.query.grammar;
 
 import java.util.List;
 
+import com.mysema.query.grammar.Ops;
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;

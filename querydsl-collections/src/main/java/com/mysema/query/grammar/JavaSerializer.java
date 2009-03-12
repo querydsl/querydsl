@@ -207,7 +207,20 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
     
     @Override
     protected void visitOperation(Class<?> type, Op<?> operator, Expr<?>... args) {
-        if (operator.equals(Ops.STRING_CAST)){
+        if (operator.equals(Ops.LIKE)){
+            String right = args[1].toString();
+            if (!right.contains("_")){
+                int lastIndex = right.lastIndexOf('%');
+                if (lastIndex == right.length() -1){
+                    operator = Ops.STARTSWITH;
+                    args[1] =  new Expr.EConstant<String>(right.substring(0, lastIndex));
+                }else if (lastIndex == 0){
+                    operator = Ops.ENDSWITH;
+                    args[1] = new Expr.EConstant<String>(right.substring(1));
+                }    
+            }                
+            super.visitOperation(type, operator, args);    
+        }else if (operator.equals(Ops.STRING_CAST)){
             visitCast(operator, args[0], String.class);
         }else if (operator.equals(Ops.NUMCAST)){
             visitCast(operator, args[0], (Class<?>) ((EConstant<?>)args[1]).getConstant());
