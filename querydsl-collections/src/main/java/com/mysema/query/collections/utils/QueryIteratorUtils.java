@@ -6,8 +6,7 @@
 package com.mysema.query.collections.utils;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.apache.commons.collections15.IteratorUtils;
 import org.apache.commons.collections15.Predicate;
@@ -34,6 +33,16 @@ public class QueryIteratorUtils {
         }
     }
     
+    /**
+     * filter the given iterator using the given condition
+     * 
+     * @param <S>
+     * @param ops
+     * @param source
+     * @param sources
+     * @param condition
+     * @return
+     */
     public static <S> Iterator<S> multiArgFilter(JavaOps ops, Iterator<S> source, List<Expr<?>> sources, EBoolean condition){
         ExpressionEvaluator ev = EvaluatorUtils.create(ops, sources, condition);
         return multiArgFilter(source, ev);
@@ -47,19 +56,63 @@ public class QueryIteratorUtils {
         });
     }
     
-    public static <S,T> Iterator<T> project(JavaOps ops, Iterator<S> source, List<Expr<?>> sources, Expr<?> projection){
+    /**
+     * transform the given source iterator using the given projection expression
+     * 
+     * @param <S>
+     * @param <T>
+     * @param ops
+     * @param source
+     * @param sources
+     * @param projection
+     * @return
+     */
+    public static <S,T> Iterator<T> transform(JavaOps ops, Iterator<S> source, List<Expr<?>> sources, Expr<?> projection){
         ExpressionEvaluator ev = EvaluatorUtils.create(ops, sources, projection);
-        return project(source, ev);
+        return transform(source, ev);
     }
     
-    private static <S,T> Iterator<T> project(Iterator<S> source, final ExpressionEvaluator ev){
+    private static <S,T> Iterator<T> transform(Iterator<S> source, final ExpressionEvaluator ev){
         return IteratorUtils.transformedIterator(source, new Transformer<S,T>(){
             public T transform(S input) {
                 return QueryIteratorUtils.<T>evaluate(ev, (Object[])input);
             }            
         });
     }
+    
+    /**
+     * project the given source iterator to a map by treating the iterator values 
+     * as map values and the projections as map keys
+     * 
+     * @param <S>
+     * @param <T>
+     * @param source
+     * @param ev
+     * @return
+     */
+    public static <S,T> Map<S,? extends Iterable<T>> projectToMap(Iterator<S> source, ExpressionEvaluator ev){
+        Map<S,Collection<T>> map = new HashMap<S,Collection<T>>();
+        while (source.hasNext()){
+            S key = source.next();
+            T value = evaluate(ev, key);
+            Collection<T> col = map.get(key);
+            if (col == null){
+                col = new ArrayList<T>();
+                map.put(key, col);
+            }
+            col.add(value);
+        }
+        return map;
+    }
         
+    /**
+     * filter the given iterator using the given expressionevaluator that evaluates to true / false
+     * 
+     * @param <S>
+     * @param source
+     * @param ev
+     * @return
+     */
     public static <S> Iterator<S> singleArgFilter(Iterator<S> source, final ExpressionEvaluator ev){
         return IteratorUtils.filteredIterator(source, new Predicate<S>(){
             public boolean evaluate(S object) {

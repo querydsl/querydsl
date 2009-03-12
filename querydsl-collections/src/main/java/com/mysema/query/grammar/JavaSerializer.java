@@ -208,6 +208,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
     @Override
     protected void visitOperation(Class<?> type, Op<?> operator, Expr<?>... args) {
         if (operator.equals(Ops.LIKE)){
+            // optimize like matches to startsWith and endsWith, when possible
             String right = args[1].toString();
             if (!right.contains("_")){
                 int lastIndex = right.lastIndexOf('%');

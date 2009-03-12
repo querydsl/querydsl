@@ -14,6 +14,7 @@ import org.junit.Test;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.collections.IndexSupport;
 import com.mysema.query.collections.MiniApi;
+import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.ENumber;
@@ -60,7 +61,7 @@ public class MultiIteratorTest extends AbstractIteratorTest {
             return getIterator(expr);
         }
 
-        public void init(List<Expr<?>> sources, EBoolean where) {
+        public void init(JavaOps ops, List<? extends Expr<?>> sources, EBoolean where) {
             // TODO Auto-generated method stub
         }
 

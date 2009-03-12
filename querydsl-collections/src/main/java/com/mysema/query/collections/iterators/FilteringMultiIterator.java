@@ -116,8 +116,8 @@ public class FilteringMultiIterator extends MultiIterator implements IndexSuppor
         return this;
     }
 
-    public void init(List<Expr<?>> orderedSources, EBoolean condition) {
-        indexSupport.init(orderedSources, condition);
+    public void init(JavaOps ops, List<? extends Expr<?>> orderedSources, EBoolean condition) {
+        indexSupport.init(ops, orderedSources, condition);
     }
     
 }

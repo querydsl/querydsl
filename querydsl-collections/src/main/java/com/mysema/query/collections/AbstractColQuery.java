@@ -93,6 +93,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
          
     @SuppressWarnings("unchecked")
     public Iterable<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
+        // TODO : move this code to querydsl-core
         final Expr<?>[] full = asArray(new Expr[rest.length + 2], e1, e2, rest);
         boolean oneType = true;
         if (e1.getType().isAssignableFrom((e2.getType()))){
@@ -243,7 +244,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
                 case DEFAULT :    // do nothing
                 }
             }   
-            indexSupport.init(sources, where.create());
+            indexSupport.init(ops, sources, where.create());
             multiIt.init(indexSupport);
             
             if (!wrapIterators && (where.create() != null)){
@@ -256,7 +257,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources) throws Exception{
             JoinExpression<?> join = joins.get(0);
             sources.add(join.getTarget());
-            indexSupport.init(sources, where.create());
+            indexSupport.init(ops, sources, where.create());
             
             // create a simple projecting iterator for Object -> Object[]
             Iterator<?> it = QueryIteratorUtils.toArrayIterator(indexSupport.getIterator(join.getTarget()));
@@ -289,7 +290,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         }
 
         protected <RT> Iterator<RT> handleSelect(Iterator<?> it, List<Expr<?>> sources, Expr<RT> projection) throws Exception {
-            return QueryIteratorUtils.project(ops, it, sources, projection);
+            return QueryIteratorUtils.transform(ops, it, sources, projection);
         }
 
         public <RT> Iterable<RT> iterate(final Expr<RT> projection) {
