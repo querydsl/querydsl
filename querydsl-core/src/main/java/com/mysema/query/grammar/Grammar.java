@@ -621,7 +621,7 @@ public class Grammar extends Factory{
      * @param right
      * @return
      */    
-    public static EBoolean like(Expr<String> left, String right) {
+    public static EBoolean like(Expr<String> left, String right) {                
         return createBoolean(Ops.LIKE, left, createConstant(right));
     }
 
