@@ -87,6 +87,11 @@ public class FilteredJavaSerializerTest {
         assertMatches1Expr("true && true", cat.name.ne(otherCat.name).and(otherCat.name.like("Kate5%")));
         assertMatches1Expr("true && cat.getName().startsWith(a1, 0)", otherCat.name.ne(cat.name).and(cat.name.like("Kate5%")));
     }
+    @Test
+    public void test15(){
+        assertMatches1Expr("true && cat.getName().endsWith(a1)", otherCat.name.ne(cat.name).and(cat.name.like("%Kate5")));
+    }
+    
     
     private void assertMatches1Expr(String expected, EBoolean where) {
         JavaSerializer ser = new FilteredJavaSerializer(ops, Collections.<Expr<?>>singletonList(cat));
