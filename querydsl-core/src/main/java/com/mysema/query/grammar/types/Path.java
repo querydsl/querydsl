@@ -25,7 +25,7 @@ public interface Path<C> {
     Path<?> getRoot();
     EBoolean isnotnull();
     EBoolean isnull();
-            
+                
     public static abstract class PArray<D> extends Expr<D[]> implements Path<D[]>, CollectionType<D>{
         protected final Class<D[]> arrayType;
         protected final Class<D> componentType;
