@@ -1,14 +1,11 @@
 package com.mysema.query.collections.support;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.codehaus.janino.ExpressionEvaluator;
 
 import com.mysema.query.collections.IndexSupport;
+import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.utils.EvaluatorUtils;
 import com.mysema.query.collections.utils.QueryIteratorUtils;
 import com.mysema.query.grammar.JavaOps;
@@ -31,17 +28,14 @@ public class DefaultIndexSupport implements IndexSupport{
     
     private List<? extends Expr<?>> sources;
     
-//    private EBoolean condition;
+    private Map<Expr<?>,Iterable<?>> exprToIt;
     
-    private final Map<Expr<?>,Iterable<?>> exprToIt;
+    Map<Path<?>,Map<?,? extends Iterable<?>>> pathEqPathIndex;
     
-    final Map<Path<?>,Map<?,? extends Iterable<?>>> pathEqPathIndex;
+    Map<Path<?>,Evaluator> pathToIndexKey;
     
-    public DefaultIndexSupport(Map<Expr<?>,Iterable<?>> exprToIt){
-        this.exprToIt = Assert.notNull(exprToIt);
-        this.pathEqPathIndex = new HashMap<Path<?>,Map<?,? extends Iterable<?>>>();
-    }
-
+    private long fullSize = 0l;
+    
     @SuppressWarnings("unchecked")
     public <A> Iterator<A> getIterator(Expr<A> expr) {
         return (Iterator<A>)exprToIt.get(expr).iterator();
@@ -49,22 +43,37 @@ public class DefaultIndexSupport implements IndexSupport{
 
     @SuppressWarnings("unchecked")
     public <A> Iterator<A> getIterator(Expr<A> expr, Object[] bindings) {
-        // TODO : make use of the index when appropriate
-        return (Iterator<A>)exprToIt.get(expr).iterator();
+        if (pathToIndexKey.containsKey(expr)){
+            Evaluator ev = pathToIndexKey.get(expr);
+            Map<?,? extends Iterable<?>> indexEntry = pathEqPathIndex.get(expr);
+            Object key = ev.evaluate(bindings);
+            if (indexEntry.containsKey(key)){
+                return (Iterator<A>)indexEntry.get(key).iterator();    
+            }else{
+                return Collections.<A>emptyList().iterator();
+            }            
+        }else{
+            return (Iterator<A>)exprToIt.get(expr).iterator();    
+        }        
     }
 
-    public void init(JavaOps ops, List<? extends Expr<?>> sources, EBoolean condition) {
+    public void init(Map<Expr<?>,Iterable<?>> exprToIt, JavaOps ops, List<? extends Expr<?>> sources, EBoolean condition) {
+        this.exprToIt = exprToIt;
         this.ops = Assert.notNull(ops);
-        this.sources = Assert.notNull(sources);
-//        this.condition = Assert.notNull(condition);
+        this.sources = Assert.notNull(sources);        
+        this.exprToIt = Assert.notNull(exprToIt);        
+        this.pathEqPathIndex = new HashMap<Path<?>,Map<?,? extends Iterable<?>>>();
+        this.pathToIndexKey = new HashMap<Path<?>,Evaluator>();
+        
+        for (Iterable<?> value : exprToIt.values()){
+            if (value instanceof Collection) fullSize += ((Collection<?>)value).size();
+        }
         
         // populate the "path eq path" index
-        // TODO : make a decision when index usage is appropriate
         if (condition instanceof Operation){
             visitOperation((Operation<?,?>) condition);
         }
         
-        // TODO : filter the sources, based on non-contextual parts of the condition
     }
 
     private void visitOperation(Operation<?,?> op) {
@@ -74,22 +83,35 @@ public class DefaultIndexSupport implements IndexSupport{
                 int i1 = sources.indexOf(p1.getRoot());
                 int i2 = sources.indexOf(p2.getRoot());
                 if (i1 < i2){
-                    indexPath(p2);
+                    indexPath(p2, p1);
                 }else if (i1 > i2){
-                    indexPath(p1);
+                    indexPath(p1, p2);
                 }
             }            
-        }else{
+            
+        }else if (op.getOperator() == Ops.NOT){    
+            // skip negative condition paths
+            
+        }else if (op.getOperator() == Ops.AND || op.getOperator() == Ops.OR){
             for (Expr<?> e : op.getArgs()){
                 if (e instanceof Operation) visitOperation((Operation<?, ?>) e);
             }
         }        
     }
     
-    private void indexPath(Path<?> path) {
-        ExpressionEvaluator ev = EvaluatorUtils.create(ops, Collections.<Expr<?>>singletonList((Expr<?>)path.getRoot()), (Expr<?>)path);
-        Map<?,? extends Iterable<?>> map = QueryIteratorUtils.projectToMap(exprToIt.get(path.getRoot()).iterator(), ev);
-        pathEqPathIndex.put(path, map);        
+    private void indexPath(Path<?> path, Path<?> key) {
+        if (!pathEqPathIndex.containsKey(path.getRoot())){
+            // create the index entry
+            Evaluator ev = EvaluatorUtils.create(ops, Collections.<Expr<?>>singletonList((Expr<?>)path.getRoot()), (Expr<?>)path);
+            Map<?,? extends Iterable<?>> map = QueryIteratorUtils.projectToMap(exprToIt.get(path.getRoot()).iterator(), ev);
+            
+            // create the key creator            
+            Evaluator keyCreator = EvaluatorUtils.create(ops, sources, (Expr<?>)key);
+            
+            // update the index
+            pathEqPathIndex.put(path.getRoot(), map);   
+            pathToIndexKey.put(path.getRoot(), keyCreator);            
+        }
     }
 
 }

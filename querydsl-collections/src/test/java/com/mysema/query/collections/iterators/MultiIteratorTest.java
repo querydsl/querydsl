@@ -61,7 +61,7 @@ public class MultiIteratorTest extends AbstractIteratorTest {
             return getIterator(expr);
         }
 
-        public void init(JavaOps ops, List<? extends Expr<?>> sources, EBoolean where) {
+        public void init(Map<Expr<?>,Iterable<?>> exprToIt, JavaOps ops, List<? extends Expr<?>> sources, EBoolean where) {
             // TODO Auto-generated method stub
         }
 

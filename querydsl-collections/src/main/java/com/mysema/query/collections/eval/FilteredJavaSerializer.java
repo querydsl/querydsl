@@ -3,10 +3,11 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.grammar;
+package com.mysema.query.collections.eval;
 
 import java.util.List;
 
+import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.Ops;
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Expr;

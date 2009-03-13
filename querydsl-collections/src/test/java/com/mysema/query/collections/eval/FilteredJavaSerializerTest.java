@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.grammar;
+package com.mysema.query.collections.eval;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.mysema.query.collections.Domain.QCat;
+import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 
@@ -24,7 +25,7 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
  */
 public class FilteredJavaSerializerTest {
     
-    private static JavaOps ops = new JavaOps();
+    private static JavaOps ops = JavaOps.DEFAULT;
     
     private static QCat cat = new QCat("cat");    
     private static QCat otherCat = new QCat("otherCat");
@@ -91,8 +92,7 @@ public class FilteredJavaSerializerTest {
     public void test15(){
         assertMatches1Expr("true && cat.getName().endsWith(a1)", otherCat.name.ne(cat.name).and(cat.name.like("%Kate5")));
     }
-    
-    
+        
     private void assertMatches1Expr(String expected, EBoolean where) {
         JavaSerializer ser = new FilteredJavaSerializer(ops, Collections.<Expr<?>>singletonList(cat));
         ser.handle(where);

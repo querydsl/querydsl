@@ -15,6 +15,7 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.support.JoinExpressionComparator;
+import com.mysema.query.collections.support.SimpleIndexSupport;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 
@@ -91,27 +92,18 @@ public class QueryPerformanceTest extends AbstractQueryTest{
             for (long j=0; j < testIterations; j++){            
                 // without wrapped iterators
                 query = new ColQuery();
-                query.setWrapIterators(false);                       
+                query.setWrapIterators(false);       
+                query.setIndexSupport(new SimpleIndexSupport());
                 level1 += query(query, condition, cats1, cats2);
-//                if (size == 100 && j == 0){
-//                    System.out.println(results + " results");
-//                }
                 
                 // without reordering
                 query = new ColQuery();
                 query.setSortSources(false);            
                 level2 += query(query, condition, cats1, cats2);
-                
-//                if (size == 100 && j == 0){
-//                    System.out.println(results + " results");
-//                }
-                
+                                
                 // with reordering and iterator wrapping
                 query = new ColQuery();            
                 level3 += query(query, condition, cats1, cats2);
-//                if (size == 100 && j == 0){
-//                    System.out.println(results + " results");
-//                }
                 
             }
             StringBuilder builder = new StringBuilder();

@@ -24,12 +24,8 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
  */
 public class SimpleIndexSupport implements IndexSupport{
     
-    private final Map<Expr<?>,Iterable<?>> exprToIt;
+    private Map<Expr<?>,Iterable<?>> exprToIt;
     
-    public SimpleIndexSupport(Map<Expr<?>,Iterable<?>> exprToIt){
-        this.exprToIt = exprToIt;
-    }
-
     @SuppressWarnings("unchecked")
     public <A> Iterator<A> getIterator(Expr<A> expr) {
         return (Iterator<A>)exprToIt.get(expr).iterator();
@@ -40,7 +36,7 @@ public class SimpleIndexSupport implements IndexSupport{
         return (Iterator<A>)exprToIt.get(expr).iterator();
     }
 
-    public void init(JavaOps ops, List<? extends Expr<?>> sources, EBoolean condition) {
+    public void init(Map<Expr<?>,Iterable<?>> exprToIt, JavaOps ops, List<? extends Expr<?>> sources, EBoolean condition) {
         // do nothing
     }
         

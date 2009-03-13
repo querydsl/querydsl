@@ -20,10 +20,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.collections.IndexSupport;
+import com.mysema.query.collections.eval.Evaluator;
+import com.mysema.query.collections.eval.FilteredJavaSerializer;
+import com.mysema.query.collections.eval.JaninoEvaluator;
+import com.mysema.query.collections.eval.JavaSerializer;
 import com.mysema.query.collections.utils.QueryIteratorUtils;
-import com.mysema.query.grammar.FilteredJavaSerializer;
 import com.mysema.query.grammar.JavaOps;
-import com.mysema.query.grammar.JavaSerializer;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 
@@ -38,7 +40,7 @@ public class FilteringMultiIterator extends MultiIterator implements IndexSuppor
     
     private static final Logger logger = LoggerFactory.getLogger(FilteringMultiIterator.class);
     
-    private Map<Expr<?>,ExpressionEvaluator> exprToEvaluator = new HashMap<Expr<?>,ExpressionEvaluator>();
+    private Map<Expr<?>,Evaluator> exprToEvaluator = new HashMap<Expr<?>,Evaluator>();
     
     private IndexSupport indexSupport;
     
@@ -56,7 +58,7 @@ public class FilteringMultiIterator extends MultiIterator implements IndexSuppor
         super.add(expr);
         try {
             // each iterator needs own copy of expressions
-            ExpressionEvaluator ev = createEvaluator(new ArrayList<Expr<?>>(sources), sources.size());
+            Evaluator ev = createEvaluator(new ArrayList<Expr<?>>(sources), sources.size());
             exprToEvaluator.put(expr, ev);
             return this;
         } catch (Exception e) {
@@ -67,7 +69,7 @@ public class FilteringMultiIterator extends MultiIterator implements IndexSuppor
         
     }
     
-    private ExpressionEvaluator createEvaluator(List<Expr<?>> exprCopy,
+    private Evaluator createEvaluator(List<Expr<?>> exprCopy,
             final int extraArgsSize) throws CompileException, ParseException,
             ScanException {
          JavaSerializer serializer = new FilteredJavaSerializer(ops, exprCopy){            
@@ -93,7 +95,7 @@ public class FilteringMultiIterator extends MultiIterator implements IndexSuppor
         serializer.handle(where);        
         // TODO : find out if the expression resolved always to true
         ExpressionEvaluator ev = serializer.createExpressionEvaluator(exprCopy, boolean.class);
-        return ev;
+        return new JaninoEvaluator(ev);
     }
     
     public <A> Iterator<A> getIterator(Expr<A> expr) {
@@ -102,7 +104,7 @@ public class FilteringMultiIterator extends MultiIterator implements IndexSuppor
 
     public <A> Iterator<A> getIterator(Expr<A> expr, Object[] bindings) {
         Iterator<A> it = indexSupport.getIterator(expr, bindings);
-        ExpressionEvaluator ev = exprToEvaluator.get(expr);        
+        Evaluator ev = exprToEvaluator.get(expr);        
         if (ev != null){
             it = QueryIteratorUtils.singleArgFilter(indexSupport.getIterator(expr, bindings), ev);
         }
@@ -116,8 +118,8 @@ public class FilteringMultiIterator extends MultiIterator implements IndexSuppor
         return this;
     }
 
-    public void init(JavaOps ops, List<? extends Expr<?>> orderedSources, EBoolean condition) {
-        indexSupport.init(ops, orderedSources, condition);
+    public void init(Map<Expr<?>,Iterable<?>> exprToIt, JavaOps ops, List<? extends Expr<?>> orderedSources, EBoolean condition) {
+        indexSupport.init(exprToIt, ops, orderedSources, condition);
     }
     
 }

@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.grammar;
+package com.mysema.query.collections.eval;
 
 import static com.mysema.query.grammar.types.PathMetadata.LISTVALUE_CONSTANT;
 import static com.mysema.query.grammar.types.PathMetadata.PROPERTY;
@@ -22,6 +22,8 @@ import org.codehaus.janino.Scanner.ScanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.grammar.JavaOps;
+import com.mysema.query.grammar.Ops;
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
@@ -66,7 +68,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
      * @throws ParseException
      * @throws ScanException
      */
-    public ExpressionEvaluator createExpressionEvaluator(List<Expr<?>> sources, Class<?> targetType) throws CompileException, ParseException, ScanException{
+    public ExpressionEvaluator createExpressionEvaluator(List<? extends Expr<?>> sources, Class<?> targetType) throws CompileException, ParseException, ScanException{
         Assert.notNull(targetType);
         String expr = builder.toString();
                 
@@ -74,13 +76,13 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
         Class<?>[] types = new Class<?>[constArray.length + sources.size()];
         String[] names = new String[constArray.length + sources.size()];
         for (int i = 0; i < constArray.length; i++){
-            types[i] = normalize(constArray[i].getClass());
+            types[i] = constArray[i].getClass();
             names[i] = "a" + (i+1);
         }
         
         int off = constArray.length;
         for (int i = 0; i < sources.size(); i++){
-            types[off + i] = normalize(sources.get(i).getType());            
+            types[off + i] = sources.get(i).getType();            
             names[off + i] = ((Path<?>)sources.get(i)).getMetadata().getExpression().toString();    
         }         
         
@@ -90,21 +92,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
         
         return instantiateExpressionEvaluator(targetType, expr, constArray, types, names);
     }
-    
-    /**
-     * Create an ExpressionEvaluator for the given sources and projection
-     * 
-     * @param sources
-     * @param projection
-     * @return
-     * @throws Exception
-     */
-    public ExpressionEvaluator createExpressionEvaluator(List<Expr<?>> sources, Expr<?> projection) throws Exception{
-        Class<?> targetType = projection.getType();
-        if (targetType == null) targetType = Object.class;
-        return createExpressionEvaluator(sources, targetType);
-    }
-        
+            
     /**
      * Instantiate a new ExpressionEvaluator
      * 
@@ -178,7 +166,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
     }
     
     private void visitCast(Op<?> operator, Expr<?> source, Class<?> targetType) {
-        if (Number.class.isAssignableFrom(source.getType())){
+        if (Number.class.isAssignableFrom(source.getType()) && !EConstant.class.isInstance(source)){
             append("new ").append(source.getType().getSimpleName()).append("(");
             handle(source);
             append(")");

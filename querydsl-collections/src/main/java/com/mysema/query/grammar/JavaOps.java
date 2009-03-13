@@ -23,7 +23,7 @@ public class JavaOps extends OperationPatterns {
     
     public static final JavaOps DEFAULT = new JavaOps();
     
-    public JavaOps(){       
+    protected JavaOps(){       
         String functions = JavaOps.class.getName();
         
         add(Ops.AFTER, "%s.compareTo(%s) > 0");
@@ -79,11 +79,16 @@ public class JavaOps extends OperationPatterns {
         add(Ops.OpMath.MOD, "%s %% %s");
         
         // path types
+        for (PathType type : new PathType[]{PathMetadata.LISTVALUE_CONSTANT}){
+            add(type,"%s.get(%s.intValue())");    
+        }        
+        
+        // path types
         for (PathType type : new PathType[]{PathMetadata.LISTVALUE, PathMetadata.LISTVALUE_CONSTANT, PathMetadata.MAPVALUE, PathMetadata.MAPVALUE_CONSTANT}){
             add(type,"%s.get(%s)");    
         }        
         add(PathMetadata.ARRAYVALUE, "%s[%s]");
-        add(PathMetadata.ARRAYVALUE_CONSTANT, "%s[%s]");
+        add(PathMetadata.ARRAYVALUE_CONSTANT, "%s[%s.intValue()]");
         
         add(PathMetadata.ARRAY_SIZE,"%s.length");
         add(PathMetadata.SIZE,"%s.size()");

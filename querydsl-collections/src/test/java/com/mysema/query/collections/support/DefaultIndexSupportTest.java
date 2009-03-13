@@ -23,7 +23,7 @@ import com.mysema.query.grammar.types.Expr;
  */
 public class DefaultIndexSupportTest extends AbstractQueryTest{
 
-    private JavaOps ops = new JavaOps();
+    private JavaOps ops = JavaOps.DEFAULT;
     
     private Map<Expr<?>,Iterable<?>> exprToIt = new HashMap<Expr<?>,Iterable<?>>();
     
@@ -33,27 +33,26 @@ public class DefaultIndexSupportTest extends AbstractQueryTest{
     public void before(){
         exprToIt.put(cat, cats);
         exprToIt.put(otherCat, cats);
-        indexSupport = new DefaultIndexSupport(exprToIt);
+        indexSupport = new DefaultIndexSupport();
     }
     
     @Test
     public void test1(){
-        indexSupport.init(ops, Arrays.asList(cat,otherCat), cat.name.eq(otherCat.name));        
-        Map<?,? extends Iterable<?>> map = indexSupport.pathEqPathIndex.get(otherCat.name);
+        indexSupport.init(exprToIt, ops, Arrays.asList(cat,otherCat), cat.name.eq(otherCat.name));        
+        Map<?,? extends Iterable<?>> map = indexSupport.pathEqPathIndex.get(otherCat);
         assertTrue("map was null or empty", map != null && !map.isEmpty());
         assertEquals(4, map.size());
-        assertTrue(indexSupport.pathEqPathIndex.get(cat.name) == null);
+        assertTrue(indexSupport.pathEqPathIndex.get(cat) == null);
         
     }
     
     @Test
     public void test2(){
-        indexSupport.init(ops, Arrays.asList(otherCat,cat), cat.name.eq(otherCat.name));
-        Map<?,? extends Iterable<?>> map = indexSupport.pathEqPathIndex.get(cat.name);
+        indexSupport.init(exprToIt, ops, Arrays.asList(otherCat,cat), cat.name.eq(otherCat.name));
+        Map<?,? extends Iterable<?>> map = indexSupport.pathEqPathIndex.get(cat);
         assertTrue("map was null or empty", map != null && !map.isEmpty());
         assertEquals(4, map.size());
-        assertTrue(indexSupport.pathEqPathIndex.get(otherCat.name) == null);
-        
+        assertTrue(indexSupport.pathEqPathIndex.get(otherCat) == null);        
     }
     
 }

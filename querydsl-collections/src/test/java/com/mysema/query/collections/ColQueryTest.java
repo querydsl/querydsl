@@ -243,8 +243,9 @@ public class ColQueryTest extends AbstractQueryTest{
             query().from(cat, c1, c2).list(e);    
         }        
                 
-    }    
-@Test
+    }
+    
+    @Test
     public void testCSVIteration(){       
         List<String> lines = Arrays.asList("1;10;100","2;20;200","3;30;300");
         

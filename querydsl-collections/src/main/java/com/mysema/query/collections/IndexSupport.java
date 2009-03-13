@@ -7,6 +7,7 @@ package com.mysema.query.collections;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.mysema.query.collections.support.DefaultIndexSupport;
 import com.mysema.query.grammar.JavaOps;
@@ -25,14 +26,15 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
 public interface IndexSupport {
     
     /**
-     * init the IndexSupport instance
-     * NOTE : this IndexSupport instance is stateful and needs to be query specific, not global
+     * Initialize the IndexSupport instance
+     * NOTE : IndexSupport instances are stateful
      * 
+     * @param exprToIt
      * @param ops
      * @param orderedSources
      * @param condition
      */
-    void init(JavaOps ops, List<? extends Expr<?>> orderedSources, EBoolean condition);
+    void init(Map<Expr<?>,Iterable<?>> exprToIt, JavaOps ops, List<? extends Expr<?>> orderedSources, EBoolean condition);
     
     <A> Iterator<A> getIterator(Expr<A> expr);
 

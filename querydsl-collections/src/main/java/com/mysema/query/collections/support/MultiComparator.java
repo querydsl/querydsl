@@ -5,11 +5,11 @@
  */
 package com.mysema.query.collections.support;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
 
 import org.apache.commons.collections15.comparators.ComparableComparator;
-import org.codehaus.janino.ExpressionEvaluator;
+
+import com.mysema.query.collections.eval.Evaluator;
 
 /**
  * MultiComparator compares 
@@ -22,29 +22,25 @@ public class MultiComparator implements Comparator<Object[]> {
 
     private Comparator<Object> naturalOrder = ComparableComparator.getInstance();
 
-    private ExpressionEvaluator ev;
+    private Evaluator ev;
     
     private boolean[] asc;
     
-    public MultiComparator(ExpressionEvaluator ev, boolean[] directions) {
+    public MultiComparator(Evaluator ev, boolean[] directions) {
         this.ev = ev;
         this.asc = directions;
     }
 
     public int compare(Object[] o1, Object[] o2) {
-        try{
-            o1 = (Object[]) ev.evaluate(o1);
-            o2 = (Object[]) ev.evaluate(o2);
-            for (int i = 0; i < o1.length; i++){
-                int res = naturalOrder.compare(o1[i], o2[i]);
-                if (res != 0){
-                    return asc[i] ? res : -res;
-                }
+        o1 = (Object[]) ev.evaluate(o1);
+        o2 = (Object[]) ev.evaluate(o2);
+        for (int i = 0; i < o1.length; i++){
+            int res = naturalOrder.compare(o1[i], o2[i]);
+            if (res != 0){
+                return asc[i] ? res : -res;
             }
-            return 0;    
-        }catch(InvocationTargetException ite){
-            throw new RuntimeException("Caught " + ite.getClass().getName());
-        }         
+        }
+        return 0;          
     }
 
 }

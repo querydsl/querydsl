@@ -8,10 +8,10 @@ package com.mysema.query.collections;
 import java.util.*;
 
 import org.apache.commons.collections15.IteratorUtils;
-import org.codehaus.janino.ExpressionEvaluator;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryBase;
+import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.iterators.FilteringMultiIterator;
 import com.mysema.query.collections.iterators.MultiIterator;
 import com.mysema.query.collections.support.DefaultIndexSupport;
@@ -62,7 +62,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     
     public AbstractColQuery(JavaOps ops) {
         this.ops = ops;
-        this.indexSupport = new DefaultIndexSupport(exprToIt);
+        this.indexSupport = new DefaultIndexSupport();
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
     }
     
@@ -244,7 +244,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
                 case DEFAULT :    // do nothing
                 }
             }   
-            indexSupport.init(ops, sources, where.create());
+            indexSupport.init(exprToIt, ops, sources, where.create());
             multiIt.init(indexSupport);
             
             if (!wrapIterators && (where.create() != null)){
@@ -257,7 +257,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources) throws Exception{
             JoinExpression<?> join = joins.get(0);
             sources.add(join.getTarget());
-            indexSupport.init(ops, sources, where.create());
+            indexSupport.init(exprToIt, ops, sources, where.create());
             
             // create a simple projecting iterator for Object -> Object[]
             Iterator<?> it = QueryIteratorUtils.toArrayIterator(indexSupport.getIterator(join.getTarget()));
@@ -280,7 +280,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
                 directions[i] = orderBy.get(i).order == Order.ASC;
             }
             Expr<?> expr = new Expr.EArrayConstructor<Object>(Object.class, orderByExpr);
-            ExpressionEvaluator ev = EvaluatorUtils.create(ops, sources, expr);
+            Evaluator ev = EvaluatorUtils.create(ops, sources, expr);
             
             // transform the iterator to list
             List<Object[]> itAsList = IteratorUtils.toList((Iterator<Object[]>)it);               

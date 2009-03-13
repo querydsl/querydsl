@@ -5,14 +5,13 @@
  */
 package com.mysema.query.collections.utils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import org.apache.commons.collections15.IteratorUtils;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
-import org.codehaus.janino.ExpressionEvaluator;
 
+import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
@@ -24,15 +23,7 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
  * @version $Id$
  */
 public class QueryIteratorUtils {
-   
-    public static <T> T evaluate(ExpressionEvaluator ev, Object... args){
-        try {
-            return (T) ev.evaluate(args);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
+       
     /**
      * filter the given iterator using the given condition
      * 
@@ -44,14 +35,14 @@ public class QueryIteratorUtils {
      * @return
      */
     public static <S> Iterator<S> multiArgFilter(JavaOps ops, Iterator<S> source, List<Expr<?>> sources, EBoolean condition){
-        ExpressionEvaluator ev = EvaluatorUtils.create(ops, sources, condition);
+        Evaluator ev = EvaluatorUtils.create(ops, sources, condition);
         return multiArgFilter(source, ev);
     }
     
-    private static <S> Iterator<S> multiArgFilter(Iterator<S> source, final ExpressionEvaluator ev){
+    private static <S> Iterator<S> multiArgFilter(Iterator<S> source, final Evaluator ev){
         return IteratorUtils.filteredIterator(source, new Predicate<S>(){
             public boolean evaluate(S object) {
-                return QueryIteratorUtils.<Boolean>evaluate(ev, (Object[])object);
+                return ev.<Boolean>evaluate((Object[])object);
             }            
         });
     }
@@ -68,14 +59,14 @@ public class QueryIteratorUtils {
      * @return
      */
     public static <S,T> Iterator<T> transform(JavaOps ops, Iterator<S> source, List<Expr<?>> sources, Expr<?> projection){
-        ExpressionEvaluator ev = EvaluatorUtils.create(ops, sources, projection);
+        Evaluator ev = EvaluatorUtils.create(ops, sources, projection);
         return transform(source, ev);
     }
     
-    private static <S,T> Iterator<T> transform(Iterator<S> source, final ExpressionEvaluator ev){
+    private static <S,T> Iterator<T> transform(Iterator<S> source, final Evaluator ev){
         return IteratorUtils.transformedIterator(source, new Transformer<S,T>(){
             public T transform(S input) {
-                return QueryIteratorUtils.<T>evaluate(ev, (Object[])input);
+                return ev.<T>evaluate((Object[])input);
             }            
         });
     }
@@ -90,11 +81,11 @@ public class QueryIteratorUtils {
      * @param ev
      * @return
      */
-    public static <S,T> Map<S,? extends Iterable<T>> projectToMap(Iterator<S> source, ExpressionEvaluator ev){
+    public static <S,T> Map<S,? extends Iterable<T>> projectToMap(Iterator<S> source, Evaluator ev){
         Map<S,Collection<T>> map = new HashMap<S,Collection<T>>();
         while (source.hasNext()){
             S key = source.next();
-            T value = evaluate(ev, key);
+            T value = ev.<T>evaluate(key);
             Collection<T> col = map.get(key);
             if (col == null){
                 col = new ArrayList<T>();
@@ -113,10 +104,10 @@ public class QueryIteratorUtils {
      * @param ev
      * @return
      */
-    public static <S> Iterator<S> singleArgFilter(Iterator<S> source, final ExpressionEvaluator ev){
+    public static <S> Iterator<S> singleArgFilter(Iterator<S> source, final Evaluator ev){
         return IteratorUtils.filteredIterator(source, new Predicate<S>(){
             public boolean evaluate(S object) {
-                return QueryIteratorUtils.<Boolean>evaluate(ev, object);
+                return ev.<Boolean>evaluate(object);
             }            
         });
     }
