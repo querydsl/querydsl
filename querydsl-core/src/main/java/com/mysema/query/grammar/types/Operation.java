@@ -40,7 +40,7 @@ public interface Operation<OP,RT> {
         public Expr<?>[] getArgs() {return args;}
         public Op<Boolean> getOperator() {return op;}    
         public String toString(){
-            return op + " ("+Arrays.asList(args)+")";
+            return ExprUtils.toString(this);
         }
     }    
     
@@ -62,7 +62,7 @@ public interface Operation<OP,RT> {
         public Expr<?>[] getArgs() {return args;}
         public Op<OpType> getOperator() {return op;}    
         public String toString(){
-            return op + " ("+Arrays.asList(args)+")";
+            return ExprUtils.toString(this);
         }
     }
         
@@ -84,7 +84,7 @@ public interface Operation<OP,RT> {
         public Expr<?>[] getArgs() {return args;}
         public Op<OpType> getOperator() {return op;}       
         public String toString(){
-            return op + " ("+Arrays.asList(args)+")";
+            return ExprUtils.toString(this);
         }
     }
     
@@ -101,7 +101,7 @@ public interface Operation<OP,RT> {
         public Expr<?>[] getArgs() {return args;}
         public Op<String> getOperator() {return op;}    
         public String toString(){
-            return op + " ("+Arrays.asList(args)+")";
+            return ExprUtils.toString(this);
         }
     }
     
@@ -116,8 +116,8 @@ public interface Operation<OP,RT> {
         public Expr<?>[] getArgs() {return args;}
         public Op<String> getOperator() {return op;}
         public String toString(){
-            return op + " ("+Arrays.asList(args)+")";
+            return ExprUtils.toString(this);
         }
     }
-
+    
 }
