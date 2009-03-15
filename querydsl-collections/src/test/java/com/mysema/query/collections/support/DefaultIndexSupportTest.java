@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.collections.support;
 
 import static org.junit.Assert.assertEquals;
@@ -52,7 +57,19 @@ public class DefaultIndexSupportTest extends AbstractQueryTest{
         Map<?,? extends Iterable<?>> map = indexSupport.pathEqPathIndex.get(cat);
         assertTrue("map was null or empty", map != null && !map.isEmpty());
         assertEquals(4, map.size());
-        assertTrue(indexSupport.pathEqPathIndex.get(otherCat) == null);        
+        assertTrue(indexSupport.pathEqPathIndex.get(otherCat) == null);      
+        System.out.println(indexSupport.pathEqPathIndex);
+        
+    }
+    
+    @Test
+    public void test3(){
+        indexSupport.init(exprToIt, ops, Arrays.asList(otherCat,cat), cat.eq(otherCat));
+        Map<?,? extends Iterable<?>> map = indexSupport.pathEqPathIndex.get(cat);
+        assertTrue("map was null or empty", map != null && !map.isEmpty());
+        assertEquals(4, map.size());        
+        assertTrue(indexSupport.pathEqPathIndex.get(otherCat) == null);     
+        assertEquals(Arrays.asList(c4), map.get(c4));
     }
     
 }

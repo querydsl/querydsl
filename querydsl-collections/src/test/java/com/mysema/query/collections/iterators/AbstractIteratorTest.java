@@ -5,9 +5,9 @@
  */
 package com.mysema.query.collections.iterators;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -20,7 +20,7 @@ public abstract class AbstractIteratorTest {
     
     protected void assertIteratorEquals(Iterator<Object[]> a, Iterator<Object[]> b) {
         while (a.hasNext()){
-            assertArrayEquals(a.next(), b.next());
+            assertEquals(Arrays.asList(a.next()), Arrays.asList(b.next()));
         }
         assertFalse(b.hasNext());
     }

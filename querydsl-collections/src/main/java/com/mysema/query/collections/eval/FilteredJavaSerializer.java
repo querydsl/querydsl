@@ -7,6 +7,13 @@ package com.mysema.query.collections.eval;
 
 import java.util.List;
 
+import org.codehaus.janino.CompileException;
+import org.codehaus.janino.ExpressionEvaluator;
+import org.codehaus.janino.Parser.ParseException;
+import org.codehaus.janino.Scanner.ScanException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.Ops;
 import com.mysema.query.grammar.Ops.Op;
@@ -21,6 +28,8 @@ import com.mysema.query.grammar.types.Path;
  */
 public class FilteredJavaSerializer extends JavaSerializer{
     
+    private static final Logger logger = LoggerFactory.getLogger(FilteredJavaSerializer.class);
+    
     private boolean skipPath = false;
     
     private List<Expr<?>> exprs;
@@ -32,9 +41,30 @@ public class FilteredJavaSerializer extends JavaSerializer{
     public FilteredJavaSerializer(JavaOps ops, List<Expr<?>> expressions) {
         super(ops);
         this.exprs = expressions;
-        this.last = exprs.get(exprs.size()-1);
+        this.last = expressions.get(expressions.size() -1);
     }
     
+    public FilteredJavaSerializer(JavaOps ops, List<Expr<?>> expressions, int lastElement){
+        super(ops);
+        this.exprs = expressions.subList(0, lastElement +1);
+        this.last = expressions.get(lastElement);                          
+    }
+    
+    public ExpressionEvaluator createExpressionEvaluator(List<? extends Expr<?>> sources, Class<?> targetType) throws CompileException, ParseException, ScanException{
+        String expr = super.toString();
+        String filtered = expr.replace("true", "").replace(" ", "").replace("&", "").replace("|", "");
+        if ("".equals(filtered)){
+            logger.info("-- no filtering");
+            return null;
+        }else{    
+            return super.createExpressionEvaluator(sources, targetType);
+        }
+    }
+    
+    protected String normalize(String expr) {
+        return expr.replace("&& true", "").replace("true &&", "");
+    }
+        
     @Override
     protected void visitOperation(Class<?> type, Op<?> operator, Expr<?>... args) {
         if (!skipPath){

@@ -1,8 +1,11 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.collections.support;
 
 import java.util.*;
-
-import org.codehaus.janino.ExpressionEvaluator;
 
 import com.mysema.query.collections.IndexSupport;
 import com.mysema.query.collections.eval.Evaluator;
@@ -17,7 +20,7 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.util.Assert;
 
 /**
- * ExtendedIndexSupport provides
+ * DefaultIndexSupport provides
  *
  * @author tiwe
  * @version $Id$
@@ -48,11 +51,13 @@ public class DefaultIndexSupport implements IndexSupport{
             Map<?,? extends Iterable<?>> indexEntry = pathEqPathIndex.get(expr);
             Object key = ev.evaluate(bindings);
             if (indexEntry.containsKey(key)){
+//                System.err.println(expr + " -> " + indexEntry.get(key) + " for " + Arrays.asList(bindings));
                 return (Iterator<A>)indexEntry.get(key).iterator();    
             }else{
                 return Collections.<A>emptyList().iterator();
             }            
         }else{
+//            System.err.println(expr + " -> " + exprToIt.get(expr) + " for " + Arrays.asList(bindings));
             return (Iterator<A>)exprToIt.get(expr).iterator();    
         }        
     }
@@ -61,7 +66,7 @@ public class DefaultIndexSupport implements IndexSupport{
         this.exprToIt = exprToIt;
         this.ops = Assert.notNull(ops);
         this.sources = Assert.notNull(sources);        
-        this.exprToIt = Assert.notNull(exprToIt);        
+        this.exprToIt = Assert.notNull(exprToIt);  
         this.pathEqPathIndex = new HashMap<Path<?>,Map<?,? extends Iterable<?>>>();
         this.pathToIndexKey = new HashMap<Path<?>,Evaluator>();
         
@@ -87,7 +92,10 @@ public class DefaultIndexSupport implements IndexSupport{
                 }else if (i1 > i2){
                     indexPath(p1, p2);
                 }
-            }            
+                
+            }else{
+                // 
+            }
             
         }else if (op.getOperator() == Ops.NOT){    
             // skip negative condition paths
@@ -103,7 +111,7 @@ public class DefaultIndexSupport implements IndexSupport{
         if (!pathEqPathIndex.containsKey(path.getRoot())){
             // create the index entry
             Evaluator ev = EvaluatorUtils.create(ops, Collections.<Expr<?>>singletonList((Expr<?>)path.getRoot()), (Expr<?>)path);
-            Map<?,? extends Iterable<?>> map = QueryIteratorUtils.projectToMap(exprToIt.get(path.getRoot()).iterator(), ev);
+            Map<?,? extends Iterable<?>> map = QueryIteratorUtils.projectToMap(exprToIt.get(path.getRoot()), ev);
             
             // create the key creator            
             Evaluator keyCreator = EvaluatorUtils.create(ops, sources, (Expr<?>)key);

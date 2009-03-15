@@ -8,18 +8,12 @@ package com.mysema.query.collections.support;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.collections.AbstractQueryTest;
-import com.mysema.query.collections.support.JoinExpressionComparator;
-import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 
 
@@ -48,8 +42,7 @@ public class JoinExpressionComparatorTest extends AbstractQueryTest{
         assertTrue( comp.compare(otherCatJoin, catJoin) < 0);
         assertTrue( comp.compare(catJoin, otherCatJoin) > 0);
         assertEquals(0, comp.compare(catJoin, catJoin));
-        assertEquals(0, comp.compare(otherCatJoin, otherCatJoin));
-           
+        assertEquals(0, comp.compare(otherCatJoin, otherCatJoin));           
     }
     
     @Test

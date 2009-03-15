@@ -81,11 +81,14 @@ public class QueryIteratorUtils {
      * @param ev
      * @return
      */
-    public static <S,T> Map<S,? extends Iterable<T>> projectToMap(Iterator<S> source, Evaluator ev){
-        Map<S,Collection<T>> map = new HashMap<S,Collection<T>>();
-        while (source.hasNext()){
-            S key = source.next();
-            T value = ev.<T>evaluate(key);
+    public static <S,T> Map<S,? extends Iterable<T>> projectToMap(Iterable<T> source, Evaluator ev){
+        int size = 300;
+        if (source instanceof Collection){
+            size = (int)Math.ceil(((Collection<?>)source).size() * 0.7);
+        }
+        Map<S,Collection<T>> map = new HashMap<S,Collection<T>>(size);
+        for (T value : source){
+            S key = ev.<S>evaluate(value);
             Collection<T> col = map.get(key);
             if (col == null){
                 col = new ArrayList<T>();

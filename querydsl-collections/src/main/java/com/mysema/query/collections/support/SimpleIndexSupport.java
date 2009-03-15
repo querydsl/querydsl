@@ -13,6 +13,7 @@ import com.mysema.query.collections.IndexSupport;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.util.Assert;
 
 /**
  * DefaultIndexSupport is the default implementation of the IndexSupport interface
@@ -37,7 +38,7 @@ public class SimpleIndexSupport implements IndexSupport{
     }
 
     public void init(Map<Expr<?>,Iterable<?>> exprToIt, JavaOps ops, List<? extends Expr<?>> sources, EBoolean condition) {
-        // do nothing
+        this.exprToIt = Assert.notNull(exprToIt);
     }
         
 }

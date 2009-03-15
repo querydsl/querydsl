@@ -13,7 +13,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.janino.CompileException;
 import org.codehaus.janino.ExpressionEvaluator;
@@ -48,7 +47,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
         super(ops);
     }
     
-    protected static Object[] combine(int size, Object[]... arrays){
+    public static Object[] combine(int size, Object[]... arrays){
         int offset = 0;
         Object[] target = new Object[size];
         for(Object[] arr : arrays){
@@ -70,7 +69,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
      */
     public ExpressionEvaluator createExpressionEvaluator(List<? extends Expr<?>> sources, Class<?> targetType) throws CompileException, ParseException, ScanException{
         Assert.notNull(targetType);
-        String expr = builder.toString();
+        String expr = normalize(builder.toString());
                 
         final Object[] constArray = constants.toArray();
         Class<?>[] types = new Class<?>[constArray.length + sources.size()];
@@ -93,6 +92,10 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
         return instantiateExpressionEvaluator(targetType, expr, constArray, types, names);
     }
             
+    protected String normalize(String expr) {
+        return expr;
+    }
+
     /**
      * Instantiate a new ExpressionEvaluator
      * 
@@ -115,18 +118,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
             public Object evaluate(Object[] origArgs) throws InvocationTargetException{
                 return super.evaluate(combine(constArray.length + origArgs.length, constArray, origArgs));
             }
-        };
-    }
-    
-    /**
-     * Changes wrapper types to primitive types
-     * 
-     * @param type
-     * @return
-     */
-    private Class<?> normalize(Class<?> type) {
-        Class<?> newType = ClassUtils.wrapperToPrimitive(type);
-        return newType != null ? newType : type;
+        };                    
     }
     
     protected void visit(ExtString stringPath){
@@ -202,10 +194,10 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
                 int lastIndex = right.lastIndexOf('%');
                 if (lastIndex == right.length() -1){
                     operator = Ops.STARTSWITH;
-                    args[1] =  new Expr.EConstant<String>(right.substring(0, lastIndex));
+                    args = new Expr[]{args[0],new Expr.EConstant<String>(right.substring(0, lastIndex))};
                 }else if (lastIndex == 0){
                     operator = Ops.ENDSWITH;
-                    args[1] = new Expr.EConstant<String>(right.substring(1));
+                    args = new Expr[]{args[0],new Expr.EConstant<String>(right.substring(1))};
                 }    
             }                
             super.visitOperation(type, operator, args);    

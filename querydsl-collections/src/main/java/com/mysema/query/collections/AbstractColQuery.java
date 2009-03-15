@@ -8,6 +8,8 @@ package com.mysema.query.collections;
 import java.util.*;
 
 import org.apache.commons.collections15.IteratorUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryBase;
@@ -23,6 +25,7 @@ import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.Order;
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.Expr.EBoolean;
 
 /**
  * AbstractColQuery provides a base class for Collection query implementations.
@@ -40,6 +43,8 @@ import com.mysema.query.grammar.types.Expr;
  * @version $Id$
  */
 public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
+    
+    private static final Logger logger = LoggerFactory.getLogger(AbstractColQuery.class);
         
     @SuppressWarnings("unchecked")
     private final SubType _this = (SubType)this;
@@ -118,6 +123,14 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     // alias variant
     public <RT> Iterable<RT> iterate(RT alias) {
         return iterate(MiniApi.getAny(alias));
+    }
+    
+    public long count(){
+        try {
+            return query.count();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     
     /**
@@ -221,16 +234,33 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
                                
         }
         
+        public long count() throws Exception {
+            List<Expr<?>> sources = new ArrayList<Expr<?>>();
+            Iterator<?> it;
+            if (joins.size() == 1){
+                it = handleFromWhereSingleSource(sources);
+            }else{
+                it = handleFromAndWhere(sources);   
+            }
+            long count = 0l;
+            while (it.hasNext()){
+                it.next();
+                count++;
+            }
+            return count;
+        }
+
         protected Iterator<?> handleFromAndWhere(List<Expr<?>> sources) throws Exception{
+            EBoolean condition = where.create();
             MultiIterator multiIt;
-            if (where.create() == null || !wrapIterators){
+            if (condition == null || !wrapIterators){
                 // cartesian view
                 multiIt = new MultiIterator();
             }else{
                 // filtered cartesian view
-                multiIt = new FilteringMultiIterator(ops, where.create());
+                multiIt = new FilteringMultiIterator(ops, condition);
                 if (sortSources){               
-                    sourceSortingSupport.sortSources(joins, where.create());               
+                    sourceSortingSupport.sortSources(joins, condition);               
                 }
             }        
             for (JoinExpression<?> join : joins) {
@@ -244,11 +274,12 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
                 case DEFAULT :    // do nothing
                 }
             }   
-            indexSupport.init(exprToIt, ops, sources, where.create());
+            indexSupport.init(exprToIt, ops, sources, condition);
             multiIt.init(indexSupport);
             
-            if (!wrapIterators && (where.create() != null)){
-                return QueryIteratorUtils.multiArgFilter(ops, multiIt, sources, where.create());
+            if (condition != null){
+                logger.info("Filtering iterator for cartesian view");
+                return QueryIteratorUtils.multiArgFilter(ops, multiIt, sources, condition);
             }else{
                 return multiIt;    
             }            

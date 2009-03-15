@@ -6,7 +6,7 @@
 package com.mysema.query.collections.iterators;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -28,6 +28,7 @@ import com.mysema.query.collections.utils.QueryIteratorUtils;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.util.Assert;
 
 /**
  * FilteringMultiIterator extends the MultiIterator to provide a filtered view 
@@ -53,49 +54,38 @@ public class FilteringMultiIterator extends MultiIterator implements IndexSuppor
         this.where = where;
     }
     
-    @Override
-    public MultiIterator add(Expr<?> expr) {
-        super.add(expr);
-        try {
-            // each iterator needs own copy of expressions
-            Evaluator ev = createEvaluator(new ArrayList<Expr<?>>(sources), sources.size());
-            exprToEvaluator.put(expr, ev);
-            return this;
-        } catch (Exception e) {
-            String error = "Caught " + e.getClass().getName();
-            logger.error(error, e);
-            throw new RuntimeException(error, e);
-        }
-        
-    }
-    
-    private Evaluator createEvaluator(List<Expr<?>> exprCopy,
-            final int extraArgsSize) throws CompileException, ParseException,
+    // TODO : simplify this
+    private Evaluator createEvaluator(List<Expr<?>> sources,
+            final int lastElement) throws CompileException, ParseException,
             ScanException {
-         JavaSerializer serializer = new FilteredJavaSerializer(ops, exprCopy){            
+         JavaSerializer serializer = new FilteredJavaSerializer(ops, sources, lastElement){            
             @Override
             protected ExpressionEvaluator instantiateExpressionEvaluator(
                     Class<?> targetType, String expr, final Object[] constArray,
                     Class<?>[] types, String[] names) throws CompileException,
                     ParseException, ScanException {
-                
+         
                 return new ExpressionEvaluator(expr, targetType, names, types){
                     @Override
                     public Object evaluate(Object[] origArgs) throws InvocationTargetException{
-                        Object[] args = new Object[constArray.length + extraArgsSize];
-                        System.arraycopy(constArray, 0, args, 0, constArray.length);
-                        System.arraycopy(values, 0, args, constArray.length, extraArgsSize);
-                        args[args.length - 1] = origArgs[0];
+                        Object[] args = JavaSerializer.combine(constArray.length + values.length, constArray, values);
+                        args[constArray.length + lastElement] = origArgs[0];                 
                         return super.evaluate(args);
                     }
-                };
+                };    
+                                
             }
             
         };
         serializer.handle(where);        
-        // TODO : find out if the expression resolved always to true
-        ExpressionEvaluator ev = serializer.createExpressionEvaluator(exprCopy, boolean.class);
-        return new JaninoEvaluator(ev);
+        logger.info("Filtering iterator for source");
+        ExpressionEvaluator ev = serializer.createExpressionEvaluator(sources, boolean.class);
+        if (ev != null){
+            return new JaninoEvaluator(ev);    
+        }else{
+            return null;
+        }
+        
     }
     
     public <A> Iterator<A> getIterator(Expr<A> expr) {
@@ -103,18 +93,29 @@ public class FilteringMultiIterator extends MultiIterator implements IndexSuppor
     }
 
     public <A> Iterator<A> getIterator(Expr<A> expr, Object[] bindings) {
-        Iterator<A> it = indexSupport.getIterator(expr, bindings);
-        Evaluator ev = exprToEvaluator.get(expr);        
-        if (ev != null){
-            it = QueryIteratorUtils.singleArgFilter(indexSupport.getIterator(expr, bindings), ev);
+        Iterator<A> it = Assert.notNull(indexSupport.getIterator(expr, bindings));
+        if (exprToEvaluator.containsKey(expr)){
+            return QueryIteratorUtils.singleArgFilter(it, exprToEvaluator.get(expr));
+        }else{
+            return it;
         }
-        return it;        
     }
     
     @Override
     public MultiIterator init(IndexSupport iteratorFactory){
         this.indexSupport = iteratorFactory;
         super.init(this);
+        int index = 0;
+        for (Expr<?> expr : sources){
+            try {
+                Evaluator ev = createEvaluator(sources, index++);
+                if (ev != null) exprToEvaluator.put(expr, ev);
+            } catch (Exception e) {
+                String error = "Caught " + e.getClass().getName();
+                logger.error(error, e);
+                throw new RuntimeException(error, e);
+            }
+        }
         return this;
     }
 

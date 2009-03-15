@@ -82,7 +82,7 @@ public class MultiIterator implements Iterator<Object[]>{
     
     private void produceNext(){
         for (int i = index; i < iterators.length; i++){   
-            if (!initialized){
+            if (!initialized || (!iterators[i].hasNext() && i > 0)){
                 iterators[i] = indexSupport.getIterator(sources.get(i), values);
             }            
             if (!iterators[i].hasNext()){
@@ -91,9 +91,6 @@ public class MultiIterator implements Iterator<Object[]>{
             }
             values[i] = iterators[i].next();
             lastEntry[i] = !iterators[i].hasNext();
-            if (!iterators[i].hasNext() && i > 0){     
-                iterators[i] = indexSupport.getIterator(sources.get(i), values);                
-            }            
             hasNext = Boolean.TRUE;
         }        
         index = iterators.length -1;

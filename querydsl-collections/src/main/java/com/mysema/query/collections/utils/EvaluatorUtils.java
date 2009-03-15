@@ -11,6 +11,7 @@ import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.eval.JaninoEvaluator;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.util.Assert;
 
 /**
  * EvaluatorUtils provides
@@ -21,6 +22,6 @@ import com.mysema.query.grammar.types.Expr;
 public class EvaluatorUtils {
     
     public static Evaluator create(JavaOps ops, List<? extends Expr<?>> sources, Expr<?> expr){
-        return new JaninoEvaluator(ops, sources, expr);
+        return new JaninoEvaluator(Assert.notNull(ops), Assert.notNull(sources), Assert.notNull(expr));
     }
 }
