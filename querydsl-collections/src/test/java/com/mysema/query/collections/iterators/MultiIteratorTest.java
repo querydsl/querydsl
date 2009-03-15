@@ -45,6 +45,7 @@ public class MultiIteratorTest extends AbstractIteratorTest {
 
     private IndexSupport iteratorFactory = new IndexSupport() {
 
+        @SuppressWarnings("unchecked")
         public <A> Iterator<A> getIterator(Expr<A> expr) {
             if (expr == int1)
                 return (Iterator<A>)list1.iterator();
@@ -62,12 +63,10 @@ public class MultiIteratorTest extends AbstractIteratorTest {
         }
 
         public void init(Map<Expr<?>,Iterable<?>> exprToIt, JavaOps ops, List<? extends Expr<?>> sources, EBoolean where) {
-            // TODO Auto-generated method stub
         }
 
-        public Comparator<JoinExpression<?>> getComparator(
-                List<Expr<?>> sources, EBoolean condition) {
-            // TODO Auto-generated method stub
+        @SuppressWarnings("unused")
+        public Comparator<JoinExpression<?>> getComparator(List<Expr<?>> sources, EBoolean condition) {
             return null;
         }
     };

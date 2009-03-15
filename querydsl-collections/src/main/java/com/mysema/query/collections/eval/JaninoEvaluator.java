@@ -22,7 +22,7 @@ import com.mysema.query.util.Assert;
  */
 public class JaninoEvaluator implements Evaluator{
 
-    private ExpressionEvaluator ev;
+    private final ExpressionEvaluator ev;
     
     public JaninoEvaluator(ExpressionEvaluator ev){
         this.ev = Assert.notNull(ev);

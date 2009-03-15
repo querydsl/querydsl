@@ -53,7 +53,6 @@ public class QueryPerformanceTest extends AbstractQueryTest{
     );
     
     @Test
-    @Ignore
     public void testValidateResultSizes(){
         int size = 50;
         long count, expected;
@@ -104,7 +103,7 @@ public class QueryPerformanceTest extends AbstractQueryTest{
         }
         System.out.println(res);
         if (res.toString().contains("X")){
-            fail("Errors occurred. See log for details.");
+            fail(res.toString().replaceAll("[^X]", "").length() + " errors occurred. See log for details.");
         }
     }
     

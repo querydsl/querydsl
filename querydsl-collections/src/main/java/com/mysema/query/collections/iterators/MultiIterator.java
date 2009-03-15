@@ -30,8 +30,6 @@ public class MultiIterator implements Iterator<Object[]>{
     
     protected int index = 0;
     
-    private boolean initialized;
-    
     private IndexSupport indexSupport;
     
     protected Iterator<?>[] iterators;
@@ -48,7 +46,7 @@ public class MultiIterator implements Iterator<Object[]>{
     }
     
     public boolean hasNext() {
-        if (hasNext == null){
+        while (hasNext == null){
             produceNext();
         }
         return hasNext.booleanValue();                
@@ -69,7 +67,7 @@ public class MultiIterator implements Iterator<Object[]>{
     }
                 
     public Object[] next() {
-        if (hasNext == null){
+        while (hasNext == null){
             produceNext();
         }
         if (hasNext.booleanValue()){
@@ -82,22 +80,21 @@ public class MultiIterator implements Iterator<Object[]>{
     
     private void produceNext(){
         for (int i = index; i < iterators.length; i++){   
-            if (!initialized || (!iterators[i].hasNext() && i > 0)){
+            if (iterators[i] == null || (!iterators[i].hasNext() && i > 0)){
                 iterators[i] = indexSupport.getIterator(sources.get(i), values);
-            }            
-            if (!iterators[i].hasNext()){
-                hasNext = Boolean.FALSE;
-                return;
             }
-            values[i] = iterators[i].next();
+            if (!iterators[i].hasNext()){
+                hasNext = i == 0 ? Boolean.FALSE : null;
+                return;    
+            }
+            values[i] = iterators[i].next();            
             lastEntry[i] = !iterators[i].hasNext();
             hasNext = Boolean.TRUE;
         }        
         index = iterators.length -1;
         while (lastEntry[index] && index > 0) index--;
-        initialized = true;
     }
-
+    
     public void remove() {
         // do nothing
     }   

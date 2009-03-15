@@ -69,7 +69,7 @@ public class FilteringMultiIterator extends MultiIterator implements IndexSuppor
                     @Override
                     public Object evaluate(Object[] origArgs) throws InvocationTargetException{
                         Object[] args = JavaSerializer.combine(constArray.length + values.length, constArray, values);
-                        args[constArray.length + lastElement] = origArgs[0];                 
+                        args[constArray.length + lastElement] = origArgs[0];                
                         return super.evaluate(args);
                     }
                 };    
