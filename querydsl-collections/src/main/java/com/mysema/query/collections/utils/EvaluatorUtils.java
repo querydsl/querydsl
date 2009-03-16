@@ -22,6 +22,7 @@ import com.mysema.query.util.Assert;
 public class EvaluatorUtils {
     
     public static Evaluator create(JavaOps ops, List<? extends Expr<?>> sources, Expr<?> expr){
-        return new JaninoEvaluator(Assert.notNull(ops), Assert.notNull(sources), Assert.notNull(expr));
+        return new JaninoEvaluator(Assert.notNull(ops), Assert.notNull(sources), Assert.notNull(expr));        
     }
+
 }

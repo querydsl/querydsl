@@ -39,16 +39,26 @@ public class QueryPerformanceTest extends AbstractQueryTest{
     
     private List<EBoolean> conditions = Arrays.asList(
             cat.ne(otherCat),
-            cat.eq(otherCat),            
-            cat.name.eq(otherCat.name),                      
+            cat.eq(otherCat),                                  
+            cat.name.eq(otherCat.name),
+            
+            // and
             cat.name.eq(otherCat.name).and(otherCat.name.eq("Kate5")),
+            cat.name.eq(otherCat.name).not().and(otherCat.name.eq("Kate5")),
+            cat.name.eq(otherCat.name).and(otherCat.name.eq("Kate5").not()),
             cat.name.ne(otherCat.name).and(otherCat.name.eq("Kate5")),
-            cat.name.ne(otherCat.name).or(otherCat.name.eq("Kate5")),            
-            cat.bodyWeight.eq(0).and(otherCat.name.eq("Kate5")),
-            cat.bodyWeight.eq(0).or(otherCat.name.eq("Kate5")),            
             cat.name.ne(otherCat.name).and(otherCat.name.like("Kate5%")),
-            cat.name.ne(otherCat.name).or(otherCat.name.like("%ate5")),            
-            cat.name.like("Bob5%").and(otherCat.name.like("Kate5%")),      
+            cat.bodyWeight.eq(0).and(otherCat.name.eq("Kate5")),
+            cat.name.like("Bob5%").and(otherCat.name.like("Kate5%")),
+            
+            // or
+            cat.name.eq(otherCat.name).or(otherCat.name.eq("Kate5")),
+            cat.name.eq(otherCat.name).or(otherCat.name.eq("Kate5").not()),
+            cat.name.ne(otherCat.name).or(otherCat.name.eq("Kate5")),            
+            cat.name.ne(otherCat.name).or(otherCat.name.like("%ate5")),
+            cat.bodyWeight.eq(0).or(otherCat.name.eq("Kate5")),
+            cat.bodyWeight.eq(0).not().or(otherCat.name.eq("Kate5")),
+            cat.bodyWeight.eq(0).or(otherCat.name.eq("Kate5").not()),
             cat.name.like("Bob5%").or(otherCat.name.like("%ate5"))      
     );
     

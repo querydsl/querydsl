@@ -51,13 +51,11 @@ public class DefaultIndexSupport implements IndexSupport{
             Map<?,? extends Iterable<?>> indexEntry = pathEqPathIndex.get(expr);
             Object key = ev.evaluate(bindings);
             if (indexEntry.containsKey(key)){
-//                System.err.println(expr + " -> " + indexEntry.get(key) + " for " + Arrays.asList(bindings));
                 return (Iterator<A>)indexEntry.get(key).iterator();    
             }else{
                 return Collections.<A>emptyList().iterator();
             }            
         }else{
-//            System.err.println(expr + " -> " + exprToIt.get(expr) + " for " + Arrays.asList(bindings));
             return (Iterator<A>)exprToIt.get(expr).iterator();    
         }        
     }
@@ -95,12 +93,12 @@ public class DefaultIndexSupport implements IndexSupport{
                 
             }else{
                 // 
-            }
+            }            
             
         }else if (op.getOperator() == Ops.NOT){    
             // skip negative condition paths
             
-        }else if (op.getOperator() == Ops.AND || op.getOperator() == Ops.OR){
+        }else if (op.getOperator() == Ops.AND){
             for (Expr<?> e : op.getArgs()){
                 if (e instanceof Operation) visitOperation((Operation<?, ?>) e);
             }
@@ -121,5 +119,5 @@ public class DefaultIndexSupport implements IndexSupport{
             pathToIndexKey.put(path.getRoot(), keyCreator);            
         }
     }
-
+    
 }
