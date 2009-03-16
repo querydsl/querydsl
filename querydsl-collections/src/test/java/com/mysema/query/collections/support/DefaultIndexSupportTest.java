@@ -42,34 +42,43 @@ public class DefaultIndexSupportTest extends AbstractQueryTest{
     }
     
     @Test
-    public void test1(){
+    public void testPathToPath1(){
         indexSupport.init(exprToIt, ops, Arrays.asList(cat,otherCat), cat.name.eq(otherCat.name));        
-        Map<?,? extends Iterable<?>> map = indexSupport.pathEqPathIndex.get(otherCat);
+        Map<?,? extends Iterable<?>> map = indexSupport.pathEqExprIndex.get(otherCat);
         assertTrue("map was null or empty", map != null && !map.isEmpty());
         assertEquals(4, map.size());
-        assertTrue(indexSupport.pathEqPathIndex.get(cat) == null);
+        assertTrue(indexSupport.pathEqExprIndex.get(cat) == null);
         
     }
     
     @Test
-    public void test2(){
+    public void testPathToPath2(){
         indexSupport.init(exprToIt, ops, Arrays.asList(otherCat,cat), cat.name.eq(otherCat.name));
-        Map<?,? extends Iterable<?>> map = indexSupport.pathEqPathIndex.get(cat);
+        Map<?,? extends Iterable<?>> map = indexSupport.pathEqExprIndex.get(cat);
         assertTrue("map was null or empty", map != null && !map.isEmpty());
         assertEquals(4, map.size());
-        assertTrue(indexSupport.pathEqPathIndex.get(otherCat) == null);      
-        System.out.println(indexSupport.pathEqPathIndex);
-        
+        assertTrue(indexSupport.pathEqExprIndex.get(otherCat) == null);      
+        System.out.println(indexSupport.pathEqExprIndex);        
     }
     
     @Test
-    public void test3(){
+    public void testToPath3(){
         indexSupport.init(exprToIt, ops, Arrays.asList(otherCat,cat), cat.eq(otherCat));
-        Map<?,? extends Iterable<?>> map = indexSupport.pathEqPathIndex.get(cat);
+        Map<?,? extends Iterable<?>> map = indexSupport.pathEqExprIndex.get(cat);
         assertTrue("map was null or empty", map != null && !map.isEmpty());
         assertEquals(4, map.size());        
-        assertTrue(indexSupport.pathEqPathIndex.get(otherCat) == null);     
+        assertTrue(indexSupport.pathEqExprIndex.get(otherCat) == null);     
         assertEquals(Arrays.asList(c4), map.get(c4));
+    }
+    
+    @Test
+    public void testPathToConstant(){
+        indexSupport.init(exprToIt, ops, Arrays.asList(otherCat,cat),
+                cat.bodyWeight.eq(0).and(otherCat.name.eq("Kitty")));
+        Iterable<?> iterable = indexSupport.pathEqConstantIndex.get(cat);
+        assertTrue(iterable != null && iterable.iterator().hasNext());
+        iterable = indexSupport.pathEqConstantIndex.get(otherCat);
+        assertTrue(iterable != null && iterable.iterator().hasNext());
     }
     
 }

@@ -55,12 +55,12 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
     
     @Test
     public void testSimpleCase1(){           
-        EBoolean where = str1.eq("one").and(str2.eq("two"));
+        EBoolean where = str1.eq("one");
         it = new FilteringMultiIterator(ops, where);        
         it.add(str1);
         exprToIt.put(str1, Arrays.asList("one","two","three"));
         it.init(iteratorFactory);
-        it.init(exprToIt, ops, Arrays.asList(str1,str2), where);
+        it.init(exprToIt, ops, Arrays.asList(str1), where);
         
         assertIteratorEquals(Collections.singletonList(row("one")).iterator(), it);
     }

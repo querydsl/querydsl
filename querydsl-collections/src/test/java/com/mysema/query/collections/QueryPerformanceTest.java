@@ -119,7 +119,7 @@ public class QueryPerformanceTest extends AbstractQueryTest{
     
     @Test
     public void testQueryResults(){
-        EBoolean condition = cat.name.eq(otherCat.name).and(otherCat.name.eq("Kate5"));
+        EBoolean condition = cat.bodyWeight.eq(0).and(otherCat.name.eq("Kate5"));
         List<Cat> cats1 = cats(10);
         List<Cat> cats2 = cats(10);
         

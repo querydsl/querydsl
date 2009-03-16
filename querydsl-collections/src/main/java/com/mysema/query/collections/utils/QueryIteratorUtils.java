@@ -7,6 +7,7 @@ package com.mysema.query.collections.utils;
 
 import java.util.*;
 
+import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.collections15.IteratorUtils;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
@@ -113,6 +114,10 @@ public class QueryIteratorUtils {
                 return ev.<Boolean>evaluate(object);
             }            
         });
+    }
+    
+    public static <S> Iterable<S> singleArgFilter(Iterable<S> source, final Evaluator ev){
+        return IteratorUtils.toList(singleArgFilter(source.iterator(), ev));
     }
     
     private static <S> S[] toArray(S... args){
