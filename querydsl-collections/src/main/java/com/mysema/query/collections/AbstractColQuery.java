@@ -8,6 +8,7 @@ package com.mysema.query.collections;
 import java.util.*;
 
 import org.apache.commons.collections15.IteratorUtils;
+import org.apache.commons.collections15.iterators.IteratorChain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,9 +24,11 @@ import com.mysema.query.collections.support.SimpleIteratorSource;
 import com.mysema.query.collections.utils.EvaluatorUtils;
 import com.mysema.query.collections.utils.QueryIteratorUtils;
 import com.mysema.query.grammar.JavaOps;
+import com.mysema.query.grammar.Ops;
 import com.mysema.query.grammar.Order;
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.Operation;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 
 /**
@@ -58,7 +61,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
 
     private final InnerQuery query = new InnerQuery();
     
-    private boolean sortSources = true, wrapIterators = true;
+    private boolean sortSources = true, wrapIterators = true, sequentialUnion = false;
     
     private SourceSortingSupport sourceSortingSupport;
 
@@ -207,6 +210,10 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         this.wrapIterators = w;
     }
     
+    public void setSequentialUnion(boolean sequentialUnion) {
+        this.sequentialUnion = sequentialUnion;
+    }
+    
     public class InnerQuery extends QueryBase<Object, InnerQuery> {
         
         private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
@@ -252,46 +259,49 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
 
         protected Iterator<?> handleFromAndWhere(List<Expr<?>> sources) throws Exception{
             EBoolean condition = where.create();
-            MultiIterator multiIt;
-            if (condition == null || !wrapIterators){
-                // cartesian view
-                multiIt = new MultiIterator();
-            }else{
-                // filtered cartesian view
-                multiIt = new FilteringMultiIterator(ops, condition);
-                if (sortSources){               
-                    sourceSortingSupport.sortSources(joins, condition);               
-                }
-            }        
+            if (sortSources){               
+                sourceSortingSupport.sortSources(joins, condition);               
+            }
             for (JoinExpression<?> join : joins) {
                 sources.add(join.getTarget());
-                multiIt.add(join.getTarget());
-                switch(join.getType()){
-                case JOIN :       
-                case INNERJOIN :  // TODO
-                case LEFTJOIN :   // TODO
-                case FULLJOIN :   // TODO
-                case DEFAULT :    // do nothing
-                }
-            }   
+            }
             indexSupport = createIndexSupport(exprToIt, ops, sources);
-            indexSupport.updateFor(condition);
-            multiIt.init(indexSupport);
+            
+            if (sequentialUnion && condition instanceof Operation && ((Operation<?,?>)condition).getOperator() == Ops.OR){
+                // TODO : handle deeper OR operations as well
+                Operation<?,?> op = (Operation<?,?>)condition;
+                IteratorChain<Object[]> chain = new IteratorChain<Object[]>();
+                EBoolean e1 = (EBoolean)op.getArgs()[0], e2 = (EBoolean)op.getArgs()[1];
+                chain.addIterator(createMultiIterator(sources, e1.and(e2.not())));
+                chain.addIterator(createMultiIterator(sources, e1.and(e2)));
+                chain.addIterator(createMultiIterator(sources, e2.and(e1.not())));
+                return chain;
+            }else{
+                return createMultiIterator(sources, condition);
+            }            
+        }
+
+        private Iterator<Object[]> createMultiIterator(List<Expr<?>> sources, EBoolean condition) {
+            MultiIterator multiIt;
+            if (condition == null || !wrapIterators){
+                multiIt = new MultiIterator();
+            }else{
+                multiIt = new FilteringMultiIterator(ops, condition);                
+            }        
+            for (Expr<?> expr : sources) multiIt.add(expr);
+            multiIt.init(indexSupport.getChildFor(condition));
             
             if (condition != null){
-                logger.info("Filtering iterator for cartesian view");
                 return QueryIteratorUtils.multiArgFilter(ops, multiIt, sources, condition);
             }else{
-                return multiIt;    
-            }            
+                return multiIt;
+            }
         }
         
         protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources) throws Exception{
             JoinExpression<?> join = joins.get(0);
             sources.add(join.getTarget());
-            indexSupport = createIndexSupport(exprToIt, ops, sources);
-            indexSupport.updateFor(where.create());
-            
+            indexSupport = createIndexSupport(exprToIt, ops, sources);            
             // create a simple projecting iterator for Object -> Object[]
             Iterator<?> it = QueryIteratorUtils.toArrayIterator(indexSupport.getIterator(join.getTarget()));
             
@@ -339,5 +349,9 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
             };
         }
     }
+
+
+
+
 
 }

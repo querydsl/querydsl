@@ -46,17 +46,23 @@ public class DefaultIndexSupport extends SimpleIndexSupport{
         this.pathToKeyToValues = new HashMap<Path<?>,Map<?,? extends Iterable<?>>>();        
     }        
 
-    public void updateFor(EBoolean condition) {
-        super.updateFor(condition);     
-        this.rootToIndexedPath = new HashMap<Path<?>,IndexedPath>();
-                
+    public IteratorSource getChildFor(EBoolean condition){  
+        if (condition == null){
+            rootToIndexedPath = new HashMap<Path<?>,IndexedPath>();
+            return this;
+        }        
+        DefaultIndexSupport indexSupport = new DefaultIndexSupport(iteratorSource, ops, sources);
+        indexSupport.pathToKeyToValues = this.pathToKeyToValues;
+        indexSupport.rootToIndexedPath = new HashMap<Path<?>,IndexedPath>();
+        
         // populate the "path eq path" index
         if (condition instanceof Operation){
-            visitOperation((Operation<?,?>) condition);
+            indexSupport.visitOperation((Operation<?,?>) condition);
         }        
+        return indexSupport;
     }
     
-    private void visitOperation(Operation<?,?> op) {
+    protected void visitOperation(Operation<?,?> op) {
         if (op.getOperator() == Ops.EQ_OBJECT  || op.getOperator() == Ops.EQ_PRIMITIVE){
             Expr<?> e1 = op.getArgs()[0];
             Expr<?> e2 = op.getArgs()[1];

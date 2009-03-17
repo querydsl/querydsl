@@ -44,7 +44,7 @@ public class DefaultIndexSupportTest extends AbstractQueryTest{
     @Test
     public void testPathToPath1(){
         indexSupport = new DefaultIndexSupport(new SimpleIteratorSource(exprToIt),ops, Arrays.asList(cat, otherCat));
-        indexSupport.updateFor(cat.name.eq(otherCat.name));        
+        indexSupport.getChildFor(cat.name.eq(otherCat.name));        
         Map<?,? extends Iterable<?>> map = indexSupport.getPathToKeyToValues().get(otherCat.name);
         assertTrue("map was null or empty", map != null && !map.isEmpty());
         assertEquals(4, map.size());
@@ -55,7 +55,7 @@ public class DefaultIndexSupportTest extends AbstractQueryTest{
     @Test
     public void testPathToPath2(){
         indexSupport = new DefaultIndexSupport(new SimpleIteratorSource(exprToIt),ops, Arrays.asList(otherCat,cat));
-        indexSupport.updateFor(cat.name.eq(otherCat.name));
+        indexSupport.getChildFor(cat.name.eq(otherCat.name));
         Map<?,? extends Iterable<?>> map = indexSupport.getPathToKeyToValues().get(cat.name);
         assertTrue("map was null or empty", map != null && !map.isEmpty());
         assertEquals(4, map.size());
@@ -66,7 +66,7 @@ public class DefaultIndexSupportTest extends AbstractQueryTest{
     @Test
     public void testToPath3(){
         indexSupport = new DefaultIndexSupport(new SimpleIteratorSource(exprToIt),ops, Arrays.asList(otherCat,cat));
-        indexSupport.updateFor(cat.eq(otherCat));
+        indexSupport.getChildFor(cat.eq(otherCat));
         Map<?,? extends Iterable<?>> map = indexSupport.getPathToKeyToValues().get(cat);
         assertTrue("map was null or empty", map != null && !map.isEmpty());
         assertEquals(4, map.size());        
@@ -77,10 +77,15 @@ public class DefaultIndexSupportTest extends AbstractQueryTest{
     @Test
     public void testPathToConstant(){
         indexSupport = new DefaultIndexSupport(new SimpleIteratorSource(exprToIt),ops, Arrays.asList(cat,otherCat));
-        indexSupport.updateFor(cat.bodyWeight.eq(0).and(otherCat.name.eq("Kitty")));
+        indexSupport.getChildFor(cat.bodyWeight.eq(0).and(otherCat.name.eq("Kitty")));
         Iterable<?> iterable = indexSupport.getPathToKeyToValues().get(otherCat.name).get("Kitty");
         assertTrue(iterable != null && iterable.iterator().hasNext());
         assertTrue(indexSupport.getPathToKeyToValues().get(cat.name) == null);
     }
     
+    @Test
+    public void testNullArgument(){
+        indexSupport = new DefaultIndexSupport(new SimpleIteratorSource(exprToIt),ops, Arrays.asList(cat,otherCat));
+        assertEquals(indexSupport, indexSupport.getChildFor(null));
+    }
 }

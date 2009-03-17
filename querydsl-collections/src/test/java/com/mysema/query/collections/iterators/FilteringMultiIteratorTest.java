@@ -61,8 +61,7 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
         it.add(str1);
         exprToIt.put(str1, Arrays.asList("one","two","three"));
         iteratorFactory = new DefaultIndexSupport(new SimpleIteratorSource(exprToIt),ops, Arrays.asList(str1));
-        it.init(iteratorFactory);
-        iteratorFactory.updateFor(where);
+        it.init(iteratorFactory.getChildFor(where));
         
         assertIteratorEquals(Collections.singletonList(row("one")).iterator(), it);
     }
@@ -76,8 +75,7 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
         it.add(str2);
         exprToIt.put(str2, Arrays.asList("two","three","four"));
         iteratorFactory = new DefaultIndexSupport(new SimpleIteratorSource(exprToIt),ops, Arrays.asList(str1, str2));
-        it.init(iteratorFactory);
-        iteratorFactory.updateFor(where);
+        it.init(iteratorFactory.getChildFor(where));
         
         assertIteratorEquals(Collections.singletonList(row("one","two")).iterator(), it);
     }
@@ -93,8 +91,7 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
         it.add(str3);
         exprToIt.put(str3, Arrays.asList("three","four","five"));
         iteratorFactory = new DefaultIndexSupport(new SimpleIteratorSource(exprToIt),ops, Arrays.asList(str1, str2, str3));
-        it.init(iteratorFactory);
-        iteratorFactory.updateFor(where);
+        it.init(iteratorFactory.getChildFor(where));
         
         while (it.hasNext()){
             System.out.println(Arrays.asList(it.next()));
@@ -115,8 +112,7 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
             exprToIt.put(otherCat, Arrays.asList(c2, c3));
 //            initAndDisplay(it);    
             iteratorFactory = new DefaultIndexSupport(new SimpleIteratorSource(exprToIt),ops, Arrays.asList(cat, otherCat));
-            it.init(iteratorFactory);
-            iteratorFactory.updateFor(where);
+            it.init(iteratorFactory.getChildFor(where));
             
             while (it.hasNext()){
                 it.next();
@@ -136,8 +132,7 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
         exprToIt.put(int3, ints);
         exprToIt.put(int4, ints);
         iteratorFactory = new DefaultIndexSupport(new SimpleIteratorSource(exprToIt),ops, Arrays.asList(int1,int2,int3,int4));
-        it.init(iteratorFactory);
-        iteratorFactory.updateFor(where);
+        it.init(iteratorFactory.getChildFor(where));
         long start = System.currentTimeMillis();
         while (it.hasNext()){
             it.next();

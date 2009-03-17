@@ -20,11 +20,11 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
 public interface QueryIndexSupport extends IteratorSource{
     
     /**
-     * Update the local indices for the given query condition
+     * Get an IteratorSource optimized for the given query condition
      * 
      * @param orderedSources
      * @param condition
      */
-    void updateFor(EBoolean condition);
+    IteratorSource getChildFor(EBoolean condition);
     
 }

@@ -35,8 +35,9 @@ public class SimpleIndexSupport implements QueryIndexSupport{
         this.sources = Assert.notNull(sources);
     }
     
-    public void updateFor(EBoolean condition) {
-        // do nothing  
+    public IteratorSource getChildFor(EBoolean condition){
+        // do nothing
+        return this;
     }
 
     public <A> Iterator<A> getIterator(Expr<A> expr) {

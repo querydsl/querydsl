@@ -66,6 +66,7 @@ public class QueryPerformanceTest extends AbstractQueryTest{
     @Test
     public void testValidateResultSizes(){
         int size = 50;
+        int max = size * size;
         long count, expected;
         List<Cat> cats1 = cats(size);
         List<Cat> cats2 = cats(size);
@@ -84,26 +85,33 @@ public class QueryPerformanceTest extends AbstractQueryTest{
             query.setSortSources(false);   
             count = query.from(cat, cats1).from(otherCat, cats2).where(condition).count();            
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
-            res.append(expected != count ? " X":"  ");
+            res.append((expected != count || count > max) ? " X":"  ");
             
             // with reordering and iterator wrapping       
             query = new ColQueryWithoutIndexing();
             count = query.from(cat, cats1).from(otherCat, cats2).where(condition).count();
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
-            res.append(expected != count ? " X":"  ");
+            res.append((expected != count || count > max) ? " X":"  ");
             
             // indexed, without reordering
             query = new ColQuery();
             query.setSortSources(false);            
             count = query.from(cat, cats1).from(otherCat, cats2).where(condition).count();
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
-            res.append(expected != count ? " X":"  ");
+            res.append((expected != count || count > max) ? " X":"  ");
             
             // indexed, with reordering and iterator wrapping
             query = new ColQuery();            
             count = query.from(cat, cats1).from(otherCat, cats2).where(condition).count();
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
-            res.append(expected != count ? " X":"  ");
+            res.append((expected != count || count > max) ? " X":"  ");
+
+            // indexed, with reordering and iterator wrapping and sequential union handling
+            query = new ColQuery();     
+            query.setSequentialUnion(true);
+            count = query.from(cat, cats1).from(otherCat, cats2).where(condition).count();
+            res.append(StringUtils.leftPad(String.valueOf(count), 7));
+            res.append((expected != count || count > max) ? " X":"  ");
             
             res.append("   ");
             res.append(new JavaSerializer(JavaOps.DEFAULT).handle(condition).toString());
@@ -178,7 +186,7 @@ public class QueryPerformanceTest extends AbstractQueryTest{
         
         // test each condition
         for (EBoolean condition : conditions){
-            long level1 = 0, level2 = 0, level3 = 0, level4 = 0;
+            long level1 = 0, level2 = 0, level3 = 0, level4 = 0, level5 = 0;
             ColQuery query;
             for (long j=0; j < testIterations; j++){            
                 // without wrapped iterators
@@ -199,6 +207,11 @@ public class QueryPerformanceTest extends AbstractQueryTest{
                 query = new ColQuery();            
                 level4 += query(query, condition, cats1, cats2);
                 
+                // indexed with sequential union
+                query = new ColQuery();          
+                query.setSequentialUnion(true);
+                level5 += query(query, condition, cats1, cats2);
+                
             }
             StringBuilder builder = new StringBuilder();
             builder.append(" #").append(conditions.indexOf(condition)+1).append("          ");
@@ -206,6 +219,7 @@ public class QueryPerformanceTest extends AbstractQueryTest{
             builder.append(StringUtils.leftPad(String.valueOf(level2 / testIterations), 10)).append(" ms");
             builder.append(StringUtils.leftPad(String.valueOf(level3 / testIterations), 10)).append(" ms");            
             builder.append(StringUtils.leftPad(String.valueOf(level4 / testIterations), 10)).append(" ms");
+            builder.append(StringUtils.leftPad(String.valueOf(level5 / testIterations), 10)).append(" ms");
             resultLog.add(builder.toString());    
         }
         resultLog.add("");
