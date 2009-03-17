@@ -272,8 +272,8 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
                 Operation<?,?> op = (Operation<?,?>)condition;
                 IteratorChain<Object[]> chain = new IteratorChain<Object[]>();
                 EBoolean e1 = (EBoolean)op.getArgs()[0], e2 = (EBoolean)op.getArgs()[1];
-                chain.addIterator(createMultiIterator(sources, e1.and(e2.not())));
-                chain.addIterator(createMultiIterator(sources, e1.and(e2)));
+                // TODO : optimize source order for each case
+                chain.addIterator(createMultiIterator(sources, e1));
                 chain.addIterator(createMultiIterator(sources, e2.and(e1.not())));
                 return chain;
             }else{
