@@ -12,7 +12,8 @@ import java.util.*;
 import org.junit.Test;
 
 import com.mysema.query.JoinExpression;
-import com.mysema.query.collections.IndexSupport;
+import com.mysema.query.collections.QueryIndexSupport;
+import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.collections.MiniApi;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
@@ -43,7 +44,7 @@ public class MultiIteratorTest extends AbstractIteratorTest {
 
     private ENumber<Integer> int4 = MiniApi.$(4);
 
-    private IndexSupport iteratorFactory = new IndexSupport() {
+    private IteratorSource iteratorSource = new IteratorSource() {
 
         @SuppressWarnings("unchecked")
         public <A> Iterator<A> getIterator(Expr<A> expr) {
@@ -62,9 +63,6 @@ public class MultiIteratorTest extends AbstractIteratorTest {
             return getIterator(expr);
         }
 
-        public void init(Map<Expr<?>,Iterable<?>> exprToIt, JavaOps ops, List<? extends Expr<?>> sources, EBoolean where) {
-        }
-
         @SuppressWarnings("unused")
         public Comparator<JoinExpression<?>> getComparator(List<Expr<?>> sources, EBoolean condition) {
             return null;
@@ -73,7 +71,7 @@ public class MultiIteratorTest extends AbstractIteratorTest {
 
     @Test
     public void testEmptyList() {
-        it.add(int1).add(int2).init(iteratorFactory);
+        it.add(int1).add(int2).init(iteratorSource);
         while (it.hasNext()) {
             it.next();
             fail("should return false on hasNext()");
@@ -82,14 +80,14 @@ public class MultiIteratorTest extends AbstractIteratorTest {
 
     @Test
     public void testOneLevel() {
-        it.add(int1).init(iteratorFactory);
+        it.add(int1).init(iteratorSource);
         assertIteratorEquals(Arrays.asList(row(1), row(2)).iterator(), it);
     }
 
     @Test
     public void testTwoLevels() {
         list2 = Arrays.asList(10, 20, 30);
-        it.add(int1).add(int2).init(iteratorFactory);
+        it.add(int1).add(int2).init(iteratorSource);
         Iterator<Object[]> base = Arrays.asList(row(1, 10), row(1, 20),
                 row(1, 30), row(2, 10), row(2, 20), row(2, 30)).iterator();
         assertIteratorEquals(base, it);
@@ -100,7 +98,7 @@ public class MultiIteratorTest extends AbstractIteratorTest {
         list1 = Arrays.asList(1, 2);
         list2 = Arrays.asList(10, 20, 30);
         list3 = Arrays.asList(100, 200, 300, 400);
-        it.add(int1).add(int2).add(int3).init(iteratorFactory);
+        it.add(int1).add(int2).add(int3).init(iteratorSource);
         List<Object[]> list = new ArrayList<Object[]>();
         for (Object a : row(1, 2)) {
             for (Object b : row(10, 20, 30)) {
@@ -118,7 +116,7 @@ public class MultiIteratorTest extends AbstractIteratorTest {
         list2 = Arrays.asList(10, 20, 30);
         list3 = Arrays.asList(100, 200, 300, 400);
         list4 = Arrays.asList(1000, 2000, 3000, 4000, 5000);
-        it.add(int1).add(int2).add(int3).add(int4).init(iteratorFactory);
+        it.add(int1).add(int2).add(int3).add(int4).init(iteratorSource);
         List<Object[]> list = new ArrayList<Object[]>();
         for (Object a : row(1, 2)) {
             for (Object b : row(10, 20, 30)) {
@@ -139,7 +137,7 @@ public class MultiIteratorTest extends AbstractIteratorTest {
             list1.add(i + 1);
         list2 = list1;
         it.add(int1).add(int2);
-        it.init(iteratorFactory);
+        it.init(iteratorSource);
         // long start = System.currentTimeMillis();
         while (it.hasNext()) {
             it.next();

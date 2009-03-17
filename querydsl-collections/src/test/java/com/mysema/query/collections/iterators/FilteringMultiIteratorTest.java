@@ -9,11 +9,12 @@ import java.util.*;
 
 import org.junit.Test;
 
-import com.mysema.query.collections.IndexSupport;
+import com.mysema.query.collections.QueryIndexSupport;
 import com.mysema.query.collections.MiniApi;
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.Domain.QCat;
 import com.mysema.query.collections.support.DefaultIndexSupport;
+import com.mysema.query.collections.support.SimpleIteratorSource;
 import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
@@ -35,7 +36,7 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
     
     private Map<Expr<?>,Iterable<?>> exprToIt = new HashMap<Expr<?>,Iterable<?>>();
     
-    private IndexSupport iteratorFactory = new DefaultIndexSupport();
+    private QueryIndexSupport iteratorFactory;
     
     private EString str1 = MiniApi.$("str1");   
     private EString str2 = MiniApi.$("str2");
@@ -59,8 +60,9 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
         it = new FilteringMultiIterator(ops, where);        
         it.add(str1);
         exprToIt.put(str1, Arrays.asList("one","two","three"));
+        iteratorFactory = new DefaultIndexSupport(new SimpleIteratorSource(exprToIt),ops, Arrays.asList(str1));
         it.init(iteratorFactory);
-        it.init(exprToIt, ops, Arrays.asList(str1), where);
+        iteratorFactory.updateFor(where);
         
         assertIteratorEquals(Collections.singletonList(row("one")).iterator(), it);
     }
@@ -73,8 +75,9 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
         exprToIt.put(str1, Arrays.asList("one","two","three"));
         it.add(str2);
         exprToIt.put(str2, Arrays.asList("two","three","four"));
+        iteratorFactory = new DefaultIndexSupport(new SimpleIteratorSource(exprToIt),ops, Arrays.asList(str1, str2));
         it.init(iteratorFactory);
-        it.init(exprToIt, ops, Arrays.asList(str1,str2), where);
+        iteratorFactory.updateFor(where);
         
         assertIteratorEquals(Collections.singletonList(row("one","two")).iterator(), it);
     }
@@ -89,8 +92,9 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
         exprToIt.put(str2, Arrays.asList("two","three","four","five","six","seven"));
         it.add(str3);
         exprToIt.put(str3, Arrays.asList("three","four","five"));
+        iteratorFactory = new DefaultIndexSupport(new SimpleIteratorSource(exprToIt),ops, Arrays.asList(str1, str2, str3));
         it.init(iteratorFactory);
-        it.init(exprToIt, ops, Arrays.asList(str1,str2,str3), where);
+        iteratorFactory.updateFor(where);
         
         while (it.hasNext()){
             System.out.println(Arrays.asList(it.next()));
@@ -110,8 +114,9 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
             it.add(otherCat);
             exprToIt.put(otherCat, Arrays.asList(c2, c3));
 //            initAndDisplay(it);    
+            iteratorFactory = new DefaultIndexSupport(new SimpleIteratorSource(exprToIt),ops, Arrays.asList(cat, otherCat));
             it.init(iteratorFactory);
-            it.init(exprToIt, ops, Arrays.asList(cat,otherCat), where);
+            iteratorFactory.updateFor(where);
             
             while (it.hasNext()){
                 it.next();
@@ -130,8 +135,9 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
         exprToIt.put(int2, ints);
         exprToIt.put(int3, ints);
         exprToIt.put(int4, ints);
+        iteratorFactory = new DefaultIndexSupport(new SimpleIteratorSource(exprToIt),ops, Arrays.asList(int1,int2,int3,int4));
         it.init(iteratorFactory);
-        it.init(exprToIt, ops, Arrays.asList(int1,int2,int3,int4), where);
+        iteratorFactory.updateFor(where);
         long start = System.currentTimeMillis();
         while (it.hasNext()){
             it.next();

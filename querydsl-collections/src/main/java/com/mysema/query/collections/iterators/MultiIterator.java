@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import com.mysema.query.collections.IndexSupport;
+import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.grammar.types.Expr;
 
 /**
@@ -30,7 +30,7 @@ public class MultiIterator implements Iterator<Object[]>{
     
     protected int index = 0;
     
-    private IndexSupport indexSupport;
+    private IteratorSource iteratorSource;
     
     protected Iterator<?>[] iterators;
     
@@ -58,8 +58,8 @@ public class MultiIterator implements Iterator<Object[]>{
      * @param indexSupport
      * @return
      */
-    public MultiIterator init(IndexSupport indexSupport){
-        this.indexSupport = indexSupport;
+    public MultiIterator init(IteratorSource iteratorSource){
+        this.iteratorSource = iteratorSource;
         this.iterators = new Iterator<?>[sources.size()];
         this.lastEntry = new boolean[iterators.length];
         this.values = new Object[iterators.length];
@@ -81,7 +81,7 @@ public class MultiIterator implements Iterator<Object[]>{
     private void produceNext(){
         for (int i = index; i < iterators.length; i++){   
             if (iterators[i] == null || (!iterators[i].hasNext() && i > 0)){
-                iterators[i] = indexSupport.getIterator(sources.get(i), values);
+                iterators[i] = iteratorSource.getIterator(sources.get(i), values);
             }
             if (!iterators[i].hasNext()){
                 hasNext = i == 0 ? Boolean.FALSE : null;

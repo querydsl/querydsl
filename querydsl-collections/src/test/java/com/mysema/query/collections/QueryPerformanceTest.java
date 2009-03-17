@@ -19,6 +19,7 @@ import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.eval.JavaSerializer;
 import com.mysema.query.collections.support.JoinExpressionComparator;
 import com.mysema.query.collections.support.SimpleIndexSupport;
+import com.mysema.query.collections.support.SimpleIteratorSource;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
@@ -72,24 +73,21 @@ public class QueryPerformanceTest extends AbstractQueryTest{
         StringBuilder res = new StringBuilder();
         for (EBoolean condition : conditions){            
             // without wrapped iterators
-            query = new ColQuery();
-            query.setIndexSupport(new SimpleIndexSupport());
+            query = new ColQueryWithoutIndexing();
             query.setWrapIterators(false);       
             count = query.from(cat, cats1).from(otherCat, cats2).where(condition).count();
             expected = count;
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
             
             // without reordering
-            query = new ColQuery();
-            query.setIndexSupport(new SimpleIndexSupport());
+            query = new ColQueryWithoutIndexing();
             query.setSortSources(false);   
             count = query.from(cat, cats1).from(otherCat, cats2).where(condition).count();            
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
             res.append(expected != count ? " X":"  ");
             
-            // with reordering and iterator wrapping
-            query = new ColQuery();            
-            query.setIndexSupport(new SimpleIndexSupport());
+            // with reordering and iterator wrapping       
+            query = new ColQueryWithoutIndexing();
             count = query.from(cat, cats1).from(otherCat, cats2).where(condition).count();
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
             res.append(expected != count ? " X":"  ");
@@ -123,8 +121,7 @@ public class QueryPerformanceTest extends AbstractQueryTest{
         List<Cat> cats1 = cats(10);
         List<Cat> cats2 = cats(10);
         
-        ColQuery query = new ColQuery();
-        query.setIndexSupport(new SimpleIndexSupport());
+        ColQuery query = new ColQueryWithoutIndexing();
         query.setSortSources(false);                  
         for (Object[] cats :  query.from(cat, cats1).from(otherCat, cats2)
                 .where(condition).iterate(cat, otherCat)){
@@ -185,20 +182,17 @@ public class QueryPerformanceTest extends AbstractQueryTest{
             ColQuery query;
             for (long j=0; j < testIterations; j++){            
                 // without wrapped iterators
-                query = new ColQuery();
-                query.setIndexSupport(new SimpleIndexSupport());
+                query = new ColQueryWithoutIndexing();
                 query.setWrapIterators(false);       
                 level1 += query(query, condition, cats1, cats2);
                 
                 // without reordering
-                query = new ColQuery();
-                query.setIndexSupport(new SimpleIndexSupport());
+                query = new ColQueryWithoutIndexing();
                 query.setSortSources(false);            
                 level2 += query(query, condition, cats1, cats2);
                                 
-                // with reordering and iterator wrapping
-                query = new ColQuery();            
-                query.setIndexSupport(new SimpleIndexSupport());
+                // with reordering and iterator wrapping         
+                query = new ColQueryWithoutIndexing();
                 level3 += query(query, condition, cats1, cats2);
                                                 
                 // indexed, with reordering and iterator wrapping
@@ -231,6 +225,13 @@ public class QueryPerformanceTest extends AbstractQueryTest{
     
     public static void main(String[] args){
         new QueryPerformanceTest().longTest();
+    }
+    
+    private class ColQueryWithoutIndexing extends ColQuery{
+        @Override
+        protected QueryIndexSupport createIndexSupport(Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops, List<Expr<?>> sources){
+            return new SimpleIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);
+        }
     }
 
 }

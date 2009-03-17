@@ -18,7 +18,7 @@ import org.codehaus.janino.Scanner.ScanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysema.query.collections.IndexSupport;
+import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.eval.FilteredJavaSerializer;
 import com.mysema.query.collections.eval.JaninoEvaluator;
@@ -36,13 +36,13 @@ import com.mysema.query.util.Assert;
  * @author tiwe
  * @version $Id$
  */
-public class FilteringMultiIterator extends MultiIterator implements IndexSupport{
+public class FilteringMultiIterator extends MultiIterator implements IteratorSource{
     
     private static final Logger logger = LoggerFactory.getLogger(FilteringMultiIterator.class);
     
     private Map<Expr<?>,Evaluator> exprToEvaluator = new HashMap<Expr<?>,Evaluator>();
     
-    private IndexSupport indexSupport;
+    private IteratorSource iteratorSource;
     
     private JavaOps ops;
     
@@ -88,11 +88,11 @@ public class FilteringMultiIterator extends MultiIterator implements IndexSuppor
     }
     
     public <A> Iterator<A> getIterator(Expr<A> expr) {
-        return indexSupport.getIterator(expr);
+        return iteratorSource.getIterator(expr);
     }
 
     public <A> Iterator<A> getIterator(Expr<A> expr, Object[] bindings) {
-        Iterator<A> it = Assert.notNull(indexSupport.getIterator(expr, bindings));
+        Iterator<A> it = Assert.notNull(iteratorSource.getIterator(expr, bindings));
         if (exprToEvaluator.containsKey(expr)){
             return QueryIteratorUtils.singleArgFilter(it, exprToEvaluator.get(expr));
         }else{
@@ -101,8 +101,8 @@ public class FilteringMultiIterator extends MultiIterator implements IndexSuppor
     }
     
     @Override
-    public MultiIterator init(IndexSupport iteratorFactory){
-        this.indexSupport = iteratorFactory;
+    public MultiIterator init(IteratorSource iteratorSource){
+        this.iteratorSource = iteratorSource;
         super.init(this);
         int index = 0;
         for (Expr<?> expr : sources){
@@ -116,10 +116,6 @@ public class FilteringMultiIterator extends MultiIterator implements IndexSuppor
             }
         }
         return this;
-    }
-
-    public void init(Map<Expr<?>,Iterable<?>> exprToIt, JavaOps ops, List<? extends Expr<?>> orderedSources, EBoolean condition) {
-        indexSupport.init(exprToIt, ops, orderedSources, condition);
     }
     
 }

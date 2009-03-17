@@ -19,6 +19,7 @@ import com.mysema.query.collections.iterators.MultiIterator;
 import com.mysema.query.collections.support.DefaultIndexSupport;
 import com.mysema.query.collections.support.DefaultSourceSortingSupport;
 import com.mysema.query.collections.support.MultiComparator;
+import com.mysema.query.collections.support.SimpleIteratorSource;
 import com.mysema.query.collections.utils.EvaluatorUtils;
 import com.mysema.query.collections.utils.QueryIteratorUtils;
 import com.mysema.query.grammar.JavaOps;
@@ -51,7 +52,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     
     private final Map<Expr<?>, Iterable<?>> exprToIt = new HashMap<Expr<?>, Iterable<?>>();
     
-    private IndexSupport indexSupport;
+    private QueryIndexSupport indexSupport;
     
     private final JavaOps ops;
 
@@ -67,8 +68,11 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     
     public AbstractColQuery(JavaOps ops) {
         this.ops = ops;
-        this.indexSupport = new DefaultIndexSupport();
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
+    }
+    
+    protected QueryIndexSupport createIndexSupport(Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops, List<Expr<?>> sources){
+        return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);
     }
     
     protected <A> SubType alias(Expr<A> path, Iterable<A> col) {
@@ -191,10 +195,6 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         return where( MiniApi.$(alias));
     }
     
-    public void setIndexSupport(IndexSupport indexSupport) {
-        this.indexSupport = indexSupport;
-    }
-    
     public void setSortSources(boolean s){
         this.sortSources = s;
     }
@@ -274,7 +274,8 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
                 case DEFAULT :    // do nothing
                 }
             }   
-            indexSupport.init(exprToIt, ops, sources, condition);
+            indexSupport = createIndexSupport(exprToIt, ops, sources);
+            indexSupport.updateFor(condition);
             multiIt.init(indexSupport);
             
             if (condition != null){
@@ -288,7 +289,8 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources) throws Exception{
             JoinExpression<?> join = joins.get(0);
             sources.add(join.getTarget());
-            indexSupport.init(exprToIt, ops, sources, where.create());
+            indexSupport = createIndexSupport(exprToIt, ops, sources);
+            indexSupport.updateFor(where.create());
             
             // create a simple projecting iterator for Object -> Object[]
             Iterator<?> it = QueryIteratorUtils.toArrayIterator(indexSupport.getIterator(join.getTarget()));

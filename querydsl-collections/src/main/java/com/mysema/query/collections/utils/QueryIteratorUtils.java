@@ -82,13 +82,14 @@ public class QueryIteratorUtils {
      * @param ev
      * @return
      */
-    public static <S,T> Map<S,? extends Iterable<T>> projectToMap(Iterable<T> source, Evaluator ev){
+    public static <S,T> Map<S,? extends Iterable<T>> projectToMap(Iterator<T> source, Evaluator ev){
         int size = 300;
         if (source instanceof Collection){
             size = (int)Math.ceil(((Collection<?>)source).size() * 0.7);
         }
         Map<S,Collection<T>> map = new HashMap<S,Collection<T>>(size);
-        for (T value : source){
+        while (source.hasNext()){
+            T value = source.next();
             S key = ev.<S>evaluate(value);
             Collection<T> col = map.get(key);
             if (col == null){
@@ -114,10 +115,6 @@ public class QueryIteratorUtils {
                 return ev.<Boolean>evaluate(object);
             }            
         });
-    }
-    
-    public static <S> Iterable<S> singleArgFilter(Iterable<S> source, final Evaluator ev){
-        return IteratorUtils.toList(singleArgFilter(source.iterator(), ev));
     }
     
     private static <S> S[] toArray(S... args){

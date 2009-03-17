@@ -5,9 +5,13 @@
  */
 package com.mysema.query.collections.support;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-import com.mysema.query.collections.IndexSupport;
+import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.utils.EvaluatorUtils;
 import com.mysema.query.collections.utils.QueryIteratorUtils;
@@ -18,7 +22,6 @@ import com.mysema.query.grammar.types.Operation;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EConstant;
-import com.mysema.query.util.Assert;
 
 /**
  * DefaultIndexSupport provides
@@ -26,68 +29,33 @@ import com.mysema.query.util.Assert;
  * @author tiwe
  * @version $Id$
  */
-public class DefaultIndexSupport implements IndexSupport{
+public class DefaultIndexSupport extends SimpleIndexSupport{
     
-    private JavaOps ops;
+    private Map<Path<?>,Map<?,? extends Iterable<?>>> pathToKeyToValues;
     
-    private List<? extends Expr<?>> sources;
+    private Map<Path<?>,IndexedPath> rootToIndexedPath;
     
-    private Map<Expr<?>,Iterable<?>> exprToIt;
-    
-    Map<Path<?>,Map<?,? extends Iterable<?>>> pathEqExprIndex;
-    
-    Map<Path<?>,Iterable<?>> pathEqConstantIndex;
-    
-    Map<Path<?>,Evaluator> pathToIndexKey;
-    
-    private long fullSize = 0l;
-    
-    @SuppressWarnings("unchecked")
-    public <A> Iterator<A> getIterator(Expr<A> expr) {
-        return (Iterator<A>)exprToIt.get(expr).iterator();
-    }
+    /**
+     * Create a new DefaultIndexSupport instance
+     * 
+     * @param iteratorSource
+     * @param ops
+     */
+    public DefaultIndexSupport(IteratorSource iteratorSource, JavaOps ops, List<? extends Expr<?>> sources) {
+        super(iteratorSource, ops, sources);
+        this.pathToKeyToValues = new HashMap<Path<?>,Map<?,? extends Iterable<?>>>();        
+    }        
 
-    @SuppressWarnings("unchecked")
-    public <A> Iterator<A> getIterator(Expr<A> expr, Object[] bindings) {
-        // get filtered by constant
-        if (pathEqConstantIndex.containsKey(expr)){
-            return (Iterator<A>) pathEqConstantIndex.get(expr).iterator();
-            
-        // get filtered by expression
-        }else if (pathToIndexKey.containsKey(expr)){
-            Evaluator ev = pathToIndexKey.get(expr);
-            Map<?,? extends Iterable<?>> indexEntry = pathEqExprIndex.get(expr);
-            Object key = ev.evaluate(bindings);
-            if (indexEntry.containsKey(key)){
-                return (Iterator<A>)indexEntry.get(key).iterator();    
-            }else{
-                return Collections.<A>emptyList().iterator();
-            }            
-        }else{
-            return (Iterator<A>)exprToIt.get(expr).iterator();    
-        }        
-    }
-
-    public void init(Map<Expr<?>,Iterable<?>> exprToIt, JavaOps ops, List<? extends Expr<?>> sources, EBoolean condition) {
-        this.exprToIt = exprToIt;
-        this.ops = Assert.notNull(ops);
-        this.sources = Assert.notNull(sources);        
-        this.exprToIt = Assert.notNull(exprToIt);  
-        this.pathEqExprIndex = new HashMap<Path<?>,Map<?,? extends Iterable<?>>>();
-        this.pathEqConstantIndex = new HashMap<Path<?>,Iterable<?>>();
-        this.pathToIndexKey = new HashMap<Path<?>,Evaluator>();
-        
-        for (Iterable<?> value : exprToIt.values()){
-            if (value instanceof Collection) fullSize += ((Collection<?>)value).size();
-        }
-        
+    public void updateFor(EBoolean condition) {
+        super.updateFor(condition);     
+        this.rootToIndexedPath = new HashMap<Path<?>,IndexedPath>();
+                
         // populate the "path eq path" index
         if (condition instanceof Operation){
             visitOperation((Operation<?,?>) condition);
-        }
-        
+        }        
     }
-
+    
     private void visitOperation(Operation<?,?> op) {
         if (op.getOperator() == Ops.EQ_OBJECT  || op.getOperator() == Ops.EQ_PRIMITIVE){
             Expr<?> e1 = op.getArgs()[0];
@@ -96,26 +64,24 @@ public class DefaultIndexSupport implements IndexSupport{
                 Path<?> p1 = (Path<?>)e1, p2 = (Path<?>)e2;
                 int i1 = sources.indexOf(p1.getRoot());
                 int i2 = sources.indexOf(p2.getRoot());
+                
+                // index the path at higher position
                 if (i1 < i2){
                     indexPathEqExpr(p2, e1);
                 }else if (i1 > i2){
                     indexPathEqExpr(p1, e2);
                 }
                 
-            }else if (e1 instanceof Path && sources.indexOf(e1) > 0){
+            }else if (e1 instanceof Path){
                 if (e2 instanceof EConstant){
-                    indexPathEqConstant((Path<?>)e1, op);
-                }else if (e2 instanceof Operation){
-                    // TODO : validate that this works properly
-                    indexPathEqExpr((Path<?>)e1, e2);
+                    indexPathEqExpr((Path<?>)e1, e2);    
+                }                
+                                    
+            }else if (e2 instanceof Path){
+                if (e1 instanceof EConstant){
+                    indexPathEqExpr((Path<?>)e2, e1);    
                 }
-            }else if (e2 instanceof Path && sources.indexOf(e2) > 0){
-                if (e2 instanceof EConstant){
-                    indexPathEqConstant((Path<?>)e2, op);
-                }else{
-                    // TODO : validate that this works properly
-                    indexPathEqExpr((Path<?>)e2, e1);
-                }
+                
             }
             
         }else if (op.getOperator() == Ops.NOT){    
@@ -128,30 +94,70 @@ public class DefaultIndexSupport implements IndexSupport{
         }        
     }
     
-    private void indexPathEqConstant(Path<?> path, Operation<?,?> op){
-        if (!pathEqConstantIndex.containsKey(path.getRoot())){
-            // create the index entry
-            Evaluator ev = EvaluatorUtils.create(ops, Collections.<Expr<?>>singletonList((Expr<?>)path.getRoot()), (Expr<?>)op);
-            Iterable<?> it = QueryIteratorUtils.singleArgFilter(exprToIt.get(path.getRoot()), ev);
-            
-            // update the index
-            pathEqConstantIndex.put(path.getRoot(), it);
-        }
+    private Map<?, ? extends Iterable<?>> createIndexEntry(Path<?> path) {
+        Evaluator ev = EvaluatorUtils.create(ops, Collections.<Expr<?>>singletonList((Expr<?>)path.getRoot()), (Expr<?>)path);
+        Map<?,? extends Iterable<?>> map = QueryIteratorUtils.projectToMap(iteratorSource.getIterator((Expr<?>)path.getRoot()), ev);
+        return map;
     }
-    
+
+    @SuppressWarnings("unchecked")
+    public <A> Iterator<A> getIterator(Expr<A> expr, Object[] bindings) {
+        if (rootToIndexedPath.containsKey(expr)){
+            IndexedPath ie = rootToIndexedPath.get(expr);
+            Map<?,? extends Iterable<?>> indexEntry = pathToKeyToValues.get(ie.getIndexedPath());
+            Object key = ie.getEvaluator().evaluate(bindings);
+            if (indexEntry.containsKey(key)){
+                return (Iterator<A>)indexEntry.get(key).iterator();    
+            }else{
+                return Collections.<A>emptyList().iterator();
+            }            
+        }else{
+            return super.getIterator(expr,bindings);    
+        }        
+    }
+
     private void indexPathEqExpr(Path<?> path, Expr<?> key) {
-        if (!pathEqExprIndex.containsKey(path.getRoot())){
-            // create the index entry
-            Evaluator ev = EvaluatorUtils.create(ops, Collections.<Expr<?>>singletonList((Expr<?>)path.getRoot()), (Expr<?>)path);
-            Map<?,? extends Iterable<?>> map = QueryIteratorUtils.projectToMap(exprToIt.get(path.getRoot()), ev);
+        if (!rootToIndexedPath.containsKey(path.getRoot())){
+            if (!pathToKeyToValues.containsKey(path)){
+                // create the index entry
+                pathToKeyToValues.put(path, createIndexEntry(path));    
+            }
             
             // create the key creator            
-            Evaluator keyCreator = EvaluatorUtils.create(ops, sources, key);
+            Evaluator keyCreator;
+            if (key instanceof EConstant){
+                final Object constant = ((EConstant<?>)key).getConstant(); 
+                keyCreator = new Evaluator(){
+                    public <T> T evaluate(Object... args) {
+                        return (T)constant;
+                    }                
+                }; 
+            }else{
+                keyCreator = EvaluatorUtils.create(ops, sources, key);
+            }
             
-            // update the index
-            pathEqExprIndex.put(path.getRoot(), map);   
-            pathToIndexKey.put(path.getRoot(), keyCreator);            
+            // update the index            
+            rootToIndexedPath.put(path.getRoot(), new IndexedPath(path,keyCreator));  
         }
+    }
+ 
+    Map<Path<?>, Map<?, ? extends Iterable<?>>> getPathToKeyToValues() {
+        return Collections.unmodifiableMap(pathToKeyToValues);
+    }
+    
+    /**
+     * Mapping from root path to indexed path and evaluator for the index key
+     *
+     */
+    private class IndexedPath{
+        private final Path<?> path;
+        private final Evaluator ev;        
+        IndexedPath(Path<?> path,Evaluator ev){            
+            this.path = path;
+            this.ev = ev;
+        }
+        public Path<?> getIndexedPath(){ return path;}
+        public Evaluator getEvaluator(){ return ev; }        
     }
     
 }

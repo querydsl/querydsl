@@ -6,26 +6,28 @@
 package com.mysema.query.collections.support;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
-import com.mysema.query.collections.IndexSupport;
-import com.mysema.query.grammar.JavaOps;
+import com.mysema.query.collections.QueryIndexSupport;
+import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.util.Assert;
 
 /**
  * DefaultIndexSupport is the default implementation of the IndexSupport interface
  *
- * @see IndexSupport
+ * @see QueryIndexSupport
  *
  * @author tiwe
  * @version $Id$
  */
-public class SimpleIndexSupport implements IndexSupport{
+public class SimpleIteratorSource implements IteratorSource{
     
-    private Map<Expr<?>,Iterable<?>> exprToIt;
+    private final Map<Expr<?>,Iterable<?>> exprToIt;
+    
+    public SimpleIteratorSource(Map<Expr<?>,Iterable<?>> exprToIt){
+        this.exprToIt = Assert.notNull(exprToIt);
+    }
     
     @SuppressWarnings("unchecked")
     public <A> Iterator<A> getIterator(Expr<A> expr) {
@@ -36,9 +38,5 @@ public class SimpleIndexSupport implements IndexSupport{
     public <A> Iterator<A> getIterator(Expr<A> expr, Object[] bindings) {
         return (Iterator<A>)exprToIt.get(expr).iterator();
     }
-
-    public void init(Map<Expr<?>,Iterable<?>> exprToIt, JavaOps ops, List<? extends Expr<?>> sources, EBoolean condition) {
-        this.exprToIt = Assert.notNull(exprToIt);
-    }
-        
+       
 }
