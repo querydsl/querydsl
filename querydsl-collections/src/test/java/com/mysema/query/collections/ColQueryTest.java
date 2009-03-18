@@ -68,7 +68,8 @@ public class ColQueryTest extends AbstractQueryTest{
     @Test
     public void isTypeOf(){
 //        Cat.class.isInstance(cat);
-        query().from(cat, c1, c2).where(Grammar.typeOf(cat, Cat.class)).list(cat);
+        assertEquals(Arrays.asList(c1, c2),
+            query().from(cat, c1, c2).where(Grammar.typeOf(cat, Cat.class)).list(cat));
     }
     
     @Test
