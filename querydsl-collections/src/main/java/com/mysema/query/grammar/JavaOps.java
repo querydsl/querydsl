@@ -41,7 +41,7 @@ public class JavaOps extends OperationPatterns {
         add(Ops.ISNULL, "%s == null");
         add(Ops.ISNOTNULL, "%s != null");
                 
-        add(Ops.ISTYPEOF, "%s.class.equals(%s)");
+        add(Ops.ISTYPEOF, "%2$s.isInstance(%1$s)");
         add(Ops.IN, "%2$s.contains(%1$s)"); 
         add(Ops.NOTIN, "!%2$s.contains(%1$s)");        
         add(Ops.LIKE, functions+".like(%s,%s)");

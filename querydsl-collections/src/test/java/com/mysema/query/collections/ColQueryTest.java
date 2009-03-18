@@ -24,6 +24,7 @@ import org.junit.Test;
 
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.Domain.QCat;
+import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.GrammarWithAlias;
 import com.mysema.query.grammar.QMath;
 import com.mysema.query.grammar.types.Expr;
@@ -62,6 +63,12 @@ public class ColQueryTest extends AbstractQueryTest{
                 cat.birthdate.boe(new Date()),
                 cat.birthdate.after(new Date()),
                 cat.birthdate.aoe(new Date())).list(cat);
+    }
+    
+    @Test
+    public void isTypeOf(){
+//        Cat.class.isInstance(cat);
+        query().from(cat, c1, c2).where(Grammar.typeOf(cat, Cat.class)).list(cat);
     }
     
     @Test
