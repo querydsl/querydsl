@@ -914,7 +914,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static <A, B extends A> EBoolean typeOf(Expr<A> left, Class<B> right) {
-        return createBoolean(Ops.ISTYPEOF, left, createConstant(right.getName()));
+        return createBoolean(Ops.ISTYPEOF, left, createConstant(right));
     }    
     
     /**
