@@ -192,7 +192,11 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         boolean old = wrapElements;
         wrapElements = HqlOps.wrapCollectionsForOp.contains(operator);    
         // 
-        if (operator.equals(Ops.STRING_CAST)){
+        if (operator.equals(Ops.ISTYPEOF)){
+            args = args.clone();
+            args[1] =  new EConstant<String>( ((Class<?>)((EConstant<?>)args[1]).getConstant()).getName());
+            super.visitOperation(type, operator, args);
+        }else if (operator.equals(Ops.STRING_CAST)){
             visitCast(operator, args[0], String.class);
         }else if (operator.equals(Ops.NUMCAST)){
             visitCast(operator, args[0], (Class<?>) ((EConstant<?>)args[1]).getConstant());
