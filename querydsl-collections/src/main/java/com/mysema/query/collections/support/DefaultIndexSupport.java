@@ -121,6 +121,23 @@ public class DefaultIndexSupport extends SimpleIndexSupport{
             return super.getIterator(expr,bindings);    
         }        
     }
+    
+    @SuppressWarnings("unchecked")
+    public <A> Iterator<A> getIterator(Expr<A> expr) {
+        if (rootToIndexedPath.containsKey(expr)){
+            IndexedPath ie = rootToIndexedPath.get(expr);
+            Map<?,? extends Iterable<?>> indexEntry = pathToKeyToValues.get(ie.getIndexedPath());
+            // NOTE : this works only for static keys
+            Object key = ie.getEvaluator().evaluate((Object[])null);
+            if (indexEntry.containsKey(key)){
+                return (Iterator<A>)indexEntry.get(key).iterator();    
+            }else{
+                return Collections.<A>emptyList().iterator();
+            }            
+        }else{
+            return super.getIterator(expr);    
+        }     
+    }
 
     private void indexPathEqExpr(Path<?> path, Expr<?> key) {
         if (!rootToIndexedPath.containsKey(path.getRoot())){

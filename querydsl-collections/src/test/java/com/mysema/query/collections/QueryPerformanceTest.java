@@ -5,8 +5,6 @@
  */
 package com.mysema.query.collections;
 
-import static org.junit.Assert.fail;
-
 import java.util.*;
 
 import org.apache.commons.lang.StringUtils;
@@ -16,11 +14,7 @@ import org.junit.Test;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.collections.Domain.Cat;
-import com.mysema.query.collections.eval.JavaSerializer;
 import com.mysema.query.collections.support.JoinExpressionComparator;
-import com.mysema.query.collections.support.SimpleIndexSupport;
-import com.mysema.query.collections.support.SimpleIteratorSource;
-import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 
@@ -37,105 +31,6 @@ public class QueryPerformanceTest extends AbstractQueryTest{
     private long results;
     
     private List<String> resultLog = new ArrayList<String>(30);
-    
-    private List<EBoolean> conditions = Arrays.asList(
-            cat.ne(otherCat),
-            cat.eq(otherCat),                                  
-            cat.name.eq(otherCat.name),
-            
-            // and
-            cat.name.eq(otherCat.name).and(otherCat.name.eq("Kate5")),
-            cat.name.eq(otherCat.name).not().and(otherCat.name.eq("Kate5")),
-            cat.name.eq(otherCat.name).and(otherCat.name.eq("Kate5").not()),
-            cat.name.ne(otherCat.name).and(otherCat.name.eq("Kate5")),
-            cat.name.ne(otherCat.name).and(otherCat.name.like("Kate5%")),
-            cat.bodyWeight.eq(0).and(otherCat.name.eq("Kate5")),
-            cat.name.like("Bob5%").and(otherCat.name.like("Kate5%")),
-            
-            // or
-            cat.name.eq(otherCat.name).or(otherCat.name.eq("Kate5")),
-            cat.name.eq(otherCat.name).or(otherCat.name.eq("Kate5").not()),
-            cat.name.ne(otherCat.name).or(otherCat.name.eq("Kate5")),            
-            cat.name.ne(otherCat.name).or(otherCat.name.like("%ate5")),
-            cat.bodyWeight.eq(0).or(otherCat.name.eq("Kate5")),
-            cat.bodyWeight.eq(0).not().or(otherCat.name.eq("Kate5")),
-            cat.bodyWeight.eq(0).or(otherCat.name.eq("Kate5").not()),
-            cat.name.like("Bob5%").or(otherCat.name.like("%ate5"))      
-    );
-    
-    @Test
-    public void testValidateResultSizes(){
-        int size = 50;
-        int max = size * size;
-        long count, expected;
-        List<Cat> cats1 = cats(size);
-        List<Cat> cats2 = cats(size);
-        ColQuery query;
-        StringBuilder res = new StringBuilder();
-        for (EBoolean condition : conditions){            
-            // without wrapped iterators
-            query = new ColQueryWithoutIndexing();
-            query.setWrapIterators(false);       
-            count = query.from(cat, cats1).from(otherCat, cats2).where(condition).count();
-            expected = count;
-            res.append(StringUtils.leftPad(String.valueOf(count), 7));
-            
-            // without reordering
-            query = new ColQueryWithoutIndexing();
-            query.setSortSources(false);   
-            count = query.from(cat, cats1).from(otherCat, cats2).where(condition).count();            
-            res.append(StringUtils.leftPad(String.valueOf(count), 7));
-            res.append((expected != count || count > max) ? " X":"  ");
-            
-            // with reordering and iterator wrapping       
-            query = new ColQueryWithoutIndexing();
-            count = query.from(cat, cats1).from(otherCat, cats2).where(condition).count();
-            res.append(StringUtils.leftPad(String.valueOf(count), 7));
-            res.append((expected != count || count > max) ? " X":"  ");
-            
-            // indexed, without reordering
-            query = new ColQuery();
-            query.setSortSources(false);            
-            count = query.from(cat, cats1).from(otherCat, cats2).where(condition).count();
-            res.append(StringUtils.leftPad(String.valueOf(count), 7));
-            res.append((expected != count || count > max) ? " X":"  ");
-            
-            // indexed, with reordering and iterator wrapping
-            query = new ColQuery();            
-            count = query.from(cat, cats1).from(otherCat, cats2).where(condition).count();
-            res.append(StringUtils.leftPad(String.valueOf(count), 7));
-            res.append((expected != count || count > max) ? " X":"  ");
-
-            // indexed, with reordering and iterator wrapping and sequential union handling
-            query = new ColQuery();     
-            query.setSequentialUnion(true);
-            count = query.from(cat, cats1).from(otherCat, cats2).where(condition).count();
-            res.append(StringUtils.leftPad(String.valueOf(count), 7));
-            res.append((expected != count || count > max) ? " X":"  ");
-            
-            res.append("   ");
-            res.append(new JavaSerializer(JavaOps.DEFAULT).handle(condition).toString());
-            res.append("\n");
-        }
-        System.out.println(res);
-        if (res.toString().contains("X")){
-            fail(res.toString().replaceAll("[^X]", "").length() + " errors occurred. See log for details.");
-        }
-    }
-    
-    @Test
-    public void testQueryResults(){
-        EBoolean condition = cat.bodyWeight.eq(0).and(otherCat.name.eq("Kate5"));
-        List<Cat> cats1 = cats(10);
-        List<Cat> cats2 = cats(10);
-        
-        ColQuery query = new ColQueryWithoutIndexing();
-        query.setSortSources(false);                  
-        for (Object[] cats :  query.from(cat, cats1).from(otherCat, cats2)
-                .where(condition).iterate(cat, otherCat)){
-            System.out.println(Arrays.asList(cats));
-        }
-    }
         
     @Test
     @Ignore
@@ -148,8 +43,8 @@ public class QueryPerformanceTest extends AbstractQueryTest{
                 new JoinExpression<Object>(JoinType.DEFAULT, cat), 
                 new JoinExpression<Object>(JoinType.DEFAULT, otherCat));
         
-        for (int i = 0; i < conditions.size(); i++){            
-            if (new JoinExpressionComparator(conditions.get(i)).comparePrioritiesOnly(joins.get(0), joins.get(1)) > 0){
+        for (int i = 0; i < conditionsFor2Sources.size(); i++){            
+            if (new JoinExpressionComparator(conditionsFor2Sources.get(i)).comparePrioritiesOnly(joins.get(0), joins.get(1)) > 0){
                 System.out.println("#" + (i+1) + " inverted");
             }else{
                 System.out.println("#" + (i+1) + " order preserved");
@@ -169,23 +64,14 @@ public class QueryPerformanceTest extends AbstractQueryTest{
             System.out.println(line);
         }
     }
-    
-    private List<Cat> cats(int size){
-        List<Cat> cats = new ArrayList<Cat>(size);
-        for (int i= 0; i < size / 2; i++){
-            cats.add(new Cat("Kate" + (i+1)));
-            cats.add(new Cat("Bob"+ (i+1)));
-        }
-        return cats;
-    }
-    
+        
     private void runTest(int size){               
         List<Cat> cats1 = cats(size);
         List<Cat> cats2 = cats(size);
         resultLog.add(size + " * " + size + " items");
         
         // test each condition
-        for (EBoolean condition : conditions){
+        for (EBoolean condition : conditionsFor2Sources){
             long level1 = 0, level2 = 0, level3 = 0, level4 = 0, level5 = 0;
             ColQuery query;
             for (long j=0; j < testIterations; j++){            
@@ -214,7 +100,7 @@ public class QueryPerformanceTest extends AbstractQueryTest{
                 
             }
             StringBuilder builder = new StringBuilder();
-            builder.append(" #").append(conditions.indexOf(condition)+1).append("          ");
+            builder.append(" #").append(conditionsFor2Sources.indexOf(condition)+1).append("          ");
             builder.append(StringUtils.leftPad(String.valueOf(level1 / testIterations), 10)).append(" ms");
             builder.append(StringUtils.leftPad(String.valueOf(level2 / testIterations), 10)).append(" ms");
             builder.append(StringUtils.leftPad(String.valueOf(level3 / testIterations), 10)).append(" ms");            
@@ -241,11 +127,4 @@ public class QueryPerformanceTest extends AbstractQueryTest{
         new QueryPerformanceTest().longTest();
     }
     
-    private class ColQueryWithoutIndexing extends ColQuery{
-        @Override
-        protected QueryIndexSupport createIndexSupport(Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops, List<Expr<?>> sources){
-            return new SimpleIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);
-        }
-    }
-
 }

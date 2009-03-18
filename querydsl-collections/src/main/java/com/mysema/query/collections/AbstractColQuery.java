@@ -22,7 +22,7 @@ import com.mysema.query.collections.support.DefaultSourceSortingSupport;
 import com.mysema.query.collections.support.MultiComparator;
 import com.mysema.query.collections.support.SimpleIteratorSource;
 import com.mysema.query.collections.utils.EvaluatorUtils;
-import com.mysema.query.collections.utils.QueryIteratorUtils;
+import static com.mysema.query.collections.utils.QueryIteratorUtils.*;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.Ops;
 import com.mysema.query.grammar.Order;
@@ -47,8 +47,6 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
  * @version $Id$
  */
 public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
-    
-    private static final Logger logger = LoggerFactory.getLogger(AbstractColQuery.class);
         
     @SuppressWarnings("unchecked")
     private final SubType _this = (SubType)this;
@@ -272,13 +270,39 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
                 Operation<?,?> op = (Operation<?,?>)condition;
                 IteratorChain<Object[]> chain = new IteratorChain<Object[]>();
                 EBoolean e1 = (EBoolean)op.getArgs()[0], e2 = (EBoolean)op.getArgs()[1];
-                // TODO : optimize source order for each case
                 chain.addIterator(createMultiIterator(sources, e1));
                 chain.addIterator(createMultiIterator(sources, e2.and(e1.not())));
                 return chain;
             }else{
                 return createMultiIterator(sources, condition);
             }            
+        }
+        
+        protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources) throws Exception{
+            EBoolean condition = where.create();
+            JoinExpression<?> join = joins.get(0);
+            sources.add(join.getTarget());
+            indexSupport = createIndexSupport(exprToIt, ops, sources);            
+            // create a simple projecting iterator for Object -> Object[]
+            
+            if (sequentialUnion && condition instanceof Operation && ((Operation<?,?>)condition).getOperator() == Ops.OR){
+                Operation<?,?> op = (Operation<?,?>)condition;
+                IteratorChain<Object[]> chain = new IteratorChain<Object[]>();
+                EBoolean e1 = (EBoolean)op.getArgs()[0], e2 = (EBoolean)op.getArgs()[1];
+                Iterator<?> it1 = indexSupport.getChildFor(e1).getIterator(join.getTarget());
+                chain.addIterator(multiArgFilter(ops, toArrayIterator(it1), sources, e1));
+                Iterator<?> it2 = indexSupport.getChildFor(e2.and(e1.not())).getIterator(join.getTarget());
+                chain.addIterator(multiArgFilter(ops, toArrayIterator(it2), sources, e2.and(e1.not())));
+                return chain;
+            }else{
+                Iterator<?> it = toArrayIterator(indexSupport.getChildFor(condition).getIterator(join.getTarget()));
+                if (condition != null){
+                    // wrap the iterator if a where constraint is available
+                    it = multiArgFilter(ops, it, sources, condition);
+                }
+                return it;    
+            }           
+            
         }
 
         private Iterator<Object[]> createMultiIterator(List<Expr<?>> sources, EBoolean condition) {
@@ -292,26 +316,12 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
             multiIt.init(indexSupport.getChildFor(condition));
             
             if (condition != null){
-                return QueryIteratorUtils.multiArgFilter(ops, multiIt, sources, condition);
+                return multiArgFilter(ops, multiIt, sources, condition);
             }else{
                 return multiIt;
             }
         }
         
-        protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources) throws Exception{
-            JoinExpression<?> join = joins.get(0);
-            sources.add(join.getTarget());
-            indexSupport = createIndexSupport(exprToIt, ops, sources);            
-            // create a simple projecting iterator for Object -> Object[]
-            Iterator<?> it = QueryIteratorUtils.toArrayIterator(indexSupport.getIterator(join.getTarget()));
-            
-            if (where.create() != null){
-                // wrap the iterator if a where constraint is available
-                it = QueryIteratorUtils.multiArgFilter(ops, it, sources, where.create());
-            }
-            return it;
-        }
-
         @SuppressWarnings("unchecked")
         protected Iterator<?> handleOrderBy(List<Expr<?>> sources, Iterator<?> it)
                 throws Exception {
@@ -333,7 +343,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         }
 
         protected <RT> Iterator<RT> handleSelect(Iterator<?> it, List<Expr<?>> sources, Expr<RT> projection) throws Exception {
-            return QueryIteratorUtils.transform(ops, it, sources, projection);
+            return transform(ops, it, sources, projection);
         }
 
         public <RT> Iterable<RT> iterate(final Expr<RT> projection) {
