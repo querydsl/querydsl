@@ -7,17 +7,17 @@ package com.mysema.query.collections.iterators;
 
 import static org.junit.Assert.fail;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.JoinExpression;
-import com.mysema.query.collections.QueryIndexSupport;
 import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.collections.MiniApi;
-import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.ENumber;
 
 /**
@@ -63,10 +63,6 @@ public class MultiIteratorTest extends AbstractIteratorTest {
             return getIterator(expr);
         }
 
-        @SuppressWarnings("unused")
-        public Comparator<JoinExpression<?>> getComparator(List<Expr<?>> sources, EBoolean condition) {
-            return null;
-        }
     };
 
     @Test

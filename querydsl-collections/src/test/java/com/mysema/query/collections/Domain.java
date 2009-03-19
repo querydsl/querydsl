@@ -52,7 +52,32 @@ public class Domain {
         }
         public boolean isAlive() {
             return alive;
+        }
+        public void setAlive(boolean alive) {
+            this.alive = alive;
+        }
+        public void setBirthdate(java.util.Date birthdate) {
+            this.birthdate = birthdate;
+        }
+        public void setBodyWeight(int bodyWeight) {
+            this.bodyWeight = bodyWeight;
+        }
+        public void setWeight(int weight) {
+            this.weight = weight;
+        }
+        public void setToes(int toes) {
+            this.toes = toes;
+        }
+        public void setColor(Color color) {
+            this.color = color;
+        }
+        public void setId(int id) {
+            this.id = id;
+        }
+        public void setName(String name) {
+            this.name = name;
         }        
+        
     }
     
     public static class Cat extends Animal{
@@ -82,6 +107,19 @@ public class Domain {
         public String toString(){
             return name;
         }
+        public void setBreed(int breed) {
+            this.breed = breed;
+        }
+        public void setEyecolor(Color eyecolor) {
+            this.eyecolor = eyecolor;
+        }
+        public void setKittens(List<Cat> kittens) {
+            this.kittens = kittens;
+        }
+        public void setMate(Cat mate) {
+            this.mate = mate;
+        }
+        
     }
 
     public enum Color {

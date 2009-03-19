@@ -7,7 +7,6 @@ package com.mysema.query.collections.utils;
 
 import java.util.*;
 
-import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.collections15.IteratorUtils;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;

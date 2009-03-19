@@ -97,7 +97,7 @@ public class AbstractQueryTest {
             cat.name.like("Bob5%").or(otherCat.name.like("%ate5"))      
     );
 
-    class ColQueryWithoutIndexing extends ColQuery{
+    static class ColQueryWithoutIndexing extends ColQuery{
         @Override
         protected QueryIndexSupport createIndexSupport(Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops, List<Expr<?>> sources){
             return new SimpleIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);

@@ -16,15 +16,14 @@ import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.utils.EvaluatorUtils;
 import com.mysema.query.collections.utils.QueryIteratorUtils;
 import com.mysema.query.grammar.JavaOps;
-import com.mysema.query.grammar.Ops;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Operation;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.Expr.EBoolean;
-import com.mysema.query.grammar.types.Expr.EConstant;
 
 /**
- * DefaultIndexSupport provides
+ * DefaultIndexSupport provides a local query specific result cache which creates
+ * optimized children of itself for given query conditions
  *
  * @author tiwe
  * @version $Id$
@@ -33,7 +32,7 @@ public class DefaultIndexSupport extends SimpleIndexSupport{
     
     private Map<Path<?>,Map<?,? extends Iterable<?>>> pathToKeyToValues;
     
-    private Map<Path<?>,IndexedPath> rootToIndexedPath;
+    private Map<Path<?>,IndexedPath> rootToIndexedPath = new HashMap<Path<?>,IndexedPath>();
     
     /**
      * Create a new DefaultIndexSupport instance
@@ -46,80 +45,23 @@ public class DefaultIndexSupport extends SimpleIndexSupport{
         this.pathToKeyToValues = new HashMap<Path<?>,Map<?,? extends Iterable<?>>>();        
     }        
 
-    public IteratorSource getChildFor(EBoolean condition){  
+    public DefaultIndexSupport addPath(Path<?> path, IndexedPath indexedPath){
+        rootToIndexedPath.put(path, indexedPath);
+        return this;
+    }
+    
+    public DefaultIndexSupport getChildFor(EBoolean condition){  
         if (condition == null){
-            rootToIndexedPath = new HashMap<Path<?>,IndexedPath>();
             return this;
         }        
         DefaultIndexSupport indexSupport = new DefaultIndexSupport(iteratorSource, ops, sources);
         indexSupport.pathToKeyToValues = this.pathToKeyToValues;
-        indexSupport.rootToIndexedPath = new HashMap<Path<?>,IndexedPath>();
         
         // populate the "path eq path" index
         if (condition instanceof Operation){
-            indexSupport.visitOperation((Operation<?,?>) condition);
+            new DefaultIndexCreationTask(indexSupport, sources, ops, condition).run();
         }        
         return indexSupport;
-    }
-    
-    protected void visitOperation(Operation<?,?> op) {
-        if (op.getOperator() == Ops.EQ_OBJECT  || op.getOperator() == Ops.EQ_PRIMITIVE){
-            Expr<?> e1 = op.getArgs()[0];
-            Expr<?> e2 = op.getArgs()[1];
-            if (e1 instanceof Path && e2 instanceof Path){
-                Path<?> p1 = (Path<?>)e1, p2 = (Path<?>)e2;
-                int i1 = sources.indexOf(p1.getRoot());
-                int i2 = sources.indexOf(p2.getRoot());
-                
-                // index the path at higher position
-                if (i1 < i2){
-                    indexPathEqExpr(p2, e1);
-                }else if (i1 > i2){
-                    indexPathEqExpr(p1, e2);
-                }
-                
-            }else if (e1 instanceof Path){
-                if (e2 instanceof EConstant){
-                    indexPathEqExpr((Path<?>)e1, e2);    
-                }                
-                                    
-            }else if (e2 instanceof Path){
-                if (e1 instanceof EConstant){
-                    indexPathEqExpr((Path<?>)e2, e1);    
-                }
-                
-            }
-            
-        }else if (op.getOperator() == Ops.NOT){    
-            // skip negative condition paths
-            
-        }else if (op.getOperator() == Ops.AND){
-            for (Expr<?> e : op.getArgs()){
-                if (e instanceof Operation) visitOperation((Operation<?, ?>) e);
-            }
-        }        
-    }
-    
-    private Map<?, ? extends Iterable<?>> createIndexEntry(Path<?> path) {
-        Evaluator ev = EvaluatorUtils.create(ops, Collections.<Expr<?>>singletonList((Expr<?>)path.getRoot()), (Expr<?>)path);
-        Map<?,? extends Iterable<?>> map = QueryIteratorUtils.projectToMap(iteratorSource.getIterator((Expr<?>)path.getRoot()), ev);
-        return map;
-    }
-
-    @SuppressWarnings("unchecked")
-    public <A> Iterator<A> getIterator(Expr<A> expr, Object[] bindings) {
-        if (rootToIndexedPath.containsKey(expr)){
-            IndexedPath ie = rootToIndexedPath.get(expr);
-            Map<?,? extends Iterable<?>> indexEntry = pathToKeyToValues.get(ie.getIndexedPath());
-            Object key = ie.getEvaluator().evaluate(bindings);
-            if (indexEntry.containsKey(key)){
-                return (Iterator<A>)indexEntry.get(key).iterator();    
-            }else{
-                return Collections.<A>emptyList().iterator();
-            }            
-        }else{
-            return super.getIterator(expr,bindings);    
-        }        
     }
     
     @SuppressWarnings("unchecked")
@@ -138,49 +80,47 @@ public class DefaultIndexSupport extends SimpleIndexSupport{
             return super.getIterator(expr);    
         }     
     }
+    
 
-    private void indexPathEqExpr(Path<?> path, Expr<?> key) {
-        if (!rootToIndexedPath.containsKey(path.getRoot())){
-            if (!pathToKeyToValues.containsKey(path)){
-                // create the index entry
-                pathToKeyToValues.put(path, createIndexEntry(path));    
-            }
-            
-            // create the key creator            
-            Evaluator keyCreator;
-            if (key instanceof EConstant){
-                final Object constant = ((EConstant<?>)key).getConstant(); 
-                keyCreator = new Evaluator(){
-                    public <T> T evaluate(Object... args) {
-                        return (T)constant;
-                    }                
-                }; 
+    @SuppressWarnings("unchecked")
+    public <A> Iterator<A> getIterator(Expr<A> expr, Object[] bindings) {
+        if (rootToIndexedPath.containsKey(expr)){
+            IndexedPath ie = rootToIndexedPath.get(expr);
+            Map<?,? extends Iterable<?>> indexEntry = pathToKeyToValues.get(ie.getIndexedPath());
+            Object key = ie.getEvaluator().evaluate(bindings);
+            if (indexEntry.containsKey(key)){
+                return (Iterator<A>)indexEntry.get(key).iterator();    
             }else{
-                keyCreator = EvaluatorUtils.create(ops, sources, key);
-            }
-            
-            // update the index            
-            rootToIndexedPath.put(path.getRoot(), new IndexedPath(path,keyCreator));  
-        }
+                return Collections.<A>emptyList().iterator();
+            }            
+        }else{
+            return super.getIterator(expr,bindings);    
+        }        
     }
- 
+    
     Map<Path<?>, Map<?, ? extends Iterable<?>>> getPathToKeyToValues() {
         return Collections.unmodifiableMap(pathToKeyToValues);
     }
     
-    /**
-     * Mapping from root path to indexed path and evaluator for the index key
-     *
-     */
-    private class IndexedPath{
-        private final Path<?> path;
-        private final Evaluator ev;        
-        IndexedPath(Path<?> path,Evaluator ev){            
-            this.path = path;
-            this.ev = ev;
+    public DefaultIndexSupport indexToHash(Path<?> path){
+        if (pathToKeyToValues.containsKey(path)){
+            return this;
         }
-        public Path<?> getIndexedPath(){ return path;}
-        public Evaluator getEvaluator(){ return ev; }        
+        // create the index entry
+        Evaluator ev = EvaluatorUtils.create(ops, Collections.<Expr<?>>singletonList((Expr<?>)path.getRoot()), (Expr<?>)path);
+        Map<?,? extends Iterable<?>> map = QueryIteratorUtils.projectToMap(iteratorSource.getIterator((Expr<?>)path.getRoot()), ev);
+        
+        pathToKeyToValues.put(path, map);
+        return this;
+    }
+    
+    DefaultIndexSupport indexToTree(Path<?> path){
+        // TODO
+        return this;
+    }
+ 
+    public boolean isIndexed(Path<?> path){
+        return rootToIndexedPath.containsKey(path);
     }
     
 }

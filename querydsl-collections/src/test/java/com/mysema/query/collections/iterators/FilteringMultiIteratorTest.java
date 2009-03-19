@@ -50,7 +50,7 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
     Cat c1 = new Cat("Kitty");
     Cat c2 = new Cat("Bob");
     Cat c3 = new Cat("Alex");
-    Cat c4 = new Cat("Francis");    
+//    Cat c4 = new Cat("Francis");    
     QCat cat = new QCat("cat");    
     QCat otherCat = new QCat("otherCat");
     

@@ -5,12 +5,14 @@
  */
 package com.mysema.query.collections;
 
+import static com.mysema.query.collections.utils.QueryIteratorUtils.multiArgFilter;
+import static com.mysema.query.collections.utils.QueryIteratorUtils.toArrayIterator;
+import static com.mysema.query.collections.utils.QueryIteratorUtils.transform;
+
 import java.util.*;
 
 import org.apache.commons.collections15.IteratorUtils;
 import org.apache.commons.collections15.iterators.IteratorChain;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryBase;
@@ -22,7 +24,6 @@ import com.mysema.query.collections.support.DefaultSourceSortingSupport;
 import com.mysema.query.collections.support.MultiComparator;
 import com.mysema.query.collections.support.SimpleIteratorSource;
 import com.mysema.query.collections.utils.EvaluatorUtils;
-import static com.mysema.query.collections.utils.QueryIteratorUtils.*;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.Ops;
 import com.mysema.query.grammar.Order;

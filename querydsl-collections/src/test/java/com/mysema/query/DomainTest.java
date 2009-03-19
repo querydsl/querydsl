@@ -76,7 +76,7 @@ public class DomainTest {
     }
     
     @Domain
-    public static class RelationType2<D extends RelationType2>{
+    public static class RelationType2<D extends RelationType2<D>>{
         List<D> list;
     }
     
