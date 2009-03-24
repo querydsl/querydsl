@@ -6,6 +6,7 @@
 package com.mysema.query.collections;
 
 import java.util.Arrays;
+import java.util.List;
 
 import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.GrammarWithAlias;
@@ -34,13 +35,13 @@ public class MiniApi extends GrammarWithAlias{
     }
     
     @SuppressWarnings("unchecked")
-    public static <A> Iterable<A> select(Iterable<A> from, Expr.EBoolean where, OrderSpecifier<?>... order){
+    public static <A> List<A> select(Iterable<A> from, Expr.EBoolean where, OrderSpecifier<?>... order){
         Expr<A> path = (Expr<A>) new SinglePathExtractor().handle(where).getPath();
         ColQuery query = new ColQuery().from(path, from).where(where).orderBy(order);
-        return query.iterate((Expr<A>)path);
+        return query.list((Expr<A>)path);
     }
                 
-    public static <A> Iterable<A> reject(Iterable<A> from, Expr.EBoolean where, OrderSpecifier<?>...order){
+    public static <A> List<A> reject(Iterable<A> from, Expr.EBoolean where, OrderSpecifier<?>...order){
         return select(from, Grammar.not(where), order);
     }
              

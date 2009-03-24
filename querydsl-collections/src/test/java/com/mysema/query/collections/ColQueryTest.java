@@ -77,26 +77,26 @@ public class ColQueryTest extends AbstractQueryTest{
         // 1st
         QCat cat = new QCat("cat");  
         for (String name : from(cat,cats).where(cat.kittens.size().gt(0))
-                          .iterate(cat.name)){
+                          .list(cat.name)){
             System.out.println(name);
         }        
         
         // 1st - variation 1        
         for (String name : from(cat,cats).where(gt(cat.kittens.size(),0))
-                          .iterate(cat.name)){
+                          .list(cat.name)){
             System.out.println(name);
         }        
         
         // 2nd
         Cat c = alias(Cat.class, "cat");
         for (String name : from(c,cats).where($(c.getKittens()).size().gt(0))
-                          .iterate(c.getName())){
+                          .list(c.getName())){
             System.out.println(name);
         }
         
         // 2nd - variation 1
         for (String name : from(c,cats).where($(c.getKittens().size()).gt(0))
-                          .iterate(c.getName())){
+                          .list(c.getName())){
             System.out.println(name);
         }   
                             
@@ -123,14 +123,14 @@ public class ColQueryTest extends AbstractQueryTest{
         // 1st
         QCat cat = new QCat("cat");  
         for (String name : from(cat,cats).where(cat.name.like("fri%"))
-                          .iterate(cat.name)){
+                          .list(cat.name)){
             System.out.println(name);
         }
         
         // 2nd
         Cat c = alias(Cat.class, "cat");        
         for (String name : from(c,cats).where($(c.getName()).like("fri%"))
-                          .iterate(c.getName())){
+                          .list(c.getName())){
             System.out.println(name);
         }      
     }
@@ -141,7 +141,7 @@ public class ColQueryTest extends AbstractQueryTest{
         
         from(c,cats)
         .where($(c.getBirthdate()).after(new Date()))
-        .iterate(c).iterator();              
+        .list(c).iterator();              
     }
     
     @Test
@@ -152,7 +152,7 @@ public class ColQueryTest extends AbstractQueryTest{
         // TODO : FIXME : Janino compiler doesn't handle generic collections
         from(c,cats)
         .where($(c.getKittens().get(0).getBodyWeight()).gt(12))
-        .iterate(c.getName()).iterator();
+        .list(c.getName()).iterator();
     }
     
     @Test
@@ -162,7 +162,7 @@ public class ColQueryTest extends AbstractQueryTest{
         
         from(c,cats)
         .where($(c).eq(other))
-        .iterate(c).iterator();
+        .list(c).iterator();
     }
     
     @Test
@@ -174,7 +174,7 @@ public class ColQueryTest extends AbstractQueryTest{
         
         from(c,cats)
         .where($(c.getKittens().contains(other)))
-        .iterate(c).iterator();
+        .list(c).iterator();
     }
     
     @Test
@@ -183,7 +183,7 @@ public class ColQueryTest extends AbstractQueryTest{
         
         from(c,cats)
         .where(c.getKittens().isEmpty())
-        .iterate(c).iterator();
+        .list(c).iterator();
     }
     
     @Test
@@ -192,7 +192,7 @@ public class ColQueryTest extends AbstractQueryTest{
         
         from(c,cats)
         .where($(c.getName()).startsWith("B"))
-        .iterate(c).iterator();        
+        .list(c).iterator();        
         
     }
     
@@ -203,7 +203,7 @@ public class ColQueryTest extends AbstractQueryTest{
         
         from(c,cats)
         .where($(c.getName()).toUpperCase().eq("MOE"))
-        .iterate(c).iterator();        
+        .list(c).iterator();        
     }
     
     @Test
@@ -224,7 +224,7 @@ public class ColQueryTest extends AbstractQueryTest{
     @Test
     public void testAPIMethods(){
         query().from(cat, c1, c2).list(cat);
-        query().from(cat, c1, c2).iterate(cat).iterator();
+        query().from(cat, c1, c2).list(cat).iterator();
     }
     
     @Test
@@ -258,7 +258,7 @@ public class ColQueryTest extends AbstractQueryTest{
         List<String> lines = Arrays.asList("1;10;100","2;20;200","3;30;300");
         
         // 1st
-        for (String[] row : query().from($(""), lines).iterate($("").split(";"))){
+        for (String[] row : query().from($(""), lines).list($("").split(";"))){
             for (String col : row){
                 System.out.println(col);
             }
@@ -266,8 +266,8 @@ public class ColQueryTest extends AbstractQueryTest{
         
         // 2nd
         Path.PStringArray strs = $(new String[]{});
-        Iterable<String[]> csvData1 = query().from($(""), lines).iterate($("").split(";"));
-        for (String s : query().from(strs, csvData1).iterate(strs.get(0).add("-").add(strs.get(1)))){
+        Iterable<String[]> csvData1 = query().from($(""), lines).list($("").split(";"));
+        for (String s : query().from(strs, csvData1).list(strs.get(0).add("-").add(strs.get(1)))){
             System.out.println(s);
         }         
     }
@@ -295,12 +295,12 @@ public class ColQueryTest extends AbstractQueryTest{
         
         // 1st 
         PEntity<Map.Entry<String,String>> e = $(map.entrySet().iterator().next());
-        for (Map.Entry<String,String> entry : from(e, map.entrySet()).iterate(e)){
+        for (Map.Entry<String,String> entry : from(e, map.entrySet()).list(e)){
             System.out.println(entry.getKey() + " > " + entry.getValue());
         }
         
         // 2nd
-//        for (String[] kv : from($("k"), $("v"), map).iterate($("k"),$("v"))){
+//        for (String[] kv : from($("k"), $("v"), map).list($("k"),$("v"))){
 //            System.out.println(kv[0] + " > " + kv[1]);
 //        }
     }
@@ -311,7 +311,7 @@ public class ColQueryTest extends AbstractQueryTest{
         Expr<Integer> i = new Expr.EConstant<Integer>(1);
         Expr<Double> d = new Expr.EConstant<Double>(1.0);
         from(c, cats)
-        .iterate(
+        .list(
                 QMath.abs(i),
                 QMath.acos(d),
                 QMath.asin(d),
@@ -409,7 +409,7 @@ public class ColQueryTest extends AbstractQueryTest{
         Iterable<String> data2 = Arrays.asList("PETer", "thOMAS", "JOhan");
         
         Iterator<String> res = Arrays.asList("petER - PETer","THomas - thOMAS", "joHAN - JOhan").iterator();
-        for (Object[] arr : query().from($("a"), data1).from($("b"), data2).where($("a").equalsIgnoreCase($("b"))).iterate($("a"),$("b"))){
+        for (Object[] arr : query().from($("a"), data1).from($("b"), data2).where($("a").equalsIgnoreCase($("b"))).list($("a"),$("b"))){
             assertEquals(res.next(), arr[0]+" - "+arr[1]);
         }
     }
@@ -418,7 +418,7 @@ public class ColQueryTest extends AbstractQueryTest{
     public void testVarious(){
         for(Object[] strs : from($("a"), "aa","bb","cc").from($("b"), "a","b")
                 .where($("a").startsWith($("b")))
-                .iterate($("a"),$("b"))){
+                .list($("a"),$("b"))){
             System.out.println(Arrays.asList(strs));
         }
         
@@ -441,7 +441,7 @@ public class ColQueryTest extends AbstractQueryTest{
     public void testVarious1(){
         for(String s : from($("str"), "a","ab","cd","de")
                 .where($("str").startsWith("a"))
-                .iterate($("str"))){
+                .list($("str"))){
             assertTrue(s.equals("a") || s.equals("ab"));
             System.out.println(s);
         }
@@ -449,7 +449,7 @@ public class ColQueryTest extends AbstractQueryTest{
     
     @Test
     public void testVarious2(){
-        for (Object o : from($(),1,2,"abc",5,3).where($().ne("abc")).iterate($())){
+        for (Object o : from($(),1,2,"abc",5,3).where($().ne("abc")).list($())){
             int i = (Integer)o;
             assertTrue(i > 0 && i < 6);
             System.out.println(o);
@@ -458,7 +458,7 @@ public class ColQueryTest extends AbstractQueryTest{
     
     @Test
     public void testVarious3(){
-        for (Integer i : from($(0),1,2,3,4).where($(0).lt(4)).iterate($(0))){
+        for (Integer i : from($(0),1,2,3,4).where($(0).lt(4)).list($(0))){
             System.out.println(i);
         }
     }
@@ -478,7 +478,7 @@ public class ColQueryTest extends AbstractQueryTest{
         
         ColQuery query = new ColQuery().from(cat, cats1).from(otherCat, cats2);
         query.setWrapIterators(false);
-        for (Object[] objects : MiniApi.from(cat, cats1).from(otherCat, cats2).where(where).iterate(cat, otherCat)){
+        for (Object[] objects : MiniApi.from(cat, cats1).from(otherCat, cats2).where(where).list(cat, otherCat)){
             System.out.println(Arrays.asList(objects));
         }
                    
@@ -487,14 +487,14 @@ public class ColQueryTest extends AbstractQueryTest{
     private static class TestQuery extends AbstractColQuery<TestQuery>{
         List<Object> res = new ArrayList<Object>();
         <RT> void select(Expr<RT> projection){
-            for (Object o : iterate(projection)){
+            for (Object o : list(projection)){
                 System.out.println(o);
                 res.add(o);
             }
             System.out.println();
         }
         <RT> void select(Expr<RT> p1, Expr<RT> p2, Expr<RT>... rest){
-            for (Object[] o : iterate(p1, p2, rest)){
+            for (Object[] o : list(p1, p2, rest)){
                 System.out.println(Arrays.asList(o));
                 res.add(o);
             }

@@ -114,7 +114,7 @@ public class QueryPerformanceTest extends AbstractQueryTest{
     
     private long query(ColQuery query, EBoolean condition, List<Cat> cats1, List<Cat> cats2){        
         long start = System.currentTimeMillis();
-        Iterator<Cat> it = query.from(cat, cats1).from(otherCat, cats2).where(condition).iterate(cat).iterator();
+        Iterator<Cat> it = query.from(cat, cats1).from(otherCat, cats2).where(condition).iterate(cat);
         results = 0;
         while (it.hasNext()){
             results++;

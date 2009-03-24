@@ -9,6 +9,7 @@ import static com.mysema.query.collections.utils.QueryIteratorUtils.multiArgFilt
 import static com.mysema.query.collections.utils.QueryIteratorUtils.toArrayIterator;
 import static com.mysema.query.collections.utils.QueryIteratorUtils.transform;
 
+import java.io.IOException;
 import java.util.*;
 
 import org.apache.commons.collections15.IteratorUtils;
@@ -31,6 +32,7 @@ import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Operation;
 import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.util.CloseableIterator;
 
 /**
  * AbstractColQuery provides a base class for Collection query implementations.
@@ -77,6 +79,10 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);
     }
     
+    public void close(){
+        // overwrite
+    }
+    
     protected <A> SubType alias(Expr<A> path, Iterable<A> col) {
         exprToIt.put(path, col);
         return _this;
@@ -103,7 +109,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     }
          
     @SuppressWarnings("unchecked")
-    public Iterable<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
+    public CloseableIterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
         // TODO : move this code to querydsl-core
         final Expr<?>[] full = asArray(new Expr[rest.length + 2], e1, e2, rest);
         boolean oneType = true;
@@ -123,11 +129,11 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         return iterate(new Expr.EArrayConstructor(type, full));
     }    
     
-    public <RT> Iterable<RT> iterate(Expr<RT> projection) {
+    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
         return query.iterate(projection);
     }
     // alias variant
-    public <RT> Iterable<RT> iterate(RT alias) {
+    public <RT> CloseableIterator<RT> iterate(RT alias) {
         return iterate(MiniApi.getAny(alias));
     }
     
@@ -148,11 +154,16 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
      * @return
      */
     public List<Object[]> list(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
-        ArrayList<Object[]> rv = new ArrayList<Object[]>();
-        for (Object[] v : iterate(e1, e2, rest)){
-            rv.add(v);
-        }
-        return rv;
+        try{
+            ArrayList<Object[]> rv = new ArrayList<Object[]>();
+            CloseableIterator<Object[]> it = iterate(e1, e2, rest);
+            while (it.hasNext()){
+                rv.add(it.next());
+            }
+            return rv;    
+        }finally{
+            close();
+        }        
     }
     
     /**
@@ -162,12 +173,17 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
      * @param projection
      * @return
      */
-    public <RT> List<RT> list(Expr<RT> projection) {
-        ArrayList<RT> rv = new ArrayList<RT>();
-        for (RT v : query.iterate(projection)){
-            rv.add(v);
-        }
-        return rv;
+    public <RT> List<RT> list(Expr<RT> projection) {        
+        try {
+            ArrayList<RT> rv = new ArrayList<RT>();
+            CloseableIterator<RT> it = query.iterate(projection);
+            while (it.hasNext()){
+                rv.add(it.next());
+            }
+            return rv;
+        }finally{
+            close();
+        }            
     }
     // alias variant
     public <RT> List<RT> list(RT alias) {
@@ -180,7 +196,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     }   
     
     public <RT> RT uniqueResult(Expr<RT> expr) {
-        Iterator<RT> it = query.iterate(expr).iterator();
+        Iterator<RT> it = query.iterate(expr);
         return it.hasNext() ? it.next() : null;
     }
     // alias variant
@@ -213,9 +229,26 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         this.sequentialUnion = sequentialUnion;
     }
     
+    private <T> CloseableIterator<T> wrap(final Iterator<T> it){
+        return new CloseableIterator<T>(){
+            public boolean hasNext() {
+                return it.hasNext();
+            }
+            public T next() {
+                return it.next();
+            }
+            public void remove() {
+                it.remove();                
+            }
+            public void close() throws IOException {
+                AbstractColQuery.this.close();                
+            }            
+        };
+    }
+    
     public class InnerQuery extends QueryBase<Object, InnerQuery> {
         
-        private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
+        private <RT> CloseableIterator<RT> createIterator(Expr<RT> projection) throws Exception {
             List<Expr<?>> sources = new ArrayList<Expr<?>>();
             // from  / where       
             Iterator<?> it;
@@ -232,10 +265,10 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
                 }
                 
                 // select    
-                return handleSelect(it, sources, projection);
+                return wrap(handleSelect(it, sources, projection));
                 
             }else{
-                return Collections.<RT>emptyList().iterator();
+                return wrap(Collections.<RT>emptyList().iterator());
             }
                                
         }
@@ -347,17 +380,13 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
             return transform(ops, it, sources, projection);
         }
 
-        public <RT> Iterable<RT> iterate(final Expr<RT> projection) {
+        public <RT> CloseableIterator<RT> iterate(final Expr<RT> projection) {
             select(projection);
-            return new Iterable<RT>() {
-                public Iterator<RT> iterator() {
-                    try {
-                        return createIterator(projection);
-                    } catch (Exception e) {
-                        throw new RuntimeException("error", e);
-                    }
-                }
-            };
+            try {
+                return createIterator(projection);
+            } catch (Exception e) {
+                throw new RuntimeException("error", e);
+            }
         }
     }
 

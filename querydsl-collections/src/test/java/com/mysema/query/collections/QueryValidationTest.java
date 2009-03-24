@@ -154,7 +154,7 @@ public class QueryValidationTest extends AbstractQueryTest{
         ColQuery query = new ColQueryWithoutIndexing();
         query.setSortSources(false);                  
         for (Object[] cats :  query.from(cat, cats1).from(otherCat, cats2)
-                .where(condition).iterate(cat, otherCat)){
+                .where(condition).list(cat, otherCat)){
             System.out.println(Arrays.asList(cats));
         }
     }
