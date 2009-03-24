@@ -15,7 +15,6 @@ import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
-import com.mysema.query.util.CloseableIterator;
 
 /**
  * QueryIteratorUtils provides

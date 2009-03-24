@@ -130,7 +130,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     }    
     
     public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
-        return query.iterate(projection);
+        return wrap(query.iterate(projection));
     }
     // alias variant
     public <RT> CloseableIterator<RT> iterate(RT alias) {
@@ -176,7 +176,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     public <RT> List<RT> list(Expr<RT> projection) {        
         try {
             ArrayList<RT> rv = new ArrayList<RT>();
-            CloseableIterator<RT> it = query.iterate(projection);
+            Iterator<RT> it = query.iterate(projection);
             while (it.hasNext()){
                 rv.add(it.next());
             }
@@ -195,9 +195,13 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         return _this;
     }   
     
-    public <RT> RT uniqueResult(Expr<RT> expr) {
-        Iterator<RT> it = query.iterate(expr);
-        return it.hasNext() ? it.next() : null;
+    public <RT> RT uniqueResult(Expr<RT> expr) {        
+        try{
+            Iterator<RT> it = query.iterate(expr);
+            return it.hasNext() ? it.next() : null;
+        }finally{
+            close();
+        }        
     }
     // alias variant
     public <RT> RT uniqueResult(RT alias) {
@@ -248,7 +252,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     
     public class InnerQuery extends QueryBase<Object, InnerQuery> {
         
-        private <RT> CloseableIterator<RT> createIterator(Expr<RT> projection) throws Exception {
+        private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
             List<Expr<?>> sources = new ArrayList<Expr<?>>();
             // from  / where       
             Iterator<?> it;
@@ -380,7 +384,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
             return transform(ops, it, sources, projection);
         }
 
-        public <RT> CloseableIterator<RT> iterate(final Expr<RT> projection) {
+        public <RT> Iterator<RT> iterate(final Expr<RT> projection) {
             select(projection);
             try {
                 return createIterator(projection);
