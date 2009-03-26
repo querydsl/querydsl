@@ -26,13 +26,13 @@ import com.mysema.query.util.NumberUtil;
  */
 public abstract class Expr<D> {
         
-    private final Class<D> type;
+    private final Class<? extends D> type;
     private String toString;
     
-    public Expr(Class<D> type){this.type = type;}        
+    public Expr(Class<? extends D> type){this.type = type;}        
     public EBoolean eq(D right){return Grammar.eq(this, right);}        
     public EBoolean eq(Expr<? super D> right){return Grammar.eq(this, right);}
-    public Class<D> getType(){ return type;}
+    public Class<? extends D> getType(){ return type;}
     public EBoolean ne(D right){return Grammar.ne(this, right);}
     public EBoolean ne(Expr<? super D> right){return Grammar.ne(this, right);}
     
@@ -67,7 +67,7 @@ public abstract class Expr<D> {
         public EBoolean or(EBoolean right) {return Grammar.or(this, right);}
     }        
     public static abstract class EComparable<D extends Comparable<? super D>> extends ESimple<D>{
-        public EComparable(Class<D> type) {super(type);}
+        public EComparable(Class<? extends D> type) {super(type);}
         public EBoolean after(D right) {return Grammar.after(this,right);}
         public EBoolean after(Expr<D> right) {return Grammar.after(this,right);}  
         public EBoolean aoe(D right) {return Grammar.aoe(this,right);}
@@ -119,7 +119,7 @@ public abstract class Expr<D> {
         @SuppressWarnings("unchecked")
         public Constructor<D> getJavaConstructor(){   
             if (javaConstructor == null){
-                Class<D> type = getType();
+                Class<? extends D> type = getType();
                 Expr<?>[] args = getArgs();
                 for (Constructor<?> c : type.getConstructors()){
                     if (c.getParameterTypes().length == args.length){
@@ -161,14 +161,15 @@ public abstract class Expr<D> {
     }
         
     public static abstract class EEmbeddable<D> extends ESimple<D>{
-        public EEmbeddable(Class<D> type) {super(type);}
+        public EEmbeddable(Class<? extends D> type) {super(type);}
     }
+    
     public static abstract class EEntity<D> extends Expr<D>{
-        public EEntity(Class<D> type) {super(type);}        
+        public EEntity(Class<? extends D> type) {super(type);}        
     }
     
     public static abstract class ENumber<D extends Number & Comparable<? super D>> extends EComparable<D>{
-        public ENumber(Class<D> type) {super(type);}
+        public ENumber(Class<? extends D> type) {super(type);}
         
         public ENumber<Byte> byteValue() { return castToNum(Byte.class); }  
         public ENumber<Double> doubleValue() { return castToNum(Double.class); }                
@@ -191,7 +192,7 @@ public abstract class Expr<D> {
     }
     
     public static abstract class ESimple<D> extends Expr<D>{
-        public ESimple(Class<D> type) {super(type);}
+        public ESimple(Class<? extends D> type) {super(type);}
         public Expr<D> as(String to){return Grammar.as(this, to);}
         public EBoolean in(CollectionType<D> arg) {return Grammar.in(this, arg);}
         public EBoolean in(D... args) {return Grammar.in(this,args);}

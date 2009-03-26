@@ -39,11 +39,7 @@ public class GrammarWithAlias extends Grammar{
     public static <A> A alias(Class<A> cl, String var){
         return aliasFactory.createAliasForVar(cl, var);
     }
-    
-    public static <A> A alias(Expr<A> expr){
-        return aliasFactory.createAliasForExpr(expr.getType(), expr);
-    }
-    
+        
     public static <A> A alias(Class<A> cl, Expr<? extends A> expr){
         return aliasFactory.createAliasForExpr(cl, expr);
     }

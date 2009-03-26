@@ -21,7 +21,7 @@ import com.mysema.query.grammar.types.Expr.EString;
  */
 public interface Operation<OP,RT> {
     
-    Class<RT> getType();
+    Class<? extends RT> getType();
     Expr<?>[] getArgs();
     Op<OP> getOperator();
     
@@ -65,7 +65,7 @@ public interface Operation<OP,RT> {
     public static class ONumber<OpType extends Number, D extends Number & Comparable<? super D>> extends ENumber<D> implements Operation<OpType,D>{
         private final Expr<?>[] args;
         private final Op<OpType> op;
-        public ONumber(Class<D> type, Op<OpType> op, Expr<?>... args){
+        public ONumber(Class<? extends D> type, Op<OpType> op, Expr<?>... args){
             super(type);
             this.op = op;
             this.args = args;

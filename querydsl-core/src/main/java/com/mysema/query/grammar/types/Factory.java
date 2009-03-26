@@ -30,7 +30,7 @@ public class Factory {
         return new Expr.EConstant<A>(Assert.notNull(obj));
     }
 
-    public static final <OpType extends Number,D extends Number & Comparable<? super D>> Expr.ENumber<D> createNumber(Class<D> type, Op<OpType> operator, Expr<?>... args) {
+    public static final <OpType extends Number,D extends Number & Comparable<? super D>> Expr.ENumber<D> createNumber(Class<? extends D> type, Op<OpType> operator, Expr<?>... args) {
         return new Operation.ONumber<OpType,D>(type, Assert.notNull(operator), Assert.notNull(args));
     }
     
