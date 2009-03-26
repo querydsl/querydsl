@@ -113,27 +113,27 @@ public class HqlOps extends OperationPatterns {
      * The Interface OpHql.
      */
     public interface OpHql{
-        Op<java.lang.Boolean> ISEMPTY = new Op<java.lang.Boolean>("is empty");
-        Op<java.lang.Boolean> ISNOTEMPTY = new Op<java.lang.Boolean>("is not empty");
-        Op<Number> SUM = new Op<Number>("sum");
+        Op<java.lang.Boolean> ISEMPTY = new Op<java.lang.Boolean>();
+        Op<java.lang.Boolean> ISNOTEMPTY = new Op<java.lang.Boolean>();
+        Op<Number> SUM = new Op<Number>();
     }
         
     /**
      * The Interface OpQuant.
      */
     public interface OpQuant{
-        Op<java.lang.Number> AVG_IN_COL = new Op<java.lang.Number>("avg in col");
-        Op<java.lang.Number> MAX_IN_COL = new Op<java.lang.Number>("max in col");
-        Op<java.lang.Number> MIN_IN_COL = new Op<java.lang.Number>("min in col");   
+        Op<java.lang.Number> AVG_IN_COL = new Op<java.lang.Number>();
+        Op<java.lang.Number> MAX_IN_COL = new Op<java.lang.Number>();
+        Op<java.lang.Number> MIN_IN_COL = new Op<java.lang.Number>();   
         
 //        some / any = true for any
 //        all        = true for all
 //        exists     = true is subselect matches
 //        not exists = true if subselect doesn't match
-        Op<?> ANY = new Op<Object>("any");
-        Op<?> ALL = new Op<Object>("all");
-        Op<?> EXISTS = new Op<Object>("exists");
-        Op<?> NOTEXISTS = new Op<Object>("not exists");
+        Op<?> ANY = new Op<Object>();
+        Op<?> ALL = new Op<Object>();
+        Op<?> EXISTS = new Op<Object>();
+        Op<?> NOTEXISTS = new Op<Object>();
     }
     
     /**
