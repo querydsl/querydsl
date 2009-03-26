@@ -40,6 +40,10 @@ public class GrammarWithAlias extends Grammar{
         return aliasFactory.createAliasForVar(cl, var);
     }
     
+    public static <A> A alias(Expr<A> expr){
+        return aliasFactory.createAliasForExpr(expr.getType(), expr);
+    }
+    
     public static <A> A alias(Class<A> cl, Expr<? extends A> expr){
         return aliasFactory.createAliasForExpr(cl, expr);
     }
@@ -55,15 +59,6 @@ public class GrammarWithAlias extends Grammar{
     public static <D extends Comparable<? super D>> EComparable<D> $(D arg){
         return exprFactory.createComparable(arg);
     }
-    
-//    BigDecimal
-//    BigInteger
-//    byte
-//    double
-//    float
-//    integer
-//    long
-//    short
     
     public static ENumber<BigDecimal> $(BigDecimal arg){
         return exprFactory.createNumber(arg);
