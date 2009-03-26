@@ -118,8 +118,13 @@ public class ColQueryTest extends AbstractQueryTest{
     @Test
     public void testAlias11(){
         QCat cat = new QCat("cat");
+        
+        // 1
         Cat c = alias(Cat.class, cat);
         assertEquals(cat.name, $(c.getName()));
+        
+        // 2
+        assertEquals(cat.name, $(alias(cat).getName()));
     }
     
     @Test
@@ -209,7 +214,7 @@ public class ColQueryTest extends AbstractQueryTest{
         Cat c = alias(Cat.class, "cat");
         
         from(c,cats)
-        .where($(c.getName()).toUpperCase().eq("MOE"))
+        .where($(c.getName()).upper().eq("MOE"))
         .list(c).iterator();        
     }
     
