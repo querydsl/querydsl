@@ -118,13 +118,8 @@ public class ColQueryTest extends AbstractQueryTest{
     @Test
     public void testAlias11(){
         QCat cat = new QCat("cat");
-        
-        // 1
         Cat c = alias(Cat.class, cat);
         assertEquals(cat.name, $(c.getName()));
-        
-        // 2
-        assertEquals(cat.name, $(alias(cat).getName()));
     }
     
     @Test
