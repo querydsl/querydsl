@@ -10,7 +10,6 @@ import java.util.List;
 
 import com.mysema.query.SimpleExprFactory;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.ENumber;

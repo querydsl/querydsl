@@ -55,7 +55,7 @@ public class QueryBase<JoinMeta,SubType extends QueryBase<JoinMeta,SubType>> imp
     }
         
     public SubType having(EBoolean... o) {
-        for (EBoolean b : o) having.and(b);
+        for (EBoolean b : o) having.and(normalize(b));
         return _this;
     }
     
@@ -81,7 +81,7 @@ public class QueryBase<JoinMeta,SubType extends QueryBase<JoinMeta,SubType>> imp
     
     public SubType on(EBoolean o) {
         if (!joins.isEmpty()){
-            joins.get(joins.size()-1).setCondition(o);
+            joins.get(joins.size()-1).setCondition(normalize(o));
         }
         return _this;
     }
@@ -97,12 +97,16 @@ public class QueryBase<JoinMeta,SubType extends QueryBase<JoinMeta,SubType>> imp
     }
 
     public SubType where(EBoolean... o) {
-        for (EBoolean b : o) where.and(b);
+        for (EBoolean b : o) where.and(normalize(b));
         return _this;
     }
         
     public Metadata getMetadata(){
         return metadata;
+    }
+    
+    protected EBoolean normalize(EBoolean e){
+        return e;
     }
 
     /**

@@ -19,6 +19,8 @@ public interface AliasFactory {
 
     <A> A createAliasForVar(Class<A> cl, String var);
     
+    <A> A createAliasForExpr(Class<A> cl, Expr<? extends A> expr);
+    
     <A extends Expr<?>> A getCurrent();
 
     <A extends Expr<?>> A getCurrentAndReset();

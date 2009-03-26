@@ -58,6 +58,7 @@ public abstract class OperationPatterns{
         // various
         add(Ops.EQ_PRIMITIVE, "%s = %s",18);
         add(Ops.EQ_OBJECT, "%s = %s",18);
+        add(Ops.EQ_IGNORECASE, "eqIc(%s,%s)",18);
         add(Ops.ISTYPEOF, "%s.class = %s");
         add(Ops.NE_PRIMITIVE, "%s != %s",25);
         add(Ops.NE_OBJECT, "%s != %s",25);
@@ -68,6 +69,9 @@ public abstract class OperationPatterns{
         
         add(Ops.EXISTS, "exists(%s)");
         
+        add(Ops.NUMCAST, "cast(%s,%s)");
+        add(Ops.STRING_CAST, "cast(%s,%s)");
+        
         // string
         add(Ops.CONCAT, "%s + %s",37);
         add(Ops.LIKE, "%s like %s",27);
@@ -76,6 +80,18 @@ public abstract class OperationPatterns{
         add(Ops.SUBSTR2ARGS, "substring(%s,%s,%s)");
         add(Ops.TRIM, "trim(%s)");
         add(Ops.UPPER, "upper(%s)");
+        add(Ops.MATCHES, "like(%s,%s)");
+        add(Ops.STARTSWITH, "startsWith(%s,%s)");
+        add(Ops.ENDSWITH, "endsWith(%s,%s");
+        add(Ops.CONTAINS, "contains(%s,%s)");
+        add(Ops.SPLIT, "split(%s,%s)");
+        add(Ops.CHAR_AT, "charAt(%s,%s)");
+        add(Ops.STRING_LENGTH, "length(%s)");
+        add(Ops.INDEXOF, "indexOf(%s,%s)");                
+        add(Ops.INDEXOF_2ARGS, "indexOf(%s,%s,%s)");
+        add(Ops.LAST_INDEX, "lastIndexOf(%s,%s)");
+        add(Ops.LAST_INDEX_2ARGS, "lastIndexOf(%s,%s,%s)");
+        add(Ops.ISEMPTY, "empty(%s,%s,%s)");
         
         // date time
         add(Ops.OpDateTime.SYSDATE, "sysdate");

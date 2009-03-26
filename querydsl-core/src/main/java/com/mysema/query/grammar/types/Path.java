@@ -58,8 +58,11 @@ public interface Path<C> {
         public Path<?> getRoot(){
             return root;
         }
-        public String toString(){
-            return metadata.toString();
+        public int hashCode(){
+            return metadata.hashCode();
+        }        
+        public boolean equals(Object o){
+            return o instanceof Path ? ((Path<?>)o).getMetadata().equals(metadata) : false;
         }
     }
 
@@ -80,10 +83,13 @@ public interface Path<C> {
         }
         public Path<?> getRoot(){
             return root;
-        }
-        public String toString(){
-            return metadata.toString();
+        }    
+        public int hashCode(){
+            return metadata.hashCode();
         }        
+        public boolean equals(Object o){
+            return o instanceof Path ? ((Path<?>)o).getMetadata().equals(metadata) : false;
+        }
     }
     
     public static class PBooleanArray extends PArray<Boolean>{
@@ -96,6 +102,7 @@ public interface Path<C> {
         public EBoolean get(int index) {
             return new PBoolean(forArrayAccess(this, index));
         }        
+        
     }
 
     public interface PCollection<D> extends Path<java.util.Collection<D>>, CollectionType<D>{        
@@ -124,8 +131,11 @@ public interface Path<C> {
         public Path<?> getRoot(){
             return root;
         }
-        public String toString(){
-            return metadata.toString();
+        public int hashCode(){
+            return metadata.hashCode();
+        }        
+        public boolean equals(Object o){
+            return o instanceof Path ? ((Path<?>)o).getMetadata().equals(metadata) : false;
         }
     }
     
@@ -148,8 +158,11 @@ public interface Path<C> {
         public Path<?> getRoot(){
             return root;
         }
-        public String toString(){
-            return metadata.toString();
+        public int hashCode(){
+            return metadata.hashCode();
+        }        
+        public boolean equals(Object o){
+            return o instanceof Path ? ((Path<?>)o).getMetadata().equals(metadata) : false;
         }
     }
         
@@ -197,8 +210,11 @@ public interface Path<C> {
         public Path<?> getRoot(){
             return root;
         }
-        public String toString(){
-            return metadata.toString();
+        public int hashCode(){
+            return metadata.hashCode();
+        }        
+        public boolean equals(Object o){
+            return o instanceof Path ? ((Path<?>)o).getMetadata().equals(metadata) : false;
         }
     }
  
@@ -245,8 +261,11 @@ public interface Path<C> {
         public Path<?> getRoot(){
             return root;
         }
-        public String toString(){
-            return metadata.toString();
+        public int hashCode(){
+            return metadata.hashCode();
+        }        
+        public boolean equals(Object o){
+            return o instanceof Path ? ((Path<?>)o).getMetadata().equals(metadata) : false;
         }
     }
 
@@ -314,8 +333,11 @@ public interface Path<C> {
         public Path<?> getRoot(){
             return root;
         }
-        public String toString(){
-            return metadata.toString();
+        public int hashCode(){
+            return metadata.hashCode();
+        }        
+        public boolean equals(Object o){
+            return o instanceof Path ? ((Path<?>)o).getMetadata().equals(metadata) : false;
         }
     }
 
@@ -355,8 +377,11 @@ public interface Path<C> {
         public Path<?> getRoot(){
             return root;
         }
-        public String toString(){
-            return metadata.toString();
+        public int hashCode(){
+            return metadata.hashCode();
+        }        
+        public boolean equals(Object o){
+            return o instanceof Path ? ((Path<?>)o).getMetadata().equals(metadata) : false;
         }
     }
 
@@ -406,8 +431,11 @@ public interface Path<C> {
         public Path<?> getRoot(){
             return root;
         }
-        public String toString(){
-            return metadata.toString();
+        public int hashCode(){
+            return metadata.hashCode();
+        }        
+        public boolean equals(Object o){
+            return o instanceof Path ? ((Path<?>)o).getMetadata().equals(metadata) : false;
         }
     }
 
@@ -442,8 +470,11 @@ public interface Path<C> {
         public Path<?> getRoot(){
             return root;
         }
-        public String toString(){
-            return metadata.toString();
+        public int hashCode(){
+            return metadata.hashCode();
+        }        
+        public boolean equals(Object o){
+            return o instanceof Path ? ((Path<?>)o).getMetadata().equals(metadata) : false;
         }
     }    
 
@@ -463,8 +494,11 @@ public interface Path<C> {
         public Path<?> getRoot(){
             return metadata.getRoot() != null ? metadata.getRoot() : this;
         }
-        public String toString(){
-            return metadata.toString();
+        public int hashCode(){
+            return metadata.hashCode();
+        }        
+        public boolean equals(Object o){
+            return o instanceof Path ? ((Path<?>)o).getMetadata().equals(metadata) : false;
         }
     }
     
@@ -477,8 +511,7 @@ public interface Path<C> {
         }
         public EString get(int index) {
             return new PString(forArrayAccess(this, index));
-        }      
-        
+        }             
     }
 
 }

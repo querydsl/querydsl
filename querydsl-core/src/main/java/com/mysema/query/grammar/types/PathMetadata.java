@@ -133,21 +133,13 @@ public final class PathMetadata<T> {
             .append(pathType, p.pathType)
             .isEquals();
     }
-    
-    public String toString(){
-        if (expression != null){
-            return expression.toString();
-        }else{
-            return super.toString();
-        }
-    }
-    
+        
     /**
      * The Class PathType.
      */
     public static class PathType extends Ops.Op<Path<?>> {
         public PathType(String symbol){
-            super(symbol);
+            super();
         }
     }
 

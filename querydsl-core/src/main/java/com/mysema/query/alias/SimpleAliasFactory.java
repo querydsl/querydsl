@@ -56,6 +56,11 @@ public class SimpleAliasFactory implements AliasFactory {
         return proxy;
     }
     
+    public <A> A createAliasForExpr(Class<A> cl, Expr<? extends A> expr) {
+        return (A)proxyCache.get(cl, expr);
+    }
+
+    
     @SuppressWarnings("unchecked")
     private <A> A createProxy(Class<A> cl, Expr<?> path) {
         Enhancer enhancer = new Enhancer();
@@ -97,5 +102,7 @@ public class SimpleAliasFactory implements AliasFactory {
     public void setCurrent(Expr<?> path){
         current.set(path);
     }
+
+
     
 }

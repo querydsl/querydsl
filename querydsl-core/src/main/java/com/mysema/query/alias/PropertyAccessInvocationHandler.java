@@ -152,7 +152,9 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
     }
     
     private boolean isListElementAccess(Method method) {
-        return checkMethod(method, "get", 1, int.class);        
+        return method.getName().equals("get") &&
+            method.getParameterTypes().length == 1 &&
+            method.getParameterTypes()[0].equals(int.class);        
     }
     
     private boolean isHashCode(Method method){

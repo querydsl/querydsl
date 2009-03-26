@@ -15,6 +15,7 @@ import org.apache.commons.lang.ClassUtils;
 import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.Ops;
 import com.mysema.query.grammar.OrderSpecifier;
+import com.mysema.query.serialization.ToStringVisitor;
 import com.mysema.query.util.NumberUtil;
 
 /**
@@ -26,12 +27,21 @@ import com.mysema.query.util.NumberUtil;
 public abstract class Expr<D> {
         
     private final Class<D> type;
+    private String toString;
+    
     public Expr(Class<D> type){this.type = type;}        
     public EBoolean eq(D right){return Grammar.eq(this, right);}        
     public EBoolean eq(Expr<? super D> right){return Grammar.eq(this, right);}
     public Class<D> getType(){ return type;}
     public EBoolean ne(D right){return Grammar.ne(this, right);}
     public EBoolean ne(Expr<? super D> right){return Grammar.ne(this, right);}
+    
+    public String toString(){
+        if (toString == null){
+            toString = new ToStringVisitor().handle(this).toString();
+        }
+        return toString;
+    }
     
     public int hashCode(){
         return type != null ? type.hashCode() : super.hashCode();
@@ -144,17 +154,14 @@ public abstract class Expr<D> {
             this.constant = constant;
         }
         public D getConstant(){ return constant;}
-        @Override public String toString(){ return constant.toString(); }
+        public int hashCode(){
+            return constant.hashCode();
+        }
+        public boolean equals(Object o){
+            return o instanceof EConstant ? ((EConstant<?>)o).getConstant().equals(constant) : false;
+        }
     }
         
-//    *, 
-//    /, 
-//    DIV, 
-//    %, 
-//    MOD
-//    -, 
-//    +
-
     public static abstract class EEmbeddable<D> extends ESimple<D>{
         public EEmbeddable(Class<D> type) {super(type);}
     }        
