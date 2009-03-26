@@ -63,7 +63,20 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
 
     private final InnerQuery query = new InnerQuery();
     
-    private boolean sortSources = true, wrapIterators = true, sequentialUnion = false;
+    /**
+     * optimize sort order for optimal index usage
+     */
+    private boolean sortSources = true;
+    
+    /**
+     * wrap single source iterators to avoid cartesian view
+     */
+    private boolean wrapIterators = true;
+    
+    /**
+     * turn OR queries into sequential UNION queries
+     */
+    private boolean sequentialUnion = false;
     
     private SourceSortingSupport sourceSortingSupport;
 
@@ -76,8 +89,16 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
     }
     
-    protected QueryIndexSupport createIndexSupport(Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops, List<Expr<?>> sources){
-        return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);
+    protected <A> SubType alias(Expr<A> path, Iterable<A> col) {
+        exprToIt.put(path, col);
+        return _this;
+    }
+    
+    private <A> A[] asArray(A[] target, A first, A second, A... rest) {
+        target[0] = first;
+        target[1] = second;
+        System.arraycopy(rest, 0, target, 2, rest.length);
+        return target;
     }
     
     /**
@@ -86,32 +107,41 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
     public void close(){
         // overwrite
     }
+
+    /**
+     * Count all results for a query formed from the FROM and WHERE parts
+     * 
+     * @return
+     */
+    public long count(){
+        try {
+            return query.count();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected QueryIndexSupport createIndexSupport(Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops, List<Expr<?>> sources){
+        return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);
+    }
     
-    protected <A> SubType alias(Expr<A> path, Iterable<A> col) {
-        exprToIt.put(path, col);
-        return _this;
-    }
-
-    private <A> A[] asArray(A[] target, A first, A second, A... rest) {
-        target[0] = first;
-        target[1] = second;
-        System.arraycopy(rest, 0, target, 2, rest.length);
-        return target;
-    }
-
     public <A> SubType from(Expr<A> entity, A first, A... rest) {
         List<A> list = new ArrayList<A>(rest.length + 1);
         list.add(first);
         list.addAll(Arrays.asList(rest));
         return from(entity, list);
     }
-    
+         
     public <A> SubType from(Expr<A> entity, Iterable<A> col) {
         alias(entity, col);
         query.from((Expr<?>)entity);
         return _this;
+    }    
+    
+    public InnerQuery.Metadata getMetadata(){
+        return query.getMetadata();
     }
-         
+    
     /**
      * Query and project an array with the given variables
      * 
@@ -139,8 +169,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
             type = Object.class;    
         }  
         return iterate(new Expr.EArrayConstructor(type, full));
-    }    
-    
+    }
     /**
      * Query and project the given projection
      * 
@@ -151,22 +180,10 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
     public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
         return wrap(query.iterate(projection));
     }
+    
     // alias variant
     public <RT> CloseableIterator<RT> iterate(RT alias) {
         return iterate(MiniApi.getAny(alias));
-    }
-    
-    /**
-     * Count all results for a query formed from the FROM and WHERE parts
-     * 
-     * @return
-     */
-    public long count(){
-        try {
-            return query.count();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
     
     /**
@@ -216,10 +233,28 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
         return list(MiniApi.getAny(alias));
     }
     
+    protected EBoolean normalize(EBoolean e) {
+        return e;
+    }   
+    
     public SubType orderBy(OrderSpecifier<?>... o) {
         query.orderBy(o);
         return _this;
-    }   
+    }
+    public void setSequentialUnion(boolean sequentialUnion) {
+        this.sequentialUnion = sequentialUnion;
+    }
+        
+    public void setSortSources(boolean s){
+        this.sortSources = s;
+    }
+    public void setSourceSortingSupport(SourceSortingSupport sourceSortingSupport) {
+        this.sourceSortingSupport = sourceSortingSupport;
+    }
+    
+    public void setWrapIterators(boolean w){
+        this.wrapIterators = w;
+    }
     
     public <RT> RT uniqueResult(Expr<RT> expr) {        
         try{
@@ -229,38 +264,27 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
             close();
         }        
     }
+
     // alias variant
     public <RT> RT uniqueResult(RT alias) {
         return uniqueResult(MiniApi.getAny(alias));
     }
-        
-    public SubType where(Expr.EBoolean... o) {
-        query.where(o);
-        return _this;
-    }
+    
     // alias variant
     public SubType where(boolean alias){
         return where( MiniApi.$(alias));
     }
     
-    public void setSortSources(boolean s){
-        this.sortSources = s;
-    }
-    
-    public void setSourceSortingSupport(SourceSortingSupport sourceSortingSupport) {
-        this.sourceSortingSupport = sourceSortingSupport;
-    }
-
-    public void setWrapIterators(boolean w){
-        this.wrapIterators = w;
-    }
-    
-    public void setSequentialUnion(boolean sequentialUnion) {
-        this.sequentialUnion = sequentialUnion;
+    public SubType where(Expr.EBoolean... o) {
+        query.where(o);
+        return _this;
     }
     
     private <T> CloseableIterator<T> wrap(final Iterator<T> it){
         return new CloseableIterator<T>(){
+            public void close() throws IOException {
+                AbstractColQuery.this.close();                
+            }
             public boolean hasNext() {
                 return it.hasNext();
             }
@@ -269,18 +293,27 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
             }
             public void remove() {
                 it.remove();                
-            }
-            public void close() throws IOException {
-                AbstractColQuery.this.close();                
             }            
         };
     }
     
-    protected EBoolean normalize(EBoolean e) {
-        return e;
-    }
-    
     public class InnerQuery extends QueryBase<Object, InnerQuery> {
+        
+        public long count() throws Exception {
+            List<Expr<?>> sources = new ArrayList<Expr<?>>();
+            Iterator<?> it;
+            if (joins.size() == 1){
+                it = handleFromWhereSingleSource(sources);
+            }else{
+                it = handleFromAndWhere(sources);   
+            }
+            long count = 0l;
+            while (it.hasNext()){
+                it.next();
+                count++;
+            }
+            return count;
+        }
         
         private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
             List<Expr<?>> sources = new ArrayList<Expr<?>>();
@@ -307,25 +340,21 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
                                
         }
         
-        public long count() throws Exception {
-            List<Expr<?>> sources = new ArrayList<Expr<?>>();
-            Iterator<?> it;
-            if (joins.size() == 1){
-                it = handleFromWhereSingleSource(sources);
+        private Iterator<Object[]> createMultiIterator(List<Expr<?>> sources, EBoolean condition) {
+            MultiIterator multiIt;
+            if (condition == null || !wrapIterators){
+                multiIt = new MultiIterator();
             }else{
-                it = handleFromAndWhere(sources);   
+                multiIt = new FilteringMultiIterator(ops, condition);                
+            }        
+            for (Expr<?> expr : sources) multiIt.add(expr);
+            multiIt.init(indexSupport.getChildFor(condition));
+            
+            if (condition != null){
+                return multiArgFilter(ops, multiIt, sources, condition);
+            }else{
+                return multiIt;
             }
-            long count = 0l;
-            while (it.hasNext()){
-                it.next();
-                count++;
-            }
-            return count;
-        }
-        
-        @Override
-        protected EBoolean normalize(EBoolean e){
-            return AbstractColQuery.this.normalize(e);
         }
 
         protected Iterator<?> handleFromAndWhere(List<Expr<?>> sources) throws Exception{
@@ -378,23 +407,6 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
             
         }
 
-        private Iterator<Object[]> createMultiIterator(List<Expr<?>> sources, EBoolean condition) {
-            MultiIterator multiIt;
-            if (condition == null || !wrapIterators){
-                multiIt = new MultiIterator();
-            }else{
-                multiIt = new FilteringMultiIterator(ops, condition);                
-            }        
-            for (Expr<?> expr : sources) multiIt.add(expr);
-            multiIt.init(indexSupport.getChildFor(condition));
-            
-            if (condition != null){
-                return multiArgFilter(ops, multiIt, sources, condition);
-            }else{
-                return multiIt;
-            }
-        }
-        
         @SuppressWarnings("unchecked")
         protected Iterator<?> handleOrderBy(List<Expr<?>> sources, Iterator<?> it)
                 throws Exception {
@@ -414,7 +426,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
             it = itAsList.iterator();
             return it;
         }
-
+        
         protected <RT> Iterator<RT> handleSelect(Iterator<?> it, List<Expr<?>> sources, Expr<RT> projection) throws Exception {
             return transform(ops, it, sources, projection);
         }
@@ -426,6 +438,11 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
             } catch (Exception e) {
                 throw new RuntimeException("error", e);
             }
+        }
+
+        @Override
+        protected EBoolean normalize(EBoolean e){
+            return AbstractColQuery.this.normalize(e);
         }
     }
 
