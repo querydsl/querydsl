@@ -27,15 +27,24 @@ public class ToStringVisitor extends AbstractVisitor<ToStringVisitor>{
     
     private String toString = "?";
     
-    protected void visit(EConstructor<?> e){
-        StringBuilder builder = new StringBuilder();
-        builder.append("new ").append(e.getType().getSimpleName()).append("(");
-        for (int i=0; i < e.getArgs().length; i++){
-            if (i > 0) builder.append(", ");
-            builder.append(e.getArgs()[i]);
-        }
-        builder.append(")");
-        toString = builder.toString();
+    public String toString(){
+        return toString;
+    }
+    
+    @Override
+    protected void visit(ASimple<?> expr) {
+        toString = expr.getFrom() + " to " + expr.getTo();
+    }
+    
+    @Override
+    protected void visit(AToPath expr) {
+        toString = expr.getFrom() + " to " + expr.getTo();        
+    }
+    
+    @Override
+    protected void visit(Custom<?> expr) {
+        toString = String.format(expr.getPattern(), expr.getArgs());
+        
     }
     
     protected void visit(EArrayConstructor<?> e){
@@ -51,17 +60,18 @@ public class ToStringVisitor extends AbstractVisitor<ToStringVisitor>{
     protected void visit(EConstant<?> e){
         toString = e.getConstant().toString();
     }
-    
-    protected void visit(Path<?> p){
-        Path<?> parent = p.getMetadata().getParent();
-        Expr<?> expr = p.getMetadata().getExpression();
-        if (parent != null){
-            toString = String.format(ops.getPattern(p.getMetadata().getPathType()), parent, expr); 
-        }else if (expr != null){
-            toString =  expr.toString();
+
+    protected void visit(EConstructor<?> e){
+        StringBuilder builder = new StringBuilder();
+        builder.append("new ").append(e.getType().getSimpleName()).append("(");
+        for (int i=0; i < e.getArgs().length; i++){
+            if (i > 0) builder.append(", ");
+            builder.append(e.getArgs()[i]);
         }
+        builder.append(")");
+        toString = builder.toString();
     }
-    
+
     protected void visit(Operation<?,?> o){
         String pattern = ops.getPattern(o.getOperator());
         if (pattern != null){
@@ -70,25 +80,18 @@ public class ToStringVisitor extends AbstractVisitor<ToStringVisitor>{
             toString = "unknown operation with args " + Arrays.asList(o.getArgs());
         }
     }
-    
-    public String toString(){
-        return toString;
-    }
 
-    @Override
-    protected void visit(ASimple<?> expr) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    protected void visit(AToPath expr) {
-        // TODO Auto-generated method stub        
-    }
-
-    @Override
-    protected void visit(Custom<?> expr) {
-        // TODO Auto-generated method stub
-        
+    protected void visit(Path<?> p){
+        Path<?> parent = p.getMetadata().getParent();
+        Expr<?> expr = p.getMetadata().getExpression();
+        if (parent != null){
+            String pattern = ops.getPattern(p.getMetadata().getPathType());
+            if (pattern != null){
+                toString = String.format(pattern, parent, expr);    
+            }             
+        }else if (expr != null){
+            toString =  expr.toString();
+        }
     }
 
 }
