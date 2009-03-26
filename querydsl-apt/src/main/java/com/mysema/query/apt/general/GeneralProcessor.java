@@ -28,22 +28,25 @@ import com.sun.mirror.declaration.Declaration;
  * @author tiwe
  * @version $Id$
  */
-public class GeneralProcessor implements AnnotationProcessor {
+public abstract class GeneralProcessor implements AnnotationProcessor {
 
+    public static final String qdEntity= "com.mysema.query.annotations.Domain",
+        qdDto = "com.mysema.query.annotations.DTO";
+    
     public static final FreeMarkerSerializer 
         DOMAIN_OUTER_TMPL = new FreeMarkerSerializer("/domain-as-outer-classes.ftl"),
         EMBEDDABLE_OUTER_TMPL = new FreeMarkerSerializer("/embeddable-as-outer-classes.ftl"),
         DTO_OUTER_TMPL = new FreeMarkerSerializer("/dto-as-outer-classes.ftl");
 
-    final String namePrefix, targetFolder;
+    protected final String namePrefix, targetFolder;
 
-    final AnnotationProcessorEnvironment env;
+    protected final AnnotationProcessorEnvironment env;
 
-    final String superClassAnnotation, domainAnnotation, dtoAnnotation, embeddableAnnotation;
+    protected final String superClassAnnotation, domainAnnotation, dtoAnnotation;
 
     public GeneralProcessor(AnnotationProcessorEnvironment env,
             String superClassAnnotation, String domainAnnotation,
-            String dtoAnnotation, String embeddableAnnotation) {
+            String dtoAnnotation) {
         this.env = env;
         this.targetFolder = env.getOptions().get("-s");
         this.namePrefix = getString(env.getOptions(), "namePrefix", "");
@@ -51,7 +54,6 @@ public class GeneralProcessor implements AnnotationProcessor {
         this.superClassAnnotation = superClassAnnotation;
         this.domainAnnotation = domainAnnotation;
         this.dtoAnnotation = dtoAnnotation;
-        this.embeddableAnnotation = embeddableAnnotation;
     }
 
     private void addSupertypeFields(Type typeDecl,
@@ -71,8 +73,16 @@ public class GeneralProcessor implements AnnotationProcessor {
         }
     }
 
+    protected DefaultEntityVisitor createEntityVisitor(){
+        return new DefaultEntityVisitor();
+    }
+    
+    protected DefaultDTOVisitor createDTOVisitor(){
+        return new DefaultDTOVisitor();
+    }
+    
     private void createDomainClasses() {
-        EntityVisitor superclassVisitor = new EntityVisitor();
+        DefaultEntityVisitor superclassVisitor = createEntityVisitor();
 
         // mapped superclass
         AnnotationTypeDeclaration a;
@@ -88,7 +98,7 @@ public class GeneralProcessor implements AnnotationProcessor {
         }        
 
         // domain types
-        EntityVisitor entityVisitor = new EntityVisitor();
+        DefaultEntityVisitor entityVisitor = createEntityVisitor();
         a = (AnnotationTypeDeclaration) env
                 .getTypeDeclaration(domainAnnotation);
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
@@ -108,31 +118,13 @@ public class GeneralProcessor implements AnnotationProcessor {
 
     }
     
-    private void createEmbeddableClasses() {
-        EntityVisitor entityVisitor = new EntityVisitor();
-        AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env
-                .getTypeDeclaration(embeddableAnnotation);
-        for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
-            typeDecl.accept(getDeclarationScanner(entityVisitor, NO_OP));
-        }
-        
-        Map<String, Type> entityTypes = entityVisitor.types;
-        if (entityTypes.isEmpty()) {
-            env.getMessager().printNotice("No class generation for domain types");
-        } else {
-            serializeAsOuterClasses(entityTypes.values(), EMBEDDABLE_OUTER_TMPL);
-        }
-
-    }
-
     private void createDTOClasses() {
         AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env
                 .getTypeDeclaration(dtoAnnotation);
-        DTOVisitor dtoVisitor = new DTOVisitor();
+        DefaultDTOVisitor dtoVisitor = createDTOVisitor();
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
             typeDecl.accept(getDeclarationScanner(dtoVisitor, NO_OP));
         }
-
         if (dtoVisitor.types.isEmpty()) {
             env.getMessager().printNotice("No class generation for DTO types");
         } else {
@@ -143,11 +135,10 @@ public class GeneralProcessor implements AnnotationProcessor {
 
     public void process() {
         if (domainAnnotation != null) createDomainClasses();
-        if (embeddableAnnotation != null) createEmbeddableClasses();
         if (dtoAnnotation != null) createDTOClasses();
     }
 
-    private void serializeAsOuterClasses(Collection<Type> entityTypes, 
+    protected void serializeAsOuterClasses(Collection<Type> entityTypes, 
             FreeMarkerSerializer serializer) {
         // populate model
         Map<String, Object> model = new HashMap<String, Object>();

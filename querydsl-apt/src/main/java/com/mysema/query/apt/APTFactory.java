@@ -13,6 +13,8 @@ import java.util.Collections;
 import java.util.Set;
 
 import com.mysema.query.apt.general.GeneralProcessor;
+import com.mysema.query.apt.jpa.JpaProcessor;
+import com.mysema.query.apt.querydsl.QuerydslProcessor;
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.apt.AnnotationProcessorFactory;
@@ -25,17 +27,16 @@ import com.sun.mirror.declaration.AnnotationTypeDeclaration;
  * @version $Id$
  */
 public class APTFactory implements AnnotationProcessorFactory {
+    
+    private static final Collection<String> supportedAnnotations = Arrays.asList(
+            GeneralProcessor.qdEntity,
+            GeneralProcessor.qdDto,
+            JpaProcessor.jpaEmbeddable,
+            JpaProcessor.jpaEntity,
+            JpaProcessor.jpaSuperClass            
+    );
 
-    static final String jpaSuperClass = "javax.persistence.MappedSuperclass",
-                        jpaEntity = "javax.persistence.Entity",                        
-                        jpaEmbeddable = "javax.persistence.Embeddable",
-                        qdEntity= "com.mysema.query.annotations.Domain",
-                        qdDto = "com.mysema.query.annotations.DTO";
-
-    static final Collection<String> supportedAnnotations = 
-        Arrays.asList(jpaSuperClass, jpaEntity, jpaEmbeddable, qdEntity, qdDto);
-
-    static final Collection<String> supportedOptions = Collections.emptySet();
+    private static final Collection<String> supportedOptions = Collections.emptySet();
 
     public Collection<String> supportedAnnotationTypes() {
         return supportedAnnotations;
@@ -50,12 +51,12 @@ public class APTFactory implements AnnotationProcessorFactory {
             AnnotationProcessorEnvironment env) {
         String profile = getString(env.getOptions(), "profile", "jpa");
         if ("jpa".equals(profile)){
-            return new GeneralProcessor(env, jpaSuperClass, jpaEntity, qdDto, jpaEmbeddable);
+            return new JpaProcessor(env);
         }else if ("querydsl".equals(profile)){
-            return new GeneralProcessor(env, jpaSuperClass, qdEntity, qdDto, jpaEmbeddable);
+            return new QuerydslProcessor(env);                       
         }else{
             throw new IllegalArgumentException("Unknown profile " + profile);
-        }
+        }          
     }
 
 }

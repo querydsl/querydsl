@@ -23,8 +23,8 @@ import com.sun.mirror.util.SimpleDeclarationVisitor;
  * @author tiwe
  * @version $Id$
  */
-public class EntityVisitor extends SimpleDeclarationVisitor {
-    final Map<String, Type> types = new HashMap<String, Type>();
+public class DefaultEntityVisitor extends SimpleDeclarationVisitor {
+    public final Map<String, Type> types = new HashMap<String, Type>();
 
     private Type last;
 
@@ -53,8 +53,7 @@ public class EntityVisitor extends SimpleDeclarationVisitor {
 
     @Override
     public void visitFieldDeclaration(FieldDeclaration d) {
-        if (!d.getModifiers().contains(Modifier.STATIC) 
-         && !d.getModifiers().contains(Modifier.TRANSIENT)) {
+        if (!d.getModifiers().contains(Modifier.STATIC) && !d.getModifiers().contains(Modifier.TRANSIENT)) {
             TypeHelper typeInfo = new TypeHelper(d.getType());
             String name = FieldHelper.javaSafe(d.getSimpleName());
             String realName = FieldHelper.realName(name);

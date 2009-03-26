@@ -95,7 +95,7 @@ public class TypeHelper {
                     fieldType = Field.Type.STRING;
                 } else if (fullName.equals(Boolean.class.getName())) {
                     fieldType = Field.Type.BOOLEAN;
-                } else if (fullName.equals(Locale.class.getName())) {
+                } else if (fullName.equals(Locale.class.getName()) || fullName.equals(Class.class.getName())) {
                     fieldType = Field.Type.SIMPLE;
                 } else if (fullName.startsWith("java") && Number.class.isAssignableFrom(Class.forName(fullName))) {
                     fieldType = Field.Type.NUMERIC;

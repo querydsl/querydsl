@@ -24,7 +24,7 @@ import com.sun.mirror.util.SimpleDeclarationVisitor;
  * @author tiwe
  * @version $Id$
  */
-public class DTOVisitor extends SimpleDeclarationVisitor {
+public class DefaultDTOVisitor extends SimpleDeclarationVisitor {
     final Set<Type> types = new TreeSet<Type>();
 
     private Type last;
