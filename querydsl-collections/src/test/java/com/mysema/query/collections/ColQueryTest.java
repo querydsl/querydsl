@@ -116,6 +116,13 @@ public class ColQueryTest extends AbstractQueryTest{
     }
     
     @Test
+    public void testAlias11(){
+        QCat cat = new QCat("cat");
+        Cat c = alias(Cat.class, cat);
+        assertEquals(cat.name, $(c.getName()));
+    }
+    
+    @Test
     public void testAlias2(){        
         query().from(cat, c1, c2).from(otherCat, c2, c3)
             .where(cat.name.eq(otherCat.name)).select(cat.name);

@@ -9,6 +9,7 @@ import static com.mysema.query.collections.utils.QueryIteratorUtils.multiArgFilt
 import static com.mysema.query.collections.utils.QueryIteratorUtils.toArrayIterator;
 import static com.mysema.query.collections.utils.QueryIteratorUtils.transform;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.*;
 
@@ -49,7 +50,7 @@ import com.mysema.query.util.CloseableIterator;
  * @author tiwe
  * @version $Id$
  */
-public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
+public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> implements Closeable{
         
     @SuppressWarnings("unchecked")
     private final SubType _this = (SubType)this;
@@ -79,6 +80,9 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);
     }
     
+    /**
+     * Close the Query and related datasource connection
+     */    
     public void close(){
         // overwrite
     }
@@ -108,6 +112,14 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         return _this;
     }
          
+    /**
+     * Query and project an array with the given variables
+     * 
+     * @param e1
+     * @param e2
+     * @param rest
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public CloseableIterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
         // TODO : move this code to querydsl-core
@@ -129,6 +141,13 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         return iterate(new Expr.EArrayConstructor(type, full));
     }    
     
+    /**
+     * Query and project the given projection
+     * 
+     * @param <RT>
+     * @param projection
+     * @return
+     */
     public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
         return wrap(query.iterate(projection));
     }
@@ -137,6 +156,11 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         return iterate(MiniApi.getAny(alias));
     }
     
+    /**
+     * Count all results for a query formed from the FROM and WHERE parts
+     * 
+     * @return
+     */
     public long count(){
         try {
             return query.count();
@@ -146,6 +170,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     }
     
     /**
+     * List the results for the given projection 
      * NOTE : use iterate for huge projections
      * 
      * @param e1
@@ -167,6 +192,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
     }
     
     /**
+     * List the results for the given projection
      * NOTE : use iterate for huge projections
      * 
      * @param <RT>
@@ -250,6 +276,10 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
         };
     }
     
+    protected EBoolean normalize(EBoolean e) {
+        return e;
+    }
+    
     public class InnerQuery extends QueryBase<Object, InnerQuery> {
         
         private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
@@ -269,10 +299,10 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
                 }
                 
                 // select    
-                return wrap(handleSelect(it, sources, projection));
+                return handleSelect(it, sources, projection);
                 
             }else{
-                return wrap(Collections.<RT>emptyList().iterator());
+                return Collections.<RT>emptyList().iterator();
             }
                                
         }
@@ -291,6 +321,11 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
                 count++;
             }
             return count;
+        }
+        
+        @Override
+        protected EBoolean normalize(EBoolean e){
+            return AbstractColQuery.this.normalize(e);
         }
 
         protected Iterator<?> handleFromAndWhere(List<Expr<?>> sources) throws Exception{
@@ -393,9 +428,5 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> {
             }
         }
     }
-
-
-
-
 
 }
