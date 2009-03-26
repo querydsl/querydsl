@@ -200,62 +200,43 @@ public abstract class Expr<D> {
     public static abstract class EString extends EComparable<String>{
         private EString lower, trim, upper;
         public EString() {super(String.class);}
+        
         public EString add(Expr<String> str) {return Grammar.concat(this, str);}
         public EString add(String str) {return Grammar.concat(this, str);}
-        public Expr<Character> charAt(Expr<Integer> i) {
-            return Grammar.charAt(this, i);
-        }        
-        public Expr<Character> charAt(int i) {
-            return Grammar.charAt(this, i);
-        }
+        
+        public Expr<Character> charAt(Expr<Integer> i) {return Grammar.charAt(this, i);}        
+        public Expr<Character> charAt(int i) {return Grammar.charAt(this, i);}
+        
         public EString concat(Expr<String> str) {return Grammar.concat(this, str);}
         public EString concat(String str) {return Grammar.concat(this, str);}        
-        public EBoolean contains(Expr<String> str) {
-            return Grammar.contains(this, str);
-        }
-        public EBoolean contains(String str) {
-            return Grammar.contains(this, str);
-        }
-        public EBoolean endsWith(Expr<String> str) {
-            return Grammar.endsWith(this, str);
-        }
-        public EBoolean endsWith(String str) {
-            return Grammar.endsWith(this, str);
-        }        
-        public EBoolean equalsIgnoreCase(Expr<String> str) {
-            return Grammar.equalsIgnoreCase(this, str);
-        }
-        public EBoolean equalsIgnoreCase(String str) {
-            return Grammar.equalsIgnoreCase(this, str);
-        }
-        public EComparable<Integer> indexOf(Expr<String> str) {
-            return Grammar.indexOf(this, str);
-        }
-        public EComparable<Integer> indexOf(String str) {
-            return Grammar.indexOf(this, str);
-        }
-        public EComparable<Integer> indexOf(String str, int i) {
-            return Grammar.indexOf(this, str, i);
-        }
-        public EComparable<Integer> lastIndex(String str, int i) {
-            return Grammar.lastIndex(this, str, i);
-        }
-        public EComparable<Integer> lastIndexOf(String str) {
-            return Grammar.lastIndexOf(this, str);
-        }
-        public EComparable<Integer> length() {
-            return Grammar.length(this);
-        }
+        
+        public EBoolean contains(Expr<String> str) {return Grammar.contains(this, str);}
+        public EBoolean contains(String str) {return Grammar.contains(this, str);}
+        
+        public EBoolean endsWith(Expr<String> str) {return Grammar.endsWith(this, str);}
+        public EBoolean endsWith(String str) {return Grammar.endsWith(this, str);}        
+        
+        public EBoolean equalsIgnoreCase(Expr<String> str) {return Grammar.equalsIgnoreCase(this, str);}
+        public EBoolean equalsIgnoreCase(String str) {return Grammar.equalsIgnoreCase(this, str);}
+        
+        public EComparable<Integer> indexOf(Expr<String> str) {return Grammar.indexOf(this, str);}
+        public EComparable<Integer> indexOf(String str) {return Grammar.indexOf(this, str);}
+        public EComparable<Integer> indexOf(String str, int i) {return Grammar.indexOf(this, str, i);}
+        public EComparable<Integer> lastIndex(String str, int i) {return Grammar.lastIndex(this, str, i);}
+        public EComparable<Integer> lastIndexOf(String str) {return Grammar.lastIndexOf(this, str);}
+        
+        public EComparable<Integer> length() {return Grammar.length(this);}
+        
         public EBoolean like(String str) { return Grammar.like(this, str); }
+        
         public EString lower() { return lower == null ? lower = Grammar.lower(this) : lower; }
-        public EBoolean startsWith(Expr<String> str) {
-            return Grammar.startsWith(this, str);
-        }
-        public EBoolean startsWith(String str) {
-            return Grammar.startsWith(this, str);
-        }
+        
+        public EBoolean startsWith(Expr<String> str) {return Grammar.startsWith(this, str);}
+        public EBoolean startsWith(String str) {return Grammar.startsWith(this, str);}
+        
         public EString substring(int beginIndex) { return Grammar.substring(this, beginIndex);}
         public EString substring(int beginIndex, int endIndex) { return Grammar.substring(this, beginIndex, endIndex);}
+        
         public EString trim() { return trim == null ? trim = Grammar.trim(this) : trim; }
         public EString upper() { return upper == null ? upper = Grammar.upper(this) : upper; }
     }

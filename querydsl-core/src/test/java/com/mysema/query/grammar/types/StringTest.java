@@ -61,7 +61,7 @@ public class StringTest {
         assertEquals("alias.refs.get(0)", $(alias.getRefs().get(0)).toString());
         
         // Operation toString
-        assertEquals("lower(alias.name)", $(alias.getName()).toLowerCase().toString());
+        assertEquals("lower(alias.name)", $(alias.getName()).lower().toString());
         
         // EConstructor
         EConstructor<SomeType> someType = new EConstructor<SomeType>(SomeType.class,$(alias));

@@ -36,8 +36,8 @@ public class ExtTypes {
         public Expr<String[]> split(String regex) { 
             return Grammar.split(this, regex);
         }
-        public EString toLowerCase(){ return lower(); }
-        public EString toUpperCase(){ return upper(); }
+//        public EString toLowerCase(){ return lower(); }
+//        public EString toUpperCase(){ return upper(); }
     }
         
 }
