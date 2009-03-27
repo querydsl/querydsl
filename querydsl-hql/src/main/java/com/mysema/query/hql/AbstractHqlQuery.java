@@ -122,20 +122,11 @@ public class AbstractHqlQuery<A extends AbstractHqlQuery<A>> extends HqlQueryBas
     }
 
     public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
-        select(e1, e2);
-        select(rest);
-        String queryString = toString();
-        logger.debug("query : {}", queryString);
-        Query query = createQuery(queryString, limit, offset);
-        return query.iterate();
+        return list(e1, e2, rest).iterator();
     }
 
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        select(projection);
-        String queryString = toString();
-        logger.debug("query : {}", queryString);
-        Query query = createQuery(queryString, limit, offset);
-        return query.iterate();
+        return list(projection).iterator();
     }
 
 }
