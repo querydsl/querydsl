@@ -28,7 +28,6 @@ import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.GrammarWithAlias;
 import com.mysema.query.grammar.QMath;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.ENumber;
 import com.mysema.query.grammar.types.Path.PEntity;

@@ -17,6 +17,7 @@ import org.apache.commons.collections15.IteratorUtils;
 import org.apache.commons.collections15.iterators.IteratorChain;
 
 import com.mysema.query.JoinExpression;
+import com.mysema.query.Projectable;
 import com.mysema.query.QueryBase;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.iterators.FilteringMultiIterator;
@@ -50,7 +51,7 @@ import com.mysema.query.util.CloseableIterator;
  * @author tiwe
  * @version $Id$
  */
-public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> implements Closeable{
+public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> implements Closeable, Projectable{
         
     @SuppressWarnings("unchecked")
     private final SubType _this = (SubType)this;
@@ -108,10 +109,8 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
         // overwrite
     }
 
-    /**
-     * Count all results for a query formed from the FROM and WHERE parts
-     * 
-     * @return
+    /* (non-Javadoc)
+     * @see com.mysema.query.collections.Projectable#count()
      */
     public long count(){
         try {
@@ -125,13 +124,15 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
         return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);
     }
     
+    // TODO : this signature isn't right when used with custom iterator source
     public <A> SubType from(Expr<A> entity, A first, A... rest) {
         List<A> list = new ArrayList<A>(rest.length + 1);
         list.add(first);
         list.addAll(Arrays.asList(rest));
         return from(entity, list);
     }
-         
+
+    // TODO : this signature isn't right when used with custom iterator source
     public <A> SubType from(Expr<A> entity, Iterable<A> col) {
         alias(entity, col);
         query.from((Expr<?>)entity);
@@ -142,13 +143,8 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
         return query.getMetadata();
     }
     
-    /**
-     * Query and project an array with the given variables
-     * 
-     * @param e1
-     * @param e2
-     * @param rest
-     * @return
+    /* (non-Javadoc)
+     * @see com.mysema.query.collections.Projectable#iterate(com.mysema.query.grammar.types.Expr, com.mysema.query.grammar.types.Expr, com.mysema.query.grammar.types.Expr)
      */
     @SuppressWarnings("unchecked")
     public CloseableIterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
@@ -156,30 +152,19 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
         return iterate(new Expr.EArrayConstructor(Object.class, full));
     }
     
-    /**
-     * Query and project the given projection
-     * 
-     * @param <RT>
-     * @param projection
-     * @return
+    /* (non-Javadoc)
+     * @see com.mysema.query.collections.Projectable#iterate(com.mysema.query.grammar.types.Expr)
      */
     public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
         return wrap(query.iterate(projection));
-    }
-    
+    }    
     // alias variant
     public <RT> CloseableIterator<RT> iterate(RT alias) {
         return iterate(MiniApi.getAny(alias));
     }
     
-    /**
-     * List the results for the given projection 
-     * NOTE : use iterate for huge projections
-     * 
-     * @param e1
-     * @param e2
-     * @param rest
-     * @return
+    /* (non-Javadoc)
+     * @see com.mysema.query.collections.Projectable#list(com.mysema.query.grammar.types.Expr, com.mysema.query.grammar.types.Expr, com.mysema.query.grammar.types.Expr)
      */
     public List<Object[]> list(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
         try{
@@ -194,13 +179,8 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
         }        
     }
     
-    /**
-     * List the results for the given projection
-     * NOTE : use iterate for huge projections
-     * 
-     * @param <RT>
-     * @param projection
-     * @return
+    /* (non-Javadoc)
+     * @see com.mysema.query.collections.Projectable#list(com.mysema.query.grammar.types.Expr)
      */
     public <RT> List<RT> list(Expr<RT> projection) {        
         try {
@@ -227,21 +207,10 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
         query.orderBy(o);
         return _this;
     }
-    public void setSequentialUnion(boolean sequentialUnion) {
-        this.sequentialUnion = sequentialUnion;
-    }
         
-    public void setSortSources(boolean s){
-        this.sortSources = s;
-    }
-    public void setSourceSortingSupport(SourceSortingSupport sourceSortingSupport) {
-        this.sourceSortingSupport = sourceSortingSupport;
-    }
-    
-    public void setWrapIterators(boolean w){
-        this.wrapIterators = w;
-    }
-    
+    /* (non-Javadoc)
+     * @see com.mysema.query.collections.Projectable#uniqueResult(com.mysema.query.grammar.types.Expr)
+     */
     public <RT> RT uniqueResult(Expr<RT> expr) {        
         try{
             Iterator<RT> it = query.iterate(expr);
@@ -250,20 +219,39 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
             close();
         }        
     }
-
     // alias variant
+    /* (non-Javadoc)
+     * @see com.mysema.query.collections.Projectable#uniqueResult(RT)
+     */
     public <RT> RT uniqueResult(RT alias) {
         return uniqueResult(MiniApi.getAny(alias));
     }
-    
+        
+    public SubType where(Expr.EBoolean... o) {
+        query.where(o);
+        return _this;
+    }
     // alias variant
     public SubType where(boolean alias){
         return where( MiniApi.$(alias));
     }
     
-    public SubType where(Expr.EBoolean... o) {
-        query.where(o);
-        return _this;
+    // settings
+    
+    public void setSequentialUnion(boolean sequentialUnion) {
+        this.sequentialUnion = sequentialUnion;
+    }
+        
+    public void setSortSources(boolean s){
+        this.sortSources = s;
+    }
+    
+    public void setSourceSortingSupport(SourceSortingSupport sourceSortingSupport) {
+        this.sourceSortingSupport = sourceSortingSupport;
+    }
+    
+    public void setWrapIterators(boolean w){
+        this.wrapIterators = w;
     }
     
     private <T> CloseableIterator<T> wrap(final Iterator<T> it){
