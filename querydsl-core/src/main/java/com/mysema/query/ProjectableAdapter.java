@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.util.Assert;
 
 /**
  * ProjectableAdapter provides
@@ -15,8 +16,10 @@ public abstract class ProjectableAdapter implements Projectable{
     
     private Projectable projectable;
     
+    public ProjectableAdapter(){}
+    
     public ProjectableAdapter(Projectable projectable){
-        this.projectable = projectable;
+        this.projectable = Assert.notNull(projectable);
     }
 
     public long count() {
@@ -43,4 +46,8 @@ public abstract class ProjectableAdapter implements Projectable{
         return projectable.uniqueResult(expr);
     }
 
+    public void setProjectable(Projectable projectable) {
+        this.projectable = Assert.notNull(projectable);
+    }
+    
 }

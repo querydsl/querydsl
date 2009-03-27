@@ -5,7 +5,11 @@
  */
 package com.mysema.query.grammar.types;
 
-import static com.mysema.query.grammar.types.PathMetadata.*;
+import static com.mysema.query.grammar.types.PathMetadata.forArrayAccess;
+import static com.mysema.query.grammar.types.PathMetadata.forListAccess;
+import static com.mysema.query.grammar.types.PathMetadata.forMapAccess;
+import static com.mysema.query.grammar.types.PathMetadata.forProperty;
+import static com.mysema.query.grammar.types.PathMetadata.forSize;
 
 import java.lang.reflect.Array;
 
@@ -41,6 +45,9 @@ public interface Path<C> {
             this.metadata = metadata;    
             this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
+        public PArray(Class<D> type, String var){
+            this(type, PathMetadata.forVariable(var));
+        }        
         public abstract Expr<D> get(Expr<Integer> index);
         public abstract Expr<D> get(int index);
         public Class<D> getElementType() {return componentType;}
@@ -74,6 +81,9 @@ public interface Path<C> {
             this.metadata = metadata;
             this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
+        public PBoolean(String var){
+            this(PathMetadata.forVariable(var));
+        }
         public PathMetadata<?> getMetadata() {return metadata;}
         public EBoolean isnotnull() {
             return isnotnull == null ? isnotnull = Grammar.isnotnull(this) : isnotnull; 
@@ -95,6 +105,9 @@ public interface Path<C> {
     public static class PBooleanArray extends PArray<Boolean>{
         public PBooleanArray(PathMetadata<?> metadata) {
             super(Boolean.class, metadata);
+        }
+        public PBooleanArray(String var){
+            super(Boolean.class, PathMetadata.forVariable(var));
         }
         public EBoolean get(Expr<Integer> index) {
             return new PBoolean(forArrayAccess(this, index));
@@ -121,6 +134,9 @@ public interface Path<C> {
             this.metadata = metadata;
             this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
+        public PComparable(Class<? extends D> type, String var) {
+            this(type, PathMetadata.forVariable(var));
+        }        
         public PathMetadata<?> getMetadata() {return metadata;}
         public EBoolean isnotnull() {
             return isnotnull == null ? isnotnull = Grammar.isnotnull(this) : isnotnull; 
@@ -148,6 +164,9 @@ public interface Path<C> {
             this.metadata = metadata;
             this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
+        public PNumber(Class<? extends D> type, String var){
+            this(type, PathMetadata.forVariable(var));
+        }        
         public PathMetadata<?> getMetadata() {return metadata;}
         public EBoolean isnotnull() {
             return isnotnull == null ? isnotnull = Grammar.isnotnull(this) : isnotnull; 
@@ -170,6 +189,9 @@ public interface Path<C> {
         public PComparableArray(Class<D> type, PathMetadata<?> metadata) {
             super(type, metadata);
         }
+        public PComparableArray(Class<D> type, String var){
+            super(type, PathMetadata.forVariable(var));
+        }
         public EComparable<D> get(Expr<Integer> index) {
             return new PComparable<D>(componentType, forArrayAccess(this, index));
         }
@@ -190,6 +212,9 @@ public interface Path<C> {
             this.metadata = metadata;
             this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
+        public PComponentCollection(Class<D> type, String var){
+            this(type, PathMetadata.forVariable(var));   
+        }        
         public Class<D> getElementType() {return type;}
         public PathMetadata<?> getMetadata() {return metadata;}
         public EBoolean isnotnull() {
@@ -222,6 +247,9 @@ public interface Path<C> {
         public PComponentList(Class<D> type, PathMetadata<?> metadata) {
             super(type, metadata);
         }
+        public PComponentList(Class<D> type, String var){
+            super(type, PathMetadata.forVariable(var));
+        }        
         public ESimple<D> get(Expr<Integer> index) {
             return new PSimple<D>(type, forListAccess(this, index));
         }
@@ -243,6 +271,9 @@ public interface Path<C> {
             this.metadata = metadata;
             this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
+        public PComponentMap(Class<K> keyType, Class<V> valueType, String var){
+            this(keyType, valueType, PathMetadata.forVariable(var));
+        }        
         public ESimple<V> get(Expr<K> key) { 
             return new PSimple<V>(valueType, forMapAccess(this, key));
         }
@@ -280,11 +311,8 @@ public interface Path<C> {
             this.metadata = metadata;
             this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
-        public PEntity(Class<? extends D> type, String entityName, String localName) {
-            super(type);
-            this.entityName = entityName;
-            metadata = forVariable(localName);
-            this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
+        public PEntity(Class<? extends D> type, String entityName, String var) {
+            this(type, entityName, PathMetadata.forVariable(var));
         }
         protected PBoolean _boolean(String path){
             return new PBoolean(forProperty(this, path));
@@ -355,6 +383,9 @@ public interface Path<C> {
             this.entityName = entityName;
             this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
+        public PEntityCollection(Class<D> type, String entityName, String var){
+            this(type, entityName, PathMetadata.forVariable(var));
+        }        
         public Alias.AEntityCollection<D> as(PEntity<D> to) {return Grammar.as(this, to);}
         public Class<D> getElementType() {return type;}
         public String getEntityName() { return entityName; }
@@ -389,6 +420,9 @@ public interface Path<C> {
         public PEntityList(Class<D> type, String entityName, PathMetadata<?> metadata) {
             super(type, entityName, metadata);
         }
+        public PEntityList(Class<D> type, String entityName, String var){
+            super(type, entityName, PathMetadata.forVariable(var));
+        }        
         public EEntity<D> get(Expr<Integer> index) {
             return new PEntity<D>(type, entityName, forListAccess(this,index));
         }
@@ -413,6 +447,10 @@ public interface Path<C> {
             this.metadata = metadata;
             this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
+        public PEntityMap(Class<K> keyType, Class<V> valueType, String entityName, String var){
+            this(keyType, valueType, entityName, PathMetadata.forVariable(var));
+        }
+        
         public EEntity<V> get(Expr<K> key) { 
             return new PEntity<V>(valueType, entityName, forMapAccess(this, key));
         }
@@ -460,6 +498,9 @@ public interface Path<C> {
             this.metadata = metadata;
             this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
+        public PSimple(Class<? extends D> type, String var){
+            this(type, PathMetadata.forVariable(var));
+        }        
         public PathMetadata<?> getMetadata() {return metadata;}
         public EBoolean isnotnull() {
             return isnotnull == null ? isnotnull = Grammar.isnotnull(this) : isnotnull; 
@@ -484,6 +525,9 @@ public interface Path<C> {
         public PString(PathMetadata<?> metadata) {
             this.metadata = metadata;
         }
+        public PString(String var){
+            this(PathMetadata.forVariable(var));
+        }
         public PathMetadata<?> getMetadata() {return metadata;}
         public EBoolean isnotnull() {
             return isnotnull == null ? isnotnull = Grammar.isnotnull(this) : isnotnull; 
@@ -505,6 +549,9 @@ public interface Path<C> {
     public static class PStringArray extends PArray<String>{
         public PStringArray(PathMetadata<?> metadata) {
             super(String.class, metadata);
+        }
+        public PStringArray(String var){
+            super(String.class, PathMetadata.forVariable(var));
         }
         public EString get(Expr<Integer> index) {
             return new PString(forArrayAccess(this, index));
