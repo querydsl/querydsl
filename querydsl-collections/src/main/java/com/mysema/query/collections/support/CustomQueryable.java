@@ -10,7 +10,6 @@ import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.collections.QueryIndexSupport;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.EEntity;
 import com.mysema.query.util.Assert;
 
 /**
@@ -36,7 +35,7 @@ public class CustomQueryable extends ProjectableAdapter{
         setProjectable(innerQuery);
     }
     
-    public <A> CustomQueryable from(EEntity<A> entity){
+    public <A> CustomQueryable from(Expr<A> entity){
         innerQuery.from(entity, Collections.<A>emptyList());
         return this;
     }

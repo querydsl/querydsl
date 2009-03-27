@@ -81,6 +81,8 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
     
     private SourceSortingSupport sourceSortingSupport;
 
+    private boolean closed = false;
+    
     public AbstractColQuery() {
         this(JavaOps.DEFAULT);
     }
@@ -101,6 +103,11 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
         System.arraycopy(rest, 0, target, 2, rest.length);
         return target;
     }
+   
+    private void checkClosed() {
+        if (closed) throw new IllegalStateException("Already closed");
+        closed = true;
+    }
     
     /**
      * Close the Query and related datasource connection
@@ -113,6 +120,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
      * @see com.mysema.query.collections.Projectable#count()
      */
     public long count(){
+        checkClosed();
         try {
             return query.count();
         } catch (Exception e) {
@@ -144,27 +152,29 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
     }
     
     /* (non-Javadoc)
-     * @see com.mysema.query.collections.Projectable#iterate(com.mysema.query.grammar.types.Expr, com.mysema.query.grammar.types.Expr, com.mysema.query.grammar.types.Expr)
+     * @see com.mysema.query.Projectable#iterate(com.mysema.query.grammar.types.Expr, com.mysema.query.grammar.types.Expr, com.mysema.query.grammar.types.Expr)
      */
     @SuppressWarnings("unchecked")
     public CloseableIterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
-        final Expr<?>[] full = asArray(new Expr[rest.length + 2], e1, e2, rest);
+        Expr<?>[] full = asArray(new Expr[rest.length + 2], e1, e2, rest);
         return iterate(new Expr.EArrayConstructor(Object.class, full));
     }
     
     /* (non-Javadoc)
-     * @see com.mysema.query.collections.Projectable#iterate(com.mysema.query.grammar.types.Expr)
+     * @see com.mysema.query.Projectable#iterate(com.mysema.query.grammar.types.Expr)
      */
     public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
+        checkClosed();
         return wrap(query.iterate(projection));
     }    
     // alias variant
     public <RT> CloseableIterator<RT> iterate(RT alias) {
+        checkClosed();
         return iterate(MiniApi.getAny(alias));
     }
     
     /* (non-Javadoc)
-     * @see com.mysema.query.collections.Projectable#list(com.mysema.query.grammar.types.Expr, com.mysema.query.grammar.types.Expr, com.mysema.query.grammar.types.Expr)
+     * @see com.mysema.query.Projectable#list(com.mysema.query.grammar.types.Expr, com.mysema.query.grammar.types.Expr, com.mysema.query.grammar.types.Expr)
      */
     public List<Object[]> list(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
         try{
@@ -180,9 +190,10 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
     }
     
     /* (non-Javadoc)
-     * @see com.mysema.query.collections.Projectable#list(com.mysema.query.grammar.types.Expr)
+     * @see com.mysema.query.Projectable#list(com.mysema.query.grammar.types.Expr)
      */
     public <RT> List<RT> list(Expr<RT> projection) {        
+        checkClosed();
         try {
             ArrayList<RT> rv = new ArrayList<RT>();
             Iterator<RT> it = query.iterate(projection);
@@ -209,9 +220,10 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
     }
         
     /* (non-Javadoc)
-     * @see com.mysema.query.collections.Projectable#uniqueResult(com.mysema.query.grammar.types.Expr)
+     * @see com.mysema.query.Projectable#uniqueResult(com.mysema.query.grammar.types.Expr)
      */
-    public <RT> RT uniqueResult(Expr<RT> expr) {        
+    public <RT> RT uniqueResult(Expr<RT> expr) {
+        checkClosed();
         try{
             Iterator<RT> it = query.iterate(expr);
             return it.hasNext() ? it.next() : null;
@@ -221,7 +233,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
     }
     // alias variant
     /* (non-Javadoc)
-     * @see com.mysema.query.collections.Projectable#uniqueResult(RT)
+     * @see com.mysema.query.Projectable#uniqueResult(RT)
      */
     public <RT> RT uniqueResult(RT alias) {
         return uniqueResult(MiniApi.getAny(alias));
