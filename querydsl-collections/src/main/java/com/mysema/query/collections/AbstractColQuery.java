@@ -152,24 +152,10 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
      */
     @SuppressWarnings("unchecked")
     public CloseableIterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
-        // TODO : move this code to querydsl-core
         final Expr<?>[] full = asArray(new Expr[rest.length + 2], e1, e2, rest);
-        boolean oneType = true;
-        if (e1.getType().isAssignableFrom((e2.getType()))){
-            for (Expr<?> e : rest){
-                if (!e1.getType().isAssignableFrom(e.getType())){
-                    oneType = false;
-                }
-            }
-        }else{
-            oneType = false;
-        }
-        Class<?> type = e1.getType();
-        if (!oneType){
-            type = Object.class;    
-        }  
-        return iterate(new Expr.EArrayConstructor(type, full));
+        return iterate(new Expr.EArrayConstructor(Object.class, full));
     }
+    
     /**
      * Query and project the given projection
      * 
