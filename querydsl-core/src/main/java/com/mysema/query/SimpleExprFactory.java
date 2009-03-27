@@ -20,7 +20,7 @@ import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.ENumber;
-import com.mysema.query.grammar.types.ExtTypes.ExtString;
+import com.mysema.query.grammar.types.Expr.EString;
 import com.mysema.query.grammar.types.Path.*;
 
 /**
@@ -31,7 +31,7 @@ import com.mysema.query.grammar.types.Path.*;
  */
 public class SimpleExprFactory implements ExprFactory {
     
-    private final ExtString strExt = new ExtString(PathMetadata.forVariable("str"));
+    private final PString str = new PString(PathMetadata.forVariable("str"));
     
     private final PBoolean btrue = new PBoolean(md()), bfalse = new PBoolean(md());
     
@@ -102,9 +102,9 @@ public class SimpleExprFactory implements ExprFactory {
         }    
     });
     
-    private final Map<String,ExtString> strToExtPath = new PathFactory<String,ExtString>(new Transformer<String,ExtString>(){
-        public ExtString transform(String str) {
-            return new ExtString(md());
+    private final Map<String,PString> strToExtPath = new PathFactory<String,PString>(new Transformer<String,PString>(){
+        public PString transform(String str) {
+            return new PString(md());
         }        
     });
     
@@ -150,8 +150,8 @@ public class SimpleExprFactory implements ExprFactory {
         return (PEntityList<D>) elToPath.get(arg);
     }
 
-    public ExtString createString(String arg){
-        return StringUtils.isEmpty(arg) ? strExt : strToExtPath.get(arg);
+    public EString createString(String arg){
+        return StringUtils.isEmpty(arg) ? str : strToExtPath.get(arg);
     }
     
     public PStringArray createStringArray(String[] args){

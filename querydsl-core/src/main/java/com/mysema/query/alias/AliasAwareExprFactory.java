@@ -13,7 +13,7 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.ENumber;
-import com.mysema.query.grammar.types.ExtTypes.ExtString;
+import com.mysema.query.grammar.types.Expr.EString;
 import com.mysema.query.grammar.types.Path.*;
 
 /**
@@ -89,8 +89,8 @@ public class AliasAwareExprFactory extends SimpleExprFactory{
         return rv != null ? rv : super.createEntityList(arg);
     }
     
-    public ExtString createString(String arg){
-        ExtString rv = aliasFactory.<ExtString>getCurrentAndReset();
+    public EString createString(String arg){
+        EString rv = aliasFactory.<EString>getCurrentAndReset();
         return rv != null ? rv : super.createString(arg);
     }
     

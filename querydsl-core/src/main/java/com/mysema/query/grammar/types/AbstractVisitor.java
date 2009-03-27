@@ -8,7 +8,6 @@ package com.mysema.query.grammar.types;
 import com.mysema.query.grammar.types.Alias.AEntity;
 import com.mysema.query.grammar.types.Alias.AEntityCollection;
 import com.mysema.query.grammar.types.Alias.AToPath;
-import com.mysema.query.grammar.types.ExtTypes.ExtString;
 import com.mysema.query.grammar.types.Path.*;
 
 
@@ -41,10 +40,6 @@ public abstract class AbstractVisitor<SubType extends AbstractVisitor<SubType>> 
     @Override
     protected void visit(Custom.CString expr){
         visit((Custom<?>)expr);
-    }
-    @Override
-    protected void visit(ExtString expr){
-        visit((PString)expr);
     }
     @Override
     protected void visit(Operation.OBoolean expr) {

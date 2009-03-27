@@ -19,7 +19,7 @@ import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.ENumber;
-import com.mysema.query.grammar.types.ExtTypes.ExtString;
+import com.mysema.query.grammar.types.Expr.EString;
 import com.mysema.query.grammar.types.Path.*;
 
 /**
@@ -88,7 +88,7 @@ public class GrammarWithAlias extends Grammar{
         return exprFactory.createNumber(arg);
     }    
     
-    public static ExtString $(String arg){
+    public static EString $(String arg){
         return exprFactory.createString(arg);
     }
 

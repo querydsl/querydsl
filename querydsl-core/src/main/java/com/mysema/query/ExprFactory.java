@@ -12,7 +12,7 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.ENumber;
-import com.mysema.query.grammar.types.ExtTypes.ExtString;
+import com.mysema.query.grammar.types.Expr.EString;
 import com.mysema.query.grammar.types.Path.*;
 
 /**
@@ -41,7 +41,7 @@ public interface ExprFactory {
 
     <D extends Comparable<? super D>> PComparableArray<D> createComparableArray(D[] args);
 
-    ExtString createString(String arg);
+    EString createString(String arg);
 
     PStringArray createStringArray(String[] args);
 

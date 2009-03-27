@@ -24,10 +24,10 @@ import com.mysema.query.grammar.types.CollectionType;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathMetadata;
-import com.mysema.query.grammar.types.ExtTypes.ExtString;
 import com.mysema.query.grammar.types.Path.PCollection;
 import com.mysema.query.grammar.types.Path.PEntity;
 import com.mysema.query.grammar.types.Path.PList;
+import com.mysema.query.grammar.types.Path.PString;
 
 /**
  * PropertyAccessInvocationHandler is the main InvocationHandler class for the CGLIB alias proxies
@@ -187,7 +187,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         T rv;
         
         if (String.class.equals(type)) {
-            path = new ExtString(pm);
+            path = new PString(pm);
             // null is used as a return value to block method invocations on Strings
             rv = null;
             
