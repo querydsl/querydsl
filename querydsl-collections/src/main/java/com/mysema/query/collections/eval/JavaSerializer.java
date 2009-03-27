@@ -27,7 +27,6 @@ import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.Expr.EConstant;
-import com.mysema.query.grammar.types.ExtTypes.ExtString;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
 import com.mysema.query.serialization.BaseSerializer;
 import com.mysema.query.util.Assert;
@@ -121,10 +120,6 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
         };                    
     }
     
-    protected void visit(ExtString stringPath){
-        visit((Path<String>)stringPath);
-    }
-
     @Override
     protected void visit(Path<?> path) {
         PathType pathType = path.getMetadata().getPathType();

@@ -260,24 +260,24 @@ public class ColQueryTest extends AbstractQueryTest{
                 
     }
     
-    @Test
-    public void testCSVIteration(){       
-        List<String> lines = Arrays.asList("1;10;100","2;20;200","3;30;300");
-        
-        // 1st
-        for (String[] row : query().from($(""), lines).list($("").split(";"))){
-            for (String col : row){
-                System.out.println(col);
-            }
-        }
-        
-        // 2nd
-        Path.PStringArray strs = $(new String[]{});
-        Iterable<String[]> csvData1 = query().from($(""), lines).list($("").split(";"));
-        for (String s : query().from(strs, csvData1).list(strs.get(0).add("-").add(strs.get(1)))){
-            System.out.println(s);
-        }         
-    }
+//    @Test
+//    public void testCSVIteration(){       
+//        List<String> lines = Arrays.asList("1;10;100","2;20;200","3;30;300");
+//        
+//        // 1st
+//        for (String[] row : query().from($(""), lines).list($("").split(";"))){
+//            for (String col : row){
+//                System.out.println(col);
+//            }
+//        }
+//        
+//        // 2nd
+//        Path.PStringArray strs = $(new String[]{});
+//        Iterable<String[]> csvData1 = query().from($(""), lines).list($("").split(";"));
+//        for (String s : query().from(strs, csvData1).list(strs.get(0).add("-").add(strs.get(1)))){
+//            System.out.println(s);
+//        }         
+//    }
     
     @Test
     public void testJoins(){
