@@ -23,7 +23,7 @@ import com.mysema.query.grammar.types.SinglePathExtractor;
 public class MiniApi extends GrammarWithAlias{
     
     public static <A> ColQuery from(Expr<A> path, A... arr){
-        return from(path, Arrays.asList(arr));
+        return new ColQuery().from(path, Arrays.asList(arr));
     }
 
     public static <A> ColQuery from(Expr<A> path, Iterable<A> col){
