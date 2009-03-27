@@ -6,6 +6,7 @@
 package com.mysema.query.hql;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -13,6 +14,7 @@ import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.Projectable;
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlOps;
 import com.mysema.query.grammar.HqlQueryBase;
@@ -25,7 +27,7 @@ import com.mysema.query.grammar.types.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class AbstractHqlQuery<A extends AbstractHqlQuery<A>> extends HqlQueryBase<A> {
+public class AbstractHqlQuery<A extends AbstractHqlQuery<A>> extends HqlQueryBase<A> implements Projectable{
     
     private static final Logger logger = LoggerFactory.getLogger(HqlQuery.class);
     
@@ -81,7 +83,7 @@ public class AbstractHqlQuery<A extends AbstractHqlQuery<A>> extends HqlQueryBas
         String queryString = toString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, limit, offset);
-        return query.list();
+        return query.list();        
     }
     
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
@@ -117,6 +119,23 @@ public class AbstractHqlQuery<A extends AbstractHqlQuery<A>> extends HqlQueryBas
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, 1, null);
         return (RT)query.uniqueResult();
+    }
+
+    public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
+        select(e1, e2);
+        select(rest);
+        String queryString = toString();
+        logger.debug("query : {}", queryString);
+        Query query = createQuery(queryString, limit, offset);
+        return query.iterate();
+    }
+
+    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
+        select(projection);
+        String queryString = toString();
+        logger.debug("query : {}", queryString);
+        Query query = createQuery(queryString, limit, offset);
+        return query.iterate();
     }
 
 }
