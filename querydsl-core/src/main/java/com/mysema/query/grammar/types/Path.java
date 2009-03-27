@@ -116,7 +116,7 @@ public interface Path<C> {
         private EBoolean isnull, isnotnull;
         private final PathMetadata<?> metadata;
         private final Path<?> root;
-        public PComparable(Class<D> type, PathMetadata<?> metadata) {
+        public PComparable(Class<? extends D> type, PathMetadata<?> metadata) {
             super(type);
             this.metadata = metadata;
             this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
@@ -143,7 +143,7 @@ public interface Path<C> {
         private EBoolean isnull, isnotnull;
         private final PathMetadata<?> metadata;
         private final Path<?> root;
-        public PNumber(Class<D> type, PathMetadata<?> metadata) {
+        public PNumber(Class<? extends D> type, PathMetadata<?> metadata) {
             super(type);
             this.metadata = metadata;
             this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
@@ -274,13 +274,13 @@ public interface Path<C> {
         private final PathMetadata<?> metadata;
         private final String entityName;
         private final Path<?> root;
-        public PEntity(Class<D> type, String entityName, PathMetadata<?> metadata) {
+        public PEntity(Class<? extends D> type, String entityName, PathMetadata<?> metadata) {
             super(type);
             this.entityName = entityName;
             this.metadata = metadata;
             this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
         }
-        public PEntity(Class<D> type, String entityName, String localName) {
+        public PEntity(Class<? extends D> type, String entityName, String localName) {
             super(type);
             this.entityName = entityName;
             metadata = forVariable(localName);
@@ -455,7 +455,7 @@ public interface Path<C> {
         private EBoolean isnull, isnotnull;
         private final PathMetadata<?> metadata;
         private final Path<?> root;
-        public PSimple(Class<D> type, PathMetadata<?> metadata) {
+        public PSimple(Class<? extends D> type, PathMetadata<?> metadata) {
             super(type);
             this.metadata = metadata;
             this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
