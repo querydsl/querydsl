@@ -15,12 +15,12 @@ import com.mysema.query.grammar.types.Expr;
  * @version $Id$
  */
 public interface Query<SubType extends Query<SubType>>{
-    SubType from(Expr<?>... o);  
+    SubType from(Expr<?>... o);
     SubType innerJoin(Expr<?> o);
     SubType join(Expr<?> o);
     SubType fullJoin(Expr<?> o);
     SubType leftJoin(Expr<?> o);
-    SubType on(Expr.EBoolean o);
+    SubType on(Expr.EBoolean o);    
     SubType groupBy(Expr<?>... o);
     SubType having(Expr.EBoolean... o);
     SubType orderBy(OrderSpecifier<?>... o);
