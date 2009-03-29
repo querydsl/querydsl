@@ -42,9 +42,9 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
     
     private final AliasFactory aliasFactory;
         
-    private final Map<String,Expr<?>> propToExpr = new HashMap<String,Expr<?>>();
+    private final Map<Object,Expr<?>> propToExpr = new HashMap<Object,Expr<?>>();
     
-    private final Map<String,Object> propToObj = new HashMap<String,Object>();
+    private final Map<Object,Object> propToObj = new HashMap<Object,Object>();
     
     public PropertyAccessInvocationHandler(Expr<?> path, AliasFactory aliasFactory){    
         this.path = path;
@@ -92,50 +92,50 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             
             
         }else if (isSizeAccessor(method)){
-            String ptyName = "_size";
-            if (propToObj.containsKey(ptyName)){
-                rv = propToObj.get(ptyName);
+            Object propKey = "_size";
+            if (propToObj.containsKey(propKey)){
+                rv = propToObj.get(propKey);
             }else{
                 PathMetadata<Integer> pm = PathMetadata.forSize((PCollection<?>) path);
-                rv = newInstance(Integer.class, Integer.class, proxy, ptyName, pm);            
+                rv = newInstance(Integer.class, Integer.class, proxy, propKey, pm);            
             }       
-            aliasFactory.setCurrent(propToExpr.get(ptyName));
+            aliasFactory.setCurrent(propToExpr.get(propKey));
             
         }else if (isListElementAccess(method)){
             // TODO : manage cases where the argument is based on a property invocation
-            String ptyName = "_get_list_" + args[0];
-            if (propToObj.containsKey(ptyName)){
-                rv = propToObj.get(ptyName);
+            Object propKey = Arrays.asList("_get_list",args[0]);
+            if (propToObj.containsKey(propKey)){
+                rv = propToObj.get(propKey);
             }else{
                 PathMetadata<Integer> pm = PathMetadata.forListAccess((PList<?>)path, (Integer)args[0]);
                 Class<?> elementType = ((PCollection<?>)path).getElementType();
                 if (elementType != null){
-                    rv = newInstance(elementType, elementType, proxy, ptyName, pm);    
+                    rv = newInstance(elementType, elementType, proxy, propKey, pm);    
                 }else{
-                    rv = newInstance(method.getReturnType(), method.getGenericReturnType(), proxy, ptyName, pm);
+                    rv = newInstance(method.getReturnType(), method.getGenericReturnType(), proxy, propKey, pm);
                 }                            
             }       
-            aliasFactory.setCurrent(propToExpr.get(ptyName)); 
+            aliasFactory.setCurrent(propToExpr.get(propKey)); 
             
         }else if (isMapElementAccess(method)){
-           String ptyName = "_get_map_" + args[0];
-           if (propToObj.containsKey(ptyName)){
-               rv = propToObj.get(ptyName);
+            Object propKey = Arrays.asList("_get_map", args[0]);
+           if (propToObj.containsKey(propKey)){
+               rv = propToObj.get(propKey);
            }else{
                PathMetadata<?> pm = PathMetadata.forMapAccess((PMap<?,?>)path, args[0]);
                Class<?> valueType = ((PMap<?,?>)path).getValueType();
                if (valueType != null){
-                   rv = newInstance(valueType, valueType, proxy, ptyName, pm);
+                   rv = newInstance(valueType, valueType, proxy, propKey, pm);
                }else{
-                   rv = newInstance(method.getReturnType(), method.getGenericReturnType(), proxy, ptyName, pm);
+                   rv = newInstance(method.getReturnType(), method.getGenericReturnType(), proxy, propKey, pm);
                }
            }
-           aliasFactory.setCurrent(propToExpr.get(ptyName));
+           aliasFactory.setCurrent(propToExpr.get(propKey));
             
         }else if (isContains(method)){    
             rv = false;
             aliasFactory.setCurrent(Grammar.in(args[0], (CollectionType<Object>)path));
-                        
+            
         }else if (isToString(method)){
             rv = path.toString();
             
@@ -146,7 +146,6 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             rv = path;
             
         }else{
-//            rv = methodProxy.invokeSuper(proxy, args);
             throw new IllegalArgumentException("Invocation of " + method.getName() + " not supported");
         }        
         return rv; 
@@ -200,7 +199,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         return true;        
     }
     
-    private <T> T newInstance(Class<T> type, Type genericType, Object parent, String prop, PathMetadata<?> pm) {        
+    private <T> T newInstance(Class<T> type, Type genericType, Object parent, Object propKey, PathMetadata<?> pm) {        
         Expr<?> path;
         T rv;
         
@@ -278,8 +277,8 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             path = new Path.PEntity<T>((Class<T>)type, type.getSimpleName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);            
         }
-        propToObj.put(prop, rv);
-        propToExpr.put(prop, path);        
+        propToObj.put(propKey, rv);
+        propToExpr.put(propKey, path);        
         return rv;
     }
     
