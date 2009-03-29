@@ -7,6 +7,7 @@ package com.mysema.query.alias;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import com.mysema.query.SimpleExprFactory;
 import com.mysema.query.grammar.types.Expr;
@@ -84,6 +85,11 @@ public class AliasAwareExprFactory extends SimpleExprFactory{
         return rv != null ? rv : super.createComparableArray(args);
     }
 
+    public <K,V> PEntityMap<K,V> createEntityMap(Map<K,V> arg) {
+        PEntityMap<K,V> rv = aliasFactory.<PEntityMap<K,V>>getCurrentAndReset();
+        return rv != null ? rv : super.createEntityMap(arg);
+    }
+    
     public <D> PEntityList<D> createEntityList(List<D> arg) {
         PEntityList<D> rv = aliasFactory.<PEntityList<D>>getCurrentAndReset();
         return rv != null ? rv : super.createEntityList(arg);

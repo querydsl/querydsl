@@ -27,6 +27,7 @@ import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.Path.PCollection;
 import com.mysema.query.grammar.types.Path.PEntity;
 import com.mysema.query.grammar.types.Path.PList;
+import com.mysema.query.grammar.types.Path.PMap;
 import com.mysema.query.grammar.types.Path.PString;
 
 /**
@@ -102,7 +103,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             
         }else if (isListElementAccess(method)){
             // TODO : manage cases where the argument is based on a property invocation
-            String ptyName = "_get" + args[0];
+            String ptyName = "_get_list_" + args[0];
             if (propToObj.containsKey(ptyName)){
                 rv = propToObj.get(ptyName);
             }else{
@@ -117,7 +118,19 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             aliasFactory.setCurrent(propToExpr.get(ptyName)); 
             
         }else if (isMapElementAccess(method)){
-           // TODO
+           String ptyName = "_get_map_" + args[0];
+           if (propToObj.containsKey(ptyName)){
+               rv = propToObj.get(ptyName);
+           }else{
+               PathMetadata<?> pm = PathMetadata.forMapAccess((PMap<?,?>)path, args[0]);
+               Class<?> valueType = ((PMap<?,?>)path).getValueType();
+               if (valueType != null){
+                   rv = newInstance(valueType, valueType, proxy, ptyName, pm);
+               }else{
+                   rv = newInstance(method.getReturnType(), method.getGenericReturnType(), proxy, ptyName, pm);
+               }
+           }
+           aliasFactory.setCurrent(propToExpr.get(ptyName));
             
         }else if (isContains(method)){    
             rv = false;
@@ -166,9 +179,14 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
     }
         
     private boolean isGetter(Method method){
-        return method.getParameterTypes().length == 0 
-            && (method.getName().startsWith("is") 
-            || method.getName().startsWith("get"));
+        if (method.getParameterTypes().length == 0){
+            if (method.getName().startsWith("get")){ 
+                return !method.getReturnType().equals(void.class);
+            }else if (method.getName().startsWith("is")) {
+                return (method.getReturnType().equals(boolean.class) || method.getReturnType().equals(Boolean.class));
+            }
+        }
+        return false;
     }
     
     private boolean isSizeAccessor(Method method) {

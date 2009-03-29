@@ -332,6 +332,9 @@ public interface Path<C> {
         protected <A> PEntityList<A> _entitylist(String path, Class<A> type, String entityName) {
             return new PEntityList<A>(type, entityName, forProperty(this,  path));
         }
+        protected <K,V> PEntityMap<K,V> _entitymap(String path, Class<K> key, Class<V> value, String entityName){
+            return new PEntityMap<K,V>(key, value, entityName, forProperty(this, path));
+        }
         protected <A> PSimple<A> _simple(String path, Class<A> type){
             return new PSimple<A>(type, forProperty(this, path));
         }        

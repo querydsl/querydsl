@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import com.mysema.query.ExprFactory;
 import com.mysema.query.alias.AliasAwareExprFactory;
@@ -106,6 +107,10 @@ public class GrammarWithAlias extends Grammar{
     
     public static <D> PEntityCollection<D> $(Collection<D> args){
         return exprFactory.createEntityCollection(args);
+    }
+    
+    public static <K,V> PEntityMap<K,V> $(Map<K,V> args){
+        return exprFactory.createEntityMap(args);
     }
     
     public static <D> PEntityList<D> $(List<D> args){

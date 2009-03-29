@@ -75,6 +75,19 @@ public class SimpleExprFactory implements ExprFactory {
         }    
     });
     
+    private final Map<Map<?,?>,PEntityMap<?,?>> emToPath = new PathFactory<Map<?,?>,PEntityMap<?,?>>(new Transformer<Map<?,?>,PEntityMap<?,?>>(){
+        @SuppressWarnings("unchecked")
+        public PEntityMap<?, ?> transform(Map<?,?> arg) {
+            if (!arg.isEmpty()){
+                Class<?> cl = arg.get(null).getClass();
+                return new PEntityMap(null, cl, cl.getSimpleName(), md());
+            }else{
+                return new PEntityMap(null, null, null, md()); 
+            }
+        }
+        
+    });
+    
     private final Map<Object,PComparable<?>> comToPath = new PathFactory<Object,PComparable<?>>(new Transformer<Object,PComparable<?>>(){
         @SuppressWarnings("unchecked")
         public PComparable<?> transform(Object arg) {
@@ -145,6 +158,11 @@ public class SimpleExprFactory implements ExprFactory {
         return (PComparableArray<D>) caToPath.get(Arrays.asList(args));
     }
 
+    @SuppressWarnings("unchecked")
+    public <K,V> PEntityMap<K,V> createEntityMap(Map<K,V> arg){
+        return (PEntityMap<K,V>)emToPath.get(arg);
+    }
+    
     @SuppressWarnings("unchecked")
     public <D> PEntityList<D> createEntityList(List<D> arg) {
         return (PEntityList<D>) elToPath.get(arg);
