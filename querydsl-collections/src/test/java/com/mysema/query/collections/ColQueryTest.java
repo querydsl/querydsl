@@ -11,15 +11,11 @@ import static com.mysema.query.collections.MiniApi.select;
 import static com.mysema.query.grammar.Grammar.gt;
 import static com.mysema.query.grammar.GrammarWithAlias.$;
 import static com.mysema.query.grammar.GrammarWithAlias.alias;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.util.*;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.collections.Domain.Cat;
@@ -72,7 +68,7 @@ public class ColQueryTest extends AbstractQueryTest{
     }
     
     @Test
-    public void testAlias1(){
+    public void testAliasVariations1(){
         // 1st
         QCat cat = new QCat("cat");  
         for (String name : from(cat,cats).where(cat.kittens.size().gt(0))
@@ -102,30 +98,7 @@ public class ColQueryTest extends AbstractQueryTest{
     }
     
     @Test
-    public void testAlias10(){
-        Cat c = alias(Cat.class, "cat");
-        
-        try{
-            from(c,cats).where($(c.getMate().getName().toUpperCase()).eq("MOE"));
-            fail("expected NPE");
-        }catch(NullPointerException ne){
-            // expected
-        }
-        
-    }
-    
-    @Test
-    public void testAlias11(){
-        QCat cat = new QCat("cat");
-        Cat c = alias(Cat.class, cat);
-        assertEquals(cat.name, $(c.getName()));
-    }
-    
-    @Test
-    public void testAlias2(){        
-        query().from(cat, c1, c2).from(otherCat, c2, c3)
-            .where(cat.name.eq(otherCat.name)).select(cat.name);
-        
+    public void testAliasVariations2(){       
         // 1st
         QCat cat = new QCat("cat");  
         for (String name : from(cat,cats).where(cat.name.like("fri%"))
@@ -143,90 +116,64 @@ public class ColQueryTest extends AbstractQueryTest{
     
     @Test
     public void testAlias3(){
+        QCat cat = new QCat("cat");
+        Cat other = new Cat();
         Cat c = alias(Cat.class, "cat");
         
+        // 1
         from(c,cats)
         .where($(c.getBirthdate()).after(new Date()))
-        .list(c).iterator();              
-    }
-    
-    @Test
-    @Ignore
-    public void testAlias4(){        
-        Cat c = alias(Cat.class, "cat");
+        .list(c).iterator();
+            
+        // 2
+        try{
+            from(c,cats).where($(c.getMate().getName().toUpperCase()).eq("MOE"));
+            fail("expected NPE");
+        }catch(NullPointerException ne){
+            // expected
+        }
         
+        // 3
+        assertEquals(cat.name, $(c.getName()));
+        
+        // 4
         // TODO : FIXME : Janino compiler doesn't handle generic collections
-        from(c,cats)
-        .where($(c.getKittens().get(0).getBodyWeight()).gt(12))
-        .list(c.getName()).iterator();
-    }
-    
-    @Test
-    public void testAlias5(){
-        Cat c = alias(Cat.class, "cat");
-        Cat other = new Cat();
+//        from(c,cats)
+//        .where($(c.getKittens().get(0).getBodyWeight()).gt(12))
+//        .list(c.getName()).iterator();
         
+        // 5
         from(c,cats)
         .where($(c).eq(other))
         .list(c).iterator();
-    }
-    
-    @Test
-    public void testAlias6(){        
-        new QCat("cat").kittens.contains(new QCat("other"));
         
-        Cat c = alias(Cat.class, "cat");
-        Cat other = new Cat();
-        
+        // 6
         from(c,cats)
         .where($(c.getKittens().contains(other)))
         .list(c).iterator();
-    }
-    
-    @Test
-    public void testAlias7(){
-        Cat c = alias(Cat.class, "cat");
         
+        // 7
         from(c,cats)
         .where(c.getKittens().isEmpty())
         .list(c).iterator();
-    }
-    
-    @Test
-    public void testAlias8(){
-        Cat c = alias(Cat.class, "cat");
         
+        // 8
         from(c,cats)
         .where($(c.getName()).startsWith("B"))
-        .list(c).iterator();        
+        .list(c).iterator();
         
-    }
-    
-
-    @Test
-    public void testAlias9(){
-        Cat c = alias(Cat.class, "cat");
-        
+        // 9
         from(c,cats)
         .where($(c.getName()).upper().eq("MOE"))
-        .list(c).iterator();        
-    }
-    
-    @Test
-    @Ignore
-    public void testAliasToString(){
-        // NOTE : temporarily commented out, since alias features have been moved to querydsl-core
-        Cat c = alias(Cat.class, "c");
+        .list(c).iterator();
         
-        assertEquals("c", c.toString());
-        assertEquals("c.getMate()", c.getMate().toString());
-        assertEquals("c.getMate().getKittens().get(0)", c.getMate().getKittens().get(0).toString());
-        
-        assertEquals("c.getKittens().get(0)", c.getKittens().get(0).toString());
-        assertEquals("c.getKittens().get(1)", c.getKittens().get(1).toString());
-        assertEquals("c.getKittens().get(0).getMate()", c.getKittens().get(0).getMate().toString());        
+        // 10
+        assertNotNull($(c.getKittensByName()));
+        assertNotNull($(c.getKittensByName().get("Kitty")));
+        from(c,cats)
+        .where($(c.getKittensByName().get("Kitty")).isnotnull()).list(cat);        
     }
-
+          
     @Test
     public void testAPIMethods(){
         query().from(cat, c1, c2).list(cat);
@@ -433,14 +380,7 @@ public class ColQueryTest extends AbstractQueryTest{
         query().from(cat,cats).select(cat.kittens);
         
         query().from(cat,cats).where(cat.name.like("fri%")).select(cat.name);
-        
-//        select(mother, offspr, mate.name).from(mother)
-//            .innerJoin(mother.mate.as(mate)).leftJoin(mother.kittens.as(offspr)).parse();
-
-//        select(new QFamily(mother, mate, offspr))
-//            .from(mother).innerJoin(mother.mate.as(mate))
-//            .leftJoin(mother.kittens.as(offspr)).parse();
-        
+   
     }
     
     @Test

@@ -9,7 +9,10 @@ import static com.mysema.query.grammar.types.PathMetadata.forListAccess;
 import static com.mysema.query.grammar.types.PathMetadata.forProperty;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
@@ -23,12 +26,12 @@ import com.mysema.query.grammar.types.PathMetadata;
  */
 public class Domain {
     public static class Animal {
-        boolean alive;
-        java.util.Date birthdate = new java.util.Date();
-        int bodyWeight, weight, toes;
-        Color color;
-        int id;    
-        String name;
+        protected boolean alive;
+        protected java.util.Date birthdate = new java.util.Date();
+        protected int bodyWeight, weight, toes;
+        protected Color color;
+        protected int id;    
+        protected String name;
         public java.util.Date getBirthdate() {
             return birthdate;
         }
@@ -81,14 +84,16 @@ public class Domain {
     }
     
     public static class Cat extends Animal{
-        int breed;
-        Color eyecolor;   
-        List<Cat> kittens;
-        Cat mate;
+        private int breed;
+        private Color eyecolor;   
+        private List<Cat> kittens;
+        private Map<String,Cat> kittensByName;
+        private Cat mate;
         public Cat() {            
         }
         public Cat(String name){
             this.kittens = Arrays.asList(new Cat());
+            this.kittensByName = Collections.singletonMap("Kitty", kittens.get(0));
             this.name = name;
             
         }
@@ -100,6 +105,9 @@ public class Domain {
         }
         public List<Cat> getKittens() {
             return kittens;
+        }
+        public Map<String,Cat> getKittensByName(){
+            return kittensByName;
         }
         public Cat getMate() {
             return mate;
@@ -136,6 +144,7 @@ public class Domain {
         public final Path.PSimple<Color> eyecolor = _simple("eyecolor",Color.class);
         public final Path.PNumber<java.lang.Integer> id = _number("id",java.lang.Integer.class);
         public final Path.PEntityList<Cat> kittens = _entitylist("kittens",Cat.class,"Cat");
+        public final Path.PEntityMap<String, Cat> kittensByName = _entitymap("kittens",String.class,Cat.class,"Cat");
         public QCat mate;
         public final Path.PString name = _string("name");
     

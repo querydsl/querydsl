@@ -68,11 +68,24 @@ public class DomainTest {
     
     @Domain
     public static class RelationType{
+        // list
         List<RelationType> list;
         List<? extends RelationType> list2;
+        List<String> list3;
+        
+        // set
         Set<RelationType> set;        
         SortedSet<RelationType> sortedSet;
+        Set<String> set2;
+        
+        // collection
         Collection<RelationType> collection;
+        Collection<String> set3;
+        
+        // map
+        Map<String,RelationType> map;
+        Map<RelationType,RelationType> map2;
+        Map<RelationType, String> map3;
     }
     
     @Domain
