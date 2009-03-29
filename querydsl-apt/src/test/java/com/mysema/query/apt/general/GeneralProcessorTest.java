@@ -33,13 +33,10 @@ public class GeneralProcessorTest {
     private Map<String, Object> model = new HashMap<String, Object>();
 
     public GeneralProcessorTest() {
-//        String superType, String packageName, String name, String simpleName
         type = new Type("com.mysema.query.DomainSuperClass",
                 "com.mysema.query",
                 "com.mysema.query.DomainClass", "DomainClass");
         
-//        String name, String realName, String keyTypeName, String typePackage, String typeName,
-//        String simpleTypeName, Type fieldType
         Field field = new Field("field", "field", null, "java.lang", "java.lang.String",
                 "String", Field.Type.STRING);
         type.addField(field);
