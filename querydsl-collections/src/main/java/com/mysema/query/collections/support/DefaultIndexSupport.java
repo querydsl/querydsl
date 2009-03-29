@@ -30,7 +30,7 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
  */
 public class DefaultIndexSupport extends SimpleIndexSupport{
     
-    private Map<Path<?>,Map<?,? extends Iterable<?>>> pathToKeyToValues;
+    private Map<Path<?>,Map<?,? extends Iterable<?>>> pathToCacheEntries;
     
     private Map<Path<?>,IndexedPath> rootToIndexedPath = new HashMap<Path<?>,IndexedPath>();
     
@@ -42,7 +42,7 @@ public class DefaultIndexSupport extends SimpleIndexSupport{
      */
     public DefaultIndexSupport(IteratorSource iteratorSource, JavaOps ops, List<? extends Expr<?>> sources) {
         super(iteratorSource, ops, sources);
-        this.pathToKeyToValues = new HashMap<Path<?>,Map<?,? extends Iterable<?>>>();        
+        this.pathToCacheEntries = new HashMap<Path<?>,Map<?,? extends Iterable<?>>>();        
     }        
 
     public DefaultIndexSupport addPath(Path<?> path, IndexedPath indexedPath){
@@ -55,7 +55,7 @@ public class DefaultIndexSupport extends SimpleIndexSupport{
             return this;
         }        
         DefaultIndexSupport indexSupport = new DefaultIndexSupport(iteratorSource, ops, sources);
-        indexSupport.pathToKeyToValues = this.pathToKeyToValues;
+        indexSupport.pathToCacheEntries = this.pathToCacheEntries;
         
         // populate the "path eq path" index
         if (condition instanceof Operation){
@@ -68,7 +68,7 @@ public class DefaultIndexSupport extends SimpleIndexSupport{
     public <A> Iterator<A> getIterator(Expr<A> expr) {
         if (rootToIndexedPath.containsKey(expr)){
             IndexedPath ie = rootToIndexedPath.get(expr);
-            Map<?,? extends Iterable<?>> indexEntry = pathToKeyToValues.get(ie.getIndexedPath());
+            Map<?,? extends Iterable<?>> indexEntry = pathToCacheEntries.get(ie.getIndexedPath());
             // NOTE : this works only for static keys
             Object key = ie.getEvaluator().evaluate((Object[])null);
             if (indexEntry.containsKey(key)){
@@ -86,7 +86,7 @@ public class DefaultIndexSupport extends SimpleIndexSupport{
     public <A> Iterator<A> getIterator(Expr<A> expr, Object[] bindings) {
         if (rootToIndexedPath.containsKey(expr)){
             IndexedPath ie = rootToIndexedPath.get(expr);
-            Map<?,? extends Iterable<?>> indexEntry = pathToKeyToValues.get(ie.getIndexedPath());
+            Map<?,? extends Iterable<?>> indexEntry = pathToCacheEntries.get(ie.getIndexedPath());
             Object key = ie.getEvaluator().evaluate(bindings);
             if (indexEntry.containsKey(key)){
                 return (Iterator<A>)indexEntry.get(key).iterator();    
@@ -99,18 +99,18 @@ public class DefaultIndexSupport extends SimpleIndexSupport{
     }
     
     Map<Path<?>, Map<?, ? extends Iterable<?>>> getPathToKeyToValues() {
-        return Collections.unmodifiableMap(pathToKeyToValues);
+        return Collections.unmodifiableMap(pathToCacheEntries);
     }
     
     public DefaultIndexSupport indexToHash(Path<?> path){
-        if (pathToKeyToValues.containsKey(path)){
+        if (pathToCacheEntries.containsKey(path)){
             return this;
         }
         // create the index entry
         Evaluator ev = EvaluatorUtils.create(ops, Collections.<Expr<?>>singletonList((Expr<?>)path.getRoot()), (Expr<?>)path);
         Map<?,? extends Iterable<?>> map = QueryIteratorUtils.projectToMap(iteratorSource.getIterator((Expr<?>)path.getRoot()), ev);
         
-        pathToKeyToValues.put(path, map);
+        pathToCacheEntries.put(path, map);
         return this;
     }
     
@@ -121,6 +121,21 @@ public class DefaultIndexSupport extends SimpleIndexSupport{
  
     public boolean isIndexed(Path<?> path){
         return rootToIndexedPath.containsKey(path);
+    }
+    
+    public static class IndexedPath {
+        private final Path<?> path;
+        private final Evaluator ev;
+        IndexedPath(Path<?> path, Evaluator ev) {
+            this.path = path;
+            this.ev = ev;
+        }
+        public Path<?> getIndexedPath() {
+            return path;
+        }
+        public Evaluator getEvaluator() {
+            return ev;
+        }
     }
     
 }

@@ -8,6 +8,7 @@ package com.mysema.query.collections.support;
 import java.util.List;
 
 import com.mysema.query.collections.eval.Evaluator;
+import com.mysema.query.collections.support.DefaultIndexSupport.IndexedPath;
 import com.mysema.query.collections.utils.EvaluatorUtils;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.Ops;

@@ -62,7 +62,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
     
     private final JavaOps ops;
 
-    private final InnerQuery query = new InnerQuery();
+    private final InnerQuery query;
     
     /**
      * optimize sort order for optimal index usage
@@ -90,9 +90,14 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
     public AbstractColQuery(JavaOps ops) {
         this.ops = ops;
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
+        this.query = createInnerQuery();
     }
     
-    protected <A> SubType alias(Expr<A> path, Iterable<A> col) {
+    protected InnerQuery createInnerQuery(){
+        return new InnerQuery();
+    }
+    
+    protected <A> SubType alias(Expr<A> path, Iterable<? extends A> col) {
         exprToIt.put(path, col);
         return _this;
     }
@@ -141,7 +146,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
     }
 
     // TODO : this signature isn't right when used with custom iterator source
-    public <A> SubType from(Expr<A> entity, Iterable<A> col) {
+    public <A> SubType from(Expr<A> entity, Iterable<? extends A> col) {
         alias(entity, col);
         query.from((Expr<?>)entity);
         return _this;
@@ -291,7 +296,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
             if (joins.size() == 1){
                 it = handleFromWhereSingleSource(sources);
             }else{
-                it = handleFromAndWhere(sources);   
+                it = handleFromWhereMultiSource(sources);   
             }
             long count = 0l;
             while (it.hasNext()){
@@ -308,7 +313,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
             if (joins.size() == 1){
                 it = handleFromWhereSingleSource(sources);
             }else{
-                it = handleFromAndWhere(sources);   
+                it = handleFromWhereMultiSource(sources);   
             }
 
             if (it.hasNext()){
@@ -343,7 +348,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
             }
         }
 
-        protected Iterator<?> handleFromAndWhere(List<Expr<?>> sources) throws Exception{
+        protected Iterator<?> handleFromWhereMultiSource(List<Expr<?>> sources) throws Exception{
             EBoolean condition = where.create();
             if (sortSources){               
                 sourceSortingSupport.sortSources(joins, condition);               

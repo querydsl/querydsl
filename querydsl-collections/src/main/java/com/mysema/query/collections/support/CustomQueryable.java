@@ -19,13 +19,11 @@ import com.mysema.query.util.Assert;
  * @version $Id$
  */
 public class CustomQueryable extends ProjectableAdapter{
-
-    private IteratorSource iteratorSource;
     
     private ColQuery innerQuery;
     
     public CustomQueryable(final IteratorSource iteratorSource){
-        this.iteratorSource = Assert.notNull(iteratorSource);
+        Assert.notNull(iteratorSource);
         this.innerQuery = new ColQuery(){
             @Override
             protected QueryIndexSupport createIndexSupport(Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops, List<Expr<?>> sources){
@@ -35,13 +33,15 @@ public class CustomQueryable extends ProjectableAdapter{
         setProjectable(innerQuery);
     }
     
-    public <A> CustomQueryable from(Expr<A> entity){
-        innerQuery.from(entity, Collections.<A>emptyList());
-        return this;
-    }
-    
     public CustomQueryable where(Expr.EBoolean... o) {
         innerQuery.where(o);
+        return this;
+    }
+
+    public CustomQueryable from(Expr<?>... o) {
+        for (Expr<Object> obj : (Expr<Object>[])o){
+            innerQuery.from(obj, Collections.<Object>emptyList());
+        }
         return this;
     }
     
