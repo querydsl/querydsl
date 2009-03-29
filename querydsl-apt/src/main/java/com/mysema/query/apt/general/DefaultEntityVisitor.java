@@ -8,6 +8,8 @@ package com.mysema.query.apt.general;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.mysema.query.apt.model.Field;
 import com.mysema.query.apt.model.Type;
 import com.sun.mirror.declaration.ClassDeclaration;
@@ -24,10 +26,22 @@ import com.sun.mirror.util.SimpleDeclarationVisitor;
  * @version $Id$
  */
 public class DefaultEntityVisitor extends SimpleDeclarationVisitor {
-    public final Map<String, Type> types = new HashMap<String, Type>();
-
     private Type last;
 
+    public final Map<String, Type> types = new HashMap<String, Type>();
+
+    private void addField(String originalName, TypeHelper typeInfo) {
+        String name = FieldHelper.javaSafe(originalName);
+        String realName = FieldHelper.realName(originalName);
+        String keyTypeName = typeInfo.getKeyTypeName();        
+        String typeName = typeInfo.getFullName();
+        String typePackage = typeInfo.getPackageName();
+        String simpleTypeName = typeInfo.getSimpleName();
+        Field.Type fieldType = typeInfo.getFieldType();   
+        last.addField(new Field(name, realName, keyTypeName, typePackage, 
+                typeName, simpleTypeName, fieldType));
+    }
+    
     @Override
     public void visitClassDeclaration(ClassDeclaration d) {
         String simpleName = d.getSimpleName();
@@ -37,7 +51,14 @@ public class DefaultEntityVisitor extends SimpleDeclarationVisitor {
         last = new Type(superType, packageName, name, simpleName);
         types.put(d.getQualifiedName(), last);
     }
-    
+
+    @Override
+    public void visitFieldDeclaration(FieldDeclaration d) {
+        if (!d.getModifiers().contains(Modifier.STATIC) && !d.getModifiers().contains(Modifier.TRANSIENT)) {
+            addField(d.getSimpleName(), new TypeHelper(d.getType()));
+        }
+    }
+
     @Override
     public void visitInterfaceDeclaration(InterfaceDeclaration d){
         String simpleName = d.getSimpleName();
@@ -50,28 +71,20 @@ public class DefaultEntityVisitor extends SimpleDeclarationVisitor {
         last = new Type(superType, packageName, name, simpleName);
         types.put(d.getQualifiedName(), last);
     }
-
-    @Override
-    public void visitFieldDeclaration(FieldDeclaration d) {
-        if (!d.getModifiers().contains(Modifier.STATIC) && !d.getModifiers().contains(Modifier.TRANSIENT)) {
-            TypeHelper typeInfo = new TypeHelper(d.getType());
-            String name = FieldHelper.javaSafe(d.getSimpleName());
-            String realName = FieldHelper.realName(name);
-            String keyTypeName = typeInfo.getKeyTypeName();        
-            String typeName = typeInfo.getFullName();
-            String typePackage = typeInfo.getPackageName();
-            String simpleTypeName = typeInfo.getSimpleName();
-            Field.Type fieldType = typeInfo.getFieldType();   
-            last.addField(new Field(name, realName, keyTypeName, typePackage, 
-                    typeName, simpleTypeName, fieldType));
-        }
-    }
     
     @Override
     public void visitMethodDeclaration(MethodDeclaration d) {
         if (!d.getModifiers().contains(Modifier.STATIC)){
-            // TODO
+            if (d.getParameters().isEmpty()){
+                if (d.getSimpleName().startsWith("get")){
+                    String name = StringUtils.uncapitalize(d.getSimpleName().substring(3));
+                    addField(name, new TypeHelper(d.getReturnType()));
+                }else if (d.getSimpleName().startsWith("is")){
+                    String name = StringUtils.uncapitalize(d.getSimpleName().substring(2));
+                    addField(name, new TypeHelper(d.getReturnType()));
+                }
+            }
         }
     }
-
+            
 }

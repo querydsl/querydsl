@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
-import com.mysema.query.apt.general.GeneralProcessor;
 import com.mysema.query.apt.jpa.JpaProcessor;
 import com.mysema.query.apt.querydsl.QuerydslProcessor;
 import com.sun.mirror.apt.AnnotationProcessor;
@@ -26,14 +25,11 @@ import com.sun.mirror.declaration.AnnotationTypeDeclaration;
  * @author tiwe
  * @version $Id$
  */
-public class APTFactory implements AnnotationProcessorFactory {
+public class APTFactory implements AnnotationProcessorFactory, Constants {
     
     private static final Collection<String> supportedAnnotations = Arrays.asList(
-            GeneralProcessor.qdEntity,
-            GeneralProcessor.qdDto,
-            JpaProcessor.jpaEmbeddable,
-            JpaProcessor.jpaEntity,
-            JpaProcessor.jpaSuperClass            
+            qdEntity, qdDto,
+            jpaEntity, jpaSuperClass, jpaEmbeddable            
     );
 
     private static final Collection<String> supportedOptions = Collections.emptySet();

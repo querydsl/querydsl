@@ -29,9 +29,6 @@ import com.sun.mirror.declaration.Declaration;
  * @version $Id$
  */
 public abstract class GeneralProcessor implements AnnotationProcessor {
-
-    public static final String qdEntity= "com.mysema.query.annotations.Domain",
-        qdDto = "com.mysema.query.annotations.DTO";
     
     public static final FreeMarkerSerializer 
         DOMAIN_OUTER_TMPL = new FreeMarkerSerializer("/domain-as-outer-classes.ftl"),
