@@ -37,7 +37,9 @@ public interface Operation<OP,RT> {
         }
         public Expr<?>[] getArgs() {return args;}
         public Op<Boolean> getOperator() {return op;}  
-
+        public OBoolean clone(){
+            return new OBoolean(op, args.clone());
+        }
     }    
     
     /**
@@ -56,7 +58,10 @@ public interface Operation<OP,RT> {
             this(null, op, args);
         }
         public Expr<?>[] getArgs() {return args;}
-        public Op<OpType> getOperator() {return op;}         
+        public Op<OpType> getOperator() {return op;}
+        public OComparable<OpType,D> clone(){
+            return new OComparable<OpType,D>((Class<D>)getType(), op, args.clone());
+        }
     }
         
     /**
@@ -75,7 +80,10 @@ public interface Operation<OP,RT> {
             this(null, op, args);
         }
         public Expr<?>[] getArgs() {return args;}
-        public Op<OpType> getOperator() {return op;}       
+        public Op<OpType> getOperator() {return op;}    
+        public ONumber<OpType,D> clone(){
+            return new ONumber<OpType,D>((Class<D>)getType(), op, args.clone());
+        }
     }
     
     /**
@@ -90,6 +98,9 @@ public interface Operation<OP,RT> {
         }
         public Expr<?>[] getArgs() {return args;}
         public Op<String> getOperator() {return op;}    
+        public OString clone(){
+            return new OString(op, args.clone());
+        }
     }
     
     public static class OStringArray extends Expr<String[]> implements Operation<String,String[]>{
@@ -102,6 +113,9 @@ public interface Operation<OP,RT> {
         }
         public Expr<?>[] getArgs() {return args;}
         public Op<String> getOperator() {return op;}
+        public OStringArray clone(){
+            return new OStringArray(op, args.clone());
+        }
     }
     
 }

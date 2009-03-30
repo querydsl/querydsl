@@ -5,7 +5,10 @@
  */
 package com.mysema.query;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.util.Assert;
 
 /**
  * JoinExpression represents a join element in a Query instance
@@ -21,13 +24,13 @@ public class JoinExpression<T> {
     
     public JoinExpression(JoinType type, Expr<?> target) {
         this.type = type;
-        this.target = target;
+        this.target = Assert.notNull(target);
         this.metadata = null;
     }
     
     public JoinExpression(JoinType type, Expr<?> target, T metadata) {
         this.type = type;
-        this.target = target;
+        this.target = Assert.notNull(target);
         this.metadata = metadata;
     }
     
@@ -53,6 +56,25 @@ public class JoinExpression<T> {
     
     public String toString(){
         return type + " " + target;
+    }
+    
+    @Override
+    public int hashCode(){
+        return target.hashCode();
+    }
+    
+    @Override
+    public boolean equals(Object o){
+        if (o instanceof JoinExpression){
+            JoinExpression<?> j = (JoinExpression<?>)o;
+            return new EqualsBuilder()
+                .append(condition, j.condition)
+                .append(metadata, j.metadata)
+                .append(target, j.target)
+                .append(type, j.type).isEquals();
+        }else{
+            return false;
+        }
     }
     
 }

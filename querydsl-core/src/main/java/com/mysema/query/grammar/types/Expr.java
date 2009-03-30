@@ -24,7 +24,7 @@ import com.mysema.query.util.NumberUtil;
  * @author tiwe
  * @version $Id$
  */
-public abstract class Expr<D> {
+public abstract class Expr<D>{
         
     private final Class<? extends D> type;
     private String toString;
