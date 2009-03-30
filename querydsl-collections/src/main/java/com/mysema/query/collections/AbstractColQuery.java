@@ -137,7 +137,6 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
         return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);
     }
     
-    // TODO : this signature isn't right when used with custom iterator source
     public <A> SubType from(Expr<A> entity, A first, A... rest) {
         List<A> list = new ArrayList<A>(rest.length + 1);
         list.add(first);
@@ -145,7 +144,6 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
         return from(entity, list);
     }
 
-    // TODO : this signature isn't right when used with custom iterator source
     public <A> SubType from(Expr<A> entity, Iterable<? extends A> col) {
         alias(entity, col);
         query.from((Expr<?>)entity);

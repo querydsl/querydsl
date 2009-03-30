@@ -181,6 +181,10 @@ public class ColQueryTest extends AbstractQueryTest{
             assertEquals("null path in expression", e.getMessage());
         }
         
+        // 12
+        TestQuery query = query().from(cat, c1, c2).from(cat, c1, c2);
+        assertEquals(1, query.getMetadata().getJoins().size());
+        
     }
           
     @Test
