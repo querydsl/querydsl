@@ -103,7 +103,7 @@ public class TypeHelper {
                     fieldType = Field.Type.COMPARABLE;
                 }    
             }catch(Exception e){
-                throw new RuntimeException("error", e);
+                throw new RuntimeException(e.getMessage(), e);
             }            
         }
 

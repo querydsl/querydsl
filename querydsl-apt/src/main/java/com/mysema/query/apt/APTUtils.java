@@ -26,8 +26,7 @@ public class APTUtils {
         try {
             return new OutputStreamWriter(new FileOutputStream(file));
         } catch (FileNotFoundException e) {
-            String error = "Caught " + e.getClass().getName();
-            throw new RuntimeException(error, e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 

@@ -154,7 +154,7 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
                 serializer.serialize(model, writerFor(new File(
                         targetFolder, path)));
             } catch (Exception e) {
-                throw new RuntimeException("Caught exception", e);
+                throw new RuntimeException(e.getMessage(), e);
             }
         }
     }
