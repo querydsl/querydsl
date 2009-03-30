@@ -10,12 +10,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.Projectable;
 import com.mysema.query.QueryBase;
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.SqlJoinMeta;
@@ -30,7 +32,7 @@ import com.mysema.query.grammar.types.SubQuery;
  * @author tiwe
  * @version $Id$
  */
-public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends QueryBase<SqlJoinMeta,SubType>{
+public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends QueryBase<SqlJoinMeta,SubType> implements Projectable{
     
     private static final Logger logger = LoggerFactory.getLogger(AbstractSqlQuery.class);
     
@@ -56,10 +58,16 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
         this.ops = ops;
     }
     
-    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>...rest) throws SQLException{
+    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>...rest){
         select(expr1, expr2);
         select(rest);
-        return listMultiple();
+        try {
+            return listMultiple();
+        } catch (SQLException e) {
+            String error = "Caught " + e.getClass().getName();
+            logger.error(error, e);
+            throw new RuntimeException(error, e);
+        }
     }
     
     private List<Object[]> listMultiple() throws SQLException{
@@ -97,9 +105,15 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
         }
     }
         
-    public <RT> List<RT> list(Expr<RT> expr) throws SQLException{
+    public <RT> List<RT> list(Expr<RT> expr){
         select(expr);
-        return listSingle(expr);
+        try {
+            return listSingle(expr);
+        } catch (SQLException e) {
+            String error = "Caught " + e.getClass().getName();
+            logger.error(error, e);
+            throw new RuntimeException(error, e);
+        }
     }
     
     private <RT> List<RT> listSingle(Expr<RT> expr) throws SQLException{        
@@ -205,7 +219,7 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
         return serializer.toString();
     }
 
-    public long count() throws SQLException {
+    private long getCount() throws SQLException{
         forCountRow = true;  
         String queryString = toString();
         logger.debug("query : {}", queryString);
@@ -235,6 +249,16 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
             }            
         }        
     }
+    
+    public long count(){
+        try {
+            return getCount();
+        } catch (SQLException e) {
+            String error = "Caught " + e.getClass().getName();
+            logger.error(error, e);
+            throw new RuntimeException(error, e);
+        }
+    }
 
     public SubType limit(int i) {
         this.limit = i;
@@ -262,6 +286,21 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
             
         }
         
+    }
+
+    public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
+        // TODO : optimize
+        return list(e1, e2, rest).iterator();
+    }
+
+    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
+        // TODO : optimize
+        return list(projection).iterator();
+    }
+
+    public <RT> RT uniqueResult(Expr<RT> expr) {
+        List<RT> list = list(expr);
+        return !list.isEmpty() ? list.get(0) : null;
     }
 
 }
