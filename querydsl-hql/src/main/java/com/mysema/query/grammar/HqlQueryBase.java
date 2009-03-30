@@ -100,9 +100,8 @@ public abstract class HqlQueryBase<SubType extends HqlQueryBase<SubType>> extend
         return _this;
     }
     
-    public SubType fullJoin(EEntity<?> o) {
-        // ?!?
-        joins.add(new JoinExpression<HqlJoinMeta>(JoinType.INNERJOIN,o));
+    public SubType fullJoin(HqlJoinMeta meta, EEntity<?> o) {
+        joins.add(new JoinExpression<HqlJoinMeta>(JoinType.FULLJOIN, o, meta));
         return _this;
     }
 

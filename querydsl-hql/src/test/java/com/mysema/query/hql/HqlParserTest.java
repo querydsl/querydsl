@@ -103,7 +103,8 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
         from(cat).leftJoin(cat.mate.kittens.as(kittens)).parse();
         
 //        parse( "from Formula form full join form.parameter param" );
-        from(form).fullJoin(form.parameter.as(param)).parse();
+        // HSQLDB doesn't support full join
+//        from(form).fullJoin(form.parameter.as(param)).parse();
         
 //        parse( "from eg.Cat as cat join cat.mate as mate left join cat.kittens as kitten" );
         from(cat).join(cat.mate.as(mate)).leftJoin(cat.kittens.as(kitten)).parse();
@@ -129,7 +130,8 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
         from($(c)).leftJoin($(c.getMate().getKittens()).as($(k))).parse();
         
 //        parse( "from Formula form full join form.parameter param" );
-        from($(f)).fullJoin($(f.getParameter()).as($(p))).parse();
+        // HSQLDB doesn't support full join
+//        from($(f)).fullJoin($(f.getParameter()).as($(p))).parse();
         
 //        parse( "from eg.Cat as cat join cat.mate as mate left join cat.kittens as kitten" );
         from($(c)).innerJoin($(c.getMate()).as($(m)))
