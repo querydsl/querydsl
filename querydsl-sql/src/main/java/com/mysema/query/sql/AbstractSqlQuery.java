@@ -66,7 +66,7 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
         } catch (SQLException e) {
             String error = "Caught " + e.getClass().getName();
             logger.error(error, e);
-            throw new RuntimeException(error, e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
     
@@ -81,7 +81,7 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
             } catch (Exception e) {
                 String error = "Caught " + e.getClass().getName();
                 logger.error(error, e);
-                throw new RuntimeException(error, e);
+                throw new RuntimeException(e.getMessage(), e);
             }
         }
         ResultSet rs = stmt.executeQuery();   
@@ -112,7 +112,7 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
         } catch (SQLException e) {
             String error = "Caught " + e.getClass().getName();
             logger.error(error, e);
-            throw new RuntimeException(error, e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
     
@@ -127,7 +127,7 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
             } catch (Exception e) {
                 String error = "Caught " + e.getClass().getName();
                 logger.error(error, e);
-                throw new RuntimeException(error, e);
+                throw new RuntimeException(e.getMessage(), e);
             }
         }        
         ResultSet rs = stmt.executeQuery();        
@@ -146,7 +146,7 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
                     } catch (Exception e) {
                         String error = "Caught " + e.getClass().getName();
                         logger.error(error, e);
-                        throw new RuntimeException(error, e);
+                        throw new RuntimeException(e.getMessage(), e);
                     }
                 }
             }else{
@@ -234,7 +234,7 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
                 } catch (Exception e) {
                     String error = "Caught " + e.getClass().getName();
                     logger.error(error, e);
-                    throw new RuntimeException(error, e);
+                    throw new RuntimeException(e.getMessage(), e);
                 }
             }        
             rs = stmt.executeQuery();   
@@ -256,7 +256,7 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
         } catch (SQLException e) {
             String error = "Caught " + e.getClass().getName();
             logger.error(error, e);
-            throw new RuntimeException(error, e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 

@@ -49,8 +49,7 @@ public class Projection extends Path.PEntity<Projection>{
             _numberMethod.setAccessible(true);
             _comparableMethod.setAccessible(true);
         } catch (Exception e) {
-            String error = "Caught " + e.getClass().getName();
-            throw new RuntimeException(error, e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
     
@@ -73,8 +72,7 @@ public class Projection extends Path.PEntity<Projection>{
                 cl = cl.getSuperclass();
             }   
         }catch(Exception e){
-            String error = "Caught " + e.getClass().getName();
-            throw new RuntimeException(error, e);
+            throw new RuntimeException(e.getMessage(), e);
         }                
         this.entityName = entityName;        
     }
@@ -154,11 +152,9 @@ public class Projection extends Path.PEntity<Projection>{
                 entityName);
             
         }catch (IllegalAccessException e) {
-            String error = "Caught " + e.getClass().getName();
-            throw new RuntimeException(error, e);
+            throw new RuntimeException(e.getMessage(), e);
         }catch (SecurityException e) {
-            String error = "Caught " + e.getClass().getName();
-            throw new RuntimeException(error, e);
+            throw new RuntimeException(e.getMessage(), e);
         }        
     }
     

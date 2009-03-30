@@ -423,7 +423,7 @@ public class SqlOps extends OperationPatterns {
                     field.set(this, field.get(this).toString().replace('\n', ' '));    
                 }                
             } catch (Exception e) {
-                throw new RuntimeException("error", e);
+                throw new RuntimeException(e.getMessage(), e);
             }
         }
         return this;
@@ -438,7 +438,7 @@ public class SqlOps extends OperationPatterns {
                     field.set(this, field.get(this).toString().toUpperCase());    
                 }                
             } catch (Exception e) {
-                throw new RuntimeException("error", e);
+                throw new RuntimeException(e.getMessage(), e);
             }
         }
         return this;
@@ -453,7 +453,7 @@ public class SqlOps extends OperationPatterns {
                     field.set(this, field.get(this).toString().toUpperCase());    
                 }                
             } catch (Exception e) {
-                throw new RuntimeException("error", e);
+                throw new RuntimeException(e.getMessage(), e);
             }
         }
         return this;
