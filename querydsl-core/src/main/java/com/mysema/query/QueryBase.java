@@ -7,7 +7,9 @@ package com.mysema.query;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
@@ -24,11 +26,13 @@ public class QueryBase<JoinMeta,SubType extends QueryBase<JoinMeta,SubType>> imp
     
     protected final CascadingBoolean having = new CascadingBoolean();
     
+    protected final Set<Expr<?>> exprInJoins = new HashSet<Expr<?>>();
     protected final List<JoinExpression<JoinMeta>> joins = new ArrayList<JoinExpression<JoinMeta>>();
     protected final List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
     protected final List<Expr<?>> select = new ArrayList<Expr<?>>();
     protected final CascadingBoolean where = new CascadingBoolean();
     protected void clear(){
+        exprInJoins.clear();
         joins.clear();
         groupBy.clear();
         having.clear();
@@ -44,9 +48,12 @@ public class QueryBase<JoinMeta,SubType extends QueryBase<JoinMeta,SubType>> imp
     
     private final Metadata metadata = new Metadata();
     
-    public SubType from(Expr<?>... o) {
+    public SubType from(Expr<?>... o) {        
         for (Expr<?> expr : o){
-            joins.add(new JoinExpression<JoinMeta>(JoinType.DEFAULT,expr));
+            if (!exprInJoins.contains(expr)){
+                joins.add(new JoinExpression<JoinMeta>(JoinType.DEFAULT,expr));
+                exprInJoins.add(expr);
+            }            
         }
         return _this;
     }
