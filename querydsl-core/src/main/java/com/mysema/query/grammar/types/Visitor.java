@@ -46,7 +46,7 @@ public abstract class Visitor<T extends Visitor<T>> {
                 }
                 return method;
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(e.getMessage(), e);
             }
         }
 

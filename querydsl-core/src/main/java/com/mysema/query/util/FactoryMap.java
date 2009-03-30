@@ -45,7 +45,7 @@ public abstract class FactoryMap<V>{
                 cache.put(key, value);
                 return value;
             } catch (Exception e) {
-                throw new RuntimeException("error", e);
+                throw new RuntimeException(e.getMessage(), e);
             }            
         }
     }
