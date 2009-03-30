@@ -87,7 +87,7 @@ public abstract class HqlQueryBase<SubType extends HqlQueryBase<SubType>> extend
         } catch (Exception e) {
             String error = "Caught " + e.getClass().getName();
             logger.error(error, e);
-            throw new RuntimeException(error, e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
     
