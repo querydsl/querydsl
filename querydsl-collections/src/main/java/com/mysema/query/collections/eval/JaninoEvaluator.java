@@ -33,7 +33,7 @@ public class JaninoEvaluator implements Evaluator{
             Class<?> type = expr.getType() != null ? expr.getType() : Object.class;
             ev = new JavaSerializer(ops).handle(expr).createExpressionEvaluator(sources, type);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
     
@@ -41,7 +41,11 @@ public class JaninoEvaluator implements Evaluator{
         try {
             return (T)ev.evaluate(args);
         } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
+            if (e.getCause() instanceof NullPointerException){
+                throw new IllegalArgumentException("null path in expression");
+            }else{
+                throw new RuntimeException(e.getMessage(), e);    
+            }            
         }
     }
 

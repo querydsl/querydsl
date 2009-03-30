@@ -129,7 +129,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
         try {
             return query.count();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
@@ -427,7 +427,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
             try {
                 return createIterator(projection);
             } catch (Exception e) {
-                throw new RuntimeException("error", e);
+                throw new RuntimeException(e.getMessage(), e);
             }
         }
 

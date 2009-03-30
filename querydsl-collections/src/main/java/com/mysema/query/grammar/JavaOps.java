@@ -73,8 +73,7 @@ public class JavaOps extends OperationPatterns {
                 add(op, "Math."+getPattern(op));
             }
         } catch (Exception e) {
-            String error = "Caught " + e.getClass().getName();
-            throw new RuntimeException(error, e);
+            throw new RuntimeException(e.getMessage(), e);
         }        
         add(Ops.OpMath.MOD, "%s %% %s");
         

@@ -112,7 +112,7 @@ public class FilteringMultiIterator extends MultiIterator implements IteratorSou
             } catch (Exception e) {
                 String error = "Caught " + e.getClass().getName();
                 logger.error(error, e);
-                throw new RuntimeException(error, e);
+                throw new RuntimeException(e.getMessage(), e);
             }
         }
         return this;

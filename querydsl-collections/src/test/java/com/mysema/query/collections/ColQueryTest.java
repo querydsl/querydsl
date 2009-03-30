@@ -171,7 +171,16 @@ public class ColQueryTest extends AbstractQueryTest{
         assertNotNull($(c.getKittensByName()));
         assertNotNull($(c.getKittensByName().get("Kitty")));
         from(c,cats)
-        .where($(c.getKittensByName().get("Kitty")).isnotnull()).list(cat);        
+        .where($(c.getKittensByName().get("Kitty")).isnotnull()).list(cat);       
+        
+        // 11
+        try{
+            from(cat,cats).where(cat.mate.alive).list(cat);
+            fail("expected RuntimeException");
+        }catch(RuntimeException e){
+            assertEquals("null path in expression", e.getMessage());
+        }
+        
     }
           
     @Test
