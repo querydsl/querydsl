@@ -58,7 +58,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
     @Test
     public void testSum() throws RecognitionException, TokenStreamException{
         from(cat)
-            .select(sum(cat.kittens.size())).parse();
+            .select(sum(cat.kittens.size())).parse();    
         
         from(cat)
             .where(sum(cat.kittens.size()).gt(0))
