@@ -40,6 +40,8 @@ public class QueryBase<JoinMeta,SubType extends QueryBase<JoinMeta,SubType>> imp
     @SuppressWarnings("unchecked")
     private SubType _this = (SubType)this;
     
+    protected String toString;
+    
     private final Metadata metadata = new Metadata();
     
     public SubType from(Expr<?>... o) {
@@ -108,7 +110,7 @@ public class QueryBase<JoinMeta,SubType extends QueryBase<JoinMeta,SubType>> imp
     protected EBoolean normalize(EBoolean e){
         return e;
     }
-
+    
     /**
      * The Class Metadata.
      */

@@ -9,19 +9,81 @@ import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
 
 /**
- * Query provides a the query interface of the fluent query DSL.
+ * Query provides a  query interface of the fluent query DSL.
  * 
  * @author tiwe
  * @version $Id$
  */
 public interface Query<SubType extends Query<SubType>>{
-    SubType from(Expr<?>... o);
-    SubType innerJoin(Expr<?> o);
-    SubType join(Expr<?> o);
-    SubType fullJoin(Expr<?> o);
+    /**
+     * use the given query sources for the query
+     * 
+     * @param sources
+     * @return the Query itself
+     */
+    SubType from(Expr<?>... sources);
+    
+    /**
+     * inner join the given source
+     * 
+     * @param source
+     * @return the Query itself
+     */
+    SubType innerJoin(Expr<?> source);
+    
+    /**
+     * join the given source
+     * 
+     * @param source
+     * @return the Query itself
+     */
+    SubType join(Expr<?> source);
+    
+    /**
+     * full join the given source
+     * 
+     * @param source
+     * @return the Query itself
+     */
+    SubType fullJoin(Expr<?> source);
+    
+    /**
+     * left join the given source
+     * 
+     * @param source
+     * @return the Query itself
+     */
     SubType leftJoin(Expr<?> o);
+
+    /**
+     * set the join condition for that last supplied join source
+     * 
+     * @param o
+     * @return the Query itself
+     */
     SubType on(Expr.EBoolean o);    
+    
+    /**
+     * set group by aggregation parameters
+     * 
+     * @param o
+     * @return the Query itself
+     */
     SubType groupBy(Expr<?>... o);
+    
+    /**
+     * set the constraints of the group by aggreation
+     * 
+     * @param o
+     * @return the Query itself
+     */
     SubType having(Expr.EBoolean... o);
+    
+    /**
+     * set the order constraints of the query
+     * 
+     * @param o
+     * @return the Query itself
+     */
     SubType orderBy(OrderSpecifier<?>... o);
 }

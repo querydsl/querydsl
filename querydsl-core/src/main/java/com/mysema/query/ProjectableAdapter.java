@@ -26,16 +26,16 @@ public abstract class ProjectableAdapter implements Projectable{
         return projectable.count();
     }
 
-    public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
-        return projectable.iterate(e1, e2, rest);
+    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+        return projectable.iterate(first, second, rest);
     }
 
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {
         return projectable.iterate(projection);
     }
 
-    public List<Object[]> list(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
-        return projectable.list(e1, e2, rest);
+    public List<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+        return projectable.list(first, second, rest);
     }
 
     public <RT> List<RT> list(Expr<RT> projection) {

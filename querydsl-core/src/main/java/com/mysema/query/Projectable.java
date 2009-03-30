@@ -11,7 +11,7 @@ import com.mysema.query.grammar.types.Expr;
  * @author tiwe
  * @version $Id$
  */
-public interface Projectable {
+public interface Projectable {    
     /**
      * return the amount of matched rows
      */
@@ -19,28 +19,50 @@ public interface Projectable {
 
     /**
      * iterate over the results with the given projection
+     * 
+     * @param first
+     * @param second
+     * @param rest
+     * @return an Iterator over the projection
      */
-    Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest);
+    Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest);
 
     /**
      * iterate over the results with the given projection
+     * 
+     * @param <RT> generic type of the Iteratpr
+     * @param projection
+     * @return an Iterator over the projection
      */
     <RT> Iterator<RT> iterate(Expr<RT> projection);
 
     /**
      * list the results with the given projection
+     * 
+     * @param first
+     * @param second
+     * @param rest rest
+     * @return a List over the projection
      */
-    List<Object[]> list(Expr<?> e1, Expr<?> e2, Expr<?>... rest);
+    List<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest);
 
     /**
      * list the results with the given projection
+     * 
+     * @param <RT> generic type of the List
+     * @param projection
+     * @return a List over the projection
      */
     <RT> List<RT> list(Expr<RT> projection);
 
     /**
-     * return a unique result for the given projection or null for an empty result
+     * return a unique result for the given projection
+     * 
+     * @param <RT> return type
+     * @param projection
+     * @return the result or null for an empty result
      */
-    <RT> RT uniqueResult(Expr<RT> expr);
+    <RT> RT uniqueResult(Expr<RT> projection);
 
 
 }
