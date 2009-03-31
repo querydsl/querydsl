@@ -18,9 +18,11 @@ import com.mysema.query.util.Assert;
  * @author tiwe
  * @version $Id$
  */
-public class CustomQueryable extends ProjectableAdapter{
+public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends ProjectableAdapter{
     
     private ColQuery innerQuery;
+    
+    private SubType _this = (SubType)this;
     
     public CustomQueryable(final IteratorSource iteratorSource){
         Assert.notNull(iteratorSource);
@@ -33,16 +35,16 @@ public class CustomQueryable extends ProjectableAdapter{
         setProjectable(innerQuery);
     }
     
-    public CustomQueryable where(Expr.EBoolean... o) {
+    public SubType where(Expr.EBoolean... o) {
         innerQuery.where(o);
-        return this;
+        return _this;
     }
 
-    public CustomQueryable from(Expr<?>... o) {
+    public SubType from(Expr<?>... o) {
         for (Expr<Object> obj : (Expr<Object>[])o){
             innerQuery.from(obj, Collections.<Object>emptyList());
         }
-        return this;
+        return _this;
     }
     
     
