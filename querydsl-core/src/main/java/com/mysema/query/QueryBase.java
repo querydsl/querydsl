@@ -46,7 +46,26 @@ public class QueryBase<JoinMeta,SubType extends QueryBase<JoinMeta,SubType>> imp
     
     protected String toString;
     
-    private final Metadata metadata = new Metadata();
+    private final QueryMetadata<JoinMeta> metadata = new QueryMetadata<JoinMeta>(){
+        public List<Expr<?>> getGroupBy() {
+            return groupBy;
+        }
+        public EBoolean getHaving() {
+            return having.create();
+        }
+        public List<JoinExpression<JoinMeta>> getJoins() {
+            return joins;
+        }
+        public List<OrderSpecifier<?>> getOrderBy() {
+            return orderBy;
+        }
+        public List<Expr<?>> getSelect() {
+            return select;
+        }
+        public EBoolean getWhere() {
+            return where.create();
+        }
+    };
     
     public SubType from(Expr<?>... o) {        
         for (Expr<?> expr : o){
@@ -110,7 +129,7 @@ public class QueryBase<JoinMeta,SubType extends QueryBase<JoinMeta,SubType>> imp
         return _this;
     }
         
-    public Metadata getMetadata(){
+    public QueryMetadata<JoinMeta> getMetadata(){
         return metadata;
     }
     
@@ -118,28 +137,5 @@ public class QueryBase<JoinMeta,SubType extends QueryBase<JoinMeta,SubType>> imp
         return e;
     }
     
-    /**
-     * The Class Metadata.
-     */
-    public class Metadata{
-        public List<Expr<?>> getGroupBy() {
-            return groupBy;
-        }
-        public EBoolean getHaving() {
-            return having.create();
-        }
-        public List<JoinExpression<JoinMeta>> getJoins() {
-            return joins;
-        }
-        public List<OrderSpecifier<?>> getOrderBy() {
-            return orderBy;
-        }
-        public List<Expr<?>> getSelect() {
-            return select;
-        }
-        public EBoolean getWhere() {
-            return where.create();
-        }
-    }
 
 }

@@ -18,4 +18,8 @@ import com.mysema.query.grammar.types.Expr;
 public class OrderSpecifier<A extends Comparable<? super A>> {
     public Order order;
     public Expr<A> target;
+    
+    public String toString(){
+        return target + " " + order;
+    }
 }

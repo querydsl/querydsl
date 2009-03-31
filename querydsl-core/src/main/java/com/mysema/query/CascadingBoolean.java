@@ -36,5 +36,9 @@ public class CascadingBoolean {
     public Expr.EBoolean create(){
         return expr;
     }
+    
+    public String toString(){
+        return expr != null ? expr.toString() : super.toString();
+    }
 
 }

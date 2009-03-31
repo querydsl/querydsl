@@ -12,5 +12,14 @@ package com.mysema.query.grammar;
  * @version $Id$
  */
 public enum Order {
-    ASC, DESC
+    ASC{
+        public String toString(){
+            return "asc";
+        }
+    }, 
+    DESC{
+        public String toString(){
+            return "desc";
+        }
+    }
 }
