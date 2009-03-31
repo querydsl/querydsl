@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.mysema.query.JoinExpression;
-import com.mysema.query.QueryBase;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.*;
 import com.mysema.query.grammar.types.Alias.ASimple;
@@ -40,10 +40,10 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
     }
     
     public void serialize(
-            List<Expr<?>> select, 
+            List<? extends Expr<?>> select, 
             List<JoinExpression<SqlJoinMeta>> joins,
             Expr.EBoolean where, 
-            List<Expr<?>> groupBy, 
+            List<? extends Expr<?>> groupBy, 
             Expr.EBoolean having,
             List<OrderSpecifier<?>> orderBy, 
             int limit, 
@@ -206,7 +206,7 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
     }
     
     protected void visit(SubQuery<SqlJoinMeta,?> query) {
-        QueryBase<SqlJoinMeta,?>.Metadata md = query.getQuery().getMetadata();
+        QueryMetadata<SqlJoinMeta> md = query.getQuery().getMetadata();
         append("(");
         serialize(md.getSelect(), md.getJoins(),
             md.getWhere(), md.getGroupBy(), md.getHaving(), 
