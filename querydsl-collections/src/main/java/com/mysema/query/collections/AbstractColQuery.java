@@ -19,6 +19,7 @@ import org.apache.commons.collections15.iterators.IteratorChain;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.Projectable;
 import com.mysema.query.QueryBase;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.iterators.FilteringMultiIterator;
 import com.mysema.query.collections.iterators.MultiIterator;
@@ -150,7 +151,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
         return _this;
     }    
     
-    public InnerQuery.Metadata getMetadata(){
+    public QueryMetadata<?> getMetadata(){
         return query.getMetadata();
     }
     
