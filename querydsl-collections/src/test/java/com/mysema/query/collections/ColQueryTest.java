@@ -149,7 +149,7 @@ public class ColQueryTest extends AbstractQueryTest{
         
         // 6
         from(c,cats)
-        .where($(c.getKittens().contains(other)))
+        .where($(c.getKittens()).contains(other))
         .list(c).iterator();
         
         // 7
