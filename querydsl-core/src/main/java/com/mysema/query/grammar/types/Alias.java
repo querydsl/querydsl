@@ -5,7 +5,6 @@
  */
 package com.mysema.query.grammar.types;
 
-import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.types.Expr.EEntity;
 import com.mysema.query.grammar.types.Expr.ESimple;
 import com.mysema.query.grammar.types.Path.PEntity;
@@ -62,9 +61,6 @@ public interface Alias {
             this.from = from;
             this.to = to;
         }
-        public Expr<D> as(String to) {
-            return Grammar.as(this, to);
-        }   
         public Expr<?> getFrom() {return from;}
         public String getTo() {return to;}  
     }

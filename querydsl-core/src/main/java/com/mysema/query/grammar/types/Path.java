@@ -12,6 +12,7 @@ import static com.mysema.query.grammar.types.PathMetadata.forProperty;
 import static com.mysema.query.grammar.types.PathMetadata.forSize;
 
 import java.lang.reflect.Array;
+import java.util.Map;
 
 import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.types.Expr.*;
@@ -29,6 +30,7 @@ public interface Path<C> {
     Path<?> getRoot();
     EBoolean isnotnull();
     EBoolean isnull();
+    Class<? extends C> getType();
                 
     public static abstract class PArray<D> extends Expr<D[]> implements Path<D[]>, CollectionType<D>{
         protected final Class<D[]> arrayType;
@@ -353,7 +355,6 @@ public interface Path<C> {
         public Alias.AEntity<D> as(PEntity<D> to) {return Grammar.as(this, to);}
         public String getEntityName(){ return entityName; }
         public PathMetadata<?> getMetadata() {return metadata;}
-        public EBoolean in(CollectionType<D> right){return Grammar.in(this, right);}
         public EBoolean isnotnull() {
             return isnotnull == null ? isnotnull = Grammar.isnotnull(this) : isnotnull; 
         }
@@ -435,7 +436,7 @@ public interface Path<C> {
         
     }
 
-    public static class PEntityMap<K,V> extends EEntity<PMap<K,V>> implements PMap<K,V>{
+    public static class PEntityMap<K,V> extends EEntity<Map<K,V>> implements PMap<K,V>{
         private EBoolean isnull, isnotnull;
         private final Class<K> keyType;
         private final PathMetadata<?> metadata;

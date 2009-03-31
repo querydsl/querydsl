@@ -5,6 +5,8 @@
  */
 package com.mysema.query.grammar;
 
+import java.util.Collection;
+
 import com.mysema.query.grammar.Ops.OpNumberAgg;
 import com.mysema.query.grammar.types.Alias;
 import com.mysema.query.grammar.types.CollectionType;
@@ -466,10 +468,24 @@ public class Grammar extends Factory{
      * @param right
      * @return
      */    
-    public static <A> EBoolean in(A left, CollectionType<A> right){
+    public static <A> EBoolean in(A left, CollectionType<? extends A> right){
         return createBoolean(Ops.IN, createConstant(left), (Expr<?>)right);
     }
 
+    /**
+     * Expr : left in right
+     *         OR
+     *        right contains left
+     * 
+     * @param <A>
+     * @param left
+     * @param right
+     * @return
+     */    
+    public static <A> EBoolean in(Expr<A> left, Collection<? extends A> right){
+        return createBoolean(Ops.IN, left, createConstant(right));
+    }
+    
     /**
      * Expr : left in rest
      *         OR
@@ -785,7 +801,7 @@ public class Grammar extends Factory{
      * @param rest
      * @return
      */    
-    public static <A extends Comparable<? super A>> EBoolean notIn(Expr<A> left, A... rest) {
+    public static <A> EBoolean notIn(Expr<A> left, A... rest) {
         return createBoolean(Ops.NOTIN, left, createConstant(rest));
     }
     
@@ -797,7 +813,7 @@ public class Grammar extends Factory{
      * @param right
      * @return
      */
-    public static <A> EBoolean notIn(Expr<A> left, CollectionType<A> right){
+    public static <A> EBoolean notIn(Expr<A> left, CollectionType<? extends A> right){
         return createBoolean(Ops.NOTIN, left, (Expr<?>)right);
     }
 
