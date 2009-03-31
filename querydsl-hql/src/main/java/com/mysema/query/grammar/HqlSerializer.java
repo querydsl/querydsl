@@ -10,7 +10,7 @@ import static com.mysema.query.grammar.types.PathMetadata.PROPERTY;
 import java.util.List;
 
 import com.mysema.query.JoinExpression;
-import com.mysema.query.QueryBase;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.*;
 import com.mysema.query.grammar.types.Expr.EConstant;
@@ -36,8 +36,8 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         super(ops);
     }
            
-    public void serialize(List<Expr<?>> select, List<JoinExpression<HqlJoinMeta>> joins,
-        Expr.EBoolean where, List<Expr<?>> groupBy, Expr.EBoolean having,
+    public void serialize(List<? extends Expr<?>> select, List<JoinExpression<HqlJoinMeta>> joins,
+        Expr.EBoolean where, List<? extends Expr<?>> groupBy, Expr.EBoolean having,
         List<OrderSpecifier<?>> orderBy, boolean forCountRow){
          if (forCountRow){
             append("select count(*)\n");
@@ -173,7 +173,7 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
     }
 
     protected void visit(SubQuery<HqlJoinMeta,?> query) {
-        QueryBase<HqlJoinMeta,?>.Metadata md = query.getQuery().getMetadata();
+        QueryMetadata<HqlJoinMeta> md = query.getQuery().getMetadata();
         append("(");
         serialize(md.getSelect(), md.getJoins(),
             md.getWhere(), md.getGroupBy(), md.getHaving(), 
