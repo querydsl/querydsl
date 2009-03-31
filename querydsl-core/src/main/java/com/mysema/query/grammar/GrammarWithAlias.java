@@ -17,10 +17,6 @@ import com.mysema.query.alias.AliasFactory;
 import com.mysema.query.alias.SimpleAliasFactory;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.PathMetadata;
-import com.mysema.query.grammar.types.Expr.EBoolean;
-import com.mysema.query.grammar.types.Expr.EComparable;
-import com.mysema.query.grammar.types.Expr.ENumber;
-import com.mysema.query.grammar.types.Expr.EString;
 import com.mysema.query.grammar.types.Path.*;
 
 /**
@@ -49,47 +45,47 @@ public class GrammarWithAlias extends Grammar{
         aliasFactory.reset();        
     }
     
-    public static EBoolean $(Boolean arg){
+    public static PBoolean $(Boolean arg){
         return exprFactory.createBoolean(arg);
     }
     
-    public static <D extends Comparable<? super D>> EComparable<D> $(D arg){
+    public static <D extends Comparable<? super D>> PComparable<D> $(D arg){
         return exprFactory.createComparable(arg);
     }
     
-    public static ENumber<BigDecimal> $(BigDecimal arg){
+    public static PNumber<BigDecimal> $(BigDecimal arg){
         return exprFactory.createNumber(arg);
     }
     
-    public static ENumber<BigInteger> $(BigInteger arg){
+    public static PNumber<BigInteger> $(BigInteger arg){
         return exprFactory.createNumber(arg);
     }
     
-    public static ENumber<Byte> $(Byte arg){
+    public static PNumber<Byte> $(Byte arg){
         return exprFactory.createNumber(arg);
     }
     
-    public static ENumber<Double> $(Double arg){
+    public static PNumber<Double> $(Double arg){
         return exprFactory.createNumber(arg);
     }
     
-    public static ENumber<Float> $(Float arg){
+    public static PNumber<Float> $(Float arg){
         return exprFactory.createNumber(arg);
     }
     
-    public static ENumber<Integer> $(Integer arg){
+    public static PNumber<Integer> $(Integer arg){
         return exprFactory.createNumber(arg);
     }
     
-    public static ENumber<Long> $(Long arg){
+    public static PNumber<Long> $(Long arg){
         return exprFactory.createNumber(arg);
     }
     
-    public static ENumber<Short> $(Short arg){
+    public static PNumber<Short> $(Short arg){
         return exprFactory.createNumber(arg);
     }    
     
-    public static EString $(String arg){
+    public static PString $(String arg){
         return exprFactory.createString(arg);
     }
 

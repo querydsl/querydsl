@@ -22,10 +22,12 @@ public class JoinExpression<T> {
     private final JoinType type;
     private final T metadata;
     
+    public JoinExpression(Expr<?> target){
+        this(JoinType.DEFAULT, target, null);
+    }
+    
     public JoinExpression(JoinType type, Expr<?> target) {
-        this.type = type;
-        this.target = Assert.notNull(target);
-        this.metadata = null;
+        this(type, target, null);
     }
     
     public JoinExpression(JoinType type, Expr<?> target, T metadata) {
@@ -55,7 +57,12 @@ public class JoinExpression<T> {
     }
     
     public String toString(){
-        return type + " " + target;
+        StringBuilder builder = new StringBuilder();
+        builder.append(type).append(" ").append(target);
+        if (condition != null){
+            builder.append(" ON ").append(condition);
+        }
+        return builder.toString();
     }
     
     @Override

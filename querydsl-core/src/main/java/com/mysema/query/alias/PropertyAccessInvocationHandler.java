@@ -132,10 +132,6 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
            }
            aliasFactory.setCurrent(propToExpr.get(propKey));
             
-        }else if (isContains(method)){    
-            rv = false;
-            aliasFactory.setCurrent(Grammar.in(args[0], (CollectionType<Object>)path));
-            
         }else if (isToString(method)){
             rv = path.toString();
             
@@ -155,10 +151,6 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         return checkMethod(method, "toString", 0, String.class);
     }
     
-    private boolean isContains(Method method){
-        return checkMethod(method, "contains", 1, boolean.class);
-    }
-
     private boolean isGetMappedPath(Method method){
         return checkMethod(method, "__mappedPath", 0, PEntity.class);
     }

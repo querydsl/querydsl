@@ -115,7 +115,7 @@ public class SimpleExprFactory implements ExprFactory {
         }    
     });
     
-    private final Map<String,PString> strToExtPath = new PathFactory<String,PString>(new Transformer<String,PString>(){
+    private final Map<String,PString> strToPath = new PathFactory<String,PString>(new Transformer<String,PString>(){
         public PString transform(String str) {
             return new PString(md());
         }        
@@ -125,7 +125,7 @@ public class SimpleExprFactory implements ExprFactory {
         throw new UnsupportedOperationException();
     }
     
-    public EBoolean createBoolean(Boolean arg){
+    public PBoolean createBoolean(Boolean arg){
         return arg.booleanValue() ? btrue : bfalse;
     }
     
@@ -139,13 +139,13 @@ public class SimpleExprFactory implements ExprFactory {
     }
     
     @SuppressWarnings("unchecked")
-    public <D extends Comparable<? super D>> EComparable<D> createComparable(D arg){
-        return (EComparable<D>) comToPath.get(arg);
+    public <D extends Comparable<? super D>> PComparable<D> createComparable(D arg){
+        return (PComparable<D>) comToPath.get(arg);
     }
     
     @SuppressWarnings("unchecked")
-    public <D extends Number & Comparable<? super D>> ENumber<D> createNumber(D arg) {
-        return (ENumber<D>) numToPath.get(arg);
+    public <D extends Number & Comparable<? super D>> PNumber<D> createNumber(D arg) {
+        return (PNumber<D>) numToPath.get(arg);
     }
     
     @SuppressWarnings("unchecked")
@@ -168,8 +168,8 @@ public class SimpleExprFactory implements ExprFactory {
         return (PEntityList<D>) elToPath.get(arg);
     }
 
-    public EString createString(String arg){
-        return StringUtils.isEmpty(arg) ? str : strToExtPath.get(arg);
+    public PString createString(String arg){
+        return StringUtils.isEmpty(arg) ? str : strToPath.get(arg);
     }
     
     public PStringArray createStringArray(String[] args){

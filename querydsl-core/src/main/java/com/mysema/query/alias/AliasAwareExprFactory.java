@@ -11,10 +11,6 @@ import java.util.Map;
 
 import com.mysema.query.SimpleExprFactory;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.EBoolean;
-import com.mysema.query.grammar.types.Expr.EComparable;
-import com.mysema.query.grammar.types.Expr.ENumber;
-import com.mysema.query.grammar.types.Expr.EString;
 import com.mysema.query.grammar.types.Path.*;
 
 /**
@@ -43,8 +39,8 @@ public class AliasAwareExprFactory extends SimpleExprFactory{
         }        
     }
     
-    public EBoolean createBoolean(Boolean arg){
-        EBoolean rv = aliasFactory.<PBoolean>getCurrentAndReset();
+    public PBoolean createBoolean(Boolean arg){
+        PBoolean rv = aliasFactory.<PBoolean>getCurrentAndReset();
         return rv != null ? rv : super.createBoolean(arg);
     }
     
@@ -58,13 +54,13 @@ public class AliasAwareExprFactory extends SimpleExprFactory{
         return rv != null ? rv : super.createEntityCollection(arg);
     }
     
-    public <D extends Comparable<? super D>> EComparable<D> createComparable(D arg){
-        EComparable<D> rv = aliasFactory.<EComparable<D>>getCurrentAndReset();
+    public <D extends Comparable<? super D>> PComparable<D> createComparable(D arg){
+        PComparable<D> rv = aliasFactory.<PComparable<D>>getCurrentAndReset();
         return rv != null ? rv : super.createComparable(arg);
     }
     
-    public <D extends Number & Comparable<? super D>> ENumber<D> createNumber(D arg){
-        ENumber<D> rv = aliasFactory.<ENumber<D>>getCurrentAndReset();
+    public <D extends Number & Comparable<? super D>> PNumber<D> createNumber(D arg){
+        PNumber<D> rv = aliasFactory.<PNumber<D>>getCurrentAndReset();
         return rv != null ? rv : super.createNumber(arg);
     }
     
@@ -95,8 +91,8 @@ public class AliasAwareExprFactory extends SimpleExprFactory{
         return rv != null ? rv : super.createEntityList(arg);
     }
     
-    public EString createString(String arg){
-        EString rv = aliasFactory.<EString>getCurrentAndReset();
+    public PString createString(String arg){
+        PString rv = aliasFactory.<PString>getCurrentAndReset();
         return rv != null ? rv : super.createString(arg);
     }
     
