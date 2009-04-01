@@ -361,7 +361,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
                 // TODO : handle deeper OR operations as well
                 Operation<?,?> op = (Operation<?,?>)condition;
                 IteratorChain<Object[]> chain = new IteratorChain<Object[]>();
-                EBoolean e1 = (EBoolean)op.getArgs()[0], e2 = (EBoolean)op.getArgs()[1];
+                EBoolean e1 = (EBoolean)op.getArgs().get(0), e2 = (EBoolean)op.getArgs().get(1);
                 chain.addIterator(createMultiIterator(sources, e1));
                 chain.addIterator(createMultiIterator(sources, e2.and(e1.not())));
                 return chain;
@@ -380,7 +380,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
             if (sequentialUnion && condition instanceof Operation && ((Operation<?,?>)condition).getOperator() == Ops.OR){
                 Operation<?,?> op = (Operation<?,?>)condition;
                 IteratorChain<Object[]> chain = new IteratorChain<Object[]>();
-                EBoolean e1 = (EBoolean)op.getArgs()[0], e2 = (EBoolean)op.getArgs()[1];
+                EBoolean e1 = (EBoolean)op.getArgs().get(0), e2 = (EBoolean)op.getArgs().get(1);
                 Iterator<?> it1 = indexSupport.getChildFor(e1).getIterator(join.getTarget());
                 chain.addIterator(multiArgFilter(ops, toArrayIterator(it1), sources, e1));
                 Iterator<?> it2 = indexSupport.getChildFor(e2.and(e1.not())).getIterator(join.getTarget());

@@ -94,8 +94,8 @@ public class DefaultIndexCreationTask {
 
     public void visitOperation(Operation<?,?> op) {
         if (op.getOperator() == Ops.EQ_OBJECT  || op.getOperator() == Ops.EQ_PRIMITIVE){
-            Expr<?> e1 = op.getArgs()[0];
-            Expr<?> e2 = op.getArgs()[1];
+            Expr<?> e1 = op.getArgs().get(0);
+            Expr<?> e2 = op.getArgs().get(1);
             if (e1 instanceof Path && e2 instanceof Path){
                 indexPathEqPath(e1, e2);
                 

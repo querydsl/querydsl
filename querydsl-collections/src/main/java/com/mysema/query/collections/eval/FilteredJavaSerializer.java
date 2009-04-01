@@ -66,7 +66,7 @@ public class FilteredJavaSerializer extends JavaSerializer{
     }
         
     @Override
-    protected void visitOperation(Class<?> type, Op<?> operator, Expr<?>... args) {
+    protected void visitOperation(Class<?> type, Op<?> operator, List<Expr<?>> args) {
         if (!skipPath){
             boolean unknownPaths = false;
             boolean knownPaths = false;

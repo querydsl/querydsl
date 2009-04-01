@@ -181,25 +181,25 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
     }
     
     @Override
-    protected void visitOperation(Class<?> type, Op<?> operator, Expr<?>... args) {
+    protected void visitOperation(Class<?> type, Op<?> operator, List<Expr<?>> args) {
         if (operator.equals(Ops.LIKE)){
             // optimize like matches to startsWith and endsWith, when possible
-            String right = args[1].toString();
+            String right = args.get(1).toString();
             if (!right.contains("_")){
                 int lastIndex = right.lastIndexOf('%');
                 if (lastIndex == right.length() -1){
                     operator = Ops.STARTSWITH;
-                    args = new Expr[]{args[0],new Expr.EConstant<String>(right.substring(0, lastIndex))};
+                    args = Arrays.<Expr<?>>asList(args.get(0),new Expr.EConstant<String>(right.substring(0, lastIndex)));
                 }else if (lastIndex == 0){
                     operator = Ops.ENDSWITH;
-                    args = new Expr[]{args[0],new Expr.EConstant<String>(right.substring(1))};
+                    args = Arrays.<Expr<?>>asList(args.get(0),new Expr.EConstant<String>(right.substring(1)));
                 }    
             }                
             super.visitOperation(type, operator, args);    
         }else if (operator.equals(Ops.STRING_CAST)){
-            visitCast(operator, args[0], String.class);
+            visitCast(operator, args.get(0), String.class);
         }else if (operator.equals(Ops.NUMCAST)){
-            visitCast(operator, args[0], (Class<?>) ((EConstant<?>)args[1]).getConstant());
+            visitCast(operator, args.get(0), (Class<?>) ((EConstant<?>)args.get(1)).getConstant());
         }else{
             super.visitOperation(type, operator, args);    
         }  
