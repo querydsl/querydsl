@@ -191,11 +191,11 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
     }
     
     @Override
-    protected void visitOperation(Class<?> type, Op<?> operator, Expr<?>... args) {
+    protected void visitOperation(Class<?> type, Op<?> operator, List<Expr<?>> args) {
         if (operator.equals(Ops.STRING_CAST)){
-            visitCast(operator, args[0], String.class);
+            visitCast(operator, args.get(0), String.class);
         }else if (operator.equals(Ops.NUMCAST)){
-            visitCast(operator, args[0], (Class<?>) ((EConstant<?>)args[1]).getConstant());
+            visitCast(operator, args.get(0), (Class<?>) ((EConstant<?>)args.get(1)).getConstant());
         }else{
             super.visitOperation(type, operator, args);    
         }  
