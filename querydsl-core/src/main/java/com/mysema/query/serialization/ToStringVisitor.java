@@ -75,9 +75,9 @@ public class ToStringVisitor extends AbstractVisitor<ToStringVisitor>{
     protected void visit(Operation<?,?> o){
         String pattern = ops.getPattern(o.getOperator());
         if (pattern != null){
-            toString =  String.format(pattern, o.getArgs());
+            toString =  String.format(pattern, o.getArgs().toArray());
         }else{
-            toString = "unknown operation with args " + Arrays.asList(o.getArgs());
+            toString = "unknown operation with args " + o.getArgs();
         }
     }
 

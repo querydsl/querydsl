@@ -5,6 +5,10 @@
  */
 package com.mysema.query.grammar;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Ops provides the operators for the fluent query grammar.
  * 
@@ -12,11 +16,29 @@ package com.mysema.query.grammar;
  * @version $Id$
  */
 public interface Ops {
+    
+    static Class<?>[] Boolean_x_2 = new Class[]{Boolean.class, Boolean.class};
+    
+    static Class<?>[] Comparable_x_2 = new Class[]{Comparable.class, Comparable.class};
+    
+    static Class<?>[] Comparable_x_3 = new Class[]{Comparable.class, Comparable.class, Comparable.class};
 
+    static Class<?>[] Number_x_2 = new Class[]{Number.class, Number.class};
+    
+    static Class<?>[] String_x_2 = new Class[]{String.class, String.class};
+    
     /**
      * The Class Op.
      */
-    public static class Op<RT>{}
+    public static class Op<RT>{
+        private final List<Class<?>> types;
+        public Op(Class<?>... types){
+            this.types = Collections.unmodifiableList(Arrays.asList(types));
+        }        
+        public List<Class<?>> getTypes(){
+            return types;
+        }
+    }
     
     // general
     Op<Boolean> EQ_PRIMITIVE = new Op<Boolean>();
@@ -30,57 +52,57 @@ public interface Ops {
     Op<Boolean> NOTIN =  new Op<Boolean>();
     
     // Boolean
-    Op<Boolean> AND = new Op<Boolean>(); 
-    Op<Boolean> NOT = new Op<Boolean>();
-    Op<Boolean> OR = new Op<Boolean>();
-    Op<Boolean> XNOR = new Op<Boolean>();
-    Op<Boolean> XOR = new Op<Boolean>();
-     
+    Op<Boolean> AND = new Op<Boolean>(Boolean_x_2); 
+    Op<Boolean> NOT = new Op<Boolean>(Boolean.class);
+    Op<Boolean> OR = new Op<Boolean>(Boolean.class);
+    Op<Boolean> XNOR = new Op<Boolean>(Boolean_x_2);
+    Op<Boolean> XOR = new Op<Boolean>(Boolean_x_2);
+    
     // Comparable
-    Op<Boolean> BETWEEN = new Op<Boolean>();
-    Op<Boolean> GOE = new Op<Boolean>();
-    Op<Boolean> GT = new Op<Boolean>();
-    Op<Boolean> LOE = new Op<Boolean>();
-    Op<Boolean> LT = new Op<Boolean>();
-    Op<Boolean> NOTBETWEEN = new Op<Boolean>();
-    Op<Number> NUMCAST = new Op<Number>();
+    Op<Boolean> BETWEEN = new Op<Boolean>(Comparable_x_3);
+    Op<Boolean> GOE = new Op<Boolean>(Comparable_x_2);
+    Op<Boolean> GT = new Op<Boolean>(Comparable_x_2);
+    Op<Boolean> LOE = new Op<Boolean>(Comparable_x_2);
+    Op<Boolean> LT = new Op<Boolean>(Comparable_x_2);
+    Op<Boolean> NOTBETWEEN = new Op<Boolean>(Comparable_x_3);
+    Op<Number> NUMCAST = new Op<Number>(Number.class, Class.class);
     Op<String> STRING_CAST = new Op<String>();
     
     // Date / Comparable
-    Op<Boolean> AFTER = new Op<Boolean>();
-    Op<Boolean> BEFORE = new Op<Boolean>();
-    Op<Boolean> AOE = new Op<Boolean>();
-    Op<Boolean> BOE = new Op<Boolean>();
+    Op<Boolean> AFTER = new Op<Boolean>(Comparable_x_2);
+    Op<Boolean> BEFORE = new Op<Boolean>(Comparable_x_2);
+    Op<Boolean> AOE = new Op<Boolean>(Comparable_x_2);
+    Op<Boolean> BOE = new Op<Boolean>(Comparable_x_2);
      
     // Number
-    Op<Number> ADD = new Op<Number>();          
-    Op<Number> DIV = new Op<Number>();        
-    Op<Number> MOD = new Op<Number>();
-    Op<Number> MULT = new Op<Number>();
+    Op<Number> ADD = new Op<Number>(Number_x_2);          
+    Op<Number> DIV = new Op<Number>(Number_x_2);        
+    Op<Number> MOD = new Op<Number>(Number_x_2);
+    Op<Number> MULT = new Op<Number>(Number_x_2);
 //    Op<Number> SQRT = new Op<Number>();
-    Op<Number> SUB = new Op<Number>();
+    Op<Number> SUB = new Op<Number>(Number_x_2);
         
     // String
-    Op<Character> CHAR_AT = new Op<Character>();
-    Op<String> CONCAT = new Op<String>();
-    Op<Boolean> LIKE = new Op<Boolean>();
-    Op<String> LOWER = new Op<String>();
-    Op<String> SUBSTR1ARG = new Op<String>();
-    Op<String> SUBSTR2ARGS = new Op<String>();
-    Op<String> SPLIT = new Op<String>();
-    Op<String> TRIM = new Op<String>();
-    Op<String> UPPER = new Op<String>();
-    Op<Boolean> MATCHES = new Op<Boolean>();
-    Op<Number> STRING_LENGTH = new Op<Number>();  
-    Op<Number> LAST_INDEX_2ARGS = new Op<Number>();  
-    Op<Number> LAST_INDEX = new Op<Number>();  
-    Op<Boolean> ISEMPTY = new Op<Boolean>();
-    Op<Boolean> STARTSWITH = new Op<Boolean>();
-    Op<Number> INDEXOF_2ARGS = new Op<Number>();  
-    Op<Number> INDEXOF = new Op<Number>();  
-    Op<Boolean> EQ_IGNORECASE = new Op<Boolean>();
-    Op<Boolean> ENDSWITH = new Op<Boolean>();
-    Op<Boolean> CONTAINS = new Op<Boolean>();
+    Op<Character> CHAR_AT = new Op<Character>(String.class,Integer.class);
+    Op<String> CONCAT = new Op<String>(String_x_2);
+    Op<Boolean> LIKE = new Op<Boolean>(String_x_2);
+    Op<String> LOWER = new Op<String>(String.class);
+    Op<String> SUBSTR1ARG = new Op<String>(String.class,Integer.class);
+    Op<String> SUBSTR2ARGS = new Op<String>(String.class,Integer.class,Integer.class);
+    Op<String> SPLIT = new Op<String>(String_x_2);
+    Op<String> TRIM = new Op<String>(String.class);
+    Op<String> UPPER = new Op<String>(String.class);
+    Op<Boolean> MATCHES = new Op<Boolean>(String_x_2);
+    Op<Number> STRING_LENGTH = new Op<Number>(String.class);  
+    Op<Number> LAST_INDEX_2ARGS = new Op<Number>(String.class,String.class,Integer.class);  
+    Op<Number> LAST_INDEX = new Op<Number>(String_x_2);  
+    Op<Boolean> ISEMPTY = new Op<Boolean>(String.class);
+    Op<Boolean> STARTSWITH = new Op<Boolean>(String_x_2);
+    Op<Number> INDEXOF_2ARGS = new Op<Number>(String.class,String.class,Integer.class);  
+    Op<Number> INDEXOF = new Op<Number>(String.class,String.class);  
+    Op<Boolean> EQ_IGNORECASE = new Op<Boolean>(String_x_2);
+    Op<Boolean> ENDSWITH = new Op<Boolean>(String_x_2);
+    Op<Boolean> CONTAINS = new Op<Boolean>(String_x_2);
     
     
     // subquery operations
@@ -123,34 +145,34 @@ public interface Ops {
      *
      */
     public interface OpMath{
-        Op<Number> ABS = new Op<Number>();
-        Op<Number> ACOS = new Op<Number>();
-        Op<Number> ASIN = new Op<Number>();
-        Op<Number> ATAN = new Op<Number>();
-        Op<Number> CEIL = new Op<Number>();
-        Op<Number> COS = new Op<Number>();
-        Op<Number> TAN = new Op<Number>();
-        Op<Number> SQRT = new Op<Number>();
-        Op<Number> SIN = new Op<Number>();
-        Op<Number> ROUND = new Op<Number>();
-        Op<Number> RANDOM = new Op<Number>();
-        Op<Number> POWER = new Op<Number>();
-        Op<Number> MIN = new Op<Number>();
-        Op<Number> MAX = new Op<Number>();
-        Op<Number> MOD = new Op<Number>();
-        Op<Number> LOG10 = new Op<Number>();
-        Op<Number> LOG = new Op<Number>();
-        Op<Number> FLOOR = new Op<Number>();
-        Op<Number> EXP = new Op<Number>();        
+        Op<Number> ABS = new Op<Number>(Number.class);
+        Op<Number> ACOS = new Op<Number>(Number.class);
+        Op<Number> ASIN = new Op<Number>(Number.class);
+        Op<Number> ATAN = new Op<Number>(Number.class);
+        Op<Number> CEIL = new Op<Number>(Number.class);
+        Op<Number> COS = new Op<Number>(Number.class);
+        Op<Number> TAN = new Op<Number>(Number.class);
+        Op<Number> SQRT = new Op<Number>(Number.class);
+        Op<Number> SIN = new Op<Number>(Number.class);
+        Op<Number> ROUND = new Op<Number>(Number.class);
+        Op<Number> RANDOM = new Op<Number>(Number.class);
+        Op<Number> POWER = new Op<Number>(Number.class);
+        Op<Number> MIN = new Op<Number>(Number.class);
+        Op<Number> MAX = new Op<Number>(Number.class);
+        Op<Number> MOD = new Op<Number>(Number.class);
+        Op<Number> LOG10 = new Op<Number>(Number.class);
+        Op<Number> LOG = new Op<Number>(Number.class);
+        Op<Number> FLOOR = new Op<Number>(Number.class);
+        Op<Number> EXP = new Op<Number>(Number.class);        
     }
     
     /**
      * String operators
      */
     public interface OpString{
-        Op<Number> LENGTH = new Op<Number>();
-        Op<String> LTRIM = new Op<String>();
-        Op<String> RTRIM = new Op<String>();
-        Op<String> SPACE = new Op<String>();
+        Op<Number> LENGTH = new Op<Number>(String.class);
+        Op<String> LTRIM = new Op<String>(String.class);
+        Op<String> RTRIM = new Op<String>(String.class);
+        Op<String> SPACE = new Op<String>(Integer.class);
     }
 }

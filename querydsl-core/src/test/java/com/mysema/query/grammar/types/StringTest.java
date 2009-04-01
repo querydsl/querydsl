@@ -33,13 +33,17 @@ public class StringTest {
         }};
         Set<Field> missing = new HashSet<Field>();
         for (Field field : Ops.class.getFields()){
-            Op op = (Op)field.get(null);
-            if (ops.getPattern(op) == null) missing.add(field);
+            if (field.getType().equals(Op.class)){
+                Op op = (Op)field.get(null);
+                if (ops.getPattern(op) == null) missing.add(field);    
+            }            
         }
         for (Class<?> cl : Ops.class.getClasses()){
             for (Field field : cl.getFields()){
-                Op op = (Op)field.get(null);
-                if (ops.getPattern(op) == null) missing.add(field);
+                if (field.getType().equals(Op.class)){
+                    Op op = (Op)field.get(null);
+                    if (ops.getPattern(op) == null) missing.add(field);    
+                }                
             }   
         }
         

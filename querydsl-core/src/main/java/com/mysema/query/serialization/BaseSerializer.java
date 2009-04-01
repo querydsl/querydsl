@@ -142,19 +142,19 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
         throw new UnsupportedOperationException("not implemented");        
     }
     
-    protected void visitOperation(Class<?> type, Op<?> operator, Expr<?>... args) {        
+    protected void visitOperation(Class<?> type, Op<?> operator, List<Expr<?>> args) {        
         String pattern = ops.getPattern(operator);
         if (pattern == null)
             throw new IllegalArgumentException("Got no pattern for " + operator);
-        Object[] strings = new String[args.length];
+        Object[] strings = new String[args.size()];
         int precedence = ops.getPrecedence(operator);
         for (int i = 0; i < strings.length; i++){
             boolean wrap = false;
-            if (args[i] instanceof Operation){
+            if (args.get(i) instanceof Operation){
                 // wrap if outer operator precedes
-                wrap = precedence < ops.getPrecedence(((Operation<?,?>)args[i]).getOperator());
+                wrap = precedence < ops.getPrecedence(((Operation<?,?>)args.get(i)).getOperator());
             }
-            strings[i] = toString(args[i],wrap);
+            strings[i] = toString(args.get(i),wrap);
         }
         appendOperationResult(operator, String.format(pattern, strings));
     }
