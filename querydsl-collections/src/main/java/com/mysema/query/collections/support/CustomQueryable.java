@@ -20,16 +20,35 @@ import com.mysema.query.util.Assert;
  */
 public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends ProjectableAdapter{
     
-    private ColQuery innerQuery;
+    private final ColQuery innerQuery;
     
-    private SubType _this = (SubType)this;
+    private final SubType _this = (SubType)this;
     
     public CustomQueryable(final IteratorSource iteratorSource){
         Assert.notNull(iteratorSource);
         this.innerQuery = new ColQuery(){
             @Override
-            protected QueryIndexSupport createIndexSupport(Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops, List<Expr<?>> sources){
+            protected QueryIndexSupport createIndexSupport(
+                    Map<Expr<?>, 
+                    Iterable<?>> exprToIt, 
+                    JavaOps ops, 
+                    List<Expr<?>> sources){
                 return new DefaultIndexSupport(iteratorSource, ops, sources);
+            }    
+        };
+        setProjectable(innerQuery);
+    }
+    
+    public CustomQueryable(final QueryIndexSupport indexSupport){
+        Assert.notNull(indexSupport);
+        this.innerQuery = new ColQuery(){
+            @Override
+            protected QueryIndexSupport createIndexSupport(
+                    Map<Expr<?>, 
+                    Iterable<?>> exprToIt, 
+                    JavaOps ops, 
+                    List<Expr<?>> sources){
+                return indexSupport;
             }    
         };
         setProjectable(innerQuery);
