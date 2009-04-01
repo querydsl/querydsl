@@ -38,22 +38,7 @@ public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends P
         };
         setProjectable(innerQuery);
     }
-    
-    public CustomQueryable(final QueryIndexSupport indexSupport){
-        Assert.notNull(indexSupport);
-        this.innerQuery = new ColQuery(){
-            @Override
-            protected QueryIndexSupport createIndexSupport(
-                    Map<Expr<?>, 
-                    Iterable<?>> exprToIt, 
-                    JavaOps ops, 
-                    List<Expr<?>> sources){
-                return indexSupport;
-            }    
-        };
-        setProjectable(innerQuery);
-    }
-    
+        
     public SubType where(Expr.EBoolean... o) {
         innerQuery.where(o);
         return _this;
