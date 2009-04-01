@@ -7,6 +7,8 @@ package com.mysema.query.grammar;
 
 import static com.mysema.query.grammar.types.PathMetadata.PROPERTY;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.mysema.query.JoinExpression;
@@ -169,7 +171,7 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
     }
 
     protected void visit(Quant q){        
-        visitOperation(null, q.getOperator(), q.getTarget());
+        visitOperation(null, q.getOperator(), Collections.<Expr<?>>singletonList(q.getTarget()));
     }
 
     protected void visit(SubQuery<HqlJoinMeta,?> query) {
@@ -188,18 +190,18 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         
     }
 
-    protected void visitOperation(Class<?> type, Op<?> operator, Expr<?>... args) {    
+    protected void visitOperation(Class<?> type, Op<?> operator, List<Expr<?>> args) {    
         boolean old = wrapElements;
         wrapElements = HqlOps.wrapCollectionsForOp.contains(operator);    
         // 
         if (operator.equals(Ops.ISTYPEOF)){
-            args = args.clone();
-            args[1] =  new EConstant<String>( ((Class<?>)((EConstant<?>)args[1]).getConstant()).getName());
+            args = new ArrayList<Expr<?>>(args);
+            args.set(1, new EConstant<String>( ((Class<?>)((EConstant<?>)args.get(1)).getConstant()).getName()));
             super.visitOperation(type, operator, args);
         }else if (operator.equals(Ops.STRING_CAST)){
-            visitCast(operator, args[0], String.class);
+            visitCast(operator, args.get(0), String.class);
         }else if (operator.equals(Ops.NUMCAST)){
-            visitCast(operator, args[0], (Class<?>) ((EConstant<?>)args[1]).getConstant());
+            visitCast(operator, args.get(0), (Class<?>) ((EConstant<?>)args.get(1)).getConstant());
         }else{
             super.visitOperation(type, operator, args);    
         }        
