@@ -19,6 +19,8 @@ import static org.junit.Assert.assertNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -186,11 +188,11 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
      * The Class MyCustomExpr.
      */
     public class MyCustomExpr extends Custom.CString{
-        private Expr<?>[] args;
+        private final List<Expr<?>> args;
         public MyCustomExpr(Expr<?>... args) {
-            this.args = args;
+            this.args = Arrays.asList(args);
         }
-        public Expr<?>[] getArgs() {return args;}
+        public List<Expr<?>> getArgs() {return args;}
         public java.lang.String getPattern() {return "myCustom(%s,%s)";}        
     }
     
