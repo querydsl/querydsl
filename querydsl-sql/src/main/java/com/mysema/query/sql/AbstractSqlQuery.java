@@ -48,7 +48,7 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
     
     private boolean forCountRow = false;
     
-    private SubQuery<SqlJoinMeta, ?>[] sq;
+    private SubQuery<SqlJoinMeta,?>[] sq;
     
     @SuppressWarnings("unchecked")
     private SubType _this = (SubType)this;
@@ -139,8 +139,8 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
                 while (rs.next()){                    
                     try {
                         List<Object> args = new ArrayList<Object>();
-                        for (int i=0; i < c.getArgs().length; i++){                        
-                            args.add(get(rs,i+1,c.getArgs()[i].getType()));
+                        for (int i=0; i < c.getArgs().size(); i++){                        
+                            args.add(get(rs,i+1,c.getArgs().get(i).getType()));
                         }
                         rv.add(cc.newInstance(args.toArray()));
                     } catch (Exception e) {

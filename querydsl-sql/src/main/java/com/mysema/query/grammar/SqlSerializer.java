@@ -59,7 +59,7 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
                 if (selectExpr instanceof Expr.EConstructor){
                     // transforms constructor arguments into individual select
                     // expressions
-                    sqlSelect.addAll(Arrays.<Expr<?>>asList(((Expr.EConstructor<?>)selectExpr).getArgs()));
+                    sqlSelect.addAll(((Expr.EConstructor<?>)selectExpr).getArgs());
                 }else{
                     sqlSelect.add(selectExpr);
                 }
