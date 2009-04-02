@@ -26,7 +26,7 @@ import com.mysema.query.grammar.types.Expr.EString;
  * @version $Id$
  */
 public interface Operation<OP,RT> {
-    
+        
     Class<? extends RT> getType();
     List<Expr<?>> getArgs();
     Op<OP> getOperator();
@@ -40,6 +40,7 @@ public interface Operation<OP,RT> {
         public OBoolean(Op<Boolean> op, List<Expr<?>> args){
             this.op = op;
             this.args = unmodifiableList(args);
+            validate();
         }
         public List<Expr<?>> getArgs() {return args;}
         public Op<Boolean> getOperator() {return op;}  
@@ -55,6 +56,7 @@ public interface Operation<OP,RT> {
             super(type);
             this.op = op;
             this.args = unmodifiableList(args);
+            validate();
         }
         public List<Expr<?>> getArgs() {return args;}
         public Op<OpType> getOperator() {return op;}
@@ -70,6 +72,7 @@ public interface Operation<OP,RT> {
             super(type);
             this.op = op;
             this.args = unmodifiableList(args);
+            validate();
         }
         public List<Expr<?>> getArgs() {return args;}
         public Op<OpType> getOperator() {return op;}    
@@ -85,6 +88,7 @@ public interface Operation<OP,RT> {
             super(type);
             this.op = op;
             this.args = unmodifiableList(args);
+            validate();
         }
         public List<Expr<?>> getArgs() {return args;}
         public Op<OpType> getOperator() {return op;}
@@ -99,6 +103,7 @@ public interface Operation<OP,RT> {
         public OString(Op<String> op, List<Expr<?>> args){
             this.op = op;
             this.args = unmodifiableList(args);
+            validate();
         }
         public List<Expr<?>> getArgs() {return args;}
         public Op<String> getOperator() {return op;}    
@@ -114,6 +119,7 @@ public interface Operation<OP,RT> {
             super(null);
             this.op = op;
             this.args = unmodifiableList(args);
+            validate();
         }
         public List<Expr<?>> getArgs() {return args;}
         public Op<String> getOperator() {return op;}

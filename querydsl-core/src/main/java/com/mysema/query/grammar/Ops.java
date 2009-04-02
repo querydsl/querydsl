@@ -5,10 +5,10 @@
  */
 package com.mysema.query.grammar;
 
-import static java.util.Collections.*;
+import static java.util.Collections.unmodifiableList;
 
-import java.util.Collections;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -56,15 +56,15 @@ public interface Ops {
     Op<Boolean> IN = new Op<Boolean>(Object_x_2);
     Op<Boolean> ISNOTNULL = new Op<Boolean>(Object.class);
     Op<Boolean> ISNULL = new Op<Boolean>(Object.class);
-    Op<Boolean> ISTYPEOF = new Op<Boolean>(Object.class);
-    Op<Boolean> NE_PRIMITIVE = new Op<Boolean>(Object.class);
-    Op<Boolean> NE_OBJECT = new Op<Boolean>(Object.class);
+    Op<Boolean> ISTYPEOF = new Op<Boolean>(Object.class,Class.class);
+    Op<Boolean> NE_PRIMITIVE = new Op<Boolean>(Object_x_2);
+    Op<Boolean> NE_OBJECT = new Op<Boolean>(Object_x_2);
     Op<Boolean> NOTIN =  new Op<Boolean>(Object_x_2);
     
     // Boolean
     Op<Boolean> AND = new Op<Boolean>(Boolean_x_2); 
     Op<Boolean> NOT = new Op<Boolean>(Boolean.class);
-    Op<Boolean> OR = new Op<Boolean>(Boolean.class);
+    Op<Boolean> OR = new Op<Boolean>(Boolean_x_2);
     Op<Boolean> XNOR = new Op<Boolean>(Boolean_x_2);
     Op<Boolean> XOR = new Op<Boolean>(Boolean_x_2);
     
@@ -76,7 +76,7 @@ public interface Ops {
     Op<Boolean> LT = new Op<Boolean>(Comparable_x_2);
     Op<Boolean> NOTBETWEEN = new Op<Boolean>(Comparable_x_3);
     Op<Number> NUMCAST = new Op<Number>(Number.class, Class.class);
-    Op<String> STRING_CAST = new Op<String>(Object_x_2);
+    Op<String> STRING_CAST = new Op<String>(Object.class);
     
     // Date / Comparable
     Op<Boolean> AFTER = new Op<Boolean>(Comparable_x_2);
@@ -116,7 +116,7 @@ public interface Ops {
     
     
     // subquery operations
-    Op<Boolean> EXISTS = new Op<Boolean>();
+    Op<Boolean> EXISTS = new Op<Boolean>(Object.class);
     
     
     
@@ -137,17 +137,17 @@ public interface Ops {
         Op<java.util.Date> CURRENT_DATE = new Op<java.util.Date>();
         Op<java.util.Date> CURRENT_TIME = new Op<java.util.Date>();
         Op<java.util.Date> CURRENT_TIMESTAMP = new Op<java.util.Date>();
-        Op<Integer> DAY = new Op<Integer>();
-        Op<Integer> HOUR = new Op<Integer>();        
-        Op<Integer> MINUTE = new Op<Integer>();
-        Op<Integer> MONTH = new Op<Integer>();
-        Op<Integer> SECOND = new Op<Integer>();        
+        Op<Integer> DAY = new Op<Integer>(java.util.Date.class);
+        Op<Integer> HOUR = new Op<Integer>(java.util.Date.class);        
+        Op<Integer> MINUTE = new Op<Integer>(java.util.Date.class);
+        Op<Integer> MONTH = new Op<Integer>(java.util.Date.class);
+        Op<Integer> SECOND = new Op<Integer>(java.util.Date.class);        
         Op<java.util.Date> SYSDATE = new Op<java.util.Date>();
-        Op<Integer> YEAR = new Op<Integer>();
-        Op<Integer> WEEK = new Op<Integer>();
-        Op<Integer> DAY_OF_WEEK = new Op<Integer>();
-        Op<Integer> DAY_OF_MONTH = new Op<Integer>();
-        Op<Integer> DAY_OF_YEAR =new Op<Integer>();
+        Op<Integer> YEAR = new Op<Integer>(java.util.Date.class);
+        Op<Integer> WEEK = new Op<Integer>(java.util.Date.class);
+        Op<Integer> DAY_OF_WEEK = new Op<Integer>(java.util.Date.class);
+        Op<Integer> DAY_OF_MONTH = new Op<Integer>(java.util.Date.class);
+        Op<Integer> DAY_OF_YEAR =new Op<Integer>(java.util.Date.class);
     }
     
     /**
@@ -165,11 +165,11 @@ public interface Ops {
         Op<Number> SQRT = new Op<Number>(Number.class);
         Op<Number> SIN = new Op<Number>(Number.class);
         Op<Number> ROUND = new Op<Number>(Number.class);
-        Op<Number> RANDOM = new Op<Number>(Number.class);
-        Op<Number> POWER = new Op<Number>(Number.class);
-        Op<Number> MIN = new Op<Number>(Number.class);
-        Op<Number> MAX = new Op<Number>(Number.class);
-        Op<Number> MOD = new Op<Number>(Number.class);
+        Op<Number> RANDOM = new Op<Number>();
+        Op<Number> POWER = new Op<Number>(Number_x_2);
+        Op<Number> MIN = new Op<Number>(Number_x_2);
+        Op<Number> MAX = new Op<Number>(Number_x_2);
+        Op<Number> MOD = new Op<Number>(Number_x_2);
         Op<Number> LOG10 = new Op<Number>(Number.class);
         Op<Number> LOG = new Op<Number>(Number.class);
         Op<Number> FLOOR = new Op<Number>(Number.class);

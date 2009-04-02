@@ -53,6 +53,10 @@ public abstract class Expr<D>{
     public final EBoolean notIn(Collection<? extends D> arg) {return Grammar.in(this, arg); }
     public final EBoolean notIn(D...args) {return Grammar.notIn(this, args);}
     
+    public void validate(){
+        new ValidationVisitor().handle(this);
+    }
+    
     public String toString(){
         if (toString == null){
             toString = new ToStringVisitor().handle(this).toString();
