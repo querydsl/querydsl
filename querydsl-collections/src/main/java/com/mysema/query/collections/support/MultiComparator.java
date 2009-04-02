@@ -28,7 +28,7 @@ public class MultiComparator implements Comparator<Object[]> {
     
     public MultiComparator(Evaluator ev, boolean[] directions) {
         this.ev = ev;
-        this.asc = directions;
+        this.asc = directions.clone();
     }
 
     public int compare(Object[] o1, Object[] o2) {
