@@ -49,9 +49,9 @@ public class ToStringVisitor extends AbstractVisitor<ToStringVisitor>{
     
     protected void visit(EArrayConstructor<?> e){
         StringBuilder builder = new StringBuilder("[");
-        for (int i=0; i < e.getArgs().length; i++){
+        for (int i=0; i < e.getArgs().size(); i++){
             if (i > 0) builder.append(", ");
-            builder.append(e.getArgs()[i]);
+            builder.append(e.getArgs().get(i));
         }
         builder.append("]");
         toString = builder.toString();
@@ -64,9 +64,9 @@ public class ToStringVisitor extends AbstractVisitor<ToStringVisitor>{
     protected void visit(EConstructor<?> e){
         StringBuilder builder = new StringBuilder();
         builder.append("new ").append(e.getType().getSimpleName()).append("(");
-        for (int i=0; i < e.getArgs().length; i++){
+        for (int i=0; i < e.getArgs().size(); i++){
             if (i > 0) builder.append(", ");
-            builder.append(e.getArgs()[i]);
+            builder.append(e.getArgs().get(i));
         }
         builder.append(")");
         toString = builder.toString();

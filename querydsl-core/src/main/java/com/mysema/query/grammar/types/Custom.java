@@ -5,6 +5,8 @@
  */
 package com.mysema.query.grammar.types;
 
+import java.util.List;
+
 /**
  * Custom provides base types for custom expresions with integrated
  * serialization patterns
@@ -14,20 +16,14 @@ package com.mysema.query.grammar.types;
  */
 public interface Custom<T> {
 
-    Expr<?>[] getArgs();
+    List<Expr<?>> getArgs();
 
     java.lang.String getPattern();
-
-    /**
-     * Custom boolean expressions
-     */
+    
     public static abstract class CBoolean extends Expr.EBoolean implements
             Custom<java.lang.Boolean> {
     }
 
-    /**
-     * Custom comparable expression
-     */
     public static abstract class CComparable<T extends java.lang.Comparable<? super T>>
             extends Expr.EComparable<T> implements Custom<T> {
         public CComparable(Class<T> type) {
@@ -42,9 +38,12 @@ public interface Custom<T> {
         }
     }
 
-    /**
-     * Custom String expression
-     */
+    public static abstract class CSimple<T> extends Expr.ESimple<T> implements Custom<T>{
+        public CSimple(Class<? extends T> type) {
+            super(type);
+        }        
+    }
+
     public static abstract class CString extends Expr.EString implements
             Custom<java.lang.String> {
     }

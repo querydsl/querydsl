@@ -5,8 +5,10 @@
  */
 package com.mysema.query.grammar;
 
-import java.util.Arrays;
+import static java.util.Collections.*;
+
 import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,23 +19,31 @@ import java.util.List;
  */
 public interface Ops {
     
-    static Class<?>[] Boolean_x_2 = new Class[]{Boolean.class, Boolean.class};
+    static List<Class<?>> Boolean_x_2 = unmodifiableList(Arrays.<Class<?>>asList(Boolean.class, Boolean.class));
     
-    static Class<?>[] Comparable_x_2 = new Class[]{Comparable.class, Comparable.class};
+    static List<Class<?>> Comparable_x_2 = unmodifiableList(Arrays.<Class<?>>asList(Comparable.class, Comparable.class));
     
-    static Class<?>[] Comparable_x_3 = new Class[]{Comparable.class, Comparable.class, Comparable.class};
+    static List<Class<?>> Comparable_x_3 = unmodifiableList(Arrays.<Class<?>>asList(Comparable.class, Comparable.class, Comparable.class));
 
-    static Class<?>[] Number_x_2 = new Class[]{Number.class, Number.class};
+    static List<Class<?>> Object_x_2 = unmodifiableList(Arrays.<Class<?>>asList(Object.class, Object.class));
     
-    static Class<?>[] String_x_2 = new Class[]{String.class, String.class};
+    static List<Class<?>> Number_x_2 = unmodifiableList(Arrays.<Class<?>>asList(Number.class, Number.class));
+    
+    static List<Class<?>> String_x_2 = unmodifiableList(Arrays.<Class<?>>asList(String.class, String.class));
     
     /**
      * The Class Op.
      */
     public static class Op<RT>{
         private final List<Class<?>> types;
+        public Op(Class<?> type){
+            this.types = unmodifiableList(Collections.<Class<?>>singletonList(type));
+        }
         public Op(Class<?>... types){
-            this.types = Collections.unmodifiableList(Arrays.asList(types));
+            this.types = unmodifiableList(Arrays.<Class<?>>asList(types));
+        }                
+        public Op(List<Class<?>> types){
+            this.types = types;
         }        
         public List<Class<?>> getTypes(){
             return types;
@@ -41,15 +51,15 @@ public interface Ops {
     }
     
     // general
-    Op<Boolean> EQ_PRIMITIVE = new Op<Boolean>();
-    Op<Boolean> EQ_OBJECT = new Op<Boolean>();
-    Op<Boolean> IN = new Op<Boolean>();
-    Op<Boolean> ISNOTNULL = new Op<Boolean>();
-    Op<Boolean> ISNULL = new Op<Boolean>();
-    Op<Boolean> ISTYPEOF = new Op<Boolean>();
-    Op<Boolean> NE_PRIMITIVE = new Op<Boolean>();
-    Op<Boolean> NE_OBJECT = new Op<Boolean>();
-    Op<Boolean> NOTIN =  new Op<Boolean>();
+    Op<Boolean> EQ_PRIMITIVE = new Op<Boolean>(Object_x_2);
+    Op<Boolean> EQ_OBJECT = new Op<Boolean>(Object_x_2);
+    Op<Boolean> IN = new Op<Boolean>(Object_x_2);
+    Op<Boolean> ISNOTNULL = new Op<Boolean>(Object.class);
+    Op<Boolean> ISNULL = new Op<Boolean>(Object.class);
+    Op<Boolean> ISTYPEOF = new Op<Boolean>(Object.class);
+    Op<Boolean> NE_PRIMITIVE = new Op<Boolean>(Object.class);
+    Op<Boolean> NE_OBJECT = new Op<Boolean>(Object.class);
+    Op<Boolean> NOTIN =  new Op<Boolean>(Object_x_2);
     
     // Boolean
     Op<Boolean> AND = new Op<Boolean>(Boolean_x_2); 
@@ -66,7 +76,7 @@ public interface Ops {
     Op<Boolean> LT = new Op<Boolean>(Comparable_x_2);
     Op<Boolean> NOTBETWEEN = new Op<Boolean>(Comparable_x_3);
     Op<Number> NUMCAST = new Op<Number>(Number.class, Class.class);
-    Op<String> STRING_CAST = new Op<String>();
+    Op<String> STRING_CAST = new Op<String>(Object_x_2);
     
     // Date / Comparable
     Op<Boolean> AFTER = new Op<Boolean>(Comparable_x_2);
@@ -115,9 +125,9 @@ public interface Ops {
      *
      */
     public interface OpNumberAgg{
-        Op<Number> AVG = new Op<Number>();
-        Op<Number> MAX = new Op<Number>();
-        Op<Number> MIN = new Op<Number>();   
+        Op<Number> AVG = new Op<Number>(Number.class);
+        Op<Number> MAX = new Op<Number>(Number.class);
+        Op<Number> MIN = new Op<Number>(Number.class);   
     }
     
     /**

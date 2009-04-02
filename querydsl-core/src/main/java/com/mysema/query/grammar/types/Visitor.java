@@ -75,6 +75,8 @@ public abstract class Visitor<T extends Visitor<T>> {
 
     protected abstract void visit(Custom.CComparable<?> expr);
 
+    protected abstract void visit(Custom.CSimple<?> expr);
+    
     protected abstract void visit(Custom.CString expr);
     
     protected abstract void visit(Custom<?> expr);

@@ -92,9 +92,9 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
     }
     
     protected void visit(Custom<?> expr){
-        Object[] strings = new String[expr.getArgs().length];
+        Object[] strings = new String[expr.getArgs().size()];
         for (int i = 0; i < strings.length; i++){
-            strings[i] = toString(expr.getArgs()[i],false);
+            strings[i] = toString(expr.getArgs().get(i),false);
         }
         append(String.format(expr.getPattern(), strings));
     }
@@ -107,7 +107,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
 
     protected void visit(Expr.EConstructor<?> expr){
         append("new ").append(expr.getType().getName()).append("(");
-        append(", ",Arrays.asList(expr.getArgs())).append(")");
+        append(", ",expr.getArgs()).append(")");
     }
         
     @Override
@@ -124,7 +124,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
     protected void visit(Expr.EArrayConstructor<?> oa) {
 //        _append("new Object[]{");
         append("new ").append(oa.getElementType().getName()).append("[]{");
-        append(", ",Arrays.asList(oa.getArgs())).append("}");
+        append(", ",oa.getArgs()).append("}");
     }
         
     @Override

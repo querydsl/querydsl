@@ -38,6 +38,10 @@ public abstract class AbstractVisitor<SubType extends AbstractVisitor<SubType>> 
         visit((Custom<?>)expr);
     }
     @Override
+    protected void visit(Custom.CSimple<?> expr){
+        visit((Custom<?>)expr);
+    }
+    @Override
     protected void visit(Custom.CString expr){
         visit((Custom<?>)expr);
     }

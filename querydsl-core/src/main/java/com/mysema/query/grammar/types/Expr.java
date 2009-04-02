@@ -9,7 +9,10 @@ import static com.mysema.query.grammar.types.Factory.createBoolean;
 import static com.mysema.query.grammar.types.Factory.createConstant;
 
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.commons.lang.ClassUtils;
 
@@ -111,13 +114,13 @@ public abstract class Expr<D>{
     }        
 
     public static class EConstructor<D> extends Expr<D> {
-        private final Expr<?>[] args;
+        private final List<Expr<?>> args;
         private java.lang.reflect.Constructor<D> javaConstructor;
         public EConstructor(Class<D> type, Expr<?>... args) {
             super(type);
-            this.args = args;
+            this.args = Collections.unmodifiableList(Arrays.asList(args));
         }
-        public final Expr<?>[] getArgs() {
+        public final List<Expr<?>> getArgs() {
             return args;
         }
                 
@@ -129,16 +132,16 @@ public abstract class Expr<D>{
         public Constructor<D> getJavaConstructor(){   
             if (javaConstructor == null){
                 Class<? extends D> type = getType();
-                Expr<?>[] args = getArgs();
+                List<Expr<?>> args = getArgs();
                 for (Constructor<?> c : type.getConstructors()){
-                    if (c.getParameterTypes().length == args.length){
+                    if (c.getParameterTypes().length == args.size()){
                         boolean match = true;
-                        for (int i = 0; i < args.length && match; i++){
+                        for (int i = 0; i < args.size() && match; i++){
                             Class<?> ptype = c.getParameterTypes()[i];
                             if (ptype.isPrimitive()){
                                 ptype = ClassUtils.primitiveToWrapper(ptype);
                             }
-                            match &= ptype.isAssignableFrom(args[i].getType());                                        
+                            match &= ptype.isAssignableFrom(args.get(i).getType());                                        
                         }
                         if (match){
                             javaConstructor = (Constructor<D>)c;
