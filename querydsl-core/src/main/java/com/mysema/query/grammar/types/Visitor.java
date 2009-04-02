@@ -89,6 +89,8 @@ public abstract class Visitor<T extends Visitor<T>> {
 
     protected abstract void visit(Operation.ONumber<?,?> expr);
     
+    protected abstract void visit(Operation.OSimple<?,?> expr);
+    
     protected abstract void visit(Operation.OString expr);
     
     protected abstract void visit(Operation.OStringArray expr);

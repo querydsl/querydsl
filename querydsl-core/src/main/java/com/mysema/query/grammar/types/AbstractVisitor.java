@@ -58,6 +58,10 @@ public abstract class AbstractVisitor<SubType extends AbstractVisitor<SubType>> 
         visit((Operation<?, ?>) expr);
     }
     @Override
+    protected void visit(Operation.OSimple<?,?> expr) {
+        visit((Operation<?, ?>) expr);
+    }
+    @Override
     protected void visit(Operation.OString expr) {
         visit((Operation<?, ?>) expr);
     }

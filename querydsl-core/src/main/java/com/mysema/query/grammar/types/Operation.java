@@ -5,14 +5,16 @@
  */
 package com.mysema.query.grammar.types;
 
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
+
 import java.util.List;
 
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.ENumber;
+import com.mysema.query.grammar.types.Expr.ESimple;
 import com.mysema.query.grammar.types.Expr.EString;
 
 
@@ -57,10 +59,6 @@ public interface Operation<OP,RT> {
             this.op = op;
             this.args = unmodifiableList(args);
         }
-        
-        public OComparable(Op<OpType> op, Expr<?>... args){
-            this(null, op, args);
-        }
         public List<Expr<?>> getArgs() {return args;}
         public Op<OpType> getOperator() {return op;}
     }
@@ -82,7 +80,22 @@ public interface Operation<OP,RT> {
         public Op<OpType> getOperator() {return op;}    
     }
     
-    // TODO : OSimple<OP,RT> extends ESimple implements Operation<OP,RT>
+    public static class OSimple<OpType,D> extends ESimple<D> implements Operation<OpType,D> {
+        private final List<Expr<?>> args;
+        private final Op<OpType> op;
+        public OSimple(Class<D> type, Op<OpType> op, Expr<?>... args){
+            super(type);
+            this.op = op;
+            this.args = unmodifiableList(asList(args));
+        }
+        public OSimple(Class<D> type, Op<OpType> op, List<Expr<?>> args){
+            super(type);
+            this.op = op;
+            this.args = unmodifiableList(args);
+        }
+        public List<Expr<?>> getArgs() {return args;}
+        public Op<OpType> getOperator() {return op;}
+    }
     
     public static class OString extends EString implements Operation<String,String>{
         private final List<Expr<?>> args;
