@@ -6,6 +6,7 @@
 package com.mysema.query.grammar;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -113,27 +114,27 @@ public class HqlOps extends OperationPatterns {
      * The Interface OpHql.
      */
     public interface OpHql{
-        Op<java.lang.Boolean> ISEMPTY = new Op<java.lang.Boolean>();
-        Op<java.lang.Boolean> ISNOTEMPTY = new Op<java.lang.Boolean>();
-        Op<Number> SUM = new Op<Number>();
+        Op<java.lang.Boolean> ISEMPTY = new Op<java.lang.Boolean>(Collection.class);
+        Op<java.lang.Boolean> ISNOTEMPTY = new Op<java.lang.Boolean>(Collection.class);
+        Op<Number> SUM = new Op<Number>(Number.class);
     }
         
     /**
      * The Interface OpQuant.
      */
     public interface OpQuant{
-        Op<java.lang.Number> AVG_IN_COL = new Op<java.lang.Number>();
-        Op<java.lang.Number> MAX_IN_COL = new Op<java.lang.Number>();
-        Op<java.lang.Number> MIN_IN_COL = new Op<java.lang.Number>();   
+        Op<java.lang.Number> AVG_IN_COL = new Op<java.lang.Number>(Collection.class);
+        Op<java.lang.Number> MAX_IN_COL = new Op<java.lang.Number>(Collection.class);
+        Op<java.lang.Number> MIN_IN_COL = new Op<java.lang.Number>(Collection.class);   
         
 //        some / any = true for any
 //        all        = true for all
 //        exists     = true is subselect matches
 //        not exists = true if subselect doesn't match
-        Op<?> ANY = new Op<Object>();
-        Op<?> ALL = new Op<Object>();
-        Op<?> EXISTS = new Op<Object>();
-        Op<?> NOTEXISTS = new Op<Object>();
+        Op<?> ANY = new Op<Object>(Object.class);
+        Op<?> ALL = new Op<Object>(Object.class);
+        Op<?> EXISTS = new Op<Object>(Object.class);
+        Op<?> NOTEXISTS = new Op<Object>(Object.class);
     }
     
     /**
