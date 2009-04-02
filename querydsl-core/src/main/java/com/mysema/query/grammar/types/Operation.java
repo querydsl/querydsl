@@ -35,8 +35,7 @@ public interface Operation<OP,RT> {
         private final List<Expr<?>> args;
         private final Op<Boolean> op;
         public OBoolean(Op<Boolean> op, Expr<?>... args){
-            this.op = op;
-            this.args = unmodifiableList(asList(args));
+            this(op, asList(args));
         }
         public OBoolean(Op<Boolean> op, List<Expr<?>> args){
             this.op = op;
@@ -50,9 +49,7 @@ public interface Operation<OP,RT> {
         private final List<Expr<?>> args;
         private final Op<OpType> op;
         public OComparable(Class<D> type, Op<OpType> op, Expr<?>... args){
-            super(type);
-            this.op = op;
-            this.args = unmodifiableList(asList(args));
+            this(type, op, asList(args));
         }
         public OComparable(Class<D> type, Op<OpType> op, List<Expr<?>> args){
             super(type);
@@ -67,9 +64,7 @@ public interface Operation<OP,RT> {
         private final List<Expr<?>> args;
         private final Op<OpType> op;
         public ONumber(Class<? extends D> type, Op<OpType> op, Expr<?>... args){
-            super(type);
-            this.op = op;
-            this.args = unmodifiableList(asList(args));
+            this(type, op, asList(args));
         }
         public ONumber(Class<? extends D> type, Op<OpType> op, List<Expr<?>> args){
             super(type);
@@ -84,9 +79,7 @@ public interface Operation<OP,RT> {
         private final List<Expr<?>> args;
         private final Op<OpType> op;
         public OSimple(Class<D> type, Op<OpType> op, Expr<?>... args){
-            super(type);
-            this.op = op;
-            this.args = unmodifiableList(asList(args));
+            this(type, op, asList(args));
         }
         public OSimple(Class<D> type, Op<OpType> op, List<Expr<?>> args){
             super(type);
@@ -101,8 +94,7 @@ public interface Operation<OP,RT> {
         private final List<Expr<?>> args;
         private final Op<String> op;
         public OString(Op<String> op, Expr<?>... args){
-            this.op = op;
-            this.args = unmodifiableList(asList(args));
+            this(op, asList(args));
         }
         public OString(Op<String> op, List<Expr<?>> args){
             this.op = op;
@@ -116,9 +108,7 @@ public interface Operation<OP,RT> {
         private final List<Expr<?>> args;
         private final Op<String> op;
         public OStringArray(Op<String> op, Expr<?>... args){
-            super(null);
-            this.op = op;
-            this.args = unmodifiableList(asList(args));
+            this(op, asList(args));
         }
         public OStringArray(Op<String> op, List<Expr<?>> args){
             super(null);

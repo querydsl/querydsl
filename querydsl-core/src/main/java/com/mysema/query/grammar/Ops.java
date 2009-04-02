@@ -37,13 +37,13 @@ public interface Ops {
     public static class Op<RT>{
         private final List<Class<?>> types;
         public Op(Class<?> type){
-            this.types = unmodifiableList(Collections.<Class<?>>singletonList(type));
+            this(Collections.<Class<?>>singletonList(type));
         }
         public Op(Class<?>... types){
-            this.types = unmodifiableList(Arrays.<Class<?>>asList(types));
+            this(Arrays.<Class<?>>asList(types));
         }                
         public Op(List<Class<?>> types){
-            this.types = types;
+            this.types = unmodifiableList(types);
         }        
         public List<Class<?>> getTypes(){
             return types;
