@@ -9,6 +9,7 @@ import com.mysema.query.collections.ColQuery;
 import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.collections.QueryIndexSupport;
 import com.mysema.query.grammar.JavaOps;
+import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.util.Assert;
 
@@ -48,6 +49,11 @@ public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends P
         for (Expr<Object> obj : (Expr<Object>[])o){
             innerQuery.from(obj, Collections.<Object>emptyList());
         }
+        return _this;
+    }
+    
+    public SubType orderBy(OrderSpecifier<?>... o) {
+        innerQuery.orderBy(o);
         return _this;
     }
     
