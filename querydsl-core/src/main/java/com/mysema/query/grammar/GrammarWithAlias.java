@@ -11,8 +11,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.mysema.query.ExprFactory;
-import com.mysema.query.alias.AliasAwareExprFactory;
+import com.mysema.query.PathFactory;
+import com.mysema.query.alias.AliasAwarePathFactory;
 import com.mysema.query.alias.AliasFactory;
 import com.mysema.query.alias.SimpleAliasFactory;
 import com.mysema.query.grammar.types.Expr;
@@ -29,7 +29,7 @@ public class GrammarWithAlias extends Grammar{
 
     private static final AliasFactory aliasFactory = new SimpleAliasFactory();
     
-    private static final ExprFactory exprFactory = new AliasAwareExprFactory(aliasFactory);
+    private static final PathFactory pathFactory = new AliasAwarePathFactory(aliasFactory);
     
     private static final PSimple<Object> it = new PSimple<Object>(Object.class,PathMetadata.forVariable("it"));
     
@@ -46,79 +46,79 @@ public class GrammarWithAlias extends Grammar{
     }
     
     public static PBoolean $(Boolean arg){
-        return exprFactory.createBoolean(arg);
+        return pathFactory.createBoolean(arg);
     }
     
     public static <D extends Comparable<? super D>> PComparable<D> $(D arg){
-        return exprFactory.createComparable(arg);
+        return pathFactory.createComparable(arg);
     }
     
     public static PNumber<BigDecimal> $(BigDecimal arg){
-        return exprFactory.createNumber(arg);
+        return pathFactory.createNumber(arg);
     }
     
     public static PNumber<BigInteger> $(BigInteger arg){
-        return exprFactory.createNumber(arg);
+        return pathFactory.createNumber(arg);
     }
     
     public static PNumber<Byte> $(Byte arg){
-        return exprFactory.createNumber(arg);
+        return pathFactory.createNumber(arg);
     }
     
     public static PNumber<Double> $(Double arg){
-        return exprFactory.createNumber(arg);
+        return pathFactory.createNumber(arg);
     }
     
     public static PNumber<Float> $(Float arg){
-        return exprFactory.createNumber(arg);
+        return pathFactory.createNumber(arg);
     }
     
     public static PNumber<Integer> $(Integer arg){
-        return exprFactory.createNumber(arg);
+        return pathFactory.createNumber(arg);
     }
     
     public static PNumber<Long> $(Long arg){
-        return exprFactory.createNumber(arg);
+        return pathFactory.createNumber(arg);
     }
     
     public static PNumber<Short> $(Short arg){
-        return exprFactory.createNumber(arg);
+        return pathFactory.createNumber(arg);
     }    
     
     public static PString $(String arg){
-        return exprFactory.createString(arg);
+        return pathFactory.createString(arg);
     }
 
     public static PBooleanArray $(Boolean[] args){
-        return exprFactory.createBooleanArray(args);
+        return pathFactory.createBooleanArray(args);
     }
     
     public static <D extends Comparable<? super D>> PComparableArray<D> $(D[] args){
-        return exprFactory.createComparableArray(args);
+        return pathFactory.createComparableArray(args);
     }
     
     public static PStringArray $(String[] args){
-        return exprFactory.createStringArray(args);
+        return pathFactory.createStringArray(args);
     }
     
     public static <D> PEntityCollection<D> $(Collection<D> args){
-        return exprFactory.createEntityCollection(args);
+        return pathFactory.createEntityCollection(args);
     }
     
     public static <K,V> PEntityMap<K,V> $(Map<K,V> args){
-        return exprFactory.createEntityMap(args);
+        return pathFactory.createEntityMap(args);
     }
     
     public static <D> PEntityList<D> $(List<D> args){
-        return exprFactory.createEntityList(args);
+        return pathFactory.createEntityList(args);
     }
     
     public static <D> PEntity<D> $(D arg){
-        return exprFactory.createEntity(arg);
+        return pathFactory.createEntity(arg);
     }
     
     public static <D> Expr<D> getAny(D arg){
-        return exprFactory.createAny(arg);
+        return pathFactory.createAny(arg);
     }
             
     @SuppressWarnings("unchecked")

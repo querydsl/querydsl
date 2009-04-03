@@ -17,10 +17,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.PathMetadata;
-import com.mysema.query.grammar.types.Expr.EBoolean;
-import com.mysema.query.grammar.types.Expr.EComparable;
-import com.mysema.query.grammar.types.Expr.ENumber;
-import com.mysema.query.grammar.types.Expr.EString;
 import com.mysema.query.grammar.types.Path.*;
 
 /**
@@ -29,7 +25,7 @@ import com.mysema.query.grammar.types.Path.*;
  * @author tiwe
  * @version $Id$
  */
-public class SimpleExprFactory implements ExprFactory {
+public class SimplePathFactory implements PathFactory {
     
     private final PString str = new PString(PathMetadata.forVariable("str"));
     

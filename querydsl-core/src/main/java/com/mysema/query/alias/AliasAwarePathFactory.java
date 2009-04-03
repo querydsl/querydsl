@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.mysema.query.SimpleExprFactory;
+import com.mysema.query.SimplePathFactory;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path.*;
 
@@ -19,11 +19,11 @@ import com.mysema.query.grammar.types.Path.*;
  * @author tiwe
  * @version $Id$
  */
-public class AliasAwareExprFactory extends SimpleExprFactory{
+public class AliasAwarePathFactory extends SimplePathFactory{
     
     private final AliasFactory aliasFactory;
     
-    public AliasAwareExprFactory(AliasFactory aliasFactory){
+    public AliasAwarePathFactory(AliasFactory aliasFactory){
         this.aliasFactory = aliasFactory;
     }
     

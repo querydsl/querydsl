@@ -14,7 +14,8 @@ import com.mysema.query.util.Assert;
 public class QueryAdapter<SubType extends QueryAdapter<SubType>> implements Query<SubType>{
 
     private Query<?> query;
-    
+   
+    @SuppressWarnings("unchecked")
     private SubType _this = (SubType)this;
     
     public QueryAdapter(){}

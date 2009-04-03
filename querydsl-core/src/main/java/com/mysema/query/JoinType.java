@@ -14,13 +14,18 @@ package com.mysema.query;
 public enum JoinType {
     DEFAULT, 
     INNERJOIN {
-        public String toString(){ return "INNER JOIN"; }
-    }, 
-    JOIN, 
-    LEFTJOIN {
-        public String toString(){ return "LEFT JOIN"; }
-    }, 
+        public String toString() {
+            return "INNER JOIN";
+        }
+    },
+    JOIN, LEFTJOIN {
+        public String toString() {
+            return "LEFT JOIN";
+        }
+    },
     FULLJOIN {
-        public String toString(){ return "FULL JOIN"; }
+        public String toString() {
+            return "FULL JOIN";
+        }
     }
 }

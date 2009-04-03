@@ -10,10 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.EBoolean;
-import com.mysema.query.grammar.types.Expr.EComparable;
-import com.mysema.query.grammar.types.Expr.ENumber;
-import com.mysema.query.grammar.types.Expr.EString;
 import com.mysema.query.grammar.types.Path.*;
 
 /**
@@ -22,7 +18,7 @@ import com.mysema.query.grammar.types.Path.*;
  * @author tiwe
  * @version $Id$
  */
-public interface ExprFactory {
+public interface PathFactory {
     
     <D> Expr<D> createAny(D arg);
 
