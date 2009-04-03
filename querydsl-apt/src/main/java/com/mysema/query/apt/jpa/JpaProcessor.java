@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.apt.jpa;
 
 import static com.sun.mirror.util.DeclarationVisitors.NO_OP;
