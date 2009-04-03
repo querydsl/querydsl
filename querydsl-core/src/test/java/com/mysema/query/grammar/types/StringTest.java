@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.grammar.types;
 
 import static com.mysema.query.grammar.GrammarWithAlias.$;
