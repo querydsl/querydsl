@@ -193,7 +193,8 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
             this.args = Arrays.asList(args);
         }
         public List<Expr<?>> getArgs() {return args;}
-        public java.lang.String getPattern() {return "myCustom(%s,%s)";}        
+        public java.lang.String getPattern() {return "myCustom(%s,%s)";}
+        public Expr<?> getArg(int index) {return args.get(index);}        
     }
     
     @Test
