@@ -140,7 +140,7 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
                     try {
                         List<Object> args = new ArrayList<Object>();
                         for (int i=0; i < c.getArgs().size(); i++){                        
-                            args.add(get(rs,i+1,c.getArgs().get(i).getType()));
+                            args.add(get(rs,i+1,c.getArg(i).getType()));
                         }
                         rv.add(cc.newInstance(args.toArray()));
                     } catch (Exception e) {
