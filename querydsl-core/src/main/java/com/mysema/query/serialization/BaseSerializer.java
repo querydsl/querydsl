@@ -94,7 +94,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
     protected void visit(Custom<?> expr){
         Object[] strings = new String[expr.getArgs().size()];
         for (int i = 0; i < strings.length; i++){
-            strings[i] = toString(expr.getArgs().get(i),false);
+            strings[i] = toString(expr.getArg(i),false);
         }
         append(String.format(expr.getPattern(), strings));
     }

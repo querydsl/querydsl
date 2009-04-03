@@ -29,6 +29,7 @@ public interface Operation<OP,RT> {
         
     Class<? extends RT> getType();
     List<Expr<?>> getArgs();
+    Expr<?> getArg(int index);
     Op<OP> getOperator();
 
     public static class OBoolean extends EBoolean implements Operation<Boolean,Boolean>{
@@ -43,6 +44,7 @@ public interface Operation<OP,RT> {
             validate();
         }
         public List<Expr<?>> getArgs() {return args;}
+        public Expr<?> getArg(int i) {return args.get(i);}
         public Op<Boolean> getOperator() {return op;}  
     }    
 
@@ -59,6 +61,7 @@ public interface Operation<OP,RT> {
             validate();
         }
         public List<Expr<?>> getArgs() {return args;}
+        public Expr<?> getArg(int i) {return args.get(i);}
         public Op<OpType> getOperator() {return op;}
     }
 
@@ -75,6 +78,7 @@ public interface Operation<OP,RT> {
             validate();
         }
         public List<Expr<?>> getArgs() {return args;}
+        public Expr<?> getArg(int i) {return args.get(i);}
         public Op<OpType> getOperator() {return op;}    
     }
     
@@ -91,6 +95,7 @@ public interface Operation<OP,RT> {
             validate();
         }
         public List<Expr<?>> getArgs() {return args;}
+        public Expr<?> getArg(int i) {return args.get(i);}
         public Op<OpType> getOperator() {return op;}
     }
     
@@ -106,6 +111,7 @@ public interface Operation<OP,RT> {
             validate();
         }
         public List<Expr<?>> getArgs() {return args;}
+        public Expr<?> getArg(int i) {return args.get(i);}
         public Op<String> getOperator() {return op;}    
     }
     
@@ -122,6 +128,7 @@ public interface Operation<OP,RT> {
             validate();
         }
         public List<Expr<?>> getArgs() {return args;}
+        public Expr<?> getArg(int i) {return args.get(i);}
         public Op<String> getOperator() {return op;}
     }
     

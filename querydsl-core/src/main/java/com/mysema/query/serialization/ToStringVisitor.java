@@ -51,7 +51,7 @@ public class ToStringVisitor extends AbstractVisitor<ToStringVisitor>{
         StringBuilder builder = new StringBuilder("[");
         for (int i=0; i < e.getArgs().size(); i++){
             if (i > 0) builder.append(", ");
-            builder.append(e.getArgs().get(i));
+            builder.append(e.getArg(i));
         }
         builder.append("]");
         toString = builder.toString();
@@ -66,7 +66,7 @@ public class ToStringVisitor extends AbstractVisitor<ToStringVisitor>{
         builder.append("new ").append(e.getType().getSimpleName()).append("(");
         for (int i=0; i < e.getArgs().size(); i++){
             if (i > 0) builder.append(", ");
-            builder.append(e.getArgs().get(i));
+            builder.append(e.getArg(i));
         }
         builder.append(")");
         toString = builder.toString();

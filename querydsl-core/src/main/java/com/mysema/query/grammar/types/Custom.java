@@ -17,11 +17,14 @@ import java.util.List;
 public interface Custom<T> {
 
     List<Expr<?>> getArgs();
+    
+    Expr<?> getArg(int index);
 
     java.lang.String getPattern();
     
     public static abstract class CBoolean extends Expr.EBoolean implements
             Custom<java.lang.Boolean> {
+        public Expr<?> getArg(int index) {return getArgs().get(index);}        
     }
 
     public static abstract class CComparable<T extends java.lang.Comparable<? super T>>
@@ -29,6 +32,7 @@ public interface Custom<T> {
         public CComparable(Class<T> type) {
             super(type);
         }
+        public Expr<?> getArg(int index) {return getArgs().get(index);}
     }
 
     public static abstract class CNumber<T extends java.lang.Number & java.lang.Comparable<? super T>>
@@ -36,16 +40,19 @@ public interface Custom<T> {
         public CNumber(Class<T> type) {
             super(type);
         }
+        public Expr<?> getArg(int index) {return getArgs().get(index);}
     }
 
     public static abstract class CSimple<T> extends Expr.ESimple<T> implements Custom<T>{
         public CSimple(Class<? extends T> type) {
             super(type);
         }        
+        public Expr<?> getArg(int index) {return getArgs().get(index);}
     }
 
     public static abstract class CString extends Expr.EString implements
             Custom<java.lang.String> {
+        public Expr<?> getArg(int index) {return getArgs().get(index);}
     }
 
 }

@@ -762,7 +762,7 @@ public class Grammar extends Factory{
     public static EBoolean not(EBoolean left) {
         if (left instanceof OBoolean){
             OBoolean o = (OBoolean)left;
-            if (o.getOperator() == Ops.NOT) return (EBoolean) o.getArgs().get(0);
+            if (o.getOperator() == Ops.NOT) return (EBoolean) o.getArg(0);
         }        
         return createBoolean(Ops.NOT, left);
     }

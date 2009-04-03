@@ -53,7 +53,7 @@ public abstract class Expr<D>{
     public final EBoolean notIn(Collection<? extends D> arg) {return Grammar.in(this, arg); }
     public final EBoolean notIn(D...args) {return Grammar.notIn(this, args);}
     
-    public void validate(){
+    void validate(){
         new ValidationVisitor().handle(this);
     }
     
@@ -126,6 +126,9 @@ public abstract class Expr<D>{
         }
         public final List<Expr<?>> getArgs() {
             return args;
+        }
+        public final Expr<?> getArg(int index){
+            return args.get(index);
         }
                 
         /**
@@ -231,7 +234,7 @@ public abstract class Expr<D>{
         public final EBoolean endsWith(Expr<String> str) {return Grammar.endsWith(this, str);}
         public final EBoolean endsWith(String str) {return Grammar.endsWith(this, str);}        
         
-        public final  EBoolean equalsIgnoreCase(Expr<String> str) {return Grammar.equalsIgnoreCase(this, str);}
+        public final EBoolean equalsIgnoreCase(Expr<String> str) {return Grammar.equalsIgnoreCase(this, str);}
         public final EBoolean equalsIgnoreCase(String str) {return Grammar.equalsIgnoreCase(this, str);}
         
         public final EComparable<Integer> indexOf(Expr<String> str) {return Grammar.indexOf(this, str);}
