@@ -14,8 +14,7 @@ import com.mysema.query.grammar.HqlQueryBase;
  * @author tiwe
  * @version $Id$
  */
-public abstract class QueryBaseWithDomain<A extends QueryBaseWithDomain<A>> 
-    extends HqlQueryBase<A>{
+public abstract class QueryBaseWithDomain<A extends QueryBaseWithDomain<A>> extends HqlQueryBase<A>{
     
     public QueryBaseWithDomain(){super(new HqlOps());}
     

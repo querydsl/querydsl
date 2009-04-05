@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.mysema.query.CascadingBoolean;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
-import com.mysema.query.QueryBase;
+import com.mysema.query.QueryBaseWithProjection;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathMetadata;
@@ -27,7 +27,7 @@ import com.mysema.query.hql.QueryModifiers;
  * @author tiwe
  * @version $Id$
  */
-public abstract class HqlQueryBase<SubType extends HqlQueryBase<SubType>> extends QueryBase<HqlJoinMeta,SubType>{
+public abstract class HqlQueryBase<SubType extends HqlQueryBase<SubType>> extends QueryBaseWithProjection<HqlJoinMeta,SubType>{
     
     private static final Logger logger = LoggerFactory
             .getLogger(HqlQueryBase.class);
@@ -48,11 +48,11 @@ public abstract class HqlQueryBase<SubType extends HqlQueryBase<SubType>> extend
     }
     
     private String buildQueryString(boolean forCountRow) {
-        if (joins.isEmpty()){
+        if (getMetadata().getJoins().isEmpty()){
             throw new IllegalArgumentException("No joins given");
         }
         HqlSerializer serializer = new HqlSerializer(ops);
-        serializer.serialize(select, joins, where.create(), groupBy, having.create(), orderBy, forCountRow);               
+        serializer.serialize(getMetadata(), forCountRow);               
         constants = serializer.getConstants();      
         return serializer.toString();
     }
@@ -80,7 +80,7 @@ public abstract class HqlQueryBase<SubType extends HqlQueryBase<SubType>> extend
     }
     
     public SubType forExample(Path.PEntity<?> entity, Map<String, Object> map) {
-        select(entity).from(entity);
+        addToProjection(entity).from(entity);
         try {            
             where(createQBECondition(entity,map));
             return _this;
@@ -96,17 +96,17 @@ public abstract class HqlQueryBase<SubType extends HqlQueryBase<SubType>> extend
     }
     
     public SubType innerJoin(HqlJoinMeta meta, EEntity<?> o) {
-        joins.add(new JoinExpression<HqlJoinMeta>(JoinType.INNERJOIN, o, meta));
+        getMetadata().getJoins().add(new JoinExpression<HqlJoinMeta>(JoinType.INNERJOIN, o, meta));
         return _this;
     }
     
     public SubType fullJoin(HqlJoinMeta meta, EEntity<?> o) {
-        joins.add(new JoinExpression<HqlJoinMeta>(JoinType.FULLJOIN, o, meta));
+        getMetadata().getJoins().add(new JoinExpression<HqlJoinMeta>(JoinType.FULLJOIN, o, meta));
         return _this;
     }
 
     public SubType leftJoin(HqlJoinMeta meta, EEntity<?> o) {
-        joins.add(new JoinExpression<HqlJoinMeta>(JoinType.LEFTJOIN, o, meta));
+        getMetadata().getJoins().add(new JoinExpression<HqlJoinMeta>(JoinType.LEFTJOIN, o, meta));
         return _this;
     }
     

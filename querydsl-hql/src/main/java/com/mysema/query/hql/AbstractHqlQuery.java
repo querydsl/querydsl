@@ -69,7 +69,7 @@ public class AbstractHqlQuery<A extends AbstractHqlQuery<A>> extends HqlQueryBas
         
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expr<RT> expr){
-        select(expr);
+        addToProjection(expr);
         String queryString = toString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, limit, offset);
@@ -78,8 +78,8 @@ public class AbstractHqlQuery<A extends AbstractHqlQuery<A>> extends HqlQueryBas
     
     @SuppressWarnings("unchecked")
     public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>...rest){
-        select(expr1, expr2);
-        select(rest);
+        addToProjection(expr1, expr2);
+        addToProjection(rest);
         String queryString = toString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, limit, offset);
@@ -87,7 +87,7 @@ public class AbstractHqlQuery<A extends AbstractHqlQuery<A>> extends HqlQueryBas
     }
     
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
-        select(expr);
+        addToProjection(expr);
         Query query = createQuery(toCountRowsString(), null, null);
         long total = (Long) query.uniqueResult();
         if (total > 0) {
@@ -114,7 +114,7 @@ public class AbstractHqlQuery<A extends AbstractHqlQuery<A>> extends HqlQueryBas
     
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expr<RT> expr) {
-        select(expr);
+        addToProjection(expr);
         String queryString = toString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, 1, null);
@@ -122,10 +122,12 @@ public class AbstractHqlQuery<A extends AbstractHqlQuery<A>> extends HqlQueryBas
     }
 
     public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
+        // TODO : optimize
         return list(e1, e2, rest).iterator();
     }
 
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {
+        // TODO : optimize
         return list(projection).iterator();
     }
 

@@ -5,7 +5,7 @@
  */
 package com.mysema.query.hql;
 
-import static com.mysema.query.grammar.Grammar.count;
+import com.mysema.query.grammar.Grammar;
 import static com.mysema.query.grammar.Grammar.not;
 import static com.mysema.query.grammar.GrammarWithAlias.$;
 import static com.mysema.query.grammar.HqlGrammar.*;
@@ -20,6 +20,7 @@ import static org.junit.Assert.assertNull;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
@@ -335,7 +336,7 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     @Test
     public void testSimpleAliasForNonEntityPaths(){
         toString("cat.bodyWeight as catbodyWeight", cat.bodyWeight.as("catbodyWeight"));
-        toString("count(*) as numPosts", count().as("numPosts"));
+        toString("count(*) as numPosts", Grammar.count().as("numPosts"));
         toString("cat.bodyWeight + kitten.bodyWeight as abc", add(cat.bodyWeight,kitten.bodyWeight).as("abc"));
     }
     
@@ -387,9 +388,9 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
         
         toString("distinct cat.bodyWeight", distinct(cat.bodyWeight));
         
-        toString("count(*)", count());
-        toString("count(distinct cat.bodyWeight)", count(distinct(cat.bodyWeight)));
-        toString("count(cat)", count(cat));        
+        toString("count(*)", Grammar.count());
+        toString("count(distinct cat.bodyWeight)", Grammar.count(distinct(cat.bodyWeight)));
+        toString("count(cat)", Grammar.count(cat));        
     }
     
     /**
@@ -462,5 +463,14 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     public static final class BookmarkDTO{
         
     }
-    
+
+    public long count() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
+        // TODO Auto-generated method stub
+        return null;
+    }    
 }

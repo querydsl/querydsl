@@ -5,6 +5,7 @@
  */
 package com.mysema.query.hql;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -13,6 +14,7 @@ import javax.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlOps;
 import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.types.Expr;
@@ -56,7 +58,7 @@ public class JpaqlQuery<A extends JpaqlQuery<A>> extends HqlQueryBase<A>{
 
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expr<RT> expr){
-        select(expr);
+        addToProjection(expr);
         String queryString = toString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, limit, offset);
@@ -65,12 +67,21 @@ public class JpaqlQuery<A extends JpaqlQuery<A>> extends HqlQueryBase<A>{
     
     @SuppressWarnings("unchecked")
     public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>...rest){
-        select(expr1, expr2);
-        select(rest);
+        addToProjection(expr1, expr2);
+        addToProjection(rest);
         String queryString = toString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, limit, offset);
         return query.getResultList();
+    }
+
+    public long count() {
+        return uniqueResult(HqlGrammar.count());
+    }
+
+    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
+        // TODO Auto-generated method stub
+        return list(projection).iterator();
     }
     
 

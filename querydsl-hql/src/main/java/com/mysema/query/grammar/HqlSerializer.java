@@ -38,9 +38,14 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
         super(ops);
     }
            
-    public void serialize(List<? extends Expr<?>> select, List<JoinExpression<HqlJoinMeta>> joins,
-        Expr.EBoolean where, List<? extends Expr<?>> groupBy, Expr.EBoolean having,
-        List<OrderSpecifier<?>> orderBy, boolean forCountRow){
+    public void serialize(QueryMetadata<HqlJoinMeta> metadata, boolean forCountRow){
+        List<? extends Expr<?>> select = metadata.getSelect();
+        List<JoinExpression<HqlJoinMeta>> joins = metadata.getJoins();
+        Expr.EBoolean where = metadata.getWhere();
+        List<? extends Expr<?>> groupBy = metadata.getGroupBy();
+        Expr.EBoolean having = metadata.getHaving();
+        List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
+        
          if (forCountRow){
             append("select count(*)\n");
         }else if (!select.isEmpty()){
@@ -175,11 +180,8 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
     }
 
     protected void visit(SubQuery<HqlJoinMeta,?> query) {
-        QueryMetadata<HqlJoinMeta> md = query.getQuery().getMetadata();
         append("(");
-        serialize(md.getSelect(), md.getJoins(),
-            md.getWhere(), md.getGroupBy(), md.getHaving(), 
-            md.getOrderBy(), false);
+        serialize(query.getQuery().getMetadata(), false);
         append(")");
     }
     

@@ -5,9 +5,8 @@
  */
 package com.mysema.query.hql;
 
-//import static com.mysema.query.grammar.Grammar.avg;
 import static com.mysema.query.grammar.Grammar.avg;
-import static com.mysema.query.grammar.Grammar.count;
+import com.mysema.query.grammar.Grammar;
 import static com.mysema.query.grammar.Grammar.in;
 import static com.mysema.query.grammar.Grammar.not;
 import static com.mysema.query.grammar.GrammarWithAlias.$;
@@ -18,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Iterator;
 
 import org.hibernate.hql.ast.HqlParser;
 import org.junit.Test;
@@ -29,6 +29,7 @@ import antlr.collections.AST;
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlJoinMeta;
 import com.mysema.query.grammar.QMath;
+import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.ENumber;
 import com.mysema.query.hql.HqlDomain.*;
@@ -42,6 +43,10 @@ import com.mysema.query.hql.HqlDomain.*;
  * @version $Id$
  */
 public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
+    
+    protected HqlParserTest select(Expr<?>... o) {
+        return addToProjection(o);
+    }
     
     @Test
     public void testBeforeAndAfter() throws RecognitionException, TokenStreamException{
@@ -184,19 +189,19 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
     public void testDocoExamples95() throws Exception {
 //        parse( "select avg(cat.weight), sum(cat.weight), max(cat.weight), count(cat)\n"
 //                + "from eg.Cat cat" );
-        select(avg(cat.weight), sum(cat.weight), QMath.max(cat.weight), count(cat)).from(cat).parse();
+        select(avg(cat.weight), sum(cat.weight), QMath.max(cat.weight), Grammar.count(cat)).from(cat).parse();
         
 //        parse( "select cat, count( elements(cat.kittens) )\n"
 //                + " from eg.Cat cat group by cat" );
         // NOTE : groupBy don't work properly in HSQLDB
-        select(cat, count(cat.kittens)).from(cat).groupBy(cat);
+        select(cat, Grammar.count(cat.kittens)).from(cat).groupBy(cat);
         clear();
         
 //        parse( "select distinct cat.name from eg.Cat cat" );
         select(distinct(cat.name)).from(cat).parse();
         
 //        parse( "select count(distinct cat.name), count(cat) from eg.Cat cat" );
-        select(count(distinct(cat.name)), count(cat)).from(cat).parse();
+        select(Grammar.count(distinct(cat.name)), Grammar.count(cat)).from(cat).parse();
     }
     
     @Test
@@ -371,7 +376,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
     public void testDocoExamples910() throws Exception {
 //        parse( "select cat.color, sum(cat.weight), count(cat)\n"
 //                + "from eg.Cat cat group by cat.color" );
-        select(cat.color, sum(cat.weight), count(cat)).from(cat).groupBy(cat.color).parse();
+        select(cat.color, sum(cat.weight), Grammar.count(cat)).from(cat).groupBy(cat.color).parse();
         
 //        parse( "select foo.id, avg( elements(foo.names) ), max( indices(foo.names) )\n"
 //                + "from eg.Foo foo group by foo.id" );
@@ -381,7 +386,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
 //        parse( "select cat.color, sum(cat.weight), count(cat)\n"
 //                + "from eg.Cat cat group by cat.color\n"
 //                + "having cat.color in (eg.Color.TABBY, eg.Color.BLACK)" );
-        select(cat.color, sum(cat.weight), count(cat)).from(cat).groupBy(cat.color)
+        select(cat.color, sum(cat.weight), Grammar.count(cat)).from(cat).groupBy(cat.color)
             .having(cat.color.in(Color.TABBY, Color.BLACK)).parse();
         
 //        parse( "select cat from eg.Cat cat join cat.kittens kitten\n"
@@ -389,7 +394,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
 //                + "order by count(kitten) asc, sum(kitten.weight) desc" );
         select(cat).from(cat).join(cat.kittens.as(kitten))
             .groupBy(cat).having(avg(kitten.weight).gt(100.0))
-            .orderBy(count(kitten).asc(), sum(kitten.weight).desc()).parse();
+            .orderBy(Grammar.count(kitten).asc(), sum(kitten.weight).desc()).parse();
     }
 
     @Test
@@ -429,7 +434,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
 //                + "having sum(price.amount) > :minAmount\n"
 //                + "order by sum(price.amount) desc" );
 //        QCatalog cat = new QCatalog("cat");
-        select(ord.id, sum(price.amount), count(item))
+        select(ord.id, sum(price.amount), Grammar.count(item))
             .from(ord).join(ord.lineItems.as(item))
                 .join(item.product.as(product)).from(catalog)
                 .join(catalog.prices.as(price))
@@ -456,7 +461,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
         HqlDomain.Customer c1 = new HqlDomain.Customer();
         HqlDomain.Catalog c2 = new HqlDomain.Catalog();
         
-        select(ord.id, sum(price.amount), count(item))
+        select(ord.id, sum(price.amount), Grammar.count(item))
             .from(ord).join(ord.lineItems.as(item)).join(item.product.as(product))
             .from(catalog).join(catalog.prices.as(price))
             .where(not(ord.paid).and(ord.customer.eq(c1))
@@ -551,7 +556,7 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
 //        parse( "SELECT f FROM eg.mypackage.Cat qat, com.toadstool.Foo f join net.sf.blurb.Blurb" );
 //        parse( "SELECT DISTINCT bar FROM eg.mypackage.Cat qat  left join com.multijoin.JoinORama as bar, com.toadstool.Foo f join net.sf.blurb.Blurb" );        
 //        parse( "SELECT count(*) FROM eg.mypackage.Cat qat" );
-        select(count()).from(qat).parse();
+        select(Grammar.count()).from(qat).parse();
         
 //        parse( "SELECT avg(qat.weight) FROM eg.mypackage.Cat qat" );
         select(avg(qat.weight)).from(qat).parse();
@@ -612,10 +617,10 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
     @Test
     public void testComplexConstructor() throws Exception {
 //        parse( "select new Foo(count(bar)) from bar" );    
-        select(new QFooDTO(count(bar))).from(bar).parse();
+        select(new QFooDTO(Grammar.count(bar))).from(bar).parse();
         
 //        parse( "select new Foo(count(bar),(select count(*) from doofus d where d.gob = 'fat' )) from bar" );
-        select(new QFooDTO(count(bar), HqlGrammar.select(count()).from(d).where(d.gob.eq("fat")))).from(bar).parse();
+        select(new QFooDTO(Grammar.count(bar), HqlGrammar.select(Grammar.count()).from(d).where(d.gob.eq("fat")))).from(bar).parse();
     }
 
     @Test
@@ -757,6 +762,16 @@ public class HqlParserTest extends QueryBaseWithDomain<HqlParserTest> {
             clear();
             System.out.println();
         }        
+    }
+
+    public long count() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
+        // TODO Auto-generated method stub
+        return null;
     }    
 
 }
