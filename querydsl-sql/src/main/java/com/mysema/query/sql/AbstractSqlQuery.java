@@ -18,7 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.Projectable;
-import com.mysema.query.QueryBase;
+import com.mysema.query.QueryBaseWithProjection;
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.SqlJoinMeta;
 import com.mysema.query.grammar.SqlOps;
@@ -32,7 +32,7 @@ import com.mysema.query.grammar.types.SubQuery;
  * @author tiwe
  * @version $Id$
  */
-public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends QueryBase<SqlJoinMeta,SubType> implements Projectable{
+public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends QueryBaseWithProjection<SqlJoinMeta,SubType> implements Projectable{
     
     private static final Logger logger = LoggerFactory.getLogger(AbstractSqlQuery.class);
     
@@ -59,8 +59,8 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
     }
     
     public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>...rest){
-        select(expr1, expr2);
-        select(rest);
+        addToProjection(expr1, expr2);
+        addToProjection(rest);
         try {
             return listMultiple();
         } catch (SQLException e) {
@@ -106,7 +106,7 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
     }
         
     public <RT> List<RT> list(Expr<RT> expr){
-        select(expr);
+        addToProjection(expr);
         try {
             return listSingle(expr);
         } catch (SQLException e) {
@@ -199,7 +199,7 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
     
     @SuppressWarnings("unchecked")
     public <RT> UnionBuilder<RT> union(SubQuery<SqlJoinMeta,RT>... sq){
-        if (!joins.isEmpty()) throw new IllegalArgumentException("Don't mix union and from");
+        if (!getMetadata().getJoins().isEmpty()) throw new IllegalArgumentException("Don't mix union and from");
         this.sq = sq;
         return new UnionBuilder();
     }
@@ -211,15 +211,15 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
     protected String buildQueryString() {
         SqlSerializer serializer = createSerializer();
         if (sq != null){
-            serializer.serializeUnion(select, sq, where.create(), orderBy);
+            serializer.serializeUnion(sq, getMetadata().getOrderBy());
         }else{
-            serializer.serialize(select, joins, where.create(), groupBy, having.create(), orderBy, limit, offset, forCountRow);    
+            serializer.serialize(getMetadata(), limit, offset, forCountRow);    
         }                       
         constants = serializer.getConstants();      
         return serializer.toString();
     }
 
-    private long getCount() throws SQLException{
+    private long unsafeCount() throws SQLException{
         forCountRow = true;  
         String queryString = toString();
         logger.debug("query : {}", queryString);
@@ -252,7 +252,7 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
     
     public long count(){
         try {
-            return getCount();
+            return unsafeCount();
         } catch (SQLException e) {
             String error = "Caught " + e.getClass().getName();
             logger.error(error, e);

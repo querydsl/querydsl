@@ -14,7 +14,6 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.*;
 import com.mysema.query.grammar.types.Alias.ASimple;
-import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EConstant;
 import com.mysema.query.grammar.types.Path.PEntity;
 import com.mysema.query.serialization.BaseSerializer;
@@ -35,22 +34,18 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
     }
         
     protected void beforeOrderBy() {
-        // template method, for subclasses do override
-        
+        // template method, for subclasses do override        
     }
     
-    public void serialize(
-            List<? extends Expr<?>> select, 
-            List<JoinExpression<SqlJoinMeta>> joins,
-            Expr.EBoolean where, 
-            List<? extends Expr<?>> groupBy, 
-            Expr.EBoolean having,
-            List<OrderSpecifier<?>> orderBy, 
-            int limit, 
-            int offset, 
-            boolean forCountRow){
+    public void serialize(QueryMetadata<SqlJoinMeta> metadata, int limit,  int offset, boolean forCountRow){
+        List<? extends Expr<?>> select = metadata.getSelect(); 
+        List<JoinExpression<SqlJoinMeta>> joins = metadata.getJoins();
+        Expr.EBoolean where = metadata.getWhere();
+        List<? extends Expr<?>> groupBy = metadata.getGroupBy();
+        Expr.EBoolean having = metadata.getHaving();
+        List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
+        
          if (forCountRow){
-//            _append("select count(*)\n");
              append(ops.select()).append(ops.countStar());
         }else if (!select.isEmpty()){
             append(ops.select());           
@@ -138,13 +133,10 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
         }               
     }
 
-    public void serializeUnion(List<Expr<?>> select,
-            SubQuery<SqlJoinMeta, ?>[] sqs, EBoolean self,
-            List<OrderSpecifier<?>> orderBy) {
+    public void serializeUnion(SubQuery<SqlJoinMeta, ?>[] sqs, List<OrderSpecifier<?>> orderBy) {
         // union
         append(ops.union(), Arrays.asList(sqs));
-        
-        
+                
         // order by
         if (!orderBy.isEmpty()){
             append(ops.orderBy());
@@ -206,11 +198,8 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
     }
     
     protected void visit(SubQuery<SqlJoinMeta,?> query) {
-        QueryMetadata<SqlJoinMeta> md = query.getQuery().getMetadata();
         append("(");
-        serialize(md.getSelect(), md.getJoins(),
-            md.getWhere(), md.getGroupBy(), md.getHaving(), 
-            md.getOrderBy(), 0, 0, false);
+        serialize(query.getQuery().getMetadata(), 0, 0, false);
         append(")");
     }
 
