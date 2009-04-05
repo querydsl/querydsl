@@ -23,7 +23,7 @@ public class SubQuery<JM,A> extends Expr<A> implements Query<SubQuery<JM,A>>, Co
     private QueryWithPublicSelect<JM> query = new QueryWithPublicSelect<JM>();
     public SubQuery(Expr<A> select) {
         super(null);
-        query.s(select);
+        query.select(select);
     }
     public SubQuery(){
         super(null);
@@ -39,11 +39,11 @@ public class SubQuery<JM,A> extends Expr<A> implements Query<SubQuery<JM,A>>, Co
     public SubQuery<JM,A> leftJoin(Expr<?> o) {query.leftJoin(o); return this;}
     public SubQuery<JM,A> on(EBoolean o) {query.on(o); return this;}
     public SubQuery<JM,A> orderBy(OrderSpecifier<?>... o) {query.orderBy(o); return this;}
-    public SubQuery<JM,A> select(Expr<?>... o) {query.s(o); return this;}
+    public SubQuery<JM,A> select(Expr<?>... o) {query.select(o); return this;}
     public SubQuery<JM,A> where(EBoolean... o) {query.where(o); return this;}    
     private static class QueryWithPublicSelect<JM> extends QueryBase<JM,QueryWithPublicSelect<JM>>{
-        public void s(Expr<?>... expr){
-            select(expr);
+        public void select(Expr<?>... expr){
+            addToProjection(expr);
         }
     }
     public Class<A> getElementType() {

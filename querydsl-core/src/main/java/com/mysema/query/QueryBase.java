@@ -16,28 +16,28 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 
 /**
- * QueryBase provides a basic implementation of the Query interface.
+ * QueryBase provides a basic implementation of the Query interface without the Projectable interface
  * 
  * @author tiwe
  * @version $Id$
  */
 public class QueryBase<JoinMeta,SubType extends QueryBase<JoinMeta,SubType>> implements Query<SubType> {
-    protected final List<Expr<?>> groupBy = new ArrayList<Expr<?>>();
+    private final List<Expr<?>> groupBy = new ArrayList<Expr<?>>();
     
-    protected final CascadingBoolean having = new CascadingBoolean();
+    private final CascadingBoolean having = new CascadingBoolean();
     
-    protected final Set<Expr<?>> exprInJoins = new HashSet<Expr<?>>();
-    protected final List<JoinExpression<JoinMeta>> joins = new ArrayList<JoinExpression<JoinMeta>>();
-    protected final List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
-    protected final List<Expr<?>> select = new ArrayList<Expr<?>>();
-    protected final CascadingBoolean where = new CascadingBoolean();
+    private final Set<Expr<?>> exprInJoins = new HashSet<Expr<?>>();
+    private final List<JoinExpression<JoinMeta>> joins = new ArrayList<JoinExpression<JoinMeta>>();
+    private final List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
+    private final List<Expr<?>> projection = new ArrayList<Expr<?>>();
+    private final CascadingBoolean where = new CascadingBoolean();
     protected void clear(){
         exprInJoins.clear();
         joins.clear();
         groupBy.clear();
         having.clear();
         orderBy.clear();
-        select.clear();
+        projection.clear();
         where.clear();
     }
 
@@ -60,7 +60,7 @@ public class QueryBase<JoinMeta,SubType extends QueryBase<JoinMeta,SubType>> imp
             return orderBy;
         }
         public List<Expr<?>> getSelect() {
-            return select;
+            return projection;
         }
         public EBoolean getWhere() {
             return where.create();
@@ -119,8 +119,8 @@ public class QueryBase<JoinMeta,SubType extends QueryBase<JoinMeta,SubType>> imp
         return _this;
     }
 
-    protected SubType select(Expr<?>... o) {
-        select.addAll(Arrays.asList(o));
+    protected SubType addToProjection(Expr<?>... o) {
+        projection.addAll(Arrays.asList(o));
         return _this;
     }
 
