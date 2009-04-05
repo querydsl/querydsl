@@ -18,8 +18,7 @@ import org.apache.commons.collections15.iterators.IteratorChain;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.Projectable;
-import com.mysema.query.QueryBase;
-import com.mysema.query.QueryMetadata;
+import com.mysema.query.QueryBaseWithProjection;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.iterators.FilteringMultiIterator;
 import com.mysema.query.collections.iterators.MultiIterator;
@@ -42,100 +41,145 @@ import com.mysema.query.util.CloseableIterator;
  * Extend it like this
  * 
  * <pre>
- * public class MyType extends AbstractColQuery<MyType>{
+ * public class MyType extends AbstractColQuery&lt;MyType&gt;{
  *   ...
  * }
  * </pre>
  * 
  * @see ColQuery
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
-public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> implements Closeable, Projectable{
-        
+// TODO : implement leftJoin, rightJoin and fullJoin
+// TODO : implement groupBy and having
+public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends QueryBaseWithProjection<Object, SubType> implements Closeable, Projectable{
+
     @SuppressWarnings("unchecked")
-    private final SubType _this = (SubType)this;
-    
+    private final SubType _this = (SubType) this;
+
+    private boolean closed = false;
+
     private final Map<Expr<?>, Iterable<?>> exprToIt = new HashMap<Expr<?>, Iterable<?>>();
-    
+
     private QueryIndexSupport indexSupport;
-    
+
     private final JavaOps ops;
 
-    private final InnerQuery query;
-    
-    /**
-     * optimize sort order for optimal index usage
-     */
-    private boolean sortSources = true;
-    
-    /**
-     * wrap single source iterators to avoid cartesian view
-     */
-    private boolean wrapIterators = true;
-    
     /**
      * turn OR queries into sequential UNION queries
      */
     private boolean sequentialUnion = false;
-    
+
+    /**
+     * optimize sort order for optimal index usage
+     */
+    private boolean sortSources = true;
+
     private SourceSortingSupport sourceSortingSupport;
 
-    private boolean closed = false;
-    
+    /**
+     * wrap single source iterators to avoid cartesian view
+     */
+    private boolean wrapIterators = true;
+
     public AbstractColQuery() {
         this(JavaOps.DEFAULT);
     }
-    
+
     public AbstractColQuery(JavaOps ops) {
         this.ops = ops;
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
-        this.query = createInnerQuery();
     }
-    
-    protected InnerQuery createInnerQuery(){
-        return new InnerQuery();
-    }
-    
+
     protected <A> SubType alias(Expr<A> path, Iterable<? extends A> col) {
         exprToIt.put(path, col);
         return _this;
     }
     
-    private <A> A[] asArray(A[] target, A first, A second, A... rest) {
-        target[0] = first;
-        target[1] = second;
-        System.arraycopy(rest, 0, target, 2, rest.length);
-        return target;
+    private boolean changeToUnionQuery(EBoolean condition) {
+        return sequentialUnion && condition instanceof Operation 
+            && ((Operation<?, ?>) condition).getOperator() == Ops.OR;
     }
-   
+
     private void checkClosed() {
         if (closed) throw new IllegalStateException("Already closed");
         closed = true;
     }
-    
+
     /**
      * Close the Query and related datasource connection
-     */    
-    public void close(){
+     */
+    public void close() {
         // overwrite
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.collections.Projectable#count()
-     */
-    public long count(){
-        checkClosed();
+    public long count() {
         try {
-            return query.count();
+            List<Expr<?>> sources = new ArrayList<Expr<?>>();
+            Iterator<?> it;
+            if (getMetadata().getJoins().size() == 1) {
+                it = handleFromWhereSingleSource(sources);
+            } else {
+                it = handleFromWhereMultiSource(sources);
+            }
+            long count = 0l;
+            while (it.hasNext()) {
+                it.next();
+                count++;
+            }
+            return count;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
 
-    protected QueryIndexSupport createIndexSupport(Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops, List<Expr<?>> sources){
+    protected QueryIndexSupport createIndexSupport(Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops,List<Expr<?>> sources) {
         return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);
+    }
+
+    private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
+        checkClosed();
+        List<Expr<?>> sources = new ArrayList<Expr<?>>();
+        // from / where
+        Iterator<?> it;
+        if (getMetadata().getJoins().size() == 1) {
+            it = handleFromWhereSingleSource(sources);
+        } else {
+            it = handleFromWhereMultiSource(sources);
+        }
+
+        if (it.hasNext()) {
+            // order
+            if (!getMetadata().getOrderBy().isEmpty()) {
+                it = handleOrderBy(sources, it);
+            }
+
+            // select
+            return handleSelect(it, sources, projection);
+
+        } else {
+            return Collections.<RT> emptyList().iterator();
+        }
+
+    }
+    
+    private Iterator<Object[]> createMultiIterator(List<Expr<?>> sources, EBoolean condition) {
+        MultiIterator multiIt;
+        if (condition == null || !wrapIterators) {
+            multiIt = new MultiIterator();
+        } else {
+            multiIt = new FilteringMultiIterator(ops, condition);
+        }
+        for (Expr<?> expr : sources)
+            multiIt.add(expr);
+        multiIt.init(indexSupport.getChildFor(condition));
+
+        if (condition != null) {
+            return multiArgFilter(ops, multiIt, sources, condition);
+        } else {
+            return multiIt;
+        }
     }
     
     public <A> SubType from(Expr<A> entity, A first, A... rest) {
@@ -147,293 +191,169 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> impleme
 
     public <A> SubType from(Expr<A> entity, Iterable<? extends A> col) {
         alias(entity, col);
-        query.from((Expr<?>)entity);
+        from((Expr<?>) entity);
         return _this;
-    }    
-    
-    public QueryMetadata<?> getMetadata(){
-        return query.getMetadata();
     }
-    
-    /* (non-Javadoc)
-     * @see com.mysema.query.Projectable#iterate(com.mysema.query.grammar.types.Expr, com.mysema.query.grammar.types.Expr, com.mysema.query.grammar.types.Expr)
-     */
+
+    protected Iterator<?> handleFromWhereMultiSource(List<Expr<?>> sources) throws Exception {
+        EBoolean condition = getMetadata().getWhere();
+        if (sortSources) {
+            sourceSortingSupport.sortSources(getMetadata().getJoins(), condition);
+        }
+        for (JoinExpression<?> join : getMetadata().getJoins()) {
+            sources.add(join.getTarget());
+        }
+        indexSupport = createIndexSupport(exprToIt, ops, sources);
+
+        if (changeToUnionQuery(condition)) {
+            // TODO : handle deeper OR operations as well
+            Operation<?, ?> op = (Operation<?, ?>) condition;
+            
+            IteratorChain<Object[]> chain = new IteratorChain<Object[]>();
+            EBoolean e1 = (EBoolean) op.getArg(0), e2 = (EBoolean) op.getArg(1);
+            chain.addIterator(createMultiIterator(sources, e1));
+            chain.addIterator(createMultiIterator(sources, e2.and(e1.not())));
+            return chain;
+        } else {
+            return createMultiIterator(sources, condition);
+        }
+    }
+
+    protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources) throws Exception {
+        EBoolean condition = getMetadata().getWhere();
+        JoinExpression<?> join = getMetadata().getJoins().get(0);
+        sources.add(join.getTarget());
+        indexSupport = createIndexSupport(exprToIt, ops, sources);
+        // create a simple projecting iterator for Object -> Object[]
+
+        if (changeToUnionQuery(condition)) {
+            Operation<?, ?> op = (Operation<?, ?>) condition;
+            
+            IteratorChain<Object[]> chain = new IteratorChain<Object[]>();
+            EBoolean e1 = (EBoolean) op.getArg(0), e2 = (EBoolean) op.getArg(1);
+            Iterator<?> it1 = indexSupport.getChildFor(e1).getIterator( join.getTarget());
+            chain.addIterator(multiArgFilter(ops, toArrayIterator(it1), sources, e1));
+            Iterator<?> it2 = indexSupport.getChildFor(e2.and(e1.not())).getIterator(join.getTarget());
+            chain.addIterator(multiArgFilter(ops, toArrayIterator(it2), sources, e2.and(e1.not())));
+            return chain;
+        } else {
+            Iterator<?> it = toArrayIterator(indexSupport.getChildFor(condition).getIterator(join.getTarget()));
+            if (condition != null) {
+                // wrap the iterator if a where constraint is available
+                it = multiArgFilter(ops, it, sources, condition);
+            }
+            return it;
+        }
+
+    }
+
     @SuppressWarnings("unchecked")
-    public CloseableIterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
-        Expr<?>[] full = asArray(new Expr[rest.length + 2], e1, e2, rest);
-        return iterate(new Expr.EArrayConstructor(Object.class, full));
+    protected Iterator<?> handleOrderBy(List<Expr<?>> sources, Iterator<?> it) throws Exception {
+        // create a projection for the order
+        List<OrderSpecifier<?>> orderBy = getMetadata().getOrderBy();
+        Expr<Object>[] orderByExpr = new Expr[orderBy.size()];
+        boolean[] directions = new boolean[orderBy.size()];
+        for (int i = 0; i < orderBy.size(); i++) {
+            orderByExpr[i] = (Expr) orderBy.get(i).target;
+            directions[i] = orderBy.get(i).order == Order.ASC;
+        }
+        Expr<?> expr = new Expr.EArrayConstructor<Object>(Object.class, orderByExpr);
+        Evaluator ev = EvaluatorUtils.create(ops, sources, expr);
+
+        // transform the iterator to list
+        List<Object[]> itAsList = IteratorUtils.toList((Iterator<Object[]>) it);
+        Collections.sort(itAsList, new MultiComparator(ev, directions));
+        it = itAsList.iterator();
+        return it;
+    }
+
+    protected <RT> Iterator<RT> handleSelect(Iterator<?> it, List<Expr<?>> sources, Expr<RT> projection) throws Exception {
+        return transform(ops, it, sources, projection);
     }
     
-    /* (non-Javadoc)
-     * @see com.mysema.query.Projectable#iterate(com.mysema.query.grammar.types.Expr)
-     */
-    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
-        checkClosed();
-        return wrap(query.iterate(projection));
-    }    
-    // alias variant
-    public <RT> CloseableIterator<RT> iterate(RT alias) {
-        checkClosed();
-        return iterate(MiniApi.getAny(alias));
+    @SuppressWarnings("unchecked")
+    public CloseableIterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+        Expr<?>[] full = asArray(new Expr[rest.length + 2], first, second, rest);
+        Expr<Object[]> projection = new Expr.EArrayConstructor(Object.class, full);
+        
+        addToProjection(projection);
+        try {
+            return wrap(createIterator(projection));
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {        
+        addToProjection(projection);
+        try {
+            return wrap(createIterator(projection));
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
     
-    /* (non-Javadoc)
-     * @see com.mysema.query.Projectable#list(com.mysema.query.grammar.types.Expr, com.mysema.query.grammar.types.Expr, com.mysema.query.grammar.types.Expr)
-     */
     public List<Object[]> list(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
         try{
-            ArrayList<Object[]> rv = new ArrayList<Object[]>();
-            CloseableIterator<Object[]> it = iterate(e1, e2, rest);
-            while (it.hasNext()){
-                rv.add(it.next());
-            }
-            return rv;    
+            return super.list(e1, e2, rest);
         }finally{
             close();
-        }        
+        }
     }
-    
-    /* (non-Javadoc)
-     * @see com.mysema.query.Projectable#list(com.mysema.query.grammar.types.Expr)
-     */
-    public <RT> List<RT> list(Expr<RT> projection) {        
-        checkClosed();
-        try {
-            ArrayList<RT> rv = new ArrayList<RT>();
-            Iterator<RT> it = query.iterate(projection);
-            while (it.hasNext()){
-                rv.add(it.next());
-            }
-            return rv;
-        }finally{
-            close();
-        }            
-    }
-    // alias variant
-    public <RT> List<RT> list(RT alias) {
-        return list(MiniApi.getAny(alias));
-    }
-    
-    protected EBoolean normalize(EBoolean e) {
-        return e;
-    }   
-    
-    public SubType orderBy(OrderSpecifier<?>... o) {
-        query.orderBy(o);
-        return _this;
-    }
-        
-    /* (non-Javadoc)
-     * @see com.mysema.query.Projectable#uniqueResult(com.mysema.query.grammar.types.Expr)
-     */
-    public <RT> RT uniqueResult(Expr<RT> expr) {
-        checkClosed();
+
+    public <RT> List<RT> list(Expr<RT> projection) {
         try{
-            Iterator<RT> it = query.iterate(expr);
-            return it.hasNext() ? it.next() : null;
+            return super.list(projection);
         }finally{
             close();
-        }        
+        }
     }
-    // alias variant
-    /* (non-Javadoc)
-     * @see com.mysema.query.Projectable#uniqueResult(RT)
-     */
-    public <RT> RT uniqueResult(RT alias) {
-        return uniqueResult(MiniApi.getAny(alias));
+
+    public <RT> List<RT> list(RT projection) {
+        return list(MiniApi.getAny(projection));
     }
-        
-    public SubType where(Expr.EBoolean... o) {
-        query.where(o);
-        return _this;
-    }
-    // alias variant
-    public SubType where(boolean alias){
-        return where( MiniApi.$(alias));
-    }
-    
-    // settings
     
     public void setSequentialUnion(boolean sequentialUnion) {
         this.sequentialUnion = sequentialUnion;
     }
-        
-    public void setSortSources(boolean s){
+
+    public void setSortSources(boolean s) {
         this.sortSources = s;
     }
     
     public void setSourceSortingSupport(SourceSortingSupport sourceSortingSupport) {
         this.sourceSortingSupport = sourceSortingSupport;
     }
-    
-    public void setWrapIterators(boolean w){
+
+    public void setWrapIterators(boolean w) {
         this.wrapIterators = w;
     }
-    
-    private <T> CloseableIterator<T> wrap(final Iterator<T> it){
-        return new CloseableIterator<T>(){
+
+    public <RT> RT uniqueResult(Expr<RT> expr) {
+        try {
+            return super.uniqueResult(expr);
+        } finally {
+            close();
+        }
+    }
+
+    private <T> CloseableIterator<T> wrap(final Iterator<T> it) {
+        return new CloseableIterator<T>() {
             public void close() throws IOException {
-                AbstractColQuery.this.close();                
+                AbstractColQuery.this.close();
             }
             public boolean hasNext() {
                 return it.hasNext();
             }
+
             public T next() {
                 return it.next();
             }
             public void remove() {
-                it.remove();                
-            }            
+                it.remove();
+            }
         };
     }
-    
-    public class InnerQuery extends QueryBase<Object, InnerQuery> {
-        
-        public long count() throws Exception {
-            List<Expr<?>> sources = new ArrayList<Expr<?>>();
-            Iterator<?> it;
-            if (joins.size() == 1){
-                it = handleFromWhereSingleSource(sources);
-            }else{
-                it = handleFromWhereMultiSource(sources);   
-            }
-            long count = 0l;
-            while (it.hasNext()){
-                it.next();
-                count++;
-            }
-            return count;
-        }
-        
-        private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
-            List<Expr<?>> sources = new ArrayList<Expr<?>>();
-            // from  / where       
-            Iterator<?> it;
-            if (joins.size() == 1){
-                it = handleFromWhereSingleSource(sources);
-            }else{
-                it = handleFromWhereMultiSource(sources);   
-            }
 
-            if (it.hasNext()){
-                // order
-                if (!orderBy.isEmpty()){
-                    it = handleOrderBy(sources, it);
-                }
-                
-                // select    
-                return handleSelect(it, sources, projection);
-                
-            }else{
-                return Collections.<RT>emptyList().iterator();
-            }
-                               
-        }
-        
-        private Iterator<Object[]> createMultiIterator(List<Expr<?>> sources, EBoolean condition) {
-            MultiIterator multiIt;
-            if (condition == null || !wrapIterators){
-                multiIt = new MultiIterator();
-            }else{
-                multiIt = new FilteringMultiIterator(ops, condition);                
-            }        
-            for (Expr<?> expr : sources) multiIt.add(expr);
-            multiIt.init(indexSupport.getChildFor(condition));
-            
-            if (condition != null){
-                return multiArgFilter(ops, multiIt, sources, condition);
-            }else{
-                return multiIt;
-            }
-        }
-
-        protected Iterator<?> handleFromWhereMultiSource(List<Expr<?>> sources) throws Exception{
-            EBoolean condition = where.create();
-            if (sortSources){               
-                sourceSortingSupport.sortSources(joins, condition);               
-            }
-            for (JoinExpression<?> join : joins) {
-                sources.add(join.getTarget());
-            }
-            indexSupport = createIndexSupport(exprToIt, ops, sources);
-            
-            if (sequentialUnion && condition instanceof Operation && ((Operation<?,?>)condition).getOperator() == Ops.OR){
-                // TODO : handle deeper OR operations as well
-                Operation<?,?> op = (Operation<?,?>)condition;
-                IteratorChain<Object[]> chain = new IteratorChain<Object[]>();
-                EBoolean e1 = (EBoolean)op.getArg(0), e2 = (EBoolean)op.getArg(1);
-                chain.addIterator(createMultiIterator(sources, e1));
-                chain.addIterator(createMultiIterator(sources, e2.and(e1.not())));
-                return chain;
-            }else{
-                return createMultiIterator(sources, condition);
-            }            
-        }
-        
-        protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources) throws Exception{
-            EBoolean condition = where.create();
-            JoinExpression<?> join = joins.get(0);
-            sources.add(join.getTarget());
-            indexSupport = createIndexSupport(exprToIt, ops, sources);            
-            // create a simple projecting iterator for Object -> Object[]
-            
-            if (sequentialUnion && condition instanceof Operation && ((Operation<?,?>)condition).getOperator() == Ops.OR){
-                Operation<?,?> op = (Operation<?,?>)condition;
-                IteratorChain<Object[]> chain = new IteratorChain<Object[]>();
-                EBoolean e1 = (EBoolean)op.getArg(0), e2 = (EBoolean)op.getArg(1);
-                Iterator<?> it1 = indexSupport.getChildFor(e1).getIterator(join.getTarget());
-                chain.addIterator(multiArgFilter(ops, toArrayIterator(it1), sources, e1));
-                Iterator<?> it2 = indexSupport.getChildFor(e2.and(e1.not())).getIterator(join.getTarget());
-                chain.addIterator(multiArgFilter(ops, toArrayIterator(it2), sources, e2.and(e1.not())));
-                return chain;
-            }else{
-                Iterator<?> it = toArrayIterator(indexSupport.getChildFor(condition).getIterator(join.getTarget()));
-                if (condition != null){
-                    // wrap the iterator if a where constraint is available
-                    it = multiArgFilter(ops, it, sources, condition);
-                }
-                return it;    
-            }           
-            
-        }
-
-        @SuppressWarnings("unchecked")
-        protected Iterator<?> handleOrderBy(List<Expr<?>> sources, Iterator<?> it)
-                throws Exception {
-            // create a projection for the order
-            Expr<Object>[] orderByExpr = new Expr[orderBy.size()];
-            boolean[] directions = new boolean[orderBy.size()];
-            for (int i = 0; i < orderBy.size(); i++){
-                orderByExpr[i] = (Expr)orderBy.get(i).target;
-                directions[i] = orderBy.get(i).order == Order.ASC;
-            }
-            Expr<?> expr = new Expr.EArrayConstructor<Object>(Object.class, orderByExpr);
-            Evaluator ev = EvaluatorUtils.create(ops, sources, expr);
-            
-            // transform the iterator to list
-            List<Object[]> itAsList = IteratorUtils.toList((Iterator<Object[]>)it);               
-            Collections.sort(itAsList, new MultiComparator(ev, directions));
-            it = itAsList.iterator();
-            return it;
-        }
-        
-        protected <RT> Iterator<RT> handleSelect(Iterator<?> it, List<Expr<?>> sources, Expr<RT> projection) throws Exception {
-            return transform(ops, it, sources, projection);
-        }
-
-        public <RT> Iterator<RT> iterate(final Expr<RT> projection) {
-            select(projection);
-            try {
-                return createIterator(projection);
-            } catch (Exception e) {
-                throw new RuntimeException(e.getMessage(), e);
-            }
-        }
-
-        @Override
-        protected EBoolean normalize(EBoolean e){
-            return AbstractColQuery.this.normalize(e);
-        }
-    }
 
 }

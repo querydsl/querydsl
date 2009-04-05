@@ -36,6 +36,7 @@ import com.mysema.query.util.Assert;
  * @author tiwe
  * @version $Id$
  */
+// TODO : simplify this
 public class FilteringMultiIterator extends MultiIterator implements IteratorSource{
     
     private static final Logger logger = LoggerFactory.getLogger(FilteringMultiIterator.class);

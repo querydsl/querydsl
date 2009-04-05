@@ -23,6 +23,7 @@ import com.mysema.query.util.Assert;
  * @author tiwe
  * @version $Id$
  */
+// TODO : find a better name for this
 public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends ProjectableAdapter{
     
     private final ColQuery innerQuery;
@@ -47,9 +48,7 @@ public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends P
     
     @SuppressWarnings("unchecked")
     public SubType from(Expr<?>... o) {
-        for (Expr<Object> obj : (Expr<Object>[])o){
-            innerQuery.from(obj, Collections.<Object>emptyList());
-        }
+        innerQuery.from(o);
         return _this;
     }
         

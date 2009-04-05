@@ -11,7 +11,11 @@ import static com.mysema.query.collections.MiniApi.select;
 import static com.mysema.query.grammar.Grammar.gt;
 import static com.mysema.query.grammar.GrammarWithAlias.$;
 import static com.mysema.query.grammar.GrammarWithAlias.alias;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.*;
 
@@ -22,6 +26,7 @@ import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.Domain.QCat;
 import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.GrammarWithAlias;
+import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.QMath;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
@@ -154,7 +159,7 @@ public class ColQueryTest extends AbstractQueryTest{
         
         // 7
         from(c,cats)
-        .where(c.getKittens().isEmpty())
+        .where($(c.getKittens().isEmpty()))
         .list(c).iterator();
         
         // 8
@@ -197,7 +202,7 @@ public class ColQueryTest extends AbstractQueryTest{
     public void testArrayProjection(){
         // select pairs of cats with different names
         query().from(cat,cats).from(otherCat,cats)
-            .where(cat.name.ne(otherCat.name)).select(cat.name, otherCat.name);
+            .where(cat.name.ne(otherCat.name)).selelect(cat.name, otherCat.name);
         assertTrue(last.res.size() == 4 * 3);
     }
     
@@ -302,17 +307,17 @@ public class ColQueryTest extends AbstractQueryTest{
         
     @Test
     public void testOrder(){
-        query().from(cat,cats).orderBy(cat.name.asc()).select(cat.name);
+        query().from(cat,cats).orderBy(cat.name.asc()).sel(cat.name);
         assertArrayEquals(new Object[]{"Alex","Bob","Francis","Kitty"}, last.res.toArray());
         
-        query().from(cat,cats).orderBy(cat.name.desc()).select(cat.name);
+        query().from(cat,cats).orderBy(cat.name.desc()).sel(cat.name);
         assertArrayEquals(new Object[]{"Kitty","Francis","Bob","Alex"}, last.res.toArray());
         
-        query().from(cat,cats).orderBy(cat.name.substring(1).asc()).select(cat.name);
+        query().from(cat,cats).orderBy(cat.name.substring(1).asc()).sel(cat.name);
         assertArrayEquals(new Object[]{"Kitty","Alex","Bob","Francis"}, last.res.toArray());
         
         query().from(cat,cats).from(otherCat,cats)
-            .orderBy(cat.name.asc(), otherCat.name.desc()).select(cat.name, otherCat.name);
+            .orderBy(cat.name.asc(), otherCat.name.desc()).selelect(cat.name, otherCat.name);
 
         // TODO : more tests
     }
@@ -320,37 +325,37 @@ public class ColQueryTest extends AbstractQueryTest{
     @Test
     public void testPrimitives(){
         // select cats with kittens
-        query().from(cat,cats).where(cat.kittens.size().ne(0)).select(cat.name);
+        query().from(cat,cats).where(cat.kittens.size().ne(0)).sel(cat.name);
         assertTrue(last.res.size() == 4);
         
         // select cats without kittens
-        query().from(cat,cats).where(cat.kittens.size().eq(0)).select(cat.name);
+        query().from(cat,cats).where(cat.kittens.size().eq(0)).sel(cat.name);
         assertTrue(last.res.size() == 0);
     }
     
     @Test
     public void testSimpleCases(){
         // select all cat names
-        query().from(cat,cats).select(cat.name);
+        query().from(cat,cats).sel(cat.name);
         assertTrue(last.res.size() == 4);
         
         // select all kittens
-        query().from(cat,cats).select(cat.kittens);
+        query().from(cat,cats).sel(cat.kittens);
         assertTrue(last.res.size() == 4);
         
         // select cats with kittens
-        query().from(cat,cats).where(cat.kittens.size().gt(0)).select(cat.name);
+        query().from(cat,cats).where(cat.kittens.size().gt(0)).sel(cat.name);
         assertTrue(last.res.size() == 4);
                 
         // select cats named Kitty
-        query().from(cat,cats).where(cat.name.eq("Kitty")).select(cat.name);
+        query().from(cat,cats).where(cat.name.eq("Kitty")).sel(cat.name);
         assertTrue(last.res.size() == 1);
         
         // select cats named Kitt%
-        query().from(cat,cats).where(cat.name.like("Kitt%")).select(cat.name);
+        query().from(cat,cats).where(cat.name.like("Kitt%")).sel(cat.name);
         assertTrue(last.res.size() == 1);        
         
-        query().from(cat,cats).select(QMath.add(cat.bodyWeight, cat.weight));        
+        query().from(cat,cats).sel(QMath.add(cat.bodyWeight, cat.weight));        
     }
     
     @Test public void testSimpleReject() {
@@ -388,11 +393,11 @@ public class ColQueryTest extends AbstractQueryTest{
             System.out.println(Arrays.asList(strs));
         }
         
-        query().from(cat,cats).select(cat.mate);
+        query().from(cat,cats).sel(cat.mate);
         
-        query().from(cat,cats).select(cat.kittens);
+        query().from(cat,cats).sel(cat.kittens);
         
-        query().from(cat,cats).where(cat.name.like("fri%")).select(cat.name);
+        query().from(cat,cats).where(cat.name.like("fri%")).sel($(cat.name));
    
     }
     
@@ -445,14 +450,14 @@ public class ColQueryTest extends AbstractQueryTest{
     
     private static class TestQuery extends AbstractColQuery<TestQuery>{
         List<Object> res = new ArrayList<Object>();
-        <RT> void select(Expr<RT> projection){
+        public <RT> void sel(Expr<RT> projection){
             for (Object o : list(projection)){
                 System.out.println(o);
                 res.add(o);
             }
             System.out.println();
         }
-        <RT> void select(Expr<RT> p1, Expr<RT> p2, Expr<RT>... rest){
+        public <RT> void selelect(Expr<RT> p1, Expr<RT> p2, Expr<RT>... rest){
             for (Object[] o : list(p1, p2, rest)){
                 System.out.println(Arrays.asList(o));
                 res.add(o);
