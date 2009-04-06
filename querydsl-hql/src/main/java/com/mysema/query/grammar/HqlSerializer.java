@@ -39,7 +39,7 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
     }
            
     public void serialize(QueryMetadata<HqlJoinMeta> metadata, boolean forCountRow){
-        List<? extends Expr<?>> select = metadata.getSelect();
+        List<? extends Expr<?>> select = metadata.getProjection();
         List<JoinExpression<HqlJoinMeta>> joins = metadata.getJoins();
         Expr.EBoolean where = metadata.getWhere();
         List<? extends Expr<?>> groupBy = metadata.getGroupBy();

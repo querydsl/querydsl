@@ -96,17 +96,17 @@ public abstract class HqlQueryBase<SubType extends HqlQueryBase<SubType>> extend
     }
     
     public SubType innerJoin(HqlJoinMeta meta, EEntity<?> o) {
-        getMetadata().getJoins().add(new JoinExpression<HqlJoinMeta>(JoinType.INNERJOIN, o, meta));
+        getMetadata().addJoin(new JoinExpression<HqlJoinMeta>(JoinType.INNERJOIN, o, meta));
         return _this;
     }
     
     public SubType fullJoin(HqlJoinMeta meta, EEntity<?> o) {
-        getMetadata().getJoins().add(new JoinExpression<HqlJoinMeta>(JoinType.FULLJOIN, o, meta));
+        getMetadata().addJoin(new JoinExpression<HqlJoinMeta>(JoinType.FULLJOIN, o, meta));
         return _this;
     }
 
     public SubType leftJoin(HqlJoinMeta meta, EEntity<?> o) {
-        getMetadata().getJoins().add(new JoinExpression<HqlJoinMeta>(JoinType.LEFTJOIN, o, meta));
+        getMetadata().addJoin(new JoinExpression<HqlJoinMeta>(JoinType.LEFTJOIN, o, meta));
         return _this;
     }
     
