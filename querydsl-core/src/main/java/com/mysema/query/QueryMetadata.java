@@ -19,6 +19,24 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
  */
 public interface QueryMetadata<JoinMeta> {
 
+    void addJoin(JoinExpression<JoinMeta> joinExpression);
+    
+    void addJoin(JoinType joinType, Expr<?> expr);
+    
+    void addJoinCondition(EBoolean o);
+
+    void addToFrom(Expr<?>[] o);
+
+    void addToGroupBy(Expr<?>[] o);
+
+    void addToHaving(EBoolean[] o);
+
+    void addToOrderBy(OrderSpecifier<?>[] o);
+
+    void addToProjection(Expr<?>[] o);
+
+    void addToWhere(EBoolean[] o);
+
     List<? extends Expr<?>> getGroupBy();
 
     EBoolean getHaving();
@@ -27,7 +45,7 @@ public interface QueryMetadata<JoinMeta> {
 
     List<OrderSpecifier<?>> getOrderBy();
 
-    List<? extends Expr<?>> getSelect();
+    List<? extends Expr<?>> getProjection();
 
     EBoolean getWhere();
 

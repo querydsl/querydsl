@@ -17,6 +17,12 @@ import com.mysema.query.grammar.types.Expr;
 public abstract class QueryBaseWithProjection<JoinMeta,SubType 
     extends QueryBaseWithProjection<JoinMeta,SubType>> extends QueryBase<JoinMeta,SubType> implements Projectable{
 
+    public QueryBaseWithProjection(){}
+    
+    public QueryBaseWithProjection(QueryMetadata<JoinMeta> metadata) {
+        super(metadata);
+    }
+
     protected <A> A[] asArray(A[] target, A first, A second, A... rest) {
         target[0] = first;
         target[1] = second;
