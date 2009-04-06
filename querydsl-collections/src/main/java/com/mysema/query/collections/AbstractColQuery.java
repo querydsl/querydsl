@@ -19,6 +19,7 @@ import org.apache.commons.collections15.iterators.IteratorChain;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.Projectable;
 import com.mysema.query.QueryBaseWithProjection;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.iterators.FilteringMultiIterator;
 import com.mysema.query.collections.iterators.MultiIterator;
@@ -89,6 +90,12 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
 
     public AbstractColQuery(JavaOps ops) {
         this.ops = ops;
+        this.sourceSortingSupport = new DefaultSourceSortingSupport();
+    }
+
+    public AbstractColQuery(QueryMetadata<Object> metadata) {
+        super(metadata);
+        this.ops = JavaOps.DEFAULT;
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
     }
 
@@ -197,10 +204,11 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
 
     protected Iterator<?> handleFromWhereMultiSource(List<Expr<?>> sources) throws Exception {
         EBoolean condition = getMetadata().getWhere();
+        List<JoinExpression<Object>> joins = new ArrayList<JoinExpression<Object>>(getMetadata().getJoins());
         if (sortSources) {
-            sourceSortingSupport.sortSources(getMetadata().getJoins(), condition);
+            sourceSortingSupport.sortSources(joins, condition);
         }
-        for (JoinExpression<?> join : getMetadata().getJoins()) {
+        for (JoinExpression<?> join : joins) {
             sources.add(join.getTarget());
         }
         indexSupport = createIndexSupport(exprToIt, ops, sources);

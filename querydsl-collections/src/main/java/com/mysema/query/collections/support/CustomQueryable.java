@@ -5,11 +5,12 @@
  */
 package com.mysema.query.collections.support;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.mysema.query.DefaultMetadata;
 import com.mysema.query.ProjectableAdapter;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.collections.ColQuery;
 import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.collections.QueryIndexSupport;
@@ -31,9 +32,13 @@ public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends P
     @SuppressWarnings("unchecked")
     private final SubType _this = (SubType)this;
     
-    public CustomQueryable(final IteratorSource iteratorSource){
+    public CustomQueryable(IteratorSource iteratorSource){
+        this(iteratorSource, new DefaultMetadata<Object>());
+    }
+    
+    public CustomQueryable(final IteratorSource iteratorSource, QueryMetadata<Object> metadata){
         Assert.notNull(iteratorSource);
-        this.innerQuery = new ColQuery(){
+        this.innerQuery = new ColQuery(metadata){
             @Override
             protected QueryIndexSupport createIndexSupport(
                     Map<Expr<?>, 

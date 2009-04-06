@@ -5,6 +5,7 @@
  */
 package com.mysema.query.collections;
 
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.grammar.JavaOps;
 
 
@@ -22,6 +23,10 @@ public class ColQuery extends AbstractColQuery<ColQuery>{
     
     public ColQuery(JavaOps ops){
         super(ops);
+    }
+
+    public ColQuery(QueryMetadata<Object> metadata) {
+        super(metadata);
     }
     
 }
