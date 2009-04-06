@@ -32,7 +32,8 @@ import com.mysema.query.grammar.types.SubQuery;
  * @author tiwe
  * @version $Id$
  */
-public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends QueryBaseWithProjection<SqlJoinMeta,SubType> implements Projectable{
+public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> 
+    extends QueryBaseWithProjection<SqlJoinMeta,SubType> implements Projectable{
     
     private static final Logger logger = LoggerFactory.getLogger(AbstractSqlQuery.class);
     
@@ -278,7 +279,7 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>> extends
         }
         
         public List<RT> list() throws SQLException {
-            if (sq[0].getQuery().getMetadata().getSelect().size() == 1){
+            if (sq[0].getQuery().getMetadata().getProjection().size() == 1){
                 return AbstractSqlQuery.this.listSingle(null);    
             }else{
                 return (List<RT>) AbstractSqlQuery.this.listMultiple();

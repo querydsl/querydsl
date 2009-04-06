@@ -38,7 +38,7 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
     }
     
     public void serialize(QueryMetadata<SqlJoinMeta> metadata, int limit,  int offset, boolean forCountRow){
-        List<? extends Expr<?>> select = metadata.getSelect(); 
+        List<? extends Expr<?>> select = metadata.getProjection(); 
         List<JoinExpression<SqlJoinMeta>> joins = metadata.getJoins();
         Expr.EBoolean where = metadata.getWhere();
         List<? extends Expr<?>> groupBy = metadata.getGroupBy();
