@@ -24,7 +24,7 @@ public class QueryBase<JoinMeta,SubType extends QueryBase<JoinMeta,SubType>> imp
     protected String toString;
 
     public QueryBase() {
-        this.metadata = new DefaultMetadata<JoinMeta>();
+        this.metadata = new DefaultQueryMetadata<JoinMeta>();
     }
     
     public QueryBase(QueryMetadata<JoinMeta> metadata) {
@@ -37,7 +37,7 @@ public class QueryBase<JoinMeta,SubType extends QueryBase<JoinMeta,SubType>> imp
     }
     
     protected void clear(){
-        metadata = new DefaultMetadata<JoinMeta>();
+        metadata = new DefaultQueryMetadata<JoinMeta>();
     }
     
     public SubType from(Expr<?>... o) {        

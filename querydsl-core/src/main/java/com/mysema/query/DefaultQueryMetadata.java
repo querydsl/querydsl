@@ -17,7 +17,7 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
  * @author tiwe
  * @version $Id$
  */
-public class DefaultMetadata<JoinMeta> implements QueryMetadata<JoinMeta>{
+public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta>{
 
     private final Set<Expr<?>> exprInJoins = new HashSet<Expr<?>>();
     
