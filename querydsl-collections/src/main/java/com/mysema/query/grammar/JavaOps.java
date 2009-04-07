@@ -75,7 +75,7 @@ public class JavaOps extends OperationPatterns {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }        
-        add(Ops.OpMath.MOD, "%s %% %s");
+        add(Ops.MOD, "%s %% %s");
         
         // path types
         for (PathType type : new PathType[]{PathMetadata.LISTVALUE_CONSTANT}){

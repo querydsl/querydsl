@@ -8,14 +8,11 @@ package com.mysema.query.collections;
 import static com.mysema.query.collections.MiniApi.from;
 import static com.mysema.query.collections.MiniApi.reject;
 import static com.mysema.query.collections.MiniApi.select;
-import static com.mysema.query.grammar.Grammar.gt;
 import static com.mysema.query.grammar.GrammarWithAlias.$;
 import static com.mysema.query.grammar.GrammarWithAlias.alias;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.*;
 
@@ -23,10 +20,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.collections.Domain.Cat;
-import com.mysema.query.collections.Domain.QCat;
 import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.GrammarWithAlias;
-import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.QMath;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
@@ -41,6 +36,13 @@ import com.mysema.query.grammar.types.Path.PEntity;
  */
 public class ColQueryTest extends AbstractQueryTest{
     private TestQuery last;
+    
+    @Test
+    public void isTypeOf(){
+//        Cat.class.isInstance(cat);
+        assertEquals(Arrays.asList(c1, c2),
+            query().from(cat, c1, c2).where(Grammar.typeOf(cat, Cat.class)).list(cat));
+    }
     
     private TestQuery query(){
         last = new TestQuery();
@@ -65,132 +67,7 @@ public class ColQueryTest extends AbstractQueryTest{
                 cat.birthdate.aoe(new Date())).list(cat);
     }
     
-    @Test
-    public void isTypeOf(){
-//        Cat.class.isInstance(cat);
-        assertEquals(Arrays.asList(c1, c2),
-            query().from(cat, c1, c2).where(Grammar.typeOf(cat, Cat.class)).list(cat));
-    }
-    
-    @Test
-    public void testAliasVariations1(){
-        // 1st
-        QCat cat = new QCat("cat");  
-        for (String name : from(cat,cats).where(cat.kittens.size().gt(0))
-                          .list(cat.name)){
-            System.out.println(name);
-        }        
-        
-        // 1st - variation 1        
-        for (String name : from(cat,cats).where(gt(cat.kittens.size(),0))
-                          .list(cat.name)){
-            System.out.println(name);
-        }        
-        
-        // 2nd
-        Cat c = alias(Cat.class, "cat");
-        for (String name : from(c,cats).where($(c.getKittens()).size().gt(0))
-                          .list(c.getName())){
-            System.out.println(name);
-        }
-        
-        // 2nd - variation 1
-        for (String name : from(c,cats).where($(c.getKittens().size()).gt(0))
-                          .list(c.getName())){
-            System.out.println(name);
-        }   
-                            
-    }
-    
-    @Test
-    public void testAliasVariations2(){       
-        // 1st
-        QCat cat = new QCat("cat");  
-        for (String name : from(cat,cats).where(cat.name.like("fri%"))
-                          .list(cat.name)){
-            System.out.println(name);
-        }
-        
-        // 2nd
-        Cat c = alias(Cat.class, "cat");        
-        for (String name : from(c,cats).where($(c.getName()).like("fri%"))
-                          .list(c.getName())){
-            System.out.println(name);
-        }      
-    }
-    
-    @Test
-    public void testAlias3(){
-        QCat cat = new QCat("cat");
-        Cat other = new Cat();
-        Cat c = alias(Cat.class, "cat");
-        
-        // 1
-        from(c,cats)
-        .where($(c.getBirthdate()).after(new Date()))
-        .list(c).iterator();
-            
-        // 2
-        try{
-            from(c,cats).where($(c.getMate().getName().toUpperCase()).eq("MOE"));
-            fail("expected NPE");
-        }catch(NullPointerException ne){
-            // expected
-        }
-        
-        // 3
-        assertEquals(cat.name, $(c.getName()));
-        
-        // 4
-        // TODO : FIXME : Janino compiler doesn't handle generic collections
-//        from(c,cats)
-//        .where($(c.getKittens().get(0).getBodyWeight()).gt(12))
-//        .list(c.getName()).iterator();
-        
-        // 5
-        from(c,cats)
-        .where($(c).eq(other))
-        .list(c).iterator();
-        
-        // 6
-        from(c,cats)
-        .where($(c.getKittens()).contains(other))
-        .list(c).iterator();
-        
-        // 7
-        from(c,cats)
-        .where($(c.getKittens().isEmpty()))
-        .list(c).iterator();
-        
-        // 8
-        from(c,cats)
-        .where($(c.getName()).startsWith("B"))
-        .list(c).iterator();
-        
-        // 9
-        from(c,cats)
-        .where($(c.getName()).upper().eq("MOE"))
-        .list(c).iterator();
-        
-        // 10
-        assertNotNull($(c.getKittensByName()));
-        assertNotNull($(c.getKittensByName().get("Kitty")));
-        from(c,cats)
-        .where($(c.getKittensByName().get("Kitty")).isnotnull()).list(cat);       
-        
-        // 11
-        try{
-            from(cat,cats).where(cat.mate.alive).list(cat);
-            fail("expected RuntimeException");
-        }catch(RuntimeException e){
-            assertEquals("null path in expression", e.getMessage());
-        }
-        
-        // 12
-        TestQuery query = query().from(cat, c1, c2).from(cat, c1, c2);
-        assertEquals(1, query.getMetadata().getJoins().size());
-        
-    }
+   
           
     @Test
     public void testAPIMethods(){
@@ -244,6 +121,27 @@ public class ColQueryTest extends AbstractQueryTest{
 //    }
     
     @Test
+    public void testCats(){
+        EBoolean where = cat.name.like("Bob5%").and(otherCat.name.like("Kate5%"));
+        int size = 100;
+        List<Cat> cats1 = new ArrayList<Cat>(size);
+        for (int i= 0; i < size; i++){
+            cats1.add(new Cat("Bob" + i));
+        }
+        List<Cat> cats2 = new ArrayList<Cat>(size);
+        for (int i=0; i < size; i++){
+            cats2.add(new Cat("Kate" + i));
+        }
+        
+        ColQuery query = new ColQuery().from(cat, cats1).from(otherCat, cats2);
+        query.setWrapIterators(false);
+        for (Object[] objects : MiniApi.from(cat, cats1).from(otherCat, cats2).where(where).list(cat, otherCat)){
+            System.out.println(Arrays.asList(objects));
+        }
+                   
+    }
+         
+    @Test
     public void testJoins(){
         // TOOD : coming soon!
 //        query().from(cat, cats)
@@ -254,7 +152,7 @@ public class ColQueryTest extends AbstractQueryTest{
 //            .innerJoin(otherCat, cats).on(cat.id.eq(otherCat.id))
 //            .select(cat, otherCat);               
     }
-         
+    
     @Test
     public void testMapUsage(){
         // FIXME
@@ -275,7 +173,7 @@ public class ColQueryTest extends AbstractQueryTest{
 //            System.out.println(kv[0] + " > " + kv[1]);
 //        }
     }
-    
+        
     @SuppressWarnings("unchecked")
     @Test public void testMathFunctions(){
         Cat c = alias(Cat.class,"c");
@@ -297,14 +195,14 @@ public class ColQueryTest extends AbstractQueryTest{
                 QMath.pow(d,d),
                 QMath.min(i,i),
                 QMath.max(i,i),
-                QMath.mod(i,i),
+//                QMath.mod(i,i),
                 QMath.log10(d),
                 QMath.log(d),
                 QMath.floor(d),
                 QMath.exp(d)).iterator();
           
     }
-        
+    
     @Test
     public void testOrder(){
         query().from(cat,cats).orderBy(cat.name.asc()).sel(cat.name);
@@ -365,7 +263,7 @@ public class ColQueryTest extends AbstractQueryTest{
         for (Integer i : oneAndTwo) ints.add(i);
         assertEquals(Arrays.asList(1,2), ints);
     }
-    
+
     @Test public void testSimpleSelect() {
     //  Iterable<Integer> threeAndFour = select(myInts, greaterThan(2));
         Iterable<Integer> threeAndFour = select(myInts, $(0).gt(2));  
@@ -373,7 +271,7 @@ public class ColQueryTest extends AbstractQueryTest{
         for (Integer i : threeAndFour) ints.add(i);
         assertEquals(Arrays.asList(3,4), ints);
     }
-
+    
     @Test
     public void testStringHandling(){
         Iterable<String> data1 = Arrays.asList("petER", "THomas", "joHAN");
@@ -399,53 +297,6 @@ public class ColQueryTest extends AbstractQueryTest{
         
         query().from(cat,cats).where(cat.name.like("fri%")).sel($(cat.name));
    
-    }
-    
-    @Test
-    public void testVarious1(){
-        for(String s : from($("str"), "a","ab","cd","de")
-                .where($("str").startsWith("a"))
-                .list($("str"))){
-            assertTrue(s.equals("a") || s.equals("ab"));
-            System.out.println(s);
-        }
-    }
-    
-    @Test
-    public void testVarious2(){
-        for (Object o : from($(),1,2,"abc",5,3).where($().ne("abc")).list($())){
-            int i = (Integer)o;
-            assertTrue(i > 0 && i < 6);
-            System.out.println(o);
-        }                
-    }
-    
-    @Test
-    public void testVarious3(){
-        for (Integer i : from($(0),1,2,3,4).where($(0).lt(4)).list($(0))){
-            System.out.println(i);
-        }
-    }
-    
-    @Test
-    public void testCats(){
-        EBoolean where = cat.name.like("Bob5%").and(otherCat.name.like("Kate5%"));
-        int size = 100;
-        List<Cat> cats1 = new ArrayList<Cat>(size);
-        for (int i= 0; i < size; i++){
-            cats1.add(new Cat("Bob" + i));
-        }
-        List<Cat> cats2 = new ArrayList<Cat>(size);
-        for (int i=0; i < size; i++){
-            cats2.add(new Cat("Kate" + i));
-        }
-        
-        ColQuery query = new ColQuery().from(cat, cats1).from(otherCat, cats2);
-        query.setWrapIterators(false);
-        for (Object[] objects : MiniApi.from(cat, cats1).from(otherCat, cats2).where(where).list(cat, otherCat)){
-            System.out.println(Arrays.asList(objects));
-        }
-                   
     }
     
     private static class TestQuery extends AbstractColQuery<TestQuery>{
