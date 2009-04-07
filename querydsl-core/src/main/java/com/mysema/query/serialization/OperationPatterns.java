@@ -91,7 +91,7 @@ public abstract class OperationPatterns{
         add(Ops.INDEXOF_2ARGS, "indexOf(%s,%s,%s)");
         add(Ops.LAST_INDEX, "lastIndexOf(%s,%s)");
         add(Ops.LAST_INDEX_2ARGS, "lastIndexOf(%s,%s,%s)");
-        add(Ops.ISEMPTY, "empty(%s,%s,%s)");
+        add(Ops.ISEMPTY, "empty(%s)");
         
         // date time
         add(Ops.OpDateTime.SYSDATE, "sysdate");
@@ -124,14 +124,13 @@ public abstract class OperationPatterns{
         add(Ops.OpMath.POWER,"pow(%s,%s)");
         add(Ops.OpMath.MIN,"min(%s,%s)");
         add(Ops.OpMath.MAX,"max(%s,%s)");
-        add(Ops.OpMath.MOD,"mod(%s,%s)");
+//        add(Ops.OpMath.MOD,"mod(%s,%s)");
         add(Ops.OpMath.LOG10,"log10(%s)");
         add(Ops.OpMath.LOG,"log(%s)");
         add(Ops.OpMath.FLOOR,"floor(%s)");               
         add(Ops.OpMath.EXP,"exp(%s)");
         
         // string 
-        add(Ops.OpString.LENGTH, "length(%s)");
         add(Ops.OpString.LTRIM, "ltrim(%s)");
         add(Ops.OpString.RTRIM, "rtrim(%s)");
         add(Ops.OpString.SPACE, "space(%s)");
@@ -146,9 +145,9 @@ public abstract class OperationPatterns{
         
 
         // numeric aggregates
-        add(OpNumberAgg.AVG, "avg(%s)");
-        add(OpNumberAgg.MAX, "max(%s)");
-        add(OpNumberAgg.MIN, "min(%s)");
+        add(OpNumberAgg.AVG_AGG, "avg(%s)");
+        add(OpNumberAgg.MAX_AGG, "max(%s)");
+        add(OpNumberAgg.MIN_AGG, "min(%s)");
         
     }
     

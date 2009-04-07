@@ -7,7 +7,6 @@ package com.mysema.query.grammar;
 
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Factory;
-import com.mysema.query.grammar.types.Expr.ENumber;
 import com.mysema.query.grammar.types.Expr.EString;
 
 /**
@@ -17,10 +16,6 @@ import com.mysema.query.grammar.types.Expr.EString;
  * @version $Id$
  */
 public class QString extends Factory{
-
-    public static ENumber<Integer> length(Expr<String> s) {
-        return createNumber(Integer.class, Ops.OpString.LENGTH, s);        
-    }
 
     public static EString ltrim(Expr<String> s) {
         return createString(Ops.OpString.LTRIM, s);

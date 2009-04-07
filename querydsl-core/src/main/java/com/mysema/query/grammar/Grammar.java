@@ -153,7 +153,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static <A extends Number & Comparable<? super A>> ENumber<Double> avg(Expr<A> left){
-        return createNumber(Double.class, OpNumberAgg.AVG, left);
+        return createNumber(Double.class, OpNumberAgg.AVG_AGG, left);
     }
     
     /**

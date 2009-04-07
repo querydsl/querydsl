@@ -99,9 +99,9 @@ public class QMath extends Factory{
         return createNumber(left.getType(),OpMath.MIN, left, right);
     }
     
-    public static ENumber<Integer> mod(Expr<Integer> left, Expr<Integer> right){
-        return createNumber(left.getType(),OpMath.MOD, left, right);
-    }
+//    public static ENumber<Integer> mod(Expr<Integer> left, Expr<Integer> right){
+//        return createNumber(left.getType(),OpMath.MOD, left, right);
+//    }
     
     public static ENumber<Double> pow(Expr<Double> left, Expr<Double> right){
         return createNumber(left.getType(),OpMath.POWER, left, right);
@@ -128,10 +128,10 @@ public class QMath extends Factory{
     }
     
     public static <A extends Number & Comparable<? super A>> ENumber<A> max(Expr<A> left){
-        return createNumber(left.getType(), OpNumberAgg.MAX, left);
+        return createNumber(left.getType(), OpNumberAgg.MAX_AGG, left);
     }
 
     public static <A extends Number & Comparable<? super A>> ENumber<A> min(Expr<A> left){
-        return createNumber(left.getType(), OpNumberAgg.MIN, left);
+        return createNumber(left.getType(), OpNumberAgg.MIN_AGG, left);
     }
 }

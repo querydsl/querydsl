@@ -89,7 +89,6 @@ public interface Ops {
     Op<Number> DIV = new Op<Number>(Number_x_2);        
     Op<Number> MOD = new Op<Number>(Number_x_2);
     Op<Number> MULT = new Op<Number>(Number_x_2);
-//    Op<Number> SQRT = new Op<Number>();
     Op<Number> SUB = new Op<Number>(Number_x_2);
         
     // String
@@ -125,9 +124,9 @@ public interface Ops {
      *
      */
     public interface OpNumberAgg{
-        Op<Number> AVG = new Op<Number>(Number.class);
-        Op<Number> MAX = new Op<Number>(Number.class);
-        Op<Number> MIN = new Op<Number>(Number.class);   
+        Op<Number> AVG_AGG = new Op<Number>(Number.class);
+        Op<Number> MAX_AGG = new Op<Number>(Number.class);
+        Op<Number> MIN_AGG = new Op<Number>(Number.class);   
     }
     
     /**
@@ -169,7 +168,6 @@ public interface Ops {
         Op<Number> POWER = new Op<Number>(Number_x_2);
         Op<Number> MIN = new Op<Number>(Number_x_2);
         Op<Number> MAX = new Op<Number>(Number_x_2);
-        Op<Number> MOD = new Op<Number>(Number_x_2);
         Op<Number> LOG10 = new Op<Number>(Number.class);
         Op<Number> LOG = new Op<Number>(Number.class);
         Op<Number> FLOOR = new Op<Number>(Number.class);
@@ -180,7 +178,6 @@ public interface Ops {
      * String operators
      */
     public interface OpString{
-        Op<Number> LENGTH = new Op<Number>(String.class);
         Op<String> LTRIM = new Op<String>(String.class);
         Op<String> RTRIM = new Op<String>(String.class);
         Op<String> SPACE = new Op<String>(Integer.class);
