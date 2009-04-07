@@ -5,19 +5,10 @@
  */
 package com.mysema.query.hql;
 
-import java.util.Iterator;
-import java.util.List;
-
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlOps;
-import com.mysema.query.grammar.HqlQueryBase;
-import com.mysema.query.grammar.types.Expr;
+
 
 /**
  * JpaqlQuery provides a fluent statically typed interface for creating JPAQL queries.
@@ -25,64 +16,17 @@ import com.mysema.query.grammar.types.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class JpaqlQuery<A extends JpaqlQuery<A>> extends HqlQueryBase<A>{
-    
-    private static final Logger logger = LoggerFactory.getLogger(JpaqlQuery.class);
-    
-    private final EntityManager em;
+public class JpaqlQuery extends AbstractJpaqlQuery<JpaqlQuery>{
 
     public JpaqlQuery(EntityManager em) {
-        this(em, HqlOps.DEFAULT);
+        super(em);
     }
-
+    
     public JpaqlQuery(EntityManager em, HqlOps ops) {
-        super(ops);
-        this.em = em;
-    }
-    
-    private Query createQuery(String queryString, Integer limit, Integer offset) {
-        Query query = em.createQuery(queryString);
-        setConstants(query, getConstants());        
-        if (limit != null) query.setMaxResults(limit);
-        if (offset != null) query.setFirstResult(offset);
-        return query;
-    }
-        
-    public static void setConstants(Query query, List<Object> constants) {
-        for (int i=0; i < constants.size(); i++){
-            String key = "a"+(i+1);
-            Object val = constants.get(i);            
-            query.setParameter(key,val);
-        }        
+        super(em, ops);
     }
 
-    @SuppressWarnings("unchecked")
-    public <RT> List<RT> list(Expr<RT> expr){
-        addToProjection(expr);
-        String queryString = toString();
-        logger.debug("query : {}", queryString);
-        Query query = createQuery(queryString, limit, offset);
-        return query.getResultList();
-    }
-    
-    @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>...rest){
-        addToProjection(expr1, expr2);
-        addToProjection(rest);
-        String queryString = toString();
-        logger.debug("query : {}", queryString);
-        Query query = createQuery(queryString, limit, offset);
-        return query.getResultList();
-    }
 
-    public long count() {
-        return uniqueResult(HqlGrammar.count());
-    }
-
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        // TODO Auto-generated method stub
-        return list(projection).iterator();
-    }
     
 
 }
