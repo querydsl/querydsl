@@ -177,6 +177,7 @@ public class HqlGrammar extends GrammarWithAlias{
      *             BigInteger when applied to state-fields of type BigInteger; 
      *             and BigDecimal when applied to state-fields of type BigDecimal. 
      */   
+    @SuppressWarnings("unchecked")
     public static <D extends Number & Comparable<? super D>> ENumber<?> sum(Expr<D> left){ 
         Class<?> type = left.getType();
         if (type.equals(Byte.class) || type.equals(Integer.class) || type.equals(Short.class)) type = Long.class;
