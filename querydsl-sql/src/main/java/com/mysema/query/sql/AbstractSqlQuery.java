@@ -117,6 +117,7 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>>
         }
     }
     
+    @SuppressWarnings("unchecked")
     private <RT> List<RT> listSingle(Expr<RT> expr) throws SQLException{        
         String queryString = toString();
         logger.debug("query : {}", queryString);
@@ -278,13 +279,13 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>>
             return this;
         }
         
+        @SuppressWarnings("unchecked")
         public List<RT> list() throws SQLException {
             if (sq[0].getQuery().getMetadata().getProjection().size() == 1){
                 return AbstractSqlQuery.this.listSingle(null);    
             }else{
                 return (List<RT>) AbstractSqlQuery.this.listMultiple();
-            }
-            
+            }            
         }
         
     }

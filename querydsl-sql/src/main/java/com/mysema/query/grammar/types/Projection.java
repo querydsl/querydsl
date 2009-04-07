@@ -125,6 +125,7 @@ public class Projection extends Path.PEntity<Projection>{
      * @param expr
      * @return
      */
+    @SuppressWarnings("unchecked")
     public  ASimple<Object[]> from(PEntity<?> expr) {
         Set<Expr<?>> fields = new HashSet<Expr<?>>();
         try{
