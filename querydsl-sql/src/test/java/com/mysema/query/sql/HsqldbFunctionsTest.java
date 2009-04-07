@@ -59,7 +59,7 @@ public class HsqldbFunctionsTest {
 //    LOG10(d)      returns the logarithm (base 10)
         QMath.log10(d);
 //    MOD(a,b)      returns a modulo b
-        QMath.mod(i,i);
+//        QMath.mod(i,i);
 //    PI()          returns pi (3.1415...)
         
 //    POWER(a,b)    returns a raised to the power of b
@@ -102,7 +102,7 @@ public class HsqldbFunctionsTest {
         s.lower();
 //    LEFT(s,count)         returns the leftmost count of characters of s) - requires double quoting - use SUBSTRING() instead
 //    LENGTH(s)             returns the number of characters in s
-        QString.length(s);
+//        QString.length(s);
 //    LOCATE(search,s,[start])returns the first index (1=left, 0=not found) where search is found in s, starting at start
 //    LTRIM(s)              removes all leading blanks in s
         QString.ltrim(s);

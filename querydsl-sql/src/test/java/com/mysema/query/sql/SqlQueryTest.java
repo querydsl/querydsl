@@ -356,7 +356,7 @@ public abstract class SqlQueryTest {
                 QMath.pow(d,d),
 //                QMath.min(i,i),
 //                QMath.max(i,i),
-                QMath.mod(i,i),
+//                QMath.mod(i,i),
                 QMath.log10(d),
                 QMath.log(d),
                 QMath.floor(d),
