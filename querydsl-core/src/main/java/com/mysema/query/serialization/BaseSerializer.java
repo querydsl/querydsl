@@ -10,11 +10,14 @@ import static com.mysema.query.grammar.types.PathMetadata.PROPERTY;
 import static com.mysema.query.grammar.types.PathMetadata.VARIABLE;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.mysema.query.grammar.Ops.Op;
-import com.mysema.query.grammar.types.*;
+import com.mysema.query.grammar.types.AbstractVisitor;
+import com.mysema.query.grammar.types.Custom;
+import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.Operation;
+import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.Alias.ASimple;
 import com.mysema.query.grammar.types.Alias.AToPath;
 import com.mysema.query.grammar.types.PathMetadata.PathType;

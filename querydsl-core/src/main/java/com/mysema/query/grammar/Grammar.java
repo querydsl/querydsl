@@ -825,6 +825,7 @@ public class Grammar extends Factory{
      * @param targetType
      * @return
      */
+    @SuppressWarnings("unchecked")
     public static <A extends Number & Comparable<? super A>> ENumber<A> numericCast(EComparable<?> source, Class<A> targetType){
         if (targetType.isAssignableFrom(source.getType()) && ENumber.class.isAssignableFrom(source.getClass())){
             return (ENumber)source;

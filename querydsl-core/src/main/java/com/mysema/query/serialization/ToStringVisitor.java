@@ -5,8 +5,6 @@
  */
 package com.mysema.query.serialization;
 
-import java.util.Arrays;
-
 import com.mysema.query.grammar.types.AbstractVisitor;
 import com.mysema.query.grammar.types.Custom;
 import com.mysema.query.grammar.types.Expr;

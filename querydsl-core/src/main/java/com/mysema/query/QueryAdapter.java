@@ -74,7 +74,7 @@ public class QueryAdapter<SubType extends QueryAdapter<SubType>> implements Quer
         return _this;
     }
 
-    public void setQuery(Query query) {
+    public void setQuery(Query<?> query) {
         this.query = query;
     }
     
