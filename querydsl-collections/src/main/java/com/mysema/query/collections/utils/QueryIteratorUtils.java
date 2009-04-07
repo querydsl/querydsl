@@ -122,6 +122,7 @@ public class QueryIteratorUtils {
     
     public static <S> Iterator<S[]> toArrayIterator(Iterator<S> source){
         return IteratorUtils.transformedIterator(source, new Transformer<S,S[]>(){
+            @SuppressWarnings("unchecked")
             public S[] transform(S input) {
                 return toArray(input);
             }

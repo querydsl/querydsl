@@ -37,6 +37,7 @@ public class JaninoEvaluator implements Evaluator{
         }
     }
     
+    @SuppressWarnings("unchecked")
     public <T> T evaluate(Object... args) {
         try {
             return (T)ev.evaluate(args);

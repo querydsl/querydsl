@@ -60,6 +60,7 @@ public class DefaultIndexCreationTask {
             if (key instanceof EConstant){
                 final Object constant = ((EConstant<?>)key).getConstant(); 
                 keyCreator = new Evaluator(){
+                    @SuppressWarnings("unchecked")
                     public <T> T evaluate(Object... args) {
                         return (T)constant;
                     }                
