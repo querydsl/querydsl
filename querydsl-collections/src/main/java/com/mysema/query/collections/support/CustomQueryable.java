@@ -8,7 +8,7 @@ package com.mysema.query.collections.support;
 import java.util.List;
 import java.util.Map;
 
-import com.mysema.query.DefaultMetadata;
+import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.ProjectableAdapter;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.collections.ColQuery;
@@ -33,7 +33,7 @@ public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends P
     private final SubType _this = (SubType)this;
     
     public CustomQueryable(IteratorSource iteratorSource){
-        this(iteratorSource, new DefaultMetadata<Object>());
+        this(iteratorSource, new DefaultQueryMetadata<Object>());
     }
     
     public CustomQueryable(final IteratorSource iteratorSource, QueryMetadata<Object> metadata){
