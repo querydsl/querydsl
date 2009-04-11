@@ -26,12 +26,12 @@ import com.mysema.query.grammar.types.Visitor;
  */
 public class VisitorTest {
     
-    @Test
+	@Test
     public void testIteration() throws SecurityException, NoSuchMethodException{
         List<Class<?>> types = new ArrayList<Class<?>>();
-        types.addAll(Arrays.asList(Alias.class.getClasses()));
-        types.addAll(Arrays.asList(Operation.class.getClasses()));
-        types.addAll(Arrays.asList(Path.class.getClasses()));
+        types.addAll(Arrays.<Class<?>>asList(Alias.class.getClasses()));
+        types.addAll(Arrays.<Class<?>>asList(Operation.class.getClasses()));
+        types.addAll(Arrays.<Class<?>>asList(Path.class.getClasses()));
         for (Class<?> innerType : types){
             if (!innerType.isInterface() && Expr.class.isAssignableFrom(innerType)){
                 Visitor.class.getDeclaredMethod("visit",innerType);
