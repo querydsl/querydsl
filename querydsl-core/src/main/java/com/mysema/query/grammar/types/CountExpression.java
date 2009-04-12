@@ -5,7 +5,7 @@
  */
 package com.mysema.query.grammar.types;
 
-import com.mysema.query.grammar.types.Expr.EComparable;
+import com.mysema.query.grammar.types.Expr.ENumber;
 
 /**
  * CountExpression represents a count expression
@@ -14,7 +14,7 @@ import com.mysema.query.grammar.types.Expr.EComparable;
  * @version $Id$
  *
  */
-public class CountExpression extends EComparable<Long> {
+public class CountExpression extends ENumber<Long> {
     private final Expr<?> target;
 
     public CountExpression(Expr<?> expr) {

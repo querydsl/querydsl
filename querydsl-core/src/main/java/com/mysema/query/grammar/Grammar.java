@@ -306,7 +306,7 @@ public class Grammar extends Factory{
      * 
      * @return
      */
-    public static EComparable<Long> count(){
+    public static ENumber<Long> count(){
         return new CountExpression(null);
     }
     
@@ -316,7 +316,7 @@ public class Grammar extends Factory{
      * @param expr
      * @return
      */
-    public static EComparable<Long> count(Expr<?> expr){
+    public static ENumber<Long> count(Expr<?> expr){
         return new CountExpression(expr);
     }
         
@@ -521,7 +521,7 @@ public class Grammar extends Factory{
      * @param right
      * @return
      */
-    public static EComparable<Integer> indexOf(Expr<String> left, Expr<String> right) {
+    public static ENumber<Integer> indexOf(Expr<String> left, Expr<String> right) {
         return createNumber(Integer.class,Ops.INDEXOF, left, right);
     }
      
@@ -532,7 +532,7 @@ public class Grammar extends Factory{
      * @param right
      * @return
      */
-    public static EComparable<Integer> indexOf(Expr<String> left, String right) {
+    public static ENumber<Integer> indexOf(Expr<String> left, String right) {
         return createNumber(Integer.class,Ops.INDEXOF, left, createConstant(right));
     }
 
@@ -544,7 +544,7 @@ public class Grammar extends Factory{
      * @param i
      * @return
      */    
-    public static EComparable<Integer> indexOf(Expr<String> left, String right, int i) {
+    public static ENumber<Integer> indexOf(Expr<String> left, String right, int i) {
         return createNumber(Integer.class,Ops.INDEXOF_2ARGS, left, createConstant(right), createConstant(i));
     }
 
@@ -594,7 +594,7 @@ public class Grammar extends Factory{
      * @param third
      * @return
      */
-    public static EComparable<Integer> lastIndex(Expr<String> left, String right, int third) {
+    public static ENumber<Integer> lastIndex(Expr<String> left, String right, int third) {
         return createNumber(Integer.class,Ops.LAST_INDEX_2ARGS, left, createConstant(right), createConstant(third));
     }
     
@@ -605,7 +605,7 @@ public class Grammar extends Factory{
      * @param right
      * @return
      */
-    public static EComparable<Integer> lastIndexOf(Expr<String> left, Expr<String> right) {
+    public static ENumber<Integer> lastIndexOf(Expr<String> left, Expr<String> right) {
         return createNumber(Integer.class,Ops.LAST_INDEX, left, right);
     }
     
@@ -616,7 +616,7 @@ public class Grammar extends Factory{
      * @param right
      * @return
      */
-    public static EComparable<Integer> lastIndexOf(Expr<String> left, String right) {
+    public static ENumber<Integer> lastIndexOf(Expr<String> left, String right) {
         return createNumber(Integer.class,Ops.LAST_INDEX, left, createConstant(right));
     }
 
@@ -626,7 +626,7 @@ public class Grammar extends Factory{
      * @param left
      * @return
      */
-    public static EComparable<Integer> length(Expr<String> left) {
+    public static ENumber<Integer> length(Expr<String> left) {
         return createNumber(Integer.class,Ops.STRING_LENGTH, left);
     }
     
