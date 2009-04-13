@@ -141,8 +141,13 @@ public final class PathMetadata<T> {
      * The Class PathType.
      */
     public static class PathType extends Ops.Op<Path<?>> {
+        private final String symbol;
         public PathType(String symbol){
             super();
+            this.symbol = symbol;
+        }
+        public String toString(){
+            return symbol;
         }
     }
 
