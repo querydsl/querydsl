@@ -26,7 +26,7 @@ public class SqlGrammar extends Grammar{
     }
     
     public static EBoolean exists(SubQuery<SqlJoinMeta,?> sq){
-        return createBoolean(Ops.EXISTS, sq);
+        return factory.createBoolean(Ops.EXISTS, sq);
     }
 
 }
