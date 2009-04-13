@@ -427,10 +427,10 @@ public interface Path<C> {
         public PEntityList(Class<D> type, String entityName, String var){
             super(type, entityName, PathMetadata.forVariable(var));
         }        
-        public EEntity<D> get(Expr<Integer> index) {
+        public PEntity<D> get(Expr<Integer> index) {
             return new PEntity<D>(type, entityName, forListAccess(this,index));
         }
-        public EEntity<D> get(int index) {
+        public PEntity<D> get(int index) {
             return new PEntity<D>(type, entityName, forListAccess(this,index));
         }
         
@@ -455,10 +455,10 @@ public interface Path<C> {
             this(keyType, valueType, entityName, PathMetadata.forVariable(var));
         }
         
-        public EEntity<V> get(Expr<K> key) { 
+        public PEntity<V> get(Expr<K> key) { 
             return new PEntity<V>(valueType, entityName, forMapAccess(this, key));
         }
-        public EEntity<V> get(K key) { 
+        public PEntity<V> get(K key) { 
             return new PEntity<V>(valueType, entityName, forMapAccess(this, key));
         }    
         public Class<K> getKeyType() {return keyType; }
