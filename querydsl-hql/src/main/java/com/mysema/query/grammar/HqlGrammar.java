@@ -56,19 +56,19 @@ public class HqlGrammar extends GrammarWithAlias{
     }        
     
     public static EComparable<Date> current_date(){
-        return createComparable(Date.class,Ops.OpDateTime.CURRENT_DATE);
+        return factory.createComparable(Date.class,Ops.OpDateTime.CURRENT_DATE);
     }    
     
     public static EComparable<Date> current_time(){
-        return createComparable(Date.class,Ops.OpDateTime.CURRENT_TIME);
+        return factory.createComparable(Date.class,Ops.OpDateTime.CURRENT_TIME);
     }    
     
     public static EComparable<Date> current_timestamp(){
-        return createComparable(Date.class,Ops.OpDateTime.CURRENT_TIMESTAMP);
+        return factory.createComparable(Date.class,Ops.OpDateTime.CURRENT_TIMESTAMP);
     }
     
     public static EComparable<Date> day(Expr<Date> date){
-        return createComparable(Date.class,Ops.OpDateTime.DAY, date);
+        return factory.createComparable(Date.class,Ops.OpDateTime.DAY, date);
     }    
     
     public static <T> Expr<T> distinct(Path<T> left){
@@ -84,7 +84,7 @@ public class HqlGrammar extends GrammarWithAlias{
     }
     
     public static EComparable<Date> hour(Expr<Date> date){
-        return createComparable(Date.class,Ops.OpDateTime.HOUR, date);
+        return factory.createComparable(Date.class,Ops.OpDateTime.HOUR, date);
     }  
 
     public static PComponentCollection<Integer> indices(PCollection<?> col){
@@ -96,19 +96,19 @@ public class HqlGrammar extends GrammarWithAlias{
     }
     
     public static EBoolean isempty(PComponentCollection<?> collection) {
-        return createBoolean(OpHql.ISEMPTY, collection);        
+        return factory.createBoolean(OpHql.ISEMPTY, collection);        
     }
                
     public static EBoolean isempty(PEntityCollection<?> collection) {
-        return createBoolean(OpHql.ISEMPTY, collection);        
+        return factory.createBoolean(OpHql.ISEMPTY, collection);        
     }
     
     public static EBoolean isnotempty(PComponentCollection<?> collection) {
-        return createBoolean(OpHql.ISNOTEMPTY, collection);        
+        return factory.createBoolean(OpHql.ISNOTEMPTY, collection);        
     }
     
     public static EBoolean isnotempty(PEntityCollection<?> collection) {
-        return createBoolean(OpHql.ISNOTEMPTY, collection);        
+        return factory.createBoolean(OpHql.ISNOTEMPTY, collection);        
     }    
     
     public static <A extends Comparable<? super A>> EComparable<A> max(PCollection<A> left){
@@ -144,11 +144,11 @@ public class HqlGrammar extends GrammarWithAlias{
     }        
     
     public static EComparable<Date> minute(Expr<Date> date){
-        return createComparable(Date.class,Ops.OpDateTime.MINUTE, date);
+        return factory.createComparable(Date.class,Ops.OpDateTime.MINUTE, date);
     }    
     
     public static EComparable<Date> month(Expr<Date> date){
-        return createComparable(Date.class,Ops.OpDateTime.MONTH, date);
+        return factory.createComparable(Date.class,Ops.OpDateTime.MONTH, date);
     }
     
     public static <A> Expr<A> newInstance(Class<A> a, Expr<?>... args){
@@ -160,7 +160,7 @@ public class HqlGrammar extends GrammarWithAlias{
     }
         
     public static EComparable<Date> second(Expr<Date> date){
-        return createComparable(Date.class,Ops.OpDateTime.SECOND, date);
+        return factory.createComparable(Date.class,Ops.OpDateTime.SECOND, date);
     }
     
     public static <A> SubQuery<HqlJoinMeta,A> select(Expr<A> select){
@@ -182,7 +182,7 @@ public class HqlGrammar extends GrammarWithAlias{
         Class<?> type = left.getType();
         if (type.equals(Byte.class) || type.equals(Integer.class) || type.equals(Short.class)) type = Long.class;
         if (type.equals(Float.class)) type = Double.class;
-        return createNumber((Class<D>)type, HqlOps.OpHql.SUM, left);
+        return factory.createNumber((Class<D>)type, HqlOps.OpHql.SUM, left);
     }
     
     public static <D extends Number & Comparable<? super D>> ENumber<Long> sumAsLong(Expr<D> left){
@@ -194,11 +194,11 @@ public class HqlGrammar extends GrammarWithAlias{
     }
     
     public static EComparable<Date> sysdate(){
-        return createComparable(Date.class,Ops.OpDateTime.SYSDATE);
+        return factory.createComparable(Date.class,Ops.OpDateTime.SYSDATE);
     }
     
     public static EComparable<Date> year(Expr<Date> date){
-        return createComparable(Date.class,Ops.OpDateTime.YEAR, date);
+        return factory.createComparable(Date.class,Ops.OpDateTime.YEAR, date);
     }
               
 }
