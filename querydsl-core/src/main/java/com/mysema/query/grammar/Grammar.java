@@ -12,7 +12,7 @@ import com.mysema.query.grammar.types.Alias;
 import com.mysema.query.grammar.types.CollectionType;
 import com.mysema.query.grammar.types.CountExpression;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Factory;
+import com.mysema.query.grammar.types.SimpleExprFactory;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.ENumber;
@@ -29,7 +29,9 @@ import com.mysema.query.util.Assert;
  * @author tiwe
  * @version $Id$
  */
-public class Grammar extends Factory{
+public class Grammar{
+    
+    protected static final SimpleExprFactory factory = new SimpleExprFactory();
     
     protected Grammar(){};
         
@@ -43,7 +45,7 @@ public class Grammar extends Factory{
      */
     public static <A extends Comparable<? super A>> EBoolean after(Expr<A> left, A right) {
         // NOTE : signature is for Comparables to support other than Java's date types
-        return createBoolean(Ops.AFTER, left, createConstant(right));
+        return factory.createBoolean(Ops.AFTER, left, factory.createConstant(right));
     }
     
     /**
@@ -55,7 +57,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A extends Comparable<? super A>> EBoolean aoe(Expr<A> left, A right) {
-        return createBoolean(Ops.AOE, left, createConstant(right));
+        return factory.createBoolean(Ops.AOE, left, factory.createConstant(right));
     }
 
     /**
@@ -69,7 +71,7 @@ public class Grammar extends Factory{
     
     public static <A extends Comparable<? super A>> EBoolean after(Expr<A> left, Expr<A> right) {
         // NOTE : signature is for Comparables to support other than Java's date types
-        return createBoolean(Ops.AFTER, left, right);
+        return factory.createBoolean(Ops.AFTER, left, right);
     }
     
     /**
@@ -81,7 +83,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A extends Comparable<? super A>> EBoolean aoe(Expr<A> left, Expr<A> right) {
-        return createBoolean(Ops.AOE, left, right);
+        return factory.createBoolean(Ops.AOE, left, right);
     }
 
     /**
@@ -92,7 +94,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static EBoolean and(EBoolean left, EBoolean right) {
-        return createBoolean(Ops.AND, left, right);
+        return factory.createBoolean(Ops.AND, left, right);
     }
     
     /**
@@ -153,7 +155,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static <A extends Number & Comparable<? super A>> ENumber<Double> avg(Expr<A> left){
-        return createNumber(Double.class, OpNumberAgg.AVG_AGG, left);
+        return factory.createNumber(Double.class, OpNumberAgg.AVG_AGG, left);
     }
     
     /**
@@ -167,7 +169,7 @@ public class Grammar extends Factory{
     public static <A extends Comparable<? super A>> EBoolean before(Expr<A> left, A right) {
         // NOTE : signature is for Comparables to support other than Java's date types
         // NOTE : basically same as lt
-        return createBoolean(Ops.BEFORE, left, createConstant(right));
+        return factory.createBoolean(Ops.BEFORE, left, factory.createConstant(right));
     }
     
     /**
@@ -179,7 +181,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A extends Comparable<? super A>> EBoolean boe(Expr<A> left, A right) {
-        return createBoolean(Ops.BOE, left, createConstant(right));
+        return factory.createBoolean(Ops.BOE, left, factory.createConstant(right));
     }
 
     /**
@@ -193,7 +195,7 @@ public class Grammar extends Factory{
     public static <A extends Comparable<? super A>> EBoolean before(Expr<A> left, Expr<A> right) {
         // NOTE : signature is for Comparables to support other than Java's date types
         // NOTE : basically same as lt
-        return createBoolean(Ops.BEFORE, left, right);
+        return factory.createBoolean(Ops.BEFORE, left, right);
     }
     
     /**
@@ -205,7 +207,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A extends Comparable<? super A>> EBoolean boe(Expr<A> left, Expr<A> right) {
-        return createBoolean(Ops.BOE, left, right);
+        return factory.createBoolean(Ops.BOE, left, right);
     }
 
     /**
@@ -218,7 +220,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static <A extends Comparable<? super A>> EBoolean between(Expr<A> left, A start, A end) {
-        return createBoolean(Ops.BETWEEN, left, createConstant(start), createConstant(end));
+        return factory.createBoolean(Ops.BETWEEN, left, factory.createConstant(start), factory.createConstant(end));
     }
     
     /**
@@ -231,7 +233,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A extends Comparable<? super A>> EBoolean between(Expr<A> left, Expr<A> start, Expr<A> end) {
-        return createBoolean(Ops.BETWEEN, left, start, end);
+        return factory.createBoolean(Ops.BETWEEN, left, start, end);
     }
         
     /**
@@ -242,7 +244,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static Expr<Character> charAt(Expr<String> left, Expr<Integer> right) {
-        return createComparable(Character.class, Ops.CHAR_AT, left, right);
+        return factory.createComparable(Character.class, Ops.CHAR_AT, left, right);
     }
         
     /**
@@ -253,7 +255,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static Expr<Character> charAt(Expr<String> left, int right) {
-        return createComparable(Character.class, Ops.CHAR_AT, left, createConstant(right));
+        return factory.createComparable(Character.class, Ops.CHAR_AT, left, factory.createConstant(right));
     }
     
     /**
@@ -265,7 +267,7 @@ public class Grammar extends Factory{
      */
     
     public static EString concat(Expr<String> left, Expr<String> right) {
-        return createString(Ops.CONCAT, left, right);
+        return factory.createString(Ops.CONCAT, left, right);
     }
 
     /**
@@ -276,7 +278,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static EString concat(Expr<String> left, String right) {
-        return createString(Ops.CONCAT, left, createConstant(right));
+        return factory.createString(Ops.CONCAT, left, factory.createConstant(right));
     }
 
     /**
@@ -287,7 +289,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static EBoolean contains(Expr<String> left, Expr<String> right) {
-        return createBoolean(Ops.CONTAINS, left, right);
+        return factory.createBoolean(Ops.CONTAINS, left, right);
     }
 
     /**
@@ -298,7 +300,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static EBoolean contains(Expr<String> left, String right) {
-        return createBoolean(Ops.CONTAINS, left, createConstant(right));
+        return factory.createBoolean(Ops.CONTAINS, left, factory.createConstant(right));
     }
                 
     /**
@@ -342,7 +344,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static EBoolean endsWith(Expr<String> left, Expr<String> right) {
-        return createBoolean(Ops.ENDSWITH, left, right);
+        return factory.createBoolean(Ops.ENDSWITH, left, right);
     }
 
     /**
@@ -353,7 +355,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static EBoolean endsWith(Expr<String> left, String right) {
-        return createBoolean(Ops.ENDSWITH, left, createConstant(right));
+        return factory.createBoolean(Ops.ENDSWITH, left, factory.createConstant(right));
     }
 
     /**
@@ -366,9 +368,9 @@ public class Grammar extends Factory{
      */
     public static <A> EBoolean eq(Expr<A> left, A right) {
         if (isPrimitive(left.getType())){
-            return createBoolean(Ops.EQ_PRIMITIVE, left, createConstant(right));
+            return factory.createBoolean(Ops.EQ_PRIMITIVE, left, factory.createConstant(right));
         }else{
-            return createBoolean(Ops.EQ_OBJECT, left, createConstant(right));
+            return factory.createBoolean(Ops.EQ_OBJECT, left, factory.createConstant(right));
         }        
     }
 
@@ -382,9 +384,9 @@ public class Grammar extends Factory{
      */
     public static <A> EBoolean eq(Expr<A> left, Expr<? super A> right) {
         if (isPrimitive(left.getType())){
-            return createBoolean(Ops.EQ_PRIMITIVE, left, right);
+            return factory.createBoolean(Ops.EQ_PRIMITIVE, left, right);
         }else{
-            return createBoolean(Ops.EQ_OBJECT, left, right);
+            return factory.createBoolean(Ops.EQ_OBJECT, left, right);
         }    
     }
 
@@ -396,7 +398,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static EBoolean equalsIgnoreCase(Expr<String> left, Expr<String> right) {
-        return createBoolean(Ops.EQ_IGNORECASE, left, right);
+        return factory.createBoolean(Ops.EQ_IGNORECASE, left, right);
     }
 
     /**
@@ -407,7 +409,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static EBoolean equalsIgnoreCase(Expr<String> left, String right) {
-        return createBoolean(Ops.EQ_IGNORECASE, left, createConstant(right));
+        return factory.createBoolean(Ops.EQ_IGNORECASE, left, factory.createConstant(right));
     }
         
     /**
@@ -419,7 +421,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A extends Comparable<? super A>> EBoolean goe(Expr<A> left, A right) {
-        return createBoolean(Ops.GOE, left, createConstant(right));
+        return factory.createBoolean(Ops.GOE, left, factory.createConstant(right));
     }
     
     /**
@@ -431,7 +433,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A extends Comparable<? super A>> EBoolean goe(Expr<A> left, Expr<A> right) {
-        return createBoolean(Ops.GOE, left, right);
+        return factory.createBoolean(Ops.GOE, left, right);
     } 
     
     /**
@@ -443,7 +445,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A extends Comparable<? super A>> EBoolean gt(Expr<A> left, A right) {
-        return createBoolean(Ops.GT, left, createConstant(right));
+        return factory.createBoolean(Ops.GT, left, factory.createConstant(right));
     }
     
     /**
@@ -455,7 +457,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A extends Comparable<? super A>> EBoolean gt(Expr<A> left, Expr<A> right) {
-        return createBoolean(Ops.GT, left, right);
+        return factory.createBoolean(Ops.GT, left, right);
     }
     
     /**
@@ -469,7 +471,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static <A> EBoolean in(A left, CollectionType<? extends A> right){
-        return createBoolean(Ops.IN, createConstant(left), (Expr<?>)right);
+        return factory.createBoolean(Ops.IN, factory.createConstant(left), (Expr<?>)right);
     }
 
     /**
@@ -483,7 +485,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static <A> EBoolean in(Expr<A> left, Collection<? extends A> right){
-        return createBoolean(Ops.IN, left, createConstant(right));
+        return factory.createBoolean(Ops.IN, left, factory.createConstant(right));
     }
     
     /**
@@ -497,7 +499,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static <A> EBoolean in(Expr<A> left, A... rest) {
-        return createBoolean(Ops.IN, left, createConstant(rest));
+        return factory.createBoolean(Ops.IN, left, factory.createConstant(rest));
     }
     
     /**
@@ -511,7 +513,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A> EBoolean in(Expr<A> left, CollectionType<A> right){
-        return createBoolean(Ops.IN, left, (Expr<?>)right);
+        return factory.createBoolean(Ops.IN, left, (Expr<?>)right);
     }
     
     /**
@@ -522,7 +524,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static ENumber<Integer> indexOf(Expr<String> left, Expr<String> right) {
-        return createNumber(Integer.class,Ops.INDEXOF, left, right);
+        return factory.createNumber(Integer.class,Ops.INDEXOF, left, right);
     }
      
     /**
@@ -533,7 +535,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static ENumber<Integer> indexOf(Expr<String> left, String right) {
-        return createNumber(Integer.class,Ops.INDEXOF, left, createConstant(right));
+        return factory.createNumber(Integer.class,Ops.INDEXOF, left, factory.createConstant(right));
     }
 
     /**
@@ -545,7 +547,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static ENumber<Integer> indexOf(Expr<String> left, String right, int i) {
-        return createNumber(Integer.class,Ops.INDEXOF_2ARGS, left, createConstant(right), createConstant(i));
+        return factory.createNumber(Integer.class,Ops.INDEXOF_2ARGS, left, factory.createConstant(right), factory.createConstant(i));
     }
 
     /**
@@ -555,7 +557,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static EBoolean isEmpty(Expr<String> left) {
-        return createBoolean(Ops.ISEMPTY, left);
+        return factory.createBoolean(Ops.ISEMPTY, left);
     }
     
     /**
@@ -566,7 +568,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A> EBoolean isnotnull(Expr<A> left) {
-        return createBoolean(Ops.ISNOTNULL, left);
+        return factory.createBoolean(Ops.ISNOTNULL, left);
     }
 
     /**
@@ -577,7 +579,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A> EBoolean isnull(Expr<A> left) {
-        return createBoolean(Ops.ISNULL, left);
+        return factory.createBoolean(Ops.ISNULL, left);
     }
 
     private static boolean isPrimitive(Class<? extends Object> class1) {
@@ -595,7 +597,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static ENumber<Integer> lastIndex(Expr<String> left, String right, int third) {
-        return createNumber(Integer.class,Ops.LAST_INDEX_2ARGS, left, createConstant(right), createConstant(third));
+        return factory.createNumber(Integer.class,Ops.LAST_INDEX_2ARGS, left, factory.createConstant(right), factory.createConstant(third));
     }
     
     /**
@@ -606,7 +608,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static ENumber<Integer> lastIndexOf(Expr<String> left, Expr<String> right) {
-        return createNumber(Integer.class,Ops.LAST_INDEX, left, right);
+        return factory.createNumber(Integer.class,Ops.LAST_INDEX, left, right);
     }
     
     /**
@@ -617,7 +619,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static ENumber<Integer> lastIndexOf(Expr<String> left, String right) {
-        return createNumber(Integer.class,Ops.LAST_INDEX, left, createConstant(right));
+        return factory.createNumber(Integer.class,Ops.LAST_INDEX, left, factory.createConstant(right));
     }
 
     /**
@@ -627,7 +629,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static ENumber<Integer> length(Expr<String> left) {
-        return createNumber(Integer.class,Ops.STRING_LENGTH, left);
+        return factory.createNumber(Integer.class,Ops.STRING_LENGTH, left);
     }
     
     /**
@@ -638,7 +640,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static EBoolean like(Expr<String> left, String right) {                
-        return createBoolean(Ops.LIKE, left, createConstant(right));
+        return factory.createBoolean(Ops.LIKE, left, factory.createConstant(right));
     }
 
     /**
@@ -650,7 +652,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A extends Comparable<? super A>> EBoolean loe(Expr<A> left, A right) {
-        return createBoolean(Ops.LOE, left, createConstant(right));
+        return factory.createBoolean(Ops.LOE, left, factory.createConstant(right));
     }
     
     /**
@@ -662,7 +664,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A extends Comparable<? super A>> EBoolean loe(Expr<A> left, Expr<A> right) {
-        return createBoolean(Ops.LOE, left, right);
+        return factory.createBoolean(Ops.LOE, left, right);
     }
 
     /**
@@ -672,7 +674,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static EString lower(Expr<String> left) {
-        return createString(Ops.LOWER, left);
+        return factory.createString(Ops.LOWER, left);
     }
     
     /**
@@ -684,7 +686,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A extends Comparable<? super A>> EBoolean lt(Expr<A> left, A right) {
-        return createBoolean(Ops.LT, left, createConstant(right));
+        return factory.createBoolean(Ops.LT, left, factory.createConstant(right));
     }
 
     /**
@@ -696,7 +698,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static <A extends Comparable<? super A>> EBoolean lt(Expr<A> left, Expr<A> right) {
-        return createBoolean(Ops.LT, left, right);
+        return factory.createBoolean(Ops.LT, left, right);
     }
 
     /** 
@@ -707,7 +709,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static EBoolean matches(Expr<String> left, Expr<String> right) {
-        return createBoolean(Ops.MATCHES, left, right);
+        return factory.createBoolean(Ops.MATCHES, left, right);
     }
     
     /** 
@@ -718,7 +720,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static EBoolean matches(Expr<String> left, String right) {
-        return createBoolean(Ops.MATCHES, left, createConstant(right));
+        return factory.createBoolean(Ops.MATCHES, left, factory.createConstant(right));
     }
     
     /**
@@ -731,9 +733,9 @@ public class Grammar extends Factory{
      */
     public static <A> EBoolean ne(Expr<A> left, A right) {
         if (isPrimitive(left.getType())){
-            return createBoolean(Ops.NE_PRIMITIVE, left, createConstant(right));
+            return factory.createBoolean(Ops.NE_PRIMITIVE, left, factory.createConstant(right));
         }else{
-            return createBoolean(Ops.NE_OBJECT, left, createConstant(right));
+            return factory.createBoolean(Ops.NE_OBJECT, left, factory.createConstant(right));
         }   
     }
 
@@ -747,9 +749,9 @@ public class Grammar extends Factory{
      */
     public static <A> EBoolean ne(Expr<A> left, Expr<? super A> right) {
         if (isPrimitive(left.getType())){
-            return createBoolean(Ops.NE_PRIMITIVE, left, right);
+            return factory.createBoolean(Ops.NE_PRIMITIVE, left, right);
         }else{
-            return createBoolean(Ops.NE_OBJECT, left, right);
+            return factory.createBoolean(Ops.NE_OBJECT, left, right);
         }    
     }
 
@@ -764,7 +766,7 @@ public class Grammar extends Factory{
             OBoolean o = (OBoolean)left;
             if (o.getOperator() == Ops.NOT) return (EBoolean) o.getArg(0);
         }        
-        return createBoolean(Ops.NOT, left);
+        return factory.createBoolean(Ops.NOT, left);
     }
        
     /**
@@ -777,7 +779,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A extends Comparable<? super A>> EBoolean notBetween(Expr<A> left, A start, A end) {
-        return createBoolean(Ops.NOTBETWEEN, left, createConstant(start), createConstant(end));
+        return factory.createBoolean(Ops.NOTBETWEEN, left, factory.createConstant(start), factory.createConstant(end));
     }
     
     /**
@@ -790,7 +792,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A extends Comparable<? super A>> EBoolean notBetween(Expr<A> left, Expr<A> start, Expr<A> end) {
-        return createBoolean(Ops.NOTBETWEEN, left, start, end);
+        return factory.createBoolean(Ops.NOTBETWEEN, left, start, end);
     }
     
     /**
@@ -802,7 +804,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static <A> EBoolean notIn(Expr<A> left, A... rest) {
-        return createBoolean(Ops.NOTIN, left, createConstant(rest));
+        return factory.createBoolean(Ops.NOTIN, left, factory.createConstant(rest));
     }
     
     /**
@@ -814,7 +816,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static <A> EBoolean notIn(Expr<A> left, CollectionType<? extends A> right){
-        return createBoolean(Ops.NOTIN, left, (Expr<?>)right);
+        return factory.createBoolean(Ops.NOTIN, left, (Expr<?>)right);
     }
 
     /**
@@ -830,7 +832,7 @@ public class Grammar extends Factory{
         if (targetType.isAssignableFrom(source.getType()) && ENumber.class.isAssignableFrom(source.getClass())){
             return (ENumber)source;
         }else{
-            return createNumber(targetType, Ops.NUMCAST, source, createConstant(targetType));
+            return factory.createNumber(targetType, Ops.NUMCAST, source, factory.createConstant(targetType));
         }
     }
     
@@ -841,7 +843,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static EString stringCast(EComparable<?> source){
-        return createString(Ops.STRING_CAST, source);
+        return factory.createString(Ops.STRING_CAST, source);
     }
     
     /**
@@ -852,7 +854,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static EBoolean or(EBoolean left, EBoolean right) {
-        return createBoolean(Ops.OR, left, right);
+        return factory.createBoolean(Ops.OR, left, right);
     }
     
     /**
@@ -863,7 +865,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static Expr<String[]> split(Expr<String> left, String regex){
-        return createStringArray(Ops.SPLIT, left, createConstant(regex));
+        return factory.createStringArray(Ops.SPLIT, left, factory.createConstant(regex));
     }
     
     /**
@@ -874,7 +876,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static EBoolean startsWith(Expr<String> left, Expr<String> right) {
-        return createBoolean(Ops.STARTSWITH, left, right);
+        return factory.createBoolean(Ops.STARTSWITH, left, right);
     }
     
     /**
@@ -885,7 +887,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static EBoolean startsWith(Expr<String> left, String right) {
-        return createBoolean(Ops.STARTSWITH, left, createConstant(right));
+        return factory.createBoolean(Ops.STARTSWITH, left, factory.createConstant(right));
     }
     
     /**
@@ -896,7 +898,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static EString substring(Expr<String> left, int right) {
-        return createString(Ops.SUBSTR1ARG, left, createConstant(right));
+        return factory.createString(Ops.SUBSTR1ARG, left, factory.createConstant(right));
     }
 
     /**
@@ -908,7 +910,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static EString substring(Expr<String> left, int beginIndex, int endIndex) {
-        return createString(Ops.SUBSTR2ARGS, left, createConstant(beginIndex), createConstant(endIndex));
+        return factory.createString(Ops.SUBSTR2ARGS, left, factory.createConstant(beginIndex), factory.createConstant(endIndex));
     }
     
     /**
@@ -918,7 +920,7 @@ public class Grammar extends Factory{
      * @return
      */
     public static EString trim(Expr<String> left) {
-        return createString(Ops.TRIM, left);
+        return factory.createString(Ops.TRIM, left);
     }    
 
     /**
@@ -931,7 +933,7 @@ public class Grammar extends Factory{
      * @return
      */    
     public static <A, B extends A> EBoolean typeOf(Expr<A> left, Class<B> right) {
-        return createBoolean(Ops.ISTYPEOF, left, createConstant(right));
+        return factory.createBoolean(Ops.ISTYPEOF, left, factory.createConstant(right));
     }    
     
     /**
@@ -941,6 +943,6 @@ public class Grammar extends Factory{
      * @return
      */
     public static EString upper(Expr<String> left) {
-        return createString(Ops.UPPER, left);
+        return factory.createString(Ops.UPPER, left);
     }
 }

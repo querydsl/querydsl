@@ -17,6 +17,9 @@ import com.mysema.query.grammar.Ops;
  * @version $Id$
  */
 public final class PathMetadata<T> {
+    
+    private static SimpleExprFactory factory = new SimpleExprFactory();
+    
     public static final PathType ARRAY_SIZE = new PathType("array size");
 
     public static final PathType ARRAYVALUE = new PathType("array value");
@@ -60,7 +63,7 @@ public final class PathMetadata<T> {
 
     public static PathMetadata<Integer> forArrayAccess(Path.PArray<?> parent,
             int index) {
-        return new PathMetadata<Integer>(parent, Factory.createConstant(index),
+        return new PathMetadata<Integer>(parent, factory.createConstant(index),
                 ARRAYVALUE_CONSTANT);
     }
 
@@ -71,7 +74,7 @@ public final class PathMetadata<T> {
 
     public static PathMetadata<Integer> forListAccess(Path.PCollection<?> parent,
             int index) {
-        return new PathMetadata<Integer>(parent, Factory.createConstant(index),
+        return new PathMetadata<Integer>(parent, factory.createConstant(index),
                 LISTVALUE_CONSTANT);
     }
     
@@ -82,12 +85,12 @@ public final class PathMetadata<T> {
     
     public static <KT> PathMetadata<KT> forMapAccess(Path.PMap<?, ?> parent,
             KT key) {
-        return new PathMetadata<KT>(parent, Factory.createConstant(key), MAPVALUE_CONSTANT);
+        return new PathMetadata<KT>(parent, factory.createConstant(key), MAPVALUE_CONSTANT);
     }
     
     public static PathMetadata<String> forProperty(Path<?> parent,
             String property) {
-        return new PathMetadata<String>(parent, Factory.createConstant(property), PROPERTY);
+        return new PathMetadata<String>(parent, factory.createConstant(property), PROPERTY);
     }
     
     public static PathMetadata<Integer> forSize(Path.PArray<?> parent) {
@@ -99,7 +102,7 @@ public final class PathMetadata<T> {
     }
     
     public static PathMetadata<String> forVariable(String variable) {
-        return new PathMetadata<String>(null, Factory.createConstant(variable), VARIABLE);
+        return new PathMetadata<String>(null, factory.createConstant(variable), VARIABLE);
     }
     
     public Expr<T> getExpression() {
