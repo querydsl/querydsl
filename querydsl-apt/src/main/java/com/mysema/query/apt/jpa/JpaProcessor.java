@@ -20,7 +20,7 @@ import com.sun.mirror.declaration.Declaration;
 import com.sun.mirror.declaration.MethodDeclaration;
 
 /**
- * JpaProcessor provides
+ * JpaProcessor provides JPA annotation handling support
  *
  * @author tiwe
  * @version $Id$

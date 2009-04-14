@@ -7,7 +7,7 @@ package com.mysema.query.apt.model;
 
 
 /**
- * FieldDecl represents a field / property in a query domain type.
+ * Field represents a field / property in a query domain type.
  * 
  * @author tiwe
  * @version $Id$

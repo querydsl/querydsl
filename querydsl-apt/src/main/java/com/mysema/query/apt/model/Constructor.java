@@ -8,7 +8,7 @@ package com.mysema.query.apt.model;
 import java.util.Collection;
 
 /**
- * ConstructorDecl represents a constructor for a DTO query type.
+ * Constructor represents a constructor for a DTO query type.
  * 
  * @author tiwe
  * @version $Id$

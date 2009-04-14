@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * TypeDecl represents a query domain type.
+ * Type represents a query domain type.
  * 
  * @author tiwe
  * @version $Id$

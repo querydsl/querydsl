@@ -6,7 +6,7 @@
 package com.mysema.query.apt;
 
 /**
- * Constants provides
+ * Constants provides constants for use in Querydsl APT
  *
  * @author tiwe
  * @version $Id$

@@ -6,7 +6,7 @@
 package com.mysema.query.apt.general;
 
 /**
- * FieldHelper provides
+ * FieldHelper provides convenience methods for field name escaping
  *
  * @author tiwe
  * @version $Id$

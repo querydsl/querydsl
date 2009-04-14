@@ -12,7 +12,7 @@ import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.MethodDeclaration;
 
 /**
- * QureydslProcessor provides
+ * QureydslProcessor provides Querydsl annotation handling support
  *
  * @author tiwe
  * @version $Id$

@@ -7,7 +7,7 @@ package com.mysema.query.apt.model;
 
 
 /**
- * ParameterDecl represents a parameter 
+ * Parameter represents a parameter 
  *  
  * @author tiwe
  * @version $Id$

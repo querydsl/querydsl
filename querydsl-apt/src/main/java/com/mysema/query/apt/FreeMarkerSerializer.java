@@ -14,7 +14,7 @@ import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.TemplateException;
 
 /**
- * Serializer is the main interface to be implemented for code generating serializers.
+ * FreeMarkerSerializer provides FreeMarker based serialization of querydsl types to Java sources
  * 
  * @author tiwe
  * @version $Id$

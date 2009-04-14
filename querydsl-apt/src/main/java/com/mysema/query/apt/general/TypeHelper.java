@@ -13,7 +13,7 @@ import com.sun.mirror.type.*;
 import com.sun.mirror.util.SimpleTypeVisitor;
 
 /**
- * TypeInfo represents a single type
+ * TypeInfo is a helper type for determing types of fields and methods
  * 
  * @author tiwe
  * @version $Id$
