@@ -13,7 +13,7 @@
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-collections</artifactId>
   <name>Querydsl collections</name>
-  <description>Hibernate / HQL support for querydsl</description>
+  <description>Collections support for querydsl</description>
   <packaging>jar</packaging>
 
   <dependencies>
@@ -32,20 +32,7 @@
       <scope>provided</scope>
       <!-- license : TODO -->
     </dependency>
-
-    <!-- logging -->
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.14</version>
-      <!-- license : Apache License 2.0 -->
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.5.2</version>
-      <!-- license : http://www.slf4j.org/license.html -->
-    </dependency>
+    
   </dependencies>
   
   <build>
