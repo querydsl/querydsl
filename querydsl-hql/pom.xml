@@ -63,20 +63,6 @@
       <scope>provided</scope>
       <!-- license : TODO -->
     </dependency>   
-
-    <!-- logging -->
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.14</version>
-      <!-- license : Apache License 2.0 -->
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.3.1</version>
-      <!-- license : http://www.slf4j.org/license.html -->
-    </dependency>
   </dependencies>
 
   <build>
