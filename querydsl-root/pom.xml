@@ -46,7 +46,13 @@
       <artifactId>junit</artifactId>
       <version>4.4</version>
       <scope>test</scope>
-    </dependency>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.servlet</groupId>
+          <artifactId>servlet-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>  
   </dependencies>
   
   <organization>
