@@ -48,7 +48,11 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
          if (forCountRow){
              append(ops.select()).append(ops.countStar());
         }else if (!select.isEmpty()){
-            append(ops.select());           
+            if (!metadata.isDistinct()){
+                append(ops.select());    
+            }else{
+                append(ops.selectDistinct());
+            }                       
             List<Expr<?>> sqlSelect = new ArrayList<Expr<?>>();
             for (Expr<?> selectExpr : select){
                 if (selectExpr instanceof Expr.EConstructor){

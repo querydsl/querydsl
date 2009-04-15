@@ -24,6 +24,7 @@ public class SqlOps extends OperationPatterns {
         countStar = "count(*)", 
         dummyTable = "dual",
         select = "select ",
+        selectDistinct = "select distinct ",
         from = "\nfrom ",
         tableAlias = " ",
         fullJoin = "\nfull join ",
@@ -255,6 +256,15 @@ public class SqlOps extends OperationPatterns {
 
     public SqlOps select(String s){
         select = s;
+        return this;
+    }
+    
+    public String selectDistinct() {
+        return selectDistinct;
+    }
+
+    public SqlOps selectDistinct(String s){
+        selectDistinct = s;
         return this;
     }
     
