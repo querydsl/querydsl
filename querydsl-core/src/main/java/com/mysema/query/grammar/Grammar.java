@@ -346,7 +346,18 @@ public class Grammar{
     public static EBoolean endsWith(Expr<String> left, Expr<String> right) {
         return factory.createBoolean(Ops.ENDSWITH, left, right);
     }
-
+    
+    /**
+     * Expr : left.endsWith(right) (ignore case)
+     * 
+     * @param left
+     * @param right
+     * @return
+     */
+    public static EBoolean endsWithIgnoreCase(Expr<String> left, Expr<String> right) {
+        return factory.createBoolean(Ops.ENDSWITH_IC, left, right);
+    }
+    
     /**
      * Expr : left.endsWith(right)
      * 
@@ -358,6 +369,17 @@ public class Grammar{
         return factory.createBoolean(Ops.ENDSWITH, left, factory.createConstant(right));
     }
 
+    /**
+     * Expr : left.endsWith(right) (ignore case)
+     * 
+     * @param left
+     * @param right
+     * @return
+     */
+    public static EBoolean endsWithIgnoreCase(Expr<String> left, String right) {
+        return factory.createBoolean(Ops.ENDSWITH_IC, left, factory.createConstant(right));
+    }
+    
     /**
      * Expr : left == right
      * 
@@ -880,6 +902,17 @@ public class Grammar{
     }
     
     /**
+     * Expr : left.startsWith(right) (ignore case)
+     * 
+     * @param left
+     * @param right
+     * @return
+     */
+    public static EBoolean startsWithIgnoreCase(Expr<String> left, Expr<String> right) {
+        return factory.createBoolean(Ops.STARTSWITH_IC, left, right);
+    }
+    
+    /**
      * Expr : left.startsWith(right)
      * 
      * @param left
@@ -888,6 +921,17 @@ public class Grammar{
      */    
     public static EBoolean startsWith(Expr<String> left, String right) {
         return factory.createBoolean(Ops.STARTSWITH, left, factory.createConstant(right));
+    }
+    
+    /**
+     * Expr : left.startsWith(right) (ignore case)
+     * 
+     * @param left
+     * @param right
+     * @return
+     */     
+    public static EBoolean startsWithIgnoreCase(Expr<String> left, String right) {
+        return factory.createBoolean(Ops.STARTSWITH_IC, left, factory.createConstant(right));
     }
     
     /**

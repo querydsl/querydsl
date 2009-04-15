@@ -107,16 +107,27 @@ public interface Ops {
     Op<Number> LAST_INDEX = new Op<Number>(String_x_2);  
     Op<Boolean> ISEMPTY = new Op<Boolean>(String.class);
     Op<Boolean> STARTSWITH = new Op<Boolean>(String_x_2);
+    Op<Boolean> STARTSWITH_IC = new Op<Boolean>(String_x_2);
     Op<Number> INDEXOF_2ARGS = new Op<Number>(String.class,String.class,Integer.class);  
     Op<Number> INDEXOF = new Op<Number>(String.class,String.class);  
     Op<Boolean> EQ_IGNORECASE = new Op<Boolean>(String_x_2);
     Op<Boolean> ENDSWITH = new Op<Boolean>(String_x_2);
+    Op<Boolean> ENDSWITH_IC = new Op<Boolean>(String_x_2);
     Op<Boolean> CONTAINS = new Op<Boolean>(String_x_2);
     
     
     // subquery operations
     Op<Boolean> EXISTS = new Op<Boolean>(Object.class);
     
+    
+    public static final List<Op<?>> compareOps = Collections.unmodifiableList(
+            Arrays.<Op<?>>asList(
+                    EQ_OBJECT, 
+                    EQ_PRIMITIVE, 
+                    LT, 
+                    GT, 
+                    GOE, 
+                    LOE));
     
     
     /**

@@ -82,7 +82,9 @@ public abstract class OperationPatterns{
         add(Ops.UPPER, "upper(%s)");
         add(Ops.MATCHES, "like(%s,%s)");
         add(Ops.STARTSWITH, "startsWith(%s,%s)");
+        add(Ops.STARTSWITH_IC, "startsWithIgnoreCase(%s,%s)");
         add(Ops.ENDSWITH, "endsWith(%s,%s");
+        add(Ops.ENDSWITH_IC, "endsWithIgnoreCase(%s,%s");
         add(Ops.CONTAINS, "contains(%s,%s)");
         add(Ops.SPLIT, "split(%s,%s)");
         add(Ops.CHAR_AT, "charAt(%s,%s)");

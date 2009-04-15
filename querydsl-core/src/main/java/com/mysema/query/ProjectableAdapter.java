@@ -30,6 +30,10 @@ public abstract class ProjectableAdapter implements Projectable{
     public long count() {
         return projectable.count();
     }
+    
+    public long countDistinct() {
+        return projectable.countDistinct();
+    }
 
     public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return projectable.iterate(first, second, rest);

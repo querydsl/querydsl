@@ -21,6 +21,11 @@ public interface Projectable {
      * return the amount of matched rows
      */
     long count();
+    
+    /**
+     * return the amount of distinct matched rows
+     */
+    long countDistinct();
 
     /**
      * iterate over the results with the given projection

@@ -35,22 +35,27 @@ public abstract class QueryBaseWithProjection<JoinMeta,SubType
         return target;
     }
         
-    public List<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest) {
-        return IteratorUtils.toList(iterate(first, second, rest));
-    }
-
-    public <RT> List<RT> list(Expr<RT> projection) {
-        return IteratorUtils.toList(iterate(projection));
-    }
-    
-    public final <RT> Iterator<RT> iterateDistinct(Expr<RT> projection){
+    public long countDistinct(){
         getMetadata().setDistinct(true);
-        return iterate(projection);
+        return count();
     }
     
     public final Iterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         getMetadata().setDistinct(true);
         return iterate(first, second, rest);
+    }
+
+    public final <RT> Iterator<RT> iterateDistinct(Expr<RT> projection){
+        getMetadata().setDistinct(true);
+        return iterate(projection);
+    }
+    
+    public List<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+        return IteratorUtils.toList(iterate(first, second, rest));
+    }
+    
+    public <RT> List<RT> list(Expr<RT> projection) {
+        return IteratorUtils.toList(iterate(projection));
     }    
 
     public final List<Object[]> listDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
