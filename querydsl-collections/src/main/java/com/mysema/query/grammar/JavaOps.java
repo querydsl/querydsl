@@ -60,10 +60,12 @@ public class JavaOps extends OperationPatterns {
         add(Ops.LAST_INDEX, "%s.lastIndex(%s,%s)");
         add(Ops.ISEMPTY, "%s.isEmpty()");
         add(Ops.STARTSWITH, "%s.startsWith(%s, 0)");
+        add(Ops.STARTSWITH_IC, "%s.toLowerCase().startsWith(%s.toLowerCase(), 0)");
         add(Ops.INDEXOF_2ARGS, "%s.indexOf(%s,%s)");
         add(Ops.INDEXOF, "%s.indexOf(%s)");
         add(Ops.EQ_IGNORECASE, "%s.equalsIgnoreCase(%s)");
         add(Ops.ENDSWITH, "%s.endsWith(%s)");
+        add(Ops.ENDSWITH_IC, "%s.toLowerCase().endsWith(%s.toLowerCase())");
         add(Ops.CONTAINS, "%s.contains(%s)");
         
         // math        

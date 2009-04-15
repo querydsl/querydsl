@@ -62,11 +62,11 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
     @SuppressWarnings("unchecked")
     private final SubType _this = (SubType) this;
 
+    private boolean arrayProjection = false;
+
     private boolean closed = false;
 
     private final Map<Expr<?>, Iterable<?>> exprToIt = new HashMap<Expr<?>, Iterable<?>>();
-
-    private boolean arrayProjection = false;
     
     private QueryIndexSupport indexSupport;
 
@@ -109,6 +109,38 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
         return _this;
     }
     
+    private <T> CloseableIterator<T> asCloseableIterator(final Iterator<T> it) {
+        return new CloseableIterator<T>() {
+            public void close() throws IOException {
+                AbstractColQuery.this.close();
+            }
+            public boolean hasNext() {
+                return it.hasNext();
+            }
+
+            public T next() {
+                return it.next();
+            }
+            public void remove() {
+                it.remove();
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    private <RT> Iterator<RT> asDistinctIterator(Iterator<RT> rv) {
+        if (!arrayProjection){
+            return new UniqueFilterIterator<RT>(rv);
+        }else{
+            return new FilterIterator<RT>(rv, new Predicate(){
+                private Set<List<Object>> set = new HashSet<List<Object>>();
+                public boolean evaluate(Object object) {
+                    return set.add(Arrays.asList((Object[])object));
+                }                    
+            });
+        }
+    }
+
     private boolean changeToUnionQuery(EBoolean condition) {
         return sequentialUnion && condition instanceof Operation 
             && ((Operation<?, ?>) condition).getOperator() == Ops.OR;
@@ -132,8 +164,12 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
             Iterator<?> it;
             if (getMetadata().getJoins().size() == 1) {
                 it = handleFromWhereSingleSource(sources);
-            } else {
+            } else {                
                 it = handleFromWhereMultiSource(sources);
+            }
+            if (getMetadata().isDistinct()){
+                arrayProjection = true;
+                it = asDistinctIterator(it);
             }
             long count = 0l;
             while (it.hasNext()) {
@@ -143,13 +179,15 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
             return count;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
+        }finally{
+            close();
         }
     }
-
+    
     protected QueryIndexSupport createIndexSupport(Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops,List<Expr<?>> sources) {
         return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);
     }
-
+    
     private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
         checkClosed();
         List<Expr<?>> sources = new ArrayList<Expr<?>>();
@@ -175,7 +213,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
         }
 
     }
-    
+
     private Iterator<Object[]> createMultiIterator(List<Expr<?>> sources, EBoolean condition) {
         MultiIterator multiIt;
         if (condition == null || !wrapIterators) {
@@ -193,7 +231,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
             return multiIt;
         }
     }
-    
+
     public <A> SubType from(Expr<A> entity, A first, A... rest) {
         List<A> list = new ArrayList<A>(rest.length + 1);
         list.add(first);
@@ -279,25 +317,15 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
         it = itAsList.iterator();
         return it;
     }
-
+    
     @SuppressWarnings("unchecked")
     protected <RT> Iterator<RT> handleSelect(Iterator<?> it, List<Expr<?>> sources, Expr<RT> projection) throws Exception {
         Iterator<RT> rv = transform(ops, it, sources, projection);
         if (getMetadata().isDistinct()){
-            if (!arrayProjection){
-                rv = new UniqueFilterIterator<RT>(rv);
-            }else{
-                rv = new FilterIterator<RT>(rv, new Predicate(){
-                    private Set<List<Object>> set = new HashSet<List<Object>>();
-                    public boolean evaluate(Object object) {
-                        return set.add(Arrays.asList((Object[])object));
-                    }                    
-                });
-            }
+            rv = asDistinctIterator(rv);
         }
         return rv;
     }
-    
     
     @SuppressWarnings("unchecked")
     public CloseableIterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
@@ -307,7 +335,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
         
         addToProjection(projection);
         try {
-            return wrap(createIterator(projection));
+            return asCloseableIterator(createIterator(projection));
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -316,7 +344,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
     public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {        
         addToProjection(projection);
         try {
-            return wrap(createIterator(projection));
+            return asCloseableIterator(createIterator(projection));
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -366,23 +394,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
         }
     }
 
-    private <T> CloseableIterator<T> wrap(final Iterator<T> it) {
-        return new CloseableIterator<T>() {
-            public void close() throws IOException {
-                AbstractColQuery.this.close();
-            }
-            public boolean hasNext() {
-                return it.hasNext();
-            }
 
-            public T next() {
-                return it.next();
-            }
-            public void remove() {
-                it.remove();
-            }
-        };
-    }
 
 
 }

@@ -65,6 +65,5 @@ public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends P
         innerQuery.where(o);
         return _this;
     }
-
     
 }
