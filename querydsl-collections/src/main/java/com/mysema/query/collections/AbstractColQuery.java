@@ -14,7 +14,10 @@ import java.io.IOException;
 import java.util.*;
 
 import org.apache.commons.collections15.IteratorUtils;
+import org.apache.commons.collections15.Predicate;
+import org.apache.commons.collections15.iterators.FilterIterator;
 import org.apache.commons.collections15.iterators.IteratorChain;
+import org.apache.commons.collections15.iterators.UniqueFilterIterator;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.Projectable;
@@ -63,6 +66,8 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
 
     private final Map<Expr<?>, Iterable<?>> exprToIt = new HashMap<Expr<?>, Iterable<?>>();
 
+    private boolean arrayProjection = false;
+    
     private QueryIndexSupport indexSupport;
 
     private final JavaOps ops;
@@ -275,12 +280,28 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
         return it;
     }
 
+    @SuppressWarnings("unchecked")
     protected <RT> Iterator<RT> handleSelect(Iterator<?> it, List<Expr<?>> sources, Expr<RT> projection) throws Exception {
-        return transform(ops, it, sources, projection);
+        Iterator<RT> rv = transform(ops, it, sources, projection);
+        if (getMetadata().isDistinct()){
+            if (!arrayProjection){
+                rv = new UniqueFilterIterator<RT>(rv);
+            }else{
+                rv = new FilterIterator<RT>(rv, new Predicate(){
+                    private Set<List<Object>> set = new HashSet<List<Object>>();
+                    public boolean evaluate(Object object) {
+                        return set.add(Arrays.asList((Object[])object));
+                    }                    
+                });
+            }
+        }
+        return rv;
     }
+    
     
     @SuppressWarnings("unchecked")
     public CloseableIterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+        arrayProjection = true;
         Expr<?>[] full = asArray(new Expr[rest.length + 2], first, second, rest);
         Expr<Object[]> projection = new Expr.EArrayConstructor(Object.class, full);
         

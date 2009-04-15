@@ -36,7 +36,8 @@ public class CustomQueryableTest {
         source.add(str, strings);           
     }
     
-    private CustomQueryable query(){
+    @SuppressWarnings("unchecked")
+    private CustomQueryable<?> query(){
         return new CustomQueryable(source);
     }
     

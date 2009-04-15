@@ -5,6 +5,13 @@
  */
 package com.mysema.query.collections;
 
+import static com.mysema.query.collections.MiniApi.reject;
+import static com.mysema.query.collections.MiniApi.select;
+import static com.mysema.query.grammar.GrammarWithAlias.$;
+import static org.junit.Assert.assertEquals;
+
+import java.util.Arrays;
+
 import org.junit.Test;
 
 import com.mysema.query.collections.Domain.Cat;
@@ -16,6 +23,24 @@ import com.mysema.query.collections.Domain.Cat;
  * @version $Id$
  */
 public class MiniApiTest extends AbstractQueryTest {
+    
+    @Test 
+    public void testSimpleReject() {
+    //  Iterable<Integer> oneAndTwo = reject(myInts, greaterThan(2));
+        Iterable<Integer> oneAndTwo = MiniApi.reject(myInts, $(0).gt(2));
+        
+        for (Integer i : oneAndTwo) ints.add(i);
+        assertEquals(Arrays.asList(1,2), ints);
+    }
+
+    @Test 
+    public void testSimpleSelect() {
+    //  Iterable<Integer> threeAndFour = select(myInts, greaterThan(2));
+        Iterable<Integer> threeAndFour = MiniApi.select(myInts, $(0).gt(2));  
+        
+        for (Integer i : threeAndFour) ints.add(i);
+        assertEquals(Arrays.asList(3,4), ints);
+    }
     
     @Test
     public void testMiniApiUsage(){        

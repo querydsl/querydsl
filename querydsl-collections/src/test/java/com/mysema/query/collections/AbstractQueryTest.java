@@ -10,10 +10,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
+
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.Domain.QCat;
 import com.mysema.query.collections.support.SimpleIndexSupport;
 import com.mysema.query.collections.support.SimpleIteratorSource;
+import com.mysema.query.grammar.GrammarWithAlias;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
@@ -24,31 +27,37 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
  * @author tiwe
  * @version $Id$
  */
-public class AbstractQueryTest {
-    protected Cat c1 = new Cat("Kitty");
-    protected Cat c2 = new Cat("Bob");
-    protected Cat c3 = new Cat("Alex");
-    protected Cat c4 = new Cat("Francis");
+public abstract class AbstractQueryTest {
     
+    protected Cat c1 = new Cat("Kitty");
+    
+    protected Cat c2 = new Cat("Bob");
+    
+    protected Cat c3 = new Cat("Alex");
+    
+    protected Cat c4 = new Cat("Francis");
+        
     protected QCat cat = new QCat("cat");
     
     protected List<Cat> cats = Arrays.asList(c1, c2, c3, c4);
     
     protected List<Integer> ints = new ArrayList<Integer>();
     
-    protected List<Integer> myInts = new ArrayList<Integer>();
+    protected TestQuery last;
     
     protected QCat mate = new QCat("mate");
+    
+    protected List<Integer> myInts = new ArrayList<Integer>();
+    
     protected QCat offspr = new QCat("offspr");
+    
     protected QCat otherCat = new QCat("otherCat");
     
-    protected List<Cat> cats(int size){
-        List<Cat> cats = new ArrayList<Cat>(size);
-        for (int i= 0; i < size / 2; i++){
-            cats.add(new Cat("Kate" + (i+1)));
-            cats.add(new Cat("Bob"+ (i+1)));
-        }
-        return cats;
+    
+    @Before 
+    public void setUp(){
+        myInts.addAll(Arrays.asList(1,2,3,4));              
+        GrammarWithAlias.resetAlias();
     }
     
     protected List<EBoolean> conditionsFor1Source = Arrays.asList(
@@ -96,11 +105,43 @@ public class AbstractQueryTest {
             cat.bodyWeight.eq(0).or(otherCat.name.eq("Kate5").not()),
             cat.name.like("Bob5%").or(otherCat.name.like("%ate5"))      
     );
+        
+    protected List<Cat> cats(int size){
+        List<Cat> cats = new ArrayList<Cat>(size);
+        for (int i= 0; i < size / 2; i++){
+            cats.add(new Cat("Kate" + (i+1)));
+            cats.add(new Cat("Bob"+ (i+1)));
+        }
+        return cats;
+    }
+    
+    protected TestQuery query(){
+        last = new TestQuery();
+        return last;
+    }
 
     static class ColQueryWithoutIndexing extends ColQuery{
         @Override
         protected QueryIndexSupport createIndexSupport(Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops, List<Expr<?>> sources){
             return new SimpleIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);
+        }
+    }
+    
+    static class TestQuery extends AbstractColQuery<TestQuery>{
+        List<Object> res = new ArrayList<Object>();
+        public <RT> void sel(Expr<RT> projection){
+            for (Object o : list(projection)){
+                System.out.println(o);
+                res.add(o);
+            }
+            System.out.println();
+        }
+        public <RT> void selelect(Expr<RT> p1, Expr<RT> p2, Expr<RT>... rest){
+            for (Object[] o : list(p1, p2, rest)){
+                System.out.println(Arrays.asList(o));
+                res.add(o);
+            }
+            System.out.println();
         }
     }
 }

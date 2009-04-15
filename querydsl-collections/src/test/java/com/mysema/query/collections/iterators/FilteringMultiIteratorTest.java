@@ -120,6 +120,7 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest{
         }        
     }
             
+    @SuppressWarnings("unchecked")
     @Test
     public void testFourLevels(){
         EBoolean where = int1.eq(int2).and(int2.eq(int3)).and(int3.eq(int4));
