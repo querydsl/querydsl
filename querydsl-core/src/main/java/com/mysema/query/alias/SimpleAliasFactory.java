@@ -26,6 +26,7 @@ public class SimpleAliasFactory implements AliasFactory {
     
     // caches top level paths (class/var as key)
     private FactoryMap<PEntity<?>> pathCache = new FactoryMap<PEntity<?>>(){
+        @SuppressWarnings("unused")
         public <A> PEntity<A> create(Class<A> cl, String var){
             return new Path.PEntity<A>(cl, cl.getSimpleName(), PathMetadata.forVariable(var));
         }
@@ -33,6 +34,7 @@ public class SimpleAliasFactory implements AliasFactory {
     
     // cahces top level proxies (class/var as key)
     private FactoryMap<ManagedObject> proxyCache = new FactoryMap<ManagedObject>(){
+        @SuppressWarnings("unused")
         public ManagedObject create(Class<?> cl, Expr<?> path){
             return (ManagedObject) createProxy(cl, path);
         }
@@ -56,6 +58,7 @@ public class SimpleAliasFactory implements AliasFactory {
         return proxy;
     }
     
+    @SuppressWarnings("unchecked")
     public <A> A createAliasForExpr(Class<A> cl, Expr<? extends A> expr) {
         return (A)proxyCache.get(cl, expr);
     }

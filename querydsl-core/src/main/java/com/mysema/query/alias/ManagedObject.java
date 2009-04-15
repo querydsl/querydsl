@@ -14,5 +14,7 @@ import com.mysema.query.grammar.types.Path.PEntity;
  * @version $Id$
  */
 public interface ManagedObject {
-    PEntity<?> __mappedPath(); 
+    
+    PEntity<?> __mappedPath();
+    
 }

@@ -34,17 +34,33 @@ public abstract class ProjectableAdapter implements Projectable{
     public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return projectable.iterate(first, second, rest);
     }
+    
+    public Iterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+        return projectable.iterateDistinct(first, second, rest);
+    }
 
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {
         return projectable.iterate(projection);
     }
 
+    public <RT> Iterator<RT> iterateDistinct(Expr<RT> projection) {
+        return projectable.iterateDistinct(projection);
+    }
+    
     public List<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return projectable.list(first, second, rest);
     }
 
+    public List<Object[]> listDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+        return projectable.listDistinct(first, second, rest);
+    }
+    
     public <RT> List<RT> list(Expr<RT> projection) {
         return projectable.list(projection);
+    }
+    
+    public <RT> List<RT> listDistinct(Expr<RT> projection) {
+        return projectable.listDistinct(projection);
     }
 
     public <RT> RT uniqueResult(Expr<RT> expr) {

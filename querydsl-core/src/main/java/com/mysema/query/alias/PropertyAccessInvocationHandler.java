@@ -19,8 +19,6 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.mysema.query.grammar.Grammar;
-import com.mysema.query.grammar.types.CollectionType;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathMetadata;
@@ -51,6 +49,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         this.aliasFactory = aliasFactory;
     }
     
+    @SuppressWarnings("unchecked")
     private Class<?> getTypeParameter(Type type, int index) {
         if (type instanceof ParameterizedType){
             ParameterizedType ptype = (ParameterizedType) type;
@@ -191,6 +190,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
         return true;        
     }
     
+    @SuppressWarnings("unchecked")
     private <T> T newInstance(Class<T> type, Type genericType, Object parent, Object propKey, PathMetadata<?> pm) {        
         Expr<?> path;
         T rv;

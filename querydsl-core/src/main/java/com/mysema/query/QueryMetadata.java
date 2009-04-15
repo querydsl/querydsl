@@ -48,5 +48,9 @@ public interface QueryMetadata<JoinMeta> {
     List<? extends Expr<?>> getProjection();
 
     EBoolean getWhere();
+    
+    boolean isDistinct();
+    
+    void setDistinct(boolean distinct);
 
 }

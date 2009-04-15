@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query;
 
 import java.util.Iterator;
@@ -29,13 +34,7 @@ public abstract class QueryBaseWithProjection<JoinMeta,SubType
         System.arraycopy(rest, 0, target, 2, rest.length);
         return target;
     }
-    
-    @SuppressWarnings("unchecked")
-    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
-        Expr<?>[] full = asArray(new Expr[rest.length + 2], first, second, rest);
-        return iterate(new Expr.EArrayConstructor(Object.class, full));
-    }
-    
+        
     public List<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return IteratorUtils.toList(iterate(first, second, rest));
     }
@@ -43,7 +42,27 @@ public abstract class QueryBaseWithProjection<JoinMeta,SubType
     public <RT> List<RT> list(Expr<RT> projection) {
         return IteratorUtils.toList(iterate(projection));
     }
+    
+    public final <RT> Iterator<RT> iterateDistinct(Expr<RT> projection){
+        getMetadata().setDistinct(true);
+        return iterate(projection);
+    }
+    
+    public final Iterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+        getMetadata().setDistinct(true);
+        return iterate(first, second, rest);
+    }    
 
+    public final List<Object[]> listDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+        getMetadata().setDistinct(true);
+        return list(first, second, rest);
+    }
+
+    public final <RT> List<RT> listDistinct(Expr<RT> projection) {
+        getMetadata().setDistinct(true);
+        return list(projection);
+    }
+    
     public <RT> RT uniqueResult(Expr<RT> expr) {
         Iterator<RT> it = iterate(expr);
         return it.hasNext() ? it.next() : null;

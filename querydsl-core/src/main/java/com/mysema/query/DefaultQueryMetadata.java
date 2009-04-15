@@ -32,6 +32,8 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta>{
     private List<Expr<?>> projection = new ArrayList<Expr<?>>();
 
     private CascadingBoolean where = new CascadingBoolean();
+    
+    private boolean distinct;
 
     public List<? extends Expr<?>> getGroupBy() {
         return Collections.unmodifiableList(groupBy);
@@ -104,6 +106,14 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta>{
 
     public void addToWhere(EBoolean[] o) {
         for (EBoolean e : o) where.and(e);        
+    }
+
+    public boolean isDistinct() {
+        return distinct;
+    }
+
+    public void setDistinct(boolean distinct) {
+        this.distinct = distinct;        
     }
       
 }
