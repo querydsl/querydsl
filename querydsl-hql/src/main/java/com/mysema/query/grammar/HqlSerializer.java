@@ -49,7 +49,12 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
          if (forCountRow){
             append("select count(*)\n");
         }else if (!select.isEmpty()){
-            append("select ").append(", ", select).append("\n");
+            if (!metadata.isDistinct()){
+                append("select ");
+            }else{
+                append("select distinct ");    
+            }            
+            append(", ", select).append("\n");
         }
         append("from ");
         for (int i=0; i < joins.size(); i++){

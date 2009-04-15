@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.hql;
 
 import java.util.Iterator;
@@ -22,7 +27,7 @@ import com.mysema.query.grammar.types.Expr;
  */
 public class AbstractJpaqlQuery<SubType extends AbstractJpaqlQuery<SubType>> extends HqlQueryBase<SubType>{
     
-private static final Logger logger = LoggerFactory.getLogger(JpaqlQuery.class);
+    private static final Logger logger = LoggerFactory.getLogger(JpaqlQuery.class);
     
     private final EntityManager em;
 
@@ -77,6 +82,12 @@ private static final Logger logger = LoggerFactory.getLogger(JpaqlQuery.class);
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {
         // TODO Auto-generated method stub
         return list(projection).iterator();
+    }
+
+    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second,
+            Expr<?>... rest) {
+        // TODO Auto-generated method stub
+        return list(first, second, rest).iterator();
     }
 
 }
