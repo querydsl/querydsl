@@ -354,8 +354,12 @@ public class Grammar{
      * @param right
      * @return
      */
-    public static EBoolean endsWithIgnoreCase(Expr<String> left, Expr<String> right) {
-        return factory.createBoolean(Ops.ENDSWITH_IC, left, right);
+    public static EBoolean endsWith(Expr<String> left, Expr<String> right, boolean caseSensitive) {
+        if (caseSensitive){
+            return endsWith(left, right);            
+        }else{
+            return factory.createBoolean(Ops.ENDSWITH_IC, left, right);
+        }
     }
     
     /**
@@ -376,8 +380,12 @@ public class Grammar{
      * @param right
      * @return
      */
-    public static EBoolean endsWithIgnoreCase(Expr<String> left, String right) {
-        return factory.createBoolean(Ops.ENDSWITH_IC, left, factory.createConstant(right));
+    public static EBoolean endsWith(Expr<String> left, String right, boolean caseSensitive) {
+        if (caseSensitive){
+            return endsWith(left, right);            
+        }else{
+            return factory.createBoolean(Ops.ENDSWITH_IC, left, factory.createConstant(right));
+        }                
     }
     
     /**
@@ -908,8 +916,12 @@ public class Grammar{
      * @param right
      * @return
      */
-    public static EBoolean startsWithIgnoreCase(Expr<String> left, Expr<String> right) {
-        return factory.createBoolean(Ops.STARTSWITH_IC, left, right);
+    public static EBoolean startsWith(Expr<String> left, Expr<String> right, boolean caseSensitive) {
+        if (caseSensitive){
+            return startsWith(left, right);            
+        }else{
+            return factory.createBoolean(Ops.STARTSWITH_IC, left, right);
+        }
     }
     
     /**
@@ -930,8 +942,12 @@ public class Grammar{
      * @param right
      * @return
      */     
-    public static EBoolean startsWithIgnoreCase(Expr<String> left, String right) {
-        return factory.createBoolean(Ops.STARTSWITH_IC, left, factory.createConstant(right));
+    public static EBoolean startsWith(Expr<String> left, String right, boolean caseSensitive) {
+        if (caseSensitive){
+            return startsWith(left, right);            
+        }else{
+            return factory.createBoolean(Ops.STARTSWITH_IC, left, factory.createConstant(right));    
+        }        
     }
     
     /**

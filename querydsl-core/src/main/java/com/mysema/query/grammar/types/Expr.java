@@ -232,8 +232,8 @@ public abstract class Expr<D>{
         
         public final EBoolean endsWith(Expr<String> str) {return Grammar.endsWith(this, str);}
         public final EBoolean endsWith(String str) {return Grammar.endsWith(this, str);}        
-        public final EBoolean endsWithIgnoreCase(Expr<String> str) {return Grammar.endsWithIgnoreCase(this, str);}
-        public final EBoolean endsWithIgnoreCase(String str) {return Grammar.endsWithIgnoreCase(this, str);}
+        public final EBoolean endsWith(Expr<String> str, boolean caseSensitive) {return Grammar.endsWith(this, str, caseSensitive);}
+        public final EBoolean endsWith(String str, boolean caseSensitive) {return Grammar.endsWith(this, str, caseSensitive);}
         
         public final EBoolean equalsIgnoreCase(Expr<String> str) {return Grammar.equalsIgnoreCase(this, str);}
         public final EBoolean equalsIgnoreCase(String str) {return Grammar.equalsIgnoreCase(this, str);}
@@ -252,8 +252,8 @@ public abstract class Expr<D>{
         
         public final EBoolean startsWith(Expr<String> str) {return Grammar.startsWith(this, str);}
         public final EBoolean startsWith(String str) {return Grammar.startsWith(this, str);}
-        public final EBoolean startsWithIgnoreCase(Expr<String> str) {return Grammar.startsWithIgnoreCase(this, str);}
-        public final EBoolean startsWithIgnoreCase(String str) {return Grammar.startsWithIgnoreCase(this, str);}
+        public final EBoolean startsWith(Expr<String> str, boolean caseSensitive) {return Grammar.startsWith(this, str, caseSensitive);}
+        public final EBoolean startsWith(String str, boolean caseSensitive) {return Grammar.startsWith(this, str, caseSensitive);}
         
         public final EString substring(int beginIndex) { return Grammar.substring(this, beginIndex);}
         public final EString substring(int beginIndex, int endIndex) { return Grammar.substring(this, beginIndex, endIndex);}
