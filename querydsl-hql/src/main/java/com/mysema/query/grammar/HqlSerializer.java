@@ -107,8 +107,8 @@ public class HqlSerializer extends BaseSerializer<HqlSerializer>{
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy){            
                 if (!first) builder.append(", ");
-                handle(os.target);
-                append(os.order == Order.ASC ? " asc" : " desc");
+                handle(os.getTarget());
+                append(os.getOrder() == Order.ASC ? " asc" : " desc");
                 first = false;
             }
         }

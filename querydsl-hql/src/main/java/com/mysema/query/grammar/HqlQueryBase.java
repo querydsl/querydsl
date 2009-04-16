@@ -91,7 +91,7 @@ public abstract class HqlQueryBase<SubType extends HqlQueryBase<SubType>> extend
         }
     }
     
-    public List<Object> getConstants() {
+    protected List<Object> getConstants() {
         return constants;
     }
     
