@@ -13,7 +13,7 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path.*;
 
 /**
- * ExprFactory creates path expressions for domain type instances
+ * PathFactory creates path expressions for domain type instances
  *
  * @author tiwe
  * @version $Id$

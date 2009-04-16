@@ -141,10 +141,7 @@ public class Grammar{
      * @return
      */
     public static <A extends Comparable<? super A>> OrderSpecifier<A> asc(Expr<A> target) {
-        OrderSpecifier<A> os = new OrderSpecifier<A>();
-        os.order = Order.ASC;
-        os.target = Assert.notNull(target);
-        return os;
+        return new OrderSpecifier<A>(Order.ASC, target);
     }
     
     /**
@@ -330,10 +327,7 @@ public class Grammar{
      * @return
      */
     public static <A extends Comparable<? super A>> OrderSpecifier<A> desc(Expr<A> target) {
-        OrderSpecifier<A> os = new OrderSpecifier<A>();
-        os.order = Order.DESC;
-        os.target = Assert.notNull(target);
-        return os;
+        return new OrderSpecifier<A>(Order.DESC, target);
     }
         
     /**

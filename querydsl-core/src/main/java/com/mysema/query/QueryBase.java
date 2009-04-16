@@ -10,7 +10,8 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 
 /**
- * QueryBase provides a basic implementation of the Query interface without the Projectable interface
+ * QueryBase provides a basic implementation of the Query interface without 
+ * the Projectable interface
  * 
  * @author tiwe
  * @version $Id$

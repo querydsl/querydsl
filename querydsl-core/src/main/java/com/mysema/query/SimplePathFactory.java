@@ -20,7 +20,7 @@ import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.Path.*;
 
 /**
- * SimpleExprFactory is a factory implementation for the creation of Path instances
+ * SimpleExprFactory is a PathFactory implementation for the creation of Path instances
  *
  * @author tiwe
  * @version $Id$

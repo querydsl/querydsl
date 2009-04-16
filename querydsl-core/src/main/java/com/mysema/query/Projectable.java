@@ -11,7 +11,7 @@ import java.util.List;
 import com.mysema.query.grammar.types.Expr;
 
 /**
- * Projectable provides
+ * Projectable defines default projection methods for Query implemnations
  *
  * @author tiwe
  * @version $Id$

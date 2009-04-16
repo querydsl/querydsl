@@ -10,7 +10,7 @@ import com.mysema.query.grammar.types.Alias.AToPath;
 import com.mysema.query.grammar.types.Expr.EConstant;
 
 /**
- * VisitorBase provides
+ * DeepVisitor provides
  *
  * @author tiwe
  * @version $Id$

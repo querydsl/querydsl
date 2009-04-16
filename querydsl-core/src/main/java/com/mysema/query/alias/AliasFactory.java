@@ -8,7 +8,7 @@ package com.mysema.query.alias;
 import com.mysema.query.grammar.types.Expr;
 
 /**
- * AliasFactory provides
+ * AliasFactory is a factory interface for alias creation
  *
  * @author tiwe
  * @version $Id$

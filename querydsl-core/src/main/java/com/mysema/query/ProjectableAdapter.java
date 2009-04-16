@@ -12,7 +12,8 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.util.Assert;
 
 /**
- * ProjectableAdapter provides
+ * ProjectableAdapter is an adapter implementation for the Projectable 
+ * interface
  *
  * @author tiwe
  * @version $Id$

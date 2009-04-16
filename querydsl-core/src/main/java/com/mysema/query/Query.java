@@ -9,7 +9,7 @@ import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
 
 /**
- * Query provides a  query interface of the fluent query DSL.
+ * Query provides a query interface of the fluent query DSL.
  * 
  * @author tiwe
  * @version $Id$

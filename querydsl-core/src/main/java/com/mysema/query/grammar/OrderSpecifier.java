@@ -6,7 +6,7 @@
 package com.mysema.query.grammar;
 
 import com.mysema.query.grammar.types.Expr;
-
+import com.mysema.query.util.Assert;
 
 /**
  * OrderSpecifier represents an order by element in a Query instance
@@ -16,9 +16,22 @@ import com.mysema.query.grammar.types.Expr;
  * @version $Id$
  */
 public class OrderSpecifier<A extends Comparable<? super A>> {
-    public Order order;
-    public Expr<A> target;
+    private final Order order;
+    private final  Expr<A> target;
     
+    public OrderSpecifier(Order order, Expr<A> target){
+        this.order = Assert.notNull(order);
+        this.target = Assert.notNull(target);
+    }
+    
+    public Order getOrder() {
+        return order;
+    }
+
+    public Expr<A> getTarget() {
+        return target;
+    }
+
     public String toString(){
         return target + " " + order;
     }

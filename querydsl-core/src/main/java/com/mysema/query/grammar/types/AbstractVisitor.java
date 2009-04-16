@@ -10,11 +10,9 @@ import com.mysema.query.grammar.types.Alias.AEntityCollection;
 import com.mysema.query.grammar.types.Alias.AToPath;
 import com.mysema.query.grammar.types.Path.*;
 
-
-
 /**
- * VisitorAdapter provides a base implementation where invocations are
- * dispatched to supertypes when available and visible.
+ * AbstractVisitor provides a base implementation of the Visitor interface
+ * where invocations are dispatched to supertypes when available and visible.
  * 
  * @author tiwe
  * @version $Id$

@@ -12,7 +12,8 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 
 /**
- * QueryMetadata provides
+ * QueryMetadata defines query metadata such as query sources, filtering conditions
+ * and the projection
  *
  * @author tiwe
  * @version $Id$

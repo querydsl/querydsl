@@ -13,8 +13,8 @@ import org.apache.commons.collections15.IteratorUtils;
 import com.mysema.query.grammar.types.Expr;
 
 /**
- * QueryBaseWithProjection extends the QueryBase interface to provide basic implementations of the methods
- * of the Projectable itnerface
+ * QueryBaseWithProjection extends the QueryBase interface to provide basic 
+ * implementations of the methods of the Projectable itnerface
  *
  * @author tiwe
  * @version $Id$

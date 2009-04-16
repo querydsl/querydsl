@@ -101,10 +101,6 @@ public class QMath extends SimpleExprFactory{
         return factory.createNumber(left.getType(),OpMath.MIN, left, right);
     }
     
-//    public static ENumber<Integer> mod(Expr<Integer> left, Expr<Integer> right){
-//        return factory.createNumber(left.getType(),OpMath.MOD, left, right);
-//    }
-    
     public static ENumber<Double> pow(Expr<Double> left, Expr<Double> right){
         return factory.createNumber(left.getType(),OpMath.POWER, left, right);
     }

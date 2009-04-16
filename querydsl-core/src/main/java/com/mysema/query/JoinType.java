@@ -6,7 +6,7 @@
 package com.mysema.query;
 
 /**
- * JoinType represents the supported join types
+ * JoinType defines the supported join types
  * 
  * @author tiwe
  * @version $Id$

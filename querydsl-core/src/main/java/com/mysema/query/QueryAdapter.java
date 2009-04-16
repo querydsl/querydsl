@@ -11,7 +11,7 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.util.Assert;
 
 /**
- * QueryAdapter provides
+ * QueryAdapter is an adapter implementation for Query instace wrapping
  *
  * @author tiwe
  * @version $Id$

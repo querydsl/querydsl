@@ -11,7 +11,7 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.util.Assert;
 
 /**
- * JoinExpression represents a join element in a Query instance
+ * JoinExpression is a join element in a Query instance
  * 
  * @author tiwe
  * @version $Id$

@@ -12,7 +12,7 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 
 /**
- * DefaultMetadata provides
+ * DefaultMetadata is the default implementation of the QueryMetadata interface
  *
  * @author tiwe
  * @version $Id$
