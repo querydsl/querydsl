@@ -78,6 +78,10 @@ public class DomainTest {
         SortedSet<RelationType> sortedSet;
         Set<String> set2;
         
+        // .. of Object
+        List<Object> listOfObjects;
+        Set<Object> setOfObjects;
+        
         // collection
         Collection<RelationType> collection;
         Collection<String> set3;
