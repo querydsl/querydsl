@@ -8,7 +8,7 @@ package com.mysema.query.grammar;
 import java.math.BigInteger;
 
 /**
- * OracleDialect provides
+ * OracleDialect is an Oracle specific extension of SqlOps
  *
  * @author tiwe
  * @version $Id$
