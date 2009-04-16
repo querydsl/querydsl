@@ -38,14 +38,14 @@ public class StringHandlingTest extends AbstractQueryTest {
     
     @Test
     public void startsWithIgnoreCase(){        
-        assertEquals(2, MiniApi.from($("a"), data).where($("a").startsWithIgnoreCase("AB")).count());
-        assertEquals(2, MiniApi.from($("a"), data).where($("a").startsWithIgnoreCase("ab")).count());
+        assertEquals(2, MiniApi.from($("a"), data).where($("a").startsWith("AB",false)).count());
+        assertEquals(2, MiniApi.from($("a"), data).where($("a").startsWith("ab",false)).count());
     }
     
     @Test
     public void endsWithIgnoreCase(){
-        assertEquals(2, MiniApi.from($("a"), data).where($("a").endsWithIgnoreCase("BC")).count());
-        assertEquals(2, MiniApi.from($("a"), data).where($("a").endsWithIgnoreCase("bc")).count());
+        assertEquals(2, MiniApi.from($("a"), data).where($("a").endsWith("BC",false)).count());
+        assertEquals(2, MiniApi.from($("a"), data).where($("a").endsWith("bc",false)).count());
     }
     
 }
