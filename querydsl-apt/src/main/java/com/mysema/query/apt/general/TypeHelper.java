@@ -95,7 +95,9 @@ public class TypeHelper {
                     fieldType = Field.Type.STRING;
                 } else if (fullName.equals(Boolean.class.getName())) {
                     fieldType = Field.Type.BOOLEAN;
-                } else if (fullName.equals(Locale.class.getName()) || fullName.equals(Class.class.getName())) {
+                } else if (fullName.equals(Locale.class.getName()) 
+                        || fullName.equals(Class.class.getName())
+                        || fullName.equals(Object.class.getName())) {
                     fieldType = Field.Type.SIMPLE;
                 } else if (fullName.startsWith("java") && Number.class.isAssignableFrom(Class.forName(fullName))) {
                     fieldType = Field.Type.NUMERIC;
@@ -203,6 +205,7 @@ public class TypeHelper {
                 fullName = lb.getFullName();
                 packageName = lb.getPackageName();     
                 simpleName = lb.getSimpleName();
+                fieldType = lb.getFieldType();
             }
         }
         
@@ -213,6 +216,7 @@ public class TypeHelper {
                 fullName = lb.getFullName();
                 packageName = lb.getPackageName();     
                 simpleName = lb.getSimpleName();
+                fieldType = lb.getFieldType();
             }
         }
 
