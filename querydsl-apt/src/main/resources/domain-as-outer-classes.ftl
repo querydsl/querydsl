@@ -4,7 +4,7 @@ package ${package};
 import com.mysema.query.grammar.types.*;
 
 /**
- * ${pre}${classSimpleName} is a Querydsl query type
+ * ${pre}${classSimpleName} is a Querydsl query type for ${classSimpleName}
  *
  */
 public class ${pre}${classSimpleName} extends Path.PEntity<${type.name}>{
