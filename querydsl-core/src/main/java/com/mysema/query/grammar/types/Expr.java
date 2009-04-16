@@ -78,22 +78,31 @@ public abstract class Expr<D>{
         }
     }
     public static abstract class EBoolean extends EComparable<Boolean>{
-        private EBoolean not;
+        private EBoolean not;        
         public EBoolean() {super(Boolean.class);}
+        
         public final EBoolean and(EBoolean right) {return Grammar.and(this, right);}
         public final EBoolean not(){
-            return not == null ? not = Grammar.not(this) : not;
+            if (not == null) not = Grammar.not(this);
+            return not;
         }        
         public final EBoolean or(EBoolean right) {return Grammar.or(this, right);}
     }        
     public static abstract class EComparable<D extends Comparable<? super D>> extends ESimple<D>{
+        private OrderSpecifier<D> asc;
+        private OrderSpecifier<D> desc;
+        private EString stringCast;               
         public EComparable(Class<? extends D> type) {super(type);}
+        
         public final EBoolean after(D right) {return Grammar.after(this,right);}
         public final EBoolean after(Expr<D> right) {return Grammar.after(this,right);}  
         public final EBoolean aoe(D right) {return Grammar.aoe(this,right);}
         public final EBoolean aoe(Expr<D> right) {return Grammar.aoe(this,right);}  
                 
-        public final OrderSpecifier<D> asc() {return Grammar.asc(this);}        
+        public final OrderSpecifier<D> asc() { 
+            if (asc == null) asc = Grammar.asc(this);
+            return asc;
+        }        
         public final EBoolean before(D right) {return Grammar.before(this,right);}
         public final EBoolean before(Expr<D> right) {return Grammar.before(this,right);}        
         public final EBoolean between(D first, D second) {return Grammar.between(this,first,second);}
@@ -103,15 +112,19 @@ public abstract class Expr<D>{
         
         public final EBoolean boe(Expr<D> right) {return Grammar.boe(this,right);}
         // cast methods
-           public <A extends Number & Comparable<? super A>> ENumber<A> castToNum(Class<A> type){
-               return Grammar.numericCast(this, type);
-           }        
-        public final OrderSpecifier<D> desc() {return Grammar.desc(this);}
+        public <A extends Number & Comparable<? super A>> ENumber<A> castToNum(Class<A> type){
+            return Grammar.numericCast(this, type);
+        }        
+        public final OrderSpecifier<D> desc() {
+            if (desc == null) desc = Grammar.desc(this);
+            return desc ;
+        }
         public final EBoolean notBetween(D first, D second) {return Grammar.notBetween(this, first, second);}
         public final EBoolean notBetween(Expr<D> first, Expr<D> second) {return Grammar.notBetween(this,first,second);}
        
        public EString stringValue(){
-           return Grammar.stringCast(this);
+           if (stringCast == null) stringCast = Grammar.stringCast(this);
+           return stringCast;
        }
        
     }        
@@ -169,6 +182,7 @@ public abstract class Expr<D>{
             super((Class<D>) constant.getClass());
             this.constant = constant;
         }
+        
         public D getConstant(){ return constant;}
         public int hashCode(){
             return constant.hashCode();
@@ -216,6 +230,8 @@ public abstract class Expr<D>{
     
     public static abstract class EString extends EComparable<String>{
         private EString lower, trim, upper;
+        private EComparable<Integer> length;
+        
         public EString() {super(String.class);}
         
         public final EString add(Expr<String> str) {return Grammar.concat(this, str);}
@@ -244,12 +260,15 @@ public abstract class Expr<D>{
         public final EComparable<Integer> lastIndex(String str, int i) {return Grammar.lastIndex(this, str, i);}
         public final EComparable<Integer> lastIndexOf(String str) {return Grammar.lastIndexOf(this, str);}
         
-        public final EComparable<Integer> length() {return Grammar.length(this);}
-        
-        public final EBoolean like(String str) { return Grammar.like(this, str); }
-        
-        public final EString lower() { return lower == null ? lower = Grammar.lower(this) : lower; }
-        
+        public final EComparable<Integer> length() {
+            if (length == null) length = Grammar.length(this);
+            return length;
+        }
+        public final EBoolean like(String str) { return Grammar.like(this, str); }        
+        public final EString lower() { 
+            if (lower == null) lower = Grammar.lower(this);
+            return lower;
+        }
         public final EBoolean startsWith(Expr<String> str) {return Grammar.startsWith(this, str);}
         public final EBoolean startsWith(String str) {return Grammar.startsWith(this, str);}
         public final EBoolean startsWith(Expr<String> str, boolean caseSensitive) {return Grammar.startsWith(this, str, caseSensitive);}
@@ -258,7 +277,16 @@ public abstract class Expr<D>{
         public final EString substring(int beginIndex) { return Grammar.substring(this, beginIndex);}
         public final EString substring(int beginIndex, int endIndex) { return Grammar.substring(this, beginIndex, endIndex);}
         
-        public final EString trim() { return trim == null ? trim = Grammar.trim(this) : trim; }
-        public final EString upper() { return upper == null ? upper = Grammar.upper(this) : upper; }
+        public final EString trim() { 
+            if (trim == null) trim = Grammar.trim(this);
+            return trim;
+        }
+        public final EString upper() {
+            if (upper == null) upper = Grammar.upper(this);
+            return upper; 
+         }        
+        public final EString stringValue(){
+            return this;
+        }
     }
 }
