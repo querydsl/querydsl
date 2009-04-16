@@ -15,7 +15,7 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.util.Assert;
 
 /**
- * DefaultIndexSupport is the default implementation of the IndexSupport interface
+ * SimpleIteratorSource is the default implementation of the IndexSupport interface
  *
  * @see QueryIndexSupport
  *

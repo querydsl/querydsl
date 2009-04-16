@@ -23,7 +23,8 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
 public interface SourceSortingSupport {
     
     /**
-     * sort the given join sources using some optimization heuristics based on the given match condition
+     * sort the given join sources using some optimization heuristics based 
+     * on the given match condition
      * 
      * @param joins
      * @param condition

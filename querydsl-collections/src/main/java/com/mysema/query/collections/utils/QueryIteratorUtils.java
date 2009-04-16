@@ -17,7 +17,7 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 
 /**
- * QueryIteratorUtils provides
+ * QueryIteratorUtils provides Iterator utilities
  *
  * @author tiwe
  * @version $Id$

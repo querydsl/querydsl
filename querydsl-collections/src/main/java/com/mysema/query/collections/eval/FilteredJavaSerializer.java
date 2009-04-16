@@ -21,7 +21,8 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 
 /**
- * FilteredJavaSerializer provides
+ * FilteredJavaSerializer is a JavaSerializer extensions for skipping expressions in the 
+ * serialization process
  *
  * @author tiwe
  * @version $Id$

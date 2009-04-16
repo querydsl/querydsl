@@ -15,7 +15,7 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.util.Assert;
 
 /**
- * JaninoEvaluator provides
+ * JaninoEvaluator is a Janino compiler based Evaluator implementation
  *
  * @author tiwe
  * @version $Id$

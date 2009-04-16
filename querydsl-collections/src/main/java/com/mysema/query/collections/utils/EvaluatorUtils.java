@@ -14,7 +14,7 @@ import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.util.Assert;
 
 /**
- * EvaluatorUtils provides
+ * EvaluatorUtils provides factory methods for Evaluator creation
  *
  * @author tiwe
  * @version $Id$
@@ -29,7 +29,16 @@ public class EvaluatorUtils {
      * @return
      */
     public static Evaluator create(JavaOps ops, List<? extends Expr<?>> sources, Expr<?> expr){
-        return new JaninoEvaluator(Assert.notNull(ops), Assert.notNull(sources), Assert.notNull(expr));        
+        if (sources.get(0) == expr){
+            return new Evaluator(){
+                public <T> T evaluate(Object... args) {
+                    return (T) args[0];
+                }                
+            };
+        // TODO : handle Path projection in special way
+        }else{
+            return new JaninoEvaluator(Assert.notNull(ops), Assert.notNull(sources), Assert.notNull(expr));    
+        }                
     }
 
 }

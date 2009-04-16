@@ -16,8 +16,9 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.util.Assert;
 
 /**
- * SimpleIndexSupport provides
+ * SimpleIndexSupport is a minimal QueryIndexSupport implementation
  *
+ * @see QueryIndexSupport
  * @author tiwe
  * @version $Id$
  */

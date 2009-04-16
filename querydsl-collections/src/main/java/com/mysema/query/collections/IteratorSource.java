@@ -10,7 +10,7 @@ import java.util.Iterator;
 import com.mysema.query.grammar.types.Expr;
 
 /**
- * IteratorSource provides
+ * IteratorSource provides a Expr -> Iterator mapping
  *
  * @author tiwe
  * @version $Id$

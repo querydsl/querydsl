@@ -305,8 +305,8 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
         Expr<Object>[] orderByExpr = new Expr[orderBy.size()];
         boolean[] directions = new boolean[orderBy.size()];
         for (int i = 0; i < orderBy.size(); i++) {
-            orderByExpr[i] = (Expr) orderBy.get(i).target;
-            directions[i] = orderBy.get(i).order == Order.ASC;
+            orderByExpr[i] = (Expr) orderBy.get(i).getTarget();
+            directions[i] = orderBy.get(i).getOrder() == Order.ASC;
         }
         Expr<?> expr = new Expr.EArrayConstructor<Object>(Object.class, orderByExpr);
         Evaluator ev = EvaluatorUtils.create(ops, sources, expr);

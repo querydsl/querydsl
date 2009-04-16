@@ -6,7 +6,7 @@
 package com.mysema.query.collections.eval;
 
 /**
- * Evaluator provides
+ * Evaluator defines an interface for evaluating Querydsl expressions
  *
  * @author tiwe
  * @version $Id$
