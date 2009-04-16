@@ -75,8 +75,13 @@ public class SqlOps extends OperationPatterns {
         add(Ops.OpDateTime.CURRENT_TIME, "current_timestamp");       
         
         // string
-        add(Ops.SUBSTR1ARG, "substr(%s,%s)");
+        add(Ops.SUBSTR1ARG, "locate(%s,%s) > 0");
         add(Ops.SUBSTR2ARGS, "substr(%s,%s,%s)");
+        
+        add(Ops.STARTSWITH, "%s like concat(%s,'%%')");
+        add(Ops.ENDSWITH, "%s like concat('%%',%s)");
+        add(Ops.STARTSWITH_IC, "lower(%s) like concat(lower(%s),'%%')");
+        add(Ops.ENDSWITH_IC, "lower(%s) like concat('%%',lower(%s))");
         
         for (Class<?> cl : new Class[]{
                 Boolean.class, 

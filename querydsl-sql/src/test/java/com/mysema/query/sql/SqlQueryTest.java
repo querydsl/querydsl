@@ -38,6 +38,7 @@ import com.mysema.query.grammar.SqlOps;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Projection;
 import com.mysema.query.grammar.types.SubQuery;
+import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.ENumber;
 import com.mysema.query.grammar.types.Expr.EString;
@@ -371,7 +372,7 @@ public abstract class SqlQueryTest {
         for (EString e : Arrays.<EString>asList(
                 s.lower(),
                 s.upper(),
-                s.substring(1),
+                s.substring(1),                
                 s.trim(),
                 s.concat("abc"),
                 QString.ltrim(s),
@@ -379,7 +380,18 @@ public abstract class SqlQueryTest {
 //                QString.length(s),
                 QString.space(4))){
             q().from(employee).list(e);
-        }    
+        }            
+    }
+    
+    @Test
+    public void testStringFunctions2() throws SQLException{
+        for (EBoolean where : Arrays.<EBoolean>asList(
+                employee.firstname.startsWith("a"),
+                employee.firstname.startsWith("a",false),
+                employee.firstname.endsWith("a"),
+                employee.firstname.endsWith("a",false))){
+            q().from(employee).where(where).list(employee.firstname);
+        }
     }
     
     @Test
