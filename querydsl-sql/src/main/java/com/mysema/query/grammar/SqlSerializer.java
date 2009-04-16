@@ -122,8 +122,8 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy){            
                 if (!first) builder.append(", ");
-                handle(os.target);
-                append(os.order == Order.ASC ? ops.asc() : ops.desc());
+                handle(os.getTarget());
+                append(os.getOrder() == Order.ASC ? ops.asc() : ops.desc());
                 first = false;
             }
         }
@@ -147,8 +147,8 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy){            
                 if (!first) builder.append(", ");
-                handle(os.target);
-                append(os.order == Order.ASC ? ops.asc() : ops.desc());
+                handle(os.getTarget());
+                append(os.getOrder() == Order.ASC ? ops.asc() : ops.desc());
                 first = false;
             }
         }
