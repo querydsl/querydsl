@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mysema.query.apt.FreeMarkerSerializer;
-import com.mysema.query.apt.model.Field;
 import com.mysema.query.apt.model.Type;
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
@@ -57,8 +56,8 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
     private void addSupertypeFields(Type typeDecl,
             Map<String, Type> entityTypes, Map<String, Type> mappedSupertypes) {
         String stype = typeDecl.getSupertypeName();
-        Class<?> superClass = safeClassForName(stype);
-        if (superClass == null){ 
+        /*Class<?> superClass = safeClassForName(stype);
+        if (superClass == null){*/ 
             while (true) {
                 Type sdecl;
                 if (entityTypes.containsKey(stype)) {
@@ -72,8 +71,8 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
                 stype = sdecl.getSupertypeName();
             }    
             
-        }else if (!superClass.equals(Object.class)){
-            /*// TODO : recursively up ?
+            /*}else if (!superClass.equals(Object.class)){
+            // TODO : recursively up ?
             Type type = new Type(superClass.getSuperclass().getName(), 
                     superClass.getPackage().getName(), 
                     superClass.getName(), 
@@ -90,8 +89,8 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
                 type.addField(field);
             }
             // include fields of supertype
-            typeDecl.include(type);*/
-        }
+            typeDecl.include(type);
+        }*/
     }
 
     private Class<?> safeClassForName(String stype) {        
