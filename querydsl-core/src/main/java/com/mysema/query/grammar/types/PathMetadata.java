@@ -56,40 +56,31 @@ public final class PathMetadata<T> {
         this.hashCode = new HashCodeBuilder().append(expression).append(parent).append(pathType).hashCode();
     }
     
-    public static PathMetadata<Integer> forArrayAccess(Path.PArray<?> parent,
-            Expr<Integer> index) {
+    public static PathMetadata<Integer> forArrayAccess(Path.PArray<?> parent, Expr<Integer> index) {
         return new PathMetadata<Integer>(parent, index, ARRAYVALUE);
     }
 
-    public static PathMetadata<Integer> forArrayAccess(Path.PArray<?> parent,
-            int index) {
-        return new PathMetadata<Integer>(parent, factory.createConstant(index),
-                ARRAYVALUE_CONSTANT);
+    public static PathMetadata<Integer> forArrayAccess(Path.PArray<?> parent, int index) {
+        return new PathMetadata<Integer>(parent, factory.createConstant(index), ARRAYVALUE_CONSTANT);
     }
 
-    public static PathMetadata<Integer> forListAccess(Path.PCollection<?> parent,
-            Expr<Integer> index) {
+    public static PathMetadata<Integer> forListAccess(Path.PCollection<?> parent, Expr<Integer> index) {
         return new PathMetadata<Integer>(parent, index, LISTVALUE);
     }    
 
-    public static PathMetadata<Integer> forListAccess(Path.PCollection<?> parent,
-            int index) {
-        return new PathMetadata<Integer>(parent, factory.createConstant(index),
-                LISTVALUE_CONSTANT);
+    public static PathMetadata<Integer> forListAccess(Path.PCollection<?> parent, int index) {
+        return new PathMetadata<Integer>(parent, factory.createConstant(index),LISTVALUE_CONSTANT);
     }
     
-    public static <KT> PathMetadata<KT> forMapAccess(Path.PMap<?, ?> parent,
-            Expr<KT> key) {
+    public static <KT> PathMetadata<KT> forMapAccess(Path.PMap<?, ?> parent, Expr<KT> key) {
         return new PathMetadata<KT>(parent, key, MAPVALUE);
     }
     
-    public static <KT> PathMetadata<KT> forMapAccess(Path.PMap<?, ?> parent,
-            KT key) {
+    public static <KT> PathMetadata<KT> forMapAccess(Path.PMap<?, ?> parent, KT key) {
         return new PathMetadata<KT>(parent, factory.createConstant(key), MAPVALUE_CONSTANT);
     }
     
-    public static PathMetadata<String> forProperty(Path<?> parent,
-            String property) {
+    public static PathMetadata<String> forProperty(Path<?> parent, String property) {
         return new PathMetadata<String>(parent, factory.createConstant(property), PROPERTY);
     }
     
