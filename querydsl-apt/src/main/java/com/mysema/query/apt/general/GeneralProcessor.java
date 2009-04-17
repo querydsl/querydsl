@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mysema.query.apt.FreeMarkerSerializer;
+import com.mysema.query.apt.model.Field;
 import com.mysema.query.apt.model.Type;
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
@@ -56,17 +57,48 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
     private void addSupertypeFields(Type typeDecl,
             Map<String, Type> entityTypes, Map<String, Type> mappedSupertypes) {
         String stype = typeDecl.getSupertypeName();
-        while (true) {
-            Type sdecl;
-            if (entityTypes.containsKey(stype)) {
-                sdecl = entityTypes.get(stype);
-            } else if (mappedSupertypes.containsKey(stype)) {
-                sdecl = mappedSupertypes.get(stype);
-            } else {
-                return;
+        Class<?> superClass = safeClassForName(stype);
+        if (superClass == null){ 
+            while (true) {
+                Type sdecl;
+                if (entityTypes.containsKey(stype)) {
+                    sdecl = entityTypes.get(stype);
+                } else if (mappedSupertypes.containsKey(stype)) {
+                    sdecl = mappedSupertypes.get(stype);
+                } else {
+                    return;
+                }
+                typeDecl.include(sdecl);
+                stype = sdecl.getSupertypeName();
+            }    
+            
+        }else if (!superClass.equals(Object.class)){
+            /*// TODO : recursively up ?
+            Type type = new Type(superClass.getSuperclass().getName(), 
+                    superClass.getPackage().getName(), 
+                    superClass.getName(), 
+                    superClass.getSimpleName());
+            for (java.lang.reflect.Field f : superClass.getDeclaredFields()){
+                Field field = new Field(
+                        FieldHelper.javaSafe(f.getName()), // name 
+                        FieldHelper.realName(f.getName()), // realName
+                        null,  // keyTypeName
+                        f.getType().getPackage().getName(), 
+                        f.getType().getName(),
+                        f.getType().getSimpleName(),
+                        null);
+                type.addField(field);
             }
-            typeDecl.include(sdecl);
-            stype = sdecl.getSupertypeName();
+            // include fields of supertype
+            typeDecl.include(type);*/
+        }
+    }
+
+    private Class<?> safeClassForName(String stype) {        
+        try {
+            return stype != null ? Class.forName(stype) : null;
+        } catch (ClassNotFoundException e) {
+            return null;
         }
     }
 
