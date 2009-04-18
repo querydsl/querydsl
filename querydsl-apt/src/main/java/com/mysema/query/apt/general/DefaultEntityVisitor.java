@@ -11,6 +11,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.apt.model.Field;
+import com.mysema.query.apt.model.FieldType;
 import com.mysema.query.apt.model.Type;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;
@@ -37,7 +38,7 @@ public class DefaultEntityVisitor extends SimpleDeclarationVisitor {
         String typeName = typeInfo.getFullName();
         String typePackage = typeInfo.getPackageName();
         String simpleTypeName = typeInfo.getSimpleName();
-        Field.Type fieldType = typeInfo.getFieldType();   
+        FieldType fieldType = typeInfo.getFieldType();   
         last.addField(new Field(name, realName, keyTypeName, typePackage, 
                 typeName, simpleTypeName, fieldType));
     }

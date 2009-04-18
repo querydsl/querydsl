@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import com.mysema.query.apt.model.Constructor;
 import com.mysema.query.apt.model.Field;
+import com.mysema.query.apt.model.FieldType;
 import com.mysema.query.apt.model.Parameter;
 import com.mysema.query.apt.model.Type;
 
@@ -37,8 +38,7 @@ public class GeneralProcessorTest {
                 "com.mysema.query",
                 "com.mysema.query.DomainClass", "DomainClass");
         
-        Field field = new Field("field", "field", null, "java.lang", "java.lang.String",
-                "String", Field.Type.STRING);
+        Field field = new Field("field", "field", null, "java.lang", "java.lang.String", "String", FieldType.STRING);
         type.addField(field);
         Parameter param = new Parameter("name", "java.lang.String");
         type.addConstructor(new Constructor(Collections.singleton(param)));

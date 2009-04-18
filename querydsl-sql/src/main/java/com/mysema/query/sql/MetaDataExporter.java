@@ -20,6 +20,7 @@ import java.util.Map;
 import com.mysema.query.apt.FreeMarkerSerializer;
 import com.mysema.query.apt.general.GeneralProcessor;
 import com.mysema.query.apt.model.Field;
+import com.mysema.query.apt.model.FieldType;
 import com.mysema.query.apt.model.Type;
 
 /**
@@ -91,7 +92,6 @@ public class MetaDataExporter {
 //            if (camelCase){
 //                tableName = toCamelCase(tableName, true);
 //            }
-//            String superType, String packageName, String name, String simpleName
             Type type = new Type(null, "java.lang", "java.lang.Object", tableName);
             ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
             while (columns.next()){
@@ -101,15 +101,14 @@ public class MetaDataExporter {
                 }
                 Class<?> _class = sqlToJavaType.get(columns.getInt(5));
                 if (_class == null) throw new RuntimeException("No java type for " + columns.getString(6));
-                Field.Type _type;
+                FieldType _type;
                 if (_class.equals(Boolean.class) || _class.equals(boolean.class)){
-                    _type = Field.Type.BOOLEAN;
+                    _type = FieldType.BOOLEAN;
                 }else if (_class.equals(String.class)){
-                    _type = Field.Type.STRING;
+                    _type = FieldType.STRING;
                 }else{
-                    _type = Field.Type.COMPARABLE;
+                    _type = FieldType.COMPARABLE;
                 }
-//                String name, String realName, String keyTypeName, String typePackage, String typeName
                 type.addField(new Field(
                         _name, columns.getString(4), null, 
                         _class.getPackage().getName(), _class.getName(), _class.getSimpleName(),

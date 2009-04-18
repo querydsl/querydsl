@@ -53,11 +53,10 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
         this.dtoAnnotation = dtoAnnotation;
     }
 
-    private void addSupertypeFields(Type typeDecl,
-            Map<String, Type> entityTypes, Map<String, Type> mappedSupertypes) {
+    private void addSupertypeFields(Type typeDecl,Map<String, Type> entityTypes, Map<String, Type> mappedSupertypes) {
         String stype = typeDecl.getSupertypeName();
-        /*Class<?> superClass = safeClassForName(stype);
-        if (superClass == null){*/ 
+        Class<?> superClass = safeClassForName(stype);
+        if (entityTypes.containsKey(stype) || mappedSupertypes.containsKey(stype)){ 
             while (true) {
                 Type sdecl;
                 if (entityTypes.containsKey(stype)) {
@@ -71,27 +70,15 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
                 stype = sdecl.getSupertypeName();
             }    
             
-            /*}else if (!superClass.equals(Object.class)){
+        }else if (superClass != null && !superClass.equals(Object.class)){
             // TODO : recursively up ?
-            Type type = new Type(superClass.getSuperclass().getName(), 
-                    superClass.getPackage().getName(), 
-                    superClass.getName(), 
-                    superClass.getSimpleName());
-            for (java.lang.reflect.Field f : superClass.getDeclaredFields()){
-                Field field = new Field(
-                        FieldHelper.javaSafe(f.getName()), // name 
-                        FieldHelper.realName(f.getName()), // realName
-                        null,  // keyTypeName
-                        f.getType().getPackage().getName(), 
-                        f.getType().getName(),
-                        f.getType().getSimpleName(),
-                        null);
-                type.addField(field);
-            }
+            Type type = TypeFactory.createType(superClass);
             // include fields of supertype
             typeDecl.include(type);
-        }*/
+        }
     }
+
+    
 
     private Class<?> safeClassForName(String stype) {        
         try {
@@ -127,8 +114,7 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
 
         // domain types
         DefaultEntityVisitor entityVisitor = createEntityVisitor();
-        a = (AnnotationTypeDeclaration) env
-                .getTypeDeclaration(domainAnnotation);
+        a = (AnnotationTypeDeclaration) env.getTypeDeclaration(domainAnnotation);
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
             typeDecl.accept(getDeclarationScanner(entityVisitor, NO_OP));
         }
@@ -147,8 +133,7 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
     }
     
     private void createDTOClasses() {
-        AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env
-                .getTypeDeclaration(dtoAnnotation);
+        AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env.getTypeDeclaration(dtoAnnotation);
         DefaultDTOVisitor dtoVisitor = createDTOVisitor();
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
             typeDecl.accept(getDeclarationScanner(dtoVisitor, NO_OP));
@@ -162,12 +147,15 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
     }
 
     public void process() {
-        if (domainAnnotation != null) createDomainClasses();
-        if (dtoAnnotation != null) createDTOClasses();
+        if (domainAnnotation != null){
+            createDomainClasses();
+        }
+        if (dtoAnnotation != null){
+            createDTOClasses();
+        }
     }
 
-    protected void serializeAsOuterClasses(Collection<Type> entityTypes, 
-            FreeMarkerSerializer serializer) {
+    protected void serializeAsOuterClasses(Collection<Type> entityTypes, FreeMarkerSerializer serializer) {
         // populate model
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("pre", namePrefix);
@@ -180,10 +168,8 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
 
             // serialize it
             try {
-                String path = packageName.replace('.', '/') + "/" + namePrefix
-                        + type.getSimpleName() + ".java";
-                serializer.serialize(model, writerFor(new File(
-                        targetFolder, path)));
+                String path = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
+                serializer.serialize(model, writerFor(new File(targetFolder, path)));
             } catch (Exception e) {
                 throw new RuntimeException(e.getMessage(), e);
             }

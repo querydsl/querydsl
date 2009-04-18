@@ -17,22 +17,8 @@ public class Field implements Comparable<Field> {
     /**
      * The Enum Type.
      */
-    public enum Type {
-        BOOLEAN, 
-        COMPARABLE, 
-        ENTITY, 
-        ENTITYLIST, 
-        ENTITYCOLLECTION, 
-        ENTITYMAP, 
-        NUMERIC,
-        SIMPLE, 
-        SIMPLELIST, 
-        SIMPLECOLLECTION, 
-        SIMPLEMAP, 
-        STRING
-    }
 
-    private final Type fieldType;
+    private final FieldType fieldType;
 
     private String name, realName, keyTypeName, typeName, typePackage, simpleTypeName;
 
@@ -47,7 +33,7 @@ public class Field implements Comparable<Field> {
      * @param fieldType
      */
     public Field(String name, String realName, String keyTypeName, String typePackage, String typeName,
-            String simpleTypeName, Type fieldType){
+            String simpleTypeName, FieldType fieldType){
         this.name = name;
         this.realName = realName;
         this.keyTypeName = keyTypeName;
@@ -65,7 +51,7 @@ public class Field implements Comparable<Field> {
         return o instanceof Field && name.equals(((Field) o).name);
     }
 
-    public Type getFieldType() {
+    public FieldType getFieldType() {
         return fieldType;
     }
 
@@ -107,6 +93,10 @@ public class Field implements Comparable<Field> {
 
     public int hashCode() {
         return name.hashCode();
+    }
+    
+    public String toString(){
+        return typeName + " " + name;
     }
 
 }
