@@ -119,6 +119,15 @@ public interface Ops {
     // subquery operations
     Op<Boolean> EXISTS = new Op<Boolean>(Object.class);
     
+    public static final List<Op<?>> equalsOps = Collections.unmodifiableList(
+            Arrays.<Op<?>>asList(
+                    EQ_OBJECT, 
+                    EQ_PRIMITIVE));
+    
+    public static final List<Op<?>> notEqualsOps = Collections.unmodifiableList(
+            Arrays.<Op<?>>asList(
+                    NE_OBJECT, 
+                    NE_PRIMITIVE));
     
     public static final List<Op<?>> compareOps = Collections.unmodifiableList(
             Arrays.<Op<?>>asList(
