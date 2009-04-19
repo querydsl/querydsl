@@ -207,8 +207,7 @@ public class TypeHelper extends SimpleTypeVisitor {
         } else if (isComparableSupported(fullName) && Comparable.class.isAssignableFrom(type)){
             fieldType = FieldType.COMPARABLE;
             
-        } else if (fullName.startsWith("org.joda.time")){
-            // can't be Comparable, since joda types don't implement Comparable with generic type parameter
+        } else if (asSimpleType(fullName)){
             fieldType = FieldType.SIMPLE;
             
         }
@@ -237,8 +236,7 @@ public class TypeHelper extends SimpleTypeVisitor {
             } else if (isComparableSupported(fullName) && Comparable.class.isAssignableFrom(Class.forName(fullName))) {
                 fieldType = FieldType.COMPARABLE;
                 
-            } else if (fullName.startsWith("org.joda.time")){
-                // can't be Comparable, since joda types don't implement Comparable with generic type parameter
+            } else if (asSimpleType(fullName)){                
                 fieldType = FieldType.SIMPLE;
                 
             }
@@ -252,7 +250,12 @@ public class TypeHelper extends SimpleTypeVisitor {
     }
     
     private boolean isComparableSupported(String fullName){
-        return fullName.startsWith("java");
+        return fullName.startsWith("java.") || fullName.startsWith("javax.");
+    }
+    
+    private boolean asSimpleType(String fullName){
+     // can't be Comparable, since joda types don't implement Comparable with generic type parameter
+        return fullName.startsWith("org.joda.time");
     }
     
     public void visitEnumType(Class<?> type) {
