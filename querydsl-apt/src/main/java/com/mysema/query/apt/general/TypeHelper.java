@@ -6,10 +6,8 @@
 package com.mysema.query.apt.general;
 
 import java.lang.reflect.Type;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.Map;
 
 import org.apache.commons.lang.ClassUtils;
 
@@ -197,17 +195,21 @@ public class TypeHelper extends SimpleTypeVisitor {
         if (type.equals(String.class)){
             fieldType = FieldType.STRING;
             
-        }else if (type.equals(Boolean.class)){
+        } else if (type.equals(Boolean.class)){
             fieldType = FieldType.BOOLEAN;
             
-        }else if (type.equals(Locale.class) || type.equals(Class.class) || type.equals(Object.class)){
+        } else if (type.equals(Locale.class) || type.equals(Class.class) || type.equals(Object.class)){
             fieldType = FieldType.SIMPLE;
             
-        }else if (fullName.startsWith("java") && Number.class.isAssignableFrom(type)){
+        } else if (isNumericSupported(fullName) && Number.class.isAssignableFrom(type)){
             fieldType = FieldType.NUMERIC;
             
-        }else if (fullName.startsWith("java") && Comparable.class.isAssignableFrom(type)){
+        } else if (isComparableSupported(fullName) && Comparable.class.isAssignableFrom(type)){
             fieldType = FieldType.COMPARABLE;
+            
+        } else if (fullName.startsWith("org.joda.time")){
+            // can't be Comparable, since joda types don't implement Comparable with generic type parameter
+            fieldType = FieldType.SIMPLE;
             
         }
     }
@@ -229,17 +231,30 @@ public class TypeHelper extends SimpleTypeVisitor {
                     || fullName.equals(Object.class.getName())) {
                 fieldType = FieldType.SIMPLE;
                 
-            } else if (fullName.startsWith("java") && Number.class.isAssignableFrom(Class.forName(fullName))) {
+            } else if (isNumericSupported(fullName) && Number.class.isAssignableFrom(Class.forName(fullName))) {
                 fieldType = FieldType.NUMERIC;
                 
-            } else if (fullName.startsWith("java") && Comparable.class.isAssignableFrom(Class.forName(fullName))) {
+            } else if (isComparableSupported(fullName) && Comparable.class.isAssignableFrom(Class.forName(fullName))) {
                 fieldType = FieldType.COMPARABLE;
-            }    
+                
+            } else if (fullName.startsWith("org.joda.time")){
+                // can't be Comparable, since joda types don't implement Comparable with generic type parameter
+                fieldType = FieldType.SIMPLE;
+                
+            }
         }catch(Exception e){
             throw new RuntimeException(e.getMessage(), e);
         }            
     }
-
+    
+    private boolean isNumericSupported(String fullName){
+        return isComparableSupported(fullName);
+    }
+    
+    private boolean isComparableSupported(String fullName){
+        return fullName.startsWith("java");
+    }
+    
     public void visitEnumType(Class<?> type) {
         fieldType = FieldType.SIMPLE;            
     }
