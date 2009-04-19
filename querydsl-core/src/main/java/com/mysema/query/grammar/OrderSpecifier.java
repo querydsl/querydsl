@@ -27,7 +27,11 @@ public class OrderSpecifier<A extends Comparable<? super A>> {
     public Order getOrder() {
         return order;
     }
-
+    
+    public boolean isAscending(){
+        return order == Order.ASC;        
+    }
+    
     public Expr<A> getTarget() {
         return target;
     }
