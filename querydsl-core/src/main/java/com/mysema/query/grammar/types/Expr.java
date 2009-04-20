@@ -89,8 +89,7 @@ public abstract class Expr<D>{
         public final EBoolean or(EBoolean right) {return Grammar.or(this, right);}
     }        
     
-    // <D extends Comparable> is used instead of <D extends Comparable<? super D> 
-    // to support pre-JDK1.5 types such as Joda time    
+    // <D extends Comparable> is used to support pre-Java5 types for the D parameter
     @SuppressWarnings("unchecked")
     public static abstract class EComparable<D extends Comparable> extends ESimple<D>{
         private OrderSpecifier<D> asc;
