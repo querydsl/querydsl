@@ -59,4 +59,14 @@ public class QComparable {
     public static <A extends Comparable> EBoolean aoe(Expr<A> left, Expr<A> right) {
         return factory.createBoolean(Ops.AOE, left, right);
     }
+    
+    @SuppressWarnings("unchecked")
+    public static <A extends Comparable> OrderSpecifier asc(Expr<A> expr){
+        return new OrderSpecifier<A>(Order.ASC, expr);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static <A extends Comparable> OrderSpecifier desc(Expr<A> expr){
+        return new OrderSpecifier<A>(Order.DESC, expr);
+    }
 }

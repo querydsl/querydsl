@@ -15,7 +15,7 @@ import com.mysema.query.util.Assert;
  * @author tiwe
  * @version $Id$
  */
-public class OrderSpecifier<A extends Comparable<? super A>> {
+public class OrderSpecifier<A extends Comparable<?>> {
     private final Order order;
     private final  Expr<A> target;
     
