@@ -19,12 +19,14 @@ import com.mysema.query.grammar.types.Expr.EString;
  */
 public interface ExprFactory {
     
+    Expr<Integer> createConstant(int i);
+    
+    <A> Expr<A> createConstant(A obj);
+    
     EBoolean createBoolean(Op<Boolean> operator, Expr<?>... args);
     
     <OpType, RT extends Comparable<?>> EComparable<RT> createComparable(Class<RT> type, Op<OpType> operator, Expr<?>... args);
     
-    <A> Expr<A> createConstant(A obj);
-
     <OpType extends Number,D extends Number & Comparable<?>> ENumber<D> createNumber(Class<? extends D> type, Op<OpType> operator, Expr<?>... args);
     
     EString createString(Op<String> operator, Expr<?>... args);

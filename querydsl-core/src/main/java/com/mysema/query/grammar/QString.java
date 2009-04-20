@@ -6,6 +6,7 @@
 package com.mysema.query.grammar;
 
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.ExprFactory;
 import com.mysema.query.grammar.types.SimpleExprFactory;
 import com.mysema.query.grammar.types.Expr.EString;
 
@@ -15,9 +16,11 @@ import com.mysema.query.grammar.types.Expr.EString;
  * @author tiwe
  * @version $Id$
  */
-public class QString extends SimpleExprFactory{
+public final class QString {
+    
+    private QString(){}
 
-    private static final SimpleExprFactory factory = new SimpleExprFactory();
+    protected static final ExprFactory factory = SimpleExprFactory.getInstance();
     
     public static EString ltrim(Expr<String> s) {
         return factory.createString(Ops.OpString.LTRIM, s);

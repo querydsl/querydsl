@@ -24,7 +24,40 @@ import com.mysema.query.util.Assert;
  * @author tiwe
  * @version $Id$
  */
+
 public class SimpleExprFactory implements ExprFactory{
+
+    private static final ExprFactory instance = new SimpleExprFactory();
+    
+    public static ExprFactory getInstance(){
+        return instance;
+    }
+    
+    @SuppressWarnings("unchecked")
+    private final Expr<Integer>[] integers = new Expr[256];
+    
+    protected SimpleExprFactory(){
+        for (int i=0; i < integers.length; i++){
+            integers[i] = new EConstant<Integer>(i-128);
+        }
+    }
+    
+    public Expr<Integer> createConstant(int i){
+        if (i >= -128 && i <= 127) { 
+            return integers[i+128];
+        }else{
+            return new EConstant<Integer>(i);        
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    public <A> Expr<A> createConstant(A obj) {
+        if (obj instanceof Expr) {
+            return (Expr<A>) obj;
+        }else{
+            return new EConstant<A>(Assert.notNull(obj));    
+        }        
+    }
     
     public EBoolean createBoolean(Op<Boolean> operator, Expr<?>... args) {
         return new OBoolean(Assert.notNull(operator), Assert.notNull(args));
@@ -34,12 +67,6 @@ public class SimpleExprFactory implements ExprFactory{
         return new OComparable<OpType,RT>(type, Assert.notNull(operator), Assert.notNull(args));
     }
     
-    @SuppressWarnings("unchecked")
-    public <A> Expr<A> createConstant(A obj) {
-        if (obj instanceof Expr) return (Expr<A>) obj;
-        return new EConstant<A>(Assert.notNull(obj));
-    }
-
     public <OpType extends Number,D extends Number & Comparable<?>> ENumber<D> createNumber(Class<? extends D> type, Op<OpType> operator, Expr<?>... args) {
         return new ONumber<OpType,D>(type, Assert.notNull(operator), Assert.notNull(args));
     }

@@ -8,11 +8,7 @@ package com.mysema.query.grammar;
 import java.util.Collection;
 
 import com.mysema.query.grammar.Ops.OpNumberAgg;
-import com.mysema.query.grammar.types.Alias;
-import com.mysema.query.grammar.types.CollectionType;
-import com.mysema.query.grammar.types.CountExpression;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.SimpleExprFactory;
+import com.mysema.query.grammar.types.*;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.ENumber;
@@ -31,7 +27,7 @@ import com.mysema.query.util.Assert;
  */
 public class Grammar{
     
-    protected static final SimpleExprFactory factory = new SimpleExprFactory();
+    protected static final ExprFactory factory = SimpleExprFactory.getInstance();
     
     protected Grammar(){};
         

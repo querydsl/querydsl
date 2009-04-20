@@ -8,6 +8,7 @@ package com.mysema.query.grammar;
 import com.mysema.query.grammar.Ops.OpMath;
 import com.mysema.query.grammar.Ops.OpNumberAgg;
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.ExprFactory;
 import com.mysema.query.grammar.types.SimpleExprFactory;
 import com.mysema.query.grammar.types.Expr.ENumber;
 
@@ -17,9 +18,11 @@ import com.mysema.query.grammar.types.Expr.ENumber;
  * @author tiwe
  * @version $Id$
  */
-public class QMath extends SimpleExprFactory{
+public final class QMath {
+    
+    private QMath(){}
 
-    private static final SimpleExprFactory factory = new SimpleExprFactory();
+    protected static final ExprFactory factory = SimpleExprFactory.getInstance();
     
     public static <A extends Number & Comparable<?>> ENumber<A> mult(Expr<A> left, A right) {
         return factory.createNumber(left.getType(), Ops.MULT, left, factory.createConstant(right));

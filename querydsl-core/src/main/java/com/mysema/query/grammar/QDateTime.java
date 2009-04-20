@@ -9,6 +9,7 @@ import java.sql.Time;
 import java.util.Date;
 
 import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.ExprFactory;
 import com.mysema.query.grammar.types.SimpleExprFactory;
 import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.ENumber;
@@ -19,10 +20,11 @@ import com.mysema.query.grammar.types.Expr.ENumber;
  * @author tiwe
  * @version $Id$
  */
-// TODO : provide Joda Time variant ?!?
-public class QDateTime{
+public final class QDateTime{
 
-    private static final SimpleExprFactory factory = new SimpleExprFactory();
+    private QDateTime(){}
+    
+    private static final ExprFactory factory = SimpleExprFactory.getInstance();
           
     public static EComparable<Date> currentDate() {
         return factory.createComparable(Date.class, Ops.OpDateTime.CURRENT_DATE);
