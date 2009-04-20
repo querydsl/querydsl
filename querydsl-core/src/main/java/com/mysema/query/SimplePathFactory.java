@@ -40,6 +40,7 @@ public class SimplePathFactory implements PathFactory {
     });
     
     private final Map<Object,PComparableArray<?>> caToPath = new PathFactory<Object,PComparableArray<?>>(new Transformer<Object,PComparableArray<?>>(){
+        @SuppressWarnings("unchecked")
         public PComparableArray<?> transform(Object arg) {
             return new PComparableArray(((List)arg).get(0).getClass(), md());
         }    
