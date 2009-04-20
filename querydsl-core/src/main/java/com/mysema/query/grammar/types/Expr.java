@@ -105,12 +105,12 @@ public abstract class Expr<D>{
         }        
         public final EBoolean before(D right) {return Grammar.before(this,right);}
         public final EBoolean before(Expr<D> right) {return Grammar.before(this,right);}        
-        public final EBoolean between(D first, D second) {return Grammar.between(this,first,second);}
-        
-        public final EBoolean between(Expr<D> first, Expr<D> second) {return Grammar.between(this,first,second);}       
-        public final EBoolean boe(D right) {return Grammar.boe(this,right);}  
-        
+        public final EBoolean boe(D right) {return Grammar.boe(this,right);}          
         public final EBoolean boe(Expr<D> right) {return Grammar.boe(this,right);}
+        
+        public final EBoolean between(D first, D second) {return Grammar.between(this,first,second);}       
+        public final EBoolean between(Expr<D> first, Expr<D> second) {return Grammar.between(this,first,second);}
+        
         // cast methods
         public <A extends Number & Comparable<? super A>> ENumber<A> castToNum(Class<A> type){
             return Grammar.numericCast(this, type);
@@ -206,21 +206,19 @@ public abstract class Expr<D>{
         public final ENumber<Byte> byteValue() { return castToNum(Byte.class); }  
         public final ENumber<Double> doubleValue() { return castToNum(Double.class); }                
         public final ENumber<Float> floatValue() { return castToNum(Float.class); }
-        // with Java level cast
-        public final <A extends Number & Comparable<? super A>> EBoolean goe(A right) { return factory.createBoolean(Ops.GOE, this, factory.createConstant(NumberUtil.castTo(right,getType())));}
+        public final ENumber<Integer> intValue() { return castToNum(Integer.class); }
+        public final ENumber<Long> longValue() { return castToNum(Long.class); }
+        public final ENumber<Short> shortValue() { return castToNum(Short.class); }
         
-        // without cast
+        public final <A extends Number & Comparable<? super A>> EBoolean goe(A right) { return factory.createBoolean(Ops.GOE, this, factory.createConstant(NumberUtil.castTo(right,getType())));}       
         public final <A extends Number & Comparable<? super A>> EBoolean goe(Expr<A> right) {return factory.createBoolean(Ops.GOE, this, right);}                
         public final <A extends Number & Comparable<? super A>> EBoolean gt(A right) { return factory.createBoolean(Ops.GT, this, factory.createConstant(NumberUtil.castTo(right,getType())));}        
         public final <A extends Number & Comparable<? super A>> EBoolean gt(Expr<A> right) {return factory.createBoolean(Ops.GT, this, right);}          
-        public ENumber<Integer> intValue() { return castToNum(Integer.class); }
-        
+                
         public final <A extends Number & Comparable<? super A>> EBoolean loe(A right) { return factory.createBoolean(Ops.LOE, this, factory.createConstant(NumberUtil.castTo(right,getType())));}
-        public final <A extends Number & Comparable<? super A>> EBoolean loe(Expr<A> right) {return factory.createBoolean(Ops.LOE, this, right);}
-        public final ENumber<Long> longValue() { return castToNum(Long.class); }
+        public final <A extends Number & Comparable<? super A>> EBoolean loe(Expr<A> right) {return factory.createBoolean(Ops.LOE, this, right);}        
         public final <A extends Number & Comparable<? super A>> EBoolean lt(A right) {  return factory.createBoolean(Ops.LT, this, factory.createConstant(NumberUtil.castTo(right,getType())));}
         public final <A extends Number & Comparable<? super A>> EBoolean lt(Expr<A> right) {return factory.createBoolean(Ops.LT, this, right);}
-        public final ENumber<Short> shortValue() { return castToNum(Short.class); }
     }
     
     public static abstract class ESimple<D> extends Expr<D>{
