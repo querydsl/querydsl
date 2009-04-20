@@ -34,14 +34,12 @@ public class SimplePathFactory implements PathFactory {
     private long counter = 0;
     
     private final Map<Object,PBooleanArray> baToPath = new PathFactory<Object,PBooleanArray>(new Transformer<Object,PBooleanArray>(){
-        @SuppressWarnings("unchecked")
         public PBooleanArray transform(Object arg) {
             return new PBooleanArray(md());
         }    
     });
     
     private final Map<Object,PComparableArray<?>> caToPath = new PathFactory<Object,PComparableArray<?>>(new Transformer<Object,PComparableArray<?>>(){
-        @SuppressWarnings("unchecked")
         public PComparableArray<?> transform(Object arg) {
             return new PComparableArray(((List)arg).get(0).getClass(), md());
         }    

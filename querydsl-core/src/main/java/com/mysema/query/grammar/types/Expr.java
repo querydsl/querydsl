@@ -88,7 +88,9 @@ public abstract class Expr<D>{
         }        
         public final EBoolean or(EBoolean right) {return Grammar.or(this, right);}
     }        
-    public static abstract class EComparable<D extends Comparable<?>> extends ESimple<D>{
+    
+    @SuppressWarnings("unchecked")
+    public static abstract class EComparable<D extends Comparable> extends ESimple<D>{
         private OrderSpecifier<D> asc;
         private OrderSpecifier<D> desc;
         private EString stringCast;               

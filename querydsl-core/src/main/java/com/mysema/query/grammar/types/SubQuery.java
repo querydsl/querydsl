@@ -19,7 +19,6 @@ import com.mysema.query.grammar.OrderSpecifier;
  * @param <A>
  */
 public class SubQuery<JM,A> extends Expr<A> implements Query<SubQuery<JM,A>>, CollectionType<A>{
-    @SuppressWarnings("unchecked")
     private QueryWithPublicSelect<JM> query = new QueryWithPublicSelect<JM>();
     public SubQuery(Expr<A> select) {
         super(null);
@@ -28,7 +27,6 @@ public class SubQuery<JM,A> extends Expr<A> implements Query<SubQuery<JM,A>>, Co
     public SubQuery(){
         super(null);
     }
-    @SuppressWarnings("unchecked")
     public SubQuery<JM,A> from(Expr<?>... o) {query.from(o); return this;}
     public SubQuery<JM,A> fullJoin(Expr<?> o) {query.fullJoin(o); return this;}
     public QueryBase<JM,?> getQuery(){ return query;}

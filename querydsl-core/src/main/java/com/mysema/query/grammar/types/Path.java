@@ -133,7 +133,8 @@ public interface Path<C> {
         EComparable<Integer> size();
     }
 
-    public static class PComparable<D extends Comparable<?>> extends EComparable<D> implements Path<D>{
+    @SuppressWarnings("unchecked")
+    public static class PComparable<D extends Comparable> extends EComparable<D> implements Path<D>{
         private EBoolean isnull, isnotnull;
         private final PathMetadata<?> metadata;
         private final Path<?> root;
@@ -197,7 +198,8 @@ public interface Path<C> {
         }
     }
         
-    public static class PComparableArray<D extends Comparable<?>> extends PArray<D>{
+    @SuppressWarnings("unchecked")
+    public static class PComparableArray<D extends Comparable> extends PArray<D>{
         public PComparableArray(Class<D> type, PathMetadata<?> metadata) {
             super(type, metadata);
         }
