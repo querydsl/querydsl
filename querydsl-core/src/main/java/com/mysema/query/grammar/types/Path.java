@@ -133,7 +133,7 @@ public interface Path<C> {
         EComparable<Integer> size();
     }
 
-    public static class PComparable<D extends Comparable<? super D>> extends EComparable<D> implements Path<D>{
+    public static class PComparable<D extends Comparable<?>> extends EComparable<D> implements Path<D>{
         private EBoolean isnull, isnotnull;
         private final PathMetadata<?> metadata;
         private final Path<?> root;
@@ -165,7 +165,7 @@ public interface Path<C> {
         }
     }
     
-    public static class PNumber<D extends Number & Comparable<? super D>> extends ENumber<D> implements Path<D>{
+    public static class PNumber<D extends Number & Comparable<?>> extends ENumber<D> implements Path<D>{
         private EBoolean isnull, isnotnull;
         private final PathMetadata<?> metadata;
         private final Path<?> root;
@@ -197,7 +197,7 @@ public interface Path<C> {
         }
     }
         
-    public static class PComparableArray<D extends Comparable<? super D>> extends PArray<D>{
+    public static class PComparableArray<D extends Comparable<?>> extends PArray<D>{
         public PComparableArray(Class<D> type, PathMetadata<?> metadata) {
             super(type, metadata);
         }
@@ -334,10 +334,10 @@ public interface Path<C> {
         protected PBoolean _boolean(String path){
             return new PBoolean(forProperty(this, path));
         }
-        protected <A extends Comparable<? super A>> PComparable<A> _comparable(String path,Class<A> type) {
+        protected <A extends Comparable<?>> PComparable<A> _comparable(String path,Class<A> type) {
             return new PComparable<A>(type, forProperty(this, path));
         }    
-        protected <A extends Number & Comparable<? super A>> PNumber<A> _number(String path,Class<A> type) {
+        protected <A extends Number & Comparable<?>> PNumber<A> _number(String path,Class<A> type) {
             return new PNumber<A>(type, forProperty(this, path));
         }   
         protected <A> PEntity<A> _entity(String path, String entityName, Class<A> type){

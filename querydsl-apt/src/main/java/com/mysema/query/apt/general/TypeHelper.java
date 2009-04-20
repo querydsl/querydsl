@@ -250,12 +250,14 @@ public class TypeHelper extends SimpleTypeVisitor {
     }
     
     private boolean isComparableSupported(String fullName){
-        return fullName.startsWith("java.") || fullName.startsWith("javax.");
+        return fullName.startsWith("java.") || fullName.startsWith("javax.") ||
+            fullName.startsWith("org.joda.time");
     }
     
     private boolean asSimpleType(String fullName){
      // can't be Comparable, since joda types don't implement Comparable with generic type parameter
-        return fullName.startsWith("org.joda.time");
+//        return fullName.startsWith("org.joda.time");
+        return false;
     }
     
     public void visitEnumType(Class<?> type) {

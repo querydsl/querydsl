@@ -30,7 +30,7 @@ public class SimpleExprFactory implements ExprFactory{
         return new OBoolean(Assert.notNull(operator), Assert.notNull(args));
     }
     
-    public <OpType, RT extends Comparable<? super RT>> EComparable<RT> createComparable(Class<RT> type, Op<OpType> operator, Expr<?>... args) {
+    public <OpType, RT extends Comparable<?>> EComparable<RT> createComparable(Class<RT> type, Op<OpType> operator, Expr<?>... args) {
         return new OComparable<OpType,RT>(type, Assert.notNull(operator), Assert.notNull(args));
     }
     
@@ -40,7 +40,7 @@ public class SimpleExprFactory implements ExprFactory{
         return new EConstant<A>(Assert.notNull(obj));
     }
 
-    public <OpType extends Number,D extends Number & Comparable<? super D>> ENumber<D> createNumber(Class<? extends D> type, Op<OpType> operator, Expr<?>... args) {
+    public <OpType extends Number,D extends Number & Comparable<?>> ENumber<D> createNumber(Class<? extends D> type, Op<OpType> operator, Expr<?>... args) {
         return new ONumber<OpType,D>(type, Assert.notNull(operator), Assert.notNull(args));
     }
     

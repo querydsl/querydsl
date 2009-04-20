@@ -49,7 +49,7 @@ public class GrammarWithAlias extends Grammar{
         return pathFactory.createBoolean(arg);
     }
     
-    public static <D extends Comparable<? super D>> PComparable<D> $(D arg){
+    public static <D extends Comparable<?>> PComparable<D> $(D arg){
         return pathFactory.createComparable(arg);
     }
     
@@ -93,7 +93,7 @@ public class GrammarWithAlias extends Grammar{
         return pathFactory.createBooleanArray(args);
     }
     
-    public static <D extends Comparable<? super D>> PComparableArray<D> $(D[] args){
+    public static <D extends Comparable<?>> PComparableArray<D> $(D[] args){
         return pathFactory.createComparableArray(args);
     }
     

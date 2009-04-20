@@ -20,14 +20,14 @@ public interface Custom<T> {
     
     Expr<?> getArg(int index);
 
-    java.lang.String getPattern();
+    String getPattern();
     
     public static abstract class CBoolean extends Expr.EBoolean implements
-            Custom<java.lang.Boolean> {
+            Custom<Boolean> {
         public Expr<?> getArg(int index) {return getArgs().get(index);}        
     }
 
-    public static abstract class CComparable<T extends java.lang.Comparable<? super T>>
+    public static abstract class CComparable<T extends Comparable<?>>
             extends Expr.EComparable<T> implements Custom<T> {
         public CComparable(Class<T> type) {
             super(type);
@@ -35,7 +35,7 @@ public interface Custom<T> {
         public Expr<?> getArg(int index) {return getArgs().get(index);}
     }
 
-    public static abstract class CNumber<T extends java.lang.Number & java.lang.Comparable<? super T>>
+    public static abstract class CNumber<T extends Number & Comparable<?>>
             extends Expr.ENumber<T> implements Custom<T> {
         public CNumber(Class<T> type) {
             super(type);
@@ -51,7 +51,7 @@ public interface Custom<T> {
     }
 
     public static abstract class CString extends Expr.EString implements
-            Custom<java.lang.String> {
+            Custom<String> {
         public Expr<?> getArg(int index) {return getArgs().get(index);}
     }
 

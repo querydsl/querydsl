@@ -43,7 +43,7 @@ public class Grammar{
      * @param right
      * @return
      */
-    public static <A extends Comparable<? super A>> EBoolean after(Expr<A> left, A right) {
+    public static <A extends Comparable<?>> EBoolean after(Expr<A> left, A right) {
         // NOTE : signature is for Comparables to support other than Java's date types
         return factory.createBoolean(Ops.AFTER, left, factory.createConstant(right));
     }
@@ -56,7 +56,7 @@ public class Grammar{
      * @param right
      * @return
      */
-    public static <A extends Comparable<? super A>> EBoolean aoe(Expr<A> left, A right) {
+    public static <A extends Comparable<?>> EBoolean aoe(Expr<A> left, A right) {
         return factory.createBoolean(Ops.AOE, left, factory.createConstant(right));
     }
 
@@ -69,7 +69,7 @@ public class Grammar{
      * @return
      */
     
-    public static <A extends Comparable<? super A>> EBoolean after(Expr<A> left, Expr<A> right) {
+    public static <A extends Comparable<?>> EBoolean after(Expr<A> left, Expr<A> right) {
         // NOTE : signature is for Comparables to support other than Java's date types
         return factory.createBoolean(Ops.AFTER, left, right);
     }
@@ -82,7 +82,7 @@ public class Grammar{
      * @param right
      * @return
      */
-    public static <A extends Comparable<? super A>> EBoolean aoe(Expr<A> left, Expr<A> right) {
+    public static <A extends Comparable<?>> EBoolean aoe(Expr<A> left, Expr<A> right) {
         return factory.createBoolean(Ops.AOE, left, right);
     }
 
@@ -140,7 +140,7 @@ public class Grammar{
      * @param target
      * @return
      */
-    public static <A extends Comparable<? super A>> OrderSpecifier<A> asc(Expr<A> target) {
+    public static <A extends Comparable<?>> OrderSpecifier<A> asc(Expr<A> target) {
         return new OrderSpecifier<A>(Order.ASC, target);
     }
     
@@ -151,7 +151,7 @@ public class Grammar{
      * @param left
      * @return
      */    
-    public static <A extends Number & Comparable<? super A>> ENumber<Double> avg(Expr<A> left){
+    public static <A extends Number & Comparable<?>> ENumber<Double> avg(Expr<A> left){
         return factory.createNumber(Double.class, OpNumberAgg.AVG_AGG, left);
     }
     
@@ -163,7 +163,7 @@ public class Grammar{
      * @param right
      * @return
      */
-    public static <A extends Comparable<? super A>> EBoolean before(Expr<A> left, A right) {
+    public static <A extends Comparable<?>> EBoolean before(Expr<A> left, A right) {
         // NOTE : signature is for Comparables to support other than Java's date types
         // NOTE : basically same as lt
         return factory.createBoolean(Ops.BEFORE, left, factory.createConstant(right));
@@ -177,7 +177,7 @@ public class Grammar{
      * @param right
      * @return
      */
-    public static <A extends Comparable<? super A>> EBoolean boe(Expr<A> left, A right) {
+    public static <A extends Comparable<?>> EBoolean boe(Expr<A> left, A right) {
         return factory.createBoolean(Ops.BOE, left, factory.createConstant(right));
     }
 
@@ -189,7 +189,7 @@ public class Grammar{
      * @param right
      * @return
      */
-    public static <A extends Comparable<? super A>> EBoolean before(Expr<A> left, Expr<A> right) {
+    public static <A extends Comparable<?>> EBoolean before(Expr<A> left, Expr<A> right) {
         // NOTE : signature is for Comparables to support other than Java's date types
         // NOTE : basically same as lt
         return factory.createBoolean(Ops.BEFORE, left, right);
@@ -203,7 +203,7 @@ public class Grammar{
      * @param right
      * @return
      */
-    public static <A extends Comparable<? super A>> EBoolean boe(Expr<A> left, Expr<A> right) {
+    public static <A extends Comparable<?>> EBoolean boe(Expr<A> left, Expr<A> right) {
         return factory.createBoolean(Ops.BOE, left, right);
     }
 
@@ -216,7 +216,7 @@ public class Grammar{
      * @param end
      * @return
      */    
-    public static <A extends Comparable<? super A>> EBoolean between(Expr<A> left, A start, A end) {
+    public static <A extends Comparable<?>> EBoolean between(Expr<A> left, A start, A end) {
         return factory.createBoolean(Ops.BETWEEN, left, factory.createConstant(start), factory.createConstant(end));
     }
     
@@ -229,7 +229,7 @@ public class Grammar{
      * @param end
      * @return
      */
-    public static <A extends Comparable<? super A>> EBoolean between(Expr<A> left, Expr<A> start, Expr<A> end) {
+    public static <A extends Comparable<?>> EBoolean between(Expr<A> left, Expr<A> start, Expr<A> end) {
         return factory.createBoolean(Ops.BETWEEN, left, start, end);
     }
         
@@ -326,7 +326,7 @@ public class Grammar{
      * @param target
      * @return
      */
-    public static <A extends Comparable<? super A>> OrderSpecifier<A> desc(Expr<A> target) {
+    public static <A extends Comparable<?>> OrderSpecifier<A> desc(Expr<A> target) {
         return new OrderSpecifier<A>(Order.DESC, target);
     }
         
@@ -444,7 +444,7 @@ public class Grammar{
      * @param right
      * @return
      */
-    public static <A extends Comparable<? super A>> EBoolean goe(Expr<A> left, A right) {
+    public static <A extends Comparable<?>> EBoolean goe(Expr<A> left, A right) {
         return factory.createBoolean(Ops.GOE, left, factory.createConstant(right));
     }
     
@@ -456,7 +456,7 @@ public class Grammar{
      * @param right
      * @return
      */
-    public static <A extends Comparable<? super A>> EBoolean goe(Expr<A> left, Expr<A> right) {
+    public static <A extends Comparable<?>> EBoolean goe(Expr<A> left, Expr<A> right) {
         return factory.createBoolean(Ops.GOE, left, right);
     } 
     
@@ -468,7 +468,7 @@ public class Grammar{
      * @param right
      * @return
      */
-    public static <A extends Comparable<? super A>> EBoolean gt(Expr<A> left, A right) {
+    public static <A extends Comparable<?>> EBoolean gt(Expr<A> left, A right) {
         return factory.createBoolean(Ops.GT, left, factory.createConstant(right));
     }
     
@@ -480,7 +480,7 @@ public class Grammar{
      * @param right
      * @return
      */
-    public static <A extends Comparable<? super A>> EBoolean gt(Expr<A> left, Expr<A> right) {
+    public static <A extends Comparable<?>> EBoolean gt(Expr<A> left, Expr<A> right) {
         return factory.createBoolean(Ops.GT, left, right);
     }
     
@@ -675,7 +675,7 @@ public class Grammar{
      * @param right
      * @return
      */
-    public static <A extends Comparable<? super A>> EBoolean loe(Expr<A> left, A right) {
+    public static <A extends Comparable<?>> EBoolean loe(Expr<A> left, A right) {
         return factory.createBoolean(Ops.LOE, left, factory.createConstant(right));
     }
     
@@ -687,7 +687,7 @@ public class Grammar{
      * @param right
      * @return
      */
-    public static <A extends Comparable<? super A>> EBoolean loe(Expr<A> left, Expr<A> right) {
+    public static <A extends Comparable<?>> EBoolean loe(Expr<A> left, Expr<A> right) {
         return factory.createBoolean(Ops.LOE, left, right);
     }
 
@@ -709,7 +709,7 @@ public class Grammar{
      * @param right
      * @return
      */
-    public static <A extends Comparable<? super A>> EBoolean lt(Expr<A> left, A right) {
+    public static <A extends Comparable<?>> EBoolean lt(Expr<A> left, A right) {
         return factory.createBoolean(Ops.LT, left, factory.createConstant(right));
     }
 
@@ -721,7 +721,7 @@ public class Grammar{
      * @param right
      * @return
      */    
-    public static <A extends Comparable<? super A>> EBoolean lt(Expr<A> left, Expr<A> right) {
+    public static <A extends Comparable<?>> EBoolean lt(Expr<A> left, Expr<A> right) {
         return factory.createBoolean(Ops.LT, left, right);
     }
 
@@ -802,7 +802,7 @@ public class Grammar{
      * @param end
      * @return
      */
-    public static <A extends Comparable<? super A>> EBoolean notBetween(Expr<A> left, A start, A end) {
+    public static <A extends Comparable<?>> EBoolean notBetween(Expr<A> left, A start, A end) {
         return factory.createBoolean(Ops.NOTBETWEEN, left, factory.createConstant(start), factory.createConstant(end));
     }
     
@@ -815,7 +815,7 @@ public class Grammar{
      * @param end
      * @return
      */
-    public static <A extends Comparable<? super A>> EBoolean notBetween(Expr<A> left, Expr<A> start, Expr<A> end) {
+    public static <A extends Comparable<?>> EBoolean notBetween(Expr<A> left, Expr<A> start, Expr<A> end) {
         return factory.createBoolean(Ops.NOTBETWEEN, left, start, end);
     }
     
@@ -852,7 +852,7 @@ public class Grammar{
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <A extends Number & Comparable<? super A>> ENumber<A> numericCast(EComparable<?> source, Class<A> targetType){
+    public static <A extends Number & Comparable<?>> ENumber<A> numericCast(EComparable<?> source, Class<A> targetType){
         if (targetType.isAssignableFrom(source.getType()) && ENumber.class.isAssignableFrom(source.getClass())){
             return (ENumber)source;
         }else{

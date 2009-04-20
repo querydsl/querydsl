@@ -54,12 +54,12 @@ public class AliasAwarePathFactory extends SimplePathFactory{
         return rv != null ? rv : super.createEntityCollection(arg);
     }
     
-    public <D extends Comparable<? super D>> PComparable<D> createComparable(D arg){
+    public <D extends Comparable<?>> PComparable<D> createComparable(D arg){
         PComparable<D> rv = aliasFactory.<PComparable<D>>getCurrentAndReset();
         return rv != null ? rv : super.createComparable(arg);
     }
     
-    public <D extends Number & Comparable<? super D>> PNumber<D> createNumber(D arg){
+    public <D extends Number & Comparable<?>> PNumber<D> createNumber(D arg){
         PNumber<D> rv = aliasFactory.<PNumber<D>>getCurrentAndReset();
         return rv != null ? rv : super.createNumber(arg);
     }
@@ -76,7 +76,7 @@ public class AliasAwarePathFactory extends SimplePathFactory{
         }                 
     }
     
-    public <D extends Comparable<? super D>> PComparableArray<D> createComparableArray(D[] args){
+    public <D extends Comparable<?>> PComparableArray<D> createComparableArray(D[] args){
         PComparableArray<D> rv = aliasFactory.<PComparableArray<D>>getCurrentAndReset();
         return rv != null ? rv : super.createComparableArray(args);
     }

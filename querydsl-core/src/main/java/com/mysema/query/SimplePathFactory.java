@@ -135,12 +135,12 @@ public class SimplePathFactory implements PathFactory {
     }
     
     @SuppressWarnings("unchecked")
-    public <D extends Comparable<? super D>> PComparable<D> createComparable(D arg){
+    public <D extends Comparable<?>> PComparable<D> createComparable(D arg){
         return (PComparable<D>) comToPath.get(arg);
     }
     
     @SuppressWarnings("unchecked")
-    public <D extends Number & Comparable<? super D>> PNumber<D> createNumber(D arg) {
+    public <D extends Number & Comparable<?>> PNumber<D> createNumber(D arg) {
         return (PNumber<D>) numToPath.get(arg);
     }
     
@@ -150,7 +150,7 @@ public class SimplePathFactory implements PathFactory {
     }
  
     @SuppressWarnings("unchecked")
-    public <D extends Comparable<? super D>> PComparableArray<D> createComparableArray(D[] args){
+    public <D extends Comparable<?>> PComparableArray<D> createComparableArray(D[] args){
         return (PComparableArray<D>) caToPath.get(Arrays.asList(args));
     }
 

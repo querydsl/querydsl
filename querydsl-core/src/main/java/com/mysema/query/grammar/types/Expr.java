@@ -88,7 +88,7 @@ public abstract class Expr<D>{
         }        
         public final EBoolean or(EBoolean right) {return Grammar.or(this, right);}
     }        
-    public static abstract class EComparable<D extends Comparable<? super D>> extends ESimple<D>{
+    public static abstract class EComparable<D extends Comparable<?>> extends ESimple<D>{
         private OrderSpecifier<D> asc;
         private OrderSpecifier<D> desc;
         private EString stringCast;               
@@ -200,7 +200,7 @@ public abstract class Expr<D>{
         public EEntity(Class<? extends D> type) {super(type);}        
     }
     
-    public static abstract class ENumber<D extends Number & Comparable<? super D>> extends EComparable<D>{
+    public static abstract class ENumber<D extends Number & Comparable<?>> extends EComparable<D>{
         public ENumber(Class<? extends D> type) {super(type);}
         
         public final ENumber<Byte> byteValue() { return castToNum(Byte.class); }  
@@ -210,15 +210,15 @@ public abstract class Expr<D>{
         public final ENumber<Long> longValue() { return castToNum(Long.class); }
         public final ENumber<Short> shortValue() { return castToNum(Short.class); }
         
-        public final <A extends Number & Comparable<? super A>> EBoolean goe(A right) { return factory.createBoolean(Ops.GOE, this, factory.createConstant(NumberUtil.castTo(right,getType())));}       
-        public final <A extends Number & Comparable<? super A>> EBoolean goe(Expr<A> right) {return factory.createBoolean(Ops.GOE, this, right);}                
-        public final <A extends Number & Comparable<? super A>> EBoolean gt(A right) { return factory.createBoolean(Ops.GT, this, factory.createConstant(NumberUtil.castTo(right,getType())));}        
-        public final <A extends Number & Comparable<? super A>> EBoolean gt(Expr<A> right) {return factory.createBoolean(Ops.GT, this, right);}          
+        public final <A extends Number & Comparable<?>> EBoolean goe(A right) { return factory.createBoolean(Ops.GOE, this, factory.createConstant(NumberUtil.castTo(right,getType())));}       
+        public final <A extends Number & Comparable<?>> EBoolean goe(Expr<A> right) {return factory.createBoolean(Ops.GOE, this, right);}                
+        public final <A extends Number & Comparable<?>> EBoolean gt(A right) { return factory.createBoolean(Ops.GT, this, factory.createConstant(NumberUtil.castTo(right,getType())));}        
+        public final <A extends Number & Comparable<?>> EBoolean gt(Expr<A> right) {return factory.createBoolean(Ops.GT, this, right);}          
                 
-        public final <A extends Number & Comparable<? super A>> EBoolean loe(A right) { return factory.createBoolean(Ops.LOE, this, factory.createConstant(NumberUtil.castTo(right,getType())));}
-        public final <A extends Number & Comparable<? super A>> EBoolean loe(Expr<A> right) {return factory.createBoolean(Ops.LOE, this, right);}        
-        public final <A extends Number & Comparable<? super A>> EBoolean lt(A right) {  return factory.createBoolean(Ops.LT, this, factory.createConstant(NumberUtil.castTo(right,getType())));}
-        public final <A extends Number & Comparable<? super A>> EBoolean lt(Expr<A> right) {return factory.createBoolean(Ops.LT, this, right);}
+        public final <A extends Number & Comparable<?>> EBoolean loe(A right) { return factory.createBoolean(Ops.LOE, this, factory.createConstant(NumberUtil.castTo(right,getType())));}
+        public final <A extends Number & Comparable<?>> EBoolean loe(Expr<A> right) {return factory.createBoolean(Ops.LOE, this, right);}        
+        public final <A extends Number & Comparable<?>> EBoolean lt(A right) {  return factory.createBoolean(Ops.LT, this, factory.createConstant(NumberUtil.castTo(right,getType())));}
+        public final <A extends Number & Comparable<?>> EBoolean lt(Expr<A> right) {return factory.createBoolean(Ops.LT, this, right);}
     }
     
     public static abstract class ESimple<D> extends Expr<D>{

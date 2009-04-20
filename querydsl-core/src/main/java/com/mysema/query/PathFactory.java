@@ -26,9 +26,9 @@ public interface PathFactory {
 
     PBooleanArray createBooleanArray(Boolean[] args);
     
-    <D extends Number & Comparable<? super D>> PNumber<D> createNumber(D arg);
+    <D extends Number & Comparable<?>> PNumber<D> createNumber(D arg);
 
-    <D extends Comparable<? super D>> PComparable<D> createComparable(D arg);
+    <D extends Comparable<?>> PComparable<D> createComparable(D arg);
 
     <D> PEntity<D> createEntity(D arg);
     
@@ -38,7 +38,7 @@ public interface PathFactory {
     
     <D> PEntityCollection<D> createEntityCollection(Collection<D> arg);
 
-    <D extends Comparable<? super D>> PComparableArray<D> createComparableArray(D[] args);
+    <D extends Comparable<?>> PComparableArray<D> createComparableArray(D[] args);
 
     PString createString(String arg);
 
