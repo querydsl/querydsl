@@ -21,6 +21,8 @@ public interface ExprFactory {
     
     Expr<Integer> createConstant(int i);
     
+    <A> Expr<Class<A>> createConstant(Class<A> obj);
+    
     <A> Expr<A> createConstant(A obj);
     
     EBoolean createBoolean(Op<Boolean> operator, Expr<?>... args);
