@@ -81,7 +81,7 @@ public class FilteringMultiIterator extends MultiIterator implements IteratorSou
         logger.info("Filtering iterator for source");
         ExpressionEvaluator ev = serializer.createExpressionEvaluator(sources, boolean.class);
         if (ev != null){
-            return new JaninoEvaluator(ev);    
+            return new JaninoEvaluator(ev, sources, where);    
         }else{
             return null;
         }

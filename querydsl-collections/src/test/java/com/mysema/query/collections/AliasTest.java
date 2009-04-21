@@ -151,7 +151,7 @@ public class AliasTest extends AbstractQueryTest{
             from(cat,cats).where(cat.mate.alive).list(cat);
             fail("expected RuntimeException");
         }catch(RuntimeException e){
-            assertEquals("null path in expression", e.getMessage());
+            assertEquals("null in cat.mate.alive", e.getMessage());
         }
         
         // 12

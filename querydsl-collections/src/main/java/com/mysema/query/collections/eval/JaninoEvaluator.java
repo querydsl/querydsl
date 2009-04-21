@@ -24,14 +24,22 @@ public class JaninoEvaluator implements Evaluator{
 
     private final ExpressionEvaluator ev;
     
-    public JaninoEvaluator(ExpressionEvaluator ev){
+    private final Expr<?> projection;
+    
+    private final List<? extends Expr<?>> sources;
+    
+    public JaninoEvaluator(ExpressionEvaluator ev, List<? extends Expr<?>> sources, Expr<?> projection){
         this.ev = Assert.notNull(ev);
+        this.sources = sources;
+        this.projection = projection;        
     }
     
     public JaninoEvaluator(JavaOps ops, List<? extends Expr<?>> sources, Expr<?> expr){
         try {
             Class<?> type = expr.getType() != null ? expr.getType() : Object.class;
-            ev = new JavaSerializer(ops).handle(expr).createExpressionEvaluator(sources, type);
+            this.ev = new JavaSerializer(ops).handle(expr).createExpressionEvaluator(sources, type);
+            this.sources = sources;
+            this.projection = expr;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -43,7 +51,12 @@ public class JaninoEvaluator implements Evaluator{
             return (T)ev.evaluate(args);
         } catch (InvocationTargetException e) {
             if (e.getCause() instanceof NullPointerException){
-                throw new IllegalArgumentException("null path in expression");
+                for (int i=0; i < args.length; i++){
+                    if (args[i] == null){
+                        throw new IllegalArgumentException("null for " + sources.get(i));        
+                    }
+                }
+                throw new IllegalArgumentException("null in " + projection);
             }else{
                 throw new RuntimeException(e.getMessage(), e);    
             }            
