@@ -7,6 +7,8 @@ package com.mysema.query;
 
 import java.util.*;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
@@ -115,5 +117,5 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta>{
     public void setDistinct(boolean distinct) {
         this.distinct = distinct;        
     }
-      
+          
 }

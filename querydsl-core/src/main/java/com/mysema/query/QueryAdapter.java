@@ -78,4 +78,8 @@ public class QueryAdapter<SubType extends QueryAdapter<SubType>> implements Quer
         this.query = query;
     }
     
+    public String toString(){
+        return query.toString();
+    }
+    
 }

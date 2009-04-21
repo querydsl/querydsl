@@ -95,5 +95,8 @@ public class QueryBase<JoinMeta,SubType extends QueryBase<JoinMeta,SubType>> imp
         return _this;
     }
     
+    public String toString(){
+        return metadata.toString();
+    }
 
 }

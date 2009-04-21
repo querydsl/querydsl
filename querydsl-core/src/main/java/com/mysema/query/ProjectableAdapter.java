@@ -76,4 +76,8 @@ public abstract class ProjectableAdapter implements Projectable{
         this.projectable = Assert.notNull(projectable);
     }
     
+    public String toString(){
+        return projectable.toString();
+    }
+    
 }
