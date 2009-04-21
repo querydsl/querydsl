@@ -10,7 +10,7 @@ import java.util.*;
 
 import org.junit.Test;
 
-import com.mysema.query.annotations.Domain;
+import com.mysema.query.annotations.Entity;
 
 /**
  * Domain provides
@@ -34,7 +34,7 @@ public class DomainTest {
         it = new QItemType("it");
     }
     
-    @Domain
+    @Entity
     public interface InterfaceType{
         InterfaceType getRelation();
         List<InterfaceType> getRelation2();
@@ -42,7 +42,7 @@ public class DomainTest {
         int getRelation4();        
     }
     
-    @Domain
+    @Entity
     public static class SimpleTypes{
         transient int test;
         long id;
@@ -66,7 +66,7 @@ public class DomainTest {
         java.sql.Timestamp timestamp;
     }
     
-    @Domain
+    @Entity
     public static class RelationType{
         // list
         List<RelationType> list;
@@ -92,17 +92,17 @@ public class DomainTest {
         Map<RelationType, String> map3;
     }
     
-    @Domain
+    @Entity
     public static class RelationType2<D extends RelationType2<D>>{
         List<D> list;
     }
     
-    @Domain
+    @Entity
     public class GenericType<T extends ItemType>{
         T itemType;        
     }        
     
-    @Domain
+    @Entity
     public class ItemType{
         
     }

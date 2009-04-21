@@ -11,6 +11,7 @@ import java.util.Locale;
 
 import org.apache.commons.lang.ClassUtils;
 
+import com.mysema.query.annotations.Literal;
 import com.mysema.query.apt.model.FieldType;
 import com.sun.mirror.type.*;
 import com.sun.mirror.util.SimpleTypeVisitor;
@@ -204,6 +205,13 @@ public class TypeHelper extends SimpleTypeVisitor {
         } else if (isNumericSupported(fullName) && Number.class.isAssignableFrom(type)){
             fieldType = FieldType.NUMERIC;
             
+        } else if (type.getAnnotation(Literal.class) != null){    
+            if (Comparable.class.isAssignableFrom(type)){
+                fieldType = FieldType.COMPARABLE;
+            }else{
+                fieldType = FieldType.SIMPLE;
+            }            
+            
         } else if (isComparableSupported(fullName) && Comparable.class.isAssignableFrom(type)){
             fieldType = FieldType.COMPARABLE;
             
@@ -233,6 +241,13 @@ public class TypeHelper extends SimpleTypeVisitor {
             } else if (isNumericSupported(fullName) && Number.class.isAssignableFrom(Class.forName(fullName))) {
                 fieldType = FieldType.NUMERIC;
                 
+            } else if (arg0.getDeclaration().getAnnotation(Literal.class) != null){    
+                if (Comparable.class.isAssignableFrom(Class.forName(fullName))){
+                    fieldType = FieldType.COMPARABLE;
+                }else{
+                    fieldType = FieldType.SIMPLE;
+                }
+                
             } else if (isComparableSupported(fullName) && Comparable.class.isAssignableFrom(Class.forName(fullName))) {
                 fieldType = FieldType.COMPARABLE;
                 
@@ -250,13 +265,12 @@ public class TypeHelper extends SimpleTypeVisitor {
     }
     
     private boolean isComparableSupported(String fullName){
-        return fullName.startsWith("java.") || fullName.startsWith("javax.") ||
+        return fullName.startsWith("java.") || 
+            fullName.startsWith("javax.") ||
             fullName.startsWith("org.joda.time");
     }
     
     private boolean asSimpleType(String fullName){
-     // can't be Comparable, since joda types don't implement Comparable with generic type parameter
-//        return fullName.startsWith("org.joda.time");
         return false;
     }
     
