@@ -23,4 +23,8 @@ public class Assert {
         return object;
     }
 
+    public static String notEmpty(String contentType) {
+        return hasText(contentType);
+    }
+
 }
