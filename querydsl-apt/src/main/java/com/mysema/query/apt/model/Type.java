@@ -44,17 +44,22 @@ public class Type implements Comparable<Type> {
     
     private Set<Field> simpleMaps = new TreeSet<Field>();
 
-    private String simpleName, name, packageName;
+    private String simpleName, uncapSimpleName, name, packageName;
+    
+    private int escapeSuffix = 1;
 
     private Set<Field> stringFields = new TreeSet<Field>();
 
     private String superType;
+    
+    
     
     public Type(String superType, String packageName, String name, String simpleName) {
         this.superType = superType;
         this.packageName = packageName;
         this.name = name;        
         this.simpleName = simpleName;
+        this.uncapSimpleName = StringUtils.uncapitalize(simpleName);
     }
 
     public void addConstructor(Constructor co) {
@@ -62,6 +67,7 @@ public class Type implements Comparable<Type> {
     }
 
     public void addField(Field fieldDecl) {
+        validateField(fieldDecl);
         switch (fieldDecl.getFieldType()) {
         case BOOLEAN:
             booleanFields.add(fieldDecl);
@@ -100,6 +106,13 @@ public class Type implements Comparable<Type> {
             simpleMaps.add(fieldDecl);
             break;
         }
+    }
+
+    private Field validateField(Field field) {
+        if (field.getName().equals(this.uncapSimpleName)){
+            uncapSimpleName = StringUtils.uncapitalize(simpleName) + (escapeSuffix++);
+        }
+        return field;
     }
 
     public int compareTo(Type o) {
@@ -171,7 +184,7 @@ public class Type implements Comparable<Type> {
     }
     
     public String getUncapSimpleName(){
-        return StringUtils.uncapitalize(simpleName);
+        return uncapSimpleName;
     }
 
     public Collection<Field> getStringFields() {
@@ -187,19 +200,24 @@ public class Type implements Comparable<Type> {
     }
 
     public void include(Type decl) {
-        booleanFields.addAll(decl.booleanFields);
-        entityCollections.addAll(decl.entityCollections);
-        entityFields.addAll(decl.entityFields);
-        entityLists.addAll(decl.entityLists);
-        entityMaps.addAll(decl.entityMaps);
-        comparableFields.addAll(decl.comparableFields);
-        numericFields.addAll(decl.numericFields);
-        simpleCollections.addAll(decl.simpleCollections);
-        simpleFields.addAll(decl.simpleFields);
-        simpleLists.addAll(decl.simpleLists);
-        simpleMaps.addAll(decl.simpleMaps);
-        stringFields.addAll(decl.stringFields);
+        addAll(booleanFields, decl.booleanFields);
+        addAll(entityCollections, decl.entityCollections);
+        addAll(entityFields, decl.entityFields);
+        addAll(entityLists, decl.entityLists);
+        addAll(entityMaps, decl.entityMaps);
+        addAll(comparableFields, decl.comparableFields);
+        addAll(numericFields, decl.numericFields);
+        addAll(simpleCollections, decl.simpleCollections);
+        addAll(simpleFields, decl.simpleFields);
+        addAll(simpleLists, decl.simpleLists);
+        addAll(simpleMaps, decl.simpleMaps);
+        addAll(stringFields, decl.stringFields);
     }
 
+    private void addAll(Set<Field> target, Set<Field> source) {
+        for (Field field : source){
+            target.add(validateField(field));
+        }        
+    }
     
 }
