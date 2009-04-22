@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Type represents a query domain type.
  * 
@@ -166,6 +168,10 @@ public class Type implements Comparable<Type> {
     
     public String getSimpleName() {
         return simpleName;
+    }
+    
+    public String getUncapSimpleName(){
+        return StringUtils.uncapitalize(simpleName);
     }
 
     public Collection<Field> getStringFields() {

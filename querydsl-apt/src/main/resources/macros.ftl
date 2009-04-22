@@ -1,6 +1,7 @@
 <#assign reserved = ["isnull", "isnotnull", "getType", "getMetadata", "toString", "hashCode", "getClass", "notify", "notifyAll", "wait"]>
 
 <#macro classContent decl embeddable>    
+	public static final ${pre}${decl.simpleName} ${decl.uncapSimpleName} = new ${pre}${decl.simpleName}("${decl.uncapSimpleName}");
     <#list decl.stringFields as field>
     	<@stringField field=field/>
     </#list>    
