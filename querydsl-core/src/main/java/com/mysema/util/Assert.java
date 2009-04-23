@@ -12,10 +12,13 @@ package com.mysema.util;
  * @version $Id$
  */
 public class Assert {
-    
-    public static String hasText(String string) {
-        if (string == null || string.equals("")) throw new IllegalArgumentException("was empty");
-        return string;
+        
+    /**
+     * use notEmpty(String) instead
+     */
+    @Deprecated
+    public static String hasText(String text) {
+        return notEmpty(text);
     }
 
     public static <T> T notNull(T object) {
@@ -27,8 +30,9 @@ public class Assert {
         return object;
     }
     
-    public static String notEmpty(String contentType) {
-        return hasText(contentType);
+    public static String notEmpty(String text) {
+        if (text == null || text.equals("")) throw new IllegalArgumentException("was empty");
+        return text;
     }
     
     public static <T> T[] notEmpty(T[] objects) {
