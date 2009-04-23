@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.util;
+package com.mysema.util;
 
 /**
  * Assert provides
@@ -19,12 +19,21 @@ public class Assert {
     }
 
     public static <T> T notNull(T object) {
-        if (object == null) throw new IllegalArgumentException("was null");
-        return object;
+        return notNull(object, "was null");
     }
 
+    public static <T> T notNull(T object, String message) {
+        if (object == null) throw new IllegalArgumentException(message);
+        return object;
+    }
+    
     public static String notEmpty(String contentType) {
         return hasText(contentType);
+    }
+    
+    public static <T> T[] notEmpty(T[] objects) {
+        if(objects == null || objects.length == 0) throw new IllegalArgumentException("was empty");
+        return objects;
     }
 
 }

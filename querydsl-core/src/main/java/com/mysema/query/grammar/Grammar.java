@@ -17,7 +17,7 @@ import com.mysema.query.grammar.types.Expr.EString;
 import com.mysema.query.grammar.types.Operation.OBoolean;
 import com.mysema.query.grammar.types.Path.PEntity;
 import com.mysema.query.grammar.types.Path.PEntityCollection;
-import com.mysema.query.util.Assert;
+import com.mysema.util.Assert;
 
 /**
  * Grammar provides the factory methods for the fluent grammar.

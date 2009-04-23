@@ -19,7 +19,7 @@ import com.mysema.query.grammar.types.Operation.OComparable;
 import com.mysema.query.grammar.types.Operation.ONumber;
 import com.mysema.query.grammar.types.Operation.OString;
 import com.mysema.query.grammar.types.Operation.OStringArray;
-import com.mysema.query.util.Assert;
+import com.mysema.util.Assert;
 
 /**
  * Factory provides factory methods for various needs

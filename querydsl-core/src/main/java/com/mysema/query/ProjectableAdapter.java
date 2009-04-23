@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.util.Assert;
+import com.mysema.util.Assert;
 
 /**
  * ProjectableAdapter is an adapter implementation for the Projectable 

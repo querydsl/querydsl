@@ -29,7 +29,7 @@ import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.Expr.EConstant;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
 import com.mysema.query.serialization.BaseSerializer;
-import com.mysema.query.util.Assert;
+import com.mysema.util.Assert;
 
 
 /**

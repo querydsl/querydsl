@@ -11,7 +11,7 @@ import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.eval.JaninoEvaluator;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.util.Assert;
+import com.mysema.util.Assert;
 
 /**
  * EvaluatorUtils provides factory methods for Evaluator creation

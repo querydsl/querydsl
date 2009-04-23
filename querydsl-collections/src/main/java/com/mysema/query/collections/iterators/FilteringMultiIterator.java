@@ -27,7 +27,7 @@ import com.mysema.query.collections.utils.QueryIteratorUtils;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
-import com.mysema.query.util.Assert;
+import com.mysema.util.Assert;
 
 /**
  * FilteringMultiIterator extends the MultiIterator to provide a filtered view 

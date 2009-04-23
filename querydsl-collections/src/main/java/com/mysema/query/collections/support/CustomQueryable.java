@@ -17,7 +17,7 @@ import com.mysema.query.collections.QueryIndexSupport;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.util.Assert;
+import com.mysema.util.Assert;
 
 /**
  * CustomQueryable a ColQuery like interface for querying on custom IteratorSource sources

@@ -13,7 +13,7 @@ import com.mysema.query.collections.QueryIndexSupport;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
-import com.mysema.query.util.Assert;
+import com.mysema.util.Assert;
 
 /**
  * SimpleIndexSupport is a minimal QueryIndexSupport implementation
