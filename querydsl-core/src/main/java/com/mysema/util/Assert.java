@@ -5,6 +5,8 @@
  */
 package com.mysema.util;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Assert provides
  *
@@ -16,9 +18,12 @@ public class Assert {
     /**
      * use notEmpty(String) instead
      */
-    @Deprecated
     public static String hasText(String text) {
-        return notEmpty(text);
+        if (StringUtils.isBlank(text)) {
+            throw new IllegalArgumentException("was blank");
+        } else {
+            return text;
+        }
     }
 
     public static <T> T notNull(T object) {
