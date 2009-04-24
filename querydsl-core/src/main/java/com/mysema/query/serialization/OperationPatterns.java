@@ -20,6 +20,7 @@ import com.mysema.query.grammar.types.PathMetadata.PathType;
  * @author tiwe
  * @version $Id$
  */
+// TODO : replace String.format based expressions with custom expressions
 public abstract class OperationPatterns{
    
     private final Map<Op<?>,String> patterns = new HashMap<Op<?>,String>();

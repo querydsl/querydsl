@@ -159,6 +159,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
             }
             strings[i] = toString(args.get(i),wrap);
         }
+        // TODO : use faster custom rendering
         appendOperationResult(operator, String.format(pattern, strings));
     }
     
