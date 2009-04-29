@@ -72,6 +72,10 @@ public abstract class ProjectableAdapter implements Projectable{
         return projectable.uniqueResult(expr);
     }
 
+    public Object[]uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+        return projectable.uniqueResult(first, second, rest);
+    }
+        
     public void setProjectable(Projectable projectable) {
         this.projectable = Assert.notNull(projectable);
     }

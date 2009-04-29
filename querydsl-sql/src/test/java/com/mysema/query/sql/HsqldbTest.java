@@ -85,7 +85,7 @@ public class HsqldbTest extends SqlQueryTest {
     
     @Before
     public void setUpForTest(){
-        dialect = Dialect.forHqlsdb().newLineToSingleSpace();
+        dialect = Dialect.forHSQLDB().newLineToSingleSpace();
     }
     
     private static void addEmployee(int id, String firstName, String lastName, double salary,

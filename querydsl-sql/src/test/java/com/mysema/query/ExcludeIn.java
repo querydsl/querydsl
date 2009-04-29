@@ -21,5 +21,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Inherited
 public @interface ExcludeIn {
-    String value();
+    String[] value();
 }

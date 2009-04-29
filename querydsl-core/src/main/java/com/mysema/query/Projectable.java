@@ -111,6 +111,15 @@ public interface Projectable {
      * @return the result or null for an empty result
      */
     <RT> RT uniqueResult(Expr<RT> projection);
+    
+    /**
+     * 
+     * @param first
+     * @param second
+     * @param rest
+     * @return
+     */
+    Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest);
 
 
 }

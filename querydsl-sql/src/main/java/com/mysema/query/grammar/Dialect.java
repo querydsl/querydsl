@@ -14,6 +14,7 @@ import java.math.BigInteger;
  * Querydsl SQL supports the following database systems :
  * <ul>
  *   <li>HSQLDB</li>
+ *   <li>Derby</li>
  *   <li>MySQL</li>
  *   <li>Oracle</li>
  *   <li>PostgreSQL</li>
@@ -26,11 +27,33 @@ import java.math.BigInteger;
 public class Dialect {
     
     // tested
-    public static SqlOps forHqlsdb(){
+    public static SqlOps forHSQLDB(){
         return new SqlOps(){{                                  
             add(Ops.OpMath.ROUND, "round(%s,0)");
             add(Ops.TRIM, "trim(both from %s)");
         }};        
+    }
+    
+    // tested
+    public static SqlOps forDerby(){
+    	return new SqlOps(){{
+    		add(Ops.CONCAT, "%s || %s");
+    		add(Ops.OpMath.ROUND, "floor(%s)");
+    		add(Ops.SUBSTR1ARG,   "substr(%s,%s+1)");
+    		add(Ops.SUBSTR2ARGS,  "substr(%s,%s+1,%s+1)");
+    		
+            add(Ops.STARTSWITH, "%s like (%s || '%%')");
+            add(Ops.ENDSWITH, "%s like ('%%' || %s)");
+            add(Ops.STARTSWITH_IC, "lower(%s) like (lower(%s) || '%%')");
+            add(Ops.ENDSWITH_IC, "lower(%s) like ('%%' || lower(%s))");
+            
+            add(Ops.OpDateTime.YEAR, "year(%s)");
+            add(Ops.OpDateTime.MONTH, "month(%s)");
+            
+            add(Ops.OpDateTime.HOUR, "hour(%s)");
+            add(Ops.OpDateTime.MINUTE, "minute(%s)");
+            add(Ops.OpDateTime.SECOND, "second(%s)");
+    	}};
     }
     
     // tested

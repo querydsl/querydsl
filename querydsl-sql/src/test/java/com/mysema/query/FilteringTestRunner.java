@@ -6,6 +6,7 @@
 package com.mysema.query;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import org.junit.internal.runners.InitializationError;
 import org.junit.internal.runners.JUnit4ClassRunner;
@@ -61,8 +62,8 @@ public class FilteringTestRunner extends JUnit4ClassRunner{
         if (label != null){
             ExcludeIn ex = method.getAnnotation(ExcludeIn.class);
             IncludeIn in = method.getAnnotation(IncludeIn.class);
-            ignore |= ex != null && ex.value().contains(label);
-            ignore |= in != null && !in.value().contains(label);
+            ignore |= ex != null && Arrays.asList(ex.value()).contains(label);
+            ignore |= in != null && !Arrays.asList(in.value()).contains(label);
         }
         return ignore;
     }

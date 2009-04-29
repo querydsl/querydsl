@@ -72,4 +72,9 @@ public abstract class QueryBaseWithProjection<JoinMeta,SubType
         Iterator<RT> it = iterate(expr);
         return it.hasNext() ? it.next() : null;
     }
+    
+    public Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+        Iterator<Object[]> it = iterate(first, second, rest);
+        return it.hasNext() ? it.next() : null;
+    }
 }

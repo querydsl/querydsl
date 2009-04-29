@@ -137,14 +137,14 @@ public abstract class SqlQueryTest {
     }
     
     @Test
-    @ExcludeIn("oracle")
+    @ExcludeIn({"oracle","derby"})
     public void testSelectBooleanExpr() throws SQLException{
         // TODO : FIXME
         System.out.println(q().from(survey).list(survey.id.eq(0)));
     }
     
     @Test
-    @ExcludeIn("oracle")
+    @ExcludeIn({"oracle","derby"})
     public void testSelectBooleanExpr2() throws SQLException{
         // TODO : FIXME
         System.out.println(q().from(survey).list(survey.id.gt(0)));
@@ -254,7 +254,7 @@ public abstract class SqlQueryTest {
     }
     
     @Test
-    @ExcludeIn("oracle")
+    @ExcludeIn({"oracle","derby"})
     public void testLimitAndOffset() throws SQLException{
         // limit offset
         expectedQuery = "select employee.id from employee employee limit 4 offset 3";
@@ -326,7 +326,7 @@ public abstract class SqlQueryTest {
     }
     
     @Test
-    @ExcludeIn("hsqldb")
+    @ExcludeIn({"hsqldb","derby"})
     public void testQueryWithoutFrom() throws SQLException{
         q().list(add(new Expr.EConstant<Integer>(1),1));
     }
@@ -339,6 +339,7 @@ public abstract class SqlQueryTest {
     }
     
     @Test
+    @ExcludeIn({"derby"})
     public void testMathFunctions() throws SQLException{
         Expr<Integer> i = new Expr.EConstant<Integer>(1);
         Expr<Double> d = new Expr.EConstant<Double>(1.0);
@@ -367,6 +368,7 @@ public abstract class SqlQueryTest {
     }
     
     @Test
+    @ExcludeIn({"derby"})
     public void testStringFunctions() throws SQLException{
         EString s = employee.firstname;
         for (EString e : Arrays.<EString>asList(
@@ -395,6 +397,7 @@ public abstract class SqlQueryTest {
     }
     
     @Test
+    @ExcludeIn({"derby"})
     public void testDateTimeFunctions() throws SQLException{
         Expr<Date> d = new Expr.EConstant<Date>(new Date());
         Expr<Time> t = new Expr.EConstant<Time>(new Time(0));
@@ -420,6 +423,7 @@ public abstract class SqlQueryTest {
     }
     
     @Test
+    @ExcludeIn({"derby"})
     public void testCasts() throws SQLException{        
         ENumber<?> num = employee.id;
         Expr<?>[] expr = new Expr[]{

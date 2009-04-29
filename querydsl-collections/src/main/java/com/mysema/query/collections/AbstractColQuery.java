@@ -393,8 +393,13 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
             close();
         }
     }
-
-
-
+    
+    public Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+        try {
+            return super.uniqueResult(first, second, rest);
+        } finally {
+            close();
+        }
+    }
 
 }
