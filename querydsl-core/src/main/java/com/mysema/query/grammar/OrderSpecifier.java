@@ -5,8 +5,8 @@
  */
 package com.mysema.query.grammar;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.util.Assert;
 
 /**
  * OrderSpecifier represents an order by element in a Query instance

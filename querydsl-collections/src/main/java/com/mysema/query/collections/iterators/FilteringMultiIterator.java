@@ -18,6 +18,7 @@ import org.codehaus.janino.Scanner.ScanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.eval.FilteredJavaSerializer;
@@ -27,7 +28,6 @@ import com.mysema.query.collections.utils.QueryIteratorUtils;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Expr.EBoolean;
-import com.mysema.util.Assert;
 
 /**
  * FilteringMultiIterator extends the MultiIterator to provide a filtered view 

@@ -7,8 +7,8 @@ package com.mysema.query;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.util.Assert;
 
 /**
  * JoinExpression is a join element in a Query instance

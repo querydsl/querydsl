@@ -3,7 +3,7 @@ package com.mysema.query.serialization;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysema.util.Assert;
+import com.mysema.commons.lang.Assert;
 
 /**
  * PatternElement provides

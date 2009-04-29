@@ -7,6 +7,7 @@ package com.mysema.query.collections.support;
 
 import java.util.List;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.support.DefaultIndexSupport.IndexedPath;
 import com.mysema.query.collections.utils.EvaluatorUtils;
@@ -17,7 +18,6 @@ import com.mysema.query.grammar.types.Operation;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EConstant;
-import com.mysema.util.Assert;
 
 /**
  * IndexCreationTask provides

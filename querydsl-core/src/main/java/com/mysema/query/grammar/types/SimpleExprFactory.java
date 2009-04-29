@@ -8,6 +8,7 @@ package com.mysema.query.grammar.types;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.grammar.Ops.Op;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
@@ -19,7 +20,6 @@ import com.mysema.query.grammar.types.Operation.OComparable;
 import com.mysema.query.grammar.types.Operation.ONumber;
 import com.mysema.query.grammar.types.Operation.OString;
 import com.mysema.query.grammar.types.Operation.OStringArray;
-import com.mysema.util.Assert;
 
 /**
  * Factory provides factory methods for various needs

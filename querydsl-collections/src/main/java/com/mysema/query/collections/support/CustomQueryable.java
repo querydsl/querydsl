@@ -8,6 +8,7 @@ package com.mysema.query.collections.support;
 import java.util.List;
 import java.util.Map;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.ProjectableAdapter;
 import com.mysema.query.QueryMetadata;
@@ -17,7 +18,6 @@ import com.mysema.query.collections.QueryIndexSupport;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.util.Assert;
 
 /**
  * CustomQueryable a ColQuery like interface for querying on custom IteratorSource sources

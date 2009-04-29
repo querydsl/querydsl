@@ -7,11 +7,11 @@ package com.mysema.query.collections.utils;
 
 import java.util.List;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.eval.JaninoEvaluator;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.types.Expr;
-import com.mysema.util.Assert;
 
 /**
  * EvaluatorUtils provides factory methods for Evaluator creation

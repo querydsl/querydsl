@@ -21,6 +21,7 @@ import org.codehaus.janino.Scanner.ScanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.grammar.JavaOps;
 import com.mysema.query.grammar.Ops;
 import com.mysema.query.grammar.Ops.Op;
@@ -29,7 +30,6 @@ import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.Expr.EConstant;
 import com.mysema.query.grammar.types.PathMetadata.PathType;
 import com.mysema.query.serialization.BaseSerializer;
-import com.mysema.util.Assert;
 
 
 /**

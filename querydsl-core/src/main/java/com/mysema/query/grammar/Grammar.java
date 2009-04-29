@@ -7,8 +7,14 @@ package com.mysema.query.grammar;
 
 import java.util.Collection;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.grammar.Ops.OpNumberAgg;
-import com.mysema.query.grammar.types.*;
+import com.mysema.query.grammar.types.Alias;
+import com.mysema.query.grammar.types.CollectionType;
+import com.mysema.query.grammar.types.CountExpression;
+import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.grammar.types.ExprFactory;
+import com.mysema.query.grammar.types.SimpleExprFactory;
 import com.mysema.query.grammar.types.Expr.EBoolean;
 import com.mysema.query.grammar.types.Expr.EComparable;
 import com.mysema.query.grammar.types.Expr.ENumber;
@@ -17,7 +23,6 @@ import com.mysema.query.grammar.types.Expr.EString;
 import com.mysema.query.grammar.types.Operation.OBoolean;
 import com.mysema.query.grammar.types.Path.PEntity;
 import com.mysema.query.grammar.types.Path.PEntityCollection;
-import com.mysema.util.Assert;
 
 /**
  * Grammar provides the factory methods for the fluent grammar.
