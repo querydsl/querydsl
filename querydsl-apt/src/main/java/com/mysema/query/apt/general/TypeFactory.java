@@ -25,7 +25,7 @@ public class TypeFactory {
             Field field = new Field(
                     FieldHelper.javaSafe(f.getName()), // name 
                     FieldHelper.realName(f.getName()), // realName
-                    null,  // keyTypeName
+                    typeHelper.getKeyTypeName(),
                     typeHelper.getPackageName(),
                     typeHelper.getFullName(),
                     typeHelper.getSimpleName(),
