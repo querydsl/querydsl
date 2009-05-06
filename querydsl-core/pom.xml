@@ -31,7 +31,7 @@
 	<dependency>
 	  <groupId>com.mysema.commons</groupId>
 	  <artifactId>mysema-commons-lang</artifactId>
-      <version>0.1.1</version>	
+      <version>0.1.2-SNAPSHOT</version>	
 	</dependency>
     
     <!-- alias dependencies -->
