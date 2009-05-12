@@ -15,11 +15,11 @@ import com.mysema.query.CascadingBoolean;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryBaseWithProjection;
+import com.mysema.query.QueryModifiers;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathMetadata;
 import com.mysema.query.grammar.types.Expr.EEntity;
-import com.mysema.query.hql.QueryModifiers;
 
 /**
  * HqlQueryBase is a base Query class for HQL

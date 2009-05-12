@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.Projectable;
+import com.mysema.query.SearchResults;
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlOps;
 import com.mysema.query.grammar.HqlQueryBase;

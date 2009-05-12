@@ -4,7 +4,7 @@
  * 
  * originally developed in Bookmarks project
  */
-package com.mysema.query.hql;
+package com.mysema.query;
 
 /**
  * QueryModifiers combines limit and offset info into a single type
@@ -12,7 +12,6 @@ package com.mysema.query.hql;
  * @author Timo Westkamper
  * @version $Id$
  */
-// TODO : move these to querydsl-core
 public final class QueryModifiers {
     
     private static final QueryModifiers DEFAULT = new QueryModifiers(Integer.MAX_VALUE,0);
