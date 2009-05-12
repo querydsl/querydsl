@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>0.3.1</version>
+  <version>0.3.1-SNAPSHOT</version>
   <name>Querydsl</name>
   <description>parent project for querydsl modules</description>
   <url>http://source.mysema.com/display/querydsl</url>
@@ -109,6 +109,16 @@
     <developerConnection>${svn.path}/${path.suffix}</developerConnection>
     <url>${viewvc.path}/${path.suffix}</url>
   </scm>
+  
+  <build>
+  	<plugins>
+  	  <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.5</version>  	  	
+	  </plugin>	
+	</plugins>
+  </build>
 
   <reporting>
     <plugins>
