@@ -36,6 +36,8 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta>{
     private CascadingBoolean where = new CascadingBoolean();
     
     private boolean distinct;
+    
+    private QueryModifiers modifiers = QueryModifiers.getDefault();
 
     public List<? extends Expr<?>> getGroupBy() {
         return Collections.unmodifiableList(groupBy);
@@ -117,5 +119,15 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta>{
     public void setDistinct(boolean distinct) {
         this.distinct = distinct;        
     }
+
+	public QueryModifiers getModifiers() {
+		return modifiers;
+	}
+
+	public void setModifiers(QueryModifiers restriction) {
+		this.modifiers = restriction;
+	}
+    
+    
           
 }

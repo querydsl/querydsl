@@ -120,6 +120,14 @@ public interface Projectable {
      * @return
      */
     Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest);
+    
+    /**
+     * 
+     * @param <RT>
+     * @param expr
+     * @return
+     */
+    <RT> SearchResults<RT> listResults(Expr<RT> expr);
 
 
 }

@@ -57,6 +57,18 @@ public abstract class QueryBaseWithProjection<JoinMeta,SubType
     public <RT> List<RT> list(Expr<RT> projection) {
         return IteratorUtils.toList(iterate(projection));
     }    
+    
+    public <RT> SearchResults<RT> listResults(Expr<RT> projection){
+    	QueryModifiers modifiers = getMetadata().getModifiers();
+    	List<RT> list = list(projection);
+    	if (list.isEmpty()){
+    		return SearchResults.emptyResults();
+    	}else{
+    		int start = Math.min(modifiers.getOffset(), list.size());
+    		int end = Math.min(modifiers.getOffset() + modifiers.getLimit(), list.size());
+    		return new SearchResults<RT>(list.subList(start, end), modifiers, list.size());
+    	}    	
+    }
 
     public final List<Object[]> listDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         getMetadata().setDistinct(true);
