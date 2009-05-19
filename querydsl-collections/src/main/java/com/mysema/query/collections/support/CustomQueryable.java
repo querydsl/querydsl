@@ -53,8 +53,8 @@ public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends P
     }
     
     
-    protected ColQuery getInnerQuery(){
-        return innerQuery;
+    protected QueryMetadata<Object> getMetadata(){
+        return innerQuery.getMetadata();
     }
     
     

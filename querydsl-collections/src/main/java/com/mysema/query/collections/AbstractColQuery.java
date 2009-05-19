@@ -11,7 +11,15 @@ import static com.mysema.query.collections.utils.QueryIteratorUtils.transform;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.collections15.IteratorUtils;
 import org.apache.commons.collections15.Predicate;
@@ -23,8 +31,11 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.Projectable;
 import com.mysema.query.QueryBaseWithProjection;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.QueryModifiers;
+import com.mysema.query.SearchResults;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.iterators.FilteringMultiIterator;
+import com.mysema.query.collections.iterators.LimitingIterator;
 import com.mysema.query.collections.iterators.MultiIterator;
 import com.mysema.query.collections.support.DefaultIndexSupport;
 import com.mysema.query.collections.support.DefaultSourceSortingSupport;
@@ -57,10 +68,8 @@ import com.mysema.query.util.CloseableIterator;
  */
 // TODO : implement leftJoin, rightJoin and fullJoin
 // TODO : implement groupBy and having
+// TODO : remove close handling
 public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends QueryBaseWithProjection<Object, SubType> implements Closeable, Projectable{
-
-    @SuppressWarnings("unchecked")
-    private final SubType _this = (SubType) this;
 
     private boolean arrayProjection = false;
 
@@ -186,6 +195,11 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
     
     protected QueryIndexSupport createIndexSupport(Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops,List<Expr<?>> sources) {
         return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);
+    }
+    
+    private <RT> Iterator<RT> createPagedIterator(Expr<RT> projection) throws Exception{
+    	Iterator<RT> iterator = createIterator(projection);
+        return LimitingIterator.transform(iterator, getMetadata().getModifiers());
     }
     
     private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
@@ -318,7 +332,6 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
         return it;
     }
     
-    @SuppressWarnings("unchecked")
     protected <RT> Iterator<RT> handleSelect(Iterator<?> it, List<Expr<?>> sources, Expr<RT> projection) throws Exception {
         Iterator<RT> rv = transform(ops, it, sources, projection);
         if (getMetadata().isDistinct()){
@@ -335,7 +348,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
         
         addToProjection(projection);
         try {
-            return asCloseableIterator(createIterator(projection));
+            return asCloseableIterator(createPagedIterator(projection));
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -344,7 +357,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
     public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {        
         addToProjection(projection);
         try {
-            return asCloseableIterator(createIterator(projection));
+            return asCloseableIterator(createPagedIterator(projection));
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -402,4 +415,33 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
         }
     }
 
+    // TODO : optimize
+	public <RT> SearchResults<RT> listResults(Expr<RT> projection) {
+    	QueryModifiers modifiers = getMetadata().getModifiers();
+    	List<RT> list;
+    	try {
+    		list = IteratorUtils.toList(createIterator(projection));
+    	}catch(Exception e){
+    		throw new RuntimeException(e.getMessage(), e);
+    	}
+    	if (list.isEmpty()){
+    		return SearchResults.emptyResults();
+    	}else if (!modifiers.isRestricting()){	
+    		return new SearchResults<RT>(list, modifiers, list.size());
+    	}else{
+    		int start = 0;
+    		int end = list.size();
+    		if (modifiers.getOffset() != null){
+    			if (modifiers.getOffset() < list.size()){
+    				start = modifiers.getOffset().intValue();
+    			}else{
+    				return new SearchResults<RT>(Collections.<RT>emptyList(), modifiers, list.size());
+    			}
+    		}    		
+    		if (modifiers.getLimit() != null){
+    			end = (int)Math.min(start + modifiers.getLimit(), list.size());
+    		}
+    		return new SearchResults<RT>(list.subList(start, end), modifiers, list.size());
+    	}    	
+    }
 }
