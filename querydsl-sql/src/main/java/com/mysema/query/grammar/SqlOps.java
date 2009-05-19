@@ -313,10 +313,10 @@ public class SqlOps extends OperationPatterns {
         return this;
     }
     
-    public String limitOffsetCondition(int limit, int offset){    
-        if (offset == 0){
+    public String limitOffsetCondition(Long limit, Long offset){    
+        if (offset == null){
             return String.format(limitTemplate, limit);
-        }else if (limit == 0){
+        }else if (limit == null){
             return String.format(offsetTemplate, offset);
         }else{
             return String.format(limitOffsetTemplate, limit, offset, limit + offset);    

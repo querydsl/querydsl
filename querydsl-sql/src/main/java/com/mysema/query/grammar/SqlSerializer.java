@@ -37,7 +37,7 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
         // template method, for subclasses do override        
     }
     
-    public void serialize(QueryMetadata<SqlJoinMeta> metadata, int limit,  int offset, boolean forCountRow){
+    public void serialize(QueryMetadata<SqlJoinMeta> metadata, boolean forCountRow){
         List<? extends Expr<?>> select = metadata.getProjection(); 
         List<JoinExpression<SqlJoinMeta>> joins = metadata.getJoins();
         Expr.EBoolean where = metadata.getWhere();
@@ -112,7 +112,10 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
         
         beforeOrderBy();
         
-        if (!ops.limitAndOffsetSymbols() && (limit > 0 || offset > 0)){
+        Long limit = metadata.getModifiers().getLimit();
+        Long offset = metadata.getModifiers().getOffset();
+        
+        if (!ops.limitAndOffsetSymbols() && metadata.getModifiers().isRestricting() && !forCountRow){
             if (where == null) append(ops.where());
             append(ops.limitOffsetCondition(limit, offset));
         }
@@ -127,11 +130,11 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
                 first = false;
             }
         }
-        if (ops.limitAndOffsetSymbols()){
-            if (limit > 0){
+        if (ops.limitAndOffsetSymbols() && metadata.getModifiers().isRestricting() && !forCountRow){
+            if (limit != null){
                 append(ops.limit()).append(String.valueOf(limit));
             }
-            if (offset > 0){
+            if (offset != null){
                 append(ops.offset()).append(String.valueOf(offset));
             }    
         }               
@@ -203,7 +206,7 @@ public class SqlSerializer extends BaseSerializer<SqlSerializer>{
     
     protected void visit(SubQuery<SqlJoinMeta,?> query) {
         append("(");
-        serialize(query.getQuery().getMetadata(), 0, 0, false);
+        serialize(query.getQuery().getMetadata(), false);
         append(")");
     }
 

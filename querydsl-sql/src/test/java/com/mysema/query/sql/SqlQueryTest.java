@@ -452,8 +452,8 @@ public abstract class SqlQueryTest {
     protected final SqlQuery q(){
         return new SqlQuery(connHolder.get(), dialect){
             @Override
-            protected String buildQueryString() {
-                String rv = super.buildQueryString();
+            protected String buildQueryString(boolean countRow) {
+                String rv = super.buildQueryString(countRow);
                 if (expectedQuery != null){
                    assertEquals(expectedQuery, rv);
                    expectedQuery = null;

@@ -19,6 +19,8 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.query.Projectable;
 import com.mysema.query.QueryBaseWithProjection;
+import com.mysema.query.QueryModifiers;
+import com.mysema.query.SearchResults;
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.SqlJoinMeta;
 import com.mysema.query.grammar.SqlOps;
@@ -39,21 +41,16 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>>
     
     private String queryString;
     
-    private int limit, offset;
-    
     private List<Object> constants;
     
     private final Connection conn;
     
     protected final SqlOps ops;
     
-    private boolean forCountRow = false;
+//    private boolean forCountRow = false;
     
     private SubQuery<SqlJoinMeta,?>[] sq;
-    
-    @SuppressWarnings("unchecked")
-    private SubType _this = (SubType)this;
-    
+        
     public AbstractSqlQuery(Connection conn, SqlOps ops){
         this.conn = conn;
         this.ops = ops;
@@ -114,6 +111,17 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>>
             String error = "Caught " + e.getClass().getName();
             logger.error(error, e);
             throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+    
+    public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
+        addToProjection(expr);
+        long total = count();
+        if (total > 0) {
+        	QueryModifiers modifiers = getMetadata().getModifiers();
+            return new SearchResults<RT>(list(expr), modifiers, total);
+        } else {
+            return SearchResults.emptyResults();
         }
     }
     
@@ -194,7 +202,7 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>>
     @Override
     public String toString(){
         if (queryString == null){
-            queryString = buildQueryString();    
+            queryString = buildQueryString(false);    
         }        
         return queryString;
     }
@@ -210,20 +218,20 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>>
         return new SqlSerializer(ops);
     }
     
-    protected String buildQueryString() {
+    protected String buildQueryString(boolean forCountRow) {
         SqlSerializer serializer = createSerializer();
         if (sq != null){
             serializer.serializeUnion(sq, getMetadata().getOrderBy());
         }else{
-            serializer.serialize(getMetadata(), limit, offset, forCountRow);    
+            serializer.serialize(getMetadata(), forCountRow);    
         }                       
         constants = serializer.getConstants();      
         return serializer.toString();
     }
 
     private long unsafeCount() throws SQLException{
-        forCountRow = true;  
-        String queryString = toString();
+//        forCountRow = true;  
+        String queryString = buildQueryString(true);
         logger.debug("query : {}", queryString);
         System.out.println(queryString);
         PreparedStatement stmt = conn.prepareStatement(queryString);
@@ -262,16 +270,6 @@ public class AbstractSqlQuery<SubType extends AbstractSqlQuery<SubType>>
         }
     }
 
-    public SubType limit(int i) {
-        this.limit = i;
-        return _this;
-    }
-    
-    public SubType offset(int o) {
-        this.offset = o;
-        return _this;
-    }
-    
     public class UnionBuilder<RT>{
         
         public UnionBuilder<RT> orderBy(OrderSpecifier<?>... o) {
