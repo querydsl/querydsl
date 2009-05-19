@@ -30,26 +30,30 @@ public class HqlIntegrationTest extends HqlParserTest{
     
     private Session session;
         
-    @Override
-    protected void parse() throws RecognitionException, TokenStreamException{
-        try{
-            System.out.println("query : " + toString().replace('\n', ' '));
+    protected TestQuery q(){
+    	return new TestQuery(){
+    		public void parse() throws RecognitionException, TokenStreamException{
+    	        try{
+    	            System.out.println("query : " + toString().replace('\n', ' '));
 
-            // create Query and execute it
-            Query query = session.createQuery(toString());
-            HqlQuery.setConstants(query, getConstants());
-            try{
-                query.list();    
-            }catch(Exception e){
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }    
-        }finally{            
-            clear();
-            System.out.println();
-        }
-                
+    	            // create Query and execute it
+    	            Query query = session.createQuery(toString());
+    	            HqlQuery.setConstants(query, getConstants());
+    	            try{
+    	                query.list();    
+    	            }catch(Exception e){
+    	                e.printStackTrace();
+    	                throw new RuntimeException(e);
+    	            }    
+    	        }finally{            
+    	            System.out.println();
+    	        }    	                
+    	    }
+    	};
     }
+    
+    @Override
+    
     
     @Test
     public void testGroupBy() throws Exception {

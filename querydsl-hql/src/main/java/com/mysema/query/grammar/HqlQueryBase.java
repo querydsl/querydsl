@@ -15,7 +15,6 @@ import com.mysema.query.CascadingBoolean;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryBaseWithProjection;
-import com.mysema.query.QueryModifiers;
 import com.mysema.query.grammar.types.Expr;
 import com.mysema.query.grammar.types.Path;
 import com.mysema.query.grammar.types.PathMetadata;
@@ -36,12 +35,7 @@ public abstract class HqlQueryBase<SubType extends HqlQueryBase<SubType>> extend
     
     private String countRowsString, queryString;
     
-    protected Integer limit, offset;
-    
     private final HqlOps ops;
-    
-    @SuppressWarnings("unchecked")
-    private SubType _this = (SubType)this;
     
     public HqlQueryBase(HqlOps ops){
         this.ops = ops;
@@ -110,20 +104,6 @@ public abstract class HqlQueryBase<SubType extends HqlQueryBase<SubType>> extend
         return _this;
     }
     
-    public SubType limit(int limit) {
-        this.limit = limit;
-        return _this;
-    }
-    
-    public SubType offset(int offset) {
-        this.offset = offset;
-        return _this;
-    }
-    
-    public SubType restrict(QueryModifiers mod) {
-        return limit(mod.getLimit()).offset(mod.getOffset());
-    }    
-
     public String toCountRowsString(){
         if (countRowsString == null){
             countRowsString = buildQueryString(true);    

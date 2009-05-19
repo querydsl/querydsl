@@ -14,6 +14,8 @@ import javax.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.QueryModifiers;
+import com.mysema.query.SearchResults;
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlOps;
 import com.mysema.query.grammar.HqlQueryBase;
@@ -40,11 +42,17 @@ public class AbstractJpaqlQuery<SubType extends AbstractJpaqlQuery<SubType>> ext
         this.em = em;
     }
     
-    private Query createQuery(String queryString, Integer limit, Integer offset) {
+    private Query createQuery(String queryString, QueryModifiers modifiers) {
         Query query = em.createQuery(queryString);
         setConstants(query, getConstants());        
-        if (limit != null) query.setMaxResults(limit);
-        if (offset != null) query.setFirstResult(offset);
+        if (modifiers != null){
+        	if (modifiers.getLimit() != null){
+        		query.setMaxResults(modifiers.getLimit().intValue());
+        	}
+            if (modifiers.getOffset() != null){
+            	query.setFirstResult(modifiers.getOffset().intValue());	
+            }
+        }  
         return query;
     }
         
@@ -61,7 +69,7 @@ public class AbstractJpaqlQuery<SubType extends AbstractJpaqlQuery<SubType>> ext
         addToProjection(expr);
         String queryString = toString();
         logger.debug("query : {}", queryString);
-        Query query = createQuery(queryString, limit, offset);
+        Query query = createQuery(queryString, getMetadata().getModifiers());
         return query.getResultList();
     }
     
@@ -71,10 +79,27 @@ public class AbstractJpaqlQuery<SubType extends AbstractJpaqlQuery<SubType>> ext
         addToProjection(rest);
         String queryString = toString();
         logger.debug("query : {}", queryString);
-        Query query = createQuery(queryString, limit, offset);
+        Query query = createQuery(queryString, getMetadata().getModifiers());
         return query.getResultList();
     }
 
+    public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
+        addToProjection(expr);
+        Query query = createQuery(toCountRowsString(),null);
+        long total = (Long) query.getSingleResult();
+        if (total > 0) {
+        	QueryModifiers modifiers = getMetadata().getModifiers();
+            String queryString = toString();
+            logger.debug("query : {}", queryString);
+            query = createQuery(queryString, modifiers);
+            @SuppressWarnings("unchecked")
+            List<RT> list = query.getResultList();
+            return new SearchResults<RT>(list, modifiers, total);
+        } else {
+            return SearchResults.emptyResults();
+        }
+    }
+    
     public long count() {
         return uniqueResult(HqlGrammar.count());
     }

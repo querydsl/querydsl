@@ -1,24 +1,8 @@
-/*
- * Copyright (c) 2008 Mysema Ltd.
- * All rights reserved.
- * 
- */
 package com.mysema.query.hql;
 
-import com.mysema.query.grammar.HqlOps;
-import com.mysema.query.grammar.HqlQueryBase;
+public interface Constants {
 
-/**
- * QueryBaseWithDomain provides
- *
- * @author tiwe
- * @version $Id$
- */
-public abstract class QueryBaseWithDomain<A extends QueryBaseWithDomain<A>> extends HqlQueryBase<A>{
-    
-    public QueryBaseWithDomain(){super(new HqlOps());}
-    
-    QAccount account = new QAccount("account");
+	QAccount account = new QAccount("account");
     
     QAnimal an = new QAnimal("an");
     

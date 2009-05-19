@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.Projectable;
+import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.grammar.HqlGrammar;
 import com.mysema.query.grammar.HqlOps;
@@ -43,11 +44,17 @@ public class AbstractHqlQuery<A extends AbstractHqlQuery<A>> extends HqlQueryBas
         this.session = session;
     }
     
-    private Query createQuery(String queryString, Integer limit, Integer offset) {
+    private Query createQuery(String queryString, QueryModifiers modifiers) {
         Query query = session.createQuery(queryString);
-        setConstants(query, getConstants());        
-        if (limit != null) query.setMaxResults(limit);
-        if (offset != null) query.setFirstResult(offset);
+        setConstants(query, getConstants());    
+        if (modifiers != null){
+        	if (modifiers.getLimit() != null){
+        		query.setMaxResults(modifiers.getLimit().intValue());
+        	}
+            if (modifiers.getOffset() != null){
+            	query.setFirstResult(modifiers.getOffset().intValue());	
+            }
+        }        
         return query;
     }
     
@@ -73,7 +80,7 @@ public class AbstractHqlQuery<A extends AbstractHqlQuery<A>> extends HqlQueryBas
         addToProjection(expr);
         String queryString = toString();
         logger.debug("query : {}", queryString);
-        Query query = createQuery(queryString, limit, offset);
+        Query query = createQuery(queryString, getMetadata().getModifiers());
         return query.list();
     }
     
@@ -83,23 +90,22 @@ public class AbstractHqlQuery<A extends AbstractHqlQuery<A>> extends HqlQueryBas
         addToProjection(rest);
         String queryString = toString();
         logger.debug("query : {}", queryString);
-        Query query = createQuery(queryString, limit, offset);
+        Query query = createQuery(queryString, getMetadata().getModifiers());
         return query.list();        
     }
     
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
         addToProjection(expr);
-        Query query = createQuery(toCountRowsString(), null, null);
+        Query query = createQuery(toCountRowsString(),null);
         long total = (Long) query.uniqueResult();
         if (total > 0) {
+        	QueryModifiers modifiers = getMetadata().getModifiers();
             String queryString = toString();
             logger.debug("query : {}", queryString);
-            query = createQuery(queryString, limit, offset);
+            query = createQuery(queryString, modifiers);
             @SuppressWarnings("unchecked")
             List<RT> list = query.list();
-            return new SearchResults<RT>(list,
-                    limit == null ? Long.MAX_VALUE : limit.longValue(),
-                    offset == null ? 0l : offset.longValue(), total);
+            return new SearchResults<RT>(list, modifiers, total);
         } else {
             return SearchResults.emptyResults();
         }
@@ -118,7 +124,7 @@ public class AbstractHqlQuery<A extends AbstractHqlQuery<A>> extends HqlQueryBas
         addToProjection(expr);
         String queryString = toString();
         logger.debug("query : {}", queryString);
-        Query query = createQuery(queryString, 1, null);
+        Query query = createQuery(queryString, QueryModifiers.limit(1));
         return (RT)query.uniqueResult();
     }
 

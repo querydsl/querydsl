@@ -5,10 +5,25 @@
  */
 package com.mysema.query.hql;
 
-import com.mysema.query.grammar.Grammar;
 import static com.mysema.query.grammar.Grammar.not;
 import static com.mysema.query.grammar.GrammarWithAlias.$;
-import static com.mysema.query.grammar.HqlGrammar.*;
+import static com.mysema.query.grammar.HqlGrammar.current_date;
+import static com.mysema.query.grammar.HqlGrammar.current_time;
+import static com.mysema.query.grammar.HqlGrammar.current_timestamp;
+import static com.mysema.query.grammar.HqlGrammar.day;
+import static com.mysema.query.grammar.HqlGrammar.distinct;
+import static com.mysema.query.grammar.HqlGrammar.hour;
+import static com.mysema.query.grammar.HqlGrammar.isempty;
+import static com.mysema.query.grammar.HqlGrammar.isnotempty;
+import static com.mysema.query.grammar.HqlGrammar.maxelement;
+import static com.mysema.query.grammar.HqlGrammar.maxindex;
+import static com.mysema.query.grammar.HqlGrammar.minelement;
+import static com.mysema.query.grammar.HqlGrammar.minindex;
+import static com.mysema.query.grammar.HqlGrammar.minute;
+import static com.mysema.query.grammar.HqlGrammar.month;
+import static com.mysema.query.grammar.HqlGrammar.second;
+import static com.mysema.query.grammar.HqlGrammar.sum;
+import static com.mysema.query.grammar.HqlGrammar.year;
 import static com.mysema.query.grammar.QMath.add;
 import static com.mysema.query.grammar.QMath.div;
 import static com.mysema.query.grammar.QMath.mult;
@@ -20,13 +35,12 @@ import static org.junit.Assert.assertNull;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
 
+import com.mysema.query.grammar.Grammar;
 import com.mysema.query.grammar.HqlOps;
-import com.mysema.query.grammar.HqlQueryBase;
 import com.mysema.query.grammar.HqlSerializer;
 import com.mysema.query.grammar.types.Custom;
 import com.mysema.query.grammar.types.Expr;
@@ -39,10 +53,8 @@ import com.mysema.query.grammar.types.Expr.ENumber;
  * @author tiwe
  * @version $Id$
  */
-public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
-    
-    public FeaturesTest(){super(new HqlOps());}
-    
+public class FeaturesTest {
+   
  // AuditLog
     QAuditLog log = new QAuditLog("log");
    
@@ -463,20 +475,5 @@ public class FeaturesTest extends HqlQueryBase<FeaturesTest>{
     public static final class BookmarkDTO{
         
     }
-
-    public long count() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second,
-            Expr<?>... rest) {
-        // TODO Auto-generated method stub
-        return null;
-    }    
+    
 }
