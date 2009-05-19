@@ -18,7 +18,7 @@ import com.mysema.query.grammar.types.Expr.EBoolean;
  */
 public class QueryBase<JoinMeta,SubType extends QueryBase<JoinMeta,SubType>> implements Query<SubType> {
     @SuppressWarnings("unchecked")
-    private SubType _this = (SubType)this;
+    protected final SubType _this = (SubType)this;
     
     private QueryMetadata<JoinMeta> metadata;
     

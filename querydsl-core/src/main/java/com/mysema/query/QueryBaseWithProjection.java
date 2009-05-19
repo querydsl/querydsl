@@ -40,6 +40,21 @@ public abstract class QueryBaseWithProjection<JoinMeta,SubType
         return count();
     }
     
+    public SubType limit(long limit){
+    	getMetadata().getModifiers().setLimit(limit);
+    	return _this;
+    }
+    
+    public SubType offset(long offset){
+    	getMetadata().getModifiers().setOffset(offset);
+    	return _this;
+    }
+    
+    public SubType restrict(QueryModifiers modifiers){
+    	getMetadata().setModifiers(modifiers);
+    	return _this;
+    }
+    
     public final Iterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         getMetadata().setDistinct(true);
         return iterate(first, second, rest);
@@ -58,18 +73,6 @@ public abstract class QueryBaseWithProjection<JoinMeta,SubType
         return IteratorUtils.toList(iterate(projection));
     }    
     
-    public <RT> SearchResults<RT> listResults(Expr<RT> projection){
-    	QueryModifiers modifiers = getMetadata().getModifiers();
-    	List<RT> list = list(projection);
-    	if (list.isEmpty()){
-    		return SearchResults.emptyResults();
-    	}else{
-    		int start = Math.min(modifiers.getOffset(), list.size());
-    		int end = Math.min(modifiers.getOffset() + modifiers.getLimit(), list.size());
-    		return new SearchResults<RT>(list.subList(start, end), modifiers, list.size());
-    	}    	
-    }
-
     public final List<Object[]> listDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         getMetadata().setDistinct(true);
         return list(first, second, rest);
@@ -80,13 +83,15 @@ public abstract class QueryBaseWithProjection<JoinMeta,SubType
         return list(projection);
     }
     
-    public <RT> RT uniqueResult(Expr<RT> expr) {
-        Iterator<RT> it = iterate(expr);
+    public Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    	getMetadata().getModifiers().setLimit(1l);
+        Iterator<Object[]> it = iterate(first, second, rest);
         return it.hasNext() ? it.next() : null;
     }
     
-    public Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
-        Iterator<Object[]> it = iterate(first, second, rest);
+    public <RT> RT uniqueResult(Expr<RT> expr) {
+    	getMetadata().getModifiers().setLimit(1l);
+        Iterator<RT> it = iterate(expr);
         return it.hasNext() ? it.next() : null;
     }
 }

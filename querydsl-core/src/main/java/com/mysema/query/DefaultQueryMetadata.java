@@ -5,9 +5,12 @@
  */
 package com.mysema.query;
 
-import java.util.*;
-
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import com.mysema.query.grammar.OrderSpecifier;
 import com.mysema.query.grammar.types.Expr;
@@ -37,7 +40,7 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta>{
     
     private boolean distinct;
     
-    private QueryModifiers modifiers = QueryModifiers.getDefault();
+    private QueryModifiers modifiers = new QueryModifiers();
 
     public List<? extends Expr<?>> getGroupBy() {
         return Collections.unmodifiableList(groupBy);

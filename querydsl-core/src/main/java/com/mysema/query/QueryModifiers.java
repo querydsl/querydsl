@@ -1,8 +1,6 @@
 /*
  * Copyright (c) 2007 Mysema Ltd.
  * All rights reserved.
- * 
- * originally developed in Bookmarks project
  */
 package com.mysema.query;
 
@@ -14,25 +12,43 @@ package com.mysema.query;
  */
 public final class QueryModifiers {
     
-    private static final QueryModifiers DEFAULT = new QueryModifiers(Integer.MAX_VALUE,0);
+    public static QueryModifiers limit(long limit) {
+		return new QueryModifiers(Long.valueOf(limit), null);
+	}
     
-    private final int limit, offset;
+    public static QueryModifiers offset(long offset) {
+		return new QueryModifiers(null, Long.valueOf(offset));
+	}
     
-    public QueryModifiers(int limit, int offset){
+    private Long limit, offset;
+
+    public QueryModifiers(){}
+    
+    public QueryModifiers(Long limit, Long offset){
         this.limit = limit;
         this.offset = offset;
     }
 
-    public static QueryModifiers getDefault(){
-        return DEFAULT;
-    }
-
-    public int getLimit() {
+	public Long getLimit() {
         return limit;
     }
-    
-    public int getOffset() {
+
+	public Long getOffset() {
         return offset;
     }
+
+	public void setLimit(Long limit) {
+		this.limit = limit;
+	}
+	
+	public void setOffset(Long offset) {
+		this.offset = offset;
+	}
+
+	public boolean isRestricting() {
+		return limit != null || offset != null;
+	}
+    
+    
     
 }

@@ -12,8 +12,6 @@ import com.mysema.commons.lang.Assert;
  * @version $Id$
  */
 public class OperationPattern {
-
-//    private static final Pattern patter
     
     private final String pattern;
     

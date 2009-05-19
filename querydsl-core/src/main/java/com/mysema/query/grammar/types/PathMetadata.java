@@ -19,7 +19,8 @@ import com.mysema.query.grammar.Ops;
 public final class PathMetadata<T> {
     
     private static SimpleExprFactory factory = new SimpleExprFactory();
-    
+
+    // TODO : refactor to operation
     public static final PathType ARRAY_SIZE = new PathType("array size");
 
     public static final PathType ARRAYVALUE = new PathType("array value");
@@ -36,6 +37,7 @@ public final class PathMetadata<T> {
 
     public static final PathType PROPERTY = new PathType("propery");
 
+    // TODO : refactor to operation
     public static final PathType SIZE = new PathType("size");
 
     public static final PathType VARIABLE = new PathType("variable");

@@ -25,9 +25,9 @@ public final class SearchResults<T> {
     
     private final List<T> results;
     
-    public SearchResults(List<T> results, long limit, long offset, long total){
-        this.limit = limit;
-        this.offset = offset;
+    public SearchResults(List<T> results, Long limit, Long offset, long total){
+        this.limit = limit != null ? limit : Long.MAX_VALUE;
+        this.offset = offset != null ? offset : 0l;
         this.total = total;
         this.results = results;
     }

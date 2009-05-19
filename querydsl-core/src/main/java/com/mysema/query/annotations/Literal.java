@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 
 /**
  * Annotion for APT based Domain query type generation. 
- * Annotate Domain types with this annotation.
+ * Annotate Literal types with this annotation.
  */
 public @interface Literal {
 

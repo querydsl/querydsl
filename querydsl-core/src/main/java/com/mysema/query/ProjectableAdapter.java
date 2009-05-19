@@ -68,7 +68,6 @@ public abstract class ProjectableAdapter implements Projectable{
     	return projectable.listResults(expr);
     }
     
-    
     public <RT> List<RT> listDistinct(Expr<RT> projection) {
         return projectable.listDistinct(projection);
     }
