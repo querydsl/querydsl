@@ -11,6 +11,8 @@ import java.sql.Statement;
 
 import org.junit.Test;
 
+import com.mysema.query.sql.support.MetaDataExporter;
+
 
 /**
  * MetaDataExporterTest provides
