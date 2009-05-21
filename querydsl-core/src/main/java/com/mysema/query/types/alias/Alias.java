@@ -14,7 +14,10 @@ import com.mysema.query.types.expr.Expr;
  * @version $Id$
  */
 public interface Alias {
-    
+    /**
+     * 
+     * @return
+     */
     Expr<?> getFrom();
 
 }

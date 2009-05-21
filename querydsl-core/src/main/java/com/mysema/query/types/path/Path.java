@@ -7,7 +7,6 @@ package com.mysema.query.types.path;
 
 import com.mysema.query.types.expr.EBoolean;
 
-
 /**
  * Path represents a path expression
  * 
@@ -15,11 +14,34 @@ import com.mysema.query.types.expr.EBoolean;
  * @version $Id$
  */
 public interface Path<C> {
-        
-    PathMetadata<?> getMetadata();
-    Path<?> getRoot();
-    EBoolean isnotnull();
-    EBoolean isnull();
-    Class<? extends C> getType();
-        
+	/**
+	 * 
+	 * @return
+	 */
+	PathMetadata<?> getMetadata();
+
+	/**
+	 * 
+	 * @return
+	 */
+	Path<?> getRoot();
+
+	/**
+	 * 
+	 * @return
+	 */
+	EBoolean isnotnull();
+
+	/**
+	 * 
+	 * @return
+	 */
+	EBoolean isnull();
+
+	/**
+	 * 
+	 * @return
+	 */
+	Class<? extends C> getType();
+
 }

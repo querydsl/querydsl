@@ -8,14 +8,22 @@ import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Ops.Op;
 
-public class QNumber<Q extends  Number & Comparable<? super Q>> extends ENumber<Q> implements Quant{
-    private final Expr<?> col;
-    private final Op<?> op;
-    public QNumber(Class<Q> type, Op<?> op, CollectionType<Q> col) {
-        super(type);
-        this.op = op;
-        this.col = (Expr<?>)col;
-    }
-    public Op<?> getOperator() {return op;}
-    public Expr<?> getTarget() {return col;}                          
+public class QNumber<Q extends Number & Comparable<? super Q>> extends
+		ENumber<Q> implements Quant {
+	private final Expr<?> col;
+	private final Op<?> op;
+
+	public QNumber(Class<Q> type, Op<?> op, CollectionType<Q> col) {
+		super(type);
+		this.op = op;
+		this.col = (Expr<?>) col;
+	}
+
+	public Op<?> getOperator() {
+		return op;
+	}
+
+	public Expr<?> getTarget() {
+		return col;
+	}
 }

@@ -15,8 +15,17 @@ import com.mysema.query.types.operation.Ops.Op;
  * @version $Id$
  */
 public interface Quant {
-    
-    Op<?> getOperator();
-    Expr<?> getTarget();
+
+	/**
+	 * 
+	 * @return
+	 */
+	Op<?> getOperator();
+
+	/**
+	 * 
+	 * @return
+	 */
+	Expr<?> getTarget();
 
 }

@@ -13,34 +13,34 @@ import com.mysema.query.types.expr.Expr;
 
 /**
  * PathFactory creates path expressions for domain type instances
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
 public interface PathFactory {
-    
-    <D> Expr<D> createAny(D arg);
 
-    PBoolean createBoolean(Boolean arg);
+	<D> Expr<D> createAny(D arg);
 
-    PBooleanArray createBooleanArray(Boolean[] args);
-    
-    <D extends Number & Comparable<?>> PNumber<D> createNumber(D arg);
+	PBoolean createBoolean(Boolean arg);
 
-    <D extends Comparable<?>> PComparable<D> createComparable(D arg);
+	PBooleanArray createBooleanArray(Boolean[] args);
 
-    <D> PEntity<D> createEntity(D arg);
-    
-    <D> PEntityList<D> createEntityList(List<D> arg);
-    
-    <K,V> PEntityMap<K,V> createEntityMap(Map<K,V> arg);
-    
-    <D> PEntityCollection<D> createEntityCollection(Collection<D> arg);
+	<D extends Number & Comparable<?>> PNumber<D> createNumber(D arg);
 
-    <D extends Comparable<?>> PComparableArray<D> createComparableArray(D[] args);
+	<D extends Comparable<?>> PComparable<D> createComparable(D arg);
 
-    PString createString(String arg);
+	<D> PEntity<D> createEntity(D arg);
 
-    PStringArray createStringArray(String[] args);
+	<D> PEntityList<D> createEntityList(List<D> arg);
+
+	<K, V> PEntityMap<K, V> createEntityMap(Map<K, V> arg);
+
+	<D> PEntityCollection<D> createEntityCollection(Collection<D> arg);
+
+	<D extends Comparable<?>> PComparableArray<D> createComparableArray(D[] args);
+
+	PString createString(String arg);
+
+	PStringArray createStringArray(String[] args);
 
 }

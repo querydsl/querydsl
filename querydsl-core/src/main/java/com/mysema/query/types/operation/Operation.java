@@ -5,13 +5,10 @@
  */
 package com.mysema.query.types.operation;
 
-
 import java.util.List;
 
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Ops.Op;
-
-
 
 /**
  * Operation represents an operation with operator and arguments
@@ -19,11 +16,30 @@ import com.mysema.query.types.operation.Ops.Op;
  * @author tiwe
  * @version $Id$
  */
-public interface Operation<OP,RT> {
-        
-    Class<? extends RT> getType();
-    List<Expr<?>> getArgs();
-    Expr<?> getArg(int index);
-    Op<OP> getOperator();
-    
+public interface Operation<OP, RT> {
+	/**
+	 * 
+	 * @return
+	 */
+	Class<? extends RT> getType();
+
+	/**
+	 * 
+	 * @return
+	 */
+	List<Expr<?>> getArgs();
+
+	/**
+	 * 
+	 * @param index
+	 * @return
+	 */
+	Expr<?> getArg(int index);
+
+	/**
+	 * 
+	 * @return
+	 */
+	Op<OP> getOperator();
+
 }

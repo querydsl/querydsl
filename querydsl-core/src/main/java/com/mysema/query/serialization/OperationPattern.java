@@ -11,6 +11,7 @@ import com.mysema.commons.lang.Assert;
  * @author tiwe
  * @version $Id$
  */
+// NOTE : work in progress
 public class OperationPattern {
     
     private final String pattern;

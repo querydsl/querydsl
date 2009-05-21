@@ -18,10 +18,10 @@ import com.mysema.query.types.expr.Expr;
  */
 public interface Custom<T> {
 
-    List<Expr<?>> getArgs();
-    
-    Expr<?> getArg(int index);
+	List<Expr<?>> getArgs();
 
-    String getPattern();
+	Expr<?> getArg(int index);
+
+	String getPattern();
 
 }
