@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.Set;
 
 import com.mysema.query.apt.general.QuerydslProcessor;
-import com.mysema.query.apt.jpa.JpaProcessor;
+import com.mysema.query.apt.jpa.JPAProcessor;
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.apt.AnnotationProcessorFactory;
@@ -47,7 +47,7 @@ public class APTFactory implements AnnotationProcessorFactory, Constants {
             AnnotationProcessorEnvironment env) {
         String profile = getString(env.getOptions(), "profile", "jpa");
         if ("jpa".equals(profile)){
-            return new JpaProcessor(env);
+            return new JPAProcessor(env);
         }else if ("querydsl".equals(profile)){
             return new QuerydslProcessor(env);                       
         }else{

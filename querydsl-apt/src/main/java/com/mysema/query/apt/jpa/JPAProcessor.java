@@ -25,9 +25,9 @@ import com.sun.mirror.declaration.MethodDeclaration;
  * @author tiwe
  * @version $Id$
  */
-public class JpaProcessor extends GeneralProcessor implements Constants{
+public class JPAProcessor extends GeneralProcessor implements Constants{
     
-    public JpaProcessor(AnnotationProcessorEnvironment env) {
+    public JPAProcessor(AnnotationProcessorEnvironment env) {
         super(env, jpaSuperClass, jpaEntity, qdDto);
     }
 
