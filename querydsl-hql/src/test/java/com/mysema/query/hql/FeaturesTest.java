@@ -5,29 +5,28 @@
  */
 package com.mysema.query.hql;
 
-import static com.mysema.query.grammar.Grammar.not;
-import static com.mysema.query.grammar.GrammarWithAlias.$;
-import static com.mysema.query.grammar.HqlGrammar.current_date;
-import static com.mysema.query.grammar.HqlGrammar.current_time;
-import static com.mysema.query.grammar.HqlGrammar.current_timestamp;
-import static com.mysema.query.grammar.HqlGrammar.day;
-import static com.mysema.query.grammar.HqlGrammar.distinct;
-import static com.mysema.query.grammar.HqlGrammar.hour;
-import static com.mysema.query.grammar.HqlGrammar.isempty;
-import static com.mysema.query.grammar.HqlGrammar.isnotempty;
-import static com.mysema.query.grammar.HqlGrammar.maxelement;
-import static com.mysema.query.grammar.HqlGrammar.maxindex;
-import static com.mysema.query.grammar.HqlGrammar.minelement;
-import static com.mysema.query.grammar.HqlGrammar.minindex;
-import static com.mysema.query.grammar.HqlGrammar.minute;
-import static com.mysema.query.grammar.HqlGrammar.month;
-import static com.mysema.query.grammar.HqlGrammar.second;
-import static com.mysema.query.grammar.HqlGrammar.sum;
-import static com.mysema.query.grammar.HqlGrammar.year;
-import static com.mysema.query.grammar.QMath.add;
-import static com.mysema.query.grammar.QMath.div;
-import static com.mysema.query.grammar.QMath.mult;
-import static com.mysema.query.grammar.QMath.sub;
+import static com.mysema.query.alias.GrammarWithAlias.$;
+import static com.mysema.query.functions.MathFunctions.add;
+import static com.mysema.query.functions.MathFunctions.div;
+import static com.mysema.query.functions.MathFunctions.mult;
+import static com.mysema.query.functions.MathFunctions.sub;
+import static com.mysema.query.hql.HQLGrammar.current_date;
+import static com.mysema.query.hql.HQLGrammar.current_time;
+import static com.mysema.query.hql.HQLGrammar.current_timestamp;
+import static com.mysema.query.hql.HQLGrammar.day;
+import static com.mysema.query.hql.HQLGrammar.hour;
+import static com.mysema.query.hql.HQLGrammar.isempty;
+import static com.mysema.query.hql.HQLGrammar.isnotempty;
+import static com.mysema.query.hql.HQLGrammar.maxelement;
+import static com.mysema.query.hql.HQLGrammar.maxindex;
+import static com.mysema.query.hql.HQLGrammar.minelement;
+import static com.mysema.query.hql.HQLGrammar.minindex;
+import static com.mysema.query.hql.HQLGrammar.minute;
+import static com.mysema.query.hql.HQLGrammar.month;
+import static com.mysema.query.hql.HQLGrammar.second;
+import static com.mysema.query.hql.HQLGrammar.sum;
+import static com.mysema.query.hql.HQLGrammar.year;
+import static com.mysema.query.types.Grammar.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -39,12 +38,11 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.grammar.Grammar;
-import com.mysema.query.grammar.HqlOps;
-import com.mysema.query.grammar.HqlSerializer;
-import com.mysema.query.grammar.types.Custom;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.ENumber;
+import com.mysema.query.types.Grammar;
+import com.mysema.query.types.custom.CString;
+import com.mysema.query.types.expr.EConstructor;
+import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.Expr;
 
 
 /**
@@ -114,7 +112,7 @@ public class FeaturesTest {
     QUser user4 = new QUser("user4");
     QUser user5 = new QUser("user5");
     
-    private HqlSerializer visitor = new HqlSerializer(new HqlOps());
+    private HQLSerializer visitor = new HQLSerializer(new HQLOps());
     
     @Test
     public void testDomainConstruction(){
@@ -200,7 +198,7 @@ public class FeaturesTest {
     /**
      * The Class MyCustomExpr.
      */
-    public class MyCustomExpr extends Custom.CString{
+    public class MyCustomExpr extends CString{
         private final List<Expr<?>> args;
         public MyCustomExpr(Expr<?>... args) {
             this.args = Arrays.asList(args);
@@ -236,7 +234,7 @@ public class FeaturesTest {
     
     @Test
     public void testConstructors(){
-        Expr.EConstructor<com.mysema.query.hql.HqlDomain.Cat> c = new Expr.EConstructor<com.mysema.query.hql.HqlDomain.Cat>(com.mysema.query.hql.HqlDomain.Cat.class, cat.name);
+        EConstructor<com.mysema.query.hql.HqlDomain.Cat> c = new EConstructor<com.mysema.query.hql.HqlDomain.Cat>(com.mysema.query.hql.HqlDomain.Cat.class, cat.name);
         toString("new "+com.mysema.query.hql.HqlDomain.Cat.class.getName()+"(cat.name)", c);
         toString("new "+getClass().getName()+"$BookmarkDTO()", new _BookmarkDTO());
         toString("new "+getClass().getName()+"$BookmarkDTO(cat.name)", new _BookmarkDTO(cat.name));
@@ -398,10 +396,10 @@ public class FeaturesTest {
         
         toString("kitten in elements(cat.kittens)", kitten.in(cat.kittens)); 
         
-        toString("distinct cat.bodyWeight", distinct(cat.bodyWeight));
+//        toString("distinct cat.bodyWeight", distinct(cat.bodyWeight));
         
         toString("count(*)", Grammar.count());
-        toString("count(distinct cat.bodyWeight)", Grammar.count(distinct(cat.bodyWeight)));
+//        toString("count(distinct cat.bodyWeight)", Grammar.count(distinct(cat.bodyWeight)));
         toString("count(cat)", Grammar.count(cat));        
     }
     
@@ -454,13 +452,13 @@ public class FeaturesTest {
     private void toString(String expected, Expr<?> expr) {
         assertEquals(expected, visitor.handle(expr).toString());
 //        visitor.clear();
-        visitor = new HqlSerializer(new HqlOps());
+        visitor = new HQLSerializer(new HQLOps());
     }
     
     /**
      * The Class _BookmarkDTO.
      */
-    public static final class _BookmarkDTO extends Expr.EConstructor<BookmarkDTO>{
+    public static final class _BookmarkDTO extends EConstructor<BookmarkDTO>{
         public _BookmarkDTO(){
             super(BookmarkDTO.class);
         }

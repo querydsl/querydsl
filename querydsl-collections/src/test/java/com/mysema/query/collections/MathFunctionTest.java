@@ -5,14 +5,15 @@
  */
 package com.mysema.query.collections;
 
+import static com.mysema.query.alias.GrammarWithAlias.alias;
 import static com.mysema.query.collections.MiniApi.from;
-import static com.mysema.query.grammar.GrammarWithAlias.alias;
 
 import org.junit.Test;
 
 import com.mysema.query.collections.Domain.Cat;
-import com.mysema.query.grammar.QMath;
-import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.functions.MathFunctions;
+import com.mysema.query.types.expr.EConstant;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * MathFunctionTest provides
@@ -25,29 +26,29 @@ public class MathFunctionTest extends AbstractQueryTest {
     @Test
     public void test(){
         Cat c = alias(Cat.class,"c");
-        Expr<Integer> i = new Expr.EConstant<Integer>(1);
-        Expr<Double> d = new Expr.EConstant<Double>(1.0);
+        Expr<Integer> i = new EConstant<Integer>(1);
+        Expr<Double> d = new EConstant<Double>(1.0);
         from(c, cats)
         .list(
-                QMath.abs(i),
-                QMath.acos(d),
-                QMath.asin(d),
-                QMath.atan(d),
-                QMath.ceil(d),
-                QMath.cos(d),
-                QMath.tan(d),
-                QMath.sqrt(i),
-                QMath.sin(d),
-                QMath.round(d),
-                QMath.random(),
-                QMath.pow(d,d),
-                QMath.min(i,i),
-                QMath.max(i,i),
+                MathFunctions.abs(i),
+                MathFunctions.acos(d),
+                MathFunctions.asin(d),
+                MathFunctions.atan(d),
+                MathFunctions.ceil(d),
+                MathFunctions.cos(d),
+                MathFunctions.tan(d),
+                MathFunctions.sqrt(i),
+                MathFunctions.sin(d),
+                MathFunctions.round(d),
+                MathFunctions.random(),
+                MathFunctions.pow(d,d),
+                MathFunctions.min(i,i),
+                MathFunctions.max(i,i),
 //                QMath.mod(i,i),
-                QMath.log10(d),
-                QMath.log(d),
-                QMath.floor(d),
-                QMath.exp(d)).iterator();
+                MathFunctions.log10(d),
+                MathFunctions.log(d),
+                MathFunctions.floor(d),
+                MathFunctions.exp(d)).iterator();
           
     }
 

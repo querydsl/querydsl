@@ -15,8 +15,8 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.support.JoinExpressionComparator;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * QueryPerformanceTest provides

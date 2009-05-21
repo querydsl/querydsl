@@ -10,8 +10,8 @@ import org.junit.Test;
 
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.grammar.GrammarWithAlias;
-import com.mysema.query.grammar.types.Path.PNumber;
+import com.mysema.query.alias.GrammarWithAlias;
+import com.mysema.query.types.path.PNumber;
 
 public class PagingTest extends AbstractQueryTest{
 

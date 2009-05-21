@@ -11,10 +11,10 @@ import java.util.Collections;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.mysema.query.collections.JavaOps;
 import com.mysema.query.collections.Domain.QCat;
-import com.mysema.query.grammar.JavaOps;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
 
 
 /**

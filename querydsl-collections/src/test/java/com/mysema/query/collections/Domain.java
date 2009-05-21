@@ -5,17 +5,24 @@
  */
 package com.mysema.query.collections;
 
-import static com.mysema.query.grammar.types.PathMetadata.forListAccess;
-import static com.mysema.query.grammar.types.PathMetadata.forProperty;
+import static com.mysema.query.types.path.PathMetadata.forListAccess;
+import static com.mysema.query.types.path.PathMetadata.forProperty;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Path;
-import com.mysema.query.grammar.types.PathMetadata;
+import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.PBoolean;
+import com.mysema.query.types.path.PComparable;
+import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.PEntityList;
+import com.mysema.query.types.path.PEntityMap;
+import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PSimple;
+import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.PathMetadata;
 
 /**
  * Domain provides
@@ -133,22 +140,22 @@ public class Domain {
         BLACK, TABBY
     }
     
-    public static class QCat extends Path.PEntity<Cat>{
-        public final Path.PBoolean alive = _boolean("alive");
-        public final Path.PComparable<java.util.Date> birthdate = _comparable("birthdate",java.util.Date.class);
+    public static class QCat extends PEntity<Cat>{
+        public final PBoolean alive = _boolean("alive");
+        public final PComparable<java.util.Date> birthdate = _comparable("birthdate",java.util.Date.class);
     
-        public final Path.PNumber<java.lang.Integer> bodyWeight = _number("bodyWeight",java.lang.Integer.class);
-        public final Path.PComparable<java.lang.Integer> breed = _comparable("breed",java.lang.Integer.class);
-        public final Path.PSimple<Color> color = _simple("color",Color.class);
-        public final Path.PSimple<Color> eyecolor = _simple("eyecolor",Color.class);
-        public final Path.PNumber<java.lang.Integer> id = _number("id",java.lang.Integer.class);
-        public final Path.PEntityList<Cat> kittens = _entitylist("kittens",Cat.class,"Cat");
-        public final Path.PEntityMap<String, Cat> kittensByName = _entitymap("kittens",String.class,Cat.class,"Cat");
+        public final PNumber<java.lang.Integer> bodyWeight = _number("bodyWeight",java.lang.Integer.class);
+        public final PComparable<java.lang.Integer> breed = _comparable("breed",java.lang.Integer.class);
+        public final PSimple<Color> color = _simple("color",Color.class);
+        public final PSimple<Color> eyecolor = _simple("eyecolor",Color.class);
+        public final PNumber<java.lang.Integer> id = _number("id",java.lang.Integer.class);
+        public final PEntityList<Cat> kittens = _entitylist("kittens",Cat.class,"Cat");
+        public final PEntityMap<String, Cat> kittensByName = _entitymap("kittens",String.class,Cat.class,"Cat");
         public QCat mate;
-        public final Path.PString name = _string("name");
+        public final PString name = _string("name");
     
-        public final Path.PComparable<java.lang.Integer> toes = _comparable("toes",java.lang.Integer.class);
-        public final Path.PComparable<java.lang.Integer> weight = _comparable("weight",java.lang.Integer.class);
+        public final PComparable<java.lang.Integer> toes = _comparable("toes",java.lang.Integer.class);
+        public final PComparable<java.lang.Integer> weight = _comparable("weight",java.lang.Integer.class);
         public QCat(java.lang.String path) {
             super(Cat.class, "Cat", path);
             _mate();

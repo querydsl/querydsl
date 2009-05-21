@@ -10,10 +10,10 @@ import java.util.List;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.collections.IteratorSource;
+import com.mysema.query.collections.JavaOps;
 import com.mysema.query.collections.QueryIndexSupport;
-import com.mysema.query.grammar.JavaOps;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * SimpleIndexSupport is a minimal QueryIndexSupport implementation

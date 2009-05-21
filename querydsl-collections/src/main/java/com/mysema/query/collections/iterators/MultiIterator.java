@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import com.mysema.query.collections.IteratorSource;
-import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * MultiIterator provides a cartesian view on the given iterators

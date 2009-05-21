@@ -20,14 +20,14 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.collections.IteratorSource;
+import com.mysema.query.collections.JavaOps;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.eval.FilteredJavaSerializer;
 import com.mysema.query.collections.eval.JaninoEvaluator;
 import com.mysema.query.collections.eval.JavaSerializer;
 import com.mysema.query.collections.utils.QueryIteratorUtils;
-import com.mysema.query.grammar.JavaOps;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * FilteringMultiIterator extends the MultiIterator to provide a filtered view 

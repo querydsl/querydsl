@@ -13,9 +13,7 @@ import org.junit.runner.RunWith;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
-import com.mysema.query.util.CustomNamingStrategy;
-import com.mysema.query.util.Hibernate;
-import com.mysema.query.util.HibernateTestRunner;
+import com.mysema.query.hql.hibernate.HQLQuery;
 
 
 /**
@@ -38,7 +36,7 @@ public class HqlIntegrationTest extends HqlParserTest{
 
     	            // create Query and execute it
     	            Query query = session.createQuery(toString());
-    	            HqlQuery.setConstants(query, getConstants());
+    	            HQLQuery.setConstants(query, getConstants());
     	            try{
     	                query.list();    
     	            }catch(Exception e){

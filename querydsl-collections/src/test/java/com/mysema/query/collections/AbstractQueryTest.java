@@ -12,14 +12,13 @@ import java.util.Map;
 
 import org.junit.Before;
 
+import com.mysema.query.alias.GrammarWithAlias;
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.Domain.QCat;
 import com.mysema.query.collections.support.SimpleIndexSupport;
 import com.mysema.query.collections.support.SimpleIteratorSource;
-import com.mysema.query.grammar.GrammarWithAlias;
-import com.mysema.query.grammar.JavaOps;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * AbstractQueryTest provides

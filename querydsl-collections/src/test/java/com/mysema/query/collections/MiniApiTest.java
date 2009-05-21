@@ -5,9 +5,9 @@
  */
 package com.mysema.query.collections;
 
+import static com.mysema.query.alias.GrammarWithAlias.$;
 import static com.mysema.query.collections.MiniApi.reject;
 import static com.mysema.query.collections.MiniApi.select;
-import static com.mysema.query.grammar.GrammarWithAlias.$;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;

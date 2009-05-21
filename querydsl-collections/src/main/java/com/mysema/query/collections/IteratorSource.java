@@ -7,7 +7,7 @@ package com.mysema.query.collections;
 
 import java.util.Iterator;
 
-import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * IteratorSource provides a Expr -> Iterator mapping

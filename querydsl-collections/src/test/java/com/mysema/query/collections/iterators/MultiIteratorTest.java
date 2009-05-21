@@ -17,8 +17,8 @@ import org.junit.Test;
 
 import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.collections.MiniApi;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.ENumber;
+import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * MultiIteratorTest provides

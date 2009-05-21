@@ -9,18 +9,18 @@ import java.util.*;
 
 import org.junit.Test;
 
+import com.mysema.query.collections.JavaOps;
 import com.mysema.query.collections.QueryIndexSupport;
 import com.mysema.query.collections.MiniApi;
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.Domain.QCat;
 import com.mysema.query.collections.support.DefaultIndexSupport;
 import com.mysema.query.collections.support.SimpleIteratorSource;
-import com.mysema.query.grammar.Grammar;
-import com.mysema.query.grammar.JavaOps;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.EBoolean;
-import com.mysema.query.grammar.types.Expr.ENumber;
-import com.mysema.query.grammar.types.Expr.EString;
+import com.mysema.query.types.Grammar;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * FilteringMultiIteratorTest provides

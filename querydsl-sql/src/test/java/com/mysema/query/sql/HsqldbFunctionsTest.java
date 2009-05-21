@@ -10,11 +10,13 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.mysema.query.grammar.QDateTime;
-import com.mysema.query.grammar.QMath;
-import com.mysema.query.grammar.QString;
-import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.functions.DateTimeFunctions;
+import com.mysema.query.functions.MathFunctions;
+import com.mysema.query.functions.StringFunctions;
 import com.mysema.query.sql.domain.QEMPLOYEE;
+import com.mysema.query.types.expr.EConstant;
+import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * HsqldbFunctionsTest provides
@@ -26,16 +28,16 @@ public class HsqldbFunctionsTest {
     
     @Test
     public void testNumeric(){
-        Expr<Integer> i = new Expr.EConstant<Integer>(1);
-        Expr<Double>  d = new Expr.EConstant<Double>(1.0);
+        Expr<Integer> i = new EConstant<Integer>(1);
+        Expr<Double>  d = new EConstant<Double>(1.0);
 //    ABS(d)        returns the absolute value of a double value
-        QMath.abs(i);
+        MathFunctions.abs(i);
 //    ACOS(d)       returns the arc cosine of an angle
-        QMath.acos(d);
+        MathFunctions.acos(d);
 //    ASIN(d)       returns the arc sine of an angle
-        QMath.asin(d);
+        MathFunctions.asin(d);
 //    ATAN(d)       returns the arc tangent of an angle
-        QMath.atan(d);
+        MathFunctions.atan(d);
 //    ATAN2(a,b)    returns the tangent of a/b
         
 //    BITAND(a,b)   return a & b
@@ -43,49 +45,49 @@ public class HsqldbFunctionsTest {
 //    BITOR(a,b)    returns a | b
         
 //    CEILING(d)    returns the smallest integer that is not less than d
-        QMath.ceil(d);
+        MathFunctions.ceil(d);
 //    COS(d)        returns the cosine of an angle
-        QMath.cos(d);
+        MathFunctions.cos(d);
 //    COT(d)        returns the cotangent of an angle
         
 //    DEGREES(d)    converts radians to degrees
         
 //    EXP(d)        returns e (2.718...) raised to the power of d
-        QMath.exp(d);
+        MathFunctions.exp(d);
 //    FLOOR(d)      returns the largest integer that is not greater than d
-        QMath.floor(d);
+        MathFunctions.floor(d);
 //    LOG(d)        returns the natural logarithm (base e)
-        QMath.log(d);
+        MathFunctions.log(d);
 //    LOG10(d)      returns the logarithm (base 10)
-        QMath.log10(d);
+        MathFunctions.log10(d);
 //    MOD(a,b)      returns a modulo b
 //        QMath.mod(i,i);
 //    PI()          returns pi (3.1415...)
         
 //    POWER(a,b)    returns a raised to the power of b
-        QMath.pow(d,d);
+        MathFunctions.pow(d,d);
 //    RADIANS(d)    converts degrees to radians
         
 //    RAND()        returns a random number x bigger or equal to 0.0 and smaller than 1.0
-        QMath.random();
+        MathFunctions.random();
 //    ROUND(a,b)    rounds a to b digits after the decimal point
-        QMath.round(d);
+        MathFunctions.round(d);
 //    ROUNDMAGIC(d) solves rounding problems such as 3.11-3.1-0.01
         
 //    SIGN(d)       returns -1 if d is smaller than 0, 0 if d==0 and 1 if d is bigger than 0
         
 //    SIN(d)        returns the sine of an angle
-        QMath.sin(d);        
+        MathFunctions.sin(d);        
 //    SQRT(d)       returns the square root
-        QMath.sqrt(i);
+        MathFunctions.sqrt(i);
 //    TAN(A)        returns the trigonometric tangent of an angle
-        QMath.tan(d);
+        MathFunctions.tan(d);
 //    TRUNCATE(a,b) truncates a to b digits after the decimal point
     }   
      
     @Test
     public void testStringFunctions(){
-        Expr.EString s = new QEMPLOYEE("e").firstname;
+        EString s = new QEMPLOYEE("e").firstname;
 //
 //    String built-in Functions / Stored Procedures
 //
@@ -105,17 +107,17 @@ public class HsqldbFunctionsTest {
 //        QString.length(s);
 //    LOCATE(search,s,[start])returns the first index (1=left, 0=not found) where search is found in s, starting at start
 //    LTRIM(s)              removes all leading blanks in s
-        QString.ltrim(s);
+        StringFunctions.ltrim(s);
 //    OCTET_LENGTH(str)[2]  returns the length of the string in bytes (twice the number of characters)
 //    RAWTOHEX(s1)[2]       returns translated string
 //    REPEAT(s,count)       returns s repeated count times
 //    REPLACE(s,replace,s2) replaces all occurrences of replace in s with s2
 //    RIGHT(s,count)        returns the rightmost count of characters of s
 //    RTRIM(s)              removes all trailing spaces
-        QString.rtrim(s);
+        StringFunctions.rtrim(s);
 //    SOUNDEX(s)            returns a four character code representing the sound of s
 //    SPACE(count)          returns a string consisting of count spaces
-        QString.space(4);
+        StringFunctions.space(4);
 //    SUBSTR(s,start[,len]) alias for substring
         s.substring(1);
 //    SUBSTRING(s,start[,len])  returns the substring starting at start (1=left) with length len        
@@ -129,40 +131,40 @@ public class HsqldbFunctionsTest {
     
     @Test
     public void testDateTimeFunctions(){
-        Expr<Date> d = new Expr.EConstant<Date>(new Date());
-        Expr<Time> t = new Expr.EConstant<Time>(new Time(0));
+        Expr<Date> d = new EConstant<Date>(new Date());
+        Expr<Time> t = new EConstant<Time>(new Time(0));
 //
 //    Date/Time built-in Functions / Stored Procedures
 //
 //    CURDATE()             returns the current date
-        QDateTime.currentDate();
+        DateTimeFunctions.currentDate();
 //    CURTIME()             returns the current time
-        QDateTime.currentTime();
+        DateTimeFunctions.currentTime();
 //    DATEDIFF(string, datetime1, datetime2)[2]
 //        returns the count of units of time elapsed from datetime1 to datetime2. The string indicates the unit of time and can have the following values 'ms'='millisecond', 'ss'='second','mi'='minute','hh'='hour', 'dd'='day', 'mm'='month', 'yy' = 'year'. Both the long and short form of the strings can be used.
 //    DAYNAME(date)         returns the name of the day
 //    DAYOFMONTH(date)      returns the day of the month (1-31)
-        QDateTime.dayOfMonth(d);
+        DateTimeFunctions.dayOfMonth(d);
 //    DAYOFWEEK(date)       returns the day of the week (1 means Sunday)
-        QDateTime.dayOfWeek(d);
+        DateTimeFunctions.dayOfWeek(d);
 //    DAYOFYEAR(date)       returns the day of the year (1-366)
-        QDateTime.dayOfYear(d);
+        DateTimeFunctions.dayOfYear(d);
 //    HOUR(time)            return the hour (0-23)
-        QDateTime.hour(t);
+        DateTimeFunctions.hour(t);
 //    MINUTE(time)          returns the minute (0-59)
-        QDateTime.minute(t);
+        DateTimeFunctions.minute(t);
 //    MONTH(date)           returns the month (1-12)
-        QDateTime.month(d);
+        DateTimeFunctions.month(d);
 //    MONTHNAME(date)       returns the name of the month
 //    NOW()                 returns the current date and time as a timestamp) - use CURRENT_TIMESTAMP instead
-        QDateTime.now();
+        DateTimeFunctions.now();
 //    QUARTER(date)         returns the quarter (1-4)        
 //    SECOND(time)          returns the second (0-59)
-        QDateTime.second(t);
+        DateTimeFunctions.second(t);
 //    WEEK(date)            returns the week of this year (1-53)
-        QDateTime.week(d);
+        DateTimeFunctions.week(d);
 //    YEAR(date)            returns the year
-        QDateTime.year(d);
+        DateTimeFunctions.year(d);
 //    CURRENT_DATE[2]       returns the current date
 //    CURRENT_TIME[2]       returns the current time
 //    CURRENT_TIMESTAMP[2]  returns the current timestamp

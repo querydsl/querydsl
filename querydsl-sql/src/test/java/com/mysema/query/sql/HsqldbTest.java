@@ -16,7 +16,6 @@ import org.junit.runner.RunWith;
 
 import com.mysema.query.Label;
 import com.mysema.query.FilteringTestRunner;
-import com.mysema.query.grammar.Dialect;
 
 /**
  * HsqdlbTest provides

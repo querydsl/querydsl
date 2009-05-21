@@ -10,7 +10,7 @@ import java.util.List;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.collections.SourceSortingSupport;
-import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.types.expr.EBoolean;
 
 /**
  * DefaultSourceSortingSupport provides

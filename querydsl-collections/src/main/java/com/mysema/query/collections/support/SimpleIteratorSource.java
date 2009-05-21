@@ -12,7 +12,7 @@ import java.util.Map;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.collections.QueryIndexSupport;
-import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * SimpleIteratorSource is the default implementation of the IndexSupport interface

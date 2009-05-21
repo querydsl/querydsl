@@ -15,8 +15,7 @@ import org.junit.Test;
 
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.eval.JavaSerializer;
-import com.mysema.query.grammar.JavaOps;
-import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.types.expr.EBoolean;
 
 /**
  * QueryValidationTest provides

@@ -5,8 +5,8 @@
  */
 package com.mysema.query.collections;
 
+import static com.mysema.query.alias.GrammarWithAlias.$;
 import static com.mysema.query.collections.MiniApi.from;
-import static com.mysema.query.grammar.GrammarWithAlias.$;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -16,10 +16,10 @@ import java.util.Date;
 import org.junit.Test;
 
 import com.mysema.query.collections.Domain.Cat;
-import com.mysema.query.grammar.Grammar;
-import com.mysema.query.grammar.QMath;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.ENumber;
+import com.mysema.query.functions.MathFunctions;
+import com.mysema.query.types.Grammar;
+import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * ColQueryTest provides
@@ -100,7 +100,7 @@ public class ColQueryTest extends AbstractQueryTest{
         query().from(cat,cats).where(cat.name.like("Kitt%")).sel(cat.name);
         assertTrue(last.res.size() == 1);        
         
-        query().from(cat,cats).sel(QMath.add(cat.bodyWeight, cat.weight));        
+        query().from(cat,cats).sel(MathFunctions.add(cat.bodyWeight, cat.weight));        
     }
         
     @Test

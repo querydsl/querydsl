@@ -14,7 +14,7 @@ import org.junit.Test;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.collections.AbstractQueryTest;
-import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.types.expr.EBoolean;
 
 
 /**

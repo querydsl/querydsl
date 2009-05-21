@@ -14,11 +14,11 @@ import org.codehaus.janino.Scanner.ScanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysema.query.grammar.JavaOps;
-import com.mysema.query.grammar.Ops;
-import com.mysema.query.grammar.Ops.Op;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Path;
+import com.mysema.query.collections.JavaOps;
+import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.operation.Ops.Op;
+import com.mysema.query.types.path.Path;
 
 /**
  * FilteredJavaSerializer is a JavaSerializer extensions for skipping expressions in the 

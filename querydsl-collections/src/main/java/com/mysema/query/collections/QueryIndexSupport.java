@@ -6,7 +6,7 @@
 package com.mysema.query.collections;
 
 import com.mysema.query.collections.support.DefaultIndexSupport;
-import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.types.expr.EBoolean;
 
 /**
  * QueryIndexSupport enables the injection of indexed query source lookup into 

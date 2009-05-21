@@ -12,14 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.mysema.query.collections.IteratorSource;
+import com.mysema.query.collections.JavaOps;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.utils.EvaluatorUtils;
 import com.mysema.query.collections.utils.QueryIteratorUtils;
-import com.mysema.query.grammar.JavaOps;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Operation;
-import com.mysema.query.grammar.types.Path;
-import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.Operation;
+import com.mysema.query.types.path.Path;
 
 /**
  * DefaultIndexSupport provides a local query specific result cache which creates

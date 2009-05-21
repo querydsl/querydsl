@@ -12,7 +12,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.grammar.types.Expr.ENumber;
+import com.mysema.query.types.expr.ENumber;
 
 /**
  * DistinctTest provides

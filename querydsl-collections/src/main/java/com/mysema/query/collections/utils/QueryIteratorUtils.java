@@ -11,10 +11,10 @@ import org.apache.commons.collections15.IteratorUtils;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
 
+import com.mysema.query.collections.JavaOps;
 import com.mysema.query.collections.eval.Evaluator;
-import com.mysema.query.grammar.JavaOps;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * QueryIteratorUtils provides Iterator utilities

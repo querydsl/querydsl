@@ -14,8 +14,8 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.mysema.query.collections.AbstractQueryTest;
+import com.mysema.query.collections.JavaOps;
 import com.mysema.query.collections.eval.Evaluator;
-import com.mysema.query.grammar.JavaOps;
 
 
 /**

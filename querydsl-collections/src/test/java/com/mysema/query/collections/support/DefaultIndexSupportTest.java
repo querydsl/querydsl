@@ -16,8 +16,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.collections.AbstractQueryTest;
-import com.mysema.query.grammar.JavaOps;
-import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.collections.JavaOps;
+import com.mysema.query.types.expr.Expr;
 
 
 /**

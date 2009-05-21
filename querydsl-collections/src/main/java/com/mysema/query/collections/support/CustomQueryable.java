@@ -10,14 +10,15 @@ import java.util.Map;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.DefaultQueryMetadata;
-import com.mysema.query.ProjectableAdapter;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.collections.ColQuery;
 import com.mysema.query.collections.IteratorSource;
+import com.mysema.query.collections.JavaOps;
 import com.mysema.query.collections.QueryIndexSupport;
-import com.mysema.query.grammar.JavaOps;
-import com.mysema.query.grammar.OrderSpecifier;
-import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.support.ProjectableAdapter;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * CustomQueryable a ColQuery like interface for querying on custom IteratorSource sources
@@ -68,7 +69,7 @@ public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends P
         return _this;
     }
      
-    public SubType where(Expr.EBoolean... o) {
+    public SubType where(EBoolean... o) {
         innerQuery.where(o);
         return _this;
     }

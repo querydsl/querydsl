@@ -8,7 +8,7 @@ package com.mysema.query.collections;
 import java.util.List;
 
 import com.mysema.query.JoinExpression;
-import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.types.expr.EBoolean;
 
 /**
  * SourceSortingSupport enables the injection of source sorting functionality 

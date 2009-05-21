@@ -6,7 +6,6 @@
 package com.mysema.query.collections;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.grammar.JavaOps;
 
 
 /**

@@ -5,7 +5,7 @@
  */
 package com.mysema.query.collections;
 
-import static com.mysema.query.grammar.GrammarWithAlias.$;
+import static com.mysema.query.alias.GrammarWithAlias.$;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;

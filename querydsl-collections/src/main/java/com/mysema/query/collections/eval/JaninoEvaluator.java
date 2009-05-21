@@ -11,8 +11,8 @@ import java.util.List;
 import org.codehaus.janino.ExpressionEvaluator;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.grammar.JavaOps;
-import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.collections.JavaOps;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * JaninoEvaluator is a Janino compiler based Evaluator implementation

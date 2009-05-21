@@ -5,10 +5,10 @@
  */
 package com.mysema.query.collections;
 
+import static com.mysema.query.alias.GrammarWithAlias.$;
+import static com.mysema.query.alias.GrammarWithAlias.alias;
 import static com.mysema.query.collections.MiniApi.from;
-import static com.mysema.query.grammar.Grammar.gt;
-import static com.mysema.query.grammar.GrammarWithAlias.$;
-import static com.mysema.query.grammar.GrammarWithAlias.alias;
+import static com.mysema.query.types.Grammar.gt;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -19,9 +19,9 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mysema.query.alias.GrammarWithAlias;
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.Domain.QCat;
-import com.mysema.query.grammar.GrammarWithAlias;
 
 /**
  * AliasTEst provides

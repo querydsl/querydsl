@@ -61,15 +61,15 @@
 </#macro>   
 
 <#macro booleanField field>
-	public final Path.PBoolean ${field.name} = _boolean("${field.realName}");
+	public final PBoolean ${field.name} = _boolean("${field.realName}");
 </#macro>
 
 <#macro comparableField field>
-	public final Path.PComparable<${field.typeName}> ${field.name} = _comparable("${field.realName}",${field.typeName}.class);
+	public final PComparable<${field.typeName}> ${field.name} = _comparable("${field.realName}",${field.typeName}.class);
 </#macro>
 
 <#macro entityCollection field>
-	public final Path.PEntityCollection<${field.typeName}> ${field.name} = _entitycol("${field.realName}",${field.typeName}.class, "${field.simpleTypeName}");
+	public final PEntityCollection<${field.typeName}> ${field.name} = _entitycol("${field.realName}",${field.typeName}.class, "${field.simpleTypeName}");
 </#macro>
 
 <#macro entityField field>
@@ -83,59 +83,59 @@
 </#macro>
 
 <#macro entityList field>
-	public final Path.PEntityList<${field.typeName}> ${field.name} = _entitylist("${field.realName}",${field.typeName}.class,"${field.simpleTypeName}");
+	public final PEntityList<${field.typeName}> ${field.name} = _entitylist("${field.realName}",${field.typeName}.class,"${field.simpleTypeName}");
     public ${field.typePackage}.${pre}${field.simpleTypeName} ${field.name}(int index) {
     	return new ${field.typePackage}.${pre}${field.simpleTypeName}(PathMetadata.forListAccess(${field.name},index));
     }
-    public ${field.typePackage}.${pre}${field.simpleTypeName} ${field.name}(Expr<Integer> index) {
+    public ${field.typePackage}.${pre}${field.simpleTypeName} ${field.name}(com.mysema.query.types.expr.Expr<Integer> index) {
     	return new ${field.typePackage}.${pre}${field.simpleTypeName}(PathMetadata.forListAccess(${field.name},index));
     }
 </#macro>
 
 <#macro entityMap field>
-	public final Path.PEntityMap<${field.keyTypeName},${field.typeName}> ${field.name} = _entitymap("${field.realName}",${field.keyTypeName}.class,${field.typeName}.class,"${field.simpleTypeName}");
+	public final PEntityMap<${field.keyTypeName},${field.typeName}> ${field.name} = _entitymap("${field.realName}",${field.keyTypeName}.class,${field.typeName}.class,"${field.simpleTypeName}");
     public ${field.typePackage}.${pre}${field.simpleTypeName} ${field.name}(${field.keyTypeName} key) {
     	return new ${field.typePackage}.${pre}${field.simpleTypeName}(PathMetadata.forMapAccess(${field.name},key));
     }
-    public ${field.typePackage}.${pre}${field.simpleTypeName} ${field.name}(Expr<${field.keyTypeName}> key) {
+    public ${field.typePackage}.${pre}${field.simpleTypeName} ${field.name}(com.mysema.query.types.expr.Expr<${field.keyTypeName}> key) {
     	return new ${field.typePackage}.${pre}${field.simpleTypeName}(PathMetadata.forMapAccess(${field.name},key));
     }
 </#macro>
      
 <#macro numericField field>
-	public final Path.PNumber<${field.typeName}> ${field.name} = _number("${field.realName}",${field.typeName}.class);
+	public final PNumber<${field.typeName}> ${field.name} = _number("${field.realName}",${field.typeName}.class);
 </#macro>
          
 <#macro simpleField field>
-	public final Path.PSimple<${field.typeName}> ${field.name} = _simple("${field.realName}",${field.typeName}.class);
+	public final PSimple<${field.typeName}> ${field.name} = _simple("${field.realName}",${field.typeName}.class);
 </#macro>
      
 <#macro simpleMap field>
-	public final Path.PComponentMap<${field.keyTypeName},${field.typeName}> ${field.name} = _simplemap("${field.realName}",${field.keyTypeName}.class,${field.typeName}.class);
-    public Path.PSimple<${field.typeName}> ${field.name}(${field.keyTypeName} key) {
-    	return new Path.PSimple<${field.typeName}>(${field.typeName}.class,PathMetadata.forMapAccess(${field.name},key));
+	public final PComponentMap<${field.keyTypeName},${field.typeName}> ${field.name} = _simplemap("${field.realName}",${field.keyTypeName}.class,${field.typeName}.class);
+    public PSimple<${field.typeName}> ${field.name}(${field.keyTypeName} key) {
+    	return new PSimple<${field.typeName}>(${field.typeName}.class,PathMetadata.forMapAccess(${field.name},key));
     }
-    public Path.PSimple<${field.typeName}> ${field.name}(Expr<${field.keyTypeName}> key) {
-    	return new Path.PSimple<${field.typeName}>(${field.typeName}.class,PathMetadata.forMapAccess(${field.name},key));
+    public PSimple<${field.typeName}> ${field.name}(com.mysema.query.types.expr.Expr<${field.keyTypeName}> key) {
+    	return new PSimple<${field.typeName}>(${field.typeName}.class,PathMetadata.forMapAccess(${field.name},key));
     }
 </#macro>     
 
 <#macro simpleCollection field>
-	public final Path.PComponentCollection<${field.typeName}> ${field.name} = _simplecol("${field.realName}",${field.typeName}.class);
+	public final PComponentCollection<${field.typeName}> ${field.name} = _simplecol("${field.realName}",${field.typeName}.class);
 </#macro>
 
 <#macro simpleList field>
-	public final Path.PComponentList<${field.typeName}> ${field.name} = _simplelist("${field.realName}",${field.typeName}.class);
-    public Path.PSimple<${field.typeName}> ${field.name}(int index) {
-    	return new Path.PSimple<${field.typeName}>(${field.typeName}.class,PathMetadata.forListAccess(${field.name},index));
+	public final PComponentList<${field.typeName}> ${field.name} = _simplelist("${field.realName}",${field.typeName}.class);
+    public PSimple<${field.typeName}> ${field.name}(int index) {
+    	return new PSimple<${field.typeName}>(${field.typeName}.class,PathMetadata.forListAccess(${field.name},index));
     }
-    public Path.PSimple<${field.typeName}> ${field.name}(Expr<Integer> index) {
-    	return new Path.PSimple<${field.typeName}>(${field.typeName}.class,PathMetadata.forListAccess(${field.name},index));
+    public PSimple<${field.typeName}> ${field.name}(com.mysema.query.types.expr.Expr<Integer> index) {
+    	return new PSimple<${field.typeName}>(${field.typeName}.class,PathMetadata.forListAccess(${field.name},index));
     }
 </#macro>
 
 <#macro stringField field>
-	public final Path.PString ${field.name} = _string("${field.realName}");
+	public final PString ${field.name} = _string("${field.realName}");
 </#macro>
 
 

@@ -29,7 +29,6 @@ import org.apache.commons.collections15.iterators.UniqueFilterIterator;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.Projectable;
-import com.mysema.query.QueryBaseWithProjection;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -42,13 +41,14 @@ import com.mysema.query.collections.support.DefaultSourceSortingSupport;
 import com.mysema.query.collections.support.MultiComparator;
 import com.mysema.query.collections.support.SimpleIteratorSource;
 import com.mysema.query.collections.utils.EvaluatorUtils;
-import com.mysema.query.grammar.JavaOps;
-import com.mysema.query.grammar.Ops;
-import com.mysema.query.grammar.Order;
-import com.mysema.query.grammar.OrderSpecifier;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Operation;
-import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.support.QueryBaseWithProjection;
+import com.mysema.query.types.Order;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.expr.EArrayConstructor;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.Operation;
+import com.mysema.query.types.operation.Ops;
 import com.mysema.query.util.CloseableIterator;
 
 /**
@@ -322,7 +322,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
             orderByExpr[i] = (Expr) orderBy.get(i).getTarget();
             directions[i] = orderBy.get(i).getOrder() == Order.ASC;
         }
-        Expr<?> expr = new Expr.EArrayConstructor<Object>(Object.class, orderByExpr);
+        Expr<?> expr = new EArrayConstructor<Object>(Object.class, orderByExpr);
         Evaluator ev = EvaluatorUtils.create(ops, sources, expr);
 
         // transform the iterator to list
@@ -344,7 +344,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
     public CloseableIterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         arrayProjection = true;
         Expr<?>[] full = asArray(new Expr[rest.length + 2], first, second, rest);
-        Expr<Object[]> projection = new Expr.EArrayConstructor(Object.class, full);
+        Expr<Object[]> projection = new EArrayConstructor(Object.class, full);
         
         addToProjection(projection);
         try {

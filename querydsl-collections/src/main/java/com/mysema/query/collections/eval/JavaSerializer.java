@@ -5,9 +5,9 @@
  */
 package com.mysema.query.collections.eval;
 
-import static com.mysema.query.grammar.types.PathMetadata.LISTVALUE_CONSTANT;
-import static com.mysema.query.grammar.types.PathMetadata.PROPERTY;
-import static com.mysema.query.grammar.types.PathMetadata.VARIABLE;
+import static com.mysema.query.types.path.PathMetadata.LISTVALUE_CONSTANT;
+import static com.mysema.query.types.path.PathMetadata.PROPERTY;
+import static com.mysema.query.types.path.PathMetadata.VARIABLE;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -22,14 +22,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.grammar.JavaOps;
-import com.mysema.query.grammar.Ops;
-import com.mysema.query.grammar.Ops.Op;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Path;
-import com.mysema.query.grammar.types.Expr.EConstant;
-import com.mysema.query.grammar.types.PathMetadata.PathType;
+import com.mysema.query.collections.JavaOps;
 import com.mysema.query.serialization.BaseSerializer;
+import com.mysema.query.types.expr.EConstant;
+import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.operation.Ops.Op;
+import com.mysema.query.types.path.Path;
+import com.mysema.query.types.path.PathMetadata.PathType;
 
 
 /**
@@ -189,10 +189,10 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer>{
                 int lastIndex = right.lastIndexOf('%');
                 if (lastIndex == right.length() -1){
                     operator = Ops.STARTSWITH;
-                    args = Arrays.<Expr<?>>asList(args.get(0),new Expr.EConstant<String>(right.substring(0, lastIndex)));
+                    args = Arrays.<Expr<?>>asList(args.get(0),new EConstant<String>(right.substring(0, lastIndex)));
                 }else if (lastIndex == 0){
                     operator = Ops.ENDSWITH;
-                    args = Arrays.<Expr<?>>asList(args.get(0),new Expr.EConstant<String>(right.substring(1)));
+                    args = Arrays.<Expr<?>>asList(args.get(0),new EConstant<String>(right.substring(1)));
                 }    
             }                
             super.visitOperation(type, operator, args);    

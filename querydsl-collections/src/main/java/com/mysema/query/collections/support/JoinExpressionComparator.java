@@ -14,12 +14,12 @@ import java.util.Map;
 import org.apache.commons.lang.mutable.MutableInt;
 
 import com.mysema.query.JoinExpression;
-import com.mysema.query.grammar.Ops;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Operation;
-import com.mysema.query.grammar.types.Path;
-import com.mysema.query.grammar.types.Expr.EBoolean;
-import com.mysema.query.grammar.types.Expr.EConstant;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EConstant;
+import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.Operation;
+import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.path.Path;
 
 /**
  * JoinExpressionComparator is a comparator for Join expressions

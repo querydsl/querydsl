@@ -5,14 +5,14 @@
  */
 package com.mysema.query.sql;
 
-import static com.mysema.query.grammar.Grammar.avg;
-import static com.mysema.query.grammar.Grammar.count;
-import static com.mysema.query.grammar.Grammar.not;
-import static com.mysema.query.grammar.QMath.add;
-import static com.mysema.query.grammar.QMath.max;
-import static com.mysema.query.grammar.QMath.min;
-import static com.mysema.query.grammar.SqlGrammar.exists;
-import static com.mysema.query.grammar.SqlGrammar.select;
+import static com.mysema.query.functions.MathFunctions.add;
+import static com.mysema.query.functions.MathFunctions.max;
+import static com.mysema.query.functions.MathFunctions.min;
+import static com.mysema.query.sql.SQLGrammar.exists;
+import static com.mysema.query.sql.SQLGrammar.select;
+import static com.mysema.query.types.Grammar.avg;
+import static com.mysema.query.types.Grammar.count;
+import static com.mysema.query.types.Grammar.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
@@ -30,23 +30,21 @@ import org.junit.Test;
 
 import com.mysema.query.ExcludeIn;
 import com.mysema.query.IncludeIn;
-import com.mysema.query.grammar.QDateTime;
-import com.mysema.query.grammar.QMath;
-import com.mysema.query.grammar.QString;
-import com.mysema.query.grammar.SqlJoinMeta;
-import com.mysema.query.grammar.SqlOps;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Projection;
-import com.mysema.query.grammar.types.SubQuery;
-import com.mysema.query.grammar.types.Expr.EBoolean;
-import com.mysema.query.grammar.types.Expr.EComparable;
-import com.mysema.query.grammar.types.Expr.ENumber;
-import com.mysema.query.grammar.types.Expr.EString;
+import com.mysema.query.functions.DateTimeFunctions;
+import com.mysema.query.functions.MathFunctions;
+import com.mysema.query.functions.StringFunctions;
 import com.mysema.query.sql.domain.QEMPLOYEE;
 import com.mysema.query.sql.domain.QSURVEY;
 import com.mysema.query.sql.domain.QTEST;
 import com.mysema.query.sql.dto.IdName;
 import com.mysema.query.sql.dto.QIdName;
+import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EComparable;
+import com.mysema.query.types.expr.EConstant;
+import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.Expr;
 
 
 /**
@@ -61,7 +59,7 @@ public abstract class SqlQueryTest {
     
     protected static ThreadLocal<Statement> stmtHolder = new ThreadLocal<Statement>();
     
-    protected SqlOps dialect;
+    protected SQLOps dialect;
     
     protected final QEMPLOYEE employee = new QEMPLOYEE("employee");
     protected final QEMPLOYEE employee2 = new QEMPLOYEE("employee2");
@@ -121,7 +119,7 @@ public abstract class SqlQueryTest {
     public void testVarious() throws SQLException{
         System.out.println(q().from(survey).list(survey.name.lower()));
         System.out.println(q().from(survey).list(survey.name.add("abc")));                
-        System.out.println(q().from(survey).list(QMath.sqrt(survey.id)));        
+        System.out.println(q().from(survey).list(MathFunctions.sqrt(survey.id)));        
     }
     
     @Test
@@ -293,8 +291,8 @@ public abstract class SqlQueryTest {
     
     @Test
     public void testIllegalUnion() throws SQLException{
-        SubQuery<SqlJoinMeta,Integer> sq1 = select(max(employee.id)).from(employee);
-        SubQuery<SqlJoinMeta,Integer> sq2 = select(min(employee.id)).from(employee);
+        SubQuery<Object,Integer> sq1 = select(max(employee.id)).from(employee);
+        SubQuery<Object,Integer> sq2 = select(min(employee.id)).from(employee);
         try{
             q().from(employee).union(sq1, sq2).list();
             fail();
@@ -307,8 +305,8 @@ public abstract class SqlQueryTest {
     @Test
     public void testUnion() throws SQLException{
         // union
-        SubQuery<SqlJoinMeta,Integer> sq1 = select(max(employee.id)).from(employee);
-        SubQuery<SqlJoinMeta,Integer> sq2 = select(min(employee.id)).from(employee);
+        SubQuery<Object,Integer> sq1 = select(max(employee.id)).from(employee);
+        SubQuery<Object,Integer> sq2 = select(min(employee.id)).from(employee);
         List<Integer> list = q().union(sq1, sq2).list(); 
         assertFalse(list.isEmpty());
         
@@ -319,8 +317,8 @@ public abstract class SqlQueryTest {
         assertFalse(list.isEmpty());
     
         // union #2
-        SubQuery<SqlJoinMeta,Object[]> sq3 = select(count(), max(employee.id)).from(employee);
-        SubQuery<SqlJoinMeta,Object[]> sq4 = select(count(), min(employee.id)).from(employee);
+        SubQuery<Object,Object[]> sq3 = select(count(), max(employee.id)).from(employee);
+        SubQuery<Object,Object[]> sq4 = select(count(), min(employee.id)).from(employee);
         List<Object[]> list2 = q().union(sq3, sq4).list();
         assertFalse(list2.isEmpty());
     }
@@ -328,12 +326,12 @@ public abstract class SqlQueryTest {
     @Test
     @ExcludeIn({"hsqldb","derby"})
     public void testQueryWithoutFrom() throws SQLException{
-        q().list(add(new Expr.EConstant<Integer>(1),1));
+        q().list(add(new EConstant<Integer>(1),1));
     }
     
     @Test
     public void testWhereExists() throws SQLException{
-        SubQuery<SqlJoinMeta,Integer> sq1 = select(max(employee.id)).from(employee);
+        SubQuery<Object,Integer> sq1 = select(max(employee.id)).from(employee);
         q().from(employee).where(exists(sq1)).count();
         q().from(employee).where(not(exists(sq1))).count();
     }
@@ -341,28 +339,28 @@ public abstract class SqlQueryTest {
     @Test
     @ExcludeIn({"derby"})
     public void testMathFunctions() throws SQLException{
-        Expr<Integer> i = new Expr.EConstant<Integer>(1);
-        Expr<Double> d = new Expr.EConstant<Double>(1.0);
+        Expr<Integer> i = new EConstant<Integer>(1);
+        Expr<Double> d = new EConstant<Double>(1.0);
         for (Expr<?> e : Arrays.<Expr<?>>asList(
-                QMath.abs(i),
-                QMath.acos(d),
-                QMath.asin(d),
-                QMath.atan(d),
-                QMath.ceil(d),
-                QMath.cos(d),
-                QMath.tan(d),
-                QMath.sqrt(i),
-                QMath.sin(d),
-                QMath.round(d),
-                QMath.random(),
-                QMath.pow(d,d),
+                MathFunctions.abs(i),
+                MathFunctions.acos(d),
+                MathFunctions.asin(d),
+                MathFunctions.atan(d),
+                MathFunctions.ceil(d),
+                MathFunctions.cos(d),
+                MathFunctions.tan(d),
+                MathFunctions.sqrt(i),
+                MathFunctions.sin(d),
+                MathFunctions.round(d),
+                MathFunctions.random(),
+                MathFunctions.pow(d,d),
 //                QMath.min(i,i),
 //                QMath.max(i,i),
 //                QMath.mod(i,i),
-                QMath.log10(d),
-                QMath.log(d),
-                QMath.floor(d),
-                QMath.exp(d))){
+                MathFunctions.log10(d),
+                MathFunctions.log(d),
+                MathFunctions.floor(d),
+                MathFunctions.exp(d))){
             q().from(employee).list((Expr<? extends Comparable>)e);
         }
     }
@@ -377,10 +375,10 @@ public abstract class SqlQueryTest {
                 s.substring(1),                
                 s.trim(),
                 s.concat("abc"),
-                QString.ltrim(s),
-                QString.rtrim(s),
+                StringFunctions.ltrim(s),
+                StringFunctions.rtrim(s),
 //                QString.length(s),
-                QString.space(4))){
+                StringFunctions.space(4))){
             q().from(employee).list(e);
         }            
     }
@@ -399,24 +397,24 @@ public abstract class SqlQueryTest {
     @Test
     @ExcludeIn({"derby"})
     public void testDateTimeFunctions() throws SQLException{
-        Expr<Date> d = new Expr.EConstant<Date>(new Date());
-        Expr<Time> t = new Expr.EConstant<Time>(new Time(0));
+        Expr<Date> d = new EConstant<Date>(new Date());
+        Expr<Time> t = new EConstant<Time>(new Time(0));
         for (EComparable<?> e : Arrays.<EComparable<?>>asList(
-                QDateTime.currentDate(),
-                QDateTime.currentTime(),
-                QDateTime.now(),
+                DateTimeFunctions.currentDate(),
+                DateTimeFunctions.currentTime(),
+                DateTimeFunctions.now(),
                 
-                QDateTime.year(d),
-                QDateTime.month(d),
-                QDateTime.week(d),
+                DateTimeFunctions.year(d),
+                DateTimeFunctions.month(d),
+                DateTimeFunctions.week(d),
                 
-                QDateTime.hour(t),
-                QDateTime.minute(t),
-                QDateTime.second(t),
+                DateTimeFunctions.hour(t),
+                DateTimeFunctions.minute(t),
+                DateTimeFunctions.second(t),
                 
-                QDateTime.dayOfMonth(d),
-                QDateTime.dayOfWeek(d),
-                QDateTime.dayOfYear(d)
+                DateTimeFunctions.dayOfMonth(d),
+                DateTimeFunctions.dayOfWeek(d),
+                DateTimeFunctions.dayOfYear(d)
         )){
             q().from(employee).list(e);
         }    
@@ -449,8 +447,8 @@ public abstract class SqlQueryTest {
         }
     }
     
-    protected final SqlQuery q(){
-        return new SqlQuery(connHolder.get(), dialect){
+    protected final SQLQuery q(){
+        return new SQLQuery(connHolder.get(), dialect){
             @Override
             protected String buildQueryString(boolean countRow) {
                 String rv = super.buildQueryString(countRow);

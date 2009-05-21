@@ -12,8 +12,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
+import com.mysema.query.apt.general.QuerydslProcessor;
 import com.mysema.query.apt.jpa.JpaProcessor;
-import com.mysema.query.apt.querydsl.QuerydslProcessor;
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.apt.AnnotationProcessorFactory;
