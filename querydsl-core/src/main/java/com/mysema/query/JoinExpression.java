@@ -8,7 +8,8 @@ package com.mysema.query;
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * JoinExpression is a join element in a Query instance
@@ -17,7 +18,7 @@ import com.mysema.query.grammar.types.Expr;
  * @version $Id$
  */
 public class JoinExpression<T> {
-    private Expr.EBoolean condition;
+    private EBoolean condition;
     private final Expr<?> target;
     private final JoinType type;
     private final T metadata;
@@ -36,11 +37,11 @@ public class JoinExpression<T> {
         this.metadata = metadata;
     }
     
-    public Expr.EBoolean getCondition() {
+    public EBoolean getCondition() {
         return condition;
     }
     
-    public void setCondition(Expr.EBoolean condition) {
+    public void setCondition(EBoolean condition) {
         this.condition = condition;
     }
     

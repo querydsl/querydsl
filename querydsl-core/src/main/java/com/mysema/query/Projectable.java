@@ -8,7 +8,7 @@ package com.mysema.query;
 import java.util.Iterator;
 import java.util.List;
 
-import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * Projectable defines default projection methods for Query implemnations

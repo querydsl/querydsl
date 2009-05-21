@@ -8,11 +8,11 @@ package com.mysema.query.serialization;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.grammar.Ops;
-import com.mysema.query.grammar.Ops.Op;
-import com.mysema.query.grammar.Ops.OpNumberAgg;
-import com.mysema.query.grammar.types.PathMetadata;
-import com.mysema.query.grammar.types.PathMetadata.PathType;
+import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.operation.Ops.Op;
+import com.mysema.query.types.operation.Ops.OpNumberAgg;
+import com.mysema.query.types.path.PathMetadata;
+import com.mysema.query.types.path.PathMetadata.PathType;
 
 /**
  * OperationPatterns provides operator patterns for SQL/HQL serialization

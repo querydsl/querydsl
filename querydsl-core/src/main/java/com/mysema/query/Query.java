@@ -5,8 +5,9 @@
  */
 package com.mysema.query;
 
-import com.mysema.query.grammar.OrderSpecifier;
-import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * Query provides a query interface of the fluent query DSL.
@@ -61,7 +62,7 @@ public interface Query<SubType extends Query<SubType>>{
      * @param o
      * @return the Query itself
      */
-    SubType on(Expr.EBoolean o);    
+    SubType on(EBoolean o);    
     
     /**
      * set group by aggregation parameters
@@ -77,7 +78,7 @@ public interface Query<SubType extends Query<SubType>>{
      * @param o
      * @return the Query itself
      */
-    SubType having(Expr.EBoolean... o);
+    SubType having(EBoolean... o);
     
     /**
      * set the order constraints of the query

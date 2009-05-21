@@ -9,9 +9,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.mysema.query.SimplePathFactory;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Path.*;
+import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.PBoolean;
+import com.mysema.query.types.path.PBooleanArray;
+import com.mysema.query.types.path.PComparable;
+import com.mysema.query.types.path.PComparableArray;
+import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.PEntityCollection;
+import com.mysema.query.types.path.PEntityList;
+import com.mysema.query.types.path.PEntityMap;
+import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.PStringArray;
+import com.mysema.query.types.path.SimplePathFactory;
 
 /**
  * AliasAwareExprFactory extends the SimpleExprFactory to return thread bound alias expressions, when present

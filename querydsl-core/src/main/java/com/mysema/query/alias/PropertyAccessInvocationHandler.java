@@ -12,21 +12,34 @@ import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Path;
-import com.mysema.query.grammar.types.PathMetadata;
-import com.mysema.query.grammar.types.Path.PCollection;
-import com.mysema.query.grammar.types.Path.PEntity;
-import com.mysema.query.grammar.types.Path.PList;
-import com.mysema.query.grammar.types.Path.PMap;
-import com.mysema.query.grammar.types.Path.PString;
+import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.PBoolean;
+import com.mysema.query.types.path.PCollection;
+import com.mysema.query.types.path.PComparable;
+import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.PEntityCollection;
+import com.mysema.query.types.path.PEntityList;
+import com.mysema.query.types.path.PEntityMap;
+import com.mysema.query.types.path.PList;
+import com.mysema.query.types.path.PMap;
+import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PSimple;
+import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.Path;
+import com.mysema.query.types.path.PathMetadata;
 
 /**
  * PropertyAccessInvocationHandler is the main InvocationHandler class for the CGLIB alias proxies
@@ -201,72 +214,72 @@ class PropertyAccessInvocationHandler implements MethodInterceptor{
             rv = null;
             
         } else if (Integer.class.equals(type) || int.class.equals(type)) {
-            path = new Path.PNumber<Integer>(Integer.class,pm);
+            path = new PNumber<Integer>(Integer.class,pm);
             rv =  (T) Integer.valueOf(42);
             
         } else if (Date.class.equals(type)) {
-            path = new Path.PComparable<Date>(Date.class,pm);
+            path = new PComparable<Date>(Date.class,pm);
             rv =  (T) new Date();
             
         } else if (Long.class.equals(type) || long.class.equals(type)) {
-            path = new Path.PNumber<Long>(Long.class,pm);
+            path = new PNumber<Long>(Long.class,pm);
             rv =  (T) Long.valueOf(42l);
             
         } else if (Short.class.equals(type) || short.class.equals(type)) {
-            path = new Path.PComparable<Short>(Short.class,pm);
+            path = new PComparable<Short>(Short.class,pm);
             rv =  (T) Short.valueOf((short)42);
             
         } else if (Double.class.equals(type) || double.class.equals(type)) {
-            path = new Path.PNumber<Double>(Double.class,pm);
+            path = new PNumber<Double>(Double.class,pm);
             rv =  (T) Double.valueOf(42d);
             
         } else if (Float.class.equals(type) || float.class.equals(type)) {
-            path = new Path.PNumber<Float>(Float.class,pm);
+            path = new PNumber<Float>(Float.class,pm);
             rv =  (T) Float.valueOf(42f);
             
         } else if (BigInteger.class.equals(type)) {
-            path = new Path.PNumber<BigInteger>(BigInteger.class,pm);
+            path = new PNumber<BigInteger>(BigInteger.class,pm);
             rv =  (T) BigInteger.valueOf(42l);
             
         } else if (BigDecimal.class.equals(type)) {
-            path = new Path.PNumber<BigDecimal>(BigDecimal.class,pm);
+            path = new PNumber<BigDecimal>(BigDecimal.class,pm);
             rv =  (T) BigDecimal.valueOf(42d);
             
         } else if (Boolean.class.equals(type) || boolean.class.equals(type)) {
-            path = new Path.PBoolean(pm);
+            path = new PBoolean(pm);
             rv =  (T) Boolean.TRUE;
             
         // Collection API types
             
         } else if (List.class.isAssignableFrom(type)) {
             Class<?> _elementType = getTypeParameter(genericType, 0);
-            path = new Path.PEntityList(_elementType, _elementType.getSimpleName(), pm);
+            path = new PEntityList(_elementType, _elementType.getSimpleName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
             
         } else if (Set.class.isAssignableFrom(type)) {
             Class<?> _elementType = getTypeParameter(genericType, 0);
-            path = new Path.PEntityCollection(_elementType, _elementType.getName(), pm);
+            path = new PEntityCollection(_elementType, _elementType.getName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
             
         } else if (Collection.class.isAssignableFrom(type)) {
             Class<?> _elementType = getTypeParameter(genericType, 0);
-            path = new Path.PEntityCollection(_elementType, _elementType.getSimpleName(), pm);
+            path = new PEntityCollection(_elementType, _elementType.getSimpleName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
             
         } else if (Map.class.isAssignableFrom(type)) {
             Class<?> _keyType = getTypeParameter(genericType, 0);
             Class<?> _valueType = getTypeParameter(genericType, 1);
-            path = new Path.PEntityMap(_keyType,_valueType,_valueType.getSimpleName(), pm);
+            path = new PEntityMap(_keyType,_valueType,_valueType.getSimpleName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
                         
         // enums    
             
         } else if (Enum.class.isAssignableFrom(type)) {
-            path = new Path.PSimple<T>(type, pm);
+            path = new PSimple<T>(type, pm);
             rv =  type.getEnumConstants()[0];
             
         } else {
-            path = new Path.PEntity<T>((Class<T>)type, type.getSimpleName(), pm);
+            path = new PEntity<T>((Class<T>)type, type.getSimpleName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);            
         }
         propToObj.put(propKey, rv);

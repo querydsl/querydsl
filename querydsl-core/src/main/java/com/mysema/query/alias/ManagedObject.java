@@ -5,7 +5,7 @@
  */
 package com.mysema.query.alias;
 
-import com.mysema.query.grammar.types.Path.PEntity;
+import com.mysema.query.types.path.PEntity;
 
 
 /**

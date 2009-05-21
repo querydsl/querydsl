@@ -5,7 +5,7 @@
  */
 package com.mysema.query.alias;
 
-import com.mysema.query.grammar.types.Expr;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * AliasFactory is a factory interface for alias creation

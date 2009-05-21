@@ -5,9 +5,9 @@
  */
 package com.mysema.query;
 
-import com.mysema.query.grammar.OrderSpecifier;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * QueryBase provides a basic implementation of the Query interface without 

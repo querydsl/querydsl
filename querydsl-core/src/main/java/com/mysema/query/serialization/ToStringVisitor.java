@@ -5,16 +5,16 @@
  */
 package com.mysema.query.serialization;
 
-import com.mysema.query.grammar.types.AbstractVisitor;
-import com.mysema.query.grammar.types.Custom;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Operation;
-import com.mysema.query.grammar.types.Path;
-import com.mysema.query.grammar.types.Alias.ASimple;
-import com.mysema.query.grammar.types.Alias.AToPath;
-import com.mysema.query.grammar.types.Expr.EArrayConstructor;
-import com.mysema.query.grammar.types.Expr.EConstant;
-import com.mysema.query.grammar.types.Expr.EConstructor;
+import com.mysema.query.types.AbstractVisitor;
+import com.mysema.query.types.alias.ASimple;
+import com.mysema.query.types.alias.AToPath;
+import com.mysema.query.types.custom.Custom;
+import com.mysema.query.types.expr.EArrayConstructor;
+import com.mysema.query.types.expr.EConstant;
+import com.mysema.query.types.expr.EConstructor;
+import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.Operation;
+import com.mysema.query.types.path.Path;
 
 /**
  * ToStringVisitor provides

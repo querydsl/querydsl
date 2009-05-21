@@ -12,9 +12,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.mysema.query.grammar.OrderSpecifier;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.types.CascadingBoolean;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * DefaultMetadata is the default implementation of the QueryMetadata interface

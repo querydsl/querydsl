@@ -7,8 +7,9 @@ package com.mysema.query;
 
 import org.junit.Test;
 
-import com.mysema.query.grammar.GrammarWithAlias;
-import com.mysema.query.grammar.types.Expr.EBoolean;
+import com.mysema.query.alias.GrammarWithAlias;
+import com.mysema.query.types.CascadingBoolean;
+import com.mysema.query.types.expr.EBoolean;
 
 
 /**

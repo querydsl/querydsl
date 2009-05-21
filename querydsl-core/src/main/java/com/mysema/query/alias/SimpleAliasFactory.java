@@ -8,10 +8,9 @@ package com.mysema.query.alias;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Path;
-import com.mysema.query.grammar.types.PathMetadata;
-import com.mysema.query.grammar.types.Path.PEntity;
+import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.util.FactoryMap;
 
 /**
@@ -28,7 +27,7 @@ public class SimpleAliasFactory implements AliasFactory {
     private FactoryMap<PEntity<?>> pathCache = new FactoryMap<PEntity<?>>(){
         @SuppressWarnings("unused")
         public <A> PEntity<A> create(Class<A> cl, String var){
-            return new Path.PEntity<A>(cl, cl.getSimpleName(), PathMetadata.forVariable(var));
+            return new PEntity<A>(cl, cl.getSimpleName(), PathMetadata.forVariable(var));
         }
     };
     

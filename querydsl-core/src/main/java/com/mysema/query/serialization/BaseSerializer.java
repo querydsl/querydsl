@@ -5,22 +5,25 @@
  */
 package com.mysema.query.serialization;
 
-import static com.mysema.query.grammar.types.PathMetadata.LISTVALUE_CONSTANT;
-import static com.mysema.query.grammar.types.PathMetadata.PROPERTY;
-import static com.mysema.query.grammar.types.PathMetadata.VARIABLE;
+import static com.mysema.query.types.path.PathMetadata.LISTVALUE_CONSTANT;
+import static com.mysema.query.types.path.PathMetadata.PROPERTY;
+import static com.mysema.query.types.path.PathMetadata.VARIABLE;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysema.query.grammar.Ops.Op;
-import com.mysema.query.grammar.types.AbstractVisitor;
-import com.mysema.query.grammar.types.Custom;
-import com.mysema.query.grammar.types.Expr;
-import com.mysema.query.grammar.types.Operation;
-import com.mysema.query.grammar.types.Path;
-import com.mysema.query.grammar.types.Alias.ASimple;
-import com.mysema.query.grammar.types.Alias.AToPath;
-import com.mysema.query.grammar.types.PathMetadata.PathType;
+import com.mysema.query.types.AbstractVisitor;
+import com.mysema.query.types.alias.ASimple;
+import com.mysema.query.types.alias.AToPath;
+import com.mysema.query.types.custom.Custom;
+import com.mysema.query.types.expr.EArrayConstructor;
+import com.mysema.query.types.expr.EConstant;
+import com.mysema.query.types.expr.EConstructor;
+import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.Operation;
+import com.mysema.query.types.operation.Ops.Op;
+import com.mysema.query.types.path.Path;
+import com.mysema.query.types.path.PathMetadata.PathType;
 
 /**
  * BaseSerializer is a stub for Serializer implementations
@@ -108,13 +111,13 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
         
     public String toString(){ return builder.toString(); }
 
-    protected void visit(Expr.EConstructor<?> expr){
+    protected void visit(EConstructor<?> expr){
         append("new ").append(expr.getType().getName()).append("(");
         append(", ",expr.getArgs()).append(")");
     }
         
     @Override
-    protected void visit(Expr.EConstant<?> expr) {
+    protected void visit(EConstant<?> expr) {
         append("a");
         if (!constants.contains(expr.getConstant())){
             constants.add(expr.getConstant());
@@ -124,7 +127,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
         }     
     }
     
-    protected void visit(Expr.EArrayConstructor<?> oa) {
+    protected void visit(EArrayConstructor<?> oa) {
 //        _append("new Object[]{");
         append("new ").append(oa.getElementType().getName()).append("[]{");
         append(", ",oa.getArgs()).append("}");
