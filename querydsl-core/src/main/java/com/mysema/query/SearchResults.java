@@ -1,8 +1,7 @@
 /*
- * Copyright (c) 2007 Mysema Ltd.
+ * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
  * 
- * originally developed in Bookmarks project
  */
 package com.mysema.query;
 
