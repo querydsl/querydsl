@@ -39,6 +39,7 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
 		throw new UnsupportedOperationException();
 	}
 
+	// FIXME
 	protected void visit(CountExpression expr) {
 		if (expr.getTarget() == null) {
 			append("COUNT(*)");
@@ -70,7 +71,7 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
 		}			
 	}
 
-	// TODO
+	// FIXME
 	private void visitCast(Op<?> operator, Expr<?> source, Class<?> targetType) {
 		append("CAST(").handle(source);
 		append(" AS ");

@@ -16,18 +16,18 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  *
  */
-public interface JDOQLQuery extends Projectable {
+public interface JDOQLQuery extends Projectable { // --> projections go into result
     
-	JDOQLQuery from(Expr<?>... o);
+	JDOQLQuery from(Expr<?>... o); // first is candidate, rest are variables
     
-	JDOQLQuery orderBy(OrderSpecifier<?>... o);
+	JDOQLQuery orderBy(OrderSpecifier<?>... o); // -> ordering
     
-	JDOQLQuery where(EBoolean... o);
+	JDOQLQuery where(EBoolean... o); // limit
     
-	JDOQLQuery limit(long limit);
+	JDOQLQuery limit(long limit); // --> range
     
-	JDOQLQuery offset(long offset);
+	JDOQLQuery offset(long offset); // --> range
     
-	JDOQLQuery restrict(QueryModifiers mod);
+	JDOQLQuery restrict(QueryModifiers mod); // --> range
 
 }
