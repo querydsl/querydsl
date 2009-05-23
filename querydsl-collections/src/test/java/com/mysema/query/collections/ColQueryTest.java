@@ -48,7 +48,7 @@ public class ColQueryTest extends AbstractQueryTest{
     public void testArrayProjection(){
         // select pairs of cats with different names
         query().from(cat,cats).from(otherCat,cats)
-            .where(cat.name.ne(otherCat.name)).selelect(cat.name, otherCat.name);
+            .where(cat.name.ne(otherCat.name)).list(cat.name, otherCat.name);
         assertTrue(last.res.size() == 4 * 3);
     }
     
@@ -70,37 +70,37 @@ public class ColQueryTest extends AbstractQueryTest{
     @Test
     public void testPrimitives(){
         // select cats with kittens
-        query().from(cat,cats).where(cat.kittens.size().ne(0)).sel(cat.name);
+        query().from(cat,cats).where(cat.kittens.size().ne(0)).list(cat.name);
         assertTrue(last.res.size() == 4);
         
         // select cats without kittens
-        query().from(cat,cats).where(cat.kittens.size().eq(0)).sel(cat.name);
+        query().from(cat,cats).where(cat.kittens.size().eq(0)).list(cat.name);
         assertTrue(last.res.size() == 0);
     }
     
     @Test
     public void testSimpleCases(){
         // select all cat names
-        query().from(cat,cats).sel(cat.name);
+        query().from(cat,cats).list(cat.name);
         assertTrue(last.res.size() == 4);
         
         // select all kittens
-        query().from(cat,cats).sel(cat.kittens);
+        query().from(cat,cats).list(cat.kittens);
         assertTrue(last.res.size() == 4);
         
         // select cats with kittens
-        query().from(cat,cats).where(cat.kittens.size().gt(0)).sel(cat.name);
+        query().from(cat,cats).where(cat.kittens.size().gt(0)).list(cat.name);
         assertTrue(last.res.size() == 4);
                 
         // select cats named Kitty
-        query().from(cat,cats).where(cat.name.eq("Kitty")).sel(cat.name);
+        query().from(cat,cats).where(cat.name.eq("Kitty")).list(cat.name);
         assertTrue(last.res.size() == 1);
         
         // select cats named Kitt%
-        query().from(cat,cats).where(cat.name.like("Kitt%")).sel(cat.name);
+        query().from(cat,cats).where(cat.name.like("Kitt%")).list(cat.name);
         assertTrue(last.res.size() == 1);        
         
-        query().from(cat,cats).sel(MathFunctions.add(cat.bodyWeight, cat.weight));        
+        query().from(cat,cats).list(MathFunctions.add(cat.bodyWeight, cat.weight));        
     }
         
     @Test
@@ -111,11 +111,11 @@ public class ColQueryTest extends AbstractQueryTest{
             System.out.println(Arrays.asList(strs));
         }
         
-        query().from(cat,cats).sel(cat.mate);
+        query().from(cat,cats).list(cat.mate);
         
-        query().from(cat,cats).sel(cat.kittens);
+        query().from(cat,cats).list(cat.kittens);
         
-        query().from(cat,cats).where(cat.name.like("fri%")).sel($(cat.name));
+        query().from(cat,cats).where(cat.name.like("fri%")).list($(cat.name));
    
     }
     

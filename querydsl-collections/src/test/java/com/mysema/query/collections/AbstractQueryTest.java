@@ -119,28 +119,32 @@ public abstract class AbstractQueryTest {
         return last;
     }
 
-    static class ColQueryWithoutIndexing extends ColQuery{
+    static class ColQueryWithoutIndexing extends ColQueryImpl{
         @Override
         protected QueryIndexSupport createIndexSupport(Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops, List<Expr<?>> sources){
             return new SimpleIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);
         }
     }
     
-    static class TestQuery extends AbstractColQuery<TestQuery>{
+    static class TestQuery extends ColQueryImpl{
         List<Object> res = new ArrayList<Object>();
-        public <RT> void sel(Expr<RT> projection){
-            for (Object o : list(projection)){
+        public <RT> List<RT> list(Expr<RT> projection){
+        	List<RT> rv = super.list(projection);
+            for (Object o : rv){
                 System.out.println(o);
                 res.add(o);
             }
             System.out.println();
+            return rv;
         }
-        public <RT> void selelect(Expr<RT> p1, Expr<RT> p2, Expr<RT>... rest){
-            for (Object[] o : list(p1, p2, rest)){
+        public List<Object[]> list(Expr<?> p1, Expr<?> p2, Expr<?>... rest){
+        	List<Object[]> rv = super.list(p1, p2, rest);
+            for (Object[] o : rv){
                 System.out.println(Arrays.asList(o));
                 res.add(o);
             }
             System.out.println();
+            return rv;
         }
     }
 }

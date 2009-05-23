@@ -31,7 +31,7 @@ public class QueryValidationTest extends AbstractQueryTest{
         int max = size * size;
         long count, expected;
         List<Cat> cats1 = cats(size);
-        ColQuery query;
+        ColQueryImpl query;
         StringBuilder res = new StringBuilder();
         for (EBoolean condition : conditionsFor1Source){            
             // without wrapped iterators
@@ -55,20 +55,20 @@ public class QueryValidationTest extends AbstractQueryTest{
             res.append((expected != count || count > max) ? " X":"  ");
             
             // indexed, without reordering
-            query = new ColQuery();
+            query = new ColQueryImpl();
             query.setSortSources(false);            
             count = query.from(cat, cats1).where(condition).count();
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
             res.append((expected != count || count > max) ? " X":"  ");
             
             // indexed, with reordering and iterator wrapping
-            query = new ColQuery();            
+            query = new ColQueryImpl();            
             count = query.from(cat, cats1).where(condition).count();
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
             res.append((expected != count || count > max) ? " X":"  ");
 
             // indexed, with reordering and iterator wrapping and sequential union handling
-            query = new ColQuery();     
+            query = new ColQueryImpl();     
             query.setSequentialUnion(true);
             count = query.from(cat, cats1).where(condition).count();
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
@@ -91,7 +91,7 @@ public class QueryValidationTest extends AbstractQueryTest{
         long count, expected;
         List<Cat> cats1 = cats(size);
         List<Cat> cats2 = cats(size);
-        ColQuery query;
+        ColQueryImpl query;
         StringBuilder res = new StringBuilder();
         for (EBoolean condition : conditionsFor2Sources){            
             // without wrapped iterators
@@ -115,20 +115,20 @@ public class QueryValidationTest extends AbstractQueryTest{
             res.append((expected != count || count > max) ? " X":"  ");
             
             // indexed, without reordering
-            query = new ColQuery();
+            query = new ColQueryImpl();
             query.setSortSources(false);            
             count = query.from(cat, cats1).from(otherCat, cats2).where(condition).count();
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
             res.append((expected != count || count > max) ? " X":"  ");
             
             // indexed, with reordering and iterator wrapping
-            query = new ColQuery();            
+            query = new ColQueryImpl();            
             count = query.from(cat, cats1).from(otherCat, cats2).where(condition).count();
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
             res.append((expected != count || count > max) ? " X":"  ");
 
             // indexed, with reordering and iterator wrapping and sequential union handling
-            query = new ColQuery();     
+            query = new ColQueryImpl();     
             query.setSequentialUnion(true);
             count = query.from(cat, cats1).from(otherCat, cats2).where(condition).count();
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
@@ -150,7 +150,7 @@ public class QueryValidationTest extends AbstractQueryTest{
         List<Cat> cats1 = cats(10);
         List<Cat> cats2 = cats(10);
         
-        ColQuery query = new ColQueryWithoutIndexing();
+        ColQueryImpl query = new ColQueryWithoutIndexing();
         query.setSortSources(false);                  
         for (Object[] cats :  query.from(cat, cats1).from(otherCat, cats2)
                 .where(condition).list(cat, otherCat)){

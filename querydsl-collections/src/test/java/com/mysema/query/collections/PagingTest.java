@@ -53,7 +53,7 @@ public class PagingTest extends AbstractQueryTest{
     }
     
     private ColQuery createQuery(QueryModifiers modifiers){
-    	ColQuery query = new ColQuery().from(var, ints);
+    	ColQuery query = new ColQueryImpl().from(var, ints);
         if (modifiers != null) query.restrict(modifiers);
         return query;
     }

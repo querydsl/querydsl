@@ -24,21 +24,21 @@ import com.mysema.query.types.expr.Expr;
 public class MiniApi extends GrammarWithAlias{
     
     public static <A> ColQuery from(Expr<A> path, A... arr){
-        return new ColQuery().from(path, Arrays.asList(arr));
+        return new ColQueryImpl().from(path, Arrays.asList(arr));
     }
 
     public static <A> ColQuery from(Expr<A> path, Iterable<A> col){
-        return new ColQuery().from(path, col);
+        return new ColQueryImpl().from(path, col);
     }
     
     public static <A> ColQuery from(A alias, Iterable<A> col){
-        return new ColQuery().from($(alias), col);
+        return new ColQueryImpl().from($(alias), col);
     }
     
     @SuppressWarnings("unchecked")
     public static <A> List<A> select(Iterable<A> from, EBoolean where, OrderSpecifier<?>... order){
         Expr<A> path = (Expr<A>) new SinglePathExtractor().handle(where).getPath();
-        ColQuery query = new ColQuery().from(path, from).where(where).orderBy(order);
+        ColQuery query = new ColQueryImpl().from(path, from).where(where).orderBy(order);
         return query.list((Expr<A>)path);
     }
                 

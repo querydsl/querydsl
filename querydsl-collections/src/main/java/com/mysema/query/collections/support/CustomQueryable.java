@@ -12,6 +12,7 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.collections.ColQuery;
+import com.mysema.query.collections.ColQueryImpl;
 import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.collections.JavaOps;
 import com.mysema.query.collections.QueryIndexSupport;
@@ -29,7 +30,7 @@ import com.mysema.query.types.expr.Expr;
 // TODO : find a better name for this
 public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends ProjectableAdapter{
     
-    private final ColQuery innerQuery;
+    private final ColQueryImpl innerQuery;
 
     @SuppressWarnings("unchecked")
     private final SubType _this = (SubType)this;
@@ -40,7 +41,7 @@ public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends P
     
     public CustomQueryable(final IteratorSource iteratorSource, QueryMetadata<Object> metadata){
         Assert.notNull(iteratorSource);
-        this.innerQuery = new ColQuery(metadata){
+        this.innerQuery = new ColQueryImpl(metadata){
             @Override
             protected QueryIndexSupport createIndexSupport(
                     Map<Expr<?>, 

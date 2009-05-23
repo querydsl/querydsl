@@ -26,7 +26,6 @@ import org.apache.commons.collections15.iterators.IteratorChain;
 import org.apache.commons.collections15.iterators.UniqueFilterIterator;
 
 import com.mysema.query.JoinExpression;
-import com.mysema.query.Projectable;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -66,7 +65,7 @@ import com.mysema.query.types.operation.Ops;
 // TODO : implement leftJoin, rightJoin and fullJoin
 // TODO : implement groupBy and having
 // TODO : remove close handling
-public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends QueryBaseWithProjection<Object, SubType> implements Projectable{
+public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl> implements ColQuery{
 
     private boolean arrayProjection = false;
 
@@ -93,22 +92,22 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
      */
     private boolean wrapIterators = true;
 
-    public AbstractColQuery() {
+    public ColQueryImpl() {
         this(JavaOps.DEFAULT);
     }
 
-    public AbstractColQuery(JavaOps ops) {
+    public ColQueryImpl(JavaOps ops) {
         this.ops = ops;
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
     }
 
-    public AbstractColQuery(QueryMetadata<Object> metadata) {
+    public ColQueryImpl(QueryMetadata<Object> metadata) {
         super(metadata);
         this.ops = JavaOps.DEFAULT;
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
     }
 
-    protected <A> SubType alias(Expr<A> path, Iterable<? extends A> col) {
+    protected <A> ColQueryImpl alias(Expr<A> path, Iterable<? extends A> col) {
         exprToIt.put(path, col);
         return _this;
     }
@@ -160,11 +159,6 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
         return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);
     }
     
-    private <RT> Iterator<RT> createPagedIterator(Expr<RT> projection) throws Exception{
-    	Iterator<RT> iterator = createIterator(projection);
-        return LimitingIterator.transform(iterator, getMetadata().getModifiers());
-    }
-    
     private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
         List<Expr<?>> sources = new ArrayList<Expr<?>>();
         // from / where
@@ -189,7 +183,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
         }
 
     }
-
+    
     private Iterator<Object[]> createMultiIterator(List<Expr<?>> sources, EBoolean condition) {
         MultiIterator multiIt;
         if (condition == null || !wrapIterators) {
@@ -208,14 +202,19 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
         }
     }
 
-    public <A> SubType from(Expr<A> entity, A first, A... rest) {
+    private <RT> Iterator<RT> createPagedIterator(Expr<RT> projection) throws Exception{
+    	Iterator<RT> iterator = createIterator(projection);
+        return LimitingIterator.transform(iterator, getMetadata().getModifiers());
+    }
+
+    public <A> ColQueryImpl from(Expr<A> entity, A first, A... rest) {
         List<A> list = new ArrayList<A>(rest.length + 1);
         list.add(first);
         list.addAll(Arrays.asList(rest));
         return from(entity, list);
     }
 
-    public <A> SubType from(Expr<A> entity, Iterable<? extends A> col) {
+    public <A> ColQueryImpl from(Expr<A> entity, Iterable<? extends A> col) {
         alias(entity, col);
         from((Expr<?>) entity);
         return _this;
@@ -328,30 +327,6 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
         return list(MiniApi.getAny(projection));
     }
     
-    public void setSequentialUnion(boolean sequentialUnion) {
-        this.sequentialUnion = sequentialUnion;
-    }
-
-    public void setSortSources(boolean s) {
-        this.sortSources = s;
-    }
-    
-    public void setSourceSortingSupport(SourceSortingSupport sourceSortingSupport) {
-        this.sourceSortingSupport = sourceSortingSupport;
-    }
-
-    public void setWrapIterators(boolean w) {
-        this.wrapIterators = w;
-    }
-
-    public <RT> RT uniqueResult(Expr<RT> expr) {
-    	return super.uniqueResult(expr);
-    }
-    
-    public Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
-    	return super.uniqueResult(first, second, rest);
-    }
-
     // TODO : optimize
 	public <RT> SearchResults<RT> listResults(Expr<RT> projection) {
     	QueryModifiers modifiers = getMetadata().getModifiers();
@@ -380,5 +355,29 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
     		}
     		return new SearchResults<RT>(list.subList(start, end), modifiers, list.size());
     	}    	
+    }
+    
+    public Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    	return super.uniqueResult(first, second, rest);
+    }
+
+    public <RT> RT uniqueResult(Expr<RT> expr) {
+    	return super.uniqueResult(expr);
+    }
+
+    public void setSequentialUnion(boolean sequentialUnion) {
+        this.sequentialUnion = sequentialUnion;
+    }
+    
+    public void setSortSources(boolean s) {
+        this.sortSources = s;
+    }
+
+    public void setSourceSortingSupport(SourceSortingSupport sourceSortingSupport) {
+        this.sourceSortingSupport = sourceSortingSupport;
+    }
+
+    public void setWrapIterators(boolean w) {
+        this.wrapIterators = w;
     }
 }

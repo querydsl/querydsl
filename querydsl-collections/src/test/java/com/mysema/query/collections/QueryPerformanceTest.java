@@ -73,7 +73,7 @@ public class QueryPerformanceTest extends AbstractQueryTest{
         // test each condition
         for (EBoolean condition : conditionsFor2Sources){
             long level1 = 0, level2 = 0, level3 = 0, level4 = 0, level5 = 0;
-            ColQuery query;
+            ColQueryImpl query;
             for (long j=0; j < testIterations; j++){            
                 // without wrapped iterators
                 query = new ColQueryWithoutIndexing();
@@ -90,11 +90,11 @@ public class QueryPerformanceTest extends AbstractQueryTest{
                 level3 += query(query, condition, cats1, cats2);
                                                 
                 // indexed, with reordering and iterator wrapping
-                query = new ColQuery();            
+                query = new ColQueryImpl();            
                 level4 += query(query, condition, cats1, cats2);
                 
                 // indexed with sequential union
-                query = new ColQuery();          
+                query = new ColQueryImpl();          
                 query.setSequentialUnion(true);
                 level5 += query(query, condition, cats1, cats2);
                 

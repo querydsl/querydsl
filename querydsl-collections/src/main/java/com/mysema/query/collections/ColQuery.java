@@ -5,7 +5,13 @@
  */
 package com.mysema.query.collections;
 
-import com.mysema.query.QueryMetadata;
+import java.util.List;
+
+import com.mysema.query.Projectable;
+import com.mysema.query.QueryModifiers;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
 
 
 /**
@@ -14,18 +20,22 @@ import com.mysema.query.QueryMetadata;
  * @author tiwe
  * @version $Id$
  */
-public class ColQuery extends AbstractColQuery<ColQuery>{
+public interface ColQuery extends Projectable {
 
-    public ColQuery(){
-        super();
-    }
-    
-    public ColQuery(JavaOps ops){
-        super(ops);
-    }
+	<A> ColQuery from(Expr<A> entity, A first, A... rest);
 
-    public ColQuery(QueryMetadata<Object> metadata) {
-        super(metadata);
-    }
+	<A> ColQuery from(Expr<A> entity, Iterable<? extends A> col);
     
+	ColQuery orderBy(OrderSpecifier<?>... o);
+    
+	ColQuery where(EBoolean... o);
+   
+	<RT> List<RT> list(RT alias);
+	
+	ColQuery limit(long limit);
+    
+	ColQuery offset(long offset);
+    
+	ColQuery restrict(QueryModifiers mod);
+
 }
