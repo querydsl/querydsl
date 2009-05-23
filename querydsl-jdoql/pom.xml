@@ -83,6 +83,7 @@
         <artifactId>maven-apt-plugin</artifactId>
         <version>1.0.15</version>
         <executions>
+          <!-- creates Querydsl query types for Product and Book -->
           <execution>
             <phase>generate-sources</phase>
             <goals>
