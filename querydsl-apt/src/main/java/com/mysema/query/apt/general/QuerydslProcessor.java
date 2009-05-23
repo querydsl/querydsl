@@ -5,7 +5,8 @@
  */
 package com.mysema.query.apt.general;
 
-import com.mysema.query.apt.Constants;
+import static com.mysema.query.apt.Constants.*;
+
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.MethodDeclaration;
 
@@ -15,10 +16,10 @@ import com.sun.mirror.declaration.MethodDeclaration;
  * @author tiwe
  * @version $Id$
  */
-public class QuerydslProcessor extends GeneralProcessor implements Constants{
+public class QuerydslProcessor extends GeneralProcessor {
 
     public QuerydslProcessor(AnnotationProcessorEnvironment env) {
-        super(env, null, qdEntity, qdDto);
+        super(env, null, QD_ENTITY, QD_DTO);
     }
     
     @Override

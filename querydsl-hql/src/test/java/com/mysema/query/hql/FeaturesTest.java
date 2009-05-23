@@ -234,8 +234,8 @@ public class FeaturesTest {
     
     @Test
     public void testConstructors(){
-        EConstructor<com.mysema.query.hql.HqlDomain.Cat> c = new EConstructor<com.mysema.query.hql.HqlDomain.Cat>(com.mysema.query.hql.HqlDomain.Cat.class, cat.name);
-        toString("new "+com.mysema.query.hql.HqlDomain.Cat.class.getName()+"(cat.name)", c);
+        EConstructor<com.mysema.query.hql.Domain.Cat> c = new EConstructor<com.mysema.query.hql.Domain.Cat>(com.mysema.query.hql.Domain.Cat.class, cat.name);
+        toString("new "+com.mysema.query.hql.Domain.Cat.class.getName()+"(cat.name)", c);
         toString("new "+getClass().getName()+"$BookmarkDTO()", new _BookmarkDTO());
         toString("new "+getClass().getName()+"$BookmarkDTO(cat.name)", new _BookmarkDTO(cat.name));
     }

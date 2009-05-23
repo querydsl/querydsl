@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>0.3.5-SNAPSHOT</version>
+  <version>0.3.6-SNAPSHOT</version>
   <name>Querydsl</name>
   <description>parent project for querydsl modules</description>
   <url>http://source.mysema.com/display/querydsl</url>
@@ -25,6 +25,7 @@
     <module>../querydsl-apt</module>
     <module>../querydsl-collections</module>
     <module>../querydsl-hql</module>
+    <module>../querydsl-jdoql</module>
     <module>../querydsl-sql</module>
   </modules>
 
@@ -39,8 +40,8 @@
       <artifactId>slf4j-log4j12</artifactId>
       <version>1.5.2</version>
       <scope>test</scope>
-    </dependency>  
-  
+    </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -52,9 +53,9 @@
           <artifactId>servlet-api</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>  
+    </dependency>
   </dependencies>
-  
+
   <organization>
     <name>Mysema Ltd</name>
     <url>http://www.mysema.com</url>
@@ -97,21 +98,21 @@
       <url>LICENSE.txt</url>
     </license>
   </licenses>
-  
+
   <properties>
     <svn.path>scm:svn:https://source.mysema.com/svn/mysema</svn.path>
     <viewvc.path>https://source.mysema.com/viewvc/mysema</viewvc.path>
     <path.suffix>projects/querydsl/trunk/${project.artifactId}</path.suffix>
   </properties>
-  
-   <scm>
+
+  <scm>
     <connection>${svn.path}/${path.suffix}</connection>
     <developerConnection>${svn.path}/${path.suffix}</developerConnection>
     <url>${viewvc.path}/${path.suffix}</url>
   </scm>
-  
+
   <build>
-  	<plugins>
+    <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
@@ -119,20 +120,20 @@
         <configuration>
           <ajdtVersion>none</ajdtVersion>
         </configuration>
-      </plugin>      		
-  	  <plugin>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.5</version>  	  	
-	  </plugin>	
+        <version>2.5</version>
+      </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
         </configuration>
-      </plugin>	  
-	</plugins>
+      </plugin>
+    </plugins>
   </build>
 
   <reporting>
@@ -147,7 +148,7 @@
         <configuration>
           <testFailureIgnore>true</testFailureIgnore>
         </configuration>
-      </plugin>      
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
@@ -155,7 +156,7 @@
           <aggregate>true</aggregate>
         </configuration>
       </plugin>
-    </plugins>    
-  </reporting>  
-  
+    </plugins>
+  </reporting>
+
 </project>

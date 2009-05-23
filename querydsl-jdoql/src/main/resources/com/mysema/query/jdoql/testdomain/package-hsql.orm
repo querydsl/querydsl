@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE jdo PUBLIC 
+    "-//Sun Microsystems, Inc.//DTD Java Data Objects ORM Metadata 2.0//EN"
+    "http://java.sun.com/dtd/orm_2_0.dtd">
+<orm>
+    <package name="com.mysema.query.jdoql.testdomain">
+        <class name="Product" identity-type="datastore" table="JDO_PRODUCTS">
+            <inheritance strategy="new-table"/>
+            <field name="name">
+                <column name="PRODUCT_NAME" length="100" jdbc-type="VARCHAR"/>
+            </field>
+            <field name="description">
+                <column length="255" jdbc-type="VARCHAR"/>
+            </field>
+        </class>
+
+        <class name="Book" identity-type="datastore" table="JDO_BOOKS">
+            <inheritance strategy="new-table"/>
+            <field name="author">
+                <column length="40" jdbc-type="VARCHAR"/>
+            </field>
+            <field name="isbn">
+                <column length="20" jdbc-type="CHAR"/>
+            </field>
+            <field name="publisher">
+                <column length="40" jdbc-type="VARCHAR"/>
+            </field>
+        </class>
+    </package>
+</orm>

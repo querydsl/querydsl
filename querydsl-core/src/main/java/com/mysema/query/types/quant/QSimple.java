@@ -13,8 +13,10 @@ import com.mysema.query.types.operation.Ops.Op;
 /**
  * The Class Simple.
  */
-public class QSimple<Q> extends ESimple<Q> implements Quant {
+public class QSimple<Q> extends ESimple<Q> implements Quant<Q> {
+	
 	private final Expr<?> col;
+	
 	private final Op<?> op;
 
 	public QSimple(Class<Q> type, Op<?> op, CollectionType<Q> col) {

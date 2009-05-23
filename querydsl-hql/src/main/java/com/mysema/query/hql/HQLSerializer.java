@@ -155,7 +155,9 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer>{
     @Override
     protected void visit(EConstant<?> expr) {
         boolean wrap = expr.getConstant().getClass().isArray();
-        if (wrap) append("(");
+        if (wrap){
+        	append("(");
+        }
         append(":a");
         if (!constants.contains(expr.getConstant())){
             constants.add(expr.getConstant());
@@ -163,36 +165,22 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer>{
         }else{
             append(Integer.toString(constants.indexOf(expr.getConstant())+1));
         }        
-        if (wrap) append(")");
+        if (wrap){
+        	append(")");
+        }
     }
         
     @Override
     protected void visit(PCollection<?> expr){
         // only wrap a PathCollection, if it the pathType is PROPERTY
         boolean wrap = wrapElements && expr.getMetadata().getPathType().equals(PROPERTY);
-        if (wrap) append("elements(");
+        if (wrap){
+        	append("elements(");
+        }
         visit((Path<?>)expr);
-        if (wrap) append(")");
-    }
-    
-    protected void visit(QBoolean<?> q){
-        visit((Quant)q);
-    }
-
-    protected void visit(QComparable<?> q){
-        visit((Quant)q);
-    }
-    
-    protected void visit(QNumber<?> q){
-        visit((Quant)q);
-    }
-    
-    protected void visit(QSimple<?> q){
-        visit((Quant)q);
-    }
-
-    protected void visit(Quant q){        
-        visitOperation(null, q.getOperator(), Collections.<Expr<?>>singletonList(q.getTarget()));
+        if (wrap){
+        	append(")");
+        }
     }
 
     protected void visit(SubQuery<HQLJoinMeta,?> query) {

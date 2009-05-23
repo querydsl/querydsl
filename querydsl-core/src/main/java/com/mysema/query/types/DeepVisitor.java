@@ -12,6 +12,7 @@ import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.path.Path;
+import com.mysema.query.types.quant.Quant;
 
 /**
  * DeepVisitor provides
@@ -50,5 +51,11 @@ public class DeepVisitor<SubType extends DeepVisitor<SubType>> extends AbstractV
     protected void visit(Path<?> expr) {
         // handle parent paths ?!?        
     }
+
+	@Override
+	protected void visit(Quant<?> q) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

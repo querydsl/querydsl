@@ -15,6 +15,7 @@ import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.path.Path;
+import com.mysema.query.types.quant.Quant;
 
 /**
  * ToStringVisitor provides
@@ -96,5 +97,11 @@ public class ToStringVisitor extends AbstractVisitor<ToStringVisitor>{
             toString =  expr.toString();
         }
     }
+
+	@Override
+	protected void visit(Quant<?> q) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

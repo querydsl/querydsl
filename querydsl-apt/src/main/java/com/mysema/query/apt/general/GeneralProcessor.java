@@ -46,7 +46,7 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
             String dtoAnnotation) {
         this.env = env;
         this.targetFolder = env.getOptions().get("-s");
-        this.namePrefix = getString(env.getOptions(), "namePrefix", "");
+        this.namePrefix = getString(env.getOptions(), "namePrefix", "Q");
 
         this.superClassAnnotation = superClassAnnotation;
         this.domainAnnotation = domainAnnotation;

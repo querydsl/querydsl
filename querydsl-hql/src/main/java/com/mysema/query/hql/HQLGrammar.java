@@ -82,8 +82,8 @@ public class HQLGrammar extends GrammarWithAlias{
 //        return new DistinctPath<T>(left);
 //    }    
     
-    public static <D> EBoolean exists(CollectionType<D> col){
-        return new QBoolean<D>(OpQuant.EXISTS, col);
+    public static EBoolean exists(CollectionType<?> col){
+        return new QBoolean(OpQuant.EXISTS, col);
     }
     
     public static <A> SubQuery<HQLJoinMeta,A> from(PEntity<A> select){
@@ -162,8 +162,8 @@ public class HQLGrammar extends GrammarWithAlias{
         return new EConstructor<A>(a,args);
     }
     
-    public static <D> EBoolean notExists(CollectionType<D> col){
-        return new QBoolean<D>(OpQuant.NOTEXISTS, col);
+    public static EBoolean notExists(CollectionType<?> col){
+        return new QBoolean(OpQuant.NOTEXISTS, col);
     }
         
     public static EComparable<Date> second(Expr<Date> date){

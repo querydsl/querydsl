@@ -40,6 +40,11 @@ import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PStringArray;
 import com.mysema.query.types.path.Path;
+import com.mysema.query.types.quant.QBoolean;
+import com.mysema.query.types.quant.QComparable;
+import com.mysema.query.types.quant.QNumber;
+import com.mysema.query.types.quant.QSimple;
+import com.mysema.query.types.quant.Quant;
 
 /**
  * AbstractVisitor provides a base implementation of the Visitor interface
@@ -172,5 +177,21 @@ public abstract class AbstractVisitor<SubType extends AbstractVisitor<SubType>> 
     protected void visit(PStringArray expr) {
         visit((PArray<?>) expr);
     }
+    @Override
+	protected void visit(QBoolean q) {
+		visit((Quant<?>) q);
+	}
+    @Override
+	protected void visit(QComparable<?> q) {
+		visit((Quant<?>) q);
+	}
+    @Override
+	protected void visit(QNumber<?> q) {
+		visit((Quant<?>) q);
+	}
+    @Override
+	protected void visit(QSimple<?> q) {
+		visit((Quant<?>) q);
+	}
     
 }

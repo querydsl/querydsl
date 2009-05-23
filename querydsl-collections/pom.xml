@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>0.3.5-SNAPSHOT</version>
+    <version>0.3.6-SNAPSHOT</version>
   </parent>
 
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-collections</artifactId>
-  <name>Querydsl collections</name>
+  <name>Querydsl - Collections support</name>
   <description>Collections support for querydsl</description>
   <packaging>jar</packaging>
 
@@ -32,12 +31,12 @@
       <scope>provided</scope>
       <!-- license : TODO -->
     </dependency>
-    
+
   </dependencies>
-  
+
   <build>
     <plugins>
-  
+
       <plugin>
         <groupId>org.apache.myfaces.tobago</groupId>
         <artifactId>maven-apt-plugin</artifactId>
@@ -60,7 +59,7 @@
               </testGenerated>
               <nocompile>true</nocompile>
               <A>-Aprofile=querydsl,
-                 -AnamePrefix=Q</A>
+                -AnamePrefix=Q</A>
               <testIncludes>
                 <testInclude>
                   com/mysema/query/DomainTest*.java
@@ -70,7 +69,7 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>        
+      </plugin>
     </plugins>
   </build>
 

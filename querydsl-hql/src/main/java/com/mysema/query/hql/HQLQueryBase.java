@@ -29,8 +29,7 @@ import com.mysema.query.types.path.PathMetadata;
  */
 public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extends QueryBaseWithProjection<HQLJoinMeta,SubType>{
     
-    private static final Logger logger = LoggerFactory
-            .getLogger(HQLQueryBase.class);
+    private static final Logger logger = LoggerFactory.getLogger(HQLQueryBase.class);
         
     private List<Object> constants;
     

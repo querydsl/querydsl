@@ -10,6 +10,7 @@ import static com.mysema.query.types.path.PathMetadata.PROPERTY;
 import static com.mysema.query.types.path.PathMetadata.VARIABLE;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.mysema.query.types.AbstractVisitor;
@@ -24,6 +25,7 @@ import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Ops.Op;
 import com.mysema.query.types.path.Path;
 import com.mysema.query.types.path.PathMetadata.PathType;
+import com.mysema.query.types.quant.Quant;
 
 /**
  * BaseSerializer is a stub for Serializer implementations
@@ -137,6 +139,11 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
     protected final void visit(Operation<?,?> expr) {
         visitOperation(expr.getType(), expr.getOperator(), expr.getArgs());
     }
+    
+    protected void visit(Quant<?> q){        
+        visitOperation(null, q.getOperator(), Collections.<Expr<?>>singletonList(q.getTarget()));
+    }
+
     
     @Override
     protected void visit(ASimple<?> expr) {

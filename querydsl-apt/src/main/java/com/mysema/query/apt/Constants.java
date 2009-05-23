@@ -14,12 +14,18 @@ import com.mysema.query.annotations.Entity;
  * @author tiwe
  * @version $Id$
  */
-public interface Constants {
-    String qdEntity= Entity.class.getName();
-    String qdDto = DTO.class.getName();
+public final class Constants {
+	private Constants(){}
+	
+    public static final String QD_ENTITY= Entity.class.getName();
+    public static final String QD_DTO = DTO.class.getName();
     
-    String jpaSuperClass = "javax.persistence.MappedSuperclass";
-    String jpaEntity = "javax.persistence.Entity";                
-    String jpaEmbeddable = "javax.persistence.Embeddable";
+    // JDO
+    public static final String JDO_ENTITY = "javax.jdo.annotations.PersistenceCapable";
+    
+    // JPA
+    public static final String JPA_SUPERCLASS = "javax.persistence.MappedSuperclass";
+    public static final String JPA_ENTITY = "javax.persistence.Entity";                
+    public static final String JPA_EMBEDDABLE = "javax.persistence.Embeddable";
 
 }

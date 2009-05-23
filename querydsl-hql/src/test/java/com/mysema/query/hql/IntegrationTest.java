@@ -24,7 +24,7 @@ import com.mysema.query.hql.hibernate.HQLQuery;
  */
 @RunWith(HibernateTestRunner.class)
 @Hibernate(namingStrategy=CustomNamingStrategy.class, properties="default.properties")
-public class HqlIntegrationTest extends HqlParserTest{
+public class IntegrationTest extends ParserTest{
     
     private Session session;
         

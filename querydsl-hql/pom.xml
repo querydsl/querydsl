@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>0.3.5-SNAPSHOT</version>
+    <version>0.3.6-SNAPSHOT</version>
   </parent>
 
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-hql</artifactId>
-  <name>Querydsl hql</name>
+  <name>Querydsl - HQL/JPAQL support</name>
   <description>Hibernate / HQL support for querydsl</description>
   <packaging>jar</packaging>
 
@@ -32,7 +31,7 @@
           <groupId>asm</groupId>
           <artifactId>asm</artifactId>
         </exclusion>
-      </exclusions>    
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
@@ -62,11 +61,11 @@
       <version>${project.parent.version}</version>
       <scope>provided</scope>
       <!-- license : TODO -->
-    </dependency>   
+    </dependency>
   </dependencies>
 
   <build>
-    <plugins>          
+    <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -89,7 +88,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>        
+      </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
@@ -125,16 +124,8 @@
               <force>true</force>
               <fork>true</fork>
               <factory>com.mysema.query.apt.APTFactory</factory>
-              <testGenerated>
-                target/generated-test-sources/java
-              </testGenerated>
+              <testGenerated>target/generated-test-sources/java</testGenerated>
               <nocompile>true</nocompile>
-              <A>-AnamePrefix=Q</A>
-              <testIncludes>
-                <testInclude>
-                  com/mysema/query/hql/HqlDomain*.java
-                </testInclude>
-              </testIncludes>
               <showWarnings>true</showWarnings>
             </configuration>
           </execution>

@@ -21,7 +21,7 @@ import com.mysema.query.types.Grammar;
  * @author tiwe
  * @version $Id$
  */
-public class HqlGrammarTest {
+public class GrammarTest {
     
     @Test
     public void noDuplicates(){

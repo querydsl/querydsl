@@ -14,7 +14,7 @@ import com.mysema.query.types.operation.Ops.Op;
  * @author tiwe
  * @version $Id$
  */
-public interface Quant {
+public interface Quant<T> {
 
 	/**
 	 * 

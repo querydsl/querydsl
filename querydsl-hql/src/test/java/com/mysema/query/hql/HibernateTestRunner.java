@@ -54,14 +54,14 @@ public class HibernateTestRunner extends JUnit4ClassRunner{
             AnnotationConfiguration cfg = new AnnotationConfiguration();
             
             // TODO : make this configurable
-            for (Class<?> cl : HqlDomain.class.getDeclaredClasses()){
+            for (Class<?> cl : Domain.class.getDeclaredClasses()){
                 cfg.addAnnotatedClass(cl);
             }
             
             Hibernate config = getTestClass().getJavaClass().getAnnotation(Hibernate.class);            
             cfg.setNamingStrategy(config.namingStrategy().newInstance());
             Properties props = new Properties();
-            InputStream is = HqlIntegrationTest.class.getResourceAsStream(config.properties());
+            InputStream is = IntegrationTest.class.getResourceAsStream(config.properties());
             if (is == null) throw new IllegalArgumentException("No configuration available at classpath:" + config.properties());
             props.load(is);
             cfg.setProperties(props);

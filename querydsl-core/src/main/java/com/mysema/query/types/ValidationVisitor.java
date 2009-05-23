@@ -15,6 +15,7 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Ops.Op;
 import com.mysema.query.types.path.Path;
+import com.mysema.query.types.quant.Quant;
 
 /**
  * ValidationVisitor provides
@@ -60,5 +61,11 @@ public class ValidationVisitor extends AbstractVisitor<ValidationVisitor>{
     protected void visit(Path<?> expr) {
         // TODO Auto-generated method stub        
     }
+
+	@Override
+	protected void visit(Quant<?> q) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

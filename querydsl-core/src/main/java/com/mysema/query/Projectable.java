@@ -28,7 +28,7 @@ public interface Projectable {
     long countDistinct();
 
     /**
-     * iterate over the results with the given projection
+     * iterate over the results for the given projection
      * 
      * @param first
      * @param second
@@ -38,7 +38,7 @@ public interface Projectable {
     Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest);
     
     /**
-     * iterate over the results with the given projection
+     * iterate over the results for the given projection
      * 
      * @param <RT> generic type of the Iteratpr
      * @param projection
@@ -47,7 +47,7 @@ public interface Projectable {
     <RT> Iterator<RT> iterate(Expr<RT> projection);
 
     /**
-     * iterate over the distinct results with the given projection
+     * iterate over the distinct results for the given projection
      * 
      * @param first
      * @param second
@@ -57,7 +57,7 @@ public interface Projectable {
     Iterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest);
     
     /**
-     * iterate over the distinct results with the given projection
+     * iterate over the distinct results for the given projection
      * 
      * @param <RT> generic type of the Iteratpr
      * @param projection
@@ -66,7 +66,7 @@ public interface Projectable {
     <RT> Iterator<RT> iterateDistinct(Expr<RT> projection);
 
     /**
-     * list the results with the given projection
+     * list the results for the given projection
      * 
      * @param first
      * @param second
@@ -76,7 +76,7 @@ public interface Projectable {
     List<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest);
     
     /**
-     * list the results with the given projection
+     * list the results for the given projection
      * 
      * @param <RT> generic type of the List
      * @param projection
@@ -85,7 +85,7 @@ public interface Projectable {
     <RT> List<RT> list(Expr<RT> projection);
 
     /**
-     * list the distinct results with the given projection
+     * list the distinct results for the given projection
      * 
      * @param first
      * @param second
@@ -95,7 +95,7 @@ public interface Projectable {
     List<Object[]> listDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest);
     
     /**
-     * list the distinct results with the given projection
+     * list the distinct results for the given projection
      * 
      * @param <RT> generic type of the List
      * @param projection
@@ -104,14 +104,16 @@ public interface Projectable {
     <RT> List<RT> listDistinct(Expr<RT> projection);
 
     /**
+     * list the results for the given projection
      * 
      * @param <RT>
-     * @param expr
+     * @param projection
      * @return
      */
-    <RT> SearchResults<RT> listResults(Expr<RT> expr);
+    <RT> SearchResults<RT> listResults(Expr<RT> projection);
     
     /**
+     * return a unique result for the given projection
      * 
      * @param first
      * @param second

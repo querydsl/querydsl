@@ -13,11 +13,11 @@ import com.mysema.query.types.operation.Ops.Op;
 /**
  * The Class Boolean.
  */
-public class QBoolean<Q> extends EBoolean implements Quant {
+public class QBoolean extends EBoolean implements Quant<Boolean> {
 	private final Expr<?> col;
 	private final Op<?> op;
 
-	public QBoolean(Op<?> op, CollectionType<Q> col) {
+	public QBoolean(Op<?> op, CollectionType<?> col) {
 		this.op = op;
 		this.col = (Expr<?>) col;
 	}

@@ -26,7 +26,7 @@ import com.mysema.query.annotations.DTO;
  * @author tiwe
  * @version $Id$
  */
-public class HqlDomain {
+public class Domain {
     
     @MappedSuperclass
     public static class Superclass{

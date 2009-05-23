@@ -26,8 +26,4 @@ public class HQLQuery extends AbstractHQLQuery<HQLQuery>{
         super(session,ops);
     }
 
-    
-
-
-
 }

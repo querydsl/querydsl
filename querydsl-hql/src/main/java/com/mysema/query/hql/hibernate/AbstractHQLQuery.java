@@ -47,7 +47,7 @@ public class AbstractHQLQuery<A extends AbstractHQLQuery<A>> extends HQLQueryBas
     private Query createQuery(String queryString, QueryModifiers modifiers) {
         Query query = session.createQuery(queryString);
         setConstants(query, getConstants());    
-        if (modifiers != null){
+        if (modifiers.isRestricting()){
         	if (modifiers.getLimit() != null){
         		query.setMaxResults(modifiers.getLimit().intValue());
         	}

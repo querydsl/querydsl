@@ -5,6 +5,8 @@
  */
 package com.mysema.query.apt;
 
+import static com.mysema.query.apt.Constants.*;
+
 import static com.mysema.query.apt.APTUtils.getString;
 
 import java.util.Arrays;
@@ -13,6 +15,7 @@ import java.util.Collections;
 import java.util.Set;
 
 import com.mysema.query.apt.general.QuerydslProcessor;
+import com.mysema.query.apt.jdo.JDOProcessor;
 import com.mysema.query.apt.jpa.JPAProcessor;
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
@@ -25,11 +28,12 @@ import com.sun.mirror.declaration.AnnotationTypeDeclaration;
  * @author tiwe
  * @version $Id$
  */
-public class APTFactory implements AnnotationProcessorFactory, Constants {
+public class APTFactory implements AnnotationProcessorFactory{
     
     private static final Collection<String> supportedAnnotations = Arrays.asList(
-            qdEntity, qdDto,
-            jpaEntity, jpaSuperClass, jpaEmbeddable            
+            QD_ENTITY, QD_DTO,
+            JDO_ENTITY,
+            JPA_ENTITY, JPA_SUPERCLASS, JPA_EMBEDDABLE            
     );
 
     private static final Collection<String> supportedOptions = Collections.emptySet();
@@ -48,6 +52,8 @@ public class APTFactory implements AnnotationProcessorFactory, Constants {
         String profile = getString(env.getOptions(), "profile", "jpa");
         if ("jpa".equals(profile)){
             return new JPAProcessor(env);
+        }else if ("jdo".equals(profile)){
+        	return new JDOProcessor(env);
         }else if ("querydsl".equals(profile)){
             return new QuerydslProcessor(env);                       
         }else{

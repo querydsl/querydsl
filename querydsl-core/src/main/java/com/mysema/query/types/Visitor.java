@@ -52,6 +52,10 @@ import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PStringArray;
 import com.mysema.query.types.path.Path;
+import com.mysema.query.types.quant.QBoolean;
+import com.mysema.query.types.quant.QComparable;
+import com.mysema.query.types.quant.QNumber;
+import com.mysema.query.types.quant.QSimple;
 import com.mysema.query.types.quant.Quant;
 
 /**
@@ -182,4 +186,13 @@ public abstract class Visitor<T extends Visitor<T>> {
     
     protected abstract void visit(PStringArray expr);
         
+	protected abstract void visit(QBoolean q);
+
+	protected abstract void visit(QComparable<?> q);
+
+	protected abstract void visit(QNumber<?> q);
+
+	protected abstract void visit(QSimple<?> q);
+	
+	protected abstract void visit(Quant<?> q);
 }

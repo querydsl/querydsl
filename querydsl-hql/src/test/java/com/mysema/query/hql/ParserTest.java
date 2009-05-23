@@ -35,12 +35,12 @@ import antlr.collections.AST;
 
 import com.mysema.query.SearchResults;
 import com.mysema.query.functions.MathFunctions;
-import com.mysema.query.hql.HqlDomain.Cat;
-import com.mysema.query.hql.HqlDomain.Color;
-import com.mysema.query.hql.HqlDomain.DomesticCat;
-import com.mysema.query.hql.HqlDomain.Formula;
-import com.mysema.query.hql.HqlDomain.Parameter;
-import com.mysema.query.hql.HqlDomain.Payment;
+import com.mysema.query.hql.Domain.Cat;
+import com.mysema.query.hql.Domain.Color;
+import com.mysema.query.hql.Domain.DomesticCat;
+import com.mysema.query.hql.Domain.Formula;
+import com.mysema.query.hql.Domain.Parameter;
+import com.mysema.query.hql.Domain.Payment;
 import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.ENumber;
@@ -55,7 +55,7 @@ import com.mysema.query.types.expr.Expr;
  * @version $Id$
  */
 // TODO : refactor this
-public class HqlParserTest implements Constants{
+public class ParserTest implements Constants{
     
 	protected TestQuery q(){
 		return new TestQuery();
@@ -371,7 +371,7 @@ public class HqlParserTest implements Constants{
             .and(prod.eq(all(cust.currentOrder.lineItems)))
             ).parse();
         
-        prod.eq(new HqlDomain.Product());
+        prod.eq(new Domain.Product());
         prod.eq(new QProduct("p"));
         prod.eq(new QItem("p"));
         
@@ -470,8 +470,8 @@ public class HqlParserTest implements Constants{
 //                + "and price.product = product and catalog = :currentCatalog\n"
 //                + "group by ord having sum(price.amount) > :minAmount\n"
 //                + "order by sum(price.amount) desc" );
-        HqlDomain.Customer c1 = new HqlDomain.Customer();
-        HqlDomain.Catalog c2 = new HqlDomain.Catalog();
+        Domain.Customer c1 = new Domain.Customer();
+        Domain.Catalog c2 = new Domain.Catalog();
         
         q().select(ord.id, sum(price.amount), Grammar.count(item))
             .from(ord).join(ord.lineItems.as(item)).join(item.product.as(product))
