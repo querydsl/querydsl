@@ -11,7 +11,6 @@ import java.util.Map;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.collections.ColQuery;
 import com.mysema.query.collections.ColQueryImpl;
 import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.collections.JavaOps;
