@@ -11,8 +11,12 @@ import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.ESimple;
 import com.mysema.query.types.expr.Expr;
 
-public class PComponentCollection<D> extends ESimple<java.util.Collection<D>>
-		implements PCollection<D> {
+/**
+ * @author tiwe
+ * 
+ * @param <D>
+ */
+public class PComponentCollection<D> extends ESimple<java.util.Collection<D>> implements PCollection<D> {
 	private EBoolean isnull, isnotnull;
 	private final PathMetadata<?> metadata;
 	private EComparable<Integer> size;

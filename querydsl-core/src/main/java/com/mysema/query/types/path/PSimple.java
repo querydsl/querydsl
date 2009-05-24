@@ -9,6 +9,11 @@ import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ESimple;
 
+/**
+ * @author tiwe
+ *
+ * @param <D>
+ */
 public class PSimple<D> extends ESimple<D> implements Path<D> {
 	private EBoolean isnull, isnotnull;
 	private final PathMetadata<?> metadata;

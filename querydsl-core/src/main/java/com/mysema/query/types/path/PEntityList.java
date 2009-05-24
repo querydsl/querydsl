@@ -7,6 +7,11 @@ package com.mysema.query.types.path;
 
 import com.mysema.query.types.expr.Expr;
 
+/**
+ * @author tiwe
+ *
+ * @param <D>
+ */
 public class PEntityList<D> extends PEntityCollection<D> implements PList<D> {
 	public PEntityList(Class<D> type, String entityName,
 			PathMetadata<?> metadata) {

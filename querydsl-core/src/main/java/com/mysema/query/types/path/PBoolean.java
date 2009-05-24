@@ -8,6 +8,10 @@ package com.mysema.query.types.path;
 import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
 
+/**
+ * @author tiwe
+ *
+ */
 public class PBoolean extends EBoolean implements Path<Boolean> {
 	private EBoolean isnull, isnotnull;
 	private final PathMetadata<?> metadata;

@@ -71,8 +71,7 @@ public abstract class EComparable<D extends Comparable> extends ESimple<D> {
 	}
 
 	// cast methods
-	public <A extends Number & Comparable<? super A>> ENumber<A> castToNum(
-			Class<A> type) {
+	public <A extends Number & Comparable<? super A>> ENumber<A> castToNum(Class<A> type) {
 		return Grammar.numericCast(this, type);
 	}
 

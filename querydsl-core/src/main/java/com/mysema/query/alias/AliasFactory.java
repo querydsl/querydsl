@@ -13,7 +13,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public interface AliasFactory {
+interface AliasFactory {
 
     /**
      * 

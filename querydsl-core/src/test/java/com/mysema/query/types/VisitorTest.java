@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.grammar;
+package com.mysema.query.types;
 
 import java.util.ArrayList;
 import java.util.Arrays;

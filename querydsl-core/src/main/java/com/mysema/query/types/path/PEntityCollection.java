@@ -14,6 +14,11 @@ import com.mysema.query.types.expr.EEntity;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 
+/**
+ * @author tiwe
+ *
+ * @param <D>
+ */
 public class PEntityCollection<D> extends EEntity<java.util.Collection<D>>
 		implements PCollection<D> {
 	private EBoolean isnull, isnotnull;

@@ -32,7 +32,7 @@ public class SimpleExprFactory implements ExprFactory {
 	@SuppressWarnings("unchecked")
 	private final Expr<Integer>[] integers = new Expr[256];
 
-	public SimpleExprFactory() {
+	SimpleExprFactory() {
 		for (int i = 0; i < integers.length; i++) {
 			integers[i] = new EConstant<Integer>(i - 128);
 		}
@@ -90,8 +90,7 @@ public class SimpleExprFactory implements ExprFactory {
 		return new OString(Assert.notNull(operator), Assert.notNull(args));
 	}
 
-	public Expr<String[]> createStringArray(Op<String> operator,
-			Expr<?>... args) {
+	public Expr<String[]> createStringArray(Op<String> operator, Expr<?>... args) {
 		return new OStringArray(Assert.notNull(operator), Assert.notNull(args));
 	}
 

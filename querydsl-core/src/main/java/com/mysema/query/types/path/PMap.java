@@ -7,6 +7,12 @@ package com.mysema.query.types.path;
 
 import com.mysema.query.types.expr.Expr;
 
+/**
+ * @author tiwe
+ *
+ * @param <K>
+ * @param <V>
+ */
 public interface PMap<K, V> extends Path<java.util.Map<K, V>> {
 	Expr<V> get(Expr<K> key);
 

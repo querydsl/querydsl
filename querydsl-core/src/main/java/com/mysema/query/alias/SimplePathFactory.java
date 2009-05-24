@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types.path;
+package com.mysema.query.alias;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,6 +16,18 @@ import org.apache.commons.collections15.map.LazyMap;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.PBoolean;
+import com.mysema.query.types.path.PBooleanArray;
+import com.mysema.query.types.path.PComparable;
+import com.mysema.query.types.path.PComparableArray;
+import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.PEntityCollection;
+import com.mysema.query.types.path.PEntityList;
+import com.mysema.query.types.path.PEntityMap;
+import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.PStringArray;
+import com.mysema.query.types.path.PathMetadata;
 
 /**
  * SimpleExprFactory is a PathFactory implementation for the creation of Path
@@ -24,7 +36,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class SimplePathFactory implements PathFactory {
+class SimplePathFactory implements PathFactory {
 
 	private final PString str = new PString(PathMetadata.forVariable("str"));
 

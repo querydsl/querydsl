@@ -37,6 +37,12 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
 		return new PComparable<A>(type, PathMetadata.forProperty(this, path));
 	}
 
+	/**
+	 * @param <A>
+	 * @param path
+	 * @param type
+	 * @return
+	 */
 	protected <A extends Number & Comparable<?>> PNumber<A> _number(
 			String path, Class<A> type) {
 		return new PNumber<A>(type, PathMetadata.forProperty(this, path));

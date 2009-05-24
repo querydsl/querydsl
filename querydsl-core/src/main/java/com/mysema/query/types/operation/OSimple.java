@@ -14,6 +14,12 @@ import com.mysema.query.types.expr.ESimple;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Ops.Op;
 
+/**
+ * @author tiwe
+ *
+ * @param <OpType>
+ * @param <D>
+ */
 public class OSimple<OpType, D> extends ESimple<D> implements
 		Operation<OpType, D> {
 	private final List<Expr<?>> args;

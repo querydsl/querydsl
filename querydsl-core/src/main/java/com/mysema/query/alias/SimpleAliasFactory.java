@@ -19,7 +19,7 @@ import com.mysema.query.util.FactoryMap;
  * @author tiwe
  * @version $Id$
  */
-public class SimpleAliasFactory implements AliasFactory {
+class SimpleAliasFactory implements AliasFactory {
     
     private final ThreadLocal<Expr<?>> current = new ThreadLocal<Expr<?>>();
     

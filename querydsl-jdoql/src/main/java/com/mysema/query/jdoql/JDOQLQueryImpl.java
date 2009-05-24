@@ -33,7 +33,7 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
    
     private List<Object> constants;
     
-    private String countRowsString, queryString;
+    private String filter, projection;
         
     private final JDOQLOps ops;
     
@@ -47,8 +47,50 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
         this.ops = ops;
         this.pm = pm;
     }
+    
+//    @Override
+//    protected JDOQLQueryImpl addToProjection(Expr<?>... o) {
+//        for (Expr<?> expr : o) {
+//            if (expr instanceof Path){
+//                projection.addElement(new ProjectionElem(transformPath((Path<?>) expr).getName()));    
+//            }else if (expr instanceof EConstructor){    
+//                EConstructor<?> constructor = (EConstructor<?>)expr;
+//                for (Expr<?> arg : constructor.getArgs()){
+//                    addToProjection(arg);
+//                }
+//            }else{
+//                throw new IllegalArgumentException("Unsupported projection element " + expr);
+//            }            
+//        }
+//        return this;
+//    }
+//    
+//    @Override
+//    public JDOQLQueryImpl from(Expr<?>... o) {
+//        for (Expr<?> expr : o) {
+//            handleRootPath((Path<?>) expr);
+//        }
+//        return this;
+//    }
+//    
+//        
+//    @Override
+//    public JDOQLQueryImpl where(EBoolean... o) {
+//        for (int i = 0; i < o.length; i++) {
+//            addFilterCondition(toValue(o[i]));
+//        }
+//        return this;
+//    }
+//    
+//    @Override
+//    public JDOQLQueryImpl orderBy(OrderSpecifier<?>... o) {
+//        for (OrderSpecifier<?> os : o){
+//            orderElements.add(new OrderElem(toValue(os.getTarget()), os.isAscending()));
+//        }
+//        return this;
+//    }
 
-    private String buildQueryString(boolean forCountRow) {
+    private String buildFilterString(boolean forCountRow) {
         if (getMetadata().getJoins().isEmpty()){
             throw new IllegalArgumentException("No joins given");
         }
@@ -66,8 +108,7 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
     @Override
     protected void clear(){
         super.clear();
-        queryString = null;
-        countRowsString = null;
+        filter = null;
     }
     
     public long count(){
@@ -139,7 +180,7 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
     public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>...rest){
         addToProjection(expr1, expr2);
         addToProjection(rest);
-        String queryString = toString();
+        String queryString = getFilterString();
         return (List<Object[]>) execute(createQuery(queryString, getMetadata().getModifiers()));                
     }
     
@@ -154,7 +195,7 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
     @SuppressWarnings("unchecked")
 	public <RT> List<RT> list(Expr<RT> expr){
         addToProjection(expr);
-        String queryString = toString();
+        String queryString = getFilterString();
         logger.debug("query : {}", queryString);
         return (List<RT>) execute(createQuery(queryString, getMetadata().getModifiers()));        
     }
@@ -162,12 +203,12 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
 	@SuppressWarnings("unchecked")
 	public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
         addToProjection(expr);
-        Query query = createQuery(toCountRowsString(),null);
+        Query query = createQuery(getFilterString(),null);
         query.setUnique(true);
         long total = (Long) execute(query);
         if (total > 0) {
         	QueryModifiers modifiers = getMetadata().getModifiers();
-            String queryString = toString();
+            String queryString = getFilterString();
             logger.debug("query : {}", queryString);
             query = createQuery(queryString, modifiers);
             List<RT> list = (List<RT>) execute(query);
@@ -177,25 +218,17 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
         }
     }
     
-    public String toCountRowsString(){
-        if (countRowsString == null){
-            countRowsString = buildQueryString(true);    
+    private String getFilterString(){
+        if (filter == null){
+            filter = buildFilterString(false);    
         }        
-        return countRowsString;
-    }
-
-    @Override
-    public String toString(){
-        if (queryString == null){
-            queryString = buildQueryString(false);    
-        }        
-        return queryString;
+        return filter;
     }
 
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expr<RT> expr) {
         addToProjection(expr);
-        String queryString = toString();
+        String queryString = getFilterString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, QueryModifiers.limit(1));
         query.setUnique(true);

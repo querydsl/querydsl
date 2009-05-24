@@ -10,6 +10,12 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ESimple;
 import com.mysema.query.types.expr.Expr;
 
+/**
+ * @author tiwe
+ *
+ * @param <K>
+ * @param <V>
+ */
 public class PComponentMap<K, V> extends ESimple<java.util.Map<K, V>> implements
 		PMap<K, V> {
 	private EBoolean isnull, isnotnull;

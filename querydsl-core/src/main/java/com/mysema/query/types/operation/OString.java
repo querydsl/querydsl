@@ -14,6 +14,10 @@ import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Ops.Op;
 
+/**
+ * @author tiwe
+ *
+ */
 public class OString extends EString implements Operation<String, String> {
 	private final List<Expr<?>> args;
 	private final Op<String> op;

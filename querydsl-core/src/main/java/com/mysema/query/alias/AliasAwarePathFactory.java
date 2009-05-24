@@ -21,7 +21,6 @@ import com.mysema.query.types.path.PEntityMap;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PStringArray;
-import com.mysema.query.types.path.SimplePathFactory;
 
 /**
  * AliasAwareExprFactory extends the SimpleExprFactory to return thread bound alias expressions, when present
@@ -29,7 +28,7 @@ import com.mysema.query.types.path.SimplePathFactory;
  * @author tiwe
  * @version $Id$
  */
-public class AliasAwarePathFactory extends SimplePathFactory{
+class AliasAwarePathFactory extends SimplePathFactory{
     
     private final AliasFactory aliasFactory;
     

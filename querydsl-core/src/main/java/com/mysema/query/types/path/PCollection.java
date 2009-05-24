@@ -10,8 +10,12 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.Expr;
 
-public interface PCollection<D> extends Path<java.util.Collection<D>>,
-		CollectionType<D> {
+/**
+ * @author tiwe
+ *
+ * @param <D>
+ */
+public interface PCollection<D> extends Path<java.util.Collection<D>>, CollectionType<D> {
 	Class<D> getElementType();
 
 	EBoolean contains(D child);

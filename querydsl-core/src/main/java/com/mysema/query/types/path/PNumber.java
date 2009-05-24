@@ -9,6 +9,11 @@ import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 
+/**
+ * @author tiwe
+ *
+ * @param <D>
+ */
 public class PNumber<D extends Number & Comparable<?>> extends ENumber<D>
 		implements Path<D> {
 	private EBoolean isnull, isnotnull;

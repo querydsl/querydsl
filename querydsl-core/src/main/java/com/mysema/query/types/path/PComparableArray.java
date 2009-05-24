@@ -8,6 +8,11 @@ package com.mysema.query.types.path;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.Expr;
 
+/**
+ * @author tiwe
+ *
+ * @param <D>
+ */
 @SuppressWarnings("unchecked")
 public class PComparableArray<D extends Comparable> extends PArray<D> {
 	public PComparableArray(Class<D> type, PathMetadata<?> metadata) {

@@ -13,6 +13,11 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.Expr;
 
+/**
+ * @author tiwe
+ *
+ * @param <D>
+ */
 public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>,
 		CollectionType<D> {
 	protected final Class<D[]> arrayType;

@@ -11,6 +11,12 @@ import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
+/**
+ * @author tiwe
+ *
+ * @param <K>
+ * @param <V>
+ */
 public class PEntityMap<K, V> extends Expr<Map<K, V>> implements PMap<K, V> {
 	private EBoolean isnull, isnotnull;
 	private final Class<K> keyType;

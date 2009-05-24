@@ -9,6 +9,11 @@ import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
 
+/**
+ * @author tiwe
+ *
+ * @param <D>
+ */
 @SuppressWarnings("unchecked")
 public class PComparable<D extends Comparable> extends EComparable<D> implements
 		Path<D> {

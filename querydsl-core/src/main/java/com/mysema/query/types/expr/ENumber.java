@@ -5,8 +5,10 @@
  */
 package com.mysema.query.types.expr;
 
-import com.mysema.query.types.operation.Ops;
-import com.mysema.query.util.NumberUtil;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+import com.mysema.query.types.Grammar;
 
 /**
  * 
@@ -14,8 +16,8 @@ import com.mysema.query.util.NumberUtil;
  * 
  * @param <D>
  */
-public abstract class ENumber<D extends Number & Comparable<?>> extends
-		EComparable<D> {
+public abstract class ENumber<D extends Number & Comparable<?>> extends EComparable<D> {
+	
 	public ENumber(Class<? extends D> type) {
 		super(type);
 	}
@@ -45,38 +47,63 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends
 	}
 
 	public final <A extends Number & Comparable<?>> EBoolean goe(A right) {
-		return factory.createBoolean(Ops.GOE, this, factory
-				.createConstant(NumberUtil.castTo(right, getType())));
+		return Grammar.goe(this, castTo(right, getType()));	
 	}
 
+	@SuppressWarnings("unchecked")
 	public final <A extends Number & Comparable<?>> EBoolean goe(Expr<A> right) {
-		return factory.createBoolean(Ops.GOE, this, right);
+		return Grammar.goe(this, (Expr<D>)right);
 	}
 
 	public final <A extends Number & Comparable<?>> EBoolean gt(A right) {
-		return factory.createBoolean(Ops.GT, this, factory
-				.createConstant(NumberUtil.castTo(right, getType())));
+		return Grammar.gt(this, castTo(right, getType()));		
 	}
 
+	@SuppressWarnings("unchecked")
 	public final <A extends Number & Comparable<?>> EBoolean gt(Expr<A> right) {
-		return factory.createBoolean(Ops.GT, this, right);
+		return Grammar.gt(this, (Expr<D>)right);
 	}
 
 	public final <A extends Number & Comparable<?>> EBoolean loe(A right) {
-		return factory.createBoolean(Ops.LOE, this, factory
-				.createConstant(NumberUtil.castTo(right, getType())));
+		return Grammar.loe(this, castTo(right, getType()));
 	}
 
+	@SuppressWarnings("unchecked")
 	public final <A extends Number & Comparable<?>> EBoolean loe(Expr<A> right) {
-		return factory.createBoolean(Ops.LOE, this, right);
+		return Grammar.loe(this, (Expr<D>)right);
 	}
 
 	public final <A extends Number & Comparable<?>> EBoolean lt(A right) {
-		return factory.createBoolean(Ops.LT, this, factory
-				.createConstant(NumberUtil.castTo(right, getType())));
+		return Grammar.lt(this, castTo(right, getType()));
 	}
 
+	@SuppressWarnings("unchecked")
 	public final <A extends Number & Comparable<?>> EBoolean lt(Expr<A> right) {
-		return factory.createBoolean(Ops.LT, this, right);
+		return Grammar.lt(this, (Expr<D>)right);
 	}
+		
+	@SuppressWarnings("unchecked")
+	private <A extends Number> A castTo(Number number, Class<A> type){
+        if (type.equals(number.getClass())){
+            return (A)number;
+        }else if (Byte.class.equals(type)){
+            return (A)Byte.valueOf(number.byteValue());
+        }else if (Double.class.equals(type)){
+            return (A)Double.valueOf(number.doubleValue());
+        }else if (Float.class.equals(type)){
+            return (A)Float.valueOf(number.floatValue());
+        }else if (Integer.class.equals(type)){
+            return (A)Integer.valueOf(number.intValue());
+        }else if (Long.class.equals(type)){
+            return (A)Long.valueOf(number.longValue());
+        }else if (Short.class.equals(type)){
+            return (A)Short.valueOf(number.shortValue());
+        }else if (BigInteger.class.equals(type)){
+            return (A)new BigInteger(String.valueOf(number.longValue()));
+        }else if (BigDecimal.class.equals(type)){
+            return (A)new BigDecimal(number.toString());
+        }else{
+            throw new IllegalArgumentException("Unsupported target type : " + type.getName());
+        }
+    }
 }

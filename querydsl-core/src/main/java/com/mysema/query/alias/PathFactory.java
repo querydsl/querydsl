@@ -3,13 +3,24 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types.path;
+package com.mysema.query.alias;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.PBoolean;
+import com.mysema.query.types.path.PBooleanArray;
+import com.mysema.query.types.path.PComparable;
+import com.mysema.query.types.path.PComparableArray;
+import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.PEntityCollection;
+import com.mysema.query.types.path.PEntityList;
+import com.mysema.query.types.path.PEntityMap;
+import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.PStringArray;
 
 /**
  * PathFactory creates path expressions for domain type instances
@@ -17,7 +28,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public interface PathFactory {
+interface PathFactory {
 
 	<D> Expr<D> createAny(D arg);
 

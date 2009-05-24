@@ -8,6 +8,10 @@ package com.mysema.query.types.path;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
 
+/**
+ * @author tiwe
+ *
+ */
 public class PStringArray extends PArray<String> {
 	public PStringArray(PathMetadata<?> metadata) {
 		super(String.class, metadata);

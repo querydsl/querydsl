@@ -14,6 +14,12 @@ import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Ops.Op;
 
+/**
+ * @author tiwe
+ *
+ * @param <OpType>
+ * @param <D>
+ */
 public class OComparable<OpType, D extends Comparable<?>> extends
 		EComparable<D> implements Operation<OpType, D> {
 	private final List<Expr<?>> args;

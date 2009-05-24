@@ -8,6 +8,10 @@ package com.mysema.query.types.path;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
+/**
+ * @author tiwe
+ *
+ */
 public class PBooleanArray extends PArray<Boolean> {
 	public PBooleanArray(PathMetadata<?> metadata) {
 		super(Boolean.class, metadata);

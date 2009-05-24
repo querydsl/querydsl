@@ -8,6 +8,11 @@ package com.mysema.query.types.path;
 import com.mysema.query.types.expr.ESimple;
 import com.mysema.query.types.expr.Expr;
 
+/**
+ * @author tiwe
+ *
+ * @param <D>
+ */
 public class PComponentList<D> extends PComponentCollection<D> implements
 		PList<D> {
 	public PComponentList(Class<D> type, PathMetadata<?> metadata) {

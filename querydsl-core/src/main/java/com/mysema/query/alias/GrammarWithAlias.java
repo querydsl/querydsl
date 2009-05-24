@@ -25,7 +25,6 @@ import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PStringArray;
-import com.mysema.query.types.path.PathFactory;
 import com.mysema.query.types.path.PathMetadata;
 
 /**
