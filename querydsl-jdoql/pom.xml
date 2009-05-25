@@ -64,28 +64,7 @@
   </dependencies>
 
   <build>
-    <plugins>
-<!--     
-      <plugin>
-        <groupId>org.datanucleus</groupId>
-        <artifactId>maven-datanucleus-plugin</artifactId>
-        <version>1.1.0</version>
-        <configuration>
-          <mappingIncludes>**/*.jdo, **/*.class</mappingIncludes>
-          <log4jConfiguration>src/test/resources/log4j.properties</log4jConfiguration>
-          <verbose>true</verbose>
-          <props>src/test/resources/datanucleus.properties</props>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>process-test-classes</phase>
-            <goals>
-              <goal>enhance</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
- -->      
+    <plugins>      
       <plugin>
         <groupId>org.apache.myfaces.tobago</groupId>
         <artifactId>maven-apt-plugin</artifactId>
@@ -114,6 +93,5 @@
       </plugin>
     </plugins>
   </build>
-
 
 </project>

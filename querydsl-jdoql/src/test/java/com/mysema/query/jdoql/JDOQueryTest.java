@@ -62,7 +62,6 @@ public class JDOQueryTest extends AbstractJDOTest{
 		assertEquals("toLowerCase", 1, query(product, product.name.lower().eq("sony discman")).size());
 		assertEquals("toUpperCase", 1, query(product, product.name.upper().eq("SONY DISCMAN")).size());
 		assertEquals("indexOf", 1, query(product, product.name.indexOf("S").eq(0)).size());
-		// TODO indexOf
 		// TODO matches
 		assertEquals("substring", 1, query(product, product.name.substring(0,4).eq("Sony")).size());
 		assertEquals("substring", 1, query(product, product.name.substring(5).eq("Discman")).size());
