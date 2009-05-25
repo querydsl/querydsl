@@ -5,12 +5,15 @@
  */
 package com.mysema.query.jdoql.testdomain;
 
+import javax.jdo.annotations.Inheritance;
+import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 
 /**
  * Definition of a Book. Extends basic Product class.
  */
 @PersistenceCapable
+@Inheritance(strategy=InheritanceStrategy.NEW_TABLE)
 public class Book extends Product {
 	private String author = null;
 

@@ -2,17 +2,45 @@ package com.mysema.query.jdoql;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
-// TODO : FIXME
+import com.mysema.query.jdoql.testdomain.Book;
+
 public class JDOQueryTest extends AbstractJDOTest{
 
 	@Test
-	public void basicTests() {
+	@Ignore
+	public void countTests(){
+		// FIXME
+		assertEquals("count", 2, query().from(product).count()); // returns 1, why?	
+	}
+	
+	@Test
+	@Ignore
+	public void searchResults(){
+		// TODO
+	}
+		
+	@Test
+	@Ignore
+	public void testOrder(){
+		// TODO
+	}
+		
+	@Test
+	public void projectionTests(){
+		assertEquals("Sony Discman", query().from(product)
+				.where(product.name.eq("Sony Discman"))
+				.uniqueResult(product.name));
+	}
+	
+	@Test
+	public void basicTests() {	
 		assertEquals("list", 2, query().from(product).list(product).size());						
 		assertEquals("list", 1, query().from(book).list(book).size());
 		assertEquals("eq", 1, query(product, product.name.eq("Sony Discman")).size());
-//		FIXME assertEquals("instanceof ", 1, query(product, product.typeOf(Book.class)).size());
+		assertEquals("instanceof ", 1, query(product, product.instanceOf(Book.class)).size());
 	}
 	
 	@Test

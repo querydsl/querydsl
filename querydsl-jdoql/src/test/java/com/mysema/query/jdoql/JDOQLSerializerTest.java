@@ -4,7 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.mysema.query.jdoql.testdomain.Book;
+import com.mysema.query.jdoql.testdomain.Department;
 import com.mysema.query.jdoql.testdomain.QBook;
+import com.mysema.query.jdoql.testdomain.QCompany;
 import com.mysema.query.jdoql.testdomain.QProduct;
 import com.mysema.query.types.expr.Expr;
 
@@ -13,6 +16,13 @@ public class JDOQLSerializerTest {
 	private QBook book = QBook.book;
 	
 	private QProduct product = QProduct.product;
+	
+	private QCompany company = QCompany.company;
+	
+	@Test
+	public void instanceOf(){
+		assertEquals("product instanceof com.mysema.query.jdoql.testdomain.Book", serialize(product.instanceOf(Book.class)));
+	}
 	
 	@Test
 	public void testHandle() {
@@ -29,14 +39,20 @@ public class JDOQLSerializerTest {
 	}
 
 	@Test
-	public void collectionTests(){
+	public void collectionTests(){		
+		Department dep = new Department();
 		// collection
-		// TODO contains
-		// TODO get
+		assertEquals("company.departments.contains(a1)", serialize(company.departments.contains(dep)));
+		assertEquals("company.departments.get(0) == a1", serialize(company.departments.get(0).eq(dep)));
+		assertEquals("company.departments.isEmpty()", serialize(company.departments.empty()));
+		assertEquals("!company.departments.isEmpty()", serialize( company.departments.notEmpty()));
+		assertEquals("company.departments.size() == a1", serialize(company.departments.size().eq(1)));		
+	}
+	
+	@Test
+	public void mapTests(){
 		// TODO containsKey
-		// TODO containsValue
-		// TODO isEmpty
-		// TODO size		
+		// TODO containsValue	
 	}
 
 	@Test
