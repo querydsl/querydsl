@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 import com.mysema.query.serialization.OperationPatterns;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.operation.Ops.Op;
-import com.mysema.query.types.operation.Ops.OpMath;
 import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.types.path.PathMetadata.PathType;
 
@@ -60,7 +59,7 @@ public class JavaOps extends OperationPatterns {
         add(Ops.STRING_LENGTH, "%s.length(%s)");
         add(Ops.LAST_INDEX_2ARGS, "%s.lastIndex(%s)");
         add(Ops.LAST_INDEX, "%s.lastIndex(%s,%s)");
-        add(Ops.ISEMPTY, "%s.isEmpty()");
+        add(Ops.STRING_ISEMPTY, "%s.isEmpty()");
         add(Ops.STARTSWITH, "%s.startsWith(%s, 0)");
         add(Ops.STARTSWITH_IC, "%s.toLowerCase().startsWith(%s.toLowerCase(), 0)");
         add(Ops.INDEXOF_2ARGS, "%s.indexOf(%s,%s)");
@@ -69,6 +68,8 @@ public class JavaOps extends OperationPatterns {
         add(Ops.ENDSWITH, "%s.endsWith(%s)");
         add(Ops.ENDSWITH_IC, "%s.toLowerCase().endsWith(%s.toLowerCase())");
         add(Ops.CONTAINS, "%s.contains(%s)");
+        add(Ops.COL_ISEMPTY, "%s.isEmpty()");
+        add(Ops.COL_ISNOTEMPTY, "!%s.isEmpty()");
         
         // math        
         try {

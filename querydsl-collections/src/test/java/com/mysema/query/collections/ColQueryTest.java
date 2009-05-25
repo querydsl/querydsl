@@ -32,7 +32,7 @@ public class ColQueryTest extends AbstractQueryTest{
     @Test
     public void isTypeOf(){
         assertEquals(Arrays.asList(c1, c2),
-            query().from(cat, c1, c2).where(Grammar.typeOf(cat, Cat.class)).list(cat));
+            query().from(cat, c1, c2).where(Grammar.instanceOf(cat, Cat.class)).list(cat));
     }   
     
     @Test
@@ -114,6 +114,10 @@ public class ColQueryTest extends AbstractQueryTest{
         query().from(cat,cats).list(cat.mate);
         
         query().from(cat,cats).list(cat.kittens);
+     
+        query().from(cat,cats).where(cat.kittens.empty()).list(cat);
+        
+        query().from(cat,cats).where(cat.kittens.notEmpty()).list(cat);
         
         query().from(cat,cats).where(cat.name.like("fri%")).list($(cat.name));
    
