@@ -1,25 +1,17 @@
-/*
- * Copyright (c) 2009 Mysema Ltd.
- * All rights reserved.
- * 
- */
-package com.mysema.query.types.expr;
+package com.mysema.query.types;
 
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EComparable;
+import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Ops.Op;
 
 /**
- * ExprFactory provides
- * 
  * @author tiwe
- * @version $Id$
+ *
  */
-public interface ExprFactory {
-
-	Expr<Integer> createConstant(int i);
-
-	<A> Expr<Class<A>> createConstant(Class<A> obj);
-
-	<A> Expr<A> createConstant(A obj);
+public interface OperationFactory {
 
 	EBoolean createBoolean(Op<Boolean> operator, Expr<?>... args);
 

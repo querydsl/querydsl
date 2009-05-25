@@ -67,11 +67,11 @@
           <mappingIncludes>**/*.jdo, **/*.class</mappingIncludes>
           <log4jConfiguration>src/test/resources/log4j.properties</log4jConfiguration>
           <verbose>true</verbose>
-          <props>src/main/resources/datanucleus.properties</props>
+          <props>src/test/resources/datanucleus.properties</props>
         </configuration>
         <executions>
           <execution>
-            <phase>compile</phase>
+            <phase>process-test-classes</phase>
             <goals>
               <goal>enhance</goal>
             </goals>
@@ -87,17 +87,17 @@
           <execution>
             <phase>generate-sources</phase>
             <goals>
-              <goal>execute</goal>
+              <goal>testExecute</goal>
             </goals>
             <configuration>
               <aptSourceRoots>
-                <aptSourceRoot>src/main/java</aptSourceRoot>
+                <aptSourceRoot>src/test/java</aptSourceRoot>
               </aptSourceRoots>
               <force>true</force>
               <fork>true</fork>
               <A>-Aprofile=jdo</A>
               <factory>com.mysema.query.apt.APTFactory</factory>
-              <generated>target/generated-sources/java</generated>
+              <testGenerated>target/generated-test-sources/java</testGenerated>
               <nocompile>true</nocompile>
               <showWarnings>true</showWarnings>
             </configuration>

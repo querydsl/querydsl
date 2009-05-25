@@ -58,20 +58,23 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>>
 	}
 
 	public EBoolean isnotnull() {
-		if (isnotnull == null)
+		if (isnotnull == null){
 			isnotnull = Grammar.isnotnull(this);
+		}			
 		return isnotnull;
 	}
 
 	public EBoolean isnull() {
-		if (isnull == null)
+		if (isnull == null){
 			isnull = Grammar.isnull(this);
+		}			
 		return isnull;
 	}
 
 	public ENumber<Integer> size() {
-		if (size == null)
+		if (size == null){
 			size = new PNumber<Integer>(Integer.class, forSize(this));
+		}			
 		return size;
 	}
 

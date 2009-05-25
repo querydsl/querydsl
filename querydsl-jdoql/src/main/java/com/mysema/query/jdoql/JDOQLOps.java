@@ -68,8 +68,8 @@ public class JDOQLOps extends OperationPatterns {
          add(Ops.LAST_INDEX_2ARGS, "%s.lastIndex(%s)");
          add(Ops.LAST_INDEX, "%s.lastIndex(%s,%s)");
          add(Ops.ISEMPTY, "%s.isEmpty()");
-         add(Ops.STARTSWITH, "%s.startsWith(%s, 0)");
-         add(Ops.STARTSWITH_IC, "%s.toLowerCase().startsWith(%s.toLowerCase(), 0)");
+         add(Ops.STARTSWITH, "%s.startsWith(%s)");
+         add(Ops.STARTSWITH_IC, "%s.toLowerCase().startsWith(%s.toLowerCase())");
          add(Ops.INDEXOF_2ARGS, "%s.indexOf(%s,%s)");
          add(Ops.INDEXOF, "%s.indexOf(%s)");
          add(Ops.EQ_IGNORECASE, "%s.equalsIgnoreCase(%s)");

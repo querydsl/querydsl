@@ -8,9 +8,9 @@ package com.mysema.query.types.path;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import com.mysema.query.types.ExprFactory;
+import com.mysema.query.types.SimpleExprFactory;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.expr.ExprFactory;
-import com.mysema.query.types.expr.SimpleExprFactory;
 import com.mysema.query.types.operation.Ops;
 
 /**

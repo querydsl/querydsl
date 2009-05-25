@@ -16,8 +16,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
 	private final String entityName;
 	private final Path<?> root;
 
-	public PEntity(Class<? extends D> type, String entityName,
-			PathMetadata<?> metadata) {
+	public PEntity(Class<? extends D> type, String entityName, PathMetadata<?> metadata) {
 		super(type);
 		this.entityName = entityName;
 		this.metadata = metadata;
@@ -32,8 +31,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
 		return new PBoolean(PathMetadata.forProperty(this, path));
 	}
 
-	protected <A extends Comparable<?>> PComparable<A> _comparable(String path,
-			Class<A> type) {
+	protected <A extends Comparable<?>> PComparable<A> _comparable(String path, Class<A> type) {
 		return new PComparable<A>(type, PathMetadata.forProperty(this, path));
 	}
 
@@ -108,14 +106,16 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
 	}
 
 	public EBoolean isnotnull() {
-		if (isnotnull == null)
+		if (isnotnull == null){
 			isnotnull = Grammar.isnotnull(this);
+		}			
 		return isnotnull;
 	}
 
 	public EBoolean isnull() {
-		if (isnull == null)
+		if (isnull == null){
 			isnull = Grammar.isnull(this);
+		}			
 		return isnull;
 	}
 

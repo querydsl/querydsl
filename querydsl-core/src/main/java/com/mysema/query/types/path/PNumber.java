@@ -35,14 +35,16 @@ public class PNumber<D extends Number & Comparable<?>> extends ENumber<D>
 	}
 
 	public EBoolean isnotnull() {
-		if (isnotnull == null)
+		if (isnotnull == null){
 			isnotnull = Grammar.isnotnull(this);
+		}			
 		return isnotnull;
 	}
 
 	public EBoolean isnull() {
-		if (isnull == null)
+		if (isnull == null){
 			isnull = Grammar.isnull(this);
+		}			
 		return isnull;
 	}
 

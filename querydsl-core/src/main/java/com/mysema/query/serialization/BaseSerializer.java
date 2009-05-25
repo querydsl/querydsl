@@ -72,8 +72,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
         if (path.getMetadata().getParent() != null){
             parentAsString = toString((Expr<?>)path.getMetadata().getParent(),false);    
         }        
-        if (pathType == PROPERTY || pathType == VARIABLE ||
-              pathType == LISTVALUE_CONSTANT){
+        if (pathType == PROPERTY || pathType == VARIABLE || pathType == LISTVALUE_CONSTANT){
             exprAsString = path.getMetadata().getExpression().toString();
         }else if (path.getMetadata().getExpression() != null){
             exprAsString = toString(path.getMetadata().getExpression(),false);

@@ -57,21 +57,24 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>,
 	}
 
 	public EBoolean isnotnull() {
-		if (isnotnull == null)
+		if (isnotnull == null){
 			isnotnull = Grammar.isnotnull(this);
+		}			
 		return isnotnull;
 	}
 
 	public EBoolean isnull() {
-		if (isnull == null)
+		if (isnull == null){
 			isnull = Grammar.isnull(this);
+		}
+			
 		return isnull;
 	}
 
 	public EComparable<Integer> size() {
-		if (size == null)
-			size = new PComparable<Integer>(Integer.class, PathMetadata
-					.forSize(this));
+		if (size == null){
+			size = new PComparable<Integer>(Integer.class, PathMetadata.forSize(this));
+		}			
 		return size;
 	}
 
@@ -84,7 +87,6 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>,
 	}
 
 	public boolean equals(Object o) {
-		return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
-				: false;
+		return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata) : false;
 	}
 }

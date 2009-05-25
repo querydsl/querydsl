@@ -97,8 +97,9 @@ public abstract class EString extends EComparable<String> {
 	}
 
 	public final EComparable<Integer> length() {
-		if (length == null)
+		if (length == null){
 			length = Grammar.length(this);
+		}			
 		return length;
 	}
 
@@ -107,8 +108,9 @@ public abstract class EString extends EComparable<String> {
 	}
 
 	public final EString lower() {
-		if (lower == null)
+		if (lower == null){
 			lower = Grammar.lower(this);
+		}			
 		return lower;
 	}
 
@@ -137,14 +139,16 @@ public abstract class EString extends EComparable<String> {
 	}
 
 	public final EString trim() {
-		if (trim == null)
+		if (trim == null){
 			trim = Grammar.trim(this);
+		}			
 		return trim;
 	}
 
 	public final EString upper() {
-		if (upper == null)
+		if (upper == null){
 			upper = Grammar.upper(this);
+		}			
 		return upper;
 	}
 

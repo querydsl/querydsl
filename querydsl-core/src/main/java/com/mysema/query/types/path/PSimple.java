@@ -34,14 +34,16 @@ public class PSimple<D> extends ESimple<D> implements Path<D> {
 	}
 
 	public EBoolean isnotnull() {
-		if (isnotnull == null)
+		if (isnotnull == null){
 			isnotnull = Grammar.isnotnull(this);
+		}			
 		return isnotnull;
 	}
 
 	public EBoolean isnull() {
-		if (isnull == null)
+		if (isnull == null){
 			isnull = Grammar.isnull(this);
+		}			
 		return isnull;
 	}
 

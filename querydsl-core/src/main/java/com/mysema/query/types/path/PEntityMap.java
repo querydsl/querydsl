@@ -63,14 +63,16 @@ public class PEntityMap<K, V> extends Expr<Map<K, V>> implements PMap<K, V> {
 	}
 
 	public EBoolean isnotnull() {
-		if (isnotnull == null)
+		if (isnotnull == null){
 			isnotnull = Grammar.isnotnull(this);
+		}			
 		return isnotnull;
 	}
 
 	public EBoolean isnull() {
-		if (isnull == null)
+		if (isnull == null){
 			isnull = Grammar.isnull(this);
+		}			
 		return isnull;
 	}
 

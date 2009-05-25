@@ -8,11 +8,11 @@ package com.mysema.query.functions;
 import java.sql.Time;
 import java.util.Date;
 
+import com.mysema.query.types.OperationFactory;
+import com.mysema.query.types.SimpleOperationFactory;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.expr.ExprFactory;
-import com.mysema.query.types.expr.SimpleExprFactory;
 import com.mysema.query.types.operation.Ops;
 
 /**
@@ -25,7 +25,7 @@ public final class DateTimeFunctions{
 
     private DateTimeFunctions(){}
     
-    private static final ExprFactory factory = SimpleExprFactory.getInstance();
+    private static final OperationFactory factory = SimpleOperationFactory.getInstance();
           
     public static EComparable<Date> currentDate() {
         return factory.createComparable(Date.class, Ops.OpDateTime.CURRENT_DATE);

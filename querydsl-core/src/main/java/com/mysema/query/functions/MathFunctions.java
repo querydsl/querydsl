@@ -5,10 +5,12 @@
  */
 package com.mysema.query.functions;
 
+import com.mysema.query.types.ExprFactory;
+import com.mysema.query.types.OperationFactory;
+import com.mysema.query.types.SimpleExprFactory;
+import com.mysema.query.types.SimpleOperationFactory;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.expr.ExprFactory;
-import com.mysema.query.types.expr.SimpleExprFactory;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.operation.Ops.OpMath;
 import com.mysema.query.types.operation.Ops.OpNumberAgg;
@@ -23,10 +25,12 @@ public final class MathFunctions {
     
     private MathFunctions(){}
 
-    protected static final ExprFactory factory = SimpleExprFactory.getInstance();
+    private static final OperationFactory factory = SimpleOperationFactory.getInstance();
+    
+    private static final ExprFactory exprFactory = SimpleExprFactory.getInstance();
     
     public static <A extends Number & Comparable<?>> ENumber<A> mult(Expr<A> left, A right) {
-        return factory.createNumber(left.getType(), Ops.MULT, left, factory.createConstant(right));
+        return factory.createNumber(left.getType(), Ops.MULT, left, exprFactory.createConstant(right));
     }
 
     public static <A extends Number & Comparable<?>> ENumber<A> mult(Expr<A> left, Expr<A> right) {
@@ -34,7 +38,7 @@ public final class MathFunctions {
     }
         
     public static <A extends Number & Comparable<?>> ENumber<Double> div(ENumber<A> left, A right) {
-        return factory.createNumber(Double.class,Ops.DIV, left, factory.createConstant(right));
+        return factory.createNumber(Double.class,Ops.DIV, left, exprFactory.createConstant(right));
     }
 
     public static <A extends Number & Comparable<?>> ENumber<Double> div(Expr<A> left, Expr<A> right) {
@@ -42,7 +46,7 @@ public final class MathFunctions {
     }
     
     public static <A extends Number & Comparable<?>> ENumber<A> add(Expr<A> left, A right) {
-        return factory.createNumber(left.getType(), Ops.ADD, left, factory.createConstant(right));
+        return factory.createNumber(left.getType(), Ops.ADD, left, exprFactory.createConstant(right));
     }
     
     public static <A extends Number & Comparable<?>> ENumber<A> add(Expr<A> left, Expr<A> right) {
@@ -50,7 +54,7 @@ public final class MathFunctions {
     }
 
     public static <A extends Number & Comparable<?>> ENumber<A> sub(Expr<A> left, A right) {
-        return factory.createNumber(left.getType(), Ops.SUB, left, factory.createConstant(right));
+        return factory.createNumber(left.getType(), Ops.SUB, left, exprFactory.createConstant(right));
     }
 
     public static <A extends Number & Comparable<?>> ENumber<A> sub(Expr<A> left, Expr<A> right) {

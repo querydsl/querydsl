@@ -3,18 +3,14 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types.expr;
+package com.mysema.query.types;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.operation.OBoolean;
-import com.mysema.query.types.operation.OComparable;
-import com.mysema.query.types.operation.ONumber;
-import com.mysema.query.types.operation.OString;
-import com.mysema.query.types.operation.OStringArray;
-import com.mysema.query.types.operation.Ops.Op;
+import com.mysema.query.types.expr.EConstant;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * SimpleExprFactory provides factory methods for various needs
@@ -40,16 +36,6 @@ public class SimpleExprFactory implements ExprFactory {
 
 	public static ExprFactory getInstance() {
 		return instance;
-	}
-
-	public EBoolean createBoolean(Op<Boolean> operator, Expr<?>... args) {
-		return new OBoolean(Assert.notNull(operator), Assert.notNull(args));
-	}
-
-	public <OpType, RT extends Comparable<?>> EComparable<RT> createComparable(
-			Class<RT> type, Op<OpType> operator, Expr<?>... args) {
-		return new OComparable<OpType, RT>(type, Assert.notNull(operator),
-				Assert.notNull(args));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -78,20 +64,6 @@ public class SimpleExprFactory implements ExprFactory {
 		} else {
 			return new EConstant<Integer>(i);
 		}
-	}
-
-	public <OpType extends Number, D extends Number & Comparable<?>> ENumber<D> createNumber(
-			Class<? extends D> type, Op<OpType> operator, Expr<?>... args) {
-		return new ONumber<OpType, D>(type, Assert.notNull(operator), Assert
-				.notNull(args));
-	}
-
-	public EString createString(Op<String> operator, Expr<?>... args) {
-		return new OString(Assert.notNull(operator), Assert.notNull(args));
-	}
-
-	public Expr<String[]> createStringArray(Op<String> operator, Expr<?>... args) {
-		return new OStringArray(Assert.notNull(operator), Assert.notNull(args));
 	}
 
 }

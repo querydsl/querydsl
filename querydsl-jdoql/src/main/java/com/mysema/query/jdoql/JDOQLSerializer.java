@@ -15,6 +15,8 @@ import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.operation.Ops.Op;
+import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.Path;
 
 /**
  * 
@@ -25,8 +27,13 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
 
 	private boolean wrapElements = false;
 
-	public JDOQLSerializer(JDOQLOps ops) {
+	private PEntity<?> candidatePath;
+	
+	private Path<?> replacementPath = new PEntity<Object>(Object.class, "Object", "this");
+	
+	public JDOQLSerializer(JDOQLOps ops, PEntity<?> candidate) {
 		super(ops);
+		this.candidatePath = candidate;
 	}
 	
 	@Override
@@ -37,20 +44,6 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
 	@Override
 	protected void visit(AToPath expr) {
 		throw new UnsupportedOperationException();
-	}
-
-	// FIXME
-	protected void visit(CountExpression expr) {
-		if (expr.getTarget() == null) {
-			append("COUNT(*)");
-		} else {
-			append("COUNT(");
-			boolean old = wrapElements;
-			wrapElements = true;
-			handle(expr.getTarget());
-			wrapElements = old;
-			append(")");
-		}
 	}
 
 	@Override
@@ -79,8 +72,8 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
 
 	}
 
-	protected void visitOperation(Class<?> type, Op<?> operator,
-			List<Expr<?>> args) {
+	@Override
+	protected void visitOperation(Class<?> type, Op<?> operator, List<Expr<?>> args) {
 		boolean old = wrapElements;
 		wrapElements = JDOQLOps.wrapCollectionsForOp.contains(operator);
 		// 
@@ -93,6 +86,15 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
 		}
 		//
 		wrapElements = old;
+	}
+	
+	@Override
+	protected void visit(Path<?> path) {
+		if (path.equals(candidatePath)){
+			super.visit(replacementPath);
+		}else{
+			super.visit(path);
+		}
 	}
 
 }

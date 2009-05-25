@@ -43,21 +43,23 @@ public class PComponentCollection<D> extends ESimple<java.util.Collection<D>> im
 	}
 
 	public EBoolean isnotnull() {
-		if (isnotnull == null)
+		if (isnotnull == null){
 			isnotnull = Grammar.isnotnull(this);
+		}			
 		return isnotnull;
 	}
 
 	public EBoolean isnull() {
-		if (isnull == null)
+		if (isnull == null){
 			isnull = Grammar.isnull(this);
+		}			
 		return isnull;
 	}
 
 	public EComparable<Integer> size() {
-		if (size == null)
-			size = new PComparable<Integer>(Integer.class, PathMetadata
-					.forSize(this));
+		if (size == null){
+			size = new PComparable<Integer>(Integer.class, PathMetadata.forSize(this));
+		}			
 		return size;
 	}
 

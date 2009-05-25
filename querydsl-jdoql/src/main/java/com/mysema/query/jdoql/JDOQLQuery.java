@@ -9,7 +9,7 @@ import com.mysema.query.Projectable;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.PEntity;
 
 /**
  * 
@@ -18,7 +18,7 @@ import com.mysema.query.types.expr.Expr;
  */
 public interface JDOQLQuery extends Projectable { // --> projections go into result
     
-	JDOQLQuery from(Expr<?>... o); // first is candidate, rest are variables
+	JDOQLQuery from(PEntity<?>... o); // first is candidate, rest are variables
     
 	JDOQLQuery orderBy(OrderSpecifier<?>... o); // -> ordering
     
