@@ -8,7 +8,6 @@ package com.mysema.query.jdoql;
 import java.util.List;
 
 import com.mysema.query.serialization.BaseSerializer;
-import com.mysema.query.types.CountExpression;
 import com.mysema.query.types.alias.ASimple;
 import com.mysema.query.types.alias.AToPath;
 import com.mysema.query.types.expr.EConstant;
@@ -29,7 +28,7 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
 
 	private PEntity<?> candidatePath;
 	
-	private Path<?> replacementPath = new PEntity<Object>(Object.class, "Object", "this");
+//	private Path<?> replacementPath = new PEntity<Object>(Object.class, "Object", "this");
 	
 	public JDOQLSerializer(JDOQLOps ops, PEntity<?> candidate) {
 		super(ops);
@@ -91,7 +90,7 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
 	@Override
 	protected void visit(Path<?> path) {
 		if (path.equals(candidatePath)){
-			super.visit(replacementPath);
+			append("this");
 		}else{
 			super.visit(path);
 		}
