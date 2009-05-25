@@ -68,7 +68,7 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer>{
                     sqlSelect.add(selectExpr);
                 }
             }
-            append(", ", sqlSelect);
+            handle(", ", sqlSelect);
         }
         append(ops.from());
         if (joins.isEmpty()){
@@ -106,7 +106,7 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer>{
             append(ops.where()).handle(where);                        
         }
         if (!groupBy.isEmpty()){
-            append(ops.groupBy()).append(", ",groupBy);
+            append(ops.groupBy()).handle(", ",groupBy);
         }
         if (having != null){
             if (groupBy.isEmpty()) {
@@ -147,7 +147,7 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer>{
 
     public void serializeUnion(SubQuery<Object, ?>[] sqs, List<OrderSpecifier<?>> orderBy) {
         // union
-        append(ops.union(), Arrays.asList(sqs));
+        handle(ops.union(), Arrays.asList(sqs));
                 
         // order by
         if (!orderBy.isEmpty()){
@@ -223,7 +223,7 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer>{
             append(ops.partitionBy()).handle(expr.getPartitionBy());
         }
         if (!expr.getOrderBy().isEmpty()){
-            append(ops.orderBy()).append(", ", expr.getOrderBy());
+            append(ops.orderBy()).handle(", ", expr.getOrderBy());
         }
         append(")");        
     }
