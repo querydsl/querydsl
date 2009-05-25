@@ -59,23 +59,16 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
 		}			
 	}
 
-	// FIXME
-	private void visitCast(Op<?> operator, Expr<?> source, Class<?> targetType) {
-		append("CAST(").handle(source);
-		append(" AS ");
-		append(targetType.getSimpleName().toLowerCase()).append(")");
-
-	}
-
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void visitOperation(Class<?> type, Op<?> operator, List<Expr<?>> args) {
 		if (operator.equals(Ops.ISTYPEOF)){
 			handle(args.get(0)).append(" instanceof ");
 			append(((EConstant<Class<?>>)args.get(1)).getConstant().getName());
 		}else if (operator.equals(Ops.STRING_CAST)) {
-			visitCast(operator, args.get(0), String.class);
+			// TODO
 		} else if (operator.equals(Ops.NUMCAST)) {
-			visitCast(operator, args.get(0), (Class<?>) ((EConstant<?>) args.get(1)).getConstant());
+			// TODO
 		} else {
 			super.visitOperation(type, operator, args);
 		}

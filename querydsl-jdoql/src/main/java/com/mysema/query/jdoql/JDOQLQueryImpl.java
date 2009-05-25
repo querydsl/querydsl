@@ -19,6 +19,8 @@ import com.mysema.query.Projectable;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.support.QueryBaseWithProjection;
+import com.mysema.query.types.Order;
+import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
@@ -81,7 +83,6 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
         	return null;
         }        
         JDOQLSerializer serializer = new JDOQLSerializer(ops, sources.get(0));
-        // NOTE : serializes only the constraints
         serializer.handle(getMetadata().getWhere());               
         constants = serializer.getConstants();      
         System.err.println("SERIALIZED : " + serializer.toString());
@@ -97,13 +98,13 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
     public long count(){
     	String filterString = getFilterString();
         logger.debug("query : {}", filterString);
-        Query query = createQuery(filterString, QueryModifiers.limit(1));
+        Query query = createQuery(filterString, null, true);
         query.setUnique(true);
         query.setResult("count(this)");
         return (Long) execute(query);
     }
     
-    private Query createQuery(String filterString, QueryModifiers modifiers) {
+    private Query createQuery(String filterString, QueryModifiers modifiers, boolean forCount) {
     	Query query = pm.newQuery(sources.get(0).getType());
     	if (filterString != null){
     		query.setFilter(filterString);	
@@ -134,8 +135,8 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
             query.declareParameters(builder.toString());	
     	}        
         
-        // range
-        if (modifiers.isRestricting()){
+        // range (not for count)
+        if (modifiers != null && modifiers.isRestricting() && !forCount){
         	long fromIncl = 0;
         	long toExcl = Long.MAX_VALUE;        	
         	if (modifiers.getOffset() != null){
@@ -147,8 +148,8 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
             query.setRange(fromIncl, toExcl);
         }        
         
-        // projection
-        if (!getMetadata().getProjection().isEmpty()){
+        // projection (not for count)
+        if (!getMetadata().getProjection().isEmpty() && !forCount){
         	List<? extends Expr<?>> projection = getMetadata().getProjection();
         	if (!projection.get(0).equals(sources.get(0))){
         		JDOQLSerializer serializer = new JDOQLSerializer(ops, sources.get(0));
@@ -157,8 +158,21 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
         	}
         }
         
-        // order
-        // TODO
+        // order (not for count)
+        if (!getMetadata().getOrderBy().isEmpty() && !forCount){
+        	List<OrderSpecifier<?>> order = getMetadata().getOrderBy();
+        	JDOQLSerializer serializer = new JDOQLSerializer(ops, sources.get(0));
+        	boolean first = true;
+        	for (OrderSpecifier<?> os : order){
+        		if (!first){
+        			serializer.append(", ");        			
+        		}
+        		serializer.handle(os.getTarget());
+        		serializer.append(os.getOrder() == Order.ASC ? " ascending" : "descending");
+        		first = false;
+        	}
+        	query.setOrdering(serializer.toString());
+        }
         
         return query;
     }
@@ -182,7 +196,7 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
         addToProjection(expr1, expr2);
         addToProjection(rest);
         String filterString = getFilterString();
-        return (List<Object[]>) execute(createQuery(filterString, getMetadata().getModifiers()));                
+        return (List<Object[]>) execute(createQuery(filterString, getMetadata().getModifiers(), false));                
     }
     
 	private Object execute(Query query){
@@ -201,20 +215,20 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
         addToProjection(expr);
         String filterString = getFilterString();
         logger.debug("query : {}", filterString);
-        return (List<RT>) execute(createQuery(filterString, getMetadata().getModifiers()));        
+        return (List<RT>) execute(createQuery(filterString, getMetadata().getModifiers(), false));        
     }
     
 	@SuppressWarnings("unchecked")
 	public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
         addToProjection(expr);
-        Query query = createQuery(getFilterString(),null);
-        query.setUnique(true);
-        long total = (Long) execute(query);
+        Query countQuery = createQuery(getFilterString(), null, true);
+        countQuery.setUnique(true);
+        long total = (Long) execute(countQuery);
         if (total > 0) {
         	QueryModifiers modifiers = getMetadata().getModifiers();
             String filterString = getFilterString();
             logger.debug("query : {}", filterString);
-            query = createQuery(filterString, modifiers);
+            Query query = createQuery(filterString, modifiers,false);
             List<RT> list = (List<RT>) execute(query);
             return new SearchResults<RT>(list, modifiers, total);
         } else {
@@ -234,7 +248,7 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
         addToProjection(expr);
         String filterString = getFilterString();
         logger.debug("query : {}", filterString);
-        Query query = createQuery(filterString, QueryModifiers.limit(1));
+        Query query = createQuery(filterString, QueryModifiers.limit(1),false);
         query.setUnique(true);
         return (RT) execute(query);
     }

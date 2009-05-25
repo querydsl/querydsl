@@ -2,32 +2,31 @@ package com.mysema.query.jdoql;
 
 import static org.junit.Assert.assertEquals;
 
+import javax.jdo.PersistenceManager;
+import javax.jdo.Transaction;
+
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.jdoql.testdomain.Book;
+import com.mysema.query.jdoql.testdomain.Product;
+import com.mysema.query.jdoql.testdomain.QBook;
+import com.mysema.query.jdoql.testdomain.QProduct;
 
-public class JDOQueryTest extends AbstractJDOTest{
+public class QueryBasicsTest extends AbstractJDOTest{
 
+	private QBook book = QBook.book;
+	
+	private QProduct product = QProduct.product;
+		
 	@Test
 	@Ignore
 	public void countTests(){
 		// FIXME
 		assertEquals("count", 2, query().from(product).count()); // returns 1, why?	
 	}
-	
-	@Test
-	@Ignore
-	public void searchResults(){
-		// TODO
-	}
-		
-	@Test
-	@Ignore
-	public void testOrder(){
-		// TODO
-	}
-		
+			
 	@Test
 	public void projectionTests(){
 		assertEquals("Sony Discman", query().from(product)
@@ -38,6 +37,7 @@ public class JDOQueryTest extends AbstractJDOTest{
 	@Test
 	public void basicTests() {	
 		assertEquals("list", 2, query().from(product).list(product).size());						
+		assertEquals("list", 2, query().from(product).list(product.name, product.description).size());
 		assertEquals("list", 1, query().from(book).list(book).size());
 		assertEquals("eq", 1, query(product, product.name.eq("Sony Discman")).size());
 		assertEquals("instanceof ", 1, query(product, product.instanceOf(Book.class)).size());
@@ -93,6 +93,35 @@ public class JDOQueryTest extends AbstractJDOTest{
 		// TODO matches
 		assertEquals("substring", 1, query(product, product.name.substring(0,4).eq("Sony")).size());
 		assertEquals("substring", 1, query(product, product.name.substring(5).eq("Discman")).size());
+	}
+	
+	@BeforeClass
+	public static void doPersist() {
+		// Persistence of a Product and a Book.
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		try {
+			tx.begin();
+			pm.makePersistent(new Product(
+					"Sony Discman",
+					"A standard discman from Sony", 
+					200.00));
+			pm.makePersistent(new Book(
+					"Lord of the Rings by Tolkien",
+					"The classic story", 
+					49.99, 
+					"JRR Tolkien", 
+					"12345678",
+					"MyBooks Factory"));
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
+		System.out.println("");
+
 	}
 	
 }
