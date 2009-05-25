@@ -58,10 +58,10 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
             if (expr instanceof EConstructor){    
                 EConstructor<?> constructor = (EConstructor<?>)expr;
                 for (Expr<?> arg : constructor.getArgs()){
-                    addToProjection(arg);
+                    super.addToProjection(arg);
                 }
             }else{
-                addToProjection(expr);
+                super.addToProjection(expr);
             }            
         }
         return this;
@@ -76,9 +76,6 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
     }
 
     private String buildFilterString(boolean forCountRow) {
-        if (getMetadata().getJoins().isEmpty()){
-            throw new IllegalArgumentException("No joins given");
-        }
         if (getMetadata().getWhere() == null){
         	return null;
         }        
@@ -182,15 +179,14 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
     }
     
 	private Object execute(Query query){
-		try{
-			if (constants != null){
-	        	return query.executeWithArray(constants.toArray());
-	        }else{
-	        	return query.execute();	
-	        }	
-		}finally{
-			query.closeAll();
-		}    	
+		Object rv;
+		if (constants != null){
+        	rv = query.executeWithArray(constants.toArray());
+        }else{
+        	rv = query.execute();	
+        }	
+//		query.closeAll();
+		return rv;
     }
     
     @SuppressWarnings("unchecked")

@@ -42,6 +42,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.datanucleus</groupId>
+      <artifactId>datanucleus-enhancer</artifactId>
+      <version>[1.1, 1.2)</version>
+      <scope>test</scope>
+    </dependency>    
+    <dependency>
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <version>1.8.0.7</version>
@@ -59,6 +65,7 @@
 
   <build>
     <plugins>
+<!--     
       <plugin>
         <groupId>org.datanucleus</groupId>
         <artifactId>maven-datanucleus-plugin</artifactId>
@@ -78,6 +85,7 @@
           </execution>
         </executions>
       </plugin>
+ -->      
       <plugin>
         <groupId>org.apache.myfaces.tobago</groupId>
         <artifactId>maven-apt-plugin</artifactId>

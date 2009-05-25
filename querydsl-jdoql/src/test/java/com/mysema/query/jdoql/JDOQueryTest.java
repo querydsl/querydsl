@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 // TODO : FIXME
-public abstract class JDOQueryTest extends AbstractJDOTest{
+public class JDOQueryTest extends AbstractJDOTest{
 
 	@Test
 	public void basicTests() {
