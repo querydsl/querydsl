@@ -82,6 +82,14 @@ public class ParserTest implements Constants{
             .where(sum(cat.kittens.size()).gt(0))
             .select(cat).parse();
         
+        q().from(cat)
+    		.where(cat.kittens.empty())
+    		.select(cat).parse();
+        
+        q().from(cat)
+        	.where(cat.kittens.notEmpty())
+        	.select(cat).parse();
+        
 //        from(cat)
 //            .groupBy(cat.name)
 //            .having(sum(cat.bodyWeight).gt(0))
@@ -278,11 +286,11 @@ public class ParserTest implements Constants{
         q().from(account).where(account.owner.pid.medicareNumber.eq(123456)).parse();
         
 //        parse( "from eg.Cat cat where cat.class = eg.DomesticCat" );
-        q().from(cat).where(cat.typeOf(DomesticCat.class)).parse();
+        q().from(cat).where(cat.instanceOf(DomesticCat.class)).parse();
         
 //        parse( "from eg.AuditLog log, eg.Payment payment\n"
 //                + "where log.item.class = 'eg.Payment' and log.item.id = payment.id" );
-        q().from(log, payment).where(log.item.typeOf(Payment.class).and(log.item.id.eq(payment.id))).parse();
+        q().from(log, payment).where(log.item.instanceOf(Payment.class).and(log.item.id.eq(payment.id))).parse();
     }
 
     /**

@@ -59,6 +59,8 @@ public class HQLOps extends OperationPatterns {
         add(Ops.NOTIN, "%s not in %s");        
         add(Ops.ISNULL, "%s is null",26);
         add(Ops.ISNOTNULL, "%s is not null",26);
+        add(Ops.COL_ISEMPTY, "%s is empty");
+        add(Ops.COL_ISNOTEMPTY, "%s is not empty");
         
         // string
         add(Ops.CONCAT, "%s || %s",37);

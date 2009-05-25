@@ -65,7 +65,7 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer>{
             }else{
                 append("select distinct ");    
             }            
-            append(", ", select).append("\n");
+            handle(", ", select).append("\n");
         }
         append("from ");
         for (int i=0; i < joins.size(); i++){
@@ -105,7 +105,7 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer>{
             append("\nwhere ").handle(where);
         }
         if (!groupBy.isEmpty()){
-            append("\ngroup by ").append(", ",groupBy);
+            append("\ngroup by ").handle(", ",groupBy);
         }
         if (having != null){
             if (groupBy.isEmpty()) {
