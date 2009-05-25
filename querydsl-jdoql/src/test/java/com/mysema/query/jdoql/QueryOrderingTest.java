@@ -55,6 +55,12 @@ public class QueryOrderingTest extends AbstractJDOTest{
 		// TODO
 	}
 	
+	@Test
+	@Ignore
+	public void testDistinct(){
+		// TODO
+	}
+	
 	@BeforeClass
 	public static void doPersist() {
 		// Persistence of a Product and a Book.

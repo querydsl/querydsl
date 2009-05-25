@@ -17,8 +17,8 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.expr.Expr;
 
 /**
- * QueryBaseWithProjection extends the QueryBase interface to provide basic 
- * implementations of the methods of the Projectable itnerface
+ * QueryBaseWithProjection extends the QueryBase class to provide basic 
+ * implementations of the methods of the Projectable interface
  *
  * @author tiwe
  * @version $Id$

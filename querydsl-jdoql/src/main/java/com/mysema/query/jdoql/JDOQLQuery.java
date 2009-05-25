@@ -12,7 +12,7 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 
 /**
- * Query interface for JDOQLQueries
+ * Query interface for JDOQL queries
  * 
  * @author tiwe
  *

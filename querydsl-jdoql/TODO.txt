@@ -1,0 +1,5 @@
+* make sure queries and results are properly closed
+
+* make the following things work
+ - tabular results in projection
+ - distinct results
