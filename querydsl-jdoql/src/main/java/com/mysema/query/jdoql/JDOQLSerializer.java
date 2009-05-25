@@ -24,8 +24,6 @@ import com.mysema.query.types.path.Path;
  */
 public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
 
-	private boolean wrapElements = false;
-
 	private PEntity<?> candidatePath;
 	
 	public JDOQLSerializer(JDOQLOps ops, PEntity<?> candidate) {
@@ -71,18 +69,16 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
 
 	@Override
 	protected void visitOperation(Class<?> type, Op<?> operator, List<Expr<?>> args) {
-		boolean old = wrapElements;
-		wrapElements = JDOQLOps.wrapCollectionsForOp.contains(operator);
-		// 
-		if (operator.equals(Ops.STRING_CAST)) {
+		if (operator.equals(Ops.ISTYPEOF)){
+			handle(args.get(0)).append(" instanceof ");
+			append(((EConstant<Class<?>>)args.get(1)).getConstant().getName());
+		}else if (operator.equals(Ops.STRING_CAST)) {
 			visitCast(operator, args.get(0), String.class);
 		} else if (operator.equals(Ops.NUMCAST)) {
 			visitCast(operator, args.get(0), (Class<?>) ((EConstant<?>) args.get(1)).getConstant());
 		} else {
 			super.visitOperation(type, operator, args);
 		}
-		//
-		wrapElements = old;
 	}
 	
 	@Override

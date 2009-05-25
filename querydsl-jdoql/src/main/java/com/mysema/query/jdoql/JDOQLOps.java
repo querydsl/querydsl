@@ -5,10 +5,7 @@
  */
 package com.mysema.query.jdoql;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 import com.mysema.query.serialization.OperationPatterns;
 import com.mysema.query.types.operation.Ops;
@@ -17,6 +14,7 @@ import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.types.path.PathMetadata.PathType;
 
 /**
+ * Operation patterns for JDOQL serialization
  * 
  * @author tiwe
  *
@@ -25,35 +23,25 @@ public class JDOQLOps extends OperationPatterns {
 	
     public static final JDOQLOps DEFAULT = new JDOQLOps();
     
-    public static final List<Op<?>> wrapCollectionsForOp;
-    
-    static{
-        wrapCollectionsForOp = Collections.<Op<?>>unmodifiableList(Arrays.<Op<?>>asList(
-                Ops.IN, 
-                Ops.NOTIN,                
-                OpQuant.ALL, 
-                OpQuant.ANY,
-                OpQuant.AVG_IN_COL,
-                OpQuant.EXISTS, 
-                OpQuant.NOTEXISTS));
-    }
-    
     public JDOQLOps(){            
-    	 add(Ops.AFTER, "%s.compareTo(%s) > 0");
-         add(Ops.BEFORE, "%s.compareTo(%s) < 0");
-         add(Ops.AOE, "%s.compareTo(%s) >= 0");
-         add(Ops.BOE, "%s.compareTo(%s) <= 0");
-                 
-         add(Ops.EQ_PRIMITIVE, "%s == %s");
+    	 add(Ops.EQ_PRIMITIVE, "%s == %s");
          add(Ops.EQ_OBJECT, "%s == %s");      
          add(Ops.NE_OBJECT, "%s != %s");  
-         
          add(Ops.ISNULL, "%s == null");
          add(Ops.ISNOTNULL, "%s != null");
-                 
          add(Ops.ISTYPEOF, "%s instanceof %s");
+         
+         // collection
          add(Ops.IN, "%2$s.contains(%1$s)"); 
-         add(Ops.NOTIN, "!%2$s.contains(%1$s)");        
+         add(Ops.NOTIN, "!%2$s.contains(%1$s)");
+         add(Ops.COL_ISEMPTY, "%s.isEmpty()");
+         add(Ops.COL_ISNOTEMPTY, "!%s.isEmpty()");
+         
+         // comparable
+         add(Ops.AFTER, "%s > %s");
+         add(Ops.BEFORE, "%s < %s");
+         add(Ops.AOE, "%s >= %s");
+         add(Ops.BOE, "%s <= %s");
          
          // java.lang.String
          add(Ops.CHAR_AT, "%s.charAt(%s)");
@@ -67,7 +55,7 @@ public class JDOQLOps extends OperationPatterns {
          add(Ops.STRING_LENGTH, "%s.length(%s)");
          add(Ops.LAST_INDEX_2ARGS, "%s.lastIndex(%s)");
          add(Ops.LAST_INDEX, "%s.lastIndex(%s,%s)");
-         add(Ops.ISEMPTY, "%s.isEmpty()");
+         add(Ops.STRING_ISEMPTY, "%s.isEmpty()");
          add(Ops.STARTSWITH, "%s.startsWith(%s)");
          add(Ops.STARTSWITH_IC, "%s.toLowerCase().startsWith(%s.toLowerCase())");
          add(Ops.INDEXOF_2ARGS, "%s.indexOf(%s,%s)");
@@ -77,13 +65,16 @@ public class JDOQLOps extends OperationPatterns {
          add(Ops.ENDSWITH_IC, "%s.toLowerCase().endsWith(%s.toLowerCase())");
          add(Ops.CONTAINS, "%s.contains(%s)");   
         
-        // path types
-        for (PathType type : new PathType[]{PathMetadata.LISTVALUE, PathMetadata.LISTVALUE_CONSTANT, PathMetadata.MAPVALUE, PathMetadata.MAPVALUE_CONSTANT}){
-            add(type,"%s[%s]");    
-        }
-        add(PathMetadata.PROPERTY,"%s.%s"); 
-        add(PathMetadata.SIZE,"%s.size");
-        add(PathMetadata.VARIABLE,"%s"); 
+         // path types
+         add(PathMetadata.VARIABLE,"%s");          
+         for (PathType type : new PathType[]{PathMetadata.LISTVALUE, PathMetadata.LISTVALUE_CONSTANT, PathMetadata.MAPVALUE, PathMetadata.MAPVALUE_CONSTANT}){
+             add(type,"%s.get(%s)");    
+         }        
+         add(PathMetadata.ARRAYVALUE, "%s[%s]");
+         add(PathMetadata.ARRAYVALUE_CONSTANT, "%s[%s]");
+         
+         add(PathMetadata.ARRAY_SIZE,"%s.length");
+         add(PathMetadata.SIZE,"%s.size()");
         
     }
         

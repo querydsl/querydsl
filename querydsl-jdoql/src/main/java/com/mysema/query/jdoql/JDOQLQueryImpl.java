@@ -24,6 +24,7 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 
 /**
+ * Default implementation of the JDOQLQuery interface
  * 
  * @author tiwe
  *
@@ -94,13 +95,12 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
     }
     
     public long count(){
-//        return uniqueResult(HQLGrammar.count());
-    	throw new UnsupportedOperationException();
-    }
-
-    public long count(Expr<?> expr){
-//        return uniqueResult(HQLGrammar.count(expr));
-    	throw new UnsupportedOperationException();
+    	String filterString = getFilterString();
+        logger.debug("query : {}", filterString);
+        Query query = createQuery(filterString, QueryModifiers.limit(1));
+        query.setUnique(true);
+        query.setResult("count(this)");
+        return (Long) execute(query);
     }
     
     private Query createQuery(String filterString, QueryModifiers modifiers) {
@@ -148,7 +148,14 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
         }        
         
         // projection
-        // TODO
+        if (!getMetadata().getProjection().isEmpty()){
+        	List<? extends Expr<?>> projection = getMetadata().getProjection();
+        	if (!projection.get(0).equals(sources.get(0))){
+        		JDOQLSerializer serializer = new JDOQLSerializer(ops, sources.get(0));
+        		serializer.handle(", ", projection);
+        		query.setResult(serializer.toString());
+        	}
+        }
         
         // order
         // TODO
