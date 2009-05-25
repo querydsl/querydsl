@@ -28,8 +28,6 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
 
 	private PEntity<?> candidatePath;
 	
-//	private Path<?> replacementPath = new PEntity<Object>(Object.class, "Object", "this");
-	
 	public JDOQLSerializer(JDOQLOps ops, PEntity<?> candidate) {
 		super(ops);
 		this.candidatePath = candidate;
