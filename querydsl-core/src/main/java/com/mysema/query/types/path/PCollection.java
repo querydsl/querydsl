@@ -23,4 +23,8 @@ public interface PCollection<D> extends Path<java.util.Collection<D>>, Collectio
 	EBoolean contains(Expr<D> child);
 
 	EComparable<Integer> size();
+	
+	EBoolean empty();
+	
+	EBoolean notEmpty();
 }

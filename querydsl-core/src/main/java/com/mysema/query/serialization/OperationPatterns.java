@@ -67,6 +67,8 @@ public abstract class OperationPatterns{
         add(Ops.NOTIN, "%s not in %s");        
         add(Ops.ISNULL, "%s is null",26);
         add(Ops.ISNOTNULL, "%s is not null",26);
+        add(Ops.COL_ISEMPTY, "empty(%s)");
+        add(Ops.COL_ISNOTEMPTY, "not empty(%s)");
         
         add(Ops.EXISTS, "exists(%s)");
         
@@ -94,7 +96,7 @@ public abstract class OperationPatterns{
         add(Ops.INDEXOF_2ARGS, "indexOf(%s,%s,%s)");
         add(Ops.LAST_INDEX, "lastIndexOf(%s,%s)");
         add(Ops.LAST_INDEX_2ARGS, "lastIndexOf(%s,%s,%s)");
-        add(Ops.ISEMPTY, "empty(%s)");
+        add(Ops.STRING_ISEMPTY, "empty(%s)");
         
         // date time
         add(Ops.OpDateTime.SYSDATE, "sysdate");

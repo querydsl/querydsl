@@ -64,6 +64,10 @@ public interface Ops {
 	Op<Boolean> NE_PRIMITIVE = new Op<Boolean>(Object_x_2);
 	Op<Boolean> NE_OBJECT = new Op<Boolean>(Object_x_2);
 	Op<Boolean> NOTIN = new Op<Boolean>(Object_x_2);
+	
+	// collection
+	Op<Boolean> COL_ISEMPTY = new Op<Boolean>(Object.class);
+	Op<Boolean> COL_ISNOTEMPTY = new Op<Boolean>(Object.class);
 
 	// Boolean
 	Op<Boolean> AND = new Op<Boolean>(Boolean_x_2);
@@ -109,7 +113,7 @@ public interface Ops {
 	Op<Number> STRING_LENGTH = new Op<Number>(String.class);
 	Op<Number> LAST_INDEX_2ARGS = new Op<Number>(String.class, String.class,Integer.class);
 	Op<Number> LAST_INDEX = new Op<Number>(String_x_2);
-	Op<Boolean> ISEMPTY = new Op<Boolean>(String.class);
+	Op<Boolean> STRING_ISEMPTY = new Op<Boolean>(String.class);
 	Op<Boolean> STARTSWITH = new Op<Boolean>(String_x_2);
 	Op<Boolean> STARTSWITH_IC = new Op<Boolean>(String_x_2);
 	Op<Number> INDEXOF_2ARGS = new Op<Number>(String.class, String.class,Integer.class);

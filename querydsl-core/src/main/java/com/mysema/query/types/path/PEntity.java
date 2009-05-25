@@ -119,8 +119,8 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
 		return isnull;
 	}
 
-	public <B extends D> EBoolean typeOf(Class<B> type) {
-		return Grammar.typeOf(this, type);
+	public <B extends D> EBoolean instanceOf(Class<B> type) {
+		return Grammar.instanceOf(this, type);
 	}
 
 	public Path<?> getRoot() {

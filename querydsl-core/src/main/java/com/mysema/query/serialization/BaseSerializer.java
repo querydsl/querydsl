@@ -5,6 +5,7 @@
  */
 package com.mysema.query.serialization;
 
+import static com.mysema.query.types.path.PathMetadata.ARRAYVALUE_CONSTANT;
 import static com.mysema.query.types.path.PathMetadata.LISTVALUE_CONSTANT;
 import static com.mysema.query.types.path.PathMetadata.PROPERTY;
 import static com.mysema.query.types.path.PathMetadata.VARIABLE;
@@ -56,7 +57,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
         return _this;
     }
         
-    protected final SubType append(String sep, List<? extends Expr<?>> expressions) {
+    public final SubType handle(String sep, List<? extends Expr<?>> expressions) {
         boolean first = true;
         for (Expr<?> expr : expressions){
             if (!first) builder.append(sep);
@@ -72,7 +73,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
         if (path.getMetadata().getParent() != null){
             parentAsString = toString((Expr<?>)path.getMetadata().getParent(),false);    
         }        
-        if (pathType == PROPERTY || pathType == VARIABLE || pathType == LISTVALUE_CONSTANT){
+        if (pathType == PROPERTY || pathType == VARIABLE || pathType == LISTVALUE_CONSTANT || pathType == ARRAYVALUE_CONSTANT){
             exprAsString = path.getMetadata().getExpression().toString();
         }else if (path.getMetadata().getExpression() != null){
             exprAsString = toString(path.getMetadata().getExpression(),false);
@@ -114,7 +115,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
 
     protected void visit(EConstructor<?> expr){
         append("new ").append(expr.getType().getName()).append("(");
-        append(", ",expr.getArgs()).append(")");
+        handle(", ",expr.getArgs()).append(")");
     }
         
     @Override
@@ -131,7 +132,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>> ex
     protected void visit(EArrayConstructor<?> oa) {
 //        _append("new Object[]{");
         append("new ").append(oa.getElementType().getName()).append("[]{");
-        append(", ",oa.getArgs()).append("}");
+        handle(", ",oa.getArgs()).append("}");
     }
         
     @Override

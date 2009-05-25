@@ -85,6 +85,14 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>>
 	public EBoolean contains(Expr<D> child) {
 		return Grammar.in(child, this);
 	}
+	
+	public EBoolean empty() {
+		return Grammar.empty(this);
+	}
+	
+	public EBoolean notEmpty() {
+		return Grammar.notEmpty(this);
+	}
 
 	public Path<?> getRoot() {
 		return root;
@@ -98,4 +106,5 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>>
 		return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
 				: false;
 	}
+
 }

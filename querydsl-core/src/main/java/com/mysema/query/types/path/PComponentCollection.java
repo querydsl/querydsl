@@ -70,6 +70,14 @@ public class PComponentCollection<D> extends ESimple<java.util.Collection<D>> im
 	public EBoolean contains(Expr<D> child) {
 		return Grammar.in(child, this);
 	}
+	
+	public EBoolean empty() {
+		return Grammar.empty(this);
+	}
+	
+	public EBoolean notEmpty() {
+		return Grammar.notEmpty(this);
+	}
 
 	public Path<?> getRoot() {
 		return root;

@@ -20,6 +20,7 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.operation.Ops.OpNumberAgg;
+import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
 
@@ -320,7 +321,7 @@ public class Grammar{
     public static ENumber<Long> count(Expr<?> expr){
         return new CountExpression(expr);
     }
-        
+            
     /**
      * OrderSpecifier : desc target
      * 
@@ -330,6 +331,20 @@ public class Grammar{
      */
     public static <A extends Comparable<?>> OrderSpecifier<A> desc(Expr<A> target) {
         return new OrderSpecifier<A>(Order.DESC, target);
+    }
+    
+
+    /**
+     * 
+     * @param collection
+     * @return
+     */
+    public static EBoolean empty(PCollection<?> collection){
+    	return operationFactory.createBoolean(Ops.COL_ISEMPTY, (Expr<?>)collection);
+    }
+    
+    public static EBoolean notEmpty(PCollection<?> collection){
+    	return operationFactory.createBoolean(Ops.COL_ISNOTEMPTY, (Expr<?>)collection);
     }
         
     /**
@@ -583,7 +598,7 @@ public class Grammar{
      * @return
      */
     public static EBoolean isEmpty(Expr<String> left) {
-        return operationFactory.createBoolean(Ops.ISEMPTY, left);
+        return operationFactory.createBoolean(Ops.STRING_ISEMPTY, left);
     }
     
     /**
@@ -988,7 +1003,7 @@ public class Grammar{
      * @param right
      * @return
      */    
-    public static <A, B extends A> EBoolean typeOf(Expr<A> left, Class<B> right) {
+    public static <A, B extends A> EBoolean instanceOf(Expr<A> left, Class<B> right) {
         return operationFactory.createBoolean(Ops.ISTYPEOF, left, exprFactory.createConstant(right));
     }    
     
