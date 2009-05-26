@@ -19,8 +19,8 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.Op;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.operation.Ops.Op;
 import com.mysema.query.types.path.PEntity;
 
 /**
