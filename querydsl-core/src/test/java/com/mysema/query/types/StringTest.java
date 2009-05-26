@@ -20,8 +20,8 @@ import org.junit.Test;
 import com.mysema.query.serialization.OperationPatterns;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EConstructor;
+import com.mysema.query.types.operation.Op;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.operation.Ops.Op;
 
 /**
  * StringTest provides
