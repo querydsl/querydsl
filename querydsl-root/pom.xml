@@ -23,9 +23,9 @@
   <modules>
     <module>../querydsl-core</module>
     <module>../querydsl-apt</module>
+    <module>../querydsl-jdoql</module>
     <module>../querydsl-collections</module>
     <module>../querydsl-hql</module>
-    <module>../querydsl-jdoql</module>
     <module>../querydsl-sql</module>
   </modules>
 
