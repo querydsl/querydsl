@@ -5,6 +5,7 @@
  */
 package com.mysema.query.jdoql;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -38,6 +39,8 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
 
     private List<Object> constants;
 
+    private List<Query> queries = new ArrayList<Query>(2);
+    
     private List<PEntity<?>> sources = new ArrayList<PEntity<?>>();
 
     private String filter;
@@ -45,7 +48,7 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
     private final JDOQLOps ops;
 
     private final PersistenceManager pm;
-
+    
     public JDOQLQueryImpl(PersistenceManager pm) {
         this(pm, JDOQLOps.DEFAULT);
     }
@@ -105,7 +108,8 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
     }
 
     private Query createQuery(String filterString, QueryModifiers modifiers, boolean forCount) {
-        Query query = pm.newQuery(sources.get(0).getType());
+        Query query = pm.newQuery(sources.get(0).getType());        
+        queries.add(query);
         if (filterString != null) {
             query.setFilter(filterString);
         }
@@ -254,6 +258,13 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
         Query query = createQuery(filterString, QueryModifiers.limit(1), false);
         query.setUnique(true);
         return (RT) execute(query);
+    }
+
+    @Override
+    public void close() throws IOException {
+        for (Query query : queries){
+            query.closeAll();
+        }        
     }
 
 }
