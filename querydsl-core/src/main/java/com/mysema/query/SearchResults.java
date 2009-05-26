@@ -15,26 +15,27 @@ import java.util.List;
  * @version $Id$
  */
 public final class SearchResults<T> {
-    
-    public static <T> SearchResults<T> emptyResults(){
-        return new SearchResults<T>(Collections.<T>emptyList(), Long.MAX_VALUE, 0l,0l);
+
+    public static <T> SearchResults<T> emptyResults() {
+        return new SearchResults<T>(Collections.<T> emptyList(),
+                Long.MAX_VALUE, 0l, 0l);
     };
 
     private final long limit, offset, total;
-    
+
     private final List<T> results;
-    
-    public SearchResults(List<T> results, Long limit, Long offset, long total){
+
+    public SearchResults(List<T> results, Long limit, Long offset, long total) {
         this.limit = limit != null ? limit : Long.MAX_VALUE;
         this.offset = offset != null ? offset : 0l;
         this.total = total;
         this.results = results;
     }
-    
-    public SearchResults(List<T> results, QueryModifiers mod, long total){
+
+    public SearchResults(List<T> results, QueryModifiers mod, long total) {
         this(results, mod.getLimit(), mod.getOffset(), total);
     }
-    
+
     public List<T> getResults() {
         return results;
     }
@@ -54,5 +55,5 @@ public final class SearchResults<T> {
     public long getOffset() {
         return offset;
     }
-    
+
 }

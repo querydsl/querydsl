@@ -15,18 +15,21 @@ import com.mysema.query.types.operation.Ops;
 
 /**
  * QString provides string functions
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
 public final class StringFunctions {
-    
-    private StringFunctions(){}
 
-    private static final OperationFactory factory = SimpleOperationFactory.getInstance();
-    
-    private static final ExprFactory exprFactory = SimpleExprFactory.getInstance();
-    
+    private StringFunctions() {
+    }
+
+    private static final OperationFactory factory = SimpleOperationFactory
+            .getInstance();
+
+    private static final ExprFactory exprFactory = SimpleExprFactory
+            .getInstance();
+
     public static EString ltrim(Expr<String> s) {
         return factory.createString(Ops.OpString.LTRIM, s);
     }
@@ -36,8 +39,8 @@ public final class StringFunctions {
     }
 
     public static EString space(int i) {
-        return factory.createString(Ops.OpString.SPACE, exprFactory.createConstant(i));        
+        return factory.createString(Ops.OpString.SPACE, exprFactory
+                .createConstant(i));
     }
-
 
 }

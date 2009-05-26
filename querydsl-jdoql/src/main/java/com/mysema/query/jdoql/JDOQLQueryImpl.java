@@ -118,7 +118,8 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
                     buffer.append(", ");
                 }
                 PEntity<?> source = sources.get(i);
-                buffer.append(source.getType().getName()).append(" ").append(source.toString());
+                buffer.append(source.getType().getName()).append(" ").append(
+                        source.toString());
             }
         }
 
@@ -130,7 +131,8 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
                     builder.append(", ");
                 }
                 Object val = constants.get(i);
-                builder.append(val.getClass().getName()).append(" ").append("a" + (i + 1));
+                builder.append(val.getClass().getName()).append(" ").append(
+                        "a" + (i + 1));
             }
             query.declareParameters(builder.toString());
         }
@@ -230,7 +232,8 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
             String filterString = getFilterString();
             logger.debug("query : {}", filterString);
             Query query = createQuery(filterString, modifiers, false);
-            return new SearchResults<RT>((List<RT>)execute(query), modifiers, total);
+            return new SearchResults<RT>((List<RT>) execute(query), modifiers,
+                    total);
         } else {
             return SearchResults.emptyResults();
         }

@@ -17,29 +17,29 @@ import com.mysema.query.types.operation.Ops.Op;
  * @version $Id$
  */
 public interface Operation<OP, RT> {
-	/**
-	 * 
-	 * @return
-	 */
-	Class<? extends RT> getType();
+    /**
+     * 
+     * @return
+     */
+    Class<? extends RT> getType();
 
-	/**
-	 * 
-	 * @return
-	 */
-	List<Expr<?>> getArgs();
+    /**
+     * 
+     * @return
+     */
+    List<Expr<?>> getArgs();
 
-	/**
-	 * 
-	 * @param index
-	 * @return
-	 */
-	Expr<?> getArg(int index);
+    /**
+     * 
+     * @param index
+     * @return
+     */
+    Expr<?> getArg(int index);
 
-	/**
-	 * 
-	 * @return
-	 */
-	Op<OP> getOperator();
+    /**
+     * 
+     * @return
+     */
+    Op<OP> getOperator();
 
 }

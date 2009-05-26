@@ -65,45 +65,46 @@ import com.mysema.query.types.quant.Quant;
  * @version $Id$
  */
 public abstract class Visitor<T extends Visitor<T>> {
-    
-	private static final Set<Package> knownPackages = new HashSet<Package>(Arrays.asList(
-			Visitor.class.getPackage(),
-			Alias.class.getPackage(),
-			Custom.class.getPackage(),
-			Expr.class.getPackage(),
-			Operation.class.getPackage(),
-			Path.class.getPackage(),
-			Quant.class.getPackage()));
 
-    private final Map<Class<?>, Method> methodMap = LazyMap.decorate(new HashMap<Class<?>,Method>(), 
-            new Transformer<Class<?>,Method>(){
+    private static final Set<Package> knownPackages = new HashSet<Package>(
+            Arrays.asList(Visitor.class.getPackage(), Alias.class.getPackage(),
+                    Custom.class.getPackage(), Expr.class.getPackage(),
+                    Operation.class.getPackage(), Path.class.getPackage(),
+                    Quant.class.getPackage()));
 
-        public Method transform(Class<?> cl) {
-            try {
-            	while (!knownPackages.contains(cl.getPackage())){            		
-                    cl = cl.getSuperclass();
-                }                     
-                Method method = null;
-                Class<?> sigClass = Visitor.this.getClass();
-                while (method == null && !sigClass.equals(Visitor.class)) {
+    private final Map<Class<?>, Method> methodMap = LazyMap.decorate(
+            new HashMap<Class<?>, Method>(),
+            new Transformer<Class<?>, Method>() {
+
+                public Method transform(Class<?> cl) {
                     try {
-                        method = sigClass.getDeclaredMethod("visit", cl);
-                    } catch (NoSuchMethodException nsme) {
-                        sigClass = sigClass.getSuperclass();
+                        while (!knownPackages.contains(cl.getPackage())) {
+                            cl = cl.getSuperclass();
+                        }
+                        Method method = null;
+                        Class<?> sigClass = Visitor.this.getClass();
+                        while (method == null
+                                && !sigClass.equals(Visitor.class)) {
+                            try {
+                                method = sigClass
+                                        .getDeclaredMethod("visit", cl);
+                            } catch (NoSuchMethodException nsme) {
+                                sigClass = sigClass.getSuperclass();
+                            }
+                        }
+                        if (method != null) {
+                            method.setAccessible(true);
+                        } else {
+                            throw new IllegalArgumentException(
+                                    "No method found for " + cl.getName());
+                        }
+                        return method;
+                    } catch (Exception e) {
+                        throw new RuntimeException(e.getMessage(), e);
                     }
                 }
-                if (method != null) {
-                    method.setAccessible(true);
-                } else {
-                    throw new IllegalArgumentException("No method found for " + cl.getName());
-                }
-                return method;
-            } catch (Exception e) {
-                throw new RuntimeException(e.getMessage(), e);
-            }
-        }
 
-    });
+            });
 
     @SuppressWarnings("unchecked")
     public final T handle(Expr<?> expr) {
@@ -117,9 +118,9 @@ public abstract class Visitor<T extends Visitor<T>> {
     }
 
     protected abstract void visit(AEntity<?> expr);
-    
+
     protected abstract void visit(AEntityCollection<?> expr);
-    
+
     protected abstract void visit(ASimple<?> expr);
 
     protected abstract void visit(AToPath expr);
@@ -129,70 +130,70 @@ public abstract class Visitor<T extends Visitor<T>> {
     protected abstract void visit(CComparable<?> expr);
 
     protected abstract void visit(CSimple<?> expr);
-    
-    protected abstract void visit(CString expr);
-    
-    protected abstract void visit(Custom<?> expr);
-    
-    protected abstract void visit(EConstant<?> expr);
-    
-    protected abstract void visit(OBoolean expr);
-    
-    protected abstract void visit(OComparable<?,?> expr);
 
-    protected abstract void visit(ONumber<?,?> expr);
-    
+    protected abstract void visit(CString expr);
+
+    protected abstract void visit(Custom<?> expr);
+
+    protected abstract void visit(EConstant<?> expr);
+
+    protected abstract void visit(OBoolean expr);
+
+    protected abstract void visit(OComparable<?, ?> expr);
+
+    protected abstract void visit(ONumber<?, ?> expr);
+
     protected abstract void visit(Operation<?, ?> expr);
-    
-    protected abstract void visit(OSimple<?,?> expr);
-    
+
+    protected abstract void visit(OSimple<?, ?> expr);
+
     protected abstract void visit(OString expr);
 
     protected abstract void visit(OStringArray expr);
-    
+
     protected abstract void visit(PArray<?> expr);
 
     protected abstract void visit(Path<?> expr);
-    
+
     protected abstract void visit(PBoolean expr);
-    
+
     protected abstract void visit(PBooleanArray expr);
-    
+
     protected abstract void visit(PComparable<?> expr);
 
     protected abstract void visit(PComparableArray<?> expr);
 
     protected abstract void visit(PComponentCollection<?> expr);
-    
+
     protected abstract void visit(PComponentList<?> expr);
-    
-    protected abstract void visit(PComponentMap<?,?> expr);
-    
+
+    protected abstract void visit(PComponentMap<?, ?> expr);
+
     protected abstract void visit(PEntity<?> expr);
-    
+
     protected abstract void visit(PEntityCollection<?> expr);
-    
+
     protected abstract void visit(PEntityList<?> expr);
-    
-    protected abstract void visit(PEntityMap<?,?> expr);
-    
-    protected abstract void visit(PMap<?,?> expr);
-    
+
+    protected abstract void visit(PEntityMap<?, ?> expr);
+
+    protected abstract void visit(PMap<?, ?> expr);
+
     protected abstract void visit(PNumber<?> expr);
-    
+
     protected abstract void visit(PSimple<?> expr);
-    
+
     protected abstract void visit(PString expr);
-    
+
     protected abstract void visit(PStringArray expr);
-        
-	protected abstract void visit(QBoolean q);
 
-	protected abstract void visit(QComparable<?> q);
+    protected abstract void visit(QBoolean q);
 
-	protected abstract void visit(QNumber<?> q);
+    protected abstract void visit(QComparable<?> q);
 
-	protected abstract void visit(QSimple<?> q);
-	
-	protected abstract void visit(Quant<?> q);
+    protected abstract void visit(QNumber<?> q);
+
+    protected abstract void visit(QSimple<?> q);
+
+    protected abstract void visit(Quant<?> q);
 }

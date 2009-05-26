@@ -12,20 +12,21 @@ import java.util.Iterator;
 
 /**
  * AbstractIteratorTest provides
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
 public abstract class AbstractIteratorTest {
-    
-    protected void assertIteratorEquals(Iterator<Object[]> a, Iterator<Object[]> b) {
-        while (a.hasNext()){
+
+    protected void assertIteratorEquals(Iterator<Object[]> a,
+            Iterator<Object[]> b) {
+        while (a.hasNext()) {
             assertEquals(Arrays.asList(a.next()), Arrays.asList(b.next()));
         }
         assertFalse(b.hasNext());
     }
-    
-    protected Object[] row(Object... row){
+
+    protected Object[] row(Object... row) {
         return row;
     }
 

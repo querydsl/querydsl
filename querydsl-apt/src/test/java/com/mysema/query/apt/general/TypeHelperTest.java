@@ -18,18 +18,16 @@ import org.junit.Test;
 import com.mysema.query.apt.model.Field;
 import com.mysema.query.apt.model.Type;
 
-
-
 /**
  * TypeHelperTest provides
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
 public class TypeHelperTest {
-    
+
     @Test
-    public void test(){
+    public void test() {
         Type type = TypeFactory.createType(TestType.class);
         assertEquals(1, type.getEntityMaps().size());
         assertEquals(1, type.getSimpleMaps().size());
@@ -42,22 +40,22 @@ public class TypeHelperTest {
         assertEquals(2, type.getNumericFields().size());
         assertEquals(3, type.getSimpleFields().size());
     }
-    
-    public static class TestType{
+
+    public static class TestType {
         // entity map
-        public Map<String,TestType> map1;
+        public Map<String, TestType> map1;
         // simple map
-        public Map<String,String> map2;
+        public Map<String, String> map2;
         // entity col
         public Collection<TestType> col1;
-        public Set<TestType> set1;        
+        public Set<TestType> set1;
         // simple col
         public Collection<Object> col2;
         public Set<Object> set2;
         // entity list
-        public List<TestType> list1;        
+        public List<TestType> list1;
         // simple list
-        public List<Object> list2;                
+        public List<Object> list2;
         // entity
         public TestType ref;
         // string

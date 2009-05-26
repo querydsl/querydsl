@@ -5,10 +5,9 @@
  */
 package com.mysema.query.apt.model;
 
-
 /**
  * Parameter represents a parameter in a Constructor
- *  
+ * 
  * @author tiwe
  * @version $Id$
  */

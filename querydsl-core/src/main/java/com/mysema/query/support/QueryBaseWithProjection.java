@@ -17,17 +17,18 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.expr.Expr;
 
 /**
- * QueryBaseWithProjection extends the QueryBase class to provide basic 
+ * QueryBaseWithProjection extends the QueryBase class to provide basic
  * implementations of the methods of the Projectable interface
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
-public abstract class QueryBaseWithProjection<JoinMeta,SubType 
-    extends QueryBaseWithProjection<JoinMeta,SubType>> extends QueryBase<JoinMeta,SubType> implements Projectable{
+public abstract class QueryBaseWithProjection<JoinMeta, SubType extends QueryBaseWithProjection<JoinMeta, SubType>>
+        extends QueryBase<JoinMeta, SubType> implements Projectable {
 
-    public QueryBaseWithProjection(){}
-    
+    public QueryBaseWithProjection() {
+    }
+
     public QueryBaseWithProjection(QueryMetadata<JoinMeta> metadata) {
         super(metadata);
     }
@@ -38,46 +39,48 @@ public abstract class QueryBaseWithProjection<JoinMeta,SubType
         System.arraycopy(rest, 0, target, 2, rest.length);
         return target;
     }
-        
-    public long countDistinct(){
+
+    public long countDistinct() {
         getMetadata().setDistinct(true);
         return count();
     }
-    
-    public SubType limit(long limit){
-    	getMetadata().getModifiers().setLimit(limit);
-    	return _this;
+
+    public SubType limit(long limit) {
+        getMetadata().getModifiers().setLimit(limit);
+        return _this;
     }
-    
-    public SubType offset(long offset){
-    	getMetadata().getModifiers().setOffset(offset);
-    	return _this;
+
+    public SubType offset(long offset) {
+        getMetadata().getModifiers().setOffset(offset);
+        return _this;
     }
-    
-    public SubType restrict(QueryModifiers modifiers){
-    	getMetadata().setModifiers(modifiers);
-    	return _this;
+
+    public SubType restrict(QueryModifiers modifiers) {
+        getMetadata().setModifiers(modifiers);
+        return _this;
     }
-    
-    public final Iterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+
+    public final Iterator<Object[]> iterateDistinct(Expr<?> first,
+            Expr<?> second, Expr<?>... rest) {
         getMetadata().setDistinct(true);
         return iterate(first, second, rest);
     }
 
-    public final <RT> Iterator<RT> iterateDistinct(Expr<RT> projection){
+    public final <RT> Iterator<RT> iterateDistinct(Expr<RT> projection) {
         getMetadata().setDistinct(true);
         return iterate(projection);
     }
-    
+
     public List<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return IteratorUtils.toList(iterate(first, second, rest));
     }
-    
+
     public <RT> List<RT> list(Expr<RT> projection) {
         return IteratorUtils.toList(iterate(projection));
-    }    
-    
-    public final List<Object[]> listDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    }
+
+    public final List<Object[]> listDistinct(Expr<?> first, Expr<?> second,
+            Expr<?>... rest) {
         getMetadata().setDistinct(true);
         return list(first, second, rest);
     }
@@ -86,15 +89,15 @@ public abstract class QueryBaseWithProjection<JoinMeta,SubType
         getMetadata().setDistinct(true);
         return list(projection);
     }
-    
+
     public Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
-    	getMetadata().getModifiers().setLimit(1l);
+        getMetadata().getModifiers().setLimit(1l);
         Iterator<Object[]> it = iterate(first, second, rest);
         return it.hasNext() ? it.next() : null;
     }
-    
+
     public <RT> RT uniqueResult(Expr<RT> expr) {
-    	getMetadata().getModifiers().setLimit(1l);
+        getMetadata().getModifiers().setLimit(1l);
         Iterator<RT> it = iterate(expr);
         return it.hasNext() ? it.next() : null;
     }

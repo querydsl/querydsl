@@ -13,21 +13,21 @@ import com.mysema.query.types.operation.Ops;
 
 /**
  * SqlGrammar provides SQL specific extensions to the general Querydsl Grammar
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
-public class SQLGrammar extends Grammar{
-    
-    public static <A> SubQuery<Object,A> select(Expr<A> select){
-        return new SubQuery<Object,A>(select);
+public class SQLGrammar extends Grammar {
+
+    public static <A> SubQuery<Object, A> select(Expr<A> select) {
+        return new SubQuery<Object, A>(select);
     }
-    
-    public static SubQuery<Object,Object[]> select(Expr<?>... select){
-        return new SubQuery<Object,Object[]>().select(select);
+
+    public static SubQuery<Object, Object[]> select(Expr<?>... select) {
+        return new SubQuery<Object, Object[]>().select(select);
     }
-    
-    public static EBoolean exists(SubQuery<Object,?> sq){
+
+    public static EBoolean exists(SubQuery<Object, ?> sq) {
         return operationFactory.createBoolean(Ops.EXISTS, sq);
     }
 

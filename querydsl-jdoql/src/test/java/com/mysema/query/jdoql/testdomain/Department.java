@@ -11,63 +11,63 @@ import javax.jdo.annotations.PrimaryKey;
 @PersistenceCapable
 // TODO : finish annotations
 public class Department {
-	private @PrimaryKey
-	int id;
-	// @ManyToOne
-	private Company company;
-	// @OneToMany(mappedBy="department")
-	private Set<Employee> employees;
-	private String name;
-	// @ManyToOne
-	private Department parent;
+    private @PrimaryKey
+    int id;
+    // @ManyToOne
+    private Company company;
+    // @OneToMany(mappedBy="department")
+    private Set<Employee> employees;
+    private String name;
+    // @ManyToOne
+    private Department parent;
 
-	public Department() {
-	}
+    public Department() {
+    }
 
-	public Department(int id, Company c) {
-		setId(id);
-		setCompany(c);
-	}
+    public Department(int id, Company c) {
+        setId(id);
+        setCompany(c);
+    }
 
-	public int getId() {
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public Company getCompany() {
-		return company;
-	}
+    public Company getCompany() {
+        return company;
+    }
 
-	public void setCompany(Company company) {
-		this.company = company;
-		company.addDepartment(this);
-	}
+    public void setCompany(Company company) {
+        this.company = company;
+        company.addDepartment(this);
+    }
 
-	public Set<Employee> getEmployees() {
-		return employees;
-	}
+    public Set<Employee> getEmployees() {
+        return employees;
+    }
 
-	public void setEmployees(Set<Employee> employees) {
-		this.employees = employees;
-	}
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Department getParent() {
-		return parent;
-	}
+    public Department getParent() {
+        return parent;
+    }
 
-	public void setParent(Department parent) {
-		this.parent = parent;
-	}
+    public void setParent(Department parent) {
+        this.parent = parent;
+    }
 
 }

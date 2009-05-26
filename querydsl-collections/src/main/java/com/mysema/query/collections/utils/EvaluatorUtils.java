@@ -15,12 +15,12 @@ import com.mysema.query.types.expr.Expr;
 
 /**
  * EvaluatorUtils provides factory methods for Evaluator creation
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
 public class EvaluatorUtils {
-    
+
     /**
      * 
      * @param ops
@@ -28,17 +28,19 @@ public class EvaluatorUtils {
      * @param expr
      * @return
      */
-    public static Evaluator create(JavaOps ops, List<? extends Expr<?>> sources, Expr<?> expr){
-        if (sources.get(0) == expr){
-            return new Evaluator(){
+    public static Evaluator create(JavaOps ops,
+            List<? extends Expr<?>> sources, Expr<?> expr) {
+        if (sources.get(0) == expr) {
+            return new Evaluator() {
                 public <T> T evaluate(Object... args) {
                     return (T) args[0];
-                }                
+                }
             };
-        // TODO : handle Path projection in special way
-        }else{
-            return new JaninoEvaluator(Assert.notNull(ops), Assert.notNull(sources), Assert.notNull(expr));    
-        }                
+            // TODO : handle Path projection in special way
+        } else {
+            return new JaninoEvaluator(Assert.notNull(ops), Assert
+                    .notNull(sources), Assert.notNull(expr));
+        }
     }
 
 }

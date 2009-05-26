@@ -12,18 +12,18 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
 /**
- * QueryMetadata defines query metadata such as query sources, filtering conditions
- * and the projection
- *
+ * QueryMetadata defines query metadata such as query sources, filtering
+ * conditions and the projection
+ * 
  * @author tiwe
  * @version $Id$
  */
 public interface QueryMetadata<JoinMeta> {
 
     void addJoin(JoinExpression<JoinMeta> joinExpression);
-    
+
     void addJoin(JoinType joinType, Expr<?> expr);
-    
+
     void addJoinCondition(EBoolean o);
 
     void addToFrom(Expr<?>[] o);
@@ -49,12 +49,12 @@ public interface QueryMetadata<JoinMeta> {
     List<? extends Expr<?>> getProjection();
 
     EBoolean getWhere();
-    
+
     boolean isDistinct();
-    
+
     void setDistinct(boolean distinct);
 
-	QueryModifiers getModifiers();
+    QueryModifiers getModifiers();
 
-	void setModifiers(QueryModifiers restriction);
+    void setModifiers(QueryModifiers restriction);
 }

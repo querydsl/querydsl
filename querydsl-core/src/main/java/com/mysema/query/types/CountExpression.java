@@ -8,13 +8,12 @@ package com.mysema.query.types;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 
-
 /**
  * CountExpression represents a count expression
- *
+ * 
  * @author tiwe
  * @version $Id$
- *
+ * 
  */
 public class CountExpression extends ENumber<Long> {
     private final Expr<?> target;

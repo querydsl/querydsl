@@ -14,7 +14,8 @@ import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.TemplateException;
 
 /**
- * FreeMarkerSerializer provides FreeMarker based serialization of querydsl types to Java sources
+ * FreeMarkerSerializer provides FreeMarker based serialization of querydsl
+ * types to Java sources
  * 
  * @author tiwe
  * @version $Id$

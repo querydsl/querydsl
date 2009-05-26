@@ -9,7 +9,7 @@ import com.mysema.query.types.expr.Expr;
 
 /**
  * AliasFactory is a factory interface for alias creation
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
@@ -33,7 +33,7 @@ interface AliasFactory {
      * @return
      */
     <A> A createAliasForVar(Class<A> cl, String var);
-    
+
     /**
      * 
      * @param <A>
@@ -42,7 +42,7 @@ interface AliasFactory {
      * @return
      */
     <A> A createAliasForExpr(Class<A> cl, Expr<? extends A> expr);
-    
+
     /**
      * 
      * @param <A>
@@ -56,18 +56,16 @@ interface AliasFactory {
      * @return
      */
     <A extends Expr<?>> A getCurrentAndReset();
-    
+
     /**
      * 
      * @param path
      */
     void setCurrent(Expr<?> path);
-    
+
     /**
      * 
      */
     void reset();
-
-    
 
 }

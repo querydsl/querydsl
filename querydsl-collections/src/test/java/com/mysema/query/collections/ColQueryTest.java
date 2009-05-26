@@ -27,103 +27,96 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class ColQueryTest extends AbstractQueryTest{
-     
+public class ColQueryTest extends AbstractQueryTest {
+
     @Test
-    public void isTypeOf(){
-        assertEquals(Arrays.asList(c1, c2),
-            query().from(cat, c1, c2).where(Grammar.instanceOf(cat, Cat.class)).list(cat));
-    }   
-    
+    public void isTypeOf() {
+        assertEquals(Arrays.asList(c1, c2), query().from(cat, c1, c2).where(
+                Grammar.instanceOf(cat, Cat.class)).list(cat));
+    }
+
     @Test
-    public void testAfterAndBefore(){
-        query().from(cat, c1, c2).where(
-                cat.birthdate.before(new Date()),
-                cat.birthdate.boe(new Date()),
-                cat.birthdate.after(new Date()),
+    public void testAfterAndBefore() {
+        query().from(cat, c1, c2).where(cat.birthdate.before(new Date()),
+                cat.birthdate.boe(new Date()), cat.birthdate.after(new Date()),
                 cat.birthdate.aoe(new Date())).list(cat);
-    }    
-   
+    }
+
     @Test
-    public void testArrayProjection(){
+    public void testArrayProjection() {
         // select pairs of cats with different names
-        query().from(cat,cats).from(otherCat,cats)
-            .where(cat.name.ne(otherCat.name)).list(cat.name, otherCat.name);
+        query().from(cat, cats).from(otherCat, cats).where(
+                cat.name.ne(otherCat.name)).list(cat.name, otherCat.name);
         assertTrue(last.res.size() == 4 * 3);
     }
-    
+
     @Test
-    public void testCast(){
+    public void testCast() {
         ENumber<?> num = cat.id;
-        Expr<?>[] expr = new Expr[]{
-                num.byteValue(),  num.doubleValue(),
-                num.floatValue(), num.intValue(),
-                num.longValue(),  num.shortValue(),
-                num.stringValue()};
-        
-        for (Expr<?> e : expr){
-            query().from(cat, c1, c2).list(e);    
-        }        
-                
+        Expr<?>[] expr = new Expr[] { num.byteValue(), num.doubleValue(),
+                num.floatValue(), num.intValue(), num.longValue(),
+                num.shortValue(), num.stringValue() };
+
+        for (Expr<?> e : expr) {
+            query().from(cat, c1, c2).list(e);
+        }
+
     }
-    
+
     @Test
-    public void testPrimitives(){
+    public void testPrimitives() {
         // select cats with kittens
-        query().from(cat,cats).where(cat.kittens.size().ne(0)).list(cat.name);
+        query().from(cat, cats).where(cat.kittens.size().ne(0)).list(cat.name);
         assertTrue(last.res.size() == 4);
-        
+
         // select cats without kittens
-        query().from(cat,cats).where(cat.kittens.size().eq(0)).list(cat.name);
+        query().from(cat, cats).where(cat.kittens.size().eq(0)).list(cat.name);
         assertTrue(last.res.size() == 0);
     }
-    
+
     @Test
-    public void testSimpleCases(){
+    public void testSimpleCases() {
         // select all cat names
-        query().from(cat,cats).list(cat.name);
+        query().from(cat, cats).list(cat.name);
         assertTrue(last.res.size() == 4);
-        
+
         // select all kittens
-        query().from(cat,cats).list(cat.kittens);
+        query().from(cat, cats).list(cat.kittens);
         assertTrue(last.res.size() == 4);
-        
+
         // select cats with kittens
-        query().from(cat,cats).where(cat.kittens.size().gt(0)).list(cat.name);
+        query().from(cat, cats).where(cat.kittens.size().gt(0)).list(cat.name);
         assertTrue(last.res.size() == 4);
-                
+
         // select cats named Kitty
-        query().from(cat,cats).where(cat.name.eq("Kitty")).list(cat.name);
+        query().from(cat, cats).where(cat.name.eq("Kitty")).list(cat.name);
         assertTrue(last.res.size() == 1);
-        
+
         // select cats named Kitt%
-        query().from(cat,cats).where(cat.name.like("Kitt%")).list(cat.name);
-        assertTrue(last.res.size() == 1);        
-        
-        query().from(cat,cats).list(MathFunctions.add(cat.bodyWeight, cat.weight));        
+        query().from(cat, cats).where(cat.name.like("Kitt%")).list(cat.name);
+        assertTrue(last.res.size() == 1);
+
+        query().from(cat, cats).list(
+                MathFunctions.add(cat.bodyWeight, cat.weight));
     }
-        
+
     @Test
-    public void testVarious(){
-        for(Object[] strs : from($("a"), "aa","bb","cc").from($("b"), "a","b")
-                .where($("a").startsWith($("b")))
-                .list($("a"),$("b"))){
+    public void testVarious() {
+        for (Object[] strs : from($("a"), "aa", "bb", "cc").from($("b"), "a",
+                "b").where($("a").startsWith($("b"))).list($("a"), $("b"))) {
             System.out.println(Arrays.asList(strs));
         }
-        
-        query().from(cat,cats).list(cat.mate);
-        
-        query().from(cat,cats).list(cat.kittens);
-     
-        query().from(cat,cats).where(cat.kittens.empty()).list(cat);
-        
-        query().from(cat,cats).where(cat.kittens.notEmpty()).list(cat);
-        
-        query().from(cat,cats).where(cat.name.like("fri%")).list($(cat.name));
-   
+
+        query().from(cat, cats).list(cat.mate);
+
+        query().from(cat, cats).list(cat.kittens);
+
+        query().from(cat, cats).where(cat.kittens.empty()).list(cat);
+
+        query().from(cat, cats).where(cat.kittens.notEmpty()).list(cat);
+
+        query().from(cat, cats).where(cat.name.like("fri%")).list($(cat.name));
+
     }
-    
-   
-    
 
 }

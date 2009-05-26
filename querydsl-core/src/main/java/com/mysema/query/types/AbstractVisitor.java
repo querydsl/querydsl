@@ -47,151 +47,186 @@ import com.mysema.query.types.quant.QSimple;
 import com.mysema.query.types.quant.Quant;
 
 /**
- * AbstractVisitor provides a base implementation of the Visitor interface
- * where invocations are dispatched to supertypes when available and visible.
+ * AbstractVisitor provides a base implementation of the Visitor interface where
+ * invocations are dispatched to supertypes when available and visible.
  * 
  * @author tiwe
  * @version $Id$
  */
-public abstract class AbstractVisitor<SubType extends AbstractVisitor<SubType>> extends Visitor<SubType> {
+public abstract class AbstractVisitor<SubType extends AbstractVisitor<SubType>>
+        extends Visitor<SubType> {
 
     @Override
     protected void visit(AEntity<?> expr) {
         visit((AToPath) expr);
     }
+
     @Override
     protected void visit(AEntityCollection<?> expr) {
         visit((AToPath) expr);
     }
+
     @Override
-    protected void visit(CBoolean expr){
-        visit((Custom<?>)expr);
+    protected void visit(CBoolean expr) {
+        visit((Custom<?>) expr);
     }
+
     @Override
-    protected void visit(CComparable<?> expr){
-        visit((Custom<?>)expr);
+    protected void visit(CComparable<?> expr) {
+        visit((Custom<?>) expr);
     }
+
     @Override
-    protected void visit(CSimple<?> expr){
-        visit((Custom<?>)expr);
+    protected void visit(CSimple<?> expr) {
+        visit((Custom<?>) expr);
     }
+
     @Override
-    protected void visit(CString expr){
-        visit((Custom<?>)expr);
+    protected void visit(CString expr) {
+        visit((Custom<?>) expr);
     }
+
     @Override
     protected void visit(OBoolean expr) {
         visit((Operation<?, ?>) expr);
     }
+
     @Override
-    protected void visit(OComparable<?,?> expr) {
+    protected void visit(OComparable<?, ?> expr) {
         visit((Operation<?, ?>) expr);
     }
+
     @Override
-    protected void visit(ONumber<?,?> expr) {
+    protected void visit(ONumber<?, ?> expr) {
         visit((Operation<?, ?>) expr);
     }
+
     @Override
-    protected void visit(OSimple<?,?> expr) {
+    protected void visit(OSimple<?, ?> expr) {
         visit((Operation<?, ?>) expr);
     }
+
     @Override
     protected void visit(OString expr) {
         visit((Operation<?, ?>) expr);
     }
+
     @Override
     protected void visit(OStringArray expr) {
         visit((Operation<?, ?>) expr);
     }
+
     @Override
     protected void visit(PArray<?> expr) {
         visit((Path<?>) expr);
     }
+
     @Override
     protected void visit(PBoolean expr) {
         visit((Path<?>) expr);
     }
+
     @Override
     protected void visit(PBooleanArray expr) {
         visit((PArray<?>) expr);
     }
-    protected void visit(PCollection<?> expr){
+
+    protected void visit(PCollection<?> expr) {
         visit((Path<?>) expr);
     }
+
     @Override
     protected void visit(PComparable<?> expr) {
         visit((Path<?>) expr);
     }
+
     @Override
     protected void visit(PComparableArray<?> expr) {
         visit((PArray<?>) expr);
     }
+
     @Override
     protected void visit(PComponentCollection<?> expr) {
         visit((PCollection<?>) expr);
-    }    
+    }
+
     @Override
     protected void visit(PComponentList<?> expr) {
         visit((PList<?>) expr);
     }
+
     @Override
-    protected void visit(PComponentMap<?,?> expr) {
-        visit((PMap<?,?>) expr);
-    }    
+    protected void visit(PComponentMap<?, ?> expr) {
+        visit((PMap<?, ?>) expr);
+    }
+
     @Override
     protected void visit(PEntity<?> expr) {
         visit((Path<?>) expr);
     }
+
     @Override
     protected void visit(PEntityCollection<?> expr) {
         visit((PCollection<?>) expr);
     }
+
     @Override
     protected void visit(PEntityList<?> expr) {
         visit((PList<?>) expr);
     }
+
     @Override
-    protected void visit(PEntityMap<?,?> expr) {
-        visit((PMap<?,?>) expr);
+    protected void visit(PEntityMap<?, ?> expr) {
+        visit((PMap<?, ?>) expr);
     }
-    protected void visit(PList<?> expr){
+
+    protected void visit(PList<?> expr) {
         visit((PCollection<?>) expr);
     }
+
     @Override
-    protected void visit(PMap<?,?> expr){
+    protected void visit(PMap<?, ?> expr) {
         visit((Path<?>) expr);
     }
+
     @Override
     protected void visit(PNumber<?> expr) {
         visit((Path<?>) expr);
     }
+
     @Override
     protected void visit(PSimple<?> expr) {
         visit((Path<?>) expr);
     }
+
     @Override
     protected void visit(PString expr) {
         visit((Path<?>) expr);
     }
+
     @Override
     protected void visit(PStringArray expr) {
         visit((PArray<?>) expr);
     }
+
     @Override
-	protected void visit(QBoolean q) {
-		visit((Quant<?>) q);
-	}
+    protected void visit(QBoolean q) {
+        visit((Quant<?>) q);
+    }
+
     @Override
-	protected void visit(QComparable<?> q) {
-		visit((Quant<?>) q);
-	}
+    protected void visit(QComparable<?> q) {
+        visit((Quant<?>) q);
+    }
+
     @Override
-	protected void visit(QNumber<?> q) {
-		visit((Quant<?>) q);
-	}
+    protected void visit(QNumber<?> q) {
+        visit((Quant<?>) q);
+    }
+
     @Override
-	protected void visit(QSimple<?> q) {
-		visit((Quant<?>) q);
-	}
-    
+    protected void visit(QSimple<?> q) {
+        visit((Quant<?>) q);
+    }
+
 }

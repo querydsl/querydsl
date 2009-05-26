@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 
 /**
  * Label provides
- *
+ * 
  * @author tiwe
  * @version $Id$
  */

@@ -17,20 +17,20 @@ import com.mysema.query.collections.AbstractQueryTest;
 import com.mysema.query.collections.JavaOps;
 import com.mysema.query.collections.eval.Evaluator;
 
-
 /**
  * QueryIteratorUtilsTest provides
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
-public class QueryIteratorUtilsTest extends AbstractQueryTest{
+public class QueryIteratorUtilsTest extends AbstractQueryTest {
 
     @Test
-    public void projectToMap(){
-        Evaluator ev = EvaluatorUtils.create(JavaOps.DEFAULT, Arrays.asList(cat), cat.name);
-        Map<?,?> map = QueryIteratorUtils.projectToMap(cats.iterator(), ev); 
-        for (Map.Entry<?, ?> e : map.entrySet()){
+    public void projectToMap() {
+        Evaluator ev = EvaluatorUtils.create(JavaOps.DEFAULT, Arrays
+                .asList(cat), cat.name);
+        Map<?, ?> map = QueryIteratorUtils.projectToMap(cats.iterator(), ev);
+        for (Map.Entry<?, ?> e : map.entrySet()) {
             assertTrue(e.getKey() instanceof String);
             assertTrue(e.getValue() instanceof Collection);
         }

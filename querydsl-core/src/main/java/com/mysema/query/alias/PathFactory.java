@@ -30,28 +30,28 @@ import com.mysema.query.types.path.PStringArray;
  */
 interface PathFactory {
 
-	<D> Expr<D> createAny(D arg);
+    <D> Expr<D> createAny(D arg);
 
-	PBoolean createBoolean(Boolean arg);
+    PBoolean createBoolean(Boolean arg);
 
-	PBooleanArray createBooleanArray(Boolean[] args);
+    PBooleanArray createBooleanArray(Boolean[] args);
 
-	<D extends Number & Comparable<?>> PNumber<D> createNumber(D arg);
+    <D extends Number & Comparable<?>> PNumber<D> createNumber(D arg);
 
-	<D extends Comparable<?>> PComparable<D> createComparable(D arg);
+    <D extends Comparable<?>> PComparable<D> createComparable(D arg);
 
-	<D> PEntity<D> createEntity(D arg);
+    <D> PEntity<D> createEntity(D arg);
 
-	<D> PEntityList<D> createEntityList(List<D> arg);
+    <D> PEntityList<D> createEntityList(List<D> arg);
 
-	<K, V> PEntityMap<K, V> createEntityMap(Map<K, V> arg);
+    <K, V> PEntityMap<K, V> createEntityMap(Map<K, V> arg);
 
-	<D> PEntityCollection<D> createEntityCollection(Collection<D> arg);
+    <D> PEntityCollection<D> createEntityCollection(Collection<D> arg);
 
-	<D extends Comparable<?>> PComparableArray<D> createComparableArray(D[] args);
+    <D extends Comparable<?>> PComparableArray<D> createComparableArray(D[] args);
 
-	PString createString(String arg);
+    PString createString(String arg);
 
-	PStringArray createStringArray(String[] args);
+    PStringArray createStringArray(String[] args);
 
 }

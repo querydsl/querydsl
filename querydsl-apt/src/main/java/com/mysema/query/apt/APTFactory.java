@@ -28,15 +28,14 @@ import com.sun.mirror.declaration.AnnotationTypeDeclaration;
  * @author tiwe
  * @version $Id$
  */
-public class APTFactory implements AnnotationProcessorFactory{
-    
-    private static final Collection<String> supportedAnnotations = Arrays.asList(
-            QD_ENTITY, QD_DTO,
-            JDO_ENTITY,
-            JPA_ENTITY, JPA_SUPERCLASS, JPA_EMBEDDABLE            
-    );
+public class APTFactory implements AnnotationProcessorFactory {
 
-    private static final Collection<String> supportedOptions = Collections.emptySet();
+    private static final Collection<String> supportedAnnotations = Arrays
+            .asList(QD_ENTITY, QD_DTO, JDO_ENTITY, JPA_ENTITY, JPA_SUPERCLASS,
+                    JPA_EMBEDDABLE);
+
+    private static final Collection<String> supportedOptions = Collections
+            .emptySet();
 
     public Collection<String> supportedAnnotationTypes() {
         return supportedAnnotations;
@@ -50,15 +49,15 @@ public class APTFactory implements AnnotationProcessorFactory{
             Set<AnnotationTypeDeclaration> atds,
             AnnotationProcessorEnvironment env) {
         String profile = getString(env.getOptions(), "profile", "jpa");
-        if ("jpa".equals(profile)){
+        if ("jpa".equals(profile)) {
             return new JPAProcessor(env);
-        }else if ("jdo".equals(profile)){
-        	return new JDOProcessor(env);
-        }else if ("querydsl".equals(profile)){
-            return new QuerydslProcessor(env);                       
-        }else{
+        } else if ("jdo".equals(profile)) {
+            return new JDOProcessor(env);
+        } else if ("querydsl".equals(profile)) {
+            return new QuerydslProcessor(env);
+        } else {
             throw new IllegalArgumentException("Unknown profile " + profile);
-        }          
+        }
     }
 
 }

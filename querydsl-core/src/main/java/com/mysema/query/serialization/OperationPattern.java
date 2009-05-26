@@ -12,46 +12,46 @@ import com.mysema.commons.lang.Assert;
 
 /**
  * PatternElement provides
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
 // NOTE : work in progress
 public class OperationPattern {
-    
+
     private final String pattern;
-    
+
     private final List<Element> elements = new ArrayList<Element>();
-    
-    public OperationPattern(String pattern){
+
+    public OperationPattern(String pattern) {
         this.pattern = Assert.notNull(pattern);
     }
-    
-    public int hashCode(){
+
+    public int hashCode() {
         return pattern.hashCode();
     }
-    
-    public boolean equals(Object o){
-        if (o == this){
+
+    public boolean equals(Object o) {
+        if (o == this) {
             return true;
-        }else if (o instanceof OperationPattern){
-            return ((OperationPattern)o).pattern.equals(pattern);
-        }else{
+        } else if (o instanceof OperationPattern) {
+            return ((OperationPattern) o).pattern.equals(pattern);
+        } else {
             return false;
         }
     }
-    
-    public class Element{
-        
+
+    public class Element {
+
         private final int index;
-        
+
         private final String text;
-        
-        public Element(int index, String text){
+
+        public Element(int index, String text) {
             this.index = index;
-            this.text = text;            
+            this.text = text;
         }
-        
+
         public int getIndex() {
             return index;
         }
@@ -59,6 +59,6 @@ public class OperationPattern {
         public String getText() {
             return text;
         }
-        
+
     }
 }

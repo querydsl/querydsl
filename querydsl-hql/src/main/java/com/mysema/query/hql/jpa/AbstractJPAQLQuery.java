@@ -23,14 +23,16 @@ import com.mysema.query.types.expr.Expr;
 
 /**
  * AbstractJpaqlQuery provides
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
-public class AbstractJPAQLQuery<SubType extends AbstractJPAQLQuery<SubType>> extends HQLQueryBase<SubType>{
-    
-    private static final Logger logger = LoggerFactory.getLogger(JPAQLQuery.class);
-    
+public class AbstractJPAQLQuery<SubType extends AbstractJPAQLQuery<SubType>>
+        extends HQLQueryBase<SubType> {
+
+    private static final Logger logger = LoggerFactory
+            .getLogger(JPAQLQuery.class);
+
     private final EntityManager em;
 
     public AbstractJPAQLQuery(EntityManager em) {
@@ -41,40 +43,40 @@ public class AbstractJPAQLQuery<SubType extends AbstractJPAQLQuery<SubType>> ext
         super(ops);
         this.em = em;
     }
-    
+
     private Query createQuery(String queryString, QueryModifiers modifiers) {
         Query query = em.createQuery(queryString);
-        setConstants(query, getConstants());        
-        if (modifiers != null){
-        	if (modifiers.getLimit() != null){
-        		query.setMaxResults(modifiers.getLimit().intValue());
-        	}
-            if (modifiers.getOffset() != null){
-            	query.setFirstResult(modifiers.getOffset().intValue());	
+        setConstants(query, getConstants());
+        if (modifiers != null) {
+            if (modifiers.getLimit() != null) {
+                query.setMaxResults(modifiers.getLimit().intValue());
             }
-        }  
+            if (modifiers.getOffset() != null) {
+                query.setFirstResult(modifiers.getOffset().intValue());
+            }
+        }
         return query;
     }
-        
+
     public static void setConstants(Query query, List<Object> constants) {
-        for (int i=0; i < constants.size(); i++){
-            String key = "a"+(i+1);
-            Object val = constants.get(i);            
-            query.setParameter(key,val);
-        }        
+        for (int i = 0; i < constants.size(); i++) {
+            String key = "a" + (i + 1);
+            Object val = constants.get(i);
+            query.setParameter(key, val);
+        }
     }
 
     @SuppressWarnings("unchecked")
-    public <RT> List<RT> list(Expr<RT> expr){
+    public <RT> List<RT> list(Expr<RT> expr) {
         addToProjection(expr);
         String queryString = toString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, getMetadata().getModifiers());
         return query.getResultList();
     }
-    
+
     @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>...rest){
+    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
         addToProjection(expr1, expr2);
         addToProjection(rest);
         String queryString = toString();
@@ -85,10 +87,10 @@ public class AbstractJPAQLQuery<SubType extends AbstractJPAQLQuery<SubType>> ext
 
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
         addToProjection(expr);
-        Query query = createQuery(toCountRowsString(),null);
+        Query query = createQuery(toCountRowsString(), null);
         long total = (Long) query.getSingleResult();
         if (total > 0) {
-        	QueryModifiers modifiers = getMetadata().getModifiers();
+            QueryModifiers modifiers = getMetadata().getModifiers();
             String queryString = toString();
             logger.debug("query : {}", queryString);
             query = createQuery(queryString, modifiers);
@@ -99,7 +101,7 @@ public class AbstractJPAQLQuery<SubType extends AbstractJPAQLQuery<SubType>> ext
             return SearchResults.emptyResults();
         }
     }
-    
+
     public long count() {
         return uniqueResult(HQLGrammar.count());
     }

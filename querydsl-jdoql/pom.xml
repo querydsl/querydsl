@@ -70,20 +70,25 @@
         <artifactId>maven-apt-plugin</artifactId>
         <version>1.0.15</version>
         <executions>
-          <!-- creates Querydsl query types for Product and Book -->
           <execution>
             <phase>generate-sources</phase>
             <goals>
+              <!-- replace with 
+                <goal>execute</goal> in external usage -->
               <goal>testExecute</goal>
             </goals>
             <configuration>
               <aptSourceRoots>
+                <!--  replace with 
+                  <aptSourceRoot>src/main/java</aptSourceRoot> in external usage -->
                 <aptSourceRoot>src/test/java</aptSourceRoot>
               </aptSourceRoots>
               <force>true</force>
               <fork>true</fork>
               <A>-Aprofile=jdo</A>
               <factory>com.mysema.query.apt.APTFactory</factory>
+              <!-- replace with 
+                <generated>target/generated-sources/java</generated> in external usage -->
               <testGenerated>target/generated-test-sources/java</testGenerated>
               <nocompile>true</nocompile>
               <showWarnings>true</showWarnings>
@@ -93,5 +98,5 @@
       </plugin>
     </plugins>
   </build>
-
+  
 </project>

@@ -13,7 +13,7 @@ import org.hibernate.cfg.ImprovedNamingStrategy;
  * @author tiwe
  * @version $Id$
  */
-public class CustomNamingStrategy extends ImprovedNamingStrategy{
+public class CustomNamingStrategy extends ImprovedNamingStrategy {
     /**
      * 
      */
@@ -22,11 +22,13 @@ public class CustomNamingStrategy extends ImprovedNamingStrategy{
     public String classToTableName(String className) {
         return super.classToTableName(className).replace('$', '_');
     }
+
     public String tableName(String tableName) {
         return super.tableName(tableName).replace("$", "");
-    }    
+    }
+
     public String columnName(String columnName) {
         return super.columnName(columnName).replace("$", "");
     }
-    
+
 }

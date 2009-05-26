@@ -60,30 +60,25 @@ public class QueryOrderingTest extends AbstractJDOTest {
                     .substring(1));
         }
     }
-    
+
     @Test
-    public void paging(){
-        assertEquals(
-            Arrays.asList("A0", "A1"), 
-            query().from(product).orderBy(product.name.asc()).limit(2).list(product.name));
-        assertEquals(
-            Arrays.asList("A2", "A3", "A4"), 
-            query().from(product).orderBy(product.name.asc()).offset(2).limit(3).list(product.name));        
-        assertEquals(
-            Arrays.asList("C9", "C8"), 
-            query().from(product).orderBy(product.name.desc()).limit(2).list(product.name));
+    public void paging() {
+        assertEquals(Arrays.asList("A0", "A1"), query().from(product).orderBy(
+                product.name.asc()).limit(2).list(product.name));
+        assertEquals(Arrays.asList("A2", "A3", "A4"), query().from(product)
+                .orderBy(product.name.asc()).offset(2).limit(3).list(
+                        product.name));
+        assertEquals(Arrays.asList("C9", "C8"), query().from(product).orderBy(
+                product.name.desc()).limit(2).list(product.name));
     }
 
     @Test
     public void searchResults() {
-        SearchResults<String> results = query()
-            .from(product)
-            .orderBy(product.name.asc())
-            .limit(2)
-            .listResults(product.name);
-        assertEquals(Arrays.asList("A0","A1"), results.getResults());
+        SearchResults<String> results = query().from(product).orderBy(
+                product.name.asc()).limit(2).listResults(product.name);
+        assertEquals(Arrays.asList("A0", "A1"), results.getResults());
         assertEquals(30, results.getTotal());
-        
+
     }
 
     @Test

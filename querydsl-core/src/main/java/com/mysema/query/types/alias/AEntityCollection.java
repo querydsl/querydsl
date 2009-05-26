@@ -13,14 +13,21 @@ import com.mysema.query.types.path.Path;
 /**
  * Entity collection as alias
  */
-public class AEntityCollection<D> extends EEntity<D> implements AToPath{
+public class AEntityCollection<D> extends EEntity<D> implements AToPath {
     private final Expr<?> from;
     private final Path<?> to;
+
     public AEntityCollection(PEntityCollection<D> from, Path<D> to) {
         super(null);
         this.from = from;
         this.to = to;
     }
-    public Expr<?> getFrom() {return from;}
-    public  Path<?> getTo() {return to;}        
+
+    public Expr<?> getFrom() {
+        return from;
+    }
+
+    public Path<?> getTo() {
+        return to;
+    }
 }

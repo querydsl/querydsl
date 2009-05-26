@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 
 /**
  * ResourceCheck provides
- *
+ * 
  * @author tiwe
  * @version $Id$
  */

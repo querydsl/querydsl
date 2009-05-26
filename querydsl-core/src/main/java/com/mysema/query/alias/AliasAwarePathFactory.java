@@ -23,90 +23,95 @@ import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PStringArray;
 
 /**
- * AliasAwareExprFactory extends the SimpleExprFactory to return thread bound alias expressions, when present
- *
+ * AliasAwareExprFactory extends the SimpleExprFactory to return thread bound
+ * alias expressions, when present
+ * 
  * @author tiwe
  * @version $Id$
  */
-class AliasAwarePathFactory extends SimplePathFactory{
-    
+class AliasAwarePathFactory extends SimplePathFactory {
+
     private final AliasFactory aliasFactory;
-    
-    public AliasAwarePathFactory(AliasFactory aliasFactory){
+
+    public AliasAwarePathFactory(AliasFactory aliasFactory) {
         this.aliasFactory = aliasFactory;
     }
-    
+
     @SuppressWarnings("unchecked")
-    public <D> Expr<D> createAny(D arg){
-        Expr<D> current = (Expr<D>)aliasFactory.getCurrentAndReset();
-        if (current != null){
+    public <D> Expr<D> createAny(D arg) {
+        Expr<D> current = (Expr<D>) aliasFactory.getCurrentAndReset();
+        if (current != null) {
             return current;
-        }else if (arg instanceof ManagedObject){
-            return (Expr<D>)((ManagedObject)arg).__mappedPath();
-        }else{
+        } else if (arg instanceof ManagedObject) {
+            return (Expr<D>) ((ManagedObject) arg).__mappedPath();
+        } else {
             throw new IllegalArgumentException("No path mapped to " + arg);
-        }        
+        }
     }
-    
-    public PBoolean createBoolean(Boolean arg){
-        PBoolean rv = aliasFactory.<PBoolean>getCurrentAndReset();
+
+    public PBoolean createBoolean(Boolean arg) {
+        PBoolean rv = aliasFactory.<PBoolean> getCurrentAndReset();
         return rv != null ? rv : super.createBoolean(arg);
     }
-    
-    public PBooleanArray createBooleanArray(Boolean[] args){
-        PBooleanArray rv = aliasFactory.<PBooleanArray>getCurrentAndReset();
+
+    public PBooleanArray createBooleanArray(Boolean[] args) {
+        PBooleanArray rv = aliasFactory.<PBooleanArray> getCurrentAndReset();
         return rv != null ? rv : super.createBooleanArray(args);
     }
-    
+
     public <D> PEntityCollection<D> createEntityCollection(Collection<D> arg) {
-        PEntityCollection<D> rv = aliasFactory.<PEntityCollection<D>>getCurrentAndReset();
+        PEntityCollection<D> rv = aliasFactory
+                .<PEntityCollection<D>> getCurrentAndReset();
         return rv != null ? rv : super.createEntityCollection(arg);
     }
-    
-    public <D extends Comparable<?>> PComparable<D> createComparable(D arg){
-        PComparable<D> rv = aliasFactory.<PComparable<D>>getCurrentAndReset();
+
+    public <D extends Comparable<?>> PComparable<D> createComparable(D arg) {
+        PComparable<D> rv = aliasFactory.<PComparable<D>> getCurrentAndReset();
         return rv != null ? rv : super.createComparable(arg);
     }
-    
-    public <D extends Number & Comparable<?>> PNumber<D> createNumber(D arg){
-        PNumber<D> rv = aliasFactory.<PNumber<D>>getCurrentAndReset();
+
+    public <D extends Number & Comparable<?>> PNumber<D> createNumber(D arg) {
+        PNumber<D> rv = aliasFactory.<PNumber<D>> getCurrentAndReset();
         return rv != null ? rv : super.createNumber(arg);
     }
-    
+
     @SuppressWarnings("unchecked")
-    public <D> PEntity<D> createEntity(D arg){
-        PEntity<D> rv = aliasFactory.<PEntity<D>>getCurrentAndReset();
-        if (rv != null){
+    public <D> PEntity<D> createEntity(D arg) {
+        PEntity<D> rv = aliasFactory.<PEntity<D>> getCurrentAndReset();
+        if (rv != null) {
             return rv;
-        }else if (arg instanceof ManagedObject){
-            return (PEntity<D>)((ManagedObject)arg).__mappedPath(); 
-        }else{
+        } else if (arg instanceof ManagedObject) {
+            return (PEntity<D>) ((ManagedObject) arg).__mappedPath();
+        } else {
             return super.createEntity(arg);
-        }                 
+        }
     }
-    
-    public <D extends Comparable<?>> PComparableArray<D> createComparableArray(D[] args){
-        PComparableArray<D> rv = aliasFactory.<PComparableArray<D>>getCurrentAndReset();
+
+    public <D extends Comparable<?>> PComparableArray<D> createComparableArray(
+            D[] args) {
+        PComparableArray<D> rv = aliasFactory
+                .<PComparableArray<D>> getCurrentAndReset();
         return rv != null ? rv : super.createComparableArray(args);
     }
 
-    public <K,V> PEntityMap<K,V> createEntityMap(Map<K,V> arg) {
-        PEntityMap<K,V> rv = aliasFactory.<PEntityMap<K,V>>getCurrentAndReset();
+    public <K, V> PEntityMap<K, V> createEntityMap(Map<K, V> arg) {
+        PEntityMap<K, V> rv = aliasFactory
+                .<PEntityMap<K, V>> getCurrentAndReset();
         return rv != null ? rv : super.createEntityMap(arg);
     }
-    
+
     public <D> PEntityList<D> createEntityList(List<D> arg) {
-        PEntityList<D> rv = aliasFactory.<PEntityList<D>>getCurrentAndReset();
+        PEntityList<D> rv = aliasFactory.<PEntityList<D>> getCurrentAndReset();
         return rv != null ? rv : super.createEntityList(arg);
     }
-    
-    public PString createString(String arg){
-        PString rv = aliasFactory.<PString>getCurrentAndReset();
+
+    public PString createString(String arg) {
+        PString rv = aliasFactory.<PString> getCurrentAndReset();
         return rv != null ? rv : super.createString(arg);
     }
-    
-    public PStringArray createStringArray(String[] args){
-        PStringArray rv = aliasFactory.<PStringArray>getCurrentAndReset();
+
+    public PStringArray createStringArray(String[] args) {
+        PStringArray rv = aliasFactory.<PStringArray> getCurrentAndReset();
         return rv != null ? rv : super.createStringArray(args);
     }
 

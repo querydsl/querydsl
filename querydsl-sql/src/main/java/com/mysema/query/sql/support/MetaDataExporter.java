@@ -25,101 +25,108 @@ import com.mysema.query.apt.model.Type;
 
 /**
  * MetadataExporter exports JDBC metadata to Querydsl query types
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
 public class MetaDataExporter {
-    
-    private Map<Integer,Class<?>> sqlToJavaType = new HashMap<Integer,Class<?>>();
-   
+
+    private Map<Integer, Class<?>> sqlToJavaType = new HashMap<Integer, Class<?>>();
+
     {
         // BOOLEAN
-        sqlToJavaType.put( Types.BIT, Boolean.class );
-        sqlToJavaType.put( Types.BOOLEAN, Boolean.class);
-        
+        sqlToJavaType.put(Types.BIT, Boolean.class);
+        sqlToJavaType.put(Types.BOOLEAN, Boolean.class);
+
         // NUMERIC
-        sqlToJavaType.put( Types.BIGINT, Long.class );
-        sqlToJavaType.put( Types.DOUBLE, Double.class );        
-        sqlToJavaType.put( Types.INTEGER, Integer.class );
-        sqlToJavaType.put( Types.SMALLINT, Short.class );
-        sqlToJavaType.put( Types.TINYINT, Byte.class );
-        sqlToJavaType.put( Types.FLOAT, Float.class );
-        sqlToJavaType.put( Types.REAL, Float.class );
-        sqlToJavaType.put( Types.NUMERIC, BigDecimal.class );
-        sqlToJavaType.put( Types.DECIMAL, BigDecimal.class );       
-        
+        sqlToJavaType.put(Types.BIGINT, Long.class);
+        sqlToJavaType.put(Types.DOUBLE, Double.class);
+        sqlToJavaType.put(Types.INTEGER, Integer.class);
+        sqlToJavaType.put(Types.SMALLINT, Short.class);
+        sqlToJavaType.put(Types.TINYINT, Byte.class);
+        sqlToJavaType.put(Types.FLOAT, Float.class);
+        sqlToJavaType.put(Types.REAL, Float.class);
+        sqlToJavaType.put(Types.NUMERIC, BigDecimal.class);
+        sqlToJavaType.put(Types.DECIMAL, BigDecimal.class);
+
         // DATE and TIME
-        sqlToJavaType.put( Types.DATE, java.util.Date.class );
-        sqlToJavaType.put( Types.TIME, Time.class );
-        sqlToJavaType.put( Types.TIMESTAMP, java.util.Date.class );
-        
+        sqlToJavaType.put(Types.DATE, java.util.Date.class);
+        sqlToJavaType.put(Types.TIME, Time.class);
+        sqlToJavaType.put(Types.TIMESTAMP, java.util.Date.class);
+
         // TEXT
-        sqlToJavaType.put( Types.CHAR, Character.class );        
-        sqlToJavaType.put( Types.CLOB, String.class );
-        sqlToJavaType.put( Types.VARCHAR, String.class );
-        sqlToJavaType.put( Types.LONGVARCHAR, String.class );
-        
+        sqlToJavaType.put(Types.CHAR, Character.class);
+        sqlToJavaType.put(Types.CLOB, String.class);
+        sqlToJavaType.put(Types.VARCHAR, String.class);
+        sqlToJavaType.put(Types.LONGVARCHAR, String.class);
+
         // OTHER
-        sqlToJavaType.put( Types.NULL, Object.class);
-        sqlToJavaType.put( Types.OTHER, Object.class);
-        sqlToJavaType.put( Types.REAL, Object.class);
-        sqlToJavaType.put( Types.REF, Object.class);
-        sqlToJavaType.put( Types.STRUCT, Object.class);
-        sqlToJavaType.put( Types.JAVA_OBJECT, Object.class);
-        sqlToJavaType.put( Types.BINARY, Object.class);
-        sqlToJavaType.put( Types.LONGVARBINARY, Object.class);
-        sqlToJavaType.put( Types.VARBINARY, Object.class );
-        sqlToJavaType.put( Types.BLOB, Object.class );        
-                
+        sqlToJavaType.put(Types.NULL, Object.class);
+        sqlToJavaType.put(Types.OTHER, Object.class);
+        sqlToJavaType.put(Types.REAL, Object.class);
+        sqlToJavaType.put(Types.REF, Object.class);
+        sqlToJavaType.put(Types.STRUCT, Object.class);
+        sqlToJavaType.put(Types.JAVA_OBJECT, Object.class);
+        sqlToJavaType.put(Types.BINARY, Object.class);
+        sqlToJavaType.put(Types.LONGVARBINARY, Object.class);
+        sqlToJavaType.put(Types.VARBINARY, Object.class);
+        sqlToJavaType.put(Types.BLOB, Object.class);
+
     }
-    
+
     private boolean camelCase;
-    
+
     private String namePrefix = "", targetFolder, packageName;
-    
+
     private String schemaPattern, tableNamePattern;
-    
+
     private FreeMarkerSerializer serializer = GeneralProcessor.DOMAIN_OUTER_TMPL;
-    
-    public void export(DatabaseMetaData md) throws SQLException{
-        if (targetFolder == null) throw new IllegalArgumentException("targetFolder needs to be set");
-        if (packageName == null) throw new IllegalArgumentException("packageName needs to be set");
-        
-        ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
-        while (tables.next()){
+
+    public void export(DatabaseMetaData md) throws SQLException {
+        if (targetFolder == null)
+            throw new IllegalArgumentException("targetFolder needs to be set");
+        if (packageName == null)
+            throw new IllegalArgumentException("packageName needs to be set");
+
+        ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern,
+                null);
+        while (tables.next()) {
             String tableName = tables.getString(3);
-//            if (camelCase){
-//                tableName = toCamelCase(tableName, true);
-//            }
-            Type type = new Type(null, "java.lang", "java.lang.Object", tableName);
-            ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
-            while (columns.next()){
+            // if (camelCase){
+            // tableName = toCamelCase(tableName, true);
+            // }
+            Type type = new Type(null, "java.lang", "java.lang.Object",
+                    tableName);
+            ResultSet columns = md.getColumns(null, schemaPattern, tables
+                    .getString(3), null);
+            while (columns.next()) {
                 String _name = columns.getString(4);
-                if (camelCase){
-                    _name = toCamelCase(_name,false);
+                if (camelCase) {
+                    _name = toCamelCase(_name, false);
                 }
                 Class<?> _class = sqlToJavaType.get(columns.getInt(5));
-                if (_class == null) throw new RuntimeException("No java type for " + columns.getString(6));
+                if (_class == null)
+                    throw new RuntimeException("No java type for "
+                            + columns.getString(6));
                 FieldType _type;
-                if (_class.equals(Boolean.class) || _class.equals(boolean.class)){
+                if (_class.equals(Boolean.class)
+                        || _class.equals(boolean.class)) {
                     _type = FieldType.BOOLEAN;
-                }else if (_class.equals(String.class)){
+                } else if (_class.equals(String.class)) {
                     _type = FieldType.STRING;
-                }else{
+                } else {
                     _type = FieldType.COMPARABLE;
                 }
-                type.addField(new Field(
-                        _name, columns.getString(4), null, 
-                        _class.getPackage().getName(), _class.getName(), _class.getSimpleName(),
-                        _type));
+                type.addField(new Field(_name, columns.getString(4), null,
+                        _class.getPackage().getName(), _class.getName(), _class
+                                .getSimpleName(), _type));
             }
             columns.close();
             serialize(type);
         }
         tables.close();
     }
-    
+
     private void serialize(Type type) {
         // populate model
         Map<String, Object> model = new HashMap<String, Object>();
@@ -132,14 +139,15 @@ public class MetaDataExporter {
         try {
             String path = packageName.replace('.', '/') + "/" + namePrefix
                     + type.getSimpleName() + ".java";
-            serializer.serialize(model, writerFor(new File(targetFolder, path)));
+            serializer
+                    .serialize(model, writerFor(new File(targetFolder, path)));
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
 
     public void setCamelCase(boolean b) {
-        this.camelCase = b;        
+        this.camelCase = b;
     }
 
     public void setNamePrefix(String namePrefix) {
@@ -165,16 +173,18 @@ public class MetaDataExporter {
     private String toCamelCase(String name, boolean firstCapitalized) {
         StringBuilder builder = new StringBuilder(name.length());
         boolean caps = firstCapitalized;
-        for (char c : name.toLowerCase().toCharArray()){
-            if (c == '_'){
-                caps = true; continue;
-            }else if (caps){
-                caps = false; builder.append(Character.toUpperCase(c));
-            }else{
+        for (char c : name.toLowerCase().toCharArray()) {
+            if (c == '_') {
+                caps = true;
+                continue;
+            } else if (caps) {
+                caps = false;
+                builder.append(Character.toUpperCase(c));
+            } else {
                 builder.append(c);
             }
         }
         return builder.toString();
     }
-    
+
 }

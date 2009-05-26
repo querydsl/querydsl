@@ -7,12 +7,12 @@ package com.mysema.query.collections.eval;
 
 /**
  * Evaluator defines an interface for evaluating Querydsl expressions
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
 public interface Evaluator {
 
     <T> T evaluate(Object... args);
-    
+
 }

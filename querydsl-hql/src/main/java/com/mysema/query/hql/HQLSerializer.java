@@ -34,187 +34,203 @@ import com.mysema.query.types.quant.QNumber;
 import com.mysema.query.types.quant.QSimple;
 import com.mysema.query.types.quant.Quant;
 
-
 /**
  * HqlSerializer serializes querydsl expressions into HQL syntax.
  * 
  * @author tiwe
  * @version $Id$
  */
-public class HQLSerializer extends BaseSerializer<HQLSerializer>{
-    
+public class HQLSerializer extends BaseSerializer<HQLSerializer> {
+
     private boolean wrapElements = false;
-        
-    public HQLSerializer(HQLOps ops){
+
+    public HQLSerializer(HQLOps ops) {
         super(ops);
     }
-           
-    public void serialize(QueryMetadata<HQLJoinMeta> metadata, boolean forCountRow){
+
+    public void serialize(QueryMetadata<HQLJoinMeta> metadata,
+            boolean forCountRow) {
         List<? extends Expr<?>> select = metadata.getProjection();
         List<JoinExpression<HQLJoinMeta>> joins = metadata.getJoins();
         EBoolean where = metadata.getWhere();
         List<? extends Expr<?>> groupBy = metadata.getGroupBy();
         EBoolean having = metadata.getHaving();
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
-        
-         if (forCountRow){
+
+        if (forCountRow) {
             append("select count(*)\n");
-        }else if (!select.isEmpty()){
-            if (!metadata.isDistinct()){
+        } else if (!select.isEmpty()) {
+            if (!metadata.isDistinct()) {
                 append("select ");
-            }else{
-                append("select distinct ");    
-            }            
+            } else {
+                append("select distinct ");
+            }
             handle(", ", select).append("\n");
         }
         append("from ");
-        for (int i=0; i < joins.size(); i++){
-            JoinExpression<HQLJoinMeta> je = joins.get(i);            
-            if (i > 0){
+        for (int i = 0; i < joins.size(); i++) {
+            JoinExpression<HQLJoinMeta> je = joins.get(i);
+            if (i > 0) {
                 String sep = ", ";
-                    switch(je.getType()){
-                    case FULLJOIN:  sep = "\n  full join "; break;
-                    case INNERJOIN: sep = "\n  inner join "; break;
-                    case JOIN:      sep = "\n  join "; break;
-                    case LEFTJOIN:  sep = "\n  left join "; break;                                
-                    }    
+                switch (je.getType()) {
+                case FULLJOIN:
+                    sep = "\n  full join ";
+                    break;
+                case INNERJOIN:
+                    sep = "\n  inner join ";
+                    break;
+                case JOIN:
+                    sep = "\n  join ";
+                    break;
+                case LEFTJOIN:
+                    sep = "\n  left join ";
+                    break;
+                }
                 append(sep);
             }
-            if (je.getMetadata() != null){
-                switch(je.getMetadata()){
-                case FETCH: if (!forCountRow) append("fetch "); break;
+            if (je.getMetadata() != null) {
+                switch (je.getMetadata()) {
+                case FETCH:
+                    if (!forCountRow)
+                        append("fetch ");
+                    break;
                 }
             }
-            
+
             // type specifier
-            if (je.getTarget() instanceof PEntity){
-                PEntity<?> pe = (PEntity<?>)je.getTarget();
-                if (pe.getMetadata().getParent() == null){
+            if (je.getTarget() instanceof PEntity) {
+                PEntity<?> pe = (PEntity<?>) je.getTarget();
+                if (pe.getMetadata().getParent() == null) {
                     String pn = pe.getType().getPackage().getName();
-                    String typeName = pe.getType().getName().substring(pn.length()+1); 
-                    append(typeName).append(" ");    
-                }                
-            }            
+                    String typeName = pe.getType().getName().substring(
+                            pn.length() + 1);
+                    append(typeName).append(" ");
+                }
+            }
             handle(je.getTarget());
-            if (je.getCondition() != null){
+            if (je.getCondition() != null) {
                 append(" with ").handle(je.getCondition());
             }
         }
-        
-        if (where != null){            
+
+        if (where != null) {
             append("\nwhere ").handle(where);
         }
-        if (!groupBy.isEmpty()){
-            append("\ngroup by ").handle(", ",groupBy);
+        if (!groupBy.isEmpty()) {
+            append("\ngroup by ").handle(", ", groupBy);
         }
-        if (having != null){
+        if (having != null) {
             if (groupBy.isEmpty()) {
-                throw new IllegalArgumentException("having, but not groupBy was given");
-            }                
+                throw new IllegalArgumentException(
+                        "having, but not groupBy was given");
+            }
             append("\nhaving ").handle(having);
         }
-        if (!orderBy.isEmpty() && !forCountRow){
+        if (!orderBy.isEmpty() && !forCountRow) {
             append("\norder by ");
             boolean first = true;
-            for (OrderSpecifier<?> os : orderBy){            
-                if (!first) builder.append(", ");
+            for (OrderSpecifier<?> os : orderBy) {
+                if (!first)
+                    builder.append(", ");
                 handle(os.getTarget());
                 append(os.getOrder() == Order.ASC ? " asc" : " desc");
                 first = false;
             }
         }
     }
-    
+
     @Override
     protected void visit(ASimple<?> expr) {
-        handle(expr.getFrom()).append(" as ").append(expr.getTo());        
+        handle(expr.getFrom()).append(" as ").append(expr.getTo());
     }
-    
+
     @Override
     protected void visit(AToPath expr) {
         handle(expr.getFrom()).append(" as ").visit(expr.getTo());
     }
-    
+
     protected void visit(CountExpression expr) {
-        if (expr.getTarget() == null){
-            append("count(*)");    
-        }else{
+        if (expr.getTarget() == null) {
+            append("count(*)");
+        } else {
             append("count(");
             boolean old = wrapElements;
             wrapElements = true;
             handle(expr.getTarget());
             wrapElements = old;
             append(")");
-        }                
-    }
-    
-//    protected void visit(DistinctPath<?> expr){
-//        append("distinct ").visit(expr.getPath());
-//    }
-    
-    @Override
-    protected void visit(EConstant<?> expr) {
-        boolean wrap = expr.getConstant().getClass().isArray();
-        if (wrap){
-        	append("(");
-        }
-        append(":a");
-        if (!constants.contains(expr.getConstant())){
-            constants.add(expr.getConstant());
-            append(Integer.toString(constants.size()));
-        }else{
-            append(Integer.toString(constants.indexOf(expr.getConstant())+1));
-        }        
-        if (wrap){
-        	append(")");
-        }
-    }
-        
-    @Override
-    protected void visit(PCollection<?> expr){
-        // only wrap a PathCollection, if it the pathType is PROPERTY
-        boolean wrap = wrapElements && expr.getMetadata().getPathType().equals(PROPERTY);
-        if (wrap){
-        	append("elements(");
-        }
-        visit((Path<?>)expr);
-        if (wrap){
-        	append(")");
         }
     }
 
-    protected void visit(SubQuery<HQLJoinMeta,?> query) {
+    // protected void visit(DistinctPath<?> expr){
+    // append("distinct ").visit(expr.getPath());
+    // }
+
+    @Override
+    protected void visit(EConstant<?> expr) {
+        boolean wrap = expr.getConstant().getClass().isArray();
+        if (wrap) {
+            append("(");
+        }
+        append(":a");
+        if (!constants.contains(expr.getConstant())) {
+            constants.add(expr.getConstant());
+            append(Integer.toString(constants.size()));
+        } else {
+            append(Integer.toString(constants.indexOf(expr.getConstant()) + 1));
+        }
+        if (wrap) {
+            append(")");
+        }
+    }
+
+    @Override
+    protected void visit(PCollection<?> expr) {
+        // only wrap a PathCollection, if it the pathType is PROPERTY
+        boolean wrap = wrapElements
+                && expr.getMetadata().getPathType().equals(PROPERTY);
+        if (wrap) {
+            append("elements(");
+        }
+        visit((Path<?>) expr);
+        if (wrap) {
+            append(")");
+        }
+    }
+
+    protected void visit(SubQuery<HQLJoinMeta, ?> query) {
         append("(");
         serialize(query.getQuery().getMetadata(), false);
         append(")");
     }
-    
+
     private void visitCast(Op<?> operator, Expr<?> source, Class<?> targetType) {
         append("cast(").handle(source);
         append(" as ");
         append(targetType.getSimpleName().toLowerCase()).append(")");
-        
+
     }
 
-    protected void visitOperation(Class<?> type, Op<?> operator, List<Expr<?>> args) {    
+    protected void visitOperation(Class<?> type, Op<?> operator,
+            List<Expr<?>> args) {
         boolean old = wrapElements;
-        wrapElements = HQLOps.wrapCollectionsForOp.contains(operator);    
+        wrapElements = HQLOps.wrapCollectionsForOp.contains(operator);
         // 
-        if (operator.equals(Ops.ISTYPEOF)){
+        if (operator.equals(Ops.ISTYPEOF)) {
             args = new ArrayList<Expr<?>>(args);
-            args.set(1, new EConstant<String>( ((Class<?>)((EConstant<?>)args.get(1)).getConstant()).getName()));
+            args.set(1, new EConstant<String>(((Class<?>) ((EConstant<?>) args
+                    .get(1)).getConstant()).getName()));
             super.visitOperation(type, operator, args);
-        }else if (operator.equals(Ops.STRING_CAST)){
+        } else if (operator.equals(Ops.STRING_CAST)) {
             visitCast(operator, args.get(0), String.class);
-        }else if (operator.equals(Ops.NUMCAST)){
-            visitCast(operator, args.get(0), (Class<?>) ((EConstant<?>)args.get(1)).getConstant());
-        }else{
-            super.visitOperation(type, operator, args);    
-        }        
+        } else if (operator.equals(Ops.NUMCAST)) {
+            visitCast(operator, args.get(0), (Class<?>) ((EConstant<?>) args
+                    .get(1)).getConstant());
+        } else {
+            super.visitOperation(type, operator, args);
+        }
         //
         wrapElements = old;
     }
-    
-    
 
 }

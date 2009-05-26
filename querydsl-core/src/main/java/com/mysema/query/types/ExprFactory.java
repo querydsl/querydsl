@@ -7,7 +7,6 @@ package com.mysema.query.types;
 
 import com.mysema.query.types.expr.Expr;
 
-
 /**
  * ExprFactory provides
  * 
@@ -16,10 +15,10 @@ import com.mysema.query.types.expr.Expr;
  */
 public interface ExprFactory {
 
-	Expr<Integer> createConstant(int i);
+    Expr<Integer> createConstant(int i);
 
-	<A> Expr<Class<A>> createConstant(Class<A> obj);
+    <A> Expr<Class<A>> createConstant(Class<A> obj);
 
-	<A> Expr<A> createConstant(A obj);
+    <A> Expr<A> createConstant(A obj);
 
 }

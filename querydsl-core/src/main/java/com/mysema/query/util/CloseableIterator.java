@@ -10,10 +10,10 @@ import java.util.Iterator;
 
 /**
  * CloseableIterator provides
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
-public interface CloseableIterator<T> extends Iterator<T>,Closeable{
+public interface CloseableIterator<T> extends Iterator<T>, Closeable {
 
 }

@@ -16,16 +16,16 @@ import com.mysema.query.types.operation.Ops.Op;
  */
 public interface Quant<T> {
 
-	/**
-	 * 
-	 * @return
-	 */
-	Op<?> getOperator();
+    /**
+     * 
+     * @return
+     */
+    Op<?> getOperator();
 
-	/**
-	 * 
-	 * @return
-	 */
-	Expr<?> getTarget();
+    /**
+     * 
+     * @return
+     */
+    Expr<?> getTarget();
 
 }

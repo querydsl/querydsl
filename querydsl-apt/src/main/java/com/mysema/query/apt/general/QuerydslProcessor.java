@@ -12,7 +12,7 @@ import com.sun.mirror.declaration.MethodDeclaration;
 
 /**
  * QureydslProcessor provides Querydsl annotation handling support
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
@@ -21,10 +21,10 @@ public class QuerydslProcessor extends GeneralProcessor {
     public QuerydslProcessor(AnnotationProcessorEnvironment env) {
         super(env, null, QD_ENTITY, QD_DTO);
     }
-    
+
     @Override
-    protected DefaultEntityVisitor createEntityVisitor(){
-        return new DefaultEntityVisitor(){
+    protected DefaultEntityVisitor createEntityVisitor() {
+        return new DefaultEntityVisitor() {
             @Override
             public void visitMethodDeclaration(MethodDeclaration d) {
                 // skip property handling

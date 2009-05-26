@@ -15,10 +15,9 @@ import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
 
-
 /**
  * ColTypesTest provides
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
@@ -26,39 +25,39 @@ public class ColTypesTest {
 
     @Test
     @SuppressWarnings("unused")
-    public void testExtString(){        
+    public void testExtString() {
         Expr<Character> echar;
         EBoolean eboolean;
         EComparable<Integer> eint;
         EString estring;
-        
+
         EString str = MiniApi.$("it");
-        
-//      charAt(int)
-        assertTrue((echar = str.charAt(0)) != null);        
-//      contains(String)
+
+        // charAt(int)
+        assertTrue((echar = str.charAt(0)) != null);
+        // contains(String)
         assertTrue((eboolean = str.contains("")) != null);
-//      endsWith
+        // endsWith
         assertTrue((eboolean = str.endsWith("")) != null);
-//      equalsIgnoreCase(String)
+        // equalsIgnoreCase(String)
         assertTrue((eboolean = str.equalsIgnoreCase("")) != null);
-//      indexOf(String)
+        // indexOf(String)
         assertTrue((eint = str.indexOf("")) != null);
-//      indexOf(String,int)
-        assertTrue((eint = str.indexOf("",0)) != null);
-//      isEmpty
-//        assertTrue((eboolean = str.isEmpty()) != null);
-//      lastIndexOf(String)
+        // indexOf(String,int)
+        assertTrue((eint = str.indexOf("", 0)) != null);
+        // isEmpty
+        // assertTrue((eboolean = str.isEmpty()) != null);
+        // lastIndexOf(String)
         assertTrue((eint = str.lastIndexOf("")) != null);
-//      lastIndexOf(String,int)
-        assertTrue((eint = str.lastIndex("",0)) != null);
-//      length
+        // lastIndexOf(String,int)
+        assertTrue((eint = str.lastIndex("", 0)) != null);
+        // length
         assertTrue((eint = str.length()) != null);
-//      matches
-//        assertTrue((eboolean = str.matches("")) != null);
-//      startsWith
+        // matches
+        // assertTrue((eboolean = str.matches("")) != null);
+        // startsWith
         assertTrue((eboolean = str.startsWith("")) != null);
-//      trim
+        // trim
         assertTrue((estring = str.trim()) != null);
     }
 }

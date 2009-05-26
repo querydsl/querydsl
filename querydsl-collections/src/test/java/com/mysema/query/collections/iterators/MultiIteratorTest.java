@@ -49,13 +49,13 @@ public class MultiIteratorTest extends AbstractIteratorTest {
         @SuppressWarnings("unchecked")
         public <A> Iterator<A> getIterator(Expr<A> expr) {
             if (expr == int1)
-                return (Iterator<A>)list1.iterator();
+                return (Iterator<A>) list1.iterator();
             if (expr == int2)
-                return (Iterator<A>)list2.iterator();
+                return (Iterator<A>) list2.iterator();
             if (expr == int3)
-                return (Iterator<A>)list3.iterator();
+                return (Iterator<A>) list3.iterator();
             if (expr == int4)
-                return (Iterator<A>)list4.iterator();
+                return (Iterator<A>) list4.iterator();
             return null;
         }
 

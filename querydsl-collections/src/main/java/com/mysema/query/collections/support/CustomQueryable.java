@@ -21,57 +21,56 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
 /**
- * CustomQueryable a ColQuery like interface for querying on custom IteratorSource sources
- *
+ * CustomQueryable a ColQuery like interface for querying on custom
+ * IteratorSource sources
+ * 
  * @author tiwe
  * @version $Id$
  */
 // TODO : find a better name for this
-public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends ProjectableAdapter{
-    
+public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends
+        ProjectableAdapter {
+
     private final ColQueryImpl innerQuery;
 
     @SuppressWarnings("unchecked")
-    private final SubType _this = (SubType)this;
-    
-    public CustomQueryable(IteratorSource iteratorSource){
+    private final SubType _this = (SubType) this;
+
+    public CustomQueryable(IteratorSource iteratorSource) {
         this(iteratorSource, new DefaultQueryMetadata<Object>());
     }
-    
-    public CustomQueryable(final IteratorSource iteratorSource, QueryMetadata<Object> metadata){
+
+    public CustomQueryable(final IteratorSource iteratorSource,
+            QueryMetadata<Object> metadata) {
         Assert.notNull(iteratorSource);
-        this.innerQuery = new ColQueryImpl(metadata){
+        this.innerQuery = new ColQueryImpl(metadata) {
             @Override
             protected QueryIndexSupport createIndexSupport(
-                    Map<Expr<?>, 
-                    Iterable<?>> exprToIt, 
-                    JavaOps ops, 
-                    List<Expr<?>> sources){
+                    Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops,
+                    List<Expr<?>> sources) {
                 return new DefaultIndexSupport(iteratorSource, ops, sources);
-            }    
+            }
         };
         setProjectable(innerQuery);
     }
-    
-    
-    protected QueryMetadata<Object> getMetadata(){
+
+    protected QueryMetadata<Object> getMetadata() {
         return innerQuery.getMetadata();
     }
-    
-    
+
     public SubType from(Expr<?>... o) {
         innerQuery.from(o);
         return _this;
     }
-    
+
     public SubType orderBy(OrderSpecifier<?>... o) {
         innerQuery.orderBy(o);
         return _this;
     }
-     
+
     public SubType where(EBoolean... o) {
         innerQuery.where(o);
         return _this;
     }
-    
+
 }

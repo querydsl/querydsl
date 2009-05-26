@@ -9,11 +9,11 @@ import com.mysema.query.types.expr.Expr;
 
 /**
  * @author tiwe
- *
+ * 
  * @param <D>
  */
 public interface PList<D> extends PCollection<D> {
-	Expr<D> get(Expr<Integer> index);
+    Expr<D> get(Expr<Integer> index);
 
-	Expr<D> get(int index);
+    Expr<D> get(int index);
 }

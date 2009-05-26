@@ -13,23 +13,23 @@ import com.mysema.query.types.Grammar;
  * 
  */
 public abstract class EBoolean extends EComparable<Boolean> {
-	private EBoolean not;
+    private EBoolean not;
 
-	public EBoolean() {
-		super(Boolean.class);
-	}
+    public EBoolean() {
+        super(Boolean.class);
+    }
 
-	public final EBoolean and(EBoolean right) {
-		return Grammar.and(this, right);
-	}
+    public final EBoolean and(EBoolean right) {
+        return Grammar.and(this, right);
+    }
 
-	public final EBoolean not() {
-		if (not == null)
-			not = Grammar.not(this);
-		return not;
-	}
+    public final EBoolean not() {
+        if (not == null)
+            not = Grammar.not(this);
+        return not;
+    }
 
-	public final EBoolean or(EBoolean right) {
-		return Grammar.or(this, right);
-	}
+    public final EBoolean or(EBoolean right) {
+        return Grammar.or(this, right);
+    }
 }

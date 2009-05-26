@@ -10,51 +10,52 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 
 /**
- * Definition of a Product Represents a product, and contains the key aspects of the item.
+ * Definition of a Product Represents a product, and contains the key aspects of
+ * the item.
  */
 @PersistenceCapable
-@Inheritance(strategy=InheritanceStrategy.NEW_TABLE)
+@Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 public class Product {
-	private String name = null;
+    private String name = null;
 
-	private String description = null;
+    private String description = null;
 
-	private double price = 0.0;
+    private double price = 0.0;
 
-	protected Product() {
-	}
+    protected Product() {
+    }
 
-	public Product(String name, String description, double price) {
-		this.name = name;
-		this.description = description;
-		this.price = price;
-	}
+    public Product(String name, String description, double price) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public double getPrice() {
-		return price;
-	}
+    public double getPrice() {
+        return price;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setPrice(double price) {
-		this.price = price;
-	}
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
-	public String toString() {
-		return "Product : " + name + " [" + description + "]";
-	}
+    public String toString() {
+        return "Product : " + name + " [" + description + "]";
+    }
 }

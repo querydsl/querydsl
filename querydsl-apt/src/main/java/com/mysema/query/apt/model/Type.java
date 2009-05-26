@@ -41,23 +41,22 @@ public class Type implements Comparable<Type> {
     private Set<Field> simpleFields = new TreeSet<Field>();
 
     private Set<Field> simpleLists = new TreeSet<Field>();
-    
+
     private Set<Field> simpleMaps = new TreeSet<Field>();
 
     private String simpleName, uncapSimpleName, name, packageName;
-    
+
     private int escapeSuffix = 1;
 
     private Set<Field> stringFields = new TreeSet<Field>();
 
     private String superType;
-    
-    
-    
-    public Type(String superType, String packageName, String name, String simpleName) {
+
+    public Type(String superType, String packageName, String name,
+            String simpleName) {
         this.superType = superType;
         this.packageName = packageName;
-        this.name = name;        
+        this.name = name;
         this.simpleName = simpleName;
         this.uncapSimpleName = StringUtils.uncapitalize(simpleName);
     }
@@ -109,8 +108,9 @@ public class Type implements Comparable<Type> {
     }
 
     private Field validateField(Field field) {
-        if (field.getName().equals(this.uncapSimpleName)){
-            uncapSimpleName = StringUtils.uncapitalize(simpleName) + (escapeSuffix++);
+        if (field.getName().equals(this.uncapSimpleName)) {
+            uncapSimpleName = StringUtils.uncapitalize(simpleName)
+                    + (escapeSuffix++);
         }
         return field;
     }
@@ -150,16 +150,16 @@ public class Type implements Comparable<Type> {
     public Collection<Field> getEntityMaps() {
         return entityMaps;
     }
-    
+
     public String getName() {
         return name;
     }
 
-    public Collection<Field> getNumericFields(){
+    public Collection<Field> getNumericFields() {
         return numericFields;
     }
 
-    public String getPackageName(){
+    public String getPackageName() {
         return packageName;
     }
 
@@ -178,12 +178,12 @@ public class Type implements Comparable<Type> {
     public Collection<Field> getSimpleMaps() {
         return simpleMaps;
     }
-    
+
     public String getSimpleName() {
         return simpleName;
     }
-    
-    public String getUncapSimpleName(){
+
+    public String getUncapSimpleName() {
         return uncapSimpleName;
     }
 
@@ -215,9 +215,9 @@ public class Type implements Comparable<Type> {
     }
 
     private void addAll(Set<Field> target, Set<Field> source) {
-        for (Field field : source){
+        for (Field field : source) {
             target.add(validateField(field));
-        }        
+        }
     }
-    
+
 }

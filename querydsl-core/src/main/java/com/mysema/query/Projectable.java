@@ -12,16 +12,16 @@ import com.mysema.query.types.expr.Expr;
 
 /**
  * Projectable defines default projection methods for Query implemnations
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
-public interface Projectable {    
+public interface Projectable {
     /**
      * return the amount of matched rows
      */
     long count();
-    
+
     /**
      * return the amount of distinct matched rows
      */
@@ -36,11 +36,12 @@ public interface Projectable {
      * @return an Iterator over the projection
      */
     Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest);
-    
+
     /**
      * iterate over the results for the given projection
      * 
-     * @param <RT> generic type of the Iteratpr
+     * @param <RT>
+     *            generic type of the Iteratpr
      * @param projection
      * @return an Iterator over the projection
      */
@@ -54,12 +55,14 @@ public interface Projectable {
      * @param rest
      * @return an Iterator over the projection
      */
-    Iterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest);
-    
+    Iterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second,
+            Expr<?>... rest);
+
     /**
      * iterate over the distinct results for the given projection
      * 
-     * @param <RT> generic type of the Iteratpr
+     * @param <RT>
+     *            generic type of the Iteratpr
      * @param projection
      * @return an Iterator over the projection
      */
@@ -70,15 +73,17 @@ public interface Projectable {
      * 
      * @param first
      * @param second
-     * @param rest rest
+     * @param rest
+     *            rest
      * @return a List over the projection
      */
     List<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest);
-    
+
     /**
      * list the results for the given projection
      * 
-     * @param <RT> generic type of the List
+     * @param <RT>
+     *            generic type of the List
      * @param projection
      * @return a List over the projection
      */
@@ -89,15 +94,17 @@ public interface Projectable {
      * 
      * @param first
      * @param second
-     * @param rest rest
+     * @param rest
+     *            rest
      * @return a List over the projection
      */
     List<Object[]> listDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest);
-    
+
     /**
      * list the distinct results for the given projection
      * 
-     * @param <RT> generic type of the List
+     * @param <RT>
+     *            generic type of the List
      * @param projection
      * @return a List over the projection
      */
@@ -111,7 +118,7 @@ public interface Projectable {
      * @return
      */
     <RT> SearchResults<RT> listResults(Expr<RT> projection);
-    
+
     /**
      * return a unique result for the given projection
      * 
@@ -121,15 +128,15 @@ public interface Projectable {
      * @return
      */
     Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest);
-    
+
     /**
      * return a unique result for the given projection
      * 
-     * @param <RT> return type
+     * @param <RT>
+     *            return type
      * @param projection
      * @return the result or null for an empty result
      */
     <RT> RT uniqueResult(Expr<RT> projection);
-
 
 }

@@ -12,7 +12,7 @@ package com.mysema.query.types.expr;
  * @param <D>
  */
 public abstract class EEmbeddable<D> extends ESimple<D> {
-	public EEmbeddable(Class<? extends D> type) {
-		super(type);
-	}
+    public EEmbeddable(Class<? extends D> type) {
+        super(type);
+    }
 }

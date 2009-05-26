@@ -14,34 +14,34 @@ import com.mysema.query.types.expr.EBoolean;
  * @version $Id$
  */
 public interface Path<C> {
-	/**
-	 * 
-	 * @return
-	 */
-	PathMetadata<?> getMetadata();
+    /**
+     * 
+     * @return
+     */
+    PathMetadata<?> getMetadata();
 
-	/**
-	 * 
-	 * @return
-	 */
-	Path<?> getRoot();
+    /**
+     * 
+     * @return
+     */
+    Path<?> getRoot();
 
-	/**
-	 * 
-	 * @return
-	 */
-	EBoolean isnotnull();
+    /**
+     * 
+     * @return
+     */
+    EBoolean isnotnull();
 
-	/**
-	 * 
-	 * @return
-	 */
-	EBoolean isnull();
+    /**
+     * 
+     * @return
+     */
+    EBoolean isnull();
 
-	/**
-	 * 
-	 * @return
-	 */
-	Class<? extends C> getType();
+    /**
+     * 
+     * @return
+     */
+    Class<? extends C> getType();
 
 }

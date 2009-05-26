@@ -19,16 +19,16 @@ import com.mysema.query.types.expr.Expr;
 
 /**
  * DefaultMetadata is the default implementation of the QueryMetadata interface
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
-public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta>{
+public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
 
     private final Set<Expr<?>> exprInJoins = new HashSet<Expr<?>>();
-    
+
     private List<Expr<?>> groupBy = new ArrayList<Expr<?>>();
-    
+
     private CascadingBoolean having = new CascadingBoolean();
 
     private List<JoinExpression<JoinMeta>> joins = new ArrayList<JoinExpression<JoinMeta>>();
@@ -38,9 +38,9 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta>{
     private List<Expr<?>> projection = new ArrayList<Expr<?>>();
 
     private CascadingBoolean where = new CascadingBoolean();
-    
+
     private boolean distinct;
-    
+
     private QueryModifiers modifiers = new QueryModifiers();
 
     public List<? extends Expr<?>> getGroupBy() {
@@ -66,54 +66,56 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta>{
     public EBoolean getWhere() {
         return where.create();
     }
-    
+
     public void addJoin(JoinExpression<JoinMeta> joinExpression) {
-        if (!exprInJoins.contains(joinExpression.getTarget())){
+        if (!exprInJoins.contains(joinExpression.getTarget())) {
             joins.add(joinExpression);
             exprInJoins.add(joinExpression.getTarget());
-        }        
+        }
     }
 
     public void addJoin(JoinType joinType, Expr<?> expr) {
-        if (!exprInJoins.contains(expr)){
+        if (!exprInJoins.contains(expr)) {
             joins.add(new JoinExpression<JoinMeta>(joinType, expr));
             exprInJoins.add(expr);
-        }                
+        }
     }
 
     public void addJoinCondition(EBoolean o) {
-        if (!joins.isEmpty()){
-            joins.get(joins.size()-1).setCondition(o);
-        }        
+        if (!joins.isEmpty()) {
+            joins.get(joins.size() - 1).setCondition(o);
+        }
     }
 
     public void addToFrom(Expr<?>[] o) {
-        for (Expr<?> expr : o){
-            if (!exprInJoins.contains(expr)){
-                joins.add(new JoinExpression<JoinMeta>(JoinType.DEFAULT,expr));
+        for (Expr<?> expr : o) {
+            if (!exprInJoins.contains(expr)) {
+                joins.add(new JoinExpression<JoinMeta>(JoinType.DEFAULT, expr));
                 exprInJoins.add(expr);
-            }            
-        }        
+            }
+        }
     }
 
     public void addToGroupBy(Expr<?>[] o) {
-        groupBy.addAll(Arrays.<Expr<?>>asList(o));        
+        groupBy.addAll(Arrays.<Expr<?>> asList(o));
     }
 
     public void addToHaving(EBoolean[] o) {
-        for (EBoolean e : o) having.and(e);        
+        for (EBoolean e : o)
+            having.and(e);
     }
 
     public void addToOrderBy(OrderSpecifier<?>[] o) {
-        orderBy.addAll(Arrays.asList(o));        
+        orderBy.addAll(Arrays.asList(o));
     }
 
     public void addToProjection(Expr<?>[] o) {
-        projection.addAll(Arrays.asList(o));        
+        projection.addAll(Arrays.asList(o));
     }
 
     public void addToWhere(EBoolean[] o) {
-        for (EBoolean e : o) where.and(e);        
+        for (EBoolean e : o)
+            where.and(e);
     }
 
     public boolean isDistinct() {
@@ -121,17 +123,15 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta>{
     }
 
     public void setDistinct(boolean distinct) {
-        this.distinct = distinct;        
+        this.distinct = distinct;
     }
 
-	public QueryModifiers getModifiers() {
-		return modifiers;
-	}
+    public QueryModifiers getModifiers() {
+        return modifiers;
+    }
 
-	public void setModifiers(QueryModifiers restriction) {
-		this.modifiers = restriction;
-	}
-    
-    
-          
+    public void setModifiers(QueryModifiers restriction) {
+        this.modifiers = restriction;
+    }
+
 }

@@ -65,12 +65,13 @@ import com.mysema.query.types.operation.Ops;
 // TODO : implement leftJoin, rightJoin and fullJoin
 // TODO : implement groupBy and having
 // TODO : remove close handling
-public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl> implements ColQuery{
+public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
+        implements ColQuery {
 
     private boolean arrayProjection = false;
 
     private final Map<Expr<?>, Iterable<?>> exprToIt = new HashMap<Expr<?>, Iterable<?>>();
-    
+
     private QueryIndexSupport indexSupport;
 
     private final JavaOps ops;
@@ -111,24 +112,25 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl> 
         exprToIt.put(path, col);
         return _this;
     }
-    
+
     @SuppressWarnings("unchecked")
     private <RT> Iterator<RT> asDistinctIterator(Iterator<RT> rv) {
-        if (!arrayProjection){
+        if (!arrayProjection) {
             return new UniqueFilterIterator<RT>(rv);
-        }else{
-            return new FilterIterator<RT>(rv, new Predicate(){
+        } else {
+            return new FilterIterator<RT>(rv, new Predicate() {
                 private Set<List<Object>> set = new HashSet<List<Object>>();
+
                 public boolean evaluate(Object object) {
-                    return set.add(Arrays.asList((Object[])object));
-                }                    
+                    return set.add(Arrays.asList((Object[]) object));
+                }
             });
         }
     }
 
     private boolean changeToUnionQuery(EBoolean condition) {
-        return sequentialUnion && condition instanceof Operation 
-            && ((Operation<?, ?>) condition).getOperator() == Ops.OR;
+        return sequentialUnion && condition instanceof Operation
+                && ((Operation<?, ?>) condition).getOperator() == Ops.OR;
     }
 
     public long count() {
@@ -137,10 +139,10 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl> 
             Iterator<?> it;
             if (getMetadata().getJoins().size() == 1) {
                 it = handleFromWhereSingleSource(sources);
-            } else {                
+            } else {
                 it = handleFromWhereMultiSource(sources);
             }
-            if (getMetadata().isDistinct()){
+            if (getMetadata().isDistinct()) {
                 arrayProjection = true;
                 it = asDistinctIterator(it);
             }
@@ -154,12 +156,16 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl> 
             throw new RuntimeException(e.getMessage(), e);
         }
     }
-    
-    protected QueryIndexSupport createIndexSupport(Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops,List<Expr<?>> sources) {
-        return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);
+
+    protected QueryIndexSupport createIndexSupport(
+            Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops,
+            List<Expr<?>> sources) {
+        return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), ops,
+                sources);
     }
-    
-    private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
+
+    private <RT> Iterator<RT> createIterator(Expr<RT> projection)
+            throws Exception {
         List<Expr<?>> sources = new ArrayList<Expr<?>>();
         // from / where
         Iterator<?> it;
@@ -183,8 +189,9 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl> 
         }
 
     }
-    
-    private Iterator<Object[]> createMultiIterator(List<Expr<?>> sources, EBoolean condition) {
+
+    private Iterator<Object[]> createMultiIterator(List<Expr<?>> sources,
+            EBoolean condition) {
         MultiIterator multiIt;
         if (condition == null || !wrapIterators) {
             multiIt = new MultiIterator();
@@ -202,9 +209,11 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl> 
         }
     }
 
-    private <RT> Iterator<RT> createPagedIterator(Expr<RT> projection) throws Exception{
-    	Iterator<RT> iterator = createIterator(projection);
-        return LimitingIterator.transform(iterator, getMetadata().getModifiers());
+    private <RT> Iterator<RT> createPagedIterator(Expr<RT> projection)
+            throws Exception {
+        Iterator<RT> iterator = createIterator(projection);
+        return LimitingIterator.transform(iterator, getMetadata()
+                .getModifiers());
     }
 
     public <A> ColQueryImpl from(Expr<A> entity, A first, A... rest) {
@@ -220,9 +229,11 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl> 
         return _this;
     }
 
-    protected Iterator<?> handleFromWhereMultiSource(List<Expr<?>> sources) throws Exception {
+    protected Iterator<?> handleFromWhereMultiSource(List<Expr<?>> sources)
+            throws Exception {
         EBoolean condition = getMetadata().getWhere();
-        List<JoinExpression<Object>> joins = new ArrayList<JoinExpression<Object>>(getMetadata().getJoins());
+        List<JoinExpression<Object>> joins = new ArrayList<JoinExpression<Object>>(
+                getMetadata().getJoins());
         if (sortSources) {
             sourceSortingSupport.sortSources(joins, condition);
         }
@@ -234,7 +245,7 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl> 
         if (changeToUnionQuery(condition)) {
             // TODO : handle deeper OR operations as well
             Operation<?, ?> op = (Operation<?, ?>) condition;
-            
+
             IteratorChain<Object[]> chain = new IteratorChain<Object[]>();
             EBoolean e1 = (EBoolean) op.getArg(0), e2 = (EBoolean) op.getArg(1);
             chain.addIterator(createMultiIterator(sources, e1));
@@ -245,7 +256,8 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl> 
         }
     }
 
-    protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources) throws Exception {
+    protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources)
+            throws Exception {
         EBoolean condition = getMetadata().getWhere();
         JoinExpression<?> join = getMetadata().getJoins().get(0);
         sources.add(join.getTarget());
@@ -254,16 +266,21 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl> 
 
         if (changeToUnionQuery(condition)) {
             Operation<?, ?> op = (Operation<?, ?>) condition;
-            
+
             IteratorChain<Object[]> chain = new IteratorChain<Object[]>();
             EBoolean e1 = (EBoolean) op.getArg(0), e2 = (EBoolean) op.getArg(1);
-            Iterator<?> it1 = indexSupport.getChildFor(e1).getIterator( join.getTarget());
-            chain.addIterator(multiArgFilter(ops, toArrayIterator(it1), sources, e1));
-            Iterator<?> it2 = indexSupport.getChildFor(e2.and(e1.not())).getIterator(join.getTarget());
-            chain.addIterator(multiArgFilter(ops, toArrayIterator(it2), sources, e2.and(e1.not())));
+            Iterator<?> it1 = indexSupport.getChildFor(e1).getIterator(
+                    join.getTarget());
+            chain.addIterator(multiArgFilter(ops, toArrayIterator(it1),
+                    sources, e1));
+            Iterator<?> it2 = indexSupport.getChildFor(e2.and(e1.not()))
+                    .getIterator(join.getTarget());
+            chain.addIterator(multiArgFilter(ops, toArrayIterator(it2),
+                    sources, e2.and(e1.not())));
             return chain;
         } else {
-            Iterator<?> it = toArrayIterator(indexSupport.getChildFor(condition).getIterator(join.getTarget()));
+            Iterator<?> it = toArrayIterator(indexSupport
+                    .getChildFor(condition).getIterator(join.getTarget()));
             if (condition != null) {
                 // wrap the iterator if a where constraint is available
                 it = multiArgFilter(ops, it, sources, condition);
@@ -274,7 +291,8 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl> 
     }
 
     @SuppressWarnings("unchecked")
-    protected Iterator<?> handleOrderBy(List<Expr<?>> sources, Iterator<?> it) throws Exception {
+    protected Iterator<?> handleOrderBy(List<Expr<?>> sources, Iterator<?> it)
+            throws Exception {
         // create a projection for the order
         List<OrderSpecifier<?>> orderBy = getMetadata().getOrderBy();
         Expr<Object>[] orderByExpr = new Expr[orderBy.size()];
@@ -292,88 +310,93 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl> 
         it = itAsList.iterator();
         return it;
     }
-    
-    protected <RT> Iterator<RT> handleSelect(Iterator<?> it, List<Expr<?>> sources, Expr<RT> projection) throws Exception {
+
+    protected <RT> Iterator<RT> handleSelect(Iterator<?> it,
+            List<Expr<?>> sources, Expr<RT> projection) throws Exception {
         Iterator<RT> rv = transform(ops, it, sources, projection);
-        if (getMetadata().isDistinct()){
+        if (getMetadata().isDistinct()) {
             rv = asDistinctIterator(rv);
         }
         return rv;
     }
-    
+
     @SuppressWarnings("unchecked")
-    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second,
+            Expr<?>... rest) {
         arrayProjection = true;
         Expr<?>[] full = asArray(new Expr[rest.length + 2], first, second, rest);
-        Expr<Object[]> projection = new EArrayConstructor(Object.class, full);        
+        Expr<Object[]> projection = new EArrayConstructor(Object.class, full);
         addToProjection(projection);
         try {
-        	return createPagedIterator(projection);
+            return createPagedIterator(projection);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
 
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {        
+    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
         addToProjection(projection);
         try {
-        	return createPagedIterator(projection);
+            return createPagedIterator(projection);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
-    
+
     public <RT> List<RT> list(RT projection) {
         return list(MiniApi.getAny(projection));
     }
-    
+
     // TODO : optimize
-	public <RT> SearchResults<RT> listResults(Expr<RT> projection) {
-    	QueryModifiers modifiers = getMetadata().getModifiers();
-    	List<RT> list;
-    	try {
-    		list = IteratorUtils.toList(createIterator(projection));
-    	}catch(Exception e){
-    		throw new RuntimeException(e.getMessage(), e);
-    	}
-    	if (list.isEmpty()){
-    		return SearchResults.emptyResults();
-    	}else if (!modifiers.isRestricting()){	
-    		return new SearchResults<RT>(list, modifiers, list.size());
-    	}else{
-    		int start = 0;
-    		int end = list.size();
-    		if (modifiers.getOffset() != null){
-    			if (modifiers.getOffset() < list.size()){
-    				start = modifiers.getOffset().intValue();
-    			}else{
-    				return new SearchResults<RT>(Collections.<RT>emptyList(), modifiers, list.size());
-    			}
-    		}    		
-    		if (modifiers.getLimit() != null){
-    			end = (int)Math.min(start + modifiers.getLimit(), list.size());
-    		}
-    		return new SearchResults<RT>(list.subList(start, end), modifiers, list.size());
-    	}    	
+    public <RT> SearchResults<RT> listResults(Expr<RT> projection) {
+        QueryModifiers modifiers = getMetadata().getModifiers();
+        List<RT> list;
+        try {
+            list = IteratorUtils.toList(createIterator(projection));
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        if (list.isEmpty()) {
+            return SearchResults.emptyResults();
+        } else if (!modifiers.isRestricting()) {
+            return new SearchResults<RT>(list, modifiers, list.size());
+        } else {
+            int start = 0;
+            int end = list.size();
+            if (modifiers.getOffset() != null) {
+                if (modifiers.getOffset() < list.size()) {
+                    start = modifiers.getOffset().intValue();
+                } else {
+                    return new SearchResults<RT>(Collections.<RT> emptyList(),
+                            modifiers, list.size());
+                }
+            }
+            if (modifiers.getLimit() != null) {
+                end = (int) Math.min(start + modifiers.getLimit(), list.size());
+            }
+            return new SearchResults<RT>(list.subList(start, end), modifiers,
+                    list.size());
+        }
     }
-    
+
     public Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
-    	return super.uniqueResult(first, second, rest);
+        return super.uniqueResult(first, second, rest);
     }
 
     public <RT> RT uniqueResult(Expr<RT> expr) {
-    	return super.uniqueResult(expr);
+        return super.uniqueResult(expr);
     }
 
     public void setSequentialUnion(boolean sequentialUnion) {
         this.sequentialUnion = sequentialUnion;
     }
-    
+
     public void setSortSources(boolean s) {
         this.sortSources = s;
     }
 
-    public void setSourceSortingSupport(SourceSortingSupport sourceSortingSupport) {
+    public void setSourceSortingSupport(
+            SourceSortingSupport sourceSortingSupport) {
         this.sourceSortingSupport = sourceSortingSupport;
     }
 

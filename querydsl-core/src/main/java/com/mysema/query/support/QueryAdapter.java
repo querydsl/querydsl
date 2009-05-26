@@ -13,23 +13,25 @@ import com.mysema.query.types.expr.Expr;
 
 /**
  * QueryAdapter is an adapter implementation for Query instace wrapping
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
-public class QueryAdapter<SubType extends QueryAdapter<SubType>> implements Query<SubType>{
+public class QueryAdapter<SubType extends QueryAdapter<SubType>> implements
+        Query<SubType> {
 
     private Query<?> query;
-   
+
     @SuppressWarnings("unchecked")
-    private SubType _this = (SubType)this;
-    
-    public QueryAdapter(){}
-    
-    public QueryAdapter(Query<?> query){
+    private SubType _this = (SubType) this;
+
+    public QueryAdapter() {
+    }
+
+    public QueryAdapter(Query<?> query) {
         this.query = Assert.notNull(query);
     }
-    
+
     public SubType from(Expr<?>... o) {
         query.from(o);
         return _this;
@@ -78,9 +80,9 @@ public class QueryAdapter<SubType extends QueryAdapter<SubType>> implements Quer
     public void setQuery(Query<?> query) {
         this.query = query;
     }
-    
-    public String toString(){
+
+    public String toString() {
         return query.toString();
     }
-    
+
 }

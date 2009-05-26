@@ -35,10 +35,11 @@ public class GeneralProcessorTest {
 
     public GeneralProcessorTest() {
         type = new Type("com.mysema.query.DomainSuperClass",
-                "com.mysema.query",
-                "com.mysema.query.DomainClass", "DomainClass");
-        
-        Field field = new Field("field", "field", null, "java.lang", "java.lang.String", "String", FieldType.STRING);
+                "com.mysema.query", "com.mysema.query.DomainClass",
+                "DomainClass");
+
+        Field field = new Field("field", "field", null, "java.lang",
+                "java.lang.String", "String", FieldType.STRING);
         type.addField(field);
         Parameter param = new Parameter("name", "java.lang.String");
         type.addConstructor(new Constructor(Collections.singleton(param)));
@@ -55,6 +56,5 @@ public class GeneralProcessorTest {
         // as outer classes
         GeneralProcessor.DOMAIN_OUTER_TMPL.serialize(model, writer);
     }
-
 
 }

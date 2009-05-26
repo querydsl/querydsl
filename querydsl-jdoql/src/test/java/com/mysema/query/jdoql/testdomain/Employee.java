@@ -8,47 +8,47 @@ import javax.jdo.annotations.PersistenceCapable;
 @PersistenceCapable
 // TODO : finish annotations
 public class Employee extends Person {
-	// @ManyToOne
-	private Company company;
-	// @ManyToOne
-	private Department department;
-	// @ManyToOne
-	private Employee superior;
+    // @ManyToOne
+    private Company company;
+    // @ManyToOne
+    private Department department;
+    // @ManyToOne
+    private Employee superior;
 
-	public Employee() {
-	}
+    public Employee() {
+    }
 
-	public Employee(int i) {
-		setId(i);
-	}
+    public Employee(int i) {
+        setId(i);
+    }
 
-	public Employee(int i, Employee superior) {
-		setId(i);
-		setSuperior(superior);
-	}
+    public Employee(int i, Employee superior) {
+        setId(i);
+        setSuperior(superior);
+    }
 
-	public Company getCompany() {
-		return company;
-	}
+    public Company getCompany() {
+        return company;
+    }
 
-	public void setCompany(Company company) {
-		this.company = company;
-	}
+    public void setCompany(Company company) {
+        this.company = company;
+    }
 
-	public Department getDepartment() {
-		return department;
-	}
+    public Department getDepartment() {
+        return department;
+    }
 
-	public void setDepartment(Department department) {
-		this.department = department;
-	}
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
 
-	public Employee getSuperior() {
-		return superior;
-	}
+    public Employee getSuperior() {
+        return superior;
+    }
 
-	public void setSuperior(Employee superior) {
-		this.superior = superior;
-	}
+    public void setSuperior(Employee superior) {
+        this.superior = superior;
+    }
 
 }

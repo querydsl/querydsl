@@ -12,26 +12,27 @@ import com.mysema.query.types.operation.Ops.Op;
 
 /**
  * @author tiwe
- *
+ * 
  * @param <Q>
  */
-public class QNumber<Q extends Number & Comparable<? super Q>> extends ENumber<Q> implements Quant<Q> {
-	
-	private final Expr<?> col;
-	
-	private final Op<?> op;
+public class QNumber<Q extends Number & Comparable<? super Q>> extends
+        ENumber<Q> implements Quant<Q> {
 
-	public QNumber(Class<Q> type, Op<?> op, CollectionType<Q> col) {
-		super(type);
-		this.op = op;
-		this.col = (Expr<?>) col;
-	}
+    private final Expr<?> col;
 
-	public Op<?> getOperator() {
-		return op;
-	}
+    private final Op<?> op;
 
-	public Expr<?> getTarget() {
-		return col;
-	}
+    public QNumber(Class<Q> type, Op<?> op, CollectionType<Q> col) {
+        super(type);
+        this.op = op;
+        this.col = (Expr<?>) col;
+    }
+
+    public Op<?> getOperator() {
+        return op;
+    }
+
+    public Expr<?> getTarget() {
+        return col;
+    }
 }

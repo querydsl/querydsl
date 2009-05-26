@@ -12,8 +12,7 @@ package com.mysema.query;
  * @version $Id$
  */
 public enum JoinType {
-    DEFAULT, 
-    INNERJOIN {
+    DEFAULT, INNERJOIN {
         public String toString() {
             return "INNER JOIN";
         }

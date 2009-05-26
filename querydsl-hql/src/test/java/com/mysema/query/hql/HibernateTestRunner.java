@@ -16,64 +16,69 @@ import org.junit.internal.runners.InitializationError;
 import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.notification.RunNotifier;
 
-
 /**
  * HibernateTestRunner provides.
  * 
  * @author tiwe
  * @version $Id$
  */
-public class HibernateTestRunner extends JUnit4ClassRunner{
-    
+public class HibernateTestRunner extends JUnit4ClassRunner {
+
     private Session session;
-    
+
     private SessionFactory sessionFactory;
-    
+
     public HibernateTestRunner(Class<?> klass) throws InitializationError {
         super(klass);
     }
-    
+
     protected Object createTest() throws Exception {
         Object o = getTestClass().getConstructor().newInstance();
-        o.getClass().getMethod("setSession", Session.class).invoke(o, session);        
+        o.getClass().getMethod("setSession", Session.class).invoke(o, session);
         return o;
     }
-    
+
     protected void invokeTestMethod(Method method, RunNotifier notifier) {
         session = sessionFactory.openSession();
         session.beginTransaction();
-        try{
-            super.invokeTestMethod(method, notifier);    
-        }finally{
+        try {
+            super.invokeTestMethod(method, notifier);
+        } finally {
             session.getTransaction().rollback();
-        }        
+        }
     }
-    
+
     public void run(final RunNotifier notifier) {
-        try{
+        try {
             AnnotationConfiguration cfg = new AnnotationConfiguration();
-            
+
             // TODO : make this configurable
-            for (Class<?> cl : Domain.class.getDeclaredClasses()){
+            for (Class<?> cl : Domain.class.getDeclaredClasses()) {
                 cfg.addAnnotatedClass(cl);
             }
-            
-            Hibernate config = getTestClass().getJavaClass().getAnnotation(Hibernate.class);            
+
+            Hibernate config = getTestClass().getJavaClass().getAnnotation(
+                    Hibernate.class);
             cfg.setNamingStrategy(config.namingStrategy().newInstance());
             Properties props = new Properties();
-            InputStream is = IntegrationTest.class.getResourceAsStream(config.properties());
-            if (is == null) throw new IllegalArgumentException("No configuration available at classpath:" + config.properties());
+            InputStream is = IntegrationTest.class.getResourceAsStream(config
+                    .properties());
+            if (is == null)
+                throw new IllegalArgumentException(
+                        "No configuration available at classpath:"
+                                + config.properties());
             props.load(is);
             cfg.setProperties(props);
-            sessionFactory = cfg.buildSessionFactory();    
-            super.run(notifier);            
+            sessionFactory = cfg.buildSessionFactory();
+            super.run(notifier);
         } catch (Exception e) {
-                String error = "Caught " + e.getClass().getName();
-                throw new RuntimeException(error, e);
-        }finally{
-            if (sessionFactory != null) sessionFactory.close();
+            String error = "Caught " + e.getClass().getName();
+            throw new RuntimeException(error, e);
+        } finally {
+            if (sessionFactory != null)
+                sessionFactory.close();
         }
-           
+
     }
-    
+
 }

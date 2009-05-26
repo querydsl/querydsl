@@ -11,12 +11,12 @@ import com.mysema.query.types.expr.Expr;
 
 /**
  * IteratorSource provides a Expr -> Iterator mapping
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
 public interface IteratorSource {
-    
+
     <A> Iterator<A> getIterator(Expr<A> expr);
 
     <A> Iterator<A> getIterator(Expr<A> expr, Object[] bindings);

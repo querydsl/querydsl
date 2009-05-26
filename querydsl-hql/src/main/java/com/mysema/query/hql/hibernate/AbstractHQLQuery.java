@@ -23,18 +23,20 @@ import com.mysema.query.hql.HQLQueryBase;
 import com.mysema.query.types.expr.Expr;
 
 /**
- * AbstractHqlQuery provides the same features as HqlQuery, but acts as a super class
- * for domain specific query subclasses
- *
+ * AbstractHqlQuery provides the same features as HqlQuery, but acts as a super
+ * class for domain specific query subclasses
+ * 
  * @author tiwe
  * @version $Id$
  */
-public class AbstractHQLQuery<A extends AbstractHQLQuery<A>> extends HQLQueryBase<A> implements Projectable{
-    
-    private static final Logger logger = LoggerFactory.getLogger(HQLQuery.class);
-    
+public class AbstractHQLQuery<A extends AbstractHQLQuery<A>> extends
+        HQLQueryBase<A> implements Projectable {
+
+    private static final Logger logger = LoggerFactory
+            .getLogger(HQLQuery.class);
+
     private final Session session;
-    
+
     public AbstractHQLQuery(Session session) {
         this(session, HQLOps.DEFAULT);
     }
@@ -43,63 +45,63 @@ public class AbstractHQLQuery<A extends AbstractHQLQuery<A>> extends HQLQueryBas
         super(ops);
         this.session = session;
     }
-    
+
     private Query createQuery(String queryString, QueryModifiers modifiers) {
         Query query = session.createQuery(queryString);
-        setConstants(query, getConstants());    
-        if (modifiers.isRestricting()){
-        	if (modifiers.getLimit() != null){
-        		query.setMaxResults(modifiers.getLimit().intValue());
-        	}
-            if (modifiers.getOffset() != null){
-            	query.setFirstResult(modifiers.getOffset().intValue());	
+        setConstants(query, getConstants());
+        if (modifiers.isRestricting()) {
+            if (modifiers.getLimit() != null) {
+                query.setMaxResults(modifiers.getLimit().intValue());
             }
-        }        
+            if (modifiers.getOffset() != null) {
+                query.setFirstResult(modifiers.getOffset().intValue());
+            }
+        }
         return query;
     }
-    
-    public static void setConstants(Query query, List<?> constants){
-        for (int i=0; i < constants.size(); i++){
-            String key = "a"+(i+1);
-            Object val = constants.get(i);            
-            if (val instanceof Collection<?>){
+
+    public static void setConstants(Query query, List<?> constants) {
+        for (int i = 0; i < constants.size(); i++) {
+            String key = "a" + (i + 1);
+            Object val = constants.get(i);
+            if (val instanceof Collection<?>) {
                 // NOTE : parameter types should be given explicitly
-                query.setParameterList(key,(Collection<?>)val);
-            }else if (val.getClass().isArray()){
+                query.setParameterList(key, (Collection<?>) val);
+            } else if (val.getClass().isArray()) {
                 // NOTE : parameter types should be given explicitly
-                query.setParameterList(key,(Object[])val);
-            }else{
+                query.setParameterList(key, (Object[]) val);
+            } else {
                 // NOTE : parameter types should be given explicitly
-                query.setParameter(key,val);    
+                query.setParameter(key, val);
             }
         }
     }
-        
+
     @SuppressWarnings("unchecked")
-    public <RT> List<RT> list(Expr<RT> expr){
+    public <RT> List<RT> list(Expr<RT> expr) {
         addToProjection(expr);
         String queryString = toString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, getMetadata().getModifiers());
         return query.list();
     }
-    
+
     @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>...rest){
+    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
         addToProjection(expr1, expr2);
         addToProjection(rest);
         String queryString = toString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, getMetadata().getModifiers());
-        return query.list();        
+        return query.list();
     }
-    
+
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
         addToProjection(expr);
-        Query query = createQuery(toCountRowsString(),null);
+        Query query = createQuery(toCountRowsString(), null);
         long total = (Long) query.uniqueResult();
         if (total > 0) {
-        	QueryModifiers modifiers = getMetadata().getModifiers();
+            QueryModifiers modifiers = getMetadata().getModifiers();
             String queryString = toString();
             logger.debug("query : {}", queryString);
             query = createQuery(queryString, modifiers);
@@ -110,22 +112,22 @@ public class AbstractHQLQuery<A extends AbstractHQLQuery<A>> extends HQLQueryBas
             return SearchResults.emptyResults();
         }
     }
-    
-    public long count(){
+
+    public long count() {
         return uniqueResult(HQLGrammar.count());
     }
-    
-    public long count(Expr<?> expr){
+
+    public long count(Expr<?> expr) {
         return uniqueResult(HQLGrammar.count(expr));
     }
-    
+
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expr<RT> expr) {
         addToProjection(expr);
         String queryString = toString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, QueryModifiers.limit(1));
-        return (RT)query.uniqueResult();
+        return (RT) query.uniqueResult();
     }
 
     public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {

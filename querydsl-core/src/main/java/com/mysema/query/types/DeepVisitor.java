@@ -16,46 +16,48 @@ import com.mysema.query.types.quant.Quant;
 
 /**
  * DeepVisitor provides
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
-public class DeepVisitor<SubType extends DeepVisitor<SubType>> extends AbstractVisitor<SubType> {
+public class DeepVisitor<SubType extends DeepVisitor<SubType>> extends
+        AbstractVisitor<SubType> {
 
     @Override
     protected void visit(ASimple<?> expr) {
-                
+
     }
 
     @Override
     protected void visit(AToPath expr) {
-                
+
     }
 
     @Override
     protected void visit(Custom<?> expr) {
-                
+
     }
 
     @Override
     protected void visit(EConstant<?> expr) {
-                
+
     }
 
     @Override
     protected void visit(Operation<?, ?> o) {
-        for (Expr<?> expr : o.getArgs()) handle(expr);
+        for (Expr<?> expr : o.getArgs())
+            handle(expr);
     }
 
     @Override
     protected void visit(Path<?> expr) {
-        // handle parent paths ?!?        
+        // handle parent paths ?!?
     }
 
-	@Override
-	protected void visit(Quant<?> q) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    protected void visit(Quant<?> q) {
+        // TODO Auto-generated method stub
+
+    }
 
 }

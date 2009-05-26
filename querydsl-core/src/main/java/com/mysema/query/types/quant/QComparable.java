@@ -13,23 +13,24 @@ import com.mysema.query.types.operation.Ops.Op;
 /**
  * The Class Comparable.
  */
-public class QComparable<Q extends Comparable<? super Q>> extends EComparable<Q> implements Quant<Q> {
-	
-	private final Expr<?> col;
-	
-	private final Op<?> op;
+public class QComparable<Q extends Comparable<? super Q>> extends
+        EComparable<Q> implements Quant<Q> {
 
-	public QComparable(Class<Q> type, Op<?> op, CollectionType<Q> col) {
-		super(type);
-		this.op = op;
-		this.col = (Expr<?>) col;
-	}
+    private final Expr<?> col;
 
-	public Op<?> getOperator() {
-		return op;
-	}
+    private final Op<?> op;
 
-	public Expr<?> getTarget() {
-		return col;
-	}
+    public QComparable(Class<Q> type, Op<?> op, CollectionType<Q> col) {
+        super(type);
+        this.op = op;
+        this.col = (Expr<?>) col;
+    }
+
+    public Op<?> getOperator() {
+        return op;
+    }
+
+    public Expr<?> getTarget() {
+        return col;
+    }
 }

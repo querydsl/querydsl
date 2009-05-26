@@ -7,32 +7,32 @@ package com.mysema.query.apt.general;
 
 /**
  * FieldHelper provides convenience methods for field name escaping
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
 public class FieldHelper {
 
-    public static String javaSafe(String name){
+    public static String javaSafe(String name) {
         // TODO : improve this
-        if (name.equals("private")){
+        if (name.equals("private")) {
             return "prvate";
-        }else if (name.equals("public")){
+        } else if (name.equals("public")) {
             return "pblic";
-        }else{
+        } else {
             return name;
         }
     }
-    
-    public static String realName(String name){
+
+    public static String realName(String name) {
         // TODO : improve this
-        if (name.equals("prvate")){
+        if (name.equals("prvate")) {
             return "private";
-        }else if (name.equals("pblic")){
+        } else if (name.equals("pblic")) {
             return "public";
-        }else{
+        } else {
             return name;
         }
     }
-    
+
 }

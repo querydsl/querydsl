@@ -11,10 +11,10 @@ package com.mysema.query.types;
  * @author tiwe
  * @version $Id$
  */
-public interface CollectionType<D>{
-	/**
-	 * 
-	 * @return
-	 */
+public interface CollectionType<D> {
+    /**
+     * 
+     * @return
+     */
     Class<D> getElementType();
 }

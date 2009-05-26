@@ -9,7 +9,7 @@ import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
 
 public abstract class CString extends EString implements Custom<String> {
-	public Expr<?> getArg(int index) {
-		return getArgs().get(index);
-	}
+    public Expr<?> getArg(int index) {
+        return getArgs().get(index);
+    }
 }

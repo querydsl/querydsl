@@ -14,11 +14,11 @@ import com.mysema.query.types.Grammar;
  * @param <D>
  */
 public abstract class ESimple<D> extends Expr<D> {
-	public ESimple(Class<? extends D> type) {
-		super(type);
-	}
+    public ESimple(Class<? extends D> type) {
+        super(type);
+    }
 
-	public final Expr<D> as(String to) {
-		return Grammar.as(this, to);
-	}
+    public final Expr<D> as(String to) {
+        return Grammar.as(this, to);
+    }
 }

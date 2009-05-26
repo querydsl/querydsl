@@ -28,33 +28,34 @@ import com.mysema.query.types.expr.Expr;
 
 /**
  * AbstractSqlQuery is the base type for SQL query implementations
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
-public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>> 
-    extends QueryBaseWithProjection<Object,SubType> implements Projectable{
-    
-    private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
-    
+public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
+        extends QueryBaseWithProjection<Object, SubType> implements Projectable {
+
+    private static final Logger logger = LoggerFactory
+            .getLogger(AbstractSQLQuery.class);
+
     private String queryString;
-    
+
     private List<Object> constants;
-    
+
     private final Connection conn;
-    
+
     protected final SQLOps ops;
-    
-//    private boolean forCountRow = false;
-    
-    private SubQuery<Object,?>[] sq;
-        
-    public AbstractSQLQuery(Connection conn, SQLOps ops){
+
+    // private boolean forCountRow = false;
+
+    private SubQuery<Object, ?>[] sq;
+
+    public AbstractSQLQuery(Connection conn, SQLOps ops) {
         this.conn = conn;
         this.ops = ops;
     }
-    
-    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>...rest){
+
+    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
         addToProjection(expr1, expr2);
         addToProjection(rest);
         try {
@@ -65,13 +66,13 @@ public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
             throw new RuntimeException(e.getMessage(), e);
         }
     }
-    
-    private List<Object[]> listMultiple() throws SQLException{
+
+    private List<Object[]> listMultiple() throws SQLException {
         String queryString = toString();
         logger.debug("query : {}", queryString);
         PreparedStatement stmt = conn.prepareStatement(queryString);
         int counter = 1;
-        for (Object o : constants){
+        for (Object o : constants) {
             try {
                 set(stmt, counter++, o);
             } catch (Exception e) {
@@ -80,28 +81,28 @@ public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
                 throw new RuntimeException(e.getMessage(), e);
             }
         }
-        ResultSet rs = stmt.executeQuery();   
-        try{
+        ResultSet rs = stmt.executeQuery();
+        try {
             List<Object[]> rv = new ArrayList<Object[]>();
-            while(rs.next()){
+            while (rs.next()) {
                 // TODO : take constructors into account
                 Object[] objects = new Object[rs.getMetaData().getColumnCount()];
-                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++){
-                    objects[i] = rs.getObject(i+1);
+                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+                    objects[i] = rs.getObject(i + 1);
                 }
                 rv.add(objects);
             }
             return rv;
-        }finally{
-            try{
-                rs.close();    
-            }finally{
-                stmt.close();    
-            }                        
+        } finally {
+            try {
+                rs.close();
+            } finally {
+                stmt.close();
+            }
         }
     }
-        
-    public <RT> List<RT> list(Expr<RT> expr){
+
+    public <RT> List<RT> list(Expr<RT> expr) {
         addToProjection(expr);
         try {
             return listSingle(expr);
@@ -111,44 +112,44 @@ public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
             throw new RuntimeException(e.getMessage(), e);
         }
     }
-    
+
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
         addToProjection(expr);
         long total = count();
         if (total > 0) {
-        	QueryModifiers modifiers = getMetadata().getModifiers();
+            QueryModifiers modifiers = getMetadata().getModifiers();
             return new SearchResults<RT>(list(expr), modifiers, total);
         } else {
             return SearchResults.emptyResults();
         }
     }
-    
+
     @SuppressWarnings("unchecked")
-    private <RT> List<RT> listSingle(Expr<RT> expr) throws SQLException{        
+    private <RT> List<RT> listSingle(Expr<RT> expr) throws SQLException {
         String queryString = toString();
         logger.debug("query : {}", queryString);
         PreparedStatement stmt = conn.prepareStatement(queryString);
         int counter = 1;
-        for (Object o : constants){ 
+        for (Object o : constants) {
             try {
-                set(stmt, counter++,o);
+                set(stmt, counter++, o);
             } catch (Exception e) {
                 String error = "Caught " + e.getClass().getName();
                 logger.error(error, e);
                 throw new RuntimeException(e.getMessage(), e);
             }
-        }        
-        ResultSet rs = stmt.executeQuery();        
-        try{
+        }
+        ResultSet rs = stmt.executeQuery();
+        try {
             List<RT> rv = new ArrayList<RT>();
-            if (expr instanceof EConstructor){                
-                EConstructor<RT> c = (EConstructor<RT>)expr;
-                java.lang.reflect.Constructor<RT> cc =  c.getJavaConstructor();
-                while (rs.next()){                    
+            if (expr instanceof EConstructor) {
+                EConstructor<RT> c = (EConstructor<RT>) expr;
+                java.lang.reflect.Constructor<RT> cc = c.getJavaConstructor();
+                while (rs.next()) {
                     try {
                         List<Object> args = new ArrayList<Object>();
-                        for (int i=0; i < c.getArgs().size(); i++){                        
-                            args.add(get(rs,i+1,c.getArg(i).getType()));
+                        for (int i = 0; i < c.getArgs().size(); i++) {
+                            args.add(get(rs, i + 1, c.getArg(i).getType()));
                         }
                         rv.add(cc.newInstance(args.toArray()));
                     } catch (Exception e) {
@@ -157,86 +158,90 @@ public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
                         throw new RuntimeException(e.getMessage(), e);
                     }
                 }
-            }else{
-                while(rs.next()){
-                    rv.add((RT)rs.getObject(1));
-                }    
-            }            
+            } else {
+                while (rs.next()) {
+                    rv.add((RT) rs.getObject(1));
+                }
+            }
             return rv;
-        }finally{
-            try{
-                rs.close();    
-            }finally{
+        } finally {
+            try {
+                rs.close();
+            } finally {
                 stmt.close();
-            }            
+            }
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     private <T> T get(ResultSet rs, int i, Class<T> type) throws Exception {
-        String methodName = "get"+type.getSimpleName();
-        if (methodName.equals("getInteger")){
+        String methodName = "get" + type.getSimpleName();
+        if (methodName.equals("getInteger")) {
             methodName = "getInt";
         }
         // TODO : cache methods
-        return (T)ResultSet.class.getMethod(methodName, int.class).invoke(rs, i);
+        return (T) ResultSet.class.getMethod(methodName, int.class).invoke(rs,
+                i);
     }
-    
+
     private void set(PreparedStatement stmt, int i, Object o) throws Exception {
         Class<?> type = o.getClass();
-        String methodName = "set"+type.getSimpleName();
-        if (methodName.equals("setInteger")){
+        String methodName = "set" + type.getSimpleName();
+        if (methodName.equals("setInteger")) {
             methodName = "setInt";
         }
-        type = ClassUtils.wrapperToPrimitive(type) != null ? ClassUtils.wrapperToPrimitive(type) : type;
-        if (methodName.equals("setDate") && type.equals(java.util.Date.class)){
+        type = ClassUtils.wrapperToPrimitive(type) != null ? ClassUtils
+                .wrapperToPrimitive(type) : type;
+        if (methodName.equals("setDate") && type.equals(java.util.Date.class)) {
             type = java.sql.Date.class;
-            o = new java.sql.Date(((java.util.Date)o).getTime());
-        }               
+            o = new java.sql.Date(((java.util.Date) o).getTime());
+        }
         // TODO : cache methods
-        PreparedStatement.class.getMethod(methodName, int.class, type).invoke(stmt, i, o);
+        PreparedStatement.class.getMethod(methodName, int.class, type).invoke(
+                stmt, i, o);
     }
 
     @Override
-    public String toString(){
-        if (queryString == null){
-            queryString = buildQueryString(false);    
-        }        
+    public String toString() {
+        if (queryString == null) {
+            queryString = buildQueryString(false);
+        }
         return queryString;
     }
-    
+
     @SuppressWarnings("unchecked")
-    public <RT> UnionBuilder<RT> union(SubQuery<Object,RT>... sq){
-        if (!getMetadata().getJoins().isEmpty()) throw new IllegalArgumentException("Don't mix union and from");
+    public <RT> UnionBuilder<RT> union(SubQuery<Object, RT>... sq) {
+        if (!getMetadata().getJoins().isEmpty())
+            throw new IllegalArgumentException("Don't mix union and from");
         this.sq = sq;
         return new UnionBuilder();
     }
 
-    protected SQLSerializer createSerializer(){
+    protected SQLSerializer createSerializer() {
         return new SQLSerializer(ops);
     }
-    
+
     protected String buildQueryString(boolean forCountRow) {
         SQLSerializer serializer = createSerializer();
-        if (sq != null){
+        if (sq != null) {
             serializer.serializeUnion(sq, getMetadata().getOrderBy());
-        }else{
-            serializer.serialize(getMetadata(), forCountRow);    
-        }                       
-        constants = serializer.getConstants();      
+        } else {
+            serializer.serialize(getMetadata(), forCountRow);
+        }
+        constants = serializer.getConstants();
         return serializer.toString();
     }
 
-    private long unsafeCount() throws SQLException{
-//        forCountRow = true;  
+    private long unsafeCount() throws SQLException {
+        // forCountRow = true;
         String queryString = buildQueryString(true);
         logger.debug("query : {}", queryString);
         System.out.println(queryString);
         PreparedStatement stmt = conn.prepareStatement(queryString);
         ResultSet rs = null;
-        try{
+        try {
             int counter = 1;
-            for (Object o : constants){
+            for (Object o : constants) {
                 try {
                     set(stmt, counter++, o);
                 } catch (Exception e) {
@@ -244,21 +249,22 @@ public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
                     logger.error(error, e);
                     throw new RuntimeException(e.getMessage(), e);
                 }
-            }        
-            rs = stmt.executeQuery();   
+            }
+            rs = stmt.executeQuery();
             rs.next();
             long rv = rs.getLong(1);
-            return rv;   
-        }finally{
-            try{
-                if (rs != null) rs.close();    
-            }finally{
+            return rv;
+        } finally {
+            try {
+                if (rs != null)
+                    rs.close();
+            } finally {
                 stmt.close();
-            }            
-        }        
+            }
+        }
     }
-    
-    public long count(){
+
+    public long count() {
         try {
             return unsafeCount();
         } catch (SQLException e) {
@@ -268,22 +274,22 @@ public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
         }
     }
 
-    public class UnionBuilder<RT>{
-        
+    public class UnionBuilder<RT> {
+
         public UnionBuilder<RT> orderBy(OrderSpecifier<?>... o) {
             AbstractSQLQuery.this.orderBy(o);
             return this;
         }
-        
+
         @SuppressWarnings("unchecked")
         public List<RT> list() throws SQLException {
-            if (sq[0].getQuery().getMetadata().getProjection().size() == 1){
-                return AbstractSQLQuery.this.listSingle(null);    
-            }else{
+            if (sq[0].getQuery().getMetadata().getProjection().size() == 1) {
+                return AbstractSQLQuery.this.listSingle(null);
+            } else {
                 return (List<RT>) AbstractSQLQuery.this.listMultiple();
-            }            
+            }
         }
-        
+
     }
 
     public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {

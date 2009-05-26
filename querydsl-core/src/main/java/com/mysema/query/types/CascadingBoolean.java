@@ -7,7 +7,6 @@ package com.mysema.query.types;
 
 import com.mysema.query.types.expr.EBoolean;
 
-
 /**
  * CascadingBoolean is a cascading builder for Boolean expressions
  * 
@@ -21,23 +20,25 @@ public class CascadingBoolean {
         expr = (expr == null) ? right : expr.and(right);
         return this;
     }
-    public void clear(){
+
+    public void clear() {
         expr = null;
     }
-    public CascadingBoolean not(EBoolean right){
+
+    public CascadingBoolean not(EBoolean right) {
         return and(Grammar.not(right));
     }
-    
+
     public CascadingBoolean or(EBoolean right) {
         expr = (expr == null) ? right : expr.or(right);
         return this;
     }
-    
-    public EBoolean create(){
+
+    public EBoolean create() {
         return expr;
     }
-    
-    public String toString(){
+
+    public String toString() {
         return expr != null ? expr.toString() : super.toString();
     }
 

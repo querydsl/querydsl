@@ -15,7 +15,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public interface Query<SubType extends Query<SubType>>{
+public interface Query<SubType extends Query<SubType>> {
     /**
      * use the given query sources for the query
      * 
@@ -23,7 +23,7 @@ public interface Query<SubType extends Query<SubType>>{
      * @return the Query itself
      */
     SubType from(Expr<?>... sources);
-    
+
     /**
      * inner join the given source
      * 
@@ -31,7 +31,7 @@ public interface Query<SubType extends Query<SubType>>{
      * @return the Query itself
      */
     SubType innerJoin(Expr<?> source);
-    
+
     /**
      * join the given source
      * 
@@ -39,7 +39,7 @@ public interface Query<SubType extends Query<SubType>>{
      * @return the Query itself
      */
     SubType join(Expr<?> source);
-    
+
     /**
      * full join the given source
      * 
@@ -47,7 +47,7 @@ public interface Query<SubType extends Query<SubType>>{
      * @return the Query itself
      */
     SubType fullJoin(Expr<?> source);
-    
+
     /**
      * left join the given source
      * 
@@ -62,8 +62,8 @@ public interface Query<SubType extends Query<SubType>>{
      * @param o
      * @return the Query itself
      */
-    SubType on(EBoolean o);    
-    
+    SubType on(EBoolean o);
+
     /**
      * set group by aggregation parameters
      * 
@@ -71,7 +71,7 @@ public interface Query<SubType extends Query<SubType>>{
      * @return the Query itself
      */
     SubType groupBy(Expr<?>... o);
-    
+
     /**
      * set the constraints of the group by aggreation
      * 
@@ -79,7 +79,7 @@ public interface Query<SubType extends Query<SubType>>{
      * @return the Query itself
      */
     SubType having(EBoolean... o);
-    
+
     /**
      * set the order constraints of the query
      * 

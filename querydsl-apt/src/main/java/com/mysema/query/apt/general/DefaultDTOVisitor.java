@@ -34,14 +34,16 @@ public class DefaultDTOVisitor extends SimpleDeclarationVisitor {
         String simpleName = d.getSimpleName();
         String name = d.getQualifiedName();
         String packageName = d.getPackage().getQualifiedName();
-        String superType = d.getSuperclass().getDeclaration().getQualifiedName();
+        String superType = d.getSuperclass().getDeclaration()
+                .getQualifiedName();
         last = new Type(superType, packageName, name, simpleName);
         types.add(last);
     }
 
     @Override
     public void visitConstructorDeclaration(ConstructorDeclaration d) {
-        List<Parameter> parameters = new ArrayList<Parameter>(d.getParameters().size());
+        List<Parameter> parameters = new ArrayList<Parameter>(d.getParameters()
+                .size());
         for (ParameterDeclaration pa : d.getParameters()) {
             String name = pa.getSimpleName();
             String typeName = new TypeHelper(pa.getType()).getFullName();

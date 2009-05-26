@@ -17,7 +17,7 @@ import org.apache.commons.io.FileUtils;
  * @version $Id$
  */
 public class APTUtils {
-    
+
     public static Writer writerFor(File file) {
         if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
             System.err.println("Folder " + file.getParent()

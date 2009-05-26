@@ -9,16 +9,16 @@ import com.mysema.query.types.expr.Expr;
 
 /**
  * @author tiwe
- *
+ * 
  * @param <K>
  * @param <V>
  */
 public interface PMap<K, V> extends Path<java.util.Map<K, V>> {
-	Expr<V> get(Expr<K> key);
+    Expr<V> get(Expr<K> key);
 
-	Expr<V> get(K key);
+    Expr<V> get(K key);
 
-	Class<K> getKeyType();
+    Class<K> getKeyType();
 
-	Class<V> getValueType();
+    Class<V> getValueType();
 }
