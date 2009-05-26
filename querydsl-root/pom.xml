@@ -138,6 +138,7 @@
         <version>2.4.3</version>
         <configuration>
           <useSystemClassLoader>false</useSystemClassLoader>
+          <forkMode>never</forkMode>
         </configuration>
       </plugin>         
     </plugins>
