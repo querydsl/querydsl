@@ -26,7 +26,7 @@ public class QueryBasicsTest extends AbstractJDOTest{
 		// FIXME
 		assertEquals("count", 2, query().from(product).count()); // returns 1, why?	
 	}
-			
+	
 	@Test
 	public void projectionTests(){
 		assertEquals("Sony Discman", query().from(product)
