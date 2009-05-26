@@ -5,9 +5,8 @@
  */
 package com.mysema.query.types.operation;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.unmodifiableList;
-
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.mysema.query.types.expr.EString;
@@ -23,12 +22,12 @@ public class OString extends EString implements Operation<String, String> {
     private final Op<String> op;
 
     public OString(Op<String> op, Expr<?>... args) {
-        this(op, asList(args));
+        this(op, Arrays.asList(args));
     }
 
     public OString(Op<String> op, List<Expr<?>> args) {
         this.op = op;
-        this.args = unmodifiableList(args);
+        this.args = Collections.unmodifiableList(args);
         validate();
     }
 

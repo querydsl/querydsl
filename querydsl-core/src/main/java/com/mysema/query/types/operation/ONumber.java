@@ -5,9 +5,8 @@
  */
 package com.mysema.query.types.operation;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.unmodifiableList;
-
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.mysema.query.types.expr.ENumber;
@@ -26,13 +25,13 @@ public class ONumber<OpType extends Number, D extends Number & Comparable<?>>
     private final Op<OpType> op;
 
     public ONumber(Class<? extends D> type, Op<OpType> op, Expr<?>... args) {
-        this(type, op, asList(args));
+        this(type, op, Arrays.asList(args));
     }
 
     public ONumber(Class<? extends D> type, Op<OpType> op, List<Expr<?>> args) {
         super(type);
         this.op = op;
-        this.args = unmodifiableList(args);
+        this.args = Collections.unmodifiableList(args);
         validate();
     }
 

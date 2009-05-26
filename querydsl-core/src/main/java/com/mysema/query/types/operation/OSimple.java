@@ -5,9 +5,8 @@
  */
 package com.mysema.query.types.operation;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.unmodifiableList;
-
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.mysema.query.types.expr.ESimple;
@@ -26,13 +25,13 @@ public class OSimple<OpType, D> extends ESimple<D> implements
     private final Op<OpType> op;
 
     public OSimple(Class<D> type, Op<OpType> op, Expr<?>... args) {
-        this(type, op, asList(args));
+        this(type, op, Arrays.asList(args));
     }
 
     public OSimple(Class<D> type, Op<OpType> op, List<Expr<?>> args) {
         super(type);
         this.op = op;
-        this.args = unmodifiableList(args);
+        this.args = Collections.unmodifiableList(args);
         validate();
     }
 

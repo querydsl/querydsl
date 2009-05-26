@@ -5,9 +5,8 @@
  */
 package com.mysema.query.types.operation;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.unmodifiableList;
-
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.mysema.query.types.expr.EBoolean;
@@ -23,12 +22,12 @@ public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
     private final Op<Boolean> op;
 
     public OBoolean(Op<Boolean> op, Expr<?>... args) {
-        this(op, asList(args));
+        this(op, Arrays.asList(args));
     }
 
     public OBoolean(Op<Boolean> op, List<Expr<?>> args) {
         this.op = op;
-        this.args = unmodifiableList(args);
+        this.args = Collections.unmodifiableList(args);
         validate();
     }
 
