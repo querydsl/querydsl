@@ -3,13 +3,18 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query;
+package com.mysema.query.collections;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 import org.junit.Test;
 
+import com.mysema.query.QGenericType;
+import com.mysema.query.QItemType;
+import com.mysema.query.QRelationType;
+import com.mysema.query.QRelationType2;
+import com.mysema.query.QSimpleTypes;
 import com.mysema.query.annotations.Entity;
 
 /**
