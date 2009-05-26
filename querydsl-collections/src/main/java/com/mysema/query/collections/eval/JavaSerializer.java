@@ -26,8 +26,8 @@ import com.mysema.query.collections.JavaOps;
 import com.mysema.query.serialization.BaseSerializer;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.Op;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.operation.Ops.Op;
 import com.mysema.query.types.path.Path;
 import com.mysema.query.types.path.PathMetadata.PathType;
 

@@ -9,8 +9,8 @@ import java.lang.reflect.Field;
 import java.util.regex.Pattern;
 
 import com.mysema.query.serialization.OperationPatterns;
+import com.mysema.query.types.operation.Op;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.operation.Ops.Op;
 import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.types.path.PathMetadata.PathType;
 

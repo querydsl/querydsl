@@ -16,8 +16,8 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.query.collections.JavaOps;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.Op;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.operation.Ops.Op;
 import com.mysema.query.types.path.Path;
 
 /**
