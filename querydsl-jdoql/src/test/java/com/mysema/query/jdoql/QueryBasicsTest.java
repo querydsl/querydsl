@@ -24,8 +24,15 @@ public class QueryBasicsTest extends AbstractJDOTest {
     @Ignore
     public void countTests() {
         // FIXME
-        assertEquals("count", 2, query().from(product).count()); // returns 1,
-                                                                 // why?
+        assertEquals("count", 2, query().from(product).count()); // returns 1, why?
+    }
+    
+    @Test
+    public void aggregation(){
+        // TODO sum
+        // TODO min
+        // TODO max
+        // TODO avg
     }
 
     @Test
