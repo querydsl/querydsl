@@ -139,6 +139,10 @@ public abstract class OperationPatterns {
         add(Ops.OpString.LTRIM, "ltrim(%s)");
         add(Ops.OpString.RTRIM, "rtrim(%s)");
         add(Ops.OpString.SPACE, "space(%s)");
+        
+        // collection
+        add(Ops.CONTAINS_KEY, "containsKey(%s,%s)");
+        add(Ops.CONTAINS_VALUE, "containsValue(%s,%s)");
 
         // path types
         for (PathType type : new PathType[] { PathMetadata.LISTVALUE,

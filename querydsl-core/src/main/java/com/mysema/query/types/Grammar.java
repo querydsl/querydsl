@@ -23,6 +23,7 @@ import com.mysema.query.types.operation.Ops.OpNumberAgg;
 import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
+import com.mysema.query.types.path.PMap;
 
 /**
  * Grammar provides the factory methods for the fluent grammar.
@@ -38,9 +39,6 @@ public class Grammar {
     protected static final OperationFactory operationFactory = SimpleOperationFactory
             .getInstance();
 
-    protected Grammar() {
-    };
-
     /**
      * Expr : left > right
      * 
@@ -54,20 +52,7 @@ public class Grammar {
         // types
         return operationFactory.createBoolean(Ops.AFTER, left, exprFactory
                 .createConstant(right));
-    }
-
-    /**
-     * Expr : left >= right (after or equals)
-     * 
-     * @param <A>
-     * @param left
-     * @param right
-     * @return
-     */
-    public static <A extends Comparable<?>> EBoolean aoe(Expr<A> left, A right) {
-        return operationFactory.createBoolean(Ops.AOE, left, exprFactory
-                .createConstant(right));
-    }
+    };
 
     /**
      * Expr : left > right
@@ -84,7 +69,31 @@ public class Grammar {
         // types
         return operationFactory.createBoolean(Ops.AFTER, left, right);
     }
-
+    
+    /**
+     * Expr : left and right
+     * 
+     * @param left
+     * @param right
+     * @return
+     */
+    public static EBoolean and(EBoolean left, EBoolean right) {
+        return operationFactory.createBoolean(Ops.AND, left, right);
+    }
+    
+    /**
+     * Expr : left >= right (after or equals)
+     * 
+     * @param <A>
+     * @param left
+     * @param right
+     * @return
+     */
+    public static <A extends Comparable<?>> EBoolean aoe(Expr<A> left, A right) {
+        return operationFactory.createBoolean(Ops.AOE, left, exprFactory
+                .createConstant(right));
+    }
+    
     /**
      * Expr : left >= right
      * 
@@ -97,18 +106,7 @@ public class Grammar {
             Expr<A> right) {
         return operationFactory.createBoolean(Ops.AOE, left, right);
     }
-
-    /**
-     * Expr : left and right
-     * 
-     * @param left
-     * @param right
-     * @return
-     */
-    public static EBoolean and(EBoolean left, EBoolean right) {
-        return operationFactory.createBoolean(Ops.AND, left, right);
-    }
-
+    
     /**
      * Expr : from as to
      * 
@@ -189,19 +187,6 @@ public class Grammar {
     }
 
     /**
-     * Expr : left <= right (before or equals)
-     * 
-     * @param <A>
-     * @param left
-     * @param right
-     * @return
-     */
-    public static <A extends Comparable<?>> EBoolean boe(Expr<A> left, A right) {
-        return operationFactory.createBoolean(Ops.BOE, left, exprFactory
-                .createConstant(right));
-    }
-
-    /**
      * Expr : left < right
      * 
      * @param <A>
@@ -211,23 +196,9 @@ public class Grammar {
      */
     public static <A extends Comparable<?>> EBoolean before(Expr<A> left,
             Expr<A> right) {
-        // NOTE : signature is for Comparables to support other than Java's date
-        // types
+        // NOTE : signature is for Comparables to support other than Java's date types
         // NOTE : basically same as lt
         return operationFactory.createBoolean(Ops.BEFORE, left, right);
-    }
-
-    /**
-     * Expr : left <= right
-     * 
-     * @param <A>
-     * @param left
-     * @param right
-     * @return
-     */
-    public static <A extends Comparable<?>> EBoolean boe(Expr<A> left,
-            Expr<A> right) {
-        return operationFactory.createBoolean(Ops.BOE, left, right);
     }
 
     /**
@@ -257,6 +228,32 @@ public class Grammar {
     public static <A extends Comparable<?>> EBoolean between(Expr<A> left,
             Expr<A> start, Expr<A> end) {
         return operationFactory.createBoolean(Ops.BETWEEN, left, start, end);
+    }
+
+    /**
+     * Expr : left <= right (before or equals)
+     * 
+     * @param <A>
+     * @param left
+     * @param right
+     * @return
+     */
+    public static <A extends Comparable<?>> EBoolean boe(Expr<A> left, A right) {
+        return operationFactory.createBoolean(Ops.BOE, left, exprFactory
+                .createConstant(right));
+    }
+
+    /**
+     * Expr : left <= right
+     * 
+     * @param <A>
+     * @param left
+     * @param right
+     * @return
+     */
+    public static <A extends Comparable<?>> EBoolean boe(Expr<A> left,
+            Expr<A> right) {
+        return operationFactory.createBoolean(Ops.BOE, left, right);
     }
 
     /**
@@ -331,6 +328,50 @@ public class Grammar {
     }
 
     /**
+     * 
+     * @param <K>
+     * @param path
+     * @param key
+     * @return
+     */
+    public static <K> EBoolean containsKey(PMap<K,?> path, Expr<K> key){
+        return operationFactory.createBoolean(Ops.CONTAINS_KEY, (Expr<?>)path, key);
+    }
+
+    /**
+     * 
+     * @param <K>
+     * @param path
+     * @param key
+     * @return
+     */
+    public static <K> EBoolean containsKey(PMap<K,?> path, K key){
+        return operationFactory.createBoolean(Ops.CONTAINS_KEY, (Expr<?>)path, exprFactory.createConstant(key));
+    }
+
+    /**
+     * 
+     * @param <V>
+     * @param path
+     * @param value
+     * @return
+     */
+    public static <V> EBoolean containsValue(PMap<?,V> path, Expr<V> value){
+        return operationFactory.createBoolean(Ops.CONTAINS_VALUE, (Expr<?>)path, value);
+    }
+
+    /**
+     * 
+     * @param <V>
+     * @param path
+     * @param value
+     * @return
+     */
+    public static <V> EBoolean containsValue(PMap<?,V> path, V value){
+        return operationFactory.createBoolean(Ops.CONTAINS_VALUE, (Expr<?>)path, exprFactory.createConstant(value));
+    }
+
+    /**
      * Expr : count(*)
      * 
      * @return
@@ -368,11 +409,6 @@ public class Grammar {
      */
     public static EBoolean empty(PCollection<?> collection) {
         return operationFactory.createBoolean(Ops.COL_ISEMPTY,
-                (Expr<?>) collection);
-    }
-
-    public static EBoolean notEmpty(PCollection<?> collection) {
-        return operationFactory.createBoolean(Ops.COL_ISNOTEMPTY,
                 (Expr<?>) collection);
     }
 
@@ -557,19 +593,6 @@ public class Grammar {
     }
 
     /**
-     * Expr : left in right OR right contains left
-     * 
-     * @param <A>
-     * @param left
-     * @param right
-     * @return
-     */
-    public static <A> EBoolean in(Expr<A> left, Collection<? extends A> right) {
-        return operationFactory.createBoolean(Ops.IN, left, exprFactory
-                .createConstant(right));
-    }
-
-    /**
      * Expr : left in rest OR rest contains left
      * 
      * @param <A>
@@ -580,6 +603,19 @@ public class Grammar {
     public static <A> EBoolean in(Expr<A> left, A... rest) {
         return operationFactory.createBoolean(Ops.IN, left, exprFactory
                 .createConstant(rest));
+    }
+
+    /**
+     * Expr : left in right OR right contains left
+     * 
+     * @param <A>
+     * @param left
+     * @param right
+     * @return
+     */
+    public static <A> EBoolean in(Expr<A> left, Collection<? extends A> right) {
+        return operationFactory.createBoolean(Ops.IN, left, exprFactory
+                .createConstant(right));
     }
 
     /**
@@ -631,6 +667,21 @@ public class Grammar {
         return operationFactory.createNumber(Integer.class, Ops.INDEXOF_2ARGS,
                 left, exprFactory.createConstant(right), exprFactory
                         .createConstant(i));
+    }
+
+    /**
+     * Expr : left instanceOf right
+     * 
+     * @param <A>
+     * @param <B>
+     * @param left
+     * @param right
+     * @return
+     */
+    public static <A, B extends A> EBoolean instanceOf(Expr<A> left,
+            Class<B> right) {
+        return operationFactory.createBoolean(Ops.ISTYPEOF, left, exprFactory
+                .createConstant(right));
     }
 
     /**
@@ -899,6 +950,11 @@ public class Grammar {
         return operationFactory.createBoolean(Ops.NOTBETWEEN, left, start, end);
     }
 
+    public static EBoolean notEmpty(PCollection<?> collection) {
+        return operationFactory.createBoolean(Ops.COL_ISNOTEMPTY,
+                (Expr<?>) collection);
+    }
+
     /**
      * Expr : left not in rest
      * 
@@ -943,16 +999,6 @@ public class Grammar {
             return operationFactory.createNumber(targetType, Ops.NUMCAST,
                     source, exprFactory.createConstant(targetType));
         }
-    }
-
-    /**
-     * Expr : cast(source as String)
-     * 
-     * @param source
-     * @return
-     */
-    public static EString stringCast(EComparable<?> source) {
-        return operationFactory.createString(Ops.STRING_CAST, source);
     }
 
     /**
@@ -1036,6 +1082,16 @@ public class Grammar {
     }
 
     /**
+     * Expr : cast(source as String)
+     * 
+     * @param source
+     * @return
+     */
+    public static EString stringCast(EComparable<?> source) {
+        return operationFactory.createString(Ops.STRING_CAST, source);
+    }
+
+    /**
      * Expr : left.substring(right)
      * 
      * @param left
@@ -1073,21 +1129,6 @@ public class Grammar {
     }
 
     /**
-     * Expr : left instanceOf right
-     * 
-     * @param <A>
-     * @param <B>
-     * @param left
-     * @param right
-     * @return
-     */
-    public static <A, B extends A> EBoolean instanceOf(Expr<A> left,
-            Class<B> right) {
-        return operationFactory.createBoolean(Ops.ISTYPEOF, left, exprFactory
-                .createConstant(right));
-    }
-
-    /**
      * Expr : left.toUpperCase()
      * 
      * @param left
@@ -1095,5 +1136,8 @@ public class Grammar {
      */
     public static EString upper(Expr<String> left) {
         return operationFactory.createString(Ops.UPPER, left);
+    }
+
+    protected Grammar() {
     }
 }

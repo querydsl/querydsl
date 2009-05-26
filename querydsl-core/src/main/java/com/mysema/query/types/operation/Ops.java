@@ -18,7 +18,7 @@ import java.util.List;
  * @version $Id$
  */
 public interface Ops {
-
+    
     static List<Class<?>> Boolean_x_2 = unmodifiableList(Arrays.<Class<?>> asList(Boolean.class, Boolean.class));
 
     static List<Class<?>> Comparable_x_2 = unmodifiableList(Arrays.<Class<?>> asList(Comparable.class, Comparable.class));
@@ -122,6 +122,8 @@ public interface Ops {
     Op<Boolean> ENDSWITH = new Op<Boolean>(String_x_2);
     Op<Boolean> ENDSWITH_IC = new Op<Boolean>(String_x_2);
     Op<Boolean> CONTAINS = new Op<Boolean>(String_x_2);
+    Op<Boolean> CONTAINS_KEY = new Op<Boolean>(Object_x_2);
+    Op<Boolean> CONTAINS_VALUE = new Op<Boolean>(Object_x_2);
 
     // subquery operations
     Op<Boolean> EXISTS = new Op<Boolean>(Object.class);

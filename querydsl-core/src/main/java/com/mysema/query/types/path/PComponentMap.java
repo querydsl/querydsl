@@ -83,4 +83,24 @@ public class PComponentMap<K, V> extends ESimple<java.util.Map<K, V>> implements
         return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
                 : false;
     }
+
+    @Override
+    public EBoolean containsKey(Expr<K> key) {
+        return Grammar.containsKey(this, key);
+    }
+
+    @Override
+    public EBoolean containsKey(K key) {
+        return Grammar.containsKey(this, key);
+    }
+
+    @Override
+    public EBoolean containsValue(Expr<V> value) {
+        return Grammar.containsValue(this, value);
+    }
+
+    @Override
+    public EBoolean containsValue(V value) {
+        return Grammar.containsValue(this, value);
+    }
 }

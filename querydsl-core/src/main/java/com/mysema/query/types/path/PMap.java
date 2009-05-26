@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.path;
 
+import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -21,4 +22,12 @@ public interface PMap<K, V> extends Path<java.util.Map<K, V>> {
     Class<K> getKeyType();
 
     Class<V> getValueType();
+    
+    EBoolean containsKey(Expr<K> key);
+    
+    EBoolean containsKey(K key);
+    
+    EBoolean containsValue(Expr<V> value);
+    
+    EBoolean containsValue(V value);
 }
