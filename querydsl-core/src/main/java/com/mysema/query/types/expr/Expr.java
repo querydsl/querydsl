@@ -20,8 +20,6 @@ import com.mysema.query.types.ValidationVisitor;
  */
 public abstract class Expr<D> {
 
-    // static final SimpleExprFactory factory = new SimpleExprFactory();
-
     private final Class<? extends D> type;
     private String toString;
 

@@ -41,8 +41,9 @@ public abstract class EComparable<D extends Comparable> extends ESimple<D> {
     }
 
     public final OrderSpecifier<D> asc() {
-        if (asc == null)
+        if (asc == null){
             asc = Grammar.asc(this);
+        }            
         return asc;
     }
 
@@ -77,8 +78,9 @@ public abstract class EComparable<D extends Comparable> extends ESimple<D> {
     }
 
     public final OrderSpecifier<D> desc() {
-        if (desc == null)
+        if (desc == null){
             desc = Grammar.desc(this);
+        }            
         return desc;
     }
 
@@ -91,8 +93,9 @@ public abstract class EComparable<D extends Comparable> extends ESimple<D> {
     }
 
     public EString stringValue() {
-        if (stringCast == null)
+        if (stringCast == null){
             stringCast = Grammar.stringCast(this);
+        }            
         return stringCast;
     }
 
