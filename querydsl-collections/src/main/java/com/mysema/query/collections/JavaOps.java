@@ -43,9 +43,7 @@ public class JavaOps extends OperationPatterns {
         add(Ops.ISNULL, "%s == null");
         add(Ops.ISNOTNULL, "%s != null");
 
-        add(Ops.ISTYPEOF, "%2$s.isInstance(%1$s)");
-        add(Ops.IN, "%2$s.contains(%1$s)");
-        add(Ops.NOTIN, "!%2$s.contains(%1$s)");
+        add(Ops.ISTYPEOF, "%2$s.isInstance(%1$s)");        
         add(Ops.LIKE, functions + ".like(%s,%s)");
 
         // java.lang.String
@@ -72,6 +70,12 @@ public class JavaOps extends OperationPatterns {
         add(Ops.CONTAINS, "%s.contains(%s)");
         add(Ops.COL_ISEMPTY, "%s.isEmpty()");
         add(Ops.COL_ISNOTEMPTY, "!%s.isEmpty()");
+        
+        // collection
+        add(Ops.IN, "%2$s.contains(%1$s)");
+        add(Ops.NOTIN, "!%2$s.contains(%1$s)");
+        add(Ops.CONTAINS_KEY, "%s.containsKey(%s)");
+        add(Ops.CONTAINS_VALUE, "%s.containsValue(%s)");
 
         // math
         try {
