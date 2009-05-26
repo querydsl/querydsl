@@ -63,8 +63,12 @@ public class JDOQLOps extends OperationPatterns {
         add(Ops.EQ_IGNORECASE, "%s.equalsIgnoreCase(%s)");
         add(Ops.ENDSWITH, "%s.endsWith(%s)");
         add(Ops.ENDSWITH_IC, "%s.toLowerCase().endsWith(%s.toLowerCase())");
+        
+        // collection / map
         add(Ops.CONTAINS, "%s.contains(%s)");
-
+        add(Ops.CONTAINS_KEY, "%s.containsKey(%s)");
+        add(Ops.CONTAINS_VALUE, "%s.containsValue(%s)");
+        
         // path types
         add(PathMetadata.VARIABLE, "%s");
         for (PathType type : new PathType[] { PathMetadata.LISTVALUE,

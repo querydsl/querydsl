@@ -1,5 +1,6 @@
 package com.mysema.query.jdoql.testdomain;
 
+import java.util.Map;
 import java.util.Set;
 
 import javax.jdo.annotations.PersistenceCapable;
@@ -17,6 +18,7 @@ public class Department {
     private Company company;
     // @OneToMany(mappedBy="department")
     private Set<Employee> employees;
+    private Map<String,Employee> employeesByUserName;
     private String name;
     // @ManyToOne
     private Department parent;
@@ -52,6 +54,14 @@ public class Department {
 
     public void setEmployees(Set<Employee> employees) {
         this.employees = employees;
+    }
+    
+    public Map<String, Employee> getEmployeesByUserName() {
+        return employeesByUserName;
+    }
+
+    public void setEmployeesByUserName(Map<String, Employee> employeesByUserName) {
+        this.employeesByUserName = employeesByUserName;
     }
 
     public String getName() {
