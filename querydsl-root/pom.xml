@@ -133,6 +133,13 @@
           <target>1.6</target>
         </configuration>
       </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.4.3</version>
+        <configuration>
+          <useSystemClassLoader>true</useSystemClassLoader>
+        </configuration>
+      </plugin>         
     </plugins>
   </build>
 
