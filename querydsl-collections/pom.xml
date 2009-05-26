@@ -62,7 +62,7 @@
                 -AnamePrefix=Q</A>
               <testIncludes>
                 <testInclude>
-                  com/mysema/query/DomainTest*.java
+                  com/mysema/query/collections/DomainTest*.java
                 </testInclude>
               </testIncludes>
               <showWarnings>true</showWarnings>

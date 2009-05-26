@@ -6,15 +6,16 @@
 package com.mysema.query.collections;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
 
 import org.junit.Test;
 
-import com.mysema.query.QGenericType;
-import com.mysema.query.QItemType;
-import com.mysema.query.QRelationType;
-import com.mysema.query.QRelationType2;
-import com.mysema.query.QSimpleTypes;
 import com.mysema.query.annotations.Entity;
 
 /**
