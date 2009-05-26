@@ -163,6 +163,8 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
                 query.setResult(serializer.toString());
             }
         }
+        
+        // TODO : distinct results
 
         // order (not for count)
         if (!getMetadata().getOrderBy().isEmpty() && !forCount) {
