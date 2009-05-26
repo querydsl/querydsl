@@ -69,6 +69,11 @@ public class JDOQLSerializerTest {
                 serialize(department.employeesByUserName.containsKey("")));
         assertEquals("department.employeesByUserName.containsValue(a1)", 
                 serialize(department.employeesByUserName.containsValue(new Employee())));
+        
+        assertEquals("department.employeesByUserName.isEmpty()",
+                serialize(department.employeesByUserName.empty()));
+        assertEquals("!department.employeesByUserName.isEmpty()",
+                serialize(department.employeesByUserName.notEmpty()));
     }
 
     @Test

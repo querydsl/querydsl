@@ -408,8 +408,16 @@ public class Grammar {
      * @return
      */
     public static EBoolean empty(PCollection<?> collection) {
-        return operationFactory.createBoolean(Ops.COL_ISEMPTY,
-                (Expr<?>) collection);
+        return operationFactory.createBoolean(Ops.COL_ISEMPTY,(Expr<?>) collection);
+    }
+    
+    /**
+     * 
+     * @param map
+     * @return
+     */
+    public static EBoolean empty(PMap<?,?> map) {
+        return operationFactory.createBoolean(Ops.MAP_ISEMPTY,(Expr<?>) map);
     }
 
     /**
@@ -950,11 +958,25 @@ public class Grammar {
         return operationFactory.createBoolean(Ops.NOTBETWEEN, left, start, end);
     }
 
+    /**
+     * 
+     * @param collection
+     * @return
+     */
     public static EBoolean notEmpty(PCollection<?> collection) {
-        return operationFactory.createBoolean(Ops.COL_ISNOTEMPTY,
-                (Expr<?>) collection);
+        return operationFactory.createBoolean(Ops.COL_ISNOTEMPTY,(Expr<?>) collection);
     }
 
+    /**
+     * 
+     * @param collection
+     * @return
+     */
+    public static EBoolean notEmpty(PMap<?,?> map) {
+        return operationFactory.createBoolean(Ops.MAP_ISNOTEMPTY,(Expr<?>) map);
+    }
+
+    
     /**
      * Expr : left not in rest
      * 

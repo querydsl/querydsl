@@ -35,6 +35,16 @@ public abstract class OperationPatterns {
         add(Ops.XNOR, "%s xnor %s", 39);
         add(Ops.XOR, "%s xor %s", 39);
 
+        // collection
+        add(Ops.COL_ISEMPTY, "empty(%s)");
+        add(Ops.COL_ISNOTEMPTY, "not empty(%s)");
+        
+        // map
+        add(Ops.MAP_ISEMPTY, "empty(%s)");
+        add(Ops.MAP_ISNOTEMPTY, "not empty(%s)");
+        add(Ops.CONTAINS_KEY, "containsKey(%s,%s)");
+        add(Ops.CONTAINS_VALUE, "containsValue(%s,%s)");
+        
         // comparison
         add(Ops.BETWEEN, "%s between %s and %s", 30);
         add(Ops.NOTBETWEEN, "%s not between %s and %s", 30);
@@ -67,9 +77,7 @@ public abstract class OperationPatterns {
         add(Ops.NOTIN, "%s not in %s");
         add(Ops.ISNULL, "%s is null", 26);
         add(Ops.ISNOTNULL, "%s is not null", 26);
-        add(Ops.COL_ISEMPTY, "empty(%s)");
-        add(Ops.COL_ISNOTEMPTY, "not empty(%s)");
-
+        
         add(Ops.EXISTS, "exists(%s)");
 
         add(Ops.NUMCAST, "cast(%s,%s)");
@@ -140,10 +148,6 @@ public abstract class OperationPatterns {
         add(Ops.OpString.RTRIM, "rtrim(%s)");
         add(Ops.OpString.SPACE, "space(%s)");
         
-        // collection
-        add(Ops.CONTAINS_KEY, "containsKey(%s,%s)");
-        add(Ops.CONTAINS_VALUE, "containsValue(%s,%s)");
-
         // path types
         for (PathType type : new PathType[] { PathMetadata.LISTVALUE,
                 PathMetadata.LISTVALUE_CONSTANT, PathMetadata.MAPVALUE,

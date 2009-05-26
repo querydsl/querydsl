@@ -108,4 +108,12 @@ public class PEntityMap<K, V> extends Expr<Map<K, V>> implements PMap<K, V> {
     public EBoolean containsValue(V value) {
         return Grammar.containsValue(this, value);
     }
+    
+    public EBoolean empty() {
+        return Grammar.empty(this);
+    }
+
+    public EBoolean notEmpty() {
+        return Grammar.notEmpty(this);
+    }
 }

@@ -30,4 +30,8 @@ public interface PMap<K, V> extends Path<java.util.Map<K, V>> {
     EBoolean containsValue(Expr<V> value);
     
     EBoolean containsValue(V value);
+    
+    EBoolean empty();
+
+    EBoolean notEmpty();
 }

@@ -68,6 +68,8 @@ public interface Ops {
     // collection
     Op<Boolean> COL_ISEMPTY = new Op<Boolean>(Object.class);
     Op<Boolean> COL_ISNOTEMPTY = new Op<Boolean>(Object.class);
+    Op<Boolean> MAP_ISEMPTY = new Op<Boolean>(Object.class);
+    Op<Boolean> MAP_ISNOTEMPTY = new Op<Boolean>(Object.class);
 
     // Boolean
     Op<Boolean> AND = new Op<Boolean>(Boolean_x_2);

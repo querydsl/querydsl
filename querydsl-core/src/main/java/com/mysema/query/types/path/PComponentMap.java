@@ -103,4 +103,12 @@ public class PComponentMap<K, V> extends ESimple<java.util.Map<K, V>> implements
     public EBoolean containsValue(V value) {
         return Grammar.containsValue(this, value);
     }
+    
+    public EBoolean empty() {
+        return Grammar.empty(this);
+    }
+
+    public EBoolean notEmpty() {
+        return Grammar.notEmpty(this);
+    }
 }

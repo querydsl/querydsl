@@ -36,6 +36,13 @@ public class JDOQLOps extends OperationPatterns {
         add(Ops.NOTIN, "!%2$s.contains(%1$s)");
         add(Ops.COL_ISEMPTY, "%s.isEmpty()");
         add(Ops.COL_ISNOTEMPTY, "!%s.isEmpty()");
+        add(Ops.CONTAINS, "%s.contains(%s)");
+        
+        // map
+        add(Ops.MAP_ISEMPTY, "%s.isEmpty()");
+        add(Ops.MAP_ISNOTEMPTY, "!%s.isEmpty()");
+        add(Ops.CONTAINS_KEY, "%s.containsKey(%s)");
+        add(Ops.CONTAINS_VALUE, "%s.containsValue(%s)");
 
         // comparable
         add(Ops.AFTER, "%s > %s");
@@ -64,10 +71,6 @@ public class JDOQLOps extends OperationPatterns {
         add(Ops.ENDSWITH, "%s.endsWith(%s)");
         add(Ops.ENDSWITH_IC, "%s.toLowerCase().endsWith(%s.toLowerCase())");
         
-        // collection / map
-        add(Ops.CONTAINS, "%s.contains(%s)");
-        add(Ops.CONTAINS_KEY, "%s.containsKey(%s)");
-        add(Ops.CONTAINS_VALUE, "%s.containsValue(%s)");
         
         // path types
         add(PathMetadata.VARIABLE, "%s");
