@@ -8,8 +8,8 @@ package com.mysema.query.serialization;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mysema.query.types.operation.Op;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.operation.Ops.Op;
 import com.mysema.query.types.operation.Ops.OpNumberAgg;
 import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.types.path.PathMetadata.PathType;

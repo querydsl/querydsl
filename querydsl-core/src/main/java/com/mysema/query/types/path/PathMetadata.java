@@ -11,7 +11,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import com.mysema.query.types.ExprFactory;
 import com.mysema.query.types.SimpleExprFactory;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.operation.Op;
 
 /**
  * PathMetadata provides metadata for Path expressions.
@@ -151,7 +151,7 @@ public final class PathMetadata<T> {
     /**
      * The Class PathType.
      */
-    public static class PathType extends Ops.Op<Path<?>> {
+    public static class PathType extends Op<Path<?>> {
         private final String symbol;
 
         public PathType(String symbol) {

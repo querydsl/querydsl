@@ -31,29 +31,6 @@ public interface Ops {
 
     static List<Class<?>> String_x_2 = unmodifiableList(Arrays.<Class<?>> asList(String.class, String.class));
 
-    /**
-     * The Class Op.
-     */
-    public static class Op<RT> {
-        private final List<Class<?>> types;
-
-        public Op(Class<?> type) {
-            this(Collections.<Class<?>> singletonList(type));
-        }
-
-        public Op(Class<?>... types) {
-            this(Arrays.<Class<?>> asList(types));
-        }
-
-        public Op(List<Class<?>> types) {
-            this.types = unmodifiableList(types);
-        }
-
-        public List<Class<?>> getTypes() {
-            return types;
-        }
-    }
-
     // general
     Op<Boolean> EQ_PRIMITIVE = new Op<Boolean>(Object_x_2);
     Op<Boolean> EQ_OBJECT = new Op<Boolean>(Object_x_2);
@@ -68,6 +45,8 @@ public interface Ops {
     // collection
     Op<Boolean> COL_ISEMPTY = new Op<Boolean>(Object.class);
     Op<Boolean> COL_ISNOTEMPTY = new Op<Boolean>(Object.class);
+    
+    // map
     Op<Boolean> MAP_ISEMPTY = new Op<Boolean>(Object.class);
     Op<Boolean> MAP_ISNOTEMPTY = new Op<Boolean>(Object.class);
 
@@ -130,15 +109,11 @@ public interface Ops {
     // subquery operations
     Op<Boolean> EXISTS = new Op<Boolean>(Object.class);
 
-    public static final List<Op<?>> equalsOps = Collections
-            .unmodifiableList(Arrays.<Op<?>> asList(EQ_OBJECT, EQ_PRIMITIVE));
+    public static final List<Op<?>> equalsOps = Collections.unmodifiableList(Arrays.<Op<?>> asList(EQ_OBJECT, EQ_PRIMITIVE));
 
-    public static final List<Op<?>> notEqualsOps = Collections
-            .unmodifiableList(Arrays.<Op<?>> asList(NE_OBJECT, NE_PRIMITIVE));
+    public static final List<Op<?>> notEqualsOps = Collections.unmodifiableList(Arrays.<Op<?>> asList(NE_OBJECT, NE_PRIMITIVE));
 
-    public static final List<Op<?>> compareOps = Collections
-            .unmodifiableList(Arrays.<Op<?>> asList(EQ_OBJECT, EQ_PRIMITIVE,
-                    LT, GT, GOE, LOE));
+    public static final List<Op<?>> compareOps = Collections.unmodifiableList(Arrays.<Op<?>> asList(EQ_OBJECT, EQ_PRIMITIVE,LT, GT, GOE, LOE));
 
     /**
      * Aggreate operators

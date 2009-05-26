@@ -8,7 +8,6 @@ package com.mysema.query.types.operation;
 import java.util.List;
 
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Ops.Op;
 
 /**
  * Operation represents an operation with operator and arguments

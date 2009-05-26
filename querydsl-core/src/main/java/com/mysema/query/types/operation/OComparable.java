@@ -11,7 +11,6 @@ import java.util.List;
 
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Ops.Op;
 
 /**
  * @author tiwe

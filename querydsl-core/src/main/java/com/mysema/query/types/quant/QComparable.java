@@ -8,7 +8,7 @@ package com.mysema.query.types.quant;
 import com.mysema.query.types.CollectionType;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Ops.Op;
+import com.mysema.query.types.operation.Op;
 
 /**
  * The Class Comparable.

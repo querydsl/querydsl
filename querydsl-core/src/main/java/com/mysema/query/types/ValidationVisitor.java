@@ -12,8 +12,8 @@ import com.mysema.query.types.alias.AToPath;
 import com.mysema.query.types.custom.Custom;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.Op;
 import com.mysema.query.types.operation.Operation;
-import com.mysema.query.types.operation.Ops.Op;
 import com.mysema.query.types.path.Path;
 import com.mysema.query.types.quant.Quant;
 

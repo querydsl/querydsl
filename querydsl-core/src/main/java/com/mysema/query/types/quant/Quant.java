@@ -6,7 +6,7 @@
 package com.mysema.query.types.quant;
 
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Ops.Op;
+import com.mysema.query.types.operation.Op;
 
 /**
  * Quant provides expressions for quantification.
