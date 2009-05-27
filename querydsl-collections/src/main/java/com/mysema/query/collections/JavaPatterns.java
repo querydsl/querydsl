@@ -12,7 +12,7 @@ import com.mysema.query.serialization.OperationPatterns;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PathMetadata;
-import com.mysema.query.types.path.PathMetadata.PathType;
+import com.mysema.query.types.path.PathType;
 
 /**
  * JavaOps extends OperationPatterns to add Java syntax specific operation
@@ -96,18 +96,18 @@ public class JavaPatterns extends OperationPatterns {
         add(Ops.MOD, "%s %% %s");
 
         // path types
-        for (PathType type : new PathType[] { PathMetadata.LISTVALUE_CONSTANT }) {
+        for (PathType type : new PathType[] { PathType.LISTVALUE_CONSTANT }) {
             add(type, "%s.get(%s.intValue())");
         }
 
         // path types
-        for (PathType type : new PathType[] { PathMetadata.LISTVALUE,
-                PathMetadata.LISTVALUE_CONSTANT, PathMetadata.MAPVALUE,
-                PathMetadata.MAPVALUE_CONSTANT }) {
+        for (PathType type : new PathType[] { PathType.LISTVALUE,
+                PathType.LISTVALUE_CONSTANT, PathType.MAPVALUE,
+                PathType.MAPVALUE_CONSTANT }) {
             add(type, "%s.get(%s)");
         }
-        add(PathMetadata.ARRAYVALUE, "%s[%s]");
-        add(PathMetadata.ARRAYVALUE_CONSTANT, "%s[%s.intValue()]");
+        add(PathType.ARRAYVALUE, "%s[%s]");
+        add(PathType.ARRAYVALUE_CONSTANT, "%s[%s.intValue()]");
     }
 
     public static <A extends Comparable<? super A>> boolean between(A a, A b, A c) {

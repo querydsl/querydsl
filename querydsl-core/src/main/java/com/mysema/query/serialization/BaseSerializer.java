@@ -5,11 +5,6 @@
  */
 package com.mysema.query.serialization;
 
-import static com.mysema.query.types.path.PathMetadata.ARRAYVALUE_CONSTANT;
-import static com.mysema.query.types.path.PathMetadata.LISTVALUE_CONSTANT;
-import static com.mysema.query.types.path.PathMetadata.PROPERTY;
-import static com.mysema.query.types.path.PathMetadata.VARIABLE;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,10 +18,10 @@ import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Operation;
+import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.path.Path;
-import com.mysema.query.types.path.PathMetadata.PathType;
+import com.mysema.query.types.path.PathType;
 import com.mysema.query.types.quant.Quant;
 
 /**
@@ -149,9 +144,9 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
             parentAsString = toString((Expr<?>) path.getMetadata().getParent(),
                     false);
         }
-        if (pathType == PROPERTY || pathType == VARIABLE
-                || pathType == LISTVALUE_CONSTANT
-                || pathType == ARRAYVALUE_CONSTANT) {
+        if (pathType == PathType.PROPERTY || pathType == PathType.VARIABLE
+                || pathType == PathType.LISTVALUE_CONSTANT
+                || pathType == PathType.ARRAYVALUE_CONSTANT) {
             exprAsString = path.getMetadata().getExpression().toString();
         } else if (path.getMetadata().getExpression() != null) {
             exprAsString = toString(path.getMetadata().getExpression(), false);

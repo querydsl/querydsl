@@ -14,7 +14,7 @@ import com.mysema.query.serialization.OperationPatterns;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PathMetadata;
-import com.mysema.query.types.path.PathMetadata.PathType;
+import com.mysema.query.types.path.PathType;
 
 /**
  * HqlOps extends OperationPatterns to provide operator patterns for HQL
@@ -96,14 +96,14 @@ public class HQLPatterns extends OperationPatterns {
         add(OpQuant.NOTEXISTS, "not exists %s");
 
         // path types
-        for (PathType type : new PathType[] { PathMetadata.LISTVALUE,
-                PathMetadata.LISTVALUE_CONSTANT, PathMetadata.MAPVALUE,
-                PathMetadata.MAPVALUE_CONSTANT }) {
+        for (PathType type : new PathType[] { PathType.LISTVALUE,
+                PathType.LISTVALUE_CONSTANT, PathType.MAPVALUE,
+                PathType.MAPVALUE_CONSTANT }) {
             add(type, "%s[%s]");
         }
-        add(PathMetadata.PROPERTY, "%s.%s");
+        add(PathType.PROPERTY, "%s.%s");
         
-        add(PathMetadata.VARIABLE, "%s");
+        add(PathType.VARIABLE, "%s");
 
         // HQL types
         add(HqlPathType.MINELEMENT, "minelement(%s)");

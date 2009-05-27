@@ -11,7 +11,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import com.mysema.query.types.ExprFactory;
 import com.mysema.query.types.SimpleExprFactory;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Operator;
 
 /**
  * PathMetadata provides metadata for Path expressions.
@@ -21,70 +20,38 @@ import com.mysema.query.types.operation.Operator;
  */
 public final class PathMetadata<T> {
 
-    /**
-     * The Class PathType.
-     */
-    public static class PathType extends Operator<Path<?>> {
-        private final String symbol;
-
-        public PathType(String symbol) {
-            super();
-            this.symbol = symbol;
-        }
-
-        public String toString() {
-            return symbol;
-        }
-    }
-
     private static ExprFactory factory = SimpleExprFactory.getInstance();
 
-    public static final PathType ARRAYVALUE = new PathType("array value");
-
-    public static final PathType ARRAYVALUE_CONSTANT = new PathType("array value constant");
-
-    public static final PathType LISTVALUE = new PathType("list value");
-
-    public static final PathType LISTVALUE_CONSTANT = new PathType("list value constant");
-
-    public static final PathType MAPVALUE = new PathType("map value");
-
-    public static final PathType MAPVALUE_CONSTANT = new PathType("map value constant");
-
-    public static final PathType PROPERTY = new PathType("propery");
-
-    public static final PathType VARIABLE = new PathType("variable");
-
     public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, Expr<Integer> index) {
-        return new PathMetadata<Integer>(parent, index, ARRAYVALUE);
+        return new PathMetadata<Integer>(parent, index, PathType.ARRAYVALUE);
     }
 
     public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, int index) {
-        return new PathMetadata<Integer>(parent, factory.createConstant(index), ARRAYVALUE_CONSTANT);
+        return new PathMetadata<Integer>(parent, factory.createConstant(index), PathType.ARRAYVALUE_CONSTANT);
     }
 
     public static PathMetadata<Integer> forListAccess(PCollection<?> parent, Expr<Integer> index) {
-        return new PathMetadata<Integer>(parent, index, LISTVALUE);
+        return new PathMetadata<Integer>(parent, index, PathType.LISTVALUE);
     }
 
     public static PathMetadata<Integer> forListAccess(PCollection<?> parent, int index) {
-        return new PathMetadata<Integer>(parent, factory.createConstant(index), LISTVALUE_CONSTANT);
+        return new PathMetadata<Integer>(parent, factory.createConstant(index), PathType.LISTVALUE_CONSTANT);
     }
 
     public static <KT> PathMetadata<KT> forMapAccess(PMap<?, ?> parent, Expr<KT> key) {
-        return new PathMetadata<KT>(parent, key, MAPVALUE);
+        return new PathMetadata<KT>(parent, key, PathType.MAPVALUE);
     }
 
     public static <KT> PathMetadata<KT> forMapAccess(PMap<?, ?> parent, KT key) {
-        return new PathMetadata<KT>(parent, factory.createConstant(key), MAPVALUE_CONSTANT);
+        return new PathMetadata<KT>(parent, factory.createConstant(key), PathType.MAPVALUE_CONSTANT);
     }
 
     public static PathMetadata<String> forProperty(Path<?> parent, String property) {
-        return new PathMetadata<String>(parent, factory.createConstant(property), PROPERTY);
+        return new PathMetadata<String>(parent, factory.createConstant(property), PathType.PROPERTY);
     }
 
     public static PathMetadata<String> forVariable(String variable) {
-        return new PathMetadata<String>(null, factory.createConstant(variable),VARIABLE);
+        return new PathMetadata<String>(null, factory.createConstant(variable), PathType.VARIABLE);
     }
 
     private final Expr<T> expression;

@@ -10,8 +10,7 @@ import java.util.Collection;
 import com.mysema.query.serialization.OperationPatterns;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.path.PathMetadata;
-import com.mysema.query.types.path.PathMetadata.PathType;
+import com.mysema.query.types.path.PathType;
 
 /**
  * Operation patterns for JDOQL serialization
@@ -76,14 +75,14 @@ public class JDOQLPatterns extends OperationPatterns {
         
         
         // path types
-        add(PathMetadata.VARIABLE, "%s");
-        for (PathType type : new PathType[] { PathMetadata.LISTVALUE,
-                PathMetadata.LISTVALUE_CONSTANT, PathMetadata.MAPVALUE,
-                PathMetadata.MAPVALUE_CONSTANT }) {
+        add(PathType.VARIABLE, "%s");
+        for (PathType type : new PathType[] { PathType.LISTVALUE,
+                PathType.LISTVALUE_CONSTANT, PathType.MAPVALUE,
+                PathType.MAPVALUE_CONSTANT }) {
             add(type, "%s.get(%s)");
         }
-        add(PathMetadata.ARRAYVALUE, "%s[%s]");
-        add(PathMetadata.ARRAYVALUE_CONSTANT, "%s[%s]");
+        add(PathType.ARRAYVALUE, "%s[%s]");
+        add(PathType.ARRAYVALUE_CONSTANT, "%s[%s]");
     }
 
     /**

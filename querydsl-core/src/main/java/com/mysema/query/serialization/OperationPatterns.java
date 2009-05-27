@@ -12,7 +12,7 @@ import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.operation.Ops.OpNumberAgg;
 import com.mysema.query.types.path.PathMetadata;
-import com.mysema.query.types.path.PathMetadata.PathType;
+import com.mysema.query.types.path.PathType;
 
 /**
  * OperationPatterns provides operator patterns for SQL/HQL serialization
@@ -153,13 +153,13 @@ public class OperationPatterns {
         add(Ops.OpString.SPACE, "space(%s)");
         
         // path types
-        for (PathType type : new PathType[] { PathMetadata.LISTVALUE,
-                PathMetadata.LISTVALUE_CONSTANT, PathMetadata.MAPVALUE,
-                PathMetadata.MAPVALUE_CONSTANT }) {
+        for (PathType type : new PathType[] { PathType.LISTVALUE,
+                PathType.LISTVALUE_CONSTANT, PathType.MAPVALUE,
+                PathType.MAPVALUE_CONSTANT }) {
             add(type, "%s.get(%s)");
         }
-        add(PathMetadata.PROPERTY, "%s.%s");
-        add(PathMetadata.VARIABLE, "%s");
+        add(PathType.PROPERTY, "%s.%s");
+        add(PathType.VARIABLE, "%s");
 
         // numeric aggregates
         add(OpNumberAgg.AVG_AGG, "avg(%s)");

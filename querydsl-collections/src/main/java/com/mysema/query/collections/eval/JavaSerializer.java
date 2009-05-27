@@ -5,10 +5,6 @@
  */
 package com.mysema.query.collections.eval;
 
-import static com.mysema.query.types.path.PathMetadata.LISTVALUE_CONSTANT;
-import static com.mysema.query.types.path.PathMetadata.PROPERTY;
-import static com.mysema.query.types.path.PathMetadata.VARIABLE;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +25,7 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.Path;
-import com.mysema.query.types.path.PathMetadata.PathType;
+import com.mysema.query.types.path.PathType;
 
 /**
  * JavaSerializer is a Serializer implementation for the Java language
@@ -136,9 +132,9 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer> {
             parentAsString = toString((Expr<?>) path.getMetadata().getParent(),
                     false);
         }
-        if (pathType == VARIABLE) {
+        if (pathType == PathType.VARIABLE) {
             exprAsString = path.getMetadata().getExpression().toString();
-        } else if (pathType == PROPERTY) {
+        } else if (pathType == PathType.PROPERTY) {
             String prefix = "get";
             if (((Expr<?>) path).getType() != null
                     && ((Expr<?>) path).getType().equals(Boolean.class)) {
@@ -148,7 +144,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer> {
                     + StringUtils.capitalize(path.getMetadata().getExpression()
                             .toString()) + "()";
 
-        } else if (pathType == LISTVALUE_CONSTANT) {
+        } else if (pathType == PathType.LISTVALUE_CONSTANT) {
             exprAsString = path.getMetadata().getExpression().toString();
 
         } else if (path.getMetadata().getExpression() != null) {

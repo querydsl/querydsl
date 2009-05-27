@@ -5,10 +5,7 @@
  */
 package com.mysema.query.hql;
 
-import static com.mysema.query.types.path.PathMetadata.PROPERTY;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.mysema.query.JoinExpression;
@@ -28,11 +25,7 @@ import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.Path;
-import com.mysema.query.types.quant.QBoolean;
-import com.mysema.query.types.quant.QComparable;
-import com.mysema.query.types.quant.QNumber;
-import com.mysema.query.types.quant.QSimple;
-import com.mysema.query.types.quant.Quant;
+import com.mysema.query.types.path.PathType;
 
 /**
  * HqlSerializer serializes querydsl expressions into HQL syntax.
@@ -184,7 +177,7 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
     protected void visit(PCollection<?> expr) {
         // only wrap a PathCollection, if it the pathType is PROPERTY
         boolean wrap = wrapElements
-                && expr.getMetadata().getPathType().equals(PROPERTY);
+                && expr.getMetadata().getPathType().equals(PathType.PROPERTY);
         if (wrap) {
             append("elements(");
         }
