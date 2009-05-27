@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
 import java.util.regex.Pattern;
 
 import com.mysema.query.serialization.OperationPatterns;
-import com.mysema.query.types.operation.Operator;
+import com.mysema.query.types.operation.OperatorImpl;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.types.path.PathType;
@@ -87,7 +87,7 @@ public class JavaPatterns extends OperationPatterns {
         // math
         try {
             for (Field f : Ops.OpMath.class.getFields()) {
-                Operator<?> op = (Operator<?>) f.get(null);
+                OperatorImpl<?> op = (OperatorImpl<?>) f.get(null);
                 add(op, "Math." + getPattern(op));
             }
         } catch (Exception e) {

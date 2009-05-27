@@ -9,6 +9,7 @@ import java.util.Collection;
 
 import com.mysema.query.serialization.OperationPatterns;
 import com.mysema.query.types.operation.Operator;
+import com.mysema.query.types.operation.OperatorImpl;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PathType;
 
@@ -89,27 +90,27 @@ public class JDOQLPatterns extends OperationPatterns {
      * The Interface OpHql.
      */
     public interface OpHql {
-        Operator<java.lang.Boolean> ISEMPTY = new Operator<java.lang.Boolean>(Collection.class);
-        Operator<java.lang.Boolean> ISNOTEMPTY = new Operator<java.lang.Boolean>(Collection.class);
-        Operator<Number> SUM = new Operator<Number>(Number.class);
+        Operator<Boolean> ISEMPTY = new OperatorImpl<java.lang.Boolean>(Collection.class);
+        Operator<Boolean> ISNOTEMPTY = new OperatorImpl<java.lang.Boolean>(Collection.class);
+        Operator<Number> SUM = new OperatorImpl<Number>(Number.class);
     }
 
     /**
      * The Interface OpQuant.
      */
     public interface OpQuant {
-        Operator<java.lang.Number> AVG_IN_COL = new Operator<java.lang.Number>(Collection.class);
-        Operator<java.lang.Number> MAX_IN_COL = new Operator<java.lang.Number>(Collection.class);
-        Operator<java.lang.Number> MIN_IN_COL = new Operator<java.lang.Number>(Collection.class);
+        Operator<Number> AVG_IN_COL = new OperatorImpl<java.lang.Number>(Collection.class);
+        Operator<Number> MAX_IN_COL = new OperatorImpl<java.lang.Number>(Collection.class);
+        Operator<Number> MIN_IN_COL = new OperatorImpl<java.lang.Number>(Collection.class);
 
         // some / any = true for any
         // all = true for all
         // exists = true is subselect matches
         // not exists = true if subselect doesn't match
-        Operator<?> ANY = new Operator<Object>(Object.class);
-        Operator<?> ALL = new Operator<Object>(Object.class);
-        Operator<?> EXISTS = new Operator<Object>(Object.class);
-        Operator<?> NOTEXISTS = new Operator<Object>(Object.class);
+        Operator<?> ANY = new OperatorImpl<Object>(Object.class);
+        Operator<?> ALL = new OperatorImpl<Object>(Object.class);
+        Operator<?> EXISTS = new OperatorImpl<Object>(Object.class);
+        Operator<?> NOTEXISTS = new OperatorImpl<Object>(Object.class);
     }
 
 }

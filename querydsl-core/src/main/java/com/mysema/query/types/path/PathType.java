@@ -1,35 +1,25 @@
 package com.mysema.query.types.path;
 
+import java.util.Collections;
+import java.util.List;
+
 import com.mysema.query.types.operation.Operator;
 
 /**
  * The Class PathType.
  */
-public class PathType extends Operator<Path<?>> {
-    private final String symbol;
+public enum PathType implements Operator<Path<?>> {
+    ARRAYVALUE, 
+    ARRAYVALUE_CONSTANT, 
+    LISTVALUE, 
+    LISTVALUE_CONSTANT, 
+    MAPVALUE, 
+    MAPVALUE_CONSTANT, 
+    PROPERTY, 
+    VARIABLE;
 
-    public PathType(String symbol) {
-        super();
-        this.symbol = symbol;
+    @Override
+    public List<Class<?>> getTypes() {
+        return Collections.emptyList();
     }
-
-    public String toString() {
-        return symbol;
-    }
-    
-    public static final PathType ARRAYVALUE = new PathType("array value");
-
-    public static final PathType ARRAYVALUE_CONSTANT = new PathType("array value constant");
-
-    public static final PathType LISTVALUE = new PathType("list value");
-
-    public static final PathType LISTVALUE_CONSTANT = new PathType("list value constant");
-
-    public static final PathType MAPVALUE = new PathType("map value");
-
-    public static final PathType MAPVALUE_CONSTANT = new PathType("map value constant");
-
-    public static final PathType PROPERTY = new PathType("propery");
-
-    public static final PathType VARIABLE = new PathType("variable");
 }

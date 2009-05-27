@@ -15,10 +15,6 @@ import static com.mysema.query.hql.HQLGrammar.current_time;
 import static com.mysema.query.hql.HQLGrammar.current_timestamp;
 import static com.mysema.query.hql.HQLGrammar.day;
 import static com.mysema.query.hql.HQLGrammar.hour;
-import static com.mysema.query.hql.HQLGrammar.maxelement;
-import static com.mysema.query.hql.HQLGrammar.maxindex;
-import static com.mysema.query.hql.HQLGrammar.minelement;
-import static com.mysema.query.hql.HQLGrammar.minindex;
 import static com.mysema.query.hql.HQLGrammar.minute;
 import static com.mysema.query.hql.HQLGrammar.month;
 import static com.mysema.query.hql.HQLGrammar.second;
@@ -249,10 +245,10 @@ public class FeaturesTest {
         // special elements() and indices functions which may be quantified
         // using some, all, exists, any, in.
         cat.kittens.size();
-        minelement(cat.kittens);
-        maxelement(cat.kittens);
-        minindex(cat.kittens);
-        maxindex(cat.kittens);
+//        minelement(cat.kittens);
+//        maxelement(cat.kittens);
+//        minindex(cat.kittens);
+//        maxindex(cat.kittens);
         toString("cat.kittens[0]", cat.kittens(0));
         toString("cat.kittens[0]", cat.kittens.get(0));
 

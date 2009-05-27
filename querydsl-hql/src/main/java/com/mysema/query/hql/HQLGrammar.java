@@ -5,11 +5,9 @@
  */
 package com.mysema.query.hql;
 
-import java.util.Collection;
 import java.util.Date;
 
 import com.mysema.query.alias.GrammarWithAlias;
-import com.mysema.query.hql.HQLPatterns.HqlPathType;
 import com.mysema.query.hql.HQLPatterns.OpQuant;
 import com.mysema.query.types.CollectionType;
 import com.mysema.query.types.SubQuery;
@@ -21,13 +19,7 @@ import com.mysema.query.types.expr.ESimple;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PCollection;
-import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PComponentCollection;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PEntityCollection;
-import com.mysema.query.types.path.PMap;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.types.quant.QBoolean;
 import com.mysema.query.types.quant.QComparable;
 import com.mysema.query.types.quant.QNumber;
@@ -94,45 +86,45 @@ public class HQLGrammar extends GrammarWithAlias {
         return operationFactory.createComparable(Date.class, Ops.OpDateTime.HOUR, date);
     }
 
-    public static PComponentCollection<Integer> indices(PCollection<?> col) {
-        return new PComponentCollection<Integer>(Integer.class,new PathMetadata<Collection<Integer>>(col, null,HqlPathType.LISTINDICES));
-    }
-
-    public static <K, V> PComponentCollection<K> indices(PMap<K, V> col) {
-        return new PComponentCollection<K>(col.getKeyType(),new PathMetadata<Collection<Integer>>(col, null,HqlPathType.LISTINDICES));
-    }
+//    public static PComponentCollection<Integer> indices(PCollection<?> col) {
+//        return new PComponentCollection<Integer>(Integer.class,new PathMetadata<Collection<Integer>>(col, null,HqlPathType.LISTINDICES));
+//    }
+//
+//    public static <K, V> PComponentCollection<K> indices(PMap<K, V> col) {
+//        return new PComponentCollection<K>(col.getKeyType(),new PathMetadata<Collection<Integer>>(col, null,HqlPathType.LISTINDICES));
+//    }
 
     public static <A extends Comparable<? super A>> EComparable<A> max(PCollection<A> left) {
         return new QComparable<A>(left.getElementType(), OpQuant.MAX_IN_COL,left);
     }
 
-    public static <A> PEntity<A> maxelement(PEntityCollection<A> col) {
-        return new PEntity<A>(col.getElementType(), col.getEntityName(),new PathMetadata<A>(col, null, HqlPathType.MINELEMENT));
-    }
-
-    public static <A> PComparable<Integer> maxindex(PComponentCollection<A> col) {
-        return new PComparable<Integer>(Integer.class,new PathMetadata<Integer>(col, null, HqlPathType.MAXINDEX));
-    }
-
-    public static <A> PNumber<Integer> maxindex(PEntityCollection<A> col) {
-        return new PNumber<Integer>(Integer.class, new PathMetadata<Integer>(col, null, HqlPathType.MAXINDEX));
-    }
+//    public static <A> PEntity<A> maxelement(PEntityCollection<A> col) {
+//        return new PEntity<A>(col.getElementType(), col.getEntityName(),new PathMetadata<A>(col, null, HqlPathType.MINELEMENT));
+//    }
+//
+//    public static <A> PComparable<Integer> maxindex(PComponentCollection<A> col) {
+//        return new PComparable<Integer>(Integer.class,new PathMetadata<Integer>(col, null, HqlPathType.MAXINDEX));
+//    }
+//
+//    public static <A> PNumber<Integer> maxindex(PEntityCollection<A> col) {
+//        return new PNumber<Integer>(Integer.class, new PathMetadata<Integer>(col, null, HqlPathType.MAXINDEX));
+//    }
 
     public static <A extends Comparable<? super A>> EComparable<A> min(PCollection<A> left) {
         return new QComparable<A>(left.getElementType(), OpQuant.MIN_IN_COL, left);
     }
 
-    public static <A> PEntity<A> minelement(PEntityCollection<A> col) {
-        return new PEntity<A>(col.getElementType(), col.getEntityName(),new PathMetadata<A>(col, null, HqlPathType.MINELEMENT));
-    }
-
-    public static <A> PComparable<Integer> minindex(PComponentCollection<A> col) {
-        return new PComparable<Integer>(Integer.class,new PathMetadata<Integer>(col, null, HqlPathType.MININDEX));
-    }
-
-    public static <A> PComparable<Integer> minindex(PEntityCollection<A> col) {
-        return new PComparable<Integer>(Integer.class,new PathMetadata<Integer>(col, null, HqlPathType.MININDEX));
-    }
+//    public static <A> PEntity<A> minelement(PEntityCollection<A> col) {
+//        return new PEntity<A>(col.getElementType(), col.getEntityName(),new PathMetadata<A>(col, null, HqlPathType.MINELEMENT));
+//    }
+//
+//    public static <A> PComparable<Integer> minindex(PComponentCollection<A> col) {
+//        return new PComparable<Integer>(Integer.class,new PathMetadata<Integer>(col, null, HqlPathType.MININDEX));
+//    }
+//
+//    public static <A> PComparable<Integer> minindex(PEntityCollection<A> col) {
+//        return new PComparable<Integer>(Integer.class,new PathMetadata<Integer>(col, null, HqlPathType.MININDEX));
+//    }
 
     public static EComparable<Date> minute(Expr<Date> date) {
         return operationFactory.createComparable(Date.class,Ops.OpDateTime.MINUTE, date);

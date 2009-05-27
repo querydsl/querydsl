@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.mysema.query.serialization.OperationPatterns;
 import com.mysema.query.types.operation.Operator;
+import com.mysema.query.types.operation.OperatorImpl;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.types.path.PathType;
@@ -106,12 +107,12 @@ public class HQLPatterns extends OperationPatterns {
         add(PathType.VARIABLE, "%s");
 
         // HQL types
-        add(HqlPathType.MINELEMENT, "minelement(%s)");
-        add(HqlPathType.MAXELEMENT, "maxelement(%s");
-        add(HqlPathType.MININDEX, "minindex(%s)");
-        add(HqlPathType.MAXINDEX, "maxindex(%s)");
-        add(HqlPathType.LISTINDICES, "indices(%s)");
-        add(HqlPathType.MAPINDICES, "indices(%s)");
+//        add(HqlPathType.MINELEMENT, "minelement(%s)");
+//        add(HqlPathType.MAXELEMENT, "maxelement(%s");
+//        add(HqlPathType.MININDEX, "minindex(%s)");
+//        add(HqlPathType.MAXINDEX, "maxindex(%s)");
+//        add(HqlPathType.LISTINDICES, "indices(%s)");
+//        add(HqlPathType.MAPINDICES, "indices(%s)");
     }
 
     /**
@@ -120,37 +121,37 @@ public class HQLPatterns extends OperationPatterns {
     public interface OpHql {
 //        Operator<java.lang.Boolean> ISEMPTY = new Operator<java.lang.Boolean>(Collection.class);
 //        Operator<java.lang.Boolean> ISNOTEMPTY = new Operator<java.lang.Boolean>(Collection.class);
-        Operator<Number> SUM = new Operator<Number>(Number.class);
+        OperatorImpl<Number> SUM = new OperatorImpl<Number>(Number.class);
     }
 
     /**
      * The Interface OpQuant.
      */
     public interface OpQuant {
-        Operator<java.lang.Number> AVG_IN_COL = new Operator<java.lang.Number>(Collection.class);
-        Operator<java.lang.Number> MAX_IN_COL = new Operator<java.lang.Number>(Collection.class);
-        Operator<java.lang.Number> MIN_IN_COL = new Operator<java.lang.Number>(Collection.class);
+        OperatorImpl<java.lang.Number> AVG_IN_COL = new OperatorImpl<java.lang.Number>(Collection.class);
+        OperatorImpl<java.lang.Number> MAX_IN_COL = new OperatorImpl<java.lang.Number>(Collection.class);
+        OperatorImpl<java.lang.Number> MIN_IN_COL = new OperatorImpl<java.lang.Number>(Collection.class);
 
         // some / any = true for any
         // all = true for all
         // exists = true is subselect matches
         // not exists = true if subselect doesn't match
-        Operator<?> ANY = new Operator<Object>(Object.class);
-        Operator<?> ALL = new Operator<Object>(Object.class);
-        Operator<?> EXISTS = new Operator<Object>(Object.class);
-        Operator<?> NOTEXISTS = new Operator<Object>(Object.class);
+        OperatorImpl<?> ANY = new OperatorImpl<Object>(Object.class);
+        OperatorImpl<?> ALL = new OperatorImpl<Object>(Object.class);
+        OperatorImpl<?> EXISTS = new OperatorImpl<Object>(Object.class);
+        OperatorImpl<?> NOTEXISTS = new OperatorImpl<Object>(Object.class);
     }
 
-    /**
-     * The Interface HqlPathType.
-     */
-    public interface HqlPathType {
-        PathType MINELEMENT = new PathType("min element");
-        PathType MAXELEMENT = new PathType("max element");
-        PathType MININDEX = new PathType("min index");
-        PathType MAXINDEX = new PathType("max index");
-        PathType LISTINDICES = new PathType("list indices");
-        PathType MAPINDICES = new PathType("map indices");
-    }
+//    /**
+//     * The Interface HqlPathType.
+//     */
+//    public interface HqlPathType {
+//        Operator<?> MINELEMENT = new Operator<Object>(Object.class);
+//        Operator<?> MAXELEMENT = new Operator<Object>(Object.class);
+//        Operator<?> MININDEX = new Operator<Object>(Object.class);
+//        Operator<?> MAXINDEX = new Operator<Object>(Object.class);
+//        Operator<?> LISTINDICES = new Operator<Object>(Object.class);
+//        Operator<?> MAPINDICES = new Operator<Object>(Object.class);
+//    }
 
 }

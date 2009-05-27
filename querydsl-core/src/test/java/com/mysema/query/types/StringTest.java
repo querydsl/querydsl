@@ -21,6 +21,7 @@ import com.mysema.query.serialization.OperationPatterns;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.operation.Operator;
+import com.mysema.query.types.operation.OperatorImpl;
 import com.mysema.query.types.operation.Ops;
 
 /**
@@ -38,14 +39,14 @@ public class StringTest {
         }};
         Set<Field> missing = new HashSet<Field>();
         for (Field field : Ops.class.getFields()){
-            if (field.getType().equals(Operator.class)){
+            if (field.getType().equals(OperatorImpl.class)){
                 Operator op = (Operator)field.get(null);
                 if (ops.getPattern(op) == null) missing.add(field);    
             }            
         }
         for (Class<?> cl : Ops.class.getClasses()){
             for (Field field : cl.getFields()){
-                if (field.getType().equals(Operator.class)){
+                if (field.getType().equals(OperatorImpl.class)){
                     Operator op = (Operator)field.get(null);
                     if (ops.getPattern(op) == null) missing.add(field);    
                 }                

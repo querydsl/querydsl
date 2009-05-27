@@ -10,15 +10,11 @@ import static com.mysema.query.alias.GrammarWithAlias.alias;
 import static com.mysema.query.functions.MathFunctions.div;
 import static com.mysema.query.hql.HQLGrammar.all;
 import static com.mysema.query.hql.HQLGrammar.exists;
-import static com.mysema.query.hql.HQLGrammar.indices;
-import static com.mysema.query.hql.HQLGrammar.max;
-import static com.mysema.query.hql.HQLGrammar.maxindex;
 import static com.mysema.query.hql.HQLGrammar.notExists;
 import static com.mysema.query.hql.HQLGrammar.some;
 import static com.mysema.query.hql.HQLGrammar.sum;
 import static com.mysema.query.hql.HQLGrammar.sysdate;
 import static com.mysema.query.types.Grammar.avg;
-import static com.mysema.query.types.Grammar.in;
 import static com.mysema.query.types.Grammar.not;
 import static org.junit.Assert.assertEquals;
 
@@ -346,7 +342,7 @@ public class ParserTest implements Constants {
         q().from(cat).where(cat.kittens.size().gt(0)).parse();
 
         // parse( "from Order ord where maxindex(ord.items) > 100" );
-        q().from(ord).where(maxindex(ord.items).gt(100)).parse();
+//        q().from(ord).where(maxindex(ord.items).gt(100)).parse();
 
         // parse( "from Order ord where minelement(ord.items) > 10000" );
         // NOTE : Invalid query
@@ -367,7 +363,7 @@ public class ParserTest implements Constants {
         q().from(player).where(all(player.scores).lt(3)).parse();
 
         // parse( "from eg.Show show where 'fizard' in indices(show.acts)" );
-        q().from(show).where(in("fizard", indices(show.acts))).parse();
+//        q().from(show).where(in("fizard", indices(show.acts))).parse();
 
         // parse( "from Order ord where ord.items[0].id = 1234" );
         q().from(ord).where(ord.items(0).id.eq(1234l)).parse();
@@ -389,9 +385,9 @@ public class ParserTest implements Constants {
 
         // parse( "select item from Item item, Order ord\n"
         // + "where ord.items[ maxindex(ord.items) ] = item and ord.id = 11" );
-        q().select(item).from(item, ord).where(
-                ord.items(maxindex(ord.items)).eq(item).and(ord.id.eq(1l)))
-                .parse();
+//        q().select(item).from(item, ord).where(
+//                ord.items(maxindex(ord.items)).eq(item).and(ord.id.eq(1l)))
+//                .parse();
         //
         // parse( "select item from Item item, Order ord\n"
         // + "where ord.items[ size(ord.items) - 1 ] = item" );
@@ -442,8 +438,8 @@ public class ParserTest implements Constants {
         // "select foo.id, avg( elements(foo.names) ), max( indices(foo.names) )\n"
         // + "from eg.Foo foo group by foo.id" );
 
-        q().select(foo.id, HQLGrammar.avg(foo.names), max(indices(foo.names)))
-                .from(foo).groupBy(foo.id).parse();
+//        q().select(foo.id, HQLGrammar.avg(foo.names), max(indices(foo.names)))
+//                .from(foo).groupBy(foo.id).parse();
 
         // parse( "select cat.color, sum(cat.weight), count(cat)\n"
         // + "from eg.Cat cat group by cat.color\n"
