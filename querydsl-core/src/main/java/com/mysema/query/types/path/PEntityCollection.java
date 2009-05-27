@@ -5,8 +5,6 @@
  */
 package com.mysema.query.types.path;
 
-import static com.mysema.query.types.path.PathMetadata.forSize;
-
 import com.mysema.query.types.Grammar;
 import com.mysema.query.types.alias.AEntityCollection;
 import com.mysema.query.types.expr.EBoolean;
@@ -28,6 +26,10 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>>
     protected final String entityName;
     private final Path<?> root;
 
+    private EBoolean empty;
+
+    private EBoolean notEmpty;
+
     public PEntityCollection(Class<D> type, String entityName,
             PathMetadata<?> metadata) {
         super(null);
@@ -45,6 +47,18 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>>
         return Grammar.as(this, to);
     }
 
+    public EBoolean contains(D child) {
+        return Grammar.in(child, this);
+    }
+
+    public EBoolean contains(Expr<D> child) {
+        return Grammar.in(child, this);
+    }
+
+    public boolean equals(Object o) {
+        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata) : false;
+    }
+
     public Class<D> getElementType() {
         return type;
     }
@@ -57,54 +71,47 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>>
         return metadata;
     }
 
-    public EBoolean isnotnull() {
+    public Path<?> getRoot() {
+        return root;
+    }
+    
+    public int hashCode() {
+        return metadata.hashCode();
+    }
+
+    public EBoolean isEmpty() {
+        if (empty == null){
+            empty = Grammar.isEmpty(this);
+        }
+        return empty;
+    }
+    
+    public EBoolean isNotEmpty() {
+        if (notEmpty == null){
+            notEmpty = Grammar.isNotEmpty(this); 
+        }
+        return notEmpty;
+    }
+
+    public EBoolean isNotNull() {
         if (isnotnull == null) {
-            isnotnull = Grammar.isnotnull(this);
+            isnotnull = Grammar.isNotNull(this);
         }
         return isnotnull;
     }
 
-    public EBoolean isnull() {
+    public EBoolean isNull() {
         if (isnull == null) {
-            isnull = Grammar.isnull(this);
+            isnull = Grammar.isNull(this);
         }
         return isnull;
     }
 
     public ENumber<Integer> size() {
         if (size == null) {
-            size = new PNumber<Integer>(Integer.class, forSize(this));
+            size = Grammar.size(this);
         }
         return size;
-    }
-
-    public EBoolean contains(D child) {
-        return Grammar.in(child, this);
-    }
-
-    public EBoolean contains(Expr<D> child) {
-        return Grammar.in(child, this);
-    }
-
-    public EBoolean empty() {
-        return Grammar.empty(this);
-    }
-
-    public EBoolean notEmpty() {
-        return Grammar.notEmpty(this);
-    }
-
-    public Path<?> getRoot() {
-        return root;
-    }
-
-    public int hashCode() {
-        return metadata.hashCode();
-    }
-
-    public boolean equals(Object o) {
-        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
-                : false;
     }
 
 }

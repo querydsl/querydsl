@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>0.3.7-SNAPSHOT</version>
+  <version>0.3.8-SNAPSHOT</version>
   <name>Querydsl</name>
   <description>parent project for querydsl modules</description>
   <url>http://source.mysema.com/display/querydsl</url>
@@ -23,8 +23,8 @@
   <modules>
     <module>../querydsl-core</module>
     <module>../querydsl-apt</module>
-    <module>../querydsl-jdoql</module>
     <module>../querydsl-collections</module>
+    <module>../querydsl-jdoql</module>    
     <module>../querydsl-hql</module>
     <module>../querydsl-sql</module>
   </modules>

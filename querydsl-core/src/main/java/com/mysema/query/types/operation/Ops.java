@@ -32,117 +32,121 @@ public interface Ops {
     static List<Class<?>> String_x_2 = unmodifiableList(Arrays.<Class<?>> asList(String.class, String.class));
 
     // general
-    Op<Boolean> EQ_PRIMITIVE = new Op<Boolean>(Object_x_2);
-    Op<Boolean> EQ_OBJECT = new Op<Boolean>(Object_x_2);
-    Op<Boolean> IN = new Op<Boolean>(Object_x_2);
-    Op<Boolean> ISNOTNULL = new Op<Boolean>(Object.class);
-    Op<Boolean> ISNULL = new Op<Boolean>(Object.class);
-    Op<Boolean> ISTYPEOF = new Op<Boolean>(Object.class, Class.class);
-    Op<Boolean> NE_PRIMITIVE = new Op<Boolean>(Object_x_2);
-    Op<Boolean> NE_OBJECT = new Op<Boolean>(Object_x_2);
-    Op<Boolean> NOTIN = new Op<Boolean>(Object_x_2);
-
+    Operator<Boolean> EQ_PRIMITIVE = new Operator<Boolean>(Object_x_2);
+    Operator<Boolean> EQ_OBJECT = new Operator<Boolean>(Object_x_2);
+    Operator<Boolean> ISNOTNULL = new Operator<Boolean>(Object.class);
+    Operator<Boolean> ISNULL = new Operator<Boolean>(Object.class);
+    Operator<Boolean> ISTYPEOF = new Operator<Boolean>(Object.class, Class.class);
+    Operator<Boolean> NE_PRIMITIVE = new Operator<Boolean>(Object_x_2);
+    Operator<Boolean> NE_OBJECT = new Operator<Boolean>(Object_x_2);
+    Operator<Number> NUMCAST = new Operator<Number>(Number.class, Class.class);
+    Operator<String> STRING_CAST = new Operator<String>(Object.class);
+    
     // collection
-    Op<Boolean> COL_ISEMPTY = new Op<Boolean>(Object.class);
-    Op<Boolean> COL_ISNOTEMPTY = new Op<Boolean>(Object.class);
+    Operator<Boolean> IN = new Operator<Boolean>(Object_x_2); // cmp. contains
+    Operator<Boolean> NOTIN = new Operator<Boolean>(Object_x_2); // cmp. not contains
+    Operator<Boolean> COL_ISEMPTY = new Operator<Boolean>(Object.class);
+    Operator<Boolean> COL_ISNOTEMPTY = new Operator<Boolean>(Object.class);
+    Operator<Number> COL_SIZE = new Operator<Number>(Object.class);
+
+    // array
+    Operator<Number> ARRAY_SIZE = new Operator<Number>(Object.class);
     
     // map
-    Op<Boolean> MAP_ISEMPTY = new Op<Boolean>(Object.class);
-    Op<Boolean> MAP_ISNOTEMPTY = new Op<Boolean>(Object.class);
+    Operator<Boolean> MAP_ISEMPTY = new Operator<Boolean>(Object.class);
+    Operator<Boolean> MAP_ISNOTEMPTY = new Operator<Boolean>(Object.class);
 
     // Boolean
-    Op<Boolean> AND = new Op<Boolean>(Boolean_x_2);
-    Op<Boolean> NOT = new Op<Boolean>(Boolean.class);
-    Op<Boolean> OR = new Op<Boolean>(Boolean_x_2);
-    Op<Boolean> XNOR = new Op<Boolean>(Boolean_x_2);
-    Op<Boolean> XOR = new Op<Boolean>(Boolean_x_2);
+    Operator<Boolean> AND = new Operator<Boolean>(Boolean_x_2);
+    Operator<Boolean> NOT = new Operator<Boolean>(Boolean.class);
+    Operator<Boolean> OR = new Operator<Boolean>(Boolean_x_2);
+    Operator<Boolean> XNOR = new Operator<Boolean>(Boolean_x_2);
+    Operator<Boolean> XOR = new Operator<Boolean>(Boolean_x_2);
 
     // Comparable
-    Op<Boolean> BETWEEN = new Op<Boolean>(Comparable_x_3);
-    Op<Boolean> GOE = new Op<Boolean>(Comparable_x_2);
-    Op<Boolean> GT = new Op<Boolean>(Comparable_x_2);
-    Op<Boolean> LOE = new Op<Boolean>(Comparable_x_2);
-    Op<Boolean> LT = new Op<Boolean>(Comparable_x_2);
-    Op<Boolean> NOTBETWEEN = new Op<Boolean>(Comparable_x_3);
-    Op<Number> NUMCAST = new Op<Number>(Number.class, Class.class);
-    Op<String> STRING_CAST = new Op<String>(Object.class);
-
+    Operator<Boolean> BETWEEN = new Operator<Boolean>(Comparable_x_3);
+    Operator<Boolean> GOE = new Operator<Boolean>(Comparable_x_2);
+    Operator<Boolean> GT = new Operator<Boolean>(Comparable_x_2);
+    Operator<Boolean> LOE = new Operator<Boolean>(Comparable_x_2);
+    Operator<Boolean> LT = new Operator<Boolean>(Comparable_x_2);
+    Operator<Boolean> NOTBETWEEN = new Operator<Boolean>(Comparable_x_3);
+    
     // Date / Comparable
-    Op<Boolean> AFTER = new Op<Boolean>(Comparable_x_2);
-    Op<Boolean> BEFORE = new Op<Boolean>(Comparable_x_2);
-    Op<Boolean> AOE = new Op<Boolean>(Comparable_x_2);
-    Op<Boolean> BOE = new Op<Boolean>(Comparable_x_2);
+    Operator<Boolean> AFTER = new Operator<Boolean>(Comparable_x_2);
+    Operator<Boolean> BEFORE = new Operator<Boolean>(Comparable_x_2);
+    Operator<Boolean> AOE = new Operator<Boolean>(Comparable_x_2);
+    Operator<Boolean> BOE = new Operator<Boolean>(Comparable_x_2);
 
     // Number
-    Op<Number> ADD = new Op<Number>(Number_x_2);
-    Op<Number> DIV = new Op<Number>(Number_x_2);
-    Op<Number> MOD = new Op<Number>(Number_x_2);
-    Op<Number> MULT = new Op<Number>(Number_x_2);
-    Op<Number> SUB = new Op<Number>(Number_x_2);
+    Operator<Number> ADD = new Operator<Number>(Number_x_2);
+    Operator<Number> DIV = new Operator<Number>(Number_x_2);
+    Operator<Number> MOD = new Operator<Number>(Number_x_2);
+    Operator<Number> MULT = new Operator<Number>(Number_x_2);
+    Operator<Number> SUB = new Operator<Number>(Number_x_2);
 
     // String
-    Op<Character> CHAR_AT = new Op<Character>(String.class, Integer.class);
-    Op<String> CONCAT = new Op<String>(String_x_2);
-    Op<Boolean> LIKE = new Op<Boolean>(String_x_2);
-    Op<String> LOWER = new Op<String>(String.class);
-    Op<String> SUBSTR1ARG = new Op<String>(String.class, Integer.class);
-    Op<String> SUBSTR2ARGS = new Op<String>(String.class, Integer.class, Integer.class);
-    Op<String> SPLIT = new Op<String>(String_x_2);
-    Op<String> TRIM = new Op<String>(String.class);
-    Op<String> UPPER = new Op<String>(String.class);
-    Op<Boolean> MATCHES = new Op<Boolean>(String_x_2);
-    Op<Number> STRING_LENGTH = new Op<Number>(String.class);
-    Op<Number> LAST_INDEX_2ARGS = new Op<Number>(String.class, String.class, Integer.class);
-    Op<Number> LAST_INDEX = new Op<Number>(String_x_2);
-    Op<Boolean> STRING_ISEMPTY = new Op<Boolean>(String.class);
-    Op<Boolean> STARTSWITH = new Op<Boolean>(String_x_2);
-    Op<Boolean> STARTSWITH_IC = new Op<Boolean>(String_x_2);
-    Op<Number> INDEXOF_2ARGS = new Op<Number>(String.class, String.class, Integer.class);
-    Op<Number> INDEXOF = new Op<Number>(String.class, String.class);
-    Op<Boolean> EQ_IGNORECASE = new Op<Boolean>(String_x_2);
-    Op<Boolean> ENDSWITH = new Op<Boolean>(String_x_2);
-    Op<Boolean> ENDSWITH_IC = new Op<Boolean>(String_x_2);
-    Op<Boolean> CONTAINS = new Op<Boolean>(String_x_2);
-    Op<Boolean> CONTAINS_KEY = new Op<Boolean>(Object_x_2);
-    Op<Boolean> CONTAINS_VALUE = new Op<Boolean>(Object_x_2);
+    Operator<Character> CHAR_AT = new Operator<Character>(String.class, Integer.class);
+    Operator<String> CONCAT = new Operator<String>(String_x_2);
+    Operator<Boolean> LIKE = new Operator<Boolean>(String_x_2);
+    Operator<String> LOWER = new Operator<String>(String.class);
+    Operator<String> SUBSTR1ARG = new Operator<String>(String.class, Integer.class);
+    Operator<String> SUBSTR2ARGS = new Operator<String>(String.class, Integer.class, Integer.class);
+    Operator<String> SPLIT = new Operator<String>(String_x_2);
+    Operator<String> TRIM = new Operator<String>(String.class);
+    Operator<String> UPPER = new Operator<String>(String.class);
+    Operator<Boolean> MATCHES = new Operator<Boolean>(String_x_2);
+    Operator<Number> STRING_LENGTH = new Operator<Number>(String.class);
+    Operator<Number> LAST_INDEX_2ARGS = new Operator<Number>(String.class, String.class, Integer.class);
+    Operator<Number> LAST_INDEX = new Operator<Number>(String_x_2);
+    Operator<Boolean> STRING_ISEMPTY = new Operator<Boolean>(String.class);
+    Operator<Boolean> STARTSWITH = new Operator<Boolean>(String_x_2);
+    Operator<Boolean> STARTSWITH_IC = new Operator<Boolean>(String_x_2);
+    Operator<Number> INDEXOF_2ARGS = new Operator<Number>(String.class, String.class, Integer.class);
+    Operator<Number> INDEXOF = new Operator<Number>(String.class, String.class);
+    Operator<Boolean> EQ_IGNORECASE = new Operator<Boolean>(String_x_2);
+    Operator<Boolean> ENDSWITH = new Operator<Boolean>(String_x_2);
+    Operator<Boolean> ENDSWITH_IC = new Operator<Boolean>(String_x_2);
+    Operator<Boolean> CONTAINS = new Operator<Boolean>(String_x_2);
+    Operator<Boolean> CONTAINS_KEY = new Operator<Boolean>(Object_x_2);
+    Operator<Boolean> CONTAINS_VALUE = new Operator<Boolean>(Object_x_2);
 
     // subquery operations
-    Op<Boolean> EXISTS = new Op<Boolean>(Object.class);
+    Operator<Boolean> EXISTS = new Operator<Boolean>(Object.class);
 
-    public static final List<Op<?>> equalsOps = Collections.unmodifiableList(Arrays.<Op<?>> asList(EQ_OBJECT, EQ_PRIMITIVE));
+    public static final List<Operator<?>> equalsOps = Collections.unmodifiableList(Arrays.<Operator<?>> asList(EQ_OBJECT, EQ_PRIMITIVE));
 
-    public static final List<Op<?>> notEqualsOps = Collections.unmodifiableList(Arrays.<Op<?>> asList(NE_OBJECT, NE_PRIMITIVE));
+    public static final List<Operator<?>> notEqualsOps = Collections.unmodifiableList(Arrays.<Operator<?>> asList(NE_OBJECT, NE_PRIMITIVE));
 
-    public static final List<Op<?>> compareOps = Collections.unmodifiableList(Arrays.<Op<?>> asList(EQ_OBJECT, EQ_PRIMITIVE,LT, GT, GOE, LOE));
+    public static final List<Operator<?>> compareOps = Collections.unmodifiableList(Arrays.<Operator<?>> asList(EQ_OBJECT, EQ_PRIMITIVE,LT, GT, GOE, LOE));
 
     /**
      * Aggreate operators
      * 
      */
     public interface OpNumberAgg {
-        Op<Number> AVG_AGG = new Op<Number>(Number.class);
-        Op<Number> MAX_AGG = new Op<Number>(Number.class);
-        Op<Number> MIN_AGG = new Op<Number>(Number.class);
+        Operator<Number> AVG_AGG = new Operator<Number>(Number.class);
+        Operator<Number> MAX_AGG = new Operator<Number>(Number.class);
+        Operator<Number> MIN_AGG = new Operator<Number>(Number.class);
     }
 
     /**
      * Date and time operators
      */
     public interface OpDateTime {
-        Op<java.util.Date> CURRENT_DATE = new Op<java.util.Date>();
-        Op<java.util.Date> CURRENT_TIME = new Op<java.util.Date>();
-        Op<java.util.Date> CURRENT_TIMESTAMP = new Op<java.util.Date>();
-        Op<Integer> DAY = new Op<Integer>(java.util.Date.class);
-        Op<Integer> HOUR = new Op<Integer>(java.util.Date.class);
-        Op<Integer> MINUTE = new Op<Integer>(java.util.Date.class);
-        Op<Integer> MONTH = new Op<Integer>(java.util.Date.class);
-        Op<Integer> SECOND = new Op<Integer>(java.util.Date.class);
-        Op<java.util.Date> SYSDATE = new Op<java.util.Date>();
-        Op<Integer> YEAR = new Op<Integer>(java.util.Date.class);
-        Op<Integer> WEEK = new Op<Integer>(java.util.Date.class);
-        Op<Integer> DAY_OF_WEEK = new Op<Integer>(java.util.Date.class);
-        Op<Integer> DAY_OF_MONTH = new Op<Integer>(java.util.Date.class);
-        Op<Integer> DAY_OF_YEAR = new Op<Integer>(java.util.Date.class);
+        Operator<java.util.Date> CURRENT_DATE = new Operator<java.util.Date>();
+        Operator<java.util.Date> CURRENT_TIME = new Operator<java.util.Date>();
+        Operator<java.util.Date> CURRENT_TIMESTAMP = new Operator<java.util.Date>();
+        Operator<Integer> DAY = new Operator<Integer>(java.util.Date.class);
+        Operator<Integer> HOUR = new Operator<Integer>(java.util.Date.class);
+        Operator<Integer> MINUTE = new Operator<Integer>(java.util.Date.class);
+        Operator<Integer> MONTH = new Operator<Integer>(java.util.Date.class);
+        Operator<Integer> SECOND = new Operator<Integer>(java.util.Date.class);
+        Operator<java.util.Date> SYSDATE = new Operator<java.util.Date>();
+        Operator<Integer> YEAR = new Operator<Integer>(java.util.Date.class);
+        Operator<Integer> WEEK = new Operator<Integer>(java.util.Date.class);
+        Operator<Integer> DAY_OF_WEEK = new Operator<Integer>(java.util.Date.class);
+        Operator<Integer> DAY_OF_MONTH = new Operator<Integer>(java.util.Date.class);
+        Operator<Integer> DAY_OF_YEAR = new Operator<Integer>(java.util.Date.class);
     }
 
     /**
@@ -150,32 +154,32 @@ public interface Ops {
      * 
      */
     public interface OpMath {
-        Op<Number> ABS = new Op<Number>(Number.class);
-        Op<Number> ACOS = new Op<Number>(Number.class);
-        Op<Number> ASIN = new Op<Number>(Number.class);
-        Op<Number> ATAN = new Op<Number>(Number.class);
-        Op<Number> CEIL = new Op<Number>(Number.class);
-        Op<Number> COS = new Op<Number>(Number.class);
-        Op<Number> TAN = new Op<Number>(Number.class);
-        Op<Number> SQRT = new Op<Number>(Number.class);
-        Op<Number> SIN = new Op<Number>(Number.class);
-        Op<Number> ROUND = new Op<Number>(Number.class);
-        Op<Number> RANDOM = new Op<Number>();
-        Op<Number> POWER = new Op<Number>(Number_x_2);
-        Op<Number> MIN = new Op<Number>(Number_x_2);
-        Op<Number> MAX = new Op<Number>(Number_x_2);
-        Op<Number> LOG10 = new Op<Number>(Number.class);
-        Op<Number> LOG = new Op<Number>(Number.class);
-        Op<Number> FLOOR = new Op<Number>(Number.class);
-        Op<Number> EXP = new Op<Number>(Number.class);
+        Operator<Number> ABS = new Operator<Number>(Number.class);
+        Operator<Number> ACOS = new Operator<Number>(Number.class);
+        Operator<Number> ASIN = new Operator<Number>(Number.class);
+        Operator<Number> ATAN = new Operator<Number>(Number.class);
+        Operator<Number> CEIL = new Operator<Number>(Number.class);
+        Operator<Number> COS = new Operator<Number>(Number.class);
+        Operator<Number> TAN = new Operator<Number>(Number.class);
+        Operator<Number> SQRT = new Operator<Number>(Number.class);
+        Operator<Number> SIN = new Operator<Number>(Number.class);
+        Operator<Number> ROUND = new Operator<Number>(Number.class);
+        Operator<Number> RANDOM = new Operator<Number>();
+        Operator<Number> POWER = new Operator<Number>(Number_x_2);
+        Operator<Number> MIN = new Operator<Number>(Number_x_2);
+        Operator<Number> MAX = new Operator<Number>(Number_x_2);
+        Operator<Number> LOG10 = new Operator<Number>(Number.class);
+        Operator<Number> LOG = new Operator<Number>(Number.class);
+        Operator<Number> FLOOR = new Operator<Number>(Number.class);
+        Operator<Number> EXP = new Operator<Number>(Number.class);
     }
 
     /**
      * String operators
      */
     public interface OpString {
-        Op<String> LTRIM = new Op<String>(String.class);
-        Op<String> RTRIM = new Op<String>(String.class);
-        Op<String> SPACE = new Op<String>(Integer.class);
+        Operator<String> LTRIM = new Operator<String>(String.class);
+        Operator<String> RTRIM = new Operator<String>(String.class);
+        Operator<String> SPACE = new Operator<String>(Integer.class);
     }
 }

@@ -118,7 +118,7 @@ public abstract class AbstractQueryTest {
     static class ColQueryWithoutIndexing extends ColQueryImpl {
         @Override
         protected QueryIndexSupport createIndexSupport(
-                Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops,
+                Map<Expr<?>, Iterable<?>> exprToIt, JavaPatterns ops,
                 List<Expr<?>> sources) {
             return new SimpleIndexSupport(new SimpleIteratorSource(exprToIt),
                     ops, sources);

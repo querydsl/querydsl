@@ -23,7 +23,7 @@ import com.mysema.query.types.alias.AToPath;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Op;
+import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PEntity;
@@ -44,7 +44,7 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
 
     private boolean wrapElements = false;
 
-    public HQLSerializer(HQLOps ops) {
+    public HQLSerializer(HQLPatterns ops) {
         super(ops);
     }
 
@@ -162,10 +162,6 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
         }
     }
 
-    // protected void visit(DistinctPath<?> expr){
-    // append("distinct ").visit(expr.getPath());
-    // }
-
     @Override
     protected void visit(EConstant<?> expr) {
         boolean wrap = expr.getConstant().getClass().isArray();
@@ -204,17 +200,17 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
         append(")");
     }
 
-    private void visitCast(Op<?> operator, Expr<?> source, Class<?> targetType) {
+    private void visitCast(Operator<?> operator, Expr<?> source, Class<?> targetType) {
         append("cast(").handle(source);
         append(" as ");
         append(targetType.getSimpleName().toLowerCase()).append(")");
 
     }
 
-    protected void visitOperation(Class<?> type, Op<?> operator,
+    protected void visitOperation(Class<?> type, Operator<?> operator,
             List<Expr<?>> args) {
         boolean old = wrapElements;
-        wrapElements = HQLOps.wrapCollectionsForOp.contains(operator);
+        wrapElements = HQLPatterns.wrapCollectionsForOp.contains(operator);
         // 
         if (operator.equals(Ops.ISTYPEOF)) {
             args = new ArrayList<Expr<?>>(args);

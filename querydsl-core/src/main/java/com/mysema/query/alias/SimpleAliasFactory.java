@@ -41,25 +41,11 @@ class SimpleAliasFactory implements AliasFactory {
         }
     };
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * com.mysema.query.alias.AliasFactory#createAliasForProp(java.lang.Class,
-     * java.lang.Object, com.mysema.query.grammar.types.Expr)
-     */
     public <A> A createAliasForProp(Class<A> cl, Object parent, Expr<?> path) {
         A proxy = createProxy(cl, path);
         return proxy;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * com.mysema.query.alias.AliasFactory#createAliasForVar(java.lang.Class,
-     * java.lang.String)
-     */
     @SuppressWarnings("unchecked")
     public <A> A createAliasForVar(Class<A> cl, String var) {
         Expr<?> path = pathCache.get(cl, var);
@@ -90,11 +76,6 @@ class SimpleAliasFactory implements AliasFactory {
         return rv;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mysema.query.alias.AliasFactory#getCurrent()
-     */
     @SuppressWarnings("unchecked")
     public <A extends Expr<?>> A getCurrent() {
         return (A) current.get();
@@ -110,13 +91,6 @@ class SimpleAliasFactory implements AliasFactory {
         current.set(null);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * com.mysema.query.alias.AliasFactory#setCurrent(com.mysema.query.grammar
-     * .types.Expr)
-     */
     public void setCurrent(Expr<?> path) {
         current.set(path);
     }

@@ -23,7 +23,7 @@ import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Op;
+import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.path.Path;
 import com.mysema.query.types.path.PathMetadata.PathType;
@@ -58,7 +58,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
         return _this;
     }
 
-    protected void appendOperationResult(Op<?> operator, String result) {
+    protected void appendOperationResult(Operator<?> operator, String result) {
         append(result);
     }
 
@@ -167,12 +167,10 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
     }
 
     protected void visit(Quant<?> q) {
-        visitOperation(null, q.getOperator(), Collections
-                .<Expr<?>> singletonList(q.getTarget()));
+        visitOperation(null, q.getOperator(), Collections.<Expr<?>> singletonList(q.getTarget()));
     }
 
-    protected void visitOperation(Class<?> type, Op<?> operator,
-            List<Expr<?>> args) {
+    protected void visitOperation(Class<?> type, Operator<?> operator,List<Expr<?>> args) {
         String pattern = ops.getPattern(operator);
         if (pattern == null) {
             throw new IllegalArgumentException("Got no pattern for " + operator);

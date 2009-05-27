@@ -10,7 +10,7 @@ import java.util.List;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.collections.IteratorSource;
-import com.mysema.query.collections.JavaOps;
+import com.mysema.query.collections.JavaPatterns;
 import com.mysema.query.collections.QueryIndexSupport;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
@@ -26,11 +26,11 @@ public class SimpleIndexSupport implements QueryIndexSupport {
 
     protected final IteratorSource iteratorSource;
 
-    protected final JavaOps ops;
+    protected final JavaPatterns ops;
 
     protected final List<? extends Expr<?>> sources;
 
-    public SimpleIndexSupport(IteratorSource iteratorSource, JavaOps ops,
+    public SimpleIndexSupport(IteratorSource iteratorSource, JavaPatterns ops,
             List<? extends Expr<?>> sources) {
         this.iteratorSource = Assert.notNull(iteratorSource);
         this.ops = Assert.notNull(ops);

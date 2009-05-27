@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.hql.HQLGrammar;
-import com.mysema.query.hql.HQLOps;
+import com.mysema.query.hql.HQLPatterns;
 import com.mysema.query.hql.HQLQueryBase;
 import com.mysema.query.types.expr.Expr;
 
@@ -36,10 +36,10 @@ public class AbstractJPAQLQuery<SubType extends AbstractJPAQLQuery<SubType>>
     private final EntityManager em;
 
     public AbstractJPAQLQuery(EntityManager em) {
-        this(em, HQLOps.DEFAULT);
+        this(em, HQLPatterns.DEFAULT);
     }
 
-    public AbstractJPAQLQuery(EntityManager em, HQLOps ops) {
+    public AbstractJPAQLQuery(EntityManager em, HQLPatterns ops) {
         super(ops);
         this.em = em;
     }

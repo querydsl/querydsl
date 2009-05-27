@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
 import java.util.regex.Pattern;
 
 import com.mysema.query.serialization.OperationPatterns;
-import com.mysema.query.types.operation.Op;
+import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.types.path.PathMetadata.PathType;
@@ -21,12 +21,12 @@ import com.mysema.query.types.path.PathMetadata.PathType;
  * @author tiwe
  * @version $Id$
  */
-public class JavaOps extends OperationPatterns {
+public class JavaPatterns extends OperationPatterns {
 
-    public static final JavaOps DEFAULT = new JavaOps();
+    public static final JavaPatterns DEFAULT = new JavaPatterns();
 
-    protected JavaOps() {
-        String functions = JavaOps.class.getName();
+    protected JavaPatterns() {
+        String functions = JavaPatterns.class.getName();
 
         add(Ops.AFTER, "%s.compareTo(%s) > 0");
         add(Ops.BEFORE, "%s.compareTo(%s) < 0");
@@ -45,6 +45,22 @@ public class JavaOps extends OperationPatterns {
 
         add(Ops.ISTYPEOF, "%2$s.isInstance(%1$s)");        
         add(Ops.LIKE, functions + ".like(%s,%s)");
+        
+        // collection
+        add(Ops.COL_ISEMPTY, "%s.isEmpty()");
+        add(Ops.COL_ISNOTEMPTY, "!%s.isEmpty()");
+        add(Ops.COL_SIZE, "%s.size()");
+        add(Ops.IN, "%2$s.contains(%1$s)");
+        add(Ops.NOTIN, "!%2$s.contains(%1$s)");
+
+        // array
+        add(Ops.ARRAY_SIZE, "%s.length");
+        
+        // map
+        add(Ops.MAP_ISEMPTY, "%s.isEmpty()");
+        add(Ops.MAP_ISNOTEMPTY, "!%s.isEmpty()");
+        add(Ops.CONTAINS_KEY, "%s.containsKey(%s)");
+        add(Ops.CONTAINS_VALUE, "%s.containsValue(%s)");
 
         // java.lang.String
         add(Ops.CHAR_AT, "%s.charAt(%s)");
@@ -60,8 +76,7 @@ public class JavaOps extends OperationPatterns {
         add(Ops.LAST_INDEX, "%s.lastIndex(%s,%s)");
         add(Ops.STRING_ISEMPTY, "%s.isEmpty()");
         add(Ops.STARTSWITH, "%s.startsWith(%s, 0)");
-        add(Ops.STARTSWITH_IC,
-                "%s.toLowerCase().startsWith(%s.toLowerCase(), 0)");
+        add(Ops.STARTSWITH_IC, "%s.toLowerCase().startsWith(%s.toLowerCase(), 0)");
         add(Ops.INDEXOF_2ARGS, "%s.indexOf(%s,%s)");
         add(Ops.INDEXOF, "%s.indexOf(%s)");
         add(Ops.EQ_IGNORECASE, "%s.equalsIgnoreCase(%s)");
@@ -69,22 +84,10 @@ public class JavaOps extends OperationPatterns {
         add(Ops.ENDSWITH_IC, "%s.toLowerCase().endsWith(%s.toLowerCase())");
         add(Ops.CONTAINS, "%s.contains(%s)");
         
-        // collection
-        add(Ops.COL_ISEMPTY, "%s.isEmpty()");
-        add(Ops.COL_ISNOTEMPTY, "!%s.isEmpty()");
-        add(Ops.IN, "%2$s.contains(%1$s)");
-        add(Ops.NOTIN, "!%2$s.contains(%1$s)");
-        add(Ops.CONTAINS_KEY, "%s.containsKey(%s)");
-        add(Ops.CONTAINS_VALUE, "%s.containsValue(%s)");
-
-        // map
-        add(Ops.MAP_ISEMPTY, "%s.isEmpty()");
-        add(Ops.MAP_ISNOTEMPTY, "!%s.isEmpty()");
-        
         // math
         try {
             for (Field f : Ops.OpMath.class.getFields()) {
-                Op<?> op = (Op<?>) f.get(null);
+                Operator<?> op = (Operator<?>) f.get(null);
                 add(op, "Math." + getPattern(op));
             }
         } catch (Exception e) {
@@ -105,20 +108,14 @@ public class JavaOps extends OperationPatterns {
         }
         add(PathMetadata.ARRAYVALUE, "%s[%s]");
         add(PathMetadata.ARRAYVALUE_CONSTANT, "%s[%s.intValue()]");
-
-        add(PathMetadata.ARRAY_SIZE, "%s.length");
-        add(PathMetadata.SIZE, "%s.size()");
-
     }
 
-    public static <A extends Comparable<? super A>> boolean between(A a, A b,
-            A c) {
+    public static <A extends Comparable<? super A>> boolean between(A a, A b, A c) {
         return a.compareTo(b) > 0 && a.compareTo(c) < 0;
     }
 
     public static boolean like(String source, String pattern) {
-        return Pattern.compile(pattern.replace("%", ".*").replace("_", "."))
-                .matcher(source).matches();
+        return Pattern.compile(pattern.replace("%", ".*").replace("_", ".")).matcher(source).matches();
     }
 
 }

@@ -29,8 +29,8 @@ import com.mysema.query.types.operation.Ops;
 public class Dialect {
 
     // tested
-    public static SQLOps forHSQLDB() {
-        return new SQLOps() {
+    public static SQLPatterns forHSQLDB() {
+        return new SQLPatterns() {
             {
                 add(Ops.OpMath.ROUND, "round(%s,0)");
                 add(Ops.TRIM, "trim(both from %s)");
@@ -39,8 +39,8 @@ public class Dialect {
     }
 
     // tested
-    public static SQLOps forDerby() {
-        return new SQLOps() {
+    public static SQLPatterns forDerby() {
+        return new SQLPatterns() {
             {
                 add(Ops.CONCAT, "%s || %s");
                 add(Ops.OpMath.ROUND, "floor(%s)");
@@ -63,8 +63,8 @@ public class Dialect {
     }
 
     // tested
-    public static SQLOps forMySQL() {
-        return new SQLOps() {
+    public static SQLPatterns forMySQL() {
+        return new SQLPatterns() {
             {
                 addClass2TypeMappings("signed", Byte.class, Integer.class,
                         Long.class, Short.class, BigInteger.class);
@@ -75,23 +75,23 @@ public class Dialect {
         };
     }
 
-    public static SQLOps forOracle10() {
+    public static SQLPatterns forOracle10() {
         return forOracle();
     }
 
     // tested
-    public static SQLOps forOracle() {
+    public static SQLPatterns forOracle() {
         return new OracleDialect();
     }
 
     // TODO : to be tested
-    public static SQLOps forPostgreSQL() {
-        return new SQLOps();
+    public static SQLPatterns forPostgreSQL() {
+        return new SQLPatterns();
     }
 
     // TODO : to be tested
-    public static SQLOps forSQLServer() {
-        return new SQLOps();
+    public static SQLPatterns forSQLServer() {
+        return new SQLPatterns();
     }
 
 }

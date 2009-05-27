@@ -24,6 +24,10 @@ public class PComponentMap<K, V> extends ESimple<java.util.Map<K, V>> implements
     private final Class<V> valueType;
     private final Path<?> root;
 
+    private EBoolean empty;
+
+    private EBoolean notEmpty;
+
     public PComponentMap(Class<K> keyType, Class<V> valueType,
             PathMetadata<?> metadata) {
         super(null);
@@ -35,53 +39,6 @@ public class PComponentMap<K, V> extends ESimple<java.util.Map<K, V>> implements
 
     public PComponentMap(Class<K> keyType, Class<V> valueType, String var) {
         this(keyType, valueType, PathMetadata.forVariable(var));
-    }
-
-    public ESimple<V> get(Expr<K> key) {
-        return new PSimple<V>(valueType, PathMetadata.forMapAccess(this, key));
-    }
-
-    public ESimple<V> get(K key) {
-        return new PSimple<V>(valueType, PathMetadata.forMapAccess(this, key));
-    }
-
-    public Class<K> getKeyType() {
-        return keyType;
-    }
-
-    public PathMetadata<?> getMetadata() {
-        return metadata;
-    }
-
-    public Class<V> getValueType() {
-        return valueType;
-    }
-
-    public EBoolean isnotnull() {
-        if (isnotnull == null) {
-            isnotnull = Grammar.isnotnull(this);
-        }
-        return isnotnull;
-    }
-
-    public EBoolean isnull() {
-        if (isnull == null) {
-            isnull = Grammar.isnull(this);
-        }
-        return isnull;
-    }
-
-    public Path<?> getRoot() {
-        return root;
-    }
-
-    public int hashCode() {
-        return metadata.hashCode();
-    }
-
-    public boolean equals(Object o) {
-        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
-                : false;
     }
 
     @Override
@@ -103,12 +60,65 @@ public class PComponentMap<K, V> extends ESimple<java.util.Map<K, V>> implements
     public EBoolean containsValue(V value) {
         return Grammar.containsValue(this, value);
     }
-    
-    public EBoolean empty() {
-        return Grammar.empty(this);
+
+    public boolean equals(Object o) {
+        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
+                : false;
     }
 
-    public EBoolean notEmpty() {
-        return Grammar.notEmpty(this);
+    public ESimple<V> get(Expr<K> key) {
+        return new PSimple<V>(valueType, PathMetadata.forMapAccess(this, key));
+    }
+
+    public ESimple<V> get(K key) {
+        return new PSimple<V>(valueType, PathMetadata.forMapAccess(this, key));
+    }
+
+    public Class<K> getKeyType() {
+        return keyType;
+    }
+
+    public PathMetadata<?> getMetadata() {
+        return metadata;
+    }
+
+    public Path<?> getRoot() {
+        return root;
+    }
+
+    public Class<V> getValueType() {
+        return valueType;
+    }
+
+    public int hashCode() {
+        return metadata.hashCode();
+    }
+    
+    public EBoolean isEmpty() {
+        if (empty == null){
+            empty = Grammar.isEmpty(this);
+        }
+        return empty;
+    }
+    
+    public EBoolean isNotEmpty() {
+        if (notEmpty == null){
+            notEmpty = Grammar.isNotEmpty(this); 
+        }
+        return notEmpty;
+    }
+
+    public EBoolean isNotNull() {
+        if (isnotnull == null) {
+            isnotnull = Grammar.isNotNull(this);
+        }
+        return isnotnull;
+    }
+    
+    public EBoolean isNull() {
+        if (isnull == null) {
+            isnull = Grammar.isNull(this);
+        }
+        return isnull;
     }
 }

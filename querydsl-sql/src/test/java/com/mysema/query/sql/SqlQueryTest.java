@@ -58,7 +58,7 @@ public abstract class SqlQueryTest {
 
     protected static ThreadLocal<Statement> stmtHolder = new ThreadLocal<Statement>();
 
-    protected SQLOps dialect;
+    protected SQLPatterns dialect;
 
     protected final QEMPLOYEE employee = new QEMPLOYEE("employee");
     protected final QEMPLOYEE employee2 = new QEMPLOYEE("employee2");
@@ -154,13 +154,13 @@ public abstract class SqlQueryTest {
         // TEST
         // select count(*) from test where name = null
         expectedQuery = "select count(*) from test test where test.name is null";
-        q().from(test).where(test.name.isnull()).count();
+        q().from(test).where(test.name.isNull()).count();
         // select count(*) from test where name like null
         // q().from(test).where(test.name.like(null)).count();
         // select count(*) from test where name = ''
         q().from(test).where(test.name.like("")).count();
         // select count(*) from test where name is not null
-        q().from(test).where(test.name.isnotnull()).count();
+        q().from(test).where(test.name.isNotNull()).count();
         // select count(*) from test where name like '%'
         q().from(test).where(test.name.like("%")).count();
         // select count(*) from test where left(name, 6) = 'name44'
@@ -200,7 +200,7 @@ public abstract class SqlQueryTest {
         // + "having superior_id is not null "
         // + "order by superior_id " + "";
         q().from(employee).groupBy(employee.superiorId).having(
-                employee.superiorId.isnotnull()).orderBy(
+                employee.superiorId.isNotNull()).orderBy(
                 employee.superiorId.asc()).list(avg(employee.salary),
                 max(employee.id));
     }

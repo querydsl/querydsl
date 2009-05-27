@@ -7,7 +7,7 @@ package com.mysema.query.hql.hibernate;
 
 import org.hibernate.Session;
 
-import com.mysema.query.hql.HQLOps;
+import com.mysema.query.hql.HQLPatterns;
 
 /**
  * HqlQuery provides a fluent statically typed interface for creating HQL
@@ -22,7 +22,7 @@ public class HQLQuery extends AbstractHQLQuery<HQLQuery> {
         super(session);
     }
 
-    public HQLQuery(Session session, HQLOps ops) {
+    public HQLQuery(Session session, HQLPatterns ops) {
         super(session, ops);
     }
 

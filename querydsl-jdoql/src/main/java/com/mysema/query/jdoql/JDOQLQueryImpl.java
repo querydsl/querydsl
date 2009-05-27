@@ -45,15 +45,15 @@ class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> imp
 
     private String filter;
 
-    private final JDOQLOps ops;
+    private final JDOQLPatterns ops;
 
     private final PersistenceManager pm;
     
     public JDOQLQueryImpl(PersistenceManager pm) {
-        this(pm, JDOQLOps.DEFAULT);
+        this(pm, JDOQLPatterns.DEFAULT);
     }
 
-    public JDOQLQueryImpl(PersistenceManager pm, JDOQLOps ops) {
+    public JDOQLQueryImpl(PersistenceManager pm, JDOQLPatterns ops) {
         this.ops = ops;
         this.pm = pm;
     }

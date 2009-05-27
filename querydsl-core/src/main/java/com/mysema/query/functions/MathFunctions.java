@@ -26,53 +26,39 @@ public final class MathFunctions {
     private MathFunctions() {
     }
 
-    private static final OperationFactory factory = SimpleOperationFactory
-            .getInstance();
+    private static final OperationFactory factory = SimpleOperationFactory.getInstance();
 
-    private static final ExprFactory exprFactory = SimpleExprFactory
-            .getInstance();
+    private static final ExprFactory exprFactory = SimpleExprFactory.getInstance();
 
-    public static <A extends Number & Comparable<?>> ENumber<A> mult(
-            Expr<A> left, A right) {
-        return factory.createNumber(left.getType(), Ops.MULT, left, exprFactory
-                .createConstant(right));
+    public static <A extends Number & Comparable<?>> ENumber<A> mult(Expr<A> left, A right) {
+        return factory.createNumber(left.getType(), Ops.MULT, left, exprFactory.createConstant(right));
     }
 
-    public static <A extends Number & Comparable<?>> ENumber<A> mult(
-            Expr<A> left, Expr<A> right) {
+    public static <A extends Number & Comparable<?>> ENumber<A> mult(Expr<A> left, Expr<A> right) {
         return factory.createNumber(left.getType(), Ops.MULT, left, right);
     }
 
-    public static <A extends Number & Comparable<?>> ENumber<Double> div(
-            ENumber<A> left, A right) {
-        return factory.createNumber(Double.class, Ops.DIV, left, exprFactory
-                .createConstant(right));
+    public static <A extends Number & Comparable<?>> ENumber<Double> div(ENumber<A> left, A right) {
+        return factory.createNumber(Double.class, Ops.DIV, left, exprFactory.createConstant(right));
     }
 
-    public static <A extends Number & Comparable<?>> ENumber<Double> div(
-            Expr<A> left, Expr<A> right) {
+    public static <A extends Number & Comparable<?>> ENumber<Double> div(Expr<A> left, Expr<A> right) {
         return factory.createNumber(Double.class, Ops.DIV, left, right);
     }
 
-    public static <A extends Number & Comparable<?>> ENumber<A> add(
-            Expr<A> left, A right) {
-        return factory.createNumber(left.getType(), Ops.ADD, left, exprFactory
-                .createConstant(right));
+    public static <A extends Number & Comparable<?>> ENumber<A> add(Expr<A> left, A right) {
+        return factory.createNumber(left.getType(), Ops.ADD, left, exprFactory.createConstant(right));
     }
 
-    public static <A extends Number & Comparable<?>> ENumber<A> add(
-            Expr<A> left, Expr<A> right) {
+    public static <A extends Number & Comparable<?>> ENumber<A> add(Expr<A> left, Expr<A> right) {
         return factory.createNumber(left.getType(), Ops.ADD, left, right);
     }
 
-    public static <A extends Number & Comparable<?>> ENumber<A> sub(
-            Expr<A> left, A right) {
-        return factory.createNumber(left.getType(), Ops.SUB, left, exprFactory
-                .createConstant(right));
+    public static <A extends Number & Comparable<?>> ENumber<A> sub(Expr<A> left, A right) {
+        return factory.createNumber(left.getType(), Ops.SUB, left, exprFactory.createConstant(right));
     }
 
-    public static <A extends Number & Comparable<?>> ENumber<A> sub(
-            Expr<A> left, Expr<A> right) {
+    public static <A extends Number & Comparable<?>> ENumber<A> sub(Expr<A> left, Expr<A> right) {
         return factory.createNumber(left.getType(), Ops.SUB, left, right);
     }
 
@@ -116,13 +102,11 @@ public final class MathFunctions {
         return factory.createNumber(left.getType(), OpMath.LOG10, left);
     }
 
-    public static <A extends Number & Comparable<?>> ENumber<A> max(
-            Expr<A> left, Expr<A> right) {
+    public static <A extends Number & Comparable<?>> ENumber<A> max(Expr<A> left, Expr<A> right) {
         return factory.createNumber(left.getType(), OpMath.MAX, left, right);
     }
 
-    public static <A extends Number & Comparable<?>> ENumber<A> min(
-            Expr<A> left, Expr<A> right) {
+    public static <A extends Number & Comparable<?>> ENumber<A> min(Expr<A> left, Expr<A> right) {
         return factory.createNumber(left.getType(), OpMath.MIN, left, right);
     }
 
@@ -142,8 +126,7 @@ public final class MathFunctions {
         return factory.createNumber(left.getType(), OpMath.SIN, left);
     }
 
-    public static <A extends Number & Comparable<?>> ENumber<Double> sqrt(
-            Expr<A> left) {
+    public static <A extends Number & Comparable<?>> ENumber<Double> sqrt(Expr<A> left) {
         return factory.createNumber(Double.class, OpMath.SQRT, left);
     }
 

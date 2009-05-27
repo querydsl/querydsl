@@ -37,11 +37,9 @@ public class GrammarWithAlias extends Grammar {
 
     private static final AliasFactory aliasFactory = new SimpleAliasFactory();
 
-    private static final PathFactory pathFactory = new AliasAwarePathFactory(
-            aliasFactory);
+    private static final PathFactory pathFactory = new AliasAwarePathFactory(aliasFactory);
 
-    private static final PSimple<Object> it = new PSimple<Object>(Object.class,
-            PathMetadata.forVariable("it"));
+    private static final PSimple<Object> it = new PSimple<Object>(Object.class,PathMetadata.forVariable("it"));
 
     public static <A> A alias(Class<A> cl, String var) {
         return aliasFactory.createAliasForVar(cl, var);

@@ -18,7 +18,7 @@ import com.mysema.query.Projectable;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.hql.HQLGrammar;
-import com.mysema.query.hql.HQLOps;
+import com.mysema.query.hql.HQLPatterns;
 import com.mysema.query.hql.HQLQueryBase;
 import com.mysema.query.types.expr.Expr;
 
@@ -38,10 +38,10 @@ public class AbstractHQLQuery<A extends AbstractHQLQuery<A>> extends
     private final Session session;
 
     public AbstractHQLQuery(Session session) {
-        this(session, HQLOps.DEFAULT);
+        this(session, HQLPatterns.DEFAULT);
     }
 
-    public AbstractHQLQuery(Session session, HQLOps ops) {
+    public AbstractHQLQuery(Session session, HQLPatterns ops) {
         super(ops);
         this.session = session;
     }

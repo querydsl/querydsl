@@ -16,8 +16,7 @@ import com.mysema.query.types.Grammar;
  * 
  * @param <D>
  */
-public abstract class ENumber<D extends Number & Comparable<?>> extends
-        EComparable<D> {
+public abstract class ENumber<D extends Number & Comparable<?>> extends EComparable<D> {
 
     public ENumber(Class<? extends D> type) {
         super(type);

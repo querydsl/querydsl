@@ -60,8 +60,7 @@ class AliasAwarePathFactory extends SimplePathFactory {
     }
 
     public <D> PEntityCollection<D> createEntityCollection(Collection<D> arg) {
-        PEntityCollection<D> rv = aliasFactory
-                .<PEntityCollection<D>> getCurrentAndReset();
+        PEntityCollection<D> rv = aliasFactory.<PEntityCollection<D>> getCurrentAndReset();
         return rv != null ? rv : super.createEntityCollection(arg);
     }
 
@@ -87,16 +86,13 @@ class AliasAwarePathFactory extends SimplePathFactory {
         }
     }
 
-    public <D extends Comparable<?>> PComparableArray<D> createComparableArray(
-            D[] args) {
-        PComparableArray<D> rv = aliasFactory
-                .<PComparableArray<D>> getCurrentAndReset();
+    public <D extends Comparable<?>> PComparableArray<D> createComparableArray(D[] args) {
+        PComparableArray<D> rv = aliasFactory.<PComparableArray<D>> getCurrentAndReset();
         return rv != null ? rv : super.createComparableArray(args);
     }
 
     public <K, V> PEntityMap<K, V> createEntityMap(Map<K, V> arg) {
-        PEntityMap<K, V> rv = aliasFactory
-                .<PEntityMap<K, V>> getCurrentAndReset();
+        PEntityMap<K, V> rv = aliasFactory.<PEntityMap<K, V>> getCurrentAndReset();
         return rv != null ? rv : super.createEntityMap(arg);
     }
 

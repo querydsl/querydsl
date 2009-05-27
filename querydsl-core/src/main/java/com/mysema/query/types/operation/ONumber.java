@@ -21,13 +21,13 @@ import com.mysema.query.types.expr.Expr;
 public class ONumber<OpType extends Number, D extends Number & Comparable<?>>
         extends ENumber<D> implements Operation<OpType, D> {
     private final List<Expr<?>> args;
-    private final Op<OpType> op;
+    private final Operator<OpType> op;
 
-    public ONumber(Class<? extends D> type, Op<OpType> op, Expr<?>... args) {
+    public ONumber(Class<? extends D> type, Operator<OpType> op, Expr<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    public ONumber(Class<? extends D> type, Op<OpType> op, List<Expr<?>> args) {
+    public ONumber(Class<? extends D> type, Operator<OpType> op, List<Expr<?>> args) {
         super(type);
         this.op = op;
         this.args = Collections.unmodifiableList(args);
@@ -42,7 +42,7 @@ public class ONumber<OpType extends Number, D extends Number & Comparable<?>>
         return args.get(i);
     }
 
-    public Op<OpType> getOperator() {
+    public Operator<OpType> getOperator() {
         return op;
     }
 }

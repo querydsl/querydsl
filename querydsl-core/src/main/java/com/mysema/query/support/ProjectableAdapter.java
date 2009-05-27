@@ -38,13 +38,11 @@ public abstract class ProjectableAdapter implements Projectable {
         return projectable.countDistinct();
     }
 
-    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second,
-            Expr<?>... rest) {
+    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return projectable.iterate(first, second, rest);
     }
 
-    public Iterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second,
-            Expr<?>... rest) {
+    public Iterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return projectable.iterateDistinct(first, second, rest);
     }
 
@@ -60,8 +58,7 @@ public abstract class ProjectableAdapter implements Projectable {
         return projectable.list(first, second, rest);
     }
 
-    public List<Object[]> listDistinct(Expr<?> first, Expr<?> second,
-            Expr<?>... rest) {
+    public List<Object[]> listDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return projectable.listDistinct(first, second, rest);
     }
 

@@ -22,11 +22,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.collections.JavaOps;
+import com.mysema.query.collections.JavaPatterns;
 import com.mysema.query.serialization.BaseSerializer;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Op;
+import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.Path;
 import com.mysema.query.types.path.PathMetadata.PathType;
@@ -42,7 +42,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer> {
     private static final Logger logger = LoggerFactory
             .getLogger(JavaSerializer.class);
 
-    public JavaSerializer(JavaOps ops) {
+    public JavaSerializer(JavaPatterns ops) {
         super(ops);
     }
 
@@ -163,7 +163,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer> {
         }
     }
 
-    private void visitCast(Op<?> operator, Expr<?> source, Class<?> targetType) {
+    private void visitCast(Operator<?> operator, Expr<?> source, Class<?> targetType) {
         if (Number.class.isAssignableFrom(source.getType())
                 && !EConstant.class.isInstance(source)) {
             append("new ").append(source.getType().getSimpleName()).append("(");
@@ -194,7 +194,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer> {
     }
 
     @Override
-    protected void visitOperation(Class<?> type, Op<?> operator,
+    protected void visitOperation(Class<?> type, Operator<?> operator,
             List<Expr<?>> args) {
         if (operator.equals(Ops.LIKE)) {
             // optimize like matches to startsWith and endsWith, when possible

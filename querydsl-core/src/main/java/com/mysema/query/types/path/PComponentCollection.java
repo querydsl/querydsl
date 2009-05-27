@@ -18,11 +18,15 @@ import com.mysema.query.types.expr.Expr;
  */
 public class PComponentCollection<D> extends ESimple<java.util.Collection<D>>
         implements PCollection<D> {
-    private EBoolean isnull, isnotnull;
+    private EBoolean isNull, notNull;
     private final PathMetadata<?> metadata;
     private EComparable<Integer> size;
     protected final Class<D> type;
     private final Path<?> root;
+
+    private EBoolean empty;
+
+    private EBoolean notEmpty;
 
     public PComponentCollection(Class<D> type, PathMetadata<?> metadata) {
         super(null);
@@ -35,36 +39,6 @@ public class PComponentCollection<D> extends ESimple<java.util.Collection<D>>
         this(type, PathMetadata.forVariable(var));
     }
 
-    public Class<D> getElementType() {
-        return type;
-    }
-
-    public PathMetadata<?> getMetadata() {
-        return metadata;
-    }
-
-    public EBoolean isnotnull() {
-        if (isnotnull == null) {
-            isnotnull = Grammar.isnotnull(this);
-        }
-        return isnotnull;
-    }
-
-    public EBoolean isnull() {
-        if (isnull == null) {
-            isnull = Grammar.isnull(this);
-        }
-        return isnull;
-    }
-
-    public EComparable<Integer> size() {
-        if (size == null) {
-            size = new PComparable<Integer>(Integer.class, PathMetadata
-                    .forSize(this));
-        }
-        return size;
-    }
-
     public EBoolean contains(D child) {
         return Grammar.in(child, this);
     }
@@ -73,14 +47,19 @@ public class PComponentCollection<D> extends ESimple<java.util.Collection<D>>
         return Grammar.in(child, this);
     }
 
-    public EBoolean empty() {
-        return Grammar.empty(this);
+    public boolean equals(Object o) {
+        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
+                : false;
     }
 
-    public EBoolean notEmpty() {
-        return Grammar.notEmpty(this);
+    public Class<D> getElementType() {
+        return type;
     }
 
+    public PathMetadata<?> getMetadata() {
+        return metadata;
+    }
+    
     public Path<?> getRoot() {
         return root;
     }
@@ -88,9 +67,39 @@ public class PComponentCollection<D> extends ESimple<java.util.Collection<D>>
     public int hashCode() {
         return metadata.hashCode();
     }
+    
+    public EBoolean isEmpty() {
+        if (empty == null){
+            empty = Grammar.isEmpty(this); 
+        }
+        return empty;
+    }
 
-    public boolean equals(Object o) {
-        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
-                : false;
+    public EBoolean isNotEmpty() {
+        if (notEmpty == null){
+            notEmpty = Grammar.isNotEmpty(this); 
+        }
+        return notEmpty; 
+    }
+
+    public EBoolean isNotNull() {
+        if (notNull == null) {
+            notNull = Grammar.isNotNull(this);
+        }
+        return notNull;
+    }
+
+    public EBoolean isNull() {
+        if (isNull == null) {
+            isNull = Grammar.isNull(this);
+        }
+        return isNull;
+    }
+
+    public EComparable<Integer> size() {
+        if (size == null) {
+            size = Grammar.size(this);
+        }
+        return size;
     }
 }

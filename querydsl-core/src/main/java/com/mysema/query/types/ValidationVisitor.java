@@ -12,7 +12,7 @@ import com.mysema.query.types.alias.AToPath;
 import com.mysema.query.types.custom.Custom;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Op;
+import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.path.Path;
 import com.mysema.query.types.quant.Quant;
@@ -47,7 +47,7 @@ public class ValidationVisitor extends AbstractVisitor<ValidationVisitor> {
 
     @Override
     protected void visit(Operation<?, ?> expr) {
-        Op<?> op = expr.getOperator();
+        Operator<?> op = expr.getOperator();
         List<Expr<?>> args = expr.getArgs();
         if (op.getTypes().size() != args.size()) {
             throw new IllegalArgumentException(expr + " is invalid : "

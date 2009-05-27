@@ -8,7 +8,7 @@ package com.mysema.query.collections.support;
 import java.util.List;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.collections.JavaOps;
+import com.mysema.query.collections.JavaPatterns;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.support.DefaultIndexSupport.IndexedPath;
 import com.mysema.query.collections.utils.EvaluatorUtils;
@@ -31,7 +31,7 @@ public class DefaultIndexCreationTask {
 
     private final DefaultIndexSupport indexSupport;
 
-    private final JavaOps ops;
+    private final JavaPatterns ops;
 
     private final List<? extends Expr<?>> sources;
 
@@ -44,7 +44,7 @@ public class DefaultIndexCreationTask {
      * @param condition
      */
     public DefaultIndexCreationTask(DefaultIndexSupport indexSupport,
-            List<? extends Expr<?>> sources, JavaOps ops, EBoolean condition) {
+            List<? extends Expr<?>> sources, JavaPatterns ops, EBoolean condition) {
         this.indexSupport = Assert.notNull(indexSupport);
         this.sources = Assert.notNull(sources);
         this.ops = ops;

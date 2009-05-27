@@ -17,15 +17,15 @@ import com.mysema.query.types.expr.Expr;
  */
 public interface PCollection<D> extends Path<java.util.Collection<D>>,
         CollectionType<D> {
-    Class<D> getElementType();
-
     EBoolean contains(D child);
 
     EBoolean contains(Expr<D> child);
 
+    Class<D> getElementType();
+
+    EBoolean isEmpty();
+
+    EBoolean isNotEmpty();
+
     EComparable<Integer> size();
-
-    EBoolean empty();
-
-    EBoolean notEmpty();
 }

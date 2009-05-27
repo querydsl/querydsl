@@ -37,17 +37,6 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
         return new PComparable<A>(type, PathMetadata.forProperty(this, path));
     }
 
-    /**
-     * @param <A>
-     * @param path
-     * @param type
-     * @return
-     */
-    protected <A extends Number & Comparable<?>> PNumber<A> _number(
-            String path, Class<A> type) {
-        return new PNumber<A>(type, PathMetadata.forProperty(this, path));
-    }
-
     protected <A> PEntity<A> _entity(String path, String entityName,
             Class<A> type) {
         return new PEntity<A>(type, entityName, PathMetadata.forProperty(this,
@@ -70,6 +59,17 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
             Class<V> value, String entityName) {
         return new PEntityMap<K, V>(key, value, entityName, PathMetadata
                 .forProperty(this, path));
+    }
+
+    /**
+     * @param <A>
+     * @param path
+     * @param type
+     * @return
+     */
+    protected <A extends Number & Comparable<?>> PNumber<A> _number(
+            String path, Class<A> type) {
+        return new PNumber<A>(type, PathMetadata.forProperty(this, path));
     }
 
     protected <A> PSimple<A> _simple(String path, Class<A> type) {
@@ -99,30 +99,17 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
         return Grammar.as(this, to);
     }
 
+    public boolean equals(Object o) {
+        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
+                : false;
+    }
+
     public String getEntityName() {
         return entityName;
     }
 
     public PathMetadata<?> getMetadata() {
         return metadata;
-    }
-
-    public EBoolean isnotnull() {
-        if (isnotnull == null) {
-            isnotnull = Grammar.isnotnull(this);
-        }
-        return isnotnull;
-    }
-
-    public EBoolean isnull() {
-        if (isnull == null) {
-            isnull = Grammar.isnull(this);
-        }
-        return isnull;
-    }
-
-    public <B extends D> EBoolean instanceOf(Class<B> type) {
-        return Grammar.instanceOf(this, type);
     }
 
     public Path<?> getRoot() {
@@ -133,8 +120,21 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
         return metadata.hashCode();
     }
 
-    public boolean equals(Object o) {
-        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
-                : false;
+    public <B extends D> EBoolean instanceOf(Class<B> type) {
+        return Grammar.instanceOf(this, type);
+    }
+
+    public EBoolean isNotNull() {
+        if (isnotnull == null) {
+            isnotnull = Grammar.isNotNull(this);
+        }
+        return isnotnull;
+    }
+
+    public EBoolean isNull() {
+        if (isnull == null) {
+            isnull = Grammar.isNull(this);
+        }
+        return isnull;
     }
 }

@@ -11,7 +11,7 @@ import org.apache.commons.collections15.IteratorUtils;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
 
-import com.mysema.query.collections.JavaOps;
+import com.mysema.query.collections.JavaPatterns;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
@@ -34,7 +34,7 @@ public class QueryIteratorUtils {
      * @param condition
      * @return
      */
-    public static <S> Iterator<S> multiArgFilter(JavaOps ops,
+    public static <S> Iterator<S> multiArgFilter(JavaPatterns ops,
             Iterator<S> source, List<Expr<?>> sources, EBoolean condition) {
         Evaluator ev = EvaluatorUtils.create(ops, sources, condition);
         return multiArgFilter(source, ev);
@@ -60,7 +60,7 @@ public class QueryIteratorUtils {
      * @param projection
      * @return
      */
-    public static <S, T> Iterator<T> transform(JavaOps ops, Iterator<S> source,
+    public static <S, T> Iterator<T> transform(JavaPatterns ops, Iterator<S> source,
             List<Expr<?>> sources, Expr<?> projection) {
         Evaluator ev = EvaluatorUtils.create(ops, sources, projection);
         return transform(source, ev);

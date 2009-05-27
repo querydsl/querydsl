@@ -7,7 +7,7 @@ package com.mysema.query.hql.jpa;
 
 import javax.persistence.EntityManager;
 
-import com.mysema.query.hql.HQLOps;
+import com.mysema.query.hql.HQLPatterns;
 
 /**
  * JpaqlQuery provides a fluent statically typed interface for creating JPAQL
@@ -22,7 +22,7 @@ public class JPAQLQuery extends AbstractJPAQLQuery<JPAQLQuery> {
         super(em);
     }
 
-    public JPAQLQuery(EntityManager em, HQLOps ops) {
+    public JPAQLQuery(EntityManager em, HQLPatterns ops) {
         super(em, ops);
     }
 

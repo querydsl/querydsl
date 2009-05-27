@@ -14,7 +14,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.mysema.query.collections.AbstractQueryTest;
-import com.mysema.query.collections.JavaOps;
+import com.mysema.query.collections.JavaPatterns;
 import com.mysema.query.collections.eval.Evaluator;
 
 /**
@@ -27,7 +27,7 @@ public class QueryIteratorUtilsTest extends AbstractQueryTest {
 
     @Test
     public void projectToMap() {
-        Evaluator ev = EvaluatorUtils.create(JavaOps.DEFAULT, Arrays
+        Evaluator ev = EvaluatorUtils.create(JavaPatterns.DEFAULT, Arrays
                 .asList(cat), cat.name);
         Map<?, ?> map = QueryIteratorUtils.projectToMap(cats.iterator(), ev);
         for (Map.Entry<?, ?> e : map.entrySet()) {

@@ -74,9 +74,9 @@ public class ParserTest implements Constants {
 
         q().from(cat).where(sum(cat.kittens.size()).gt(0)).select(cat).parse();
 
-        q().from(cat).where(cat.kittens.empty()).select(cat).parse();
+        q().from(cat).where(cat.kittens.isEmpty()).select(cat).parse();
 
-        q().from(cat).where(cat.kittens.notEmpty()).select(cat).parse();
+        q().from(cat).where(cat.kittens.isNotEmpty()).select(cat).parse();
 
         // from(cat)
         // .groupBy(cat.name)
@@ -273,7 +273,7 @@ public class ParserTest implements Constants {
                 .parse();
 
         // parse( "from eg.Cat cat where cat.mate.name is not null" );
-        q().from(cat).where(cat.mate.name.isnotnull()).parse();
+        q().from(cat).where(cat.mate.name.isNotNull()).parse();
 
         // parse( "from eg.Cat cat, eg.Cat rival where cat.mate = rival.mate" );
         q().from(cat, rival).where(cat.mate.eq(rival.mate)).parse();
@@ -684,7 +684,7 @@ public class ParserTest implements Constants {
         // );
         q().from(an).where(
                 an.bodyWeight.gt(10).and(
-                        an.bodyWeight.lt(100).or(an.bodyWeight.isnull())))
+                        an.bodyWeight.lt(100).or(an.bodyWeight.isNull())))
                 .parse();
     }
 
@@ -883,7 +883,7 @@ public class ParserTest implements Constants {
 
     class TestQuery extends HQLQueryBase<TestQuery> {
         public TestQuery() {
-            super(new HQLOps());
+            super(new HQLPatterns());
         }
 
         public long count() {

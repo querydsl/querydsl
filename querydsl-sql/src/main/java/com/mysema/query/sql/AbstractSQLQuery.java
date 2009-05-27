@@ -44,13 +44,13 @@ public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
 
     private final Connection conn;
 
-    protected final SQLOps ops;
+    protected final SQLPatterns ops;
 
     // private boolean forCountRow = false;
 
     private SubQuery<Object, ?>[] sq;
 
-    public AbstractSQLQuery(Connection conn, SQLOps ops) {
+    public AbstractSQLQuery(Connection conn, SQLPatterns ops) {
         this.conn = conn;
         this.ops = ops;
     }

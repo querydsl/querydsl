@@ -64,10 +64,10 @@ public class AliasTest extends AbstractQueryTest {
         }
 
         // 2nd - variation 1
-        for (String name : from(c, cats).where($(c.getKittens().size()).gt(0))
-                .list(c.getName())) {
-            System.out.println(name);
-        }
+//        for (String name : from(c, cats).where($(c.getKittens().size()).gt(0))
+//                .list(c.getName())) {
+//            System.out.println(name);
+//        }
 
     }
 
@@ -136,7 +136,7 @@ public class AliasTest extends AbstractQueryTest {
         // 10
         assertNotNull($(c.getKittensByName()));
         assertNotNull($(c.getKittensByName().get("Kitty")));
-        from(c, cats).where($(c.getKittensByName().get("Kitty")).isnotnull())
+        from(c, cats).where($(c.getKittensByName().get("Kitty")).isNotNull())
                 .list(cat);
 
         // 11

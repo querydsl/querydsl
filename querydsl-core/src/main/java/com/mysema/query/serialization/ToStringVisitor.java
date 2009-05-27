@@ -25,11 +25,7 @@ import com.mysema.query.types.quant.Quant;
  */
 public class ToStringVisitor extends AbstractVisitor<ToStringVisitor> {
 
-    private static OperationPatterns ops = new OperationPatterns() {
-        {
-            // TODO
-        }
-    };
+    private static OperationPatterns ops = new OperationPatterns();
 
     private String toString = "?";
 

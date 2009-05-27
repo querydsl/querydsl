@@ -36,17 +36,13 @@ public class MiniApi extends GrammarWithAlias {
     }
 
     @SuppressWarnings("unchecked")
-    public static <A> List<A> select(Iterable<A> from, EBoolean where,
-            OrderSpecifier<?>... order) {
-        Expr<A> path = (Expr<A>) new SinglePathExtractor().handle(where)
-                .getPath();
-        ColQuery query = new ColQueryImpl().from(path, from).where(where)
-                .orderBy(order);
+    public static <A> List<A> select(Iterable<A> from, EBoolean where, OrderSpecifier<?>... order) {
+        Expr<A> path = (Expr<A>) new SinglePathExtractor().handle(where).getPath();
+        ColQuery query = new ColQueryImpl().from(path, from).where(where).orderBy(order);
         return query.list((Expr<A>) path);
     }
 
-    public static <A> List<A> reject(Iterable<A> from, EBoolean where,
-            OrderSpecifier<?>... order) {
+    public static <A> List<A> reject(Iterable<A> from, EBoolean where, OrderSpecifier<?>... order) {
         return select(from, Grammar.not(where), order);
     }
 

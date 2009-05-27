@@ -8,7 +8,7 @@ package com.mysema.query.types.quant;
 import com.mysema.query.types.CollectionType;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Op;
+import com.mysema.query.types.operation.Operator;
 
 /**
  * @author tiwe
@@ -20,15 +20,15 @@ public class QNumber<Q extends Number & Comparable<? super Q>> extends
 
     private final Expr<?> col;
 
-    private final Op<?> op;
+    private final Operator<?> op;
 
-    public QNumber(Class<Q> type, Op<?> op, CollectionType<Q> col) {
+    public QNumber(Class<Q> type, Operator<?> op, CollectionType<Q> col) {
         super(type);
         this.op = op;
         this.col = (Expr<?>) col;
     }
 
-    public Op<?> getOperator() {
+    public Operator<?> getOperator() {
         return op;
     }
 

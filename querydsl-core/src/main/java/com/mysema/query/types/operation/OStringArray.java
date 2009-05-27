@@ -18,13 +18,13 @@ import com.mysema.query.types.expr.Expr;
 public class OStringArray extends Expr<String[]> implements
         Operation<String, String[]> {
     private final List<Expr<?>> args;
-    private final Op<String> op;
+    private final Operator<String> op;
 
-    public OStringArray(Op<String> op, Expr<?>... args) {
+    public OStringArray(Operator<String> op, Expr<?>... args) {
         this(op, Arrays.asList(args));
     }
 
-    public OStringArray(Op<String> op, List<Expr<?>> args) {
+    public OStringArray(Operator<String> op, List<Expr<?>> args) {
         super(null);
         this.op = op;
         this.args = Collections.unmodifiableList(args);
@@ -39,7 +39,7 @@ public class OStringArray extends Expr<String[]> implements
         return args.get(i);
     }
 
-    public Op<String> getOperator() {
+    public Operator<String> getOperator() {
         return op;
     }
 }

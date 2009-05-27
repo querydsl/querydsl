@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.collections.IteratorSource;
-import com.mysema.query.collections.JavaOps;
+import com.mysema.query.collections.JavaPatterns;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.eval.FilteredJavaSerializer;
 import com.mysema.query.collections.eval.JaninoEvaluator;
@@ -47,11 +47,11 @@ public class FilteringMultiIterator extends MultiIterator implements
 
     private IteratorSource iteratorSource;
 
-    private JavaOps ops;
+    private JavaPatterns ops;
 
     private EBoolean where;
 
-    public FilteringMultiIterator(JavaOps ops, EBoolean where) {
+    public FilteringMultiIterator(JavaPatterns ops, EBoolean where) {
         this.ops = ops;
         this.where = where;
     }

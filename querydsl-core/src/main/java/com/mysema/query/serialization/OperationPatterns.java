@@ -8,7 +8,7 @@ package com.mysema.query.serialization;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.types.operation.Op;
+import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.operation.Ops.OpNumberAgg;
 import com.mysema.query.types.path.PathMetadata;
@@ -21,11 +21,11 @@ import com.mysema.query.types.path.PathMetadata.PathType;
  * @version $Id$
  */
 // TODO : replace String.format based expressions with custom expressions
-public abstract class OperationPatterns {
+public class OperationPatterns {
 
-    private final Map<Op<?>, String> patterns = new HashMap<Op<?>, String>();
+    private final Map<Operator<?>, String> patterns = new HashMap<Operator<?>, String>();
 
-    private final Map<Op<?>, Integer> precedence = new HashMap<Op<?>, Integer>();
+    private final Map<Operator<?>, Integer> precedence = new HashMap<Operator<?>, Integer>();
 
     public OperationPatterns() {
         // boolean
@@ -38,6 +38,10 @@ public abstract class OperationPatterns {
         // collection
         add(Ops.COL_ISEMPTY, "empty(%s)");
         add(Ops.COL_ISNOTEMPTY, "not empty(%s)");
+        add(Ops.COL_SIZE, "%s.size");
+        
+        // array
+        add(Ops.ARRAY_SIZE, "empty(%s)");
         
         // map
         add(Ops.MAP_ISEMPTY, "empty(%s)");
@@ -155,7 +159,6 @@ public abstract class OperationPatterns {
             add(type, "%s.get(%s)");
         }
         add(PathMetadata.PROPERTY, "%s.%s");
-        add(PathMetadata.SIZE, "%s.size");
         add(PathMetadata.VARIABLE, "%s");
 
         // numeric aggregates
@@ -165,20 +168,20 @@ public abstract class OperationPatterns {
 
     }
 
-    protected void add(Op<?> op, String pattern) {
+    protected void add(Operator<?> op, String pattern) {
         patterns.put(op, pattern);
     }
 
-    protected void add(Op<?> op, String pattern, int pre) {
+    protected void add(Operator<?> op, String pattern, int pre) {
         patterns.put(op, pattern);
         precedence.put(op, pre);
     }
 
-    public String getPattern(Op<?> op) {
+    public String getPattern(Operator<?> op) {
         return patterns.get(op);
     }
 
-    public int getPrecedence(Op<?> operator) {
+    public int getPrecedence(Operator<?> operator) {
         if (precedence.containsKey(operator)) {
             return precedence.get(operator);
         } else {
@@ -187,14 +190,14 @@ public abstract class OperationPatterns {
     }
 
     public OperationPatterns toUpperCase() {
-        for (Map.Entry<Op<?>, String> entry : patterns.entrySet()) {
+        for (Map.Entry<Operator<?>, String> entry : patterns.entrySet()) {
             patterns.put(entry.getKey(), entry.getValue().toUpperCase());
         }
         return this;
     }
 
     public OperationPatterns toLowerCase() {
-        for (Map.Entry<Op<?>, String> entry : patterns.entrySet()) {
+        for (Map.Entry<Operator<?>, String> entry : patterns.entrySet()) {
             patterns.put(entry.getKey(), entry.getValue().toLowerCase());
         }
         return this;

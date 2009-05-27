@@ -9,7 +9,7 @@ import java.util.*;
 
 import org.junit.Test;
 
-import com.mysema.query.collections.JavaOps;
+import com.mysema.query.collections.JavaPatterns;
 import com.mysema.query.collections.QueryIndexSupport;
 import com.mysema.query.collections.MiniApi;
 import com.mysema.query.collections.Domain.Cat;
@@ -32,7 +32,7 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest {
 
     private FilteringMultiIterator it;
 
-    private JavaOps ops = JavaOps.DEFAULT;
+    private JavaPatterns ops = JavaPatterns.DEFAULT;
 
     private Map<Expr<?>, Iterable<?>> exprToIt = new HashMap<Expr<?>, Iterable<?>>();
 

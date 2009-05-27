@@ -12,7 +12,7 @@ import com.mysema.query.types.alias.ASimple;
 import com.mysema.query.types.alias.AToPath;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Op;
+import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.Path;
@@ -26,7 +26,7 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
 
     private PEntity<?> candidatePath;
 
-    public JDOQLSerializer(JDOQLOps ops, PEntity<?> candidate) {
+    public JDOQLSerializer(JDOQLPatterns ops, PEntity<?> candidate) {
         super(ops);
         this.candidatePath = candidate;
     }
@@ -61,7 +61,7 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void visitOperation(Class<?> type, Op<?> operator,
+    protected void visitOperation(Class<?> type, Operator<?> operator,
             List<Expr<?>> args) {
         if (operator.equals(Ops.ISTYPEOF)) {
             handle(args.get(0)).append(" instanceof ");

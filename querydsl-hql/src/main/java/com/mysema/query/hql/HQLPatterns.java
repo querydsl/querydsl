@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.mysema.query.serialization.OperationPatterns;
-import com.mysema.query.types.operation.Op;
+import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.types.path.PathMetadata.PathType;
@@ -23,19 +23,19 @@ import com.mysema.query.types.path.PathMetadata.PathType;
  * @author tiwe
  * @version $Id$
  */
-public class HQLOps extends OperationPatterns {
+public class HQLPatterns extends OperationPatterns {
 
-    public static final HQLOps DEFAULT = new HQLOps();
+    public static final HQLPatterns DEFAULT = new HQLPatterns();
 
-    public static final List<Op<?>> wrapCollectionsForOp;
+    public static final List<Operator<?>> wrapCollectionsForOp;
 
     static {
-        wrapCollectionsForOp = Collections.<Op<?>> unmodifiableList(Arrays
-                .<Op<?>> asList(Ops.IN, Ops.NOTIN, OpQuant.ALL, OpQuant.ANY,
+        wrapCollectionsForOp = Collections.<Operator<?>> unmodifiableList(Arrays
+                .<Operator<?>> asList(Ops.IN, Ops.NOTIN, OpQuant.ALL, OpQuant.ANY,
                         OpQuant.AVG_IN_COL, OpQuant.EXISTS, OpQuant.NOTEXISTS));
     }
 
-    public HQLOps() {
+    public HQLPatterns() {
         // boolean
         add(Ops.AND, "%s and %s", 36);
         add(Ops.NOT, "not %s", 3);
@@ -50,14 +50,17 @@ public class HQLOps extends OperationPatterns {
         // numeric
         add(Ops.OpMath.SQRT, "sqrt(%s)");
 
-        // various
-        add(Ops.IN, "%s in %s");
-        add(Ops.NOTIN, "%s not in %s");
+        // various        
         add(Ops.ISNULL, "%s is null", 26);
         add(Ops.ISNOTNULL, "%s is not null", 26);
+        
+        // collection
+        add(Ops.IN, "%s in %s");
+        add(Ops.NOTIN, "%s not in %s");
         add(Ops.COL_ISEMPTY, "%s is empty");
         add(Ops.COL_ISNOTEMPTY, "%s is not empty");
-
+        add(Ops.COL_SIZE, "%s.size");
+        
         // string
         add(Ops.CONCAT, "%s || %s", 37);
         add(Ops.LIKE, "%s like %s", 27);
@@ -99,7 +102,7 @@ public class HQLOps extends OperationPatterns {
             add(type, "%s[%s]");
         }
         add(PathMetadata.PROPERTY, "%s.%s");
-        add(PathMetadata.SIZE, "%s.size");
+        
         add(PathMetadata.VARIABLE, "%s");
 
         // HQL types
@@ -115,32 +118,27 @@ public class HQLOps extends OperationPatterns {
      * The Interface OpHql.
      */
     public interface OpHql {
-        Op<java.lang.Boolean> ISEMPTY = new Op<java.lang.Boolean>(
-                Collection.class);
-        Op<java.lang.Boolean> ISNOTEMPTY = new Op<java.lang.Boolean>(
-                Collection.class);
-        Op<Number> SUM = new Op<Number>(Number.class);
+//        Operator<java.lang.Boolean> ISEMPTY = new Operator<java.lang.Boolean>(Collection.class);
+//        Operator<java.lang.Boolean> ISNOTEMPTY = new Operator<java.lang.Boolean>(Collection.class);
+        Operator<Number> SUM = new Operator<Number>(Number.class);
     }
 
     /**
      * The Interface OpQuant.
      */
     public interface OpQuant {
-        Op<java.lang.Number> AVG_IN_COL = new Op<java.lang.Number>(
-                Collection.class);
-        Op<java.lang.Number> MAX_IN_COL = new Op<java.lang.Number>(
-                Collection.class);
-        Op<java.lang.Number> MIN_IN_COL = new Op<java.lang.Number>(
-                Collection.class);
+        Operator<java.lang.Number> AVG_IN_COL = new Operator<java.lang.Number>(Collection.class);
+        Operator<java.lang.Number> MAX_IN_COL = new Operator<java.lang.Number>(Collection.class);
+        Operator<java.lang.Number> MIN_IN_COL = new Operator<java.lang.Number>(Collection.class);
 
         // some / any = true for any
         // all = true for all
         // exists = true is subselect matches
         // not exists = true if subselect doesn't match
-        Op<?> ANY = new Op<Object>(Object.class);
-        Op<?> ALL = new Op<Object>(Object.class);
-        Op<?> EXISTS = new Op<Object>(Object.class);
-        Op<?> NOTEXISTS = new Op<Object>(Object.class);
+        Operator<?> ANY = new Operator<Object>(Object.class);
+        Operator<?> ALL = new Operator<Object>(Object.class);
+        Operator<?> EXISTS = new Operator<Object>(Object.class);
+        Operator<?> NOTEXISTS = new Operator<Object>(Object.class);
     }
 
     /**

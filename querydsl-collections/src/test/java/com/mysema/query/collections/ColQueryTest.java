@@ -111,9 +111,9 @@ public class ColQueryTest extends AbstractQueryTest {
 
         query().from(cat, cats).list(cat.kittens);
 
-        query().from(cat, cats).where(cat.kittens.empty()).list(cat);
+        query().from(cat, cats).where(cat.kittens.isEmpty()).list(cat);
 
-        query().from(cat, cats).where(cat.kittens.notEmpty()).list(cat);
+        query().from(cat, cats).where(cat.kittens.isNotEmpty()).list(cat);
 
         query().from(cat, cats).where(cat.name.like("fri%")).list($(cat.name));
 

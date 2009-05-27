@@ -6,7 +6,7 @@
 package com.mysema.query.types.quant;
 
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Op;
+import com.mysema.query.types.operation.Operator;
 
 /**
  * Quant provides expressions for quantification.
@@ -20,7 +20,7 @@ public interface Quant<T> {
      * 
      * @return
      */
-    Op<?> getOperator();
+    Operator<?> getOperator();
 
     /**
      * 

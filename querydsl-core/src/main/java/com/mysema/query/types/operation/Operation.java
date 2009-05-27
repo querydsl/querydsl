@@ -39,6 +39,6 @@ public interface Operation<OP, RT> {
      * 
      * @return
      */
-    Op<OP> getOperator();
+    Operator<OP> getOperator();
 
 }

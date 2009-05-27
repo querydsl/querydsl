@@ -19,8 +19,8 @@ import com.mysema.query.types.expr.Expr;
  * 
  * @param <A>
  */
-public class SubQuery<JM, A> extends Expr<A> implements Query<SubQuery<JM, A>>,
-        CollectionType<A> {
+public class SubQuery<JM, A> extends Expr<A> implements Query<SubQuery<JM, A>>, CollectionType<A> {
+    
     private QueryWithPublicSelect<JM> query = new QueryWithPublicSelect<JM>();
 
     public SubQuery(Expr<A> select) {
@@ -91,8 +91,7 @@ public class SubQuery<JM, A> extends Expr<A> implements Query<SubQuery<JM, A>>,
         return this;
     }
 
-    private static class QueryWithPublicSelect<JM> extends
-            QueryBase<JM, QueryWithPublicSelect<JM>> {
+    private static class QueryWithPublicSelect<JM> extends QueryBase<JM, QueryWithPublicSelect<JM>> {
         public void select(Expr<?>... expr) {
             addToProjection(expr);
         }

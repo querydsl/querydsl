@@ -9,18 +9,18 @@ import java.util.List;
 /**
  * The Class Op represents an Operator symbol.
  */
-public class Op<RT> {
+public class Operator<RT> {
     private final List<Class<?>> types;
 
-    public Op(Class<?> type) {
+    public Operator(Class<?> type) {
         this(Collections.<Class<?>> singletonList(type));
     }
 
-    public Op(Class<?>... types) {
+    public Operator(Class<?>... types) {
         this(Arrays.<Class<?>> asList(types));
     }
 
-    public Op(List<Class<?>> types) {
+    public Operator(List<Class<?>> types) {
         this.types = unmodifiableList(types);
     }
 

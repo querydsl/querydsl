@@ -8,7 +8,7 @@ package com.mysema.query.jdoql;
 import java.util.Collection;
 
 import com.mysema.query.serialization.OperationPatterns;
-import com.mysema.query.types.operation.Op;
+import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.types.path.PathMetadata.PathType;
@@ -19,14 +19,13 @@ import com.mysema.query.types.path.PathMetadata.PathType;
  * @author tiwe
  * 
  */
-public class JDOQLOps extends OperationPatterns {
+public class JDOQLPatterns extends OperationPatterns {
 
-    public static final JDOQLOps DEFAULT = new JDOQLOps();
+    public static final JDOQLPatterns DEFAULT = new JDOQLPatterns();
 
-    public JDOQLOps() {
+    public JDOQLPatterns() {
         add(Ops.EQ_PRIMITIVE, "%s == %s");
         add(Ops.EQ_OBJECT, "%s == %s");
-        add(Ops.NE_OBJECT, "%s != %s");
         add(Ops.ISNULL, "%s == null");
         add(Ops.ISNOTNULL, "%s != null");
         add(Ops.ISTYPEOF, "%s instanceof %s");
@@ -36,7 +35,11 @@ public class JDOQLOps extends OperationPatterns {
         add(Ops.NOTIN, "!%2$s.contains(%1$s)");
         add(Ops.COL_ISEMPTY, "%s.isEmpty()");
         add(Ops.COL_ISNOTEMPTY, "!%s.isEmpty()");
-        add(Ops.CONTAINS, "%s.contains(%s)");
+        add(Ops.CONTAINS, "%s.contains(%s)");        
+        add(Ops.COL_SIZE, "%s.size()");
+        
+        // array
+        add(Ops.ARRAY_SIZE, "%s.length");
         
         // map
         add(Ops.MAP_ISEMPTY, "%s.isEmpty()");
@@ -81,37 +84,33 @@ public class JDOQLOps extends OperationPatterns {
         }
         add(PathMetadata.ARRAYVALUE, "%s[%s]");
         add(PathMetadata.ARRAYVALUE_CONSTANT, "%s[%s]");
-
-        add(PathMetadata.ARRAY_SIZE, "%s.length");
-        add(PathMetadata.SIZE, "%s.size()");
-
     }
 
     /**
      * The Interface OpHql.
      */
     public interface OpHql {
-        Op<java.lang.Boolean> ISEMPTY = new Op<java.lang.Boolean>(Collection.class);
-        Op<java.lang.Boolean> ISNOTEMPTY = new Op<java.lang.Boolean>(Collection.class);
-        Op<Number> SUM = new Op<Number>(Number.class);
+        Operator<java.lang.Boolean> ISEMPTY = new Operator<java.lang.Boolean>(Collection.class);
+        Operator<java.lang.Boolean> ISNOTEMPTY = new Operator<java.lang.Boolean>(Collection.class);
+        Operator<Number> SUM = new Operator<Number>(Number.class);
     }
 
     /**
      * The Interface OpQuant.
      */
     public interface OpQuant {
-        Op<java.lang.Number> AVG_IN_COL = new Op<java.lang.Number>(Collection.class);
-        Op<java.lang.Number> MAX_IN_COL = new Op<java.lang.Number>(Collection.class);
-        Op<java.lang.Number> MIN_IN_COL = new Op<java.lang.Number>(Collection.class);
+        Operator<java.lang.Number> AVG_IN_COL = new Operator<java.lang.Number>(Collection.class);
+        Operator<java.lang.Number> MAX_IN_COL = new Operator<java.lang.Number>(Collection.class);
+        Operator<java.lang.Number> MIN_IN_COL = new Operator<java.lang.Number>(Collection.class);
 
         // some / any = true for any
         // all = true for all
         // exists = true is subselect matches
         // not exists = true if subselect doesn't match
-        Op<?> ANY = new Op<Object>(Object.class);
-        Op<?> ALL = new Op<Object>(Object.class);
-        Op<?> EXISTS = new Op<Object>(Object.class);
-        Op<?> NOTEXISTS = new Op<Object>(Object.class);
+        Operator<?> ANY = new Operator<Object>(Object.class);
+        Operator<?> ALL = new Operator<Object>(Object.class);
+        Operator<?> EXISTS = new Operator<Object>(Object.class);
+        Operator<?> NOTEXISTS = new Operator<Object>(Object.class);
     }
 
 }

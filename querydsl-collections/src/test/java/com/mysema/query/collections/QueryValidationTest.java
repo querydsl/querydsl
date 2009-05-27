@@ -76,7 +76,7 @@ public class QueryValidationTest extends AbstractQueryTest {
             res.append((expected != count || count > max) ? " X" : "  ");
 
             res.append("   ");
-            res.append(new JavaSerializer(JavaOps.DEFAULT).handle(condition)
+            res.append(new JavaSerializer(JavaPatterns.DEFAULT).handle(condition)
                     .toString());
             res.append("\n");
         }
@@ -145,7 +145,7 @@ public class QueryValidationTest extends AbstractQueryTest {
             res.append((expected != count || count > max) ? " X" : "  ");
 
             res.append("   ");
-            res.append(new JavaSerializer(JavaOps.DEFAULT).handle(condition)
+            res.append(new JavaSerializer(JavaPatterns.DEFAULT).handle(condition)
                     .toString());
             res.append("\n");
         }

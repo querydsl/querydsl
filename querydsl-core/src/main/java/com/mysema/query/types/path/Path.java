@@ -30,18 +30,18 @@ public interface Path<C> {
      * 
      * @return
      */
-    EBoolean isnotnull();
-
-    /**
-     * 
-     * @return
-     */
-    EBoolean isnull();
-
-    /**
-     * 
-     * @return
-     */
     Class<? extends C> getType();
+
+    /**
+     * 
+     * @return
+     */
+    EBoolean isNotNull();
+
+    /**
+     * 
+     * @return
+     */
+    EBoolean isNull();
 
 }

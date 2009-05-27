@@ -74,7 +74,7 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
 
     private QueryIndexSupport indexSupport;
 
-    private final JavaOps ops;
+    private final JavaPatterns ops;
 
     /**
      * turn OR queries into sequential UNION queries
@@ -94,17 +94,17 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
     private boolean wrapIterators = true;
 
     public ColQueryImpl() {
-        this(JavaOps.DEFAULT);
+        this(JavaPatterns.DEFAULT);
     }
 
-    public ColQueryImpl(JavaOps ops) {
+    public ColQueryImpl(JavaPatterns ops) {
         this.ops = ops;
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
     }
 
     public ColQueryImpl(QueryMetadata<Object> metadata) {
         super(metadata);
-        this.ops = JavaOps.DEFAULT;
+        this.ops = JavaPatterns.DEFAULT;
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
     }
 
@@ -158,14 +158,12 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
     }
 
     protected QueryIndexSupport createIndexSupport(
-            Map<Expr<?>, Iterable<?>> exprToIt, JavaOps ops,
+            Map<Expr<?>, Iterable<?>> exprToIt, JavaPatterns ops,
             List<Expr<?>> sources) {
-        return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), ops,
-                sources);
+        return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);
     }
 
-    private <RT> Iterator<RT> createIterator(Expr<RT> projection)
-            throws Exception {
+    private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
         List<Expr<?>> sources = new ArrayList<Expr<?>>();
         // from / where
         Iterator<?> it;
@@ -190,8 +188,7 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
 
     }
 
-    private Iterator<Object[]> createMultiIterator(List<Expr<?>> sources,
-            EBoolean condition) {
+    private Iterator<Object[]> createMultiIterator(List<Expr<?>> sources, EBoolean condition) {
         MultiIterator multiIt;
         if (condition == null || !wrapIterators) {
             multiIt = new MultiIterator();
@@ -209,8 +206,7 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
         }
     }
 
-    private <RT> Iterator<RT> createPagedIterator(Expr<RT> projection)
-            throws Exception {
+    private <RT> Iterator<RT> createPagedIterator(Expr<RT> projection) throws Exception {
         Iterator<RT> iterator = createIterator(projection);
         return LimitingIterator.transform(iterator, getMetadata()
                 .getModifiers());
@@ -229,11 +225,9 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
         return _this;
     }
 
-    protected Iterator<?> handleFromWhereMultiSource(List<Expr<?>> sources)
-            throws Exception {
+    protected Iterator<?> handleFromWhereMultiSource(List<Expr<?>> sources) throws Exception {
         EBoolean condition = getMetadata().getWhere();
-        List<JoinExpression<Object>> joins = new ArrayList<JoinExpression<Object>>(
-                getMetadata().getJoins());
+        List<JoinExpression<Object>> joins = new ArrayList<JoinExpression<Object>>(getMetadata().getJoins());
         if (sortSources) {
             sourceSortingSupport.sortSources(joins, condition);
         }
@@ -256,8 +250,7 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
         }
     }
 
-    protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources)
-            throws Exception {
+    protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources) throws Exception {
         EBoolean condition = getMetadata().getWhere();
         JoinExpression<?> join = getMetadata().getJoins().get(0);
         sources.add(join.getTarget());
@@ -269,18 +262,13 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
 
             IteratorChain<Object[]> chain = new IteratorChain<Object[]>();
             EBoolean e1 = (EBoolean) op.getArg(0), e2 = (EBoolean) op.getArg(1);
-            Iterator<?> it1 = indexSupport.getChildFor(e1).getIterator(
-                    join.getTarget());
-            chain.addIterator(multiArgFilter(ops, toArrayIterator(it1),
-                    sources, e1));
-            Iterator<?> it2 = indexSupport.getChildFor(e2.and(e1.not()))
-                    .getIterator(join.getTarget());
-            chain.addIterator(multiArgFilter(ops, toArrayIterator(it2),
-                    sources, e2.and(e1.not())));
+            Iterator<?> it1 = indexSupport.getChildFor(e1).getIterator(join.getTarget());
+            chain.addIterator(multiArgFilter(ops, toArrayIterator(it1),sources, e1));
+            Iterator<?> it2 = indexSupport.getChildFor(e2.and(e1.not())).getIterator(join.getTarget());
+            chain.addIterator(multiArgFilter(ops, toArrayIterator(it2),sources, e2.and(e1.not())));
             return chain;
         } else {
-            Iterator<?> it = toArrayIterator(indexSupport
-                    .getChildFor(condition).getIterator(join.getTarget()));
+            Iterator<?> it = toArrayIterator(indexSupport.getChildFor(condition).getIterator(join.getTarget()));
             if (condition != null) {
                 // wrap the iterator if a where constraint is available
                 it = multiArgFilter(ops, it, sources, condition);
@@ -291,8 +279,7 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
     }
 
     @SuppressWarnings("unchecked")
-    protected Iterator<?> handleOrderBy(List<Expr<?>> sources, Iterator<?> it)
-            throws Exception {
+    protected Iterator<?> handleOrderBy(List<Expr<?>> sources, Iterator<?> it) throws Exception {
         // create a projection for the order
         List<OrderSpecifier<?>> orderBy = getMetadata().getOrderBy();
         Expr<Object>[] orderByExpr = new Expr[orderBy.size()];
@@ -321,8 +308,7 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
     }
 
     @SuppressWarnings("unchecked")
-    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second,
-            Expr<?>... rest) {
+    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         arrayProjection = true;
         Expr<?>[] full = asArray(new Expr[rest.length + 2], first, second, rest);
         Expr<Object[]> projection = new EArrayConstructor(Object.class, full);
@@ -395,8 +381,7 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
         this.sortSources = s;
     }
 
-    public void setSourceSortingSupport(
-            SourceSortingSupport sourceSortingSupport) {
+    public void setSourceSortingSupport(SourceSortingSupport sourceSortingSupport) {
         this.sourceSortingSupport = sourceSortingSupport;
     }
 

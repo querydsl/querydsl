@@ -15,23 +15,23 @@ import com.mysema.query.types.expr.Expr;
  * @param <V>
  */
 public interface PMap<K, V> extends Path<java.util.Map<K, V>> {
-    Expr<V> get(Expr<K> key);
-
-    Expr<V> get(K key);
-
-    Class<K> getKeyType();
-
-    Class<V> getValueType();
-    
     EBoolean containsKey(Expr<K> key);
-    
+
     EBoolean containsKey(K key);
-    
+
     EBoolean containsValue(Expr<V> value);
-    
+
     EBoolean containsValue(V value);
     
-    EBoolean empty();
+    Expr<V> get(Expr<K> key);
+    
+    Expr<V> get(K key);
+    
+    Class<K> getKeyType();
+    
+    Class<V> getValueType();
+    
+    EBoolean isEmpty();
 
-    EBoolean notEmpty();
+    EBoolean isNotEmpty();
 }

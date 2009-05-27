@@ -31,22 +31,13 @@ public class PComparable<D extends Comparable> extends EComparable<D> implements
         this(type, PathMetadata.forVariable(var));
     }
 
+    public boolean equals(Object o) {
+        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
+                : false;
+    }
+
     public PathMetadata<?> getMetadata() {
         return metadata;
-    }
-
-    public EBoolean isnotnull() {
-        if (isnotnull == null) {
-            isnotnull = Grammar.isnotnull(this);
-        }
-        return isnotnull;
-    }
-
-    public EBoolean isnull() {
-        if (isnull == null) {
-            isnull = Grammar.isnull(this);
-        }
-        return isnull;
     }
 
     public Path<?> getRoot() {
@@ -57,8 +48,17 @@ public class PComparable<D extends Comparable> extends EComparable<D> implements
         return metadata.hashCode();
     }
 
-    public boolean equals(Object o) {
-        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
-                : false;
+    public EBoolean isNotNull() {
+        if (isnotnull == null) {
+            isnotnull = Grammar.isNotNull(this);
+        }
+        return isnotnull;
+    }
+
+    public EBoolean isNull() {
+        if (isnull == null) {
+            isnull = Grammar.isNull(this);
+        }
+        return isnull;
     }
 }

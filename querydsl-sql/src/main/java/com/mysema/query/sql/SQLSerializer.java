@@ -19,7 +19,7 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Op;
+import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
 
@@ -31,9 +31,9 @@ import com.mysema.query.types.path.PEntity;
  */
 public class SQLSerializer extends BaseSerializer<SQLSerializer> {
 
-    protected final SQLOps ops;
+    protected final SQLPatterns ops;
 
-    public SQLSerializer(SQLOps ops) {
+    public SQLSerializer(SQLPatterns ops) {
         super(ops);
         this.ops = ops;
     }
@@ -202,7 +202,7 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
         constants.add(expr.getConstant());
     }
 
-    private void visitCast(Op<?> operator, Expr<?> source, Class<?> targetType) {
+    private void visitCast(Operator<?> operator, Expr<?> source, Class<?> targetType) {
         // TODO : move constants to SqlOps
         append("cast(").handle(source);
         append(" as ");
@@ -211,7 +211,7 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
     }
 
     @Override
-    protected void visitOperation(Class<?> type, Op<?> operator,
+    protected void visitOperation(Class<?> type, Operator<?> operator,
             List<Expr<?>> args) {
         if (operator.equals(Ops.STRING_CAST)) {
             visitCast(operator, args.get(0), String.class);

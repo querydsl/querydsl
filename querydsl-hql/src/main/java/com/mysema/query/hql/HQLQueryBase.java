@@ -37,9 +37,9 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
 
     private String countRowsString, queryString;
 
-    private final HQLOps ops;
+    private final HQLPatterns ops;
 
-    public HQLQueryBase(HQLOps ops) {
+    public HQLQueryBase(HQLPatterns ops) {
         this.ops = ops;
     }
 
@@ -70,7 +70,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
             if (entry.getValue() != null) {
                 expr.and(path.eq(entry.getValue()));
             } else {
-                expr.and(path.isnull());
+                expr.and(path.isNull());
             }
         }
         return expr.create();

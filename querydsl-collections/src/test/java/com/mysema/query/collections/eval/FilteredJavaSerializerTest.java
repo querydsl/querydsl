@@ -11,7 +11,7 @@ import java.util.Collections;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.mysema.query.collections.JavaOps;
+import com.mysema.query.collections.JavaPatterns;
 import com.mysema.query.collections.Domain.QCat;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
@@ -24,7 +24,7 @@ import com.mysema.query.types.expr.Expr;
  */
 public class FilteredJavaSerializerTest {
 
-    private static JavaOps ops = JavaOps.DEFAULT;
+    private static JavaPatterns ops = JavaPatterns.DEFAULT;
 
     private static QCat cat = new QCat("cat");
     private static QCat otherCat = new QCat("otherCat");
@@ -33,45 +33,45 @@ public class FilteredJavaSerializerTest {
     @Test
     public void test1() {
         assertMatches1Expr("cat.getName().equals(a1) && true", cat.name.eq(
-                "Test").and(otherCat.isnull()));
+                "Test").and(otherCat.isNull()));
     }
 
     @Test
     public void test2() {
         assertMatches1Expr("cat.getName().equals(a1) && !(false)", cat.name.eq(
-                "Test").and(otherCat.isnull().not()));
+                "Test").and(otherCat.isNull().not()));
     }
 
     @Test
     public void test3() {
         assertMatches1Expr("!(cat.getName().equals(a1)) && !(false)", cat.name
-                .eq("Test").not().and(otherCat.isnull().not()));
+                .eq("Test").not().and(otherCat.isNull().not()));
     }
 
     @Test
     public void test4() {
         assertMatches1Expr("cat.getName().equals(a1) && !(false)", cat.name.eq(
-                "Test").and(otherCat.isnull().not()));
+                "Test").and(otherCat.isNull().not()));
     }
 
     @Test
     public void test5() {
         assertMatches1Expr("true && true && !(cat != null)", cat.mate.eq(mate)
-                .and(otherCat.name.eq("Lucy")).and(cat.isnotnull().not()));
+                .and(otherCat.name.eq("Lucy")).and(cat.isNotNull().not()));
     }
 
     @Test
     public void test6() {
         assertMatches1Expr("!(false && false) && !(cat != null)", cat.mate.eq(
                 mate).and(otherCat.name.eq("Lucy")).not().and(
-                cat.isnotnull().not()));
+                cat.isNotNull().not()));
     }
 
     @Test
     public void test7() {
         assertMatches1Expr("true && true && !(cat != null)", cat.mate.eq(mate)
                 .and(otherCat.name.eq("Lucy")).not().not().and(
-                        cat.isnotnull().not()));
+                        cat.isNotNull().not()));
     }
 
     @Test

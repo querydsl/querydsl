@@ -19,28 +19,44 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @version $Id$
  */
-public class SQLOps extends OperationPatterns {
+public class SQLPatterns extends OperationPatterns {
 
-    private String count = "count ", countStar = "count(*)",
-            dummyTable = "dual", select = "select ",
-            selectDistinct = "select distinct ", from = "\nfrom ",
-            tableAlias = " ", fullJoin = "\nfull join ",
-            innerJoin = "\ninner join ", join = "\njoin ",
-            leftJoin = "\nleft join ", on = "\non ", where = "\nwhere ",
-            groupBy = "\ngroup by ", having = "\nhaving ",
-            orderBy = "\norder by ", desc = " desc", asc = " asc",
-            limit = "\nlimit ", offset = "\noffset ", union = "\nunion\n",
-            columnAlias = " ";
+    private String count = "count ", 
+        countStar = "count(*)",
+        dummyTable = "dual", 
+        select = "select ",
+        selectDistinct = "select distinct ", 
+        from = "\nfrom ",
+        tableAlias = " ", 
+        fullJoin = "\nfull join ",
+        innerJoin = "\ninner join ", 
+        join = "\njoin ",
+        leftJoin = "\nleft join ", 
+        on = "\non ", 
+        where = "\nwhere ",
+        groupBy = "\ngroup by ", 
+        having = "\nhaving ",
+        orderBy = "\norder by ", 
+        desc = " desc", 
+        asc = " asc",
+        limit = "\nlimit ", 
+        offset = "\noffset ", 
+        union = "\nunion\n",
+        columnAlias = " ";
 
     // oracle specific
-    private String startWith = "\nstart with ", connectBy = "\nconnect by ",
-            connectByPrior = "\nconnect by prior ",
-            connectByNocyclePrior = "\nconnect by nocycle prior ",
-            orderSiblingsBy = "\norder siblings by ", sum = "sum",
-            over = "over", partitionBy = "partition by ";
+    private String startWith = "\nstart with ", 
+        connectBy = "\nconnect by ",
+        connectByPrior = "\nconnect by prior ",
+        connectByNocyclePrior = "\nconnect by nocycle prior ",
+        orderSiblingsBy = "\norder siblings by ", 
+        sum = "sum",
+        over = "over", 
+        partitionBy = "partition by ";
 
-    private String limitTemplate = "", offsetTemplate = "",
-            limitOffsetTemplate = "";
+    private String limitTemplate = "", 
+        offsetTemplate = "",
+        limitOffsetTemplate = "";
 
     private Map<Class<?>, String> class2type = new HashMap<Class<?>, String>();
 
@@ -94,7 +110,7 @@ public class SQLOps extends OperationPatterns {
         return tableAlias;
     }
 
-    public SQLOps tableAlias(String s) {
+    public SQLPatterns tableAlias(String s) {
         tableAlias = s;
         return this;
     }
@@ -103,7 +119,7 @@ public class SQLOps extends OperationPatterns {
         return columnAlias;
     }
 
-    public SQLOps columnAlias(String s) {
+    public SQLPatterns columnAlias(String s) {
         columnAlias = s;
         return this;
     }
@@ -112,7 +128,7 @@ public class SQLOps extends OperationPatterns {
         return asc;
     }
 
-    public SQLOps asc(String s) {
+    public SQLPatterns asc(String s) {
         asc = s;
         return this;
     }
@@ -121,7 +137,7 @@ public class SQLOps extends OperationPatterns {
         return count;
     }
 
-    public SQLOps count(String s) {
+    public SQLPatterns count(String s) {
         count = s;
         return this;
     }
@@ -130,7 +146,7 @@ public class SQLOps extends OperationPatterns {
         return countStar;
     }
 
-    public SQLOps countStar(String s) {
+    public SQLPatterns countStar(String s) {
         countStar = s;
         return this;
     }
@@ -139,7 +155,7 @@ public class SQLOps extends OperationPatterns {
         return desc;
     }
 
-    public SQLOps desc(String s) {
+    public SQLPatterns desc(String s) {
         desc = s;
         return this;
     }
@@ -148,7 +164,7 @@ public class SQLOps extends OperationPatterns {
         return from;
     }
 
-    public SQLOps from(String s) {
+    public SQLPatterns from(String s) {
         from = s;
         return this;
     }
@@ -157,7 +173,7 @@ public class SQLOps extends OperationPatterns {
         return fullJoin;
     }
 
-    public SQLOps fullJoin(String fullJoin) {
+    public SQLPatterns fullJoin(String fullJoin) {
         this.fullJoin = fullJoin;
         return this;
     }
@@ -166,7 +182,7 @@ public class SQLOps extends OperationPatterns {
         return groupBy;
     }
 
-    public SQLOps groupBy(String s) {
+    public SQLPatterns groupBy(String s) {
         groupBy = s;
         return this;
     }
@@ -175,7 +191,7 @@ public class SQLOps extends OperationPatterns {
         return having;
     }
 
-    public SQLOps having(String s) {
+    public SQLPatterns having(String s) {
         having = s;
         return this;
     }
@@ -184,7 +200,7 @@ public class SQLOps extends OperationPatterns {
         return innerJoin;
     }
 
-    public SQLOps innerJoin(String innerJoin) {
+    public SQLPatterns innerJoin(String innerJoin) {
         this.innerJoin = innerJoin;
         return this;
     }
@@ -193,7 +209,7 @@ public class SQLOps extends OperationPatterns {
         return join;
     }
 
-    public SQLOps join(String join) {
+    public SQLPatterns join(String join) {
         this.join = join;
         return this;
     }
@@ -210,7 +226,7 @@ public class SQLOps extends OperationPatterns {
         return limit;
     }
 
-    public SQLOps limit(String limit) {
+    public SQLPatterns limit(String limit) {
         this.limit = limit;
         return this;
     }
@@ -219,7 +235,7 @@ public class SQLOps extends OperationPatterns {
         return offset;
     }
 
-    public SQLOps offset(String offset) {
+    public SQLPatterns offset(String offset) {
         this.offset = offset;
         return this;
     }
@@ -228,7 +244,7 @@ public class SQLOps extends OperationPatterns {
         return orderBy;
     }
 
-    public SQLOps orderBy(String s) {
+    public SQLPatterns orderBy(String s) {
         orderBy = s;
         return this;
     }
@@ -237,7 +253,7 @@ public class SQLOps extends OperationPatterns {
         return select;
     }
 
-    public SQLOps select(String s) {
+    public SQLPatterns select(String s) {
         select = s;
         return this;
     }
@@ -246,7 +262,7 @@ public class SQLOps extends OperationPatterns {
         return selectDistinct;
     }
 
-    public SQLOps selectDistinct(String s) {
+    public SQLPatterns selectDistinct(String s) {
         selectDistinct = s;
         return this;
     }
@@ -259,7 +275,7 @@ public class SQLOps extends OperationPatterns {
         return union;
     }
 
-    public SQLOps union(String union) {
+    public SQLPatterns union(String union) {
         this.union = union;
         return this;
     }
@@ -268,7 +284,7 @@ public class SQLOps extends OperationPatterns {
         return where;
     }
 
-    public SQLOps where(String s) {
+    public SQLPatterns where(String s) {
         where = s;
         return this;
     }
@@ -277,7 +293,7 @@ public class SQLOps extends OperationPatterns {
         return on;
     }
 
-    public SQLOps on(String s) {
+    public SQLPatterns on(String s) {
         on = s;
         return this;
     }
@@ -286,7 +302,7 @@ public class SQLOps extends OperationPatterns {
         return dummyTable;
     }
 
-    public SQLOps dummyTable(String dt) {
+    public SQLPatterns dummyTable(String dt) {
         dummyTable = dt;
         return this;
     }
@@ -306,7 +322,7 @@ public class SQLOps extends OperationPatterns {
         return limitAndOffsetSymbols;
     }
 
-    public SQLOps limitAndOffsetSymbols(boolean limitAndOffsetSymbols) {
+    public SQLPatterns limitAndOffsetSymbols(boolean limitAndOffsetSymbols) {
         this.limitAndOffsetSymbols = limitAndOffsetSymbols;
         return this;
     }
@@ -315,7 +331,7 @@ public class SQLOps extends OperationPatterns {
         return offsetTemplate;
     }
 
-    public SQLOps offsetTemplate(String offsetTemplate) {
+    public SQLPatterns offsetTemplate(String offsetTemplate) {
         this.offsetTemplate = offsetTemplate;
         return this;
     }
@@ -324,7 +340,7 @@ public class SQLOps extends OperationPatterns {
         return limitTemplate;
     }
 
-    public SQLOps limitTemplate(String limitTemplate) {
+    public SQLPatterns limitTemplate(String limitTemplate) {
         this.limitTemplate = limitTemplate;
         return this;
     }
@@ -333,7 +349,7 @@ public class SQLOps extends OperationPatterns {
         return limitOffsetTemplate;
     }
 
-    public SQLOps limitOffsetTemplate(String limitOffsetTemplate) {
+    public SQLPatterns limitOffsetTemplate(String limitOffsetTemplate) {
         this.limitOffsetTemplate = limitOffsetTemplate;
         return this;
     }
@@ -342,7 +358,7 @@ public class SQLOps extends OperationPatterns {
         return startWith;
     }
 
-    public SQLOps startWith(String sw) {
+    public SQLPatterns startWith(String sw) {
         this.startWith = sw;
         return this;
     }
@@ -351,7 +367,7 @@ public class SQLOps extends OperationPatterns {
         return connectBy;
     }
 
-    public SQLOps connectBy(String connectBy) {
+    public SQLPatterns connectBy(String connectBy) {
         this.connectBy = connectBy;
         return this;
     }
@@ -360,7 +376,7 @@ public class SQLOps extends OperationPatterns {
         return connectByPrior;
     }
 
-    public SQLOps connectByPrior(String connectByPrior) {
+    public SQLPatterns connectByPrior(String connectByPrior) {
         this.connectByPrior = connectByPrior;
         return this;
     }
@@ -369,7 +385,7 @@ public class SQLOps extends OperationPatterns {
         return connectByNocyclePrior;
     }
 
-    public SQLOps connectByNocyclePrior(String connectByNocyclePrior) {
+    public SQLPatterns connectByNocyclePrior(String connectByNocyclePrior) {
         this.connectByNocyclePrior = connectByNocyclePrior;
         return this;
     }
@@ -378,7 +394,7 @@ public class SQLOps extends OperationPatterns {
         return orderSiblingsBy;
     }
 
-    public SQLOps orderSiblingsBy(String orderSiblingsBy) {
+    public SQLPatterns orderSiblingsBy(String orderSiblingsBy) {
         this.orderSiblingsBy = orderSiblingsBy;
         return this;
     }
@@ -387,7 +403,7 @@ public class SQLOps extends OperationPatterns {
         return sum;
     }
 
-    public SQLOps sum(String sum) {
+    public SQLPatterns sum(String sum) {
         this.sum = sum;
         return this;
     }
@@ -396,7 +412,7 @@ public class SQLOps extends OperationPatterns {
         return over;
     }
 
-    public SQLOps over(String over) {
+    public SQLPatterns over(String over) {
         this.over = over;
         return this;
     }
@@ -405,13 +421,13 @@ public class SQLOps extends OperationPatterns {
         return partitionBy;
     }
 
-    public SQLOps partitionBy(String partitionBy) {
+    public SQLPatterns partitionBy(String partitionBy) {
         this.partitionBy = partitionBy;
         return this;
     }
 
-    public SQLOps newLineToSingleSpace() {
-        for (Field field : SQLOps.class.getDeclaredFields()) {
+    public SQLPatterns newLineToSingleSpace() {
+        for (Field field : SQLPatterns.class.getDeclaredFields()) {
             try {
                 if (field.getType().equals(String.class)) {
                     field.set(this, field.get(this).toString().replace('\n',
@@ -425,9 +441,9 @@ public class SQLOps extends OperationPatterns {
     }
 
     @Override
-    public SQLOps toLowerCase() {
+    public SQLPatterns toLowerCase() {
         super.toLowerCase();
-        for (Field field : SQLOps.class.getDeclaredFields()) {
+        for (Field field : SQLPatterns.class.getDeclaredFields()) {
             try {
                 if (field.getType().equals(String.class)) {
                     field.set(this, field.get(this).toString().toUpperCase());
@@ -440,9 +456,9 @@ public class SQLOps extends OperationPatterns {
     }
 
     @Override
-    public SQLOps toUpperCase() {
+    public SQLPatterns toUpperCase() {
         super.toUpperCase();
-        for (Field field : SQLOps.class.getDeclaredFields()) {
+        for (Field field : SQLPatterns.class.getDeclaredFields()) {
             try {
                 if (field.getType().equals(String.class)) {
                     field.set(this, field.get(this).toString().toUpperCase());

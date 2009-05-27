@@ -7,7 +7,7 @@ package com.mysema.query.sql.oracle;
 
 import java.math.BigInteger;
 
-import com.mysema.query.sql.SQLOps;
+import com.mysema.query.sql.SQLPatterns;
 import com.mysema.query.types.operation.Ops;
 
 /**
@@ -16,7 +16,7 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @version $Id$
  */
-public class OracleDialect extends SQLOps {
+public class OracleDialect extends SQLPatterns {
     {
         // type mappings
         addClass2TypeMappings("number(3,0)", Byte.class);

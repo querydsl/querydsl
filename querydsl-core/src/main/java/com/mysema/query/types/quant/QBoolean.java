@@ -8,21 +8,21 @@ package com.mysema.query.types.quant;
 import com.mysema.query.types.CollectionType;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Op;
+import com.mysema.query.types.operation.Operator;
 
 /**
  * The Class Boolean.
  */
 public class QBoolean extends EBoolean implements Quant<Boolean> {
     private final Expr<?> col;
-    private final Op<?> op;
+    private final Operator<?> op;
 
-    public QBoolean(Op<?> op, CollectionType<?> col) {
+    public QBoolean(Operator<?> op, CollectionType<?> col) {
         this.op = op;
         this.col = (Expr<?>) col;
     }
 
-    public Op<?> getOperator() {
+    public Operator<?> getOperator() {
         return op;
     }
 

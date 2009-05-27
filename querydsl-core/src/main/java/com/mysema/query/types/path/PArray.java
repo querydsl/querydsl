@@ -40,6 +40,11 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>,
         this(type, PathMetadata.forVariable(var));
     }
 
+    public boolean equals(Object o) {
+        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
+                : false;
+    }
+
     public abstract Expr<D> get(Expr<Integer> index);
 
     public abstract Expr<D> get(int index);
@@ -52,20 +57,28 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>,
         return metadata;
     }
 
+    public Path<?> getRoot() {
+        return root;
+    }
+
     public Class<D[]> getType() {
         return arrayType;
     }
 
-    public EBoolean isnotnull() {
+    public int hashCode() {
+        return metadata.hashCode();
+    }
+
+    public EBoolean isNotNull() {
         if (isnotnull == null) {
-            isnotnull = Grammar.isnotnull(this);
+            isnotnull = Grammar.isNotNull(this);
         }
         return isnotnull;
     }
 
-    public EBoolean isnull() {
+    public EBoolean isNull() {
         if (isnull == null) {
-            isnull = Grammar.isnull(this);
+            isnull = Grammar.isNull(this);
         }
 
         return isnull;
@@ -73,22 +86,8 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>,
 
     public EComparable<Integer> size() {
         if (size == null) {
-            size = new PComparable<Integer>(Integer.class, PathMetadata
-                    .forSize(this));
+            size = Grammar.size(this);
         }
         return size;
-    }
-
-    public Path<?> getRoot() {
-        return root;
-    }
-
-    public int hashCode() {
-        return metadata.hashCode();
-    }
-
-    public boolean equals(Object o) {
-        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
-                : false;
     }
 }

@@ -15,8 +15,6 @@ import static com.mysema.query.hql.HQLGrammar.current_time;
 import static com.mysema.query.hql.HQLGrammar.current_timestamp;
 import static com.mysema.query.hql.HQLGrammar.day;
 import static com.mysema.query.hql.HQLGrammar.hour;
-import static com.mysema.query.hql.HQLGrammar.isempty;
-import static com.mysema.query.hql.HQLGrammar.isnotempty;
 import static com.mysema.query.hql.HQLGrammar.maxelement;
 import static com.mysema.query.hql.HQLGrammar.maxindex;
 import static com.mysema.query.hql.HQLGrammar.minelement;
@@ -111,7 +109,7 @@ public class FeaturesTest {
     QUser user4 = new QUser("user4");
     QUser user5 = new QUser("user5");
 
-    private HQLSerializer visitor = new HQLSerializer(new HQLOps());
+    private HQLSerializer visitor = new HQLSerializer(new HQLPatterns());
 
     @Test
     public void testDomainConstruction() {
@@ -199,10 +197,10 @@ public class FeaturesTest {
 
     @Test
     public void testBooleanOpeations() {
-        toString("cust is null or cat is null", cust.isnull().or(cat.isnull()));
-        toString("cust is null and cat is null", cust.isnull()
-                .and(cat.isnull()));
-        toString("not (cust is null)", not(cust.isnull()));
+        toString("cust is null or cat is null", cust.isNull().or(cat.isNull()));
+        toString("cust is null and cat is null", cust.isNull()
+                .and(cat.isNull()));
+        toString("not (cust is null)", not(cust.isNull()));
         cat.name.eq(cust.name.firstName).and(
                 cat.bodyWeight.eq(kitten.bodyWeight));
         cat.name.eq(cust.name.firstName).or(
@@ -338,10 +336,10 @@ public class FeaturesTest {
         kitten.in(cat.kittens);
         not(kitten.in(cat.kittens));
         kitten.bodyWeight.between(10, 20);
-        kitten.bodyWeight.isnull();
-        kitten.bodyWeight.isnotnull();
-        isempty(cat.kittens);
-        isnotempty(cat.kittens);
+        kitten.bodyWeight.isNull();
+        kitten.bodyWeight.isNotNull();
+        cat.kittens.isEmpty();
+        cat.kittens.isNotEmpty();
     }
 
     @Test
@@ -352,7 +350,7 @@ public class FeaturesTest {
 
     @Test
     public void testIsNullAndIsNotNullInFunctionalWay() {
-        toString("cat.bodyWeight is null", cat.bodyWeight.isnull());
+        toString("cat.bodyWeight is null", cat.bodyWeight.isNull());
     }
 
     @Test
@@ -363,7 +361,7 @@ public class FeaturesTest {
         toString("cat = kitten and kitten = cat", cat.eq(kitten).and(
                 kitten.eq(cat)));
         toString("cat is null and (kitten is null or kitten.bodyWeight > :a1)",
-                cat.isnull().and(kitten.isnull().or(kitten.bodyWeight.gt(10))));
+                cat.isNull().and(kitten.isNull().or(kitten.bodyWeight.gt(10))));
     }
 
     @Test
@@ -500,7 +498,7 @@ public class FeaturesTest {
     private void toString(String expected, Expr<?> expr) {
         assertEquals(expected, visitor.handle(expr).toString());
         // visitor.clear();
-        visitor = new HQLSerializer(new HQLOps());
+        visitor = new HQLSerializer(new HQLPatterns());
     }
 
     /**

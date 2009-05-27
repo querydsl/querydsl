@@ -14,9 +14,9 @@ import org.codehaus.janino.Scanner.ScanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysema.query.collections.JavaOps;
+import com.mysema.query.collections.JavaPatterns;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Op;
+import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.Path;
 
@@ -40,13 +40,13 @@ public class FilteredJavaSerializer extends JavaSerializer {
 
     private boolean inNotOperation = false;
 
-    public FilteredJavaSerializer(JavaOps ops, List<Expr<?>> expressions) {
+    public FilteredJavaSerializer(JavaPatterns ops, List<Expr<?>> expressions) {
         super(ops);
         this.exprs = expressions;
         this.last = expressions.get(expressions.size() - 1);
     }
 
-    public FilteredJavaSerializer(JavaOps ops, List<Expr<?>> expressions,
+    public FilteredJavaSerializer(JavaPatterns ops, List<Expr<?>> expressions,
             int lastElement) {
         super(ops);
         this.exprs = expressions.subList(0, lastElement + 1);
@@ -72,7 +72,7 @@ public class FilteredJavaSerializer extends JavaSerializer {
     }
 
     @Override
-    protected void visitOperation(Class<?> type, Op<?> operator,
+    protected void visitOperation(Class<?> type, Operator<?> operator,
             List<Expr<?>> args) {
         if (!skipPath) {
             boolean unknownPaths = false;
@@ -111,7 +111,7 @@ public class FilteredJavaSerializer extends JavaSerializer {
     }
 
     @Override
-    protected void appendOperationResult(Op<?> operator, String result) {
+    protected void appendOperationResult(Operator<?> operator, String result) {
         if (!skipPath) {
             super.appendOperationResult(operator, result);
         }

@@ -5,7 +5,7 @@ import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Op;
+import com.mysema.query.types.operation.Operator;
 
 /**
  * @author tiwe
@@ -13,16 +13,52 @@ import com.mysema.query.types.operation.Op;
  */
 public interface OperationFactory {
 
-    EBoolean createBoolean(Op<Boolean> operator, Expr<?>... args);
+    /**
+     * 
+     * @param operator
+     * @param args
+     * @return
+     */
+    EBoolean createBoolean(Operator<Boolean> operator, Expr<?>... args);
 
+    /**
+     * 
+     * @param <OpType>
+     * @param <RT>
+     * @param type
+     * @param operator
+     * @param args
+     * @return
+     */
     <OpType, RT extends Comparable<?>> EComparable<RT> createComparable(
-            Class<RT> type, Op<OpType> operator, Expr<?>... args);
+            Class<RT> type, Operator<OpType> operator, Expr<?>... args);
 
+    /**
+     * 
+     * @param <OpType>
+     * @param <D>
+     * @param type
+     * @param operator
+     * @param args
+     * @return
+     */
     <OpType extends Number, D extends Number & Comparable<?>> ENumber<D> createNumber(
-            Class<? extends D> type, Op<OpType> operator, Expr<?>... args);
+            Class<? extends D> type, Operator<OpType> operator, Expr<?>... args);
 
-    EString createString(Op<String> operator, Expr<?>... args);
+    /**
+     * 
+     * @param operator
+     * @param args
+     * @return
+     */
+    EString createString(Operator<String> operator, Expr<?>... args);
 
-    Expr<String[]> createStringArray(Op<String> operator, Expr<?>... args);
+    /**
+     * 
+     * @param operator
+     * @param args
+     * @return
+     */
+    Expr<String[]> createStringArray(Operator<String> operator, Expr<?>... args);
 
 }

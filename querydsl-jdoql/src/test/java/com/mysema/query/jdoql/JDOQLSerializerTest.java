@@ -56,9 +56,9 @@ public class JDOQLSerializerTest {
         assertEquals("company.departments.get(0) == a1",
                 serialize(company.departments.get(0).eq(dep)));
         assertEquals("company.departments.isEmpty()",
-                serialize(company.departments.empty()));
+                serialize(company.departments.isEmpty()));
         assertEquals("!company.departments.isEmpty()",
-                serialize(company.departments.notEmpty()));
+                serialize(company.departments.isNotEmpty()));
         assertEquals("company.departments.size() == a1",
                 serialize(company.departments.size().eq(1)));
     }
@@ -71,9 +71,9 @@ public class JDOQLSerializerTest {
                 serialize(department.employeesByUserName.containsValue(new Employee())));
         
         assertEquals("department.employeesByUserName.isEmpty()",
-                serialize(department.employeesByUserName.empty()));
+                serialize(department.employeesByUserName.isEmpty()));
         assertEquals("!department.employeesByUserName.isEmpty()",
-                serialize(department.employeesByUserName.notEmpty()));
+                serialize(department.employeesByUserName.isNotEmpty()));
     }
 
     @Test
@@ -111,7 +111,7 @@ public class JDOQLSerializerTest {
     }
 
     private String serialize(Expr<?> expr) {
-        return new JDOQLSerializer(JDOQLOps.DEFAULT, book).handle(expr).toString();
+        return new JDOQLSerializer(JDOQLPatterns.DEFAULT, book).handle(expr).toString();
     }
 
 }

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.mysema.query.collections.IteratorSource;
-import com.mysema.query.collections.JavaOps;
+import com.mysema.query.collections.JavaPatterns;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.utils.EvaluatorUtils;
 import com.mysema.query.collections.utils.QueryIteratorUtils;
@@ -40,7 +40,7 @@ public class DefaultIndexSupport extends SimpleIndexSupport {
      * @param iteratorSource
      * @param ops
      */
-    public DefaultIndexSupport(IteratorSource iteratorSource, JavaOps ops,
+    public DefaultIndexSupport(IteratorSource iteratorSource, JavaPatterns ops,
             List<? extends Expr<?>> sources) {
         super(iteratorSource, ops, sources);
         this.pathToCacheEntries = new HashMap<Path<?>, Map<?, ? extends Iterable<?>>>();
