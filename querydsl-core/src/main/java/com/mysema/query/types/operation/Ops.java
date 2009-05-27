@@ -109,6 +109,14 @@ public interface Ops {
     OperatorImpl<Boolean> CONTAINS = new OperatorImpl<Boolean>(String_x_2);
     OperatorImpl<Boolean> CONTAINS_KEY = new OperatorImpl<Boolean>(Object_x_2);
     OperatorImpl<Boolean> CONTAINS_VALUE = new OperatorImpl<Boolean>(Object_x_2);
+    
+    // aggregation
+    OperatorImpl<Number> AVG_AGG = new OperatorImpl<Number>(Number.class);
+    OperatorImpl<Number> MAX_AGG = new OperatorImpl<Number>(Number.class);
+    OperatorImpl<Number> MIN_AGG = new OperatorImpl<Number>(Number.class);
+    OperatorImpl<Number> SUM_AGG = new OperatorImpl<Number>(Number.class);
+    OperatorImpl<Number> COUNT_AGG = new OperatorImpl<Number>(Object.class);
+    OperatorImpl<Number> COUNT_ALL_AGG = new OperatorImpl<Number>();
 
     // subquery operations
     OperatorImpl<Boolean> EXISTS = new OperatorImpl<Boolean>(Object.class);
@@ -120,19 +128,9 @@ public interface Ops {
     public static final List<Operator<?>> compareOps = Collections.unmodifiableList(Arrays.<Operator<?>> asList(EQ_OBJECT, EQ_PRIMITIVE,LT, GT, GOE, LOE));
 
     /**
-     * Aggreate operators
-     * 
-     */
-    public interface OpNumberAgg {
-        OperatorImpl<Number> AVG_AGG = new OperatorImpl<Number>(Number.class);
-        OperatorImpl<Number> MAX_AGG = new OperatorImpl<Number>(Number.class);
-        OperatorImpl<Number> MIN_AGG = new OperatorImpl<Number>(Number.class);
-    }
-
-    /**
      * Date and time operators
      */
-    public interface OpDateTime {
+    public interface DateTime {
         OperatorImpl<java.util.Date> CURRENT_DATE = new OperatorImpl<java.util.Date>();
         OperatorImpl<java.util.Date> CURRENT_TIME = new OperatorImpl<java.util.Date>();
         OperatorImpl<java.util.Date> CURRENT_TIMESTAMP = new OperatorImpl<java.util.Date>();
@@ -153,7 +151,7 @@ public interface Ops {
      * Math operators
      * 
      */
-    public interface OpMath {
+    public interface Math {
         OperatorImpl<Number> ABS = new OperatorImpl<Number>(Number.class);
         OperatorImpl<Number> ACOS = new OperatorImpl<Number>(Number.class);
         OperatorImpl<Number> ASIN = new OperatorImpl<Number>(Number.class);
@@ -177,7 +175,7 @@ public interface Ops {
     /**
      * String operators
      */
-    public interface OpString {
+    public interface StringOps {
         OperatorImpl<String> LTRIM = new OperatorImpl<String>(String.class);
         OperatorImpl<String> RTRIM = new OperatorImpl<String>(String.class);
         OperatorImpl<String> SPACE = new OperatorImpl<String>(Integer.class);

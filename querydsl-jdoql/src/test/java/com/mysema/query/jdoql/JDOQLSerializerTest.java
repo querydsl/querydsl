@@ -11,6 +11,7 @@ import com.mysema.query.jdoql.testdomain.QBook;
 import com.mysema.query.jdoql.testdomain.QCompany;
 import com.mysema.query.jdoql.testdomain.QDepartment;
 import com.mysema.query.jdoql.testdomain.QProduct;
+import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.Expr;
 
 public class JDOQLSerializerTest {
@@ -31,9 +32,18 @@ public class JDOQLSerializerTest {
     }
 
     @Test
-    public void testHandle() {
+    public void eq() {
         assertEquals("this.name == product.name", serialize(book.name.eq(product.name)));
         assertEquals("this == product", serialize(book.eq(product)));
+    }
+    
+    @Test
+    public void aggregation(){
+        assertEquals("sum(product.price)", serialize(Grammar.sum(product.price)));
+        assertEquals("min(product.price)", serialize(Grammar.min(product.price)));
+        assertEquals("max(product.price)", serialize(Grammar.max(product.price)));
+        assertEquals("avg(product.price)", serialize(Grammar.avg(product.price)));
+        assertEquals("count(product.price)", serialize(Grammar.count(product.price)));
     }
 
     @Test

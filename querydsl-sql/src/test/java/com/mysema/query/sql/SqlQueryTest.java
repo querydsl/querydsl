@@ -38,6 +38,7 @@ import com.mysema.query.sql.domain.QSURVEY;
 import com.mysema.query.sql.domain.QTEST;
 import com.mysema.query.sql.dto.IdName;
 import com.mysema.query.sql.dto.QIdName;
+import com.mysema.query.types.Grammar;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
@@ -186,14 +187,14 @@ public abstract class SqlQueryTest {
         // + "group by superior_id " + "order by superior_id " + "";
         q().from(employee).groupBy(employee.superiorId).orderBy(
                 employee.superiorId.asc()).list(avg(employee.salary),
-                max(employee.id));
+                Grammar.max(employee.id));
 
         // "select avg(salary), max(id) from employee "
         // + "group by superior_id " + "having max(id) > 5 "
         // + "order by superior_id " + "";
         q().from(employee).groupBy(employee.superiorId).having(
-                max(employee.id).gt(5)).orderBy(employee.superiorId.asc())
-                .list(avg(employee.salary), max(employee.id));
+                Grammar.max(employee.id).gt(5)).orderBy(employee.superiorId.asc())
+                .list(avg(employee.salary), Grammar.max(employee.id));
 
         // "select avg(salary), max(id) from employee "
         // + "group by superior_id "
@@ -202,7 +203,7 @@ public abstract class SqlQueryTest {
         q().from(employee).groupBy(employee.superiorId).having(
                 employee.superiorId.isNotNull()).orderBy(
                 employee.superiorId.asc()).list(avg(employee.salary),
-                max(employee.id));
+                Grammar.max(employee.id));
     }
 
     @Test
@@ -283,15 +284,15 @@ public abstract class SqlQueryTest {
                 + "where employee.id = (select max(employee.id) "
                 + "from employee employee)";
         List<Integer> list = q().from(employee).where(
-                employee.id.eq(select(max(employee.id)).from(employee))).list(
+                employee.id.eq(select(Grammar.max(employee.id)).from(employee))).list(
                 employee.id);
         assertFalse(list.isEmpty());
     }
 
     @Test
     public void testIllegalUnion() throws SQLException {
-        SubQuery<Object, Integer> sq1 = select(max(employee.id)).from(employee);
-        SubQuery<Object, Integer> sq2 = select(min(employee.id)).from(employee);
+        SubQuery<Object, Integer> sq1 = select(Grammar.max(employee.id)).from(employee);
+        SubQuery<Object, Integer> sq2 = select(Grammar.min(employee.id)).from(employee);
         try {
             q().from(employee).union(sq1, sq2).list();
             fail();
@@ -304,20 +305,20 @@ public abstract class SqlQueryTest {
     @Test
     public void testUnion() throws SQLException {
         // union
-        SubQuery<Object, Integer> sq1 = select(max(employee.id)).from(employee);
-        SubQuery<Object, Integer> sq2 = select(min(employee.id)).from(employee);
+        SubQuery<Object, Integer> sq1 = select(Grammar.max(employee.id)).from(employee);
+        SubQuery<Object, Integer> sq2 = select(Grammar.min(employee.id)).from(employee);
         List<Integer> list = q().union(sq1, sq2).list();
         assertFalse(list.isEmpty());
 
         // variation 1
-        list = q().union(select(max(employee.id)).from(employee),
-                select(min(employee.id)).from(employee)).list();
+        list = q().union(select(Grammar.max(employee.id)).from(employee),
+                select(Grammar.min(employee.id)).from(employee)).list();
         assertFalse(list.isEmpty());
 
         // union #2
-        SubQuery<Object, Object[]> sq3 = select(count(), max(employee.id))
+        SubQuery<Object, Object[]> sq3 = select(count(), Grammar.max(employee.id))
                 .from(employee);
-        SubQuery<Object, Object[]> sq4 = select(count(), min(employee.id))
+        SubQuery<Object, Object[]> sq4 = select(count(), Grammar.min(employee.id))
                 .from(employee);
         List<Object[]> list2 = q().union(sq3, sq4).list();
         assertFalse(list2.isEmpty());
@@ -331,7 +332,7 @@ public abstract class SqlQueryTest {
 
     @Test
     public void testWhereExists() throws SQLException {
-        SubQuery<Object, Integer> sq1 = select(max(employee.id)).from(employee);
+        SubQuery<Object, Integer> sq1 = select(Grammar.max(employee.id)).from(employee);
         q().from(employee).where(exists(sq1)).count();
         q().from(employee).where(not(exists(sq1))).count();
     }

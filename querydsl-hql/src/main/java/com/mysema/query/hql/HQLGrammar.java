@@ -55,19 +55,19 @@ public class HQLGrammar extends GrammarWithAlias {
     }
 
     public static EComparable<Date> current_date() {
-        return operationFactory.createComparable(Date.class,Ops.OpDateTime.CURRENT_DATE);
+        return operationFactory.createComparable(Date.class,Ops.DateTime.CURRENT_DATE);
     }
 
     public static EComparable<Date> current_time() {
-        return operationFactory.createComparable(Date.class,Ops.OpDateTime.CURRENT_TIME);
+        return operationFactory.createComparable(Date.class,Ops.DateTime.CURRENT_TIME);
     }
 
     public static EComparable<Date> current_timestamp() {
-        return operationFactory.createComparable(Date.class,Ops.OpDateTime.CURRENT_TIMESTAMP);
+        return operationFactory.createComparable(Date.class,Ops.DateTime.CURRENT_TIMESTAMP);
     }
 
     public static EComparable<Date> day(Expr<Date> date) {
-        return operationFactory.createComparable(Date.class,Ops.OpDateTime.DAY, date);
+        return operationFactory.createComparable(Date.class,Ops.DateTime.DAY, date);
     }
 
     // public static <T> Expr<T> distinct(Path<T> left){
@@ -83,7 +83,7 @@ public class HQLGrammar extends GrammarWithAlias {
     }
 
     public static EComparable<Date> hour(Expr<Date> date) {
-        return operationFactory.createComparable(Date.class, Ops.OpDateTime.HOUR, date);
+        return operationFactory.createComparable(Date.class, Ops.DateTime.HOUR, date);
     }
 
 //    public static PComponentCollection<Integer> indices(PCollection<?> col) {
@@ -127,11 +127,11 @@ public class HQLGrammar extends GrammarWithAlias {
 //    }
 
     public static EComparable<Date> minute(Expr<Date> date) {
-        return operationFactory.createComparable(Date.class,Ops.OpDateTime.MINUTE, date);
+        return operationFactory.createComparable(Date.class,Ops.DateTime.MINUTE, date);
     }
 
     public static EComparable<Date> month(Expr<Date> date) {
-        return operationFactory.createComparable(Date.class,Ops.OpDateTime.MONTH, date);
+        return operationFactory.createComparable(Date.class,Ops.DateTime.MONTH, date);
     }
 
     public static <A> Expr<A> newInstance(Class<A> a, Expr<?>... args) {
@@ -143,7 +143,7 @@ public class HQLGrammar extends GrammarWithAlias {
     }
 
     public static EComparable<Date> second(Expr<Date> date) {
-        return operationFactory.createComparable(Date.class,Ops.OpDateTime.SECOND, date);
+        return operationFactory.createComparable(Date.class,Ops.DateTime.SECOND, date);
     }
 
     public static <A> SubQuery<HQLJoinMeta, A> select(Expr<A> select) {
@@ -180,11 +180,11 @@ public class HQLGrammar extends GrammarWithAlias {
     }
 
     public static EComparable<Date> sysdate() {
-        return operationFactory.createComparable(Date.class,Ops.OpDateTime.SYSDATE);
+        return operationFactory.createComparable(Date.class,Ops.DateTime.SYSDATE);
     }
 
     public static EComparable<Date> year(Expr<Date> date) {
-        return operationFactory.createComparable(Date.class,Ops.OpDateTime.YEAR, date);
+        return operationFactory.createComparable(Date.class,Ops.DateTime.YEAR, date);
     }
 
 }

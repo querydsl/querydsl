@@ -49,7 +49,7 @@ public class HQLPatterns extends OperationPatterns {
         add(Ops.NOTBETWEEN, "%s not between %s and %s", 30);
 
         // numeric
-        add(Ops.OpMath.SQRT, "sqrt(%s)");
+        add(Ops.Math.SQRT, "sqrt(%s)");
 
         // various        
         add(Ops.ISNULL, "%s is null", 26);
@@ -75,16 +75,16 @@ public class HQLPatterns extends OperationPatterns {
         add(OpHql.SUM, "sum(%s)");
 
         // date time
-        add(Ops.OpDateTime.SYSDATE, "sysdate");
-        add(Ops.OpDateTime.CURRENT_DATE, "current_date()");
-        add(Ops.OpDateTime.CURRENT_TIME, "current_time()");
-        add(Ops.OpDateTime.CURRENT_TIMESTAMP, "current_timestamp()");
-        add(Ops.OpDateTime.SECOND, "second(%s)");
-        add(Ops.OpDateTime.MINUTE, "minute(%s)");
-        add(Ops.OpDateTime.HOUR, "hour(%s)");
-        add(Ops.OpDateTime.DAY, "day(%s)");
-        add(Ops.OpDateTime.MONTH, "month(%s)");
-        add(Ops.OpDateTime.YEAR, "year(%s)");
+        add(Ops.DateTime.SYSDATE, "sysdate");
+        add(Ops.DateTime.CURRENT_DATE, "current_date()");
+        add(Ops.DateTime.CURRENT_TIME, "current_time()");
+        add(Ops.DateTime.CURRENT_TIMESTAMP, "current_timestamp()");
+        add(Ops.DateTime.SECOND, "second(%s)");
+        add(Ops.DateTime.MINUTE, "minute(%s)");
+        add(Ops.DateTime.HOUR, "hour(%s)");
+        add(Ops.DateTime.DAY, "day(%s)");
+        add(Ops.DateTime.MONTH, "month(%s)");
+        add(Ops.DateTime.YEAR, "year(%s)");
 
         // quantified expressions
         add(OpQuant.AVG_IN_COL, "avg(%s)");

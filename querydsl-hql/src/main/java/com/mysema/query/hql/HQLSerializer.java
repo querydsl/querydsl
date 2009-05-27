@@ -11,7 +11,6 @@ import java.util.List;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.BaseSerializer;
-import com.mysema.query.types.CountExpression;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.SubQuery;
@@ -140,19 +139,6 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
     @Override
     protected void visit(AToPath expr) {
         handle(expr.getFrom()).append(" as ").visit(expr.getTo());
-    }
-
-    protected void visit(CountExpression expr) {
-        if (expr.getTarget() == null) {
-            append("count(*)");
-        } else {
-            append("count(");
-            boolean old = wrapElements;
-            wrapElements = true;
-            handle(expr.getTarget());
-            wrapElements = old;
-            append(")");
-        }
     }
 
     @Override

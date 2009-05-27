@@ -19,7 +19,6 @@ import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.operation.Ops.OpNumberAgg;
 import com.mysema.query.types.path.PArray;
 import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PEntity;
@@ -156,9 +155,9 @@ public class Grammar {
      * @return
      */
     public static <A extends Number & Comparable<?>> ENumber<Double> avg( Expr<A> left) {
-        return operationFactory.createNumber(Double.class, OpNumberAgg.AVG_AGG, left);
+        return operationFactory.createNumber(Double.class, Ops.AVG_AGG, left);
     }
-
+    
     /**
      * Expr : left < right
      * 
@@ -354,7 +353,8 @@ public class Grammar {
      * @return
      */
     public static ENumber<Long> count() {
-        return new CountExpression(null);
+        return operationFactory.createNumber(Long.class, Ops.COUNT_ALL_AGG);
+        
     }
 
     /**
@@ -364,7 +364,7 @@ public class Grammar {
      * @return
      */
     public static ENumber<Long> count(Expr<?> expr) {
-        return new CountExpression(expr);
+        return operationFactory.createNumber(Long.class, Ops.COUNT_AGG, expr);
     }
 
     /**
@@ -415,7 +415,7 @@ public class Grammar {
     public static EBoolean endsWith(Expr<String> left, String right) {
         return operationFactory.createBoolean(Ops.ENDSWITH, left, exprFactory.createConstant(right));
     }
-    
+
     /**
      * Expr : left.endsWith(right) (ignore case)
      * 
@@ -431,7 +431,7 @@ public class Grammar {
             return operationFactory.createBoolean(Ops.ENDSWITH_IC, left, exprFactory.createConstant(right));
         }
     }
-
+    
     /**
      * Expr : left == right
      * 
@@ -848,6 +848,26 @@ public class Grammar {
     }
 
     /**
+     * 
+     * @param <A>
+     * @param left
+     * @return
+     */
+    public static <A extends Number & Comparable<?>> ENumber<A> max( Expr<A> left) {
+        return operationFactory.createNumber(left.getType(), Ops.MAX_AGG, left);
+    }
+
+    /**
+     * 
+     * @param <A>
+     * @param left
+     * @return
+     */
+    public static <A extends Number & Comparable<?>> ENumber<A> min( Expr<A> left) {
+        return operationFactory.createNumber(left.getType(), Ops.MIN_AGG, left);
+    }
+
+    /**
      * Expr : left != right
      * 
      * @param <A>
@@ -936,6 +956,7 @@ public class Grammar {
         return operationFactory.createBoolean(Ops.NOTIN, left, exprFactory.createConstant(rest));
     }
 
+    
     /**
      * Expr : left not in right
      * 
@@ -948,7 +969,6 @@ public class Grammar {
         return operationFactory.createBoolean(Ops.NOTIN, left, (Expr<?>) right);
     }
 
-    
     /**
      * Expr : cast(source as targetType)
      * 
@@ -1098,7 +1118,18 @@ public class Grammar {
                 .createConstant(beginIndex), exprFactory
                 .createConstant(endIndex));
     }
-
+    
+    /**
+     * Expr : sum(left)
+     * 
+     * @param <A>
+     * @param left
+     * @return
+     */
+    public static <A extends Number & Comparable<?>> ENumber<Double> sum( Expr<A> left) {
+        return operationFactory.createNumber(Double.class, Ops.SUM_AGG, left);
+    }
+    
     /**
      * Expr : left.trim()
      * 

@@ -27,6 +27,8 @@ public interface JDOQLQuery extends Projectable, Closeable {
 
     JDOQLQuery where(EBoolean... o);
 
+    // TODO : grouping
+    
     JDOQLQuery limit(long limit);
 
     JDOQLQuery offset(long offset);

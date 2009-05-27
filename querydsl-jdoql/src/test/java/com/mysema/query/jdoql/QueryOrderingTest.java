@@ -20,7 +20,7 @@ import com.mysema.query.jdoql.testdomain.QProduct;
 public class QueryOrderingTest extends AbstractJDOTest {
 
     private QProduct product = QProduct.product;
-
+    
     @Test
     public void testOrderAsc() {
         List<String> namesAsc = query().from(product).orderBy(
@@ -66,8 +66,7 @@ public class QueryOrderingTest extends AbstractJDOTest {
         assertEquals(Arrays.asList("A0", "A1"), query().from(product).orderBy(
                 product.name.asc()).limit(2).list(product.name));
         assertEquals(Arrays.asList("A2", "A3", "A4"), query().from(product)
-                .orderBy(product.name.asc()).offset(2).limit(3).list(
-                        product.name));
+                .orderBy(product.name.asc()).offset(2).limit(3).list(product.name));
         assertEquals(Arrays.asList("C9", "C8"), query().from(product).orderBy(
                 product.name.desc()).limit(2).list(product.name));
     }
@@ -95,9 +94,9 @@ public class QueryOrderingTest extends AbstractJDOTest {
         try {
             tx.begin();
             for (int i = 0; i < 10; i++) {
-                pm.makePersistent(new Product("C" + i, "F" + i, 200.00));
-                pm.makePersistent(new Product("B" + i, "E" + i, 200.00));
-                pm.makePersistent(new Product("A" + i, "D" + i, 200.00));
+                pm.makePersistent(new Product("C" + i, "F" + i, i * 200.00));
+                pm.makePersistent(new Product("B" + i, "E" + i, i * 200.00));
+                pm.makePersistent(new Product("A" + i, "D" + i, i * 200.00));
             }
             tx.commit();
         } finally {

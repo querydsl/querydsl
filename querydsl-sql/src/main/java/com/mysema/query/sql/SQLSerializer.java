@@ -187,15 +187,6 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
         handle(expr.getFrom()).append(ops.columnAlias()).append(expr.getTo());
     }
 
-    protected void visit(CountExpression expr) {
-        if (expr.getTarget() == null) {
-            append(ops.countStar());
-        } else {
-            append(ops.count()).append("(").handle(expr.getTarget())
-                    .append(")");
-        }
-    }
-
     @Override
     protected void visit(EConstant<?> expr) {
         append("?");

@@ -28,14 +28,6 @@ public class QueryBasicsTest extends AbstractJDOTest {
     }
     
     @Test
-    public void aggregation(){
-        // TODO sum
-        // TODO min
-        // TODO max
-        // TODO avg
-    }
-
-    @Test
     public void projectionTests() {
         assertEquals("Sony Discman", query().from(product).where(
                 product.name.eq("Sony Discman")).uniqueResult(product.name));

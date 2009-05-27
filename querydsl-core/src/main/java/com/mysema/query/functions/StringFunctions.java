@@ -29,15 +29,15 @@ public final class StringFunctions {
     private static final ExprFactory exprFactory = SimpleExprFactory.getInstance();
 
     public static EString ltrim(Expr<String> s) {
-        return factory.createString(Ops.OpString.LTRIM, s);
+        return factory.createString(Ops.StringOps.LTRIM, s);
     }
 
     public static EString rtrim(Expr<String> s) {
-        return factory.createString(Ops.OpString.RTRIM, s);
+        return factory.createString(Ops.StringOps.RTRIM, s);
     }
 
     public static EString space(int i) {
-        return factory.createString(Ops.OpString.SPACE, exprFactory.createConstant(i));
+        return factory.createString(Ops.StringOps.SPACE, exprFactory.createConstant(i));
     }
 
 }

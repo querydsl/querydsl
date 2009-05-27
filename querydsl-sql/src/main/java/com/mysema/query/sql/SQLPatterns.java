@@ -66,13 +66,13 @@ public class SQLPatterns extends OperationPatterns {
         add(Ops.NOT, "not %s");
 
         // math
-        add(Ops.OpMath.RANDOM, "rand()");
-        add(Ops.OpMath.CEIL, "ceiling(%s)");
-        add(Ops.OpMath.POWER, "power(%s,%s)");
+        add(Ops.Math.RANDOM, "rand()");
+        add(Ops.Math.CEIL, "ceiling(%s)");
+        add(Ops.Math.POWER, "power(%s,%s)");
 
         // date time
-        add(Ops.OpDateTime.CURRENT_DATE, "current_date");
-        add(Ops.OpDateTime.CURRENT_TIME, "current_timestamp");
+        add(Ops.DateTime.CURRENT_DATE, "current_date");
+        add(Ops.DateTime.CURRENT_TIME, "current_timestamp");
 
         // string
         add(Ops.SUBSTR1ARG, "substr(%s,%s)");

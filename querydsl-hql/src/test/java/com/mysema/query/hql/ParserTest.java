@@ -216,7 +216,7 @@ public class ParserTest implements Constants {
         // "select avg(cat.weight), sum(cat.weight), max(cat.weight), count(cat)\n"
         // + "from eg.Cat cat" );
         q().select(avg(cat.weight), sum(cat.weight),
-                MathFunctions.max(cat.weight), Grammar.count(cat)).from(cat)
+                Grammar.max(cat.weight), Grammar.count(cat)).from(cat)
                 .parse();
 
         // parse( "select cat, count( elements(cat.kittens) )\n"
