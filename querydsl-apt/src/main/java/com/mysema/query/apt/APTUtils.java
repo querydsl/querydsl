@@ -5,7 +5,12 @@
  */
 package com.mysema.query.apt;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;

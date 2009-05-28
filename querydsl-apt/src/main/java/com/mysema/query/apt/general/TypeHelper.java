@@ -12,8 +12,16 @@ import java.util.Locale;
 import org.apache.commons.lang.ClassUtils;
 
 import com.mysema.query.annotations.Literal;
-import com.mysema.query.apt.model.FieldType;
-import com.sun.mirror.type.*;
+import com.mysema.query.codegen.FieldType;
+import com.sun.mirror.type.AnnotationType;
+import com.sun.mirror.type.ArrayType;
+import com.sun.mirror.type.ClassType;
+import com.sun.mirror.type.EnumType;
+import com.sun.mirror.type.InterfaceType;
+import com.sun.mirror.type.PrimitiveType;
+import com.sun.mirror.type.TypeMirror;
+import com.sun.mirror.type.TypeVariable;
+import com.sun.mirror.type.WildcardType;
 import com.sun.mirror.util.SimpleTypeVisitor;
 
 /**

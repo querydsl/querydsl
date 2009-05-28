@@ -5,7 +5,8 @@
  */
 package com.mysema.query.apt.general;
 
-import static com.mysema.query.apt.Constants.*;
+import static com.mysema.query.apt.Constants.QD_DTO;
+import static com.mysema.query.apt.Constants.QD_ENTITY;
 
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.MethodDeclaration;
