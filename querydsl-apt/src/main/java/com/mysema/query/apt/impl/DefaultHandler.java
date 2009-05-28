@@ -14,9 +14,10 @@ import java.util.Set;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 
+import com.mysema.query.codegen.ClassModel;
+import com.mysema.query.codegen.ClassModelFactory;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.Serializers;
-import com.mysema.query.codegen.Type;
 import com.mysema.query.util.FileUtils;
 
 public class DefaultHandler {
@@ -26,15 +27,15 @@ public class DefaultHandler {
     private String targetFolder = "target/generated-sources/java";
     
     public void processClasses(Set<? extends Element> elements, RoundEnvironment env) {
-        Map<String, Type> mappedSupertypes = new HashMap<String, Type>();
+        Map<String, ClassModel> mappedSupertypes = new HashMap<String, ClassModel>();
         // TODO : handle super types 
         
-        Map<String,Type> entityTypes = new HashMap<String,Type>();
+        Map<String,ClassModel> entityTypes = new HashMap<String,ClassModel>();
         for (Element element : elements){
             // TODO
         }
         
-        for (Type entityType : entityTypes.values()) {
+        for (ClassModel entityType : entityTypes.values()) {
             addSupertypeFields(entityType, entityTypes, mappedSupertypes);
         }
 
@@ -44,13 +45,13 @@ public class DefaultHandler {
     }
     
 
-    private void addSupertypeFields(Type typeDecl, Map<String, Type> entityTypes, Map<String, Type> mappedSupertypes) {
+    private void addSupertypeFields(ClassModel typeDecl, Map<String, ClassModel> entityTypes, Map<String, ClassModel> mappedSupertypes) {
         String stype = typeDecl.getSupertypeName();
         Class<?> superClass = safeClassForName(stype);
         if (entityTypes.containsKey(stype)
                 || mappedSupertypes.containsKey(stype)) {
             while (true) {
-                Type sdecl;
+                ClassModel sdecl;
                 if (entityTypes.containsKey(stype)) {
                     sdecl = entityTypes.get(stype);
                 } else if (mappedSupertypes.containsKey(stype)) {
@@ -64,7 +65,7 @@ public class DefaultHandler {
 
         } else if (superClass != null && !superClass.equals(Object.class)) {
             // TODO : recursively up ?
-            Type type = TypeFactory.createType(superClass);
+            ClassModel type = ClassModelFactory.createType(superClass);
             // include fields of supertype
             typeDecl.include(type);
         }
@@ -78,10 +79,10 @@ public class DefaultHandler {
         }
     }
     
-    protected void serializeAsOuterClasses(Collection<Type> entityTypes, Serializer serializer) {
+    protected void serializeAsOuterClasses(Collection<ClassModel> entityTypes, Serializer serializer) {
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("pre", namePrefix);
-        for (Type type : entityTypes) {
+        for (ClassModel type : entityTypes) {
             String packageName = type.getPackageName();
             model.put("package", packageName);
             model.put("type", type);
