@@ -19,8 +19,7 @@ public class Field implements Comparable<Field> {
 
     private final FieldType fieldType;
 
-    private String name, realName, keyTypeName, typeName, typePackage,
-            simpleTypeName;
+    private String name, keyTypeName, typeName, typePackage, simpleTypeName;
 
     /**
      * Construct a new Field instance
@@ -38,11 +37,10 @@ public class Field implements Comparable<Field> {
      *            simple type name (local)
      * @param fieldType
      */
-    public Field(String name, String realName, String keyTypeName,
+    public Field(String name, String keyTypeName,
             String typePackage, String typeName, String simpleTypeName,
             FieldType fieldType) {
         this.name = name;
-        this.realName = realName;
         this.keyTypeName = keyTypeName;
         this.typePackage = typePackage;
         this.typeName = typeName;
@@ -73,10 +71,6 @@ public class Field implements Comparable<Field> {
 
     public String getName() {
         return name;
-    }
-
-    public String getRealName() {
-        return realName;
     }
 
     /**

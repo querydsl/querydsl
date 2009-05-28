@@ -33,13 +33,13 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
 
     protected final List<Object> constants = new ArrayList<Object>();
 
-    protected final OperationPatterns ops;
+    protected final OperationPatterns patterns;
 
     @SuppressWarnings("unchecked")
     private final SubType _this = (SubType) this;
 
-    public BaseSerializer(OperationPatterns ops) {
-        this.ops = Assert.notNull(ops);
+    public BaseSerializer(OperationPatterns patterns) {
+        this.patterns = Assert.notNull(patterns);
     }
 
     public final SubType append(String... str) {
@@ -138,7 +138,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
             exprAsString = toString(path.getMetadata().getExpression(), false);
         }
 
-        String pattern = ops.getPattern(pathType);
+        String pattern = patterns.getPattern(pathType);
         if (parentAsString != null) {
             append(String.format(pattern, parentAsString, exprAsString));
         } else {
@@ -148,17 +148,17 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
     }
     
     protected void visitOperation(Class<?> type, Operator<?> operator,List<Expr<?>> args) {
-        String pattern = ops.getPattern(operator);
+        String pattern = patterns.getPattern(operator);
         if (pattern == null) {
             throw new IllegalArgumentException("Got no pattern for " + operator);
         }
         Object[] strings = new String[args.size()];
-        int precedence = ops.getPrecedence(operator);
+        int precedence = patterns.getPrecedence(operator);
         for (int i = 0; i < strings.length; i++) {
             boolean wrap = false;
             if (args.get(i) instanceof Operation) {
                 // wrap if outer operator precedes
-                wrap = precedence < ops.getPrecedence(((Operation<?, ?>) args
+                wrap = precedence < patterns.getPrecedence(((Operation<?, ?>) args
                         .get(i)).getOperator());
             }
             strings[i] = toString(args.get(i), wrap);

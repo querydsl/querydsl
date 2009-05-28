@@ -45,6 +45,15 @@
       <artifactId>cglib</artifactId>
       <version>2.2</version>
     </dependency>
+    
+    <!-- codegen deps -->
+    
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.12</version>
+      <!-- license : BSD-style license -->
+    </dependency>    
 
     <!-- test dependencies -->
 

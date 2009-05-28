@@ -22,7 +22,7 @@ import com.mysema.query.types.path.Path;
  */
 public class ToStringVisitor extends AbstractVisitor<ToStringVisitor> {
 
-    private static OperationPatterns ops = new OperationPatterns();
+    private static OperationPatterns patterns = new OperationPatterns();
 
     private String toString = "?";
 
@@ -64,7 +64,7 @@ public class ToStringVisitor extends AbstractVisitor<ToStringVisitor> {
     }
 
     protected void visit(Operation<?, ?> o) {
-        String pattern = ops.getPattern(o.getOperator());
+        String pattern = patterns.getPattern(o.getOperator());
         if (pattern != null) {
             toString = String.format(pattern, o.getArgs().toArray());
         } else {
@@ -76,7 +76,7 @@ public class ToStringVisitor extends AbstractVisitor<ToStringVisitor> {
         Path<?> parent = p.getMetadata().getParent();
         Expr<?> expr = p.getMetadata().getExpression();
         if (parent != null) {
-            String pattern = ops.getPattern(p.getMetadata().getPathType());
+            String pattern = patterns.getPattern(p.getMetadata().getPathType());
             if (pattern != null) {
                 toString = String.format(pattern, parent, expr);
             }
