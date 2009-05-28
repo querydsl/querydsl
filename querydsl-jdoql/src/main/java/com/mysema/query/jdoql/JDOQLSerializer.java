@@ -51,7 +51,7 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator,
             List<Expr<?>> args) {
-        if (operator.equals(Ops.ISTYPEOF)) {
+        if (operator.equals(Ops.INSTANCEOF)) {
             handle(args.get(0)).append(" instanceof ");
             append(((EConstant<Class<?>>) args.get(1)).getConstant().getName());
         } else if (operator.equals(Ops.STRING_CAST)) {

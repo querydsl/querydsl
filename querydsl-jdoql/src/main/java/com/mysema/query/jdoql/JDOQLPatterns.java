@@ -5,11 +5,7 @@
  */
 package com.mysema.query.jdoql;
 
-import java.util.Collection;
-
 import com.mysema.query.serialization.OperationPatterns;
-import com.mysema.query.types.operation.Operator;
-import com.mysema.query.types.operation.OperatorImpl;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PathType;
 
@@ -28,7 +24,7 @@ public class JDOQLPatterns extends OperationPatterns {
         add(Ops.EQ_OBJECT, "%s == %s");
         add(Ops.ISNULL, "%s == null");
         add(Ops.ISNOTNULL, "%s != null");
-        add(Ops.ISTYPEOF, "%s instanceof %s");
+        add(Ops.INSTANCEOF, "%s instanceof %s");
 
         // collection
         add(Ops.IN, "%2$s.contains(%1$s)");
@@ -86,33 +82,6 @@ public class JDOQLPatterns extends OperationPatterns {
         }
         add(PathType.ARRAYVALUE, "%s[%s]");
         add(PathType.ARRAYVALUE_CONSTANT, "%s[%s]");
-    }
-
-    /**
-     * The Interface OpHql.
-     */
-    public interface OpHql {
-        Operator<Boolean> ISEMPTY = new OperatorImpl<java.lang.Boolean>(Collection.class);
-        Operator<Boolean> ISNOTEMPTY = new OperatorImpl<java.lang.Boolean>(Collection.class);
-        Operator<Number> SUM = new OperatorImpl<Number>(Number.class);
-    }
-
-    /**
-     * The Interface OpQuant.
-     */
-    public interface OpQuant {
-        Operator<Number> AVG_IN_COL = new OperatorImpl<java.lang.Number>(Collection.class);
-        Operator<Number> MAX_IN_COL = new OperatorImpl<java.lang.Number>(Collection.class);
-        Operator<Number> MIN_IN_COL = new OperatorImpl<java.lang.Number>(Collection.class);
-
-        // some / any = true for any
-        // all = true for all
-        // exists = true is subselect matches
-        // not exists = true if subselect doesn't match
-        Operator<?> ANY = new OperatorImpl<Object>(Object.class);
-        Operator<?> ALL = new OperatorImpl<Object>(Object.class);
-        Operator<?> EXISTS = new OperatorImpl<Object>(Object.class);
-        Operator<?> NOTEXISTS = new OperatorImpl<Object>(Object.class);
     }
 
 }
