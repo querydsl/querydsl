@@ -27,7 +27,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  *
  */
-public class JPAQLQueryImpl extends HQLQueryBase<JPAQLQueryImpl> {
+public class JPAQLQueryImpl extends HQLQueryBase<JPAQLQueryImpl> implements JPAQLQuery{
 
     private static final Logger logger = LoggerFactory.getLogger(JPAQLQueryImpl.class);
 
