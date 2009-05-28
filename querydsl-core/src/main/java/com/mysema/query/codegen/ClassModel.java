@@ -23,29 +23,29 @@ import org.apache.commons.lang.StringUtils;
  */
 public class ClassModel implements Comparable<ClassModel> {
 
-    private Set<FieldModel> booleanFields = new TreeSet<FieldModel>();
+    private final Set<FieldModel> booleanFields = new TreeSet<FieldModel>();
 
-    private Set<FieldModel> comparableFields = new TreeSet<FieldModel>();
+    private final Set<FieldModel> comparableFields = new TreeSet<FieldModel>();
 
-    private Set<ConstructorModel> constructors = new HashSet<ConstructorModel>();
+    private final Set<ConstructorModel> constructors = new HashSet<ConstructorModel>();
 
-    private Set<FieldModel> entityCollections = new TreeSet<FieldModel>();
+    private final Set<FieldModel> entityCollections = new TreeSet<FieldModel>();
 
-    private Set<FieldModel> entityFields = new TreeSet<FieldModel>();
+    private final Set<FieldModel> entityFields = new TreeSet<FieldModel>();
 
-    private Set<FieldModel> entityLists = new TreeSet<FieldModel>();
+    private final Set<FieldModel> entityLists = new TreeSet<FieldModel>();
 
-    private Set<FieldModel> entityMaps = new TreeSet<FieldModel>();
+    private final Set<FieldModel> entityMaps = new TreeSet<FieldModel>();
 
-    private Set<FieldModel> numericFields = new TreeSet<FieldModel>();
+    private final Set<FieldModel> numericFields = new TreeSet<FieldModel>();
 
-    private Set<FieldModel> simpleCollections = new TreeSet<FieldModel>();
+    private final Set<FieldModel> simpleCollections = new TreeSet<FieldModel>();
 
-    private Set<FieldModel> simpleFields = new TreeSet<FieldModel>();
+    private final Set<FieldModel> simpleFields = new TreeSet<FieldModel>();
 
-    private Set<FieldModel> simpleLists = new TreeSet<FieldModel>();
+    private final Set<FieldModel> simpleLists = new TreeSet<FieldModel>();
 
-    private Set<FieldModel> simpleMaps = new TreeSet<FieldModel>();
+    private final Set<FieldModel> simpleMaps = new TreeSet<FieldModel>();
 
     private String simpleName, uncapSimpleName, name, packageName;
 
@@ -68,44 +68,44 @@ public class ClassModel implements Comparable<ClassModel> {
         constructors.add(co);
     }
 
-    public void addField(FieldModel fieldDecl) {
-        validateField(fieldDecl);
-        switch (fieldDecl.getFieldType()) {
+    public void addField(FieldModel field) {
+        validateField(field);
+        switch (field.getFieldType()) {
         case BOOLEAN:
-            booleanFields.add(fieldDecl);
+            booleanFields.add(field);
             break;
         case STRING:
-            stringFields.add(fieldDecl);
+            stringFields.add(field);
             break;
         case SIMPLE:
-            simpleFields.add(fieldDecl);
+            simpleFields.add(field);
             break;
         case COMPARABLE:
-            comparableFields.add(fieldDecl);
+            comparableFields.add(field);
             break;
         case NUMERIC:
-            numericFields.add(fieldDecl);
+            numericFields.add(field);
             break;
         case ENTITY:
-            entityFields.add(fieldDecl);
+            entityFields.add(field);
             break;
         case ENTITYCOLLECTION:
-            entityCollections.add(fieldDecl);
+            entityCollections.add(field);
             break;
         case SIMPLECOLLECTION:
-            simpleCollections.add(fieldDecl);
+            simpleCollections.add(field);
             break;
         case ENTITYLIST:
-            entityLists.add(fieldDecl);
+            entityLists.add(field);
             break;
         case SIMPLELIST:
-            simpleLists.add(fieldDecl);
+            simpleLists.add(field);
             break;
         case ENTITYMAP:
-            entityMaps.add(fieldDecl);
+            entityMaps.add(field);
             break;
         case SIMPLEMAP:
-            simpleMaps.add(fieldDecl);
+            simpleMaps.add(field);
             break;
         }
     }
@@ -201,19 +201,19 @@ public class ClassModel implements Comparable<ClassModel> {
         return name.hashCode();
     }
 
-    public void include(ClassModel decl) {
-        addAll(booleanFields, decl.booleanFields);
-        addAll(entityCollections, decl.entityCollections);
-        addAll(entityFields, decl.entityFields);
-        addAll(entityLists, decl.entityLists);
-        addAll(entityMaps, decl.entityMaps);
-        addAll(comparableFields, decl.comparableFields);
-        addAll(numericFields, decl.numericFields);
-        addAll(simpleCollections, decl.simpleCollections);
-        addAll(simpleFields, decl.simpleFields);
-        addAll(simpleLists, decl.simpleLists);
-        addAll(simpleMaps, decl.simpleMaps);
-        addAll(stringFields, decl.stringFields);
+    public void include(ClassModel clazz) {
+        addAll(booleanFields, clazz.booleanFields);
+        addAll(entityCollections, clazz.entityCollections);
+        addAll(entityFields, clazz.entityFields);
+        addAll(entityLists, clazz.entityLists);
+        addAll(entityMaps, clazz.entityMaps);
+        addAll(comparableFields, clazz.comparableFields);
+        addAll(numericFields, clazz.numericFields);
+        addAll(simpleCollections, clazz.simpleCollections);
+        addAll(simpleFields, clazz.simpleFields);
+        addAll(simpleLists, clazz.simpleLists);
+        addAll(simpleMaps, clazz.simpleMaps);
+        addAll(stringFields, clazz.stringFields);
     }
 
     private void addAll(Set<FieldModel> target, Set<FieldModel> source) {

@@ -18,13 +18,13 @@ import com.mysema.query.util.TypeUtil;
  * @author tiwe
  *
  */
-public class ClassModelFactory {
+public class ClassModelBuilder {
 
     private FieldType fieldType;
 
     private String simpleName, fullName, packageName = "", keyTypeName;
 
-    public ClassModelFactory(Class<?> cl) {
+    public ClassModelBuilder(Class<?> cl) {
         this(cl, cl);
     }
     
@@ -32,7 +32,7 @@ public class ClassModelFactory {
         ClassModel type = new ClassModel(clazz.getSuperclass().getName(), clazz
                 .getPackage().getName(), clazz.getName(), clazz.getSimpleName());
         for (java.lang.reflect.Field f : clazz.getDeclaredFields()) {
-            ClassModelFactory typeHelper = new ClassModelFactory(f.getType(), f.getGenericType());
+            ClassModelBuilder typeHelper = new ClassModelBuilder(f.getType(), f.getGenericType());
             FieldModel field = new FieldModel(
                     f.getName(), 
                     typeHelper.getKeyTypeName(), typeHelper.getPackageName(),
@@ -44,7 +44,7 @@ public class ClassModelFactory {
     }
 
 
-    public ClassModelFactory(Class<?> cl, java.lang.reflect.Type genericType) {
+    public ClassModelBuilder(Class<?> cl, java.lang.reflect.Type genericType) {
         if (cl == null) {
             throw new IllegalArgumentException("cl was null");
         } else if (cl.isArray()) {
@@ -90,11 +90,11 @@ public class ClassModelFactory {
     }
 
     private void handleCollectionInterface(Class<?> type, Type genericType) {
-        ClassModelFactory valueInfo = new ClassModelFactory(TypeUtil.getTypeParameter(genericType, 0));
+        ClassModelBuilder valueInfo = new ClassModelBuilder(TypeUtil.getTypeParameter(genericType, 0));
         handleCollection(valueInfo);
     }
 
-    private void handleCollection(ClassModelFactory valueInfo) {
+    private void handleCollection(ClassModelBuilder valueInfo) {
         fullName = valueInfo.getFullName();
         packageName = valueInfo.getPackageName();
         if (valueInfo.fieldType == FieldType.ENTITY) {
@@ -104,7 +104,7 @@ public class ClassModelFactory {
         }
     }
 
-    private void handleList(ClassModelFactory valueInfo) {
+    private void handleList(ClassModelBuilder valueInfo) {
         fullName = valueInfo.getFullName();
         packageName = valueInfo.getPackageName();
         if (valueInfo.fieldType == FieldType.ENTITY) {
@@ -115,17 +115,17 @@ public class ClassModelFactory {
     }
 
     private void handleListInterface(Class<?> type, Type genericType) {
-        ClassModelFactory valueInfo = new ClassModelFactory(TypeUtil.getTypeParameter(genericType, 0));
+        ClassModelBuilder valueInfo = new ClassModelBuilder(TypeUtil.getTypeParameter(genericType, 0));
         handleList(valueInfo);
     }
 
     private void handleMapInterface(Class<?> type, Type genericType) {
-        ClassModelFactory keyInfo = new ClassModelFactory(TypeUtil.getTypeParameter(genericType, 0));
-        ClassModelFactory valueInfo = new ClassModelFactory(TypeUtil.getTypeParameter(genericType, 1));
+        ClassModelBuilder keyInfo = new ClassModelBuilder(TypeUtil.getTypeParameter(genericType, 0));
+        ClassModelBuilder valueInfo = new ClassModelBuilder(TypeUtil.getTypeParameter(genericType, 1));
         handleMapInterface(keyInfo, valueInfo);
     }
 
-    private void handleMapInterface(ClassModelFactory keyInfo, ClassModelFactory valueInfo) {
+    private void handleMapInterface(ClassModelBuilder keyInfo, ClassModelBuilder valueInfo) {
         keyTypeName = keyInfo.getFullName();
         fullName = valueInfo.getFullName();
         packageName = valueInfo.getPackageName();
@@ -149,7 +149,7 @@ public class ClassModelFactory {
         return fullName;
     }
 
-    private void visitArrayComponentType(ClassModelFactory valueInfo) {
+    private void visitArrayComponentType(ClassModelBuilder valueInfo) {
         fullName = valueInfo.getFullName();
         packageName = valueInfo.getPackageName();
         if (valueInfo.fieldType == FieldType.ENTITY) {
@@ -160,7 +160,7 @@ public class ClassModelFactory {
     }
 
     public void visitArrayType(Class<?> clazz) {
-        ClassModelFactory valueInfo = new ClassModelFactory(clazz.getComponentType());
+        ClassModelBuilder valueInfo = new ClassModelBuilder(clazz.getComponentType());
         visitArrayComponentType(valueInfo);
     }
 
