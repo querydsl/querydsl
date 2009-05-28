@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.apt.general;
+package com.mysema.query.apt.impl;
 
 import java.lang.reflect.Type;
 import java.util.Iterator;

@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.apt.general;
+package com.mysema.query.apt.impl;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.TypeVariable;
@@ -27,8 +27,7 @@ public class TypeFactory {
             TypeHelper typeHelper = new TypeHelper(f.getType(), f
                     .getGenericType());
             Field field = new Field(
-                    FieldHelper.javaSafe(f.getName()), // name
-                    FieldHelper.realName(f.getName()), // realName
+                    f.getName(), 
                     typeHelper.getKeyTypeName(), typeHelper.getPackageName(),
                     typeHelper.getFullName(), typeHelper.getSimpleName(),
                     typeHelper.getFieldType());

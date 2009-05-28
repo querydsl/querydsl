@@ -7,5 +7,5 @@
 /**
  * APT implementation classes
  */
-package com.mysema.query.apt.general;
+package com.mysema.query.apt.impl;
 
