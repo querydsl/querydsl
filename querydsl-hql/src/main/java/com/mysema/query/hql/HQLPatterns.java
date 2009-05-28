@@ -6,7 +6,6 @@
 package com.mysema.query.hql;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PathType;
 
 /**
- * HqlOps extends OperationPatterns to provide operator patterns for HQL
+ * HQLPatterns extends OperationPatterns to provide operator patterns for HQL
  * serialization
  * 
  * @author tiwe
@@ -30,9 +29,14 @@ public class HQLPatterns extends OperationPatterns {
     public static final List<Operator<?>> wrapCollectionsForOp;
 
     static {
-        wrapCollectionsForOp = Collections.<Operator<?>> unmodifiableList(Arrays
-                .<Operator<?>> asList(Ops.IN, Ops.NOTIN, OpQuant.ALL, OpQuant.ANY,
-                        OpQuant.AVG_IN_COL, OpQuant.EXISTS, OpQuant.NOTEXISTS));
+        wrapCollectionsForOp = Collections.<Operator<?>> unmodifiableList(Arrays.<Operator<?>> asList(
+            Ops.IN, 
+            Ops.NOTIN, 
+            Ops.QuantOps.ALL, 
+            Ops.QuantOps.ANY,
+            Ops.QuantOps.AVG_IN_COL, 
+            Ops.QuantOps.EXISTS, 
+            Ops.QuantOps.NOTEXISTS));
     }
 
     public HQLPatterns() {
@@ -53,9 +57,6 @@ public class HQLPatterns extends OperationPatterns {
         // various        
         add(Ops.ISNULL, "%s is null", 26);
         add(Ops.ISNOTNULL, "%s is not null", 26);
-        
-        // TODO : move ALIAS to querydsl-core
-        add(ALIAS, "%s as %s");
         
         // collection
         add(Ops.IN, "%s in %s");
@@ -85,16 +86,6 @@ public class HQLPatterns extends OperationPatterns {
         add(Ops.DateTimeOps.MONTH, "month(%s)");
         add(Ops.DateTimeOps.YEAR, "year(%s)");
 
-        // quantified expressions
-        add(OpQuant.AVG_IN_COL, "avg(%s)");
-        add(OpQuant.MAX_IN_COL, "max(%s)");
-        add(OpQuant.MIN_IN_COL, "min(%s)");
-
-        add(OpQuant.ANY, "any %s");
-        add(OpQuant.ALL, "all %s");
-        add(OpQuant.EXISTS, "exists %s");
-        add(OpQuant.NOTEXISTS, "not exists %s");
-
         // path types
         for (PathType type : new PathType[] { PathType.LISTVALUE,
                 PathType.LISTVALUE_CONSTANT, PathType.MAPVALUE,
@@ -114,25 +105,4 @@ public class HQLPatterns extends OperationPatterns {
 //        add(HqlPathType.MAPINDICES, "indices(%s)");
     }
     
-    public static final Operator<Object> ALIAS = new OperatorImpl<Object>(Object.class, Object.class);
-
-    /**
-     * The Interface OpQuant.
-     */
-    // TODO : move to core
-    public interface OpQuant {
-        Operator<Number> AVG_IN_COL = new OperatorImpl<Number>(Collection.class);
-        Operator<Number> MAX_IN_COL = new OperatorImpl<Number>(Collection.class);
-        Operator<Number> MIN_IN_COL = new OperatorImpl<Number>(Collection.class);
-
-        // some / any = true for any
-        // all = true for all
-        // exists = true is subselect matches
-        // not exists = true if subselect doesn't match
-        Operator<Object> ANY = new OperatorImpl<Object>(Object.class);
-        Operator<Object> ALL = new OperatorImpl<Object>(Object.class);
-        Operator<Boolean> EXISTS = new OperatorImpl<Boolean>(Object.class);
-        Operator<Boolean> NOTEXISTS = new OperatorImpl<Boolean>(Object.class);
-    }
-
 }

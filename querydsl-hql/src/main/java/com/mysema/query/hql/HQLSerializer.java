@@ -179,7 +179,7 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
         boolean old = wrapElements;
         wrapElements = HQLPatterns.wrapCollectionsForOp.contains(operator);
         // 
-        if (operator.equals(Ops.ISTYPEOF)) {
+        if (operator.equals(Ops.INSTANCEOF)) {
             args = new ArrayList<Expr<?>>(args);
             args.set(1, new EConstant<String>(((Class<?>) ((EConstant<?>) args
                     .get(1)).getConstant()).getName()));

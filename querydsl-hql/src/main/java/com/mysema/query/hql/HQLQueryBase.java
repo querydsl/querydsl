@@ -14,6 +14,7 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EEntity;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OSimple;
+import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PathMetadata;
@@ -56,7 +57,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
 
     @SuppressWarnings("unchecked")
     private <D> Expr<D> createAlias(EEntity<?> target, PEntity<D> alias){
-        return new OSimple<Object,D>((Class<D>)alias.getType(), HQLPatterns.ALIAS, target, alias);
+        return new OSimple<Object,D>((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
     }
 
     protected EBoolean createQBECondition(PEntity<?> entity,

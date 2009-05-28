@@ -8,7 +8,6 @@ package com.mysema.query.hql;
 import java.util.Date;
 
 import com.mysema.query.alias.GrammarWithAlias;
-import com.mysema.query.hql.HQLPatterns.OpQuant;
 import com.mysema.query.types.CollectionType;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
@@ -33,15 +32,15 @@ import com.mysema.query.types.path.PEntity;
 public class HQLGrammar extends GrammarWithAlias {
 
     public static <D> Expr<D> all(CollectionType<D> col) {
-        return new OSimple<Object,D>(col.getElementType(), OpQuant.ALL, (Expr<?>)col);
+        return new OSimple<Object,D>(col.getElementType(), Ops.QuantOps.ALL, (Expr<?>)col);
     }
 
     public static <D> Expr<D> any(CollectionType<D> col) {
-        return new OSimple<Object,D>(col.getElementType(), OpQuant.ANY, (Expr<?>)col);
+        return new OSimple<Object,D>(col.getElementType(), Ops.QuantOps.ANY, (Expr<?>)col);
     }
 
     public static <A extends Comparable<? super A>> EComparable<A> avg(PCollection<A> col) {
-        return new OComparable<Number,A>(col.getElementType(), OpQuant.AVG_IN_COL, (Expr<?>)col);
+        return new OComparable<Number,A>(col.getElementType(), Ops.QuantOps.AVG_IN_COL, (Expr<?>)col);
     }
 
     public static EComparable<Date> current_date() {
@@ -61,7 +60,7 @@ public class HQLGrammar extends GrammarWithAlias {
     }
 
     public static EBoolean exists(CollectionType<?> col) {
-        return new OBoolean(OpQuant.EXISTS, (Expr<?>)col);
+        return new OBoolean(Ops.QuantOps.EXISTS, (Expr<?>)col);
     }
 
     public static <A> SubQuery<HQLJoinMeta, A> from(PEntity<A> select) {
@@ -73,11 +72,11 @@ public class HQLGrammar extends GrammarWithAlias {
     }
 
     public static <A extends Comparable<? super A>> EComparable<A> max(PCollection<A> left) {
-        return new OComparable<Number,A>(left.getElementType(), OpQuant.MAX_IN_COL, (Expr<?>)left);
+        return new OComparable<Number,A>(left.getElementType(), Ops.QuantOps.MAX_IN_COL, (Expr<?>)left);
     }
 
     public static <A extends Comparable<? super A>> EComparable<A> min(PCollection<A> left) {
-        return new OComparable<Number,A>(left.getElementType(), OpQuant.MIN_IN_COL, (Expr<?>)left);
+        return new OComparable<Number,A>(left.getElementType(), Ops.QuantOps.MIN_IN_COL, (Expr<?>)left);
     }
 
     public static EComparable<Date> minute(Expr<Date> date) {
@@ -93,7 +92,7 @@ public class HQLGrammar extends GrammarWithAlias {
     }
 
     public static EBoolean notExists(CollectionType<?> col) {
-        return new OBoolean(OpQuant.NOTEXISTS, (Expr<?>)col);
+        return new OBoolean(Ops.QuantOps.NOTEXISTS, (Expr<?>)col);
     }
 
     public static EComparable<Date> second(Expr<Date> date) {
