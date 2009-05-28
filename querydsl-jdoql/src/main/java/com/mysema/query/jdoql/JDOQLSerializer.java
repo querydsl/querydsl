@@ -24,8 +24,8 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
 
     private PEntity<?> candidatePath;
 
-    public JDOQLSerializer(JDOQLPatterns ops, PEntity<?> candidate) {
-        super(ops);
+    public JDOQLSerializer(JDOQLPatterns patterns, PEntity<?> candidate) {
+        super(patterns);
         this.candidatePath = candidate;
     }
 

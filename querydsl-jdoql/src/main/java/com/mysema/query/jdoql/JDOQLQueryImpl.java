@@ -45,7 +45,7 @@ public class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryIm
 
     private String filter;
 
-    private final JDOQLPatterns ops;
+    private final JDOQLPatterns patterns;
 
     private final PersistenceManager pm;
     
@@ -53,8 +53,8 @@ public class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryIm
         this(pm, JDOQLPatterns.DEFAULT);
     }
 
-    public JDOQLQueryImpl(PersistenceManager pm, JDOQLPatterns ops) {
-        this.ops = ops;
+    public JDOQLQueryImpl(PersistenceManager pm, JDOQLPatterns patterns) {
+        this.patterns = patterns;
         this.pm = pm;
     }
 
@@ -85,7 +85,7 @@ public class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryIm
         if (getMetadata().getWhere() == null) {
             return null;
         }
-        JDOQLSerializer serializer = new JDOQLSerializer(ops, sources.get(0));
+        JDOQLSerializer serializer = new JDOQLSerializer(patterns, sources.get(0));
         serializer.handle(getMetadata().getWhere());
         constants = serializer.getConstants();
         System.err.println("SERIALIZED : " + serializer.toString());
@@ -158,7 +158,7 @@ public class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryIm
         if (!getMetadata().getProjection().isEmpty() && !forCount) {
             List<? extends Expr<?>> projection = getMetadata().getProjection();
             if (!projection.get(0).equals(sources.get(0))) {
-                JDOQLSerializer serializer = new JDOQLSerializer(ops, sources.get(0));
+                JDOQLSerializer serializer = new JDOQLSerializer(patterns, sources.get(0));
                 serializer.handle(", ", projection);
                 query.setResult(serializer.toString());
             }
@@ -169,7 +169,7 @@ public class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryIm
         // order (not for count)
         if (!getMetadata().getOrderBy().isEmpty() && !forCount) {
             List<OrderSpecifier<?>> order = getMetadata().getOrderBy();
-            JDOQLSerializer serializer = new JDOQLSerializer(ops, sources.get(0));
+            JDOQLSerializer serializer = new JDOQLSerializer(patterns, sources.get(0));
             boolean first = true;
             for (OrderSpecifier<?> os : order) {
                 if (!first) {
