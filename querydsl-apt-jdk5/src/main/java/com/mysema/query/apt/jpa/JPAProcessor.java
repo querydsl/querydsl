@@ -17,7 +17,7 @@ import java.util.Map;
 import com.mysema.query.apt.general.DefaultEntityVisitor;
 import com.mysema.query.apt.general.GeneralProcessor;
 import com.mysema.query.codegen.Serializers;
-import com.mysema.query.codegen.Type;
+import com.mysema.query.codegen.ClassModel;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.Declaration;
@@ -43,7 +43,7 @@ public class JPAProcessor extends GeneralProcessor {
             typeDecl.accept(getDeclarationScanner(entityVisitor, NO_OP));
         }
 
-        Map<String, Type> entityTypes = entityVisitor.types;
+        Map<String, ClassModel> entityTypes = entityVisitor.types;
         if (entityTypes.isEmpty()) {
             env.getMessager().printNotice(
                     "No class generation for embeddable types");

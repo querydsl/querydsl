@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.mysema.query.codegen.Constructor;
+import com.mysema.query.codegen.ConstructorModel;
 import com.mysema.query.codegen.Parameter;
-import com.mysema.query.codegen.Type;
+import com.mysema.query.codegen.ClassModel;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;
@@ -25,9 +25,9 @@ import com.sun.mirror.util.SimpleDeclarationVisitor;
  * @version $Id$
  */
 public class DefaultDTOVisitor extends SimpleDeclarationVisitor {
-    final Set<Type> types = new TreeSet<Type>();
+    final Set<ClassModel> types = new TreeSet<ClassModel>();
 
-    private Type last;
+    private ClassModel last;
 
     @Override
     public void visitClassDeclaration(ClassDeclaration d) {
@@ -36,7 +36,7 @@ public class DefaultDTOVisitor extends SimpleDeclarationVisitor {
         String packageName = d.getPackage().getQualifiedName();
         String superType = d.getSuperclass().getDeclaration()
                 .getQualifiedName();
-        last = new Type(superType, packageName, name, simpleName);
+        last = new ClassModel(superType, packageName, name, simpleName);
         types.add(last);
     }
 
@@ -49,7 +49,7 @@ public class DefaultDTOVisitor extends SimpleDeclarationVisitor {
             String typeName = new TypeHelper(pa.getType()).getFullName();
             parameters.add(new Parameter(name, typeName));
         }
-        last.addConstructor(new Constructor(parameters));
+        last.addConstructor(new ConstructorModel(parameters));
     }
 
 }

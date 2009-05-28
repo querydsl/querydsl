@@ -10,9 +10,9 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.mysema.query.codegen.Field;
+import com.mysema.query.codegen.FieldModel;
 import com.mysema.query.codegen.FieldType;
-import com.mysema.query.codegen.Type;
+import com.mysema.query.codegen.ClassModel;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.InterfaceDeclaration;
@@ -27,9 +27,9 @@ import com.sun.mirror.util.SimpleDeclarationVisitor;
  * @version $Id$
  */
 public class DefaultEntityVisitor extends SimpleDeclarationVisitor {
-    private Type last;
+    private ClassModel last;
 
-    public final Map<String, Type> types = new HashMap<String, Type>();
+    public final Map<String, ClassModel> types = new HashMap<String, ClassModel>();
 
     private void addField(String name, TypeHelper typeInfo) {
         String keyTypeName = typeInfo.getKeyTypeName();
@@ -37,7 +37,7 @@ public class DefaultEntityVisitor extends SimpleDeclarationVisitor {
         String typePackage = typeInfo.getPackageName();
         String simpleTypeName = typeInfo.getSimpleName();
         FieldType fieldType = typeInfo.getFieldType();
-        last.addField(new Field(name, keyTypeName, typePackage,
+        last.addField(new FieldModel(name, keyTypeName, typePackage,
                 typeName, simpleTypeName, fieldType));
     }
 
@@ -48,7 +48,7 @@ public class DefaultEntityVisitor extends SimpleDeclarationVisitor {
         String packageName = d.getPackage().getQualifiedName();
         String superType = d.getSuperclass().getDeclaration()
                 .getQualifiedName();
-        last = new Type(superType, packageName, name, simpleName);
+        last = new ClassModel(superType, packageName, name, simpleName);
         types.put(d.getQualifiedName(), last);
     }
 
@@ -70,7 +70,7 @@ public class DefaultEntityVisitor extends SimpleDeclarationVisitor {
             superType = d.getSuperinterfaces().iterator().next()
                     .getDeclaration().getQualifiedName();
         }
-        last = new Type(superType, packageName, name, simpleName);
+        last = new ClassModel(superType, packageName, name, simpleName);
         types.put(d.getQualifiedName(), last);
     }
 

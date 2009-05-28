@@ -14,9 +14,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mysema.query.codegen.ClassModelFactory;
+import com.mysema.query.codegen.ClassModel;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.Serializers;
-import com.mysema.query.codegen.Type;
 import com.mysema.query.util.FileUtils;
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
@@ -50,14 +51,14 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
         this.dtoAnnotation = dtoAnnotation;
     }
 
-    private void addSupertypeFields(Type typeDecl,
-            Map<String, Type> entityTypes, Map<String, Type> mappedSupertypes) {
+    private void addSupertypeFields(ClassModel typeDecl,
+            Map<String, ClassModel> entityTypes, Map<String, ClassModel> mappedSupertypes) {
         String stype = typeDecl.getSupertypeName();
         Class<?> superClass = safeClassForName(stype);
         if (entityTypes.containsKey(stype)
                 || mappedSupertypes.containsKey(stype)) {
             while (true) {
-                Type sdecl;
+                ClassModel sdecl;
                 if (entityTypes.containsKey(stype)) {
                     sdecl = entityTypes.get(stype);
                 } else if (mappedSupertypes.containsKey(stype)) {
@@ -71,7 +72,7 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
 
         } else if (superClass != null && !superClass.equals(Object.class)) {
             // TODO : recursively up ?
-            Type type = TypeFactory.createType(superClass);
+            ClassModel type = ClassModelFactory.createType(superClass);
             // include fields of supertype
             typeDecl.include(type);
         }
@@ -98,7 +99,7 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
 
         // mapped superclass
         AnnotationTypeDeclaration a;
-        Map<String, Type> mappedSupertypes;
+        Map<String, ClassModel> mappedSupertypes;
         if (superClassAnnotation != null) {
             a = (AnnotationTypeDeclaration) env
                     .getTypeDeclaration(superClassAnnotation);
@@ -108,7 +109,7 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
             }
             mappedSupertypes = superclassVisitor.types;
         } else {
-            mappedSupertypes = new HashMap<String, Type>();
+            mappedSupertypes = new HashMap<String, ClassModel>();
         }
 
         // domain types
@@ -118,9 +119,9 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
             typeDecl.accept(getDeclarationScanner(entityVisitor, NO_OP));
         }
-        Map<String, Type> entityTypes = entityVisitor.types;
+        Map<String, ClassModel> entityTypes = entityVisitor.types;
 
-        for (Type typeDecl : entityTypes.values()) {
+        for (ClassModel typeDecl : entityTypes.values()) {
             addSupertypeFields(typeDecl, entityTypes, mappedSupertypes);
         }
 
@@ -157,12 +158,12 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
         }
     }
 
-    protected void serializeAsOuterClasses(Collection<Type> entityTypes, Serializer serializer) {
+    protected void serializeAsOuterClasses(Collection<ClassModel> entityTypes, Serializer serializer) {
         // populate model
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("pre", namePrefix);
 
-        for (Type type : entityTypes) {
+        for (ClassModel type : entityTypes) {
             String packageName = type.getPackageName();
             model.put("package", packageName);
             model.put("type", type);

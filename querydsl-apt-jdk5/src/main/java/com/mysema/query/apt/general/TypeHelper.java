@@ -5,11 +5,8 @@
  */
 package com.mysema.query.apt.general;
 
-import java.lang.reflect.Type;
 import java.util.Iterator;
 import java.util.Locale;
-
-import org.apache.commons.lang.ClassUtils;
 
 import com.mysema.query.annotations.Literal;
 import com.mysema.query.codegen.FieldType;
@@ -30,37 +27,11 @@ import com.sun.mirror.util.SimpleTypeVisitor;
  * @author tiwe
  * @version $Id$
  */
-// TODO : clean this up
 public class TypeHelper extends SimpleTypeVisitor {
 
     private FieldType fieldType;
 
     private String simpleName, fullName, packageName = "", keyTypeName;
-
-    public TypeHelper(Class<?> cl) {
-        this(cl, cl);
-    }
-
-    public TypeHelper(Class<?> cl, Type genericType) {
-        if (cl == null) {
-            throw new IllegalArgumentException("cl was null");
-        } else if (cl.isArray()) {
-            visitArrayType(cl);
-        } else if (cl.isEnum()) {
-            visitEnumType(cl);
-        } else if (cl.isPrimitive()) {
-            visitPrimitiveType(cl);
-        } else if (cl.isInterface()) {
-            visitInterfaceType(cl, genericType);
-        } else {
-            visitClassType(cl);
-        }
-        if (fullName == null) {
-            fullName = cl.getName();
-        }
-
-        setDefaults();
-    }
 
     public TypeHelper(TypeMirror type) {
         type.accept(this);
@@ -94,12 +65,6 @@ public class TypeHelper extends SimpleTypeVisitor {
         return fullName;
     }
 
-    private void handleCollectionInterface(Class<?> type, Type genericType) {
-        TypeHelper valueInfo = new TypeHelper(TypeFactory.getTypeParameter(
-                genericType, 0));
-        handleCollection(valueInfo);
-    }
-
     private void handleCollectionInterface(Iterator<TypeMirror> i) {
         TypeHelper valueInfo = new TypeHelper(i.next());
         handleCollection(valueInfo);
@@ -128,20 +93,6 @@ public class TypeHelper extends SimpleTypeVisitor {
         } else {
             fieldType = FieldType.SIMPLELIST;
         }
-    }
-
-    private void handleListInterface(Class<?> type, Type genericType) {
-        TypeHelper valueInfo = new TypeHelper(TypeFactory.getTypeParameter(
-                genericType, 0));
-        handleList(valueInfo);
-    }
-
-    private void handleMapInterface(Class<?> type, Type genericType) {
-        TypeHelper keyInfo = new TypeHelper(TypeFactory.getTypeParameter(
-                genericType, 0));
-        TypeHelper valueInfo = new TypeHelper(TypeFactory.getTypeParameter(
-                genericType, 1));
-        handleMapInterface(keyInfo, valueInfo);
     }
 
     private void handleMapInterface(Iterator<TypeMirror> i) {
@@ -195,46 +146,6 @@ public class TypeHelper extends SimpleTypeVisitor {
         visitArrayComponentType(valueInfo);
     }
 
-    public void visitArrayType(Class<?> clazz) {
-        TypeHelper valueInfo = new TypeHelper(clazz.getComponentType());
-        visitArrayComponentType(valueInfo);
-    }
-
-    public void visitClassType(Class<?> type) {
-        fullName = type.getName();
-        packageName = type.getPackage().getName();
-
-        if (type.equals(String.class)) {
-            fieldType = FieldType.STRING;
-
-        } else if (type.equals(Boolean.class)) {
-            fieldType = FieldType.BOOLEAN;
-
-        } else if (type.equals(Locale.class) || type.equals(Class.class)
-                || type.equals(Object.class)) {
-            fieldType = FieldType.SIMPLE;
-
-        } else if (isNumericSupported(fullName)
-                && Number.class.isAssignableFrom(type)) {
-            fieldType = FieldType.NUMERIC;
-
-        } else if (type.getAnnotation(Literal.class) != null) {
-            if (Comparable.class.isAssignableFrom(type)) {
-                fieldType = FieldType.COMPARABLE;
-            } else {
-                fieldType = FieldType.SIMPLE;
-            }
-
-        } else if (isComparableSupported(fullName)
-                && Comparable.class.isAssignableFrom(type)) {
-            fieldType = FieldType.COMPARABLE;
-
-        } else if (asSimpleType(fullName)) {
-            fieldType = FieldType.SIMPLE;
-
-        }
-    }
-
     @Override
     public void visitClassType(ClassType arg0) {
         try {
@@ -282,8 +193,7 @@ public class TypeHelper extends SimpleTypeVisitor {
     }
 
     private boolean isComparableSupported(String fullName) {
-        return fullName.startsWith("java.") || fullName.startsWith("javax.")
-                || fullName.startsWith("org.joda.time");
+        return fullName.startsWith("java.") || fullName.startsWith("javax.") || fullName.startsWith("org.joda.time");
     }
 
     private boolean asSimpleType(String fullName) {
@@ -297,19 +207,6 @@ public class TypeHelper extends SimpleTypeVisitor {
     @Override
     public void visitEnumType(EnumType arg0) {
         fieldType = FieldType.SIMPLE;
-    }
-
-    public void visitInterfaceType(Class<?> type, Type genericType) {
-        if (java.util.Map.class.isAssignableFrom(type)) {
-            handleMapInterface(type, genericType);
-
-        } else if (java.util.List.class.isAssignableFrom(type)) {
-            handleListInterface(type, genericType);
-
-        } else if (java.util.Collection.class.isAssignableFrom(type)) {
-            handleCollectionInterface(type, genericType);
-        }
-
     }
 
     @Override
@@ -328,10 +225,6 @@ public class TypeHelper extends SimpleTypeVisitor {
         } else if (typeName.equals(java.util.List.class.getName())) {
             handleList(i);
         }
-    }
-
-    public void visitPrimitiveType(Class<?> cl) {
-        visitPrimitiveWrapperType(ClassUtils.primitiveToWrapper(cl));
     }
 
     @Override
@@ -396,8 +289,7 @@ public class TypeHelper extends SimpleTypeVisitor {
     @Override
     public void visitWildcardType(WildcardType arg0) {
         if (!arg0.getUpperBounds().isEmpty()) {
-            TypeHelper lb = new TypeHelper(arg0.getUpperBounds().iterator()
-                    .next());
+            TypeHelper lb = new TypeHelper(arg0.getUpperBounds().iterator().next());
             fullName = lb.getFullName();
             packageName = lb.getPackageName();
             simpleName = lb.getSimpleName();

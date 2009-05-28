@@ -13,12 +13,12 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.mysema.query.codegen.Constructor;
-import com.mysema.query.codegen.Field;
+import com.mysema.query.codegen.ConstructorModel;
+import com.mysema.query.codegen.FieldModel;
 import com.mysema.query.codegen.FieldType;
 import com.mysema.query.codegen.Parameter;
 import com.mysema.query.codegen.Serializers;
-import com.mysema.query.codegen.Type;
+import com.mysema.query.codegen.ClassModel;
 
 /**
  * HibernateProcessorTest provides.
@@ -28,22 +28,22 @@ import com.mysema.query.codegen.Type;
  */
 public class GeneralProcessorTest {
 
-    private Type type;
+    private ClassModel type;
 
     private Writer writer = new StringWriter();
 
     private Map<String, Object> model = new HashMap<String, Object>();
 
     public GeneralProcessorTest() {
-        type = new Type("com.mysema.query.DomainSuperClass",
+        type = new ClassModel("com.mysema.query.DomainSuperClass",
                 "com.mysema.query", "com.mysema.query.DomainClass",
                 "DomainClass");
 
-        Field field = new Field("field", null, "java.lang",
+        FieldModel field = new FieldModel("field", null, "java.lang",
                 "java.lang.String", "String", FieldType.STRING);
         type.addField(field);
         Parameter param = new Parameter("name", "java.lang.String");
-        type.addConstructor(new Constructor(Collections.singleton(param)));
+        type.addConstructor(new ConstructorModel(Collections.singleton(param)));
     }
 
     @Test
