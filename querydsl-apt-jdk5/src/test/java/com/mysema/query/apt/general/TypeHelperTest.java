@@ -16,7 +16,7 @@ import java.util.Set;
 import org.junit.Test;
 
 import com.mysema.query.codegen.ClassModel;
-import com.mysema.query.codegen.ClassModelFactory;
+import com.mysema.query.codegen.ClassModelBuilder;
 
 /**
  * TypeHelperTest provides
@@ -28,7 +28,7 @@ public class TypeHelperTest {
 
     @Test
     public void test() {
-        ClassModel type = ClassModelFactory.createType(TestType.class);
+        ClassModel type = ClassModelBuilder.createType(TestType.class);
         assertEquals(1, type.getEntityMaps().size());
         assertEquals(1, type.getSimpleMaps().size());
         assertEquals(2, type.getEntityCollections().size());

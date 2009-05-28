@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.codegen.ClassModelFactory;
+import com.mysema.query.codegen.ClassModelBuilder;
 import com.mysema.query.codegen.ClassModel;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.Serializers;
@@ -72,7 +72,7 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
 
         } else if (superClass != null && !superClass.equals(Object.class)) {
             // TODO : recursively up ?
-            ClassModel type = ClassModelFactory.createType(superClass);
+            ClassModel type = ClassModelBuilder.createType(superClass);
             // include fields of supertype
             typeDecl.include(type);
         }
