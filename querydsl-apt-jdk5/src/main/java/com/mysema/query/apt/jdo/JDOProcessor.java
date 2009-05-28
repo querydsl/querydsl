@@ -7,6 +7,11 @@ import com.mysema.query.apt.general.GeneralProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.MethodDeclaration;
 
+/**
+ * 
+ * @author tiwe
+ *
+ */
 public class JDOProcessor extends GeneralProcessor {
 
     public JDOProcessor(AnnotationProcessorEnvironment env) {

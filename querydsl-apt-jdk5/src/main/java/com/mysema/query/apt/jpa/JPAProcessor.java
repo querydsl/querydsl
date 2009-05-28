@@ -16,6 +16,7 @@ import java.util.Map;
 
 import com.mysema.query.apt.general.DefaultEntityVisitor;
 import com.mysema.query.apt.general.GeneralProcessor;
+import com.mysema.query.codegen.Serializers;
 import com.mysema.query.codegen.Type;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
@@ -23,7 +24,7 @@ import com.sun.mirror.declaration.Declaration;
 import com.sun.mirror.declaration.MethodDeclaration;
 
 /**
- * JpaProcessor provides JPA annotation handling support
+ * JPAProcessor provides JPA annotation handling support
  * 
  * @author tiwe
  * @version $Id$
@@ -47,7 +48,7 @@ public class JPAProcessor extends GeneralProcessor {
             env.getMessager().printNotice(
                     "No class generation for embeddable types");
         } else {
-            serializeAsOuterClasses(entityTypes.values(), EMBEDDABLE_OUTER_TMPL);
+            serializeAsOuterClasses(entityTypes.values(), Serializers.EMBEDDABLE);
         }
 
     }

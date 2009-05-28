@@ -6,7 +6,6 @@
 package com.mysema.query.apt.general;
 
 import static com.mysema.query.apt.APTUtils.getString;
-import static com.mysema.query.apt.APTUtils.writerFor;
 import static com.sun.mirror.util.DeclarationVisitors.NO_OP;
 import static com.sun.mirror.util.DeclarationVisitors.getDeclarationScanner;
 
@@ -15,8 +14,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.apt.FreeMarkerSerializer;
+import com.mysema.query.codegen.Serializer;
+import com.mysema.query.codegen.Serializers;
 import com.mysema.query.codegen.Type;
+import com.mysema.query.util.FileUtils;
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
@@ -29,13 +30,6 @@ import com.sun.mirror.declaration.Declaration;
  * @version $Id$
  */
 public abstract class GeneralProcessor implements AnnotationProcessor {
-
-    public static final FreeMarkerSerializer DOMAIN_OUTER_TMPL = new FreeMarkerSerializer(
-            "/domain-as-outer-classes.ftl"),
-            EMBEDDABLE_OUTER_TMPL = new FreeMarkerSerializer(
-                    "/embeddable-as-outer-classes.ftl"),
-            DTO_OUTER_TMPL = new FreeMarkerSerializer(
-                    "/dto-as-outer-classes.ftl");
 
     protected final String namePrefix, targetFolder;
 
@@ -134,7 +128,7 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
             env.getMessager().printNotice(
                     "No class generation for domain types");
         } else {
-            serializeAsOuterClasses(entityTypes.values(), DOMAIN_OUTER_TMPL);
+            serializeAsOuterClasses(entityTypes.values(), Serializers.DOMAIN);
         }
 
     }
@@ -149,7 +143,7 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
         if (dtoVisitor.types.isEmpty()) {
             env.getMessager().printNotice("No class generation for DTO types");
         } else {
-            serializeAsOuterClasses(dtoVisitor.types, DTO_OUTER_TMPL);
+            serializeAsOuterClasses(dtoVisitor.types, Serializers.DTO);
         }
 
     }
@@ -163,8 +157,7 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
         }
     }
 
-    protected void serializeAsOuterClasses(Collection<Type> entityTypes,
-            FreeMarkerSerializer serializer) {
+    protected void serializeAsOuterClasses(Collection<Type> entityTypes, Serializer serializer) {
         // populate model
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("pre", namePrefix);
@@ -177,10 +170,8 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
 
             // serialize it
             try {
-                String path = packageName.replace('.', '/') + "/" + namePrefix
-                        + type.getSimpleName() + ".java";
-                serializer.serialize(model, writerFor(new File(targetFolder,
-                        path)));
+                String path = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
+                serializer.serialize(model, FileUtils.writerFor(new File(targetFolder, path)));
             } catch (Exception e) {
                 throw new RuntimeException(e.getMessage(), e);
             }

@@ -17,6 +17,7 @@ import com.mysema.query.codegen.Constructor;
 import com.mysema.query.codegen.Field;
 import com.mysema.query.codegen.FieldType;
 import com.mysema.query.codegen.Parameter;
+import com.mysema.query.codegen.Serializers;
 import com.mysema.query.codegen.Type;
 
 /**
@@ -38,7 +39,7 @@ public class GeneralProcessorTest {
                 "com.mysema.query", "com.mysema.query.DomainClass",
                 "DomainClass");
 
-        Field field = new Field("field", "field", null, "java.lang",
+        Field field = new Field("field", null, "java.lang",
                 "java.lang.String", "String", FieldType.STRING);
         type.addField(field);
         Parameter param = new Parameter("name", "java.lang.String");
@@ -54,7 +55,7 @@ public class GeneralProcessorTest {
         model.put("classSimpleName", "Test");
 
         // as outer classes
-        GeneralProcessor.DOMAIN_OUTER_TMPL.serialize(model, writer);
+        Serializers.DOMAIN.serialize(model, writer);
     }
 
 }

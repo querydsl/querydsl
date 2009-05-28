@@ -31,15 +31,13 @@ public class DefaultEntityVisitor extends SimpleDeclarationVisitor {
 
     public final Map<String, Type> types = new HashMap<String, Type>();
 
-    private void addField(String originalName, TypeHelper typeInfo) {
-        String name = FieldHelper.javaSafe(originalName);
-        String realName = FieldHelper.realName(originalName);
+    private void addField(String name, TypeHelper typeInfo) {
         String keyTypeName = typeInfo.getKeyTypeName();
         String typeName = typeInfo.getFullName();
         String typePackage = typeInfo.getPackageName();
         String simpleTypeName = typeInfo.getSimpleName();
         FieldType fieldType = typeInfo.getFieldType();
-        last.addField(new Field(name, realName, keyTypeName, typePackage,
+        last.addField(new Field(name, keyTypeName, typePackage,
                 typeName, simpleTypeName, fieldType));
     }
 

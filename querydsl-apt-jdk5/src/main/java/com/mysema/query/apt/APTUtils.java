@@ -5,10 +5,7 @@
  */
 package com.mysema.query.apt;
 
-import java.io.*;
 import java.util.Map;
-
-import org.apache.commons.io.FileUtils;
 
 /**
  * APUtils provides utilities for APT code generation in Querydsl
@@ -17,28 +14,6 @@ import org.apache.commons.io.FileUtils;
  * @version $Id$
  */
 public class APTUtils {
-
-    public static Writer writerFor(File file) {
-        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
-            System.err.println("Folder " + file.getParent()
-                    + " could not be created");
-        }
-        try {
-            return new OutputStreamWriter(new FileOutputStream(file));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
-    }
-
-    public static String getFileContent(Map<String, String> options,
-            String key, String defaultValue) throws IOException {
-        String path = getString(options, key, null);
-        if (path != null) {
-            return FileUtils.readFileToString(new File(path), "UTF-8");
-        } else {
-            return "";
-        }
-    }
 
     public static String getString(Map<String, String> options, String key,
             String defaultValue) {
