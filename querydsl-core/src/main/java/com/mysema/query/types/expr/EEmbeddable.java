@@ -6,12 +6,13 @@
 package com.mysema.query.types.expr;
 
 /**
+ * EEmbeddable represents an embeddable expression
  * 
  * @author tiwe
  * 
- * @param <D>
+ * @param <D> Java type
  */
-public abstract class EEmbeddable<D> extends ESimple<D> {
+public abstract class EEmbeddable<D> extends Expr<D> {
     public EEmbeddable(Class<? extends D> type) {
         super(type);
     }

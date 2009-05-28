@@ -8,9 +8,10 @@ package com.mysema.query.types.expr;
 import com.mysema.query.types.Grammar;
 
 /**
+ * EString represents String expressions
  * 
  * @author tiwe
- * 
+ * @see java.lang.String
  */
 public abstract class EString extends EComparable<String> {
     private EString lower, trim, upper;
@@ -56,12 +57,12 @@ public abstract class EString extends EComparable<String> {
         return Grammar.endsWith(this, str);
     }
 
-    public final EBoolean endsWith(String str) {
-        return Grammar.endsWith(this, str);
-    }
-
     public final EBoolean endsWith(Expr<String> str, boolean caseSensitive) {
         return Grammar.endsWith(this, str, caseSensitive);
+    }
+
+    public final EBoolean endsWith(String str) {
+        return Grammar.endsWith(this, str);
     }
 
     public final EBoolean endsWith(String str, boolean caseSensitive) {
@@ -118,16 +119,20 @@ public abstract class EString extends EComparable<String> {
         return Grammar.startsWith(this, str);
     }
 
-    public final EBoolean startsWith(String str) {
-        return Grammar.startsWith(this, str);
-    }
-
     public final EBoolean startsWith(Expr<String> str, boolean caseSensitive) {
         return Grammar.startsWith(this, str, caseSensitive);
     }
 
+    public final EBoolean startsWith(String str) {
+        return Grammar.startsWith(this, str);
+    }
+
     public final EBoolean startsWith(String str, boolean caseSensitive) {
         return Grammar.startsWith(this, str, caseSensitive);
+    }
+
+    public final EString stringValue() {
+        return this;
     }
 
     public final EString substring(int beginIndex) {
@@ -151,8 +156,5 @@ public abstract class EString extends EComparable<String> {
         }
         return upper;
     }
-
-    public final EString stringValue() {
-        return this;
-    }
+    
 }

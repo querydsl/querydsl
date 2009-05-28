@@ -9,11 +9,13 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * CBoolean is a custom boolean expression
  * 
  * @author tiwe
  *
  */
 public abstract class CBoolean extends EBoolean implements Custom<Boolean> {
+    @Override
     public Expr<?> getArg(int index) {
         return getArgs().get(index);
     }

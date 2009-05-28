@@ -12,7 +12,7 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
 /**
- * JoinExpression is a join element in a Query instance
+ * JoinExpression is a join element in a Query instance. 
  * 
  * @author tiwe
  * @version $Id$

@@ -7,16 +7,17 @@ package com.mysema.query.types.path;
 
 import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.ESimple;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * PComponentMap represents component map paths
+ * 
  * @author tiwe
  * 
- * @param <K>
- * @param <V>
+ * @param <K> key type
+ * @param <V> value type
  */
-public class PComponentMap<K, V> extends ESimple<java.util.Map<K, V>> implements
+public class PComponentMap<K, V> extends Expr<java.util.Map<K, V>> implements
         PMap<K, V> {
     private EBoolean isnull, isnotnull;
     private final Class<K> keyType;
@@ -61,39 +62,48 @@ public class PComponentMap<K, V> extends ESimple<java.util.Map<K, V>> implements
         return Grammar.containsValue(this, value);
     }
 
+    @Override
     public boolean equals(Object o) {
         return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
                 : false;
     }
 
-    public ESimple<V> get(Expr<K> key) {
+    @Override
+    public Expr<V> get(Expr<K> key) {
         return new PSimple<V>(valueType, PathMetadata.forMapAccess(this, key));
     }
 
-    public ESimple<V> get(K key) {
+    @Override
+    public Expr<V> get(K key) {
         return new PSimple<V>(valueType, PathMetadata.forMapAccess(this, key));
     }
 
+    @Override
     public Class<K> getKeyType() {
         return keyType;
     }
 
+    @Override
     public PathMetadata<?> getMetadata() {
         return metadata;
     }
 
+    @Override
     public Path<?> getRoot() {
         return root;
     }
 
+    @Override
     public Class<V> getValueType() {
         return valueType;
     }
 
+    @Override
     public int hashCode() {
         return metadata.hashCode();
     }
     
+    @Override
     public EBoolean isEmpty() {
         if (empty == null){
             empty = Grammar.isEmpty(this);
@@ -101,6 +111,7 @@ public class PComponentMap<K, V> extends ESimple<java.util.Map<K, V>> implements
         return empty;
     }
     
+    @Override
     public EBoolean isNotEmpty() {
         if (notEmpty == null){
             notEmpty = Grammar.isNotEmpty(this); 
@@ -108,6 +119,7 @@ public class PComponentMap<K, V> extends ESimple<java.util.Map<K, V>> implements
         return notEmpty;
     }
 
+    @Override
     public EBoolean isNotNull() {
         if (isnotnull == null) {
             isnotnull = Grammar.isNotNull(this);
@@ -115,6 +127,7 @@ public class PComponentMap<K, V> extends ESimple<java.util.Map<K, V>> implements
         return isnotnull;
     }
     
+    @Override
     public EBoolean isNull() {
         if (isnull == null) {
             isnull = Grammar.isNull(this);

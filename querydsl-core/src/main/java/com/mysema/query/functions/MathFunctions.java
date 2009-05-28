@@ -12,10 +12,10 @@ import com.mysema.query.types.SimpleOperationFactory;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.operation.Ops.Math;
+import com.mysema.query.types.operation.Ops.MathOps;
 
 /**
- * QMath provides math functions
+ * MathFunctions provides math functions
  * 
  * @author tiwe
  * @version $Id$
@@ -62,75 +62,75 @@ public final class MathFunctions {
     }
 
     public static <A extends Number & Comparable<?>> ENumber<A> abs(Expr<A> left) {
-        return factory.createNumber(left.getType(), Math.ABS, left);
+        return factory.createNumber(left.getType(), MathOps.ABS, left);
     }
 
     public static ENumber<Double> acos(Expr<Double> left) {
-        return factory.createNumber(left.getType(), Math.ACOS, left);
+        return factory.createNumber(left.getType(), MathOps.ACOS, left);
     }
 
     public static ENumber<Double> asin(Expr<Double> left) {
-        return factory.createNumber(left.getType(), Math.ASIN, left);
+        return factory.createNumber(left.getType(), MathOps.ASIN, left);
     }
 
     public static ENumber<Double> atan(Expr<Double> left) {
-        return factory.createNumber(left.getType(), Math.ATAN, left);
+        return factory.createNumber(left.getType(), MathOps.ATAN, left);
     }
 
     public static ENumber<Double> ceil(Expr<Double> left) {
-        return factory.createNumber(left.getType(), Math.CEIL, left);
+        return factory.createNumber(left.getType(), MathOps.CEIL, left);
     }
 
     public static ENumber<Double> cos(Expr<Double> left) {
-        return factory.createNumber(left.getType(), Math.COS, left);
+        return factory.createNumber(left.getType(), MathOps.COS, left);
     }
 
     public static ENumber<Double> exp(Expr<Double> left) {
-        return factory.createNumber(left.getType(), Math.EXP, left);
+        return factory.createNumber(left.getType(), MathOps.EXP, left);
     }
 
     public static ENumber<Double> floor(Expr<Double> left) {
-        return factory.createNumber(left.getType(), Math.FLOOR, left);
+        return factory.createNumber(left.getType(), MathOps.FLOOR, left);
     }
 
     public static ENumber<Double> log(Expr<Double> left) {
-        return factory.createNumber(left.getType(), Math.LOG, left);
+        return factory.createNumber(left.getType(), MathOps.LOG, left);
     }
 
     public static ENumber<Double> log10(Expr<Double> left) {
-        return factory.createNumber(left.getType(), Math.LOG10, left);
+        return factory.createNumber(left.getType(), MathOps.LOG10, left);
     }
 
     public static <A extends Number & Comparable<?>> ENumber<A> max(Expr<A> left, Expr<A> right) {
-        return factory.createNumber(left.getType(), Math.MAX, left, right);
+        return factory.createNumber(left.getType(), MathOps.MAX, left, right);
     }
 
     public static <A extends Number & Comparable<?>> ENumber<A> min(Expr<A> left, Expr<A> right) {
-        return factory.createNumber(left.getType(), Math.MIN, left, right);
+        return factory.createNumber(left.getType(), MathOps.MIN, left, right);
     }
 
     public static ENumber<Double> pow(Expr<Double> left, Expr<Double> right) {
-        return factory.createNumber(left.getType(), Math.POWER, left, right);
+        return factory.createNumber(left.getType(), MathOps.POWER, left, right);
     }
 
     public static ENumber<Double> random() {
-        return factory.createNumber(Double.class, Math.RANDOM);
+        return factory.createNumber(Double.class, MathOps.RANDOM);
     }
 
     public static ENumber<Double> round(Expr<Double> left) {
-        return factory.createNumber(left.getType(), Math.ROUND, left);
+        return factory.createNumber(left.getType(), MathOps.ROUND, left);
     }
 
     public static ENumber<Double> sin(Expr<Double> left) {
-        return factory.createNumber(left.getType(), Math.SIN, left);
+        return factory.createNumber(left.getType(), MathOps.SIN, left);
     }
 
     public static <A extends Number & Comparable<?>> ENumber<Double> sqrt(Expr<A> left) {
-        return factory.createNumber(Double.class, Math.SQRT, left);
+        return factory.createNumber(Double.class, MathOps.SQRT, left);
     }
 
     public static ENumber<Double> tan(Expr<Double> left) {
-        return factory.createNumber(left.getType(), Math.TAN, left);
+        return factory.createNumber(left.getType(), MathOps.TAN, left);
     }
 
 }

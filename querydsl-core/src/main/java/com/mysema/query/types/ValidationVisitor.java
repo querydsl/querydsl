@@ -7,43 +7,17 @@ package com.mysema.query.types;
 
 import java.util.List;
 
-import com.mysema.query.types.alias.ASimple;
-import com.mysema.query.types.alias.AToPath;
-import com.mysema.query.types.custom.Custom;
-import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Operation;
-import com.mysema.query.types.path.Path;
-import com.mysema.query.types.quant.Quant;
+import com.mysema.query.types.operation.Operator;
 
 /**
- * ValidationVisitor provides
+ * ValidationVisitor provides validation functionality in visitor form
  * 
  * @author tiwe
  * @version $Id$
  */
-public class ValidationVisitor extends AbstractVisitor<ValidationVisitor> {
-
-    @Override
-    protected void visit(ASimple<?> expr) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    protected void visit(AToPath expr) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    protected void visit(Custom<?> expr) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    protected void visit(EConstant<?> expr) {
-        // TODO Auto-generated method stub
-    }
+public class ValidationVisitor extends EmptyVisitor<ValidationVisitor>{
 
     @Override
     protected void visit(Operation<?, ?> expr) {
@@ -54,17 +28,6 @@ public class ValidationVisitor extends AbstractVisitor<ValidationVisitor> {
                     + "args size mismatch : " + op.getTypes().size()
                     + " required, but " + args.size() + " given");
         }
-
-    }
-
-    @Override
-    protected void visit(Path<?> expr) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    protected void visit(Quant<?> q) {
-        // TODO Auto-generated method stub
 
     }
 

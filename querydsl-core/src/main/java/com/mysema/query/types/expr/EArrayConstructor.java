@@ -6,10 +6,11 @@
 package com.mysema.query.types.expr;
 
 /**
+ * EArrayConstructor extends EConstructor to represent array initializers
  * 
  * @author tiwe
  * 
- * @param <D>
+ * @param <D> component type
  */
 public class EArrayConstructor<D> extends EConstructor<D[]> {
     private Class<D> elementType;

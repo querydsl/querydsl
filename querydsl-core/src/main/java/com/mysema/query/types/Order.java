@@ -12,11 +12,17 @@ package com.mysema.query.types;
  * @version $Id$
  */
 public enum Order {
+    /**
+     * Ascending order
+     */
     ASC {
         public String toString() {
             return "asc";
         }
     },
+    /**
+     * Descending order
+     */
     DESC {
         public String toString() {
             return "desc";

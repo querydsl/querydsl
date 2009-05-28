@@ -12,6 +12,8 @@ import java.util.List;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * OStringArray represents a String[] typed operation
+ * 
  * @author tiwe
  * 
  */
@@ -31,14 +33,17 @@ public class OStringArray extends Expr<String[]> implements
         validate();
     }
 
+    @Override
     public List<Expr<?>> getArgs() {
         return args;
     }
 
+    @Override
     public Expr<?> getArg(int i) {
         return args.get(i);
     }
 
+    @Override
     public Operator<String> getOperator() {
         return op;
     }

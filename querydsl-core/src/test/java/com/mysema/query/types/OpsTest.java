@@ -29,8 +29,8 @@ public class OpsTest {
     public void test(){
         Map<String,Field> fields = new HashMap<String,Field>();
         for (Class<?> cl : Arrays.<Class<?>>asList(Ops.class, 
-                Ops.DateTime.class, 
-                Ops.Math.class, 
+                Ops.DateTimeOps.class, 
+                Ops.MathOps.class, 
                 Ops.StringOps.class)){
             for (Field field : cl.getDeclaredFields()){
                 Field old = fields.put(field.getName(), field);

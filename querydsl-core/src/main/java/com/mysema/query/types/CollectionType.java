@@ -13,6 +13,7 @@ package com.mysema.query.types;
  */
 public interface CollectionType<D> {
     /**
+     * Get the element type of the expression
      * 
      * @return
      */

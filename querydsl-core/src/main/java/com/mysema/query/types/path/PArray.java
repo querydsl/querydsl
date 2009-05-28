@@ -14,9 +14,11 @@ import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * PArray represents an array typed path
+ * 
  * @author tiwe
  * 
- * @param <D>
+ * @param <D> component type
  */
 public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>,
         CollectionType<D> {
@@ -45,30 +47,48 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>,
                 : false;
     }
 
+    /**
+     * Create a expression for indexed access
+     * 
+     * @param index
+     * @return
+     */
     public abstract Expr<D> get(Expr<Integer> index);
 
+    /**
+     * Create a expression for indexed access
+     * 
+     * @param index
+     * @return
+     */
     public abstract Expr<D> get(int index);
 
+    @Override
     public Class<D> getElementType() {
         return componentType;
     }
 
+    @Override
     public PathMetadata<?> getMetadata() {
         return metadata;
     }
 
+    @Override
     public Path<?> getRoot() {
         return root;
     }
 
+    @Override
     public Class<D[]> getType() {
         return arrayType;
     }
 
+    @Override
     public int hashCode() {
         return metadata.hashCode();
     }
 
+    @Override
     public EBoolean isNotNull() {
         if (isnotnull == null) {
             isnotnull = Grammar.isNotNull(this);
@@ -76,6 +96,7 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>,
         return isnotnull;
     }
 
+    @Override
     public EBoolean isNull() {
         if (isnull == null) {
             isnull = Grammar.isNull(this);
@@ -84,6 +105,11 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>,
         return isnull;
     }
 
+    /**
+     * Create an expression for the array size
+     * 
+     * @return
+     */
     public EComparable<Integer> size() {
         if (size == null) {
             size = Grammar.size(this);

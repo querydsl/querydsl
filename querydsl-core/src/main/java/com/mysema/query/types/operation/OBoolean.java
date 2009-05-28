@@ -13,6 +13,8 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * OBoolean represents boolean operations
+ * 
  * @author tiwe
  * 
  */
@@ -30,14 +32,17 @@ public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
         validate();
     }
 
+    @Override
     public List<Expr<?>> getArgs() {
         return args;
     }
 
+    @Override
     public Expr<?> getArg(int i) {
         return args.get(i);
     }
 
+    @Override
     public Operator<Boolean> getOperator() {
         return op;
     }

@@ -13,6 +13,8 @@ import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * OString represents a String typed operation
+ * 
  * @author tiwe
  * 
  */
@@ -30,14 +32,17 @@ public class OString extends EString implements Operation<String, String> {
         validate();
     }
 
+    @Override
     public List<Expr<?>> getArgs() {
         return args;
     }
 
+    @Override
     public Expr<?> getArg(int i) {
         return args.get(i);
     }
 
+    @Override
     public Operator<String> getOperator() {
         return op;
     }

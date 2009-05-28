@@ -130,7 +130,7 @@ public interface Ops {
     /**
      * Date and time operators
      */
-    public interface DateTime {
+    public interface DateTimeOps {
         OperatorImpl<java.util.Date> CURRENT_DATE = new OperatorImpl<java.util.Date>();
         OperatorImpl<java.util.Date> CURRENT_TIME = new OperatorImpl<java.util.Date>();
         OperatorImpl<java.util.Date> CURRENT_TIMESTAMP = new OperatorImpl<java.util.Date>();
@@ -151,7 +151,7 @@ public interface Ops {
      * Math operators
      * 
      */
-    public interface Math {
+    public interface MathOps {
         OperatorImpl<Number> ABS = new OperatorImpl<Number>(Number.class);
         OperatorImpl<Number> ACOS = new OperatorImpl<Number>(Number.class);
         OperatorImpl<Number> ASIN = new OperatorImpl<Number>(Number.class);

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.types.operation;
 
 import static java.util.Collections.unmodifiableList;
@@ -7,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The Class Op represents an Operator symbol.
+ * OperatorImpl is the default implementation of the Operator interface
  */
 public class OperatorImpl<RT> implements Operator<RT> {
     private final List<Class<?>> types;
@@ -24,9 +29,7 @@ public class OperatorImpl<RT> implements Operator<RT> {
         this.types = unmodifiableList(types);
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.types.operation.Operator#getTypes()
-     */
+    @Override
     public List<Class<?>> getTypes() {
         return types;
     }

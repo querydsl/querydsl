@@ -7,22 +7,15 @@ package com.mysema.query.types;
 
 import java.util.Collection;
 
-import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.alias.AEntity;
-import com.mysema.query.types.alias.AEntityCollection;
-import com.mysema.query.types.alias.ASimple;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.ESimple;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PArray;
 import com.mysema.query.types.path.PCollection;
-import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PEntityCollection;
 import com.mysema.query.types.path.PMap;
 
 /**
@@ -38,7 +31,7 @@ public class Grammar {
     protected static final OperationFactory operationFactory = SimpleOperationFactory.getInstance();
 
     /**
-     * Expr : left > right
+     * Expr : <code>left > right</code>
      * 
      * @param <A>
      * @param left
@@ -52,7 +45,7 @@ public class Grammar {
     };
     
     /**
-     * Expr : left > right
+     * Expr : <code>left > right</code>
      * 
      * @param <A>
      * @param left
@@ -66,7 +59,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left and right
+     * Expr : <code>left and right</code>
      * 
      * @param left
      * @param right
@@ -77,7 +70,7 @@ public class Grammar {
     }
     
     /**
-     * Expr : left >= right (after or equals)
+     * Expr : <code>left >= right (after or equals)</code>
      * 
      * @param <A>
      * @param left
@@ -89,7 +82,7 @@ public class Grammar {
     }
     
     /**
-     * Expr : left >= right
+     * Expr : <code>left >= right</code>
      * 
      * @param <A>
      * @param left
@@ -101,43 +94,7 @@ public class Grammar {
     }
     
     /**
-     * Expr : from as to
-     * 
-     * @param <D>
-     * @param from
-     * @param to
-     * @return
-     */
-    public static <D> ASimple<D> as(ESimple<D> from, String to) {
-        return new ASimple<D>(Assert.notNull(from), Assert.notNull(to));
-    }
-    
-    /**
-     * Expr : from as to
-     * 
-     * @param <D>
-     * @param from
-     * @param to
-     * @return
-     */
-    public static <D> AEntity<D> as(PEntity<D> from, PEntity<D> to) {
-        return new AEntity<D>(Assert.notNull(from), Assert.notNull(to));
-    }
-    
-    /**
-     * Expr : from as to
-     * 
-     * @param <D>
-     * @param from
-     * @param to
-     * @return
-     */
-    public static <D> AEntityCollection<D> as(PEntityCollection<D> from, PEntity<D> to) {
-        return new AEntityCollection<D>(Assert.notNull(from), Assert.notNull(to));
-    }
-
-    /**
-     * OrderSpecificier : asc target
+     * OrderSpecifier : asc target
      * 
      * @param <A>
      * @param target
@@ -148,7 +105,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : avg(left)
+     * Expr : <code>avg(left)</code>
      * 
      * @param <A>
      * @param left
@@ -159,7 +116,7 @@ public class Grammar {
     }
     
     /**
-     * Expr : left < right
+     * Expr : <code>left < right</code>
      * 
      * @param <A>
      * @param left
@@ -173,7 +130,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left < right
+     * Expr : <code>left < right</code>
      * 
      * @param <A>
      * @param left
@@ -187,7 +144,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left between start and end
+     * Expr : <code>left between start and end</code>
      * 
      * @param <A>
      * @param left
@@ -200,7 +157,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left between start and end
+     * Expr : <code>left between start and end</code>
      * 
      * @param <A>
      * @param left
@@ -213,7 +170,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left <= right (before or equals)
+     * Expr : <code>left <= right (before or equals)</code>
      * 
      * @param <A>
      * @param left
@@ -225,7 +182,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left <= right
+     * Expr : <code>left <= right</code>
      * 
      * @param <A>
      * @param left
@@ -237,7 +194,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.chartAt(right)
+     * Expr : <code>left.charAt(right)</code>
      * 
      * @param left
      * @param right
@@ -248,7 +205,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.charAt(right)
+     * Expr : <code>left.charAt(right)</code>
      * 
      * @param left
      * @param right
@@ -259,7 +216,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left || right
+     * Expr : <code>left || right</code>
      * 
      * @param left
      * @param right
@@ -271,7 +228,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left || right
+     * Expr : <code>left || right</code>
      * 
      * @param left
      * @param right
@@ -282,7 +239,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left || right
+     * Expr : <code>left.contains(right)</code>
      * 
      * @param left
      * @param right
@@ -293,7 +250,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left || right
+     * Expr : <code>left.contains(right)</code>
      * 
      * @param left
      * @param right
@@ -304,51 +261,55 @@ public class Grammar {
     }
 
     /**
+     * Expr: <code>left.containsKey(right)</code>
      * 
      * @param <K>
-     * @param path
-     * @param key
+     * @param left
+     * @param right
      * @return
      */
-    public static <K> EBoolean containsKey(PMap<K,?> path, Expr<K> key){
-        return operationFactory.createBoolean(Ops.CONTAINS_KEY, (Expr<?>)path, key);
+    public static <K> EBoolean containsKey(PMap<K,?> left, Expr<K> right){
+        return operationFactory.createBoolean(Ops.CONTAINS_KEY, (Expr<?>)left, right);
     }
 
     /**
+     * Expr: <code>left.containsKey(right)</code>
      * 
      * @param <K>
-     * @param path
-     * @param key
+     * @param left
+     * @param right
      * @return
      */
-    public static <K> EBoolean containsKey(PMap<K,?> path, K key){
-        return operationFactory.createBoolean(Ops.CONTAINS_KEY, (Expr<?>)path, exprFactory.createConstant(key));
+    public static <K> EBoolean containsKey(PMap<K,?> left, K right){
+        return operationFactory.createBoolean(Ops.CONTAINS_KEY, (Expr<?>)left, exprFactory.createConstant(right));
     }
 
     /**
+     * Expr: <code>left.containsValue(right)</code>
+     * 
+     * @param <V>
+     * @param left
+     * @param right
+     * @return
+     */
+    public static <V> EBoolean containsValue(PMap<?,V> left, Expr<V> right){
+        return operationFactory.createBoolean(Ops.CONTAINS_VALUE, (Expr<?>)left, right);
+    }
+
+    /**
+     * Expr: <code>left.containsValue(right)</code>
      * 
      * @param <V>
      * @param path
-     * @param value
+     * @param right
      * @return
      */
-    public static <V> EBoolean containsValue(PMap<?,V> path, Expr<V> value){
-        return operationFactory.createBoolean(Ops.CONTAINS_VALUE, (Expr<?>)path, value);
+    public static <V> EBoolean containsValue(PMap<?,V> left, V right){
+        return operationFactory.createBoolean(Ops.CONTAINS_VALUE, (Expr<?>)left, exprFactory.createConstant(right));
     }
 
     /**
-     * 
-     * @param <V>
-     * @param path
-     * @param value
-     * @return
-     */
-    public static <V> EBoolean containsValue(PMap<?,V> path, V value){
-        return operationFactory.createBoolean(Ops.CONTAINS_VALUE, (Expr<?>)path, exprFactory.createConstant(value));
-    }
-
-    /**
-     * Expr : count(*)
+     * Expr : <code>count(*)</code>
      * 
      * @return
      */
@@ -358,7 +319,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : count(expr)
+     * Expr : <code>count(expr)</code>
      * 
      * @param expr
      * @return
@@ -368,7 +329,7 @@ public class Grammar {
     }
 
     /**
-     * OrderSpecifier : desc target
+     * OrderSpecifier : <code>desc target</code>
      * 
      * @param <A>
      * @param target
@@ -379,7 +340,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.endsWith(right)
+     * Expr : <code>left.endsWith(right)</code>
      * 
      * @param left
      * @param right
@@ -390,7 +351,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.endsWith(right) (ignore case)
+     * Expr : <code>left.endsWith(right) (ignore case)</code>
      * 
      * @param left
      * @param right
@@ -406,7 +367,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.endsWith(right)
+     * Expr : <code>left.endsWith(right)</code>
      * 
      * @param left
      * @param right
@@ -417,7 +378,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.endsWith(right) (ignore case)
+     * Expr : <code>left.endsWith(right) (ignore case)</code>
      * 
      * @param left
      * @param right
@@ -433,7 +394,7 @@ public class Grammar {
     }
     
     /**
-     * Expr : left == right
+     * Expr : <code>left == right</code>
      * 
      * @param <A>
      * @param left
@@ -449,7 +410,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left == right
+     * Expr : <code>left == right</code>
      * 
      * @param <A>
      * @param left
@@ -465,7 +426,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.lower() == right.lower()
+     * Expr : <code>left.lower() == right.lower()</code>
      * 
      * @param left
      * @param right
@@ -476,7 +437,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.lower() == right.lower()
+     * Expr : <code>left.lower() == right.lower()</code>
      * 
      * @param left
      * @param right
@@ -487,7 +448,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left >= right
+     * Expr : <code>left >= right</code>
      * 
      * @param <A>
      * @param left
@@ -499,7 +460,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left >= right
+     * Expr : <code>left >= right</code>
      * 
      * @param <A>
      * @param left
@@ -511,7 +472,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left > right
+     * Expr : <code>left > right</code>
      * 
      * @param <A>
      * @param left
@@ -523,7 +484,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left > right
+     * Expr : <code>left > right</code>
      * 
      * @param <A>
      * @param left
@@ -535,7 +496,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left in right OR right contains left
+     * Expr : <code>left in right OR right contains left</code>
      * 
      * @param <A>
      * @param left
@@ -547,7 +508,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left in rest OR rest contains left
+     * Expr : <code>left in rest OR rest contains left</code>
      * 
      * @param <A>
      * @param left
@@ -559,7 +520,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left in right OR right contains left
+     * Expr : <code>left in right OR right contains left</code>
      * 
      * @param <A>
      * @param left
@@ -571,7 +532,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left in right OR right contains left
+     * Expr : <code>left in right OR right contains left</code>
      * 
      * @param <A>
      * @param left
@@ -583,7 +544,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.indexOf(right)
+     * Expr : <code>left.indexOf(right)</code>
      * 
      * @param left
      * @param right
@@ -594,7 +555,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.indexOf(right)
+     * Expr : <code>left.indexOf(right)</code>
      * 
      * @param left
      * @param right
@@ -605,7 +566,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.indexOf(right, i)
+     * Expr : <code>left.indexOf(right, i)</code>
      * 
      * @param left
      * @param right
@@ -618,7 +579,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left instanceOf right
+     * Expr : <code>left instanceOf right</code>
      * 
      * @param <A>
      * @param <B>
@@ -631,7 +592,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.isEmpty()
+     * Expr : <code>left.isEmpty()</code>
      * 
      * @param left
      * @return
@@ -677,7 +638,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left is not null
+     * Expr : <code>left is not null</code>
      * 
      * @param <A>
      * @param left
@@ -688,7 +649,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left is null
+     * Expr : <code>left is null</code>
      * 
      * @param <A>
      * @param left
@@ -706,7 +667,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.lastIndexOf(right, third);
+     * Expr : <code>left.lastIndexOf(right, third);</code>
      * 
      * @param left
      * @param right
@@ -721,7 +682,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.lastIndexOf(right)
+     * Expr : <code>left.lastIndexOf(right)</code>
      * 
      * @param left
      * @param right
@@ -732,7 +693,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.lastIndexOf(right)
+     * Expr : <code>left.lastIndexOf(right)</code>
      * 
      * @param left
      * @param right
@@ -744,7 +705,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.length()
+     * Expr : <code>left.length()</code>
      * 
      * @param left
      * @return
@@ -755,7 +716,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left like right
+     * Expr : <code>left like right</code>
      * 
      * @param left
      * @param right
@@ -767,7 +728,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left <= right
+     * Expr : <code>left <= right</code>
      * 
      * @param <A>
      * @param left
@@ -780,7 +741,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left <= right
+     * Expr : <code>left <= right</code>
      * 
      * @param <A>
      * @param left
@@ -792,7 +753,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.toLowerCase()
+     * Expr : <code>left.toLowerCase()</code>
      * 
      * @param left
      * @return
@@ -802,7 +763,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left < right
+     * Expr : <code>left < right</code>
      * 
      * @param <A>
      * @param left
@@ -814,7 +775,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left < right
+     * Expr : <code>left < right</code>
      * 
      * @param <A>
      * @param left
@@ -868,7 +829,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left != right
+     * Expr : <code>left != right</code>
      * 
      * @param <A>
      * @param left
@@ -886,7 +847,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left != right
+     * Expr : <code>left != right</code>
      * 
      * @param <A>
      * @param left
@@ -902,7 +863,7 @@ public class Grammar {
     }
 
     /**
-     * Expr !left
+     * Expr <code>!left</code>
      * 
      * @param left
      * @return
@@ -918,7 +879,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left not between start and end
+     * Expr : <code>left not between start and end</code>
      * 
      * @param <A>
      * @param left
@@ -932,7 +893,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left not between start and end
+     * Expr : <code>left not between start and end</code>
      * 
      * @param <A>
      * @param left
@@ -945,7 +906,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left not in rest
+     * Expr : <code>left not in rest</code>
      * 
      * @param <A>
      * @param left
@@ -958,7 +919,7 @@ public class Grammar {
 
     
     /**
-     * Expr : left not in right
+     * Expr : <code>left not in right</code>
      * 
      * @param <A>
      * @param left
@@ -970,7 +931,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : cast(source as targetType)
+     * Expr : <code>cast(source as targetType)</code>
      * 
      * @param <A>
      * @param source
@@ -990,7 +951,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left or right
+     * Expr : <code>left or right</code>
      * 
      * @param left
      * @param right
@@ -1030,7 +991,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.startsWith(right)
+     * Expr : <code>left.startsWith(right)</code>
      * 
      * @param left
      * @param right
@@ -1041,7 +1002,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.startsWith(right) (ignore case)
+     * Expr : <code>left.startsWith(right) (ignore case)</code>
      * 
      * @param left
      * @param right
@@ -1057,7 +1018,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.startsWith(right)
+     * Expr : <code>left.startsWith(right)</code>
      * 
      * @param left
      * @param right
@@ -1068,7 +1029,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.startsWith(right) (ignore case)
+     * Expr : <code>left.startsWith(right) (ignore case)</code>
      * 
      * @param left
      * @param right
@@ -1084,7 +1045,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : cast(source as String)
+     * Expr : <code>cast(source as String)</code>
      * 
      * @param source
      * @return
@@ -1094,7 +1055,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.substring(right)
+     * Expr : <code>left.substring(right)</code>
      * 
      * @param left
      * @param right
@@ -1105,7 +1066,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.substring(beginIndex, endIndex)
+     * Expr : <code>left.substring(beginIndex, endIndex)</code>
      * 
      * @param left
      * @param beginIndex
@@ -1120,7 +1081,7 @@ public class Grammar {
     }
     
     /**
-     * Expr : sum(left)
+     * Expr : <code>sum(left)</code>
      * 
      * @param <A>
      * @param left
@@ -1131,7 +1092,7 @@ public class Grammar {
     }
     
     /**
-     * Expr : left.trim()
+     * Expr : <code>left.trim()</code>
      * 
      * @param left
      * @return
@@ -1141,7 +1102,7 @@ public class Grammar {
     }
 
     /**
-     * Expr : left.toUpperCase()
+     * Expr : <code>left.toUpperCase()</code>
      * 
      * @param left
      * @return

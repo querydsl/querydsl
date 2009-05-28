@@ -18,7 +18,7 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
 /**
- * DefaultMetadata is the default implementation of the QueryMetadata interface
+ * DefaultQueryMetadata is the default implementation of the QueryMetadata interface
  * 
  * @author tiwe
  * @version $Id$
@@ -43,30 +43,37 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
 
     private QueryModifiers modifiers = new QueryModifiers();
 
+    @Override
     public List<? extends Expr<?>> getGroupBy() {
         return Collections.unmodifiableList(groupBy);
     }
 
+    @Override
     public EBoolean getHaving() {
         return having.create();
     }
 
+    @Override
     public List<JoinExpression<JoinMeta>> getJoins() {
         return Collections.unmodifiableList(joins);
     }
 
+    @Override
     public List<OrderSpecifier<?>> getOrderBy() {
         return Collections.unmodifiableList(orderBy);
     }
 
+    @Override
     public List<? extends Expr<?>> getProjection() {
         return Collections.unmodifiableList(projection);
     }
 
+    @Override
     public EBoolean getWhere() {
         return where.create();
     }
 
+    @Override
     public void addJoin(JoinExpression<JoinMeta> joinExpression) {
         if (!exprInJoins.contains(joinExpression.getTarget())) {
             joins.add(joinExpression);
@@ -74,6 +81,7 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
         }
     }
 
+    @Override
     public void addJoin(JoinType joinType, Expr<?> expr) {
         if (!exprInJoins.contains(expr)) {
             joins.add(new JoinExpression<JoinMeta>(joinType, expr));
@@ -81,13 +89,15 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
         }
     }
 
+    @Override
     public void addJoinCondition(EBoolean o) {
         if (!joins.isEmpty()) {
             joins.get(joins.size() - 1).setCondition(o);
         }
     }
 
-    public void addToFrom(Expr<?>[] o) {
+    @Override
+    public void addToFrom(Expr<?>... o) {
         for (Expr<?> expr : o) {
             if (!exprInJoins.contains(expr)) {
                 joins.add(new JoinExpression<JoinMeta>(JoinType.DEFAULT, expr));
@@ -96,40 +106,49 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
         }
     }
 
-    public void addToGroupBy(Expr<?>[] o) {
+    @Override
+    public void addToGroupBy(Expr<?>... o) {
         groupBy.addAll(Arrays.<Expr<?>> asList(o));
     }
 
-    public void addToHaving(EBoolean[] o) {
+    @Override
+    public void addToHaving(EBoolean... o) {
         for (EBoolean e : o)
             having.and(e);
     }
 
-    public void addToOrderBy(OrderSpecifier<?>[] o) {
+    @Override
+    public void addToOrderBy(OrderSpecifier<?>... o) {
         orderBy.addAll(Arrays.asList(o));
     }
 
-    public void addToProjection(Expr<?>[] o) {
+    @Override
+    public void addToProjection(Expr<?>... o) {
         projection.addAll(Arrays.asList(o));
     }
 
-    public void addToWhere(EBoolean[] o) {
+    @Override
+    public void addToWhere(EBoolean... o) {
         for (EBoolean e : o)
             where.and(e);
     }
 
+    @Override
     public boolean isDistinct() {
         return distinct;
     }
 
+    @Override
     public void setDistinct(boolean distinct) {
         this.distinct = distinct;
     }
 
+    @Override
     public QueryModifiers getModifiers() {
         return modifiers;
     }
 
+    @Override
     public void setModifiers(QueryModifiers restriction) {
         this.modifiers = restriction;
     }

@@ -11,7 +11,8 @@ import java.util.List;
 import com.mysema.query.types.expr.Expr;
 
 /**
- * Projectable defines default projection methods for Query implemnations
+ * Projectable defines default projection methods for Query implementations.
+ * All Querydsl query implementations should implement this interface.
  * 
  * @author tiwe
  * @version $Id$

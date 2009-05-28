@@ -10,14 +10,12 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
 /**
- * QueryBase provides a basic implementation of the Query interface without the
- * Projectable interface
+ * QueryBase provides a stub for Query implementations
  * 
  * @author tiwe
  * @version $Id$
  */
-public class QueryBase<JoinMeta, SubType extends QueryBase<JoinMeta, SubType>>
-        implements Query<SubType> {
+public class QueryBase<JoinMeta, SubType extends QueryBase<JoinMeta, SubType>> {
     @SuppressWarnings("unchecked")
     protected final SubType _this = (SubType) this;
 
@@ -42,12 +40,14 @@ public class QueryBase<JoinMeta, SubType extends QueryBase<JoinMeta, SubType>>
         metadata = new DefaultQueryMetadata<JoinMeta>();
     }
 
-    public SubType from(Expr<?>... o) {
+    // template
+    protected SubType from(Expr<?>... o) {
         metadata.addToFrom(o);
         return _this;
     }
 
-    public SubType fullJoin(Expr<?> o) {
+    // template
+    protected SubType fullJoin(Expr<?> o) {
         metadata.addJoin(JoinType.FULLJOIN, o);
         return _this;
     }
@@ -66,17 +66,20 @@ public class QueryBase<JoinMeta, SubType extends QueryBase<JoinMeta, SubType>>
         return _this;
     }
 
-    public SubType innerJoin(Expr<?> o) {
+    // template
+    protected SubType innerJoin(Expr<?> o) {
         metadata.addJoin(JoinType.INNERJOIN, o);
         return _this;
     }
 
-    public SubType join(Expr<?> o) {
+    // template
+    protected SubType join(Expr<?> o) {
         metadata.addJoin(JoinType.JOIN, o);
         return _this;
     }
 
-    public SubType leftJoin(Expr<?> o) {
+    // template
+    protected SubType leftJoin(Expr<?> o) {
         metadata.addJoin(JoinType.LEFTJOIN, o);
         return _this;
     }

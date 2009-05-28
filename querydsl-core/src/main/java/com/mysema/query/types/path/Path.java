@@ -15,30 +15,36 @@ import com.mysema.query.types.expr.EBoolean;
  */
 public interface Path<C> {
     /**
+     * Get the metadata for this path
      * 
      * @return
      */
     PathMetadata<?> getMetadata();
 
     /**
+     * Get the root for this path
      * 
      * @return
      */
     Path<?> getRoot();
 
     /**
+     * Get the type of this path
      * 
      * @return
      */
     Class<? extends C> getType();
 
     /**
+     * Create a <code>this is not null</code> expression
      * 
      * @return
      */
     EBoolean isNotNull();
 
     /**
+     * Create a <code>this is null</code> expression
+     * 
      * 
      * @return
      */

@@ -22,34 +22,91 @@ public final class PathMetadata<T> {
 
     private static ExprFactory factory = SimpleExprFactory.getInstance();
 
+    /**
+     * Create a new PathMetadata instance for indexed array access
+     * 
+     * @param parent parent path
+     * @param index
+     * @return
+     */
     public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, Expr<Integer> index) {
         return new PathMetadata<Integer>(parent, index, PathType.ARRAYVALUE);
     }
 
+    /**
+     * Create a new PathMetadata instance for indexed array access
+     * 
+     * @param parent parent path
+     * @param index
+     * @return
+     */
     public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, int index) {
         return new PathMetadata<Integer>(parent, factory.createConstant(index), PathType.ARRAYVALUE_CONSTANT);
     }
 
-    public static PathMetadata<Integer> forListAccess(PCollection<?> parent, Expr<Integer> index) {
+    /**
+     * Create a new PathMetadata instance for indexed List access
+     * 
+     * @param parent parent path
+     * @param index
+     * @return
+     */
+    public static PathMetadata<Integer> forListAccess(PList<?> parent, Expr<Integer> index) {
         return new PathMetadata<Integer>(parent, index, PathType.LISTVALUE);
     }
 
-    public static PathMetadata<Integer> forListAccess(PCollection<?> parent, int index) {
+    /**
+     * Create a new PathMetadata instance for indexed list access
+     * 
+     * @param parent parent path
+     * @param index
+     * @return
+     */
+    public static PathMetadata<Integer> forListAccess(PList<?> parent, int index) {
         return new PathMetadata<Integer>(parent, factory.createConstant(index), PathType.LISTVALUE_CONSTANT);
     }
 
+    /**
+     * Create a new PathMetadata instance for Map value access
+     * 
+     * @param <KT> key type
+     * @param parent parent path
+     * @param key
+     * @return
+     */
     public static <KT> PathMetadata<KT> forMapAccess(PMap<?, ?> parent, Expr<KT> key) {
         return new PathMetadata<KT>(parent, key, PathType.MAPVALUE);
     }
 
+    /**
+     * Create a new PathMetadata instance for Map value access
+     * 
+     * @param <KT> key type
+     * @param parent parent path
+     * @param key
+     * @return
+     */
     public static <KT> PathMetadata<KT> forMapAccess(PMap<?, ?> parent, KT key) {
         return new PathMetadata<KT>(parent, factory.createConstant(key), PathType.MAPVALUE_CONSTANT);
     }
 
+    /**
+     * Create a new PathMetadata instance for a property based path
+     * 
+     * @param parent parent path
+     * @param property
+     * @return
+     */
     public static PathMetadata<String> forProperty(Path<?> parent, String property) {
         return new PathMetadata<String>(parent, factory.createConstant(property), PathType.PROPERTY);
     }
 
+    /**
+     * Create a new PathMetadata instance for a variable based path
+     * 
+     * @param variable
+     * @return
+     */
     public static PathMetadata<String> forVariable(String variable) {
         return new PathMetadata<String>(null, factory.createConstant(variable), PathType.VARIABLE);
     }
@@ -70,6 +127,7 @@ public final class PathMetadata<T> {
         this.hashCode = new HashCodeBuilder().append(expression).append(parent).append(pathType).hashCode();
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj == null)
             return false;
@@ -82,22 +140,43 @@ public final class PathMetadata<T> {
                 parent, p.parent).append(pathType, p.pathType).isEquals();
     }
 
+    /**
+     * Get the expression related to this path
+     * 
+     * @return
+     */
     public Expr<T> getExpression() {
         return expression;
     }
 
+    /**
+     * Get the parent path
+     * 
+     * @return
+     */
     public Path<?> getParent() {
         return parent;
     }
 
+    /**
+     * Get the path type
+     * 
+     * @return
+     */
     public PathType getPathType() {
         return pathType;
     }
 
+    /**
+     * Get the root path
+     * 
+     * @return
+     */
     public Path<?> getRoot() {
         return root;
     }
 
+    @Override
     public int hashCode() {
         return hashCode;
     }

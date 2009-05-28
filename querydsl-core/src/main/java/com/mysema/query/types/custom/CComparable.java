@@ -9,6 +9,7 @@ import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * CComparable defines custom comparable expressions
  * 
  * @author tiwe
  *
@@ -20,6 +21,7 @@ public abstract class CComparable<T extends Comparable<?>> extends
         super(type);
     }
 
+    @Override
     public Expr<?> getArg(int index) {
         return getArgs().get(index);
     }

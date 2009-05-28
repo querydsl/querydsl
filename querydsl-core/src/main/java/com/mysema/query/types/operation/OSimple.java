@@ -9,16 +9,17 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.mysema.query.types.expr.ESimple;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * OSimple represents a simple operation expression
+ * 
  * @author tiwe
  * 
  * @param <OpType>
  * @param <D>
  */
-public class OSimple<OpType, D> extends ESimple<D> implements
+public class OSimple<OpType, D> extends Expr<D> implements
         Operation<OpType, D> {
     private final List<Expr<?>> args;
     private final Operator<OpType> op;
@@ -34,14 +35,17 @@ public class OSimple<OpType, D> extends ESimple<D> implements
         validate();
     }
 
+    @Override
     public List<Expr<?>> getArgs() {
         return args;
     }
 
+    @Override
     public Expr<?> getArg(int i) {
         return args.get(i);
     }
 
+    @Override
     public Operator<OpType> getOperator() {
         return op;
     }

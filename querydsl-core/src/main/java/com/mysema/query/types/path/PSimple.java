@@ -7,14 +7,16 @@ package com.mysema.query.types.path;
 
 import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.ESimple;
+import com.mysema.query.types.expr.Expr;
 
 /**
+ * PSimple represents simple paths
+ * 
  * @author tiwe
  * 
- * @param <D>
+ * @param <D> Java type
  */
-public class PSimple<D> extends ESimple<D> implements Path<D> {
+public class PSimple<D> extends Expr<D> implements Path<D> {
     private EBoolean isnull, isnotnull;
     private final PathMetadata<?> metadata;
     private final Path<?> root;
@@ -29,23 +31,28 @@ public class PSimple<D> extends ESimple<D> implements Path<D> {
         this(type, PathMetadata.forVariable(var));
     }
 
+    @Override
     public boolean equals(Object o) {
         return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
                 : false;
     }
 
+    @Override
     public PathMetadata<?> getMetadata() {
         return metadata;
     }
 
+    @Override
     public Path<?> getRoot() {
         return root;
     }
 
+    @Override
     public int hashCode() {
         return metadata.hashCode();
     }
 
+    @Override
     public EBoolean isNotNull() {
         if (isnotnull == null) {
             isnotnull = Grammar.isNotNull(this);
@@ -53,6 +60,7 @@ public class PSimple<D> extends ESimple<D> implements Path<D> {
         return isnotnull;
     }
 
+    @Override
     public EBoolean isNull() {
         if (isnull == null) {
             isnull = Grammar.isNull(this);

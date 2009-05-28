@@ -9,10 +9,12 @@ import java.io.Closeable;
 import java.util.Iterator;
 
 /**
- * CloseableIterator provides
+ * CloseableIterator bundles Iterator and Closeable
  * 
  * @author tiwe
  * @version $Id$
+ * @see java.util.Iterator
+ * @see java.io.Closeable
  */
 public interface CloseableIterator<T> extends Iterator<T>, Closeable {
 

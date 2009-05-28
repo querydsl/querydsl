@@ -109,41 +109,41 @@ public class OperationPatterns {
         add(Ops.STRING_ISEMPTY, "empty(%s)");
 
         // date time
-        add(Ops.DateTime.SYSDATE, "sysdate");
-        add(Ops.DateTime.CURRENT_DATE, "current_date()");
-        add(Ops.DateTime.CURRENT_TIME, "current_time()");
-        add(Ops.DateTime.CURRENT_TIMESTAMP, "current_timestamp()");
-        add(Ops.DateTime.SECOND, "second(%s)");
-        add(Ops.DateTime.MINUTE, "minute(%s)");
-        add(Ops.DateTime.HOUR, "hour(%s)");
-        add(Ops.DateTime.DAY, "day(%s)");
-        add(Ops.DateTime.WEEK, "week(%s)");
-        add(Ops.DateTime.MONTH, "month(%s)");
-        add(Ops.DateTime.YEAR, "year(%s)");
-        add(Ops.DateTime.DAY_OF_WEEK, "dayofweek(%s)");
-        add(Ops.DateTime.DAY_OF_MONTH, "dayofmonth(%s)");
-        add(Ops.DateTime.DAY_OF_YEAR, "dayofyear(%s)");
+        add(Ops.DateTimeOps.SYSDATE, "sysdate");
+        add(Ops.DateTimeOps.CURRENT_DATE, "current_date()");
+        add(Ops.DateTimeOps.CURRENT_TIME, "current_time()");
+        add(Ops.DateTimeOps.CURRENT_TIMESTAMP, "current_timestamp()");
+        add(Ops.DateTimeOps.SECOND, "second(%s)");
+        add(Ops.DateTimeOps.MINUTE, "minute(%s)");
+        add(Ops.DateTimeOps.HOUR, "hour(%s)");
+        add(Ops.DateTimeOps.DAY, "day(%s)");
+        add(Ops.DateTimeOps.WEEK, "week(%s)");
+        add(Ops.DateTimeOps.MONTH, "month(%s)");
+        add(Ops.DateTimeOps.YEAR, "year(%s)");
+        add(Ops.DateTimeOps.DAY_OF_WEEK, "dayofweek(%s)");
+        add(Ops.DateTimeOps.DAY_OF_MONTH, "dayofmonth(%s)");
+        add(Ops.DateTimeOps.DAY_OF_YEAR, "dayofyear(%s)");
 
         // math
-        add(Ops.Math.ABS, "abs(%s)");
-        add(Ops.Math.ACOS, "acos(%s)");
-        add(Ops.Math.ASIN, "asin(%s)");
-        add(Ops.Math.ATAN, "atan(%s)");
-        add(Ops.Math.CEIL, "ceil(%s)");
-        add(Ops.Math.COS, "cos(%s)");
-        add(Ops.Math.TAN, "tan(%s)");
-        add(Ops.Math.SQRT, "sqrt(%s)");
-        add(Ops.Math.SIN, "sin(%s)");
-        add(Ops.Math.ROUND, "round(%s)");
-        add(Ops.Math.RANDOM, "random()");
-        add(Ops.Math.POWER, "pow(%s,%s)");
-        add(Ops.Math.MIN, "min(%s,%s)");
-        add(Ops.Math.MAX, "max(%s,%s)");
+        add(Ops.MathOps.ABS, "abs(%s)");
+        add(Ops.MathOps.ACOS, "acos(%s)");
+        add(Ops.MathOps.ASIN, "asin(%s)");
+        add(Ops.MathOps.ATAN, "atan(%s)");
+        add(Ops.MathOps.CEIL, "ceil(%s)");
+        add(Ops.MathOps.COS, "cos(%s)");
+        add(Ops.MathOps.TAN, "tan(%s)");
+        add(Ops.MathOps.SQRT, "sqrt(%s)");
+        add(Ops.MathOps.SIN, "sin(%s)");
+        add(Ops.MathOps.ROUND, "round(%s)");
+        add(Ops.MathOps.RANDOM, "random()");
+        add(Ops.MathOps.POWER, "pow(%s,%s)");
+        add(Ops.MathOps.MIN, "min(%s,%s)");
+        add(Ops.MathOps.MAX, "max(%s,%s)");
         // add(Ops.OpMath.MOD,"mod(%s,%s)");
-        add(Ops.Math.LOG10, "log10(%s)");
-        add(Ops.Math.LOG, "log(%s)");
-        add(Ops.Math.FLOOR, "floor(%s)");
-        add(Ops.Math.EXP, "exp(%s)");
+        add(Ops.MathOps.LOG10, "log10(%s)");
+        add(Ops.MathOps.LOG, "log(%s)");
+        add(Ops.MathOps.FLOOR, "floor(%s)");
+        add(Ops.MathOps.EXP, "exp(%s)");
 
         // string
         add(Ops.StringOps.LTRIM, "ltrim(%s)");

@@ -6,13 +6,10 @@
 package com.mysema.query.serialization;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.AbstractVisitor;
-import com.mysema.query.types.alias.ASimple;
-import com.mysema.query.types.alias.AToPath;
 import com.mysema.query.types.custom.Custom;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EConstant;
@@ -22,7 +19,6 @@ import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.path.Path;
 import com.mysema.query.types.path.PathType;
-import com.mysema.query.types.quant.Quant;
 
 /**
  * BaseSerializer is a stub for Serializer implementations
@@ -92,16 +88,6 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
         return ret;
     }
 
-    @Override
-    protected void visit(ASimple<?> expr) {
-        throw new UnsupportedOperationException("not implemented");
-    }
-
-    @Override
-    protected void visit(AToPath expr) {
-        throw new UnsupportedOperationException("not implemented");
-    }
-
     protected void visit(Custom<?> expr) {
         Object[] strings = new String[expr.getArgs().size()];
         for (int i = 0; i < strings.length; i++) {
@@ -160,11 +146,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
         }
 
     }
-
-    protected void visit(Quant<?> q) {
-        visitOperation(null, q.getOperator(), Collections.<Expr<?>> singletonList(q.getTarget()));
-    }
-
+    
     protected void visitOperation(Class<?> type, Operator<?> operator,List<Expr<?>> args) {
         String pattern = ops.getPattern(operator);
         if (pattern == null) {

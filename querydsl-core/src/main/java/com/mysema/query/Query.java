@@ -11,6 +11,7 @@ import com.mysema.query.types.expr.Expr;
 
 /**
  * Query provides a query interface of the fluent query DSL.
+ * Querydsl query implementations can be based also on other interfaces, but the signature should be a subset of Query.
  * 
  * @author tiwe
  * @version $Id$
@@ -87,4 +88,12 @@ public interface Query<SubType extends Query<SubType>> {
      * @return the Query itself
      */
     SubType orderBy(OrderSpecifier<?>... o);
+    
+    /**
+     * adds filtering conditions
+     * 
+     * @param o
+     * @return
+     */
+    SubType where(EBoolean... o);
 }

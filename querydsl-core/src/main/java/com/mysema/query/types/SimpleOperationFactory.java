@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.types;
 
 import com.mysema.commons.lang.Assert;
@@ -14,6 +19,7 @@ import com.mysema.query.types.operation.OStringArray;
 import com.mysema.query.types.operation.Operator;
 
 /**
+ * SimpleOperationFactory is the default implementation of the OperationFactory itnerfa
  * 
  * @author tiwe
  *

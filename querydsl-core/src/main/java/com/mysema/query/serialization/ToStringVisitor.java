@@ -6,8 +6,6 @@
 package com.mysema.query.serialization;
 
 import com.mysema.query.types.AbstractVisitor;
-import com.mysema.query.types.alias.ASimple;
-import com.mysema.query.types.alias.AToPath;
 import com.mysema.query.types.custom.Custom;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EConstant;
@@ -15,10 +13,9 @@ import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.path.Path;
-import com.mysema.query.types.quant.Quant;
 
 /**
- * ToStringVisitor provides
+ * ToStringVisitor is used for toString() serialization in Expr implementations.
  * 
  * @author tiwe
  * @version $Id$
@@ -31,16 +28,6 @@ public class ToStringVisitor extends AbstractVisitor<ToStringVisitor> {
 
     public String toString() {
         return toString;
-    }
-
-    @Override
-    protected void visit(ASimple<?> expr) {
-        toString = expr.getFrom() + " to " + expr.getTo();
-    }
-
-    @Override
-    protected void visit(AToPath expr) {
-        toString = expr.getFrom() + " to " + expr.getTo();
     }
 
     @Override
@@ -96,12 +83,6 @@ public class ToStringVisitor extends AbstractVisitor<ToStringVisitor> {
         } else if (expr != null) {
             toString = expr.toString();
         }
-    }
-
-    @Override
-    protected void visit(Quant<?> q) {
-        // TODO Auto-generated method stub
-
     }
 
 }

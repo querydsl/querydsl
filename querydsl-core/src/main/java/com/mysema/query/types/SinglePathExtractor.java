@@ -8,7 +8,7 @@ package com.mysema.query.types;
 import com.mysema.query.types.path.Path;
 
 /**
- * PathExtractor is a visitor implementation which returns the top level path
+ * SinglePathExtractor is a visitor implementation which returns the top level path
  * from a single Expr instance
  * 
  * @author tiwe

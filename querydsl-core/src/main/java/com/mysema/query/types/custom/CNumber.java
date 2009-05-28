@@ -9,6 +9,7 @@ import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * CNumber defines custom numeric expressions
  * 
  * @author tiwe
  *
@@ -20,6 +21,7 @@ public abstract class CNumber<T extends Number & Comparable<?>> extends
         super(type);
     }
 
+    @Override
     public Expr<?> getArg(int index) {
         return getArgs().get(index);
     }

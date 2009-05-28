@@ -8,7 +8,7 @@ package com.mysema.query.types;
 import com.mysema.query.types.expr.Expr;
 
 /**
- * ExprFactory provides
+ * ExprFactory is a factory interface for EConstant instance creation
  * 
  * @author tiwe
  * @version $Id$
@@ -16,6 +16,8 @@ import com.mysema.query.types.expr.Expr;
 public interface ExprFactory {
 
     /**
+     * Create a constant for the given integer
+     * 
      * 
      * @param i
      * @return
@@ -23,6 +25,7 @@ public interface ExprFactory {
     Expr<Integer> createConstant(int i);
 
     /**
+     * Create a constant for the given class
      * 
      * @param <A>
      * @param obj
@@ -31,6 +34,7 @@ public interface ExprFactory {
     <A> Expr<Class<A>> createConstant(Class<A> obj);
 
     /**
+     * Create a constant for the given object
      * 
      * @param <A>
      * @param obj

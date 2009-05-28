@@ -10,9 +10,11 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 
 /**
+ * PNumber represents numeric paths
+ * 
  * @author tiwe
  * 
- * @param <D>
+ * @param <D> Java type
  */
 public class PNumber<D extends Number & Comparable<?>> extends ENumber<D>
         implements Path<D> {
@@ -30,23 +32,28 @@ public class PNumber<D extends Number & Comparable<?>> extends ENumber<D>
         this(type, PathMetadata.forVariable(var));
     }
 
+    @Override
     public boolean equals(Object o) {
         return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
                 : false;
     }
 
+    @Override
     public PathMetadata<?> getMetadata() {
         return metadata;
     }
 
+    @Override
     public Path<?> getRoot() {
         return root;
     }
 
+    @Override
     public int hashCode() {
         return metadata.hashCode();
     }
 
+    @Override
     public EBoolean isNotNull() {
         if (isnotnull == null) {
             isnotnull = Grammar.isNotNull(this);
@@ -54,6 +61,7 @@ public class PNumber<D extends Number & Comparable<?>> extends ENumber<D>
         return isnotnull;
     }
 
+    @Override
     public EBoolean isNull() {
         if (isnull == null) {
             isnull = Grammar.isNull(this);

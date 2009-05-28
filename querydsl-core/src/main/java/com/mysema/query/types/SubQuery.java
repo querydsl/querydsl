@@ -5,8 +5,11 @@
  */
 package com.mysema.query.types;
 
+import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.JoinType;
 import com.mysema.query.Query;
 import com.mysema.query.QueryBase;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
@@ -21,80 +24,84 @@ import com.mysema.query.types.expr.Expr;
  */
 public class SubQuery<JM, A> extends Expr<A> implements Query<SubQuery<JM, A>>, CollectionType<A> {
     
-    private QueryWithPublicSelect<JM> query = new QueryWithPublicSelect<JM>();
+    private QueryMetadata<JM> md = new DefaultQueryMetadata<JM>();
 
     public SubQuery(Expr<A> select) {
         super(null);
-        query.select(select);
+        md.addToProjection(select);
     }
 
     public SubQuery() {
         super(null);
     }
-
+    
+    @Override
     public SubQuery<JM, A> from(Expr<?>... o) {
-        query.from(o);
+        md.addToFrom(o);
         return this;
     }
 
+    @Override
     public SubQuery<JM, A> fullJoin(Expr<?> o) {
-        query.fullJoin(o);
+        md.addJoin(JoinType.FULLJOIN, o);
         return this;
     }
 
-    public QueryBase<JM, ?> getQuery() {
-        return query;
+    public QueryMetadata<JM> getMetadata() {
+        return md;
     }
 
+    @Override
     public SubQuery<JM, A> groupBy(Expr<?>... o) {
-        query.groupBy(o);
+        md.addToGroupBy(o);
         return this;
     }
 
+    @Override
     public SubQuery<JM, A> having(EBoolean... o) {
-        query.having(o);
+        md.addToHaving(o);
         return this;
     }
 
+    @Override
     public SubQuery<JM, A> innerJoin(Expr<?> o) {
-        query.innerJoin(o);
+        md.addJoin(JoinType.INNERJOIN, o);
         return this;
     }
 
+    @Override
     public SubQuery<JM, A> join(Expr<?> o) {
-        query.join(o);
+        md.addJoin(JoinType.JOIN, o);
         return this;
     }
 
+    @Override
     public SubQuery<JM, A> leftJoin(Expr<?> o) {
-        query.leftJoin(o);
+        md.addJoin(JoinType.LEFTJOIN, o);
         return this;
     }
 
+    @Override
     public SubQuery<JM, A> on(EBoolean o) {
-        query.on(o);
+        md.addJoinCondition(o);
         return this;
     }
 
+    @Override
     public SubQuery<JM, A> orderBy(OrderSpecifier<?>... o) {
-        query.orderBy(o);
+        md.addToOrderBy(o);
         return this;
     }
 
     public SubQuery<JM, A> select(Expr<?>... o) {
-        query.select(o);
+        md.addToProjection(o);
         return this;
     }
 
+    @Override
     public SubQuery<JM, A> where(EBoolean... o) {
-        query.where(o);
+        md.addToWhere(o);
         return this;
-    }
-
-    private static class QueryWithPublicSelect<JM> extends QueryBase<JM, QueryWithPublicSelect<JM>> {
-        public void select(Expr<?>... expr) {
-            addToProjection(expr);
-        }
     }
 
     public Class<A> getElementType() {

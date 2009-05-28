@@ -8,9 +8,11 @@ package com.mysema.query.types.path;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * PEntityList represents entity list paths
+ * 
  * @author tiwe
  * 
- * @param <D>
+ * @param <D> component type
  */
 public class PEntityList<D> extends PEntityCollection<D> implements PList<D> {
     public PEntityList(Class<D> type, String entityName,
@@ -22,13 +24,15 @@ public class PEntityList<D> extends PEntityCollection<D> implements PList<D> {
         super(type, entityName, PathMetadata.forVariable(var));
     }
 
+    @Override
     public PEntity<D> get(Expr<Integer> index) {
         return new PEntity<D>(type, entityName, PathMetadata.forListAccess(
                 this, index));
     }
 
+    @Override
     public PEntity<D> get(int index) {
-        // cache
+        // TODO : cache
         return new PEntity<D>(type, entityName, PathMetadata.forListAccess(
                 this, index));
     }

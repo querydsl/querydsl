@@ -12,10 +12,12 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * PEntityMap represents entity map paths
+ * 
  * @author tiwe
  * 
- * @param <K>
- * @param <V>
+ * @param <K> key type
+ * @param <V> value type
  */
 public class PEntityMap<K, V> extends Expr<Map<K, V>> implements PMap<K, V> {
     private EBoolean isnull, isnotnull;
@@ -64,41 +66,50 @@ public class PEntityMap<K, V> extends Expr<Map<K, V>> implements PMap<K, V> {
         return Grammar.containsValue(this, value);
     }
 
+    @Override
     public boolean equals(Object o) {
         return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
                 : false;
     }
 
+    @Override
     public PEntity<V> get(Expr<K> key) {
         return new PEntity<V>(valueType, entityName, PathMetadata.forMapAccess(
                 this, key));
     }
 
+    @Override
     public PEntity<V> get(K key) {
         return new PEntity<V>(valueType, entityName, PathMetadata.forMapAccess(
                 this, key));
     }
 
+    @Override
     public Class<K> getKeyType() {
         return keyType;
     }
     
+    @Override
     public PathMetadata<?> getMetadata() {
         return metadata;
     }
 
+    @Override
     public Path<?> getRoot() {
         return root;
     }
 
+    @Override
     public Class<V> getValueType() {
         return valueType;
     }
     
+    @Override
     public int hashCode() {
         return metadata.hashCode();
     }
     
+    @Override
     public EBoolean isEmpty() {
         if (empty == null){
             empty = Grammar.isEmpty(this);
@@ -106,6 +117,7 @@ public class PEntityMap<K, V> extends Expr<Map<K, V>> implements PMap<K, V> {
         return empty;
     }
     
+    @Override
     public EBoolean isNotEmpty() {
         if (notEmpty == null){
             notEmpty = Grammar.isNotEmpty(this); 
@@ -113,6 +125,7 @@ public class PEntityMap<K, V> extends Expr<Map<K, V>> implements PMap<K, V> {
         return notEmpty;
     }
     
+    @Override
     public EBoolean isNotNull() {
         if (isnotnull == null) {
             isnotnull = Grammar.isNotNull(this);
@@ -120,6 +133,7 @@ public class PEntityMap<K, V> extends Expr<Map<K, V>> implements PMap<K, V> {
         return isnotnull;
     }
 
+    @Override
     public EBoolean isNull() {
         if (isnull == null) {
             isnull = Grammar.isNull(this);

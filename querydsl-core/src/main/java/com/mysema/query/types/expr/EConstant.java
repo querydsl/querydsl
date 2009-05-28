@@ -6,10 +6,11 @@
 package com.mysema.query.types.expr;
 
 /**
+ * EConstant represents constant expressions
  * 
  * @author tiwe
  * 
- * @param <D>
+ * @param <D> Java type of constant
  */
 public class EConstant<D> extends Expr<D> {
     private final D constant;
@@ -20,14 +21,21 @@ public class EConstant<D> extends Expr<D> {
         this.constant = constant;
     }
 
+    /**
+     * Get the embedded constant
+     * 
+     * @return
+     */
     public D getConstant() {
         return constant;
     }
 
+    @Override
     public int hashCode() {
         return constant.hashCode();
     }
 
+    @Override
     public boolean equals(Object o) {
         return o instanceof EConstant ? ((EConstant<?>) o).getConstant()
                 .equals(constant) : false;

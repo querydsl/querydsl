@@ -27,64 +27,132 @@ public abstract class Expr<D> {
         this.type = type;
     }
 
+    /**
+     * Get the Java type for this expression
+     * 
+     * @return
+     */
     public Class<? extends D> getType() {
         return type;
     }
 
-    // eq
+    /**
+     * Create a <code>this == right</code> expression
+     * 
+     * @param right rhs of the comparison
+     * @return
+     */
     public final EBoolean eq(D right) {
         return Grammar.eq(this, right);
     }
 
+    /**
+     * Create a <code>this == right</code> expression
+     * 
+     * @param right rhs of the comparison
+     * @return
+     */
     public final EBoolean eq(Expr<? super D> right) {
         return Grammar.eq(this, right);
     }
 
-    // ne
+    /**
+     * Create a <code>this != right</code> expression
+     * 
+     * @param right rhs of the comparison
+     * @return
+     */
     public final EBoolean ne(D right) {
         return Grammar.ne(this, right);
     }
 
+    /**
+     * Create a <code>this != right</code> expression
+     * 
+     * @param right rhs of the comparison
+     * @return
+     */
     public final EBoolean ne(Expr<? super D> right) {
         return Grammar.ne(this, right);
     }
 
-    // containment
-    public final EBoolean in(CollectionType<? extends D> arg) {
-        return Grammar.in(this, arg);
+    /**
+     * Create a <code>this in right</code> expression
+     * 
+     * @param right rhs of the comparison
+     * @return
+     */
+    public final EBoolean in(CollectionType<? extends D> right) {
+        return Grammar.in(this, right);
     }
 
-    public final EBoolean in(Collection<? extends D> arg) {
-        return Grammar.in(this, arg);
+    /**
+     * Create a <code>this in right</code> expression
+     * 
+     * @param right rhs of the comparison
+     * @return
+     */
+    public final EBoolean in(Collection<? extends D> right) {
+        return Grammar.in(this, right);
     }
 
-    public final EBoolean in(D... args) {
-        return Grammar.in(this, args);
+    /**
+     * Create a <code>this in right</code> expression
+     * 
+     * @param right rhs of the comparison
+     * @return
+     */
+    public final EBoolean in(D... right) {
+        return Grammar.in(this, right);
     }
 
-    public final EBoolean notIn(CollectionType<? extends D> arg) {
-        return Grammar.notIn(this, arg);
+    /**
+     * Create a <code>this not in right</code> expression
+     * 
+     * @param right rhs of the comparison
+     * @return
+     */
+    public final EBoolean notIn(CollectionType<? extends D> right) {
+        return Grammar.notIn(this, right);
     }
 
-    public final EBoolean notIn(Collection<? extends D> arg) {
-        return Grammar.in(this, arg);
+    /**
+     * Create a <code>this not in right</code> expression
+     * 
+     * @param right rhs of the comparison
+     * @return
+     */
+    public final EBoolean notIn(Collection<? extends D> right) {
+        return Grammar.in(this, right);
     }
 
-    public final EBoolean notIn(D... args) {
-        return Grammar.notIn(this, args);
+    /**
+     * Create a <code>this not in right</code> expression
+     * 
+     * @param right rhs of the comparison
+     * @return
+     */
+    public final EBoolean notIn(D... right) {
+        return Grammar.notIn(this, right);
     }
 
+    /**
+     * validate this expression for consistency
+     * 
+     */
     protected void validate() {
         new ValidationVisitor().handle(this);
     }
 
+    @Override
     public String toString() {
         if (toString == null) {
             toString = new ToStringVisitor().handle(this).toString();
         }
         return toString;
     }
-
+    
+    @Override
     public int hashCode() {
         return type != null ? type.hashCode() : super.hashCode();
     }

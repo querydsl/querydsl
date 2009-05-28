@@ -13,6 +13,8 @@ import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * ONumber represents numeric operations
+ * 
  * @author tiwe
  * 
  * @param <OpType>
@@ -34,14 +36,17 @@ public class ONumber<OpType extends Number, D extends Number & Comparable<?>>
         validate();
     }
 
+    @Override
     public List<Expr<?>> getArgs() {
         return args;
     }
 
+    @Override
     public Expr<?> getArg(int i) {
         return args.get(i);
     }
 
+    @Override
     public Operator<OpType> getOperator() {
         return op;
     }

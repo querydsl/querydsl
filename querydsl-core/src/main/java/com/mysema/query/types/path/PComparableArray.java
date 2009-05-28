@@ -9,9 +9,10 @@ import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * PComparableArray represents comparable array paths
  * @author tiwe
  * 
- * @param <D>
+ * @param <D> component type
  */
 @SuppressWarnings("unchecked")
 public class PComparableArray<D extends Comparable> extends PArray<D> {
@@ -23,11 +24,13 @@ public class PComparableArray<D extends Comparable> extends PArray<D> {
         super(type, PathMetadata.forVariable(var));
     }
 
+    @Override
     public EComparable<D> get(Expr<Integer> index) {
         return new PComparable<D>(componentType, PathMetadata.forArrayAccess(
                 this, index));
     }
 
+    @Override
     public EComparable<D> get(int index) {
         return new PComparable<D>(componentType, PathMetadata.forArrayAccess(
                 this, index));

@@ -9,7 +9,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.mysema.query.types.alias.Alias;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.Path;
 
@@ -22,15 +21,15 @@ import com.mysema.query.types.path.Path;
  */
 public class TypesTest {
     
-    @Test
-    public void testAlias(){
-        for (Class<?> cl : Alias.class.getClasses()){
-            assertTrue(cl.getName(),Alias.class.isAssignableFrom(cl));
-            if (!cl.isInterface()){                
-                assertTrue(cl.getName(),Expr.class.isAssignableFrom(cl));    
-            }            
-        }
-    }
+//    @Test
+//    public void testAlias(){
+//        for (Class<?> cl : Alias.class.getClasses()){
+//            assertTrue(cl.getName(),Alias.class.isAssignableFrom(cl));
+//            if (!cl.isInterface()){                
+//                assertTrue(cl.getName(),Expr.class.isAssignableFrom(cl));    
+//            }            
+//        }
+//    }
     
     @Test
     public void testExpr(){

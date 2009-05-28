@@ -9,10 +9,9 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.expr.Expr;
 
 /**
- * OrderSpecifier represents an order by element in a Query instance
+ * OrderSpecifier represents an order-by-element in a Query instance
  * 
- * @param <A>
- *            *
+ * @param <A> - Java type of the target expression
  * @author tiwe
  * @version $Id$
  */
@@ -26,18 +25,34 @@ public class OrderSpecifier<A extends Comparable> {
         this.target = Assert.notNull(target);
     }
 
+    /**
+     * Get the order of this specifier
+     * 
+     * @return
+     */
     public Order getOrder() {
         return order;
     }
 
+    /**
+     * Get whether the order is ascending or not
+     * 
+     * @return
+     */
     public boolean isAscending() {
         return order == Order.ASC;
     }
 
+    /**
+     * Get the target expression of this OrderSpecifier
+     * 
+     * @return
+     */
     public Expr<A> getTarget() {
         return target;
     }
 
+    @Override
     public String toString() {
         return target + " " + order;
     }

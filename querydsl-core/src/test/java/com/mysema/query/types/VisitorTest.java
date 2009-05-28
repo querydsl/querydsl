@@ -11,8 +11,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.types.Visitor;
-import com.mysema.query.types.alias.Alias;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.path.Path;
@@ -29,7 +27,7 @@ public class VisitorTest {
 	@Test
     public void testIteration() throws SecurityException, NoSuchMethodException{
         List<Class<?>> types = new ArrayList<Class<?>>();
-        types.addAll(Arrays.<Class<?>>asList(Alias.class.getClasses()));
+//        types.addAll(Arrays.<Class<?>>asList(Alias.class.getClasses()));
         types.addAll(Arrays.<Class<?>>asList(Operation.class.getClasses()));
         types.addAll(Arrays.<Class<?>>asList(Path.class.getClasses()));
         for (Class<?> innerType : types){

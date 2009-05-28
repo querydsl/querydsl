@@ -13,6 +13,8 @@ import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * OComparable represents Comparable operations
+ * 
  * @author tiwe
  * 
  * @param <OpType>
@@ -34,14 +36,17 @@ public class OComparable<OpType, D extends Comparable<?>> extends
         validate();
     }
 
+    @Override
     public List<Expr<?>> getArgs() {
         return args;
     }
 
+    @Override
     public Expr<?> getArg(int i) {
         return args.get(i);
     }
 
+    @Override
     public Operator<OpType> getOperator() {
         return op;
     }

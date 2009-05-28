@@ -30,7 +30,7 @@ import com.mysema.query.types.path.PStringArray;
 import com.mysema.query.types.path.PathMetadata;
 
 /**
- * SimpleExprFactory is a PathFactory implementation for the creation of Path
+ * SimplePathFactory is a PathFactory implementation for the creation of Path
  * instances
  * 
  * @author tiwe

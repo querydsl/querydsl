@@ -13,10 +13,11 @@ import java.util.List;
 import org.apache.commons.lang.ClassUtils;
 
 /**
+ * EConstructor represents a constructor invocation
  * 
  * @author tiwe
  * 
- * @param <D>
+ * @param <D> Java type
  */
 public class EConstructor<D> extends Expr<D> {
     private final List<Expr<?>> args;
@@ -27,10 +28,21 @@ public class EConstructor<D> extends Expr<D> {
         this.args = Collections.unmodifiableList(Arrays.asList(args));
     }
 
+    /**
+     * Get the constructor invocation arguments
+     * 
+     * @return
+     */
     public final List<Expr<?>> getArgs() {
         return args;
     }
 
+    /**
+     * Get the constructor invocation argument with the given index
+     * 
+     * @param index
+     * @return
+     */
     public final Expr<?> getArg(int index) {
         return args.get(index);
     }

@@ -5,9 +5,6 @@
  */
 package com.mysema.query.types;
 
-import com.mysema.query.types.alias.AEntity;
-import com.mysema.query.types.alias.AEntityCollection;
-import com.mysema.query.types.alias.AToPath;
 import com.mysema.query.types.custom.CBoolean;
 import com.mysema.query.types.custom.CComparable;
 import com.mysema.query.types.custom.CSimple;
@@ -40,14 +37,9 @@ import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PStringArray;
 import com.mysema.query.types.path.Path;
-import com.mysema.query.types.quant.QBoolean;
-import com.mysema.query.types.quant.QComparable;
-import com.mysema.query.types.quant.QNumber;
-import com.mysema.query.types.quant.QSimple;
-import com.mysema.query.types.quant.Quant;
 
 /**
- * AbstractVisitor provides a base implementation of the Visitor interface where
+ * AbstractVisitor provides a base implementation of the Visitor class, where
  * invocations are dispatched to supertypes when available and visible.
  * 
  * @author tiwe
@@ -55,16 +47,6 @@ import com.mysema.query.types.quant.Quant;
  */
 public abstract class AbstractVisitor<SubType extends AbstractVisitor<SubType>>
         extends Visitor<SubType> {
-
-    @Override
-    protected void visit(AEntity<?> expr) {
-        visit((AToPath) expr);
-    }
-
-    @Override
-    protected void visit(AEntityCollection<?> expr) {
-        visit((AToPath) expr);
-    }
 
     @Override
     protected void visit(CBoolean expr) {
@@ -131,6 +113,7 @@ public abstract class AbstractVisitor<SubType extends AbstractVisitor<SubType>>
         visit((PArray<?>) expr);
     }
 
+    @Override
     protected void visit(PCollection<?> expr) {
         visit((Path<?>) expr);
     }
@@ -180,6 +163,7 @@ public abstract class AbstractVisitor<SubType extends AbstractVisitor<SubType>>
         visit((PMap<?, ?>) expr);
     }
 
+    @Override
     protected void visit(PList<?> expr) {
         visit((PCollection<?>) expr);
     }
@@ -207,26 +191,6 @@ public abstract class AbstractVisitor<SubType extends AbstractVisitor<SubType>>
     @Override
     protected void visit(PStringArray expr) {
         visit((PArray<?>) expr);
-    }
-
-    @Override
-    protected void visit(QBoolean q) {
-        visit((Quant<?>) q);
-    }
-
-    @Override
-    protected void visit(QComparable<?> q) {
-        visit((Quant<?>) q);
-    }
-
-    @Override
-    protected void visit(QNumber<?> q) {
-        visit((Quant<?>) q);
-    }
-
-    @Override
-    protected void visit(QSimple<?> q) {
-        visit((Quant<?>) q);
     }
 
 }

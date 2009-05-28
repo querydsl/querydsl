@@ -10,9 +10,12 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
 
 /**
+ * PComparable represents Comparable paths
+ * 
  * @author tiwe
  * 
  * @param <D>
+ * @see java.util.Comparable
  */
 @SuppressWarnings("unchecked")
 public class PComparable<D extends Comparable> extends EComparable<D> implements
@@ -36,18 +39,22 @@ public class PComparable<D extends Comparable> extends EComparable<D> implements
                 : false;
     }
 
+    @Override
     public PathMetadata<?> getMetadata() {
         return metadata;
     }
 
+    @Override
     public Path<?> getRoot() {
         return root;
     }
 
+    @Override
     public int hashCode() {
         return metadata.hashCode();
     }
 
+    @Override
     public EBoolean isNotNull() {
         if (isnotnull == null) {
             isnotnull = Grammar.isNotNull(this);
@@ -55,6 +62,7 @@ public class PComparable<D extends Comparable> extends EComparable<D> implements
         return isnotnull;
     }
 
+    @Override
     public EBoolean isNull() {
         if (isnull == null) {
             isnull = Grammar.isNull(this);

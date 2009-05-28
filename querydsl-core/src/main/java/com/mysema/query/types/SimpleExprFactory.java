@@ -13,12 +13,11 @@ import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
 
 /**
- * SimpleExprFactory provides factory methods for various needs
+ * SimpleExprFactory is the default implementation of the ExprFactory interface
  * 
  * @author tiwe
  * @version $Id$
  */
-
 public class SimpleExprFactory implements ExprFactory {
 
     private static final ExprFactory instance = new SimpleExprFactory();

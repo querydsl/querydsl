@@ -14,7 +14,7 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Ops;
 
 /**
- * QString provides string functions
+ * StringFunctions provides string functions
  * 
  * @author tiwe
  * @version $Id$

@@ -15,11 +15,6 @@ import java.util.Set;
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.map.LazyMap;
 
-import com.mysema.query.types.alias.AEntity;
-import com.mysema.query.types.alias.AEntityCollection;
-import com.mysema.query.types.alias.ASimple;
-import com.mysema.query.types.alias.AToPath;
-import com.mysema.query.types.alias.Alias;
 import com.mysema.query.types.custom.CBoolean;
 import com.mysema.query.types.custom.CComparable;
 import com.mysema.query.types.custom.CSimple;
@@ -37,6 +32,7 @@ import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.path.PArray;
 import com.mysema.query.types.path.PBoolean;
 import com.mysema.query.types.path.PBooleanArray;
+import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PComparableArray;
 import com.mysema.query.types.path.PComponentCollection;
@@ -46,17 +42,13 @@ import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
 import com.mysema.query.types.path.PEntityList;
 import com.mysema.query.types.path.PEntityMap;
+import com.mysema.query.types.path.PList;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PStringArray;
 import com.mysema.query.types.path.Path;
-import com.mysema.query.types.quant.QBoolean;
-import com.mysema.query.types.quant.QComparable;
-import com.mysema.query.types.quant.QNumber;
-import com.mysema.query.types.quant.QSimple;
-import com.mysema.query.types.quant.Quant;
 
 /**
  * Visitor provides a dispatching Visitor for Expr instances.
@@ -67,10 +59,12 @@ import com.mysema.query.types.quant.Quant;
 public abstract class Visitor<T extends Visitor<T>> {
 
     private static final Set<Package> knownPackages = new HashSet<Package>(
-            Arrays.asList(Visitor.class.getPackage(), Alias.class.getPackage(),
-                    Custom.class.getPackage(), Expr.class.getPackage(),
-                    Operation.class.getPackage(), Path.class.getPackage(),
-                    Quant.class.getPackage()));
+            Arrays.asList(
+                    Visitor.class.getPackage(), 
+                    Custom.class.getPackage(), 
+                    Expr.class.getPackage(),
+                    Operation.class.getPackage(), 
+                    Path.class.getPackage()));
 
     private final Map<Class<?>, Method> methodMap = LazyMap.decorate(
             new HashMap<Class<?>, Method>(),
@@ -86,8 +80,7 @@ public abstract class Visitor<T extends Visitor<T>> {
                         while (method == null
                                 && !sigClass.equals(Visitor.class)) {
                             try {
-                                method = sigClass
-                                        .getDeclaredMethod("visit", cl);
+                                method = sigClass.getDeclaredMethod("visit", cl);
                             } catch (NoSuchMethodException nsme) {
                                 sigClass = sigClass.getSuperclass();
                             }
@@ -95,8 +88,7 @@ public abstract class Visitor<T extends Visitor<T>> {
                         if (method != null) {
                             method.setAccessible(true);
                         } else {
-                            throw new IllegalArgumentException(
-                                    "No method found for " + cl.getName());
+                            throw new IllegalArgumentException("No method found for " + cl.getName());
                         }
                         return method;
                     } catch (Exception e) {
@@ -116,14 +108,6 @@ public abstract class Visitor<T extends Visitor<T>> {
         }
         return (T) this;
     }
-
-    protected abstract void visit(AEntity<?> expr);
-
-    protected abstract void visit(AEntityCollection<?> expr);
-
-    protected abstract void visit(ASimple<?> expr);
-
-    protected abstract void visit(AToPath expr);
 
     protected abstract void visit(CBoolean expr);
 
@@ -187,13 +171,7 @@ public abstract class Visitor<T extends Visitor<T>> {
 
     protected abstract void visit(PStringArray expr);
 
-    protected abstract void visit(QBoolean q);
+    protected abstract void visit(PCollection<?> expr);
 
-    protected abstract void visit(QComparable<?> q);
-
-    protected abstract void visit(QNumber<?> q);
-
-    protected abstract void visit(QSimple<?> q);
-
-    protected abstract void visit(Quant<?> q);
+    protected abstract void visit(PList<?> expr);
 }

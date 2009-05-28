@@ -9,6 +9,8 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * PBooleanArray represents boolean array typed paths
+ * 
  * @author tiwe
  * 
  */
@@ -21,10 +23,12 @@ public class PBooleanArray extends PArray<Boolean> {
         super(Boolean.class, PathMetadata.forVariable(var));
     }
 
+    @Override
     public EBoolean get(Expr<Integer> index) {
         return new PBoolean(PathMetadata.forArrayAccess(this, index));
     }
 
+    @Override
     public EBoolean get(int index) {
         return new PBoolean(PathMetadata.forArrayAccess(this, index));
     }

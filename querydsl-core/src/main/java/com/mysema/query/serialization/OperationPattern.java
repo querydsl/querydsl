@@ -10,14 +10,8 @@ import java.util.List;
 
 import com.mysema.commons.lang.Assert;
 
-/**
- * PatternElement provides
- * 
- * @author tiwe
- * @version $Id$
- */
 // NOTE : work in progress
-public class OperationPattern {
+class OperationPattern {
 
     private final String pattern;
 

@@ -5,13 +5,14 @@
  */
 package com.mysema.query.types.path;
 
-import com.mysema.query.types.expr.ESimple;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * PComponentList represents component list paths
+ * 
  * @author tiwe
  * 
- * @param <D>
+ * @param <D> component type
  */
 public class PComponentList<D> extends PComponentCollection<D> implements
         PList<D> {
@@ -23,11 +24,14 @@ public class PComponentList<D> extends PComponentCollection<D> implements
         super(type, PathMetadata.forVariable(var));
     }
 
-    public ESimple<D> get(Expr<Integer> index) {
+    @Override
+    public Expr<D> get(Expr<Integer> index) {
         return new PSimple<D>(type, PathMetadata.forListAccess(this, index));
     }
 
-    public ESimple<D> get(int index) {
+    @Override
+    public Expr<D> get(int index) {
+        // TODO : cache
         return new PSimple<D>(type, PathMetadata.forListAccess(this, index));
     }
 }
