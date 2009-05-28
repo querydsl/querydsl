@@ -40,15 +40,15 @@ public class FilteredJavaSerializer extends JavaSerializer {
 
     private boolean inNotOperation = false;
 
-    public FilteredJavaSerializer(JavaPatterns ops, List<Expr<?>> expressions) {
-        super(ops);
+    public FilteredJavaSerializer(JavaPatterns patterns, List<Expr<?>> expressions) {
+        super(patterns);
         this.exprs = expressions;
         this.last = expressions.get(expressions.size() - 1);
     }
 
-    public FilteredJavaSerializer(JavaPatterns ops, List<Expr<?>> expressions,
+    public FilteredJavaSerializer(JavaPatterns patterns, List<Expr<?>> expressions,
             int lastElement) {
-        super(ops);
+        super(patterns);
         this.exprs = expressions.subList(0, lastElement + 1);
         this.last = expressions.get(lastElement);
     }

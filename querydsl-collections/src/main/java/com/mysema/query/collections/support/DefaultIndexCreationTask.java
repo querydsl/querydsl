@@ -31,7 +31,7 @@ public class DefaultIndexCreationTask {
 
     private final DefaultIndexSupport indexSupport;
 
-    private final JavaPatterns ops;
+    private final JavaPatterns patterns;
 
     private final List<? extends Expr<?>> sources;
 
@@ -40,14 +40,14 @@ public class DefaultIndexCreationTask {
      * 
      * @param indexSupport
      * @param sources
-     * @param ops
+     * @param patterns
      * @param condition
      */
     public DefaultIndexCreationTask(DefaultIndexSupport indexSupport,
-            List<? extends Expr<?>> sources, JavaPatterns ops, EBoolean condition) {
+            List<? extends Expr<?>> sources, JavaPatterns patterns, EBoolean condition) {
         this.indexSupport = Assert.notNull(indexSupport);
         this.sources = Assert.notNull(sources);
-        this.ops = ops;
+        this.patterns = patterns;
         this.condition = Assert.notNull(condition);
     }
 
@@ -66,7 +66,7 @@ public class DefaultIndexCreationTask {
                     }
                 };
             } else {
-                keyCreator = EvaluatorUtils.create(ops, sources, key);
+                keyCreator = EvaluatorUtils.create(patterns, sources, key);
             }
 
             // update the index

@@ -38,8 +38,8 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer> {
     private static final Logger logger = LoggerFactory
             .getLogger(JavaSerializer.class);
 
-    public JavaSerializer(JavaPatterns ops) {
-        super(ops);
+    public JavaSerializer(JavaPatterns patterns) {
+        super(patterns);
     }
 
     public static Object[] combine(int size, Object[]... arrays) {
@@ -151,7 +151,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer> {
             exprAsString = toString(path.getMetadata().getExpression(), false);
         }
 
-        String pattern = ops.getPattern(pathType);
+        String pattern = patterns.getPattern(pathType);
         if (parentAsString != null) {
             append(String.format(pattern, parentAsString, exprAsString));
         } else {

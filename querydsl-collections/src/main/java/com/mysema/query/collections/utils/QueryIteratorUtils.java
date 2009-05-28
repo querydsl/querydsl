@@ -28,15 +28,15 @@ public class QueryIteratorUtils {
      * filter the given iterator using the given condition
      * 
      * @param <S>
-     * @param ops
+     * @param patterns
      * @param source
      * @param sources
      * @param condition
      * @return
      */
-    public static <S> Iterator<S> multiArgFilter(JavaPatterns ops,
+    public static <S> Iterator<S> multiArgFilter(JavaPatterns patterns,
             Iterator<S> source, List<Expr<?>> sources, EBoolean condition) {
-        Evaluator ev = EvaluatorUtils.create(ops, sources, condition);
+        Evaluator ev = EvaluatorUtils.create(patterns, sources, condition);
         return multiArgFilter(source, ev);
     }
 
@@ -54,15 +54,15 @@ public class QueryIteratorUtils {
      * 
      * @param <S>
      * @param <T>
-     * @param ops
+     * @param patterns
      * @param source
      * @param sources
      * @param projection
      * @return
      */
-    public static <S, T> Iterator<T> transform(JavaPatterns ops, Iterator<S> source,
+    public static <S, T> Iterator<T> transform(JavaPatterns patterns, Iterator<S> source,
             List<Expr<?>> sources, Expr<?> projection) {
-        Evaluator ev = EvaluatorUtils.create(ops, sources, projection);
+        Evaluator ev = EvaluatorUtils.create(patterns, sources, projection);
         return transform(source, ev);
     }
 

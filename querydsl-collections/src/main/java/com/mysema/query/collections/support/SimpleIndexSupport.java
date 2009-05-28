@@ -26,14 +26,14 @@ public class SimpleIndexSupport implements QueryIndexSupport {
 
     protected final IteratorSource iteratorSource;
 
-    protected final JavaPatterns ops;
+    protected final JavaPatterns patterns;
 
     protected final List<? extends Expr<?>> sources;
 
-    public SimpleIndexSupport(IteratorSource iteratorSource, JavaPatterns ops,
+    public SimpleIndexSupport(IteratorSource iteratorSource, JavaPatterns patterns,
             List<? extends Expr<?>> sources) {
         this.iteratorSource = Assert.notNull(iteratorSource);
-        this.ops = Assert.notNull(ops);
+        this.patterns = Assert.notNull(patterns);
         this.sources = Assert.notNull(sources);
     }
 

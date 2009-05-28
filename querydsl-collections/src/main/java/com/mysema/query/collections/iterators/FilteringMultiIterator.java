@@ -47,12 +47,12 @@ public class FilteringMultiIterator extends MultiIterator implements
 
     private IteratorSource iteratorSource;
 
-    private JavaPatterns ops;
+    private JavaPatterns patterns;
 
     private EBoolean where;
 
-    public FilteringMultiIterator(JavaPatterns ops, EBoolean where) {
-        this.ops = ops;
+    public FilteringMultiIterator(JavaPatterns patterns, EBoolean where) {
+        this.patterns = patterns;
         this.where = where;
     }
 
@@ -60,7 +60,7 @@ public class FilteringMultiIterator extends MultiIterator implements
     private Evaluator createEvaluator(List<Expr<?>> sources,
             final int lastElement) throws CompileException, ParseException,
             ScanException {
-        JavaSerializer serializer = new FilteredJavaSerializer(ops, sources,
+        JavaSerializer serializer = new FilteredJavaSerializer(patterns, sources,
                 lastElement) {
             @Override
             protected ExpressionEvaluator instantiateExpressionEvaluator(

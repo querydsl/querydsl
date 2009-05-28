@@ -35,12 +35,12 @@ public class JaninoEvaluator implements Evaluator {
         this.projection = projection;
     }
 
-    public JaninoEvaluator(JavaPatterns ops, List<? extends Expr<?>> sources,
+    public JaninoEvaluator(JavaPatterns patterns, List<? extends Expr<?>> sources,
             Expr<?> expr) {
         try {
             Class<?> type = expr.getType() != null ? expr.getType()
                     : Object.class;
-            this.ev = new JavaSerializer(ops).handle(expr)
+            this.ev = new JavaSerializer(patterns).handle(expr)
                     .createExpressionEvaluator(sources, type);
             this.sources = sources;
             this.projection = expr;

@@ -74,7 +74,7 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
 
     private QueryIndexSupport indexSupport;
 
-    private final JavaPatterns ops;
+    private final JavaPatterns patterns;
 
     /**
      * turn OR queries into sequential UNION queries
@@ -97,14 +97,14 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
         this(JavaPatterns.DEFAULT);
     }
 
-    public ColQueryImpl(JavaPatterns ops) {
-        this.ops = ops;
+    public ColQueryImpl(JavaPatterns patterns) {
+        this.patterns = patterns;
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
     }
 
     public ColQueryImpl(QueryMetadata<Object> metadata) {
         super(metadata);
-        this.ops = JavaPatterns.DEFAULT;
+        this.patterns = JavaPatterns.DEFAULT;
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
     }
 
@@ -158,9 +158,9 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
     }
 
     protected QueryIndexSupport createIndexSupport(
-            Map<Expr<?>, Iterable<?>> exprToIt, JavaPatterns ops,
+            Map<Expr<?>, Iterable<?>> exprToIt, JavaPatterns patterns,
             List<Expr<?>> sources) {
-        return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), ops, sources);
+        return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), patterns, sources);
     }
 
     private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
@@ -193,14 +193,14 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
         if (condition == null || !wrapIterators) {
             multiIt = new MultiIterator();
         } else {
-            multiIt = new FilteringMultiIterator(ops, condition);
+            multiIt = new FilteringMultiIterator(patterns, condition);
         }
         for (Expr<?> expr : sources)
             multiIt.add(expr);
         multiIt.init(indexSupport.getChildFor(condition));
 
         if (condition != null) {
-            return multiArgFilter(ops, multiIt, sources, condition);
+            return multiArgFilter(patterns, multiIt, sources, condition);
         } else {
             return multiIt;
         }
@@ -234,7 +234,7 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
         for (JoinExpression<?> join : joins) {
             sources.add(join.getTarget());
         }
-        indexSupport = createIndexSupport(exprToIt, ops, sources);
+        indexSupport = createIndexSupport(exprToIt, patterns, sources);
 
         if (changeToUnionQuery(condition)) {
             // TODO : handle deeper OR operations as well
@@ -254,7 +254,7 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
         EBoolean condition = getMetadata().getWhere();
         JoinExpression<?> join = getMetadata().getJoins().get(0);
         sources.add(join.getTarget());
-        indexSupport = createIndexSupport(exprToIt, ops, sources);
+        indexSupport = createIndexSupport(exprToIt, patterns, sources);
         // create a simple projecting iterator for Object -> Object[]
 
         if (changeToUnionQuery(condition)) {
@@ -263,15 +263,15 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
             IteratorChain<Object[]> chain = new IteratorChain<Object[]>();
             EBoolean e1 = (EBoolean) op.getArg(0), e2 = (EBoolean) op.getArg(1);
             Iterator<?> it1 = indexSupport.getChildFor(e1).getIterator(join.getTarget());
-            chain.addIterator(multiArgFilter(ops, toArrayIterator(it1),sources, e1));
+            chain.addIterator(multiArgFilter(patterns, toArrayIterator(it1),sources, e1));
             Iterator<?> it2 = indexSupport.getChildFor(e2.and(e1.not())).getIterator(join.getTarget());
-            chain.addIterator(multiArgFilter(ops, toArrayIterator(it2),sources, e2.and(e1.not())));
+            chain.addIterator(multiArgFilter(patterns, toArrayIterator(it2),sources, e2.and(e1.not())));
             return chain;
         } else {
             Iterator<?> it = toArrayIterator(indexSupport.getChildFor(condition).getIterator(join.getTarget()));
             if (condition != null) {
                 // wrap the iterator if a where constraint is available
-                it = multiArgFilter(ops, it, sources, condition);
+                it = multiArgFilter(patterns, it, sources, condition);
             }
             return it;
         }
@@ -289,7 +289,7 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
             directions[i] = orderBy.get(i).getOrder() == Order.ASC;
         }
         Expr<?> expr = new EArrayConstructor<Object>(Object.class, orderByExpr);
-        Evaluator ev = EvaluatorUtils.create(ops, sources, expr);
+        Evaluator ev = EvaluatorUtils.create(patterns, sources, expr);
 
         // transform the iterator to list
         List<Object[]> itAsList = IteratorUtils.toList((Iterator<Object[]>) it);
@@ -300,7 +300,7 @@ public class ColQueryImpl extends QueryBaseWithProjection<Object, ColQueryImpl>
 
     protected <RT> Iterator<RT> handleSelect(Iterator<?> it,
             List<Expr<?>> sources, Expr<RT> projection) throws Exception {
-        Iterator<RT> rv = transform(ops, it, sources, projection);
+        Iterator<RT> rv = transform(patterns, it, sources, projection);
         if (getMetadata().isDistinct()) {
             rv = asDistinctIterator(rv);
         }

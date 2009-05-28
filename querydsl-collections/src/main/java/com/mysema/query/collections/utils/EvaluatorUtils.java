@@ -23,12 +23,12 @@ public class EvaluatorUtils {
 
     /**
      * 
-     * @param ops
+     * @param patterns
      * @param sources
      * @param expr
      * @return
      */
-    public static Evaluator create(JavaPatterns ops,
+    public static Evaluator create(JavaPatterns patterns,
             List<? extends Expr<?>> sources, Expr<?> expr) {
         if (sources.get(0) == expr) {
             return new Evaluator() {
@@ -38,7 +38,7 @@ public class EvaluatorUtils {
             };
             // TODO : handle Path projection in special way
         } else {
-            return new JaninoEvaluator(Assert.notNull(ops), Assert
+            return new JaninoEvaluator(Assert.notNull(patterns), Assert
                     .notNull(sources), Assert.notNull(expr));
         }
     }

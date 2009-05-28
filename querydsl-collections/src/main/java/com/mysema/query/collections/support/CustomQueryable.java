@@ -46,9 +46,9 @@ public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends
         this.innerQuery = new ColQueryImpl(metadata) {
             @Override
             protected QueryIndexSupport createIndexSupport(
-                    Map<Expr<?>, Iterable<?>> exprToIt, JavaPatterns ops,
+                    Map<Expr<?>, Iterable<?>> exprToIt, JavaPatterns patterns,
                     List<Expr<?>> sources) {
-                return new DefaultIndexSupport(iteratorSource, ops, sources);
+                return new DefaultIndexSupport(iteratorSource, patterns, sources);
             }
         };
         setProjectable(innerQuery);

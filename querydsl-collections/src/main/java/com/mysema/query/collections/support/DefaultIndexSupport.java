@@ -38,11 +38,11 @@ public class DefaultIndexSupport extends SimpleIndexSupport {
      * Create a new DefaultIndexSupport instance
      * 
      * @param iteratorSource
-     * @param ops
+     * @param patterns
      */
-    public DefaultIndexSupport(IteratorSource iteratorSource, JavaPatterns ops,
+    public DefaultIndexSupport(IteratorSource iteratorSource, JavaPatterns patterns,
             List<? extends Expr<?>> sources) {
-        super(iteratorSource, ops, sources);
+        super(iteratorSource, patterns, sources);
         this.pathToCacheEntries = new HashMap<Path<?>, Map<?, ? extends Iterable<?>>>();
     }
 
@@ -56,12 +56,12 @@ public class DefaultIndexSupport extends SimpleIndexSupport {
             return this;
         }
         DefaultIndexSupport indexSupport = new DefaultIndexSupport(
-                iteratorSource, ops, sources);
+                iteratorSource, patterns, sources);
         indexSupport.pathToCacheEntries = this.pathToCacheEntries;
 
         // populate the "path eq path" index
         if (condition instanceof Operation) {
-            new DefaultIndexCreationTask(indexSupport, sources, ops, condition)
+            new DefaultIndexCreationTask(indexSupport, sources, patterns, condition)
                     .run();
         }
         return indexSupport;
@@ -111,7 +111,7 @@ public class DefaultIndexSupport extends SimpleIndexSupport {
             return this;
         }
         // create the index entry
-        Evaluator ev = EvaluatorUtils.create(ops, Collections
+        Evaluator ev = EvaluatorUtils.create(patterns, Collections
                 .<Expr<?>> singletonList((Expr<?>) path.getRoot()),
                 (Expr<?>) path);
         Map<?, ? extends Iterable<?>> map = QueryIteratorUtils.projectToMap(
