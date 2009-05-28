@@ -43,7 +43,7 @@ public class JavaPatterns extends OperationPatterns {
         add(Ops.ISNULL, "%s == null");
         add(Ops.ISNOTNULL, "%s != null");
 
-        add(Ops.ISTYPEOF, "%2$s.isInstance(%1$s)");        
+        add(Ops.INSTANCEOF, "%2$s.isInstance(%1$s)");        
         add(Ops.LIKE, functions + ".like(%s,%s)");
         
         // collection
