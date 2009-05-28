@@ -17,16 +17,13 @@ import org.apache.commons.lang.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysema.query.JoinType;
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
-import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.support.QueryBaseWithProjection;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.SubQuery;
-import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
 
