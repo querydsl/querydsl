@@ -15,11 +15,11 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.codegen.Field;
+import com.mysema.query.codegen.FieldModel;
 import com.mysema.query.codegen.FieldType;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.Serializers;
-import com.mysema.query.codegen.Type;
+import com.mysema.query.codegen.ClassModel;
 import com.mysema.query.util.FileUtils;
 
 /**
@@ -91,7 +91,7 @@ public class MetaDataExporter {
             // if (camelCase){
             // tableName = toCamelCase(tableName, true);
             // }
-            Type type = new Type(null, "java.lang", "java.lang.Object",
+            ClassModel type = new ClassModel(null, "java.lang", "java.lang.Object",
                     tableName);
             ResultSet columns = md.getColumns(null, schemaPattern, tables
                     .getString(3), null);
@@ -109,7 +109,7 @@ public class MetaDataExporter {
                 } else {
                     _type = FieldType.COMPARABLE;
                 }
-                type.addField(new Field(_name, null,
+                type.addField(new FieldModel(_name, null,
                         _class.getPackage().getName(), _class.getName(), _class
                                 .getSimpleName(), _type));
             }
@@ -119,7 +119,7 @@ public class MetaDataExporter {
         tables.close();
     }
 
-    private void serialize(Type type) {
+    private void serialize(ClassModel type) {
         // populate model
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("pre", namePrefix);
