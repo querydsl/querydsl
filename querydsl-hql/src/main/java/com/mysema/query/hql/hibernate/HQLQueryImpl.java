@@ -36,8 +36,8 @@ public class HQLQueryImpl extends HQLQueryBase<HQLQueryImpl> implements HQLQuery
         this(session, HQLPatterns.DEFAULT);
     }
 
-    public HQLQueryImpl(Session session, HQLPatterns ops) {
-        super(ops);
+    public HQLQueryImpl(Session session, HQLPatterns patterns) {
+        super(patterns);
         this.session = session;
     }
 

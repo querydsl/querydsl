@@ -37,8 +37,8 @@ public class JPAQLQueryImpl extends HQLQueryBase<JPAQLQueryImpl> implements JPAQ
         this(em, HQLPatterns.DEFAULT);
     }
 
-    public JPAQLQueryImpl(EntityManager em, HQLPatterns ops) {
-        super(ops);
+    public JPAQLQueryImpl(EntityManager em, HQLPatterns patterns) {
+        super(patterns);
         this.em = em;
     }
 

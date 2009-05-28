@@ -34,8 +34,8 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
 
     private boolean wrapElements = false;
 
-    public HQLSerializer(HQLPatterns ops) {
-        super(ops);
+    public HQLSerializer(HQLPatterns patterns) {
+        super(patterns);
     }
 
     public void serialize(QueryMetadata<HQLJoinMeta> metadata,

@@ -31,17 +31,17 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
 
     private String countRowsString, queryString;
 
-    private final HQLPatterns ops;
+    private final HQLPatterns patterns;
 
-    public HQLQueryBase(HQLPatterns ops) {
-        this.ops = ops;
+    public HQLQueryBase(HQLPatterns patterns) {
+        this.patterns = patterns;
     }
 
     private String buildQueryString(boolean forCountRow) {
         if (getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("No joins given");
         }
-        HQLSerializer serializer = new HQLSerializer(ops);
+        HQLSerializer serializer = new HQLSerializer(patterns);
         serializer.serialize(getMetadata(), forCountRow);
         constants = serializer.getConstants();
         return serializer.toString();
