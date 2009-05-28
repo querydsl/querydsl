@@ -6,25 +6,25 @@
 package com.mysema.query.codegen;
 
 /**
- * Parameter represents a parameter in a Constructor
+ * ParameterModel represents a parameter in a Constructor
  * 
  * @author tiwe
  * @version $Id$
  */
-public class Parameter implements Comparable<Parameter> {
+public class ParameterModel implements Comparable<ParameterModel> {
     private final String name, typeName;
 
-    public Parameter(String name, String typeName) {
+    public ParameterModel(String name, String typeName) {
         this.name = name;
         this.typeName = typeName;
     }
 
-    public int compareTo(Parameter o) {
+    public int compareTo(ParameterModel o) {
         return name.compareTo(o.name);
     }
 
     public boolean equals(Object o) {
-        return o instanceof Parameter && name.equals(((Parameter) o).name);
+        return o instanceof ParameterModel && name.equals(((ParameterModel) o).name);
     }
 
     public String getName() {

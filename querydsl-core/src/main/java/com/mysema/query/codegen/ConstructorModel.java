@@ -8,19 +8,19 @@ package com.mysema.query.codegen;
 import java.util.Collection;
 
 /**
- * Constructor represents a constructor for a DTO query type.
+ * ConstructorModel represents a constructor for a DTO query type.
  * 
  * @author tiwe
  * @version $Id$
  */
 public class ConstructorModel {
-    private final Collection<Parameter> parameters;
+    private final Collection<ParameterModel> parameters;
 
-    public ConstructorModel(Collection<Parameter> params) {
+    public ConstructorModel(Collection<ParameterModel> params) {
         parameters = params;
     }
 
-    public Collection<Parameter> getParameters() {
+    public Collection<ParameterModel> getParameters() {
         return parameters;
     }
 

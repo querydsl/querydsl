@@ -14,7 +14,7 @@ public final class Serializers {
 
     static {
         configuration = new Configuration();
-        configuration.setClassForTemplateLoading(Serializer.class, "/");
+        configuration.setClassForTemplateLoading(Serializers.class, "/");
         configuration.setObjectWrapper(new DefaultObjectWrapper());
     }
     

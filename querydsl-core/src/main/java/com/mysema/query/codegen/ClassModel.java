@@ -16,7 +16,7 @@ import java.util.TreeSet;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * Type represents a query domain type.
+ * ClassModel represents a query domain type.
  * 
  * @author tiwe
  * @version $Id$

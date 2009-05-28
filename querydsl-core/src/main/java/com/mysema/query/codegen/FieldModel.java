@@ -6,7 +6,7 @@
 package com.mysema.query.codegen;
 
 /**
- * Field represents a field / property in a query domain type.
+ * FieldModel represents a field / property in a query domain type.
  * 
  * @author tiwe
  * @version $Id$
