@@ -9,8 +9,8 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 
-import com.mysema.query.apt.model.Field;
-import com.mysema.query.apt.model.Type;
+import com.mysema.query.codegen.Field;
+import com.mysema.query.codegen.Type;
 
 /**
  * TypeFactory provides

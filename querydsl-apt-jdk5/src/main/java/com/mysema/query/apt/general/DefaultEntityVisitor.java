@@ -10,9 +10,9 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.mysema.query.apt.model.Field;
-import com.mysema.query.apt.model.FieldType;
-import com.mysema.query.apt.model.Type;
+import com.mysema.query.codegen.Field;
+import com.mysema.query.codegen.FieldType;
+import com.mysema.query.codegen.Type;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.InterfaceDeclaration;

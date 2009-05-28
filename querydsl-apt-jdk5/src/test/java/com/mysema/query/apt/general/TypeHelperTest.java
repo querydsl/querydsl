@@ -15,8 +15,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.mysema.query.apt.model.Field;
-import com.mysema.query.apt.model.Type;
+import com.mysema.query.codegen.Type;
 
 /**
  * TypeHelperTest provides

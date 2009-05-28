@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.mysema.query.apt.model.Constructor;
-import com.mysema.query.apt.model.Parameter;
-import com.mysema.query.apt.model.Type;
+import com.mysema.query.codegen.Constructor;
+import com.mysema.query.codegen.Parameter;
+import com.mysema.query.codegen.Type;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;
 import com.sun.mirror.declaration.ParameterDeclaration;

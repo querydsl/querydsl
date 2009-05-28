@@ -5,8 +5,10 @@
  */
 package com.mysema.query.apt.jpa;
 
-import static com.mysema.query.apt.Constants.*;
-
+import static com.mysema.query.apt.Constants.JPA_EMBEDDABLE;
+import static com.mysema.query.apt.Constants.JPA_ENTITY;
+import static com.mysema.query.apt.Constants.JPA_SUPERCLASS;
+import static com.mysema.query.apt.Constants.QD_DTO;
 import static com.sun.mirror.util.DeclarationVisitors.NO_OP;
 import static com.sun.mirror.util.DeclarationVisitors.getDeclarationScanner;
 
@@ -14,7 +16,7 @@ import java.util.Map;
 
 import com.mysema.query.apt.general.DefaultEntityVisitor;
 import com.mysema.query.apt.general.GeneralProcessor;
-import com.mysema.query.apt.model.Type;
+import com.mysema.query.codegen.Type;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
 import com.sun.mirror.declaration.Declaration;

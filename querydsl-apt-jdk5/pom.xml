@@ -6,12 +6,12 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>0.3.10-SNAPSHOT</version>
+    <version>0.3.11-SNAPSHOT</version>
   </parent>
 
   <groupId>com.mysema.querydsl</groupId>
-  <artifactId>querydsl-apt</artifactId>
-  <name>Querydsl - APT support</name>
+  <artifactId>querydsl-apt-jdk5</artifactId>
+  <name>Querydsl - APT for JDK5 support</name>
   <description>source code generation for querydsl</description>
   <packaging>jar</packaging>
 
