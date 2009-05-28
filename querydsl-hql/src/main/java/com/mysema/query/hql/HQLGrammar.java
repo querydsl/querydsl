@@ -15,15 +15,13 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.ESimple;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.OBoolean;
+import com.mysema.query.types.operation.OComparable;
+import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.quant.QBoolean;
-import com.mysema.query.types.quant.QComparable;
-import com.mysema.query.types.quant.QNumber;
-import com.mysema.query.types.quant.QSimple;
 
 /**
  * HqlGrammar extends the Query DSL base grammar to provide HQL specific syntax
@@ -35,47 +33,35 @@ import com.mysema.query.types.quant.QSimple;
 public class HQLGrammar extends GrammarWithAlias {
 
     public static <D> Expr<D> all(CollectionType<D> col) {
-        return new QSimple<D>(col.getElementType(), OpQuant.ALL, col);
+        return new OSimple<Object,D>(col.getElementType(), OpQuant.ALL, (Expr<?>)col);
     }
 
-    public static <D extends Number & Comparable<? super D>> ENumber<D> all(CollectionType<D> col) {
-        return new QNumber<D>(col.getElementType(), OpQuant.ALL, col);
-    }
-
-    public static <D> ESimple<D> any(CollectionType<D> col) {
-        return new QSimple<D>(col.getElementType(), OpQuant.ANY, col);
-    }
-
-    public static <D extends Number & Comparable<? super D>> ENumber<D> any(CollectionType<D> col) {
-        return new QNumber<D>(col.getElementType(), OpQuant.ANY, col);
+    public static <D> Expr<D> any(CollectionType<D> col) {
+        return new OSimple<Object,D>(col.getElementType(), OpQuant.ANY, (Expr<?>)col);
     }
 
     public static <A extends Comparable<? super A>> EComparable<A> avg(PCollection<A> col) {
-        return new QComparable<A>(col.getElementType(), OpQuant.AVG_IN_COL, col);
+        return new OComparable<Number,A>(col.getElementType(), OpQuant.AVG_IN_COL, (Expr<?>)col);
     }
 
     public static EComparable<Date> current_date() {
-        return operationFactory.createComparable(Date.class,Ops.DateTime.CURRENT_DATE);
+        return operationFactory.createComparable(Date.class,Ops.DateTimeOps.CURRENT_DATE);
     }
 
     public static EComparable<Date> current_time() {
-        return operationFactory.createComparable(Date.class,Ops.DateTime.CURRENT_TIME);
+        return operationFactory.createComparable(Date.class,Ops.DateTimeOps.CURRENT_TIME);
     }
 
     public static EComparable<Date> current_timestamp() {
-        return operationFactory.createComparable(Date.class,Ops.DateTime.CURRENT_TIMESTAMP);
+        return operationFactory.createComparable(Date.class,Ops.DateTimeOps.CURRENT_TIMESTAMP);
     }
 
     public static EComparable<Date> day(Expr<Date> date) {
-        return operationFactory.createComparable(Date.class,Ops.DateTime.DAY, date);
+        return operationFactory.createComparable(Date.class,Ops.DateTimeOps.DAY, date);
     }
 
-    // public static <T> Expr<T> distinct(Path<T> left){
-    // return new DistinctPath<T>(left);
-    // }
-
     public static EBoolean exists(CollectionType<?> col) {
-        return new QBoolean(OpQuant.EXISTS, col);
+        return new OBoolean(OpQuant.EXISTS, (Expr<?>)col);
     }
 
     public static <A> SubQuery<HQLJoinMeta, A> from(PEntity<A> select) {
@@ -83,55 +69,23 @@ public class HQLGrammar extends GrammarWithAlias {
     }
 
     public static EComparable<Date> hour(Expr<Date> date) {
-        return operationFactory.createComparable(Date.class, Ops.DateTime.HOUR, date);
+        return operationFactory.createComparable(Date.class, Ops.DateTimeOps.HOUR, date);
     }
-
-//    public static PComponentCollection<Integer> indices(PCollection<?> col) {
-//        return new PComponentCollection<Integer>(Integer.class,new PathMetadata<Collection<Integer>>(col, null,HqlPathType.LISTINDICES));
-//    }
-//
-//    public static <K, V> PComponentCollection<K> indices(PMap<K, V> col) {
-//        return new PComponentCollection<K>(col.getKeyType(),new PathMetadata<Collection<Integer>>(col, null,HqlPathType.LISTINDICES));
-//    }
 
     public static <A extends Comparable<? super A>> EComparable<A> max(PCollection<A> left) {
-        return new QComparable<A>(left.getElementType(), OpQuant.MAX_IN_COL,left);
+        return new OComparable<Number,A>(left.getElementType(), OpQuant.MAX_IN_COL, (Expr<?>)left);
     }
-
-//    public static <A> PEntity<A> maxelement(PEntityCollection<A> col) {
-//        return new PEntity<A>(col.getElementType(), col.getEntityName(),new PathMetadata<A>(col, null, HqlPathType.MINELEMENT));
-//    }
-//
-//    public static <A> PComparable<Integer> maxindex(PComponentCollection<A> col) {
-//        return new PComparable<Integer>(Integer.class,new PathMetadata<Integer>(col, null, HqlPathType.MAXINDEX));
-//    }
-//
-//    public static <A> PNumber<Integer> maxindex(PEntityCollection<A> col) {
-//        return new PNumber<Integer>(Integer.class, new PathMetadata<Integer>(col, null, HqlPathType.MAXINDEX));
-//    }
 
     public static <A extends Comparable<? super A>> EComparable<A> min(PCollection<A> left) {
-        return new QComparable<A>(left.getElementType(), OpQuant.MIN_IN_COL, left);
+        return new OComparable<Number,A>(left.getElementType(), OpQuant.MIN_IN_COL, (Expr<?>)left);
     }
 
-//    public static <A> PEntity<A> minelement(PEntityCollection<A> col) {
-//        return new PEntity<A>(col.getElementType(), col.getEntityName(),new PathMetadata<A>(col, null, HqlPathType.MINELEMENT));
-//    }
-//
-//    public static <A> PComparable<Integer> minindex(PComponentCollection<A> col) {
-//        return new PComparable<Integer>(Integer.class,new PathMetadata<Integer>(col, null, HqlPathType.MININDEX));
-//    }
-//
-//    public static <A> PComparable<Integer> minindex(PEntityCollection<A> col) {
-//        return new PComparable<Integer>(Integer.class,new PathMetadata<Integer>(col, null, HqlPathType.MININDEX));
-//    }
-
     public static EComparable<Date> minute(Expr<Date> date) {
-        return operationFactory.createComparable(Date.class,Ops.DateTime.MINUTE, date);
+        return operationFactory.createComparable(Date.class,Ops.DateTimeOps.MINUTE, date);
     }
 
     public static EComparable<Date> month(Expr<Date> date) {
-        return operationFactory.createComparable(Date.class,Ops.DateTime.MONTH, date);
+        return operationFactory.createComparable(Date.class,Ops.DateTimeOps.MONTH, date);
     }
 
     public static <A> Expr<A> newInstance(Class<A> a, Expr<?>... args) {
@@ -139,11 +93,11 @@ public class HQLGrammar extends GrammarWithAlias {
     }
 
     public static EBoolean notExists(CollectionType<?> col) {
-        return new QBoolean(OpQuant.NOTEXISTS, col);
+        return new OBoolean(OpQuant.NOTEXISTS, (Expr<?>)col);
     }
 
     public static EComparable<Date> second(Expr<Date> date) {
-        return operationFactory.createComparable(Date.class,Ops.DateTime.SECOND, date);
+        return operationFactory.createComparable(Date.class,Ops.DateTimeOps.SECOND, date);
     }
 
     public static <A> SubQuery<HQLJoinMeta, A> select(Expr<A> select) {
@@ -168,7 +122,7 @@ public class HQLGrammar extends GrammarWithAlias {
         }else if (type.equals(Float.class)){
             type = Double.class;
         }            
-        return operationFactory.createNumber((Class<D>) type, HQLPatterns.OpHql.SUM, left);
+        return operationFactory.createNumber((Class<D>) type, Ops.SUM_AGG, left);
     }
 
     public static <D extends Number & Comparable<? super D>> ENumber<Long> sumAsLong(Expr<D> left) {
@@ -180,11 +134,11 @@ public class HQLGrammar extends GrammarWithAlias {
     }
 
     public static EComparable<Date> sysdate() {
-        return operationFactory.createComparable(Date.class,Ops.DateTime.SYSDATE);
+        return operationFactory.createComparable(Date.class,Ops.DateTimeOps.SYSDATE);
     }
 
     public static EComparable<Date> year(Expr<Date> date) {
-        return operationFactory.createComparable(Date.class,Ops.DateTime.YEAR, date);
+        return operationFactory.createComparable(Date.class,Ops.DateTimeOps.YEAR, date);
     }
 
 }

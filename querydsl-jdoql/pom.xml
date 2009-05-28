@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>0.3.9-SNAPSHOT</version>
+    <version>0.3.10-SNAPSHOT</version>
   </parent>
 
   <groupId>com.mysema.querydsl</groupId>
@@ -47,14 +47,6 @@
       <version>${dn.version}</version>
       <scope>test</scope>
     </dependency>
-<!--     
-    <dependency>
-      <groupId>org.datanucleus</groupId>
-      <artifactId>datanucleus-enhancer</artifactId>
-      <version>${dn.version}</version>
-      <scope>test</scope>
-    </dependency>
- -->    
     <dependency>
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
@@ -73,6 +65,7 @@
 
   <build>
     <plugins>      
+      <!-- this plugin does the JDO class enhancement -->
       <plugin>
         <groupId>org.datanucleus</groupId>
         <artifactId>maven-datanucleus-plugin</artifactId>
@@ -93,6 +86,7 @@
         </executions>
       </plugin>    
     
+      <!-- this plugin does the Querydsl query type generation via APT -->
       <plugin>
         <groupId>org.apache.myfaces.tobago</groupId>
         <artifactId>maven-apt-plugin</artifactId>

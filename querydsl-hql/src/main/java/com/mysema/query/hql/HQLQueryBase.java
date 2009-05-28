@@ -8,15 +8,12 @@ package com.mysema.query.hql;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.mysema.query.JoinExpression;
-import com.mysema.query.JoinType;
 import com.mysema.query.support.QueryBaseWithProjection;
 import com.mysema.query.types.CascadingBoolean;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EEntity;
+import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PathMetadata;
@@ -29,9 +26,6 @@ import com.mysema.query.types.path.PathMetadata;
  */
 public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
         extends QueryBaseWithProjection<HQLJoinMeta, SubType> {
-
-    private static final Logger logger = LoggerFactory
-            .getLogger(HQLQueryBase.class);
 
     private List<Object> constants;
 
@@ -60,6 +54,11 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
         countRowsString = null;
     }
 
+    @SuppressWarnings("unchecked")
+    private <D> Expr<D> createAlias(EEntity<?> target, PEntity<D> alias){
+        return new OSimple<Object,D>((Class<D>)alias.getType(), HQLPatterns.ALIAS, target, alias);
+    }
+
     protected EBoolean createQBECondition(PEntity<?> entity,
             Map<String, Object> map) {
         CascadingBoolean expr = new CascadingBoolean();
@@ -76,37 +75,33 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
         return expr.create();
     }
 
-    public SubType forExample(PEntity<?> entity, Map<String, Object> map) {
-        addToProjection(entity).from(entity);
-        try {
-            where(createQBECondition(entity, map));
-            return _this;
-        } catch (Exception e) {
-            String error = "Caught " + e.getClass().getName();
-            logger.error(error, e);
-            throw new RuntimeException(e.getMessage(), e);
-        }
+    public SubType from(PEntity<?>... o) {
+        super.from(o);
+        return _this;
     }
+    
 
+    public SubType fullJoin(EEntity<?> target, PEntity<?> alias) {
+        super.fullJoin(createAlias(target,alias));
+        return _this;
+    }
+    
     protected List<Object> getConstants() {
         return constants;
     }
-
-    public SubType innerJoin(HQLJoinMeta meta, EEntity<?> o) {
-        getMetadata().addJoin(
-                new JoinExpression<HQLJoinMeta>(JoinType.INNERJOIN, o, meta));
+    
+    public SubType innerJoin(EEntity<?> target, PEntity<?> alias) {
+        super.innerJoin(createAlias(target,alias));
         return _this;
     }
 
-    public SubType fullJoin(HQLJoinMeta meta, EEntity<?> o) {
-        getMetadata().addJoin(
-                new JoinExpression<HQLJoinMeta>(JoinType.FULLJOIN, o, meta));
+    public SubType join(EEntity<?> target, PEntity<?> alias) {
+        super.join(createAlias(target,alias));
         return _this;
     }
 
-    public SubType leftJoin(HQLJoinMeta meta, EEntity<?> o) {
-        getMetadata().addJoin(
-                new JoinExpression<HQLJoinMeta>(JoinType.LEFTJOIN, o, meta));
+    public SubType leftJoin(EEntity<?> target, PEntity<?> alias) {
+        super.leftJoin(createAlias(target,alias));
         return _this;
     }
 

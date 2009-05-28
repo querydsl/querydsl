@@ -86,7 +86,7 @@ public class JavaPatterns extends OperationPatterns {
         
         // math
         try {
-            for (Field f : Ops.Math.class.getFields()) {
+            for (Field f : Ops.MathOps.class.getFields()) {
                 OperatorImpl<?> op = (OperatorImpl<?>) f.get(null);
                 add(op, "Math." + getPattern(op));
             }

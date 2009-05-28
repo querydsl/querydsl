@@ -12,9 +12,9 @@ import java.util.List;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.BaseSerializer;
-import com.mysema.query.types.*;
-import com.mysema.query.types.alias.ASimple;
-import com.mysema.query.types.alias.AToPath;
+import com.mysema.query.types.Order;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.EConstructor;
@@ -178,14 +178,14 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
 
     }
 
-    protected void visit(AToPath expr) {
-        handle(expr.getFrom()).append(ops.tableAlias()).visit(expr.getTo());
-    }
-
-    @Override
-    protected void visit(ASimple<?> expr) {
-        handle(expr.getFrom()).append(ops.columnAlias()).append(expr.getTo());
-    }
+//    protected void visit(AToPath expr) {
+//        handle(expr.getFrom()).append(ops.tableAlias()).visit(expr.getTo());
+//    }
+//
+//    @Override
+//    protected void visit(ASimple<?> expr) {
+//        handle(expr.getFrom()).append(ops.columnAlias()).append(expr.getTo());
+//    }
 
     @Override
     protected void visit(EConstant<?> expr) {
@@ -214,13 +214,13 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
         }
     }
 
-    protected void visit(Projection expr) {
-        visit((PEntity<?>) expr);
-    }
+//    protected void visit(Projection expr) {
+//        visit((PEntity<?>) expr);
+//    }
 
     protected void visit(SubQuery<Object, ?> query) {
         append("(");
-        serialize(query.getQuery().getMetadata(), false);
+        serialize(query.getMetadata(), false);
         append(")");
     }
 

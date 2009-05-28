@@ -8,8 +8,6 @@ package com.mysema.query.jdoql;
 import java.util.List;
 
 import com.mysema.query.serialization.BaseSerializer;
-import com.mysema.query.types.alias.ASimple;
-import com.mysema.query.types.alias.AToPath;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operator;
@@ -29,16 +27,6 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
     public JDOQLSerializer(JDOQLPatterns ops, PEntity<?> candidate) {
         super(ops);
         this.candidatePath = candidate;
-    }
-
-    @Override
-    protected void visit(ASimple<?> expr) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    protected void visit(AToPath expr) {
-        throw new UnsupportedOperationException();
     }
 
     @Override

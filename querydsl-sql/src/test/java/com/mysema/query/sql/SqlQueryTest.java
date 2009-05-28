@@ -124,11 +124,11 @@ public abstract class SqlQueryTest {
                 .println(q().from(survey).list(MathFunctions.sqrt(survey.id)));
     }
 
-    @Test
-    public void testColumnAlias() throws SQLException {
-        q().from(employee).list(employee.firstname.as("fn"),
-                employee.firstname.lower().as("fnLc"));
-    }
+//    @Test
+//    public void testColumnAlias() throws SQLException {
+//        q().from(employee).list(employee.firstname.as("fn"),
+//                employee.firstname.lower().as("fnLc"));
+//    }
 
     @Test
     public void testSelectConcat() throws SQLException {
@@ -215,36 +215,36 @@ public abstract class SqlQueryTest {
         }
     }
 
-    class EmployeeProjection extends Projection {
-        public EmployeeProjection(String entityName) {
-            super(entityName);
-        }
+//    class EmployeeProjection extends Projection {
+//        public EmployeeProjection(String entityName) {
+//            super(entityName);
+//        }
+//
+//        Expr<Integer> id;
+//        Expr<String> firstname;
+//        Expr<Integer> superiorId;
+//    }
 
-        Expr<Integer> id;
-        Expr<String> firstname;
-        Expr<Integer> superiorId;
-    }
+//    @Test
+//    public void testProjectionFromEntity() throws SQLException {
+//        EmployeeProjection proj = new EmployeeProjection("proj");
+//        for (Object[] row : q().from(employee).leftJoin(proj.from(employee2))
+//                .on(proj.id.eq(employee.superiorId)).list(employee.id, proj.id,
+//                        proj.superiorId)) {
+//            System.out.println(row[0] + ", " + row[1]);
+//        }
+//    }
 
-    @Test
-    public void testProjectionFromEntity() throws SQLException {
-        EmployeeProjection proj = new EmployeeProjection("proj");
-        for (Object[] row : q().from(employee).leftJoin(proj.from(employee2))
-                .on(proj.id.eq(employee.superiorId)).list(employee.id, proj.id,
-                        proj.superiorId)) {
-            System.out.println(row[0] + ", " + row[1]);
-        }
-    }
-
-    @Test
-    public void testProjectionFromSubQuery() throws SQLException {
-        EmployeeProjection proj = new EmployeeProjection("proj");
-        for (Object[] row : q().from(employee).leftJoin(
-                proj.from(select(employee2.id, employee2.firstname).from(
-                        employee2))).on(proj.id.eq(employee.superiorId)).list(
-                employee.id, proj.id)) {
-            System.out.println(row[0] + ", " + row[1]);
-        }
-    }
+//    @Test
+//    public void testProjectionFromSubQuery() throws SQLException {
+//        EmployeeProjection proj = new EmployeeProjection("proj");
+//        for (Object[] row : q().from(employee).leftJoin(
+//                proj.from(select(employee2.id, employee2.firstname).from(
+//                        employee2))).on(proj.id.eq(employee.superiorId)).list(
+//                employee.id, proj.id)) {
+//            System.out.println(row[0] + ", " + row[1]);
+//        }
+//    }
 
     @Test
     public void testIllegal() throws SQLException {

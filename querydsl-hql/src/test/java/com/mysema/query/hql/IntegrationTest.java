@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
-import com.mysema.query.hql.hibernate.HQLQuery;
+import com.mysema.query.hql.hibernate.HQLQueryImpl;
 
 /**
  * HibernatePersistenceTest provides.
@@ -37,7 +37,7 @@ public class IntegrationTest extends ParserTest {
 
                     // create Query and execute it
                     Query query = session.createQuery(toString());
-                    HQLQuery.setConstants(query, getConstants());
+                    HQLQueryImpl.setConstants(query, getConstants());
                     try {
                         query.list();
                     } catch (Exception e) {

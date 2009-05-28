@@ -14,7 +14,6 @@ import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysema.query.Projectable;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.hql.HQLGrammar;
@@ -23,25 +22,21 @@ import com.mysema.query.hql.HQLQueryBase;
 import com.mysema.query.types.expr.Expr;
 
 /**
- * AbstractHqlQuery provides the same features as HqlQuery, but acts as a super
- * class for domain specific query subclasses
  * 
  * @author tiwe
- * @version $Id$
+ *
  */
-public class AbstractHQLQuery<A extends AbstractHQLQuery<A>> extends
-        HQLQueryBase<A> implements Projectable {
+public class HQLQueryImpl extends HQLQueryBase<HQLQueryImpl> implements HQLQuery{
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(HQLQuery.class);
+    private static final Logger logger = LoggerFactory.getLogger(HQLQueryImpl.class);
 
     private final Session session;
 
-    public AbstractHQLQuery(Session session) {
+    public HQLQueryImpl(Session session) {
         this(session, HQLPatterns.DEFAULT);
     }
 
-    public AbstractHQLQuery(Session session, HQLPatterns ops) {
+    public HQLQueryImpl(Session session, HQLPatterns ops) {
         super(ops);
         this.session = session;
     }

@@ -14,7 +14,6 @@ import com.mysema.query.serialization.OperationPatterns;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.OperatorImpl;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.types.path.PathType;
 
 /**
@@ -49,11 +48,14 @@ public class HQLPatterns extends OperationPatterns {
         add(Ops.NOTBETWEEN, "%s not between %s and %s", 30);
 
         // numeric
-        add(Ops.Math.SQRT, "sqrt(%s)");
+        add(Ops.MathOps.SQRT, "sqrt(%s)");
 
         // various        
         add(Ops.ISNULL, "%s is null", 26);
         add(Ops.ISNOTNULL, "%s is not null", 26);
+        
+        // TODO : move ALIAS to querydsl-core
+        add(ALIAS, "%s as %s");
         
         // collection
         add(Ops.IN, "%s in %s");
@@ -71,20 +73,17 @@ public class HQLPatterns extends OperationPatterns {
         add(Ops.TRIM, "trim(%s)");
         add(Ops.UPPER, "upper(%s)");
 
-        // HQL specific
-        add(OpHql.SUM, "sum(%s)");
-
         // date time
-        add(Ops.DateTime.SYSDATE, "sysdate");
-        add(Ops.DateTime.CURRENT_DATE, "current_date()");
-        add(Ops.DateTime.CURRENT_TIME, "current_time()");
-        add(Ops.DateTime.CURRENT_TIMESTAMP, "current_timestamp()");
-        add(Ops.DateTime.SECOND, "second(%s)");
-        add(Ops.DateTime.MINUTE, "minute(%s)");
-        add(Ops.DateTime.HOUR, "hour(%s)");
-        add(Ops.DateTime.DAY, "day(%s)");
-        add(Ops.DateTime.MONTH, "month(%s)");
-        add(Ops.DateTime.YEAR, "year(%s)");
+        add(Ops.DateTimeOps.SYSDATE, "sysdate");
+        add(Ops.DateTimeOps.CURRENT_DATE, "current_date()");
+        add(Ops.DateTimeOps.CURRENT_TIME, "current_time()");
+        add(Ops.DateTimeOps.CURRENT_TIMESTAMP, "current_timestamp()");
+        add(Ops.DateTimeOps.SECOND, "second(%s)");
+        add(Ops.DateTimeOps.MINUTE, "minute(%s)");
+        add(Ops.DateTimeOps.HOUR, "hour(%s)");
+        add(Ops.DateTimeOps.DAY, "day(%s)");
+        add(Ops.DateTimeOps.MONTH, "month(%s)");
+        add(Ops.DateTimeOps.YEAR, "year(%s)");
 
         // quantified expressions
         add(OpQuant.AVG_IN_COL, "avg(%s)");
@@ -114,44 +113,26 @@ public class HQLPatterns extends OperationPatterns {
 //        add(HqlPathType.LISTINDICES, "indices(%s)");
 //        add(HqlPathType.MAPINDICES, "indices(%s)");
     }
-
-    /**
-     * The Interface OpHql.
-     */
-    public interface OpHql {
-//        Operator<java.lang.Boolean> ISEMPTY = new Operator<java.lang.Boolean>(Collection.class);
-//        Operator<java.lang.Boolean> ISNOTEMPTY = new Operator<java.lang.Boolean>(Collection.class);
-        OperatorImpl<Number> SUM = new OperatorImpl<Number>(Number.class);
-    }
+    
+    public static final Operator<Object> ALIAS = new OperatorImpl<Object>(Object.class, Object.class);
 
     /**
      * The Interface OpQuant.
      */
+    // TODO : move to core
     public interface OpQuant {
-        OperatorImpl<java.lang.Number> AVG_IN_COL = new OperatorImpl<java.lang.Number>(Collection.class);
-        OperatorImpl<java.lang.Number> MAX_IN_COL = new OperatorImpl<java.lang.Number>(Collection.class);
-        OperatorImpl<java.lang.Number> MIN_IN_COL = new OperatorImpl<java.lang.Number>(Collection.class);
+        Operator<Number> AVG_IN_COL = new OperatorImpl<Number>(Collection.class);
+        Operator<Number> MAX_IN_COL = new OperatorImpl<Number>(Collection.class);
+        Operator<Number> MIN_IN_COL = new OperatorImpl<Number>(Collection.class);
 
         // some / any = true for any
         // all = true for all
         // exists = true is subselect matches
         // not exists = true if subselect doesn't match
-        OperatorImpl<?> ANY = new OperatorImpl<Object>(Object.class);
-        OperatorImpl<?> ALL = new OperatorImpl<Object>(Object.class);
-        OperatorImpl<?> EXISTS = new OperatorImpl<Object>(Object.class);
-        OperatorImpl<?> NOTEXISTS = new OperatorImpl<Object>(Object.class);
+        Operator<Object> ANY = new OperatorImpl<Object>(Object.class);
+        Operator<Object> ALL = new OperatorImpl<Object>(Object.class);
+        Operator<Boolean> EXISTS = new OperatorImpl<Boolean>(Object.class);
+        Operator<Boolean> NOTEXISTS = new OperatorImpl<Boolean>(Object.class);
     }
-
-//    /**
-//     * The Interface HqlPathType.
-//     */
-//    public interface HqlPathType {
-//        Operator<?> MINELEMENT = new Operator<Object>(Object.class);
-//        Operator<?> MAXELEMENT = new Operator<Object>(Object.class);
-//        Operator<?> MININDEX = new Operator<Object>(Object.class);
-//        Operator<?> MAXINDEX = new Operator<Object>(Object.class);
-//        Operator<?> LISTINDICES = new Operator<Object>(Object.class);
-//        Operator<?> MAPINDICES = new Operator<Object>(Object.class);
-//    }
 
 }

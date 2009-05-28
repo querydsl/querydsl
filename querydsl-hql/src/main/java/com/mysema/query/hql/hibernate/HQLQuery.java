@@ -1,29 +1,45 @@
-/*
- * Copyright (c) 2009 Mysema Ltd.
- * All rights reserved.
- * 
- */
 package com.mysema.query.hql.hibernate;
 
-import org.hibernate.Session;
-
-import com.mysema.query.hql.HQLPatterns;
+import com.mysema.query.Projectable;
+import com.mysema.query.QueryModifiers;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EEntity;
+import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.PEntity;
 
 /**
- * HqlQuery provides a fluent statically typed interface for creating HQL
- * queries.
+ * 
  * 
  * @author tiwe
- * @version $Id$
+ *
  */
-public class HQLQuery extends AbstractHQLQuery<HQLQuery> {
+public interface HQLQuery extends Projectable{
+    
+    HQLQuery from(PEntity<?>... o);
 
-    public HQLQuery(Session session) {
-        super(session);
-    }
+    HQLQuery innerJoin(EEntity<?> target, PEntity<?> alias);
+    
+    HQLQuery join(EEntity<?> target, PEntity<?> alias);
+    
+    HQLQuery fullJoin(EEntity<?> target, PEntity<?> alias);
+    
+    HQLQuery leftJoin(EEntity<?> target, PEntity<?> alias);
+    
+    HQLQuery on(EBoolean cond);
+    
+    HQLQuery groupBy(Expr<?>... e);
+    
+    HQLQuery having(EBoolean... cond);
+    
+    HQLQuery where(EBoolean... o);
+    
+    HQLQuery orderBy(OrderSpecifier<?>... o);
+        
+    HQLQuery limit(long limit);
 
-    public HQLQuery(Session session, HQLPatterns ops) {
-        super(session, ops);
-    }
+    HQLQuery offset(long offset);
+
+    HQLQuery restrict(QueryModifiers mod);
 
 }

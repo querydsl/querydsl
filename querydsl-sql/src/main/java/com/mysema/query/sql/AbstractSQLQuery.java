@@ -17,12 +17,16 @@ import org.apache.commons.lang.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.JoinType;
 import com.mysema.query.Projectable;
+import com.mysema.query.Query;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.support.QueryBaseWithProjection;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
 
@@ -33,7 +37,7 @@ import com.mysema.query.types.expr.Expr;
  * @version $Id$
  */
 public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
-        extends QueryBaseWithProjection<Object, SubType> implements Projectable {
+        extends QueryBaseWithProjection<Object, SubType> implements Projectable, Query<SubType> {
 
     private static final Logger logger = LoggerFactory
             .getLogger(AbstractSQLQuery.class);
@@ -283,7 +287,7 @@ public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
 
         @SuppressWarnings("unchecked")
         public List<RT> list() throws SQLException {
-            if (sq[0].getQuery().getMetadata().getProjection().size() == 1) {
+            if (sq[0].getMetadata().getProjection().size() == 1) {
                 return AbstractSQLQuery.this.listSingle(null);
             } else {
                 return (List<RT>) AbstractSQLQuery.this.listMultiple();
@@ -307,4 +311,23 @@ public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
         return !list.isEmpty() ? list.get(0) : null;
     }
 
+    public SubType from(Expr<?>... o) {
+        return super.from(o);        
+    }
+
+    public SubType fullJoin(Expr<?> o) {
+        return super.fullJoin(o);
+    }
+
+    public SubType innerJoin(Expr<?> o) {
+        return super.innerJoin(o);
+    }
+
+    public SubType join(Expr<?> o) {
+        return super.join(o);
+    }
+
+    public SubType leftJoin(Expr<?> o) {
+        return super.leftJoin(o);
+    }
 }

@@ -22,24 +22,22 @@ import com.mysema.query.hql.HQLQueryBase;
 import com.mysema.query.types.expr.Expr;
 
 /**
- * AbstractJpaqlQuery provides
+ * 
  * 
  * @author tiwe
- * @version $Id$
+ *
  */
-public class AbstractJPAQLQuery<SubType extends AbstractJPAQLQuery<SubType>>
-        extends HQLQueryBase<SubType> {
+public class JPAQLQueryImpl extends HQLQueryBase<JPAQLQueryImpl> {
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(JPAQLQuery.class);
+    private static final Logger logger = LoggerFactory.getLogger(JPAQLQueryImpl.class);
 
     private final EntityManager em;
 
-    public AbstractJPAQLQuery(EntityManager em) {
+    public JPAQLQueryImpl(EntityManager em) {
         this(em, HQLPatterns.DEFAULT);
     }
 
-    public AbstractJPAQLQuery(EntityManager em, HQLPatterns ops) {
+    public JPAQLQueryImpl(EntityManager em, HQLPatterns ops) {
         super(ops);
         this.em = em;
     }
@@ -111,8 +109,7 @@ public class AbstractJPAQLQuery<SubType extends AbstractJPAQLQuery<SubType>>
         return list(projection).iterator();
     }
 
-    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second,
-            Expr<?>... rest) {
+    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         // TODO Auto-generated method stub
         return list(first, second, rest).iterator();
     }

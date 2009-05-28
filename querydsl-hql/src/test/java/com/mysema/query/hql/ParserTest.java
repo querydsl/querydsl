@@ -109,11 +109,10 @@ public class ParserTest implements Constants {
         // parse(
         // "from eg.Cat as cat inner join cat.mate as mate left outer join cat.kittens as kitten"
         // );
-        q().from(cat).innerJoin(cat.mate.as(mate)).leftJoin(
-                cat.kittens.as(kitten)).parse();
+        q().from(cat).innerJoin(cat.mate, mate).leftJoin(cat.kittens, kitten).parse();
 
         // parse( "from eg.Cat as cat left join cat.mate.kittens as kittens" );
-        q().from(cat).leftJoin(cat.mate.kittens.as(kittens)).parse();
+        q().from(cat).leftJoin(cat.mate.kittens, kitten).parse();
 
         // parse( "from Formula form full join form.parameter param" );
         // HSQLDB doesn't support full join
@@ -122,14 +121,12 @@ public class ParserTest implements Constants {
         // parse(
         // "from eg.Cat as cat join cat.mate as mate left join cat.kittens as kitten"
         // );
-        q().from(cat).join(cat.mate.as(mate)).leftJoin(cat.kittens.as(kitten))
-                .parse();
+        q().from(cat).join(cat.mate, mate).leftJoin(cat.kittens, kitten).parse();
 
         // parse(
         // "from eg.Cat as cat\ninner join fetch cat.mate\nleft join fetch cat.kittens"
         // );
-        q().from(cat).innerJoin(cat.mate).leftJoin(HQLJoinMeta.FETCH,
-                cat.kittens).parse();
+        q().from(cat).innerJoin(cat.mate, mate).leftJoin(cat.kittens, kitten).parse();
     }
 
     @Test
@@ -144,11 +141,10 @@ public class ParserTest implements Constants {
         // parse(
         // "from eg.Cat as cat inner join cat.mate as mate left outer join cat.kittens as kitten"
         // );
-        q().from($(c)).innerJoin($(c.getMate()).as($(m))).leftJoin(
-                $(c.getKittens()).as($(k))).parse();
+        q().from($(c)).innerJoin($(c.getMate()),$(m)).leftJoin($(c.getKittens()),$(k)).parse();
 
         // parse( "from eg.Cat as cat left join cat.mate.kittens as kittens" );
-        q().from($(c)).leftJoin($(c.getMate().getKittens()).as($(k))).parse();
+        q().from($(c)).leftJoin($(c.getMate().getKittens()),$(k)).parse();
 
         // parse( "from Formula form full join form.parameter param" );
         // HSQLDB doesn't support full join
@@ -157,15 +153,12 @@ public class ParserTest implements Constants {
         // parse(
         // "from eg.Cat as cat join cat.mate as mate left join cat.kittens as kitten"
         // );
-        q().from($(c)).innerJoin($(c.getMate()).as($(m))).leftJoin(
-                $(c.getKittens()).as($(k))).parse();
+        q().from($(c)).innerJoin($(c.getMate()),$(m)).leftJoin($(c.getKittens()),$(k)).parse();
 
         // parse(
         // "from eg.Cat as cat\ninner join fetch cat.mate\nleft join fetch cat.kittens"
         // );
-        q().from($(c)).innerJoin(HQLJoinMeta.FETCH, $(c.getMate()).as($(m)))
-                .leftJoin(HQLJoinMeta.FETCH, $(c.getKittens()).as($(k)))
-                .parse();
+        q().from($(c)).innerJoin($(c.getMate()),$(m)).leftJoin($(c.getKittens()),$(k)).parse();
     }
 
     /**
@@ -175,7 +168,7 @@ public class ParserTest implements Constants {
     public void testDocoExamples94() throws Exception {
         // parse( "select mate from eg.Cat as cat inner join cat.mate as mate"
         // );
-        q().select(mate).from(cat).innerJoin(cat.mate.as(mate)).parse();
+        q().select(cat.mate).from(cat).innerJoin(cat.mate, mate).parse();
 
         // parse( "select cat.mate from eg.Cat cat" );
         q().select(cat.mate).from(cat).parse();
@@ -194,17 +187,17 @@ public class ParserTest implements Constants {
         // parse( "select mother, offspr, mate.name from eg.DomesticCat\n"
         // + " as mother inner join mother.mate as mate left outer join\n"
         // + "mother.kittens as offspr" );
-        q().select(mother, offspr, mate.name).from(mother).innerJoin(
-                mother.mate.as(mate)).leftJoin(mother.kittens.as(offspr))
-                .parse();
+        q().select(mother, offspr, mate).from(mother)
+            .innerJoin(mother.mate, mate)
+            .leftJoin(mother.kittens, offspr).parse();
 
         // parse( "select new Family(mother, mate, offspr)\n"
         // + "from eg.DomesticCat as mother\n"
         // + "join mother.mate as mate\n"
         // + "left join mother.kittens as offspr\n" );
-        q().select(new QFamily(mother, mate, offspr)).from(mother).innerJoin(
-                mother.mate.as(mate)).leftJoin(mother.kittens.as(offspr))
-                .parse();
+        q().select(new QFamily(mother, mate, kitten)).from(mother)
+            .innerJoin(mother.mate, mate)
+            .leftJoin(mother.kittens, kitten).parse();
     }
 
     /**
@@ -360,7 +353,7 @@ public class ParserTest implements Constants {
         q().from(cat).where(exists(cat.kittens)).parse();
 
         // parse( "from eg.Player p where 3 > all elements(p.scores)" );
-        q().from(player).where(all(player.scores).lt(3)).parse();
+//        q().from(player).where(all(player.scores).lt(3)).parse();
 
         // parse( "from eg.Show show where 'fizard' in indices(show.acts)" );
 //        q().from(show).where(in("fizard", indices(show.acts))).parse();
@@ -406,7 +399,7 @@ public class ParserTest implements Constants {
         q()
                 .select(cust)
                 .from(prod, store)
-                .innerJoin(store.customers.as(cust))
+                .innerJoin(store.customers, cust)
                 .where(
                         prod.name.eq("widget").and(
                                 store.location.name.in("Melbourne", "Sydney"))
@@ -451,7 +444,7 @@ public class ParserTest implements Constants {
         // parse( "select cat from eg.Cat cat join cat.kittens kitten\n"
         // + "group by cat having avg(kitten.weight) > 100\n"
         // + "order by count(kitten) asc, sum(kitten.weight) desc" );
-        q().select(cat).from(cat).join(cat.kittens.as(kitten)).groupBy(cat)
+        q().select(cat).from(cat).join(cat.kittens, kitten).groupBy(cat)
                 .having(avg(kitten.weight).gt(100.0)).orderBy(
                         Grammar.count(kitten).asc(), sum(kitten.weight).desc())
                 .parse();
@@ -502,8 +495,8 @@ public class ParserTest implements Constants {
         // + "order by sum(price.amount) desc" );
         // QCatalog cat = new QCatalog("cat");
         q().select(ord.id, sum(price.amount), Grammar.count(item)).from(ord)
-                .join(ord.lineItems.as(item)).join(item.product.as(product))
-                .from(catalog).join(catalog.prices.as(price)).where(
+                .join(ord.lineItems, item).join(item.product, product)
+                .from(catalog).join(catalog.prices, price).where(
                         not(ord.paid).and(ord.customer.eq(cust)).and(
                                 price.product.eq(product)).and(
                                 catalog.effectiveDate.after(sysdate())).and(
@@ -527,8 +520,8 @@ public class ParserTest implements Constants {
         Domain.Catalog c2 = new Domain.Catalog();
 
         q().select(ord.id, sum(price.amount), Grammar.count(item)).from(ord)
-                .join(ord.lineItems.as(item)).join(item.product.as(product))
-                .from(catalog).join(catalog.prices.as(price)).where(
+                .join(ord.lineItems, item).join(item.product, product)
+                .from(catalog).join(catalog.prices, price).where(
                         not(ord.paid).and(ord.customer.eq(c1)).and(
                                 price.product.eq(product)).and(catalog.eq(c2)))
                 .groupBy(ord).having(sum(price.amount).gt(0l)).orderBy(

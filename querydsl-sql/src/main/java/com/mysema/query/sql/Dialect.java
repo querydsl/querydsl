@@ -32,7 +32,7 @@ public class Dialect {
     public static SQLPatterns forHSQLDB() {
         return new SQLPatterns() {
             {
-                add(Ops.Math.ROUND, "round(%s,0)");
+                add(Ops.MathOps.ROUND, "round(%s,0)");
                 add(Ops.TRIM, "trim(both from %s)");
             }
         };
@@ -43,7 +43,7 @@ public class Dialect {
         return new SQLPatterns() {
             {
                 add(Ops.CONCAT, "%s || %s");
-                add(Ops.Math.ROUND, "floor(%s)");
+                add(Ops.MathOps.ROUND, "floor(%s)");
                 add(Ops.SUBSTR1ARG, "substr(%s,%s+1)");
                 add(Ops.SUBSTR2ARGS, "substr(%s,%s+1,%s+1)");
 
@@ -52,12 +52,12 @@ public class Dialect {
                 add(Ops.STARTSWITH_IC, "lower(%s) like (lower(%s) || '%%')");
                 add(Ops.ENDSWITH_IC, "lower(%s) like ('%%' || lower(%s))");
 
-                add(Ops.DateTime.YEAR, "year(%s)");
-                add(Ops.DateTime.MONTH, "month(%s)");
+                add(Ops.DateTimeOps.YEAR, "year(%s)");
+                add(Ops.DateTimeOps.MONTH, "month(%s)");
 
-                add(Ops.DateTime.HOUR, "hour(%s)");
-                add(Ops.DateTime.MINUTE, "minute(%s)");
-                add(Ops.DateTime.SECOND, "second(%s)");
+                add(Ops.DateTimeOps.HOUR, "hour(%s)");
+                add(Ops.DateTimeOps.MINUTE, "minute(%s)");
+                add(Ops.DateTimeOps.SECOND, "second(%s)");
             }
         };
     }

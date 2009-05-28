@@ -14,8 +14,6 @@ import com.mysema.query.serialization.BaseSerializer;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.SubQuery;
-import com.mysema.query.types.alias.ASimple;
-import com.mysema.query.types.alias.AToPath;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
@@ -132,16 +130,6 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
     }
 
     @Override
-    protected void visit(ASimple<?> expr) {
-        handle(expr.getFrom()).append(" as ").append(expr.getTo());
-    }
-
-    @Override
-    protected void visit(AToPath expr) {
-        handle(expr.getFrom()).append(" as ").visit(expr.getTo());
-    }
-
-    @Override
     protected void visit(EConstant<?> expr) {
         boolean wrap = expr.getConstant().getClass().isArray();
         if (wrap) {
@@ -175,7 +163,7 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
 
     protected void visit(SubQuery<HQLJoinMeta, ?> query) {
         append("(");
-        serialize(query.getQuery().getMetadata(), false);
+        serialize(query.getMetadata(), false);
         append(")");
     }
 

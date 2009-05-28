@@ -38,15 +38,20 @@ public class OracleSerializer extends SQLSerializer {
 
     @Override
     protected void beforeOrderBy() {
-        if (startWith != null)
+        if (startWith != null){
             append(ops.startWith()).handle(startWith);
-        if (connectBy != null)
+        }            
+        if (connectBy != null){
             append(ops.connectBy()).handle(connectBy);
-        if (connectByPrior != null)
+        }            
+        if (connectByPrior != null){
             append(ops.connectByPrior()).handle(connectByPrior);
-        if (connectByNocyclePrior != null)
+        }            
+        if (connectByNocyclePrior != null){
             append(ops.connectByNocyclePrior()).handle(connectByNocyclePrior);
-        if (orderSiblingsBy != null)
+        }            
+        if (orderSiblingsBy != null){
             append(ops.orderSiblingsBy()).handle(orderSiblingsBy);
+        }            
     }
 }

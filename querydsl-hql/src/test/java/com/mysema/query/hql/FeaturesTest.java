@@ -380,14 +380,13 @@ public class FeaturesTest {
     // "Simple" case, case ... when ... then ... else ... end, and "searched"
     // case, case when ... then ... else ... end
 
-    @Test
-    public void testSimpleAliasForNonEntityPaths() {
-        toString("cat.bodyWeight as catbodyWeight", cat.bodyWeight
-                .as("catbodyWeight"));
-        toString("count(*) as numPosts", Grammar.count().as("numPosts"));
-        toString("cat.bodyWeight + kitten.bodyWeight as abc", add(
-                cat.bodyWeight, kitten.bodyWeight).as("abc"));
-    }
+//    @Test
+//    public void testSimpleAliasForNonEntityPaths() {
+//        toString("cat.bodyWeight as catbodyWeight", cat.bodyWeight.as("catbodyWeight"));
+//        toString("count(*) as numPosts", Grammar.count().as("numPosts"));
+//        toString("cat.bodyWeight + kitten.bodyWeight as abc", add(
+//                cat.bodyWeight, kitten.bodyWeight).as("abc"));
+//    }
 
     @Test
     public void testSQLScalarOperations() {
@@ -426,14 +425,14 @@ public class FeaturesTest {
         toString("cust.name", cust.name);
         toString("cust.name.firstName = :a1", cust.name.firstName.eq("Martin"));
 
-        toString("cat.kittens as kitten", cat.kittens.as(kitten));
+//        toString("cat.kittens as kitten", cat.kittens.as(kitten));
 
         toString("cat.bodyWeight + :a1", add(cat.bodyWeight, 10));
         toString("cat.bodyWeight - :a1", sub(cat.bodyWeight, 10));
         toString("cat.bodyWeight * :a1", mult(cat.bodyWeight, 10));
         toString("cat.bodyWeight / :a1", div(cat.bodyWeight, 10));
 
-        toString("cat.bodyWeight as bw", cat.bodyWeight.as("bw"));
+//        toString("cat.bodyWeight as bw", cat.bodyWeight.as("bw"));
 
         toString("kitten in elements(cat.kittens)", kitten.in(cat.kittens));
 

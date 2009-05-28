@@ -33,7 +33,7 @@ import com.mysema.query.types.path.PEntity;
  * 
  * @param <A>
  */
-class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> implements Projectable, JDOQLQuery {
+public class JDOQLQueryImpl extends QueryBaseWithProjection<Object, JDOQLQueryImpl> implements Projectable, JDOQLQuery {
 
     private static final Logger logger = LoggerFactory.getLogger(JDOQLQueryImpl.class);
 
