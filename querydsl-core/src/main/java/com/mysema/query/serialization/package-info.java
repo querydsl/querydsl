@@ -5,7 +5,7 @@
  */
 
 /**
- * Contains stubs for Serialization of queries into HQL, JPAQL and SQL
+ * Contains stubs for Serialization of queries 
  */
 package com.mysema.query.serialization;
 
