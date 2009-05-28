@@ -72,13 +72,14 @@ public class OperationPatterns {
         add(Ops.EQ_PRIMITIVE, "%s = %s", 18);
         add(Ops.EQ_OBJECT, "%s = %s", 18);
         add(Ops.EQ_IGNORECASE, "eqIc(%s,%s)", 18);
-        add(Ops.ISTYPEOF, "%s.class = %s");
+        add(Ops.INSTANCEOF, "%s.class = %s");
         add(Ops.NE_PRIMITIVE, "%s != %s", 25);
         add(Ops.NE_OBJECT, "%s != %s", 25);
         add(Ops.IN, "%s in %s");
         add(Ops.NOTIN, "%s not in %s");
         add(Ops.ISNULL, "%s is null", 26);
         add(Ops.ISNOTNULL, "%s is not null", 26);
+        add(Ops.ALIAS, "%s as %s");
         
         add(Ops.EXISTS, "exists(%s)");
 
@@ -166,6 +167,17 @@ public class OperationPatterns {
         add(Ops.SUM_AGG, "sum(%s)");
         add(Ops.COUNT_AGG, "count(%s)");
         add(Ops.COUNT_ALL_AGG, "count(*)");
+        
+
+        // quantified expressions
+        add(Ops.QuantOps.AVG_IN_COL, "avg(%s)");
+        add(Ops.QuantOps.MAX_IN_COL, "max(%s)");
+        add(Ops.QuantOps.MIN_IN_COL, "min(%s)");
+
+        add(Ops.QuantOps.ANY, "any %s");
+        add(Ops.QuantOps.ALL, "all %s");
+        add(Ops.QuantOps.EXISTS, "exists %s");
+        add(Ops.QuantOps.NOTEXISTS, "not exists %s");
     }
 
     protected void add(Operator<?> op, String pattern) {

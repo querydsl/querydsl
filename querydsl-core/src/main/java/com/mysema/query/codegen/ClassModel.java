@@ -47,11 +47,11 @@ public class ClassModel implements Comparable<ClassModel> {
 
     private final Set<FieldModel> simpleMaps = new TreeSet<FieldModel>();
 
+    private final Set<FieldModel> stringFields = new TreeSet<FieldModel>();
+    
     private String simpleName, uncapSimpleName, name, packageName;
 
-    private int escapeSuffix = 1;
-
-    private Set<FieldModel> stringFields = new TreeSet<FieldModel>();
+    private int escapeSuffix = 1;    
 
     private String superType;
 

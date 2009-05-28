@@ -588,7 +588,7 @@ public class Grammar {
      * @return
      */
     public static <A, B extends A> EBoolean instanceOf(Expr<A> left, Class<B> right) {
-        return operationFactory.createBoolean(Ops.ISTYPEOF, left, exprFactory.createConstant(right));
+        return operationFactory.createBoolean(Ops.INSTANCEOF, left, exprFactory.createConstant(right));
     }
 
     /**
