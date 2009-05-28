@@ -5,8 +5,6 @@
  */
 package com.mysema.query.sql.support;
 
-import static com.mysema.query.apt.APTUtils.writerFor;
-
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.DatabaseMetaData;
@@ -17,11 +15,12 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.apt.FreeMarkerSerializer;
-import com.mysema.query.apt.general.GeneralProcessor;
 import com.mysema.query.codegen.Field;
 import com.mysema.query.codegen.FieldType;
+import com.mysema.query.codegen.Serializer;
+import com.mysema.query.codegen.Serializers;
 import com.mysema.query.codegen.Type;
+import com.mysema.query.util.FileUtils;
 
 /**
  * MetadataExporter exports JDBC metadata to Querydsl query types
@@ -74,13 +73,11 @@ public class MetaDataExporter {
 
     }
 
-    private boolean camelCase;
-
     private String namePrefix = "", targetFolder, packageName;
 
     private String schemaPattern, tableNamePattern;
 
-    private FreeMarkerSerializer serializer = GeneralProcessor.DOMAIN_OUTER_TMPL;
+    private Serializer serializer = Serializers.DOMAIN;
 
     public void export(DatabaseMetaData md) throws SQLException {
         if (targetFolder == null)
@@ -88,8 +85,7 @@ public class MetaDataExporter {
         if (packageName == null)
             throw new IllegalArgumentException("packageName needs to be set");
 
-        ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern,
-                null);
+        ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
         while (tables.next()) {
             String tableName = tables.getString(3);
             // if (camelCase){
@@ -101,23 +97,19 @@ public class MetaDataExporter {
                     .getString(3), null);
             while (columns.next()) {
                 String _name = columns.getString(4);
-                if (camelCase) {
-                    _name = toCamelCase(_name, false);
-                }
                 Class<?> _class = sqlToJavaType.get(columns.getInt(5));
-                if (_class == null)
-                    throw new RuntimeException("No java type for "
-                            + columns.getString(6));
+                if (_class == null){
+                    throw new RuntimeException("No java type for " + columns.getString(6));
+                }                    
                 FieldType _type;
-                if (_class.equals(Boolean.class)
-                        || _class.equals(boolean.class)) {
+                if (_class.equals(Boolean.class) || _class.equals(boolean.class)) {
                     _type = FieldType.BOOLEAN;
                 } else if (_class.equals(String.class)) {
                     _type = FieldType.STRING;
                 } else {
                     _type = FieldType.COMPARABLE;
                 }
-                type.addField(new Field(_name, columns.getString(4), null,
+                type.addField(new Field(_name, null,
                         _class.getPackage().getName(), _class.getName(), _class
                                 .getSimpleName(), _type));
             }
@@ -137,17 +129,11 @@ public class MetaDataExporter {
 
         // serialize it
         try {
-            String path = packageName.replace('.', '/') + "/" + namePrefix
-                    + type.getSimpleName() + ".java";
-            serializer
-                    .serialize(model, writerFor(new File(targetFolder, path)));
+            String path = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
+            serializer.serialize(model, FileUtils.writerFor(new File(targetFolder, path)));
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
-    }
-
-    public void setCamelCase(boolean b) {
-        this.camelCase = b;
     }
 
     public void setNamePrefix(String namePrefix) {
@@ -168,23 +154,6 @@ public class MetaDataExporter {
 
     public void setTargetFolder(String targetFolder) {
         this.targetFolder = targetFolder;
-    }
-
-    private String toCamelCase(String name, boolean firstCapitalized) {
-        StringBuilder builder = new StringBuilder(name.length());
-        boolean caps = firstCapitalized;
-        for (char c : name.toLowerCase().toCharArray()) {
-            if (c == '_') {
-                caps = true;
-                continue;
-            } else if (caps) {
-                caps = false;
-                builder.append(Character.toUpperCase(c));
-            } else {
-                builder.append(c);
-            }
-        }
-        return builder.toString();
     }
 
 }

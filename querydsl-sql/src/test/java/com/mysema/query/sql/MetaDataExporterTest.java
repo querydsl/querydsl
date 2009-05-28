@@ -32,7 +32,6 @@ public class MetaDataExporterTest {
             e.setTargetFolder("target");
             e.setNamePrefix("Q");
             e.setPackageName("com.mysema.query.sql.domain");
-            e.setCamelCase(true);
             e.export(conn.getMetaData());
         } finally {
             if (st != null)

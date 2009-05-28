@@ -15,8 +15,8 @@ import java.sql.Connection;
  */
 public class SQLQuery extends AbstractSQLQuery<SQLQuery> {
 
-    public SQLQuery(Connection conn, SQLPatterns ops) {
-        super(conn, ops);
+    public SQLQuery(Connection conn, SQLPatterns patterns) {
+        super(conn, patterns);
     }
 
 }

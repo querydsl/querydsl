@@ -25,10 +25,10 @@ public class OracleSerializer extends SQLSerializer {
 
     private EBoolean startWith;
 
-    public OracleSerializer(SQLPatterns ops, EBoolean connectBy,
+    public OracleSerializer(SQLPatterns patterns, EBoolean connectBy,
             EBoolean connectByNocyclePrior, EBoolean connectByPrior,
             Expr<?> orderSiblingsBy, EBoolean startWith) {
-        super(ops);
+        super(patterns);
         this.connectBy = connectBy;
         this.connectByNocyclePrior = connectByNocyclePrior;
         this.connectByPrior = connectByPrior;
@@ -39,19 +39,19 @@ public class OracleSerializer extends SQLSerializer {
     @Override
     protected void beforeOrderBy() {
         if (startWith != null){
-            append(ops.startWith()).handle(startWith);
+            append(patterns.startWith()).handle(startWith);
         }            
         if (connectBy != null){
-            append(ops.connectBy()).handle(connectBy);
+            append(patterns.connectBy()).handle(connectBy);
         }            
         if (connectByPrior != null){
-            append(ops.connectByPrior()).handle(connectByPrior);
+            append(patterns.connectByPrior()).handle(connectByPrior);
         }            
         if (connectByNocyclePrior != null){
-            append(ops.connectByNocyclePrior()).handle(connectByNocyclePrior);
+            append(patterns.connectByNocyclePrior()).handle(connectByNocyclePrior);
         }            
         if (orderSiblingsBy != null){
-            append(ops.orderSiblingsBy()).handle(orderSiblingsBy);
+            append(patterns.orderSiblingsBy()).handle(orderSiblingsBy);
         }            
     }
 }

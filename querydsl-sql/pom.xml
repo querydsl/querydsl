@@ -45,11 +45,6 @@
       <version>5.1.6</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-apt-jdk5</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
   </dependencies>
 
   <build>

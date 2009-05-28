@@ -27,8 +27,8 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
 
     private EBoolean startWith;
 
-    public OracleQuery(Connection conn, SQLPatterns ops) {
-        super(conn, ops);
+    public OracleQuery(Connection conn, SQLPatterns patterns) {
+        super(conn, patterns);
     }
 
     public OracleQuery connectByPrior(EBoolean cond) {
@@ -57,7 +57,7 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
     }
 
     protected SQLSerializer createSerializer() {
-        return new OracleSerializer(ops, connectBy, connectByNocyclePrior,
+        return new OracleSerializer(patterns, connectBy, connectByNocyclePrior,
                 connectByPrior, orderSiblingsBy, startWith);
     }
 

@@ -31,11 +31,11 @@ import com.mysema.query.types.path.PEntity;
  */
 public class SQLSerializer extends BaseSerializer<SQLSerializer> {
 
-    protected final SQLPatterns ops;
+    protected final SQLPatterns patterns;
 
-    public SQLSerializer(SQLPatterns ops) {
-        super(ops);
-        this.ops = ops;
+    public SQLSerializer(SQLPatterns patterns) {
+        super(patterns);
+        this.patterns = patterns;
     }
 
     protected void beforeOrderBy() {
@@ -51,12 +51,12 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
         if (forCountRow) {
-            append(ops.select()).append(ops.countStar());
+            append(patterns.select()).append(patterns.countStar());
         } else if (!select.isEmpty()) {
             if (!metadata.isDistinct()) {
-                append(ops.select());
+                append(patterns.select());
             } else {
-                append(ops.selectDistinct());
+                append(patterns.selectDistinct());
             }
             List<Expr<?>> sqlSelect = new ArrayList<Expr<?>>();
             for (Expr<?> selectExpr : select) {
@@ -70,10 +70,10 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
             }
             handle(", ", sqlSelect);
         }
-        append(ops.from());
+        append(patterns.from());
         if (joins.isEmpty()) {
             // TODO : disallow usage of dummy table ?!?
-            append(ops.dummyTable());
+            append(patterns.dummyTable());
 
         }
         for (int i = 0; i < joins.size(); i++) {
@@ -82,46 +82,46 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
                 String sep = ", ";
                 switch (je.getType()) {
                 case FULLJOIN:
-                    sep = ops.fullJoin();
+                    sep = patterns.fullJoin();
                     break;
                 case INNERJOIN:
-                    sep = ops.innerJoin();
+                    sep = patterns.innerJoin();
                     break;
                 case JOIN:
-                    sep = ops.join();
+                    sep = patterns.join();
                     break;
                 case LEFTJOIN:
-                    sep = ops.leftJoin();
+                    sep = patterns.leftJoin();
                     break;
                 }
                 append(sep);
             }
 
             // type specifier
-            if (je.getTarget() instanceof PEntity && ops.supportsAlias()) {
+            if (je.getTarget() instanceof PEntity && patterns.supportsAlias()) {
                 PEntity<?> pe = (PEntity<?>) je.getTarget();
                 if (pe.getMetadata().getParent() == null) {
-                    append(pe.getEntityName()).append(ops.tableAlias());
+                    append(pe.getEntityName()).append(patterns.tableAlias());
                 }
             }
             handle(je.getTarget());
             if (je.getCondition() != null) {
-                append(ops.on()).handle(je.getCondition());
+                append(patterns.on()).handle(je.getCondition());
             }
         }
 
         if (where != null) {
-            append(ops.where()).handle(where);
+            append(patterns.where()).handle(where);
         }
         if (!groupBy.isEmpty()) {
-            append(ops.groupBy()).handle(", ", groupBy);
+            append(patterns.groupBy()).handle(", ", groupBy);
         }
         if (having != null) {
             if (groupBy.isEmpty()) {
                 throw new IllegalArgumentException(
                         "having, but not groupBy was given");
             }
-            append(ops.having()).handle(having);
+            append(patterns.having()).handle(having);
         }
 
         beforeOrderBy();
@@ -129,31 +129,31 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
         Long limit = metadata.getModifiers().getLimit();
         Long offset = metadata.getModifiers().getOffset();
 
-        if (!ops.limitAndOffsetSymbols()
+        if (!patterns.limitAndOffsetSymbols()
                 && metadata.getModifiers().isRestricting() && !forCountRow) {
             if (where == null)
-                append(ops.where());
-            append(ops.limitOffsetCondition(limit, offset));
+                append(patterns.where());
+            append(patterns.limitOffsetCondition(limit, offset));
         }
 
         if (!orderBy.isEmpty() && !forCountRow) {
-            append(ops.orderBy());
+            append(patterns.orderBy());
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy) {
                 if (!first)
                     builder.append(", ");
                 handle(os.getTarget());
-                append(os.getOrder() == Order.ASC ? ops.asc() : ops.desc());
+                append(os.getOrder() == Order.ASC ? patterns.asc() : patterns.desc());
                 first = false;
             }
         }
-        if (ops.limitAndOffsetSymbols()
+        if (patterns.limitAndOffsetSymbols()
                 && metadata.getModifiers().isRestricting() && !forCountRow) {
             if (limit != null) {
-                append(ops.limit()).append(String.valueOf(limit));
+                append(patterns.limit()).append(String.valueOf(limit));
             }
             if (offset != null) {
-                append(ops.offset()).append(String.valueOf(offset));
+                append(patterns.offset()).append(String.valueOf(offset));
             }
         }
     }
@@ -161,17 +161,17 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
     public void serializeUnion(SubQuery<Object, ?>[] sqs,
             List<OrderSpecifier<?>> orderBy) {
         // union
-        handle(ops.union(), Arrays.asList(sqs));
+        handle(patterns.union(), Arrays.asList(sqs));
 
         // order by
         if (!orderBy.isEmpty()) {
-            append(ops.orderBy());
+            append(patterns.orderBy());
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy) {
                 if (!first)
                     builder.append(", ");
                 handle(os.getTarget());
-                append(os.getOrder() == Order.ASC ? ops.asc() : ops.desc());
+                append(os.getOrder() == Order.ASC ? patterns.asc() : patterns.desc());
                 first = false;
             }
         }
@@ -179,12 +179,12 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
     }
 
 //    protected void visit(AToPath expr) {
-//        handle(expr.getFrom()).append(ops.tableAlias()).visit(expr.getTo());
+//        handle(expr.getFrom()).append(patterns.tableAlias()).visit(expr.getTo());
 //    }
 //
 //    @Override
 //    protected void visit(ASimple<?> expr) {
-//        handle(expr.getFrom()).append(ops.columnAlias()).append(expr.getTo());
+//        handle(expr.getFrom()).append(patterns.columnAlias()).append(expr.getTo());
 //    }
 
     @Override
@@ -197,7 +197,7 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
         // TODO : move constants to SqlOps
         append("cast(").handle(source);
         append(" as ");
-        append(ops.getClass2Type().get(targetType)).append(")");
+        append(patterns.getClass2Type().get(targetType)).append(")");
 
     }
 
@@ -225,14 +225,14 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
     }
 
     protected void visit(SumOver<?> expr) {
-        append(ops.sum()).append("(").handle(expr.getTarget()).append(") ");
-        append(ops.over());
+        append(patterns.sum()).append("(").handle(expr.getTarget()).append(") ");
+        append(patterns.over());
         append(" (");
         if (expr.getPartitionBy() != null) {
-            append(ops.partitionBy()).handle(expr.getPartitionBy());
+            append(patterns.partitionBy()).handle(expr.getPartitionBy());
         }
         if (!expr.getOrderBy().isEmpty()) {
-            append(ops.orderBy()).handle(", ", expr.getOrderBy());
+            append(patterns.orderBy()).handle(", ", expr.getOrderBy());
         }
         append(")");
     }
