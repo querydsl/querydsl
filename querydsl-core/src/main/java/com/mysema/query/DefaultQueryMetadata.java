@@ -97,7 +97,7 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
     }
 
     @Override
-    public void addToFrom(Expr<?>... o) {
+    public void addFrom(Expr<?>... o) {
         for (Expr<?> expr : o) {
             if (!exprInJoins.contains(expr)) {
                 joins.add(new JoinExpression<JoinMeta>(JoinType.DEFAULT, expr));
@@ -107,28 +107,28 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
     }
 
     @Override
-    public void addToGroupBy(Expr<?>... o) {
+    public void addGroupBy(Expr<?>... o) {
         groupBy.addAll(Arrays.<Expr<?>> asList(o));
     }
 
     @Override
-    public void addToHaving(EBoolean... o) {
+    public void addHaving(EBoolean... o) {
         for (EBoolean e : o)
             having.and(e);
     }
 
     @Override
-    public void addToOrderBy(OrderSpecifier<?>... o) {
+    public void addOrderBy(OrderSpecifier<?>... o) {
         orderBy.addAll(Arrays.asList(o));
     }
 
     @Override
-    public void addToProjection(Expr<?>... o) {
+    public void addProjection(Expr<?>... o) {
         projection.addAll(Arrays.asList(o));
     }
 
     @Override
-    public void addToWhere(EBoolean... o) {
+    public void addWhere(EBoolean... o) {
         for (EBoolean e : o)
             where.and(e);
     }

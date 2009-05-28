@@ -26,17 +26,17 @@ public interface QueryMetadata<JoinMeta> {
 
     void addJoinCondition(EBoolean o);
 
-    void addToFrom(Expr<?>... o);
+    void addFrom(Expr<?>... o);
 
-    void addToGroupBy(Expr<?>... o);
+    void addGroupBy(Expr<?>... o);
 
-    void addToHaving(EBoolean... o);
+    void addHaving(EBoolean... o);
 
-    void addToOrderBy(OrderSpecifier<?>... o);
+    void addOrderBy(OrderSpecifier<?>... o);
 
-    void addToProjection(Expr<?>... o);
+    void addProjection(Expr<?>... o);
 
-    void addToWhere(EBoolean... o);
+    void addWhere(EBoolean... o);
 
     List<? extends Expr<?>> getGroupBy();
 

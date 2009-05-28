@@ -32,7 +32,7 @@ public class QueryBase<JoinMeta, SubType extends QueryBase<JoinMeta, SubType>> {
     }
 
     protected SubType addToProjection(Expr<?>... o) {
-        metadata.addToProjection(o);
+        metadata.addProjection(o);
         return _this;
     }
 
@@ -42,7 +42,7 @@ public class QueryBase<JoinMeta, SubType extends QueryBase<JoinMeta, SubType>> {
 
     // template
     protected SubType from(Expr<?>... o) {
-        metadata.addToFrom(o);
+        metadata.addFrom(o);
         return _this;
     }
 
@@ -57,12 +57,12 @@ public class QueryBase<JoinMeta, SubType extends QueryBase<JoinMeta, SubType>> {
     }
 
     public SubType groupBy(Expr<?>... o) {
-        metadata.addToGroupBy(o);
+        metadata.addGroupBy(o);
         return _this;
     }
 
     public SubType having(EBoolean... o) {
-        metadata.addToHaving(o);
+        metadata.addHaving(o);
         return _this;
     }
 
@@ -90,12 +90,12 @@ public class QueryBase<JoinMeta, SubType extends QueryBase<JoinMeta, SubType>> {
     }
 
     public SubType orderBy(OrderSpecifier<?>... o) {
-        metadata.addToOrderBy(o);
+        metadata.addOrderBy(o);
         return _this;
     }
 
     public SubType where(EBoolean... o) {
-        metadata.addToWhere(o);
+        metadata.addWhere(o);
         return _this;
     }
 

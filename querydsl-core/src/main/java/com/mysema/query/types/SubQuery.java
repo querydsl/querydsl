@@ -8,7 +8,6 @@ package com.mysema.query.types;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.Query;
-import com.mysema.query.QueryBase;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
@@ -28,7 +27,7 @@ public class SubQuery<JM, A> extends Expr<A> implements Query<SubQuery<JM, A>>, 
 
     public SubQuery(Expr<A> select) {
         super(null);
-        md.addToProjection(select);
+        md.addProjection(select);
     }
 
     public SubQuery() {
@@ -37,7 +36,7 @@ public class SubQuery<JM, A> extends Expr<A> implements Query<SubQuery<JM, A>>, 
     
     @Override
     public SubQuery<JM, A> from(Expr<?>... o) {
-        md.addToFrom(o);
+        md.addFrom(o);
         return this;
     }
 
@@ -53,13 +52,13 @@ public class SubQuery<JM, A> extends Expr<A> implements Query<SubQuery<JM, A>>, 
 
     @Override
     public SubQuery<JM, A> groupBy(Expr<?>... o) {
-        md.addToGroupBy(o);
+        md.addGroupBy(o);
         return this;
     }
 
     @Override
     public SubQuery<JM, A> having(EBoolean... o) {
-        md.addToHaving(o);
+        md.addHaving(o);
         return this;
     }
 
@@ -89,18 +88,18 @@ public class SubQuery<JM, A> extends Expr<A> implements Query<SubQuery<JM, A>>, 
 
     @Override
     public SubQuery<JM, A> orderBy(OrderSpecifier<?>... o) {
-        md.addToOrderBy(o);
+        md.addOrderBy(o);
         return this;
     }
 
     public SubQuery<JM, A> select(Expr<?>... o) {
-        md.addToProjection(o);
+        md.addProjection(o);
         return this;
     }
 
     @Override
     public SubQuery<JM, A> where(EBoolean... o) {
-        md.addToWhere(o);
+        md.addWhere(o);
         return this;
     }
 

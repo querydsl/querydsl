@@ -59,7 +59,7 @@ public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends
     }
 
     public SubType from(Expr<?>... o) {
-        innerQuery.getMetadata().addToFrom(o);
+        innerQuery.getMetadata().addFrom(o);
         return _this;
     }
 
