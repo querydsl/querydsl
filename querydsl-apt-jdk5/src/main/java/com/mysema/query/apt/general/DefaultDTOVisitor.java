@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.mysema.query.codegen.ConstructorModel;
-import com.mysema.query.codegen.Parameter;
+import com.mysema.query.codegen.ParameterModel;
 import com.mysema.query.codegen.ClassModel;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.ConstructorDeclaration;
@@ -42,12 +42,12 @@ public class DefaultDTOVisitor extends SimpleDeclarationVisitor {
 
     @Override
     public void visitConstructorDeclaration(ConstructorDeclaration d) {
-        List<Parameter> parameters = new ArrayList<Parameter>(d.getParameters()
+        List<ParameterModel> parameters = new ArrayList<ParameterModel>(d.getParameters()
                 .size());
         for (ParameterDeclaration pa : d.getParameters()) {
             String name = pa.getSimpleName();
             String typeName = new TypeHelper(pa.getType()).getFullName();
-            parameters.add(new Parameter(name, typeName));
+            parameters.add(new ParameterModel(name, typeName));
         }
         last.addConstructor(new ConstructorModel(parameters));
     }

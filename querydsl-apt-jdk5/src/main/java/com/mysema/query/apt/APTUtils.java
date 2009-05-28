@@ -15,8 +15,7 @@ import java.util.Map;
  */
 public class APTUtils {
 
-    public static String getString(Map<String, String> options, String key,
-            String defaultValue) {
+    public static String getString(Map<String, String> options, String key, String defaultValue) {
         String prefix = "-A" + key + "=";
         for (Map.Entry<String, String> entry : options.entrySet()) {
             if (entry.getKey().startsWith(prefix)) {

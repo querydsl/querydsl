@@ -37,16 +37,14 @@ public class JPAProcessor extends GeneralProcessor {
 
     private void createEmbeddableClasses() {
         DefaultEntityVisitor entityVisitor = new DefaultEntityVisitor();
-        AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env
-                .getTypeDeclaration(JPA_EMBEDDABLE);
+        AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env.getTypeDeclaration(JPA_EMBEDDABLE);
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
             typeDecl.accept(getDeclarationScanner(entityVisitor, NO_OP));
         }
 
         Map<String, ClassModel> entityTypes = entityVisitor.types;
         if (entityTypes.isEmpty()) {
-            env.getMessager().printNotice(
-                    "No class generation for embeddable types");
+            env.getMessager().printNotice("No class generation for embeddable types");
         } else {
             serializeAsOuterClasses(entityTypes.values(), Serializers.EMBEDDABLE);
         }

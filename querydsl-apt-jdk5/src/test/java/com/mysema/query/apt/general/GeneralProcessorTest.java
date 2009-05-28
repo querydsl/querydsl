@@ -16,7 +16,7 @@ import org.junit.Test;
 import com.mysema.query.codegen.ConstructorModel;
 import com.mysema.query.codegen.FieldModel;
 import com.mysema.query.codegen.FieldType;
-import com.mysema.query.codegen.Parameter;
+import com.mysema.query.codegen.ParameterModel;
 import com.mysema.query.codegen.Serializers;
 import com.mysema.query.codegen.ClassModel;
 
@@ -42,7 +42,7 @@ public class GeneralProcessorTest {
         FieldModel field = new FieldModel("field", null, "java.lang",
                 "java.lang.String", "String", FieldType.STRING);
         type.addField(field);
-        Parameter param = new Parameter("name", "java.lang.String");
+        ParameterModel param = new ParameterModel("name", "java.lang.String");
         type.addConstructor(new ConstructorModel(Collections.singleton(param)));
     }
 
