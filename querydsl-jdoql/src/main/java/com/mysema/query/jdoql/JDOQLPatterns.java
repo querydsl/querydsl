@@ -77,8 +77,10 @@ public class JDOQLPatterns extends OperationPatterns {
         
         // path types
         add(PathType.VARIABLE, "%s");
-        for (PathType type : new PathType[] { PathType.LISTVALUE,
-                PathType.LISTVALUE_CONSTANT, PathType.MAPVALUE,
+        for (PathType type : new PathType[] { 
+                PathType.LISTVALUE,
+                PathType.LISTVALUE_CONSTANT, 
+                PathType.MAPVALUE,
                 PathType.MAPVALUE_CONSTANT }) {
             add(type, "%s.get(%s)");
         }

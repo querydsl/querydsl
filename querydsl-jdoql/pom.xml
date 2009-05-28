@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>0.3.10-SNAPSHOT</version>
+    <version>0.3.11-SNAPSHOT</version>
   </parent>
 
   <groupId>com.mysema.querydsl</groupId>
@@ -56,7 +56,7 @@
     </dependency>
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-apt</artifactId>
+      <artifactId>querydsl-apt-jdk5</artifactId>
       <version>${project.parent.version}</version>
       <scope>provided</scope>
       <!-- license : TODO -->
