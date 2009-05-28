@@ -1,4 +1,7 @@
 /*
+
+ * 
+ * 
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
  * 
@@ -18,41 +21,41 @@ import org.apache.commons.lang.StringUtils;
  * @author tiwe
  * @version $Id$
  */
-public class Type implements Comparable<Type> {
+public class ClassModel implements Comparable<ClassModel> {
 
-    private Set<Field> booleanFields = new TreeSet<Field>();
+    private Set<FieldModel> booleanFields = new TreeSet<FieldModel>();
 
-    private Set<Field> comparableFields = new TreeSet<Field>();
+    private Set<FieldModel> comparableFields = new TreeSet<FieldModel>();
 
-    private Set<Constructor> constructors = new HashSet<Constructor>();
+    private Set<ConstructorModel> constructors = new HashSet<ConstructorModel>();
 
-    private Set<Field> entityCollections = new TreeSet<Field>();
+    private Set<FieldModel> entityCollections = new TreeSet<FieldModel>();
 
-    private Set<Field> entityFields = new TreeSet<Field>();
+    private Set<FieldModel> entityFields = new TreeSet<FieldModel>();
 
-    private Set<Field> entityLists = new TreeSet<Field>();
+    private Set<FieldModel> entityLists = new TreeSet<FieldModel>();
 
-    private Set<Field> entityMaps = new TreeSet<Field>();
+    private Set<FieldModel> entityMaps = new TreeSet<FieldModel>();
 
-    private Set<Field> numericFields = new TreeSet<Field>();
+    private Set<FieldModel> numericFields = new TreeSet<FieldModel>();
 
-    private Set<Field> simpleCollections = new TreeSet<Field>();
+    private Set<FieldModel> simpleCollections = new TreeSet<FieldModel>();
 
-    private Set<Field> simpleFields = new TreeSet<Field>();
+    private Set<FieldModel> simpleFields = new TreeSet<FieldModel>();
 
-    private Set<Field> simpleLists = new TreeSet<Field>();
+    private Set<FieldModel> simpleLists = new TreeSet<FieldModel>();
 
-    private Set<Field> simpleMaps = new TreeSet<Field>();
+    private Set<FieldModel> simpleMaps = new TreeSet<FieldModel>();
 
     private String simpleName, uncapSimpleName, name, packageName;
 
     private int escapeSuffix = 1;
 
-    private Set<Field> stringFields = new TreeSet<Field>();
+    private Set<FieldModel> stringFields = new TreeSet<FieldModel>();
 
     private String superType;
 
-    public Type(String superType, String packageName, String name,
+    public ClassModel(String superType, String packageName, String name,
             String simpleName) {
         this.superType = superType;
         this.packageName = packageName;
@@ -61,11 +64,11 @@ public class Type implements Comparable<Type> {
         this.uncapSimpleName = StringUtils.uncapitalize(simpleName);
     }
 
-    public void addConstructor(Constructor co) {
+    public void addConstructor(ConstructorModel co) {
         constructors.add(co);
     }
 
-    public void addField(Field fieldDecl) {
+    public void addField(FieldModel fieldDecl) {
         validateField(fieldDecl);
         switch (fieldDecl.getFieldType()) {
         case BOOLEAN:
@@ -107,47 +110,46 @@ public class Type implements Comparable<Type> {
         }
     }
 
-    private Field validateField(Field field) {
+    private FieldModel validateField(FieldModel field) {
         if (field.getName().equals(this.uncapSimpleName)) {
-            uncapSimpleName = StringUtils.uncapitalize(simpleName)
-                    + (escapeSuffix++);
+            uncapSimpleName = StringUtils.uncapitalize(simpleName)+ (escapeSuffix++);
         }
         return field;
     }
 
-    public int compareTo(Type o) {
+    public int compareTo(ClassModel o) {
         return simpleName.compareTo(o.simpleName);
     }
 
     public boolean equals(Object o) {
-        return o instanceof Type && simpleName.equals(((Type) o).simpleName);
+        return o instanceof ClassModel && simpleName.equals(((ClassModel) o).simpleName);
     }
 
-    public Collection<Field> getBooleanFields() {
+    public Collection<FieldModel> getBooleanFields() {
         return booleanFields;
     }
 
-    public Collection<Field> getComparableFields() {
+    public Collection<FieldModel> getComparableFields() {
         return comparableFields;
     }
 
-    public Collection<Constructor> getConstructors() {
+    public Collection<ConstructorModel> getConstructors() {
         return constructors;
     }
 
-    public Collection<Field> getEntityCollections() {
+    public Collection<FieldModel> getEntityCollections() {
         return entityCollections;
     }
 
-    public Collection<Field> getEntityFields() {
+    public Collection<FieldModel> getEntityFields() {
         return entityFields;
     }
 
-    public Collection<Field> getEntityLists() {
+    public Collection<FieldModel> getEntityLists() {
         return entityLists;
     }
 
-    public Collection<Field> getEntityMaps() {
+    public Collection<FieldModel> getEntityMaps() {
         return entityMaps;
     }
 
@@ -155,7 +157,7 @@ public class Type implements Comparable<Type> {
         return name;
     }
 
-    public Collection<Field> getNumericFields() {
+    public Collection<FieldModel> getNumericFields() {
         return numericFields;
     }
 
@@ -163,19 +165,19 @@ public class Type implements Comparable<Type> {
         return packageName;
     }
 
-    public Collection<Field> getSimpleCollections() {
+    public Collection<FieldModel> getSimpleCollections() {
         return simpleCollections;
     }
 
-    public Collection<Field> getSimpleFields() {
+    public Collection<FieldModel> getSimpleFields() {
         return simpleFields;
     }
 
-    public Collection<Field> getSimpleLists() {
+    public Collection<FieldModel> getSimpleLists() {
         return simpleLists;
     }
 
-    public Collection<Field> getSimpleMaps() {
+    public Collection<FieldModel> getSimpleMaps() {
         return simpleMaps;
     }
 
@@ -187,7 +189,7 @@ public class Type implements Comparable<Type> {
         return uncapSimpleName;
     }
 
-    public Collection<Field> getStringFields() {
+    public Collection<FieldModel> getStringFields() {
         return stringFields;
     }
 
@@ -199,7 +201,7 @@ public class Type implements Comparable<Type> {
         return name.hashCode();
     }
 
-    public void include(Type decl) {
+    public void include(ClassModel decl) {
         addAll(booleanFields, decl.booleanFields);
         addAll(entityCollections, decl.entityCollections);
         addAll(entityFields, decl.entityFields);
@@ -214,8 +216,8 @@ public class Type implements Comparable<Type> {
         addAll(stringFields, decl.stringFields);
     }
 
-    private void addAll(Set<Field> target, Set<Field> source) {
-        for (Field field : source) {
+    private void addAll(Set<FieldModel> target, Set<FieldModel> source) {
+        for (FieldModel field : source) {
             target.add(validateField(field));
         }
     }

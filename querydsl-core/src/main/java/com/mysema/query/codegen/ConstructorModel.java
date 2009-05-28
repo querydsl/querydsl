@@ -13,10 +13,10 @@ import java.util.Collection;
  * @author tiwe
  * @version $Id$
  */
-public class Constructor {
+public class ConstructorModel {
     private final Collection<Parameter> parameters;
 
-    public Constructor(Collection<Parameter> params) {
+    public ConstructorModel(Collection<Parameter> params) {
         parameters = params;
     }
 

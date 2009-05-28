@@ -5,6 +5,22 @@
  */
 package com.mysema.query.codegen;
 
+/**
+ * 
+ * @author tiwe
+ *
+ */
 public enum FieldType {
-    BOOLEAN, COMPARABLE, ENTITY, ENTITYLIST, ENTITYCOLLECTION, ENTITYMAP, NUMERIC, SIMPLE, SIMPLELIST, SIMPLECOLLECTION, SIMPLEMAP, STRING
+    BOOLEAN, 
+    COMPARABLE, 
+    ENTITY, 
+    ENTITYLIST, 
+    ENTITYCOLLECTION, 
+    ENTITYMAP, 
+    NUMERIC, 
+    SIMPLE, 
+    SIMPLELIST, 
+    SIMPLECOLLECTION, 
+    SIMPLEMAP, 
+    STRING
 }

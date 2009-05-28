@@ -11,7 +11,7 @@ package com.mysema.query.codegen;
  * @author tiwe
  * @version $Id$
  */
-public class Field implements Comparable<Field> {
+public class FieldModel implements Comparable<FieldModel> {
 
     /**
      * The Enum Type.
@@ -37,7 +37,7 @@ public class Field implements Comparable<Field> {
      *            simple type name (local)
      * @param fieldType
      */
-    public Field(String name, String keyTypeName,
+    public FieldModel(String name, String keyTypeName,
             String typePackage, String typeName, String simpleTypeName,
             FieldType fieldType) {
         this.name = name;
@@ -48,12 +48,12 @@ public class Field implements Comparable<Field> {
         this.fieldType = fieldType;
     }
 
-    public int compareTo(Field o) {
+    public int compareTo(FieldModel o) {
         return name.compareTo(o.name);
     }
 
     public boolean equals(Object o) {
-        return o instanceof Field && name.equals(((Field) o).name);
+        return o instanceof FieldModel && name.equals(((FieldModel) o).name);
     }
 
     public FieldType getFieldType() {
