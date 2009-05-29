@@ -46,7 +46,7 @@ public class JPAProcessor extends GeneralProcessor {
         if (entityTypes.isEmpty()) {
             env.getMessager().printNotice("No class generation for embeddable types");
         } else {
-            serializeAsOuterClasses(entityTypes.values(), Serializers.EMBEDDABLE);
+            Serializers.EMBEDDABLE.serialize(targetFolder, namePrefix, entityTypes.values());
         }
 
     }

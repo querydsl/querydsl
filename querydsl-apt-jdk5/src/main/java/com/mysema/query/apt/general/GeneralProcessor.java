@@ -9,16 +9,12 @@ import static com.mysema.query.apt.APTUtils.getString;
 import static com.sun.mirror.util.DeclarationVisitors.NO_OP;
 import static com.sun.mirror.util.DeclarationVisitors.getDeclarationScanner;
 
-import java.io.File;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.codegen.ClassModelBuilder;
 import com.mysema.query.codegen.ClassModel;
-import com.mysema.query.codegen.Serializer;
+import com.mysema.query.codegen.ClassModelBuilder;
 import com.mysema.query.codegen.Serializers;
-import com.mysema.query.util.FileUtils;
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
 import com.sun.mirror.declaration.AnnotationTypeDeclaration;
@@ -129,7 +125,7 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
             env.getMessager().printNotice(
                     "No class generation for domain types");
         } else {
-            serializeAsOuterClasses(entityTypes.values(), Serializers.DOMAIN);
+            Serializers.DOMAIN.serialize(targetFolder, namePrefix, entityTypes.values());
         }
 
     }
@@ -144,7 +140,7 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
         if (dtoVisitor.types.isEmpty()) {
             env.getMessager().printNotice("No class generation for DTO types");
         } else {
-            serializeAsOuterClasses(dtoVisitor.types, Serializers.DTO);
+            Serializers.DTO.serialize(targetFolder, namePrefix, dtoVisitor.types);
         }
 
     }
@@ -155,27 +151,6 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
         }
         if (dtoAnnotation != null) {
             createDTOClasses();
-        }
-    }
-
-    protected void serializeAsOuterClasses(Collection<ClassModel> entityTypes, Serializer serializer) {
-        // populate model
-        Map<String, Object> model = new HashMap<String, Object>();
-        model.put("pre", namePrefix);
-
-        for (ClassModel type : entityTypes) {
-            String packageName = type.getPackageName();
-            model.put("package", packageName);
-            model.put("type", type);
-            model.put("classSimpleName", type.getSimpleName());
-
-            // serialize it
-            try {
-                String path = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
-                serializer.serialize(model, FileUtils.writerFor(new File(targetFolder, path)));
-            } catch (Exception e) {
-                throw new RuntimeException(e.getMessage(), e);
-            }
         }
     }
 
