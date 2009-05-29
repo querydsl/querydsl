@@ -5,8 +5,6 @@
  */
 package com.mysema.query.apt.impl;
 
-import java.io.File;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -16,9 +14,7 @@ import javax.lang.model.element.Element;
 
 import com.mysema.query.codegen.ClassModel;
 import com.mysema.query.codegen.ClassModelBuilder;
-import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.Serializers;
-import com.mysema.query.util.FileUtils;
 
 public class DefaultHandler {
 
@@ -40,7 +36,7 @@ public class DefaultHandler {
         }
 
         if (!entityTypes.isEmpty()) {
-            serializeAsOuterClasses(entityTypes.values(), Serializers.DOMAIN);
+            Serializers.DOMAIN.serialize(targetFolder, namePrefix, entityTypes.values());
         }
     }
     
@@ -78,21 +74,6 @@ public class DefaultHandler {
             return null;
         }
     }
-    
-    protected void serializeAsOuterClasses(Collection<ClassModel> entityTypes, Serializer serializer) {
-        Map<String, Object> model = new HashMap<String, Object>();
-        model.put("pre", namePrefix);
-        for (ClassModel type : entityTypes) {
-            String packageName = type.getPackageName();
-            model.put("package", packageName);
-            model.put("type", type);
-            model.put("classSimpleName", type.getSimpleName());
-            try {
-                String path = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
-                serializer.serialize(model, FileUtils.writerFor(new File(targetFolder, path)));
-            } catch (Exception e) {
-                throw new RuntimeException(e.getMessage(), e);
-            }
-        }
-    }
+   
+
 }
