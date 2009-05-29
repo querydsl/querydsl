@@ -5,11 +5,15 @@
  */
 package com.mysema.query.codegen;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.util.FileUtils;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
@@ -31,6 +35,23 @@ public class Serializer {
         this.templateLocation = Assert.notNull(template);
     }
 
+    public void serialize(String targetFolder, String namePrefix, Collection<ClassModel> entityTypes) {
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("pre", namePrefix);
+        for (ClassModel type : entityTypes) {
+            String packageName = type.getPackageName();
+            model.put("package", packageName);
+            model.put("type", type);
+            model.put("classSimpleName", type.getSimpleName());
+            try {
+                String path = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
+                serialize(model, FileUtils.writerFor(new File(targetFolder, path)));
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+        }
+    }
+    
     public void serialize(Map<String, Object> model, Writer writer) throws IOException, TemplateException {
         configuration.getTemplate(templateLocation).process(model, writer);
         writer.flush();
