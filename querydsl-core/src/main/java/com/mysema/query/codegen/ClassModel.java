@@ -1,7 +1,4 @@
 /*
-
- * 
- * 
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
  * 
@@ -10,6 +7,7 @@ package com.mysema.query.codegen;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -22,6 +20,19 @@ import org.apache.commons.lang.StringUtils;
  * @version $Id$
  */
 public class ClassModel implements Comparable<ClassModel> {
+    
+    public static ClassModel createFor(Class<?> key){
+        ClassModel value = new ClassModel(
+                key.getSuperclass().getName(), 
+                key.getPackage().getName(), 
+                key.getName(), 
+                key.getSimpleName());
+        for (java.lang.reflect.Field f : key.getDeclaredFields()) {
+            TypeModel typeHelper = ReflectionTypeModel.get(f.getType(), f.getGenericType());
+            value.addField(new FieldModel(f.getName(), typeHelper));
+        }
+        return value;
+    }
 
     private final Set<FieldModel> booleanFields = new TreeSet<FieldModel>();
 
@@ -55,8 +66,7 @@ public class ClassModel implements Comparable<ClassModel> {
 
     private String superType;
 
-    public ClassModel(String superType, String packageName, String name,
-            String simpleName) {
+    public ClassModel(String superType, String packageName, String name, String simpleName) {
         this.superType = superType;
         this.packageName = packageName;
         this.name = name;
@@ -221,5 +231,40 @@ public class ClassModel implements Comparable<ClassModel> {
             target.add(validateField(field));
         }
     }
+    
+    public void addSupertypeFields(Map<String, ClassModel> entityTypes, Map<String, ClassModel> supertypes) {
+        String stype = getSupertypeName();
+        Class<?> superClass = safeClassForName(stype);
+        if (entityTypes.containsKey(stype) || supertypes.containsKey(stype)) {
+            while (true) {
+                ClassModel sdecl;
+                if (entityTypes.containsKey(stype)) {
+                    sdecl = entityTypes.get(stype);
+                } else if (supertypes.containsKey(stype)) {
+                    sdecl = supertypes.get(stype);
+                } else {
+                    return;
+                }
+                include(sdecl);
+                stype = sdecl.getSupertypeName();
+            }
+
+        } else if (superClass != null && !superClass.equals(Object.class)) {
+            // TODO : recursively up ?
+            ClassModel type = ClassModel.createFor(superClass);
+            // include fields of supertype
+            include(type);
+        }
+    }    
+    
+    private Class<?> safeClassForName(String stype) {
+        try {
+            return stype != null ? Class.forName(stype) : null;
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+    }
+
+
 
 }

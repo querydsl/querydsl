@@ -15,20 +15,17 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.mysema.query.codegen.ClassModel;
-import com.mysema.query.codegen.ClassModelBuilder;
-
 /**
  * TypeHelperTest provides
  * 
  * @author tiwe
  * @version $Id$
  */
-public class ClassModelBuilderTest {
+public class ClassModelTest {
 
     @Test
     public void test() {
-        ClassModel type = ClassModelBuilder.createType(TestType.class);
+        ClassModel type = ClassModel.createFor(TestType.class);
         assertEquals(1, type.getEntityMaps().size());
         assertEquals(1, type.getSimpleMaps().size());
         assertEquals(2, type.getEntityCollections().size());

@@ -61,6 +61,14 @@
       <scope>provided</scope>
       <!-- license : TODO -->
     </dependency>
+<!--     
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-apt</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>provided</scope>
+    </dependency>
+ -->    
   </dependencies>
 
   <build>
@@ -118,6 +126,17 @@
           </execution>
         </executions>
       </plugin>
+<!--       
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration> 
+          <compilerArguments>
+            <processor>com.mysema.query.apt.EntityAnnotationProcessor</processor>
+          </compilerArguments>
+          <fork>true</fork>
+        </configuration>
+      </plugin>
+ -->      
     </plugins>
   </build>
   

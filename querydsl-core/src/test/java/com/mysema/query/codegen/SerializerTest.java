@@ -33,9 +33,32 @@ public class SerializerTest {
                 "com.mysema.query", 
                 "com.mysema.query.DomainClass",
                 "DomainClass");
-
-        FieldModel field = new FieldModel("field", null, "java.lang",
-                "java.lang.String", "String", FieldType.STRING);
+        
+        FieldModel field = new FieldModel("field", new TypeModel(){
+            @Override
+            public FieldType getFieldType() {
+                return FieldType.STRING;
+            }
+            @Override
+            public String getFullName() {
+                return String.class.getName();
+            }
+            @Override
+            public String getKeyTypeName() {
+                return null;
+            }
+            @Override
+            public String getPackageName() {
+                return String.class.getPackage().getName();
+            }
+            @Override
+            public String getSimpleName() {
+                return String.class.getSimpleName();
+            }
+            @Override
+            public String getValueTypeName() {
+                return null;
+            }});
         type.addField(field);
         ParameterModel param = new ParameterModel("name", "java.lang.String");
         type.addConstructor(new ConstructorModel(Collections.singleton(param)));

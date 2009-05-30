@@ -90,6 +90,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @param <A>
      * @param right rhs of the comparison
      * @return
+     * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean goe(A right) {
         return Grammar.goe(this, castTo(right, getType()));
@@ -101,6 +102,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @param <A>
      * @param right rhs of the comparison
      * @return
+     * @see java.lang.Comparable#compareTo(Object)
      */
     @SuppressWarnings("unchecked")
     public final <A extends Number & Comparable<?>> EBoolean goe(Expr<A> right) {
@@ -113,6 +115,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @param <A>
      * @param right rhs of the comparison
      * @return
+     * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean gt(A right) {
         return Grammar.gt(this, castTo(right, getType()));
@@ -124,6 +127,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @param <A>
      * @param right rhs of the comparison
      * @return
+     * @see java.lang.Comparable#compareTo(Object)
      */
     @SuppressWarnings("unchecked")
     public final <A extends Number & Comparable<?>> EBoolean gt(Expr<A> right) {
@@ -136,6 +140,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @param <A>
      * @param right rhs of the comparison
      * @return
+     * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean loe(A right) {
         return Grammar.loe(this, castTo(right, getType()));
@@ -147,6 +152,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @param <A>
      * @param right rhs of the comparison
      * @return
+     * @see java.lang.Comparable#compareTo(Object)
      */
     @SuppressWarnings("unchecked")
     public final <A extends Number & Comparable<?>> EBoolean loe(Expr<A> right) {
@@ -159,6 +165,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @param <A>
      * @param right rhs of the comparison
      * @return
+     * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean lt(A right) {
         return Grammar.lt(this, castTo(right, getType()));
@@ -170,6 +177,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @param <A>
      * @param right rhs of the comparison
      * @return
+     * @see java.lang.Comparable#compareTo(Object)
      */
     @SuppressWarnings("unchecked")
     public final <A extends Number & Comparable<?>> EBoolean lt(Expr<A> right) {

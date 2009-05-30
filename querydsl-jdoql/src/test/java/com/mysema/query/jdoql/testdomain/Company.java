@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.jdoql.testdomain;
 
 import java.util.ArrayList;
@@ -6,10 +11,13 @@ import java.util.List;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.mysema.query.annotations.Entity;
+
 /**
  * The Class Company.
  */
 @PersistenceCapable
+@Entity
 // TODO : finish annotations
 public class Company {
     private @PrimaryKey

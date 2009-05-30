@@ -1,0 +1,1717 @@
++ Error stacktraces are turned on.
+Maven version: 2.0.9
+Java version: 1.6.0_04
+OS name: "windows xp" version: "5.1" arch: "x86" Family: "windows"
+[DEBUG] Building Maven user-level plugin registry from: 'C:\Documents and Settings\tiwe\.m2\plugin-registry.xml'
+[DEBUG] Building Maven global-level plugin registry from: 'c:\work\maven\conf\plugin-registry.xml'
+[INFO] Scanning for projects...
+[DEBUG] Searching for parent-POM: com.mysema.querydsl:querydsl-root::0.3.11-SNAPSHOT of project: com.mysema.querydsl:querydsl-jdoql:jar:null in relative path: ../pom.xml
+[DEBUG] Parent-POM: com.mysema.querydsl:querydsl-root::0.3.11-SNAPSHOT not found in relative path: ../pom.xml
+[DEBUG] Retrieving parent-POM: com.mysema.querydsl:querydsl-root::0.3.11-SNAPSHOT for project: com.mysema.querydsl:querydsl-jdoql:jar:null from the repository.
+[DEBUG] Skipping disabled repository mysema-releases
+[DEBUG] Skipping disabled repository central
+[DEBUG] querydsl-root: using locally installed snapshot
+[DEBUG] Retrieving parent-POM: com.mysema.home:mysema-source::0.2.0 for project: com.mysema.querydsl:querydsl-root:pom:0.3.11-SNAPSHOT from the repository.
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Querydsl - JDOQL support
+[INFO]    task-segment: [clean, test]
+[INFO] ------------------------------------------------------------------------
+[DEBUG] Retrieving parent-POM: org.apache.maven.plugins:maven-plugins::10 for project: null:maven-clean-plugin:maven-plugin:2.2 from the repository.
+[DEBUG] Retrieving parent-POM: org.apache.maven:maven-parent::7 for project: org.apache.maven.plugins:maven-plugins:pom:10 from the repository.
+[DEBUG] Retrieving parent-POM: org.apache:apache::4 for project: org.apache.maven:maven-parent:pom:7 from the repository.
+[DEBUG] Retrieving parent-POM: org.apache.maven.plugins:maven-plugins::13 for project: null:maven-eclipse-plugin:maven-plugin:2.6 from the repository.
+[DEBUG] Retrieving parent-POM: org.apache.maven:maven-parent::11 for project: org.apache.maven.plugins:maven-plugins:pom:13 from the repository.
+[DEBUG] Retrieving parent-POM: org.apache:apache::5 for project: org.apache.maven:maven-parent:pom:11 from the repository.
+[DEBUG] Retrieving parent-POM: org.apache.myfaces.tobago:tobago-tool::1.0.15 for project: null:maven-apt-plugin:maven-plugin:null from the repository.
+[DEBUG] Retrieving parent-POM: org.apache.myfaces.tobago:tobago::1.0.15 for project: null:tobago-tool:pom:null from the repository.
+[DEBUG] Retrieving parent-POM: org.apache.myfaces:myfaces::3 for project: org.apache.myfaces.tobago:tobago:pom:1.0.15 from the repository.
+[DEBUG] Adding managed dependencies for unknown:maven-apt-plugin
+[DEBUG]   commons-io:commons-io:jar:1.1
+[DEBUG]   commons-lang:commons-lang:jar:2.1
+[DEBUG]   commons-beanutils:commons-beanutils:jar:1.7.0
+[DEBUG]   commons-collections:commons-collections:jar:3.1
+[DEBUG]   commons-logging:commons-logging:jar:1.1
+[DEBUG]   commons-digester:commons-digester:jar:1.8
+[DEBUG]   commons-fileupload:commons-fileupload:jar:1.2
+[DEBUG]   log4j:log4j:jar:1.2.14
+[DEBUG]   junit:junit:jar:4.4:test
+[DEBUG]   javax.servlet:jstl:jar:1.1.0
+[DEBUG]   taglibs:standard:jar:1.1.2
+[DEBUG]   org.apache.myfaces.core:myfaces-api:jar:1.1.5
+[DEBUG]   org.apache.myfaces.core:myfaces-impl:jar:1.1.5
+[DEBUG]   javax.faces:jsf-api:jar:1.1_02
+[DEBUG]   javax.faces:jsf-impl:jar:1.1_02
+[DEBUG]   javax.servlet:jsp-api:jar:2.0:provided
+[DEBUG]   javax.servlet:servlet-api:jar:2.3:provided
+[DEBUG]   portlet-api:portlet-api:jar:1.0:provided
+[DEBUG]   net.sf.retrotranslator:retrotranslator-runtime:jar:1.2.1:provided
+[DEBUG] Retrieving parent-POM: org.apache.maven.plugins:maven-plugins::8 for project: null:maven-compiler-plugin:maven-plugin:2.0.2 from the repository.
+[DEBUG] Retrieving parent-POM: org.apache.maven:maven-parent::5 for project: org.apache.maven.plugins:maven-plugins:pom:8 from the repository.
+[DEBUG] Retrieving parent-POM: org.apache:apache::3 for project: org.apache.maven:maven-parent:pom:5 from the repository.
+[DEBUG] Retrieving parent-POM: org.apache.maven.surefire:surefire::2.4.3 for project: org.apache.maven.plugins:maven-surefire-plugin:maven-plugin:null from the repository.
+[DEBUG] Adding managed dependencies for org.apache.maven.plugins:maven-surefire-plugin
+[DEBUG]   org.apache.maven.surefire:surefire-api:jar:2.4.3
+[DEBUG]   org.apache.maven.surefire:surefire-booter:jar:2.4.3
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.5.1
+[DEBUG] Retrieving parent-POM: org.apache.maven.plugins:maven-plugins::11 for project: null:maven-javadoc-plugin:maven-plugin:2.5 from the repository.
+[DEBUG] Retrieving parent-POM: org.apache.maven:maven-parent::8 for project: org.apache.maven.plugins:maven-plugins:pom:11 from the repository.
+[DEBUG] Plugin dependencies for:
+
+org.apache.maven.plugins:maven-clean-plugin:2.2
+
+are:
+
+org.apache.maven:maven-project:jar:2.0:runtime
+org.apache.maven:maven-plugin-api:jar:2.0:runtime
+org.apache.maven.shared:file-management:jar:1.2:runtime
+org.codehaus.plexus:plexus-utils:jar:1.1:runtime
+
+
+[DEBUG] org.apache.maven.plugins:maven-clean-plugin:maven-plugin:2.2:runtime (selected for runtime)
+[DEBUG] Retrieving parent-POM: org.apache.maven:maven::2.0 for project: null:maven-project:jar:2.0 from the repository.
+[DEBUG] Adding managed dependencies for unknown:maven-project
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.4
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven:maven-project:jar:2.0:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:maven-profile
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.4
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-alpha-5
+[DEBUG]     org.apache.maven:maven-profile:jar:2.0:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for org.apache.maven:maven-model
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.4
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-alpha-5
+[DEBUG]       org.apache.maven:maven-model:jar:2.0:runtime (selected for runtime)
+[DEBUG]         org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (selected for runtime)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (selected for runtime)
+[DEBUG]       org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8:runtime (selected for runtime)
+[DEBUG]         junit:junit:jar:3.8.1:runtime (selected for runtime)
+[DEBUG]         classworlds:classworlds:jar:1.1-alpha-2:runtime (selected for runtime)
+[DEBUG]     org.apache.maven:maven-model:jar:2.0:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for org.apache.maven:maven-artifact-manager
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.4
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-alpha-5
+[DEBUG]     org.apache.maven:maven-artifact-manager:jar:2.0:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for org.apache.maven:maven-repository-metadata
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.4
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-alpha-5
+[DEBUG]       org.apache.maven:maven-repository-metadata:jar:2.0:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for org.apache.maven:maven-artifact
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.4
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-alpha-5
+[DEBUG]       org.apache.maven:maven-artifact:jar:2.0:runtime (selected for runtime)
+[DEBUG]       org.apache.maven.wagon:wagon-provider-api:jar:1.0-alpha-5:runtime (selected for runtime)
+[DEBUG]     org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (selected for runtime)
+[DEBUG]     org.apache.maven:maven-artifact:jar:2.0:runtime (selected for runtime)
+[DEBUG]     org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8:runtime (selected for runtime)
+[DEBUG]       junit:junit:jar:3.8.1:runtime (selected for runtime)
+[DEBUG]       classworlds:classworlds:jar:1.1-alpha-2:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for org.apache.maven:maven-plugin-api
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.4
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-alpha-5
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0:runtime (selected for runtime)
+[DEBUG] Retrieving parent-POM: org.apache.maven.shared:maven-shared-components::8 for project: null:file-management:jar:1.2 from the repository.
+[DEBUG]   org.apache.maven.shared:file-management:jar:1.2:runtime (selected for runtime)
+[DEBUG] Retrieving parent-POM: org.apache.maven:maven::2.0.6 for project: null:maven-plugin-api:jar:null from the repository.
+[DEBUG] Adding managed dependencies for unknown:maven-plugin-api
+[DEBUG]   org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   org.apache.maven.reporting:maven-reporting-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-test:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.4.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]     org.apache.maven:maven-plugin-api:jar:2.0.6:runtime (removed - nearer found: 2.0)
+[DEBUG]     org.apache.maven.shared:maven-shared-io:jar:1.1:runtime (selected for runtime)
+[DEBUG] Retrieving parent-POM: org.apache.maven:maven::2.0.2 for project: org.apache.maven:maven-artifact:jar:2.0.2 from the repository.
+[DEBUG] Adding managed dependencies for org.apache.maven:maven-artifact
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-alpha-6
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-alpha-6
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-alpha-6
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-alpha-6
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-alpha-6
+[DEBUG]       org.apache.maven:maven-artifact:jar:2.0.2:runtime (removed - nearer found: 2.0)
+[DEBUG] Adding managed dependencies for org.apache.maven:maven-artifact-manager
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-alpha-6
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-alpha-6
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-alpha-6
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-alpha-6
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-alpha-6
+[DEBUG]       org.apache.maven:maven-artifact-manager:jar:2.0.2:runtime (removed - nearer found: 2.0)
+[DEBUG] Retrieving parent-POM: org.apache.maven.wagon:wagon::1.0-alpha-6 for project: null:wagon-provider-api:jar:1.0-alpha-6 from the repository.
+[DEBUG] Adding managed dependencies for unknown:wagon-provider-api
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-alpha-6
+[DEBUG]   org.apache.maven.wagon:wagon-provider-test:jar:1.0-alpha-6
+[DEBUG]   junit:junit:jar:3.8.1
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.4
+[DEBUG]       org.apache.maven.wagon:wagon-provider-api:jar:1.0-alpha-6:runtime (removed - nearer found: 1.0-alpha-5)
+[DEBUG] Retrieving parent-POM: org.codehaus.plexus:plexus::1.0.11 for project: null:plexus-utils:jar:1.4.6 from the repository.
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.4.6:runtime (removed - nearer found: 1.0.4)
+[DEBUG]     org.codehaus.plexus:plexus-utils:jar:1.4.6:runtime (removed - nearer found: 1.0.4)
+[DEBUG] Retrieving parent-POM: org.codehaus.plexus:plexus-containers::1.0.3 for project: null:plexus-container-default:jar:1.0-alpha-9 from the repository.
+[DEBUG] Retrieving parent-POM: org.codehaus.plexus:plexus::1.0.4 for project: org.codehaus.plexus:plexus-containers:pom:1.0.3 from the repository.
+[DEBUG]     org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9:runtime (removed - nearer found: 1.0-alpha-8)
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (removed - nearer found: 1.1)
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.1:runtime (selected for runtime)
+[DEBUG]  The following artifacts were filtered out for plugin: org.apache.maven.plugins:maven-clean-plugin:2.2 because they're already in the core of Maven:
+
+org.apache.maven:maven-project:jar:2.0:runtime
+org.apache.maven:maven-plugin-api:jar:2.0:runtime
+
+These will use the artifact files already in the core ClassRealm instead, to allow them to be included in PluginDescriptor.getArtifacts().
+
+
+[DEBUG] Configuring mojo 'org.apache.maven.plugins:maven-clean-plugin:2.2:clean' -->
+[DEBUG]   (f) directory = c:\work\querydsl-workspace\querydsl-jdoql\target
+[DEBUG]   (f) failOnError = true
+[DEBUG]   (f) followSymLinks = false
+[DEBUG]   (f) outputDirectory = c:\work\querydsl-workspace\querydsl-jdoql\target\classes
+[DEBUG]   (f) project = MavenProject: com.mysema.querydsl:querydsl-jdoql:0.3.11-SNAPSHOT @ c:\work\querydsl-workspace\querydsl-jdoql\pom.xml
+[DEBUG]   (f) reportDirectory = c:\work\querydsl-workspace\querydsl-jdoql\target\site
+[DEBUG]   (f) skip = false
+[DEBUG]   (f) testOutputDirectory = c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes
+[DEBUG]   (f) verbose = false
+[DEBUG] -- end configuration --
+[INFO] [clean:clean]
+[INFO] Deleting directory c:\work\querydsl-workspace\querydsl-jdoql\target
+[DEBUG] Retrieving parent-POM: org.apache.maven.plugins:maven-plugins::1 for project: null:maven-resources-plugin:maven-plugin:2.2 from the repository.
+[DEBUG] Retrieving parent-POM: org.apache.maven:maven-parent::1 for project: org.apache.maven.plugins:maven-plugins:pom:1 from the repository.
+[DEBUG] Retrieving parent-POM: org.apache:apache::1 for project: org.apache.maven:maven-parent:pom:1 from the repository.
+[DEBUG] com.mysema.querydsl:querydsl-jdoql:jar:0.3.11-SNAPSHOT (selected for null)
+[DEBUG] Skipping disabled repository mysema-releases
+[DEBUG] Skipping disabled repository central
+[DEBUG] jdo2-api: using locally installed snapshot
+[DEBUG] Skipping disabled repository mysema-releases
+[DEBUG] Trying repository mysema-snapshots
+Downloading: http://intra.mysema.com/maven2/snapshots/javax/jdo/jdo2-api/2.3-SNAPSHOT/jdo2-api-2.3-SNAPSHOT.pom
+[DEBUG] Unable to get resource 'javax.jdo:jdo2-api:pom:2.3-SNAPSHOT' from repository mysema-snapshots (http://intra.mysema.com/maven2/snapshots)
+[DEBUG] Skipping disabled repository central
+[DEBUG] Artifact not found - using stub model: Unable to download the artifact from any repository
+
+  javax.jdo:jdo2-api:pom:2.3-SNAPSHOT
+
+from the specified remote repositories:
+  mysema-releases (http://intra.mysema.com/maven2/releases),
+  mysema-snapshots (http://intra.mysema.com/maven2/snapshots),
+  central (http://repo1.maven.org/maven2)
+
+[DEBUG] Using defaults for missing POM javax.jdo:jdo2-api:pom:2.3-SNAPSHOT:compile
+[DEBUG]   javax.jdo:jdo2-api:jar:2.3-SNAPSHOT:compile (selected for compile)
+[DEBUG] Skipping disabled repository mysema-releases
+[DEBUG] Skipping disabled repository central
+[DEBUG] querydsl-core: using locally installed snapshot
+[DEBUG]   com.mysema.querydsl:querydsl-core:jar:0.3.11-SNAPSHOT:compile (selected for compile)
+[DEBUG]     net.sourceforge.collections:collections-generic:jar:4.01:compile (selected for compile)
+[DEBUG] Retrieving parent-POM: org.apache.commons:commons-parent::9 for project: commons-lang:commons-lang:jar:2.4 from the repository.
+[DEBUG]     commons-lang:commons-lang:jar:2.4:compile (selected for compile)
+[DEBUG] Skipping disabled repository mysema-releases
+[DEBUG] Skipping disabled repository central
+[DEBUG] mysema-commons-lang: using locally installed snapshot
+[DEBUG] Retrieving parent-POM: com.mysema.commons:mysema-commons::1.0.0-SNAPSHOT for project: null:mysema-commons-lang:jar:0.1.2-SNAPSHOT from the repository.
+[DEBUG] Skipping disabled repository mysema-releases
+[DEBUG] Skipping disabled repository central
+[DEBUG] mysema-commons: using locally installed snapshot
+[DEBUG] Retrieving parent-POM: com.mysema.home:mysema-source::0.1.0 for project: com.mysema.commons:mysema-commons:pom:1.0.0-SNAPSHOT from the repository.
+[DEBUG]     com.mysema.commons:mysema-commons-lang:jar:0.1.2-SNAPSHOT:compile (selected for compile)
+[DEBUG] Retrieving parent-POM: org.slf4j:slf4j-parent::1.5.2 for project: org.slf4j:slf4j-api:jar:null from the repository.
+[DEBUG] Adding managed dependencies for org.slf4j:slf4j-api
+[DEBUG]   org.slf4j:slf4j-api:jar:1.5.2
+[DEBUG]   log4j:log4j:jar:1.2.14
+[DEBUG]       org.slf4j:slf4j-api:jar:1.5.2:compile (selected for compile)
+[DEBUG]     janino:janino:jar:2.5.10:compile (selected for compile)
+[DEBUG]     cglib:cglib:jar:2.2:compile (selected for compile)
+[DEBUG] Retrieving parent-POM: asm:asm-parent::3.1 for project: null:asm:jar:null from the repository.
+[DEBUG] Adding managed dependencies for unknown:asm
+[DEBUG]   asm:asm:jar:3.1
+[DEBUG]   asm:asm-tree:jar:3.1
+[DEBUG]   asm:asm-analysis:jar:3.1
+[DEBUG]   asm:asm-commons:jar:3.1
+[DEBUG]   asm:asm-util:jar:3.1
+[DEBUG]   asm:asm-xml:jar:3.1
+[DEBUG]       asm:asm:jar:3.1:compile (selected for compile)
+[DEBUG]     org.freemarker:freemarker:jar:2.3.12:compile (selected for compile)
+[DEBUG]     org.slf4j:slf4j-api:jar:1.5.2:compile (selected for compile)
+[DEBUG]   org.datanucleus:datanucleus-core:jar:1.1.3:test (selected for test)
+[DEBUG]     javax.transaction:transaction-api:jar:1.1:test (selected for test)
+[DEBUG]   org.datanucleus:datanucleus-rdbms:jar:1.1.3:test (selected for test)
+[DEBUG]   hsqldb:hsqldb:jar:1.8.0.7:test (selected for test)
+[DEBUG] Skipping disabled repository mysema-releases
+[DEBUG] Skipping disabled repository central
+[DEBUG] querydsl-apt-jdk5: using locally installed snapshot
+[DEBUG]   com.mysema.querydsl:querydsl-apt-jdk5:jar:0.3.11-SNAPSHOT:provided (selected for provided)
+[DEBUG] Retrieving parent-POM: org.apache.commons:commons-parent::7 for project: commons-io:commons-io:jar:1.4 from the repository.
+[DEBUG]     commons-io:commons-io:jar:1.4:provided (selected for provided)
+[DEBUG]     com.sun:tools:jar:1.4.2:system (selected for system)
+[DEBUG] Skipping disabled repository mysema-releases
+[DEBUG] Skipping disabled repository central
+[DEBUG] querydsl-apt: using locally installed snapshot
+[DEBUG]   com.mysema.querydsl:querydsl-apt:jar:0.3.11-SNAPSHOT:provided (selected for provided)
+[DEBUG]   org.slf4j:slf4j-api:jar:1.5.2:compile (selected for compile)
+[DEBUG] Adding managed dependencies for org.slf4j:slf4j-log4j12
+[DEBUG]   org.slf4j:slf4j-api:jar:1.5.2
+[DEBUG]   log4j:log4j:jar:1.2.14
+[DEBUG]   org.slf4j:slf4j-log4j12:jar:1.5.2:test (selected for test)
+[DEBUG]     log4j:log4j:jar:1.2.14:test (selected for test)
+[DEBUG]   junit:junit:jar:4.4:test (selected for test)
+[DEBUG] jdo2-api: using locally installed snapshot
+[DEBUG] querydsl-core: using locally installed snapshot
+[DEBUG] mysema-commons-lang: using locally installed snapshot
+[DEBUG] querydsl-apt-jdk5: using locally installed snapshot
+[DEBUG] querydsl-apt: using locally installed snapshot
+[DEBUG] Plugin dependencies for:
+
+org.apache.myfaces.tobago:maven-apt-plugin:1.0.15
+
+are:
+
+org.codehaus.plexus:plexus-compiler-javac:jar:1.5.3:runtime
+org.apache.maven:maven-plugin-api:jar:2.0.5:runtime
+org.apache.maven:maven-project:jar:2.0.5:runtime
+org.codehaus.plexus:plexus-utils:jar:1.0.5:runtime
+
+
+[DEBUG] org.apache.myfaces.tobago:maven-apt-plugin:maven-plugin:1.0.15:runtime (selected for runtime)
+[DEBUG] Retrieving parent-POM: org.codehaus.plexus:plexus-compilers::1.5.3 for project: null:plexus-compiler-javac:jar:1.5.3 from the repository.
+[DEBUG] Retrieving parent-POM: org.codehaus.plexus:plexus-compiler::1.5.3 for project: org.codehaus.plexus:plexus-compilers:pom:1.5.3 from the repository.
+[DEBUG] Retrieving parent-POM: org.codehaus.plexus:plexus-components::1.1.6 for project: null:plexus-compiler:pom:1.5.3 from the repository.
+[DEBUG] Retrieving parent-POM: org.codehaus.plexus:plexus::1.0.8 for project: org.codehaus.plexus:plexus-components:pom:1.1.6 from the repository.
+[DEBUG]   org.codehaus.plexus:plexus-compiler-javac:jar:1.5.3:runtime (selected for runtime)
+[DEBUG]     org.codehaus.plexus:plexus-utils:jar:1.0.5:runtime (selected for runtime)
+[DEBUG]       classworlds:classworlds:jar:1.1-alpha-2:runtime (selected for runtime)
+[DEBUG]     org.codehaus.plexus:plexus-compiler-api:jar:1.5.3:runtime (selected for runtime)
+[DEBUG]       org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8:runtime (selected for runtime)
+[DEBUG]         org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (removed - nearer found: 1.0.5)
+[DEBUG]         junit:junit:jar:3.8.1:runtime (applying version: 4.4)
+[DEBUG]         junit:junit:jar:4.4:runtime (applying scope: test)
+[DEBUG]         junit:junit:jar:4.4:test (selected for test)
+[DEBUG]     org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8:runtime (selected for runtime)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (removed - nearer found: 1.0.5)
+[DEBUG]       junit:junit:jar:3.8.1:runtime (applying version: 4.4)
+[DEBUG]       junit:junit:jar:4.4:runtime (applying scope: test)
+[DEBUG]       junit:junit:jar:4.4:test (selected for test)
+[DEBUG] Retrieving parent-POM: org.apache.maven:maven::2.0.5 for project: null:maven-plugin-api:jar:2.0.5 from the repository.
+[DEBUG] Adding managed dependencies for unknown:maven-plugin-api
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0.5:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:maven-project
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]   org.apache.maven:maven-project:jar:2.0.5:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:maven-settings
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]     org.apache.maven:maven-settings:jar:2.0.5:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:maven-model
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]       org.apache.maven:maven-model:jar:2.0.5:runtime (selected for runtime)
+[DEBUG]         org.codehaus.plexus:plexus-utils:jar:1.1:runtime (removed - nearer found: 1.0.5)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.1:runtime (removed - nearer found: 1.0.5)
+[DEBUG]       org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9:runtime (removed - nearer found: 1.0-alpha-8)
+[DEBUG] Adding managed dependencies for unknown:maven-profile
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]     org.apache.maven:maven-profile:jar:2.0.5:runtime (selected for runtime)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.1:runtime (removed - nearer found: 1.0.5)
+[DEBUG]       org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9:runtime (removed - nearer found: 1.0-alpha-8)
+[DEBUG]     org.apache.maven:maven-model:jar:2.0.5:runtime (selected for runtime)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.1:runtime (removed - nearer found: 1.0.5)
+[DEBUG] Adding managed dependencies for unknown:maven-artifact-manager
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]     org.apache.maven:maven-artifact-manager:jar:2.0.5:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:maven-repository-metadata
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]       org.apache.maven:maven-repository-metadata:jar:2.0.5:runtime (selected for runtime)
+[DEBUG]         org.codehaus.plexus:plexus-utils:jar:1.1:runtime (removed - nearer found: 1.0.5)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.1:runtime (removed - nearer found: 1.0.5)
+[DEBUG] Adding managed dependencies for unknown:maven-artifact
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]       org.apache.maven:maven-artifact:jar:2.0.5:runtime (selected for runtime)
+[DEBUG]         org.codehaus.plexus:plexus-utils:jar:1.1:runtime (removed - nearer found: 1.0.5)
+[DEBUG]       org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9:runtime (removed - nearer found: 1.0-alpha-8)
+[DEBUG] Retrieving parent-POM: org.apache.maven.wagon:wagon::1.0-beta-2 for project: null:wagon-provider-api:jar:1.0-beta-2 from the repository.
+[DEBUG] Retrieving parent-POM: org.apache.maven:maven-parent::4 for project: org.apache.maven.wagon:wagon:pom:1.0-beta-2 from the repository.
+[DEBUG] Adding managed dependencies for unknown:wagon-provider-api
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-provider-test:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-common-test:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-common:jar:1.0-beta-2
+[DEBUG]   junit:junit:jar:3.8.1
+[DEBUG]   org.codehaus.plexus:plexus-interactivity-api:jar:1.0-alpha-4
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.4
+[DEBUG]       org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2:runtime (selected for runtime)
+[DEBUG]         org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (removed - nearer found: 1.0.5)
+[DEBUG]     org.codehaus.plexus:plexus-utils:jar:1.1:runtime (removed - nearer found: 1.0.5)
+[DEBUG]     org.apache.maven:maven-artifact:jar:2.0.5:runtime (selected for runtime)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.1:runtime (removed - nearer found: 1.0.5)
+[DEBUG]     org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9:runtime (removed - nearer found: 1.0-alpha-8)
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.5:runtime (selected for runtime)
+[DEBUG]     classworlds:classworlds:jar:1.1-alpha-2:runtime (selected for runtime)
+[DEBUG]  The following artifacts were filtered out for plugin: org.apache.myfaces.tobago:maven-apt-plugin:1.0.15 because they're already in the core of Maven:
+
+org.apache.maven:maven-plugin-api:jar:2.0.5:runtime
+org.apache.maven:maven-project:jar:2.0.5:runtime
+
+These will use the artifact files already in the core ClassRealm instead, to allow them to be included in PluginDescriptor.getArtifacts().
+
+
+[DEBUG] Configuring mojo 'org.apache.myfaces.tobago:maven-apt-plugin:1.0.15:testExecute' -->
+[DEBUG]   (f) aptOptions = -Aprofile=jdo
+[DEBUG]   (f) aptSourceRoots = [src/test/java]
+[DEBUG]   (f) basedir = c:\work\querydsl-workspace\querydsl-jdoql
+[DEBUG]   (f) compileSourceRoots = [c:\work\querydsl-workspace\querydsl-jdoql\src\test\java]
+[DEBUG]   (f) debug = true
+[DEBUG]   (f) factory = com.mysema.query.apt.APTFactory
+[DEBUG]   (f) force = true
+[DEBUG]   (f) fork = true
+[DEBUG]   (f) nocompile = true
+[DEBUG]   (f) outputDirectory = c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes
+[DEBUG]   (f) project = MavenProject: com.mysema.querydsl:querydsl-jdoql:0.3.11-SNAPSHOT @ c:\work\querydsl-workspace\querydsl-jdoql\pom.xml
+[DEBUG]   (f) resourceFiltering = false
+[DEBUG]   (f) showWarnings = true
+[DEBUG]   (f) staleMillis = 0
+[DEBUG]   (f) tempRoot = c:\work\querydsl-workspace\querydsl-jdoql\target\maven-apt-plugin
+[DEBUG]   (f) testClasspathElements = [c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes, c:\work\querydsl-workspace\querydsl-jdoql\target\classes, C:\Documents and Settings\tiwe\.m2\repository\javax\jdo\jdo2-api\2.3-SNAPSHOT\jdo2-api-2.3-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-core\0.3.11-SNAPSHOT\querydsl-core-0.3.11-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\net\sourceforge\collections\collections-generic\4.01\collections-generic-4.01.jar, C:\Documents and Settings\tiwe\.m2\repository\commons-lang\commons-lang\2.4\commons-lang-2.4.jar, C:\Documents and Settings\tiwe\.m2\repository\com\mysema\commons\mysema-commons-lang\0.1.2-SNAPSHOT\mysema-commons-lang-0.1.2-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-api\1.5.2\slf4j-api-1.5.2.jar, C:\Documents and Settings\tiwe\.m2\repository\janino\janino\2.5.10\janino-2.5.10.jar, C:\Documents and Settings\tiwe\.m2\repository\cglib\cglib\2.2\cglib-2.2.jar, C:\Documents and Settings\tiwe\.m2\repository\asm\asm\3.1\asm-3.1.jar, C:\Documents and Settings\tiwe\.m2\repository\org\freemarker\freemarker\2.3.12\freemarker-2.3.12.jar, C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-core\1.1.3\datanucleus-core-1.1.3.jar, C:\Documents and Settings\tiwe\.m2\repository\javax\transaction\transaction-api\1.1\transaction-api-1.1.jar, C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-rdbms\1.1.3\datanucleus-rdbms-1.1.3.jar, C:\Documents and Settings\tiwe\.m2\repository\hsqldb\hsqldb\1.8.0.7\hsqldb-1.8.0.7.jar, C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt-jdk5\0.3.11-SNAPSHOT\querydsl-apt-jdk5-0.3.11-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\commons-io\commons-io\1.4\commons-io-1.4.jar, c:\Program Files\Java\jdk1.6.0_04\jre\..\lib\tools.jar, C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt\0.3.11-SNAPSHOT\querydsl-apt-0.3.11-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-log4j12\1.5.2\slf4j-log4j12-1.5.2.jar, C:\Documents and Settings\tiwe\.m2\repository\log4j\log4j\1.2.14\log4j-1.2.14.jar, C:\Documents and Settings\tiwe\.m2\repository\junit\junit\4.4\junit-4.4.jar]
+[DEBUG]   (f) testGenerated = target/generated-test-sources/java
+[DEBUG]   (f) verbose = false
+[DEBUG]   (f) workingDir = c:\work\querydsl-workspace\querydsl-jdoql
+[DEBUG] -- end configuration --
+[INFO] [apt:testExecute {execution: default}]
+[DEBUG] Using apt compiler
+[DEBUG] Checking sourcepath
+[DEBUG] Checking sourcepath in c:\work\querydsl-workspace\querydsl-jdoql\src\test\java
+[DEBUG] sources from: c:\work\querydsl-workspace\querydsl-jdoql\src\test\java
+[DEBUG] c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\AbstractJDOTest.java
+c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\testdomain\Employee.java
+c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\testdomain\Department.java
+c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\testdomain\Company.java
+c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\testdomain\Book.java
+c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\JDOQLSerializerTest.java
+c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\testdomain\Person.java
+c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\QueryBasicsTest.java
+c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\QueryOrderingTest.java
+c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\testdomain\Product.java
+
+[DEBUG] Checking sourcepath in src\test\java
+[DEBUG] sources from: c:\work\querydsl-workspace\querydsl-jdoql\src\test\java
+[DEBUG] src\test\java\com\mysema\query\jdoql\QueryBasicsTest.java
+src\test\java\com\mysema\query\jdoql\JDOQLSerializerTest.java
+src\test\java\com\mysema\query\jdoql\testdomain\Employee.java
+src\test\java\com\mysema\query\jdoql\testdomain\Product.java
+src\test\java\com\mysema\query\jdoql\testdomain\Book.java
+src\test\java\com\mysema\query\jdoql\testdomain\Department.java
+src\test\java\com\mysema\query\jdoql\testdomain\Company.java
+src\test\java\com\mysema\query\jdoql\testdomain\Person.java
+src\test\java\com\mysema\query\jdoql\QueryOrderingTest.java
+src\test\java\com\mysema\query\jdoql\AbstractJDOTest.java
+
+[DEBUG] Working dir: c:\work\querydsl-workspace\querydsl-jdoql
+[DEBUG] Apt executable=[c:\Program Files\Java\jdk1.6.0_04\jre\..\bin\apt.exe]
+[DEBUG] Invoking apt with cmd cmd.exe /X /C '""c:\Program Files\Java\jdk1.6.0_04\jre\..\bin\apt.exe" -Aprofile=jdo -s C:\work\querydsl-workspace\querydsl-jdoql\target\generated-test-sources\java -nocompile -factory com.mysema.query.apt.APTFactory -g -sourcepath c:\work\querydsl-workspace\querydsl-jdoql\src\test\java;src/test/java -d C:\work\querydsl-workspace\querydsl-jdoql\target\test-classes -classpath "c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes;c:\work\querydsl-workspace\querydsl-jdoql\target\classes;C:\Documents and Settings\tiwe\.m2\repository\javax\jdo\jdo2-api\2.3-SNAPSHOT\jdo2-api-2.3-SNAPSHOT.jar;C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-core\0.3.11-SNAPSHOT\querydsl-core-0.3.11-SNAPSHOT.jar;C:\Documents and Settings\tiwe\.m2\repository\net\sourceforge\collections\collections-generic\4.01\collections-generic-4.01.jar;C:\Documents and Settings\tiwe\.m2\repository\commons-lang\commons-lang\2.4\commons-lang-2.4.jar;C:\Documents and Settings\tiwe\.m2\repository\com\mysema\commons\mysema-commons-lang\0.1.2-SNAPSHOT\mysema-commons-lang-0.1.2-SNAPSHOT.jar;C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-api\1.5.2\slf4j-api-1.5.2.jar;C:\Documents and Settings\tiwe\.m2\repository\janino\janino\2.5.10\janino-2.5.10.jar;C:\Documents and Settings\tiwe\.m2\repository\cglib\cglib\2.2\cglib-2.2.jar;C:\Documents and Settings\tiwe\.m2\repository\asm\asm\3.1\asm-3.1.jar;C:\Documents and Settings\tiwe\.m2\repository\org\freemarker\freemarker\2.3.12\freemarker-2.3.12.jar;C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-core\1.1.3\datanucleus-core-1.1.3.jar;C:\Documents and Settings\tiwe\.m2\repository\javax\transaction\transaction-api\1.1\transaction-api-1.1.jar;C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-rdbms\1.1.3\datanucleus-rdbms-1.1.3.jar;C:\Documents and Settings\tiwe\.m2\repository\hsqldb\hsqldb\1.8.0.7\hsqldb-1.8.0.7.jar;C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt-jdk5\0.3.11-SNAPSHOT\querydsl-apt-jdk5-0.3.11-SNAPSHOT.jar;C:\Documents and Settings\tiwe\.m2\repository\commons-io\commons-io\1.4\commons-io-1.4.jar;c:\Program Files\Java\jdk1.6.0_04\jre\..\lib\tools.jar;C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt\0.3.11-SNAPSHOT\querydsl-apt-0.3.11-SNAPSHOT.jar;C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-log4j12\1.5.2\slf4j-log4j12-1.5.2.jar;C:\Documents and Settings\tiwe\.m2\repository\log4j\log4j\1.2.14\log4j-1.2.14.jar;C:\Documents and Settings\tiwe\.m2\repository\junit\junit\4.4\junit-4.4.jar" @c:\work\querydsl-workspace\querydsl-jdoql\target\maven-apt-plugin\files"'
+[ERROR] warning: Annotation types without processors: [org.junit.Before, org.junit.After, org.junit.AfterClass, javax.jdo.annotations.PrimaryKey, javax.jdo.annotations.Inheritance, org.junit.Test, org.junit.Ignore, org.junit.BeforeClass]
+log4j:WARN No appenders could be found for logger (freemarker.cache).
+log4j:WARN Please initialize the log4j system properly.
+Note: No class generation for DTO types
+1 warning
+
+[DEBUG] Apt finished.
+[DEBUG] Plugin dependencies for:
+
+org.apache.maven.plugins:maven-resources-plugin:2.2
+
+are:
+
+org.apache.maven:maven-plugin-api:jar:2.0:runtime
+org.apache.maven:maven-project:jar:2.0:runtime
+org.apache.maven:maven-model:jar:2.0:runtime
+org.codehaus.plexus:plexus-utils:jar:1.1:runtime
+
+
+[DEBUG] org.apache.maven.plugins:maven-resources-plugin:maven-plugin:2.2:runtime (selected for runtime)
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0:runtime (selected for runtime)
+[DEBUG]   org.apache.maven:maven-project:jar:2.0:runtime (selected for runtime)
+[DEBUG]     org.apache.maven:maven-profile:jar:2.0:runtime (selected for runtime)
+[DEBUG]       org.apache.maven:maven-model:jar:2.0:runtime (selected for runtime)
+[DEBUG]         org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (selected for runtime)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (selected for runtime)
+[DEBUG]       org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8:runtime (selected for runtime)
+[DEBUG]         junit:junit:jar:3.8.1:runtime (selected for runtime)
+[DEBUG]         classworlds:classworlds:jar:1.1-alpha-2:runtime (selected for runtime)
+[DEBUG]     org.apache.maven:maven-model:jar:2.0:runtime (selected for runtime)
+[DEBUG]     org.apache.maven:maven-artifact-manager:jar:2.0:runtime (selected for runtime)
+[DEBUG]       org.apache.maven:maven-repository-metadata:jar:2.0:runtime (selected for runtime)
+[DEBUG]       org.apache.maven:maven-artifact:jar:2.0:runtime (selected for runtime)
+[DEBUG]       org.apache.maven.wagon:wagon-provider-api:jar:1.0-alpha-5:runtime (selected for runtime)
+[DEBUG]     org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (selected for runtime)
+[DEBUG]     org.apache.maven:maven-artifact:jar:2.0:runtime (selected for runtime)
+[DEBUG]     org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8:runtime (selected for runtime)
+[DEBUG]       junit:junit:jar:3.8.1:runtime (selected for runtime)
+[DEBUG]       classworlds:classworlds:jar:1.1-alpha-2:runtime (selected for runtime)
+[DEBUG]   org.apache.maven:maven-model:jar:2.0:runtime (selected for runtime)
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (removed - nearer found: 1.1)
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.1:runtime (selected for runtime)
+[DEBUG]  The following artifacts were filtered out for plugin: org.apache.maven.plugins:maven-resources-plugin:2.2 because they're already in the core of Maven:
+
+org.apache.maven:maven-plugin-api:jar:2.0:runtime
+org.apache.maven:maven-project:jar:2.0:runtime
+org.apache.maven:maven-model:jar:2.0:runtime
+
+These will use the artifact files already in the core ClassRealm instead, to allow them to be included in PluginDescriptor.getArtifacts().
+
+
+[DEBUG] Configuring mojo 'org.apache.maven.plugins:maven-resources-plugin:2.2:resources' -->
+[DEBUG]   (f) filters = []
+[DEBUG]   (f) outputDirectory = c:\work\querydsl-workspace\querydsl-jdoql\target\classes
+[DEBUG]   (f) project = MavenProject: com.mysema.querydsl:querydsl-jdoql:0.3.11-SNAPSHOT @ c:\work\querydsl-workspace\querydsl-jdoql\pom.xml
+[DEBUG]   (f) resources = [Resource {targetPath: null, filtering: false, FileSet {directory: c:\work\querydsl-workspace\querydsl-jdoql\src\main\resources, PatternSet [includes: {}, excludes: {}]}}]
+[DEBUG] -- end configuration --
+[INFO] [resources:resources]
+[INFO] Using default encoding to copy filtered resources.
+[DEBUG] com.mysema.querydsl:querydsl-jdoql:jar:0.3.11-SNAPSHOT (selected for null)
+[DEBUG]   javax.jdo:jdo2-api:jar:2.3-SNAPSHOT:compile (selected for compile)
+[DEBUG]   com.mysema.querydsl:querydsl-core:jar:0.3.11-SNAPSHOT:compile (selected for compile)
+[DEBUG]     net.sourceforge.collections:collections-generic:jar:4.01:compile (selected for compile)
+[DEBUG]     commons-lang:commons-lang:jar:2.4:compile (selected for compile)
+[DEBUG]     com.mysema.commons:mysema-commons-lang:jar:0.1.2-SNAPSHOT:compile (selected for compile)
+[DEBUG]       org.slf4j:slf4j-api:jar:1.5.2:compile (selected for compile)
+[DEBUG]     janino:janino:jar:2.5.10:compile (selected for compile)
+[DEBUG]     cglib:cglib:jar:2.2:compile (selected for compile)
+[DEBUG]       asm:asm:jar:3.1:compile (selected for compile)
+[DEBUG]     org.freemarker:freemarker:jar:2.3.12:compile (selected for compile)
+[DEBUG]     org.slf4j:slf4j-api:jar:1.5.2:compile (selected for compile)
+[DEBUG]   org.datanucleus:datanucleus-core:jar:1.1.3:test (selected for test)
+[DEBUG]     javax.transaction:transaction-api:jar:1.1:test (selected for test)
+[DEBUG]   org.datanucleus:datanucleus-rdbms:jar:1.1.3:test (selected for test)
+[DEBUG]   hsqldb:hsqldb:jar:1.8.0.7:test (selected for test)
+[DEBUG]   com.mysema.querydsl:querydsl-apt-jdk5:jar:0.3.11-SNAPSHOT:provided (selected for provided)
+[DEBUG]     commons-io:commons-io:jar:1.4:provided (selected for provided)
+[DEBUG]     com.sun:tools:jar:1.4.2:system (selected for system)
+[DEBUG]   com.mysema.querydsl:querydsl-apt:jar:0.3.11-SNAPSHOT:provided (selected for provided)
+[DEBUG]   org.slf4j:slf4j-api:jar:1.5.2:compile (selected for compile)
+[DEBUG]   org.slf4j:slf4j-log4j12:jar:1.5.2:test (selected for test)
+[DEBUG]     log4j:log4j:jar:1.2.14:test (selected for test)
+[DEBUG]   junit:junit:jar:4.4:test (selected for test)
+[DEBUG] mysema-commons-lang: using locally installed snapshot
+[DEBUG] Plugin dependencies for:
+
+org.apache.maven.plugins:maven-compiler-plugin:2.0.2
+
+are:
+
+org.apache.maven:maven-plugin-api:jar:2.0:runtime
+org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime
+org.codehaus.plexus:plexus-compiler-api:jar:1.5.3:runtime
+org.codehaus.plexus:plexus-compiler-manager:jar:1.5.3:runtime
+org.codehaus.plexus:plexus-compiler-javac:jar:1.5.3:runtime
+org.apache.maven:maven-artifact:jar:2.0:runtime
+
+
+[DEBUG] org.apache.maven.plugins:maven-compiler-plugin:maven-plugin:2.0.2:runtime (selected for runtime)
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0:runtime (selected for runtime)
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (selected for runtime)
+[DEBUG]   org.codehaus.plexus:plexus-compiler-api:jar:1.5.3:runtime (selected for runtime)
+[DEBUG]     org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8:runtime (selected for runtime)
+[DEBUG]       junit:junit:jar:3.8.1:runtime (selected for runtime)
+[DEBUG]       classworlds:classworlds:jar:1.1-alpha-2:runtime (selected for runtime)
+[DEBUG]   org.codehaus.plexus:plexus-compiler-manager:jar:1.5.3:runtime (selected for runtime)
+[DEBUG]   org.codehaus.plexus:plexus-compiler-javac:jar:1.5.3:runtime (selected for runtime)
+[DEBUG]     org.codehaus.plexus:plexus-utils:jar:1.0.5:runtime (removed - nearer found: 1.0.4)
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0:runtime (selected for runtime)
+[DEBUG]  The following artifacts were filtered out for plugin: org.apache.maven.plugins:maven-compiler-plugin:2.0.2 because they're already in the core of Maven:
+
+org.apache.maven:maven-plugin-api:jar:2.0:runtime
+org.apache.maven:maven-artifact:jar:2.0:runtime
+
+These will use the artifact files already in the core ClassRealm instead, to allow them to be included in PluginDescriptor.getArtifacts().
+
+
+[DEBUG] Configuring mojo 'org.apache.maven.plugins:maven-compiler-plugin:2.0.2:compile' -->
+[DEBUG]   (f) basedir = c:\work\querydsl-workspace\querydsl-jdoql
+[DEBUG]   (f) buildDirectory = c:\work\querydsl-workspace\querydsl-jdoql\target
+[DEBUG]   (f) classpathElements = [c:\work\querydsl-workspace\querydsl-jdoql\target\classes, C:\Documents and Settings\tiwe\.m2\repository\javax\jdo\jdo2-api\2.3-SNAPSHOT\jdo2-api-2.3-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-core\0.3.11-SNAPSHOT\querydsl-core-0.3.11-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\net\sourceforge\collections\collections-generic\4.01\collections-generic-4.01.jar, C:\Documents and Settings\tiwe\.m2\repository\commons-lang\commons-lang\2.4\commons-lang-2.4.jar, C:\Documents and Settings\tiwe\.m2\repository\com\mysema\commons\mysema-commons-lang\0.1.2-SNAPSHOT\mysema-commons-lang-0.1.2-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-api\1.5.2\slf4j-api-1.5.2.jar, C:\Documents and Settings\tiwe\.m2\repository\janino\janino\2.5.10\janino-2.5.10.jar, C:\Documents and Settings\tiwe\.m2\repository\cglib\cglib\2.2\cglib-2.2.jar, C:\Documents and Settings\tiwe\.m2\repository\asm\asm\3.1\asm-3.1.jar, C:\Documents and Settings\tiwe\.m2\repository\org\freemarker\freemarker\2.3.12\freemarker-2.3.12.jar, C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt-jdk5\0.3.11-SNAPSHOT\querydsl-apt-jdk5-0.3.11-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\commons-io\commons-io\1.4\commons-io-1.4.jar, c:\Program Files\Java\jdk1.6.0_04\jre\..\lib\tools.jar, C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt\0.3.11-SNAPSHOT\querydsl-apt-0.3.11-SNAPSHOT.jar]
+[DEBUG]   (f) compileSourceRoots = [c:\work\querydsl-workspace\querydsl-jdoql\src\main\java]
+[DEBUG]   (f) compilerArguments = {processor=com.mysema.query.apt.EntityAnnotationProcessor}
+[DEBUG]   (f) compilerId = javac
+[DEBUG]   (f) debug = true
+[DEBUG]   (f) failOnError = true
+[DEBUG]   (f) fork = true
+[DEBUG]   (f) optimize = false
+[DEBUG]   (f) outputDirectory = c:\work\querydsl-workspace\querydsl-jdoql\target\classes
+[DEBUG]   (f) outputFileName = querydsl-jdoql-0.3.11-SNAPSHOT
+[DEBUG]   (f) projectArtifact = com.mysema.querydsl:querydsl-jdoql:jar:0.3.11-SNAPSHOT
+[DEBUG]   (f) showDeprecation = false
+[DEBUG]   (f) showWarnings = false
+[DEBUG]   (f) source = 1.6
+[DEBUG]   (f) staleMillis = 0
+[DEBUG]   (f) target = 1.6
+[DEBUG]   (f) verbose = false
+[DEBUG] -- end configuration --
+[INFO] [compiler:compile]
+[DEBUG] Using compiler 'javac'.
+[DEBUG] Source directories: [c:\work\querydsl-workspace\querydsl-jdoql\src\main\java]
+[DEBUG] Classpath: [c:\work\querydsl-workspace\querydsl-jdoql\target\classes
+ C:\Documents and Settings\tiwe\.m2\repository\javax\jdo\jdo2-api\2.3-SNAPSHOT\jdo2-api-2.3-SNAPSHOT.jar
+ C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-core\0.3.11-SNAPSHOT\querydsl-core-0.3.11-SNAPSHOT.jar
+ C:\Documents and Settings\tiwe\.m2\repository\net\sourceforge\collections\collections-generic\4.01\collections-generic-4.01.jar
+ C:\Documents and Settings\tiwe\.m2\repository\commons-lang\commons-lang\2.4\commons-lang-2.4.jar
+ C:\Documents and Settings\tiwe\.m2\repository\com\mysema\commons\mysema-commons-lang\0.1.2-SNAPSHOT\mysema-commons-lang-0.1.2-SNAPSHOT.jar
+ C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-api\1.5.2\slf4j-api-1.5.2.jar
+ C:\Documents and Settings\tiwe\.m2\repository\janino\janino\2.5.10\janino-2.5.10.jar
+ C:\Documents and Settings\tiwe\.m2\repository\cglib\cglib\2.2\cglib-2.2.jar
+ C:\Documents and Settings\tiwe\.m2\repository\asm\asm\3.1\asm-3.1.jar
+ C:\Documents and Settings\tiwe\.m2\repository\org\freemarker\freemarker\2.3.12\freemarker-2.3.12.jar
+ C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt-jdk5\0.3.11-SNAPSHOT\querydsl-apt-jdk5-0.3.11-SNAPSHOT.jar
+ C:\Documents and Settings\tiwe\.m2\repository\commons-io\commons-io\1.4\commons-io-1.4.jar
+ c:\Program Files\Java\jdk1.6.0_04\jre\..\lib\tools.jar
+ C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt\0.3.11-SNAPSHOT\querydsl-apt-0.3.11-SNAPSHOT.jar]
+[DEBUG] Output directory: c:\work\querydsl-workspace\querydsl-jdoql\target\classes
+[DEBUG] Classpath:
+[DEBUG]  c:\work\querydsl-workspace\querydsl-jdoql\target\classes
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\javax\jdo\jdo2-api\2.3-SNAPSHOT\jdo2-api-2.3-SNAPSHOT.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-core\0.3.11-SNAPSHOT\querydsl-core-0.3.11-SNAPSHOT.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\net\sourceforge\collections\collections-generic\4.01\collections-generic-4.01.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\commons-lang\commons-lang\2.4\commons-lang-2.4.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\com\mysema\commons\mysema-commons-lang\0.1.2-SNAPSHOT\mysema-commons-lang-0.1.2-SNAPSHOT.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-api\1.5.2\slf4j-api-1.5.2.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\janino\janino\2.5.10\janino-2.5.10.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\cglib\cglib\2.2\cglib-2.2.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\asm\asm\3.1\asm-3.1.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\org\freemarker\freemarker\2.3.12\freemarker-2.3.12.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt-jdk5\0.3.11-SNAPSHOT\querydsl-apt-jdk5-0.3.11-SNAPSHOT.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\commons-io\commons-io\1.4\commons-io-1.4.jar
+[DEBUG]  c:\Program Files\Java\jdk1.6.0_04\jre\..\lib\tools.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt\0.3.11-SNAPSHOT\querydsl-apt-0.3.11-SNAPSHOT.jar
+[DEBUG] Source roots:
+[DEBUG]  c:\work\querydsl-workspace\querydsl-jdoql\src\main\java
+[DEBUG] Command line options:
+[DEBUG] -d c:\work\querydsl-workspace\querydsl-jdoql\target\classes -classpath c:\work\querydsl-workspace\querydsl-jdoql\target\classes;C:\Documents and Settings\tiwe\.m2\repository\javax\jdo\jdo2-api\2.3-SNAPSHOT\jdo2-api-2.3-SNAPSHOT.jar;C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-core\0.3.11-SNAPSHOT\querydsl-core-0.3.11-SNAPSHOT.jar;C:\Documents and Settings\tiwe\.m2\repository\net\sourceforge\collections\collections-generic\4.01\collections-generic-4.01.jar;C:\Documents and Settings\tiwe\.m2\repository\commons-lang\commons-lang\2.4\commons-lang-2.4.jar;C:\Documents and Settings\tiwe\.m2\repository\com\mysema\commons\mysema-commons-lang\0.1.2-SNAPSHOT\mysema-commons-lang-0.1.2-SNAPSHOT.jar;C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-api\1.5.2\slf4j-api-1.5.2.jar;C:\Documents and Settings\tiwe\.m2\repository\janino\janino\2.5.10\janino-2.5.10.jar;C:\Documents and Settings\tiwe\.m2\repository\cglib\cglib\2.2\cglib-2.2.jar;C:\Documents and Settings\tiwe\.m2\repository\asm\asm\3.1\asm-3.1.jar;C:\Documents and Settings\tiwe\.m2\repository\org\freemarker\freemarker\2.3.12\freemarker-2.3.12.jar;C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt-jdk5\0.3.11-SNAPSHOT\querydsl-apt-jdk5-0.3.11-SNAPSHOT.jar;C:\Documents and Settings\tiwe\.m2\repository\commons-io\commons-io\1.4\commons-io-1.4.jar;c:\Program Files\Java\jdk1.6.0_04\jre\..\lib\tools.jar;C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt\0.3.11-SNAPSHOT\querydsl-apt-0.3.11-SNAPSHOT.jar; c:\work\querydsl-workspace\querydsl-jdoql\src\main\java\com\mysema\query\jdoql\package-info.java c:\work\querydsl-workspace\querydsl-jdoql\src\main\java\com\mysema\query\jdoql\AbstractJDOQLQuery.java c:\work\querydsl-workspace\querydsl-jdoql\src\main\java\com\mysema\query\jdoql\JDOQLQueryImpl.java c:\work\querydsl-workspace\querydsl-jdoql\src\main\java\com\mysema\query\jdoql\JDOQLPatterns.java c:\work\querydsl-workspace\querydsl-jdoql\src\main\java\com\mysema\query\jdoql\JDOQLSerializer.java c:\work\querydsl-workspace\querydsl-jdoql\src\main\java\com\mysema\query\jdoql\JDOQLQuery.java -g -nowarn -target 1.6 -source 1.6 -processor com.mysema.query.apt.EntityAnnotationProcessor
+[INFO] Compiling 6 source files to c:\work\querydsl-workspace\querydsl-jdoql\target\classes
+[DEBUG] Configuring mojo 'org.apache.maven.plugins:maven-resources-plugin:2.2:testResources' -->
+[DEBUG]   (f) filters = []
+[DEBUG]   (f) outputDirectory = c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes
+[DEBUG]   (f) project = MavenProject: com.mysema.querydsl:querydsl-jdoql:0.3.11-SNAPSHOT @ c:\work\querydsl-workspace\querydsl-jdoql\pom.xml
+[DEBUG]   (f) resources = [Resource {targetPath: null, filtering: false, FileSet {directory: c:\work\querydsl-workspace\querydsl-jdoql\src\test\resources, PatternSet [includes: {}, excludes: {}]}}, Resource {targetPath: null, filtering: false, FileSet {directory: c:\work\querydsl-workspace\querydsl-jdoql\target\generated-test-sources\java, PatternSet [includes: {}, excludes: {**/*.java}]}}]
+[DEBUG] -- end configuration --
+[INFO] [resources:testResources]
+[INFO] Using default encoding to copy filtered resources.
+[DEBUG] com.mysema.querydsl:querydsl-jdoql:jar:0.3.11-SNAPSHOT (selected for null)
+[DEBUG]   javax.jdo:jdo2-api:jar:2.3-SNAPSHOT:compile (selected for compile)
+[DEBUG]   com.mysema.querydsl:querydsl-core:jar:0.3.11-SNAPSHOT:compile (selected for compile)
+[DEBUG]     net.sourceforge.collections:collections-generic:jar:4.01:compile (selected for compile)
+[DEBUG]     commons-lang:commons-lang:jar:2.4:compile (selected for compile)
+[DEBUG]     com.mysema.commons:mysema-commons-lang:jar:0.1.2-SNAPSHOT:compile (selected for compile)
+[DEBUG]       org.slf4j:slf4j-api:jar:1.5.2:compile (selected for compile)
+[DEBUG]     janino:janino:jar:2.5.10:compile (selected for compile)
+[DEBUG]     cglib:cglib:jar:2.2:compile (selected for compile)
+[DEBUG]       asm:asm:jar:3.1:compile (selected for compile)
+[DEBUG]     org.freemarker:freemarker:jar:2.3.12:compile (selected for compile)
+[DEBUG]     org.slf4j:slf4j-api:jar:1.5.2:compile (selected for compile)
+[DEBUG]   org.datanucleus:datanucleus-core:jar:1.1.3:test (selected for test)
+[DEBUG]     javax.transaction:transaction-api:jar:1.1:test (selected for test)
+[DEBUG]   org.datanucleus:datanucleus-rdbms:jar:1.1.3:test (selected for test)
+[DEBUG]   hsqldb:hsqldb:jar:1.8.0.7:test (selected for test)
+[DEBUG]   com.mysema.querydsl:querydsl-apt-jdk5:jar:0.3.11-SNAPSHOT:provided (selected for provided)
+[DEBUG]     commons-io:commons-io:jar:1.4:provided (selected for provided)
+[DEBUG]     com.sun:tools:jar:1.4.2:system (selected for system)
+[DEBUG]   com.mysema.querydsl:querydsl-apt:jar:0.3.11-SNAPSHOT:provided (selected for provided)
+[DEBUG]   org.slf4j:slf4j-api:jar:1.5.2:compile (selected for compile)
+[DEBUG]   org.slf4j:slf4j-log4j12:jar:1.5.2:test (selected for test)
+[DEBUG]     log4j:log4j:jar:1.2.14:test (selected for test)
+[DEBUG]   junit:junit:jar:4.4:test (selected for test)
+[DEBUG] mysema-commons-lang: using locally installed snapshot
+[DEBUG] Configuring mojo 'org.apache.maven.plugins:maven-compiler-plugin:2.0.2:testCompile' -->
+[DEBUG]   (f) basedir = c:\work\querydsl-workspace\querydsl-jdoql
+[DEBUG]   (f) buildDirectory = c:\work\querydsl-workspace\querydsl-jdoql\target
+[DEBUG]   (f) classpathElements = [c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes, c:\work\querydsl-workspace\querydsl-jdoql\target\classes, C:\Documents and Settings\tiwe\.m2\repository\javax\jdo\jdo2-api\2.3-SNAPSHOT\jdo2-api-2.3-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-core\0.3.11-SNAPSHOT\querydsl-core-0.3.11-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\net\sourceforge\collections\collections-generic\4.01\collections-generic-4.01.jar, C:\Documents and Settings\tiwe\.m2\repository\commons-lang\commons-lang\2.4\commons-lang-2.4.jar, C:\Documents and Settings\tiwe\.m2\repository\com\mysema\commons\mysema-commons-lang\0.1.2-SNAPSHOT\mysema-commons-lang-0.1.2-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-api\1.5.2\slf4j-api-1.5.2.jar, C:\Documents and Settings\tiwe\.m2\repository\janino\janino\2.5.10\janino-2.5.10.jar, C:\Documents and Settings\tiwe\.m2\repository\cglib\cglib\2.2\cglib-2.2.jar, C:\Documents and Settings\tiwe\.m2\repository\asm\asm\3.1\asm-3.1.jar, C:\Documents and Settings\tiwe\.m2\repository\org\freemarker\freemarker\2.3.12\freemarker-2.3.12.jar, C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-core\1.1.3\datanucleus-core-1.1.3.jar, C:\Documents and Settings\tiwe\.m2\repository\javax\transaction\transaction-api\1.1\transaction-api-1.1.jar, C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-rdbms\1.1.3\datanucleus-rdbms-1.1.3.jar, C:\Documents and Settings\tiwe\.m2\repository\hsqldb\hsqldb\1.8.0.7\hsqldb-1.8.0.7.jar, C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt-jdk5\0.3.11-SNAPSHOT\querydsl-apt-jdk5-0.3.11-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\commons-io\commons-io\1.4\commons-io-1.4.jar, c:\Program Files\Java\jdk1.6.0_04\jre\..\lib\tools.jar, C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt\0.3.11-SNAPSHOT\querydsl-apt-0.3.11-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-log4j12\1.5.2\slf4j-log4j12-1.5.2.jar, C:\Documents and Settings\tiwe\.m2\repository\log4j\log4j\1.2.14\log4j-1.2.14.jar, C:\Documents and Settings\tiwe\.m2\repository\junit\junit\4.4\junit-4.4.jar]
+[DEBUG]   (f) compileSourceRoots = [c:\work\querydsl-workspace\querydsl-jdoql\src\test\java, c:\work\querydsl-workspace\querydsl-jdoql\target\generated-test-sources\java]
+[DEBUG]   (f) compilerArguments = {processor=com.mysema.query.apt.EntityAnnotationProcessor}
+[DEBUG]   (f) compilerId = javac
+[DEBUG]   (f) debug = true
+[DEBUG]   (f) failOnError = true
+[DEBUG]   (f) fork = true
+[DEBUG]   (f) optimize = false
+[DEBUG]   (f) outputDirectory = c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes
+[DEBUG]   (f) outputFileName = querydsl-jdoql-0.3.11-SNAPSHOT
+[DEBUG]   (f) showDeprecation = false
+[DEBUG]   (f) showWarnings = false
+[DEBUG]   (f) source = 1.6
+[DEBUG]   (f) staleMillis = 0
+[DEBUG]   (f) target = 1.6
+[DEBUG]   (f) verbose = false
+[DEBUG] -- end configuration --
+[INFO] [compiler:testCompile]
+[DEBUG] Using compiler 'javac'.
+[DEBUG] Source directories: [c:\work\querydsl-workspace\querydsl-jdoql\src\test\java
+ c:\work\querydsl-workspace\querydsl-jdoql\target\generated-test-sources\java]
+[DEBUG] Classpath: [c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes
+ c:\work\querydsl-workspace\querydsl-jdoql\target\classes
+ C:\Documents and Settings\tiwe\.m2\repository\javax\jdo\jdo2-api\2.3-SNAPSHOT\jdo2-api-2.3-SNAPSHOT.jar
+ C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-core\0.3.11-SNAPSHOT\querydsl-core-0.3.11-SNAPSHOT.jar
+ C:\Documents and Settings\tiwe\.m2\repository\net\sourceforge\collections\collections-generic\4.01\collections-generic-4.01.jar
+ C:\Documents and Settings\tiwe\.m2\repository\commons-lang\commons-lang\2.4\commons-lang-2.4.jar
+ C:\Documents and Settings\tiwe\.m2\repository\com\mysema\commons\mysema-commons-lang\0.1.2-SNAPSHOT\mysema-commons-lang-0.1.2-SNAPSHOT.jar
+ C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-api\1.5.2\slf4j-api-1.5.2.jar
+ C:\Documents and Settings\tiwe\.m2\repository\janino\janino\2.5.10\janino-2.5.10.jar
+ C:\Documents and Settings\tiwe\.m2\repository\cglib\cglib\2.2\cglib-2.2.jar
+ C:\Documents and Settings\tiwe\.m2\repository\asm\asm\3.1\asm-3.1.jar
+ C:\Documents and Settings\tiwe\.m2\repository\org\freemarker\freemarker\2.3.12\freemarker-2.3.12.jar
+ C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-core\1.1.3\datanucleus-core-1.1.3.jar
+ C:\Documents and Settings\tiwe\.m2\repository\javax\transaction\transaction-api\1.1\transaction-api-1.1.jar
+ C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-rdbms\1.1.3\datanucleus-rdbms-1.1.3.jar
+ C:\Documents and Settings\tiwe\.m2\repository\hsqldb\hsqldb\1.8.0.7\hsqldb-1.8.0.7.jar
+ C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt-jdk5\0.3.11-SNAPSHOT\querydsl-apt-jdk5-0.3.11-SNAPSHOT.jar
+ C:\Documents and Settings\tiwe\.m2\repository\commons-io\commons-io\1.4\commons-io-1.4.jar
+ c:\Program Files\Java\jdk1.6.0_04\jre\..\lib\tools.jar
+ C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt\0.3.11-SNAPSHOT\querydsl-apt-0.3.11-SNAPSHOT.jar
+ C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-log4j12\1.5.2\slf4j-log4j12-1.5.2.jar
+ C:\Documents and Settings\tiwe\.m2\repository\log4j\log4j\1.2.14\log4j-1.2.14.jar
+ C:\Documents and Settings\tiwe\.m2\repository\junit\junit\4.4\junit-4.4.jar]
+[DEBUG] Output directory: c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes
+[DEBUG] Classpath:
+[DEBUG]  c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes
+[DEBUG]  c:\work\querydsl-workspace\querydsl-jdoql\target\classes
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\javax\jdo\jdo2-api\2.3-SNAPSHOT\jdo2-api-2.3-SNAPSHOT.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-core\0.3.11-SNAPSHOT\querydsl-core-0.3.11-SNAPSHOT.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\net\sourceforge\collections\collections-generic\4.01\collections-generic-4.01.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\commons-lang\commons-lang\2.4\commons-lang-2.4.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\com\mysema\commons\mysema-commons-lang\0.1.2-SNAPSHOT\mysema-commons-lang-0.1.2-SNAPSHOT.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-api\1.5.2\slf4j-api-1.5.2.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\janino\janino\2.5.10\janino-2.5.10.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\cglib\cglib\2.2\cglib-2.2.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\asm\asm\3.1\asm-3.1.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\org\freemarker\freemarker\2.3.12\freemarker-2.3.12.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-core\1.1.3\datanucleus-core-1.1.3.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\javax\transaction\transaction-api\1.1\transaction-api-1.1.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-rdbms\1.1.3\datanucleus-rdbms-1.1.3.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\hsqldb\hsqldb\1.8.0.7\hsqldb-1.8.0.7.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt-jdk5\0.3.11-SNAPSHOT\querydsl-apt-jdk5-0.3.11-SNAPSHOT.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\commons-io\commons-io\1.4\commons-io-1.4.jar
+[DEBUG]  c:\Program Files\Java\jdk1.6.0_04\jre\..\lib\tools.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt\0.3.11-SNAPSHOT\querydsl-apt-0.3.11-SNAPSHOT.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-log4j12\1.5.2\slf4j-log4j12-1.5.2.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\log4j\log4j\1.2.14\log4j-1.2.14.jar
+[DEBUG]  C:\Documents and Settings\tiwe\.m2\repository\junit\junit\4.4\junit-4.4.jar
+[DEBUG] Source roots:
+[DEBUG]  c:\work\querydsl-workspace\querydsl-jdoql\src\test\java
+[DEBUG]  c:\work\querydsl-workspace\querydsl-jdoql\target\generated-test-sources\java
+[DEBUG] Command line options:
+[DEBUG] -d c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes -classpath c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes;c:\work\querydsl-workspace\querydsl-jdoql\target\classes;C:\Documents and Settings\tiwe\.m2\repository\javax\jdo\jdo2-api\2.3-SNAPSHOT\jdo2-api-2.3-SNAPSHOT.jar;C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-core\0.3.11-SNAPSHOT\querydsl-core-0.3.11-SNAPSHOT.jar;C:\Documents and Settings\tiwe\.m2\repository\net\sourceforge\collections\collections-generic\4.01\collections-generic-4.01.jar;C:\Documents and Settings\tiwe\.m2\repository\commons-lang\commons-lang\2.4\commons-lang-2.4.jar;C:\Documents and Settings\tiwe\.m2\repository\com\mysema\commons\mysema-commons-lang\0.1.2-SNAPSHOT\mysema-commons-lang-0.1.2-SNAPSHOT.jar;C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-api\1.5.2\slf4j-api-1.5.2.jar;C:\Documents and Settings\tiwe\.m2\repository\janino\janino\2.5.10\janino-2.5.10.jar;C:\Documents and Settings\tiwe\.m2\repository\cglib\cglib\2.2\cglib-2.2.jar;C:\Documents and Settings\tiwe\.m2\repository\asm\asm\3.1\asm-3.1.jar;C:\Documents and Settings\tiwe\.m2\repository\org\freemarker\freemarker\2.3.12\freemarker-2.3.12.jar;C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-core\1.1.3\datanucleus-core-1.1.3.jar;C:\Documents and Settings\tiwe\.m2\repository\javax\transaction\transaction-api\1.1\transaction-api-1.1.jar;C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-rdbms\1.1.3\datanucleus-rdbms-1.1.3.jar;C:\Documents and Settings\tiwe\.m2\repository\hsqldb\hsqldb\1.8.0.7\hsqldb-1.8.0.7.jar;C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt-jdk5\0.3.11-SNAPSHOT\querydsl-apt-jdk5-0.3.11-SNAPSHOT.jar;C:\Documents and Settings\tiwe\.m2\repository\commons-io\commons-io\1.4\commons-io-1.4.jar;c:\Program Files\Java\jdk1.6.0_04\jre\..\lib\tools.jar;C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt\0.3.11-SNAPSHOT\querydsl-apt-0.3.11-SNAPSHOT.jar;C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-log4j12\1.5.2\slf4j-log4j12-1.5.2.jar;C:\Documents and Settings\tiwe\.m2\repository\log4j\log4j\1.2.14\log4j-1.2.14.jar;C:\Documents and Settings\tiwe\.m2\repository\junit\junit\4.4\junit-4.4.jar; c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\testdomain\Department.java c:\work\querydsl-workspace\querydsl-jdoql\target\generated-test-sources\java\com\mysema\query\jdoql\testdomain\QBook.java c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\JDOQLSerializerTest.java c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\AbstractJDOTest.java c:\work\querydsl-workspace\querydsl-jdoql\target\generated-test-sources\java\com\mysema\query\jdoql\testdomain\QEmployee.java c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\QueryOrderingTest.java c:\work\querydsl-workspace\querydsl-jdoql\target\generated-test-sources\java\com\mysema\query\jdoql\testdomain\QCompany.java c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\testdomain\Product.java c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\testdomain\Book.java c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\testdomain\Person.java c:\work\querydsl-workspace\querydsl-jdoql\target\generated-test-sources\java\com\mysema\query\jdoql\testdomain\QProduct.java c:\work\querydsl-workspace\querydsl-jdoql\target\generated-test-sources\java\com\mysema\query\jdoql\testdomain\QPerson.java c:\work\querydsl-workspace\querydsl-jdoql\target\generated-test-sources\java\com\mysema\query\jdoql\testdomain\QDepartment.java c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\testdomain\Company.java c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\QueryBasicsTest.java c:\work\querydsl-workspace\querydsl-jdoql\src\test\java\com\mysema\query\jdoql\testdomain\Employee.java -g -nowarn -target 1.6 -source 1.6 -processor com.mysema.query.apt.EntityAnnotationProcessor
+[INFO] Compiling 16 source files to c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes
+[DEBUG] com.mysema.querydsl:querydsl-jdoql:jar:0.3.11-SNAPSHOT (selected for null)
+[DEBUG]   javax.jdo:jdo2-api:jar:2.3-SNAPSHOT:compile (selected for compile)
+[DEBUG]   com.mysema.querydsl:querydsl-core:jar:0.3.11-SNAPSHOT:compile (selected for compile)
+[DEBUG]     net.sourceforge.collections:collections-generic:jar:4.01:compile (selected for compile)
+[DEBUG]     commons-lang:commons-lang:jar:2.4:compile (selected for compile)
+[DEBUG]     com.mysema.commons:mysema-commons-lang:jar:0.1.2-SNAPSHOT:compile (selected for compile)
+[DEBUG]       org.slf4j:slf4j-api:jar:1.5.2:compile (selected for compile)
+[DEBUG]     janino:janino:jar:2.5.10:compile (selected for compile)
+[DEBUG]     cglib:cglib:jar:2.2:compile (selected for compile)
+[DEBUG]       asm:asm:jar:3.1:compile (selected for compile)
+[DEBUG]     org.freemarker:freemarker:jar:2.3.12:compile (selected for compile)
+[DEBUG]     org.slf4j:slf4j-api:jar:1.5.2:compile (selected for compile)
+[DEBUG]   org.datanucleus:datanucleus-core:jar:1.1.3:test (selected for test)
+[DEBUG]     javax.transaction:transaction-api:jar:1.1:test (selected for test)
+[DEBUG]   org.datanucleus:datanucleus-rdbms:jar:1.1.3:test (selected for test)
+[DEBUG]   hsqldb:hsqldb:jar:1.8.0.7:test (selected for test)
+[DEBUG]   com.mysema.querydsl:querydsl-apt-jdk5:jar:0.3.11-SNAPSHOT:provided (selected for provided)
+[DEBUG]     commons-io:commons-io:jar:1.4:provided (selected for provided)
+[DEBUG]     com.sun:tools:jar:1.4.2:system (selected for system)
+[DEBUG]   com.mysema.querydsl:querydsl-apt:jar:0.3.11-SNAPSHOT:provided (selected for provided)
+[DEBUG]   org.slf4j:slf4j-api:jar:1.5.2:compile (selected for compile)
+[DEBUG]   org.slf4j:slf4j-log4j12:jar:1.5.2:test (selected for test)
+[DEBUG]     log4j:log4j:jar:1.2.14:test (selected for test)
+[DEBUG]   junit:junit:jar:4.4:test (selected for test)
+[DEBUG] mysema-commons-lang: using locally installed snapshot
+[DEBUG] Plugin dependencies for:
+
+org.datanucleus:maven-datanucleus-plugin:1.1.0
+
+are:
+
+org.datanucleus:datanucleus-core:jar:[1.1,2.0):runtime
+org.datanucleus:datanucleus-rdbms:jar:[1.1,2.0):runtime
+org.datanucleus:datanucleus-enhancer:jar:[1.1,2.0):runtime
+javax.jdo:jdo2-api:jar:2.3-SNAPSHOT:runtime
+asm:asm:jar:[3.0,4.0):runtime
+org.codehaus.plexus:plexus-utils:jar:1.2:runtime
+org.apache.maven:maven-artifact:jar:2.0:runtime
+org.apache.maven:maven-plugin-api:jar:2.0:runtime
+org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9:runtime
+
+
+[DEBUG] org.datanucleus:maven-datanucleus-plugin:maven-plugin:1.1.0:runtime (selected for runtime)
+[DEBUG] Skipping disabled repository mysema-snapshots
+[DEBUG]   org.datanucleus:datanucleus-core:jar:1.1.3:runtime (setting version to: 1.1.3 from range: [1.1,2.0))
+[DEBUG]   org.datanucleus:datanucleus-core:jar:1.1.3:runtime (selected for runtime)
+[DEBUG]     javax.transaction:transaction-api:jar:1.1:runtime (selected for runtime)
+[DEBUG] Skipping disabled repository mysema-snapshots
+[DEBUG]   org.datanucleus:datanucleus-rdbms:jar:1.1.3:runtime (setting version to: 1.1.3 from range: [1.1,2.0))
+[DEBUG]   org.datanucleus:datanucleus-rdbms:jar:1.1.3:runtime (selected for runtime)
+[DEBUG] Skipping disabled repository mysema-snapshots
+[DEBUG]   org.datanucleus:datanucleus-enhancer:jar:1.1.3:runtime (setting version to: 1.1.3 from range: [1.1,2.0))
+[DEBUG]   org.datanucleus:datanucleus-enhancer:jar:1.1.3:runtime (selected for runtime)
+[DEBUG] Skipping disabled repository mysema-snapshots
+[DEBUG]     asm:asm:jar:3.1:runtime (setting version to: 3.1 from range: [3.0,4.0))
+[DEBUG]     asm:asm:jar:3.1:runtime (selected for runtime)
+[DEBUG]   javax.jdo:jdo2-api:jar:2.3-SNAPSHOT:runtime (selected for runtime)
+[DEBUG]   asm:asm:jar:3.1:runtime (setting version to: 3.1 from range: [3.0,4.0))
+[DEBUG]   asm:asm:jar:3.1:runtime (setting version to: 3.1 from range: [3.0,4.0))
+[DEBUG]   asm:asm:jar:3.1:runtime (setting version to: 3.1 from range: [3.0,4.0))
+[DEBUG]   asm:asm:jar:3.1:runtime (selected for runtime)
+[DEBUG] Retrieving parent-POM: org.codehaus.plexus:plexus::1.0.5 for project: null:plexus-utils:jar:1.2 from the repository.
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.2:runtime (selected for runtime)
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0:runtime (selected for runtime)
+[DEBUG]     org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (removed - nearer found: 1.2)
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0:runtime (selected for runtime)
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9:runtime (selected for runtime)
+[DEBUG]     junit:junit:jar:3.8.1:runtime (selected for runtime)
+[DEBUG]     org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (removed - nearer found: 1.2)
+[DEBUG]     classworlds:classworlds:jar:1.1-alpha-2:runtime (selected for runtime)
+[DEBUG] jdo2-api: using locally installed snapshot
+[DEBUG]  The following artifacts were filtered out for plugin: org.datanucleus:maven-datanucleus-plugin:1.1.0 because they're already in the core of Maven:
+
+org.apache.maven:maven-artifact:jar:2.0:runtime
+org.apache.maven:maven-plugin-api:jar:2.0:runtime
+org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9:runtime
+
+These will use the artifact files already in the core ClassRealm instead, to allow them to be included in PluginDescriptor.getArtifacts().
+
+
+[DEBUG] Configuring mojo 'org.datanucleus:maven-datanucleus-plugin:1.1.0:enhance' -->
+[DEBUG]   (f) api = JDO
+[DEBUG]   (f) classes = c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes
+[DEBUG]   (f) classpathElements = [c:\work\querydsl-workspace\querydsl-jdoql\target\classes, C:\Documents and Settings\tiwe\.m2\repository\javax\jdo\jdo2-api\2.3-SNAPSHOT\jdo2-api-2.3-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-core\0.3.11-SNAPSHOT\querydsl-core-0.3.11-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\net\sourceforge\collections\collections-generic\4.01\collections-generic-4.01.jar, C:\Documents and Settings\tiwe\.m2\repository\commons-lang\commons-lang\2.4\commons-lang-2.4.jar, C:\Documents and Settings\tiwe\.m2\repository\com\mysema\commons\mysema-commons-lang\0.1.2-SNAPSHOT\mysema-commons-lang-0.1.2-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-api\1.5.2\slf4j-api-1.5.2.jar, C:\Documents and Settings\tiwe\.m2\repository\janino\janino\2.5.10\janino-2.5.10.jar, C:\Documents and Settings\tiwe\.m2\repository\cglib\cglib\2.2\cglib-2.2.jar, C:\Documents and Settings\tiwe\.m2\repository\asm\asm\3.1\asm-3.1.jar, C:\Documents and Settings\tiwe\.m2\repository\org\freemarker\freemarker\2.3.12\freemarker-2.3.12.jar]
+[DEBUG]   (f) enhancerName = ASM
+[DEBUG]   (f) fork = true
+[DEBUG]   (f) log4jConfiguration = src/test/resources/log4j.properties
+[DEBUG]   (f) mappingIncludes = **/*.jdo, **/*.class
+[DEBUG]   (f) outDir = c:\work\querydsl-workspace\querydsl-jdoql\target\classes
+[DEBUG]   (f) pluginArtifacts = [org.datanucleus:datanucleus-core:jar:1.1.3:runtime, javax.transaction:transaction-api:jar:1.1:runtime, org.datanucleus:datanucleus-rdbms:jar:1.1.3:runtime, org.datanucleus:datanucleus-enhancer:jar:1.1.3:runtime, asm:asm:jar:3.1:runtime, javax.jdo:jdo2-api:jar:2.3-SNAPSHOT:runtime, org.codehaus.plexus:plexus-utils:jar:1.2:runtime, org.apache.maven:maven-artifact:jar:2.0:runtime, org.apache.maven:maven-plugin-api:jar:2.0:runtime, org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9:runtime]
+[DEBUG]   (f) projectArtifacts = [javax.jdo:jdo2-api:jar:2.3-SNAPSHOT:compile, com.mysema.querydsl:querydsl-core:jar:0.3.11-SNAPSHOT:compile, net.sourceforge.collections:collections-generic:jar:4.01:compile, commons-lang:commons-lang:jar:2.4:compile, com.mysema.commons:mysema-commons-lang:jar:0.1.2-SNAPSHOT:compile, org.slf4j:slf4j-api:jar:1.5.2:compile, janino:janino:jar:2.5.10:compile, cglib:cglib:jar:2.2:compile, asm:asm:jar:3.1:compile, org.freemarker:freemarker:jar:2.3.12:compile]
+[DEBUG]   (f) verbose = true
+[DEBUG] -- end configuration --
+[INFO] [datanucleus:enhance {execution: default}]
+[DEBUG] Classes Dir is : c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes
+[DEBUG] Executing command line:
+[DEBUG] java -cp "c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes;c:\work\querydsl-workspace\querydsl-jdoql\target\classes;C:\Documents and Settings\tiwe\.m2\repository\javax\jdo\jdo2-api\2.3-SNAPSHOT\jdo2-api-2.3-SNAPSHOT.jar;C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-core\0.3.11-SNAPSHOT\querydsl-core-0.3.11-SNAPSHOT.jar;C:\Documents and Settings\tiwe\.m2\repository\net\sourceforge\collections\collections-generic\4.01\collections-generic-4.01.jar;C:\Documents and Settings\tiwe\.m2\repository\commons-lang\commons-lang\2.4\commons-lang-2.4.jar;C:\Documents and Settings\tiwe\.m2\repository\com\mysema\commons\mysema-commons-lang\0.1.2-SNAPSHOT\mysema-commons-lang-0.1.2-SNAPSHOT.jar;C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-api\1.5.2\slf4j-api-1.5.2.jar;C:\Documents and Settings\tiwe\.m2\repository\janino\janino\2.5.10\janino-2.5.10.jar;C:\Documents and Settings\tiwe\.m2\repository\cglib\cglib\2.2\cglib-2.2.jar;C:\Documents and Settings\tiwe\.m2\repository\asm\asm\3.1\asm-3.1.jar;C:\Documents and Settings\tiwe\.m2\repository\org\freemarker\freemarker\2.3.12\freemarker-2.3.12.jar;C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-core\1.1.3\datanucleus-core-1.1.3.jar;C:\Documents and Settings\tiwe\.m2\repository\javax\transaction\transaction-api\1.1\transaction-api-1.1.jar;C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-rdbms\1.1.3\datanucleus-rdbms-1.1.3.jar;C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-enhancer\1.1.3\datanucleus-enhancer-1.1.3.jar;C:\Documents and Settings\tiwe\.m2\repository\org\codehaus\plexus\plexus-utils\1.2\plexus-utils-1.2.jar;C:\work\maven\lib\maven-2.0.9-uber.jar" -Dlog4j.configuration=file:src/test/resources/log4j.properties org.datanucleus.enhancer.DataNucleusEnhancer -v -enhancerName ASM -api JDO c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes\com\mysema\query\jdoql\AbstractJDOTest.class c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes\com\mysema\query\jdoql\JDOQLSerializerTest.class c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes\com\mysema\query\jdoql\QueryBasicsTest.class c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes\com\mysema\query\jdoql\QueryOrderingTest.class c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes\com\mysema\query\jdoql\testdomain\Book.class c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes\com\mysema\query\jdoql\testdomain\Company.class c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes\com\mysema\query\jdoql\testdomain\Department.class c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes\com\mysema\query\jdoql\testdomain\Employee.class c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes\com\mysema\query\jdoql\testdomain\Person.class c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes\com\mysema\query\jdoql\testdomain\Product.class c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes\com\mysema\query\jdoql\testdomain\QBook.class c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes\com\mysema\query\jdoql\testdomain\QCompany.class c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes\com\mysema\query\jdoql\testdomain\QDepartment.class c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes\com\mysema\query\jdoql\testdomain\QEmployee.class c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes\com\mysema\query\jdoql\testdomain\QPerson.class c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes\com\mysema\query\jdoql\testdomain\QProduct.class
+[DEBUG] Exit code: 0
+[DEBUG] --------------------
+[DEBUG]  Standard output from the DataNucleus tool org.datanucleus.enhancer.DataNucleusEnhancer :
+[DEBUG] --------------------
+[INFO] DataNucleus Enhancer (version 1.1.3) : Enhancement of classes
+DataNucleus Enhancer : Classpath
+>>  c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes
+>>  c:\work\querydsl-workspace\querydsl-jdoql\target\classes
+>>  C:\Documents and Settings\tiwe\.m2\repository\javax\jdo\jdo2-api\2.3-SNAPSHOT\jdo2-api-2.3-SNAPSHOT.jar
+>>  C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-core\0.3.11-SNAPSHOT\querydsl-core-0.3.11-SNAPSHOT.jar
+>>  C:\Documents and Settings\tiwe\.m2\repository\net\sourceforge\collections\collections-generic\4.01\collections-generic-4.01.jar
+>>  C:\Documents and Settings\tiwe\.m2\repository\commons-lang\commons-lang\2.4\commons-lang-2.4.jar
+>>  C:\Documents and Settings\tiwe\.m2\repository\com\mysema\commons\mysema-commons-lang\0.1.2-SNAPSHOT\mysema-commons-lang-0.1.2-SNAPSHOT.jar
+>>  C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-api\1.5.2\slf4j-api-1.5.2.jar
+>>  C:\Documents and Settings\tiwe\.m2\repository\janino\janino\2.5.10\janino-2.5.10.jar
+>>  C:\Documents and Settings\tiwe\.m2\repository\cglib\cglib\2.2\cglib-2.2.jar
+>>  C:\Documents and Settings\tiwe\.m2\repository\asm\asm\3.1\asm-3.1.jar
+>>  C:\Documents and Settings\tiwe\.m2\repository\org\freemarker\freemarker\2.3.12\freemarker-2.3.12.jar
+>>  C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-core\1.1.3\datanucleus-core-1.1.3.jar
+>>  C:\Documents and Settings\tiwe\.m2\repository\javax\transaction\transaction-api\1.1\transaction-api-1.1.jar
+>>  C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-rdbms\1.1.3\datanucleus-rdbms-1.1.3.jar
+>>  C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-enhancer\1.1.3\datanucleus-enhancer-1.1.3.jar
+>>  C:\Documents and Settings\tiwe\.m2\repository\org\codehaus\plexus\plexus-utils\1.2\plexus-utils-1.2.jar
+>>  C:\work\maven\lib\maven-2.0.9-uber.jar
+ENHANCED (PersistenceCapable) : com.mysema.query.jdoql.testdomain.Person
+ENHANCED (PersistenceCapable) : com.mysema.query.jdoql.testdomain.Book
+ENHANCED (PersistenceCapable) : com.mysema.query.jdoql.testdomain.Company
+ENHANCED (PersistenceCapable) : com.mysema.query.jdoql.testdomain.Department
+ENHANCED (PersistenceCapable) : com.mysema.query.jdoql.testdomain.Product
+ENHANCED (PersistenceCapable) : com.mysema.query.jdoql.testdomain.Employee
+DataNucleus Enhancer completed with success for 6 classes. Timings : input=156 ms, enhance=125 ms, total=281 ms. Consult the log for full details
+
+[DEBUG] --------------------
+[ERROR] --------------------
+[ERROR]  Standard error from the DataNucleus tool + org.datanucleus.enhancer.DataNucleusEnhancer :
+[ERROR] --------------------
+[ERROR] 29.5.2009 17:45:46 org.datanucleus.enhancer.DataNucleusEnhancer <init>
+INFO: DataNucleus Enhancer : Using ClassEnhancer "ASM" for API "JDO"
+29.5.2009 17:45:46 org.datanucleus.plugin.NonManagedPluginRegistry resolveConstraints
+INFO: Bundle "org.datanucleus" has an optional dependency to "org.eclipse.equinox.registry" but it cannot be resolved
+29.5.2009 17:45:46 org.datanucleus.plugin.NonManagedPluginRegistry resolveConstraints
+INFO: Bundle "org.datanucleus" has an optional dependency to "org.eclipse.core.runtime" but it cannot be resolved
+29.5.2009 17:45:46 org.datanucleus.enhancer.DataNucleusEnhancer main
+INFO: DataNucleus Enhancer (version 1.1.3) : Enhancement of classes
+29.5.2009 17:45:47 org.datanucleus.jdo.metadata.JDOAnnotationReader processClassAnnotations
+INFO: Class "com.mysema.query.jdoql.testdomain.Book" has been specified with JDO annotations so using those.
+29.5.2009 17:45:47 org.datanucleus.metadata.MetaDataManager loadClasses
+INFO: Class "com.mysema.query.jdoql.testdomain.QProduct" has no MetaData or annotations.
+29.5.2009 17:45:47 org.datanucleus.metadata.MetaDataManager loadClasses
+INFO: Class "com.mysema.query.jdoql.QueryBasicsTest" has no MetaData or annotations.
+29.5.2009 17:45:47 org.datanucleus.metadata.MetaDataManager loadClasses
+INFO: Class "com.mysema.query.jdoql.QueryOrderingTest" has no MetaData or annotations.
+29.5.2009 17:45:47 org.datanucleus.jdo.metadata.JDOAnnotationReader processClassAnnotations
+INFO: Class "com.mysema.query.jdoql.testdomain.Department" has been specified with JDO annotations so using those.
+29.5.2009 17:45:47 org.datanucleus.jdo.metadata.JDOAnnotationReader processClassAnnotations
+INFO: Class "com.mysema.query.jdoql.testdomain.Employee" has been specified with JDO annotations so using those.
+29.5.2009 17:45:47 org.datanucleus.jdo.metadata.JDOAnnotationReader processClassAnnotations
+INFO: Class "com.mysema.query.jdoql.testdomain.Company" has been specified with JDO annotations so using those.
+29.5.2009 17:45:47 org.datanucleus.metadata.MetaDataManager loadClasses
+INFO: Class "com.mysema.query.jdoql.testdomain.QPerson" has no MetaData or annotations.
+29.5.2009 17:45:47 org.datanucleus.metadata.MetaDataManager loadClasses
+INFO: Class "com.mysema.query.jdoql.testdomain.QBook" has no MetaData or annotations.
+29.5.2009 17:45:47 org.datanucleus.jdo.metadata.JDOAnnotationReader processClassAnnotations
+INFO: Class "com.mysema.query.jdoql.testdomain.Person" has been specified with JDO annotations so using those.
+29.5.2009 17:45:47 org.datanucleus.metadata.MetaDataManager loadClasses
+INFO: Class "com.mysema.query.jdoql.testdomain.QCompany" has no MetaData or annotations.
+29.5.2009 17:45:47 org.datanucleus.metadata.MetaDataManager loadClasses
+INFO: Class "com.mysema.query.jdoql.testdomain.QDepartment" has no MetaData or annotations.
+29.5.2009 17:45:47 org.datanucleus.metadata.MetaDataManager loadClasses
+INFO: Class "com.mysema.query.jdoql.testdomain.QEmployee" has no MetaData or annotations.
+29.5.2009 17:45:47 org.datanucleus.metadata.MetaDataManager loadClasses
+INFO: Class "com.mysema.query.jdoql.AbstractJDOTest" has no MetaData or annotations.
+29.5.2009 17:45:47 org.datanucleus.metadata.MetaDataManager loadClasses
+INFO: Class "com.mysema.query.jdoql.JDOQLSerializerTest" has no MetaData or annotations.
+29.5.2009 17:45:47 org.datanucleus.jdo.metadata.JDOAnnotationReader processClassAnnotations
+INFO: Class "com.mysema.query.jdoql.testdomain.Product" has been specified with JDO annotations so using those.
+29.5.2009 17:45:47 org.datanucleus.enhancer.asm.ASMClassEnhancer save
+INFO: Updating class file "file:/C:/work/querydsl-workspace/querydsl-jdoql/target/test-classes/com/mysema/query/jdoql/testdomain/Person.class" with enhanced definition
+29.5.2009 17:45:47 org.datanucleus.enhancer.DataNucleusEnhancer addMessage
+INFO: ENHANCED (PersistenceCapable) : com.mysema.query.jdoql.testdomain.Person
+29.5.2009 17:45:47 org.datanucleus.enhancer.asm.ASMClassEnhancer save
+INFO: Updating class file "file:/C:/work/querydsl-workspace/querydsl-jdoql/target/test-classes/com/mysema/query/jdoql/testdomain/Book.class" with enhanced definition
+29.5.2009 17:45:47 org.datanucleus.enhancer.DataNucleusEnhancer addMessage
+INFO: ENHANCED (PersistenceCapable) : com.mysema.query.jdoql.testdomain.Book
+29.5.2009 17:45:47 org.datanucleus.enhancer.asm.ASMClassEnhancer save
+INFO: Updating class file "file:/C:/work/querydsl-workspace/querydsl-jdoql/target/test-classes/com/mysema/query/jdoql/testdomain/Company.class" with enhanced definition
+29.5.2009 17:45:47 org.datanucleus.enhancer.DataNucleusEnhancer addMessage
+INFO: ENHANCED (PersistenceCapable) : com.mysema.query.jdoql.testdomain.Company
+29.5.2009 17:45:47 org.datanucleus.enhancer.asm.ASMClassEnhancer save
+INFO: Updating class file "file:/C:/work/querydsl-workspace/querydsl-jdoql/target/test-classes/com/mysema/query/jdoql/testdomain/Department.class" with enhanced definition
+29.5.2009 17:45:47 org.datanucleus.enhancer.DataNucleusEnhancer addMessage
+INFO: ENHANCED (PersistenceCapable) : com.mysema.query.jdoql.testdomain.Department
+29.5.2009 17:45:47 org.datanucleus.enhancer.asm.ASMClassEnhancer save
+INFO: Updating class file "file:/C:/work/querydsl-workspace/querydsl-jdoql/target/test-classes/com/mysema/query/jdoql/testdomain/Product.class" with enhanced definition
+29.5.2009 17:45:47 org.datanucleus.enhancer.DataNucleusEnhancer addMessage
+INFO: ENHANCED (PersistenceCapable) : com.mysema.query.jdoql.testdomain.Product
+29.5.2009 17:45:47 org.datanucleus.enhancer.asm.ASMClassEnhancer save
+INFO: Updating class file "file:/C:/work/querydsl-workspace/querydsl-jdoql/target/test-classes/com/mysema/query/jdoql/testdomain/Employee.class" with enhanced definition
+29.5.2009 17:45:47 org.datanucleus.enhancer.DataNucleusEnhancer addMessage
+INFO: ENHANCED (PersistenceCapable) : com.mysema.query.jdoql.testdomain.Employee
+29.5.2009 17:45:47 org.datanucleus.enhancer.DataNucleusEnhancer addMessage
+INFO: DataNucleus Enhancer completed with success for 6 classes. Timings : input=156 ms, enhance=125 ms, total=281 ms. Consult the log for full details
+
+[ERROR] --------------------
+[DEBUG] com.mysema.querydsl:querydsl-jdoql:jar:0.3.11-SNAPSHOT (selected for null)
+[DEBUG]   javax.jdo:jdo2-api:jar:2.3-SNAPSHOT:compile (selected for compile)
+[DEBUG]   com.mysema.querydsl:querydsl-core:jar:0.3.11-SNAPSHOT:compile (selected for compile)
+[DEBUG]     net.sourceforge.collections:collections-generic:jar:4.01:compile (selected for compile)
+[DEBUG]     commons-lang:commons-lang:jar:2.4:compile (selected for compile)
+[DEBUG]     com.mysema.commons:mysema-commons-lang:jar:0.1.2-SNAPSHOT:compile (selected for compile)
+[DEBUG]       org.slf4j:slf4j-api:jar:1.5.2:compile (selected for compile)
+[DEBUG]     janino:janino:jar:2.5.10:compile (selected for compile)
+[DEBUG]     cglib:cglib:jar:2.2:compile (selected for compile)
+[DEBUG]       asm:asm:jar:3.1:compile (selected for compile)
+[DEBUG]     org.freemarker:freemarker:jar:2.3.12:compile (selected for compile)
+[DEBUG]     org.slf4j:slf4j-api:jar:1.5.2:compile (selected for compile)
+[DEBUG]   org.datanucleus:datanucleus-core:jar:1.1.3:test (selected for test)
+[DEBUG]     javax.transaction:transaction-api:jar:1.1:test (selected for test)
+[DEBUG]   org.datanucleus:datanucleus-rdbms:jar:1.1.3:test (selected for test)
+[DEBUG]   hsqldb:hsqldb:jar:1.8.0.7:test (selected for test)
+[DEBUG]   com.mysema.querydsl:querydsl-apt-jdk5:jar:0.3.11-SNAPSHOT:provided (selected for provided)
+[DEBUG]     commons-io:commons-io:jar:1.4:provided (selected for provided)
+[DEBUG]     com.sun:tools:jar:1.4.2:system (selected for system)
+[DEBUG]   com.mysema.querydsl:querydsl-apt:jar:0.3.11-SNAPSHOT:provided (selected for provided)
+[DEBUG]   org.slf4j:slf4j-api:jar:1.5.2:compile (selected for compile)
+[DEBUG]   org.slf4j:slf4j-log4j12:jar:1.5.2:test (selected for test)
+[DEBUG]     log4j:log4j:jar:1.2.14:test (selected for test)
+[DEBUG]   junit:junit:jar:4.4:test (selected for test)
+[DEBUG] mysema-commons-lang: using locally installed snapshot
+[DEBUG] Plugin dependencies for:
+
+org.apache.maven.plugins:maven-surefire-plugin:2.4.3
+
+are:
+
+org.apache.maven:maven-plugin-api:jar:2.0.6:runtime
+org.apache.maven.surefire:surefire-booter:jar:2.4.3:runtime
+org.codehaus.plexus:plexus-utils:jar:1.5.1:runtime
+org.apache.maven:maven-artifact:jar:2.0.6:runtime
+org.apache.maven:maven-project:jar:2.0.6:runtime
+org.apache.maven:maven-core:jar:2.0.6:runtime
+org.apache.maven:maven-toolchain:jar:1.0:runtime
+
+
+[DEBUG] org.apache.maven.plugins:maven-surefire-plugin:maven-plugin:2.4.3:runtime (selected for runtime)
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0.6:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:surefire-booter
+[DEBUG]   org.apache.maven.surefire:surefire-api:jar:2.4.3
+[DEBUG]   org.apache.maven.surefire:surefire-booter:jar:2.4.3
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.5.1
+[DEBUG]   org.apache.maven.surefire:surefire-booter:jar:2.4.3:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:surefire-api
+[DEBUG]   org.apache.maven.surefire:surefire-api:jar:2.4.3
+[DEBUG]   org.apache.maven.surefire:surefire-booter:jar:2.4.3
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.5.1
+[DEBUG]     org.apache.maven.surefire:surefire-api:jar:2.4.3:runtime (selected for runtime)
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.5.1:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:maven-artifact
+[DEBUG]   org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   org.apache.maven.reporting:maven-reporting-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-test:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.4.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0.6:runtime (selected for runtime)
+[DEBUG]     org.codehaus.plexus:plexus-utils:jar:1.4.1:runtime (applying version: 1.5.1)
+[DEBUG] Adding managed dependencies for unknown:maven-project
+[DEBUG]   org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   org.apache.maven.reporting:maven-reporting-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-test:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.4.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]   org.apache.maven:maven-project:jar:2.0.6:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:maven-settings
+[DEBUG]   org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   org.apache.maven.reporting:maven-reporting-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-test:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.4.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]     org.apache.maven:maven-settings:jar:2.0.6:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:maven-model
+[DEBUG]   org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   org.apache.maven.reporting:maven-reporting-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-test:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.4.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]       org.apache.maven:maven-model:jar:2.0.6:runtime (selected for runtime)
+[DEBUG]         org.codehaus.plexus:plexus-utils:jar:1.4.1:runtime (applying version: 1.5.1)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.4.1:runtime (applying version: 1.5.1)
+[DEBUG]       org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1:runtime (selected for runtime)
+[DEBUG]         junit:junit:jar:3.8.1:runtime (selected for runtime)
+[DEBUG]         org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (applying version: 1.5.1)
+[DEBUG]         classworlds:classworlds:jar:1.1-alpha-2:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:maven-profile
+[DEBUG]   org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   org.apache.maven.reporting:maven-reporting-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-test:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.4.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]     org.apache.maven:maven-profile:jar:2.0.6:runtime (selected for runtime)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.4.1:runtime (applying version: 1.5.1)
+[DEBUG]     org.apache.maven:maven-model:jar:2.0.6:runtime (selected for runtime)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.4.1:runtime (applying version: 1.5.1)
+[DEBUG] Adding managed dependencies for unknown:maven-artifact-manager
+[DEBUG]   org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   org.apache.maven.reporting:maven-reporting-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-test:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.4.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]     org.apache.maven:maven-artifact-manager:jar:2.0.6:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:maven-repository-metadata
+[DEBUG]   org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   org.apache.maven.reporting:maven-reporting-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-test:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.4.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]       org.apache.maven:maven-repository-metadata:jar:2.0.6:runtime (selected for runtime)
+[DEBUG]         org.codehaus.plexus:plexus-utils:jar:1.4.1:runtime (applying version: 1.5.1)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.4.1:runtime (applying version: 1.5.1)
+[DEBUG]       org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2:runtime (selected for runtime)
+[DEBUG]         org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (applying version: 1.5.1)
+[DEBUG] Adding managed dependencies for org.apache.maven:maven-plugin-registry
+[DEBUG]   org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   org.apache.maven.reporting:maven-reporting-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-test:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.4.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]     org.apache.maven:maven-plugin-registry:jar:2.0.6:runtime (selected for runtime)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.4.1:runtime (applying version: 1.5.1)
+[DEBUG]     org.codehaus.plexus:plexus-utils:jar:1.4.1:runtime (applying version: 1.5.1)
+[DEBUG]     org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1:runtime (selected for runtime)
+[DEBUG]       junit:junit:jar:3.8.1:runtime (selected for runtime)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (applying version: 1.5.1)
+[DEBUG]       classworlds:classworlds:jar:1.1-alpha-2:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:maven-core
+[DEBUG]   org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   org.apache.maven.reporting:maven-reporting-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-test:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.4.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]   org.apache.maven:maven-core:jar:2.0.6:runtime (selected for runtime)
+[DEBUG] Retrieving parent-POM: org.apache.maven.wagon:wagon-providers::1.0-beta-2 for project: null:wagon-file:jar:1.0-beta-2 from the repository.
+[DEBUG] Adding managed dependencies for unknown:wagon-file
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-common:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-common-test:jar:1.0-beta-2:test
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-provider-test:jar:1.0-beta-2
+[DEBUG]   junit:junit:jar:3.8.1
+[DEBUG]   org.codehaus.plexus:plexus-interactivity-api:jar:1.0-alpha-4
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.4
+[DEBUG]     org.apache.maven.wagon:wagon-file:jar:1.0-beta-2:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:maven-plugin-parameter-documenter
+[DEBUG]   org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   org.apache.maven.reporting:maven-reporting-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-test:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.4.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]     org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6:runtime (selected for runtime)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.4.1:runtime (applying version: 1.5.1)
+[DEBUG] Adding managed dependencies for unknown:wagon-http-lightweight
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-common:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-common-test:jar:1.0-beta-2:test
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-provider-test:jar:1.0-beta-2
+[DEBUG]   junit:junit:jar:3.8.1
+[DEBUG]   org.codehaus.plexus:plexus-interactivity-api:jar:1.0-alpha-4
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.4
+[DEBUG]     org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:wagon-http-shared
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-common:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-common-test:jar:1.0-beta-2:test
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-provider-test:jar:1.0-beta-2
+[DEBUG]   junit:junit:jar:3.8.1
+[DEBUG]   org.codehaus.plexus:plexus-interactivity-api:jar:1.0-alpha-4
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.4
+[DEBUG]       org.apache.maven.wagon:wagon-http-shared:jar:1.0-beta-2:runtime (selected for runtime)
+[DEBUG]         jtidy:jtidy:jar:4aug2000r7-dev:runtime (selected for runtime)
+[DEBUG]       xml-apis:xml-apis:jar:1.0.b2:runtime (selected for runtime)
+[DEBUG] Retrieving parent-POM: org.apache.maven.reporting:maven-reporting::2.0.6 for project: null:maven-reporting-api:jar:null from the repository.
+[DEBUG] Adding managed dependencies for unknown:maven-reporting-api
+[DEBUG]   org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   org.apache.maven.reporting:maven-reporting-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-test:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.4.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]     org.apache.maven.reporting:maven-reporting-api:jar:2.0.6:runtime (selected for runtime)
+[DEBUG] Retrieving parent-POM: org.apache.maven.doxia:doxia::1.0-alpha-7 for project: null:doxia-sink-api:jar:1.0-alpha-7 from the repository.
+[DEBUG]       org.apache.maven.doxia:doxia-sink-api:jar:1.0-alpha-7:runtime (selected for runtime)
+[DEBUG]     org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2:runtime (selected for runtime)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (applying version: 1.5.1)
+[DEBUG]     org.apache.maven:maven-repository-metadata:jar:2.0.6:runtime (selected for runtime)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.4.1:runtime (applying version: 1.5.1)
+[DEBUG] Adding managed dependencies for unknown:maven-error-diagnostics
+[DEBUG]   org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   org.apache.maven.reporting:maven-reporting-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-test:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.4.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]     org.apache.maven:maven-error-diagnostics:jar:2.0.6:runtime (selected for runtime)
+[DEBUG]     commons-cli:commons-cli:jar:1.0:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:wagon-ssh-external
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-common:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-common-test:jar:1.0-beta-2:test
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-provider-test:jar:1.0-beta-2
+[DEBUG]   junit:junit:jar:3.8.1
+[DEBUG]   org.codehaus.plexus:plexus-interactivity-api:jar:1.0-alpha-4
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.4
+[DEBUG]     org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2:runtime (selected for runtime)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (applying version: 1.5.1)
+[DEBUG] Adding managed dependencies for unknown:wagon-ssh-common
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-common:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-common-test:jar:1.0-beta-2:test
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-provider-test:jar:1.0-beta-2
+[DEBUG]   junit:junit:jar:3.8.1
+[DEBUG]   org.codehaus.plexus:plexus-interactivity-api:jar:1.0-alpha-4
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.4
+[DEBUG]       org.apache.maven.wagon:wagon-ssh-common:jar:1.0-beta-2:runtime (selected for runtime)
+[DEBUG]         org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (applying version: 1.5.1)
+[DEBUG]         org.codehaus.plexus:plexus-interactivity-api:jar:1.0-alpha-4:runtime (selected for runtime)
+[DEBUG] Retrieving parent-POM: plexus:plexus-containers::1.0.2 for project: org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-7 from the repository.
+[DEBUG] Retrieving parent-POM: plexus:plexus-root::1.0.3 for project: plexus:plexus-containers:pom:1.0.2 from the repository.
+[DEBUG]           org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-7:runtime (removed - nearer found: 1.0-alpha-9-stable-1)
+[DEBUG]           plexus:plexus-utils:jar:1.0.2:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:maven-plugin-descriptor
+[DEBUG]   org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   org.apache.maven.reporting:maven-reporting-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-test:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.4.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]     org.apache.maven:maven-plugin-descriptor:jar:2.0.6:runtime (selected for runtime)
+[DEBUG]     org.codehaus.plexus:plexus-interactivity-api:jar:1.0-alpha-4:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:maven-monitor
+[DEBUG]   org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   org.apache.maven.reporting:maven-reporting-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-test:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.4.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]     org.apache.maven:maven-monitor:jar:2.0.6:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:wagon-ssh
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-common:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-common-test:jar:1.0-beta-2:test
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-provider-test:jar:1.0-beta-2
+[DEBUG]   junit:junit:jar:3.8.1
+[DEBUG]   org.codehaus.plexus:plexus-interactivity-api:jar:1.0-alpha-4
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.0.4
+[DEBUG]     org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2:runtime (selected for runtime)
+[DEBUG]       com.jcraft:jsch:jar:0.1.27:runtime (selected for runtime)
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:1.0.4:runtime (applying version: 1.5.1)
+[DEBUG]     org.codehaus.plexus:plexus-utils:jar:1.4.1:runtime (applying version: 1.5.1)
+[DEBUG]     classworlds:classworlds:jar:1.1-alpha-2:runtime (removed - nearer found: 1.1)
+[DEBUG]     classworlds:classworlds:jar:1.1:runtime (selected for runtime)
+[DEBUG] Adding managed dependencies for unknown:maven-toolchain
+[DEBUG]   org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   org.apache.maven.reporting:maven-reporting-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-artifact-test:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.4.1
+[DEBUG]   org.apache.maven.wagon:wagon-provider-api:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-ssh-external:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-file:jar:1.0-beta-2
+[DEBUG]   org.apache.maven.wagon:wagon-http-lightweight:jar:1.0-beta-2
+[DEBUG]   easymock:easymock:jar:1.2_Java1.3:test
+[DEBUG]   classworlds:classworlds:jar:1.1
+[DEBUG]   org.apache.maven:maven-toolchain:jar:1.0:runtime (selected for runtime)
+[DEBUG]  The following artifacts were filtered out for plugin: org.apache.maven.plugins:maven-surefire-plugin:2.4.3 because they're already in the core of Maven:
+
+org.apache.maven:maven-plugin-api:jar:2.0.6:runtime
+org.apache.maven:maven-artifact:jar:2.0.6:runtime
+org.apache.maven:maven-project:jar:2.0.6:runtime
+org.apache.maven:maven-core:jar:2.0.6:runtime
+org.apache.maven:maven-toolchain:jar:1.0:runtime
+
+These will use the artifact files already in the core ClassRealm instead, to allow them to be included in PluginDescriptor.getArtifacts().
+
+
+[DEBUG] Configuring mojo 'org.apache.maven.plugins:maven-surefire-plugin:2.4.3:test' -->
+[DEBUG]   (f) basedir = c:\work\querydsl-workspace\querydsl-jdoql
+[DEBUG]   (f) childDelegation = false
+[DEBUG]   (f) classesDirectory = c:\work\querydsl-workspace\querydsl-jdoql\target\classes
+[DEBUG]   (f) classpathElements = [c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes, c:\work\querydsl-workspace\querydsl-jdoql\target\classes, C:\Documents and Settings\tiwe\.m2\repository\javax\jdo\jdo2-api\2.3-SNAPSHOT\jdo2-api-2.3-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-core\0.3.11-SNAPSHOT\querydsl-core-0.3.11-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\net\sourceforge\collections\collections-generic\4.01\collections-generic-4.01.jar, C:\Documents and Settings\tiwe\.m2\repository\commons-lang\commons-lang\2.4\commons-lang-2.4.jar, C:\Documents and Settings\tiwe\.m2\repository\com\mysema\commons\mysema-commons-lang\0.1.2-SNAPSHOT\mysema-commons-lang-0.1.2-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-api\1.5.2\slf4j-api-1.5.2.jar, C:\Documents and Settings\tiwe\.m2\repository\janino\janino\2.5.10\janino-2.5.10.jar, C:\Documents and Settings\tiwe\.m2\repository\cglib\cglib\2.2\cglib-2.2.jar, C:\Documents and Settings\tiwe\.m2\repository\asm\asm\3.1\asm-3.1.jar, C:\Documents and Settings\tiwe\.m2\repository\org\freemarker\freemarker\2.3.12\freemarker-2.3.12.jar, C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-core\1.1.3\datanucleus-core-1.1.3.jar, C:\Documents and Settings\tiwe\.m2\repository\javax\transaction\transaction-api\1.1\transaction-api-1.1.jar, C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-rdbms\1.1.3\datanucleus-rdbms-1.1.3.jar, C:\Documents and Settings\tiwe\.m2\repository\hsqldb\hsqldb\1.8.0.7\hsqldb-1.8.0.7.jar, C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt-jdk5\0.3.11-SNAPSHOT\querydsl-apt-jdk5-0.3.11-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\commons-io\commons-io\1.4\commons-io-1.4.jar, c:\Program Files\Java\jdk1.6.0_04\jre\..\lib\tools.jar, C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt\0.3.11-SNAPSHOT\querydsl-apt-0.3.11-SNAPSHOT.jar, C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-log4j12\1.5.2\slf4j-log4j12-1.5.2.jar, C:\Documents and Settings\tiwe\.m2\repository\log4j\log4j\1.2.14\log4j-1.2.14.jar, C:\Documents and Settings\tiwe\.m2\repository\junit\junit\4.4\junit-4.4.jar]
+[DEBUG]   (f) disableXmlReport = false
+[DEBUG]   (f) enableAssertions = true
+[DEBUG]   (f) forkMode = once
+[DEBUG]   (f) junitArtifactName = junit:junit
+[DEBUG]   (f) localRepository = [local] -> file://C:\Documents and Settings\tiwe\.m2\repository
+[DEBUG]   (f) pluginArtifactMap = {org.codehaus.plexus:plexus-utils=org.codehaus.plexus:plexus-utils:jar:1.5.1:runtime, org.apache.maven.surefire:surefire-api=org.apache.maven.surefire:surefire-api:jar:2.4.3:runtime, org.apache.maven:maven-project=org.apache.maven:maven-project:jar:2.0.6:runtime, org.apache.maven:maven-artifact=org.apache.maven:maven-artifact:jar:2.0.6:runtime, org.apache.maven:maven-plugin-api=org.apache.maven:maven-plugin-api:jar:2.0.6:runtime, org.apache.maven.surefire:surefire-booter=org.apache.maven.surefire:surefire-booter:jar:2.4.3:runtime, org.apache.maven:maven-core=org.apache.maven:maven-core:jar:2.0.6:runtime, org.apache.maven:maven-toolchain=org.apache.maven:maven-toolchain:jar:1.0:runtime}
+[DEBUG]   (f) printSummary = true
+[DEBUG]   (f) project = MavenProject: com.mysema.querydsl:querydsl-jdoql:0.3.11-SNAPSHOT @ c:\work\querydsl-workspace\querydsl-jdoql\pom.xml
+[DEBUG]   (f) projectArtifactMap = {commons-lang:commons-lang=commons-lang:commons-lang:jar:2.4:compile, asm:asm=asm:asm:jar:3.1:compile, com.sun:tools=com.sun:tools:jar:1.4.2:system, junit:junit=junit:junit:jar:4.4:test, hsqldb:hsqldb=hsqldb:hsqldb:jar:1.8.0.7:test, org.datanucleus:datanucleus-core=org.datanucleus:datanucleus-core:jar:1.1.3:test, javax.jdo:jdo2-api=javax.jdo:jdo2-api:jar:2.3-SNAPSHOT:compile, javax.transaction:transaction-api=javax.transaction:transaction-api:jar:1.1:test, com.mysema.commons:mysema-commons-lang=com.mysema.commons:mysema-commons-lang:jar:0.1.2-SNAPSHOT:compile, log4j:log4j=log4j:log4j:jar:1.2.14:test, com.mysema.querydsl:querydsl-apt-jdk5=com.mysema.querydsl:querydsl-apt-jdk5:jar:0.3.11-SNAPSHOT:provided, com.mysema.querydsl:querydsl-core=com.mysema.querydsl:querydsl-core:jar:0.3.11-SNAPSHOT:compile, cglib:cglib=cglib:cglib:jar:2.2:compile, org.freemarker:freemarker=org.freemarker:freemarker:jar:2.3.12:compile, org.slf4j:slf4j-api=org.slf4j:slf4j-api:jar:1.5.2:compile, com.mysema.querydsl:querydsl-apt=com.mysema.querydsl:querydsl-apt:jar:0.3.11-SNAPSHOT:provided, janino:janino=janino:janino:jar:2.5.10:compile, net.sourceforge.collections:collections-generic=net.sourceforge.collections:collections-generic:jar:4.01:compile, commons-io:commons-io=commons-io:commons-io:jar:1.4:provided, org.datanucleus:datanucleus-rdbms=org.datanucleus:datanucleus-rdbms:jar:1.1.3:test, org.slf4j:slf4j-log4j12=org.slf4j:slf4j-log4j12:jar:1.5.2:test}
+[DEBUG]   (f) redirectTestOutputToFile = false
+[DEBUG]   (f) remoteRepositories = [[mysema-releases] -> http://intra.mysema.com/maven2/releases, [mysema-snapshots] -> http://intra.mysema.com/maven2/snapshots, [central] -> http://repo1.maven.org/maven2]
+[DEBUG]   (f) reportFormat = brief
+[DEBUG]   (f) reportsDirectory = c:\work\querydsl-workspace\querydsl-jdoql\target\surefire-reports
+[DEBUG]   (f) session = org.apache.maven.execution.MavenSession@ec436
+[DEBUG]   (f) testClassesDirectory = c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes
+[DEBUG]   (f) testNGArtifactName = org.testng:testng
+[DEBUG]   (f) testSourceDirectory = c:\work\querydsl-workspace\querydsl-jdoql\src\test\java
+[DEBUG]   (f) trimStackTrace = true
+[DEBUG]   (f) useFile = true
+[DEBUG]   (f) useManifestOnlyJar = true
+[DEBUG]   (f) useSystemClassLoader = false
+[DEBUG]   (f) workingDirectory = c:\work\querydsl-workspace\querydsl-jdoql
+[DEBUG] -- end configuration --
+[INFO] [surefire:test]
+[DEBUG] dummy:dummy:jar:1.0 (selected for null)
+[DEBUG]   org.apache.maven.surefire:surefire-booter:jar:2.4.3:runtime (selected for runtime)
+[DEBUG]     org.apache.maven.surefire:surefire-api:jar:2.4.3:runtime (selected for runtime)
+[DEBUG] Adding to surefire booter test classpath: C:\Documents and Settings\tiwe\.m2\repository\org\apache\maven\surefire\surefire-booter\2.4.3\surefire-booter-2.4.3.jar
+[DEBUG] Adding to surefire booter test classpath: C:\Documents and Settings\tiwe\.m2\repository\org\apache\maven\surefire\surefire-api\2.4.3\surefire-api-2.4.3.jar
+[DEBUG] dummy:dummy:jar:1.0 (selected for null)
+[DEBUG] Retrieving parent-POM: org.apache.maven.surefire:surefire-providers::2.4.3 for project: null:surefire-junit4:jar:null from the repository.
+[DEBUG] Adding managed dependencies for unknown:surefire-junit4
+[DEBUG]   org.apache.maven.surefire:surefire-api:jar:2.4.3
+[DEBUG]   org.apache.maven.surefire:surefire-booter:jar:2.4.3
+[DEBUG]   org.codehaus.plexus:plexus-utils:jar:1.5.1
+[DEBUG]   org.apache.maven.surefire:surefire-junit4:jar:2.4.3:test (selected for test)
+[DEBUG]     junit:junit:jar:4.0:test (selected for test)
+[DEBUG]     org.apache.maven.surefire:surefire-api:jar:2.4.3:test (selected for test)
+[DEBUG] Adding to surefire test classpath: C:\Documents and Settings\tiwe\.m2\repository\org\apache\maven\surefire\surefire-junit4\2.4.3\surefire-junit4-2.4.3.jar
+[DEBUG] Adding to surefire test classpath: C:\Documents and Settings\tiwe\.m2\repository\junit\junit\4.0\junit-4.0.jar
+[DEBUG] Adding to surefire test classpath: C:\Documents and Settings\tiwe\.m2\repository\org\apache\maven\surefire\surefire-api\2.4.3\surefire-api-2.4.3.jar
+[DEBUG] Test Classpath :
+[DEBUG]   c:\work\querydsl-workspace\querydsl-jdoql\target\test-classes
+[DEBUG]   c:\work\querydsl-workspace\querydsl-jdoql\target\classes
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\javax\jdo\jdo2-api\2.3-SNAPSHOT\jdo2-api-2.3-SNAPSHOT.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-core\0.3.11-SNAPSHOT\querydsl-core-0.3.11-SNAPSHOT.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\net\sourceforge\collections\collections-generic\4.01\collections-generic-4.01.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\commons-lang\commons-lang\2.4\commons-lang-2.4.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\com\mysema\commons\mysema-commons-lang\0.1.2-SNAPSHOT\mysema-commons-lang-0.1.2-SNAPSHOT.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-api\1.5.2\slf4j-api-1.5.2.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\janino\janino\2.5.10\janino-2.5.10.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\cglib\cglib\2.2\cglib-2.2.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\asm\asm\3.1\asm-3.1.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\org\freemarker\freemarker\2.3.12\freemarker-2.3.12.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-core\1.1.3\datanucleus-core-1.1.3.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\javax\transaction\transaction-api\1.1\transaction-api-1.1.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\org\datanucleus\datanucleus-rdbms\1.1.3\datanucleus-rdbms-1.1.3.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\hsqldb\hsqldb\1.8.0.7\hsqldb-1.8.0.7.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt-jdk5\0.3.11-SNAPSHOT\querydsl-apt-jdk5-0.3.11-SNAPSHOT.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\commons-io\commons-io\1.4\commons-io-1.4.jar
+[DEBUG]   c:\Program Files\Java\jdk1.6.0_04\jre\..\lib\tools.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\com\mysema\querydsl\querydsl-apt\0.3.11-SNAPSHOT\querydsl-apt-0.3.11-SNAPSHOT.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\org\slf4j\slf4j-log4j12\1.5.2\slf4j-log4j12-1.5.2.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\log4j\log4j\1.2.14\log4j-1.2.14.jar
+[DEBUG]   C:\Documents and Settings\tiwe\.m2\repository\junit\junit\4.4\junit-4.4.jar
+[DEBUG] Setting system property [user.dir]=[c:\work\querydsl-workspace\querydsl-jdoql]
+[DEBUG] Setting system property [localRepository]=[C:\Documents and Settings\tiwe\.m2\repository]
+[DEBUG] Setting system property [basedir]=[c:\work\querydsl-workspace\querydsl-jdoql]
+[DEBUG] Using JVM: c:\Program Files\Java\jdk1.6.0_04\jre\bin\java
+[INFO] Surefire report directory: c:\work\querydsl-workspace\querydsl-jdoql\target\surefire-reports
+Forking command line: cmd.exe /X /C ""c:\Program Files\Java\jdk1.6.0_04\jre\bin\java" -classpath "C:\Documents and Settings\tiwe\.m2\repository\org\apache\maven\surefire\surefire-booter\2.4.3\surefire-booter-2.4.3.jar;C:\Documents and Settings\tiwe\.m2\repository\org\apache\maven\surefire\surefire-api\2.4.3\surefire-api-2.4.3.jar" org.apache.maven.surefire.booter.SurefireBooter c:\DOCUME~1\tiwe\LOCALS~1\Temp\surefire39591tmp c:\DOCUME~1\tiwe\LOCALS~1\Temp\surefire39592tmp"
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running com.mysema.query.jdoql.QueryOrderingTest
+
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : null
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : null
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : null
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : null
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : null
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : null
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : null
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : null
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : null
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : null
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:238) - query : null
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:238) - query : null
+Deleting all products from persistence
+Deleted 30 products
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 1.109 sec
+Running com.mysema.query.jdoql.QueryBasicsTest
+
+SERIALIZED : this.name == a1 && this.price <= a2
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name == a1 && this.price <= a2
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name == a1 && this.price <= a2
+SERIALIZED : this.name == a1 || this.price <= a2
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name == a1 || this.price <= a2
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name == a1 || this.price <= a2
+SERIALIZED : !(this.name == a1)
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : !(this.name == a1)
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : !(this.name == a1)
+SERIALIZED : this.price == a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.price == a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.price == a1
+SERIALIZED : this.price == a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.price == a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.price == a1
+SERIALIZED : this.price != a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.price != a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.price != a1
+SERIALIZED : this.price > a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.price > a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.price > a1
+SERIALIZED : this.price < a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.price < a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.price < a1
+SERIALIZED : this.price >= a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.price >= a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.price >= a1
+SERIALIZED : this.price <= a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.price <= a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.price <= a1
+SERIALIZED : this.name.startsWith(a1)
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name.startsWith(a1)
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name.startsWith(a1)
+SERIALIZED : this.name.endsWith(a1)
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name.endsWith(a1)
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name.endsWith(a1)
+SERIALIZED : this.name.toLowerCase() == a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name.toLowerCase() == a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name.toLowerCase() == a1
+SERIALIZED : this.name.toUpperCase() == a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name.toUpperCase() == a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name.toUpperCase() == a1
+SERIALIZED : this.name.indexOf(a1) == a2
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name.indexOf(a1) == a2
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name.indexOf(a1) == a2
+SERIALIZED : this.name.substring(a1,a2) == a3
+SERIALIZED : this.name.substring(a1) == a2
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name.substring(a1,a2) == a3
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name.substring(a1,a2) == a3
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name.substring(a1) == a2
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name.substring(a1) == a2
+SERIALIZED : this.name == a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:258) - query : this.name == a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:258) - query : this.name == a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : null
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : null
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : null
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : null
+SERIALIZED : this.name == a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name == a1
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this.name == a1
+SERIALIZED : this instanceof com.mysema.query.jdoql.testdomain.Book
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this instanceof com.mysema.query.jdoql.testdomain.Book
+DEBUG [2009-05-29 17:45:49] (AbstractJDOQLQuery.java:224) - query : this instanceof com.mysema.query.jdoql.testdomain.Book
+Deleting all products from persistence
+Deleted 2 products
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.125 sec
+Running com.mysema.query.jdoql.JDOQLSerializerTest
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.063 sec
+
+Results :
+
+Tests run: 21, Failures: 0, Errors: 0, Skipped: 2
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESSFUL
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 9 seconds
+[INFO] Finished at: Fri May 29 17:45:49 EEST 2009
+[INFO] Final Memory: 15M/27M
+[INFO] ------------------------------------------------------------------------

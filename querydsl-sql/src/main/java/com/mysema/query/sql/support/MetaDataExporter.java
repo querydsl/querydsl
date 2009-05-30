@@ -15,11 +15,13 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mysema.query.codegen.ClassModel;
 import com.mysema.query.codegen.FieldModel;
 import com.mysema.query.codegen.FieldType;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.Serializers;
-import com.mysema.query.codegen.ClassModel;
+import com.mysema.query.codegen.SimpleTypeModel;
+import com.mysema.query.codegen.TypeModel;
 import com.mysema.query.util.FileUtils;
 
 /**
@@ -109,9 +111,12 @@ public class MetaDataExporter {
                 } else {
                     _type = FieldType.COMPARABLE;
                 }
-                type.addField(new FieldModel(_name, null,
-                        _class.getPackage().getName(), _class.getName(), _class
-                                .getSimpleName(), _type));
+
+                TypeModel typeModel = new SimpleTypeModel(_type, 
+                        _class.getName(),
+                        _class.getPackage().getName(),
+                        _class.getSimpleName(), null, null);
+                type.addField(new FieldModel(_name, typeModel));
             }
             columns.close();
             serialize(type);

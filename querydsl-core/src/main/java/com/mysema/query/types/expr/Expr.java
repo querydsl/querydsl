@@ -13,7 +13,8 @@ import com.mysema.query.types.Grammar;
 import com.mysema.query.types.ValidationVisitor;
 
 /**
- * Expr represents a general typed expression in a Query instance
+ * Expr represents a general typed expression in a Query instance. The generic type parameter
+ * is a reference to the type the expression instance is bound to.
  * 
  * @author tiwe
  * @version $Id$
@@ -57,7 +58,7 @@ public abstract class Expr<D> {
     }
 
     /**
-     * Create a <code>this != right</code> expression
+     * Create a <code>this &lt;&gt; right</code> expression
      * 
      * @param right rhs of the comparison
      * @return
@@ -67,7 +68,7 @@ public abstract class Expr<D> {
     }
 
     /**
-     * Create a <code>this != right</code> expression
+     * Create a <code>this &lt;&gt; right</code> expression
      * 
      * @param right rhs of the comparison
      * @return

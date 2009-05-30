@@ -6,7 +6,11 @@
 package com.mysema.query.codegen;
 
 import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.commons.lang.ClassUtils;
 
@@ -18,33 +22,26 @@ import com.mysema.query.util.TypeUtil;
  * @author tiwe
  *
  */
-public class ClassModelBuilder {
-
-    private FieldType fieldType;
-
-    private String simpleName, fullName, packageName = "", keyTypeName;
-
-    public ClassModelBuilder(Class<?> cl) {
-        this(cl, cl);
+public class ReflectionTypeModel extends SimpleTypeModel implements TypeModel{
+    
+    private static Map<List<Type>,TypeModel> cache = new HashMap<List<Type>,TypeModel>();
+    
+    public static TypeModel get(Class<?> key){
+        return get(key, key);
     }
     
-    public static ClassModel createType(Class<?> clazz) {
-        ClassModel type = new ClassModel(clazz.getSuperclass().getName(), clazz
-                .getPackage().getName(), clazz.getName(), clazz.getSimpleName());
-        for (java.lang.reflect.Field f : clazz.getDeclaredFields()) {
-            ClassModelBuilder typeHelper = new ClassModelBuilder(f.getType(), f.getGenericType());
-            FieldModel field = new FieldModel(
-                    f.getName(), 
-                    typeHelper.getKeyTypeName(), typeHelper.getPackageName(),
-                    typeHelper.getFullName(), typeHelper.getSimpleName(),
-                    typeHelper.getFieldType());
-            type.addField(field);
+    public static TypeModel get(Class<?> type, Type genericType){
+        List<Type> key = Arrays.<Type>asList(type, genericType);
+        if (cache.containsKey(key)){
+            return cache.get(key);
+        }else{
+            TypeModel value = new ReflectionTypeModel(type, genericType);
+            cache.put(key, value);
+            return value;
         }
-        return type;
     }
-
-
-    public ClassModelBuilder(Class<?> cl, java.lang.reflect.Type genericType) {
+    
+    private ReflectionTypeModel(Class<?> cl, java.lang.reflect.Type genericType) {
         if (cl == null) {
             throw new IllegalArgumentException("cl was null");
         } else if (cl.isArray()) {
@@ -65,49 +62,25 @@ public class ClassModelBuilder {
         setDefaults();
     }
 
-    public FieldType getFieldType() {
-        return fieldType;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public String getKeyTypeName() {
-        return keyTypeName;
-    }
-
-    public String getPackageName() {
-        return packageName;
-    }
-
-    public String getSimpleName() {
-        return simpleName;
-    }
-
-    public String getValueTypeName() {
-        return fullName;
-    }
-
     private void handleCollectionInterface(Class<?> type, Type genericType) {
-        ClassModelBuilder valueInfo = new ClassModelBuilder(TypeUtil.getTypeParameter(genericType, 0));
+        TypeModel valueInfo = ReflectionTypeModel.get(TypeUtil.getTypeParameter(genericType, 0));
         handleCollection(valueInfo);
     }
 
-    private void handleCollection(ClassModelBuilder valueInfo) {
+    protected void handleCollection(TypeModel valueInfo) {
         fullName = valueInfo.getFullName();
         packageName = valueInfo.getPackageName();
-        if (valueInfo.fieldType == FieldType.ENTITY) {
+        if (valueInfo.getFieldType() == FieldType.ENTITY) {
             fieldType = FieldType.ENTITYCOLLECTION;
         } else {
             fieldType = FieldType.SIMPLECOLLECTION;
         }
     }
 
-    private void handleList(ClassModelBuilder valueInfo) {
+    private void handleList(TypeModel valueInfo) {
         fullName = valueInfo.getFullName();
         packageName = valueInfo.getPackageName();
-        if (valueInfo.fieldType == FieldType.ENTITY) {
+        if (valueInfo.getFieldType() == FieldType.ENTITY) {
             fieldType = FieldType.ENTITYLIST;
         } else {
             fieldType = FieldType.SIMPLELIST;
@@ -115,21 +88,21 @@ public class ClassModelBuilder {
     }
 
     private void handleListInterface(Class<?> type, Type genericType) {
-        ClassModelBuilder valueInfo = new ClassModelBuilder(TypeUtil.getTypeParameter(genericType, 0));
+        TypeModel valueInfo = ReflectionTypeModel.get(TypeUtil.getTypeParameter(genericType, 0));
         handleList(valueInfo);
     }
 
     private void handleMapInterface(Class<?> type, Type genericType) {
-        ClassModelBuilder keyInfo = new ClassModelBuilder(TypeUtil.getTypeParameter(genericType, 0));
-        ClassModelBuilder valueInfo = new ClassModelBuilder(TypeUtil.getTypeParameter(genericType, 1));
+        TypeModel keyInfo = ReflectionTypeModel.get(TypeUtil.getTypeParameter(genericType, 0));
+        TypeModel valueInfo = ReflectionTypeModel.get(TypeUtil.getTypeParameter(genericType, 1));
         handleMapInterface(keyInfo, valueInfo);
     }
 
-    private void handleMapInterface(ClassModelBuilder keyInfo, ClassModelBuilder valueInfo) {
+    private void handleMapInterface(TypeModel keyInfo, TypeModel valueInfo) {
         keyTypeName = keyInfo.getFullName();
         fullName = valueInfo.getFullName();
         packageName = valueInfo.getPackageName();
-        if (valueInfo.fieldType == FieldType.ENTITY) {
+        if (valueInfo.getFieldType() == FieldType.ENTITY) {
             fieldType = FieldType.ENTITYMAP;
         } else {
             fieldType = FieldType.SIMPLEMAP;
@@ -149,10 +122,10 @@ public class ClassModelBuilder {
         return fullName;
     }
 
-    private void visitArrayComponentType(ClassModelBuilder valueInfo) {
+    private void visitArrayComponentType(TypeModel valueInfo) {
         fullName = valueInfo.getFullName();
         packageName = valueInfo.getPackageName();
-        if (valueInfo.fieldType == FieldType.ENTITY) {
+        if (valueInfo.getFieldType() == FieldType.ENTITY) {
             fieldType = FieldType.ENTITYCOLLECTION;
         } else {
             fieldType = FieldType.SIMPLECOLLECTION;
@@ -160,7 +133,7 @@ public class ClassModelBuilder {
     }
 
     public void visitArrayType(Class<?> clazz) {
-        ClassModelBuilder valueInfo = new ClassModelBuilder(clazz.getComponentType());
+        TypeModel valueInfo = ReflectionTypeModel.get(clazz.getComponentType());
         visitArrayComponentType(valueInfo);
     }
 

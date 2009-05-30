@@ -5,134 +5,25 @@
  */
 package com.mysema.query.hql.hibernate;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import org.hibernate.Query;
 import org.hibernate.Session;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.mysema.query.QueryModifiers;
-import com.mysema.query.SearchResults;
-import com.mysema.query.hql.HQLGrammar;
 import com.mysema.query.hql.HQLPatterns;
-import com.mysema.query.hql.HQLQueryBase;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.hql.HQLQuery;
+
 
 /**
  * 
  * @author tiwe
  *
  */
-public class HQLQueryImpl extends HQLQueryBase<HQLQueryImpl> implements HQLQuery{
-
-    private static final Logger logger = LoggerFactory.getLogger(HQLQueryImpl.class);
-
-    private final Session session;
+public class HQLQueryImpl extends AbstractHQLQuery<HQLQueryImpl> implements HQLQuery{
 
     public HQLQueryImpl(Session session) {
-        this(session, HQLPatterns.DEFAULT);
+        super(session);
     }
 
     public HQLQueryImpl(Session session, HQLPatterns patterns) {
-        super(patterns);
-        this.session = session;
-    }
-
-    private Query createQuery(String queryString, QueryModifiers modifiers) {
-        Query query = session.createQuery(queryString);
-        setConstants(query, getConstants());
-        if (modifiers.isRestricting()) {
-            if (modifiers.getLimit() != null) {
-                query.setMaxResults(modifiers.getLimit().intValue());
-            }
-            if (modifiers.getOffset() != null) {
-                query.setFirstResult(modifiers.getOffset().intValue());
-            }
-        }
-        return query;
-    }
-
-    public static void setConstants(Query query, List<?> constants) {
-        for (int i = 0; i < constants.size(); i++) {
-            String key = "a" + (i + 1);
-            Object val = constants.get(i);
-            if (val instanceof Collection<?>) {
-                // NOTE : parameter types should be given explicitly
-                query.setParameterList(key, (Collection<?>) val);
-            } else if (val.getClass().isArray()) {
-                // NOTE : parameter types should be given explicitly
-                query.setParameterList(key, (Object[]) val);
-            } else {
-                // NOTE : parameter types should be given explicitly
-                query.setParameter(key, val);
-            }
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public <RT> List<RT> list(Expr<RT> expr) {
-        addToProjection(expr);
-        String queryString = toString();
-        logger.debug("query : {}", queryString);
-        Query query = createQuery(queryString, getMetadata().getModifiers());
-        return query.list();
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
-        addToProjection(expr1, expr2);
-        addToProjection(rest);
-        String queryString = toString();
-        logger.debug("query : {}", queryString);
-        Query query = createQuery(queryString, getMetadata().getModifiers());
-        return query.list();
-    }
-
-    public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
-        addToProjection(expr);
-        Query query = createQuery(toCountRowsString(), null);
-        long total = (Long) query.uniqueResult();
-        if (total > 0) {
-            QueryModifiers modifiers = getMetadata().getModifiers();
-            String queryString = toString();
-            logger.debug("query : {}", queryString);
-            query = createQuery(queryString, modifiers);
-            @SuppressWarnings("unchecked")
-            List<RT> list = query.list();
-            return new SearchResults<RT>(list, modifiers, total);
-        } else {
-            return SearchResults.emptyResults();
-        }
-    }
-
-    public long count() {
-        return uniqueResult(HQLGrammar.count());
-    }
-
-    public long count(Expr<?> expr) {
-        return uniqueResult(HQLGrammar.count(expr));
-    }
-
-    @SuppressWarnings("unchecked")
-    public <RT> RT uniqueResult(Expr<RT> expr) {
-        addToProjection(expr);
-        String queryString = toString();
-        logger.debug("query : {}", queryString);
-        Query query = createQuery(queryString, QueryModifiers.limit(1));
-        return (RT) query.uniqueResult();
-    }
-
-    public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
-        // TODO : optimize
-        return list(e1, e2, rest).iterator();
-    }
-
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        // TODO : optimize
-        return list(projection).iterator();
+        super(session, patterns);
     }
 
 }

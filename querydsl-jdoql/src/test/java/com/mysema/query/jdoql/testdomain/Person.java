@@ -1,10 +1,14 @@
-/**
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
  * 
  */
 package com.mysema.query.jdoql.testdomain;
 
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.PrimaryKey;
+
+import com.mysema.query.annotations.Entity;
 
 /**
  * Person provides
@@ -13,6 +17,7 @@ import javax.jdo.annotations.PrimaryKey;
  * @version $Id$
  */
 @PersistenceCapable
+@Entity
 // TODO : finish annotations
 public class Person {
     private String firstName, lastName, email;

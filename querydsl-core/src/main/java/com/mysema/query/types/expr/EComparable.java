@@ -31,6 +31,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * 
      * @param right rhs of the comparison
      * @return
+     * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean after(D right) {
         return Grammar.after(this, right);
@@ -41,6 +42,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * 
      * @param right rhs of the comparison
      * @return
+     * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean after(Expr<D> right) {
         return Grammar.after(this, right);
@@ -51,6 +53,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * 
      * @param right rhs of the comparison
      * @return
+     * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean aoe(D right) {
         return Grammar.aoe(this, right);
@@ -61,6 +64,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * 
      * @param right rhs of the comparison
      * @return
+     * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean aoe(Expr<D> right) {
         return Grammar.aoe(this, right);
@@ -83,6 +87,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * 
      * @param right rhs of the comparison
      * @return
+     * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean before(D right) {
         return Grammar.before(this, right);
@@ -93,6 +98,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * 
      * @param right rhs of the comparison
      * @return
+     * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean before(Expr<D> right) {
         return Grammar.before(this, right);
@@ -103,6 +109,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * 
      * @param right rhs of the comparison
      * @return
+     * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean boe(D right) {
         return Grammar.boe(this, right);
@@ -113,6 +120,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * 
      * @param right rhs of the comparison
      * @return
+     * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean boe(Expr<D> right) {
         return Grammar.boe(this, right);

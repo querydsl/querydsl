@@ -1,4 +1,9 @@
-package com.mysema.query.hql.hibernate;
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
+package com.mysema.query.hql;
 
 import com.mysema.query.Projectable;
 import com.mysema.query.QueryModifiers;

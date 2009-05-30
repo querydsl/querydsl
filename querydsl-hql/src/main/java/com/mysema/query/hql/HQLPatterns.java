@@ -11,7 +11,6 @@ import java.util.List;
 
 import com.mysema.query.serialization.OperationPatterns;
 import com.mysema.query.types.operation.Operator;
-import com.mysema.query.types.operation.OperatorImpl;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PathType;
 

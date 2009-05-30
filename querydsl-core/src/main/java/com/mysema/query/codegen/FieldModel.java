@@ -13,39 +13,13 @@ package com.mysema.query.codegen;
  */
 public class FieldModel implements Comparable<FieldModel> {
 
-    /**
-     * The Enum Type.
-     */
-
-    private final FieldType fieldType;
-
-    private String name, keyTypeName, typeName, typePackage, simpleTypeName;
-
-    /**
-     * Construct a new Field instance
-     * 
-     * @param name
-     *            normalized field name
-     * @param realName
-     *            real fieldName
-     * @param keyTypeName
-     *            key type name for Map types
-     * @param typePackage
-     * @param typeName
-     *            full type name (with package)
-     * @param simpleTypeName
-     *            simple type name (local)
-     * @param fieldType
-     */
-    public FieldModel(String name, String keyTypeName,
-            String typePackage, String typeName, String simpleTypeName,
-            FieldType fieldType) {
+    private String name;
+    
+    private TypeModel type;
+    
+    public FieldModel(String name, TypeModel type){
         this.name = name;
-        this.keyTypeName = keyTypeName;
-        this.typePackage = typePackage;
-        this.typeName = typeName;
-        this.simpleTypeName = simpleTypeName;
-        this.fieldType = fieldType;
+        this.type = type;
     }
 
     public int compareTo(FieldModel o) {
@@ -57,42 +31,27 @@ public class FieldModel implements Comparable<FieldModel> {
     }
 
     public FieldType getFieldType() {
-        return fieldType;
+        return type.getFieldType();
     }
 
-    /**
-     * Returns the type name of key element for Map fields
-     * 
-     * @return
-     */
     public String getKeyTypeName() {
-        return keyTypeName;
+        return type.getKeyTypeName();
     }
 
     public String getName() {
         return name;
     }
 
-    /**
-     * Returns the simple name of the field type
-     * 
-     * @return
-     */
     public String getSimpleTypeName() {
-        return simpleTypeName;
+        return type.getSimpleName();
     }
 
-    /**
-     * Returns the full name of the field type
-     * 
-     * @return
-     */
     public String getTypeName() {
-        return typeName;
+        return type.getFullName();
     }
 
     public String getTypePackage() {
-        return typePackage;
+        return type.getPackageName();
     }
 
     public int hashCode() {
@@ -100,7 +59,7 @@ public class FieldModel implements Comparable<FieldModel> {
     }
 
     public String toString() {
-        return typeName + " " + name;
+        return type.getFullName() + " " + name;
     }
 
 }
