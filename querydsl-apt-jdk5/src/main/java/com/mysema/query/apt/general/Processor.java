@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mysema.query.codegen.ClassModel;
-import com.mysema.query.codegen.ClassModelBuilder;
 import com.mysema.query.codegen.Serializers;
 import com.sun.mirror.apt.AnnotationProcessor;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
@@ -26,82 +25,43 @@ import com.sun.mirror.declaration.Declaration;
  * @author tiwe
  * @version $Id$
  */
-public abstract class GeneralProcessor implements AnnotationProcessor {
+public abstract class Processor implements AnnotationProcessor {
 
     protected final String namePrefix, targetFolder;
 
     protected final AnnotationProcessorEnvironment env;
 
-    protected final String superClassAnnotation, domainAnnotation,
-            dtoAnnotation;
+    protected final String superClassAnnotation, domainAnnotation, dtoAnnotation;
 
-    public GeneralProcessor(AnnotationProcessorEnvironment env,
+    public Processor(AnnotationProcessorEnvironment env,
             String superClassAnnotation, String domainAnnotation,
             String dtoAnnotation) {
         this.env = env;
         this.targetFolder = env.getOptions().get("-s");
         this.namePrefix = getString(env.getOptions(), "namePrefix", "Q");
-
         this.superClassAnnotation = superClassAnnotation;
         this.domainAnnotation = domainAnnotation;
         this.dtoAnnotation = dtoAnnotation;
     }
 
-    private void addSupertypeFields(ClassModel typeDecl,
-            Map<String, ClassModel> entityTypes, Map<String, ClassModel> mappedSupertypes) {
-        String stype = typeDecl.getSupertypeName();
-        Class<?> superClass = safeClassForName(stype);
-        if (entityTypes.containsKey(stype)
-                || mappedSupertypes.containsKey(stype)) {
-            while (true) {
-                ClassModel sdecl;
-                if (entityTypes.containsKey(stype)) {
-                    sdecl = entityTypes.get(stype);
-                } else if (mappedSupertypes.containsKey(stype)) {
-                    sdecl = mappedSupertypes.get(stype);
-                } else {
-                    return;
-                }
-                typeDecl.include(sdecl);
-                stype = sdecl.getSupertypeName();
-            }
-
-        } else if (superClass != null && !superClass.equals(Object.class)) {
-            // TODO : recursively up ?
-            ClassModel type = ClassModelBuilder.createType(superClass);
-            // include fields of supertype
-            typeDecl.include(type);
-        }
+    protected EntityVisitor createEntityVisitor() {
+        return new EntityVisitor();
     }
 
-    private Class<?> safeClassForName(String stype) {
-        try {
-            return stype != null ? Class.forName(stype) : null;
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-    }
-
-    protected DefaultEntityVisitor createEntityVisitor() {
-        return new DefaultEntityVisitor();
-    }
-
-    protected DefaultDTOVisitor createDTOVisitor() {
-        return new DefaultDTOVisitor();
+    protected DTOVisitor createDTOVisitor() {
+        return new DTOVisitor();
     }
 
     private void createDomainClasses() {
-        DefaultEntityVisitor superclassVisitor = createEntityVisitor();
+        EntityVisitor superclassVisitor = createEntityVisitor();
 
         // mapped superclass
         AnnotationTypeDeclaration a;
         Map<String, ClassModel> mappedSupertypes;
         if (superClassAnnotation != null) {
-            a = (AnnotationTypeDeclaration) env
-                    .getTypeDeclaration(superClassAnnotation);
+            a = (AnnotationTypeDeclaration) env.getTypeDeclaration(superClassAnnotation);
             for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
-                typeDecl
-                        .accept(getDeclarationScanner(superclassVisitor, NO_OP));
+                typeDecl.accept(getDeclarationScanner(superclassVisitor, NO_OP));
             }
             mappedSupertypes = superclassVisitor.types;
         } else {
@@ -109,21 +69,19 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
         }
 
         // domain types
-        DefaultEntityVisitor entityVisitor = createEntityVisitor();
-        a = (AnnotationTypeDeclaration) env
-                .getTypeDeclaration(domainAnnotation);
+        EntityVisitor entityVisitor = createEntityVisitor();
+        a = (AnnotationTypeDeclaration) env.getTypeDeclaration(domainAnnotation);
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
             typeDecl.accept(getDeclarationScanner(entityVisitor, NO_OP));
         }
         Map<String, ClassModel> entityTypes = entityVisitor.types;
 
         for (ClassModel typeDecl : entityTypes.values()) {
-            addSupertypeFields(typeDecl, entityTypes, mappedSupertypes);
+            typeDecl.addSupertypeFields(entityTypes, mappedSupertypes);
         }
 
         if (entityTypes.isEmpty()) {
-            env.getMessager().printNotice(
-                    "No class generation for domain types");
+            env.getMessager().printNotice("No class generation for domain types");
         } else {
             Serializers.DOMAIN.serialize(targetFolder, namePrefix, entityTypes.values());
         }
@@ -131,9 +89,8 @@ public abstract class GeneralProcessor implements AnnotationProcessor {
     }
 
     private void createDTOClasses() {
-        AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env
-                .getTypeDeclaration(dtoAnnotation);
-        DefaultDTOVisitor dtoVisitor = createDTOVisitor();
+        AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env.getTypeDeclaration(dtoAnnotation);
+        DTOVisitor dtoVisitor = createDTOVisitor();
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
             typeDecl.accept(getDeclarationScanner(dtoVisitor, NO_OP));
         }

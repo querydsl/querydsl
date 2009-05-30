@@ -5,7 +5,7 @@
  */
 
 /**
- * APT implementation classes
+ * APT (JDK5 Mirror API) implementation classes
  */
 package com.mysema.query.apt.general;
 

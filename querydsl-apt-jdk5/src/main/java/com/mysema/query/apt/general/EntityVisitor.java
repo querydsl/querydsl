@@ -10,9 +10,9 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.mysema.query.codegen.FieldModel;
-import com.mysema.query.codegen.FieldType;
 import com.mysema.query.codegen.ClassModel;
+import com.mysema.query.codegen.FieldModel;
+import com.mysema.query.codegen.TypeModel;
 import com.sun.mirror.declaration.ClassDeclaration;
 import com.sun.mirror.declaration.FieldDeclaration;
 import com.sun.mirror.declaration.InterfaceDeclaration;
@@ -26,19 +26,13 @@ import com.sun.mirror.util.SimpleDeclarationVisitor;
  * @author tiwe
  * @version $Id$
  */
-public class DefaultEntityVisitor extends SimpleDeclarationVisitor {
+public class EntityVisitor extends SimpleDeclarationVisitor {
     private ClassModel last;
 
     public final Map<String, ClassModel> types = new HashMap<String, ClassModel>();
 
-    private void addField(String name, TypeHelper typeInfo) {
-        String keyTypeName = typeInfo.getKeyTypeName();
-        String typeName = typeInfo.getFullName();
-        String typePackage = typeInfo.getPackageName();
-        String simpleTypeName = typeInfo.getSimpleName();
-        FieldType fieldType = typeInfo.getFieldType();
-        last.addField(new FieldModel(name, keyTypeName, typePackage,
-                typeName, simpleTypeName, fieldType));
+    private void addField(String name, TypeModel typeInfo) {        
+        last.addField(new FieldModel(name, typeInfo));
     }
 
     @Override
@@ -46,17 +40,15 @@ public class DefaultEntityVisitor extends SimpleDeclarationVisitor {
         String simpleName = d.getSimpleName();
         String name = d.getQualifiedName();
         String packageName = d.getPackage().getQualifiedName();
-        String superType = d.getSuperclass().getDeclaration()
-                .getQualifiedName();
+        String superType = d.getSuperclass().getDeclaration().getQualifiedName();
         last = new ClassModel(superType, packageName, name, simpleName);
         types.put(d.getQualifiedName(), last);
     }
 
     @Override
     public void visitFieldDeclaration(FieldDeclaration d) {
-        if (!d.getModifiers().contains(Modifier.STATIC)
-                && !d.getModifiers().contains(Modifier.TRANSIENT)) {
-            addField(d.getSimpleName(), new TypeHelper(d.getType()));
+        if (!d.getModifiers().contains(Modifier.STATIC) && !d.getModifiers().contains(Modifier.TRANSIENT)) {
+            addField(d.getSimpleName(), MirrorAPITypeModel.get(d.getType()));
         }
     }
 
@@ -67,8 +59,7 @@ public class DefaultEntityVisitor extends SimpleDeclarationVisitor {
         String packageName = d.getPackage().getQualifiedName();
         String superType = null;
         if (!d.getSuperinterfaces().isEmpty()) {
-            superType = d.getSuperinterfaces().iterator().next()
-                    .getDeclaration().getQualifiedName();
+            superType = d.getSuperinterfaces().iterator().next().getDeclaration().getQualifiedName();
         }
         last = new ClassModel(superType, packageName, name, simpleName);
         types.put(d.getQualifiedName(), last);
@@ -79,13 +70,11 @@ public class DefaultEntityVisitor extends SimpleDeclarationVisitor {
         if (!d.getModifiers().contains(Modifier.STATIC)) {
             if (d.getParameters().isEmpty()) {
                 if (d.getSimpleName().startsWith("get")) {
-                    String name = StringUtils.uncapitalize(d.getSimpleName()
-                            .substring(3));
-                    addField(name, new TypeHelper(d.getReturnType()));
+                    String name = StringUtils.uncapitalize(d.getSimpleName().substring(3));
+                    addField(name, MirrorAPITypeModel.get(d.getReturnType()));
                 } else if (d.getSimpleName().startsWith("is")) {
-                    String name = StringUtils.uncapitalize(d.getSimpleName()
-                            .substring(2));
-                    addField(name, new TypeHelper(d.getReturnType()));
+                    String name = StringUtils.uncapitalize(d.getSimpleName().substring(2));
+                    addField(name, MirrorAPITypeModel.get(d.getReturnType()));
                 }
             }
         }

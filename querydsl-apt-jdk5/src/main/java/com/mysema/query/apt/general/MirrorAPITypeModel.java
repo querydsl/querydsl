@@ -5,11 +5,14 @@
  */
 package com.mysema.query.apt.general;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 
 import com.mysema.query.annotations.Literal;
 import com.mysema.query.codegen.FieldType;
+import com.mysema.query.codegen.TypeModel;
 import com.sun.mirror.type.AnnotationType;
 import com.sun.mirror.type.ArrayType;
 import com.sun.mirror.type.ClassType;
@@ -27,13 +30,25 @@ import com.sun.mirror.util.SimpleTypeVisitor;
  * @author tiwe
  * @version $Id$
  */
-public class TypeHelper extends SimpleTypeVisitor {
+class MirrorAPITypeModel extends SimpleTypeVisitor implements TypeModel {
 
+    private static Map<TypeMirror,TypeModel> cache = new HashMap<TypeMirror,TypeModel>();
+    
+    public static TypeModel get(TypeMirror key){
+        if (cache.containsKey(key)){
+            return cache.get(key);
+        }else{
+            TypeModel value = new MirrorAPITypeModel(key);
+            cache.put(key, value);
+            return value;
+        }
+    }
+    
     private FieldType fieldType;
 
     private String simpleName, fullName, packageName = "", keyTypeName;
 
-    public TypeHelper(TypeMirror type) {
+    private MirrorAPITypeModel(TypeMirror type) {
         type.accept(this);
         if (fullName == null) {
             fullName = type.toString();
@@ -66,11 +81,11 @@ public class TypeHelper extends SimpleTypeVisitor {
     }
 
     private void handleCollectionInterface(Iterator<TypeMirror> i) {
-        TypeHelper valueInfo = new TypeHelper(i.next());
+        MirrorAPITypeModel valueInfo = new MirrorAPITypeModel(i.next());
         handleCollection(valueInfo);
     }
 
-    private void handleCollection(TypeHelper valueInfo) {
+    private void handleCollection(MirrorAPITypeModel valueInfo) {
         fullName = valueInfo.getFullName();
         packageName = valueInfo.getPackageName();
         if (valueInfo.fieldType == FieldType.ENTITY) {
@@ -81,11 +96,11 @@ public class TypeHelper extends SimpleTypeVisitor {
     }
 
     private void handleList(Iterator<TypeMirror> i) {
-        TypeHelper valueInfo = new TypeHelper(i.next());
+        MirrorAPITypeModel valueInfo = new MirrorAPITypeModel(i.next());
         handleList(valueInfo);
     }
 
-    private void handleList(TypeHelper valueInfo) {
+    private void handleList(MirrorAPITypeModel valueInfo) {
         fullName = valueInfo.getFullName();
         packageName = valueInfo.getPackageName();
         if (valueInfo.fieldType == FieldType.ENTITY) {
@@ -96,12 +111,12 @@ public class TypeHelper extends SimpleTypeVisitor {
     }
 
     private void handleMapInterface(Iterator<TypeMirror> i) {
-        TypeHelper keyInfo = new TypeHelper(i.next());
-        TypeHelper valueInfo = new TypeHelper(i.next());
+        TypeModel keyInfo = new MirrorAPITypeModel(i.next());
+        MirrorAPITypeModel valueInfo = new MirrorAPITypeModel(i.next());
         handleMapInterface(keyInfo, valueInfo);
     }
 
-    private void handleMapInterface(TypeHelper keyInfo, TypeHelper valueInfo) {
+    private void handleMapInterface(TypeModel keyInfo, MirrorAPITypeModel valueInfo) {
         keyTypeName = keyInfo.getFullName();
         fullName = valueInfo.getFullName();
         packageName = valueInfo.getPackageName();
@@ -130,7 +145,7 @@ public class TypeHelper extends SimpleTypeVisitor {
         //            
     }
 
-    private void visitArrayComponentType(TypeHelper valueInfo) {
+    private void visitArrayComponentType(MirrorAPITypeModel valueInfo) {
         fullName = valueInfo.getFullName();
         packageName = valueInfo.getPackageName();
         if (valueInfo.fieldType == FieldType.ENTITY) {
@@ -142,7 +157,7 @@ public class TypeHelper extends SimpleTypeVisitor {
 
     @Override
     public void visitArrayType(ArrayType arg0) {
-        TypeHelper valueInfo = new TypeHelper(arg0.getComponentType());
+        MirrorAPITypeModel valueInfo = new MirrorAPITypeModel(arg0.getComponentType());
         visitArrayComponentType(valueInfo);
     }
 
@@ -277,7 +292,7 @@ public class TypeHelper extends SimpleTypeVisitor {
     @Override
     public void visitTypeVariable(TypeVariable arg0) {
         if (!arg0.getDeclaration().getBounds().isEmpty()) {
-            TypeHelper lb = new TypeHelper(arg0.getDeclaration().getBounds()
+            TypeModel lb = new MirrorAPITypeModel(arg0.getDeclaration().getBounds()
                     .iterator().next());
             fullName = lb.getFullName();
             packageName = lb.getPackageName();
@@ -289,7 +304,7 @@ public class TypeHelper extends SimpleTypeVisitor {
     @Override
     public void visitWildcardType(WildcardType arg0) {
         if (!arg0.getUpperBounds().isEmpty()) {
-            TypeHelper lb = new TypeHelper(arg0.getUpperBounds().iterator().next());
+            TypeModel lb = new MirrorAPITypeModel(arg0.getUpperBounds().iterator().next());
             fullName = lb.getFullName();
             packageName = lb.getPackageName();
             simpleName = lb.getSimpleName();

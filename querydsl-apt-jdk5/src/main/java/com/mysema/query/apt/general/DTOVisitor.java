@@ -24,7 +24,7 @@ import com.sun.mirror.util.SimpleDeclarationVisitor;
  * @author tiwe
  * @version $Id$
  */
-public class DefaultDTOVisitor extends SimpleDeclarationVisitor {
+public class DTOVisitor extends SimpleDeclarationVisitor {
     final Set<ClassModel> types = new TreeSet<ClassModel>();
 
     private ClassModel last;
@@ -46,7 +46,7 @@ public class DefaultDTOVisitor extends SimpleDeclarationVisitor {
                 .size());
         for (ParameterDeclaration pa : d.getParameters()) {
             String name = pa.getSimpleName();
-            String typeName = new TypeHelper(pa.getType()).getFullName();
+            String typeName = MirrorAPITypeModel.get(pa.getType()).getFullName();
             parameters.add(new ParameterModel(name, typeName));
         }
         last.addConstructor(new ConstructorModel(parameters));

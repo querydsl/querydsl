@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.apt.jpa;
+package com.mysema.query.apt.general;
 
 import static com.mysema.query.apt.Constants.JPA_EMBEDDABLE;
 import static com.mysema.query.apt.Constants.JPA_ENTITY;
@@ -14,8 +14,6 @@ import static com.sun.mirror.util.DeclarationVisitors.getDeclarationScanner;
 
 import java.util.Map;
 
-import com.mysema.query.apt.general.DefaultEntityVisitor;
-import com.mysema.query.apt.general.GeneralProcessor;
 import com.mysema.query.codegen.Serializers;
 import com.mysema.query.codegen.ClassModel;
 import com.sun.mirror.apt.AnnotationProcessorEnvironment;
@@ -29,14 +27,14 @@ import com.sun.mirror.declaration.MethodDeclaration;
  * @author tiwe
  * @version $Id$
  */
-public class JPAProcessor extends GeneralProcessor {
+public class JPAProcessor extends Processor {
 
     public JPAProcessor(AnnotationProcessorEnvironment env) {
         super(env, JPA_SUPERCLASS, JPA_ENTITY, QD_DTO);
     }
 
     private void createEmbeddableClasses() {
-        DefaultEntityVisitor entityVisitor = new DefaultEntityVisitor();
+        EntityVisitor entityVisitor = new EntityVisitor();
         AnnotationTypeDeclaration a = (AnnotationTypeDeclaration) env.getTypeDeclaration(JPA_EMBEDDABLE);
         for (Declaration typeDecl : env.getDeclarationsAnnotatedWith(a)) {
             typeDecl.accept(getDeclarationScanner(entityVisitor, NO_OP));
@@ -53,8 +51,8 @@ public class JPAProcessor extends GeneralProcessor {
 
     // TODO : add switch for field / getter handling
     @Override
-    protected DefaultEntityVisitor createEntityVisitor() {
-        return new DefaultEntityVisitor() {
+    protected EntityVisitor createEntityVisitor() {
+        return new EntityVisitor() {
             @Override
             public void visitMethodDeclaration(MethodDeclaration d) {
                 // skip property handling
