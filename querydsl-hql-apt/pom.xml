@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.mysema.querydsl</groupId>
+    <artifactId>querydsl-root</artifactId>
+    <version>0.3.11-SNAPSHOT</version>
+  </parent>
+
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-hql-apt</artifactId>
+  <name>Querydsl - HQL/APT support</name>
+  <packaging>jar</packaging>
+  
+  <properties>
+    <hibernate.version>3.2.1.ga</hibernate.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate</artifactId>
+      <version>${hibernate.version}</version>
+    </dependency>  
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-annotations</artifactId>
+      <version>${hibernate.version}</version>
+    </dependency>  
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-apt</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin
+        </artifactId>
+        <configuration>
+          <compilerArgument>-proc:none</compilerArgument>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

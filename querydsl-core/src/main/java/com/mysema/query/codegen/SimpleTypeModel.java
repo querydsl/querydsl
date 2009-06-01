@@ -11,9 +11,9 @@ package com.mysema.query.codegen;
  */
 public class SimpleTypeModel implements TypeModel {
 
-    protected FieldType fieldType;
+    protected FieldType fieldType = FieldType.ENTITY;
 
-    protected String fullName, packageName, simpleName;
+    protected String name, packageName, simpleName;
 
     protected String keyTypeName, valueTypeName;
 
@@ -23,7 +23,7 @@ public class SimpleTypeModel implements TypeModel {
             String packageName, String simpleName, String keyTypeName,
             String valueTypeName) {
         this.fieldType = fieldType;
-        this.fullName = fullName;
+        this.name = fullName;
         this.packageName = packageName;
         this.simpleName = simpleName;
         this.keyTypeName = keyTypeName;
@@ -36,8 +36,8 @@ public class SimpleTypeModel implements TypeModel {
     }
 
     @Override
-    public String getFullName() {
-        return fullName;
+    public String getName() {
+        return name;
     }
 
     @Override
@@ -59,5 +59,10 @@ public class SimpleTypeModel implements TypeModel {
     public String getValueTypeName() {
         return valueTypeName;
     }
+    
+    public String toString() {
+        return name;
+    }
+
 
 }

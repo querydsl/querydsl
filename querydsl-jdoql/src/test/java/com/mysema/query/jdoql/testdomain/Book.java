@@ -9,13 +9,10 @@ import javax.jdo.annotations.Inheritance;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 
-import com.mysema.query.annotations.Entity;
-
 /**
  * Definition of a Book. Extends basic Product class.
  */
 @PersistenceCapable
-@Entity
 @Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 public class Book extends Product {
     private String author = null;

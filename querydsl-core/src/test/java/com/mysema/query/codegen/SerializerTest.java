@@ -40,7 +40,7 @@ public class SerializerTest {
                 return FieldType.STRING;
             }
             @Override
-            public String getFullName() {
+            public String getName() {
                 return String.class.getName();
             }
             @Override

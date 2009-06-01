@@ -8,10 +8,11 @@ package com.mysema.query.codegen;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
+
+import com.mysema.commons.lang.Assert;
 
 /**
  * ClassModel represents a query domain type.
@@ -34,31 +35,31 @@ public class ClassModel implements Comparable<ClassModel> {
         return value;
     }
 
-    private final Set<FieldModel> booleanFields = new TreeSet<FieldModel>();
+    private final Collection<FieldModel> booleanFields = new TreeSet<FieldModel>();
 
-    private final Set<FieldModel> comparableFields = new TreeSet<FieldModel>();
+    private final Collection<FieldModel> comparableFields = new TreeSet<FieldModel>();
 
-    private final Set<ConstructorModel> constructors = new HashSet<ConstructorModel>();
+    private final Collection<ConstructorModel> constructors = new HashSet<ConstructorModel>();
 
-    private final Set<FieldModel> entityCollections = new TreeSet<FieldModel>();
+    private final Collection<FieldModel> entityCollections = new TreeSet<FieldModel>();
 
-    private final Set<FieldModel> entityFields = new TreeSet<FieldModel>();
+    private final Collection<FieldModel> entityFields = new TreeSet<FieldModel>();
 
-    private final Set<FieldModel> entityLists = new TreeSet<FieldModel>();
+    private final Collection<FieldModel> entityLists = new TreeSet<FieldModel>();
 
-    private final Set<FieldModel> entityMaps = new TreeSet<FieldModel>();
+    private final Collection<FieldModel> entityMaps = new TreeSet<FieldModel>();
 
-    private final Set<FieldModel> numericFields = new TreeSet<FieldModel>();
+    private final Collection<FieldModel> numericFields = new TreeSet<FieldModel>();
 
-    private final Set<FieldModel> simpleCollections = new TreeSet<FieldModel>();
+    private final Collection<FieldModel> simpleCollections = new TreeSet<FieldModel>();
 
-    private final Set<FieldModel> simpleFields = new TreeSet<FieldModel>();
+    private final Collection<FieldModel> simpleFields = new TreeSet<FieldModel>();
 
-    private final Set<FieldModel> simpleLists = new TreeSet<FieldModel>();
+    private final Collection<FieldModel> simpleLists = new TreeSet<FieldModel>();
 
-    private final Set<FieldModel> simpleMaps = new TreeSet<FieldModel>();
+    private final Collection<FieldModel> simpleMaps = new TreeSet<FieldModel>();
 
-    private final Set<FieldModel> stringFields = new TreeSet<FieldModel>();
+    private final Collection<FieldModel> stringFields = new TreeSet<FieldModel>();
     
     private String simpleName, uncapSimpleName, name, packageName;
 
@@ -68,9 +69,9 @@ public class ClassModel implements Comparable<ClassModel> {
 
     public ClassModel(String superType, String packageName, String name, String simpleName) {
         this.superType = superType;
-        this.packageName = packageName;
-        this.name = name;
-        this.simpleName = simpleName;
+        this.packageName = Assert.notNull(packageName);
+        this.name = Assert.notNull(name);
+        this.simpleName = Assert.notNull(simpleName);
         this.uncapSimpleName = StringUtils.uncapitalize(simpleName);
     }
 
@@ -226,7 +227,7 @@ public class ClassModel implements Comparable<ClassModel> {
         addAll(stringFields, clazz.stringFields);
     }
 
-    private void addAll(Set<FieldModel> target, Set<FieldModel> source) {
+    private void addAll(Collection<FieldModel> target, Collection<FieldModel> source) {
         for (FieldModel field : source) {
             target.add(validateField(field));
         }

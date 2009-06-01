@@ -14,13 +14,13 @@
   <name>Querydsl - JDOQL support</name>
   <description>Hibernate / HQL support for querydsl</description>
   <packaging>jar</packaging>
-  
+
   <properties>
     <jdo.version>2.3-SNAPSHOT</jdo.version>
     <dn.version>1.1.3</dn.version>
     <datanucleus.classDir>target/test-classes</datanucleus.classDir>
   </properties>
-  
+
   <dependencies>
     <dependency>
       <groupId>javax.jdo</groupId>
@@ -32,6 +32,11 @@
       <artifactId>querydsl-core</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-jdoql-apt</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>    
 
     <!-- test -->
 
@@ -54,25 +59,10 @@
       <scope>test</scope>
       <!-- license : TODO -->
     </dependency>
-    <dependency>
-      <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-apt-jdk5</artifactId>
-      <version>${project.parent.version}</version>
-      <scope>provided</scope>
-      <!-- license : TODO -->
-    </dependency>
-<!--     
-    <dependency>
-      <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-apt</artifactId>
-      <version>${project.parent.version}</version>
-      <scope>provided</scope>
-    </dependency>
- -->    
   </dependencies>
 
   <build>
-    <plugins>      
+    <plugins>
       <!-- this plugin does the JDO class enhancement -->
       <plugin>
         <groupId>org.datanucleus</groupId>
@@ -92,52 +82,36 @@
             </goals>
           </execution>
         </executions>
-      </plugin>    
-    
-      <!-- this plugin does the Querydsl query type generation via APT -->
+      </plugin> 
       <plugin>
-        <groupId>org.apache.myfaces.tobago</groupId>
+        <groupId>com.mysema.maven</groupId>
         <artifactId>maven-apt-plugin</artifactId>
-        <version>1.0.15</version>
+        <version>0.1.0</version>
         <executions>
           <execution>
-            <phase>generate-sources</phase>
             <goals>
-              <!-- replace with 
-                <goal>execute</goal> in external usage -->
-              <goal>testExecute</goal>
+              <goal>test-process</goal>
             </goals>
             <configuration>
-              <aptSourceRoots>
-                <!--  replace with 
-                  <aptSourceRoot>src/main/java</aptSourceRoot> in external usage -->
-                <aptSourceRoot>src/test/java</aptSourceRoot>
-              </aptSourceRoots>
-              <force>true</force>
-              <fork>true</fork>
-              <A>-Aprofile=jdo</A>
-              <factory>com.mysema.query.apt.APTFactory</factory>
-              <!-- replace with 
-                <generated>target/generated-sources/java</generated> in external usage -->
-              <testGenerated>target/generated-test-sources/java</testGenerated>
-              <nocompile>true</nocompile>
-              <showWarnings>true</showWarnings>
+              <outputDirectory>target/generated-test-sources/java</outputDirectory>
+              <processor>com.mysema.query.jdoql.apt.JDOAnnotationProcessor</processor>
             </configuration>
           </execution>
         </executions>
-      </plugin>
-<!--       
-      <plugin>
+      </plugin>   
+      <!--
+      <plugin> 
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration> 
           <compilerArguments>
             <processor>com.mysema.query.apt.EntityAnnotationProcessor</processor>
+            <s>target/generated-test-sources/java</s> 
           </compilerArguments>
-          <fork>true</fork>
-        </configuration>
+          <fork>true</fork> 
+        </configuration> 
       </plugin>
- -->      
+      -->
     </plugins>
   </build>
-  
+
 </project>

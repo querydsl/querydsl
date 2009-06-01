@@ -11,6 +11,14 @@ import java.lang.reflect.WildcardType;
 
 public class TypeUtil {
     
+    public static Class<?> safeForName(String name){
+        try {
+            return Class.forName(name);
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+    }
+    
     public static Class<?> getTypeParameter(java.lang.reflect.Type type, int index) {
         if (type instanceof ParameterizedType) {
             ParameterizedType ptype = (ParameterizedType) type;

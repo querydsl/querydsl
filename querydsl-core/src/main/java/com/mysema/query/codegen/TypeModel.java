@@ -15,7 +15,7 @@ public interface TypeModel {
 
     FieldType getFieldType();
 
-    String getFullName();
+    String getName();
 
     String getKeyTypeName();
 

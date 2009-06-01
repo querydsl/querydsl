@@ -57,10 +57,8 @@
     </dependency>
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-apt-jdk5</artifactId>
+      <artifactId>querydsl-hql-apt</artifactId>
       <version>${project.parent.version}</version>
-      <scope>provided</scope>
-      <!-- license : TODO -->
     </dependency>
   </dependencies>
 
@@ -90,30 +88,21 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.apache.myfaces.tobago</groupId>
+        <groupId>com.mysema.maven</groupId>
         <artifactId>maven-apt-plugin</artifactId>
-        <version>1.0.15</version>
+        <version>0.1.0</version>
         <executions>
           <execution>
-            <id>dummy-domain-into-package</id>
-            <phase>generate-sources</phase>
             <goals>
-              <goal>testExecute</goal>
+              <goal>test-process</goal>
             </goals>
             <configuration>
-              <aptSourceRoots>
-                <aptSourceRoot>src/test/java</aptSourceRoot>
-              </aptSourceRoots>
-              <force>true</force>
-              <fork>true</fork>
-              <factory>com.mysema.query.apt.APTFactory</factory>
-              <testGenerated>target/generated-test-sources/java</testGenerated>
-              <nocompile>true</nocompile>
-              <showWarnings>true</showWarnings>
+              <outputDirectory>target/generated-test-sources/java</outputDirectory>
+              <processor>com.mysema.query.hql.apt.JPAAnnotationProcessor</processor>
             </configuration>
           </execution>
         </executions>
-      </plugin>
+      </plugin>   
     </plugins>
   </build>
 

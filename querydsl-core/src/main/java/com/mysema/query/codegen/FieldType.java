@@ -5,6 +5,7 @@
  */
 package com.mysema.query.codegen;
 
+
 /**
  * 
  * @author tiwe
@@ -22,5 +23,6 @@ public enum FieldType {
     SIMPLELIST, 
     SIMPLECOLLECTION, 
     SIMPLEMAP, 
-    STRING
+    STRING;
+    
 }

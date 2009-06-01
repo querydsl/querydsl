@@ -11,13 +11,10 @@ import java.util.Set;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.PrimaryKey;
 
-import com.mysema.query.annotations.Entity;
-
 /**
  * The Class Department.
  */
 @PersistenceCapable
-@Entity
 // TODO : finish annotations
 public class Department {
     private @PrimaryKey

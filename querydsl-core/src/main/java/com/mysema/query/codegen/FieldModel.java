@@ -5,6 +5,8 @@
  */
 package com.mysema.query.codegen;
 
+import com.mysema.commons.lang.Assert;
+
 /**
  * FieldModel represents a field / property in a query domain type.
  * 
@@ -18,8 +20,11 @@ public class FieldModel implements Comparable<FieldModel> {
     private TypeModel type;
     
     public FieldModel(String name, TypeModel type){
-        this.name = name;
-        this.type = type;
+        this.name = Assert.notNull(name);
+        this.type = Assert.notNull(type);
+        if (type.getSimpleName() == null){
+            throw new IllegalArgumentException("Field with name " + name + " got no valid type : " + type);
+        }
     }
 
     public int compareTo(FieldModel o) {
@@ -47,7 +52,7 @@ public class FieldModel implements Comparable<FieldModel> {
     }
 
     public String getTypeName() {
-        return type.getFullName();
+        return type.getName();
     }
 
     public String getTypePackage() {
@@ -59,7 +64,7 @@ public class FieldModel implements Comparable<FieldModel> {
     }
 
     public String toString() {
-        return type.getFullName() + " " + name;
+        return type.getName() + " " + name;
     }
 
 }

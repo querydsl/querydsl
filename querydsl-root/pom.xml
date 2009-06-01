@@ -23,9 +23,11 @@
   <modules>
     <module>../querydsl-core</module>
     <module>../querydsl-apt</module>
-    <module>../querydsl-apt-jdk5</module>
+    <module>../querydsl-apt-jdk5</module>    
     <module>../querydsl-collections</module>
+    <module>../querydsl-jdoql-apt</module>
     <module>../querydsl-jdoql</module>    
+    <module>../querydsl-hql-apt</module>
     <module>../querydsl-hql</module>
     <module>../querydsl-sql</module>
   </modules>
@@ -121,6 +123,13 @@
       </plugin>
     </plugins>
   </build>
+  
+  <pluginRepositories>
+    <pluginRepository>
+      <id>maven-annotation-plugin</id>
+      <url>http://maven-annotation-plugin.googlecode.com/svn/trunk/mavenrepo</url>
+    </pluginRepository>
+  </pluginRepositories>
 
   <reporting>
     <plugins>
