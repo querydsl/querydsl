@@ -113,8 +113,9 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
 
     @Override
     public void addHaving(EBoolean... o) {
-        for (EBoolean e : o)
+        for (EBoolean e : o){
             having.and(e);
+        }            
     }
 
     @Override
@@ -129,8 +130,9 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
 
     @Override
     public void addWhere(EBoolean... o) {
-        for (EBoolean e : o)
+        for (EBoolean e : o){
             where.and(e);
+        }            
     }
 
     @Override

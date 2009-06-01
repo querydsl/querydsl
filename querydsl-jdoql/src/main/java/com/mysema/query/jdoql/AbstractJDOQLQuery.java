@@ -22,6 +22,7 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.support.QueryBaseWithProjection;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
@@ -102,11 +103,15 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         logger.debug("query : {}", filterString);
         Query query = createQuery(filterString, null, true);
         query.setUnique(true);
-        query.setResult("count(this)");
+        if (getMetadata().isDistinct()){
+            query.setResult("distinct count(this)");
+        }else{
+            query.setResult("count(this)");    
+        }        
         return (Long) execute(query);
     }
 
-    private Query createQuery(String filterString, QueryModifiers modifiers, boolean forCount) {
+    private Query createQuery(String filterString, QueryModifiers modifiers, boolean forCount) {        
         Query query = pm.newQuery(sources.get(0).getType());        
         queries.add(query);
         if (filterString != null) {
@@ -139,6 +144,17 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
             }
             query.declareParameters(builder.toString());
         }
+        
+        if (!getMetadata().getGroupBy().isEmpty()){
+            List<? extends Expr<?>> groupBy = getMetadata().getGroupBy();
+            JDOQLSerializer serializer = new JDOQLSerializer(patterns, sources.get(0));
+            serializer.handle(", ", groupBy);
+            if (getMetadata().getHaving() != null){
+                EBoolean having = getMetadata().getHaving();
+                serializer.append(" having ").handle(having);
+            }
+            query.setGrouping(serializer.toString());
+        }
 
         // range (not for count)
         if (modifiers != null && modifiers.isRestricting() && !forCount) {
@@ -156,10 +172,15 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         // projection (not for count)
         if (!getMetadata().getProjection().isEmpty() && !forCount) {
             List<? extends Expr<?>> projection = getMetadata().getProjection();
-            if (!projection.get(0).equals(sources.get(0))) {
-                JDOQLSerializer serializer = new JDOQLSerializer(patterns, sources.get(0));
+            if (projection.size() > 1 || !projection.get(0).equals(sources.get(0))) {
+                JDOQLSerializer serializer = new JDOQLSerializer(patterns, sources.get(0));      
+                if (getMetadata().isDistinct()){
+                    serializer.append("distinct ");
+                }
                 serializer.handle(", ", projection);
                 query.setResult(serializer.toString());
+            }else if (getMetadata().isDistinct()){
+                query.setResult("distinct this");
             }
         }
         

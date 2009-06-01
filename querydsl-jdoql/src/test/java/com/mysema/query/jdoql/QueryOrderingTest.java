@@ -15,7 +15,6 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.SearchResults;
@@ -86,9 +85,24 @@ public class QueryOrderingTest extends AbstractJDOTest {
     }
 
     @Test
-    @Ignore
     public void testDistinct() {
-        // TODO
+        int size1 = query().from(product).listDistinct(product.name).size();
+        int size2 = query().from(product).list(product.name).size();
+        assertEquals(size1, size2);
+    }
+    
+    @Test
+    public void testGroupBy() {
+        int size1 = query().from(product).groupBy(product.name).list(product.name).size();
+        int size2 = query().from(product).list(product.name).size();
+        assertEquals(size1, size2);
+    }
+    
+    @Test
+    public void testGroupByHaving() {
+        int size1 = query().from(product).groupBy(product.name).list(product.name).size();
+        int size2 = query().from(product).groupBy(product.name).having(product.name.isNotNull()).list(product.name).size();
+        assertEquals(size1, size2);
     }
 
     @BeforeClass

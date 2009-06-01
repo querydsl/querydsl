@@ -11,6 +11,7 @@ import com.mysema.query.Projectable;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 
 /**
@@ -27,8 +28,10 @@ public interface JDOQLQuery extends Projectable, Closeable {
 
     JDOQLQuery where(EBoolean... o);
 
-    // TODO : grouping
+    JDOQLQuery groupBy(Expr<?>... e);
     
+    JDOQLQuery having(EBoolean... cond);
+        
     JDOQLQuery limit(long limit);
 
     JDOQLQuery offset(long offset);
