@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.apt.general;
+package com.mysema.query.apt.jdk5;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ public class DTOVisitor extends SimpleDeclarationVisitor {
                 .size());
         for (ParameterDeclaration pa : d.getParameters()) {
             String name = pa.getSimpleName();
-            String typeName = MirrorAPITypeModel.get(pa.getType()).getFullName();
+            String typeName = MirrorAPITypeModel.get(pa.getType()).getName();
             parameters.add(new ParameterModel(name, typeName));
         }
         last.addConstructor(new ConstructorModel(parameters));

@@ -3,12 +3,12 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.apt.general;
+package com.mysema.query.apt.jdk5;
 
-import static com.mysema.query.apt.Constants.JPA_EMBEDDABLE;
-import static com.mysema.query.apt.Constants.JPA_ENTITY;
-import static com.mysema.query.apt.Constants.JPA_SUPERCLASS;
-import static com.mysema.query.apt.Constants.QD_DTO;
+import static com.mysema.query.apt.jdk5.Constants.JPA_EMBEDDABLE;
+import static com.mysema.query.apt.jdk5.Constants.JPA_ENTITY;
+import static com.mysema.query.apt.jdk5.Constants.JPA_SUPERCLASS;
+import static com.mysema.query.apt.jdk5.Constants.QD_DTO;
 import static com.sun.mirror.util.DeclarationVisitors.NO_OP;
 import static com.sun.mirror.util.DeclarationVisitors.getDeclarationScanner;
 

@@ -3,9 +3,8 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.apt.general;
+package com.mysema.query.apt.jdk5;
 
-import static com.mysema.query.apt.APTUtils.getString;
 import static com.sun.mirror.util.DeclarationVisitors.NO_OP;
 import static com.sun.mirror.util.DeclarationVisitors.getDeclarationScanner;
 
@@ -38,7 +37,7 @@ public abstract class Processor implements AnnotationProcessor {
             String dtoAnnotation) {
         this.env = env;
         this.targetFolder = env.getOptions().get("-s");
-        this.namePrefix = getString(env.getOptions(), "namePrefix", "Q");
+        this.namePrefix = APTFactory.getString(env.getOptions(), "namePrefix", "Q");
         this.superClassAnnotation = superClassAnnotation;
         this.domainAnnotation = domainAnnotation;
         this.dtoAnnotation = dtoAnnotation;

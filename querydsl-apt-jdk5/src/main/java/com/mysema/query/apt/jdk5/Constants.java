@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.apt;
+package com.mysema.query.apt.jdk5;
 
 import com.mysema.query.annotations.DTO;
 import com.mysema.query.annotations.Entity;

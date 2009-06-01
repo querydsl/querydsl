@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.apt.general;
+package com.mysema.query.apt.jdk5;
 
 import java.util.HashMap;
 import java.util.Map;

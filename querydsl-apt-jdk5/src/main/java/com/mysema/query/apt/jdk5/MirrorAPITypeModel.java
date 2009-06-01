@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.apt.general;
+package com.mysema.query.apt.jdk5;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,6 +13,7 @@ import java.util.Map;
 import com.mysema.query.annotations.Literal;
 import com.mysema.query.codegen.FieldType;
 import com.mysema.query.codegen.TypeModel;
+import com.mysema.query.util.TypeUtil;
 import com.sun.mirror.type.AnnotationType;
 import com.sun.mirror.type.ArrayType;
 import com.sun.mirror.type.ClassType;
@@ -56,26 +57,32 @@ class MirrorAPITypeModel extends SimpleTypeVisitor implements TypeModel {
         setDefaults();
     }
 
+    @Override
     public FieldType getFieldType() {
         return fieldType;
     }
 
-    public String getFullName() {
+    @Override
+    public String getName() {
         return fullName;
     }
 
+    @Override
     public String getKeyTypeName() {
         return keyTypeName;
     }
 
+    @Override
     public String getPackageName() {
         return packageName;
     }
 
+    @Override
     public String getSimpleName() {
         return simpleName;
     }
 
+    @Override
     public String getValueTypeName() {
         return fullName;
     }
@@ -86,7 +93,7 @@ class MirrorAPITypeModel extends SimpleTypeVisitor implements TypeModel {
     }
 
     private void handleCollection(MirrorAPITypeModel valueInfo) {
-        fullName = valueInfo.getFullName();
+        fullName = valueInfo.getName();
         packageName = valueInfo.getPackageName();
         if (valueInfo.fieldType == FieldType.ENTITY) {
             fieldType = FieldType.ENTITYCOLLECTION;
@@ -101,7 +108,7 @@ class MirrorAPITypeModel extends SimpleTypeVisitor implements TypeModel {
     }
 
     private void handleList(MirrorAPITypeModel valueInfo) {
-        fullName = valueInfo.getFullName();
+        fullName = valueInfo.getName();
         packageName = valueInfo.getPackageName();
         if (valueInfo.fieldType == FieldType.ENTITY) {
             fieldType = FieldType.ENTITYLIST;
@@ -117,8 +124,8 @@ class MirrorAPITypeModel extends SimpleTypeVisitor implements TypeModel {
     }
 
     private void handleMapInterface(TypeModel keyInfo, MirrorAPITypeModel valueInfo) {
-        keyTypeName = keyInfo.getFullName();
-        fullName = valueInfo.getFullName();
+        keyTypeName = keyInfo.getName();
+        fullName = valueInfo.getName();
         packageName = valueInfo.getPackageName();
         if (valueInfo.fieldType == FieldType.ENTITY) {
             fieldType = FieldType.ENTITYMAP;
@@ -146,7 +153,7 @@ class MirrorAPITypeModel extends SimpleTypeVisitor implements TypeModel {
     }
 
     private void visitArrayComponentType(MirrorAPITypeModel valueInfo) {
-        fullName = valueInfo.getFullName();
+        fullName = valueInfo.getName();
         packageName = valueInfo.getPackageName();
         if (valueInfo.fieldType == FieldType.ENTITY) {
             fieldType = FieldType.ENTITYCOLLECTION;
@@ -166,53 +173,52 @@ class MirrorAPITypeModel extends SimpleTypeVisitor implements TypeModel {
         try {
             fullName = arg0.getDeclaration().getQualifiedName();
             packageName = arg0.getDeclaration().getPackage().getQualifiedName();
-
-            if (fullName.equals(String.class.getName())) {
-                fieldType = FieldType.STRING;
-
-            } else if (fullName.equals(Boolean.class.getName())) {
-                fieldType = FieldType.BOOLEAN;
-
-            } else if (fullName.equals(Locale.class.getName())
-                    || fullName.equals(Class.class.getName())
-                    || fullName.equals(Object.class.getName())) {
-                fieldType = FieldType.SIMPLE;
-
-            } else if (isNumericSupported(fullName)
-                    && Number.class.isAssignableFrom(Class.forName(fullName))) {
-                fieldType = FieldType.NUMERIC;
-
-            } else if (arg0.getDeclaration().getAnnotation(Literal.class) != null) {
+            
+            if (arg0.getDeclaration().getAnnotation(Literal.class) != null) {
                 if (Comparable.class.isAssignableFrom(Class.forName(fullName))) {
                     fieldType = FieldType.COMPARABLE;
                 } else {
                     fieldType = FieldType.SIMPLE;
                 }
-
-            } else if (isComparableSupported(fullName)
-                    && Comparable.class.isAssignableFrom(Class
-                            .forName(fullName))) {
-                fieldType = FieldType.COMPARABLE;
-
-            } else if (asSimpleType(fullName)) {
-                fieldType = FieldType.SIMPLE;
-
+            }else{
+                fieldType = getFieldType(fullName);
             }
+            
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
+    
+    protected FieldType getFieldType(String fullName){
+        if (fullName.equals(String.class.getName())) {
+            return FieldType.STRING;
 
-    private boolean isNumericSupported(String fullName) {
-        return isComparableSupported(fullName);
+        } else if (fullName.equals(Boolean.class.getName())) {
+            return FieldType.BOOLEAN;
+
+        } else if (fullName.equals(Locale.class.getName())
+                || fullName.equals(Class.class.getName())
+                || fullName.equals(Object.class.getName())) {
+            return FieldType.SIMPLE;
+
+        } else if (isComparableSupported(fullName)
+                && Number.class.isAssignableFrom(TypeUtil.safeForName(fullName))) {
+            return FieldType.NUMERIC;
+            
+        } else if (isComparableSupported(fullName)
+                && Comparable.class.isAssignableFrom(TypeUtil.safeForName(fullName))) {
+            return FieldType.COMPARABLE;
+
+        }else{
+            return FieldType.ENTITY;
+        }
+        
     }
-
+    
     private boolean isComparableSupported(String fullName) {
-        return fullName.startsWith("java.") || fullName.startsWith("javax.") || fullName.startsWith("org.joda.time");
-    }
-
-    private boolean asSimpleType(String fullName) {
-        return false;
+        return fullName.startsWith("java.") 
+            || fullName.startsWith("javax.") 
+            || fullName.startsWith("org.joda.time");
     }
 
     public void visitEnumType(Class<?> type) {
@@ -292,9 +298,8 @@ class MirrorAPITypeModel extends SimpleTypeVisitor implements TypeModel {
     @Override
     public void visitTypeVariable(TypeVariable arg0) {
         if (!arg0.getDeclaration().getBounds().isEmpty()) {
-            TypeModel lb = new MirrorAPITypeModel(arg0.getDeclaration().getBounds()
-                    .iterator().next());
-            fullName = lb.getFullName();
+            TypeModel lb = new MirrorAPITypeModel(arg0.getDeclaration().getBounds().iterator().next());
+            fullName = lb.getName();
             packageName = lb.getPackageName();
             simpleName = lb.getSimpleName();
             fieldType = lb.getFieldType();
@@ -305,7 +310,7 @@ class MirrorAPITypeModel extends SimpleTypeVisitor implements TypeModel {
     public void visitWildcardType(WildcardType arg0) {
         if (!arg0.getUpperBounds().isEmpty()) {
             TypeModel lb = new MirrorAPITypeModel(arg0.getUpperBounds().iterator().next());
-            fullName = lb.getFullName();
+            fullName = lb.getName();
             packageName = lb.getPackageName();
             simpleName = lb.getSimpleName();
             fieldType = lb.getFieldType();
