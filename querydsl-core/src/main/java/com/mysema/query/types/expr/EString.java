@@ -89,7 +89,7 @@ public abstract class EString extends EComparable<String> {
         return Grammar.indexOf(this, str, i);
     }
 
-    public final EComparable<Integer> lastIndex(String str, int i) {
+    public final EComparable<Integer> lastIndexOf(String str, int i) {
         return Grammar.lastIndex(this, str, i);
     }
 
