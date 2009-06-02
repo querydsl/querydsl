@@ -9,9 +9,9 @@ import com.mysema.query.Projectable;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EEntity;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.PEntityCollection;
 
 /**
  * 
@@ -23,28 +23,36 @@ public interface HQLQuery extends Projectable{
     
     HQLQuery from(PEntity<?>... o);
 
-    HQLQuery innerJoin(EEntity<?> target, PEntity<?> alias);
+    <P> HQLQuery innerJoin(PEntity<P> target, PEntity<P> alias);
     
-    HQLQuery join(EEntity<?> target, PEntity<?> alias);
+    <P> HQLQuery innerJoin(PEntityCollection<P> target, PEntity<P> alias);
     
-    HQLQuery fullJoin(EEntity<?> target, PEntity<?> alias);
+    <P> HQLQuery join(PEntity<P> target, PEntity<P> alias);
     
-    HQLQuery leftJoin(EEntity<?> target, PEntity<?> alias);
+    <P> HQLQuery join(PEntityCollection<P> target, PEntity<P> alias);
     
-    HQLQuery on(EBoolean cond);
+    <P> HQLQuery leftJoin(PEntity<P> target, PEntity<P> alias);
+    
+    <P> HQLQuery leftJoin(PEntityCollection<P> target, PEntity<P> alias);
+    
+    <P> HQLQuery fullJoin(PEntity<P> target, PEntity<P> alias);
+    
+    <P> HQLQuery fullJoin(PEntityCollection<P> target, PEntity<P> alias);
     
     HQLQuery groupBy(Expr<?>... e);
     
     HQLQuery having(EBoolean... cond);
     
-    HQLQuery where(EBoolean... o);
-    
-    HQLQuery orderBy(OrderSpecifier<?>... o);
-        
     HQLQuery limit(long limit);
-
+    
     HQLQuery offset(long offset);
+    
+    HQLQuery on(EBoolean cond);
+        
+    HQLQuery orderBy(OrderSpecifier<?>... o);
 
     HQLQuery restrict(QueryModifiers mod);
+
+    HQLQuery where(EBoolean... o);
 
 }

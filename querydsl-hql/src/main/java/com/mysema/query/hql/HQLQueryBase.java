@@ -16,6 +16,7 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.PEntityCollection;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PathMetadata;
 
@@ -81,8 +82,12 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
         return _this;
     }
     
-
-    public SubType fullJoin(EEntity<?> target, PEntity<?> alias) {
+    public <P> SubType fullJoin(PEntity<P> target, PEntity<P> alias) {
+        super.fullJoin(createAlias(target,alias));
+        return _this;
+    }
+    
+    public <P> SubType fullJoin(PEntityCollection<P> target, PEntity<P> alias) {
         super.fullJoin(createAlias(target,alias));
         return _this;
     }
@@ -91,17 +96,32 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
         return constants;
     }
     
-    public SubType innerJoin(EEntity<?> target, PEntity<?> alias) {
+    public <P> SubType innerJoin(PEntity<P> target, PEntity<P> alias) {
         super.innerJoin(createAlias(target,alias));
         return _this;
     }
 
-    public SubType join(EEntity<?> target, PEntity<?> alias) {
+    public <P> SubType innerJoin(PEntityCollection<P> target, PEntity<P> alias) {
+        super.innerJoin(createAlias(target,alias));
+        return _this;
+    }
+    
+    public <P> SubType join(PEntity<P> target, PEntity<P> alias) {
+        super.join(createAlias(target,alias));
+        return _this;
+    }
+    
+    public <P> SubType join(PEntityCollection<P> target, PEntity<P> alias) {
         super.join(createAlias(target,alias));
         return _this;
     }
 
-    public SubType leftJoin(EEntity<?> target, PEntity<?> alias) {
+    public <P> SubType leftJoin(PEntity<P> target, PEntity<P> alias) {
+        super.leftJoin(createAlias(target,alias));
+        return _this;
+    }
+    
+    public <P> SubType leftJoin(PEntityCollection<P> target, PEntity<P> alias) {
         super.leftJoin(createAlias(target,alias));
         return _this;
     }
