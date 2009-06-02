@@ -50,7 +50,7 @@ public class ColTypesTest {
         // lastIndexOf(String)
         assertTrue((eint = str.lastIndexOf("")) != null);
         // lastIndexOf(String,int)
-        assertTrue((eint = str.lastIndex("", 0)) != null);
+        assertTrue((eint = str.lastIndexOf("", 0)) != null);
         // length
         assertTrue((eint = str.length()) != null);
         // matches

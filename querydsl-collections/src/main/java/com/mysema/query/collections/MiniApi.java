@@ -21,6 +21,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
+// TODO : rename to MiniAPI
 public class MiniApi extends GrammarWithAlias {
 
     public static <A> ColQuery from(Expr<A> path, A... arr) {
