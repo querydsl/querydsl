@@ -7,7 +7,6 @@ package com.mysema.query.codegen;
 
 import java.util.Locale;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.util.TypeUtil;
 
 
