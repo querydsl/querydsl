@@ -221,7 +221,7 @@ public class Processor {
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("pre", namePrefix);
         for (ClassModel type : types.values()) {
-            msg.printMessage(Kind.MANDATORY_WARNING, type.getName() + " is processed");
+            msg.printMessage(Kind.NOTE, type.getName() + " is processed");
             String packageName = type.getPackageName();
             model.put("package", packageName);
             model.put("type", type);
