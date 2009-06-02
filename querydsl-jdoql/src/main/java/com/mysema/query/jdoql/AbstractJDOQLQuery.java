@@ -36,7 +36,7 @@ import com.mysema.query.types.path.PEntity;
  */
 public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubType>> extends QueryBaseWithProjection<Object, SubType> implements Projectable {
 
-    private static final Logger logger = LoggerFactory.getLogger(JDOQLQueryImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AbstractJDOQLQuery.class);
 
     private List<Object> constants;
 
@@ -88,7 +88,6 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         JDOQLSerializer serializer = new JDOQLSerializer(patterns, sources.get(0));
         serializer.handle(getMetadata().getWhere());
         constants = serializer.getConstants();
-        System.err.println("SERIALIZED : " + serializer.toString());
         return serializer.toString();
     }
 
@@ -100,7 +99,6 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
 
     public long count() {
         String filterString = getFilterString();
-        logger.debug("query : {}", filterString);
         Query query = createQuery(filterString, null, true);
         query.setUnique(true);
         if (getMetadata().isDistinct()){
@@ -242,7 +240,6 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     public <RT> List<RT> list(Expr<RT> expr) {
         addToProjection(expr);
         String filterString = getFilterString();
-        logger.debug("query : {}", filterString);
         return (List<RT>) execute(createQuery(filterString, getMetadata().getModifiers(), false));
     }
 
@@ -256,7 +253,6 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         if (total > 0) {
             QueryModifiers modifiers = getMetadata().getModifiers();
             String filterString = getFilterString();
-            logger.debug("query : {}", filterString);
             Query query = createQuery(filterString, modifiers, false);
             return new SearchResults<RT>((List<RT>) execute(query), modifiers,
                     total);
@@ -276,7 +272,6 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     public <RT> RT uniqueResult(Expr<RT> expr) {
         addToProjection(expr);
         String filterString = getFilterString();
-        logger.debug("query : {}", filterString);
         Query query = createQuery(filterString, QueryModifiers.limit(1), false);
         query.setUnique(true);
         return (RT) execute(query);

@@ -7,6 +7,8 @@ package com.mysema.query.jdoql;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
+
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
 
@@ -30,6 +32,13 @@ public class QueryBasicsTest extends AbstractJDOTest {
     public void countTests() {
         // FIXME
         assertEquals("count", 2, query().from(product).count()); // returns 1, why?
+    }
+    
+    @Test
+    public void simpleTest() throws IOException{
+        JDOQLQuery query = new JDOQLQueryImpl(pm);
+        assertEquals("Sony Discman", query.from(product).where(product.name.eq("Sony Discman")).uniqueResult(product.name));
+        query.close();
     }
     
     @Test

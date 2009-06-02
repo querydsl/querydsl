@@ -84,27 +84,6 @@ public class QueryOrderingTest extends AbstractJDOTest {
 
     }
 
-    @Test
-    public void testDistinct() {
-        int size1 = query().from(product).listDistinct(product.name).size();
-        int size2 = query().from(product).list(product.name).size();
-        assertEquals(size1, size2);
-    }
-    
-    @Test
-    public void testGroupBy() {
-        int size1 = query().from(product).groupBy(product.name).list(product.name).size();
-        int size2 = query().from(product).list(product.name).size();
-        assertEquals(size1, size2);
-    }
-    
-    @Test
-    public void testGroupByHaving() {
-        int size1 = query().from(product).groupBy(product.name).list(product.name).size();
-        int size2 = query().from(product).groupBy(product.name).having(product.name.isNotNull()).list(product.name).size();
-        assertEquals(size1, size2);
-    }
-
     @BeforeClass
     public static void doPersist() {
         // Persistence of a Product and a Book.
