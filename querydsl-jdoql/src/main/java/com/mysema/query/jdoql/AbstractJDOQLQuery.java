@@ -13,9 +13,6 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.mysema.query.Projectable;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -36,7 +33,7 @@ import com.mysema.query.types.path.PEntity;
  */
 public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubType>> extends QueryBaseWithProjection<Object, SubType> implements Projectable {
 
-    private static final Logger logger = LoggerFactory.getLogger(AbstractJDOQLQuery.class);
+//    private static final Logger logger = LoggerFactory.getLogger(AbstractJDOQLQuery.class);
 
     private List<Object> constants;
 
@@ -182,8 +179,6 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
             }
         }
         
-        // TODO : distinct results
-
         // order (not for count)
         if (!getMetadata().getOrderBy().isEmpty() && !forCount) {
             List<OrderSpecifier<?>> order = getMetadata().getOrderBy();

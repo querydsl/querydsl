@@ -32,6 +32,7 @@ import com.mysema.query.types.operation.Ops;
  */
 public class StringTest {
     
+    @SuppressWarnings("unchecked")
     @Test
     public void testPatternAvailability() throws IllegalArgumentException, IllegalAccessException{
         OperationPatterns ops = new OperationPatterns(){{
