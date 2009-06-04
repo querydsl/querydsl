@@ -1,5 +1,7 @@
 package com.mysema.query;
 
+import static org.junit.Assert.*;
+
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
 
@@ -41,6 +43,14 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest{
         for (EBoolean f : TestFilters.getFiltersForString(product.name, otherProduct.name, "C5")){
             System.out.println(f);
             query().from(product, otherProduct).where(f).list(product.name, otherProduct.name);
+        }
+    }
+    
+    @Test
+    public void matchingStringFilters(){
+        for (EBoolean f : TestFilters.getMatchingFilters(product.name, otherProduct.name, "C5")){
+            System.out.println(f);
+            assertTrue(!query().from(product, otherProduct).where(f).list(product.name, otherProduct.name).isEmpty());
         }
     }
     

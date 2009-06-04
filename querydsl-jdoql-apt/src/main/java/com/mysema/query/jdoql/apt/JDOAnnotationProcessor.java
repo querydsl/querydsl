@@ -7,6 +7,7 @@ import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
+import javax.jdo.annotations.EmbeddedOnly;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
@@ -28,7 +29,7 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
         processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
         Class<? extends Annotation> entity = PersistenceCapable.class;
         Class<? extends Annotation> superType = null;
-        Class<? extends Annotation> embeddable = null;
+        Class<? extends Annotation> embeddable = EmbeddedOnly.class;
         Class<? extends Annotation> dtoAnnotation = DTO.class;
         Processor p = new Processor(processingEnv, entity, superType, embeddable, dtoAnnotation, "Q");
         p.process(roundEnv);

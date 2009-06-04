@@ -1,5 +1,7 @@
 package com.mysema.query;
 
+import static org.junit.Assert.*;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,6 +49,14 @@ public class ColQueryStandardTest {
         for (EBoolean f : TestFilters.getFiltersForString(cat.name, otherCat.name, "Bob")){
             System.out.println(f);
             MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat.name);
+        }
+    }
+    
+    @Test
+    public void matchingStringFilters(){
+        for (EBoolean f : TestFilters.getMatchingFilters(cat.name, otherCat.name, "Bob")){
+            System.out.println(f);
+            assertTrue(!MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat.name).isEmpty());
         }
     }
     
