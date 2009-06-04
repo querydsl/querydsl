@@ -117,10 +117,13 @@ public class Domain {
 
         public Cat(String name) {
             this.kittens = Arrays.asList(new Cat());
-            this.kittensByName = Collections.singletonMap("Kitty", kittens
-                    .get(0));
+            this.kittensByName = Collections.singletonMap("Kitty", kittens.get(0));
             this.name = name;
-
+        }
+        
+        public Cat(String name, int id) {
+            this(name);
+            this.id = id;
         }
 
         public int getBreed() {

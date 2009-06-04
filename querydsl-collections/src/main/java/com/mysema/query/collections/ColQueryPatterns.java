@@ -5,11 +5,9 @@
  */
 package com.mysema.query.collections;
 
-import java.lang.reflect.Field;
 import java.util.regex.Pattern;
 
 import com.mysema.query.serialization.JavaPatterns;
-import com.mysema.query.types.operation.OperatorImpl;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PathType;
 
@@ -40,17 +38,6 @@ public class ColQueryPatterns extends JavaPatterns {
         add(Ops.INSTANCEOF, "%2$s.isInstance(%1$s)");        
         add(Ops.LIKE, functions + ".like(%s,%s)");
         
-        // math
-        try {
-            for (Field f : Ops.MathOps.class.getFields()) {
-                OperatorImpl<?> op = (OperatorImpl<?>) f.get(null);
-                add(op, "Math." + getPattern(op));
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
-        add(Ops.MOD, "%s %% %s");
-
         // path types
         for (PathType type : new PathType[] { PathType.LISTVALUE_CONSTANT }) {
             add(type, "%s.get(%s.intValue())");

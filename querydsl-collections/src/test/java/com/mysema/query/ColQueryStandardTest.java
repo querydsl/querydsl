@@ -17,11 +17,11 @@ import com.mysema.query.types.expr.EString;
 public class ColQueryStandardTest {
     
     private static final List<Cat> data = Arrays.asList(
-            new Cat("Bob"),
-            new Cat("Ruth"),
-            new Cat("Felix"),
-            new Cat("Allen"),
-            new Cat("Mary")
+            new Cat("Bob", 1),
+            new Cat("Ruth", 2),
+            new Cat("Felix", 3),
+            new Cat("Allen", 4),
+            new Cat("Mary", 5)
     );
     
     private static QCat cat = new QCat("cat");
@@ -37,7 +37,7 @@ public class ColQueryStandardTest {
     }
     
     @Test
-    public void testNumericProjections(){
+    public void numericPojections(){
         for (ENumber<?> num : TestExprs.getProjectionsForNumber(cat.id, otherCat.id, 1)){
             System.out.println(num);
             MiniApi.from(cat, data).from(otherCat, data).list(num);
@@ -65,6 +65,22 @@ public class ColQueryStandardTest {
         for (EBoolean f : TestFilters.getFiltersForBoolean(cat.name.isNull(), otherCat.kittens.isEmpty())){
             System.out.println(f);
             MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat.name);
+        }
+    }
+    
+    @Test
+    public void numericFilters(){
+        for (EBoolean f : TestFilters.getFiltersForNumber(cat.id, otherCat.id, 1)){
+            System.out.println(f);
+            MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat.name);
+        }
+    }
+    
+    @Test
+    public void matchingNumericFilters(){
+        for (EBoolean f : TestFilters.getMatchingFilters(cat.id, otherCat.id, 1)){
+            System.out.println(f);
+            assertTrue(!MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat.name).isEmpty());
         }
     }
 

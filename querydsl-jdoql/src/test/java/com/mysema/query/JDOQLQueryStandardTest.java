@@ -1,6 +1,6 @@
 package com.mysema.query;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
@@ -13,6 +13,7 @@ import com.mysema.query.jdoql.AbstractJDOTest;
 import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QProduct;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
 
 public class JDOQLQueryStandardTest extends AbstractJDOTest{
@@ -30,13 +31,14 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest{
         }
     }
     
-//    @Test
-//    public void testNumericProjections(){
-//        for (ENumber<?> num : TestUtil.getNumericProjections(product.price, otherProduct.price, 1)){
-//            System.out.println(num);
-//            query().from(product).from(otherProduct).list(num);
-//        }
-//    }
+    @Test
+    @Ignore
+    public void testNumericProjections(){
+        for (ENumber<?> num : TestExprs.getProjectionsForNumber(product.price, otherProduct.price, 200.0)){
+            System.out.println(num);
+            query().from(product).from(otherProduct).list(num, product.price, otherProduct.price);
+        }
+    }
     
     @Test
     public void stringFilters(){
@@ -49,6 +51,24 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest{
     @Test
     public void matchingStringFilters(){
         for (EBoolean f : TestFilters.getMatchingFilters(product.name, otherProduct.name, "C5")){
+            System.out.println(f);
+            assertTrue(!query().from(product, otherProduct).where(f).list(product.name, otherProduct.name).isEmpty());
+        }
+    }
+    
+    @Test
+    @Ignore
+    public void numericFilters(){
+     // FIXME
+        for (EBoolean f : TestFilters.getFiltersForNumber(product.price, otherProduct.price, 200.0)){
+            System.out.println(f);
+            query().from(product, otherProduct).where(f).list(product.name, otherProduct.name);
+        }
+    }
+    
+    @Test    
+    public void matchingNumericFilters(){        
+        for (EBoolean f : TestFilters.getMatchingFilters(product.price, otherProduct.price, 200.0)){
             System.out.println(f);
             assertTrue(!query().from(product, otherProduct).where(f).list(product.name, otherProduct.name).isEmpty());
         }

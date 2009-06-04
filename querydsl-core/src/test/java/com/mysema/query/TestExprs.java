@@ -11,17 +11,17 @@ public abstract class TestExprs {
     
     // ENumber    
     
-    public static Collection<ENumber<?>> getProjectionsForNumber(ENumber<Integer> expr, ENumber<Integer> other, int knownValue){
+    public static <A extends Number & Comparable<A>> Collection<ENumber<?>> getProjectionsForNumber(ENumber<A> expr, ENumber<A> other, A knownValue){
         return Arrays.<ENumber<?>>asList(
           MathFunctions.abs(expr),
           MathFunctions.add(expr, other),
-          MathFunctions.div(expr, other),
-          MathFunctions.max(expr, other),
-          MathFunctions.min(expr, other),
+          MathFunctions.div(expr, other),          
           MathFunctions.mult(expr, other),
-          MathFunctions.random(),
+//          MathFunctions.random(),
           MathFunctions.sqrt(expr),
           MathFunctions.sub(expr, other),
+          MathFunctions.max(expr, other),
+          MathFunctions.min(expr, other),
           expr.byteValue(),
           expr.doubleValue(),
           expr.floatValue(),

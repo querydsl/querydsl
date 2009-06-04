@@ -1,5 +1,8 @@
 package com.mysema.query.serialization;
 
+import java.lang.reflect.Field;
+
+import com.mysema.query.types.operation.OperatorImpl;
 import com.mysema.query.types.operation.Ops;
 
 
@@ -55,6 +58,17 @@ public class JavaPatterns extends OperationPatterns {
         add(Ops.EQ_IGNORECASE, "%s.equalsIgnoreCase(%s)");
         add(Ops.ENDSWITH, "%s.endsWith(%s)");
         add(Ops.ENDSWITH_IC, "%s.toLowerCase().endsWith(%s.toLowerCase())");
+        
+        // Math
+        try {
+            for (Field f : Ops.MathOps.class.getFields()) {
+                OperatorImpl<?> op = (OperatorImpl<?>) f.get(null);
+                add(op, "Math." + getPattern(op));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        add(Ops.MOD, "%s %% %s");
     }
 
 }

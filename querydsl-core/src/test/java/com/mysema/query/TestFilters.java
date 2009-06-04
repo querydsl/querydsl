@@ -66,9 +66,34 @@ public abstract class TestFilters {
     
     // ENumber
     
-    public static Collection<EBoolean> getFiltersForNumber(ENumber<Integer> expr, ENumber<Integer> other, int knownValue){
-        // TODO
-        return Arrays.asList();        
+    @SuppressWarnings("unchecked")
+    public static <A extends Number & Comparable<A>> Collection<EBoolean> getFiltersForNumber(ENumber<A> expr, ENumber<A> other, A knownValue){
+        List<EBoolean> rv = new ArrayList<EBoolean>();        
+        for (ENumber<?> num : TestExprs.getProjectionsForNumber(expr, other, knownValue)){
+            rv.add(num.lt(expr));
+        }        
+        rv.addAll(Arrays.asList(
+            expr.goe(other),
+            expr.goe(knownValue),
+            expr.gt(other),
+            expr.gt(knownValue),            
+            expr.loe(other),
+            expr.loe(knownValue),
+            expr.lt(other),
+            expr.lt(knownValue)
+            
+        ));       
+        if (expr.getType().equals(Integer.class)){
+            ENumber<Integer> eint = (ENumber)expr;
+            rv.add(eint.between(1, 2));
+            rv.add(eint.notBetween(1, 2));            
+        }else if (expr.getType().equals(Double.class)){
+            ENumber<Double> edouble = (ENumber)expr;
+            rv.add(edouble.between(1.0, 2.0));
+            rv.add(edouble.notBetween(1.0, 2.0));
+        }
+        
+        return rv;
     }
     
     @SuppressWarnings("unchecked")
@@ -135,6 +160,16 @@ public abstract class TestFilters {
             expr.substring(1).eq(knownValue.substring(1)),
             expr.like(knownValue),
             other.like(knownValue)
+        );
+    }
+    
+    public static <A extends Number & Comparable<A>> Collection<EBoolean> getMatchingFilters(ENumber<A> expr, ENumber<A> other, A knownValue){
+        return Arrays.<EBoolean>asList(
+            expr.eq(knownValue),
+            expr.goe(knownValue),
+            expr.gt(knownValue.intValue()-1),
+            expr.loe(knownValue),
+            expr.lt(knownValue.intValue()+1)
         );
     }
     
