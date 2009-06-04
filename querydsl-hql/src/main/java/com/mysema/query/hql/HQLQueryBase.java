@@ -5,7 +5,6 @@
  */
 package com.mysema.query.hql;
 
-import java.util.List;
 import java.util.Map;
 
 import com.mysema.query.support.QueryBaseWithProjection;
@@ -29,7 +28,7 @@ import com.mysema.query.types.path.PathMetadata;
 public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
         extends QueryBaseWithProjection<HQLJoinMeta, SubType> {
 
-    private List<Object> constants;
+    private Map<Object,String> constants;
 
     private String countRowsString, queryString;
 
@@ -45,7 +44,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
         }
         HQLSerializer serializer = new HQLSerializer(patterns);
         serializer.serialize(getMetadata(), forCountRow);
-        constants = serializer.getConstants();
+        constants = serializer.getConstantToLabel();
         return serializer.toString();
     }
 
@@ -92,7 +91,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
         return _this;
     }
     
-    protected List<Object> getConstants() {
+    protected Map<Object,String> getConstants() {
         return constants;
     }
     

@@ -11,7 +11,7 @@ import java.util.Collections;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.mysema.query.collections.JavaPatterns;
+import com.mysema.query.collections.ColQueryPatterns;
 import com.mysema.query.collections.Domain.QCat;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
@@ -24,7 +24,7 @@ import com.mysema.query.types.expr.Expr;
  */
 public class FilteredJavaSerializerTest {
 
-    private static JavaPatterns ops = JavaPatterns.DEFAULT;
+    private static ColQueryPatterns ops = ColQueryPatterns.DEFAULT;
 
     private static QCat cat = new QCat("cat");
     private static QCat otherCat = new QCat("otherCat");
@@ -113,7 +113,7 @@ public class FilteredJavaSerializerTest {
     public void test14() {
         assertMatches1Expr("true && true", cat.name.ne(otherCat.name).and(
                 otherCat.name.like("Kate5%")));
-        assertMatches1Expr("true && cat.getName().startsWith(a1, 0)",
+        assertMatches1Expr("true && cat.getName().startsWith(a1)",
                 otherCat.name.ne(cat.name).and(cat.name.like("Kate5%")));
     }
 
@@ -125,7 +125,7 @@ public class FilteredJavaSerializerTest {
 
     @Test
     public void test16() {
-        assertMatches1Expr("cat.getName().startsWith(a1, 0) && true", cat.name
+        assertMatches1Expr("cat.getName().startsWith(a1) && true", cat.name
                 .like("Bob5%").and(otherCat.name.like("Kate5%")));
     }
 

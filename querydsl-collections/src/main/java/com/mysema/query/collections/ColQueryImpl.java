@@ -54,7 +54,7 @@ public class ColQueryImpl extends AbstractColQuery<ColQueryImpl>{
         super();
     }
 
-    public ColQueryImpl(JavaPatterns patterns) {
+    public ColQueryImpl(ColQueryPatterns patterns) {
         super(patterns);
     }
 

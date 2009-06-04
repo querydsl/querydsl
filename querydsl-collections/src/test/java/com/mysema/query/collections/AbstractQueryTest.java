@@ -8,16 +8,12 @@ package com.mysema.query.collections;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Before;
 
 import com.mysema.query.alias.GrammarWithAlias;
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.Domain.QCat;
-import com.mysema.query.collections.support.SimpleIndexSupport;
-import com.mysema.query.collections.support.SimpleIteratorSource;
-import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -58,49 +54,6 @@ public abstract class AbstractQueryTest {
         GrammarWithAlias.resetAlias();
     }
 
-    protected List<EBoolean> conditionsFor1Source = Arrays.asList(cat.name
-            .eq("Kate5"), cat.name.eq("Kate5").not(), cat.name.like("Kate5%"),
-            cat.bodyWeight.eq(0),
-
-            // and
-            cat.bodyWeight.eq(0).and(cat.name.eq("Kate5")), cat.bodyWeight
-                    .eq(0).not().and(cat.name.eq("Kate5")), cat.bodyWeight
-                    .eq(0).and(cat.name.eq("Kate5").not()),
-
-            // or
-            cat.bodyWeight.eq(0).or(cat.name.eq("Kate5")), cat.bodyWeight.eq(0)
-                    .not().or(cat.name.eq("Kate5")), cat.bodyWeight.eq(0).or(
-                    cat.name.eq("Kate5").not()));
-
-    protected List<EBoolean> conditionsFor2Sources = Arrays.asList(
-            cat.ne(otherCat),
-            cat.eq(otherCat),
-            cat.name.eq(otherCat.name),
-
-            // and
-            cat.name.eq(otherCat.name).and(otherCat.name.eq("Kate5")), cat.name
-                    .eq(otherCat.name).not().and(otherCat.name.eq("Kate5")),
-            cat.name.eq(otherCat.name).and(otherCat.name.eq("Kate5").not()),
-            cat.name.ne(otherCat.name).and(otherCat.name.eq("Kate5")),
-            cat.name.ne(otherCat.name).and(otherCat.name.like("Kate5%")),
-            cat.bodyWeight.eq(0).and(otherCat.name.eq("Kate5")),
-            cat.name.like("Bob5%").and(otherCat.name.like("Kate5%")),
-
-            // or
-            cat.name.eq(otherCat.name).or(otherCat.name.eq("Kate5")), cat.name
-                    .eq(otherCat.name).or(otherCat.name.eq("Kate5").not()),
-            cat.name.ne(otherCat.name).or(otherCat.name.eq("Kate5")), cat.name
-                    .ne(otherCat.name).or(otherCat.name.like("%ate5")),
-            cat.bodyWeight.eq(0).or(otherCat.name.eq("Kate5")), cat.bodyWeight
-                    .eq(0).or(cat.name.eq("Kate5")), cat.bodyWeight.gt(0).and(
-                    otherCat.name.eq("Bob5")).or(cat.name.eq("Kate5")),
-            cat.bodyWeight.gt(0).and(otherCat.name.eq(cat.name)).or(
-                    cat.name.eq("Kate5")), cat.bodyWeight.gt(0).or(
-                    otherCat.name.eq(cat.name)), cat.bodyWeight.eq(0).not().or(
-                    otherCat.name.eq("Kate5")), cat.bodyWeight.eq(0).or(
-                    otherCat.name.eq("Kate5").not()), cat.name.like("Bob5%")
-                    .or(otherCat.name.like("%ate5")));
-
     protected List<Cat> cats(int size) {
         List<Cat> cats = new ArrayList<Cat>(size);
         for (int i = 0; i < size / 2; i++) {
@@ -113,16 +66,6 @@ public abstract class AbstractQueryTest {
     protected TestQuery query() {
         last = new TestQuery();
         return last;
-    }
-
-    static class ColQueryWithoutIndexing extends ColQueryImpl {
-        @Override
-        protected QueryIndexSupport createIndexSupport(
-                Map<Expr<?>, Iterable<?>> exprToIt, JavaPatterns ops,
-                List<Expr<?>> sources) {
-            return new SimpleIndexSupport(new SimpleIteratorSource(exprToIt),
-                    ops, sources);
-        }
     }
 
     static class TestQuery extends ColQueryImpl {

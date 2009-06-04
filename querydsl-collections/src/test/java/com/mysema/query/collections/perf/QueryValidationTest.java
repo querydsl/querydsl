@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections;
+package com.mysema.query.collections.perf;
 
 import static org.junit.Assert.fail;
 
@@ -13,6 +13,8 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
+import com.mysema.query.collections.ColQueryImpl;
+import com.mysema.query.collections.ColQueryPatterns;
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.eval.JavaSerializer;
 import com.mysema.query.types.expr.EBoolean;
@@ -23,7 +25,7 @@ import com.mysema.query.types.expr.EBoolean;
  * @author tiwe
  * @version $Id$
  */
-public class QueryValidationTest extends AbstractQueryTest {
+public class QueryValidationTest extends AbstractPerformanceTest {
 
     @Test
     public void validateResults1Source() {
@@ -76,7 +78,7 @@ public class QueryValidationTest extends AbstractQueryTest {
             res.append((expected != count || count > max) ? " X" : "  ");
 
             res.append("   ");
-            res.append(new JavaSerializer(JavaPatterns.DEFAULT).handle(condition)
+            res.append(new JavaSerializer(ColQueryPatterns.DEFAULT).handle(condition)
                     .toString());
             res.append("\n");
         }
@@ -145,7 +147,7 @@ public class QueryValidationTest extends AbstractQueryTest {
             res.append((expected != count || count > max) ? " X" : "  ");
 
             res.append("   ");
-            res.append(new JavaSerializer(JavaPatterns.DEFAULT).handle(condition)
+            res.append(new JavaSerializer(ColQueryPatterns.DEFAULT).handle(condition)
                     .toString());
             res.append("\n");
         }

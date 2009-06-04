@@ -8,6 +8,7 @@ package com.mysema.query.hql.hibernate;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -55,10 +56,11 @@ public abstract class AbstractHQLQuery<SubType extends AbstractHQLQuery<SubType>
         return query;
     }
 
-    public static void setConstants(Query query, List<?> constants) {
-        for (int i = 0; i < constants.size(); i++) {
-            String key = "a" + (i + 1);
-            Object val = constants.get(i);
+    public static void setConstants(Query query, Map<Object,String> constants) {
+        for (Map.Entry<Object, String> entry : constants.entrySet()){
+            String key = entry.getValue();
+            Object val = entry.getKey();
+            
             if (val instanceof Collection<?>) {
                 // NOTE : parameter types should be given explicitly
                 query.setParameterList(key, (Collection<?>) val);

@@ -31,6 +31,8 @@ import com.mysema.query.types.path.PEntity;
  */
 public class SQLSerializer extends BaseSerializer<SQLSerializer> {
 
+    private final List<Object> constants = new ArrayList<Object>();
+    
     protected final SQLPatterns patterns;
 
     public SQLSerializer(SQLPatterns patterns) {
@@ -40,6 +42,10 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
 
     protected void beforeOrderBy() {
         // template method, for subclasses do override
+    }
+    
+    public List<Object> getConstants(){
+        return constants;
     }
 
     public void serialize(QueryMetadata<Object> metadata, boolean forCountRow) {

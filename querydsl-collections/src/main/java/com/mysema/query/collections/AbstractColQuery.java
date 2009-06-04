@@ -68,7 +68,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
 
     private QueryIndexSupport indexSupport;
 
-    private final JavaPatterns patterns;
+    private final ColQueryPatterns patterns;
 
     /**
      * turn OR queries into sequential UNION queries
@@ -88,17 +88,17 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
     private boolean wrapIterators = true;
 
     public AbstractColQuery() {
-        this(JavaPatterns.DEFAULT);
+        this(ColQueryPatterns.DEFAULT);
     }
 
-    public AbstractColQuery(JavaPatterns patterns) {
+    public AbstractColQuery(ColQueryPatterns patterns) {
         this.patterns = patterns;
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
     }
 
     public AbstractColQuery(QueryMetadata<Object> metadata) {
         super(metadata);
-        this.patterns = JavaPatterns.DEFAULT;
+        this.patterns = ColQueryPatterns.DEFAULT;
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
     }
 
@@ -152,7 +152,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
     }
 
     protected QueryIndexSupport createIndexSupport(
-            Map<Expr<?>, Iterable<?>> exprToIt, JavaPatterns patterns,
+            Map<Expr<?>, Iterable<?>> exprToIt, ColQueryPatterns patterns,
             List<Expr<?>> sources) {
         return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), patterns, sources);
     }

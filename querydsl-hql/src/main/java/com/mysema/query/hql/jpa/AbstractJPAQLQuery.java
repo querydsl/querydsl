@@ -7,6 +7,7 @@ package com.mysema.query.hql.jpa;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -55,10 +56,10 @@ public abstract class AbstractJPAQLQuery<SubType extends AbstractJPAQLQuery<SubT
         return query;
     }
 
-    public static void setConstants(Query query, List<Object> constants) {
-        for (int i = 0; i < constants.size(); i++) {
-            String key = "a" + (i + 1);
-            Object val = constants.get(i);
+    public static void setConstants(Query query, Map<Object,String> constants) {
+        for (Map.Entry<Object,String> entry : constants.entrySet()){
+            String key = entry.getValue();
+            Object val = entry.getKey();
             query.setParameter(key, val);
         }
     }

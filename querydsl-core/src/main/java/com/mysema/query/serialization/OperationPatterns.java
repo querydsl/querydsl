@@ -99,7 +99,7 @@ public class OperationPatterns {
         add(Ops.STARTSWITH_IC, "startsWithIgnoreCase(%s,%s)");
         add(Ops.ENDSWITH, "endsWith(%s,%s");
         add(Ops.ENDSWITH_IC, "endsWithIgnoreCase(%s,%s");
-        add(Ops.CONTAINS, "contains(%s,%s)");
+        add(Ops.STRING_CONTAINS, "contains(%s,%s)");
         add(Ops.SPLIT, "split(%s,%s)");
         add(Ops.CHAR_AT, "charAt(%s,%s)");
         add(Ops.STRING_LENGTH, "length(%s)");

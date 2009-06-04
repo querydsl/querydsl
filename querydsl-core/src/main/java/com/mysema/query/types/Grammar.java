@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import com.mysema.query.types.expr.EBoolean;
@@ -246,7 +247,7 @@ public class Grammar {
      * @return
      */
     public static EBoolean contains(Expr<String> left, Expr<String> right) {
-        return operationFactory.createBoolean(Ops.CONTAINS, left, right);
+        return operationFactory.createBoolean(Ops.STRING_CONTAINS, left, right);
     }
 
     /**
@@ -257,7 +258,7 @@ public class Grammar {
      * @return
      */
     public static EBoolean contains(Expr<String> left, String right) {
-        return operationFactory.createBoolean(Ops.CONTAINS, left, exprFactory.createConstant(right));
+        return operationFactory.createBoolean(Ops.STRING_CONTAINS, left, exprFactory.createConstant(right));
     }
 
     /**
@@ -516,7 +517,7 @@ public class Grammar {
      * @return
      */
     public static <A> EBoolean in(Expr<A> left, A... rest) {
-        return operationFactory.createBoolean(Ops.IN, left, exprFactory.createConstant(rest));
+        return operationFactory.createBoolean(Ops.IN, left, exprFactory.createConstant(Arrays.asList(rest)));
     }
 
     /**
@@ -663,7 +664,10 @@ public class Grammar {
         if (class1 == null){
             return false;
         }            
-        return class1.isPrimitive() || Number.class.isAssignableFrom(class1) || Boolean.class.equals(class1);
+        return class1.isPrimitive() 
+            || Number.class.isAssignableFrom(class1) 
+            || Boolean.class.equals(class1) 
+            || Character.class.equals(class1);
     }
 
     /**

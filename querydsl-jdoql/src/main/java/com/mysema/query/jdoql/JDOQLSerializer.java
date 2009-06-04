@@ -29,24 +29,6 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
         this.candidatePath = candidate;
     }
 
-    @Override
-    protected void visit(EConstant<?> expr) {
-        boolean wrap = expr.getConstant().getClass().isArray();
-        if (wrap) {
-            append("(");
-        }
-        append("a");
-        if (!constants.contains(expr.getConstant())) {
-            constants.add(expr.getConstant());
-            append(Integer.toString(constants.size()));
-        } else {
-            append(Integer.toString(constants.indexOf(expr.getConstant()) + 1));
-        }
-        if (wrap) {
-            append(")");
-        }
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator,

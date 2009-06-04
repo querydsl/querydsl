@@ -107,8 +107,8 @@ public interface Ops {
     Operator<Number> INDEXOF = new OperatorImpl<Number>(String.class, String.class);
     Operator<Boolean> EQ_IGNORECASE = new OperatorImpl<Boolean>(String_x_2);
     Operator<Boolean> ENDSWITH = new OperatorImpl<Boolean>(String_x_2);
-    Operator<Boolean> ENDSWITH_IC = new OperatorImpl<Boolean>(String_x_2);
-    Operator<Boolean> CONTAINS = new OperatorImpl<Boolean>(String_x_2);
+    Operator<Boolean> ENDSWITH_IC = new OperatorImpl<Boolean>(String_x_2);    
+    Operator<Boolean> STRING_CONTAINS = new OperatorImpl<Boolean>(String_x_2);
     Operator<Boolean> CONTAINS_KEY = new OperatorImpl<Boolean>(Object_x_2);
     Operator<Boolean> CONTAINS_VALUE = new OperatorImpl<Boolean>(Object_x_2);
     

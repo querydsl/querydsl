@@ -8,7 +8,7 @@ package com.mysema.query.collections.utils;
 import java.util.List;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.collections.JavaPatterns;
+import com.mysema.query.collections.ColQueryPatterns;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.eval.JaninoEvaluator;
 import com.mysema.query.types.expr.Expr;
@@ -28,7 +28,7 @@ public class EvaluatorUtils {
      * @param expr
      * @return
      */
-    public static Evaluator create(JavaPatterns patterns,
+    public static Evaluator create(ColQueryPatterns patterns,
             List<? extends Expr<?>> sources, Expr<?> expr) {
         if (sources.get(0) == expr) {
             return new Evaluator() {

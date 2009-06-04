@@ -14,7 +14,7 @@ import org.codehaus.janino.Scanner.ScanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysema.query.collections.JavaPatterns;
+import com.mysema.query.collections.ColQueryPatterns;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
@@ -40,13 +40,13 @@ public class FilteredJavaSerializer extends JavaSerializer {
 
     private boolean inNotOperation = false;
 
-    public FilteredJavaSerializer(JavaPatterns patterns, List<Expr<?>> expressions) {
+    public FilteredJavaSerializer(ColQueryPatterns patterns, List<Expr<?>> expressions) {
         super(patterns);
         this.exprs = expressions;
         this.last = expressions.get(expressions.size() - 1);
     }
 
-    public FilteredJavaSerializer(JavaPatterns patterns, List<Expr<?>> expressions,
+    public FilteredJavaSerializer(ColQueryPatterns patterns, List<Expr<?>> expressions,
             int lastElement) {
         super(patterns);
         this.exprs = expressions.subList(0, lastElement + 1);

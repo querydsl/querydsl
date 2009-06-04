@@ -7,7 +7,9 @@ package com.mysema.query.collections.eval;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.janino.CompileException;
@@ -18,7 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.collections.JavaPatterns;
+import com.mysema.query.collections.ColQueryPatterns;
 import com.mysema.query.serialization.BaseSerializer;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
@@ -38,7 +40,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer> {
     private static final Logger logger = LoggerFactory
             .getLogger(JavaSerializer.class);
 
-    public JavaSerializer(JavaPatterns patterns) {
+    public JavaSerializer(ColQueryPatterns patterns) {
         super(patterns);
     }
 
@@ -68,12 +70,21 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer> {
         Assert.notNull(targetType);
         String expr = normalize(builder.toString());
 
-        final Object[] constArray = constants.toArray();
+        final Object[] constArray = constantToLabel.keySet().toArray();        
         Class<?>[] types = new Class<?>[constArray.length + sources.size()];
         String[] names = new String[constArray.length + sources.size()];
         for (int i = 0; i < constArray.length; i++) {
-            types[i] = constArray[i].getClass();
-            names[i] = "a" + (i + 1);
+            if (constArray[i] instanceof List){
+                types[i] = List.class;
+            }else if (constArray[i] instanceof Set){
+                types[i] = Set.class;
+            }else if (constArray[i] instanceof Collection){
+                types[i] = Collection.class;
+            }else{
+                types[i] = constArray[i].getClass();    
+            }            
+//            names[i] = "a" + (i + 1);
+            names[i] = constantToLabel.get(constArray[i]);
         }
 
         int off = constArray.length;

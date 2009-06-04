@@ -11,7 +11,7 @@ import java.util.List;
 import org.codehaus.janino.ExpressionEvaluator;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.collections.JavaPatterns;
+import com.mysema.query.collections.ColQueryPatterns;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -35,7 +35,7 @@ public class JaninoEvaluator implements Evaluator {
         this.projection = projection;
     }
 
-    public JaninoEvaluator(JavaPatterns patterns, List<? extends Expr<?>> sources,
+    public JaninoEvaluator(ColQueryPatterns patterns, List<? extends Expr<?>> sources,
             Expr<?> expr) {
         try {
             Class<?> type = expr.getType() != null ? expr.getType()

@@ -62,6 +62,7 @@ public class StringTest {
         }
     }
     
+    @SuppressWarnings("unchecked")
     @Test
     public void testToString(){
         SomeType alias = alias(SomeType.class, "alias");

@@ -3,9 +3,15 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections;
+package com.mysema.query.collections.perf;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Ignore;
@@ -13,6 +19,8 @@ import org.junit.Test;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
+import com.mysema.query.collections.ColQuery;
+import com.mysema.query.collections.ColQueryImpl;
 import com.mysema.query.collections.Domain.Cat;
 import com.mysema.query.collections.support.JoinExpressionComparator;
 import com.mysema.query.types.expr.EBoolean;
@@ -24,7 +32,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class QueryPerformanceTest extends AbstractQueryTest {
+public class QueryPerformanceTest extends AbstractPerformanceTest {
 
     private long testIterations = 50;
 

@@ -7,8 +7,10 @@ package com.mysema.query.jdoql;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -33,9 +35,7 @@ import com.mysema.query.types.path.PEntity;
  */
 public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubType>> extends QueryBaseWithProjection<Object, SubType> implements Projectable {
 
-//    private static final Logger logger = LoggerFactory.getLogger(AbstractJDOQLQuery.class);
-
-    private List<Object> constants;
+    private Map<Object,String> constants = new HashMap<Object,String>();
 
     private List<Query> queries = new ArrayList<Query>(2);
     
@@ -84,7 +84,7 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         }
         JDOQLSerializer serializer = new JDOQLSerializer(patterns, sources.get(0));
         serializer.handle(getMetadata().getWhere());
-        constants = serializer.getConstants();
+        constants = serializer.getConstantToLabel();
         return serializer.toString();
     }
 
@@ -121,34 +121,22 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
                     buffer.append(", ");
                 }
                 PEntity<?> source = sources.get(i);
-                buffer.append(source.getType().getName()).append(" ").append(
-                        source.toString());
+                buffer.append(source.getType().getName()).append(" ").append(source.toString());
             }
-        }
-
-        // explicit parameters
-        if (constants != null) {
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < constants.size(); i++) {
-                if (builder.length() > 0) {
-                    builder.append(", ");
-                }
-                Object val = constants.get(i);
-                builder.append(val.getClass().getName()).append(" ").append(
-                        "a" + (i + 1));
-            }
-            query.declareParameters(builder.toString());
+            query.declareVariables(buffer.toString());
         }
         
         if (!getMetadata().getGroupBy().isEmpty()){
             List<? extends Expr<?>> groupBy = getMetadata().getGroupBy();
             JDOQLSerializer serializer = new JDOQLSerializer(patterns, sources.get(0));
-            serializer.handle(", ", groupBy);
+            serializer.setConstantPrefix("varg");
+            serializer.handle(", ", groupBy);            
             if (getMetadata().getHaving() != null){
                 EBoolean having = getMetadata().getHaving();
                 serializer.append(" having ").handle(having);
             }
             query.setGrouping(serializer.toString());
+            constants.putAll(serializer.getConstantToLabel());
         }
 
         // range (not for count)
@@ -168,12 +156,14 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         if (!getMetadata().getProjection().isEmpty() && !forCount) {
             List<? extends Expr<?>> projection = getMetadata().getProjection();
             if (projection.size() > 1 || !projection.get(0).equals(sources.get(0))) {
-                JDOQLSerializer serializer = new JDOQLSerializer(patterns, sources.get(0));      
+                JDOQLSerializer serializer = new JDOQLSerializer(patterns, sources.get(0));
+                serializer.setConstantPrefix("varp");
                 if (getMetadata().isDistinct()){
                     serializer.append("distinct ");
                 }
                 serializer.handle(", ", projection);
                 query.setResult(serializer.toString());
+                constants.putAll(serializer.getConstantToLabel());
             }else if (getMetadata().isDistinct()){
                 query.setResult("distinct this");
             }
@@ -182,6 +172,7 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         // order (not for count)
         if (!getMetadata().getOrderBy().isEmpty() && !forCount) {
             List<OrderSpecifier<?>> order = getMetadata().getOrderBy();
+            // TODO : extract constants
             JDOQLSerializer serializer = new JDOQLSerializer(patterns, sources.get(0));
             boolean first = true;
             for (OrderSpecifier<?> os : order) {
@@ -195,12 +186,26 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
             query.setOrdering(serializer.toString());
         }
 
+        // explicit parameters
+        if (!constants.isEmpty()) {
+            StringBuilder builder = new StringBuilder();
+            for (Map.Entry<Object,String> entry : constants.entrySet()){
+                if (builder.length() > 0) {
+                    builder.append(", ");
+                }
+                String key = entry.getValue();
+                Object val = entry.getKey();
+                builder.append(val.getClass().getName()).append(" ").append(key);
+            }
+            query.declareParameters(builder.toString());
+        }
+        
         return query;
     }
 
-    protected List<Object> getConstants() {
-        return constants;
-    }
+//    protected Map<Object,String> getConstants() {
+//        return constants;
+//    }
 
     public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
         // TODO : optimize
@@ -223,7 +228,7 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     private Object execute(Query query) {
         Object rv;
         if (constants != null) {
-            rv = query.executeWithArray(constants.toArray());
+            rv = query.executeWithArray(constants.keySet().toArray());
         } else {
             rv = query.execute();
         }

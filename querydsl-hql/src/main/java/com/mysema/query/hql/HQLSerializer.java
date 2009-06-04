@@ -6,6 +6,7 @@
 package com.mysema.query.hql;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.mysema.query.JoinExpression;
@@ -131,16 +132,18 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
 
     @Override
     protected void visit(EConstant<?> expr) {
-        boolean wrap = expr.getConstant().getClass().isArray();
+        boolean wrap = expr.getConstant().getClass().isArray()
+            || expr.getConstant() instanceof Collection;
         if (wrap) {
             append("(");
         }
-        append(":a");
-        if (!constants.contains(expr.getConstant())) {
-            constants.add(expr.getConstant());
-            append(Integer.toString(constants.size()));
+        append(":");
+        if (!constantToLabel.containsKey(expr.getConstant())) {
+            String constLabel = constantPrefix + (constantToLabel.size()+1);
+            constantToLabel.put(expr.getConstant(), constLabel);
+            append(constLabel);
         } else {
-            append(Integer.toString(constants.indexOf(expr.getConstant()) + 1));
+            append(constantToLabel.get(expr.getConstant()));
         }
         if (wrap) {
             append(")");

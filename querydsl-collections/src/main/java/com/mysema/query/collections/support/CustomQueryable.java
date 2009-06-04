@@ -13,7 +13,7 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.collections.ColQueryImpl;
 import com.mysema.query.collections.IteratorSource;
-import com.mysema.query.collections.JavaPatterns;
+import com.mysema.query.collections.ColQueryPatterns;
 import com.mysema.query.collections.QueryIndexSupport;
 import com.mysema.query.support.ProjectableAdapter;
 import com.mysema.query.types.OrderSpecifier;
@@ -46,7 +46,7 @@ public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends
         this.innerQuery = new ColQueryImpl(metadata) {
             @Override
             protected QueryIndexSupport createIndexSupport(
-                    Map<Expr<?>, Iterable<?>> exprToIt, JavaPatterns patterns,
+                    Map<Expr<?>, Iterable<?>> exprToIt, ColQueryPatterns patterns,
                     List<Expr<?>> sources) {
                 return new DefaultIndexSupport(iteratorSource, patterns, sources);
             }

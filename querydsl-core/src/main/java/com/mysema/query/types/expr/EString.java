@@ -15,7 +15,7 @@ import com.mysema.query.types.Grammar;
  */
 public abstract class EString extends EComparable<String> {
     private EString lower, trim, upper;
-    private EComparable<Integer> length;
+    private ENumber<Integer> length;
 
     public EString() {
         super(String.class);
@@ -77,27 +77,31 @@ public abstract class EString extends EComparable<String> {
         return Grammar.equalsIgnoreCase(this, str);
     }
 
-    public final EComparable<Integer> indexOf(Expr<String> str) {
+    public final ENumber<Integer> indexOf(Expr<String> str) {
         return Grammar.indexOf(this, str);
     }
 
-    public final EComparable<Integer> indexOf(String str) {
+    public final ENumber<Integer> indexOf(String str) {
         return Grammar.indexOf(this, str);
     }
 
-    public final EComparable<Integer> indexOf(String str, int i) {
+    public final ENumber<Integer> indexOf(String str, int i) {
         return Grammar.indexOf(this, str, i);
     }
 
-    public final EComparable<Integer> lastIndexOf(String str, int i) {
+    public final ENumber<Integer> lastIndexOf(String str, int i) {
         return Grammar.lastIndex(this, str, i);
     }
 
-    public final EComparable<Integer> lastIndexOf(String str) {
+    public final ENumber<Integer> lastIndexOf(String str) {
+        return Grammar.lastIndexOf(this, str);
+    }
+    
+    public final ENumber<Integer> lastIndexOf(Expr<String> str) {
         return Grammar.lastIndexOf(this, str);
     }
 
-    public final EComparable<Integer> length() {
+    public final ENumber<Integer> length() {
         if (length == null) {
             length = Grammar.length(this);
         }

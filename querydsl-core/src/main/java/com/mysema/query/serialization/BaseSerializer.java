@@ -5,8 +5,9 @@
  */
 package com.mysema.query.serialization;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.AbstractVisitor;
@@ -31,8 +32,10 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
 
     protected StringBuilder builder = new StringBuilder();
 
-    protected final List<Object> constants = new ArrayList<Object>();
-
+    protected Map<Object,String> constantToLabel = new HashMap<Object,String>();
+    
+    protected String constantPrefix = "a";
+    
     protected final OperationPatterns patterns;
 
     @SuppressWarnings("unchecked")
@@ -53,8 +56,8 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
         append(result);
     }
 
-    public List<Object> getConstants() {
-        return constants;
+    public Map<Object,String> getConstantToLabel() {
+        return constantToLabel;
     }
 
     public final SubType handle(String sep, List<? extends Expr<?>> expressions) {
@@ -69,6 +72,11 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
         return _this;
     }
 
+    public void setConstantPrefix(String prefix){
+        this.constantPrefix = prefix;
+    }
+    
+    
     public String toString() {
         return builder.toString();
     }
@@ -102,13 +110,13 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
     }
 
     @Override
-    protected void visit(EConstant<?> expr) {
-        append("a");
-        if (!constants.contains(expr.getConstant())) {
-            constants.add(expr.getConstant());
-            append(Integer.toString(constants.size()));
+    protected void visit(EConstant<?> expr) {        
+        if (!constantToLabel.containsKey(expr.getConstant())) {
+            String constLabel = constantPrefix + (constantToLabel.size() + 1);
+            constantToLabel.put(expr.getConstant(), constLabel);
+            append(constLabel);
         } else {
-            append(Integer.toString(constants.indexOf(expr.getConstant()) + 1));
+            append(constantToLabel.get(expr.getConstant()));
         }
     }
 
@@ -130,7 +138,8 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
             parentAsString = toString((Expr<?>) path.getMetadata().getParent(),
                     false);
         }
-        if (pathType == PathType.PROPERTY || pathType == PathType.VARIABLE
+        if (pathType == PathType.PROPERTY 
+                || pathType == PathType.VARIABLE
                 || pathType == PathType.LISTVALUE_CONSTANT
                 || pathType == PathType.ARRAYVALUE_CONSTANT) {
             exprAsString = path.getMetadata().getExpression().toString();

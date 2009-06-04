@@ -8,10 +8,9 @@ package com.mysema.query.collections;
 import java.lang.reflect.Field;
 import java.util.regex.Pattern;
 
-import com.mysema.query.serialization.OperationPatterns;
+import com.mysema.query.serialization.JavaPatterns;
 import com.mysema.query.types.operation.OperatorImpl;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.types.path.PathType;
 
 /**
@@ -21,13 +20,12 @@ import com.mysema.query.types.path.PathType;
  * @author tiwe
  * @version $Id$
  */
-public class JavaPatterns extends OperationPatterns {
+public class ColQueryPatterns extends JavaPatterns {
 
-    public static final JavaPatterns DEFAULT = new JavaPatterns();
+    public static final ColQueryPatterns DEFAULT = new ColQueryPatterns();
 
-    protected JavaPatterns() {
-        String functions = JavaPatterns.class.getName();
-
+    protected ColQueryPatterns() {
+        String functions = ColQueryPatterns.class.getName();
         add(Ops.AFTER, "%s.compareTo(%s) > 0");
         add(Ops.BEFORE, "%s.compareTo(%s) < 0");
         add(Ops.AOE, "%s.compareTo(%s) >= 0");
@@ -36,53 +34,11 @@ public class JavaPatterns extends OperationPatterns {
         add(Ops.BETWEEN, functions + ".between(%s,%s,%s)");
         add(Ops.NOTBETWEEN, "!" + functions + ".between(%s,%s,%s)");
 
-        add(Ops.EQ_PRIMITIVE, "%s == %s");
         add(Ops.EQ_OBJECT, "%s.equals(%s)");
         add(Ops.NE_OBJECT, "!%s.equals(%s)");
 
-        add(Ops.ISNULL, "%s == null");
-        add(Ops.ISNOTNULL, "%s != null");
-
         add(Ops.INSTANCEOF, "%2$s.isInstance(%1$s)");        
         add(Ops.LIKE, functions + ".like(%s,%s)");
-        
-        // collection
-        add(Ops.COL_ISEMPTY, "%s.isEmpty()");
-        add(Ops.COL_ISNOTEMPTY, "!%s.isEmpty()");
-        add(Ops.COL_SIZE, "%s.size()");
-        add(Ops.IN, "%2$s.contains(%1$s)");
-        add(Ops.NOTIN, "!%2$s.contains(%1$s)");
-
-        // array
-        add(Ops.ARRAY_SIZE, "%s.length");
-        
-        // map
-        add(Ops.MAP_ISEMPTY, "%s.isEmpty()");
-        add(Ops.MAP_ISNOTEMPTY, "!%s.isEmpty()");
-        add(Ops.CONTAINS_KEY, "%s.containsKey(%s)");
-        add(Ops.CONTAINS_VALUE, "%s.containsValue(%s)");
-
-        // java.lang.String
-        add(Ops.CHAR_AT, "%s.charAt(%s)");
-        add(Ops.LOWER, "%s.toLowerCase()");
-        add(Ops.SPLIT, "%s.split(%s)");
-        add(Ops.SUBSTR1ARG, "%s.substring(%s)");
-        add(Ops.SUBSTR2ARGS, "%s.substring(%s,%s)");
-        add(Ops.TRIM, "%s.trim()");
-        add(Ops.UPPER, "%s.toUpperCase()");
-        add(Ops.MATCHES, "%s.matches(%s)");
-        add(Ops.STRING_LENGTH, "%s.length(%s)");
-        add(Ops.LAST_INDEX_2ARGS, "%s.lastIndex(%s)");
-        add(Ops.LAST_INDEX, "%s.lastIndex(%s,%s)");
-        add(Ops.STRING_ISEMPTY, "%s.isEmpty()");
-        add(Ops.STARTSWITH, "%s.startsWith(%s, 0)");
-        add(Ops.STARTSWITH_IC, "%s.toLowerCase().startsWith(%s.toLowerCase(), 0)");
-        add(Ops.INDEXOF_2ARGS, "%s.indexOf(%s,%s)");
-        add(Ops.INDEXOF, "%s.indexOf(%s)");
-        add(Ops.EQ_IGNORECASE, "%s.equalsIgnoreCase(%s)");
-        add(Ops.ENDSWITH, "%s.endsWith(%s)");
-        add(Ops.ENDSWITH_IC, "%s.toLowerCase().endsWith(%s.toLowerCase())");
-        add(Ops.CONTAINS, "%s.contains(%s)");
         
         // math
         try {
@@ -108,6 +64,10 @@ public class JavaPatterns extends OperationPatterns {
         }
         add(PathType.ARRAYVALUE, "%s[%s]");
         add(PathType.ARRAYVALUE_CONSTANT, "%s[%s.intValue()]");
+        
+        // TEMPORARY FIXES
+        
+        add(Ops.DIV, "((double)%s) / ((double)%s)");
     }
 
     public static <A extends Comparable<? super A>> boolean between(A a, A b, A c) {
