@@ -75,14 +75,14 @@ public class AliasTest extends AbstractQueryTest {
     public void testAliasVariations2() {
         // 1st
         QCat cat = new QCat("cat");
-        for (String name : from(cat, cats).where(cat.name.like("fri%")).list(
+        for (String name : from(cat, cats).where(cat.name.matches("fri.*")).list(
                 cat.name)) {
             System.out.println(name);
         }
 
         // 2nd
         Cat c = alias(Cat.class, "cat");
-        for (String name : from(c, cats).where($(c.getName()).like("fri%"))
+        for (String name : from(c, cats).where($(c.getName()).matches("fri.*"))
                 .list(c.getName())) {
             System.out.println(name);
         }

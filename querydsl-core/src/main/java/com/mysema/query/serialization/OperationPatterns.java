@@ -13,7 +13,7 @@ import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PathType;
 
 /**
- * OperationPatterns provides operator patterns for SQL/HQL serialization
+ * OperationPatterns provides operator patterns for query expression serialization
  * 
  * @author tiwe
  * @version $Id$
@@ -21,27 +21,28 @@ import com.mysema.query.types.path.PathType;
 // TODO : replace String.format based expressions with custom expressions
 public class OperationPatterns {
 
-    private final Map<Operator<?>, String> patterns = new HashMap<Operator<?>, String>();
+    final Map<Operator<?>, String> patterns = new HashMap<Operator<?>, String>();
 
-    private final Map<Operator<?>, Integer> precedence = new HashMap<Operator<?>, Integer>();
+    final Map<Operator<?>, Integer> precedence = new HashMap<Operator<?>, Integer>();
 
     public OperationPatterns() {
         // boolean
         add(Ops.AND, "%s && %s", 36);
         add(Ops.NOT, "!%s", 3);
         add(Ops.OR, "%s || %s", 38);
-        add(Ops.XNOR, "%s xnor %s", 39);
-        add(Ops.XOR, "%s xor %s", 39);
+        add(Ops.BooleanOps.XNOR, "%s xnor %s", 39);
+        add(Ops.BooleanOps.XOR, "%s xor %s", 39);
 
         // collection
         add(Ops.COL_ISEMPTY, "empty(%s)");
         add(Ops.COL_ISNOTEMPTY, "not empty(%s)");
-        add(Ops.COL_SIZE, "%s.size");
+        add(Ops.COL_SIZE, "size(%s)");
         
         // array
         add(Ops.ARRAY_SIZE, "empty(%s)");
         
         // map
+        add(Ops.MAP_SIZE, "size(%s)");
         add(Ops.MAP_ISEMPTY, "empty(%s)");
         add(Ops.MAP_ISNOTEMPTY, "not empty(%s)");
         add(Ops.CONTAINS_KEY, "containsKey(%s,%s)");
@@ -84,31 +85,35 @@ public class OperationPatterns {
         add(Ops.EXISTS, "exists(%s)");
 
         add(Ops.NUMCAST, "cast(%s,%s)");
-        add(Ops.STRING_CAST, "cast(%s,%s)");
+        add(Ops.STRING_CAST, "toString(%s)");
 
         // string
         add(Ops.CONCAT, "%s + %s", 37);
-        add(Ops.LIKE, "%s like %s", 27);
+//        add(Ops.LIKE, "%s like %s", 27);
         add(Ops.LOWER, "lower(%s)");
         add(Ops.SUBSTR1ARG, "substring(%s,%s)");
         add(Ops.SUBSTR2ARGS, "substring(%s,%s,%s)");
         add(Ops.TRIM, "trim(%s)");
         add(Ops.UPPER, "upper(%s)");
-        add(Ops.MATCHES, "like(%s,%s)");
+        add(Ops.MATCHES, "matches(%s,%s)");
         add(Ops.STARTSWITH, "startsWith(%s,%s)");
         add(Ops.STARTSWITH_IC, "startsWithIgnoreCase(%s,%s)");
         add(Ops.ENDSWITH, "endsWith(%s,%s");
         add(Ops.ENDSWITH_IC, "endsWithIgnoreCase(%s,%s");
         add(Ops.STRING_CONTAINS, "contains(%s,%s)");
-        add(Ops.SPLIT, "split(%s,%s)");
         add(Ops.CHAR_AT, "charAt(%s,%s)");
         add(Ops.STRING_LENGTH, "length(%s)");
         add(Ops.INDEXOF, "indexOf(%s,%s)");
         add(Ops.INDEXOF_2ARGS, "indexOf(%s,%s,%s)");
-        add(Ops.LAST_INDEX, "lastIndexOf(%s,%s)");
-        add(Ops.LAST_INDEX_2ARGS, "lastIndexOf(%s,%s,%s)");
         add(Ops.STRING_ISEMPTY, "empty(%s)");
-
+        add(Ops.STRING_ISNOTEMPTY, "not empty(%s)");
+        add(Ops.StringOps.LTRIM, "ltrim(%s)");
+        add(Ops.StringOps.RTRIM, "rtrim(%s)");
+        add(Ops.StringOps.SPACE, "space(%s)");
+        add(Ops.StringOps.LAST_INDEX, "lastIndexOf(%s,%s)");
+        add(Ops.StringOps.LAST_INDEX_2ARGS, "lastIndexOf(%s,%s,%s)");
+        add(Ops.StringOps.SPLIT, "split(%s,%s)");
+                
         // date time
         add(Ops.DateTimeOps.SYSDATE, "sysdate");
         add(Ops.DateTimeOps.CURRENT_DATE, "current_date()");
@@ -145,11 +150,6 @@ public class OperationPatterns {
         add(Ops.MathOps.LOG, "log(%s)");
         add(Ops.MathOps.FLOOR, "floor(%s)");
         add(Ops.MathOps.EXP, "exp(%s)");
-
-        // string
-        add(Ops.StringOps.LTRIM, "ltrim(%s)");
-        add(Ops.StringOps.RTRIM, "rtrim(%s)");
-        add(Ops.StringOps.SPACE, "space(%s)");
         
         // path types
         for (PathType type : new PathType[] { PathType.LISTVALUE,

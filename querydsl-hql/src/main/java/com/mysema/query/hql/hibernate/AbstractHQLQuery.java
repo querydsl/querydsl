@@ -45,7 +45,7 @@ public abstract class AbstractHQLQuery<SubType extends AbstractHQLQuery<SubType>
     private Query createQuery(String queryString, QueryModifiers modifiers) {
         Query query = session.createQuery(queryString);
         setConstants(query, getConstants());
-        if (modifiers.isRestricting()) {
+        if (modifiers != null && modifiers.isRestricting()) {
             if (modifiers.getLimit() != null) {
                 query.setMaxResults(modifiers.getLimit().intValue());
             }

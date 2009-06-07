@@ -14,6 +14,7 @@ import com.mysema.query.Projectable;
 import com.mysema.query.QueryBase;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.SearchResults;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -90,6 +91,11 @@ public abstract class QueryBaseWithProjection<JoinMeta, SubType extends QueryBas
         return list(projection);
     }
 
+    public final <RT> SearchResults<RT> listDistinctResults(Expr<RT> projection){
+        getMetadata().setDistinct(true);
+        return listResults(projection);
+    }
+    
     public Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         getMetadata().getModifiers().setLimit(1l);
         Iterator<Object[]> it = iterate(first, second, rest);

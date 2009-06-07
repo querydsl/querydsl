@@ -16,6 +16,8 @@ import org.junit.internal.runners.InitializationError;
 import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.notification.RunNotifier;
 
+import com.mysema.query.hql.domain.Domain;
+
 /**
  * HibernateTestRunner provides.
  * 
@@ -46,25 +48,21 @@ public class HibernateTestRunner extends JUnit4ClassRunner {
         } finally {
             session.getTransaction().rollback();
         }
+        session.close();
     }
 
     public void run(final RunNotifier notifier) {
         try {
             AnnotationConfiguration cfg = new AnnotationConfiguration();
-
-            // TODO : make this configurable
-            for (Class<?> cl : Domain.class.getDeclaredClasses()) {
+            for (Class<?> cl : Domain.classes){
                 cfg.addAnnotatedClass(cl);
-            }
-
+            }            
             Hibernate config = getTestClass().getJavaClass().getAnnotation(Hibernate.class);
-            cfg.setNamingStrategy(config.namingStrategy().newInstance());
             Properties props = new Properties();
-            InputStream is = IntegrationTest.class.getResourceAsStream(config
-                    .properties());
-            if (is == null)
-                throw new IllegalArgumentException(
-                        "No configuration available at classpath:" + config.properties());
+            InputStream is = HibernateTestRunner.class.getResourceAsStream(config.properties());
+            if (is == null){
+                throw new IllegalArgumentException("No configuration available at classpath:" + config.properties());
+            }                
             props.load(is);
             cfg.setProperties(props);
             sessionFactory = cfg.buildSessionFactory();
@@ -73,8 +71,9 @@ public class HibernateTestRunner extends JUnit4ClassRunner {
             String error = "Caught " + e.getClass().getName();
             throw new RuntimeException(error, e);
         } finally {
-            if (sessionFactory != null)
+            if (sessionFactory != null){
                 sessionFactory.close();
+            }                
         }
 
     }

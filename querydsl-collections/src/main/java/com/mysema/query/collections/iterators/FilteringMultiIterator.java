@@ -6,6 +6,7 @@
 package com.mysema.query.collections.iterators;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -19,8 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.collections.ColQueryPatterns;
+import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.eval.FilteredJavaSerializer;
 import com.mysema.query.collections.eval.JaninoEvaluator;
@@ -60,25 +61,31 @@ public class FilteringMultiIterator extends MultiIterator implements
     private Evaluator createEvaluator(List<Expr<?>> sources,
             final int lastElement) throws CompileException, ParseException,
             ScanException {
-        JavaSerializer serializer = new FilteredJavaSerializer(patterns, sources,
-                lastElement) {
+        JavaSerializer serializer = new FilteredJavaSerializer(patterns,
+                sources, lastElement) {
             @Override
             protected ExpressionEvaluator instantiateExpressionEvaluator(
                     Class<?> targetType, String expr,
                     final Object[] constArray, Class<?>[] types, String[] names)
                     throws CompileException, ParseException, ScanException {
-
-                return new ExpressionEvaluator(expr, targetType, names, types) {
-                    @Override
-                    public Object evaluate(Object[] origArgs)
-                            throws InvocationTargetException {
-                        Object[] args = JavaSerializer.combine(
-                                constArray.length + values.length, constArray,
-                                values);
-                        args[constArray.length + lastElement] = origArgs[0];
-                        return super.evaluate(args);
-                    }
-                };
+                try {
+                    return new ExpressionEvaluator(expr, targetType, names,
+                            types) {
+                        @Override
+                        public Object evaluate(Object[] origArgs)
+                                throws InvocationTargetException {
+                            Object[] args = JavaSerializer.combine(
+                                    constArray.length + values.length,
+                                    constArray, values);
+                            args[constArray.length + lastElement] = origArgs[0];
+                            return super.evaluate(args);
+                        }
+                    };
+                } catch (CompileException e) {
+                    throw new IllegalArgumentException(
+                            "Caught exception when trying to compile " + expr
+                                    + " with types " + Arrays.asList(types));
+                }
 
             }
 

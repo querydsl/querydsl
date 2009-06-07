@@ -7,6 +7,8 @@ package com.mysema.query.jdoql;
 
 import java.util.List;
 
+import org.apache.commons.lang.ClassUtils;
+
 import com.mysema.query.serialization.BaseSerializer;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
@@ -33,13 +35,18 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator,
             List<Expr<?>> args) {
+        // TODO : these should be handled as serialization patterns
         if (operator.equals(Ops.INSTANCEOF)) {
             handle(args.get(0)).append(" instanceof ");
             append(((EConstant<Class<?>>) args.get(1)).getConstant().getName());
         } else if (operator.equals(Ops.STRING_CAST)) {
-            // TODO
+            append("(String)").handle(args.get(0));
         } else if (operator.equals(Ops.NUMCAST)) {
-            // TODO
+            Class<?> clazz = ((EConstant<Class<?>>)args.get(1)).getConstant();
+            if (Number.class.isAssignableFrom(clazz) && ClassUtils.wrapperToPrimitive(clazz) != null){
+                clazz = ClassUtils.wrapperToPrimitive(clazz);
+            }
+            append("(",clazz.getSimpleName(),")").handle(args.get(0));
         } else {
             super.visitOperation(type, operator, args);
         }

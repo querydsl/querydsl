@@ -43,8 +43,8 @@ public class HQLPatterns extends OperationPatterns {
         add(Ops.AND, "%s and %s", 36);
         add(Ops.NOT, "not %s", 3);
         add(Ops.OR, "%s or %s", 38);
-        add(Ops.XNOR, "%s xnor %s", 39);
-        add(Ops.XOR, "%s xor %s", 39);
+        add(Ops.BooleanOps.XNOR, "%s xnor %s", 39);
+        add(Ops.BooleanOps.XOR, "%s xor %s", 39);
 
         // comparison
         add(Ops.BETWEEN, "%s between %s and %s", 30);
@@ -66,12 +66,23 @@ public class HQLPatterns extends OperationPatterns {
         
         // string
         add(Ops.CONCAT, "%s || %s", 37);
-        add(Ops.LIKE, "%s like %s", 27);
+        add(Ops.MATCHES, "%s like %s", 27); // FIXME limited regex functionality
         add(Ops.LOWER, "lower(%s)");
         add(Ops.SUBSTR1ARG, "substring(%s,%s)");
         add(Ops.SUBSTR2ARGS, "substring(%s,%s,%s)");
         add(Ops.TRIM, "trim(%s)");
         add(Ops.UPPER, "upper(%s)");
+        add(Ops.EQ_IGNORECASE, "lower(%s) = lower(%s)");
+        add(Ops.CHAR_AT, "cast(substring(%s,%s+1,1) as char)");
+        add(Ops.STRING_CONTAINS, "locate(%s,%s) > -1");
+        add(Ops.ENDSWITH, "locate(%s,%s) > -1"); // FIXME
+        add(Ops.ENDSWITH_IC, "locate(lower(%s),lower(%s)) > -1"); // FIXME
+        add(Ops.STARTSWITH, "locate(%s,%s) = 0");
+        add(Ops.STARTSWITH_IC, "locate(lower(%s),lower(%s)) = 0");
+        add(Ops.INDEXOF, "locate(%s,%s)");
+        add(Ops.INDEXOF_2ARGS, "locate(%s,%s,%s)");
+        add(Ops.STRING_ISEMPTY, "length(%s) = 0");
+        add(Ops.STRING_ISNOTEMPTY, "length(%s) > 0");
 
         // date time
         add(Ops.DateTimeOps.SYSDATE, "sysdate");

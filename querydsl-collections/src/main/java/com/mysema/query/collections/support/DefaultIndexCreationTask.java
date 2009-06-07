@@ -113,9 +113,6 @@ public class DefaultIndexCreationTask {
                 }
             }
 
-        } else if (op.getOperator() == Ops.LIKE) {
-            // TODO
-
         } else if (op.getOperator() == Ops.NOT) {
             // skip negative condition paths
 

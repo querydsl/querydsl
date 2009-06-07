@@ -18,17 +18,15 @@ import com.mysema.query.types.expr.Expr;
  * 
  * @param <D> component type
  */
-public class PEntityCollection<D> extends EEntity<java.util.Collection<D>>
-        implements PCollection<D> {
-    private EBoolean isnull, isnotnull;
+public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> implements PCollection<D> {
     private final PathMetadata<?> metadata;
-    private ENumber<Integer> size;
     protected final Class<D> type;
     protected final String entityName;
+    
+    private EBoolean isnull, isnotnull;    
+    private ENumber<Integer> size;    
     private final Path<?> root;
-
     private EBoolean empty;
-
     private EBoolean notEmpty;
 
     public PEntityCollection(Class<D> type, String entityName,

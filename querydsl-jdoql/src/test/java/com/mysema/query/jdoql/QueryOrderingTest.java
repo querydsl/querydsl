@@ -92,9 +92,9 @@ public class QueryOrderingTest extends AbstractJDOTest {
         try {
             tx.begin();
             for (int i = 0; i < 10; i++) {
-                pm.makePersistent(new Product("C" + i, "F" + i, i * 200.00));
-                pm.makePersistent(new Product("B" + i, "E" + i, i * 200.00));
-                pm.makePersistent(new Product("A" + i, "D" + i, i * 200.00));
+                pm.makePersistent(new Product("C" + i, "F" + i, i * 200.00, 2));
+                pm.makePersistent(new Product("B" + i, "E" + i, i * 200.00, 4));
+                pm.makePersistent(new Product("A" + i, "D" + i, i * 200.00, 6));
             }
             tx.commit();
         } finally {

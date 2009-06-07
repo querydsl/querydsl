@@ -22,12 +22,12 @@ import com.mysema.query.hql.hibernate.HQLQueryImpl;
  * @version $Id$
  */
 @RunWith(HibernateTestRunner.class)
-@Hibernate(namingStrategy = CustomNamingStrategy.class, properties = "default.properties")
+@Hibernate(properties = "hsqldb.properties")
 public class IntegrationTest extends ParserTest {
 
     private Session session;
 
-    protected TestQuery q() {
+    protected TestQuery query() {
         return new TestQuery() {
             public void parse() throws RecognitionException,
                     TokenStreamException {

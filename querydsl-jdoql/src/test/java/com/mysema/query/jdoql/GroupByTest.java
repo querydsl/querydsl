@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.jdoql;
 
 import static org.junit.Assert.assertEquals;
@@ -35,9 +40,9 @@ public class GroupByTest extends AbstractJDOTest {
         try {
             tx.begin();
             for (int i = 0; i < 10; i++) {
-                pm.makePersistent(new Product("C" + i, "F", 200.00));
-                pm.makePersistent(new Product("B" + i, "E", 400.00));
-                pm.makePersistent(new Product("A" + i, "D", 600.00));
+                pm.makePersistent(new Product("C" + i, "F", 200.00, 2));
+                pm.makePersistent(new Product("B" + i, "E", 400.00, 4));
+                pm.makePersistent(new Product("A" + i, "D", 600.00, 6));
             }
             tx.commit();
         } finally {

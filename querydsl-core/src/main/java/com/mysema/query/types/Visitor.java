@@ -143,6 +143,8 @@ public abstract class Visitor<T extends Visitor<T>> {
 
     protected abstract void visit(PBooleanArray expr);
 
+    protected abstract void visit(PCollection<?> expr);
+
     protected abstract void visit(PComparable<?> expr);
 
     protected abstract void visit(PComparableArray<?> expr);
@@ -161,6 +163,8 @@ public abstract class Visitor<T extends Visitor<T>> {
 
     protected abstract void visit(PEntityMap<?, ?> expr);
 
+    protected abstract void visit(PList<?> expr);
+
     protected abstract void visit(PMap<?, ?> expr);
 
     protected abstract void visit(PNumber<?> expr);
@@ -170,8 +174,4 @@ public abstract class Visitor<T extends Visitor<T>> {
     protected abstract void visit(PString expr);
 
     protected abstract void visit(PStringArray expr);
-
-    protected abstract void visit(PCollection<?> expr);
-
-    protected abstract void visit(PList<?> expr);
 }

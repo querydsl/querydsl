@@ -19,10 +19,10 @@ import com.mysema.query.types.expr.Expr;
  */
 public class JoinExpression<T> {
     private EBoolean condition;
+    private T metadata;
     private final Expr<?> target;
     private final JoinType type;
-    private final T metadata;
-
+    
     public JoinExpression(Expr<?> target) {
         this(JoinType.DEFAULT, target, null);
     }
@@ -55,6 +55,10 @@ public class JoinExpression<T> {
 
     public T getMetadata() {
         return metadata;
+    }
+    
+    public void setMetadata(T metadata){
+        this.metadata = metadata;
     }
 
     public String toString() {

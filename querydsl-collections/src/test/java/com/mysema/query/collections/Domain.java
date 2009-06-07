@@ -188,7 +188,7 @@ public class Domain {
         public final PEntityList<Cat> kittens = _entitylist("kittens",
                 Cat.class, "Cat");
         public final PEntityMap<String, Cat> kittensByName = _entitymap(
-                "kittens", String.class, Cat.class, "Cat");
+                "kittensByName", String.class, Cat.class, "Cat");
         public QCat mate;
         public final PString name = _string("name");
 

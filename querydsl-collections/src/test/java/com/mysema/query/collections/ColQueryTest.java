@@ -93,7 +93,7 @@ public class ColQueryTest extends AbstractQueryTest {
         assertTrue(last.res.size() == 1);
 
         // select cats named Kitt%
-        query().from(cat, cats).where(cat.name.like("Kitt%")).list(cat.name);
+        query().from(cat, cats).where(cat.name.matches("Kitt.*")).list(cat.name);
         assertTrue(last.res.size() == 1);
 
         query().from(cat, cats).list(
@@ -115,7 +115,7 @@ public class ColQueryTest extends AbstractQueryTest {
 
         query().from(cat, cats).where(cat.kittens.isNotEmpty()).list(cat);
 
-        query().from(cat, cats).where(cat.name.like("fri%")).list($(cat.name));
+        query().from(cat, cats).where(cat.name.matches("fri.*")).list($(cat.name));
 
     }
 

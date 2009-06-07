@@ -119,6 +119,15 @@ public interface Projectable {
      * @return
      */
     <RT> SearchResults<RT> listResults(Expr<RT> projection);
+    
+    /**
+     * list the distinct results for the given projection
+     * 
+     * @param <RT>
+     * @param projection
+     * @return
+     */
+    <RT> SearchResults<RT> listDistinctResults(Expr<RT> projection);
 
     /**
      * return a unique result for the given projection

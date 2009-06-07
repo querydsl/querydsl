@@ -7,6 +7,7 @@ package com.mysema.query.types.path;
 
 import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -17,16 +18,15 @@ import com.mysema.query.types.expr.Expr;
  * @param <K> key type
  * @param <V> value type
  */
-public class PComponentMap<K, V> extends Expr<java.util.Map<K, V>> implements
-        PMap<K, V> {
-    private EBoolean isnull, isnotnull;
+public class PComponentMap<K, V> extends Expr<java.util.Map<K, V>> implements PMap<K, V> {    
     private final Class<K> keyType;
     private final PathMetadata<?> metadata;
     private final Class<V> valueType;
     private final Path<?> root;
-
+    
+    private EBoolean isnull, isnotnull;
+    private ENumber<Integer> size;    
     private EBoolean empty;
-
     private EBoolean notEmpty;
 
     public PComponentMap(Class<K> keyType, Class<V> valueType,
@@ -133,5 +133,13 @@ public class PComponentMap<K, V> extends Expr<java.util.Map<K, V>> implements
             isnull = Grammar.isNull(this);
         }
         return isnull;
+    }
+    
+    @Override
+    public ENumber<Integer> size() {
+        if (size == null) {
+            size = Grammar.size(this);
+        }
+        return size;
     }
 }

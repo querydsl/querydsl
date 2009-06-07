@@ -132,9 +132,9 @@ public class QueryBasicsTest extends AbstractJDOTest {
         try {
             tx.begin();
             pm.makePersistent(new Product("Sony Discman",
-                    "A standard discman from Sony", 200.00));
+                    "A standard discman from Sony", 200.00, 3));
             pm.makePersistent(new Book("Lord of the Rings by Tolkien",
-                    "The classic story", 49.99, "JRR Tolkien", "12345678",
+                    "The classic story", 49.99, 5, "JRR Tolkien", "12345678",
                     "MyBooks Factory"));
             tx.commit();
         } finally {

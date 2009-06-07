@@ -5,8 +5,10 @@
  */
 package com.mysema.query.hql;
 
+import java.util.List;
 import java.util.Map;
 
+import com.mysema.query.JoinExpression;
 import com.mysema.query.support.QueryBaseWithProjection;
 import com.mysema.query.types.CascadingBoolean;
 import com.mysema.query.types.expr.EBoolean;
@@ -78,6 +80,12 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
 
     public SubType from(PEntity<?>... o) {
         super.from(o);
+        return _this;
+    }
+    
+    public SubType fetch(){
+        List<JoinExpression<HQLJoinMeta>> joins = getMetadata().getJoins();
+        joins.get(joins.size()-1).setMetadata(HQLJoinMeta.FETCH);
         return _this;
     }
     

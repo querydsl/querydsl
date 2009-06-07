@@ -95,12 +95,10 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer> {
         }
 
         if (logger.isInfoEnabled()) {
-            logger.info(expr + " " + Arrays.asList(names) + " "
-                    + Arrays.asList(types));
+            logger.info(expr + " " + Arrays.asList(names) + " " + Arrays.asList(types));
         }
 
-        return instantiateExpressionEvaluator(targetType, expr, constArray,
-                types, names);
+        return instantiateExpressionEvaluator(targetType, expr, constArray, types, names);
     }
 
     protected String normalize(String expr) {
@@ -152,8 +150,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer> {
                 prefix = "is";
             }
             exprAsString = prefix
-                    + StringUtils.capitalize(path.getMetadata().getExpression()
-                            .toString()) + "()";
+                    + StringUtils.capitalize(path.getMetadata().getExpression().toString()) + "()";
 
         } else if (pathType == PathType.LISTVALUE_CONSTANT) {
             exprAsString = path.getMetadata().getExpression().toString();
@@ -203,29 +200,10 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer> {
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator,
             List<Expr<?>> args) {
-        if (operator.equals(Ops.LIKE)) {
-            // optimize like matches to startsWith and endsWith, when possible
-            String right = args.get(1).toString();
-            if (!right.contains("_")) {
-                int lastIndex = right.lastIndexOf('%');
-                if (lastIndex == right.length() - 1) {
-                    operator = Ops.STARTSWITH;
-                    args = Arrays
-                            .<Expr<?>> asList(args.get(0),
-                                    new EConstant<String>(right.substring(0,
-                                            lastIndex)));
-                } else if (lastIndex == 0) {
-                    operator = Ops.ENDSWITH;
-                    args = Arrays.<Expr<?>> asList(args.get(0),
-                            new EConstant<String>(right.substring(1)));
-                }
-            }
-            super.visitOperation(type, operator, args);
-        } else if (operator.equals(Ops.STRING_CAST)) {
+        if (operator.equals(Ops.STRING_CAST)) {
             visitCast(operator, args.get(0), String.class);
         } else if (operator.equals(Ops.NUMCAST)) {
-            visitCast(operator, args.get(0), (Class<?>) ((EConstant<?>) args
-                    .get(1)).getConstant());
+            visitCast(operator, args.get(0), (Class<?>) ((EConstant<?>) args.get(1)).getConstant());
         } else {
             super.visitOperation(type, operator, args);
         }

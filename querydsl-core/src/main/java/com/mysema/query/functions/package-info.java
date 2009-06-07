@@ -5,7 +5,7 @@
  */
 
 /**
- * Contains basic Querydsl grammar elements
+ * Optional function libraries
  */
 package com.mysema.query.functions;
 

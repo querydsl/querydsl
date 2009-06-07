@@ -45,7 +45,7 @@ public abstract class AbstractJPAQLQuery<SubType extends AbstractJPAQLQuery<SubT
     private Query createQuery(String queryString, QueryModifiers modifiers) {
         Query query = em.createQuery(queryString);
         setConstants(query, getConstants());
-        if (modifiers != null) {
+        if (modifiers != null && modifiers.isRestricting()) {
             if (modifiers.getLimit() != null) {
                 query.setMaxResults(modifiers.getLimit().intValue());
             }

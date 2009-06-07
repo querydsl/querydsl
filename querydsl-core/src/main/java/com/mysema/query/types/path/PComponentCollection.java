@@ -7,7 +7,7 @@ package com.mysema.query.types.path;
 
 import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EComparable;
+import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -17,16 +17,14 @@ import com.mysema.query.types.expr.Expr;
  * 
  * @param <D> component type
  */
-public class PComponentCollection<D> extends Expr<java.util.Collection<D>>
-        implements PCollection<D> {
-    private EBoolean isNull, notNull;
-    private final PathMetadata<?> metadata;
-    private EComparable<Integer> size;
+public class PComponentCollection<D> extends Expr<java.util.Collection<D>> implements PCollection<D> {
     protected final Class<D> type;
     private final Path<?> root;
-
+    private final PathMetadata<?> metadata;
+    
+    private EBoolean isNull, notNull;    
+    private ENumber<Integer> size;    
     private EBoolean empty;
-
     private EBoolean notEmpty;
 
     public PComponentCollection(Class<D> type, PathMetadata<?> metadata) {
@@ -109,7 +107,7 @@ public class PComponentCollection<D> extends Expr<java.util.Collection<D>>
     }
 
     @Override
-    public EComparable<Integer> size() {
+    public ENumber<Integer> size() {
         if (size == null) {
             size = Grammar.size(this);
         }

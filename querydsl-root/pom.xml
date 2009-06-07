@@ -16,7 +16,20 @@
   <packaging>pom</packaging>
 
   <inceptionYear>2007</inceptionYear>
-
+  
+    <properties>
+    <svn.path>scm:svn:https://source.mysema.com/svn/mysema</svn.path>
+    <viewvc.path>https://source.mysema.com/viewvc/mysema</viewvc.path>
+    <path.suffix>projects/querydsl/trunk/${project.artifactId}</path.suffix>
+    
+    <!-- deps -->
+    <derby.version>10.4.2.0</derby.version>
+    <hsqldb.version>1.8.0.7</hsqldb.version>
+    <hibernate.version>3.2.1.ga</hibernate.version>
+    <jdo.version>2.3-SNAPSHOT</jdo.version>
+    <dn.version>1.1.3</dn.version>
+  </properties>
+  
   <modules>
     <module>../querydsl-core</module>
     <module>../querydsl-apt</module>
@@ -99,12 +112,6 @@
     </license>
   </licenses>
 
-  <properties>
-    <svn.path>scm:svn:https://source.mysema.com/svn/mysema</svn.path>
-    <viewvc.path>https://source.mysema.com/viewvc/mysema</viewvc.path>
-    <path.suffix>projects/querydsl/trunk/${project.artifactId}</path.suffix>
-  </properties>
-
   <scm>
     <connection>${svn.path}/${path.suffix}</connection>
     <developerConnection>${svn.path}/${path.suffix}</developerConnection>
@@ -118,21 +125,9 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.5</version>
       </plugin>
-      <plugin>
-        <groupId>com.mysema.maven</groupId>
-        <artifactId>maven-version-plugin</artifactId>
-        <version>0.1.0</version>
-      </plugin>
     </plugins>
   </build>
   
-  <pluginRepositories>
-    <pluginRepository>
-      <id>maven-annotation-plugin</id>
-      <url>http://maven-annotation-plugin.googlecode.com/svn/trunk/mavenrepo</url>
-    </pluginRepository>
-  </pluginRepositories>
-
   <reporting>
     <plugins>
       <plugin>

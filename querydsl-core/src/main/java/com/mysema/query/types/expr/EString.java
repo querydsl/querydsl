@@ -15,7 +15,7 @@ import com.mysema.query.types.Grammar;
  */
 public abstract class EString extends EComparable<String> {
     private EString lower, trim, upper;
-    private ENumber<Integer> length;
+    private ENumber<Long> length;
 
     public EString() {
         super(String.class);
@@ -89,27 +89,30 @@ public abstract class EString extends EComparable<String> {
         return Grammar.indexOf(this, str, i);
     }
 
-    public final ENumber<Integer> lastIndexOf(String str, int i) {
-        return Grammar.lastIndex(this, str, i);
-    }
-
-    public final ENumber<Integer> lastIndexOf(String str) {
-        return Grammar.lastIndexOf(this, str);
+    public final EBoolean isEmpty(){
+        return Grammar.isEmpty(this);
     }
     
-    public final ENumber<Integer> lastIndexOf(Expr<String> str) {
-        return Grammar.lastIndexOf(this, str);
+    public final EBoolean isNotEmpty(){
+        return Grammar.isNotEmpty(this);
     }
-
-    public final ENumber<Integer> length() {
+    
+    public final ENumber<Long> length() {
         if (length == null) {
             length = Grammar.length(this);
         }
         return length;
     }
 
+    /**
+     * Uses startsWith, endsWith and matches
+     * 
+     * @param str
+     * @return
+     */
+    @Deprecated
     public final EBoolean like(String str) {
-        return Grammar.like(this, str);
+        return matches(str.replace("%", ".*").replace("_", "."));
     }
 
     public final EString lower() {
@@ -119,6 +122,14 @@ public abstract class EString extends EComparable<String> {
         return lower;
     }
 
+    public final EBoolean matches(String regex){
+        return Grammar.matches(this, regex);
+    }
+    
+    public final EBoolean matches(Expr<String> regex){
+        return Grammar.matches(this, regex);
+    }
+    
     public final EBoolean startsWith(Expr<String> str) {
         return Grammar.startsWith(this, str);
     }

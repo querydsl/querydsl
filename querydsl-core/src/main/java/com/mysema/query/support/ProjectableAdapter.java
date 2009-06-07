@@ -79,6 +79,11 @@ public abstract class ProjectableAdapter implements Projectable {
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
         return projectable.listResults(expr);
     }
+    
+    @Override
+    public <RT> SearchResults<RT> listDistinctResults(Expr<RT> expr) {
+        return projectable.listDistinctResults(expr);
+    }
 
     @Override
     public <RT> List<RT> listDistinct(Expr<RT> projection) {

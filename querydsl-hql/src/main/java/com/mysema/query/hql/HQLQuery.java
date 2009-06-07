@@ -39,6 +39,8 @@ public interface HQLQuery extends Projectable{
     
     <P> HQLQuery fullJoin(PEntityCollection<P> target, PEntity<P> alias);
     
+    HQLQuery fetch();
+    
     HQLQuery groupBy(Expr<?>... e);
     
     HQLQuery having(EBoolean... cond);

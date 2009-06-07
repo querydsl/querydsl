@@ -25,9 +25,10 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.mysema.query.types.expr.ECollection;
+import com.mysema.query.types.expr.EMap;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PBoolean;
-import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
@@ -119,7 +120,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
                 rv = propToObj.get(propKey);
             } else {
                 PathMetadata<Integer> pm = PathMetadata.forListAccess((PList<?>) path, (Integer) args[0]);
-                Class<?> elementType = ((PCollection<?>) path).getElementType();
+                Class<?> elementType = ((ECollection<?>) path).getElementType();
                 if (elementType != null) {
                     rv = newInstance(elementType, elementType, proxy, propKey, pm);
                 } else {
@@ -134,7 +135,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
                 rv = propToObj.get(propKey);
             } else {
                 PathMetadata<?> pm = PathMetadata.forMapAccess((PMap<?, ?>) path, args[0]);
-                Class<?> valueType = ((PMap<?, ?>) path).getValueType();
+                Class<?> valueType = ((EMap<?, ?>) path).getValueType();
                 if (valueType != null) {
                     rv = newInstance(valueType, valueType, proxy, propKey, pm);
                 } else {

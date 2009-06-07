@@ -14,8 +14,7 @@ import com.mysema.query.types.expr.Expr;
  * 
  * @param <D> component type
  */
-public class PComponentList<D> extends PComponentCollection<D> implements
-        PList<D> {
+public class PComponentList<D> extends PComponentCollection<D> implements PList<D> {
     public PComponentList(Class<D> type, PathMetadata<?> metadata) {
         super(type, metadata);
     }

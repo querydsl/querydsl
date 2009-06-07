@@ -5,8 +5,6 @@
  */
 package com.mysema.query.collections;
 
-import java.util.regex.Pattern;
-
 import com.mysema.query.serialization.JavaPatterns;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PathType;
@@ -24,19 +22,21 @@ public class ColQueryPatterns extends JavaPatterns {
 
     protected ColQueryPatterns() {
         String functions = ColQueryPatterns.class.getName();
+        add(Ops.EQ_OBJECT, "%s.equals(%s)");
+        add(Ops.NE_OBJECT, "!%s.equals(%s)");
+        add(Ops.INSTANCEOF, "%2$s.isInstance(%1$s)");
+        
+        // comparable
         add(Ops.AFTER, "%s.compareTo(%s) > 0");
         add(Ops.BEFORE, "%s.compareTo(%s) < 0");
         add(Ops.AOE, "%s.compareTo(%s) >= 0");
         add(Ops.BOE, "%s.compareTo(%s) <= 0");
-
         add(Ops.BETWEEN, functions + ".between(%s,%s,%s)");
         add(Ops.NOTBETWEEN, "!" + functions + ".between(%s,%s,%s)");
-
-        add(Ops.EQ_OBJECT, "%s.equals(%s)");
-        add(Ops.NE_OBJECT, "!%s.equals(%s)");
-
-        add(Ops.INSTANCEOF, "%2$s.isInstance(%1$s)");        
-        add(Ops.LIKE, functions + ".like(%s,%s)");
+        add(Ops.STRING_CAST, "String.valueOf(%s)");
+        
+        // String
+//        add(Ops.LIKE, functions + ".like(%s,%s)");
         
         // path types
         for (PathType type : new PathType[] { PathType.LISTVALUE_CONSTANT }) {
@@ -59,10 +59,6 @@ public class ColQueryPatterns extends JavaPatterns {
 
     public static <A extends Comparable<? super A>> boolean between(A a, A b, A c) {
         return a.compareTo(b) > 0 && a.compareTo(c) < 0;
-    }
-
-    public static boolean like(String source, String pattern) {
-        return Pattern.compile(pattern.replace("%", ".*").replace("_", ".")).matcher(source).matches();
     }
 
 }

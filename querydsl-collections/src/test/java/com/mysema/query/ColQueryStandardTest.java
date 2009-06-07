@@ -1,10 +1,11 @@
 package com.mysema.query;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.collections.MiniApi;
@@ -13,8 +14,9 @@ import com.mysema.query.collections.Domain.QCat;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.Expr;
 
-public class ColQueryStandardTest {
+public class ColQueryStandardTest implements StandardTest {
     
     private static final List<Cat> data = Arrays.asList(
             new Cat("Bob", 1),
@@ -29,59 +31,103 @@ public class ColQueryStandardTest {
     private static QCat otherCat = new QCat("otherCat");
     
     @Test
-    public void stringProjections(){               
-        for (EString str : TestExprs.getProjectionsForString(cat.name, otherCat.name, "Bob")){
-            System.out.println(str);
-            MiniApi.from(cat, data).from(otherCat, data).list(str);
+    public void booleanFilters(){
+        for (EBoolean f : StandardTestData.booleanFilters(cat.name.isNull(), otherCat.kittens.isEmpty())){
+            System.out.println(f);
+            MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat.name);
         }
     }
-    
+
     @Test
-    public void numericPojections(){
-        for (ENumber<?> num : TestExprs.getProjectionsForNumber(cat.id, otherCat.id, 1)){
+    public void numericFilters(){
+        for (EBoolean f : StandardTestData.numericFilters(cat.id, otherCat.id, 1)){
+            System.out.println(f);
+            MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat.name);
+        }
+    }
+
+    @Test
+    public void numericMatchingFilters(){
+        for (EBoolean f : StandardTestData.numericMatchingFilters(cat.id, otherCat.id, 1)){
+            System.out.println(f);
+            assertTrue(f + " failed", !MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat.name).isEmpty());
+        }
+    }
+
+    @Test
+    public void numericProjections(){
+        for (ENumber<?> num : StandardTestData.numericProjections(cat.id, otherCat.id, 1)){
             System.out.println(num);
             MiniApi.from(cat, data).from(otherCat, data).list(num);
         }
     }
     
     @Test
+    public void numericCasts(){
+        for (ENumber<?> num : StandardTestData.numericCasts(cat.id, otherCat.id, 1)){
+            System.out.println(num);
+            MiniApi.from(cat, data).from(otherCat, data).list(num);
+        }
+    }
+
+    @Test
     public void stringFilters(){
-        for (EBoolean f : TestFilters.getFiltersForString(cat.name, otherCat.name, "Bob")){
+        for (EBoolean f : StandardTestData.stringFilters(cat.name, otherCat.name, "Bob")){
             System.out.println(f);
             MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat.name);
         }
     }
-    
+
     @Test
-    public void matchingStringFilters(){
-        for (EBoolean f : TestFilters.getMatchingFilters(cat.name, otherCat.name, "Bob")){
+    public void stringMatchingFilters(){
+        for (EBoolean f : StandardTestData.stringMatchingFilters(cat.name, otherCat.name, "Bob")){
             System.out.println(f);
-            assertTrue(!MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat.name).isEmpty());
+            assertTrue(f + " failed", !MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat.name).isEmpty());
         }
+    }
+
+    @Test
+    public void stringProjections(){               
+        for (EString str : StandardTestData.stringProjections(cat.name, otherCat.name, "Bob")){
+            System.out.println(str);
+            MiniApi.from(cat, data).from(otherCat, data).list(str);
+        }
+    }
+
+    @Test
+    @Ignore
+    public void listProjections() {
+        // FIXME : requires replacement of Janino
+        for (Expr<?> pr : StandardTestData.listProjections(cat.kittens, otherCat.kittens, new Cat())){
+            System.out.println(pr);
+            MiniApi.from(cat, data).from(otherCat, data).list(pr);
+        }        
     }
     
     @Test
-    public void booleanFilters(){
-        for (EBoolean f : TestFilters.getFiltersForBoolean(cat.name.isNull(), otherCat.kittens.isEmpty())){
-            System.out.println(f);
-            MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat.name);
-        }
+    public void listFilters() {
+        for (EBoolean filter : StandardTestData.listFilters(cat.kittens, otherCat.kittens, new Cat())){
+            System.out.println(filter);
+            MiniApi.from(cat, data).from(otherCat, data).where(filter).list(cat, otherCat);
+        }        
+    }
+
+    @Test
+    @Ignore
+    public void mapProjections() {
+        // FIXME : requires replacement of Janino
+        for (Expr<?> pr : StandardTestData.mapProjections(cat.kittensByName, otherCat.kittensByName, "Bob", new Cat())){
+            System.out.println(pr);
+            MiniApi.from(cat, data).from(otherCat, data).list(pr);
+        }           
     }
     
     @Test
-    public void numericFilters(){
-        for (EBoolean f : TestFilters.getFiltersForNumber(cat.id, otherCat.id, 1)){
+    public void mapFilters() {
+        for (EBoolean f : StandardTestData.mapFilters(cat.kittensByName, otherCat.kittensByName, "Bob", new Cat())){
             System.out.println(f);
-            MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat.name);
-        }
-    }
-    
-    @Test
-    public void matchingNumericFilters(){
-        for (EBoolean f : TestFilters.getMatchingFilters(cat.id, otherCat.id, 1)){
-            System.out.println(f);
-            assertTrue(!MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat.name).isEmpty());
-        }
+            MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat, otherCat);
+        }           
     }
 
 }

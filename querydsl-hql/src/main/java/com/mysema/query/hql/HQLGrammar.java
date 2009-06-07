@@ -15,11 +15,11 @@ import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.OComparable;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PEntity;
 
 /**
@@ -39,7 +39,7 @@ public class HQLGrammar extends GrammarWithAlias {
         return new OSimple<Object,D>(col.getElementType(), Ops.QuantOps.ANY, (Expr<?>)col);
     }
 
-    public static <A extends Comparable<? super A>> EComparable<A> avg(PCollection<A> col) {
+    public static <A extends Comparable<? super A>> EComparable<A> avg(ECollection<A> col) {
         return new OComparable<Number,A>(col.getElementType(), Ops.QuantOps.AVG_IN_COL, (Expr<?>)col);
     }
 
@@ -71,11 +71,11 @@ public class HQLGrammar extends GrammarWithAlias {
         return operationFactory.createComparable(Date.class, Ops.DateTimeOps.HOUR, date);
     }
 
-    public static <A extends Comparable<? super A>> EComparable<A> max(PCollection<A> left) {
+    public static <A extends Comparable<? super A>> EComparable<A> max(ECollection<A> left) {
         return new OComparable<Number,A>(left.getElementType(), Ops.QuantOps.MAX_IN_COL, (Expr<?>)left);
     }
 
-    public static <A extends Comparable<? super A>> EComparable<A> min(PCollection<A> left) {
+    public static <A extends Comparable<? super A>> EComparable<A> min(ECollection<A> left) {
         return new OComparable<Number,A>(left.getElementType(), Ops.QuantOps.MIN_IN_COL, (Expr<?>)left);
     }
 

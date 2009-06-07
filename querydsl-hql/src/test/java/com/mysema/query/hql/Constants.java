@@ -5,6 +5,33 @@
  */
 package com.mysema.query.hql;
 
+import com.mysema.query.hql.domain.QAccount;
+import com.mysema.query.hql.domain.QAnimal;
+import com.mysema.query.hql.domain.QAuditLog;
+import com.mysema.query.hql.domain.QBar;
+import com.mysema.query.hql.domain.QCalendar;
+import com.mysema.query.hql.domain.QCat;
+import com.mysema.query.hql.domain.QCatalog;
+import com.mysema.query.hql.domain.QCustomer;
+import com.mysema.query.hql.domain.QFoo;
+import com.mysema.query.hql.domain.QFormula;
+import com.mysema.query.hql.domain.QItem;
+import com.mysema.query.hql.domain.QName;
+import com.mysema.query.hql.domain.QNameList;
+import com.mysema.query.hql.domain.QNamed;
+import com.mysema.query.hql.domain.QOrder;
+import com.mysema.query.hql.domain.QParameter;
+import com.mysema.query.hql.domain.QPayment;
+import com.mysema.query.hql.domain.QPerson;
+import com.mysema.query.hql.domain.QPlayer;
+import com.mysema.query.hql.domain.QPrice;
+import com.mysema.query.hql.domain.QProduct;
+import com.mysema.query.hql.domain.QShow;
+import com.mysema.query.hql.domain.QStatus;
+import com.mysema.query.hql.domain.QStatusChange;
+import com.mysema.query.hql.domain.QStore;
+import com.mysema.query.hql.domain.Qdoofus;
+
 public interface Constants {
 
     QAccount account = new QAccount("account");

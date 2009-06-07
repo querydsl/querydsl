@@ -29,6 +29,7 @@ public class ColTypesTest {
         Expr<Character> echar;
         EBoolean eboolean;
         EComparable<Integer> eint;
+        EComparable<Long> elong;
         EString estring;
 
         EString str = MiniApi.$("it");
@@ -48,11 +49,11 @@ public class ColTypesTest {
         // isEmpty
         // assertTrue((eboolean = str.isEmpty()) != null);
         // lastIndexOf(String)
-        assertTrue((eint = str.lastIndexOf("")) != null);
-        // lastIndexOf(String,int)
-        assertTrue((eint = str.lastIndexOf("", 0)) != null);
+//        assertTrue((eint = str.lastIndexOf("")) != null);
+//        // lastIndexOf(String,int)
+//        assertTrue((eint = str.lastIndexOf("", 0)) != null);
         // length
-        assertTrue((eint = str.length()) != null);
+        assertTrue((elong = str.length()) != null);
         // matches
         // assertTrue((eboolean = str.matches("")) != null);
         // startsWith

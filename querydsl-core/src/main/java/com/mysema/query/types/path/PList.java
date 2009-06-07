@@ -5,7 +5,7 @@
  */
 package com.mysema.query.types.path;
 
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.expr.EList;
 
 /**
  * PList represents List typed paths
@@ -15,23 +15,6 @@ import com.mysema.query.types.expr.Expr;
  * @param <D> component type
  * @see java.util.List
  */
-public interface PList<D> extends PCollection<D> {
+public interface PList<D> extends PCollection<D>, EList<D> {
     
-    /**
-     * Indexed access
-     * 
-     * @param index
-     * @return
-     * @see java.util.List#get(int)
-     */
-    Expr<D> get(Expr<Integer> index);
-
-    /**
-     * Indexed access
-     * 
-     * @param index
-     * @return
-     * @see java.util.List#get(int)
-     */
-    Expr<D> get(int index);
 }

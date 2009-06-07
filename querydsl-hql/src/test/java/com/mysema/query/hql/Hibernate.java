@@ -11,9 +11,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.hibernate.cfg.DefaultNamingStrategy;
-import org.hibernate.cfg.NamingStrategy;
-
 /**
  * Hibernate provides.
  * 
@@ -24,8 +21,6 @@ import org.hibernate.cfg.NamingStrategy;
 @Target(ElementType.TYPE)
 @Inherited
 public @interface Hibernate {
-
-    Class<? extends NamingStrategy> namingStrategy() default DefaultNamingStrategy.class;
 
     String properties();
 }

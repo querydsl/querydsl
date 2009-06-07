@@ -6,8 +6,6 @@
 package com.mysema.query.sql;
 
 import static com.mysema.query.functions.MathFunctions.add;
-import static com.mysema.query.functions.MathFunctions.max;
-import static com.mysema.query.functions.MathFunctions.min;
 import static com.mysema.query.sql.SQLGrammar.exists;
 import static com.mysema.query.sql.SQLGrammar.select;
 import static com.mysema.query.types.Grammar.avg;
@@ -150,35 +148,35 @@ public abstract class SqlQueryTest {
         System.out.println(q().from(survey).list(survey.id.gt(0)));
     }
 
-    @Test
-    public void testSyntaxForTest() throws SQLException {
-        // TEST
-        // select count(*) from test where name = null
-        expectedQuery = "select count(*) from test test where test.name is null";
-        q().from(test).where(test.name.isNull()).count();
-        // select count(*) from test where name like null
-        // q().from(test).where(test.name.like(null)).count();
-        // select count(*) from test where name = ''
-        q().from(test).where(test.name.like("")).count();
-        // select count(*) from test where name is not null
-        q().from(test).where(test.name.isNotNull()).count();
-        // select count(*) from test where name like '%'
-        q().from(test).where(test.name.like("%")).count();
-        // select count(*) from test where left(name, 6) = 'name44'
-        q().from(test).where(test.name.substring(0, 6).like("name44%")).count();
-        // select count(*) from test where name like 'name44%'
-        q().from(test).where(test.name.like("name44%")).count();
-        // select count(*) from test where left(name,5) = 'name4' and
-        // right(name,1) = 5
-        // TODO
-        // select count(*) from test where name like 'name4%5'
-        q().from(test).where(test.name.like("name4%5")).count();
-        // select count(*) from test where left(name,5) = 'name4' and
-        // right(name,1) = 5
-        // TODO
-        // select count(*) from test where name like 'name4%5'
-        q().from(test).where(test.name.like("name4%5")).count();
-    }
+//    @Test
+//    public void testSyntaxForTest() throws SQLException {
+//        // TEST
+//        // select count(*) from test where name = null
+//        expectedQuery = "select count(*) from test test where test.name is null";
+//        q().from(test).where(test.name.isNull()).count();
+//        // select count(*) from test where name like null
+//        // q().from(test).where(test.name.like(null)).count();
+//        // select count(*) from test where name = ''
+//        q().from(test).where(test.name.like("")).count();
+//        // select count(*) from test where name is not null
+//        q().from(test).where(test.name.isNotNull()).count();
+//        // select count(*) from test where name like '%'
+//        q().from(test).where(test.name.like("%")).count();
+//        // select count(*) from test where left(name, 6) = 'name44'
+//        q().from(test).where(test.name.substring(0, 6).like("name44%")).count();
+//        // select count(*) from test where name like 'name44%'
+//        q().from(test).where(test.name.like("name44%")).count();
+//        // select count(*) from test where left(name,5) = 'name4' and
+//        // right(name,1) = 5
+//        // TODO
+//        // select count(*) from test where name like 'name4%5'
+//        q().from(test).where(test.name.like("name4%5")).count();
+//        // select count(*) from test where left(name,5) = 'name4' and
+//        // right(name,1) = 5
+//        // TODO
+//        // select count(*) from test where name like 'name4%5'
+//        q().from(test).where(test.name.like("name4%5")).count();
+//    }
 
     @Test
     public void testSyntaxForEmployee() throws SQLException {

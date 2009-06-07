@@ -12,21 +12,19 @@
   <artifactId>querydsl-hql-apt</artifactId>
   <name>Querydsl - HQL/APT support</name>
   <packaging>jar</packaging>
-  
-  <properties>
-    <hibernate.version>3.2.1.ga</hibernate.version>
-  </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate</artifactId>
       <version>${hibernate.version}</version>
+      <scope>provided</scope>
     </dependency>  
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-annotations</artifactId>
       <version>${hibernate.version}</version>
+      <scope>provided</scope>
     </dependency>  
     <dependency>
       <groupId>com.mysema.querydsl</groupId>

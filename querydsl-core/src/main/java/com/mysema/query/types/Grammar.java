@@ -9,15 +9,15 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EComparable;
+import com.mysema.query.types.expr.EMap;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PArray;
-import com.mysema.query.types.path.PCollection;
-import com.mysema.query.types.path.PMap;
 
 /**
  * Grammar provides the factory methods for the fluent grammar.
@@ -269,7 +269,7 @@ public class Grammar {
      * @param right
      * @return
      */
-    public static <K> EBoolean containsKey(PMap<K,?> left, Expr<K> right){
+    public static <K> EBoolean containsKey(EMap<K,?> left, Expr<K> right){
         return operationFactory.createBoolean(Ops.CONTAINS_KEY, (Expr<?>)left, right);
     }
 
@@ -281,7 +281,7 @@ public class Grammar {
      * @param right
      * @return
      */
-    public static <K> EBoolean containsKey(PMap<K,?> left, K right){
+    public static <K> EBoolean containsKey(EMap<K,?> left, K right){
         return operationFactory.createBoolean(Ops.CONTAINS_KEY, (Expr<?>)left, exprFactory.createConstant(right));
     }
 
@@ -293,7 +293,7 @@ public class Grammar {
      * @param right
      * @return
      */
-    public static <V> EBoolean containsValue(PMap<?,V> left, Expr<V> right){
+    public static <V> EBoolean containsValue(EMap<?,V> left, Expr<V> right){
         return operationFactory.createBoolean(Ops.CONTAINS_VALUE, (Expr<?>)left, right);
     }
 
@@ -305,7 +305,7 @@ public class Grammar {
      * @param right
      * @return
      */
-    public static <V> EBoolean containsValue(PMap<?,V> left, V right){
+    public static <V> EBoolean containsValue(EMap<?,V> left, V right){
         return operationFactory.createBoolean(Ops.CONTAINS_VALUE, (Expr<?>)left, exprFactory.createConstant(right));
     }
 
@@ -601,13 +601,17 @@ public class Grammar {
     public static EBoolean isEmpty(Expr<String> left) {
         return operationFactory.createBoolean(Ops.STRING_ISEMPTY, left);
     }
+    
+    public static EBoolean isNotEmpty(Expr<String> left) {
+        return operationFactory.createBoolean(Ops.STRING_ISNOTEMPTY, left);
+    }
 
     /**
      * 
      * @param collection
      * @return
      */
-    public static EBoolean isEmpty(PCollection<?> collection) {
+    public static EBoolean isEmpty(ECollection<?> collection) {
         return operationFactory.createBoolean(Ops.COL_ISEMPTY,(Expr<?>) collection);
     }
 
@@ -616,7 +620,7 @@ public class Grammar {
      * @param map
      * @return
      */
-    public static EBoolean isEmpty(PMap<?,?> map) {
+    public static EBoolean isEmpty(EMap<?,?> map) {
         return operationFactory.createBoolean(Ops.MAP_ISEMPTY,(Expr<?>) map);
     }
 
@@ -625,7 +629,7 @@ public class Grammar {
      * @param collection
      * @return
      */
-    public static EBoolean isNotEmpty(PCollection<?> collection) {
+    public static EBoolean isNotEmpty(ECollection<?> collection) {
         return operationFactory.createBoolean(Ops.COL_ISNOTEMPTY,(Expr<?>) collection);
     }
 
@@ -634,7 +638,7 @@ public class Grammar {
      * @param collection
      * @return
      */
-    public static EBoolean isNotEmpty(PMap<?,?> map) {
+    public static EBoolean isNotEmpty(EMap<?,?> map) {
         return operationFactory.createBoolean(Ops.MAP_ISNOTEMPTY,(Expr<?>) map);
     }
 
@@ -671,52 +675,13 @@ public class Grammar {
     }
 
     /**
-     * Expr : <code>left.lastIndexOf(right, third);</code>
-     * 
-     * @param left
-     * @param right
-     * @param third
-     * @return
-     */
-    public static ENumber<Integer> lastIndex(Expr<String> left, String right,
-            int third) {
-        return operationFactory.createNumber(Integer.class,
-                Ops.LAST_INDEX_2ARGS, left, exprFactory.createConstant(right),
-                exprFactory.createConstant(third));
-    }
-
-    /**
-     * Expr : <code>left.lastIndexOf(right)</code>
-     * 
-     * @param left
-     * @param right
-     * @return
-     */
-    public static ENumber<Integer> lastIndexOf(Expr<String> left, Expr<String> right) {
-        return operationFactory.createNumber(Integer.class, Ops.LAST_INDEX, left, right);
-    }
-
-    /**
-     * Expr : <code>left.lastIndexOf(right)</code>
-     * 
-     * @param left
-     * @param right
-     * @return
-     */
-    public static ENumber<Integer> lastIndexOf(Expr<String> left, String right) {
-        return operationFactory.createNumber(Integer.class, Ops.LAST_INDEX,
-                left, exprFactory.createConstant(right));
-    }
-
-    /**
      * Expr : <code>left.length()</code>
      * 
      * @param left
      * @return
      */
-    public static ENumber<Integer> length(Expr<String> left) {
-        return operationFactory.createNumber(Integer.class, Ops.STRING_LENGTH,
-                left);
+    public static ENumber<Long> length(Expr<String> left) {
+        return operationFactory.createNumber(Long.class, Ops.STRING_LENGTH,left);
     }
 
     /**
@@ -726,10 +691,10 @@ public class Grammar {
      * @param right
      * @return
      */
-    public static EBoolean like(Expr<String> left, String right) {
-        return operationFactory.createBoolean(Ops.LIKE, left, exprFactory
-                .createConstant(right));
-    }
+//    public static EBoolean like(Expr<String> left, String right) {
+//        return operationFactory.createBoolean(Ops.LIKE, left, exprFactory
+//                .createConstant(right));
+//    }
 
     /**
      * Expr : <code>left <= right</code>
@@ -918,7 +883,7 @@ public class Grammar {
      * @return
      */
     public static <A> EBoolean notIn(Expr<A> left, A... rest) {
-        return operationFactory.createBoolean(Ops.NOTIN, left, exprFactory.createConstant(rest));
+        return operationFactory.createBoolean(Ops.NOTIN, left, exprFactory.createConstant(Arrays.asList(rest)));
     }
 
     
@@ -979,21 +944,14 @@ public class Grammar {
      * @param path
      * @return
      */
-    public static ENumber<Integer> size(PCollection<?> path){
+    public static ENumber<Integer> size(ECollection<?> path){
         return operationFactory.createNumber(Integer.class, Ops.COL_SIZE, (Expr<?>)path);
     }
 
-    /**
-     * Split the given String left with refex as the matcher for the separator
-     * 
-     * @param left
-     * @param regex
-     * @return
-     */
-    public static Expr<String[]> split(Expr<String> left, String regex) {
-        return operationFactory.createStringArray(Ops.SPLIT, left, exprFactory.createConstant(regex));
+    public static ENumber<Integer> size(EMap<?,?> path){
+        return operationFactory.createNumber(Integer.class, Ops.MAP_SIZE, (Expr<?>)path);
     }
-
+    
     /**
      * Expr : <code>left.startsWith(right)</code>
      * 

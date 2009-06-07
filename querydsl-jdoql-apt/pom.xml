@@ -12,10 +12,6 @@
   <artifactId>querydsl-jdoql-apt</artifactId>
   <name>Querydsl - JDOQL/APT support</name>
   <packaging>jar</packaging>
-  
-  <properties>
-    <jdo.version>2.3-SNAPSHOT</jdo.version>
-  </properties>
 
   <dependencies>
     <dependency>

@@ -32,6 +32,21 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.mysema.query.hql.domain.QAccount;
+import com.mysema.query.hql.domain.QAuditLog;
+import com.mysema.query.hql.domain.QCat;
+import com.mysema.query.hql.domain.QCatalog;
+import com.mysema.query.hql.domain.QCompany;
+import com.mysema.query.hql.domain.QCustomer;
+import com.mysema.query.hql.domain.QDocument;
+import com.mysema.query.hql.domain.QDomesticCat;
+import com.mysema.query.hql.domain.QInheritedProperties;
+import com.mysema.query.hql.domain.QItem;
+import com.mysema.query.hql.domain.QOrder;
+import com.mysema.query.hql.domain.QPayment;
+import com.mysema.query.hql.domain.QPrice;
+import com.mysema.query.hql.domain.QProduct;
+import com.mysema.query.hql.domain.QUser;
 import com.mysema.query.types.Grammar;
 import com.mysema.query.types.custom.CString;
 import com.mysema.query.types.expr.EConstructor;
@@ -109,7 +124,7 @@ public class FeaturesTest {
 
     @Test
     public void testDomainConstruction() {
-        QInheritatedProperties i = new QInheritatedProperties("i");
+        QInheritedProperties i = new QInheritedProperties("i");
         assertNotNull(i.superclassProperty);
         assertNotNull(i.classProperty);
 
@@ -188,7 +203,7 @@ public class FeaturesTest {
                 .lt(kitten.bodyWeight));
         toString("cat.bodyWeight != kitten.bodyWeight", cat.bodyWeight
                 .ne(kitten.bodyWeight));
-        toString("cat.name like :a1", cat.name.like("Kitty"));
+//        toString("cat.name like :a1", cat.name.like("Kitty"));
     }
 
     @Test
@@ -257,9 +272,9 @@ public class FeaturesTest {
 
     @Test
     public void testConstructors() {
-        EConstructor<com.mysema.query.hql.Domain.Cat> c = new EConstructor<com.mysema.query.hql.Domain.Cat>(
-                com.mysema.query.hql.Domain.Cat.class, cat.name);
-        toString("new " + com.mysema.query.hql.Domain.Cat.class.getName()
+        EConstructor<com.mysema.query.hql.domain.Cat> c = new EConstructor<com.mysema.query.hql.domain.Cat>(
+                com.mysema.query.hql.domain.Cat.class, cat.name);
+        toString("new " + com.mysema.query.hql.domain.Cat.class.getName()
                 + "(cat.name)", c);
         toString("new " + getClass().getName() + "$BookmarkDTO()",
                 new _BookmarkDTO());
@@ -411,7 +426,7 @@ public class FeaturesTest {
     public void testStringOperationsInFunctionalWay() {
         toString("cat.name || cust.name.firstName", cat.name
                 .concat(cust.name.firstName));
-        toString("cat.name like :a1", cat.name.like("A%"));
+//        toString("cat.name like :a1", cat.name.like("A%"));
         toString("lower(cat.name)", cat.name.lower());
     }
 

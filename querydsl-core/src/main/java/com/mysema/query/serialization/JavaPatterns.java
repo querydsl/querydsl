@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.serialization;
 
 import java.lang.reflect.Field;
@@ -30,26 +35,25 @@ public class JavaPatterns extends OperationPatterns {
         // map
         add(Ops.MAP_ISEMPTY, "%s.isEmpty()");
         add(Ops.MAP_ISNOTEMPTY, "!%s.isEmpty()");
+        add(Ops.MAP_SIZE, "%s.size()");
         add(Ops.CONTAINS_KEY, "%s.containsKey(%s)");
         add(Ops.CONTAINS_VALUE, "%s.containsValue(%s)");
-        
+                
         // Comparable
         add(Ops.BETWEEN, "%2$s < %1$s && %1$s < %3$s");
         add(Ops.NOTBETWEEN, "!(%2$s < %1$s && %1$s < %3$s)");
         
         // String
         add(Ops.CHAR_AT, "%s.charAt(%s)");
-        add(Ops.LOWER, "%s.toLowerCase()");
-        add(Ops.SPLIT, "%s.split(%s)");
+        add(Ops.LOWER, "%s.toLowerCase()");        
         add(Ops.SUBSTR1ARG, "%s.substring(%s)");
         add(Ops.SUBSTR2ARGS, "%s.substring(%s,%s)");
         add(Ops.TRIM, "%s.trim()");
         add(Ops.UPPER, "%s.toUpperCase()");
         add(Ops.MATCHES, "%s.matches(%s)");
         add(Ops.STRING_LENGTH, "%s.length()");        
-        add(Ops.LAST_INDEX, "%s.lastIndexOf(%s)");
-        add(Ops.LAST_INDEX_2ARGS, "%s.lastIndexOf(%s,%s)");
         add(Ops.STRING_ISEMPTY, "%s.isEmpty()");
+        add(Ops.STRING_ISNOTEMPTY, "!%s.isEmpty()");
         add(Ops.STRING_CONTAINS, "%s.contains(%s)");
         add(Ops.STARTSWITH, "%s.startsWith(%s)");
         add(Ops.STARTSWITH_IC, "%s.toLowerCase().startsWith(%s.toLowerCase())");        
@@ -58,7 +62,10 @@ public class JavaPatterns extends OperationPatterns {
         add(Ops.EQ_IGNORECASE, "%s.equalsIgnoreCase(%s)");
         add(Ops.ENDSWITH, "%s.endsWith(%s)");
         add(Ops.ENDSWITH_IC, "%s.toLowerCase().endsWith(%s.toLowerCase())");
-        
+        add(Ops.StringOps.SPLIT, "%s.split(%s)");
+        add(Ops.StringOps.LAST_INDEX, "%s.lastIndexOf(%s)");
+        add(Ops.StringOps.LAST_INDEX_2ARGS, "%s.lastIndexOf(%s,%s)");
+
         // Math
         try {
             for (Field f : Ops.MathOps.class.getFields()) {
@@ -69,6 +76,7 @@ public class JavaPatterns extends OperationPatterns {
             throw new RuntimeException(e.getMessage(), e);
         }
         add(Ops.MOD, "%s %% %s");
+        
     }
 
 }

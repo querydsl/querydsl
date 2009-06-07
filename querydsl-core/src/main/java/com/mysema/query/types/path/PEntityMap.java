@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -26,6 +27,7 @@ public class PEntityMap<K, V> extends Expr<Map<K, V>> implements PMap<K, V> {
     private final Class<V> valueType;
     private final String entityName;
     private final Path<?> root;
+    private ENumber<Integer> size;    
 
     private EBoolean empty;
 
@@ -139,5 +141,13 @@ public class PEntityMap<K, V> extends Expr<Map<K, V>> implements PMap<K, V> {
             isnull = Grammar.isNull(this);
         }
         return isnull;
+    }
+    
+    @Override
+    public ENumber<Integer> size() {
+        if (size == null) {
+            size = Grammar.size(this);
+        }
+        return size;
     }
 }
