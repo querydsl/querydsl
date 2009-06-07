@@ -192,9 +192,9 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
         return false;
     }
 
-    private boolean isSizeAccessor(Method method) {
-        return checkMethod(method, "size", 0, int.class);
-    }
+//    private boolean isSizeAccessor(Method method) {
+//        return checkMethod(method, "size", 0, int.class);
+//    }
 
     private boolean checkMethod(Method method, String name, int paramCount, Class<?> returnType) {
         if (!method.getName().equals(name))

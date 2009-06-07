@@ -32,14 +32,16 @@ public class EvaluatorUtils {
             List<? extends Expr<?>> sources, Expr<?> expr) {
         if (sources.get(0) == expr) {
             return new Evaluator() {
+                @SuppressWarnings("unchecked")
                 public <T> T evaluate(Object... args) {
                     return (T) args[0];
                 }
             };
-            // TODO : handle Path projection in special way
         } else {
-            return new JaninoEvaluator(Assert.notNull(patterns), Assert
-                    .notNull(sources), Assert.notNull(expr));
+            return new JaninoEvaluator(
+                    Assert.notNull(patterns),
+                    Assert.notNull(sources), 
+                    Assert.notNull(expr));
         }
     }
 

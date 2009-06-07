@@ -463,6 +463,7 @@ public class FeaturesTest {
      * specs :
      * http://opensource.atlassian.com/projects/hibernate/browse/HHH-1538
      */
+    @SuppressWarnings("unchecked")
     @Test
     public void testBug326650() {
         assertEquals(Long.class, sum($((byte) 0)).getType());
@@ -478,6 +479,7 @@ public class FeaturesTest {
 
         // sum to var
 
+        @SuppressWarnings("unused")
         ENumber<Long> sum = (ENumber) sum($(0)); // via Java level cast
         sum = sum($(0)).longValue();
 

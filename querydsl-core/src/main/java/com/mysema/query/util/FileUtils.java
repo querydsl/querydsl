@@ -15,8 +15,7 @@ public class FileUtils {
 
     public static Writer writerFor(File file) {
         if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
-            System.err.println("Folder " + file.getParent()
-                    + " could not be created");
+            System.err.println("Folder " + file.getParent() + " could not be created");
         }
         try {
             return new OutputStreamWriter(new FileOutputStream(file));

@@ -177,6 +177,7 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
 
     }
 
+    @SuppressWarnings("unchecked")
     protected void visitOperation(Class<?> type, Operator<?> operator,
             List<Expr<?>> args) {
         boolean old = wrapElements;

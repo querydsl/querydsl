@@ -51,6 +51,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
+@SuppressWarnings("unchecked")
 public abstract class SqlQueryTest {
 
     protected static ThreadLocal<Connection> connHolder = new ThreadLocal<Connection>();
@@ -300,6 +301,7 @@ public abstract class SqlQueryTest {
 
     }
 
+    
     @Test
     public void testUnion() throws SQLException {
         // union

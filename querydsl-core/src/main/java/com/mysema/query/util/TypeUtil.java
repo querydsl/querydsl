@@ -9,6 +9,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 
+// TODO : move to mysema-commons
 public class TypeUtil {
     
     public static Class<?> safeForName(String name){
@@ -19,6 +20,7 @@ public class TypeUtil {
         }
     }
     
+    @SuppressWarnings("unchecked")
     public static Class<?> getTypeParameter(java.lang.reflect.Type type, int index) {
         if (type instanceof ParameterizedType) {
             ParameterizedType ptype = (ParameterizedType) type;

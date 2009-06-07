@@ -37,8 +37,6 @@ import com.mysema.query.hql.domain.Catalog;
 import com.mysema.query.hql.domain.Color;
 import com.mysema.query.hql.domain.Customer;
 import com.mysema.query.hql.domain.DomesticCat;
-import com.mysema.query.hql.domain.Formula;
-import com.mysema.query.hql.domain.Parameter;
 import com.mysema.query.hql.domain.Payment;
 import com.mysema.query.hql.domain.Product;
 import com.mysema.query.hql.domain.QFamily;
@@ -147,8 +145,8 @@ public class ParserTest implements Constants {
         Cat k = alias(Cat.class, "kittens");
         Cat m = alias(Cat.class, "mate");
 
-        Formula f = alias(Formula.class, "formula");
-        Parameter p = alias(Parameter.class, "param");
+//        Formula f = alias(Formula.class, "formula");
+//        Parameter p = alias(Parameter.class, "param");
 
         // parse(
         // "from eg.Cat as cat inner join cat.mate as mate left outer join cat.kittens as kitten"
