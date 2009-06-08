@@ -3,14 +3,15 @@ package com.mysema.query;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.collections.MiniApi;
-import com.mysema.query.collections.Domain.Cat;
-import com.mysema.query.collections.Domain.QCat;
+import com.mysema.query.collections.domain.Cat;
+import com.mysema.query.collections.domain.QCat;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
@@ -144,6 +145,27 @@ public class ColQueryStandardTest implements StandardTest {
             System.out.println(f);
             MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat, otherCat);
         }           
+    }
+
+    @Test
+    @Ignore
+    public void dateProjections() {
+                
+    }
+
+    @Test
+    public void dateTimeProjections() {
+        for (Expr<?> pr : StandardTestData.dateTimeProjections(cat.birthdate, otherCat.birthdate, new Date())){
+            System.out.println(pr);
+            MiniApi.from(cat, data).from(otherCat, data).list(pr);
+        }        
+    }
+
+    @Test
+    @Ignore
+    public void timeProjections() {
+        // TODO Auto-generated method stub
+        
     }
 
 }

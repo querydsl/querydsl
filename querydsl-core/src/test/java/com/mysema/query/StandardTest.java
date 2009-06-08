@@ -20,26 +20,32 @@ public interface StandardTest {
     
     void collectionProjections();
     
+    void dateProjections();
+    
+    void dateTimeProjections();
+    
     void listFilters();
     
     void listProjections();
-
-    void mapFilters();
     
+    void mapFilters();
+
     void mapProjections();
+    
+    void numericCasts();
 
     void numericFilters();
     
-    void numericCasts();
-    
     void numericMatchingFilters();
-
+    
     void numericProjections();
 
     void stringFilters();
 
     void stringMatchingFilters();
-    
+
     void stringProjections();
+    
+    void timeProjections();
     
 }

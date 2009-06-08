@@ -12,7 +12,8 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import com.mysema.query.collections.Domain.Cat;
+import com.mysema.query.collections.domain.Cat;
+
 
 /**
  * MiniApiTest provides

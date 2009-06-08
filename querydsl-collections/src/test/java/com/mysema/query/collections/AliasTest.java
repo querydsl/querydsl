@@ -20,8 +20,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.alias.GrammarWithAlias;
-import com.mysema.query.collections.Domain.Cat;
-import com.mysema.query.collections.Domain.QCat;
+import com.mysema.query.collections.domain.Cat;
+import com.mysema.query.collections.domain.QCat;
 
 /**
  * AliasTEst provides

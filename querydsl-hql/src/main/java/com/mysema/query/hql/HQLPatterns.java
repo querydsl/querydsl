@@ -92,7 +92,7 @@ public class HQLPatterns extends OperationPatterns {
         add(Ops.DateTimeOps.SECOND, "second(%s)");
         add(Ops.DateTimeOps.MINUTE, "minute(%s)");
         add(Ops.DateTimeOps.HOUR, "hour(%s)");
-        add(Ops.DateTimeOps.DAY, "day(%s)");
+//        add(Ops.DateTimeOps.DAY, "day(%s)");
         add(Ops.DateTimeOps.MONTH, "month(%s)");
         add(Ops.DateTimeOps.YEAR, "year(%s)");
 

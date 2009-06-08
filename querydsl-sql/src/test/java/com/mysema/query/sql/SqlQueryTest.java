@@ -386,17 +386,20 @@ public abstract class SqlQueryTest {
         Expr<Date> d = new EConstant<Date>(new Date());
         Expr<Time> t = new EConstant<Time>(new Time(0));
         for (EComparable<?> e : Arrays.<EComparable<?>> asList(
-                DateTimeFunctions.currentDate(), DateTimeFunctions
-                        .currentTime(), DateTimeFunctions.now(),
+                DateTimeFunctions.currentDate(), 
+                DateTimeFunctions.currentTime(),
 
-                DateTimeFunctions.year(d), DateTimeFunctions.month(d),
+                DateTimeFunctions.year(d), 
+                DateTimeFunctions.month(d),
                 DateTimeFunctions.week(d),
 
-                DateTimeFunctions.hour(t), DateTimeFunctions.minute(t),
+                DateTimeFunctions.hour(t),
+                DateTimeFunctions.minute(t),
                 DateTimeFunctions.second(t),
 
                 DateTimeFunctions.dayOfMonth(d),
-                DateTimeFunctions.dayOfWeek(d), DateTimeFunctions.dayOfYear(d))) {
+                DateTimeFunctions.dayOfWeek(d), 
+                DateTimeFunctions.dayOfYear(d))) {
             q().from(employee).list(e);
         }
     }

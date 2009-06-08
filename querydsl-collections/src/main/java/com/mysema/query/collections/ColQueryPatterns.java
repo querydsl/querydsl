@@ -35,6 +35,11 @@ public class ColQueryPatterns extends JavaPatterns {
         add(Ops.NOTBETWEEN, "!" + functions + ".between(%s,%s,%s)");
         add(Ops.STRING_CAST, "String.valueOf(%s)");
         
+        // Date and Time
+        add(Ops.DateTimeOps.HOUR, "%s.getHours()"); 
+        add(Ops.DateTimeOps.MINUTE, "%s.getMinutes()");
+        add(Ops.DateTimeOps.SECOND, "%s.getSeconds()");
+        
         // String
 //        add(Ops.LIKE, functions + ".like(%s,%s)");
         

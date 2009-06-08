@@ -35,16 +35,22 @@ public class ClassModel implements Comparable<ClassModel> {
         return value;
     }
 
+    private int escapeSuffix = 1;
+
+    private final Collection<ConstructorModel> constructors = new HashSet<ConstructorModel>();
+    
     private final Collection<FieldModel> booleanFields = new TreeSet<FieldModel>();
 
     private final Collection<FieldModel> comparableFields = new TreeSet<FieldModel>();
 
-    private final Collection<ConstructorModel> constructors = new HashSet<ConstructorModel>();
+    private final Collection<FieldModel> dateFields = new TreeSet<FieldModel>();
 
+    private final Collection<FieldModel> dateTimeFields = new TreeSet<FieldModel>();
+    
     private final Collection<FieldModel> entityCollections = new TreeSet<FieldModel>();
-
+    
     private final Collection<FieldModel> entityFields = new TreeSet<FieldModel>();
-
+    
     private final Collection<FieldModel> entityLists = new TreeSet<FieldModel>();
 
     private final Collection<FieldModel> entityMaps = new TreeSet<FieldModel>();
@@ -61,11 +67,11 @@ public class ClassModel implements Comparable<ClassModel> {
 
     private final Collection<FieldModel> stringFields = new TreeSet<FieldModel>();
     
+    private final Collection<FieldModel> timeFields = new TreeSet<FieldModel>();
+    
     private String simpleName, uncapSimpleName, name, packageName;
-
-    private int escapeSuffix = 1;    
-
-    private String superType;
+    
+    private String superType;    
 
     public ClassModel(String superType, String packageName, String name, String simpleName) {
         this.superType = superType;
@@ -73,6 +79,12 @@ public class ClassModel implements Comparable<ClassModel> {
         this.name = Assert.notNull(name);
         this.simpleName = Assert.notNull(simpleName);
         this.uncapSimpleName = StringUtils.uncapitalize(simpleName);
+    }
+
+    private void addAll(Collection<FieldModel> target, Collection<FieldModel> source) {
+        for (FieldModel field : source) {
+            target.add(validateField(field));
+        }
     }
 
     public void addConstructor(ConstructorModel co) {
@@ -118,14 +130,41 @@ public class ClassModel implements Comparable<ClassModel> {
         case SIMPLEMAP:
             simpleMaps.add(field);
             break;
+        case DATE:
+            dateFields.add(field);
+            break;
+        case DATETIME:
+            dateTimeFields.add(field);
+            break;
+        case TIME:
+            timeFields.add(field);
+            break;
         }
     }
 
-    private FieldModel validateField(FieldModel field) {
-        if (field.getName().equals(this.uncapSimpleName)) {
-            uncapSimpleName = StringUtils.uncapitalize(simpleName)+ (escapeSuffix++);
+    public void addSupertypeFields(Map<String, ClassModel> entityTypes, Map<String, ClassModel> supertypes) {
+        String stype = getSupertypeName();
+        Class<?> superClass = safeClassForName(stype);
+        if (entityTypes.containsKey(stype) || supertypes.containsKey(stype)) {
+            while (true) {
+                ClassModel sdecl;
+                if (entityTypes.containsKey(stype)) {
+                    sdecl = entityTypes.get(stype);
+                } else if (supertypes.containsKey(stype)) {
+                    sdecl = supertypes.get(stype);
+                } else {
+                    return;
+                }
+                include(sdecl);
+                stype = sdecl.getSupertypeName();
+            }
+
+        } else if (superClass != null && !superClass.equals(Object.class)) {
+            // TODO : recursively up ?
+            ClassModel type = ClassModel.createFor(superClass);
+            // include fields of supertype
+            include(type);
         }
-        return field;
     }
 
     public int compareTo(ClassModel o) {
@@ -148,10 +187,18 @@ public class ClassModel implements Comparable<ClassModel> {
         return constructors;
     }
 
+    public Collection<FieldModel> getDateFields() {
+        return dateFields;
+    }
+    
+    public Collection<FieldModel> getDateTimeFields() {
+        return dateTimeFields;
+    }
+    
     public Collection<FieldModel> getEntityCollections() {
         return entityCollections;
     }
-
+    
     public Collection<FieldModel> getEntityFields() {
         return entityFields;
     }
@@ -196,10 +243,6 @@ public class ClassModel implements Comparable<ClassModel> {
         return simpleName;
     }
 
-    public String getUncapSimpleName() {
-        return uncapSimpleName;
-    }
-
     public Collection<FieldModel> getStringFields() {
         return stringFields;
     }
@@ -208,12 +251,22 @@ public class ClassModel implements Comparable<ClassModel> {
         return superType;
     }
 
+    public Collection<FieldModel> getTimeFields() {
+        return timeFields;
+    }
+
+    public String getUncapSimpleName() {
+        return uncapSimpleName;
+    }
+
     public int hashCode() {
         return name.hashCode();
     }
 
     public void include(ClassModel clazz) {
         addAll(booleanFields, clazz.booleanFields);
+        addAll(dateFields, clazz.dateFields);
+        addAll(dateTimeFields, clazz.dateTimeFields);
         addAll(entityCollections, clazz.entityCollections);
         addAll(entityFields, clazz.entityFields);
         addAll(entityLists, clazz.entityLists);
@@ -225,38 +278,8 @@ public class ClassModel implements Comparable<ClassModel> {
         addAll(simpleLists, clazz.simpleLists);
         addAll(simpleMaps, clazz.simpleMaps);
         addAll(stringFields, clazz.stringFields);
+        addAll(timeFields, clazz.timeFields);
     }
-
-    private void addAll(Collection<FieldModel> target, Collection<FieldModel> source) {
-        for (FieldModel field : source) {
-            target.add(validateField(field));
-        }
-    }
-    
-    public void addSupertypeFields(Map<String, ClassModel> entityTypes, Map<String, ClassModel> supertypes) {
-        String stype = getSupertypeName();
-        Class<?> superClass = safeClassForName(stype);
-        if (entityTypes.containsKey(stype) || supertypes.containsKey(stype)) {
-            while (true) {
-                ClassModel sdecl;
-                if (entityTypes.containsKey(stype)) {
-                    sdecl = entityTypes.get(stype);
-                } else if (supertypes.containsKey(stype)) {
-                    sdecl = supertypes.get(stype);
-                } else {
-                    return;
-                }
-                include(sdecl);
-                stype = sdecl.getSupertypeName();
-            }
-
-        } else if (superClass != null && !superClass.equals(Object.class)) {
-            // TODO : recursively up ?
-            ClassModel type = ClassModel.createFor(superClass);
-            // include fields of supertype
-            include(type);
-        }
-    }    
     
     private Class<?> safeClassForName(String stype) {
         try {
@@ -264,6 +287,13 @@ public class ClassModel implements Comparable<ClassModel> {
         } catch (ClassNotFoundException e) {
             return null;
         }
+    }    
+    
+    private FieldModel validateField(FieldModel field) {
+        if (field.getName().equals(this.uncapSimpleName)) {
+            uncapSimpleName = StringUtils.uncapitalize(simpleName)+ (escapeSuffix++);
+        }
+        return field;
     }
 
 

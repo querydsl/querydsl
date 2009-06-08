@@ -14,6 +14,8 @@ package com.mysema.query.codegen;
 public enum FieldType {
     BOOLEAN, 
     COMPARABLE, 
+    DATE,
+    DATETIME,
     ENTITY, 
     ENTITYLIST, 
     ENTITYCOLLECTION, 
@@ -23,6 +25,7 @@ public enum FieldType {
     SIMPLELIST, 
     SIMPLECOLLECTION, 
     SIMPLEMAP, 
-    STRING;
+    STRING,
+    TIME
     
 }

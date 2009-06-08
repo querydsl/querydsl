@@ -65,6 +65,17 @@ public class JavaPatterns extends OperationPatterns {
         add(Ops.StringOps.SPLIT, "%s.split(%s)");
         add(Ops.StringOps.LAST_INDEX, "%s.lastIndexOf(%s)");
         add(Ops.StringOps.LAST_INDEX_2ARGS, "%s.lastIndexOf(%s,%s)");
+        
+        // Date and Time
+        add(Ops.DateTimeOps.DAY_OF_MONTH, "%s.getDay()");
+        add(Ops.DateTimeOps.DAY_OF_WEEK, "%s.getDayOfWeek()");
+        add(Ops.DateTimeOps.DAY_OF_YEAR, "%s.getDayOfYear()");
+        add(Ops.DateTimeOps.HOUR, "%s.getHour()");
+        add(Ops.DateTimeOps.MINUTE, "%s.getMinute()");
+        add(Ops.DateTimeOps.MONTH, "%s.getMonth()");
+        add(Ops.DateTimeOps.SECOND, "%s.getSecond()");
+        add(Ops.DateTimeOps.WEEK, "%s.getWeek()");
+        add(Ops.DateTimeOps.YEAR, "%s.getYear()");
 
         // Math
         try {

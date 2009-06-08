@@ -5,17 +5,15 @@
  */
 package com.mysema.query.hql;
 
-import java.util.Date;
-
 import com.mysema.query.alias.GrammarWithAlias;
 import com.mysema.query.types.CollectionType;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.OComparable;
 import com.mysema.query.types.operation.OSimple;
@@ -43,32 +41,12 @@ public class HQLGrammar extends GrammarWithAlias {
         return new OComparable<Number,A>(col.getElementType(), Ops.QuantOps.AVG_IN_COL, (Expr<?>)col);
     }
 
-    public static EComparable<Date> current_date() {
-        return operationFactory.createComparable(Date.class,Ops.DateTimeOps.CURRENT_DATE);
-    }
-
-    public static EComparable<Date> current_time() {
-        return operationFactory.createComparable(Date.class,Ops.DateTimeOps.CURRENT_TIME);
-    }
-
-    public static EComparable<Date> current_timestamp() {
-        return operationFactory.createComparable(Date.class,Ops.DateTimeOps.CURRENT_TIMESTAMP);
-    }
-
-    public static EComparable<Date> day(Expr<Date> date) {
-        return operationFactory.createComparable(Date.class,Ops.DateTimeOps.DAY, date);
-    }
-
     public static EBoolean exists(CollectionType<?> col) {
         return new OBoolean(Ops.QuantOps.EXISTS, (Expr<?>)col);
     }
 
     public static <A> SubQuery<HQLJoinMeta, A> from(PEntity<A> select) {
         return new SubQuery<HQLJoinMeta, A>(select).from(select);
-    }
-
-    public static EComparable<Date> hour(Expr<Date> date) {
-        return operationFactory.createComparable(Date.class, Ops.DateTimeOps.HOUR, date);
     }
 
     public static <A extends Comparable<? super A>> EComparable<A> max(ECollection<A> left) {
@@ -79,24 +57,12 @@ public class HQLGrammar extends GrammarWithAlias {
         return new OComparable<Number,A>(left.getElementType(), Ops.QuantOps.MIN_IN_COL, (Expr<?>)left);
     }
 
-    public static EComparable<Date> minute(Expr<Date> date) {
-        return operationFactory.createComparable(Date.class,Ops.DateTimeOps.MINUTE, date);
-    }
-
-    public static EComparable<Date> month(Expr<Date> date) {
-        return operationFactory.createComparable(Date.class,Ops.DateTimeOps.MONTH, date);
-    }
-
     public static <A> Expr<A> newInstance(Class<A> a, Expr<?>... args) {
         return new EConstructor<A>(a, args);
     }
 
     public static EBoolean notExists(CollectionType<?> col) {
         return new OBoolean(Ops.QuantOps.NOTEXISTS, (Expr<?>)col);
-    }
-
-    public static EComparable<Date> second(Expr<Date> date) {
-        return operationFactory.createComparable(Date.class,Ops.DateTimeOps.SECOND, date);
     }
 
     public static <A> SubQuery<HQLJoinMeta, A> select(Expr<A> select) {
@@ -130,14 +96,6 @@ public class HQLGrammar extends GrammarWithAlias {
 
     public static <D extends Number & Comparable<? super D>> ENumber<Double> sumAsDouble(Expr<D> left) {
         return sum(left).doubleValue();
-    }
-
-    public static EComparable<Date> sysdate() {
-        return operationFactory.createComparable(Date.class,Ops.DateTimeOps.SYSDATE);
-    }
-
-    public static EComparable<Date> year(Expr<Date> date) {
-        return operationFactory.createComparable(Date.class,Ops.DateTimeOps.YEAR, date);
     }
 
 }

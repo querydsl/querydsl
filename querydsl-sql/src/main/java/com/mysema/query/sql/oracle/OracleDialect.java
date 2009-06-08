@@ -39,7 +39,7 @@ public class OracleDialect extends SQLPatterns {
         add(Ops.DateTimeOps.YEAR, "extract(year from %s)");
         add(Ops.DateTimeOps.MONTH, "extract(month from %s)");
         add(Ops.DateTimeOps.WEEK, "to_number(to_char(%s,'WW'))");
-        add(Ops.DateTimeOps.DAY, "extract(day from %s)");
+//        add(Ops.DateTimeOps.DAY, "extract(day from %s)");
 
         add(Ops.DateTimeOps.HOUR, "to_number(to_char(%s,'HH24'))");
         add(Ops.DateTimeOps.MINUTE, "to_number(to_char(%s,'MI'))");

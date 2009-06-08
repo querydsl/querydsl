@@ -13,7 +13,6 @@ import static com.mysema.query.hql.HQLGrammar.exists;
 import static com.mysema.query.hql.HQLGrammar.notExists;
 import static com.mysema.query.hql.HQLGrammar.some;
 import static com.mysema.query.hql.HQLGrammar.sum;
-import static com.mysema.query.hql.HQLGrammar.sysdate;
 import static com.mysema.query.types.Grammar.avg;
 import static com.mysema.query.types.Grammar.not;
 import static org.junit.Assert.assertEquals;
@@ -31,6 +30,7 @@ import antlr.TokenStreamException;
 import antlr.collections.AST;
 
 import com.mysema.query.SearchResults;
+import com.mysema.query.functions.DateTimeFunctions;
 import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.Catalog;
@@ -68,9 +68,10 @@ public class ParserTest implements Constants {
     @Test
     public void testBeforeAndAfter() throws RecognitionException,
             TokenStreamException {
+        
         EComparable<java.util.Date> ed = catalog.effectiveDate;
-        query().from(catalog).where(ed.after(sysdate()), ed.aoe(sysdate()),
-                ed.before(sysdate()), ed.boe(sysdate())).select(catalog)
+        query().from(catalog).where(ed.after(DateTimeFunctions.currentDate()), ed.aoe(DateTimeFunctions.currentDate()),
+                ed.before(DateTimeFunctions.currentDate()), ed.boe(DateTimeFunctions.currentDate())).select(catalog)
                 .parse();
     }
 
@@ -510,12 +511,12 @@ public class ParserTest implements Constants {
                 .from(catalog).join(catalog.prices, price).where(
                         not(ord.paid).and(ord.customer.eq(cust)).and(
                                 price.product.eq(product)).and(
-                                catalog.effectiveDate.after(sysdate())).and(
+                                catalog.effectiveDate.after(DateTimeFunctions.currentDate())).and(
                                 catalog.effectiveDate.after(all(HQLGrammar
                                         .select(catalog.effectiveDate).from(
                                                 catalog).where(
                                                 catalog.effectiveDate
-                                                        .before(sysdate()))))))
+                                                        .before(DateTimeFunctions.currentDate()))))))
                 .groupBy(ord).having(sum(price.amount).gt(0l)).orderBy(
                         sum(price.amount).desc());
 

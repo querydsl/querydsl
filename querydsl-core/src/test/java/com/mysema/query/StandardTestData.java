@@ -14,6 +14,8 @@ import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EComparable;
+import com.mysema.query.types.expr.EDate;
+import com.mysema.query.types.expr.EDateTime;
 import com.mysema.query.types.expr.EList;
 import com.mysema.query.types.expr.EMap;
 import com.mysema.query.types.expr.ENumber;
@@ -70,6 +72,25 @@ public abstract class StandardTestData {
     public static <A> Collection<Expr<?>> collectionProjections(ECollection<A> expr, ECollection<A> other, A knownElement){
         return Arrays.<Expr<?>>asList(
           expr.size()
+        );
+    }
+    
+    public static <A extends Comparable> Collection<Expr<?>> dateProjections(EDate<A> expr, EDate<A> other, A knownValue){
+        return Arrays.<Expr<?>>asList(
+          expr.getDayOfMonth(),
+          expr.getMonth(),
+          expr.getYear()
+        );
+    }
+    
+    public static <A extends Comparable> Collection<Expr<?>> dateTimeProjections(EDateTime<A> expr, EDateTime<A> other, A knownValue){
+        return Arrays.<Expr<?>>asList(
+          expr.getDayOfMonth(),
+          expr.getMonth(),
+          expr.getYear(),
+          expr.getHour(),
+          expr.getMinute(),
+          expr.getSecond()
         );
     }
     

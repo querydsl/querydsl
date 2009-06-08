@@ -7,6 +7,8 @@ package com.mysema.query;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Date;
+
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
 
@@ -184,6 +186,30 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest implements StandardT
             System.out.println(str);
             query().from(product, otherProduct).list(str, product.name, otherProduct.name);
         }
+    }
+    
+    @Test
+    @Ignore
+    public void dateProjections() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Test
+    @Ignore
+    public void dateTimeProjections() {
+        // valid expressions are not allowed in projections
+        for (Expr<?> pr : StandardTestData.dateTimeProjections(product.publicationDate, otherProduct.publicationDate, new Date())){
+            System.out.println(pr);
+            query().from(product, otherProduct).list(pr, product.name, otherProduct.name);
+        }          
+    }
+
+    @Test
+    @Ignore
+    public void timeProjections() {
+        // TODO Auto-generated method stub
+        
     }
     
 }

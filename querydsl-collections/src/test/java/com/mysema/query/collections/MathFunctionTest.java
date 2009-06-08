@@ -10,7 +10,7 @@ import static com.mysema.query.collections.MiniApi.from;
 
 import org.junit.Test;
 
-import com.mysema.query.collections.Domain.Cat;
+import com.mysema.query.collections.domain.Cat;
 import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;

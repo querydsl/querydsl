@@ -21,7 +21,7 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.collections.ColQuery;
 import com.mysema.query.collections.ColQueryImpl;
-import com.mysema.query.collections.Domain.Cat;
+import com.mysema.query.collections.domain.Cat;
 import com.mysema.query.collections.support.JoinExpressionComparator;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;

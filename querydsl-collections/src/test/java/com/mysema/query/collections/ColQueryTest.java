@@ -15,7 +15,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.mysema.query.collections.Domain.Cat;
+import com.mysema.query.collections.domain.Cat;
 import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.ENumber;

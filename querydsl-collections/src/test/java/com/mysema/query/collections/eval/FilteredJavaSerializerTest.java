@@ -12,7 +12,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.mysema.query.collections.ColQueryPatterns;
-import com.mysema.query.collections.Domain.QCat;
+import com.mysema.query.collections.domain.QCat;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 

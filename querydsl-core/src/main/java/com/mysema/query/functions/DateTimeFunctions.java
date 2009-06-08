@@ -5,7 +5,6 @@
  */
 package com.mysema.query.functions;
 
-import java.sql.Time;
 import java.util.Date;
 
 import com.mysema.query.types.OperationFactory;
@@ -33,46 +32,47 @@ public final class DateTimeFunctions {
     }
 
     public static EComparable<Date> currentTime() {
-        return factory.createComparable(Date.class, Ops.DateTimeOps.CURRENT_DATE);
+        return factory.createComparable(Date.class, Ops.DateTimeOps.CURRENT_TIME);
     }
+    
+    public static EComparable<Date> currentTimestamp() {
+        return factory.createComparable(Date.class, Ops.DateTimeOps.CURRENT_TIMESTAMP);
+    }
+    
 
-    public static ENumber<Integer> dayOfMonth(Expr<Date> d) {
+    public static ENumber<Integer> dayOfMonth(Expr<?> d) {
         return factory.createNumber(Integer.class, Ops.DateTimeOps.DAY_OF_MONTH, d);
     }
 
-    public static ENumber<Integer> dayOfWeek(Expr<Date> d) {
+    public static ENumber<Integer> dayOfWeek(Expr<?> d) {
         return factory.createNumber(Integer.class, Ops.DateTimeOps.DAY_OF_WEEK,d);
     }
 
-    public static ENumber<Integer> dayOfYear(Expr<Date> d) {
+    public static ENumber<Integer> dayOfYear(Expr<?> d) {
         return factory.createNumber(Integer.class, Ops.DateTimeOps.DAY_OF_YEAR,d);
     }
 
-    public static ENumber<Integer> hour(Expr<Time> t) {
+    public static ENumber<Integer> hour(Expr<?> t) {
         return factory.createNumber(Integer.class, Ops.DateTimeOps.HOUR, t);
     }
 
-    public static ENumber<Integer> minute(Expr<Time> t) {
+    public static ENumber<Integer> minute(Expr<?> t) {
         return factory.createNumber(Integer.class, Ops.DateTimeOps.MINUTE, t);
     }
 
-    public static ENumber<Integer> year(Expr<Date> d) {
+    public static ENumber<Integer> year(Expr<?> d) {
         return factory.createNumber(Integer.class, Ops.DateTimeOps.YEAR, d);
     }
 
-    public static ENumber<Integer> week(Expr<Date> d) {
+    public static ENumber<Integer> week(Expr<?> d) {
         return factory.createNumber(Integer.class, Ops.DateTimeOps.WEEK, d);
     }
 
-    public static ENumber<Integer> second(Expr<Time> t) {
+    public static ENumber<Integer> second(Expr<?> t) {
         return factory.createNumber(Integer.class, Ops.DateTimeOps.SECOND, t);
     }
 
-    public static EComparable<Date> now() {
-        return factory.createComparable(Date.class, Ops.DateTimeOps.CURRENT_TIME);
-    }
-
-    public static ENumber<Integer> month(Expr<Date> d) {
+    public static ENumber<Integer> month(Expr<?> d) {
         return factory.createNumber(Integer.class, Ops.DateTimeOps.MONTH, d);
     }
 

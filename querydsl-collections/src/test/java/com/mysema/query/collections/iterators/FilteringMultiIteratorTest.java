@@ -5,15 +5,20 @@
  */
 package com.mysema.query.collections.iterators;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
 import com.mysema.query.collections.ColQueryPatterns;
-import com.mysema.query.collections.QueryIndexSupport;
 import com.mysema.query.collections.MiniApi;
-import com.mysema.query.collections.Domain.Cat;
-import com.mysema.query.collections.Domain.QCat;
+import com.mysema.query.collections.QueryIndexSupport;
+import com.mysema.query.collections.domain.Cat;
+import com.mysema.query.collections.domain.QCat;
 import com.mysema.query.collections.support.DefaultIndexSupport;
 import com.mysema.query.collections.support.SimpleIteratorSource;
 import com.mysema.query.types.Grammar;

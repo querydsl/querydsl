@@ -10,16 +10,7 @@ import static com.mysema.query.functions.MathFunctions.add;
 import static com.mysema.query.functions.MathFunctions.div;
 import static com.mysema.query.functions.MathFunctions.mult;
 import static com.mysema.query.functions.MathFunctions.sub;
-import static com.mysema.query.hql.HQLGrammar.current_date;
-import static com.mysema.query.hql.HQLGrammar.current_time;
-import static com.mysema.query.hql.HQLGrammar.current_timestamp;
-import static com.mysema.query.hql.HQLGrammar.day;
-import static com.mysema.query.hql.HQLGrammar.hour;
-import static com.mysema.query.hql.HQLGrammar.minute;
-import static com.mysema.query.hql.HQLGrammar.month;
-import static com.mysema.query.hql.HQLGrammar.second;
 import static com.mysema.query.hql.HQLGrammar.sum;
-import static com.mysema.query.hql.HQLGrammar.year;
 import static com.mysema.query.types.Grammar.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -32,6 +23,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.mysema.query.functions.DateTimeFunctions;
 import com.mysema.query.hql.domain.QAccount;
 import com.mysema.query.hql.domain.QAuditLog;
 import com.mysema.query.hql.domain.QCat;
@@ -285,16 +277,16 @@ public class FeaturesTest {
     @Test
     public void testDateOperations() {
         // current_date(), current_time(), current_timestamp()
-        toString("current_date()", current_date());
-        toString("current_time()", current_time());
-        toString("current_timestamp()", current_timestamp());
+        toString("current_date()", DateTimeFunctions.currentDate());
+        toString("current_time()", DateTimeFunctions.currentTime());
+        toString("current_timestamp()", DateTimeFunctions.currentTimestamp());
         // second(...), minute(...), hour(...), day(...), month(...), year(...),
-        second(catalog.effectiveDate);
-        minute(catalog.effectiveDate);
-        hour(catalog.effectiveDate);
-        day(catalog.effectiveDate);
-        month(catalog.effectiveDate);
-        year(catalog.effectiveDate);
+        DateTimeFunctions.second(catalog.effectiveDate);
+        DateTimeFunctions.minute(catalog.effectiveDate);
+        DateTimeFunctions.hour(catalog.effectiveDate);
+        DateTimeFunctions.dayOfMonth(catalog.effectiveDate);
+        DateTimeFunctions.month(catalog.effectiveDate);
+        DateTimeFunctions.year(catalog.effectiveDate);
     }
 
     @Test

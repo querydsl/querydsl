@@ -38,6 +38,8 @@ import com.mysema.query.types.path.PComparableArray;
 import com.mysema.query.types.path.PComponentCollection;
 import com.mysema.query.types.path.PComponentList;
 import com.mysema.query.types.path.PComponentMap;
+import com.mysema.query.types.path.PDate;
+import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
 import com.mysema.query.types.path.PEntityList;
@@ -48,6 +50,7 @@ import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PStringArray;
+import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.Path;
 
 /**
@@ -174,4 +177,10 @@ public abstract class Visitor<T extends Visitor<T>> {
     protected abstract void visit(PString expr);
 
     protected abstract void visit(PStringArray expr);
+    
+    protected abstract void visit(PDate<?> expr);
+    
+    protected abstract void visit(PDateTime<?> expr);
+    
+    protected abstract void visit(PTime<?> expr);
 }

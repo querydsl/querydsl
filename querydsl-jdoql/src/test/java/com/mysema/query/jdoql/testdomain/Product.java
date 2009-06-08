@@ -5,6 +5,8 @@
  */
 package com.mysema.query.jdoql.testdomain;
 
+import java.util.Date;
+
 import javax.jdo.annotations.Inheritance;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
@@ -21,6 +23,8 @@ public class Product {
     private String description = null;
 
     private double price = 0.0;
+    
+    private Date publicationDate;
 
     private int amount;
     
@@ -64,6 +68,14 @@ public class Product {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+    
+    public Date getPublicationDate() {
+        return publicationDate;
+    }
+
+    public void setPublicationDate(Date publicationDate) {
+        this.publicationDate = publicationDate;
     }
 
     public String toString() {

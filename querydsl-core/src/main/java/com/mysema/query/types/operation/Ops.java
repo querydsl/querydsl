@@ -138,7 +138,7 @@ public interface Ops {
         Operator<java.util.Date> CURRENT_DATE = new OperatorImpl<java.util.Date>();
         Operator<java.util.Date> CURRENT_TIME = new OperatorImpl<java.util.Date>();
         Operator<java.util.Date> CURRENT_TIMESTAMP = new OperatorImpl<java.util.Date>();
-        Operator<Integer> DAY = new OperatorImpl<Integer>(java.util.Date.class);
+//        Operator<Integer> DAY = new OperatorImpl<Integer>(java.util.Date.class);
         Operator<Integer> HOUR = new OperatorImpl<Integer>(java.util.Date.class);
         Operator<Integer> MINUTE = new OperatorImpl<Integer>(java.util.Date.class);
         Operator<Integer> MONTH = new OperatorImpl<Integer>(java.util.Date.class);

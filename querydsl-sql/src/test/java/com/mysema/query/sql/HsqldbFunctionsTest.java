@@ -172,7 +172,7 @@ public class HsqldbFunctionsTest {
         // MONTHNAME(date) returns the name of the month
         // NOW() returns the current date and time as a timestamp) - use
         // CURRENT_TIMESTAMP instead
-        DateTimeFunctions.now();
+//        DateTimeFunctions.now();
         // QUARTER(date) returns the quarter (1-4)
         // SECOND(time) returns the second (0-59)
         DateTimeFunctions.second(t);

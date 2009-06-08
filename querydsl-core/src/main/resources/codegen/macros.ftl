@@ -16,6 +16,15 @@
     <#list decl.comparableFields as field>
         <@comparableField field=field/>
     </#list>
+    <#list decl.dateFields as field>
+        <@dateField field=field/>
+    </#list>
+    <#list decl.dateTimeFields as field>
+        <@dateTimeField field=field/>
+    </#list>
+    <#list decl.timeFields as field>
+        <@timeField field=field/>
+    </#list>    
     <#list decl.numericFields as field>
         <@numericField field=field/>
     </#list>
@@ -66,6 +75,18 @@
 
 <#macro comparableField field>
     public final PComparable<${field.typeName}> ${field.name} = _comparable("${field.name}",${field.typeName}.class);
+</#macro>
+
+<#macro dateField field>
+    public final PDate<${field.typeName}> ${field.name} = _date("${field.name}",${field.typeName}.class);
+</#macro>
+
+<#macro dateTimeField field>
+    public final PDateTime<${field.typeName}> ${field.name} = _dateTime("${field.name}",${field.typeName}.class);
+</#macro>
+
+<#macro timeField field>
+    public final PTime<${field.typeName}> ${field.name} = _time("${field.name}",${field.typeName}.class);
 </#macro>
 
 <#macro entityCollection field>

@@ -161,6 +161,27 @@ public abstract class AbstractStandardTest implements StandardTest{
         
     }
     
+    @Test
+    @Ignore
+    public void dateProjections() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Test
+    @Ignore
+    public void dateTimeProjections() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Test
+    @Ignore
+    public void timeProjections() {
+        // TODO Auto-generated method stub
+        
+    }
+    
     public void setSession(Session session) {
         this.session = session;
     }

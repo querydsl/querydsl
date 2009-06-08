@@ -26,6 +26,8 @@ import com.mysema.query.types.path.PComparableArray;
 import com.mysema.query.types.path.PComponentCollection;
 import com.mysema.query.types.path.PComponentList;
 import com.mysema.query.types.path.PComponentMap;
+import com.mysema.query.types.path.PDate;
+import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
 import com.mysema.query.types.path.PEntityList;
@@ -36,6 +38,7 @@ import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PStringArray;
+import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.Path;
 
 /**
@@ -175,6 +178,21 @@ public abstract class AbstractVisitor<SubType extends AbstractVisitor<SubType>>
 
     @Override
     protected void visit(PNumber<?> expr) {
+        visit((Path<?>) expr);
+    }
+    
+    @Override
+    protected void visit(PDate<?> expr) {
+        visit((Path<?>) expr);
+    }
+    
+    @Override
+    protected void visit(PDateTime<?> expr) {
+        visit((Path<?>) expr);
+    }
+    
+    @Override
+    protected void visit(PTime<?> expr) {
         visit((Path<?>) expr);
     }
 

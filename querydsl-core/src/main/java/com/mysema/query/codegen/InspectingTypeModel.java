@@ -27,7 +27,17 @@ public abstract class InspectingTypeModel extends SimpleTypeModel {
                 || fullName.equals(Class.class.getName())
                 || fullName.equals(Object.class.getName())) {
             return FieldType.SIMPLE;
-
+            
+        } else if (fullName.equals(java.sql.Date.class.getName())){
+            return FieldType.DATE;
+            
+        }else if (fullName.equals(java.util.Date.class.getName())
+                || fullName.equals(java.sql.Timestamp.class.getName())){
+            return FieldType.DATETIME;
+                        
+        } else if (fullName.equals(java.sql.Time.class)){
+            return FieldType.TIME;
+            
         } else if (isComparableSupported(fullName)
                 && Number.class.isAssignableFrom(TypeUtil.safeForName(fullName))) {
             return FieldType.NUMERIC;

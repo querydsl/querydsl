@@ -17,9 +17,9 @@ import com.mysema.query.types.expr.EEntity;
  * @param <D> Java type
  */
 public class PEntity<D> extends EEntity<D> implements Path<D> {
+    private final String entityName;
     private EBoolean isnull, isnotnull;
     private final PathMetadata<?> metadata;
-    private final String entityName;
     private final Path<?> root;
 
     /**
@@ -70,7 +70,29 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
             Class<A> type) {
         return new PComparable<A>(type, PathMetadata.forProperty(this, propertyName));
     }
-
+    
+    /**
+     * @param <A>
+     * @param propertyName
+     * @param type
+     * @return
+     */
+    protected <A extends Comparable<?>> PDate<A> _date(String propertyName,
+            Class<A> type) {
+        return new PDate<A>(type, PathMetadata.forProperty(this, propertyName));
+    }
+    
+    /**
+     * @param <A>
+     * @param propertyName
+     * @param type
+     * @return
+     */
+    protected <A extends Comparable<?>> PDateTime<A> _dateTime(String propertyName,
+            Class<A> type) {
+        return new PDateTime<A>(type, PathMetadata.forProperty(this, propertyName));
+    }
+    
     /**
      * Create an Entity subpath for the given property
      * 
@@ -207,6 +229,17 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      */
     protected PString _string(String property) {
         return new PString(PathMetadata.forProperty(this, property));
+    }
+
+    /**
+     * @param <A>
+     * @param propertyName
+     * @param type
+     * @return
+     */
+    protected <A extends Comparable<?>> PTime<A> _time(String propertyName,
+            Class<A> type) {
+        return new PTime<A>(type, PathMetadata.forProperty(this, propertyName));
     }
 
     @Override
