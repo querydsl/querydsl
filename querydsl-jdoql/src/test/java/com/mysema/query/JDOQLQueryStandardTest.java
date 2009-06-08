@@ -7,6 +7,9 @@ package com.mysema.query;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
 
@@ -14,12 +17,17 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.jdoql.AbstractJDOTest;
 import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QProduct;
+import com.mysema.query.jdoql.testdomain.QStore;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EList;
+import com.mysema.query.types.expr.EMap;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.Expr;
 
 public class JDOQLQueryStandardTest extends AbstractJDOTest implements StandardTest{
     
@@ -50,6 +58,10 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest implements StandardT
     
     private QProduct otherProduct = new QProduct("otherProduct");
     
+    private QStore store = QStore.store;
+    
+    private QStore otherStore = new QStore("otherStore");
+    
     @Test 
     public void booleanFilters() {
         for (EBoolean f : StandardTestData.booleanFilters(product.name.isNull(), otherProduct.price.lt(10.00))){
@@ -58,31 +70,64 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest implements StandardT
         }
     }
     
-    
     @Test
-    public void numericFilters(){
-        for (EBoolean f : StandardTestData.numericFilters(product.amount, otherProduct.amount, 2)){
+    public void collectionFilters() {
+        Product p = query().from(product).limit(1).uniqueResult(product);
+        for (EBoolean f : StandardTestData.collectionFilters(store.products, otherStore.products, p)){
             System.out.println(f);
-            query().from(product, otherProduct).where(f).list(product.name, otherProduct.name);
-        }
-    }
-    
-    @Test    
-    public void numericMatchingFilters(){        
-        for (EBoolean f : StandardTestData.numericMatchingFilters(product.amount, otherProduct.amount, 2)){
-            System.out.println(f);
-            assertTrue(!query().from(product, otherProduct).where(f).list(product.name, otherProduct.name).isEmpty());
-        }
+            query().from(store, otherStore).where(f).list(store.name, otherStore.name);
+        }        
     }
     
     @Test
     @Ignore
-    public void numericProjections(){
-        // some valid numeric expressions are not supported in projections
-        for (ENumber<?> num : StandardTestData.numericProjections(product.price, otherProduct.price, 200.0)){
-            System.out.println(num);
-            query().from(product).from(otherProduct).list(num, product.price, otherProduct.price);
+    public void collectionProjections() {
+        //The expression ContainerSizeExpression "(SELECT COUNT(*) FROM STORE_PRODUCTS THIS_PRODUCTS WHERE THIS_PRODUCTS.STORE_ID_OID = THIS.STORE_ID)" is not supported in results.
+        Product p = query().from(product).limit(1).uniqueResult(product);
+        for (Expr<?> pr : StandardTestData.collectionProjections(store.products, otherStore.products, p)){
+            System.out.println(pr);
+            query().from(store, otherStore).list(pr, store.name, otherStore.name);
         }
+    }
+    
+    @Test
+    public void listFilters() {
+        Product p = query().from(product).limit(1).uniqueResult(product);
+        for (EBoolean f : StandardTestData.listFilters(store.products, otherStore.products, p)){
+            System.out.println(f);
+            query().from(store, otherStore).where(f).list(store.name, otherStore.name);
+        }        
+    }
+    
+    @Test
+    @Ignore
+    public void listProjections() {
+        // java.util.List#get(int) is not supported
+        Product p = query().from(product).limit(1).uniqueResult(product);
+        for (Expr<?> pr : StandardTestData.listProjections(store.products, otherStore.products, p)){
+            System.out.println(pr);
+            query().from(store, otherStore).list(pr, store.name, otherStore.name);
+        }
+    }
+    
+    @Test
+    public void mapFilters() {
+        Product p = query().from(product).limit(1).uniqueResult(product);
+        for (EBoolean f : StandardTestData.mapFilters(store.productsByName, otherStore.productsByName, "A0", p)){
+            System.out.println(f);
+            query().from(store, otherStore).where(f).list(store.name, otherStore.name);
+        }        
+    }
+    
+    @Test
+    @Ignore
+    public void mapProjections() {
+        // valid expressions are not allowed in projections
+        Product p = query().from(product).limit(1).uniqueResult(product);
+        for (Expr<?> pr : StandardTestData.mapProjections(store.productsByName, otherStore.productsByName, "A0", p)){
+            System.out.println(pr);
+            query().from(store, otherStore).list(pr, store.name, otherStore.name);
+        }        
     }
     
     @Test
@@ -96,13 +141,39 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest implements StandardT
     }
     
     @Test
+    public void numericFilters(){
+        for (EBoolean f : StandardTestData.numericFilters(product.amount, otherProduct.amount, 2)){
+            System.out.println(f);
+            query().from(product, otherProduct).where(f).list(product.name, otherProduct.name);
+        }
+    }
+
+    @Test    
+    public void numericMatchingFilters(){        
+        for (EBoolean f : StandardTestData.numericMatchingFilters(product.amount, otherProduct.amount, 2)){
+            System.out.println(f);
+            assertTrue(!query().from(product, otherProduct).where(f).list(product.name, otherProduct.name).isEmpty());
+        }
+    }
+
+    @Test
+    @Ignore
+    public void numericProjections(){
+        // valid expressions are not allowed in projections
+        for (ENumber<?> num : StandardTestData.numericProjections(product.price, otherProduct.price, 200.0)){
+            System.out.println(num);
+            query().from(product).from(otherProduct).list(num, product.price, otherProduct.price);
+        }
+    }
+
+    @Test
     public void stringFilters(){
         for (EBoolean f : StandardTestData.stringFilters(product.name, otherProduct.name, "C5")){
             System.out.println(f);
             query().from(product, otherProduct).where(f).list(product.name, otherProduct.name);
         }
     }
-    
+
     @Test
     public void stringMatchingFilters(){
         for (EBoolean f : StandardTestData.stringMatchingFilters(product.name, otherProduct.name, "C5")){
@@ -114,31 +185,11 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest implements StandardT
     @Test
     @Ignore
     public void stringProjections(){   
-        // commented out since lots of valid String expressions aren't allowed in projections
+        // valid expressions are not allowed in projections
         for (EString str : StandardTestData.stringProjections(product.name, otherProduct.name, "C5")){
             System.out.println(str);
             query().from(product, otherProduct).list(str, product.name, otherProduct.name);
         }
     }
-
-    @Test
-    public void listProjections() {
-        // TODO Auto-generated method stub       
-    }
-
-    @Test
-    public void mapProjections() {
-        // TODO Auto-generated method stub        
-    }
-
-    @Test
-    public void listFilters() {
-        // TODO Auto-generated method stub        
-    }
-
-    @Test
-    public void mapFilters() {
-        // TODO Auto-generated method stub        
-    }
-
+    
 }

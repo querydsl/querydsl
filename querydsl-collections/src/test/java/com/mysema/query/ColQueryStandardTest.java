@@ -111,6 +111,22 @@ public class ColQueryStandardTest implements StandardTest {
             MiniApi.from(cat, data).from(otherCat, data).where(filter).list(cat, otherCat);
         }        
     }
+    
+    @Test
+    public void collectionProjections() {
+        for (Expr<?> pr : StandardTestData.collectionProjections(cat.kittens, otherCat.kittens, new Cat())){
+            System.out.println(pr);
+            MiniApi.from(cat, data).from(otherCat, data).list(pr);
+        }        
+    }
+    
+    @Test
+    public void collectionFilters() {
+        for (EBoolean filter : StandardTestData.collectionFilters(cat.kittens, otherCat.kittens, new Cat())){
+            System.out.println(filter);
+            MiniApi.from(cat, data).from(otherCat, data).where(filter).list(cat, otherCat);
+        }        
+    }
 
     @Test
     @Ignore

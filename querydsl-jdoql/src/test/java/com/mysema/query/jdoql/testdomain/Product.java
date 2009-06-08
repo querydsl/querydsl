@@ -24,7 +24,7 @@ public class Product {
 
     private int amount;
     
-    protected Product() {
+    public Product() {
     }
 
     public Product(String name, String description, double price, int amount) {

@@ -117,6 +117,22 @@ public abstract class AbstractStandardTest implements StandardTest{
     }
     
     @Test
+    public void collectionProjections() {
+        for (Expr<?> p : StandardTestData.collectionProjections(cat.kittens, otherCat.kittens, savedCats.get(0))){
+            System.out.println(p);
+            query().from(cat, otherCat).list(cat, otherCat, p);
+        }        
+    }
+    
+    @Test
+    public void collectionFilters() {
+        for (EBoolean f : StandardTestData.collectionFilters(cat.kittens, otherCat.kittens, savedCats.get(0))){
+            System.out.println(f);
+            query().from(cat, otherCat).where(f).list(cat.name);
+        }        
+    }
+    
+    @Test
     public void listProjections() {
         for (Expr<?> p : StandardTestData.listProjections(cat.kittens, otherCat.kittens, savedCats.get(0))){
             System.out.println(p);

@@ -16,6 +16,10 @@ public interface StandardTest {
     
     void booleanFilters();
     
+    void collectionFilters();
+    
+    void collectionProjections();
+    
     void listFilters();
     
     void listProjections();

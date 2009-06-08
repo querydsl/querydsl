@@ -10,12 +10,10 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.mysema.query.jdoql.testdomain.Book;
-import com.mysema.query.jdoql.testdomain.Department;
-import com.mysema.query.jdoql.testdomain.Employee;
+import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QBook;
-import com.mysema.query.jdoql.testdomain.QCompany;
-import com.mysema.query.jdoql.testdomain.QDepartment;
 import com.mysema.query.jdoql.testdomain.QProduct;
+import com.mysema.query.jdoql.testdomain.QStore;
 import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.Expr;
 
@@ -24,10 +22,8 @@ public class JDOQLSerializerTest {
     private QBook book = QBook.book;
 
     private QProduct product = QProduct.product;
-
-    private QCompany company = QCompany.company;
     
-    private QDepartment department = QDepartment.department;
+    private QStore store = QStore.store;
 
     @Test
     public void instanceOf() {
@@ -64,31 +60,31 @@ public class JDOQLSerializerTest {
 
     @Test
     public void collectionTests() {
-        Department dep = new Department();
+        Product product = new Product();
         // collection
-        assertEquals("company.departments.contains(a1)",
-                serialize(company.departments.contains(dep)));
-        assertEquals("company.departments.get(0) == a1",
-                serialize(company.departments.get(0).eq(dep)));
-        assertEquals("company.departments.isEmpty()",
-                serialize(company.departments.isEmpty()));
-        assertEquals("!company.departments.isEmpty()",
-                serialize(company.departments.isNotEmpty()));
-        assertEquals("company.departments.size() == a1",
-                serialize(company.departments.size().eq(1)));
+        assertEquals("store.products.contains(a1)",
+                serialize(store.products.contains(product)));
+        assertEquals("store.products.get(0) == a1",
+                serialize(store.products.get(0).eq(product)));
+        assertEquals("store.products.isEmpty()",
+                serialize(store.products.isEmpty()));
+        assertEquals("!store.products.isEmpty()",
+                serialize(store.products.isNotEmpty()));
+        assertEquals("store.products.size() == a1",
+                serialize(store.products.size().eq(1)));
     }
 
     @Test
     public void mapTests() {        
-        assertEquals("department.employeesByUserName.containsKey(a1)", 
-                serialize(department.employeesByUserName.containsKey("")));
-        assertEquals("department.employeesByUserName.containsValue(a1)", 
-                serialize(department.employeesByUserName.containsValue(new Employee())));
+        assertEquals("store.productsByName.containsKey(a1)", 
+                serialize(store.productsByName.containsKey("")));
+        assertEquals("store.productsByName.containsValue(a1)", 
+                serialize(store.productsByName.containsValue(new Product())));
         
-        assertEquals("department.employeesByUserName.isEmpty()",
-                serialize(department.employeesByUserName.isEmpty()));
-        assertEquals("!department.employeesByUserName.isEmpty()",
-                serialize(department.employeesByUserName.isNotEmpty()));
+        assertEquals("store.productsByName.isEmpty()",
+                serialize(store.productsByName.isEmpty()));
+        assertEquals("!store.productsByName.isEmpty()",
+                serialize(store.productsByName.isNotEmpty()));
     }
 
     @Test

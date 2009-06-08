@@ -36,6 +36,8 @@ import com.mysema.query.types.path.PEntity;
 public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubType>> extends QueryBaseWithProjection<Object, SubType> implements Projectable {
 
     private Map<Object,String> constants = new HashMap<Object,String>();
+    
+    private List<Object> orderedConstants = new ArrayList<Object>();
 
     private List<Query> queries = new ArrayList<Query>(2);
     
@@ -80,12 +82,14 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
 
     private String buildFilterString(boolean forCountRow) {
         if (getMetadata().getWhere() == null) {
+            constants = new HashMap<Object,String>();
             return null;
-        }
-        JDOQLSerializer serializer = new JDOQLSerializer(patterns, sources.get(0));
-        serializer.handle(getMetadata().getWhere());
-        constants = serializer.getConstantToLabel();
-        return serializer.toString();
+        }else{
+            JDOQLSerializer serializer = new JDOQLSerializer(patterns, sources.get(0));
+            serializer.handle(getMetadata().getWhere());
+            constants = serializer.getConstantToLabel();
+            return serializer.toString();    
+        }        
     }
 
     @Override
@@ -195,6 +199,7 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
                 }
                 String key = entry.getValue();
                 Object val = entry.getKey();
+                orderedConstants.add(val);
                 builder.append(val.getClass().getName()).append(" ").append(key);
             }
             query.declareParameters(builder.toString());
@@ -227,8 +232,8 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
 
     private Object execute(Query query) {
         Object rv;
-        if (constants != null) {
-            rv = query.executeWithArray(constants.keySet().toArray());
+        if (!orderedConstants.isEmpty()) {
+            rv = query.executeWithArray(orderedConstants.toArray());
         } else {
             rv = query.execute();
         }

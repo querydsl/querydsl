@@ -838,6 +838,7 @@ public class Grammar {
      * @return
      */
     public static EBoolean not(EBoolean left) {
+        // TODO : use a known set of operation negations
         if (left instanceof OBoolean) {
             OBoolean o = (OBoolean) left;
             if (o.getOperator() == Ops.NOT){

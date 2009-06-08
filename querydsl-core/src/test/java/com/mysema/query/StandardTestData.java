@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.EList;
 import com.mysema.query.types.expr.EMap;
@@ -57,13 +58,23 @@ public abstract class StandardTestData {
         );
     }
     
-    public static <A> Collection<EBoolean> listFilters(EList<A> expr, EList<A> other, A knownElement){
+    public static <A> Collection<EBoolean> collectionFilters(ECollection<A> expr, ECollection<A> other, A knownElement){
         return Arrays.<EBoolean>asList(
           expr.contains(knownElement),
           expr.isEmpty(),
           expr.isNotEmpty(),
           expr.size().gt(0)
         );
+    }
+    
+    public static <A> Collection<Expr<?>> collectionProjections(ECollection<A> expr, ECollection<A> other, A knownElement){
+        return Arrays.<Expr<?>>asList(
+          expr.size()
+        );
+    }
+    
+    public static <A> Collection<EBoolean> listFilters(EList<A> expr, EList<A> other, A knownElement){
+        return collectionFilters(expr, other, knownElement);
     }
     
     public static <A> Collection<Expr<?>> listProjections(EList<A> expr, EList<A> other, A knownElement){
