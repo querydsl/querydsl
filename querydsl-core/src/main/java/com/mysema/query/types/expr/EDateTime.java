@@ -16,16 +16,22 @@ public abstract class EDateTime<D extends Comparable> extends EComparable<D> {
     
     private ENumber<Integer> year;
     
-    private ENumber<Integer> hour;
+    private ENumber<Integer> hours;
     
-    private ENumber<Integer> minute;
+    private ENumber<Integer> minutes;
     
-    private ENumber<Integer> second;
+    private ENumber<Integer> seconds;
     
     public EDateTime(Class<? extends D> type) {
         super(type);
     }
     
+    /**
+     * Create a day of month expression
+     * 
+     * @return
+     * @see java.util.Date#getDate()
+     */
     public ENumber<Integer> getDayOfMonth(){
         if (dayOfMonth == null){
             dayOfMonth = DateTimeFunctions.dayOfMonth(this);
@@ -33,20 +39,38 @@ public abstract class EDateTime<D extends Comparable> extends EComparable<D> {
         return dayOfMonth;
     }
     
-    public ENumber<Integer> getHour(){
-        if (hour == null){
-            hour = DateTimeFunctions.hour(this);
+    /**
+     * Create a hours expression
+     * 
+     * @return
+     * @see java.util.Date#getHours()
+     */
+    public ENumber<Integer> getHours(){
+        if (hours == null){
+            hours = DateTimeFunctions.hours(this);
         }
-        return hour;
+        return hours;
     }
     
-    public ENumber<Integer> getMinute(){
-        if (minute == null){
-            minute = DateTimeFunctions.minute(this);
+    /**
+     * Create a minutes expression
+     * 
+     * @return
+     * @see java.util.Date#getMinutes()
+     */
+    public ENumber<Integer> getMinutes(){
+        if (minutes == null){
+            minutes = DateTimeFunctions.minutes(this);
         }
-        return minute;
+        return minutes;
     }
 
+    /**
+     * Create a month expression
+     * 
+     * @return
+     * @see java.util.Date#getMonth()
+     */
     public ENumber<Integer> getMonth(){
         if (month == null){
             month = DateTimeFunctions.month(this);
@@ -54,13 +78,25 @@ public abstract class EDateTime<D extends Comparable> extends EComparable<D> {
         return month;
     }
     
-    public ENumber<Integer> getSecond(){
-        if (second == null){
-            second = DateTimeFunctions.second(this);
+    /**
+     * Create a seconds expression
+     * 
+     * @return
+     * @see java.util.Date#getSeconds()
+     */
+    public ENumber<Integer> getSeconds(){
+        if (seconds == null){
+            seconds = DateTimeFunctions.seconds(this);
         }
-        return second;
+        return seconds;
     }
     
+    /**
+     * Create a year expression
+     * 
+     * @return
+     * @see java.util.Date#getYear()
+     */
     public ENumber<Integer> getYear(){
         if (year == null){
             year = DateTimeFunctions.year(this);

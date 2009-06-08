@@ -164,9 +164,9 @@ public class HsqldbFunctionsTest {
         // DAYOFYEAR(date) returns the day of the year (1-366)
         DateTimeFunctions.dayOfYear(d);
         // HOUR(time) return the hour (0-23)
-        DateTimeFunctions.hour(t);
+        DateTimeFunctions.hours(t);
         // MINUTE(time) returns the minute (0-59)
-        DateTimeFunctions.minute(t);
+        DateTimeFunctions.minutes(t);
         // MONTH(date) returns the month (1-12)
         DateTimeFunctions.month(d);
         // MONTHNAME(date) returns the name of the month
@@ -175,7 +175,7 @@ public class HsqldbFunctionsTest {
 //        DateTimeFunctions.now();
         // QUARTER(date) returns the quarter (1-4)
         // SECOND(time) returns the second (0-59)
-        DateTimeFunctions.second(t);
+        DateTimeFunctions.seconds(t);
         // WEEK(date) returns the week of this year (1-53)
         DateTimeFunctions.week(d);
         // YEAR(date) returns the year

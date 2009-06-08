@@ -25,6 +25,9 @@ public class JDOQLPatterns extends JavaPatterns {
         add(Ops.EQ_IGNORECASE, "%s.toLowerCase().equals(%s.toLowerCase())");
         add(Ops.STRING_ISEMPTY, "%s == \"\"");
         add(Ops.STRING_ISNOTEMPTY, "%s != \"\"");
+        
+        // Date
+        add(Ops.DateTimeOps.DAY_OF_MONTH, "%s.getDay()");
 
         // path types
         add(PathType.VARIABLE, "%s");

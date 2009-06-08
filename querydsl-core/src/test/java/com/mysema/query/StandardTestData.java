@@ -8,6 +8,7 @@ package com.mysema.query;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import com.mysema.query.functions.MathFunctions;
@@ -88,9 +89,9 @@ public abstract class StandardTestData {
           expr.getDayOfMonth(),
           expr.getMonth(),
           expr.getYear(),
-          expr.getHour(),
-          expr.getMinute(),
-          expr.getSecond()
+          expr.getHours(),
+          expr.getMinutes(),
+          expr.getSeconds()
         );
     }
     

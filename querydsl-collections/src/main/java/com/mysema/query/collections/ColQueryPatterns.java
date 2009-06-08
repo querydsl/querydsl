@@ -36,9 +36,11 @@ public class ColQueryPatterns extends JavaPatterns {
         add(Ops.STRING_CAST, "String.valueOf(%s)");
         
         // Date and Time
-        add(Ops.DateTimeOps.HOUR, "%s.getHours()"); 
-        add(Ops.DateTimeOps.MINUTE, "%s.getMinutes()");
-        add(Ops.DateTimeOps.SECOND, "%s.getSeconds()");
+        add(Ops.DateTimeOps.DAY_OF_MONTH, "%s.getDate()"); // java.util.Date
+        add(Ops.DateTimeOps.DAY_OF_WEEK, "%s.getDay()"); // java.util.Date
+        add(Ops.DateTimeOps.HOUR, "%s.getHours()");  // java.util.Date
+        add(Ops.DateTimeOps.MINUTE, "%s.getMinutes()"); // java.util.Date
+        add(Ops.DateTimeOps.SECOND, "%s.getSeconds()"); // java.util.Date
         
         // String
 //        add(Ops.LIKE, functions + ".like(%s,%s)");

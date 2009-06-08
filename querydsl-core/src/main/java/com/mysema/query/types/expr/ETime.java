@@ -10,35 +10,53 @@ import com.mysema.query.functions.DateTimeFunctions;
 @SuppressWarnings("unchecked")
 public abstract class ETime<D extends Comparable> extends EComparable<D> {
     
-    private ENumber<Integer> hour;
+    private ENumber<Integer> hours;
     
-    private ENumber<Integer> minute;
+    private ENumber<Integer> minutes;
     
-    private ENumber<Integer> second;
+    private ENumber<Integer> seconds;
 
     public ETime(Class<? extends D> type) {
         super(type);
     }
     
-    public ENumber<Integer> getHour(){
-        if (hour == null){
-            hour = DateTimeFunctions.hour(this);
+    /**
+     * Create a hours expression
+     * 
+     * @return
+     * @see java.util.Date#getHours()
+     */
+    public ENumber<Integer> getHours(){
+        if (hours == null){
+            hours = DateTimeFunctions.hours(this);
         }
-        return hour;
+        return hours;
     }
     
-    public ENumber<Integer> getMinute(){
-        if (minute == null){
-            minute = DateTimeFunctions.minute(this);
+    /**
+     * Create a minutes expression
+     * 
+     * @return
+     * @see java.util.Date#getMinutes()
+     */
+    public ENumber<Integer> getMinutes(){
+        if (minutes == null){
+            minutes = DateTimeFunctions.minutes(this);
         }
-        return minute;
+        return minutes;
     }
     
-    public ENumber<Integer> getSecond(){
-        if (second == null){
-            second = DateTimeFunctions.second(this);
+    /**
+     * Create a seconds expression
+     * 
+     * @return
+     * @see java.util.Date#getSeconds()
+     */
+    public ENumber<Integer> getSeconds(){
+        if (seconds == null){
+            seconds = DateTimeFunctions.seconds(this);
         }
-        return second;
+        return seconds;
     }
 
 }

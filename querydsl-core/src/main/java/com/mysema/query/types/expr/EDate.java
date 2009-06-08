@@ -20,6 +20,12 @@ public abstract class EDate<D extends Comparable> extends EComparable<D> {
         super(type);
     }
 
+    /**
+     * Create a day of month expression
+     * 
+     * @return
+     * @see java.util.Date#getDate()
+     */
     public ENumber<Integer> getDayOfMonth(){
         if (dayOfMonth == null){
             dayOfMonth = DateTimeFunctions.dayOfMonth(this);
@@ -27,6 +33,12 @@ public abstract class EDate<D extends Comparable> extends EComparable<D> {
         return dayOfMonth;
     }
     
+    /**
+     * Create a month expression
+     * 
+     * @return
+     * @see java.util.Date#getMonth()
+     */
     public ENumber<Integer> getMonth(){
         if (month == null){
             month = DateTimeFunctions.month(this);
@@ -34,6 +46,12 @@ public abstract class EDate<D extends Comparable> extends EComparable<D> {
         return month;
     }
     
+    /**
+     * Create a year expression
+     * 
+     * @return
+     * @see java.util.Date#getYear()
+     */
     public ENumber<Integer> getYear(){
         if (year == null){
             year = DateTimeFunctions.year(this);

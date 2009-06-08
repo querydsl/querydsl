@@ -52,11 +52,11 @@ public final class DateTimeFunctions {
         return factory.createNumber(Integer.class, Ops.DateTimeOps.DAY_OF_YEAR,d);
     }
 
-    public static ENumber<Integer> hour(Expr<?> t) {
+    public static ENumber<Integer> hours(Expr<?> t) {
         return factory.createNumber(Integer.class, Ops.DateTimeOps.HOUR, t);
     }
 
-    public static ENumber<Integer> minute(Expr<?> t) {
+    public static ENumber<Integer> minutes(Expr<?> t) {
         return factory.createNumber(Integer.class, Ops.DateTimeOps.MINUTE, t);
     }
 
@@ -68,7 +68,7 @@ public final class DateTimeFunctions {
         return factory.createNumber(Integer.class, Ops.DateTimeOps.WEEK, d);
     }
 
-    public static ENumber<Integer> second(Expr<?> t) {
+    public static ENumber<Integer> seconds(Expr<?> t) {
         return factory.createNumber(Integer.class, Ops.DateTimeOps.SECOND, t);
     }
 

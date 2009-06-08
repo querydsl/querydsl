@@ -393,9 +393,9 @@ public abstract class SqlQueryTest {
                 DateTimeFunctions.month(d),
                 DateTimeFunctions.week(d),
 
-                DateTimeFunctions.hour(t),
-                DateTimeFunctions.minute(t),
-                DateTimeFunctions.second(t),
+                DateTimeFunctions.hours(t),
+                DateTimeFunctions.minutes(t),
+                DateTimeFunctions.seconds(t),
 
                 DateTimeFunctions.dayOfMonth(d),
                 DateTimeFunctions.dayOfWeek(d), 

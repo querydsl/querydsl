@@ -281,9 +281,9 @@ public class FeaturesTest {
         toString("current_time()", DateTimeFunctions.currentTime());
         toString("current_timestamp()", DateTimeFunctions.currentTimestamp());
         // second(...), minute(...), hour(...), day(...), month(...), year(...),
-        DateTimeFunctions.second(catalog.effectiveDate);
-        DateTimeFunctions.minute(catalog.effectiveDate);
-        DateTimeFunctions.hour(catalog.effectiveDate);
+        DateTimeFunctions.seconds(catalog.effectiveDate);
+        DateTimeFunctions.minutes(catalog.effectiveDate);
+        DateTimeFunctions.hours(catalog.effectiveDate);
         DateTimeFunctions.dayOfMonth(catalog.effectiveDate);
         DateTimeFunctions.month(catalog.effectiveDate);
         DateTimeFunctions.year(catalog.effectiveDate);
