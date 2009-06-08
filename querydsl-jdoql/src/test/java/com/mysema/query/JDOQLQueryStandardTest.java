@@ -7,9 +7,6 @@ package com.mysema.query;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
-import java.util.List;
-
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
 
@@ -17,14 +14,11 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.jdoql.AbstractJDOTest;
 import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QProduct;
 import com.mysema.query.jdoql.testdomain.QStore;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EList;
-import com.mysema.query.types.expr.EMap;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;

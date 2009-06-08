@@ -85,7 +85,7 @@ public class OperationPatterns {
         add(Ops.EXISTS, "exists(%s)");
 
         add(Ops.NUMCAST, "cast(%s,%s)");
-        add(Ops.STRING_CAST, "toString(%s)");
+        add(Ops.STRING_CAST, "str(%s)");
 
         // string
         add(Ops.CONCAT, "%s + %s", 37);

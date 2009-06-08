@@ -174,7 +174,6 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
         append("cast(").handle(source);
         append(" as ");
         append(targetType.getSimpleName().toLowerCase()).append(")");
-
     }
 
     @SuppressWarnings("unchecked")
@@ -188,9 +187,6 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
             args.set(1, new EConstant<String>(((Class<?>) ((EConstant<?>) args
                     .get(1)).getConstant()).getName()));
             super.visitOperation(type, operator, args);
-            
-        } else if (operator.equals(Ops.STRING_CAST)) {
-            visitCast(operator, args.get(0), String.class);
             
         } else if (operator.equals(Ops.NUMCAST)) {
             visitCast(operator, args.get(0), (Class<?>) ((EConstant<?>) args.get(1)).getConstant());

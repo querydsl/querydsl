@@ -392,17 +392,6 @@ public class FeaturesTest {
         add(cat.bodyWeight, kitten.bodyWeight).asc();
     }
 
-    // "Simple" case, case ... when ... then ... else ... end, and "searched"
-    // case, case when ... then ... else ... end
-
-//    @Test
-//    public void testSimpleAliasForNonEntityPaths() {
-//        toString("cat.bodyWeight as catbodyWeight", cat.bodyWeight.as("catbodyWeight"));
-//        toString("count(*) as numPosts", Grammar.count().as("numPosts"));
-//        toString("cat.bodyWeight + kitten.bodyWeight as abc", add(
-//                cat.bodyWeight, kitten.bodyWeight).as("abc"));
-//    }
-
     @Test
     public void testSQLScalarOperations() {
         // Any database-supported SQL scalar function like sign(), trunc(),
@@ -420,6 +409,7 @@ public class FeaturesTest {
     @Test
     public void testStringConversionOperations() {
         // str() for converting numeric or temporal values to a readable string
+        toString("str(cat.bodyWeight)", cat.bodyWeight.stringValue());
     }
 
     @Test

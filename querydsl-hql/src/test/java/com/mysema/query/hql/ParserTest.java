@@ -84,10 +84,10 @@ public class ParserTest implements Constants {
 
         query().from(cat).where(cat.kittens.isNotEmpty()).select(cat).parse();
 
-        // from(cat)
-        // .groupBy(cat.name)
-        // .having(sum(cat.bodyWeight).gt(0))
-        // .select(cat).parse();
+//        query().from(cat)
+//         .groupBy(cat.name)
+//         .having(sum(cat.bodyWeight).gt(0))
+//         .select(cat).parse();
     }
 
     /**
@@ -308,8 +308,8 @@ public class ParserTest implements Constants {
         // + "where log.item.class = 'eg.Payment' and log.item.id = payment.id"
         // );
         query().from(log, payment).where(
-                log.item.instanceOf(Payment.class).and(
-                        log.item.id.eq(payment.id))).parse();
+                log.item.instanceOf(Payment.class),
+                log.item.id.eq(payment.id)).parse();
     }
 
     /**
