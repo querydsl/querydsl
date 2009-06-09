@@ -87,6 +87,31 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest implements StandardT
     }
     
     @Test
+    @Ignore
+    public void dateProjections() {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    @Test
+    public void dateTimeFilters() {
+        for (EBoolean f : StandardTestData.dateTimeFilters(product.publicationDate, otherProduct.publicationDate, new Date())){
+            System.out.println(f);
+            query().from(product, otherProduct).where(f).list(product.name, otherProduct.name);
+        }           
+    }
+    
+    @Test
+    @Ignore
+    public void dateTimeProjections() {
+        // valid expressions are not allowed in projections
+        for (Expr<?> pr : StandardTestData.dateTimeProjections(product.publicationDate, otherProduct.publicationDate, new Date())){
+            System.out.println(pr);
+            query().from(product, otherProduct).list(pr, product.name, otherProduct.name);
+        }          
+    }
+    
+    @Test
     public void listFilters() {
         Product p = query().from(product).limit(1).uniqueResult(product);
         for (EBoolean f : StandardTestData.listFilters(store.products, otherStore.products, p)){
@@ -114,7 +139,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest implements StandardT
             query().from(store, otherStore).where(f).list(store.name, otherStore.name);
         }        
     }
-    
+
     @Test
     @Ignore
     public void mapProjections() {
@@ -125,7 +150,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest implements StandardT
             query().from(store, otherStore).list(pr, store.name, otherStore.name);
         }        
     }
-    
+
     @Test
     @Ignore
     public void numericCasts(){
@@ -135,7 +160,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest implements StandardT
             query().from(product).from(otherProduct).list(num, product.price, otherProduct.price);
         }
     }
-    
+
     @Test
     public void numericFilters(){
         for (EBoolean f : StandardTestData.numericFilters(product.amount, otherProduct.amount, 2)){
@@ -161,7 +186,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest implements StandardT
             query().from(product).from(otherProduct).list(num, product.price, otherProduct.price);
         }
     }
-
+    
     @Test
     public void stringFilters(){
         for (EBoolean f : StandardTestData.stringFilters(product.name, otherProduct.name, "C5")){
@@ -177,7 +202,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest implements StandardT
             assertTrue(!query().from(product, otherProduct).where(f).list(product.name, otherProduct.name).isEmpty());
         }
     }
-
+    
     @Test
     @Ignore
     public void stringProjections(){   
@@ -186,23 +211,6 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest implements StandardT
             System.out.println(str);
             query().from(product, otherProduct).list(str, product.name, otherProduct.name);
         }
-    }
-    
-    @Test
-    @Ignore
-    public void dateProjections() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Test
-    @Ignore
-    public void dateTimeProjections() {
-        // valid expressions are not allowed in projections
-        for (Expr<?> pr : StandardTestData.dateTimeProjections(product.publicationDate, otherProduct.publicationDate, new Date())){
-            System.out.println(pr);
-            query().from(product, otherProduct).list(pr, product.name, otherProduct.name);
-        }          
     }
 
     @Test

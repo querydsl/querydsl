@@ -40,13 +40,95 @@ public class ColQueryStandardTest implements StandardTest {
     }
 
     @Test
+    public void collectionFilters() {
+        for (EBoolean filter : StandardTestData.collectionFilters(cat.kittens, otherCat.kittens, new Cat())){
+            System.out.println(filter);
+            MiniApi.from(cat, data).from(otherCat, data).where(filter).list(cat, otherCat);
+        }        
+    }
+
+    @Test
+    public void collectionProjections() {
+        for (Expr<?> pr : StandardTestData.collectionProjections(cat.kittens, otherCat.kittens, new Cat())){
+            System.out.println(pr);
+            MiniApi.from(cat, data).from(otherCat, data).list(pr);
+        }        
+    }
+
+    @Test
+    @Ignore
+    public void dateProjections() {
+                
+    }
+    
+    @Test
+    public void dateTimeProjections() {
+        for (Expr<?> pr : StandardTestData.dateTimeProjections(cat.birthdate, otherCat.birthdate, new Date())){
+            System.out.println(pr);
+            MiniApi.from(cat, data).from(otherCat, data).list(pr);
+        }        
+    }
+    
+    @Test
+    public void dateTimeFilters() {
+        for (EBoolean f : StandardTestData.dateTimeFilters(cat.birthdate, otherCat.birthdate, new Date())){
+            System.out.println(f);
+            MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat.name, otherCat.name);
+        }        
+    }
+
+    @Test
+    public void listFilters() {
+        for (EBoolean filter : StandardTestData.listFilters(cat.kittens, otherCat.kittens, new Cat())){
+            System.out.println(filter);
+            MiniApi.from(cat, data).from(otherCat, data).where(filter).list(cat, otherCat);
+        }        
+    }
+
+    @Test
+    @Ignore
+    public void listProjections() {
+        // FIXME : requires replacement of Janino
+        for (Expr<?> pr : StandardTestData.listProjections(cat.kittens, otherCat.kittens, new Cat())){
+            System.out.println(pr);
+            MiniApi.from(cat, data).from(otherCat, data).list(pr);
+        }        
+    }
+
+    @Test
+    public void mapFilters() {
+        for (EBoolean f : StandardTestData.mapFilters(cat.kittensByName, otherCat.kittensByName, "Bob", new Cat())){
+            System.out.println(f);
+            MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat, otherCat);
+        }           
+    }
+
+    @Test
+    @Ignore
+    public void mapProjections() {
+        // FIXME : requires replacement of Janino
+        for (Expr<?> pr : StandardTestData.mapProjections(cat.kittensByName, otherCat.kittensByName, "Bob", new Cat())){
+            System.out.println(pr);
+            MiniApi.from(cat, data).from(otherCat, data).list(pr);
+        }           
+    }
+    
+    @Test
+    public void numericCasts(){
+        for (ENumber<?> num : StandardTestData.numericCasts(cat.id, otherCat.id, 1)){
+            System.out.println(num);
+            MiniApi.from(cat, data).from(otherCat, data).list(num);
+        }
+    }
+    
+    @Test
     public void numericFilters(){
         for (EBoolean f : StandardTestData.numericFilters(cat.id, otherCat.id, 1)){
             System.out.println(f);
             MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat.name);
         }
     }
-
+    
     @Test
     public void numericMatchingFilters(){
         for (EBoolean f : StandardTestData.numericMatchingFilters(cat.id, otherCat.id, 1)){
@@ -63,14 +145,6 @@ public class ColQueryStandardTest implements StandardTest {
         }
     }
     
-    @Test
-    public void numericCasts(){
-        for (ENumber<?> num : StandardTestData.numericCasts(cat.id, otherCat.id, 1)){
-            System.out.println(num);
-            MiniApi.from(cat, data).from(otherCat, data).list(num);
-        }
-    }
-
     @Test
     public void stringFilters(){
         for (EBoolean f : StandardTestData.stringFilters(cat.name, otherCat.name, "Bob")){
@@ -93,72 +167,6 @@ public class ColQueryStandardTest implements StandardTest {
             System.out.println(str);
             MiniApi.from(cat, data).from(otherCat, data).list(str);
         }
-    }
-
-    @Test
-    @Ignore
-    public void listProjections() {
-        // FIXME : requires replacement of Janino
-        for (Expr<?> pr : StandardTestData.listProjections(cat.kittens, otherCat.kittens, new Cat())){
-            System.out.println(pr);
-            MiniApi.from(cat, data).from(otherCat, data).list(pr);
-        }        
-    }
-    
-    @Test
-    public void listFilters() {
-        for (EBoolean filter : StandardTestData.listFilters(cat.kittens, otherCat.kittens, new Cat())){
-            System.out.println(filter);
-            MiniApi.from(cat, data).from(otherCat, data).where(filter).list(cat, otherCat);
-        }        
-    }
-    
-    @Test
-    public void collectionProjections() {
-        for (Expr<?> pr : StandardTestData.collectionProjections(cat.kittens, otherCat.kittens, new Cat())){
-            System.out.println(pr);
-            MiniApi.from(cat, data).from(otherCat, data).list(pr);
-        }        
-    }
-    
-    @Test
-    public void collectionFilters() {
-        for (EBoolean filter : StandardTestData.collectionFilters(cat.kittens, otherCat.kittens, new Cat())){
-            System.out.println(filter);
-            MiniApi.from(cat, data).from(otherCat, data).where(filter).list(cat, otherCat);
-        }        
-    }
-
-    @Test
-    @Ignore
-    public void mapProjections() {
-        // FIXME : requires replacement of Janino
-        for (Expr<?> pr : StandardTestData.mapProjections(cat.kittensByName, otherCat.kittensByName, "Bob", new Cat())){
-            System.out.println(pr);
-            MiniApi.from(cat, data).from(otherCat, data).list(pr);
-        }           
-    }
-    
-    @Test
-    public void mapFilters() {
-        for (EBoolean f : StandardTestData.mapFilters(cat.kittensByName, otherCat.kittensByName, "Bob", new Cat())){
-            System.out.println(f);
-            MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat, otherCat);
-        }           
-    }
-
-    @Test
-    @Ignore
-    public void dateProjections() {
-                
-    }
-
-    @Test
-    public void dateTimeProjections() {
-        for (Expr<?> pr : StandardTestData.dateTimeProjections(cat.birthdate, otherCat.birthdate, new Date())){
-            System.out.println(pr);
-            MiniApi.from(cat, data).from(otherCat, data).list(pr);
-        }        
     }
 
     @Test

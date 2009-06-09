@@ -84,6 +84,20 @@ public abstract class StandardTestData {
         );
     }
     
+    public static <A extends Comparable> Collection<EBoolean> dateTimeFilters(EDateTime<A> expr, EDateTime<A> other, A knownValue){
+        List<EBoolean> rv = new ArrayList<EBoolean>();
+        rv.addAll(comparableFilters(expr, other, knownValue));
+        rv.addAll(Arrays.<EBoolean>asList(
+          expr.getDayOfMonth().eq(1),
+          expr.getMonth().eq(1),
+          expr.getYear().eq(2000),
+          expr.getHours().eq(1),
+          expr.getMinutes().eq(1),
+          expr.getSeconds().eq(1)
+        ));
+        return rv;
+    }
+    
     public static <A extends Comparable> Collection<Expr<?>> dateTimeProjections(EDateTime<A> expr, EDateTime<A> other, A knownValue){
         return Arrays.<Expr<?>>asList(
           expr.getDayOfMonth(),

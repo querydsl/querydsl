@@ -22,6 +22,8 @@ public interface StandardTest {
     
     void dateProjections();
     
+    void dateTimeFilters();
+    
     void dateTimeProjections();
     
     void listFilters();
