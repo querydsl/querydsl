@@ -117,8 +117,5 @@
     <span class="hl-value"><xsl:apply-templates/></span>
   </xsl:template>    
   
-  <xsl:template match='xslthl:tag'>
-    <span class="hl-tag"><xsl:apply-templates/></span>
-  </xsl:template>
 
 </xsl:stylesheet>

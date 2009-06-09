@@ -178,7 +178,9 @@ JDOQLQuery query = new JDOQLQueryImpl (pm);
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 JDOQLQuery query = new JDOQLQueryImpl (pm);
-Customer bob = query.from(customer).where(customer.firstName.eq("Bob")).uniqueResult(customer);
+Customer bob = query.from(customer)
+  .where(customer.firstName.eq("Bob"))
+  .uniqueResult(customer);
 query.close();
 ]]></programlisting>
 

@@ -15,9 +15,9 @@
     <title>Maven integration</title>
 
     <para>
-      Add the following dependencies to your Maven project and make sure that
+      Add the following dependency to your Maven project and make sure that
       the Maven 2 repo of Mysema Source
-      (http://source.mysema.com/maven2/releases) is accesible from your
+      (http://source.mysema.com/maven2/releases) is accessible from your
       POM :
     </para>
 
@@ -160,7 +160,9 @@ HQLQuery query = new HQLQueryImpl (session); // where session is a Hibernate ses
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 HQLQuery query = new HQLQueryImpl (session);
-Customer bob = query.from(customer).where(customer.firstName.eq("Bob")).uniqueResult(customer);
+Customer bob = query.from(customer)
+  .where(customer.firstName.eq("Bob"))
+  .uniqueResult(customer);
 ]]></programlisting>
 
     <para>

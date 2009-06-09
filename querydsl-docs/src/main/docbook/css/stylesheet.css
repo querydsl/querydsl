@@ -38,7 +38,8 @@ pre.programlisting {
   font-size:     10pt;
   padding:       7pt 3pt;
   border:        1pt solid black;
-  background:    #eeeeee;
+  /*background:    #eeeeee;*/
+  background:    #f8f8f8;
   clear:         both;
 }
 
