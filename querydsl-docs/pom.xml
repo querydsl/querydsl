@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.mysema.querydsl</groupId>
+    <artifactId>querydsl-root</artifactId>
+    <version>0.4.2-SNAPSHOT</version>
+  </parent>
+
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-docs</artifactId>
+  <name>Querydsl - Documentation</name>
+  <packaging>jdocbook</packaging>
+  
+  <properties>
+    <xslthl.config>http://docbook.sourceforge.net/release/xsl/current/highlighting/xslthl-config.xml</xslthl.config>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jboss.maven.plugins</groupId>
+        <artifactId>maven-jdocbook-plugin</artifactId>
+        <version>2.1.2</version>
+        <extensions>true</extensions>
+        <configuration>
+          <sourceDocumentName>Querydsl_Reference.xml</sourceDocumentName>
+          <imageResource>
+            <directory>${basedir}/src/main/docbook</directory>
+            <excludes>
+              <exclude>*.xml</exclude>
+              <exclude>**/*.xml</exclude>
+            </excludes>
+          </imageResource>
+          <formats>
+            <format>
+              <formatName>html</formatName>
+              <finalName>index.html</finalName>
+              <stylesheetResource>file:${basedir}/src/main/styles/html/custom.xsl</stylesheetResource>
+            </format>
+            <format>
+              <formatName>pdf</formatName>
+              <profilingTypeName>two_pass</profilingTypeName>
+              <stylesheetResource>file:${basedir}/src/main/styles/pdf/custom.xsl</stylesheetResource>
+            </format>
+          </formats>
+          <options>
+            <xincludeSupported>true</xincludeSupported>
+            <useRelativeImageUris>true</useRelativeImageUris>
+          </options>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>net.sf.xslthl</groupId>
+            <artifactId>xslthl</artifactId>
+            <version>2.0.1</version>          
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

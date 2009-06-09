@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<!DOCTYPE preface PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<preface id="preface">
+  <title>Preface</title>
+
+  <para>
+    Querydsl (spell: query diesel) is a framework which enables the construction
+    of statically
+    typed SQL-like queries. Instead of writing queries as inline strings or
+    externalizing them
+    into XML files they can be constructed via a fluentDSL/API like Querydsl.
+    </para>
+
+  <para>
+    The benefits of using a fluent API in comparison to simple strings are
+    </para>
+
+  <orderedlist>
+    <listitem>
+      <para>code completion in IDE</para>
+    </listitem>
+    <listitem>
+      <para>almost none syntactically invalid queries allowed</para>
+    </listitem>
+    <listitem>
+      <para>domain types and properties can be referenced safely</para>
+    </listitem>
+    <listitem>
+      <para>adopts better to refactoring changes in domain types</para>
+    </listitem>
+  </orderedlist>
+
+  <!-- more -->
+
+</preface>

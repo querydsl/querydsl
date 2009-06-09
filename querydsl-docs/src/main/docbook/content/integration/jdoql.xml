@@ -1,0 +1,193 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<sect1 id="jdoql_integration" revision="1">
+  <title>Querying JDO sources</title>
+
+  <para>
+    Querydsl defines a general statically typed syntax for querying on top of
+    persisted domain model data. JDO and JPA are the primary integration
+    technologies for Querydsl. This guide describes how to use Querydsl
+    in combination with JDO. Support for JDO is in beta phase and still
+    to be considered experimental.
+    </para>
+
+  <sect2>
+    <title>Maven integration</title>
+
+    <para>
+      Add the following dependency to your Maven project and make sure that
+      the Maven 2 repo of Mysema Source
+      (http://source.mysema.com/maven2/releases) is accessible from your
+      POM if the version cannot yet be found in other public Maven repos
+      :
+    </para>
+
+    <programlisting language="xml"><![CDATA[
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-jdoql</artifactId>
+  <version>0.4.0</version>
+</dependency>
+]]></programlisting>
+
+    <para>
+      And now, configure the Maven APT plugin which generates the query types
+      used by Querydsl :
+  </para>
+
+    <programlisting language="xml"><![CDATA[
+<project>
+  <build>
+    <plugins>
+      ...
+      <plugin>
+        <groupId>com.mysema.maven</groupId>
+        <artifactId>maven-apt-plugin</artifactId>
+        <version>0.2.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>process</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>target/generated-sources/java</outputDirectory>
+              <processor>com.mysema.query.jdoql.apt.JDOAnnotationProcessor</processor>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    ...
+    </plugins>
+  </build>
+</project>
+]]></programlisting>
+
+    <para>
+      The JDOAnnotationProcessor finds domain types annotated with the
+      javax.jdo.annotations.PersistenceCapable annotation and generates
+      Querydsl query types for them.
+      Run mvn eclipse:eclipse or clean install and you will get your Query
+      types generated into target/generated-sources/java.
+    </para>
+
+    <para>
+      Now you are able to construct JDOQL query instances and instances of the
+      query domain model.
+    </para>
+
+  </sect2>
+
+  <sect2>
+
+    <title>Using query types</title>
+
+    <para>
+      To create queries with Querydsl you need to instantiate variables and
+      Query implementations. We will start with the variables.
+    </para>
+
+    <para>
+      Let's assume that your project has the following domain type :
+    </para>
+
+    <programlisting language="java"><![CDATA[
+@PersistenceCapable
+public class Customer {
+  private String firstName;
+  private String lastName;
+  
+  public String getFirstName(){
+    return firstName;
+  }
+  
+  public String getLastName(){
+    return lastName;
+  }
+  
+  public void setFirstName(String fn){
+    firstName = fn;
+  }
+  
+  public void setLastName(String ln)[
+    lastName = ln;
+  }
+}
+]]></programlisting>
+
+    <para>
+      Querydsl will generate a query type with the simple name QCustomer into the
+      same package as Customer. QCustomer can be used as a statically
+      typed variable in Querydsl queries as a representative for the
+      Customer type.
+  </para>
+
+    <para>
+      QCustomer has a default instance variable which can be accessed as a static
+      field :
+  </para>
+
+    <programlisting language="java"><![CDATA[
+QCustomer customer = QCustomer.customer;
+]]></programlisting>
+
+    <para>
+      Alternatively you can define your own Customer variables like this :
+  </para>
+
+    <programlisting language="java"><![CDATA[
+QCustomer customer = new QCustomer("myCustomer");
+]]></programlisting>
+
+    <para>
+      QCustomer reflects all the properties of the original type Customer as public
+      fields. The firstName field can be accessed like this
+  </para>
+
+    <programlisting language="java"><![CDATA[
+customer.firstName;
+]]></programlisting>
+
+    <para>
+      The generated Querydsl query types are based on a builtin expression
+      type system. The Querydsl expression archetypes are presented in
+      more detailed on this page : [Querydsl expressions].
+  </para>
+
+  </sect2>
+
+  <sect2>
+
+    <title>Querying with JDOQL</title>
+
+    <para>
+      For the JDOQL-module JDOQLQueryImpl is the main Query implementation. It
+      is instantiated like this :
+    </para>
+
+    <programlisting language="java"><![CDATA[
+PersistenceManager pm;
+...
+JDOQLQuery query = new JDOQLQueryImpl (pm);
+]]></programlisting>
+
+    <para>
+      To retrieve the customer with the first name Bob you would construct a
+      query like this :
+  </para>
+
+    <programlisting language="java"><![CDATA[
+QCustomer customer = QCustomer.customer;
+JDOQLQuery query = new JDOQLQueryImpl (pm);
+Customer bob = query.from(customer).where(customer.firstName.eq("Bob")).uniqueResult(customer);
+query.close();
+]]></programlisting>
+
+    <para>
+      The from call defines the query source, the where part defines the
+      filter and uniqueResult defines the projection and tells Querydsl
+      to return a single element. Easy, right?
+  </para>
+
+  </sect2>
+
+</sect1>

@@ -1,0 +1,28 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<chapter id="intro" revision="1">
+    <title>Introduction</title>
+    
+    <sect1>
+      <title>Background</title>
+      
+      <para>
+      TODO
+      </para>
+    
+       <!-- 
+       Current approaches
+       Enter Querydsl       
+        -->
+    
+    </sect1>
+    
+    <sect1>
+    
+      <title>Principles</title>
+      
+      <para>TODO</para>
+    
+    </sect1>
+    
+</chapter>    

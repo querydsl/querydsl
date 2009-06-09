@@ -1,0 +1,97 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<chapter id="alias" revision="1">
+  <title>Alias usage</title>
+
+  <para>
+    In cases where code generation is not an option, alias objects
+    can be used as path references for expression construction.
+  </para>
+
+  <para>
+    The following examples demonstrate how alias objects can be used
+    as replacements for expressions based on generated types.
+  </para>
+
+  <para>
+    At first an example query with APT generated domain types :
+  </para>
+
+  <programlisting language="java">
+QCat cat = new QCat("cat");
+for (String name : from(cat,cats)
+  .where(cat.kittens.size().gt(0))
+  .iterate(cat.name)){
+    System.out.println(name);
+}
+  </programlisting>
+
+  <para>
+    And now with an alias instance for the Cat class. The call
+    "c.getKittens()" inside the dollar-method is internally transformed
+    into the property path c.kittens.
+  </para>
+
+  <programlisting language="java">
+Cat c = alias(Cat.class, "cat");
+for (String name : from($(c),cats)
+  .where($(c.getKittens()).size().gt(0))
+  .iterate($(c.getName()))){
+    System.out.println(name);
+}
+  </programlisting>
+
+  <para>
+    To use the alias functionality in your code, add the following two
+    imports
+  </para>
+
+  <programlisting language="java">
+import static com.mysema.query.alias.GrammarWithAlias.$;
+import static com.mysema.query.alias.GrammarWithAlias.alias;
+  </programlisting>
+
+  <para>
+    The following example is a variation of the previous, where the access to
+    the list size happens inside the dollar-method invocation.
+  </para>
+
+  <programlisting language="java">
+Cat c = alias(Cat.class, "cat");
+for (String name : from($(c),cats)
+  .where($(c.getKittens().size()).gt(0))
+  .iterate($(c.getName()))){
+    System.out.println(name);
+}
+  </programlisting>
+
+  <para>
+    All non-primitive and non-String typed properties of aliases are aliases
+    themselves. So you may cascade method calls until you hit a
+    primitive or String type in the dollar-method scope.
+    e.g.
+  </para>
+
+  <programlisting language="java">
+$(c.getMate().getName())
+  </programlisting>
+
+  <para>
+    is transformed into *c.mate.name* internally, but
+  </para>
+
+  <programlisting language="java">
+$(c.getMate().getName().toLowerCase())
+  </programlisting>
+
+  <para>
+    is not transformed properly, since the toLowerCase() invocation is not
+    tracked.
+  </para>
+
+  <para>
+    Note also that you may only invoke getters, size(), contains(Object) and
+    get(int) on alias types. All other invocations throw exceptions.
+  </para>
+
+</chapter>

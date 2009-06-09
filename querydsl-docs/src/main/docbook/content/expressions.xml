@@ -1,0 +1,81 @@
+Querydsl is based on the following basic expression hierarchy :
+
+{toc:outline=false|style=none|maxLevel=3}
+
+See the [javadocs|https://source.mysema.com/svn/mysema/projects/querydsl/tags/QUERYDSL_0_4_0/apidocs/index.html?com/mysema/query/types/expr/Expr.html] for more information.
+
+h1. Expr
+General expressions
+
+* eq(...) - this equals given
+* ne(...) - this not equals given
+* in(...) - this in given collection or array
+* notIn(...) - this not in given collection or array
+
+h2. EComparable
+Comparable expressions
+
+* after(...) - this after given
+* aoe(...) - this after or equals given
+* asc() - ascending order
+* before(...) - this before given
+* boe(...) - this before or equals given
+* between(...) - this between given values
+* desc() - descending order
+* notBetween(...) - this not beween given values
+* stringValue() - cast to String
+
+h3. EBoolean
+Boolean expressions
+
+* and(...) - this and given
+* or(...) - this or given
+* not() - not this
+
+h3. ENumber
+Numeric expressions
+
+* byteValue() - byte value of this
+* doubleValue() - double value of this
+* floatValue() - float value of this
+* intValue() - int value of this
+* longValue() - long value of this
+* shortValue() - short value of this
+* goe(...) - this greater than or equals given
+* gt(...) - this greater than given
+* loe(...) - this less than or equals given
+* lt(...) - this less than given
+
+h3. EString
+String expressions
+
+* add(...) - concatenation
+* charAt(...)
+* concat(...) - concatenation
+* contains(...)
+* endsWith(...)
+* equalsIgnoreCase
+* indexOf(...)
+* lastIndexOf(...)
+* length()
+* like(..) - this like given
+* lower() - lowercase of this
+* startsWith(...)
+* substring(...)
+* trim() - trimmed version
+* upper() - uppercase of this
+
+h2. EConstant
+Constant expressions
+
+h2. EConstructor
+Constructors
+
+h3. EArrayConstructor
+Array constructor
+
+h2. EEmbeddable
+Embeddable expressions
+
+h2. EEntity
+Entity expressions 
