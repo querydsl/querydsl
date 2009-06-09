@@ -208,10 +208,6 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         return query;
     }
 
-//    protected Map<Object,String> getConstants() {
-//        return constants;
-//    }
-
     public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
         // TODO : optimize
         return list(e1, e2, rest).iterator();
