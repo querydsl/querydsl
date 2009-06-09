@@ -40,6 +40,7 @@
     <module>../querydsl-hql-apt</module>
     <module>../querydsl-hql</module>
     <module>../querydsl-sql</module>
+    <module>../querydsl-docs</module>
   </modules>
 
   <dependencies>
