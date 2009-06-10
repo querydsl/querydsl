@@ -17,11 +17,12 @@ import org.apache.commons.lang.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysema.query.Projectable;
 import com.mysema.query.Query;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.support.QueryBaseWithProjection;
+import com.mysema.query.support.QueryBaseWithProjectionAndDetach;
+import com.mysema.query.types.ListSubQuery;
+import com.mysema.query.types.ObjectSubQuery;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EConstructor;
@@ -34,7 +35,7 @@ import com.mysema.query.types.expr.Expr;
  * @version $Id$
  */
 public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
-        extends QueryBaseWithProjection<Object, SubType> implements Projectable, Query<SubType> {
+        extends QueryBaseWithProjectionAndDetach<Object, SubType> implements Query<SubType> {
 
     private static final Logger logger = LoggerFactory
             .getLogger(AbstractSQLQuery.class);
@@ -47,9 +48,7 @@ public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
 
     protected final SQLPatterns patterns;
 
-    // private boolean forCountRow = false;
-
-    private SubQuery<Object, ?>[] sq;
+    private SubQuery<Object>[] sq;
 
     public AbstractSQLQuery(Connection conn, SQLPatterns patterns) {
         this.conn = conn;
@@ -209,13 +208,20 @@ public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
         }
         return queryString;
     }
+    
+    public <RT> UnionBuilder<RT> union(ObjectSubQuery<Object,RT>... sq) {
+        return innerUnion(sq);
+    }
+    
+    public <RT> UnionBuilder<RT> union(ListSubQuery<Object,RT>... sq) {
+        return innerUnion(sq);
+    }
 
-    @SuppressWarnings("unchecked")
-    public <RT> UnionBuilder<RT> union(SubQuery<Object, RT>... sq) {
+    private <RT> UnionBuilder<RT> innerUnion(SubQuery<Object>... sq) {
         if (!getMetadata().getJoins().isEmpty())
             throw new IllegalArgumentException("Don't mix union and from");
         this.sq = sq;
-        return new UnionBuilder();
+        return new UnionBuilder<RT>();
     }
 
     protected SQLSerializer createSerializer() {

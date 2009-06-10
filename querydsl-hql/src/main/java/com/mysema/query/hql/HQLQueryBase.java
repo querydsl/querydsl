@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.mysema.query.JoinExpression;
-import com.mysema.query.support.QueryBaseWithProjection;
+import com.mysema.query.support.QueryBaseWithProjectionAndDetach;
 import com.mysema.query.types.CascadingBoolean;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EEntity;
@@ -28,7 +28,7 @@ import com.mysema.query.types.path.PathMetadata;
  * @version $Id$
  */
 public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
-        extends QueryBaseWithProjection<HQLJoinMeta, SubType> {
+        extends QueryBaseWithProjectionAndDetach<HQLJoinMeta, SubType> {
 
     private Map<Object,String> constants;
 

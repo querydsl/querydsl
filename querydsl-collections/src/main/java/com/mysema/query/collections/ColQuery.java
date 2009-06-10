@@ -7,6 +7,7 @@ package com.mysema.query.collections;
 
 import java.util.List;
 
+import com.mysema.query.Detachable;
 import com.mysema.query.Projectable;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.OrderSpecifier;
@@ -19,7 +20,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public interface ColQuery extends Projectable {
+public interface ColQuery extends Projectable, Detachable<Object> {
 
     <A> ColQuery from(Expr<A> entity, A first, A... rest);
 

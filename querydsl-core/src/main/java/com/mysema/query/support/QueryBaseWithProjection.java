@@ -97,12 +97,14 @@ public abstract class QueryBaseWithProjection<JoinMeta, SubType extends QueryBas
     }
     
     public Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+        getMetadata().setUnique(true);
         getMetadata().getModifiers().setLimit(1l);
         Iterator<Object[]> it = iterate(first, second, rest);
         return it.hasNext() ? it.next() : null;
     }
 
     public <RT> RT uniqueResult(Expr<RT> expr) {
+        getMetadata().setUnique(true);
         getMetadata().getModifiers().setLimit(1l);
         Iterator<RT> it = iterate(expr);
         return it.hasNext() ? it.next() : null;

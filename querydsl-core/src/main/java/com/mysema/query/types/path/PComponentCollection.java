@@ -7,8 +7,7 @@ package com.mysema.query.types.path;
 
 import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.expr.ECollectionBase;
 
 /**
  * PComponentCollection represents component collection paths
@@ -17,16 +16,13 @@ import com.mysema.query.types.expr.Expr;
  * 
  * @param <D> component type
  */
-public class PComponentCollection<D> extends Expr<java.util.Collection<D>> implements PCollection<D> {
+public class PComponentCollection<D> extends ECollectionBase<D> implements PCollection<D> {
     protected final Class<D> type;
     private final Path<?> root;
     private final PathMetadata<?> metadata;
     
     private EBoolean isNull, notNull;    
-    private ENumber<Integer> size;    
-    private EBoolean empty;
-    private EBoolean notEmpty;
-
+    
     public PComponentCollection(Class<D> type, PathMetadata<?> metadata) {
         super(null);
         this.type = type;
@@ -36,16 +32,6 @@ public class PComponentCollection<D> extends Expr<java.util.Collection<D>> imple
 
     public PComponentCollection(Class<D> type, String var) {
         this(type, PathMetadata.forVariable(var));
-    }
-
-    @Override
-    public EBoolean contains(D child) {
-        return Grammar.in(child, this);
-    }
-
-    @Override
-    public EBoolean contains(Expr<D> child) {
-        return Grammar.in(child, this);
     }
 
     @Override
@@ -75,22 +61,6 @@ public class PComponentCollection<D> extends Expr<java.util.Collection<D>> imple
     }
     
     @Override
-    public EBoolean isEmpty() {
-        if (empty == null){
-            empty = Grammar.isEmpty(this); 
-        }
-        return empty;
-    }
-
-    @Override
-    public EBoolean isNotEmpty() {
-        if (notEmpty == null){
-            notEmpty = Grammar.isNotEmpty(this); 
-        }
-        return notEmpty; 
-    }
-
-    @Override
     public EBoolean isNotNull() {
         if (notNull == null) {
             notNull = Grammar.isNotNull(this);
@@ -106,11 +76,4 @@ public class PComponentCollection<D> extends Expr<java.util.Collection<D>> imple
         return isNull;
     }
 
-    @Override
-    public ENumber<Integer> size() {
-        if (size == null) {
-            size = Grammar.size(this);
-        }
-        return size;
-    }
 }

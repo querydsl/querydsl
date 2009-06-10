@@ -57,4 +57,8 @@ public interface QueryMetadata<JoinMeta> {
     QueryModifiers getModifiers();
 
     void setModifiers(QueryModifiers restriction);
+    
+    void setUnique(boolean unique);
+    
+    boolean isUnique();
 }

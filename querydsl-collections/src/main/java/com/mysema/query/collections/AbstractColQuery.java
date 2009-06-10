@@ -33,7 +33,7 @@ import com.mysema.query.collections.support.DefaultSourceSortingSupport;
 import com.mysema.query.collections.support.MultiComparator;
 import com.mysema.query.collections.support.SimpleIteratorSource;
 import com.mysema.query.collections.utils.EvaluatorUtils;
-import com.mysema.query.support.QueryBaseWithProjection;
+import com.mysema.query.support.QueryBaseWithProjectionAndDetach;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EArrayConstructor;
@@ -44,7 +44,6 @@ import com.mysema.query.types.operation.Ops;
 
 //TODO : implement leftJoin, rightJoin and fullJoin
 //TODO : implement groupBy and having
-//TODO : remove close handling
 /**
  * AbstractColQuery provides a base class for Collection query implementations.
  * Extend it like this
@@ -60,7 +59,7 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @version $Id$
  */
-public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends QueryBaseWithProjection<Object, SubType> implements ColQuery {
+public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends QueryBaseWithProjectionAndDetach<Object, SubType> implements ColQuery {
     
     private boolean arrayProjection = false;
 

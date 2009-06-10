@@ -13,7 +13,6 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.jdoql.testdomain.Book;
@@ -28,10 +27,8 @@ public class QueryBasicsTest extends AbstractJDOTest {
     private QProduct product = QProduct.product;
 
     @Test
-    @Ignore
     public void countTests() {
-        // FIXME
-        assertEquals("count", 2, query().from(product).count()); // returns 1, why?
+        assertEquals("count", 2, query().from(product).count());
     }
     
     @Test

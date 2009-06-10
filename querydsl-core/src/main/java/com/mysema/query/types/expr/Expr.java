@@ -8,7 +8,6 @@ package com.mysema.query.types.expr;
 import java.util.Collection;
 
 import com.mysema.query.serialization.ToStringVisitor;
-import com.mysema.query.types.CollectionType;
 import com.mysema.query.types.Grammar;
 import com.mysema.query.types.ValidationVisitor;
 
@@ -83,7 +82,7 @@ public abstract class Expr<D> {
      * @param right rhs of the comparison
      * @return
      */
-    public final EBoolean in(CollectionType<? extends D> right) {
+    public final EBoolean in(ECollection<? extends D> right) {
         return Grammar.in(this, right);
     }
 
@@ -113,7 +112,7 @@ public abstract class Expr<D> {
      * @param right rhs of the comparison
      * @return
      */
-    public final EBoolean notIn(CollectionType<? extends D> right) {
+    public final EBoolean notIn(ECollection<? extends D> right) {
         return Grammar.notIn(this, right);
     }
 

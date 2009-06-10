@@ -5,20 +5,18 @@
  */
 package com.mysema.query.hql;
 
+import org.hibernate.type.CollectionType;
+
 import com.mysema.query.alias.GrammarWithAlias;
-import com.mysema.query.types.CollectionType;
-import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EComparable;
-import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.OComparable;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.path.PEntity;
 
 /**
  * HqlGrammar extends the Query DSL base grammar to provide HQL specific syntax
@@ -29,11 +27,11 @@ import com.mysema.query.types.path.PEntity;
  */
 public class HQLGrammar extends GrammarWithAlias {
 
-    public static <D> Expr<D> all(CollectionType<D> col) {
+    public static <D> Expr<D> all(ECollection<D> col) {
         return new OSimple<Object,D>(col.getElementType(), Ops.QuantOps.ALL, (Expr<?>)col);
     }
 
-    public static <D> Expr<D> any(CollectionType<D> col) {
+    public static <D> Expr<D> any(ECollection<D> col) {
         return new OSimple<Object,D>(col.getElementType(), Ops.QuantOps.ANY, (Expr<?>)col);
     }
 
@@ -41,12 +39,8 @@ public class HQLGrammar extends GrammarWithAlias {
         return new OComparable<Number,A>(col.getElementType(), Ops.QuantOps.AVG_IN_COL, (Expr<?>)col);
     }
 
-    public static EBoolean exists(CollectionType<?> col) {
+    public static EBoolean exists(ECollection<?> col) {
         return new OBoolean(Ops.QuantOps.EXISTS, (Expr<?>)col);
-    }
-
-    public static <A> SubQuery<HQLJoinMeta, A> from(PEntity<A> select) {
-        return new SubQuery<HQLJoinMeta, A>(select).from(select);
     }
 
     public static <A extends Comparable<? super A>> EComparable<A> max(ECollection<A> left) {
@@ -57,19 +51,11 @@ public class HQLGrammar extends GrammarWithAlias {
         return new OComparable<Number,A>(left.getElementType(), Ops.QuantOps.MIN_IN_COL, (Expr<?>)left);
     }
 
-    public static <A> Expr<A> newInstance(Class<A> a, Expr<?>... args) {
-        return new EConstructor<A>(a, args);
-    }
-
-    public static EBoolean notExists(CollectionType<?> col) {
+    public static EBoolean notExists(ECollection<?> col) {
         return new OBoolean(Ops.QuantOps.NOTEXISTS, (Expr<?>)col);
     }
 
-    public static <A> SubQuery<HQLJoinMeta, A> select(Expr<A> select) {
-        return new SubQuery<HQLJoinMeta, A>(select);
-    }
-
-    public static <D> Expr<D> some(CollectionType<D> col) {
+    public static <D> Expr<D> some(ECollection<D> col) {
         return any(col);
     }
 

@@ -7,7 +7,6 @@ package com.mysema.query.types.path;
 
 import java.lang.reflect.Array;
 
-import com.mysema.query.types.CollectionType;
 import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
@@ -20,8 +19,7 @@ import com.mysema.query.types.expr.Expr;
  * 
  * @param <D> component type
  */
-public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>,
-        CollectionType<D> {
+public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>{
     protected final Class<D[]> arrayType;
     protected final Class<D> componentType;
     private EBoolean isnull, isnotnull;
@@ -63,7 +61,7 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>,
      */
     public abstract Expr<D> get(int index);
 
-    @Override
+//    @Override
     public Class<D> getElementType() {
         return componentType;
     }

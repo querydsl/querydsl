@@ -7,7 +7,6 @@ package com.mysema.query.sql;
 
 import static com.mysema.query.functions.MathFunctions.add;
 import static com.mysema.query.sql.SQLGrammar.exists;
-import static com.mysema.query.sql.SQLGrammar.select;
 import static com.mysema.query.types.Grammar.avg;
 import static com.mysema.query.types.Grammar.count;
 import static com.mysema.query.types.Grammar.not;
@@ -37,6 +36,7 @@ import com.mysema.query.sql.domain.QTEST;
 import com.mysema.query.sql.dto.IdName;
 import com.mysema.query.sql.dto.QIdName;
 import com.mysema.query.types.Grammar;
+import com.mysema.query.types.ObjectSubQuery;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
@@ -283,15 +283,16 @@ public abstract class SqlQueryTest {
                 + "where employee.id = (select max(employee.id) "
                 + "from employee employee)";
         List<Integer> list = q().from(employee).where(
-                employee.id.eq(select(Grammar.max(employee.id)).from(employee))).list(
+//                employee.id.eq(select(Grammar.max(employee.id)).from(employee))).list(
+                employee.id.eq(q().from(employee).uniqueExpr(Grammar.max(employee.id)))).list(
                 employee.id);
         assertFalse(list.isEmpty());
     }
 
     @Test
     public void testIllegalUnion() throws SQLException {
-        SubQuery<Object, Integer> sq1 = select(Grammar.max(employee.id)).from(employee);
-        SubQuery<Object, Integer> sq2 = select(Grammar.min(employee.id)).from(employee);
+        ObjectSubQuery<Object, Integer> sq1 = q().from(employee).uniqueExpr(Grammar.max(employee.id));
+        ObjectSubQuery<Object, Integer> sq2 = q().from(employee).uniqueExpr(Grammar.min(employee.id));
         try {
             q().from(employee).union(sq1, sq2).list();
             fail();
@@ -305,21 +306,20 @@ public abstract class SqlQueryTest {
     @Test
     public void testUnion() throws SQLException {
         // union
-        SubQuery<Object, Integer> sq1 = select(Grammar.max(employee.id)).from(employee);
-        SubQuery<Object, Integer> sq2 = select(Grammar.min(employee.id)).from(employee);
+        ObjectSubQuery<Object, Integer> sq1 = q().from(employee).uniqueExpr(Grammar.max(employee.id));
+        ObjectSubQuery<Object, Integer> sq2 = q().from(employee).uniqueExpr(Grammar.min(employee.id));
         List<Integer> list = q().union(sq1, sq2).list();
         assertFalse(list.isEmpty());
 
         // variation 1
-        list = q().union(select(Grammar.max(employee.id)).from(employee),
-                select(Grammar.min(employee.id)).from(employee)).list();
+        list = q().union(
+                q().from(employee).uniqueExpr(Grammar.max(employee.id)),
+                q().from(employee).uniqueExpr(Grammar.min(employee.id))).list();
         assertFalse(list.isEmpty());
 
         // union #2
-        SubQuery<Object, Object[]> sq3 = select(count(), Grammar.max(employee.id))
-                .from(employee);
-        SubQuery<Object, Object[]> sq4 = select(count(), Grammar.min(employee.id))
-                .from(employee);
+        ObjectSubQuery<Object, Object[]> sq3 = q().from(employee).uniqueExpr(count(), Grammar.max(employee.id));
+        ObjectSubQuery<Object, Object[]> sq4 = q().from(employee).uniqueExpr(count(), Grammar.min(employee.id));
         List<Object[]> list2 = q().union(sq3, sq4).list();
         assertFalse(list2.isEmpty());
     }
@@ -332,7 +332,7 @@ public abstract class SqlQueryTest {
 
     @Test
     public void testWhereExists() throws SQLException {
-        SubQuery<Object, Integer> sq1 = select(Grammar.max(employee.id)).from(employee);
+        ObjectSubQuery<Object, Integer> sq1 = q().from(employee).uniqueExpr(Grammar.max(employee.id));
         q().from(employee).where(exists(sq1)).count();
         q().from(employee).where(not(exists(sq1))).count();
     }

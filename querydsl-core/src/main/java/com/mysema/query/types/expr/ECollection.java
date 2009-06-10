@@ -5,7 +5,6 @@
  */
 package com.mysema.query.types.expr;
 
-import com.mysema.query.types.CollectionType;
 
 /**
  * ECollection represents collection typed expressions
@@ -15,7 +14,7 @@ import com.mysema.query.types.CollectionType;
  * @param <D>
  * @see java.util.Collection
  */
-public interface ECollection<D> extends CollectionType<D> {
+public interface ECollection<D>{
    
     /**
      * Create an expression for <code>this.contains(child)</code>

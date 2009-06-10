@@ -467,25 +467,29 @@ public class ParserTest implements Constants {
         // parse( "from eg.Cat as fatcat where fatcat.weight > (\n"
         // + "select avg(cat.weight) from eg.DomesticCat cat)" );
         query().from(fatcat).where(
-                fatcat.weight.gt(HQLGrammar.select(avg(cat.weight)).from(cat)))
+//                fatcat.weight.gt(HQLGrammar.select(avg(cat.weight)).from(cat)))
+                fatcat.weight.gt(query().from(cat).uniqueExpr(avg(cat.weight))))
                 .parse();
 
         // parse( "from eg.DomesticCat as cat where cat.name = some (\n"
         // + "select name.nickName from eg.Name as name)\n" );
         query().from(cat).where(
-                cat.name.eq(some(HQLGrammar.select(name.nickName).from(name))))
+//                cat.name.eq(some(HQLGrammar.select(name.nickName).from(name))))
+                cat.name.eq(some(query().from(name).listExpr(name.nickName))))
                 .parse();
 
         // parse( "from eg.Cat as cat where not exists (\n"
         // + "from eg.Cat as mate where mate.mate = cat)" );
         query().from(cat).where(
-                notExists(HQLGrammar.from(mate).where(mate.mate.eq(cat))))
+//                notExists(HQLGrammar.from(mate).where(mate.mate.eq(cat))))
+                notExists(query().from(mate).where(mate.mate.eq(cat)).listExpr(mate)))
                 .parse();
 
         // parse( "from eg.DomesticCat as cat where cat.name not in (\n"
         // + "select name.nickName from eg.Name as name)" );
         query().from(cat).where(
-                cat.name.notIn(HQLGrammar.select(name.nickName).from(name)))
+//                cat.name.notIn(HQLGrammar.select(name.nickName).from(name)))
+                cat.name.notIn(query().from(name).listExpr(name.nickName)))
                 .parse();
     }
 
@@ -512,11 +516,10 @@ public class ParserTest implements Constants {
                         not(ord.paid).and(ord.customer.eq(cust)).and(
                                 price.product.eq(product)).and(
                                 catalog.effectiveDate.after(DateTimeFunctions.currentDate())).and(
-                                catalog.effectiveDate.after(all(HQLGrammar
-                                        .select(catalog.effectiveDate).from(
-                                                catalog).where(
-                                                catalog.effectiveDate
-                                                        .before(DateTimeFunctions.currentDate()))))))
+                                catalog.effectiveDate.after(all(                                        
+                                        query().from(catalog).where(
+                                                catalog.effectiveDate.before(DateTimeFunctions.currentDate()))
+                                             .listExpr(catalog.effectiveDate)                                ))))
                 .groupBy(ord).having(sum(price.amount).gt(0l)).orderBy(
                         sum(price.amount).desc());
 
@@ -728,9 +731,11 @@ public class ParserTest implements Constants {
         // "select new Foo(count(bar),(select count(*) from doofus d where d.gob = 'fat' )) from bar"
         // );
         query().select(
-                new QFooDTO(Grammar.count(bar), HQLGrammar.select(
-                        Grammar.count()).from(d).where(d.gob.eq("fat")))).from(
-                bar).parse();
+                   new QFooDTO(Grammar.count(bar), 
+//                 HQLGrammar.select(Grammar.count()).from(d).where(d.gob.eq("fat")))).from(bar)
+                   query().from(d).where(d.gob.eq("fat")).countExpr()))
+               .from(bar)
+               .parse();
     }
 
     @Test
@@ -871,6 +876,14 @@ public class ParserTest implements Constants {
     @Test
     public void testHHH1247() throws Exception {
         // parse("select distinct user.party from com.itf.iceclaims.domain.party.user.UserImpl user inner join user.party.$RelatedWorkgroups relatedWorkgroups where relatedWorkgroups.workgroup.id = :workgroup and relatedWorkgroups.effectiveTime.start <= :datesnow and relatedWorkgroups.effectiveTime.end > :dateenow ");
+    }
+    
+    @Test
+    public void testFetch() throws RecognitionException, TokenStreamException{
+        // correct single invocation
+        query().from(cat).innerJoin(cat.mate, mate).fetch().parse();
+        // duplicate invocation doesn't break anything, but looks stupid
+        query().from(cat).innerJoin(cat.mate, mate).fetch().fetch().parse();
     }
 
     @Test

@@ -12,6 +12,8 @@ import java.util.List;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.BaseSerializer;
+import com.mysema.query.types.ListSubQuery;
+import com.mysema.query.types.ObjectSubQuery;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.SubQuery;
@@ -164,10 +166,10 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
         }
     }
 
-    public void serializeUnion(SubQuery<Object, ?>[] sqs,
+    public void serializeUnion(SubQuery<Object>[] sqs,
             List<OrderSpecifier<?>> orderBy) {
         // union
-        handle(patterns.union(), Arrays.asList(sqs));
+        handle(patterns.union(), (List)Arrays.asList(sqs));
 
         // order by
         if (!orderBy.isEmpty()) {
@@ -220,11 +222,15 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
         }
     }
 
-//    protected void visit(Projection expr) {
-//        visit((PEntity<?>) expr);
-//    }
-
-    protected void visit(SubQuery<Object, ?> query) {
+    protected void visit(ObjectSubQuery<Object, ?> query) {
+        visit((SubQuery<Object>)query);
+    }
+    
+    protected void visit(ListSubQuery<Object, ?> query) {
+        visit((SubQuery<Object>)query);
+    }
+    
+    protected void visit(SubQuery<Object> query) {
         append("(");
         serialize(query.getMetadata(), false);
         append(")");

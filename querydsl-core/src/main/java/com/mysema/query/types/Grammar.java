@@ -504,7 +504,7 @@ public class Grammar {
      * @param right
      * @return
      */
-    public static <A> EBoolean in(A left, CollectionType<? extends A> right) {
+    public static <A> EBoolean in(A left, ECollection<? extends A> right) {
         return operationFactory.createBoolean(Ops.IN, exprFactory.createConstant(left), (Expr<?>) right);
     }
 
@@ -540,7 +540,7 @@ public class Grammar {
      * @param right
      * @return
      */
-    public static <A> EBoolean in(Expr<A> left, CollectionType<A> right) {
+    public static <A> EBoolean in(Expr<A> left, ECollection<A> right) {
         return operationFactory.createBoolean(Ops.IN, left, (Expr<?>) right);
     }
 
@@ -896,7 +896,7 @@ public class Grammar {
      * @param right
      * @return
      */
-    public static <A> EBoolean notIn(Expr<A> left,CollectionType<? extends A> right) {
+    public static <A> EBoolean notIn(Expr<A> left, ECollection<? extends A> right) {
         return operationFactory.createBoolean(Ops.NOTIN, left, (Expr<?>) right);
     }
 

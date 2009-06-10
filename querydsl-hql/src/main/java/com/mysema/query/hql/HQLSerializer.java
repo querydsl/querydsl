@@ -12,6 +12,8 @@ import java.util.List;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.BaseSerializer;
+import com.mysema.query.types.ListSubQuery;
+import com.mysema.query.types.ObjectSubQuery;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.SubQuery;
@@ -121,8 +123,9 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
             append("\norder by ");
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy) {
-                if (!first)
+                if (!first){
                     builder.append(", ");
+                }                    
                 handle(os.getTarget());
                 append(os.getOrder() == Order.ASC ? " asc" : " desc");
                 first = false;
@@ -163,8 +166,16 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
             append(")");
         }
     }
-
-    protected void visit(SubQuery<HQLJoinMeta, ?> query) {
+    
+    protected void visit(ObjectSubQuery<HQLJoinMeta, ?> query) {
+        visit((SubQuery<HQLJoinMeta>)query);
+    }
+    
+    protected void visit(ListSubQuery<HQLJoinMeta, ?> query) {
+        visit((SubQuery<HQLJoinMeta>)query);
+    }
+    
+    protected void visit(SubQuery<HQLJoinMeta> query) {
         append("(");
         serialize(query.getMetadata(), false);
         append(")");

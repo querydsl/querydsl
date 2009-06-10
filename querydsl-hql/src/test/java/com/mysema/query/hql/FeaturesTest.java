@@ -23,22 +23,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.functions.DateTimeFunctions;
 import com.mysema.query.hql.domain.QAccount;
-import com.mysema.query.hql.domain.QAuditLog;
-import com.mysema.query.hql.domain.QCat;
-import com.mysema.query.hql.domain.QCatalog;
-import com.mysema.query.hql.domain.QCompany;
-import com.mysema.query.hql.domain.QCustomer;
-import com.mysema.query.hql.domain.QDocument;
-import com.mysema.query.hql.domain.QDomesticCat;
 import com.mysema.query.hql.domain.QInheritedProperties;
-import com.mysema.query.hql.domain.QItem;
-import com.mysema.query.hql.domain.QOrder;
-import com.mysema.query.hql.domain.QPayment;
-import com.mysema.query.hql.domain.QPrice;
-import com.mysema.query.hql.domain.QProduct;
-import com.mysema.query.hql.domain.QUser;
 import com.mysema.query.types.Grammar;
 import com.mysema.query.types.custom.CString;
 import com.mysema.query.types.expr.EConstructor;
@@ -51,68 +37,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class FeaturesTest {
-
-    // AuditLog
-    QAuditLog log = new QAuditLog("log");
-
-    // QCat
-    QCat cat = new QCat("cat");
-    QCat cat1 = new QCat("cat1");
-    QCat cat2 = new QCat("cat2");
-    QCat cat3 = new QCat("cat3");
-    QCat cat4 = new QCat("cat4");
-    QCat cat5 = new QCat("cat5");
-
-    QCat kitten = new QCat("kitten");
-    QCat kitten2 = new QCat("kitten2");
-    QCat child = new QCat("child");
-    QCat mate = new QCat("mate");
-
-    // QCatalog
-    QCatalog catalog = new QCatalog("catalog");
-
-    // QCompany
-    QCompany company = new QCompany("company");
-    QCompany company1 = new QCompany("company1");
-    QCompany company2 = new QCompany("company2");
-    QCompany company3 = new QCompany("company3");
-    QCompany company4 = new QCompany("company4");
-    QCompany company5 = new QCompany("company5");
-
-    // Customer
-    QCustomer cust = new QCustomer("cust");
-
-    // QDocument
-    QDocument doc = new QDocument("doc");
-
-    // DomesticQCat
-    QDomesticCat domesticCat = new QDomesticCat("domesticCat");
-
-    // QItem
-    QItem item = new QItem("item");
-
-    // Order
-    QOrder order = new QOrder("order");
-
-    // Payment
-    QPayment payment = new QPayment("payment");
-
-    // Price
-    QPrice price = new QPrice("price");
-
-    // Product
-    QProduct product = new QProduct("product");
-
-    // User
-    QUser user = new QUser("user");
-    QUser user1 = new QUser("user1");
-    QUser user2 = new QUser("user2");
-    QUser user3 = new QUser("user3");
-    QUser user4 = new QUser("user4");
-    QUser user5 = new QUser("user5");
-
-    private HQLSerializer visitor = new HQLSerializer(new HQLPatterns());
+public class FeaturesTest extends AbstractQueryTest{
 
     @Test
     public void testDomainConstruction() {
@@ -140,34 +65,7 @@ public class FeaturesTest {
                         kitten.name.eq("Kitty")));
     }
 
-    @Test
-    public void testArithmeticOperationsInFunctionalWay() {
-        toString("cat.bodyWeight + :a1", add(cat.bodyWeight, 10));
-        toString("cat.bodyWeight - :a1", sub(cat.bodyWeight, 10));
-        toString("cat.bodyWeight * :a1", mult(cat.bodyWeight, 10));
-        toString("cat.bodyWeight / :a1", div(cat.bodyWeight, 10));
 
-        toString("cat.bodyWeight + :a1 < :a1", add(cat.bodyWeight, 10).lt(10));
-        toString("cat.bodyWeight - :a1 < :a1", sub(cat.bodyWeight, 10).lt(10));
-        toString("cat.bodyWeight * :a1 < :a1", mult(cat.bodyWeight, 10).lt(10));
-        toString("cat.bodyWeight / :a1 < :a2", div(cat.bodyWeight, 10).lt(10d));
-
-        toString("(cat.bodyWeight + :a1) * :a2", mult(add(cat.bodyWeight, 10),
-                20));
-        toString("(cat.bodyWeight - :a1) * :a2", mult(sub(cat.bodyWeight, 10),
-                20));
-        toString("cat.bodyWeight * :a1 + :a2",
-                add(mult(cat.bodyWeight, 10), 20));
-        toString("cat.bodyWeight * :a1 - :a2",
-                sub(mult(cat.bodyWeight, 10), 20));
-
-        QCat c1 = new QCat("c1");
-        QCat c2 = new QCat("c2");
-        QCat c3 = new QCat("c3");
-        toString("c1.id + c2.id * c3.id", add(c1.id, mult(c2.id, c3.id)));
-        toString("c1.id * (c2.id + c3.id)", mult(c1.id, add(c2.id, c3.id)));
-        toString("(c1.id + c2.id) * c3.id", mult(add(c1.id, c2.id), c3.id));
-    }
 
     @Test
     public void testBasicOperations() {
@@ -178,24 +76,6 @@ public class FeaturesTest {
 
         toString("cat.bodyWeight + kitten.bodyWeight = kitten.bodyWeight", add(
                 cat.bodyWeight, kitten.bodyWeight).eq(kitten.bodyWeight));
-    }
-
-    @Test
-    public void testBinaryComparisonOperations() {
-        // binary comparison operators =, >=, <=, <>, !=, like
-        toString("cat.bodyWeight = kitten.bodyWeight", cat.bodyWeight
-                .eq(kitten.bodyWeight));
-        toString("cat.bodyWeight >= kitten.bodyWeight", cat.bodyWeight
-                .goe(kitten.bodyWeight));
-        toString("cat.bodyWeight > kitten.bodyWeight", cat.bodyWeight
-                .gt(kitten.bodyWeight));
-        toString("cat.bodyWeight <= kitten.bodyWeight", cat.bodyWeight
-                .loe(kitten.bodyWeight));
-        toString("cat.bodyWeight < kitten.bodyWeight", cat.bodyWeight
-                .lt(kitten.bodyWeight));
-        toString("cat.bodyWeight != kitten.bodyWeight", cat.bodyWeight
-                .ne(kitten.bodyWeight));
-//        toString("cat.name like :a1", cat.name.like("Kitty"));
     }
 
     @Test
@@ -275,42 +155,6 @@ public class FeaturesTest {
     }
 
     @Test
-    public void testDateOperations() {
-        // current_date(), current_time(), current_timestamp()
-        toString("current_date()", DateTimeFunctions.currentDate());
-        toString("current_time()", DateTimeFunctions.currentTime());
-        toString("current_timestamp()", DateTimeFunctions.currentTimestamp());
-        // second(...), minute(...), hour(...), day(...), month(...), year(...),
-        DateTimeFunctions.seconds(catalog.effectiveDate);
-        DateTimeFunctions.minutes(catalog.effectiveDate);
-        DateTimeFunctions.hours(catalog.effectiveDate);
-        DateTimeFunctions.dayOfMonth(catalog.effectiveDate);
-        DateTimeFunctions.month(catalog.effectiveDate);
-        DateTimeFunctions.year(catalog.effectiveDate);
-    }
-
-    @Test
-    public void testEJBQL3Functions() {
-        // Any function or operator defined by EJB-QL 3.0: substring(), trim(),
-        // lower(), upper(), length(), locate(), abs(), sqrt(), bit_length(),
-        // mod()
-        // substring(),
-        // trim(),
-        // lower(),
-        // upper(),
-        // length(),
-        // locate(),
-        // abs(),
-        // sqrt(),
-        // bit_length(),
-        // mod()
-        toString("trim(cat.name)", cat.name.trim());
-        toString("lower(cat.name)", cat.name.lower());
-        toString("upper(cat.name)", cat.name.upper());
-        // cat.name.length();
-    }
-
-    @Test
     public void testEqualsAndNotEqualsForAllExpressions() {
         toString("cat.name = cust.name.firstName", cat.name
                 .eq(cust.name.firstName));
@@ -367,14 +211,6 @@ public class FeaturesTest {
                 cat.isNull().and(kitten.isNull().or(kitten.bodyWeight.gt(10))));
     }
 
-    @Test
-    public void testMathematicalOperations() {
-        // mathematical operators +, -, *, /
-        add(cat.bodyWeight, kitten.bodyWeight);
-        sub(cat.bodyWeight, kitten.bodyWeight);
-        mult(cat.bodyWeight, kitten.bodyWeight);
-        div(cat.bodyWeight, kitten.bodyWeight);
-    }
 
     // Parentheses ( ), indicating grouping
 
@@ -470,29 +306,6 @@ public class FeaturesTest {
         sum($(0)).gt(0);
         sum($(0)).intValue().gt(0);
 
-    }
-
-    @Test
-    public void testNumericCast() {
-        ENumber<Integer> expr = $(0);
-        assertEquals(Byte.class, expr.byteValue().getType());
-        assertEquals(Double.class, expr.doubleValue().getType());
-        assertEquals(Float.class, expr.floatValue().getType());
-        assertEquals(Integer.class, expr.intValue().getType());
-        assertEquals(Long.class, expr.longValue().getType());
-        assertEquals(Short.class, expr.shortValue().getType());
-    }
-
-    @Test
-    public void testStringCast() {
-        ENumber<Integer> expr = $(0);
-        assertEquals(String.class, expr.stringValue().getType());
-    }
-
-    private void toString(String expected, Expr<?> expr) {
-        assertEquals(expected, visitor.handle(expr).toString());
-        // visitor.clear();
-        visitor = new HQLSerializer(new HQLPatterns());
     }
 
     /**

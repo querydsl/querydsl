@@ -17,7 +17,7 @@ import com.mysema.query.jdoql.testdomain.QStore;
 import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.Expr;
 
-public class JDOQLSerializerTest {
+public class ExprSerializationTest {
 
     private QBook book = QBook.book;
 
@@ -110,8 +110,6 @@ public class JDOQLSerializerTest {
         // string
         assertEquals("product.name.startsWith(a1)", serialize(product.name.startsWith("Sony Discman")));
         assertEquals("product.name.endsWith(a1)", serialize(product.name.endsWith("Discman")));
-        // FIXME assertEquals("like", 1,
-        // serialize(product.name.like("Sony %")));
         assertEquals("product.name.toLowerCase() == a1", serialize(product.name.lower().eq("sony discman")));
         assertEquals("product.name.toUpperCase() == a1", serialize(product.name.upper().eq("SONY DISCMAN")));
         assertEquals("product.name.indexOf(a1) == a2", serialize(product.name.indexOf("S").eq(0)));
@@ -120,7 +118,7 @@ public class JDOQLSerializerTest {
         assertEquals("product.name.substring(a1,a2) == a3", serialize(product.name.substring(0, 4).eq("Sony")));
         assertEquals("product.name.substring(a1) == a2", serialize(product.name.substring(5).eq("Discman")));
     }
-
+        
     private String serialize(Expr<?> expr) {
         return new JDOQLSerializer(JDOQLPatterns.DEFAULT, book).handle(expr).toString();
     }

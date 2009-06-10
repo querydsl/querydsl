@@ -25,6 +25,8 @@ import com.mysema.query.types.expr.Expr;
  */
 public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
 
+    private boolean unique;
+    
     private final Set<Expr<?>> exprInJoins = new HashSet<Expr<?>>();
 
     private List<Expr<?>> groupBy = new ArrayList<Expr<?>>();
@@ -44,33 +46,25 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
     private QueryModifiers modifiers = new QueryModifiers();
 
     @Override
-    public List<? extends Expr<?>> getGroupBy() {
-        return Collections.unmodifiableList(groupBy);
+    public void addFrom(Expr<?>... o) {
+        for (Expr<?> expr : o) {
+            if (!exprInJoins.contains(expr)) {
+                joins.add(new JoinExpression<JoinMeta>(JoinType.DEFAULT, expr));
+                exprInJoins.add(expr);
+            }
+        }
     }
 
     @Override
-    public EBoolean getHaving() {
-        return having.create();
+    public void addGroupBy(Expr<?>... o) {
+        groupBy.addAll(Arrays.<Expr<?>> asList(o));
     }
 
     @Override
-    public List<JoinExpression<JoinMeta>> getJoins() {
-        return Collections.unmodifiableList(joins);
-    }
-
-    @Override
-    public List<OrderSpecifier<?>> getOrderBy() {
-        return Collections.unmodifiableList(orderBy);
-    }
-
-    @Override
-    public List<? extends Expr<?>> getProjection() {
-        return Collections.unmodifiableList(projection);
-    }
-
-    @Override
-    public EBoolean getWhere() {
-        return where.create();
+    public void addHaving(EBoolean... o) {
+        for (EBoolean e : o){
+            having.and(e);
+        }            
     }
 
     @Override
@@ -97,28 +91,6 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
     }
 
     @Override
-    public void addFrom(Expr<?>... o) {
-        for (Expr<?> expr : o) {
-            if (!exprInJoins.contains(expr)) {
-                joins.add(new JoinExpression<JoinMeta>(JoinType.DEFAULT, expr));
-                exprInJoins.add(expr);
-            }
-        }
-    }
-
-    @Override
-    public void addGroupBy(Expr<?>... o) {
-        groupBy.addAll(Arrays.<Expr<?>> asList(o));
-    }
-
-    @Override
-    public void addHaving(EBoolean... o) {
-        for (EBoolean e : o){
-            having.and(e);
-        }            
-    }
-
-    @Override
     public void addOrderBy(OrderSpecifier<?>... o) {
         orderBy.addAll(Arrays.asList(o));
     }
@@ -136,13 +108,18 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
     }
 
     @Override
-    public boolean isDistinct() {
-        return distinct;
+    public List<? extends Expr<?>> getGroupBy() {
+        return Collections.unmodifiableList(groupBy);
     }
 
     @Override
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
+    public EBoolean getHaving() {
+        return having.create();
+    }
+
+    @Override
+    public List<JoinExpression<JoinMeta>> getJoins() {
+        return Collections.unmodifiableList(joins);
     }
 
     @Override
@@ -151,8 +128,43 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
     }
 
     @Override
+    public List<OrderSpecifier<?>> getOrderBy() {
+        return Collections.unmodifiableList(orderBy);
+    }
+
+    @Override
+    public List<? extends Expr<?>> getProjection() {
+        return Collections.unmodifiableList(projection);
+    }
+
+    @Override
+    public EBoolean getWhere() {
+        return where.create();
+    }
+
+    @Override
+    public boolean isDistinct() {
+        return distinct;
+    }
+
+    @Override
+    public boolean isUnique() {
+        return unique;
+    }
+
+    @Override
+    public void setDistinct(boolean distinct) {
+        this.distinct = distinct;
+    }
+
+    @Override
     public void setModifiers(QueryModifiers restriction) {
         this.modifiers = restriction;
     }
 
+    @Override
+    public void setUnique(boolean unique) {
+        this.unique = unique;
+    }
+    
 }

@@ -1,8 +1,15 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.types.expr;
 
 import com.mysema.query.functions.DateTimeFunctions;
 
 /**
+ * ETime represents Time expressions
+ * 
  * @author tiwe
  *
  * @param <D>
