@@ -1,28 +1,54 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 
 <chapter id="intro" revision="1">
-    <title>Introduction</title>
-    
-    <sect1>
-      <title>Background</title>
-      
-      <para>
-      TODO
+  <title>Introduction</title>
+
+  <sect1>
+    <title>Background</title>
+
+    <para>
+      Querydsl was born out of the need to maintain HQL queries in a
+      typesafe way.
+      Incremental construction of HQL queries requires
+      String concatenation and results
+      in hard to read code. Unsafe references to domain types and properties
+      via plain Strings
+      were another issue with String based HQL
+      construction.
       </para>
-    
-       <!-- 
-       Current approaches
-       Enter Querydsl       
-        -->
-    
-    </sect1>
-    
-    <sect1>
-    
-      <title>Principles</title>
-      
-      <para>TODO</para>
-    
-    </sect1>
-    
+
+    <para>
+      With a changing domain model type-safe bring huge benefits in
+      software development. Domain changes
+      are directly reflected in
+      queries and autocomplete in query construction makes query
+      construction
+      faster and safer.
+      </para>
+
+    <para>
+      HQL queries for Hibernate were the first target language for
+      Querydsl, but nowadays it supports
+      Collections, JDO, JDBC and
+      RDFBean as backends.   
+      </para>
+
+  </sect1>
+
+  <sect1>
+
+    <title>Principles</title>
+
+    <para>Type safety is the core principle of Querydsl. Queries are
+      constructed based on generated query types that
+      reflect the properties of your project's domain types. Also function invocations are
+      constructed in a fully
+       manner.</para>
+       
+    <para>Consistency is another important principle. The query paths and operations are the same
+    in all implementations and also the Query interfaces are similar.    
+    </para>   
+
+  </sect1>
+
 </chapter>    

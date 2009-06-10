@@ -3,7 +3,10 @@
 <chapter id="integration" xmlns:xi="http://www.w3.org/2001/XInclude">
     <title>Getting started with Querydsl</title>
     
-    <!-- TODO -->
+    <para>
+    Instead of a general Getting started guide we provide integration
+    guides for the main backends of Querydsl.
+    </para>
     
     <xi:include href="integration/jdoql.xml" />
     <xi:include href="integration/hql.xml" />
