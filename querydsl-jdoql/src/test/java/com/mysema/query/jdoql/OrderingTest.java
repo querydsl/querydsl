@@ -21,7 +21,7 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QProduct;
 
-public class QueryOrderingTest extends AbstractJDOTest {
+public class OrderingTest extends AbstractJDOTest {
 
     private QProduct product = QProduct.product;
     

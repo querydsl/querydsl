@@ -45,6 +45,12 @@ import com.mysema.query.codegen.TypeModel;
  */
 public class Processor {
     
+    private boolean useGetters = true;
+    
+    private boolean useFields = true;
+    
+    private boolean listsAsCollections = false;
+    
     private ElementVisitor<ClassModel, Void> dtoElementVisitor = new SimpleElementVisitor6<ClassModel, Void>() {
         
         @Override
@@ -52,6 +58,7 @@ public class Processor {
             Elements elementUtils = env.getElementUtils();
             TypeModel c = APTTypeModel.get(e.asType(), elementUtils);
             ClassModel classModel = new ClassModel(null, c.getPackageName(), c.getName(), c.getSimpleName());
+            classModel.setListsAsCollections(listsAsCollections);
             List<? extends Element> elements = e.getEnclosedElements();
             // CONSTRUCTOR
             for (ExecutableElement constructor : ElementFilter.constructorsIn(elements)){
@@ -78,6 +85,7 @@ public class Processor {
             TypeModel sc = APTTypeModel.get(e.getSuperclass(), elementUtils);
             TypeModel c = APTTypeModel.get(e.asType(), elementUtils);
             ClassModel classModel = new ClassModel(sc.getName(), c.getPackageName(), c.getName(), c.getSimpleName());
+            classModel.setListsAsCollections(listsAsCollections);
             List<? extends Element> elements = e.getEnclosedElements();
             // GETTERS
             for (ExecutableElement method : ElementFilter.methodsIn(elements)){
@@ -90,15 +98,25 @@ public class Processor {
                     continue;
                 }
                 if (isValidGetter(method)){
-                    TypeModel fieldType = APTTypeModel.get(method.getReturnType(), elementUtils);
-                    classModel.addField(new FieldModel(name, fieldType));    
+                    try{
+                        TypeModel fieldType = APTTypeModel.get(method.getReturnType(), elementUtils);
+                        classModel.addField(new FieldModel(name, fieldType));    
+                        
+                    }catch(IllegalArgumentException ex){
+                        throw new RuntimeException("Caught exception for method " + c.getName()+"#"+method.getSimpleName(), ex);
+                    }
                 }                
             }
             // FIELDS
             for (VariableElement field : ElementFilter.fieldsIn(elements)){
                 if (isValidField(field)){
-                    TypeModel fieldType = APTTypeModel.get(field.asType(), elementUtils);
-                    classModel.addField(new FieldModel(field.getSimpleName().toString(), fieldType));    
+                    try{
+                        TypeModel fieldType = APTTypeModel.get(field.asType(), elementUtils);                      
+                        classModel.addField(new FieldModel(field.getSimpleName().toString(), fieldType));    
+                    }catch(IllegalArgumentException ex){
+                        throw new RuntimeException("Caught exception for field " + c.getName()+"#"+field.getSimpleName(), ex);
+                    }
+                        
                 }                
             }                        
             return classModel;
@@ -145,11 +163,13 @@ public class Processor {
     }
 
     protected boolean isValidField(VariableElement field) {
-        return !field.getModifiers().contains(Modifier.TRANSIENT) && !field.getModifiers().contains(Modifier.STATIC);
+        return useFields
+            && !field.getModifiers().contains(Modifier.TRANSIENT) 
+            && !field.getModifiers().contains(Modifier.STATIC);
     }
 
     protected boolean isValidGetter(ExecutableElement getter){
-        return !getter.getModifiers().contains(Modifier.STATIC);
+        return useGetters && !getter.getModifiers().contains(Modifier.STATIC);
     }
 
     public void process(RoundEnvironment roundEnv) {
@@ -240,6 +260,37 @@ public class Processor {
                 msg.printMessage(Kind.ERROR, e.getMessage());
             }
         }
+    }
+
+    /**
+     * Skip processing of getters
+     * 
+     * @return
+     */
+    public Processor skipGetters() {
+        useGetters = false;        
+        return this;
+    }
+    
+    /***
+     * Skip processing of fields
+     * 
+     * @return
+     */
+    public Processor skipFields(){
+        useFields = false;
+        return this;
+    }
+
+    /**
+     * Process lists as Collections
+     * 
+     * @return
+     */
+    public Processor listsAsCollections() {
+        listsAsCollections = true;
+        return this;
+        
     }
 
 }

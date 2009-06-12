@@ -28,11 +28,11 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
         Class<? extends Annotation> entity = PersistenceCapable.class;
-        Class<? extends Annotation> superType = null;
+        Class<? extends Annotation> superType = null; // ?!?
         Class<? extends Annotation> embeddable = EmbeddedOnly.class;
         Class<? extends Annotation> dtoAnnotation = DTO.class;
         Processor p = new Processor(processingEnv, entity, superType, embeddable, dtoAnnotation, "Q");
-        p.process(roundEnv);
+        p.skipGetters().listsAsCollections().process(roundEnv);
         return true;
     }       
     

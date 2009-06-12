@@ -5,6 +5,7 @@
  */
 package com.mysema.query.apt.jdk5;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
@@ -235,7 +236,13 @@ class MirrorAPITypeModel extends SimpleTypeVisitor implements TypeModel {
         Iterator<TypeMirror> i = arg0.getActualTypeArguments().iterator();
         String typeName = arg0.getDeclaration().getQualifiedName();
 
-        if (typeName.equals(java.util.Map.class.getName())) {
+        if (typeName.equals(Serializable.class.getName())){
+            fullName = Serializable.class.getName();
+            simpleName = Serializable.class.getSimpleName();
+            packageName = Serializable.class.getPackage().getName();
+            fieldType = FieldType.SIMPLE;
+        
+        }else if (typeName.equals(java.util.Map.class.getName())) {
             handleMapInterface(i);
 
         } else if (typeName.equals(java.util.Collection.class.getName())

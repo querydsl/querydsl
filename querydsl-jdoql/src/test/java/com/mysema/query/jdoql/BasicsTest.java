@@ -20,7 +20,7 @@ import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QBook;
 import com.mysema.query.jdoql.testdomain.QProduct;
 
-public class QueryBasicsTest extends AbstractJDOTest {
+public class BasicsTest extends AbstractJDOTest {
 
     private QBook book = QBook.book;
 

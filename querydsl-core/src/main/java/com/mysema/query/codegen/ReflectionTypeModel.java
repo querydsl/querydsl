@@ -5,6 +5,7 @@
  */
 package com.mysema.query.codegen;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,7 +55,11 @@ public class ReflectionTypeModel extends InspectingTypeModel implements TypeMode
             handlePrimitiveWrapperType(ClassUtils.primitiveToWrapper(cl));
             
         } else if (cl.isInterface()) {
-            if (java.util.Map.class.isAssignableFrom(cl)) {
+            if (Serializable.class.isAssignableFrom(cl)){
+                setNames(Serializable.class);
+                fieldType = FieldType.SIMPLE;
+            
+            }else if (java.util.Map.class.isAssignableFrom(cl)) {
                 TypeModel keyInfo = ReflectionTypeModel.get(TypeUtil.getTypeParameter(genericType, 0));
                 TypeModel valueInfo = ReflectionTypeModel.get(TypeUtil.getTypeParameter(genericType, 1));
                 handleMapInterface(keyInfo, valueInfo);

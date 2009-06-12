@@ -11,7 +11,7 @@
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-jdoql</artifactId>
   <name>Querydsl - JDOQL support</name>
-  <description>Hibernate / HQL support for querydsl</description>
+  <description>JDOQL support for querydsl</description>
   <packaging>jar</packaging>
 
   <properties>    
@@ -98,23 +98,14 @@
             </goals>
             <configuration>
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
-              <processor>com.mysema.query.jdoql.apt.JDOAnnotationProcessor</processor>
+              <processors>                                
+                <processor>com.mysema.query.jdoql.apt.JDOAnnotationProcessor</processor>
+                <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>                
+              </processors>              
             </configuration>
           </execution>
         </executions>
       </plugin>   
-      <!--
-      <plugin> 
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration> 
-          <compilerArguments>
-            <processor>com.mysema.query.apt.EntityAnnotationProcessor</processor>
-            <s>target/generated-test-sources/java</s> 
-          </compilerArguments>
-          <fork>true</fork> 
-        </configuration> 
-      </plugin>
-      -->
     </plugins>
   </build>
 

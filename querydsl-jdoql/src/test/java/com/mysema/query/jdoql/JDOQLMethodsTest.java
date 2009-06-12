@@ -14,7 +14,7 @@ import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QProduct;
 import com.mysema.query.jdoql.testdomain.QStore;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EList;
+import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EMap;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
@@ -40,7 +40,7 @@ public class JDOQLMethodsTest extends AbstractJDOTest {
 
     private <A,K,V> List<EBoolean> getFilters(
             EString str, EString other, String knownString,
-            EList<A> list, A element,
+            ECollection<A> list, A element,
             EMap<K,V> map, K key, V value,
             ENumber<Integer> number){
         return Arrays.<EBoolean>asList(

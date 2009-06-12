@@ -5,6 +5,7 @@
  */
 package com.mysema.query.apt;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -89,15 +90,27 @@ class APTTypeModel extends InspectingTypeModel implements TypeVisitor<Void,Eleme
                 }
             }else if (element.getKind() == ElementKind.INTERFACE){
                 Iterator<? extends TypeMirror> i = arg0.getTypeArguments().iterator();
-                if (name.equals(java.util.Map.class.getName())) {
+                if (name.equals(Serializable.class.getName())){
+                     setNames(Serializable.class);
+                     fieldType = FieldType.SIMPLE;
+                }else if (name.equals(java.util.Map.class.getName())) {
+                    if (!i.hasNext()){
+                        throw new IllegalArgumentException("Insufficient type arguments for " + simpleName);
+                    }                    
                     handleMapInterface(APTTypeModel.get(i.next(), el), APTTypeModel.get(i.next(), el));
 
                 } else if (name.equals(java.util.Collection.class.getName())
                         || name.equals(java.util.Set.class.getName())
                         || name.equals(java.util.SortedSet.class.getName())) {
+                    if (!i.hasNext()){
+                        throw new IllegalArgumentException("Insufficient type arguments for " + simpleName);
+                    }                    
                     handleCollection(APTTypeModel.get(i.next(), el));
 
                 } else if (name.equals(java.util.List.class.getName())) {
+                    if (!i.hasNext()){
+                        throw new IllegalArgumentException("Insufficient type arguments for " + simpleName);
+                    }                    
                     handleList(APTTypeModel.get(i.next(), el));
                 }
             }else if (element.getKind() == ElementKind.ENUM){

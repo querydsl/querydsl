@@ -1,5 +1,6 @@
 package com.mysema.query.collections.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
@@ -28,4 +29,7 @@ public class SimpleTypes {
     Date date;
     java.sql.Time time;
     java.sql.Timestamp timestamp;
+    Serializable serializable;
+    Object object;
+    Class<?> clazz;
 }

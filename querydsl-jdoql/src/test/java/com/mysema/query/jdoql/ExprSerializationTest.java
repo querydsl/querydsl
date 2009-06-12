@@ -64,8 +64,8 @@ public class ExprSerializationTest {
         // collection
         assertEquals("store.products.contains(a1)",
                 serialize(store.products.contains(product)));
-        assertEquals("store.products.get(0) == a1",
-                serialize(store.products.get(0).eq(product)));
+//        assertEquals("store.products.get(0) == a1",
+//                serialize(store.products.get(0).eq(product)));
         assertEquals("store.products.isEmpty()",
                 serialize(store.products.isEmpty()));
         assertEquals("!store.products.isEmpty()",
