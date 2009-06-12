@@ -1,0 +1,21 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<chapter id="internals" revision="1">
+  <title>Internals</title>
+
+  <sect1>
+    <title>Expression model</title>
+    <para>TODO</para>
+  </sect1>
+  
+  <sect1>
+    <title>Query model</title>
+    <para>TODO</para>
+  </sect1>
+  
+  <sect1>
+    <title>APT usage</title>    
+    <para>TODO</para>
+  </sect1>
+  
+</chapter>

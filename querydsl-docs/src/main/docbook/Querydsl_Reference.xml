@@ -42,19 +42,12 @@
 
     <xi:include href="content/preface.xml"/>    
     <xi:include href="content/intro.xml" />
-    <xi:include href="content/getting-started.xml"/>    
+    <xi:include href="content/getting-started.xml"/>
+        
     <xi:include href="content/alias_usage.xml" />
-              
-    <!--  
-      * Usage patterns
-        * Interface based query usage
-        * Custom query extensions    
-    
-      * Internals
-        * Expression model
-        * Query model
-        * APT usage    
-    -->
+    <xi:include href="content/best-practices.xml"/>    
+    <xi:include href="content/internals.xml"/>
+    <xi:include href="content/troubleshooting.xml"/>
 
 </book>
 
