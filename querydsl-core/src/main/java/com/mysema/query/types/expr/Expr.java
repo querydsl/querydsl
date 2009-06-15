@@ -113,7 +113,7 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean notIn(ECollection<? extends D> right) {
-        return Grammar.notIn(this, right);
+        return Grammar.in(this, right).not();
     }
 
     /**
@@ -133,7 +133,7 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean notIn(D... right) {
-        return Grammar.notIn(this, right);
+        return Grammar.in(this, right).not();
     }
 
     /**

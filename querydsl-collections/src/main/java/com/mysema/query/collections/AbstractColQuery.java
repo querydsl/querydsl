@@ -59,7 +59,7 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @version $Id$
  */
-public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends QueryBaseWithProjectionAndDetach<Object, SubType> implements ColQuery {
+public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends QueryBaseWithProjectionAndDetach<SubType> implements ColQuery {
     
     private boolean arrayProjection = false;
 
@@ -95,7 +95,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
     }
 
-    public AbstractColQuery(QueryMetadata<Object> metadata) {
+    public AbstractColQuery(QueryMetadata metadata) {
         super(metadata);
         this.patterns = ColQueryPatterns.DEFAULT;
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
@@ -220,11 +220,11 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
 
     protected Iterator<?> handleFromWhereMultiSource(List<Expr<?>> sources) throws Exception {
         EBoolean condition = getMetadata().getWhere();
-        List<JoinExpression<Object>> joins = new ArrayList<JoinExpression<Object>>(getMetadata().getJoins());
+        List<JoinExpression> joins = new ArrayList<JoinExpression>(getMetadata().getJoins());
         if (sortSources) {
             sourceSortingSupport.sortSources(joins, condition);
         }
-        for (JoinExpression<?> join : joins) {
+        for (JoinExpression join : joins) {
             sources.add(join.getTarget());
         }
         indexSupport = createIndexSupport(exprToIt, patterns, sources);
@@ -245,7 +245,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
 
     protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources) throws Exception {
         EBoolean condition = getMetadata().getWhere();
-        JoinExpression<?> join = getMetadata().getJoins().get(0);
+        JoinExpression join = getMetadata().getJoins().get(0);
         sources.add(join.getTarget());
         indexSupport = createIndexSupport(exprToIt, patterns, sources);
         // create a simple projecting iterator for Object -> Object[]

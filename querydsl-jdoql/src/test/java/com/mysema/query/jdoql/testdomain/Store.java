@@ -1,13 +1,17 @@
 package com.mysema.query.jdoql.testdomain;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.Inheritance;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.Join;
+import javax.jdo.annotations.Key;
 import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.Value;
 
 @PersistenceCapable
 @Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
@@ -15,13 +19,16 @@ public class Store {
 
     private String name;
     
-    @Persistent
+//    @Persistent
     @Join
-    private List<Product> products;
+    @Element(types=Product.class)
+    private List<Product> products = new ArrayList<Product>();
     
-    @Persistent
+//    @Persistent
     @Join
-    private Map<String,Product> productsByName;
+    @Key(types=String.class)
+    @Value(types=Product.class)
+    private Map<String,Product> productsByName = new HashMap<String,Product>();
     
     public String getName() {
         return name;

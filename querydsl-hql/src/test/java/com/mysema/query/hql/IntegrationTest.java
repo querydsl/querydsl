@@ -13,6 +13,8 @@ import org.junit.runner.RunWith;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
+import com.mysema.query.Hibernate;
+import com.mysema.query.HibernateTestRunner;
 import com.mysema.query.hql.hibernate.HQLQueryImpl;
 
 /**

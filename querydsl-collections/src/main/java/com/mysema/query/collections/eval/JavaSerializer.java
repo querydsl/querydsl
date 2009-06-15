@@ -149,8 +149,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer> {
                     && ((Expr<?>) path).getType().equals(Boolean.class)) {
                 prefix = "is";
             }
-            exprAsString = prefix
-                    + StringUtils.capitalize(path.getMetadata().getExpression().toString()) + "()";
+            exprAsString = prefix + StringUtils.capitalize(path.getMetadata().getExpression().toString()) + "()";
 
         } else if (pathType == PathType.LISTVALUE_CONSTANT) {
             exprAsString = path.getMetadata().getExpression().toString();
@@ -158,12 +157,20 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer> {
         } else if (path.getMetadata().getExpression() != null) {
             exprAsString = toString(path.getMetadata().getExpression(), false);
         }
-
+        
+        if (pathType.isGeneric()){
+            // required because Janino doesn't support generics
+            append("((").append(path.getType().getName()).append(")");
+        }        
         String pattern = patterns.getPattern(pathType);
         if (parentAsString != null) {
             append(String.format(pattern, parentAsString, exprAsString));
         } else {
             append(String.format(pattern, exprAsString));
+        }
+        if (pathType.isGeneric()){
+            // required because Janino doesn't support generics
+            append(")");
         }
     }
 

@@ -19,6 +19,7 @@ import org.hibernate.annotations.CollectionOfElements;
 public class Calendar {
     @CollectionOfElements
     Map<String, java.util.Date> holidays;
+    
     @Id
     int id;
 }

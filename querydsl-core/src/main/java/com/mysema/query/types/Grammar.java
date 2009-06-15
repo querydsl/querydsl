@@ -602,10 +602,6 @@ public class Grammar {
         return operationFactory.createBoolean(Ops.STRING_ISEMPTY, left);
     }
     
-    public static EBoolean isNotEmpty(Expr<String> left) {
-        return operationFactory.createBoolean(Ops.STRING_ISNOTEMPTY, left);
-    }
-
     /**
      * 
      * @param collection
@@ -622,24 +618,6 @@ public class Grammar {
      */
     public static EBoolean isEmpty(EMap<?,?> map) {
         return operationFactory.createBoolean(Ops.MAP_ISEMPTY,(Expr<?>) map);
-    }
-
-    /**
-     * 
-     * @param collection
-     * @return
-     */
-    public static EBoolean isNotEmpty(ECollection<?> collection) {
-        return operationFactory.createBoolean(Ops.COL_ISNOTEMPTY,(Expr<?>) collection);
-    }
-
-    /**
-     * 
-     * @param collection
-     * @return
-     */
-    public static EBoolean isNotEmpty(EMap<?,?> map) {
-        return operationFactory.createBoolean(Ops.MAP_ISNOTEMPTY,(Expr<?>) map);
     }
 
     /**
@@ -846,58 +824,6 @@ public class Grammar {
             }                
         }
         return operationFactory.createBoolean(Ops.NOT, left);
-    }
-
-    /**
-     * Expr : <code>left not between start and end</code>
-     * 
-     * @param <A>
-     * @param left
-     * @param start
-     * @param end
-     * @return
-     */
-    public static <A extends Comparable<?>> EBoolean notBetween(Expr<A> left, A start, A end) {
-        return operationFactory.createBoolean(Ops.NOTBETWEEN, left, exprFactory
-                .createConstant(start), exprFactory.createConstant(end));
-    }
-
-    /**
-     * Expr : <code>left not between start and end</code>
-     * 
-     * @param <A>
-     * @param left
-     * @param start
-     * @param end
-     * @return
-     */
-    public static <A extends Comparable<?>> EBoolean notBetween(Expr<A> left, Expr<A> start, Expr<A> end) {
-        return operationFactory.createBoolean(Ops.NOTBETWEEN, left, start, end);
-    }
-
-    /**
-     * Expr : <code>left not in rest</code>
-     * 
-     * @param <A>
-     * @param left
-     * @param rest
-     * @return
-     */
-    public static <A> EBoolean notIn(Expr<A> left, A... rest) {
-        return operationFactory.createBoolean(Ops.NOTIN, left, exprFactory.createConstant(Arrays.asList(rest)));
-    }
-
-    
-    /**
-     * Expr : <code>left not in right</code>
-     * 
-     * @param <A>
-     * @param left
-     * @param right
-     * @return
-     */
-    public static <A> EBoolean notIn(Expr<A> left, ECollection<? extends A> right) {
-        return operationFactory.createBoolean(Ops.NOTIN, left, (Expr<?>) right);
     }
 
     /**

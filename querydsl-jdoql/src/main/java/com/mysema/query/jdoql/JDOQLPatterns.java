@@ -21,10 +21,9 @@ public class JDOQLPatterns extends JavaPatterns {
 
     public JDOQLPatterns() {
         // String
-        add(Ops.STRING_CONTAINS, "%s.indexOf(%s) > -1");
+        add(Ops.STRING_CONTAINS, "%s.indexOf(%s) > -1", 25);
         add(Ops.EQ_IGNORECASE, "%s.toLowerCase().equals(%s.toLowerCase())");
-        add(Ops.STRING_ISEMPTY, "%s == \"\"");
-        add(Ops.STRING_ISNOTEMPTY, "%s != \"\"");
+        add(Ops.STRING_ISEMPTY, "%s == \"\"", 25);
         
         // Date
         add(Ops.DateTimeOps.DAY_OF_MONTH, "%s.getDay()");

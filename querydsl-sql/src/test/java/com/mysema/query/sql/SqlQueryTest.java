@@ -291,8 +291,8 @@ public abstract class SqlQueryTest {
 
     @Test
     public void testIllegalUnion() throws SQLException {
-        ObjectSubQuery<Object, Integer> sq1 = q().from(employee).uniqueExpr(Grammar.max(employee.id));
-        ObjectSubQuery<Object, Integer> sq2 = q().from(employee).uniqueExpr(Grammar.min(employee.id));
+        ObjectSubQuery<Integer> sq1 = q().from(employee).uniqueExpr(Grammar.max(employee.id));
+        ObjectSubQuery<Integer> sq2 = q().from(employee).uniqueExpr(Grammar.min(employee.id));
         try {
             q().from(employee).union(sq1, sq2).list();
             fail();
@@ -306,8 +306,8 @@ public abstract class SqlQueryTest {
     @Test
     public void testUnion() throws SQLException {
         // union
-        ObjectSubQuery<Object, Integer> sq1 = q().from(employee).uniqueExpr(Grammar.max(employee.id));
-        ObjectSubQuery<Object, Integer> sq2 = q().from(employee).uniqueExpr(Grammar.min(employee.id));
+        ObjectSubQuery<Integer> sq1 = q().from(employee).uniqueExpr(Grammar.max(employee.id));
+        ObjectSubQuery<Integer> sq2 = q().from(employee).uniqueExpr(Grammar.min(employee.id));
         List<Integer> list = q().union(sq1, sq2).list();
         assertFalse(list.isEmpty());
 
@@ -318,8 +318,8 @@ public abstract class SqlQueryTest {
         assertFalse(list.isEmpty());
 
         // union #2
-        ObjectSubQuery<Object, Object[]> sq3 = q().from(employee).uniqueExpr(count(), Grammar.max(employee.id));
-        ObjectSubQuery<Object, Object[]> sq4 = q().from(employee).uniqueExpr(count(), Grammar.min(employee.id));
+        ObjectSubQuery<Object[]> sq3 = q().from(employee).uniqueExpr(count(), Grammar.max(employee.id));
+        ObjectSubQuery<Object[]> sq4 = q().from(employee).uniqueExpr(count(), Grammar.min(employee.id));
         List<Object[]> list2 = q().union(sq3, sq4).list();
         assertFalse(list2.isEmpty());
     }
@@ -332,7 +332,7 @@ public abstract class SqlQueryTest {
 
     @Test
     public void testWhereExists() throws SQLException {
-        ObjectSubQuery<Object, Integer> sq1 = q().from(employee).uniqueExpr(Grammar.max(employee.id));
+        ObjectSubQuery<Integer> sq1 = q().from(employee).uniqueExpr(Grammar.max(employee.id));
         q().from(employee).where(exists(sq1)).count();
         q().from(employee).where(not(exists(sq1))).count();
     }

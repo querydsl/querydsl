@@ -20,7 +20,7 @@ import com.mysema.query.types.path.PEntityCollection;
  * @author tiwe
  *
  */
-public interface HQLQuery extends Projectable, Detachable<HQLJoinMeta>{
+public interface HQLQuery extends Projectable, Detachable{
     
     HQLQuery from(PEntity<?>... o);
 

@@ -97,7 +97,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     @Override
     public EBoolean isNotEmpty() {
         if (notEmpty == null){
-            notEmpty = Grammar.isNotEmpty(this); 
+            notEmpty = Grammar.isEmpty(this).not(); 
         }
         return notEmpty;
     }

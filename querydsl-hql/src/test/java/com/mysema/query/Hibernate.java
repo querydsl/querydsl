@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.hql;
+package com.mysema.query;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;

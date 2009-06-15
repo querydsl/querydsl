@@ -16,7 +16,9 @@ import javax.persistence.ManyToOne;
 public class Employee {
     @ManyToOne
     Company company;
+    
     String firstName, lastName;
+    
     @Id
     int id;
 }

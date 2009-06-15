@@ -20,7 +20,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public interface ColQuery extends Projectable, Detachable<Object> {
+public interface ColQuery extends Projectable, Detachable {
 
     <A> ColQuery from(Expr<A> entity, A first, A... rest);
 

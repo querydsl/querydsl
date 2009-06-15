@@ -8,6 +8,10 @@ package com.mysema.query.collections;
 import com.mysema.query.QueryMetadata;
 
 
+/**
+ * @author tiwe
+ *
+ */
 public class ColQueryImpl extends AbstractColQuery<ColQueryImpl>{
 
     public ColQueryImpl() {
@@ -18,7 +22,7 @@ public class ColQueryImpl extends AbstractColQuery<ColQueryImpl>{
         super(patterns);
     }
 
-    public ColQueryImpl(QueryMetadata<Object> metadata) {
+    public ColQueryImpl(QueryMetadata metadata) {
         super(metadata);
     }
 

@@ -17,8 +17,19 @@ import com.mysema.query.types.expr.Expr;
  */
 public interface IteratorSource {
 
+    /**
+     * @param <A>
+     * @param expr
+     * @return
+     */
     <A> Iterator<A> getIterator(Expr<A> expr);
 
+    /**
+     * @param <A>
+     * @param expr
+     * @param bindings
+     * @return
+     */
     <A> Iterator<A> getIterator(Expr<A> expr, Object[] bindings);
 
 }

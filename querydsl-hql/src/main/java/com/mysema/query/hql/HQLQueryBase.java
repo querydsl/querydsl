@@ -28,7 +28,7 @@ import com.mysema.query.types.path.PathMetadata;
  * @version $Id$
  */
 public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
-        extends QueryBaseWithProjectionAndDetach<HQLJoinMeta, SubType> {
+        extends QueryBaseWithProjectionAndDetach<SubType> {
 
     private Map<Object,String> constants;
 
@@ -84,8 +84,8 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
     }
     
     public SubType fetch(){
-        List<JoinExpression<HQLJoinMeta>> joins = getMetadata().getJoins();
-        joins.get(joins.size()-1).setMetadata(HQLJoinMeta.FETCH);
+        List<JoinExpression> joins = getMetadata().getJoins();
+        joins.get(joins.size()-1).setFetch(true);
         return _this;
     }
     

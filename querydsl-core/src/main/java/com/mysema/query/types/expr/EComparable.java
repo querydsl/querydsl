@@ -173,11 +173,11 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
     }
 
     public final EBoolean notBetween(D first, D second) {
-        return Grammar.notBetween(this, first, second);
+        return Grammar.between(this, first, second).not();
     }
 
     public final EBoolean notBetween(Expr<D> first, Expr<D> second) {
-        return Grammar.notBetween(this, first, second);
+        return Grammar.between(this, first, second).not();
     }
 
     /**

@@ -114,7 +114,7 @@ public class PComponentMap<K, V> extends Expr<java.util.Map<K, V>> implements PM
     @Override
     public EBoolean isNotEmpty() {
         if (notEmpty == null){
-            notEmpty = Grammar.isNotEmpty(this); 
+            notEmpty = Grammar.isEmpty(this).not(); 
         }
         return notEmpty;
     }

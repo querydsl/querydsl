@@ -18,8 +18,10 @@ import javax.persistence.ManyToOne;
 public class Account {
     @Id
     long id;
+    
     @ManyToOne
     Person owner;
+    
     @Embedded
     EmbeddedType embeddedData;
 }

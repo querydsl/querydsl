@@ -37,11 +37,11 @@ public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends
     private final SubType _this = (SubType) this;
 
     public CustomQueryable(IteratorSource iteratorSource) {
-        this(iteratorSource, new DefaultQueryMetadata<Object>());
+        this(iteratorSource, new DefaultQueryMetadata());
     }
 
     public CustomQueryable(final IteratorSource iteratorSource,
-            QueryMetadata<Object> metadata) {
+            QueryMetadata metadata) {
         Assert.notNull(iteratorSource);
         this.innerQuery = new ColQueryImpl(metadata) {
             @Override
@@ -54,7 +54,7 @@ public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends
         setProjectable(innerQuery);
     }
 
-    protected QueryMetadata<Object> getMetadata() {
+    protected QueryMetadata getMetadata() {
         return innerQuery.getMetadata();
     }
 

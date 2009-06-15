@@ -22,10 +22,13 @@ import org.hibernate.annotations.IndexColumn;
 public class Company {
     @ManyToOne
     Employee ceo;
+    
     @OneToMany
     @IndexColumn(name = "_index")
     List<Department> departments;
+    
     @Id
     int id;
+    
     String name;
 }

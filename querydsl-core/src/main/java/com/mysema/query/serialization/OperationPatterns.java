@@ -18,7 +18,6 @@ import com.mysema.query.types.path.PathType;
  * @author tiwe
  * @version $Id$
  */
-// TODO : replace String.format based expressions with custom expressions
 public class OperationPatterns {
 
     final Map<Operator<?>, String> patterns = new HashMap<Operator<?>, String>();
@@ -35,7 +34,6 @@ public class OperationPatterns {
 
         // collection
         add(Ops.COL_ISEMPTY, "empty(%s)");
-        add(Ops.COL_ISNOTEMPTY, "not empty(%s)");
         add(Ops.COL_SIZE, "size(%s)");
         
         // array
@@ -44,13 +42,11 @@ public class OperationPatterns {
         // map
         add(Ops.MAP_SIZE, "size(%s)");
         add(Ops.MAP_ISEMPTY, "empty(%s)");
-        add(Ops.MAP_ISNOTEMPTY, "not empty(%s)");
         add(Ops.CONTAINS_KEY, "containsKey(%s,%s)");
         add(Ops.CONTAINS_VALUE, "containsValue(%s,%s)");
         
         // comparison
         add(Ops.BETWEEN, "%s between %s and %s", 30);
-        add(Ops.NOTBETWEEN, "%s not between %s and %s", 30);
         add(Ops.GOE, "%s >= %s", 20);
         add(Ops.GT, "%s > %s", 21);
         add(Ops.LOE, "%s <= %s", 22);
@@ -77,7 +73,6 @@ public class OperationPatterns {
         add(Ops.NE_PRIMITIVE, "%s != %s", 25);
         add(Ops.NE_OBJECT, "%s != %s", 25);
         add(Ops.IN, "%s in %s");
-        add(Ops.NOTIN, "%s not in %s");
         add(Ops.ISNULL, "%s is null", 26);
         add(Ops.ISNOTNULL, "%s is not null", 26);
         add(Ops.ALIAS, "%s as %s");
@@ -106,7 +101,6 @@ public class OperationPatterns {
         add(Ops.INDEXOF, "indexOf(%s,%s)");
         add(Ops.INDEXOF_2ARGS, "indexOf(%s,%s,%s)");
         add(Ops.STRING_ISEMPTY, "empty(%s)");
-        add(Ops.STRING_ISNOTEMPTY, "not empty(%s)");
         add(Ops.StringOps.LTRIM, "ltrim(%s)");
         add(Ops.StringOps.RTRIM, "rtrim(%s)");
         add(Ops.StringOps.SPACE, "space(%s)");

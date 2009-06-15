@@ -5,11 +5,14 @@
  */
 package com.mysema.query.hql.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.IndexColumn;
 
 /**
  * The Class Cat.
@@ -18,8 +21,11 @@ import javax.persistence.OneToMany;
 public class Cat extends Animal {
     int breed;
     Color eyecolor;
+    
     @OneToMany
-    List<Cat> kittens;
+    @IndexColumn(name = "ind")
+    List<Cat> kittens = new ArrayList<Cat>();
+    
     @ManyToOne
     Cat mate;
 

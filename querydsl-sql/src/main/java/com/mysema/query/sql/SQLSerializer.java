@@ -50,9 +50,9 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
         return constants;
     }
 
-    public void serialize(QueryMetadata<Object> metadata, boolean forCountRow) {
+    public void serialize(QueryMetadata metadata, boolean forCountRow) {
         List<? extends Expr<?>> select = metadata.getProjection();
-        List<JoinExpression<Object>> joins = metadata.getJoins();
+        List<JoinExpression> joins = metadata.getJoins();
         EBoolean where = metadata.getWhere();
         List<? extends Expr<?>> groupBy = metadata.getGroupBy();
         EBoolean having = metadata.getHaving();
@@ -85,7 +85,7 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
 
         }
         for (int i = 0; i < joins.size(); i++) {
-            JoinExpression<Object> je = joins.get(i);
+            JoinExpression je = joins.get(i);
             if (i > 0) {
                 String sep = ", ";
                 switch (je.getType()) {
@@ -166,7 +166,7 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
         }
     }
 
-    public void serializeUnion(SubQuery<Object>[] sqs,
+    public void serializeUnion(SubQuery[] sqs,
             List<OrderSpecifier<?>> orderBy) {
         // union
         handle(patterns.union(), (List)Arrays.asList(sqs));
@@ -222,15 +222,15 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
         }
     }
 
-    protected void visit(ObjectSubQuery<Object, ?> query) {
-        visit((SubQuery<Object>)query);
+    protected void visit(ObjectSubQuery<?> query) {
+        visit((SubQuery)query);
     }
     
-    protected void visit(ListSubQuery<Object, ?> query) {
-        visit((SubQuery<Object>)query);
+    protected void visit(ListSubQuery<?> query) {
+        visit((SubQuery)query);
     }
     
-    protected void visit(SubQuery<Object> query) {
+    protected void visit(SubQuery query) {
         append("(");
         serialize(query.getMetadata(), false);
         append(")");

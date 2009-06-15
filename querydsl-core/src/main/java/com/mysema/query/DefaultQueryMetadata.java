@@ -23,7 +23,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
+public class DefaultQueryMetadata implements QueryMetadata {
 
     private boolean unique;
     
@@ -33,7 +33,7 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
 
     private CascadingBoolean having = new CascadingBoolean();
 
-    private List<JoinExpression<JoinMeta>> joins = new ArrayList<JoinExpression<JoinMeta>>();
+    private List<JoinExpression> joins = new ArrayList<JoinExpression>();
 
     private List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
 
@@ -49,7 +49,7 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
     public void addFrom(Expr<?>... o) {
         for (Expr<?> expr : o) {
             if (!exprInJoins.contains(expr)) {
-                joins.add(new JoinExpression<JoinMeta>(JoinType.DEFAULT, expr));
+                joins.add(new JoinExpression(JoinType.DEFAULT, expr));
                 exprInJoins.add(expr);
             }
         }
@@ -68,7 +68,7 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
     }
 
     @Override
-    public void addJoin(JoinExpression<JoinMeta> joinExpression) {
+    public void addJoin(JoinExpression joinExpression) {
         if (!exprInJoins.contains(joinExpression.getTarget())) {
             joins.add(joinExpression);
             exprInJoins.add(joinExpression.getTarget());
@@ -78,7 +78,7 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
     @Override
     public void addJoin(JoinType joinType, Expr<?> expr) {
         if (!exprInJoins.contains(expr)) {
-            joins.add(new JoinExpression<JoinMeta>(joinType, expr));
+            joins.add(new JoinExpression(joinType, expr));
             exprInJoins.add(expr);
         }
     }
@@ -118,7 +118,7 @@ public class DefaultQueryMetadata<JoinMeta> implements QueryMetadata<JoinMeta> {
     }
 
     @Override
-    public List<JoinExpression<JoinMeta>> getJoins() {
+    public List<JoinExpression> getJoins() {
         return Collections.unmodifiableList(joins);
     }
 

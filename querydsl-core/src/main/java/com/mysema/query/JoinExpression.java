@@ -17,24 +17,15 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class JoinExpression<T> {
+public class JoinExpression {
     private EBoolean condition;
-    private T metadata;
+    private boolean fetch;
     private final Expr<?> target;
     private final JoinType type;
-    
-    public JoinExpression(Expr<?> target) {
-        this(JoinType.DEFAULT, target, null);
-    }
 
     public JoinExpression(JoinType type, Expr<?> target) {
-        this(type, target, null);
-    }
-
-    public JoinExpression(JoinType type, Expr<?> target, T metadata) {
         this.type = type;
         this.target = Assert.notNull(target);
-        this.metadata = metadata;
     }
 
     public EBoolean getCondition() {
@@ -53,14 +44,14 @@ public class JoinExpression<T> {
         return type;
     }
 
-    public T getMetadata() {
-        return metadata;
-    }
-    
-    public void setMetadata(T metadata){
-        this.metadata = metadata;
+    public boolean isFetch() {
+        return fetch;
     }
 
+    public void setFetch(boolean fetch) {
+        this.fetch = fetch;
+    }
+    
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(type).append(" ").append(target);
@@ -78,10 +69,11 @@ public class JoinExpression<T> {
     @Override
     public boolean equals(Object o) {
         if (o instanceof JoinExpression) {
-            JoinExpression<?> j = (JoinExpression<?>) o;
-            return new EqualsBuilder().append(condition, j.condition).append(
-                    metadata, j.metadata).append(target, j.target).append(type,
-                    j.type).isEquals();
+            JoinExpression j = (JoinExpression) o;
+            return new EqualsBuilder()
+                .append(condition, j.condition)
+                .append(target, j.target)
+                .append(type, j.type).isEquals();
         } else {
             return false;
         }

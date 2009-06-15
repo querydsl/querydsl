@@ -17,38 +17,48 @@ public enum PathType implements Operator<Path<?>> {
     /**
      * Indexed array access (array[i])
      */
-    ARRAYVALUE, 
+    ARRAYVALUE(false), 
     /**
      * Indexed array access with constant (array[i])
      */
-    ARRAYVALUE_CONSTANT, 
+    ARRAYVALUE_CONSTANT(false), 
     /**
      * Indexed list access (list.get(index))
      */
-    LISTVALUE, 
+    LISTVALUE(true), 
     /**
      * Indexed list access with constant (list.get(index))
      */
-    LISTVALUE_CONSTANT, 
+    LISTVALUE_CONSTANT(true), 
     /**
      * Map value access (map.get(key))
      */
-    MAPVALUE, 
+    MAPVALUE(true), 
     /**
      * Map value access with constant (map.get(key))
      */
-    MAPVALUE_CONSTANT, 
+    MAPVALUE_CONSTANT(true), 
     /**
      * Property of the parent
      */
-    PROPERTY, 
+    PROPERTY(false), 
     /**
      * Root path
      */
-    VARIABLE;
+    VARIABLE(false);
+    
+    private boolean generic;
+    
+    PathType(boolean generic){
+        this.generic = generic;
+    }
 
     @Override
     public List<Class<?>> getTypes() {
         return Collections.emptyList();
+    }
+    
+    public boolean isGeneric(){
+        return generic;
     }
 }

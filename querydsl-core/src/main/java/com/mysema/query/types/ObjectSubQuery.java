@@ -14,17 +14,17 @@ import com.mysema.query.types.expr.Expr;
  * @param <JM>
  * @param <A>
  */
-public class ObjectSubQuery<JM, A> extends Expr<A> implements SubQuery<JM>{
+public class ObjectSubQuery<A> extends Expr<A> implements SubQuery{
 
-    private QueryMetadata<JM> md;
+    private QueryMetadata md;
     
-    public ObjectSubQuery(QueryMetadata<JM> md, Class<A> type) {
+    public ObjectSubQuery(QueryMetadata md, Class<A> type) {
         super(type);
         this.md = md;
     }
 
     @Override
-    public QueryMetadata<JM> getMetadata() {
+    public QueryMetadata getMetadata() {
         return md;
     }
 

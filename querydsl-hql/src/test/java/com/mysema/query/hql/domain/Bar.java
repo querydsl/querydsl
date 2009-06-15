@@ -14,6 +14,7 @@ import javax.persistence.Id;
 @Entity
 public class Bar {
     java.util.Date date;
+    
     @Id
     int id;
 }

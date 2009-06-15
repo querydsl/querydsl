@@ -46,9 +46,7 @@ public interface Ops {
         
     // collection
     Operator<Boolean> IN = new OperatorImpl<Boolean>(Object_x_2); // cmp. contains
-    Operator<Boolean> NOTIN = new OperatorImpl<Boolean>(Object_x_2); // cmp. not contains
     Operator<Boolean> COL_ISEMPTY = new OperatorImpl<Boolean>(Object.class);
-    Operator<Boolean> COL_ISNOTEMPTY = new OperatorImpl<Boolean>(Object.class);
     Operator<Number> COL_SIZE = new OperatorImpl<Number>(Object.class);
 
     // array
@@ -59,7 +57,6 @@ public interface Ops {
     Operator<Boolean> CONTAINS_VALUE = new OperatorImpl<Boolean>(Object_x_2);
     Operator<Number> MAP_SIZE = new OperatorImpl<Number>(Object.class);
     Operator<Boolean> MAP_ISEMPTY = new OperatorImpl<Boolean>(Object.class);
-    Operator<Boolean> MAP_ISNOTEMPTY = new OperatorImpl<Boolean>(Object.class);
     
     // Boolean
     Operator<Boolean> AND = new OperatorImpl<Boolean>(Boolean_x_2);
@@ -72,7 +69,6 @@ public interface Ops {
     Operator<Boolean> GT = new OperatorImpl<Boolean>(Comparable_x_2);
     Operator<Boolean> LOE = new OperatorImpl<Boolean>(Comparable_x_2);
     Operator<Boolean> LT = new OperatorImpl<Boolean>(Comparable_x_2);
-    Operator<Boolean> NOTBETWEEN = new OperatorImpl<Boolean>(Comparable_x_3);
     
     // Date / Comparable
     Operator<Boolean> AFTER = new OperatorImpl<Boolean>(Comparable_x_2);
@@ -90,7 +86,6 @@ public interface Ops {
     // String
     Operator<Character> CHAR_AT = new OperatorImpl<Character>(String.class, Integer.class);
     Operator<String> CONCAT = new OperatorImpl<String>(String_x_2);
-//    Operator<Boolean> LIKE = new OperatorImpl<Boolean>(String_x_2);
     Operator<String> LOWER = new OperatorImpl<String>(String.class);
     Operator<String> SUBSTR1ARG = new OperatorImpl<String>(String.class, Integer.class);
     Operator<String> SUBSTR2ARGS = new OperatorImpl<String>(String.class, Integer.class, Integer.class);
@@ -99,7 +94,6 @@ public interface Ops {
     Operator<Boolean> MATCHES = new OperatorImpl<Boolean>(String_x_2);
     Operator<Number> STRING_LENGTH = new OperatorImpl<Number>(String.class);
     Operator<Boolean> STRING_ISEMPTY = new OperatorImpl<Boolean>(String.class);
-    Operator<Boolean> STRING_ISNOTEMPTY = new OperatorImpl<Boolean>(String.class);
     Operator<Boolean> STARTSWITH = new OperatorImpl<Boolean>(String_x_2);
     Operator<Boolean> STARTSWITH_IC = new OperatorImpl<Boolean>(String_x_2);
     Operator<Number> INDEXOF_2ARGS = new OperatorImpl<Number>(String.class, String.class, Integer.class);

@@ -18,51 +18,51 @@ import com.mysema.query.types.expr.Expr;
  * @param <JoinMeta>
  * @param <SubType>
  */
-public abstract class QueryBaseWithProjectionAndDetach <JoinMeta, 
-    SubType extends QueryBaseWithProjectionAndDetach<JoinMeta, SubType>>
-    extends QueryBaseWithProjection<JoinMeta, SubType> implements Detachable<JoinMeta> {
+public abstract class QueryBaseWithProjectionAndDetach 
+    <SubType extends QueryBaseWithProjectionAndDetach<SubType>>
+    extends QueryBaseWithProjection<SubType> implements Detachable {
     
     public QueryBaseWithProjectionAndDetach() {
     }
 
-    public QueryBaseWithProjectionAndDetach(QueryMetadata<JoinMeta> metadata) {
+    public QueryBaseWithProjectionAndDetach(QueryMetadata metadata) {
         super(metadata);
     }
     
     @Override
-    public ObjectSubQuery<JoinMeta,Long> countExpr(){
+    public ObjectSubQuery<Long> countExpr(){
         addToProjection(Grammar.count());
-        return new ObjectSubQuery<JoinMeta,Long>(getMetadata(), Long.class);
+        return new ObjectSubQuery<Long>(getMetadata(), Long.class);
     }
 
     @Override
-    public ListSubQuery<JoinMeta, Object[]> listExpr(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public ListSubQuery<Object[]> listExpr(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         addToProjection(first, second);
         addToProjection(rest);
-        return new ListSubQuery<JoinMeta,Object[]>(getMetadata(), Object[].class);
+        return new ListSubQuery<Object[]>(getMetadata(), Object[].class);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <RT> ListSubQuery<JoinMeta, RT> listExpr(Expr<RT> projection) {
+    public <RT> ListSubQuery<RT> listExpr(Expr<RT> projection) {
         addToProjection(projection);
-        return new ListSubQuery<JoinMeta,RT>(getMetadata(), (Class)projection.getType());
+        return new ListSubQuery<RT>(getMetadata(), (Class)projection.getType());
     }
 
     @Override
-    public ObjectSubQuery<JoinMeta, Object[]> uniqueExpr(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public ObjectSubQuery<Object[]> uniqueExpr(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         addToProjection(first, second);
         addToProjection(rest);
         getMetadata().setUnique(true);
-        return new ObjectSubQuery<JoinMeta,Object[]>(getMetadata(),Object[].class);
+        return new ObjectSubQuery<Object[]>(getMetadata(),Object[].class);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <RT> ObjectSubQuery<JoinMeta, RT> uniqueExpr(Expr<RT> projection) {
+    public <RT> ObjectSubQuery<RT> uniqueExpr(Expr<RT> projection) {
         addToProjection(projection);
         getMetadata().setUnique(true);
-        return new ObjectSubQuery<JoinMeta,RT>(getMetadata(), (Class)projection.getType());
+        return new ObjectSubQuery<RT>(getMetadata(), (Class)projection.getType());
     }
 
 }

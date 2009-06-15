@@ -22,8 +22,10 @@ import org.hibernate.annotations.SortType;
 @Entity
 public class Catalog {
     Date effectiveDate;
+    
     @Id
     int id;
+    
     @OneToMany
     @Sort(type = SortType.NATURAL)
     SortedSet<Price> prices;

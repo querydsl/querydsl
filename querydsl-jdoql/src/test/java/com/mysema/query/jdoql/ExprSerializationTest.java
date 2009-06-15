@@ -117,6 +117,9 @@ public class ExprSerializationTest {
         // TODO matches
         assertEquals("product.name.substring(a1,a2) == a3", serialize(product.name.substring(0, 4).eq("Sony")));
         assertEquals("product.name.substring(a1) == a2", serialize(product.name.substring(5).eq("Discman")));
+        
+        assertEquals("product.name == \"\"", serialize(product.name.isEmpty()));
+        assertEquals("!(product.name == \"\")", serialize(product.name.isNotEmpty()));
     }
         
     private String serialize(Expr<?> expr) {

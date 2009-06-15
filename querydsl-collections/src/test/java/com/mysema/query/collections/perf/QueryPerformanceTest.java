@@ -47,9 +47,9 @@ public class QueryPerformanceTest extends AbstractPerformanceTest {
         exprToIt.put(cat, Collections.emptySet());
         exprToIt.put(otherCat, Collections.emptySet());
 
-        List<JoinExpression<?>> joins = Arrays.<JoinExpression<?>> asList(
-                new JoinExpression<Object>(JoinType.DEFAULT, cat),
-                new JoinExpression<Object>(JoinType.DEFAULT, otherCat));
+        List<JoinExpression> joins = Arrays.<JoinExpression> asList(
+                new JoinExpression(JoinType.DEFAULT, cat),
+                new JoinExpression(JoinType.DEFAULT, otherCat));
 
         for (int i = 0; i < conditionsFor2Sources.size(); i++) {
             if (new JoinExpressionComparator(conditionsFor2Sources.get(i))

@@ -35,7 +35,7 @@ import com.mysema.query.types.expr.Expr;
  * @version $Id$
  */
 public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
-        extends QueryBaseWithProjectionAndDetach<Object, SubType> implements Query<SubType> {
+        extends QueryBaseWithProjectionAndDetach<SubType> implements Query<SubType> {
 
     private static final Logger logger = LoggerFactory
             .getLogger(AbstractSQLQuery.class);
@@ -48,7 +48,7 @@ public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
 
     protected final SQLPatterns patterns;
 
-    private SubQuery<Object>[] sq;
+    private SubQuery[] sq;
 
     public AbstractSQLQuery(Connection conn, SQLPatterns patterns) {
         this.conn = conn;
@@ -209,15 +209,15 @@ public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
         return queryString;
     }
     
-    public <RT> UnionBuilder<RT> union(ObjectSubQuery<Object,RT>... sq) {
+    public <RT> UnionBuilder<RT> union(ObjectSubQuery<RT>... sq) {
         return innerUnion(sq);
     }
     
-    public <RT> UnionBuilder<RT> union(ListSubQuery<Object,RT>... sq) {
+    public <RT> UnionBuilder<RT> union(ListSubQuery<RT>... sq) {
         return innerUnion(sq);
     }
 
-    private <RT> UnionBuilder<RT> innerUnion(SubQuery<Object>... sq) {
+    private <RT> UnionBuilder<RT> innerUnion(SubQuery... sq) {
         if (!getMetadata().getJoins().isEmpty())
             throw new IllegalArgumentException("Don't mix union and from");
         this.sq = sq;

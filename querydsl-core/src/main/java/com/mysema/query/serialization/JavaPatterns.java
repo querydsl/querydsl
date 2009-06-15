@@ -24,9 +24,7 @@ public class JavaPatterns extends OperationPatterns {
 
         // collection
         add(Ops.IN, "%2$s.contains(%1$s)");
-        add(Ops.NOTIN, "!%2$s.contains(%1$s)");
         add(Ops.COL_ISEMPTY, "%s.isEmpty()");
-        add(Ops.COL_ISNOTEMPTY, "!%s.isEmpty()");
         add(Ops.COL_SIZE, "%s.size()");
         
         // array
@@ -34,14 +32,12 @@ public class JavaPatterns extends OperationPatterns {
         
         // map
         add(Ops.MAP_ISEMPTY, "%s.isEmpty()");
-        add(Ops.MAP_ISNOTEMPTY, "!%s.isEmpty()");
         add(Ops.MAP_SIZE, "%s.size()");
         add(Ops.CONTAINS_KEY, "%s.containsKey(%s)");
         add(Ops.CONTAINS_VALUE, "%s.containsValue(%s)");
                 
         // Comparable
         add(Ops.BETWEEN, "%2$s < %1$s && %1$s < %3$s");
-        add(Ops.NOTBETWEEN, "!(%2$s < %1$s && %1$s < %3$s)");
         
         // String
         add(Ops.CHAR_AT, "%s.charAt(%s)");
@@ -53,7 +49,6 @@ public class JavaPatterns extends OperationPatterns {
         add(Ops.MATCHES, "%s.matches(%s)");
         add(Ops.STRING_LENGTH, "%s.length()");        
         add(Ops.STRING_ISEMPTY, "%s.isEmpty()");
-        add(Ops.STRING_ISNOTEMPTY, "!%s.isEmpty()");
         add(Ops.STRING_CONTAINS, "%s.contains(%s)");
         add(Ops.STARTSWITH, "%s.startsWith(%s)");
         add(Ops.STARTSWITH_IC, "%s.toLowerCase().startsWith(%s.toLowerCase())");        

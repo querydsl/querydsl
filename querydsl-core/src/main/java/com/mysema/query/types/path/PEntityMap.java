@@ -122,7 +122,7 @@ public class PEntityMap<K, V> extends Expr<Map<K, V>> implements PMap<K, V> {
     @Override
     public EBoolean isNotEmpty() {
         if (notEmpty == null){
-            notEmpty = Grammar.isNotEmpty(this); 
+            notEmpty = Grammar.isEmpty(this).not(); 
         }
         return notEmpty;
     }

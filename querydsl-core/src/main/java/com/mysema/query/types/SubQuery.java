@@ -16,8 +16,8 @@ import com.mysema.query.QueryMetadata;
  * 
  * @param <A>
  */
-public interface SubQuery<JM>{
+public interface SubQuery{
 
-    public QueryMetadata<JM> getMetadata();
+    public QueryMetadata getMetadata();
     
 }

@@ -32,7 +32,6 @@ public class ColQueryPatterns extends JavaPatterns {
         add(Ops.AOE, "%s.compareTo(%s) >= 0");
         add(Ops.BOE, "%s.compareTo(%s) <= 0");
         add(Ops.BETWEEN, functions + ".between(%s,%s,%s)");
-        add(Ops.NOTBETWEEN, "!" + functions + ".between(%s,%s,%s)");
         add(Ops.STRING_CAST, "String.valueOf(%s)");
         
         // Date and Time

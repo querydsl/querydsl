@@ -8,7 +8,7 @@ package com.mysema.query;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 
 import com.mysema.query.functions.MathFunctions;
@@ -24,9 +24,9 @@ import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.Path;
 
-public abstract class StandardTestData {
+class StandardTestData {
     
-    public static Collection<EBoolean> booleanFilters(EBoolean expr, EBoolean other){
+    Collection<EBoolean> booleanFilters(EBoolean expr, EBoolean other){
         return Arrays.asList(
             expr.and(other),
             expr.or(other),
@@ -36,7 +36,30 @@ public abstract class StandardTestData {
         );
     };
     
-    private static <A extends Comparable<A>> Collection<EBoolean> comparableFilters(EComparable<A> expr, EComparable<A> other, A knownValue){
+    <A> Collection<EBoolean> collectionFilters(ECollection<A> expr, ECollection<A> other, A knownElement){
+        return Arrays.<EBoolean>asList(
+          expr.contains(knownElement),
+          expr.isEmpty(),
+          expr.isNotEmpty(),
+          expr.size().gt(0)
+        );
+    }
+    
+    <A> Collection<EBoolean> collectionMatchingFilters(ECollection<A> expr, ECollection<A> other, A knownElement){
+        return Arrays.<EBoolean>asList(
+          expr.contains(knownElement),
+          expr.isEmpty().not(),
+          expr.isNotEmpty()
+        );
+    }
+    
+    <A> Collection<Expr<?>> collectionProjections(ECollection<A> expr, ECollection<A> other, A knownElement){
+        return Arrays.<Expr<?>>asList(
+          expr.size()
+        );
+    }
+    
+    private <A extends Comparable<A>> Collection<EBoolean> comparableFilters(EComparable<A> expr, EComparable<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(exprFilters(expr, other, knownValue));
         rv.addAll(Arrays.<EBoolean>asList(
@@ -52,31 +75,17 @@ public abstract class StandardTestData {
         return rv;
     }
     
-    private static <A> Collection<EBoolean> exprFilters(Expr<A> expr, Expr<A> other, A knownValue){
-        return Arrays.<EBoolean>asList(
-            expr.eq(other),
-            expr.eq(knownValue),
-            expr.ne(other),
-            expr.ne(knownValue)
-        );
+    @SuppressWarnings("unchecked")
+    <A extends Comparable> Collection<EBoolean> dateFilters(EDate<A> expr, EDate<A> other, A knownValue){
+        return Collections.emptyList();
     }
     
-    public static <A> Collection<EBoolean> collectionFilters(ECollection<A> expr, ECollection<A> other, A knownElement){
-        return Arrays.<EBoolean>asList(
-          expr.contains(knownElement),
-          expr.isEmpty(),
-          expr.isNotEmpty(),
-          expr.size().gt(0)
-        );
+    <A extends Comparable> Collection<EBoolean> dateMatchingFilters(EDate<A> expr, EDate<A> other, A knownValue){
+        return Collections.emptyList();
     }
     
-    public static <A> Collection<Expr<?>> collectionProjections(ECollection<A> expr, ECollection<A> other, A knownElement){
-        return Arrays.<Expr<?>>asList(
-          expr.size()
-        );
-    }
-    
-    public static <A extends Comparable> Collection<Expr<?>> dateProjections(EDate<A> expr, EDate<A> other, A knownValue){
+    @SuppressWarnings("unchecked")
+    <A extends Comparable> Collection<Expr<?>> dateProjections(EDate<A> expr, EDate<A> other, A knownValue){
         return Arrays.<Expr<?>>asList(
           expr.getDayOfMonth(),
           expr.getMonth(),
@@ -84,7 +93,8 @@ public abstract class StandardTestData {
         );
     }
     
-    public static <A extends Comparable> Collection<EBoolean> dateTimeFilters(EDateTime<A> expr, EDateTime<A> other, A knownValue){
+    @SuppressWarnings("unchecked")
+    <A extends Comparable> Collection<EBoolean> dateTimeFilters(EDateTime<A> expr, EDateTime<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(comparableFilters(expr, other, knownValue));
         rv.addAll(Arrays.<EBoolean>asList(
@@ -98,7 +108,12 @@ public abstract class StandardTestData {
         return rv;
     }
     
-    public static <A extends Comparable> Collection<Expr<?>> dateTimeProjections(EDateTime<A> expr, EDateTime<A> other, A knownValue){
+    <A extends Comparable> Collection<EBoolean> dateTimeMatchingFilters(EDateTime<A> expr, EDateTime<A> other, A knownValue){
+        return Collections.emptyList();
+    }
+    
+    @SuppressWarnings("unchecked")
+    <A extends Comparable> Collection<Expr<?>> dateTimeProjections(EDateTime<A> expr, EDateTime<A> other, A knownValue){
         return Arrays.<Expr<?>>asList(
           expr.getDayOfMonth(),
           expr.getMonth(),
@@ -109,35 +124,63 @@ public abstract class StandardTestData {
         );
     }
     
-    public static <A> Collection<EBoolean> listFilters(EList<A> expr, EList<A> other, A knownElement){
-        return collectionFilters(expr, other, knownElement);
+    private <A> Collection<EBoolean> exprFilters(Expr<A> expr, Expr<A> other, A knownValue){
+        return Arrays.<EBoolean>asList(
+            expr.eq(other),
+            expr.eq(knownValue),
+            expr.ne(other),
+            expr.ne(knownValue)
+        );
     }
     
-    public static <A> Collection<Expr<?>> listProjections(EList<A> expr, EList<A> other, A knownElement){
+    <A> Collection<EBoolean> listFilters(EList<A> expr, EList<A> other, A knownElement){
+        List<EBoolean> rv = new ArrayList<EBoolean>();
+        rv.addAll(collectionFilters(expr, other, knownElement));
+        rv.add(expr.get(0).eq(knownElement));
+        return rv;
+    }
+    
+    <A> Collection<EBoolean> listMatchingFilters(EList<A> expr, EList<A> other, A knownElement){
+        return collectionMatchingFilters(expr, other, knownElement);
+    }
+    
+    <A> Collection<Expr<?>> listProjections(EList<A> expr, EList<A> other, A knownElement){
         return Arrays.<Expr<?>>asList(
           expr.get(0),
           expr.size()
         );
     }
-        
-    public static <K,V> Collection<EBoolean> mapFilters(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue) {
+    
+    <K,V> Collection<EBoolean> mapFilters(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue) {
         return Arrays.<EBoolean>asList(
           expr.containsKey(knownKey),
           expr.containsValue(knownValue),
+          expr.get(knownKey).eq(knownValue),
+          expr.get(knownKey).ne(knownValue),
           expr.isEmpty(),
           expr.isNotEmpty(),
           expr.size().gt(0)
         );
     }
         
-    public static <K,V> Collection<Expr<?>> mapProjections(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue) {
+    <K,V> Collection<EBoolean> mapMatchingFilters(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue) {
+        return Arrays.<EBoolean>asList(
+          expr.containsKey(knownKey),
+          expr.containsValue(knownValue),
+          expr.get(knownKey).eq(knownValue),
+          expr.isEmpty().not(),
+          expr.isNotEmpty()
+        );
+    }
+        
+    <K,V> Collection<Expr<?>> mapProjections(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue) {
         return Arrays.<Expr<?>>asList(
           expr.get(knownKey),
           expr.size()
         );
     }
     
-    public static <A extends Number & Comparable<A>> Collection<ENumber<?>> numericCasts(ENumber<A> expr, ENumber<A> other, A knownValue){
+    <A extends Number & Comparable<A>> Collection<ENumber<?>> numericCasts(ENumber<A> expr, ENumber<A> other, A knownValue){
         return Arrays.<ENumber<?>>asList(
           expr.byteValue(),
           expr.doubleValue(),
@@ -149,9 +192,9 @@ public abstract class StandardTestData {
     }
         
     @SuppressWarnings("unchecked")
-    public static <A extends Number & Comparable<A>> Collection<EBoolean> numericFilters(ENumber<A> expr, ENumber<A> other, A knownValue){
+    <A extends Number & Comparable<A>> Collection<EBoolean> numericFilters(ENumber<A> expr, ENumber<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();        
-        for (ENumber<?> num : StandardTestData.numericProjections(expr, other, knownValue)){
+        for (ENumber<?> num : numericProjections(expr, other, knownValue)){
             rv.add(num.lt(expr));
         }        
         rv.addAll(Arrays.asList(
@@ -180,10 +223,9 @@ public abstract class StandardTestData {
         return rv;
     }
     
-    public static <A extends Number & Comparable<A>> Collection<EBoolean> numericMatchingFilters(ENumber<A> expr, ENumber<A> other, A knownValue){
+    <A extends Number & Comparable<A>> Collection<EBoolean> numericMatchingFilters(ENumber<A> expr, ENumber<A> other, A knownValue){
         return Arrays.<EBoolean>asList(
             expr.eq(knownValue),            
-//            expr.stringValue().eq(String.valueOf(knownValue)),
             expr.goe(knownValue),
             expr.gt(knownValue.intValue()-1),
             expr.loe(knownValue),
@@ -191,7 +233,7 @@ public abstract class StandardTestData {
         );
     }
     
-    public static <A extends Number & Comparable<A>> Collection<ENumber<?>> numericProjections(ENumber<A> expr, ENumber<A> other, A knownValue){
+    <A extends Number & Comparable<A>> Collection<ENumber<?>> numericProjections(ENumber<A> expr, ENumber<A> other, A knownValue){
         return Arrays.<ENumber<?>>asList(
           MathFunctions.abs(expr),
           MathFunctions.add(expr, other),
@@ -202,7 +244,7 @@ public abstract class StandardTestData {
         );
     }
     
-    private static <A> Collection<EBoolean> pathFilters(Path<A> expr, Path<A> other, A knownValue){
+    <A> Collection<EBoolean> pathFilters(Path<A> expr, Path<A> other, A knownValue){
         return Arrays.<EBoolean>asList(
              expr.isNull(),
              expr.isNotNull()
@@ -210,13 +252,13 @@ public abstract class StandardTestData {
     }
     
     @SuppressWarnings("unchecked")
-    public static Collection<EBoolean> stringFilters(EString expr, EString other, String knownValue){
+    Collection<EBoolean> stringFilters(EString expr, EString other, String knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         if (expr instanceof Path && other instanceof Path){
             rv.addAll(pathFilters((Path<String>)expr, (Path<String>)other, knownValue));
         }
         rv.addAll(comparableFilters(expr, other, knownValue));        
-        for (EString eq : StandardTestData.stringProjections(expr, other, knownValue)){
+        for (EString eq : stringProjections(expr, other, knownValue)){
             rv.add(eq.eq(other));
         }
         rv.addAll(Arrays.<EBoolean>asList(            
@@ -250,7 +292,7 @@ public abstract class StandardTestData {
         return rv;
     }
     
-    public static Collection<EBoolean> stringMatchingFilters(EString expr, EString other, String knownValue){
+    Collection<EBoolean> stringMatchingFilters(EString expr, EString other, String knownValue){
         return Arrays.<EBoolean>asList(
             expr.eq(other),
             expr.eq(knownValue),
@@ -290,7 +332,7 @@ public abstract class StandardTestData {
         );
     }
     
-    public static Collection<EString> stringProjections(EString expr, EString other, String knownValue){
+    Collection<EString> stringProjections(EString expr, EString other, String knownValue){
         return Arrays.<EString>asList(
           expr.add("Hello"),
           expr.add(other),
@@ -304,8 +346,5 @@ public abstract class StandardTestData {
           expr.trim() 
         );
     }
-    
-    private StandardTestData(){}
-
-    
+        
 }

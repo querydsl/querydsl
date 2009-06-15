@@ -19,11 +19,11 @@ import com.mysema.query.types.operation.Ops;
  */
 public class SQLGrammar extends Grammar {
 
-    public static EBoolean exists(ObjectSubQuery<Object, ?> sq) {
+    public static EBoolean exists(ObjectSubQuery<?> sq) {
         return operationFactory.createBoolean(Ops.EXISTS, sq);
     }
 
-    public static EBoolean exists(ListSubQuery<Object, ?> sq) {
+    public static EBoolean exists(ListSubQuery<?> sq) {
         return operationFactory.createBoolean(Ops.EXISTS, sq);
     }
     

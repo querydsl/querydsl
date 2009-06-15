@@ -30,7 +30,7 @@ import com.mysema.query.types.path.Path;
  * @author tiwe
  * @version $Id$
  */
-public class JoinExpressionComparator implements Comparator<JoinExpression<?>> {
+public class JoinExpressionComparator implements Comparator<JoinExpression> {
 
     private Map<Expr<?>, MutableInt> priorities = new HashMap<Expr<?>, MutableInt>();
 
@@ -42,7 +42,7 @@ public class JoinExpressionComparator implements Comparator<JoinExpression<?>> {
         }
     }
 
-    public int comparePrioritiesOnly(JoinExpression<?> o1, JoinExpression<?> o2) {
+    public int comparePrioritiesOnly(JoinExpression o1, JoinExpression o2) {
         MutableInt p1 = priorities.get(o1.getTarget());
         MutableInt p2 = priorities.get(o2.getTarget());
         if (p1 == null || p2 == null) {
@@ -52,7 +52,7 @@ public class JoinExpressionComparator implements Comparator<JoinExpression<?>> {
         }
     }
 
-    public int compare(JoinExpression<?> o1, JoinExpression<?> o2) {
+    public int compare(JoinExpression o1, JoinExpression o2) {
         int rv = comparePrioritiesOnly(o1, o2);
         if (rv == 0) {
             rv = o1.hashCode() - o2.hashCode();

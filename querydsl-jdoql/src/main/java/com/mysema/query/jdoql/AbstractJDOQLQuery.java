@@ -28,7 +28,7 @@ import com.mysema.query.types.path.PEntity;
  *
  * @param <SubType>
  */
-public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubType>> extends QueryBaseWithProjectionAndDetach<Object, SubType> implements Projectable {
+public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubType>> extends QueryBaseWithProjectionAndDetach<SubType> implements Projectable {
     
     private List<Object> orderedConstants = new ArrayList<Object>();
 

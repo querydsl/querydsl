@@ -17,8 +17,10 @@ import javax.persistence.ManyToOne;
 public class Customer {
     @ManyToOne
     Order currentOrder;
+    
     @Id
     int id;
+    
     @ManyToOne
     Name name;
 }

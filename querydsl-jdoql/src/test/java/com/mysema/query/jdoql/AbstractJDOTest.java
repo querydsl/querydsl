@@ -10,7 +10,6 @@ import java.util.List;
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
-import javax.jdo.Query;
 import javax.jdo.Transaction;
 
 import org.junit.After;
@@ -18,6 +17,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 
 import com.mysema.query.jdoql.testdomain.Product;
+import com.mysema.query.jdoql.testdomain.Store;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 
@@ -59,13 +59,10 @@ public abstract class AbstractJDOTest {
         PersistenceManager pm = pmf.getPersistenceManager();
         Transaction tx = pm.currentTransaction();
         try {
-            tx.begin();
-            System.out.println("Deleting all products from persistence");
-            Query q = pm.newQuery(Product.class);
-            long numberInstancesDeleted = q.deletePersistentAll();
-            System.out.println("Deleted " + numberInstancesDeleted
-                    + " products");
-
+            tx.begin();                        
+            pm.newQuery(Store.class).deletePersistentAll();
+            pm.newQuery(Product.class).deletePersistentAll();
+                        
             tx.commit();
         } finally {
             if (tx.isActive()) {

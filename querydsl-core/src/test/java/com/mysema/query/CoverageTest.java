@@ -25,28 +25,30 @@ import com.mysema.query.types.operation.Ops;
 
 public class CoverageTest {
     
+    private StandardTestData testData = new StandardTestData();
+    
     @Test
-    public void test() throws IllegalArgumentException, IllegalAccessException{
+    public void test() throws IllegalArgumentException, IllegalAccessException{        
         // make sure all Operators are covered in expression factory methods
         Set<Operator<?>> usedOperators = new HashSet<Operator<?>>();
         List<Expr<?>> exprs = new ArrayList<Expr<?>>();
         // numeric
-        exprs.addAll(StandardTestData.numericProjections($(0), $(1), 1));
-        exprs.addAll(StandardTestData.numericMatchingFilters($(0), $(1), 1));
-        exprs.addAll(StandardTestData.numericFilters($(0), $(1), 1));        
-        exprs.addAll(StandardTestData.numericCasts($(0), $(1), 1));
+        exprs.addAll(testData.numericProjections($(0), $(1), 1));
+        exprs.addAll(testData.numericMatchingFilters($(0), $(1), 1));
+        exprs.addAll(testData.numericFilters($(0), $(1), 1));        
+        exprs.addAll(testData.numericCasts($(0), $(1), 1));
         // string
-        exprs.addAll(StandardTestData.stringProjections($("a"), $("b"), "abc"));
-        exprs.addAll(StandardTestData.stringMatchingFilters($("a"), $("b"), "abc"));        
-        exprs.addAll(StandardTestData.stringFilters($("a"), $("b"), "abc"));
+        exprs.addAll(testData.stringProjections($("a"), $("b"), "abc"));
+        exprs.addAll(testData.stringMatchingFilters($("a"), $("b"), "abc"));        
+        exprs.addAll(testData.stringFilters($("a"), $("b"), "abc"));
         // boolean
-        exprs.addAll(StandardTestData.booleanFilters($(true), $(false)));                
+        exprs.addAll(testData.booleanFilters($(true), $(false)));                
         // collection
-        exprs.addAll(StandardTestData.listProjections($(new ArrayList<String>()), $(new ArrayList<String>()), ""));
-        exprs.addAll(StandardTestData.listFilters($(new ArrayList<String>()), $(new ArrayList<String>()), ""));
+        exprs.addAll(testData.listProjections($(new ArrayList<String>()), $(new ArrayList<String>()), ""));
+        exprs.addAll(testData.listFilters($(new ArrayList<String>()), $(new ArrayList<String>()), ""));
         // map
-        exprs.addAll(StandardTestData.mapProjections($(new HashMap<String,String>()), $(new HashMap<String,String>()), "", ""));
-        exprs.addAll(StandardTestData.mapFilters($(new HashMap<String,String>()), $(new HashMap<String,String>()), "", ""));
+        exprs.addAll(testData.mapProjections($(new HashMap<String,String>()), $(new HashMap<String,String>()), "", ""));
+        exprs.addAll(testData.mapFilters($(new HashMap<String,String>()), $(new HashMap<String,String>()), "", ""));
         
         for (Expr<?> e : exprs){
             if (e instanceof Operation){

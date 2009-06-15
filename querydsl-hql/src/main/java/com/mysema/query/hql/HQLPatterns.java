@@ -30,7 +30,6 @@ public class HQLPatterns extends OperationPatterns {
     static {
         wrapCollectionsForOp = Collections.<Operator<?>> unmodifiableList(Arrays.<Operator<?>> asList(
             Ops.IN, 
-            Ops.NOTIN, 
             Ops.QuantOps.ALL, 
             Ops.QuantOps.ANY,
             Ops.QuantOps.AVG_IN_COL, 
@@ -48,7 +47,7 @@ public class HQLPatterns extends OperationPatterns {
 
         // comparison
         add(Ops.BETWEEN, "%s between %s and %s", 30);
-        add(Ops.NOTBETWEEN, "%s not between %s and %s", 30);
+//        add(Ops.NOTBETWEEN, "%s not between %s and %s", 30);
 
         // numeric
         add(Ops.MathOps.SQRT, "sqrt(%s)");
@@ -59,9 +58,9 @@ public class HQLPatterns extends OperationPatterns {
         
         // collection
         add(Ops.IN, "%s in %s");
-        add(Ops.NOTIN, "%s not in %s");
+//        add(Ops.NOTIN, "%s not in %s");
         add(Ops.COL_ISEMPTY, "%s is empty");
-        add(Ops.COL_ISNOTEMPTY, "%s is not empty");
+//        add(Ops.COL_ISNOTEMPTY, "%s is not empty");
         add(Ops.COL_SIZE, "%s.size");
         
         // string
@@ -82,7 +81,7 @@ public class HQLPatterns extends OperationPatterns {
         add(Ops.INDEXOF, "locate(%s,%s)");
         add(Ops.INDEXOF_2ARGS, "locate(%s,%s,%s)");
         add(Ops.STRING_ISEMPTY, "length(%s) = 0");
-        add(Ops.STRING_ISNOTEMPTY, "length(%s) > 0");
+//        add(Ops.STRING_ISNOTEMPTY, "length(%s) > 0");
 
         // date time
         add(Ops.DateTimeOps.SYSDATE, "sysdate");
@@ -106,13 +105,6 @@ public class HQLPatterns extends OperationPatterns {
         
         add(PathType.VARIABLE, "%s");
 
-        // HQL types
-//        add(HqlPathType.MINELEMENT, "minelement(%s)");
-//        add(HqlPathType.MAXELEMENT, "maxelement(%s");
-//        add(HqlPathType.MININDEX, "minindex(%s)");
-//        add(HqlPathType.MAXINDEX, "maxindex(%s)");
-//        add(HqlPathType.LISTINDICES, "indices(%s)");
-//        add(HqlPathType.MAPINDICES, "indices(%s)");
     }
     
 }

@@ -44,9 +44,9 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
         this.candidatePath = candidate;
     }
     
-    public void serialize(QueryMetadata<Object> metadata, boolean forCountRow, boolean subquery) {
+    public void serialize(QueryMetadata metadata, boolean forCountRow, boolean subquery) {
         List<? extends Expr<?>> select = metadata.getProjection();
-        List<JoinExpression<Object>> joins = metadata.getJoins();
+        List<JoinExpression> joins = metadata.getJoins();
         Expr<?> source = joins.get(0).getTarget();
         EBoolean where = metadata.getWhere();
         List<? extends Expr<?>> groupBy = metadata.getGroupBy();
@@ -79,22 +79,24 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
         }
         
         // VARIABLES
-        for (int i = 1; i < joins.size(); i++) {
+        if (joins.size() > 1){
             append("\nVARIABLES ");
-            JoinExpression<Object> je = joins.get(i);
-            if (i > 1) {
-                append(", ");
-            }
-            
-            // type specifier
-            if (je.getTarget() instanceof PEntity) {
-                PEntity<?> pe = (PEntity<?>) je.getTarget();
-                if (pe.getMetadata().getParent() == null) {
-                    append(pe.getType().getName()).append(" ");
+            for (int i = 1; i < joins.size(); i++) {                
+                JoinExpression je = joins.get(i);
+                if (i > 1) {
+                    append("; ");
                 }
+                
+                // type specifier
+                if (je.getTarget() instanceof PEntity) {
+                    PEntity<?> pe = (PEntity<?>) je.getTarget();
+                    if (pe.getMetadata().getParent() == null) {
+                        append(pe.getType().getName()).append(" ");
+                    }
+                }
+                handle(je.getTarget());
             }
-            handle(je.getTarget());
-        }
+        }        
         
         // PARAMETERS
         if (!subquery && !getConstantToLabel().isEmpty()){
@@ -152,15 +154,15 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
         
     }
     
-    protected void visit(ObjectSubQuery<Object, ?> query) {
-        visit((SubQuery<Object>)query);
+    protected void visit(ObjectSubQuery<?> query) {
+        visit((SubQuery)query);
     }
     
-    protected void visit(ListSubQuery<Object, ?> query) {
-        visit((SubQuery<Object>)query);
+    protected void visit(ListSubQuery<?> query) {
+        visit((SubQuery)query);
     }
     
-    protected void visit(SubQuery<Object> query) {
+    protected void visit(SubQuery query) {
         append("(");
         serialize(query.getMetadata(), false, true);
         append(")");

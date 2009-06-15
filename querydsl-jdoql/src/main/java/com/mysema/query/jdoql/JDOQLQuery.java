@@ -21,7 +21,7 @@ import com.mysema.query.types.path.PEntity;
  * @author tiwe
  * 
  */
-public interface JDOQLQuery extends Projectable, Closeable, Detachable<Object> {
+public interface JDOQLQuery extends Projectable, Closeable, Detachable {
 
     JDOQLQuery from(PEntity<?>... o);
 

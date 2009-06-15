@@ -46,7 +46,7 @@ public abstract  class ECollectionBase<D> extends Expr<java.util.Collection<D>> 
     @Override
     public final EBoolean isNotEmpty() {
         if (notEmpty == null){
-            notEmpty = Grammar.isNotEmpty(this); 
+            notEmpty = Grammar.isEmpty(this).not(); 
         }
         return notEmpty; 
     }

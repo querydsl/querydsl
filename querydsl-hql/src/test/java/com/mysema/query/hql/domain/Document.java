@@ -17,6 +17,7 @@ import javax.persistence.Id;
 public class Document {
     @Id
     int id;
+    
     String name;
     Date validTo;
 }

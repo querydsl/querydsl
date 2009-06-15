@@ -24,13 +24,13 @@ import com.mysema.query.types.expr.EBoolean;
  */
 public class JoinExpressionComparatorTest extends AbstractQueryTest {
 
-    private JoinExpression<?> catJoin, otherCatJoin, mateJoin;
+    private JoinExpression catJoin, otherCatJoin, mateJoin;
 
     @Before
     public void setUp() {
-        catJoin = new JoinExpression<Object>(JoinType.DEFAULT, cat);
-        otherCatJoin = new JoinExpression<Object>(JoinType.DEFAULT, otherCat);
-        mateJoin = new JoinExpression<Object>(JoinType.DEFAULT, mate);
+        catJoin = new JoinExpression(JoinType.DEFAULT, cat);
+        otherCatJoin = new JoinExpression(JoinType.DEFAULT, otherCat);
+        mateJoin = new JoinExpression(JoinType.DEFAULT, mate);
     }
 
     @Test

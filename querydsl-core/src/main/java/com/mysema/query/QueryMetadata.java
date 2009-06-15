@@ -18,9 +18,9 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public interface QueryMetadata<JoinMeta> {
+public interface QueryMetadata {
 
-    void addJoin(JoinExpression<JoinMeta> joinExpression);
+    void addJoin(JoinExpression joinExpression);
 
     void addJoin(JoinType joinType, Expr<?> expr);
 
@@ -42,7 +42,7 @@ public interface QueryMetadata<JoinMeta> {
 
     EBoolean getHaving();
 
-    List<JoinExpression<JoinMeta>> getJoins();
+    List<JoinExpression> getJoins();
 
     List<OrderSpecifier<?>> getOrderBy();
 

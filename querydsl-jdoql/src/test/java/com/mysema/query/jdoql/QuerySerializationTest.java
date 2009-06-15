@@ -102,7 +102,7 @@ public class QuerySerializationTest {
         return new JDOQLQueryImpl(null);
     }
 
-    private String serialize(SubQuery<Object> expr) {
+    private String serialize(SubQuery expr) {
         Expr<?> source = expr.getMetadata().getJoins().get(0).getTarget();
         JDOQLSerializer serializer = new JDOQLSerializer(JDOQLPatterns.DEFAULT, source);
         serializer.serialize(expr.getMetadata(), false, false);

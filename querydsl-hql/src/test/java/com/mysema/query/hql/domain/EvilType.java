@@ -16,15 +16,19 @@ import javax.persistence.ManyToOne;
 @Entity
 public class EvilType {
     @ManyToOne
-    @JoinColumn(name = "_asc")
+    @JoinColumn(name = "_asc")    
     EvilType asc;
+    
     @ManyToOne
     @JoinColumn(name = "_desc")
     EvilType desc;
+    
     @Id
     int id;
+    
     @ManyToOne
     EvilType isnull, isnotnull, get, getType, getMetadata;
+    
     @ManyToOne
     EvilType toString, hashCode, getClass, notify, notifyAll, wait;
 }

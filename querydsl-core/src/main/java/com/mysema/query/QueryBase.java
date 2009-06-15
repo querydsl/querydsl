@@ -15,19 +15,19 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class QueryBase<JoinMeta, SubType extends QueryBase<JoinMeta, SubType>> {
+public class QueryBase<SubType extends QueryBase<SubType>> {
     @SuppressWarnings("unchecked")
     protected final SubType _this = (SubType) this;
 
-    private QueryMetadata<JoinMeta> metadata;
+    private QueryMetadata metadata;
 
     protected String toString;
 
     public QueryBase() {
-        this.metadata = new DefaultQueryMetadata<JoinMeta>();
+        this.metadata = new DefaultQueryMetadata();
     }
 
-    public QueryBase(QueryMetadata<JoinMeta> metadata) {
+    public QueryBase(QueryMetadata metadata) {
         this.metadata = metadata;
     }
 
@@ -37,7 +37,7 @@ public class QueryBase<JoinMeta, SubType extends QueryBase<JoinMeta, SubType>> {
     }
 
     protected void clear() {
-        metadata = new DefaultQueryMetadata<JoinMeta>();
+        metadata = new DefaultQueryMetadata();
     }
 
     // template
@@ -52,7 +52,7 @@ public class QueryBase<JoinMeta, SubType extends QueryBase<JoinMeta, SubType>> {
         return _this;
     }
 
-    public QueryMetadata<JoinMeta> getMetadata() {
+    public QueryMetadata getMetadata() {
         return metadata;
     }
 

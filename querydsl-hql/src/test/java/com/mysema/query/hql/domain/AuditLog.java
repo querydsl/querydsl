@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 public class AuditLog {
     @Id
     int id;
+    
     @ManyToOne
     Item item;
 }

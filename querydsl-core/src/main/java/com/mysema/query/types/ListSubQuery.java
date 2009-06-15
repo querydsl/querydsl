@@ -14,13 +14,13 @@ import com.mysema.query.types.expr.ECollectionBase;
  * @param <JM>
  * @param <A>
  */
-public class ListSubQuery<JM, A> extends ECollectionBase<A> implements SubQuery<JM>{
+public class ListSubQuery<A> extends ECollectionBase<A> implements SubQuery{
 
     private Class<A> elementType;
     
-    private QueryMetadata<JM> md;
+    private QueryMetadata md;
     
-    public ListSubQuery(QueryMetadata<JM> md, Class<A> elementType) {
+    public ListSubQuery(QueryMetadata md, Class<A> elementType) {
         super(null);
         this.elementType = elementType;
         this.md = md;
@@ -31,7 +31,7 @@ public class ListSubQuery<JM, A> extends ECollectionBase<A> implements SubQuery<
     }
     
     @Override
-    public QueryMetadata<JM> getMetadata() {
+    public QueryMetadata getMetadata() {
         return md;
     }
 

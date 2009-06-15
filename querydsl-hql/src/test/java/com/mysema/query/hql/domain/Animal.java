@@ -15,10 +15,15 @@ import javax.persistence.Id;
 @Entity
 public class Animal {
     boolean alive;
+    
     java.util.Date birthdate;
+    
     int bodyWeight, weight, toes;
+    
     Color color;
+    
     @Id
     int id;
+    
     String name;
 }

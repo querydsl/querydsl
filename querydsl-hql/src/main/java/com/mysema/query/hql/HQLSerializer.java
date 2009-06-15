@@ -41,10 +41,10 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
         super(patterns);
     }
 
-    public void serialize(QueryMetadata<HQLJoinMeta> metadata,
+    public void serialize(QueryMetadata metadata,
             boolean forCountRow) {
         List<? extends Expr<?>> select = metadata.getProjection();
-        List<JoinExpression<HQLJoinMeta>> joins = metadata.getJoins();
+        List<JoinExpression> joins = metadata.getJoins();
         EBoolean where = metadata.getWhere();
         List<? extends Expr<?>> groupBy = metadata.getGroupBy();
         EBoolean having = metadata.getHaving();
@@ -62,7 +62,7 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
         }
         append("from ");
         for (int i = 0; i < joins.size(); i++) {
-            JoinExpression<HQLJoinMeta> je = joins.get(i);
+            JoinExpression je = joins.get(i);
             if (i > 0) {
                 String sep = ", ";
                 switch (je.getType()) {
@@ -81,15 +81,10 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
                 }
                 append(sep);
             }
-            if (je.getMetadata() != null) {
-                switch (je.getMetadata()) {
-                case FETCH:
-                    if (!forCountRow)
-                        append("fetch ");
-                    break;
-                }
+            if (je.isFetch() && !forCountRow){
+                append("fetch ");
             }
-
+            
             // type specifier
             if (je.getTarget() instanceof PEntity) {
                 PEntity<?> pe = (PEntity<?>) je.getTarget();
@@ -167,15 +162,15 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
         }
     }
     
-    protected void visit(ObjectSubQuery<HQLJoinMeta, ?> query) {
-        visit((SubQuery<HQLJoinMeta>)query);
+    protected void visit(ObjectSubQuery<?> query) {
+        visit((SubQuery)query);
     }
     
-    protected void visit(ListSubQuery<HQLJoinMeta, ?> query) {
-        visit((SubQuery<HQLJoinMeta>)query);
+    protected void visit(ListSubQuery<?> query) {
+        visit((SubQuery)query);
     }
     
-    protected void visit(SubQuery<HQLJoinMeta> query) {
+    protected void visit(SubQuery query) {
         append("(");
         serialize(query.getMetadata(), false);
         append(")");

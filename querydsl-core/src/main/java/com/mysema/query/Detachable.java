@@ -13,12 +13,12 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  *
  */
-public interface Detachable<JM> {
+public interface Detachable {
 
     /**
      * @return
      */
-    ObjectSubQuery<JM,Long> countExpr();
+    ObjectSubQuery<Long> countExpr();
     
     /**
      * Create a projection expression for the given projection
@@ -29,7 +29,7 @@ public interface Detachable<JM> {
      *            rest
      * @return a List over the projection
      */
-    ListSubQuery<JM,Object[]> listExpr(Expr<?> first, Expr<?> second, Expr<?>... rest);
+    ListSubQuery<Object[]> listExpr(Expr<?> first, Expr<?> second, Expr<?>... rest);
 
     /**
      * Create a projection expression for the given projection
@@ -39,7 +39,7 @@ public interface Detachable<JM> {
      * @param projection
      * @return a List over the projection
      */
-    <RT> ListSubQuery<JM,RT> listExpr(Expr<RT> projection);
+    <RT> ListSubQuery<RT> listExpr(Expr<RT> projection);
     
     /**
      * Create a projection expression for the given projection
@@ -49,7 +49,7 @@ public interface Detachable<JM> {
      * @param rest
      * @return
      */
-    ObjectSubQuery<JM,Object[]> uniqueExpr(Expr<?> first, Expr<?> second, Expr<?>... rest);
+    ObjectSubQuery<Object[]> uniqueExpr(Expr<?> first, Expr<?> second, Expr<?>... rest);
 
     /**
      * Create a projection expression for the given projection
@@ -59,7 +59,7 @@ public interface Detachable<JM> {
      * @param projection
      * @return the result or null for an empty result
      */
-    <RT> ObjectSubQuery<JM,RT> uniqueExpr(Expr<RT> projection);
+    <RT> ObjectSubQuery<RT> uniqueExpr(Expr<RT> projection);
        
 
 }

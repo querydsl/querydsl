@@ -24,13 +24,13 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public abstract class QueryBaseWithProjection<JoinMeta, SubType extends QueryBaseWithProjection<JoinMeta, SubType>>
-        extends QueryBase<JoinMeta, SubType> implements Projectable {
+public abstract class QueryBaseWithProjection<SubType extends QueryBaseWithProjection<SubType>>
+        extends QueryBase<SubType> implements Projectable {
 
     public QueryBaseWithProjection() {
     }
 
-    public QueryBaseWithProjection(QueryMetadata<JoinMeta> metadata) {
+    public QueryBaseWithProjection(QueryMetadata metadata) {
         super(metadata);
     }
 

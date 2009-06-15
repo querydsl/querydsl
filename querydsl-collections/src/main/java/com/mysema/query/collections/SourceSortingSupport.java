@@ -29,6 +29,6 @@ public interface SourceSortingSupport {
      * @param joins
      * @param condition
      */
-    void sortSources(List<JoinExpression<Object>> joins, EBoolean condition);
+    void sortSources(List<JoinExpression> joins, EBoolean condition);
 
 }
