@@ -1,3 +1,0 @@
-* closing results and queries
-
-* distinct results
