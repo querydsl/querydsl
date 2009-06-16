@@ -6,8 +6,11 @@
 package com.mysema.query.jdoql;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.ClassUtils;
 
@@ -34,6 +37,14 @@ import com.mysema.query.types.path.Path;
  * 
  */
 public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
+    
+    private static Comparator<Map.Entry<Object,String>> comparator = new Comparator<Map.Entry<Object,String>>(){
+        @Override
+        public int compare(Entry<Object, String> o1, Entry<Object, String> o2) {
+            return o1.getValue().compareTo(o2.getValue());
+        }
+        
+    };
 
     private Expr<?> candidatePath;
     
@@ -102,7 +113,9 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
         if (!subquery && !getConstantToLabel().isEmpty()){
             append("\nPARAMETERS ");
             boolean first = true;
-            for (Map.Entry<Object, String> entry : getConstantToLabel().entrySet()){
+            List<Map.Entry<Object, String>> entries = new ArrayList<Map.Entry<Object, String>>(getConstantToLabel().entrySet());
+            Collections.sort(entries, comparator);            
+            for (Map.Entry<Object, String> entry : entries){
                 if (!first){
                     append(", ");
                 }
