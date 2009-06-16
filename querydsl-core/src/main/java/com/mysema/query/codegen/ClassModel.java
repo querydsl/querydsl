@@ -30,7 +30,7 @@ public class ClassModel implements Comparable<ClassModel> {
                 key.getSimpleName());
         for (java.lang.reflect.Field f : key.getDeclaredFields()) {
             TypeModel typeHelper = ReflectionTypeModel.get(f.getType(), f.getGenericType());
-            value.addField(new FieldModel(f.getName(), typeHelper));
+            value.addField(new FieldModel(f.getName(), typeHelper, f.getName()));
         }
         return value;
     }

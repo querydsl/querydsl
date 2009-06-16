@@ -100,7 +100,8 @@ public class Processor {
                 if (isValidGetter(method)){
                     try{
                         TypeModel fieldType = APTTypeModel.get(method.getReturnType(), elementUtils);
-                        classModel.addField(new FieldModel(name, fieldType));    
+                        String docs = elementUtils.getDocComment(method);
+                        classModel.addField(new FieldModel(name, fieldType, docs != null ? docs : name));    
                         
                     }catch(IllegalArgumentException ex){
                         throw new RuntimeException("Caught exception for method " + c.getName()+"#"+method.getSimpleName(), ex);
@@ -111,8 +112,10 @@ public class Processor {
             for (VariableElement field : ElementFilter.fieldsIn(elements)){
                 if (isValidField(field)){
                     try{
-                        TypeModel fieldType = APTTypeModel.get(field.asType(), elementUtils);                      
-                        classModel.addField(new FieldModel(field.getSimpleName().toString(), fieldType));    
+                        TypeModel fieldType = APTTypeModel.get(field.asType(), elementUtils);     
+                        String name = field.getSimpleName().toString();
+                        String docs = elementUtils.getDocComment(field);
+                        classModel.addField(new FieldModel(name, fieldType, docs != null ? docs : name));    
                     }catch(IllegalArgumentException ex){
                         throw new RuntimeException("Caught exception for field " + c.getName()+"#"+field.getSimpleName(), ex);
                     }

@@ -19,9 +19,12 @@ public class FieldModel implements Comparable<FieldModel> {
     
     private TypeModel type;
     
-    public FieldModel(String name, TypeModel type){
+    private String docs;
+    
+    public FieldModel(String name, TypeModel type, String docs){
         this.name = Assert.notNull(name);
         this.type = Assert.notNull(type);
+        this.docs = Assert.notNull(docs).replace("@return", "").trim();
         if (type.getSimpleName() == null){
             throw new IllegalArgumentException("Field with name " + name + " got no valid type : " + type);
         }
@@ -57,6 +60,10 @@ public class FieldModel implements Comparable<FieldModel> {
 
     public String getTypePackage() {
         return type.getPackageName();
+    }
+    
+    public String getDocString() {
+        return docs;
     }
 
     public int hashCode() {

@@ -31,8 +31,8 @@ public class EntityVisitor extends SimpleDeclarationVisitor {
 
     public final Map<String, ClassModel> types = new HashMap<String, ClassModel>();
 
-    private void addField(String name, TypeModel typeInfo) {        
-        last.addField(new FieldModel(name, typeInfo));
+    private void addField(String name, TypeModel typeInfo, String docs) {        
+        last.addField(new FieldModel(name, typeInfo, docs));
     }
 
     @Override
@@ -48,7 +48,8 @@ public class EntityVisitor extends SimpleDeclarationVisitor {
     @Override
     public void visitFieldDeclaration(FieldDeclaration d) {
         if (!d.getModifiers().contains(Modifier.STATIC) && !d.getModifiers().contains(Modifier.TRANSIENT)) {
-            addField(d.getSimpleName(), MirrorAPITypeModel.get(d.getType()));
+            String docs = d.getDocComment() != null ? d.getDocComment() : d.getSimpleName();
+            addField(d.getSimpleName(), MirrorAPITypeModel.get(d.getType()), docs);
         }
     }
 
@@ -70,11 +71,13 @@ public class EntityVisitor extends SimpleDeclarationVisitor {
         if (!d.getModifiers().contains(Modifier.STATIC)) {
             if (d.getParameters().isEmpty()) {
                 if (d.getSimpleName().startsWith("get")) {
+                    String docs = d.getDocComment() != null ? d.getDocComment() : d.getSimpleName();
                     String name = StringUtils.uncapitalize(d.getSimpleName().substring(3));
-                    addField(name, MirrorAPITypeModel.get(d.getReturnType()));
+                    addField(name, MirrorAPITypeModel.get(d.getReturnType()), docs);
                 } else if (d.getSimpleName().startsWith("is")) {
+                    String docs = d.getDocComment() != null ? d.getDocComment() : d.getSimpleName();
                     String name = StringUtils.uncapitalize(d.getSimpleName().substring(2));
-                    addField(name, MirrorAPITypeModel.get(d.getReturnType()));
+                    addField(name, MirrorAPITypeModel.get(d.getReturnType()), docs);
                 }
             }
         }

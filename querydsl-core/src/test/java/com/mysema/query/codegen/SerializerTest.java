@@ -58,7 +58,7 @@ public class SerializerTest {
             @Override
             public String getValueTypeName() {
                 return null;
-            }});
+            }}, "field");
         type.addField(field);
         ParameterModel param = new ParameterModel("name", "java.lang.String");
         type.addConstructor(new ConstructorModel(Collections.singleton(param)));
