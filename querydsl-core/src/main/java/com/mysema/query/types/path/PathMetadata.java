@@ -8,8 +8,7 @@ package com.mysema.query.types.path;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import com.mysema.query.types.ExprFactory;
-import com.mysema.query.types.SimpleExprFactory;
+import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -19,8 +18,6 @@ import com.mysema.query.types.expr.Expr;
  * @version $Id$
  */
 public final class PathMetadata<T> {
-
-    private static ExprFactory factory = SimpleExprFactory.getInstance();
 
     /**
      * Create a new PathMetadata instance for indexed array access
@@ -41,7 +38,7 @@ public final class PathMetadata<T> {
      * @return
      */
     public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, int index) {
-        return new PathMetadata<Integer>(parent, factory.createConstant(index), PathType.ARRAYVALUE_CONSTANT);
+        return new PathMetadata<Integer>(parent, EConstant.create(index), PathType.ARRAYVALUE_CONSTANT);
     }
 
     /**
@@ -63,7 +60,7 @@ public final class PathMetadata<T> {
      * @return
      */
     public static PathMetadata<Integer> forListAccess(PList<?> parent, int index) {
-        return new PathMetadata<Integer>(parent, factory.createConstant(index), PathType.LISTVALUE_CONSTANT);
+        return new PathMetadata<Integer>(parent, EConstant.create(index), PathType.LISTVALUE_CONSTANT);
     }
 
     /**
@@ -87,7 +84,7 @@ public final class PathMetadata<T> {
      * @return
      */
     public static <KT> PathMetadata<KT> forMapAccess(PMap<?, ?> parent, KT key) {
-        return new PathMetadata<KT>(parent, factory.createConstant(key), PathType.MAPVALUE_CONSTANT);
+        return new PathMetadata<KT>(parent,EConstant.create(key), PathType.MAPVALUE_CONSTANT);
     }
 
     /**
@@ -98,7 +95,7 @@ public final class PathMetadata<T> {
      * @return
      */
     public static PathMetadata<String> forProperty(Path<?> parent, String property) {
-        return new PathMetadata<String>(parent, factory.createConstant(property), PathType.PROPERTY);
+        return new PathMetadata<String>(parent, EConstant.create(property), PathType.PROPERTY);
     }
 
     /**
@@ -108,7 +105,7 @@ public final class PathMetadata<T> {
      * @return
      */
     public static PathMetadata<String> forVariable(String variable) {
-        return new PathMetadata<String>(null, factory.createConstant(variable), PathType.VARIABLE);
+        return new PathMetadata<String>(null, EConstant.create(variable), PathType.VARIABLE);
     }
 
     private final Expr<T> expression;

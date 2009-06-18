@@ -13,6 +13,7 @@ import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.OComparable;
+import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.Ops;
 
@@ -71,7 +72,7 @@ public class HQLGrammar extends GrammarWithAlias {
         }else if (type.equals(Float.class)){
             type = Double.class;
         }            
-        return operationFactory.createNumber((Class<D>) type, Ops.SUM_AGG, left);
+        return ONumber.create((Class<D>) type, Ops.SUM_AGG, left);
     }
 
     public static <D extends Number & Comparable<? super D>> ENumber<Long> sumAsLong(Expr<D> left) {

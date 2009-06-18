@@ -51,7 +51,7 @@ public class ONumber<OpType extends Number, D extends Number & Comparable<?>>
         return op;
     }
     
-    public static <O extends Number,D extends Number & Comparable<?>> ENumber<D> create(Class<D> type, Operator<O> op, Expr<?>... args){
+    public static <O extends Number,D extends Number & Comparable<?>> ENumber<D> create(Class<? extends D> type, Operator<O> op, Expr<?>... args){
         return new ONumber<O,D>(type, op, args);
     }
 }

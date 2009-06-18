@@ -321,7 +321,7 @@ public abstract class SqlQueryTest {
     @Test
     @ExcludeIn( { "hsqldb", "derby" })
     public void testQueryWithoutFrom() throws SQLException {
-        q().list(add(new EConstant<Integer>(1), 1));
+        q().list(add(EConstant.create(1), 1));
     }
 
     @Test
@@ -334,8 +334,8 @@ public abstract class SqlQueryTest {
     @Test
     @ExcludeIn( { "derby" })
     public void testMathFunctions() throws SQLException {
-        Expr<Integer> i = new EConstant<Integer>(1);
-        Expr<Double> d = new EConstant<Double>(1.0);
+        Expr<Integer> i = EConstant.create(1);
+        Expr<Double> d = EConstant.create(1.0);
         for (Expr<?> e : Arrays.<Expr<?>> asList(MathFunctions.abs(i),
                 MathFunctions.acos(d), MathFunctions.asin(d), MathFunctions
                         .atan(d), MathFunctions.ceil(d), MathFunctions.cos(d),

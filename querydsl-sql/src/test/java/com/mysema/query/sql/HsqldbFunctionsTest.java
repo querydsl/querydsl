@@ -5,12 +5,8 @@
  */
 package com.mysema.query.sql;
 
-import java.sql.Time;
-import java.util.Date;
-
 import org.junit.Test;
 
-import com.mysema.query.functions.DateTimeFunctions;
 import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.functions.StringFunctions;
 import com.mysema.query.sql.domain.QEMPLOYEE;
@@ -28,8 +24,8 @@ public class HsqldbFunctionsTest {
 
     @Test
     public void testNumeric() {
-        Expr<Integer> i = new EConstant<Integer>(1);
-        Expr<Double> d = new EConstant<Double>(1.0);
+        Expr<Integer> i = EConstant.create(1);
+        Expr<Double> d = EConstant.create(1.0);
         // ABS(d) returns the absolute value of a double value
         MathFunctions.abs(i);
         // ACOS(d) returns the arc cosine of an angle

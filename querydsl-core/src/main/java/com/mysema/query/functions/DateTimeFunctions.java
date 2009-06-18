@@ -7,11 +7,11 @@ package com.mysema.query.functions;
 
 import java.util.Date;
 
-import com.mysema.query.types.OperationFactory;
-import com.mysema.query.types.SimpleOperationFactory;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.OComparable;
+import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
 
 /**
@@ -25,30 +25,28 @@ public final class DateTimeFunctions {
     private DateTimeFunctions() {
     }
 
-    private static final OperationFactory factory = SimpleOperationFactory.getInstance();
-
     public static EComparable<Date> currentDate() {
-        return factory.createComparable(Date.class, Ops.DateTimeOps.CURRENT_DATE);
+        return OComparable.create(Date.class, Ops.DateTimeOps.CURRENT_DATE);
     }
 
     public static EComparable<Date> currentTime() {
-        return factory.createComparable(Date.class, Ops.DateTimeOps.CURRENT_TIME);
+        return OComparable.create(Date.class, Ops.DateTimeOps.CURRENT_TIME);
     }
     
     public static EComparable<Date> currentTimestamp() {
-        return factory.createComparable(Date.class, Ops.DateTimeOps.CURRENT_TIMESTAMP);
+        return OComparable.create(Date.class, Ops.DateTimeOps.CURRENT_TIMESTAMP);
     }
 
     public static ENumber<Integer> dayOfWeek(Expr<?> d) {
-        return factory.createNumber(Integer.class, Ops.DateTimeOps.DAY_OF_WEEK,d);
+        return ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_WEEK,d);
     }
 
     public static ENumber<Integer> dayOfYear(Expr<?> d) {
-        return factory.createNumber(Integer.class, Ops.DateTimeOps.DAY_OF_YEAR,d);
+        return ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_YEAR,d);
     }
 
     public static ENumber<Integer> week(Expr<?> d) {
-        return factory.createNumber(Integer.class, Ops.DateTimeOps.WEEK, d);
+        return ONumber.create(Integer.class, Ops.DateTimeOps.WEEK, d);
     }
 
 

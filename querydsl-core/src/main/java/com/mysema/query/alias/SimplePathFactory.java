@@ -20,6 +20,8 @@ import com.mysema.query.types.path.PBoolean;
 import com.mysema.query.types.path.PBooleanArray;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PComparableArray;
+import com.mysema.query.types.path.PDate;
+import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
 import com.mysema.query.types.path.PEntityList;
@@ -27,6 +29,7 @@ import com.mysema.query.types.path.PEntityMap;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PStringArray;
+import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.PathMetadata;
 
 /**
@@ -37,6 +40,16 @@ import com.mysema.query.types.path.PathMetadata;
  * @version $Id$
  */
 class SimplePathFactory implements PathFactory {
+
+    private static class PathFactory<K, V> extends LazyMap<K, V> {
+
+        private static final long serialVersionUID = -2443097467085594792L;
+
+        protected PathFactory(Transformer<K, V> transformer) {
+            super(new WeakHashMap<K, V>(), transformer);
+        }
+
+    }
 
     private final PString str = new PString(PathMetadata.forVariable("str"));
 
@@ -119,6 +132,30 @@ class SimplePathFactory implements PathFactory {
                     return new PNumber(arg.getClass(), md());
                 }
             });
+    
+    private final Map<Object, PDate<?>> dateToPath = new PathFactory<Object, PDate<?>>(
+            new Transformer<Object, PDate<?>>() {
+                @SuppressWarnings("unchecked")
+                public PDate<?> transform(Object arg) {
+                    return new PDate(arg.getClass(), md());
+                }
+            });
+    
+    private final Map<Object, PDateTime<?>> dateTimeToPath = new PathFactory<Object, PDateTime<?>>(
+            new Transformer<Object, PDateTime<?>>() {
+                @SuppressWarnings("unchecked")
+                public PDateTime<?> transform(Object arg) {
+                    return new PDateTime(arg.getClass(), md());
+                }
+            });
+    
+    private final Map<Object, PTime<?>> timeToPath = new PathFactory<Object, PTime<?>>(
+            new Transformer<Object, PTime<?>>() {
+                @SuppressWarnings("unchecked")
+                public PTime<?> transform(Object arg) {
+                    return new PTime(arg.getClass(), md());
+                }
+            });
 
     private final Map<Object, PStringArray> saToPath = new PathFactory<Object, PStringArray>(
             new Transformer<Object, PStringArray>() {
@@ -156,18 +193,25 @@ class SimplePathFactory implements PathFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public <D> PEntityCollection<D> createEntityCollection(Collection<D> arg) {
-        return (PEntityCollection<D>) ecToPath.get(arg);
-    }
-
-    @SuppressWarnings("unchecked")
     public <D extends Comparable<?>> PComparable<D> createComparable(D arg) {
         return (PComparable<D>) comToPath.get(arg);
     }
 
     @SuppressWarnings("unchecked")
-    public <D extends Number & Comparable<?>> PNumber<D> createNumber(D arg) {
-        return (PNumber<D>) numToPath.get(arg);
+    public <D extends Comparable<?>> PComparableArray<D> createComparableArray(D[] args) {
+        return (PComparableArray<D>) caToPath.get(Arrays.asList(args));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <D extends Comparable> PDate<D> createDate(D arg) {
+        return (PDate<D>) dateToPath.get(arg);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <D extends Comparable> PDateTime<D> createDateTime(D arg) {
+        return (PDateTime<D>) dateTimeToPath.get(arg);
     }
 
     @SuppressWarnings("unchecked")
@@ -176,9 +220,13 @@ class SimplePathFactory implements PathFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public <D extends Comparable<?>> PComparableArray<D> createComparableArray(
-            D[] args) {
-        return (PComparableArray<D>) caToPath.get(Arrays.asList(args));
+    public <D> PEntityCollection<D> createEntityCollection(Collection<D> arg) {
+        return (PEntityCollection<D>) ecToPath.get(arg);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <D> PEntityList<D> createEntityList(List<D> arg) {
+        return (PEntityList<D>) elToPath.get(arg);
     }
 
     @SuppressWarnings("unchecked")
@@ -187,8 +235,8 @@ class SimplePathFactory implements PathFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public <D> PEntityList<D> createEntityList(List<D> arg) {
-        return (PEntityList<D>) elToPath.get(arg);
+    public <D extends Number & Comparable<?>> PNumber<D> createNumber(D arg) {
+        return (PNumber<D>) numToPath.get(arg);
     }
 
     public PString createString(String arg) {
@@ -199,18 +247,14 @@ class SimplePathFactory implements PathFactory {
         return saToPath.get(Arrays.asList(args));
     }
 
-    private PathMetadata<String> md() {
-        return PathMetadata.forVariable("v" + String.valueOf(++counter));
+    @SuppressWarnings("unchecked")
+    @Override
+    public <D extends Comparable> PTime<D> createTime(D arg) {
+        return (PTime<D>) timeToPath.get(arg);
     }
 
-    private static class PathFactory<K, V> extends LazyMap<K, V> {
-
-        private static final long serialVersionUID = -2443097467085594792L;
-
-        protected PathFactory(Transformer<K, V> transformer) {
-            super(new WeakHashMap<K, V>(), transformer);
-        }
-
+    private PathMetadata<String> md() {
+        return PathMetadata.forVariable("v" + String.valueOf(++counter));
     }
 
 }

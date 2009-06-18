@@ -34,7 +34,7 @@ public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
     
     @Override
     public EBoolean not() {
-        if (op == Ops.NOT){
+        if (op == Ops.NOT && args.get(0) instanceof EBoolean){
             return (EBoolean) args.get(0);
         }else{
             return super.not();

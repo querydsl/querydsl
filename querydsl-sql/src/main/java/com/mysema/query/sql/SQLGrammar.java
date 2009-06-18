@@ -7,6 +7,7 @@ package com.mysema.query.sql;
 
 import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.ObjectSubQuery;
@@ -20,11 +21,11 @@ import com.mysema.query.types.query.ObjectSubQuery;
 public class SQLGrammar extends Grammar {
 
     public static EBoolean exists(ObjectSubQuery<?> sq) {
-        return operationFactory.createBoolean(Ops.EXISTS, sq);
+        return new OBoolean(Ops.EXISTS, sq);
     }
 
     public static EBoolean exists(ListSubQuery<?> sq) {
-        return operationFactory.createBoolean(Ops.EXISTS, sq);
+        return new OBoolean(Ops.EXISTS, sq);
     }
     
 }

@@ -93,8 +93,7 @@ public class AliasTest extends AbstractQueryTest {
 
         // 2
         try {
-            from(c, cats).where(
-                    $(c.getMate().getName().toUpperCase()).eq("MOE"));
+            from(c, cats).where($(c.getMate().getName().toUpperCase()).eq("MOE"));
             fail("expected NPE");
         } catch (NullPointerException ne) {
             // expected

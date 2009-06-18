@@ -5,13 +5,13 @@
  */
 package com.mysema.query.functions;
 
-import com.mysema.query.types.ExprFactory;
-import com.mysema.query.types.OperationFactory;
-import com.mysema.query.types.SimpleExprFactory;
-import com.mysema.query.types.SimpleOperationFactory;
+import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.ONumber;
+import com.mysema.query.types.operation.OSimple;
+import com.mysema.query.types.operation.OString;
 import com.mysema.query.types.operation.Ops;
 
 /**
@@ -25,22 +25,16 @@ public final class StringFunctions {
     private StringFunctions() {
     }
 
-    private static final OperationFactory factory = SimpleOperationFactory
-            .getInstance();
-
-    private static final ExprFactory exprFactory = SimpleExprFactory
-            .getInstance();
-
     public static EString ltrim(Expr<String> s) {
-        return factory.createString(Ops.StringOps.LTRIM, s);
+        return new OString(Ops.StringOps.LTRIM, s);
     }
 
     public static EString rtrim(Expr<String> s) {
-        return factory.createString(Ops.StringOps.RTRIM, s);
+        return new OString(Ops.StringOps.RTRIM, s);
     }
 
     public static EString space(int i) {
-        return factory.createString(Ops.StringOps.SPACE, exprFactory.createConstant(i));
+        return new OString(Ops.StringOps.SPACE, EConstant.create(i));
     }
 
     /**
@@ -53,9 +47,9 @@ public final class StringFunctions {
      */
     public static ENumber<Integer> lastIndex(Expr<String> left, String right,
             int third) {
-        return factory.createNumber(Integer.class,
-                Ops.StringOps.LAST_INDEX_2ARGS, left, exprFactory.createConstant(right),
-                exprFactory.createConstant(third));
+        return ONumber.create(Integer.class,
+                Ops.StringOps.LAST_INDEX_2ARGS, left, EConstant.create(right),
+                EConstant.create(third));
     }
 
     /**
@@ -67,7 +61,7 @@ public final class StringFunctions {
      */
     public static ENumber<Integer> lastIndexOf(Expr<String> left,
             Expr<String> right) {
-        return factory.createNumber(Integer.class, Ops.StringOps.LAST_INDEX, left, right);
+        return ONumber.create(Integer.class, Ops.StringOps.LAST_INDEX, left, right);
     }
 
     /**
@@ -78,8 +72,8 @@ public final class StringFunctions {
      * @return
      */
     public static ENumber<Integer> lastIndexOf(Expr<String> left, String right) {
-        return factory.createNumber(Integer.class, Ops.StringOps.LAST_INDEX,
-                left, exprFactory.createConstant(right));
+        return ONumber.create(Integer.class, Ops.StringOps.LAST_INDEX,
+                left, EConstant.create(right));
     }
     
 
@@ -91,7 +85,7 @@ public final class StringFunctions {
      * @return
      */
     public static Expr<String[]> split(Expr<String> left, String regex) {
-        return factory.createStringArray(Ops.StringOps.SPLIT, left, exprFactory.createConstant(regex));
+        return new OSimple<String,String[]>(String[].class, Ops.StringOps.SPLIT, left, EConstant.create(regex));
     }
 
 }

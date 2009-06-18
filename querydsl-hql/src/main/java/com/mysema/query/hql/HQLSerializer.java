@@ -190,7 +190,7 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
         // 
         if (operator.equals(Ops.INSTANCEOF)) {
             args = new ArrayList<Expr<?>>(args);
-            args.set(1, new EConstant<String>(((Class<?>) ((EConstant<?>) args
+            args.set(1, EConstant.create(((Class<?>) ((EConstant<?>) args
                     .get(1)).getConstant()).getName()));
             super.visitOperation(type, operator, args);
             
@@ -201,7 +201,7 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
             args = new ArrayList<Expr<?>>(args);
             if (args.get(1) instanceof EConstant){
                 int arg1 = ((EConstant<Integer>)args.get(1)).getConstant();
-                args.set(1, new EConstant<Integer>(arg1 + 1));
+                args.set(1, EConstant.create(arg1 + 1));
             }else{
                 throw new IllegalArgumentException("Unsupported substr variant");
             }
@@ -212,8 +212,8 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
             if (args.get(2) instanceof EConstant){
                 int arg1 = ((EConstant<Integer>)args.get(1)).getConstant();
                 int arg2 = ((EConstant<Integer>)args.get(2)).getConstant();
-                args.set(1, new EConstant<Integer>(arg1 + 1));
-                args.set(2, new EConstant<Integer>(arg2 - arg1));                
+                args.set(1, EConstant.create(arg1 + 1));
+                args.set(2, EConstant.create(arg2 - arg1));                
             }else{
                 throw new IllegalArgumentException("Unsupported substr variant");
             }
@@ -222,7 +222,7 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
         } else if (operator.equals(Ops.MATCHES)){
             args = new ArrayList<Expr<?>>(args);
             if (args.get(1) instanceof EConstant){
-                args.set(1, new EConstant<String>(args.get(1).toString().replace(".*", "%").replace(".", "_")));
+                args.set(1, EConstant.create(args.get(1).toString().replace(".*", "%").replace(".", "_")));
             }
             super.visitOperation(type, operator, args);
             

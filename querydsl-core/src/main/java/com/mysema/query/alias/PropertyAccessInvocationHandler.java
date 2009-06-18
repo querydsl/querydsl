@@ -12,6 +12,7 @@ import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -30,6 +31,8 @@ import com.mysema.query.types.expr.EMap;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PBoolean;
 import com.mysema.query.types.path.PComparable;
+import com.mysema.query.types.path.PDate;
+import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
 import com.mysema.query.types.path.PEntityList;
@@ -39,6 +42,7 @@ import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.Path;
 import com.mysema.query.types.path.PathMetadata;
 
@@ -220,9 +224,21 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             path = new PNumber<Integer>(Integer.class, pm);
             rv = (T) Integer.valueOf(42);
 
-        } else if (Date.class.equals(type)) {
-            path = new PComparable<Date>(Date.class, pm);
+        } else if (java.util.Date.class.equals(type)) {
+            path = new PDateTime<Date>(Date.class, pm);
             rv = (T) new Date();
+            
+        } else if (java.sql.Timestamp.class.equals(type)) {
+            path = new PDateTime<Timestamp>(Timestamp.class, pm);
+            rv = (T) new Timestamp(System.currentTimeMillis());
+            
+        } else if (java.sql.Date.class.equals(type)) {
+            path = new PDate<java.sql.Date>(java.sql.Date.class, pm);
+            rv = (T) new java.sql.Date(System.currentTimeMillis());
+            
+        } else if (java.sql.Time.class.equals(type)) {
+            path = new PTime<java.sql.Time>(java.sql.Time.class, pm);
+            rv = (T) new java.sql.Time(System.currentTimeMillis());
 
         } else if (Long.class.equals(type) || long.class.equals(type)) {
             path = new PNumber<Long>(Long.class, pm);
