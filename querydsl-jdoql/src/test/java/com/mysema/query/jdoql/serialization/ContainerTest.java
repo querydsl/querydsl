@@ -12,7 +12,7 @@ import com.mysema.query.jdoql.models.fitness.Wardrobe;
 /**
  * Tests for JDOQL queries of collections and maps.
  */
-public class JDOQLContainerTest extends AbstractTest{
+public class ContainerTest extends AbstractTest{
 
     private QGym gym = QGym.gym1;
 
