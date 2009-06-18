@@ -18,11 +18,8 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.serialization.BaseSerializer;
-import com.mysema.query.types.ListSubQuery;
-import com.mysema.query.types.ObjectSubQuery;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
@@ -30,6 +27,9 @@ import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.Path;
+import com.mysema.query.types.query.ListSubQuery;
+import com.mysema.query.types.query.ObjectSubQuery;
+import com.mysema.query.types.query.SubQuery;
 
 /**
  * 
@@ -189,14 +189,17 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
         if (operator.equals(Ops.INSTANCEOF)) {
             handle(args.get(0)).append(" instanceof ");
             append(((EConstant<Class<?>>) args.get(1)).getConstant().getName());
+            
         } else if (operator.equals(Ops.STRING_CAST)) {
             append("(String)").handle(args.get(0));
+            
         } else if (operator.equals(Ops.NUMCAST)) {
             Class<?> clazz = ((EConstant<Class<?>>)args.get(1)).getConstant();
             if (Number.class.isAssignableFrom(clazz) && ClassUtils.wrapperToPrimitive(clazz) != null){
                 clazz = ClassUtils.wrapperToPrimitive(clazz);
             }
             append("(",clazz.getSimpleName(),")").handle(args.get(0));
+            
         } else {
             super.visitOperation(type, operator, args);
         }

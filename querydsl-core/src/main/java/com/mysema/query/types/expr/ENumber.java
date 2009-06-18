@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import com.mysema.query.types.operation.OBoolean;
-import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
+
 
 /**
  * ENumber represents a numeric expression

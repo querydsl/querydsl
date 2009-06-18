@@ -8,6 +8,7 @@ package com.mysema.query.types.expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
 
+
 /**
  * EBoolean represents boolean expressions
  * 

@@ -5,13 +5,13 @@
  */
 package com.mysema.query.types.expr;
 
-import com.mysema.query.types.Grammar;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.OString;
 import com.mysema.query.types.operation.Ops;
+
 
 /**
  * EComparable represents comparable expressions

@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.mysema.query.alias.GrammarWithAlias;
-import com.mysema.query.types.Grammar;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.SinglePathExtractor;
 import com.mysema.query.types.expr.EBoolean;

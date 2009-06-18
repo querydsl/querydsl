@@ -8,9 +8,9 @@ package com.mysema.query.support;
 import com.mysema.query.Detachable;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Grammar;
-import com.mysema.query.types.ListSubQuery;
-import com.mysema.query.types.ObjectSubQuery;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.query.ListSubQuery;
+import com.mysema.query.types.query.ObjectSubQuery;
 
 /**
  * @author tiwe

@@ -21,12 +21,12 @@ import com.mysema.query.Query;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.support.QueryBaseWithProjectionAndDetach;
-import com.mysema.query.types.ListSubQuery;
-import com.mysema.query.types.ObjectSubQuery;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.query.ListSubQuery;
+import com.mysema.query.types.query.ObjectSubQuery;
+import com.mysema.query.types.query.SubQuery;
 
 /**
  * AbstractSqlQuery is the base type for SQL query implementations

@@ -5,7 +5,8 @@
  */
 package com.mysema.query.types.expr;
 
-import com.mysema.query.functions.DateTimeFunctions;
+import com.mysema.query.types.operation.ONumber;
+import com.mysema.query.types.operation.Ops;
 
 /**
  * EDateTime represents Date / Time expressions
@@ -41,7 +42,7 @@ public abstract class EDateTime<D extends Comparable> extends EComparable<D> {
      */
     public ENumber<Integer> getDayOfMonth(){
         if (dayOfMonth == null){
-            dayOfMonth = DateTimeFunctions.dayOfMonth(this);
+            dayOfMonth = ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_MONTH, this);
         }
         return dayOfMonth;
     }
@@ -54,7 +55,7 @@ public abstract class EDateTime<D extends Comparable> extends EComparable<D> {
      */
     public ENumber<Integer> getHours(){
         if (hours == null){
-            hours = DateTimeFunctions.hours(this);
+            hours = ONumber.create(Integer.class, Ops.DateTimeOps.HOUR, this);
         }
         return hours;
     }
@@ -67,7 +68,7 @@ public abstract class EDateTime<D extends Comparable> extends EComparable<D> {
      */
     public ENumber<Integer> getMinutes(){
         if (minutes == null){
-            minutes = DateTimeFunctions.minutes(this);
+            minutes = ONumber.create(Integer.class, Ops.DateTimeOps.MINUTE, this);
         }
         return minutes;
     }
@@ -80,7 +81,7 @@ public abstract class EDateTime<D extends Comparable> extends EComparable<D> {
      */
     public ENumber<Integer> getMonth(){
         if (month == null){
-            month = DateTimeFunctions.month(this);
+            month = ONumber.create(Integer.class, Ops.DateTimeOps.MONTH, this);
         }
         return month;
     }
@@ -93,7 +94,7 @@ public abstract class EDateTime<D extends Comparable> extends EComparable<D> {
      */
     public ENumber<Integer> getSeconds(){
         if (seconds == null){
-            seconds = DateTimeFunctions.seconds(this);
+            seconds = ONumber.create(Integer.class, Ops.DateTimeOps.SECOND, this);
         }
         return seconds;
     }
@@ -106,7 +107,7 @@ public abstract class EDateTime<D extends Comparable> extends EComparable<D> {
      */
     public ENumber<Integer> getYear(){
         if (year == null){
-            year = DateTimeFunctions.year(this);
+            year = ONumber.create(Integer.class, Ops.DateTimeOps.YEAR, this);
         }
         return year;
     }

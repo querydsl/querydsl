@@ -6,10 +6,10 @@
 package com.mysema.query.sql;
 
 import com.mysema.query.types.Grammar;
-import com.mysema.query.types.ListSubQuery;
-import com.mysema.query.types.ObjectSubQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.query.ListSubQuery;
+import com.mysema.query.types.query.ObjectSubQuery;
 
 /**
  * SqlGrammar provides SQL specific extensions to the general Querydsl Grammar

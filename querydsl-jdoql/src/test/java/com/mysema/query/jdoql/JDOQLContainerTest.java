@@ -7,8 +7,8 @@ import org.junit.Test;
 
 import com.mysema.query.jdoql.models.fitness.QGym;
 import com.mysema.query.jdoql.models.fitness.Wardrobe;
-import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.query.SubQuery;
 
 
 /**

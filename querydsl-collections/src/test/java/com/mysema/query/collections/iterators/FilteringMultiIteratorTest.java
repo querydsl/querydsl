@@ -21,7 +21,6 @@ import com.mysema.query.collections.domain.Cat;
 import com.mysema.query.collections.domain.QCat;
 import com.mysema.query.collections.support.DefaultIndexSupport;
 import com.mysema.query.collections.support.SimpleIteratorSource;
-import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;

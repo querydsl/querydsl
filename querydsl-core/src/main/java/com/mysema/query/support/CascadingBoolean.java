@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types;
+package com.mysema.query.support;
 
 import com.mysema.query.types.expr.EBoolean;
 

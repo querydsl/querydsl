@@ -14,6 +14,7 @@ import java.util.Map;
 import org.apache.commons.lang.mutable.MutableInt;
 
 import com.mysema.query.JoinExpression;
+import com.mysema.query.collections.SourceSortingSupport;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;

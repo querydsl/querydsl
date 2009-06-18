@@ -9,8 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.collections.ColQueryPatterns;
+import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.collections.QueryIndexSupport;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;

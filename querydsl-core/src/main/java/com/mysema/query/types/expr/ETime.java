@@ -5,7 +5,8 @@
  */
 package com.mysema.query.types.expr;
 
-import com.mysema.query.functions.DateTimeFunctions;
+import com.mysema.query.types.operation.ONumber;
+import com.mysema.query.types.operation.Ops;
 
 /**
  * ETime represents Time expressions
@@ -35,7 +36,7 @@ public abstract class ETime<D extends Comparable> extends EComparable<D> {
      */
     public ENumber<Integer> getHours(){
         if (hours == null){
-            hours = DateTimeFunctions.hours(this);
+            hours = ONumber.create(Integer.class, Ops.DateTimeOps.HOUR, this);
         }
         return hours;
     }
@@ -48,7 +49,7 @@ public abstract class ETime<D extends Comparable> extends EComparable<D> {
      */
     public ENumber<Integer> getMinutes(){
         if (minutes == null){
-            minutes = DateTimeFunctions.minutes(this);
+            minutes = ONumber.create(Integer.class, Ops.DateTimeOps.MINUTE, this);
         }
         return minutes;
     }
@@ -61,7 +62,7 @@ public abstract class ETime<D extends Comparable> extends EComparable<D> {
      */
     public ENumber<Integer> getSeconds(){
         if (seconds == null){
-            seconds = DateTimeFunctions.seconds(this);
+            seconds = ONumber.create(Integer.class, Ops.DateTimeOps.SECOND, this);
         }
         return seconds;
     }

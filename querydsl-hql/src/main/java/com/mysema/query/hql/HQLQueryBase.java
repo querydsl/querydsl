@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.mysema.query.JoinExpression;
+import com.mysema.query.support.CascadingBoolean;
 import com.mysema.query.support.QueryBaseWithProjectionAndDetach;
-import com.mysema.query.types.CascadingBoolean;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EEntity;
 import com.mysema.query.types.expr.Expr;

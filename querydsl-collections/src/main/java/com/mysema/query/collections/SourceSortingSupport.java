@@ -8,6 +8,8 @@ package com.mysema.query.collections;
 import java.util.List;
 
 import com.mysema.query.JoinExpression;
+import com.mysema.query.collections.support.DefaultSourceSortingSupport;
+import com.mysema.query.collections.support.JoinExpressionComparator;
 import com.mysema.query.types.expr.EBoolean;
 
 /**

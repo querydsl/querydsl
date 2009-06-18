@@ -7,8 +7,8 @@ import org.junit.Test;
 import com.mysema.query.jdoql.testdomain.Book;
 import com.mysema.query.jdoql.testdomain.QProduct;
 import com.mysema.query.types.Grammar;
-import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.query.SubQuery;
 
 public class QuerySerializationTest {
     

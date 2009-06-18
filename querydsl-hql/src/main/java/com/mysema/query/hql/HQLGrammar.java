@@ -5,8 +5,6 @@
  */
 package com.mysema.query.hql;
 
-import org.hibernate.type.CollectionType;
-
 import com.mysema.query.alias.GrammarWithAlias;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollection;

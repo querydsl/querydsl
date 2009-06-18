@@ -6,6 +6,8 @@
 package com.mysema.query.types.expr;
 
 import com.mysema.query.functions.DateTimeFunctions;
+import com.mysema.query.types.operation.ONumber;
+import com.mysema.query.types.operation.Ops;
 
 /**
  * EDate represents Date expressions
@@ -35,7 +37,7 @@ public abstract class EDate<D extends Comparable> extends EComparable<D> {
      */
     public ENumber<Integer> getDayOfMonth(){
         if (dayOfMonth == null){
-            dayOfMonth = DateTimeFunctions.dayOfMonth(this);
+            dayOfMonth = ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_MONTH, this);
         }
         return dayOfMonth;
     }
@@ -48,7 +50,7 @@ public abstract class EDate<D extends Comparable> extends EComparable<D> {
      */
     public ENumber<Integer> getMonth(){
         if (month == null){
-            month = DateTimeFunctions.month(this);
+            month = ONumber.create(Integer.class, Ops.DateTimeOps.MONTH, this);
         }
         return month;
     }
@@ -61,7 +63,7 @@ public abstract class EDate<D extends Comparable> extends EComparable<D> {
      */
     public ENumber<Integer> getYear(){
         if (year == null){
-            year = DateTimeFunctions.year(this);
+            year = ONumber.create(Integer.class, Ops.DateTimeOps.YEAR, this);
         }
         return year;
     }

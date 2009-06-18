@@ -15,17 +15,18 @@ public enum Order {
     /**
      * Ascending order
      */
-    ASC {
-        public String toString() {
-            return "asc";
-        }
-    },
+    ASC("asc"),
     /**
      * Descending order
      */
-    DESC {
-        public String toString() {
-            return "desc";
-        }
+    DESC("desc");
+    
+    private final String label;    
+    Order(String label){
+        this.label = label;
+    }    
+    @Override
+    public String toString(){
+        return label;
     }
 }

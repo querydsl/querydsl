@@ -38,11 +38,6 @@ public final class DateTimeFunctions {
     public static EComparable<Date> currentTimestamp() {
         return factory.createComparable(Date.class, Ops.DateTimeOps.CURRENT_TIMESTAMP);
     }
-    
-
-    public static ENumber<Integer> dayOfMonth(Expr<?> d) {
-        return factory.createNumber(Integer.class, Ops.DateTimeOps.DAY_OF_MONTH, d);
-    }
 
     public static ENumber<Integer> dayOfWeek(Expr<?> d) {
         return factory.createNumber(Integer.class, Ops.DateTimeOps.DAY_OF_WEEK,d);
@@ -52,28 +47,9 @@ public final class DateTimeFunctions {
         return factory.createNumber(Integer.class, Ops.DateTimeOps.DAY_OF_YEAR,d);
     }
 
-    public static ENumber<Integer> hours(Expr<?> t) {
-        return factory.createNumber(Integer.class, Ops.DateTimeOps.HOUR, t);
-    }
-
-    public static ENumber<Integer> minutes(Expr<?> t) {
-        return factory.createNumber(Integer.class, Ops.DateTimeOps.MINUTE, t);
-    }
-
-    public static ENumber<Integer> year(Expr<?> d) {
-        return factory.createNumber(Integer.class, Ops.DateTimeOps.YEAR, d);
-    }
-
     public static ENumber<Integer> week(Expr<?> d) {
         return factory.createNumber(Integer.class, Ops.DateTimeOps.WEEK, d);
     }
 
-    public static ENumber<Integer> seconds(Expr<?> t) {
-        return factory.createNumber(Integer.class, Ops.DateTimeOps.SECOND, t);
-    }
-
-    public static ENumber<Integer> month(Expr<?> d) {
-        return factory.createNumber(Integer.class, Ops.DateTimeOps.MONTH, d);
-    }
 
 }

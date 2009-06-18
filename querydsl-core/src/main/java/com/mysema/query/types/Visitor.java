@@ -52,6 +52,7 @@ import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PStringArray;
 import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.Path;
+import com.mysema.query.types.query.SubQuery;
 
 /**
  * Visitor provides a dispatching Visitor for Expr instances.
@@ -67,7 +68,8 @@ public abstract class Visitor<T extends Visitor<T>> {
                     Custom.class.getPackage(), 
                     Expr.class.getPackage(),
                     Operation.class.getPackage(), 
-                    Path.class.getPackage()));
+                    Path.class.getPackage(),
+                    SubQuery.class.getPackage()));
 
     private final Map<Class<?>, Method> methodMap = LazyMap.decorate(
             new HashMap<Class<?>, Method>(),
