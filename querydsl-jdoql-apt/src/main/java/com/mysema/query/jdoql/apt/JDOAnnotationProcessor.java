@@ -32,7 +32,7 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
         Class<? extends Annotation> embeddable = EmbeddedOnly.class;
         Class<? extends Annotation> dtoAnnotation = DTO.class;
         Processor p = new Processor(processingEnv, entity, superType, embeddable, dtoAnnotation, "Q");
-        p.skipGetters().listsAsCollections().process(roundEnv);
+        p.skipGetters().process(roundEnv);
         return true;
     }       
     

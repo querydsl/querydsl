@@ -73,7 +73,7 @@ public class ClassModel implements Comparable<ClassModel> {
     
     private String superType;
 
-    private boolean listsAsCollections;    
+//    private boolean listsAsCollections;    
 
     public ClassModel(String superType, String packageName, String name, String simpleName) {
         this.superType = superType;
@@ -121,18 +121,10 @@ public class ClassModel implements Comparable<ClassModel> {
             simpleCollections.add(field);
             break;
         case ENTITYLIST:
-            if (listsAsCollections){
-                entityCollections.add(field);
-            }else{
-                entityLists.add(field);    
-            }            
+            entityLists.add(field);
             break;
         case SIMPLELIST:
-            if (listsAsCollections){
-                simpleCollections.add(field);
-            }else{
-                simpleLists.add(field);    
-            }            
+            simpleLists.add(field);
             break;
         case ENTITYMAP:
             entityMaps.add(field);
@@ -306,8 +298,8 @@ public class ClassModel implements Comparable<ClassModel> {
         return field;
     }
 
-    public void setListsAsCollections(boolean b) {
-        listsAsCollections = b;        
-    }
+//    public void setListsAsCollections(boolean b) {
+//        listsAsCollections = b;        
+//    }
 
 }

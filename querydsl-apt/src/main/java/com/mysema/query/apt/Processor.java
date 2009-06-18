@@ -49,7 +49,7 @@ public class Processor {
     
     private boolean useFields = true;
     
-    private boolean listsAsCollections = false;
+//    private boolean listsAsCollections = false;
     
     private ElementVisitor<ClassModel, Void> dtoElementVisitor = new SimpleElementVisitor6<ClassModel, Void>() {
         
@@ -58,7 +58,7 @@ public class Processor {
             Elements elementUtils = env.getElementUtils();
             TypeModel c = APTTypeModel.get(e.asType(), elementUtils);
             ClassModel classModel = new ClassModel(null, c.getPackageName(), c.getName(), c.getSimpleName());
-            classModel.setListsAsCollections(listsAsCollections);
+//            classModel.setListsAsCollections(listsAsCollections);
             List<? extends Element> elements = e.getEnclosedElements();
             // CONSTRUCTOR
             for (ExecutableElement constructor : ElementFilter.constructorsIn(elements)){
@@ -85,7 +85,7 @@ public class Processor {
             TypeModel sc = APTTypeModel.get(e.getSuperclass(), elementUtils);
             TypeModel c = APTTypeModel.get(e.asType(), elementUtils);
             ClassModel classModel = new ClassModel(sc.getName(), c.getPackageName(), c.getName(), c.getSimpleName());
-            classModel.setListsAsCollections(listsAsCollections);
+//            classModel.setListsAsCollections(listsAsCollections);
             List<? extends Element> elements = e.getEnclosedElements();
             // GETTERS
             for (ExecutableElement method : ElementFilter.methodsIn(elements)){
@@ -285,15 +285,15 @@ public class Processor {
         return this;
     }
 
-    /**
-     * Process lists as Collections
-     * 
-     * @return
-     */
-    public Processor listsAsCollections() {
-        listsAsCollections = true;
-        return this;
-        
-    }
+//    /**
+//     * Process lists as Collections
+//     * 
+//     * @return
+//     */
+//    public Processor listsAsCollections() {
+//        listsAsCollections = true;
+//        return this;
+//        
+//    }
 
 }
