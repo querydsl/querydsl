@@ -44,7 +44,7 @@ public class MiniApi extends GrammarWithAlias {
     }
 
     public static <A> List<A> reject(Iterable<A> from, EBoolean where, OrderSpecifier<?>... order) {
-        return select(from, Grammar.not(where), order);
+        return select(from, where.not(), order);
     }
 
 }

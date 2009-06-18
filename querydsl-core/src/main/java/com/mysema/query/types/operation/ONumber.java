@@ -50,4 +50,8 @@ public class ONumber<OpType extends Number, D extends Number & Comparable<?>>
     public Operator<OpType> getOperator() {
         return op;
     }
+    
+    public static <O extends Number,D extends Number & Comparable<?>> ENumber<D> create(Class<D> type, Operator<O> op, Expr<?>... args){
+        return new ONumber<O,D>(type, op, args);
+    }
 }

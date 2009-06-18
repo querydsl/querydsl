@@ -11,7 +11,6 @@ import static com.mysema.query.functions.MathFunctions.div;
 import static com.mysema.query.functions.MathFunctions.mult;
 import static com.mysema.query.functions.MathFunctions.sub;
 import static com.mysema.query.hql.HQLGrammar.sum;
-import static com.mysema.query.types.Grammar.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -83,7 +82,7 @@ public class FeaturesTest extends AbstractQueryTest{
         toString("cust is null or cat is null", cust.isNull().or(cat.isNull()));
         toString("cust is null and cat is null", cust.isNull()
                 .and(cat.isNull()));
-        toString("not (cust is null)", not(cust.isNull()));
+        toString("not (cust is null)", cust.isNull().not());
         cat.name.eq(cust.name.firstName).and(
                 cat.bodyWeight.eq(kitten.bodyWeight));
         cat.name.eq(cust.name.firstName).or(
@@ -181,7 +180,7 @@ public class FeaturesTest extends AbstractQueryTest{
         // member of
         // not member of
         kitten.in(cat.kittens);
-        not(kitten.in(cat.kittens));
+        kitten.in(cat.kittens).not();
         kitten.bodyWeight.between(10, 20);
         kitten.bodyWeight.isNull();
         kitten.bodyWeight.isNotNull();

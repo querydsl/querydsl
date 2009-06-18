@@ -26,7 +26,7 @@ public class CascadingBoolean {
     }
 
     public CascadingBoolean not(EBoolean right) {
-        return and(Grammar.not(right));
+        return and(right.not());
     }
 
     public CascadingBoolean or(EBoolean right) {

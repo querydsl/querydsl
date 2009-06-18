@@ -146,8 +146,10 @@ public class OperationPatterns {
         add(Ops.MathOps.EXP, "exp(%s)");
         
         // path types
-        for (PathType type : new PathType[] { PathType.LISTVALUE,
-                PathType.LISTVALUE_CONSTANT, PathType.MAPVALUE,
+        for (PathType type : new PathType[] {
+                PathType.LISTVALUE,
+                PathType.LISTVALUE_CONSTANT, 
+                PathType.MAPVALUE,
                 PathType.MAPVALUE_CONSTANT }) {
             add(type, "%s.get(%s)");
         }

@@ -5,11 +5,14 @@
  */
 package com.mysema.query.types.path;
 
-import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.EEntity;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.OBoolean;
+import com.mysema.query.types.operation.ONumber;
+import com.mysema.query.types.operation.Ops;
 
 /**
  * PEntityCollection represents an entity collection path
@@ -44,12 +47,12 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
 
     @Override
     public EBoolean contains(D child) {
-        return Grammar.in(child, this);
+        return new OBoolean(Ops.IN, EConstant.create(child), this);
     }
 
     @Override
     public EBoolean contains(Expr<D> child) {
-        return Grammar.in(child, this);
+        return new OBoolean(Ops.IN, child, this);
     }
 
     @Override
@@ -89,7 +92,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     @Override
     public EBoolean isEmpty() {
         if (empty == null){
-            empty = Grammar.isEmpty(this);
+            empty = new OBoolean(Ops.COL_ISEMPTY, this);
         }
         return empty;
     }
@@ -97,7 +100,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     @Override
     public EBoolean isNotEmpty() {
         if (notEmpty == null){
-            notEmpty = Grammar.isEmpty(this).not(); 
+            notEmpty = isEmpty().not(); 
         }
         return notEmpty;
     }
@@ -105,15 +108,15 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     @Override
     public EBoolean isNotNull() {
         if (isnotnull == null) {
-            isnotnull = Grammar.isNotNull(this);
+            isnotnull = new OBoolean(Ops.ISNOTNULL, this);
         }
         return isnotnull;
     }
-
+    
     @Override
     public EBoolean isNull() {
         if (isnull == null) {
-            isnull = Grammar.isNull(this);
+            isnull = new OBoolean(Ops.ISNULL, this);
         }
         return isnull;
     }
@@ -121,7 +124,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     @Override
     public ENumber<Integer> size() {
         if (size == null) {
-            size = Grammar.size(this);
+            size = ONumber.create(Integer.class, Ops.COL_SIZE, this);
         }
         return size;
     }

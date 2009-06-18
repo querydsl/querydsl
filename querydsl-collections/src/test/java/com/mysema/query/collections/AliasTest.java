@@ -8,7 +8,6 @@ package com.mysema.query.collections;
 import static com.mysema.query.alias.GrammarWithAlias.$;
 import static com.mysema.query.alias.GrammarWithAlias.alias;
 import static com.mysema.query.collections.MiniApi.from;
-import static com.mysema.query.types.Grammar.gt;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -46,12 +45,6 @@ public class AliasTest extends AbstractQueryTest {
         // 1st
         QCat cat = new QCat("cat");
         for (String name : from(cat, cats).where(cat.kittens.size().gt(0))
-                .list(cat.name)) {
-            System.out.println(name);
-        }
-
-        // 1st - variation 1
-        for (String name : from(cat, cats).where(gt(cat.kittens.size(), 0))
                 .list(cat.name)) {
             System.out.println(name);
         }

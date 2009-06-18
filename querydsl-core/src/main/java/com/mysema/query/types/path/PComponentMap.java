@@ -5,10 +5,13 @@
  */
 package com.mysema.query.types.path;
 
-import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.OBoolean;
+import com.mysema.query.types.operation.ONumber;
+import com.mysema.query.types.operation.Ops;
 
 /**
  * PComponentMap represents component map paths
@@ -44,22 +47,22 @@ public class PComponentMap<K, V> extends Expr<java.util.Map<K, V>> implements PM
 
     @Override
     public EBoolean containsKey(Expr<K> key) {
-        return Grammar.containsKey(this, key);
+        return new OBoolean(Ops.CONTAINS_KEY, this, key);
     }
 
     @Override
     public EBoolean containsKey(K key) {
-        return Grammar.containsKey(this, key);
+        return new OBoolean(Ops.CONTAINS_KEY, this, EConstant.create(key));
     }
 
     @Override
     public EBoolean containsValue(Expr<V> value) {
-        return Grammar.containsValue(this, value);
+        return new OBoolean(Ops.CONTAINS_VALUE, this, value);
     }
 
     @Override
     public EBoolean containsValue(V value) {
-        return Grammar.containsValue(this, value);
+        return new OBoolean(Ops.CONTAINS_VALUE, this, EConstant.create(value));
     }
 
     @Override
@@ -106,7 +109,7 @@ public class PComponentMap<K, V> extends Expr<java.util.Map<K, V>> implements PM
     @Override
     public EBoolean isEmpty() {
         if (empty == null){
-            empty = Grammar.isEmpty(this);
+            empty = new OBoolean(Ops.MAP_ISEMPTY, this);
         }
         return empty;
     }
@@ -114,7 +117,7 @@ public class PComponentMap<K, V> extends Expr<java.util.Map<K, V>> implements PM
     @Override
     public EBoolean isNotEmpty() {
         if (notEmpty == null){
-            notEmpty = Grammar.isEmpty(this).not(); 
+            notEmpty = isEmpty().not(); 
         }
         return notEmpty;
     }
@@ -122,7 +125,7 @@ public class PComponentMap<K, V> extends Expr<java.util.Map<K, V>> implements PM
     @Override
     public EBoolean isNotNull() {
         if (isnotnull == null) {
-            isnotnull = Grammar.isNotNull(this);
+            isnotnull = new OBoolean(Ops.ISNOTNULL);
         }
         return isnotnull;
     }
@@ -130,7 +133,7 @@ public class PComponentMap<K, V> extends Expr<java.util.Map<K, V>> implements PM
     @Override
     public EBoolean isNull() {
         if (isnull == null) {
-            isnull = Grammar.isNull(this);
+            isnull = new OBoolean(Ops.ISNULL);
         }
         return isnull;
     }
@@ -138,7 +141,7 @@ public class PComponentMap<K, V> extends Expr<java.util.Map<K, V>> implements PM
     @Override
     public ENumber<Integer> size() {
         if (size == null) {
-            size = Grammar.size(this);
+            size = ONumber.create(Integer.class,Ops.MAP_SIZE, this);
         }
         return size;
     }

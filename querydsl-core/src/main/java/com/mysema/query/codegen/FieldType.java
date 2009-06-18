@@ -12,20 +12,77 @@ package com.mysema.query.codegen;
  *
  */
 public enum FieldType {
-    BOOLEAN, 
-    COMPARABLE, 
-    DATE,
-    DATETIME,
-    ENTITY, 
-    ENTITYLIST, 
-    ENTITYCOLLECTION, 
-    ENTITYMAP, 
-    NUMERIC, 
-    SIMPLE, 
-    SIMPLELIST, 
-    SIMPLECOLLECTION, 
-    SIMPLEMAP, 
-    STRING,
-    TIME
+    /**
+     * 
+     */
+    SIMPLE(null),
+    /**
+     * 
+     */
+    COMPARABLE(SIMPLE),
+    /**
+     * 
+     */
+    BOOLEAN(COMPARABLE),     
+    /**
+     * 
+     */
+    DATE(COMPARABLE),
+    /**
+     * 
+     */
+    DATETIME(COMPARABLE),
+    /**
+     * 
+     */
+    ENTITY(SIMPLE),
+    /**
+     * 
+     */
+    ENTITYCOLLECTION(SIMPLE),
+    /**
+     * 
+     */
+    ENTITYLIST(ENTITYCOLLECTION),      
+    /**
+     * 
+     */
+    ENTITYMAP(SIMPLE), 
+    /**
+     * 
+     */
+    NUMERIC(COMPARABLE),     
+    /**
+     * 
+     */
+    SIMPLECOLLECTION(SIMPLE), 
+    /**
+     * 
+     */
+    SIMPLELIST(SIMPLECOLLECTION),
+    /**
+     * 
+     */
+    SIMPLEMAP(SIMPLE), 
+    /**
+     * 
+     */
+    STRING(COMPARABLE),
+    /**
+     * 
+     */
+    TIME(COMPARABLE);
+    
+    private final FieldType superType;
+    
+    FieldType(FieldType superType){
+        this.superType = superType;
+    }
+
+    public FieldType getSuperType() {
+        return superType;
+    }
+    
+    
     
 }

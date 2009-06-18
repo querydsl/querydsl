@@ -5,11 +5,13 @@
  */
 package com.mysema.query.types.expr;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import com.mysema.query.serialization.ToStringVisitor;
-import com.mysema.query.types.Grammar;
 import com.mysema.query.types.ValidationVisitor;
+import com.mysema.query.types.operation.OBoolean;
+import com.mysema.query.types.operation.Ops;
 
 /**
  * Expr represents a general typed expression in a Query instance. The generic type parameter
@@ -43,7 +45,7 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean eq(D right) {
-        return Grammar.eq(this, right);
+        return eq(EConstant.create(right));
     }
 
     /**
@@ -53,7 +55,11 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean eq(Expr<? super D> right) {
-        return Grammar.eq(this, right);
+        if (isPrimitive()) {
+            return new OBoolean(Ops.EQ_PRIMITIVE, this, right);
+        } else {
+            return new OBoolean(Ops.EQ_OBJECT, this, right);
+        }
     }
 
     /**
@@ -63,7 +69,7 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean ne(D right) {
-        return Grammar.ne(this, right);
+        return ne(EConstant.create(right));
     }
 
     /**
@@ -73,7 +79,11 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean ne(Expr<? super D> right) {
-        return Grammar.ne(this, right);
+        if (isPrimitive()) {
+            return new OBoolean(Ops.NE_PRIMITIVE, this, right);
+        } else {
+            return new OBoolean(Ops.NE_OBJECT, this, right);
+        }
     }
 
     /**
@@ -83,7 +93,7 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean in(ECollection<? extends D> right) {
-        return Grammar.in(this, right);
+        return new OBoolean(Ops.IN, this, (Expr<?>)right);
     }
 
     /**
@@ -93,7 +103,7 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean in(Collection<? extends D> right) {
-        return Grammar.in(this, right);
+        return new OBoolean(Ops.IN, this, EConstant.create(right));
     }
 
     /**
@@ -103,7 +113,7 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean in(D... right) {
-        return Grammar.in(this, right);
+        return new OBoolean(Ops.IN, this, EConstant.create(Arrays.asList(right)));
     }
 
     /**
@@ -113,7 +123,7 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean notIn(ECollection<? extends D> right) {
-        return Grammar.in(this, right).not();
+        return in(right).not();
     }
 
     /**
@@ -123,7 +133,7 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean notIn(Collection<? extends D> right) {
-        return Grammar.in(this, right);
+        return in(right).not();
     }
 
     /**
@@ -133,7 +143,7 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean notIn(D... right) {
-        return Grammar.in(this, right).not();
+        return in(right).not();
     }
 
     /**
@@ -155,5 +165,18 @@ public abstract class Expr<D> {
     @Override
     public int hashCode() {
         return type != null ? type.hashCode() : super.hashCode();
+    }
+    
+    @SuppressWarnings("unchecked")
+    private boolean isPrimitive() {
+        Class<D> type = (Class<D>) getType();
+        if (type != null){
+            return type.isPrimitive() 
+                || Number.class.isAssignableFrom(type) 
+                || Boolean.class.equals(type) 
+                || Character.class.equals(type);    
+        }else{
+            return false;
+        }        
     }
 }

@@ -31,7 +31,7 @@ public class FieldModel implements Comparable<FieldModel> {
     }
 
     public int compareTo(FieldModel o) {
-        return name.compareTo(o.name);
+        return name.compareToIgnoreCase(o.name);
     }
 
     public boolean equals(Object o) {

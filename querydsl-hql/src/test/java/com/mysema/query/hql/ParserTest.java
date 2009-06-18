@@ -14,7 +14,6 @@ import static com.mysema.query.hql.HQLGrammar.notExists;
 import static com.mysema.query.hql.HQLGrammar.some;
 import static com.mysema.query.hql.HQLGrammar.sum;
 import static com.mysema.query.types.Grammar.avg;
-import static com.mysema.query.types.Grammar.not;
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
@@ -513,7 +512,7 @@ public class ParserTest implements Constants {
         query().select(ord.id, sum(price.amount), Grammar.count(item)).from(ord)
                 .join(ord.lineItems, item).join(item.product, product)
                 .from(catalog).join(catalog.prices, price).where(
-                        not(ord.paid).and(ord.customer.eq(cust)).and(
+                        ord.paid.not().and(ord.customer.eq(cust)).and(
                                 price.product.eq(product)).and(
                                 catalog.effectiveDate.after(DateTimeFunctions.currentDate())).and(
                                 catalog.effectiveDate.after(all(                                        
@@ -537,7 +536,7 @@ public class ParserTest implements Constants {
         query().select(ord.id, sum(price.amount), Grammar.count(item)).from(ord)
                 .join(ord.lineItems, item).join(item.product, product)
                 .from(catalog).join(catalog.prices, price).where(
-                        not(ord.paid).and(ord.customer.eq(c1)).and(
+                        ord.paid.not().and(ord.customer.eq(c1)).and(
                                 price.product.eq(product)).and(catalog.eq(c2)))
                 .groupBy(ord).having(sum(price.amount).gt(0l)).orderBy(
                         sum(price.amount).desc());
@@ -796,33 +795,33 @@ public class ParserTest implements Constants {
     public void testNot() throws Exception {
         // Cover NOT optimization in HqlParser
         // parse( "from eg.Cat cat where not ( cat.kittens.size < 1 )" );
-        query().from(cat).where(not(cat.kittens.size().lt(1))).parse();
+        query().from(cat).where(cat.kittens.size().lt(1).not()).parse();
 
         // parse( "from eg.Cat cat where not ( cat.kittens.size > 1 )" );
-        query().from(cat).where(not(cat.kittens.size().gt(1))).parse();
+        query().from(cat).where(cat.kittens.size().gt(1).not()).parse();
 
         // parse( "from eg.Cat cat where not ( cat.kittens.size >= 1 )" );
-        query().from(cat).where(not(cat.kittens.size().goe(1))).parse();
+        query().from(cat).where(cat.kittens.size().goe(1).not()).parse();
 
         // parse( "from eg.Cat cat where not ( cat.kittens.size <= 1 )" );
-        query().from(cat).where(not(cat.kittens.size().loe(1))).parse();
+        query().from(cat).where(cat.kittens.size().loe(1).not()).parse();
 
         // parse(
         // "from eg.DomesticCat cat where not ( cat.name between 'A' and 'B' ) "
         // );
-        query().from(cat).where(not(cat.name.between("A", "B"))).parse();
+        query().from(cat).where(cat.name.between("A", "B").not()).parse();
 
         // parse(
         // "from eg.DomesticCat cat where not ( cat.name not between 'A' and 'B' ) "
         // );
-        query().from(cat).where(not(cat.name.notBetween("A", "B"))).parse();
+        query().from(cat).where(cat.name.notBetween("A", "B").not()).parse();
 
         // parse( "from eg.Cat cat where not ( not cat.kittens.size <= 1 )" );
-        query().from(cat).where(not(not(cat.kittens.size().loe(1)))).parse();
+        query().from(cat).where(cat.kittens.size().loe(1).not().not()).parse();
 
         // parse( "from eg.Cat cat where not  not ( not cat.kittens.size <= 1 )"
         // );
-        query().from(cat).where(not(not(not(cat.kittens.size().loe(1))))).parse();
+        query().from(cat).where(cat.kittens.size().loe(1).not().not().not()).parse();
     }
 
     @Test

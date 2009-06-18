@@ -5,9 +5,10 @@
  */
 package com.mysema.query.types.path;
 
-import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EDateTime;
+import com.mysema.query.types.operation.OBoolean;
+import com.mysema.query.types.operation.Ops;
 
 /**
  * @author tiwe
@@ -54,15 +55,15 @@ public class PDateTime<D extends Comparable> extends EDateTime<D> implements Pat
     @Override
     public EBoolean isNotNull() {
         if (isnotnull == null) {
-            isnotnull = Grammar.isNotNull(this);
+            isnotnull = new OBoolean(Ops.ISNOTNULL, this);
         }
         return isnotnull;
     }
-
+    
     @Override
     public EBoolean isNull() {
         if (isnull == null) {
-            isnull = Grammar.isNull(this);
+            isnull = new OBoolean(Ops.ISNULL, this);
         }
         return isnull;
     }

@@ -17,7 +17,6 @@ import org.junit.Test;
 
 import com.mysema.query.collections.domain.Cat;
 import com.mysema.query.functions.MathFunctions;
-import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 
@@ -30,9 +29,9 @@ import com.mysema.query.types.expr.Expr;
 public class ColQueryTest extends AbstractQueryTest {
 
     @Test
-    public void isTypeOf() {
+    public void instanceOf() {
         assertEquals(Arrays.asList(c1, c2), query().from(cat, c1, c2).where(
-                Grammar.instanceOf(cat, Cat.class)).list(cat));
+                cat.instanceOf(Cat.class)).list(cat));
     }
 
     @Test

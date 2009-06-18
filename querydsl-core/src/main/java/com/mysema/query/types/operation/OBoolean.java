@@ -31,6 +31,15 @@ public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
         this.args = Collections.unmodifiableList(args);
         validate();
     }
+    
+    @Override
+    public EBoolean not() {
+        if (op == Ops.NOT){
+            return (EBoolean) args.get(0);
+        }else{
+            return super.not();
+        }
+    }
 
     @Override
     public List<Expr<?>> getArgs() {

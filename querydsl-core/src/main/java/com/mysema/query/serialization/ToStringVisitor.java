@@ -33,7 +33,6 @@ public class ToStringVisitor extends AbstractVisitor<ToStringVisitor> {
     @Override
     protected void visit(Custom<?> expr) {
         toString = String.format(expr.getPattern(), expr.getArgs());
-
     }
 
     protected void visit(EArrayConstructor<?> e) {

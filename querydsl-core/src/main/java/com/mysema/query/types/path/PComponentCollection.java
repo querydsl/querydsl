@@ -5,9 +5,10 @@
  */
 package com.mysema.query.types.path;
 
-import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollectionBase;
+import com.mysema.query.types.operation.OBoolean;
+import com.mysema.query.types.operation.Ops;
 
 /**
  * PComponentCollection represents component collection paths
@@ -21,7 +22,7 @@ public class PComponentCollection<D> extends ECollectionBase<D> implements PColl
     private final Path<?> root;
     private final PathMetadata<?> metadata;
     
-    private EBoolean isNull, notNull;    
+    private EBoolean isnull, isnotnull;    
     
     public PComponentCollection(Class<D> type, PathMetadata<?> metadata) {
         super(null);
@@ -62,18 +63,18 @@ public class PComponentCollection<D> extends ECollectionBase<D> implements PColl
     
     @Override
     public EBoolean isNotNull() {
-        if (notNull == null) {
-            notNull = Grammar.isNotNull(this);
+        if (isnotnull == null) {
+            isnotnull = new OBoolean(Ops.ISNOTNULL, this);
         }
-        return notNull;
+        return isnotnull;
     }
-
+    
     @Override
     public EBoolean isNull() {
-        if (isNull == null) {
-            isNull = Grammar.isNull(this);
+        if (isnull == null) {
+            isnull = new OBoolean(Ops.ISNULL, this);
         }
-        return isNull;
+        return isnull;
     }
 
 }

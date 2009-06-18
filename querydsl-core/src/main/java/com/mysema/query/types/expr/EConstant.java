@@ -40,4 +40,8 @@ public class EConstant<D> extends Expr<D> {
         return o instanceof EConstant ? ((EConstant<?>) o).getConstant()
                 .equals(constant) : false;
     }
+    
+    public static <D> EConstant<D> create(D val){
+        return new EConstant<D>(val);
+    }
 }

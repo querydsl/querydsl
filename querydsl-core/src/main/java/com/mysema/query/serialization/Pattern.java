@@ -36,9 +36,9 @@ public class Pattern {
     
     public interface Element { }
     
-    public static class ArgElement implements Element {     
+    public class ArgElement implements Element {     
         private final int index;        
-        private ArgElement (int index){
+        ArgElement (int index){
             this.index = index;
         }        
         public int getIndex(){
@@ -46,9 +46,9 @@ public class Pattern {
         }
     }
     
-    public static class TextElement implements Element {
-        private String text;
-        private TextElement(String text) {
+    public class TextElement implements Element {
+        private final String text;
+        TextElement(String text) {
             this.text = text;
         }
         public String getText() {

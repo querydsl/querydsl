@@ -6,7 +6,12 @@
 package com.mysema.query.types.expr;
 
 import com.mysema.query.types.Grammar;
+import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.operation.OBoolean;
+import com.mysema.query.types.operation.ONumber;
+import com.mysema.query.types.operation.OString;
+import com.mysema.query.types.operation.Ops;
 
 /**
  * EComparable represents comparable expressions
@@ -34,7 +39,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean after(D right) {
-        return Grammar.after(this, right);
+        return after(EConstant.create(right));
     }
 
     /**
@@ -45,7 +50,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean after(Expr<D> right) {
-        return Grammar.after(this, right);
+        return new OBoolean(Ops.AFTER, this, right);
     }
 
     /**
@@ -56,7 +61,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean aoe(D right) {
-        return Grammar.aoe(this, right);
+        return aoe(EConstant.create(right));
     }
 
     /**
@@ -67,7 +72,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean aoe(Expr<D> right) {
-        return Grammar.aoe(this, right);
+        return new OBoolean(Ops.AOE, this, right);
     }
 
     /**
@@ -77,7 +82,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      */
     public final OrderSpecifier<D> asc() {
         if (asc == null){
-            asc = Grammar.asc(this);
+            asc = new OrderSpecifier<D>(Order.ASC, this);
         }            
         return asc;
     }
@@ -90,7 +95,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean before(D right) {
-        return Grammar.before(this, right);
+        return before(EConstant.create(right));
     }
 
     /**
@@ -101,7 +106,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean before(Expr<D> right) {
-        return Grammar.before(this, right);
+        return new OBoolean(Ops.BEFORE, this, right);
     }
 
     /**
@@ -112,7 +117,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean boe(D right) {
-        return Grammar.boe(this, right);
+        return new OBoolean(Ops.BOE, this, EConstant.create(right));
     }
 
     /**
@@ -123,7 +128,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean boe(Expr<D> right) {
-        return Grammar.boe(this, right);
+        return new OBoolean(Ops.BOE, this, right);
     }
 
     /**
@@ -134,7 +139,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @return
      */
     public final EBoolean between(D first, D second) {
-        return Grammar.between(this, first, second);
+        return new OBoolean(Ops.BETWEEN, this, EConstant.create(first), EConstant.create(second));
     }
 
     /**
@@ -145,7 +150,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @return
      */
     public final EBoolean between(Expr<D> first, Expr<D> second) {
-        return Grammar.between(this, first, second);
+        return new OBoolean(Ops.BETWEEN, this, first, second);
     }
 
     
@@ -157,7 +162,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @return
      */
     public <A extends Number & Comparable<? super A>> ENumber<A> castToNum(Class<A> type) {
-        return Grammar.numericCast(this, type);
+        return ONumber.create(type, Ops.NUMCAST, this, EConstant.create(type));
     }
 
     /**
@@ -167,17 +172,17 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      */
     public final OrderSpecifier<D> desc() {
         if (desc == null){
-            desc = Grammar.desc(this);
+            desc = new OrderSpecifier<D>(Order.DESC, this);
         }            
         return desc;
     }
 
     public final EBoolean notBetween(D first, D second) {
-        return Grammar.between(this, first, second).not();
+        return between(first, second).not();
     }
 
     public final EBoolean notBetween(Expr<D> first, Expr<D> second) {
-        return Grammar.between(this, first, second).not();
+        return between(first, second).not();
     }
 
     /**
@@ -188,7 +193,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      */
     public EString stringValue() {
         if (stringCast == null){
-            stringCast = Grammar.stringCast(this);
+            stringCast = new OString(Ops.STRING_CAST, this);
         }            
         return stringCast;
     }

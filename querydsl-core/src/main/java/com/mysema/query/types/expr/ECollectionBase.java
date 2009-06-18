@@ -7,7 +7,9 @@ package com.mysema.query.types.expr;
 
 import java.util.Collection;
 
-import com.mysema.query.types.Grammar;
+import com.mysema.query.types.operation.OBoolean;
+import com.mysema.query.types.operation.ONumber;
+import com.mysema.query.types.operation.Ops;
 
 /**
  * @author tiwe
@@ -27,18 +29,18 @@ public abstract  class ECollectionBase<D> extends Expr<java.util.Collection<D>> 
     
     @Override
     public final EBoolean contains(D child) {
-        return Grammar.in(child, this);
+        return contains(EConstant.create(child));        
     }
 
     @Override
     public final EBoolean contains(Expr<D> child) {
-        return Grammar.in(child, this);
+        return new OBoolean(Ops.IN, child, this);
     }
     
     @Override
     public final EBoolean isEmpty() {
         if (empty == null){
-            empty = Grammar.isEmpty(this); 
+            empty = new OBoolean(Ops.COL_ISEMPTY, this); 
         }
         return empty;
     }
@@ -46,7 +48,7 @@ public abstract  class ECollectionBase<D> extends Expr<java.util.Collection<D>> 
     @Override
     public final EBoolean isNotEmpty() {
         if (notEmpty == null){
-            notEmpty = Grammar.isEmpty(this).not(); 
+            notEmpty = isEmpty().not(); 
         }
         return notEmpty; 
     }
@@ -54,7 +56,7 @@ public abstract  class ECollectionBase<D> extends Expr<java.util.Collection<D>> 
     @Override
     public final ENumber<Integer> size() {
         if (size == null) {
-            size = Grammar.size(this);
+            size = ONumber.create(Integer.class, Ops.COL_SIZE, this);
         }
         return size;
     }

@@ -50,4 +50,8 @@ public class OComparable<OpType, D extends Comparable<?>> extends
     public Operator<OpType> getOperator() {
         return op;
     }
+    
+    public static <O,D extends Comparable<?>> EComparable<D> create(Class<D> type, Operator<O> op, Expr<?>... args){
+        return new OComparable<O,D>(type, op, args);
+    }
 }

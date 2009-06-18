@@ -5,7 +5,8 @@
  */
 package com.mysema.query.types.expr;
 
-import com.mysema.query.types.Grammar;
+import com.mysema.query.types.operation.OBoolean;
+import com.mysema.query.types.operation.Ops;
 
 /**
  * EBoolean represents boolean expressions
@@ -28,7 +29,7 @@ public abstract class EBoolean extends EComparable<Boolean> {
      * @return
      */
     public final EBoolean and(EBoolean right) {
-        return Grammar.and(this, right);
+        return new OBoolean(Ops.AND, this, right);
     }
 
     /**
@@ -36,9 +37,9 @@ public abstract class EBoolean extends EComparable<Boolean> {
      * 
      * @return
      */
-    public final EBoolean not() {
+    public EBoolean not() {
         if (not == null){
-            not = Grammar.not(this);
+            not = new OBoolean(Ops.NOT, this);
         }            
         return not;
     }
@@ -50,6 +51,6 @@ public abstract class EBoolean extends EComparable<Boolean> {
      * @return
      */
     public final EBoolean or(EBoolean right) {
-        return Grammar.or(this, right);
+        return new OBoolean(Ops.OR, this, right);
     }
 }

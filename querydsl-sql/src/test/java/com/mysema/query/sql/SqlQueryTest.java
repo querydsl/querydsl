@@ -9,7 +9,6 @@ import static com.mysema.query.functions.MathFunctions.add;
 import static com.mysema.query.sql.SQLGrammar.exists;
 import static com.mysema.query.types.Grammar.avg;
 import static com.mysema.query.types.Grammar.count;
-import static com.mysema.query.types.Grammar.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
@@ -37,7 +36,6 @@ import com.mysema.query.sql.dto.IdName;
 import com.mysema.query.sql.dto.QIdName;
 import com.mysema.query.types.Grammar;
 import com.mysema.query.types.ObjectSubQuery;
-import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.EConstant;
@@ -334,7 +332,7 @@ public abstract class SqlQueryTest {
     public void testWhereExists() throws SQLException {
         ObjectSubQuery<Integer> sq1 = q().from(employee).uniqueExpr(Grammar.max(employee.id));
         q().from(employee).where(exists(sq1)).count();
-        q().from(employee).where(not(exists(sq1))).count();
+        q().from(employee).where(exists(sq1).not()).count();
     }
 
     @Test

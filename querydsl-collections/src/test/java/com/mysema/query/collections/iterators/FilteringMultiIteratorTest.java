@@ -115,7 +115,7 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest {
     public void testCats() {
         for (EBoolean where : Arrays.asList(cat.name.eq(otherCat.name),
                 cat.name.eq("Kitty").and(otherCat.name.eq("Bob")), cat.name.eq(
-                        "Kitty").and(Grammar.not(otherCat.name.eq("Bob"))))) {
+                        "Kitty").and(otherCat.name.ne("Bob")))) {
             it = new FilteringMultiIterator(ops, where);
             it.add(cat);
             exprToIt.put(cat, Arrays.asList(c1, c2));
