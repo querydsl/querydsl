@@ -62,7 +62,8 @@ public class QuerySerializationTest extends AbstractTest{
         assertEquals(
             "SELECT this.price " +
             "FROM com.mysema.query.jdoql.testdomain.Product " +
-            "WHERE this.price < (SELECT avg(other.price) FROM com.mysema.query.jdoql.testdomain.Product other)", 
+            "WHERE this.price < " +
+            "(SELECT avg(other.price) FROM com.mysema.query.jdoql.testdomain.Product other)", 
                 
             serialize(query().from(product)
               .where(product.price.lt(query().from(other).uniqueExpr(Grammar.avg(other.price))))
