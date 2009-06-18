@@ -1,0 +1,101 @@
+package com.mysema.query.jdoql.serialization;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+import com.mysema.query.jdoql.models.company.QDepartment;
+import com.mysema.query.jdoql.models.company.QEmployee;
+import com.mysema.query.types.Grammar;
+
+public class SubqueriesTest extends AbstractTest{    
+ 
+    private QDepartment department = QDepartment.department;
+    
+    private QDepartment d = new QDepartment("d");
+    
+    private QEmployee e = new QEmployee("e");
+    
+    private QEmployee employee = QEmployee.employee;
+    
+/*  "SELECT FROM " + Department.class.getName() + " WHERE this.employees.size() == " + 
+ *  "(SELECT MAX(d.employees.size()) FROM " + Department.class.getName() + " d)"; */
+    @Test
+    public void test1(){
+        assertEquals(
+          "SELECT this FROM com.mysema.query.jdoql.models.company.Department " +
+          "WHERE this.employees.size() == " +
+          "(SELECT max(d.employees.size()) FROM com.mysema.query.jdoql.models.company.Department d)",
+          
+          serialize(query().from(department).where(department.employees.size().eq(
+               query().from(d).uniqueExpr(Grammar.max(d.employees.size()))
+            )).listExpr(department))
+        );
+    }
+    
+/*  "SELECT FROM " + Employee.class.getName() + " WHERE this.weeklyhours > " + 
+ *  "(SELECT AVG(e.weeklyhours) FROM this.department.employees e)"; */
+    @Test
+    public void test2(){
+        assertEquals(
+          "SELECT this FROM com.mysema.query.jdoql.models.company.Employee " +
+          "WHERE this.weeklyhours > " +
+          "(SELECT avg(e.weeklyhours) FROM this.department.employees e)",
+          
+          serialize(query().from(employee).where(employee.weeklyhours.gt(
+               query().from(employee.department.employees, e).uniqueExpr(Grammar.avg(e.weeklyhours))
+            )).listExpr(employee))
+        );
+    }
+    
+/*  "SELECT FROM " + Employee.class.getName() +
+ *   " WHERE this.weeklyhours > " +
+ *   "(SELECT AVG(e.weeklyhours) FROM this.department.employees e " + 
+ *   " WHERE e.manager == this.manager)"; */
+    @Test
+    public void test3(){
+        assertEquals(
+          "SELECT this FROM com.mysema.query.jdoql.models.company.Employee " +
+          "WHERE this.weeklyhours > " +
+          "(SELECT avg(e.weeklyhours) FROM this.department.employees e WHERE e.manager == this.manager)",
+          
+          serialize(query().from(employee).where(employee.weeklyhours.gt(
+               query().from(employee.department.employees, e).where(e.manager.eq(employee.manager)).uniqueExpr(Grammar.avg(e.weeklyhours))
+            )).listExpr(employee))
+        );
+    }    
+/*  "SELECT FROM " + Employee.class.getName() + " WHERE this.weeklyhours > " + 
+ *   "(SELECT AVG(e.weeklyhours) FROM " + Employee.class.getName() + " e)"; */
+    @Test
+    public void test4(){
+        assertEquals(
+          "SELECT this FROM com.mysema.query.jdoql.models.company.Employee " +
+          "WHERE this.weeklyhours > " +
+          "(SELECT avg(e.weeklyhours) FROM com.mysema.query.jdoql.models.company.Employee e)",
+          
+          serialize(query().from(employee).where(employee.weeklyhours.gt(
+               query().from(e).uniqueExpr(Grammar.avg(e.weeklyhours))
+            )).listExpr(employee))
+        );
+    }     
+  
+/*  "SELECT FROM " + Employee.class.getName() +
+ *   " WHERE this.weeklyhours == emp.weeklyhours && " +
+ *   "emp.firstname == 'emp1First' VARIABLES Employee emp"; */
+    @Test
+    public void test5(){
+        assertEquals(
+          "SELECT this FROM com.mysema.query.jdoql.models.company.Employee " +
+          "WHERE this.weeklyhours == e.weeklyhours && this.firstName == a1 " +
+          "VARIABLES com.mysema.query.jdoql.models.company.Employee e " +
+          "PARAMETERS java.lang.String a1",
+          
+          serialize(query().from(employee, e)
+              .where(
+                  employee.weeklyhours.eq(e.weeklyhours),
+                  employee.firstName.eq("emp1First")
+              ).listExpr(employee))
+        );
+    }    
+
+}

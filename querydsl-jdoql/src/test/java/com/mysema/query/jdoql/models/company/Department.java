@@ -1,6 +1,7 @@
 package com.mysema.query.jdoql.models.company;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.mysema.query.annotations.Entity;
@@ -16,6 +17,7 @@ public class Department {
     private String name;
     private Manager manager;
     private Set<Project> projects = new HashSet<Project>();
+    private List<Employee> employees;
     
     public Department(){
         
@@ -56,4 +58,10 @@ public class Department {
     public String toString() {
         return name;
     }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+    
+    
 }

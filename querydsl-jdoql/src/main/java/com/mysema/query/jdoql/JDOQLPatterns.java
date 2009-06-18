@@ -39,6 +39,9 @@ public class JDOQLPatterns extends JavaPatterns {
         }
         add(PathType.ARRAYVALUE, "%s[%s]");
         add(PathType.ARRAYVALUE_CONSTANT, "%s[%s]");
+        
+        // other
+        add(Ops.ALIAS, "%s %s");
     }
 
 }

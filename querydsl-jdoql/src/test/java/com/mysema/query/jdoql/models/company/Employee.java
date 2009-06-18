@@ -16,7 +16,9 @@ public class Employee extends Person  {
     private Integer yearsInCompany;
     private Manager manager;
     private Account account;
-
+    private int weeklyhours;
+    private Department department;
+    
     /** Used for the querying of static fields. */
     public static final String FIRSTNAME = "Bart";
 
@@ -85,4 +87,14 @@ public class Employee extends Person  {
     public void setYearsInCompany(Integer y) {
         this.yearsInCompany = y;
     }
+
+    public int getWeeklyhours() {
+        return weeklyhours;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+    
+    
 }

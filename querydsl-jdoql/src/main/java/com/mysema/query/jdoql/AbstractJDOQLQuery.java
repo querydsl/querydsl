@@ -18,8 +18,12 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.support.QueryBaseWithProjectionAndDetach;
 import com.mysema.query.types.expr.EConstructor;
+import com.mysema.query.types.expr.EEntity;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.OSimple;
+import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.PEntityCollection;
 
 /**
  * Abstract base class for custom implementations of the JDOQLQuery interface.
@@ -67,6 +71,15 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         return _this;
     }
 
+    public <P> SubType from(PEntityCollection<P> target, PEntity<P> alias){
+        super.from(createAlias(target, alias));
+        return _this;
+    }
+    
+    private <D> Expr<D> createAlias(EEntity<?> target, PEntity<D> alias){
+        return new OSimple<Object,D>((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
+    }
+    
     @Override
     protected void clear() {
         super.clear();

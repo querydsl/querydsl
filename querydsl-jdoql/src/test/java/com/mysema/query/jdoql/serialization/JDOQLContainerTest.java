@@ -1,4 +1,4 @@
-package com.mysema.query.jdoql;
+package com.mysema.query.jdoql.serialization;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,14 +7,12 @@ import org.junit.Test;
 
 import com.mysema.query.jdoql.models.fitness.QGym;
 import com.mysema.query.jdoql.models.fitness.Wardrobe;
-import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.query.SubQuery;
 
 
 /**
  * Tests for JDOQL queries of collections and maps.
  */
-public class JDOQLContainerTest {
+public class JDOQLContainerTest extends AbstractTest{
 
     private QGym gym = QGym.gym1;
 
@@ -173,17 +171,5 @@ public class JDOQLContainerTest {
                    .orderBy(gym.wardrobes(wrd.getModel()).model.asc()).listExpr(gym)));
     }
 
-    private JDOQLQuery query(){
-        // creates detached query
-        return new JDOQLQueryImpl(null);
-    }
 
-    private String serialize(SubQuery expr) {
-        Expr<?> source = expr.getMetadata().getJoins().get(0).getTarget();
-        JDOQLSerializer serializer = new JDOQLSerializer(JDOQLPatterns.DEFAULT, source);
-        serializer.serialize(expr.getMetadata(), false, false);
-        String rv = serializer.toString().replace('\n', ' ');
-//        System.out.println(rv);
-        return rv;
-    }
 }

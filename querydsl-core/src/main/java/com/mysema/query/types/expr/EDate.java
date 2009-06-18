@@ -5,7 +5,6 @@
  */
 package com.mysema.query.types.expr;
 
-import com.mysema.query.functions.DateTimeFunctions;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
 

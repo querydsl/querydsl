@@ -1,4 +1,4 @@
-package com.mysema.query.jdoql;
+package com.mysema.query.jdoql.serialization;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,10 +7,8 @@ import org.junit.Test;
 import com.mysema.query.jdoql.testdomain.Book;
 import com.mysema.query.jdoql.testdomain.QProduct;
 import com.mysema.query.types.Grammar;
-import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.query.SubQuery;
 
-public class QuerySerializationTest {
+public class QuerySerializationTest extends AbstractTest{
     
     private QProduct product = QProduct.product;
     
@@ -64,7 +62,7 @@ public class QuerySerializationTest {
         assertEquals(
             "SELECT this.price " +
             "FROM com.mysema.query.jdoql.testdomain.Product " +
-            "WHERE this.price < (SELECT UNIQUE avg(other.price) FROM com.mysema.query.jdoql.testdomain.Product other)", 
+            "WHERE this.price < (SELECT avg(other.price) FROM com.mysema.query.jdoql.testdomain.Product other)", 
                 
             serialize(query().from(product)
               .where(product.price.lt(query().from(other).uniqueExpr(Grammar.avg(other.price))))
@@ -95,20 +93,6 @@ public class QuerySerializationTest {
             serialize(query().from(product)
               .where(product.instanceOf(Book.class))
               .listExpr(product)));
-    }
-
-    private JDOQLQuery query(){
-        // creates detached query
-        return new JDOQLQueryImpl(null);
-    }
-
-    private String serialize(SubQuery expr) {
-        Expr<?> source = expr.getMetadata().getJoins().get(0).getTarget();
-        JDOQLSerializer serializer = new JDOQLSerializer(JDOQLPatterns.DEFAULT, source);
-        serializer.serialize(expr.getMetadata(), false, false);
-        String rv = serializer.toString().replace('\n', ' ');
-//        System.out.println(rv);
-        return rv;
     }
 
 }

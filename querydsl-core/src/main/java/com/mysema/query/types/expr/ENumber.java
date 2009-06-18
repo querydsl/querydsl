@@ -182,6 +182,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         return new OBoolean(Ops.LT, this, right);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <A extends Number & Comparable<? super A>> ENumber<A> castToNum(Class<A> type) {
         if (type.equals(getType())){

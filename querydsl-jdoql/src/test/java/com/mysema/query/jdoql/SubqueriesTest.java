@@ -12,7 +12,7 @@ import org.junit.Test;
 import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QProduct;
 
-public class SubQueryTest extends AbstractJDOTest {
+public class SubqueriesTest extends AbstractJDOTest {
 
     private QProduct product = QProduct.product;
     

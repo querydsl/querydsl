@@ -3,12 +3,14 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.jdoql;
+package com.mysema.query.jdoql.serialization;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.mysema.query.jdoql.JDOQLPatterns;
+import com.mysema.query.jdoql.JDOQLSerializer;
 import com.mysema.query.jdoql.testdomain.Book;
 import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QBook;

@@ -23,6 +23,7 @@ import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
@@ -70,7 +71,7 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
         } else if (!select.isEmpty()) {
             if (metadata.isDistinct()){
                 append("SELECT DISTINCT ");
-            }else if (metadata.isUnique()){
+            }else if (metadata.isUnique() && !subquery){
                 append("SELECT UNIQUE ");
             }else{
                 append("SELECT ");
@@ -79,10 +80,17 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
         }
         
         // FROM
-        append("\nFROM ").append(source.getType().getName());
-        if (!source.equals(candidatePath)){
-            append(" ").handle(source);
+        
+        append("\nFROM ");
+        if (source instanceof Operation && subquery){
+            handle(source);
+        }else{
+            append(source.getType().getName());
+            if (!source.equals(candidatePath)){
+                append(" ").handle(source);
+            }    
         }
+        
 
         // WHERE
         if (where != null) {

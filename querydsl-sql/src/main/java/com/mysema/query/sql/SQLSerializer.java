@@ -186,15 +186,6 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
 
     }
 
-//    protected void visit(AToPath expr) {
-//        handle(expr.getFrom()).append(patterns.tableAlias()).visit(expr.getTo());
-//    }
-//
-//    @Override
-//    protected void visit(ASimple<?> expr) {
-//        handle(expr.getFrom()).append(patterns.columnAlias()).append(expr.getTo());
-//    }
-
     @Override
     protected void visit(EConstant<?> expr) {
         append("?");

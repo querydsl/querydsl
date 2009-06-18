@@ -29,6 +29,7 @@ public class EConstant<D> extends Expr<D> {
         }
     }
     
+    @SuppressWarnings("unchecked")
     public static <A> Expr<Class<A>> create(Class<A> obj) {
         if (classToExpr.containsKey(obj)) {
             return (Expr<Class<A>>) classToExpr.get(obj);

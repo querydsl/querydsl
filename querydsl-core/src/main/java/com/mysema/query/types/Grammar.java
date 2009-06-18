@@ -30,10 +30,12 @@ public class Grammar {
         return ONumber.create(Long.class, Ops.COUNT_AGG, expr);
     }
 
+    @SuppressWarnings("unchecked")
     public static <A extends Number & Comparable<?>> ENumber<A> max( Expr<A> left) {
         return ONumber.create((Class<A>)left.getType(), Ops.MAX_AGG, left);
     }
 
+    @SuppressWarnings("unchecked")
     public static <A extends Number & Comparable<?>> ENumber<A> min( Expr<A> left) {
         return ONumber.create((Class<A>)left.getType(), Ops.MIN_AGG, left);
     }

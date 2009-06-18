@@ -98,10 +98,11 @@
             </goals>
             <configuration>
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
-              <processors>                                
+              <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+              <!-- <processors>                                
                 <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
-                <!-- <processor>com.mysema.query.jdoql.apt.JDOAnnotationProcessor</processor> -->                                
-              </processors>              
+                <processor>com.mysema.query.jdoql.apt.JDOAnnotationProcessor</processor>                                
+              </processors>  -->              
             </configuration>
           </execution>
         </executions>
