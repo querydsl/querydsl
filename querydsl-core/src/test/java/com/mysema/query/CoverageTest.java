@@ -5,7 +5,7 @@
  */
 package com.mysema.query;
 
-import static com.mysema.query.alias.GrammarWithAlias.$;
+import static com.mysema.query.alias.Alias.$;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;

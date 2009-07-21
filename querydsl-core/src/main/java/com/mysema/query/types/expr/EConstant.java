@@ -8,6 +8,8 @@ package com.mysema.query.types.expr;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mysema.commons.lang.Assert;
+
 /**
  * EConstant represents constant expressions
  * 
@@ -29,6 +31,13 @@ public class EConstant<D> extends Expr<D> {
         }
     }
     
+    /**
+     * Factory method
+     * 
+     * @param <A>
+     * @param obj
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public static <A> Expr<Class<A>> create(Class<A> obj) {
         if (classToExpr.containsKey(obj)) {
@@ -40,10 +49,23 @@ public class EConstant<D> extends Expr<D> {
         }
     }
 
+    /**
+     * Factory method
+     * 
+     * @param <D>
+     * @param val
+     * @return
+     */
     public static <D> Expr<D> create(D val){
-        return new EConstant<D>(val);
+        return new EConstant<D>(Assert.notNull(val,"val is null"));
     }
 
+    /**
+     * Factory method
+     * 
+     * @param i
+     * @return
+     */
     public static Expr<Integer> create(int i){
         if (i >= -128 && i <= 127) {
             return integers[i + 128];
@@ -55,7 +77,7 @@ public class EConstant<D> extends Expr<D> {
     private final D constant;
 
     @SuppressWarnings("unchecked")
-    EConstant(D constant) {
+    private EConstant(D constant) {
         super((Class<D>) constant.getClass());
         this.constant = constant;
     }

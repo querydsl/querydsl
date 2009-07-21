@@ -54,7 +54,7 @@
       <artifactId>slf4j-log4j12</artifactId>
       <version>1.5.2</version>
       <scope>test</scope>
-    </dependency>
+    </dependency>    
 
     <dependency>
       <groupId>junit</groupId>

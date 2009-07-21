@@ -5,7 +5,7 @@
  */
 package com.mysema.query.apt.jdk5;
 
-import com.mysema.query.annotations.DTO;
+import com.mysema.query.annotations.Projection;
 import com.mysema.query.annotations.Entity;
 
 /**
@@ -19,7 +19,7 @@ public final class Constants {
     }
 
     public static final String QD_ENTITY = Entity.class.getName();
-    public static final String QD_DTO = DTO.class.getName();
+    public static final String QD_DTO = Projection.class.getName();
 
     // JDO
     public static final String JDO_ENTITY = "javax.jdo.annotations.PersistenceCapable";

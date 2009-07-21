@@ -24,6 +24,7 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
+import com.mysema.query.alias.Alias;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.iterators.FilteringMultiIterator;
 import com.mysema.query.collections.iterators.LimitingIterator;
@@ -323,7 +324,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
     }
 
     public <RT> List<RT> list(RT projection) {
-        return list(MiniApi.getAny(projection));
+        return list(Alias.getAny(projection));
     }
 
     // TODO : optimize

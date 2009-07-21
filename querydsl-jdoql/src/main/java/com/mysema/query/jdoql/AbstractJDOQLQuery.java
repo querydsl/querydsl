@@ -77,7 +77,7 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     }
     
     private <D> Expr<D> createAlias(EEntity<?> target, PEntity<D> alias){
-        return new OSimple<Object,D>((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
+        return OSimple.create(alias.getType(), Ops.ALIAS, target, alias);
     }
     
     @Override

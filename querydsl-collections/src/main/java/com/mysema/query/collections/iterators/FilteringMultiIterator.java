@@ -125,8 +125,9 @@ public class FilteringMultiIterator extends MultiIterator implements
         for (Expr<?> expr : sources) {
             try {
                 Evaluator ev = createEvaluator(sources, index++);
-                if (ev != null)
+                if (ev != null){
                     exprToEvaluator.put(expr, ev);
+                }                    
             } catch (Exception e) {
                 String error = "Caught " + e.getClass().getName();
                 logger.error(error, e);

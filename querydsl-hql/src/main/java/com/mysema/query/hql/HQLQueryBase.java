@@ -59,7 +59,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
 
     @SuppressWarnings("unchecked")
     private <D> Expr<D> createAlias(EEntity<?> target, PEntity<D> alias){
-        return new OSimple<Object,D>((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
+        return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
     }
 
     protected EBoolean createQBECondition(PEntity<?> entity,

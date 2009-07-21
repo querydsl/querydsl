@@ -15,25 +15,25 @@ import com.mysema.query.types.expr.Expr;
  * @param <D> component type
  */
 public class PEntityList<D> extends PEntityCollection<D> implements PList<D> {
-    public PEntityList(Class<D> type, String entityName,
+    public PEntityList(Class<D> elementType, String entityName,
             PathMetadata<?> metadata) {
-        super(type, entityName, metadata);
+        super(elementType, entityName, metadata);
     }
 
-    public PEntityList(Class<D> type, String entityName, String var) {
-        super(type, entityName, PathMetadata.forVariable(var));
+    public PEntityList(Class<D> elementType, String entityName, String var) {
+        super(elementType, entityName, PathMetadata.forVariable(var));
     }
 
     @Override
     public PEntity<D> get(Expr<Integer> index) {
-        return new PEntity<D>(type, entityName, PathMetadata.forListAccess(
+        return new PEntity<D>(elementType, entityName, PathMetadata.forListAccess(
                 this, index));
     }
 
     @Override
     public PEntity<D> get(int index) {
         // TODO : cache
-        return new PEntity<D>(type, entityName, PathMetadata.forListAccess(
+        return new PEntity<D>(elementType, entityName, PathMetadata.forListAccess(
                 this, index));
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.junit.Before;
 
-import com.mysema.query.alias.GrammarWithAlias;
+import com.mysema.query.alias.Alias;
 import com.mysema.query.collections.domain.Cat;
 import com.mysema.query.collections.domain.QCat;
 import com.mysema.query.types.expr.Expr;
@@ -51,7 +51,7 @@ public abstract class AbstractQueryTest {
     @Before
     public void setUp() {
         myInts.addAll(Arrays.asList(1, 2, 3, 4));
-        GrammarWithAlias.resetAlias();
+        Alias.resetAlias();
     }
 
     protected List<Cat> cats(int size) {

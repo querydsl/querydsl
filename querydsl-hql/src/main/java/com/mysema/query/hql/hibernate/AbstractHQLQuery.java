@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
+import com.mysema.query.functions.AggregationFunctions;
 import com.mysema.query.hql.HQLGrammar;
 import com.mysema.query.hql.HQLPatterns;
 import com.mysema.query.hql.HQLQueryBase;
@@ -111,11 +112,11 @@ public abstract class AbstractHQLQuery<SubType extends AbstractHQLQuery<SubType>
     }
 
     public long count() {
-        return uniqueResult(HQLGrammar.count());
+        return uniqueResult(AggregationFunctions.count());
     }
 
     public long count(Expr<?> expr) {
-        return uniqueResult(HQLGrammar.count(expr));
+        return uniqueResult(AggregationFunctions.count(expr));
     }
 
     @SuppressWarnings("unchecked")

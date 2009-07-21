@@ -7,7 +7,7 @@ package com.mysema.query;
 
 import org.junit.Test;
 
-import com.mysema.query.alias.GrammarWithAlias;
+import com.mysema.query.alias.Alias;
 import com.mysema.query.support.CascadingBoolean;
 import com.mysema.query.types.expr.EBoolean;
 
@@ -22,8 +22,8 @@ public class CascadingBooleanTest {
     
     @Test
     public void test(){
-        EBoolean etrue = GrammarWithAlias.$(true);
-        EBoolean efalse = GrammarWithAlias.$(false);
+        EBoolean etrue = Alias.$(true);
+        EBoolean efalse = Alias.$(false);
         new CascadingBoolean().and(etrue).or(efalse).create();
     }
 

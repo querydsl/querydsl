@@ -49,8 +49,6 @@ public class Processor {
     
     private boolean useFields = true;
     
-//    private boolean listsAsCollections = false;
-    
     private ElementVisitor<ClassModel, Void> dtoElementVisitor = new SimpleElementVisitor6<ClassModel, Void>() {
         
         @Override
@@ -284,16 +282,5 @@ public class Processor {
         useFields = false;
         return this;
     }
-
-//    /**
-//     * Process lists as Collections
-//     * 
-//     * @return
-//     */
-//    public Processor listsAsCollections() {
-//        listsAsCollections = true;
-//        return this;
-//        
-//    }
 
 }

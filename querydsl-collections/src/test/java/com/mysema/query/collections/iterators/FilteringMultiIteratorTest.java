@@ -14,8 +14,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.mysema.query.alias.Alias;
 import com.mysema.query.collections.ColQueryPatterns;
-import com.mysema.query.collections.MiniApi;
 import com.mysema.query.collections.QueryIndexSupport;
 import com.mysema.query.collections.domain.Cat;
 import com.mysema.query.collections.domain.QCat;
@@ -42,14 +42,14 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest {
 
     private QueryIndexSupport iteratorFactory;
 
-    private EString str1 = MiniApi.$("str1");
-    private EString str2 = MiniApi.$("str2");
-    private EString str3 = MiniApi.$("str3");
+    private EString str1 = Alias.$("str1");
+    private EString str2 = Alias.$("str2");
+    private EString str3 = Alias.$("str3");
 
-    private ENumber<Integer> int1 = MiniApi.$(1);
-    private ENumber<Integer> int2 = MiniApi.$(2);
-    private ENumber<Integer> int3 = MiniApi.$(3);
-    private ENumber<Integer> int4 = MiniApi.$(4);
+    private ENumber<Integer> int1 = Alias.$(1);
+    private ENumber<Integer> int2 = Alias.$(2);
+    private ENumber<Integer> int3 = Alias.$(3);
+    private ENumber<Integer> int4 = Alias.$(4);
 
     Cat c1 = new Cat("Kitty");
     Cat c2 = new Cat("Bob");

@@ -5,10 +5,14 @@
  */
 package com.mysema.query.types.query;
 
+import java.util.List;
+
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.expr.ECollectionBase;
 
 /**
+ * List result subquery
+ * 
  * @author tiwe
  *
  * @param <JM>
@@ -16,12 +20,13 @@ import com.mysema.query.types.expr.ECollectionBase;
  */
 public class ListSubQuery<A> extends ECollectionBase<A> implements SubQuery{
 
-    private Class<A> elementType;
+    private final Class<A> elementType;
     
-    private QueryMetadata md;
+    private final QueryMetadata md;
     
+    @SuppressWarnings("unchecked")
     public ListSubQuery(QueryMetadata md, Class<A> elementType) {
-        super(null);
+        super((Class)List.class);
         this.elementType = elementType;
         this.md = md;
     }

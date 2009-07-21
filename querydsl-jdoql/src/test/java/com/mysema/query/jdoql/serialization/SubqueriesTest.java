@@ -4,9 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.mysema.query.functions.AggregationFunctions;
 import com.mysema.query.jdoql.models.company.QDepartment;
 import com.mysema.query.jdoql.models.company.QEmployee;
-import com.mysema.query.types.Grammar;
 
 public class SubqueriesTest extends AbstractTest{    
  
@@ -28,7 +28,7 @@ public class SubqueriesTest extends AbstractTest{
           "(SELECT max(d.employees.size()) FROM com.mysema.query.jdoql.models.company.Department d)",
           
           serialize(query().from(department).where(department.employees.size().eq(
-               query().from(d).uniqueExpr(Grammar.max(d.employees.size()))
+               query().from(d).uniqueExpr(AggregationFunctions.max(d.employees.size()))
             )).listExpr(department))
         );
     }
@@ -43,7 +43,7 @@ public class SubqueriesTest extends AbstractTest{
           "(SELECT avg(e.weeklyhours) FROM this.department.employees e)",
           
           serialize(query().from(employee).where(employee.weeklyhours.gt(
-               query().from(employee.department.employees, e).uniqueExpr(Grammar.avg(e.weeklyhours))
+               query().from(employee.department.employees, e).uniqueExpr(AggregationFunctions.avg(e.weeklyhours))
             )).listExpr(employee))
         );
     }
@@ -60,7 +60,7 @@ public class SubqueriesTest extends AbstractTest{
           "(SELECT avg(e.weeklyhours) FROM this.department.employees e WHERE e.manager == this.manager)",
           
           serialize(query().from(employee).where(employee.weeklyhours.gt(
-               query().from(employee.department.employees, e).where(e.manager.eq(employee.manager)).uniqueExpr(Grammar.avg(e.weeklyhours))
+               query().from(employee.department.employees, e).where(e.manager.eq(employee.manager)).uniqueExpr(AggregationFunctions.avg(e.weeklyhours))
             )).listExpr(employee))
         );
     }    
@@ -74,7 +74,7 @@ public class SubqueriesTest extends AbstractTest{
           "(SELECT avg(e.weeklyhours) FROM com.mysema.query.jdoql.models.company.Employee e)",
           
           serialize(query().from(employee).where(employee.weeklyhours.gt(
-               query().from(e).uniqueExpr(Grammar.avg(e.weeklyhours))
+               query().from(e).uniqueExpr(AggregationFunctions.avg(e.weeklyhours))
             )).listExpr(employee))
         );
     }     

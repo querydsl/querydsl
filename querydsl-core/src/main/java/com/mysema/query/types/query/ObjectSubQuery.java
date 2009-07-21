@@ -9,6 +9,8 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * Single result subquery
+ * 
  * @author tiwe
  *
  * @param <JM>
@@ -16,7 +18,7 @@ import com.mysema.query.types.expr.Expr;
  */
 public class ObjectSubQuery<A> extends Expr<A> implements SubQuery{
 
-    private QueryMetadata md;
+    private final QueryMetadata md;
     
     public ObjectSubQuery(QueryMetadata md, Class<A> type) {
         super(type);

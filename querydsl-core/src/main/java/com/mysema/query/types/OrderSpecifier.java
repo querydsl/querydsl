@@ -21,8 +21,8 @@ public class OrderSpecifier<A extends Comparable> {
     private final Expr<A> target;
 
     public OrderSpecifier(Order order, Expr<A> target) {
-        this.order = Assert.notNull(order);
-        this.target = Assert.notNull(target);
+        this.order = Assert.notNull(order,"order is null");
+        this.target = Assert.notNull(target,"target is null");
     }
 
     /**

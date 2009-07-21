@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types;
+package com.mysema.query.functions;
 
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
@@ -16,7 +16,9 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @version $Id$
  */
-public class Grammar {
+public final class AggregationFunctions {
+    
+    private AggregationFunctions(){}
 
     public static <A extends Number & Comparable<?>> ENumber<Double> avg( Expr<A> left) {
         return ONumber.create(Double.class, Ops.AVG_AGG, left);
@@ -30,19 +32,16 @@ public class Grammar {
         return ONumber.create(Long.class, Ops.COUNT_AGG, expr);
     }
 
-    @SuppressWarnings("unchecked")
     public static <A extends Number & Comparable<?>> ENumber<A> max( Expr<A> left) {
-        return ONumber.create((Class<A>)left.getType(), Ops.MAX_AGG, left);
+        return ONumber.create(left.getType(), Ops.MAX_AGG, left);
     }
 
-    @SuppressWarnings("unchecked")
     public static <A extends Number & Comparable<?>> ENumber<A> min( Expr<A> left) {
-        return ONumber.create((Class<A>)left.getType(), Ops.MIN_AGG, left);
+        return ONumber.create(left.getType(), Ops.MIN_AGG, left);
     }
 
     public static <A extends Number & Comparable<?>> ENumber<Double> sum( Expr<A> left) {
         return ONumber.create(Double.class, Ops.SUM_AGG, left);
     }
     
-    protected Grammar() {}
 }

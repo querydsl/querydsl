@@ -5,6 +5,9 @@
  */
 package com.mysema.query.types.path;
 
+import java.util.Collection;
+
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.EEntity;
@@ -23,7 +26,7 @@ import com.mysema.query.types.operation.Ops;
  */
 public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> implements PCollection<D> {
     private final PathMetadata<?> metadata;
-    protected final Class<D> type;
+    protected final Class<D> elementType;
     protected final String entityName;
     
     private EBoolean isnull, isnotnull;    
@@ -32,12 +35,13 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     private EBoolean empty;
     private EBoolean notEmpty;
 
+    @SuppressWarnings("unchecked")
     public PEntityCollection(Class<D> type, String entityName,
             PathMetadata<?> metadata) {
-        super(null);
-        this.type = type;
-        this.metadata = metadata;
-        this.entityName = entityName;
+        super((Class)Collection.class);
+        this.elementType = Assert.notNull(type,"type is null");
+        this.metadata = Assert.notNull(metadata,"metadata is null");
+        this.entityName = Assert.notNull(entityName,"entityName is null");
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
@@ -62,7 +66,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
 
     @Override
     public Class<D> getElementType() {
-        return type;
+        return elementType;
     }
 
     /**

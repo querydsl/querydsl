@@ -5,7 +5,7 @@
  */
 package com.mysema.query.collections;
 
-import static com.mysema.query.alias.GrammarWithAlias.$;
+import static com.mysema.query.alias.Alias.$;
 import static com.mysema.query.collections.MiniApi.from;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -16,7 +16,6 @@ import java.util.Date;
 import org.junit.Test;
 
 import com.mysema.query.collections.domain.Cat;
-import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 
@@ -96,7 +95,7 @@ public class ColQueryTest extends AbstractQueryTest {
         assertTrue(last.res.size() == 1);
 
         query().from(cat, cats).list(
-                MathFunctions.add(cat.bodyWeight, cat.weight));
+                cat.bodyWeight.add(cat.weight));
     }
 
     @Test

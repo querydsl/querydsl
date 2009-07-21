@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PBoolean;
 import com.mysema.query.types.path.PBooleanArray;
@@ -38,7 +37,9 @@ import com.mysema.query.types.path.PathMetadata;
  * @author tiwe
  * @version $Id$
  */
-public class GrammarWithAlias extends Grammar {
+public final class Alias {
+    
+    private Alias(){}
 
     private static final AliasFactory aliasFactory = new SimpleAliasFactory();
 

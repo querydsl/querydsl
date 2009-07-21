@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.mysema.query.alias.Alias;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.EString;
@@ -31,7 +32,7 @@ public class ColTypesTest {
         EComparable<Long> elong;
         EString estring;
 
-        EString str = MiniApi.$("it");
+        EString str = Alias.$("it");
 
         // charAt(int)
         assertTrue((echar = str.charAt(0)) != null);

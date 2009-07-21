@@ -97,7 +97,7 @@ class SimplePathFactory implements PathFactory {
                         Class<?> cl = arg.get(0).getClass();
                         return new PEntityList(cl, cl.getSimpleName(), md());
                     } else {
-                        return new PEntityList(null, null, md());
+                        return new PEntityList(Object.class, "Object", md());
                     }
                 }
             });
@@ -111,7 +111,7 @@ class SimplePathFactory implements PathFactory {
                         return new PEntityMap(null, cl, cl.getSimpleName(),
                                 md());
                     } else {
-                        return new PEntityMap(null, null, null, md());
+                        return new PEntityMap(null, Object.class, "Object", md());
                     }
                 }
 

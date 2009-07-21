@@ -16,7 +16,7 @@ public class EArrayConstructor<D> extends EConstructor<D[]> {
     private Class<D> elementType;
 
     public EArrayConstructor(Class<D> type, Expr<D>... args) {
-        super(null, args);
+        super((Class)Object.class, args);
         this.elementType = type;
     }
 

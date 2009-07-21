@@ -28,7 +28,7 @@ public class QueryAdapter<SubType extends QueryAdapter<SubType>> implements Quer
     }
 
     public QueryAdapter(Query<?> query) {
-        this.query = Assert.notNull(query);
+        this.query = Assert.notNull(query,"query is null");
     }
 
     @Override

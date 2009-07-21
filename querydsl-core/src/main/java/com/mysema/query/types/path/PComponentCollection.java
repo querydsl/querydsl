@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.path;
 
+import java.util.Collection;
+
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollectionBase;
 import com.mysema.query.types.operation.OBoolean;
@@ -24,8 +26,9 @@ public class PComponentCollection<D> extends ECollectionBase<D> implements PColl
     
     private EBoolean isnull, isnotnull;    
     
+    @SuppressWarnings("unchecked")
     public PComponentCollection(Class<D> type, PathMetadata<?> metadata) {
-        super(null);
+        super((Class)Collection.class);
         this.type = type;
         this.metadata = metadata;
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;

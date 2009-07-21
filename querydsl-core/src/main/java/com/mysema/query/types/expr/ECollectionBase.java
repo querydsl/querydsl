@@ -17,7 +17,7 @@ import com.mysema.query.types.operation.Ops;
  *
  * @param <D>
  */
-public abstract  class ECollectionBase<D> extends Expr<java.util.Collection<D>> implements ECollection<D> {
+public abstract class ECollectionBase<D> extends Expr<java.util.Collection<D>> implements ECollection<D> {
 
     public ECollectionBase(Class<? extends Collection<D>> type) {
         super(type);

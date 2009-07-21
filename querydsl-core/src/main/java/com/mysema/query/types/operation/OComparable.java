@@ -25,11 +25,11 @@ public class OComparable<OpType, D extends Comparable<?>> extends
     private final List<Expr<?>> args;
     private final Operator<OpType> op;
 
-    public OComparable(Class<D> type, Operator<OpType> op, Expr<?>... args) {
+    OComparable(Class<D> type, Operator<OpType> op, Expr<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    public OComparable(Class<D> type, Operator<OpType> op, List<Expr<?>> args) {
+    OComparable(Class<D> type, Operator<OpType> op, List<Expr<?>> args) {
         super(type);
         this.op = op;
         this.args = Collections.unmodifiableList(args);
@@ -51,6 +51,16 @@ public class OComparable<OpType, D extends Comparable<?>> extends
         return op;
     }
     
+    /**
+     * Factory method
+     * 
+     * @param <O>
+     * @param <D>
+     * @param type
+     * @param op
+     * @param args
+     * @return
+     */
     public static <O,D extends Comparable<?>> EComparable<D> create(Class<D> type, Operator<O> op, Expr<?>... args){
         return new OComparable<O,D>(type, op, args);
     }

@@ -38,7 +38,7 @@ public abstract class AbstractStandardTest {
         return new HQLQueryImpl(session);
     }
     
-    private StandardTest testData = new StandardTest(new StandardTestData(){        
+    private StandardTest standardTest = new StandardTest(new StandardTestData(){        
         <A> Collection<Expr<?>> listProjections(EList<A> expr, EList<A> other, A knownElement){
             // NOTE : expr.get(0) is only supported in the where clause
             return Collections.<Expr<?>>singleton(expr.size());
@@ -75,17 +75,17 @@ public abstract class AbstractStandardTest {
     @Test
     public void test(){
         Cat kitten = savedCats.get(0);        
-        testData.booleanTests(cat.name.isNull(), otherCat.kittens.isEmpty());
-        testData.collectionTests(cat.kittens, otherCat.kittens, kitten);
-        testData.dateTests(null, null, null);
-        testData.dateTimeTests(cat.birthdate, otherCat.birthdate, new Date());
-        testData.listTests(cat.kittens, otherCat.kittens, kitten);
+        standardTest.booleanTests(cat.name.isNull(), otherCat.kittens.isEmpty());
+        standardTest.collectionTests(cat.kittens, otherCat.kittens, kitten);
+        standardTest.dateTests(null, null, null);
+        standardTest.dateTimeTests(cat.birthdate, otherCat.birthdate, new Date());
+        standardTest.listTests(cat.kittens, otherCat.kittens, kitten);
 //        testData.mapTests(cat.kittensByName, otherCat.kittensByName, "Kitty", kitten);
-        testData.numericCasts(cat.id, otherCat.id, 1);
-        testData.numericTests(cat.id, otherCat.id, 1);
-        testData.stringTests(cat.name, otherCat.name, "Bob");
-        testData.timeTests(null, null, null);
-        testData.report();        
+        standardTest.numericCasts(cat.id, otherCat.id, 1);
+        standardTest.numericTests(cat.id, otherCat.id, 1);
+        standardTest.stringTests(cat.name, otherCat.name, "Bob");
+        standardTest.timeTests(null, null, null);
+        standardTest.report();        
     }
         
     public void setSession(Session session) {

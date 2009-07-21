@@ -24,11 +24,11 @@ public class OSimple<OpType, D> extends Expr<D> implements
     private final List<Expr<?>> args;
     private final Operator<OpType> op;
 
-    public OSimple(Class<D> type, Operator<OpType> op, Expr<?>... args) {
+    OSimple(Class<? extends D> type, Operator<OpType> op, Expr<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    public OSimple(Class<D> type, Operator<OpType> op, List<Expr<?>> args) {
+    OSimple(Class<? extends D> type, Operator<OpType> op, List<Expr<?>> args) {
         super(type);
         this.op = op;
         this.args = Collections.unmodifiableList(args);
@@ -48,5 +48,19 @@ public class OSimple<OpType, D> extends Expr<D> implements
     @Override
     public Operator<OpType> getOperator() {
         return op;
+    }
+    
+    /**
+     * Factory method
+     * 
+     * @param <OpType>
+     * @param <D>
+     * @param type
+     * @param op
+     * @param args
+     * @return
+     */
+    public static <OpType,D> Expr<D> create(Class<? extends D> type, Operator<OpType> op, Expr<?>... args){
+        return new OSimple<OpType,D>(type, op, args);
     }
 }

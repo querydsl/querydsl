@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import com.mysema.query.types.operation.OBoolean;
+import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
 
 
@@ -25,6 +26,22 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     public ENumber(Class<? extends D> type) {
         super(type);
     }
+    
+    /**
+     * @param right
+     * @return
+     */
+    public ENumber<D> add(D right) {
+        return ONumber.create(getType(), Ops.ADD, this, EConstant.create(right));
+    }
+
+    /**
+     * @param right
+     * @return
+     */
+    public ENumber<D> add(Expr<D> right) {
+        return ONumber.create(getType(), Ops.ADD, this, right);
+    }
 
     /**
      * Get the byte expression of this numeric expression
@@ -34,6 +51,58 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      */
     public final ENumber<Byte> byteValue() {
         return castToNum(Byte.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    private D cast(Number number) {
+        Class<D> type = (Class<D>) getType();
+        if (type.equals(number.getClass())) {
+            return (D) number;
+        } else if (Byte.class.equals(type)) {
+            return (D) Byte.valueOf(number.byteValue());
+        } else if (Double.class.equals(type)) {
+            return (D) Double.valueOf(number.doubleValue());
+        } else if (Float.class.equals(type)) {
+            return (D) Float.valueOf(number.floatValue());
+        } else if (Integer.class.equals(type)) {
+            return (D) Integer.valueOf(number.intValue());
+        } else if (Long.class.equals(type)) {
+            return (D) Long.valueOf(number.longValue());
+        } else if (Short.class.equals(type)) {
+            return (D) Short.valueOf(number.shortValue());
+        } else if (BigInteger.class.equals(type)) {
+            return (D) new BigInteger(String.valueOf(number.longValue()));
+        } else if (BigDecimal.class.equals(type)) {
+            return (D) new BigDecimal(number.toString());
+        } else {
+            throw new IllegalArgumentException("Unsupported target type : " + type.getName());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <A extends Number & Comparable<? super A>> ENumber<A> castToNum(Class<A> type) {
+        if (type.equals(getType())){
+            return (ENumber<A>) this;
+        }else{
+            return super.castToNum(type);
+        }
+    }
+
+    /**
+     * @param right
+     * @return
+     */
+    public ENumber<Double> div(D right) {
+        return ONumber.create(Double.class, Ops.DIV, this, EConstant.create(right));
+    }
+
+    /**
+     * @param right
+     * @return
+     */
+    public ENumber<Double> div(Expr<D> right) {
+        return ONumber.create(Double.class, Ops.DIV, this, right);
     }
 
     /**
@@ -46,6 +115,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         return castToNum(Double.class);
     }
 
+
     /**
      * Get the float expression of this numeric expression
      * 
@@ -54,36 +124,6 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      */
     public final ENumber<Float> floatValue() {
         return castToNum(Float.class);
-    }
-
-    /**
-     * Get the int expression of this numeric expression
-     * 
-     * @return
-     * @see java.lang.Number#intValue()
-     */
-    public final ENumber<Integer> intValue() {
-        return castToNum(Integer.class);
-    }
-
-    /**
-     * Get the long expression of this numeric expression
-     * 
-     * @return
-     * @see java.lang.Number#longValue()
-     */
-    public final ENumber<Long> longValue() {
-        return castToNum(Long.class);
-    }
-
-    /**
-     * Get the short expression of this numeric expression
-     * 
-     * @return
-     * @see java.lang.Number#shortValue()
-     */
-    public final ENumber<Short> shortValue() {
-        return castToNum(Short.class);
     }
 
     /**
@@ -135,6 +175,16 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
 
     /**
+     * Get the int expression of this numeric expression
+     * 
+     * @return
+     * @see java.lang.Number#intValue()
+     */
+    public final ENumber<Integer> intValue() {
+        return castToNum(Integer.class);
+    }
+
+    /**
      * Create a <code>this &lt;= right</code> expression
      * 
      * @param <A>
@@ -156,6 +206,16 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      */
     public final <A extends Number & Comparable<?>> EBoolean loe(Expr<A> right) {
         return new OBoolean(Ops.LOE, this, right);
+    }
+
+    /**
+     * Get the long expression of this numeric expression
+     * 
+     * @return
+     * @see java.lang.Number#longValue()
+     */
+    public final ENumber<Long> longValue() {
+        return castToNum(Long.class);
     }
 
     /**
@@ -182,39 +242,45 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         return new OBoolean(Ops.LT, this, right);
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <A extends Number & Comparable<? super A>> ENumber<A> castToNum(Class<A> type) {
-        if (type.equals(getType())){
-            return (ENumber<A>) this;
-        }else{
-            return super.castToNum(type);
-        }
+    /**
+     * @param right
+     * @return
+     */
+    public ENumber<D> mult(D right) {
+        return ONumber.create(getType(), Ops.MULT, this, EConstant.create(right));
+    }
+
+    /**
+     * @param right
+     * @return
+     */
+    public ENumber<D> mult(Expr<D> right) {
+        return ONumber.create(getType(), Ops.MULT, this, right);
+    }
+
+    /**
+     * Get the short expression of this numeric expression
+     * 
+     * @return
+     * @see java.lang.Number#shortValue()
+     */
+    public final ENumber<Short> shortValue() {
+        return castToNum(Short.class);
+    }
+
+    /**
+     * @param right
+     * @return
+     */
+    public ENumber<D> sub(D right) {
+        return ONumber.create(getType(), Ops.SUB, this, EConstant.create(right));
     }
     
-    @SuppressWarnings("unchecked")
-    private D cast(Number number) {
-        Class<D> type = (Class<D>) getType();
-        if (type.equals(number.getClass())) {
-            return (D) number;
-        } else if (Byte.class.equals(type)) {
-            return (D) Byte.valueOf(number.byteValue());
-        } else if (Double.class.equals(type)) {
-            return (D) Double.valueOf(number.doubleValue());
-        } else if (Float.class.equals(type)) {
-            return (D) Float.valueOf(number.floatValue());
-        } else if (Integer.class.equals(type)) {
-            return (D) Integer.valueOf(number.intValue());
-        } else if (Long.class.equals(type)) {
-            return (D) Long.valueOf(number.longValue());
-        } else if (Short.class.equals(type)) {
-            return (D) Short.valueOf(number.shortValue());
-        } else if (BigInteger.class.equals(type)) {
-            return (D) new BigInteger(String.valueOf(number.longValue()));
-        } else if (BigDecimal.class.equals(type)) {
-            return (D) new BigDecimal(number.toString());
-        } else {
-            throw new IllegalArgumentException("Unsupported target type : " + type.getName());
-        }
+    /**
+     * @param right
+     * @return
+     */
+    public ENumber<D> sub(Expr<D> right) {
+        return ONumber.create(getType(), Ops.SUB, this, right);
     }
 }

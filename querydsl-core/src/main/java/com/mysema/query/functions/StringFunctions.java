@@ -15,7 +15,8 @@ import com.mysema.query.types.operation.OString;
 import com.mysema.query.types.operation.Ops;
 
 /**
- * StringFunctions provides string functions
+ * StringFunctions provides additional string operations that are not available 
+ * in standard String expressions
  * 
  * @author tiwe
  * @version $Id$
@@ -85,7 +86,7 @@ public final class StringFunctions {
      * @return
      */
     public static Expr<String[]> split(Expr<String> left, String regex) {
-        return new OSimple<String,String[]>(String[].class, Ops.StringOps.SPLIT, left, EConstant.create(regex));
+        return OSimple.create(String[].class, Ops.StringOps.SPLIT, left, EConstant.create(regex));
     }
 
 }

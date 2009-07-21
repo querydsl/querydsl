@@ -57,7 +57,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
 
     }
     
-    private StandardTest testData = new StandardTest(){
+    private StandardTest standardTest = new StandardTest(){
         @Override
         public int executeFilter(EBoolean f) {
             return query().from(store, product, otherProduct).where(f).list(store, product, otherProduct).size();
@@ -79,21 +79,21 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
     @Test
     public void test(){
         Product p = query().from(product).where(product.name.eq("A")).limit(1).uniqueResult(product);
-        testData.noProjections();
+        standardTest.noProjections();
                 
-        testData.booleanTests(product.name.isNull(), otherProduct.price.lt(10.00));
-        testData.collectionTests(store.products, otherStore.products, p);
-        testData.dateTests(null, null, null);
-        testData.dateTimeTests(product.publicationDate, otherProduct.publicationDate, new Date());
+        standardTest.booleanTests(product.name.isNull(), otherProduct.price.lt(10.00));
+        standardTest.collectionTests(store.products, otherStore.products, p);
+        standardTest.dateTests(null, null, null);
+        standardTest.dateTimeTests(product.publicationDate, otherProduct.publicationDate, new Date());
         // NO list support in JDOQL
 //        testData.listTests(store.products, otherStore.products, p);
-        testData.mapTests(store.productsByName, otherStore.productsByName, "A", p);
-        testData.numericCasts(product.price, otherProduct.price, 200.0);
-        testData.numericTests(product.amount, otherProduct.amount, 2);
-        testData.stringTests(product.name, otherProduct.name, "C5");
-        testData.timeTests(null, null, null);
+        standardTest.mapTests(store.productsByName, otherStore.productsByName, "A", p);
+        standardTest.numericCasts(product.price, otherProduct.price, 200.0);
+        standardTest.numericTests(product.amount, otherProduct.amount, 2);
+        standardTest.stringTests(product.name, otherProduct.name, "C5");
+        standardTest.timeTests(null, null, null);
         
-        testData.report();        
+        standardTest.report();        
     }
     
 

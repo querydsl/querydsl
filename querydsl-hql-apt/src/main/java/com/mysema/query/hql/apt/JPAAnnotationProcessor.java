@@ -14,7 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 import javax.tools.Diagnostic;
 
-import com.mysema.query.annotations.DTO;
+import com.mysema.query.annotations.Projection;
 import com.mysema.query.apt.Processor;
 
 /**
@@ -31,7 +31,7 @@ public class JPAAnnotationProcessor extends AbstractProcessor{
         Class<? extends Annotation> entity = Entity.class;
         Class<? extends Annotation> superType = MappedSuperclass.class;
         Class<? extends Annotation> embeddable = Embeddable.class;
-        Class<? extends Annotation> dtoAnnotation = DTO.class;
+        Class<? extends Annotation> dtoAnnotation = Projection.class;
         Processor p = new Processor(processingEnv, entity, superType, embeddable, dtoAnnotation, "Q");
         p.process(roundEnv);
         return true;

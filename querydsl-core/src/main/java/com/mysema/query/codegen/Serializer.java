@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.contracts.Contracts;
 import com.mysema.query.util.FileUtils;
 
 import freemarker.template.Configuration;
@@ -24,6 +25,7 @@ import freemarker.template.TemplateException;
  * @author tiwe
  * @version $Id$
  */
+@Contracts
 public class Serializer {
 
     private final Configuration configuration;
@@ -31,8 +33,8 @@ public class Serializer {
     private final String templateLocation;
 
     Serializer(Configuration configuration, String template) {
-        this.configuration = Assert.notNull(configuration);
-        this.templateLocation = Assert.notNull(template);
+        this.configuration = Assert.notNull(configuration,"configuration is null");
+        this.templateLocation = Assert.notNull(template,"template is null");
     }
 
     public void serialize(String targetFolder, String namePrefix, Collection<ClassModel> entityTypes) {

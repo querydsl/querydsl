@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.path;
 
+import java.util.Map;
+
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.ENumber;
@@ -32,9 +34,10 @@ public class PComponentMap<K, V> extends Expr<java.util.Map<K, V>> implements PM
     private EBoolean empty;
     private EBoolean notEmpty;
 
+    @SuppressWarnings("unchecked")
     public PComponentMap(Class<K> keyType, Class<V> valueType,
             PathMetadata<?> metadata) {
-        super(null);
+        super((Class)Map.class);
         this.keyType = keyType;
         this.valueType = valueType;
         this.metadata = metadata;

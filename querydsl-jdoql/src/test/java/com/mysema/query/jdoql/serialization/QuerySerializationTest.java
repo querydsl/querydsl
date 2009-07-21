@@ -4,9 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.mysema.query.functions.AggregationFunctions;
 import com.mysema.query.jdoql.testdomain.Book;
 import com.mysema.query.jdoql.testdomain.QProduct;
-import com.mysema.query.types.Grammar;
 
 public class QuerySerializationTest extends AbstractTest{
     
@@ -66,7 +66,7 @@ public class QuerySerializationTest extends AbstractTest{
             "(SELECT avg(other.price) FROM com.mysema.query.jdoql.testdomain.Product other)", 
                 
             serialize(query().from(product)
-              .where(product.price.lt(query().from(other).uniqueExpr(Grammar.avg(other.price))))
+              .where(product.price.lt(query().from(other).uniqueExpr(AggregationFunctions.avg(other.price))))
               .listExpr(product.price)));
     }
 

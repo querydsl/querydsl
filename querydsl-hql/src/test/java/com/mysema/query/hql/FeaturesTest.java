@@ -5,11 +5,7 @@
  */
 package com.mysema.query.hql;
 
-import static com.mysema.query.alias.GrammarWithAlias.$;
-import static com.mysema.query.functions.MathFunctions.add;
-import static com.mysema.query.functions.MathFunctions.div;
-import static com.mysema.query.functions.MathFunctions.mult;
-import static com.mysema.query.functions.MathFunctions.sub;
+import static com.mysema.query.alias.Alias.$;
 import static com.mysema.query.hql.HQLGrammar.sum;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,9 +18,9 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.mysema.query.functions.AggregationFunctions;
 import com.mysema.query.hql.domain.QAccount;
 import com.mysema.query.hql.domain.QInheritedProperties;
-import com.mysema.query.types.Grammar;
 import com.mysema.query.types.custom.CString;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.ENumber;
@@ -73,8 +69,8 @@ public class FeaturesTest extends AbstractQueryTest{
         toString("cat.bodyWeight != kitten.bodyWeight", cat.bodyWeight
                 .ne(kitten.bodyWeight));
 
-        toString("cat.bodyWeight + kitten.bodyWeight = kitten.bodyWeight", add(
-                cat.bodyWeight, kitten.bodyWeight).eq(kitten.bodyWeight));
+        toString("cat.bodyWeight + kitten.bodyWeight = kitten.bodyWeight", 
+                cat.bodyWeight.add(kitten.bodyWeight).eq(kitten.bodyWeight));
     }
 
     @Test
@@ -163,7 +159,7 @@ public class FeaturesTest extends AbstractQueryTest{
 
     @Test
     public void testGrammarConstructs() {
-        add(cat.bodyWeight, kitten.bodyWeight);
+        cat.bodyWeight.add(kitten.bodyWeight);
     }
 
     @Test
@@ -216,7 +212,7 @@ public class FeaturesTest extends AbstractQueryTest{
     @Test
     public void testOrderExpressionInFunctionalWay() {
         cat.bodyWeight.asc();
-        add(cat.bodyWeight, kitten.bodyWeight).asc();
+        cat.bodyWeight.add(kitten.bodyWeight).asc();
     }
 
     @Test
@@ -259,10 +255,10 @@ public class FeaturesTest extends AbstractQueryTest{
 
 //        toString("cat.kittens as kitten", cat.kittens.as(kitten));
 
-        toString("cat.bodyWeight + :a1", add(cat.bodyWeight, 10));
-        toString("cat.bodyWeight - :a1", sub(cat.bodyWeight, 10));
-        toString("cat.bodyWeight * :a1", mult(cat.bodyWeight, 10));
-        toString("cat.bodyWeight / :a1", div(cat.bodyWeight, 10));
+        toString("cat.bodyWeight + :a1", cat.bodyWeight.add(10));
+        toString("cat.bodyWeight - :a1", cat.bodyWeight.sub(10));
+        toString("cat.bodyWeight * :a1", cat.bodyWeight.mult(10));
+        toString("cat.bodyWeight / :a1", cat.bodyWeight.div(10));
 
 //        toString("cat.bodyWeight as bw", cat.bodyWeight.as("bw"));
 
@@ -270,10 +266,10 @@ public class FeaturesTest extends AbstractQueryTest{
 
         // toString("distinct cat.bodyWeight", distinct(cat.bodyWeight));
 
-        toString("count(*)", Grammar.count());
+        toString("count(*)", AggregationFunctions.count());
         // toString("count(distinct cat.bodyWeight)",
         // Grammar.count(distinct(cat.bodyWeight)));
-        toString("count(cat)", Grammar.count(cat));
+        toString("count(cat)", AggregationFunctions.count(cat));
     }
 
     /**

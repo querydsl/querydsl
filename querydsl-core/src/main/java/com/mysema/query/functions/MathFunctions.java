@@ -13,7 +13,8 @@ import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.operation.Ops.MathOps;
 
 /**
- * MathFunctions provides math functions
+ * MathFunctions provides additional math functions that are not available 
+ * in standard numeric expressions
  * 
  * @author tiwe
  * @version $Id$
@@ -23,34 +24,42 @@ public final class MathFunctions {
     private MathFunctions() {
     }
 
+    @Deprecated
     public static <A extends Number & Comparable<?>> ENumber<A> mult(Expr<A> left, A right) {
         return ONumber.create(left.getType(), Ops.MULT, left, EConstant.create(right));
     }
 
+    @Deprecated
     public static <A extends Number & Comparable<?>> ENumber<A> mult(Expr<A> left, Expr<A> right) {
         return ONumber.create(left.getType(), Ops.MULT, left, right);
     }
 
+    @Deprecated
     public static <A extends Number & Comparable<?>> ENumber<Double> div(ENumber<A> left, A right) {
         return ONumber.create(Double.class, Ops.DIV, left, EConstant.create(right));
     }
 
+    @Deprecated
     public static <A extends Number & Comparable<?>> ENumber<Double> div(Expr<A> left, Expr<A> right) {
         return ONumber.create(Double.class, Ops.DIV, left, right);
     }
 
+    @Deprecated
     public static <A extends Number & Comparable<?>> ENumber<A> add(Expr<A> left, A right) {
         return ONumber.create(left.getType(), Ops.ADD, left, EConstant.create(right));
     }
 
+    @Deprecated
     public static <A extends Number & Comparable<?>> ENumber<A> add(Expr<A> left, Expr<A> right) {
         return ONumber.create(left.getType(), Ops.ADD, left, right);
     }
 
+    @Deprecated
     public static <A extends Number & Comparable<?>> ENumber<A> sub(Expr<A> left, A right) {
         return ONumber.create(left.getType(), Ops.SUB, left, EConstant.create(right));
     }
 
+    @Deprecated
     public static <A extends Number & Comparable<?>> ENumber<A> sub(Expr<A> left, Expr<A> right) {
         return ONumber.create(left.getType(), Ops.SUB, left, right);
     }

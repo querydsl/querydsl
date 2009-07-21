@@ -11,8 +11,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import com.mysema.query.functions.AggregationFunctions;
 import com.mysema.query.hql.HQLGrammar;
-import com.mysema.query.types.Grammar;
 
 /**
  * HqlGrammarTest provides
@@ -25,7 +25,7 @@ public class GrammarTest {
     @Test
     public void noDuplicates() {
         Set<String> names = new HashSet<String>();
-        for (Method method : Grammar.class.getDeclaredMethods()) {
+        for (Method method : AggregationFunctions.class.getDeclaredMethods()) {
             names.add(method.getName());
         }
 

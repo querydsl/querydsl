@@ -1,6 +1,6 @@
 package com.mysema.query.jdoql;
 
-import static com.mysema.query.types.Grammar.avg;
+import static com.mysema.query.functions.AggregationFunctions.avg;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;

@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Target(TYPE)
 @Retention(RUNTIME)
 /**
- * Annotion for APT based DTO query type generation. Annotate DTO types with this annotation.
+ * Annotation for APT based DTO query type generation. Annotate DTO types with this annotation.
  */
-public @interface DTO {
+public @interface Projection {
 }

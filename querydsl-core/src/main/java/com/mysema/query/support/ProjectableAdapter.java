@@ -27,7 +27,7 @@ public abstract class ProjectableAdapter implements Projectable {
     }
 
     public ProjectableAdapter(Projectable projectable) {
-        this.projectable = Assert.notNull(projectable);
+        this.projectable = Assert.notNull(projectable,"projectable is null");
     }
 
     @Override

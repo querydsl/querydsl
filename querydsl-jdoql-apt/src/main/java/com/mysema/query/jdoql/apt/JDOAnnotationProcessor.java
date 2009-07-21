@@ -13,7 +13,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
-import com.mysema.query.annotations.DTO;
+import com.mysema.query.annotations.Projection;
 import com.mysema.query.apt.Processor;
 
 /**
@@ -30,7 +30,7 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
         Class<? extends Annotation> entity = PersistenceCapable.class;
         Class<? extends Annotation> superType = null; // ?!?
         Class<? extends Annotation> embeddable = EmbeddedOnly.class;
-        Class<? extends Annotation> dtoAnnotation = DTO.class;
+        Class<? extends Annotation> dtoAnnotation = Projection.class;
         Processor p = new Processor(processingEnv, entity, superType, embeddable, dtoAnnotation, "Q");
         p.skipGetters().process(roundEnv);
         return true;

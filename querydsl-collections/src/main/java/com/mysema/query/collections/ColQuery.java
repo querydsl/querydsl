@@ -7,6 +7,7 @@ package com.mysema.query.collections;
 
 import java.util.List;
 
+import com.mysema.contracts.Contracts;
 import com.mysema.query.Detachable;
 import com.mysema.query.Projectable;
 import com.mysema.query.QueryModifiers;
@@ -20,6 +21,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
+@Contracts
 public interface ColQuery extends Projectable, Detachable {
 
     <A> ColQuery from(Expr<A> entity, A first, A... rest);

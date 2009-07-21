@@ -8,6 +8,8 @@ package com.mysema.query.types.expr;
 import java.util.Arrays;
 import java.util.Collection;
 
+import com.mysema.commons.lang.Assert;
+import com.mysema.contracts.Contracts;
 import com.mysema.query.serialization.ToStringVisitor;
 import com.mysema.query.types.ValidationVisitor;
 import com.mysema.query.types.operation.OBoolean;
@@ -20,13 +22,20 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @version $Id$
  */
+@Contracts
 public abstract class Expr<D> {
 
     private final Class<? extends D> type;
     private String toString;
 
+    private final boolean primitive;
+    
     public Expr(Class<? extends D> type) {
-        this.type = type;
+        this.type = Assert.notNull(type,"type is null");
+        this.primitive = type.isPrimitive() 
+            || Number.class.isAssignableFrom(type) 
+            || Boolean.class.equals(type) 
+            || Character.class.equals(type);
     }
 
     /**
@@ -55,7 +64,7 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean eq(Expr<? super D> right) {
-        if (isPrimitive()) {
+        if (primitive) {
             return new OBoolean(Ops.EQ_PRIMITIVE, this, right);
         } else {
             return new OBoolean(Ops.EQ_OBJECT, this, right);
@@ -79,7 +88,7 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean ne(Expr<? super D> right) {
-        if (isPrimitive()) {
+        if (primitive) {
             return new OBoolean(Ops.NE_PRIMITIVE, this, right);
         } else {
             return new OBoolean(Ops.NE_OBJECT, this, right);
@@ -167,16 +176,4 @@ public abstract class Expr<D> {
         return type != null ? type.hashCode() : super.hashCode();
     }
     
-    @SuppressWarnings("unchecked")
-    private boolean isPrimitive() {
-        Class<D> type = (Class<D>) getType();
-        if (type != null){
-            return type.isPrimitive() 
-                || Number.class.isAssignableFrom(type) 
-                || Boolean.class.equals(type) 
-                || Character.class.equals(type);    
-        }else{
-            return false;
-        }        
-    }
 }

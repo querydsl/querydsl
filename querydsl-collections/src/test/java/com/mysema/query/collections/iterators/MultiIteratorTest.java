@@ -15,8 +15,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.mysema.query.alias.Alias;
 import com.mysema.query.collections.IteratorSource;
-import com.mysema.query.collections.MiniApi;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 
@@ -36,13 +36,13 @@ public class MultiIteratorTest extends AbstractIteratorTest {
 
     private MultiIterator it = new MultiIterator();
 
-    private ENumber<Integer> int1 = MiniApi.$(1);
+    private ENumber<Integer> int1 = Alias.$(1);
 
-    private ENumber<Integer> int2 = MiniApi.$(2);
+    private ENumber<Integer> int2 = Alias.$(2);
 
-    private ENumber<Integer> int3 = MiniApi.$(3);
+    private ENumber<Integer> int3 = Alias.$(3);
 
-    private ENumber<Integer> int4 = MiniApi.$(4);
+    private ENumber<Integer> int4 = Alias.$(4);
 
     private IteratorSource iteratorSource = new IteratorSource() {
 

@@ -8,7 +8,7 @@ package com.mysema.query.types;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
-import com.mysema.query.alias.GrammarWithAlias;
+import com.mysema.query.alias.Alias;
 import com.mysema.query.types.expr.EComparable;
 
 /**
@@ -21,7 +21,7 @@ public class JodaTimeTest {
     
     @Test
     public void test(){
-        EComparable<LocalDate> expr = GrammarWithAlias.$(new LocalDate());
+        EComparable<LocalDate> expr = Alias.$(new LocalDate());
         expr.after(expr);
         expr.after(new LocalDate());
         expr.before(expr);

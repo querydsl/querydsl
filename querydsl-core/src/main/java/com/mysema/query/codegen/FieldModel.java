@@ -6,6 +6,7 @@
 package com.mysema.query.codegen;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.contracts.Contracts;
 
 /**
  * FieldModel represents a field / property in a query domain type.
@@ -13,6 +14,7 @@ import com.mysema.commons.lang.Assert;
  * @author tiwe
  * @version $Id$
  */
+@Contracts
 public class FieldModel implements Comparable<FieldModel> {
 
     private String name;
@@ -22,9 +24,9 @@ public class FieldModel implements Comparable<FieldModel> {
     private String docs;
     
     public FieldModel(String name, TypeModel type, String docs){
-        this.name = Assert.notNull(name);
-        this.type = Assert.notNull(type);
-        this.docs = Assert.notNull(docs).replace("@return", "").trim();
+        this.name = Assert.notNull(name,"name is null");
+        this.type = Assert.notNull(type,"type is null");
+        this.docs = Assert.notNull(docs,"docs is null").replace("@return", "").trim();
         if (type.getSimpleName() == null){
             throw new IllegalArgumentException("Field with name " + name + " got no valid type : " + type);
         }

@@ -120,6 +120,10 @@ public interface Ops {
 
     public static final List<Operator<?>> compareOps = Collections.unmodifiableList(Arrays.<Operator<?>> asList(EQ_OBJECT, EQ_PRIMITIVE,LT, GT, GOE, LOE));
 
+    /**
+     * @author tiwe
+     *
+     */
     public interface BooleanOps {
         Operator<Boolean> XNOR = new OperatorImpl<Boolean>(Boolean_x_2);
         Operator<Boolean> XOR = new OperatorImpl<Boolean>(Boolean_x_2);

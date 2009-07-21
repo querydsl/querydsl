@@ -5,7 +5,6 @@
  */
 package com.mysema.query.sql;
 
-import com.mysema.query.types.Grammar;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
@@ -18,7 +17,7 @@ import com.mysema.query.types.query.ObjectSubQuery;
  * @author tiwe
  * @version $Id$
  */
-public class SQLGrammar extends Grammar {
+public class SQLGrammar {
 
     public static EBoolean exists(ObjectSubQuery<?> sq) {
         return new OBoolean(Ops.EXISTS, sq);

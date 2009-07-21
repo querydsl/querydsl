@@ -5,8 +5,8 @@
  */
 package com.mysema.query.types;
 
-import static com.mysema.query.alias.GrammarWithAlias.$;
-import static com.mysema.query.alias.GrammarWithAlias.alias;
+import static com.mysema.query.alias.Alias.$;
+import static com.mysema.query.alias.Alias.alias;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 

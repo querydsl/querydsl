@@ -15,7 +15,8 @@ import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
 
 /**
- * DateTimeFunctions provides date and time functions
+ * DateTimeFunctions provides additional date and time functions that are not 
+ * available in standard expressions 
  * 
  * @author tiwe
  * @version $Id$

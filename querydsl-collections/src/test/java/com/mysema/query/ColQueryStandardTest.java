@@ -26,7 +26,7 @@ public class ColQueryStandardTest {
     
     private static QCat otherCat = new QCat("otherCat");
     
-    private StandardTest testData = new StandardTest(){
+    private StandardTest standardTest = new StandardTest(){
         @Override
         public int executeFilter(EBoolean f){
             return MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat.name).size();
@@ -40,17 +40,17 @@ public class ColQueryStandardTest {
     @Test
     public void test(){
         Cat kitten = data.get(0).getKittens().get(0);        
-        testData.booleanTests(cat.name.isNull(), otherCat.kittens.isEmpty());
-        testData.collectionTests(cat.kittens, otherCat.kittens, kitten);
+        standardTest.booleanTests(cat.name.isNull(), otherCat.kittens.isEmpty());
+        standardTest.collectionTests(cat.kittens, otherCat.kittens, kitten);
 //        testData.dateTests(null, null, null);
-        testData.dateTimeTests(cat.birthdate, otherCat.birthdate, new Date());
-        testData.listTests(cat.kittens, otherCat.kittens, kitten);
-        testData.mapTests(cat.kittensByName, otherCat.kittensByName, "Kitty", kitten);
-        testData.numericCasts(cat.id, otherCat.id, 1);
-        testData.numericTests(cat.id, otherCat.id, 1);
-        testData.stringTests(cat.name, otherCat.name, "Bob");
+        standardTest.dateTimeTests(cat.birthdate, otherCat.birthdate, new Date());
+        standardTest.listTests(cat.kittens, otherCat.kittens, kitten);
+        standardTest.mapTests(cat.kittensByName, otherCat.kittensByName, "Kitty", kitten);
+        standardTest.numericCasts(cat.id, otherCat.id, 1);
+        standardTest.numericTests(cat.id, otherCat.id, 1);
+        standardTest.stringTests(cat.name, otherCat.name, "Bob");
 //        testData.timeTests(null, null, null);
-        testData.report();        
+        standardTest.report();        
     }
         
 

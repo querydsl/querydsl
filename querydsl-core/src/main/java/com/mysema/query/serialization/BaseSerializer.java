@@ -42,7 +42,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
     private final SubType _this = (SubType) this;
 
     public BaseSerializer(OperationPatterns patterns) {
-        this.patterns = Assert.notNull(patterns);
+        this.patterns = Assert.notNull(patterns,"patterns is null");
     }
 
     public final SubType append(String... str) {

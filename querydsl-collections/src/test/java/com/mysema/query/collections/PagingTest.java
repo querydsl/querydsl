@@ -15,14 +15,14 @@ import org.junit.Test;
 
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.alias.GrammarWithAlias;
+import com.mysema.query.alias.Alias;
 import com.mysema.query.types.path.PNumber;
 
 public class PagingTest extends AbstractQueryTest {
 
     private List<Integer> ints = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-    private PNumber<Integer> var = GrammarWithAlias.$(0);
+    private PNumber<Integer> var = Alias.$(0);
 
     @Test
     public void test() {

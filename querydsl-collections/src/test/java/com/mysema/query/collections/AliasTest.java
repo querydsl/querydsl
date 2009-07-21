@@ -5,8 +5,8 @@
  */
 package com.mysema.query.collections;
 
-import static com.mysema.query.alias.GrammarWithAlias.$;
-import static com.mysema.query.alias.GrammarWithAlias.alias;
+import static com.mysema.query.alias.Alias.$;
+import static com.mysema.query.alias.Alias.alias;
 import static com.mysema.query.collections.MiniApi.from;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -18,7 +18,7 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.query.alias.GrammarWithAlias;
+import com.mysema.query.alias.Alias;
 import com.mysema.query.collections.domain.Cat;
 import com.mysema.query.collections.domain.QCat;
 
@@ -37,7 +37,7 @@ public class AliasTest extends AbstractQueryTest {
         myInts.add(3);
         myInts.add(4);
 
-        GrammarWithAlias.resetAlias();
+        Alias.resetAlias();
     }
 
     @Test

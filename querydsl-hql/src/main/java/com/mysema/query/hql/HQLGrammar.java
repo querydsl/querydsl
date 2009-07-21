@@ -5,7 +5,6 @@
  */
 package com.mysema.query.hql;
 
-import com.mysema.query.alias.GrammarWithAlias;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EComparable;
@@ -24,18 +23,18 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @version $Id$
  */
-public class HQLGrammar extends GrammarWithAlias {
+public class HQLGrammar {
 
     public static <D> Expr<D> all(ECollection<D> col) {
-        return new OSimple<Object,D>(col.getElementType(), Ops.QuantOps.ALL, (Expr<?>)col);
+        return OSimple.create(col.getElementType(), Ops.QuantOps.ALL, (Expr<?>)col);
     }
 
     public static <D> Expr<D> any(ECollection<D> col) {
-        return new OSimple<Object,D>(col.getElementType(), Ops.QuantOps.ANY, (Expr<?>)col);
+        return OSimple.create(col.getElementType(), Ops.QuantOps.ANY, (Expr<?>)col);
     }
 
     public static <A extends Comparable<? super A>> EComparable<A> avg(ECollection<A> col) {
-        return new OComparable<Number,A>(col.getElementType(), Ops.QuantOps.AVG_IN_COL, (Expr<?>)col);
+        return OComparable.create(col.getElementType(), Ops.QuantOps.AVG_IN_COL, (Expr<?>)col);
     }
 
     public static EBoolean exists(ECollection<?> col) {
@@ -43,11 +42,11 @@ public class HQLGrammar extends GrammarWithAlias {
     }
 
     public static <A extends Comparable<? super A>> EComparable<A> max(ECollection<A> left) {
-        return new OComparable<Number,A>(left.getElementType(), Ops.QuantOps.MAX_IN_COL, (Expr<?>)left);
+        return OComparable.create(left.getElementType(), Ops.QuantOps.MAX_IN_COL, (Expr<?>)left);
     }
 
     public static <A extends Comparable<? super A>> EComparable<A> min(ECollection<A> left) {
-        return new OComparable<Number,A>(left.getElementType(), Ops.QuantOps.MIN_IN_COL, (Expr<?>)left);
+        return OComparable.create(left.getElementType(), Ops.QuantOps.MIN_IN_COL, (Expr<?>)left);
     }
 
     public static EBoolean notExists(ECollection<?> col) {
