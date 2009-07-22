@@ -190,6 +190,111 @@ query.close();
       to return a single element. Easy, right?
   </para>
 
+<para>
+    To create a query with multiple sources you just use the JDOQLQuery interface like this :
+  </para>
+
+    <programlisting language="java"><![CDATA[
+query.from(customer, company);    
+]]></programlisting>    
+
+   <para>
+   And to use multiple filters use it like this
+   </para>
+   
+   <programlisting language="java"><![CDATA[
+query.from(customer)
+    .where(customer.firstName.eq("Bob"), customer.lastName.eq("Wilson"));   
+]]></programlisting>   
+  
+  <para>Or like this</para>
+    
+<programlisting language="java"><![CDATA[
+query.form(customer)
+    .where(customer.firstName.eq("Bob").and(customer.lastName.eq("Wilson")));
+]]></programlisting>
+
   </sect2>
+  
+  <sect2>
+  
+  <title>Ordering</title>
+  
+  <para>The syntax for declaring ordering is </para>
+  
+<programlisting language="java"><![CDATA[ 
+query.from(customer)
+    .orderBy(customer.lastName.asc(), customer.firstName.desc())
+    .list(customer);
+]]></programlisting>
+
+  </sect2>  
+
+  <sect2>
+  
+  <title>Grouping</title>
+  
+  <para>Grouping can be done in the following form</para>
+  
+<programlisting language="java"><![CDATA[ 
+query.from(customer)
+    .groupBy(customer.lastName)
+    .list(customer.lastName);
+]]></programlisting>
+     
+  </sect2>    
+  
+  <sect2>
+  
+  <title>Subqueries</title>
+  
+  <para>Subqueries in the JDOQL module are just special projections of the JDOQLQuery interface. To create
+  a subquery you create a JDOQLQuery instance, define the query parameters via from, where etc and use
+  uniqueExpr or listExpr to create a subquery, which is just a type-safe Querydsl expression for the query.
+  uniqueExpr is used for a unique result and listExpr for a list result.</para>
+
+<programlisting language="java"><![CDATA[
+query().from(department)
+    .where(department.employees.size().eq(
+        query().from(d).uniqueExpr(AggregationFunctions.max(d.employees.size()))
+     )).list(department);  
+]]></programlisting>   
+
+  <para>represents the following native JDOQL query</para>
+  
+<programlisting>
+SELECT this FROM com.mysema.query.jdoql.models.company.Department
+WHERE this.employees.size() == 
+(SELECT max(d.employees.size()) FROM com.mysema.query.jdoql.models.company.Department d)
+</programlisting>  
+
+  <para>Another example</para>
+
+<programlisting language="java"><![CDATA[
+query().from(employee)
+    .where(employee.weeklyhours.gt(
+        query().from(employee.department.employees, e)
+        .where(e.manager.eq(employee.manager))
+        .uniqueExpr(AggregationFunctions.avg(e.weeklyhours))
+    )).list(employee);
+]]></programlisting>  
+
+<para>which represents the following native JDOQL query</para>
+
+<programlisting>
+SELECT this FROM com.mysema.query.jdoql.models.company.Employee 
+WHERE this.weeklyhours > 
+(SELECT avg(e.weeklyhours) FROM this.department.employees e WHERE e.manager == this.manager)
+</programlisting>
+          
+  </sect2>      
+  
+  <sect2>
+  
+  <title>Aggregate functions</title>
+  
+  <para>Aggregate functions are available as static methods in the com.mysema.query.functions.AggreationFunctions class.</para>
+  
+  </sect2>    
 
 </sect1>

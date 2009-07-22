@@ -116,7 +116,7 @@ public final class PathMetadata<T> {
 
     private final int hashCode;
 
-    public PathMetadata(Path<?> parent, Expr<T> expression, PathType type) {
+    private PathMetadata(Path<?> parent, Expr<T> expression, PathType type) {
         this.parent = parent;
         this.expression = expression;
         this.pathType = type;

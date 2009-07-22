@@ -21,6 +21,7 @@
 
     <programlisting language="java"><![CDATA[
 import static com.mysema.query.collections.MiniApi.*;
+import static com.mysema.query.alias.Alias.*; // for alias usage
 ]]></programlisting>
 
   </sect2>

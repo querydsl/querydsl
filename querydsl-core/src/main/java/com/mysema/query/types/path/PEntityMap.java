@@ -7,7 +7,6 @@ package com.mysema.query.types.path;
 
 import java.util.Map;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.ENumber;
@@ -37,6 +36,7 @@ public class PEntityMap<K, V> extends Expr<Map<K, V>> implements PMap<K, V> {
 
     private EBoolean notEmpty;
 
+    @SuppressWarnings("unchecked")
     public PEntityMap(Class<K> keyType, Class<V> valueType, String entityName,
             PathMetadata<?> metadata) {
         super((Class)Map.class);

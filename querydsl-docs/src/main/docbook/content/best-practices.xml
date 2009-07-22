@@ -2,12 +2,51 @@
 
 <chapter id="best-practices" revision="1">
   <title>Best practices</title>
-
-  <para>TODO</para>
   
 <!-- 
         * Interface based query usage
         * Custom query extensions    
  -->
+ 
+  <sect1>
+  
+    <title>Interface based usage</title>
+  
+    <para>Whenever possible, use interface based query references : JDOQLQuery for JDO and HQLQuery for HQL</para>
+  
+  </sect1>
+  
+  <sect1>
+  
+    <title>Custom query extensions</title>
+  
+    <para>TODO</para>
+  
+  </sect1>
+ 
+  <sect1 id="dao_integration">
+  
+  <title>DAO integration</title>
+  
+  <para>A practice which we have found to be very easy to use is to provide factory methods for 
+  Query instances in DAO implementations in the following form.</para>
+  
+  <para>For HQL usage :</para>
+  
+<programlisting language="java"><![CDATA[ 
+protected HQLQuery from(PEntity<?>... o) {
+    return new HqlQueryImpl(session).from(o);
+} 
+]]></programlisting>  
+  
+  <para>For JDO usage : </para>
+  
+<programlisting language="java"><![CDATA[
+protected JDOQLQuery from(PEntity<?>... o) {
+    return new JDOQLQueryImpl(persistenceManager).from(o);
+}        
+]]></programlisting>         
+  
+  </sect1>     
   
 </chapter>

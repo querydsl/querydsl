@@ -170,7 +170,161 @@ Customer bob = query.from(customer)
       filter and uniqueResult defines the projection and tells Querydsl
       to return a single element. Easy, right?
   </para>
+  
+  <para>
+    To create a query with multiple sources you just use the HQLQuery interface like this :
+  </para>
+
+    <programlisting language="java"><![CDATA[
+query.from(customer, company);    
+]]></programlisting>    
+
+   <para>
+   And to use multiple filters use it like this
+   </para>
+   
+   <programlisting language="java"><![CDATA[
+query.from(customer)
+    .where(customer.firstName.eq("Bob"), customer.lastName.eq("Wilson"));   
+]]></programlisting>   
+  
+  <para>Or like this</para>
+    
+<programlisting language="java"><![CDATA[
+query.form(customer)
+    .where(customer.firstName.eq("Bob").and(customer.lastName.eq("Wilson")));
+]]></programlisting>
+
+  <para>In native HQL form the query would be written like this : </para>
+  
+<programlisting>
+from Customer as customer
+    where customer.firstName = "Bob" and customer.lastName = "Wilson"
+</programlisting>
 
   </sect2>
+  
+  <sect2>
+  
+  <title>Using joins</title>
+  
+  <para>Querydsl supports the following join variants in HQL/JPAQL : inner join, join, left join and full join.
+    Join usage is typesafe, and follows the following pattern :</para>
+    
+<programlisting language="java"><![CDATA[  
+query.from(cat)
+    .innerJoin(cat.mate, mate)
+    .leftJoin(cat.kittens, kitten)
+    .list(cat);
+]]></programlisting>
+
+ <para>The native HQL version of the query would be </para>
+  
+<programlisting>
+from Cat as cat
+    inner join cat.mate as mate
+    left outer join cat.kittens as kitten
+</programlisting>    
+  
+  <para>Another example</para>
+  
+<programlisting language="java"><![CDATA[ 
+query.from(cat)
+    .leftJoin(cat.kittens, kitten)
+    .on(kitten.bodyWeight.gt(10.0))
+    .list(cat);
+]]></programlisting>
+
+<para>With the following HQL version</para>    
+  
+<programlisting>  
+from Cat as cat
+    left join cat.kittens as kitten
+    with kitten.bodyWeight > 10.0  
+</programlisting>  
+  
+  </sect2>
+  
+  <sect2>
+  
+  <title>Ordering</title>
+  
+  <para>The syntax for declaring ordering is </para>
+  
+<programlisting language="java"><![CDATA[ 
+query.from(customer)
+    .orderBy(customer.lastName.asc(), customer.firstName.desc())
+    .list(customer);
+]]></programlisting>
+
+  <para>which is equivalent to the following native HQL</para>  
+
+<programlisting>  
+from Customer as customer
+    order by customer.lastName asc, customer.firstName desc
+</programlisting>
+  
+  </sect2>  
+
+  <sect2>
+  
+  <title>Grouping</title>
+  
+  <para>Grouping can be done in the following form</para>
+  
+<programlisting language="java"><![CDATA[ 
+query.from(customer)
+    .groupBy(customer.lastName)
+    .list(customer.lastName);
+]]></programlisting>
+
+  <para>which is equivalent to the following native HQL</para>  
+
+<programlisting>  
+select customer.lastName
+    from Customer as customer
+    group by customer.lastName
+</programlisting>
+    
+  
+  </sect2>  
+  
+  <sect2>
+  
+  <title>Subqueries</title>
+  
+  
+  <para>Subqueries in the HQL module are just special projections of the HQLQuery interface. To create
+  a subquery you create a HQLQuery instance, define the query parameters via from, where etc and use
+  uniqueExpr or listExpr to create a subquery, which is just a type-safe Querydsl expression for the query.
+  uniqueExpr is used for a unique result and listExpr for a list result.</para>
+
+<programlisting language="java"><![CDATA[
+query().from(department)
+    .where(department.employees.size().eq(
+        query().from(d).uniqueExpr(AggregationFunctions.max(d.employees.size()))
+     )).list(department);
+]]></programlisting>   
+
+  <para>Another example</para>
+
+<programlisting language="java"><![CDATA[
+query().from(employee)
+    .where(employee.weeklyhours.gt(
+        query().from(employee.department.employees, e)
+        .where(e.manager.eq(employee.manager))
+        .uniqueExpr(AggregationFunctions.avg(e.weeklyhours))
+    )).list(employee);
+]]></programlisting>  
+
+  </sect2>      
+  
+  <sect2>
+  
+  <title>Aggregate functions</title>
+  
+  <para>Aggregate functions are available as static methods in the com.mysema.query.functions.AggreationFunctions class.</para>
+  
+  </sect2>    
 
 </sect1>
