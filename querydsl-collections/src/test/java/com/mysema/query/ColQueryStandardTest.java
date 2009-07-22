@@ -41,11 +41,11 @@ public class ColQueryStandardTest {
     public void test(){
         Cat kitten = data.get(0).getKittens().get(0);        
         standardTest.booleanTests(cat.name.isNull(), otherCat.kittens.isEmpty());
-        standardTest.collectionTests(cat.kittens, otherCat.kittens, kitten);
+        standardTest.collectionTests(cat.kittens, otherCat.kittens, kitten, new Cat());
 //        testData.dateTests(null, null, null);
         standardTest.dateTimeTests(cat.birthdate, otherCat.birthdate, new Date());
-        standardTest.listTests(cat.kittens, otherCat.kittens, kitten);
-        standardTest.mapTests(cat.kittensByName, otherCat.kittensByName, "Kitty", kitten);
+        standardTest.listTests(cat.kittens, otherCat.kittens, kitten, new Cat());
+        standardTest.mapTests(cat.kittensByName, otherCat.kittensByName, "Kitty", kitten, "NoName", new Cat());
         standardTest.numericCasts(cat.id, otherCat.id, 1);
         standardTest.numericTests(cat.id, otherCat.id, 1);
         standardTest.stringTests(cat.name, otherCat.name, "Bob");

@@ -45,8 +45,8 @@ public abstract class StandardTest {
         execute(testData.booleanFilters(expr, other), false);
     }
     
-    public <A> void collectionTests(ECollection<A> expr, ECollection<A> other, A knownElement){
-        execute(testData.collectionMatchingFilters(expr, other, knownElement), true);
+    public <A> void collectionTests(ECollection<A> expr, ECollection<A> other, A knownElement, A missingElement){
+        execute(testData.collectionMatchingFilters(expr, other, knownElement, missingElement), true);
         execute(testData.collectionFilters(expr, other, knownElement), false);
         execute(testData.collectionProjections(expr, other, knownElement));
     }
@@ -67,14 +67,14 @@ public abstract class StandardTest {
         execute(testData.dateTimeProjections(expr, other, knownValue));   
     }
     
-    public <A> void listTests(EList<A> expr, EList<A> other, A knownElement){
-        execute(testData.listMatchingFilters(expr, other, knownElement), true);
+    public <A> void listTests(EList<A> expr, EList<A> other, A knownElement, A missingElement){
+        execute(testData.listMatchingFilters(expr, other, knownElement, missingElement), true);
         execute(testData.listFilters(expr, other, knownElement), false);
         execute(testData.listProjections(expr, other, knownElement));
     }
     
-    public <K,V> void mapTests(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue) {
-        execute(testData.mapMatchingFilters(expr, other, knownKey, knownValue), true);
+    public <K,V> void mapTests(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue, K missingKey, V missingValue) {
+        execute(testData.mapMatchingFilters(expr, other, knownKey, knownValue, missingKey, missingValue), true);
         execute(testData.mapFilters(expr, other, knownKey, knownValue), false);
         execute(testData.mapProjections(expr, other, knownKey, knownValue));
     }

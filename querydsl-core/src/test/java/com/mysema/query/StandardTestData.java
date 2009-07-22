@@ -45,11 +45,12 @@ class StandardTestData {
         );
     }
     
-    <A> Collection<EBoolean> collectionMatchingFilters(ECollection<A> expr, ECollection<A> other, A knownElement){
+    <A> Collection<EBoolean> collectionMatchingFilters(ECollection<A> expr, ECollection<A> other, A knownElement, A missingElement){
         return Arrays.<EBoolean>asList(
           expr.contains(knownElement),
+          expr.contains(missingElement).not(),
           expr.isEmpty().not(),
-          expr.isNotEmpty()
+          expr.isNotEmpty()          
         );
     }
     
@@ -140,8 +141,8 @@ class StandardTestData {
         return rv;
     }
     
-    <A> Collection<EBoolean> listMatchingFilters(EList<A> expr, EList<A> other, A knownElement){
-        return collectionMatchingFilters(expr, other, knownElement);
+    <A> Collection<EBoolean> listMatchingFilters(EList<A> expr, EList<A> other, A knownElement, A missingElement){
+        return collectionMatchingFilters(expr, other, knownElement, missingElement);
     }
     
     <A> Collection<Expr<?>> listProjections(EList<A> expr, EList<A> other, A knownElement){
@@ -163,10 +164,12 @@ class StandardTestData {
         );
     }
         
-    <K,V> Collection<EBoolean> mapMatchingFilters(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue) {
+    <K,V> Collection<EBoolean> mapMatchingFilters(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue, K missingKey, V missingValue) {
         return Arrays.<EBoolean>asList(
           expr.containsKey(knownKey),
+          expr.containsKey(missingKey).not(),
           expr.containsValue(knownValue),
+          expr.containsValue(missingValue).not(),
           expr.get(knownKey).eq(knownValue),
           expr.isEmpty().not(),
           expr.isNotEmpty()

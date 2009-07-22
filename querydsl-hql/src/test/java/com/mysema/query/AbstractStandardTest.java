@@ -70,17 +70,22 @@ public abstract class AbstractStandardTest {
             savedCats.add(cat);
             prev = cat;
         }
+        
+        Cat cat = new Cat("Some",6);
+        session.save(cat);
+        savedCats.add(cat);
     }
     
     @Test
     public void test(){
         Cat kitten = savedCats.get(0);        
+        Cat noKitten = savedCats.get(savedCats.size()-1);
         standardTest.booleanTests(cat.name.isNull(), otherCat.kittens.isEmpty());
-        standardTest.collectionTests(cat.kittens, otherCat.kittens, kitten);
+        standardTest.collectionTests(cat.kittens, otherCat.kittens, kitten, noKitten);
         standardTest.dateTests(null, null, null);
         standardTest.dateTimeTests(cat.birthdate, otherCat.birthdate, new Date());
-        standardTest.listTests(cat.kittens, otherCat.kittens, kitten);
-//        testData.mapTests(cat.kittensByName, otherCat.kittensByName, "Kitty", kitten);
+        standardTest.listTests(cat.kittens, otherCat.kittens, kitten, noKitten);
+//        standardTest.mapTests(cat.kittensByName, otherCat.kittensByName, "Kitty", kitten);
         standardTest.numericCasts(cat.id, otherCat.id, 1);
         standardTest.numericTests(cat.id, otherCat.id, 1);
         standardTest.stringTests(cat.name, otherCat.name, "Bob");

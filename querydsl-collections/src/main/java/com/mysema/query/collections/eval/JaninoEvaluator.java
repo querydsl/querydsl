@@ -57,11 +57,10 @@ public class JaninoEvaluator implements Evaluator {
             if (e.getCause() instanceof NullPointerException) {
                 for (int i = 0; i < args.length; i++) {
                     if (args[i] == null) {
-                        throw new IllegalArgumentException("null for "
-                                + sources.get(i));
+                        throw new IllegalArgumentException("null for " + sources.get(i));
                     }
                 }
-                throw new IllegalArgumentException("null in " + projection);
+                throw new IllegalArgumentException("null in " + projection, e);
             } else {
                 throw new RuntimeException(e.getMessage(), e);
             }

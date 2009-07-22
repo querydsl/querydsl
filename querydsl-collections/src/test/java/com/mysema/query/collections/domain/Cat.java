@@ -19,6 +19,7 @@ public class Cat extends Animal {
     private Cat mate;
 
     public Cat() {
+        this.kittensByName = Collections.emptyMap();
     }
 
     public Cat(String name) {
