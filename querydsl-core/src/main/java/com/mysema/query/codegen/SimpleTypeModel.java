@@ -5,6 +5,8 @@
  */
 package com.mysema.query.codegen;
 
+import com.mysema.commons.lang.Assert;
+
 /**
  * @author tiwe
  *
@@ -22,10 +24,10 @@ public class SimpleTypeModel implements TypeModel {
     public SimpleTypeModel(FieldType fieldType, String fullName,
             String packageName, String simpleName, String keyTypeName,
             String valueTypeName) {
-        this.fieldType = fieldType;
-        this.name = fullName;
-        this.packageName = packageName;
-        this.simpleName = simpleName;
+        this.fieldType = Assert.notNull(fieldType,"fieldType is null");
+        this.name = Assert.notNull(fullName,"fullName is null");
+        this.packageName = Assert.notNull(packageName,"packageName is null");
+        this.simpleName = Assert.notNull(simpleName,"simpleName is null");
         this.keyTypeName = keyTypeName;
         this.valueTypeName = valueTypeName;
     }

@@ -5,6 +5,8 @@
  */
 package com.mysema.query.codegen;
 
+import com.mysema.commons.lang.Assert;
+
 /**
  * ParameterModel represents a parameter in a Constructor
  * 
@@ -15,8 +17,8 @@ public class ParameterModel implements Comparable<ParameterModel> {
     private final String name, typeName;
 
     public ParameterModel(String name, String typeName) {
-        this.name = name;
-        this.typeName = typeName;
+        this.name = Assert.notNull(name,"name was null");
+        this.typeName = Assert.notNull(typeName,"typeName was null");
     }
 
     public int compareTo(ParameterModel o) {

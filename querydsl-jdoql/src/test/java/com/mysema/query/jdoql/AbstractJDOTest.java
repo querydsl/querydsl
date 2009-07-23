@@ -16,6 +16,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 
+import com.mysema.contracts.proxy.ProxyFactory;
 import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.Store;
 import com.mysema.query.types.expr.EBoolean;
@@ -30,12 +31,11 @@ public abstract class AbstractJDOTest {
     protected Transaction tx;
 
     protected JDOQLQuery query() {
-        return new JDOQLQueryImpl(pm);
+        return ProxyFactory.create(JDOQLQuery.class, new JDOQLQueryImpl(pm));
     }
 
     protected <T> List<T> query(PEntity<T> source, EBoolean condition) {
-        return new JDOQLQueryImpl(pm).from(source).where(condition)
-                .list(source);
+        return query().from(source).where(condition).list(source);
     }
 
     @Before

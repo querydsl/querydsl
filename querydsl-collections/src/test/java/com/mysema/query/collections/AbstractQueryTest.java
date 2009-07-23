@@ -71,6 +71,7 @@ public abstract class AbstractQueryTest {
     static class TestQuery extends ColQueryImpl {
         List<Object> res = new ArrayList<Object>();
 
+        @Override
         public <RT> List<RT> list(Expr<RT> projection) {
             List<RT> rv = super.list(projection);
             for (Object o : rv) {
@@ -81,6 +82,7 @@ public abstract class AbstractQueryTest {
             return rv;
         }
 
+        @Override
         public List<Object[]> list(Expr<?> p1, Expr<?> p2, Expr<?>... rest) {
             List<Object[]> rv = super.list(p1, p2, rest);
             for (Object[] o : rv) {

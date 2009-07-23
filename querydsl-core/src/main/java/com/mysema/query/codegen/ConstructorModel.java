@@ -7,6 +7,8 @@ package com.mysema.query.codegen;
 
 import java.util.Collection;
 
+import com.mysema.commons.lang.Assert;
+
 /**
  * ConstructorModel represents a constructor for a DTO query type.
  * 
@@ -17,7 +19,7 @@ public class ConstructorModel {
     private final Collection<ParameterModel> parameters;
 
     public ConstructorModel(Collection<ParameterModel> params) {
-        parameters = params;
+        parameters = Assert.notNull(params,"params was null");
     }
 
     public Collection<ParameterModel> getParameters() {
