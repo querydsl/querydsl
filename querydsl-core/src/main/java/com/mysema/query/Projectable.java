@@ -8,7 +8,6 @@ package com.mysema.query;
 import java.util.Iterator;
 import java.util.List;
 
-import com.mysema.contracts.Contracts;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -18,7 +17,6 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-@Contracts
 public interface Projectable {
     /**
      * return the amount of matched rows

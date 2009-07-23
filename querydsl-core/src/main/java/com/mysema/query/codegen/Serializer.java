@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.contracts.Contracts;
 import com.mysema.query.util.FileUtils;
 
 import freemarker.template.Configuration;
@@ -25,7 +24,6 @@ import freemarker.template.TemplateException;
  * @author tiwe
  * @version $Id$
  */
-@Contracts
 public class Serializer {
 
     private final Configuration configuration;

@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.contracts.Contracts;
 import com.mysema.query.serialization.ToStringVisitor;
 import com.mysema.query.types.ValidationVisitor;
 import com.mysema.query.types.operation.OBoolean;
@@ -22,7 +21,6 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @version $Id$
  */
-@Contracts
 public abstract class Expr<D> {
 
     private final Class<? extends D> type;

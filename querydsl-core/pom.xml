@@ -33,12 +33,6 @@
       <version>0.1.4</version>
     </dependency>
 
-   <dependency>
-     <groupId>com.mysema.contracts</groupId>
-     <artifactId>contracts</artifactId>
-     <version>0.1.2</version>
-   </dependency>
-
     <!-- alias dependencies -->
 
     <dependency>

@@ -7,7 +7,6 @@ package com.mysema.query.jdoql;
 
 import java.io.Closeable;
 
-import com.mysema.contracts.Contracts;
 import com.mysema.query.Detachable;
 import com.mysema.query.Projectable;
 import com.mysema.query.QueryModifiers;
@@ -23,7 +22,6 @@ import com.mysema.query.types.path.PEntityCollection;
  * @author tiwe
  * 
  */
-@Contracts
 public interface JDOQLQuery extends Projectable, Closeable, Detachable {
 
     JDOQLQuery from(PEntity<?>... o);

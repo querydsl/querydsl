@@ -6,7 +6,6 @@
 package com.mysema.query.codegen;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.contracts.Contracts;
 
 /**
  * FieldModel represents a field / property in a query domain type.
@@ -14,7 +13,6 @@ import com.mysema.contracts.Contracts;
  * @author tiwe
  * @version $Id$
  */
-@Contracts
 public class FieldModel implements Comparable<FieldModel> {
 
     private String name;

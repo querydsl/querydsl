@@ -13,8 +13,6 @@ import java.util.TreeSet;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.contracts.Contracts;
-import com.mysema.contracts.Optional;
 
 /**
  * ClassModel represents a query domain type.
@@ -22,7 +20,6 @@ import com.mysema.contracts.Optional;
  * @author tiwe
  * @version $Id$
  */
-@Contracts
 public class ClassModel implements Comparable<ClassModel> {
     
     public static ClassModel createFor(Class<?> key){
@@ -78,7 +75,7 @@ public class ClassModel implements Comparable<ClassModel> {
 
 //    private boolean listsAsCollections;    
 
-    public ClassModel(@Optional String superType, String packageName, String name, String simpleName) {
+    public ClassModel(String superType, String packageName, String name, String simpleName) {
         this.superType = superType;
         this.packageName = Assert.notNull(packageName,"packageName is null");
         this.name = Assert.notNull(name,"name is null");

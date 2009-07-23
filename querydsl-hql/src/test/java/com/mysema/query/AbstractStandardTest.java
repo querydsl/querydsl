@@ -16,7 +16,6 @@ import org.hibernate.Session;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.contracts.proxy.ProxyFactory;
 import com.mysema.query.hql.HQLQuery;
 import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.QCat;
@@ -36,7 +35,7 @@ public abstract class AbstractStandardTest {
     private List<Cat> savedCats = new ArrayList<Cat>();
     
     private HQLQuery query(){
-        return ProxyFactory.create(HQLQuery.class, new HQLQueryImpl(session));
+        return new HQLQueryImpl(session);
     }
     
     private StandardTest standardTest = new StandardTest(new StandardTestData(){        

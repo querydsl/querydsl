@@ -5,7 +5,6 @@
  */
 package com.mysema.query.hql;
 
-import com.mysema.contracts.Contracts;
 import com.mysema.query.Detachable;
 import com.mysema.query.Projectable;
 import com.mysema.query.QueryModifiers;
@@ -21,7 +20,6 @@ import com.mysema.query.types.path.PEntityCollection;
  * @author tiwe
  *
  */
-@Contracts
 public interface HQLQuery extends Projectable, Detachable{
     
     HQLQuery from(PEntity<?>... o);

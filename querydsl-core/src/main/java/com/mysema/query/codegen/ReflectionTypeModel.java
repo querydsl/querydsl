@@ -15,7 +15,6 @@ import java.util.Map;
 import org.apache.commons.lang.ClassUtils;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.contracts.Contracts;
 import com.mysema.query.annotations.Literal;
 import com.mysema.query.util.TypeUtil;
 
@@ -24,7 +23,6 @@ import com.mysema.query.util.TypeUtil;
  * @author tiwe
  *
  */
-@Contracts
 public class ReflectionTypeModel extends InspectingTypeModel implements TypeModel{
     
     private static Map<List<Type>,TypeModel> cache = new HashMap<List<Type>,TypeModel>();
