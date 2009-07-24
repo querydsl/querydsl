@@ -51,13 +51,13 @@ public class DerbyTest extends SqlQueryTest {
 
         // employee
         // stmt.execute("drop table employee if exists");
-        safeExecute(stmt, "drop table employee");
-        stmt.execute("create table employee(id int, "
+        safeExecute(stmt, "drop table employee2");
+        stmt.execute("create table employee2(id int, "
                 + "firstname VARCHAR(50), " + "lastname VARCHAR(50), "
                 + "salary decimal(10, 2), " + "superior_id int, "
                 + "CONSTRAINT PK_employee PRIMARY KEY (id), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) "
-                + "REFERENCES employee(ID))");
+                + "REFERENCES employee2(ID))");
         addEmployee(1, "Mike", "Smith", 160000, -1);
         addEmployee(2, "Mary", "Smith", 140000, -1);
 
@@ -98,7 +98,7 @@ public class DerbyTest extends SqlQueryTest {
     private static void addEmployee(int id, String firstName, String lastName,
             double salary, int superiorId) throws Exception {
         stmtHolder.get().execute(
-                "insert into employee values(" + id + ", '" + firstName
+                "insert into employee2 values(" + id + ", '" + firstName
                         + "', '" + lastName + "', " + salary + ", "
                         + (superiorId <= 0 ? "null" : ("" + superiorId)) + ")");
     }

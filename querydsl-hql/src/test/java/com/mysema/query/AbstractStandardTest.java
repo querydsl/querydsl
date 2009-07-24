@@ -80,16 +80,18 @@ public abstract class AbstractStandardTest {
     public void test(){
         Cat kitten = savedCats.get(0);        
         Cat noKitten = savedCats.get(savedCats.size()-1);
+        
         standardTest.booleanTests(cat.name.isNull(), otherCat.kittens.isEmpty());
         standardTest.collectionTests(cat.kittens, otherCat.kittens, kitten, noKitten);
-        standardTest.dateTests(null, null, null);
+//        standardTest.dateTests(null, null, null);
         standardTest.dateTimeTests(cat.birthdate, otherCat.birthdate, new Date());
         standardTest.listTests(cat.kittens, otherCat.kittens, kitten, noKitten);
 //        standardTest.mapTests(cat.kittensByName, otherCat.kittensByName, "Kitty", kitten);
         standardTest.numericCasts(cat.id, otherCat.id, 1);
         standardTest.numericTests(cat.id, otherCat.id, 1);
         standardTest.stringTests(cat.name, otherCat.name, "Bob");
-        standardTest.timeTests(null, null, null);
+//        standardTest.timeTests(null, null, null);
+        
         standardTest.report();        
     }
         

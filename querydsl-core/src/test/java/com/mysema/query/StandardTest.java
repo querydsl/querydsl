@@ -51,16 +51,21 @@ public abstract class StandardTest {
         execute(testData.collectionProjections(expr, other, knownElement));
     }
     
+    @SuppressWarnings("unchecked")
     public <A extends Comparable> void dateTests(EDate<A> expr, EDate<A> other, A knownValue){
-//        execute(testData.dateMatchingFilters(expr, other, knownValue), true);
-//        execute(testData.dateFilters(expr, other, knownValue), false);
-//        execute(testData.dateProjections(expr, other, knownValue));
+        execute(testData.dateMatchingFilters(expr, other, knownValue), true);
+        execute(testData.dateFilters(expr, other, knownValue), false);
+        execute(testData.dateProjections(expr, other, knownValue));
     }
     
+    @SuppressWarnings("unchecked")
     public <A extends Comparable> void timeTests(ETime<A> expr, ETime<A> other, A knownValue){
-        // TODO
+        execute(testData.timeMatchingFilters(expr, other, knownValue), true);
+        execute(testData.timeFilters(expr, other, knownValue), false);
+        execute(testData.timeProjections(expr, other, knownValue));
     }
     
+    @SuppressWarnings("unchecked")
     public <A extends Comparable> void dateTimeTests(EDateTime<A> expr, EDateTime<A> other, A knownValue){
         execute(testData.dateTimeMatchingFilters(expr, other, knownValue), true);
         execute(testData.dateTimeFilters(expr, other, knownValue), false);
@@ -136,14 +141,18 @@ public abstract class StandardTest {
 
     public void report() {
         if (!failures.isEmpty() || !errors.isEmpty()){
+            // System.err logging
             System.err.println(failures.size() + " failures");
             for (String f : failures){
                 System.err.println(f);
             }
+            System.err.println();
             System.err.println(errors.size() + " errors");
             for (String e : errors){
                 System.err.println(e);
             }
+            
+            // construct String for Assert.fail()
             StringBuffer buffer = new StringBuffer("Failed with ");
             if (!failures.isEmpty()){
                 buffer.append(failures.size()).append(" failure(s) ");

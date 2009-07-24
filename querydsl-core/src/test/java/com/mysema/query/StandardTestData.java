@@ -21,6 +21,7 @@ import com.mysema.query.types.expr.EList;
 import com.mysema.query.types.expr.EMap;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.ETime;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.Path;
 
@@ -78,9 +79,17 @@ class StandardTestData {
     
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<EBoolean> dateFilters(EDate<A> expr, EDate<A> other, A knownValue){
-        return Collections.emptyList();
+        List<EBoolean> rv = new ArrayList<EBoolean>();
+        rv.addAll(comparableFilters(expr, other, knownValue));
+        rv.addAll(Arrays.<EBoolean>asList(
+          expr.getDayOfMonth().eq(other.getDayOfMonth()),
+          expr.getMonth().eq(other.getMonth()),
+          expr.getYear().eq(other.getYear())
+        ));        
+        return rv;
     }
     
+    @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<EBoolean> dateMatchingFilters(EDate<A> expr, EDate<A> other, A knownValue){
         return Collections.emptyList();
     }
@@ -95,20 +104,53 @@ class StandardTestData {
     }
     
     @SuppressWarnings("unchecked")
+    <A extends Comparable> Collection<EBoolean> timeFilters(ETime<A> expr, ETime<A> other, A knownValue){
+        List<EBoolean> rv = new ArrayList<EBoolean>();
+        rv.addAll(comparableFilters(expr, other, knownValue));
+        rv.addAll(Arrays.<EBoolean>asList(
+          expr.getHours().eq(other.getHours()),
+          expr.getMinutes().eq(other.getMinutes()),
+          expr.getSeconds().eq(other.getSeconds())
+        ));        
+        return rv;
+    }
+    
+    @SuppressWarnings("unchecked")
+    <A extends Comparable> Collection<EBoolean> timeMatchingFilters(ETime<A> expr, ETime<A> other, A knownValue){
+        return Collections.emptyList();
+    }
+    
+    @SuppressWarnings("unchecked")
+    <A extends Comparable> Collection<Expr<?>> timeProjections(ETime<A> expr, ETime<A> other, A knownValue){
+        return Arrays.<Expr<?>>asList(
+          expr.getHours(),
+          expr.getMinutes(),
+          expr.getSeconds()
+        );
+    }
+    
+    @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<EBoolean> dateTimeFilters(EDateTime<A> expr, EDateTime<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(comparableFilters(expr, other, knownValue));
         rv.addAll(Arrays.<EBoolean>asList(
           expr.getDayOfMonth().eq(1),
+          expr.getDayOfMonth().eq(other.getDayOfMonth()),
           expr.getMonth().eq(1),
+          expr.getMonth().eq(other.getMonth()),
           expr.getYear().eq(2000),
+          expr.getYear().eq(other.getYear()),
           expr.getHours().eq(1),
+          expr.getHours().eq(other.getHours()),
           expr.getMinutes().eq(1),
-          expr.getSeconds().eq(1)
+          expr.getMinutes().eq(other.getMinutes()),
+          expr.getSeconds().eq(1),
+          expr.getSeconds().eq(other.getSeconds())
         ));
         return rv;
     }
     
+    @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<EBoolean> dateTimeMatchingFilters(EDateTime<A> expr, EDateTime<A> other, A knownValue){
         return Collections.emptyList();
     }
@@ -270,6 +312,7 @@ class StandardTestData {
             expr.notBetween("A", "Z"),
             expr.contains(other),
             expr.contains(knownValue.substring(0,1)),
+            expr.contains(knownValue.substring(1,2)),
             expr.endsWith(other),
             expr.endsWith(knownValue.substring(1)),            
             expr.equalsIgnoreCase(other),
@@ -317,6 +360,8 @@ class StandardTestData {
             expr.startsWith(knownValue,false),
             expr.contains(other),
             expr.contains(knownValue),
+            expr.contains(knownValue.substring(0,1)),
+            expr.contains(knownValue.substring(1,2)),
             other.startsWith(expr),
             other.endsWith(expr),
             other.contains(expr),

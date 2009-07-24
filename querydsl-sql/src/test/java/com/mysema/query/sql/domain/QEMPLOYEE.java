@@ -29,10 +29,10 @@ public class QEMPLOYEE extends PEntity<java.lang.Object> {
             java.lang.Integer.class);
 
     public QEMPLOYEE(java.lang.String path) {
-        super(java.lang.Object.class, "employee", path);
+        super(java.lang.Object.class, "employee2", path);
     }
 
     public QEMPLOYEE(PathMetadata<?> metadata) {
-        super(java.lang.Object.class, "employee", metadata);
+        super(java.lang.Object.class, "employee2", metadata);
     }
 }

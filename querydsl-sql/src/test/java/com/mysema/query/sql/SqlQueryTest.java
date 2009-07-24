@@ -247,7 +247,7 @@ public abstract class SqlQueryTest {
     @ExcludeIn( { "oracle", "derby" })
     public void testLimitAndOffset() throws SQLException {
         // limit offset
-        expectedQuery = "select employee.id from employee employee limit 4 offset 3";
+        expectedQuery = "select employee.id from employee2 employee limit 4 offset 3";
         q().from(employee).limit(4).offset(3).list(employee.id);
     }
 
@@ -272,9 +272,9 @@ public abstract class SqlQueryTest {
     @Test
     public void testSubQueries() throws SQLException {
         // subquery in where block
-        expectedQuery = "select employee.id from employee employee "
+        expectedQuery = "select employee.id from employee2 employee "
                 + "where employee.id = (select max(employee.id) "
-                + "from employee employee)";
+                + "from employee2 employee)";
         List<Integer> list = q().from(employee).where(
 //                employee.id.eq(select(Grammar.max(employee.id)).from(employee))).list(
                 employee.id.eq(q().from(employee).uniqueExpr(AggregationFunctions.max(employee.id)))).list(

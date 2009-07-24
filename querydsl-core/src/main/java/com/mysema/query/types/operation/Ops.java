@@ -114,15 +114,14 @@ public interface Ops {
     // subquery operations
     Operator<Boolean> EXISTS = new OperatorImpl<Boolean>(Object.class);
 
-    public static final List<Operator<?>> equalsOps = Collections.unmodifiableList(Arrays.<Operator<?>> asList(EQ_OBJECT, EQ_PRIMITIVE));
+    public static final List<Operator<?>> equalsOps = unmodifiableList(Arrays.<Operator<?>> asList(EQ_OBJECT, EQ_PRIMITIVE));
 
-    public static final List<Operator<?>> notEqualsOps = Collections.unmodifiableList(Arrays.<Operator<?>> asList(NE_OBJECT, NE_PRIMITIVE));
+    public static final List<Operator<?>> notEqualsOps = unmodifiableList(Arrays.<Operator<?>> asList(NE_OBJECT, NE_PRIMITIVE));
 
-    public static final List<Operator<?>> compareOps = Collections.unmodifiableList(Arrays.<Operator<?>> asList(EQ_OBJECT, EQ_PRIMITIVE,LT, GT, GOE, LOE));
+    public static final List<Operator<?>> compareOps = unmodifiableList(Arrays.<Operator<?>> asList(EQ_OBJECT, EQ_PRIMITIVE,LT, GT, GOE, LOE));
 
     /**
-     * @author tiwe
-     *
+     * Boolean operators
      */
     public interface BooleanOps {
         Operator<Boolean> XNOR = new OperatorImpl<Boolean>(Boolean_x_2);
@@ -188,7 +187,7 @@ public interface Ops {
     
 
     /**
-     * The Interface OpQuant.
+     * Quantification operators
      */
     public interface QuantOps {
         Operator<Number> AVG_IN_COL = new OperatorImpl<Number>(Collection.class);

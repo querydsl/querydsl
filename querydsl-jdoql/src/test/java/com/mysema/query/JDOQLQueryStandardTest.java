@@ -84,7 +84,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
                 
         standardTest.booleanTests(product.name.isNull(), otherProduct.price.lt(10.00));
         standardTest.collectionTests(store.products, otherStore.products, p, p2);
-        standardTest.dateTests(null, null, null);
+//        standardTest.dateTests(null, null, null);
         standardTest.dateTimeTests(product.publicationDate, otherProduct.publicationDate, new Date());
         // NO list support in JDOQL
 //        testData.listTests(store.products, otherStore.products, p);
@@ -92,7 +92,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
         standardTest.numericCasts(product.price, otherProduct.price, 200.0);
         standardTest.numericTests(product.amount, otherProduct.amount, 2);
         standardTest.stringTests(product.name, otherProduct.name, "C5");
-        standardTest.timeTests(null, null, null);
+//        standardTest.timeTests(null, null, null);
         
         standardTest.report();        
     }

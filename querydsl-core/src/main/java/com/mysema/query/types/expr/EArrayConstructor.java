@@ -15,6 +15,7 @@ package com.mysema.query.types.expr;
 public class EArrayConstructor<D> extends EConstructor<D[]> {
     private Class<D> elementType;
 
+    @SuppressWarnings("unchecked")
     public EArrayConstructor(Class<D> type, Expr<D>... args) {
         super((Class)Object.class, args);
         this.elementType = type;

@@ -73,7 +73,7 @@ public class HQLPatterns extends OperationPatterns {
         add(Ops.UPPER, "upper(%s)");
         add(Ops.EQ_IGNORECASE, "lower(%s) = lower(%s)");
         add(Ops.CHAR_AT, "cast(substring(%s,%s+1,1) as char)");
-        add(Ops.STRING_CONTAINS, "locate(%s,%s) > -1");
+        add(Ops.STRING_CONTAINS, "locate(%2$s,%1$s) > 0");
         add(Ops.ENDSWITH, "locate(%s,%s) > -1"); // FIXME
         add(Ops.ENDSWITH_IC, "locate(lower(%s),lower(%s)) > -1"); // FIXME
         add(Ops.STARTSWITH, "locate(%s,%s) = 0");

@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.functions.AggregationFunctions;
-import com.mysema.query.hql.HQLGrammar;
 import com.mysema.query.hql.HQLPatterns;
 import com.mysema.query.hql.HQLQueryBase;
 import com.mysema.query.types.expr.Expr;
