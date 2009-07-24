@@ -9,8 +9,9 @@ import static java.util.Collections.unmodifiableList;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+
+import com.mysema.query.types.expr.ENumber;
 
 /**
  * Ops provides the operators for the fluent query grammar.
@@ -103,14 +104,6 @@ public interface Ops {
     Operator<Boolean> ENDSWITH_IC = new OperatorImpl<Boolean>(String_x_2);    
     Operator<Boolean> STRING_CONTAINS = new OperatorImpl<Boolean>(String_x_2);
         
-    // aggregation
-    Operator<Number> AVG_AGG = new OperatorImpl<Number>(Number.class);
-    Operator<Number> MAX_AGG = new OperatorImpl<Number>(Number.class);
-    Operator<Number> MIN_AGG = new OperatorImpl<Number>(Number.class);
-    Operator<Number> SUM_AGG = new OperatorImpl<Number>(Number.class);
-    Operator<Number> COUNT_AGG = new OperatorImpl<Number>(Object.class);
-    Operator<Number> COUNT_ALL_AGG = new OperatorImpl<Number>();
-
     // subquery operations
     Operator<Boolean> EXISTS = new OperatorImpl<Boolean>(Object.class);
 
@@ -120,6 +113,19 @@ public interface Ops {
 
     public static final List<Operator<?>> compareOps = unmodifiableList(Arrays.<Operator<?>> asList(EQ_OBJECT, EQ_PRIMITIVE,LT, GT, GOE, LOE));
 
+    /**
+     * Aggreation operators
+     */
+    public interface AggOps{
+        Operator<Number> AVG_AGG = new OperatorImpl<Number>(Number.class);
+        Operator<Number> MAX_AGG = new OperatorImpl<Number>(Number.class);
+        Operator<Number> MIN_AGG = new OperatorImpl<Number>(Number.class);
+        Operator<Number> SUM_AGG = new OperatorImpl<Number>(Number.class);
+        Operator<Number> COUNT_AGG = new OperatorImpl<Number>(Object.class);
+        Operator<Number> COUNT_ALL_AGG = new OperatorImpl<Number>();
+        ENumber<Long> COUNT_ALL_AGG_EXPR = ONumber.create(Long.class, COUNT_ALL_AGG);
+    }
+    
     /**
      * Boolean operators
      */

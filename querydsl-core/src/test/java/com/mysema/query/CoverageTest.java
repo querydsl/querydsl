@@ -72,12 +72,12 @@ public class CoverageTest {
             Ops.STRING_CAST,
                 
             // aggregation
-            Ops.AVG_AGG,
-            Ops.MAX_AGG,
-            Ops.MIN_AGG,
-            Ops.SUM_AGG,
-            Ops.COUNT_AGG,
-            Ops.COUNT_ALL_AGG,
+            Ops.AggOps.AVG_AGG,
+            Ops.AggOps.MAX_AGG,
+            Ops.AggOps.MIN_AGG,
+            Ops.AggOps.SUM_AGG,
+            Ops.AggOps.COUNT_AGG,
+            Ops.AggOps.COUNT_ALL_AGG,
             Ops.EXISTS
          ));        
              

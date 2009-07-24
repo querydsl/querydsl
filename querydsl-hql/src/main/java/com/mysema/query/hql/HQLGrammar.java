@@ -71,7 +71,7 @@ public class HQLGrammar {
         }else if (type.equals(Float.class)){
             type = Double.class;
         }            
-        return ONumber.create((Class<D>) type, Ops.SUM_AGG, left);
+        return ONumber.create((Class<D>) type, Ops.AggOps.SUM_AGG, left);
     }
 
     public static <D extends Number & Comparable<? super D>> ENumber<Long> sumAsLong(Expr<D> left) {

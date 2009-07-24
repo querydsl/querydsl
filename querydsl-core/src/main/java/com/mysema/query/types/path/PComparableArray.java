@@ -26,13 +26,11 @@ public class PComparableArray<D extends Comparable> extends PArray<D> {
 
     @Override
     public EComparable<D> get(Expr<Integer> index) {
-        return new PComparable<D>(componentType, PathMetadata.forArrayAccess(
-                this, index));
+        return new PComparable<D>(componentType, PathMetadata.forArrayAccess(this, index));
     }
 
     @Override
     public EComparable<D> get(int index) {
-        return new PComparable<D>(componentType, PathMetadata.forArrayAccess(
-                this, index));
+        return new PComparable<D>(componentType, PathMetadata.forArrayAccess(this, index));
     }
 }

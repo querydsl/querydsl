@@ -8,7 +8,6 @@ package com.mysema.query;
 import org.junit.Test;
 
 import com.mysema.query.alias.Alias;
-import com.mysema.query.support.CascadingBoolean;
 import com.mysema.query.types.expr.EBoolean;
 
 

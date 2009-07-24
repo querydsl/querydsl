@@ -7,8 +7,8 @@ package com.mysema.query.support;
 
 import com.mysema.query.Detachable;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.functions.AggregationFunctions;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.ObjectSubQuery;
 
@@ -31,7 +31,7 @@ public abstract class QueryBaseWithProjectionAndDetach
     
     @Override
     public ObjectSubQuery<Long> countExpr(){
-        addToProjection(AggregationFunctions.count());
+        addToProjection(Ops.AggOps.COUNT_ALL_AGG_EXPR);
         return new ObjectSubQuery<Long>(getMetadata(), Long.class);
     }
 

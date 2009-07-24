@@ -157,12 +157,12 @@ public class OperationPatterns {
         add(PathType.VARIABLE, "%s");
 
         // numeric aggregates
-        add(Ops.AVG_AGG, "avg(%s)");
-        add(Ops.MAX_AGG, "max(%s)");
-        add(Ops.MIN_AGG, "min(%s)");
-        add(Ops.SUM_AGG, "sum(%s)");
-        add(Ops.COUNT_AGG, "count(%s)");
-        add(Ops.COUNT_ALL_AGG, "count(*)");
+        add(Ops.AggOps.AVG_AGG, "avg(%s)");
+        add(Ops.AggOps.MAX_AGG, "max(%s)");
+        add(Ops.AggOps.MIN_AGG, "min(%s)");
+        add(Ops.AggOps.SUM_AGG, "sum(%s)");
+        add(Ops.AggOps.COUNT_AGG, "count(%s)");
+        add(Ops.AggOps.COUNT_ALL_AGG, "count(*)");
         
 
         // quantified expressions

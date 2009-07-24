@@ -18,6 +18,13 @@ package com.mysema.query.types.expr;
 public interface EMap<K, V> {
     
     /**
+     * @param key
+     * @param value
+     * @return
+     */
+    EBoolean contains(Expr<K> key, Expr<V> value);
+    
+    /**
      * Create a <code>this.containsKey(key)</code> expression
      * 
      * @param key

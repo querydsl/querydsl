@@ -13,6 +13,8 @@ import com.mysema.query.types.operation.Ops;
 
 
 /**
+ * ECollectionBase is an abstract base class for ECollection implementations
+ * 
  * @author tiwe
  *
  * @param <D>
@@ -24,9 +26,8 @@ public abstract class ECollectionBase<D> extends Expr<java.util.Collection<D>> i
     }
    
     private ENumber<Integer> size;    
+    
     private EBoolean empty;
-    private EBoolean notEmpty;
-
     
     @Override
     public final EBoolean contains(D child) {
@@ -48,10 +49,7 @@ public abstract class ECollectionBase<D> extends Expr<java.util.Collection<D>> i
 
     @Override
     public final EBoolean isNotEmpty() {
-        if (notEmpty == null){
-            notEmpty = isEmpty().not(); 
-        }
-        return notEmpty; 
+        return isEmpty().not();  
     }
 
     @Override

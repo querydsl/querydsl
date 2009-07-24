@@ -21,27 +21,27 @@ public final class AggregationFunctions {
     private AggregationFunctions(){}
 
     public static <A extends Number & Comparable<?>> ENumber<Double> avg( Expr<A> left) {
-        return ONumber.create(Double.class, Ops.AVG_AGG, left);
+        return ONumber.create(Double.class, Ops.AggOps.AVG_AGG, left);
     }
 
     public static ENumber<Long> count() {
-        return ONumber.create(Long.class, Ops.COUNT_ALL_AGG);        
+        return Ops.AggOps.COUNT_ALL_AGG_EXPR;        
     }
 
     public static ENumber<Long> count(Expr<?> expr) {
-        return ONumber.create(Long.class, Ops.COUNT_AGG, expr);
+        return ONumber.create(Long.class, Ops.AggOps.COUNT_AGG, expr);
     }
 
     public static <A extends Number & Comparable<?>> ENumber<A> max( Expr<A> left) {
-        return ONumber.create(left.getType(), Ops.MAX_AGG, left);
+        return ONumber.create(left.getType(), Ops.AggOps.MAX_AGG, left);
     }
 
     public static <A extends Number & Comparable<?>> ENumber<A> min( Expr<A> left) {
-        return ONumber.create(left.getType(), Ops.MIN_AGG, left);
+        return ONumber.create(left.getType(), Ops.AggOps.MIN_AGG, left);
     }
 
     public static <A extends Number & Comparable<?>> ENumber<Double> sum( Expr<A> left) {
-        return ONumber.create(Double.class, Ops.SUM_AGG, left);
+        return ONumber.create(Double.class, Ops.AggOps.SUM_AGG, left);
     }
     
 }
