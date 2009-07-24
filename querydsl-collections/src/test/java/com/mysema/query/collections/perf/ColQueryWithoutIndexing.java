@@ -6,11 +6,11 @@ package com.mysema.query.collections.perf;
 import java.util.List;
 import java.util.Map;
 
-import com.mysema.query.collections.ColQueryImpl;
-import com.mysema.query.collections.ColQueryPatterns;
-import com.mysema.query.collections.QueryIndexSupport;
-import com.mysema.query.collections.support.SimpleIndexSupport;
-import com.mysema.query.collections.support.SimpleIteratorSource;
+import com.mysema.query.collections.eval.ColQueryPatterns;
+import com.mysema.query.collections.impl.ColQueryImpl;
+import com.mysema.query.collections.impl.QueryIndexSupport;
+import com.mysema.query.collections.impl.SimpleIndexSupport;
+import com.mysema.query.collections.impl.SimpleIteratorSource;
 import com.mysema.query.types.expr.Expr;
 
 class ColQueryWithoutIndexing extends ColQueryImpl {

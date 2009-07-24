@@ -4,7 +4,7 @@ package com.mysema.query.collections.perf;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mysema.query.collections.AbstractQueryTest;
+import com.mysema.query.collections.impl.AbstractQueryTest;
 import com.mysema.query.types.expr.EBoolean;
 
 public abstract class AbstractPerformanceTest extends AbstractQueryTest{

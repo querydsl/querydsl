@@ -17,6 +17,7 @@ import org.junit.Test;
 
 import com.mysema.query.alias.Alias;
 import com.mysema.query.collections.IteratorSource;
+import com.mysema.query.collections.impl.MultiIterator;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 

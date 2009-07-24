@@ -13,10 +13,10 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
-import com.mysema.query.collections.ColQueryImpl;
-import com.mysema.query.collections.ColQueryPatterns;
 import com.mysema.query.collections.domain.Cat;
+import com.mysema.query.collections.eval.ColQueryPatterns;
 import com.mysema.query.collections.eval.JavaSerializer;
+import com.mysema.query.collections.impl.ColQueryImpl;
 import com.mysema.query.types.expr.EBoolean;
 
 /**

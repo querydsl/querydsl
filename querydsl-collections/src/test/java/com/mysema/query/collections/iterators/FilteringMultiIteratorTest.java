@@ -15,12 +15,13 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.mysema.query.alias.Alias;
-import com.mysema.query.collections.ColQueryPatterns;
-import com.mysema.query.collections.QueryIndexSupport;
 import com.mysema.query.collections.domain.Cat;
 import com.mysema.query.collections.domain.QCat;
-import com.mysema.query.collections.support.DefaultIndexSupport;
-import com.mysema.query.collections.support.SimpleIteratorSource;
+import com.mysema.query.collections.eval.ColQueryPatterns;
+import com.mysema.query.collections.impl.DefaultIndexSupport;
+import com.mysema.query.collections.impl.FilteringMultiIterator;
+import com.mysema.query.collections.impl.QueryIndexSupport;
+import com.mysema.query.collections.impl.SimpleIteratorSource;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
