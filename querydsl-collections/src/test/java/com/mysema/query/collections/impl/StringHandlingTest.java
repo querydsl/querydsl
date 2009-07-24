@@ -14,8 +14,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.collections.impl.MiniApi;
-
 /**
  * StringHandlingTest provides
  * 

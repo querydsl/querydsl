@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.impl.eval;
+package com.mysema.query.collections.eval;
 
 /**
  * Evaluator defines an interface for evaluating Querydsl expressions

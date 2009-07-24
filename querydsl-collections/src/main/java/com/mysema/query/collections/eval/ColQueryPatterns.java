@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.impl.eval;
+package com.mysema.query.collections.eval;
 
 import com.mysema.query.serialization.JavaPatterns;
 import com.mysema.query.types.operation.Ops;

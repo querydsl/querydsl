@@ -13,7 +13,6 @@ import org.junit.Test;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
-import com.mysema.query.collections.impl.JoinExpressionComparator;
 import com.mysema.query.types.expr.EBoolean;
 
 /**

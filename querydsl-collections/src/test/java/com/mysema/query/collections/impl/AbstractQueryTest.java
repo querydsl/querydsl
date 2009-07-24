@@ -14,7 +14,6 @@ import org.junit.Before;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.collections.domain.Cat;
 import com.mysema.query.collections.domain.QCat;
-import com.mysema.query.collections.impl.ColQueryImpl;
 import com.mysema.query.types.expr.Expr;
 
 /**

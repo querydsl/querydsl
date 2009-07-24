@@ -13,7 +13,6 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import com.mysema.query.collections.domain.Cat;
-import com.mysema.query.collections.impl.MiniApi;
 
 
 /**

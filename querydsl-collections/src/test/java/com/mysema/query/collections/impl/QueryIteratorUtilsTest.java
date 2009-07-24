@@ -16,7 +16,6 @@ import org.junit.Test;
 import com.mysema.query.collections.eval.ColQueryPatterns;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.eval.EvaluatorFactory;
-import com.mysema.query.collections.impl.QueryIteratorUtils;
 
 /**
  * QueryIteratorUtilsTest provides

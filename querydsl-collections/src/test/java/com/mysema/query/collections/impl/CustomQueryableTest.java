@@ -13,8 +13,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.query.collections.impl.CustomQueryable;
-import com.mysema.query.collections.impl.SimpleIteratorSource;
 import com.mysema.query.types.path.PString;
 
 /**

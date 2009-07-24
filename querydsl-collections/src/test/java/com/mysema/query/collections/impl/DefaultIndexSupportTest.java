@@ -16,8 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.collections.eval.ColQueryPatterns;
-import com.mysema.query.collections.impl.DefaultIndexSupport;
-import com.mysema.query.collections.impl.SimpleIteratorSource;
 import com.mysema.query.types.expr.Expr;
 
 /**
