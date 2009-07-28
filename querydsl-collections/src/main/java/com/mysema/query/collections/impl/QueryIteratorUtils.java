@@ -92,6 +92,7 @@ public class QueryIteratorUtils {
      * @param ev
      * @return
      */
+    @SuppressWarnings("unchecked")
     public static <S, T> Map<S, ? extends Iterable<T>> projectToMap(
             Iterator<T> source, Evaluator ev) {
         int size = 300;

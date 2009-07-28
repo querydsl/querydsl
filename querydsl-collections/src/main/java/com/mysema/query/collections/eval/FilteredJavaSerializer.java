@@ -70,6 +70,7 @@ public class FilteredJavaSerializer extends JavaSerializer {
         return expr.replace("&& true", "").replace("true &&", "");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator,
             List<Expr<?>> args) {

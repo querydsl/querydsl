@@ -63,6 +63,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer> {
      * @throws ParseException
      * @throws ScanException
      */
+    @SuppressWarnings("unchecked")
     public ExpressionEvaluator createExpressionEvaluator(
             List<? extends Expr<?>> sources, Class<?> targetType)
             throws CompileException, ParseException, ScanException {

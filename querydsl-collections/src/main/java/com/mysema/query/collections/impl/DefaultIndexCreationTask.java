@@ -50,6 +50,7 @@ public class DefaultIndexCreationTask {
         this.condition = Assert.notNull(condition);
     }
 
+    @SuppressWarnings("unchecked")
     private void indexPathEqExpr(Path<?> path, Expr<?> key) {
         if (!indexSupport.isIndexed(path.getRoot())) {
             indexSupport.indexToHash(path);
@@ -59,7 +60,6 @@ public class DefaultIndexCreationTask {
             if (key instanceof EConstant) {
                 final Object constant = ((EConstant<?>) key).getConstant();
                 keyCreator = new Evaluator() {
-                    @SuppressWarnings("unchecked")
                     public <T> T evaluate(Object... args) {
                         return (T) constant;
                     }
@@ -87,12 +87,14 @@ public class DefaultIndexCreationTask {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void run() {
         if (condition instanceof Operation) {
             visitOperation((Operation<?, ?>) condition);
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void visitOperation(Operation<?, ?> op) {
         if (op.getOperator() == Ops.EQ_OBJECT
                 || op.getOperator() == Ops.EQ_PRIMITIVE) {

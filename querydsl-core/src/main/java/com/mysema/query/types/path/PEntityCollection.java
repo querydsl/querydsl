@@ -59,6 +59,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
         return new OBoolean(Ops.IN, child, this);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {
         return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata) : false;

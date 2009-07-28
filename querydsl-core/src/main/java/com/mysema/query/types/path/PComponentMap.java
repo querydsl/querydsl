@@ -44,6 +44,7 @@ public class PComponentMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {
     }
 
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {
         return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata) : false;

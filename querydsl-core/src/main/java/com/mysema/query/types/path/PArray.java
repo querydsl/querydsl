@@ -31,7 +31,7 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>{
 
     @SuppressWarnings("unchecked")
     public PArray(Class<D> type, PathMetadata<?> metadata) {
-        super(null);
+        super((Class)Object[].class);
         this.arrayType = (Class<D[]>) Array.newInstance(type, 0).getClass();
         this.componentType = type;
         this.metadata = metadata;
@@ -42,6 +42,7 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>{
         this(type, PathMetadata.forVariable(var));
     }
 
+    @SuppressWarnings("unchecked")
     public boolean equals(Object o) {
         return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
                 : false;

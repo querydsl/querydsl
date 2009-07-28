@@ -156,6 +156,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
 
     }
     
+    @SuppressWarnings("unchecked")
     protected void visitOperation(Class<?> type, Operator<?> operator,List<Expr<?>> args) {
         String pattern = patterns.getPattern(operator);
         if (pattern == null) {

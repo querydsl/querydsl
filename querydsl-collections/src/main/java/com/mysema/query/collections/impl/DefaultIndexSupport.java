@@ -50,6 +50,7 @@ public class DefaultIndexSupport extends SimpleIndexSupport {
         return this;
     }
 
+    @SuppressWarnings("unchecked")
     public DefaultIndexSupport getChildFor(EBoolean condition) {
         if (condition == null) {
             return this;

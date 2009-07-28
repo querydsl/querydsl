@@ -38,6 +38,7 @@ public class PComponentCollection<D> extends ECollectionBase<D> implements PColl
         this(type, PathMetadata.forVariable(var));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {
         return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)

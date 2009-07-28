@@ -41,6 +41,7 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
         super(patterns);
     }
 
+    @SuppressWarnings("unchecked")
     public void serialize(QueryMetadata metadata,
             boolean forCountRow) {
         List<? extends Expr<?>> select = metadata.getProjection();
@@ -128,6 +129,7 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void visit(EConstant<?> expr) {
         boolean wrap = expr.getConstant().getClass().isArray()

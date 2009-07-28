@@ -51,6 +51,7 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         this.pm = pm;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected SubType addToProjection(Expr<?>... o) {
         for (Expr<?> expr : o) {

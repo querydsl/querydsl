@@ -36,6 +36,7 @@ public class JoinExpressionComparator implements Comparator<JoinExpression> {
 
     private boolean invert = false;
 
+    @SuppressWarnings("unchecked")
     public JoinExpressionComparator(EBoolean where) {
         if (where instanceof Operation) {
             visitOperation((Operation<?, ?>) where);
@@ -60,6 +61,7 @@ public class JoinExpressionComparator implements Comparator<JoinExpression> {
         return invert ? -rv : rv;
     }
 
+    @SuppressWarnings("unchecked")
     protected void visitOperation(Operation<?, ?> op) {
         List<Expr<?>> involved = new ArrayList<Expr<?>>();
         boolean constantInvolved = false;

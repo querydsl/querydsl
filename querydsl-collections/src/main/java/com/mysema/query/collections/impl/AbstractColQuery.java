@@ -117,6 +117,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
         }
     }
 
+    @SuppressWarnings("unchecked")
     private boolean changeToUnionQuery(EBoolean condition) {
         return sequentialUnion && condition instanceof Operation
                 && ((Operation<?, ?>) condition).getOperator() == Ops.OR;

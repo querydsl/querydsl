@@ -56,6 +56,7 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
         this.candidatePath = candidate;
     }
     
+    @SuppressWarnings("unchecked")
     public void serialize(QueryMetadata metadata, boolean forCountRow, boolean subquery) {
         List<? extends Expr<?>> select = metadata.getProjection();
         List<JoinExpression> joins = metadata.getJoins();
@@ -79,8 +80,7 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
             handle(", ", select);
         }
         
-        // FROM
-        
+        // FROM        
         append("\nFROM ");
         if (source instanceof Operation && subquery){
             handle(source);
@@ -89,8 +89,7 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
             if (!source.equals(candidatePath)){
                 append(" ").handle(source);
             }    
-        }
-        
+        }        
 
         // WHERE
         if (where != null) {

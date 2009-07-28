@@ -33,6 +33,7 @@ public class PNumber<D extends Number & Comparable<?>> extends ENumber<D>
         this(type, PathMetadata.forVariable(var));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {
         return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)

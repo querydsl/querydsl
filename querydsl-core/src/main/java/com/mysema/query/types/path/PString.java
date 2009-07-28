@@ -28,6 +28,7 @@ public class PString extends EString implements Path<String> {
         this(PathMetadata.forVariable(var));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {
         return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)

@@ -244,6 +244,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
         return new PTime<A>(type, PathMetadata.forProperty(this, propertyName));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {
         return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)

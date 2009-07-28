@@ -28,8 +28,7 @@ class SimpleAliasFactory implements AliasFactory {
     private FactoryMap<PEntity<?>> pathCache = new FactoryMap<PEntity<?>>() {
         @SuppressWarnings("unused")
         public <A> PEntity<A> create(Class<A> cl, String var) {
-            return new PEntity<A>(cl, cl.getSimpleName(), PathMetadata
-                    .forVariable(var));
+            return new PEntity<A>(cl, cl.getSimpleName(), PathMetadata.forVariable(var));
         }
     };
 
