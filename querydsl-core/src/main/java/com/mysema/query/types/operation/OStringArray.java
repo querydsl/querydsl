@@ -27,7 +27,7 @@ public class OStringArray extends Expr<String[]> implements
     }
 
     public OStringArray(Operator<String> op, List<Expr<?>> args) {
-        super(null);
+        super(String[].class);
         this.op = op;
         this.args = Collections.unmodifiableList(args);
         validate();

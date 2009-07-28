@@ -35,7 +35,7 @@ public abstract class InspectingTypeModel extends SimpleTypeModel {
                 || fullName.equals(java.sql.Timestamp.class.getName())){
             return FieldType.DATETIME;
                         
-        } else if (fullName.equals(java.sql.Time.class)){
+        } else if (fullName.equals(java.sql.Time.class.getName())){
             return FieldType.TIME;
             
         } else if (isComparableSupported(fullName)

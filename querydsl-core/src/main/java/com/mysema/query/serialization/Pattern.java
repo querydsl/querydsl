@@ -36,7 +36,7 @@ public class Pattern {
     
     public interface Element { }
     
-    public class ArgElement implements Element {     
+    public static class ArgElement implements Element {     
         private final int index;        
         ArgElement (int index){
             this.index = index;
@@ -46,7 +46,7 @@ public class Pattern {
         }
     }
     
-    public class TextElement implements Element {
+    public static class TextElement implements Element {
         private final String text;
         TextElement(String text) {
             this.text = text;
