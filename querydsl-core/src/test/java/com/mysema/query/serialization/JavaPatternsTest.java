@@ -5,6 +5,8 @@
  */
 package com.mysema.query.serialization;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 
@@ -14,7 +16,7 @@ public class JavaPatternsTest {
     public void test(){
         JavaPatterns patterns = new JavaPatterns();
         for (String pattern : patterns.patterns.values()){
-            String.format(pattern, "","","","","");
+            assertNotNull(String.format(pattern, "","","","",""));
         }
     }
 

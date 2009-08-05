@@ -2,7 +2,6 @@ package com.mysema.query.jdoql.models.company;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import com.mysema.query.annotations.Entity;
@@ -66,91 +65,4 @@ public class Manager extends Employee {
         this.departments.clear();
     }
 
-    /**
-     * Compares two sets of Person. Returns true if and only if the two sets
-     * contain the same number of objects and each element of the first set has
-     * a corresponding element in the second set whose fields compare equal
-     * according to the compareTo() method.
-     * 
-     * @return <tt>true</tt> if the sets compare equal, <tt>false</tt>
-     *         otherwise.
-     */
-    public static boolean compareSet(Set s1, Set s2) {
-        if (s1 == null) {
-            return s2 == null;
-        } else if (s2 == null) {
-            return false;
-        }
-
-        if (s1.size() != s2.size()) {
-            return false;
-        }
-
-        s2 = new HashSet(s2);
-        Iterator i = s1.iterator();
-        while (i.hasNext()) {
-            Person obj = (Person) i.next();
-
-            boolean found = false;
-            Iterator j = s2.iterator();
-            while (j.hasNext()) {
-                if (obj.compareTo(j.next())) {
-                    j.remove();
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Compares two sets of Person. Returns true if and only if the two sets
-     * contain the same number of objects and each element of the first set has
-     * a corresponding element in the second set whose fields compare equal
-     * according to the compareTo() method.
-     * 
-     * @return <tt>true</tt> if the sets compare equal, <tt>false</tt>
-     *         otherwise.
-     */
-    public static boolean compareElementsContained(Set s1, Set s2) {
-        if (s1 == null) {
-            return s2 == null;
-        } else if (s2 == null) {
-            return false;
-        }
-
-        if (s1.size() != s2.size()) {
-            return false;
-        }
-
-        s2 = new HashSet(s2);
-        Iterator i = s1.iterator();
-        while (i.hasNext()) {
-            Person p1 = (Person) i.next();
-
-            boolean found = false;
-            Iterator j = s2.iterator();
-            while (j.hasNext()) {
-                Person p2 = (Person) j.next();
-                if (p1.getFirstName().equals(p2.getFirstName())
-                        && p1.getLastName().equals(p2.getLastName())) {
-                    j.remove();
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 }

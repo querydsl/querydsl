@@ -24,7 +24,6 @@ import com.mysema.query.types.expr.Expr;
 public class ColTypesTest {
 
     @Test
-    @SuppressWarnings("unused")
     public void testExtString() {
         Expr<Character> echar;
         EBoolean eboolean;
@@ -60,5 +59,11 @@ public class ColTypesTest {
         assertTrue((eboolean = str.startsWith("")) != null);
         // trim
         assertTrue((estring = str.trim()) != null);
+        
+        assertTrue(eboolean != null);
+        assertTrue(echar != null);
+        assertTrue(eint != null);
+        assertTrue(elong != null);
+        assertTrue(estring != null);
     }
 }

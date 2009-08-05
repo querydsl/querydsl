@@ -28,11 +28,13 @@ public class Person implements Cloneable {
     /** Used for the querying of static fields. */
     public static final String FIRSTNAME = "Woody";
 
+    private static Random random = new Random();
+    
     public Person() {
     }
 
     public Person(long num, String first, String last, String email) {
-        globalNum = "global:" + Math.abs(new Random().nextInt());
+        globalNum = "global:" + Math.abs(random.nextInt());
         personNum = num;
         firstName = first;
         lastName = last;
@@ -151,6 +153,8 @@ public class Person implements Cloneable {
     }
 
     public static class Id implements Serializable {
+
+        private static final long serialVersionUID = -4893934512712167318L;
         public long personNum;
         public String globalNum;
 

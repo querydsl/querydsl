@@ -105,12 +105,10 @@ public abstract class AbstractJPAQLQuery<SubType extends AbstractJPAQLQuery<SubT
     }
 
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        // TODO Auto-generated method stub
         return list(projection).iterator();
     }
 
     public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
-        // TODO Auto-generated method stub
         return list(first, second, rest).iterator();
     }
 }

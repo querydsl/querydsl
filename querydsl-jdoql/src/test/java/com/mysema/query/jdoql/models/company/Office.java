@@ -12,7 +12,7 @@ import com.mysema.query.annotations.Entity;
  * An office in the company.
  */
 @Entity
-public class Office implements Cloneable {
+public class Office {
     private long floor; // PK when app-id
     private String roomName; // PK when app-id
 
@@ -114,6 +114,8 @@ public class Office implements Cloneable {
     }
 
     public static class Id implements Serializable {
+
+        private static final long serialVersionUID = -4032898077139179659L;
         public long floor;
         public String roomName;
 

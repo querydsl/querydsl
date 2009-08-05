@@ -1,18 +1,13 @@
 package com.mysema.query;
 
-import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.util.Properties;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.junit.internal.runners.InitializationError;
 import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.notification.RunNotifier;
-
-import com.mysema.query.hql.domain.Domain;
 
 public class JPATestRunner extends JUnit4ClassRunner {
 

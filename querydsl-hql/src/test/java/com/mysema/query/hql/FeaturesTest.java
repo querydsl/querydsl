@@ -88,7 +88,7 @@ public class FeaturesTest extends AbstractQueryTest{
     /**
      * The Class MyCustomExpr.
      */
-    public class MyCustomExpr extends CString {
+    public static class MyCustomExpr extends CString {
         private final List<Expr<?>> args;
 
         public MyCustomExpr(Expr<?>... args) {
@@ -291,10 +291,9 @@ public class FeaturesTest extends AbstractQueryTest{
         assertEquals(BigDecimal.class, sum($(new BigDecimal("0"))).getType());
 
         // sum to var
-
-        @SuppressWarnings("unused")
         ENumber<Long> sum = (ENumber) sum($(0)); // via Java level cast
         sum = sum($(0)).longValue();
+        assertNotNull(sum);
 
         // sum comparison
 

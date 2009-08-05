@@ -56,7 +56,7 @@ public class Employee extends Person  {
         return this.salaryCurrency;
     }
 
-    public synchronized Manager getManager() {
+    public Manager getManager() {
         return this.manager;
     }
 

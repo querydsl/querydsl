@@ -25,6 +25,7 @@ import com.mysema.query.collections.eval.EvaluatorFactory;
  */
 public class QueryIteratorUtilsTest extends AbstractQueryTest {
 
+    @SuppressWarnings("unchecked")
     @Test
     public void projectToMap() {
         Evaluator ev = EvaluatorFactory.create(ColQueryPatterns.DEFAULT, Arrays

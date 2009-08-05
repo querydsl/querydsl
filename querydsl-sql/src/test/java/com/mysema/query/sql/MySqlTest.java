@@ -48,11 +48,15 @@ public class MySqlTest extends SqlQueryTest {
         stmt.execute("create table test(name varchar(255))");
         sql = "insert into test values(?)";
         PreparedStatement pstmt = c.prepareStatement(sql);
-        for (int i = 0; i < 10000; i++) {
-            pstmt.setString(1, "name" + i);
-            pstmt.addBatch();
-        }
-        pstmt.executeBatch();
+        try{
+            for (int i = 0; i < 10000; i++) {
+                pstmt.setString(1, "name" + i);
+                pstmt.addBatch();
+            }
+            pstmt.executeBatch();    
+        }finally{
+            pstmt.close();
+        }       
 
         // employee
         stmt.execute("drop table if exists employee2");

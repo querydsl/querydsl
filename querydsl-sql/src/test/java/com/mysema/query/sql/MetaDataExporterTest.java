@@ -34,10 +34,8 @@ public class MetaDataExporterTest {
             e.setPackageName("com.mysema.query.sql.domain");
             e.export(conn.getMetaData());
         } finally {
-            if (st != null)
-                st.close();
-            if (conn != null)
-                conn.close();
+            st.close();
+            conn.close();
         }
 
     }
