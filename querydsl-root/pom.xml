@@ -32,8 +32,7 @@
   
   <modules>
     <module>../querydsl-core</module>
-    <module>../querydsl-apt</module>
-    <module>../querydsl-apt-jdk5</module>    
+    <module>../querydsl-apt</module> 
     <module>../querydsl-collections</module>
     <module>../querydsl-jdoql</module>    
     <module>../querydsl-hql</module>
