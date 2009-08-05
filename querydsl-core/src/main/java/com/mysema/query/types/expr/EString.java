@@ -32,7 +32,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * @param str
-     * @return
+     * @return this + str
      */
     public final EString add(Expr<String> str) {
         return concat(str);
@@ -40,7 +40,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * @param str
-     * @return
+     * @return this + str
      */
     public final EString add(String str) {
         return concat(str);
@@ -48,7 +48,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * @param i
-     * @return
+     * @return this.charAt(i)
      * @see java.lang.String#charAt(int)
      */
     public final Expr<Character> charAt(Expr<Integer> i) {
@@ -57,7 +57,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * @param i
-     * @return
+     * @return this.charAt(i)
      * @see java.lang.String#charAt(int)
      */
     public final Expr<Character> charAt(int i) {
@@ -66,7 +66,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * @param str
-     * @return
+     * @return this + str
      */
     public final EString concat(Expr<String> str) {
         return new OString(Ops.CONCAT, this, str);
@@ -74,7 +74,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * @param str
-     * @return
+     * @return this + str
      */
     public final EString concat(String str) {
         return concat(EConstant.create(str));
@@ -82,7 +82,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * @param str
-     * @return
+     * @return this.contains(str)
      * @see java.lang.String#contains(CharSequence)
      */
     public final EBoolean contains(Expr<String> str) {
@@ -91,7 +91,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * @param str
-     * @return
+     * @return this.contains(str)
      * @see java.lang.String#contains(CharSequence)
      */
     public final EBoolean contains(String str) {
@@ -100,7 +100,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * @param str
-     * @return
+     * @return this.endsWith(str)
      * @see java.lang.String#endsWith(String)
      */
     public final EBoolean endsWith(Expr<String> str) {
@@ -123,7 +123,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * @param str
-     * @return
+     * @return this.endsWith(str)
      * @see java.lang.String#endsWith(String)
      */
     public final EBoolean endsWith(String str) {
@@ -142,7 +142,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * @param str
-     * @return
+     * @return this.equalsIgnoreCase(str)
      * @see java.lang.String#equalsIgnoreCase(String)
      */
     public final EBoolean equalsIgnoreCase(Expr<String> str) {
@@ -151,7 +151,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * @param str
-     * @return
+     * @return this.equalsIgnoreCase(str)
      * @see java.lang.String#equalsIgnoreCase(String)
      */
     public final EBoolean equalsIgnoreCase(String str) {
@@ -160,7 +160,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * @param str
-     * @return
+     * @return this.indexOf(str)
      * @see java.lang.String#indexOf(String)
      */
     public final ENumber<Integer> indexOf(Expr<String> str) {
@@ -169,7 +169,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * @param str
-     * @return
+     * @return this.indexOf(str)
      * @see java.lang.String#indexOf(String)
      */
     public final ENumber<Integer> indexOf(String str) {
@@ -179,7 +179,7 @@ public abstract class EString extends EComparable<String> {
     /**
      * @param str
      * @param i
-     * @return
+     * @return this.indexOf(str, i)
      * @see java.lang.String#indexOf(String, int)
      */
     public final ENumber<Integer> indexOf(String str, int i) {
@@ -187,7 +187,7 @@ public abstract class EString extends EComparable<String> {
     }
 
     /**
-     * @return
+     * @return this.isEmpty()
      * @see java.lang.String#isEmpty()
      */
     public final EBoolean isEmpty(){
@@ -195,7 +195,7 @@ public abstract class EString extends EComparable<String> {
     }
     
     /**
-     * @return
+     * @return !this.isEmpty()
      * @see java.lang.String#isEmpty()
      */
     public final EBoolean isNotEmpty(){
@@ -207,7 +207,7 @@ public abstract class EString extends EComparable<String> {
      * 
      * @param right
      * @param third
-     * @return
+     * @return this.lastIndexOf(right, third)
      * @see java.lang.String#lastIndexOf(String, int)
      */
     @Optional
@@ -219,7 +219,7 @@ public abstract class EString extends EComparable<String> {
      * Expr : <code>this.lastIndexOf(right)</code>
      * 
      * @param right
-     * @return
+     * @return this.lastIndexOf(right)
      * @see java.lang.String#lastIndexOf(String)
      */
     @Optional
@@ -232,7 +232,7 @@ public abstract class EString extends EComparable<String> {
      * Expr : <code>this.lastIndexOf(right)</code>
      * 
      * @param right
-     * @return
+     * @return this.lastIndexOf(right)
      * @see java.lang.String#lastIndexOf(String)
      */
     @Optional
@@ -241,7 +241,7 @@ public abstract class EString extends EComparable<String> {
     }
 
     /**
-     * @return
+     * @return this.length()
      * @see java.lang.String#length()
      */
     public final ENumber<Long> length() {
@@ -252,7 +252,8 @@ public abstract class EString extends EComparable<String> {
     }
 
     /**
-     * Uses startsWith, endsWith and matches
+     * Delegates to matches.
+     * Going to be removed in some future version.
      * 
      * @param str
      * @return
@@ -264,7 +265,7 @@ public abstract class EString extends EComparable<String> {
     
     /**
      * 
-     * @return
+     * @return this.toLowerCase()
      * @see java.lang.String#toLowerCase()
      */
     public final EString lower() {
@@ -276,7 +277,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * @param regex
-     * @return
+     * @return this.matches(right)
      * @see java.lang.String#matches(String)
      */
     public final EBoolean matches(Expr<String> regex){
@@ -285,7 +286,7 @@ public abstract class EString extends EComparable<String> {
     
     /**
      * @param regex
-     * @return
+     * @return this.matches(regex)
      * @see java.lang.String#matches(String)
      */
     public final EBoolean matches(String regex){
@@ -296,7 +297,7 @@ public abstract class EString extends EComparable<String> {
      * Split the given String with regex as the matcher for the separator
      * 
      * @param regex
-     * @return
+     * @return this.split(regex)
      * @see java.lang.String#split(String)
      */
     @Optional
@@ -306,7 +307,7 @@ public abstract class EString extends EComparable<String> {
     
     /**
      * @param str
-     * @return
+     * @return this.startsWith(str)
      * @see java.lang.String#startsWith(String)
      */
     public final EBoolean startsWith(Expr<String> str) {
@@ -329,7 +330,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * @param str
-     * @return
+     * @return this.startsWith(str)
      * @see java.lang.String#startsWith(String)
      */
     public final EBoolean startsWith(String str) {
@@ -355,7 +356,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * @param beginIndex
-     * @return
+     * @return this.substring(beginIndex)
      * @see java.lang.String#substring(int)
      */
     public final EString substring(int beginIndex) {
@@ -365,7 +366,7 @@ public abstract class EString extends EComparable<String> {
     /**
      * @param beginIndex
      * @param endIndex
-     * @return
+     * @return this.substring(beginIndex, endIndex)
      * @see java.lang.String#substring(int, int)
      */
     public final EString substring(int beginIndex, int endIndex) {
@@ -374,7 +375,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * 
-     * @return
+     * @return this.toLowerCase()
      * @see java.lang.String#toLowerCase()
      */
     public final EString toLowerCase() {

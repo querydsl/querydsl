@@ -20,7 +20,7 @@ public interface ECollection<D>{
      * Create an expression for <code>this.contains(child)</code>
      * 
      * @param child
-     * @return
+     * @return this.contains(child)
      * @see java.util.Collection#contains(Object)
      */
     EBoolean contains(D child);
@@ -43,7 +43,7 @@ public interface ECollection<D>{
     /**
      * Create an expression for <code>this.isEmpty()</code>
      * 
-     * @return
+     * @return this.isEmpty()
      * @see java.util.Collection#isEmpty()
      */
     EBoolean isEmpty();
@@ -51,7 +51,7 @@ public interface ECollection<D>{
     /**
      * Create an expression for <code>!this.isEmpty()</code>
      * 
-     * @return
+     * @return !this.isEmpty()
      * @see java.util.Collection#isEmpty()
      */
     EBoolean isNotEmpty();
@@ -59,7 +59,7 @@ public interface ECollection<D>{
     /**
      * Create an expression for <code>this.size()</code>
      * 
-     * @return
+     * @return this.size()
      * @see java.util.Collection#size()
      */
     ENumber<Integer> size();

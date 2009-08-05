@@ -27,7 +27,7 @@ public abstract class EBoolean extends EComparable<Boolean> {
      * Create an intersection of this and the given expression 
      * 
      * @param right right hand side of the union
-     * @return
+     * @return this && right
      */
     public final EBoolean and(EBoolean right) {
         return new OBoolean(Ops.AND, this, right);
@@ -36,7 +36,7 @@ public abstract class EBoolean extends EComparable<Boolean> {
     /**
      * Create a negation of this boolean expression
      * 
-     * @return
+     * @return !this
      */
     public EBoolean not() {
         if (not == null){
@@ -49,7 +49,7 @@ public abstract class EBoolean extends EComparable<Boolean> {
      * Create a union of this and the given expression
      * 
      * @param right right hand side of the union
-     * @return
+     * @return this || right
      */
     public final EBoolean or(EBoolean right) {
         return new OBoolean(Ops.OR, this, right);

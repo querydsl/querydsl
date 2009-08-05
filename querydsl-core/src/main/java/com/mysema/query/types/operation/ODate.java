@@ -8,6 +8,8 @@ import com.mysema.query.types.expr.EDate;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * ODate represents Date operations
+ * 
  * @author tiwe
  *
  * @param <OpType>

@@ -20,7 +20,7 @@ public interface EMap<K, V> {
     /**
      * @param key
      * @param value
-     * @return
+     * @return this.get(key).equals(value)
      */
     EBoolean contains(Expr<K> key, Expr<V> value);
     
@@ -28,7 +28,7 @@ public interface EMap<K, V> {
      * Create a <code>this.containsKey(key)</code> expression
      * 
      * @param key
-     * @return
+     * @return this.containsKey(key)
      * @see java.util.Map#containsKey(Object)
      */
     EBoolean containsKey(Expr<K> key);
@@ -37,8 +37,8 @@ public interface EMap<K, V> {
      * Create a <code>this.containsKey(key)</code> expression
      * 
      * @param key
-     * @return
-     * @see java.util.Map#containsValue(Object)
+     * @return this.containsKey(key)
+     * @see java.util.Map#containsKey(Object)
      */
     EBoolean containsKey(K key);
 
@@ -46,7 +46,7 @@ public interface EMap<K, V> {
      * Create a <code>this.containsValue(value)</code> expression
      * 
      * @param value
-     * @return
+     * @return this.containsValue(value)
      * @see java.util.Map#containsValue(Object)
      */
     EBoolean containsValue(Expr<V> value);
@@ -55,7 +55,7 @@ public interface EMap<K, V> {
      * Create a <code>this.containsValue(value)</code> expression
      * 
      * @param value
-     * @return
+     * @return this.containsValue(value)
      * @see java.util.Map#containsValue(Object)c
      */
     EBoolean containsValue(V value);
@@ -64,7 +64,7 @@ public interface EMap<K, V> {
      * Create a <code>this.get(key)</code> expression
      * 
      * @param key
-     * @return
+     * @return this.get(key)
      * @see java.util.Map#get(Object)
      */
     Expr<V> get(Expr<K> key);
@@ -73,7 +73,7 @@ public interface EMap<K, V> {
      * Create a <code>this.get(key)</code> expression
      * 
      * @param key
-     * @return
+     * @return this.get(key)
      * @see java.util.Map#get(Object)
      */
     Expr<V> get(K key);
@@ -95,7 +95,7 @@ public interface EMap<K, V> {
     /**
      * Get the <code>this.isEmpty()</code> expression
      * 
-     * @return
+     * @return this.isEmpty()
      * @see java.util.Map#isEmpty()
      */
     EBoolean isEmpty();
@@ -103,7 +103,7 @@ public interface EMap<K, V> {
     /**
      * Get the <code>!this.isEmpty()</code> expression
      * 
-     * @return
+     * @return !this.isEmpty()
      * @see java.util.Map#isEmpty()
      */
     EBoolean isNotEmpty();
@@ -111,7 +111,7 @@ public interface EMap<K, V> {
     /**
      * Get the size of the Map instance
      * 
-     * @return
+     * @return this.size()
      * @see java.util.Map#size()
      */
     ENumber<Integer> size();

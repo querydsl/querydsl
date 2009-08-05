@@ -20,7 +20,7 @@ public interface EList<D> extends ECollection<D> {
      * Indexed access
      * 
      * @param index
-     * @return
+     * @return this.get(index)
      * @see java.util.List#get(int)
      */
     Expr<D> get(Expr<Integer> index);
@@ -29,7 +29,7 @@ public interface EList<D> extends ECollection<D> {
      * Indexed access
      * 
      * @param index
-     * @return
+     * @return this.get(index)
      * @see java.util.List#get(int)
      */
     Expr<D> get(int index);

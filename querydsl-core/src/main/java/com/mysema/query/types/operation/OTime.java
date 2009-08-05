@@ -8,6 +8,8 @@ import com.mysema.query.types.expr.ETime;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * OTime represents Time functions
+ * 
  * @author tiwe
  *
  * @param <OpType>
