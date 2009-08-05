@@ -7,7 +7,6 @@ package com.mysema.query.functions;
 
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
 
 /**
@@ -20,28 +19,49 @@ public final class AggregationFunctions {
     
     private AggregationFunctions(){}
 
-    public static <A extends Number & Comparable<?>> ENumber<Double> avg( Expr<A> left) {
-        return ONumber.create(Double.class, Ops.AggOps.AVG_AGG, left);
+    /**
+     * Use expr.avg() instead
+     */
+    @Deprecated
+    public static <A extends Number & Comparable<?>> ENumber<Double> avg( ENumber<A> left) {
+        return left.avg();
     }
 
+    
     public static ENumber<Long> count() {
         return Ops.AggOps.COUNT_ALL_AGG_EXPR;        
     }
 
+    /**
+     * Use expr.avg() instead
+     */
+    @Deprecated
     public static ENumber<Long> count(Expr<?> expr) {
-        return ONumber.create(Long.class, Ops.AggOps.COUNT_AGG, expr);
+        return expr.count();
     }
 
-    public static <A extends Number & Comparable<?>> ENumber<A> max( Expr<A> left) {
-        return ONumber.create(left.getType(), Ops.AggOps.MAX_AGG, left);
+    /**
+     * Use expr.max() instead
+     */
+    @Deprecated
+    public static <A extends Number & Comparable<?>> ENumber<A> max( ENumber<A> left) {
+        return left.max();
     }
 
-    public static <A extends Number & Comparable<?>> ENumber<A> min( Expr<A> left) {
-        return ONumber.create(left.getType(), Ops.AggOps.MIN_AGG, left);
+    /**
+     * Use expr.min() instead
+     */
+    @Deprecated
+    public static <A extends Number & Comparable<?>> ENumber<A> min( ENumber<A> left) {
+        return left.min();
     }
 
-    public static <A extends Number & Comparable<?>> ENumber<Double> sum( Expr<A> left) {
-        return ONumber.create(Double.class, Ops.AggOps.SUM_AGG, left);
+    /**
+     * Use expr.sum() instead
+     */
+    @Deprecated
+    public static <A extends Number & Comparable<?>> ENumber<A> sum( ENumber<A> left) {
+        return left.sum();
     }
     
 }

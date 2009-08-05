@@ -1,7 +1,5 @@
 package com.mysema.query.jdoql;
 
-import static com.mysema.query.functions.AggregationFunctions.avg;
-
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
 
@@ -21,7 +19,7 @@ public class SubqueriesTest extends AbstractJDOTest {
     @Test
     public void test1() {
         for (double price : query().from(product)
-                .where(product.price.gt(query().from(other).uniqueExpr(avg(other.price))))
+                .where(product.price.gt(query().from(other).uniqueExpr(other.price.avg())))
                 .list(product.price)) {
             System.out.println(price);
         }
@@ -30,7 +28,7 @@ public class SubqueriesTest extends AbstractJDOTest {
     @Test
     public void test2() {
         for (double price : query().from(product)
-                .where(product.price.eq(query().from(other).uniqueExpr(avg(other.price))))
+                .where(product.price.eq(query().from(other).uniqueExpr(other.price.avg())))
                 .list(product.price)) {
             System.out.println(price);
         }

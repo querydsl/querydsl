@@ -7,7 +7,7 @@ package com.mysema.query.types.expr;
 
 
 /**
- * ECollection represents collection typed expressions
+ * ECollection represents java.util.Collection typed expressions
  * 
  * @author tiwe
  * 

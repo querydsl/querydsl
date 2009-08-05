@@ -115,7 +115,7 @@ public abstract class AbstractHQLQuery<SubType extends AbstractHQLQuery<SubType>
     }
 
     public long count(Expr<?> expr) {
-        return uniqueResult(AggregationFunctions.count(expr));
+        return uniqueResult(expr.count());
     }
 
     @SuppressWarnings("unchecked")

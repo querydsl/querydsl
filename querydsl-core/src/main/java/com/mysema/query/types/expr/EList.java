@@ -7,7 +7,7 @@ package com.mysema.query.types.expr;
 
 
 /**
- * EList represents List typed expressions
+ * EList represents java.util.List typed expressions
  * 
  * @author tiwe
  * 

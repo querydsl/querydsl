@@ -70,8 +70,22 @@ public abstract class ETime<D extends Comparable> extends EComparable<D> {
         return seconds;
     }
     
+    /**
+     * Get an expression representing the current time as a ETime instance
+     * 
+     * @return
+     */
     public static ETime<Date> currentTime() {
         return OTime.create(Date.class, Ops.DateTimeOps.CURRENT_TIME);
     }
 
+    /**
+     * Get an expression representing the current time as a ETime instance
+     * 
+     * @return
+     */
+    public static <T extends Comparable> ETime<T> currentTime(Class<T> cl) {
+        return OTime.create(cl, Ops.DateTimeOps.CURRENT_TIME);
+    }
+    
 }

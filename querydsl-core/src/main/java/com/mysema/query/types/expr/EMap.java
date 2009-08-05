@@ -7,7 +7,7 @@ package com.mysema.query.types.expr;
 
 
 /**
- * EMap represents Map typed expressions
+ * EMap represents java.util.Map typed expressions
  * 
  * @author tiwe
  * 

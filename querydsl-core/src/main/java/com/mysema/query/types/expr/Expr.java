@@ -12,6 +12,7 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.serialization.ToStringVisitor;
 import com.mysema.query.types.ValidationVisitor;
 import com.mysema.query.types.operation.OBoolean;
+import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
 
 /**
@@ -24,9 +25,12 @@ import com.mysema.query.types.operation.Ops;
 public abstract class Expr<D> {
 
     private final Class<? extends D> type;
+    
     private String toString;
 
     private final boolean primitive;
+    
+    private ENumber<Long> count;
     
     public Expr(Class<? extends D> type) {
         this.type = Assert.notNull(type,"type is null");
@@ -34,6 +38,16 @@ public abstract class Expr<D> {
             || Number.class.isAssignableFrom(type) 
             || Boolean.class.equals(type) 
             || Character.class.equals(type);
+    }
+        
+    /**
+     * @return count(this)
+     */
+    public ENumber<Long> count(){
+        if (count == null){
+            count = ONumber.create(Long.class, Ops.AggOps.COUNT_AGG, this);
+        }
+        return count;
     }
 
     /**

@@ -269,7 +269,7 @@ public class FeaturesTest extends AbstractQueryTest{
         toString("count(*)", AggregationFunctions.count());
         // toString("count(distinct cat.bodyWeight)",
         // Grammar.count(distinct(cat.bodyWeight)));
-        toString("count(cat)", AggregationFunctions.count(cat));
+        toString("count(cat)", cat.count());
     }
 
     /**

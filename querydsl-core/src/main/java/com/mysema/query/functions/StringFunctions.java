@@ -23,14 +23,26 @@ public final class StringFunctions {
     private StringFunctions() {
     }
 
+    /**
+     * will be removed with no replacement
+     */
+    @Deprecated
     public static EString ltrim(Expr<String> s) {
         return new OString(Ops.StringOps.LTRIM, s);
     }
 
+    /**
+     * will be removed with no replacement
+     */
+    @Deprecated
     public static EString rtrim(Expr<String> s) {
         return new OString(Ops.StringOps.RTRIM, s);
     }
 
+    /**
+     * will be removed with no replacement
+     */
+    @Deprecated
     public static EString space(int i) {
         return new OString(Ops.StringOps.SPACE, EConstant.create(i));
     }

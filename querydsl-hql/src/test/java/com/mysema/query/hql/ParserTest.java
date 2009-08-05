@@ -7,7 +7,6 @@ package com.mysema.query.hql;
 
 import static com.mysema.query.alias.Alias.$;
 import static com.mysema.query.alias.Alias.alias;
-import static com.mysema.query.functions.AggregationFunctions.avg;
 import static com.mysema.query.hql.HQLGrammar.all;
 import static com.mysema.query.hql.HQLGrammar.exists;
 import static com.mysema.query.hql.HQLGrammar.notExists;
@@ -217,8 +216,8 @@ public class ParserTest implements Constants {
         // parse(
         // "select avg(cat.weight), sum(cat.weight), max(cat.weight), count(cat)\n"
         // + "from eg.Cat cat" );
-        query().select(avg(cat.weight), sum(cat.weight),
-                AggregationFunctions.max(cat.weight), AggregationFunctions.count(cat)).from(cat)
+        query().select(cat.weight.avg(), cat.weight.sum(),
+                cat.weight.max(), cat.count()).from(cat)
                 .parse();
 
         // parse( "select cat, count( elements(cat.kittens) )\n"
@@ -434,7 +433,7 @@ public class ParserTest implements Constants {
     public void testDocoExamples910() throws Exception {
         // parse( "select cat.color, sum(cat.weight), count(cat)\n"
         // + "from eg.Cat cat group by cat.color" );
-        query().select(cat.color, sum(cat.weight), AggregationFunctions.count(cat)).from(cat)
+        query().select(cat.color, sum(cat.weight), cat.count()).from(cat)
                 .groupBy(cat.color).parse();
 
         // parse(
@@ -447,7 +446,7 @@ public class ParserTest implements Constants {
         // parse( "select cat.color, sum(cat.weight), count(cat)\n"
         // + "from eg.Cat cat group by cat.color\n"
         // + "having cat.color in (eg.Color.TABBY, eg.Color.BLACK)" );
-        query().select(cat.color, sum(cat.weight), AggregationFunctions.count(cat)).from(cat)
+        query().select(cat.color, sum(cat.weight), cat.count()).from(cat)
                 .groupBy(cat.color).having(
                         cat.color.in(Color.TABBY, Color.BLACK)).parse();
 
@@ -455,8 +454,8 @@ public class ParserTest implements Constants {
         // + "group by cat having avg(kitten.weight) > 100\n"
         // + "order by count(kitten) asc, sum(kitten.weight) desc" );
         query().select(cat).from(cat).join(cat.kittens, kitten).groupBy(cat)
-                .having(avg(kitten.weight).gt(100.0)).orderBy(
-                        AggregationFunctions.count(kitten).asc(), sum(kitten.weight).desc())
+                .having(kitten.weight.avg().gt(100.0)).orderBy(
+                        kitten.count().asc(), sum(kitten.weight).desc())
                 .parse();
     }
 
@@ -466,7 +465,7 @@ public class ParserTest implements Constants {
         // + "select avg(cat.weight) from eg.DomesticCat cat)" );
         query().from(fatcat).where(
 //                fatcat.weight.gt(HQLGrammar.select(avg(cat.weight)).from(cat)))
-                fatcat.weight.gt(query().from(cat).uniqueExpr(avg(cat.weight))))
+                fatcat.weight.gt(query().from(cat).uniqueExpr(cat.weight.avg())))
                 .parse();
 
         // parse( "from eg.DomesticCat as cat where cat.name = some (\n"
@@ -508,7 +507,7 @@ public class ParserTest implements Constants {
         // + "having sum(price.amount) > :minAmount\n"
         // + "order by sum(price.amount) desc" );
         // QCatalog cat = new QCatalog("cat");
-        query().select(ord.id, sum(price.amount), AggregationFunctions.count(item)).from(ord)
+        query().select(ord.id, sum(price.amount), item.count()).from(ord)
                 .join(ord.lineItems, item).join(item.product, product)
                 .from(catalog).join(catalog.prices, price).where(
                         ord.paid.not().and(ord.customer.eq(cust)).and(
@@ -532,7 +531,7 @@ public class ParserTest implements Constants {
         Customer c1 = new Customer();
         Catalog c2 = new Catalog();
 
-        query().select(ord.id, sum(price.amount), AggregationFunctions.count(item)).from(ord)
+        query().select(ord.id, sum(price.amount), item.count()).from(ord)
                 .join(ord.lineItems, item).join(item.product, product)
                 .from(catalog).join(catalog.prices, price).where(
                         ord.paid.not().and(ord.customer.eq(c1)).and(
@@ -646,7 +645,7 @@ public class ParserTest implements Constants {
         query().select(AggregationFunctions.count()).from(qat).parse();
 
         // parse( "SELECT avg(qat.weight) FROM eg.mypackage.Cat qat" );
-        query().select(avg(qat.weight)).from(qat).parse();
+        query().select(qat.weight.avg()).from(qat).parse();
     }
 
     @Test
@@ -704,7 +703,7 @@ public class ParserTest implements Constants {
     @Test
     public void testOrderBy() throws Exception {
         // parse( "FROM eg.mypackage.Cat qat order by avg(qat.toes)" );
-        query().from(qat).orderBy(avg(qat.toes).asc()).parse();
+        query().from(qat).orderBy(qat.toes.avg().asc()).parse();
 
         // parse( "from Animal an order by sqrt(an.bodyWeight)/2" );
         query().from(qat).orderBy(MathFunctions.sqrt(an.bodyWeight.div(2)).asc())
@@ -723,14 +722,13 @@ public class ParserTest implements Constants {
     @Test
     public void testComplexConstructor() throws Exception {
         // parse( "select new Foo(count(bar)) from bar" );
-        query().select(new QFooDTO(AggregationFunctions.count(bar))).from(bar).parse();
+        query().select(new QFooDTO(bar.count())).from(bar).parse();
 
         // parse(
         // "select new Foo(count(bar),(select count(*) from doofus d where d.gob = 'fat' )) from bar"
         // );
         query().select(
-                   new QFooDTO(AggregationFunctions.count(bar), 
-//                 HQLGrammar.select(Grammar.count()).from(d).where(d.gob.eq("fat")))).from(bar)
+                   new QFooDTO(bar.count(), 
                    query().from(d).where(d.gob.eq("fat")).countExpr()))
                .from(bar)
                .parse();

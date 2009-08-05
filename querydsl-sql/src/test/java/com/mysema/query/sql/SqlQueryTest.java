@@ -5,7 +5,6 @@
  */
 package com.mysema.query.sql;
 
-import static com.mysema.query.functions.AggregationFunctions.avg;
 import static com.mysema.query.functions.AggregationFunctions.count;
 import static com.mysema.query.sql.SQLGrammar.exists;
 import static org.junit.Assert.assertEquals;
@@ -23,7 +22,6 @@ import org.junit.Test;
 
 import com.mysema.query.ExcludeIn;
 import com.mysema.query.IncludeIn;
-import com.mysema.query.functions.AggregationFunctions;
 import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.functions.StringFunctions;
 import com.mysema.query.sql.domain.QEMPLOYEE;
@@ -178,15 +176,15 @@ public abstract class SqlQueryTest {
         // "select avg(salary), max(id) from employee "
         // + "group by superior_id " + "order by superior_id " + "";
         q().from(employee).groupBy(employee.superiorId).orderBy(
-                employee.superiorId.asc()).list(avg(employee.salary),
-                AggregationFunctions.max(employee.id));
+                employee.superiorId.asc()).list(employee.salary.avg(),
+                employee.id.max());
 
         // "select avg(salary), max(id) from employee "
         // + "group by superior_id " + "having max(id) > 5 "
         // + "order by superior_id " + "";
         q().from(employee).groupBy(employee.superiorId).having(
-                AggregationFunctions.max(employee.id).gt(5)).orderBy(employee.superiorId.asc())
-                .list(avg(employee.salary), AggregationFunctions.max(employee.id));
+                employee.id.max().gt(5)).orderBy(employee.superiorId.asc())
+                .list(employee.salary.avg(), employee.id.max());
 
         // "select avg(salary), max(id) from employee "
         // + "group by superior_id "
@@ -194,8 +192,8 @@ public abstract class SqlQueryTest {
         // + "order by superior_id " + "";
         q().from(employee).groupBy(employee.superiorId).having(
                 employee.superiorId.isNotNull()).orderBy(
-                employee.superiorId.asc()).list(avg(employee.salary),
-                AggregationFunctions.max(employee.id));
+                employee.superiorId.asc()).list(employee.salary.avg(),
+                employee.id.max());
     }
 
     @Test
@@ -277,15 +275,15 @@ public abstract class SqlQueryTest {
                 + "from employee2 employee)";
         List<Integer> list = q().from(employee).where(
 //                employee.id.eq(select(Grammar.max(employee.id)).from(employee))).list(
-                employee.id.eq(q().from(employee).uniqueExpr(AggregationFunctions.max(employee.id)))).list(
+                employee.id.eq(q().from(employee).uniqueExpr(employee.id.max()))).list(
                 employee.id);
         assertFalse(list.isEmpty());
     }
 
     @Test
     public void testIllegalUnion() throws SQLException {
-        ObjectSubQuery<Integer> sq1 = q().from(employee).uniqueExpr(AggregationFunctions.max(employee.id));
-        ObjectSubQuery<Integer> sq2 = q().from(employee).uniqueExpr(AggregationFunctions.min(employee.id));
+        ObjectSubQuery<Integer> sq1 = q().from(employee).uniqueExpr(employee.id.max());
+        ObjectSubQuery<Integer> sq2 = q().from(employee).uniqueExpr(employee.id.max());
         try {
             q().from(employee).union(sq1, sq2).list();
             fail();
@@ -299,20 +297,20 @@ public abstract class SqlQueryTest {
     @Test
     public void testUnion() throws SQLException {
         // union
-        ObjectSubQuery<Integer> sq1 = q().from(employee).uniqueExpr(AggregationFunctions.max(employee.id));
-        ObjectSubQuery<Integer> sq2 = q().from(employee).uniqueExpr(AggregationFunctions.min(employee.id));
+        ObjectSubQuery<Integer> sq1 = q().from(employee).uniqueExpr(employee.id.max());
+        ObjectSubQuery<Integer> sq2 = q().from(employee).uniqueExpr(employee.id.min());
         List<Integer> list = q().union(sq1, sq2).list();
         assertFalse(list.isEmpty());
 
         // variation 1
         list = q().union(
-                q().from(employee).uniqueExpr(AggregationFunctions.max(employee.id)),
-                q().from(employee).uniqueExpr(AggregationFunctions.min(employee.id))).list();
+                q().from(employee).uniqueExpr(employee.id.max()),
+                q().from(employee).uniqueExpr(employee.id.min())).list();
         assertFalse(list.isEmpty());
 
         // union #2
-        ObjectSubQuery<Object[]> sq3 = q().from(employee).uniqueExpr(count(), AggregationFunctions.max(employee.id));
-        ObjectSubQuery<Object[]> sq4 = q().from(employee).uniqueExpr(count(), AggregationFunctions.min(employee.id));
+        ObjectSubQuery<Object[]> sq3 = q().from(employee).uniqueExpr(count(), employee.id.max());
+        ObjectSubQuery<Object[]> sq4 = q().from(employee).uniqueExpr(count(), employee.id.min());
         List<Object[]> list2 = q().union(sq3, sq4).list();
         assertFalse(list2.isEmpty());
     }
@@ -325,7 +323,7 @@ public abstract class SqlQueryTest {
 
     @Test
     public void testWhereExists() throws SQLException {
-        ObjectSubQuery<Integer> sq1 = q().from(employee).uniqueExpr(AggregationFunctions.max(employee.id));
+        ObjectSubQuery<Integer> sq1 = q().from(employee).uniqueExpr(employee.id.max());
         q().from(employee).where(exists(sq1)).count();
         q().from(employee).where(exists(sq1).not()).count();
     }

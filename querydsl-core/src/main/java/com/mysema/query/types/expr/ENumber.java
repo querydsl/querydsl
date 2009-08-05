@@ -23,13 +23,57 @@ import com.mysema.query.types.operation.Ops;
  */
 public abstract class ENumber<D extends Number & Comparable<?>> extends EComparable<D> {
 
+    private ENumber<D> sum, min, max;
+    
+    private ENumber<Double> avg;
+    
     public ENumber(Class<? extends D> type) {
         super(type);
     }
     
     /**
+     * @return sum(this)
+     */
+    public ENumber<D> sum(){
+        if (sum == null){
+            sum = ONumber.create(getType(), Ops.AggOps.SUM_AGG, this); 
+        }
+        return sum;
+    }
+    
+    /**
+     * @return min(this)
+     */
+    public ENumber<D> min(){
+        if (min == null){
+            min = ONumber.create(getType(), Ops.AggOps.MIN_AGG, this);
+        }
+        return min;
+    }
+    
+    /**
+     * @return max(this)
+     */
+    public ENumber<D> max(){
+        if (max == null){
+            max = ONumber.create(getType(), Ops.AggOps.MAX_AGG, this);
+        }
+        return max;
+    }
+    
+    /**
+     *  @return avg(this)
+     */
+    public ENumber<Double> avg(){
+        if (avg == null){
+            avg = ONumber.create(Double.class, Ops.AggOps.AVG_AGG, this);
+        }
+        return avg;
+    }
+    
+    /**
      * @param right
-     * @return
+     * @return this + right
      */
     public ENumber<D> add(D right) {
         return ONumber.create(getType(), Ops.ADD, this, EConstant.create(right));
@@ -37,7 +81,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
 
     /**
      * @param right
-     * @return
+     * @return this + right
      */
     public ENumber<D> add(Expr<D> right) {
         return ONumber.create(getType(), Ops.ADD, this, right);
@@ -46,7 +90,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     /**
      * Get the byte expression of this numeric expression
      * 
-     * @return
+     * @return this.byteValue()
      * @see java.lang.Number#byteValue()
      */
     public final ENumber<Byte> byteValue() {
@@ -91,7 +135,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
 
     /**
      * @param right
-     * @return
+     * @return this / right
      */
     public ENumber<Double> div(D right) {
         return ONumber.create(Double.class, Ops.DIV, this, EConstant.create(right));
@@ -99,7 +143,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
 
     /**
      * @param right
-     * @return
+     * @return this / right
      */
     public ENumber<Double> div(Expr<D> right) {
         return ONumber.create(Double.class, Ops.DIV, this, right);
@@ -108,7 +152,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     /**
      * Get the double expression of this numeric expression
      * 
-     * @return
+     * @return this.doubleValue()
      * @see java.lang.Number#doubleValue()
      */
     public final ENumber<Double> doubleValue() {
@@ -119,7 +163,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     /**
      * Get the float expression of this numeric expression
      * 
-     * @return
+     * @return this.floatValue()
      * @see java.lang.Number#floatValue()
      */
     public final ENumber<Float> floatValue() {
@@ -131,7 +175,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * 
      * @param <A>
      * @param right rhs of the comparison
-     * @return
+     * @return this >= right
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean goe(A right) {
@@ -143,7 +187,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * 
      * @param <A>
      * @param right rhs of the comparison
-     * @return
+     * @return this >= right
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean goe(Expr<A> right) {
@@ -155,7 +199,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * 
      * @param <A>
      * @param right rhs of the comparison
-     * @return
+     * @return this > right
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean gt(A right) {
@@ -167,7 +211,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * 
      * @param <A>
      * @param right rhs of the comparison
-     * @return
+     * @return this > right
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean gt(Expr<A> right) {
@@ -177,7 +221,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     /**
      * Get the int expression of this numeric expression
      * 
-     * @return
+     * @return this.intValue()
      * @see java.lang.Number#intValue()
      */
     public final ENumber<Integer> intValue() {
@@ -189,7 +233,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * 
      * @param <A>
      * @param right rhs of the comparison
-     * @return
+     * @return this <= right
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean loe(A right) {
@@ -201,7 +245,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * 
      * @param <A>
      * @param right rhs of the comparison
-     * @return
+     * @return this <= right
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean loe(Expr<A> right) {
@@ -211,7 +255,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     /**
      * Get the long expression of this numeric expression
      * 
-     * @return
+     * @return this.longValue()
      * @see java.lang.Number#longValue()
      */
     public final ENumber<Long> longValue() {
@@ -223,7 +267,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * 
      * @param <A>
      * @param right rhs of the comparison
-     * @return
+     * @return this < right
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean lt(A right) {
@@ -235,7 +279,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * 
      * @param <A>
      * @param right rhs of the comparison
-     * @return
+     * @return this < right
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean lt(Expr<A> right) {
@@ -244,7 +288,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
 
     /**
      * @param right
-     * @return
+     * @return this * right
      */
     public ENumber<D> mult(D right) {
         return ONumber.create(getType(), Ops.MULT, this, EConstant.create(right));
@@ -252,7 +296,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
 
     /**
      * @param right
-     * @return
+     * @return this * right
      */
     public ENumber<D> mult(Expr<D> right) {
         return ONumber.create(getType(), Ops.MULT, this, right);
@@ -261,7 +305,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     /**
      * Get the short expression of this numeric expression
      * 
-     * @return
+     * @return this.shortValue()
      * @see java.lang.Number#shortValue()
      */
     public final ENumber<Short> shortValue() {
@@ -270,7 +314,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
 
     /**
      * @param right
-     * @return
+     * @return this - right
      */
     public ENumber<D> sub(D right) {
         return ONumber.create(getType(), Ops.SUB, this, EConstant.create(right));
@@ -278,7 +322,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     
     /**
      * @param right
-     * @return
+     * @return this - right
      */
     public ENumber<D> sub(Expr<D> right) {
         return ONumber.create(getType(), Ops.SUB, this, right);

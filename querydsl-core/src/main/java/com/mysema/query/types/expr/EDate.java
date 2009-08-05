@@ -86,7 +86,21 @@ public abstract class EDate<D extends Comparable> extends EComparable<D> {
         return ONumber.create(Integer.class, Ops.DateTimeOps.WEEK,  this);
     }
     
+    /**
+     * Get an expression representing the current date as a EDate instance
+     * 
+     * @return
+     */
     public static EDate<Date> currentDate() {
         return ODate.create(Date.class, Ops.DateTimeOps.CURRENT_DATE);
+    }
+    
+    /**
+     * Get an expression representing the current date as a EDate instance
+     * 
+     * @return
+     */
+    public static <T extends Comparable> EDate<T> currentDate(Class<T> cl) {
+        return ODate.create(cl, Ops.DateTimeOps.CURRENT_DATE);
     }
 }

@@ -131,12 +131,39 @@ public abstract class EDateTime<D extends Comparable> extends EComparable<D> {
         return ONumber.create(Integer.class, Ops.DateTimeOps.WEEK,  this);
     }
     
+    /**
+     * Get an expression representing the current date as a EDateTime instance
+     * 
+     * @return
+     */
     public static EDateTime<Date> currentDate() {
         return ODateTime.create(Date.class, Ops.DateTimeOps.CURRENT_DATE);
     }
     
+    /**
+     * Get an expression representing the current time instant as a EDateTime instance
+     * 
+     * @return
+     */
     public static EDateTime<Date> currentTimestamp() {
         return ODateTime.create(Date.class, Ops.DateTimeOps.CURRENT_TIMESTAMP);
     }
 
+    /**
+     * Get an expression representing the current date as a EDateTime instance
+     * 
+     * @return
+     */
+    public static <T extends Comparable> EDateTime<T> currentDate(Class<T> cl) {
+        return ODateTime.create(cl, Ops.DateTimeOps.CURRENT_DATE);
+    }
+    
+    /**
+     * Get an expression representing the current time instant as a EDateTime instance
+     * 
+     * @return
+     */
+    public static <T extends Comparable> EDateTime<T> currentTimestamp(Class<T> cl) {
+        return ODateTime.create(cl, Ops.DateTimeOps.CURRENT_TIMESTAMP);
+    }
 }

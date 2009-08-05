@@ -9,7 +9,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.functions.AggregationFunctions;
 import com.mysema.query.jdoql.JDOQLPatterns;
 import com.mysema.query.jdoql.JDOQLSerializer;
 import com.mysema.query.jdoql.testdomain.Book;
@@ -42,11 +41,11 @@ public class ExprSerializationTest {
     
     @Test
     public void aggregation(){
-        assertEquals("sum(product.price)", serialize(AggregationFunctions.sum(product.price)));
-        assertEquals("min(product.price)", serialize(AggregationFunctions.min(product.price)));
-        assertEquals("max(product.price)", serialize(AggregationFunctions.max(product.price)));
-        assertEquals("avg(product.price)", serialize(AggregationFunctions.avg(product.price)));
-        assertEquals("count(product.price)", serialize(AggregationFunctions.count(product.price)));
+        assertEquals("sum(product.price)", serialize(product.price.sum()));
+        assertEquals("min(product.price)", serialize(product.price.min()));
+        assertEquals("max(product.price)", serialize(product.price.max()));
+        assertEquals("avg(product.price)", serialize(product.price.avg()));
+        assertEquals("count(product.price)", serialize(product.price.count()));
     }
 
     @Test
