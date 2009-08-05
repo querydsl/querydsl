@@ -5,11 +5,9 @@
  */
 package com.mysema.query.functions;
 
-import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.ONumber;
-import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.operation.Ops.MathOps;
 
 /**
@@ -22,46 +20,6 @@ import com.mysema.query.types.operation.Ops.MathOps;
 public final class MathFunctions {
 
     private MathFunctions() {
-    }
-
-    @Deprecated
-    public static <A extends Number & Comparable<?>> ENumber<A> mult(Expr<A> left, A right) {
-        return ONumber.create(left.getType(), Ops.MULT, left, EConstant.create(right));
-    }
-
-    @Deprecated
-    public static <A extends Number & Comparable<?>> ENumber<A> mult(Expr<A> left, Expr<A> right) {
-        return ONumber.create(left.getType(), Ops.MULT, left, right);
-    }
-
-    @Deprecated
-    public static <A extends Number & Comparable<?>> ENumber<Double> div(ENumber<A> left, A right) {
-        return ONumber.create(Double.class, Ops.DIV, left, EConstant.create(right));
-    }
-
-    @Deprecated
-    public static <A extends Number & Comparable<?>> ENumber<Double> div(Expr<A> left, Expr<A> right) {
-        return ONumber.create(Double.class, Ops.DIV, left, right);
-    }
-
-    @Deprecated
-    public static <A extends Number & Comparable<?>> ENumber<A> add(Expr<A> left, A right) {
-        return ONumber.create(left.getType(), Ops.ADD, left, EConstant.create(right));
-    }
-
-    @Deprecated
-    public static <A extends Number & Comparable<?>> ENumber<A> add(Expr<A> left, Expr<A> right) {
-        return ONumber.create(left.getType(), Ops.ADD, left, right);
-    }
-
-    @Deprecated
-    public static <A extends Number & Comparable<?>> ENumber<A> sub(Expr<A> left, A right) {
-        return ONumber.create(left.getType(), Ops.SUB, left, EConstant.create(right));
-    }
-
-    @Deprecated
-    public static <A extends Number & Comparable<?>> ENumber<A> sub(Expr<A> left, Expr<A> right) {
-        return ONumber.create(left.getType(), Ops.SUB, left, right);
     }
 
     public static <A extends Number & Comparable<?>> ENumber<A> abs(Expr<A> left) {

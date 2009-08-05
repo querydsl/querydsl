@@ -5,6 +5,10 @@
  */
 package com.mysema.query.types.expr;
 
+import java.util.Date;
+
+import com.mysema.query.annotations.Optional;
+import com.mysema.query.types.operation.ODateTime;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
 
@@ -110,6 +114,29 @@ public abstract class EDateTime<D extends Comparable> extends EComparable<D> {
             year = ONumber.create(Integer.class, Ops.DateTimeOps.YEAR, this);
         }
         return year;
+    }
+    
+    @Optional
+    public ENumber<Integer> getDayOfWeek() {
+        return ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_WEEK, this);
+    }
+
+    @Optional
+    public ENumber<Integer> getDayOfYear() {
+        return ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_YEAR, this);
+    }
+
+    @Optional
+    public ENumber<Integer> getWeek() {
+        return ONumber.create(Integer.class, Ops.DateTimeOps.WEEK,  this);
+    }
+    
+    public static EDateTime<Date> currentDate() {
+        return ODateTime.create(Date.class, Ops.DateTimeOps.CURRENT_DATE);
+    }
+    
+    public static EDateTime<Date> currentTimestamp() {
+        return ODateTime.create(Date.class, Ops.DateTimeOps.CURRENT_TIMESTAMP);
     }
 
 }

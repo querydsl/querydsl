@@ -24,10 +24,13 @@ import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.OComparable;
+import com.mysema.query.types.operation.ODate;
+import com.mysema.query.types.operation.ODateTime;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.OString;
 import com.mysema.query.types.operation.OStringArray;
+import com.mysema.query.types.operation.OTime;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.path.PArray;
 import com.mysema.query.types.path.PBoolean;
@@ -129,6 +132,12 @@ public abstract class Visitor<T extends Visitor<T>> {
     protected abstract void visit(OBoolean expr);
 
     protected abstract void visit(OComparable<?, ?> expr);
+    
+    protected abstract void visit(ODate<?, ?> expr);
+    
+    protected abstract void visit(ODateTime<?, ?> expr);
+    
+    protected abstract void visit(OTime<?, ?> expr);
 
     protected abstract void visit(ONumber<?, ?> expr);
 

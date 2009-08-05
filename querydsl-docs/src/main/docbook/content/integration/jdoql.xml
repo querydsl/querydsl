@@ -51,7 +51,7 @@
             </goals>
             <configuration>
               <outputDirectory>target/generated-sources/java</outputDirectory>
-              <processor>com.mysema.query.jdoql.apt.JDOAnnotationProcessor</processor>
+              <processor>com.mysema.query.apt.jdo.JDOAnnotationProcessor</processor>
             </configuration>
           </execution>
         </executions>

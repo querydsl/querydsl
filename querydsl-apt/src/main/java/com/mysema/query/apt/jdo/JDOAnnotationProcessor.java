@@ -33,7 +33,7 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
             Class<? extends Annotation> dtoAnnotation = Projection.class;
             Processor p = new Processor(processingEnv, entity, superType, embeddable, dtoAnnotation, "Q");
             p.skipGetters().process(roundEnv);
-        return true;
+            return true;
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e.getMessage(), e);
         }

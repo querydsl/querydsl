@@ -12,10 +12,13 @@ import com.mysema.query.types.custom.CString;
 import com.mysema.query.types.custom.Custom;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.OComparable;
+import com.mysema.query.types.operation.ODate;
+import com.mysema.query.types.operation.ODateTime;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.OString;
 import com.mysema.query.types.operation.OStringArray;
+import com.mysema.query.types.operation.OTime;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.path.PArray;
 import com.mysema.query.types.path.PBoolean;
@@ -79,6 +82,21 @@ public abstract class AbstractVisitor<SubType extends AbstractVisitor<SubType>>
     @Override
     protected void visit(OComparable<?, ?> expr) {
         visit((Operation<?, ?>) expr);
+    }
+    
+    @Override
+    protected void visit(ODate<?, ?> expr) {
+        visit((Operation<?, ?>) expr);        
+    }
+
+    @Override
+    protected void visit(ODateTime<?, ?> expr) {
+        visit((Operation<?, ?>) expr);        
+    }
+
+    @Override
+    protected void visit(OTime<?, ?> expr) {
+        visit((Operation<?, ?>) expr);        
     }
 
     @Override

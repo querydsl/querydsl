@@ -5,7 +5,10 @@
  */
 package com.mysema.query.types.expr;
 
+import java.util.Date;
+
 import com.mysema.query.types.operation.ONumber;
+import com.mysema.query.types.operation.OTime;
 import com.mysema.query.types.operation.Ops;
 
 /**
@@ -65,6 +68,10 @@ public abstract class ETime<D extends Comparable> extends EComparable<D> {
             seconds = ONumber.create(Integer.class, Ops.DateTimeOps.SECOND, this);
         }
         return seconds;
+    }
+    
+    public static ETime<Date> currentTime() {
+        return OTime.create(Date.class, Ops.DateTimeOps.CURRENT_TIME);
     }
 
 }

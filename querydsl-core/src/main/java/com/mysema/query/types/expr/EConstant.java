@@ -82,6 +82,7 @@ public class EConstant<D> extends Expr<D> {
         this.constant = constant;
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {
         return o instanceof EConstant ? ((EConstant<?>) o).getConstant().equals(constant) : false;
