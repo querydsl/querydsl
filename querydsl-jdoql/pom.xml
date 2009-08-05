@@ -31,7 +31,7 @@
     </dependency>
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-jdoql-apt</artifactId>
+      <artifactId>querydsl-apt</artifactId>
       <version>${project.parent.version}</version>
     </dependency>    
 

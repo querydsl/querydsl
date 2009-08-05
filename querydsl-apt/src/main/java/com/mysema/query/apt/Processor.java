@@ -129,13 +129,13 @@ public class Processor {
     
     private String namePrefix;
     
-    private Class<? extends Annotation> entityAnn;
+    private final Class<? extends Annotation> entityAnn;
 
-    private Class<? extends Annotation> superTypeAnn;
+    private final Class<? extends Annotation> superTypeAnn;
     
-    private Class<? extends Annotation> embeddableAnn;
+    private final Class<? extends Annotation> embeddableAnn;
 
-    private Class<? extends Annotation> dtoAnn;
+    private final Class<? extends Annotation> dtoAnn;
     
     public Processor(ProcessingEnvironment env,
             Class<? extends Annotation> entityAnn, 
