@@ -19,17 +19,16 @@ public final class AggregationFunctions {
     
     private AggregationFunctions(){}
 
+    public static ENumber<Long> count() {
+        return Ops.AggOps.COUNT_ALL_AGG_EXPR;        
+    }
+    
     /**
      * Use expr.avg() instead
      */
     @Deprecated
     public static <A extends Number & Comparable<?>> ENumber<Double> avg( ENumber<A> left) {
         return left.avg();
-    }
-
-    
-    public static ENumber<Long> count() {
-        return Ops.AggOps.COUNT_ALL_AGG_EXPR;        
     }
 
     /**
