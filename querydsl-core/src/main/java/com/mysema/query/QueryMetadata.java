@@ -42,6 +42,7 @@ public interface QueryMetadata {
 
     List<? extends Expr<?>> getGroupBy();
 
+    @Nullable
     EBoolean getHaving();
 
     List<JoinExpression> getJoins();
@@ -57,6 +58,7 @@ public interface QueryMetadata {
 
     void setDistinct(boolean distinct);
 
+    @Nullable
     QueryModifiers getModifiers();
 
     void setModifiers(QueryModifiers restriction);
