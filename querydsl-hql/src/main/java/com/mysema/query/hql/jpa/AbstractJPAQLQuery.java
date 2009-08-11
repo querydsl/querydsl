@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -42,7 +43,7 @@ public abstract class AbstractJPAQLQuery<SubType extends AbstractJPAQLQuery<SubT
         this.em = em;
     }
 
-    private Query createQuery(String queryString, QueryModifiers modifiers) {
+    private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
         Query query = em.createQuery(queryString);
         setConstants(query, getConstants());
         if (modifiers != null && modifiers.isRestricting()) {

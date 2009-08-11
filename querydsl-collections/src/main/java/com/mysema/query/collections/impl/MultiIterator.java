@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.types.expr.Expr;
 
@@ -26,6 +28,7 @@ import com.mysema.query.types.expr.Expr;
  */
 public class MultiIterator implements Iterator<Object[]> {
 
+    @Nullable
     private Boolean hasNext;
 
     protected int index = 0;

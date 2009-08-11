@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.collections.eval.ColQueryPatterns;
 import com.mysema.query.collections.eval.Evaluator;
@@ -51,7 +53,7 @@ public class DefaultIndexSupport extends SimpleIndexSupport {
     }
 
     @SuppressWarnings("unchecked")
-    public DefaultIndexSupport getChildFor(EBoolean condition) {
+    public DefaultIndexSupport getChildFor(@Nullable EBoolean condition) {
         if (condition == null) {
             return this;
         }
@@ -74,7 +76,7 @@ public class DefaultIndexSupport extends SimpleIndexSupport {
             Map<?, ? extends Iterable<?>> indexEntry = pathToCacheEntries
                     .get(ie.getIndexedPath());
             // NOTE : this works only for static keys
-            Object key = ie.getEvaluator().evaluate((Object[]) null);
+            Object key = ie.getEvaluator().evaluate();
             if (indexEntry.containsKey(key)) {
                 return (Iterator<A>) indexEntry.get(key).iterator();
             } else {

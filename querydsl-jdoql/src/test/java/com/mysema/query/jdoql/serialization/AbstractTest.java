@@ -11,7 +11,7 @@ public abstract class AbstractTest {
     
     protected JDOQLQuery query(){
         // creates detached query
-        return new JDOQLQueryImpl(null);
+        return new JDOQLQueryImpl();
     }
 
     protected String serialize(SubQuery expr) {

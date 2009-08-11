@@ -4,8 +4,11 @@
  * 
  */
 
+/**
+ * HQL for JPA
+ */
 @DefaultAnnotation( { Nonnull.class, OverridingMethodsMustInvokeSuper.class })
-package com.mysema.query.collections.impl;
+package com.mysema.query.hql.support;
 
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;

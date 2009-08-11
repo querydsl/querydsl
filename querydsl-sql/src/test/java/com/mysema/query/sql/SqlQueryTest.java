@@ -17,6 +17,8 @@ import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.junit.AfterClass;
 import org.junit.Test;
 
@@ -57,6 +59,7 @@ public abstract class SqlQueryTest {
     protected final QSURVEY survey2 = new QSURVEY("survey2");
     protected final QTEST test = new QTEST("test");
 
+    @Nullable
     protected String expectedQuery;
 
     @AfterClass

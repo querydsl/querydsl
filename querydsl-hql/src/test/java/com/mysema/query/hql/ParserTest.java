@@ -18,6 +18,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Iterator;
 
+import javax.annotation.Nullable;
+
 import org.hibernate.hql.ast.HqlParser;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -901,15 +903,18 @@ public class ParserTest implements Constants {
             return 0;
         }
 
+        @Nullable    
         public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second,
                 Expr<?>... rest) {
             return null;
         }
 
+        @Nullable
         public <RT> Iterator<RT> iterate(Expr<RT> projection) {
             return null;
         }
 
+        @Nullable
         public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
             return null;
         }

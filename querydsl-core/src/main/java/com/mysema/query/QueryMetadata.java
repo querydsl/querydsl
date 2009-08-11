@@ -7,6 +7,8 @@ package com.mysema.query;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
@@ -48,6 +50,7 @@ public interface QueryMetadata {
 
     List<? extends Expr<?>> getProjection();
 
+    @Nullable
     EBoolean getWhere();
 
     boolean isDistinct();

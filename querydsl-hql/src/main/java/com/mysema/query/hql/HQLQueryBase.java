@@ -8,6 +8,8 @@ package com.mysema.query.hql;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.CascadingBoolean;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.support.QueryBaseWithProjectionAndDetach;
@@ -32,6 +34,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
 
     private Map<Object,String> constants;
 
+    @Nullable
     private String countRowsString, queryString;
 
     private final HQLPatterns patterns;

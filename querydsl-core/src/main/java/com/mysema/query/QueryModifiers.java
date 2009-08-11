@@ -5,6 +5,8 @@
  */
 package com.mysema.query;
 
+import javax.annotation.Nullable;
+
 /**
  * QueryModifiers combines limit and offset info into a single type
  * 
@@ -21,12 +23,13 @@ public final class QueryModifiers {
         return new QueryModifiers(null, Long.valueOf(offset));
     }
 
+    @Nullable
     private Long limit, offset;
 
     public QueryModifiers() {
     }
 
-    public QueryModifiers(Long limit, Long offset) {
+    public QueryModifiers(@Nullable Long limit, @Nullable Long offset) {
         this.limit = limit;
         this.offset = offset;
     }

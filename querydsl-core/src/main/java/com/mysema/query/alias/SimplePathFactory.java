@@ -79,12 +79,10 @@ class SimplePathFactory implements PathFactory {
                 @SuppressWarnings("unchecked")
                 public PEntityCollection<?> transform(Collection<?> arg) {
                     if (!arg.isEmpty()) {
-                        Class<?> cl = ((Collection) arg).iterator().next()
-                                .getClass();
-                        return new PEntityCollection(cl, cl.getSimpleName(),
-                                md());
+                        Class<?> cl = ((Collection) arg).iterator().next().getClass();
+                        return new PEntityCollection(cl, cl.getSimpleName(), md());
                     } else {
-                        return new PEntityCollection(null, null, md());
+                        return new PEntityCollection(Object.class, "Object", md());
                     }
                 }
             });
@@ -107,11 +105,12 @@ class SimplePathFactory implements PathFactory {
                 @SuppressWarnings("unchecked")
                 public PEntityMap<?, ?> transform(Map<?, ?> arg) {
                     if (!arg.isEmpty()) {
-                        Class<?> cl = arg.get(null).getClass();
-                        return new PEntityMap(null, cl, cl.getSimpleName(),
-                                md());
+                        Map.Entry entry = arg.entrySet().iterator().next();
+                        Class<?> keyType = entry.getKey().getClass();
+                        Class<?> valueType = entry.getValue().getClass();
+                        return new PEntityMap(keyType, valueType, valueType.getSimpleName(), md());
                     } else {
-                        return new PEntityMap(null, Object.class, "Object", md());
+                        return new PEntityMap(Object.class, Object.class, "Object", md());
                     }
                 }
 

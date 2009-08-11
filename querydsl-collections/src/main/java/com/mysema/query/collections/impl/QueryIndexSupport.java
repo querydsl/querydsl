@@ -5,6 +5,8 @@
  */
 package com.mysema.query.collections.impl;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.types.expr.EBoolean;
 
@@ -25,6 +27,6 @@ public interface QueryIndexSupport extends IteratorSource {
      * @param orderedSources
      * @param condition
      */
-    IteratorSource getChildFor(EBoolean condition);
+    IteratorSource getChildFor(@Nullable EBoolean condition);
 
 }

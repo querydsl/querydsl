@@ -5,6 +5,8 @@
  */
 package com.mysema.query.codegen;
 
+import javax.annotation.Nullable;
+
 import com.mysema.commons.lang.Assert;
 
 /**
@@ -17,13 +19,18 @@ public class SimpleTypeModel implements TypeModel {
 
     protected String name, packageName, simpleName;
 
+    @Nullable
     protected String keyTypeName, valueTypeName;
 
     protected SimpleTypeModel(){}
     
-    public SimpleTypeModel(FieldType fieldType, String fullName,
-            String packageName, String simpleName, String keyTypeName,
-            String valueTypeName) {
+    public SimpleTypeModel(
+            FieldType fieldType, 
+            String fullName,
+            String packageName, 
+            String simpleName, 
+            @Nullable String keyTypeName,
+            @Nullable String valueTypeName) {
         this.fieldType = Assert.notNull(fieldType,"fieldType is null");
         this.name = Assert.notNull(fullName,"fullName is null");
         this.packageName = Assert.notNull(packageName,"packageName is null");

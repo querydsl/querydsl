@@ -5,6 +5,8 @@
  */
 package com.mysema.query;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.expr.EBoolean;
 
 /**
@@ -14,6 +16,8 @@ import com.mysema.query.types.expr.EBoolean;
  * @version $Id$
  */
 public class CascadingBoolean {
+    
+    @Nullable
     private EBoolean expr;
 
     public CascadingBoolean and(EBoolean right) {

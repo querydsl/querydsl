@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
@@ -40,7 +41,13 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     
     private final JDOQLPatterns patterns;
 
+    @Nullable
     private final PersistenceManager pm;
+    
+    public AbstractJDOQLQuery(){
+        this.patterns = JDOQLPatterns.DEFAULT;
+        this.pm = null;
+    }
     
     public AbstractJDOQLQuery(PersistenceManager pm) {
         this(pm, JDOQLPatterns.DEFAULT);
@@ -87,12 +94,12 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     }
 
     public long count() {
-        Query query = createQuery(null, true);
+        Query query = createQuery(true);
         query.setUnique(true);
         return (Long) execute(query);
     }
 
-    private Query createQuery(QueryModifiers modifiers, boolean forCount) {        
+    private Query createQuery(boolean forCount) {        
         Expr<?> source = this.getMetadata().getJoins().get(0).getTarget();
         
         // serialize
@@ -120,7 +127,7 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
         addToProjection(expr1, expr2);
         addToProjection(rest);
-        return (List<Object[]>) execute(createQuery(getMetadata().getModifiers(), false));
+        return (List<Object[]>) execute(createQuery(false));
     }
 
     private Object execute(Query query) {
@@ -137,19 +144,19 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expr<RT> expr) {
         addToProjection(expr);
-        return (List<RT>) execute(createQuery(getMetadata().getModifiers(), false));
+        return (List<RT>) execute(createQuery(false));
     }
 
     @SuppressWarnings("unchecked")
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
         addToProjection(expr);
-        Query countQuery = createQuery(null, true);
+        Query countQuery = createQuery(true);
         countQuery.setUnique(true);
         countQuery.setResult("count(this)");
         long total = (Long) execute(countQuery);
         if (total > 0) {
             QueryModifiers modifiers = getMetadata().getModifiers();
-            Query query = createQuery(modifiers, false);
+            Query query = createQuery(false);
             return new SearchResults<RT>((List<RT>) execute(query), modifiers,
                     total);
         } else {
@@ -160,7 +167,7 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expr<RT> expr) {
         addToProjection(expr);
-        Query query = createQuery(QueryModifiers.limit(1), false);
+        Query query = createQuery(false);
         query.setUnique(true);
         return (RT) execute(query);
     }

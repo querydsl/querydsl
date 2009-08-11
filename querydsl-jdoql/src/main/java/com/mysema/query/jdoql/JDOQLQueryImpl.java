@@ -17,6 +17,9 @@ import javax.jdo.PersistenceManager;
  */
 public class JDOQLQueryImpl extends AbstractJDOQLQuery<JDOQLQueryImpl> implements JDOQLQuery{
 
+    public JDOQLQueryImpl() {
+    }
+    
     public JDOQLQueryImpl(PersistenceManager pm) {
         super(pm);
     }

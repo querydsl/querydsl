@@ -139,8 +139,9 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
 
         if (!patterns.limitAndOffsetSymbols()
                 && metadata.getModifiers().isRestricting() && !forCountRow) {
-            if (where == null)
+            if (where == null){
                 append(patterns.where());
+            }                
             append(patterns.limitOffsetCondition(limit, offset));
         }
 
@@ -148,8 +149,9 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
             append(patterns.orderBy());
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy) {
-                if (!first)
+                if (!first){
                     builder.append(", ");
+                }                    
                 handle(os.getTarget());
                 append(os.getOrder() == Order.ASC ? patterns.asc() : patterns.desc());
                 first = false;

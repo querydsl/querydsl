@@ -12,9 +12,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.mysema.query.collections.domain.QCat;
-import com.mysema.query.collections.eval.ColQueryPatterns;
-import com.mysema.query.collections.eval.FilteredJavaSerializer;
-import com.mysema.query.collections.eval.JavaSerializer;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 

@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.path;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -110,13 +112,14 @@ public final class PathMetadata<T> {
 
     private final Expr<T> expression;
 
+    @Nullable
     private final Path<?> parent, root;
 
     private final PathType pathType;
 
     private final int hashCode;
 
-    private PathMetadata(Path<?> parent, Expr<T> expression, PathType type) {
+    private PathMetadata(@Nullable Path<?> parent, Expr<T> expression, PathType type) {
         this.parent = parent;
         this.expression = expression;
         this.pathType = type;

@@ -12,7 +12,6 @@ import java.util.Set;
 import org.junit.Test;
 
 import com.mysema.query.functions.AggregationFunctions;
-import com.mysema.query.hql.HQLGrammar;
 
 /**
  * HqlGrammarTest provides

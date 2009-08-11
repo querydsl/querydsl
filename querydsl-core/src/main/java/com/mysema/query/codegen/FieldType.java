@@ -5,6 +5,8 @@
  */
 package com.mysema.query.codegen;
 
+import javax.annotation.Nullable;
+
 
 /**
  * 
@@ -73,12 +75,14 @@ public enum FieldType {
      */
     TIME(COMPARABLE);
     
+    @Nullable
     private final FieldType superType;
     
-    FieldType(FieldType superType){
+    FieldType(@Nullable FieldType superType){
         this.superType = superType;
     }
 
+    @Nullable
     public FieldType getSuperType() {
         return superType;
     }

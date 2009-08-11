@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.slf4j.Logger;
@@ -42,7 +44,7 @@ public abstract class AbstractHQLQuery<SubType extends AbstractHQLQuery<SubType>
         this.session = session;
     }
 
-    private Query createQuery(String queryString, QueryModifiers modifiers) {
+    private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
         Query query = session.createQuery(queryString);
         setConstants(query, getConstants());
         if (modifiers != null && modifiers.isRestricting()) {
