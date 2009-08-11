@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
@@ -69,6 +71,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
     }
 
     @SuppressWarnings("unchecked")
+    @Nullable
     private Class<?> getTypeParameter(Type type, int index) {
         if (type instanceof ParameterizedType) {
             ParameterizedType ptype = (ParameterizedType) type;
@@ -211,6 +214,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
     }
 
     @SuppressWarnings("unchecked")
+    @Nullable
     private <T> T newInstance(Class<T> type, Type genericType, Object parent, Object propKey, PathMetadata<?> pm) {
         Expr<?> path;
         T rv;

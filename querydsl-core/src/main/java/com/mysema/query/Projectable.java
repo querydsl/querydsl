@@ -8,6 +8,8 @@ package com.mysema.query;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -137,6 +139,7 @@ public interface Projectable {
      * @param rest
      * @return
      */
+    @Nullable
     Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest);
 
     /**
@@ -147,6 +150,7 @@ public interface Projectable {
      * @param projection
      * @return the result or null for an empty result
      */
+    @Nullable
     <RT> RT uniqueResult(Expr<RT> projection);
 
 }

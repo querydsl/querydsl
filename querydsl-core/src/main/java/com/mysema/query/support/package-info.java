@@ -4,12 +4,9 @@
  * 
  */
 
-/**
- * Operations represent typed operations with operator and arguments
- */
 @DefaultAnnotationForMethods( { Nonnull.class,
         OverridingMethodsMustInvokeSuper.class })
-package com.mysema.query.types.operation;
+package com.mysema.query.support;
 
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;

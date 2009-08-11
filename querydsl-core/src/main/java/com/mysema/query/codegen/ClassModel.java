@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeSet;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.commons.lang.Assert;
@@ -283,6 +285,7 @@ public class ClassModel implements Comparable<ClassModel> {
         addAll(timeFields, clazz.timeFields);
     }
     
+    @Nullable
     private Class<?> safeClassForName(String stype) {
         try {
             return stype != null ? Class.forName(stype) : null;

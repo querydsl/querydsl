@@ -9,9 +9,12 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 
+import javax.annotation.Nullable;
+
 // TODO : move to mysema-commons
 public class TypeUtil {
     
+    @Nullable
     public static Class<?> safeForName(String name){
         try {
             return Class.forName(name);
@@ -21,6 +24,7 @@ public class TypeUtil {
     }
     
     @SuppressWarnings("unchecked")
+    @Nullable
     public static Class<?> getTypeParameter(java.lang.reflect.Type type, int index) {
         if (type instanceof ParameterizedType) {
             ParameterizedType ptype = (ParameterizedType) type;

@@ -13,6 +13,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.junit.Test;
 
 import com.mysema.query.alias.Alias;
@@ -48,6 +50,7 @@ public class MultiIteratorTest extends AbstractIteratorTest {
     private IteratorSource iteratorSource = new IteratorSource() {
 
         @SuppressWarnings("unchecked")
+        @Nullable
         public <A> Iterator<A> getIterator(Expr<A> expr) {
             if (expr == int1)
                 return (Iterator<A>) list1.iterator();

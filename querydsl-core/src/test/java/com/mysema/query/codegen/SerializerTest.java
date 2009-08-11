@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.junit.Test;
 
 /**
@@ -44,6 +46,7 @@ public class SerializerTest {
                 return String.class.getName();
             }
             @Override
+            @Nullable
             public String getKeyTypeName() {
                 return null;
             }
@@ -56,6 +59,7 @@ public class SerializerTest {
                 return String.class.getSimpleName();
             }
             @Override
+            @Nullable
             public String getValueTypeName() {
                 return null;
             }}, "field");

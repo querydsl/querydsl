@@ -102,7 +102,7 @@ public abstract class QueryBaseWithProjection<SubType extends QueryBaseWithProje
         Iterator<Object[]> it = iterate(first, second, rest);
         return it.hasNext() ? it.next() : null;
     }
-
+    
     public <RT> RT uniqueResult(Expr<RT> expr) {
         getMetadata().setUnique(true);
         getMetadata().getModifiers().setLimit(1l);

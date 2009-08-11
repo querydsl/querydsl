@@ -7,6 +7,8 @@ package com.mysema.query.collections.eval;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.codehaus.janino.CompileException;
 import org.codehaus.janino.ExpressionEvaluator;
 import org.codehaus.janino.Parser.ParseException;
@@ -52,12 +54,14 @@ public class FilteredJavaSerializer extends JavaSerializer {
         this.last = expressions.get(lastElement);
     }
 
+    @Nullable
     public ExpressionEvaluator createExpressionEvaluator(
             List<? extends Expr<?>> sources, Class<?> targetType)
             throws CompileException, ParseException, ScanException {
         String expr = super.toString();
-        String filtered = expr.replace("true", "").replace(" ", "").replace(
-                "&", "").replace("|", "");
+        String filtered = expr.replace("true", "")
+            .replace(" ", "")
+            .replace("&", "").replace("|", "");
         if ("".equals(filtered)) {
             logger.info("-- no filtering");
             return null;
