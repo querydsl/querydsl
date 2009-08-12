@@ -8,6 +8,8 @@ package com.mysema.query;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 /**
  * SearchResults bundles data for paged search results
  * 
@@ -25,7 +27,7 @@ public final class SearchResults<T> {
 
     private final List<T> results;
 
-    public SearchResults(List<T> results, Long limit, Long offset, long total) {
+    public SearchResults(List<T> results, @Nullable Long limit, @Nullable Long offset, long total) {
         this.limit = limit != null ? limit : Long.MAX_VALUE;
         this.offset = offset != null ? offset : 0l;
         this.total = total;

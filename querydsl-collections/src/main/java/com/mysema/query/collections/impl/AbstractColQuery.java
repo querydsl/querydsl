@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.collections15.IteratorUtils;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.iterators.FilterIterator;
@@ -178,7 +180,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
 
     }
 
-    private Iterator<Object[]> createMultiIterator(List<Expr<?>> sources, EBoolean condition) {
+    private Iterator<Object[]> createMultiIterator(List<Expr<?>> sources, @Nullable EBoolean condition) {
         MultiIterator multiIt;
         if (condition == null || !wrapIterators) {
             multiIt = new MultiIterator();
