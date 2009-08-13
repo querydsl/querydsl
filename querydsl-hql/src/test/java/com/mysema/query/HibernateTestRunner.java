@@ -57,11 +57,11 @@ public class HibernateTestRunner extends JUnit4ClassRunner {
             for (Class<?> cl : Domain.classes){
                 cfg.addAnnotatedClass(cl);
             }            
-            Hibernate config = getTestClass().getJavaClass().getAnnotation(Hibernate.class);
+            HibernateConfig config = getTestClass().getJavaClass().getAnnotation(HibernateConfig.class);
             Properties props = new Properties();
-            InputStream is = HibernateTestRunner.class.getResourceAsStream(config.properties());
+            InputStream is = HibernateTestRunner.class.getResourceAsStream(config.value());
             if (is == null){
-                throw new IllegalArgumentException("No configuration available at classpath:" + config.properties());
+                throw new IllegalArgumentException("No configuration available at classpath:" + config.value());
             }                
             props.load(is);
             cfg.setProperties(props);

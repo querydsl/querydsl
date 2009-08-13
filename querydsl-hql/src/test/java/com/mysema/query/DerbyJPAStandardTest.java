@@ -8,9 +8,8 @@ package com.mysema.query;
 import org.junit.runner.RunWith;
 
 
-@RunWith(HibernateTestRunner.class)
-@HibernateConfig("hsqldb.properties")
-public class HSQLDBStandardTest extends AbstractHibernateTest{
-    
+@RunWith(JPATestRunner.class)
+@JPAConfig("derby")
+public class DerbyJPAStandardTest extends AbstractJPATest{
     
 }

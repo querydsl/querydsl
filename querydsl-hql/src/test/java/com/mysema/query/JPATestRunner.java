@@ -1,9 +1,15 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query;
 
 import java.lang.reflect.Method;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import org.junit.internal.runners.InitializationError;
 import org.junit.internal.runners.JUnit4ClassRunner;
@@ -36,30 +42,19 @@ public class JPATestRunner extends JUnit4ClassRunner {
         entityManager.close();
     }
 
-//    public void run(final RunNotifier notifier) {
-//        try {
-//            AnnotationConfiguration cfg = new AnnotationConfiguration();
-//            for (Class<?> cl : Domain.classes){
-//                cfg.addAnnotatedClass(cl);
-//            }            
-//            Hibernate config = getTestClass().getJavaClass().getAnnotation(Hibernate.class);
-//            Properties props = new Properties();
-//            InputStream is = HibernateTestRunner.class.getResourceAsStream(config.properties());
-//            if (is == null){
-//                throw new IllegalArgumentException("No configuration available at classpath:" + config.properties());
-//            }                
-//            props.load(is);
-//            cfg.setProperties(props);
-//            sessionFactory = cfg.buildSessionFactory();
-//            super.run(notifier);
-//        } catch (Exception e) {
-//            String error = "Caught " + e.getClass().getName();
-//            throw new RuntimeException(error, e);
-//        } finally {
-//            if (sessionFactory != null){
-//                sessionFactory.close();
-//            }                
-//        }
-//
-//    }
+    public void run(final RunNotifier notifier) {
+        try {
+            JPAConfig config = getTestClass().getJavaClass().getAnnotation(JPAConfig.class);            
+            entityManagerFactory = Persistence.createEntityManagerFactory(config.value());
+            super.run(notifier);
+        } catch (Exception e) {
+            String error = "Caught " + e.getClass().getName();
+            throw new RuntimeException(error, e);
+        } finally {
+            if (entityManagerFactory != null){
+                entityManagerFactory.close();
+            }                
+        }
+
+    }
 }

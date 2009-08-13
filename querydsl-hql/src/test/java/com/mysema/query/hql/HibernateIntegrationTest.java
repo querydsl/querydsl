@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
-import com.mysema.query.Hibernate;
+import com.mysema.query.HibernateConfig;
 import com.mysema.query.HibernateTestRunner;
 import com.mysema.query.hql.hibernate.HQLQueryImpl;
 
@@ -24,8 +24,8 @@ import com.mysema.query.hql.hibernate.HQLQueryImpl;
  * @version $Id$
  */
 @RunWith(HibernateTestRunner.class)
-@Hibernate(properties = "hsqldb.properties")
-public class IntegrationTest extends ParserTest {
+@HibernateConfig("hsqldb.properties")
+public class HibernateIntegrationTest extends ParserTest {
 
     private Session session;
 
@@ -34,8 +34,7 @@ public class IntegrationTest extends ParserTest {
             public void parse() throws RecognitionException,
                     TokenStreamException {
                 try {
-                    System.out.println("query : "
-                            + toString().replace('\n', ' '));
+                    System.out.println("query : " + toString().replace('\n', ' '));
 
                     // create Query and execute it
                     Query query = session.createQuery(toString());

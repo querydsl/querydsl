@@ -38,7 +38,7 @@ public class ColQueryStandardTest {
     };
     
     @Test
-    public void test(){
+    public void test(){        
         Cat kitten = data.get(0).getKittens().get(0);        
         standardTest.booleanTests(cat.name.isNull(), otherCat.kittens.isEmpty());
         standardTest.collectionTests(cat.kittens, otherCat.kittens, kitten, new Cat());

@@ -12,31 +12,27 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.Session;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.hql.HQLQuery;
 import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.QCat;
-import com.mysema.query.hql.hibernate.HQLQueryImpl;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EList;
 import com.mysema.query.types.expr.Expr;
 
+/**
+ * @author tiwe
+ *
+ */
 public abstract class AbstractStandardTest {
-    
-    private Session session;
       
     private static QCat cat = new QCat("cat");
     
     private static QCat otherCat = new QCat("otherCat");
     
     private List<Cat> savedCats = new ArrayList<Cat>();
-    
-    private HQLQuery query(){
-        return new HQLQueryImpl(session);
-    }
     
     private StandardTest standardTest = new StandardTest(new StandardTestData(){        
         <A> Collection<Expr<?>> listProjections(EList<A> expr, EList<A> other, A knownElement){
@@ -54,6 +50,10 @@ public abstract class AbstractStandardTest {
         }              
     };
     
+    protected abstract HQLQuery query();
+    
+    protected abstract void save(Object entity);
+
     @Before
     public void setUp(){
         Cat prev = null;
@@ -66,13 +66,13 @@ public abstract class AbstractStandardTest {
             if (prev != null){
                 cat.getKittens().add(prev);
             }
-            session.save(cat);
+            save(cat);
             savedCats.add(cat);
             prev = cat;
         }
         
         Cat cat = new Cat("Some",6);
-        session.save(cat);
+        save(cat);
         savedCats.add(cat);
     }
     
@@ -95,8 +95,5 @@ public abstract class AbstractStandardTest {
         standardTest.report();        
     }
         
-    public void setSession(Session session) {
-        this.session = session;
-    }
 
 }

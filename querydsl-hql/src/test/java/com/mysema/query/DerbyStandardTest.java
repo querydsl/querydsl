@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 
 
 @RunWith(HibernateTestRunner.class)
-@Hibernate(properties = "derby.properties")
-public class DerbyStandardTest extends AbstractStandardTest{
-
+@HibernateConfig("derby.properties")
+public class DerbyStandardTest extends AbstractHibernateTest{
+    
 }
