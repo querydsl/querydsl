@@ -13,6 +13,7 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.Path;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * TypesTest provides.
  * 
@@ -31,13 +32,19 @@ public class TypesTest {
 //        }
 //    }
     
-    @Test
+    /**
+ * Test expr.
+ */
+@Test
     public void testExpr(){
         for (Class<?> cl : Expr.class.getClasses()){
             assertTrue(cl.getName(),Expr.class.isAssignableFrom(cl));
         }
     }
     
+    /**
+     * Test path.
+     */
     @Test
     public void testPath(){
         for (Class<?> cl : Path.class.getClasses()){

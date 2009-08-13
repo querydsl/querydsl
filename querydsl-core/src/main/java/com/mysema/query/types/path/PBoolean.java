@@ -8,6 +8,7 @@ package com.mysema.query.types.path;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.util.NotEmpty;
 
 /**
  * PBoolean represents boolean path expressions
@@ -26,7 +27,7 @@ public class PBoolean extends EBoolean implements Path<Boolean> {
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    public PBoolean(String var) {
+    public PBoolean(@NotEmpty String var) {
         this(PathMetadata.forVariable(var));
     }
 

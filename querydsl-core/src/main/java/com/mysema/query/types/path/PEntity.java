@@ -10,6 +10,9 @@ import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.EEntity;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.util.NotEmpty;
+
+import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
 
 /**
  * PEntity represents entity paths
@@ -31,7 +34,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @param entityName
      * @param metadata
      */
-    public PEntity(Class<? extends D> type, String entityName,
+    public PEntity(Class<? extends D> type, @NotEmpty String entityName,
             PathMetadata<?> metadata) {
         super(type);
         this.entityName = entityName;
@@ -46,7 +49,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @param entityName
      * @param var
      */
-    public PEntity(Class<? extends D> type, String entityName, String var) {
+    public PEntity(Class<? extends D> type, @NotEmpty String entityName, @NotEmpty String var) {
         this(type, entityName, PathMetadata.forVariable(var));
     }
     
@@ -56,7 +59,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @param propertyName
      * @return
      */
-    protected PBoolean _boolean(String propertyName) {
+    protected PBoolean _boolean(@NotEmpty String propertyName) {
         return new PBoolean(PathMetadata.forProperty(this, propertyName));
     }
 
@@ -68,7 +71,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @param type
      * @return
      */
-    protected <A extends Comparable<?>> PComparable<A> _comparable(String propertyName,
+    protected <A extends Comparable<?>> PComparable<A> _comparable(@NotEmpty String propertyName,
             Class<A> type) {
         return new PComparable<A>(type, PathMetadata.forProperty(this, propertyName));
     }
@@ -79,7 +82,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @param type
      * @return
      */
-    protected <A extends Comparable<?>> PDate<A> _date(String propertyName,
+    protected <A extends Comparable<?>> PDate<A> _date(@NotEmpty String propertyName,
             Class<A> type) {
         return new PDate<A>(type, PathMetadata.forProperty(this, propertyName));
     }
@@ -90,7 +93,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @param type
      * @return
      */
-    protected <A extends Comparable<?>> PDateTime<A> _dateTime(String propertyName,
+    protected <A extends Comparable<?>> PDateTime<A> _dateTime(@NotEmpty String propertyName,
             Class<A> type) {
         return new PDateTime<A>(type, PathMetadata.forProperty(this, propertyName));
     }
@@ -104,7 +107,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @param type
      * @return
      */
-    protected <A> PEntity<A> _entity(String property, String entityName,
+    protected <A> PEntity<A> _entity(@NotEmpty String property, @NotEmpty String entityName,
             Class<A> type) {
         return new PEntity<A>(type, entityName, PathMetadata.forProperty(this,
                 property));
@@ -119,8 +122,8 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @param entityName
      * @return
      */
-    protected <A> PEntityCollection<A> _entitycol(String property, Class<A> type,
-            String entityName) {
+    protected <A> PEntityCollection<A> _entitycol(@NotEmpty String property, Class<A> type,
+            @NotEmpty String entityName) {
         return new PEntityCollection<A>(type, entityName, PathMetadata
                 .forProperty(this, property));
     }
@@ -134,8 +137,8 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @param entityName
      * @return
      */
-    protected <A> PEntityList<A> _entitylist(String property, Class<A> type,
-            String entityName) {
+    protected <A> PEntityList<A> _entitylist(@NotEmpty String property, Class<A> type,
+            @NotEmpty String entityName) {
         return new PEntityList<A>(type, entityName, PathMetadata.forProperty(
                 this, property));
     }
@@ -151,8 +154,8 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @param entityName
      * @return
      */
-    protected <K, V> PEntityMap<K, V> _entitymap(String property, Class<K> key,
-            Class<V> value, String entityName) {
+    protected <K, V> PEntityMap<K, V> _entitymap(@NotEmpty String property, Class<K> key,
+            Class<V> value, @NotEmpty String entityName) {
         return new PEntityMap<K, V>(key, value, entityName, PathMetadata
                 .forProperty(this, property));
     }
@@ -166,7 +169,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @return
      */
     protected <A extends Number & Comparable<?>> PNumber<A> _number(
-            String property, Class<A> type) {
+            @NotEmpty String property, Class<A> type) {
         return new PNumber<A>(type, PathMetadata.forProperty(this, property));
     }
 
@@ -178,7 +181,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @param type
      * @return
      */
-    protected <A> PSimple<A> _simple(String path, Class<A> type) {
+    protected <A> PSimple<A> _simple(@NotEmpty String path, Class<A> type) {
         return new PSimple<A>(type, PathMetadata.forProperty(this, path));
     }
 
@@ -190,7 +193,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @param type
      * @return
      */
-    protected <A> PComponentCollection<A> _simplecol(String path, Class<A> type) {
+    protected <A> PComponentCollection<A> _simplecol(@NotEmpty String path, Class<A> type) {
         return new PComponentCollection<A>(type, PathMetadata.forProperty(this,
                 path));
     }
@@ -203,7 +206,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @param type
      * @return
      */
-    protected <A> PComponentList<A> _simplelist(String path, Class<A> type) {
+    protected <A> PComponentList<A> _simplelist(@NotEmpty String path, Class<A> type) {
         return new PComponentList<A>(type, PathMetadata.forProperty(this, path));
     }
 
@@ -217,7 +220,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @param value
      * @return
      */
-    protected <K, V> PComponentMap<K, V> _simplemap(String path, Class<K> key,
+    protected <K, V> PComponentMap<K, V> _simplemap(@NotEmpty String path, Class<K> key,
             Class<V> value) {
         return new PComponentMap<K, V>(key, value, PathMetadata.forProperty(
                 this, path));
@@ -229,7 +232,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @param property
      * @return
      */
-    protected PString _string(String property) {
+    protected PString _string(@NotEmpty String property) {
         return new PString(PathMetadata.forProperty(this, property));
     }
 
@@ -239,7 +242,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @param type
      * @return
      */
-    protected <A extends Comparable<?>> PTime<A> _time(String propertyName,
+    protected <A extends Comparable<?>> PTime<A> _time(@NotEmpty String propertyName,
             Class<A> type) {
         return new PTime<A>(type, PathMetadata.forProperty(this, propertyName));
     }

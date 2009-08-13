@@ -9,6 +9,7 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.util.NotEmpty;
 
 /**
  * PString represents String typed paths
@@ -24,7 +25,7 @@ public class PString extends EString implements Path<String> {
         this.metadata = metadata;
     }
 
-    public PString(String var) {
+    public PString(@NotEmpty String var) {
         this(PathMetadata.forVariable(var));
     }
 

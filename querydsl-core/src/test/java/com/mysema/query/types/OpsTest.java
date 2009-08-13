@@ -17,14 +17,18 @@ import org.junit.Test;
 import com.mysema.query.types.operation.Ops;
 
 
+// TODO: Auto-generated Javadoc
 /**
- * OpsTest provides
- *
+ * OpsTest provides.
+ * 
  * @author tiwe
  * @version $Id$
  */
 public class OpsTest {
     
+    /**
+     * Test.
+     */
     @Test
     public void test(){
         Map<String,Field> fields = new HashMap<String,Field>();

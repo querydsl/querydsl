@@ -10,8 +10,15 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class JavaPatternsTest.
+ */
 public class JavaPatternsTest {
     
+    /**
+     * Test.
+     */
     @Test
     public void test(){
         JavaPatterns patterns = new JavaPatterns();

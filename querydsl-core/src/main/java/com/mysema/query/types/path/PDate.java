@@ -9,6 +9,7 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EDate;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.util.NotEmpty;
 
 /**
  * @author tiwe
@@ -28,7 +29,7 @@ public class PDate<D extends Comparable> extends EDate<D> implements Path<D>{
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    public PDate(Class<? extends D> type, String var) {
+    public PDate(Class<? extends D> type, @NotEmpty String var) {
         this(type, PathMetadata.forVariable(var));
     }
 

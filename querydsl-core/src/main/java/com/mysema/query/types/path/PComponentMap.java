@@ -12,6 +12,7 @@ import com.mysema.query.types.expr.EMapBase;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.util.NotEmpty;
 
 /**
  * PComponentMap represents component map paths
@@ -39,7 +40,7 @@ public class PComponentMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    public PComponentMap(Class<K> keyType, Class<V> valueType, String var) {
+    public PComponentMap(Class<K> keyType, Class<V> valueType, @NotEmpty String var) {
         this(keyType, valueType, PathMetadata.forVariable(var));
     }
 

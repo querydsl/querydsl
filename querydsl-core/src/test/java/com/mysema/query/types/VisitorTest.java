@@ -16,6 +16,7 @@ import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.path.Path;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * VisitorTest provides.
  * 
@@ -24,6 +25,12 @@ import com.mysema.query.types.path.Path;
  */
 public class VisitorTest {
     
+	/**
+	 * Test iteration.
+	 * 
+	 * @throws SecurityException the security exception
+	 * @throws NoSuchMethodException the no such method exception
+	 */
 	@Test
     public void testIteration() throws SecurityException, NoSuchMethodException{
         List<Class<?>> types = new ArrayList<Class<?>>();

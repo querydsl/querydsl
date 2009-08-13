@@ -16,6 +16,7 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.util.NotEmpty;
 
 /**
  * PEntityCollection represents an entity collection path
@@ -36,8 +37,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     private EBoolean notEmpty;
 
     @SuppressWarnings("unchecked")
-    public PEntityCollection(Class<D> type, String entityName,
-            PathMetadata<?> metadata) {
+    public PEntityCollection(Class<D> type, @NotEmpty String entityName, PathMetadata<?> metadata) {
         super((Class)Collection.class);
         this.elementType = Assert.notNull(type,"type is null");
         this.metadata = Assert.notNull(metadata,"metadata is null");
@@ -45,7 +45,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    public PEntityCollection(Class<D> type, String entityName, String var) {
+    public PEntityCollection(Class<D> type, @NotEmpty String entityName, @NotEmpty String var) {
         this(type, entityName, PathMetadata.forVariable(var));
     }
 

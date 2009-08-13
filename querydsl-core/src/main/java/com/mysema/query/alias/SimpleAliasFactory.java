@@ -12,6 +12,7 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.util.FactoryMap;
+import com.mysema.query.util.NotEmpty;
 
 /**
  * SimpleAliasFactory creates CGLIB based alias proxy instances and keeps track
@@ -27,7 +28,7 @@ class SimpleAliasFactory implements AliasFactory {
     // caches top level paths (class/var as key)
     private FactoryMap<PEntity<?>> pathCache = new FactoryMap<PEntity<?>>() {
         @SuppressWarnings("unused")
-        public <A> PEntity<A> create(Class<A> cl, String var) {
+        public <A> PEntity<A> create(Class<A> cl, @NotEmpty String var) {
             return new PEntity<A>(cl, cl.getSimpleName(), PathMetadata.forVariable(var));
         }
     };

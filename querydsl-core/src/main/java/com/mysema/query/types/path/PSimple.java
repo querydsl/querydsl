@@ -9,6 +9,7 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.util.NotEmpty;
 
 /**
  * PSimple represents simple paths
@@ -28,7 +29,7 @@ public class PSimple<D> extends Expr<D> implements Path<D> {
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    public PSimple(Class<? extends D> type, String var) {
+    public PSimple(Class<? extends D> type, @NotEmpty String var) {
         this(type, PathMetadata.forVariable(var));
     }
 

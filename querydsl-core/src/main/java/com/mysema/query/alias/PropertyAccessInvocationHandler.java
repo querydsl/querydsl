@@ -275,24 +275,24 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             // Collection API types
 
         } else if (List.class.isAssignableFrom(type)) {
-            Class<?> _elementType = getTypeParameter(genericType, 0);
-            path = new PEntityList(_elementType, _elementType.getSimpleName(), pm);
+            Class<?> elementType = getTypeParameter(genericType, 0);
+            path = new PEntityList(elementType, elementType.getSimpleName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
 
         } else if (Set.class.isAssignableFrom(type)) {
-            Class<?> _elementType = getTypeParameter(genericType, 0);
-            path = new PEntityCollection(_elementType, _elementType.getName(), pm);
+            Class<?> elementType = getTypeParameter(genericType, 0);
+            path = new PEntityCollection(elementType, elementType.getName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
 
         } else if (Collection.class.isAssignableFrom(type)) {
-            Class<?> _elementType = getTypeParameter(genericType, 0);
-            path = new PEntityCollection(_elementType, _elementType.getSimpleName(), pm);
+            Class<?> elementType = getTypeParameter(genericType, 0);
+            path = new PEntityCollection(elementType, elementType.getSimpleName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
 
         } else if (Map.class.isAssignableFrom(type)) {
-            Class<?> _keyType = getTypeParameter(genericType, 0);
-            Class<?> _valueType = getTypeParameter(genericType, 1);
-            path = new PEntityMap(_keyType, _valueType, _valueType.getSimpleName(), pm);
+            Class<?> keyType = getTypeParameter(genericType, 0);
+            Class<?> valueType = getTypeParameter(genericType, 1);
+            path = new PEntityMap(keyType, valueType, valueType.getSimpleName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
 
             // enums

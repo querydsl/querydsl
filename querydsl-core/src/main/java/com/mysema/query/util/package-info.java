@@ -3,11 +3,10 @@
  * All rights reserved.
  * 
  */
-@DefaultAnnotation( { Nonnull.class, OverridingMethodsMustInvokeSuper.class })
+@DefaultAnnotation( { Nonnull.class })
 package com.mysema.query.util;
 
 import javax.annotation.Nonnull;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
 

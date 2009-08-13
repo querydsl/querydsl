@@ -7,6 +7,7 @@ package com.mysema.query.types.path;
 
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.util.NotEmpty;
 
 /**
  * PComparableArray represents comparable array paths
@@ -20,7 +21,7 @@ public class PComparableArray<D extends Comparable> extends PArray<D> {
         super(type, metadata);
     }
 
-    public PComparableArray(Class<D> type, String var) {
+    public PComparableArray(Class<D> type, @NotEmpty String var) {
         super(type, PathMetadata.forVariable(var));
     }
 

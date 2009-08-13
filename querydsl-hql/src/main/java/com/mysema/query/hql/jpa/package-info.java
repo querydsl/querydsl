@@ -7,11 +7,10 @@
 /**
  * HQL Support classes
  */
-@DefaultAnnotation( { Nonnull.class, OverridingMethodsMustInvokeSuper.class })
+@DefaultAnnotation( { Nonnull.class })
 package com.mysema.query.hql.jpa;
 
 import javax.annotation.Nonnull;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
 

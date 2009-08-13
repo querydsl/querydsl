@@ -52,10 +52,10 @@
     
   <#-- constructors -->           
     <#if !embeddable>
-    public ${pre}${decl.simpleName}(java.lang.String path) {
+    public ${pre}${decl.simpleName}(@NotEmpty String path) {
           this(${decl.name}.class, path);        
     }
-    public ${pre}${decl.simpleName}(Class<? extends ${decl.name}> cl, java.lang.String path) {
+    public ${pre}${decl.simpleName}(Class<? extends ${decl.name}> cl, @NotEmpty String path) {
           super(cl, "${decl.simpleName}", path);
     <#list decl.entityFields as field>
           <#if !reserved?seq_contains(field.name)>

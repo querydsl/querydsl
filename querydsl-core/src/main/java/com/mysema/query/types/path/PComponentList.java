@@ -6,6 +6,7 @@
 package com.mysema.query.types.path;
 
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.util.NotEmpty;
 
 /**
  * PComponentList represents component list paths
@@ -19,7 +20,7 @@ public class PComponentList<D> extends PComponentCollection<D> implements PList<
         super(type, metadata);
     }
 
-    public PComponentList(Class<D> type, String var) {
+    public PComponentList(Class<D> type, @NotEmpty String var) {
         super(type, PathMetadata.forVariable(var));
     }
 

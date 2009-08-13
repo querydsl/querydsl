@@ -11,6 +11,7 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollectionBase;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.util.NotEmpty;
 
 /**
  * PComponentCollection represents component collection paths
@@ -34,7 +35,7 @@ public class PComponentCollection<D> extends ECollectionBase<D> implements PColl
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    public PComponentCollection(Class<D> type, String var) {
+    public PComponentCollection(Class<D> type, @NotEmpty String var) {
         this(type, PathMetadata.forVariable(var));
     }
 

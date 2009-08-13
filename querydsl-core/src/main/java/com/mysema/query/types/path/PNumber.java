@@ -9,6 +9,7 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.util.NotEmpty;
 
 /**
  * PNumber represents numeric paths
@@ -29,7 +30,7 @@ public class PNumber<D extends Number & Comparable<?>> extends ENumber<D>
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    public PNumber(Class<? extends D> type, String var) {
+    public PNumber(Class<? extends D> type, @NotEmpty String var) {
         this(type, PathMetadata.forVariable(var));
     }
 

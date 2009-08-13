@@ -12,6 +12,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.util.NotEmpty;
 
 /**
  * PathMetadata provides metadata for Path expressions.
@@ -96,7 +97,7 @@ public final class PathMetadata<T> {
      * @param property
      * @return
      */
-    public static PathMetadata<String> forProperty(Path<?> parent, String property) {
+    public static PathMetadata<String> forProperty(Path<?> parent, @NotEmpty String property) {
         return new PathMetadata<String>(parent, EConstant.create(property), PathType.PROPERTY);
     }
 
@@ -106,7 +107,7 @@ public final class PathMetadata<T> {
      * @param variable
      * @return
      */
-    public static PathMetadata<String> forVariable(String variable) {
+    public static PathMetadata<String> forVariable(@NotEmpty String variable) {
         return new PathMetadata<String>(null, EConstant.create(variable), PathType.VARIABLE);
     }
 

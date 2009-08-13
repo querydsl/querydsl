@@ -7,6 +7,7 @@ package com.mysema.query.types.path;
 
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.util.NotEmpty;
 
 /**
  * PStringArray represents String[] typed path
@@ -19,7 +20,7 @@ public class PStringArray extends PArray<String> {
         super(String.class, metadata);
     }
 
-    public PStringArray(String var) {
+    public PStringArray(@NotEmpty String var) {
         super(String.class, PathMetadata.forVariable(var));
     }
 

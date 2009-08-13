@@ -9,6 +9,7 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.util.NotEmpty;
 
 /**
  * PComparable represents Comparable paths
@@ -31,7 +32,7 @@ public class PComparable<D extends Comparable> extends EComparable<D> implements
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    public PComparable(Class<? extends D> type, String var) {
+    public PComparable(Class<? extends D> type, @NotEmpty String var) {
         this(type, PathMetadata.forVariable(var));
     }
 

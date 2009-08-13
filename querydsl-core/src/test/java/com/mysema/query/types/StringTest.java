@@ -24,14 +24,21 @@ import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.OperatorImpl;
 import com.mysema.query.types.operation.Ops;
 
+// TODO: Auto-generated Javadoc
 /**
- * StringTest provides
- *
+ * StringTest provides.
+ * 
  * @author tiwe
  * @version $Id$
  */
 public class StringTest {
     
+    /**
+     * Test pattern availability.
+     * 
+     * @throws IllegalArgumentException the illegal argument exception
+     * @throws IllegalAccessException the illegal access exception
+     */
     @SuppressWarnings("unchecked")
     @Test
     public void testPatternAvailability() throws IllegalArgumentException, IllegalAccessException{
@@ -62,6 +69,9 @@ public class StringTest {
         }
     }
     
+    /**
+     * Test to string.
+     */
     @SuppressWarnings("unchecked")
     @Test
     public void testToString(){
@@ -84,10 +94,37 @@ public class StringTest {
         assertEquals("[alias]", someTypeArray.toString());
     }
     
+    /**
+     * The Interface SomeType.
+     */
     public interface SomeType{        
+        
+        /**
+         * Gets the name.
+         * 
+         * @return the name
+         */
         String getName();
+        
+        /**
+         * Gets the ref.
+         * 
+         * @return the ref
+         */
         SomeType getRef();
+        
+        /**
+         * Gets the refs.
+         * 
+         * @return the refs
+         */
         List<SomeType> getRefs();
+        
+        /**
+         * Gets the amount.
+         * 
+         * @return the amount
+         */
         int getAmount();
     }
 

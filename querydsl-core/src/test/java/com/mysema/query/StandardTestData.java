@@ -25,8 +25,20 @@ import com.mysema.query.types.expr.ETime;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.Path;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StandardTestData.
+ */
 class StandardTestData {
     
+    /**
+     * Boolean filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * 
+     * @return the collection< e boolean>
+     */
     Collection<EBoolean> booleanFilters(EBoolean expr, EBoolean other){
         return Arrays.asList(
             expr.and(other),
@@ -37,6 +49,15 @@ class StandardTestData {
         );
     };
     
+    /**
+     * Collection filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownElement the known element
+     * 
+     * @return the collection< e boolean>
+     */
     <A> Collection<EBoolean> collectionFilters(ECollection<A> expr, ECollection<A> other, A knownElement){
         return Arrays.<EBoolean>asList(
           expr.contains(knownElement),
@@ -46,6 +67,16 @@ class StandardTestData {
         );
     }
     
+    /**
+     * Collection matching filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownElement the known element
+     * @param missingElement the missing element
+     * 
+     * @return the collection< e boolean>
+     */
     <A> Collection<EBoolean> collectionMatchingFilters(ECollection<A> expr, ECollection<A> other, A knownElement, A missingElement){
         return Arrays.<EBoolean>asList(
           expr.contains(knownElement),
@@ -55,12 +86,30 @@ class StandardTestData {
         );
     }
     
+    /**
+     * Collection projections.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownElement the known element
+     * 
+     * @return the collection< expr<?>>
+     */
     <A> Collection<Expr<?>> collectionProjections(ECollection<A> expr, ECollection<A> other, A knownElement){
         return Arrays.<Expr<?>>asList(
           expr.size()
         );
     }
     
+    /**
+     * Comparable filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< e boolean>
+     */
     private <A extends Comparable<A>> Collection<EBoolean> comparableFilters(EComparable<A> expr, EComparable<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(exprFilters(expr, other, knownValue));
@@ -77,6 +126,15 @@ class StandardTestData {
         return rv;
     }
     
+    /**
+     * Date filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< e boolean>
+     */
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<EBoolean> dateFilters(EDate<A> expr, EDate<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
@@ -89,11 +147,29 @@ class StandardTestData {
         return rv;
     }
     
+    /**
+     * Date matching filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< e boolean>
+     */
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<EBoolean> dateMatchingFilters(EDate<A> expr, EDate<A> other, A knownValue){
         return Collections.emptyList();
     }
     
+    /**
+     * Date projections.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< expr<?>>
+     */
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<Expr<?>> dateProjections(EDate<A> expr, EDate<A> other, A knownValue){
         return Arrays.<Expr<?>>asList(
@@ -103,6 +179,15 @@ class StandardTestData {
         );
     }
     
+    /**
+     * Time filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< e boolean>
+     */
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<EBoolean> timeFilters(ETime<A> expr, ETime<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
@@ -115,11 +200,29 @@ class StandardTestData {
         return rv;
     }
     
+    /**
+     * Time matching filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< e boolean>
+     */
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<EBoolean> timeMatchingFilters(ETime<A> expr, ETime<A> other, A knownValue){
         return Collections.emptyList();
     }
     
+    /**
+     * Time projections.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< expr<?>>
+     */
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<Expr<?>> timeProjections(ETime<A> expr, ETime<A> other, A knownValue){
         return Arrays.<Expr<?>>asList(
@@ -129,6 +232,15 @@ class StandardTestData {
         );
     }
     
+    /**
+     * Date time filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< e boolean>
+     */
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<EBoolean> dateTimeFilters(EDateTime<A> expr, EDateTime<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
@@ -150,11 +262,29 @@ class StandardTestData {
         return rv;
     }
     
+    /**
+     * Date time matching filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< e boolean>
+     */
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<EBoolean> dateTimeMatchingFilters(EDateTime<A> expr, EDateTime<A> other, A knownValue){
         return Collections.emptyList();
     }
     
+    /**
+     * Date time projections.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< expr<?>>
+     */
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<Expr<?>> dateTimeProjections(EDateTime<A> expr, EDateTime<A> other, A knownValue){
         return Arrays.<Expr<?>>asList(
@@ -167,6 +297,15 @@ class StandardTestData {
         );
     }
     
+    /**
+     * Expr filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< e boolean>
+     */
     private <A> Collection<EBoolean> exprFilters(Expr<A> expr, Expr<A> other, A knownValue){
         return Arrays.<EBoolean>asList(
             expr.eq(other),
@@ -176,6 +315,15 @@ class StandardTestData {
         );
     }
     
+    /**
+     * List filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownElement the known element
+     * 
+     * @return the collection< e boolean>
+     */
     <A> Collection<EBoolean> listFilters(EList<A> expr, EList<A> other, A knownElement){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(collectionFilters(expr, other, knownElement));
@@ -183,10 +331,29 @@ class StandardTestData {
         return rv;
     }
     
+    /**
+     * List matching filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownElement the known element
+     * @param missingElement the missing element
+     * 
+     * @return the collection< e boolean>
+     */
     <A> Collection<EBoolean> listMatchingFilters(EList<A> expr, EList<A> other, A knownElement, A missingElement){
         return collectionMatchingFilters(expr, other, knownElement, missingElement);
     }
     
+    /**
+     * List projections.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownElement the known element
+     * 
+     * @return the collection< expr<?>>
+     */
     <A> Collection<Expr<?>> listProjections(EList<A> expr, EList<A> other, A knownElement){
         return Arrays.<Expr<?>>asList(
           expr.get(0),
@@ -194,6 +361,16 @@ class StandardTestData {
         );
     }
     
+    /**
+     * Map filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownKey the known key
+     * @param knownValue the known value
+     * 
+     * @return the collection< e boolean>
+     */
     <K,V> Collection<EBoolean> mapFilters(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue) {
         return Arrays.<EBoolean>asList(
           expr.containsKey(knownKey),
@@ -206,6 +383,18 @@ class StandardTestData {
         );
     }
         
+    /**
+     * Map matching filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownKey the known key
+     * @param knownValue the known value
+     * @param missingKey the missing key
+     * @param missingValue the missing value
+     * 
+     * @return the collection< e boolean>
+     */
     <K,V> Collection<EBoolean> mapMatchingFilters(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue, K missingKey, V missingValue) {
         return Arrays.<EBoolean>asList(
           expr.containsKey(knownKey),
@@ -218,6 +407,16 @@ class StandardTestData {
         );
     }
         
+    /**
+     * Map projections.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownKey the known key
+     * @param knownValue the known value
+     * 
+     * @return the collection< expr<?>>
+     */
     <K,V> Collection<Expr<?>> mapProjections(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue) {
         return Arrays.<Expr<?>>asList(
           expr.get(knownKey),
@@ -225,6 +424,15 @@ class StandardTestData {
         );
     }
     
+    /**
+     * Numeric casts.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< e number<?>>
+     */
     <A extends Number & Comparable<A>> Collection<ENumber<?>> numericCasts(ENumber<A> expr, ENumber<A> other, A knownValue){
         return Arrays.<ENumber<?>>asList(
           expr.byteValue(),
@@ -236,6 +444,15 @@ class StandardTestData {
         );
     }
         
+    /**
+     * Numeric filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< e boolean>
+     */
     @SuppressWarnings("unchecked")
     <A extends Number & Comparable<A>> Collection<EBoolean> numericFilters(ENumber<A> expr, ENumber<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();        
@@ -268,6 +485,15 @@ class StandardTestData {
         return rv;
     }
     
+    /**
+     * Numeric matching filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< e boolean>
+     */
     <A extends Number & Comparable<A>> Collection<EBoolean> numericMatchingFilters(ENumber<A> expr, ENumber<A> other, A knownValue){
         return Arrays.<EBoolean>asList(
             expr.eq(knownValue),            
@@ -278,6 +504,15 @@ class StandardTestData {
         );
     }
     
+    /**
+     * Numeric projections.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< e number<?>>
+     */
     <A extends Number & Comparable<A>> Collection<ENumber<?>> numericProjections(ENumber<A> expr, ENumber<A> other, A knownValue){
         return Arrays.<ENumber<?>>asList(
           MathFunctions.abs(expr),
@@ -289,6 +524,15 @@ class StandardTestData {
         );
     }
     
+    /**
+     * Path filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< e boolean>
+     */
     <A> Collection<EBoolean> pathFilters(Path<A> expr, Path<A> other, A knownValue){
         return Arrays.<EBoolean>asList(
              expr.isNull(),
@@ -296,6 +540,15 @@ class StandardTestData {
         );
     }
     
+    /**
+     * String filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< e boolean>
+     */
     @SuppressWarnings("unchecked")
     Collection<EBoolean> stringFilters(EString expr, EString other, String knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
@@ -340,6 +593,15 @@ class StandardTestData {
         return rv;
     }
     
+    /**
+     * String matching filters.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< e boolean>
+     */
     Collection<EBoolean> stringMatchingFilters(EString expr, EString other, String knownValue){
         return Arrays.<EBoolean>asList(
             expr.eq(other),
@@ -384,6 +646,15 @@ class StandardTestData {
         );
     }
     
+    /**
+     * String projections.
+     * 
+     * @param expr the expr
+     * @param other the other
+     * @param knownValue the known value
+     * 
+     * @return the collection< e string>
+     */
     Collection<EString> stringProjections(EString expr, EString other, String knownValue){
         return Arrays.<EString>asList(
           expr.add("Hello"),

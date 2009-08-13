@@ -13,6 +13,7 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.util.NotEmpty;
 
 /**
  * PArray represents an array typed path
@@ -38,7 +39,7 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>{
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    public PArray(Class<D> type, String var) {
+    public PArray(Class<D> type, @NotEmpty String var) {
         this(type, PathMetadata.forVariable(var));
     }
 

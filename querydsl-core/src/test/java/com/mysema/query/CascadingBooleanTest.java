@@ -11,14 +11,18 @@ import com.mysema.query.alias.Alias;
 import com.mysema.query.types.expr.EBoolean;
 
 
+// TODO: Auto-generated Javadoc
 /**
- * CascadingBooleanTest provides
- *
+ * CascadingBooleanTest provides.
+ * 
  * @author tiwe
  * @version $Id$
  */
 public class CascadingBooleanTest {
     
+    /**
+     * Test.
+     */
     @Test
     public void test(){
         EBoolean etrue = Alias.$(true);

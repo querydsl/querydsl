@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 
 import org.junit.Test;
 
+// TODO: Auto-generated Javadoc
 /**
  * HibernateProcessorTest provides.
  * 
@@ -23,12 +24,18 @@ import org.junit.Test;
  */
 public class SerializerTest {
 
+    /** The type. */
     private ClassModel type;
 
+    /** The writer. */
     private Writer writer = new StringWriter();
 
+    /** The model. */
     private Map<String, Object> model = new HashMap<String, Object>();
 
+    /**
+     * Instantiates a new serializer test.
+     */
     public SerializerTest() {
         type = new ClassModel(
                 "com.mysema.query.DomainSuperClass",
@@ -68,6 +75,11 @@ public class SerializerTest {
         type.addConstructor(new ConstructorModel(Collections.singleton(param)));
     }
 
+    /**
+     * Test domain types as outer classes.
+     * 
+     * @throws Exception the exception
+     */
     @Test
     public void testDomainTypesAsOuterClasses() throws Exception {
         model.put("type", type);

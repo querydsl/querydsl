@@ -7,11 +7,10 @@
 /**
  * Alias functionality
  */
-@DefaultAnnotation( { Nonnull.class, OverridingMethodsMustInvokeSuper.class })
+@DefaultAnnotation( { Nonnull.class })
 package com.mysema.query.alias;
 
 import javax.annotation.Nonnull;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
 

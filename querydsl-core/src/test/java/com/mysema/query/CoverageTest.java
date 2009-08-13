@@ -23,10 +23,21 @@ import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CoverageTest.
+ */
 public class CoverageTest {
     
+    /** The test data. */
     private StandardTestData testData = new StandardTestData();
     
+    /**
+     * Test.
+     * 
+     * @throws IllegalArgumentException the illegal argument exception
+     * @throws IllegalAccessException the illegal access exception
+     */
     @Test
     public void test() throws IllegalArgumentException, IllegalAccessException{        
         // make sure all Operators are covered in expression factory methods

@@ -7,6 +7,7 @@ package com.mysema.query.types.path;
 
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.util.NotEmpty;
 
 /**
  * PBooleanArray represents boolean array typed paths
@@ -19,7 +20,7 @@ public class PBooleanArray extends PArray<Boolean> {
         super(Boolean.class, metadata);
     }
 
-    public PBooleanArray(String var) {
+    public PBooleanArray(@NotEmpty String var) {
         super(Boolean.class, PathMetadata.forVariable(var));
     }
 

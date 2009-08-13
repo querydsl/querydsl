@@ -11,14 +11,18 @@ import org.junit.Test;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.types.expr.EComparable;
 
+// TODO: Auto-generated Javadoc
 /**
- * JodaTimeTest provides
- *
+ * JodaTimeTest provides.
+ * 
  * @author tiwe
  * @version $Id$
  */
 public class JodaTimeTest {
     
+    /**
+     * Test.
+     */
     @Test
     public void test(){
         EComparable<LocalDate> expr = Alias.$(new LocalDate());

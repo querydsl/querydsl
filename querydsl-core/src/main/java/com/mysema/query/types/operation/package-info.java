@@ -7,11 +7,10 @@
 /**
  * Operations represent typed operations with operator and arguments
  */
-@DefaultAnnotation( { Nonnull.class, OverridingMethodsMustInvokeSuper.class })
+@DefaultAnnotation( { Nonnull.class })
 package com.mysema.query.types.operation;
 
 import javax.annotation.Nonnull;
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
 
