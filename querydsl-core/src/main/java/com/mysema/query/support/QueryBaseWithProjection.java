@@ -47,12 +47,14 @@ public abstract class QueryBaseWithProjection<SubType extends QueryBaseWithProje
     }
 
     public SubType limit(long limit) {
-        getMetadata().getModifiers().setLimit(limit);
+        QueryModifiers mod = getMetadata().getModifiers();
+        getMetadata().setModifiers(new QueryModifiers(limit, mod.getOffset()));
         return _this;
     }
 
     public SubType offset(long offset) {
-        getMetadata().getModifiers().setOffset(offset);
+        QueryModifiers mod = getMetadata().getModifiers();
+        getMetadata().setModifiers(new QueryModifiers(mod.getLimit(), offset));
         return _this;
     }
 
@@ -98,14 +100,14 @@ public abstract class QueryBaseWithProjection<SubType extends QueryBaseWithProje
     
     public Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         getMetadata().setUnique(true);
-        getMetadata().getModifiers().setLimit(1l);
+        limit(1l);
         Iterator<Object[]> it = iterate(first, second, rest);
         return it.hasNext() ? it.next() : null;
     }
     
     public <RT> RT uniqueResult(Expr<RT> expr) {
         getMetadata().setUnique(true);
-        getMetadata().getModifiers().setLimit(1l);
+        limit(1l);
         Iterator<RT> it = iterate(expr);
         return it.hasNext() ? it.next() : null;
     }

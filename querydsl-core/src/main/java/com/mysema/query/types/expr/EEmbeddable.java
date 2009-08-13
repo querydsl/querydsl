@@ -13,7 +13,9 @@ package com.mysema.query.types.expr;
  * @param <D> Java type
  */
 public abstract class EEmbeddable<D> extends Expr<D> {
+   
     public EEmbeddable(Class<? extends D> type) {
         super(type);
     }
+    
 }

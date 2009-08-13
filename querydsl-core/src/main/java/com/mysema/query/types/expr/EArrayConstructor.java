@@ -13,7 +13,8 @@ package com.mysema.query.types.expr;
  * @param <D> component type
  */
 public class EArrayConstructor<D> extends EConstructor<D[]> {
-    private Class<D> elementType;
+    
+    private final Class<D> elementType;
 
     @SuppressWarnings("unchecked")
     public EArrayConstructor(Class<D> type, Expr<D>... args) {

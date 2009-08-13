@@ -938,7 +938,7 @@ public class ParserTest implements Constants {
                         + input, 0, parser.getParseErrorHandler()
                         .getErrorCount());
             } finally {
-                clear();
+//                clear();
                 System.out.println();
             }
         }

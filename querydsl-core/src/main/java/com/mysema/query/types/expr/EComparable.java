@@ -177,10 +177,20 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
         return desc;
     }
 
+    /**
+     * @param first
+     * @param second
+     * @return
+     */
     public final EBoolean notBetween(D first, D second) {
         return between(first, second).not();
     }
 
+    /**
+     * @param first
+     * @param second
+     * @return
+     */
     public final EBoolean notBetween(Expr<D> first, Expr<D> second) {
         return between(first, second).not();
     }

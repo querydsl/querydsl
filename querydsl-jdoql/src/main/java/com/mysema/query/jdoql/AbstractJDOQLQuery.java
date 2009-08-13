@@ -88,10 +88,10 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         return OSimple.create(alias.getType(), Ops.ALIAS, target, alias);
     }
     
-    @Override
-    protected void clear() {
-        super.clear();
-    }
+//    @Override
+//    protected void clear() {
+//        super.clear();
+//    }
 
     public long count() {
         Query query = createQuery(true);

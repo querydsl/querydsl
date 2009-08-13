@@ -53,12 +53,12 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
         return serializer.toString();
     }
 
-    @Override
-    protected void clear() {
-        super.clear();
-        queryString = null;
-        countRowsString = null;
-    }
+//    @Override
+//    protected void clear() {
+//        super.clear();
+//        queryString = null;
+//        countRowsString = null;
+//    }
 
     @SuppressWarnings("unchecked")
     private <D> Expr<D> createAlias(EEntity<?> target, PEntity<D> alias){

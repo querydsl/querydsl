@@ -19,7 +19,7 @@ public class QueryBase<SubType extends QueryBase<SubType>> {
     @SuppressWarnings("unchecked")
     protected final SubType _this = (SubType) this;
 
-    private QueryMetadata metadata;
+    private final QueryMetadata metadata;
 
     protected String toString;
 
@@ -36,9 +36,9 @@ public class QueryBase<SubType extends QueryBase<SubType>> {
         return _this;
     }
 
-    protected void clear() {
-        metadata = new DefaultQueryMetadata();
-    }
+//    protected void clear() {
+//        metadata = new DefaultQueryMetadata();
+//    }
 
     // template
     protected SubType from(Expr<?>... o) {

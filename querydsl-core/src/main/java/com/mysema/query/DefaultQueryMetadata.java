@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
@@ -28,20 +30,21 @@ public class DefaultQueryMetadata implements QueryMetadata {
     
     private final Set<Expr<?>> exprInJoins = new HashSet<Expr<?>>();
 
-    private List<Expr<?>> groupBy = new ArrayList<Expr<?>>();
+    private final List<Expr<?>> groupBy = new ArrayList<Expr<?>>();
 
-    private CascadingBoolean having = new CascadingBoolean();
+    private final CascadingBoolean having = new CascadingBoolean();
 
-    private List<JoinExpression> joins = new ArrayList<JoinExpression>();
+    private final List<JoinExpression> joins = new ArrayList<JoinExpression>();
 
-    private List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
+    private final List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
 
-    private List<Expr<?>> projection = new ArrayList<Expr<?>>();
+    private final List<Expr<?>> projection = new ArrayList<Expr<?>>();
 
-    private CascadingBoolean where = new CascadingBoolean();
+    private final CascadingBoolean where = new CascadingBoolean();
 
     private boolean distinct;
 
+    @Nullable
     private QueryModifiers modifiers = new QueryModifiers();
 
     @Override
@@ -122,6 +125,7 @@ public class DefaultQueryMetadata implements QueryMetadata {
     }
 
     @Override
+    @Nullable
     public QueryModifiers getModifiers() {
         return modifiers;
     }
@@ -157,7 +161,7 @@ public class DefaultQueryMetadata implements QueryMetadata {
     }
 
     @Override
-    public void setModifiers(QueryModifiers restriction) {
+    public void setModifiers(@Nullable QueryModifiers restriction) {
         this.modifiers = restriction;
     }
 

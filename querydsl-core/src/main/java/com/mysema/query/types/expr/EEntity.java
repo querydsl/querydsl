@@ -13,7 +13,9 @@ package com.mysema.query.types.expr;
  * @param <D> Java type
  */
 public abstract class EEntity<D> extends Expr<D> {
+    
     public EEntity(Class<? extends D> type) {
         super(type);
     }
+    
 }

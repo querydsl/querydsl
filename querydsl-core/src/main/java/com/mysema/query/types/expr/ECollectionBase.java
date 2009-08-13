@@ -21,13 +21,13 @@ import com.mysema.query.types.operation.Ops;
  */
 public abstract class ECollectionBase<D> extends Expr<java.util.Collection<D>> implements ECollection<D> {
 
-    public ECollectionBase(Class<? extends Collection<D>> type) {
-        super(type);
-    }
+    private EBoolean empty;
    
     private ENumber<Integer> size;    
     
-    private EBoolean empty;
+    public ECollectionBase(Class<? extends Collection<D>> type) {
+        super(type);
+    }
     
     @Override
     public final EBoolean contains(D child) {

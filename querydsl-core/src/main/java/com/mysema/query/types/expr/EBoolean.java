@@ -17,6 +17,7 @@ import com.mysema.query.types.operation.Ops;
  * 
  */
 public abstract class EBoolean extends EComparable<Boolean> {
+    
     private EBoolean not;
 
     public EBoolean() {

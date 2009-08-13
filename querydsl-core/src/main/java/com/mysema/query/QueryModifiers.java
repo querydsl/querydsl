@@ -6,6 +6,7 @@
 package com.mysema.query;
 
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
 
 /**
  * QueryModifiers combines limit and offset info into a single type
@@ -13,6 +14,7 @@ import javax.annotation.Nullable;
  * @author Timo Westkamper
  * @version $Id$
  */
+@Immutable
 public final class QueryModifiers {
 
     public static QueryModifiers limit(long limit) {
@@ -24,9 +26,11 @@ public final class QueryModifiers {
     }
 
     @Nullable
-    private Long limit, offset;
+    private final Long limit, offset;
 
     public QueryModifiers() {
+        limit = null;
+        offset = null;
     }
 
     public QueryModifiers(@Nullable Long limit, @Nullable Long offset) {
@@ -40,14 +44,6 @@ public final class QueryModifiers {
 
     public Long getOffset() {
         return offset;
-    }
-
-    public void setLimit(Long limit) {
-        this.limit = limit;
-    }
-
-    public void setOffset(Long offset) {
-        this.offset = offset;
     }
 
     public boolean isRestricting() {
