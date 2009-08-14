@@ -8,7 +8,6 @@ package com.mysema.query.collections.impl;
 import java.util.List;
 import java.util.Map;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.collections.IteratorSource;
@@ -38,18 +37,16 @@ public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends
         this(iteratorSource, new DefaultQueryMetadata());
     }
 
-    public CustomQueryable(final IteratorSource iteratorSource,
-            QueryMetadata metadata) {
-        Assert.notNull(iteratorSource);
-        this.innerQuery = new ColQueryImpl(metadata) {
+    public CustomQueryable(final IteratorSource iteratorSource, QueryMetadata metadata) {
+        super(new ColQueryImpl(metadata) {
             @Override
             protected QueryIndexSupport createIndexSupport(
                     Map<Expr<?>, Iterable<?>> exprToIt, ColQueryPatterns patterns,
                     List<Expr<?>> sources) {
                 return new DefaultIndexSupport(iteratorSource, patterns, sources);
             }
-        };
-        setProjectable(innerQuery);
+        });
+        innerQuery = (ColQueryImpl) projectable;
     }
 
     protected QueryMetadata getMetadata() {
