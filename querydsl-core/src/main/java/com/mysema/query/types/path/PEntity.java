@@ -5,14 +5,13 @@
  */
 package com.mysema.query.types.path;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.EEntity;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.util.NotEmpty;
-
-import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
 
 /**
  * PEntity represents entity paths
@@ -22,9 +21,13 @@ import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
  * @param <D> Java type
  */
 public class PEntity<D> extends EEntity<D> implements Path<D> {
+    
     private final String entityName;
+    
     private EBoolean isnull, isnotnull;
+    
     private final PathMetadata<?> metadata;
+    
     private final Path<?> root;
 
     /**
@@ -50,7 +53,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @param var
      */
     public PEntity(Class<? extends D> type, @NotEmpty String entityName, @NotEmpty String var) {
-        this(type, entityName, PathMetadata.forVariable(var));
+        this(type, Assert.hasLength(entityName), PathMetadata.forVariable(var));
     }
     
     /**

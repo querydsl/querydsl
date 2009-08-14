@@ -19,7 +19,9 @@ import com.mysema.query.types.expr.Expr;
  */
 public class OStringArray extends Expr<String[]> implements
         Operation<String, String[]> {
+    
     private final List<Expr<?>> args;
+    
     private final Operator<String> op;
 
     public OStringArray(Operator<String> op, Expr<?>... args) {

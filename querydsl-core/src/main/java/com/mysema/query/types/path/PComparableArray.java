@@ -17,6 +17,7 @@ import com.mysema.query.util.NotEmpty;
  */
 @SuppressWarnings("unchecked")
 public class PComparableArray<D extends Comparable> extends PArray<D> {
+    
     public PComparableArray(Class<D> type, PathMetadata<?> metadata) {
         super(type, metadata);
     }

@@ -7,9 +7,12 @@ package com.mysema.query.types.path;
 
 import javax.annotation.Nullable;
 
+import net.jcip.annotations.Immutable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.util.NotEmpty;
@@ -20,6 +23,7 @@ import com.mysema.query.util.NotEmpty;
  * @author tiwe
  * @version $Id$
  */
+@Immutable
 public final class PathMetadata<T> {
 
     /**
@@ -98,7 +102,7 @@ public final class PathMetadata<T> {
      * @return
      */
     public static PathMetadata<String> forProperty(Path<?> parent, @NotEmpty String property) {
-        return new PathMetadata<String>(parent, EConstant.create(property), PathType.PROPERTY);
+        return new PathMetadata<String>(parent, EConstant.create(Assert.hasLength(property)), PathType.PROPERTY);
     }
 
     /**
@@ -108,7 +112,7 @@ public final class PathMetadata<T> {
      * @return
      */
     public static PathMetadata<String> forVariable(@NotEmpty String variable) {
-        return new PathMetadata<String>(null, EConstant.create(variable), PathType.VARIABLE);
+        return new PathMetadata<String>(null, EConstant.create(Assert.hasLength(variable)), PathType.VARIABLE);
     }
 
     private final Expr<T> expression;

@@ -15,10 +15,10 @@ import com.mysema.query.types.expr.Expr;
  * @param <OpType>
  * @param <D>
  */
-public class OTime<OpType, D extends Comparable<?>> extends
-ETime<D> implements Operation<OpType, D> {
+public class OTime<OpType, D extends Comparable<?>> extends ETime<D> implements Operation<OpType, D> {
 
     private final List<Expr<?>> args;
+    
     private final Operator<OpType> op;
 
     OTime(Class<D> type, Operator<OpType> op, Expr<?>... args) {

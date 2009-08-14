@@ -18,7 +18,9 @@ import com.mysema.query.util.NotEmpty;
  * 
  */
 public class PString extends EString implements Path<String> {
+    
     private EBoolean isnull, isnotnull;
+    
     private final PathMetadata<?> metadata;
 
     public PString(PathMetadata<?> metadata) {

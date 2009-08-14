@@ -23,9 +23,13 @@ import com.mysema.query.util.NotEmpty;
  * @param <V> value type
  */
 public class PComponentMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {    
+    
     private final Class<K> keyType;
+    
     private final PathMetadata<?> metadata;
+    
     private final Class<V> valueType;
+    
     private final Path<?> root;
     
     private EBoolean isnull, isnotnull;    

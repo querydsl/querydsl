@@ -11,10 +11,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import net.jcip.annotations.Immutable;
+
 /**
  * OperatorImpl is the default implementation of the Operator interface
  */
+@Immutable
 public class OperatorImpl<RT> implements Operator<RT> {
+    
     private final List<Class<?>> types;
 
     public OperatorImpl(Class<?> type) {

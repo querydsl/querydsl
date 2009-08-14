@@ -26,14 +26,21 @@ import com.mysema.query.util.NotEmpty;
  * @param <D> component type
  */
 public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> implements PCollection<D> {
+    
     private final PathMetadata<?> metadata;
+    
     protected final Class<D> elementType;
+    
     protected final String entityName;
     
     private EBoolean isnull, isnotnull;    
+    
     private ENumber<Integer> size;    
+    
     private final Path<?> root;
+    
     private EBoolean empty;
+    
     private EBoolean notEmpty;
 
     @SuppressWarnings("unchecked")

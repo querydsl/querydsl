@@ -22,7 +22,9 @@ import com.mysema.query.types.expr.Expr;
  */
 public class OComparable<OpType, D extends Comparable<?>> extends
         EComparable<D> implements Operation<OpType, D> {
+    
     private final List<Expr<?>> args;
+    
     private final Operator<OpType> op;
 
     OComparable(Class<D> type, Operator<OpType> op, Expr<?>... args) {

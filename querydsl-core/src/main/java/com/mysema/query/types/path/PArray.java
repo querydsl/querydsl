@@ -23,11 +23,17 @@ import com.mysema.query.util.NotEmpty;
  * @param <D> component type
  */
 public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>{
+    
     protected final Class<D[]> arrayType;
+    
     protected final Class<D> componentType;
+    
     private EBoolean isnull, isnotnull;
+    
     private final PathMetadata<?> metadata;
+    
     private EComparable<Integer> size;
+    
     private final Path<?> root;
 
     @SuppressWarnings("unchecked")

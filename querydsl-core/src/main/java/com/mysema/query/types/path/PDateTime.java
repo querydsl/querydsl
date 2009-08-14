@@ -20,7 +20,9 @@ import com.mysema.query.util.NotEmpty;
 public class PDateTime<D extends Comparable> extends EDateTime<D> implements Path<D> {
 
     private EBoolean isnull, isnotnull;
+    
     private final PathMetadata<?> metadata;
+    
     private final Path<?> root;
     
     public PDateTime(Class<? extends D> type, PathMetadata<?> metadata) {

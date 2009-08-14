@@ -22,7 +22,9 @@ import com.mysema.query.types.expr.Expr;
  */
 public class ONumber<OpType extends Number, D extends Number & Comparable<?>>
         extends ENumber<D> implements Operation<OpType, D> {
+    
     private final List<Expr<?>> args;
+    
     private final Operator<OpType> op;
 
     ONumber(Class<? extends D> type, Operator<OpType> op, Expr<?>... args) {

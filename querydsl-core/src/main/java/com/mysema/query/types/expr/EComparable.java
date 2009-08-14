@@ -23,8 +23,11 @@ import com.mysema.query.types.operation.Ops;
  */
 @SuppressWarnings("unchecked")
 public abstract class EComparable<D extends Comparable> extends Expr<D> {
+    
     private OrderSpecifier<D> asc;
+    
     private OrderSpecifier<D> desc;
+    
     private EString stringCast;
 
     public EComparable(Class<? extends D> type) {

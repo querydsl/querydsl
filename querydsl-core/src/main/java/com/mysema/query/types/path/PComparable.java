@@ -22,8 +22,11 @@ import com.mysema.query.util.NotEmpty;
 @SuppressWarnings("unchecked")
 public class PComparable<D extends Comparable> extends EComparable<D> implements
         Path<D> {
+    
     private EBoolean isnull, isnotnull;
+    
     private final PathMetadata<?> metadata;
+    
     private final Path<?> root;
 
     public PComparable(Class<? extends D> type, PathMetadata<?> metadata) {

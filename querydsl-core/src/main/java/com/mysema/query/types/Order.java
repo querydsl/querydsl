@@ -22,9 +22,11 @@ public enum Order {
     DESC("desc");
     
     private final String label;    
+    
     Order(String label){
         this.label = label;
     }    
+    
     @Override
     public String toString(){
         return label;

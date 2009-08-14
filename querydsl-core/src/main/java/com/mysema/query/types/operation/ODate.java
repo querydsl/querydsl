@@ -19,6 +19,7 @@ public class ODate <OpType, D extends Comparable<?>> extends
     EDate<D> implements Operation<OpType, D> {
     
     private final List<Expr<?>> args;
+    
     private final Operator<OpType> op;
 
     ODate(Class<D> type, Operator<OpType> op, Expr<?>... args) {

@@ -19,13 +19,13 @@ import com.mysema.query.types.expr.Expr;
  */
 public class QueryAdapter<SubType extends QueryAdapter<SubType>> implements Query<SubType> {
 
-    private Query<?> query;
+    private final Query<?> query;
 
     @SuppressWarnings("unchecked")
     private SubType _this = (SubType) this;
 
-    public QueryAdapter() {
-    }
+//    public QueryAdapter() {
+//    }
 
     public QueryAdapter(Query<?> query) {
         this.query = Assert.notNull(query,"query is null");
@@ -85,9 +85,9 @@ public class QueryAdapter<SubType extends QueryAdapter<SubType>> implements Quer
         return _this;
     }
 
-    public void setQuery(Query<?> query) {
-        this.query = query;
-    }
+//    public void setQuery(Query<?> query) {
+//        this.query = query;
+//    }
 
     @Override
     public String toString() {

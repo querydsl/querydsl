@@ -19,7 +19,9 @@ import com.mysema.query.types.expr.Expr;
  * 
  */
 public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
+
     private final List<Expr<?>> args;
+    
     private final Operator<Boolean> op;
 
     public OBoolean(Operator<Boolean> op, Expr<?>... args) {

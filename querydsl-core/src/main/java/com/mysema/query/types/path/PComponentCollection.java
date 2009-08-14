@@ -21,8 +21,11 @@ import com.mysema.query.util.NotEmpty;
  * @param <D> component type
  */
 public class PComponentCollection<D> extends ECollectionBase<D> implements PCollection<D> {
+    
     protected final Class<D> type;
+    
     private final Path<?> root;
+    
     private final PathMetadata<?> metadata;
     
     private EBoolean isnull, isnotnull;    

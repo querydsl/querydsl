@@ -18,10 +18,12 @@ import com.mysema.query.util.NotEmpty;
  * 
  * @param <D> Java type
  */
-public class PNumber<D extends Number & Comparable<?>> extends ENumber<D>
-        implements Path<D> {
+public class PNumber<D extends Number & Comparable<?>> extends ENumber<D> implements Path<D> {
+    
     private EBoolean isnull, isnotnull;
+    
     private final PathMetadata<?> metadata;
+    
     private final Path<?> root;
 
     public PNumber(Class<? extends D> type, PathMetadata<?> metadata) {

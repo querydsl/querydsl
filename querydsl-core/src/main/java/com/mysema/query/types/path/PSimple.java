@@ -19,8 +19,11 @@ import com.mysema.query.util.NotEmpty;
  * @param <D> Java type
  */
 public class PSimple<D> extends Expr<D> implements Path<D> {
+    
     private EBoolean isnull, isnotnull;
+    
     private final PathMetadata<?> metadata;
+    
     private final Path<?> root;
 
     public PSimple(Class<? extends D> type, PathMetadata<?> metadata) {

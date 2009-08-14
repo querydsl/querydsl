@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types;
 
+import net.jcip.annotations.Immutable;
+
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.expr.Expr;
 
@@ -16,8 +18,11 @@ import com.mysema.query.types.expr.Expr;
  * @version $Id$
  */
 @SuppressWarnings("unchecked")
+@Immutable
 public class OrderSpecifier<A extends Comparable> {
+    
     private final Order order;
+    
     private final Expr<A> target;
 
     public OrderSpecifier(Order order, Expr<A> target) {

@@ -16,6 +16,7 @@ import com.mysema.query.util.NotEmpty;
  * 
  */
 public class PBooleanArray extends PArray<Boolean> {
+    
     public PBooleanArray(PathMetadata<?> metadata) {
         super(Boolean.class, metadata);
     }

@@ -19,9 +19,10 @@ import com.mysema.query.types.expr.Expr;
  * @param <OpType>
  * @param <D>
  */
-public class OSimple<OpType, D> extends Expr<D> implements
-        Operation<OpType, D> {
+public class OSimple<OpType, D> extends Expr<D> implements Operation<OpType, D> {
+    
     private final List<Expr<?>> args;
+    
     private final Operator<OpType> op;
 
     OSimple(Class<? extends D> type, Operator<OpType> op, Expr<?>... args) {

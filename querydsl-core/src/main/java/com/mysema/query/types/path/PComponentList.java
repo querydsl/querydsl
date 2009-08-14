@@ -16,6 +16,7 @@ import com.mysema.query.util.NotEmpty;
  * @param <D> component type
  */
 public class PComponentList<D> extends PComponentCollection<D> implements PList<D> {
+    
     public PComponentList(Class<D> type, PathMetadata<?> metadata) {
         super(type, metadata);
     }

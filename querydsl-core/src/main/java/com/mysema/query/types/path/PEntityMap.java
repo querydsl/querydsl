@@ -23,11 +23,18 @@ import com.mysema.query.util.NotEmpty;
  * @param <V> value type
  */
 public class PEntityMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {
+    
     private EBoolean isnull, isnotnull;
+    
     private final Class<K> keyType;
+    
     private final PathMetadata<?> metadata;
+    
     private final Class<V> valueType;
+    
+    @NotEmpty 
     private final String entityName;
+    
     private final Path<?> root;
 
     @SuppressWarnings("unchecked")
@@ -41,8 +48,7 @@ public class PEntityMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    public PEntityMap(Class<K> keyType, Class<V> valueType, @NotEmpty String entityName,
-            @NotEmpty String var) {
+    public PEntityMap(Class<K> keyType, Class<V> valueType, @NotEmpty String entityName, @NotEmpty String var) {
         this(keyType, valueType, entityName, PathMetadata.forVariable(var));
     }
 

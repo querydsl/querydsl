@@ -18,8 +18,11 @@ import com.mysema.query.util.NotEmpty;
  * 
  */
 public class PBoolean extends EBoolean implements Path<Boolean> {
+    
     private EBoolean isnull, isnotnull;
+    
     private final PathMetadata<?> metadata;
+    
     private final Path<?> root;
 
     public PBoolean(PathMetadata<?> metadata) {
