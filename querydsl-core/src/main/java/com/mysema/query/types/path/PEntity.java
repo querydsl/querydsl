@@ -102,6 +102,17 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
     }
     
     /**
+     * @param <A>
+     * @param property
+     * @param type
+     * @return
+     */
+    protected <A extends Number & Comparable<?>> PDecimal<A> _decimal(
+            @NotEmpty String property, Class<A> type) {
+        return new PDecimal<A>(type, PathMetadata.forProperty(this, property));
+    }
+
+    /**
      * Create an Entity subpath for the given property
      * 
      * @param <A>
@@ -162,7 +173,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
         return new PEntityMap<K, V>(key, value, entityName, PathMetadata
                 .forProperty(this, property));
     }
-
+    
     /**
      * Create a new numeric subpath for the given property
      * 

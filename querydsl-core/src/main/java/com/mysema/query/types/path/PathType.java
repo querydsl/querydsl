@@ -47,7 +47,7 @@ public enum PathType implements Operator<Path<?>> {
      */
     VARIABLE(false);
     
-    private boolean generic;
+    private final boolean generic;
     
     PathType(boolean generic){
         this.generic = generic;

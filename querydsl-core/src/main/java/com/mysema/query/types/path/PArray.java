@@ -7,6 +7,8 @@ package com.mysema.query.types.path;
 
 import java.lang.reflect.Array;
 
+import javax.annotation.Nonnegative;
+
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.Expr;
@@ -69,7 +71,7 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>{
      * @param index
      * @return
      */
-    public abstract Expr<D> get(int index);
+    public abstract Expr<D> get(@Nonnegative int index);
 
 //    @Override
     public Class<D> getElementType() {

@@ -32,7 +32,6 @@ public class PComponentList<D> extends PComponentCollection<D> implements PList<
 
     @Override
     public Expr<D> get(int index) {
-        // TODO : cache
         return new PSimple<D>(type, PathMetadata.forListAccess(this, index));
     }
 }

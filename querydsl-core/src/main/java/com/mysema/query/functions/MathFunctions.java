@@ -5,6 +5,7 @@
  */
 package com.mysema.query.functions;
 
+import com.mysema.query.types.expr.EDecimal;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.ONumber;
@@ -62,6 +63,22 @@ public final class MathFunctions {
         return ENumber.min(left, right);
     }
 
+    @Deprecated
+    public static ENumber<Double> ceil(EDecimal<Double> left) {
+        return left.ceil();
+    }
+    
+    @Deprecated
+    public static ENumber<Double> round(EDecimal<Double> left) {
+        return left.round();
+    }
+    
+    @Deprecated
+    public static ENumber<Double> floor(EDecimal<Double> left) {
+        return left.floor();
+    }
+    
+    // REMAINING
     
     public static ENumber<Double> acos(Expr<Double> left) {
         return ONumber.create(left.getType(), MathOps.ACOS, left);
@@ -75,20 +92,12 @@ public final class MathFunctions {
         return ONumber.create(left.getType(), MathOps.ATAN, left);
     }
 
-    public static ENumber<Double> ceil(Expr<Double> left) {
-        return ONumber.create(left.getType(), MathOps.CEIL, left);
-    }
-
     public static ENumber<Double> cos(Expr<Double> left) {
         return ONumber.create(left.getType(), MathOps.COS, left);
     }
 
     public static ENumber<Double> exp(Expr<Double> left) {
         return ONumber.create(left.getType(), MathOps.EXP, left);
-    }
-
-    public static ENumber<Double> floor(Expr<Double> left) {
-        return ONumber.create(left.getType(), MathOps.FLOOR, left);
     }
 
     public static ENumber<Double> log(Expr<Double> left) {
@@ -101,10 +110,6 @@ public final class MathFunctions {
 
     public static ENumber<Double> pow(Expr<Double> left, Expr<Double> right) {
         return ONumber.create(left.getType(), MathOps.POWER, left, right);
-    }
-
-    public static ENumber<Double> round(Expr<Double> left) {
-        return ONumber.create(left.getType(), MathOps.ROUND, left);
     }
 
     public static ENumber<Double> sin(Expr<Double> left) {

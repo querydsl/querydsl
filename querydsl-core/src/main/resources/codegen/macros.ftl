@@ -28,6 +28,9 @@
     <#list decl.numericFields as field>
         <@numericField field=field/>
     </#list>
+    <#list decl.decimalFields as field>
+        <@decimalField field=field/>
+    </#list>
     <#list decl.simpleMaps as field>
         <@simpleMap field=field/>
        </#list>  
@@ -135,6 +138,11 @@
 <#macro numericField field>
     /** ${field.docString} */
     public final PNumber<${field.typeName}> ${field.name} = _number("${field.name}",${field.typeName}.class);
+</#macro>
+
+<#macro decimalField field>
+    /** ${field.docString} */
+    public final PDecimal<${field.typeName}> ${field.name} = _decimal("${field.name}",${field.typeName}.class);
 </#macro>
          
 <#macro simpleField field>

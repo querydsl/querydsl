@@ -34,11 +34,11 @@ public class MathFunctionTest extends AbstractQueryTest {
                 MathFunctions.acos(d),
                 MathFunctions.asin(d), 
                 MathFunctions.atan(d),
-                MathFunctions.ceil(d), 
+//                MathFunctions.ceil(d), 
                 MathFunctions.cos(d),
 //                MathFunctions.tan(d), MathFunctions.sqrt(i),
                 MathFunctions.sin(d), 
-                MathFunctions.round(d),
+//                MathFunctions.round(d),
                 ENumber.random(), 
                 MathFunctions.pow(d, d),
                 ENumber.min(i, i), 
@@ -46,7 +46,7 @@ public class MathFunctionTest extends AbstractQueryTest {
                 // QMath.mod(i,i),
                 MathFunctions.log10(d), 
                 MathFunctions.log(d),
-                MathFunctions.floor(d), 
+//                MathFunctions.floor(d), 
                 MathFunctions.exp(d)).iterator();
 
     }

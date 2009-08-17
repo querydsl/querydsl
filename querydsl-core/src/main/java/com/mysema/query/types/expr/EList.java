@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.expr;
 
+import javax.annotation.Nonnegative;
+
 
 /**
  * EList represents java.util.List typed expressions
@@ -32,5 +34,5 @@ public interface EList<D> extends ECollection<D> {
      * @return this.get(index)
      * @see java.util.List#get(int)
      */
-    Expr<D> get(int index);
+    Expr<D> get(@Nonnegative int index);
 }

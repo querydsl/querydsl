@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.path;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 
 import net.jcip.annotations.Immutable;
@@ -44,7 +45,7 @@ public final class PathMetadata<T> {
      * @param index
      * @return
      */
-    public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, int index) {
+    public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, @Nonnegative int index) {
         return new PathMetadata<Integer>(parent, EConstant.create(index), PathType.ARRAYVALUE_CONSTANT);
     }
 
@@ -66,7 +67,7 @@ public final class PathMetadata<T> {
      * @param index
      * @return
      */
-    public static PathMetadata<Integer> forListAccess(PList<?> parent, int index) {
+    public static PathMetadata<Integer> forListAccess(PList<?> parent, @Nonnegative int index) {
         return new PathMetadata<Integer>(parent, EConstant.create(index), PathType.LISTVALUE_CONSTANT);
     }
 

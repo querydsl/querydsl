@@ -59,6 +59,8 @@ public class ClassModel implements Comparable<ClassModel> {
 
     private final Collection<FieldModel> numericFields = new TreeSet<FieldModel>();
 
+    private final Collection<FieldModel> decimalFields = new TreeSet<FieldModel>();
+    
     private final Collection<FieldModel> simpleCollections = new TreeSet<FieldModel>();
 
     private final Collection<FieldModel> simpleFields = new TreeSet<FieldModel>();
@@ -111,6 +113,9 @@ public class ClassModel implements Comparable<ClassModel> {
             break;
         case NUMERIC:
             numericFields.add(field);
+            break;
+        case DECIMAL:
+            decimalFields.add(field);
             break;
         case ENTITY:
             entityFields.add(field);
@@ -221,6 +226,10 @@ public class ClassModel implements Comparable<ClassModel> {
     public Collection<FieldModel> getNumericFields() {
         return numericFields;
     }
+    
+    public Collection<FieldModel> getDecimalFields() {
+        return decimalFields;
+    }
 
     public String getPackageName() {
         return packageName;
@@ -276,6 +285,7 @@ public class ClassModel implements Comparable<ClassModel> {
         addAll(entityMaps, clazz.entityMaps);
         addAll(comparableFields, clazz.comparableFields);
         addAll(numericFields, clazz.numericFields);
+        addAll(decimalFields, clazz.decimalFields);
         addAll(simpleCollections, clazz.simpleCollections);
         addAll(simpleFields, clazz.simpleFields);
         addAll(simpleLists, clazz.simpleLists);
@@ -299,9 +309,5 @@ public class ClassModel implements Comparable<ClassModel> {
         }
         return field;
     }
-
-//    public void setListsAsCollections(boolean b) {
-//        listsAsCollections = b;        
-//    }
 
 }
