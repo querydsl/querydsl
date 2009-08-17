@@ -47,14 +47,12 @@ public abstract class QueryBaseWithProjection<SubType extends QueryBaseWithProje
     }
 
     public SubType limit(long limit) {
-        QueryModifiers mod = getMetadata().getModifiers();
-        getMetadata().setModifiers(new QueryModifiers(limit, mod.getOffset()));
+        getMetadata().setLimit(limit);
         return _this;
     }
 
     public SubType offset(long offset) {
-        QueryModifiers mod = getMetadata().getModifiers();
-        getMetadata().setModifiers(new QueryModifiers(mod.getLimit(), offset));
+        getMetadata().setOffset(offset);
         return _this;
     }
 

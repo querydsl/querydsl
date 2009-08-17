@@ -76,8 +76,6 @@ public class ClassModel implements Comparable<ClassModel> {
     @Nullable
     private String superType;
 
-//    private boolean listsAsCollections;    
-
     public ClassModel(@Nullable String superType, String packageName, String name, String simpleName) {
         this.superType = superType;
         this.packageName = Assert.notNull(packageName,"packageName is null");

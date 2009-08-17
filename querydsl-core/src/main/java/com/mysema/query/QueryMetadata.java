@@ -22,17 +22,17 @@ import com.mysema.query.types.expr.Expr;
  */
 public interface QueryMetadata {
 
-    void addJoin(JoinExpression joinExpression);
-
-    void addJoin(JoinType joinType, Expr<?> expr);
-
-    void addJoinCondition(EBoolean o);
-
     void addFrom(Expr<?>... o);
 
     void addGroupBy(Expr<?>... o);
 
     void addHaving(EBoolean... o);
+
+    void addJoin(JoinExpression joinExpression);
+
+    void addJoin(JoinType joinType, Expr<?> expr);
+
+    void addJoinCondition(EBoolean o);
 
     void addOrderBy(OrderSpecifier<?>... o);
 
@@ -47,23 +47,33 @@ public interface QueryMetadata {
 
     List<JoinExpression> getJoins();
 
+    @Nullable
+    Long getLimit();
+
+    @Nullable
+    QueryModifiers getModifiers();
+
+    @Nullable
+    Long getOffset();
+
     List<OrderSpecifier<?>> getOrderBy();
 
     List<? extends Expr<?>> getProjection();
 
     @Nullable
     EBoolean getWhere();
-
+    
     boolean isDistinct();
-
+    
+    boolean isUnique();
+    
     void setDistinct(boolean distinct);
-
-    @Nullable
-    QueryModifiers getModifiers();
+    
+    void setLimit(@Nullable Long limit);
 
     void setModifiers(QueryModifiers restriction);
     
-    void setUnique(boolean unique);
+    void setOffset(@Nullable Long offset);
     
-    boolean isUnique();
+    void setUnique(boolean unique);
 }

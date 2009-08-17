@@ -20,7 +20,7 @@ import com.mysema.query.types.expr.Expr;
  * @param <OpType>
  * @param <D>
  */
-public class ODate <OpType, D extends Comparable<?>> extends
+public class ODate <OpType extends Comparable<?>, D extends Comparable<?>> extends
     EDate<D> implements Operation<OpType, D> {
     
     private final List<Expr<?>> args;
@@ -62,7 +62,7 @@ public class ODate <OpType, D extends Comparable<?>> extends
      * @param args
      * @return
      */
-    public static <O,D extends Comparable<?>> EDate<D> create(Class<D> type, Operator<O> op, Expr<?>... args){
+    public static <O extends Comparable<?>,D extends Comparable<?>> EDate<D> create(Class<D> type, Operator<O> op, Expr<?>... args){
         return new ODate<O,D>(type, op, args);
     }
 

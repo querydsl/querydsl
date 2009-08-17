@@ -26,14 +26,24 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
 
     private static ENumber<Double> random;
     
+    /**
+     * @return max(left, right)
+     */
     public static <A extends Number & Comparable<?>> ENumber<A> max(Expr<A> left, Expr<A> right) {
         return ONumber.create(left.getType(), MathOps.MAX, left, right);
     }
     
+    /**
+     * @return min(left, right)
+     */
     public static <A extends Number & Comparable<?>> ENumber<A> min(Expr<A> left, Expr<A> right) {
         return ONumber.create(left.getType(), MathOps.MIN, left, right);
     }
     
+    /**
+     * Returns the random expression
+     * @return random()
+     */
     public static ENumber<Double> random(){
         if (random == null){
             random = ONumber.create(Double.class, MathOps.RANDOM);
@@ -49,6 +59,9 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         super(type);
     }
     
+    /**
+     * @return abs(this)
+     */
     public ENumber<D> abs() {
         if (abs == null){
             abs = ONumber.create(getType(), MathOps.ABS, this);
@@ -327,6 +340,10 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         return castToNum(Short.class);
     }
     
+    /**
+     * Returns the square root of this numeric expressions
+     * @return sqrt(this)
+     */
     public ENumber<Double> sqrt(){
         if (sqrt == null){
             sqrt = ONumber.create(Double.class, MathOps.SQRT, this);

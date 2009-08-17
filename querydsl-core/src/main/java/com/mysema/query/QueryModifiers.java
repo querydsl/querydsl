@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 
 import net.jcip.annotations.Immutable;
 
-// TODO: Auto-generated Javadoc
 /**
  * QueryModifiers combines limit and offset info into a single type.
  * 

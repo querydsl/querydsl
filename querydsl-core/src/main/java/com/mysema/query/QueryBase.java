@@ -36,10 +36,6 @@ public class QueryBase<SubType extends QueryBase<SubType>> {
         return _this;
     }
 
-//    protected void clear() {
-//        metadata = new DefaultQueryMetadata();
-//    }
-
     // template
     protected SubType from(Expr<?>... o) {
         metadata.addFrom(o);

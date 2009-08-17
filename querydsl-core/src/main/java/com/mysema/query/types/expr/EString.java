@@ -252,18 +252,6 @@ public abstract class EString extends EComparable<String> {
     }
 
     /**
-     * Delegates to matches.
-     * Going to be removed in some future version.
-     * 
-     * @param str
-     * @return
-     */
-    @Deprecated
-    public final EBoolean like(String str) {
-        return matches(str.replace("%", ".*").replace("_", "."));
-    }
-    
-    /**
      * 
      * @return this.toLowerCase()
      * @see java.lang.String#toLowerCase()

@@ -8,8 +8,6 @@ package com.mysema.query.types.expr;
 import java.util.Arrays;
 import java.util.Collection;
 
-import net.jcip.annotations.ThreadSafe;
-
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.serialization.ToStringVisitor;
 import com.mysema.query.types.operation.OBoolean;
@@ -178,7 +176,7 @@ public abstract class Expr<D> {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         if (toString == null) {
             toString = new ToStringVisitor().handle(this).toString();
         }

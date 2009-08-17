@@ -24,9 +24,6 @@ public class QueryAdapter<SubType extends QueryAdapter<SubType>> implements Quer
     @SuppressWarnings("unchecked")
     private SubType _this = (SubType) this;
 
-//    public QueryAdapter() {
-//    }
-
     public QueryAdapter(Query<?> query) {
         this.query = Assert.notNull(query,"query is null");
     }
@@ -84,10 +81,6 @@ public class QueryAdapter<SubType extends QueryAdapter<SubType>> implements Quer
         query.orderBy(o);
         return _this;
     }
-
-//    public void setQuery(Query<?> query) {
-//        this.query = query;
-//    }
 
     @Override
     public String toString() {

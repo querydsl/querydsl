@@ -23,9 +23,6 @@ public abstract class ProjectableAdapter implements Projectable {
 
     protected final Projectable projectable;
 
-//    public ProjectableAdapter() {
-//    }
-
     public ProjectableAdapter(Projectable projectable) {
         this.projectable = Assert.notNull(projectable,"projectable is null");
     }
@@ -100,9 +97,6 @@ public abstract class ProjectableAdapter implements Projectable {
         return projectable.uniqueResult(first, second, rest);
     }
 
-//    public void setProjectable(Projectable projectable) {
-//        this.projectable = Assert.notNull(projectable);
-//    }
 
     public String toString() {
         return projectable.toString();

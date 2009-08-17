@@ -169,5 +169,33 @@ public class DefaultQueryMetadata implements QueryMetadata {
     public void setUnique(boolean unique) {
         this.unique = unique;
     }
+
+    @Override
+    public Long getLimit() {
+        return modifiers != null ? modifiers.getLimit() : null;
+    }
+
+    @Override
+    public Long getOffset() {
+        return modifiers != null ? modifiers.getOffset() : null;
+    }
+
+    @Override
+    public void setLimit(Long limit) {
+        if (modifiers == null || modifiers.getOffset() == null){
+            modifiers = QueryModifiers.limit(limit);
+        }else{
+            modifiers = new QueryModifiers(limit, modifiers.getOffset());
+        }        
+    }
+
+    @Override
+    public void setOffset(Long offset) {
+        if (modifiers == null || modifiers.getLimit() == null){
+            modifiers = QueryModifiers.offset(offset);
+        }else{
+            modifiers = new QueryModifiers(modifiers.getLimit(), offset);
+        }        
+    }
     
 }
