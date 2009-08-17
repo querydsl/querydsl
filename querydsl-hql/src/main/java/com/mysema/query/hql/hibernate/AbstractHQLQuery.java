@@ -113,7 +113,7 @@ public abstract class AbstractHQLQuery<SubType extends AbstractHQLQuery<SubType>
     }
 
     public long count() {
-        return uniqueResult(AggregationFunctions.count());
+        return uniqueResult(Expr.countAll());
     }
 
     public long count(Expr<?> expr) {

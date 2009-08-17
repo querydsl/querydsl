@@ -515,11 +515,11 @@ class StandardTestData {
      */
     <A extends Number & Comparable<A>> Collection<ENumber<?>> numericProjections(ENumber<A> expr, ENumber<A> other, A knownValue){
         return Arrays.<ENumber<?>>asList(
-          MathFunctions.abs(expr),
+          expr.abs(),
           expr.add(other),
           expr.div(other),
           expr.mult(other),
-          MathFunctions.sqrt(expr),
+          expr.sqrt(),
           expr.sub(other)
         );
     }

@@ -644,7 +644,7 @@ public class ParserTest implements Constants {
         // "SELECT DISTINCT bar FROM eg.mypackage.Cat qat  left join com.multijoin.JoinORama as bar, com.toadstool.Foo f join net.sf.blurb.Blurb"
         // );
         // parse( "SELECT count(*) FROM eg.mypackage.Cat qat" );
-        query().select(AggregationFunctions.count()).from(qat).parse();
+        query().select(Expr.countAll()).from(qat).parse();
 
         // parse( "SELECT avg(qat.weight) FROM eg.mypackage.Cat qat" );
         query().select(qat.weight.avg()).from(qat).parse();
@@ -679,9 +679,9 @@ public class ParserTest implements Constants {
         query().from(qat).where(qat.name.notIn("crater", "bean", "fluffy")).parse();
 
         // parse( "from Animal an where sqrt(an.bodyWeight)/2 > 10" );
-        query().from(an).where(MathFunctions.sqrt(an.bodyWeight).gt(10.0)).parse();
+        query().from(an).where(an.bodyWeight.sqrt().gt(10.0)).parse();
 
-        query().from(an).where(MathFunctions.sqrt(an.bodyWeight).div(2d).gt(10.0))
+        query().from(an).where(an.bodyWeight.sqrt().div(2d).gt(10.0))
                 .parse();
         // parse(
         // "from Animal an where (an.bodyWeight > 10 and an.bodyWeight < 100) or an.bodyWeight is null"
@@ -708,8 +708,7 @@ public class ParserTest implements Constants {
         query().from(qat).orderBy(qat.toes.avg().asc()).parse();
 
         // parse( "from Animal an order by sqrt(an.bodyWeight)/2" );
-        query().from(qat).orderBy(MathFunctions.sqrt(an.bodyWeight.div(2)).asc())
-                .parse();
+        query().from(qat).orderBy(an.bodyWeight.sqrt().div(2.0).asc()).parse();
     }
 
     @Test

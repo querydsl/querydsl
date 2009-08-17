@@ -8,9 +8,9 @@ package com.mysema.query.sql;
 import org.junit.Test;
 
 import com.mysema.query.functions.MathFunctions;
-import com.mysema.query.functions.StringFunctions;
 import com.mysema.query.sql.domain.QEMPLOYEE;
 import com.mysema.query.types.expr.EConstant;
+import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
 
@@ -27,7 +27,7 @@ public class HsqldbFunctionsTest {
         Expr<Integer> i = EConstant.create(1);
         Expr<Double> d = EConstant.create(1.0);
         // ABS(d) returns the absolute value of a double value
-        MathFunctions.abs(i);
+//        MathFunctions.abs(i);
         // ACOS(d) returns the arc cosine of an angle
         MathFunctions.acos(d);
         // ASIN(d) returns the arc sine of an angle
@@ -66,7 +66,7 @@ public class HsqldbFunctionsTest {
 
         // RAND() returns a random number x bigger or equal to 0.0 and smaller
         // than 1.0
-        MathFunctions.random();
+        ENumber.random();
         // ROUND(a,b) rounds a to b digits after the decimal point
         MathFunctions.round(d);
         // ROUNDMAGIC(d) solves rounding problems such as 3.11-3.1-0.01
@@ -77,7 +77,7 @@ public class HsqldbFunctionsTest {
         // SIN(d) returns the sine of an angle
         MathFunctions.sin(d);
         // SQRT(d) returns the square root
-        MathFunctions.sqrt(i);
+//        MathFunctions.sqrt(i);
         // TAN(A) returns the trigonometric tangent of an angle
         MathFunctions.tan(d);
         // TRUNCATE(a,b) truncates a to b digits after the decimal point
@@ -109,7 +109,7 @@ public class HsqldbFunctionsTest {
         // LOCATE(search,s,[start])returns the first index (1=left, 0=not found)
         // where search is found in s, starting at start
         // LTRIM(s) removes all leading blanks in s
-        StringFunctions.ltrim(s);
+//        StringFunctions.ltrim(s);
         // OCTET_LENGTH(str)[2] returns the length of the string in bytes (twice
         // the number of characters)
         // RAWTOHEX(s1)[2] returns translated string
@@ -118,10 +118,10 @@ public class HsqldbFunctionsTest {
         // s2
         // RIGHT(s,count) returns the rightmost count of characters of s
         // RTRIM(s) removes all trailing spaces
-        StringFunctions.rtrim(s);
+//        StringFunctions.rtrim(s);
         // SOUNDEX(s) returns a four character code representing the sound of s
         // SPACE(count) returns a string consisting of count spaces
-        StringFunctions.space(4);
+//        StringFunctions.space(4);
         // SUBSTR(s,start[,len]) alias for substring
         s.substring(1);
         // SUBSTRING(s,start[,len]) returns the substring starting at start

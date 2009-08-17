@@ -187,5 +187,9 @@ public abstract class Expr<D> {
     public int hashCode() {
         return type != null ? type.hashCode() : super.hashCode();
     }
+
+    public static ENumber<Long> countAll() {
+        return Ops.AggOps.COUNT_ALL_AGG_EXPR;
+    }
     
 }

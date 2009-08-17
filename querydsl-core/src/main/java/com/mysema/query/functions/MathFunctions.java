@@ -22,10 +22,32 @@ public final class MathFunctions {
     private MathFunctions() {
     }
 
-    public static <A extends Number & Comparable<?>> ENumber<A> abs(Expr<A> left) {
-        return ONumber.create(left.getType(), MathOps.ABS, left);
+    @Deprecated
+    public static <A extends Number & Comparable<?>> ENumber<A> abs(ENumber<A> left) {
+        return left.abs();
     }
 
+    @Deprecated
+    public static <A extends Number & Comparable<?>> ENumber<Double> sqrt(ENumber<A> left) {
+        return left.sqrt();
+    }
+    
+    @Deprecated
+    public static ENumber<Double> random() {
+        return ENumber.random();
+    }
+    
+    @Deprecated
+    public static <A extends Number & Comparable<?>> ENumber<A> max(Expr<A> left, Expr<A> right) {
+        return ENumber.max(left, right);
+    }
+
+    @Deprecated
+    public static <A extends Number & Comparable<?>> ENumber<A> min(Expr<A> left, Expr<A> right) {
+        return ENumber.min(left, right);
+    }
+
+    
     public static ENumber<Double> acos(Expr<Double> left) {
         return ONumber.create(left.getType(), MathOps.ACOS, left);
     }
@@ -62,20 +84,8 @@ public final class MathFunctions {
         return ONumber.create(left.getType(), MathOps.LOG10, left);
     }
 
-    public static <A extends Number & Comparable<?>> ENumber<A> max(Expr<A> left, Expr<A> right) {
-        return ONumber.create(left.getType(), MathOps.MAX, left, right);
-    }
-
-    public static <A extends Number & Comparable<?>> ENumber<A> min(Expr<A> left, Expr<A> right) {
-        return ONumber.create(left.getType(), MathOps.MIN, left, right);
-    }
-
     public static ENumber<Double> pow(Expr<Double> left, Expr<Double> right) {
         return ONumber.create(left.getType(), MathOps.POWER, left, right);
-    }
-
-    public static ENumber<Double> random() {
-        return ONumber.create(Double.class, MathOps.RANDOM);
     }
 
     public static ENumber<Double> round(Expr<Double> left) {
@@ -84,10 +94,6 @@ public final class MathFunctions {
 
     public static ENumber<Double> sin(Expr<Double> left) {
         return ONumber.create(left.getType(), MathOps.SIN, left);
-    }
-
-    public static <A extends Number & Comparable<?>> ENumber<Double> sqrt(Expr<A> left) {
-        return ONumber.create(Double.class, MathOps.SQRT, left);
     }
 
     public static ENumber<Double> tan(Expr<Double> left) {

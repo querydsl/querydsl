@@ -102,7 +102,7 @@ public abstract class AbstractJPAQLQuery<SubType extends AbstractJPAQLQuery<SubT
     }
 
     public long count() {
-        return uniqueResult(AggregationFunctions.count());
+        return uniqueResult(Expr.countAll());
     }
 
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {

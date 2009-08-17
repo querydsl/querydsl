@@ -66,8 +66,8 @@ public class JDOQLMethodsTest extends AbstractJDOTest {
            map.containsValue(value),
            map.get(key).eq(value),
            map.size().gt(0),
-           MathFunctions.abs(number).gt(0),
-           MathFunctions.sqrt(number).gt(0)           
+           number.abs().gt(0),
+           number.sqrt().gt(0)           
         );
     }
     

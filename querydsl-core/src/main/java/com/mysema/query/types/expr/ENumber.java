@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.operation.Ops.MathOps;
 
 
 /**
@@ -23,54 +24,39 @@ import com.mysema.query.types.operation.Ops;
  */
 public abstract class ENumber<D extends Number & Comparable<?>> extends EComparable<D> {
 
-    private ENumber<D> sum, min, max;
+    private static final ENumber<Double> random = ONumber.create(Double.class, MathOps.RANDOM);
+    
+    public static <A extends Number & Comparable<?>> ENumber<A> max(Expr<A> left, Expr<A> right) {
+        return ONumber.create(left.getType(), MathOps.MAX, left, right);
+    }
+    
+    public static <A extends Number & Comparable<?>> ENumber<A> min(Expr<A> left, Expr<A> right) {
+        return ONumber.create(left.getType(), MathOps.MIN, left, right);
+    }
+    
+    public static ENumber<Double> random(){
+        return random;
+    }
+    
+    private ENumber<D> abs;
     
     private ENumber<Double> avg;
+    
+    private ENumber<Double> sqrt;
+    
+    private ENumber<D> sum, min, max;
     
     public ENumber(Class<? extends D> type) {
         super(type);
     }
     
-    /**
-     * @return sum(this)
-     */
-    public ENumber<D> sum(){
-        if (sum == null){
-            sum = ONumber.create(getType(), Ops.AggOps.SUM_AGG, this); 
+    public ENumber<D> abs() {
+        if (abs == null){
+            abs = ONumber.create(getType(), MathOps.ABS, this);
         }
-        return sum;
+        return abs;
     }
-    
-    /**
-     * @return min(this)
-     */
-    public ENumber<D> min(){
-        if (min == null){
-            min = ONumber.create(getType(), Ops.AggOps.MIN_AGG, this);
-        }
-        return min;
-    }
-    
-    /**
-     * @return max(this)
-     */
-    public ENumber<D> max(){
-        if (max == null){
-            max = ONumber.create(getType(), Ops.AggOps.MAX_AGG, this);
-        }
-        return max;
-    }
-    
-    /**
-     *  @return avg(this)
-     */
-    public ENumber<Double> avg(){
-        if (avg == null){
-            avg = ONumber.create(Double.class, Ops.AggOps.AVG_AGG, this);
-        }
-        return avg;
-    }
-    
+
     /**
      * @param right
      * @return this + right
@@ -85,6 +71,16 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      */
     public ENumber<D> add(Expr<D> right) {
         return ONumber.create(getType(), Ops.ADD, this, right);
+    }
+
+    /**
+     *  @return avg(this)
+     */
+    public ENumber<Double> avg(){
+        if (avg == null){
+            avg = ONumber.create(Double.class, Ops.AggOps.AVG_AGG, this);
+        }
+        return avg;
     }
 
     /**
@@ -141,6 +137,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         return ONumber.create(Double.class, Ops.DIV, this, EConstant.create(right));
     }
 
+
     /**
      * @param right
      * @return this / right
@@ -158,7 +155,6 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     public final ENumber<Double> doubleValue() {
         return castToNum(Double.class);
     }
-
 
     /**
      * Get the float expression of this numeric expression
@@ -287,6 +283,26 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
 
     /**
+     * @return max(this)
+     */
+    public ENumber<D> max(){
+        if (max == null){
+            max = ONumber.create(getType(), Ops.AggOps.MAX_AGG, this);
+        }
+        return max;
+    }
+
+    /**
+     * @return min(this)
+     */
+    public ENumber<D> min(){
+        if (min == null){
+            min = ONumber.create(getType(), Ops.AggOps.MIN_AGG, this);
+        }
+        return min;
+    }
+    
+    /**
      * @param right
      * @return this * right
      */
@@ -301,7 +317,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     public ENumber<D> mult(Expr<D> right) {
         return ONumber.create(getType(), Ops.MULT, this, right);
     }
-
+    
     /**
      * Get the short expression of this numeric expression
      * 
@@ -311,7 +327,14 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     public final ENumber<Short> shortValue() {
         return castToNum(Short.class);
     }
-
+    
+    public ENumber<Double> sqrt(){
+        if (sqrt == null){
+            sqrt = ONumber.create(Double.class, MathOps.SQRT, this);
+        }
+        return sqrt;
+    }
+    
     /**
      * @param right
      * @return this - right
@@ -327,4 +350,15 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     public ENumber<D> sub(Expr<D> right) {
         return ONumber.create(getType(), Ops.SUB, this, right);
     }
+
+    /**
+     * @return sum(this)
+     */
+    public ENumber<D> sum(){
+        if (sum == null){
+            sum = ONumber.create(getType(), Ops.AggOps.SUM_AGG, this); 
+        }
+        return sum;
+    }
+    
 }
