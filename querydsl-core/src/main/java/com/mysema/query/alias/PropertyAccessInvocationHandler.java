@@ -272,8 +272,6 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             path = new PBoolean(pm);
             rv = (T) Boolean.TRUE;
 
-            // Collection API types
-
         } else if (List.class.isAssignableFrom(type)) {
             Class<?> elementType = getTypeParameter(genericType, 0);
             path = new PEntityList(elementType, elementType.getSimpleName(), pm);
@@ -294,8 +292,6 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             Class<?> valueType = getTypeParameter(genericType, 1);
             path = new PEntityMap(keyType, valueType, valueType.getSimpleName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
-
-            // enums
 
         } else if (Enum.class.isAssignableFrom(type)) {
             path = new PSimple<T>(type, pm);

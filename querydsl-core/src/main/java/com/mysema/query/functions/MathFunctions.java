@@ -22,26 +22,41 @@ public final class MathFunctions {
     private MathFunctions() {
     }
 
+    /**
+     * use left.abs() instead
+     */
     @Deprecated
     public static <A extends Number & Comparable<?>> ENumber<A> abs(ENumber<A> left) {
         return left.abs();
     }
 
+    /**
+     * use left.sqrt() instead
+     */
     @Deprecated
     public static <A extends Number & Comparable<?>> ENumber<Double> sqrt(ENumber<A> left) {
         return left.sqrt();
     }
     
+    /**
+     * use ENumber.random() instead
+     */
     @Deprecated
     public static ENumber<Double> random() {
         return ENumber.random();
     }
     
+    /**
+     * use ENumber.max(left, right) instead
+     */
     @Deprecated
     public static <A extends Number & Comparable<?>> ENumber<A> max(Expr<A> left, Expr<A> right) {
         return ENumber.max(left, right);
     }
 
+    /**
+     * use ENumber.min(left, right) instead
+     */
     @Deprecated
     public static <A extends Number & Comparable<?>> ENumber<A> min(Expr<A> left, Expr<A> right) {
         return ENumber.min(left, right);
