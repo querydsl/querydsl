@@ -33,7 +33,6 @@ public class OSimple<OpType, D> extends Expr<D> implements Operation<OpType, D> 
         super(type);
         this.op = op;
         this.args = Collections.unmodifiableList(args);
-        validate();
     }
 
     @Override

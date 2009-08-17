@@ -15,8 +15,8 @@ import com.mysema.query.types.expr.Expr;
  *
  * @param <T>
  */
-public abstract class CComparable<T extends Comparable<?>> extends
-        EComparable<T> implements Custom<T> {
+public abstract class CComparable<T extends Comparable<?>> extends EComparable<T> implements Custom<T> {
+    
     public CComparable(Class<T> type) {
         super(type);
     }

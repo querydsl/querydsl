@@ -24,7 +24,7 @@ import com.mysema.query.types.operation.Ops.MathOps;
  */
 public abstract class ENumber<D extends Number & Comparable<?>> extends EComparable<D> {
 
-    private static final ENumber<Double> random = ONumber.create(Double.class, MathOps.RANDOM);
+    private static ENumber<Double> random;
     
     public static <A extends Number & Comparable<?>> ENumber<A> max(Expr<A> left, Expr<A> right) {
         return ONumber.create(left.getType(), MathOps.MAX, left, right);
@@ -35,16 +35,15 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
     
     public static ENumber<Double> random(){
+        if (random == null){
+            random = ONumber.create(Double.class, MathOps.RANDOM);
+        }
         return random;
     }
     
-    private ENumber<D> abs;
+    private ENumber<D> abs, sum, min, max;
     
-    private ENumber<Double> avg;
-    
-    private ENumber<Double> sqrt;
-    
-    private ENumber<D> sum, min, max;
+    private ENumber<Double> avg, sqrt;
     
     public ENumber(Class<? extends D> type) {
         super(type);

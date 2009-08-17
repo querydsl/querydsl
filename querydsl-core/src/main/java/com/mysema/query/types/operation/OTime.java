@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.types.operation;
 
 import java.util.Arrays;
@@ -29,7 +34,6 @@ public class OTime<OpType, D extends Comparable<?>> extends ETime<D> implements 
         super(type);
         this.op = op;
         this.args = Collections.unmodifiableList(args);
-        validate();
     }
 
     @Override

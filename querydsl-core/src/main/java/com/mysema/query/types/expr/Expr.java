@@ -8,9 +8,10 @@ package com.mysema.query.types.expr;
 import java.util.Arrays;
 import java.util.Collection;
 
+import net.jcip.annotations.ThreadSafe;
+
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.serialization.ToStringVisitor;
-import com.mysema.query.types.ValidationVisitor;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
@@ -24,14 +25,18 @@ import com.mysema.query.types.operation.Ops;
  */
 public abstract class Expr<D> {
 
-    private final Class<? extends D> type;
+    public static ENumber<Long> countAll() {
+        return Ops.AggOps.COUNT_ALL_AGG_EXPR;
+    }
     
-    private String toString;
+    private ENumber<Long> count;
 
     private final boolean primitive;
     
-    private ENumber<Long> count;
+    private String toString;
     
+    private final Class<? extends D> type;
+        
     public Expr(Class<? extends D> type) {
         this.type = Assert.notNull(type,"type is null");
         this.primitive = type.isPrimitive() 
@@ -39,7 +44,7 @@ public abstract class Expr<D> {
             || Boolean.class.equals(type) 
             || Character.class.equals(type);
     }
-        
+
     /**
      * @return count(this)
      */
@@ -48,15 +53,6 @@ public abstract class Expr<D> {
             count = ONumber.create(Long.class, Ops.AggOps.COUNT_AGG, this);
         }
         return count;
-    }
-
-    /**
-     * Get the Java type for this expression
-     * 
-     * @return
-     */
-    public Class<? extends D> getType() {
-        return type;
     }
 
     /**
@@ -84,6 +80,50 @@ public abstract class Expr<D> {
     }
 
     /**
+     * Get the Java type for this expression
+     * 
+     * @return
+     */
+    public Class<? extends D> getType() {
+        return type;
+    }
+
+    @Override
+    public int hashCode() {
+        return type != null ? type.hashCode() : super.hashCode();
+    }
+
+    /**
+     * Create a <code>this in right</code> expression
+     * 
+     * @param right rhs of the comparison
+     * @return
+     */
+    public final EBoolean in(Collection<? extends D> right) {
+        return new OBoolean(Ops.IN, this, EConstant.create(right));
+    }
+
+    /**
+     * Create a <code>this in right</code> expression
+     * 
+     * @param right rhs of the comparison
+     * @return
+     */
+    public final EBoolean in(D... right) {
+        return new OBoolean(Ops.IN, this, EConstant.create(Arrays.asList(right)));
+    }
+
+    /**
+     * Create a <code>this in right</code> expression
+     * 
+     * @param right rhs of the comparison
+     * @return
+     */
+    public final EBoolean in(ECollection<? extends D> right) {
+        return new OBoolean(Ops.IN, this, (Expr<?>)right);
+    }
+
+    /**
      * Create a <code>this &lt;&gt; right</code> expression
      * 
      * @param right rhs of the comparison
@@ -108,46 +148,6 @@ public abstract class Expr<D> {
     }
 
     /**
-     * Create a <code>this in right</code> expression
-     * 
-     * @param right rhs of the comparison
-     * @return
-     */
-    public final EBoolean in(ECollection<? extends D> right) {
-        return new OBoolean(Ops.IN, this, (Expr<?>)right);
-    }
-
-    /**
-     * Create a <code>this in right</code> expression
-     * 
-     * @param right rhs of the comparison
-     * @return
-     */
-    public final EBoolean in(Collection<? extends D> right) {
-        return new OBoolean(Ops.IN, this, EConstant.create(right));
-    }
-
-    /**
-     * Create a <code>this in right</code> expression
-     * 
-     * @param right rhs of the comparison
-     * @return
-     */
-    public final EBoolean in(D... right) {
-        return new OBoolean(Ops.IN, this, EConstant.create(Arrays.asList(right)));
-    }
-
-    /**
-     * Create a <code>this not in right</code> expression
-     * 
-     * @param right rhs of the comparison
-     * @return
-     */
-    public final EBoolean notIn(ECollection<? extends D> right) {
-        return in(right).not();
-    }
-
-    /**
      * Create a <code>this not in right</code> expression
      * 
      * @param right rhs of the comparison
@@ -166,13 +166,15 @@ public abstract class Expr<D> {
     public final EBoolean notIn(D... right) {
         return in(right).not();
     }
-
+    
     /**
-     * validate this expression for consistency
+     * Create a <code>this not in right</code> expression
      * 
+     * @param right rhs of the comparison
+     * @return
      */
-    protected void validate() {
-        new ValidationVisitor().handle(this);
+    public final EBoolean notIn(ECollection<? extends D> right) {
+        return in(right).not();
     }
 
     @Override
@@ -181,15 +183,6 @@ public abstract class Expr<D> {
             toString = new ToStringVisitor().handle(this).toString();
         }
         return toString;
-    }
-    
-    @Override
-    public int hashCode() {
-        return type != null ? type.hashCode() : super.hashCode();
-    }
-
-    public static ENumber<Long> countAll() {
-        return Ops.AggOps.COUNT_ALL_AGG_EXPR;
     }
     
 }

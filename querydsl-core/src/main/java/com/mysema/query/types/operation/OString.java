@@ -31,7 +31,6 @@ public class OString extends EString implements Operation<String, String> {
     public OString(Operator<String> op, List<Expr<?>> args) {
         this.op = op;
         this.args = Collections.unmodifiableList(args);
-        validate();
     }
 
     @Override

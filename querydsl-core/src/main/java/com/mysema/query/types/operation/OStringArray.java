@@ -32,7 +32,6 @@ public class OStringArray extends Expr<String[]> implements
         super(String[].class);
         this.op = op;
         this.args = Collections.unmodifiableList(args);
-        validate();
     }
 
     @Override

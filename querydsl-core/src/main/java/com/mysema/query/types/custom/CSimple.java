@@ -15,6 +15,7 @@ import com.mysema.query.types.expr.Expr;
  * @param <T>
  */
 public abstract class CSimple<T> extends Expr<T> implements Custom<T> {
+    
     public CSimple(Class<? extends T> type) {
         super(type);
     }

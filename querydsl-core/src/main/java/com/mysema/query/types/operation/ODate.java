@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.types.operation;
 
 import java.util.Arrays;
@@ -30,7 +35,6 @@ public class ODate <OpType, D extends Comparable<?>> extends
         super(type);
         this.op = op;
         this.args = Collections.unmodifiableList(args);
-        validate();
     }
 
     @Override

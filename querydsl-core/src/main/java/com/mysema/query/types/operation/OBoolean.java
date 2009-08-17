@@ -31,7 +31,6 @@ public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
     public OBoolean(Operator<Boolean> op, List<Expr<?>> args) {
         this.op = op;
         this.args = Collections.unmodifiableList(args);
-        validate();
     }
     
     @Override

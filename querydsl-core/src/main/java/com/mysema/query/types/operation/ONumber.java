@@ -35,7 +35,6 @@ public class ONumber<OpType extends Number, D extends Number & Comparable<?>>
         super(type);
         this.op = op;
         this.args = Collections.unmodifiableList(args);
-        validate();
     }
 
     @Override

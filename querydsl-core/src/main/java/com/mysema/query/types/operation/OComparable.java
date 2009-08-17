@@ -35,7 +35,6 @@ public class OComparable<OpType, D extends Comparable<?>> extends
         super(type);
         this.op = op;
         this.args = Collections.unmodifiableList(args);
-        validate();
     }
 
     @Override

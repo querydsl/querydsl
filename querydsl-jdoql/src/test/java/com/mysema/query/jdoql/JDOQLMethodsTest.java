@@ -9,7 +9,6 @@ import javax.jdo.Transaction;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QProduct;
 import com.mysema.query.jdoql.testdomain.QStore;
