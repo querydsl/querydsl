@@ -63,16 +63,25 @@ public final class MathFunctions {
         return ENumber.min(left, right);
     }
 
+    /**
+     * use left.ceil() instead
+     */
     @Deprecated
     public static ENumber<Double> ceil(EDecimal<Double> left) {
         return left.ceil();
     }
     
+    /**
+     * use left.round() instead
+     */
     @Deprecated
     public static ENumber<Double> round(EDecimal<Double> left) {
         return left.round();
     }
     
+    /**
+     * use left.floor() instead
+     */
     @Deprecated
     public static ENumber<Double> floor(EDecimal<Double> left) {
         return left.floor();

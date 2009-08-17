@@ -14,6 +14,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
+@Deprecated
 public final class AggregationFunctions {
     
     private AggregationFunctions(){}
