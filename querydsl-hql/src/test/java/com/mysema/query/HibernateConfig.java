@@ -12,7 +12,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Hibernate provides.
+ * HibernateConfig provides.
  * 
  * @author tiwe
  * @version $Id$

@@ -37,7 +37,9 @@
     <module>../querydsl-jdoql</module>    
     <module>../querydsl-hql</module>
     <module>../querydsl-sql</module>
+<!--     
     <module>../querydsl-docs</module>
+ -->    
   </modules>
 
   <dependencies>

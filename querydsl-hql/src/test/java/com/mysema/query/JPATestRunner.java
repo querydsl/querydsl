@@ -15,6 +15,10 @@ import org.junit.internal.runners.InitializationError;
 import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.notification.RunNotifier;
 
+/**
+ * @author tiwe
+ *
+ */
 public class JPATestRunner extends JUnit4ClassRunner {
 
     private EntityManager entityManager;

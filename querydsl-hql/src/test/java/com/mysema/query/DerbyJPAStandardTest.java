@@ -8,6 +8,10 @@ package com.mysema.query;
 import org.junit.runner.RunWith;
 
 
+/**
+ * @author tiwe
+ *
+ */
 @RunWith(JPATestRunner.class)
 @JPAConfig("derby")
 public class DerbyJPAStandardTest extends AbstractJPATest{

@@ -8,6 +8,10 @@ package com.mysema.query;
 import org.junit.runner.RunWith;
 
 
+/**
+ * @author tiwe
+ *
+ */
 @RunWith(HibernateTestRunner.class)
 @HibernateConfig("derby.properties")
 public class DerbyStandardTest extends AbstractHibernateTest{
