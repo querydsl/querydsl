@@ -45,13 +45,13 @@ import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.Path;
 
 /**
- * AbstractVisitor provides a base implementation of the Visitor class, where
+ * VisitorBase provides a base implementation of the Visitor class, where
  * invocations are dispatched to supertypes when available and visible.
  * 
  * @author tiwe
  * @version $Id$
  */
-public abstract class AbstractVisitor<SubType extends AbstractVisitor<SubType>>
+public abstract class VisitorBase<SubType extends VisitorBase<SubType>>
         extends Visitor<SubType> {
 
     @Override

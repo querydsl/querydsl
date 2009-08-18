@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.AbstractVisitor;
+import com.mysema.query.types.VisitorBase;
 import com.mysema.query.types.custom.Custom;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EConstant;
@@ -28,7 +28,7 @@ import com.mysema.query.types.path.PathType;
  * @version $Id$
  */
 public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
-        extends AbstractVisitor<SubType> {
+        extends VisitorBase<SubType> {
 
     protected StringBuilder builder = new StringBuilder();
 

@@ -5,7 +5,7 @@
  */
 package com.mysema.query.serialization;
 
-import com.mysema.query.types.AbstractVisitor;
+import com.mysema.query.types.VisitorBase;
 import com.mysema.query.types.custom.Custom;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EConstant;
@@ -20,7 +20,7 @@ import com.mysema.query.types.path.Path;
  * @author tiwe
  * @version $Id$
  */
-public class ToStringVisitor extends AbstractVisitor<ToStringVisitor> {
+public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
 
     private static OperationPatterns patterns = new OperationPatterns();
 
