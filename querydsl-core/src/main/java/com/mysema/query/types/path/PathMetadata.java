@@ -27,91 +27,34 @@ import com.mysema.query.util.NotEmpty;
 @Immutable
 public final class PathMetadata<T> {
 
-    /**
-     * Create a new PathMetadata instance for indexed array access
-     * 
-     * @param parent parent path
-     * @param index
-     * @return
-     */
     public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, Expr<Integer> index) {
         return new PathMetadata<Integer>(parent, index, PathType.ARRAYVALUE);
     }
 
-    /**
-     * Create a new PathMetadata instance for indexed array access
-     * 
-     * @param parent parent path
-     * @param index
-     * @return
-     */
     public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, @Nonnegative int index) {
         return new PathMetadata<Integer>(parent, EConstant.create(index), PathType.ARRAYVALUE_CONSTANT);
     }
 
-    /**
-     * Create a new PathMetadata instance for indexed List access
-     * 
-     * @param parent parent path
-     * @param index
-     * @return
-     */
     public static PathMetadata<Integer> forListAccess(PList<?> parent, Expr<Integer> index) {
         return new PathMetadata<Integer>(parent, index, PathType.LISTVALUE);
     }
 
-    /**
-     * Create a new PathMetadata instance for indexed list access
-     * 
-     * @param parent parent path
-     * @param index
-     * @return
-     */
     public static PathMetadata<Integer> forListAccess(PList<?> parent, @Nonnegative int index) {
         return new PathMetadata<Integer>(parent, EConstant.create(index), PathType.LISTVALUE_CONSTANT);
     }
 
-    /**
-     * Create a new PathMetadata instance for Map value access
-     * 
-     * @param <KT> key type
-     * @param parent parent path
-     * @param key
-     * @return
-     */
     public static <KT> PathMetadata<KT> forMapAccess(PMap<?, ?> parent, Expr<KT> key) {
         return new PathMetadata<KT>(parent, key, PathType.MAPVALUE);
     }
 
-    /**
-     * Create a new PathMetadata instance for Map value access
-     * 
-     * @param <KT> key type
-     * @param parent parent path
-     * @param key
-     * @return
-     */
     public static <KT> PathMetadata<KT> forMapAccess(PMap<?, ?> parent, KT key) {
         return new PathMetadata<KT>(parent,EConstant.create(key), PathType.MAPVALUE_CONSTANT);
     }
 
-    /**
-     * Create a new PathMetadata instance for a property based path
-     * 
-     * @param parent parent path
-     * @param property
-     * @return
-     */
     public static PathMetadata<String> forProperty(Path<?> parent, @NotEmpty String property) {
         return new PathMetadata<String>(parent, EConstant.create(Assert.hasLength(property)), PathType.PROPERTY);
     }
 
-    /**
-     * Create a new PathMetadata instance for a variable based path
-     * 
-     * @param variable
-     * @return
-     */
     public static PathMetadata<String> forVariable(@NotEmpty String variable) {
         return new PathMetadata<String>(null, EConstant.create(Assert.hasLength(variable)), PathType.VARIABLE);
     }
@@ -142,42 +85,24 @@ public final class PathMetadata<T> {
         if (obj.getClass() != getClass())
             return false;
         PathMetadata<?> p = (PathMetadata<?>) obj;
-        return new EqualsBuilder().append(expression, p.expression).append(
-                parent, p.parent).append(pathType, p.pathType).isEquals();
+        return new EqualsBuilder()
+            .append(expression, p.expression)
+            .append(parent, p.parent)
+            .append(pathType, p.pathType).isEquals();
     }
 
-    /**
-     * Get the expression related to this path
-     * 
-     * @return
-     */
     public Expr<T> getExpression() {
         return expression;
     }
 
-    /**
-     * Get the parent path
-     * 
-     * @return
-     */
     public Path<?> getParent() {
         return parent;
     }
 
-    /**
-     * Get the path type
-     * 
-     * @return
-     */
     public PathType getPathType() {
         return pathType;
     }
 
-    /**
-     * Get the root path
-     * 
-     * @return
-     */
     public Path<?> getRoot() {
         return root;
     }

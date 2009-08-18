@@ -35,6 +35,10 @@ public class PSimple<D> extends Expr<D> implements Path<D> {
     public PSimple(Class<? extends D> type, @NotEmpty String var) {
         this(type, PathMetadata.forVariable(var));
     }
+    
+    public PSimple(Class<? extends D> type, @NotEmpty Path<?> parent, String property) {
+        this(type, PathMetadata.forProperty(parent, property));
+    }
 
     @SuppressWarnings("unchecked")
     @Override

@@ -35,6 +35,10 @@ public class PNumber<D extends Number & Comparable<?>> extends ENumber<D> implem
     public PNumber(Class<? extends D> type, @NotEmpty String var) {
         this(type, PathMetadata.forVariable(var));
     }
+    
+    public PNumber(Class<? extends D> type, Path<?> parent, @NotEmpty String property) {
+        this(type, PathMetadata.forProperty(parent, property));
+    }
 
     @SuppressWarnings("unchecked")
     @Override

@@ -38,6 +38,10 @@ public class PComparable<D extends Comparable> extends EComparable<D> implements
     public PComparable(Class<? extends D> type, @NotEmpty String var) {
         this(type, PathMetadata.forVariable(var));
     }
+    
+    public PComparable(Class<? extends D> type, Path<?> parent, @NotEmpty String property) {
+        this(type, PathMetadata.forProperty(parent, property));
+    }
 
     public boolean equals(Object o) {
         return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)

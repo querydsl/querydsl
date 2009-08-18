@@ -47,6 +47,10 @@ public class PComponentMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {
     public PComponentMap(Class<K> keyType, Class<V> valueType, @NotEmpty String var) {
         this(keyType, valueType, PathMetadata.forVariable(var));
     }
+    
+    public PComponentMap(Class<K> keyType, Class<V> valueType, Path<?> parent, @NotEmpty String property) {
+        this(keyType, valueType, PathMetadata.forProperty(parent, property));
+    }
 
 
     @SuppressWarnings("unchecked")

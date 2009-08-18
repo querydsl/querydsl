@@ -41,6 +41,10 @@ public class PComponentCollection<D> extends ECollectionBase<D> implements PColl
     public PComponentCollection(Class<D> type, @NotEmpty String var) {
         this(type, PathMetadata.forVariable(var));
     }
+    
+    public PComponentCollection(Class<D> type, Path<?> parent, @NotEmpty String property) {
+        this(type, PathMetadata.forProperty(parent, property));
+    }
 
     @SuppressWarnings("unchecked")
     @Override

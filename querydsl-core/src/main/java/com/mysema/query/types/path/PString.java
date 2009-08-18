@@ -30,6 +30,10 @@ public class PString extends EString implements Path<String> {
     public PString(@NotEmpty String var) {
         this(PathMetadata.forVariable(var));
     }
+    
+    public PString(Path<?> parent, @NotEmpty String property) {
+        this(PathMetadata.forProperty(parent, property));
+    }
 
     @SuppressWarnings("unchecked")
     @Override

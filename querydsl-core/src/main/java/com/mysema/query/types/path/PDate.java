@@ -35,6 +35,10 @@ public class PDate<D extends Comparable> extends EDate<D> implements Path<D>{
         this(type, PathMetadata.forVariable(var));
     }
 
+    public PDate(Class<? extends D> type, Path<?> parent, @NotEmpty String property) {
+        this(type, PathMetadata.forProperty(parent, property));
+    }
+    
     public boolean equals(Object o) {
         return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
                 : false;

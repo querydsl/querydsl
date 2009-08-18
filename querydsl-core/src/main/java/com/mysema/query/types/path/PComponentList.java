@@ -24,6 +24,10 @@ public class PComponentList<D> extends PComponentCollection<D> implements PList<
     public PComponentList(Class<D> type, @NotEmpty String var) {
         super(type, PathMetadata.forVariable(var));
     }
+    
+    public PComponentList(Class<D> type, Path<?> path, @NotEmpty String property) {
+        super(type, PathMetadata.forProperty(path, property));
+    }
 
     @Override
     public Expr<D> get(Expr<Integer> index) {

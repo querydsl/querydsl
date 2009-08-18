@@ -30,13 +30,6 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
     
     private final Path<?> root;
 
-    /**
-     * Create a new PEntity instance with the given Java type, entity name and Path metadata
-     * 
-     * @param type
-     * @param entityName
-     * @param metadata
-     */
     public PEntity(Class<? extends D> type, @NotEmpty String entityName,
             PathMetadata<?> metadata) {
         super(type);
@@ -45,216 +38,78 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    /**
-     * Create a new PEntity instance with the given Java type, entity name and variable name
-     * 
-     * @param type
-     * @param entityName
-     * @param var
-     */
     public PEntity(Class<? extends D> type, @NotEmpty String entityName, @NotEmpty String var) {
         this(type, Assert.hasLength(entityName), PathMetadata.forVariable(var));
     }
-    
-    /**
-     * Create Boolean typed subpath for the given property
-     * 
-     * @param propertyName
-     * @return
-     */
-    protected PBoolean _boolean(@NotEmpty String propertyName) {
-        return new PBoolean(PathMetadata.forProperty(this, propertyName));
+
+    public PEntity(Class<? extends D> type, @NotEmpty String entityName, Path<?> parent, @NotEmpty String property) {
+        this(type, Assert.hasLength(entityName), PathMetadata.forProperty(parent, property));
     }
 
-    /**
-     * Create a Comparable typed subpath for the given property
-     * 
-     * @param <A>
-     * @param propertyName
-     * @param type
-     * @return
-     */
-    protected <A extends Comparable<?>> PComparable<A> _comparable(@NotEmpty String propertyName,
-            Class<A> type) {
-        return new PComparable<A>(type, PathMetadata.forProperty(this, propertyName));
+    protected PBoolean _boolean(@NotEmpty String propertyName) {
+        return new PBoolean(this, propertyName);
     }
-    
-    /**
-     * @param <A>
-     * @param propertyName
-     * @param type
-     * @return
-     */
-    protected <A extends Comparable<?>> PDate<A> _date(@NotEmpty String propertyName,
-            Class<A> type) {
+
+    protected <A extends Comparable<?>> PComparable<A> _comparable(@NotEmpty String propertyName, Class<A> type) {
+        return new PComparable<A>(type, this, propertyName);
+    }
+
+    protected <A extends Comparable<?>> PDate<A> _date(@NotEmpty String propertyName, Class<A> type) {
         return new PDate<A>(type, PathMetadata.forProperty(this, propertyName));
     }
-    
-    /**
-     * @param <A>
-     * @param propertyName
-     * @param type
-     * @return
-     */
-    protected <A extends Comparable<?>> PDateTime<A> _dateTime(@NotEmpty String propertyName,
-            Class<A> type) {
-        return new PDateTime<A>(type, PathMetadata.forProperty(this, propertyName));
+
+    protected <A extends Comparable<?>> PDateTime<A> _dateTime(@NotEmpty String propertyName, Class<A> type) {
+        return new PDateTime<A>(type, this, propertyName);
     }
 
-    /**
-     * Create an Entity subpath for the given property
-     * 
-     * @param <A>
-     * @param property
-     * @param entityName
-     * @param type
-     * @return
-     */
-    protected <A> PEntity<A> _entity(@NotEmpty String property, @NotEmpty String entityName,
-            Class<A> type) {
-        return new PEntity<A>(type, entityName, PathMetadata.forProperty(this,
-                property));
+    protected <A> PEntity<A> _entity(@NotEmpty String property, @NotEmpty String entityName, Class<A> type) {
+        return new PEntity<A>(type, entityName, this,property);
     }
 
-    /**
-     * Create a new Entity collection subpath for the given property
-     * 
-     * @param <A>
-     * @param property
-     * @param type
-     * @param entityName
-     * @return
-     */
-    protected <A> PEntityCollection<A> _entitycol(@NotEmpty String property, Class<A> type,
-            @NotEmpty String entityName) {
-        return new PEntityCollection<A>(type, entityName, PathMetadata
-                .forProperty(this, property));
+    protected <A> PEntityCollection<A> _entitycol(@NotEmpty String property, Class<A> type, @NotEmpty String entityName) {
+        return new PEntityCollection<A>(type, entityName, this, property);
     }
 
-    /**
-     * Create a new Entity list subpath for the given property
-     * 
-     * @param <A>
-     * @param property
-     * @param type
-     * @param entityName
-     * @return
-     */
-    protected <A> PEntityList<A> _entitylist(@NotEmpty String property, Class<A> type,
-            @NotEmpty String entityName) {
-        return new PEntityList<A>(type, entityName, PathMetadata.forProperty(
-                this, property));
+    protected <A> PEntityList<A> _entitylist(@NotEmpty String property, Class<A> type, @NotEmpty String entityName) {
+        return new PEntityList<A>(type, entityName, this, property);
     }
 
-    /**
-     * Create a new Entity map subpath for the given property
-     * 
-     * @param <K>
-     * @param <V>
-     * @param path
-     * @param key
-     * @param value
-     * @param entityName
-     * @return
-     */
-    protected <K, V> PEntityMap<K, V> _entitymap(@NotEmpty String property, Class<K> key,
-            Class<V> value, @NotEmpty String entityName) {
-        return new PEntityMap<K, V>(key, value, entityName, PathMetadata
-                .forProperty(this, property));
-    }
-    
-    /**
-     * Create a new numeric subpath for the given property
-     * 
-     * @param <A>
-     * @param property
-     * @param type
-     * @return
-     */
-    protected <A extends Number & Comparable<?>> PNumber<A> _number(
-            @NotEmpty String property, Class<A> type) {
-        return new PNumber<A>(type, PathMetadata.forProperty(this, property));
+    protected <K, V> PEntityMap<K, V> _entitymap(@NotEmpty String property, Class<K> key, Class<V> value, @NotEmpty String entityName) {
+        return new PEntityMap<K, V>(key, value, entityName, this, property);
     }
 
-    /**
-     * Create a new simple subpath for the given property
-     * 
-     * @param <A>
-     * @param path
-     * @param type
-     * @return
-     */
+    protected <A extends Number & Comparable<?>> PNumber<A> _number(@NotEmpty String property, Class<A> type) {
+        return new PNumber<A>(type, this, property);
+    }
+
     protected <A> PSimple<A> _simple(@NotEmpty String path, Class<A> type) {
-        return new PSimple<A>(type, PathMetadata.forProperty(this, path));
+        return new PSimple<A>(type, this, path);
     }
 
-    /**
-     * Create a new Collection typed subpath for the given property
-     * 
-     * @param <A>
-     * @param path
-     * @param type
-     * @return
-     */
     protected <A> PComponentCollection<A> _simplecol(@NotEmpty String path, Class<A> type) {
-        return new PComponentCollection<A>(type, PathMetadata.forProperty(this,
-                path));
+        return new PComponentCollection<A>(type, this,path);
     }
 
-    /**
-     * Create a new List typed subpath for the given property
-     * 
-     * @param <A>
-     * @param path
-     * @param type
-     * @return
-     */
     protected <A> PComponentList<A> _simplelist(@NotEmpty String path, Class<A> type) {
-        return new PComponentList<A>(type, PathMetadata.forProperty(this, path));
+        return new PComponentList<A>(type, this, path);
     }
 
-    /**
-     * Create a new Map typed subpath for the given property
-     * 
-     * @param <K>
-     * @param <V>
-     * @param path
-     * @param key
-     * @param value
-     * @return
-     */
-    protected <K, V> PComponentMap<K, V> _simplemap(@NotEmpty String path, Class<K> key,
-            Class<V> value) {
-        return new PComponentMap<K, V>(key, value, PathMetadata.forProperty(
-                this, path));
+    protected <K, V> PComponentMap<K, V> _simplemap(@NotEmpty String path, Class<K> key, Class<V> value) {
+        return new PComponentMap<K, V>(key, value, this, path);
     }
 
-    /**
-     * Create a new String typed subpath for the given property
-     * 
-     * @param property
-     * @return
-     */
     protected PString _string(@NotEmpty String property) {
-        return new PString(PathMetadata.forProperty(this, property));
+        return new PString(this, property);
     }
 
-    /**
-     * @param <A>
-     * @param propertyName
-     * @param type
-     * @return
-     */
-    protected <A extends Comparable<?>> PTime<A> _time(@NotEmpty String propertyName,
-            Class<A> type) {
-        return new PTime<A>(type, PathMetadata.forProperty(this, propertyName));
+    protected <A extends Comparable<?>> PTime<A> _time(@NotEmpty String propertyName, Class<A> type) {
+        return new PTime<A>(type, this, propertyName);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {
-        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
-                : false;
+        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata) : false;
     }
 
     /**

@@ -55,6 +55,10 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     public PEntityCollection(Class<D> type, @NotEmpty String entityName, @NotEmpty String var) {
         this(type, entityName, PathMetadata.forVariable(var));
     }
+    
+    public PEntityCollection(Class<D> type, @NotEmpty String entityName, Path<?> parent, @NotEmpty String property) {
+        this(type, entityName, PathMetadata.forProperty(parent, property));
+    }
 
     @Override
     public EBoolean contains(D child) {

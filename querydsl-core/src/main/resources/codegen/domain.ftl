@@ -9,5 +9,6 @@ import com.mysema.query.types.path.*;
  *
  */
 public class ${pre}${classSimpleName} extends PEntity<${type.name}>{
+
 <@cl.classContent decl=type embeddable=false/>
 }

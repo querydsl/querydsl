@@ -34,6 +34,10 @@ public class PTime<D extends Comparable> extends ETime<D> implements Path<D>{
     public PTime(Class<? extends D> type, @NotEmpty String var) {
         this(type, PathMetadata.forVariable(var));
     }
+    
+    public PTime(Class<? extends D> type, Path<?> parent, @NotEmpty String property) {
+        this(type, PathMetadata.forProperty(parent, property));
+    }
 
     public boolean equals(Object o) {
         return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)

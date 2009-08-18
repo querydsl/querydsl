@@ -25,6 +25,10 @@ public class PEntityList<D> extends PEntityCollection<D> implements PList<D> {
         super(elementType, entityName, PathMetadata.forVariable(var));
     }
 
+    public PEntityList(Class<D> elementType, @NotEmpty String entityName, Path<?> parent, @NotEmpty String property) {
+        super(elementType, entityName, PathMetadata.forProperty(parent, property));
+    }
+    
     @Override
     public PEntity<D> get(Expr<Integer> index) {
         return new PEntity<D>(elementType, entityName, PathMetadata.forListAccess(

@@ -33,6 +33,10 @@ public class PBoolean extends EBoolean implements Path<Boolean> {
     public PBoolean(@NotEmpty String var) {
         this(PathMetadata.forVariable(var));
     }
+    
+    public PBoolean(Path<?> parent, @NotEmpty String property) {
+        this(PathMetadata.forProperty(parent, property));
+    }
 
     @SuppressWarnings("unchecked")
     @Override

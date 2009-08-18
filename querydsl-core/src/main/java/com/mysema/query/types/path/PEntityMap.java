@@ -51,6 +51,10 @@ public class PEntityMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {
     public PEntityMap(Class<K> keyType, Class<V> valueType, @NotEmpty String entityName, @NotEmpty String var) {
         this(keyType, valueType, entityName, PathMetadata.forVariable(var));
     }
+    
+    public PEntityMap(Class<K> keyType, Class<V> valueType, @NotEmpty String entityName, Path<?> parent, @NotEmpty String var) {
+        this(keyType, valueType, entityName, PathMetadata.forProperty(parent, var));
+    }
 
     @SuppressWarnings("unchecked")
     @Override
