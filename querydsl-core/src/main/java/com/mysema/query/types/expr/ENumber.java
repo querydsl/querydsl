@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import com.mysema.query.types.operation.OBoolean;
-import com.mysema.query.types.operation.ODecimal;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.operation.Ops.MathOps;
@@ -25,7 +24,7 @@ import com.mysema.query.types.operation.Ops.MathOps;
  */
 public abstract class ENumber<D extends Number & Comparable<?>> extends EComparable<D> {
 
-    private static EDecimal<Double> random;
+    private static ENumber<Double> random;
     
     /**
      * @return max(left, right)
@@ -45,16 +44,18 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * Returns the random expression
      * @return random()
      */
-    public static EDecimal<Double> random(){
+    public static ENumber<Double> random(){
         if (random == null){
-            random = ODecimal.create(Double.class, MathOps.RANDOM);
+            random = ONumber.create(Double.class, MathOps.RANDOM);
         }
         return random;
     }
     
     private ENumber<D> abs, sum, min, max;
     
-    private EDecimal<Double> avg, sqrt;
+    private ENumber<Double> avg, sqrt;
+    
+    private ENumber<D> round, floor, ceil;
     
     public ENumber(Class<? extends D> type) {
         super(type);
@@ -69,7 +70,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         }
         return abs;
     }
-
+    
     /**
      * @param right
      * @return this + right
@@ -77,7 +78,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     public ENumber<D> add(D right) {
         return ONumber.create(getType(), Ops.ADD, this, EConstant.create(right));
     }
-
+    
     /**
      * @param right
      * @return this + right
@@ -85,13 +86,13 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     public ENumber<D> add(Expr<D> right) {
         return ONumber.create(getType(), Ops.ADD, this, right);
     }
-
+    
     /**
      *  @return avg(this)
      */
-    public EDecimal<Double> avg(){
+    public ENumber<Double> avg(){
         if (avg == null){
-            avg = ODecimal.create(Double.class, Ops.AggOps.AVG_AGG, this);
+            avg = ONumber.create(Double.class, Ops.AggOps.AVG_AGG, this);
         }
         return avg;
     }
@@ -143,20 +144,30 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
 
     /**
-     * @param right
-     * @return this / right
+     * @return ceil(this)
+     * @see java.lang.Math#ceil(double)
      */
-    public EDecimal<Double> div(D right) {
-        return ODecimal.create(Double.class, Ops.DIV, this, EConstant.create(right));
+    public ENumber<D> ceil() {
+        if (ceil == null){
+            ceil = ONumber.create(getType(), MathOps.CEIL, this); 
+        }
+        return ceil;
     }
-
 
     /**
      * @param right
      * @return this / right
      */
-    public EDecimal<Double> div(Expr<D> right) {
-        return ODecimal.create(Double.class, Ops.DIV, this, right);
+    public ENumber<Double> div(D right) {
+        return ONumber.create(Double.class, Ops.DIV, this, EConstant.create(right));
+    }
+
+    /**
+     * @param right
+     * @return this / right
+     */
+    public ENumber<Double> div(Expr<D> right) {
+        return ONumber.create(Double.class, Ops.DIV, this, right);
     }
 
     /**
@@ -169,6 +180,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         return castToNum(Double.class);
     }
 
+
     /**
      * Get the float expression of this numeric expression
      * 
@@ -177,6 +189,17 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      */
     public final ENumber<Float> floatValue() {
         return castToNum(Float.class);
+    }
+
+    /**
+     * @return floor(this)
+     * @see java.lang.Math#floor(double)
+     */
+    public ENumber<D> floor() {
+        if (floor == null){
+            floor = ONumber.create(getType(), MathOps.FLOOR, this);
+        }
+        return floor;
     }
 
     /**
@@ -314,7 +337,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         }
         return min;
     }
-    
+
     /**
      * @param right
      * @return this * right
@@ -322,13 +345,25 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     public ENumber<D> mult(D right) {
         return ONumber.create(getType(), Ops.MULT, this, EConstant.create(right));
     }
-
+    
     /**
      * @param right
      * @return this * right
      */
     public ENumber<D> mult(Expr<D> right) {
         return ONumber.create(getType(), Ops.MULT, this, right);
+    }
+
+    /**
+     * @return round(this)
+     * @see java.lang.Math#round(double)
+     * @see java.lang.Math#round(float)
+     */
+    public ENumber<D> round() {
+        if (round == null){
+            round = ONumber.create(getType(), MathOps.ROUND, this); 
+        }
+        return round;
     }
     
     /**
@@ -345,9 +380,9 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * Returns the square root of this numeric expressions
      * @return sqrt(this)
      */
-    public EDecimal<Double> sqrt(){
+    public ENumber<Double> sqrt(){
         if (sqrt == null){
-            sqrt = ODecimal.create(Double.class, MathOps.SQRT, this);
+            sqrt = ONumber.create(Double.class, MathOps.SQRT, this);
         }
         return sqrt;
     }

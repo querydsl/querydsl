@@ -14,7 +14,6 @@ import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.OComparable;
 import com.mysema.query.types.operation.ODate;
 import com.mysema.query.types.operation.ODateTime;
-import com.mysema.query.types.operation.ODecimal;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.OString;
@@ -32,7 +31,6 @@ import com.mysema.query.types.path.PComponentList;
 import com.mysema.query.types.path.PComponentMap;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
-import com.mysema.query.types.path.PDecimal;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
 import com.mysema.query.types.path.PEntityList;
@@ -106,11 +104,6 @@ public abstract class AbstractVisitor<SubType extends AbstractVisitor<SubType>>
         visit((Operation<?, ?>) expr);
     }
     
-    @Override
-    protected void visit(ODecimal<?, ?> expr) {
-        visit((Operation<?, ?>) expr);
-    }
-
     @Override
     protected void visit(OSimple<?, ?> expr) {
         visit((Operation<?, ?>) expr);
@@ -205,12 +198,7 @@ public abstract class AbstractVisitor<SubType extends AbstractVisitor<SubType>>
     protected void visit(PNumber<?> expr) {
         visit((Path<?>) expr);
     }
-    
-    @Override
-    protected void visit(PDecimal<?> expr) {
-        visit((Path<?>) expr);
-    }
-    
+        
     @Override
     protected void visit(PDate<?> expr) {
         visit((Path<?>) expr);

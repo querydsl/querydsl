@@ -5,7 +5,6 @@
  */
 package com.mysema.query.functions;
 
-import com.mysema.query.types.expr.EDecimal;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.ONumber;
@@ -67,7 +66,7 @@ public final class MathFunctions {
      * use left.ceil() instead
      */
     @Deprecated
-    public static ENumber<Double> ceil(EDecimal<Double> left) {
+    public static ENumber<Double> ceil(ENumber<Double> left) {
         return left.ceil();
     }
     
@@ -75,7 +74,7 @@ public final class MathFunctions {
      * use left.round() instead
      */
     @Deprecated
-    public static ENumber<Double> round(EDecimal<Double> left) {
+    public static ENumber<Double> round(ENumber<Double> left) {
         return left.round();
     }
     
@@ -83,7 +82,7 @@ public final class MathFunctions {
      * use left.floor() instead
      */
     @Deprecated
-    public static ENumber<Double> floor(EDecimal<Double> left) {
+    public static ENumber<Double> floor(ENumber<Double> left) {
         return left.floor();
     }
     

@@ -100,17 +100,6 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
             Class<A> type) {
         return new PDateTime<A>(type, PathMetadata.forProperty(this, propertyName));
     }
-    
-    /**
-     * @param <A>
-     * @param property
-     * @param type
-     * @return
-     */
-    protected <A extends Number & Comparable<?>> PDecimal<A> _decimal(
-            @NotEmpty String property, Class<A> type) {
-        return new PDecimal<A>(type, PathMetadata.forProperty(this, property));
-    }
 
     /**
      * Create an Entity subpath for the given property
