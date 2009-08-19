@@ -17,12 +17,12 @@ public interface TypeModel {
 
     String getName();
 
-    String getKeyTypeName();
+    TypeModel getKeyType();
+    
+    TypeModel getValueType();
 
     String getPackageName();
 
     String getSimpleName();
-
-    String getValueTypeName();
 
 }

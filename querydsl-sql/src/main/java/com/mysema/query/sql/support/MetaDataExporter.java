@@ -116,7 +116,7 @@ public class MetaDataExporter {
                         _class.getName(),
                         _class.getPackage().getName(),
                         _class.getSimpleName(), null, null);
-                type.addField(new FieldModel(_name, typeModel, _name));
+                type.addField(new FieldModel(type, _name, typeModel, _name));
             }
             columns.close();
             serialize(type);

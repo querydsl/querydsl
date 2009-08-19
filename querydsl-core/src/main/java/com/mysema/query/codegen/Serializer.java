@@ -42,7 +42,7 @@ public class Serializer {
             String packageName = type.getPackageName();
             model.put("package", packageName);
             model.put("type", type);
-            model.put("classSimpleName", type.getSimpleName());
+            model.put("classSimpleName", type.getSimpleName());            
             try {
                 String path = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
                 serialize(model, FileUtils.writerFor(new File(targetFolder, path)));

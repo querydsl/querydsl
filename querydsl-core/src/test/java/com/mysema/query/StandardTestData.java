@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EComparable;

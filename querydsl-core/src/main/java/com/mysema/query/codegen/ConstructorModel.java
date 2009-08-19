@@ -7,6 +7,8 @@ package com.mysema.query.codegen;
 
 import java.util.Collection;
 
+import net.jcip.annotations.Immutable;
+
 import com.mysema.commons.lang.Assert;
 
 /**
@@ -15,7 +17,9 @@ import com.mysema.commons.lang.Assert;
  * @author tiwe
  * @version $Id$
  */
+@Immutable
 public class ConstructorModel {
+    
     private final Collection<ParameterModel> parameters;
 
     public ConstructorModel(Collection<ParameterModel> params) {

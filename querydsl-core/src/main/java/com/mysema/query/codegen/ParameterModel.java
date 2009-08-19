@@ -5,6 +5,8 @@
  */
 package com.mysema.query.codegen;
 
+import net.jcip.annotations.Immutable;
+
 import com.mysema.commons.lang.Assert;
 
 /**
@@ -13,7 +15,9 @@ import com.mysema.commons.lang.Assert;
  * @author tiwe
  * @version $Id$
  */
+@Immutable
 public class ParameterModel implements Comparable<ParameterModel> {
+    
     private final String name, typeName;
 
     public ParameterModel(String name, String typeName) {

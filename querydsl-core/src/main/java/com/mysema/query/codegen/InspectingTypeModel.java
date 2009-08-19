@@ -62,7 +62,8 @@ public abstract class InspectingTypeModel extends SimpleTypeModel {
     }
     
     protected final void handleArray(TypeModel valueInfo) {
-        setNames(valueInfo);               
+        setNames(valueInfo);
+        valueType = valueInfo;
         if (valueInfo.getFieldType() == FieldType.ENTITY) {
             fieldType = FieldType.ENTITYCOLLECTION;
         } else {
@@ -71,7 +72,8 @@ public abstract class InspectingTypeModel extends SimpleTypeModel {
     }
     
     protected final void handleCollection(TypeModel valueInfo) {
-        setNames(valueInfo);        
+        setNames(valueInfo);  
+        valueType = valueInfo;
         if (valueInfo.getFieldType() == FieldType.ENTITY) {
             fieldType = FieldType.ENTITYCOLLECTION;
         } else {
@@ -81,6 +83,7 @@ public abstract class InspectingTypeModel extends SimpleTypeModel {
     
     protected final void handleList(TypeModel valueInfo) {
         setNames(valueInfo);        
+        valueType = valueInfo;
         if (valueInfo.getFieldType() == FieldType.ENTITY) {
             fieldType = FieldType.ENTITYLIST;
         } else {
@@ -90,7 +93,8 @@ public abstract class InspectingTypeModel extends SimpleTypeModel {
     
     protected final void handleMapInterface(TypeModel keyInfo, TypeModel valueInfo) {        
         setNames(valueInfo);
-        keyTypeName = keyInfo.getName();
+        keyType = keyInfo;
+        valueType = valueInfo;
         if (valueInfo.getFieldType() == FieldType.ENTITY) {
             fieldType = FieldType.ENTITYMAP;
         } else {

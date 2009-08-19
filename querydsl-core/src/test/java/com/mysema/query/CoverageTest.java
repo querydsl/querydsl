@@ -38,6 +38,7 @@ public class CoverageTest {
      * @throws IllegalArgumentException the illegal argument exception
      * @throws IllegalAccessException the illegal access exception
      */
+    @SuppressWarnings("unchecked")
     @Test
     public void test() throws IllegalArgumentException, IllegalAccessException{        
         // make sure all Operators are covered in expression factory methods

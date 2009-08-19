@@ -6,12 +6,14 @@
 package com.mysema.query.codegen;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.TreeSet;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.collections15.Factory;
+import org.apache.commons.collections15.MapUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.commons.lang.Assert;
@@ -32,52 +34,31 @@ public class ClassModel implements Comparable<ClassModel> {
                 key.getSimpleName());
         for (java.lang.reflect.Field f : key.getDeclaredFields()) {
             TypeModel typeHelper = ReflectionTypeModel.get(f.getType(), f.getGenericType());
-            value.addField(new FieldModel(f.getName(), typeHelper, f.getName()));
+            value.addField(new FieldModel(value, f.getName(), typeHelper, f.getName()));
         }
         return value;
     }
 
-    private int escapeSuffix = 1;
-
     private final Collection<ConstructorModel> constructors = new HashSet<ConstructorModel>();
     
-    private final Collection<FieldModel> booleanFields = new TreeSet<FieldModel>();
-
-    private final Collection<FieldModel> comparableFields = new TreeSet<FieldModel>();
-
-    private final Collection<FieldModel> dateFields = new TreeSet<FieldModel>();
-
-    private final Collection<FieldModel> dateTimeFields = new TreeSet<FieldModel>();
+    private int escapeSuffix = 1;
     
-    private final Collection<FieldModel> entityCollections = new TreeSet<FieldModel>();
-    
-    private final Collection<FieldModel> entityFields = new TreeSet<FieldModel>();
-    
-    private final Collection<FieldModel> entityLists = new TreeSet<FieldModel>();
-
-    private final Collection<FieldModel> entityMaps = new TreeSet<FieldModel>();
-
-    private final Collection<FieldModel> numericFields = new TreeSet<FieldModel>();
-
-    private final Collection<FieldModel> decimalFields = new TreeSet<FieldModel>();
-    
-    private final Collection<FieldModel> simpleCollections = new TreeSet<FieldModel>();
-
-    private final Collection<FieldModel> simpleFields = new TreeSet<FieldModel>();
-
-    private final Collection<FieldModel> simpleLists = new TreeSet<FieldModel>();
-
-    private final Collection<FieldModel> simpleMaps = new TreeSet<FieldModel>();
-
-    private final Collection<FieldModel> stringFields = new TreeSet<FieldModel>();
-    
-    private final Collection<FieldModel> timeFields = new TreeSet<FieldModel>();
-    
-    private String simpleName, uncapSimpleName, name, packageName;
+    private final String simpleName, name, packageName;
     
     @Nullable
     private String superType;
+    
+    private Map<FieldType,Collection<FieldModel>> typeToFields = MapUtils.lazyMap(
+            new HashMap<FieldType,Collection<FieldModel>>(),
+            new Factory<Collection<FieldModel>>(){
+                @Override
+                public Collection<FieldModel> create() {
+                    return new HashSet<FieldModel>();
+                }                
+            });
 
+    private String uncapSimpleName;
+    
     public ClassModel(@Nullable String superType, String packageName, String name, String simpleName) {
         this.superType = superType;
         this.packageName = Assert.notNull(packageName,"packageName is null");
@@ -85,69 +66,15 @@ public class ClassModel implements Comparable<ClassModel> {
         this.simpleName = Assert.notNull(simpleName,"simpleName is null");
         this.uncapSimpleName = StringUtils.uncapitalize(simpleName);
     }
-
-    private void addAll(Collection<FieldModel> target, Collection<FieldModel> source) {
-        for (FieldModel field : source) {
-            target.add(validateField(field));
-        }
-    }
-
+    
     public void addConstructor(ConstructorModel co) {
         constructors.add(co);
     }
 
     public void addField(FieldModel field) {
         validateField(field);
-        switch (field.getFieldType()) {
-        case BOOLEAN:
-            booleanFields.add(field);
-            break;
-        case STRING:
-            stringFields.add(field);
-            break;
-        case SIMPLE:
-            simpleFields.add(field);
-            break;
-        case COMPARABLE:
-            comparableFields.add(field);
-            break;
-        case NUMERIC:
-            numericFields.add(field);
-            break;
-        case DECIMAL:
-            decimalFields.add(field);
-            break;
-        case ENTITY:
-            entityFields.add(field);
-            break;
-        case ENTITYCOLLECTION:
-            entityCollections.add(field);
-            break;
-        case SIMPLECOLLECTION:
-            simpleCollections.add(field);
-            break;
-        case ENTITYLIST:
-            entityLists.add(field);
-            break;
-        case SIMPLELIST:
-            simpleLists.add(field);
-            break;
-        case ENTITYMAP:
-            entityMaps.add(field);
-            break;
-        case SIMPLEMAP:
-            simpleMaps.add(field);
-            break;
-        case DATE:
-            dateFields.add(field);
-            break;
-        case DATETIME:
-            dateTimeFields.add(field);
-            break;
-        case TIME:
-            timeFields.add(field);
-            break;
-        }
+        Collection<FieldModel> fields = typeToFields.get(field.getFieldType());
+        fields.add(field);
     }
 
     public void addSupertypeFields(Map<String, ClassModel> entityTypes, Map<String, ClassModel> supertypes) {
@@ -184,11 +111,11 @@ public class ClassModel implements Comparable<ClassModel> {
     }
 
     public Collection<FieldModel> getBooleanFields() {
-        return booleanFields;
+        return typeToFields.get(FieldType.BOOLEAN);
     }
 
     public Collection<FieldModel> getComparableFields() {
-        return comparableFields;
+        return typeToFields.get(FieldType.COMPARABLE);
     }
 
     public Collection<ConstructorModel> getConstructors() {
@@ -196,27 +123,27 @@ public class ClassModel implements Comparable<ClassModel> {
     }
 
     public Collection<FieldModel> getDateFields() {
-        return dateFields;
+        return typeToFields.get(FieldType.DATE);
     }
     
     public Collection<FieldModel> getDateTimeFields() {
-        return dateTimeFields;
+        return typeToFields.get(FieldType.DATETIME);
     }
     
     public Collection<FieldModel> getEntityCollections() {
-        return entityCollections;
+        return typeToFields.get(FieldType.ENTITYCOLLECTION);
     }
     
     public Collection<FieldModel> getEntityFields() {
-        return entityFields;
+        return typeToFields.get(FieldType.ENTITY);
     }
 
     public Collection<FieldModel> getEntityLists() {
-        return entityLists;
+        return typeToFields.get(FieldType.ENTITYLIST);
     }
 
     public Collection<FieldModel> getEntityMaps() {
-        return entityMaps;
+        return typeToFields.get(FieldType.ENTITYMAP);
     }
 
     public String getName() {
@@ -224,31 +151,27 @@ public class ClassModel implements Comparable<ClassModel> {
     }
 
     public Collection<FieldModel> getNumericFields() {
-        return numericFields;
-    }
-    
-    public Collection<FieldModel> getDecimalFields() {
-        return decimalFields;
+        return typeToFields.get(FieldType.NUMERIC);
     }
 
     public String getPackageName() {
         return packageName;
     }
-
+    
     public Collection<FieldModel> getSimpleCollections() {
-        return simpleCollections;
+        return typeToFields.get(FieldType.SIMPLECOLLECTION);
     }
 
     public Collection<FieldModel> getSimpleFields() {
-        return simpleFields;
+        return typeToFields.get(FieldType.SIMPLE);
     }
 
     public Collection<FieldModel> getSimpleLists() {
-        return simpleLists;
+        return typeToFields.get(FieldType.SIMPLELIST);
     }
 
     public Collection<FieldModel> getSimpleMaps() {
-        return simpleMaps;
+        return typeToFields.get(FieldType.SIMPLEMAP);
     }
 
     public String getSimpleName() {
@@ -256,7 +179,7 @@ public class ClassModel implements Comparable<ClassModel> {
     }
 
     public Collection<FieldModel> getStringFields() {
-        return stringFields;
+        return typeToFields.get(FieldType.STRING);
     }
 
     public String getSupertypeName() {
@@ -264,7 +187,7 @@ public class ClassModel implements Comparable<ClassModel> {
     }
 
     public Collection<FieldModel> getTimeFields() {
-        return timeFields;
+        return typeToFields.get(FieldType.TIME);
     }
 
     public String getUncapSimpleName() {
@@ -276,26 +199,19 @@ public class ClassModel implements Comparable<ClassModel> {
     }
 
     public void include(ClassModel clazz) {
-        addAll(booleanFields, clazz.booleanFields);
-        addAll(dateFields, clazz.dateFields);
-        addAll(dateTimeFields, clazz.dateTimeFields);
-        addAll(entityCollections, clazz.entityCollections);
-        addAll(entityFields, clazz.entityFields);
-        addAll(entityLists, clazz.entityLists);
-        addAll(entityMaps, clazz.entityMaps);
-        addAll(comparableFields, clazz.comparableFields);
-        addAll(numericFields, clazz.numericFields);
-        addAll(decimalFields, clazz.decimalFields);
-        addAll(simpleCollections, clazz.simpleCollections);
-        addAll(simpleFields, clazz.simpleFields);
-        addAll(simpleLists, clazz.simpleLists);
-        addAll(simpleMaps, clazz.simpleMaps);
-        addAll(stringFields, clazz.stringFields);
-        addAll(timeFields, clazz.timeFields);
+        for (FieldType fieldType : FieldType.values()){
+            Collection<FieldModel> source = clazz.typeToFields.get(fieldType);
+            if (!source.isEmpty()){
+                Collection<FieldModel> target = typeToFields.get(fieldType);
+                for (FieldModel field : source) {   
+                    target.add(validateField(field.createCopy(this)));
+                }    
+            }            
+        }        
     }
     
     @Nullable
-    private Class<?> safeClassForName(String stype) {
+    private static Class<?> safeClassForName(String stype) {
         try {
             return stype != null ? Class.forName(stype) : null;
         } catch (ClassNotFoundException e) {

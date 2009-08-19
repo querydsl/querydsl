@@ -20,7 +20,7 @@ public class SimpleTypeModel implements TypeModel {
     protected String name, packageName, simpleName;
 
     @Nullable
-    protected String keyTypeName, valueTypeName;
+    protected TypeModel keyType, valueType;
 
     protected SimpleTypeModel(){}
     
@@ -29,14 +29,14 @@ public class SimpleTypeModel implements TypeModel {
             String fullName,
             String packageName, 
             String simpleName, 
-            @Nullable String keyTypeName,
-            @Nullable String valueTypeName) {
+            @Nullable TypeModel keyType,
+            @Nullable TypeModel valueType) {
         this.fieldType = Assert.notNull(fieldType,"fieldType is null");
         this.name = Assert.notNull(fullName,"fullName is null");
         this.packageName = Assert.notNull(packageName,"packageName is null");
         this.simpleName = Assert.notNull(simpleName,"simpleName is null");
-        this.keyTypeName = keyTypeName;
-        this.valueTypeName = valueTypeName;
+        this.keyType = keyType;
+        this.valueType = valueType;
     }
 
     @Override
@@ -50,8 +50,8 @@ public class SimpleTypeModel implements TypeModel {
     }
 
     @Override
-    public String getKeyTypeName() {
-        return keyTypeName;
+    public TypeModel getKeyType() {
+        return keyType;
     }
 
     @Override
@@ -65,8 +65,8 @@ public class SimpleTypeModel implements TypeModel {
     }
 
     @Override
-    public String getValueTypeName() {
-        return valueTypeName;
+    public TypeModel getValueType() {
+        return valueType;
     }
     
     public String toString() {

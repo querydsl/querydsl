@@ -7,7 +7,7 @@ import com.mysema.query.types.path.*;
  * ${pre}${classSimpleName} is a Querydsl embeddable type
  *
  */
-public class ${pre}${classSimpleName} extends PEntity<${type.name}>{
+public class ${pre}${classSimpleName} extends PEntity<${type.simpleName}>{
 
 <@cl.classContent decl=type embeddable=true/>
 }

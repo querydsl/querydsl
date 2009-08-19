@@ -56,7 +56,6 @@ public class Processor {
             Elements elementUtils = env.getElementUtils();
             TypeModel c = APTTypeModel.get(e.asType(), elementUtils);
             ClassModel classModel = new ClassModel(null, c.getPackageName(), c.getName(), c.getSimpleName());
-//            classModel.setListsAsCollections(listsAsCollections);
             List<? extends Element> elements = e.getEnclosedElements();
             // CONSTRUCTOR
             for (ExecutableElement constructor : ElementFilter.constructorsIn(elements)){
@@ -83,7 +82,6 @@ public class Processor {
             TypeModel sc = APTTypeModel.get(e.getSuperclass(), elementUtils);
             TypeModel c = APTTypeModel.get(e.asType(), elementUtils);
             ClassModel classModel = new ClassModel(sc.getName(), c.getPackageName(), c.getName(), c.getSimpleName());
-//            classModel.setListsAsCollections(listsAsCollections);
             List<? extends Element> elements = e.getEnclosedElements();
             // GETTERS
             for (ExecutableElement method : ElementFilter.methodsIn(elements)){
@@ -99,7 +97,7 @@ public class Processor {
                     try{
                         TypeModel fieldType = APTTypeModel.get(method.getReturnType(), elementUtils);
                         String docs = elementUtils.getDocComment(method);
-                        classModel.addField(new FieldModel(name, fieldType, docs != null ? docs : name));    
+                        classModel.addField(new FieldModel(classModel, name, fieldType, docs != null ? docs : name));    
                         
                     }catch(IllegalArgumentException ex){
                         throw new RuntimeException("Caught exception for method " + c.getName()+"#"+method.getSimpleName(), ex);
@@ -113,7 +111,7 @@ public class Processor {
                         TypeModel fieldType = APTTypeModel.get(field.asType(), elementUtils);     
                         String name = field.getSimpleName().toString();
                         String docs = elementUtils.getDocComment(field);
-                        classModel.addField(new FieldModel(name, fieldType, docs != null ? docs : name));    
+                        classModel.addField(new FieldModel(classModel, name, fieldType, docs != null ? docs : name));    
                     }catch(IllegalArgumentException ex){
                         throw new RuntimeException("Caught exception for field " + c.getName()+"#"+field.getSimpleName(), ex);
                     }

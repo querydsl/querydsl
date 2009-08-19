@@ -43,7 +43,7 @@ public class SerializerTest {
                 "com.mysema.query.DomainClass",
                 "DomainClass");
         
-        FieldModel field = new FieldModel("field", new TypeModel(){
+        FieldModel field = new FieldModel(type, "field", new TypeModel(){
             @Override
             public FieldType getFieldType() {
                 return FieldType.STRING;
@@ -54,7 +54,7 @@ public class SerializerTest {
             }
             @Override
             @Nullable
-            public String getKeyTypeName() {
+            public TypeModel getKeyType() {
                 return null;
             }
             @Override
@@ -67,7 +67,7 @@ public class SerializerTest {
             }
             @Override
             @Nullable
-            public String getValueTypeName() {
+            public TypeModel getValueType() {
                 return null;
             }}, "field");
         type.addField(field);
@@ -90,6 +90,7 @@ public class SerializerTest {
 
         // as outer classes
         Serializers.DOMAIN.serialize(model, writer);
+//        System.out.println(writer);
     }
 
 }
