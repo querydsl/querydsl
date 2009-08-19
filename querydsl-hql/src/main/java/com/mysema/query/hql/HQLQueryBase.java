@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.CascadingBoolean;
 import com.mysema.query.JoinExpression;
+import com.mysema.query.JoinType;
 import com.mysema.query.support.QueryBaseWithProjectionAndDetach;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EEntity;
@@ -29,8 +30,7 @@ import com.mysema.query.types.path.PathMetadata;
  * @author tiwe
  * @version $Id$
  */
-public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
-        extends QueryBaseWithProjectionAndDetach<SubType> {
+public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extends QueryBaseWithProjectionAndDetach<SubType> {
 
     private Map<Object,String> constants;
 
@@ -86,12 +86,12 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
     }
     
     public <P> SubType fullJoin(PEntity<P> target, PEntity<P> alias) {
-        super.fullJoin(createAlias(target,alias));
+        getMetadata().addJoin(JoinType.FULLJOIN, createAlias(target, alias));
         return _this;
     }
     
     public <P> SubType fullJoin(PEntityCollection<P> target, PEntity<P> alias) {
-        super.fullJoin(createAlias(target,alias));
+        getMetadata().addJoin(JoinType.FULLJOIN, createAlias(target, alias));
         return _this;
     }
     
@@ -100,32 +100,32 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
     }
     
     public <P> SubType innerJoin(PEntity<P> target, PEntity<P> alias) {
-        super.innerJoin(createAlias(target,alias));
+        getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return _this;
     }
 
     public <P> SubType innerJoin(PEntityCollection<P> target, PEntity<P> alias) {
-        super.innerJoin(createAlias(target,alias));
+        getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return _this;
     }
     
     public <P> SubType join(PEntity<P> target, PEntity<P> alias) {
-        super.join(createAlias(target,alias));
+        getMetadata().addJoin(JoinType.JOIN, createAlias(target, alias));
         return _this;
     }
     
     public <P> SubType join(PEntityCollection<P> target, PEntity<P> alias) {
-        super.join(createAlias(target,alias));
+        getMetadata().addJoin(JoinType.JOIN, createAlias(target, alias));
         return _this;
     }
 
     public <P> SubType leftJoin(PEntity<P> target, PEntity<P> alias) {
-        super.leftJoin(createAlias(target,alias));
+        getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
         return _this;
     }
     
     public <P> SubType leftJoin(PEntityCollection<P> target, PEntity<P> alias) {
-        super.leftJoin(createAlias(target,alias));
+        getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
         return _this;
     }
 

@@ -42,7 +42,7 @@ public abstract class ECollectionBase<D> extends Expr<java.util.Collection<D>> i
     @Override
     public final EBoolean isEmpty() {
         if (empty == null){
-            empty = new OBoolean(Ops.COL_ISEMPTY, this); 
+            empty = new OBoolean(Ops.COL_IS_EMPTY, this); 
         }
         return empty;
     }

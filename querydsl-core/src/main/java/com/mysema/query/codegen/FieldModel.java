@@ -77,7 +77,6 @@ public class FieldModel implements Comparable<FieldModel> {
         return valueTypeName;
     }
 
-
     public String getName() {
         return name;
     }

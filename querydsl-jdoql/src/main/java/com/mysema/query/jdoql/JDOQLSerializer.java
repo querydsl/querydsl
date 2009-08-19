@@ -193,7 +193,7 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     protected void visitOperation(Class<?> type, Operator<?> operator,
             List<Expr<?>> args) {
         // TODO : these should be handled as serialization patterns
-        if (operator.equals(Ops.INSTANCEOF)) {
+        if (operator.equals(Ops.INSTANCE_OF)) {
             handle(args.get(0)).append(" instanceof ");
             append(((EConstant<Class<?>>) args.get(1)).getConstant().getName());
             

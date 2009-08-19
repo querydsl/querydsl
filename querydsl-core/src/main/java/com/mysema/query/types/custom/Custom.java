@@ -12,7 +12,7 @@ import com.mysema.query.types.expr.Expr;
 
 /**
  * Custom provides base types for custom expresions with integrated
- * serialization patterns
+ * serialization templates
  * 
  * @author tiwe
  * @version $Id$
@@ -35,7 +35,7 @@ public interface Custom<T> {
     Expr<?> getArg(int index);
 
     /**
-     * Get the serialization pattern for this custom expression
+     * Get the serialization template for this custom expression
      * 
      * @return
      */

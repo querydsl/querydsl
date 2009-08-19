@@ -190,7 +190,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         boolean old = wrapElements;
         wrapElements = HQLTemplates.wrapCollectionsForOp.contains(operator);
         // 
-        if (operator.equals(Ops.INSTANCEOF)) {
+        if (operator.equals(Ops.INSTANCE_OF)) {
             args = new ArrayList<Expr<?>>(args);
             args.set(1, EConstant.create(((Class<?>) ((EConstant<?>) args
                     .get(1)).getConstant()).getName()));
@@ -199,7 +199,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         } else if (operator.equals(Ops.NUMCAST)) {
             visitCast(operator, args.get(0), (Class<?>) ((EConstant<?>) args.get(1)).getConstant());
             
-        } else if (operator.equals(Ops.SUBSTR1ARG)){
+        } else if (operator.equals(Ops.SUBSTR_1ARG)){
             args = new ArrayList<Expr<?>>(args);
             if (args.get(1) instanceof EConstant){
                 int arg1 = ((EConstant<Integer>)args.get(1)).getConstant();
@@ -209,7 +209,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             }
             super.visitOperation(type, operator, args);
             
-        } else if (operator.equals(Ops.SUBSTR2ARGS)){
+        } else if (operator.equals(Ops.SUBSTR_2ARGS)){
             args = new ArrayList<Expr<?>>(args);
             if (args.get(2) instanceof EConstant){
                 int arg1 = ((EConstant<Integer>)args.get(1)).getConstant();

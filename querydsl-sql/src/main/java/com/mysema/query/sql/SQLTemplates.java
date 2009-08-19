@@ -75,13 +75,13 @@ public class SQLTemplates extends Templates {
         add(Ops.DateTimeOps.CURRENT_TIME, "current_timestamp");
 
         // string
-        add(Ops.SUBSTR1ARG, "substr({0},{1})");
-        add(Ops.SUBSTR2ARGS, "substr({0},{1},{2})");
+        add(Ops.SUBSTR_1ARG, "substr({0},{1})");
+        add(Ops.SUBSTR_2ARGS, "substr({0},{1},{2})");
 
-        add(Ops.STARTSWITH, "{0} like concat({1},'%')");
-        add(Ops.ENDSWITH, "{0} like concat('%',{1})");
-        add(Ops.STARTSWITH_IC, "lower({0}) like concat(lower({1}),'%')");
-        add(Ops.ENDSWITH_IC, "lower({0}) like concat('%',lower({1}))");
+        add(Ops.STARTS_WITH, "{0} like concat({1},'%')");
+        add(Ops.ENDS_WITH, "{0} like concat('%',{1})");
+        add(Ops.STARTS_WITH_IC, "lower({0}) like concat(lower({1}),'%')");
+        add(Ops.ENDS_WITH_IC, "lower({0}) like concat('%',lower({1}))");
 
         for (Class<?> cl : new Class[] { Boolean.class, Byte.class,
                 Double.class, Float.class, Integer.class, Long.class,

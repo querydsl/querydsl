@@ -46,21 +46,6 @@ public abstract class QueryBaseWithProjection<SubType extends QueryBaseWithProje
         return count();
     }
 
-    public SubType limit(long limit) {
-        getMetadata().setLimit(limit);
-        return _this;
-    }
-
-    public SubType offset(long offset) {
-        getMetadata().setOffset(offset);
-        return _this;
-    }
-
-    public SubType restrict(QueryModifiers modifiers) {
-        getMetadata().setModifiers(modifiers);
-        return _this;
-    }
-
     public final Iterator<Object[]> iterateDistinct(Expr<?> first,
             Expr<?> second, Expr<?>... rest) {
         getMetadata().setDistinct(true);

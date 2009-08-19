@@ -22,7 +22,7 @@ import com.mysema.query.types.path.Path;
  */
 public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
 
-    private static Templates patterns = new Templates();
+    private final static Templates templates = new Templates();
 
     private String toString = "?";
 
@@ -73,7 +73,7 @@ public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
     }
 
     protected void visit(Operation<?, ?> o) {
-        Template template = patterns.getTemplate(o.getOperator());
+        Template template = templates.getTemplate(o.getOperator());
         if (template != null) {
             StringBuilder builder = new StringBuilder();
             for (Element element : template.getElements()){
@@ -93,7 +93,7 @@ public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
         Path<?> parent = p.getMetadata().getParent();
         Expr<?> expr = p.getMetadata().getExpression();
         if (parent != null) {
-            Template pattern = patterns.getTemplate(p.getMetadata().getPathType());
+            Template pattern = templates.getTemplate(p.getMetadata().getPathType());
             if (pattern != null) {
                 StringBuilder builder = new StringBuilder();
                 for (Element element : pattern.getElements()){

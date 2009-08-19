@@ -9,10 +9,7 @@ import java.io.Closeable;
 
 import com.mysema.query.Detachable;
 import com.mysema.query.Projectable;
-import com.mysema.query.QueryModifiers;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.Query;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
 
@@ -22,28 +19,9 @@ import com.mysema.query.types.path.PEntityCollection;
  * @author tiwe
  * 
  */
-public interface JDOQLQuery extends Projectable, Closeable, Detachable {
+public interface JDOQLQuery extends Query<JDOQLQuery>, Projectable, Closeable, Detachable {
 
-    JDOQLQuery from(PEntity<?>... o);
-    
     // only sub query
     <P> JDOQLQuery from(PEntityCollection<P> target, PEntity<P> alias);
-    
-    JDOQLQuery orderBy(OrderSpecifier<?>... o);
-
-    JDOQLQuery where(EBoolean... o);
-
-    JDOQLQuery groupBy(Expr<?>... e);
-    
-    JDOQLQuery having(EBoolean... cond);
-        
-    // not in subquery
-    JDOQLQuery limit(long limit);
-
-    // not in subquery
-    JDOQLQuery offset(long offset);
-
-    // not in subquery
-    JDOQLQuery restrict(QueryModifiers mod);
 
 }

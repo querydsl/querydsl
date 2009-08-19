@@ -17,13 +17,13 @@ public class JavaTemplates extends Templates {
     public JavaTemplates() {
         add(Ops.EQ_PRIMITIVE, "{0} == {1}");
         add(Ops.EQ_OBJECT, "{0} == {1}");
-        add(Ops.ISNULL, "{0} == null");
-        add(Ops.ISNOTNULL, "{0} != null");
-        add(Ops.INSTANCEOF, "{0} instanceof {1}");
+        add(Ops.IS_NULL, "{0} == null");
+        add(Ops.IS_NOT_NULL, "{0} != null");
+        add(Ops.INSTANCE_OF, "{0} instanceof {1}");
 
         // collection
         add(Ops.IN, "{1}.contains({0})");
-        add(Ops.COL_ISEMPTY, "{0}.isEmpty()");
+        add(Ops.COL_IS_EMPTY, "{0}.isEmpty()");
         add(Ops.COL_SIZE, "{0}.size()");
         
         // array
@@ -41,21 +41,21 @@ public class JavaTemplates extends Templates {
         // String
         add(Ops.CHAR_AT, "{0}.charAt({1})");
         add(Ops.LOWER, "{0}.toLowerCase()");        
-        add(Ops.SUBSTR1ARG, "{0}.substring({1})");
-        add(Ops.SUBSTR2ARGS, "{0}.substring({1},{2})");
+        add(Ops.SUBSTR_1ARG, "{0}.substring({1})");
+        add(Ops.SUBSTR_2ARGS, "{0}.substring({1},{2})");
         add(Ops.TRIM, "{0}.trim()");
         add(Ops.UPPER, "{0}.toUpperCase()");
         add(Ops.MATCHES, "{0}.matches({1})");
         add(Ops.STRING_LENGTH, "{0}.length()");        
-        add(Ops.STRING_ISEMPTY, "{0}.isEmpty()");
+        add(Ops.STRING_IS_EMPTY, "{0}.isEmpty()");
         add(Ops.STRING_CONTAINS, "{0}.contains({1})");
-        add(Ops.STARTSWITH, "{0}.startsWith({1})");
-        add(Ops.STARTSWITH_IC, "{0}.toLowerCase().startsWith({1}.toLowerCase())");        
-        add(Ops.INDEXOF, "{0}.indexOf({1})");
-        add(Ops.INDEXOF_2ARGS, "{0}.indexOf({1},{2})");
-        add(Ops.EQ_IGNORECASE, "{0}.equalsIgnoreCase({1})");
-        add(Ops.ENDSWITH, "{0}.endsWith({1})");
-        add(Ops.ENDSWITH_IC, "{0}.toLowerCase().endsWith({1}.toLowerCase())");
+        add(Ops.STARTS_WITH, "{0}.startsWith({1})");
+        add(Ops.STARTS_WITH_IC, "{0}.toLowerCase().startsWith({1}.toLowerCase())");        
+        add(Ops.INDEX_OF, "{0}.indexOf({1})");
+        add(Ops.INDEX_OF_2ARGS, "{0}.indexOf({1},{2})");
+        add(Ops.EQ_IGNORE_CASE, "{0}.equalsIgnoreCase({1})");
+        add(Ops.ENDS_WITH, "{0}.endsWith({1})");
+        add(Ops.ENDS_WITH_IC, "{0}.toLowerCase().endsWith({1}.toLowerCase())");
         add(Ops.StringOps.SPLIT, "{0}.split({1})");
         add(Ops.StringOps.LAST_INDEX, "{0}.lastIndexOf({1})");
         add(Ops.StringOps.LAST_INDEX_2ARGS, "{0}.lastIndexOf({1},{2})");

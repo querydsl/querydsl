@@ -209,7 +209,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
 
     public <A> SubType from(Expr<A> entity, Iterable<? extends A> col) {
         alias(entity, col);
-        from((Expr<?>) entity);
+        super.from(entity);
         return _this;
     }
 

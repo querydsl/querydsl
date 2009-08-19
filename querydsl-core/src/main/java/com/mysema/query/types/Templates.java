@@ -38,7 +38,7 @@ public class Templates {
         add(Ops.BooleanOps.XOR, "{0} xor {1}", 39);
 
         // collection
-        add(Ops.COL_ISEMPTY, "empty({0})");
+        add(Ops.COL_IS_EMPTY, "empty({0})");
         add(Ops.COL_SIZE, "size({0})");
         
         // array
@@ -72,13 +72,13 @@ public class Templates {
         // various
         add(Ops.EQ_PRIMITIVE, "{0} = {1}", 18);
         add(Ops.EQ_OBJECT, "{0} = {1}", 18);
-        add(Ops.EQ_IGNORECASE, "eqIc({0},{1})", 18);
-        add(Ops.INSTANCEOF, "{0}.class = {1}");
+        add(Ops.EQ_IGNORE_CASE, "eqIc({0},{1})", 18);
+        add(Ops.INSTANCE_OF, "{0}.class = {1}");
         add(Ops.NE_PRIMITIVE, "{0} != {1}", 25);
         add(Ops.NE_OBJECT, "{0} != {1}", 25);
         add(Ops.IN, "{0} in {1}");
-        add(Ops.ISNULL, "{0} is null", 26);
-        add(Ops.ISNOTNULL, "{0} is not null", 26);
+        add(Ops.IS_NULL, "{0} is null", 26);
+        add(Ops.IS_NOT_NULL, "{0} is not null", 26);
         add(Ops.ALIAS, "{0} as {1}");
         
         add(Ops.EXISTS, "exists({0})");
@@ -89,21 +89,21 @@ public class Templates {
         // string
         add(Ops.CONCAT, "{0} + {1}", 37);
         add(Ops.LOWER, "lower({0})");
-        add(Ops.SUBSTR1ARG, "substring({0},{1})");
-        add(Ops.SUBSTR2ARGS, "substring({0},{1},{2})");
+        add(Ops.SUBSTR_1ARG, "substring({0},{1})");
+        add(Ops.SUBSTR_2ARGS, "substring({0},{1},{2})");
         add(Ops.TRIM, "trim({0})");
         add(Ops.UPPER, "upper({0})");
         add(Ops.MATCHES, "matches({0},{1})");
-        add(Ops.STARTSWITH, "startsWith({0},{1})");
-        add(Ops.STARTSWITH_IC, "startsWithIgnoreCase({0},{1})");
-        add(Ops.ENDSWITH, "endsWith({0},{0}");
-        add(Ops.ENDSWITH_IC, "endsWithIgnoreCase({0},{1}");
+        add(Ops.STARTS_WITH, "startsWith({0},{1})");
+        add(Ops.STARTS_WITH_IC, "startsWithIgnoreCase({0},{1})");
+        add(Ops.ENDS_WITH, "endsWith({0},{0}");
+        add(Ops.ENDS_WITH_IC, "endsWithIgnoreCase({0},{1}");
         add(Ops.STRING_CONTAINS, "contains({0},{1})");
         add(Ops.CHAR_AT, "charAt({0},{1})");
         add(Ops.STRING_LENGTH, "length({0})");
-        add(Ops.INDEXOF, "indexOf({0},{1})");
-        add(Ops.INDEXOF_2ARGS, "indexOf({0},{1},{2})");
-        add(Ops.STRING_ISEMPTY, "empty({0})");
+        add(Ops.INDEX_OF, "indexOf({0},{1})");
+        add(Ops.INDEX_OF_2ARGS, "indexOf({0},{1},{2})");
+        add(Ops.STRING_IS_EMPTY, "empty({0})");
         add(Ops.StringOps.LTRIM, "ltrim({0})");
         add(Ops.StringOps.RTRIM, "rtrim({0})");
         add(Ops.StringOps.SPACE, "space({0})");

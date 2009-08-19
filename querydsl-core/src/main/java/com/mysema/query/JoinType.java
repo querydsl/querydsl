@@ -5,26 +5,45 @@
  */
 package com.mysema.query;
 
+import net.jcip.annotations.Immutable;
+
 /**
  * JoinType defines the supported join types
  * 
  * @author tiwe
  * @version $Id$
  */
+@Immutable
 public enum JoinType {
-    DEFAULT, INNERJOIN {
-        public String toString() {
-            return "INNER JOIN";
-        }
-    },
-    JOIN, LEFTJOIN {
-        public String toString() {
-            return "LEFT JOIN";
-        }
-    },
-    FULLJOIN {
-        public String toString() {
-            return "FULL JOIN";
-        }
+    /**
+     * 
+     */
+    DEFAULT("JOIN"), 
+    /**
+     * 
+     */
+    INNERJOIN("INNER JOIN"),
+    /**
+     * 
+     */
+    JOIN("JOIN"),
+    /**
+     * 
+     */
+    LEFTJOIN("LEFTJOIN"),
+    /**
+     * 
+     */
+    FULLJOIN("FULL JOIN");
+    
+    private final String str;
+    
+    private JoinType(String str){
+        this.str = str;
+    }
+    
+    @Override 
+    public String toString(){
+        return str;
     }
 }

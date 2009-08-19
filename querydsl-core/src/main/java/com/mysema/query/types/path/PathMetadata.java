@@ -28,19 +28,23 @@ import com.mysema.query.util.NotEmpty;
 public final class PathMetadata<T> {
 
     public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, Expr<Integer> index) {
-        return new PathMetadata<Integer>(parent, index, PathType.ARRAYVALUE);
+        return new PathMetadata<Integer>(
+                parent, index, PathType.ARRAYVALUE);
     }
 
     public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, @Nonnegative int index) {
-        return new PathMetadata<Integer>(parent, EConstant.create(index), PathType.ARRAYVALUE_CONSTANT);
+        return new PathMetadata<Integer>(
+                parent, EConstant.create(index), PathType.ARRAYVALUE_CONSTANT);
     }
 
     public static PathMetadata<Integer> forListAccess(PList<?> parent, Expr<Integer> index) {
-        return new PathMetadata<Integer>(parent, index, PathType.LISTVALUE);
+        return new PathMetadata<Integer>(
+                parent, index, PathType.LISTVALUE);
     }
 
     public static PathMetadata<Integer> forListAccess(PList<?> parent, @Nonnegative int index) {
-        return new PathMetadata<Integer>(parent, EConstant.create(index), PathType.LISTVALUE_CONSTANT);
+        return new PathMetadata<Integer>(
+                parent, EConstant.create(index), PathType.LISTVALUE_CONSTANT);
     }
 
     public static <KT> PathMetadata<KT> forMapAccess(PMap<?, ?> parent, Expr<KT> key) {
@@ -48,15 +52,18 @@ public final class PathMetadata<T> {
     }
 
     public static <KT> PathMetadata<KT> forMapAccess(PMap<?, ?> parent, KT key) {
-        return new PathMetadata<KT>(parent,EConstant.create(key), PathType.MAPVALUE_CONSTANT);
+        return new PathMetadata<KT>(
+                parent,EConstant.create(key), PathType.MAPVALUE_CONSTANT);
     }
 
     public static PathMetadata<String> forProperty(Path<?> parent, @NotEmpty String property) {
-        return new PathMetadata<String>(parent, EConstant.create(Assert.hasLength(property)), PathType.PROPERTY);
+        return new PathMetadata<String>(
+                parent, EConstant.create(Assert.hasLength(property)), PathType.PROPERTY);
     }
 
     public static PathMetadata<String> forVariable(@NotEmpty String variable) {
-        return new PathMetadata<String>(null, EConstant.create(Assert.hasLength(variable)), PathType.VARIABLE);
+        return new PathMetadata<String>(
+                null, EConstant.create(Assert.hasLength(variable)), PathType.VARIABLE);
     }
 
     private final Expr<T> expression;

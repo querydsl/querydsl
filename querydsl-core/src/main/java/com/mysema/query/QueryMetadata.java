@@ -48,13 +48,7 @@ public interface QueryMetadata {
     List<JoinExpression> getJoins();
 
     @Nullable
-    Long getLimit();
-
-    @Nullable
     QueryModifiers getModifiers();
-
-    @Nullable
-    Long getOffset();
 
     List<OrderSpecifier<?>> getOrderBy();
 

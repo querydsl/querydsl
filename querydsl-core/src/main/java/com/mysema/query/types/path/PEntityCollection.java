@@ -108,7 +108,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     @Override
     public EBoolean isEmpty() {
         if (empty == null){
-            empty = new OBoolean(Ops.COL_ISEMPTY, this);
+            empty = new OBoolean(Ops.COL_IS_EMPTY, this);
         }
         return empty;
     }
@@ -124,7 +124,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     @Override
     public EBoolean isNotNull() {
         if (isnotnull == null) {
-            isnotnull = new OBoolean(Ops.ISNOTNULL, this);
+            isnotnull = new OBoolean(Ops.IS_NOT_NULL, this);
         }
         return isnotnull;
     }
@@ -132,7 +132,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     @Override
     public EBoolean isNull() {
         if (isnull == null) {
-            isnull = new OBoolean(Ops.ISNULL, this);
+            isnull = new OBoolean(Ops.IS_NULL, this);
         }
         return isnull;
     }

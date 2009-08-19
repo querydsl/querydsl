@@ -50,32 +50,32 @@ public class HQLTemplates extends Templates {
         add(Ops.MathOps.SQRT, "sqrt({0})");
 
         // various        
-        add(Ops.ISNULL, "{0} is null", 26);
-        add(Ops.ISNOTNULL, "{0} is not null", 26);
+        add(Ops.IS_NULL, "{0} is null", 26);
+        add(Ops.IS_NOT_NULL, "{0} is not null", 26);
         
         // collection
         add(Ops.IN, "{0} in {1}");
-        add(Ops.COL_ISEMPTY, "{0} is empty");
+        add(Ops.COL_IS_EMPTY, "{0} is empty");
         add(Ops.COL_SIZE, "{0}.size");
         
         // string
         add(Ops.CONCAT, "{0} || {1}", 37);
         add(Ops.MATCHES, "{0} like {1}", 27); // FIXME limited regex functionality
         add(Ops.LOWER, "lower({0})");
-        add(Ops.SUBSTR1ARG, "substring({0},{1})");
-        add(Ops.SUBSTR2ARGS, "substring({0},{1},{2})");
+        add(Ops.SUBSTR_1ARG, "substring({0},{1})");
+        add(Ops.SUBSTR_2ARGS, "substring({0},{1},{2})");
         add(Ops.TRIM, "trim({0})");
         add(Ops.UPPER, "upper({0})");
-        add(Ops.EQ_IGNORECASE, "lower({0}) = lower({1})");
+        add(Ops.EQ_IGNORE_CASE, "lower({0}) = lower({1})");
         add(Ops.CHAR_AT, "cast(substring({0},{1}+1,1) as char)");
         add(Ops.STRING_CONTAINS, "locate({1},{0}) > 0");
-        add(Ops.ENDSWITH, "locate({0},{1}) > -1"); // FIXME
-        add(Ops.ENDSWITH_IC, "locate(lower({0}),lower({1})) > -1"); // FIXME
-        add(Ops.STARTSWITH, "locate({0},{1}) = 0");
-        add(Ops.STARTSWITH_IC, "locate(lower({0}),lower({1})) = 0");
-        add(Ops.INDEXOF, "locate({0},{1})");
-        add(Ops.INDEXOF_2ARGS, "locate({0},{1},{2})");
-        add(Ops.STRING_ISEMPTY, "length({0}) = 0");
+        add(Ops.ENDS_WITH, "locate({0},{1}) > -1"); // FIXME
+        add(Ops.ENDS_WITH_IC, "locate(lower({0}),lower({1})) > -1"); // FIXME
+        add(Ops.STARTS_WITH, "locate({0},{1}) = 0");
+        add(Ops.STARTS_WITH_IC, "locate(lower({0}),lower({1})) = 0");
+        add(Ops.INDEX_OF, "locate({0},{1})");
+        add(Ops.INDEX_OF_2ARGS, "locate({0},{1},{2})");
+        add(Ops.STRING_IS_EMPTY, "length({0}) = 0");
 
         // date time
         add(Ops.DateTimeOps.SYSDATE, "sysdate");

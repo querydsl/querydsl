@@ -22,7 +22,7 @@ public class ColQueryTemplates extends JavaTemplates {
         String functions = ColQueryTemplates.class.getName();
         add(Ops.EQ_OBJECT, "{0}.equals({1})");
         add(Ops.NE_OBJECT, "!{0}.equals({1})");
-        add(Ops.INSTANCEOF, "{1}.isInstance({0})");
+        add(Ops.INSTANCE_OF, "{1}.isInstance({0})");
         
         // comparable
         add(Ops.AFTER, "{0}.compareTo({1}) > 0");

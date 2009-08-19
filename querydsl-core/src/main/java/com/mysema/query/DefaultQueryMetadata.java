@@ -26,7 +26,7 @@ import com.mysema.query.types.expr.Expr;
  */
 public class DefaultQueryMetadata implements QueryMetadata {
 
-    private boolean unique;
+    private boolean distinct;
     
     private final Set<Expr<?>> exprInJoins = new HashSet<Expr<?>>();
 
@@ -36,16 +36,16 @@ public class DefaultQueryMetadata implements QueryMetadata {
 
     private final List<JoinExpression> joins = new ArrayList<JoinExpression>();
 
+    @Nullable
+    private QueryModifiers modifiers = new QueryModifiers();
+
     private final List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
 
     private final List<Expr<?>> projection = new ArrayList<Expr<?>>();
 
+    private boolean unique;
+
     private final CascadingBoolean where = new CascadingBoolean();
-
-    private boolean distinct;
-
-    @Nullable
-    private QueryModifiers modifiers = new QueryModifiers();
 
     @Override
     public void addFrom(Expr<?>... o) {
@@ -161,26 +161,6 @@ public class DefaultQueryMetadata implements QueryMetadata {
     }
 
     @Override
-    public void setModifiers(@Nullable QueryModifiers restriction) {
-        this.modifiers = restriction;
-    }
-
-    @Override
-    public void setUnique(boolean unique) {
-        this.unique = unique;
-    }
-
-    @Override
-    public Long getLimit() {
-        return modifiers != null ? modifiers.getLimit() : null;
-    }
-
-    @Override
-    public Long getOffset() {
-        return modifiers != null ? modifiers.getOffset() : null;
-    }
-
-    @Override
     public void setLimit(Long limit) {
         if (modifiers == null || modifiers.getOffset() == null){
             modifiers = QueryModifiers.limit(limit);
@@ -190,12 +170,22 @@ public class DefaultQueryMetadata implements QueryMetadata {
     }
 
     @Override
+    public void setModifiers(@Nullable QueryModifiers restriction) {
+        this.modifiers = restriction;
+    }
+
+    @Override
     public void setOffset(Long offset) {
         if (modifiers == null || modifiers.getLimit() == null){
             modifiers = QueryModifiers.offset(offset);
         }else{
             modifiers = new QueryModifiers(modifiers.getLimit(), offset);
         }        
+    }
+
+    @Override
+    public void setUnique(boolean unique) {
+        this.unique = unique;
     }
     
 }

@@ -17,13 +17,16 @@ import org.apache.commons.lang.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.JoinType;
 import com.mysema.query.Query;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.support.QueryBaseWithProjectionAndDetach;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.ObjectSubQuery;
 import com.mysema.query.types.query.SubQuery;
@@ -314,23 +317,32 @@ public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
         return !list.isEmpty() ? list.get(0) : null;
     }
 
-    public SubType from(Expr<?>... o) {
+    public SubType from(PEntity<?>... o) {
         return super.from(o);        
     }
 
     public SubType fullJoin(Expr<?> o) {
-        return super.fullJoin(o);
+        getMetadata().addJoin(JoinType.FULLJOIN, o);
+        return _this;
     }
 
     public SubType innerJoin(Expr<?> o) {
-        return super.innerJoin(o);
+        getMetadata().addJoin(JoinType.INNERJOIN, o);
+        return _this;
     }
 
     public SubType join(Expr<?> o) {
-        return super.join(o);
+        getMetadata().addJoin(JoinType.JOIN, o);
+        return _this;
     }
 
     public SubType leftJoin(Expr<?> o) {
-        return super.leftJoin(o);
+        getMetadata().addJoin(JoinType.LEFTJOIN, o);
+        return _this;
+    }
+    
+    public SubType on(EBoolean condition){
+        getMetadata().addJoinCondition(condition);
+        return _this;
     }
 }

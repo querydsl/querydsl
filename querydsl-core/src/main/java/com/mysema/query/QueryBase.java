@@ -15,7 +15,8 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class QueryBase<SubType extends QueryBase<SubType>> {
+public abstract class QueryBase<SubType extends QueryBase<SubType>> {
+    
     @SuppressWarnings("unchecked")
     protected final SubType _this = (SubType) this;
 
@@ -36,15 +37,8 @@ public class QueryBase<SubType extends QueryBase<SubType>> {
         return _this;
     }
 
-    // template
-    protected SubType from(Expr<?>... o) {
+    public SubType from(Expr<?>... o) {
         metadata.addFrom(o);
-        return _this;
-    }
-
-    // template
-    protected SubType fullJoin(Expr<?> o) {
-        metadata.addJoin(JoinType.FULLJOIN, o);
         return _this;
     }
 
@@ -62,29 +56,6 @@ public class QueryBase<SubType extends QueryBase<SubType>> {
         return _this;
     }
 
-    // template
-    protected SubType innerJoin(Expr<?> o) {
-        metadata.addJoin(JoinType.INNERJOIN, o);
-        return _this;
-    }
-
-    // template
-    protected SubType join(Expr<?> o) {
-        metadata.addJoin(JoinType.JOIN, o);
-        return _this;
-    }
-
-    // template
-    protected SubType leftJoin(Expr<?> o) {
-        metadata.addJoin(JoinType.LEFTJOIN, o);
-        return _this;
-    }
-
-    public SubType on(EBoolean o) {
-        metadata.addJoinCondition(o);
-        return _this;
-    }
-
     public SubType orderBy(OrderSpecifier<?>... o) {
         metadata.addOrderBy(o);
         return _this;
@@ -97,6 +68,21 @@ public class QueryBase<SubType extends QueryBase<SubType>> {
 
     public String toString() {
         return metadata.toString();
+    }
+    
+    public SubType limit(long limit) {
+        metadata.setLimit(limit);
+        return _this;
+    }
+
+    public SubType offset(long offset) {
+        metadata.setOffset(offset);
+        return _this;
+    }
+
+    public SubType restrict(QueryModifiers modifiers) {
+        metadata.setModifiers(modifiers);
+        return _this;
     }
 
 }

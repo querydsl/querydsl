@@ -44,13 +44,13 @@ public class Dialect {
             {
                 add(Ops.CONCAT, "{0} || {1}");
                 add(Ops.MathOps.ROUND, "floor({0})");
-                add(Ops.SUBSTR1ARG, "substr({0},{1}+1)");
-                add(Ops.SUBSTR2ARGS, "substr({0},{1}+1,{2}+1)");
+                add(Ops.SUBSTR_1ARG, "substr({0},{1}+1)");
+                add(Ops.SUBSTR_2ARGS, "substr({0},{1}+1,{2}+1)");
 
-                add(Ops.STARTSWITH, "{0} like ({1} || '%')");
-                add(Ops.ENDSWITH, "{0} like ('%' || {1})");
-                add(Ops.STARTSWITH_IC, "lower({0}) like (lower({1}) || '%')");
-                add(Ops.ENDSWITH_IC, "lower({0}) like ('%' || lower({1}))");
+                add(Ops.STARTS_WITH, "{0} like ({1} || '%')");
+                add(Ops.ENDS_WITH, "{0} like ('%' || {1})");
+                add(Ops.STARTS_WITH_IC, "lower({0}) like (lower({1}) || '%')");
+                add(Ops.ENDS_WITH_IC, "lower({0}) like ('%' || lower({1}))");
 
                 add(Ops.DateTimeOps.YEAR, "year({0})");
                 add(Ops.DateTimeOps.MONTH, "month({0})");

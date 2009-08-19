@@ -36,9 +36,9 @@ public interface Ops {
     // general
     Operator<Boolean> EQ_PRIMITIVE = new OperatorImpl<Boolean>(Object_x_2);
     Operator<Boolean> EQ_OBJECT = new OperatorImpl<Boolean>(Object_x_2);
-    Operator<Boolean> ISNOTNULL = new OperatorImpl<Boolean>(Object.class);
-    Operator<Boolean> ISNULL = new OperatorImpl<Boolean>(Object.class);
-    Operator<Boolean> INSTANCEOF = new OperatorImpl<Boolean>(Object.class, Class.class);
+    Operator<Boolean> IS_NOT_NULL = new OperatorImpl<Boolean>(Object.class);
+    Operator<Boolean> IS_NULL = new OperatorImpl<Boolean>(Object.class);
+    Operator<Boolean> INSTANCE_OF = new OperatorImpl<Boolean>(Object.class, Class.class);
     Operator<Boolean> NE_PRIMITIVE = new OperatorImpl<Boolean>(Object_x_2);
     Operator<Boolean> NE_OBJECT = new OperatorImpl<Boolean>(Object_x_2);
     Operator<Number> NUMCAST = new OperatorImpl<Number>(Number.class, Class.class);
@@ -47,7 +47,7 @@ public interface Ops {
         
     // collection
     Operator<Boolean> IN = new OperatorImpl<Boolean>(Object_x_2); // cmp. contains
-    Operator<Boolean> COL_ISEMPTY = new OperatorImpl<Boolean>(Object.class);
+    Operator<Boolean> COL_IS_EMPTY = new OperatorImpl<Boolean>(Object.class);
     Operator<Number> COL_SIZE = new OperatorImpl<Number>(Object.class);
 
     // array
@@ -88,20 +88,20 @@ public interface Ops {
     Operator<Character> CHAR_AT = new OperatorImpl<Character>(String.class, Integer.class);
     Operator<String> CONCAT = new OperatorImpl<String>(String_x_2);
     Operator<String> LOWER = new OperatorImpl<String>(String.class);
-    Operator<String> SUBSTR1ARG = new OperatorImpl<String>(String.class, Integer.class);
-    Operator<String> SUBSTR2ARGS = new OperatorImpl<String>(String.class, Integer.class, Integer.class);
+    Operator<String> SUBSTR_1ARG = new OperatorImpl<String>(String.class, Integer.class);
+    Operator<String> SUBSTR_2ARGS = new OperatorImpl<String>(String.class, Integer.class, Integer.class);
     Operator<String> TRIM = new OperatorImpl<String>(String.class);
     Operator<String> UPPER = new OperatorImpl<String>(String.class);
     Operator<Boolean> MATCHES = new OperatorImpl<Boolean>(String_x_2);
     Operator<Number> STRING_LENGTH = new OperatorImpl<Number>(String.class);
-    Operator<Boolean> STRING_ISEMPTY = new OperatorImpl<Boolean>(String.class);
-    Operator<Boolean> STARTSWITH = new OperatorImpl<Boolean>(String_x_2);
-    Operator<Boolean> STARTSWITH_IC = new OperatorImpl<Boolean>(String_x_2);
-    Operator<Number> INDEXOF_2ARGS = new OperatorImpl<Number>(String.class, String.class, Integer.class);
-    Operator<Number> INDEXOF = new OperatorImpl<Number>(String.class, String.class);
-    Operator<Boolean> EQ_IGNORECASE = new OperatorImpl<Boolean>(String_x_2);
-    Operator<Boolean> ENDSWITH = new OperatorImpl<Boolean>(String_x_2);
-    Operator<Boolean> ENDSWITH_IC = new OperatorImpl<Boolean>(String_x_2);    
+    Operator<Boolean> STRING_IS_EMPTY = new OperatorImpl<Boolean>(String.class);
+    Operator<Boolean> STARTS_WITH = new OperatorImpl<Boolean>(String_x_2);
+    Operator<Boolean> STARTS_WITH_IC = new OperatorImpl<Boolean>(String_x_2);
+    Operator<Number> INDEX_OF_2ARGS = new OperatorImpl<Number>(String.class, String.class, Integer.class);
+    Operator<Number> INDEX_OF = new OperatorImpl<Number>(String.class, String.class);
+    Operator<Boolean> EQ_IGNORE_CASE = new OperatorImpl<Boolean>(String_x_2);
+    Operator<Boolean> ENDS_WITH = new OperatorImpl<Boolean>(String_x_2);
+    Operator<Boolean> ENDS_WITH_IC = new OperatorImpl<Boolean>(String_x_2);    
     Operator<Boolean> STRING_CONTAINS = new OperatorImpl<Boolean>(String_x_2);
         
     // subquery operations

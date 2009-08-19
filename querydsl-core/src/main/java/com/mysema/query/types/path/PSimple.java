@@ -65,7 +65,7 @@ public class PSimple<D> extends Expr<D> implements Path<D> {
     @Override
     public EBoolean isNotNull() {
         if (isnotnull == null) {
-            isnotnull = new OBoolean(Ops.ISNOTNULL, this);
+            isnotnull = new OBoolean(Ops.IS_NOT_NULL, this);
         }
         return isnotnull;
     }
@@ -73,7 +73,7 @@ public class PSimple<D> extends Expr<D> implements Path<D> {
     @Override
     public EBoolean isNull() {
         if (isnull == null) {
-            isnull = new OBoolean(Ops.ISNULL, this);
+            isnull = new OBoolean(Ops.IS_NULL, this);
         }
         return isnull;
     }

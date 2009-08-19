@@ -30,7 +30,12 @@ public class CascadingBoolean {
      * @return the cascading boolean
      */
     public CascadingBoolean and(EBoolean right) {
-        expr = (expr == null) ? right : expr.and(right);
+//        expr = (expr == null) ? right : expr.and(right);
+        if (expr == null){
+            expr = right;
+        }else{
+            expr = expr.and(right);
+        }        
         return this;
     }
 
@@ -60,7 +65,12 @@ public class CascadingBoolean {
      * @return the cascading boolean
      */
     public CascadingBoolean or(EBoolean right) {
-        expr = (expr == null) ? right : expr.or(right);
+//        expr = (expr == null) ? right : expr.or(right);
+        if (expr == null){
+            expr = right;
+        }else{
+            expr = expr.and(right);
+        }
         return this;
     }
 

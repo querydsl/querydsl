@@ -66,7 +66,7 @@ public class PComparable<D extends Comparable> extends EComparable<D> implements
     @Override
     public EBoolean isNotNull() {
         if (isnotnull == null) {
-            isnotnull = new OBoolean(Ops.ISNOTNULL, this);
+            isnotnull = new OBoolean(Ops.IS_NOT_NULL, this);
         }
         return isnotnull;
     }
@@ -74,7 +74,7 @@ public class PComparable<D extends Comparable> extends EComparable<D> implements
     @Override
     public EBoolean isNull() {
         if (isnull == null) {
-            isnull = new OBoolean(Ops.ISNULL, this);
+            isnull = new OBoolean(Ops.IS_NULL, this);
         }
         return isnull;
     }

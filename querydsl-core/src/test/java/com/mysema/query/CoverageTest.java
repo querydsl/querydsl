@@ -77,7 +77,7 @@ public class CoverageTest {
         
         // missing mappings
         usedOperators.addAll(Arrays.<Operator<?>>asList(
-            Ops.INSTANCEOF,
+            Ops.INSTANCE_OF,
             Ops.ALIAS,
             Ops.ARRAY_SIZE,
             Ops.MOD,
