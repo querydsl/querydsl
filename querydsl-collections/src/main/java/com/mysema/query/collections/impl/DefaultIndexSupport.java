@@ -14,7 +14,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.mysema.query.collections.IteratorSource;
-import com.mysema.query.collections.eval.ColQueryPatterns;
+import com.mysema.query.collections.eval.ColQueryTemplates;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.eval.EvaluatorFactory;
 import com.mysema.query.types.expr.EBoolean;
@@ -41,7 +41,7 @@ public class DefaultIndexSupport extends SimpleIndexSupport {
      * @param iteratorSource
      * @param patterns
      */
-    public DefaultIndexSupport(IteratorSource iteratorSource, ColQueryPatterns patterns,
+    public DefaultIndexSupport(IteratorSource iteratorSource, ColQueryTemplates patterns,
             List<? extends Expr<?>> sources) {
         super(iteratorSource, patterns, sources);
         this.pathToCacheEntries = new HashMap<Path<?>, Map<?, ? extends Iterable<?>>>();

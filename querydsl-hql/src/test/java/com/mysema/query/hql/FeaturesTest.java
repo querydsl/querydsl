@@ -18,9 +18,9 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.functions.AggregationFunctions;
 import com.mysema.query.hql.domain.QAccount;
 import com.mysema.query.hql.domain.QInheritedProperties;
+import com.mysema.query.types.Template;
 import com.mysema.query.types.custom.CString;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.ENumber;
@@ -99,8 +99,8 @@ public class FeaturesTest extends AbstractQueryTest{
             return args;
         }
 
-        public java.lang.String getPattern() {
-            return "myCustom(%s,%s)";
+        public Template getTemplate() {
+            return new Template("myCustom({0},{1})");
         }
 
         public Expr<?> getArg(int index) {

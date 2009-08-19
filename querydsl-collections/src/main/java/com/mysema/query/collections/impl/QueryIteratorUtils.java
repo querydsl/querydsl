@@ -16,7 +16,7 @@ import org.apache.commons.collections15.IteratorUtils;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
 
-import com.mysema.query.collections.eval.ColQueryPatterns;
+import com.mysema.query.collections.eval.ColQueryTemplates;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.eval.EvaluatorFactory;
 import com.mysema.query.types.expr.EBoolean;
@@ -40,7 +40,7 @@ public class QueryIteratorUtils {
      * @param condition
      * @return
      */
-    public static <S> Iterator<S> multiArgFilter(ColQueryPatterns patterns,
+    public static <S> Iterator<S> multiArgFilter(ColQueryTemplates patterns,
             Iterator<S> source, List<Expr<?>> sources, EBoolean condition) {
         Evaluator ev = EvaluatorFactory.create(patterns, sources, condition);
         return multiArgFilter(source, ev);
@@ -66,7 +66,7 @@ public class QueryIteratorUtils {
      * @param projection
      * @return
      */
-    public static <S, T> Iterator<T> transform(ColQueryPatterns patterns, Iterator<S> source,
+    public static <S, T> Iterator<T> transform(ColQueryTemplates patterns, Iterator<S> source,
             List<Expr<?>> sources, Expr<?> projection) {
         Evaluator ev = EvaluatorFactory.create(patterns, sources, projection);
         return transform(source, ev);

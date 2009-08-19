@@ -35,9 +35,9 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
 
     private final List<Object> constants = new ArrayList<Object>();
     
-    protected final SQLPatterns patterns;
+    protected final SQLTemplates patterns;
 
-    public SQLSerializer(SQLPatterns patterns) {
+    public SQLSerializer(SQLTemplates patterns) {
         super(patterns);
         this.patterns = patterns;
     }
@@ -150,7 +150,7 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy) {
                 if (!first){
-                    builder.append(", ");
+                    append(", ");
                 }                    
                 handle(os.getTarget());
                 append(os.getOrder() == Order.ASC ? patterns.asc() : patterns.desc());
@@ -168,6 +168,7 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void serializeUnion(SubQuery[] sqs,
             List<OrderSpecifier<?>> orderBy) {
         // union
@@ -178,8 +179,9 @@ public class SQLSerializer extends BaseSerializer<SQLSerializer> {
             append(patterns.orderBy());
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy) {
-                if (!first)
-                    builder.append(", ");
+                if (!first){
+                    append(", ");
+                }                    
                 handle(os.getTarget());
                 append(os.getOrder() == Order.ASC ? patterns.asc() : patterns.desc());
                 first = false;

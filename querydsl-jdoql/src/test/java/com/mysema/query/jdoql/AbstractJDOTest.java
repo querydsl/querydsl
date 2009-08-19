@@ -23,6 +23,8 @@ import com.mysema.query.types.path.PEntity;
 
 public abstract class AbstractJDOTest {
 
+    private static final JDOQLTemplates templates = new JDOQLTemplates();
+    
     protected static PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
 
     protected PersistenceManager pm;
@@ -30,7 +32,7 @@ public abstract class AbstractJDOTest {
     protected Transaction tx;
 
     protected JDOQLQuery query() {
-        return new JDOQLQueryImpl(pm);
+        return new JDOQLQueryImpl(pm, templates);
     }
 
     protected <T> List<T> query(PEntity<T> source, EBoolean condition) {

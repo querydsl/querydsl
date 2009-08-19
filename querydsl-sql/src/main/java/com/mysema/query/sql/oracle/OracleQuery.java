@@ -8,7 +8,7 @@ package com.mysema.query.sql.oracle;
 import java.sql.Connection;
 
 import com.mysema.query.sql.AbstractSQLQuery;
-import com.mysema.query.sql.SQLPatterns;
+import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
@@ -27,7 +27,7 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
 
     private EBoolean startWith;
 
-    public OracleQuery(Connection conn, SQLPatterns patterns) {
+    public OracleQuery(Connection conn, SQLTemplates patterns) {
         super(conn, patterns);
     }
 
@@ -57,7 +57,7 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
     }
 
     protected SQLSerializer createSerializer() {
-        return new OracleSerializer(patterns, connectBy, connectByNocyclePrior,
+        return new OracleSerializer(templates, connectBy, connectByNocyclePrior,
                 connectByPrior, orderSiblingsBy, startWith);
     }
 

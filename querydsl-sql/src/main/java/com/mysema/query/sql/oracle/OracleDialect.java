@@ -7,7 +7,7 @@ package com.mysema.query.sql.oracle;
 
 import java.math.BigInteger;
 
-import com.mysema.query.sql.SQLPatterns;
+import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.operation.Ops;
 
 /**
@@ -16,7 +16,7 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @version $Id$
  */
-public class OracleDialect extends SQLPatterns {
+public class OracleDialect extends SQLTemplates {
     {
         // type mappings
         addClass2TypeMappings("number(3,0)", Byte.class);
@@ -28,30 +28,29 @@ public class OracleDialect extends SQLPatterns {
         addClass2TypeMappings("varchar(4000 char)", String.class);
 
         // operator mappings
-        add(Ops.MathOps.CEIL, "ceil(%s)");
+        add(Ops.MathOps.CEIL, "ceil({0})");
         add(Ops.MathOps.RANDOM, "dbms_random.value");
-        add(Ops.MathOps.LOG, "ln(%s)");
-        add(Ops.MathOps.LOG10, "log(10,%s)");
+        add(Ops.MathOps.LOG, "ln({0})");
+        add(Ops.MathOps.LOG10, "log(10,{0})");
 
-        add(Ops.CONCAT, "%s || %s");
-        add(Ops.StringOps.SPACE, "lpad('',%s,' ')");
+        add(Ops.CONCAT, "{0} || {1}");
+        add(Ops.StringOps.SPACE, "lpad('',{0},' ')");
 
-        add(Ops.DateTimeOps.YEAR, "extract(year from %s)");
-        add(Ops.DateTimeOps.MONTH, "extract(month from %s)");
-        add(Ops.DateTimeOps.WEEK, "to_number(to_char(%s,'WW'))");
-//        add(Ops.DateTimeOps.DAY, "extract(day from %s)");
+        add(Ops.DateTimeOps.YEAR, "extract(year from {0})");
+        add(Ops.DateTimeOps.MONTH, "extract(month from {0})");
+        add(Ops.DateTimeOps.WEEK, "to_number(to_char({0},'WW'))");
 
-        add(Ops.DateTimeOps.HOUR, "to_number(to_char(%s,'HH24'))");
-        add(Ops.DateTimeOps.MINUTE, "to_number(to_char(%s,'MI'))");
-        add(Ops.DateTimeOps.SECOND, "to_number(to_char(%s,'SS'))");
+        add(Ops.DateTimeOps.HOUR, "to_number(to_char({0},'HH24'))");
+        add(Ops.DateTimeOps.MINUTE, "to_number(to_char({0},'MI'))");
+        add(Ops.DateTimeOps.SECOND, "to_number(to_char({0},'SS'))");
 
-        add(Ops.DateTimeOps.DAY_OF_MONTH, "to_number(to_char(%s,'DD'))");
-        add(Ops.DateTimeOps.DAY_OF_WEEK, "to_number(to_char(%s,'D'))");
-        add(Ops.DateTimeOps.DAY_OF_YEAR, "to_number(to_char(%s,'DDD'))");
+        add(Ops.DateTimeOps.DAY_OF_MONTH, "to_number(to_char({0},'DD'))");
+        add(Ops.DateTimeOps.DAY_OF_WEEK, "to_number(to_char({0},'D'))");
+        add(Ops.DateTimeOps.DAY_OF_YEAR, "to_number(to_char({0},'DDD'))");
 
         limitAndOffsetSymbols(false);
-        limitTemplate("rownum < %s");
-        offsetTemplate("rownum > %s");
-        limitOffsetTemplate("rownum between %1$s and %3$s");
+        limitTemplate("rownum < {0}");
+        offsetTemplate("rownum > {0}");
+        limitOffsetTemplate("rownum between {0} and {2}");
     }
 }

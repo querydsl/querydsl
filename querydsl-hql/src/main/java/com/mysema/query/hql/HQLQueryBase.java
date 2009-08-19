@@ -37,9 +37,9 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>>
     @Nullable
     private String countRowsString, queryString;
 
-    private final HQLPatterns patterns;
+    private final HQLTemplates patterns;
 
-    public HQLQueryBase(HQLPatterns patterns) {
+    public HQLQueryBase(HQLTemplates patterns) {
         this.patterns = patterns;
     }
 

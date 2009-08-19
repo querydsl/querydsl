@@ -17,9 +17,12 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.collections.ColQuery;
+import com.mysema.query.collections.eval.ColQueryTemplates;
 import com.mysema.query.types.path.PNumber;
 
 public class PagingTest extends AbstractQueryTest {
+    
+    private static final ColQueryTemplates templates = new ColQueryTemplates();
 
     private List<Integer> ints = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
@@ -55,7 +58,7 @@ public class PagingTest extends AbstractQueryTest {
     }
 
     private ColQuery createQuery(QueryModifiers modifiers) {
-        ColQuery query = new ColQueryImpl().from(var, ints);
+        ColQuery query = new ColQueryImpl(templates).from(var, ints);
         if (modifiers != null)
             query.restrict(modifiers);
         return query;

@@ -13,7 +13,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.mysema.query.collections.eval.ColQueryPatterns;
+import com.mysema.query.collections.eval.ColQueryTemplates;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.eval.EvaluatorFactory;
 
@@ -25,11 +25,12 @@ import com.mysema.query.collections.eval.EvaluatorFactory;
  */
 public class QueryIteratorUtilsTest extends AbstractQueryTest {
 
+    private static final ColQueryTemplates ops = new ColQueryTemplates();
+    
     @SuppressWarnings("unchecked")
     @Test
     public void projectToMap() {
-        Evaluator ev = EvaluatorFactory.create(ColQueryPatterns.DEFAULT, Arrays
-                .asList(cat), cat.name);
+        Evaluator ev = EvaluatorFactory.create(ops, Arrays.asList(cat), cat.name);
         Map<?, ?> map = QueryIteratorUtils.projectToMap(cats.iterator(), ev);
         for (Map.Entry<?, ?> e : map.entrySet()) {
             assertTrue(e.getKey() instanceof String);

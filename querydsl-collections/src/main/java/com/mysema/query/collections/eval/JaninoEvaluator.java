@@ -34,13 +34,11 @@ public class JaninoEvaluator implements Evaluator {
         this.projection = projection;
     }
 
-    public JaninoEvaluator(ColQueryPatterns patterns, List<? extends Expr<?>> sources,
+    public JaninoEvaluator(ColQueryTemplates patterns, List<? extends Expr<?>> sources,
             Expr<?> expr) {
         try {
-            Class<?> type = expr.getType() != null ? expr.getType()
-                    : Object.class;
-            this.ev = new JavaSerializer(patterns).handle(expr)
-                    .createExpressionEvaluator(sources, type);
+            Class<?> type = expr.getType() != null ? expr.getType() : Object.class;
+            this.ev = new JavaSerializer(patterns).handle(expr).createExpressionEvaluator(sources, type);
             this.sources = sources;
             this.projection = expr;
         } catch (Exception e) {

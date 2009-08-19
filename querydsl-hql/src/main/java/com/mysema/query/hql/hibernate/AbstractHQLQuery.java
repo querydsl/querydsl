@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.hql.HQLPatterns;
+import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.hql.HQLQueryBase;
 import com.mysema.query.types.expr.Expr;
 
@@ -31,14 +31,10 @@ import com.mysema.query.types.expr.Expr;
 public abstract class AbstractHQLQuery<SubType extends AbstractHQLQuery<SubType>> extends HQLQueryBase<SubType>{
     
     private static final Logger logger = LoggerFactory.getLogger(HQLQueryImpl.class);
-
+    
     private final Session session;
 
-    public AbstractHQLQuery(Session session) {
-        this(session, HQLPatterns.DEFAULT);
-    }
-
-    public AbstractHQLQuery(Session session, HQLPatterns patterns) {
+    public AbstractHQLQuery(Session session, HQLTemplates patterns) {
         super(patterns);
         this.session = session;
     }

@@ -7,8 +7,8 @@ package com.mysema.query.hql.hibernate;
 
 import org.hibernate.Session;
 
-import com.mysema.query.hql.HQLPatterns;
 import com.mysema.query.hql.HQLQuery;
+import com.mysema.query.hql.HQLTemplates;
 
 
 /**
@@ -18,11 +18,7 @@ import com.mysema.query.hql.HQLQuery;
  */
 public class HQLQueryImpl extends AbstractHQLQuery<HQLQueryImpl> implements HQLQuery{
 
-    public HQLQueryImpl(Session session) {
-        super(session);
-    }
-
-    public HQLQueryImpl(Session session, HQLPatterns patterns) {
+    public HQLQueryImpl(Session session, HQLTemplates patterns) {
         super(session, patterns);
     }
 

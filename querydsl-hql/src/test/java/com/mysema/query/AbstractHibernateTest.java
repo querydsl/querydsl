@@ -8,6 +8,7 @@ package com.mysema.query;
 import org.hibernate.Session;
 
 import com.mysema.query.hql.HQLQuery;
+import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.hql.hibernate.HQLQueryImpl;
 
 /**
@@ -16,10 +17,12 @@ import com.mysema.query.hql.hibernate.HQLQueryImpl;
  */
 public abstract class AbstractHibernateTest extends AbstractStandardTest{
     
+    private static final HQLTemplates templates = new HQLTemplates();
+    
     private Session session;
     
     protected HQLQuery query(){
-        return new HQLQueryImpl(session);
+        return new HQLQueryImpl(session, templates);
     }
 
     public void setSession(Session session) {

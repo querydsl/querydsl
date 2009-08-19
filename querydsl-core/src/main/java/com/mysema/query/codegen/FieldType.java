@@ -73,11 +73,7 @@ public enum FieldType {
     /**
      * 
      */
-    TIME(COMPARABLE),
-    /**
-     * 
-     */
-    DECIMAL(NUMERIC);
+    TIME(COMPARABLE);
     
     @Nullable
     private final FieldType superType;

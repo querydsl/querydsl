@@ -7,7 +7,7 @@ package com.mysema.query.hql.jpa;
 
 import javax.persistence.EntityManager;
 
-import com.mysema.query.hql.HQLPatterns;
+import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.hql.HQLQuery;
 
 /**
@@ -18,11 +18,7 @@ import com.mysema.query.hql.HQLQuery;
  */
 public class JPAQLQueryImpl extends AbstractJPAQLQuery<JPAQLQueryImpl> implements HQLQuery{
 
-    public JPAQLQueryImpl(EntityManager em) {
-        super(em, HQLPatterns.DEFAULT);
-    }
-
-    public JPAQLQueryImpl(EntityManager em, HQLPatterns patterns) {
+    public JPAQLQueryImpl(EntityManager em, HQLTemplates patterns) {
         super(em, patterns);
     }
 

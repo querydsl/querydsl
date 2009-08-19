@@ -7,6 +7,7 @@ package com.mysema.query.types.custom;
 
 import java.util.List;
 
+import com.mysema.query.types.Template;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -38,6 +39,6 @@ public interface Custom<T> {
      * 
      * @return
      */
-    String getPattern();
+    Template getTemplate();
 
 }

@@ -11,7 +11,7 @@ import java.util.Map;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.collections.IteratorSource;
-import com.mysema.query.collections.eval.ColQueryPatterns;
+import com.mysema.query.collections.eval.ColQueryTemplates;
 import com.mysema.query.support.ProjectableAdapter;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
@@ -25,23 +25,27 @@ import com.mysema.query.types.expr.Expr;
  * @version $Id$
  */
 // TODO : find a better name for this
-public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends
-        ProjectableAdapter {
+public class CustomQueryable<SubType extends CustomQueryable<SubType>> extends ProjectableAdapter {
 
     private final ColQueryImpl innerQuery;
 
     @SuppressWarnings("unchecked")
     private final SubType _this = (SubType) this;
 
-    public CustomQueryable(IteratorSource iteratorSource) {
-        this(iteratorSource, new DefaultQueryMetadata());
+    public CustomQueryable(
+            IteratorSource iteratorSource, 
+            ColQueryTemplates templates) {
+        this(iteratorSource, new DefaultQueryMetadata(), templates);
     }
 
-    public CustomQueryable(final IteratorSource iteratorSource, QueryMetadata metadata) {
-        super(new ColQueryImpl(metadata) {
+    public CustomQueryable(
+            final IteratorSource iteratorSource, 
+            QueryMetadata metadata, 
+            ColQueryTemplates templates) {
+        super(new ColQueryImpl(metadata, templates) {
             @Override
             protected QueryIndexSupport createIndexSupport(
-                    Map<Expr<?>, Iterable<?>> exprToIt, ColQueryPatterns patterns,
+                    Map<Expr<?>, Iterable<?>> exprToIt, ColQueryTemplates patterns,
                     List<Expr<?>> sources) {
                 return new DefaultIndexSupport(iteratorSource, patterns, sources);
             }

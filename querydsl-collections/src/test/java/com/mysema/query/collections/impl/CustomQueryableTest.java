@@ -13,6 +13,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mysema.query.collections.eval.ColQueryTemplates;
 import com.mysema.query.types.path.PString;
 
 /**
@@ -23,6 +24,8 @@ import com.mysema.query.types.path.PString;
  */
 public class CustomQueryableTest {
 
+    private static final ColQueryTemplates templates = new ColQueryTemplates();
+    
     private List<String> strings = Arrays.asList("1", "2", "3");
 
     private PString str = new PString("str");
@@ -37,7 +40,7 @@ public class CustomQueryableTest {
 
     @SuppressWarnings("unchecked")
     private CustomQueryable<?> query() {
-        return new CustomQueryable(source);
+        return new CustomQueryable(source, templates);
     }
 
     @Test

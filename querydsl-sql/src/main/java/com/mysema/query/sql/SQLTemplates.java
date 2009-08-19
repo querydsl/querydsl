@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.serialization.OperationPatterns;
+import com.mysema.query.types.Templates;
 import com.mysema.query.types.operation.Ops;
 
 /**
@@ -19,7 +19,7 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @version $Id$
  */
-public class SQLPatterns extends OperationPatterns {
+public class SQLTemplates extends Templates {
 
     private String count = "count ", 
         countStar = "count(*)",
@@ -63,25 +63,25 @@ public class SQLPatterns extends OperationPatterns {
     private boolean limitAndOffsetSymbols = true;
 
     {
-        add(Ops.NOT, "not %s");
+        add(Ops.NOT, "not {0}");
 
         // math
         add(Ops.MathOps.RANDOM, "rand()");
-        add(Ops.MathOps.CEIL, "ceiling(%s)");
-        add(Ops.MathOps.POWER, "power(%s,%s)");
+        add(Ops.MathOps.CEIL, "ceiling({0})");
+        add(Ops.MathOps.POWER, "power({0},{1})");
 
         // date time
         add(Ops.DateTimeOps.CURRENT_DATE, "current_date");
         add(Ops.DateTimeOps.CURRENT_TIME, "current_timestamp");
 
         // string
-        add(Ops.SUBSTR1ARG, "substr(%s,%s)");
-        add(Ops.SUBSTR2ARGS, "substr(%s,%s,%s)");
+        add(Ops.SUBSTR1ARG, "substr({0},{1})");
+        add(Ops.SUBSTR2ARGS, "substr({0},{1},{2})");
 
-        add(Ops.STARTSWITH, "%s like concat(%s,'%%')");
-        add(Ops.ENDSWITH, "%s like concat('%%',%s)");
-        add(Ops.STARTSWITH_IC, "lower(%s) like concat(lower(%s),'%%')");
-        add(Ops.ENDSWITH_IC, "lower(%s) like concat('%%',lower(%s))");
+        add(Ops.STARTSWITH, "{0} like concat({1},'%')");
+        add(Ops.ENDSWITH, "{0} like concat('%',{1})");
+        add(Ops.STARTSWITH_IC, "lower({0}) like concat(lower({1}),'%')");
+        add(Ops.ENDSWITH_IC, "lower({0}) like concat('%',lower({1}))");
 
         for (Class<?> cl : new Class[] { Boolean.class, Byte.class,
                 Double.class, Float.class, Integer.class, Long.class,
@@ -110,7 +110,7 @@ public class SQLPatterns extends OperationPatterns {
         return tableAlias;
     }
 
-    public SQLPatterns tableAlias(String s) {
+    public SQLTemplates tableAlias(String s) {
         tableAlias = s;
         return this;
     }
@@ -119,7 +119,7 @@ public class SQLPatterns extends OperationPatterns {
         return columnAlias;
     }
 
-    public SQLPatterns columnAlias(String s) {
+    public SQLTemplates columnAlias(String s) {
         columnAlias = s;
         return this;
     }
@@ -128,7 +128,7 @@ public class SQLPatterns extends OperationPatterns {
         return asc;
     }
 
-    public SQLPatterns asc(String s) {
+    public SQLTemplates asc(String s) {
         asc = s;
         return this;
     }
@@ -137,7 +137,7 @@ public class SQLPatterns extends OperationPatterns {
         return count;
     }
 
-    public SQLPatterns count(String s) {
+    public SQLTemplates count(String s) {
         count = s;
         return this;
     }
@@ -146,7 +146,7 @@ public class SQLPatterns extends OperationPatterns {
         return countStar;
     }
 
-    public SQLPatterns countStar(String s) {
+    public SQLTemplates countStar(String s) {
         countStar = s;
         return this;
     }
@@ -155,7 +155,7 @@ public class SQLPatterns extends OperationPatterns {
         return desc;
     }
 
-    public SQLPatterns desc(String s) {
+    public SQLTemplates desc(String s) {
         desc = s;
         return this;
     }
@@ -164,7 +164,7 @@ public class SQLPatterns extends OperationPatterns {
         return from;
     }
 
-    public SQLPatterns from(String s) {
+    public SQLTemplates from(String s) {
         from = s;
         return this;
     }
@@ -173,7 +173,7 @@ public class SQLPatterns extends OperationPatterns {
         return fullJoin;
     }
 
-    public SQLPatterns fullJoin(String fullJoin) {
+    public SQLTemplates fullJoin(String fullJoin) {
         this.fullJoin = fullJoin;
         return this;
     }
@@ -182,7 +182,7 @@ public class SQLPatterns extends OperationPatterns {
         return groupBy;
     }
 
-    public SQLPatterns groupBy(String s) {
+    public SQLTemplates groupBy(String s) {
         groupBy = s;
         return this;
     }
@@ -191,7 +191,7 @@ public class SQLPatterns extends OperationPatterns {
         return having;
     }
 
-    public SQLPatterns having(String s) {
+    public SQLTemplates having(String s) {
         having = s;
         return this;
     }
@@ -200,7 +200,7 @@ public class SQLPatterns extends OperationPatterns {
         return innerJoin;
     }
 
-    public SQLPatterns innerJoin(String innerJoin) {
+    public SQLTemplates innerJoin(String innerJoin) {
         this.innerJoin = innerJoin;
         return this;
     }
@@ -209,7 +209,7 @@ public class SQLPatterns extends OperationPatterns {
         return join;
     }
 
-    public SQLPatterns join(String join) {
+    public SQLTemplates join(String join) {
         this.join = join;
         return this;
     }
@@ -226,7 +226,7 @@ public class SQLPatterns extends OperationPatterns {
         return limit;
     }
 
-    public SQLPatterns limit(String limit) {
+    public SQLTemplates limit(String limit) {
         this.limit = limit;
         return this;
     }
@@ -235,7 +235,7 @@ public class SQLPatterns extends OperationPatterns {
         return offset;
     }
 
-    public SQLPatterns offset(String offset) {
+    public SQLTemplates offset(String offset) {
         this.offset = offset;
         return this;
     }
@@ -244,7 +244,7 @@ public class SQLPatterns extends OperationPatterns {
         return orderBy;
     }
 
-    public SQLPatterns orderBy(String s) {
+    public SQLTemplates orderBy(String s) {
         orderBy = s;
         return this;
     }
@@ -253,7 +253,7 @@ public class SQLPatterns extends OperationPatterns {
         return select;
     }
 
-    public SQLPatterns select(String s) {
+    public SQLTemplates select(String s) {
         select = s;
         return this;
     }
@@ -262,7 +262,7 @@ public class SQLPatterns extends OperationPatterns {
         return selectDistinct;
     }
 
-    public SQLPatterns selectDistinct(String s) {
+    public SQLTemplates selectDistinct(String s) {
         selectDistinct = s;
         return this;
     }
@@ -275,7 +275,7 @@ public class SQLPatterns extends OperationPatterns {
         return union;
     }
 
-    public SQLPatterns union(String union) {
+    public SQLTemplates union(String union) {
         this.union = union;
         return this;
     }
@@ -284,7 +284,7 @@ public class SQLPatterns extends OperationPatterns {
         return where;
     }
 
-    public SQLPatterns where(String s) {
+    public SQLTemplates where(String s) {
         where = s;
         return this;
     }
@@ -293,7 +293,7 @@ public class SQLPatterns extends OperationPatterns {
         return on;
     }
 
-    public SQLPatterns on(String s) {
+    public SQLTemplates on(String s) {
         on = s;
         return this;
     }
@@ -302,7 +302,7 @@ public class SQLPatterns extends OperationPatterns {
         return dummyTable;
     }
 
-    public SQLPatterns dummyTable(String dt) {
+    public SQLTemplates dummyTable(String dt) {
         dummyTable = dt;
         return this;
     }
@@ -322,7 +322,7 @@ public class SQLPatterns extends OperationPatterns {
         return limitAndOffsetSymbols;
     }
 
-    public SQLPatterns limitAndOffsetSymbols(boolean limitAndOffsetSymbols) {
+    public SQLTemplates limitAndOffsetSymbols(boolean limitAndOffsetSymbols) {
         this.limitAndOffsetSymbols = limitAndOffsetSymbols;
         return this;
     }
@@ -331,7 +331,7 @@ public class SQLPatterns extends OperationPatterns {
         return offsetTemplate;
     }
 
-    public SQLPatterns offsetTemplate(String offsetTemplate) {
+    public SQLTemplates offsetTemplate(String offsetTemplate) {
         this.offsetTemplate = offsetTemplate;
         return this;
     }
@@ -340,7 +340,7 @@ public class SQLPatterns extends OperationPatterns {
         return limitTemplate;
     }
 
-    public SQLPatterns limitTemplate(String limitTemplate) {
+    public SQLTemplates limitTemplate(String limitTemplate) {
         this.limitTemplate = limitTemplate;
         return this;
     }
@@ -349,7 +349,7 @@ public class SQLPatterns extends OperationPatterns {
         return limitOffsetTemplate;
     }
 
-    public SQLPatterns limitOffsetTemplate(String limitOffsetTemplate) {
+    public SQLTemplates limitOffsetTemplate(String limitOffsetTemplate) {
         this.limitOffsetTemplate = limitOffsetTemplate;
         return this;
     }
@@ -358,7 +358,7 @@ public class SQLPatterns extends OperationPatterns {
         return startWith;
     }
 
-    public SQLPatterns startWith(String sw) {
+    public SQLTemplates startWith(String sw) {
         this.startWith = sw;
         return this;
     }
@@ -367,7 +367,7 @@ public class SQLPatterns extends OperationPatterns {
         return connectBy;
     }
 
-    public SQLPatterns connectBy(String connectBy) {
+    public SQLTemplates connectBy(String connectBy) {
         this.connectBy = connectBy;
         return this;
     }
@@ -376,7 +376,7 @@ public class SQLPatterns extends OperationPatterns {
         return connectByPrior;
     }
 
-    public SQLPatterns connectByPrior(String connectByPrior) {
+    public SQLTemplates connectByPrior(String connectByPrior) {
         this.connectByPrior = connectByPrior;
         return this;
     }
@@ -385,7 +385,7 @@ public class SQLPatterns extends OperationPatterns {
         return connectByNocyclePrior;
     }
 
-    public SQLPatterns connectByNocyclePrior(String connectByNocyclePrior) {
+    public SQLTemplates connectByNocyclePrior(String connectByNocyclePrior) {
         this.connectByNocyclePrior = connectByNocyclePrior;
         return this;
     }
@@ -394,7 +394,7 @@ public class SQLPatterns extends OperationPatterns {
         return orderSiblingsBy;
     }
 
-    public SQLPatterns orderSiblingsBy(String orderSiblingsBy) {
+    public SQLTemplates orderSiblingsBy(String orderSiblingsBy) {
         this.orderSiblingsBy = orderSiblingsBy;
         return this;
     }
@@ -403,7 +403,7 @@ public class SQLPatterns extends OperationPatterns {
         return sum;
     }
 
-    public SQLPatterns sum(String sum) {
+    public SQLTemplates sum(String sum) {
         this.sum = sum;
         return this;
     }
@@ -412,7 +412,7 @@ public class SQLPatterns extends OperationPatterns {
         return over;
     }
 
-    public SQLPatterns over(String over) {
+    public SQLTemplates over(String over) {
         this.over = over;
         return this;
     }
@@ -421,47 +421,17 @@ public class SQLPatterns extends OperationPatterns {
         return partitionBy;
     }
 
-    public SQLPatterns partitionBy(String partitionBy) {
+    public SQLTemplates partitionBy(String partitionBy) {
         this.partitionBy = partitionBy;
         return this;
     }
 
-    public SQLPatterns newLineToSingleSpace() {
-        for (Field field : SQLPatterns.class.getDeclaredFields()) {
+    public SQLTemplates newLineToSingleSpace() {
+        for (Field field : SQLTemplates.class.getDeclaredFields()) {
             try {
                 if (field.getType().equals(String.class)) {
                     field.set(this, field.get(this).toString().replace('\n',
                             ' '));
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e.getMessage(), e);
-            }
-        }
-        return this;
-    }
-
-    @Override
-    public SQLPatterns toLowerCase() {
-        super.toLowerCase();
-        for (Field field : SQLPatterns.class.getDeclaredFields()) {
-            try {
-                if (field.getType().equals(String.class)) {
-                    field.set(this, field.get(this).toString().toUpperCase());
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e.getMessage(), e);
-            }
-        }
-        return this;
-    }
-
-    @Override
-    public SQLPatterns toUpperCase() {
-        super.toUpperCase();
-        for (Field field : SQLPatterns.class.getDeclaredFields()) {
-            try {
-                if (field.getType().equals(String.class)) {
-                    field.set(this, field.get(this).toString().toUpperCase());
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e.getMessage(), e);

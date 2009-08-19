@@ -28,7 +28,7 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.collections.ColQuery;
-import com.mysema.query.collections.eval.ColQueryPatterns;
+import com.mysema.query.collections.eval.ColQueryTemplates;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.eval.EvaluatorFactory;
 import com.mysema.query.support.QueryBaseWithProjectionAndDetach;
@@ -65,7 +65,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
 
     private QueryIndexSupport indexSupport;
 
-    private final ColQueryPatterns patterns;
+    private final ColQueryTemplates patterns;
 
     /**
      * turn OR queries into sequential UNION queries
@@ -84,18 +84,14 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
      */
     private boolean wrapIterators = true;
 
-    public AbstractColQuery() {
-        this(ColQueryPatterns.DEFAULT);
-    }
-
-    public AbstractColQuery(ColQueryPatterns patterns) {
+    public AbstractColQuery(ColQueryTemplates patterns) {
         this.patterns = patterns;
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
     }
 
-    public AbstractColQuery(QueryMetadata metadata) {
+    public AbstractColQuery(QueryMetadata metadata, ColQueryTemplates patterns) {
         super(metadata);
-        this.patterns = ColQueryPatterns.DEFAULT;
+        this.patterns = patterns;
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
     }
 
@@ -150,7 +146,7 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
     }
 
     protected QueryIndexSupport createIndexSupport(
-            Map<Expr<?>, Iterable<?>> exprToIt, ColQueryPatterns patterns,
+            Map<Expr<?>, Iterable<?>> exprToIt, ColQueryTemplates patterns,
             List<Expr<?>> sources) {
         return new DefaultIndexSupport(new SimpleIteratorSource(exprToIt), patterns, sources);
     }

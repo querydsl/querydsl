@@ -21,6 +21,7 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.collections.ColQuery;
 import com.mysema.query.collections.domain.Cat;
+import com.mysema.query.collections.eval.ColQueryTemplates;
 import com.mysema.query.collections.impl.ColQueryImpl;
 import com.mysema.query.collections.impl.JoinExpressionComparator;
 import com.mysema.query.types.expr.EBoolean;
@@ -34,6 +35,8 @@ import com.mysema.query.types.expr.Expr;
  */
 public class QueryPerformanceTest extends AbstractPerformanceTest {
 
+    private static final ColQueryTemplates templates = new ColQueryTemplates();
+    
     private long testIterations = 50;
 
     private long results;
@@ -85,25 +88,25 @@ public class QueryPerformanceTest extends AbstractPerformanceTest {
             ColQueryImpl query;
             for (long j = 0; j < testIterations; j++) {
                 // without wrapped iterators
-                query = new ColQueryWithoutIndexing();
+                query = new ColQueryWithoutIndexing(templates);
                 query.setWrapIterators(false);
                 level1 += query(query, condition, cats1, cats2);
 
                 // without reordering
-                query = new ColQueryWithoutIndexing();
+                query = new ColQueryWithoutIndexing(templates);
                 query.setSortSources(false);
                 level2 += query(query, condition, cats1, cats2);
 
                 // with reordering and iterator wrapping
-                query = new ColQueryWithoutIndexing();
+                query = new ColQueryWithoutIndexing(templates);
                 level3 += query(query, condition, cats1, cats2);
 
                 // indexed, with reordering and iterator wrapping
-                query = new ColQueryImpl();
+                query = new ColQueryImpl(templates);
                 level4 += query(query, condition, cats1, cats2);
 
                 // indexed with sequential union
-                query = new ColQueryImpl();
+                query = new ColQueryImpl(templates);
                 query.setSequentialUnion(true);
                 level5 += query(query, condition, cats1, cats2);
 

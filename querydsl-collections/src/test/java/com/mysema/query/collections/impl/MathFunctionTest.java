@@ -29,24 +29,18 @@ public class MathFunctionTest extends AbstractQueryTest {
         Cat c = alias(Cat.class, "c");
         Expr<Integer> i = EConstant.create(1);
         Expr<Double> d = EConstant.create(1.0);
-        from(c, cats).list(
-//                MathFunctions.abs(i), 
+        from(c, cats).list( 
                 MathFunctions.acos(d),
                 MathFunctions.asin(d), 
-                MathFunctions.atan(d),
-//                MathFunctions.ceil(d), 
+                MathFunctions.atan(d), 
                 MathFunctions.cos(d),
-//                MathFunctions.tan(d), MathFunctions.sqrt(i),
                 MathFunctions.sin(d), 
-//                MathFunctions.round(d),
                 ENumber.random(), 
                 MathFunctions.pow(d, d),
                 ENumber.min(i, i), 
                 ENumber.max(i, i),
-                // QMath.mod(i,i),
                 MathFunctions.log10(d), 
-                MathFunctions.log(d),
-//                MathFunctions.floor(d), 
+                MathFunctions.log(d), 
                 MathFunctions.exp(d)).iterator();
 
     }

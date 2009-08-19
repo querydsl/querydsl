@@ -37,7 +37,7 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
 
     private boolean wrapElements = false;
 
-    public HQLSerializer(HQLPatterns patterns) {
+    public HQLSerializer(HQLTemplates patterns) {
         super(patterns);
     }
 
@@ -120,7 +120,7 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy) {
                 if (!first){
-                    builder.append(", ");
+                    append(", ");
                 }                    
                 handle(os.getTarget());
                 append(os.getOrder() == Order.ASC ? " asc" : " desc");
@@ -188,7 +188,7 @@ public class HQLSerializer extends BaseSerializer<HQLSerializer> {
     protected void visitOperation(Class<?> type, Operator<?> operator,
             List<Expr<?>> args) {
         boolean old = wrapElements;
-        wrapElements = HQLPatterns.wrapCollectionsForOp.contains(operator);
+        wrapElements = HQLTemplates.wrapCollectionsForOp.contains(operator);
         // 
         if (operator.equals(Ops.INSTANCEOF)) {
             args = new ArrayList<Expr<?>>(args);

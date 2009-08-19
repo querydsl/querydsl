@@ -5,9 +5,6 @@
  */
 package com.mysema.query.codegen;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 
 import com.mysema.query.util.TypeUtil;
@@ -19,8 +16,6 @@ import com.mysema.query.util.TypeUtil;
  */
 public abstract class InspectingTypeModel extends SimpleTypeModel {
     
-    private static final List<Class<?>> decimalTypes = Arrays.<Class<?>>asList(Double.class, Float.class, BigDecimal.class);
-
     protected FieldType getFieldType(String fullName){
         if (fullName.equals(String.class.getName())) {
             return FieldType.STRING;
@@ -42,11 +37,7 @@ public abstract class InspectingTypeModel extends SimpleTypeModel {
                         
         } else if (fullName.equals(java.sql.Time.class.getName())){
             return FieldType.TIME;
-            
-        } else if (isComparableSupported(fullName) 
-                && decimalTypes.contains(TypeUtil.safeForName(fullName))) {
-            return FieldType.DECIMAL;
-            
+                        
         } else if (isComparableSupported(fullName)
                 && Number.class.isAssignableFrom(TypeUtil.safeForName(fullName))) {
             return FieldType.NUMERIC;
@@ -106,8 +97,6 @@ public abstract class InspectingTypeModel extends SimpleTypeModel {
         setNames(cl);
         if (cl.equals(Boolean.class)) {
             fieldType = FieldType.BOOLEAN;
-        } else if (decimalTypes.contains(cl)) {
-            fieldType = FieldType.DECIMAL;            
         } else if (Number.class.isAssignableFrom(cl)) {
             fieldType = FieldType.NUMERIC;
         } else if (Comparable.class.isAssignableFrom(cl)) {

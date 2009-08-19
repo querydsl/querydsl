@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.jdoql.JDOQLPatterns;
+import com.mysema.query.jdoql.JDOQLTemplates;
 import com.mysema.query.jdoql.JDOQLSerializer;
 import com.mysema.query.jdoql.testdomain.Book;
 import com.mysema.query.jdoql.testdomain.Product;
@@ -20,6 +20,8 @@ import com.mysema.query.types.expr.Expr;
 
 public class ExprSerializationTest {
 
+    private static final JDOQLTemplates templates = new JDOQLTemplates();
+    
     private QBook book = QBook.book;
 
     private QProduct product = QProduct.product;
@@ -124,7 +126,7 @@ public class ExprSerializationTest {
     }
         
     private String serialize(Expr<?> expr) {
-        return new JDOQLSerializer(JDOQLPatterns.DEFAULT, book).handle(expr).toString();
+        return new JDOQLSerializer(templates, book).handle(expr).toString();
     }
 
 }

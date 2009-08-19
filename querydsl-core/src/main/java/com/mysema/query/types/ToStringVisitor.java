@@ -3,9 +3,9 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.serialization;
+package com.mysema.query.types;
 
-import com.mysema.query.types.VisitorBase;
+import com.mysema.query.types.Template.Element;
 import com.mysema.query.types.custom.Custom;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EConstant;
@@ -22,7 +22,7 @@ import com.mysema.query.types.path.Path;
  */
 public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
 
-    private static OperationPatterns patterns = new OperationPatterns();
+    private static Templates patterns = new Templates();
 
     private String toString = "?";
 
@@ -32,14 +32,23 @@ public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
 
     @Override
     protected void visit(Custom<?> expr) {
-        toString = String.format(expr.getPattern(), expr.getArgs());
+        StringBuilder builder = new StringBuilder();
+        for (Element element : expr.getTemplate().getElements()){
+            if (element.getStaticText() != null){
+                builder.append(element.getStaticText());
+            }else{
+                builder.append(expr.getArg(element.getIndex()));
+            }
+        }
+        toString = builder.toString();
     }
 
     protected void visit(EArrayConstructor<?> e) {
         StringBuilder builder = new StringBuilder("[");
         for (int i = 0; i < e.getArgs().size(); i++) {
-            if (i > 0)
+            if (i > 0){
                 builder.append(", ");
+            }                
             builder.append(e.getArg(i));
         }
         builder.append("]");
@@ -54,8 +63,9 @@ public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
         StringBuilder builder = new StringBuilder();
         builder.append("new ").append(e.getType().getSimpleName()).append("(");
         for (int i = 0; i < e.getArgs().size(); i++) {
-            if (i > 0)
+            if (i > 0){
                 builder.append(", ");
+            }                
             builder.append(e.getArg(i));
         }
         builder.append(")");
@@ -63,9 +73,17 @@ public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
     }
 
     protected void visit(Operation<?, ?> o) {
-        String pattern = patterns.getPattern(o.getOperator());
-        if (pattern != null) {
-            toString = String.format(pattern, o.getArgs().toArray());
+        Template template = patterns.getTemplate(o.getOperator());
+        if (template != null) {
+            StringBuilder builder = new StringBuilder();
+            for (Element element : template.getElements()){
+                if (element.getStaticText() != null){
+                    builder.append(element.getStaticText());
+                }else{
+                    builder.append(o.getArg(element.getIndex()));
+                }
+            }
+            toString = builder.toString();
         } else {
             toString = "unknown operation with args " + o.getArgs();
         }
@@ -75,9 +93,19 @@ public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
         Path<?> parent = p.getMetadata().getParent();
         Expr<?> expr = p.getMetadata().getExpression();
         if (parent != null) {
-            String pattern = patterns.getPattern(p.getMetadata().getPathType());
+            Template pattern = patterns.getTemplate(p.getMetadata().getPathType());
             if (pattern != null) {
-                toString = String.format(pattern, parent, expr);
+                StringBuilder builder = new StringBuilder();
+                for (Element element : pattern.getElements()){
+                    if (element.getStaticText() != null){
+                        builder.append(element.getStaticText());
+                    }else if (element.getIndex() == 0){
+                        builder.append(parent);
+                    }else if (element.getIndex() == 1){
+                        builder.append(expr);
+                    }
+                }
+                toString = builder.toString();
             }
         } else if (expr != null) {
             toString = expr.toString();

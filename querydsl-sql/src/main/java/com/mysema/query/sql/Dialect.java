@@ -29,42 +29,42 @@ import com.mysema.query.types.operation.Ops;
 public class Dialect {
 
     // tested
-    public static SQLPatterns forHSQLDB() {
-        return new SQLPatterns() {
+    public static SQLTemplates forHSQLDB() {
+        return new SQLTemplates() {
             {
-                add(Ops.MathOps.ROUND, "round(%s,0)");
-                add(Ops.TRIM, "trim(both from %s)");
+                add(Ops.MathOps.ROUND, "round({0},0)");
+                add(Ops.TRIM, "trim(both from {0})");
             }
         };
     }
 
     // tested
-    public static SQLPatterns forDerby() {
-        return new SQLPatterns() {
+    public static SQLTemplates forDerby() {
+        return new SQLTemplates() {
             {
-                add(Ops.CONCAT, "%s || %s");
-                add(Ops.MathOps.ROUND, "floor(%s)");
-                add(Ops.SUBSTR1ARG, "substr(%s,%s+1)");
-                add(Ops.SUBSTR2ARGS, "substr(%s,%s+1,%s+1)");
+                add(Ops.CONCAT, "{0} || {1}");
+                add(Ops.MathOps.ROUND, "floor({0})");
+                add(Ops.SUBSTR1ARG, "substr({0},{1}+1)");
+                add(Ops.SUBSTR2ARGS, "substr({0},{1}+1,{2}+1)");
 
-                add(Ops.STARTSWITH, "%s like (%s || '%%')");
-                add(Ops.ENDSWITH, "%s like ('%%' || %s)");
-                add(Ops.STARTSWITH_IC, "lower(%s) like (lower(%s) || '%%')");
-                add(Ops.ENDSWITH_IC, "lower(%s) like ('%%' || lower(%s))");
+                add(Ops.STARTSWITH, "{0} like ({1} || '%')");
+                add(Ops.ENDSWITH, "{0} like ('%' || {1})");
+                add(Ops.STARTSWITH_IC, "lower({0}) like (lower({1}) || '%')");
+                add(Ops.ENDSWITH_IC, "lower({0}) like ('%' || lower({1}))");
 
-                add(Ops.DateTimeOps.YEAR, "year(%s)");
-                add(Ops.DateTimeOps.MONTH, "month(%s)");
+                add(Ops.DateTimeOps.YEAR, "year({0})");
+                add(Ops.DateTimeOps.MONTH, "month({0})");
 
-                add(Ops.DateTimeOps.HOUR, "hour(%s)");
-                add(Ops.DateTimeOps.MINUTE, "minute(%s)");
-                add(Ops.DateTimeOps.SECOND, "second(%s)");
+                add(Ops.DateTimeOps.HOUR, "hour({0})");
+                add(Ops.DateTimeOps.MINUTE, "minute({0})");
+                add(Ops.DateTimeOps.SECOND, "second({0})");
             }
         };
     }
 
     // tested
-    public static SQLPatterns forMySQL() {
-        return new SQLPatterns() {
+    public static SQLTemplates forMySQL() {
+        return new SQLTemplates() {
             {
                 addClass2TypeMappings("signed", Byte.class, Integer.class,
                         Long.class, Short.class, BigInteger.class);
@@ -75,23 +75,23 @@ public class Dialect {
         };
     }
 
-    public static SQLPatterns forOracle10() {
+    public static SQLTemplates forOracle10() {
         return forOracle();
     }
 
     // tested
-    public static SQLPatterns forOracle() {
+    public static SQLTemplates forOracle() {
         return new OracleDialect();
     }
 
     // TODO : to be tested
-    public static SQLPatterns forPostgreSQL() {
-        return new SQLPatterns();
+    public static SQLTemplates forPostgreSQL() {
+        return new SQLTemplates();
     }
 
     // TODO : to be tested
-    public static SQLPatterns forSQLServer() {
-        return new SQLPatterns();
+    public static SQLTemplates forSQLServer() {
+        return new SQLTemplates();
     }
 
 }

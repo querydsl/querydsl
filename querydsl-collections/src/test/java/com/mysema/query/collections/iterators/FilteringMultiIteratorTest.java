@@ -17,7 +17,7 @@ import org.junit.Test;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.collections.domain.Cat;
 import com.mysema.query.collections.domain.QCat;
-import com.mysema.query.collections.eval.ColQueryPatterns;
+import com.mysema.query.collections.eval.ColQueryTemplates;
 import com.mysema.query.collections.impl.DefaultIndexSupport;
 import com.mysema.query.collections.impl.FilteringMultiIterator;
 import com.mysema.query.collections.impl.QueryIndexSupport;
@@ -37,7 +37,7 @@ public class FilteringMultiIteratorTest extends AbstractIteratorTest {
 
     private FilteringMultiIterator it;
 
-    private ColQueryPatterns ops = ColQueryPatterns.DEFAULT;
+    private ColQueryTemplates ops = new ColQueryTemplates();
 
     private Map<Expr<?>, Iterable<?>> exprToIt = new HashMap<Expr<?>, Iterable<?>>();
 

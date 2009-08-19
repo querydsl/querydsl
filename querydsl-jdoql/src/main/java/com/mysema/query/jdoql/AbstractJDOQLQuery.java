@@ -39,22 +39,18 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
 
     private List<Query> queries = new ArrayList<Query>(2);
     
-    private final JDOQLPatterns patterns;
+    private final JDOQLTemplates templates;
 
     @Nullable
     private final PersistenceManager pm;
     
-    public AbstractJDOQLQuery(){
-        this.patterns = JDOQLPatterns.DEFAULT;
+    public AbstractJDOQLQuery(JDOQLTemplates templates){
+        this.templates = templates;
         this.pm = null;
     }
     
-    public AbstractJDOQLQuery(PersistenceManager pm) {
-        this(pm, JDOQLPatterns.DEFAULT);
-    }
-
-    public AbstractJDOQLQuery(PersistenceManager pm, JDOQLPatterns patterns) {
-        this.patterns = patterns;
+    public AbstractJDOQLQuery(PersistenceManager pm, JDOQLTemplates templates) {
+        this.templates = templates;
         this.pm = pm;
     }
 
@@ -87,11 +83,6 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     private <D> Expr<D> createAlias(EEntity<?> target, PEntity<D> alias){
         return OSimple.create(alias.getType(), Ops.ALIAS, target, alias);
     }
-    
-//    @Override
-//    protected void clear() {
-//        super.clear();
-//    }
 
     public long count() {
         Query query = createQuery(true);
@@ -103,7 +94,7 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         Expr<?> source = this.getMetadata().getJoins().get(0).getTarget();
         
         // serialize
-        JDOQLSerializer serializer = new JDOQLSerializer(patterns, source);
+        JDOQLSerializer serializer = new JDOQLSerializer(templates, source);
         serializer.serialize(getMetadata(), forCount, false);
         
         // create Query 

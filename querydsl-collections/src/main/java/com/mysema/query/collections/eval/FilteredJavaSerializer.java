@@ -6,6 +6,7 @@
 package com.mysema.query.collections.eval;
 
 import java.util.List;
+import java.util.Stack;
 
 import javax.annotation.Nullable;
 
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.Path;
@@ -30,8 +32,7 @@ import com.mysema.query.types.path.Path;
  */
 public class FilteredJavaSerializer extends JavaSerializer {
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(FilteredJavaSerializer.class);
+    private static final Logger logger = LoggerFactory.getLogger(FilteredJavaSerializer.class);
 
     private boolean skipPath = false;
 
@@ -40,15 +41,14 @@ public class FilteredJavaSerializer extends JavaSerializer {
     private Expr<?> last;
 
     private boolean inNotOperation = false;
-
-    public FilteredJavaSerializer(ColQueryPatterns patterns, List<Expr<?>> expressions) {
+    
+    public FilteredJavaSerializer(ColQueryTemplates patterns, List<Expr<?>> expressions) {
         super(patterns);
         this.exprs = expressions;
         this.last = expressions.get(expressions.size() - 1);
     }
 
-    public FilteredJavaSerializer(ColQueryPatterns patterns, List<Expr<?>> expressions,
-            int lastElement) {
+    public FilteredJavaSerializer(ColQueryTemplates patterns, List<Expr<?>> expressions, int lastElement) {
         super(patterns);
         this.exprs = expressions.subList(0, lastElement + 1);
         this.last = expressions.get(lastElement);
@@ -76,14 +76,16 @@ public class FilteredJavaSerializer extends JavaSerializer {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void visitOperation(Class<?> type, Operator<?> operator,
-            List<Expr<?>> args) {
+    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
         if (!skipPath) {
             boolean unknownPaths = false;
             boolean knownPaths = false;
             boolean targetIncluded = false;
             // iterate over arguments
-            for (Expr<?> expr : args) {
+            Stack<Expr<?>> exprToVisit = new Stack<Expr<?>>();
+            exprToVisit.addAll(args);
+            while (!exprToVisit.isEmpty()){
+                Expr<?> expr = exprToVisit.pop();
                 if (expr instanceof Path) {
                     Path<?> path = ((Path<?>) expr).getRoot();
                     if (!exprs.contains(path)) {
@@ -93,11 +95,20 @@ public class FilteredJavaSerializer extends JavaSerializer {
                     } else {
                         knownPaths = true;
                     }
+                }else if (expr instanceof Operation){
+                    Operation<?,?> op = (Operation)expr;
+                    if (!op.getType().equals(Boolean.class)){
+                        exprToVisit.addAll(op.getArgs());
+                    }                    
                 }
             }
-            if (unknownPaths) {
+            
+            if (unknownPaths) { 
+                // all expressions with unknown paths can be filtered out
                 skipPath = true;
-            } else if (!targetIncluded && knownPaths) {
+            } else if (!targetIncluded && knownPaths && type.equals(Boolean.class)) {
+                // boolean expressions without the last path, but without
+                // unknown paths can be filtered out
                 skipPath = true;
             } else {
                 boolean old = inNotOperation;
@@ -108,17 +119,18 @@ public class FilteredJavaSerializer extends JavaSerializer {
         }
         if (skipPath) {
             if (type.equals(Boolean.class)) {
-                append(inNotOperation ? "false" : "true");
                 skipPath = false;
+                append(inNotOperation ? "false" : "true");                
             }
         }
     }
-
+    
     @Override
-    protected void appendOperationResult(Operator<?> operator, String result) {
-        if (!skipPath) {
-            super.appendOperationResult(operator, result);
+    public FilteredJavaSerializer append(String... str) {
+        if (!skipPath){
+            super.append(str);
         }
+        return this;
     }
-
+    
 }

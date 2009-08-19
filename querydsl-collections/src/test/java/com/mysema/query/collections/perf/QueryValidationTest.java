@@ -14,7 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
 import com.mysema.query.collections.domain.Cat;
-import com.mysema.query.collections.eval.ColQueryPatterns;
+import com.mysema.query.collections.eval.ColQueryTemplates;
 import com.mysema.query.collections.eval.JavaSerializer;
 import com.mysema.query.collections.impl.ColQueryImpl;
 import com.mysema.query.types.expr.EBoolean;
@@ -27,6 +27,8 @@ import com.mysema.query.types.expr.EBoolean;
  */
 public class QueryValidationTest extends AbstractPerformanceTest {
 
+    private static final ColQueryTemplates templates = new ColQueryTemplates();
+    
     @Test
     public void validateResults1Source() {
         int size = 50;
@@ -37,49 +39,48 @@ public class QueryValidationTest extends AbstractPerformanceTest {
         StringBuilder res = new StringBuilder();
         for (EBoolean condition : conditionsFor1Source) {
             // without wrapped iterators
-            query = new ColQueryWithoutIndexing();
+            query = new ColQueryWithoutIndexing(templates);
             query.setWrapIterators(false);
             count = query.from(cat, cats1).where(condition).count();
             expected = count;
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
 
             // without reordering
-            query = new ColQueryWithoutIndexing();
+            query = new ColQueryWithoutIndexing(templates);
             query.setSortSources(false);
             count = query.from(cat, cats1).where(condition).count();
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
             res.append((expected != count || count > max) ? " X" : "  ");
 
             // with reordering and iterator wrapping
-            query = new ColQueryWithoutIndexing();
+            query = new ColQueryWithoutIndexing(templates);
             count = query.from(cat, cats1).where(condition).count();
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
             res.append((expected != count || count > max) ? " X" : "  ");
 
             // indexed, without reordering
-            query = new ColQueryImpl();
+            query = new ColQueryImpl(templates);
             query.setSortSources(false);
             count = query.from(cat, cats1).where(condition).count();
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
             res.append((expected != count || count > max) ? " X" : "  ");
 
             // indexed, with reordering and iterator wrapping
-            query = new ColQueryImpl();
+            query = new ColQueryImpl(templates);
             count = query.from(cat, cats1).where(condition).count();
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
             res.append((expected != count || count > max) ? " X" : "  ");
 
             // indexed, with reordering and iterator wrapping and sequential
             // union handling
-            query = new ColQueryImpl();
+            query = new ColQueryImpl(templates);
             query.setSequentialUnion(true);
             count = query.from(cat, cats1).where(condition).count();
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
             res.append((expected != count || count > max) ? " X" : "  ");
 
             res.append("   ");
-            res.append(new JavaSerializer(ColQueryPatterns.DEFAULT).handle(condition)
-                    .toString());
+            res.append(new JavaSerializer(templates).handle(condition).toString());
             res.append("\n");
         }
         System.out.println(res);
@@ -100,7 +101,7 @@ public class QueryValidationTest extends AbstractPerformanceTest {
         StringBuilder res = new StringBuilder();
         for (EBoolean condition : conditionsFor2Sources) {
             // without wrapped iterators
-            query = new ColQueryWithoutIndexing();
+            query = new ColQueryWithoutIndexing(templates);
             query.setWrapIterators(false);
             count = query.from(cat, cats1).from(otherCat, cats2).where(
                     condition).count();
@@ -108,7 +109,7 @@ public class QueryValidationTest extends AbstractPerformanceTest {
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
 
             // without reordering
-            query = new ColQueryWithoutIndexing();
+            query = new ColQueryWithoutIndexing(templates);
             query.setSortSources(false);
             count = query.from(cat, cats1).from(otherCat, cats2).where(
                     condition).count();
@@ -116,14 +117,14 @@ public class QueryValidationTest extends AbstractPerformanceTest {
             res.append((expected != count || count > max) ? " X" : "  ");
 
             // with reordering and iterator wrapping
-            query = new ColQueryWithoutIndexing();
+            query = new ColQueryWithoutIndexing(templates);
             count = query.from(cat, cats1).from(otherCat, cats2).where(
                     condition).count();
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
             res.append((expected != count || count > max) ? " X" : "  ");
 
             // indexed, without reordering
-            query = new ColQueryImpl();
+            query = new ColQueryImpl(templates);
             query.setSortSources(false);
             count = query.from(cat, cats1).from(otherCat, cats2).where(
                     condition).count();
@@ -131,7 +132,7 @@ public class QueryValidationTest extends AbstractPerformanceTest {
             res.append((expected != count || count > max) ? " X" : "  ");
 
             // indexed, with reordering and iterator wrapping
-            query = new ColQueryImpl();
+            query = new ColQueryImpl(templates);
             count = query.from(cat, cats1).from(otherCat, cats2).where(
                     condition).count();
             res.append(StringUtils.leftPad(String.valueOf(count), 7));
@@ -139,7 +140,7 @@ public class QueryValidationTest extends AbstractPerformanceTest {
 
             // indexed, with reordering and iterator wrapping and sequential
             // union handling
-            query = new ColQueryImpl();
+            query = new ColQueryImpl(templates);
             query.setSequentialUnion(true);
             count = query.from(cat, cats1).from(otherCat, cats2).where(
                     condition).count();
@@ -147,8 +148,7 @@ public class QueryValidationTest extends AbstractPerformanceTest {
             res.append((expected != count || count > max) ? " X" : "  ");
 
             res.append("   ");
-            res.append(new JavaSerializer(ColQueryPatterns.DEFAULT).handle(condition)
-                    .toString());
+            res.append(new JavaSerializer(templates).handle(condition).toString());
             res.append("\n");
         }
         System.out.println(res);
@@ -165,7 +165,7 @@ public class QueryValidationTest extends AbstractPerformanceTest {
         List<Cat> cats1 = cats(10);
         List<Cat> cats2 = cats(10);
 
-        ColQueryImpl query = new ColQueryWithoutIndexing();
+        ColQueryImpl query = new ColQueryWithoutIndexing(templates);
         query.setSortSources(false);
         for (Object[] cats : query.from(cat, cats1).from(otherCat, cats2)
                 .where(condition).list(cat, otherCat)) {

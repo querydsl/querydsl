@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.collections.IteratorSource;
-import com.mysema.query.collections.eval.ColQueryPatterns;
+import com.mysema.query.collections.eval.ColQueryTemplates;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.eval.FilteredJavaSerializer;
 import com.mysema.query.collections.eval.JaninoEvaluator;
@@ -47,11 +47,11 @@ public class FilteringMultiIterator extends MultiIterator implements
 
     private IteratorSource iteratorSource;
 
-    private ColQueryPatterns patterns;
+    private ColQueryTemplates patterns;
 
     private EBoolean where;
 
-    public FilteringMultiIterator(ColQueryPatterns patterns, EBoolean where) {
+    public FilteringMultiIterator(ColQueryTemplates patterns, EBoolean where) {
         this.patterns = patterns;
         this.where = where;
     }
@@ -80,10 +80,9 @@ public class FilteringMultiIterator extends MultiIterator implements
                             return super.evaluate(args);
                         }
                     };
-                } catch (CompileException e) {
+                } catch (Exception e) {
                     throw new IllegalArgumentException(
-                            "Caught exception when trying to compile " + expr
-                                    + " with types " + Arrays.asList(types));
+                            "Caught exception when trying to compile \"" + expr + "\" with types " + Arrays.asList(types));
                 }
 
             }

@@ -15,7 +15,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.query.collections.eval.ColQueryPatterns;
+import com.mysema.query.collections.eval.ColQueryTemplates;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -26,7 +26,7 @@ import com.mysema.query.types.expr.Expr;
  */
 public class DefaultIndexSupportTest extends AbstractQueryTest {
 
-    private ColQueryPatterns ops = ColQueryPatterns.DEFAULT;
+    private static final ColQueryTemplates ops = new ColQueryTemplates();
 
     private Map<Expr<?>, Iterable<?>> exprToIt = new HashMap<Expr<?>, Iterable<?>>();
 

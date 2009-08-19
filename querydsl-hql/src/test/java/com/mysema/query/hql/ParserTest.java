@@ -895,7 +895,7 @@ public class ParserTest implements Constants {
 
     class TestQuery extends HQLQueryBase<TestQuery> {
         public TestQuery() {
-            super(new HQLPatterns());
+            super(new HQLTemplates());
         }
 
         public long count() {

@@ -48,7 +48,7 @@ public abstract class SqlQueryTest {
 
     protected static ThreadLocal<Statement> stmtHolder = new ThreadLocal<Statement>();
 
-    protected SQLPatterns dialect;
+    protected SQLTemplates dialect;
 
     protected final QEMPLOYEE employee = new QEMPLOYEE("employee");
     protected final QEMPLOYEE employee2 = new QEMPLOYEE("employee2");

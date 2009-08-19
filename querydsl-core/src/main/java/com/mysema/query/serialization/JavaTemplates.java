@@ -1,0 +1,87 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
+package com.mysema.query.serialization;
+
+import java.lang.reflect.Field;
+
+import com.mysema.query.types.Templates;
+import com.mysema.query.types.operation.OperatorImpl;
+import com.mysema.query.types.operation.Ops;
+
+
+public class JavaTemplates extends Templates {
+    
+    public JavaTemplates() {
+        add(Ops.EQ_PRIMITIVE, "{0} == {1}");
+        add(Ops.EQ_OBJECT, "{0} == {1}");
+        add(Ops.ISNULL, "{0} == null");
+        add(Ops.ISNOTNULL, "{0} != null");
+        add(Ops.INSTANCEOF, "{0} instanceof {1}");
+
+        // collection
+        add(Ops.IN, "{1}.contains({0})");
+        add(Ops.COL_ISEMPTY, "{0}.isEmpty()");
+        add(Ops.COL_SIZE, "{0}.size()");
+        
+        // array
+        add(Ops.ARRAY_SIZE, "{0}.length");
+        
+        // map
+        add(Ops.MAP_ISEMPTY, "{0}.isEmpty()");
+        add(Ops.MAP_SIZE, "{0}.size()");
+        add(Ops.CONTAINS_KEY, "{0}.containsKey({1})");
+        add(Ops.CONTAINS_VALUE, "{0}.containsValue({1})");
+                
+        // Comparable
+        add(Ops.BETWEEN, "{1} < {0} && {0} < {2}");
+        
+        // String
+        add(Ops.CHAR_AT, "{0}.charAt({1})");
+        add(Ops.LOWER, "{0}.toLowerCase()");        
+        add(Ops.SUBSTR1ARG, "{0}.substring({1})");
+        add(Ops.SUBSTR2ARGS, "{0}.substring({1},{2})");
+        add(Ops.TRIM, "{0}.trim()");
+        add(Ops.UPPER, "{0}.toUpperCase()");
+        add(Ops.MATCHES, "{0}.matches({1})");
+        add(Ops.STRING_LENGTH, "{0}.length()");        
+        add(Ops.STRING_ISEMPTY, "{0}.isEmpty()");
+        add(Ops.STRING_CONTAINS, "{0}.contains({1})");
+        add(Ops.STARTSWITH, "{0}.startsWith({1})");
+        add(Ops.STARTSWITH_IC, "{0}.toLowerCase().startsWith({1}.toLowerCase())");        
+        add(Ops.INDEXOF, "{0}.indexOf({1})");
+        add(Ops.INDEXOF_2ARGS, "{0}.indexOf({1},{2})");
+        add(Ops.EQ_IGNORECASE, "{0}.equalsIgnoreCase({1})");
+        add(Ops.ENDSWITH, "{0}.endsWith({1})");
+        add(Ops.ENDSWITH_IC, "{0}.toLowerCase().endsWith({1}.toLowerCase())");
+        add(Ops.StringOps.SPLIT, "{0}.split({1})");
+        add(Ops.StringOps.LAST_INDEX, "{0}.lastIndexOf({1})");
+        add(Ops.StringOps.LAST_INDEX_2ARGS, "{0}.lastIndexOf({1},{2})");
+        
+        // Date and Time
+        add(Ops.DateTimeOps.DAY_OF_MONTH, "{0}.getDayOfMonth()");
+        add(Ops.DateTimeOps.DAY_OF_WEEK, "{0}.getDayOfWeek()");
+        add(Ops.DateTimeOps.DAY_OF_YEAR, "{0}.getDayOfYear()");
+        add(Ops.DateTimeOps.HOUR, "{0}.getHour()");
+        add(Ops.DateTimeOps.MINUTE, "{0}.getMinute()");
+        add(Ops.DateTimeOps.MONTH, "{0}.getMonth()");
+        add(Ops.DateTimeOps.SECOND, "{0}.getSecond()");
+        add(Ops.DateTimeOps.WEEK, "{0}.getWeek()");
+        add(Ops.DateTimeOps.YEAR, "{0}.getYear()");
+
+        // Math
+        try {
+            for (Field f : Ops.MathOps.class.getFields()) {
+                OperatorImpl<?> op = (OperatorImpl<?>) f.get(null);
+                add(op, "Math." + getTemplate(op));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        add(Ops.MOD, "{0} % {0}");
+        
+    }
+
+}

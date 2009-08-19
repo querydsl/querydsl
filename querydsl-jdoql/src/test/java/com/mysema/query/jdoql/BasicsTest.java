@@ -22,6 +22,8 @@ import com.mysema.query.jdoql.testdomain.QProduct;
 
 public class BasicsTest extends AbstractJDOTest {
 
+    private static final JDOQLTemplates templates = new JDOQLTemplates();
+    
     private QBook book = QBook.book;
 
     private QProduct product = QProduct.product;
@@ -33,7 +35,7 @@ public class BasicsTest extends AbstractJDOTest {
     
     @Test
     public void simpleTest() throws IOException{
-        JDOQLQuery query = new JDOQLQueryImpl(pm);
+        JDOQLQuery query = new JDOQLQueryImpl(pm, templates);
         assertEquals("Sony Discman", query.from(product).where(product.name.eq("Sony Discman")).uniqueResult(product.name));
         query.close();
     }

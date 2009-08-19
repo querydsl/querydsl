@@ -46,13 +46,13 @@ public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
 
     private final Connection conn;
 
-    protected final SQLPatterns patterns;
+    protected final SQLTemplates templates;
 
     private SubQuery[] sq;
 
-    public AbstractSQLQuery(Connection conn, SQLPatterns patterns) {
+    public AbstractSQLQuery(Connection conn, SQLTemplates templates) {
         this.conn = conn;
-        this.patterns = patterns;
+        this.templates = templates;
     }
 
     public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
@@ -225,7 +225,7 @@ public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
     }
 
     protected SQLSerializer createSerializer() {
-        return new SQLSerializer(patterns);
+        return new SQLSerializer(templates);
     }
 
     protected String buildQueryString(boolean forCountRow) {

@@ -27,8 +27,7 @@ public final class EvaluatorFactory {
      * @param expr
      * @return
      */
-    public static Evaluator create(ColQueryPatterns patterns,
-            List<? extends Expr<?>> sources, Expr<?> expr) {
+    public static Evaluator create(ColQueryTemplates patterns, List<? extends Expr<?>> sources, Expr<?> expr) {
         if (sources.get(0) == expr) {
             return new Evaluator() {
                 @SuppressWarnings("unchecked")

@@ -6,7 +6,7 @@
 package com.mysema.query.collections.impl;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.collections.eval.ColQueryPatterns;
+import com.mysema.query.collections.eval.ColQueryTemplates;
 
 
 /**
@@ -15,16 +15,12 @@ import com.mysema.query.collections.eval.ColQueryPatterns;
  */
 public class ColQueryImpl extends AbstractColQuery<ColQueryImpl>{
 
-    public ColQueryImpl() {
-        super();
-    }
-
-    public ColQueryImpl(ColQueryPatterns patterns) {
+    public ColQueryImpl(ColQueryTemplates patterns) {
         super(patterns);
     }
 
-    public ColQueryImpl(QueryMetadata metadata) {
-        super(metadata);
+    public ColQueryImpl(QueryMetadata metadata, ColQueryTemplates patterns) {
+        super(metadata, patterns);
     }
 
 }

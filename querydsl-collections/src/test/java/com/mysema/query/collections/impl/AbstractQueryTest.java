@@ -14,6 +14,7 @@ import org.junit.Before;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.collections.domain.Cat;
 import com.mysema.query.collections.domain.QCat;
+import com.mysema.query.collections.eval.ColQueryTemplates;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -24,6 +25,8 @@ import com.mysema.query.types.expr.Expr;
  */
 public abstract class AbstractQueryTest {
 
+    private static final ColQueryTemplates templates = new ColQueryTemplates();
+    
     protected Cat c1 = new Cat("Kitty");
 
     protected Cat c2 = new Cat("Bob");
@@ -64,11 +67,15 @@ public abstract class AbstractQueryTest {
     }
 
     protected TestQuery query() {
-        last = new TestQuery();
+        last = new TestQuery(templates);
         return last;
     }
 
     static class TestQuery extends ColQueryImpl {
+        public TestQuery(ColQueryTemplates patterns) {
+            super(patterns);
+        }
+
         List<Object> res = new ArrayList<Object>();
 
         @Override

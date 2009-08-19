@@ -6,6 +6,7 @@
 package com.mysema.query.collections.eval;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -21,6 +22,8 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.serialization.BaseSerializer;
+import com.mysema.query.types.Template;
+import com.mysema.query.types.Template.Element;
 import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operator;
@@ -36,10 +39,9 @@ import com.mysema.query.types.path.PathType;
  */
 public class JavaSerializer extends BaseSerializer<JavaSerializer> {
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(JavaSerializer.class);
+    private static final Logger logger = LoggerFactory.getLogger(JavaSerializer.class);
 
-    public JavaSerializer(ColQueryPatterns patterns) {
+    public JavaSerializer(ColQueryTemplates patterns) {
         super(patterns);
     }
 
@@ -68,7 +70,7 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer> {
             List<? extends Expr<?>> sources, Class<?> targetType)
             throws CompileException, ParseException, ScanException {
         Assert.notNull(targetType);
-        String expr = normalize(builder.toString());
+        String expr = normalize(toString());
 
         final Object[] constArray = constantToLabel.keySet().toArray();        
         Class<?>[] types = new Class<?>[constArray.length + sources.size()];
@@ -83,7 +85,6 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer> {
             }else{
                 types[i] = constArray[i].getClass();    
             }            
-//            names[i] = "a" + (i + 1);
             names[i] = constantToLabel.get(constArray[i]);
         }
 
@@ -135,43 +136,39 @@ public class JavaSerializer extends BaseSerializer<JavaSerializer> {
     @Override
     protected void visit(Path<?> path) {
         PathType pathType = path.getMetadata().getPathType();
-        String parentAsString = null, exprAsString = null;
-
-        if (path.getMetadata().getParent() != null) {
-            parentAsString = toString((Expr<?>) path.getMetadata().getParent(),
-                    false);
-        }
-        if (pathType == PathType.VARIABLE) {
-            exprAsString = path.getMetadata().getExpression().toString();
-        } else if (pathType == PathType.PROPERTY) {
+        
+        if (pathType == PathType.PROPERTY){            
             String prefix = "get";
-            if (((Expr<?>) path).getType() != null
-                    && ((Expr<?>) path).getType().equals(Boolean.class)) {
+            if (((Expr<?>) path).getType() != null && ((Expr<?>) path).getType().equals(Boolean.class)) {
                 prefix = "is";
             }
-            exprAsString = prefix + StringUtils.capitalize(path.getMetadata().getExpression().toString()) + "()";
-
-        } else if (pathType == PathType.LISTVALUE_CONSTANT) {
-            exprAsString = path.getMetadata().getExpression().toString();
-
-        } else if (path.getMetadata().getExpression() != null) {
-            exprAsString = toString(path.getMetadata().getExpression(), false);
+            handle((Expr<?>) path.getMetadata().getParent());
+            append(".").append(prefix);
+            append(StringUtils.capitalize(path.getMetadata().getExpression().toString()) + "()");
+        }else{
+            if (pathType.isGeneric()){
+                append("((").append(path.getType().getName()).append(")");
+            }        
+            List<Expr<?>> args = new ArrayList<Expr<?>>(2);
+            if (path.getMetadata().getParent() != null){
+                args.add((Expr<?>)path.getMetadata().getParent());
+            }
+            args.add(path.getMetadata().getExpression());            
+            Template template = templates.getTemplate(pathType);
+            for (Element element : template.getElements()){
+                if (element.getStaticText() != null){
+                    append(element.getStaticText());
+                }else if (element.isAsString()){
+                    append(args.get(element.getIndex()).toString());
+                }else{
+                    handle(args.get(element.getIndex()));
+                }
+            }  
+            if (pathType.isGeneric()){
+                append(")");
+            }
         }
         
-        if (pathType.isGeneric()){
-            // required because Janino doesn't support generics
-            append("((").append(path.getType().getName()).append(")");
-        }        
-        String pattern = patterns.getPattern(pathType);
-        if (parentAsString != null) {
-            append(String.format(pattern, parentAsString, exprAsString));
-        } else {
-            append(String.format(pattern, exprAsString));
-        }
-        if (pathType.isGeneric()){
-            // required because Janino doesn't support generics
-            append(")");
-        }
     }
 
     private void visitCast(Operator<?> operator, Expr<?> source, Class<?> targetType) {

@@ -51,7 +51,7 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
     
     private List<Object> constants = new ArrayList<Object>();
     
-    public JDOQLSerializer(JDOQLPatterns patterns, Expr<?> candidate) {
+    public JDOQLSerializer(JDOQLTemplates patterns, Expr<?> candidate) {
         super(patterns);
         this.candidatePath = candidate;
     }
@@ -150,7 +150,7 @@ public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy) {
                 if (!first){
-                    builder.append(", ");
+                    append(", ");
                 }                    
                 handle(os.getTarget());
                 append(os.getOrder() == Order.ASC ? " ASC" : " DESC");

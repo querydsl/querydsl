@@ -17,14 +17,12 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.mysema.query.serialization.OperationPatterns;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.OperatorImpl;
 import com.mysema.query.types.operation.Ops;
 
-// TODO: Auto-generated Javadoc
 /**
  * StringTest provides.
  * 
@@ -42,21 +40,21 @@ public class StringTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testPatternAvailability() throws IllegalArgumentException, IllegalAccessException{
-        OperationPatterns ops = new OperationPatterns(){{
+        Templates ops = new Templates(){{
             // TODO
         }};
         Set<Field> missing = new HashSet<Field>();
         for (Field field : Ops.class.getFields()){
             if (field.getType().equals(OperatorImpl.class)){
                 Operator op = (Operator)field.get(null);
-                if (ops.getPattern(op) == null) missing.add(field);    
+                if (ops.getTemplate(op) == null) missing.add(field);    
             }            
         }
         for (Class<?> cl : Ops.class.getClasses()){
             for (Field field : cl.getFields()){
                 if (field.getType().equals(OperatorImpl.class)){
                     Operator op = (Operator)field.get(null);
-                    if (ops.getPattern(op) == null) missing.add(field);    
+                    if (ops.getTemplate(op) == null) missing.add(field);    
                 }                
             }   
         }

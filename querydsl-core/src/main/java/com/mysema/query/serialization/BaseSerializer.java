@@ -5,12 +5,17 @@
  */
 package com.mysema.query.serialization;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.Template;
+import com.mysema.query.types.Templates;
 import com.mysema.query.types.VisitorBase;
+import com.mysema.query.types.Template.Element;
 import com.mysema.query.types.custom.Custom;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EConstant;
@@ -30,30 +35,26 @@ import com.mysema.query.types.path.PathType;
 public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
         extends VisitorBase<SubType> {
 
-    protected StringBuilder builder = new StringBuilder();
+    private final StringBuilder builder = new StringBuilder();
 
     protected Map<Object,String> constantToLabel = new HashMap<Object,String>();
     
     protected String constantPrefix = "a";
     
-    protected final OperationPatterns patterns;
+    protected final Templates templates;
 
     @SuppressWarnings("unchecked")
     private final SubType _this = (SubType) this;
 
-    public BaseSerializer(OperationPatterns patterns) {
-        this.patterns = Assert.notNull(patterns,"patterns is null");
+    public BaseSerializer(Templates patterns) {
+        this.templates = Assert.notNull(patterns,"patterns is null");
     }
 
-    public final SubType append(String... str) {
+    public SubType append(String... str) {
         for (String s : str) {
             builder.append(s);
         }
         return _this;
-    }
-
-    protected void appendOperationResult(Operator<?> operator, String result) {
-        append(result);
     }
 
     public Map<Object,String> getConstantToLabel() {
@@ -64,7 +65,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
         boolean first = true;
         for (Expr<?> expr : expressions) {
             if (!first) {
-                builder.append(sep);
+                append(sep);
             }
             handle(expr);
             first = false;
@@ -81,27 +82,14 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
         return builder.toString();
     }
 
-    protected final String toString(Expr<?> expr, boolean wrap) {
-        StringBuilder old = builder;
-        builder = new StringBuilder();
-        if (wrap) {
-            builder.append("(");
+    protected void visit(Custom<?> expr) {        
+        for (Element element : expr.getTemplate().getElements()){
+            if (element.getStaticText() != null){
+                append(element.getStaticText());
+            }else{
+                handle(expr.getArg(element.getIndex()));
+            }
         }
-        handle(expr);
-        if (wrap) {
-            builder.append(")");
-        }
-        String ret = builder.toString();
-        builder = old;
-        return ret;
-    }
-
-    protected void visit(Custom<?> expr) {
-        Object[] strings = new String[expr.getArgs().size()];
-        for (int i = 0; i < strings.length; i++) {
-            strings[i] = toString(expr.getArg(i), false);
-        }
-        append(String.format(expr.getPattern(), strings));
     }
 
     protected void visit(EArrayConstructor<?> oa) {
@@ -126,54 +114,57 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
     }
 
     @Override
-    protected final void visit(Operation<?, ?> expr) {
+    protected void visit(Operation<?, ?> expr) {
         visitOperation(expr.getType(), expr.getOperator(), expr.getArgs());
     }
 
     protected void visit(Path<?> path) {
         PathType pathType = path.getMetadata().getPathType();
-        String parentAsString = null, exprAsString = null;
-
-        if (path.getMetadata().getParent() != null) {
-            parentAsString = toString((Expr<?>) path.getMetadata().getParent(),
-                    false);
+        Template template = templates.getTemplate(pathType);
+        List<Expr<?>> args = new ArrayList<Expr<?>>();
+        if (path.getMetadata().getParent() != null){
+            args.add((Expr<?>) path.getMetadata().getParent());
         }
-        if (pathType == PathType.PROPERTY 
-                || pathType == PathType.VARIABLE
-                || pathType == PathType.LISTVALUE_CONSTANT
-                || pathType == PathType.ARRAYVALUE_CONSTANT) {
-            exprAsString = path.getMetadata().getExpression().toString();
-        } else if (path.getMetadata().getExpression() != null) {
-            exprAsString = toString(path.getMetadata().getExpression(), false);
+        args.add(path.getMetadata().getExpression());
+        
+        for (Element element : template.getElements()){
+            if (element.getStaticText() != null){
+                append(element.getStaticText());
+            }else if (element.isAsString()){
+                append(args.get(element.getIndex()).toString());
+            }else{
+                handle(args.get(element.getIndex()));
+            }
         }
-
-        String pattern = patterns.getPattern(pathType);
-        if (parentAsString != null) {
-            append(String.format(pattern, parentAsString, exprAsString));
-        } else {
-            append(String.format(pattern, exprAsString));
-        }
-
     }
     
     @SuppressWarnings("unchecked")
-    protected void visitOperation(Class<?> type, Operator<?> operator,List<Expr<?>> args) {
-        String pattern = patterns.getPattern(operator);
-        if (pattern == null) {
+    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
+        Template template = templates.getTemplate(operator);
+        if (template == null) {
             throw new IllegalArgumentException("Got no pattern for " + operator);
         }
-        Object[] strings = new String[args.size()];
-        int precedence = patterns.getPrecedence(operator);
-        for (int i = 0; i < strings.length; i++) {
-            boolean wrap = false;
-            if (args.get(i) instanceof Operation) {
-                // wrap if outer operator precedes
-                wrap = precedence < patterns.getPrecedence(((Operation<?, ?>) args
-                        .get(i)).getOperator());
+        int precedence = templates.getPrecedence(operator);
+        for (Element element : template.getElements()){
+            if (element.getStaticText() != null){
+                append(element.getStaticText());
+            }else if (element.isAsString()){
+                append(args.get(element.getIndex()).toString());
+            }else{
+                int i = element.getIndex();
+                boolean wrap = false;
+                if (args.get(i) instanceof Operation){
+                    wrap = precedence < templates.getPrecedence(((Operation<?, ?>) args.get(i)).getOperator());
+                }
+                if (wrap){
+                    append("(");
+                }
+                handle(args.get(i));
+                if (wrap){
+                    append(")");
+                }
             }
-            strings[i] = toString(args.get(i), wrap);
-        }
-        // TODO : use faster custom rendering
-        appendOperationResult(operator, String.format(pattern, strings));
+        }        
     }
+
 }

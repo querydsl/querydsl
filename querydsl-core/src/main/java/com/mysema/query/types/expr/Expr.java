@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.serialization.ToStringVisitor;
+import com.mysema.query.types.ToStringVisitor;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;

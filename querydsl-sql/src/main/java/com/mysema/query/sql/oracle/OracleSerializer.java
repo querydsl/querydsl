@@ -5,7 +5,7 @@
  */
 package com.mysema.query.sql.oracle;
 
-import com.mysema.query.sql.SQLPatterns;
+import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
@@ -25,7 +25,7 @@ public class OracleSerializer extends SQLSerializer {
 
     private EBoolean startWith;
 
-    public OracleSerializer(SQLPatterns patterns, EBoolean connectBy,
+    public OracleSerializer(SQLTemplates patterns, EBoolean connectBy,
             EBoolean connectByNocyclePrior, EBoolean connectByPrior,
             Expr<?> orderSiblingsBy, EBoolean startWith) {
         super(patterns);
