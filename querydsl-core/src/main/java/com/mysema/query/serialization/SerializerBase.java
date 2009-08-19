@@ -6,7 +6,6 @@
 package com.mysema.query.serialization;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,13 +26,12 @@ import com.mysema.query.types.path.Path;
 import com.mysema.query.types.path.PathType;
 
 /**
- * BaseSerializer is a stub for Serializer implementations
+ * SerializerBase is a stub for Serializer implementations
  * 
  * @author tiwe
  * @version $Id$
  */
-public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
-        extends VisitorBase<SubType> {
+public abstract class SerializerBase<SubType extends SerializerBase<SubType>> extends VisitorBase<SubType> {
 
     private final StringBuilder builder = new StringBuilder();
 
@@ -46,7 +44,7 @@ public abstract class BaseSerializer<SubType extends BaseSerializer<SubType>>
     @SuppressWarnings("unchecked")
     private final SubType _this = (SubType) this;
 
-    public BaseSerializer(Templates patterns) {
+    public SerializerBase(Templates patterns) {
         this.templates = Assert.notNull(patterns,"patterns is null");
     }
 

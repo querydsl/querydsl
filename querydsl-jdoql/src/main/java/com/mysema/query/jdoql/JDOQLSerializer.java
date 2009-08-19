@@ -17,7 +17,7 @@ import org.apache.commons.lang.ClassUtils;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.serialization.BaseSerializer;
+import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
@@ -37,7 +37,7 @@ import com.mysema.query.types.query.SubQuery;
  * @author tiwe
  * 
  */
-public class JDOQLSerializer extends BaseSerializer<JDOQLSerializer> {
+public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     
     private static Comparator<Map.Entry<Object,String>> comparator = new Comparator<Map.Entry<Object,String>>(){
         @Override

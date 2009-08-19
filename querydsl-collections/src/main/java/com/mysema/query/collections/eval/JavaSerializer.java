@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.serialization.BaseSerializer;
+import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.Template.Element;
 import com.mysema.query.types.expr.EConstant;
@@ -37,7 +37,7 @@ import com.mysema.query.types.path.PathType;
  * @author tiwe
  * @version $Id$
  */
-public class JavaSerializer extends BaseSerializer<JavaSerializer> {
+public class JavaSerializer extends SerializerBase<JavaSerializer> {
 
     private static final Logger logger = LoggerFactory.getLogger(JavaSerializer.class);
 

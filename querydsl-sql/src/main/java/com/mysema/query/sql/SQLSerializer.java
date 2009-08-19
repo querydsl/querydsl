@@ -11,7 +11,7 @@ import java.util.List;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.serialization.BaseSerializer;
+import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
@@ -31,7 +31,7 @@ import com.mysema.query.types.query.SubQuery;
  * @author tiwe
  * @version $Id$
  */
-public class SQLSerializer extends BaseSerializer<SQLSerializer> {
+public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     private final List<Object> constants = new ArrayList<Object>();
     
