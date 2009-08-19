@@ -53,10 +53,10 @@
   <#-- constructors -->           
     <#if !embeddable>
     public ${pre}${decl.simpleName}(@NotEmpty String variable) {
-        this(${decl.simpleName}.class, variable);        
+        this(${decl.localName}.class, variable);        
     }    
     
-    public ${pre}${decl.simpleName}(Class<? extends ${decl.simpleName}> cl, @NotEmpty String variable) {
+    public ${pre}${decl.simpleName}(Class<? extends ${decl.localName}> cl, @NotEmpty String variable) {
         super(cl, "${decl.simpleName}", variable);
     <#list decl.entityFields as field>
         <#if !reserved?seq_contains(field.name)>
@@ -67,7 +67,7 @@
     
     </#if>     
     public ${pre}${decl.simpleName}(PathMetadata<?> metadata) {
-        super(${decl.simpleName}.class, "${decl.simpleName}", metadata);
+        super(${decl.localName}.class, "${decl.simpleName}", metadata);
     }
     
     <#list decl.simpleMaps as field>

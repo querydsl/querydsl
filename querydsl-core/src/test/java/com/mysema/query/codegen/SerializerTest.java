@@ -66,6 +66,10 @@ public class SerializerTest {
                 return String.class.getSimpleName();
             }
             @Override
+            public String getLocalName() {
+                return String.class.getSimpleName();
+            }
+            @Override
             @Nullable
             public TypeModel getValueType() {
                 return null;

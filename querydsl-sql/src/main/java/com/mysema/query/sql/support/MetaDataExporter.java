@@ -115,7 +115,8 @@ public class MetaDataExporter {
                 TypeModel typeModel = new SimpleTypeModel(_type, 
                         _class.getName(),
                         _class.getPackage().getName(),
-                        _class.getSimpleName(), null, null);
+                        _class.getSimpleName(),
+                        null, null);
                 type.addField(new FieldModel(type, _name, typeModel, _name));
             }
             columns.close();

@@ -7,7 +7,7 @@ import com.mysema.query.types.expr.*;
  * ${pre}${classSimpleName} is a Querydsl DTO type
  *
  */
-public class ${pre}${classSimpleName} extends EConstructor<${type.simpleName}>{
+public class ${pre}${classSimpleName} extends EConstructor<${type.localName}>{
 
     <#list type.constructors as co>    
     public ${pre}${type.simpleName}(<#list co.parameters as pa>Expr<${pa.typeName}> ${pa.name}<#if pa_has_next>,</#if></#list>){

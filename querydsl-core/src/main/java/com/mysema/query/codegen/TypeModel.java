@@ -15,14 +15,16 @@ public interface TypeModel {
 
     FieldType getFieldType();
 
-    String getName();
-
     TypeModel getKeyType();
+
+    String getLocalName();
     
-    TypeModel getValueType();
+    String getName();
 
     String getPackageName();
 
     String getSimpleName();
+    
+    TypeModel getValueType();
 
 }

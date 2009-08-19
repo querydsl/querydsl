@@ -17,7 +17,7 @@ public class SimpleTypeModel implements TypeModel {
 
     protected FieldType fieldType = FieldType.ENTITY;
 
-    protected String name, packageName, simpleName;
+    protected String name, packageName, simpleName, localName;
 
     @Nullable
     protected TypeModel keyType, valueType;
@@ -62,6 +62,13 @@ public class SimpleTypeModel implements TypeModel {
     @Override
     public String getSimpleName() {
         return simpleName;
+    }
+    
+    public String getLocalName(){
+        if (localName == null){
+            localName = name.substring(packageName.length()+1);
+        }
+        return localName;
     }
 
     @Override

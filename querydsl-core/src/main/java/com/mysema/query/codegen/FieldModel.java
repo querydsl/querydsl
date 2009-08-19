@@ -29,9 +29,6 @@ public class FieldModel implements Comparable<FieldModel> {
         this.name = Assert.notNull(name,"name is null");
         this.type = Assert.notNull(type,"type is null");
         this.docs = Assert.notNull(docs,"docs is null").replace("@return", "").trim();
-        if (type.getSimpleName() == null){
-            throw new IllegalArgumentException("Field with name " + name + " got no valid type : " + type);
-        }
         this.typeName = getLocalName(type);
         this.keyTypeName = type.getKeyType() != null ? getLocalName(type.getKeyType()) : null;
         this.valueTypeName = type.getValueType() != null ? getLocalName(type.getValueType()) : null;
@@ -49,7 +46,7 @@ public class FieldModel implements Comparable<FieldModel> {
     }
     
     private String getLocalName(TypeModel type){        
-        return isVisible(type) ? type.getSimpleName() : type.getName();
+        return isVisible(type) ? type.getLocalName() : type.getName();
     }
     
     public int compareTo(FieldModel o) {

@@ -43,12 +43,12 @@ public class ClassModel implements Comparable<ClassModel> {
     
     private int escapeSuffix = 1;
     
-    private final String simpleName, name, packageName;
+    private final String simpleName, name, packageName, localName;
     
     @Nullable
     private String superType;
     
-    private Map<FieldType,Collection<FieldModel>> typeToFields = MapUtils.lazyMap(
+    private final Map<FieldType,Collection<FieldModel>> typeToFields = MapUtils.lazyMap(
             new HashMap<FieldType,Collection<FieldModel>>(),
             new Factory<Collection<FieldModel>>(){
                 @Override
@@ -65,6 +65,7 @@ public class ClassModel implements Comparable<ClassModel> {
         this.name = Assert.notNull(name,"name is null");
         this.simpleName = Assert.notNull(simpleName,"simpleName is null");
         this.uncapSimpleName = StringUtils.uncapitalize(simpleName);
+        this.localName = name.substring(packageName.length()+1);
     }
     
     public void addConstructor(ConstructorModel co) {
@@ -174,6 +175,10 @@ public class ClassModel implements Comparable<ClassModel> {
         return typeToFields.get(FieldType.SIMPLEMAP);
     }
 
+    public String getLocalName(){
+        return localName;
+    }
+    
     public String getSimpleName() {
         return simpleName;
     }
