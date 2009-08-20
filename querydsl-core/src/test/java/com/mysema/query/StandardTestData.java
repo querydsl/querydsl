@@ -656,8 +656,10 @@ class StandardTestData {
      */
     Collection<EString> stringProjections(EString expr, EString other, String knownValue){
         return Arrays.<EString>asList(
-          expr.add("Hello"),
-          expr.add(other),
+          expr.append("Hello"),
+          expr.append(other),
+          expr.prepend("Hello"),
+          expr.prepend(other),
           expr.concat("Hello"),
           expr.concat(other),
           expr.lower(),

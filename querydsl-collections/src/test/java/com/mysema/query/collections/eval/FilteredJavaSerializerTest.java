@@ -74,7 +74,7 @@ public class FilteredJavaSerializerTest {
 
     @Test
     public void cat16(){
-        matchCat("true", cat.name.add("Hello").eq(otherCat.name));
+        matchCat("true", cat.name.append("Hello").eq(otherCat.name));
     }
 
     @Test
@@ -140,13 +140,13 @@ public class FilteredJavaSerializerTest {
     @Test
     public void catAndOtherCat3(){
         matchCatAndOtherCat("(cat.getName() + a1).equals(otherCat.getName())", 
-                cat.name.add("Hello").eq(otherCat.name));
+                cat.name.append("Hello").eq(otherCat.name));
     }
     
     @Test
     public void catAndOtherCat4(){
         matchCatAndOtherCat("otherCat.getName().equals((cat.getName() + a1))", 
-                otherCat.name.eq(cat.name.add("Hello")));
+                otherCat.name.eq(cat.name.append("Hello")));
     }
     
     private void matchCat(String expected, EBoolean where) {

@@ -108,7 +108,7 @@ public abstract class SqlQueryTest {
     @Test
     public void testVarious() throws SQLException {
         System.out.println(q().from(survey).list(survey.name.lower()));
-        System.out.println(q().from(survey).list(survey.name.add("abc")));
+        System.out.println(q().from(survey).list(survey.name.append("abc")));
         System.out
                 .println(q().from(survey).list(survey.id.sqrt()));
     }
@@ -122,7 +122,7 @@ public abstract class SqlQueryTest {
     @Test
     public void testSelectConcat() throws SQLException {
         System.out.println(q().from(survey)
-                .list(survey.name.add("Hello World")));
+                .list(survey.name.append("Hello World")));
     }
 
     @Test

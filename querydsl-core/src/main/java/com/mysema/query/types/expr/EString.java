@@ -34,16 +34,32 @@ public abstract class EString extends EComparable<String> {
      * @param str
      * @return this + str
      */
-    public final EString add(Expr<String> str) {
-        return concat(str);
+    public final EString append(Expr<String> str) {
+        return new OString(Ops.CONCAT, this, str);
     }
 
     /**
      * @param str
      * @return this + str
      */
-    public final EString add(String str) {
-        return concat(str);
+    public final EString append(String str) {
+        return append(EConstant.create(str));
+    }
+    
+    /**
+     * @param str
+     * @return str + this
+     */
+    public final EString prepend(Expr<String> str) {
+        return new OString(Ops.CONCAT, str, this);
+    }
+
+    /**
+     * @param str
+     * @return str + this
+     */
+    public final EString prepend(String str) {
+        return prepend(EConstant.create(str));
     }
 
     /**
@@ -69,7 +85,7 @@ public abstract class EString extends EComparable<String> {
      * @return this + str
      */
     public final EString concat(Expr<String> str) {
-        return new OString(Ops.CONCAT, this, str);
+        return append(str);
     }
 
     /**
@@ -77,7 +93,7 @@ public abstract class EString extends EComparable<String> {
      * @return this + str
      */
     public final EString concat(String str) {
-        return concat(EConstant.create(str));
+        return append(str);
     }
 
     /**

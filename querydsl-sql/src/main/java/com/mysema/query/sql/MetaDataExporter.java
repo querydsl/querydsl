@@ -32,9 +32,21 @@ import com.mysema.query.util.FileUtils;
  */
 public class MetaDataExporter {
 
-    private Map<Integer, Class<?>> sqlToJavaType = new HashMap<Integer, Class<?>>();
+    private final Map<Integer, Class<?>> sqlToJavaType = new HashMap<Integer, Class<?>>();
 
-    {
+    private final String namePrefix, targetFolder, packageName;
+
+    private final String schemaPattern, tableNamePattern;
+
+    private static final Serializer serializer = Serializers.DOMAIN;
+    
+    public MetaDataExporter(String namePrefix, String packageName, String schemaPattern, String tableNamePattern, String targetFolder){
+        this.namePrefix = namePrefix;
+        this.packageName = packageName;
+        this.schemaPattern = schemaPattern;
+        this.tableNamePattern = tableNamePattern;
+        this.targetFolder = targetFolder;
+        
         // BOOLEAN
         sqlToJavaType.put(Types.BIT, Boolean.class);
         sqlToJavaType.put(Types.BOOLEAN, Boolean.class);
@@ -72,14 +84,8 @@ public class MetaDataExporter {
         sqlToJavaType.put(Types.LONGVARBINARY, Object.class);
         sqlToJavaType.put(Types.VARBINARY, Object.class);
         sqlToJavaType.put(Types.BLOB, Object.class);
-
     }
 
-    private String namePrefix = "", targetFolder, packageName;
-
-    private String schemaPattern, tableNamePattern;
-
-    private Serializer serializer = Serializers.DOMAIN;
 
     public void export(DatabaseMetaData md) throws SQLException {
         if (targetFolder == null)
@@ -134,26 +140,6 @@ public class MetaDataExporter {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
-    }
-
-    public void setNamePrefix(String namePrefix) {
-        this.namePrefix = namePrefix;
-    }
-
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
-    }
-
-    public void setSchemaPattern(String schemaPattern) {
-        this.schemaPattern = schemaPattern;
-    }
-
-    public void setTableNamePattern(String tableNamePattern) {
-        this.tableNamePattern = tableNamePattern;
-    }
-
-    public void setTargetFolder(String targetFolder) {
-        this.targetFolder = targetFolder;
     }
 
 }
