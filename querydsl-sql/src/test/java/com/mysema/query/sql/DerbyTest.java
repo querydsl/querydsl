@@ -96,7 +96,7 @@ public class DerbyTest extends SqlQueryTest {
 
     @Before
     public void setUpForTest() {
-        dialect = Dialect.forDerby().newLineToSingleSpace();
+        dialect = SQLTemplatesFactory.forDerby().newLineToSingleSpace();
     }
 
     private static void addEmployee(int id, String firstName, String lastName,

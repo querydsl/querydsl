@@ -39,19 +39,19 @@ public class OracleSerializer extends SQLSerializer {
     @Override
     protected void beforeOrderBy() {
         if (startWith != null){
-            append(patterns.startWith()).handle(startWith);
+            append(templates.startWith()).handle(startWith);
         }            
         if (connectBy != null){
-            append(patterns.connectBy()).handle(connectBy);
+            append(templates.connectBy()).handle(connectBy);
         }            
         if (connectByPrior != null){
-            append(patterns.connectByPrior()).handle(connectByPrior);
+            append(templates.connectByPrior()).handle(connectByPrior);
         }            
         if (connectByNocyclePrior != null){
-            append(patterns.connectByNocyclePrior()).handle(connectByNocyclePrior);
+            append(templates.connectByNocyclePrior()).handle(connectByNocyclePrior);
         }            
         if (orderSiblingsBy != null){
-            append(patterns.orderSiblingsBy()).handle(orderSiblingsBy);
+            append(templates.orderSiblingsBy()).handle(orderSiblingsBy);
         }            
     }
 }

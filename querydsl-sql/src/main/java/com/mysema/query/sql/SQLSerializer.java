@@ -35,11 +35,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     private final List<Object> constants = new ArrayList<Object>();
     
-    protected final SQLTemplates patterns;
+    protected final SQLTemplates templates;
 
-    public SQLSerializer(SQLTemplates patterns) {
-        super(patterns);
-        this.patterns = patterns;
+    public SQLSerializer(SQLTemplates templates) {
+        super(templates);
+        this.templates = templates;
     }
 
     protected void beforeOrderBy() {
@@ -50,6 +50,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         return constants;
     }
 
+    @SuppressWarnings("unchecked")
     public void serialize(QueryMetadata metadata, boolean forCountRow) {
         List<? extends Expr<?>> select = metadata.getProjection();
         List<JoinExpression> joins = metadata.getJoins();
@@ -59,12 +60,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
         if (forCountRow) {
-            append(patterns.select()).append(patterns.countStar());
+            append(templates.select()).append(templates.countStar());
         } else if (!select.isEmpty()) {
             if (!metadata.isDistinct()) {
-                append(patterns.select());
+                append(templates.select());
             } else {
-                append(patterns.selectDistinct());
+                append(templates.selectDistinct());
             }
             List<Expr<?>> sqlSelect = new ArrayList<Expr<?>>();
             for (Expr<?> selectExpr : select) {
@@ -78,10 +79,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
             handle(", ", sqlSelect);
         }
-        append(patterns.from());
+        append(templates.from());
         if (joins.isEmpty()) {
             // TODO : disallow usage of dummy table ?!?
-            append(patterns.dummyTable());
+            append(templates.dummyTable());
 
         }
         for (int i = 0; i < joins.size(); i++) {
@@ -90,46 +91,46 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 String sep = ", ";
                 switch (je.getType()) {
                 case FULLJOIN:
-                    sep = patterns.fullJoin();
+                    sep = templates.fullJoin();
                     break;
                 case INNERJOIN:
-                    sep = patterns.innerJoin();
+                    sep = templates.innerJoin();
                     break;
                 case JOIN:
-                    sep = patterns.join();
+                    sep = templates.join();
                     break;
                 case LEFTJOIN:
-                    sep = patterns.leftJoin();
+                    sep = templates.leftJoin();
                     break;
                 }
                 append(sep);
             }
 
             // type specifier
-            if (je.getTarget() instanceof PEntity && patterns.supportsAlias()) {
+            if (je.getTarget() instanceof PEntity && templates.supportsAlias()) {
                 PEntity<?> pe = (PEntity<?>) je.getTarget();
                 if (pe.getMetadata().getParent() == null) {
-                    append(pe.getEntityName()).append(patterns.tableAlias());
+                    append(pe.getEntityName()).append(templates.tableAlias());
                 }
             }
             handle(je.getTarget());
             if (je.getCondition() != null) {
-                append(patterns.on()).handle(je.getCondition());
+                append(templates.on()).handle(je.getCondition());
             }
         }
 
         if (where != null) {
-            append(patterns.where()).handle(where);
+            append(templates.where()).handle(where);
         }
         if (!groupBy.isEmpty()) {
-            append(patterns.groupBy()).handle(", ", groupBy);
+            append(templates.groupBy()).handle(", ", groupBy);
         }
         if (having != null) {
             if (groupBy.isEmpty()) {
                 throw new IllegalArgumentException(
                         "having, but not groupBy was given");
             }
-            append(patterns.having()).handle(having);
+            append(templates.having()).handle(having);
         }
 
         beforeOrderBy();
@@ -137,33 +138,33 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         Long limit = metadata.getModifiers().getLimit();
         Long offset = metadata.getModifiers().getOffset();
 
-        if (!patterns.limitAndOffsetSymbols()
+        if (!templates.limitAndOffsetSymbols()
                 && metadata.getModifiers().isRestricting() && !forCountRow) {
             if (where == null){
-                append(patterns.where());
+                append(templates.where());
             }                
-            append(patterns.limitOffsetCondition(limit, offset));
+            append(templates.limitOffsetCondition(limit, offset));
         }
 
         if (!orderBy.isEmpty() && !forCountRow) {
-            append(patterns.orderBy());
+            append(templates.orderBy());
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy) {
                 if (!first){
                     append(", ");
                 }                    
                 handle(os.getTarget());
-                append(os.getOrder() == Order.ASC ? patterns.asc() : patterns.desc());
+                append(os.getOrder() == Order.ASC ? templates.asc() : templates.desc());
                 first = false;
             }
         }
-        if (patterns.limitAndOffsetSymbols()
+        if (templates.limitAndOffsetSymbols()
                 && metadata.getModifiers().isRestricting() && !forCountRow) {
             if (limit != null) {
-                append(patterns.limit()).append(String.valueOf(limit));
+                append(templates.limit()).append(String.valueOf(limit));
             }
             if (offset != null) {
-                append(patterns.offset()).append(String.valueOf(offset));
+                append(templates.offset()).append(String.valueOf(offset));
             }
         }
     }
@@ -172,18 +173,18 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     public void serializeUnion(SubQuery[] sqs,
             List<OrderSpecifier<?>> orderBy) {
         // union
-        handle(patterns.union(), (List)Arrays.asList(sqs));
+        handle(templates.union(), (List)Arrays.asList(sqs));
 
         // order by
         if (!orderBy.isEmpty()) {
-            append(patterns.orderBy());
+            append(templates.orderBy());
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy) {
                 if (!first){
                     append(", ");
                 }                    
                 handle(os.getTarget());
-                append(os.getOrder() == Order.ASC ? patterns.asc() : patterns.desc());
+                append(os.getOrder() == Order.ASC ? templates.asc() : templates.desc());
                 first = false;
             }
         }
@@ -200,7 +201,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         // TODO : move constants to SqlOps
         append("cast(").handle(source);
         append(" as ");
-        append(patterns.getClass2Type().get(targetType)).append(")");
+        append(templates.getClass2Type().get(targetType)).append(")");
 
     }
 
@@ -232,14 +233,14 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     protected void visit(SumOver<?> expr) {
-        append(patterns.sum()).append("(").handle(expr.getTarget()).append(") ");
-        append(patterns.over());
+        append(templates.sum()).append("(").handle(expr.getTarget()).append(") ");
+        append(templates.over());
         append(" (");
         if (expr.getPartitionBy() != null) {
-            append(patterns.partitionBy()).handle(expr.getPartitionBy());
+            append(templates.partitionBy()).handle(expr.getPartitionBy());
         }
         if (!expr.getOrderBy().isEmpty()) {
-            append(patterns.orderBy()).handle(", ", expr.getOrderBy());
+            append(templates.orderBy()).handle(", ", expr.getOrderBy());
         }
         append(")");
     }

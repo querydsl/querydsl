@@ -62,7 +62,7 @@ public class SQLTemplates extends Templates {
 
     private boolean limitAndOffsetSymbols = true;
 
-    {
+    public SQLTemplates(){
         add(Ops.NOT, "not {0}");
 
         // math

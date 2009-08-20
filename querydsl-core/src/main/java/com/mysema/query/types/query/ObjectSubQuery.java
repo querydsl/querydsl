@@ -8,7 +8,10 @@ package com.mysema.query.types.query;
 import net.jcip.annotations.Immutable;
 
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.OBoolean;
+import com.mysema.query.types.operation.Ops;
 
 /**
  * Single result subquery
@@ -23,6 +26,8 @@ public class ObjectSubQuery<A> extends Expr<A> implements SubQuery{
 
     private final QueryMetadata md;
     
+    private EBoolean exists;
+    
     public ObjectSubQuery(QueryMetadata md, Class<A> type) {
         super(type);
         this.md = md;
@@ -31,6 +36,14 @@ public class ObjectSubQuery<A> extends Expr<A> implements SubQuery{
     @Override
     public QueryMetadata getMetadata() {
         return md;
+    }
+
+    @Override
+    public EBoolean exists() {
+        if (exists == null){
+            exists = new OBoolean(Ops.EXISTS, this);
+        }
+        return exists;
     }
 
 }

@@ -5,7 +5,6 @@
  */
 package com.mysema.query.sql;
 
-import static com.mysema.query.sql.SQLGrammar.exists;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
@@ -324,8 +323,8 @@ public abstract class SqlQueryTest {
     @Test
     public void testWhereExists() throws SQLException {
         ObjectSubQuery<Integer> sq1 = q().from(employee).uniqueExpr(employee.id.max());
-        q().from(employee).where(exists(sq1)).count();
-        q().from(employee).where(exists(sq1).not()).count();
+        q().from(employee).where(sq1.exists()).count();
+        q().from(employee).where(sq1.exists().not()).count();
     }
 
     @Test

@@ -6,6 +6,7 @@
 package com.mysema.query.types.query;
 
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.types.expr.EBoolean;
 
 /**
  * 
@@ -18,6 +19,8 @@ import com.mysema.query.QueryMetadata;
  */
 public interface SubQuery{
 
-    public QueryMetadata getMetadata();
+    QueryMetadata getMetadata();
+ 
+    EBoolean exists();
     
 }

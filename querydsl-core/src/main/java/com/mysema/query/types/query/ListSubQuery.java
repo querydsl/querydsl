@@ -10,7 +10,10 @@ import java.util.List;
 import net.jcip.annotations.Immutable;
 
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollectionBase;
+import com.mysema.query.types.operation.OBoolean;
+import com.mysema.query.types.operation.Ops;
 
 /**
  * List result subquery
@@ -27,6 +30,8 @@ public class ListSubQuery<A> extends ECollectionBase<A> implements SubQuery{
     
     private final QueryMetadata md;
     
+    private EBoolean exists;
+    
     @SuppressWarnings("unchecked")
     public ListSubQuery(QueryMetadata md, Class<A> elementType) {
         super((Class)List.class);
@@ -41,6 +46,14 @@ public class ListSubQuery<A> extends ECollectionBase<A> implements SubQuery{
     @Override
     public QueryMetadata getMetadata() {
         return md;
+    }
+    
+    @Override
+    public EBoolean exists() {
+        if (exists == null){
+            exists = new OBoolean(Ops.EXISTS, this);
+        }
+        return exists;
     }
 
 }

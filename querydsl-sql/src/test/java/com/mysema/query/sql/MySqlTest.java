@@ -90,7 +90,7 @@ public class MySqlTest extends SqlQueryTest {
 
     @Before
     public void setUpForTest() {
-        dialect = Dialect.forMySQL().newLineToSingleSpace();
+        dialect = SQLTemplatesFactory.forMySQL().newLineToSingleSpace();
     }
 
     private static void addEmployee(int id, String firstName, String lastName,

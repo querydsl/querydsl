@@ -16,7 +16,7 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @version $Id$
  */
-public class OracleDialect extends SQLTemplates {
+public class OracleTemplates extends SQLTemplates {
     {
         // type mappings
         addClass2TypeMappings("number(3,0)", Byte.class);

@@ -90,37 +90,31 @@ public class MetaDataExporter {
         ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
         while (tables.next()) {
             String tableName = tables.getString(3);
-            // if (camelCase){
-            // tableName = toCamelCase(tableName, true);
-            // }
-            ClassModel type = new ClassModel(null, "java.lang", "java.lang.Object",
-                    tableName);
-            ResultSet columns = md.getColumns(null, schemaPattern, tables
-                    .getString(3), null);
+            ClassModel classModel = new ClassModel(null, "java.lang", "java.lang.Object", tableName);
+            ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
             while (columns.next()) {
-                String _name = columns.getString(4);
-                Class<?> _class = sqlToJavaType.get(columns.getInt(5));
-                if (_class == null){
+                String name = columns.getString(4);
+                Class<?> clazz = sqlToJavaType.get(columns.getInt(5));
+                if (clazz == null){
                     throw new RuntimeException("No java type for " + columns.getString(6));
                 }                    
-                FieldType _type;
-                if (_class.equals(Boolean.class) || _class.equals(boolean.class)) {
-                    _type = FieldType.BOOLEAN;
-                } else if (_class.equals(String.class)) {
-                    _type = FieldType.STRING;
-                } else {
-                    _type = FieldType.COMPARABLE;
+                FieldType fieldType = FieldType.COMPARABLE;
+                if (clazz.equals(Boolean.class) || clazz.equals(boolean.class)) {
+                    fieldType = FieldType.BOOLEAN;
+                } else if (clazz.equals(String.class)) {
+                    fieldType = FieldType.STRING;
                 }
 
-                TypeModel typeModel = new SimpleTypeModel(_type, 
-                        _class.getName(),
-                        _class.getPackage().getName(),
-                        _class.getSimpleName(),
+                TypeModel typeModel = new SimpleTypeModel(
+                        fieldType, 
+                        clazz.getName(),
+                        clazz.getPackage().getName(),
+                        clazz.getSimpleName(),
                         null, null);
-                type.addField(new FieldModel(type, _name, typeModel, _name));
+                classModel.addField(new FieldModel(classModel, name, typeModel, name));
             }
             columns.close();
-            serialize(type);
+            serialize(classModel);
         }
         tables.close();
     }
