@@ -13,7 +13,6 @@ import org.apache.commons.collections15.IteratorUtils;
 import com.mysema.query.Projectable;
 import com.mysema.query.QueryBase;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.types.expr.Expr;
 
@@ -26,9 +25,6 @@ import com.mysema.query.types.expr.Expr;
  */
 public abstract class QueryBaseWithProjection<SubType extends QueryBaseWithProjection<SubType>>
         extends QueryBase<SubType> implements Projectable {
-
-    public QueryBaseWithProjection() {
-    }
 
     public QueryBaseWithProjection(QueryMetadata metadata) {
         super(metadata);

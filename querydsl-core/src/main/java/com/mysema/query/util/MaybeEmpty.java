@@ -13,7 +13,7 @@ import javax.annotation.meta.TypeQualifierNickname;
 import javax.annotation.meta.When;
 
 /**
- * MaybeEmpty provides
+ * MaybeEmpty declares that a String field or parameter may be null or empty
  *
  * @author tiwe
  * @version $Id$

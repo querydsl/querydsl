@@ -14,7 +14,7 @@ import javax.annotation.meta.TypeQualifierNickname;
 import javax.annotation.meta.When;
 
 /**
- * NotEmpty provides
+ * NotEmpty declares that a String field or parameter should not be null or empty 
  *
  * @author tiwe
  * @version $Id$

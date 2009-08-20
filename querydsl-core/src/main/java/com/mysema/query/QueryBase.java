@@ -24,10 +24,6 @@ public abstract class QueryBase<SubType extends QueryBase<SubType>> {
 
     protected String toString;
 
-    public QueryBase() {
-        this.metadata = new DefaultQueryMetadata();
-    }
-
     public QueryBase(QueryMetadata metadata) {
         this.metadata = metadata;
     }

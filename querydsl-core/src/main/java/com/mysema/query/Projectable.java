@@ -8,6 +8,7 @@ package com.mysema.query;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.expr.Expr;
@@ -23,11 +24,13 @@ public interface Projectable {
     /**
      * return the amount of matched rows
      */
+    @Nonnegative
     long count();
 
     /**
      * return the amount of distinct matched rows
      */
+    @Nonnegative
     long countDistinct();
 
     /**

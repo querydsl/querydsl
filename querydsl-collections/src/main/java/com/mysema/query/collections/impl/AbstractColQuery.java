@@ -22,6 +22,7 @@ import org.apache.commons.collections15.iterators.FilterIterator;
 import org.apache.commons.collections15.iterators.IteratorChain;
 import org.apache.commons.collections15.iterators.UniqueFilterIterator;
 
+import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
@@ -85,6 +86,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
     private boolean wrapIterators = true;
 
     public AbstractColQuery(ColQueryTemplates patterns) {
+        super(new DefaultQueryMetadata());
         this.patterns = patterns;
         this.sourceSortingSupport = new DefaultSourceSortingSupport();
     }

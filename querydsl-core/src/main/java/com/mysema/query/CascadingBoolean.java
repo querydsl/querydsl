@@ -18,17 +18,9 @@ import com.mysema.query.types.expr.EBoolean;
  */
 public class CascadingBoolean {
     
-    /** The expr. */
     @Nullable
     private EBoolean expr;
 
-    /**
-     * And.
-     * 
-     * @param right the right
-     * 
-     * @return the cascading boolean
-     */
     public CascadingBoolean and(EBoolean right) {
 //        expr = (expr == null) ? right : expr.and(right);
         if (expr == null){
@@ -39,31 +31,15 @@ public class CascadingBoolean {
         return this;
     }
 
-    /**
-     * Clear.
-     */
     public void clear() {
         expr = null;
     }
 
-    /**
-     * Not.
-     * 
-     * @param right the right
-     * 
-     * @return the cascading boolean
-     */
     public CascadingBoolean not(EBoolean right) {
         return and(right.not());
     }
 
-    /**
-     * Or.
-     * 
-     * @param right the right
-     * 
-     * @return the cascading boolean
-     */
+
     public CascadingBoolean or(EBoolean right) {
 //        expr = (expr == null) ? right : expr.or(right);
         if (expr == null){
@@ -74,11 +50,6 @@ public class CascadingBoolean {
         return this;
     }
 
-    /**
-     * Creates the.
-     * 
-     * @return the e boolean
-     */
     public EBoolean create() {
         return expr;
     }

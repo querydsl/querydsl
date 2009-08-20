@@ -10,12 +10,15 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import net.jcip.annotations.Immutable;
+
 /**
  * SearchResults bundles data for paged search results
  * 
  * @author Timo Westkamper
  * @version $Id$
  */
+@Immutable
 public final class SearchResults<T> {
 
     public static <T> SearchResults<T> emptyResults() {

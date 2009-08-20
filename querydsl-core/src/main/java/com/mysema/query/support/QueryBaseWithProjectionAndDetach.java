@@ -21,9 +21,6 @@ import com.mysema.query.types.query.ObjectSubQuery;
 public abstract class QueryBaseWithProjectionAndDetach 
     <SubType extends QueryBaseWithProjectionAndDetach<SubType>>
     extends QueryBaseWithProjection<SubType> implements Detachable {
-    
-    public QueryBaseWithProjectionAndDetach() {
-    }
 
     public QueryBaseWithProjectionAndDetach(QueryMetadata metadata) {
         super(metadata);

@@ -5,6 +5,7 @@
  */
 package com.mysema.query;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 
 import net.jcip.annotations.Immutable;
@@ -25,7 +26,7 @@ public final class QueryModifiers {
      * 
      * @return the query modifiers
      */
-    public static QueryModifiers limit(long limit) {
+    public static QueryModifiers limit(@Nonnegative long limit) {
         return new QueryModifiers(Long.valueOf(limit), null);
     }
 
@@ -36,7 +37,7 @@ public final class QueryModifiers {
      * 
      * @return the query modifiers
      */
-    public static QueryModifiers offset(long offset) {
+    public static QueryModifiers offset(@Nonnegative long offset) {
         return new QueryModifiers(null, Long.valueOf(offset));
     }
 

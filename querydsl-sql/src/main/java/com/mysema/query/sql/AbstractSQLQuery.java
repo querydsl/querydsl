@@ -17,6 +17,7 @@ import org.apache.commons.lang.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -52,6 +53,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     private SubQuery[] sq;
 
     public AbstractSQLQuery(Connection conn, SQLTemplates templates) {
+        super(new DefaultQueryMetadata());
         this.conn = conn;
         this.templates = templates;
     }

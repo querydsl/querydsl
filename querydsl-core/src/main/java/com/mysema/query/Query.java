@@ -5,6 +5,8 @@
  */
 package com.mysema.query;
 
+import javax.annotation.Nonnegative;
+
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
@@ -27,9 +29,9 @@ public interface Query<SubType extends Query<SubType>> {
 
     SubType orderBy(OrderSpecifier<?>... o);
     
-    SubType limit(long limit);
+    SubType limit(@Nonnegative long limit);
     
-    SubType offset(long offset);
+    SubType offset(@Nonnegative long offset);
         
     SubType restrict(QueryModifiers mod);
        
