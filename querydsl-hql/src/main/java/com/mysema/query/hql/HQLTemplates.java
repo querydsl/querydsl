@@ -40,8 +40,8 @@ public class HQLTemplates extends Templates {
         add(Ops.AND, "{0} and {1}", 36);
         add(Ops.NOT, "not {0}", 3);
         add(Ops.OR, "{0} or {1}", 38);
-        add(Ops.BooleanOps.XNOR, "{0} xnor {1}", 39);
-        add(Ops.BooleanOps.XOR, "{0} xor {1}", 39);
+        add(Ops.XNOR, "{0} xnor {1}", 39);
+        add(Ops.XOR, "{0} xor {1}", 39);
 
         // comparison
         add(Ops.BETWEEN, "{0} between {1} and {2}", 30);

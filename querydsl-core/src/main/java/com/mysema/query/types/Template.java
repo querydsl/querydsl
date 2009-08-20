@@ -18,6 +18,10 @@ import net.jcip.annotations.Immutable;
 @Immutable
 public final class Template {
 
+    // s -> toString
+    // l -> toLowerCase()
+    // u -> toUpperCase()
+    
     @Immutable
     public static final class Element {
         
@@ -85,9 +89,9 @@ public final class Template {
             }
             String index = template.substring(m.start() + 1, m.end() - 1);
             if (index.endsWith("s")) {
-                elements.add(new Element(Integer.valueOf(index.substring(0, index.length() - 1)), true));
+                elements.add(new Element(Integer.parseInt(index.substring(0, index.length() - 1)), true));
             } else {
-                elements.add(new Element(Integer.valueOf(index)));
+                elements.add(new Element(Integer.parseInt(index)));
             }
             end = m.end();
         }

@@ -34,8 +34,8 @@ public class Templates {
         add(Ops.AND, "{0} && {1}", 36);
         add(Ops.NOT, "!{0}", 3);
         add(Ops.OR, "{0} || {1}", 38);
-        add(Ops.BooleanOps.XNOR, "{0} xnor {1}", 39);
-        add(Ops.BooleanOps.XOR, "{0} xor {1}", 39);
+        add(Ops.XNOR, "{0} xnor {1}", 39);
+        add(Ops.XOR, "{0} xor {1}", 39);
 
         // collection
         add(Ops.COL_IS_EMPTY, "empty({0})");

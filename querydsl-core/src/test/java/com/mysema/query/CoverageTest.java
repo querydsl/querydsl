@@ -82,6 +82,9 @@ public class CoverageTest {
             Ops.ARRAY_SIZE,
             Ops.MOD,
             Ops.STRING_CAST,
+            
+            Ops.XOR,
+            Ops.XNOR,
                 
             // aggregation
             Ops.AggOps.AVG_AGG,

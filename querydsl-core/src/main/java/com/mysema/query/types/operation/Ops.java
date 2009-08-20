@@ -63,6 +63,8 @@ public interface Ops {
     Operator<Boolean> AND = new OperatorImpl<Boolean>(Boolean_x_2);
     Operator<Boolean> NOT = new OperatorImpl<Boolean>(Boolean.class);
     Operator<Boolean> OR = new OperatorImpl<Boolean>(Boolean_x_2);
+    Operator<Boolean> XNOR = new OperatorImpl<Boolean>(Boolean_x_2);
+    Operator<Boolean> XOR = new OperatorImpl<Boolean>(Boolean_x_2);
     
     // Comparable
     Operator<Boolean> BETWEEN = new OperatorImpl<Boolean>(Comparable_x_3);
@@ -124,14 +126,6 @@ public interface Ops {
         Operator<Number> COUNT_AGG = new OperatorImpl<Number>(Object.class);
         Operator<Number> COUNT_ALL_AGG = new OperatorImpl<Number>();
         ENumber<Long> COUNT_ALL_AGG_EXPR = ONumber.create(Long.class, COUNT_ALL_AGG);
-    }
-    
-    /**
-     * Boolean operators
-     */
-    public interface BooleanOps {
-        Operator<Boolean> XNOR = new OperatorImpl<Boolean>(Boolean_x_2);
-        Operator<Boolean> XOR = new OperatorImpl<Boolean>(Boolean_x_2);
     }
     
     /**
