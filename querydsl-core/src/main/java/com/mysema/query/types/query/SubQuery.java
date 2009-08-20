@@ -23,4 +23,6 @@ public interface SubQuery{
  
     EBoolean exists();
     
+    EBoolean notExists();
+    
 }

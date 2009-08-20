@@ -161,6 +161,9 @@ public class Templates {
         add(PathType.LISTVALUE_CONSTANT, "{0}.get({1s})"); // serialized constant
         add(PathType.ARRAYVALUE_CONSTANT, "{0}[{1s}]");    // serialized constant
         
+        // subquery
+        add(Ops.EXISTS, "exists {0}");
+//        add(Ops.NOT_EXISTS, "not exists {0}");
         
         // numeric aggregates
         add(Ops.AggOps.AVG_AGG, "avg({0})");
@@ -177,9 +180,7 @@ public class Templates {
         add(Ops.QuantOps.MIN_IN_COL, "min({0})");
 
         add(Ops.QuantOps.ANY, "any {0}");
-        add(Ops.QuantOps.ALL, "all {0}");
-        add(Ops.QuantOps.EXISTS, "exists {0}");
-        add(Ops.QuantOps.NOTEXISTS, "not exists {0}");
+        add(Ops.QuantOps.ALL, "all {0}");        
     }
 
     protected void add(Operator<?> op, String pattern) {

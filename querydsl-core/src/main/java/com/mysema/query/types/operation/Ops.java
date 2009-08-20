@@ -198,8 +198,6 @@ public interface Ops {
         // exists = true is subselect matches
         // not exists = true if subselect doesn't match
         Operator<Object> ANY = new OperatorImpl<Object>(Object.class);
-        Operator<Object> ALL = new OperatorImpl<Object>(Object.class);
-        Operator<Boolean> EXISTS = new OperatorImpl<Boolean>(Object.class);
-        Operator<Boolean> NOTEXISTS = new OperatorImpl<Boolean>(Object.class);
+        Operator<Object> ALL = new OperatorImpl<Object>(Object.class);        
     }
 }

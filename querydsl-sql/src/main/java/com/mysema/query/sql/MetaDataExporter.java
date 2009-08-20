@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.sql.support;
+package com.mysema.query.sql;
 
 import java.io.File;
 import java.math.BigDecimal;

@@ -45,5 +45,9 @@ public class ObjectSubQuery<A> extends Expr<A> implements SubQuery{
         }
         return exists;
     }
-
+    
+    @Override
+    public EBoolean notExists() {
+        return exists().not();
+    }
 }

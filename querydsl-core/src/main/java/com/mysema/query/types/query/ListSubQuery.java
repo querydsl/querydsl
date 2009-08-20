@@ -55,5 +55,10 @@ public class ListSubQuery<A> extends ECollectionBase<A> implements SubQuery{
         }
         return exists;
     }
+    
+    @Override
+    public EBoolean notExists() {
+        return exists().not();
+    }
 
 }

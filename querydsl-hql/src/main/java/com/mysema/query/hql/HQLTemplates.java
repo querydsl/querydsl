@@ -31,8 +31,7 @@ public class HQLTemplates extends Templates {
             Ops.QuantOps.ALL, 
             Ops.QuantOps.ANY,
             Ops.QuantOps.AVG_IN_COL, 
-            Ops.QuantOps.EXISTS, 
-            Ops.QuantOps.NOTEXISTS));
+            Ops.EXISTS));
     }
 
     public HQLTemplates() {
