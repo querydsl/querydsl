@@ -104,6 +104,7 @@ public class Templates {
         add(Ops.INDEX_OF, "indexOf({0},{1})");
         add(Ops.INDEX_OF_2ARGS, "indexOf({0},{1},{2})");
         add(Ops.STRING_IS_EMPTY, "empty({0})");
+        
         add(Ops.StringOps.LTRIM, "ltrim({0})");
         add(Ops.StringOps.RTRIM, "rtrim({0})");
         add(Ops.StringOps.SPACE, "space({0})");
