@@ -19,6 +19,8 @@ import com.mysema.query.types.path.PEntityCollection;
  */
 public interface HQLQuery extends Query<HQLQuery>, Projectable, Detachable{
     
+    HQLQuery from(PEntity<?>... sources);
+    
     <P> HQLQuery innerJoin(PEntity<P> target, PEntity<P> alias);
     
     <P> HQLQuery innerJoin(PEntityCollection<P> target, PEntity<P> alias);

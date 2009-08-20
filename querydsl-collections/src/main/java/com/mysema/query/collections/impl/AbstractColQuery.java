@@ -200,11 +200,8 @@ public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends
                 .getModifiers());
     }
 
-    public <A> SubType from(Expr<A> entity, A first, A... rest) {
-        List<A> list = new ArrayList<A>(rest.length + 1);
-        list.add(first);
-        list.addAll(Arrays.asList(rest));
-        return from(entity, list);
+    public <A> SubType from(Expr<A> entity, A... args) {
+        return from(entity, Arrays.asList(args));
     }
 
     public <A> SubType from(Expr<A> entity, Iterable<? extends A> col) {

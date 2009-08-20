@@ -427,7 +427,7 @@ public abstract class SqlQueryTest {
     }
 
     protected final SQLQuery q() {
-        return new SQLQuery(connHolder.get(), dialect) {
+        return new SQLQueryImpl(connHolder.get(), dialect) {
             @Override
             protected String buildQueryString(boolean countRow) {
                 String rv = super.buildQueryString(countRow);

@@ -58,8 +58,7 @@ public interface Projectable {
      * @param rest
      * @return an Iterator over the projection
      */
-    Iterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second,
-            Expr<?>... rest);
+    Iterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest);
 
     /**
      * iterate over the distinct results for the given projection

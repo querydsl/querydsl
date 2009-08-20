@@ -8,7 +8,6 @@ package com.mysema.query;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.path.PEntity;
 
 /**
  * Query provides a query interface of the fluent query DSL.
@@ -17,9 +16,9 @@ import com.mysema.query.types.path.PEntity;
  * @version $Id$
  */
 public interface Query<SubType extends Query<SubType>> {
-
-    SubType from(PEntity<?>... sources);
-
+    
+    // from is implementation specific
+    
     SubType where(EBoolean... o);
 
     SubType groupBy(Expr<?>... o);

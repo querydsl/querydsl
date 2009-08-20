@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.JoinType;
-import com.mysema.query.Query;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.support.QueryBaseWithProjectionAndDetach;
@@ -38,10 +37,9 @@ import com.mysema.query.types.query.SubQuery;
  * @version $Id$
  */
 public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
-        extends QueryBaseWithProjectionAndDetach<SubType> implements Query<SubType> {
+        extends QueryBaseWithProjectionAndDetach<SubType>{
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(AbstractSQLQuery.class);
+    private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
 
     private String queryString;
 
@@ -284,13 +282,15 @@ public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
         }
     }
 
-    public class UnionBuilder<RT> {
+    public class UnionBuilder<RT> implements Union<RT> {
 
+        @Override
         public UnionBuilder<RT> orderBy(OrderSpecifier<?>... o) {
             AbstractSQLQuery.this.orderBy(o);
             return this;
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         public List<RT> list() throws SQLException {
             if (sq[0].getMetadata().getProjection().size() == 1) {
