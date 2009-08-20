@@ -17,7 +17,8 @@ import com.mysema.query.types.operation.Ops;
  * @version $Id$
  */
 public class OracleTemplates extends SQLTemplates {
-    {
+    
+    public OracleTemplates(){
         // type mappings
         addClass2TypeMappings("number(3,0)", Byte.class);
         addClass2TypeMappings("number(1,0)", Boolean.class);

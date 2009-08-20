@@ -45,11 +45,7 @@ import com.mysema.query.codegen.TypeModel;
  */
 public class Processor {
     
-    private boolean useGetters = true;
-    
-    private boolean useFields = true;
-    
-    private ElementVisitor<ClassModel, Void> dtoElementVisitor = new SimpleElementVisitor6<ClassModel, Void>() {
+    private final ElementVisitor<ClassModel, Void> dtoElementVisitor = new SimpleElementVisitor6<ClassModel, Void>() {
         
         @Override
         public ClassModel visitType(TypeElement e, Void p) {
@@ -74,7 +70,7 @@ public class Processor {
         
     };
     
-    private ElementVisitor<ClassModel, Void> elementVisitor = new SimpleElementVisitor6<ClassModel, Void>() {
+    private final ElementVisitor<ClassModel, Void> elementVisitor = new SimpleElementVisitor6<ClassModel, Void>() {
 
         @Override
         public ClassModel visitType(TypeElement e, Void p) {
@@ -123,17 +119,15 @@ public class Processor {
 
     };
     
-    private ProcessingEnvironment env;
+    private final Class<? extends Annotation> entityAnn, superTypeAnn, embeddableAnn, dtoAnn;
     
-    private String namePrefix;
+    private final ProcessingEnvironment env;
     
-    private final Class<? extends Annotation> entityAnn;
-
-    private final Class<? extends Annotation> superTypeAnn;
+    private final String namePrefix;
     
-    private final Class<? extends Annotation> embeddableAnn;
-
-    private final Class<? extends Annotation> dtoAnn;
+    private boolean useFields = true;
+    
+    private boolean useGetters = true;
     
     public Processor(ProcessingEnvironment env,
             Class<? extends Annotation> entityAnn, 
@@ -261,16 +255,6 @@ public class Processor {
         }
     }
 
-    /**
-     * Skip processing of getters
-     * 
-     * @return
-     */
-    public Processor skipGetters() {
-        useGetters = false;        
-        return this;
-    }
-    
     /***
      * Skip processing of fields
      * 
@@ -278,6 +262,16 @@ public class Processor {
      */
     public Processor skipFields(){
         useFields = false;
+        return this;
+    }
+    
+    /**
+     * Skip processing of getters
+     * 
+     * @return
+     */
+    public Processor skipGetters() {
+        useGetters = false;        
         return this;
     }
 

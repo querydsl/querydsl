@@ -34,13 +34,11 @@ public class FilteredJavaSerializer extends JavaSerializer {
 
     private static final Logger logger = LoggerFactory.getLogger(FilteredJavaSerializer.class);
 
-    private boolean skipPath = false;
+    private final List<Expr<?>> exprs;
 
-    private List<Expr<?>> exprs;
+    private final Expr<?> last;
 
-    private Expr<?> last;
-
-    private boolean inNotOperation = false;
+    private boolean skipPath = false, inNotOperation = false;
     
     public FilteredJavaSerializer(ColQueryTemplates patterns, List<Expr<?>> expressions) {
         super(patterns);

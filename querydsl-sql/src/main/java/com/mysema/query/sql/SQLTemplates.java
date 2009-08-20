@@ -13,7 +13,7 @@ import com.mysema.query.types.Templates;
 import com.mysema.query.types.operation.Ops;
 
 /**
- * SqlOps extended OperationPatterns to provided SQL specific extensions and
+ * SQLTemplates extended OperationPatterns to provided SQL specific extensions and
  * acts as database specific Dialect for Querydsl SQL
  * 
  * @author tiwe

@@ -7,6 +7,7 @@ import com.mysema.query.types.expr.*;
  * ${pre}${classSimpleName} is a Querydsl DTO type
  *
  */
+@SuppressWarnings("all")
 public class ${pre}${classSimpleName} extends EConstructor<${type.localName}>{
 
     <#list type.constructors as co>    

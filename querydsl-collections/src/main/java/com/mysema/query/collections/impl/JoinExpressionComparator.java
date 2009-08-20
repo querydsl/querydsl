@@ -32,7 +32,7 @@ import com.mysema.query.types.path.Path;
  */
 public class JoinExpressionComparator implements Comparator<JoinExpression> {
 
-    private Map<Expr<?>, MutableInt> priorities = new HashMap<Expr<?>, MutableInt>();
+    private final Map<Expr<?>, MutableInt> priorities = new HashMap<Expr<?>, MutableInt>();
 
     private boolean invert = false;
 

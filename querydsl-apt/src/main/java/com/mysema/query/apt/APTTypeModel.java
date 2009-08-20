@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
@@ -37,7 +36,7 @@ import com.mysema.query.codegen.TypeModel;
  * @author tiwe
  * @version $Id$
  */
-class APTTypeModel extends InspectingTypeModel implements TypeVisitor<Void,Elements> {
+public final class APTTypeModel extends InspectingTypeModel implements TypeVisitor<Void,Elements> {
     
     private static Map<TypeMirror,TypeModel> cache = new HashMap<TypeMirror,TypeModel>();
     
@@ -68,16 +67,23 @@ class APTTypeModel extends InspectingTypeModel implements TypeVisitor<Void,Eleme
 
     @Override
     public Void visitDeclared(DeclaredType arg0, Elements el) {
-        Element element = arg0.asElement();
-        if (element != null && element instanceof TypeElement){
-            TypeElement typeElement = (TypeElement)element;
+        if (arg0.asElement() != null && arg0.asElement() instanceof TypeElement){
+            TypeElement typeElement = (TypeElement)arg0.asElement();
             name = typeElement.getQualifiedName().toString();
             packageName = el.getPackageOf(typeElement).getQualifiedName().toString();
             simpleName = typeElement.getSimpleName().toString();
-            if (element.getKind() == ElementKind.CLASS){
+            if (typeElement.getKind() == ElementKind.CLASS){
                 try {
-                    if (arg0.asElement().getAnnotation(Literal.class) != null) {
-                        if (Comparable.class.isAssignableFrom(Class.forName(name))) {
+                    if (typeElement.getAnnotation(Literal.class) != null) {
+                        boolean comparable = false;
+                        for (TypeMirror tm : typeElement.getInterfaces()){
+                            TypeModel type = APTTypeModel.get(tm, el);
+                            if (type.getName().equals("java.lang.Comparable")){
+                                comparable = true;
+                                break;
+                            }
+                        }                        
+                        if (comparable) {
                             fieldType =  FieldType.COMPARABLE;
                         } else {
                             fieldType = FieldType.SIMPLE;
@@ -88,7 +94,8 @@ class APTTypeModel extends InspectingTypeModel implements TypeVisitor<Void,Eleme
                 } catch (Exception e) {
                     throw new RuntimeException(e.getMessage(), e);
                 }
-            }else if (element.getKind() == ElementKind.INTERFACE){
+                
+            }else if (arg0.asElement().getKind() == ElementKind.INTERFACE){
                 Iterator<? extends TypeMirror> i = arg0.getTypeArguments().iterator();
                 if (name.equals(Serializable.class.getName())){
                      setNames(Serializable.class);
@@ -113,11 +120,12 @@ class APTTypeModel extends InspectingTypeModel implements TypeVisitor<Void,Eleme
                     }                    
                     handleList(APTTypeModel.get(i.next(), el));
                 }
-            }else if (element.getKind() == ElementKind.ENUM){
+            }else if (arg0.asElement().getKind() == ElementKind.ENUM){
                 fieldType = FieldType.SIMPLE;
             }
+            
         }else{
-            throw new IllegalArgumentException("Unsupported element type " + element);
+            throw new IllegalArgumentException("Unsupported element type " + arg0.asElement());
         }
         return null;
     }

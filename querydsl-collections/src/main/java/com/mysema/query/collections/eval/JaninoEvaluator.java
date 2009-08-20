@@ -8,6 +8,8 @@ package com.mysema.query.collections.eval;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import net.jcip.annotations.Immutable;
+
 import org.codehaus.janino.ExpressionEvaluator;
 
 import com.mysema.commons.lang.Assert;
@@ -19,6 +21,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
+@Immutable
 public class JaninoEvaluator implements Evaluator {
 
     private final ExpressionEvaluator ev;

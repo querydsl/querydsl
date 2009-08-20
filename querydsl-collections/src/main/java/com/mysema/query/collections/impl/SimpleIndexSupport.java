@@ -8,6 +8,8 @@ package com.mysema.query.collections.impl;
 import java.util.Iterator;
 import java.util.List;
 
+import net.jcip.annotations.Immutable;
+
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.collections.IteratorSource;
 import com.mysema.query.collections.eval.ColQueryTemplates;
@@ -21,6 +23,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
+@Immutable
 public class SimpleIndexSupport implements QueryIndexSupport {
 
     protected final IteratorSource iteratorSource;

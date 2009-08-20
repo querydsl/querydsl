@@ -32,4 +32,6 @@ public class SimpleTypes {
     Serializable serializable;
     Object object;
     Class<?> clazz;
+    CustomLiteral literal;
+    CustomComparableLiteral literal2;
 }

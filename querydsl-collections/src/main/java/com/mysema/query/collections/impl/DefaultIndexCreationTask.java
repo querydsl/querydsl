@@ -7,6 +7,8 @@ package com.mysema.query.collections.impl;
 
 import java.util.List;
 
+import net.jcip.annotations.Immutable;
+
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.collections.eval.ColQueryTemplates;
 import com.mysema.query.collections.eval.Evaluator;
@@ -24,6 +26,7 @@ import com.mysema.query.types.path.Path;
  * @author tiwe
  * @version $Id$
  */
+@Immutable
 public class DefaultIndexCreationTask {
 
     private final EBoolean condition;

@@ -23,9 +23,9 @@ import com.mysema.query.util.TypeUtil;
  * @author tiwe
  *
  */
-public class ReflectionTypeModel extends InspectingTypeModel implements TypeModel{
+public final class ReflectionTypeModel extends InspectingTypeModel implements TypeModel{
     
-    private static Map<List<Type>,TypeModel> cache = new HashMap<List<Type>,TypeModel>();
+    private static final Map<List<Type>,TypeModel> cache = new HashMap<List<Type>,TypeModel>();
     
     public static TypeModel get(Class<?> key){
         return get(key, key);

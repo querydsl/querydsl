@@ -62,9 +62,15 @@ public final class SQLTemplatesFactory {
     
     private static final SQLTemplates mysqlTemplates = new SQLTemplates() {
         {
-            addClass2TypeMappings("signed", Byte.class, Integer.class,
-                    Long.class, Short.class, BigInteger.class);
-            addClass2TypeMappings("decimal", Double.class, Float.class,
+            addClass2TypeMappings("signed", 
+                    Byte.class, 
+                    Integer.class,
+                    Long.class, 
+                    Short.class, 
+                    BigInteger.class);
+            addClass2TypeMappings("decimal", 
+                    Double.class, 
+                    Float.class,
                     BigDecimal.class);
             addClass2TypeMappings("char(256)", String.class);
         }

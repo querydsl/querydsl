@@ -11,6 +11,7 @@ import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathMetadata;
+import com.mysema.query.util.NotEmpty;
 
 public class QEMPLOYEE extends PEntity<java.lang.Object> {
     // stmt.execute("create table employee(id int, "
@@ -28,7 +29,7 @@ public class QEMPLOYEE extends PEntity<java.lang.Object> {
     public final PNumber<java.lang.Integer> superiorId = _number("superior_id",
             java.lang.Integer.class);
 
-    public QEMPLOYEE(java.lang.String path) {
+    public QEMPLOYEE(@NotEmpty java.lang.String path) {
         super(java.lang.Object.class, "employee2", path);
     }
 

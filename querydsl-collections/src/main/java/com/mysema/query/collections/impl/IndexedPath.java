@@ -3,9 +3,12 @@
  */
 package com.mysema.query.collections.impl;
 
+import net.jcip.annotations.Immutable;
+
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.types.path.Path;
 
+@Immutable
 public class IndexedPath {
     private final Path<?> path;
     private final Evaluator ev;
