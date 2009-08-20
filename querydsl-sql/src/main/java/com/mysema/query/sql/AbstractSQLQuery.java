@@ -36,7 +36,7 @@ import com.mysema.query.types.query.SubQuery;
  * @author tiwe
  * @version $Id$
  */
-public class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
+public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
         extends QueryBaseWithProjectionAndDetach<SubType>{
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);

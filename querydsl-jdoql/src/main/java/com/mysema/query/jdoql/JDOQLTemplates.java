@@ -7,7 +7,6 @@ package com.mysema.query.jdoql;
 
 import com.mysema.query.serialization.JavaTemplates;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.path.PathType;
 
 /**
  * Operation patterns for JDOQL serialization

@@ -57,7 +57,7 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @version $Id$
  */
-public class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends QueryBaseWithProjectionAndDetach<SubType> implements ColQuery {
+public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>> extends QueryBaseWithProjectionAndDetach<SubType> implements ColQuery {
     
     private boolean arrayProjection = false;
 

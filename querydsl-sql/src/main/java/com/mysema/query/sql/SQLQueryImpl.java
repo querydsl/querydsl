@@ -8,7 +8,7 @@ package com.mysema.query.sql;
 import java.sql.Connection;
 
 /**
- * SqlQuery is a JDBC based implementation of the Querydsl Query interface
+ * SQLQueryImpl is a JDBC based implementation of the Querydsl SQLQuery interface
  * 
  * @author tiwe
  * @version $Id$
