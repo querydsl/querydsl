@@ -19,7 +19,7 @@ import net.jcip.annotations.Immutable;
 public final class Template {
 
     @Immutable
-    public static class Element {
+    public static final class Element {
         
         private final int index;
         
