@@ -16,9 +16,9 @@ import com.mysema.query.hql.HQLTemplates;
  * @author tiwe
  *
  */
-public class HQLQueryImpl extends AbstractHQLQuery<HQLQueryImpl> implements HQLQuery{
+public class HibernateQueryImpl extends AbstractHibernateQuery<HibernateQueryImpl> implements HQLQuery{
 
-    public HQLQueryImpl(Session session, HQLTemplates patterns) {
+    public HibernateQueryImpl(Session session, HQLTemplates patterns) {
         super(session, patterns);
     }
 

@@ -82,7 +82,7 @@ public class SQLTemplates extends Templates {
         add(Ops.ENDS_WITH, "{0} like concat('%',{1})");
         add(Ops.STARTS_WITH_IC, "lower({0}) like concat(lower({1}),'%')");
         add(Ops.ENDS_WITH_IC, "lower({0}) like concat('%',lower({1}))");
-
+        
         for (Class<?> cl : new Class[] { Boolean.class, Byte.class,
                 Double.class, Float.class, Integer.class, Long.class,
                 Short.class, String.class }) {
@@ -430,8 +430,7 @@ public class SQLTemplates extends Templates {
         for (Field field : SQLTemplates.class.getDeclaredFields()) {
             try {
                 if (field.getType().equals(String.class)) {
-                    field.set(this, field.get(this).toString().replace('\n',
-                            ' '));
+                    field.set(this, field.get(this).toString().replace('\n',' '));
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e.getMessage(), e);

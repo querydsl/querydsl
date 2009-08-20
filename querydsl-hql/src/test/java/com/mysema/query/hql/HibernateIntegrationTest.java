@@ -15,7 +15,7 @@ import antlr.TokenStreamException;
 
 import com.mysema.query.HibernateConfig;
 import com.mysema.query.HibernateTestRunner;
-import com.mysema.query.hql.hibernate.HQLQueryImpl;
+import com.mysema.query.hql.hibernate.HibernateQueryImpl;
 
 /**
  * HibernatePersistenceTest provides.
@@ -38,7 +38,7 @@ public class HibernateIntegrationTest extends ParserTest {
 
                     // create Query and execute it
                     Query query = session.createQuery(toString());
-                    HQLQueryImpl.setConstants(query, getConstants());
+                    HibernateQueryImpl.setConstants(query, getConstants());
                     try {
                         query.list();
                     } catch (Exception e) {

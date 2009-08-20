@@ -23,7 +23,6 @@ import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class CoverageTest.
  */

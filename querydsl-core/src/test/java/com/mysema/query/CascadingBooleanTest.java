@@ -11,7 +11,6 @@ import com.mysema.query.alias.Alias;
 import com.mysema.query.types.expr.EBoolean;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * CascadingBooleanTest provides.
  * 

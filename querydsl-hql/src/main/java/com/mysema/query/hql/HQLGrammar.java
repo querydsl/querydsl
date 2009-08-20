@@ -17,7 +17,7 @@ import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.Ops;
 
 /**
- * HqlGrammar extends the Query DSL base grammar to provide HQL specific syntax
+ * HQLGrammar provides factory methods for HQL specific operations
  * elements.
  * 
  * @author tiwe

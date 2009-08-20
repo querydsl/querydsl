@@ -3,17 +3,16 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.hql.hibernate;
+package com.mysema.query.hql.jpa;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,19 +27,19 @@ import com.mysema.query.types.expr.Expr;
  *
  * @param <SubType>
  */
-public abstract class AbstractHQLQuery<SubType extends AbstractHQLQuery<SubType>> extends HQLQueryBase<SubType>{
-    
-    private static final Logger logger = LoggerFactory.getLogger(HQLQueryImpl.class);
-    
-    private final Session session;
+public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>> extends HQLQueryBase<SubType> {
 
-    public AbstractHQLQuery(Session session, HQLTemplates patterns) {
+    private static final Logger logger = LoggerFactory.getLogger(JPAQueryImpl.class);
+    
+    private final EntityManager em;
+
+    public AbstractJPAQuery(EntityManager em, HQLTemplates patterns) {
         super(patterns);
-        this.session = session;
+        this.em = em;
     }
 
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
-        Query query = session.createQuery(queryString);
+        Query query = em.createQuery(queryString);
         setConstants(query, getConstants());
         if (modifiers != null && modifiers.isRestricting()) {
             if (modifiers.getLimit() != null) {
@@ -54,20 +53,10 @@ public abstract class AbstractHQLQuery<SubType extends AbstractHQLQuery<SubType>
     }
 
     public static void setConstants(Query query, Map<Object,String> constants) {
-        for (Map.Entry<Object, String> entry : constants.entrySet()){
+        for (Map.Entry<Object,String> entry : constants.entrySet()){
             String key = entry.getValue();
             Object val = entry.getKey();
-            
-            if (val instanceof Collection<?>) {
-                // NOTE : parameter types should be given explicitly
-                query.setParameterList(key, (Collection<?>) val);
-            } else if (val.getClass().isArray()) {
-                // NOTE : parameter types should be given explicitly
-                query.setParameterList(key, (Object[]) val);
-            } else {
-                // NOTE : parameter types should be given explicitly
-                query.setParameter(key, val);
-            }
+            query.setParameter(key, val);
         }
     }
 
@@ -77,7 +66,7 @@ public abstract class AbstractHQLQuery<SubType extends AbstractHQLQuery<SubType>
         String queryString = toString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, getMetadata().getModifiers());
-        return query.list();
+        return query.getResultList();
     }
 
     @SuppressWarnings("unchecked")
@@ -87,20 +76,20 @@ public abstract class AbstractHQLQuery<SubType extends AbstractHQLQuery<SubType>
         String queryString = toString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, getMetadata().getModifiers());
-        return query.list();
+        return query.getResultList();
     }
 
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
         addToProjection(expr);
         Query query = createQuery(toCountRowsString(), null);
-        long total = (Long) query.uniqueResult();
+        long total = (Long) query.getSingleResult();
         if (total > 0) {
             QueryModifiers modifiers = getMetadata().getModifiers();
             String queryString = toString();
             logger.debug("query : {}", queryString);
             query = createQuery(queryString, modifiers);
             @SuppressWarnings("unchecked")
-            List<RT> list = query.list();
+            List<RT> list = query.getResultList();
             return new SearchResults<RT>(list, modifiers, total);
         } else {
             return SearchResults.emptyResults();
@@ -111,27 +100,11 @@ public abstract class AbstractHQLQuery<SubType extends AbstractHQLQuery<SubType>
         return uniqueResult(Expr.countAll());
     }
 
-    public long count(Expr<?> expr) {
-        return uniqueResult(expr.count());
-    }
-
-    @SuppressWarnings("unchecked")
-    public <RT> RT uniqueResult(Expr<RT> expr) {
-        addToProjection(expr);
-        String queryString = toString();
-        logger.debug("query : {}", queryString);
-        Query query = createQuery(queryString, QueryModifiers.limit(1));
-        return (RT) query.uniqueResult();
-    }
-
-    public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
-        // TODO : optimize
-        return list(e1, e2, rest).iterator();
-    }
-
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        // TODO : optimize
         return list(projection).iterator();
     }
 
+    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+        return list(first, second, rest).iterator();
+    }
 }

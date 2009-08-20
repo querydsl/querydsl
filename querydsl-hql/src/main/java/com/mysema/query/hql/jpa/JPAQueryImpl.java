@@ -16,9 +16,9 @@ import com.mysema.query.hql.HQLQuery;
  * @author tiwe
  *
  */
-public class JPAQLQueryImpl extends AbstractJPAQLQuery<JPAQLQueryImpl> implements HQLQuery{
+public class JPAQueryImpl extends AbstractJPAQuery<JPAQueryImpl> implements HQLQuery{
 
-    public JPAQLQueryImpl(EntityManager em, HQLTemplates patterns) {
+    public JPAQueryImpl(EntityManager em, HQLTemplates patterns) {
         super(em, patterns);
     }
 
