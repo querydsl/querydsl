@@ -15,9 +15,8 @@ import javax.annotation.Nullable;
 
 import org.junit.Test;
 
-// TODO: Auto-generated Javadoc
 /**
- * HibernateProcessorTest provides.
+ * SerializerTest provides.
  * 
  * @author tiwe
  * @version $Id$

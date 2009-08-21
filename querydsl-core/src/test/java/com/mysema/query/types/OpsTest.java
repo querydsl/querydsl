@@ -17,7 +17,6 @@ import org.junit.Test;
 import com.mysema.query.types.operation.Ops;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * OpsTest provides.
  * 

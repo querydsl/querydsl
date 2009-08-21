@@ -30,6 +30,7 @@ import javax.tools.Diagnostic.Kind;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.annotations.Transient;
 import com.mysema.query.codegen.ClassModel;
 import com.mysema.query.codegen.ConstructorModel;
 import com.mysema.query.codegen.FieldModel;
@@ -53,6 +54,7 @@ public class Processor {
             TypeModel c = APTTypeModel.get(e.asType(), elementUtils);
             ClassModel classModel = new ClassModel(null, c.getPackageName(), c.getName(), c.getSimpleName());
             List<? extends Element> elements = e.getEnclosedElements();
+            
             // CONSTRUCTOR
             for (ExecutableElement constructor : ElementFilter.constructorsIn(elements)){
                 if (isValidConstructor(constructor)){
@@ -79,6 +81,7 @@ public class Processor {
             TypeModel c = APTTypeModel.get(e.asType(), elementUtils);
             ClassModel classModel = new ClassModel(sc.getName(), c.getPackageName(), c.getName(), c.getSimpleName());
             List<? extends Element> elements = e.getEnclosedElements();
+            
             // GETTERS
             for (ExecutableElement method : ElementFilter.methodsIn(elements)){
                 String name = method.getSimpleName().toString();
@@ -100,6 +103,7 @@ public class Processor {
                     }
                 }                
             }
+            
             // FIELDS
             for (VariableElement field : ElementFilter.fieldsIn(elements)){
                 if (isValidField(field)){
@@ -157,12 +161,15 @@ public class Processor {
 
     protected boolean isValidField(VariableElement field) {
         return useFields
+            && field.getAnnotation(Transient.class) == null
             && !field.getModifiers().contains(Modifier.TRANSIENT) 
             && !field.getModifiers().contains(Modifier.STATIC);
     }
 
     protected boolean isValidGetter(ExecutableElement getter){
-        return useGetters && !getter.getModifiers().contains(Modifier.STATIC);
+        return useGetters
+            && getter.getAnnotation(Transient.class) == null
+            && !getter.getModifiers().contains(Modifier.STATIC);
     }
 
     public void process(RoundEnvironment roundEnv) {

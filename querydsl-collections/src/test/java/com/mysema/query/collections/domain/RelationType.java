@@ -13,16 +13,16 @@ import com.mysema.query.collections.domain2.RelationType2;
 @Entity
 @SuppressWarnings("unchecked")
 public class RelationType {
-    
+
     Host.MyEnum enumProperty;
     List<Host.MyEnum> enumList;
-    Map<String,Host.MyEnum> enumMap1;
-    Map<Host.MyEnum,String> enumMap;
-    
+    Map<String, Host.MyEnum> enumMap1;
+    Map<Host.MyEnum, String> enumMap;
+
     // list
     List<RelationType> list;
     List<? extends RelationType> list2;
-    List<String> list3;    
+    List<String> list3;
     List<RelationType2> list4;
     List<Reference> list5;
 
@@ -48,11 +48,11 @@ public class RelationType {
     Map<String, RelationType> map;
     Map<RelationType, RelationType> map2;
     Map<RelationType, String> map3;
-    
+
     Map<String, RelationType2> map4;
     Map<RelationType2, RelationType2> map5;
     Map<RelationType2, String> map6;
-    
+
     Map<String, Reference> map7;
     Map<Reference, Reference> map8;
     Map<Reference, String> map9;

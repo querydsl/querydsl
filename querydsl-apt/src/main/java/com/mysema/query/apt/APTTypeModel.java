@@ -96,6 +96,7 @@ public final class APTTypeModel extends InspectingTypeModel implements TypeVisit
                 }
                 
             }else if (arg0.asElement().getKind() == ElementKind.INTERFACE){
+                fieldType = getFieldType(name);
                 Iterator<? extends TypeMirror> i = arg0.getTypeArguments().iterator();
                 if (name.equals(Serializable.class.getName())){
                      setNames(Serializable.class);

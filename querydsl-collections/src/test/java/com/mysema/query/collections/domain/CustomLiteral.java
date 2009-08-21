@@ -4,5 +4,5 @@ import com.mysema.query.annotations.Literal;
 
 @Literal
 public class CustomLiteral {
-    
+
 }

@@ -5,6 +5,8 @@
  */
 package com.mysema.query.codegen;
 
+import java.sql.Blob;
+import java.sql.Clob;
 import java.util.Locale;
 
 import com.mysema.query.util.TypeUtil;
@@ -24,6 +26,8 @@ public abstract class InspectingTypeModel extends SimpleTypeModel {
             return FieldType.BOOLEAN;
 
         } else if (fullName.equals(Locale.class.getName())
+                || fullName.equals(Clob.class.getName())
+                || fullName.equals(Blob.class.getName())
                 || fullName.equals(Class.class.getName())
                 || fullName.equals(Object.class.getName())) {
             return FieldType.SIMPLE;
@@ -113,7 +117,11 @@ public abstract class InspectingTypeModel extends SimpleTypeModel {
     }
     
     protected final void setNames(Class<?> cl){
-        packageName = cl.getPackage().getName();
+        if (cl.getPackage() != null){
+            packageName = cl.getPackage().getName();    
+        }else{
+            packageName = "java.lang";
+        }        
         name = cl.getName();
         simpleName = cl.getSimpleName();
     }

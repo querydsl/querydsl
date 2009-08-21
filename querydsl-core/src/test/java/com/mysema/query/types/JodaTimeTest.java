@@ -11,7 +11,6 @@ import org.junit.Test;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.types.expr.EComparable;
 
-// TODO: Auto-generated Javadoc
 /**
  * JodaTimeTest provides.
  * 

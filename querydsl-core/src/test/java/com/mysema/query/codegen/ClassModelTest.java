@@ -15,9 +15,9 @@ import java.util.Set;
 
 import org.junit.Test;
 
-// TODO: Auto-generated Javadoc
+
 /**
- * TypeHelperTest provides.
+ * ClassModelTest provides.
  * 
  * @author tiwe
  * @version $Id$

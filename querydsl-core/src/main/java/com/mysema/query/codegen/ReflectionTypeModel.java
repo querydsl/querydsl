@@ -43,47 +43,49 @@ public final class ReflectionTypeModel extends InspectingTypeModel implements Ty
     }
     
     private ReflectionTypeModel(Class<?> cl, java.lang.reflect.Type genericType) {
+        setNames(cl);
+        fieldType = getFieldType(name);
         if (cl.isArray()) {
-            TypeModel valueInfo = ReflectionTypeModel.get(cl.getComponentType());
+            TypeModel valueInfo = get(cl.getComponentType());
             handleArray(valueInfo);
             
-        } else if (cl.isEnum()) {
-            setNames(cl);
+        } else if (cl.isEnum()) {            
             fieldType = FieldType.SIMPLE;
             
         } else if (cl.isPrimitive()) {
             handlePrimitiveWrapperType(ClassUtils.primitiveToWrapper(cl));
             
         } else if (cl.isInterface()) {
-            if (Serializable.class.isAssignableFrom(cl)){
-                setNames(Serializable.class);
-                fieldType = FieldType.SIMPLE;
-            
-            }else if (java.util.Map.class.isAssignableFrom(cl)) {
-                TypeModel keyInfo = ReflectionTypeModel.get(TypeUtil.getTypeParameter(genericType, 0));
-                TypeModel valueInfo = ReflectionTypeModel.get(TypeUtil.getTypeParameter(genericType, 1));
-                handleMapInterface(keyInfo, valueInfo);
-
-            } else if (java.util.List.class.isAssignableFrom(cl)) {
-                TypeModel valueInfo = ReflectionTypeModel.get(TypeUtil.getTypeParameter(genericType, 0));
-                handleList(valueInfo);
-
-            } else if (java.util.Collection.class.isAssignableFrom(cl)) {
-                TypeModel valueInfo = ReflectionTypeModel.get(TypeUtil.getTypeParameter(genericType, 0));
-                handleCollection(valueInfo);
-            }
+            handleInterface(cl, genericType);
 
         } else {
-            setNames(cl);
             if (cl.getAnnotation(Literal.class) != null) {
                 if (Comparable.class.isAssignableFrom(cl)) {
                     fieldType = FieldType.COMPARABLE;
                 } else {
                     fieldType = FieldType.SIMPLE;
                 }
-            } else {
-                fieldType = getFieldType(name);
             }
+        }
+    }
+
+    private void handleInterface(Class<?> cl, java.lang.reflect.Type genericType) {
+        if (Serializable.class.isAssignableFrom(cl)){
+            setNames(Serializable.class);
+            fieldType = FieldType.SIMPLE;
+        
+        }else if (java.util.Map.class.isAssignableFrom(cl)) {
+            TypeModel keyInfo = get(TypeUtil.getTypeParameter(genericType, 0));
+            TypeModel valueInfo = get(TypeUtil.getTypeParameter(genericType, 1));
+            handleMapInterface(keyInfo, valueInfo);
+
+        } else if (java.util.List.class.isAssignableFrom(cl)) {
+            TypeModel valueInfo = get(TypeUtil.getTypeParameter(genericType, 0));
+            handleList(valueInfo);
+
+        } else if (java.util.Collection.class.isAssignableFrom(cl)) {
+            TypeModel valueInfo = get(TypeUtil.getTypeParameter(genericType, 0));
+            handleCollection(valueInfo);            
         }
     }
 
