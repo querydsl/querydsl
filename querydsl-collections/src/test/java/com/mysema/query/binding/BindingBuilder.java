@@ -31,12 +31,5 @@ public class BindingBuilder<Base> {
         // TODO
     }
 
-    public <Other> void fromAndTo(Path<Other> second) {
-        // TODO
-    }
-
-    public <Other> void fromAndTo(Path<Other> second, Converter<Base, Other> c) {
-        // TODO
-    }
     
 }

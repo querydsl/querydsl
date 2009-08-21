@@ -32,11 +32,6 @@ public class BindingsTest {
                 bind(entity.firstName, dto.firstName);
                 bind(entity.lastName, dto.lastName);
                 bind(entity.address, dto.addressId, addressConverter);
-                
-                // verbose
-                bind(entity.firstName).fromAndTo(dto.firstName);
-                bind(entity.lastName).fromAndTo(dto.lastName);
-                bind(entity.address).fromAndTo(dto.addressId, addressConverter);
             }            
         };        
     }
