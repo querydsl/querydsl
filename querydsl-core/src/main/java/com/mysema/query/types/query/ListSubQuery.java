@@ -7,8 +7,6 @@ package com.mysema.query.types.query;
 
 import java.util.List;
 
-import net.jcip.annotations.Immutable;
-
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollectionBase;
@@ -23,7 +21,6 @@ import com.mysema.query.types.operation.Ops;
  * @param <JM>
  * @param <A>
  */
-@Immutable
 public class ListSubQuery<A> extends ECollectionBase<A> implements SubQuery{
 
     private final Class<A> elementType;

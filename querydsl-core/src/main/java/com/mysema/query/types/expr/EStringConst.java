@@ -6,6 +6,8 @@
 package com.mysema.query.types.expr;
 
 
+
+
 /**
  * EStringConst represents String constants
  * 
@@ -14,14 +16,16 @@ package com.mysema.query.types.expr;
  */
 public class EStringConst extends EString implements Constant<String>{
     
-    private EString lower, trim, upper;
-    
     private final String constant;
+    
+    private ENumber<Long> length;
+
+    private EString lower, trim, upper;
 
     EStringConst(String constant){
         this.constant = constant;
     }
-
+    
     @Override
     public EString append(String s) {
         return EString.create(constant + s);
@@ -31,18 +35,23 @@ public class EStringConst extends EString implements Constant<String>{
     public EString concat(String s) {
         return append(s);
     }
-    
+
     @Override
     public EBoolean eq(String s){
         return EBoolean.create(constant.equals(s));
     }
-
+    
     @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {
         return o instanceof Constant ? ((Constant<?>) o).getConstant().equals(constant) : false;
     }
-    
+
+    @Override
+    public EBoolean equalsIgnoreCase(String str) {
+        return EBoolean.create(constant.equalsIgnoreCase(str));
+    }
+
     @Override
     public String getConstant() {
         return constant;
@@ -53,6 +62,24 @@ public class EStringConst extends EString implements Constant<String>{
         return constant.hashCode();
     }
 
+    @Override
+    public EBoolean isEmpty(){
+        return EBoolean.create(constant.isEmpty());
+    }
+    
+    @Override
+    public EBoolean isNotEmpty(){
+        return EBoolean.create(!constant.isEmpty());
+    }
+    
+    @Override
+    public ENumber<Long> length() {
+        if (length == null) {
+            length = ENumber.create((long)constant.length());
+        }
+        return length;
+    }
+    
     @Override
     public EString lower() {
         if (lower == null) {
@@ -65,7 +92,7 @@ public class EStringConst extends EString implements Constant<String>{
     public EBoolean ne(String s){
         return EBoolean.create(!constant.equals(s));
     }
-
+    
     @Override
     public EString prepend(String s) {
         return EString.create(s + constant);
@@ -105,5 +132,10 @@ public class EStringConst extends EString implements Constant<String>{
             upper = EString.create(constant.toUpperCase()); 
         }
         return upper; 
+    }
+    
+    @Override
+    public Expr<String[]> split(String regex) {
+        return Expr.create(constant.split(regex));
     }
 }

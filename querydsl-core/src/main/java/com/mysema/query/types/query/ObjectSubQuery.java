@@ -5,8 +5,6 @@
  */
 package com.mysema.query.types.query;
 
-import net.jcip.annotations.Immutable;
-
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
@@ -21,7 +19,6 @@ import com.mysema.query.types.operation.Ops;
  * @param <JM>
  * @param <A>
  */
-@Immutable
 public class ObjectSubQuery<A> extends Expr<A> implements SubQuery{
 
     private final QueryMetadata md;

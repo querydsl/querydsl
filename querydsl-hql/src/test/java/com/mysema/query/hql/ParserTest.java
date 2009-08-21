@@ -29,8 +29,6 @@ import antlr.TokenStreamException;
 import antlr.collections.AST;
 
 import com.mysema.query.SearchResults;
-import com.mysema.query.functions.AggregationFunctions;
-import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.Catalog;
 import com.mysema.query.hql.domain.Color;

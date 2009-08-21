@@ -14,8 +14,8 @@ import java.util.Map;
 import org.apache.commons.lang.mutable.MutableInt;
 
 import com.mysema.query.JoinExpression;
+import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Ops;
@@ -71,7 +71,7 @@ public class JoinExpressionComparator implements Comparator<JoinExpression> {
             if (expr instanceof Path) {
                 Path<?> path = (Path<?>) expr;
                 involved.add((Expr<?>) path.getRoot());
-            } else if (expr instanceof ExprConst) {
+            } else if (expr instanceof Constant) {
                 constantInvolved = true;
             } else if (expr instanceof Operation) {
                 visitOperation((Operation<?, ?>) expr);
@@ -80,8 +80,7 @@ public class JoinExpressionComparator implements Comparator<JoinExpression> {
 
         if (!involved.isEmpty()) {
             int addition = 10;
-            if (op.getOperator() == Ops.EQ_PRIMITIVE
-                    || op.getOperator() == Ops.EQ_OBJECT) {
+            if (op.getOperator() == Ops.EQ_PRIMITIVE || op.getOperator() == Ops.EQ_OBJECT) {
                 addition *= 10;
             }
             if (constantInvolved) {
