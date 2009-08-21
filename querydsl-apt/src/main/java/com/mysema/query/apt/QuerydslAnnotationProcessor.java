@@ -16,9 +16,10 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
-import com.mysema.query.annotations.Projection;
 import com.mysema.query.annotations.Embeddable;
 import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.Projection;
+import com.mysema.query.annotations.Transient;
 
 
 @SupportedAnnotationTypes("*")
@@ -32,7 +33,8 @@ public class QuerydslAnnotationProcessor extends AbstractProcessor{
         Class<? extends Annotation> superType = null;
         Class<? extends Annotation> embeddable = Embeddable.class;
         Class<? extends Annotation> dtoAnnotation = Projection.class;
-        Processor p = new Processor(processingEnv, entity, superType, embeddable, dtoAnnotation, "Q");
+        Class<? extends Annotation> skipAnnotation = Transient.class;
+        Processor p = new Processor(processingEnv, entity, superType, embeddable, dtoAnnotation, skipAnnotation, "Q");
         p.process(roundEnv);
         return true;
     }       

@@ -31,7 +31,8 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
             Class<? extends Annotation> superType = null; // ?!?
             Class<? extends Annotation> embeddable = (Class)Class.forName("javax.jdo.annotations.EmbeddedOnly");
             Class<? extends Annotation> dtoAnnotation = Projection.class;
-            Processor p = new Processor(processingEnv, entity, superType, embeddable, dtoAnnotation, "Q");
+            Class<? extends Annotation> skipAnnotation = (Class)Class.forName("javax.jdo.annotations.NotPersistent");
+            Processor p = new Processor(processingEnv, entity, superType, embeddable, dtoAnnotation, skipAnnotation, "Q");
             p.skipGetters().process(roundEnv);
             return true;
         } catch (ClassNotFoundException e) {

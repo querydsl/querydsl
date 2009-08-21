@@ -31,7 +31,8 @@ public class JPAAnnotationProcessor extends AbstractProcessor{
             Class<? extends Annotation> superType = (Class)Class.forName("javax.persistence.MappedSuperclass");
             Class<? extends Annotation> embeddable = (Class)Class.forName("javax.persistence.Embeddable");
             Class<? extends Annotation> dtoAnnotation = Projection.class;
-            Processor p = new Processor(processingEnv, entity, superType, embeddable, dtoAnnotation, "Q");
+            Class<? extends Annotation> skipAnnotation = (Class)Class.forName("javax.persistence.Transient");
+            Processor p = new Processor(processingEnv, entity, superType, embeddable, dtoAnnotation, skipAnnotation, "Q");
             p.process(roundEnv);
             return true;
         } catch (ClassNotFoundException e) {

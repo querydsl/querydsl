@@ -30,7 +30,6 @@ import javax.tools.Diagnostic.Kind;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.annotations.Transient;
 import com.mysema.query.codegen.ClassModel;
 import com.mysema.query.codegen.ConstructorModel;
 import com.mysema.query.codegen.FieldModel;
@@ -123,7 +122,7 @@ public class Processor {
 
     };
     
-    private final Class<? extends Annotation> entityAnn, superTypeAnn, embeddableAnn, dtoAnn;
+    private final Class<? extends Annotation> entityAnn, superTypeAnn, embeddableAnn, dtoAnn, skipAnn;
     
     private final ProcessingEnvironment env;
     
@@ -138,12 +137,14 @@ public class Processor {
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
             Class<? extends Annotation> dtoAnn,
+            Class<? extends Annotation> skipAnn,
             String namePrefix) {
         this.env = Assert.notNull(env);
         this.entityAnn = Assert.notNull(entityAnn);
         this.superTypeAnn = superTypeAnn;
         this.embeddableAnn = embeddableAnn;
         this.dtoAnn = dtoAnn;
+        this.skipAnn = skipAnn;
         this.namePrefix = Assert.notNull(namePrefix);
     }
     
@@ -161,14 +162,14 @@ public class Processor {
 
     protected boolean isValidField(VariableElement field) {
         return useFields
-            && field.getAnnotation(Transient.class) == null
+            && field.getAnnotation(skipAnn) == null
             && !field.getModifiers().contains(Modifier.TRANSIENT) 
             && !field.getModifiers().contains(Modifier.STATIC);
     }
 
     protected boolean isValidGetter(ExecutableElement getter){
         return useGetters
-            && getter.getAnnotation(Transient.class) == null
+            && getter.getAnnotation(skipAnn) == null
             && !getter.getModifiers().contains(Modifier.STATIC);
     }
 
