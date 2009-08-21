@@ -20,8 +20,12 @@ import com.mysema.query.types.custom.CComparable;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.custom.CString;
 import com.mysema.query.types.custom.Custom;
-import com.mysema.query.types.expr.EConstant;
+import com.mysema.query.types.expr.Constant;
+import com.mysema.query.types.expr.EBooleanConst;
+import com.mysema.query.types.expr.ENumberConst;
+import com.mysema.query.types.expr.EStringConst;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.OComparable;
 import com.mysema.query.types.operation.ODate;
@@ -127,7 +131,15 @@ public abstract class Visitor<T extends Visitor<T>> {
 
     protected abstract void visit(Custom<?> expr);
 
-    protected abstract void visit(EConstant<?> expr);
+    protected abstract void visit(Constant<?> expr);
+
+    protected abstract void visit(ENumberConst<?> expr);
+    
+    protected abstract void visit(EStringConst expr);
+    
+    protected abstract void visit(EBooleanConst expr);
+    
+    protected abstract void visit(ExprConst<?> expr);
 
     protected abstract void visit(OBoolean expr);
 

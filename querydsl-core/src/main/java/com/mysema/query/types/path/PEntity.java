@@ -7,7 +7,7 @@ package com.mysema.query.types.path;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EConstant;
+import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.EEntity;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
@@ -144,7 +144,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @return
      */
     public <B extends D> EBoolean instanceOf(Class<B> type) {
-        return new OBoolean(Ops.INSTANCE_OF, this, EConstant.create(type));
+        return new OBoolean(Ops.INSTANCE_OF, this, ExprConst.create(type));
     }
 
     @Override

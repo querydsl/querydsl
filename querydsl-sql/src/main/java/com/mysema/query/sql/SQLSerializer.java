@@ -14,8 +14,8 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operator;
@@ -192,7 +192,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     @Override
-    protected void visit(EConstant<?> expr) {
+    protected void visit(Constant<?> expr) {
         append("?");
         constants.add(expr.getConstant());
     }
@@ -211,8 +211,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (operator.equals(Ops.STRING_CAST)) {
             visitCast(operator, args.get(0), String.class);
         } else if (operator.equals(Ops.NUMCAST)) {
-            visitCast(operator, args.get(0), (Class<?>) ((EConstant<?>) args
-                    .get(1)).getConstant());
+            visitCast(operator, args.get(0), (Class<?>) ((Constant<?>) args.get(1)).getConstant());
         } else {
             super.visitOperation(type, operator, args);
         }

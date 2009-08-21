@@ -7,8 +7,8 @@ package com.mysema.query.types;
 
 import com.mysema.query.types.Template.Element;
 import com.mysema.query.types.custom.Custom;
+import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EArrayConstructor;
-import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operation;
@@ -55,7 +55,7 @@ public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
         toString = builder.toString();
     }
 
-    protected void visit(EConstant<?> e) {
+    protected void visit(Constant<?> e) {
         toString = e.getConstant().toString();
     }
 

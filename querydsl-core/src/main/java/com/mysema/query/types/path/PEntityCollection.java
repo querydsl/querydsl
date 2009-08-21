@@ -9,7 +9,7 @@ import java.util.Collection;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EConstant;
+import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.EEntity;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
@@ -62,7 +62,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
 
     @Override
     public EBoolean contains(D child) {
-        return new OBoolean(Ops.IN, EConstant.create(child), this);
+        return new OBoolean(Ops.IN, ExprConst.create(child), this);
     }
 
     @Override

@@ -23,6 +23,24 @@ import com.mysema.query.types.operation.Ops;
  */
 public abstract class Expr<D> {
 
+    /**
+     * Factory method for constants
+     * 
+     * @param <D>
+     * @param val
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <D> Expr<D> create(D val){
+        if (val instanceof String){
+            return (Expr<D>)EString.create((String)val);
+        }else if (val instanceof Boolean){
+            return (Expr<D>)EBoolean.create((Boolean)val);            
+        }else{
+            return new ExprConst<D>(Assert.notNull(val,"val is null"));    
+        }
+    }
+    
     public static ENumber<Long> countAll() {
         return Ops.AggOps.COUNT_ALL_AGG_EXPR;
     }
@@ -59,8 +77,8 @@ public abstract class Expr<D> {
      * @param right rhs of the comparison
      * @return
      */
-    public final EBoolean eq(D right) {
-        return eq(EConstant.create(right));
+    public EBoolean eq(D right) {
+        return eq(ExprConst.create(right));
     }
 
     /**
@@ -98,7 +116,7 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean in(Collection<? extends D> right) {
-        return new OBoolean(Ops.IN, this, EConstant.create(right));
+        return new OBoolean(Ops.IN, this, ExprConst.create(right));
     }
 
     /**
@@ -108,7 +126,7 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean in(D... right) {
-        return new OBoolean(Ops.IN, this, EConstant.create(Arrays.asList(right)));
+        return new OBoolean(Ops.IN, this, ExprConst.create(Arrays.asList(right)));
     }
 
     /**
@@ -127,8 +145,8 @@ public abstract class Expr<D> {
      * @param right rhs of the comparison
      * @return
      */
-    public final EBoolean ne(D right) {
-        return ne(EConstant.create(right));
+    public EBoolean ne(D right) {
+        return ne(ExprConst.create(right));
     }
 
     /**

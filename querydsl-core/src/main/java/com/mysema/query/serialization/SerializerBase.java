@@ -16,8 +16,8 @@ import com.mysema.query.types.Templates;
 import com.mysema.query.types.VisitorBase;
 import com.mysema.query.types.Template.Element;
 import com.mysema.query.types.custom.Custom;
+import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EArrayConstructor;
-import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operation;
@@ -96,7 +96,7 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
     }
 
     @Override
-    protected void visit(EConstant<?> expr) {        
+    protected void visit(Constant<?> expr) {        
         if (!constantToLabel.containsKey(expr.getConstant())) {
             String constLabel = constantPrefix + (constantToLabel.size() + 1);
             constantToLabel.put(expr.getConstant(), constLabel);
@@ -127,11 +127,14 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
         
         for (Element element : template.getElements()){
             if (element.getStaticText() != null){
-                append(element.getStaticText());
-            }else if (element.isAsString()){
-                append(args.get(element.getIndex()).toString());
+                append(element.getStaticText()); 
             }else{
-                handle(args.get(element.getIndex()));
+                Expr<?> arg = args.get(element.getIndex());
+                if (element.isAsString()){
+                    append(arg.toString());
+                }else{
+                    handle(arg);    
+                }
             }
         }
     }

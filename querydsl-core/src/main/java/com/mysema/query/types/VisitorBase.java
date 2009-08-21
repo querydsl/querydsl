@@ -10,6 +10,11 @@ import com.mysema.query.types.custom.CComparable;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.custom.CString;
 import com.mysema.query.types.custom.Custom;
+import com.mysema.query.types.expr.Constant;
+import com.mysema.query.types.expr.EBooleanConst;
+import com.mysema.query.types.expr.ENumberConst;
+import com.mysema.query.types.expr.EStringConst;
+import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.OComparable;
 import com.mysema.query.types.operation.ODate;
@@ -54,6 +59,26 @@ import com.mysema.query.types.path.Path;
 public abstract class VisitorBase<SubType extends VisitorBase<SubType>>
         extends Visitor<SubType> {
 
+    @Override
+    protected void visit(EStringConst expr) {
+        visit((Constant<?>) expr);
+    }
+    
+    @Override
+    protected void visit(EBooleanConst expr) {
+        visit((Constant<?>) expr);
+    }
+    
+    @Override
+    protected void visit(ExprConst<?> expr) {
+        visit((Constant<?>) expr);
+    }
+    
+    @Override
+    protected void visit(ENumberConst<?> expr) {
+        visit((Constant<?>) expr);
+    }
+    
     @Override
     protected void visit(CBoolean expr) {
         visit((Custom<?>) expr);

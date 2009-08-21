@@ -41,7 +41,7 @@ public abstract class EMapBase<K,V> extends Expr<Map<K,V>> implements EMap<K,V> 
 
     @Override
     public final EBoolean containsKey(K key) {
-        return new OBoolean(Ops.CONTAINS_KEY, this, EConstant.create(key));
+        return new OBoolean(Ops.CONTAINS_KEY, this, ExprConst.create(key));
     }
 
     @Override
@@ -51,7 +51,7 @@ public abstract class EMapBase<K,V> extends Expr<Map<K,V>> implements EMap<K,V> 
 
     @Override
     public final EBoolean containsValue(V value) {
-        return new OBoolean(Ops.CONTAINS_VALUE, this, EConstant.create(value));
+        return new OBoolean(Ops.CONTAINS_VALUE, this, ExprConst.create(value));
     }
         
     @Override

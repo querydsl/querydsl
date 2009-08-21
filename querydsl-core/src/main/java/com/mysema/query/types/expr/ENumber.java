@@ -8,6 +8,7 @@ package com.mysema.query.types.expr;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
@@ -22,9 +23,22 @@ import com.mysema.query.types.operation.Ops.MathOps;
  * @param <D> Java type
  * @see java.lang.Number
  */
-public abstract class ENumber<D extends Number & Comparable<?>> extends EComparable<D> {
 
+public abstract class ENumber<D extends Number & Comparable<?>> extends EComparable<D> {
+    
     private static ENumber<Double> random;
+    
+    /**
+     * Factory method
+     * 
+     * @param <T>
+     * @param val
+     * @return
+     */    
+    @SuppressWarnings("unchecked")
+    public static <T extends Number & Comparable<?>> ENumber<T> create(T val){
+        return new ENumberConst<T>((Class<T>)val.getClass(),Assert.notNull(val,"val is null"));
+    }
     
     /**
      * @return max(left, right)
@@ -76,7 +90,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @return this + right
      */
     public ENumber<D> add(D right) {
-        return ONumber.create(getType(), Ops.ADD, this, EConstant.create(right));
+        return ONumber.create(getType(), Ops.ADD, this, ENumber.create(right));
     }
     
     /**
@@ -103,7 +117,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @return this.byteValue()
      * @see java.lang.Number#byteValue()
      */
-    public final ENumber<Byte> byteValue() {
+    public ENumber<Byte> byteValue() {
         return castToNum(Byte.class);
     }
 
@@ -159,7 +173,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @return this / right
      */
     public ENumber<Double> div(D right) {
-        return ONumber.create(Double.class, Ops.DIV, this, EConstant.create(right));
+        return ONumber.create(Double.class, Ops.DIV, this, ENumber.create(right));
     }
 
     /**
@@ -176,7 +190,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @return this.doubleValue()
      * @see java.lang.Number#doubleValue()
      */
-    public final ENumber<Double> doubleValue() {
+    public ENumber<Double> doubleValue() {
         return castToNum(Double.class);
     }
 
@@ -187,7 +201,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @return this.floatValue()
      * @see java.lang.Number#floatValue()
      */
-    public final ENumber<Float> floatValue() {
+    public ENumber<Float> floatValue() {
         return castToNum(Float.class);
     }
 
@@ -211,7 +225,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean goe(A right) {
-        return goe(EConstant.create(cast(right)));
+        return goe(ENumber.create(cast(right)));
     }
 
     /**
@@ -235,7 +249,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean gt(A right) {
-        return gt(EConstant.create(cast(right)));
+        return gt(ENumber.create(cast(right)));
     }
 
     /**
@@ -256,7 +270,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @return this.intValue()
      * @see java.lang.Number#intValue()
      */
-    public final ENumber<Integer> intValue() {
+    public ENumber<Integer> intValue() {
         return castToNum(Integer.class);
     }
 
@@ -269,7 +283,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean loe(A right) {
-        return loe(EConstant.create(cast(right)));
+        return loe(ENumber.create(cast(right)));
     }
 
     /**
@@ -290,7 +304,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @return this.longValue()
      * @see java.lang.Number#longValue()
      */
-    public final ENumber<Long> longValue() {
+    public ENumber<Long> longValue() {
         return castToNum(Long.class);
     }
 
@@ -303,7 +317,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean lt(A right) {
-        return lt(EConstant.create(cast(right)));
+        return lt(ENumber.create(cast(right)));
     }
 
     /**
@@ -343,7 +357,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @return this * right
      */
     public ENumber<D> mult(D right) {
-        return ONumber.create(getType(), Ops.MULT, this, EConstant.create(right));
+        return ONumber.create(getType(), Ops.MULT, this, ENumber.create(right));
     }
     
     /**
@@ -372,7 +386,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @return this.shortValue()
      * @see java.lang.Number#shortValue()
      */
-    public final ENumber<Short> shortValue() {
+    public ENumber<Short> shortValue() {
         return castToNum(Short.class);
     }
     
@@ -392,7 +406,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @return this - right
      */
     public ENumber<D> sub(D right) {
-        return ONumber.create(getType(), Ops.SUB, this, EConstant.create(right));
+        return ONumber.create(getType(), Ops.SUB, this, ENumber.create(right));
     }
     
     /**

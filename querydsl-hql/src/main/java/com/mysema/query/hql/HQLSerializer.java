@@ -14,8 +14,10 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EConstant;
+import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
@@ -131,7 +133,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void visit(EConstant<?> expr) {
+    protected void visit(Constant<?> expr) {
         boolean wrap = expr.getConstant().getClass().isArray()
             || expr.getConstant() instanceof Collection;
         if (wrap) {
@@ -192,18 +194,17 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         // 
         if (operator.equals(Ops.INSTANCE_OF)) {
             args = new ArrayList<Expr<?>>(args);
-            args.set(1, EConstant.create(((Class<?>) ((EConstant<?>) args
-                    .get(1)).getConstant()).getName()));
+            args.set(1, EString.create(((Class<?>) ((Constant<?>) args.get(1)).getConstant()).getName()));
             super.visitOperation(type, operator, args);
             
         } else if (operator.equals(Ops.NUMCAST)) {
-            visitCast(operator, args.get(0), (Class<?>) ((EConstant<?>) args.get(1)).getConstant());
+            visitCast(operator, args.get(0), (Class<?>) ((Constant<?>) args.get(1)).getConstant());
             
         } else if (operator.equals(Ops.SUBSTR_1ARG)){
             args = new ArrayList<Expr<?>>(args);
-            if (args.get(1) instanceof EConstant){
-                int arg1 = ((EConstant<Integer>)args.get(1)).getConstant();
-                args.set(1, EConstant.create(arg1 + 1));
+            if (args.get(1) instanceof Constant){
+                int arg1 = ((Constant<Integer>)args.get(1)).getConstant();
+                args.set(1, ENumber.create(arg1 + 1));
             }else{
                 throw new IllegalArgumentException("Unsupported substr variant");
             }
@@ -211,11 +212,11 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             
         } else if (operator.equals(Ops.SUBSTR_2ARGS)){
             args = new ArrayList<Expr<?>>(args);
-            if (args.get(2) instanceof EConstant){
-                int arg1 = ((EConstant<Integer>)args.get(1)).getConstant();
-                int arg2 = ((EConstant<Integer>)args.get(2)).getConstant();
-                args.set(1, EConstant.create(arg1 + 1));
-                args.set(2, EConstant.create(arg2 - arg1));                
+            if (args.get(2) instanceof Constant){
+                int arg1 = ((Constant<Integer>)args.get(1)).getConstant();
+                int arg2 = ((Constant<Integer>)args.get(2)).getConstant();
+                args.set(1, ENumber.create(arg1 + 1));
+                args.set(2, ENumber.create(arg2 - arg1));                
             }else{
                 throw new IllegalArgumentException("Unsupported substr variant");
             }
@@ -223,8 +224,8 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             
         } else if (operator.equals(Ops.MATCHES)){
             args = new ArrayList<Expr<?>>(args);
-            if (args.get(1) instanceof EConstant){
-                args.set(1, EConstant.create(args.get(1).toString().replace(".*", "%").replace(".", "_")));
+            if (args.get(1) instanceof Constant){
+                args.set(1, EString.create(args.get(1).toString().replace(".*", "%").replace(".", "_")));
             }
             super.visitOperation(type, operator, args);
             

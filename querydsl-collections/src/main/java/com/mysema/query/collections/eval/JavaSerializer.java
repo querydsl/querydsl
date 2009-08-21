@@ -24,7 +24,7 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.Template.Element;
-import com.mysema.query.types.expr.EConstant;
+import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
@@ -172,8 +172,7 @@ public class JavaSerializer extends SerializerBase<JavaSerializer> {
     }
 
     private void visitCast(Operator<?> operator, Expr<?> source, Class<?> targetType) {
-        if (Number.class.isAssignableFrom(source.getType())
-                && !EConstant.class.isInstance(source)) {
+        if (Number.class.isAssignableFrom(source.getType()) && !Constant.class.isInstance(source)) {
             append("new ").append(source.getType().getSimpleName()).append("(");
             handle(source);
             append(")");
@@ -207,7 +206,7 @@ public class JavaSerializer extends SerializerBase<JavaSerializer> {
         if (operator.equals(Ops.STRING_CAST)) {
             visitCast(operator, args.get(0), String.class);
         } else if (operator.equals(Ops.NUMCAST)) {
-            visitCast(operator, args.get(0), (Class<?>) ((EConstant<?>) args.get(1)).getConstant());
+            visitCast(operator, args.get(0), (Class<?>) ((Constant<?>) args.get(1)).getConstant());
         } else {
             super.visitOperation(type, operator, args);
         }

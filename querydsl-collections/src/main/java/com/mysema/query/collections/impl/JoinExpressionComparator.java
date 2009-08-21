@@ -15,7 +15,7 @@ import org.apache.commons.lang.mutable.MutableInt;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EConstant;
+import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Ops;
@@ -71,7 +71,7 @@ public class JoinExpressionComparator implements Comparator<JoinExpression> {
             if (expr instanceof Path) {
                 Path<?> path = (Path<?>) expr;
                 involved.add((Expr<?>) path.getRoot());
-            } else if (expr instanceof EConstant) {
+            } else if (expr instanceof ExprConst) {
                 constantInvolved = true;
             } else if (expr instanceof Operation) {
                 visitOperation((Operation<?, ?>) expr);

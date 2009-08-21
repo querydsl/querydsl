@@ -12,7 +12,6 @@ import org.junit.Test;
 
 import com.mysema.query.collections.domain.Cat;
 import com.mysema.query.functions.MathFunctions;
-import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 
@@ -27,8 +26,8 @@ public class MathFunctionTest extends AbstractQueryTest {
     @Test
     public void test() {
         Cat c = alias(Cat.class, "c");
-        Expr<Integer> i = EConstant.create(1);
-        Expr<Double> d = EConstant.create(1.0);
+        Expr<Integer> i = ENumber.create(1);
+        Expr<Double> d = ENumber.create(1.0);
         from(c, cats).list( 
                 MathFunctions.acos(d),
                 MathFunctions.asin(d), 

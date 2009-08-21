@@ -1,0 +1,109 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
+package com.mysema.query.types.expr;
+
+
+/**
+ * EStringConst represents String constants
+ * 
+ * @author tiwe
+ *
+ */
+public class EStringConst extends EString implements Constant<String>{
+    
+    private EString lower, trim, upper;
+    
+    private final String constant;
+
+    EStringConst(String constant){
+        this.constant = constant;
+    }
+
+    @Override
+    public EString append(String s) {
+        return EString.create(constant + s);
+    }
+    
+    @Override
+    public EString concat(String s) {
+        return append(s);
+    }
+    
+    @Override
+    public EBoolean eq(String s){
+        return EBoolean.create(constant.equals(s));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Constant ? ((Constant<?>) o).getConstant().equals(constant) : false;
+    }
+    
+    @Override
+    public String getConstant() {
+        return constant;
+    }
+
+    @Override
+    public int hashCode() {
+        return constant.hashCode();
+    }
+
+    @Override
+    public EString lower() {
+        if (lower == null) {
+            lower = EString.create(constant.toLowerCase());
+        }
+        return lower;
+    }
+
+    @Override
+    public EBoolean ne(String s){
+        return EBoolean.create(!constant.equals(s));
+    }
+
+    @Override
+    public EString prepend(String s) {
+        return EString.create(s + constant);
+    }
+    
+    @Override
+    public EString substring(int beginIndex) {
+        return EString.create(constant.substring(beginIndex));
+    }
+    
+    @Override
+    public EString substring(int beginIndex, int endIndex) {
+        return EString.create(constant.substring(beginIndex, endIndex));
+    }
+    
+    @Override
+    public EString toLowerCase() {
+        return lower();
+    }
+
+    @Override
+    public EString toUpperCase() {
+        return upper();
+    }
+    
+    @Override
+    public EString trim() {
+        if (trim == null) {
+            trim = EString.create(constant.trim());
+        }
+        return trim;
+    }
+    
+    @Override
+    public EString upper() {
+        if (upper == null){
+            upper = EString.create(constant.toUpperCase()); 
+        }
+        return upper; 
+    }
+}

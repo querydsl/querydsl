@@ -13,9 +13,10 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.collections.eval.ColQueryTemplates;
 import com.mysema.query.collections.eval.Evaluator;
 import com.mysema.query.collections.eval.EvaluatorFactory;
+import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EConstant;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.Path;
@@ -60,8 +61,8 @@ public class DefaultIndexCreationTask {
 
             // create the key creator
             Evaluator keyCreator;
-            if (key instanceof EConstant) {
-                final Object constant = ((EConstant<?>) key).getConstant();
+            if (key instanceof Constant) {
+                final Object constant = ((Constant<?>) key).getConstant();
                 keyCreator = new Evaluator() {
                     public <T> T evaluate(Object... args) {
                         return (T) constant;
@@ -107,12 +108,12 @@ public class DefaultIndexCreationTask {
                 indexPathEqPath(e1, e2);
 
             } else if (e1 instanceof Path) {
-                if (e2 instanceof EConstant) {
+                if (e2 instanceof Constant) {
                     indexPathEqExpr((Path<?>) e1, e2);
                 }
 
             } else if (e2 instanceof Path) {
-                if (e1 instanceof EConstant) {
+                if (e1 instanceof Constant) {
                     indexPathEqExpr((Path<?>) e2, e1);
                 }
             }

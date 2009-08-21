@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.types;
 
 import java.util.ArrayList;
@@ -18,9 +23,9 @@ import net.jcip.annotations.Immutable;
 @Immutable
 public final class Template {
 
-    // s -> toString
-    // l -> toLowerCase()
-    // u -> toUpperCase()
+    // s -> toString()
+    // l -> lower()
+    // u -> upper()
     
     @Immutable
     public static final class Element {

@@ -55,4 +55,8 @@ public abstract class EBoolean extends EComparable<Boolean> {
     public final EBoolean or(EBoolean right) {
         return new OBoolean(Ops.OR, this, right);
     }
+    
+    public static final EBoolean create(boolean b){
+        return b ? EBooleanConst.TRUE : EBooleanConst.FALSE;
+    }
 }

@@ -29,7 +29,7 @@ import com.mysema.query.sql.domain.QTEST;
 import com.mysema.query.sql.dto.IdName;
 import com.mysema.query.sql.dto.QIdName;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EConstant;
+import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.query.ObjectSubQuery;
@@ -330,8 +330,8 @@ public abstract class SqlQueryTest {
     @Test
     @ExcludeIn( { "derby" })
     public void testMathFunctions() throws SQLException {
-        Expr<Integer> i = EConstant.create(1);
-        Expr<Double> d = EConstant.create(1.0);
+        Expr<Integer> i = ENumber.create(1);
+        Expr<Double> d = ENumber.create(1.0);
         for (Expr<?> e : Arrays.<Expr<?>> asList(
 //                MathFunctions.abs(i),
                 MathFunctions.acos(d), 

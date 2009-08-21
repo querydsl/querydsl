@@ -51,11 +51,13 @@ public class JavaTemplates extends Templates {
         add(Ops.STRING_CONTAINS, "{0}.contains({1})");
         add(Ops.STARTS_WITH, "{0}.startsWith({1})");
         add(Ops.STARTS_WITH_IC, "{0}.toLowerCase().startsWith({1}.toLowerCase())");        
+                               //{0l}.startsWith({1l}) 
         add(Ops.INDEX_OF, "{0}.indexOf({1})");
         add(Ops.INDEX_OF_2ARGS, "{0}.indexOf({1},{2})");
         add(Ops.EQ_IGNORE_CASE, "{0}.equalsIgnoreCase({1})");
         add(Ops.ENDS_WITH, "{0}.endsWith({1})");
         add(Ops.ENDS_WITH_IC, "{0}.toLowerCase().endsWith({1}.toLowerCase())");
+                             //{0l}.endsWith({1l})
         add(Ops.StringOps.SPLIT, "{0}.split({1})");
         add(Ops.StringOps.LAST_INDEX, "{0}.lastIndexOf({1})");
         add(Ops.StringOps.LAST_INDEX_2ARGS, "{0}.lastIndexOf({1},{2})");

@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.expr;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.Optional;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.OComparable;
@@ -22,9 +23,19 @@ import com.mysema.query.types.operation.Ops;
  */
 public abstract class EString extends EComparable<String> {
     
-    private EString lower, trim, upper;
+    /**
+     * Factory method for constants
+     * 
+     * @param str
+     * @return
+     */
+    public static final EString create(String str){
+        return new EStringConst(Assert.notNull(str));
+    }
     
     private ENumber<Long> length;
+    
+    private EString lower, trim, upper;
 
     public EString() {
         super(String.class);
@@ -42,32 +53,16 @@ public abstract class EString extends EComparable<String> {
      * @param str
      * @return this + str
      */
-    public final EString append(String str) {
-        return append(EConstant.create(str));
+    public EString append(String str) {
+        return append(EString.create(str));
     }
     
-    /**
-     * @param str
-     * @return str + this
-     */
-    public final EString prepend(Expr<String> str) {
-        return new OString(Ops.CONCAT, str, this);
-    }
-
-    /**
-     * @param str
-     * @return str + this
-     */
-    public final EString prepend(String str) {
-        return prepend(EConstant.create(str));
-    }
-
     /**
      * @param i
      * @return this.charAt(i)
      * @see java.lang.String#charAt(int)
      */
-    public final Expr<Character> charAt(Expr<Integer> i) {
+    public Expr<Character> charAt(Expr<Integer> i) {
         return OComparable.create(Character.class, Ops.CHAR_AT, this, i);
     }
 
@@ -76,15 +71,15 @@ public abstract class EString extends EComparable<String> {
      * @return this.charAt(i)
      * @see java.lang.String#charAt(int)
      */
-    public final Expr<Character> charAt(int i) {
-        return charAt(EConstant.create(i));
+    public Expr<Character> charAt(int i) {
+        return charAt(ENumber.create(i));
     }
 
     /**
      * @param str
      * @return this + str
      */
-    public final EString concat(Expr<String> str) {
+    public EString concat(Expr<String> str) {
         return append(str);
     }
 
@@ -92,7 +87,7 @@ public abstract class EString extends EComparable<String> {
      * @param str
      * @return this + str
      */
-    public final EString concat(String str) {
+    public EString concat(String str) {
         return append(str);
     }
 
@@ -101,7 +96,7 @@ public abstract class EString extends EComparable<String> {
      * @return this.contains(str)
      * @see java.lang.String#contains(CharSequence)
      */
-    public final EBoolean contains(Expr<String> str) {
+    public EBoolean contains(Expr<String> str) {
         return new OBoolean(Ops.STRING_CONTAINS, this, str);
     }
 
@@ -110,8 +105,8 @@ public abstract class EString extends EComparable<String> {
      * @return this.contains(str)
      * @see java.lang.String#contains(CharSequence)
      */
-    public final EBoolean contains(String str) {
-        return contains(EConstant.create(str));
+    public EBoolean contains(String str) {
+        return contains(EString.create(str));
     }
 
     /**
@@ -119,7 +114,7 @@ public abstract class EString extends EComparable<String> {
      * @return this.endsWith(str)
      * @see java.lang.String#endsWith(String)
      */
-    public final EBoolean endsWith(Expr<String> str) {
+    public EBoolean endsWith(Expr<String> str) {
         return new OBoolean(Ops.ENDS_WITH, this, str);
     }
 
@@ -129,7 +124,7 @@ public abstract class EString extends EComparable<String> {
      * @return
      * @see java.lang.String#endsWith(String)
      */
-    public final EBoolean endsWith(Expr<String> str, boolean caseSensitive) {
+    public EBoolean endsWith(Expr<String> str, boolean caseSensitive) {
         if (caseSensitive){
             return endsWith(str);
         }else{
@@ -142,8 +137,8 @@ public abstract class EString extends EComparable<String> {
      * @return this.endsWith(str)
      * @see java.lang.String#endsWith(String)
      */
-    public final EBoolean endsWith(String str) {
-        return endsWith(EConstant.create(str));
+    public EBoolean endsWith(String str) {
+        return endsWith(EString.create(str));
     }
 
     /**
@@ -152,8 +147,8 @@ public abstract class EString extends EComparable<String> {
      * @return
      * @see java.lang.String#endsWith(String)
      */
-    public final EBoolean endsWith(String str, boolean caseSensitive) {
-        return endsWith(EConstant.create(str), caseSensitive);
+    public EBoolean endsWith(String str, boolean caseSensitive) {
+        return endsWith(EString.create(str), caseSensitive);
     }
 
     /**
@@ -161,7 +156,7 @@ public abstract class EString extends EComparable<String> {
      * @return this.equalsIgnoreCase(str)
      * @see java.lang.String#equalsIgnoreCase(String)
      */
-    public final EBoolean equalsIgnoreCase(Expr<String> str) {
+    public EBoolean equalsIgnoreCase(Expr<String> str) {
         return new OBoolean(Ops.EQ_IGNORE_CASE, this, str);
     }
 
@@ -170,8 +165,8 @@ public abstract class EString extends EComparable<String> {
      * @return this.equalsIgnoreCase(str)
      * @see java.lang.String#equalsIgnoreCase(String)
      */
-    public final EBoolean equalsIgnoreCase(String str) {
-        return equalsIgnoreCase(EConstant.create(str));
+    public EBoolean equalsIgnoreCase(String str) {
+        return equalsIgnoreCase(EString.create(str));
     }
 
     /**
@@ -179,7 +174,7 @@ public abstract class EString extends EComparable<String> {
      * @return this.indexOf(str)
      * @see java.lang.String#indexOf(String)
      */
-    public final ENumber<Integer> indexOf(Expr<String> str) {
+    public ENumber<Integer> indexOf(Expr<String> str) {
         return ONumber.create(Integer.class, Ops.INDEX_OF, this, str);
     }
 
@@ -188,8 +183,8 @@ public abstract class EString extends EComparable<String> {
      * @return this.indexOf(str)
      * @see java.lang.String#indexOf(String)
      */
-    public final ENumber<Integer> indexOf(String str) {
-        return indexOf(EConstant.create(str));
+    public ENumber<Integer> indexOf(String str) {
+        return indexOf(EString.create(str));
     }
 
     /**
@@ -198,26 +193,26 @@ public abstract class EString extends EComparable<String> {
      * @return this.indexOf(str, i)
      * @see java.lang.String#indexOf(String, int)
      */
-    public final ENumber<Integer> indexOf(String str, int i) {
-        return ONumber.create(Integer.class, Ops.INDEX_OF_2ARGS, this, EConstant.create(str), EConstant.create(i));
+    public ENumber<Integer> indexOf(String str, int i) {
+        return ONumber.create(Integer.class, Ops.INDEX_OF_2ARGS, this, EString.create(str), ENumber.create(i));
     }
 
     /**
      * @return this.isEmpty()
      * @see java.lang.String#isEmpty()
      */
-    public final EBoolean isEmpty(){
+    public EBoolean isEmpty(){
         return new OBoolean(Ops.STRING_IS_EMPTY, this);
     }
-    
+
     /**
      * @return !this.isEmpty()
      * @see java.lang.String#isEmpty()
      */
-    public final EBoolean isNotEmpty(){
+    public EBoolean isNotEmpty(){
         return isEmpty().not();
     }
-    
+
     /**
      * Expr : <code>this.lastIndexOf(right, third);</code>
      * 
@@ -228,9 +223,9 @@ public abstract class EString extends EComparable<String> {
      */
     @Optional
     public ENumber<Integer> lastIndex(String right, int third) {
-        return ONumber.create(Integer.class, Ops.StringOps.LAST_INDEX_2ARGS, this, EConstant.create(right), EConstant.create(third));
+        return ONumber.create(Integer.class, Ops.StringOps.LAST_INDEX_2ARGS, this, EString.create(right), ENumber.create(third));
     }
-
+    
     /**
      * Expr : <code>this.lastIndexOf(right)</code>
      * 
@@ -243,7 +238,6 @@ public abstract class EString extends EComparable<String> {
         return ONumber.create(Integer.class, Ops.StringOps.LAST_INDEX, this, right);
     }
     
-
     /**
      * Expr : <code>this.lastIndexOf(right)</code>
      * 
@@ -253,26 +247,27 @@ public abstract class EString extends EComparable<String> {
      */
     @Optional
     public ENumber<Integer> lastIndexOf(String right) {
-        return ONumber.create(Integer.class, Ops.StringOps.LAST_INDEX, this, EConstant.create(right));
+        return ONumber.create(Integer.class, Ops.StringOps.LAST_INDEX, this, EString.create(right));
     }
 
     /**
      * @return this.length()
      * @see java.lang.String#length()
      */
-    public final ENumber<Long> length() {
+    public ENumber<Long> length() {
         if (length == null) {
             length = ONumber.create(Long.class, Ops.STRING_LENGTH, this);
         }
         return length;
     }
+    
 
     /**
      * 
      * @return this.toLowerCase()
      * @see java.lang.String#toLowerCase()
      */
-    public final EString lower() {
+    public EString lower() {
         if (lower == null) {
             lower = new OString(Ops.LOWER, this);
         }
@@ -284,17 +279,33 @@ public abstract class EString extends EComparable<String> {
      * @return this.matches(right)
      * @see java.lang.String#matches(String)
      */
-    public final EBoolean matches(Expr<String> regex){
+    public EBoolean matches(Expr<String> regex){
         return new OBoolean(Ops.MATCHES, this, regex);
     }
-    
+
     /**
      * @param regex
      * @return this.matches(regex)
      * @see java.lang.String#matches(String)
      */
-    public final EBoolean matches(String regex){
-        return matches(EConstant.create(regex));
+    public EBoolean matches(String regex){
+        return matches(EString.create(regex));
+    }
+
+    /**
+     * @param str
+     * @return str + this
+     */
+    public EString prepend(Expr<String> str) {
+        return new OString(Ops.CONCAT, str, this);
+    }
+    
+    /**
+     * @param str
+     * @return str + this
+     */
+    public EString prepend(String str) {
+        return prepend(EString.create(str));
     }
     
     /**
@@ -306,7 +317,7 @@ public abstract class EString extends EComparable<String> {
      */
     @Optional
     public Expr<String[]> split(String regex) {
-        return OSimple.create(String[].class, Ops.StringOps.SPLIT, this, EConstant.create(regex));
+        return OSimple.create(String[].class, Ops.StringOps.SPLIT, this, EString.create(regex));
     }
     
     /**
@@ -314,7 +325,7 @@ public abstract class EString extends EComparable<String> {
      * @return this.startsWith(str)
      * @see java.lang.String#startsWith(String)
      */
-    public final EBoolean startsWith(Expr<String> str) {
+    public EBoolean startsWith(Expr<String> str) {
         return new OBoolean(Ops.STARTS_WITH, this, str);
     }
 
@@ -324,7 +335,7 @@ public abstract class EString extends EComparable<String> {
      * @return
      * @see java.lang.String#startsWith(String)
      */
-    public final EBoolean startsWith(Expr<String> str, boolean caseSensitive) {
+    public EBoolean startsWith(Expr<String> str, boolean caseSensitive) {
         if (caseSensitive){
             return startsWith(str);
         }else{
@@ -337,8 +348,8 @@ public abstract class EString extends EComparable<String> {
      * @return this.startsWith(str)
      * @see java.lang.String#startsWith(String)
      */
-    public final EBoolean startsWith(String str) {
-        return startsWith(EConstant.create(str));
+    public EBoolean startsWith(String str) {
+        return startsWith(EString.create(str));
     }
 
     /**
@@ -347,14 +358,14 @@ public abstract class EString extends EComparable<String> {
      * @return
      * @see java.lang.String#startsWith(String)
      */
-    public final EBoolean startsWith(String str, boolean caseSensitive) {
-        return startsWith(EConstant.create(str), caseSensitive);
+    public EBoolean startsWith(String str, boolean caseSensitive) {
+        return startsWith(EString.create(str), caseSensitive);
     }
 
     /* (non-Javadoc)
      * @see com.mysema.query.types.expr.EComparable#stringValue()
      */
-    public final EString stringValue() {
+    public EString stringValue() {
         return this;
     }
 
@@ -363,8 +374,8 @@ public abstract class EString extends EComparable<String> {
      * @return this.substring(beginIndex)
      * @see java.lang.String#substring(int)
      */
-    public final EString substring(int beginIndex) {
-        return new OString(Ops.SUBSTR_1ARG, this, EConstant.create(beginIndex));
+    public EString substring(int beginIndex) {
+        return new OString(Ops.SUBSTR_1ARG, this, ENumber.create(beginIndex));
     }
 
     /**
@@ -373,8 +384,8 @@ public abstract class EString extends EComparable<String> {
      * @return this.substring(beginIndex, endIndex)
      * @see java.lang.String#substring(int, int)
      */
-    public final EString substring(int beginIndex, int endIndex) {
-        return new OString(Ops.SUBSTR_2ARGS, this, EConstant.create(beginIndex), EConstant.create(endIndex));
+    public EString substring(int beginIndex, int endIndex) {
+        return new OString(Ops.SUBSTR_2ARGS, this, ENumber.create(beginIndex), ENumber.create(endIndex));
     }
 
     /**
@@ -382,7 +393,7 @@ public abstract class EString extends EComparable<String> {
      * @return this.toLowerCase()
      * @see java.lang.String#toLowerCase()
      */
-    public final EString toLowerCase() {
+    public EString toLowerCase() {
         return lower();
     }
 
@@ -391,7 +402,7 @@ public abstract class EString extends EComparable<String> {
      * @return
      * @see java.lang.String#toUpperCase()
      */
-    public final EString toUpperCase() {
+    public EString toUpperCase() {
         return upper();
     }
     
@@ -399,7 +410,7 @@ public abstract class EString extends EComparable<String> {
      * @return
      * @see java.lang.String#trim()
      */
-    public final EString trim() {
+    public EString trim() {
         if (trim == null) {
             trim = new OString(Ops.TRIM, this);
         }
@@ -410,7 +421,7 @@ public abstract class EString extends EComparable<String> {
      * @return
      * @see java.lang.String#toUpperCase()
      */
-    public final EString upper() {
+    public EString upper() {
         if (upper == null) {
             upper = new OString(Ops.UPPER, this);
         }

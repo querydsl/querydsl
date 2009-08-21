@@ -23,7 +23,7 @@ import com.mysema.query.types.operation.Ops;
  */
 @SuppressWarnings("unchecked")
 public abstract class EComparable<D extends Comparable> extends Expr<D> {
-    
+
     private OrderSpecifier<D> asc;
     
     private OrderSpecifier<D> desc;
@@ -42,7 +42,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean after(D right) {
-        return after(EConstant.create(right));
+        return after(ExprConst.create(right));
     }
 
     /**
@@ -64,7 +64,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean aoe(D right) {
-        return aoe(EConstant.create(right));
+        return aoe(ExprConst.create(right));
     }
 
     /**
@@ -98,7 +98,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean before(D right) {
-        return before(EConstant.create(right));
+        return before(ExprConst.create(right));
     }
 
     /**
@@ -120,7 +120,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean boe(D right) {
-        return new OBoolean(Ops.BOE, this, EConstant.create(right));
+        return new OBoolean(Ops.BOE, this, ExprConst.create(right));
     }
 
     /**
@@ -142,7 +142,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @return
      */
     public final EBoolean between(D first, D second) {
-        return new OBoolean(Ops.BETWEEN, this, EConstant.create(first), EConstant.create(second));
+        return new OBoolean(Ops.BETWEEN, this, ExprConst.create(first), ExprConst.create(second));
     }
 
     /**
@@ -165,7 +165,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @return
      */
     public <A extends Number & Comparable<? super A>> ENumber<A> castToNum(Class<A> type) {
-        return ONumber.create(type, Ops.NUMCAST, this, EConstant.create(type));
+        return ONumber.create(type, Ops.NUMCAST, this, ExprConst.create(type));
     }
 
     /**
