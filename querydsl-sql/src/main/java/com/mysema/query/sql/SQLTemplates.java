@@ -80,8 +80,8 @@ public class SQLTemplates extends Templates {
 
         add(Ops.STARTS_WITH, "{0} like concat({1},'%')");
         add(Ops.ENDS_WITH, "{0} like concat('%',{1})");
-        add(Ops.STARTS_WITH_IC, "lower({0}) like concat(lower({1}),'%')");
-        add(Ops.ENDS_WITH_IC, "lower({0}) like concat('%',lower({1}))");
+        add(Ops.STARTS_WITH_IC, "{0l} like concat({1l},'%')");
+        add(Ops.ENDS_WITH_IC, "{0l} like concat('%',{1l})");
         
         for (Class<?> cl : new Class[] { Boolean.class, Byte.class,
                 Double.class, Float.class, Integer.class, Long.class,

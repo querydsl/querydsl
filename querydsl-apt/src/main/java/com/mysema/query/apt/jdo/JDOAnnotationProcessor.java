@@ -22,19 +22,23 @@ import com.mysema.query.apt.Processor;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class JDOAnnotationProcessor extends AbstractProcessor{
     
+    private Class<? extends Annotation> entity, superType, embeddable, dto, skip;
+    
     @SuppressWarnings("unchecked")
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         try {
             processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
-            Class<? extends Annotation> entity = (Class)Class.forName("javax.jdo.annotations.PersistenceCapable");
-            Class<? extends Annotation> superType = null; // ?!?
-            Class<? extends Annotation> embeddable = (Class)Class.forName("javax.jdo.annotations.EmbeddedOnly");
-            Class<? extends Annotation> dtoAnnotation = Projection.class;
-            Class<? extends Annotation> skipAnnotation = (Class)Class.forName("javax.jdo.annotations.NotPersistent");
-            Processor p = new Processor(processingEnv, entity, superType, embeddable, dtoAnnotation, skipAnnotation, "Q");
+            entity = (Class)Class.forName("javax.jdo.annotations.PersistenceCapable");
+            superType = null; // ?!?
+            embeddable = (Class)Class.forName("javax.jdo.annotations.EmbeddedOnly");
+            dto = Projection.class;
+            skip = (Class)Class.forName("javax.jdo.annotations.NotPersistent");
+            
+            Processor p = new Processor(processingEnv, entity, superType, embeddable, dto, skip);
             p.skipGetters().process(roundEnv);
             return true;
+            
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e.getMessage(), e);
         }

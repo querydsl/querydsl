@@ -8,6 +8,7 @@ package com.mysema.query.hql;
 import com.mysema.query.Detachable;
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
+import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
 
@@ -36,6 +37,8 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable, Detachable{
     <P> HQLQuery fullJoin(PEntity<P> target, PEntity<P> alias);
     
     <P> HQLQuery fullJoin(PEntityCollection<P> target, PEntity<P> alias);
+    
+    HQLQuery on(EBoolean condition);
     
     HQLQuery fetch();
             

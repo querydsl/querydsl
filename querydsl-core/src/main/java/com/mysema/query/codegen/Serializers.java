@@ -9,6 +9,7 @@ import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 
 /**
+ * Serializers provides access to Serializer instances
  * 
  * @author tiwe
  *

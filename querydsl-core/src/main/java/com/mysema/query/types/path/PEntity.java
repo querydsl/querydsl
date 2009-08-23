@@ -144,13 +144,13 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @return
      */
     public <B extends D> EBoolean instanceOf(Class<B> type) {
-        return new OBoolean(Ops.INSTANCE_OF, this, ExprConst.create(type));
+        return OBoolean.create(Ops.INSTANCE_OF, this, ExprConst.create(type));
     }
 
     @Override
     public EBoolean isNotNull() {
         if (isnotnull == null) {
-            isnotnull = new OBoolean(Ops.IS_NOT_NULL, this);
+            isnotnull = OBoolean.create(Ops.IS_NOT_NULL, this);
         }
         return isnotnull;
     }
@@ -158,7 +158,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
     @Override
     public EBoolean isNull() {
         if (isnull == null) {
-            isnull = new OBoolean(Ops.IS_NULL, this);
+            isnull = OBoolean.create(Ops.IS_NULL, this);
         }
         return isnull;
     }

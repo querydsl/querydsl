@@ -237,7 +237,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean goe(Expr<A> right) {
-        return new OBoolean(Ops.GOE, this, right);
+        return OBoolean.create(Ops.GOE, this, right);
     }
 
     /**
@@ -261,7 +261,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean gt(Expr<A> right) {
-        return new OBoolean(Ops.GT, this, right);
+        return OBoolean.create(Ops.GT, this, right);
     }
 
     /**
@@ -295,7 +295,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean loe(Expr<A> right) {
-        return new OBoolean(Ops.LOE, this, right);
+        return OBoolean.create(Ops.LOE, this, right);
     }
 
     /**
@@ -329,7 +329,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean lt(Expr<A> right) {
-        return new OBoolean(Ops.LT, this, right);
+        return OBoolean.create(Ops.LT, this, right);
     }
 
     /**

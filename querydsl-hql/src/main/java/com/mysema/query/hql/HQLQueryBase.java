@@ -26,7 +26,7 @@ import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PathMetadata;
 
 /**
- * HqlQueryBase is a base Query class for HQL
+ * HQLQueryBase is a base Query class for HQL
  * 
  * @author tiwe
  * @version $Id$
@@ -38,18 +38,18 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
     @Nullable
     private String countRowsString, queryString;
 
-    private final HQLTemplates patterns;
-
-    public HQLQueryBase(HQLTemplates patterns) {
+    private final HQLTemplates templates;
+    
+    public HQLQueryBase(HQLTemplates templates) {
         super(new DefaultQueryMetadata());
-        this.patterns = patterns;
+        this.templates = templates;
     }
 
     private String buildQueryString(boolean forCountRow) {
         if (getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("No joins given");
         }
-        HQLSerializer serializer = new HQLSerializer(patterns);
+        HQLSerializer serializer = new HQLSerializer(templates);
         serializer.serialize(getMetadata(), forCountRow);
         constants = serializer.getConstantToLabel();
         return serializer.toString();
@@ -128,6 +128,11 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
     
     public <P> SubType leftJoin(PEntityCollection<P> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
+        return _this;
+    }
+    
+    public SubType on(EBoolean condition){
+        getMetadata().addJoinCondition(condition);
         return _this;
     }
 

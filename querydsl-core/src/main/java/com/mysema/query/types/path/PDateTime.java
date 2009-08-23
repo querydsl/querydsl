@@ -62,7 +62,7 @@ public class PDateTime<D extends Comparable> extends EDateTime<D> implements Pat
     @Override
     public EBoolean isNotNull() {
         if (isnotnull == null) {
-            isnotnull = new OBoolean(Ops.IS_NOT_NULL, this);
+            isnotnull = OBoolean.create(Ops.IS_NOT_NULL, this);
         }
         return isnotnull;
     }
@@ -70,7 +70,7 @@ public class PDateTime<D extends Comparable> extends EDateTime<D> implements Pat
     @Override
     public EBoolean isNull() {
         if (isnull == null) {
-            isnull = new OBoolean(Ops.IS_NULL, this);
+            isnull = OBoolean.create(Ops.IS_NULL, this);
         }
         return isnull;
     }

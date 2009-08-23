@@ -14,6 +14,8 @@ import javax.annotation.Nullable;
 
 import net.jcip.annotations.Immutable;
 
+import com.mysema.query.types.expr.Expr;
+
 /**
  * Template for operation and path serialization
  * 
@@ -22,11 +24,7 @@ import net.jcip.annotations.Immutable;
  */
 @Immutable
 public final class Template {
-
-    // s -> toString()
-    // l -> lower()
-    // u -> upper()
-    
+        
     @Immutable
     public static final class Element {
         
@@ -35,24 +33,34 @@ public final class Template {
         @Nullable
         private final String staticText;
         
+        @Nullable
+        private final Converter<?,?> converter;
+        
         private final boolean asString;
 
         private Element(int index) {
-            this(index, false);
+            this(index, false, null, null);
         }
 
+        private Element(int index, Converter<?,?> converter) {
+            this(index, false, null, converter);
+        }
+        
         private Element(int index, boolean asString) {
-            this.index = index;
-            this.staticText = null;
-            this.asString = asString;
+            this(index, asString, null, null);
         }
 
         private Element(String text) {
-            this.index = -1;
-            this.staticText = text;
-            this.asString = true;
+            this(-1, false, text, null);
         }
 
+        private Element(int index, boolean asString, @Nullable String text, @Nullable Converter<?,?> converter){
+            this.index = index;
+            this.asString = asString;
+            this.staticText = text;
+            this.converter = converter;
+        }
+        
         public int getIndex() {
             return index;
         }
@@ -64,6 +72,15 @@ public final class Template {
 
         public boolean isAsString() {
             return asString;
+        }
+        
+        public boolean hasConverter(){
+            return converter != null;
+        }
+        
+        @SuppressWarnings("unchecked")
+        public Expr<?> convert(Expr<?> source){
+            return ((Converter)converter).convert(source);
         }
 
         @Override
@@ -78,7 +95,7 @@ public final class Template {
         }
     }
 
-    private static final Pattern elementPattern = Pattern.compile("\\{\\d+s?\\}");
+    private static final Pattern elementPattern = Pattern.compile("\\{\\d+[slu]?\\}");
 
     private final List<Element> elements = new ArrayList<Element>();
 
@@ -92,11 +109,24 @@ public final class Template {
             if (m.start() > end) {
                 elements.add(new Element(template.substring(end, m.start())));
             }
-            String index = template.substring(m.start() + 1, m.end() - 1);
-            if (index.endsWith("s")) {
-                elements.add(new Element(Integer.parseInt(index.substring(0, index.length() - 1)), true));
-            } else {
-                elements.add(new Element(Integer.parseInt(index)));
+            String str = template.substring(m.start() + 1, m.end() - 1).toLowerCase();
+            boolean asString = false;
+            Converter<?,?> converter = null;
+            switch (str.charAt(str.length()-1)){
+              case 'l' : converter = Converters.toLowerCase; break;
+              case 'u' : converter = Converters.toUpperCase; break;
+              case 's' : asString = true; break;
+            }
+            if (asString || converter != null){
+                str = str.substring(0, str.length()-1);
+            }
+            int index = Integer.parseInt(str);
+            if (asString){
+                elements.add(new Element(index, true));
+            }else if (converter != null){
+                elements.add(new Element(index, converter));
+            }else{
+                elements.add(new Element(index));
             }
             end = m.end();
         }

@@ -96,7 +96,7 @@ public class MetaDataExporter {
         ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
         while (tables.next()) {
             String tableName = tables.getString(3);
-            ClassModel classModel = new ClassModel(null, "java.lang", "java.lang.Object", tableName);
+            ClassModel classModel = new ClassModel(namePrefix, null, "java.lang", "java.lang.Object", tableName);
             ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
             while (columns.next()) {
                 String name = columns.getString(4);
@@ -126,17 +126,9 @@ public class MetaDataExporter {
     }
 
     private void serialize(ClassModel type) {
-        // populate model
-        Map<String, Object> model = new HashMap<String, Object>();
-        model.put("pre", namePrefix);
-        model.put("package", packageName);
-        model.put("type", type);
-        model.put("classSimpleName", type.getSimpleName());
-
-        // serialize it
         try {
             String path = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
-            serializer.serialize(model, FileUtils.writerFor(new File(targetFolder, path)));
+            serializer.serialize(type, FileUtils.writerFor(new File(targetFolder, path)));
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }

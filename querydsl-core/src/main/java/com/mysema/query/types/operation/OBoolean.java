@@ -24,11 +24,11 @@ public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
     
     private final Operator<Boolean> op;
 
-    public OBoolean(Operator<Boolean> op, Expr<?>... args) {
+    OBoolean(Operator<Boolean> op, Expr<?>... args) {
         this(op, Arrays.asList(args));
     }
 
-    public OBoolean(Operator<Boolean> op, List<Expr<?>> args) {
+    OBoolean(Operator<Boolean> op, List<Expr<?>> args) {
         this.op = op;
         this.args = Collections.unmodifiableList(args);
     }
@@ -55,5 +55,9 @@ public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
     @Override
     public Operator<Boolean> getOperator() {
         return op;
+    }
+    
+    public static EBoolean create(Operator<Boolean> op, Expr<?>... args){
+        return new OBoolean(op, args);
     }
 }

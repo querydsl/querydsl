@@ -51,7 +51,7 @@ public class Processor {
         public ClassModel visitType(TypeElement e, Void p) {
             Elements elementUtils = env.getElementUtils();
             TypeModel c = APTTypeModel.get(e.asType(), elementUtils);
-            ClassModel classModel = new ClassModel(null, c.getPackageName(), c.getName(), c.getSimpleName());
+            ClassModel classModel = new ClassModel(namePrefix, null, c.getPackageName(), c.getName(), c.getSimpleName());
             List<? extends Element> elements = e.getEnclosedElements();
             
             // CONSTRUCTOR
@@ -78,7 +78,7 @@ public class Processor {
             Elements elementUtils = env.getElementUtils();
             TypeModel sc = APTTypeModel.get(e.getSuperclass(), elementUtils);
             TypeModel c = APTTypeModel.get(e.asType(), elementUtils);
-            ClassModel classModel = new ClassModel(sc.getName(), c.getPackageName(), c.getName(), c.getSimpleName());
+            ClassModel classModel = new ClassModel(namePrefix, sc.getName(), c.getPackageName(), c.getName(), c.getSimpleName());
             List<? extends Element> elements = e.getEnclosedElements();
             
             // GETTERS
@@ -126,26 +126,22 @@ public class Processor {
     
     private final ProcessingEnvironment env;
     
-    private final String namePrefix;
+    private final String namePrefix = "Q";
     
-    private boolean useFields = true;
-    
-    private boolean useGetters = true;
+    private boolean useFields = true, useGetters = true;
     
     public Processor(ProcessingEnvironment env,
             Class<? extends Annotation> entityAnn, 
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
             Class<? extends Annotation> dtoAnn,
-            Class<? extends Annotation> skipAnn,
-            String namePrefix) {
+            Class<? extends Annotation> skipAnn) {
         this.env = Assert.notNull(env);
         this.entityAnn = Assert.notNull(entityAnn);
         this.superTypeAnn = superTypeAnn;
         this.embeddableAnn = embeddableAnn;
         this.dtoAnn = dtoAnn;
         this.skipAnn = skipAnn;
-        this.namePrefix = Assert.notNull(namePrefix);
     }
     
     private ClassModel getClassModel(Element element) {
@@ -239,24 +235,18 @@ public class Processor {
     
     private void serialize(Serializer serializer, Map<String, ClassModel> types) {
         Messager msg = env.getMessager();
-        Map<String, Object> model = new HashMap<String, Object>();
-        model.put("pre", namePrefix);
         for (ClassModel type : types.values()) {
             msg.printMessage(Kind.NOTE, type.getName() + " is processed");
-            String packageName = type.getPackageName();
-            model.put("package", packageName);
-            model.put("type", type);
-            model.put("classSimpleName", type.getSimpleName());
-            try {                    
+            try {
+                String packageName = type.getPackageName();                    
                 String className = packageName + "." + namePrefix + type.getSimpleName();
                 JavaFileObject fileObject = env.getFiler().createSourceFile(className);
                 Writer writer = fileObject.openWriter();
-                try{
-                    serializer.serialize(model, writer);
+                try {
+                    serializer.serialize(type, writer);    
                 }finally{
-                    writer.close();
-                }
-                
+                    if (writer != null) writer.close();
+                }                
             } catch (Exception e) {
                 msg.printMessage(Kind.ERROR, e.getMessage());
             }

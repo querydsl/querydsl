@@ -22,19 +22,23 @@ import com.mysema.query.apt.Processor;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class JPAAnnotationProcessor extends AbstractProcessor{
     
+    private Class<? extends Annotation> entity, superType, embeddable, dto, skip;
+    
     @SuppressWarnings("unchecked")
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         try {
             processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
-            Class<? extends Annotation> entity = (Class)Class.forName("javax.persistence.Entity");
-            Class<? extends Annotation> superType = (Class)Class.forName("javax.persistence.MappedSuperclass");
-            Class<? extends Annotation> embeddable = (Class)Class.forName("javax.persistence.Embeddable");
-            Class<? extends Annotation> dtoAnnotation = Projection.class;
-            Class<? extends Annotation> skipAnnotation = (Class)Class.forName("javax.persistence.Transient");
-            Processor p = new Processor(processingEnv, entity, superType, embeddable, dtoAnnotation, skipAnnotation, "Q");
+            entity = (Class)Class.forName("javax.persistence.Entity");
+            superType = (Class)Class.forName("javax.persistence.MappedSuperclass");
+            embeddable = (Class)Class.forName("javax.persistence.Embeddable");
+            dto = Projection.class;
+            skip = (Class)Class.forName("javax.persistence.Transient");
+            
+            Processor p = new Processor(processingEnv, entity, superType, embeddable, dto, skip);
             p.process(roundEnv);
             return true;
+            
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e.getMessage(), e);
         }        

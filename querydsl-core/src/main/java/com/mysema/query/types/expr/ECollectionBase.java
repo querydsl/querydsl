@@ -36,13 +36,13 @@ public abstract class ECollectionBase<D> extends Expr<java.util.Collection<D>> i
 
     @Override
     public final EBoolean contains(Expr<D> child) {
-        return new OBoolean(Ops.IN, child, this);
+        return OBoolean.create(Ops.IN, child, this);
     }
     
     @Override
     public final EBoolean isEmpty() {
         if (empty == null){
-            empty = new OBoolean(Ops.COL_IS_EMPTY, this); 
+            empty = OBoolean.create(Ops.COL_IS_EMPTY, this); 
         }
         return empty;
     }

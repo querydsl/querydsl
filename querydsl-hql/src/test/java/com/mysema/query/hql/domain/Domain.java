@@ -26,7 +26,6 @@ public final class Domain {
             Department.class,
             Document.class,
             DomesticCat.class,
-            doofus.class,
             EmbeddedType.class,
             Employee.class,
             EvilType.class,

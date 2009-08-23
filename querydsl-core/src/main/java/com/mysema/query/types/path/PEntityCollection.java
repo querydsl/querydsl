@@ -62,12 +62,12 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
 
     @Override
     public EBoolean contains(D child) {
-        return new OBoolean(Ops.IN, ExprConst.create(child), this);
+        return OBoolean.create(Ops.IN, ExprConst.create(child), this);
     }
 
     @Override
     public EBoolean contains(Expr<D> child) {
-        return new OBoolean(Ops.IN, child, this);
+        return OBoolean.create(Ops.IN, child, this);
     }
 
     @SuppressWarnings("unchecked")
@@ -108,7 +108,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     @Override
     public EBoolean isEmpty() {
         if (empty == null){
-            empty = new OBoolean(Ops.COL_IS_EMPTY, this);
+            empty = OBoolean.create(Ops.COL_IS_EMPTY, this);
         }
         return empty;
     }
@@ -124,7 +124,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     @Override
     public EBoolean isNotNull() {
         if (isnotnull == null) {
-            isnotnull = new OBoolean(Ops.IS_NOT_NULL, this);
+            isnotnull = OBoolean.create(Ops.IS_NOT_NULL, this);
         }
         return isnotnull;
     }
@@ -132,7 +132,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     @Override
     public EBoolean isNull() {
         if (isnull == null) {
-            isnull = new OBoolean(Ops.IS_NULL, this);
+            isnull = OBoolean.create(Ops.IS_NULL, this);
         }
         return isnull;
     }

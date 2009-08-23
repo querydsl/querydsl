@@ -132,6 +132,8 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
                 Expr<?> arg = args.get(element.getIndex());
                 if (element.isAsString()){
                     append(arg.toString());
+                }else if (element.hasConverter()){    
+                    handle(element.convert(arg));
                 }else{
                     handle(arg);    
                 }
@@ -160,7 +162,11 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
                 if (wrap){
                     append("(");
                 }
-                handle(args.get(i));
+                if (element.hasConverter()){
+                    handle(element.convert(args.get(i)));
+                }else{
+                    handle(args.get(i));                    
+                }
                 if (wrap){
                     append(")");
                 }

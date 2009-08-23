@@ -6,13 +6,3 @@ REFACTORING
 
   - real queries (Query + Projectable)
   - detached queries (Query + Detachable)
-
-IDEAS
-
- * all fields : 
- 
-  from(customer).list(customer.allFields()) // SQL wildcard projection
-  
-  
-  
-  

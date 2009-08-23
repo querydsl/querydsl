@@ -75,7 +75,7 @@ public class EStringConst extends EString implements Constant<String>{
     @Override
     public ENumber<Long> length() {
         if (length == null) {
-            length = ENumber.create((long)constant.length());
+            length = ENumber.create(Long.valueOf(constant.length()));
         }
         return length;
     }

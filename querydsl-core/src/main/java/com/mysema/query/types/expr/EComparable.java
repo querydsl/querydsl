@@ -53,7 +53,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean after(Expr<D> right) {
-        return new OBoolean(Ops.AFTER, this, right);
+        return OBoolean.create(Ops.AFTER, this, right);
     }
 
     /**
@@ -75,7 +75,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean aoe(Expr<D> right) {
-        return new OBoolean(Ops.AOE, this, right);
+        return OBoolean.create(Ops.AOE, this, right);
     }
 
     /**
@@ -109,7 +109,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean before(Expr<D> right) {
-        return new OBoolean(Ops.BEFORE, this, right);
+        return OBoolean.create(Ops.BEFORE, this, right);
     }
 
     /**
@@ -120,7 +120,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean boe(D right) {
-        return new OBoolean(Ops.BOE, this, ExprConst.create(right));
+        return OBoolean.create(Ops.BOE, this, ExprConst.create(right));
     }
 
     /**
@@ -131,7 +131,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean boe(Expr<D> right) {
-        return new OBoolean(Ops.BOE, this, right);
+        return OBoolean.create(Ops.BOE, this, right);
     }
 
     /**
@@ -142,7 +142,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @return
      */
     public final EBoolean between(D first, D second) {
-        return new OBoolean(Ops.BETWEEN, this, ExprConst.create(first), ExprConst.create(second));
+        return OBoolean.create(Ops.BETWEEN, this, ExprConst.create(first), ExprConst.create(second));
     }
 
     /**
@@ -153,7 +153,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @return
      */
     public final EBoolean between(Expr<D> first, Expr<D> second) {
-        return new OBoolean(Ops.BETWEEN, this, first, second);
+        return OBoolean.create(Ops.BETWEEN, this, first, second);
     }
 
     
@@ -206,7 +206,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      */
     public EString stringValue() {
         if (stringCast == null){
-            stringCast = new OString(Ops.STRING_CAST, this);
+            stringCast = OString.create(Ops.STRING_CAST, this);
         }            
         return stringCast;
     }

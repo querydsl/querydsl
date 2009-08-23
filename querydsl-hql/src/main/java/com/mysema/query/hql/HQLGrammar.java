@@ -38,7 +38,7 @@ public class HQLGrammar {
     }
 
     public static EBoolean exists(ECollection<?> col) {
-        return new OBoolean(Ops.EXISTS, (Expr<?>)col);
+        return OBoolean.create(Ops.EXISTS, (Expr<?>)col);
     }
 
     public static <A extends Comparable<? super A>> EComparable<A> max(ECollection<A> left) {

@@ -65,13 +65,13 @@ public class HQLTemplates extends Templates {
         add(Ops.SUBSTR_2ARGS, "substring({0},{1},{2})");
         add(Ops.TRIM, "trim({0})");
         add(Ops.UPPER, "upper({0})");
-        add(Ops.EQ_IGNORE_CASE, "lower({0}) = lower({1})");
+        add(Ops.EQ_IGNORE_CASE, "{0l} = {1l}");
         add(Ops.CHAR_AT, "cast(substring({0},{1}+1,1) as char)");
         add(Ops.STRING_CONTAINS, "locate({1},{0}) > 0");
         add(Ops.ENDS_WITH, "locate({0},{1}) > -1"); // FIXME
-        add(Ops.ENDS_WITH_IC, "locate(lower({0}),lower({1})) > -1"); // FIXME
+        add(Ops.ENDS_WITH_IC, "locate({0l},{1l}) > -1"); // FIXME
         add(Ops.STARTS_WITH, "locate({0},{1}) = 0");
-        add(Ops.STARTS_WITH_IC, "locate(lower({0}),lower({1})) = 0");
+        add(Ops.STARTS_WITH_IC, "locate({0l},{1l}) = 0");
         add(Ops.INDEX_OF, "locate({0},{1})");
         add(Ops.INDEX_OF_2ARGS, "locate({0},{1},{2})");
         add(Ops.STRING_IS_EMPTY, "length({0}) = 0");

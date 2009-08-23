@@ -31,7 +31,7 @@ public abstract class EBoolean extends EComparable<Boolean> {
      * @return this && right
      */
     public final EBoolean and(EBoolean right) {
-        return new OBoolean(Ops.AND, this, right);
+        return OBoolean.create(Ops.AND, this, right);
     }
 
     /**
@@ -41,7 +41,7 @@ public abstract class EBoolean extends EComparable<Boolean> {
      */
     public EBoolean not() {
         if (not == null){
-            not = new OBoolean(Ops.NOT, this);
+            not = OBoolean.create(Ops.NOT, this);
         }            
         return not;
     }
@@ -53,7 +53,7 @@ public abstract class EBoolean extends EComparable<Boolean> {
      * @return this || right
      */
     public final EBoolean or(EBoolean right) {
-        return new OBoolean(Ops.OR, this, right);
+        return OBoolean.create(Ops.OR, this, right);
     }
     
     public static final EBoolean create(boolean b){

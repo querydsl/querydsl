@@ -8,8 +8,6 @@ package com.mysema.query.codegen;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -23,20 +21,16 @@ import org.junit.Test;
  */
 public class SerializerTest {
 
-    /** The type. */
     private ClassModel type;
 
-    /** The writer. */
     private Writer writer = new StringWriter();
-
-    /** The model. */
-    private Map<String, Object> model = new HashMap<String, Object>();
 
     /**
      * Instantiates a new serializer test.
      */
     public SerializerTest() {
         type = new ClassModel(
+                "Q",
                 "com.mysema.query.DomainSuperClass",
                 "com.mysema.query", 
                 "com.mysema.query.DomainClass",
@@ -85,14 +79,7 @@ public class SerializerTest {
      */
     @Test
     public void testDomainTypesAsOuterClasses() throws Exception {
-        model.put("type", type);
-        model.put("pre", "");
-        model.put("include", "");
-        model.put("package", "com.mysema.query");
-        model.put("classSimpleName", "Test");
-
-        // as outer classes
-        Serializers.DOMAIN.serialize(model, writer);
+        Serializers.DOMAIN.serialize(type, writer);
 //        System.out.println(writer);
     }
 

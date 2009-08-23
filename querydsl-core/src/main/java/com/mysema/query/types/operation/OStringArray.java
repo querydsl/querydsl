@@ -24,11 +24,11 @@ public class OStringArray extends Expr<String[]> implements
     
     private final Operator<String> op;
 
-    public OStringArray(Operator<String> op, Expr<?>... args) {
+    OStringArray(Operator<String> op, Expr<?>... args) {
         this(op, Arrays.asList(args));
     }
 
-    public OStringArray(Operator<String> op, List<Expr<?>> args) {
+    OStringArray(Operator<String> op, List<Expr<?>> args) {
         super(String[].class);
         this.op = op;
         this.args = Collections.unmodifiableList(args);

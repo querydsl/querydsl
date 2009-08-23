@@ -19,7 +19,7 @@ public class JDOQLTemplates extends JavaTemplates {
     public JDOQLTemplates() {
         // String
         add(Ops.STRING_CONTAINS, "{0}.indexOf({1}) > -1", 25);
-        add(Ops.EQ_IGNORE_CASE, "{0}.toLowerCase().equals({1}.toLowerCase())");
+        add(Ops.EQ_IGNORE_CASE, "{0l}.equals({1l})");
         add(Ops.STRING_IS_EMPTY, "{0} == \"\"", 25);
         
         // Date

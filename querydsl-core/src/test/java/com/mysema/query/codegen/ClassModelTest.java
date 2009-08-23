@@ -29,7 +29,7 @@ public class ClassModelTest {
      */
     @Test
     public void test() {
-        ClassModel type = ClassModel.createFor(TestType.class);
+        ClassModel type = ClassModel.create(TestType.class, "Q");
         assertEquals(1, type.getEntityMaps().size());
         assertEquals(1, type.getSimpleMaps().size());
         assertEquals(2, type.getEntityCollections().size());

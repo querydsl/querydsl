@@ -24,11 +24,11 @@ public class OString extends EString implements Operation<String, String> {
     
     private final Operator<String> op;
 
-    public OString(Operator<String> op, Expr<?>... args) {
+    OString(Operator<String> op, Expr<?>... args) {
         this(op, Arrays.asList(args));
     }
 
-    public OString(Operator<String> op, List<Expr<?>> args) {
+    OString(Operator<String> op, List<Expr<?>> args) {
         this.op = op;
         this.args = Collections.unmodifiableList(args);
     }
@@ -46,5 +46,9 @@ public class OString extends EString implements Operation<String, String> {
     @Override
     public Operator<String> getOperator() {
         return op;
+    }
+    
+    public static EString create(Operator<String> op, Expr<?>... args){
+        return new OString(op, args);
     }
 }

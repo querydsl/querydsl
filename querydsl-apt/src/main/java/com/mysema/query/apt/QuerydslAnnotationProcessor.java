@@ -26,15 +26,18 @@ import com.mysema.query.annotations.Transient;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class QuerydslAnnotationProcessor extends AbstractProcessor{
     
+    private Class<? extends Annotation> entity, superType, embeddable, dto, skip;
+    
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
-        Class<? extends Annotation> entity = Entity.class;
-        Class<? extends Annotation> superType = null;
-        Class<? extends Annotation> embeddable = Embeddable.class;
-        Class<? extends Annotation> dtoAnnotation = Projection.class;
-        Class<? extends Annotation> skipAnnotation = Transient.class;
-        Processor p = new Processor(processingEnv, entity, superType, embeddable, dtoAnnotation, skipAnnotation, "Q");
+        entity = Entity.class;
+        superType = null;
+        embeddable = Embeddable.class;
+        dto = Projection.class;
+        skip = Transient.class;
+        
+        Processor p = new Processor(processingEnv, entity, superType, embeddable, dto, skip);
         p.process(roundEnv);
         return true;
     }       

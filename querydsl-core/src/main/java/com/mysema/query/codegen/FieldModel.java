@@ -34,9 +34,9 @@ public class FieldModel implements Comparable<FieldModel> {
         this.valueTypeName = type.getValueType() != null ? getLocalName(type.getValueType()) : null;
         
         if (isVisible(type)){
-            this.queryTypeName = "Q"  + type.getSimpleName();
+            this.queryTypeName = model.getPrefix() + type.getSimpleName();
         }else{
-            this.queryTypeName = type.getPackageName() + ".Q" + type.getSimpleName();
+            this.queryTypeName = type.getPackageName() + "." + model.getPrefix() + type.getSimpleName();
         }
     }
     

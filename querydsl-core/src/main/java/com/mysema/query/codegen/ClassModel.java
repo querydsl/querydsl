@@ -19,15 +19,22 @@ import org.apache.commons.lang.StringUtils;
 import com.mysema.commons.lang.Assert;
 
 /**
- * ClassModel represents a query domain type.
+ * ClassModel represents the model of a query domain type.
  * 
  * @author tiwe
  * @version $Id$
  */
 public class ClassModel implements Comparable<ClassModel> {
     
-    public static ClassModel createFor(Class<?> key){
+    public static final String DEFAULT_PREFIX = "Q";
+    
+    public static ClassModel create(Class<?> key){
+        return create(key, DEFAULT_PREFIX);
+    }
+    
+    public static ClassModel create(Class<?> key, String prefix){
         ClassModel value = new ClassModel(
+                prefix,
                 key.getSuperclass().getName(), 
                 key.getPackage().getName(), 
                 key.getName(), 
@@ -45,8 +52,10 @@ public class ClassModel implements Comparable<ClassModel> {
     
     private final String simpleName, name, packageName, localName;
     
+    private final String prefix;
+    
     @Nullable
-    private String superType;
+    private final String superType;
     
     private final Map<FieldType,Collection<FieldModel>> typeToFields = MapUtils.lazyMap(
             new HashMap<FieldType,Collection<FieldModel>>(),
@@ -59,7 +68,8 @@ public class ClassModel implements Comparable<ClassModel> {
 
     private String uncapSimpleName;
     
-    public ClassModel(@Nullable String superType, String packageName, String name, String simpleName) {
+    public ClassModel(String prefix, @Nullable String superType, String packageName, String name, String simpleName) {
+        this.prefix = Assert.notNull(prefix);
         this.superType = superType;
         this.packageName = Assert.notNull(packageName,"packageName is null");
         this.name = Assert.notNull(name,"name is null");
@@ -97,7 +107,7 @@ public class ClassModel implements Comparable<ClassModel> {
 
         } else if (superClass != null && !superClass.equals(Object.class)) {
             // TODO : recursively up ?
-            ClassModel type = ClassModel.createFor(superClass);
+            ClassModel type = ClassModel.create(superClass, prefix);
             // include fields of supertype
             include(type);
         }
@@ -229,6 +239,10 @@ public class ClassModel implements Comparable<ClassModel> {
             uncapSimpleName = StringUtils.uncapitalize(simpleName)+ (escapeSuffix++);
         }
         return field;
+    }
+    
+    public String getPrefix(){
+        return prefix;
     }
 
 }

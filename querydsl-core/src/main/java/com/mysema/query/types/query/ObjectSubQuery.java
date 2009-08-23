@@ -38,7 +38,7 @@ public class ObjectSubQuery<A> extends Expr<A> implements SubQuery{
     @Override
     public EBoolean exists() {
         if (exists == null){
-            exists = new OBoolean(Ops.EXISTS, this);
+            exists = OBoolean.create(Ops.EXISTS, this);
         }
         return exists;
     }

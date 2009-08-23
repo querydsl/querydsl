@@ -31,13 +31,13 @@ public abstract class Expr<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <D> Expr<D> create(D val){
+    public static <T> Expr<T> create(T val){
         if (val instanceof String){
-            return (Expr<D>)EString.create((String)val);
+            return (Expr<T>)EString.create((String)val);
         }else if (val instanceof Boolean){
-            return (Expr<D>)EBoolean.create((Boolean)val);            
+            return (Expr<T>)EBoolean.create((Boolean)val);            
         }else{
-            return new ExprConst<D>(Assert.notNull(val,"val is null"));    
+            return new ExprConst<T>(Assert.notNull(val,"val is null"));    
         }
     }
     
@@ -89,9 +89,9 @@ public abstract class Expr<D> {
      */
     public final EBoolean eq(Expr<? super D> right) {
         if (primitive) {
-            return new OBoolean(Ops.EQ_PRIMITIVE, this, right);
+            return OBoolean.create(Ops.EQ_PRIMITIVE, this, right);
         } else {
-            return new OBoolean(Ops.EQ_OBJECT, this, right);
+            return OBoolean.create(Ops.EQ_OBJECT, this, right);
         }
     }
 
@@ -116,7 +116,7 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean in(Collection<? extends D> right) {
-        return new OBoolean(Ops.IN, this, ExprConst.create(right));
+        return OBoolean.create(Ops.IN, this, ExprConst.create(right));
     }
 
     /**
@@ -126,7 +126,7 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean in(D... right) {
-        return new OBoolean(Ops.IN, this, ExprConst.create(Arrays.asList(right)));
+        return OBoolean.create(Ops.IN, this, ExprConst.create(Arrays.asList(right)));
     }
 
     /**
@@ -136,7 +136,7 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean in(ECollection<? extends D> right) {
-        return new OBoolean(Ops.IN, this, (Expr<?>)right);
+        return OBoolean.create(Ops.IN, this, (Expr<?>)right);
     }
 
     /**
@@ -157,9 +157,9 @@ public abstract class Expr<D> {
      */
     public final EBoolean ne(Expr<? super D> right) {
         if (primitive) {
-            return new OBoolean(Ops.NE_PRIMITIVE, this, right);
+            return OBoolean.create(Ops.NE_PRIMITIVE, this, right);
         } else {
-            return new OBoolean(Ops.NE_OBJECT, this, right);
+            return OBoolean.create(Ops.NE_OBJECT, this, right);
         }
     }
 

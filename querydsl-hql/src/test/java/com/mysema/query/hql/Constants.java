@@ -34,7 +34,6 @@ import com.mysema.query.hql.domain.QStatus;
 import com.mysema.query.hql.domain.QStatusChange;
 import com.mysema.query.hql.domain.QStore;
 import com.mysema.query.hql.domain.QUser;
-import com.mysema.query.hql.domain.Qdoofus;
 
 public interface Constants {
     
@@ -70,7 +69,7 @@ public interface Constants {
     // Customer
     QCustomer cust = new QCustomer("cust");
 
-    Qdoofus d = new Qdoofus("d");
+//    Qdoofus d = new Qdoofus("d");
 
     // QDocument
     QDocument doc = new QDocument("doc");

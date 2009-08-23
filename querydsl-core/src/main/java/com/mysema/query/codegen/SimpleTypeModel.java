@@ -10,6 +10,8 @@ import javax.annotation.Nullable;
 import com.mysema.commons.lang.Assert;
 
 /**
+ * SimpleTypeModel is a minimal implementation of the TypeModel interface
+ * 
  * @author tiwe
  *
  */

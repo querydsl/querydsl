@@ -163,7 +163,6 @@ public class Templates {
         
         // subquery
         add(Ops.EXISTS, "exists {0}");
-//        add(Ops.NOT_EXISTS, "not exists {0}");
         
         // numeric aggregates
         add(Ops.AggOps.AVG_AGG, "avg({0})");
