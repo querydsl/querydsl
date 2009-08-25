@@ -5,62 +5,114 @@
  */
 package com.mysema.query.codegen;
 
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nullable;
+
+import com.mysema.commons.lang.Assert;
+
 
 /**
- * Type model represents a class of field
+ * TypeModel represents a java type
  * 
  * @author tiwe
  *
  */
-public interface TypeModel {
+public class TypeModel {
 
-    /**
-     * Field type of the Type
-     * 
-     * @return field type of type
-     */
-    TypeCategory getTypeCategory();
-
-    /**
-     * Key type or null
-     * 
-     * @return key type of Map type
-     */
-    TypeModel getKeyType();
-
-    /**
-     * Local name
-     * 
-     * @return name including optional enclosing class' simple name and 
-     */
-    String getLocalName();
+    private static final Map<List<Type>,TypeModel> cache = new HashMap<List<Type>,TypeModel>();
     
-    /**
-     * Fully qualified class name
-     * 
-     * @return fully qualified class name
-     */
-    String getName();
-
-    /**
-     * Package name
-     * 
-     * @return package name
-     */
-    String getPackageName();
-
-    /**
-     * Simple name
-     * 
-     * @return simple class name
-     */
-    String getSimpleName();
+    public static TypeModel create(Class<?> key){
+        return create(key, key, false);
+    }
     
-    /**
-     * Value type or null if not applicable
-     * 
-     * @return value type of Map and Collection type
-     */
-    TypeModel getValueType();
+    public static TypeModel createLiteralType(Class<?> key){
+        return create(key, key, true);
+    }
+    
+    public static TypeModel create(Class<?> type, Type genericType){
+        return create(type, genericType, false);
+    }
+    
+    private static TypeModel create(Class<?> type, Type genericType, boolean literal){
+        List<Type> key = Arrays.<Type>asList(type, genericType);
+        if (cache.containsKey(key)){
+            return cache.get(key);
+        }else{
+            TypeModel value = new InspectingTypeModel(Assert.notNull(type), genericType);
+            if (literal && !value.typeCategory.isChildOf(TypeCategory.SIMPLE)){
+                if (Comparable.class.isAssignableFrom(type)){
+                    value.typeCategory = TypeCategory.COMPARABLE;
+                }else{
+                    value.typeCategory = TypeCategory.SIMPLE;
+                }
+            }
+            cache.put(key, value);
+            return value;
+        }
+    }
+    
+    protected TypeCategory typeCategory = TypeCategory.ENTITY;
+
+    protected String name, packageName, simpleName, localName;
+
+    @Nullable
+    protected TypeModel keyType, valueType;
+
+    protected TypeModel(){}
+    
+    public TypeModel(
+            TypeCategory typeCategory, 
+            String fullName,
+            String packageName, 
+            String simpleName, 
+            @Nullable TypeModel keyType,
+            @Nullable TypeModel valueType) {
+        this.typeCategory = Assert.notNull(typeCategory,"typeCategory is null");
+        this.name = Assert.notNull(fullName,"fullName is null");
+        this.packageName = Assert.notNull(packageName,"packageName is null");
+        this.simpleName = Assert.notNull(simpleName,"simpleName is null");
+        this.keyType = keyType;
+        this.valueType = valueType;
+    }
+
+    public TypeCategory getTypeCategory() {
+        return typeCategory;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public TypeModel getKeyType() {
+        return keyType;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public String getSimpleName() {
+        return simpleName;
+    }
+    
+    public String getLocalName(){
+        if (localName == null){
+            localName = name.substring(packageName.length()+1);
+        }
+        return localName;
+    }
+
+    public TypeModel getValueType() {
+        return valueType;
+    }
+    
+    public String toString() {
+        return name;
+    }
 
 }

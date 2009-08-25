@@ -5,6 +5,7 @@
  */
 package com.mysema.query.codegen;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,9 +18,10 @@ import org.apache.commons.collections15.MapUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.annotations.Literal;
 
 /**
- * ClassModel represents the model of a query domain type.
+ * ClassModel represents the model of a query domain type with properties
  * 
  * @author tiwe
  * @version $Id$
@@ -29,21 +31,26 @@ public class ClassModel implements Comparable<ClassModel> {
     public static final String DEFAULT_PREFIX = "Q";
     
     public static ClassModel create(Class<?> key){
-        return create(key, DEFAULT_PREFIX);
+        return create(key, ClassModel.DEFAULT_PREFIX);
     }
     
     public static ClassModel create(Class<?> key, String prefix){
-        ClassModel value = new ClassModel(
+        ClassModel classModel = new ClassModel(
                 prefix,
                 key.getSuperclass().getName(), 
                 key.getPackage().getName(), 
                 key.getName(), 
                 key.getSimpleName());
-        for (java.lang.reflect.Field f : key.getDeclaredFields()) {
-            TypeModel typeHelper = ReflectionTypeModel.get(f.getType(), f.getGenericType());
-            value.addField(new FieldModel(value, f.getName(), typeHelper, f.getName()));
+        for (Field f : key.getDeclaredFields()) {
+            TypeModel typeModel;
+            if (f.getAnnotation(Literal.class) != null){
+                typeModel = TypeModel.createLiteralType(f.getType());
+            }else{
+                typeModel = TypeModel.create(f.getType(), f.getGenericType());
+            } 
+            classModel.addField(new FieldModel(classModel, f.getName(), typeModel, f.getName()));
         }
-        return value;
+        return classModel;
     }
 
     private final Collection<ConstructorModel> constructors = new HashSet<ConstructorModel>();

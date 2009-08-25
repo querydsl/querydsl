@@ -5,9 +5,10 @@
  */
 package com.mysema.query.apt;
 
-import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.lang.model.element.ElementKind;
@@ -26,9 +27,10 @@ import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.Elements;
 
 import com.mysema.query.annotations.Literal;
-import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.InspectingTypeModel;
+import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeModel;
+import com.mysema.query.util.TypeUtil;
 
 /**
  * APTTypeModel is a helper type for determing types of fields and methods
@@ -40,7 +42,7 @@ public final class APTTypeModel extends InspectingTypeModel implements TypeVisit
     
     private static Map<TypeMirror,TypeModel> cache = new HashMap<TypeMirror,TypeModel>();
     
-    public static TypeModel get(TypeMirror key, Elements el){
+    public static TypeModel create(TypeMirror key, Elements el){
         if (cache.containsKey(key)){
             return cache.get(key);
         }else{
@@ -60,7 +62,7 @@ public final class APTTypeModel extends InspectingTypeModel implements TypeVisit
 
     @Override
     public Void visitArray(ArrayType arg0, Elements el) {
-        TypeModel valueInfo = APTTypeModel.get(arg0.getComponentType(), el);
+        TypeModel valueInfo = APTTypeModel.create(arg0.getComponentType(), el);
         handleArray(valueInfo);
         return null;
     }
@@ -77,7 +79,7 @@ public final class APTTypeModel extends InspectingTypeModel implements TypeVisit
                     if (typeElement.getAnnotation(Literal.class) != null) {
                         boolean comparable = false;
                         for (TypeMirror tm : typeElement.getInterfaces()){
-                            TypeModel type = APTTypeModel.get(tm, el);
+                            TypeModel type = APTTypeModel.create(tm, el);
                             if (type.getName().equals("java.lang.Comparable")){
                                 comparable = true;
                                 break;
@@ -89,38 +91,40 @@ public final class APTTypeModel extends InspectingTypeModel implements TypeVisit
                             typeCategory = TypeCategory.SIMPLE;
                         }
                     }else{
-                        typeCategory = getTypeCategory(name);    
+                        typeCategory = TypeCategory.get(name);    
                     }
                 } catch (Exception e) {
                     throw new RuntimeException(e.getMessage(), e);
                 }
                 
-            }else if (arg0.asElement().getKind() == ElementKind.INTERFACE){
-                typeCategory = getTypeCategory(name);
+            }else if (arg0.asElement().getKind() == ElementKind.INTERFACE){               
                 Iterator<? extends TypeMirror> i = arg0.getTypeArguments().iterator();
-                if (name.equals(Serializable.class.getName())){
-                     setNames(Serializable.class);
-                     typeCategory = TypeCategory.SIMPLE;
-                }else if (name.equals(java.util.Map.class.getName())) {
+                Class<?> cl = TypeUtil.safeForName(name);
+                if (cl == null) { // class not available
+                    typeCategory = TypeCategory.get(name);
+                    
+                }else if (Map.class.isAssignableFrom(cl)){
                     if (!i.hasNext()){
-                        throw new IllegalArgumentException("Insufficient type arguments for " + simpleName);
+                        throw new TypeArgumentsException(simpleName);
                     }                    
-                    handleMapInterface(APTTypeModel.get(i.next(), el), APTTypeModel.get(i.next(), el));
+                    handleMap(APTTypeModel.create(i.next(), el), APTTypeModel.create(i.next(), el));
 
-                } else if (name.equals(java.util.Collection.class.getName())
-                        || name.equals(java.util.Set.class.getName())
-                        || name.equals(java.util.SortedSet.class.getName())) {
+                } else if (List.class.isAssignableFrom(cl)) {
                     if (!i.hasNext()){
-                        throw new IllegalArgumentException("Insufficient type arguments for " + simpleName);
+                        throw new TypeArgumentsException(simpleName);
                     }                    
-                    handleCollection(APTTypeModel.get(i.next(), el));
-
-                } else if (name.equals(java.util.List.class.getName())) {
+                    handleList(APTTypeModel.create(i.next(), el));
+                    
+                } else if (Collection.class.isAssignableFrom(cl)) {
                     if (!i.hasNext()){
-                        throw new IllegalArgumentException("Insufficient type arguments for " + simpleName);
+                        throw new TypeArgumentsException(simpleName);
                     }                    
-                    handleList(APTTypeModel.get(i.next(), el));
+                    handleCollection(APTTypeModel.create(i.next(), el));
+                
+                }else{
+                    typeCategory = TypeCategory.get(name);
                 }
+                
             }else if (arg0.asElement().getKind() == ElementKind.ENUM){
                 typeCategory = TypeCategory.SIMPLE;
             }
@@ -160,7 +164,8 @@ public final class APTTypeModel extends InspectingTypeModel implements TypeVisit
             cl = Short.class;
             break;
         }
-        handlePrimitiveWrapperType(cl);
+        typeCategory = TypeCategory.get(cl.getName());
+        setNames(cl);
         return null;
     }
 
@@ -168,7 +173,7 @@ public final class APTTypeModel extends InspectingTypeModel implements TypeVisit
     @Override
     public Void visitTypeVariable(TypeVariable arg0, Elements el) {
         if (arg0.getUpperBound() != null) {
-            TypeModel lb = APTTypeModel.get(arg0.getUpperBound(), el);
+            TypeModel lb = APTTypeModel.create(arg0.getUpperBound(), el);
             setNames(lb);
             typeCategory = lb.getTypeCategory();
         }
@@ -178,7 +183,7 @@ public final class APTTypeModel extends InspectingTypeModel implements TypeVisit
     @Override
     public Void visitWildcard(WildcardType arg0, Elements el) {
         if (arg0.getExtendsBound() != null) {
-            TypeModel lb = APTTypeModel.get(arg0.getExtendsBound(), el);
+            TypeModel lb = APTTypeModel.create(arg0.getExtendsBound(), el);
             setNames(lb);
             typeCategory = lb.getTypeCategory();
         }

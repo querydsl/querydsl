@@ -5,123 +5,96 @@
  */
 package com.mysema.query.codegen;
 
-import java.sql.Blob;
-import java.sql.Clob;
-import java.util.Locale;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
+import javax.annotation.Nullable;
+
+import org.apache.commons.lang.ClassUtils;
+
+import com.mysema.commons.lang.Assert;
+import com.mysema.query.annotations.Literal;
 import com.mysema.query.util.TypeUtil;
+
 
 
 /**
  * @author tiwe
  *
  */
-public abstract class InspectingTypeModel extends SimpleTypeModel {
+public class InspectingTypeModel extends TypeModel {
+   
+    public InspectingTypeModel(){}
     
-    protected TypeCategory getTypeCategory(String fullName){
-        if (fullName.equals(String.class.getName())) {
-            return TypeCategory.STRING;
-
-        } else if (fullName.equals(Boolean.class.getName())) {
-            return TypeCategory.BOOLEAN;
-
-        } else if (fullName.equals(Locale.class.getName())
-                || fullName.equals(Clob.class.getName())
-                || fullName.equals(Blob.class.getName())
-                || fullName.equals(Class.class.getName())
-                || fullName.equals(Object.class.getName())) {
-            return TypeCategory.SIMPLE;
-            
-        } else if (fullName.equals(java.sql.Date.class.getName())){
-            return TypeCategory.DATE;
-            
-        }else if (fullName.equals(java.util.Date.class.getName())
-                || fullName.equals(java.sql.Timestamp.class.getName())){
-            return TypeCategory.DATETIME;
-                        
-        } else if (fullName.equals(java.sql.Time.class.getName())){
-            return TypeCategory.TIME;
-                        
-        } else if (isComparableSupported(fullName)
-                && Number.class.isAssignableFrom(TypeUtil.safeForName(fullName))) {
-            return TypeCategory.NUMERIC;
-            
-        } else if (isComparableSupported(fullName)
-                && Comparable.class.isAssignableFrom(TypeUtil.safeForName(fullName))) {
-            return TypeCategory.COMPARABLE;
-
-        }else{
-            return TypeCategory.ENTITY;
-        }
+    public InspectingTypeModel(Class<?> cl, java.lang.reflect.Type genericType){
+        if (cl.isPrimitive()) {
+            cl = ClassUtils.primitiveToWrapper(cl);
+        } 
         
-    }
-    
-    protected final void handleArray(TypeModel valueInfo) {
-        setNames(valueInfo);
-        valueType = valueInfo;
-        if (valueInfo.getTypeCategory() == TypeCategory.ENTITY) {
-            typeCategory = TypeCategory.ENTITYCOLLECTION;
-        } else {
-            typeCategory = TypeCategory.SIMPLECOLLECTION;
-        }
-    }
-    
-    protected final void handleCollection(TypeModel valueInfo) {
-        setNames(valueInfo);  
-        valueType = valueInfo;
-        if (valueInfo.getTypeCategory() == TypeCategory.ENTITY) {
-            typeCategory = TypeCategory.ENTITYCOLLECTION;
-        } else {
-            typeCategory = TypeCategory.SIMPLECOLLECTION;
-        }
-    }
-    
-    protected final void handleList(TypeModel valueInfo) {
-        setNames(valueInfo);        
-        valueType = valueInfo;
-        if (valueInfo.getTypeCategory() == TypeCategory.ENTITY) {
-            typeCategory = TypeCategory.ENTITYLIST;
-        } else {
-            typeCategory = TypeCategory.SIMPLELIST;
-        }
-    }
-    
-    protected final void handleMapInterface(TypeModel keyInfo, TypeModel valueInfo) {        
-        setNames(valueInfo);
-        keyType = keyInfo;
-        valueType = valueInfo;
-        if (valueInfo.getTypeCategory() == TypeCategory.ENTITY) {
-            typeCategory = TypeCategory.ENTITYMAP;
-        } else {
-            typeCategory = TypeCategory.SIMPLEMAP;
-        }
-    }
-    
-    protected final void handlePrimitiveWrapperType(Class<?> cl) {
-        setNames(cl);
-        if (cl.equals(Boolean.class)) {
-            typeCategory = TypeCategory.BOOLEAN;
-        } else if (Number.class.isAssignableFrom(cl)) {
-            typeCategory = TypeCategory.NUMERIC;
-        } else if (Comparable.class.isAssignableFrom(cl)) {
-            typeCategory = TypeCategory.COMPARABLE;
-        } else {
+        if (cl.isArray()) {
+            TypeModel valueInfo = create(cl.getComponentType());
+            handleArray(valueInfo);
+
+        } else if (cl.isEnum()) {
+            setNames(cl);
             typeCategory = TypeCategory.SIMPLE;
-        }        
+
+        } else if (Map.class.isAssignableFrom(cl)) {
+            TypeModel keyInfo = create(TypeUtil.getTypeParameter(genericType, 0));
+            TypeModel valueInfo = create(TypeUtil.getTypeParameter(genericType, 1));
+            handleMap(keyInfo, valueInfo);
+
+        } else if (List.class.isAssignableFrom(cl)) {
+            TypeModel valueInfo = create(TypeUtil.getTypeParameter(genericType, 0));
+            handleList(valueInfo);
+
+        } else if (Collection.class.isAssignableFrom(cl)) {
+            TypeModel valueInfo = create(TypeUtil.getTypeParameter(genericType, 0));
+            handleCollection(valueInfo);
+
+        } else if (cl.getAnnotation(Literal.class) != null) {
+            setNames(cl);
+            if (Comparable.class.isAssignableFrom(cl)) {
+                typeCategory = TypeCategory.COMPARABLE;
+            } else {
+                typeCategory = TypeCategory.SIMPLE;
+            }
+        } else {
+            setNames(cl);
+            typeCategory = TypeCategory.get(cl.getName());
+        }
+    }
+        
+    private void handle(@Nullable TypeModel key, TypeModel value, TypeCategory entity, TypeCategory simple){
+        setNames(value);        
+        this.keyType = key;
+        this.valueType = value;
+        if (value.getTypeCategory() == TypeCategory.ENTITY) {
+            this.typeCategory = entity;
+        } else {
+            this.typeCategory = simple;
+        }
     }
     
-    private boolean isComparableSupported(String fullName) {
-        return fullName.startsWith("java.") 
-            || fullName.startsWith("javax.") 
-            || fullName.startsWith("org.joda.time");
+    protected final void handleArray(TypeModel valueType) {
+        handle(null, valueType, TypeCategory.ENTITYCOLLECTION, TypeCategory.SIMPLECOLLECTION);
+    }
+    
+    protected final void handleCollection(TypeModel valueType) {
+        handle(null, valueType, TypeCategory.ENTITYCOLLECTION, TypeCategory.SIMPLECOLLECTION);
+    }
+    
+    protected final void handleList(TypeModel valueType) {
+        handle(null, valueType, TypeCategory.ENTITYLIST, TypeCategory.SIMPLELIST);
+    }
+    
+    protected final void handleMap(TypeModel keyType, TypeModel valueType) {       
+        handle(keyType, valueType, TypeCategory.ENTITYMAP, TypeCategory.SIMPLEMAP);
     }
     
     protected final void setNames(Class<?> cl){
-        if (cl.getPackage() != null){
-            packageName = cl.getPackage().getName();    
-        }else{
-            packageName = "java.lang";
-        }        
+        packageName = Assert.notNull(cl.getPackage().getName());
         name = cl.getName();
         simpleName = cl.getSimpleName();
     }

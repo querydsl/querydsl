@@ -31,8 +31,7 @@ public class FieldModel implements Comparable<FieldModel> {
         this.docs = Assert.notNull(docs,"docs is null").replace("@return", "").trim();
         this.typeName = getLocalName(type);
         this.keyTypeName = type.getKeyType() != null ? getLocalName(type.getKeyType()) : null;
-        this.valueTypeName = type.getValueType() != null ? getLocalName(type.getValueType()) : null;
-        
+        this.valueTypeName = type.getValueType() != null ? getLocalName(type.getValueType()) : null;        
         if (isVisible(type)){
             this.queryTypeName = model.getPrefix() + type.getSimpleName();
         }else{

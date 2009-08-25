@@ -17,10 +17,9 @@ import java.util.Map;
 
 import com.mysema.query.codegen.ClassModel;
 import com.mysema.query.codegen.FieldModel;
-import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.Serializers;
-import com.mysema.query.codegen.SimpleTypeModel;
+import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeModel;
 import com.mysema.query.util.FileUtils;
 
@@ -111,7 +110,7 @@ public class MetaDataExporter {
                     fieldType = TypeCategory.STRING;
                 }
 
-                TypeModel typeModel = new SimpleTypeModel(
+                TypeModel typeModel = new TypeModel(
                         fieldType, 
                         clazz.getName(),
                         clazz.getPackage().getName(),

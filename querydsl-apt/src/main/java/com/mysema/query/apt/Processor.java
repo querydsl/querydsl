@@ -50,7 +50,7 @@ public class Processor {
         @Override
         public ClassModel visitType(TypeElement e, Void p) {
             Elements elementUtils = env.getElementUtils();
-            TypeModel c = APTTypeModel.get(e.asType(), elementUtils);
+            TypeModel c = APTTypeModel.create(e.asType(), elementUtils);
             ClassModel classModel = new ClassModel(namePrefix, null, c.getPackageName(), c.getName(), c.getSimpleName());
             List<? extends Element> elements = e.getEnclosedElements();
             
@@ -59,7 +59,7 @@ public class Processor {
                 if (isValidConstructor(constructor)){
                     List<ParameterModel> parameters = new ArrayList<ParameterModel>(constructor.getParameters().size());
                     for (VariableElement var : constructor.getParameters()){
-                        TypeModel varType = APTTypeModel.get(var.asType(), elementUtils);
+                        TypeModel varType = APTTypeModel.create(var.asType(), elementUtils);
                         parameters.add(new ParameterModel(var.getSimpleName().toString(), varType.getName()));
                     }
                     classModel.addConstructor(new ConstructorModel(parameters));    
@@ -76,8 +76,8 @@ public class Processor {
         @Override
         public ClassModel visitType(TypeElement e, Void p) {
             Elements elementUtils = env.getElementUtils();
-            TypeModel sc = APTTypeModel.get(e.getSuperclass(), elementUtils);
-            TypeModel c = APTTypeModel.get(e.asType(), elementUtils);
+            TypeModel sc = APTTypeModel.create(e.getSuperclass(), elementUtils);
+            TypeModel c = APTTypeModel.create(e.asType(), elementUtils);
             ClassModel classModel = new ClassModel(namePrefix, sc.getName(), c.getPackageName(), c.getName(), c.getSimpleName());
             List<? extends Element> elements = e.getEnclosedElements();
             
@@ -93,7 +93,7 @@ public class Processor {
                 }
                 if (isValidGetter(method)){
                     try{
-                        TypeModel fieldType = APTTypeModel.get(method.getReturnType(), elementUtils);
+                        TypeModel fieldType = APTTypeModel.create(method.getReturnType(), elementUtils);
                         String docs = elementUtils.getDocComment(method);
                         classModel.addField(new FieldModel(classModel, name, fieldType, docs != null ? docs : name));    
                         
@@ -107,7 +107,7 @@ public class Processor {
             for (VariableElement field : ElementFilter.fieldsIn(elements)){
                 if (isValidField(field)){
                     try{
-                        TypeModel fieldType = APTTypeModel.get(field.asType(), elementUtils);     
+                        TypeModel fieldType = APTTypeModel.create(field.asType(), elementUtils);     
                         String name = field.getSimpleName().toString();
                         String docs = elementUtils.getDocComment(field);
                         classModel.addField(new FieldModel(classModel, name, fieldType, docs != null ? docs : name));    
