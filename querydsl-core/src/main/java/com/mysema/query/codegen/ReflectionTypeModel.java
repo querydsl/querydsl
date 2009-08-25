@@ -44,13 +44,13 @@ public final class ReflectionTypeModel extends InspectingTypeModel implements Ty
     
     private ReflectionTypeModel(Class<?> cl, java.lang.reflect.Type genericType) {
         setNames(cl);
-        fieldType = getFieldType(name);
+        typeCategory = getTypeCategory(name);
         if (cl.isArray()) {
             TypeModel valueInfo = get(cl.getComponentType());
             handleArray(valueInfo);
             
         } else if (cl.isEnum()) {            
-            fieldType = FieldType.SIMPLE;
+            typeCategory = TypeCategory.SIMPLE;
             
         } else if (cl.isPrimitive()) {
             handlePrimitiveWrapperType(ClassUtils.primitiveToWrapper(cl));
@@ -61,9 +61,9 @@ public final class ReflectionTypeModel extends InspectingTypeModel implements Ty
         } else {
             if (cl.getAnnotation(Literal.class) != null) {
                 if (Comparable.class.isAssignableFrom(cl)) {
-                    fieldType = FieldType.COMPARABLE;
+                    typeCategory = TypeCategory.COMPARABLE;
                 } else {
-                    fieldType = FieldType.SIMPLE;
+                    typeCategory = TypeCategory.SIMPLE;
                 }
             }
         }
@@ -72,7 +72,7 @@ public final class ReflectionTypeModel extends InspectingTypeModel implements Ty
     private void handleInterface(Class<?> cl, java.lang.reflect.Type genericType) {
         if (Serializable.class.isAssignableFrom(cl)){
             setNames(Serializable.class);
-            fieldType = FieldType.SIMPLE;
+            typeCategory = TypeCategory.SIMPLE;
         
         }else if (java.util.Map.class.isAssignableFrom(cl)) {
             TypeModel keyInfo = get(TypeUtil.getTypeParameter(genericType, 0));

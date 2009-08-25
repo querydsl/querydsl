@@ -38,8 +38,8 @@ public class SerializerTest {
         
         FieldModel field = new FieldModel(type, "field", new TypeModel(){
             @Override
-            public FieldType getFieldType() {
-                return FieldType.STRING;
+            public TypeCategory getTypeCategory() {
+                return TypeCategory.STRING;
             }
             @Override
             public String getName() {

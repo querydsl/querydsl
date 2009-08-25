@@ -65,8 +65,8 @@ public class FieldModel implements Comparable<FieldModel> {
         return docs;
     }
 
-    public FieldType getFieldType() {
-        return type.getFieldType();
+    public TypeCategory getTypeCategory() {
+        return type.getTypeCategory();
     }
 
     public String getKeyTypeName() {

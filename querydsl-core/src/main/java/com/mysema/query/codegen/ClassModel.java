@@ -57,8 +57,8 @@ public class ClassModel implements Comparable<ClassModel> {
     @Nullable
     private final String superType;
     
-    private final Map<FieldType,Collection<FieldModel>> typeToFields = MapUtils.lazyMap(
-            new HashMap<FieldType,Collection<FieldModel>>(),
+    private final Map<TypeCategory,Collection<FieldModel>> typeToFields = MapUtils.lazyMap(
+            new HashMap<TypeCategory,Collection<FieldModel>>(),
             new Factory<Collection<FieldModel>>(){
                 @Override
                 public Collection<FieldModel> create() {
@@ -84,7 +84,7 @@ public class ClassModel implements Comparable<ClassModel> {
 
     public void addField(FieldModel field) {
         validateField(field);
-        Collection<FieldModel> fields = typeToFields.get(field.getFieldType());
+        Collection<FieldModel> fields = typeToFields.get(field.getTypeCategory());
         fields.add(field);
     }
 
@@ -122,11 +122,11 @@ public class ClassModel implements Comparable<ClassModel> {
     }
 
     public Collection<FieldModel> getBooleanFields() {
-        return typeToFields.get(FieldType.BOOLEAN);
+        return typeToFields.get(TypeCategory.BOOLEAN);
     }
 
     public Collection<FieldModel> getComparableFields() {
-        return typeToFields.get(FieldType.COMPARABLE);
+        return typeToFields.get(TypeCategory.COMPARABLE);
     }
 
     public Collection<ConstructorModel> getConstructors() {
@@ -134,27 +134,27 @@ public class ClassModel implements Comparable<ClassModel> {
     }
 
     public Collection<FieldModel> getDateFields() {
-        return typeToFields.get(FieldType.DATE);
+        return typeToFields.get(TypeCategory.DATE);
     }
     
     public Collection<FieldModel> getDateTimeFields() {
-        return typeToFields.get(FieldType.DATETIME);
+        return typeToFields.get(TypeCategory.DATETIME);
     }
     
     public Collection<FieldModel> getEntityCollections() {
-        return typeToFields.get(FieldType.ENTITYCOLLECTION);
+        return typeToFields.get(TypeCategory.ENTITYCOLLECTION);
     }
     
     public Collection<FieldModel> getEntityFields() {
-        return typeToFields.get(FieldType.ENTITY);
+        return typeToFields.get(TypeCategory.ENTITY);
     }
 
     public Collection<FieldModel> getEntityLists() {
-        return typeToFields.get(FieldType.ENTITYLIST);
+        return typeToFields.get(TypeCategory.ENTITYLIST);
     }
 
     public Collection<FieldModel> getEntityMaps() {
-        return typeToFields.get(FieldType.ENTITYMAP);
+        return typeToFields.get(TypeCategory.ENTITYMAP);
     }
 
     public String getName() {
@@ -162,7 +162,7 @@ public class ClassModel implements Comparable<ClassModel> {
     }
 
     public Collection<FieldModel> getNumericFields() {
-        return typeToFields.get(FieldType.NUMERIC);
+        return typeToFields.get(TypeCategory.NUMERIC);
     }
 
     public String getPackageName() {
@@ -170,19 +170,19 @@ public class ClassModel implements Comparable<ClassModel> {
     }
     
     public Collection<FieldModel> getSimpleCollections() {
-        return typeToFields.get(FieldType.SIMPLECOLLECTION);
+        return typeToFields.get(TypeCategory.SIMPLECOLLECTION);
     }
 
     public Collection<FieldModel> getSimpleFields() {
-        return typeToFields.get(FieldType.SIMPLE);
+        return typeToFields.get(TypeCategory.SIMPLE);
     }
 
     public Collection<FieldModel> getSimpleLists() {
-        return typeToFields.get(FieldType.SIMPLELIST);
+        return typeToFields.get(TypeCategory.SIMPLELIST);
     }
 
     public Collection<FieldModel> getSimpleMaps() {
-        return typeToFields.get(FieldType.SIMPLEMAP);
+        return typeToFields.get(TypeCategory.SIMPLEMAP);
     }
 
     public String getLocalName(){
@@ -194,7 +194,7 @@ public class ClassModel implements Comparable<ClassModel> {
     }
 
     public Collection<FieldModel> getStringFields() {
-        return typeToFields.get(FieldType.STRING);
+        return typeToFields.get(TypeCategory.STRING);
     }
 
     public String getSupertypeName() {
@@ -202,7 +202,7 @@ public class ClassModel implements Comparable<ClassModel> {
     }
 
     public Collection<FieldModel> getTimeFields() {
-        return typeToFields.get(FieldType.TIME);
+        return typeToFields.get(TypeCategory.TIME);
     }
 
     public String getUncapSimpleName() {
@@ -214,10 +214,10 @@ public class ClassModel implements Comparable<ClassModel> {
     }
 
     public void include(ClassModel clazz) {
-        for (FieldType fieldType : FieldType.values()){
-            Collection<FieldModel> source = clazz.typeToFields.get(fieldType);
+        for (TypeCategory category : TypeCategory.values()){
+            Collection<FieldModel> source = clazz.typeToFields.get(category);
             if (!source.isEmpty()){
-                Collection<FieldModel> target = typeToFields.get(fieldType);
+                Collection<FieldModel> target = typeToFields.get(category);
                 for (FieldModel field : source) {   
                     target.add(validateField(field.createCopy(this)));
                 }    

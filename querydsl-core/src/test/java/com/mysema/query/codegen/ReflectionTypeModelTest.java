@@ -36,14 +36,14 @@ public class ReflectionTypeModelTest {
     @Test
     public void getFieldType(){
         for (Class<?> cl : Arrays.<Class<?>>asList(Blob.class, Clob.class, Locale.class, Class.class, Serializable.class)){
-            assertEquals(FieldType.SIMPLE, get(cl).getFieldType());
+            assertEquals(TypeCategory.SIMPLE, get(cl).getTypeCategory());
         }
         
         for (Class<?> cl : Arrays.<Class<?>>asList(Number.class, Integer.class)){
-            assertEquals(FieldType.NUMERIC, get(cl).getFieldType());
+            assertEquals(TypeCategory.NUMERIC, get(cl).getTypeCategory());
         }
         
-        assertEquals(FieldType.BOOLEAN, get(boolean.class).getFieldType());
+        assertEquals(TypeCategory.BOOLEAN, get(boolean.class).getTypeCategory());
     }
 
     private TypeModel get(Class<?> cl){

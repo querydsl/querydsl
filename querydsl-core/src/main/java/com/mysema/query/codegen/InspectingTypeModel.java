@@ -18,40 +18,40 @@ import com.mysema.query.util.TypeUtil;
  */
 public abstract class InspectingTypeModel extends SimpleTypeModel {
     
-    protected FieldType getFieldType(String fullName){
+    protected TypeCategory getTypeCategory(String fullName){
         if (fullName.equals(String.class.getName())) {
-            return FieldType.STRING;
+            return TypeCategory.STRING;
 
         } else if (fullName.equals(Boolean.class.getName())) {
-            return FieldType.BOOLEAN;
+            return TypeCategory.BOOLEAN;
 
         } else if (fullName.equals(Locale.class.getName())
                 || fullName.equals(Clob.class.getName())
                 || fullName.equals(Blob.class.getName())
                 || fullName.equals(Class.class.getName())
                 || fullName.equals(Object.class.getName())) {
-            return FieldType.SIMPLE;
+            return TypeCategory.SIMPLE;
             
         } else if (fullName.equals(java.sql.Date.class.getName())){
-            return FieldType.DATE;
+            return TypeCategory.DATE;
             
         }else if (fullName.equals(java.util.Date.class.getName())
                 || fullName.equals(java.sql.Timestamp.class.getName())){
-            return FieldType.DATETIME;
+            return TypeCategory.DATETIME;
                         
         } else if (fullName.equals(java.sql.Time.class.getName())){
-            return FieldType.TIME;
+            return TypeCategory.TIME;
                         
         } else if (isComparableSupported(fullName)
                 && Number.class.isAssignableFrom(TypeUtil.safeForName(fullName))) {
-            return FieldType.NUMERIC;
+            return TypeCategory.NUMERIC;
             
         } else if (isComparableSupported(fullName)
                 && Comparable.class.isAssignableFrom(TypeUtil.safeForName(fullName))) {
-            return FieldType.COMPARABLE;
+            return TypeCategory.COMPARABLE;
 
         }else{
-            return FieldType.ENTITY;
+            return TypeCategory.ENTITY;
         }
         
     }
@@ -59,30 +59,30 @@ public abstract class InspectingTypeModel extends SimpleTypeModel {
     protected final void handleArray(TypeModel valueInfo) {
         setNames(valueInfo);
         valueType = valueInfo;
-        if (valueInfo.getFieldType() == FieldType.ENTITY) {
-            fieldType = FieldType.ENTITYCOLLECTION;
+        if (valueInfo.getTypeCategory() == TypeCategory.ENTITY) {
+            typeCategory = TypeCategory.ENTITYCOLLECTION;
         } else {
-            fieldType = FieldType.SIMPLECOLLECTION;
+            typeCategory = TypeCategory.SIMPLECOLLECTION;
         }
     }
     
     protected final void handleCollection(TypeModel valueInfo) {
         setNames(valueInfo);  
         valueType = valueInfo;
-        if (valueInfo.getFieldType() == FieldType.ENTITY) {
-            fieldType = FieldType.ENTITYCOLLECTION;
+        if (valueInfo.getTypeCategory() == TypeCategory.ENTITY) {
+            typeCategory = TypeCategory.ENTITYCOLLECTION;
         } else {
-            fieldType = FieldType.SIMPLECOLLECTION;
+            typeCategory = TypeCategory.SIMPLECOLLECTION;
         }
     }
     
     protected final void handleList(TypeModel valueInfo) {
         setNames(valueInfo);        
         valueType = valueInfo;
-        if (valueInfo.getFieldType() == FieldType.ENTITY) {
-            fieldType = FieldType.ENTITYLIST;
+        if (valueInfo.getTypeCategory() == TypeCategory.ENTITY) {
+            typeCategory = TypeCategory.ENTITYLIST;
         } else {
-            fieldType = FieldType.SIMPLELIST;
+            typeCategory = TypeCategory.SIMPLELIST;
         }
     }
     
@@ -90,23 +90,23 @@ public abstract class InspectingTypeModel extends SimpleTypeModel {
         setNames(valueInfo);
         keyType = keyInfo;
         valueType = valueInfo;
-        if (valueInfo.getFieldType() == FieldType.ENTITY) {
-            fieldType = FieldType.ENTITYMAP;
+        if (valueInfo.getTypeCategory() == TypeCategory.ENTITY) {
+            typeCategory = TypeCategory.ENTITYMAP;
         } else {
-            fieldType = FieldType.SIMPLEMAP;
+            typeCategory = TypeCategory.SIMPLEMAP;
         }
     }
     
     protected final void handlePrimitiveWrapperType(Class<?> cl) {
         setNames(cl);
         if (cl.equals(Boolean.class)) {
-            fieldType = FieldType.BOOLEAN;
+            typeCategory = TypeCategory.BOOLEAN;
         } else if (Number.class.isAssignableFrom(cl)) {
-            fieldType = FieldType.NUMERIC;
+            typeCategory = TypeCategory.NUMERIC;
         } else if (Comparable.class.isAssignableFrom(cl)) {
-            fieldType = FieldType.COMPARABLE;
+            typeCategory = TypeCategory.COMPARABLE;
         } else {
-            fieldType = FieldType.SIMPLE;
+            typeCategory = TypeCategory.SIMPLE;
         }        
     }
     

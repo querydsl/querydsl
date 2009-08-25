@@ -26,7 +26,7 @@ import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.Elements;
 
 import com.mysema.query.annotations.Literal;
-import com.mysema.query.codegen.FieldType;
+import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.InspectingTypeModel;
 import com.mysema.query.codegen.TypeModel;
 
@@ -84,23 +84,23 @@ public final class APTTypeModel extends InspectingTypeModel implements TypeVisit
                             }
                         }                        
                         if (comparable) {
-                            fieldType =  FieldType.COMPARABLE;
+                            typeCategory =  TypeCategory.COMPARABLE;
                         } else {
-                            fieldType = FieldType.SIMPLE;
+                            typeCategory = TypeCategory.SIMPLE;
                         }
                     }else{
-                        fieldType = getFieldType(name);    
+                        typeCategory = getTypeCategory(name);    
                     }
                 } catch (Exception e) {
                     throw new RuntimeException(e.getMessage(), e);
                 }
                 
             }else if (arg0.asElement().getKind() == ElementKind.INTERFACE){
-                fieldType = getFieldType(name);
+                typeCategory = getTypeCategory(name);
                 Iterator<? extends TypeMirror> i = arg0.getTypeArguments().iterator();
                 if (name.equals(Serializable.class.getName())){
                      setNames(Serializable.class);
-                     fieldType = FieldType.SIMPLE;
+                     typeCategory = TypeCategory.SIMPLE;
                 }else if (name.equals(java.util.Map.class.getName())) {
                     if (!i.hasNext()){
                         throw new IllegalArgumentException("Insufficient type arguments for " + simpleName);
@@ -122,7 +122,7 @@ public final class APTTypeModel extends InspectingTypeModel implements TypeVisit
                     handleList(APTTypeModel.get(i.next(), el));
                 }
             }else if (arg0.asElement().getKind() == ElementKind.ENUM){
-                fieldType = FieldType.SIMPLE;
+                typeCategory = TypeCategory.SIMPLE;
             }
             
         }else{
@@ -170,7 +170,7 @@ public final class APTTypeModel extends InspectingTypeModel implements TypeVisit
         if (arg0.getUpperBound() != null) {
             TypeModel lb = APTTypeModel.get(arg0.getUpperBound(), el);
             setNames(lb);
-            fieldType = lb.getFieldType();
+            typeCategory = lb.getTypeCategory();
         }
         return null;
     }
@@ -180,7 +180,7 @@ public final class APTTypeModel extends InspectingTypeModel implements TypeVisit
         if (arg0.getExtendsBound() != null) {
             TypeModel lb = APTTypeModel.get(arg0.getExtendsBound(), el);
             setNames(lb);
-            fieldType = lb.getFieldType();
+            typeCategory = lb.getTypeCategory();
         }
         return null;
     }

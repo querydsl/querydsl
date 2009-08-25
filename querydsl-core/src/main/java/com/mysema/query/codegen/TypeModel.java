@@ -19,7 +19,7 @@ public interface TypeModel {
      * 
      * @return field type of type
      */
-    FieldType getFieldType();
+    TypeCategory getTypeCategory();
 
     /**
      * Key type or null

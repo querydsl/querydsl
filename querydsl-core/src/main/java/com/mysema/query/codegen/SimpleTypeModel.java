@@ -17,7 +17,7 @@ import com.mysema.commons.lang.Assert;
  */
 public class SimpleTypeModel implements TypeModel {
 
-    protected FieldType fieldType = FieldType.ENTITY;
+    protected TypeCategory typeCategory = TypeCategory.ENTITY;
 
     protected String name, packageName, simpleName, localName;
 
@@ -27,13 +27,13 @@ public class SimpleTypeModel implements TypeModel {
     protected SimpleTypeModel(){}
     
     public SimpleTypeModel(
-            FieldType fieldType, 
+            TypeCategory typeCategory, 
             String fullName,
             String packageName, 
             String simpleName, 
             @Nullable TypeModel keyType,
             @Nullable TypeModel valueType) {
-        this.fieldType = Assert.notNull(fieldType,"fieldType is null");
+        this.typeCategory = Assert.notNull(typeCategory,"typeCategory is null");
         this.name = Assert.notNull(fullName,"fullName is null");
         this.packageName = Assert.notNull(packageName,"packageName is null");
         this.simpleName = Assert.notNull(simpleName,"simpleName is null");
@@ -42,8 +42,8 @@ public class SimpleTypeModel implements TypeModel {
     }
 
     @Override
-    public FieldType getFieldType() {
-        return fieldType;
+    public TypeCategory getTypeCategory() {
+        return typeCategory;
     }
 
     @Override

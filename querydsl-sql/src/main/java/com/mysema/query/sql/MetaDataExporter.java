@@ -17,7 +17,7 @@ import java.util.Map;
 
 import com.mysema.query.codegen.ClassModel;
 import com.mysema.query.codegen.FieldModel;
-import com.mysema.query.codegen.FieldType;
+import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.Serializers;
 import com.mysema.query.codegen.SimpleTypeModel;
@@ -104,11 +104,11 @@ public class MetaDataExporter {
                 if (clazz == null){
                     throw new RuntimeException("No java type for " + columns.getString(6));
                 }                    
-                FieldType fieldType = FieldType.COMPARABLE;
+                TypeCategory fieldType = TypeCategory.COMPARABLE;
                 if (clazz.equals(Boolean.class) || clazz.equals(boolean.class)) {
-                    fieldType = FieldType.BOOLEAN;
+                    fieldType = TypeCategory.BOOLEAN;
                 } else if (clazz.equals(String.class)) {
-                    fieldType = FieldType.STRING;
+                    fieldType = TypeCategory.STRING;
                 }
 
                 TypeModel typeModel = new SimpleTypeModel(

@@ -9,12 +9,12 @@ import javax.annotation.Nullable;
 
 
 /**
- * FieldType defines the expression type used for a Field
+ * TypeCategory defines the expression type used for a Field
  * 
  * @author tiwe
  *
  */
-public enum FieldType {
+public enum TypeCategory {
     /**
      * Simple non-entity fields
      */
@@ -77,14 +77,14 @@ public enum FieldType {
     TIME(COMPARABLE);
     
     @Nullable
-    private final FieldType superType;
+    private final TypeCategory superType;
     
-    FieldType(@Nullable FieldType superType){
+    TypeCategory(@Nullable TypeCategory superType){
         this.superType = superType;
     }
 
     @Nullable
-    public FieldType getSuperType() {
+    public TypeCategory getSuperType() {
         return superType;
     }
     
