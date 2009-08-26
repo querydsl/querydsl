@@ -36,7 +36,7 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
             skip = (Class)Class.forName("javax.jdo.annotations.NotPersistent");
             
             Processor p = new Processor(processingEnv, entity, superType, embeddable, dto, skip);
-            p.skipGetters().process(roundEnv);
+            p.setUseGetters(false).process(roundEnv);
             return true;
             
         } catch (ClassNotFoundException e) {

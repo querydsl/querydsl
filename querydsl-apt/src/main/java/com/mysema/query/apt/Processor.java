@@ -7,36 +7,26 @@ package com.mysema.query.apt;
 
 import java.io.Writer;
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementVisitor;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.lang.model.util.ElementFilter;
-import javax.lang.model.util.Elements;
-import javax.lang.model.util.SimpleElementVisitor6;
 import javax.tools.JavaFileObject;
 import javax.tools.Diagnostic.Kind;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.codegen.ClassModel;
-import com.mysema.query.codegen.ConstructorModel;
-import com.mysema.query.codegen.FieldModel;
-import com.mysema.query.codegen.ParameterModel;
+import com.mysema.query.codegen.ClassModelFactory;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.Serializers;
-import com.mysema.query.codegen.TypeModel;
+import com.mysema.query.codegen.TypeModelFactory;
 
 /**
  * 
@@ -45,91 +35,19 @@ import com.mysema.query.codegen.TypeModel;
  */
 public class Processor {
     
-    private final ElementVisitor<ClassModel, Void> dtoElementVisitor = new SimpleElementVisitor6<ClassModel, Void>() {
-        
-        @Override
-        public ClassModel visitType(TypeElement e, Void p) {
-            Elements elementUtils = env.getElementUtils();
-            TypeModel c = APTTypeModel.create(e.asType(), elementUtils);
-            ClassModel classModel = new ClassModel(namePrefix, null, c.getPackageName(), c.getName(), c.getSimpleName());
-            List<? extends Element> elements = e.getEnclosedElements();
-            
-            // CONSTRUCTOR
-            for (ExecutableElement constructor : ElementFilter.constructorsIn(elements)){
-                if (isValidConstructor(constructor)){
-                    List<ParameterModel> parameters = new ArrayList<ParameterModel>(constructor.getParameters().size());
-                    for (VariableElement var : constructor.getParameters()){
-                        TypeModel varType = APTTypeModel.create(var.asType(), elementUtils);
-                        parameters.add(new ParameterModel(var.getSimpleName().toString(), varType.getName()));
-                    }
-                    classModel.addConstructor(new ConstructorModel(parameters));    
-                }                
-            }                                    
-            return classModel;
-        }
-
-        
-    };
-    
-    private final ElementVisitor<ClassModel, Void> elementVisitor = new SimpleElementVisitor6<ClassModel, Void>() {
-
-        @Override
-        public ClassModel visitType(TypeElement e, Void p) {
-            Elements elementUtils = env.getElementUtils();
-            TypeModel sc = APTTypeModel.create(e.getSuperclass(), elementUtils);
-            TypeModel c = APTTypeModel.create(e.asType(), elementUtils);
-            ClassModel classModel = new ClassModel(namePrefix, sc.getName(), c.getPackageName(), c.getName(), c.getSimpleName());
-            List<? extends Element> elements = e.getEnclosedElements();
-            
-            // GETTERS
-            for (ExecutableElement method : ElementFilter.methodsIn(elements)){
-                String name = method.getSimpleName().toString();
-                if (name.startsWith("get") && method.getParameters().isEmpty()){
-                    name = StringUtils.uncapitalize(name.substring(3));
-                }else if (name.startsWith("is") && method.getParameters().isEmpty()){
-                    name = StringUtils.uncapitalize(name.substring(2));
-                }else{
-                    continue;
-                }
-                if (isValidGetter(method)){
-                    try{
-                        TypeModel fieldType = APTTypeModel.create(method.getReturnType(), elementUtils);
-                        String docs = elementUtils.getDocComment(method);
-                        classModel.addField(new FieldModel(classModel, name, fieldType, docs != null ? docs : name));    
-                        
-                    }catch(IllegalArgumentException ex){
-                        throw new RuntimeException("Caught exception for method " + c.getName()+"#"+method.getSimpleName(), ex);
-                    }
-                }                
-            }
-            
-            // FIELDS
-            for (VariableElement field : ElementFilter.fieldsIn(elements)){
-                if (isValidField(field)){
-                    try{
-                        TypeModel fieldType = APTTypeModel.create(field.asType(), elementUtils);     
-                        String name = field.getSimpleName().toString();
-                        String docs = elementUtils.getDocComment(field);
-                        classModel.addField(new FieldModel(classModel, name, fieldType, docs != null ? docs : name));    
-                    }catch(IllegalArgumentException ex){
-                        throw new RuntimeException("Caught exception for field " + c.getName()+"#"+field.getSimpleName(), ex);
-                    }
-                        
-                }                
-            }                        
-            return classModel;
-        }
-
-    };
-    
     private final Class<? extends Annotation> entityAnn, superTypeAnn, embeddableAnn, dtoAnn, skipAnn;
     
     private final ProcessingEnvironment env;
+    
+    private final APTModelFactory typeFactory;
+    
+    private final ClassModelFactory classModelFactory;
     
     private final String namePrefix = "Q";
     
     private boolean useFields = true, useGetters = true;
     
+    @SuppressWarnings("unchecked")
     public Processor(ProcessingEnvironment env,
             Class<? extends Annotation> entityAnn, 
             Class<? extends Annotation> superTypeAnn,
@@ -141,17 +59,18 @@ public class Processor {
         this.superTypeAnn = superTypeAnn;
         this.embeddableAnn = embeddableAnn;
         this.dtoAnn = dtoAnn;
-        this.skipAnn = skipAnn;
+        this.skipAnn = skipAnn;        
+        Class<? extends Annotation>[] anns ;
+        if (embeddableAnn != null){
+            anns = new Class[]{entityAnn, embeddableAnn};
+        }else{
+            anns = new Class[]{entityAnn};            
+        }
+        TypeModelFactory factory = new TypeModelFactory(anns);
+        this.typeFactory = new APTModelFactory(factory, Arrays.asList(anns));
+        this.classModelFactory = new ClassModelFactory(factory);
     }
     
-    private ClassModel getClassModel(Element element) {
-        return element.accept(elementVisitor, null);
-    }
-    
-    private ClassModel getClassModelForDTO(Element element){
-        return element.accept(dtoElementVisitor, null);
-    }
-
     protected boolean isValidConstructor(ExecutableElement constructor) {
         return constructor.getModifiers().contains(Modifier.PUBLIC);
     }
@@ -172,10 +91,24 @@ public class Processor {
     public void process(RoundEnvironment roundEnv) {
         Map<String, ClassModel> superTypes = new HashMap<String, ClassModel>();
 
+        EntityElementVisitor entityVisitor = new EntityElementVisitor(env, namePrefix, classModelFactory, typeFactory){
+            @Override
+            protected boolean isValidField(VariableElement field) {
+                return Processor.this.isValidField(field);
+            }
+
+            @Override
+            protected boolean isValidGetter(ExecutableElement method) {
+                return Processor.this.isValidGetter(method);
+            }
+            
+        }; 
+        
         // populate super type mappings
         if (superTypeAnn != null) {
             for (Element element : roundEnv.getElementsAnnotatedWith(superTypeAnn)) {
-                ClassModel model = getClassModel(element);
+//                ClassModel model = getClassModel(element);
+                ClassModel model = element.accept(entityVisitor, null);
                 superTypes.put(model.getName(), model);
             }
         }
@@ -185,7 +118,7 @@ public class Processor {
         // populate entity type mappings
         Map<String, ClassModel> entityTypes = new HashMap<String, ClassModel>();
         for (Element element : roundEnv.getElementsAnnotatedWith(entityAnn)) {
-            ClassModel model = getClassModel(element);
+            ClassModel model = element.accept(entityVisitor, null);
             entityTypes.put(model.getName(), model);
         }
         // add super type fields
@@ -203,7 +136,7 @@ public class Processor {
             // populate entity type mappings
             Map<String, ClassModel> embeddables = new HashMap<String, ClassModel>();
             for (Element element : roundEnv.getElementsAnnotatedWith(embeddableAnn)) {
-                ClassModel model = getClassModel(element);
+                ClassModel model = element.accept(entityVisitor, null);
                 embeddables.put(model.getName(), model);
             }
             // add super type fields
@@ -219,9 +152,16 @@ public class Processor {
         // DTOS (optional)
         
         if (dtoAnn != null){
+            DTOElementVisitor dtoVisitor = new DTOElementVisitor(env, namePrefix, classModelFactory, typeFactory){
+                @Override
+                protected boolean isValidConstructor(ExecutableElement constructor) {
+                    return Processor.this.isValidConstructor(constructor);
+                }
+                
+            };
             Map<String, ClassModel> dtos = new HashMap<String, ClassModel>();
             for (Element element : roundEnv.getElementsAnnotatedWith(dtoAnn)) {
-                ClassModel model = getClassModelForDTO(element);
+                ClassModel model = element.accept(dtoVisitor, null);
                 dtos.put(model.getName(), model);
             }
             // serialize entity types
@@ -253,23 +193,13 @@ public class Processor {
         }
     }
 
-    /***
-     * Skip processing of fields
-     * 
-     * @return
-     */
-    public Processor skipFields(){
-        useFields = false;
+    public Processor setUseFields(boolean useFields){
+        this.useFields = useFields;
         return this;
     }
     
-    /**
-     * Skip processing of getters
-     * 
-     * @return
-     */
-    public Processor skipGetters() {
-        useGetters = false;        
+    public Processor setUseGetters(boolean useGetters) {
+        this.useGetters = useGetters;        
         return this;
     }
 

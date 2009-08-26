@@ -18,15 +18,17 @@ import org.junit.Test;
 
 public class InspectingTypeModelTest {
     
+    private TypeModelFactory factory = new TypeModelFactory();
+    
     @Test
-    public void test(){
-        TypeModel blob = TypeModel.create(Blob.class);
+    public void test(){        
+        TypeModel blob = factory.create(Blob.class);
         assertEquals("Blob", blob.getLocalName());
         assertEquals("Blob", blob.getSimpleName());
         assertEquals("java.sql.Blob", blob.getName());
         assertEquals("java.sql", blob.getPackageName());
         
-        TypeModel bo = TypeModel.create(boolean.class);
+        TypeModel bo = factory.create(boolean.class);
         assertEquals("Boolean", bo.getLocalName());
         assertEquals("Boolean", bo.getSimpleName());
         assertEquals("java.lang.Boolean", bo.getName());
@@ -36,14 +38,14 @@ public class InspectingTypeModelTest {
     @Test
     public void getFieldType(){
         for (Class<?> cl : Arrays.<Class<?>>asList(Blob.class, Clob.class, Locale.class, Class.class, Serializable.class)){
-            assertEquals("wrong type for " + cl.getName(), TypeCategory.SIMPLE, TypeModel.create(cl).getTypeCategory());
+            assertEquals("wrong type for " + cl.getName(), TypeCategory.SIMPLE, factory.create(cl).getTypeCategory());
         }
         
         for (Class<?> cl : Arrays.<Class<?>>asList(Byte.class, Integer.class)){
-            assertEquals("wrong type for " + cl.getName(), TypeCategory.NUMERIC, TypeModel.create(cl).getTypeCategory());
+            assertEquals("wrong type for " + cl.getName(), TypeCategory.NUMERIC, factory.create(cl).getTypeCategory());
         }
         
-        assertEquals(TypeCategory.BOOLEAN, TypeModel.create(boolean.class).getTypeCategory());
+        assertEquals(TypeCategory.BOOLEAN, factory.create(boolean.class).getTypeCategory());
     }
 
 }

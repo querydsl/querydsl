@@ -1,6 +1,6 @@
 package com.mysema.query.collections.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -70,6 +70,8 @@ public class SimpleTypes {
     Object object;
     
     Class<?> clazz;
+    
+    Package packageAsLiteral;
     
     CustomLiteral literal;
     

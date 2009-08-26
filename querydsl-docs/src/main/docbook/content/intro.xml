@@ -48,6 +48,12 @@
     <para>Consistency is another important principle. The query paths and operations are the same
     in all implementations and also the Query interfaces are similar.    
     </para>   
+    
+    <para>
+    To get an impression of the expressivity of the Querydsl query and expression types go to 
+    the javadocs and explore
+    com.mysema.query.Query, com.mysema.query.Projectable and com.mysema.query.types.expr.Expr.
+    </para>
 
   </sect1>
 

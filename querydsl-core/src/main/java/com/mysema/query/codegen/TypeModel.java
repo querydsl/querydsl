@@ -5,13 +5,12 @@
  */
 package com.mysema.query.codegen;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nullable;
+
+import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
 
@@ -22,60 +21,32 @@ import com.mysema.commons.lang.Assert;
  * @author tiwe
  *
  */
-public class TypeModel {
+@Immutable
+public final class TypeModel {
 
-    private static final Map<List<Type>,TypeModel> cache = new HashMap<List<Type>,TypeModel>();
-    
-    public static TypeModel create(Class<?> key){
-        return create(key, key, false);
-    }
-    
-    public static TypeModel createLiteralType(Class<?> key){
-        return create(key, key, true);
-    }
-    
-    public static TypeModel create(Class<?> type, Type genericType){
-        return create(type, genericType, false);
-    }
-    
-    private static TypeModel create(Class<?> type, Type genericType, boolean literal){
-        List<Type> key = Arrays.<Type>asList(type, genericType);
-        if (cache.containsKey(key)){
-            return cache.get(key);
-        }else{
-            TypeModel value = new InspectingTypeModel(Assert.notNull(type), genericType);
-            if (literal && !value.typeCategory.isChildOf(TypeCategory.SIMPLE)){
-                if (Comparable.class.isAssignableFrom(type)){
-                    value.typeCategory = TypeCategory.COMPARABLE;
-                }else{
-                    value.typeCategory = TypeCategory.SIMPLE;
-                }
-            }
-            cache.put(key, value);
-            return value;
-        }
-    }
-    
-    protected TypeCategory typeCategory = TypeCategory.ENTITY;
+    private final TypeCategory typeCategory;
 
-    protected String name, packageName, simpleName, localName;
+    private final String name, packageName, simpleName, localName;
 
     @Nullable
-    protected TypeModel keyType, valueType;
-
-    protected TypeModel(){}
+    private final TypeModel keyType, valueType;
     
+    public TypeModel(TypeCategory typeCategory, Class<?> clazz){
+        this(typeCategory, clazz.getName(), clazz.getPackage().getName(), clazz.getSimpleName(), null, null);
+    }
+
     public TypeModel(
             TypeCategory typeCategory, 
-            String fullName,
+            String name,
             String packageName, 
             String simpleName, 
             @Nullable TypeModel keyType,
             @Nullable TypeModel valueType) {
         this.typeCategory = Assert.notNull(typeCategory,"typeCategory is null");
-        this.name = Assert.notNull(fullName,"fullName is null");
+        this.name = Assert.notNull(name,"name is null");
         this.packageName = Assert.notNull(packageName,"packageName is null");
         this.simpleName = Assert.notNull(simpleName,"simpleName is null");
+        this.localName = name.substring(packageName.length()+1);
         this.keyType = keyType;
         this.valueType = valueType;
     }
@@ -101,9 +72,6 @@ public class TypeModel {
     }
     
     public String getLocalName(){
-        if (localName == null){
-            localName = name.substring(packageName.length()+1);
-        }
         return localName;
     }
 
@@ -113,6 +81,14 @@ public class TypeModel {
     
     public String toString() {
         return name;
+    }
+    
+    public TypeModel as(TypeCategory category) {
+        if (typeCategory.isSubCategoryOf(category)){
+            return this;
+        }else{
+            return new TypeModel(category, name, packageName, simpleName, keyType, valueType);
+        }
     }
 
 }

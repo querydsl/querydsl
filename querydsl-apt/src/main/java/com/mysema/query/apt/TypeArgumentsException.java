@@ -1,5 +1,9 @@
 package com.mysema.query.apt;
 
+/**
+ * @author tiwe
+ *
+ */
 public class TypeArgumentsException extends RuntimeException{
     
     private static final long serialVersionUID = -3344464172475025628L;

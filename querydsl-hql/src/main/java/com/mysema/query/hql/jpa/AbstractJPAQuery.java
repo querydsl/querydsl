@@ -29,7 +29,7 @@ import com.mysema.query.types.expr.Expr;
  */
 public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>> extends HQLQueryBase<SubType> {
 
-    private static final Logger logger = LoggerFactory.getLogger(JPAQueryImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(JPAQuery.class);
     
     private final EntityManager em;
 

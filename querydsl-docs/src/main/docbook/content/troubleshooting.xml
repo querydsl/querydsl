@@ -105,7 +105,25 @@ To use Querydsl with JDK 5.0 you also need to exclude querydsl-hql-apt and inclu
 <sect1>
     <title>Custom literal types</title>
 
- <para>TODO</para>
+ <para>To use custom literal types annotate the types or the type usage with the 
+ com.mysema.query.annotations.Literal annotation.</para>
+ 
+ <programlisting language="java"><![CDATA[
+ @Literal
+ public class DateTime {
+     //...
+ }
+ ]]></programlisting>
+
+or if the Literal type can't be annotated
+
+ <programlisting language="java"><![CDATA[
+ public class MyEntity {
+     @Literal
+     private DateTime created;
+ }
+ ]]></programlisting>
+
 
 </sect1>
 

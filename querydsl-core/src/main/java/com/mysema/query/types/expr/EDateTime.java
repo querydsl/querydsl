@@ -137,7 +137,7 @@ public abstract class EDateTime<D extends Comparable> extends EComparable<D> {
      * @return
      */
     public static EDateTime<Date> currentDate() {
-        return ODateTime.create(Date.class, Ops.DateTimeOps.CURRENT_DATE);
+        return currentDate(Date.class);
     }
     
     /**
@@ -146,7 +146,7 @@ public abstract class EDateTime<D extends Comparable> extends EComparable<D> {
      * @return
      */
     public static EDateTime<Date> currentTimestamp() {
-        return ODateTime.create(Date.class, Ops.DateTimeOps.CURRENT_TIMESTAMP);
+        return currentTimestamp(Date.class);
     }
 
     /**

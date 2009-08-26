@@ -9,7 +9,7 @@ import org.hibernate.Session;
 
 import com.mysema.query.hql.HQLQuery;
 import com.mysema.query.hql.HQLTemplates;
-import com.mysema.query.hql.hibernate.HibernateQueryImpl;
+import com.mysema.query.hql.hibernate.HibernateQuery;
 
 /**
  * @author tiwe
@@ -22,7 +22,7 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
     private Session session;
     
     protected HQLQuery query(){
-        return new HibernateQueryImpl(session, templates);
+        return new HibernateQuery(session, templates);
     }
 
     public void setSession(Session session) {

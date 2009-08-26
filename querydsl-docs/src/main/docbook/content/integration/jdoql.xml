@@ -166,8 +166,9 @@ customer.firstName;
 
     <programlisting language="java"><![CDATA[
 PersistenceManager pm;
+JDOQLTemplates templates = new JDOQLTemplates(); // can be reused in every query
 ...
-JDOQLQuery query = new JDOQLQueryImpl (pm);
+JDOQLQuery query = new JDOQLQueryImpl (pm, templates);
 ]]></programlisting>
 
     <para>
@@ -177,7 +178,7 @@ JDOQLQuery query = new JDOQLQueryImpl (pm);
 
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
-JDOQLQuery query = new JDOQLQueryImpl (pm);
+JDOQLQuery query = new JDOQLQueryImpl (pm, templates);
 Customer bob = query.from(customer)
   .where(customer.firstName.eq("Bob"))
   .uniqueResult(customer);
@@ -252,6 +253,8 @@ query.from(customer)
   a subquery you create a JDOQLQuery instance, define the query parameters via from, where etc and use
   uniqueExpr or listExpr to create a subquery, which is just a type-safe Querydsl expression for the query.
   uniqueExpr is used for a unique result and listExpr for a list result.</para>
+  
+  <para>Subqueries are instantiated as new JDOQLQueryImpl(null, templates).</para>
 
 <programlisting language="java"><![CDATA[
 query().from(department)
@@ -289,12 +292,4 @@ WHERE this.weeklyhours >
           
   </sect2>      
   
-  <sect2>
-  
-  <title>Aggregate functions</title>
-  
-  <para>Aggregate functions are available as static methods in the com.mysema.query.functions.AggreationFunctions class.</para>
-  
-  </sect2>    
-
 </sect1>

@@ -22,6 +22,10 @@ import com.mysema.query.annotations.Projection;
 import com.mysema.query.annotations.Transient;
 
 
+/**
+ * @author tiwe
+ *
+ */
 @SupportedAnnotationTypes("*")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class QuerydslAnnotationProcessor extends AbstractProcessor{

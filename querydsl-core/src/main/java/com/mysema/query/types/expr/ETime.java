@@ -76,7 +76,7 @@ public abstract class ETime<D extends Comparable> extends EComparable<D> {
      * @return
      */
     public static ETime<Date> currentTime() {
-        return OTime.create(Date.class, Ops.DateTimeOps.CURRENT_TIME);
+        return currentTime(Date.class);
     }
 
     /**

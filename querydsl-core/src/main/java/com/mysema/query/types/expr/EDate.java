@@ -92,7 +92,7 @@ public abstract class EDate<D extends Comparable> extends EComparable<D> {
      * @return
      */
     public static EDate<Date> currentDate() {
-        return ODate.create(Date.class, Ops.DateTimeOps.CURRENT_DATE);
+        return currentDate(Date.class);
     }
     
     /**

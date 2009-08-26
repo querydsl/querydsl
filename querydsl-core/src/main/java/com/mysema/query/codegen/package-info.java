@@ -4,7 +4,7 @@
  * 
  */
 
-@DefaultAnnotation( { Nonnull.class })
+@DefaultAnnotation({ Nonnull.class })
 package com.mysema.query.codegen;
 
 import javax.annotation.Nonnull;

@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 
 import com.mysema.query.hql.HQLQuery;
 import com.mysema.query.hql.HQLTemplates;
-import com.mysema.query.hql.jpa.JPAQueryImpl;
+import com.mysema.query.hql.jpa.JPAQuery;
 
 /**
  * @author tiwe
@@ -22,7 +22,7 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
     private EntityManager entityManager;
     
     protected HQLQuery query(){
-        return new JPAQueryImpl(entityManager, templates);
+        return new JPAQuery(entityManager, templates);
     }
 
     public void setEntityManager(EntityManager entityManager) {

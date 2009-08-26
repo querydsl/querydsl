@@ -16,32 +16,33 @@ import com.mysema.commons.lang.Assert;
  * @version $Id$
  */
 @Immutable
-public class FieldModel implements Comparable<FieldModel> {
+public final class FieldModel implements Comparable<FieldModel> {
     
-    private final ClassModel model;
+    private final ClassModel classModel;
     
     private final String name, docs, typeName, queryTypeName, keyTypeName, valueTypeName;
     
     private final TypeModel type;
     
-    public FieldModel(ClassModel model, String name, TypeModel type, String docs){
-        this.model = model;
+    public FieldModel(ClassModel classModel, String name, TypeModel type, String docs){
+        this.classModel = classModel;
         this.name = Assert.notNull(name,"name is null");
         this.type = Assert.notNull(type,"type is null");
         this.docs = Assert.notNull(docs,"docs is null").replace("@return", "").trim();
         this.typeName = getLocalName(type);
         this.keyTypeName = type.getKeyType() != null ? getLocalName(type.getKeyType()) : null;
-        this.valueTypeName = type.getValueType() != null ? getLocalName(type.getValueType()) : null;        
-        if (isVisible(type)){
-            this.queryTypeName = model.getPrefix() + type.getSimpleName();
+        this.valueTypeName = type.getValueType() != null ? getLocalName(type.getValueType()) : null;    
+        if (type.getTypeCategory().isSubCategoryOf(TypeCategory.SIMPLE)){
+            this.queryTypeName = null;
+        }else if (isVisible(type)){
+            this.queryTypeName = classModel.getPrefix() + type.getSimpleName();
         }else{
-            this.queryTypeName = type.getPackageName() + "." + model.getPrefix() + type.getSimpleName();
-        }
+            this.queryTypeName = type.getPackageName() + "." + classModel.getPrefix() + type.getSimpleName();
+        }        
     }
     
     private boolean isVisible(TypeModel type){
-        return model.getPackageName().equals(type.getPackageName()) 
-            || type.getPackageName().equals("java.lang");
+        return classModel.getPackageName().equals(type.getPackageName()) || type.getPackageName().equals("java.lang");
     }
     
     private String getLocalName(TypeModel type){        

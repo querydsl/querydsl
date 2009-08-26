@@ -16,7 +16,7 @@ import com.mysema.commons.lang.Assert;
  * @version $Id$
  */
 @Immutable
-public class ParameterModel implements Comparable<ParameterModel> {
+public final class ParameterModel implements Comparable<ParameterModel> {
     
     private final String name, typeName;
 

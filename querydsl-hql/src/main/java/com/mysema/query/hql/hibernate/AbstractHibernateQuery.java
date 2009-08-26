@@ -30,7 +30,7 @@ import com.mysema.query.types.expr.Expr;
  */
 public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQuery<SubType>> extends HQLQueryBase<SubType>{
     
-    private static final Logger logger = LoggerFactory.getLogger(HibernateQueryImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(HibernateQuery.class);
     
     private final Session session;
 

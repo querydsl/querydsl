@@ -5,18 +5,22 @@
  */
 package com.mysema.query.codegen;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Blob;
-import java.sql.Clob;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Set;
 
 import javax.annotation.Nullable;
 
 import net.jcip.annotations.Immutable;
+
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+import org.joda.time.Instant;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
+import org.joda.time.Partial;
 
 
 /**
@@ -30,44 +34,37 @@ public enum TypeCategory {
     /**
      * Simple non-entity fields
      */           
-    SIMPLE(null,
-        Number.class, // Number is itself simple, since it is not comparable 
-        Locale.class, 
-        Clob.class, 
-        Blob.class, 
-        Class.class, 
-        Object.class, 
-        Serializable.class),
+    SIMPLE(null),
     /**
      * Comparable literal fields
      */
-    COMPARABLE(SIMPLE, 
-        Comparable.class, 
-        Character.class),
+    COMPARABLE(SIMPLE, Comparable.class, Character.class, Partial.class),
     /**
      * Boolean files
      */
-    BOOLEAN(COMPARABLE, 
-        Boolean.class),     
+    BOOLEAN(COMPARABLE, Boolean.class),     
     /**
      * Date fields
      */
-    DATE(COMPARABLE, 
-        java.sql.Date.class),
+    DATE(COMPARABLE, java.sql.Date.class, LocalDate.class),
     /**
      * Date/Time fields
      */
     DATETIME(COMPARABLE, 
         java.util.Date.class, 
-        java.sql.Timestamp.class),    
+        java.sql.Timestamp.class, 
+        LocalDateTime.class, 
+        Instant.class,
+        DateTime.class, 
+        DateMidnight.class),    
     /**
      * Entity fields
      */
-    ENTITY(SIMPLE),
+    ENTITY(null),
     /**
      * Entity collection fields
      */
-    ENTITYCOLLECTION(SIMPLE),
+    ENTITYCOLLECTION(null),
     /**
      * Entity list fields
      */
@@ -75,7 +72,7 @@ public enum TypeCategory {
     /**
      * Entity map fields
      */
-    ENTITYMAP(SIMPLE), 
+    ENTITYMAP(null), 
     /**
      * Numeric fields
      */
@@ -91,7 +88,7 @@ public enum TypeCategory {
     /**
      * Simple collection fields
      */
-    SIMPLECOLLECTION(SIMPLE), 
+    SIMPLECOLLECTION(null), 
     /**
      * Simple list fields
      */
@@ -99,23 +96,21 @@ public enum TypeCategory {
     /**
      * Simple map fields
      */
-    SIMPLEMAP(SIMPLE), 
+    SIMPLEMAP(null), 
     /**
      * String fields
      */
-    STRING(COMPARABLE, 
-        String.class),
+    STRING(COMPARABLE, String.class),
     /**
      * Time fields
      */
-    TIME(COMPARABLE, 
-        java.sql.Time.class);
+    TIME(COMPARABLE, java.sql.Time.class, LocalTime.class);
     
     @Nullable
     private final TypeCategory superType;
     
     private final Set<String> types;
-    
+        
     TypeCategory(@Nullable TypeCategory superType, Class<?>... types){
         this.superType = superType;
         this.types = new HashSet<String>(types.length);
@@ -137,8 +132,19 @@ public enum TypeCategory {
         return types.contains(className);
     }
     
-    public boolean isChildOf(TypeCategory ancestor){
-        return superType != null && (superType == ancestor || superType.isChildOf(ancestor));
+    /**
+     * transitive and reflexive subCategoryOf check
+     * 
+     * @param ancestor
+     * @return
+     */
+    public boolean isSubCategoryOf(TypeCategory ancestor){
+        if (this == ancestor)
+            return true;
+        else if (superType == null)
+            return false;
+        else 
+            return superType == ancestor || superType.isSubCategoryOf(ancestor);
     }
     
     public static TypeCategory get(String className){
@@ -147,7 +153,7 @@ public enum TypeCategory {
                 return category;
             }
         }
-        return ENTITY;
+        return SIMPLE;
     }
     
 }

@@ -64,15 +64,12 @@
       <version>2.3.12</version>
       <!-- license : BSD-style license -->
     </dependency>    
-
-    <!-- test dependencies -->
-
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
       <version>1.6</version>
-      <scope>test</scope>
-    </dependency>
+    </dependency>    
+
   </dependencies>
   
   <build>

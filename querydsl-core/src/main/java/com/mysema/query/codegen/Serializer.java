@@ -8,7 +8,7 @@ package com.mysema.query.codegen;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,22 +56,27 @@ public class Serializer {
         writer.flush();
     }
     
-    /**
-     * Serialize the given ClassModel instances
-     * 
-     * @param targetFolder
-     * @param entityTypes
-     */
-    public void serialize(String targetFolder, Collection<ClassModel> types) {
-        for (ClassModel type : types) {            
-            try {
-                String packageName = type.getPackageName();
-                String path = packageName.replace('.', '/') + "/" + type.getPrefix() + type.getSimpleName() + ".java";
-                serialize(type, FileUtils.writerFor(new File(targetFolder, path)));
-            } catch (Exception e) {
-                throw new RuntimeException(e.getMessage(), e);
-            }
-        }
-    }
+//    /**
+//     * Serialize the given ClassModel instances
+//     * 
+//     * @param targetFolder
+//     * @param prefix
+//     * @param entityTypes
+//     */
+//    public void serialize(String targetFolder, String prefix, Class<?>... types) {
+//        ClassModelFactory factory = new ClassModelFactory(new TypeModelFactory(Collections.singleton(o)));
+//        for (Class<?> type : types) {            
+//            try {
+//                ClassModel model = factory.create(type, prefix);
+//                String packageName = model.getPackageName();
+//                String path = packageName.replace('.', File.separatorChar) 
+//                    + File.separator 
+//                    + model.getPrefix() + type.getSimpleName() + ".java";
+//                serialize(model, FileUtils.writerFor(new File(targetFolder, path)));
+//            } catch (Exception e) {
+//                throw new RuntimeException(e.getMessage(), e);
+//            }
+//        }
+//    }
 
 }

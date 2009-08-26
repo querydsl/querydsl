@@ -18,7 +18,7 @@ import com.mysema.commons.lang.Assert;
  * @version $Id$
  */
 @Immutable
-public class ConstructorModel {
+public final class ConstructorModel {
     
     private final Collection<ParameterModel> parameters;
 

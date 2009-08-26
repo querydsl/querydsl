@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-        <!ENTITY versionNumber "0.5.0">
+        <!ENTITY versionNumber "0.5.1">
         <!ENTITY copyrightYear "2007-2009">
         <!ENTITY copyrightHolder "Mysema Ltd.">
 ]>
@@ -46,8 +46,10 @@
         
     <xi:include href="content/alias_usage.xml" />
     <xi:include href="content/best-practices.xml"/>    
-    <xi:include href="content/internals.xml"/>
     <xi:include href="content/troubleshooting.xml"/>
+    
+    <xi:include href="content/internals.xml"/>
+    
 
 </book>
 

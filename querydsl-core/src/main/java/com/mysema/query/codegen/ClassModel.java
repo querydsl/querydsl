@@ -5,7 +5,6 @@
  */
 package com.mysema.query.codegen;
 
-import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,7 +17,6 @@ import org.apache.commons.collections15.MapUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.annotations.Literal;
 
 /**
  * ClassModel represents the model of a query domain type with properties
@@ -26,35 +24,13 @@ import com.mysema.query.annotations.Literal;
  * @author tiwe
  * @version $Id$
  */
-public class ClassModel implements Comparable<ClassModel> {
-    
+public final class ClassModel implements Comparable<ClassModel> {
+        
     public static final String DEFAULT_PREFIX = "Q";
     
-    public static ClassModel create(Class<?> key){
-        return create(key, ClassModel.DEFAULT_PREFIX);
-    }
-    
-    public static ClassModel create(Class<?> key, String prefix){
-        ClassModel classModel = new ClassModel(
-                prefix,
-                key.getSuperclass().getName(), 
-                key.getPackage().getName(), 
-                key.getName(), 
-                key.getSimpleName());
-        for (Field f : key.getDeclaredFields()) {
-            TypeModel typeModel;
-            if (f.getAnnotation(Literal.class) != null){
-                typeModel = TypeModel.createLiteralType(f.getType());
-            }else{
-                typeModel = TypeModel.create(f.getType(), f.getGenericType());
-            } 
-            classModel.addField(new FieldModel(classModel, f.getName(), typeModel, f.getName()));
-        }
-        return classModel;
-    }
-
     private final Collection<ConstructorModel> constructors = new HashSet<ConstructorModel>();
     
+    // mutable
     private int escapeSuffix = 1;
     
     private final String simpleName, name, packageName, localName;
@@ -75,12 +51,15 @@ public class ClassModel implements Comparable<ClassModel> {
 
     private String uncapSimpleName;
     
-    public ClassModel(String prefix, @Nullable String superType, String packageName, String name, String simpleName) {
+    private final ClassModelFactory factory;
+    
+    public ClassModel(ClassModelFactory factory, String prefix, @Nullable String superType, String packageName, String name, String simpleName) {
+        this.factory = Assert.notNull(factory);
         this.prefix = Assert.notNull(prefix);
         this.superType = superType;
-        this.packageName = Assert.notNull(packageName,"packageName is null");
-        this.name = Assert.notNull(name,"name is null");
-        this.simpleName = Assert.notNull(simpleName,"simpleName is null");
+        this.packageName = Assert.notNull(packageName);
+        this.name = Assert.notNull(name);
+        this.simpleName = Assert.notNull(simpleName);
         this.uncapSimpleName = StringUtils.uncapitalize(simpleName);
         this.localName = name.substring(packageName.length()+1);
     }
@@ -114,7 +93,7 @@ public class ClassModel implements Comparable<ClassModel> {
 
         } else if (superClass != null && !superClass.equals(Object.class)) {
             // TODO : recursively up ?
-            ClassModel type = ClassModel.create(superClass, prefix);
+            ClassModel type = factory.create(superClass, prefix);
             // include fields of supertype
             include(type);
         }
