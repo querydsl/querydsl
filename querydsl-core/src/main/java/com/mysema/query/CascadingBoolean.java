@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.types.expr.EBoolean;
 
-// TODO: Auto-generated Javadoc
 /**
  * CascadingBoolean is a cascading builder for Boolean expressions.
  * 
@@ -22,7 +21,6 @@ public class CascadingBoolean {
     private EBoolean expr;
 
     public CascadingBoolean and(EBoolean right) {
-//        expr = (expr == null) ? right : expr.and(right);
         if (expr == null){
             expr = right;
         }else{
@@ -41,11 +39,10 @@ public class CascadingBoolean {
 
 
     public CascadingBoolean or(EBoolean right) {
-//        expr = (expr == null) ? right : expr.or(right);
         if (expr == null){
             expr = right;
         }else{
-            expr = expr.and(right);
+            expr = expr.or(right);
         }
         return this;
     }
