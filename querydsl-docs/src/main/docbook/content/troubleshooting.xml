@@ -102,6 +102,7 @@ To use Querydsl with JDK 5.0 you also need to exclude querydsl-hql-apt and inclu
 
 </sect1>
 
+<!-- 
 <sect1>
     <title>Custom literal types</title>
 
@@ -126,6 +127,8 @@ or if the Literal type can't be annotated
 
 
 </sect1>
+
+ -->
 
 </chapter>
 

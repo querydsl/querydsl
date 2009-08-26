@@ -30,6 +30,10 @@ public class TypeModelFactory {
         this.entityAnnotations = (List)Arrays.asList(entityAnnotations);
     }
     
+    public TypeModelFactory(List<Class<? extends Annotation>> entityAnnotations){
+        this.entityAnnotations = entityAnnotations;
+    }
+    
     public TypeModel create(Class<?> cl){
         return create(cl, cl);
     }
@@ -81,11 +85,11 @@ public class TypeModelFactory {
         
     }
     
-    public final TypeModel createArrayType(TypeModel valueType) {
+    public TypeModel createArrayType(TypeModel valueType) {
         return createComposite(null, valueType, TypeCategory.ENTITYCOLLECTION, TypeCategory.SIMPLECOLLECTION);
     }
 
-    public final TypeModel createCollectionType(TypeModel valueType) {
+    public TypeModel createCollectionType(TypeModel valueType) {
         return createComposite(null, valueType, TypeCategory.ENTITYCOLLECTION, TypeCategory.SIMPLECOLLECTION);
     }
 
@@ -100,11 +104,11 @@ public class TypeModelFactory {
 
     }
 
-    public final TypeModel createListType(TypeModel valueType) {
+    public TypeModel createListType(TypeModel valueType) {
         return createComposite(null, valueType, TypeCategory.ENTITYLIST, TypeCategory.SIMPLELIST);
     }
 
-    public final TypeModel createMapType(TypeModel keyType, TypeModel valueType) {
+    public TypeModel createMapType(TypeModel keyType, TypeModel valueType) {
         return createComposite(keyType, valueType, TypeCategory.ENTITYMAP, TypeCategory.SIMPLEMAP);
     }
 

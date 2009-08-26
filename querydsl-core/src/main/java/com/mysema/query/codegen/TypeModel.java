@@ -5,9 +5,6 @@
  */
 package com.mysema.query.codegen;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-
 import javax.annotation.Nullable;
 
 import net.jcip.annotations.Immutable;

@@ -8,8 +8,9 @@ package com.mysema.query.codegen;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Collections;
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.jcip.annotations.Immutable;
@@ -56,27 +57,33 @@ public class Serializer {
         writer.flush();
     }
     
-//    /**
-//     * Serialize the given ClassModel instances
-//     * 
-//     * @param targetFolder
-//     * @param prefix
-//     * @param entityTypes
-//     */
-//    public void serialize(String targetFolder, String prefix, Class<?>... types) {
-//        ClassModelFactory factory = new ClassModelFactory(new TypeModelFactory(Collections.singleton(o)));
-//        for (Class<?> type : types) {            
-//            try {
-//                ClassModel model = factory.create(type, prefix);
-//                String packageName = model.getPackageName();
-//                String path = packageName.replace('.', File.separatorChar) 
-//                    + File.separator 
-//                    + model.getPrefix() + type.getSimpleName() + ".java";
-//                serialize(model, FileUtils.writerFor(new File(targetFolder, path)));
-//            } catch (Exception e) {
-//                throw new RuntimeException(e.getMessage(), e);
-//            }
-//        }
-//    }
+    /**
+     * Serialize the given classes as Querydsl query types
+     * 
+     * @param targetFolder serialization target folder
+     * @param prefix name prefix ("Q" is the preferred one)
+     * @param entityAnnotations entity annotations
+     * @param entityTypes entity types
+     */
+    public void serialize(
+            String targetFolder, 
+            String prefix, 
+            List<Class<? extends Annotation>> entityAnnotations,
+            Class<?>... types) {
+        TypeModelFactory typeModelFactory = new TypeModelFactory(entityAnnotations);
+        ClassModelFactory factory = new ClassModelFactory(typeModelFactory);
+        for (Class<?> type : types) {            
+            try {
+                ClassModel model = factory.create(type, prefix);
+                String packageName = model.getPackageName();
+                String path = packageName.replace('.', File.separatorChar) 
+                    + File.separator 
+                    + model.getPrefix() + type.getSimpleName() + ".java";
+                serialize(model, FileUtils.writerFor(new File(targetFolder, path)));
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+        }
+    }
 
 }
