@@ -22,7 +22,7 @@ public abstract class QueryBase<SubType extends QueryBase<SubType>> {
 
     private final QueryMetadata metadata;
 
-    protected String toString;
+//    protected String toString;
 
     public QueryBase(QueryMetadata metadata) {
         this.metadata = metadata;
