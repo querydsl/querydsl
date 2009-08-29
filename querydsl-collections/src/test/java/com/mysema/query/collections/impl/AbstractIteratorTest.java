@@ -19,8 +19,7 @@ import java.util.Iterator;
  */
 public abstract class AbstractIteratorTest {
 
-    protected void assertIteratorEquals(Iterator<Object[]> a,
-            Iterator<Object[]> b) {
+    protected void assertIteratorEquals(Iterator<Object[]> a, Iterator<Object[]> b) {
         while (a.hasNext()) {
             assertEquals(Arrays.asList(a.next()), Arrays.asList(b.next()));
         }
