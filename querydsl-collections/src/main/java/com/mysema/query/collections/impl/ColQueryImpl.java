@@ -12,6 +12,8 @@ import com.mysema.query.collections.ColQueryTemplates;
 
 
 /**
+ * ColQueryImpl is the default implementation of the ColQuery interface
+ * 
  * @author tiwe
  *
  */

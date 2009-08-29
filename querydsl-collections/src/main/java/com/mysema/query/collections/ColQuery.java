@@ -5,7 +5,6 @@
  */
 package com.mysema.query.collections;
 
-import com.mysema.query.Detachable;
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
 import com.mysema.query.types.expr.Expr;
@@ -16,7 +15,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public interface ColQuery extends Query<ColQuery>, Projectable, Detachable {
+public interface ColQuery extends Query<ColQuery>, Projectable {
 
     <A> ColQuery from(Expr<A> entity, Iterable<? extends A> col);
 

@@ -24,18 +24,18 @@ public class MultiComparator implements Comparator<Object[]> {
 
     private static final Comparator<Object> naturalOrder = ComparableComparator.getInstance();
 
-    private final Evaluator ev;
+    private final Evaluator<Object[]> ev;
 
     private final boolean[] asc;
 
-    public MultiComparator(Evaluator ev, boolean[] directions) {
+    public MultiComparator(Evaluator<Object[]> ev, boolean[] directions) {
         this.ev = ev;
         this.asc = directions.clone();
     }
 
     public int compare(Object[] o1, Object[] o2) {
-        o1 = (Object[]) ev.evaluate(o1);
-        o2 = (Object[]) ev.evaluate(o2);
+        o1 = ev.evaluate(o1);
+        o2 = ev.evaluate(o2);
         for (int i = 0; i < o1.length; i++) {
             int res = naturalOrder.compare(o1[i], o2[i]);
             if (res != 0) {

@@ -26,7 +26,7 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.collections.ColQuery;
 import com.mysema.query.collections.ColQueryTemplates;
-import com.mysema.query.support.QueryBaseWithProjectionAndDetach;
+import com.mysema.query.support.QueryBaseWithProjection;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EArrayConstructor;
@@ -50,21 +50,22 @@ import com.mysema.util.MultiIterator;
  * @version $Id$
  */
 public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>> 
-    extends QueryBaseWithProjectionAndDetach<SubType> {
+    extends QueryBaseWithProjection<SubType> {
     
-    private final IteratorFactory iteratorFactory = new IteratorFactory();
+    private final EvaluatorFactory evaluatorFactory;
+    
+    private final IteratorFactory iteratorFactory;
     
     private boolean arrayProjection = false;
 
     private final Map<Expr<?>, Iterable<?>> exprToIt = new HashMap<Expr<?>, Iterable<?>>();
 
-    private final ColQueryTemplates templates;
-
-    public AbstractColQuery(QueryMetadata metadata, ColQueryTemplates patterns) {
+    public AbstractColQuery(QueryMetadata metadata, ColQueryTemplates templates) {
         super(metadata);
-        this.templates = patterns;
+        this.evaluatorFactory = new EvaluatorFactory(templates);
+        this.iteratorFactory = new IteratorFactory(evaluatorFactory);
     }
-
+    
     public long count() {
         try {
             List<Expr<?>> sources = new ArrayList<Expr<?>>();
@@ -138,7 +139,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
         }
         Iterator it = new MultiIterator(iterables);
         if (condition != null) {
-            it = iteratorFactory.multiArgFilter(templates, it, sources, condition);
+            it = iteratorFactory.multiArgFilter(it, sources, condition);
         }
         return it;
     }
@@ -154,7 +155,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
         it = iteratorFactory.toArrayIterator(exprToIt.get(join.getTarget()).iterator());
         if (condition != null) {
             // where
-            it = iteratorFactory.multiArgFilter(templates, it, sources, condition);
+            it = iteratorFactory.multiArgFilter(it, sources, condition);
         }
         
         return it;
@@ -172,7 +173,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
             directions[i] = orderBy.get(i).getOrder() == Order.ASC;
         }
         Expr<?> expr = new EArrayConstructor<Object>(Object.class, orderByExpr);
-        Evaluator ev = Evaluator.create(templates, sources, expr);
+        Evaluator ev = evaluatorFactory.create(sources, expr);
 
         // transform the iterator to list
         List<Object[]> itAsList = IteratorUtils.toList((Iterator<Object[]>) it);
@@ -183,7 +184,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
 
     protected <RT> Iterator<RT> handleSelect(Iterator<?> it,
             List<Expr<?>> sources, Expr<RT> projection) throws Exception {
-        Iterator<RT> rv = iteratorFactory.transform(templates, it, sources, projection);
+        Iterator<RT> rv = iteratorFactory.transform(it, sources, projection);
         if (getMetadata().isDistinct()) {
             rv = asDistinctIterator(rv);
         }
@@ -223,7 +224,6 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
         }
     }
 
-    // TODO : optimize
     public <RT> SearchResults<RT> listResults(Expr<RT> projection) {
         QueryModifiers modifiers = getMetadata().getModifiers();
         List<RT> list;
@@ -232,10 +232,14 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
+        // empty results
         if (list.isEmpty()) {
             return SearchResults.emptyResults();
+            
+        // no restrictions    
         } else if (!modifiers.isRestricting()) {
             return new SearchResults<RT>(list, modifiers, list.size());
+            
         } else {
             int start = 0;
             int end = list.size();
@@ -249,8 +253,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
             if (modifiers.getLimit() != null) {
                 end = (int) Math.min(start + modifiers.getLimit(), list.size());
             }
-            return new SearchResults<RT>(list.subList(start, end), modifiers,
-                    list.size());
+            return new SearchResults<RT>(list.subList(start, end), modifiers, list.size());
         }
     }
 

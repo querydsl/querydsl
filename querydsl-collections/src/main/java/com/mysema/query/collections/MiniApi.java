@@ -17,7 +17,9 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class MiniApi {
+public final class MiniApi {
+    
+    private MiniApi(){}
     
     private static final ColQueryTemplates templates = new ColQueryTemplates();
 
