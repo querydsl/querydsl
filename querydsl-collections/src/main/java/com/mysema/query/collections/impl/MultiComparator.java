@@ -7,9 +7,11 @@ package com.mysema.query.collections.impl;
 
 import java.util.Comparator;
 
+import net.jcip.annotations.Immutable;
+
 import org.apache.commons.collections15.comparators.ComparableComparator;
 
-import com.mysema.query.collections.eval.Evaluator;
+
 
 /**
  * MultiComparator compares
@@ -17,15 +19,14 @@ import com.mysema.query.collections.eval.Evaluator;
  * @author tiwe
  * @version $Id$
  */
-
+@Immutable
 public class MultiComparator implements Comparator<Object[]> {
 
-    private Comparator<Object> naturalOrder = ComparableComparator
-            .getInstance();
+    private static final Comparator<Object> naturalOrder = ComparableComparator.getInstance();
 
-    private Evaluator ev;
+    private final Evaluator ev;
 
-    private boolean[] asc;
+    private final boolean[] asc;
 
     public MultiComparator(Evaluator ev, boolean[] directions) {
         this.ev = ev;

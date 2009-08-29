@@ -17,10 +17,11 @@ import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.hql.HQLQueryBase;
+import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -34,8 +35,8 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     
     private final Session session;
 
-    public AbstractHibernateQuery(Session session, HQLTemplates patterns) {
-        super(patterns);
+    public AbstractHibernateQuery(QueryMetadata md, Session session, HQLTemplates patterns) {
+        super(md, patterns);
         this.session = session;
     }
 

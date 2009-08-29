@@ -6,7 +6,7 @@
 package com.mysema.query.collections.impl;
 
 import static com.mysema.query.alias.Alias.alias;
-import static com.mysema.query.collections.impl.MiniApi.from;
+import static com.mysema.query.collections.MiniApi.from;
 
 import org.junit.Test;
 

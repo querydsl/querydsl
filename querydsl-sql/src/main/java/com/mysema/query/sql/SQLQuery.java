@@ -10,6 +10,8 @@ import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.ObjectSubQuery;
 
 /**
+ * Query interface for SQL queries
+ * 
  * @author tiwe
  *
  */

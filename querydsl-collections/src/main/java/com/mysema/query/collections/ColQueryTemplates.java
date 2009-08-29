@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.eval;
+package com.mysema.query.collections;
 
 import com.mysema.query.serialization.JavaTemplates;
 import com.mysema.query.types.operation.Ops;
@@ -30,14 +30,15 @@ public class ColQueryTemplates extends JavaTemplates {
         add(Ops.AOE, "{0}.compareTo({1}) >= 0");
         add(Ops.BOE, "{0}.compareTo({1}) <= 0");
         add(Ops.BETWEEN, functions + ".between({0},{1},{2})");
+//        add(Ops.BETWEEN, "{0}.compareTo({1}) > 0 && {0}.compareTo({2}) < 0");
         add(Ops.STRING_CAST, "String.valueOf({0})");
         
         // Date and Time
-        add(Ops.DateTimeOps.DAY_OF_MONTH, "{0}.getDate()"); // java.util.Date
-        add(Ops.DateTimeOps.DAY_OF_WEEK, "{0}.getDay()"); // java.util.Date
-        add(Ops.DateTimeOps.HOUR, "{0}.getHours()");  // java.util.Date
-        add(Ops.DateTimeOps.MINUTE, "{0}.getMinutes()"); // java.util.Date
-        add(Ops.DateTimeOps.SECOND, "{0}.getSeconds()"); // java.util.Date
+        add(Ops.DateTimeOps.DAY_OF_MONTH, "{0}.getDate()");  // java.util.Date
+        add(Ops.DateTimeOps.DAY_OF_WEEK, "{0}.getDay()");    // java.util.Date
+        add(Ops.DateTimeOps.HOUR, "{0}.getHours()");         // java.util.Date
+        add(Ops.DateTimeOps.MINUTE, "{0}.getMinutes()");     // java.util.Date
+        add(Ops.DateTimeOps.SECOND, "{0}.getSeconds()");     // java.util.Date
         
         // path types
         for (PathType type : new PathType[] { 

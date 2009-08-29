@@ -16,10 +16,11 @@ import javax.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.hql.HQLQueryBase;
+import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -33,8 +34,8 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
     
     private final EntityManager em;
 
-    public AbstractJPAQuery(EntityManager em, HQLTemplates patterns) {
-        super(patterns);
+    public AbstractJPAQuery(QueryMetadata md, EntityManager em, HQLTemplates patterns) {
+        super(md, patterns);
         this.em = em;
     }
 

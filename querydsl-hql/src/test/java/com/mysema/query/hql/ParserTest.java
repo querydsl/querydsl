@@ -28,6 +28,7 @@ import antlr.RecognitionException;
 import antlr.TokenStreamException;
 import antlr.collections.AST;
 
+import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.SearchResults;
 import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.Catalog;
@@ -901,7 +902,7 @@ public class ParserTest implements Constants {
 
     class TestQuery extends HQLQueryBase<TestQuery> {
         public TestQuery() {
-            super(new HQLTemplates());
+            super(new DefaultQueryMetadata(), new HQLTemplates());
         }
 
         public long count() {

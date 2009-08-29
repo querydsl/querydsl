@@ -14,14 +14,6 @@ import javax.annotation.Nullable;
 
 import net.jcip.annotations.Immutable;
 
-import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
-import org.joda.time.Instant;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.LocalTime;
-import org.joda.time.Partial;
-
 
 /**
  * TypeCategory defines the expression type used for a Field
@@ -38,25 +30,25 @@ public enum TypeCategory {
     /**
      * Comparable literal fields
      */
-    COMPARABLE(SIMPLE, Comparable.class, Character.class, Partial.class),
+    COMPARABLE(SIMPLE, Comparable.class.getName(), Character.class.getName(), "org.joda.time.Partial"),
     /**
      * Boolean files
      */
-    BOOLEAN(COMPARABLE, Boolean.class),     
+    BOOLEAN(COMPARABLE, Boolean.class.getName()),     
     /**
      * Date fields
      */
-    DATE(COMPARABLE, java.sql.Date.class, LocalDate.class),
+    DATE(COMPARABLE, java.sql.Date.class.getName(), "org.joda.time.LocalDate"),
     /**
      * Date/Time fields
      */
     DATETIME(COMPARABLE, 
-        java.util.Date.class, 
-        java.sql.Timestamp.class, 
-        LocalDateTime.class, 
-        Instant.class,
-        DateTime.class, 
-        DateMidnight.class),    
+        java.util.Date.class.getName(), 
+        java.sql.Timestamp.class.getName(), 
+        "org.joda.time.LocalDateTime", 
+        "org.joda.time.Instant",
+        "org.joda.time.DateTime", 
+        "org.joda.time.DateMidnight"),    
     /**
      * Entity fields
      */
@@ -77,14 +69,9 @@ public enum TypeCategory {
      * Numeric fields
      */
     NUMERIC(COMPARABLE, 
-        Long.class, 
-        Integer.class, 
-        Byte.class, 
-        Double.class, 
-        Float.class, 
-        Short.class, 
-        BigDecimal.class, 
-        BigInteger.class),     
+        Long.class.getName(), Integer.class.getName(), Byte.class.getName(), 
+        Double.class.getName(), Float.class.getName(), Short.class.getName(), 
+        BigDecimal.class.getName(), BigInteger.class.getName()),     
     /**
      * Simple collection fields
      */
@@ -100,22 +87,22 @@ public enum TypeCategory {
     /**
      * String fields
      */
-    STRING(COMPARABLE, String.class),
+    STRING(COMPARABLE, String.class.getName()),
     /**
      * Time fields
      */
-    TIME(COMPARABLE, java.sql.Time.class, LocalTime.class);
+    TIME(COMPARABLE, java.sql.Time.class.getName(), "org.joda.time.LocalTime");
     
     @Nullable
     private final TypeCategory superType;
     
     private final Set<String> types;
         
-    TypeCategory(@Nullable TypeCategory superType, Class<?>... types){
+    TypeCategory(@Nullable TypeCategory superType, String... types){
         this.superType = superType;
         this.types = new HashSet<String>(types.length);
-        for (Class<?> type : types){
-        this.types.add(type.getName());
+        for (String type : types){
+            this.types.add(type);
         }
     }
 

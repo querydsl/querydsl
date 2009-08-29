@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.eval;
+package com.mysema.query.collections.impl;
 
 import java.util.List;
 import java.util.Stack;
@@ -17,6 +17,7 @@ import org.codehaus.janino.Scanner.ScanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.collections.ColQueryTemplates;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Operator;
@@ -30,9 +31,9 @@ import com.mysema.query.types.path.Path;
  * @author tiwe
  * @version $Id$
  */
-public class FilteredJavaSerializer extends JavaSerializer {
+public class FilteredColQuerySerializer extends ColQuerySerializer {
 
-    private static final Logger logger = LoggerFactory.getLogger(FilteredJavaSerializer.class);
+    private static final Logger logger = LoggerFactory.getLogger(FilteredColQuerySerializer.class);
 
     private final List<Expr<?>> exprs;
 
@@ -40,13 +41,13 @@ public class FilteredJavaSerializer extends JavaSerializer {
 
     private boolean skipPath = false, inNotOperation = false;
     
-    public FilteredJavaSerializer(ColQueryTemplates patterns, List<Expr<?>> expressions) {
+    public FilteredColQuerySerializer(ColQueryTemplates patterns, List<Expr<?>> expressions) {
         super(patterns);
         this.exprs = expressions;
         this.last = expressions.get(expressions.size() - 1);
     }
 
-    public FilteredJavaSerializer(ColQueryTemplates patterns, List<Expr<?>> expressions, int lastElement) {
+    public FilteredColQuerySerializer(ColQueryTemplates patterns, List<Expr<?>> expressions, int lastElement) {
         super(patterns);
         this.exprs = expressions.subList(0, lastElement + 1);
         this.last = expressions.get(lastElement);
@@ -124,7 +125,7 @@ public class FilteredJavaSerializer extends JavaSerializer {
     }
     
     @Override
-    public FilteredJavaSerializer append(String... str) {
+    public FilteredColQuerySerializer append(String... str) {
         if (!skipPath){
             super.append(str);
         }

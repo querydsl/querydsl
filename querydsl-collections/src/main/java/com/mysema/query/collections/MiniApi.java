@@ -3,13 +3,12 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.impl;
+package com.mysema.query.collections;
 
 import java.util.Arrays;
 
 import com.mysema.query.alias.Alias;
-import com.mysema.query.collections.ColQuery;
-import com.mysema.query.collections.eval.ColQueryTemplates;
+import com.mysema.query.collections.impl.ColQueryImpl;
 import com.mysema.query.types.expr.Expr;
 
 /**

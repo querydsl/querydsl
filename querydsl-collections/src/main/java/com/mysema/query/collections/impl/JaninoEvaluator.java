@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.eval;
+package com.mysema.query.collections.impl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -13,6 +13,7 @@ import net.jcip.annotations.Immutable;
 import org.codehaus.janino.ExpressionEvaluator;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.collections.ColQueryTemplates;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -22,7 +23,7 @@ import com.mysema.query.types.expr.Expr;
  * @version $Id$
  */
 @Immutable
-public class JaninoEvaluator implements Evaluator {
+class JaninoEvaluator extends Evaluator {
 
     private final ExpressionEvaluator ev;
 
@@ -30,20 +31,18 @@ public class JaninoEvaluator implements Evaluator {
 
     private final List<? extends Expr<?>> sources;
 
-    public JaninoEvaluator(ExpressionEvaluator ev,
-            List<? extends Expr<?>> sources, Expr<?> projection) {
+    public JaninoEvaluator(ExpressionEvaluator ev, List<? extends Expr<?>> sources, Expr<?> projection) {
         this.ev = Assert.notNull(ev);
         this.sources = sources;
         this.projection = projection;
     }
 
-    public JaninoEvaluator(ColQueryTemplates patterns, List<? extends Expr<?>> sources,
-            Expr<?> expr) {
+    public JaninoEvaluator(ColQueryTemplates patterns, List<? extends Expr<?>> sources, Expr<?> projection) {
         try {
-            Class<?> type = expr.getType() != null ? expr.getType() : Object.class;
-            this.ev = new JavaSerializer(patterns).handle(expr).createExpressionEvaluator(sources, type);
+            Class<?> type = projection.getType() != null ? projection.getType() : Object.class;
+            this.ev = new ColQuerySerializer(patterns).handle(projection).createExpressionEvaluator(sources, type);
             this.sources = sources;
-            this.projection = expr;
+            this.projection = projection;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }

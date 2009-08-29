@@ -17,7 +17,7 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.collections.ColQuery;
-import com.mysema.query.collections.eval.ColQueryTemplates;
+import com.mysema.query.collections.ColQueryTemplates;
 import com.mysema.query.types.path.PNumber;
 
 public class PagingTest extends AbstractQueryTest {

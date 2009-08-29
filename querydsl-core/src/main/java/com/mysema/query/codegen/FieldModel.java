@@ -26,9 +26,9 @@ public final class FieldModel implements Comparable<FieldModel> {
     
     public FieldModel(ClassModel classModel, String name, TypeModel type, String docs){
         this.classModel = classModel;
-        this.name = Assert.notNull(name,"name is null");
-        this.type = Assert.notNull(type,"type is null");
-        this.docs = Assert.notNull(docs,"docs is null").replace("@return", "").trim();
+        this.name = Assert.notNull(name);
+        this.type = Assert.notNull(type);
+        this.docs = Assert.notNull(docs).replace("@return", "").trim();
         this.typeName = getLocalName(type);
         this.keyTypeName = type.getKeyType() != null ? getLocalName(type.getKeyType()) : null;
         this.valueTypeName = type.getValueType() != null ? getLocalName(type.getValueType()) : null;    

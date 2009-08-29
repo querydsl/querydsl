@@ -1,10 +1,14 @@
-package com.mysema.query.collections.perf;
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
+package com.mysema.query.collections.impl;
 
 
 import java.util.Arrays;
 import java.util.List;
 
-import com.mysema.query.collections.impl.AbstractQueryTest;
 import com.mysema.query.types.expr.EBoolean;
 
 public abstract class AbstractPerformanceTest extends AbstractQueryTest{

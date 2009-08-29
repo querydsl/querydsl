@@ -7,6 +7,8 @@ package com.mysema.query.jdoql;
 
 import javax.jdo.PersistenceManager;
 
+import com.mysema.query.DefaultQueryMetadata;
+
 
 /**
  * Default implementation of the JDOQLQuery interface
@@ -18,11 +20,11 @@ import javax.jdo.PersistenceManager;
 public class JDOQLQueryImpl extends AbstractJDOQLQuery<JDOQLQueryImpl> implements JDOQLQuery{
 
     public JDOQLQueryImpl(JDOQLTemplates templates) {
-        super(templates);
+        super(new DefaultQueryMetadata(), templates);
     }
 
     public JDOQLQueryImpl(PersistenceManager pm, JDOQLTemplates templates) {
-        super(pm, templates);
+        super(new DefaultQueryMetadata(), pm, templates);
     }
 
 }

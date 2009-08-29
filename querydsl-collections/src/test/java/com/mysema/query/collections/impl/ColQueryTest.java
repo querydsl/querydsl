@@ -6,7 +6,7 @@
 package com.mysema.query.collections.impl;
 
 import static com.mysema.query.alias.Alias.$;
-import static com.mysema.query.collections.impl.MiniApi.from;
+import static com.mysema.query.collections.MiniApi.from;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -29,22 +29,24 @@ public class ColQueryTest extends AbstractQueryTest {
 
     @Test
     public void instanceOf() {
-        assertEquals(Arrays.asList(c1, c2), query().from(cat, c1, c2).where(
-                cat.instanceOf(Cat.class)).list(cat));
+        assertEquals(
+                Arrays.asList(c1, c2), 
+                query().from(cat, Arrays.asList(c1, c2)).where(cat.instanceOf(Cat.class)).list(cat));
     }
 
     @Test
     public void testAfterAndBefore() {
-        query().from(cat, c1, c2).where(cat.birthdate.before(new Date()),
+        query().from(cat, Arrays.asList(c1, c2))
+        .where(cat.birthdate.before(new Date()),
                 cat.birthdate.boe(new Date()), cat.birthdate.after(new Date()),
-                cat.birthdate.aoe(new Date())).list(cat);
+                cat.birthdate.aoe(new Date()))
+        .list(cat);
     }
 
     @Test
     public void testArrayProjection() {
         // select pairs of cats with different names
-        query().from(cat, cats).from(otherCat, cats).where(
-                cat.name.ne(otherCat.name)).list(cat.name, otherCat.name);
+        query().from(cat, cats).from(otherCat, cats).where(cat.name.ne(otherCat.name)).list(cat.name, otherCat.name);
         assertTrue(last.res.size() == 4 * 3);
     }
 
@@ -56,7 +58,7 @@ public class ColQueryTest extends AbstractQueryTest {
                 num.shortValue(), num.stringValue() };
 
         for (Expr<?> e : expr) {
-            query().from(cat, c1, c2).list(e);
+            query().from(cat, Arrays.asList(c1, c2)).list(e);
         }
 
     }
@@ -100,8 +102,8 @@ public class ColQueryTest extends AbstractQueryTest {
 
     @Test
     public void testVarious() {
-        for (Object[] strs : from($("a"), "aa", "bb", "cc").from($("b"), "a",
-                "b").where($("a").startsWith($("b"))).list($("a"), $("b"))) {
+        for (Object[] strs : from($("a"), "aa", "bb", "cc")
+                .from($("b"), Arrays.asList("a","b")).where($("a").startsWith($("b"))).list($("a"), $("b"))) {
             System.out.println(Arrays.asList(strs));
         }
 

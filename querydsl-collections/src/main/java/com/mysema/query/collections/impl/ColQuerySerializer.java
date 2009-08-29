@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.eval;
+package com.mysema.query.collections.impl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.collections.ColQueryTemplates;
 import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.Template.Element;
@@ -32,16 +33,16 @@ import com.mysema.query.types.path.Path;
 import com.mysema.query.types.path.PathType;
 
 /**
- * JavaSerializer is a Serializer implementation for the Java language
+ * ColQuerySerializer is a Serializer implementation for the Java language
  * 
  * @author tiwe
  * @version $Id$
  */
-public class JavaSerializer extends SerializerBase<JavaSerializer> {
+public class ColQuerySerializer extends SerializerBase<ColQuerySerializer> {
 
-    private static final Logger logger = LoggerFactory.getLogger(JavaSerializer.class);
+    private static final Logger logger = LoggerFactory.getLogger(ColQuerySerializer.class);
 
-    public JavaSerializer(ColQueryTemplates patterns) {
+    public ColQuerySerializer(ColQueryTemplates patterns) {
         super(patterns);
     }
 
@@ -127,8 +128,7 @@ public class JavaSerializer extends SerializerBase<JavaSerializer> {
             @Override
             public Object evaluate(Object[] origArgs)
                     throws InvocationTargetException {
-                return super.evaluate(combine(constArray.length
-                        + origArgs.length, constArray, origArgs));
+                return super.evaluate(combine(constArray.length + origArgs.length, constArray, origArgs));
             }
         };
     }

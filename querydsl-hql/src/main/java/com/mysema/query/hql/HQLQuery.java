@@ -13,7 +13,7 @@ import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
 
 /**
- * 
+ * Query interface for HQL queries
  * 
  * @author tiwe
  *

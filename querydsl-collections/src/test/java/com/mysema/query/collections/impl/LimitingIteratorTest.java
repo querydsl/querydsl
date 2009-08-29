@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.iterators;
+package com.mysema.query.collections.impl;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,7 +14,6 @@ import org.apache.commons.collections15.IteratorUtils;
 import org.junit.Test;
 
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.collections.impl.LimitingIterator;
 
 public class LimitingIteratorTest {
 
@@ -28,8 +27,7 @@ public class LimitingIteratorTest {
 
     private List<Integer> transform(List<Integer> ints, Long limit, Long offset) {
         QueryModifiers modifiers = new QueryModifiers(limit, offset);
-        return IteratorUtils.toList(LimitingIterator.transform(ints.iterator(),
-                modifiers));
+        return IteratorUtils.toList(LimitingIterator.create(ints.iterator(), modifiers));
     }
 
 }

@@ -7,7 +7,7 @@ package com.mysema.query.collections.impl;
 
 import static com.mysema.query.alias.Alias.$;
 import static com.mysema.query.alias.Alias.alias;
-import static com.mysema.query.collections.impl.MiniApi.from;
+import static com.mysema.query.collections.MiniApi.from;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -52,7 +52,7 @@ public class AliasTest extends AbstractQueryTest {
         // 2nd
         Cat c = alias(Cat.class, "cat");
         for (String name : from(c, cats).where($(c.getKittens()).size().gt(0))
-                .list(c.getName())) {
+                .list($(c.getName()))) {
             System.out.println(name);
         }
 
@@ -76,7 +76,7 @@ public class AliasTest extends AbstractQueryTest {
         // 2nd
         Cat c = alias(Cat.class, "cat");
         for (String name : from(c, cats).where($(c.getName()).matches("fri.*"))
-                .list(c.getName())) {
+                .list($(c.getName()))) {
             System.out.println(name);
         }
     }
@@ -88,7 +88,7 @@ public class AliasTest extends AbstractQueryTest {
         Cat c = alias(Cat.class, "cat");
 
         // 1
-        from(c, cats).where($(c.getBirthdate()).after(new Date())).list(c)
+        from(c, cats).where($(c.getBirthdate()).after(new Date())).list($(c))
                 .iterator();
 
         // 2
@@ -103,26 +103,25 @@ public class AliasTest extends AbstractQueryTest {
         assertEquals(cat.name, $(c.getName()));
 
         // 4
-        // TODO : FIXME : Janino compiler doesn't handle generic collections
-        // from(c,cats)
-        // .where($(c.getKittens().get(0).getBodyWeight()).gt(12))
-        // .list(c.getName()).iterator();
+         from(c,cats)
+             .where($(c.getKittens().get(0).getBodyWeight()).gt(12))
+             .list($(c.getName())).iterator();
 
         // 5
-        from(c, cats).where($(c).eq(other)).list(c).iterator();
+        from(c, cats).where($(c).eq(other)).list($(c)).iterator();
 
         // 6
-        from(c, cats).where($(c.getKittens()).contains(other)).list(c)
+        from(c, cats).where($(c.getKittens()).contains(other)).list($(c))
                 .iterator();
 
         // 7
-        from(c, cats).where($(c.getKittens().isEmpty())).list(c).iterator();
+        from(c, cats).where($(c.getKittens().isEmpty())).list($(c)).iterator();
 
         // 8
-        from(c, cats).where($(c.getName()).startsWith("B")).list(c).iterator();
+        from(c, cats).where($(c.getName()).startsWith("B")).list($(c)).iterator();
 
         // 9
-        from(c, cats).where($(c.getName()).upper().eq("MOE")).list(c)
+        from(c, cats).where($(c.getName()).upper().eq("MOE")).list($(c))
                 .iterator();
 
         // 10

@@ -11,9 +11,9 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.mysema.query.CascadingBoolean;
-import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.QueryBaseWithProjectionAndDetach;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EEntity;
@@ -40,8 +40,8 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
 
     private final HQLTemplates templates;
     
-    public HQLQueryBase(HQLTemplates templates) {
-        super(new DefaultQueryMetadata());
+    public HQLQueryBase(QueryMetadata md, HQLTemplates templates) {
+        super(md);
         this.templates = templates;
     }
 
