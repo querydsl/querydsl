@@ -45,6 +45,7 @@ public class ColQuerySerializer extends SerializerBase<ColQuerySerializer> {
             handle((Expr<?>) path.getMetadata().getParent());
             append(".").append(prefix);
             append(StringUtils.capitalize(path.getMetadata().getExpression().toString()) + "()");
+            
         }else{
             if (pathType.isGeneric()){
                 append("((").append(path.getType().getName()).append(")");

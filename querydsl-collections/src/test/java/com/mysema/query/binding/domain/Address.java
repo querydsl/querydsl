@@ -7,9 +7,14 @@ package com.mysema.query.binding.domain;
 
 import com.mysema.query.annotations.Entity;
 
+/**
+ * @author tiwe
+ *
+ */
 @Entity
 public class Address {
-    
+
+// 象形字
     long id;
 
     String streetName, zipCode, town;

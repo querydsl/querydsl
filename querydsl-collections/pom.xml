@@ -50,7 +50,7 @@
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>maven-apt-plugin</artifactId>
-        <version>0.3.0</version>
+        <version>0.3.1</version>
         <executions>
           <execution>
             <goals>
