@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.path;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.util.NotEmpty;
@@ -34,5 +35,10 @@ public class PComparableArray<D extends Comparable> extends PArray<D> {
     @Override
     public EComparable<D> get(int index) {
         return new PComparable<D>(componentType, PathMetadata.forArrayAccess(this, index));
+    }
+    
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
 }

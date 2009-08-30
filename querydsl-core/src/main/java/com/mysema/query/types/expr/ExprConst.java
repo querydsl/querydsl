@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.expr;
 
+import com.mysema.query.types.Visitor;
+
 
 /**
  * ExprConst represents general constant expressions
@@ -55,5 +57,9 @@ public class ExprConst<D> extends Expr<D> implements Constant<D> {
         return EBoolean.create(!constant.equals(s));
     }
     
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
+    }
     
 }

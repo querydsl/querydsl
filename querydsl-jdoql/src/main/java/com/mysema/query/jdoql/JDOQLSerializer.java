@@ -28,8 +28,6 @@ import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.Path;
-import com.mysema.query.types.query.ListSubQuery;
-import com.mysema.query.types.query.ObjectSubQuery;
 import com.mysema.query.types.query.SubQuery;
 
 /**
@@ -174,15 +172,8 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         
     }
     
-    protected void visit(ObjectSubQuery<?> query) {
-        visit((SubQuery)query);
-    }
-    
-    protected void visit(ListSubQuery<?> query) {
-        visit((SubQuery)query);
-    }
-    
-    protected void visit(SubQuery query) {
+    @Override
+    public void visit(SubQuery query) {
         append("(");
         serialize(query.getMetadata(), false, true);
         append(")");
@@ -213,7 +204,7 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     }
 
     @Override
-    protected void visit(Path<?> path) {
+    public void visit(Path<?> path) {
         if (path.equals(candidatePath)) {
             append("this");
         } else {

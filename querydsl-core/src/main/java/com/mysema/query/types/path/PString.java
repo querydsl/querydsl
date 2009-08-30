@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.path;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.operation.OBoolean;
@@ -35,6 +36,11 @@ public class PString extends EString implements Path<String> {
         this(PathMetadata.forProperty(parent, property));
     }
 
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
+    }
+    
     @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {

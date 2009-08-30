@@ -11,9 +11,12 @@ import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.custom.CString;
 import com.mysema.query.types.custom.Custom;
 import com.mysema.query.types.expr.Constant;
+import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EBooleanConst;
+import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.ENumberConst;
 import com.mysema.query.types.expr.EStringConst;
+import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.OComparable;
@@ -48,210 +51,233 @@ import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PStringArray;
 import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.Path;
+import com.mysema.query.types.query.ListSubQuery;
+import com.mysema.query.types.query.ObjectSubQuery;
+import com.mysema.query.types.query.SubQuery;
 
 /**
  * VisitorBase provides a base implementation of the Visitor class, where
- * invocations are dispatched to supertypes when available and visible.
+ * invocations are dispatched to supertypes 
  * 
  * @author tiwe
  * @version $Id$
  */
-public abstract class VisitorBase<SubType extends VisitorBase<SubType>>
-        extends Visitor<SubType> {
-
+public abstract class VisitorBase<SubType extends VisitorBase<SubType>> implements Visitor {
+    
+    @SuppressWarnings("unchecked")
+    public final SubType handle(Expr<?> expr) {
+        expr.accept(this);
+        return (SubType)this;
+    }
+    
     @Override
-    protected void visit(EStringConst expr) {
+    public void visit(CBoolean expr) {
+        visit((Custom<?>) expr);
+    }
+    
+    @Override
+    public void visit(EArrayConstructor<?> expr){
+        visit((EConstructor<?>)expr);
+    }
+    
+    @Override
+    public void visit(CComparable<?> expr) {
+        visit((Custom<?>) expr);
+    }
+    
+    @Override
+    public void visit(CSimple<?> expr) {
+        visit((Custom<?>) expr);
+    }
+    
+    @Override
+    public void visit(CString expr) {
+        visit((Custom<?>) expr);
+    }
+    
+    @Override
+    public void visit(EBooleanConst expr) {
         visit((Constant<?>) expr);
     }
     
     @Override
-    protected void visit(EBooleanConst expr) {
+    public void visit(ENumberConst<?> expr) {
         visit((Constant<?>) expr);
     }
     
     @Override
-    protected void visit(ExprConst<?> expr) {
+    public void visit(EStringConst expr) {
         visit((Constant<?>) expr);
     }
-    
+
     @Override
-    protected void visit(ENumberConst<?> expr) {
+    public void visit(ExprConst<?> expr) {
         visit((Constant<?>) expr);
     }
-    
+
     @Override
-    protected void visit(CBoolean expr) {
-        visit((Custom<?>) expr);
+    public void visit(ListSubQuery<?> query) {
+        visit((SubQuery)query);
     }
 
     @Override
-    protected void visit(CComparable<?> expr) {
-        visit((Custom<?>) expr);
+    public void visit(ObjectSubQuery<?> query) {
+        visit((SubQuery)query);
     }
 
     @Override
-    protected void visit(CSimple<?> expr) {
-        visit((Custom<?>) expr);
-    }
-
-    @Override
-    protected void visit(CString expr) {
-        visit((Custom<?>) expr);
-    }
-
-    @Override
-    protected void visit(OBoolean expr) {
+    public void visit(OBoolean expr) {
         visit((Operation<?, ?>) expr);
     }
 
     @Override
-    protected void visit(OComparable<?, ?> expr) {
+    public void visit(OComparable<?, ?> expr) {
         visit((Operation<?, ?>) expr);
     }
     
     @Override
-    protected void visit(ODate<?, ?> expr) {
+    public void visit(ODate<?, ?> expr) {
         visit((Operation<?, ?>) expr);        
     }
 
     @Override
-    protected void visit(ODateTime<?, ?> expr) {
+    public void visit(ODateTime<?, ?> expr) {
         visit((Operation<?, ?>) expr);        
     }
 
     @Override
-    protected void visit(OTime<?, ?> expr) {
-        visit((Operation<?, ?>) expr);        
+    public void visit(ONumber<?, ?> expr) {
+        visit((Operation<?, ?>) expr);
     }
 
     @Override
-    protected void visit(ONumber<?, ?> expr) {
+    public void visit(OSimple<?, ?> expr) {
         visit((Operation<?, ?>) expr);
     }
     
     @Override
-    protected void visit(OSimple<?, ?> expr) {
+    public void visit(OString expr) {
         visit((Operation<?, ?>) expr);
     }
 
     @Override
-    protected void visit(OString expr) {
+    public void visit(OStringArray expr) {
         visit((Operation<?, ?>) expr);
     }
 
     @Override
-    protected void visit(OStringArray expr) {
-        visit((Operation<?, ?>) expr);
+    public void visit(OTime<?, ?> expr) {
+        visit((Operation<?, ?>) expr);        
     }
 
     @Override
-    protected void visit(PArray<?> expr) {
+    public void visit(PArray<?> expr) {
         visit((Path<?>) expr);
     }
 
     @Override
-    protected void visit(PBoolean expr) {
+    public void visit(PBoolean expr) {
         visit((Path<?>) expr);
     }
 
     @Override
-    protected void visit(PBooleanArray expr) {
+    public void visit(PBooleanArray expr) {
         visit((PArray<?>) expr);
     }
 
     @Override
-    protected void visit(PCollection<?> expr) {
+    public void visit(PCollection<?> expr) {
         visit((Path<?>) expr);
     }
 
     @Override
-    protected void visit(PComparable<?> expr) {
+    public void visit(PComparable<?> expr) {
         visit((Path<?>) expr);
     }
 
     @Override
-    protected void visit(PComparableArray<?> expr) {
+    public void visit(PComparableArray<?> expr) {
         visit((PArray<?>) expr);
     }
 
     @Override
-    protected void visit(PComponentCollection<?> expr) {
+    public void visit(PComponentCollection<?> expr) {
         visit((PCollection<?>) expr);
     }
 
     @Override
-    protected void visit(PComponentList<?> expr) {
+    public void visit(PComponentList<?> expr) {
         visit((PList<?>) expr);
     }
 
     @Override
-    protected void visit(PComponentMap<?, ?> expr) {
+    public void visit(PComponentMap<?, ?> expr) {
         visit((PMap<?, ?>) expr);
     }
 
     @Override
-    protected void visit(PEntity<?> expr) {
+    public void visit(PDate<?> expr) {
         visit((Path<?>) expr);
     }
 
     @Override
-    protected void visit(PEntityCollection<?> expr) {
+    public void visit(PDateTime<?> expr) {
+        visit((Path<?>) expr);
+    }
+
+    @Override
+    public void visit(PEntity<?> expr) {
+        visit((Path<?>) expr);
+    }
+
+    @Override
+    public void visit(PEntityCollection<?> expr) {
         visit((PCollection<?>) expr);
     }
 
     @Override
-    protected void visit(PEntityList<?> expr) {
+    public void visit(PEntityList<?> expr) {
         visit((PList<?>) expr);
     }
 
     @Override
-    protected void visit(PEntityMap<?, ?> expr) {
+    public void visit(PEntityMap<?, ?> expr) {
         visit((PMap<?, ?>) expr);
     }
 
     @Override
-    protected void visit(PList<?> expr) {
+    public void visit(PList<?> expr) {
         visit((PCollection<?>) expr);
-    }
-
-    @Override
-    protected void visit(PMap<?, ?> expr) {
-        visit((Path<?>) expr);
-    }
-
-    @Override
-    protected void visit(PNumber<?> expr) {
-        visit((Path<?>) expr);
     }
         
     @Override
-    protected void visit(PDate<?> expr) {
+    public void visit(PMap<?, ?> expr) {
         visit((Path<?>) expr);
     }
     
     @Override
-    protected void visit(PDateTime<?> expr) {
+    public void visit(PNumber<?> expr) {
         visit((Path<?>) expr);
     }
     
     @Override
-    protected void visit(PTime<?> expr) {
+    public void visit(PSimple<?> expr) {
         visit((Path<?>) expr);
     }
 
     @Override
-    protected void visit(PSimple<?> expr) {
+    public void visit(PString expr) {
         visit((Path<?>) expr);
     }
 
     @Override
-    protected void visit(PString expr) {
-        visit((Path<?>) expr);
-    }
-
-    @Override
-    protected void visit(PStringArray expr) {
+    public void visit(PStringArray expr) {
         visit((PArray<?>) expr);
+    }
+
+    @Override
+    public void visit(PTime<?> expr) {
+        visit((Path<?>) expr);
     }
 
 }

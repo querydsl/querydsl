@@ -6,6 +6,7 @@
 package com.mysema.query.types.query;
 
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
@@ -28,6 +29,11 @@ public class ObjectSubQuery<A> extends Expr<A> implements SubQuery{
     public ObjectSubQuery(QueryMetadata md, Class<A> type) {
         super(type);
         this.md = md;
+    }
+    
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
 
     @Override

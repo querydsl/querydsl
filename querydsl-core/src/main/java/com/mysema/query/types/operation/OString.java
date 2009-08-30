@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
 
@@ -46,6 +47,11 @@ public class OString extends EString implements Operation<String, String> {
     @Override
     public Operator<String> getOperator() {
         return op;
+    }
+    
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
     
     public static EString create(Operator<String> op, Expr<?>... args){

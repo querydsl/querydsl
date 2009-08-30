@@ -9,7 +9,9 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.Templates;
 import com.mysema.query.types.ToStringVisitor;
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
@@ -22,7 +24,9 @@ import com.mysema.query.types.operation.Ops;
  * @version $Id$
  */
 public abstract class Expr<D> {
-
+    
+    private static final Templates templates = new Templates();
+    
     /**
      * Factory method for constants
      * 
@@ -61,6 +65,8 @@ public abstract class Expr<D> {
             || Character.class.equals(type);
     }
 
+    public abstract void accept(Visitor v);
+    
     /**
      * @return count(this)
      */
@@ -196,7 +202,7 @@ public abstract class Expr<D> {
     @Override
     public final String toString() {
         if (toString == null) {
-            toString = new ToStringVisitor().handle(this).toString();
+            toString = new ToStringVisitor(templates).handle(this).toString();
         }
         return toString;
     }

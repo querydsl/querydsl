@@ -14,12 +14,13 @@ import com.mysema.query.types.expr.Expr;
 /**
  * Query provides a query interface of the fluent query DSL.
  * 
+ * <p>Note that the from method has been left out, since there are implementation
+ * specific variants of it.</p>
+ * 
  * @author tiwe
  * @version $Id$
  */
 public interface Query<SubType extends Query<SubType>> {
-    
-    // from is implementation specific
     
     SubType where(EBoolean... o);
 

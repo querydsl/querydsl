@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.custom;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -19,9 +20,16 @@ public abstract class CSimple<T> extends Expr<T> implements Custom<T> {
     public CSimple(Class<? extends T> type) {
         super(type);
     }
+    
+    @Override
+    public void accept(Visitor v){
+        v.visit(this);
+    }
 
     @Override
     public Expr<?> getArg(int index) {
         return getArgs().get(index);
     }
+    
+    // TODO : factory method
 }

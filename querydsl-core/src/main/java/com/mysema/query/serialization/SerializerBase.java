@@ -47,7 +47,7 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
     public SerializerBase(Templates patterns) {
         this.templates = Assert.notNull(patterns,"patterns is null");
     }
-
+    
     public SubType append(String... str) {
         for (String s : str) {
             builder.append(s);
@@ -80,7 +80,8 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
         return builder.toString();
     }
 
-    protected void visit(Custom<?> expr) {        
+    @Override
+    public void visit(Custom<?> expr) {        
         for (Element element : expr.getTemplate().getElements()){
             if (element.getStaticText() != null){
                 append(element.getStaticText());
@@ -90,13 +91,14 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
         }
     }
 
-    protected void visit(EArrayConstructor<?> oa) {
+    @Override
+    public void visit(EArrayConstructor<?> oa) {
         append("new ").append(oa.getElementType().getName()).append("[]{");
         handle(", ", oa.getArgs()).append("}");
     }
 
     @Override
-    protected void visit(Constant<?> expr) {        
+    public void visit(Constant<?> expr) {        
         if (!constantToLabel.containsKey(expr.getConstant())) {
             String constLabel = constantPrefix + (constantToLabel.size() + 1);
             constantToLabel.put(expr.getConstant(), constLabel);
@@ -106,17 +108,19 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
         }
     }
 
-    protected void visit(EConstructor<?> expr) {
+    @Override
+    public void visit(EConstructor<?> expr) {
         append("new ").append(expr.getType().getName()).append("(");
         handle(", ", expr.getArgs()).append(")");
     }
 
     @Override
-    protected void visit(Operation<?, ?> expr) {
+    public void visit(Operation<?, ?> expr) {
         visitOperation(expr.getType(), expr.getOperator(), expr.getArgs());
     }
 
-    protected void visit(Path<?> path) {
+    @Override
+    public void visit(Path<?> path) {
         PathType pathType = path.getMetadata().getPathType();
         Template template = templates.getTemplate(pathType);
         List<Expr<?>> args = new ArrayList<Expr<?>>();

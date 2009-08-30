@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.expr;
 
+import com.mysema.query.types.Visitor;
+
 /**
  * EArrayConstructor extends EConstructor to represent array initializers
  * 
@@ -24,5 +26,9 @@ public class EArrayConstructor<D> extends EConstructor<D[]> {
 
     public final Class<D> getElementType() {
         return elementType;
+    }
+    
+    public void accept(Visitor v){
+        v.visit(this);
     }
 }

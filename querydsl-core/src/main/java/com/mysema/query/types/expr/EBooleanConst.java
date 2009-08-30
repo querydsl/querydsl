@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.expr;
 
+import com.mysema.query.types.Visitor;
+
 /**
  * EBooleanConst provides constants for Boolean.TRUE and Boolean.FALSE
  * 
@@ -52,6 +54,11 @@ public class EBooleanConst extends EBoolean implements Constant<Boolean>{
     @Override
     public EBoolean not() {
         return constant.booleanValue() ? FALSE : TRUE;
+    }
+
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
 
 }

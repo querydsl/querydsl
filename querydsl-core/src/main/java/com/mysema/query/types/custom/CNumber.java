@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.custom;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 
@@ -20,9 +21,16 @@ public abstract class CNumber<T extends Number & Comparable<?>> extends ENumber<
     public CNumber(Class<T> type) {
         super(type);
     }
+    
+    @Override
+    public void accept(Visitor v){
+        v.visit(this);
+    }
 
     @Override
     public Expr<?> getArg(int index) {
         return getArgs().get(index);
     }
+    
+    // TODO : factory method
 }

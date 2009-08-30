@@ -7,6 +7,7 @@ package com.mysema.query.types.path;
 
 import java.util.Map;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EMapBase;
 import com.mysema.query.types.expr.Expr;
@@ -56,6 +57,11 @@ public class PEntityMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {
         this(keyType, valueType, entityName, PathMetadata.forProperty(parent, var));
     }
 
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
+    }
+    
     @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {

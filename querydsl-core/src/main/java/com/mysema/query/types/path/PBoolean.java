@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.path;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
@@ -66,6 +67,11 @@ public class PBoolean extends EBoolean implements Path<Boolean> {
             isnotnull = OBoolean.create(Ops.IS_NOT_NULL, this);
         }
         return isnotnull;
+    }
+    
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
     
     @Override

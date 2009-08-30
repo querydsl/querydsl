@@ -25,7 +25,6 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.collections.ColQuery;
-import com.mysema.query.collections.ColQueryTemplates;
 import com.mysema.query.support.QueryBaseWithProjection;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
@@ -49,6 +48,8 @@ import com.mysema.util.MultiIterator;
  * @author tiwe
  * @version $Id$
  */
+// TODO : groupBy
+// TODO : having
 public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>> 
     extends QueryBaseWithProjection<SubType> {
     
@@ -60,9 +61,9 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
 
     private final Map<Expr<?>, Iterable<?>> exprToIt = new HashMap<Expr<?>, Iterable<?>>();
 
-    public AbstractColQuery(QueryMetadata metadata, ColQueryTemplates templates) {
+    public AbstractColQuery(QueryMetadata metadata, EvaluatorFactory evaluatorFactory) {
         super(metadata);
-        this.evaluatorFactory = new EvaluatorFactory(templates);
+        this.evaluatorFactory = evaluatorFactory;
         this.iteratorFactory = new IteratorFactory(evaluatorFactory);
     }
     

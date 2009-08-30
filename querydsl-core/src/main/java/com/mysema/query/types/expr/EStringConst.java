@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.expr;
 
+import com.mysema.query.types.Visitor;
+
 
 
 
@@ -137,5 +139,10 @@ public class EStringConst extends EString implements Constant<String>{
     @Override
     public Expr<String[]> split(String regex) {
         return Expr.create(constant.split(regex));
+    }
+    
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
 }

@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.path;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ETime;
 import com.mysema.query.types.operation.OBoolean;
@@ -42,6 +43,11 @@ public class PTime<D extends Comparable> extends ETime<D> implements Path<D>{
     public boolean equals(Object o) {
         return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
                 : false;
+    }
+    
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
 
     @Override

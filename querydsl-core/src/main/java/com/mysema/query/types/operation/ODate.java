@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EDate;
 import com.mysema.query.types.expr.Expr;
 
@@ -50,6 +51,11 @@ public class ODate <OpType extends Comparable<?>, D extends Comparable<?>> exten
     @Override
     public Operator<OpType> getOperator() {
         return op;
+    }
+    
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
     
     /**

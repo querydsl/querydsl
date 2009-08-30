@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.path;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
@@ -38,6 +39,11 @@ public class PSimple<D> extends Expr<D> implements Path<D> {
     
     public PSimple(Class<? extends D> type, @NotEmpty Path<?> parent, String property) {
         this(type, PathMetadata.forProperty(parent, property));
+    }
+    
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
 
     @SuppressWarnings("unchecked")

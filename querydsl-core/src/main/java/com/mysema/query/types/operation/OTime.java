@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.ETime;
 import com.mysema.query.types.expr.Expr;
 
@@ -49,6 +50,11 @@ public class OTime<OpType, D extends Comparable<?>> extends ETime<D> implements 
     @Override
     public Operator<OpType> getOperator() {
         return op;
+    }
+    
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
     
     /**

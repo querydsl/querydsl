@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
@@ -59,5 +60,10 @@ public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
     
     public static EBoolean create(Operator<Boolean> op, Expr<?>... args){
         return new OBoolean(op, args);
+    }
+    
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
 }

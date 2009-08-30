@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.path;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.operation.OBoolean;
@@ -46,6 +47,11 @@ public class PComparable<D extends Comparable> extends EComparable<D> implements
     public boolean equals(Object o) {
         return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
                 : false;
+    }
+    
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
 
     @Override

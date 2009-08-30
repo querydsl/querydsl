@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.path;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.util.NotEmpty;
@@ -30,6 +31,11 @@ public class PStringArray extends PArray<String> {
         return new PString(PathMetadata.forArrayAccess(this, index));
     }
 
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
+    }
+    
     @Override
     public EString get(int index) {
         // TODO : cache

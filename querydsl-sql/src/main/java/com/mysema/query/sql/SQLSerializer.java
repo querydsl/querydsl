@@ -21,8 +21,6 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.query.ListSubQuery;
-import com.mysema.query.types.query.ObjectSubQuery;
 import com.mysema.query.types.query.SubQuery;
 
 /**
@@ -192,7 +190,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     @Override
-    protected void visit(Constant<?> expr) {
+    public void visit(Constant<?> expr) {
         append("?");
         constants.add(expr.getConstant());
     }
@@ -216,22 +214,15 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             super.visitOperation(type, operator, args);
         }
     }
-
-    protected void visit(ObjectSubQuery<?> query) {
-        visit((SubQuery)query);
-    }
     
-    protected void visit(ListSubQuery<?> query) {
-        visit((SubQuery)query);
-    }
-    
-    protected void visit(SubQuery query) {
+    @Override
+    public void visit(SubQuery query) {
         append("(");
         serialize(query.getMetadata(), false);
         append(")");
     }
 
-    protected void visit(SumOver<?> expr) {
+    public void visit(SumOver<?> expr) {
         append(templates.sum()).append("(").handle(expr.getTarget()).append(") ");
         append(templates.over());
         append(" (");

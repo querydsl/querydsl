@@ -8,6 +8,7 @@ package com.mysema.query.types.query;
 import java.util.List;
 
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollectionBase;
 import com.mysema.query.types.operation.OBoolean;
@@ -34,6 +35,11 @@ public class ListSubQuery<A> extends ECollectionBase<A> implements SubQuery{
         super((Class)List.class);
         this.elementType = elementType;
         this.md = md;
+    }
+    
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
     
     public Class<A> getElementType() {

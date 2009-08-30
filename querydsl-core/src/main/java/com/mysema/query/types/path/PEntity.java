@@ -6,6 +6,7 @@
 package com.mysema.query.types.path;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.EEntity;
@@ -136,6 +137,11 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
         return metadata.hashCode();
     }
 
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
+    }
+    
     /**
      * Create an <code>this instanceOf type</code> expression
      * 

@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 import com.mysema.query.alias.Alias;
 import com.mysema.query.collections.impl.ColQueryImpl;
+import com.mysema.query.collections.impl.EvaluatorFactory;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -23,16 +24,22 @@ public final class MiniApi {
     
     private static final ColQueryTemplates templates = new ColQueryTemplates();
 
+    private static final EvaluatorFactory evaluatorFactory = new EvaluatorFactory(templates);
+    
+    private static ColQuery query(){
+        return new ColQueryImpl(evaluatorFactory);
+    }
+    
     public static <A> ColQuery from(Expr<A> path, A... arr) {
-        return new ColQueryImpl(templates).from(path, Arrays.asList(arr));
+        return query().from(path, Arrays.asList(arr));
     }
 
     public static <A> ColQuery from(Expr<A> path, Iterable<A> col) {
-        return new ColQueryImpl(templates).from(path, col);
+        return query().from(path, col);
     }
 
     public static <A> ColQuery from(A alias, Iterable<A> col) {
-        return new ColQueryImpl(templates).from(Alias.$(alias), col);
+        return query().from(Alias.$(alias), col);
     }
 
 }

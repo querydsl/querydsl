@@ -19,11 +19,11 @@ import com.mysema.query.types.expr.Expr;
  */
 public class OracleSerializer extends SQLSerializer {
 
-    private EBoolean connectBy, connectByPrior, connectByNocyclePrior;
+    private final EBoolean connectBy, connectByPrior, connectByNocyclePrior;
 
-    private Expr<?> orderSiblingsBy;
+    private final Expr<?> orderSiblingsBy;
 
-    private EBoolean startWith;
+    private final EBoolean startWith;
 
     public OracleSerializer(SQLTemplates patterns, EBoolean connectBy,
             EBoolean connectByNocyclePrior, EBoolean connectByPrior,

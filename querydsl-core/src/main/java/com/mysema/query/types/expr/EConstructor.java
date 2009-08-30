@@ -12,6 +12,8 @@ import java.util.List;
 
 import org.apache.commons.lang.ClassUtils;
 
+import com.mysema.query.types.Visitor;
+
 /**
  * EConstructor represents a constructor invocation
  * 
@@ -79,5 +81,10 @@ public class EConstructor<D> extends Expr<D> {
         } else {
             return javaConstructor;
         }
+    }
+    
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
 }

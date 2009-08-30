@@ -7,6 +7,7 @@ package com.mysema.query.collections;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.collections.impl.ColQueryImpl;
+import com.mysema.query.collections.impl.EvaluatorFactory;
 import com.mysema.query.support.ProjectableAdapter;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
@@ -26,8 +27,8 @@ public abstract class CustomQueryable<SubType extends CustomQueryable<SubType>> 
     @SuppressWarnings("unchecked")
     private final SubType _this = (SubType) this;
 
-    public CustomQueryable(ColQueryTemplates templates) {
-        super(new ColQueryImpl(templates));
+    public CustomQueryable(QueryMetadata metadata, EvaluatorFactory evaluatorFactory) {
+        super(new ColQueryImpl(metadata, evaluatorFactory));
         query = (ColQueryImpl) projectable;
     }
 

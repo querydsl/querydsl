@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 
@@ -19,10 +20,12 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class SumOver<A extends Number & Comparable<? super A>> extends
-        ENumber<A> {
+public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A> {
+    
     private Expr<A> target;
+    
     private Expr<?> partitionBy;
+    
     private List<Expr<?>> orderBy = new ArrayList<Expr<?>>();
 
     public SumOver(Expr<A> expr) {
@@ -51,4 +54,14 @@ public class SumOver<A extends Number & Comparable<? super A>> extends
     public List<Expr<?>> getOrderBy() {
         return orderBy;
     }
+
+    @Override
+    public void accept(Visitor v) {
+        if (v instanceof SQLSerializer){
+            ((SQLSerializer)v).visit(this);
+        }else{
+            throw new IllegalArgumentException("Unsupported expression " + this);
+        }        
+    }
+    
 }

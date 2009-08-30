@@ -13,6 +13,7 @@ import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.path.Path;
+import com.mysema.query.types.query.SubQuery;
 
 /**
  * ToStringVisitor is used for toString() serialization in Expr implementations.
@@ -22,16 +23,20 @@ import com.mysema.query.types.path.Path;
  */
 public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
 
-    private final static Templates templates = new Templates();
+    private final Templates templates;
 
     private String toString = "?";
 
+    public ToStringVisitor(Templates templates){
+        this.templates = templates;
+    }
+    
     public String toString() {
         return toString;
     }
 
     @Override
-    protected void visit(Custom<?> expr) {
+    public void visit(Custom<?> expr) {
         StringBuilder builder = new StringBuilder();
         for (Element element : expr.getTemplate().getElements()){
             if (element.getStaticText() != null){
@@ -43,7 +48,8 @@ public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
         toString = builder.toString();
     }
 
-    protected void visit(EArrayConstructor<?> e) {
+    @Override
+    public void visit(EArrayConstructor<?> e) {
         StringBuilder builder = new StringBuilder("[");
         for (int i = 0; i < e.getArgs().size(); i++) {
             if (i > 0){
@@ -55,11 +61,13 @@ public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
         toString = builder.toString();
     }
 
-    protected void visit(Constant<?> e) {
+    @Override
+    public void visit(Constant<?> e) {
         toString = e.getConstant().toString();
     }
 
-    protected void visit(EConstructor<?> e) {
+    @Override
+    public void visit(EConstructor<?> e) {
         StringBuilder builder = new StringBuilder();
         builder.append("new ").append(e.getType().getSimpleName()).append("(");
         for (int i = 0; i < e.getArgs().size(); i++) {
@@ -72,7 +80,8 @@ public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
         toString = builder.toString();
     }
 
-    protected void visit(Operation<?, ?> o) {
+    @Override
+    public void visit(Operation<?, ?> o) {
         Template template = templates.getTemplate(o.getOperator());
         if (template != null) {
             StringBuilder builder = new StringBuilder();
@@ -89,7 +98,8 @@ public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
         }
     }
 
-    protected void visit(Path<?> p) {
+    @Override
+    public void visit(Path<?> p) {
         Path<?> parent = p.getMetadata().getParent();
         Expr<?> expr = p.getMetadata().getExpression();
         if (parent != null) {
@@ -110,6 +120,11 @@ public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
         } else if (expr != null) {
             toString = expr.toString();
         }
+    }
+
+    @Override
+    public void visit(SubQuery expr) {
+        // TODO : select from (+joins) where group-by having order-by limit offset        
     }
 
 }

@@ -25,8 +25,6 @@ import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.Path;
 import com.mysema.query.types.path.PathType;
-import com.mysema.query.types.query.ListSubQuery;
-import com.mysema.query.types.query.ObjectSubQuery;
 import com.mysema.query.types.query.SubQuery;
 
 /**
@@ -133,7 +131,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void visit(Constant<?> expr) {
+    public void visit(Constant<?> expr) {
         boolean wrap = expr.getConstant().getClass().isArray()
             || expr.getConstant() instanceof Collection;
         if (wrap) {
@@ -153,7 +151,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     }
 
     @Override
-    protected void visit(PCollection<?> expr) {
+    public void visit(PCollection<?> expr) {
         // only wrap a PathCollection, if it the pathType is PROPERTY
         boolean wrap = wrapElements
                 && expr.getMetadata().getPathType().equals(PathType.PROPERTY);
@@ -166,15 +164,8 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         }
     }
     
-    protected void visit(ObjectSubQuery<?> query) {
-        visit((SubQuery)query);
-    }
-    
-    protected void visit(ListSubQuery<?> query) {
-        visit((SubQuery)query);
-    }
-    
-    protected void visit(SubQuery query) {
+    @Override
+    public void visit(SubQuery query) {
         append("(");
         serialize(query.getMetadata(), false);
         append(")");

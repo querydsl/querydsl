@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.custom;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.Expr;
 
@@ -22,7 +23,14 @@ public abstract class CComparable<T extends Comparable<?>> extends EComparable<T
     }
 
     @Override
+    public void accept(Visitor v){
+        v.visit(this);
+    }
+    
+    @Override
     public Expr<?> getArg(int index) {
         return getArgs().get(index);
     }
+    
+    // TODO : factory method
 }

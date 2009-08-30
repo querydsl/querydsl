@@ -8,6 +8,7 @@ package com.mysema.query.types.path;
 import java.util.Collection;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.EEntity;
@@ -68,6 +69,11 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     @Override
     public EBoolean contains(Expr<D> child) {
         return OBoolean.create(Ops.IN, child, this);
+    }
+    
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
 
     @SuppressWarnings("unchecked")

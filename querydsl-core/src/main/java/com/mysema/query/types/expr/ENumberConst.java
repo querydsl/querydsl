@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.expr;
 
+import com.mysema.query.types.Visitor;
+
 /**
  * ENumberConst represents numeric constants
  * 
@@ -45,6 +47,11 @@ public class ENumberConst<D extends Number & Comparable<?>> extends ENumber<D> i
     @Override
     public EBoolean ne(D b){
         return EBoolean.create(!constant.equals(b));
+    }
+    
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
     
 }

@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.path;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.operation.OBoolean;
@@ -40,6 +41,11 @@ public class PNumber<D extends Number & Comparable<?>> extends ENumber<D> implem
         this(type, PathMetadata.forProperty(parent, property));
     }
 
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
+    }
+    
     @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {

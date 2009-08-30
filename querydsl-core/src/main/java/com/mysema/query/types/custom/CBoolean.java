@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.custom;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
@@ -15,8 +16,16 @@ import com.mysema.query.types.expr.Expr;
  *
  */
 public abstract class CBoolean extends EBoolean implements Custom<Boolean> {
+    
+    @Override
+    public void accept(Visitor v){
+        v.visit(this);
+    }
+    
     @Override
     public Expr<?> getArg(int index) {
         return getArgs().get(index);
     }
+    
+    // TODO : factory method
 }

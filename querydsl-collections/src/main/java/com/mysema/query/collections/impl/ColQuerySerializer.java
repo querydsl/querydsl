@@ -20,6 +20,7 @@ import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.Path;
 import com.mysema.query.types.path.PathType;
+import com.mysema.query.types.query.SubQuery;
 
 /**
  * ColQuerySerializer is a Serializer implementation for the Java language
@@ -34,7 +35,7 @@ public class ColQuerySerializer extends SerializerBase<ColQuerySerializer> {
     }
 
     @Override
-    protected void visit(Path<?> path) {
+    public void visit(Path<?> path) {
         PathType pathType = path.getMetadata().getPathType();
         
         if (pathType == PathType.PROPERTY){            
@@ -109,6 +110,11 @@ public class ColQuerySerializer extends SerializerBase<ColQuerySerializer> {
         } else {
             super.visitOperation(type, operator, args);
         }
+    }
+
+    @Override
+    public void visit(SubQuery expr) {
+        throw new IllegalArgumentException("Not supported");        
     }
 
 }

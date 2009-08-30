@@ -19,12 +19,22 @@ import com.mysema.query.collections.ColQueryTemplates;
  */
 public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQuery{
 
-    public ColQueryImpl(ColQueryTemplates patterns) {
-        super(new DefaultQueryMetadata(), patterns);
+    @Deprecated
+    public ColQueryImpl(ColQueryTemplates templates) {
+        super(new DefaultQueryMetadata(), new EvaluatorFactory(templates));
     }
 
-    public ColQueryImpl(QueryMetadata metadata, ColQueryTemplates patterns) {
-        super(metadata, patterns);
+    @Deprecated
+    public ColQueryImpl(QueryMetadata metadata, ColQueryTemplates templates) {
+        super(metadata, new EvaluatorFactory(templates));
+    }
+    
+    public ColQueryImpl(EvaluatorFactory evaluatorFactory) {
+        super(new DefaultQueryMetadata(), evaluatorFactory);
+    }
+    
+    public ColQueryImpl(QueryMetadata metadata, EvaluatorFactory evaluatorFactory) {
+        super(metadata, evaluatorFactory);
     }
 
 }
