@@ -5,8 +5,6 @@
  */
 package com.mysema.query.codegen;
 
-import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
 
 /**
  * Serializers provides access to Serializer instances
@@ -16,20 +14,11 @@ import freemarker.template.DefaultObjectWrapper;
  */
 public final class Serializers {
     
-    private static final Configuration configuration;
-
-    static {
-        configuration = new Configuration();
-        configuration.setClassForTemplateLoading(Serializers.class, "/");
-        configuration.setObjectWrapper(new DefaultObjectWrapper());
-    }
-    
     private Serializers(){}
     
-    public static final Serializer DOMAIN = new Serializer(configuration,"/codegen/domain.ftl");
+    public static final Serializer DOMAIN = new EntitySerializer(false);
     
-    public static final Serializer EMBEDDABLE = new Serializer(configuration,"/codegen/embeddable.ftl");
+    public static final Serializer EMBEDDABLE = new EntitySerializer(true);
     
-    public static final Serializer DTO = new Serializer(configuration,"/codegen/dto.ftl");
-    
+    public static final Serializer DTO = new DTOSerializer();    
 }

@@ -5,6 +5,8 @@
  */
 package com.mysema.query.codegen;
 
+import javax.annotation.Nullable;
+
 import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
@@ -20,15 +22,22 @@ public final class FieldModel implements Comparable<FieldModel> {
     
     private final ClassModel classModel;
     
-    private final String name, docs, typeName, queryTypeName, keyTypeName, valueTypeName;
+    private final String name, typeName, keyTypeName, valueTypeName;
+    
+    @Nullable
+    private final String queryTypeName, docs;
     
     private final TypeModel type;
     
-    public FieldModel(ClassModel classModel, String name, TypeModel type, String docs){
+    public FieldModel(ClassModel classModel, String name, TypeModel type, @Nullable String docs){
         this.classModel = classModel;
         this.name = Assert.notNull(name);
         this.type = Assert.notNull(type);
-        this.docs = Assert.notNull(docs).replace("@return", "").trim();
+        if (docs != null){
+            this.docs = docs.replace("@return", "").trim();
+        }else{
+            this.docs = null;
+        }
         this.typeName = getLocalName(type);
         this.keyTypeName = type.getKeyType() != null ? getLocalName(type.getKeyType()) : null;
         this.valueTypeName = type.getValueType() != null ? getLocalName(type.getValueType()) : null;    

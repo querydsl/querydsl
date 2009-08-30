@@ -29,6 +29,8 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- test deps -->
+
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
@@ -36,6 +38,7 @@
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>
+    
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>

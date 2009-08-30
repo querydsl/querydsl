@@ -61,7 +61,7 @@ public abstract class EntityElementVisitor extends SimpleElementVisitor6<ClassMo
                 try{
                     TypeModel typeModel = typeFactory.create(method.getReturnType(), elementUtils);
                     String docs = elementUtils.getDocComment(method);
-                    classModel.addField(new FieldModel(classModel, name, typeModel, docs != null ? docs : name));    
+                    classModel.addField(new FieldModel(classModel, name, typeModel, docs));    
                     
                 }catch(IllegalArgumentException ex){
                     throw new RuntimeException("Caught exception for method " + c.getName()+"#"+method.getSimpleName(), ex);
@@ -76,7 +76,7 @@ public abstract class EntityElementVisitor extends SimpleElementVisitor6<ClassMo
                     TypeModel typeModel = typeFactory.create(field.asType(), elementUtils);     
                     String name = field.getSimpleName().toString();
                     String docs = elementUtils.getDocComment(field);
-                    classModel.addField(new FieldModel(classModel, name, typeModel, docs != null ? docs : name));    
+                    classModel.addField(new FieldModel(classModel, name, typeModel, docs));    
                 }catch(IllegalArgumentException ex){
                     throw new RuntimeException("Caught exception for field " + c.getName()+"#"+field.getSimpleName(), ex);
                 }
