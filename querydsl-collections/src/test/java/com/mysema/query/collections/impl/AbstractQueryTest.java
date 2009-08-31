@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.junit.Before;
 
-import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.collections.ColQueryTemplates;
 import com.mysema.query.collections.domain.Cat;

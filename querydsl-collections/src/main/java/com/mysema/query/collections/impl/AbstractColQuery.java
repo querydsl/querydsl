@@ -48,8 +48,6 @@ import com.mysema.util.MultiIterator;
  * @author tiwe
  * @version $Id$
  */
-// TODO : groupBy
-// TODO : having
 public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>> 
     extends QueryBaseWithProjection<SubType> {
     
@@ -92,18 +90,29 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
     }
 
     private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
+        QueryMetadata md = getMetadata();
         List<Expr<?>> sources = new ArrayList<Expr<?>>();
         // from / where
         Iterator<?> it;
-        if (getMetadata().getJoins().size() == 1) {
+        if (md.getJoins().size() == 1) {
             it = handleFromWhereSingleSource(sources);
         } else {
             it = handleFromWhereMultiSource(sources);
         }
 
+        // group by
+        if (!md.getGroupBy().isEmpty()){
+            // TODO
+            
+            // having
+            if (md.getHaving() != null){
+                it = iteratorFactory.multiArgFilter(it, sources, md.getHaving());
+            }
+        }
+        
         if (it.hasNext()) {
             // order
-            if (!getMetadata().getOrderBy().isEmpty()) {
+            if (!md.getOrderBy().isEmpty()) {
                 it = handleOrderBy(sources, it);
             }
 

@@ -13,7 +13,6 @@ import java.util.List;
 import org.apache.commons.collections15.IteratorUtils;
 import org.junit.Test;
 
-import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.alias.Alias;
@@ -54,14 +53,14 @@ public class PagingTest extends AbstractQueryTest {
         assertEquals(total, createQuery(modifiers).count());
 
         // via iterator
-        assertEquals(size, IteratorUtils.toList(
-                createQuery(modifiers).iterate(var)).size());
+        assertEquals(size, IteratorUtils.toList(createQuery(modifiers).iterate(var)).size());
     }
 
     private ColQuery createQuery(QueryModifiers modifiers) {
         ColQuery query = new ColQueryImpl(evaluatorFactory).from(var, ints);
-        if (modifiers != null)
+        if (modifiers != null){
             query.restrict(modifiers);
+        }            
         return query;
     }
 }
