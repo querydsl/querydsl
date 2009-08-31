@@ -36,8 +36,8 @@ public class OStringArray extends Expr<String[]> implements
     }
 
     @Override
-    public List<Expr<?>> getArgs() {
-        return args;
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
 
     @Override
@@ -46,12 +46,12 @@ public class OStringArray extends Expr<String[]> implements
     }
 
     @Override
-    public Operator<String> getOperator() {
-        return op;
+    public List<Expr<?>> getArgs() {
+        return args;
     }
     
     @Override
-    public void accept(Visitor v) {
-        v.visit(this);        
+    public Operator<String> getOperator() {
+        return op;
     }
 }

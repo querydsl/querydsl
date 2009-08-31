@@ -24,8 +24,22 @@ import com.mysema.query.types.expr.Expr;
 public class OComparable<OpType, D extends Comparable<?>> extends
         EComparable<D> implements Operation<OpType, D> {
     
-    private final List<Expr<?>> args;
+    /**
+     * Factory method
+     * 
+     * @param <O>
+     * @param <D>
+     * @param type
+     * @param op
+     * @param args
+     * @return
+     */
+    public static <O,D extends Comparable<?>> EComparable<D> create(Class<D> type, Operator<O> op, Expr<?>... args){
+        return new OComparable<O,D>(type, op, args);
+    }
     
+    private final List<Expr<?>> args;
+
     private final Operator<OpType> op;
 
     OComparable(Class<D> type, Operator<OpType> op, Expr<?>... args) {
@@ -39,36 +53,22 @@ public class OComparable<OpType, D extends Comparable<?>> extends
     }
 
     @Override
-    public List<Expr<?>> getArgs() {
-        return args;
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
 
     @Override
     public Expr<?> getArg(int i) {
         return args.get(i);
     }
-
+ 
+    @Override
+    public List<Expr<?>> getArgs() {
+        return args;
+    }
+    
     @Override
     public Operator<OpType> getOperator() {
         return op;
-    }
- 
-    @Override
-    public void accept(Visitor v) {
-        v.visit(this);        
-    }
-    
-    /**
-     * Factory method
-     * 
-     * @param <O>
-     * @param <D>
-     * @param type
-     * @param op
-     * @param args
-     * @return
-     */
-    public static <O,D extends Comparable<?>> EComparable<D> create(Class<D> type, Operator<O> op, Expr<?>... args){
-        return new OComparable<O,D>(type, op, args);
     }
 }

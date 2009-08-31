@@ -21,8 +21,12 @@ import com.mysema.query.types.expr.Expr;
  */
 public class OString extends EString implements Operation<String, String> {
     
-    private final List<Expr<?>> args;
+    public static EString create(Operator<String> op, Expr<?>... args){
+        return new OString(op, args);
+    }
     
+    private final List<Expr<?>> args;
+
     private final Operator<String> op;
 
     OString(Operator<String> op, Expr<?>... args) {
@@ -35,26 +39,22 @@ public class OString extends EString implements Operation<String, String> {
     }
 
     @Override
-    public List<Expr<?>> getArgs() {
-        return args;
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
 
     @Override
     public Expr<?> getArg(int i) {
         return args.get(i);
     }
-
+    
+    @Override
+    public List<Expr<?>> getArgs() {
+        return args;
+    }
+    
     @Override
     public Operator<String> getOperator() {
         return op;
-    }
-    
-    @Override
-    public void accept(Visitor v) {
-        v.visit(this);        
-    }
-    
-    public static EString create(Operator<String> op, Expr<?>... args){
-        return new OString(op, args);
     }
 }

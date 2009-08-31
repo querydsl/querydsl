@@ -19,13 +19,6 @@ import com.mysema.query.types.expr.Expr;
  */
 public interface Custom<T> {
 
-    /**
-     * Get the arguments of the custom expression
-     * 
-     * @return
-     */
-    List<Expr<?>> getArgs();
-
     /** 
      * Get the argument with the given index
      * 
@@ -33,6 +26,13 @@ public interface Custom<T> {
      * @return
      */
     Expr<?> getArg(int index);
+
+    /**
+     * Get the arguments of the custom expression
+     * 
+     * @return
+     */
+    List<Expr<?>> getArgs();
 
     /**
      * Get the serialization template for this custom expression

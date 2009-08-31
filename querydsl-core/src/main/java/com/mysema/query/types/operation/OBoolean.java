@@ -21,17 +21,41 @@ import com.mysema.query.types.expr.Expr;
  */
 public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
 
-    private final List<Expr<?>> args;
+    public static EBoolean create(Operator<Boolean> op, Expr<?>... args){
+        return new OBoolean(op, args);
+    }
     
+    private final List<Expr<?>> args;
+
     private final Operator<Boolean> op;
 
     OBoolean(Operator<Boolean> op, Expr<?>... args) {
         this(op, Arrays.asList(args));
     }
-
+    
     OBoolean(Operator<Boolean> op, List<Expr<?>> args) {
         this.op = op;
         this.args = Collections.unmodifiableList(args);
+    }
+
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
+    }
+
+    @Override
+    public Expr<?> getArg(int i) {
+        return args.get(i);
+    }
+
+    @Override
+    public List<Expr<?>> getArgs() {
+        return args;
+    }
+    
+    @Override
+    public Operator<Boolean> getOperator() {
+        return op;
     }
     
     @Override
@@ -41,29 +65,5 @@ public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
         }else{
             return super.not();
         }
-    }
-
-    @Override
-    public List<Expr<?>> getArgs() {
-        return args;
-    }
-
-    @Override
-    public Expr<?> getArg(int i) {
-        return args.get(i);
-    }
-
-    @Override
-    public Operator<Boolean> getOperator() {
-        return op;
-    }
-    
-    public static EBoolean create(Operator<Boolean> op, Expr<?>... args){
-        return new OBoolean(op, args);
-    }
-    
-    @Override
-    public void accept(Visitor v) {
-        v.visit(this);        
     }
 }

@@ -5,6 +5,9 @@
  */
 package com.mysema.query.types.custom;
 
+import java.util.List;
+
+import com.mysema.query.types.Template;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.Expr;
@@ -16,12 +19,22 @@ import com.mysema.query.types.expr.Expr;
  *
  * @param <T>
  */
-public abstract class CComparable<T extends Comparable<?>> extends EComparable<T> implements Custom<T> {
+public class CComparable<T extends Comparable<?>> extends EComparable<T> implements Custom<T> {
     
-    public CComparable(Class<T> type) {
-        super(type);
+    public static <T extends Comparable<?>> EComparable<T> create(Class<T> type, List<Expr<?>> args, Template template){
+        return new CComparable<T>(type, args, template);
     }
+    
+    private final List<Expr<?>> args;
+    
+    private final Template template;
 
+    public CComparable(Class<T> type, List<Expr<?>> args, Template template) {
+        super(type);
+        this.args = args;
+        this.template = template;
+    }
+    
     @Override
     public void accept(Visitor v){
         v.visit(this);
@@ -31,6 +44,14 @@ public abstract class CComparable<T extends Comparable<?>> extends EComparable<T
     public Expr<?> getArg(int index) {
         return getArgs().get(index);
     }
+
+    @Override
+    public List<Expr<?>> getArgs() {
+        return args;
+    }
     
-    // TODO : factory method
+    @Override
+    public Template getTemplate() {
+        return template;
+    }
 }

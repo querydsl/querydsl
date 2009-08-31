@@ -14,7 +14,6 @@ import static org.junit.Assert.assertNull;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Test;
 
@@ -89,22 +88,8 @@ public class FeaturesTest extends AbstractQueryTest{
      * The Class MyCustomExpr.
      */
     public static class MyCustomExpr extends CString {
-        private final List<Expr<?>> args;
-
         public MyCustomExpr(Expr<?>... args) {
-            this.args = Arrays.asList(args);
-        }
-
-        public List<Expr<?>> getArgs() {
-            return args;
-        }
-
-        public Template getTemplate() {
-            return new Template("myCustom({0},{1})");
-        }
-
-        public Expr<?> getArg(int index) {
-            return args.get(index);
+            super(Arrays.asList(args), new Template("myCustom({0},{1})"));
         }
     }
 

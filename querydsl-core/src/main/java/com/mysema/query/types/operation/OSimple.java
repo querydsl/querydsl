@@ -22,8 +22,22 @@ import com.mysema.query.types.expr.Expr;
  */
 public class OSimple<OpType, D> extends Expr<D> implements Operation<OpType, D> {
     
-    private final List<Expr<?>> args;
+    /**
+     * Factory method
+     * 
+     * @param <OpType>
+     * @param <D>
+     * @param type
+     * @param op
+     * @param args
+     * @return
+     */
+    public static <OpType,D> Expr<D> create(Class<? extends D> type, Operator<OpType> op, Expr<?>... args){
+        return new OSimple<OpType,D>(type, op, args);
+    }
     
+    private final List<Expr<?>> args;
+
     private final Operator<OpType> op;
 
     OSimple(Class<? extends D> type, Operator<OpType> op, Expr<?>... args) {
@@ -37,36 +51,22 @@ public class OSimple<OpType, D> extends Expr<D> implements Operation<OpType, D> 
     }
 
     @Override
-    public List<Expr<?>> getArgs() {
-        return args;
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
 
     @Override
     public Expr<?> getArg(int i) {
         return args.get(i);
     }
-
+    
+    @Override
+    public List<Expr<?>> getArgs() {
+        return args;
+    }
+    
     @Override
     public Operator<OpType> getOperator() {
         return op;
-    }
-    
-    @Override
-    public void accept(Visitor v) {
-        v.visit(this);        
-    }
-    
-    /**
-     * Factory method
-     * 
-     * @param <OpType>
-     * @param <D>
-     * @param type
-     * @param op
-     * @param args
-     * @return
-     */
-    public static <OpType,D> Expr<D> create(Class<? extends D> type, Operator<OpType> op, Expr<?>... args){
-        return new OSimple<OpType,D>(type, op, args);
     }
 }
