@@ -168,8 +168,7 @@ public class Processor {
             if (!dtos.isEmpty()) {
                 serialize(Serializers.DTO, dtos);
             }    
-        }
-          
+        }         
         
     }
     
