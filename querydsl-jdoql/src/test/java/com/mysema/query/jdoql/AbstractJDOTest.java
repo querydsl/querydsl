@@ -35,6 +35,10 @@ public abstract class AbstractJDOTest {
         return new JDOQLQueryImpl(pm, templates);
     }
 
+    protected JDOQLSubQuery sub(){
+        return new JDOQLSubQuery();
+    }
+    
     protected <T> List<T> query(PEntity<T> source, EBoolean condition) {
         return query().from(source).where(condition).list(source);
     }

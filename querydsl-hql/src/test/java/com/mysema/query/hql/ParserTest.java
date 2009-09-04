@@ -57,6 +57,10 @@ public class ParserTest implements Constants {
     protected TestQuery query() {
         return new TestQuery();
     }
+    
+    protected HQLSubQuery sub(){
+        return new HQLSubQuery();
+    }
 
     @Test
     public void test() throws RecognitionException, TokenStreamException{
@@ -474,28 +478,28 @@ public class ParserTest implements Constants {
         // + "select avg(cat.weight) from eg.DomesticCat cat)" );
         query().from(fatcat).where(
 //                fatcat.weight.gt(HQLGrammar.select(avg(cat.weight)).from(cat)))
-                fatcat.weight.gt(query().from(cat).uniqueExpr(cat.weight.avg())))
+                fatcat.weight.gt(sub().from(cat).unique(cat.weight.avg())))
                 .parse();
 
         // parse( "from eg.DomesticCat as cat where cat.name = some (\n"
         // + "select name.nickName from eg.Name as name)\n" );
         query().from(cat).where(
 //                cat.name.eq(some(HQLGrammar.select(name.nickName).from(name))))
-                cat.name.eq(some(query().from(name).listExpr(name.nickName))))
+                cat.name.eq(some(sub().from(name).list(name.nickName))))
                 .parse();
 
         // parse( "from eg.Cat as cat where not exists (\n"
         // + "from eg.Cat as mate where mate.mate = cat)" );
         query().from(cat).where(
 //                notExists(HQLGrammar.from(mate).where(mate.mate.eq(cat))))
-                notExists(query().from(mate).where(mate.mate.eq(cat)).listExpr(mate)))
+                notExists(sub().from(mate).where(mate.mate.eq(cat)).list(mate)))
                 .parse();
 
         // parse( "from eg.DomesticCat as cat where cat.name not in (\n"
         // + "select name.nickName from eg.Name as name)" );
         query().from(cat).where(
 //                cat.name.notIn(HQLGrammar.select(name.nickName).from(name)))
-                cat.name.notIn(query().from(name).listExpr(name.nickName)))
+                cat.name.notIn(sub().from(name).list(name.nickName)))
                 .parse();
     }
 
@@ -523,9 +527,9 @@ public class ParserTest implements Constants {
                                 price.product.eq(product)).and(
                                 catalog.effectiveDate.after(EDate.currentDate())).and(
                                 catalog.effectiveDate.after(all(                                        
-                                        query().from(catalog).where(
+                                        sub().from(catalog).where(
                                                 catalog.effectiveDate.before(EDate.currentDate()))
-                                             .listExpr(catalog.effectiveDate)                                ))))
+                                             .list(catalog.effectiveDate)                                ))))
                 .groupBy(ord).having(sum(price.amount).gt(0l)).orderBy(
                         sum(price.amount).desc());
 

@@ -14,19 +14,14 @@ import javax.annotation.Nullable;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.Projectable;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.support.QueryBaseWithProjectionAndDetach;
+import com.mysema.query.support.QueryBaseWithProjection;
 import com.mysema.query.types.expr.EConstructor;
-import com.mysema.query.types.expr.EEntity;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.OSimple;
-import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PEntityCollection;
 
 /**
  * Abstract base class for custom implementations of the JDOQLQuery interface.
@@ -35,7 +30,7 @@ import com.mysema.query.types.path.PEntityCollection;
  *
  * @param <SubType>
  */
-public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubType>> extends QueryBaseWithProjectionAndDetach<SubType> implements Projectable {
+public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubType>> extends QueryBaseWithProjection<SubType> implements Projectable {
     
     private List<Object> orderedConstants = new ArrayList<Object>();
 
@@ -77,15 +72,6 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     public SubType from(PEntity<?>... o) {
         super.from(o);
         return _this;
-    }
-
-    public <P> SubType from(PEntityCollection<P> target, PEntity<P> alias){
-        super.from(createAlias(target, alias));
-        return _this;
-    }
-    
-    private <D> Expr<D> createAlias(EEntity<?> target, PEntity<D> alias){
-        return OSimple.create(alias.getType(), Ops.ALIAS, target, alias);
     }
 
     public long count() {

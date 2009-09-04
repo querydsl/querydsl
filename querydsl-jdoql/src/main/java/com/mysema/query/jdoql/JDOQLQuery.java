@@ -7,11 +7,9 @@ package com.mysema.query.jdoql;
 
 import java.io.Closeable;
 
-import com.mysema.query.Detachable;
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PEntityCollection;
 
 /**
  * Query interface for JDOQL queries
@@ -19,11 +17,8 @@ import com.mysema.query.types.path.PEntityCollection;
  * @author tiwe
  * 
  */
-public interface JDOQLQuery extends Query<JDOQLQuery>, Projectable, Closeable, Detachable {
+public interface JDOQLQuery extends Query<JDOQLQuery>, Projectable, Closeable {
 
     JDOQLQuery from(PEntity<?>... sources);
-    
-    // only sub query
-    <P> JDOQLQuery from(PEntityCollection<P> target, PEntity<P> alias);
 
 }

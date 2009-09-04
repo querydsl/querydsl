@@ -5,7 +5,6 @@
  */
 package com.mysema.query.hql;
 
-import com.mysema.query.Detachable;
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
 import com.mysema.query.types.expr.EBoolean;
@@ -18,7 +17,7 @@ import com.mysema.query.types.path.PEntityCollection;
  * @author tiwe
  *
  */
-public interface HQLQuery extends Query<HQLQuery>, Projectable, Detachable{
+public interface HQLQuery extends Query<HQLQuery>, Projectable {
     
     HQLQuery from(PEntity<?>... sources);
     

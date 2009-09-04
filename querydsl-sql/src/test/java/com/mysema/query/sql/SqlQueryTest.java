@@ -274,15 +274,15 @@ public abstract class SqlQueryTest {
                 + "from employee2 employee)";
         List<Integer> list = q().from(employee).where(
 //                employee.id.eq(select(Grammar.max(employee.id)).from(employee))).list(
-                employee.id.eq(q().from(employee).uniqueExpr(employee.id.max()))).list(
+                employee.id.eq(s().from(employee).unique(employee.id.max()))).list(
                 employee.id);
         assertFalse(list.isEmpty());
     }
 
     @Test
     public void testIllegalUnion() throws SQLException {
-        ObjectSubQuery<Integer> sq1 = q().from(employee).uniqueExpr(employee.id.max());
-        ObjectSubQuery<Integer> sq2 = q().from(employee).uniqueExpr(employee.id.max());
+        ObjectSubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
+        ObjectSubQuery<Integer> sq2 = s().from(employee).unique(employee.id.max());
         try {
             q().from(employee).union(sq1, sq2).list();
             fail();
@@ -296,20 +296,20 @@ public abstract class SqlQueryTest {
     @Test
     public void testUnion() throws SQLException {
         // union
-        ObjectSubQuery<Integer> sq1 = q().from(employee).uniqueExpr(employee.id.max());
-        ObjectSubQuery<Integer> sq2 = q().from(employee).uniqueExpr(employee.id.min());
+        ObjectSubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
+        ObjectSubQuery<Integer> sq2 = s().from(employee).unique(employee.id.min());
         List<Integer> list = q().union(sq1, sq2).list();
         assertFalse(list.isEmpty());
 
         // variation 1
         list = q().union(
-                q().from(employee).uniqueExpr(employee.id.max()),
-                q().from(employee).uniqueExpr(employee.id.min())).list();
+                s().from(employee).unique(employee.id.max()),
+                s().from(employee).unique(employee.id.min())).list();
         assertFalse(list.isEmpty());
 
         // union #2
-        ObjectSubQuery<Object[]> sq3 = q().from(employee).uniqueExpr(Expr.countAll(), employee.id.max());
-        ObjectSubQuery<Object[]> sq4 = q().from(employee).uniqueExpr(Expr.countAll(), employee.id.min());
+        ObjectSubQuery<Object[]> sq3 = s().from(employee).unique(Expr.countAll(), employee.id.max());
+        ObjectSubQuery<Object[]> sq4 = s().from(employee).unique(Expr.countAll(), employee.id.min());
         List<Object[]> list2 = q().union(sq3, sq4).list();
         assertFalse(list2.isEmpty());
     }
@@ -322,7 +322,7 @@ public abstract class SqlQueryTest {
 
     @Test
     public void testWhereExists() throws SQLException {
-        ObjectSubQuery<Integer> sq1 = q().from(employee).uniqueExpr(employee.id.max());
+        ObjectSubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
         q().from(employee).where(sq1.exists()).count();
         q().from(employee).where(sq1.exists().not()).count();
     }
@@ -425,6 +425,10 @@ public abstract class SqlQueryTest {
         }
     }
 
+    protected SQLSubQuery s(){
+        return new SQLSubQuery();
+    }
+    
     protected final SQLQuery q() {
         return new SQLQueryImpl(connHolder.get(), dialect) {
             @Override

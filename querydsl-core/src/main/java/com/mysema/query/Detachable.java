@@ -18,7 +18,7 @@ public interface Detachable {
     /**
      * @return
      */
-    ObjectSubQuery<Long> countExpr();
+    ObjectSubQuery<Long> count();
     
     /**
      * Create a projection expression for the given projection
@@ -29,7 +29,7 @@ public interface Detachable {
      *            rest
      * @return a List over the projection
      */
-    ListSubQuery<Object[]> listExpr(Expr<?> first, Expr<?> second, Expr<?>... rest);
+    ListSubQuery<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest);
 
     /**
      * Create a projection expression for the given projection
@@ -39,7 +39,7 @@ public interface Detachable {
      * @param projection
      * @return a List over the projection
      */
-    <RT> ListSubQuery<RT> listExpr(Expr<RT> projection);
+    <RT> ListSubQuery<RT> list(Expr<RT> projection);
     
     /**
      * Create a projection expression for the given projection
@@ -49,7 +49,7 @@ public interface Detachable {
      * @param rest
      * @return
      */
-    ObjectSubQuery<Object[]> uniqueExpr(Expr<?> first, Expr<?> second, Expr<?>... rest);
+    ObjectSubQuery<Object[]> unique(Expr<?> first, Expr<?> second, Expr<?>... rest);
 
     /**
      * Create a projection expression for the given projection
@@ -59,7 +59,7 @@ public interface Detachable {
      * @param projection
      * @return the result or null for an empty result
      */
-    <RT> ObjectSubQuery<RT> uniqueExpr(Expr<RT> projection);
+    <RT> ObjectSubQuery<RT> unique(Expr<RT> projection);
        
 
 }

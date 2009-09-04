@@ -38,7 +38,7 @@ public class ContainerTest extends AbstractTest{
           "PARAMETERS com.mysema.query.jdoql.models.fitness.Wardrobe a1",
           
           serialize(query().from(gym)
-                  .where(gym.wardrobes.containsValue(wrd).not()).listExpr(gym)));
+                  .where(gym.wardrobes.containsValue(wrd).not()).list(gym)));
         
 
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
@@ -52,7 +52,7 @@ public class ContainerTest extends AbstractTest{
           
           serialize(query().from(gym)
                   .where(gym.wardrobes.containsValue(wrd).not(), gym.wardrobes.containsValue(wrd2).not())
-                  .listExpr(gym)));
+                  .list(gym)));
 //
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
 //                + "WHERE !this.wardrobes.containsValue(wrd) && !this.wardrobes.containsValue(wrd2) && this.wardrobes.containsValue(wrd1) "
@@ -68,7 +68,7 @@ public class ContainerTest extends AbstractTest{
                     gym.wardrobes.containsValue(wrd).not(), 
                     gym.wardrobes.containsValue(wrd1).not(),
                     gym.wardrobes.containsValue(wrd2))
-                .listExpr(gym)));
+                .list(gym)));
     }
 
 
@@ -86,7 +86,7 @@ public class ContainerTest extends AbstractTest{
           "PARAMETERS com.mysema.query.jdoql.models.fitness.Wardrobe a1",
                 
           serialize(query().from(gym)
-                   .where(gym.wardrobes2.containsKey(wrd).not()).listExpr(gym)));
+                   .where(gym.wardrobes2.containsKey(wrd).not()).list(gym)));
 //
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
 //                + "WHERE !this.wardrobes2.containsKey(wrd) && !this.wardrobes2.containsKey(wrd2) "
@@ -100,7 +100,7 @@ public class ContainerTest extends AbstractTest{
                    .where(
                        gym.wardrobes2.containsKey(wrd).not(),
                        gym.wardrobes2.containsKey(wrd2).not())
-                   .listExpr(gym)));
+                   .list(gym)));
 //
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
 //                + "WHERE !this.wardrobes2.containsKey(wrd) && !this.wardrobes2.containsKey(wrd2) && this.wardrobes2.containsKey(wrd1) "
@@ -115,7 +115,7 @@ public class ContainerTest extends AbstractTest{
                      gym.wardrobes2.containsKey(wrd).not(),
                      gym.wardrobes2.containsKey(wrd2).not(),
                      gym.wardrobes2.containsKey(wrd1))
-                 .listExpr(gym)));
+                 .list(gym)));
     }
 
     /**
@@ -153,7 +153,7 @@ public class ContainerTest extends AbstractTest{
           "PARAMETERS java.lang.String a1, com.mysema.query.jdoql.models.fitness.Wardrobe a2",
                       
           serialize(query().from(gym)
-                   .where(gym.wardrobes.get(wrd.getModel()).eq(wrd)).listExpr(gym)));
+                   .where(gym.wardrobes.get(wrd.getModel()).eq(wrd)).list(gym)));
     }
 
     /**
@@ -168,7 +168,7 @@ public class ContainerTest extends AbstractTest{
           "ORDER BY this.wardrobes.get(a1).model ASC",
                             
           serialize(query().from(gym)
-                   .orderBy(gym.wardrobes(wrd.getModel()).model.asc()).listExpr(gym)));
+                   .orderBy(gym.wardrobes(wrd.getModel()).model.asc()).list(gym)));
     }
 
 

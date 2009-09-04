@@ -14,7 +14,7 @@ import com.mysema.query.CascadingBoolean;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.support.QueryBaseWithProjectionAndDetach;
+import com.mysema.query.support.QueryBaseWithProjection;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EEntity;
 import com.mysema.query.types.expr.Expr;
@@ -31,7 +31,7 @@ import com.mysema.query.types.path.PathMetadata;
  * @author tiwe
  * @version $Id$
  */
-public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extends QueryBaseWithProjectionAndDetach<SubType> {
+public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extends QueryBaseWithProjection<SubType> {
 
     private Map<Object,String> constants;
 

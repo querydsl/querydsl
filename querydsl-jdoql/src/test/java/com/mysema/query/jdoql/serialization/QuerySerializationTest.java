@@ -25,7 +25,7 @@ public class QuerySerializationTest extends AbstractTest{
             serialize(query().from(product)
               .where(product.name.eq("Test"))
               .orderBy(product.name.asc())
-              .uniqueExpr(product.name)));
+              .unique(product.name)));
     }
     
     @Test
@@ -40,7 +40,7 @@ public class QuerySerializationTest extends AbstractTest{
             serialize(query().from(product)
               .where(product.name.startsWith("A").or(product.name.endsWith("B")))
               .groupBy(product.price)
-              .listExpr(product.name)));
+              .list(product.name)));
     }
     
     @Test
@@ -53,7 +53,7 @@ public class QuerySerializationTest extends AbstractTest{
                 
             serialize(query().from(product, other)
               .where(product.name.eq(other.name))
-              .listExpr(product.name)));
+              .list(product.name)));
     }
     
     @Test
@@ -65,8 +65,8 @@ public class QuerySerializationTest extends AbstractTest{
             "(SELECT avg(other.price) FROM com.mysema.query.jdoql.testdomain.Product other)", 
                 
             serialize(query().from(product)
-              .where(product.price.lt(query().from(other).uniqueExpr(other.price.avg())))
-              .listExpr(product.price)));
+              .where(product.price.lt(query().from(other).unique(other.price.avg())))
+              .list(product.price)));
     }
 
     @Test
@@ -79,8 +79,8 @@ public class QuerySerializationTest extends AbstractTest{
             "PARAMETERS java.lang.String a1",
 
             serialize(query().from(product)
-              .where(product.price.in(query().from(other).where(other.name.eq("Some name")).listExpr(other.price)))
-              .listExpr(product.name)));
+              .where(product.price.in(query().from(other).where(other.name.eq("Some name")).list(other.price)))
+              .list(product.name)));
     }
     
     @Test
@@ -92,7 +92,7 @@ public class QuerySerializationTest extends AbstractTest{
               
             serialize(query().from(product)
               .where(product.instanceOf(Book.class))
-              .listExpr(product)));
+              .list(product)));
     }
 
 }

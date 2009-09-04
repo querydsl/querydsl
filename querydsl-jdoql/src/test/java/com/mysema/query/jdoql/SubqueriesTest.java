@@ -19,7 +19,7 @@ public class SubqueriesTest extends AbstractJDOTest {
     @Test
     public void test1() {
         for (double price : query().from(product)
-                .where(product.price.gt(query().from(other).uniqueExpr(other.price.avg())))
+                .where(product.price.gt(sub().from(other).unique(other.price.avg())))
                 .list(product.price)) {
             System.out.println(price);
         }
@@ -28,7 +28,7 @@ public class SubqueriesTest extends AbstractJDOTest {
     @Test
     public void test2() {
         for (double price : query().from(product)
-                .where(product.price.eq(query().from(other).uniqueExpr(other.price.avg())))
+                .where(product.price.eq(sub().from(other).unique(other.price.avg())))
                 .list(product.price)) {
             System.out.println(price);
         }
@@ -40,7 +40,7 @@ public class SubqueriesTest extends AbstractJDOTest {
         // FIXME
         for (double price : query().from(product)
                 .where(product.price.in(
-                    query().from(other).where(other.name.eq("Some name")).listExpr(other.price)))
+                        sub().from(other).where(other.name.eq("Some name")).list(other.price)))
                 .list(product.price)) {
             System.out.println(price);
         }

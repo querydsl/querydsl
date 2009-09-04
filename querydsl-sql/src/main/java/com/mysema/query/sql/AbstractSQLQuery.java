@@ -21,7 +21,7 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.support.QueryBaseWithProjectionAndDetach;
+import com.mysema.query.support.QueryBaseWithProjection;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstructor;
@@ -38,7 +38,7 @@ import com.mysema.query.types.query.SubQuery;
  * @version $Id$
  */
 public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
-        extends QueryBaseWithProjectionAndDetach<SubType>{
+        extends QueryBaseWithProjection<SubType>{
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
 
