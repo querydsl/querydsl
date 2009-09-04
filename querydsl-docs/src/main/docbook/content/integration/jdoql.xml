@@ -219,6 +219,26 @@ query.form(customer)
   
   <sect2>
   
+  <title>General usage</title>
+  
+  <para>Use the the cascading methods of the JDOQLQuery method like this</para>
+  
+  <para><emphasis>from :</emphasis> Define the query sources here, the first argument becomes the main source and the others are treated as variables.</para>
+  
+  <para><emphasis>where :</emphasis> Define the query filters, either in varargs form separated via commas or cascaded via the and-operator.</para>
+  
+  <para><emphasis>groupBy :</emphasis> Define the group by arguments in varargs form.</para>
+  
+  <para><emphasis>having :</emphasis> Define the having filter of the "group by" grouping as an varags array of EBoolean expressions.</para>
+  
+  <para><emphasis>orderBy :</emphasis> Define the ordering of the result as an varargs array of order expressions. Use asc() and desc() on numeric, string and other comparable expression to access the OrderSpecifier instances. </para>
+  
+  <para><emphasis>limit, offset, restrict :</emphasis> Define the paging of the result. Limit for max results, offset for skipping rows and restrict for defining both in one call.</para>
+  
+  </sect2>
+  
+  <sect2>
+  
   <title>Ordering</title>
   
   <para>The syntax for declaring ordering is </para>
@@ -248,6 +268,8 @@ query.from(customer)
   <sect2>
   
   <title>Subqueries</title>
+  
+  <!-- TODO : update -->  
   
   <para>Subqueries in the JDOQL module are just special projections of the JDOQLQuery interface. To create
   a subquery you create a JDOQLQuery instance, define the query parameters via from, where etc and use

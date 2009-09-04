@@ -259,6 +259,28 @@ from Cat as cat
   
   <sect2>
   
+  <title>General usage</title>
+  
+  <para>Use the the cascading methods of the HQLQuery method like this</para>
+  
+  <para><emphasis>from :</emphasis> Define the query sources here.</para>
+  
+  <para><emphasis>innerJoin, join, leftJoin, fullJoin, on</emphasis> : Defined join elements using these constructs. For the join methods the first argument is the join expression and the second the shorter alias.</para>
+  
+  <para><emphasis>where :</emphasis> Define the query filters, either in varargs form separated via commas or cascaded via the and-operator.</para>
+  
+  <para><emphasis>groupBy :</emphasis> Define the group by arguments in varargs form.</para>
+  
+  <para><emphasis>having :</emphasis> Define the having filter of the "group by" grouping as an varags array of EBoolean expressions.</para>
+  
+  <para><emphasis>orderBy :</emphasis> Define the ordering of the result as an varargs array of order expressions. Use asc() and desc() on numeric, string and other comparable expression to access the OrderSpecifier instances. </para>
+  
+  <para><emphasis>limit, offset, restrict :</emphasis> Define the paging of the result. Limit for max results, offset for skipping rows and restrict for defining both in one call.</para>
+  
+  </sect2>  
+  
+  <sect2>
+  
   <title>Ordering</title>
   
   <para>The syntax for declaring ordering is </para>
@@ -305,6 +327,7 @@ select customer.lastName
   
   <title>Subqueries</title>
   
+  <!-- TODO : update -->
   
   <para>Subqueries in the HQL module are just special projections of the HQLQuery interface. To create
   a subquery you create a HQLQuery instance, define the query parameters via from, where etc and use
