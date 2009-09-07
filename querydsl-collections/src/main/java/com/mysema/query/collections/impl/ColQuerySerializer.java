@@ -13,7 +13,6 @@ import org.apache.commons.lang.StringUtils;
 import com.mysema.query.collections.ColQueryTemplates;
 import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.Template;
-import com.mysema.query.types.Template.Element;
 import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operator;
@@ -57,7 +56,7 @@ public class ColQuerySerializer extends SerializerBase<ColQuerySerializer> {
             }
             args.add(path.getMetadata().getExpression());            
             Template template = templates.getTemplate(pathType);
-            for (Element element : template.getElements()){
+            for (Template.Element element : template.getElements()){
                 if (element.getStaticText() != null){
                     append(element.getStaticText());
                 }else if (element.isAsString()){

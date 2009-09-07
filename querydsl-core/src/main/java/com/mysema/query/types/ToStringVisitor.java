@@ -5,7 +5,6 @@
  */
 package com.mysema.query.types;
 
-import com.mysema.query.types.Template.Element;
 import com.mysema.query.types.custom.Custom;
 import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EArrayConstructor;
@@ -38,7 +37,7 @@ public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
     @Override
     public void visit(Custom<?> expr) {
         StringBuilder builder = new StringBuilder();
-        for (Element element : expr.getTemplate().getElements()){
+        for (Template.Element element : expr.getTemplate().getElements()){
             if (element.getStaticText() != null){
                 builder.append(element.getStaticText());
             }else{
@@ -85,7 +84,7 @@ public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
         Template template = templates.getTemplate(o.getOperator());
         if (template != null) {
             StringBuilder builder = new StringBuilder();
-            for (Element element : template.getElements()){
+            for (Template.Element element : template.getElements()){
                 if (element.getStaticText() != null){
                     builder.append(element.getStaticText());
                 }else{
@@ -106,7 +105,7 @@ public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
             Template pattern = templates.getTemplate(p.getMetadata().getPathType());
             if (pattern != null) {
                 StringBuilder builder = new StringBuilder();
-                for (Element element : pattern.getElements()){
+                for (Template.Element element : pattern.getElements()){
                     if (element.getStaticText() != null){
                         builder.append(element.getStaticText());
                     }else if (element.getIndex() == 0){

@@ -19,7 +19,7 @@ import org.junit.Test;
 
 import com.mysema.query.hql.domain.QAccount;
 import com.mysema.query.hql.domain.QInheritedProperties;
-import com.mysema.query.types.Template;
+import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.custom.CString;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.ENumber;
@@ -89,7 +89,7 @@ public class FeaturesTest extends AbstractQueryTest{
      */
     public static class MyCustomExpr extends CString {
         public MyCustomExpr(Expr<?>... args) {
-            super(Arrays.asList(args), new Template("myCustom({0},{1})"));
+            super(Arrays.asList(args), new TemplateFactory().create("myCustom({0},{1})"));
         }
     }
 

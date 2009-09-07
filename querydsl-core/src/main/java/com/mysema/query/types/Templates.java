@@ -23,7 +23,7 @@ import com.mysema.query.types.path.PathType;
 @Immutable
 public class Templates {
 
-    private static final Map<String,Template> templateCache = new HashMap<String,Template>();
+    private static final TemplateFactory templateFactory = new TemplateFactory();
     
     private final Map<Operator<?>, Template> templates = new HashMap<Operator<?>, Template>();
 
@@ -183,11 +183,7 @@ public class Templates {
     }
 
     protected void add(Operator<?> op, String pattern) {
-        Template template = templateCache.get(pattern);
-        if (template == null){
-            template = new Template(pattern);
-            templateCache.put(pattern, template);
-        }
+        Template template = templateFactory.create(pattern);
         templates.put(op, template);
     }
 

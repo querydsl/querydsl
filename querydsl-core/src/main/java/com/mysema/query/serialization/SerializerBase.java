@@ -14,7 +14,6 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.VisitorBase;
-import com.mysema.query.types.Template.Element;
 import com.mysema.query.types.custom.Custom;
 import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EArrayConstructor;
@@ -82,7 +81,7 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
 
     @Override
     public void visit(Custom<?> expr) {        
-        for (Element element : expr.getTemplate().getElements()){
+        for (Template.Element element : expr.getTemplate().getElements()){
             if (element.getStaticText() != null){
                 append(element.getStaticText());
             }else{
@@ -129,7 +128,7 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
         }
         args.add(path.getMetadata().getExpression());
         
-        for (Element element : template.getElements()){
+        for (Template.Element element : template.getElements()){
             if (element.getStaticText() != null){
                 append(element.getStaticText()); 
             }else{
@@ -152,7 +151,7 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
             throw new IllegalArgumentException("Got no pattern for " + operator);
         }
         int precedence = templates.getPrecedence(operator);
-        for (Element element : template.getElements()){
+        for (Template.Element element : template.getElements()){
             if (element.getStaticText() != null){
                 append(element.getStaticText());
             }else if (element.isAsString()){
