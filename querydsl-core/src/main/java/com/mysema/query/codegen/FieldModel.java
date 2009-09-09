@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.util.JavaSyntaxUtils;
 
 /**
  * FieldModel represents a field / property in a query domain type.
@@ -22,7 +23,7 @@ public final class FieldModel implements Comparable<FieldModel> {
     
     private final ClassModel classModel;
     
-    private final String name, typeName, keyTypeName, valueTypeName;
+    private final String name, escapedName, typeName, keyTypeName, valueTypeName;
     
     @Nullable
     private final String queryTypeName, docs;
@@ -32,6 +33,7 @@ public final class FieldModel implements Comparable<FieldModel> {
     public FieldModel(ClassModel classModel, String name, TypeModel type, @Nullable String docs){
         this.classModel = classModel;
         this.name = Assert.notNull(name);
+        this.escapedName = JavaSyntaxUtils.isReserved(name) ? (name + "_") : name;
         this.type = Assert.notNull(type);
         if (docs != null){
             this.docs = docs.replace("@return", "").trim();
@@ -88,6 +90,10 @@ public final class FieldModel implements Comparable<FieldModel> {
 
     public String getName() {
         return name;
+    }
+    
+    public String getEscapedName(){
+        return escapedName;
     }
     
     public String getQueryTypeName() {

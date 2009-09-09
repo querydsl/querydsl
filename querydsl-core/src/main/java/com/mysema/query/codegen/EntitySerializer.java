@@ -108,7 +108,7 @@ public class EntitySerializer extends AbstractSerializer{
         if (field.getDocString() != null){
             builder.append("    /** "  + field.getDocString() + " */\n");    
         }        
-        builder.append("    public final " + type + " " + field.getName() + " = " + value + ";\n\n");
+        builder.append("    public final " + type + " " + field.getEscapedName() + " = " + value + ";\n\n");
         writer.append(builder.toString());
     }
     
@@ -117,7 +117,7 @@ public class EntitySerializer extends AbstractSerializer{
         if (field.getDocString() != null){
             builder.append("    /** "  + field.getDocString() + " */\n");    
         }        
-        builder.append("    public " + type + " " + field.getName()+";\n\n");
+        builder.append("    public " + type + " " + field.getEscapedName()+";\n\n");
         writer.append(builder.toString());        
     }
     
@@ -174,13 +174,14 @@ public class EntitySerializer extends AbstractSerializer{
 
     protected void entityFieldAccessor(FieldModel field, Writer writer) throws IOException {        
         final String fieldName = field.getName();
+        final String escapedName = field.getEscapedName();
         final String queryType = field.getQueryTypeName();               
         StringBuilder builder = new StringBuilder();
         builder.append("    public " + queryType + " _" + fieldName + "() {\n");
-        builder.append("        if (" + fieldName + " == null){\n");
-        builder.append("            " + fieldName + " = new " + queryType + "(PathMetadata.forProperty(this,\"" + fieldName + "\"));\n");
+        builder.append("        if (" + escapedName + " == null){\n");
+        builder.append("            " + escapedName + " = new " + queryType + "(PathMetadata.forProperty(this,\"" + fieldName + "\"));\n");
         builder.append("        }\n");
-        builder.append("        return " + fieldName + ";\n");
+        builder.append("        return " + escapedName + ";\n");
         builder.append("    }\n\n");
         writer.append(builder.toString());
     }
@@ -190,14 +191,15 @@ public class EntitySerializer extends AbstractSerializer{
     }
 
     protected void entityListAccessor(FieldModel field, Writer writer) throws IOException {
-        final String fieldName = field.getName();
+//        final String fieldName = field.getName();
+        final String escapedName = field.getEscapedName();
         final String queryType = field.getQueryTypeName();               
         StringBuilder builder = new StringBuilder();
-        builder.append("    public " + queryType + " " + fieldName + "(int index) {\n");
-        builder.append("        return new " + queryType + "(PathMetadata.forListAccess(" + fieldName+", index));\n");
+        builder.append("    public " + queryType + " " + escapedName + "(int index) {\n");
+        builder.append("        return new " + queryType + "(PathMetadata.forListAccess(" + escapedName+", index));\n");
         builder.append("    };\n\n");
-        builder.append("    public " + queryType + " " + fieldName + "(com.mysema.query.types.expr.Expr<Integer> index) {\n");
-        builder.append("        return new " + queryType + "(PathMetadata.forListAccess(" + fieldName+", index));\n");
+        builder.append("    public " + queryType + " " + escapedName + "(com.mysema.query.types.expr.Expr<Integer> index) {\n");
+        builder.append("        return new " + queryType + "(PathMetadata.forListAccess(" + escapedName+", index));\n");
         builder.append("    };\n\n");
         writer.append(builder.toString());
     }
@@ -212,15 +214,16 @@ public class EntitySerializer extends AbstractSerializer{
     }
 
     protected void entityMapAccessor(FieldModel field, Writer writer) throws IOException {
-        final String fieldName = field.getName();
+//        final String fieldName = field.getName();
+        final String escapedName = field.getEscapedName();
         final String queryType = field.getQueryTypeName();
         final String keyType = field.getKeyTypeName();
         StringBuilder builder = new StringBuilder();
-        builder.append("    public " + queryType + " " + fieldName + "(" + keyType+ " key) {\n");
-        builder.append("        return new " + queryType + "(PathMetadata.forMapAccess(" + fieldName+", key));\n");
+        builder.append("    public " + queryType + " " + escapedName + "(" + keyType+ " key) {\n");
+        builder.append("        return new " + queryType + "(PathMetadata.forMapAccess(" + escapedName+", key));\n");
         builder.append("    };\n\n");        
-        builder.append("    public " + queryType + " " + fieldName + "(com.mysema.query.types.expr.Expr<"+keyType+"> key) {\n");
-        builder.append("        return new " + queryType + "(PathMetadata.forMapAccess(" + fieldName+", key));\n");
+        builder.append("    public " + queryType + " " + escapedName + "(com.mysema.query.types.expr.Expr<"+keyType+"> key) {\n");
+        builder.append("        return new " + queryType + "(PathMetadata.forMapAccess(" + escapedName+", key));\n");
         builder.append("    };\n\n");
         writer.append(builder.toString());
         
@@ -279,14 +282,15 @@ public class EntitySerializer extends AbstractSerializer{
     }
 
     protected void simpleListAccessor(FieldModel field, Writer writer) throws IOException {
-        final String fieldName = field.getName();               
+//        final String fieldName = field.getName();      
+        final String escapedName = field.getEscapedName();
         final String valueType = field.getValueTypeName();
         StringBuilder builder = new StringBuilder();
-        builder.append("    public PSimple<" + valueType + "> " + fieldName + "(int index) {\n");
-        builder.append("        return new PSimple<" + valueType + ">("+valueType+".class, PathMetadata.forListAccess(" + fieldName+", index));\n");
+        builder.append("    public PSimple<" + valueType + "> " + escapedName + "(int index) {\n");
+        builder.append("        return new PSimple<" + valueType + ">("+valueType+".class, PathMetadata.forListAccess(" + escapedName+", index));\n");
         builder.append("    };\n\n");
-        builder.append("    public PSimple<" + valueType + "> " + fieldName + "(com.mysema.query.types.expr.Expr<Integer> index) {\n");
-        builder.append("        return new PSimple<" + valueType + ">("+valueType+".class, PathMetadata.forListAccess(" + fieldName+", index));\n");
+        builder.append("    public PSimple<" + valueType + "> " + escapedName + "(com.mysema.query.types.expr.Expr<Integer> index) {\n");
+        builder.append("        return new PSimple<" + valueType + ">("+valueType+".class, PathMetadata.forListAccess(" + escapedName+", index));\n");
         builder.append("    };\n\n");
         writer.append(builder.toString());
         
@@ -300,15 +304,16 @@ public class EntitySerializer extends AbstractSerializer{
     }
 
     protected void simpleMapAccessor(FieldModel field, Writer writer) throws IOException {
-        final String fieldName = field.getName();               
+//        final String fieldName = field.getName();     
+        final String escapedName = field.getEscapedName();
         final String keyType = field.getKeyTypeName();
         final String valueType = field.getValueTypeName();
         StringBuilder builder = new StringBuilder();
-        builder.append("    public PSimple<" + valueType + "> " + fieldName + "(" + keyType + " key) {\n");
-        builder.append("        return new PSimple<" + valueType + ">("+valueType+".class, PathMetadata.forMapAccess(" + fieldName+", key));\n");
+        builder.append("    public PSimple<" + valueType + "> " + escapedName + "(" + keyType + " key) {\n");
+        builder.append("        return new PSimple<" + valueType + ">("+valueType+".class, PathMetadata.forMapAccess(" + escapedName+", key));\n");
         builder.append("    };\n\n");
-        builder.append("    public PSimple<" + valueType + "> " + fieldName + "(com.mysema.query.types.expr.Expr<"+keyType+"> key) {\n");
-        builder.append("        return new PSimple<" + valueType + ">("+valueType+".class, PathMetadata.forMapAccess(" + fieldName+", key));\n");
+        builder.append("    public PSimple<" + valueType + "> " + escapedName + "(com.mysema.query.types.expr.Expr<"+keyType+"> key) {\n");
+        builder.append("        return new PSimple<" + valueType + ">("+valueType+".class, PathMetadata.forMapAccess(" + escapedName+", key));\n");
         builder.append("    };\n\n");
         writer.append(builder.toString());
         
