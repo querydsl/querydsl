@@ -49,8 +49,7 @@ public class PComparable<D extends Comparable> extends EComparable<D> implements
     }
 
     public boolean equals(Object o) {
-        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
-                : false;
+        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata) : false;
     }
     
     @Override
