@@ -34,46 +34,6 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
         super(type);
     }
     
-    @Deprecated
-    public EBoolean after(D right) {
-        return gt(right);
-    }    
-
-    @Deprecated
-    public EBoolean after(Expr<D> right) {
-        return gt(right);
-    }
-    
-    @Deprecated
-    public EBoolean aoe(D right) {
-        return goe(right);
-    }    
-
-    @Deprecated
-    public EBoolean aoe(Expr<D> right) {
-        return goe(right);
-    }
-    
-    @Deprecated
-    public EBoolean before(D right) {
-        return lt(right);
-    }    
-
-    @Deprecated
-    public EBoolean before(Expr<D> right) {
-        return lt(right);
-    }
-    
-    @Deprecated
-    public EBoolean boe(D right) {
-        return loe(right);
-    }    
-
-    @Deprecated
-    public EBoolean boe(Expr<D> right) {
-        return loe(right);
-    }
-
     /**
      * Create a <code>this &gt; right</code> expression
      * 

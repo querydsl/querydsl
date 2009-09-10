@@ -20,7 +20,7 @@ import com.mysema.query.types.operation.Ops;
  * @param <D>
  */
 @SuppressWarnings("unchecked")
-public abstract class EDate<D extends Comparable> extends EComparable<D> {
+public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     
     private ENumber<Integer> dayOfMonth;
     
