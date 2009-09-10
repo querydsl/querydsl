@@ -11,6 +11,7 @@ import javax.annotation.Nonnegative;
 
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
+import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
@@ -34,7 +35,7 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>{
     
     private final PathMetadata<?> metadata;
     
-    private EComparable<Integer> size;
+    private ENumber<Integer> size;
     
     private final Path<?> root;
 
@@ -119,7 +120,7 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>{
      * 
      * @return
      */
-    public EComparable<Integer> size() {
+    public ENumber<Integer> size() {
         if (size == null) {
             size = ONumber.create(Integer.class, Ops.COL_SIZE, this);
         }

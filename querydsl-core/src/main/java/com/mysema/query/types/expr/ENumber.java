@@ -9,8 +9,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.Order;
+import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
+import com.mysema.query.types.operation.OString;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.operation.Ops.MathOps;
 
@@ -24,9 +27,15 @@ import com.mysema.query.types.operation.Ops.MathOps;
  * @see java.lang.Number
  */
 
-public abstract class ENumber<D extends Number & Comparable<?>> extends EComparable<D> {
+public abstract class ENumber<D extends Number & Comparable<?>> extends Expr<D> {
     
     private static ENumber<Double> random;
+    
+    private OrderSpecifier<D> asc;
+    
+    private OrderSpecifier<D> desc;
+    
+    private EString stringCast;
     
     /**
      * Factory method
@@ -148,12 +157,12 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
 
     @SuppressWarnings("unchecked")
-    @Override
     public <A extends Number & Comparable<? super A>> ENumber<A> castToNum(Class<A> type) {
         if (type.equals(getType())){
             return (ENumber<A>) this;
         }else{
-            return super.castToNum(type);
+//            return super.castToNum(type);
+            return ONumber.create(type, Ops.NUMCAST, this, ExprConst.create(type));
         }
     }
 
@@ -427,4 +436,87 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         return sum;
     }
     
+    /**
+     * Create a <code>first &lt; this &lt; second</code> expression
+     * 
+     * @param first
+     * @param second
+     * @return
+     */
+    // copied from EComparable
+    public final EBoolean between(D first, D second) {
+        return OBoolean.create(Ops.BETWEEN, this, ExprConst.create(first), ExprConst.create(second));
+    }
+
+    /**
+     * Create a <code>first &lt; this &lt; second</code> expression
+     * 
+     * @param first
+     * @param second
+     * @return
+     */
+    // copied from EComparable
+    public final EBoolean between(Expr<D> first, Expr<D> second) {
+        return OBoolean.create(Ops.BETWEEN, this, first, second);
+    }
+    
+    /**
+     * @param first
+     * @param second
+     * @return
+     */
+    // copied from EComparable
+    public final EBoolean notBetween(D first, D second) {
+        return between(first, second).not();
+    }
+
+    /**
+     * @param first
+     * @param second
+     * @return
+     */
+    // copied from EComparable
+    public final EBoolean notBetween(Expr<D> first, Expr<D> second) {
+        return between(first, second).not();
+    }
+    
+    /**
+     * Get an OrderSpecifier for ascending order of this expression
+     * 
+     * @return
+     */
+    // copied from EComparable
+    public final OrderSpecifier<D> asc() {
+        if (asc == null){
+            asc = new OrderSpecifier<D>(Order.ASC, this);
+        }            
+        return asc;
+    }
+    
+    /**
+     * Get an OrderSpecifier for descending order of this expression
+     * 
+     * @return
+     */
+    // copied from EComparable
+    public final OrderSpecifier<D> desc() {
+        if (desc == null){
+            desc = new OrderSpecifier<D>(Order.DESC, this);
+        }            
+        return desc;
+    }
+    
+    /**
+     * Get a cast to String expression 
+     * 
+     * @see     java.lang.Object#toString()
+     * @return
+     */
+    // copied from EComparable
+    public EString stringValue() {
+        if (stringCast == null){
+            stringCast = OString.create(Ops.STRING_CAST, this);
+        }            
+        return stringCast;
+    }
 }

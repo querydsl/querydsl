@@ -88,7 +88,7 @@ public class AliasTest extends AbstractQueryTest {
         Cat c = alias(Cat.class, "cat");
 
         // 1
-        from(c, cats).where($(c.getBirthdate()).after(new Date())).list($(c))
+        from(c, cats).where($(c.getBirthdate()).gt(new Date())).list($(c))
                 .iterator();
 
         // 2

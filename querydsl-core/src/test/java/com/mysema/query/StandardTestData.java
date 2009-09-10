@@ -113,14 +113,14 @@ class StandardTestData {
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(exprFilters(expr, other, knownValue));
         rv.addAll(Arrays.<EBoolean>asList(
-            expr.after(other),
-            expr.after(knownValue),
-            expr.aoe(other),
-            expr.aoe(knownValue),
-            expr.before(other),
-            expr.before(knownValue),
-            expr.boe(other),
-            expr.boe(knownValue)
+            expr.gt(other),
+            expr.gt(knownValue),
+            expr.goe(other),
+            expr.goe(knownValue),
+            expr.lt(other),
+            expr.lt(knownValue),
+            expr.loe(other),
+            expr.loe(knownValue)
         ));
         return rv;
     }

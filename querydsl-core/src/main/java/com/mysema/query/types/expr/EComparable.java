@@ -33,16 +33,45 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
     public EComparable(Class<? extends D> type) {
         super(type);
     }
+    
+    @Deprecated
+    public EBoolean after(D right) {
+        return gt(right);
+    }    
 
-    /**
-     * Create a <code>this &gt; right</code> expression
-     * 
-     * @param right rhs of the comparison
-     * @return
-     * @see java.lang.Comparable#compareTo(Object)
-     */
-    public final EBoolean after(D right) {
-        return after(ExprConst.create(right));
+    @Deprecated
+    public EBoolean after(Expr<D> right) {
+        return gt(right);
+    }
+    
+    @Deprecated
+    public EBoolean aoe(D right) {
+        return goe(right);
+    }    
+
+    @Deprecated
+    public EBoolean aoe(Expr<D> right) {
+        return goe(right);
+    }
+    
+    @Deprecated
+    public EBoolean before(D right) {
+        return lt(right);
+    }    
+
+    @Deprecated
+    public EBoolean before(Expr<D> right) {
+        return lt(right);
+    }
+    
+    @Deprecated
+    public EBoolean boe(D right) {
+        return loe(right);
+    }    
+
+    @Deprecated
+    public EBoolean boe(Expr<D> right) {
+        return loe(right);
     }
 
     /**
@@ -52,7 +81,18 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @return
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public final EBoolean after(Expr<D> right) {
+    public EBoolean gt(D right) {
+        return gt(ExprConst.create(right));
+    }
+    
+    /**
+     * Create a <code>this &gt; right</code> expression
+     * 
+     * @param right rhs of the comparison
+     * @return
+     * @see java.lang.Comparable#compareTo(Object)
+     */
+    public EBoolean gt(Expr<D> right) {
         return OBoolean.create(Ops.AFTER, this, right);
     }
 
@@ -63,8 +103,8 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @return
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public final EBoolean aoe(D right) {
-        return aoe(ExprConst.create(right));
+    public EBoolean goe(D right) {
+        return goe(ExprConst.create(right));
     }
 
     /**
@@ -74,7 +114,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @return
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public final EBoolean aoe(Expr<D> right) {
+    public EBoolean goe(Expr<D> right) {
         return OBoolean.create(Ops.AOE, this, right);
     }
 
@@ -97,8 +137,8 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @return
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public final EBoolean before(D right) {
-        return before(ExprConst.create(right));
+    public final EBoolean lt(D right) {
+        return lt(ExprConst.create(right));
     }
 
     /**
@@ -108,7 +148,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @return
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public final EBoolean before(Expr<D> right) {
+    public final EBoolean lt(Expr<D> right) {
         return OBoolean.create(Ops.BEFORE, this, right);
     }
 
@@ -119,7 +159,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @return
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public final EBoolean boe(D right) {
+    public final EBoolean loe(D right) {
         return OBoolean.create(Ops.BOE, this, ExprConst.create(right));
     }
 
@@ -130,7 +170,7 @@ public abstract class EComparable<D extends Comparable> extends Expr<D> {
      * @return
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public final EBoolean boe(Expr<D> right) {
+    public final EBoolean loe(Expr<D> right) {
         return OBoolean.create(Ops.BOE, this, right);
     }
 

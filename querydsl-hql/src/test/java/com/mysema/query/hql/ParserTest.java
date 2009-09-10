@@ -80,8 +80,8 @@ public class ParserTest implements Constants {
             TokenStreamException {
         
         EComparable<java.util.Date> ed = catalog.effectiveDate;
-        query().from(catalog).where(ed.after(EDate.currentDate()), ed.aoe(EDate.currentDate()),
-                ed.before(EDate.currentDate()), ed.boe(EDate.currentDate())).select(catalog)
+        query().from(catalog).where(ed.gt(EDate.currentDate()), ed.goe(EDate.currentDate()),
+                ed.lt(EDate.currentDate()), ed.loe(EDate.currentDate())).select(catalog)
                 .parse();
     }
 
@@ -525,10 +525,10 @@ public class ParserTest implements Constants {
                 .from(catalog).join(catalog.prices, price).where(
                         ord.paid.not().and(ord.customer.eq(cust)).and(
                                 price.product.eq(product)).and(
-                                catalog.effectiveDate.after(EDate.currentDate())).and(
-                                catalog.effectiveDate.after(all(                                        
+                                catalog.effectiveDate.gt(EDate.currentDate())).and(
+                                catalog.effectiveDate.gt(all(                                        
                                         sub().from(catalog).where(
-                                                catalog.effectiveDate.before(EDate.currentDate()))
+                                                catalog.effectiveDate.lt(EDate.currentDate()))
                                              .list(catalog.effectiveDate)                                ))))
                 .groupBy(ord).having(sum(price.amount).gt(0l)).orderBy(
                         sum(price.amount).desc());

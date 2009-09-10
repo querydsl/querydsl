@@ -37,9 +37,9 @@ public class ColQueryTest extends AbstractQueryTest {
     @Test
     public void testAfterAndBefore() {
         query().from(cat, Arrays.asList(c1, c2))
-        .where(cat.birthdate.before(new Date()),
-                cat.birthdate.boe(new Date()), cat.birthdate.after(new Date()),
-                cat.birthdate.aoe(new Date()))
+        .where(cat.birthdate.lt(new Date()),
+                cat.birthdate.loe(new Date()), cat.birthdate.gt(new Date()),
+                cat.birthdate.goe(new Date()))
         .list(cat);
     }
 
