@@ -12,12 +12,8 @@ import net.jcip.annotations.Immutable;
 @Immutable
 public class SupertypeSerializer extends EntitySerializer{
 
-    public SupertypeSerializer() {
-        super(false);
-    }
-    
     @Override
-    protected void defaultInstance(ClassModel model, StringBuilder builder) {
+    protected void introDefaultInstance(StringBuilder builder, ClassModel model) {
         // no default instance
     }
     

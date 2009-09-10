@@ -11,7 +11,8 @@ import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.util.NotEmpty;
 
 public class QTEST extends PEntity<java.lang.Object> {
-    public final PString name = _string("name");
+    
+    public final PString name = createString("name");
 
     public QTEST(@NotEmpty java.lang.String path) {
         super(java.lang.Object.class, "test", path);

@@ -16,11 +16,11 @@ public final class Serializers {
     
     private Serializers(){}
     
-    public static final Serializer ENTITY = new EntitySerializer(false);
+    public static final Serializer ENTITY = new EntitySerializer();
     
     public static final Serializer SUPERTYPE = new SupertypeSerializer();
     
-    public static final Serializer EMBEDDABLE = new EntitySerializer(true);
+    public static final Serializer EMBEDDABLE = new EmbeddableSerializer();
     
     public static final Serializer DTO = new DTOSerializer();    
 }

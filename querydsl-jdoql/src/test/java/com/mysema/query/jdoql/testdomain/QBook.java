@@ -7,16 +7,25 @@ import com.mysema.query.types.path.*;
  *
  */
 public class QBook extends PEntity<com.mysema.query.jdoql.testdomain.Book>{
-    public static final QBook book = new QBook("book");
-    public final PString author = _string("author");
-    public final PString description = _string("description");
-    public final PString isbn = _string("isbn");
-    public final PString name = _string("name");
-    public final PString publisher = _string("publisher");
-    public final PDateTime<java.util.Date> publicationDate = _dateTime("publicationDate",java.util.Date.class);
-    public final PNumber<java.lang.Integer> amount = _number("amount",java.lang.Integer.class);
-    public final PNumber<java.lang.Double> price = _number("price",java.lang.Double.class);
     
+    public static final QBook book = new QBook("book");
+    
+    public final PString author = createString("author");
+    
+    public final PString description = createString("description");
+    
+    public final PString isbn = createString("isbn");
+    
+    public final PString name = createString("name");
+    
+    public final PString publisher = createString("publisher");
+    
+    public final PDateTime<java.util.Date> publicationDate = createDateTime("publicationDate",java.util.Date.class);
+    
+    public final PNumber<java.lang.Integer> amount = createNumber("amount",java.lang.Integer.class);
+    
+    public final PNumber<java.lang.Double> price = createNumber("price",java.lang.Double.class);
+        
     public QBook(java.lang.String path) {
           this(com.mysema.query.jdoql.testdomain.Book.class, path);        
     }

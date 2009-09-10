@@ -20,14 +20,15 @@ public class QEMPLOYEE extends PEntity<java.lang.Object> {
     // + "CONSTRAINT PK_employee PRIMARY KEY (id), "
     // + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) "
     // + "REFERENCES employee(ID))");
-    public final PNumber<java.lang.Integer> id = _number("id",
-            java.lang.Integer.class);
-    public final PString firstname = _string("firstname");
-    public final PString lastname = _string("lastname");
-    public final PNumber<BigDecimal> salary = _number("salary",
-            BigDecimal.class);
-    public final PNumber<java.lang.Integer> superiorId = _number("superior_id",
-            java.lang.Integer.class);
+    public final PNumber<java.lang.Integer> id = createNumber("id", java.lang.Integer.class);
+    
+    public final PString firstname = createString("firstname");
+    
+    public final PString lastname = createString("lastname");
+    
+    public final PNumber<BigDecimal> salary = createNumber("salary", BigDecimal.class);
+    
+    public final PNumber<java.lang.Integer> superiorId = createNumber("superior_id", java.lang.Integer.class);
 
     public QEMPLOYEE(@NotEmpty java.lang.String path) {
         super(java.lang.Object.class, "employee2", path);

@@ -12,9 +12,10 @@ import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.util.NotEmpty;
 
 public class QSURVEY extends PEntity<java.lang.Object> {
-    public final PString name = _string("name");
-    public final PNumber<java.lang.Integer> id = _number("id",
-            java.lang.Integer.class);
+    
+    public final PString name = createString("name");
+    
+    public final PNumber<java.lang.Integer> id = createNumber("id", java.lang.Integer.class);
 
     public QSURVEY(@NotEmpty java.lang.String path) {
         super(java.lang.Object.class, "survey", path);

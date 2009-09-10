@@ -47,63 +47,63 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
         this(type, Assert.hasLength(entityName), PathMetadata.forProperty(parent, property));
     }
 
-    protected PBoolean _boolean(@NotEmpty String propertyName) {
+    protected PBoolean createBoolean(@NotEmpty String propertyName) {
         return new PBoolean(this, propertyName);
     }
 
-    protected <A extends Comparable<?>> PComparable<A> _comparable(@NotEmpty String propertyName, Class<A> type) {
+    protected <A extends Comparable<?>> PComparable<A> createComparable(@NotEmpty String propertyName, Class<A> type) {
         return new PComparable<A>(type, this, propertyName);
     }
 
-    protected <A extends Comparable<?>> PDate<A> _date(@NotEmpty String propertyName, Class<A> type) {
+    protected <A extends Comparable<?>> PDate<A> createDate(@NotEmpty String propertyName, Class<A> type) {
         return new PDate<A>(type, PathMetadata.forProperty(this, propertyName));
     }
 
-    protected <A extends Comparable<?>> PDateTime<A> _dateTime(@NotEmpty String propertyName, Class<A> type) {
+    protected <A extends Comparable<?>> PDateTime<A> createDateTime(@NotEmpty String propertyName, Class<A> type) {
         return new PDateTime<A>(type, this, propertyName);
     }
 
-    protected <A> PEntity<A> _entity(@NotEmpty String property, @NotEmpty String entityName, Class<A> type) {
+    protected <A> PEntity<A> createEntity(@NotEmpty String property, @NotEmpty String entityName, Class<A> type) {
         return new PEntity<A>(type, entityName, this,property);
     }
 
-    protected <A> PEntityCollection<A> _entitycol(@NotEmpty String property, Class<A> type, @NotEmpty String entityName) {
+    protected <A> PEntityCollection<A> createEntityCollection(@NotEmpty String property, Class<A> type, @NotEmpty String entityName) {
         return new PEntityCollection<A>(type, entityName, this, property);
     }
 
-    protected <A> PEntityList<A> _entitylist(@NotEmpty String property, Class<A> type, @NotEmpty String entityName) {
+    protected <A> PEntityList<A> createEntityList(@NotEmpty String property, Class<A> type, @NotEmpty String entityName) {
         return new PEntityList<A>(type, entityName, this, property);
     }
 
-    protected <K, V> PEntityMap<K, V> _entitymap(@NotEmpty String property, Class<K> key, Class<V> value, @NotEmpty String entityName) {
+    protected <K, V> PEntityMap<K, V> createEntityMap(@NotEmpty String property, Class<K> key, Class<V> value, @NotEmpty String entityName) {
         return new PEntityMap<K, V>(key, value, entityName, this, property);
     }
 
-    protected <A extends Number & Comparable<?>> PNumber<A> _number(@NotEmpty String property, Class<A> type) {
+    protected <A extends Number & Comparable<?>> PNumber<A> createNumber(@NotEmpty String property, Class<A> type) {
         return new PNumber<A>(type, this, property);
     }
 
-    protected <A> PSimple<A> _simple(@NotEmpty String path, Class<A> type) {
+    protected <A> PSimple<A> createSimple(@NotEmpty String path, Class<A> type) {
         return new PSimple<A>(type, this, path);
     }
 
-    protected <A> PComponentCollection<A> _simplecol(@NotEmpty String path, Class<A> type) {
+    protected <A> PComponentCollection<A> createSimpleCollection(@NotEmpty String path, Class<A> type) {
         return new PComponentCollection<A>(type, this,path);
     }
 
-    protected <A> PComponentList<A> _simplelist(@NotEmpty String path, Class<A> type) {
+    protected <A> PComponentList<A> createSimpleList(@NotEmpty String path, Class<A> type) {
         return new PComponentList<A>(type, this, path);
     }
 
-    protected <K, V> PComponentMap<K, V> _simplemap(@NotEmpty String path, Class<K> key, Class<V> value) {
+    protected <K, V> PComponentMap<K, V> createSimpleMap(@NotEmpty String path, Class<K> key, Class<V> value) {
         return new PComponentMap<K, V>(key, value, this, path);
     }
 
-    protected PString _string(@NotEmpty String property) {
+    protected PString createString(@NotEmpty String property) {
         return new PString(this, property);
     }
 
-    protected <A extends Comparable<?>> PTime<A> _time(@NotEmpty String propertyName, Class<A> type) {
+    protected <A extends Comparable<?>> PTime<A> createTime(@NotEmpty String propertyName, Class<A> type) {
         return new PTime<A>(type, this, propertyName);
     }
 

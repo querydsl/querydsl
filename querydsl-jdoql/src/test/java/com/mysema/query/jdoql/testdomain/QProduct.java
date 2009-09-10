@@ -7,13 +7,19 @@ import com.mysema.query.types.path.*;
  *
  */
 public class QProduct extends PEntity<com.mysema.query.jdoql.testdomain.Product>{
-    public static final QProduct product = new QProduct("product");
-    public final PString description = _string("description");
-    public final PString name = _string("name");
-    public final PDateTime<java.util.Date> publicationDate = _dateTime("publicationDate",java.util.Date.class);
-    public final PNumber<java.lang.Integer> amount = _number("amount",java.lang.Integer.class);
-    public final PNumber<java.lang.Double> price = _number("price",java.lang.Double.class);
     
+    public static final QProduct product = new QProduct("product");
+    
+    public final PString description = createString("description");
+    
+    public final PString name = createString("name");
+    
+    public final PDateTime<java.util.Date> publicationDate = createDateTime("publicationDate",java.util.Date.class);
+    
+    public final PNumber<java.lang.Integer> amount = createNumber("amount",java.lang.Integer.class);
+    
+    public final PNumber<java.lang.Double> price = createNumber("price",java.lang.Double.class);
+        
     public QProduct(java.lang.String path) {
           this(com.mysema.query.jdoql.testdomain.Product.class, path);        
     }
