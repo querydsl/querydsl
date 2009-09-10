@@ -9,6 +9,7 @@ import com.mysema.query.annotations.Entity;
 
 @Entity
 public class Animal {
+    
     protected boolean alive;
     protected java.util.Date birthdate = new java.util.Date();
     protected int bodyWeight, weight, toes;

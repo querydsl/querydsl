@@ -50,7 +50,7 @@ public class SerializerTest {
      */
     @Test
     public void testDomainTypesAsOuterClasses() throws Exception {
-        Serializers.DOMAIN.serialize(type, writer);
+        Serializers.ENTITY.serialize(type, writer);
 //        System.out.println(writer);
     }
 

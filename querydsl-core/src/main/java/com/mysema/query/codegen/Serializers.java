@@ -16,7 +16,9 @@ public final class Serializers {
     
     private Serializers(){}
     
-    public static final Serializer DOMAIN = new EntitySerializer(false);
+    public static final Serializer ENTITY = new EntitySerializer(false);
+    
+    public static final Serializer SUPERTYPE = new SupertypeSerializer(false);
     
     public static final Serializer EMBEDDABLE = new EntitySerializer(true);
     

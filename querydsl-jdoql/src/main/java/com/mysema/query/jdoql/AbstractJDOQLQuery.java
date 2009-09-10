@@ -41,12 +41,6 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     @Nullable
     private final PersistenceManager pm;
     
-    public AbstractJDOQLQuery(QueryMetadata md, JDOQLTemplates templates){
-        super(md);
-        this.templates = templates;
-        this.pm = null;
-    }
-    
     public AbstractJDOQLQuery(QueryMetadata md, PersistenceManager pm, JDOQLTemplates templates) {
         super(md);
         this.templates = templates;

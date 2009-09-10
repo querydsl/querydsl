@@ -19,8 +19,14 @@ import com.mysema.query.hql.HQLTemplates;
  */
 public class HibernateQuery extends AbstractHibernateQuery<HibernateQuery> implements HQLQuery{
 
-    public HibernateQuery(Session session, HQLTemplates patterns) {
-        super(new DefaultQueryMetadata(), session, patterns);
+    private static final HQLTemplates DEFAULT_TEMPLATES = new HQLTemplates();
+    
+    public HibernateQuery(Session session, HQLTemplates templates) {
+        super(new DefaultQueryMetadata(), session, templates);
+    }
+    
+    public HibernateQuery(Session session) {
+        super(new DefaultQueryMetadata(), session, DEFAULT_TEMPLATES);
     }
 
 }

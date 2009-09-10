@@ -71,6 +71,11 @@ public class Processor {
                 ClassModel model = element.accept(entityVisitor, null);
                 superTypes.put(model.getName(), model);
             }
+            
+            // serialize supertypes
+            if (!superTypes.isEmpty()){
+                serialize(Serializers.SUPERTYPE, superTypes);
+            }
         }
 
         // ENTITIES
@@ -87,7 +92,7 @@ public class Processor {
         }
         // serialize entity types
         if (!entityTypes.isEmpty()) {
-            serialize(Serializers.DOMAIN, entityTypes);
+            serialize(Serializers.ENTITY, entityTypes);
         }
         
         // EMBEDDABLES (optional)

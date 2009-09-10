@@ -19,12 +19,13 @@ import com.mysema.query.DefaultQueryMetadata;
  */
 public class JDOQLQueryImpl extends AbstractJDOQLQuery<JDOQLQueryImpl> implements JDOQLQuery{
 
-    public JDOQLQueryImpl(JDOQLTemplates templates) {
-        super(new DefaultQueryMetadata(), templates);
-    }
-
+    private static final JDOQLTemplates DEFAULT_TEMPLATES = new JDOQLTemplates();
+    
     public JDOQLQueryImpl(PersistenceManager pm, JDOQLTemplates templates) {
         super(new DefaultQueryMetadata(), pm, templates);
     }
 
+    public JDOQLQueryImpl(PersistenceManager pm) {
+        super(new DefaultQueryMetadata(), pm, DEFAULT_TEMPLATES);
+    }
 }

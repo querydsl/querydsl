@@ -149,6 +149,9 @@ public class EntitySerializer extends AbstractSerializer{
             builder.append("    }\n\n");    
         }        
 
+        builder.append("    public " + queryType + "(PEntity<?> entity) {\n");
+        builder.append("        this(entity.getMetadata());\n");
+        builder.append("    }\n\n");        
         builder.append("    public " + queryType + "(PathMetadata<?> metadata) {\n");
         builder.append("        super("+ localName + ".class, \"" + simpleName + "\", metadata);\n");
         builder.append("    }\n\n");
@@ -233,7 +236,6 @@ public class EntitySerializer extends AbstractSerializer{
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
         final String localName = model.getLocalName();
-        final String unscapSimpleName = model.getUncapSimpleName();
         
         StringBuilder builder = new StringBuilder();        
         // package
@@ -253,14 +255,21 @@ public class EntitySerializer extends AbstractSerializer{
         builder.append("@SuppressWarnings(\"all\")\n");
         builder.append("public class " + queryType + " extends PEntity<" + localName + "> {\n\n");
         
-        if (!embeddable){
-            // default variable
-            builder.append("    public static final " + queryType + " " + unscapSimpleName + " = new " + queryType + "(\"" + unscapSimpleName + "\");\n\n");            
-        }
+        defaultInstance(model, builder);
         
         writer.append(builder.toString());
     }
 
+    protected void defaultInstance(ClassModel model, StringBuilder builder) {
+        final String simpleName = model.getSimpleName();
+        final String unscapSimpleName = model.getUncapSimpleName();
+        final String queryType = model.getPrefix() + simpleName;
+        if (!embeddable){
+            // default variable
+            builder.append("    public static final " + queryType + " " + unscapSimpleName + " = new " + queryType + "(\"" + unscapSimpleName + "\");\n\n");            
+        }
+    }
+    
     protected void numericField(FieldModel field, Writer writer) throws IOException {
         serialize(field, "PNumber<" + field.getTypeName() + ">", writer, "_number", field.getTypeName() +".class");        
     }

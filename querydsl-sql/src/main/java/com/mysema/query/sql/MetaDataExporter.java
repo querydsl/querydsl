@@ -39,7 +39,7 @@ public class MetaDataExporter {
 
     private final String schemaPattern, tableNamePattern;
 
-    private static final Serializer serializer = Serializers.DOMAIN;
+    private static final Serializer serializer = Serializers.ENTITY;
     
     public MetaDataExporter(String namePrefix, String packageName, String schemaPattern, String tableNamePattern, String targetFolder){
         this.namePrefix = namePrefix;

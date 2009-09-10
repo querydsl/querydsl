@@ -19,8 +19,13 @@ import com.mysema.query.hql.HQLTemplates;
  */
 public class JPAQuery extends AbstractJPAQuery<JPAQuery> implements HQLQuery{
 
+    private static final HQLTemplates DEFAULT_TEMPLATES = new HQLTemplates();
+    
     public JPAQuery(EntityManager em, HQLTemplates patterns) {
         super(new DefaultQueryMetadata(), em, patterns);
     }
 
+    public JPAQuery(EntityManager em) {
+        super(new DefaultQueryMetadata(), em, DEFAULT_TEMPLATES);
+    }
 }
