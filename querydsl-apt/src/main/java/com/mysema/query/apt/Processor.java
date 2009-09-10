@@ -15,11 +15,10 @@ import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.VariableElement;
 import javax.tools.JavaFileObject;
 import javax.tools.Diagnostic.Kind;
+
+import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.codegen.ClassModel;
@@ -33,9 +32,8 @@ import com.mysema.query.codegen.TypeModelFactory;
  * @author tiwe
  * 
  */
+@Immutable
 public class Processor {
-    
-    private final Class<? extends Annotation> entityAnn, superTypeAnn, embeddableAnn, dtoAnn, skipAnn;
     
     private final ProcessingEnvironment env;
     
@@ -45,69 +43,31 @@ public class Processor {
     
     private final String namePrefix = "Q";
     
-    private boolean useFields = true, useGetters = true;
+    private final Configuration conf;
     
     @SuppressWarnings("unchecked")
-    public Processor(ProcessingEnvironment env,
-            Class<? extends Annotation> entityAnn, 
-            Class<? extends Annotation> superTypeAnn,
-            Class<? extends Annotation> embeddableAnn,
-            Class<? extends Annotation> dtoAnn,
-            Class<? extends Annotation> skipAnn) {
-        this.env = Assert.notNull(env);
-        this.entityAnn = Assert.notNull(entityAnn);
-        this.superTypeAnn = superTypeAnn;
-        this.embeddableAnn = embeddableAnn;
-        this.dtoAnn = dtoAnn;
-        this.skipAnn = skipAnn;        
+    public Processor(ProcessingEnvironment env, Configuration configuration) {
+        this.conf = configuration;
         Class<? extends Annotation>[] anns ;
-        if (embeddableAnn != null){
-            anns = new Class[]{entityAnn, embeddableAnn};
+        if (conf.getEmbeddableAnn() != null){
+            anns = new Class[]{conf.getEntityAnn(), conf.getEmbeddableAnn()};
         }else{
-            anns = new Class[]{entityAnn};            
+            anns = new Class[]{conf.getEntityAnn()};            
         }
+        this.env = Assert.notNull(env);        
         TypeModelFactory factory = new TypeModelFactory(anns);
         this.typeFactory = new APTModelFactory(factory, Arrays.asList(anns));
         this.classModelFactory = new ClassModelFactory(factory);
     }
     
-    protected boolean isValidConstructor(ExecutableElement constructor) {
-        return constructor.getModifiers().contains(Modifier.PUBLIC);
-    }
-
-    protected boolean isValidField(VariableElement field) {
-        return useFields
-            && field.getAnnotation(skipAnn) == null
-            && !field.getModifiers().contains(Modifier.TRANSIENT) 
-            && !field.getModifiers().contains(Modifier.STATIC);
-    }
-
-    protected boolean isValidGetter(ExecutableElement getter){
-        return useGetters
-            && getter.getAnnotation(skipAnn) == null
-            && !getter.getModifiers().contains(Modifier.STATIC);
-    }
-
     public void process(RoundEnvironment roundEnv) {
         Map<String, ClassModel> superTypes = new HashMap<String, ClassModel>();
 
-        EntityElementVisitor entityVisitor = new EntityElementVisitor(env, namePrefix, classModelFactory, typeFactory){
-            @Override
-            protected boolean isValidField(VariableElement field) {
-                return Processor.this.isValidField(field);
-            }
-
-            @Override
-            protected boolean isValidGetter(ExecutableElement method) {
-                return Processor.this.isValidGetter(method);
-            }
-            
-        }; 
+        EntityElementVisitor entityVisitor = new EntityElementVisitor(env, conf, namePrefix, classModelFactory, typeFactory);
         
         // populate super type mappings
-        if (superTypeAnn != null) {
-            for (Element element : roundEnv.getElementsAnnotatedWith(superTypeAnn)) {
-//                ClassModel model = getClassModel(element);
+        if (conf.getSuperTypeAnn() != null) {
+            for (Element element : roundEnv.getElementsAnnotatedWith(conf.getSuperTypeAnn())) {
                 ClassModel model = element.accept(entityVisitor, null);
                 superTypes.put(model.getName(), model);
             }
@@ -117,7 +77,7 @@ public class Processor {
         
         // populate entity type mappings
         Map<String, ClassModel> entityTypes = new HashMap<String, ClassModel>();
-        for (Element element : roundEnv.getElementsAnnotatedWith(entityAnn)) {
+        for (Element element : roundEnv.getElementsAnnotatedWith(conf.getEntityAnn())) {
             ClassModel model = element.accept(entityVisitor, null);
             entityTypes.put(model.getName(), model);
         }
@@ -132,10 +92,10 @@ public class Processor {
         
         // EMBEDDABLES (optional)
         
-        if (embeddableAnn != null){
+        if (conf.getEmbeddableAnn() != null){
             // populate entity type mappings
             Map<String, ClassModel> embeddables = new HashMap<String, ClassModel>();
-            for (Element element : roundEnv.getElementsAnnotatedWith(embeddableAnn)) {
+            for (Element element : roundEnv.getElementsAnnotatedWith(conf.getEmbeddableAnn())) {
                 ClassModel model = element.accept(entityVisitor, null);
                 embeddables.put(model.getName(), model);
             }
@@ -151,16 +111,10 @@ public class Processor {
 
         // DTOS (optional)
         
-        if (dtoAnn != null){
-            DTOElementVisitor dtoVisitor = new DTOElementVisitor(env, namePrefix, classModelFactory, typeFactory){
-                @Override
-                protected boolean isValidConstructor(ExecutableElement constructor) {
-                    return Processor.this.isValidConstructor(constructor);
-                }
-                
-            };
+        if (conf.getDtoAnn() != null){
+            DTOElementVisitor dtoVisitor = new DTOElementVisitor(env, conf, namePrefix, classModelFactory, typeFactory);
             Map<String, ClassModel> dtos = new HashMap<String, ClassModel>();
-            for (Element element : roundEnv.getElementsAnnotatedWith(dtoAnn)) {
+            for (Element element : roundEnv.getElementsAnnotatedWith(conf.getDtoAnn())) {
                 ClassModel model = element.accept(dtoVisitor, null);
                 dtos.put(model.getName(), model);
             }
@@ -190,16 +144,6 @@ public class Processor {
                 msg.printMessage(Kind.ERROR, e.getMessage());
             }
         }
-    }
-
-    public Processor setUseFields(boolean useFields){
-        this.useFields = useFields;
-        return this;
-    }
-    
-    public Processor setUseGetters(boolean useGetters) {
-        this.useGetters = useGetters;        
-        return this;
     }
 
 }

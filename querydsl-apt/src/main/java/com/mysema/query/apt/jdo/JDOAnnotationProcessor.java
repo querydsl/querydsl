@@ -12,6 +12,7 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
 import com.mysema.query.annotations.Projection;
+import com.mysema.query.apt.Configuration;
 import com.mysema.query.apt.Processor;
 
 /**
@@ -35,8 +36,10 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
             dto = Projection.class;
             skip = (Class)Class.forName("javax.jdo.annotations.NotPersistent");
             
-            Processor p = new Processor(processingEnv, entity, superType, embeddable, dto, skip);
-            p.setUseGetters(false).process(roundEnv);
+            Configuration configuration = new Configuration(entity, superType, embeddable, dto, skip);
+            configuration.setUseGetters(false);
+            Processor processor = new Processor(processingEnv, configuration);
+            processor.process(roundEnv);
             return true;
             
         } catch (ClassNotFoundException e) {

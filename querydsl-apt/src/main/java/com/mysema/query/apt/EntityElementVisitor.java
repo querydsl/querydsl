@@ -11,6 +11,8 @@ import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.SimpleElementVisitor6;
 
+import net.jcip.annotations.Immutable;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.codegen.ClassModel;
@@ -22,7 +24,8 @@ import com.mysema.query.codegen.TypeModel;
  * @author tiwe
  *
  */
-public abstract class EntityElementVisitor extends SimpleElementVisitor6<ClassModel, Void>{
+@Immutable
+public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel, Void>{
     
     private final ProcessingEnvironment env;
     
@@ -30,10 +33,13 @@ public abstract class EntityElementVisitor extends SimpleElementVisitor6<ClassMo
     
     private final APTModelFactory typeFactory;
     
-    private ClassModelFactory classModelFactory;
+    private final ClassModelFactory classModelFactory;
     
-    EntityElementVisitor(ProcessingEnvironment env, String namePrefix, ClassModelFactory classModelFactory, APTModelFactory typeFactory){
+    private final Configuration configuration;
+    
+    EntityElementVisitor(ProcessingEnvironment env, Configuration conf, String namePrefix, ClassModelFactory classModelFactory, APTModelFactory typeFactory){
         this.env = env;
+        this.configuration = conf;
         this.namePrefix = namePrefix;
         this.classModelFactory = classModelFactory;
         this.typeFactory = typeFactory;
@@ -46,47 +52,62 @@ public abstract class EntityElementVisitor extends SimpleElementVisitor6<ClassMo
         TypeModel c = typeFactory.create(e.asType(), elementUtils);
         ClassModel classModel = new ClassModel(classModelFactory, namePrefix, sc.getName(), c.getPackageName(), c.getName(), c.getSimpleName());
         List<? extends Element> elements = e.getEnclosedElements();
+    
+        VisitorConfig config = configuration.getConfig(e, elements);
         
-        // GETTERS
-        for (ExecutableElement method : ElementFilter.methodsIn(elements)){
-            String name = method.getSimpleName().toString();
-            if (name.startsWith("get") && method.getParameters().isEmpty()){
-                name = StringUtils.uncapitalize(name.substring(3));
-            }else if (name.startsWith("is") && method.getParameters().isEmpty()){
-                name = StringUtils.uncapitalize(name.substring(2));
-            }else{
-                continue;
-            }
-            if (isValidGetter(method)){
-                try{
-                    TypeModel typeModel = typeFactory.create(method.getReturnType(), elementUtils);
-                    String docs = elementUtils.getDocComment(method);
-                    classModel.addField(new FieldModel(classModel, name, typeModel, docs));    
-                    
-                }catch(IllegalArgumentException ex){
-                    throw new RuntimeException("Caught exception for method " + c.getName()+"#"+method.getSimpleName(), ex);
+        if (config.isVisitMethods()){
+            for (ExecutableElement method : ElementFilter.methodsIn(elements)){
+                String name = method.getSimpleName().toString();
+                if (name.startsWith("get") && method.getParameters().isEmpty()){
+                    name = StringUtils.uncapitalize(name.substring(3));
+                }else if (name.startsWith("is") && method.getParameters().isEmpty()){
+                    name = StringUtils.uncapitalize(name.substring(2));
+                }else{
+                    continue;
                 }
-            }                
+                if (configuration.isValidGetter(method)){
+                    try{
+                        TypeModel typeModel = typeFactory.create(method.getReturnType(), elementUtils);
+//                        String docs = elementUtils.getDocComment(method);
+//                        if (docs != null){
+//                            docs = replacePattern.matcher(docs).replaceAll(" ");
+//                        }
+                        classModel.addField(new FieldModel(classModel, name, typeModel, null));    
+                        
+                    }catch(IllegalArgumentException ex){
+                        StringBuilder builder = new StringBuilder();
+                        builder.append("Caught exception for method ");
+                        builder.append(c.getName()).append("#").append(method.getSimpleName());
+                        throw new RuntimeException(builder.toString(), ex);
+                    }
+                }                
+            }   
         }
         
-        // FIELDS
-        for (VariableElement field : ElementFilter.fieldsIn(elements)){
-            if (isValidField(field)){
-                try{
-                    TypeModel typeModel = typeFactory.create(field.asType(), elementUtils);     
-                    String name = field.getSimpleName().toString();
-                    String docs = elementUtils.getDocComment(field);
-                    classModel.addField(new FieldModel(classModel, name, typeModel, docs));    
-                }catch(IllegalArgumentException ex){
-                    throw new RuntimeException("Caught exception for field " + c.getName()+"#"+field.getSimpleName(), ex);
-                }
-                    
-            }                
-        }                        
+        
+        if (config.isVisitFields()){
+            for (VariableElement field : ElementFilter.fieldsIn(elements)){
+                if (configuration.isValidField(field)){
+                    try{
+                        TypeModel typeModel = typeFactory.create(field.asType(), elementUtils);     
+                        String name = field.getSimpleName().toString();
+//                        String docs = elementUtils.getDocComment(field);
+//                        if (docs != null){
+//                            docs = replacePattern.matcher(docs).replaceAll(" ");
+//                        }
+                        classModel.addField(new FieldModel(classModel, name, typeModel, null));    
+                    }catch(IllegalArgumentException ex){
+                        StringBuilder builder = new StringBuilder();
+                        builder.append("Caught exception for field ");
+                        builder.append(c.getName()).append("#").append(field.getSimpleName());
+                        throw new RuntimeException(builder.toString(), ex);
+                    }
+                        
+                }                
+            }    
+        }
+        
         return classModel;
     }
 
-    protected abstract boolean isValidGetter(ExecutableElement method);
-
-    protected abstract boolean isValidField(VariableElement field);
 }

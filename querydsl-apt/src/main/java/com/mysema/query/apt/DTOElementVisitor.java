@@ -12,6 +12,8 @@ import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.SimpleElementVisitor6;
 
+import net.jcip.annotations.Immutable;
+
 import com.mysema.query.codegen.ClassModel;
 import com.mysema.query.codegen.ClassModelFactory;
 import com.mysema.query.codegen.ConstructorModel;
@@ -22,7 +24,8 @@ import com.mysema.query.codegen.TypeModel;
  * @author tiwe
  *
  */
-public abstract class DTOElementVisitor extends SimpleElementVisitor6<ClassModel, Void>{
+@Immutable
+public final class DTOElementVisitor extends SimpleElementVisitor6<ClassModel, Void>{
     
     private final ProcessingEnvironment env;
     
@@ -30,10 +33,13 @@ public abstract class DTOElementVisitor extends SimpleElementVisitor6<ClassModel
     
     private final APTModelFactory typeFactory;
     
-    private ClassModelFactory classModelFactory;
+    private final ClassModelFactory classModelFactory;
     
-    DTOElementVisitor(ProcessingEnvironment env, String namePrefix, ClassModelFactory classModelFactory, APTModelFactory typeFactory){
+    private final Configuration configuration;
+    
+    DTOElementVisitor(ProcessingEnvironment env, Configuration configuration, String namePrefix, ClassModelFactory classModelFactory, APTModelFactory typeFactory){
         this.env = env;
+        this.configuration = configuration;
         this.namePrefix = namePrefix;
         this.classModelFactory = classModelFactory;
         this.typeFactory = typeFactory;
@@ -48,7 +54,7 @@ public abstract class DTOElementVisitor extends SimpleElementVisitor6<ClassModel
         
         // CONSTRUCTOR
         for (ExecutableElement constructor : ElementFilter.constructorsIn(elements)){
-            if (isValidConstructor(constructor)){
+            if (configuration.isValidConstructor(constructor)){
                 List<ParameterModel> parameters = new ArrayList<ParameterModel>(constructor.getParameters().size());
                 for (VariableElement var : constructor.getParameters()){
                     TypeModel varType = typeFactory.create(var.asType(), elementUtils);
@@ -59,7 +65,5 @@ public abstract class DTOElementVisitor extends SimpleElementVisitor6<ClassModel
         }                                    
         return classModel;
     }
-
-    protected abstract boolean isValidConstructor(ExecutableElement constructor);
-
+    
 }
