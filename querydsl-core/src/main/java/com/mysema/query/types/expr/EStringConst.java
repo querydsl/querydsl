@@ -20,9 +20,9 @@ public class EStringConst extends EString implements Constant<String>{
     
     private final String constant;
     
-    private ENumber<Long> length;
+    private volatile ENumber<Long> length;
 
-    private EString lower, trim, upper;
+    private volatile EString lower, trim, upper;
 
     EStringConst(String constant){
         this.constant = constant;

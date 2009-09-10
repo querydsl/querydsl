@@ -14,6 +14,7 @@ import java.util.List;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EComparable;
+import com.mysema.query.types.expr.EComparableBase;
 import com.mysema.query.types.expr.EDate;
 import com.mysema.query.types.expr.EDateTime;
 import com.mysema.query.types.expr.EList;

@@ -33,9 +33,9 @@ public abstract class EString extends EComparable<String> {
         return new EStringConst(Assert.notNull(str));
     }
     
-    private ENumber<Long> length;
+    private volatile ENumber<Long> length;
     
-    private EString lower, trim, upper;
+    private volatile EString lower, trim, upper;
 
     public EString() {
         super(String.class);

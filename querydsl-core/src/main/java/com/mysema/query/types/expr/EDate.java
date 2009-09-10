@@ -22,12 +22,8 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings("unchecked")
 public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     
-    private ENumber<Integer> dayOfMonth;
+    private volatile ENumber<Integer> dayOfMonth, month, year;
     
-    private ENumber<Integer> month;
-    
-    private ENumber<Integer> year;
-
     public EDate(Class<? extends D> type) {
         super(type);
     }

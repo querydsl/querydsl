@@ -8,7 +8,7 @@ package com.mysema.query.sql.oracle;
 import java.util.Date;
 
 import com.mysema.query.sql.SumOver;
-import com.mysema.query.types.expr.EComparable;
+import com.mysema.query.types.expr.EComparableBase;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PComparable;
@@ -30,7 +30,7 @@ public class OracleGrammar {
 
     public static ENumber<Integer> rownum = new PNumber<Integer>(Integer.class, createVariable("rownum"));
 
-    public static EComparable<Date> sysdate = new PComparable<Date>(Date.class, createVariable("sysdate"));
+    public static EComparableBase<Date> sysdate = new PComparable<Date>(Date.class, createVariable("sysdate"));
 
     // custom functions
 

@@ -10,7 +10,7 @@ import java.lang.reflect.Array;
 import javax.annotation.Nonnegative;
 
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EComparable;
+import com.mysema.query.types.expr.EComparableBase;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;

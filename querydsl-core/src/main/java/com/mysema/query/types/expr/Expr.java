@@ -49,11 +49,11 @@ public abstract class Expr<D> {
         return Ops.AggOps.COUNT_ALL_AGG_EXPR;
     }
     
-    private ENumber<Long> count;
+    private volatile ENumber<Long> count;
 
     private final boolean primitive;
     
-    private String toString;
+    private volatile String toString;
     
     private final Class<? extends D> type;
         

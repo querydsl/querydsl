@@ -21,9 +21,9 @@ import com.mysema.query.types.operation.Ops;
  */
 public abstract class EMapBase<K,V> extends Expr<Map<K,V>> implements EMap<K,V> {
 
-    private ENumber<Integer> size;    
+    private volatile ENumber<Integer> size;    
     
-    private EBoolean empty;
+    private volatile EBoolean empty;
     
     public EMapBase(Class<? extends Map<K, V>> type) {
         super(type);

@@ -21,12 +21,8 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings("unchecked")
 public abstract class ETime<D extends Comparable> extends EDateOrTime<D> {
     
-    private ENumber<Integer> hours;
+    private volatile ENumber<Integer> hours, minutes, seconds;
     
-    private ENumber<Integer> minutes;
-    
-    private ENumber<Integer> seconds;
-
     public ETime(Class<? extends D> type) {
         super(type);
     }

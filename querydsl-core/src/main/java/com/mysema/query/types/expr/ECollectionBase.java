@@ -21,9 +21,9 @@ import com.mysema.query.types.operation.Ops;
  */
 public abstract class ECollectionBase<D> extends Expr<java.util.Collection<D>> implements ECollection<D> {
 
-    private EBoolean empty;
+    private volatile EBoolean empty;
    
-    private ENumber<Integer> size;    
+    private volatile ENumber<Integer> size;    
     
     public ECollectionBase(Class<? extends Collection<D>> type) {
         super(type);
