@@ -122,7 +122,11 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean in(Collection<? extends D> right) {
-        return OBoolean.create(Ops.IN, this, ExprConst.create(right));
+        if (right.size() == 1){
+            return eq(right.iterator().next());
+        }else{
+            return OBoolean.create(Ops.IN, this, ExprConst.create(right));    
+        }        
     }
 
     /**
@@ -132,7 +136,11 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean in(D... right) {
-        return OBoolean.create(Ops.IN, this, ExprConst.create(Arrays.asList(right)));
+        if (right.length == 1){
+            return eq(right[0]);
+        }else{
+            return OBoolean.create(Ops.IN, this, ExprConst.create(Arrays.asList(right)));    
+        }        
     }
 
     /**
@@ -176,7 +184,11 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean notIn(Collection<? extends D> right) {
-        return in(right).not();
+        if (right.size() == 1){
+            return ne(right.iterator().next());
+        }else{
+            return in(right).not();    
+        }        
     }
 
     /**
@@ -186,7 +198,11 @@ public abstract class Expr<D> {
      * @return
      */
     public final EBoolean notIn(D... right) {
-        return in(right).not();
+        if (right.length == 1){
+            return ne(right[0]);
+        }else{
+            return in(right).not();    
+        }        
     }
     
     /**
