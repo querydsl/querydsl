@@ -26,7 +26,7 @@ public class SupertypeSerializer extends EntitySerializer{
         
         StringBuilder builder = new StringBuilder();
         builder.append("    public " + queryType + "(PEntity<? extends "+localName+"> entity) {\n");
-        builder.append("        this(entity.getMetadata());\n");
+        builder.append("        super(entity.getType(), entity.getEntityName(), entity.getMetadata());\n");
         builder.append("    }\n\n");
         builder.append("    public " + queryType + "(PathMetadata<?> metadata) {\n");
         builder.append("        super("+ localName + ".class, \"" + simpleName + "\", metadata);\n");
