@@ -3,14 +3,17 @@ package com.mysema.query.codegen;
 import java.io.IOException;
 import java.io.Writer;
 
+import net.jcip.annotations.Immutable;
+
 /**
  * @author tiwe
  *
  */
+@Immutable
 public class SupertypeSerializer extends EntitySerializer{
 
-    public SupertypeSerializer(boolean embeddable) {
-        super(embeddable);
+    public SupertypeSerializer() {
+        super(false);
     }
     
     @Override
@@ -27,9 +30,6 @@ public class SupertypeSerializer extends EntitySerializer{
         StringBuilder builder = new StringBuilder();
         builder.append("    public " + queryType + "(PEntity<? extends "+localName+"> entity) {\n");
         builder.append("        super(entity.getType(), entity.getEntityName(), entity.getMetadata());\n");
-        builder.append("    }\n\n");
-        builder.append("    public " + queryType + "(PathMetadata<?> metadata) {\n");
-        builder.append("        super("+ localName + ".class, \"" + simpleName + "\", metadata);\n");
         builder.append("    }\n\n");
         writer.append(builder.toString());
     }

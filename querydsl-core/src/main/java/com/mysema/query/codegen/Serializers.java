@@ -18,7 +18,7 @@ public final class Serializers {
     
     public static final Serializer ENTITY = new EntitySerializer(false);
     
-    public static final Serializer SUPERTYPE = new SupertypeSerializer(false);
+    public static final Serializer SUPERTYPE = new SupertypeSerializer();
     
     public static final Serializer EMBEDDABLE = new EntitySerializer(true);
     

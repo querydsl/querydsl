@@ -11,7 +11,6 @@ import com.mysema.query.hql.domain.QAnimal;
 import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.hql.domain.QInheritedProperties;
 import com.mysema.query.hql.domain.QSuperclass;
-import com.mysema.query.hql.domain.Superclass;
 
 public class TypeCastTest {
 
@@ -25,15 +24,15 @@ public class TypeCastTest {
         assertEquals("inheritedProperties", superClass.toString());
     }
     
-    @Test
-    public void mappedSuperclass2(){
-        QInheritedProperties subClass = QInheritedProperties.inheritedProperties;
-        QSuperclass superClass = new QSuperclass(subClass.getMetadata());
-        
-        assertEquals(Superclass.class, superClass.getType());
-        assertEquals(Superclass.class.getSimpleName(), superClass.getEntityName());
-        assertEquals("inheritedProperties", superClass.toString());
-    }
+//    @Test
+//    public void mappedSuperclass2(){
+//        QInheritedProperties subClass = QInheritedProperties.inheritedProperties;
+//        QSuperclass superClass = new QSuperclass(subClass.getMetadata());
+//        
+//        assertEquals(Superclass.class, superClass.getType());
+//        assertEquals(Superclass.class.getSimpleName(), superClass.getEntityName());
+//        assertEquals("inheritedProperties", superClass.toString());
+//    }
 
     @Test
     public void subClassToSuper(){
