@@ -19,6 +19,7 @@ import com.mysema.query.types.operation.Ops;
  *
  * @param <D>
  */
+@SuppressWarnings("serial")
 public abstract class ECollectionBase<D> extends Expr<java.util.Collection<D>> implements ECollection<D> {
 
     private volatile EBoolean empty;

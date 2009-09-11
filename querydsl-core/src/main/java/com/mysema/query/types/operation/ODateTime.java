@@ -21,6 +21,7 @@ import com.mysema.query.types.expr.Expr;
  * @param <OpType>
  * @param <D>
  */
+@SuppressWarnings("serial")
 public class ODateTime<OpType extends Comparable<?>, D extends Comparable<?>> extends
 EDateTime<D> implements Operation<OpType, D> {
 

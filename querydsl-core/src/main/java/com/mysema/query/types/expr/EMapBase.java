@@ -19,6 +19,7 @@ import com.mysema.query.types.operation.Ops;
  * @param <K>
  * @param <V>
  */
+@SuppressWarnings("serial")
 public abstract class EMapBase<K,V> extends Expr<Map<K,V>> implements EMap<K,V> {
 
     private volatile ENumber<Integer> size;    

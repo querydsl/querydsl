@@ -13,6 +13,7 @@ import com.mysema.query.types.Visitor;
  * @author tiwe
  *
  */
+@SuppressWarnings("serial")
 public class EBooleanConst extends EBoolean implements Constant<Boolean>{
     
     public static final EBooleanConst FALSE = new EBooleanConst(Boolean.FALSE);

@@ -20,6 +20,7 @@ import com.mysema.query.types.operation.Ops;
  * @param <JM>
  * @param <A>
  */
+@SuppressWarnings("serial")
 public class ObjectSubQuery<A> extends Expr<A> implements SubQuery{
 
     private final QueryMetadata md;

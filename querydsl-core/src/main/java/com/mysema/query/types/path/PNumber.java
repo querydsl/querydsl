@@ -19,6 +19,7 @@ import com.mysema.query.util.NotEmpty;
  * 
  * @param <D> Java type
  */
+@SuppressWarnings("serial")
 public class PNumber<D extends Number & Comparable<?>> extends ENumber<D> implements Path<D> {
     
     private EBoolean isnull, isnotnull;

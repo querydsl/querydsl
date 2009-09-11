@@ -19,6 +19,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * 
  */
+@SuppressWarnings("serial")
 public class OString extends EString implements Operation<String, String> {
     
     public static EString create(Operator<String> op, Expr<?>... args){

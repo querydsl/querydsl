@@ -18,6 +18,7 @@ import com.mysema.query.types.expr.Expr;
  *
  * @param <T>
  */
+@SuppressWarnings("serial")
 public class CSimple<T> extends Expr<T> implements Custom<T> {
     
     public static <T> Expr<T> create(Class<? extends T> type, List<Expr<?>> args, Template template){

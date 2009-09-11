@@ -16,6 +16,7 @@ import com.mysema.query.util.NotEmpty;
  * @author tiwe
  * 
  */
+@SuppressWarnings("serial")
 public class PBooleanArray extends PArray<Boolean> {
     
     public PBooleanArray(PathMetadata<?> metadata) {

@@ -18,6 +18,7 @@ import com.mysema.query.util.NotEmpty;
  * @see java.lang.Boolean
  * 
  */
+@SuppressWarnings("serial")
 public class PBoolean extends EBoolean implements Path<Boolean> {
     
     private EBoolean isnull, isnotnull;

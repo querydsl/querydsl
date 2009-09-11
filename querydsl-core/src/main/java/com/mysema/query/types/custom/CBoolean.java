@@ -18,6 +18,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  *
  */
+@SuppressWarnings("serial")
 public class CBoolean extends EBoolean implements Custom<Boolean> {
     
     public static EBoolean create(List<Expr<?>> args, Template template){

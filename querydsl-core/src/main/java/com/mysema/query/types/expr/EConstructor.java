@@ -21,6 +21,7 @@ import com.mysema.query.types.Visitor;
  * 
  * @param <D> Java type
  */
+@SuppressWarnings("serial")
 public class EConstructor<D> extends Expr<D> {
     
     private final List<Expr<?>> args;

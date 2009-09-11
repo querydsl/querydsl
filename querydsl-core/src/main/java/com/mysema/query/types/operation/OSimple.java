@@ -20,6 +20,7 @@ import com.mysema.query.types.expr.Expr;
  * @param <OpType>
  * @param <D>
  */
+@SuppressWarnings("serial")
 public class OSimple<OpType, D> extends Expr<D> implements Operation<OpType, D> {
     
     /**

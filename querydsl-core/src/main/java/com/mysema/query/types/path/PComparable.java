@@ -20,7 +20,7 @@ import com.mysema.query.util.NotEmpty;
  * @param <D>
  * @see java.util.Comparable
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","serial"})
 public class PComparable<D extends Comparable> extends EComparable<D> implements
         Path<D> {
     

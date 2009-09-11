@@ -19,6 +19,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * 
  */
+@SuppressWarnings("serial")
 public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
 
     public static EBoolean create(Operator<Boolean> op, Expr<?>... args){

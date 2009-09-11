@@ -26,6 +26,7 @@ import com.mysema.query.util.NotEmpty;
  * 
  * @param <D> component type
  */
+@SuppressWarnings("serial")
 public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> implements PCollection<D> {
     
     private final PathMetadata<?> metadata;

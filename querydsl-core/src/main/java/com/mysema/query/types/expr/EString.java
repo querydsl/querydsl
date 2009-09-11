@@ -21,6 +21,7 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @see java.lang.String
  */
+@SuppressWarnings("serial")
 public abstract class EString extends EComparable<String> {
     
     /**

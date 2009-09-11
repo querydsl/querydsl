@@ -18,6 +18,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * 
  */
+@SuppressWarnings("serial")
 public class OStringArray extends Expr<String[]> implements
         Operation<String, String[]> {
     

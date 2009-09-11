@@ -8,7 +8,7 @@ package com.mysema.query.types.expr;
  *
  * @param <D>
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","serial"})
 public abstract class EDateOrTime<D extends Comparable> extends EComparable<D> {
     
     public EDateOrTime(Class<? extends D> type) {

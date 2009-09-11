@@ -21,6 +21,7 @@ import com.mysema.query.util.NotEmpty;
  *
  * @param <D> Java type
  */
+@SuppressWarnings("serial")
 public class PEntity<D> extends EEntity<D> implements Path<D> {
     
     private final String entityName;

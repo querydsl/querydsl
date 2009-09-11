@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.expr;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -23,7 +24,8 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @version $Id$
  */
-public abstract class Expr<D> {
+@SuppressWarnings("serial")
+public abstract class Expr<D> implements Serializable{
     
     private static final Templates templates = new Templates();
     

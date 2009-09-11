@@ -19,6 +19,7 @@ import com.mysema.query.util.NotEmpty;
  * 
  * @param <D> Java type
  */
+@SuppressWarnings("serial")
 public class PSimple<D> extends Expr<D> implements Path<D> {
     
     private EBoolean isnull, isnotnull;

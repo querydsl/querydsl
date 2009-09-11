@@ -14,6 +14,7 @@ import com.mysema.query.types.Visitor;
  * 
  * @param <D> component type
  */
+@SuppressWarnings("serial")
 public class EArrayConstructor<D> extends EConstructor<D[]> {
     
     private final Class<D> elementType;

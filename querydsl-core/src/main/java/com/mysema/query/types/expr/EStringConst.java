@@ -16,6 +16,7 @@ import com.mysema.query.types.Visitor;
  * @author tiwe
  *
  */
+@SuppressWarnings("serial")
 public class EStringConst extends EString implements Constant<String>{
     
     private final String constant;

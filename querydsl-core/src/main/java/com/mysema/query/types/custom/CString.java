@@ -18,6 +18,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  *
  */
+@SuppressWarnings("serial")
 public class CString extends EString implements Custom<String> {
     
     public static EString create(List<Expr<?>> args, Template template){

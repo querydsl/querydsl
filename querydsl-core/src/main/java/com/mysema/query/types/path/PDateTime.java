@@ -17,7 +17,7 @@ import com.mysema.query.util.NotEmpty;
  *
  * @param <D>
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","serial"})
 public class PDateTime<D extends Comparable> extends EDateTime<D> implements Path<D> {
 
     private EBoolean isnull, isnotnull;

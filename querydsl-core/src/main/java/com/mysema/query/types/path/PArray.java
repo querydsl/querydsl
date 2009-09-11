@@ -10,7 +10,6 @@ import java.lang.reflect.Array;
 import javax.annotation.Nonnegative;
 
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EComparableBase;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
@@ -25,6 +24,7 @@ import com.mysema.query.util.NotEmpty;
  * 
  * @param <D> component type
  */
+@SuppressWarnings("serial")
 public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>{
     
     protected final Class<D[]> arrayType;

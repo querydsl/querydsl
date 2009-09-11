@@ -10,7 +10,7 @@ import com.mysema.query.types.operation.Ops;
  *
  * @param <D>
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","serial"})
 public abstract class EComparable<D extends Comparable> extends EComparableBase<D> {
     
     public EComparable(Class<? extends D> type) {

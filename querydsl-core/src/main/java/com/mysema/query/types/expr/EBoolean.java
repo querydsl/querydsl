@@ -16,6 +16,7 @@ import com.mysema.query.types.operation.Ops;
  * @see java.lang.Boolean
  * 
  */
+@SuppressWarnings("serial")
 public abstract class EBoolean extends EComparable<Boolean> {
     
     private volatile EBoolean not;

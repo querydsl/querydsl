@@ -15,7 +15,7 @@ import com.mysema.query.types.Visitor;
  * 
  * @param <D> Java type of constant
  */
-
+@SuppressWarnings("serial")
 public class ExprConst<D> extends Expr<D> implements Constant<D> {
     
     private final D constant;

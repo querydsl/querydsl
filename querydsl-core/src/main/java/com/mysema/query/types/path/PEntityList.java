@@ -15,6 +15,7 @@ import com.mysema.query.util.NotEmpty;
  * 
  * @param <D> component type
  */
+@SuppressWarnings("serial")
 public class PEntityList<D> extends PEntityCollection<D> implements PList<D> {
     
     public PEntityList(Class<D> elementType, @NotEmpty String entityName, PathMetadata<?> metadata) {

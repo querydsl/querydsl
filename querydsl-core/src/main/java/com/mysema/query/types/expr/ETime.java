@@ -18,7 +18,7 @@ import com.mysema.query.types.operation.Ops;
  *
  * @param <D>
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","serial"})
 public abstract class ETime<D extends Comparable> extends EDateOrTime<D> {
     
     private volatile ENumber<Integer> hours, minutes, seconds;

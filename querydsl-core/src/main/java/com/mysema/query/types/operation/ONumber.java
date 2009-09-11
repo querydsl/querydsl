@@ -21,6 +21,7 @@ import com.mysema.query.types.expr.Expr;
  * @param <OpType>
  * @param <D>
  */
+@SuppressWarnings("serial")
 public class ONumber<OpType extends Number, D extends Number & Comparable<?>>
         extends ENumber<D> implements Operation<OpType, D> {
     

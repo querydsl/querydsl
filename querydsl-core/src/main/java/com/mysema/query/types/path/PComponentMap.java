@@ -23,6 +23,7 @@ import com.mysema.query.util.NotEmpty;
  * @param <K> key type
  * @param <V> value type
  */
+@SuppressWarnings("serial")
 public class PComponentMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {    
     
     private final Class<K> keyType;

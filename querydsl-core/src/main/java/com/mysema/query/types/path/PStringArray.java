@@ -16,6 +16,7 @@ import com.mysema.query.util.NotEmpty;
  * @author tiwe
  * 
  */
+@SuppressWarnings("serial")
 public class PStringArray extends PArray<String> {
     
     public PStringArray(PathMetadata<?> metadata) {

@@ -23,7 +23,7 @@ import com.mysema.query.types.operation.Ops.MathOps;
  * @param <D> Java type
  * @see java.lang.Number
  */
-
+@SuppressWarnings("serial")
 public abstract class ENumber<D extends Number & Comparable<?>> extends EComparableBase<D> {
     
     private static ENumber<Double> random;

@@ -14,6 +14,7 @@ import com.mysema.query.types.Visitor;
  *
  * @param <D>
  */
+@SuppressWarnings("serial")
 public class ENumberConst<D extends Number & Comparable<?>> extends ENumber<D> implements Constant<D>{
 
     private final D constant;

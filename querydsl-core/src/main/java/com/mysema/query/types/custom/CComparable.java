@@ -19,6 +19,7 @@ import com.mysema.query.types.expr.Expr;
  *
  * @param <T>
  */
+@SuppressWarnings("serial")
 public class CComparable<T extends Comparable<?>> extends EComparable<T> implements Custom<T> {
     
     public static <T extends Comparable<?>> EComparable<T> create(Class<T> type, List<Expr<?>> args, Template template){

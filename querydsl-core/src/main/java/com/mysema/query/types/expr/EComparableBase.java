@@ -21,7 +21,7 @@ import com.mysema.query.types.operation.Ops;
  * @param <D> Java type
  * @see java.lang.Comparable
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","serial"})
 public abstract class EComparableBase<D extends Comparable> extends Expr<D> {
 
     private volatile OrderSpecifier<D> asc, desc;

@@ -19,7 +19,7 @@ import com.mysema.query.types.operation.Ops;
  *
  * @param <D>
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","serial"})
 public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     
     private volatile ENumber<Integer> dayOfMonth, month, year;

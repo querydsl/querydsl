@@ -18,6 +18,7 @@ import com.mysema.query.util.NotEmpty;
  * @author tiwe
  * 
  */
+@SuppressWarnings("serial")
 public class PString extends EString implements Path<String> {
     
     private EBoolean isnull, isnotnull;
