@@ -55,4 +55,9 @@ public class OStringArray extends Expr<String[]> implements
     public Operator<String> getOperator() {
         return op;
     }
+
+    @Override
+    public Expr<String[]> asExpr() {
+        return this;
+    }
 }

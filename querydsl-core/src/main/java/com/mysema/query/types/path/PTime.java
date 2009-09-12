@@ -7,6 +7,7 @@ package com.mysema.query.types.path;
 
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EMapBase;
 import com.mysema.query.types.expr.ETime;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
@@ -81,4 +82,8 @@ public class PTime<D extends Comparable> extends ETime<D> implements Path<D>{
         return isnull;
     }
 
+    @Override
+    public ETime<D> asExpr() {
+        return this;
+    }
 }

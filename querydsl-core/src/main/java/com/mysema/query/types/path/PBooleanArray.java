@@ -42,4 +42,9 @@ public class PBooleanArray extends PArray<Boolean> {
         v.visit(this);        
     }
     
+    @Override
+    public Expr<Boolean[]> asExpr() {
+        return this;
+    }
+    
 }

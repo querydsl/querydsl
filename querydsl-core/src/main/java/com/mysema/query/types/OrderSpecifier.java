@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types;
 
+import java.io.Serializable;
+
 import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
@@ -17,9 +19,9 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","serial"})
 @Immutable
-public class OrderSpecifier<A extends Comparable> {
+public class OrderSpecifier<A extends Comparable> implements Serializable {
     
     private final Order order;
     

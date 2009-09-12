@@ -72,4 +72,9 @@ public class ONumber<OpType extends Number, D extends Number & Comparable<?>>
     public Operator<OpType> getOperator() {
         return op;
     }
+
+    @Override
+    public ENumber<D> asExpr() {
+        return this;
+    }
 }

@@ -7,6 +7,7 @@ package com.mysema.query.types.path;
 
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EMapBase;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
@@ -78,5 +79,10 @@ public class PString extends EString implements Path<String> {
             isnull = OBoolean.create(Ops.IS_NULL, this);
         }
         return isnull;
+    }
+    
+    @Override
+    public EString asExpr() {
+        return this;
     }
 }

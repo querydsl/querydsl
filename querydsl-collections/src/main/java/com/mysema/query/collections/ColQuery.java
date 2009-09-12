@@ -7,7 +7,7 @@ package com.mysema.query.collections;
 
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.Path;
 
 /**
  * Query interface for Collection queries
@@ -17,6 +17,6 @@ import com.mysema.query.types.expr.Expr;
  */
 public interface ColQuery extends Query<ColQuery>, Projectable {
 
-    <A> ColQuery from(Expr<A> entity, Iterable<? extends A> col);
+    <A> ColQuery from(Path<A> entity, Iterable<? extends A> col);
 
 }

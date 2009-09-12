@@ -7,6 +7,7 @@ package com.mysema.query.types.path;
 
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EMapBase;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
@@ -83,5 +84,10 @@ public class PNumber<D extends Number & Comparable<?>> extends ENumber<D> implem
             isnull = OBoolean.create(Ops.IS_NULL, this);
         }
         return isnull;
+    }
+    
+    @Override
+    public ENumber<D> asExpr() {
+        return this;
     }
 }

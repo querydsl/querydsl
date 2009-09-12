@@ -41,9 +41,25 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         super(patterns);
     }
 
-    @SuppressWarnings("unchecked")
-    public void serialize(QueryMetadata metadata,
-            boolean forCountRow) {
+    public void serializeForDelete(QueryMetadata md) {
+        append("delete ");
+        handleJoinTarget(md.getJoins().get(0));        
+        if (md.getWhere() != null) {
+            append("\nwhere ").handle(md.getWhere());
+        }
+    }
+
+    public void serializeForUpdate(QueryMetadata md) {
+        append("update ");
+        handleJoinTarget(md.getJoins().get(0));
+        append("\nset ");
+        handle(", ", md.getProjection());
+        if (md.getWhere() != null) {
+            append("\nwhere ").handle(md.getWhere());
+        }
+    }
+    
+    public void serialize(QueryMetadata metadata, boolean forCountRow) {
         List<? extends Expr<?>> select = metadata.getProjection();
         List<JoinExpression> joins = metadata.getJoins();
         EBoolean where = metadata.getWhere();
@@ -86,17 +102,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
                 append("fetch ");
             }
             
-            // type specifier
-            if (je.getTarget() instanceof PEntity) {
-                PEntity<?> pe = (PEntity<?>) je.getTarget();
-                if (pe.getMetadata().getParent() == null) {
-                    String pn = pe.getType().getPackage().getName();
-                    String typeName = pe.getType().getName().substring(
-                            pn.length() + 1);
-                    append(typeName).append(" ");
-                }
-            }
-            handle(je.getTarget());
+            handleJoinTarget(je);
             if (je.getCondition() != null) {
                 append(" with ").handle(je.getCondition());
             }
@@ -130,10 +136,23 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     }
 
     @SuppressWarnings("unchecked")
+    private void handleJoinTarget(JoinExpression je) {
+        // type specifier
+        if (je.getTarget() instanceof PEntity) {
+            PEntity<?> pe = (PEntity<?>) je.getTarget();
+            if (pe.getMetadata().getParent() == null) {
+                String pn = pe.getType().getPackage().getName();
+                String typeName = pe.getType().getName().substring(pn.length() + 1);
+                append(typeName).append(" ");
+            }
+        }
+        handle(je.getTarget());
+    }
+
+    @SuppressWarnings("unchecked")
     @Override
     public void visit(Constant<?> expr) {
-        boolean wrap = expr.getConstant().getClass().isArray()
-            || expr.getConstant() instanceof Collection;
+        boolean wrap = expr.getConstant().getClass().isArray() || expr.getConstant() instanceof Collection;
         if (wrap) {
             append("(");
         }
@@ -178,8 +197,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     }
 
     @SuppressWarnings("unchecked")
-    protected void visitOperation(Class<?> type, Operator<?> operator,
-            List<Expr<?>> args) {
+    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
         boolean old = wrapElements;
         wrapElements = HQLTemplates.wrapCollectionsForOp.contains(operator);
         // 
@@ -226,5 +244,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         //
         wrapElements = old;
     }
+
+
 
 }

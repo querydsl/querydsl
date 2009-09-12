@@ -5,6 +5,8 @@
  */
 package com.mysema.query.hql;
 
+import static org.junit.Assert.assertEquals;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.junit.Test;
@@ -15,7 +17,12 @@ import antlr.TokenStreamException;
 
 import com.mysema.query.HibernateConfig;
 import com.mysema.query.HibernateTestRunner;
+import com.mysema.query.hql.domain.Cat;
+import com.mysema.query.hql.domain.QCat;
+import com.mysema.query.hql.hibernate.HibernateDeleteClause;
 import com.mysema.query.hql.hibernate.HibernateQuery;
+import com.mysema.query.hql.hibernate.HibernateUpdateClause;
+import com.mysema.query.types.path.PEntity;
 
 /**
  * HibernatePersistenceTest provides.
@@ -68,6 +75,42 @@ public class HibernateIntegrationTest extends ParserTest {
         // NOTE : commented out, because HQLSDB doesn't support these queries
     }
 
+    private HibernateDeleteClause delete(PEntity<?> entity){
+        return new HibernateDeleteClause(session, entity);
+    }
+    
+    private HibernateUpdateClause update(PEntity<?> entity){
+        return new HibernateUpdateClause(session, entity);
+    }
+    
+    @Test
+    public void testUpdate(){
+        session.save(new Cat("Bob",10));
+        session.save(new Cat("Steve",11));
+        
+        QCat cat = QCat.cat;
+        long amount = update(cat).where(cat.name.eq("Bob"))
+            .set(cat.name, "Bobby")
+            .set(cat.alive, false)
+            .execute();
+        assertEquals(1, amount);
+            
+        assertEquals(0l, query().from(cat).where(cat.name.eq("Bob")).count());
+    }
+    
+    @Test
+    public void testDelete(){
+        session.save(new Cat("Bob",10));
+        session.save(new Cat("Steve",11));
+        
+        QCat cat = QCat.cat;
+        long amount = delete(cat).where(cat.name.eq("Bob"))            
+            .execute();
+        assertEquals(1, amount);
+            
+        assertEquals(0l, query().from(cat).where(cat.name.eq("Bob")).count());
+    }
+    
     public void setSession(Session session) {
         this.session = session;
     }

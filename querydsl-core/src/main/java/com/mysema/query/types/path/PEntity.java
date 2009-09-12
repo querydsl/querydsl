@@ -8,6 +8,7 @@ package com.mysema.query.types.path;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EDateTime;
 import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.EEntity;
 import com.mysema.query.types.operation.OBoolean;
@@ -168,5 +169,10 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
             isnull = OBoolean.create(Ops.IS_NULL, this);
         }
         return isnull;
+    }
+    
+    @Override
+    public EEntity<D> asExpr() {
+        return this;
     }
 }

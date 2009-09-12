@@ -72,4 +72,9 @@ EDateTime<D> implements Operation<OpType, D> {
     public Operator<OpType> getOperator() {
         return op;
     }
+
+    @Override
+    public EDateTime<D> asExpr() {
+        return this;
+    }
 }

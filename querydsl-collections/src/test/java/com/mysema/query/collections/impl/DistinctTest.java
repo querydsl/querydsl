@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import com.mysema.query.alias.Alias;
 import com.mysema.query.collections.MiniApi;
-import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.path.PNumber;
 
 /**
  * DistinctTest provides
@@ -24,8 +24,8 @@ import com.mysema.query.types.expr.ENumber;
  */
 public class DistinctTest extends AbstractQueryTest {
 
-    private ENumber<Integer> intVar1 = Alias.$(0);
-    private ENumber<Integer> intVar2 = Alias.$(1);
+    private PNumber<Integer> intVar1 = Alias.$(0);
+    private PNumber<Integer> intVar2 = Alias.$(1);
     private List<Integer> list1 = Arrays.asList(1, 2, 2, 3, 3, 3, 4, 4, 4, 4);
     private List<Integer> list2 = Arrays.asList(2, 2, 3, 3, 3, 4, 4, 4, 4, 4);
 

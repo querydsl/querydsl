@@ -10,6 +10,7 @@ import java.util.Collection;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EDateTime;
 import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.EEntity;
 import com.mysema.query.types.expr.ENumber;
@@ -150,6 +151,11 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
             size = ONumber.create(Integer.class, Ops.COL_SIZE, this);
         }
         return size;
+    }
+    
+    @Override
+    public Expr<Collection<D>> asExpr() {
+        return this;
     }
 
 }

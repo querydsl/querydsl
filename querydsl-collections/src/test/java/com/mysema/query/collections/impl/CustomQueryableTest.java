@@ -15,8 +15,8 @@ import org.junit.Test;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.collections.ColQueryTemplates;
 import com.mysema.query.collections.CustomQueryable;
-import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.Path;
 
 /**
  * CustomQueryableTest provides
@@ -36,7 +36,7 @@ public class CustomQueryableTest {
     private CustomQueryable<?> query() {        
         return new CustomQueryable(new DefaultQueryMetadata(), evaluatorFactory){
             @Override
-            protected Iterable getContent(Expr expr) {
+            protected Iterable getContent(Path expr) {
                 return strings;
             }                
         };

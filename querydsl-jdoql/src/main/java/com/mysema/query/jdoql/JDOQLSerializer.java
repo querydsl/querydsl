@@ -54,6 +54,17 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         this.candidatePath = candidate;
     }
     
+    public void serializeForDelete(QueryMetadata md) {
+        Expr<?> source = md.getJoins().get(0).getTarget();
+        
+        // DELETE CASCADE<fields> FROM [<candidate-class>] [WHERE <filter>] 
+        append("DELETE FROM ");
+        append(source.getType().getName());
+        if (md.getWhere() != null) {
+            append("\nWHERE ").handle(md.getWhere());
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     public void serialize(QueryMetadata metadata, boolean forCountRow, boolean subquery) {
         List<? extends Expr<?>> select = metadata.getProjection();
@@ -219,6 +230,8 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     public List<Object> getConstants() {
         return constants;
     }
+
+
     
     
 }

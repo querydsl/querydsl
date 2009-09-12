@@ -58,4 +58,9 @@ public class OString extends EString implements Operation<String, String> {
     public Operator<String> getOperator() {
         return op;
     }
+
+    @Override
+    public EString asExpr() {
+        return this;
+    }
 }

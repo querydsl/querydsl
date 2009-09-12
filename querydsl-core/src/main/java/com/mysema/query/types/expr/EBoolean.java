@@ -19,6 +19,10 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings("serial")
 public abstract class EBoolean extends EComparable<Boolean> {
     
+    public static final EBoolean FALSE = new EBooleanConst(Boolean.FALSE);
+    
+    public static final EBoolean TRUE = new EBooleanConst(Boolean.TRUE);
+    
     private volatile EBoolean not;
 
     public EBoolean() {
@@ -57,7 +61,7 @@ public abstract class EBoolean extends EComparable<Boolean> {
         return OBoolean.create(Ops.OR, this, right);
     }
     
-    public static final EBoolean create(boolean b){
-        return b ? EBooleanConst.TRUE : EBooleanConst.FALSE;
+    public static final EBoolean create(Boolean b){
+        return b.booleanValue() ? TRUE : FALSE;
     }
 }

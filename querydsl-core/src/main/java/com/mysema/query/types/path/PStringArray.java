@@ -42,4 +42,9 @@ public class PStringArray extends PArray<String> {
         // TODO : cache
         return new PString(PathMetadata.forArrayAccess(this, index));
     }
+    
+    @Override
+    public Expr<String[]> asExpr() {
+        return this;
+    }
 }

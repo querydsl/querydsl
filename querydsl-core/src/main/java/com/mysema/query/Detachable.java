@@ -10,6 +10,8 @@ import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.ObjectSubQuery;
 
 /**
+ * Detachable defines methods for the construction of SubQuery instances
+ * 
  * @author tiwe
  *
  */

@@ -15,14 +15,10 @@ import com.mysema.query.types.Visitor;
  */
 @SuppressWarnings("serial")
 public class EBooleanConst extends EBoolean implements Constant<Boolean>{
-    
-    public static final EBooleanConst FALSE = new EBooleanConst(Boolean.FALSE);
-    
-    public static final EBooleanConst TRUE = new EBooleanConst(Boolean.TRUE);
         
     private final Boolean constant;
     
-    private EBooleanConst(Boolean b){
+    EBooleanConst(Boolean b){
         this.constant = b;
     }
     

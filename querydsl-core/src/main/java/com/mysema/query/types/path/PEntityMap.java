@@ -123,4 +123,9 @@ public class PEntityMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {
         return isnull;
     }
     
+    @Override
+    public EMapBase<K,V> asExpr() {
+        return this;
+    }
+    
 }

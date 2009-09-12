@@ -31,6 +31,7 @@ import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.Path;
 import com.mysema.util.MultiIterator;
 
 /**
@@ -130,9 +131,9 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
         return LimitingIterator.create(iterator, getMetadata().getModifiers());
     }
 
-    public <A> SubType from(Expr<A> entity, Iterable<? extends A> col) {
-        exprToIt.put(entity, col);
-        getMetadata().addFrom(entity);
+    public <A> SubType from(Path<A> entity, Iterable<? extends A> col) {
+        exprToIt.put(entity.asExpr(), col);
+        getMetadata().addFrom(entity.asExpr());
         return _this;
     }
 

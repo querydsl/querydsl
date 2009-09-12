@@ -6,6 +6,7 @@
 package com.mysema.query.types.path;
 
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * Path represents a path expression
@@ -49,5 +50,10 @@ public interface Path<C> {
      * @return
      */
     EBoolean isNull();
+    
+    /**
+     * @return
+     */
+    Expr<C> asExpr();
 
 }

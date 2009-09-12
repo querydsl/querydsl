@@ -7,6 +7,7 @@ package com.mysema.query.types.path;
 
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EMapBase;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
@@ -84,4 +85,10 @@ public class PSimple<D> extends Expr<D> implements Path<D> {
         }
         return isnull;
     }
+    
+    @Override
+    public Expr<D> asExpr() {
+        return this;
+    }
+    
 }

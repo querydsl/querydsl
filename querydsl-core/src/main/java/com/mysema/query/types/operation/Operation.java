@@ -44,5 +44,10 @@ public interface Operation<OP, RT> {
      * @return
      */
     Class<? extends RT> getType();
+    
+    /**
+     * @return
+     */
+    Expr<RT> asExpr();
 
 }

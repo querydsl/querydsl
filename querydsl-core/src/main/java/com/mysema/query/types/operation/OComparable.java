@@ -72,4 +72,9 @@ public class OComparable<OpType, D extends Comparable<?>> extends
     public Operator<OpType> getOperator() {
         return op;
     }
+
+    @Override
+    public EComparable<D> asExpr() {
+        return this;
+    }
 }

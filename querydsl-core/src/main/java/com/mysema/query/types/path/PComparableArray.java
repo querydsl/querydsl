@@ -40,4 +40,9 @@ public class PComparableArray<D extends Comparable> extends PArray<D> {
     public void accept(Visitor v) {
         v.visit(this);        
     }
+    
+    @Override
+    public Expr<D[]> asExpr() {
+        return this;
+    }
 }

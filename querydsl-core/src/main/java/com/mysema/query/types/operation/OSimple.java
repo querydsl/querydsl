@@ -70,4 +70,9 @@ public class OSimple<OpType, D> extends Expr<D> implements Operation<OpType, D> 
     public Operator<OpType> getOperator() {
         return op;
     }
+
+    @Override
+    public Expr<D> asExpr() {
+        return this;
+    }
 }

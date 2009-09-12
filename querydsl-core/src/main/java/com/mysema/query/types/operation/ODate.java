@@ -73,4 +73,9 @@ public class ODate <OpType extends Comparable<?>, D extends Comparable<?>> exten
         return op;
     }
 
+    @Override
+    public EDate<D> asExpr() {
+        return this;
+    }
+
 }

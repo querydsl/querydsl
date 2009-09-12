@@ -11,7 +11,7 @@ import com.mysema.query.collections.impl.EvaluatorFactory;
 import com.mysema.query.support.ProjectableAdapter;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.Path;
 
 /**
  * CustomQueryable a ColQuery like interface for querying on custom
@@ -37,14 +37,14 @@ public abstract class CustomQueryable<SubType extends CustomQueryable<SubType>> 
     }
 
     @SuppressWarnings("unchecked")
-    public SubType from(Expr<?>... exprs) {
-        for (Expr<?> expr : exprs){
+    public SubType from(Path<?>... exprs) {
+        for (Path<?> expr : exprs){
             query.from(expr, (Iterable)getContent(expr));
         }
         return _this;
     }
 
-    protected abstract <T> Iterable<T> getContent(Expr<T> expr);
+    protected abstract <T> Iterable<T> getContent(Path<T> expr);
 
     public SubType orderBy(OrderSpecifier<?>... o) {
         query.orderBy(o);

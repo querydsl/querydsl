@@ -67,4 +67,9 @@ public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
             return super.not();
         }
     }
+
+    @Override
+    public EBoolean asExpr() {
+        return this;
+    }
 }

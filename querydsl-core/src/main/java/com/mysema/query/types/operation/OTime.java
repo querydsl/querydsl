@@ -71,4 +71,9 @@ public class OTime<OpType, D extends Comparable<?>> extends ETime<D> implements 
     public Operator<OpType> getOperator() {
         return op;
     }
+
+    @Override
+    public ETime<D> asExpr() {
+        return this;
+    }
 }

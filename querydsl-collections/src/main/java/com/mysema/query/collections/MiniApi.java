@@ -6,11 +6,14 @@
 package com.mysema.query.collections;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 import com.mysema.query.alias.Alias;
+import com.mysema.query.collections.dml.ColDeleteClause;
+import com.mysema.query.collections.dml.ColUpdateClause;
 import com.mysema.query.collections.impl.ColQueryImpl;
 import com.mysema.query.collections.impl.EvaluatorFactory;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.Path;
 
 /**
  * MiniApi provides static convenience methods for query construction
@@ -30,11 +33,19 @@ public final class MiniApi {
         return new ColQueryImpl(evaluatorFactory);
     }
     
-    public static <A> ColQuery from(Expr<A> path, A... arr) {
+    public static <A> ColDeleteClause<A> delete(Path<A> path, Collection<A> col){
+        return new ColDeleteClause<A>(evaluatorFactory, path, col);
+    }
+    
+    public static <A> ColUpdateClause<A> update(Path<A> path, Iterable<A> col){
+        return new ColUpdateClause<A>(evaluatorFactory, path, col);
+    }
+    
+    public static <A> ColQuery from(Path<A> path, A... arr) {
         return query().from(path, Arrays.asList(arr));
     }
 
-    public static <A> ColQuery from(Expr<A> path, Iterable<A> col) {
+    public static <A> ColQuery from(Path<A> path, Iterable<A> col) {
         return query().from(path, col);
     }
 

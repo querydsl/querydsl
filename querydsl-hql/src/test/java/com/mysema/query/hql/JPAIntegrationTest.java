@@ -32,8 +32,7 @@ public class JPAIntegrationTest extends ParserTest {
 
     protected TestQuery query() {
         return new TestQuery() {
-            public void parse() throws RecognitionException,
-                    TokenStreamException {
+            public void parse() throws RecognitionException, TokenStreamException {
                 try {
                     System.out.println("query : " + toString().replace('\n', ' '));
 

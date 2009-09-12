@@ -10,6 +10,7 @@ import java.util.Collection;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollectionBase;
+import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.util.NotEmpty;
@@ -94,6 +95,11 @@ public class PComponentCollection<D> extends ECollectionBase<D> implements PColl
             isnull = OBoolean.create(Ops.IS_NULL, this);
         }
         return isnull;
+    }
+    
+    @Override
+    public Expr<Collection<D>> asExpr() {
+        return this;
     }
 
 }
