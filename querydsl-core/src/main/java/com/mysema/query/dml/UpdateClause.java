@@ -9,6 +9,8 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.Path;
 
 /**
+ * UpdateClause defines a generic extensible interface for Update clauses
+ * 
  * @author tiwe
  *
  * @param <SubType>

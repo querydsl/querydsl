@@ -11,6 +11,7 @@ import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.util.NotEmpty;
 
+@SuppressWarnings("all")
 public class QSURVEY extends PEntity<java.lang.Object> {
     
     public final PString name = createString("name");

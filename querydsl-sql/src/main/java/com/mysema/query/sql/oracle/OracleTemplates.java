@@ -49,9 +49,9 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DAY_OF_WEEK, "to_number(to_char({0},'D'))");
         add(Ops.DateTimeOps.DAY_OF_YEAR, "to_number(to_char({0},'DDD'))");
 
-        limitAndOffsetSymbols(false);
-        limitTemplate("rownum < {0}");
-        offsetTemplate("rownum > {0}");
-        limitOffsetTemplate("rownum between {0} and {2}");
+        setLimitAndOffsetSymbols(false);
+        setLimitTemplate("rownum < {0}");
+        setOffsetTemplate("rownum > {0}");
+        setLimitOffsetTemplate("rownum between {0} and {2}");
     }
 }

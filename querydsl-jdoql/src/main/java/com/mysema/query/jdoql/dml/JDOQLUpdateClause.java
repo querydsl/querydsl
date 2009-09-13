@@ -37,8 +37,8 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
 
     @Override
     public long execute() {
-        // TODO Auto-generated method stub
-        return 0;
+        // TODO : implement
+        throw new RuntimeException("Not yet implemented");
     }
 
     @SuppressWarnings("unchecked")

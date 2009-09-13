@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.lang.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,16 +73,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         String queryString = toString();
         logger.debug("query : {}", queryString);
         PreparedStatement stmt = conn.prepareStatement(queryString);
-        int counter = 1;
-        for (Object o : constants) {
-            try {
-                set(stmt, counter++, o);
-            } catch (Exception e) {
-                String error = "Caught " + e.getClass().getName();
-                logger.error(error, e);
-                throw new RuntimeException(e.getMessage(), e);
-            }
-        }
+        JDBCUtil.setParameters(stmt, constants);
         ResultSet rs = stmt.executeQuery();
         try {
             List<Object[]> rv = new ArrayList<Object[]>();
@@ -103,6 +93,16 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
                 stmt.close();
             }
         }
+    }
+    
+    @SuppressWarnings("unchecked")
+    private <T> T get(ResultSet rs, int i, Class<T> type) throws Exception {
+        String methodName = "get" + type.getSimpleName();
+        if (methodName.equals("getInteger")) {
+            methodName = "getInt";
+        }
+        // TODO : cache methods
+        return (T) ResultSet.class.getMethod(methodName, int.class).invoke(rs, i);
     }
 
     public <RT> List<RT> list(Expr<RT> expr) {
@@ -132,16 +132,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         String queryString = toString();
         logger.debug("query : {}", queryString);
         PreparedStatement stmt = conn.prepareStatement(queryString);
-        int counter = 1;
-        for (Object o : constants) {
-            try {
-                set(stmt, counter++, o);
-            } catch (Exception e) {
-                String error = "Caught " + e.getClass().getName();
-                logger.error(error, e);
-                throw new RuntimeException(e.getMessage(), e);
-            }
-        }
+        JDBCUtil.setParameters(stmt, constants);        
         ResultSet rs = stmt.executeQuery();
         try {
             List<RT> rv = new ArrayList<RT>();
@@ -176,33 +167,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> T get(ResultSet rs, int i, Class<T> type) throws Exception {
-        String methodName = "get" + type.getSimpleName();
-        if (methodName.equals("getInteger")) {
-            methodName = "getInt";
-        }
-        // TODO : cache methods
-        return (T) ResultSet.class.getMethod(methodName, int.class).invoke(rs,
-                i);
-    }
 
-    private void set(PreparedStatement stmt, int i, Object o) throws Exception {
-        Class<?> type = o.getClass();
-        String methodName = "set" + type.getSimpleName();
-        if (methodName.equals("setInteger")) {
-            methodName = "setInt";
-        }
-        type = ClassUtils.wrapperToPrimitive(type) != null ? ClassUtils
-                .wrapperToPrimitive(type) : type;
-        if (methodName.equals("setDate") && type.equals(java.util.Date.class)) {
-            type = java.sql.Date.class;
-            o = new java.sql.Date(((java.util.Date) o).getTime());
-        }
-        // TODO : cache methods
-        PreparedStatement.class.getMethod(methodName, int.class, type).invoke(
-                stmt, i, o);
-    }
 
     @Override
     public String toString() {
@@ -245,21 +210,11 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     private long unsafeCount() throws SQLException {
         // forCountRow = true;
         String queryString = buildQueryString(true);
-        logger.debug("query : {}", queryString);
-        System.out.println(queryString);
+        logger.debug("query : {}", queryString);        
         PreparedStatement stmt = conn.prepareStatement(queryString);
         ResultSet rs = null;
         try {
-            int counter = 1;
-            for (Object o : constants) {
-                try {
-                    set(stmt, counter++, o);
-                } catch (Exception e) {
-                    String error = "Caught " + e.getClass().getName();
-                    logger.error(error, e);
-                    throw new RuntimeException(e.getMessage(), e);
-                }
-            }
+            JDBCUtil.setParameters(stmt, constants);            
             rs = stmt.executeQuery();
             rs.next();
             long rv = rs.getLong(1);

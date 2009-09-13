@@ -13,6 +13,7 @@ import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.util.NotEmpty;
 
+@SuppressWarnings("all")
 public class QEMPLOYEE extends PEntity<java.lang.Object> {
     // stmt.execute("create table employee(id int, "
     // + "firstname VARCHAR(50), " + "lastname VARCHAR(50), "

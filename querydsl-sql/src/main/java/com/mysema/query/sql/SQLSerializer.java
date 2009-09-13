@@ -47,7 +47,25 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     public List<Object> getConstants(){
         return constants;
     }
+    
+    public void serializeForDelete(QueryMetadata md) {
+        append(templates.getDeleteFrom());
+        handleJoinTarget(md.getJoins().get(0));        
+        if (md.getWhere() != null) {
+            append(templates.getWhere()).handle(md.getWhere());
+        }
+    }
 
+    public void serializeForUpdate(QueryMetadata md) {
+        append(templates.getUpdate());
+        handleJoinTarget(md.getJoins().get(0));
+        append("\nset ");
+        handle(", ", md.getProjection());
+        if (md.getWhere() != null) {
+            append(templates.getWhere()).handle(md.getWhere());
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     public void serialize(QueryMetadata metadata, boolean forCountRow) {
         List<? extends Expr<?>> select = metadata.getProjection();
@@ -58,12 +76,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
         if (forCountRow) {
-            append(templates.select()).append(templates.countStar());
+            append(templates.getSelect()).append(templates.getCountStar());
         } else if (!select.isEmpty()) {
             if (!metadata.isDistinct()) {
-                append(templates.select());
+                append(templates.getSelect());
             } else {
-                append(templates.selectDistinct());
+                append(templates.getSelectDistinct());
             }
             List<Expr<?>> sqlSelect = new ArrayList<Expr<?>>();
             for (Expr<?> selectExpr : select) {
@@ -77,10 +95,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
             handle(", ", sqlSelect);
         }
-        append(templates.from());
+        append(templates.getFrom());
         if (joins.isEmpty()) {
             // TODO : disallow usage of dummy table ?!?
-            append(templates.dummyTable());
+            append(templates.getDummyTable());
 
         }
         for (int i = 0; i < joins.size(); i++) {
@@ -89,46 +107,40 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 String sep = ", ";
                 switch (je.getType()) {
                 case FULLJOIN:
-                    sep = templates.fullJoin();
+                    sep = templates.getFullJoin();
                     break;
                 case INNERJOIN:
-                    sep = templates.innerJoin();
+                    sep = templates.getInnerJoin();
                     break;
                 case JOIN:
-                    sep = templates.join();
+                    sep = templates.getJoin();
                     break;
                 case LEFTJOIN:
-                    sep = templates.leftJoin();
+                    sep = templates.getLeftJoin();
                     break;
                 }
                 append(sep);
             }
 
-            // type specifier
-            if (je.getTarget() instanceof PEntity && templates.supportsAlias()) {
-                PEntity<?> pe = (PEntity<?>) je.getTarget();
-                if (pe.getMetadata().getParent() == null) {
-                    append(pe.getEntityName()).append(templates.tableAlias());
-                }
-            }
-            handle(je.getTarget());
+            handleJoinTarget(je);
+            
             if (je.getCondition() != null) {
-                append(templates.on()).handle(je.getCondition());
+                append(templates.getOn()).handle(je.getCondition());
             }
         }
 
         if (where != null) {
-            append(templates.where()).handle(where);
+            append(templates.getWhere()).handle(where);
         }
         if (!groupBy.isEmpty()) {
-            append(templates.groupBy()).handle(", ", groupBy);
+            append(templates.getGroupBy()).handle(", ", groupBy);
         }
         if (having != null) {
             if (groupBy.isEmpty()) {
                 throw new IllegalArgumentException(
                         "having, but not groupBy was given");
             }
-            append(templates.having()).handle(having);
+            append(templates.getHaving()).handle(having);
         }
 
         beforeOrderBy();
@@ -136,53 +148,65 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         Long limit = metadata.getModifiers().getLimit();
         Long offset = metadata.getModifiers().getOffset();
 
-        if (!templates.limitAndOffsetSymbols()
+        if (!templates.isLimitAndOffsetSymbols()
                 && metadata.getModifiers().isRestricting() && !forCountRow) {
             if (where == null){
-                append(templates.where());
+                append(templates.getWhere());
             }                
-            append(templates.limitOffsetCondition(limit, offset));
+            append(templates.getLimitOffsetCondition(limit, offset));
         }
 
         if (!orderBy.isEmpty() && !forCountRow) {
-            append(templates.orderBy());
+            append(templates.getOrderBy());
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy) {
                 if (!first){
                     append(", ");
                 }                    
                 handle(os.getTarget());
-                append(os.getOrder() == Order.ASC ? templates.asc() : templates.desc());
+                append(os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc());
                 first = false;
             }
         }
-        if (templates.limitAndOffsetSymbols()
+        if (templates.isLimitAndOffsetSymbols()
                 && metadata.getModifiers().isRestricting() && !forCountRow) {
             if (limit != null) {
-                append(templates.limit()).append(String.valueOf(limit));
+                append(templates.getLimit()).append(String.valueOf(limit));
             }
             if (offset != null) {
-                append(templates.offset()).append(String.valueOf(offset));
+                append(templates.getOffset()).append(String.valueOf(offset));
             }
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void handleJoinTarget(JoinExpression je) {
+        // type specifier
+        if (je.getTarget() instanceof PEntity && templates.isSupportsAlias()) {
+            PEntity<?> pe = (PEntity<?>) je.getTarget();
+            if (pe.getMetadata().getParent() == null) {
+                append(pe.getEntityName()).append(templates.getTableAlias());
+            }
+        }
+        handle(je.getTarget());
     }
 
     @SuppressWarnings("unchecked")
     public void serializeUnion(SubQuery[] sqs,
             List<OrderSpecifier<?>> orderBy) {
         // union
-        handle(templates.union(), (List)Arrays.asList(sqs));
+        handle(templates.getUnion(), (List)Arrays.asList(sqs));
 
         // order by
         if (!orderBy.isEmpty()) {
-            append(templates.orderBy());
+            append(templates.getOrderBy());
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy) {
                 if (!first){
                     append(", ");
                 }                    
                 handle(os.getTarget());
-                append(os.getOrder() == Order.ASC ? templates.asc() : templates.desc());
+                append(os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc());
                 first = false;
             }
         }
@@ -223,16 +247,17 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     public void visit(SumOver<?> expr) {
-        append(templates.sum()).append("(").handle(expr.getTarget()).append(") ");
-        append(templates.over());
+        append(templates.getSum()).append("(").handle(expr.getTarget()).append(") ");
+        append(templates.getOver());
         append(" (");
         if (expr.getPartitionBy() != null) {
-            append(templates.partitionBy()).handle(expr.getPartitionBy());
+            append(templates.getPartitionBy()).handle(expr.getPartitionBy());
         }
         if (!expr.getOrderBy().isEmpty()) {
-            append(templates.orderBy()).handle(", ", expr.getOrderBy());
+            append(templates.getOrderBy()).handle(", ", expr.getOrderBy());
         }
         append(")");
     }
+
 
 }

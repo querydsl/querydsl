@@ -23,15 +23,17 @@ import org.junit.Test;
 import com.mysema.query.ExcludeIn;
 import com.mysema.query.IncludeIn;
 import com.mysema.query.functions.MathFunctions;
+import com.mysema.query.sql.dml.SQLDeleteClause;
+import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.domain.QEMPLOYEE;
 import com.mysema.query.sql.domain.QSURVEY;
 import com.mysema.query.sql.domain.QTEST;
 import com.mysema.query.sql.dto.IdName;
 import com.mysema.query.sql.dto.QIdName;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.query.ObjectSubQuery;
 
 /**
@@ -66,6 +68,30 @@ public abstract class SqlQueryTest {
             connHolder.get().close();
     }
 
+    @Test
+    public void testUpdate(){        
+        // original state
+        long count = q().from(survey).count();
+        assertEquals(0, q().from(survey).where(survey.name.eq("S")).count());
+        
+        // update call with 0 update count
+        assertEquals(0, update(survey).where(survey.name.eq("XXX")).set(survey.name, "S").execute());
+        assertEquals(0, q().from(survey).where(survey.name.eq("S")).count());
+        
+        // update call with full update count
+        assertEquals(count, update(survey).set(survey.name, "S").execute());
+        assertEquals(count, q().from(survey).where(survey.name.eq("S")).count());
+    }
+    
+    @Test
+    @ExcludeIn("mysql")
+    public void testDelete(){
+        // TODO : FIXME
+        long count = q().from(survey).count();
+        assertEquals(0, delete(survey).where(survey.name.eq("XXX")).execute());
+        assertEquals(count, delete(survey).execute());
+    }
+    
     @Test
     public void testQuery1() throws Exception {
         for (String s : q().from(survey).list(survey.name)) {
@@ -113,12 +139,6 @@ public abstract class SqlQueryTest {
                 .println(q().from(survey).list(survey.id.sqrt()));
     }
 
-//    @Test
-//    public void testColumnAlias() throws SQLException {
-//        q().from(employee).list(employee.firstname.as("fn"),
-//                employee.firstname.lower().as("fnLc"));
-//    }
-
     @Test
     public void testSelectConcat() throws SQLException {
         System.out.println(q().from(survey)
@@ -138,36 +158,6 @@ public abstract class SqlQueryTest {
         // TODO : FIXME
         System.out.println(q().from(survey).list(survey.id.gt(0)));
     }
-
-//    @Test
-//    public void testSyntaxForTest() throws SQLException {
-//        // TEST
-//        // select count(*) from test where name = null
-//        expectedQuery = "select count(*) from test test where test.name is null";
-//        q().from(test).where(test.name.isNull()).count();
-//        // select count(*) from test where name like null
-//        // q().from(test).where(test.name.like(null)).count();
-//        // select count(*) from test where name = ''
-//        q().from(test).where(test.name.like("")).count();
-//        // select count(*) from test where name is not null
-//        q().from(test).where(test.name.isNotNull()).count();
-//        // select count(*) from test where name like '%'
-//        q().from(test).where(test.name.like("%")).count();
-//        // select count(*) from test where left(name, 6) = 'name44'
-//        q().from(test).where(test.name.substring(0, 6).like("name44%")).count();
-//        // select count(*) from test where name like 'name44%'
-//        q().from(test).where(test.name.like("name44%")).count();
-//        // select count(*) from test where left(name,5) = 'name4' and
-//        // right(name,1) = 5
-//        // TODO
-//        // select count(*) from test where name like 'name4%5'
-//        q().from(test).where(test.name.like("name4%5")).count();
-//        // select count(*) from test where left(name,5) = 'name4' and
-//        // right(name,1) = 5
-//        // TODO
-//        // select count(*) from test where name like 'name4%5'
-//        q().from(test).where(test.name.like("name4%5")).count();
-//    }
 
     @Test
     public void testSyntaxForEmployee() throws SQLException {
@@ -203,37 +193,6 @@ public abstract class SqlQueryTest {
             System.out.println(row[0] + ", " + row[1]);
         }
     }
-
-//    class EmployeeProjection extends Projection {
-//        public EmployeeProjection(String entityName) {
-//            super(entityName);
-//        }
-//
-//        Expr<Integer> id;
-//        Expr<String> firstname;
-//        Expr<Integer> superiorId;
-//    }
-
-//    @Test
-//    public void testProjectionFromEntity() throws SQLException {
-//        EmployeeProjection proj = new EmployeeProjection("proj");
-//        for (Object[] row : q().from(employee).leftJoin(proj.from(employee2))
-//                .on(proj.id.eq(employee.superiorId)).list(employee.id, proj.id,
-//                        proj.superiorId)) {
-//            System.out.println(row[0] + ", " + row[1]);
-//        }
-//    }
-
-//    @Test
-//    public void testProjectionFromSubQuery() throws SQLException {
-//        EmployeeProjection proj = new EmployeeProjection("proj");
-//        for (Object[] row : q().from(employee).leftJoin(
-//                proj.from(select(employee2.id, employee2.firstname).from(
-//                        employee2))).on(proj.id.eq(employee.superiorId)).list(
-//                employee.id, proj.id)) {
-//            System.out.println(row[0] + ", " + row[1]);
-//        }
-//    }
 
     @Test
     public void testIllegal() throws SQLException {
@@ -356,19 +315,6 @@ public abstract class SqlQueryTest {
         }
     }
 
-//    @Test
-//    @ExcludeIn( { "derby" })
-//    public void testStringFunctions() throws SQLException {
-//        EString s = employee.firstname;
-//        for (EString e : Arrays.<EString> asList(s.lower(), s.upper(), s
-//                .substring(1), s.trim(), s.concat("abc"), StringFunctions
-//                .ltrim(s), StringFunctions.rtrim(s),
-//        // QString.length(s),
-//                StringFunctions.space(4))) {
-//            q().from(employee).list(e);
-//        }
-//    }
-
     @Test
     public void testStringFunctions2() throws SQLException {
         for (EBoolean where : Arrays.<EBoolean> asList(employee.firstname
@@ -378,31 +324,6 @@ public abstract class SqlQueryTest {
             q().from(employee).where(where).list(employee.firstname);
         }
     }
-
-//    @Test
-//    @ExcludeIn( { "derby" })
-//    public void testDateTimeFunctions() throws SQLException {
-//        Expr<Date> d = new EConstant<Date>(new Date());
-//        Expr<Time> t = new EConstant<Time>(new Time(0));
-//        for (EComparable<?> e : Arrays.<EComparable<?>> asList(
-//                DateTimeFunctions.currentDate(), 
-//                DateTimeFunctions.currentTime(),
-//
-//                DateTimeFunctions.year(d), 
-//                DateTimeFunctions.month(d),
-//                DateTimeFunctions.week(d),
-//
-//                DateTimeFunctions.hours(t),
-//                DateTimeFunctions.minutes(t),
-//                DateTimeFunctions.seconds(t),
-//
-//                DateTimeFunctions.dayOfMonth(d),
-//                DateTimeFunctions.dayOfWeek(d), 
-//                DateTimeFunctions.dayOfYear(d))) {
-//            q().from(employee).list(e);
-//        }
-//    }
-
     @Test
     @ExcludeIn( { "derby" })
     public void testCasts() throws SQLException {
@@ -427,6 +348,14 @@ public abstract class SqlQueryTest {
 
     protected SQLSubQuery s(){
         return new SQLSubQuery();
+    }
+    
+    protected SQLDeleteClause delete(PEntity<?> e){
+        return new SQLDeleteClause(connHolder.get(), dialect, e);
+    }
+    
+    protected SQLUpdateClause update(PEntity<?> e){
+        return new SQLUpdateClause(connHolder.get(), dialect, e);
     }
     
     protected final SQLQuery q() {

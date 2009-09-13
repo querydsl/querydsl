@@ -13,56 +13,89 @@ import com.mysema.query.types.Templates;
 import com.mysema.query.types.operation.Ops;
 
 /**
- * SQLTemplates extended OperationPatterns to provided SQL specific extensions and
- * acts as database specific Dialect for Querydsl SQL
+ * SQLTemplates extended OperationPatterns to provided SQL specific extensions
+ * and acts as database specific Dialect for Querydsl SQL
  * 
  * @author tiwe
  * @version $Id$
  */
 public class SQLTemplates extends Templates {
 
-    private String count = "count ", 
-        countStar = "count(*)",
-        dummyTable = "dual", 
-        select = "select ",
-        selectDistinct = "select distinct ", 
-        from = "\nfrom ",
-        tableAlias = " ", 
-        fullJoin = "\nfull join ",
-        innerJoin = "\ninner join ", 
-        join = "\njoin ",
-        leftJoin = "\nleft join ", 
-        on = "\non ", 
-        where = "\nwhere ",
-        groupBy = "\ngroup by ", 
-        having = "\nhaving ",
-        orderBy = "\norder by ", 
-        desc = " desc", 
-        asc = " asc",
-        limit = "\nlimit ", 
-        offset = "\noffset ", 
-        union = "\nunion\n",
-        columnAlias = " ";
+    private final Map<Class<?>, String> class2type = new HashMap<Class<?>, String>();
+    
+    private String asc = " asc";
 
-    // oracle specific
-    private String startWith = "\nstart with ", 
-        connectBy = "\nconnect by ",
-        connectByPrior = "\nconnect by prior ",
-        connectByNocyclePrior = "\nconnect by nocycle prior ",
-        orderSiblingsBy = "\norder siblings by ", 
-        sum = "sum",
-        over = "over", 
-        partitionBy = "partition by ";
-
-    private String limitTemplate = "", 
-        offsetTemplate = "",
-        limitOffsetTemplate = "";
-
-    private Map<Class<?>, String> class2type = new HashMap<Class<?>, String>();
-
+    private String columnAlias = " ";
+    
+    private String connectBy = "\nconnect by ";
+    
+    private String connectByNocyclePrior = "\nconnect by nocycle prior ";
+    
+    private String connectByPrior = "\nconnect by prior ";
+    
+    private String count = "count ";
+    
+    private String countStar = "count(*)";
+    
+    private String deleteFrom = "delete from ";
+    
+    private String desc = " desc";
+    
+    private String dummyTable = "dual";
+    
+    private String from = "\nfrom ";
+    
+    private String fullJoin = "\nfull join ";
+    
+    private String groupBy = "\ngroup by ";
+    
+    private String having = "\nhaving ";
+    
+    private String innerJoin = "\ninner join ";
+    
+    private String join = "\njoin ";
+    
+    private String leftJoin = "\nleft join ";
+    
+    private String limit = "\nlimit ";
+    
     private boolean limitAndOffsetSymbols = true;
+    
+    private String limitOffsetTemplate = "";
+    
+    private String limitTemplate = "";
+    
+    private String offset = "\noffset ";
+    
+    private String offsetTemplate = "";
 
-    public SQLTemplates(){
+    private String on = "\non ";
+    
+    private String orderBy = "\norder by ";
+    
+    private String orderSiblingsBy = "\norder siblings by ";
+    
+    private String over = "over";
+    
+    private String partitionBy = "partition by ";
+    
+    private String select = "select ";
+    
+    private String selectDistinct = "select distinct ";
+    
+    private String startWith = "\nstart with ";
+
+    private String sum = "sum";
+    
+    private String tableAlias = " ";
+    
+    private String union = "\nunion\n";
+
+    private String update = "update ";
+
+    private String where = "\nwhere ";
+
+    public SQLTemplates() {
         add(Ops.NOT, "not {0}");
 
         // math
@@ -82,7 +115,7 @@ public class SQLTemplates extends Templates {
         add(Ops.ENDS_WITH, "{0} like concat('%',{1})");
         add(Ops.STARTS_WITH_IC, "{0l} like concat({1l},'%')");
         add(Ops.ENDS_WITH_IC, "{0l} like concat('%',{1l})");
-        
+
         for (Class<?> cl : new Class[] { Boolean.class, Byte.class,
                 Double.class, Float.class, Integer.class, Long.class,
                 Short.class, String.class }) {
@@ -99,333 +132,13 @@ public class SQLTemplates extends Templates {
     public Map<Class<?>, String> getClass2Type() {
         return class2type;
     }
-
+    
     public void addClass2TypeMappings(String type, Class<?>... classes) {
         for (Class<?> cl : classes) {
             class2type.put(cl, type);
         }
     }
-
-    public String tableAlias() {
-        return tableAlias;
-    }
-
-    public SQLTemplates tableAlias(String s) {
-        tableAlias = s;
-        return this;
-    }
-
-    public String columnAlias() {
-        return columnAlias;
-    }
-
-    public SQLTemplates columnAlias(String s) {
-        columnAlias = s;
-        return this;
-    }
-
-    public String asc() {
-        return asc;
-    }
-
-    public SQLTemplates asc(String s) {
-        asc = s;
-        return this;
-    }
-
-    public String count() {
-        return count;
-    }
-
-    public SQLTemplates count(String s) {
-        count = s;
-        return this;
-    }
-
-    public String countStar() {
-        return countStar;
-    }
-
-    public SQLTemplates countStar(String s) {
-        countStar = s;
-        return this;
-    }
-
-    public String desc() {
-        return desc;
-    }
-
-    public SQLTemplates desc(String s) {
-        desc = s;
-        return this;
-    }
-
-    public String from() {
-        return from;
-    }
-
-    public SQLTemplates from(String s) {
-        from = s;
-        return this;
-    }
-
-    public String fullJoin() {
-        return fullJoin;
-    }
-
-    public SQLTemplates fullJoin(String fullJoin) {
-        this.fullJoin = fullJoin;
-        return this;
-    }
-
-    public String groupBy() {
-        return groupBy;
-    }
-
-    public SQLTemplates groupBy(String s) {
-        groupBy = s;
-        return this;
-    }
-
-    public String having() {
-        return having;
-    }
-
-    public SQLTemplates having(String s) {
-        having = s;
-        return this;
-    }
-
-    public String innerJoin() {
-        return innerJoin;
-    }
-
-    public SQLTemplates innerJoin(String innerJoin) {
-        this.innerJoin = innerJoin;
-        return this;
-    }
-
-    public String join() {
-        return join;
-    }
-
-    public SQLTemplates join(String join) {
-        this.join = join;
-        return this;
-    }
-
-    public String leftJoin() {
-        return leftJoin;
-    }
-
-    public void leftJoin(String leftJoin) {
-        this.leftJoin = leftJoin;
-    }
-
-    public String limit() {
-        return limit;
-    }
-
-    public SQLTemplates limit(String limit) {
-        this.limit = limit;
-        return this;
-    }
-
-    public String offset() {
-        return offset;
-    }
-
-    public SQLTemplates offset(String offset) {
-        this.offset = offset;
-        return this;
-    }
-
-    public String orderBy() {
-        return orderBy;
-    }
-
-    public SQLTemplates orderBy(String s) {
-        orderBy = s;
-        return this;
-    }
-
-    public String select() {
-        return select;
-    }
-
-    public SQLTemplates select(String s) {
-        select = s;
-        return this;
-    }
-
-    public String selectDistinct() {
-        return selectDistinct;
-    }
-
-    public SQLTemplates selectDistinct(String s) {
-        selectDistinct = s;
-        return this;
-    }
-
-    public boolean supportsAlias() {
-        return true;
-    }
-
-    public String union() {
-        return union;
-    }
-
-    public SQLTemplates union(String union) {
-        this.union = union;
-        return this;
-    }
-
-    public String where() {
-        return where;
-    }
-
-    public SQLTemplates where(String s) {
-        where = s;
-        return this;
-    }
-
-    public String on() {
-        return on;
-    }
-
-    public SQLTemplates on(String s) {
-        on = s;
-        return this;
-    }
-
-    public String dummyTable() {
-        return dummyTable;
-    }
-
-    public SQLTemplates dummyTable(String dt) {
-        dummyTable = dt;
-        return this;
-    }
-
-    public String limitOffsetCondition(Long limit, Long offset) {
-        if (offset == null) {
-            return String.format(limitTemplate, limit);
-        } else if (limit == null) {
-            return String.format(offsetTemplate, offset);
-        } else {
-            return String.format(limitOffsetTemplate, limit, offset, limit
-                    + offset);
-        }
-    }
-
-    public boolean limitAndOffsetSymbols() {
-        return limitAndOffsetSymbols;
-    }
-
-    public SQLTemplates limitAndOffsetSymbols(boolean limitAndOffsetSymbols) {
-        this.limitAndOffsetSymbols = limitAndOffsetSymbols;
-        return this;
-    }
-
-    public String offsetTemplate() {
-        return offsetTemplate;
-    }
-
-    public SQLTemplates offsetTemplate(String offsetTemplate) {
-        this.offsetTemplate = offsetTemplate;
-        return this;
-    }
-
-    public String limitTemplate() {
-        return limitTemplate;
-    }
-
-    public SQLTemplates limitTemplate(String limitTemplate) {
-        this.limitTemplate = limitTemplate;
-        return this;
-    }
-
-    public String limitOffsetTemplate() {
-        return limitOffsetTemplate;
-    }
-
-    public SQLTemplates limitOffsetTemplate(String limitOffsetTemplate) {
-        this.limitOffsetTemplate = limitOffsetTemplate;
-        return this;
-    }
-
-    public String startWith() {
-        return startWith;
-    }
-
-    public SQLTemplates startWith(String sw) {
-        this.startWith = sw;
-        return this;
-    }
-
-    public String connectBy() {
-        return connectBy;
-    }
-
-    public SQLTemplates connectBy(String connectBy) {
-        this.connectBy = connectBy;
-        return this;
-    }
-
-    public String connectByPrior() {
-        return connectByPrior;
-    }
-
-    public SQLTemplates connectByPrior(String connectByPrior) {
-        this.connectByPrior = connectByPrior;
-        return this;
-    }
-
-    public String connectByNocyclePrior() {
-        return connectByNocyclePrior;
-    }
-
-    public SQLTemplates connectByNocyclePrior(String connectByNocyclePrior) {
-        this.connectByNocyclePrior = connectByNocyclePrior;
-        return this;
-    }
-
-    public String orderSiblingsBy() {
-        return orderSiblingsBy;
-    }
-
-    public SQLTemplates orderSiblingsBy(String orderSiblingsBy) {
-        this.orderSiblingsBy = orderSiblingsBy;
-        return this;
-    }
-
-    public String sum() {
-        return sum;
-    }
-
-    public SQLTemplates sum(String sum) {
-        this.sum = sum;
-        return this;
-    }
-
-    public String over() {
-        return over;
-    }
-
-    public SQLTemplates over(String over) {
-        this.over = over;
-        return this;
-    }
-
-    public String partitionBy() {
-        return partitionBy;
-    }
-
-    public SQLTemplates partitionBy(String partitionBy) {
-        this.partitionBy = partitionBy;
-        return this;
-    }
-
+    
     public SQLTemplates newLineToSingleSpace() {
         for (Field field : SQLTemplates.class.getDeclaredFields()) {
             try {
@@ -438,5 +151,306 @@ public class SQLTemplates extends Templates {
         }
         return this;
     }
+    
+    public String getLimitOffsetCondition(Long limit, Long offset) {
+        if (offset == null) {
+            return String.format(limitTemplate, limit);
+        } else if (limit == null) {
+            return String.format(offsetTemplate, offset);
+        } else {
+            return String.format(limitOffsetTemplate, limit, offset, limit + offset);
+        }
+    }
 
+    public String getAsc() {
+        return asc;
+    }
+
+    public void setAsc(String asc) {
+        this.asc = asc;
+    }
+
+    public String getColumnAlias() {
+        return columnAlias;
+    }
+
+    public void setColumnAlias(String columnAlias) {
+        this.columnAlias = columnAlias;
+    }
+
+    public String getConnectBy() {
+        return connectBy;
+    }
+
+    public void setConnectBy(String connectBy) {
+        this.connectBy = connectBy;
+    }
+
+    public String getConnectByNocyclePrior() {
+        return connectByNocyclePrior;
+    }
+
+    public void setConnectByNocyclePrior(String connectByNocyclePrior) {
+        this.connectByNocyclePrior = connectByNocyclePrior;
+    }
+
+    public String getConnectByPrior() {
+        return connectByPrior;
+    }
+
+    public void setConnectByPrior(String connectByPrior) {
+        this.connectByPrior = connectByPrior;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
+
+    public String getCountStar() {
+        return countStar;
+    }
+
+    public void setCountStar(String countStar) {
+        this.countStar = countStar;
+    }
+
+    public String getDeleteFrom() {
+        return deleteFrom;
+    }
+
+    public void setDeleteFrom(String deleteFrom) {
+        this.deleteFrom = deleteFrom;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getDummyTable() {
+        return dummyTable;
+    }
+
+    public void setDummyTable(String dummyTable) {
+        this.dummyTable = dummyTable;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getFullJoin() {
+        return fullJoin;
+    }
+
+    public void setFullJoin(String fullJoin) {
+        this.fullJoin = fullJoin;
+    }
+
+    public String getGroupBy() {
+        return groupBy;
+    }
+
+    public void setGroupBy(String groupBy) {
+        this.groupBy = groupBy;
+    }
+
+    public String getHaving() {
+        return having;
+    }
+
+    public void setHaving(String having) {
+        this.having = having;
+    }
+
+    public String getInnerJoin() {
+        return innerJoin;
+    }
+
+    public void setInnerJoin(String innerJoin) {
+        this.innerJoin = innerJoin;
+    }
+
+    public String getJoin() {
+        return join;
+    }
+
+    public void setJoin(String join) {
+        this.join = join;
+    }
+
+    public String getLeftJoin() {
+        return leftJoin;
+    }
+
+    public void setLeftJoin(String leftJoin) {
+        this.leftJoin = leftJoin;
+    }
+
+    public String getLimit() {
+        return limit;
+    }
+
+    public void setLimit(String limit) {
+        this.limit = limit;
+    }
+
+    public boolean isLimitAndOffsetSymbols() {
+        return limitAndOffsetSymbols;
+    }
+
+    public void setLimitAndOffsetSymbols(boolean limitAndOffsetSymbols) {
+        this.limitAndOffsetSymbols = limitAndOffsetSymbols;
+    }
+
+    public String getLimitOffsetTemplate() {
+        return limitOffsetTemplate;
+    }
+
+    public void setLimitOffsetTemplate(String limitOffsetTemplate) {
+        this.limitOffsetTemplate = limitOffsetTemplate;
+    }
+
+    public String getLimitTemplate() {
+        return limitTemplate;
+    }
+
+    public void setLimitTemplate(String limitTemplate) {
+        this.limitTemplate = limitTemplate;
+    }
+
+    public String getOffset() {
+        return offset;
+    }
+
+    public void setOffset(String offset) {
+        this.offset = offset;
+    }
+
+    public String getOffsetTemplate() {
+        return offsetTemplate;
+    }
+
+    public void setOffsetTemplate(String offsetTemplate) {
+        this.offsetTemplate = offsetTemplate;
+    }
+
+    public String getOn() {
+        return on;
+    }
+
+    public void setOn(String on) {
+        this.on = on;
+    }
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    public String getOrderSiblingsBy() {
+        return orderSiblingsBy;
+    }
+
+    public void setOrderSiblingsBy(String orderSiblingsBy) {
+        this.orderSiblingsBy = orderSiblingsBy;
+    }
+
+    public String getOver() {
+        return over;
+    }
+
+    public void setOver(String over) {
+        this.over = over;
+    }
+
+    public String getPartitionBy() {
+        return partitionBy;
+    }
+
+    public void setPartitionBy(String partitionBy) {
+        this.partitionBy = partitionBy;
+    }
+
+    public String getSelect() {
+        return select;
+    }
+
+    public void setSelect(String select) {
+        this.select = select;
+    }
+
+    public String getSelectDistinct() {
+        return selectDistinct;
+    }
+
+    public void setSelectDistinct(String selectDistinct) {
+        this.selectDistinct = selectDistinct;
+    }
+
+    public String getStartWith() {
+        return startWith;
+    }
+
+    public void setStartWith(String startWith) {
+        this.startWith = startWith;
+    }
+
+    public String getSum() {
+        return sum;
+    }
+
+    public void setSum(String sum) {
+        this.sum = sum;
+    }
+
+    public String getTableAlias() {
+        return tableAlias;
+    }
+
+    public void setTableAlias(String tableAlias) {
+        this.tableAlias = tableAlias;
+    }
+
+    public String getUnion() {
+        return union;
+    }
+
+    public void setUnion(String union) {
+        this.union = union;
+    }
+
+    public String getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(String update) {
+        this.update = update;
+    }
+
+    public String getWhere() {
+        return where;
+    }
+
+    public void setWhere(String where) {
+        this.where = where;
+    }
+
+    public boolean isSupportsAlias() {
+        return true;
+    }
 }

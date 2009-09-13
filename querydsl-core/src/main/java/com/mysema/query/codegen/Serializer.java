@@ -21,16 +21,16 @@ public interface Serializer {
      */
     void serialize(ClassModel type, Writer writer) throws IOException;
 
-    /**
-     * Serialize the given classes as Querydsl query types
-     * 
-     * @param targetFolder serialization target folder
-     * @param prefix name prefix ("Q" is the preferred one)
-     * @param entityAnnotations entity annotations
-     * @param entityTypes entity types
-     */
-    void serialize(String targetFolder, String prefix,
-            List<Class<? extends Annotation>> entityAnnotations,
-            Class<?>... types);
+//    /**
+//     * Serialize the given classes as Querydsl query types
+//     * 
+//     * @param targetFolder serialization target folder
+//     * @param prefix name prefix ("Q" is the preferred one)
+//     * @param entityAnnotations entity annotations
+//     * @param entityTypes entity types
+//     */
+//    void serialize(String targetFolder, String prefix,
+//            List<Class<? extends Annotation>> entityAnnotations,
+//            Class<?>... types);
 
 }

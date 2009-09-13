@@ -88,7 +88,7 @@ public class HsqldbTest extends SqlQueryTest {
 
     @Before
     public void setUpForTest() {
-        dialect = SQLTemplatesFactory.forHSQLDB().newLineToSingleSpace();
+        dialect = new HSQLDBTemplates().newLineToSingleSpace();
     }
 
     private static void addEmployee(int id, String firstName, String lastName,
