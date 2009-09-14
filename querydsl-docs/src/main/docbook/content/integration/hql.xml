@@ -15,7 +15,7 @@
     <title>Maven integration</title>
 
     <para>
-      Add the following dependency to your Maven project and make sure that
+      Add the following dependencies to your Maven project and make sure that
       the Maven 2 repo of Mysema Source
       (http://source.mysema.com/maven2/releases) is accessible from your
       POM :
@@ -24,8 +24,15 @@
     <programlisting language="xml"><![CDATA[
 <dependency>
   <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-apt</artifactId>
+  <version>0.5.4</version>
+  <scope>provided</scope>
+</dependency>    
+    
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-hql</artifactId>
-  <version>0.4.0</version>
+  <version>0.5.4</version>
 </dependency>
 ]]></programlisting>
 
@@ -149,19 +156,15 @@ QCustomer customer = new QCustomer("myCustomer");
     </para>
 
     <programlisting language="java"><![CDATA[
-// this can be reused over queries
-HQLTemplates templates = new HQLTemplates();    
 // where session is a Hibernate session
-HQLQuery query = new HibernateQuery (session, templates); 
+HQLQuery query = new HibernateQuery (session); 
 ]]></programlisting>
 
    <para>To use the JPA API instead of the Hibernate API, you can instantiate a HQLQuery like this :</para>
 
     <programlisting language="java"><![CDATA[
-// this can be reused over queries
-HQLTemplates templates = new HQLTemplates();   
 // where entityManager is a JPA EntityManager   
-HQLQuery query = new JPAQuery (entityManager, templates); 
+HQLQuery query = new JPAQuery (entityManager); 
 ]]></programlisting>
 
     <para>
@@ -171,7 +174,7 @@ HQLQuery query = new JPAQuery (entityManager, templates);
 
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
-HQLQuery query = new HibernateQuery (session, templates);
+HQLQuery query = new HibernateQuery (session);
 Customer bob = query.from(customer)
   .where(customer.firstName.eq("Bob"))
   .uniqueResult(customer);
@@ -323,23 +326,57 @@ select customer.lastName
   
   </sect2>  
   
+  <sect2>  
+  <title>Delete clauses</title>
+  <para>Delete clauses in Querydsl HQL follow a simple delete-where-execute form. Here are some examples :</para>
+    
+<programlisting language="java"><![CDATA[   
+QCat cat = QCat.cat;
+// delete all cats
+new HibernateDeleteClause(session, cat).execute();
+// delete all cats with kittens
+new HibernateDeleteClause(session, cat).where(cat.kittens.isNotEmpty()).execute());  
+]]></programlisting>  
+  
+  <para>The second parameter of the HibernateDeleteClause constructor is the entity to be deleted.
+  The where call is optional and the execute call performs the deletion and returns the amount of deleted entities.</para>
+  
+  <para>For JPA based Delete usage, use the JPADeleteClause instead.</para>
+  </sect2>
+  
+  <sect2>  
+  <title>Update clauses</title>
+  <para>Update clauses in Querydsl HQL follow a simple update-set/where-execute form. Here are some examples :</para>
+  
+<programlisting language="java"><![CDATA[   
+QCat cat = QCat.cat;
+// rename cats named Bob to Bobby
+new HibernateUpdateClause(session, cat).where(cat.name.eq("Bob"))
+    .set(cat.name, "Bobby")
+    .execute();  
+]]></programlisting>  
+  
+  <para>The second parameter of the HibernateUpdateClause constructor is the entity to be updated.
+  The set invocations define the property updates in SQL-Update-style and the execute call performs
+  the Update and returns the amount of updated entities.</para>
+  
+  <para>For JPA based Update usage, use the JPAUpdateClause instead.</para>
+  
+  </sect2>
+  
   <sect2>
   
   <title>Subqueries</title>
   
-  <!-- TODO : update -->
-  
-  <para>Subqueries in the HQL module are just special projections of the HQLQuery interface. To create
-  a subquery you create a HQLQuery instance, define the query parameters via from, where etc and use
-  uniqueExpr or listExpr to create a subquery, which is just a type-safe Querydsl expression for the query.
-  uniqueExpr is used for a unique result and listExpr for a list result.</para>
-  
-  <para>Subqueries are instantiated as new HibernateQuery(null, templates) or JPAQuery(null, templates).</para>
+  <para>To create a subquery you create a HQLSubQuery instance, define the query parameters 
+  via from, where etc and use
+  unique or list to create a subquery, which is just a type-safe Querydsl expression for the query.
+  unique is used for a unique (single) result and list for a list result.</para>
 
 <programlisting language="java"><![CDATA[
 query().from(department)
     .where(department.employees.size().eq(
-        query().from(d).uniqueExpr(AggregationFunctions.max(d.employees.size()))
+        new HQLSubQuery().from(d).unique(AggregationFunctions.max(d.employees.size()))
      )).list(department);
 ]]></programlisting>   
 
@@ -348,9 +385,9 @@ query().from(department)
 <programlisting language="java"><![CDATA[
 query().from(employee)
     .where(employee.weeklyhours.gt(
-        query().from(employee.department.employees, e)
+        new HQLSubQuery().from(employee.department.employees, e)
         .where(e.manager.eq(employee.manager))
-        .uniqueExpr(AggregationFunctions.avg(e.weeklyhours))
+        .unique(AggregationFunctions.avg(e.weeklyhours))
     )).list(employee);
 ]]></programlisting>  
 
