@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.jdoql.testdomain;
 
 import com.mysema.query.types.path.*;

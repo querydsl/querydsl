@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.jdoql.serialization;
 
 import com.mysema.query.jdoql.JDOQLSerializer;

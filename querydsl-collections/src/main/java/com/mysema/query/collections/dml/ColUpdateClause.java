@@ -25,12 +25,13 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
     
     @Override
     public long execute() {
-        int rv = 0;
-        for (T match : query.list(expr.asExpr())){
-            // TODO : update
-            rv++;
-        }
-        return rv;
+        throw new RuntimeException("Not yet implemented");
+//        int rv = 0;
+//        for (T match : query.list(expr.asExpr())){
+//            // TODO : update
+//            rv++;
+//        }
+//        return rv;
     }
 
     @Override

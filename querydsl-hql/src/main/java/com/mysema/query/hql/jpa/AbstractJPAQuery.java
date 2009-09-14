@@ -7,7 +7,6 @@ package com.mysema.query.hql.jpa;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
@@ -41,7 +40,7 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
 
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
         Query query = em.createQuery(queryString);
-        setConstants(query, getConstants());
+        JPAUtil.setConstants(query, getConstants());
         if (modifiers != null && modifiers.isRestricting()) {
             if (modifiers.getLimit() != null) {
                 query.setMaxResults(modifiers.getLimit().intValue());
@@ -51,14 +50,6 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
             }
         }
         return query;
-    }
-
-    public static void setConstants(Query query, Map<Object,String> constants) {
-        for (Map.Entry<Object,String> entry : constants.entrySet()){
-            String key = entry.getValue();
-            Object val = entry.getKey();
-            query.setParameter(key, val);
-        }
     }
 
     @SuppressWarnings("unchecked")

@@ -42,7 +42,7 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
 
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
         Query query = session.createQuery(queryString);
-        setConstants(query, getConstants());
+        HibernateUtil.setConstants(query, getConstants());
         if (modifiers != null && modifiers.isRestricting()) {
             if (modifiers.getLimit() != null) {
                 query.setMaxResults(modifiers.getLimit().intValue());
@@ -52,24 +52,6 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
             }
         }
         return query;
-    }
-
-    public static void setConstants(Query query, Map<Object,String> constants) {
-        for (Map.Entry<Object, String> entry : constants.entrySet()){
-            String key = entry.getValue();
-            Object val = entry.getKey();
-            
-            if (val instanceof Collection<?>) {
-                // NOTE : parameter types should be given explicitly
-                query.setParameterList(key, (Collection<?>) val);
-            } else if (val.getClass().isArray()) {
-                // NOTE : parameter types should be given explicitly
-                query.setParameterList(key, (Object[]) val);
-            } else {
-                // NOTE : parameter types should be given explicitly
-                query.setParameter(key, val);
-            }
-        }
     }
 
     @SuppressWarnings("unchecked")

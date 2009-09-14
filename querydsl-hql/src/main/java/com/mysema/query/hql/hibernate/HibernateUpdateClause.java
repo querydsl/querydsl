@@ -46,7 +46,7 @@ public class HibernateUpdateClause implements UpdateClause<HibernateUpdateClause
         Map<Object,String> constants = serializer.getConstantToLabel();
 
         Query query = session.createQuery(serializer.toString());
-        AbstractHibernateQuery.setConstants(query, constants);
+        HibernateUtil.setConstants(query, constants);
         return query.executeUpdate();
     }
 

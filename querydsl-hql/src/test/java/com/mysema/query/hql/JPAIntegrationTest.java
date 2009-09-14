@@ -16,7 +16,7 @@ import antlr.TokenStreamException;
 
 import com.mysema.query.JPAConfig;
 import com.mysema.query.JPATestRunner;
-import com.mysema.query.hql.jpa.JPAQuery;
+import com.mysema.query.hql.jpa.JPAUtil;
 
 /**
  * HibernatePersistenceTest provides.
@@ -38,7 +38,7 @@ public class JPAIntegrationTest extends ParserTest {
 
                     // create Query and execute it
                     Query query = entityManager.createQuery(toString());
-                    JPAQuery.setConstants(query, getConstants());
+                    JPAUtil.setConstants(query, getConstants());
                     try {
                         query.getResultList();
                     } catch (Exception e) {

@@ -1,9 +1,9 @@
-package com.mysema.query.hql.hibernate;
+package com.mysema.query.hql.jpa;
 
 import java.util.Map;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
@@ -17,22 +17,22 @@ import com.mysema.query.types.path.PEntity;
  * @author tiwe
  *
  */
-public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause>{
+public class JPADeleteClause implements DeleteClause<JPADeleteClause>{
 
     private static final HQLTemplates DEFAULT_TEMPLATES = new HQLTemplates();
     
     private final QueryMetadata md = new DefaultQueryMetadata();
     
-    private final Session session;
+    private final EntityManager em;
     
     private final HQLTemplates templates;
     
-    public HibernateDeleteClause(Session session, PEntity<?> entity){
-        this(session, entity, DEFAULT_TEMPLATES);
+    public JPADeleteClause(EntityManager em, PEntity<?> entity){
+        this(em, entity, DEFAULT_TEMPLATES);
     }
     
-    public HibernateDeleteClause(Session session, PEntity<?> entity, HQLTemplates templates){
-        this.session = session;
+    public JPADeleteClause(EntityManager em, PEntity<?> entity, HQLTemplates templates){
+        this.em = em;
         this.templates = templates;
         md.addFrom(entity);        
     }
@@ -43,13 +43,13 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
         serializer.serializeForDelete(md);
         Map<Object,String> constants = serializer.getConstantToLabel();
 
-        Query query = session.createQuery(serializer.toString());
-        HibernateUtil.setConstants(query, constants);
+        Query query = em.createQuery(serializer.toString());
+        JPAUtil.setConstants(query, constants);
         return query.executeUpdate();
     }
 
     @Override
-    public HibernateDeleteClause where(EBoolean... o) {
+    public JPADeleteClause where(EBoolean... o) {
         md.addWhere(o);
         return this;
     }

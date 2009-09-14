@@ -20,8 +20,8 @@ import com.mysema.query.HibernateTestRunner;
 import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.hql.hibernate.HibernateDeleteClause;
-import com.mysema.query.hql.hibernate.HibernateQuery;
 import com.mysema.query.hql.hibernate.HibernateUpdateClause;
+import com.mysema.query.hql.hibernate.HibernateUtil;
 import com.mysema.query.types.path.PEntity;
 
 /**
@@ -45,7 +45,7 @@ public class HibernateIntegrationTest extends ParserTest {
 
                     // create Query and execute it
                     Query query = session.createQuery(toString());
-                    HibernateQuery.setConstants(query, getConstants());
+                    HibernateUtil.setConstants(query, getConstants());
                     try {
                         query.list();
                     } catch (Exception e) {
