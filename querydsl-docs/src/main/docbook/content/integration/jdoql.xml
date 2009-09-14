@@ -271,8 +271,21 @@ query.from(customer)
   </sect2>    
   
   <sect2>  
+
   <title>Delete clauses</title>
-  <para>TODO</para>
+  <para>Delete clauses in Querydsl JDOQL follow a simple delete-where-execute form. Here are some examples :</para>
+    
+<programlisting language="java"><![CDATA[   
+QCat cat = QCat.cat;
+// delete all cats
+new JDOQLDeleteClause(pm, cat).execute();
+// delete all cats with kittens
+new JDOQLDeleteClause(pm, cat).where(cat.kittens.isNotEmpty()).execute());  
+]]></programlisting>  
+  
+  <para>The second parameter of the JDOQLDeleteClause constructor is the entity to be deleted.
+  The where call is optional and the execute call performs the deletion and returns the amount of deleted entities.</para>
+  
   </sect2>  
   
   <sect2>
