@@ -5,13 +5,14 @@
  */
 package com.mysema.query.types;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.expr.Expr;
-
 import net.jcip.annotations.Immutable;
+
+import com.mysema.query.types.expr.Expr;
 
 
 /**
@@ -21,18 +22,22 @@ import net.jcip.annotations.Immutable;
  * 
  */
 @Immutable
-public final class Template {
+public final class Template implements Serializable{
     
+    private static final long serialVersionUID = -1697705745769542204L;
+
     @Immutable
-    public static final class Element {
+    public static final class Element implements Serializable{
         
+        private static final long serialVersionUID = -6861235060996903489L;
+
         private final int index;
         
         @Nullable
         private final String staticText;
         
         @Nullable
-        private final Converter<?,?> converter;
+        private transient final Converter<?,?> converter;
         
         private final boolean asString;
         

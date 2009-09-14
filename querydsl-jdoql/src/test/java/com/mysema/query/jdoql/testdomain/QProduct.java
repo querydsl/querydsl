@@ -11,6 +11,7 @@ import com.mysema.query.types.path.*;
  * QProduct is a Querydsl query type for Product
  *
  */
+@SuppressWarnings("serial")
 public class QProduct extends PEntity<com.mysema.query.jdoql.testdomain.Product>{
     
     public static final QProduct product = new QProduct("product");

@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.path;
 
+import java.io.Serializable;
+
 import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 
@@ -14,10 +16,10 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.util.NotEmpty;
 
 /**
@@ -27,7 +29,9 @@ import com.mysema.query.util.NotEmpty;
  * @version $Id$
  */
 @Immutable
-public final class PathMetadata<T> {
+public final class PathMetadata<T> implements Serializable{
+
+    private static final long serialVersionUID = -1055994185028970065L;
 
     public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, Expr<Integer> index) {
         return new PathMetadata<Integer>(parent, index, PathType.ARRAYVALUE);

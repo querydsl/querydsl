@@ -11,6 +11,7 @@ import com.mysema.query.types.path.*;
  * QBook is a Querydsl query type for Book
  *
  */
+@SuppressWarnings("serial")
 public class QBook extends PEntity<com.mysema.query.jdoql.testdomain.Book>{
     
     public static final QBook book = new QBook("book");

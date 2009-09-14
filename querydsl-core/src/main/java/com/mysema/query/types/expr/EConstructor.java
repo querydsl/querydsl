@@ -26,7 +26,7 @@ public class EConstructor<D> extends Expr<D> {
     
     private final List<Expr<?>> args;
     
-    private volatile java.lang.reflect.Constructor<D> javaConstructor;
+    private transient volatile java.lang.reflect.Constructor<D> javaConstructor;
 
     public EConstructor(Class<D> type, Expr<?>... args) {
         super(type);

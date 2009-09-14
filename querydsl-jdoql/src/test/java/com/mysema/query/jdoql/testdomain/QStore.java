@@ -11,6 +11,7 @@ import com.mysema.query.types.path.*;
  * QStore is a Querydsl query type for Store
  *
  */
+@SuppressWarnings("serial")
 public class QStore extends PEntity<com.mysema.query.jdoql.testdomain.Store>{
     
     public static final QStore store = new QStore("store");
