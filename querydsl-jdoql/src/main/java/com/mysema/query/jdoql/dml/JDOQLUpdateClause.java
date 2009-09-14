@@ -17,6 +17,8 @@ import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.Path;
 
 /**
+ * UpdateClause implementation for JDO
+ * 
  * @author tiwe
  *
  */

@@ -5,10 +5,8 @@
  */
 package com.mysema.query.hql.hibernate;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -25,6 +23,8 @@ import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * Abstract base class for Hibernate API based implementations of the HQLQuery interface
+ * 
  * @author tiwe
  *
  * @param <SubType>

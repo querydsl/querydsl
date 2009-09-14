@@ -5,6 +5,8 @@ import java.util.Map;
 import javax.persistence.Query;
 
 /**
+ * Utility methods for JPA
+ * 
  * @author tiwe
  *
  */

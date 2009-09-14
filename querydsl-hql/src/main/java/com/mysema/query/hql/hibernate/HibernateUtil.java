@@ -6,6 +6,8 @@ import java.util.Map;
 import org.hibernate.Query;
 
 /**
+ * Utility methods for Hibernate
+ * 
  * @author tiwe
  *
  */

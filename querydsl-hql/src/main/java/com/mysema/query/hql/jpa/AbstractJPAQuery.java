@@ -23,6 +23,8 @@ import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * Abstract base class for JPA API based implementations of the HQLQuery interface
+ * 
  * @author tiwe
  *
  * @param <SubType>

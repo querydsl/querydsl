@@ -14,6 +14,8 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 
 /**
+ * DeleteClause implementation for JPA
+ * 
  * @author tiwe
  *
  */

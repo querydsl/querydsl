@@ -12,7 +12,7 @@ import com.mysema.query.hql.HQLQuery;
 import com.mysema.query.hql.HQLTemplates;
 
 /**
- * 
+ * JPAQuery is the default implementation of the HQLQuery interface for JPA
  * 
  * @author tiwe
  *

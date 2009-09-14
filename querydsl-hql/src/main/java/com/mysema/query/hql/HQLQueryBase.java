@@ -131,7 +131,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return _this;
     }
     
-    public SubType on(EBoolean condition){
+    public SubType with(EBoolean condition){
         getMetadata().addJoinCondition(condition);
         return _this;
     }

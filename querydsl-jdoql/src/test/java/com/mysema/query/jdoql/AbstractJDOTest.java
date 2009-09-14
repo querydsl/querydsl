@@ -16,6 +16,8 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 
+import com.mysema.query.jdoql.dml.JDOQLDeleteClause;
+import com.mysema.query.jdoql.dml.JDOQLUpdateClause;
 import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.Store;
 import com.mysema.query.types.expr.EBoolean;
@@ -43,6 +45,14 @@ public abstract class AbstractJDOTest {
         return query().from(source).where(condition).list(source);
     }
 
+    protected JDOQLUpdateClause update(PEntity<?> entity) {
+        return new JDOQLUpdateClause(pm, entity, templates);
+    }
+    
+    protected JDOQLDeleteClause delete(PEntity<?> entity) {
+        return new JDOQLDeleteClause(pm, entity, templates);
+    }
+    
     @Before
     public void setUp() {
         pm = pmf.getPersistenceManager();

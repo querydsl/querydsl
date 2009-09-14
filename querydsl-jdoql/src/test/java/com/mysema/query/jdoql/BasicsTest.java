@@ -29,6 +29,13 @@ public class BasicsTest extends AbstractJDOTest {
     private QProduct product = QProduct.product;
 
     @Test
+    public void delete(){
+        long count = query().from(product).count();
+        assertEquals(0, delete(product).where(product.name.eq("XXX")).execute());
+        assertEquals(count, delete(product).execute());
+    }
+    
+    @Test
     public void countTests() {
         assertEquals("count", 2, query().from(product).count());
     }
@@ -49,26 +56,21 @@ public class BasicsTest extends AbstractJDOTest {
     @Test
     public void basicTests() {
         assertEquals("list", 2, query().from(product).list(product).size());
-        assertEquals("list", 2, query().from(product).list(product.name,
-                product.description).size());
+        assertEquals("list", 2, query().from(product).list(product.name,product.description).size());
         assertEquals("list", 1, query().from(book).list(book).size());
-        assertEquals("eq", 1, query(product, product.name.eq("Sony Discman"))
-                .size());
-        assertEquals("instanceof ", 1, query(product,
-                product.instanceOf(Book.class)).size());
+        assertEquals("eq", 1, query(product, product.name.eq("Sony Discman")).size());
+        assertEquals("instanceof ", 1, query(product,product.instanceOf(Book.class)).size());
     }
 
     @Test
     public void booleanTests() {
         // boolean
-        assertEquals("and", 1, query(product,
-                product.name.eq("Sony Discman").and(product.price.loe(300.00)))
-                .size());
-        assertEquals("or", 2, query(product,
-                product.name.eq("Sony Discman").or(product.price.loe(300.00)))
-                .size());
-        assertEquals("not", 2, query(product,
-                product.name.eq("Sony MP3 player").not()).size());
+        assertEquals("and", 1, 
+            query(product, product.name.eq("Sony Discman").and(product.price.loe(300.00))).size());
+        assertEquals("or", 2, 
+            query(product, product.name.eq("Sony Discman").or(product.price.loe(300.00))).size());
+        assertEquals("not", 2, 
+            query(product, product.name.eq("Sony MP3 player").not()).size());
     }
 
     @Test
@@ -104,23 +106,16 @@ public class BasicsTest extends AbstractJDOTest {
     @Test
     public void stringTests() {
         // string
-        assertEquals("startsWith", 1, query(product,
-                product.name.startsWith("Sony Discman")).size());
-        assertEquals("endsWith", 1, query(product,
-                product.name.endsWith("Discman")).size());
+        assertEquals("startsWith", 1, query(product,product.name.startsWith("Sony Discman")).size());
+        assertEquals("endsWith", 1, query(product,product.name.endsWith("Discman")).size());
         // FIXME assertEquals("like", 1, query(product,
         // product.name.like("Sony %")).size());
-        assertEquals("toLowerCase", 1, query(product,
-                product.name.lower().eq("sony discman")).size());
-        assertEquals("toUpperCase", 1, query(product,
-                product.name.upper().eq("SONY DISCMAN")).size());
-        assertEquals("indexOf", 1, query(product,
-                product.name.indexOf("S").eq(0)).size());
+        assertEquals("toLowerCase", 1, query(product,product.name.lower().eq("sony discman")).size());
+        assertEquals("toUpperCase", 1, query(product,product.name.upper().eq("SONY DISCMAN")).size());
+        assertEquals("indexOf", 1, query(product,product.name.indexOf("S").eq(0)).size());
         // TODO matches
-        assertEquals("substring", 1, query(product,
-                product.name.substring(0, 4).eq("Sony")).size());
-        assertEquals("substring", 1, query(product,
-                product.name.substring(5).eq("Discman")).size());
+        assertEquals("substring", 1, query(product,product.name.substring(0, 4).eq("Sony")).size());
+        assertEquals("substring", 1, query(product,product.name.substring(5).eq("Discman")).size());
     }
 
     @BeforeClass
@@ -130,11 +125,8 @@ public class BasicsTest extends AbstractJDOTest {
         Transaction tx = pm.currentTransaction();
         try {
             tx.begin();
-            pm.makePersistent(new Product("Sony Discman",
-                    "A standard discman from Sony", 200.00, 3));
-            pm.makePersistent(new Book("Lord of the Rings by Tolkien",
-                    "The classic story", 49.99, 5, "JRR Tolkien", "12345678",
-                    "MyBooks Factory"));
+            pm.makePersistent(new Product("Sony Discman","A standard discman from Sony", 200.00, 3));
+            pm.makePersistent(new Book("Lord of the Rings by Tolkien","The classic story", 49.99, 5, "JRR Tolkien", "12345678","MyBooks Factory"));
             tx.commit();
         } finally {
             if (tx.isActive()) {

@@ -5,7 +5,9 @@
  */
 package com.mysema.query.jdoql.dml;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -19,6 +21,8 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 
 /**
+ * DeleteClause implementation for JDO
+ * 
  * @author tiwe
  *
  */
@@ -47,18 +51,40 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
     
     @Override
     public long execute() {
-        JDOQLSerializer serializer = new JDOQLSerializer(templates, entity);
-        serializer.serializeForDelete(md);
-        List<Object> constants = serializer.getConstants();
-        
-        Query query = pm.newQuery(serializer.toString());
-        long rv;
-        if (!constants.isEmpty()) {            
-            rv = query.deletePersistentAll(constants.toArray());
-        } else {
-            rv = query.deletePersistentAll();
-        }
-        return rv;
+        Query query = pm.newQuery(entity.getType());
+        if (md.getWhere() != null){            
+            JDOQLSerializer serializer = new JDOQLSerializer(templates, entity);
+            serializer.handle(md.getWhere());
+            query.setFilter(serializer.toString());
+            Map<Object,String> constToLabel = serializer.getConstantToLabel();    
+            
+            try{
+                if (!constToLabel.isEmpty()) {
+                    List<Object> constants = new ArrayList<Object>(constToLabel.size());
+                    StringBuilder builder = new StringBuilder();
+                    for (Map.Entry<Object, String> entry : constToLabel.entrySet()){
+                        if (builder.length() > 0){
+                            builder.append(", ");
+                        }
+                        builder.append(entry.getKey().getClass().getName()).append(" ");
+                        builder.append(entry.getValue());
+                        constants.add(entry.getKey());
+                    }                    
+                    query.declareParameters(builder.toString());
+                    return query.deletePersistentAll(constants.toArray());
+                } else {
+                    return query.deletePersistentAll();
+                }    
+            }finally{
+                query.closeAll();    
+            }            
+        }else{
+            try{
+                return query.deletePersistentAll();
+            }finally{
+                query.closeAll();    
+            }   
+        }        
     }
 
     @Override

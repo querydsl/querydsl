@@ -13,6 +13,7 @@ import com.mysema.query.hql.HQLTemplates;
 
 
 /**
+ * HibernateQuery is the default implementation of the HQLQuery interface for Hibernate
  * 
  * @author tiwe
  *
