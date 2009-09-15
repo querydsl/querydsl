@@ -335,7 +335,7 @@ QCat cat = QCat.cat;
 // delete all cats
 new HibernateDeleteClause(session, cat).execute();
 // delete all cats with kittens
-new HibernateDeleteClause(session, cat).where(cat.kittens.isNotEmpty()).execute());  
+new HibernateDeleteClause(session, cat).where(cat.kittens.isNotEmpty()).execute();  
 ]]></programlisting>  
   
   <para>The second parameter of the HibernateDeleteClause constructor is the entity to be deleted.

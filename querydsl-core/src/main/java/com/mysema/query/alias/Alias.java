@@ -32,7 +32,7 @@ import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.PathMetadata;
 
 /**
- * GrammarWithAlias extends the base grammar to include alias factory methods
+ * Alias provides alias factory methods
  * 
  * @author tiwe
  * @version $Id$

@@ -113,7 +113,7 @@ public class AliasTest extends AbstractQueryTest {
         // 6
         from(c, cats).where($(c.getKittens()).contains(other)).list($(c))
                 .iterator();
-
+        
         // 7
         from(c, cats).where($(c.getKittens().isEmpty())).list($(c)).iterator();
 
@@ -121,14 +121,12 @@ public class AliasTest extends AbstractQueryTest {
         from(c, cats).where($(c.getName()).startsWith("B")).list($(c)).iterator();
 
         // 9
-        from(c, cats).where($(c.getName()).upper().eq("MOE")).list($(c))
-                .iterator();
+        from(c, cats).where($(c.getName()).upper().eq("MOE")).list($(c)).iterator();
 
         // 10
         assertNotNull($(c.getKittensByName()));
         assertNotNull($(c.getKittensByName().get("Kitty")));
-        from(c, cats).where($(c.getKittensByName().get("Kitty")).isNotNull())
-                .list(cat);
+        from(c, cats).where($(c.getKittensByName().get("Kitty")).isNotNull()).list(cat);
 
         // 11
 //        try {

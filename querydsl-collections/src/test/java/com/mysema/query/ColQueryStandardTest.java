@@ -19,17 +19,17 @@ import com.mysema.query.types.expr.Expr;
 
 public class ColQueryStandardTest {
     
-    private static QCat cat = new QCat("cat");
+    private final QCat cat = new QCat("cat");
     
-    private static final List<Cat> data = Arrays.asList(
+    private final QCat otherCat = new QCat("otherCat");
+    
+    private final List<Cat> data = Arrays.asList(
             new Cat("Bob", 1),
             new Cat("Ruth", 2),
             new Cat("Felix", 3),
             new Cat("Allen", 4),
             new Cat("Mary", 5)
     );
-    
-    private static QCat otherCat = new QCat("otherCat");
     
     private StandardTest standardTest = new StandardTest(){
         @Override

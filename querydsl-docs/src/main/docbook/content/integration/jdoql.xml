@@ -280,7 +280,7 @@ QCat cat = QCat.cat;
 // delete all cats
 new JDOQLDeleteClause(pm, cat).execute();
 // delete all cats with kittens
-new JDOQLDeleteClause(pm, cat).where(cat.kittens.isNotEmpty()).execute());  
+new JDOQLDeleteClause(pm, cat).where(cat.kittens.isNotEmpty()).execute();  
 ]]></programlisting>  
   
   <para>The second parameter of the JDOQLDeleteClause constructor is the entity to be deleted.
