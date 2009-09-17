@@ -72,7 +72,10 @@ public class Processor {
                 ClassModel model = element.accept(entityVisitor, null);
                 superTypes.put(model.getName(), model);
             }
-            
+            // add supertype fields
+            for (ClassModel superType : superTypes.values()) {
+                addSupertypeFields(superType, superTypes);            
+            }
             // serialize supertypes
             if (!superTypes.isEmpty()){
                 serialize(Serializers.SUPERTYPE, superTypes);
@@ -89,7 +92,8 @@ public class Processor {
         }
         // add super type fields
         for (ClassModel entityType : entityTypes.values()) {
-            addSupertypeFields(entityType, entityTypes, superTypes);
+            addSupertypeFields(entityType, superTypes);
+            addSupertypeFields(entityType, entityTypes);            
         }
         // serialize entity types
         if (!entityTypes.isEmpty()) {
@@ -107,7 +111,8 @@ public class Processor {
             }
             // add super type fields
             for (ClassModel embeddable : embeddables.values()) {
-                addSupertypeFields(embeddable, embeddables, superTypes);
+                addSupertypeFields(embeddable, embeddables);
+                addSupertypeFields(embeddable, superTypes);
             }
             // serialize entity types
             if (!embeddables.isEmpty()) {
@@ -132,20 +137,20 @@ public class Processor {
         
     }
     
-    public void addSupertypeFields(ClassModel model, Map<String, ClassModel> entityTypes, Map<String, ClassModel> supertypes) {
+    public void addSupertypeFields(ClassModel model, Map<String, ClassModel> supertypes) {
         String stype = model.getSupertypeName();
         Class<?> superClass = ClassUtil.safeClassForName(stype);
-        if (entityTypes.containsKey(stype) || supertypes.containsKey(stype)) {
+        if (supertypes.containsKey(stype)) {
             while (true) {
                 ClassModel sdecl;
-                if (entityTypes.containsKey(stype)) {
-                    sdecl = entityTypes.get(stype);
-                } else if (supertypes.containsKey(stype)) {
+                if (supertypes.containsKey(stype)) {
                     sdecl = supertypes.get(stype);
                 } else {
-                    return;
+                    break;
                 }
-                model.setSuperModel(sdecl);
+                if (stype.equals(model.getSupertypeName())){
+                    model.setSuperModel(sdecl);    
+                }                
                 model.include(sdecl);
                 stype = sdecl.getSupertypeName();
             }
@@ -154,7 +159,6 @@ public class Processor {
             // TODO : recursively up ?
             ClassModel type = classModelFactory.create(superClass, namePrefix);
             // include fields of supertype
-            model.setSuperModel(type);
             model.include(type);
         }
     }
