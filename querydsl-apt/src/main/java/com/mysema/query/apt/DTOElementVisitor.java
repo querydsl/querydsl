@@ -33,15 +33,12 @@ public final class DTOElementVisitor extends SimpleElementVisitor6<ClassModel, V
     
     private final APTModelFactory typeFactory;
     
-    private final ClassModelFactory classModelFactory;
-    
     private final Configuration configuration;
     
-    DTOElementVisitor(ProcessingEnvironment env, Configuration configuration, String namePrefix, ClassModelFactory classModelFactory, APTModelFactory typeFactory){
+    DTOElementVisitor(ProcessingEnvironment env, Configuration configuration, String namePrefix, APTModelFactory typeFactory){
         this.env = env;
         this.configuration = configuration;
         this.namePrefix = namePrefix;
-        this.classModelFactory = classModelFactory;
         this.typeFactory = typeFactory;
     }
     
@@ -49,7 +46,7 @@ public final class DTOElementVisitor extends SimpleElementVisitor6<ClassModel, V
     public ClassModel visitType(TypeElement e, Void p) {
         Elements elementUtils = env.getElementUtils();
         TypeModel c = typeFactory.create(e.asType(), elementUtils);
-        ClassModel classModel = new ClassModel(classModelFactory, namePrefix, null, c.getPackageName(), c.getName(), c.getSimpleName());
+        ClassModel classModel = new ClassModel(namePrefix, null, c.getPackageName(), c.getName(), c.getSimpleName());
         List<? extends Element> elements = e.getEnclosedElements();
         
         // CONSTRUCTOR

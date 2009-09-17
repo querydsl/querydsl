@@ -28,9 +28,7 @@ public class SerializerTest {
      */
     public SerializerTest() {
         TypeModelFactory typeFactory = new TypeModelFactory();
-        ClassModelFactory factory = new ClassModelFactory(typeFactory);
         type = new ClassModel(
-                factory,
                 "Q",
                 "com.mysema.query.DomainSuperClass",
                 "com.mysema.query", 

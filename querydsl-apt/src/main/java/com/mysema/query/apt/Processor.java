@@ -23,6 +23,7 @@ import net.jcip.annotations.Immutable;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.codegen.ClassModel;
 import com.mysema.query.codegen.ClassModelFactory;
+import com.mysema.query.codegen.ClassUtil;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.Serializers;
 import com.mysema.query.codegen.TypeModelFactory;
@@ -63,7 +64,7 @@ public class Processor {
     public void process(RoundEnvironment roundEnv) {
         Map<String, ClassModel> superTypes = new HashMap<String, ClassModel>();
 
-        EntityElementVisitor entityVisitor = new EntityElementVisitor(env, conf, namePrefix, classModelFactory, typeFactory);
+        EntityElementVisitor entityVisitor = new EntityElementVisitor(env, conf, namePrefix, typeFactory);
         
         // populate super type mappings
         if (conf.getSuperTypeAnn() != null) {
@@ -88,7 +89,7 @@ public class Processor {
         }
         // add super type fields
         for (ClassModel entityType : entityTypes.values()) {
-            entityType.addSupertypeFields(entityTypes, superTypes);
+            addSupertypeFields(entityType, entityTypes, superTypes);
         }
         // serialize entity types
         if (!entityTypes.isEmpty()) {
@@ -106,7 +107,7 @@ public class Processor {
             }
             // add super type fields
             for (ClassModel embeddable : embeddables.values()) {
-                embeddable.addSupertypeFields(embeddables, superTypes);
+                addSupertypeFields(embeddable, embeddables, superTypes);
             }
             // serialize entity types
             if (!embeddables.isEmpty()) {
@@ -117,7 +118,7 @@ public class Processor {
         // DTOS (optional)
         
         if (conf.getDtoAnn() != null){
-            DTOElementVisitor dtoVisitor = new DTOElementVisitor(env, conf, namePrefix, classModelFactory, typeFactory);
+            DTOElementVisitor dtoVisitor = new DTOElementVisitor(env, conf, namePrefix, typeFactory);
             Map<String, ClassModel> dtos = new HashMap<String, ClassModel>();
             for (Element element : roundEnv.getElementsAnnotatedWith(conf.getDtoAnn())) {
                 ClassModel model = element.accept(dtoVisitor, null);
@@ -129,6 +130,33 @@ public class Processor {
             }    
         }         
         
+    }
+    
+    public void addSupertypeFields(ClassModel model, Map<String, ClassModel> entityTypes, Map<String, ClassModel> supertypes) {
+        String stype = model.getSupertypeName();
+        Class<?> superClass = ClassUtil.safeClassForName(stype);
+        if (entityTypes.containsKey(stype) || supertypes.containsKey(stype)) {
+            while (true) {
+                ClassModel sdecl;
+                if (entityTypes.containsKey(stype)) {
+                    sdecl = entityTypes.get(stype);
+                } else if (supertypes.containsKey(stype)) {
+                    sdecl = supertypes.get(stype);
+                } else {
+                    return;
+                }
+                model.setSuperModel(sdecl);
+                model.include(sdecl);
+                stype = sdecl.getSupertypeName();
+            }
+
+        } else if (superClass != null && !superClass.equals(Object.class)) {
+            // TODO : recursively up ?
+            ClassModel type = classModelFactory.create(superClass, namePrefix);
+            // include fields of supertype
+            model.setSuperModel(type);
+            model.include(type);
+        }
     }
     
     private void serialize(Serializer serializer, Map<String, ClassModel> types) {

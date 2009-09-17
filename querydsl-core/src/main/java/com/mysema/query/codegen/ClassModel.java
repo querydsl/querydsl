@@ -30,6 +30,8 @@ public final class ClassModel implements Comparable<ClassModel> {
     
     private final Collection<ConstructorModel> constructors = new HashSet<ConstructorModel>();
     
+    private ClassModel superModel;
+    
     // mutable
     private int escapeSuffix = 1;
     
@@ -51,10 +53,7 @@ public final class ClassModel implements Comparable<ClassModel> {
 
     private String uncapSimpleName;
     
-    private final ClassModelFactory factory;
-    
-    public ClassModel(ClassModelFactory factory, String prefix, @Nullable String superType, String packageName, String name, String simpleName) {
-        this.factory = Assert.notNull(factory);
+    public ClassModel(String prefix, @Nullable String superType, String packageName, String name, String simpleName) {
         this.prefix = Assert.notNull(prefix);
         this.superType = superType;
         this.packageName = Assert.notNull(packageName);
@@ -72,31 +71,6 @@ public final class ClassModel implements Comparable<ClassModel> {
         validateField(field);
         Collection<FieldModel> fields = typeToFields.get(field.getTypeCategory());
         fields.add(field);
-    }
-
-    public void addSupertypeFields(Map<String, ClassModel> entityTypes, Map<String, ClassModel> supertypes) {
-        String stype = getSupertypeName();
-        Class<?> superClass = safeClassForName(stype);
-        if (entityTypes.containsKey(stype) || supertypes.containsKey(stype)) {
-            while (true) {
-                ClassModel sdecl;
-                if (entityTypes.containsKey(stype)) {
-                    sdecl = entityTypes.get(stype);
-                } else if (supertypes.containsKey(stype)) {
-                    sdecl = supertypes.get(stype);
-                } else {
-                    return;
-                }
-                include(sdecl);
-                stype = sdecl.getSupertypeName();
-            }
-
-        } else if (superClass != null && !superClass.equals(Object.class)) {
-            // TODO : recursively up ?
-            ClassModel type = factory.create(superClass, prefix);
-            // include fields of supertype
-            include(type);
-        }
     }
 
     public int compareTo(ClassModel o) {
@@ -210,16 +184,7 @@ public final class ClassModel implements Comparable<ClassModel> {
             }            
         }        
     }
-    
-    @Nullable
-    private static Class<?> safeClassForName(String stype) {
-        try {
-            return stype != null ? Class.forName(stype) : null;
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-    }    
-    
+        
     private FieldModel validateField(FieldModel field) {
         if (field.getName().equals(this.uncapSimpleName)) {
             uncapSimpleName = StringUtils.uncapitalize(simpleName)+ (escapeSuffix++);
@@ -231,4 +196,12 @@ public final class ClassModel implements Comparable<ClassModel> {
         return prefix;
     }
 
+    public ClassModel getSuperModel() {
+        return superModel;
+    }
+
+    public void setSuperModel(ClassModel superModel) {
+        this.superModel = superModel;
+    }
+    
 }

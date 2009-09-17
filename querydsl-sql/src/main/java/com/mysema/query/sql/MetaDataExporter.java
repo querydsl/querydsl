@@ -16,13 +16,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mysema.query.codegen.ClassModel;
-import com.mysema.query.codegen.ClassModelFactory;
 import com.mysema.query.codegen.FieldModel;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.Serializers;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeModel;
-import com.mysema.query.codegen.TypeModelFactory;
 import com.mysema.query.util.FileUtils;
 
 /**
@@ -95,10 +93,10 @@ public class MetaDataExporter {
             throw new IllegalArgumentException("packageName needs to be set");
 
         ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
-        ClassModelFactory factory = new ClassModelFactory(new TypeModelFactory());
+//        ClassModelFactory factory = new ClassModelFactory(new TypeModelFactory());
         while (tables.next()) {
             String tableName = tables.getString(3);
-            ClassModel classModel = new ClassModel(factory, namePrefix, null, "java.lang", "java.lang.Object", tableName);
+            ClassModel classModel = new ClassModel(namePrefix, null, "java.lang", "java.lang.Object", tableName);
             ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
             while (columns.next()) {
                 String name = columns.getString(4);

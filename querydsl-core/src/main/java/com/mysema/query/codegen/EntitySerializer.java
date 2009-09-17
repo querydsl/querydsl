@@ -171,7 +171,17 @@ public class EntitySerializer extends AbstractSerializer{
         introJavadoc(builder, model);        
         introClassHeader(builder, model);        
         introDefaultInstance(builder, model);        
+        introSuper(builder, model);
         writer.append(builder.toString());
+    }
+
+    private void introSuper(StringBuilder builder, ClassModel model) {
+        if (model.getSuperModel() != null){
+            ClassModel _super = model.getSuperModel();
+            final String simpleName = _super.getSimpleName();
+            final String queryType = _super.getPrefix() + simpleName;
+            builder.append("    public final "+queryType+" _super = new " + queryType + "(this);\n\n");
+        }        
     }
 
     protected void introClassHeader(StringBuilder builder, ClassModel model) {

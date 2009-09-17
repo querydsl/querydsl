@@ -24,7 +24,6 @@ public class ClassModelFactory {
     
     public ClassModel create(Class<?> key, String prefix ){
         ClassModel classModel = new ClassModel(
-                this,
                 prefix,
                 key.getSuperclass().getName(), 
                 key.getPackage().getName(), 

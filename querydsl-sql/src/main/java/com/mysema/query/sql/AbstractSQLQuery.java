@@ -186,8 +186,9 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     }
 
     private <RT> UnionBuilder<RT> innerUnion(SubQuery... sq) {
-        if (!getMetadata().getJoins().isEmpty())
+        if (!getMetadata().getJoins().isEmpty()){
             throw new IllegalArgumentException("Don't mix union and from");
+        }            
         this.sq = sq;
         return new UnionBuilder<RT>();
     }
