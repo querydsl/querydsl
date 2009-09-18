@@ -16,7 +16,6 @@ import net.jcip.annotations.Immutable;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.codegen.ClassModel;
-import com.mysema.query.codegen.ClassModelFactory;
 import com.mysema.query.codegen.FieldModel;
 import com.mysema.query.codegen.TypeModel;
 

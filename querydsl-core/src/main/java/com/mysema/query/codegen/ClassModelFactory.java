@@ -5,11 +5,17 @@
  */
 package com.mysema.query.codegen;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 import net.jcip.annotations.Immutable;
 
+import com.mysema.query.annotations.Transient;
+
 /**
+ * A Reflection based Factory implementation for ClassModel instance
+ * 
  * @author tiwe
  *
  */
@@ -18,9 +24,17 @@ public class ClassModelFactory {
     
     private final TypeModelFactory typeModelFactory;
     
-    public ClassModelFactory(TypeModelFactory typeModelFactory){
+    private final Class<? extends Annotation> skipAnn;
+    
+    public ClassModelFactory(TypeModelFactory typeModelFactory, Class<? extends Annotation> skipAnn){
         this.typeModelFactory = typeModelFactory;
+        this.skipAnn = skipAnn;
     }
+    
+    public ClassModelFactory(TypeModelFactory typeModelFactory){
+        this(typeModelFactory, Transient.class);
+    }
+
     
     public ClassModel create(Class<?> key, String prefix ){
         ClassModel classModel = new ClassModel(
@@ -30,10 +44,18 @@ public class ClassModelFactory {
                 key.getName(), 
                 key.getSimpleName());
         for (Field f : key.getDeclaredFields()) {
-            TypeModel typeModel = typeModelFactory.create(f.getType(), f.getGenericType());
-            classModel.addField(new FieldModel(classModel, f.getName(), typeModel, f.getName()));
+            if (isValidField(f)){
+                TypeModel typeModel = typeModelFactory.create(f.getType(), f.getGenericType());
+                classModel.addField(new FieldModel(classModel, f.getName(), typeModel, f.getName()));    
+            }            
         }
         return classModel;
+    }
+
+    protected boolean isValidField(Field field) {
+        return field.getAnnotation(skipAnn) == null
+            && !Modifier.isTransient(field.getModifiers()) 
+            && !Modifier.isStatic(field.getModifiers());
     }
     
 }

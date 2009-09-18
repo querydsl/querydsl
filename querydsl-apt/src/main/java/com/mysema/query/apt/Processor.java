@@ -29,10 +29,12 @@ import com.mysema.query.codegen.Serializers;
 import com.mysema.query.codegen.TypeModelFactory;
 
 /**
+ * Processor handles the actual work in the Querydsl APT module
  * 
  * @author tiwe
  * 
  */
+// TODO : simplify this
 @Immutable
 public class Processor {
     
@@ -40,11 +42,11 @@ public class Processor {
     
     private final APTModelFactory typeFactory;
     
-    private final ClassModelFactory classModelFactory;
-    
     private final String namePrefix = "Q";
     
     private final Configuration conf;
+    
+    private final ClassModelFactory classModelFactory;
     
     @SuppressWarnings("unchecked")
     public Processor(ProcessingEnvironment env, Configuration configuration) {
@@ -58,9 +60,15 @@ public class Processor {
         this.env = Assert.notNull(env);        
         TypeModelFactory factory = new TypeModelFactory(anns);
         this.typeFactory = new APTModelFactory(factory, Arrays.asList(anns));
-        this.classModelFactory = new ClassModelFactory(factory);
+        if (conf.getSkipAnn() != null){
+            this.classModelFactory = new ClassModelFactory(factory, conf.getSkipAnn());
+        }else{
+            this.classModelFactory = new ClassModelFactory(factory);
+        }
+        
     }
     
+    @SuppressWarnings("unchecked")
     public void process(RoundEnvironment roundEnv) {
         Map<String, ClassModel> superTypes = new HashMap<String, ClassModel>();
 
@@ -74,7 +82,7 @@ public class Processor {
             }
             // add supertype fields
             for (ClassModel superType : superTypes.values()) {
-                addSupertypeFields(superType, superTypes);            
+                addSupertypeFields(superType, superTypes);      
             }
             // serialize supertypes
             if (!superTypes.isEmpty()){
@@ -92,8 +100,7 @@ public class Processor {
         }
         // add super type fields
         for (ClassModel entityType : entityTypes.values()) {
-            addSupertypeFields(entityType, superTypes);
-            addSupertypeFields(entityType, entityTypes);            
+            addSupertypeFields(entityType, superTypes, entityTypes);
         }
         // serialize entity types
         if (!entityTypes.isEmpty()) {
@@ -111,8 +118,7 @@ public class Processor {
             }
             // add super type fields
             for (ClassModel embeddable : embeddables.values()) {
-                addSupertypeFields(embeddable, embeddables);
-                addSupertypeFields(embeddable, superTypes);
+                addSupertypeFields(embeddable, superTypes, embeddables);
             }
             // serialize entity types
             if (!embeddables.isEmpty()) {
@@ -136,33 +142,45 @@ public class Processor {
         }         
         
     }
-    
-    public void addSupertypeFields(ClassModel model, Map<String, ClassModel> supertypes) {
+        
+    private void addSupertypeFields(ClassModel model, Map<String,ClassModel>... superTypes){
         String stype = model.getSupertypeName();
-        Class<?> superClass = ClassUtil.safeClassForName(stype);
-        if (supertypes.containsKey(stype)) {
-            while (true) {
-                ClassModel sdecl;
-                if (supertypes.containsKey(stype)) {
-                    sdecl = supertypes.get(stype);
-                } else {
-                    break;
+        // iterate over supertypes
+        for (Map<String,ClassModel> stypes : superTypes){
+            if (stypes.containsKey(stype)) {
+                while (true) {
+                    ClassModel sdecl;
+                    if (stypes.containsKey(stype)) {
+                        sdecl = stypes.get(stype);
+                    } else {
+                        break;
+                    }
+                    if (stype.equals(model.getSupertypeName())){
+                        model.setSuperModel(sdecl);    
+                    }                
+                    model.include(sdecl);
+                    stype = sdecl.getSupertypeName();
                 }
-                if (stype.equals(model.getSupertypeName())){
-                    model.setSuperModel(sdecl);    
-                }                
-                model.include(sdecl);
-                stype = sdecl.getSupertypeName();
+            } 
+        }
+        
+        // create super class model via reflection
+        if (model.getSuperModel() == null){
+            stype = model.getSupertypeName();
+            Class<?> superClass = ClassUtil.safeClassForName(stype);
+            if (superClass != null && !superClass.equals(Object.class)) {
+                // handle the supertype only, if it has the proper annotations
+                if((conf.getSuperTypeAnn() == null 
+                    || superClass.getAnnotation(conf.getSuperTypeAnn()) != null)
+                    || superClass.getAnnotation(conf.getEntityAnn()) != null){
+                    ClassModel type = classModelFactory.create(superClass, namePrefix);
+                    // include fields of supertype
+                    model.include(type);    
+                }            
             }
-
-        } else if (superClass != null && !superClass.equals(Object.class)) {
-            // TODO : recursively up ?
-            ClassModel type = classModelFactory.create(superClass, namePrefix);
-            // include fields of supertype
-            model.include(type);
         }
     }
-    
+        
     private void serialize(Serializer serializer, Map<String, ClassModel> types) {
         Messager msg = env.getMessager();
         for (ClassModel type : types.values()) {
@@ -175,7 +193,9 @@ public class Processor {
                 try {
                     serializer.serialize(type, writer);    
                 }finally{
-                    if (writer != null) writer.close();
+                    if (writer != null) {
+                        writer.close();
+                    }
                 }                
             } catch (Exception e) {
                 msg.printMessage(Kind.ERROR, e.getMessage());
