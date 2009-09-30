@@ -125,7 +125,15 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
             }
         }        
         String name = typeElement.getQualifiedName().toString();
-        return create(typeElement, TypeCategory.get(name), p);
+        TypeCategory typeCategory = TypeCategory.get(name);
+        if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE)){
+            for(TypeMirror iface : typeElement.getInterfaces()){
+                if (iface.toString().contains("java.lang.Comparable")){
+                    typeCategory = TypeCategory.COMPARABLE;
+                }
+            }
+        }
+        return create(typeElement, typeCategory, p);
     }
 
     private TypeModel create(TypeElement typeElement, TypeCategory category, Elements p) {

@@ -11,7 +11,7 @@ import java.io.Writer;
 import net.jcip.annotations.Immutable;
 
 @Immutable
-public class DTOSerializer extends AbstractSerializer{
+public class DTOSerializer implements Serializer{
     
     @Override
     public void serialize(ClassModel model, Writer writer) throws IOException{

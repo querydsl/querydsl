@@ -82,7 +82,11 @@ public class TypeModelFactory {
                 value = createCollectionType(valueInfo);
                 
             } else {
-                value = new TypeModel(TypeCategory.get(cl.getName()), cl);
+                TypeCategory typeCategory = TypeCategory.get(cl.getName());
+                if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)){
+                    typeCategory = TypeCategory.COMPARABLE;
+                }
+                value = new TypeModel(typeCategory, cl);
             }
             cache.put(key, value);
             return value;

@@ -15,7 +15,6 @@ import javax.lang.model.util.SimpleElementVisitor6;
 import net.jcip.annotations.Immutable;
 
 import com.mysema.query.codegen.ClassModel;
-import com.mysema.query.codegen.ClassModelFactory;
 import com.mysema.query.codegen.ConstructorModel;
 import com.mysema.query.codegen.ParameterModel;
 import com.mysema.query.codegen.TypeModel;

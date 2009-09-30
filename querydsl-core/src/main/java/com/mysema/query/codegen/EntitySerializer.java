@@ -11,7 +11,7 @@ import java.io.Writer;
 import net.jcip.annotations.Immutable;
 
 @Immutable
-public class EntitySerializer extends AbstractSerializer{
+public class EntitySerializer implements Serializer{
     
     public void serialize(ClassModel model, Writer writer) throws IOException{
         // intro
@@ -310,7 +310,6 @@ public class EntitySerializer extends AbstractSerializer{
     protected void outro(ClassModel model, Writer writer) throws IOException {
         writer.write("}\n");        
     }
-
 
     protected void serialize(FieldModel field, String type, Writer writer) throws IOException {
         StringBuilder builder = new StringBuilder();
