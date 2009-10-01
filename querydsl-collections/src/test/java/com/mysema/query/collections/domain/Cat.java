@@ -5,7 +5,7 @@
  */
 package com.mysema.query.collections.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,9 +15,8 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.mysema.query.annotations.Entity;
-import com.mysema.query.annotations.NonSearchable;
-import com.mysema.query.annotations.Type;
-import com.mysema.query.types.TypeCategory;
+import com.mysema.query.annotations.PropertyType;
+import com.mysema.query.annotations.QueryType;
 import com.mysema.query.types.path.PSimple;
 
 @Entity
@@ -33,10 +32,11 @@ public class Cat extends Animal {
     
     private Cat mate;
     
-    @NonSearchable    
+    @QueryType(PropertyType.NONE)    
     private String skippedField;
     
-    @Type(TypeCategory.SIMPLE)    
+    @SuppressWarnings("unused")
+    @QueryType(PropertyType.SIMPLE)    
     private String stringAsSimple;
 
     @Test

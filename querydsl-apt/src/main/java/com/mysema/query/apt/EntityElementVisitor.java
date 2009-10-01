@@ -16,11 +16,11 @@ import net.jcip.annotations.Immutable;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.mysema.query.annotations.Type;
+import com.mysema.query.annotations.QueryType;
 import com.mysema.query.codegen.ClassModel;
 import com.mysema.query.codegen.FieldModel;
+import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeModel;
-import com.mysema.query.types.TypeCategory;
 
 /**
  * @author tiwe
@@ -67,8 +67,11 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel
                 if (configuration.isValidGetter(method)){
                     try{
                         TypeModel typeModel = typeFactory.create(method.getReturnType(), elementUtils);
-                        if (method.getAnnotation(Type.class) != null){
-                            TypeCategory category = method.getAnnotation(Type.class).value();
+                        if (method.getAnnotation(QueryType.class) != null){
+                            TypeCategory category = TypeCategory.get(method.getAnnotation(QueryType.class).value());
+                            if (category == null){
+                                continue;
+                            }
                             typeModel = typeModel.convertTo(category);
                         }
                         classModel.addField(new FieldModel(classModel, name, typeModel, null));    
@@ -89,8 +92,11 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel
                 if (configuration.isValidField(field)){
                     try{
                         TypeModel typeModel = typeFactory.create(field.asType(), elementUtils);     
-                        if (field.getAnnotation(Type.class) != null){
-                            TypeCategory category = field.getAnnotation(Type.class).value();
+                        if (field.getAnnotation(QueryType.class) != null){
+                            TypeCategory category = TypeCategory.get(field.getAnnotation(QueryType.class).value());
+                            if (category == null){
+                                continue;
+                            }
                             typeModel = typeModel.convertTo(category);
                         }
                         String name = field.getSimpleName().toString();

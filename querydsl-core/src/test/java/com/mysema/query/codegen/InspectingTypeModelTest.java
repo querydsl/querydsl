@@ -15,7 +15,6 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import com.mysema.query.types.TypeCategory;
 
 
 public class InspectingTypeModelTest {

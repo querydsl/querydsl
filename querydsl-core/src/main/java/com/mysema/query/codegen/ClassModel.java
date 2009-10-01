@@ -17,7 +17,6 @@ import org.apache.commons.collections15.MapUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.TypeCategory;
 
 /**
  * ClassModel represents the model of a query domain type with properties

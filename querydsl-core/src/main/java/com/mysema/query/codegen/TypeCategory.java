@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types;
+package com.mysema.query.codegen;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -13,6 +13,8 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import net.jcip.annotations.Immutable;
+
+import com.mysema.query.annotations.PropertyType;
 
 
 /**
@@ -141,6 +143,17 @@ public enum TypeCategory {
             }
         }
         return SIMPLE;
+    }
+    
+    public static TypeCategory get(PropertyType propertyType){
+        switch(propertyType){
+            case SIMPLE: return SIMPLE; 
+            case DATE: return DATE;
+            case TIME: return TIME;
+            case DATETIME: return DATETIME;
+            case NUMERIC: return NUMERIC;
+            default: return null;
+        }        
     }
     
 }

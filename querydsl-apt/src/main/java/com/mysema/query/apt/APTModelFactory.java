@@ -21,9 +21,9 @@ import javax.lang.model.type.TypeVisitor;
 import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.Elements;
 
+import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeModel;
 import com.mysema.query.codegen.TypeModelFactory;
-import com.mysema.query.types.TypeCategory;
 import com.mysema.query.util.TypeUtil;
 
 /**

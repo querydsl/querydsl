@@ -8,12 +8,10 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import com.mysema.query.types.TypeCategory;
-
 @Documented
 @Target({FIELD,METHOD})
 @Retention(RUNTIME)
-public @interface Type {
+public @interface QueryType {
 
-    TypeCategory value();
+    PropertyType value();
 }

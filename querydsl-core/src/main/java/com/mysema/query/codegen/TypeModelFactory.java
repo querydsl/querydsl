@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.ClassUtils;
 
-import com.mysema.query.types.TypeCategory;
 import com.mysema.query.util.TypeUtil;
 
 /**

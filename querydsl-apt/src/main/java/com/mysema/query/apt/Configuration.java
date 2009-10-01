@@ -10,7 +10,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.annotations.NonSearchable;
 
 /**
  * @author tiwe
@@ -45,7 +44,6 @@ public class Configuration {
     
     public boolean isValidField(VariableElement field) {
         return useFields
-            && field.getAnnotation(NonSearchable.class) == null
             && field.getAnnotation(skipAnn) == null
             && !field.getModifiers().contains(Modifier.TRANSIENT) 
             && !field.getModifiers().contains(Modifier.STATIC);
@@ -53,7 +51,6 @@ public class Configuration {
 
     public boolean isValidGetter(ExecutableElement getter){
         return useGetters
-            && getter.getAnnotation(NonSearchable.class) == null
             && getter.getAnnotation(skipAnn) == null
             && !getter.getModifiers().contains(Modifier.STATIC);
     }

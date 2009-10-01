@@ -10,7 +10,6 @@ import javax.annotation.Nullable;
 import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.TypeCategory;
 
 
 /**
