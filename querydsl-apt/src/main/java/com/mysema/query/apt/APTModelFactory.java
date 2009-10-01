@@ -21,9 +21,9 @@ import javax.lang.model.type.TypeVisitor;
 import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.Elements;
 
-import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeModel;
 import com.mysema.query.codegen.TypeModelFactory;
+import com.mysema.query.types.TypeCategory;
 import com.mysema.query.util.TypeUtil;
 
 /**
@@ -118,12 +118,15 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
         }
     }
 
-    private TypeModel createClassType(TypeElement typeElement, Elements p) {
+    private TypeModel createClassType(TypeElement typeElement, Elements p) {   
+        // entity type
         for (Class<? extends Annotation> entityAnn : entityAnnotations){
             if (typeElement.getAnnotation(entityAnn) != null){
                 return create(typeElement, TypeCategory.ENTITY, p);
             }
         }        
+        
+        // other
         String name = typeElement.getQualifiedName().toString();
         TypeCategory typeCategory = TypeCategory.get(name);
         if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE)){

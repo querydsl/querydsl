@@ -2,6 +2,7 @@ package com.mysema.query.apt;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
@@ -15,9 +16,11 @@ import net.jcip.annotations.Immutable;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.mysema.query.annotations.Type;
 import com.mysema.query.codegen.ClassModel;
 import com.mysema.query.codegen.FieldModel;
 import com.mysema.query.codegen.TypeModel;
+import com.mysema.query.types.TypeCategory;
 
 /**
  * @author tiwe
@@ -64,10 +67,10 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel
                 if (configuration.isValidGetter(method)){
                     try{
                         TypeModel typeModel = typeFactory.create(method.getReturnType(), elementUtils);
-//                        String docs = elementUtils.getDocComment(method);
-//                        if (docs != null){
-//                            docs = replacePattern.matcher(docs).replaceAll(" ");
-//                        }
+                        if (method.getAnnotation(Type.class) != null){
+                            TypeCategory category = method.getAnnotation(Type.class).value();
+                            typeModel = typeModel.convertTo(category);
+                        }
                         classModel.addField(new FieldModel(classModel, name, typeModel, null));    
                         
                     }catch(IllegalArgumentException ex){
@@ -86,11 +89,11 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel
                 if (configuration.isValidField(field)){
                     try{
                         TypeModel typeModel = typeFactory.create(field.asType(), elementUtils);     
+                        if (field.getAnnotation(Type.class) != null){
+                            TypeCategory category = field.getAnnotation(Type.class).value();
+                            typeModel = typeModel.convertTo(category);
+                        }
                         String name = field.getSimpleName().toString();
-//                        String docs = elementUtils.getDocComment(field);
-//                        if (docs != null){
-//                            docs = replacePattern.matcher(docs).replaceAll(" ");
-//                        }
                         classModel.addField(new FieldModel(classModel, name, typeModel, null));    
                     }catch(IllegalArgumentException ex){
                         StringBuilder builder = new StringBuilder();
@@ -105,5 +108,5 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel
         
         return classModel;
     }
-
+    
 }

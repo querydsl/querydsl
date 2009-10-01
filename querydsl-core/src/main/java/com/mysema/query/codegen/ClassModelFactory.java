@@ -12,6 +12,8 @@ import java.lang.reflect.Modifier;
 import net.jcip.annotations.Immutable;
 
 import com.mysema.query.annotations.Transient;
+import com.mysema.query.annotations.Type;
+import com.mysema.query.types.TypeCategory;
 
 /**
  * A Reflection based Factory implementation for ClassModel instance
@@ -46,6 +48,10 @@ public class ClassModelFactory {
         for (Field f : key.getDeclaredFields()) {
             if (isValidField(f)){
                 TypeModel typeModel = typeModelFactory.create(f.getType(), f.getGenericType());
+                if (f.getAnnotation(Type.class) != null){
+                    TypeCategory typeCategory = f.getAnnotation(Type.class).value();
+                    typeModel = typeModel.convertTo(typeCategory);
+                }
                 classModel.addField(new FieldModel(classModel, f.getName(), typeModel, f.getName()));    
             }            
         }

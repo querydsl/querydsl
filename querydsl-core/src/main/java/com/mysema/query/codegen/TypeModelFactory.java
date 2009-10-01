@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.ClassUtils;
 
+import com.mysema.query.types.TypeCategory;
 import com.mysema.query.util.TypeUtil;
 
 /**
@@ -81,7 +82,7 @@ public class TypeModelFactory {
                 TypeModel valueInfo = create(TypeUtil.getTypeParameter(genericType, 0));
                 value = createCollectionType(valueInfo);
                 
-            } else {
+            } else {    
                 TypeCategory typeCategory = TypeCategory.get(cl.getName());
                 if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)){
                     typeCategory = TypeCategory.COMPARABLE;

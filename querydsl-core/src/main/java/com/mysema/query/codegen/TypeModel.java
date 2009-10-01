@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.TypeCategory;
 
 
 /**
@@ -78,6 +79,14 @@ public final class TypeModel {
     
     public String toString() {
         return name;
+    }
+
+    public TypeModel convertTo(TypeCategory category) {
+        if (typeCategory == category){
+            return this;
+        }else{
+            return new TypeModel(category, name, packageName, simpleName, keyType, valueType);
+        }
     }
     
     public TypeModel as(TypeCategory category) {

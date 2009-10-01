@@ -9,36 +9,44 @@ import com.mysema.query.annotations.Entity;
 @Entity
 public class ReservedNames {
 
-    public boolean isNew(){
+    public boolean isNew() {
         return false;
     }
-    public String getPackage(){
+
+    public String getPackage() {
         return "";
     }
-    public int getProtected(){
+
+    public int getProtected() {
         return 1;
     }
-    public List<ReservedNames> getIf(){
+
+    public List<ReservedNames> getIf() {
         return null;
     }
-    public Set<ReservedNames> getElse(){
+
+    public Set<ReservedNames> getElse() {
         return null;
     }
-    public List<String> getTry(){
+
+    public List<String> getTry() {
         return null;
     }
-    public Set<Integer> getCatch(){
+
+    public Set<Integer> getCatch() {
         return null;
     }
-    public Map<String,ReservedNames> getWhile(){
+
+    public Map<String, ReservedNames> getWhile() {
         return null;
     }
-    public Map<String,String> getFor(){
+
+    public Map<String, String> getFor() {
         return null;
     }
-    
-    public ReservedNames getExtends(){
+
+    public ReservedNames getExtends() {
         return null;
     }
-    
+
 }

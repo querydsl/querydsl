@@ -24,14 +24,14 @@ import com.mysema.query.types.path.PTime;
 
 /**
  * @author tiwe
- *
+ * 
  */
 @Entity
 public class JodaTimeSupport {
-    
+
     @SuppressWarnings("unchecked")
     @Test
-    public void test(){
+    public void test() {
         QJodaTimeSupport i = QJodaTimeSupport.jodaTimeSupport;
         assertTrue(i.dateMidnight instanceof PDateTime);
         assertTrue(i.dateTime instanceof PDateTime);
@@ -41,20 +41,19 @@ public class JodaTimeSupport {
         assertTrue(i.localTime instanceof PTime);
         assertTrue(i.partial instanceof PComparable);
     }
-    
+
     DateMidnight dateMidnight;
 
     DateTime dateTime;
-    
+
     Instant instant;
-    
+
     LocalDate localDate;
-    
+
     LocalDateTime localDateTime;
-    
+
     LocalTime localTime;
-    
+
     Partial partial;
-    
 
 }

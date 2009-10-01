@@ -1,0 +1,1 @@
+* Document @Type and @NonSearchable

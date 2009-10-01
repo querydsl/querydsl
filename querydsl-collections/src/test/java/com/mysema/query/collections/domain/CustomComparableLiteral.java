@@ -5,7 +5,6 @@
  */
 package com.mysema.query.collections.domain;
 
-
 public class CustomComparableLiteral implements
         Comparable<CustomComparableLiteral> {
 

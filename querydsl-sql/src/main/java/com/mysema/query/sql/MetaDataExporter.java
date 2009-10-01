@@ -19,8 +19,8 @@ import com.mysema.query.codegen.ClassModel;
 import com.mysema.query.codegen.FieldModel;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.Serializers;
-import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeModel;
+import com.mysema.query.types.TypeCategory;
 import com.mysema.query.util.FileUtils;
 
 /**

@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.codegen;
+package com.mysema.query.types;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
