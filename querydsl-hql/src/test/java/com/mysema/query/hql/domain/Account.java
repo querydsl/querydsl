@@ -5,7 +5,7 @@
  */
 package com.mysema.query.hql.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.io.Serializable;
 
@@ -39,6 +39,9 @@ public class Account implements Serializable{
     
     @Embedded
     EmbeddedType embeddedData;
+    
+//    @EmbeddedId
+//    EmbeddedType embeddedId;
     
     @Test
     public void test(){

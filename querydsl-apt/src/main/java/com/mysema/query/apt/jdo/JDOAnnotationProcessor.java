@@ -36,7 +36,7 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
             dto = Projection.class;
             skip = (Class)Class.forName("javax.jdo.annotations.NotPersistent");
             
-            Configuration configuration = new Configuration(entity, superType, embeddable, dto, skip);
+            Configuration configuration = new Configuration(entity, superType, embeddable, null, dto, skip);
             configuration.setUseGetters(false);
             Processor processor = new Processor(processingEnv, configuration);
             processor.process(roundEnv);

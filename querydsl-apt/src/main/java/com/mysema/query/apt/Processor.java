@@ -109,13 +109,24 @@ public class Processor {
         
         // EMBEDDABLES (optional)
         
-        if (conf.getEmbeddableAnn() != null){
+        if (conf.getEmbeddableAnn() != null || conf.getEmbeddedIdAnn() != null){
             // populate entity type mappings
             Map<String, ClassModel> embeddables = new HashMap<String, ClassModel>();
-            for (Element element : roundEnv.getElementsAnnotatedWith(conf.getEmbeddableAnn())) {
-                ClassModel model = element.accept(entityVisitor, null);
-                embeddables.put(model.getName(), model);
+            
+            if (conf.getEmbeddableAnn() != null){
+                for (Element element : roundEnv.getElementsAnnotatedWith(conf.getEmbeddableAnn())) {
+                    ClassModel model = element.accept(entityVisitor, null);
+                    embeddables.put(model.getName(), model);
+                }    
             }
+            
+            if (conf.getEmbeddedIdAnn() != null){
+                for (Element element : roundEnv.getElementsAnnotatedWith(conf.getEmbeddedIdAnn())) {
+                    ClassModel model = element.accept(entityVisitor, null);
+                    embeddables.put(model.getName(), model);
+                }
+            }
+            
             // add super type fields
             for (ClassModel embeddable : embeddables.values()) {
                 addSupertypeFields(embeddable, superTypes, embeddables);

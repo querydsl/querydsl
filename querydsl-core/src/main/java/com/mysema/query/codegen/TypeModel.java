@@ -80,7 +80,7 @@ public final class TypeModel {
         return name;
     }
 
-    public TypeModel convertTo(TypeCategory category) {
+    public TypeModel as(TypeCategory category) {
         if (typeCategory == category){
             return this;
         }else{
@@ -88,12 +88,12 @@ public final class TypeModel {
         }
     }
     
-    public TypeModel as(TypeCategory category) {
-        if (typeCategory.isSubCategoryOf(category)){
-            return this;
-        }else{
-            return new TypeModel(category, name, packageName, simpleName, keyType, valueType);
-        }
-    }
+//    public TypeModel as(TypeCategory category) {
+//        if (typeCategory.isSubCategoryOf(category)){
+//            return this;
+//        }else{
+//            return new TypeModel(category, name, packageName, simpleName, keyType, valueType);
+//        }
+//    }
 
 }

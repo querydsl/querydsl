@@ -8,6 +8,10 @@ package com.mysema.query.annotations;
  */
 public enum PropertyType {
     /**
+     * for PComparable fields
+     */
+    COMPARABLE,
+    /**
      *  for PDate fields
      */
     DATE,

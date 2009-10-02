@@ -24,9 +24,10 @@ public class JPAConfiguration extends Configuration {
     public JPAConfiguration(Class<? extends Annotation> entityAnn,
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
+            Class<? extends Annotation> embeddedIdAnn,
             Class<? extends Annotation> dtoAnn,
             Class<? extends Annotation> skipAnn) throws ClassNotFoundException {
-        super(entityAnn, superTypeAnn, embeddableAnn, dtoAnn, skipAnn);
+        super(entityAnn, superTypeAnn, embeddableAnn, embeddedIdAnn, dtoAnn, skipAnn);
         this.annotations = new ArrayList<Class<? extends Annotation>>();
         for (String simpleName : Arrays.asList(
                 "Column",

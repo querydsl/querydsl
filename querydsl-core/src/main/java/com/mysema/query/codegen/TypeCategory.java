@@ -147,11 +147,12 @@ public enum TypeCategory {
     
     public static TypeCategory get(PropertyType propertyType){
         switch(propertyType){
-            case SIMPLE: return SIMPLE; 
+            case COMPARABLE: return COMPARABLE;
             case DATE: return DATE;
-            case TIME: return TIME;
             case DATETIME: return DATETIME;
             case NUMERIC: return NUMERIC;
+            case SIMPLE: return SIMPLE;            
+            case TIME: return TIME;                      
             default: return null;
         }        
     }

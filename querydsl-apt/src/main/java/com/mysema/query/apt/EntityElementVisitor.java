@@ -72,7 +72,7 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel
                             if (category == null){
                                 continue;
                             }
-                            typeModel = typeModel.convertTo(category);
+                            typeModel = typeModel.as(category);
                         }
                         classModel.addField(new FieldModel(classModel, name, typeModel, null));    
                         
@@ -97,7 +97,7 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel
                             if (category == null){
                                 continue;
                             }
-                            typeModel = typeModel.convertTo(category);
+                            typeModel = typeModel.as(category);
                         }
                         String name = field.getSimpleName().toString();
                         classModel.addField(new FieldModel(classModel, name, typeModel, null));    

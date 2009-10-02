@@ -52,7 +52,7 @@ public class ClassModelFactory {
                     if (typeCategory == null){
                         continue;
                     }
-                    typeModel = typeModel.convertTo(typeCategory);
+                    typeModel = typeModel.as(typeCategory);
                 }
                 classModel.addField(new FieldModel(classModel, f.getName(), typeModel, f.getName()));    
             }            

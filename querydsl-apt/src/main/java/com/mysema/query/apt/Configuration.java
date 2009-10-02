@@ -17,7 +17,7 @@ import com.mysema.commons.lang.Assert;
  */
 public class Configuration {
     
-    protected final Class<? extends Annotation> entityAnn, superTypeAnn, embeddableAnn, dtoAnn, skipAnn;
+    protected final Class<? extends Annotation> entityAnn, superTypeAnn, embeddableAnn, embeddedIdAnn, dtoAnn, skipAnn;
     
     private boolean useFields = true, useGetters = true;
     
@@ -25,11 +25,13 @@ public class Configuration {
             Class<? extends Annotation> entityAnn, 
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
+            Class<? extends Annotation> embeddedIdAnn,
             Class<? extends Annotation> dtoAnn,
             Class<? extends Annotation> skipAnn) {
         this.entityAnn = Assert.notNull(entityAnn);
         this.superTypeAnn = superTypeAnn;
         this.embeddableAnn = embeddableAnn;
+        this.embeddedIdAnn = embeddedIdAnn;
         this.dtoAnn = dtoAnn;
         this.skipAnn = skipAnn;             
     }
@@ -65,6 +67,10 @@ public class Configuration {
 
     public Class<? extends Annotation> getEmbeddableAnn() {
         return embeddableAnn;
+    }
+    
+    public Class<? extends Annotation> getEmbeddedIdAnn() {
+        return embeddedIdAnn;
     }
 
     public Class<? extends Annotation> getDtoAnn() {
