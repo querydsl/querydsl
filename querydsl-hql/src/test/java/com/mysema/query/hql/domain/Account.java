@@ -39,10 +39,7 @@ public class Account implements Serializable{
     
     @Embedded
     EmbeddedType embeddedData;
-    
-//    @EmbeddedId
-//    EmbeddedType embeddedId;
-    
+        
     @Test
     public void test(){
         try {
