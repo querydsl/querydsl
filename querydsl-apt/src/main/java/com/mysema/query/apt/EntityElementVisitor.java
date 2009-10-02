@@ -2,7 +2,6 @@ package com.mysema.query.apt;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;

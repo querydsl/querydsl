@@ -9,6 +9,7 @@ import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.processing.Messager;
@@ -51,15 +52,15 @@ public class Processor {
     @SuppressWarnings("unchecked")
     public Processor(ProcessingEnvironment env, Configuration configuration) {
         this.conf = configuration;
-        Class<? extends Annotation>[] anns ;
+        List<Class<? extends Annotation>> anns ;
         if (conf.getEmbeddableAnn() != null){
-            anns = new Class[]{conf.getEntityAnn(), conf.getEmbeddableAnn()};
+            anns = Arrays.<Class<? extends Annotation>>asList(conf.getEntityAnn(), conf.getEmbeddableAnn());
         }else{
-            anns = new Class[]{conf.getEntityAnn()};            
+            anns = Arrays.<Class<? extends Annotation>>asList(conf.getEntityAnn());            
         }
         this.env = Assert.notNull(env);        
         TypeModelFactory factory = new TypeModelFactory(anns);
-        this.typeFactory = new APTModelFactory(factory, Arrays.asList(anns));
+        this.typeFactory = new APTModelFactory(factory, anns);
         if (conf.getSkipAnn() != null){
             this.classModelFactory = new ClassModelFactory(factory, conf.getSkipAnn());
         }else{
@@ -109,23 +110,14 @@ public class Processor {
         
         // EMBEDDABLES (optional)
         
-        if (conf.getEmbeddableAnn() != null || conf.getEmbeddedIdAnn() != null){
+        if (conf.getEmbeddableAnn() != null){
             // populate entity type mappings
             Map<String, ClassModel> embeddables = new HashMap<String, ClassModel>();
             
-            if (conf.getEmbeddableAnn() != null){
-                for (Element element : roundEnv.getElementsAnnotatedWith(conf.getEmbeddableAnn())) {
-                    ClassModel model = element.accept(entityVisitor, null);
-                    embeddables.put(model.getName(), model);
-                }    
-            }
-            
-            if (conf.getEmbeddedIdAnn() != null){
-                for (Element element : roundEnv.getElementsAnnotatedWith(conf.getEmbeddedIdAnn())) {
-                    ClassModel model = element.accept(entityVisitor, null);
-                    embeddables.put(model.getName(), model);
-                }
-            }
+            for (Element element : roundEnv.getElementsAnnotatedWith(conf.getEmbeddableAnn())) {
+                ClassModel model = element.accept(entityVisitor, null);
+                embeddables.put(model.getName(), model);
+            }  
             
             // add super type fields
             for (ClassModel embeddable : embeddables.values()) {
