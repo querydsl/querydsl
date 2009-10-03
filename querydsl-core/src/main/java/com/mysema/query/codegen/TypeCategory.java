@@ -152,9 +152,10 @@ public enum TypeCategory {
             case DATETIME: return DATETIME;
             case NUMERIC: return NUMERIC;
             case SIMPLE: return SIMPLE;            
-            case TIME: return TIME;                      
-            default: return null;
+            case TIME: return TIME;    
+            case NONE: return null;
         }        
+        throw new IllegalArgumentException("Unsupported PropertyType " + propertyType);
     }
     
 }
