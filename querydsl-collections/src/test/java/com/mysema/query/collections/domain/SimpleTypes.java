@@ -14,10 +14,10 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import com.mysema.query.annotations.Entity;
-import com.mysema.query.annotations.Transient;
+import com.mysema.query.annotations.QueryEntity;
+import com.mysema.query.annotations.QueryTransient;
 
-@Entity
+@QueryEntity
 public class SimpleTypes {
 
     @Test
@@ -86,6 +86,6 @@ public class SimpleTypes {
 
     java.sql.Blob blob;
 
-    @Transient
+    @QueryTransient
     String skipMe;
 }

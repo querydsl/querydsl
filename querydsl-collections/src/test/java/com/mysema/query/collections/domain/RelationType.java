@@ -11,11 +11,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.collections.domain.Host.Reference;
 import com.mysema.query.collections.domain2.RelationType2;
 
-@Entity
+@QueryEntity
 @SuppressWarnings("unchecked")
 public class RelationType {
 

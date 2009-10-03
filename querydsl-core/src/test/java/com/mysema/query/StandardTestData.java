@@ -561,32 +561,46 @@ class StandardTestData {
         }
         rv.addAll(Arrays.<EBoolean>asList(            
             expr.between("A", "Z"),
+            
             expr.charAt(0).eq(knownValue.charAt(0)),
+            
             expr.notBetween("A", "Z"),
+            
             expr.contains(other),
             expr.contains(knownValue.substring(0,1)),
             expr.contains(knownValue.substring(1,2)),
+            
             expr.endsWith(other),
             expr.endsWith(knownValue.substring(1)),            
+            
             expr.equalsIgnoreCase(other),
             expr.equalsIgnoreCase(knownValue),
+            
             expr.in(Arrays.asList(knownValue)),
+            
             expr.indexOf(other).gt(0),
             expr.indexOf("X", 1).gt(0),
             expr.indexOf(knownValue).gt(0),
+            
 //            expr.lastIndexOf(other).gt(0),
 //            expr.lastIndexOf(knownValue).gt(0),
+            
             expr.in("A","B","C"),
             expr.notIn("A","B","C"),
-//            expr.like(knownValue.substring(0,1)+"%"),
-//            expr.like("%"+knownValue.substring(1)),
-//            expr.like("%"+knownValue.substring(1,2)+"%"),            
+            
+            expr.like(knownValue.substring(0,1)+"%"),
+            expr.like("%"+knownValue.substring(1)),
+            expr.like("%"+knownValue.substring(1,2)+"%"),            
+            
             expr.matches(knownValue.substring(0,1)+".*"),
             expr.matches(".*"+knownValue.substring(1)),
             expr.matches(".*"+knownValue.substring(1,2)+".*"),
+            
             expr.length().gt(0),            
+            
             expr.notBetween("A", "Z"),
             expr.notBetween(other, other),
+            
             expr.isEmpty(),
             expr.isNotEmpty()
         ));
@@ -610,36 +624,50 @@ class StandardTestData {
             expr.ne(knownValue),
             expr.equalsIgnoreCase(other),
             expr.equalsIgnoreCase(knownValue),
+            
             expr.lower().eq(other.lower()),
             expr.upper().eq(other.upper()),
             expr.lower().eq(knownValue.toLowerCase()),
+            expr.upper().eq(knownValue.toUpperCase()),
+            
             expr.charAt(0).eq(other.charAt(0)),
+            
             expr.endsWith(other),
             expr.endsWith(knownValue),
+            expr.endsWith(knownValue.substring(1)),
             expr.endsWith(other,false),
             expr.endsWith(knownValue,false),
+            expr.endsWith(knownValue.substring(1),false),
+            
             expr.startsWith(other),
             expr.startsWith(knownValue),
+            expr.startsWith(knownValue.substring(0,1)),
             expr.startsWith(other,false),
             expr.startsWith(knownValue,false),
+            expr.startsWith(knownValue.substring(0,1),false),
+            
             expr.indexOf(knownValue).eq(0),
 //            expr.lastIndexOf(knownValue).eq(0),
             expr.contains(other),
             expr.contains(knownValue),
             expr.contains(knownValue.substring(0,1)),
             expr.contains(knownValue.substring(1,2)),
+            
             other.startsWith(expr),
             other.endsWith(expr),
             other.contains(expr),
+            
             expr.substring(0,1).eq(other.substring(0,1)),
             expr.substring(1).eq(other.substring(1)),
             expr.substring(0,1).eq(knownValue.substring(0,1)),
             expr.substring(1).eq(knownValue.substring(1)),
-//            expr.like(knownValue),
-//            other.like(knownValue),
-//            expr.like(knownValue.substring(0,1)+"%"),
-//            expr.like("%"+knownValue.substring(1)),
-//            expr.like("%"+knownValue.substring(1,2)+"%"),
+            
+            expr.like(knownValue),
+            other.like(knownValue),
+            expr.like(knownValue.substring(0,1)+"%"),
+            expr.like("%"+knownValue.substring(1)),
+            expr.like("%"+knownValue.substring(1,2)+"%"),
+            
             expr.matches(knownValue.substring(0,1)+".*"),
             expr.matches(".*"+knownValue.substring(1)),
             expr.matches(".*"+knownValue.substring(1,2)+".*")

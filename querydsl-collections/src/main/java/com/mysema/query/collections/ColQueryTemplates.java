@@ -24,7 +24,7 @@ public class ColQueryTemplates extends JavaTemplates {
         add(Ops.NE_OBJECT, "!{0}.equals({1})");
         add(Ops.INSTANCE_OF, "{1}.isInstance({0})");
         
-        // comparable
+        // Comparable
         add(Ops.AFTER, "{0}.compareTo({1}) > 0");
         add(Ops.BEFORE, "{0}.compareTo({1}) < 0");
         add(Ops.AOE, "{0}.compareTo({1}) >= 0");
@@ -40,7 +40,10 @@ public class ColQueryTemplates extends JavaTemplates {
         add(Ops.DateTimeOps.MINUTE, "{0}.getMinutes()");     // java.util.Date
         add(Ops.DateTimeOps.SECOND, "{0}.getSeconds()");     // java.util.Date
         
-        // path types
+        // String
+        add(Ops.LIKE, functions + ".like({0},{1})");
+        
+        // Path types
         for (PathType type : new PathType[] { 
                 PathType.LISTVALUE,
                 PathType.MAPVALUE,
@@ -54,6 +57,10 @@ public class ColQueryTemplates extends JavaTemplates {
         // TEMPORARY FIXES
         
         add(Ops.DIV, "((double){0}) / ((double){1})");
+    }
+    
+    public static boolean like(String str, String like){
+        return str.matches(like.replace("%", ".*").replace('_', '.'));
     }
 
     public static <A extends Comparable<? super A>> boolean between(A a, A b, A c) {

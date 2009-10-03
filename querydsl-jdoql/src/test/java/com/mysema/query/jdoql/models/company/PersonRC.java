@@ -8,9 +8,9 @@ package com.mysema.query.jdoql.models.company;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 
-@Entity
+@QueryEntity
 public class PersonRC {
     // persistent member variables
     public long personNum;

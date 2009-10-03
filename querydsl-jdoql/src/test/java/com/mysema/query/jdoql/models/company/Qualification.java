@@ -7,14 +7,14 @@ package com.mysema.query.jdoql.models.company;
 
 import java.util.Date;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 
 /**
  * Qualification of a person.
  * 
  * @version $Revision: 1.1 $
  */
-@Entity
+@QueryEntity
 public class Qualification {
     private Person person;
     private String name;

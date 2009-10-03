@@ -1,1 +1,1 @@
-* Document @Type and @NonSearchable
+* Document @QueryType

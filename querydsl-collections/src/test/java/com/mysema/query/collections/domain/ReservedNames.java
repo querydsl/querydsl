@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 
-@Entity
+@QueryEntity
 public class ReservedNames {
 
     public boolean isNew() {

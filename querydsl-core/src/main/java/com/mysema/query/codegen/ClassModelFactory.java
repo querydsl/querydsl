@@ -11,7 +11,7 @@ import java.lang.reflect.Modifier;
 
 import net.jcip.annotations.Immutable;
 
-import com.mysema.query.annotations.Transient;
+import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.annotations.QueryType;
 
 /**
@@ -33,7 +33,7 @@ public class ClassModelFactory {
     }
     
     public ClassModelFactory(TypeModelFactory typeModelFactory){
-        this(typeModelFactory, Transient.class);
+        this(typeModelFactory, QueryTransient.class);
     }
 
     

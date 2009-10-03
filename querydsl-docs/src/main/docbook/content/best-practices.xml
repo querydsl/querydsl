@@ -49,4 +49,22 @@ protected JDOQLQuery from(PEntity<?>... o) {
   
   </sect1>     
   
+  <sect1>
+    <title>Overriding query types</title>
+    
+    <para>Use the com.mysema.query.annotations.QueryType annotation to override the query type on a field or method basis.</para>
+    
+    <para>Use the annotation like this : </para>
+
+<programlisting language="java"><![CDATA[    
+@QueryType(PropertyType.SIMPLE)    
+private String stringAsSimple;    
+]]></programlisting>
+
+    <para>This will generate a PSimple typed query field for stringAsSimple.</para>
+    
+    <para>Use cases for this feature are blocking comparison operations for encrypted fields, adding support for custom literals etc.</para>
+  
+  </sect1>
+  
 </chapter>

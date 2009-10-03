@@ -5,9 +5,9 @@
  */
 package com.mysema.query.collections.domain;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 
-@Entity
+@QueryEntity
 public class Animal {
 
     protected boolean alive;

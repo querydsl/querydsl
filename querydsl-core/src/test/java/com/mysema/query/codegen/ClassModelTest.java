@@ -15,7 +15,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 
 
 /**
@@ -31,7 +31,7 @@ public class ClassModelTest {
      */
     @Test
     public void test() {        
-        ClassModelFactory factory = new ClassModelFactory(new TypeModelFactory(Entity.class));
+        ClassModelFactory factory = new ClassModelFactory(new TypeModelFactory(QueryEntity.class));
         ClassModel type = factory.create(TestType.class, "Q");
         assertEquals(1, type.getEntityMaps().size());
         assertEquals(1, type.getSimpleMaps().size());
@@ -48,7 +48,7 @@ public class ClassModelTest {
     /**
      * The Class TestType.
      */
-    @Entity
+    @QueryEntity
     public static class TestType {
         // entity map
         /** The map1. */

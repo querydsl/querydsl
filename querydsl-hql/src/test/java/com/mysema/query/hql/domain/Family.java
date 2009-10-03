@@ -5,12 +5,12 @@
  */
 package com.mysema.query.hql.domain;
 
-import com.mysema.query.annotations.Projection;
+import com.mysema.query.annotations.QueryProjection;
 
 /**
  * The Class Family.
  */
-@Projection
+@QueryProjection
 public class Family {
     public Family(Cat mother, Cat mate, Cat offspr) {
 

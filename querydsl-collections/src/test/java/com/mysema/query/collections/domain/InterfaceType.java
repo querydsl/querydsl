@@ -7,9 +7,9 @@ package com.mysema.query.collections.domain;
 
 import java.util.List;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 
-@Entity
+@QueryEntity
 public interface InterfaceType {
     InterfaceType getRelation();
 

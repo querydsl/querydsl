@@ -11,12 +11,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 
 /**
  * An office in the company.
  */
-@Entity
+@QueryEntity
 public class Office {
     private long floor; // PK when app-id
     private String roomName; // PK when app-id

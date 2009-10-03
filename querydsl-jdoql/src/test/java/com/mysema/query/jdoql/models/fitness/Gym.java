@@ -8,14 +8,14 @@ package com.mysema.query.jdoql.models.fitness;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 
 /**
  * Gymnasium.
  * 
  * @version $Revision: 1.1 $
  */
-@Entity
+@QueryEntity
 public class Gym {
     private Map<String, String> codes;
     private String location;

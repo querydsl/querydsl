@@ -16,10 +16,10 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
-import com.mysema.query.annotations.Embeddable;
-import com.mysema.query.annotations.Entity;
-import com.mysema.query.annotations.Projection;
-import com.mysema.query.annotations.Transient;
+import com.mysema.query.annotations.QueryEmbeddable;
+import com.mysema.query.annotations.QueryEntity;
+import com.mysema.query.annotations.QueryProjection;
+import com.mysema.query.annotations.QueryTransient;
 
 
 /**
@@ -35,11 +35,11 @@ public class QuerydslAnnotationProcessor extends AbstractProcessor{
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
-        entity = Entity.class;
+        entity = QueryEntity.class;
         superType = null;
-        embeddable = Embeddable.class;
-        dto = Projection.class;
-        skip = Transient.class;
+        embeddable = QueryEmbeddable.class;
+        dto = QueryProjection.class;
+        skip = QueryTransient.class;
         
         Configuration configuration = new Configuration(entity, superType, embeddable, dto, skip);
         Processor processor = new Processor(processingEnv, configuration);

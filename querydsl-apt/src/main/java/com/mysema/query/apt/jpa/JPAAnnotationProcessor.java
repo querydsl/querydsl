@@ -11,7 +11,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
-import com.mysema.query.annotations.Projection;
+import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.apt.Configuration;
 import com.mysema.query.apt.Processor;
 
@@ -33,7 +33,7 @@ public class JPAAnnotationProcessor extends AbstractProcessor{
             entity = (Class)Class.forName("javax.persistence.Entity");
             superType = (Class)Class.forName("javax.persistence.MappedSuperclass");
             embeddable = (Class)Class.forName("javax.persistence.Embeddable");
-            dto = Projection.class;
+            dto = QueryProjection.class;
             skip = (Class)Class.forName("javax.persistence.Transient");
             
             Configuration configuration = new JPAConfiguration(entity, superType, embeddable, dto, skip);

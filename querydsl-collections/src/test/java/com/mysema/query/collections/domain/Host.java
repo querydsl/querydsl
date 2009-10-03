@@ -5,7 +5,7 @@
  */
 package com.mysema.query.collections.domain;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 
 public class Host {
 
@@ -13,7 +13,7 @@ public class Host {
         VAR1, VAR2
     }
 
-    @Entity
+    @QueryEntity
     public static class Reference {
 
     }

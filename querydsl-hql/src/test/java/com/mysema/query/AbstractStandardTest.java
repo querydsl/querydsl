@@ -5,6 +5,8 @@
  */
 package com.mysema.query;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -52,6 +54,10 @@ public abstract class AbstractStandardTest {
     
     protected abstract HQLQuery query();
     
+    protected HQLQuery catQuery(){
+        return query().from(cat);
+    }
+        
     protected abstract void save(Object entity);
 
     @Before
@@ -93,6 +99,28 @@ public abstract class AbstractStandardTest {
 //        standardTest.timeTests(null, null, null);
         
         standardTest.report();        
+    }
+    
+    @Test
+    public void testStringOperations(){
+        // startsWith
+        assertEquals(1, catQuery().where(cat.name.startsWith("R")).count());
+        assertEquals(0, catQuery().where(cat.name.startsWith("r")).count());
+        assertEquals(1, catQuery().where(cat.name.startsWith("r",false)).count());
+        
+        // endsWith
+        assertEquals(1, catQuery().where(cat.name.endsWith("h")).count());
+        assertEquals(0, catQuery().where(cat.name.endsWith("H")).count());
+        assertEquals(1, catQuery().where(cat.name.endsWith("H",false)).count());
+        
+        // contains
+        assertEquals(1, catQuery().where(cat.name.contains("eli")).count());
+                
+        // indexOf
+        assertEquals(Integer.valueOf(0), catQuery().where(cat.name.eq("Bob")).uniqueResult(cat.name.indexOf("B")));
+        assertEquals(Integer.valueOf(1), catQuery().where(cat.name.eq("Bob")).uniqueResult(cat.name.indexOf("o")));
+        assertEquals(Integer.valueOf(2), catQuery().where(cat.name.eq("Bob")).uniqueResult(cat.name.indexOf("b")));
+        
     }
         
 

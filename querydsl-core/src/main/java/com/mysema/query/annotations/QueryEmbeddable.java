@@ -5,23 +5,19 @@
  */
 package com.mysema.query.annotations;
 
-import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-/**
- * Annotate fields and getters that should be skipped in APT based code generation
- * with this annotation
- * 
- * @author tiwe
- *
- */
 @Documented
-@Target({FIELD,METHOD})
+@Target(TYPE)
 @Retention(RUNTIME)
-public @interface Transient {
+/**
+ * Annotation for APT based Domain query type generation. Annotate Embeddable types with this annotation.
+ */
+public @interface QueryEmbeddable {
 
 }

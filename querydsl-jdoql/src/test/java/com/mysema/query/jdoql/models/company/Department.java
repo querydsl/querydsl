@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 
 /**
  * Department in a company. Has a Manager, and a set of Projects being worked
@@ -17,7 +17,7 @@ import com.mysema.query.annotations.Entity;
  * 
  * @version $Revision: 1.1 $
  */
-@Entity
+@QueryEntity
 public class Department {
     private String name;
     private Manager manager;

@@ -18,5 +18,5 @@ import java.lang.annotation.Target;
 /**
  * Annotation for APT based DTO query type generation. Annotate DTO types with this annotation.
  */
-public @interface Projection {
+public @interface QueryProjection {
 }

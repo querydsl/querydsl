@@ -11,9 +11,9 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.CollectionOfElements;
 
-import com.mysema.query.annotations.Projection;
+import com.mysema.query.annotations.QueryProjection;
 
-@Projection
+@QueryProjection
 public class FooDTO {
     String bar;
     @Id

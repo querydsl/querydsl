@@ -97,13 +97,14 @@ public class Templates {
         add(Ops.STARTS_WITH, "startsWith({0},{1})");
         add(Ops.STARTS_WITH_IC, "startsWithIgnoreCase({0},{1})");
         add(Ops.ENDS_WITH, "endsWith({0},{0}");
-        add(Ops.ENDS_WITH_IC, "endsWithIgnoreCase({0},{1}");
+        add(Ops.ENDS_WITH_IC, "endsWithIgnoreCase({0},{1})");
         add(Ops.STRING_CONTAINS, "contains({0},{1})");
         add(Ops.CHAR_AT, "charAt({0},{1})");
         add(Ops.STRING_LENGTH, "length({0})");
         add(Ops.INDEX_OF, "indexOf({0},{1})");
         add(Ops.INDEX_OF_2ARGS, "indexOf({0},{1},{2})");
         add(Ops.STRING_IS_EMPTY, "empty({0})");
+        add(Ops.LIKE, "{0} like {1}");
         
         add(Ops.StringOps.LTRIM, "ltrim({0})");
         add(Ops.StringOps.RTRIM, "rtrim({0})");

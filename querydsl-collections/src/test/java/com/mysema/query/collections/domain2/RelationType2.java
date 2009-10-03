@@ -7,9 +7,9 @@ package com.mysema.query.collections.domain2;
 
 import java.util.List;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 
-@Entity
+@QueryEntity
 public class RelationType2<D extends RelationType2<D>> {
     List<D> list;
 }

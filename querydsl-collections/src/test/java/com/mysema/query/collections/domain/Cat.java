@@ -14,12 +14,12 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryType;
 import com.mysema.query.types.path.PSimple;
 
-@Entity
+@QueryEntity
 public class Cat extends Animal {
     
     private int breed;
@@ -32,6 +32,7 @@ public class Cat extends Animal {
     
     private Cat mate;
     
+    @SuppressWarnings("unused")
     @QueryType(PropertyType.NONE)    
     private String skippedField;
     
@@ -40,14 +41,15 @@ public class Cat extends Animal {
     private String stringAsSimple;
 
     @Test
-    public void test() throws SecurityException, NoSuchFieldException {
+    public void testType() throws SecurityException, NoSuchFieldException {
         assertTrue(QCat.cat.stringAsSimple.getClass().equals(PSimple.class));
     }
     
     @Test(expected=NoSuchFieldException.class)
-    public void skippedField() throws SecurityException, NoSuchFieldException{
+    public void testSkippedField() throws SecurityException, NoSuchFieldException{
         QCat.class.getField("skippedField");
     }
+    
     public Cat() {
         this.kittensByName = Collections.emptyMap();
     }
@@ -102,14 +104,6 @@ public class Cat extends Animal {
 
     public void setMate(Cat mate) {
         this.mate = mate;
-    }
-
-    public String getSkippedField() {
-        return skippedField;
-    }
-
-    public void setSkippedField(String skippedField) {
-        this.skippedField = skippedField;
     }
 
 //    public String getStringAsSimple() {

@@ -5,7 +5,7 @@
  */
 package com.mysema.query.jdoql.models.company;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 
 
 /**
@@ -14,7 +14,7 @@ import com.mysema.query.annotations.Entity;
  * 
  * @version $Revision: 1.1 $
  */
-@Entity
+@QueryEntity
 public class Organisation {
     String name;
     

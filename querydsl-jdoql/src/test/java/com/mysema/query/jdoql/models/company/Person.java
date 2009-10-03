@@ -11,12 +11,12 @@ import java.util.Map;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 
 /**
  * Person in a company.
  */
-@Entity
+@QueryEntity
 public class Person implements Cloneable {
     private long personNum; // Part of PK when app id
     private String globalNum; // Part of PK when app id

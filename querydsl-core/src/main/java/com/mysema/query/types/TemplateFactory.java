@@ -24,20 +24,41 @@ import com.mysema.query.types.expr.EString;
 @Immutable
 public class TemplateFactory {
 
-    private static final Pattern elementPattern = Pattern.compile("\\{\\d+[slu]?\\}");
+    private static final Pattern elementPattern = Pattern.compile("\\{%?\\d+[slu%]?\\}");
 
-    private static final Converter<EString,EString> toLowerCase = new Converter<EString,EString>(){
+    private final Converter<EString,EString> toLowerCase = new Converter<EString,EString>(){
         @Override
         public EString convert(EString arg) {
             return arg.toLowerCase();
         } 
     };
     
-    private static final Converter<EString,EString> toUpperCase = new Converter<EString,EString>(){
+    private final Converter<EString,EString> toUpperCase = new Converter<EString,EString>(){
         @Override
         public EString convert(EString arg) {
             return arg.toUpperCase();
         } 
+    };
+    
+    private final Converter<EString,EString> toStartsWithViaLike = new Converter<EString,EString>(){
+        @Override
+        public EString convert(EString arg) {
+            return arg.append("%");
+        } 
+    };
+    
+    private final Converter<EString,EString> toEndsWithViaLike = new Converter<EString,EString>(){
+        @Override
+        public EString convert(EString arg) {
+            return arg.prepend("%");
+        } 
+    };
+    
+    private final Converter<EString,EString> toContainsViaLike = new Converter<EString,EString>(){
+        @Override
+        public EString convert(EString arg) {
+            return arg.prepend("%").append("%");
+        }
     };
     
     private final Map<String,Template> cache = new HashMap<String,Template>();
@@ -56,12 +77,17 @@ public class TemplateFactory {
                 String str = template.substring(m.start() + 1, m.end() - 1).toLowerCase();
                 boolean asString = false;
                 Converter<?,?> converter = null;
+                if (str.charAt(0) == '%'){
+                    converter = toEndsWithViaLike;
+                    str = str.substring(1);
+                }                
                 switch (str.charAt(str.length()-1)){
                   case 'l' : converter = toLowerCase; break;
                   case 'u' : converter = toUpperCase; break;
+                  case '%' : converter = converter == null ? toStartsWithViaLike : toContainsViaLike; break;
                   case 's' : asString = true; break;
                 }
-                if (asString || converter != null){
+                if (asString || (converter != null && converter != toEndsWithViaLike)){
                     str = str.substring(0, str.length()-1);
                 }
                 int index = Integer.parseInt(str);

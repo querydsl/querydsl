@@ -16,7 +16,7 @@ import org.joda.time.LocalTime;
 import org.joda.time.Partial;
 import org.junit.Test;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
@@ -26,7 +26,7 @@ import com.mysema.query.types.path.PTime;
  * @author tiwe
  * 
  */
-@Entity
+@QueryEntity
 public class JodaTimeSupport {
 
     @SuppressWarnings("unchecked")

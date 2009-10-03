@@ -262,7 +262,26 @@ public abstract class EString extends EComparable<String> {
         return length;
     }
     
-
+    /**
+     * Expr: <code>this like str</code>
+     * 
+     * @param str
+     * @return
+     */
+    public EBoolean like(String str){
+        return OBoolean.create(Ops.LIKE, this, EString.create(str));
+    }
+    
+    /**
+     * Expr: <code>this like str</code>
+     * 
+     * @param str
+     * @return
+     */
+    public EBoolean like(EString str){
+        return OBoolean.create(Ops.LIKE, this, str);
+    }
+    
     /**
      * 
      * @return this.toLowerCase()

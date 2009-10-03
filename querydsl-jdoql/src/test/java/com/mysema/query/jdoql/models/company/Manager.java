@@ -9,14 +9,14 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 
 /**
  * Manager of a set of Employees, and departments.
  * 
  * @version $Revision: 1.1 $
  */
-@Entity
+@QueryEntity
 public class Manager extends Employee {
     protected Set<Employee> subordinates;
     protected Set<Department> departments;

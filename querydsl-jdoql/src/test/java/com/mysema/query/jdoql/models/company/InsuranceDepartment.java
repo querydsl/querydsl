@@ -5,10 +5,10 @@
  */
 package com.mysema.query.jdoql.models.company;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 
 
-@Entity
+@QueryEntity
 public class InsuranceDepartment extends Department {
     private String someInfo1;
     private String someInfo2;

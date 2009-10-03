@@ -8,14 +8,14 @@ package com.mysema.query.jdoql.models.fitness;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysema.query.annotations.Entity;
+import com.mysema.query.annotations.QueryEntity;
 
 /**
  * Container for clothes in a Gym.
  * 
  * @version $Revision: 1.1 $
  */
-@Entity
+@QueryEntity
 public class Wardrobe {
     // this must be initialized in the constructor. dont change it
     private List<Cloth> clothes;
