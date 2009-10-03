@@ -35,7 +35,6 @@ import com.mysema.query.codegen.TypeModelFactory;
  * @author tiwe
  * 
  */
-// TODO : simplify this
 @Immutable
 public class Processor {
     

@@ -32,11 +32,9 @@ public class Cat extends Animal {
     
     private Cat mate;
     
-    @SuppressWarnings("unused")
     @QueryType(PropertyType.NONE)    
     private String skippedField;
     
-    @SuppressWarnings("unused")
     @QueryType(PropertyType.SIMPLE)    
     private String stringAsSimple;
 
@@ -106,9 +104,13 @@ public class Cat extends Animal {
         this.mate = mate;
     }
 
-//    public String getStringAsSimple() {
-//        return stringAsSimple;
-//    }
+    public String getStringAsSimple() {
+        return stringAsSimple;
+    }
+    
+    public String getSkippedField() {
+        return skippedField;
+    }
 
     public void setStringAsSimple(String stringAsSimple) {
         this.stringAsSimple = stringAsSimple;

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.apt;
 
 import java.lang.annotation.Annotation;
@@ -39,7 +44,8 @@ public class Configuration {
     }
     
     public boolean isValidConstructor(ExecutableElement constructor) {
-        return constructor.getModifiers().contains(Modifier.PUBLIC);
+        return constructor.getModifiers().contains(Modifier.PUBLIC)
+            && !constructor.getParameters().isEmpty();
     }
     
     public boolean isValidField(VariableElement field) {

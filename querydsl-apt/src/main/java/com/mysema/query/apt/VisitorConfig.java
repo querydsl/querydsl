@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.apt;
 
 /**
@@ -32,6 +37,5 @@ public enum VisitorConfig {
     public boolean isVisitMethods(){
         return methods;
     }
-    
     
 }

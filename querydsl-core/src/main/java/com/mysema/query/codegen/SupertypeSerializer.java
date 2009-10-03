@@ -23,6 +23,17 @@ public class SupertypeSerializer extends EntitySerializer{
     }
     
     @Override
+    protected void factoryMethods(ClassModel model, Writer writer) {
+        // no factory methods        
+    }
+    
+    @Override
+    protected void introImports(StringBuilder builder) {
+        builder.append("import com.mysema.query.util.*;\n");
+        builder.append("import com.mysema.query.types.path.*;\n\n");
+    }
+    
+    @Override
     protected void constructors(ClassModel model, Writer writer) throws IOException {
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;

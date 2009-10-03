@@ -59,7 +59,7 @@ public class HQLTemplates extends Templates {
         
         // string
         add(Ops.CONCAT, "{0} || {1}", 37);
-        add(Ops.MATCHES, "{0} like {1}", 27); // TODO : as real regex
+        add(Ops.MATCHES, "{0} like {1}", 27); // TODO : support real regexes 
         add(Ops.LOWER, "lower({0})");
         add(Ops.SUBSTR_1ARG, "substring({0},{1})");
         add(Ops.SUBSTR_2ARGS, "substring({0},{1},{2})");

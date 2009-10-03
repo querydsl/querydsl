@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import net.jcip.annotations.Immutable;
 
 import com.mysema.query.types.Template.Element;
+import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EString;
 
 /**
@@ -43,25 +44,37 @@ public class TemplateFactory {
     private final Converter<EString,EString> toStartsWithViaLike = new Converter<EString,EString>(){
         @Override
         public EString convert(EString arg) {
-            return arg.append("%");
+            return escapeForLike(arg).append("%");
         } 
     };
     
     private final Converter<EString,EString> toEndsWithViaLike = new Converter<EString,EString>(){
         @Override
         public EString convert(EString arg) {
-            return arg.prepend("%");
+            return escapeForLike(arg).prepend("%");
         } 
     };
     
     private final Converter<EString,EString> toContainsViaLike = new Converter<EString,EString>(){
         @Override
         public EString convert(EString arg) {
-            return arg.prepend("%").append("%");
+            return escapeForLike(arg).prepend("%").append("%");
         }
     };
     
     private final Map<String,Template> cache = new HashMap<String,Template>();
+    
+    @SuppressWarnings("unchecked")
+    private EString escapeForLike(EString expr){
+        if (expr instanceof Constant){
+            String str = ((Constant<String>) expr).getConstant();
+            if (str.contains("%") || str.contains("_")){
+                str = str.replace("%", "\\%").replace("_", "\\_");
+                return EString.create(str);
+            }                
+        }        
+        return expr;
+    }
     
     public Template create(String template){
         if (cache.containsKey(template)){

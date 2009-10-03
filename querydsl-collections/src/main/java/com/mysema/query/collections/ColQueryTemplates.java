@@ -30,7 +30,6 @@ public class ColQueryTemplates extends JavaTemplates {
         add(Ops.AOE, "{0}.compareTo({1}) >= 0");
         add(Ops.BOE, "{0}.compareTo({1}) <= 0");
         add(Ops.BETWEEN, functions + ".between({0},{1},{2})");
-//        add(Ops.BETWEEN, "{0}.compareTo({1}) > 0 && {0}.compareTo({2}) < 0");
         add(Ops.STRING_CAST, "String.valueOf({0})");
         
         // Date and Time
@@ -60,6 +59,7 @@ public class ColQueryTemplates extends JavaTemplates {
     }
     
     public static boolean like(String str, String like){
+        // TODO : better escaping
         return str.matches(like.replace("%", ".*").replace('_', '.'));
     }
 

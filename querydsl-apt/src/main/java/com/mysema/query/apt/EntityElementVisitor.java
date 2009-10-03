@@ -1,6 +1,16 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.apt;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
@@ -17,7 +27,9 @@ import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.annotations.QueryType;
 import com.mysema.query.codegen.ClassModel;
+import com.mysema.query.codegen.ConstructorModel;
 import com.mysema.query.codegen.FieldModel;
+import com.mysema.query.codegen.ParameterModel;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeModel;
 
@@ -51,7 +63,57 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel
         ClassModel classModel = new ClassModel(namePrefix, sc.getName(), c.getPackageName(), c.getName(), c.getSimpleName());
         List<? extends Element> elements = e.getEnclosedElements();
     
+        // CONSTRUCTORS
+        
+        for (ExecutableElement constructor : ElementFilter.constructorsIn(elements)){
+            if (configuration.isValidConstructor(constructor)){
+                List<ParameterModel> parameters = new ArrayList<ParameterModel>(constructor.getParameters().size());
+                for (VariableElement var : constructor.getParameters()){
+                    TypeModel varType = typeFactory.create(var.asType(), elementUtils);
+                    parameters.add(new ParameterModel(var.getSimpleName().toString(), varType.getName()));
+                }
+                classModel.addConstructor(new ConstructorModel(parameters));    
+            }                
+        }  
+
         VisitorConfig config = configuration.getConfig(e, elements);
+                
+        Set<String> blockedFields = new HashSet<String>();
+        Map<String,FieldModel> fields = new HashMap<String,FieldModel>();
+        Map<String,TypeCategory> types = new HashMap<String,TypeCategory>();
+        
+        // FIELDS
+        
+        if (config.isVisitFields()){
+            for (VariableElement field : ElementFilter.fieldsIn(elements)){
+                String name = field.getSimpleName().toString();
+                if (configuration.isValidField(field)){
+                    try{                        
+                        TypeModel typeModel = typeFactory.create(field.asType(), elementUtils);                            
+                        if (field.getAnnotation(QueryType.class) != null){
+                            TypeCategory typeCategory = TypeCategory.get(field.getAnnotation(QueryType.class).value());
+                            if (typeCategory == null){
+                                blockedFields.add(name);
+                                continue;
+                            }
+                            typeModel = typeModel.as(typeCategory);
+                            types.put(name, typeCategory);
+                        }                        
+                        fields.put(name, new FieldModel(classModel, name, typeModel, null));    
+                    }catch(IllegalArgumentException ex){
+                        StringBuilder builder = new StringBuilder();
+                        builder.append("Caught exception for field ");
+                        builder.append(c.getName()).append("#").append(field.getSimpleName());
+                        throw new RuntimeException(builder.toString(), ex);
+                    }
+                        
+                }else{
+                    blockedFields.add(name);
+                }
+            }    
+        }
+        
+        // METHODS
         
         if (config.isVisitMethods()){
             for (ExecutableElement method : ElementFilter.methodsIn(elements)){
@@ -67,13 +129,18 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel
                     try{
                         TypeModel typeModel = typeFactory.create(method.getReturnType(), elementUtils);
                         if (method.getAnnotation(QueryType.class) != null){
-                            TypeCategory category = TypeCategory.get(method.getAnnotation(QueryType.class).value());
-                            if (category == null){
+                            TypeCategory typeCategory = TypeCategory.get(method.getAnnotation(QueryType.class).value());
+                            if (typeCategory == null){
+                                blockedFields.add(name);
+                                continue;
+                            }else if (blockedFields.contains(name)){
                                 continue;
                             }
-                            typeModel = typeModel.as(category);
+                            typeModel = typeModel.as(typeCategory);
+                        }else if (types.containsKey(name)){
+                            typeModel = typeModel.as(types.get(name));
                         }
-                        classModel.addField(new FieldModel(classModel, name, typeModel, null));    
+                        fields.put(name, new FieldModel(classModel, name, typeModel, null));    
                         
                     }catch(IllegalArgumentException ex){
                         StringBuilder builder = new StringBuilder();
@@ -81,35 +148,18 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel
                         builder.append(c.getName()).append("#").append(method.getSimpleName());
                         throw new RuntimeException(builder.toString(), ex);
                     }
-                }                
+                }else{
+                    blockedFields.add(name);
+                }
             }   
         }
+               
         
-        
-        if (config.isVisitFields()){
-            for (VariableElement field : ElementFilter.fieldsIn(elements)){
-                if (configuration.isValidField(field)){
-                    try{
-                        TypeModel typeModel = typeFactory.create(field.asType(), elementUtils);     
-                        if (field.getAnnotation(QueryType.class) != null){
-                            TypeCategory category = TypeCategory.get(field.getAnnotation(QueryType.class).value());
-                            if (category == null){
-                                continue;
-                            }
-                            typeModel = typeModel.as(category);
-                        }
-                        String name = field.getSimpleName().toString();
-                        classModel.addField(new FieldModel(classModel, name, typeModel, null));    
-                    }catch(IllegalArgumentException ex){
-                        StringBuilder builder = new StringBuilder();
-                        builder.append("Caught exception for field ");
-                        builder.append(c.getName()).append("#").append(field.getSimpleName());
-                        throw new RuntimeException(builder.toString(), ex);
-                    }
-                        
-                }                
-            }    
-        }
+        for (Map.Entry<String,FieldModel> entry : fields.entrySet()){
+            if (!blockedFields.contains(entry.getKey())){
+                classModel.addField(entry.getValue());
+            }
+        }        
         
         return classModel;
     }

@@ -17,6 +17,9 @@ public class EntitySerializer implements Serializer{
         // intro
         intro(model, writer);
         
+        // factory methods
+        factoryMethods(model, writer);        
+        
         // fields
         for (FieldModel field : model.getStringFields()){
             stringField(field, writer);
@@ -88,6 +91,38 @@ public class EntitySerializer implements Serializer{
         outro(model, writer);
     }
         
+    protected void factoryMethods(ClassModel model, Writer writer) throws IOException {
+        final String localName = model.getLocalName();
+        
+        StringBuilder builder = new StringBuilder();
+        for (ConstructorModel c : model.getConstructors()){
+            // begin
+            builder.append("    /**\n");
+            builder.append("     * Factory method for projection\n");
+            builder.append("     */\n");
+            builder.append("    public static EConstructor<" + localName + "> create(");
+            boolean first = true;
+            for (ParameterModel p : c.getParameters()){
+                if (!first) builder.append(", ");
+                builder.append("Expr<" + p.getTypeName() + "> " + p.getName());
+                first = false;
+            }
+            builder.append("){\n");
+            
+            // body
+            builder.append("        return new EConstructor<" + localName + ">(" + localName + ".class");
+            for (ParameterModel p : c.getParameters()){
+                builder.append(", " + p.getName());
+            }
+            
+            // end
+            builder.append(");\n");
+            builder.append("    }\n\n");
+        }
+        writer.append(builder.toString());
+        
+    }
+
     protected void booleanField(FieldModel field, Writer writer) throws IOException {
         serialize(field, "PBoolean", writer, "createBoolean");
     }
@@ -155,6 +190,9 @@ public class EntitySerializer implements Serializer{
         final String escapedName = field.getEscapedName();
         final String queryType = field.getQueryTypeName();               
         StringBuilder builder = new StringBuilder();
+        builder.append("    /**\n");
+        builder.append("     * Lazy creation of "+fieldName+" field\n");
+        builder.append("     */\n");
         builder.append("    public " + queryType + " _" + fieldName + "() {\n");
         builder.append("        if (" + escapedName + " == null){\n");
         builder.append("            " + escapedName + " = new " + queryType + "(PathMetadata.forProperty(this,\"" + fieldName + "\"));\n");
@@ -180,6 +218,9 @@ public class EntitySerializer implements Serializer{
             ClassModel _super = model.getSuperModel();
             final String simpleName = _super.getSimpleName();
             final String queryType = _super.getPrefix() + simpleName;
+            builder.append("    /**\n");
+            builder.append("     * Reference to the same path with the supertype signature\n");
+            builder.append("     */\n");
             builder.append("    public final "+queryType+" _super = new " + queryType + "(this);\n\n");
         }        
     }
@@ -200,7 +241,8 @@ public class EntitySerializer implements Serializer{
 
     protected void introImports(StringBuilder builder) {
         builder.append("import com.mysema.query.util.*;\n");
-        builder.append("import com.mysema.query.types.path.*;\n\n");
+        builder.append("import com.mysema.query.types.path.*;\n");
+        builder.append("import com.mysema.query.types.expr.*;\n");
     }
 
     protected void introJavadoc(StringBuilder builder, ClassModel model) {
