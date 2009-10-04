@@ -8,6 +8,10 @@ package com.mysema.query.codegen;
 import java.io.IOException;
 import java.io.Writer;
 
+/**
+ * @author tiwe
+ *
+ */
 public interface Serializer {
 
     /**

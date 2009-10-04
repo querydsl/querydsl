@@ -13,7 +13,7 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.util.JavaSyntaxUtils;
 
 /**
- * FieldModel represents a field / property in a query domain type.
+ * PropertyModel represents a property in a query domain type.
  * 
  * @author tiwe
  * @version $Id$
@@ -23,10 +23,10 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     
     private final BeanModel classModel;
     
-    private final String name, escapedName, typeName, keyTypeName, valueTypeName;
+    private final String name, escapedName, typeName;
     
     @Nullable
-    private final String queryTypeName;
+    private final String keyTypeName, valueTypeName, queryTypeName;
     
     private final TypeModel type;
     

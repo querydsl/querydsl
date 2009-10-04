@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import com.mysema.commons.lang.Assert;
 
 /**
- * ClassModel represents the model of a query domain type with properties
+ * BeanModel represents the model of a query domain type with properties
  * 
  * @author tiwe
  * @version $Id$

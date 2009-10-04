@@ -145,6 +145,7 @@ public enum TypeCategory {
         return SIMPLE;
     }
     
+    @Nullable
     public static TypeCategory get(PropertyType propertyType){
         switch(propertyType){
             case COMPARABLE: return COMPARABLE;
