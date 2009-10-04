@@ -15,8 +15,9 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.codegen.ClassModel;
-import com.mysema.query.codegen.FieldModel;
+import com.mysema.query.codegen.BeanModel;
+import com.mysema.query.codegen.ClassTypeModel;
+import com.mysema.query.codegen.PropertyModel;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.Serializers;
 import com.mysema.query.codegen.TypeCategory;
@@ -96,7 +97,7 @@ public class MetaDataExporter {
 //        ClassModelFactory factory = new ClassModelFactory(new TypeModelFactory());
         while (tables.next()) {
             String tableName = tables.getString(3);
-            ClassModel classModel = new ClassModel(namePrefix, null, "java.lang", "java.lang.Object", tableName);
+            BeanModel classModel = new BeanModel(namePrefix, null, "java.lang", "java.lang.Object", tableName);
             ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
             while (columns.next()) {
                 String name = columns.getString(4);
@@ -111,13 +112,8 @@ public class MetaDataExporter {
                     fieldType = TypeCategory.STRING;
                 }
 
-                TypeModel typeModel = new TypeModel(
-                        fieldType, 
-                        clazz.getName(),
-                        clazz.getPackage().getName(),
-                        clazz.getSimpleName(),
-                        null, null);
-                classModel.addField(new FieldModel(classModel, name, typeModel, name));
+                TypeModel typeModel = new ClassTypeModel(fieldType, clazz);
+                classModel.addProperty(new PropertyModel(classModel, name, typeModel));
             }
             columns.close();
             serialize(classModel);
@@ -125,7 +121,7 @@ public class MetaDataExporter {
         tables.close();
     }
 
-    private void serialize(ClassModel type) {
+    private void serialize(BeanModel type) {
         try {
             String path = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
             serializer.serialize(type, FileUtils.writerFor(new File(targetFolder, path)));

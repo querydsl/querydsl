@@ -84,7 +84,7 @@ public class StringTest {
         assertEquals("lower(alias.name)", $(alias.getName()).lower().toString());
         
         // EConstructor
-        EConstructor<SomeType> someType = new EConstructor<SomeType>(SomeType.class,$(alias));
+        EConstructor<SomeType> someType = new EConstructor<SomeType>(SomeType.class, new Class[]{SomeType.class}, $(alias));
         assertEquals("new SomeType(alias)", someType.toString());
         
         // EArrayConstructor

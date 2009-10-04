@@ -7,8 +7,6 @@ package com.mysema.query.codegen;
 
 import net.jcip.annotations.Immutable;
 
-import com.mysema.commons.lang.Assert;
-
 /**
  * ParameterModel represents a parameter in a Constructor
  * 
@@ -18,11 +16,12 @@ import com.mysema.commons.lang.Assert;
 @Immutable
 public final class ParameterModel implements Comparable<ParameterModel> {
     
-    private final String name, typeName;
+    private final String name, typeName, realTypeName;
 
-    public ParameterModel(String name, String typeName) {
-        this.name = Assert.notNull(name,"name was null");
-        this.typeName = Assert.notNull(typeName,"typeName was null");
+    public ParameterModel(String name, TypeModel type) {
+        this.name = name;
+        this.typeName = type.getPackageName().equals("java.lang") ? type.getLocalName() : type.getName();
+        this.realTypeName = type.isPrimitive() ? type.getPrimitiveName() : typeName;
     }
 
     public int compareTo(ParameterModel o) {
@@ -39,6 +38,10 @@ public final class ParameterModel implements Comparable<ParameterModel> {
 
     public String getTypeName() {
         return typeName;
+    }
+
+    public String getRealTypeName() {
+        return realTypeName;
     }
 
     public int hashCode() {

@@ -19,6 +19,7 @@ import javax.tools.Diagnostic;
 import com.mysema.query.annotations.QueryEmbeddable;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryProjection;
+import com.mysema.query.annotations.QuerySupertype;
 import com.mysema.query.annotations.QueryTransient;
 
 
@@ -36,7 +37,7 @@ public class QuerydslAnnotationProcessor extends AbstractProcessor{
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
         entity = QueryEntity.class;
-        superType = null;
+        superType = QuerySupertype.class;
         embeddable = QueryEmbeddable.class;
         dto = QueryProjection.class;
         skip = QueryTransient.class;

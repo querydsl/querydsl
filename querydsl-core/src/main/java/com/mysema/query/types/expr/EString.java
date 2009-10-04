@@ -6,7 +6,6 @@
 package com.mysema.query.types.expr;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.annotations.Optional;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.OComparable;
 import com.mysema.query.types.operation.ONumber;
@@ -222,7 +221,6 @@ public abstract class EString extends EComparable<String> {
      * @return this.lastIndexOf(right, third)
      * @see java.lang.String#lastIndexOf(String, int)
      */
-    @Optional
     public ENumber<Integer> lastIndex(String right, int third) {
         return ONumber.create(Integer.class, Ops.StringOps.LAST_INDEX_2ARGS, this, EString.create(right), ENumber.create(third));
     }
@@ -234,7 +232,6 @@ public abstract class EString extends EComparable<String> {
      * @return this.lastIndexOf(right)
      * @see java.lang.String#lastIndexOf(String)
      */
-    @Optional
     public ENumber<Integer> lastIndexOf(Expr<String> right) {
         return ONumber.create(Integer.class, Ops.StringOps.LAST_INDEX, this, right);
     }
@@ -246,7 +243,6 @@ public abstract class EString extends EComparable<String> {
      * @return this.lastIndexOf(right)
      * @see java.lang.String#lastIndexOf(String)
      */
-    @Optional
     public ENumber<Integer> lastIndexOf(String right) {
         return ONumber.create(Integer.class, Ops.StringOps.LAST_INDEX, this, EString.create(right));
     }
@@ -335,7 +331,6 @@ public abstract class EString extends EComparable<String> {
      * @return this.split(regex)
      * @see java.lang.String#split(String)
      */
-    @Optional
     public Expr<String[]> split(String regex) {
         return OSimple.create(String[].class, Ops.StringOps.SPLIT, this, EString.create(regex));
     }

@@ -124,12 +124,13 @@ public class FeaturesTest extends AbstractQueryTest{
 
     @Test
     public void testConstructors() {
-        EConstructor<com.mysema.query.hql.domain.Cat> c = new EConstructor<com.mysema.query.hql.domain.Cat>(
-                com.mysema.query.hql.domain.Cat.class, cat.name);
+        EConstructor<com.mysema.query.hql.domain.Cat> c = 
+                new EConstructor<com.mysema.query.hql.domain.Cat>(
+                com.mysema.query.hql.domain.Cat.class,
+                new Class[]{String.class},
+                cat.name);
         toString("new " + com.mysema.query.hql.domain.Cat.class.getName()
                 + "(cat.name)", c);
-        toString("new " + getClass().getName() + "$BookmarkDTO()",
-                new _BookmarkDTO());
         toString("new " + getClass().getName() + "$BookmarkDTO(cat.name)",
                 new _BookmarkDTO(cat.name));
     }
@@ -291,12 +292,13 @@ public class FeaturesTest extends AbstractQueryTest{
      * The Class _BookmarkDTO.
      */
     public static final class _BookmarkDTO extends EConstructor<BookmarkDTO> {
-        public _BookmarkDTO() {
-            super(BookmarkDTO.class);
-        }
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 2664671413344744578L;
 
         public _BookmarkDTO(Expr<java.lang.String> address) {
-            super(BookmarkDTO.class, address);
+            super(BookmarkDTO.class, new Class[]{String.class},address);
         }
     }
 

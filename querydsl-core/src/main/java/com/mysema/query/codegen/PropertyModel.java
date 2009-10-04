@@ -19,27 +19,22 @@ import com.mysema.util.JavaSyntaxUtils;
  * @version $Id$
  */
 @Immutable
-public final class FieldModel implements Comparable<FieldModel> {
+public final class PropertyModel implements Comparable<PropertyModel> {
     
-    private final ClassModel classModel;
+    private final BeanModel classModel;
     
     private final String name, escapedName, typeName, keyTypeName, valueTypeName;
     
     @Nullable
-    private final String queryTypeName, docs;
+    private final String queryTypeName;
     
     private final TypeModel type;
     
-    public FieldModel(ClassModel classModel, String name, TypeModel type, @Nullable String docs){
+    public PropertyModel(BeanModel classModel, String name, TypeModel type){
         this.classModel = classModel;
         this.name = Assert.notNull(name);
         this.escapedName = JavaSyntaxUtils.isReserved(name) ? (name + "_") : name;
         this.type = Assert.notNull(type);
-        if (docs != null){
-            this.docs = docs.replace("@return", "").trim();
-        }else{
-            this.docs = null;
-        }
         this.typeName = getLocalName(type);
         this.keyTypeName = type.getKeyType() != null ? getLocalName(type.getKeyType()) : null;
         this.valueTypeName = type.getValueType() != null ? getLocalName(type.getValueType()) : null;    
@@ -60,20 +55,16 @@ public final class FieldModel implements Comparable<FieldModel> {
         return isVisible(type) ? type.getLocalName() : type.getName();
     }
     
-    public int compareTo(FieldModel o) {
+    public int compareTo(PropertyModel o) {
         return name.compareToIgnoreCase(o.name);
     }
 
-    public FieldModel createCopy(ClassModel model){
-        return new FieldModel(model, name, type, docs);
+    public PropertyModel createCopy(BeanModel model){
+        return new PropertyModel(model, name, type);
     }
 
     public boolean equals(Object o) {
-        return o instanceof FieldModel && name.equals(((FieldModel) o).name);
-    }
-
-    public String getDocString() {
-        return docs;
+        return o instanceof PropertyModel && name.equals(((PropertyModel) o).name);
     }
 
     public TypeCategory getTypeCategory() {

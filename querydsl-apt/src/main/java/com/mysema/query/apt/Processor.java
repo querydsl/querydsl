@@ -22,9 +22,8 @@ import javax.tools.Diagnostic.Kind;
 import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.codegen.ClassModel;
-import com.mysema.query.codegen.ClassModelFactory;
-import com.mysema.query.codegen.ClassUtil;
+import com.mysema.query.codegen.BeanModel;
+import com.mysema.query.codegen.BeanModelFactory;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.Serializers;
 import com.mysema.query.codegen.TypeModelFactory;
@@ -46,7 +45,7 @@ public class Processor {
     
     private final Configuration conf;
     
-    private final ClassModelFactory classModelFactory;
+    private final BeanModelFactory classModelFactory;
     
     @SuppressWarnings("unchecked")
     public Processor(ProcessingEnvironment env, Configuration configuration) {
@@ -61,27 +60,27 @@ public class Processor {
         TypeModelFactory factory = new TypeModelFactory(anns);
         this.typeFactory = new APTModelFactory(factory, anns);
         if (conf.getSkipAnn() != null){
-            this.classModelFactory = new ClassModelFactory(factory, conf.getSkipAnn());
+            this.classModelFactory = new BeanModelFactory(factory, conf.getSkipAnn());
         }else{
-            this.classModelFactory = new ClassModelFactory(factory);
+            this.classModelFactory = new BeanModelFactory(factory);
         }
         
     }
     
     @SuppressWarnings("unchecked")
     public void process(RoundEnvironment roundEnv) {
-        Map<String, ClassModel> superTypes = new HashMap<String, ClassModel>();
+        Map<String, BeanModel> superTypes = new HashMap<String, BeanModel>();
 
         EntityElementVisitor entityVisitor = new EntityElementVisitor(env, conf, namePrefix, typeFactory);
         
         // populate super type mappings
         if (conf.getSuperTypeAnn() != null) {
             for (Element element : roundEnv.getElementsAnnotatedWith(conf.getSuperTypeAnn())) {
-                ClassModel model = element.accept(entityVisitor, null);
+                BeanModel model = element.accept(entityVisitor, null);
                 superTypes.put(model.getName(), model);
             }
             // add supertype fields
-            for (ClassModel superType : superTypes.values()) {
+            for (BeanModel superType : superTypes.values()) {
                 addSupertypeFields(superType, superTypes);      
             }
             // serialize supertypes
@@ -93,13 +92,13 @@ public class Processor {
         // ENTITIES
         
         // populate entity type mappings
-        Map<String, ClassModel> entityTypes = new HashMap<String, ClassModel>();
+        Map<String, BeanModel> entityTypes = new HashMap<String, BeanModel>();
         for (Element element : roundEnv.getElementsAnnotatedWith(conf.getEntityAnn())) {
-            ClassModel model = element.accept(entityVisitor, null);
+            BeanModel model = element.accept(entityVisitor, null);
             entityTypes.put(model.getName(), model);
         }
         // add super type fields
-        for (ClassModel entityType : entityTypes.values()) {
+        for (BeanModel entityType : entityTypes.values()) {
             addSupertypeFields(entityType, superTypes, entityTypes);
         }
         // serialize entity types
@@ -111,15 +110,15 @@ public class Processor {
         
         if (conf.getEmbeddableAnn() != null){
             // populate entity type mappings
-            Map<String, ClassModel> embeddables = new HashMap<String, ClassModel>();
+            Map<String, BeanModel> embeddables = new HashMap<String, BeanModel>();
             
             for (Element element : roundEnv.getElementsAnnotatedWith(conf.getEmbeddableAnn())) {
-                ClassModel model = element.accept(entityVisitor, null);
+                BeanModel model = element.accept(entityVisitor, null);
                 embeddables.put(model.getName(), model);
             }  
             
             // add super type fields
-            for (ClassModel embeddable : embeddables.values()) {
+            for (BeanModel embeddable : embeddables.values()) {
                 addSupertypeFields(embeddable, superTypes, embeddables);
             }
             // serialize entity types
@@ -132,9 +131,9 @@ public class Processor {
         
         if (conf.getDtoAnn() != null){
             DTOElementVisitor dtoVisitor = new DTOElementVisitor(env, conf, namePrefix, typeFactory);
-            Map<String, ClassModel> dtos = new HashMap<String, ClassModel>();
+            Map<String, BeanModel> dtos = new HashMap<String, BeanModel>();
             for (Element element : roundEnv.getElementsAnnotatedWith(conf.getDtoAnn())) {
-                ClassModel model = element.accept(dtoVisitor, null);
+                BeanModel model = element.accept(dtoVisitor, null);
                 dtos.put(model.getName(), model);
             }
             // serialize entity types
@@ -145,13 +144,13 @@ public class Processor {
         
     }
         
-    private void addSupertypeFields(ClassModel model, Map<String,ClassModel>... superTypes){
+    private void addSupertypeFields(BeanModel model, Map<String,BeanModel>... superTypes){
         String stype = model.getSupertypeName();
         // iterate over supertypes
-        for (Map<String,ClassModel> stypes : superTypes){
+        for (Map<String,BeanModel> stypes : superTypes){
             if (stypes.containsKey(stype)) {
                 while (true) {
-                    ClassModel sdecl;
+                    BeanModel sdecl;
                     if (stypes.containsKey(stype)) {
                         sdecl = stypes.get(stype);
                     } else {
@@ -169,23 +168,31 @@ public class Processor {
         // create super class model via reflection
         if (model.getSuperModel() == null){
             stype = model.getSupertypeName();
-            Class<?> superClass = ClassUtil.safeClassForName(stype);
+            Class<?> superClass = safeClassForName(stype);
             if (superClass != null && !superClass.equals(Object.class)) {
                 // handle the supertype only, if it has the proper annotations
                 if((conf.getSuperTypeAnn() == null 
                     || superClass.getAnnotation(conf.getSuperTypeAnn()) != null)
                     || superClass.getAnnotation(conf.getEntityAnn()) != null){
-                    ClassModel type = classModelFactory.create(superClass, namePrefix);
+                    BeanModel type = classModelFactory.create(superClass, namePrefix);
                     // include fields of supertype
                     model.include(type);    
                 }            
             }
         }
     }
+    
+    private static Class<?> safeClassForName(String stype) {
+        try {
+            return stype != null ? Class.forName(stype) : null;
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+    } 
         
-    private void serialize(Serializer serializer, Map<String, ClassModel> types) {
+    private void serialize(Serializer serializer, Map<String, BeanModel> types) {
         Messager msg = env.getMessager();
-        for (ClassModel type : types.values()) {
+        for (BeanModel type : types.values()) {
             msg.printMessage(Kind.NOTE, type.getName() + " is processed");
             try {
                 String packageName = type.getPackageName();                    

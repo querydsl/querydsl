@@ -17,6 +17,6 @@ public interface Serializer {
      * @param writer serialization target
      * @throws IOException
      */
-    void serialize(ClassModel type, Writer writer) throws IOException;
+    void serialize(BeanModel type, Writer writer) throws IOException;
 
 }

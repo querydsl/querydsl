@@ -26,6 +26,8 @@ import javax.lang.model.type.TypeVisitor;
 import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.Elements;
 
+import com.mysema.query.codegen.ClassTypeModel;
+import com.mysema.query.codegen.SimpleTypeModel;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeModel;
 import com.mysema.query.codegen.TypeModelFactory;
@@ -148,7 +150,7 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
         String name = typeElement.getQualifiedName().toString();
         String simpleName = typeElement.getSimpleName().toString();
         String packageName = p.getPackageOf(typeElement).getQualifiedName().toString();
-        return new TypeModel(category, name, packageName, simpleName, null, null);
+        return new SimpleTypeModel(category, name, packageName, simpleName, null, null);
     }
 
     @Override
@@ -200,7 +202,7 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
             cl = Short.class;
             break;
         }
-        return new TypeModel(TypeCategory.get(cl.getName()), cl);
+        return new ClassTypeModel(TypeCategory.get(cl.getName()), cl);
     }
 
     @Override

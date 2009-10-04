@@ -13,7 +13,7 @@ import net.jcip.annotations.Immutable;
 @Immutable
 public class EntitySerializer implements Serializer{
     
-    public void serialize(ClassModel model, Writer writer) throws IOException{
+    public void serialize(BeanModel model, Writer writer) throws IOException{
         // intro
         intro(model, writer);
         
@@ -21,49 +21,49 @@ public class EntitySerializer implements Serializer{
         factoryMethods(model, writer);        
         
         // fields
-        for (FieldModel field : model.getStringFields()){
+        for (PropertyModel field : model.getStringProperties()){
             stringField(field, writer);
         }
-        for (FieldModel field : model.getBooleanFields()){
+        for (PropertyModel field : model.getBooleanProperties()){
             booleanField(field, writer);
         }
-        for (FieldModel field : model.getSimpleFields()){
+        for (PropertyModel field : model.getSimpleProperties()){
             simpleField(field, writer);
         }
-        for (FieldModel field : model.getComparableFields()){
+        for (PropertyModel field : model.getComparableProperties()){
             comparableField(field, writer);
         }
-        for (FieldModel field : model.getDateFields()){
+        for (PropertyModel field : model.getDateProperties()){
             dateField(field, writer);
         }
-        for (FieldModel field : model.getDateTimeFields()){
+        for (PropertyModel field : model.getDateTimeProperties()){
             dateTimeField(field, writer);
         }
-        for (FieldModel field : model.getTimeFields()){
+        for (PropertyModel field : model.getTimeProperties()){
             timeField(field, writer);
         }
-        for (FieldModel field : model.getNumericFields()){
+        for (PropertyModel field : model.getNumericProperties()){
             numericField(field, writer);
         }
-        for (FieldModel field : model.getSimpleCollections()){
+        for (PropertyModel field : model.getSimpleCollections()){
             collectionOfSimple(field, writer);
         }
-        for (FieldModel field : model.getEntityCollections()){
+        for (PropertyModel field : model.getEntityCollections()){
             collectionOfEntity(field, writer);
         }
-        for (FieldModel field : model.getSimpleMaps()){
+        for (PropertyModel field : model.getSimpleMaps()){
             mapOfSimple(field, writer);
         }
-        for (FieldModel field : model.getEntityMaps()){
+        for (PropertyModel field : model.getEntityMaps()){
             mapOfEntity(field, writer);
         }
-        for (FieldModel field : model.getSimpleLists()){
+        for (PropertyModel field : model.getSimpleLists()){
             listSimple(field, writer);
         }
-        for (FieldModel field : model.getEntityLists()){
+        for (PropertyModel field : model.getEntityLists()){
             listOfEntity(field, writer);
         }
-        for (FieldModel field : model.getEntityFields()){
+        for (PropertyModel field : model.getEntityProperties()){
             entityField(field, writer);
         }
         
@@ -71,19 +71,19 @@ public class EntitySerializer implements Serializer{
         constructors(model, writer);
         
         // accessors
-        for (FieldModel field : model.getSimpleLists()){
+        for (PropertyModel field : model.getSimpleLists()){
             listOfSimpleAccessor(field, writer);
         }
-        for (FieldModel field : model.getEntityLists()){
+        for (PropertyModel field : model.getEntityLists()){
             listOfEntityAccessor(field, writer);
         }
-        for (FieldModel field : model.getSimpleMaps()){
+        for (PropertyModel field : model.getSimpleMaps()){
             mapOfSimpleAccessor(field, writer);
         }
-        for (FieldModel field : model.getEntityMaps()){
+        for (PropertyModel field : model.getEntityMaps()){
             mapOfEntityAccessor(field, writer);
         }        
-        for (FieldModel field : model.getEntityFields()){
+        for (PropertyModel field : model.getEntityProperties()){
             entityFieldAccessor(field, writer);
         }
         
@@ -91,7 +91,7 @@ public class EntitySerializer implements Serializer{
         outro(model, writer);
     }
         
-    protected void factoryMethods(ClassModel model, Writer writer) throws IOException {
+    protected void factoryMethods(BeanModel model, Writer writer) throws IOException {
         final String localName = model.getLocalName();
         
         StringBuilder builder = new StringBuilder();
@@ -111,6 +111,15 @@ public class EntitySerializer implements Serializer{
             
             // body
             builder.append("        return new EConstructor<" + localName + ">(" + localName + ".class");
+            builder.append(", new Class[]{");
+            first = true;
+            for (ParameterModel p : c.getParameters()){
+                if (!first) builder.append(",");
+                builder.append(p.getRealTypeName() + ".class");
+                first = false;
+            }
+            builder.append("}");
+            
             for (ParameterModel p : c.getParameters()){
                 builder.append(", " + p.getName());
             }
@@ -123,24 +132,24 @@ public class EntitySerializer implements Serializer{
         
     }
 
-    protected void booleanField(FieldModel field, Writer writer) throws IOException {
+    protected void booleanField(PropertyModel field, Writer writer) throws IOException {
         serialize(field, "PBoolean", writer, "createBoolean");
     }
 
-    protected void collectionOfEntity(FieldModel field, Writer writer) throws IOException {
+    protected void collectionOfEntity(PropertyModel field, Writer writer) throws IOException {
         serialize(field, "PEntityCollection<" + field.getTypeName()+">", writer, "createEntityCollection", field.getTypeName()+".class", "\"" + field.getSimpleTypeName()+"\"");        
     }
     
-    protected void collectionOfSimple(FieldModel field, Writer writer) throws IOException {
+    protected void collectionOfSimple(PropertyModel field, Writer writer) throws IOException {
         serialize(field, "PComponentCollection<" + field.getTypeName()+">", writer, "createSimpleCollection", field.getTypeName()+".class");        
     }
     
     
-    protected void comparableField(FieldModel field, Writer writer) throws IOException {        
+    protected void comparableField(PropertyModel field, Writer writer) throws IOException {        
         serialize(field, "PComparable<" + field.getTypeName() + ">", writer, "createComparable", field.getTypeName() + ".class");
     }
     
-    protected void constructors(ClassModel model, Writer writer) throws IOException {
+    protected void constructors(BeanModel model, Writer writer) throws IOException {
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
         final String localName = model.getLocalName();
@@ -157,7 +166,7 @@ public class EntitySerializer implements Serializer{
         writer.append(builder.toString());
     }
     
-    protected void constructorsForVariables(StringBuilder builder, ClassModel model) {
+    protected void constructorsForVariables(StringBuilder builder, BeanModel model) {
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
         final String localName = model.getLocalName();
@@ -167,25 +176,25 @@ public class EntitySerializer implements Serializer{
         
         builder.append("    public " + queryType + "(Class<? extends " + localName + "> cl, @NotEmpty String variable) {\n");
         builder.append("        super(cl, \"" + simpleName + "\", variable);\n");
-        for (FieldModel entityField : model.getEntityFields()){
+        for (PropertyModel entityField : model.getEntityProperties()){
             builder.append("        _" + entityField.getName()+"();\n"); 
         }
         builder.append("    }\n\n");
     }  
 
-    protected void dateField(FieldModel field, Writer writer) throws IOException {
+    protected void dateField(PropertyModel field, Writer writer) throws IOException {
         serialize(field, "PDate<" + field.getTypeName() + ">", writer, "createDate", field.getTypeName()+".class");
     }
 
-    protected void dateTimeField(FieldModel field, Writer writer) throws IOException {
+    protected void dateTimeField(PropertyModel field, Writer writer) throws IOException {
         serialize(field, "PDateTime<" + field.getTypeName() + ">", writer, "createDateTime", field.getTypeName()+".class");        
     }
 
-    protected void entityField(FieldModel field, Writer writer) throws IOException {
+    protected void entityField(PropertyModel field, Writer writer) throws IOException {
         serialize(field, field.getQueryTypeName(), writer);        
     }
 
-    protected void entityFieldAccessor(FieldModel field, Writer writer) throws IOException {        
+    protected void entityFieldAccessor(PropertyModel field, Writer writer) throws IOException {        
         final String fieldName = field.getName();
         final String escapedName = field.getEscapedName();
         final String queryType = field.getQueryTypeName();               
@@ -202,7 +211,7 @@ public class EntitySerializer implements Serializer{
         writer.append(builder.toString());
     }
 
-    protected void intro(ClassModel model, Writer writer) throws IOException {        
+    protected void intro(BeanModel model, Writer writer) throws IOException {        
         StringBuilder builder = new StringBuilder();        
         introPackage(builder, model);        
         introImports(builder);        
@@ -213,9 +222,9 @@ public class EntitySerializer implements Serializer{
         writer.append(builder.toString());
     }
 
-    private void introSuper(StringBuilder builder, ClassModel model) {
+    private void introSuper(StringBuilder builder, BeanModel model) {
         if (model.getSuperModel() != null){
-            ClassModel _super = model.getSuperModel();
+            BeanModel _super = model.getSuperModel();
             final String simpleName = _super.getSimpleName();
             final String queryType = _super.getPrefix() + simpleName;
             builder.append("    /**\n");
@@ -225,14 +234,14 @@ public class EntitySerializer implements Serializer{
         }        
     }
 
-    protected void introClassHeader(StringBuilder builder, ClassModel model) {
+    protected void introClassHeader(StringBuilder builder, BeanModel model) {
         final String queryType = model.getPrefix() + model.getSimpleName();
         final String localName = model.getLocalName();
         builder.append("@SuppressWarnings(\"all\")\n");
         builder.append("public class " + queryType + " extends PEntity<" + localName + "> {\n\n");
     }
 
-    protected void introDefaultInstance(StringBuilder builder, ClassModel model) {
+    protected void introDefaultInstance(StringBuilder builder, BeanModel model) {
         final String simpleName = model.getSimpleName();
         final String unscapSimpleName = model.getUncapSimpleName();
         final String queryType = model.getPrefix() + simpleName;
@@ -245,7 +254,7 @@ public class EntitySerializer implements Serializer{
         builder.append("import com.mysema.query.types.expr.*;\n");
     }
 
-    protected void introJavadoc(StringBuilder builder, ClassModel model) {
+    protected void introJavadoc(StringBuilder builder, BeanModel model) {
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
         builder.append("/**\n");
@@ -254,15 +263,15 @@ public class EntitySerializer implements Serializer{
         builder.append(" */ \n");
     }
 
-    protected void introPackage(StringBuilder builder, ClassModel model) {
+    protected void introPackage(StringBuilder builder, BeanModel model) {
         builder.append("package " + model.getPackageName() + ";\n\n");
     }
 
-    protected void listOfEntity(FieldModel field, Writer writer) throws IOException {
+    protected void listOfEntity(PropertyModel field, Writer writer) throws IOException {
         serialize(field, "PEntityList<" + field.getTypeName()+ ">", writer, "createEntityList", field.getTypeName()+".class", "\"" + field.getSimpleTypeName()+"\"");        
     }
 
-    protected void listOfEntityAccessor(FieldModel field, Writer writer) throws IOException {
+    protected void listOfEntityAccessor(PropertyModel field, Writer writer) throws IOException {
         final String escapedName = field.getEscapedName();
         final String queryType = field.getQueryTypeName();               
         StringBuilder builder = new StringBuilder();
@@ -276,7 +285,7 @@ public class EntitySerializer implements Serializer{
         writer.append(builder.toString());
     }
 
-    protected void listOfSimpleAccessor(FieldModel field, Writer writer) throws IOException { 
+    protected void listOfSimpleAccessor(PropertyModel field, Writer writer) throws IOException { 
         final String escapedName = field.getEscapedName();
         final String valueType = field.getValueTypeName();
         StringBuilder builder = new StringBuilder();
@@ -291,11 +300,11 @@ public class EntitySerializer implements Serializer{
         
     }
 
-    protected void listSimple(FieldModel field, Writer writer) throws IOException {
+    protected void listSimple(PropertyModel field, Writer writer) throws IOException {
         serialize(field, "PComponentList<" + field.getTypeName()+">", writer, "createSimpleList", field.getTypeName()+".class");        
     }
 
-    protected void mapOfEntity(FieldModel field, Writer writer) throws IOException{
+    protected void mapOfEntity(PropertyModel field, Writer writer) throws IOException{
         final String keyType = field.getKeyTypeName();
         final String valueType = field.getValueTypeName();
         final String simpleName = field.getSimpleTypeName();
@@ -304,7 +313,7 @@ public class EntitySerializer implements Serializer{
         
     }
 
-    protected void mapOfEntityAccessor(FieldModel field, Writer writer) throws IOException {
+    protected void mapOfEntityAccessor(PropertyModel field, Writer writer) throws IOException {
         final String escapedName = field.getEscapedName();
         final String queryType = field.getQueryTypeName();
         final String keyType = field.getKeyTypeName();
@@ -320,7 +329,7 @@ public class EntitySerializer implements Serializer{
         
     }
 
-    protected void mapOfSimple(FieldModel field, Writer writer) throws IOException {               
+    protected void mapOfSimple(PropertyModel field, Writer writer) throws IOException {               
         final String keyType = field.getKeyTypeName();
         final String valueType = field.getValueTypeName();
         
@@ -328,7 +337,7 @@ public class EntitySerializer implements Serializer{
         
     }
     
-    protected void mapOfSimpleAccessor(FieldModel field, Writer writer) throws IOException {
+    protected void mapOfSimpleAccessor(PropertyModel field, Writer writer) throws IOException {
 //        final String fieldName = field.getName();     
         final String escapedName = field.getEscapedName();
         final String keyType = field.getKeyTypeName();
@@ -345,24 +354,24 @@ public class EntitySerializer implements Serializer{
         
     }
 
-    protected void numericField(FieldModel field, Writer writer) throws IOException {
+    protected void numericField(PropertyModel field, Writer writer) throws IOException {
         serialize(field, "PNumber<" + field.getTypeName() + ">", writer, "createNumber", field.getTypeName() +".class");        
     }
 
-    protected void outro(ClassModel model, Writer writer) throws IOException {
+    protected void outro(BeanModel model, Writer writer) throws IOException {
         writer.write("}\n");        
     }
 
-    protected void serialize(FieldModel field, String type, Writer writer) throws IOException {
+    protected void serialize(PropertyModel field, String type, Writer writer) throws IOException {
         StringBuilder builder = new StringBuilder();
-        if (field.getDocString() != null){
-            builder.append("    /** "  + field.getDocString() + " */\n");    
-        }        
+//        if (field.getDocString() != null){
+//            builder.append("    /** "  + field.getDocString() + " */\n");    
+//        }        
         builder.append("    public " + type + " " + field.getEscapedName()+";\n\n");
         writer.append(builder.toString());        
     }
 
-    protected void serialize(FieldModel field, String type, Writer writer, String factoryMethod, String... args) throws IOException{
+    protected void serialize(PropertyModel field, String type, Writer writer, String factoryMethod, String... args) throws IOException{
         // construct value
         StringBuilder value = new StringBuilder();
         value.append(factoryMethod + "(\"" + field.getName() + "\"");
@@ -373,22 +382,22 @@ public class EntitySerializer implements Serializer{
         
         // serialize it
         StringBuilder builder = new StringBuilder();
-        if (field.getDocString() != null){
-            builder.append("    /** "  + field.getDocString() + " */\n");    
-        }        
+//        if (field.getDocString() != null){
+//            builder.append("    /** "  + field.getDocString() + " */\n");    
+//        }        
         builder.append("    public final " + type + " " + field.getEscapedName() + " = " + value + ";\n\n");
         writer.append(builder.toString());
     }
 
-    protected void simpleField(FieldModel field, Writer writer) throws IOException {
+    protected void simpleField(PropertyModel field, Writer writer) throws IOException {
         serialize(field, "PSimple<" + field.getTypeName()+">", writer, "createSimple", field.getTypeName()+".class");        
     }
 
-    protected void stringField(FieldModel field, Writer writer) throws IOException {
+    protected void stringField(PropertyModel field, Writer writer) throws IOException {
         serialize(field, "PString", writer, "createString");        
     }
 
-    protected void timeField(FieldModel field, Writer writer) throws IOException {
+    protected void timeField(PropertyModel field, Writer writer) throws IOException {
         serialize(field, "PTime<" + field.getTypeName() + ">", writer, "createTime", field.getTypeName()+".class");        
     }
 

@@ -21,24 +21,23 @@ import com.mysema.query.annotations.QueryType;
  *
  */
 @Immutable
-public class ClassModelFactory {
+public class BeanModelFactory {
     
     private final TypeModelFactory typeModelFactory;
     
     private final Class<? extends Annotation> skipAnn;
     
-    public ClassModelFactory(TypeModelFactory typeModelFactory, Class<? extends Annotation> skipAnn){
+    public BeanModelFactory(TypeModelFactory typeModelFactory, Class<? extends Annotation> skipAnn){
         this.typeModelFactory = typeModelFactory;
         this.skipAnn = skipAnn;
     }
     
-    public ClassModelFactory(TypeModelFactory typeModelFactory){
+    public BeanModelFactory(TypeModelFactory typeModelFactory){
         this(typeModelFactory, QueryTransient.class);
     }
-
     
-    public ClassModel create(Class<?> key, String prefix ){
-        ClassModel classModel = new ClassModel(
+    public BeanModel create(Class<?> key, String prefix ){
+        BeanModel beanModel = new BeanModel(
                 prefix,
                 key.getSuperclass().getName(), 
                 key.getPackage().getName(), 
@@ -54,10 +53,10 @@ public class ClassModelFactory {
                     }
                     typeModel = typeModel.as(typeCategory);
                 }
-                classModel.addField(new FieldModel(classModel, f.getName(), typeModel, f.getName()));    
+                beanModel.addProperty(new PropertyModel(beanModel, f.getName(), typeModel));    
             }            
         }
-        return classModel;
+        return beanModel;
     }
 
     protected boolean isValidField(Field field) {

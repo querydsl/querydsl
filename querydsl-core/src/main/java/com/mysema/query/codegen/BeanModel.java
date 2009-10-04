@@ -24,13 +24,13 @@ import com.mysema.commons.lang.Assert;
  * @author tiwe
  * @version $Id$
  */
-public final class ClassModel implements Comparable<ClassModel> {
+public final class BeanModel implements Comparable<BeanModel> {
         
     public static final String DEFAULT_PREFIX = "Q";
     
     private final Collection<ConstructorModel> constructors = new HashSet<ConstructorModel>();
     
-    private ClassModel superModel;
+    private BeanModel superModel;
     
     // mutable
     private int escapeSuffix = 1;
@@ -42,18 +42,18 @@ public final class ClassModel implements Comparable<ClassModel> {
     @Nullable
     private final String superType;
     
-    private final Map<TypeCategory,Collection<FieldModel>> typeToFields = MapUtils.lazyMap(
-            new HashMap<TypeCategory,Collection<FieldModel>>(),
-            new Factory<Collection<FieldModel>>(){
+    private final Map<TypeCategory,Collection<PropertyModel>> typeToProperties = MapUtils.lazyMap(
+            new HashMap<TypeCategory,Collection<PropertyModel>>(),
+            new Factory<Collection<PropertyModel>>(){
                 @Override
-                public Collection<FieldModel> create() {
-                    return new HashSet<FieldModel>();
+                public Collection<PropertyModel> create() {
+                    return new HashSet<PropertyModel>();
                 }                
             });
 
     private String uncapSimpleName;
     
-    public ClassModel(String prefix, @Nullable String superType, String packageName, String name, String simpleName) {
+    public BeanModel(String prefix, @Nullable String superType, String packageName, String name, String simpleName) {
         this.prefix = Assert.notNull(prefix);
         this.superType = superType;
         this.packageName = Assert.notNull(packageName);
@@ -67,82 +67,82 @@ public final class ClassModel implements Comparable<ClassModel> {
         constructors.add(co);
     }
 
-    public void addField(FieldModel field) {
+    public void addProperty(PropertyModel field) {
         validateField(field);
-        Collection<FieldModel> fields = typeToFields.get(field.getTypeCategory());
+        Collection<PropertyModel> fields = typeToProperties.get(field.getTypeCategory());
         fields.add(field);
     }
 
-    public int compareTo(ClassModel o) {
+    public int compareTo(BeanModel o) {
         return simpleName.compareTo(o.simpleName);
     }
 
     public boolean equals(Object o) {
-        return o instanceof ClassModel && simpleName.equals(((ClassModel) o).simpleName);
+        return o instanceof BeanModel && simpleName.equals(((BeanModel) o).simpleName);
     }
 
-    public Collection<FieldModel> getBooleanFields() {
-        return typeToFields.get(TypeCategory.BOOLEAN);
+    public Collection<PropertyModel> getBooleanProperties() {
+        return typeToProperties.get(TypeCategory.BOOLEAN);
     }
 
-    public Collection<FieldModel> getComparableFields() {
-        return typeToFields.get(TypeCategory.COMPARABLE);
+    public Collection<PropertyModel> getComparableProperties() {
+        return typeToProperties.get(TypeCategory.COMPARABLE);
     }
 
     public Collection<ConstructorModel> getConstructors() {
         return constructors;
     }
 
-    public Collection<FieldModel> getDateFields() {
-        return typeToFields.get(TypeCategory.DATE);
+    public Collection<PropertyModel> getDateProperties() {
+        return typeToProperties.get(TypeCategory.DATE);
     }
     
-    public Collection<FieldModel> getDateTimeFields() {
-        return typeToFields.get(TypeCategory.DATETIME);
+    public Collection<PropertyModel> getDateTimeProperties() {
+        return typeToProperties.get(TypeCategory.DATETIME);
     }
     
-    public Collection<FieldModel> getEntityCollections() {
-        return typeToFields.get(TypeCategory.ENTITYCOLLECTION);
+    public Collection<PropertyModel> getEntityCollections() {
+        return typeToProperties.get(TypeCategory.ENTITYCOLLECTION);
     }
     
-    public Collection<FieldModel> getEntityFields() {
-        return typeToFields.get(TypeCategory.ENTITY);
+    public Collection<PropertyModel> getEntityProperties() {
+        return typeToProperties.get(TypeCategory.ENTITY);
     }
 
-    public Collection<FieldModel> getEntityLists() {
-        return typeToFields.get(TypeCategory.ENTITYLIST);
+    public Collection<PropertyModel> getEntityLists() {
+        return typeToProperties.get(TypeCategory.ENTITYLIST);
     }
 
-    public Collection<FieldModel> getEntityMaps() {
-        return typeToFields.get(TypeCategory.ENTITYMAP);
+    public Collection<PropertyModel> getEntityMaps() {
+        return typeToProperties.get(TypeCategory.ENTITYMAP);
     }
 
     public String getName() {
         return name;
     }
 
-    public Collection<FieldModel> getNumericFields() {
-        return typeToFields.get(TypeCategory.NUMERIC);
+    public Collection<PropertyModel> getNumericProperties() {
+        return typeToProperties.get(TypeCategory.NUMERIC);
     }
 
     public String getPackageName() {
         return packageName;
     }
     
-    public Collection<FieldModel> getSimpleCollections() {
-        return typeToFields.get(TypeCategory.SIMPLECOLLECTION);
+    public Collection<PropertyModel> getSimpleCollections() {
+        return typeToProperties.get(TypeCategory.SIMPLECOLLECTION);
     }
 
-    public Collection<FieldModel> getSimpleFields() {
-        return typeToFields.get(TypeCategory.SIMPLE);
+    public Collection<PropertyModel> getSimpleProperties() {
+        return typeToProperties.get(TypeCategory.SIMPLE);
     }
 
-    public Collection<FieldModel> getSimpleLists() {
-        return typeToFields.get(TypeCategory.SIMPLELIST);
+    public Collection<PropertyModel> getSimpleLists() {
+        return typeToProperties.get(TypeCategory.SIMPLELIST);
     }
 
-    public Collection<FieldModel> getSimpleMaps() {
-        return typeToFields.get(TypeCategory.SIMPLEMAP);
+    public Collection<PropertyModel> getSimpleMaps() {
+        return typeToProperties.get(TypeCategory.SIMPLEMAP);
     }
 
     public String getLocalName(){
@@ -153,16 +153,16 @@ public final class ClassModel implements Comparable<ClassModel> {
         return simpleName;
     }
 
-    public Collection<FieldModel> getStringFields() {
-        return typeToFields.get(TypeCategory.STRING);
+    public Collection<PropertyModel> getStringProperties() {
+        return typeToProperties.get(TypeCategory.STRING);
     }
 
     public String getSupertypeName() {
         return superType;
     }
 
-    public Collection<FieldModel> getTimeFields() {
-        return typeToFields.get(TypeCategory.TIME);
+    public Collection<PropertyModel> getTimeProperties() {
+        return typeToProperties.get(TypeCategory.TIME);
     }
 
     public String getUncapSimpleName() {
@@ -173,19 +173,19 @@ public final class ClassModel implements Comparable<ClassModel> {
         return name.hashCode();
     }
 
-    public void include(ClassModel clazz) {
+    public void include(BeanModel clazz) {
         for (TypeCategory category : TypeCategory.values()){
-            Collection<FieldModel> source = clazz.typeToFields.get(category);
+            Collection<PropertyModel> source = clazz.typeToProperties.get(category);
             if (!source.isEmpty()){
-                Collection<FieldModel> target = typeToFields.get(category);
-                for (FieldModel field : source) {   
+                Collection<PropertyModel> target = typeToProperties.get(category);
+                for (PropertyModel field : source) {   
                     target.add(validateField(field.createCopy(this)));
                 }    
             }            
         }        
     }
         
-    private FieldModel validateField(FieldModel field) {
+    private PropertyModel validateField(PropertyModel field) {
         if (field.getName().equals(this.uncapSimpleName)) {
             uncapSimpleName = StringUtils.uncapitalize(simpleName)+ (escapeSuffix++);
         }
@@ -196,11 +196,11 @@ public final class ClassModel implements Comparable<ClassModel> {
         return prefix;
     }
 
-    public ClassModel getSuperModel() {
+    public BeanModel getSuperModel() {
         return superModel;
     }
 
-    public void setSuperModel(ClassModel superModel) {
+    public void setSuperModel(BeanModel superModel) {
         this.superModel = superModel;
     }
     

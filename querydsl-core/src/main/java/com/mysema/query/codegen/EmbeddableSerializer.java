@@ -11,12 +11,12 @@ import java.io.Writer;
 public class EmbeddableSerializer extends EntitySerializer{
     
     @Override
-    protected void constructorsForVariables(StringBuilder builder, ClassModel model) {
+    protected void constructorsForVariables(StringBuilder builder, BeanModel model) {
         // no root constructors
     }
     
     @Override
-    protected void factoryMethods(ClassModel model, Writer writer) {
+    protected void factoryMethods(BeanModel model, Writer writer) {
         // no factory methods        
     }
     
@@ -27,7 +27,7 @@ public class EmbeddableSerializer extends EntitySerializer{
     }
     
     @Override
-    protected void introDefaultInstance(StringBuilder builder, ClassModel model) {
+    protected void introDefaultInstance(StringBuilder builder, BeanModel model) {
         // no default instance
     }
 

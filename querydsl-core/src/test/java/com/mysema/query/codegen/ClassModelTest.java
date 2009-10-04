@@ -31,18 +31,18 @@ public class ClassModelTest {
      */
     @Test
     public void test() {        
-        ClassModelFactory factory = new ClassModelFactory(new TypeModelFactory(QueryEntity.class));
-        ClassModel type = factory.create(TestType.class, "Q");
+        BeanModelFactory factory = new BeanModelFactory(new TypeModelFactory(QueryEntity.class));
+        BeanModel type = factory.create(TestType.class, "Q");
         assertEquals(1, type.getEntityMaps().size());
         assertEquals(1, type.getSimpleMaps().size());
         assertEquals(2, type.getEntityCollections().size());
         assertEquals(2, type.getSimpleCollections().size());
         assertEquals(1, type.getEntityLists().size());
         assertEquals(1, type.getSimpleLists().size());
-        assertEquals(1, type.getEntityFields().size());
-        assertEquals(1, type.getStringFields().size());
-        assertEquals(2, type.getNumericFields().size());
-        assertEquals(3, type.getSimpleFields().size());
+        assertEquals(1, type.getEntityProperties().size());
+        assertEquals(1, type.getStringProperties().size());
+        assertEquals(2, type.getNumericProperties().size());
+        assertEquals(3, type.getSimpleProperties().size());
     }
 
     /**

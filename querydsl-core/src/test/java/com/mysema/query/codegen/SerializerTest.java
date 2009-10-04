@@ -19,7 +19,7 @@ import org.junit.Test;
  */
 public class SerializerTest {
 
-    private ClassModel type;
+    private BeanModel type;
 
     private Writer writer = new StringWriter();
 
@@ -28,16 +28,16 @@ public class SerializerTest {
      */
     public SerializerTest() {
         TypeModelFactory typeFactory = new TypeModelFactory();
-        type = new ClassModel(
+        type = new BeanModel(
                 "Q",
                 "com.mysema.query.DomainSuperClass",
                 "com.mysema.query", 
                 "com.mysema.query.DomainClass",
                 "DomainClass");
         
-        FieldModel field = new FieldModel(type, "field", typeFactory.create(String.class), "field");
-        type.addField(field);
-        ParameterModel param = new ParameterModel("name", "java.lang.String");
+        PropertyModel field = new PropertyModel(type, "field", typeFactory.create(String.class));
+        type.addProperty(field);
+        ParameterModel param = new ParameterModel("name", new ClassTypeModel(TypeCategory.STRING, String.class));
         type.addConstructor(new ConstructorModel(Collections.singleton(param)));
     }
 

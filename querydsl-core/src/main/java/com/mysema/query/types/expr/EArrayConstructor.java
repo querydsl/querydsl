@@ -21,7 +21,7 @@ public class EArrayConstructor<D> extends EConstructor<D[]> {
 
     @SuppressWarnings("unchecked")
     public EArrayConstructor(Class<D> type, Expr<D>... args) {
-        super((Class)Object.class, args);
+        super((Class)Object.class, new Class[0], args);
         this.elementType = type;
     }
 

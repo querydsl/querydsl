@@ -10,8 +10,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang.ClassUtils;
-
 import com.mysema.query.types.Visitor;
 
 /**
@@ -25,11 +23,12 @@ import com.mysema.query.types.Visitor;
 public class EConstructor<D> extends Expr<D> {
     
     private final List<Expr<?>> args;
-    
-    private transient volatile java.lang.reflect.Constructor<D> javaConstructor;
 
-    public EConstructor(Class<D> type, Expr<?>... args) {
+    private final Class<?>[] parameterTypes;
+
+    public EConstructor(Class<D> type, Class<?>[] paramTypes, Expr<?>... args) {
         super(type);
+        this.parameterTypes = paramTypes;
         this.args = Collections.unmodifiableList(Arrays.asList(args));
     }
 
@@ -59,28 +58,12 @@ public class EConstructor<D> extends Expr<D> {
      */
     @SuppressWarnings("unchecked")
     public Constructor<D> getJavaConstructor() {
-        if (javaConstructor == null) {
-            Class<? extends D> type = getType();
-            List<Expr<?>> args = getArgs();
-            for (Constructor<?> c : type.getConstructors()) {
-                if (c.getParameterTypes().length == args.size()) {
-                    boolean match = true;
-                    for (int i = 0; i < args.size() && match; i++) {
-                        Class<?> ptype = c.getParameterTypes()[i];
-                        if (ptype.isPrimitive()) {
-                            ptype = ClassUtils.primitiveToWrapper(ptype);
-                        }
-                        match &= ptype.isAssignableFrom(args.get(i).getType());
-                    }
-                    if (match) {
-                        javaConstructor = (Constructor<D>) c;
-                        return javaConstructor;
-                    }
-                }
-            }
-            throw new IllegalArgumentException("no suitable constructor found");
-        } else {
-            return javaConstructor;
+        try {
+            return (Constructor<D>) getType().getConstructor(parameterTypes);
+        } catch (SecurityException e) {
+           throw new RuntimeException(e.getMessage(), e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
     

@@ -26,9 +26,9 @@ import net.jcip.annotations.Immutable;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.codegen.ClassModel;
+import com.mysema.query.codegen.BeanModel;
 import com.mysema.query.codegen.ConstructorModel;
-import com.mysema.query.codegen.FieldModel;
+import com.mysema.query.codegen.PropertyModel;
 import com.mysema.query.codegen.ParameterModel;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeModel;
@@ -38,7 +38,7 @@ import com.mysema.query.codegen.TypeModel;
  *
  */
 @Immutable
-public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel, Void>{
+public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel, Void>{
     
     private final ProcessingEnvironment env;
     
@@ -56,11 +56,11 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel
     }
     
     @Override
-    public ClassModel visitType(TypeElement e, Void p) {
+    public BeanModel visitType(TypeElement e, Void p) {
         Elements elementUtils = env.getElementUtils();
         TypeModel sc = typeFactory.create(e.getSuperclass(), elementUtils);
         TypeModel c = typeFactory.create(e.asType(), elementUtils);
-        ClassModel classModel = new ClassModel(namePrefix, sc.getName(), c.getPackageName(), c.getName(), c.getSimpleName());
+        BeanModel classModel = new BeanModel(namePrefix, sc.getName(), c.getPackageName(), c.getName(), c.getSimpleName());
         List<? extends Element> elements = e.getEnclosedElements();
     
         // CONSTRUCTORS
@@ -69,8 +69,8 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel
             if (configuration.isValidConstructor(constructor)){
                 List<ParameterModel> parameters = new ArrayList<ParameterModel>(constructor.getParameters().size());
                 for (VariableElement var : constructor.getParameters()){
-                    TypeModel varType = typeFactory.create(var.asType(), elementUtils);
-                    parameters.add(new ParameterModel(var.getSimpleName().toString(), varType.getName()));
+                    TypeModel varType = typeFactory.create(var.asType(), elementUtils);                    
+                    parameters.add(new ParameterModel(var.getSimpleName().toString(), varType));
                 }
                 classModel.addConstructor(new ConstructorModel(parameters));    
             }                
@@ -78,8 +78,8 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel
 
         VisitorConfig config = configuration.getConfig(e, elements);
                 
-        Set<String> blockedFields = new HashSet<String>();
-        Map<String,FieldModel> fields = new HashMap<String,FieldModel>();
+        Set<String> blockedProperties = new HashSet<String>();
+        Map<String,PropertyModel> properties = new HashMap<String,PropertyModel>();
         Map<String,TypeCategory> types = new HashMap<String,TypeCategory>();
         
         // FIELDS
@@ -93,13 +93,13 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel
                         if (field.getAnnotation(QueryType.class) != null){
                             TypeCategory typeCategory = TypeCategory.get(field.getAnnotation(QueryType.class).value());
                             if (typeCategory == null){
-                                blockedFields.add(name);
+                                blockedProperties.add(name);
                                 continue;
                             }
                             typeModel = typeModel.as(typeCategory);
                             types.put(name, typeCategory);
                         }                        
-                        fields.put(name, new FieldModel(classModel, name, typeModel, null));    
+                        properties.put(name, new PropertyModel(classModel, name, typeModel));    
                     }catch(IllegalArgumentException ex){
                         StringBuilder builder = new StringBuilder();
                         builder.append("Caught exception for field ");
@@ -108,7 +108,7 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel
                     }
                         
                 }else{
-                    blockedFields.add(name);
+                    blockedProperties.add(name);
                 }
             }    
         }
@@ -131,16 +131,16 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel
                         if (method.getAnnotation(QueryType.class) != null){
                             TypeCategory typeCategory = TypeCategory.get(method.getAnnotation(QueryType.class).value());
                             if (typeCategory == null){
-                                blockedFields.add(name);
+                                blockedProperties.add(name);
                                 continue;
-                            }else if (blockedFields.contains(name)){
+                            }else if (blockedProperties.contains(name)){
                                 continue;
                             }
                             typeModel = typeModel.as(typeCategory);
                         }else if (types.containsKey(name)){
                             typeModel = typeModel.as(types.get(name));
                         }
-                        fields.put(name, new FieldModel(classModel, name, typeModel, null));    
+                        properties.put(name, new PropertyModel(classModel, name, typeModel));    
                         
                     }catch(IllegalArgumentException ex){
                         StringBuilder builder = new StringBuilder();
@@ -149,15 +149,15 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<ClassModel
                         throw new RuntimeException(builder.toString(), ex);
                     }
                 }else{
-                    blockedFields.add(name);
+                    blockedProperties.add(name);
                 }
             }   
         }
                
         
-        for (Map.Entry<String,FieldModel> entry : fields.entrySet()){
-            if (!blockedFields.contains(entry.getKey())){
-                classModel.addField(entry.getValue());
+        for (Map.Entry<String,PropertyModel> entry : properties.entrySet()){
+            if (!blockedProperties.contains(entry.getKey())){
+                classModel.addProperty(entry.getValue());
             }
         }        
         

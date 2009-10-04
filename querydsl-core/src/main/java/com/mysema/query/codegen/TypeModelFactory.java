@@ -60,13 +60,13 @@ public class TypeModelFactory {
                 }
             }            
             if (entity){
-                value = new TypeModel(TypeCategory.ENTITY, cl);
+                value = new ClassTypeModel(TypeCategory.ENTITY, cl);
                 
             }else if (cl.isArray()) {
                 value = createArrayType(create(cl.getComponentType()));
 
             } else if (cl.isEnum()) {
-                value = new TypeModel(TypeCategory.SIMPLE, cl);
+                value = new ClassTypeModel(TypeCategory.SIMPLE, cl);
 
             } else if (Map.class.isAssignableFrom(cl)) {
                 TypeModel keyInfo = create(TypeUtil.getTypeParameter(genericType, 0));
@@ -86,7 +86,7 @@ public class TypeModelFactory {
                 if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)){
                     typeCategory = TypeCategory.COMPARABLE;
                 }
-                value = new TypeModel(typeCategory, cl);
+                value = new ClassTypeModel(typeCategory, cl);
             }
             cache.put(key, value);
             return value;
@@ -109,7 +109,7 @@ public class TypeModelFactory {
         } else {
             category = simple;
         }
-        return new TypeModel(category, value.getName(), value.getPackageName(), value.getSimpleName(), key, value);
+        return new SimpleTypeModel(category, value.getName(), value.getPackageName(), value.getSimpleName(), key, value);
 
     }
 

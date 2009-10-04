@@ -18,12 +18,12 @@ import net.jcip.annotations.Immutable;
 public class SupertypeSerializer extends EntitySerializer{
 
     @Override
-    protected void introDefaultInstance(StringBuilder builder, ClassModel model) {
+    protected void introDefaultInstance(StringBuilder builder, BeanModel model) {
         // no default instance
     }
     
     @Override
-    protected void factoryMethods(ClassModel model, Writer writer) {
+    protected void factoryMethods(BeanModel model, Writer writer) {
         // no factory methods        
     }
     
@@ -34,7 +34,7 @@ public class SupertypeSerializer extends EntitySerializer{
     }
     
     @Override
-    protected void constructors(ClassModel model, Writer writer) throws IOException {
+    protected void constructors(BeanModel model, Writer writer) throws IOException {
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
         final String localName = model.getLocalName();
