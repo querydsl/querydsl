@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.jdo.annotations.Inheritance;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
 
 /**
  * Definition of a Product Represents a product, and contains the key aspects of
@@ -25,6 +26,12 @@ public class Product {
     private double price = 0.0;
     
     private Date publicationDate;
+    
+    @Persistent
+    private java.sql.Date dateField;
+    
+    @Persistent
+    private java.sql.Time timeField;
 
     private int amount;
     
@@ -32,10 +39,17 @@ public class Product {
     }
 
     public Product(String name, String description, double price, int amount) {
+        this(name, description, price, amount, new Date());
+    }
+    
+    public Product(String name, String description, double price, int amount, Date publicationDate) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.amount = amount;
+        this.publicationDate = publicationDate;
+        this.dateField = new java.sql.Date(publicationDate.getTime());
+        this.timeField = new java.sql.Time(publicationDate.getTime());
     }
 
     public String getName() {
@@ -76,6 +90,22 @@ public class Product {
 
     public void setPublicationDate(Date publicationDate) {
         this.publicationDate = publicationDate;
+    }
+
+    public java.sql.Date getDateField() {
+        return dateField;
+    }
+
+    public void setDateField(java.sql.Date dateField) {
+        this.dateField = dateField;
+    }
+
+    public java.sql.Time getTimeField() {
+        return timeField;
+    }
+
+    public void setTimeField(java.sql.Time timeField) {
+        this.timeField = timeField;
     }
 
     public String toString() {

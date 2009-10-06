@@ -18,10 +18,7 @@ import com.mysema.query.types.expr.EBoolean;
  * @version $Id$
  */
 public class CascadingBooleanTest {
-    
-    /**
-     * Test.
-     */
+
     @Test
     public void test(){
         EBoolean etrue = Alias.$(true);

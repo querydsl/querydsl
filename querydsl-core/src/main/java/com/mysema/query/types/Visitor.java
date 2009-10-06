@@ -14,8 +14,11 @@ import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EBooleanConst;
 import com.mysema.query.types.expr.EConstructor;
+import com.mysema.query.types.expr.EDateConst;
+import com.mysema.query.types.expr.EDateTimeConst;
 import com.mysema.query.types.expr.ENumberConst;
 import com.mysema.query.types.expr.EStringConst;
+import com.mysema.query.types.expr.ETimeConst;
 import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.OComparable;
@@ -82,6 +85,10 @@ public interface Visitor {
 
     void visit(EArrayConstructor<?> expr);
     
+    void visit(EDateConst expr);
+    
+    void visit(EDateTimeConst expr);
+    
     void visit(ENumberConst<?> expr);
     
     void visit(EStringConst expr);
@@ -91,6 +98,8 @@ public interface Visitor {
     void visit(EConstructor<?> expr);
     
     void visit(ExprConst<?> expr);
+    
+    void visit(ETimeConst expr);
 
     void visit(OBoolean expr);
 

@@ -45,7 +45,7 @@ public abstract class EString extends EComparable<String> {
      * @param str
      * @return this + str
      */
-    public final EString append(Expr<String> str) {
+    public EString append(Expr<String> str) {
         return OString.create(Ops.CONCAT, this, str);
     }
 
@@ -194,9 +194,18 @@ public abstract class EString extends EComparable<String> {
      * @see java.lang.String#indexOf(String, int)
      */
     public ENumber<Integer> indexOf(String str, int i) {
-        return ONumber.create(Integer.class, Ops.INDEX_OF_2ARGS, this, EString.create(str), ENumber.create(i));
+        return indexOf(EString.create(str), i);
     }
 
+    
+    /**
+     * @param str
+     * @param i
+     * @return
+     */
+    public ENumber<Integer> indexOf(Expr<String> str, int i) {
+        return ONumber.create(Integer.class, Ops.INDEX_OF_2ARGS, this, str, ENumber.create(i));
+    }
     /**
      * @return this.isEmpty()
      * @see java.lang.String#isEmpty()

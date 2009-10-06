@@ -33,6 +33,8 @@ public class ColQueryTemplates extends JavaTemplates {
         add(Ops.STRING_CAST, "String.valueOf({0})");
         
         // Date and Time
+        add(Ops.DateTimeOps.YEAR, "({0}.getYear() + 1900)"); // java.util.Date
+        add(Ops.DateTimeOps.MONTH, "({0}.getMonth() + 1)");  // java.util.Date
         add(Ops.DateTimeOps.DAY_OF_MONTH, "{0}.getDate()");  // java.util.Date
         add(Ops.DateTimeOps.DAY_OF_WEEK, "{0}.getDay()");    // java.util.Date
         add(Ops.DateTimeOps.HOUR, "{0}.getHours()");         // java.util.Date

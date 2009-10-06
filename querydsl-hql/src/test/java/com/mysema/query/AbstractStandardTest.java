@@ -5,7 +5,7 @@
  */
 package com.mysema.query;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,18 +30,27 @@ import com.mysema.query.types.expr.Expr;
  */
 public abstract class AbstractStandardTest {
       
+    private Date birthDate = new Date();
+    
+    private java.sql.Date date = new java.sql.Date(birthDate.getTime());
+    
+    private java.sql.Time time = new java.sql.Time(birthDate.getTime());
+    
     private static QCat cat = new QCat("cat");
     
     private static QCat otherCat = new QCat("otherCat");
     
     private List<Cat> savedCats = new ArrayList<Cat>();
     
-    private StandardTest standardTest = new StandardTest(new StandardTestData(){        
-        <A> Collection<Expr<?>> listProjections(EList<A> expr, EList<A> other, A knownElement){
+    private Projections projections = new Projections(){
+        <A> Collection<Expr<?>> list(EList<A> expr, EList<A> other, A knownElement){
             // NOTE : expr.get(0) is only supported in the where clause
             return Collections.<Expr<?>>singleton(expr.size());
-        }        
-    }){
+        }          
+    };
+    
+    private StandardTest standardTest = new StandardTest(
+            projections, new Filters(projections), new MatchingFilters()){
         @Override
         public int executeFilter(EBoolean f){
             return query().from(cat, otherCat).where(f).list(cat.name).size();
@@ -72,6 +81,9 @@ public abstract class AbstractStandardTest {
             if (prev != null){
                 cat.getKittens().add(prev);
             }
+            cat.setBirthdate(birthDate);
+            cat.setDateField(date);
+            cat.setTimeField(time);
             save(cat);
             savedCats.add(cat);
             prev = cat;
@@ -89,15 +101,16 @@ public abstract class AbstractStandardTest {
         
         standardTest.booleanTests(cat.name.isNull(), otherCat.kittens.isEmpty());
         standardTest.collectionTests(cat.kittens, otherCat.kittens, kitten, noKitten);
-//        standardTest.dateTests(null, null, null);
-        standardTest.dateTimeTests(cat.birthdate, otherCat.birthdate, new Date());
+//        standardTest.dateTests(cat.dateField, otherCat.dateField, date);
+//        standardTest.dateTimeTests(cat.birthdate, otherCat.birthdate, birthDate);
         standardTest.listTests(cat.kittens, otherCat.kittens, kitten, noKitten);
 //        standardTest.mapTests(cat.kittensByName, otherCat.kittensByName, "Kitty", kitten);
         standardTest.numericCasts(cat.id, otherCat.id, 1);
         standardTest.numericTests(cat.id, otherCat.id, 1);
-        standardTest.stringTests(cat.name, otherCat.name, "Bob");
-//        standardTest.timeTests(null, null, null);
+//        standardTest.stringTests(cat.name, otherCat.name, "Bob");
+//        standardTest.timeTests(cat.timeField, otherCat.timeField, time);
         
+//        System.out.println("used date : " + birthDate);
         standardTest.report();        
     }
     
@@ -119,8 +132,7 @@ public abstract class AbstractStandardTest {
         // indexOf
         assertEquals(Integer.valueOf(0), catQuery().where(cat.name.eq("Bob")).uniqueResult(cat.name.indexOf("B")));
         assertEquals(Integer.valueOf(1), catQuery().where(cat.name.eq("Bob")).uniqueResult(cat.name.indexOf("o")));
-        assertEquals(Integer.valueOf(2), catQuery().where(cat.name.eq("Bob")).uniqueResult(cat.name.indexOf("b")));
-        
+        assertEquals(Integer.valueOf(2), catQuery().where(cat.name.eq("Bob")).uniqueResult(cat.name.indexOf("b")));        
     }
         
 

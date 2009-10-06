@@ -29,9 +29,24 @@ public class EStringConst extends EString implements Constant<String>{
         this.constant = constant;
     }
     
+    @SuppressWarnings("unchecked")
+    @Override
+    public EString append(Expr<String> s) {
+        if (s instanceof Constant){
+            return append(((Constant<String>)s).getConstant());
+        }else{
+            return super.append(s);
+        }
+    }
+    
     @Override
     public EString append(String s) {
         return EString.create(constant + s);
+    }
+    
+    @Override
+    public Expr<Character> charAt(int i) {
+        return Expr.create(constant.charAt(i));
     }
     
     @Override
@@ -49,7 +64,7 @@ public class EStringConst extends EString implements Constant<String>{
     public boolean equals(Object o) {
         return o instanceof Constant ? ((Constant<?>) o).getConstant().equals(constant) : false;
     }
-
+    
     @Override
     public EBoolean equalsIgnoreCase(String str) {
         return EBoolean.create(constant.equalsIgnoreCase(str));
@@ -90,10 +105,25 @@ public class EStringConst extends EString implements Constant<String>{
         }
         return lower;
     }
+    
+    @Override
+    public EBoolean matches(String pattern){
+        return EBoolean.create(constant.matches(pattern));
+    }
 
     @Override
     public EBoolean ne(String s){
         return EBoolean.create(!constant.equals(s));
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public EString prepend(Expr<String> s) {
+        if (s instanceof Constant){
+            return prepend(((Constant<String>)s).getConstant());
+        }else{
+            return super.prepend(s);
+        }
     }
     
     @Override

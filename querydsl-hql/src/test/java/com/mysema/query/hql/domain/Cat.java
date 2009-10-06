@@ -19,21 +19,22 @@ import org.hibernate.annotations.IndexColumn;
  */
 @Entity
 public class Cat extends Animal {
-    int breed;
-    Color eyecolor;
+    private int breed;
+    
+    private Color eyecolor;
     
     @OneToMany
     @IndexColumn(name = "ind")
-    List<Cat> kittens = new ArrayList<Cat>();
+    private List<Cat> kittens = new ArrayList<Cat>();
     
     @ManyToOne
-    Cat mate;
+    private Cat mate;
 
     public Cat(){}
     
     public Cat(String name, int id){
-        this.id = id;
-        this.name = name;
+        this.setId(id);
+        this.setName( name);
     }
     
     public int getBreed() {

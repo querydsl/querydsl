@@ -5,7 +5,13 @@
  */
 package com.mysema.query.jdoql.testdomain;
 
-import com.mysema.query.types.path.*;
+import com.mysema.query.types.path.PDate;
+import com.mysema.query.types.path.PDateTime;
+import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.PTime;
+import com.mysema.query.types.path.PathMetadata;
 
 /**
  * QProduct is a Querydsl query type for Product
@@ -21,6 +27,10 @@ public class QProduct extends PEntity<com.mysema.query.jdoql.testdomain.Product>
     public final PString name = createString("name");
     
     public final PDateTime<java.util.Date> publicationDate = createDateTime("publicationDate",java.util.Date.class);
+    
+    public final PDate<java.sql.Date> dateField = createDate("dateField", java.sql.Date.class);
+    
+    public final PTime<java.sql.Time> timeField = createTime("timeField", java.sql.Time.class);
     
     public final PNumber<java.lang.Integer> amount = createNumber("amount",java.lang.Integer.class);
     

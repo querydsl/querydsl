@@ -151,7 +151,7 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
                     append(", ");
                 }                    
                 handle(os.getTarget());
-                append(os.getOrder() == Order.ASC ? " ASC" : " DESC");
+                append(" " + os.getOrder());
                 first = false;
             }
         }

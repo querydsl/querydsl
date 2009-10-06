@@ -23,6 +23,10 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
 
     private volatile ENumber<Integer> dayOfMonth, month, year, hours, minutes, seconds;
     
+    public static EDateTime<java.util.Date> create(java.util.Date date){
+        return new EDateTimeConst(date);
+    }
+    
     public EDateTime(Class<? extends D> type) {
         super(type);
     }
@@ -67,10 +71,9 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     }
 
     /**
-     * Create a month expression
+     * Create a month expression (range 1-12)
      * 
      * @return
-     * @see java.util.Date#getMonth()
      */
     public ENumber<Integer> getMonth(){
         if (month == null){
@@ -96,7 +99,6 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
      * Create a year expression
      * 
      * @return
-     * @see java.util.Date#getYear()
      */
     public ENumber<Integer> getYear(){
         if (year == null){

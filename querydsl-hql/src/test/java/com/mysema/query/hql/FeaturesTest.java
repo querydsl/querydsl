@@ -88,6 +88,11 @@ public class FeaturesTest extends AbstractQueryTest{
      * The Class MyCustomExpr.
      */
     public static class MyCustomExpr extends CString {
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
         public MyCustomExpr(Expr<?>... args) {
             super(Arrays.asList(args), new TemplateFactory().create("myCustom({0},{1})"));
         }

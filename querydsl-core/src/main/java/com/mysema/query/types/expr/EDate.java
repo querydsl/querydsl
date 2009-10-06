@@ -23,6 +23,10 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     
     private volatile ENumber<Integer> dayOfMonth, month, year;
     
+    public static EDate<java.sql.Date> create(java.sql.Date date){
+        return new EDateConst(date);
+    }
+    
     public EDate(Class<? extends D> type) {
         super(type);
     }
@@ -41,10 +45,9 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a month expression
+     * Create a month expression (range 1-12)
      * 
      * @return
-     * @see java.util.Date#getMonth()
      */
     public ENumber<Integer> getMonth(){
         if (month == null){
@@ -57,7 +60,6 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
      * Create a year expression
      * 
      * @return
-     * @see java.util.Date#getYear()
      */
     public ENumber<Integer> getYear(){
         if (year == null){

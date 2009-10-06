@@ -14,6 +14,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 
+import com.mysema.query.annotations.QueryType;
 import com.mysema.query.apt.Configuration;
 import com.mysema.query.apt.VisitorConfig;
 
@@ -25,14 +26,19 @@ public class JPAConfiguration extends Configuration {
    
     private List<Class<? extends Annotation>> annotations;
     
-    @SuppressWarnings("unchecked")
     public JPAConfiguration(Class<? extends Annotation> entityAnn,
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
             Class<? extends Annotation> dtoAnn,
             Class<? extends Annotation> skipAnn) throws ClassNotFoundException {
         super(entityAnn, superTypeAnn, embeddableAnn, dtoAnn, skipAnn);
-        this.annotations = new ArrayList<Class<? extends Annotation>>();
+        this.annotations = getAnnotations();
+    }
+    
+    @SuppressWarnings("unchecked")
+    protected List<Class<? extends Annotation>> getAnnotations() throws ClassNotFoundException{
+        List<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
+        annotations.add(QueryType.class);
         for (String simpleName : Arrays.asList(
                 "Column",
                 "Embedded",
@@ -45,6 +51,7 @@ public class JPAConfiguration extends Configuration {
                 "PrimaryKeyJoinColumn")){
             annotations.add((Class<? extends Annotation>) Class.forName("javax.persistence."+simpleName));
         }
+        return annotations;
     }
     
     @Override
@@ -52,11 +59,11 @@ public class JPAConfiguration extends Configuration {
         boolean fields = false, methods = false;
         for (Element element : elements){
             if (element.getKind().equals(ElementKind.FIELD) ){
-                if (!fields && hasJPAAnnotation(element)){
+                if (!fields && hasRelevantAnnotation(element)){
                     fields = true;
                 }
             }else if (element.getKind().equals(ElementKind.METHOD)){
-                if (!methods && hasJPAAnnotation(element)){
+                if (!methods && hasRelevantAnnotation(element)){
                     methods = true;
                 }
             }
@@ -71,12 +78,12 @@ public class JPAConfiguration extends Configuration {
         
     }
     
-    private boolean hasJPAAnnotation(Element element){
+    private boolean hasRelevantAnnotation(Element element){
         for (Class<? extends Annotation> annotation : annotations){
             if (element.getAnnotation(annotation) != null){
                 return true;
             }
-        }
+        }        
         return false;
     }
 

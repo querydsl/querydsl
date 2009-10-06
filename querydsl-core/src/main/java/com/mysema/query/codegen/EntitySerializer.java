@@ -97,9 +97,6 @@ public class EntitySerializer implements Serializer{
         StringBuilder builder = new StringBuilder();
         for (ConstructorModel c : model.getConstructors()){
             // begin
-            builder.append("    /**\n");
-            builder.append("     * Factory method for projection\n");
-            builder.append("     */\n");
             builder.append("    public static EConstructor<" + localName + "> create(");
             boolean first = true;
             for (ParameterModel p : c.getParameters()){
@@ -197,11 +194,9 @@ public class EntitySerializer implements Serializer{
     protected void entityFieldAccessor(PropertyModel field, Writer writer) throws IOException {        
         final String fieldName = field.getName();
         final String escapedName = field.getEscapedName();
-        final String queryType = field.getQueryTypeName();               
+        final String queryType = field.getQueryTypeName();
+        
         StringBuilder builder = new StringBuilder();
-        builder.append("    /**\n");
-        builder.append("     * Lazy creation of "+fieldName+" field\n");
-        builder.append("     */\n");
         builder.append("    public " + queryType + " _" + fieldName + "() {\n");
         builder.append("        if (" + escapedName + " == null){\n");
         builder.append("            " + escapedName + " = new " + queryType + "(PathMetadata.forProperty(this,\"" + fieldName + "\"));\n");
@@ -227,9 +222,6 @@ public class EntitySerializer implements Serializer{
             BeanModel _super = model.getSuperModel();
             final String simpleName = _super.getSimpleName();
             final String queryType = _super.getPrefix() + simpleName;
-            builder.append("    /**\n");
-            builder.append("     * Reference to the same path with the supertype signature\n");
-            builder.append("     */\n");
             builder.append("    public final "+queryType+" _super = new " + queryType + "(this);\n\n");
         }        
     }
@@ -278,10 +270,10 @@ public class EntitySerializer implements Serializer{
         
         builder.append("    public " + queryType + " " + escapedName + "(int index) {\n");
         builder.append("        return new " + queryType + "(PathMetadata.forListAccess(" + escapedName+", index));\n");
-        builder.append("    };\n\n");
+        builder.append("    }\n\n");
         builder.append("    public " + queryType + " " + escapedName + "(com.mysema.query.types.expr.Expr<Integer> index) {\n");
         builder.append("        return new " + queryType + "(PathMetadata.forListAccess(" + escapedName+", index));\n");
-        builder.append("    };\n\n");
+        builder.append("    }\n\n");
         writer.append(builder.toString());
     }
 
@@ -292,10 +284,10 @@ public class EntitySerializer implements Serializer{
         
         builder.append("    public PSimple<" + valueType + "> " + escapedName + "(int index) {\n");
         builder.append("        return new PSimple<" + valueType + ">("+valueType+".class, PathMetadata.forListAccess(" + escapedName+", index));\n");
-        builder.append("    };\n\n");
+        builder.append("    }\n\n");
         builder.append("    public PSimple<" + valueType + "> " + escapedName + "(com.mysema.query.types.expr.Expr<Integer> index) {\n");
         builder.append("        return new PSimple<" + valueType + ">("+valueType+".class, PathMetadata.forListAccess(" + escapedName+", index));\n");
-        builder.append("    };\n\n");
+        builder.append("    }\n\n");
         writer.append(builder.toString());
         
     }
@@ -321,10 +313,10 @@ public class EntitySerializer implements Serializer{
         
         builder.append("    public " + queryType + " " + escapedName + "(" + keyType+ " key) {\n");
         builder.append("        return new " + queryType + "(PathMetadata.forMapAccess(" + escapedName+", key));\n");
-        builder.append("    };\n\n");        
+        builder.append("    }\n\n");        
         builder.append("    public " + queryType + " " + escapedName + "(com.mysema.query.types.expr.Expr<"+keyType+"> key) {\n");
         builder.append("        return new " + queryType + "(PathMetadata.forMapAccess(" + escapedName+", key));\n");
-        builder.append("    };\n\n");
+        builder.append("    }\n\n");
         writer.append(builder.toString());
         
     }
@@ -346,10 +338,10 @@ public class EntitySerializer implements Serializer{
         
         builder.append("    public PSimple<" + valueType + "> " + escapedName + "(" + keyType + " key) {\n");
         builder.append("        return new PSimple<" + valueType + ">("+valueType+".class, PathMetadata.forMapAccess(" + escapedName+", key));\n");
-        builder.append("    };\n\n");
+        builder.append("    }\n\n");
         builder.append("    public PSimple<" + valueType + "> " + escapedName + "(com.mysema.query.types.expr.Expr<"+keyType+"> key) {\n");
         builder.append("        return new PSimple<" + valueType + ">("+valueType+".class, PathMetadata.forMapAccess(" + escapedName+", key));\n");
-        builder.append("    };\n\n");
+        builder.append("    }\n\n");
         writer.append(builder.toString());
         
     }

@@ -14,8 +14,11 @@ import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EBooleanConst;
 import com.mysema.query.types.expr.EConstructor;
+import com.mysema.query.types.expr.EDateConst;
+import com.mysema.query.types.expr.EDateTimeConst;
 import com.mysema.query.types.expr.ENumberConst;
 import com.mysema.query.types.expr.EStringConst;
+import com.mysema.query.types.expr.ETimeConst;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.operation.OBoolean;
@@ -97,6 +100,21 @@ public abstract class VisitorBase<SubType extends VisitorBase<SubType>> implemen
     
     @Override
     public void visit(EBooleanConst expr) {
+        visit((Constant<?>) expr);
+    }
+    
+    @Override
+    public void visit(EDateConst expr) {
+        visit((Constant<?>) expr);
+    }
+    
+    @Override
+    public void visit(EDateTimeConst expr) {
+        visit((Constant<?>) expr);
+    }
+    
+    @Override
+    public void visit(ETimeConst expr) {
         visit((Constant<?>) expr);
     }
     

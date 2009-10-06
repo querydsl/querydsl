@@ -5,6 +5,8 @@
  */
 package com.mysema.query.jdoql.testdomain;
 
+import java.util.Date;
+
 import javax.jdo.annotations.Inheritance;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
@@ -27,7 +29,12 @@ public class Book extends Product {
 
     public Book(String name, String description, double price, int amount, String author,
             String isbn, String publisher) {
-        super(name, description, price, amount);
+        this(name, description, price, amount, author, isbn, publisher, new Date());
+    }
+    
+    public Book(String name, String description, double price, int amount, String author,
+            String isbn, String publisher, Date date) {
+        super(name, description, price, amount, date);
         this.author = author;
         this.isbn = isbn;
         this.publisher = publisher;

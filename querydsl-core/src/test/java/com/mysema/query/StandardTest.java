@@ -22,7 +22,6 @@ import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.ETime;
 import com.mysema.query.types.expr.Expr;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class StandardTest.
  * 
@@ -30,176 +29,49 @@ import com.mysema.query.types.expr.Expr;
  */
 public abstract class StandardTest {
     
-    /** The total. */
-    private int total;
-    
-    /** The failures. */
-    private final List<String> failures = new ArrayList<String>();
-    
-    /** The errors. */
     private final List<String> errors = new ArrayList<String>();
     
-    /** The run projections. */
+    private final List<String> failures = new ArrayList<String>();
+    
+    private final MatchingFilters matchers;
+    
+    private final Projections projections;
+    
+    private final Filters filters;
+    
     private boolean runFilters = true, runProjections = true;
     
-    /** The test data. */
-    private final StandardTestData testData;
+    private int total;
     
-    /**
-     * Instantiates a new standard test.
-     */
     public StandardTest(){
-        this(new StandardTestData());
+        projections = new Projections();
+        filters = new Filters(projections);
+        matchers = new MatchingFilters();
     }
     
-    /**
-     * Instantiates a new standard test.
-     * 
-     * @param data the data
-     */
-    public StandardTest(StandardTestData data){
-        this.testData = data;
+    public StandardTest(Projections p, Filters f, MatchingFilters m){
+        projections = p;
+        filters = f;
+        matchers = m;
     }
     
-    /**
-     * Boolean tests.
-     * 
-     * @param expr the expr
-     * @param other the other
-     */
-    public void booleanTests(EBoolean expr, EBoolean other){
-        execute(testData.booleanFilters(expr, other), false);
+
+    private void execute(Collection<? extends Expr<?>> projections){
+        if (this.runProjections){
+            for (Expr<?> pr : projections){
+                total++;
+                try{
+                    System.err.println(pr);
+                    executeProjection(pr);
+                    System.err.println();
+                }catch(Throwable t){
+                    t.printStackTrace();
+                    errors.add(pr + " failed : " + t.getMessage());
+                }            
+            }    
+        }        
     }
-    
-    /**
-     * Collection tests.
-     * 
-     * @param expr the expr
-     * @param other the other
-     * @param knownElement the known element
-     * @param missingElement the missing element
-     */
-    public <A> void collectionTests(ECollection<A> expr, ECollection<A> other, A knownElement, A missingElement){
-        execute(testData.collectionMatchingFilters(expr, other, knownElement, missingElement), true);
-        execute(testData.collectionFilters(expr, other, knownElement), false);
-        execute(testData.collectionProjections(expr, other, knownElement));
-    }
-    
-    /**
-     * Date tests.
-     * 
-     * @param expr the expr
-     * @param other the other
-     * @param knownValue the known value
-     */
-    @SuppressWarnings("unchecked")
-    public <A extends Comparable> void dateTests(EDate<A> expr, EDate<A> other, A knownValue){
-        execute(testData.dateMatchingFilters(expr, other, knownValue), true);
-        execute(testData.dateFilters(expr, other, knownValue), false);
-        execute(testData.dateProjections(expr, other, knownValue));
-    }
-    
-    /**
-     * Time tests.
-     * 
-     * @param expr the expr
-     * @param other the other
-     * @param knownValue the known value
-     */
-    @SuppressWarnings("unchecked")
-    public <A extends Comparable> void timeTests(ETime<A> expr, ETime<A> other, A knownValue){
-        execute(testData.timeMatchingFilters(expr, other, knownValue), true);
-        execute(testData.timeFilters(expr, other, knownValue), false);
-        execute(testData.timeProjections(expr, other, knownValue));
-    }
-    
-    /**
-     * Date time tests.
-     * 
-     * @param expr the expr
-     * @param other the other
-     * @param knownValue the known value
-     */
-    @SuppressWarnings("unchecked")
-    public <A extends Comparable> void dateTimeTests(EDateTime<A> expr, EDateTime<A> other, A knownValue){
-        execute(testData.dateTimeMatchingFilters(expr, other, knownValue), true);
-        execute(testData.dateTimeFilters(expr, other, knownValue), false);
-        execute(testData.dateTimeProjections(expr, other, knownValue));   
-    }
-    
-    /**
-     * List tests.
-     * 
-     * @param expr the expr
-     * @param other the other
-     * @param knownElement the known element
-     * @param missingElement the missing element
-     */
-    public <A> void listTests(EList<A> expr, EList<A> other, A knownElement, A missingElement){
-        execute(testData.listMatchingFilters(expr, other, knownElement, missingElement), true);
-        execute(testData.listFilters(expr, other, knownElement), false);
-        execute(testData.listProjections(expr, other, knownElement));
-    }
-    
-    /**
-     * Map tests.
-     * 
-     * @param expr the expr
-     * @param other the other
-     * @param knownKey the known key
-     * @param knownValue the known value
-     * @param missingKey the missing key
-     * @param missingValue the missing value
-     */
-    public <K,V> void mapTests(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue, K missingKey, V missingValue) {
-        execute(testData.mapMatchingFilters(expr, other, knownKey, knownValue, missingKey, missingValue), true);
-        execute(testData.mapFilters(expr, other, knownKey, knownValue), false);
-        execute(testData.mapProjections(expr, other, knownKey, knownValue));
-    }
-    
-    /**
-     * Numeric casts.
-     * 
-     * @param expr the expr
-     * @param other the other
-     * @param knownValue the known value
-     */
-    public <A extends Number & Comparable<A>> void numericCasts(ENumber<A> expr, ENumber<A> other, A knownValue){
-        execute(testData.numericCasts(expr, other, knownValue));
-    }
-    
-    /**
-     * Numeric tests.
-     * 
-     * @param expr the expr
-     * @param other the other
-     * @param knownValue the known value
-     */
-    public <A extends Number & Comparable<A>> void numericTests(ENumber<A> expr, ENumber<A> other, A knownValue){
-        execute(testData.numericMatchingFilters(expr, other, knownValue), true);
-        execute(testData.numericFilters(expr, other, knownValue), false);
-        execute(testData.numericProjections(expr, other, knownValue));
-    }
-    
-    /**
-     * String tests.
-     * 
-     * @param expr the expr
-     * @param other the other
-     * @param knownValue the known value
-     */
-    public void stringTests(EString expr, EString other, String knownValue){
-        execute(testData.stringMatchingFilters(expr, other, knownValue), true);
-        execute(testData.stringFilters(expr, other, knownValue), false);
-        execute(testData.stringProjections(expr, other, knownValue));
-    }
-    
-    /**
-     * Execute.
-     * 
-     * @param filters the filters
-     * @param matching the matching
-     */
+
     private void execute(Collection<EBoolean> filters, boolean matching){
         if (this.runFilters){
             for (EBoolean f : filters){
@@ -218,49 +90,12 @@ public abstract class StandardTest {
             }    
         }        
     }
-    
-    /**
-     * Execute.
-     * 
-     * @param projections the projections
-     */
-    private void execute(Collection<? extends Expr<?>> projections){
-        if (this.runProjections){
-            for (Expr<?> pr : projections){
-                total++;
-                try{
-                    System.err.println(pr);
-                    executeProjection(pr);
-                    System.err.println();
-                }catch(Throwable t){
-                    t.printStackTrace();
-                    errors.add(pr + " failed : " + t.getMessage());
-                }            
-            }    
-        }        
-    }
 
-    /**
-     * Execute filter.
-     * 
-     * @param f the f
-     * 
-     * @return the int
-     */
     public abstract int executeFilter(EBoolean f);
 
-    /**
-     * Execute projection.
-     * 
-     * @param pr the pr
-     * 
-     * @return the int
-     */
     public abstract int executeProjection(Expr<?> pr);
 
-    /**
-     * Report.
-     */
+
     public void report() {
         if (!failures.isEmpty() || !errors.isEmpty()){
             // System.err logging
@@ -292,24 +127,70 @@ public abstract class StandardTest {
         }        
     }
 
-    /**
-     * No filters.
-     * 
-     * @return the standard test
-     */
     public StandardTest noFilters() {
         runFilters = false;        
         return this;
-    }       
-    
-    /**
-     * No projections.
-     * 
-     * @return the standard test
-     */
+    }
+
     public StandardTest noProjections() {
         runProjections = false;
         return this;
+    }
+        
+    public void booleanTests(EBoolean expr, EBoolean other){
+        execute(filters.booleanFilters(expr, other), false);
+    }
+
+    public <A> void collectionTests(ECollection<A> expr, ECollection<A> other, A knownElement, A missingElement){
+        execute(matchers.collection(expr, other, knownElement, missingElement), true);
+        execute(filters.collection(expr, other, knownElement), false);
+        execute(projections.collection(expr, other, knownElement));
+    }
+
+    public void dateTests(EDate<java.sql.Date> expr, EDate<java.sql.Date> other, java.sql.Date knownValue){
+        execute(matchers.date(expr, other, knownValue), true);
+        execute(filters.date(expr, other, knownValue), false);
+        execute(projections.date(expr, other, knownValue));
+    }
+
+    public void dateTimeTests(EDateTime<java.util.Date> expr, EDateTime<java.util.Date> other, java.util.Date knownValue){
+        execute(matchers.dateTime(expr, other, knownValue), true);
+        execute(filters.dateTime(expr, other, knownValue), false);
+        execute(projections.dateTime(expr, other, knownValue));   
+    }
+
+    public <A> void listTests(EList<A> expr, EList<A> other, A knownElement, A missingElement){
+        execute(matchers.list(expr, other, knownElement, missingElement), true);
+        execute(filters.list(expr, other, knownElement), false);
+        execute(projections.list(expr, other, knownElement));
+    }
+
+    public <K,V> void mapTests(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue, K missingKey, V missingValue) {
+        execute(matchers.map(expr, other, knownKey, knownValue, missingKey, missingValue), true);
+        execute(filters.map(expr, other, knownKey, knownValue), false);
+        execute(projections.map(expr, other, knownKey, knownValue));
+    }
+
+    public <A extends Number & Comparable<A>> void numericCasts(ENumber<A> expr, ENumber<A> other, A knownValue){
+        execute(projections.numericCasts(expr, other, knownValue));
+    }
+
+    public <A extends Number & Comparable<A>> void numericTests(ENumber<A> expr, ENumber<A> other, A knownValue){
+        execute(matchers.numeric(expr, other, knownValue), true);
+        execute(filters.numeric(expr, other, knownValue), false);
+        execute(projections.numeric(expr, other, knownValue));
+    }
+
+    public void stringTests(EString expr, EString other, String knownValue){
+        execute(matchers.string(expr, other, knownValue), true);
+        execute(filters.string(expr, other, knownValue), false);
+        execute(projections.string(expr, other, knownValue));
+    }       
+    
+    public void timeTests(ETime<java.sql.Time> expr, ETime<java.sql.Time> other, java.sql.Time knownValue){
+        execute(matchers.time(expr, other, knownValue), true);
+        execute(filters.time(expr, other, knownValue), false);
+        execute(projections.time(expr, other, knownValue));
     }  
 
 }

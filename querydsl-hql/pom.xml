@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>0.6.0-SNAPSHOT</version>
+    <version>0.6.1</version>
   </parent>
 
   <groupId>com.mysema.querydsl</groupId>
@@ -104,7 +104,7 @@
             </goals>
             <configuration>
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
-              <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+              <processor>com.mysema.query.apt.jpa.hibernate.HibernateAnnotationProcessor</processor>
             </configuration>
           </execution>
         </executions>

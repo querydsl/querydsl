@@ -12,13 +12,14 @@ import java.util.List;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.SerializerBase;
-import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.OSimple;
+import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PCollection;
@@ -129,7 +130,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
                     append(", ");
                 }                    
                 handle(os.getTarget());
-                append(os.getOrder() == Order.ASC ? " asc" : " desc");
+                append(" " + os.getOrder().toString().toLowerCase());
                 first = false;
             }
         }
@@ -234,7 +235,9 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         } else if (operator.equals(Ops.MATCHES)){
             args = new ArrayList<Expr<?>>(args);
             if (args.get(1) instanceof Constant){
-                args.set(1, EString.create(args.get(1).toString().replace(".*", "%").replace(".", "_")));
+                args.set(1, regexToLike(args.get(1).toString()));
+            }else if (args.get(1) instanceof Operation){
+                args.set(1, regexToLike((Operation)args.get(1)));
             }
             super.visitOperation(type, operator, args);
             
@@ -245,6 +248,28 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         wrapElements = old;
     }
 
+    @SuppressWarnings("unchecked")
+    private Expr<?> regexToLike(Operation<?,?> operation) {
+        List<Expr<?>> args = new ArrayList<Expr<?>>();
+        for (Expr<?> arg : operation.getArgs()){
+            if (!arg.getType().equals(String.class)){
+                args.add(arg);
+            }else if (arg instanceof Constant){
+                args.add(regexToLike(arg.toString()));
+            }else if (arg instanceof Operation){
+                args.add(regexToLike((Operation)arg));
+            }else{
+                args.add(arg);
+            }
+        }
+        return OSimple.create(
+                operation.getType(),
+                operation.getOperator(), 
+                args.<Expr<?>>toArray(new Expr[args.size()]));
+    }
 
+    private Expr<?> regexToLike(String str){
+        return EString.create(str.replace(".*", "%").replace(".", "_"));
+    }
 
 }

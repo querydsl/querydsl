@@ -5,7 +5,11 @@
  */
 package com.mysema.query.collections.domain;
 
+import java.util.Date;
+
+import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryEntity;
+import com.mysema.query.annotations.QueryType;
 
 @QueryEntity
 public class Animal {
@@ -13,6 +17,9 @@ public class Animal {
     protected boolean alive;
     
     protected java.util.Date birthdate = new java.util.Date();
+    
+    @QueryType(PropertyType.SIMPLE)
+    private Date dateAsSimple;
     
     protected int bodyWeight, weight, toes;
     
@@ -85,5 +92,15 @@ public class Animal {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Date getDateAsSimple() {
+        return dateAsSimple;
+    }
+
+    public void setDateAsSimple(Date dateAsSimple) {
+        this.dateAsSimple = dateAsSimple;
+    }
+    
+    
 
 }
