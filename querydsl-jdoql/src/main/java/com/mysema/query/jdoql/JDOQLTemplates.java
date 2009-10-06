@@ -24,6 +24,7 @@ public class JDOQLTemplates extends JavaTemplates {
         add(Ops.LIKE, "{0}.like({1})");
         
         // Date
+        add(Ops.DateTimeOps.MONTH, "({0}.getMonth() + 1)"); // getMonth() in JDO returns a range from 0-11
         add(Ops.DateTimeOps.DAY_OF_MONTH, "{0}.getDay()");
         
         // other

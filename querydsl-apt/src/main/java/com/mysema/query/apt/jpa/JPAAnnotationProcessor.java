@@ -28,7 +28,7 @@ import com.mysema.query.apt.Processor;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class JPAAnnotationProcessor extends AbstractProcessor{
     
-    private Class<? extends Annotation> entity, superType, embeddable, dto, skip;
+    protected Class<? extends Annotation> entity, superType, embeddable, dto, skip;
     
     @SuppressWarnings("unchecked")
     @Override
@@ -41,7 +41,7 @@ public class JPAAnnotationProcessor extends AbstractProcessor{
             dto = QueryProjection.class;
             skip = (Class)Class.forName("javax.persistence.Transient");
             
-            Configuration configuration = new JPAConfiguration(entity, superType, embeddable, dto, skip);
+            Configuration configuration = createConfiguration();
             Processor processor = new Processor(processingEnv, configuration);
             processor.process(roundEnv);
             return true;
@@ -49,6 +49,10 @@ public class JPAAnnotationProcessor extends AbstractProcessor{
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e.getMessage(), e);
         }        
+    }
+
+    protected Configuration createConfiguration() throws ClassNotFoundException {
+        return new JPAConfiguration(entity, superType, embeddable, dto, skip);
     }       
     
 }

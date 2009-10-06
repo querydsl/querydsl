@@ -6,6 +6,7 @@
 package com.mysema.query.jdoql;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -18,11 +19,12 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.serialization.SerializerBase;
-import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
@@ -41,8 +43,7 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         @Override
         public int compare(Entry<Object, String> o1, Entry<Object, String> o2) {
             return o1.getValue().compareTo(o2.getValue());
-        }
-        
+        }        
     };
 
     private Expr<?> candidatePath;
@@ -181,8 +182,7 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void visitOperation(Class<?> type, Operator<?> operator,
-            List<Expr<?>> args) {
+    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
         // TODO : these should be handled as serialization patterns
         if (operator.equals(Ops.INSTANCE_OF)) {
             handle(args.get(0)).append(" instanceof ");
@@ -190,6 +190,14 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             
         } else if (operator.equals(Ops.STRING_CAST)) {
             append("(String)").handle(args.get(0));
+            
+        } else if (operator.equals(Ops.MATCHES)){
+            // switch from regex to like if the regex expression is an operation
+            if (args.get(1) instanceof Operation){
+                operator = Ops.LIKE;
+                args = Arrays.asList(args.get(0), regexToLike((Operation<?, ?>) args.get(1)));                
+            }
+            super.visitOperation(type, operator, args);
             
         } else if (operator.equals(Ops.NUMCAST)) {
             Class<?> clazz = ((Constant<Class<?>>)args.get(1)).getConstant();
@@ -201,6 +209,29 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         } else {
             super.visitOperation(type, operator, args);
         }
+    }
+    
+    private Expr<?> regexToLike(Operation<?,?> operation) {
+        List<Expr<?>> args = new ArrayList<Expr<?>>();
+        for (Expr<?> arg : operation.getArgs()){
+            if (!arg.getType().equals(String.class)){
+                args.add(arg);
+            }else if (arg instanceof Constant){
+                args.add(regexToLike(arg.toString()));
+            }else if (arg instanceof Operation){
+                args.add(regexToLike((Operation)arg));
+            }else{
+                args.add(arg);
+            }
+        }
+        return OSimple.create(
+                operation.getType(),
+                operation.getOperator(), 
+                args.<Expr<?>>toArray(new Expr[args.size()]));
+    }
+
+    private Expr<?> regexToLike(String str){
+        return EString.create(str.replace(".*", "%").replace(".", "_"));
     }
 
     @Override

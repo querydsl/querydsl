@@ -16,6 +16,8 @@
 
   <properties>    
     <datanucleus.classDir>target/test-classes</datanucleus.classDir>
+    <jdo.version>2.3-eb</jdo.version>
+    <dn.version>1.1.5</dn.version>
   </properties>
 
   <dependencies>
@@ -66,13 +68,40 @@
     </dependency>    
   </dependencies>
 
+
+  <repositories>
+    <repository>
+      <id>datanucleus</id>
+      <url>http://www.datanucleus.org/downloads/maven2</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  
+  <pluginRepositories>
+    <pluginRepository>
+      <id>datanucleus</id>
+      <url>http://www.datanucleus.org/downloads/maven2</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>  
+  </pluginRepositories>
+
   <build>
     <plugins>
       <!-- this plugin does the JDO class enhancement -->
       <plugin>
         <groupId>org.datanucleus</groupId>
         <artifactId>maven-datanucleus-plugin</artifactId>
-        <version>1.1.0</version>
+        <version>1.1.4</version>
         <configuration>
           <mappingIncludes>com/mysema/query/jdoql/testdomain/*.class</mappingIncludes>
           <log4jConfiguration>src/test/resources/log4j.properties</log4jConfiguration>

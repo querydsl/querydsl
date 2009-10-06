@@ -89,7 +89,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @param right
      * @return this + right
      */
-    public ENumber<D> add(D right) {
+    public ENumber<D> add(Number right) {
         return ONumber.create(getType(), Ops.ADD, this, ENumber.create(right));
     }
     
@@ -356,7 +356,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @param right
      * @return this * right
      */
-    public ENumber<D> mult(D right) {
+    public ENumber<D> mult(Number right) {
         return ONumber.create(getType(), Ops.MULT, this, ENumber.create(right));
     }
     
@@ -405,7 +405,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @param right
      * @return this - right
      */
-    public ENumber<D> sub(D right) {
+    public ENumber<D> sub(Number right) {
         return ONumber.create(getType(), Ops.SUB, this, ENumber.create(right));
     }
     

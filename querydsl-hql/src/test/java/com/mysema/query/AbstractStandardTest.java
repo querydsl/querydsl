@@ -101,14 +101,14 @@ public abstract class AbstractStandardTest {
         
         standardTest.booleanTests(cat.name.isNull(), otherCat.kittens.isEmpty());
         standardTest.collectionTests(cat.kittens, otherCat.kittens, kitten, noKitten);
-//        standardTest.dateTests(cat.dateField, otherCat.dateField, date);
-//        standardTest.dateTimeTests(cat.birthdate, otherCat.birthdate, birthDate);
+        standardTest.dateTests(cat.dateField, otherCat.dateField, date);
+        standardTest.dateTimeTests(cat.birthdate, otherCat.birthdate, birthDate);
         standardTest.listTests(cat.kittens, otherCat.kittens, kitten, noKitten);
 //        standardTest.mapTests(cat.kittensByName, otherCat.kittensByName, "Kitty", kitten);
         standardTest.numericCasts(cat.id, otherCat.id, 1);
         standardTest.numericTests(cat.id, otherCat.id, 1);
-//        standardTest.stringTests(cat.name, otherCat.name, "Bob");
-//        standardTest.timeTests(cat.timeField, otherCat.timeField, time);
+        standardTest.stringTests(cat.name, otherCat.name, "Bob");
+        standardTest.timeTests(cat.timeField, otherCat.timeField, time);
         
 //        System.out.println("used date : " + birthDate);
         standardTest.report();        

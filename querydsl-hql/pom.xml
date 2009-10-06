@@ -13,7 +13,11 @@
   <name>Querydsl - HQL/JPAQL support</name>
   <description>Hibernate / HQL support for querydsl</description>
   <packaging>jar</packaging>
-
+  
+  <properties>  
+    <hibernate.version>3.2.1.ga</hibernate.version>
+  </properties>
+  
   <dependencies>
     <dependency>
       <groupId>org.hibernate</groupId>

@@ -6,6 +6,7 @@
 package com.mysema.query.types.expr;
 
 import com.mysema.query.types.Visitor;
+import com.mysema.util.MathUtils;
 
 /**
  * ENumberConst represents numeric constants
@@ -53,6 +54,36 @@ public class ENumberConst<D extends Number & Comparable<?>> extends ENumber<D> i
     @Override
     public void accept(Visitor v) {
         v.visit(this);        
+    }
+    
+    @Override
+    public ENumber<D> add(Number right) {
+        return ENumber.create(MathUtils.sum(constant, right));
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public ENumber<D> add(Expr<D> right) {
+        if (right instanceof Constant){
+            return add(((Constant<Number>)right).getConstant());
+        }else{
+            return super.add(right);
+        }
+    }
+    
+    @Override
+    public ENumber<D> sub(Number right) {
+        return ENumber.create(MathUtils.difference(constant, right));
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public ENumber<D> sub(Expr<D> right) {
+        if (right instanceof Constant){
+            return sub(((Constant<Number>)right).getConstant());
+        }else{
+            return super.sub(right);
+        }
     }
     
 }

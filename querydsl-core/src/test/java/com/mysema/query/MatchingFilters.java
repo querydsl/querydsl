@@ -1,9 +1,9 @@
 package com.mysema.query;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EComparable;
@@ -15,6 +15,7 @@ import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.ETime;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.Path;
 
 /**
  * @author tiwe
@@ -23,37 +24,30 @@ import com.mysema.query.types.expr.Expr;
 public class MatchingFilters {
 
     <A> Collection<EBoolean> collection(ECollection<A> expr,  ECollection<A> other, A knownElement, A missingElement){
-        return Arrays.<EBoolean>asList(
-          expr.contains(knownElement),
-          expr.contains(missingElement).not(),
-          
-          expr.isEmpty().not(),
-          
-          expr.isNotEmpty()          
-        );
+        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+        rv.add(expr.contains(knownElement));
+        rv.add(expr.contains(missingElement).not());          
+        rv.add(expr.isEmpty().not());          
+        rv.add(expr.isNotEmpty());
+        return rv;
     }
     
     @SuppressWarnings("unchecked")
     private <A extends Comparable> Collection<EBoolean> comparable(EComparable<A> expr,  Expr<A> other){
-        return Arrays.asList(
-            expr.eq(other),
-            
-            expr.goe(other),
-            
-            expr.loe(other),
-            
-            expr.ne(other).not()
-        );
+        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+        rv.add(expr.eq(other));            
+        rv.add(expr.goe(other));            
+        rv.add(expr.loe(other));            
+        rv.add(expr.ne(other).not());
+        return rv;
     }
     
     Collection<EBoolean> date(EDate<java.sql.Date> expr, EDate<java.sql.Date> other){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(comparable(expr, other));
-        rv.addAll(Arrays.asList(
-                expr.getDayOfMonth().eq(other.getDayOfMonth()),
-                expr.getMonth().eq(other.getMonth()),
-                expr.getYear().eq(other.getYear())
-            ));
+        rv.add(expr.getDayOfMonth().eq(other.getDayOfMonth()));
+        rv.add(expr.getMonth().eq(other.getMonth()));
+        rv.add(expr.getYear().eq(other.getYear()));
         return rv;
     }
     
@@ -64,17 +58,19 @@ public class MatchingFilters {
         return rv;
     }
 
+    @SuppressWarnings("unchecked")
     Collection<EBoolean> dateTime(EDateTime<java.util.Date> expr, EDateTime<java.util.Date> other){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(comparable(expr, other));
-        rv.addAll(Arrays.asList(
-                expr.getSeconds().eq(other.getSeconds()),
-                expr.getMinutes().eq(other.getMinutes()),
-                expr.getHours().eq(other.getHours()),
-                expr.getDayOfMonth().eq(other.getDayOfMonth()),
-                expr.getMonth().eq(other.getMonth()),
-                expr.getYear().eq(other.getYear())
-            ));
+        if (other instanceof Path){
+         // NOTE : second(date) is fractional in Derby
+            rv.add(expr.getSeconds().eq(other.getSeconds()));    
+        }        
+        rv.add(expr.getMinutes().eq(other.getMinutes()));
+        rv.add(expr.getHours().eq(other.getHours()));
+        rv.add(expr.getDayOfMonth().eq(other.getDayOfMonth()));
+        rv.add(expr.getMonth().eq(other.getMonth()));
+        rv.add(expr.getYear().eq(other.getYear()));
         return rv;
     }
     
@@ -90,104 +86,102 @@ public class MatchingFilters {
     }
 
     <K,V> Collection<EBoolean> map(EMap<K,V> expr, EMap<K,V> other,  K knownKey, V knownValue, K missingKey, V missingValue) {
-        return Arrays.<EBoolean>asList(
-          expr.containsKey(knownKey),
-          expr.containsKey(missingKey).not(),
-          
-          expr.containsValue(knownValue),
-          expr.containsValue(missingValue).not(),
-          
-          expr.get(knownKey).eq(knownValue),
-          
-          expr.isEmpty().not(),
-          
-          expr.isNotEmpty()
-        );
+        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+        rv.add(expr.containsKey(knownKey));
+        rv.add(expr.containsKey(missingKey).not());          
+        rv.add(expr.containsValue(knownValue));
+        rv.add(expr.containsValue(missingValue).not());          
+        rv.add(expr.get(knownKey).eq(knownValue));          
+        rv.add(expr.isEmpty().not());          
+        rv.add(expr.isNotEmpty());
+        return rv;
     }
 
     <A extends Number & Comparable<A>> Collection<EBoolean> numeric( ENumber<A> expr, ENumber<A> other, A knownValue){
-        return Arrays.<EBoolean>asList(
-            expr.eq(other),
-            expr.eq(knownValue),
-            
-            expr.goe(other),
-            expr.goe(knownValue),            
-            
-            expr.gt(knownValue.intValue()-1),            
-            
-            expr.loe(other),
-            expr.loe(knownValue),            
-            
-            expr.lt(knownValue.intValue()+1),
-            
-            expr.ne(other).not(),
-            expr.ne(knownValue).not()
-        );
+        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+        rv.addAll(numeric(expr, other));
+        rv.addAll(numeric(expr, ENumber.create(knownValue)));
+        return rv;
+    }
+    
+    <A extends Number & Comparable<A>> Collection<EBoolean> numeric( ENumber<A> expr, ENumber<A> other){
+        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+        rv.add(expr.eq(other));
+        rv.add(expr.goe(other));
+        rv.add(expr.gt(other.sub(1)));                           
+        rv.add(expr.gt(other.sub(2)));
+        rv.add(expr.loe(other));                
+        rv.add(expr.lt(other.add(1)));                
+        rv.add(expr.lt(other.add(2)));
+        rv.add(expr.ne(other).not());
+        return rv;
     }
 
+    @SuppressWarnings("unchecked")
     Collection<EBoolean> string(EString expr, EString other){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(comparable(expr, other));
-        rv.addAll(Arrays.<EBoolean>asList(
-            expr.charAt(0).eq(other.charAt(0)),
-            expr.charAt(1).eq(other.charAt(1)),
+        
+        rv.add(expr.charAt(0).eq(other.charAt(0)));
+        rv.add(expr.charAt(1).eq(other.charAt(1)));
             
-            expr.contains(other),
-            expr.contains(other.substring(0,1)),
-            expr.contains(other.substring(0,2)),
-            expr.contains(other.substring(1,2)),
-            expr.contains(other.substring(1)),
-            expr.contains(other.substring(2)),
+        rv.add(expr.contains(other));
+        rv.add(expr.contains(other.substring(0,1)));
+        rv.add(expr.contains(other.substring(0,2)));
+        rv.add(expr.contains(other.substring(1,2)));
+        rv.add(expr.contains(other.substring(1)));
+        rv.add(expr.contains(other.substring(2)));
             
-            expr.endsWith(other),
-            expr.endsWith(other,false),
-            expr.endsWith(other.substring(1)),
-            expr.endsWith(other.substring(2)),
-            expr.endsWith(other.substring(1),false),
-            expr.endsWith(other.substring(2),false),
+        rv.add(expr.endsWith(other));
+        rv.add(expr.endsWith(other,false));
+        rv.add(expr.endsWith(other.substring(1)));
+        rv.add(expr.endsWith(other.substring(2)));
+        rv.add(expr.endsWith(other.substring(1),false));
+        rv.add(expr.endsWith(other.substring(2),false));
             
-            expr.eq(other),
-            expr.equalsIgnoreCase(other),
+        rv.add(expr.eq(other));
+        rv.add(expr.equalsIgnoreCase(other));
             
-            expr.indexOf(other).eq(0),
-            expr.indexOf(other.substring(1)).eq(1), 
-            expr.indexOf(other.substring(2)).eq(2), 
+        rv.add(expr.indexOf(other).eq(0));
+        
+        if (other instanceof Constant){
+            rv.add(expr.indexOf(other.substring(1)).eq(1)); // NOTE : fails in Derby with paths
+            rv.add(expr.indexOf(other.substring(2)).eq(2)); // NOTE : fails in Derby with paths    
+        }        
             
-            expr.isEmpty().not(),
-            expr.isNotEmpty(),
+        rv.add(expr.isEmpty().not());
+        rv.add(expr.isNotEmpty());
             
-            expr.length().eq(other.length()),
+        rv.add(expr.length().eq(other.length()));
             
-            expr.like(other),
-            expr.like(other.substring(0,1).append("%")),
-            expr.like(other.substring(0,1).append("%").append(other.substring(2))),
-            expr.like(other.substring(1).prepend("%")),
-            expr.like(other.substring(1,2).append("%").prepend("%")),
+        rv.add(expr.like(other));
+        rv.add(expr.like(other.substring(0,1).append("%")));
+        rv.add(expr.like(other.substring(0,1).append("%").append(other.substring(2))));
+        rv.add(expr.like(other.substring(1).prepend("%")));
+        rv.add(expr.like(other.substring(1,2).append("%").prepend("%")));
             
-            expr.lower().eq(other.lower()),
+        rv.add(expr.lower().eq(other.lower()));
             
-            expr.matches(other.substring(0,1).append(".*")),
-            expr.matches(other.substring(0,1).append(".").append(other.substring(2))),
-            expr.matches(other.substring(1).prepend(".*")),
-            expr.matches(other.substring(1,2).prepend(".*").append(".*")),
+        rv.add(expr.matches(other.substring(0,1).append(".*")));
+        rv.add(expr.matches(other.substring(0,1).append(".").append(other.substring(2))));
+        rv.add(expr.matches(other.substring(1).prepend(".*")));
+        rv.add(expr.matches(other.substring(1,2).prepend(".*").append(".*")));
             
-            expr.ne(other),
+        rv.add(expr.ne(other));
             
-            expr.startsWith(other),
-            expr.startsWith(other,false),            
-            expr.startsWith(other.substring(0,1)),
-            expr.startsWith(other.substring(0,1),false),
-            expr.startsWith(other.substring(0,2)),                        
-            expr.startsWith(other.substring(0,2),false),
+        rv.add(expr.startsWith(other));
+        rv.add(expr.startsWith(other,false));            
+        rv.add(expr.startsWith(other.substring(0,1)));
+        rv.add(expr.startsWith(other.substring(0,1),false));
+        rv.add(expr.startsWith(other.substring(0,2)));                        
+        rv.add(expr.startsWith(other.substring(0,2),false));
             
-            expr.substring(0,1).eq(other.substring(0,1)),
-            expr.substring(1).eq(other.substring(1)),
+        rv.add(expr.substring(0,1).eq(other.substring(0,1)));
+        rv.add(expr.substring(1).eq(other.substring(1)));
                                                              
-            expr.trim().eq(other.trim()),
+        rv.add(expr.trim().eq(other.trim()));
             
-            expr.upper().eq(other.upper())
-            
-        ));
+        rv.add(expr.upper().eq(other.upper()));
         return rv;
     }
 
@@ -201,11 +195,9 @@ public class MatchingFilters {
     Collection<EBoolean> time(ETime<java.sql.Time> expr,  ETime<java.sql.Time> other){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(comparable(expr, other));
-        rv.addAll(Arrays.asList(
-                expr.getSeconds().eq(other.getSeconds()),
-                expr.getMinutes().eq(other.getMinutes()),
-                expr.getHours().eq(other.getHours())
-            ));
+        rv.add(expr.getSeconds().eq(other.getSeconds()));
+        rv.add(expr.getMinutes().eq(other.getMinutes()));
+        rv.add(expr.getHours().eq(other.getHours()));
         return rv;
     }
     
