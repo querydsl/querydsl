@@ -5,12 +5,10 @@
  */
 package com.mysema.query.hql;
 
-import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.OComparable;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.OSimple;
@@ -37,9 +35,9 @@ public class HQLGrammar {
         return OComparable.create(col.getElementType(), Ops.QuantOps.AVG_IN_COL, (Expr<?>)col);
     }
 
-    public static EBoolean exists(ECollection<?> col) {
-        return OBoolean.create(Ops.EXISTS, (Expr<?>)col);
-    }
+//    public static EBoolean exists(ECollection<?> col) {
+//        return OBoolean.create(Ops.EXISTS, (Expr<?>)col);
+//    }
 
     public static <A extends Comparable<? super A>> EComparable<A> max(ECollection<A> left) {
         return OComparable.create(left.getElementType(), Ops.QuantOps.MAX_IN_COL, (Expr<?>)left);
@@ -49,9 +47,9 @@ public class HQLGrammar {
         return OComparable.create(left.getElementType(), Ops.QuantOps.MIN_IN_COL, (Expr<?>)left);
     }
 
-    public static EBoolean notExists(ECollection<?> col) {
-        return exists(col).not();
-    }
+//    public static EBoolean notExists(ECollection<?> col) {
+//        return exists(col).not();
+//    }
 
     public static <D> Expr<D> some(ECollection<D> col) {
         return any(col);

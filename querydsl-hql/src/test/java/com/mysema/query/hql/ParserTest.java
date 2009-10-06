@@ -8,8 +8,6 @@ package com.mysema.query.hql;
 import static com.mysema.query.alias.Alias.$;
 import static com.mysema.query.alias.Alias.alias;
 import static com.mysema.query.hql.HQLGrammar.all;
-import static com.mysema.query.hql.HQLGrammar.exists;
-import static com.mysema.query.hql.HQLGrammar.notExists;
 import static com.mysema.query.hql.HQLGrammar.some;
 import static com.mysema.query.hql.HQLGrammar.sum;
 import static org.junit.Assert.assertEquals;
@@ -372,7 +370,7 @@ public class ParserTest implements Constants {
         query().select(p).from(list, p).where(p.name.eq(some(list.names))).parse();
 
         // parse( "from eg.Cat cat where exists elements(cat.kittens)" );
-        query().from(cat).where(exists(cat.kittens)).parse();
+        query().from(cat).where(cat.kittens.isNotEmpty()).parse();
 
         // parse( "from eg.Player p where 3 > all elements(p.scores)" );
 //        q().from(player).where(all(player.scores).lt(3)).parse();
@@ -491,8 +489,7 @@ public class ParserTest implements Constants {
         // parse( "from eg.Cat as cat where not exists (\n"
         // + "from eg.Cat as mate where mate.mate = cat)" );
         query().from(cat).where(
-//                notExists(HQLGrammar.from(mate).where(mate.mate.eq(cat))))
-                notExists(sub().from(mate).where(mate.mate.eq(cat)).list(mate)))
+                sub().from(mate).where(mate.mate.eq(cat)).list(mate).notExists())
                 .parse();
 
         // parse( "from eg.DomesticCat as cat where cat.name not in (\n"

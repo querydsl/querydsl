@@ -1,1 +1,3 @@
 * Document @QueryType
+
+* Document HibernateAnnotationProcessor
