@@ -3,6 +3,7 @@ package com.mysema.query;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import com.mysema.query.types.expr.EBoolean;
@@ -31,49 +32,46 @@ public class Filters {
     }
 
     Collection<EBoolean> booleanFilters(EBoolean expr, EBoolean other){
-        return Arrays.asList(
-            expr.and(other),
-            expr.or(other),
-            expr.not().and(other.not()),
-            expr.not(),
-            other.not()
-        );
-    };
+        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+        rv.add(expr.and(other));
+        rv.add(expr.or(other));
+        rv.add(expr.not().and(other.not()));
+        rv.add(expr.not());
+        rv.add(other.not());
+        return rv;
+    }
 
     <A> Collection<EBoolean> collection(ECollection<A> expr, ECollection<A> other, A knownElement){
-        return Arrays.<EBoolean>asList(
-          expr.contains(knownElement),
-          expr.isEmpty(),
-          expr.isNotEmpty(),
-          expr.size().gt(0)
-        );
+        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+        rv.add(expr.contains(knownElement));
+        rv.add(expr.isEmpty());
+        rv.add(expr.isNotEmpty());
+        rv.add(expr.size().gt(0));
+        return rv;
     }
 
     private <A extends Comparable<A>> Collection<EBoolean> comparable(EComparable<A> expr, EComparable<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(exprFilters(expr, other, knownValue));
-        rv.addAll(Arrays.<EBoolean>asList(
-            expr.gt(other),
-            expr.gt(knownValue),
-            expr.goe(other),
-            expr.goe(knownValue),
-            expr.lt(other),
-            expr.lt(knownValue),
-            expr.loe(other),
-            expr.loe(knownValue)
-        ));
+        rv.add(expr.gt(other));
+        rv.add(expr.gt(knownValue));
+        rv.add(expr.goe(other));
+        rv.add(expr.goe(knownValue));
+        rv.add(expr.lt(other));
+        rv.add(expr.lt(knownValue));
+        rv.add(expr.loe(other));
+        rv.add(expr.loe(knownValue));
         return rv;
+
     }
 
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<EBoolean> date(EDate<A> expr, EDate<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(comparable(expr, other, knownValue));
-        rv.addAll(Arrays.<EBoolean>asList(
-          expr.getDayOfMonth().eq(other.getDayOfMonth()),
-          expr.getMonth().eq(other.getMonth()),
-          expr.getYear().eq(other.getYear())
-        ));        
+        rv.add(expr.getDayOfMonth().eq(other.getDayOfMonth()));
+        rv.add(expr.getMonth().eq(other.getMonth()));
+        rv.add(expr.getYear().eq(other.getYear()));    
         return rv;
     }
     
@@ -82,37 +80,35 @@ public class Filters {
     <A extends Comparable> Collection<EBoolean> dateTime(EDateTime<A> expr, EDateTime<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(comparable(expr, other, knownValue));
-        rv.addAll(Arrays.<EBoolean>asList(
-          expr.getDayOfMonth().eq(1),
-          expr.getDayOfMonth().eq(other.getDayOfMonth()),
+        rv.add(expr.getDayOfMonth().eq(1));
+        rv.add(expr.getDayOfMonth().eq(other.getDayOfMonth()));
           
-          expr.getMonth().eq(1),
-          expr.getMonth().eq(other.getMonth()),
+        rv.add(expr.getMonth().eq(1));
+        rv.add(expr.getMonth().eq(other.getMonth()));
           
-          expr.getYear().eq(2000),
-          expr.getYear().eq(other.getYear()),
+        rv.add(expr.getYear().eq(2000));
+        rv.add(expr.getYear().eq(other.getYear()));
           
-          expr.getHours().eq(1),
-          expr.getHours().eq(other.getHours()),
+        rv.add(expr.getHours().eq(1));
+        rv.add(expr.getHours().eq(other.getHours()));
           
-          expr.getMinutes().eq(1),
-          expr.getMinutes().eq(other.getMinutes()),
+        rv.add(expr.getMinutes().eq(1));
+        rv.add(expr.getMinutes().eq(other.getMinutes()));
           
-          expr.getSeconds().eq(1),
-          expr.getSeconds().eq(other.getSeconds())
-        ));
+        rv.add(expr.getSeconds().eq(1));
+        rv.add(expr.getSeconds().eq(other.getSeconds()));
         return rv;
     }
 
 
     private <A> Collection<EBoolean> exprFilters(Expr<A> expr, Expr<A> other, A knownValue){
-        return Arrays.<EBoolean>asList(
-            expr.eq(other),
-            expr.eq(knownValue),
+        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+        rv.add(expr.eq(other));
+        rv.add(expr.eq(knownValue));
             
-            expr.ne(other),
-            expr.ne(knownValue)
-        );
+        rv.add(expr.ne(other));
+        rv.add(expr.ne(knownValue));
+        return rv;
     }
 
     <A> Collection<EBoolean> list(EList<A> expr, EList<A> other, A knownElement){
@@ -124,15 +120,15 @@ public class Filters {
 
 
     <K,V> Collection<EBoolean> map(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue) {
-        return Arrays.<EBoolean>asList(
-          expr.containsKey(knownKey),
-          expr.containsValue(knownValue),
-          expr.get(knownKey).eq(knownValue),
-          expr.get(knownKey).ne(knownValue),
-          expr.isEmpty(),
-          expr.isNotEmpty(),
-          expr.size().gt(0)
-        );
+        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+        rv.add(expr.containsKey(knownKey));
+        rv.add(expr.containsValue(knownValue));
+        rv.add(expr.get(knownKey).eq(knownValue));
+        rv.add(expr.get(knownKey).ne(knownValue));
+        rv.add(expr.isEmpty());
+        rv.add(expr.isNotEmpty());
+        rv.add(expr.size().gt(0));
+        return rv;
     }
 
     @SuppressWarnings("unchecked")
@@ -141,19 +137,17 @@ public class Filters {
         for (ENumber<?> num : projections.numeric(expr, other, knownValue)){
             rv.add(num.lt(expr));
         }        
-        rv.addAll(Arrays.asList(
-            expr.ne(other),
-            expr.ne(knownValue),
-            expr.goe(other),
-            expr.goe(knownValue),
-            expr.gt(other),
-            expr.gt(knownValue),            
-            expr.loe(other),
-            expr.loe(knownValue),
-            expr.lt(other),
-            expr.lt(knownValue)
-            
-        ));       
+        rv.add(expr.ne(other));
+        rv.add(expr.ne(knownValue));
+        rv.add(expr.goe(other));
+        rv.add(expr.goe(knownValue));
+        rv.add(expr.gt(other));
+        rv.add(expr.gt(knownValue));            
+        rv.add(expr.loe(other));
+        rv.add(expr.loe(knownValue));
+        rv.add(expr.lt(other));
+        rv.add(expr.lt(knownValue));
+
         if (expr.getType().equals(Integer.class)){
             ENumber<Integer> eint = (ENumber)expr;
             rv.add(eint.between(1, 2));
@@ -183,70 +177,63 @@ public class Filters {
         rv.addAll(comparable(expr, other, knownValue));        
         for (EString eq : projections.string(expr, other, knownValue)){
             rv.add(eq.eq(other));
-        }
-        rv.addAll(Arrays.<EBoolean>asList(            
-            expr.between("A", "Z"),
+        }            
+        rv.add(expr.between("A", "Z"));
             
-            expr.charAt(0).eq(knownValue.charAt(0)),
+        rv.add(expr.charAt(0).eq(knownValue.charAt(0)));
             
-            expr.notBetween("A", "Z"),
+        rv.add(expr.notBetween("A", "Z"));
             
-            expr.contains(other),
-            expr.contains(knownValue.substring(0,1)),
-            expr.contains(knownValue.substring(1,2)),
+        rv.add(expr.contains(other));
+        rv.add(expr.contains(knownValue.substring(0,1)));
+        rv.add(expr.contains(knownValue.substring(1,2)));
             
-            expr.endsWith(other),
-            expr.endsWith(knownValue.substring(1)),
-            expr.endsWith(knownValue.substring(2)),       
+        rv.add(expr.endsWith(other));
+        rv.add(expr.endsWith(knownValue.substring(1)));
+        rv.add(expr.endsWith(knownValue.substring(2)));      
             
-            expr.equalsIgnoreCase(other),
-            expr.equalsIgnoreCase(knownValue),
+        rv.add(expr.equalsIgnoreCase(other));
+        rv.add(expr.equalsIgnoreCase(knownValue));
             
-            expr.in(Arrays.asList(knownValue)),
+        rv.add(expr.in(Arrays.asList(knownValue)));
             
-            expr.indexOf(other).gt(0),
-            expr.indexOf("X", 1).gt(0),
-            expr.indexOf(knownValue).gt(0),
+        rv.add(expr.indexOf(other).gt(0));
+        rv.add(expr.indexOf("X", 1).gt(0));
+        rv.add(expr.indexOf(knownValue).gt(0));
             
 //            expr.lastIndexOf(other).gt(0),
 //            expr.lastIndexOf(knownValue).gt(0),
             
-            expr.in("A","B","C"),
+        rv.add(expr.in("A","B","C"));
                         
-            expr.isEmpty(),
-            expr.isNotEmpty(),
+        rv.add(expr.isEmpty());
+        rv.add(expr.isNotEmpty());
             
-            expr.length().gt(0),            
+        rv.add(expr.length().gt(0));            
                         
-            expr.like(knownValue.substring(0,1)+"%"),
-            expr.like("%"+knownValue.substring(1)),
-            expr.like("%"+knownValue.substring(1,2)+"%"),            
+        rv.add(expr.like(knownValue.substring(0,1)+"%"));
+        rv.add(expr.like("%"+knownValue.substring(1)));
+        rv.add(expr.like("%"+knownValue.substring(1,2)+"%"));            
             
-            expr.matches(knownValue.substring(0,1)+".*"),
-            expr.matches(".*"+knownValue.substring(1)),
-            expr.matches(".*"+knownValue.substring(1,2)+".*"),
+        rv.add(expr.matches(knownValue.substring(0,1)+".*"));
+        rv.add(expr.matches(".*"+knownValue.substring(1)));
+        rv.add(expr.matches(".*"+knownValue.substring(1,2)+".*"));
             
-            expr.notIn("A","B","C"),
+        rv.add(expr.notIn("A","B","C"));
             
-            expr.notBetween("A", "Z"),
-            expr.notBetween(other, other)
+        rv.add(expr.notBetween("A", "Z"));
+        rv.add(expr.notBetween(other, other));
             
-            
-        ));
         return rv;
-    }
-
-    
+    }    
     
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<EBoolean> time(ETime<A> expr, ETime<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(comparable(expr, other, knownValue));
-        rv.addAll(Arrays.<EBoolean>asList(
-          expr.getHours().eq(other.getHours()),
-          expr.getMinutes().eq(other.getMinutes()),
-          expr.getSeconds().eq(other.getSeconds())
-        ));        
+        rv.add(expr.getHours().eq(other.getHours()));
+        rv.add(expr.getMinutes().eq(other.getMinutes()));
+        rv.add(expr.getSeconds().eq(other.getSeconds()));
         return rv;
     }
     

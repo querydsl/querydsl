@@ -14,7 +14,7 @@ public abstract class AbstractQueryTest implements Constants{
     private HQLSerializer visitor = new HQLSerializer(new HQLTemplates());
     
     protected void toString(String expected, Expr<?> expr) {
-        assertEquals(expected, visitor.handle(expr).toString());
+        assertEquals(expected, visitor.handle(expr).toString().replace("\n", " "));
         // visitor.clear();
         visitor = new HQLSerializer(new HQLTemplates());
     }

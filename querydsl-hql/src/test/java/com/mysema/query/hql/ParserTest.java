@@ -65,14 +65,6 @@ public class ParserTest implements Constants {
         query().from(cat, fatcat).select(cat.name, fatcat.name).parse();
     }
     
-//    @Test
-//    public void detach(){
-//        // detach
-//        ListSubQuery<Object[]> detached = query().from(cat, fatcat).listExpr(cat.name, fatcat.name);
-//        // attach
-//        query().from(detached).count();
-//    }
-    
     @Test
     public void testBeforeAndAfter() throws RecognitionException,
             TokenStreamException {

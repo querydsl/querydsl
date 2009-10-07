@@ -18,5 +18,5 @@ public class HQLSubQuery extends QueryBaseWithDetach<HQLSubQuery>{
         super.from(o);
         return _this;
     }
-    
+        
 }

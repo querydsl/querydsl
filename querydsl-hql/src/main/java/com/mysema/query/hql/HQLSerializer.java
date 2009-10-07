@@ -248,6 +248,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         wrapElements = old;
     }
 
+    // TODO : generalize this!
     @SuppressWarnings("unchecked")
     private Expr<?> regexToLike(Operation<?,?> operation) {
         List<Expr<?>> args = new ArrayList<Expr<?>>();
