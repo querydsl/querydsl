@@ -5,20 +5,15 @@
  */
 package com.mysema.query.collections.domain;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.types.path.PSimple;
 
 @QueryEntity
 public class Cat extends Animal {

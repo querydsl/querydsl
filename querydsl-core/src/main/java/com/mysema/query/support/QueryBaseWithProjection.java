@@ -6,7 +6,9 @@
 package com.mysema.query.support;
 
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections15.IteratorUtils;
 
@@ -37,46 +39,66 @@ public abstract class QueryBaseWithProjection<SubType extends QueryBaseWithProje
         return target;
     }
 
+    @Override
     public long countDistinct() {
         getMetadata().setDistinct(true);
         return count();
     }
 
+    @Override
     public final Iterator<Object[]> iterateDistinct(Expr<?> first,
             Expr<?> second, Expr<?>... rest) {
         getMetadata().setDistinct(true);
         return iterate(first, second, rest);
     }
 
+    @Override
     public final <RT> Iterator<RT> iterateDistinct(Expr<RT> projection) {
         getMetadata().setDistinct(true);
         return iterate(projection);
     }
 
+    @Override
     public List<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return IteratorUtils.toList(iterate(first, second, rest));
     }
 
+    @Override
     public <RT> List<RT> list(Expr<RT> projection) {
         return IteratorUtils.toList(iterate(projection));
     }
 
+    @Override
     public final List<Object[]> listDistinct(Expr<?> first, Expr<?> second,
             Expr<?>... rest) {
         getMetadata().setDistinct(true);
         return list(first, second, rest);
     }
 
+    @Override
     public final <RT> List<RT> listDistinct(Expr<RT> projection) {
         getMetadata().setDistinct(true);
         return list(projection);
     }
 
+    @Override
     public final <RT> SearchResults<RT> listDistinctResults(Expr<RT> projection){
         getMetadata().setDistinct(true);
         return listResults(projection);
     }
     
+    @Override
+    @SuppressWarnings("unchecked")
+    public final <K, V> Map<K, V> map(Expr<K> key, Expr<V> value) {
+        List<Object[]> list = list(key, value);
+        Map<K, V> results = new LinkedHashMap<K, V>(list.size());
+        for (Object[] row : list){
+            results.put((K)row[0], (V)row[1]);
+        }
+        return results;
+    }
+    
+    @Override
     public Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         getMetadata().setUnique(true);
         limit(1l);
@@ -84,6 +106,7 @@ public abstract class QueryBaseWithProjection<SubType extends QueryBaseWithProje
         return it.hasNext() ? it.next() : null;
     }
     
+    @Override
     public <RT> RT uniqueResult(Expr<RT> expr) {
         getMetadata().setUnique(true);
         limit(1l);

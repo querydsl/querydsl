@@ -7,6 +7,7 @@ package com.mysema.query;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
@@ -132,6 +133,17 @@ public interface Projectable {
      * @return
      */
     <RT> SearchResults<RT> listDistinctResults(Expr<RT> projection);
+    
+    /**
+     * return the given projection as a Map instance using key and value for Map population
+     * 
+     * @param <K>
+     * @param <V>
+     * @param key
+     * @param value
+     * @return
+     */
+    <K,V> Map<K,V> map(Expr<K> key, Expr<V> value);
 
     /**
      * return a unique result for the given projection

@@ -7,6 +7,7 @@ package com.mysema.query.support;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.Projectable;
@@ -19,7 +20,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public abstract class ProjectableAdapter implements Projectable {
+public class ProjectableAdapter implements Projectable {
 
     protected final Projectable projectable;
 
@@ -43,13 +44,13 @@ public abstract class ProjectableAdapter implements Projectable {
     }
 
     @Override
-    public Iterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
-        return projectable.iterateDistinct(first, second, rest);
+    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
+        return projectable.iterate(projection);
     }
 
     @Override
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        return projectable.iterate(projection);
+    public Iterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+        return projectable.iterateDistinct(first, second, rest);
     }
     
     @Override
@@ -63,18 +64,18 @@ public abstract class ProjectableAdapter implements Projectable {
     }
 
     @Override
-    public List<Object[]> listDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
-        return projectable.listDistinct(first, second, rest);
-    }
-
-    @Override
     public <RT> List<RT> list(Expr<RT> projection) {
         return projectable.list(projection);
     }
 
     @Override
-    public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
-        return projectable.listResults(expr);
+    public List<Object[]> listDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+        return projectable.listDistinct(first, second, rest);
+    }
+
+    @Override
+    public <RT> List<RT> listDistinct(Expr<RT> projection) {
+        return projectable.listDistinct(projection);
     }
     
     @Override
@@ -83,23 +84,28 @@ public abstract class ProjectableAdapter implements Projectable {
     }
 
     @Override
-    public <RT> List<RT> listDistinct(Expr<RT> projection) {
-        return projectable.listDistinct(projection);
+    public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
+        return projectable.listResults(expr);
     }
 
     @Override
-    public <RT> RT uniqueResult(Expr<RT> expr) {
-        return projectable.uniqueResult(expr);
+    public <K, V> Map<K, V> map(Expr<K> key, Expr<V> value) {
+        return projectable.map(key, value);
     }
     
+    public String toString() {
+        return projectable.toString();
+    }
+
+
     @Override
     public Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return projectable.uniqueResult(first, second, rest);
     }
 
-
-    public String toString() {
-        return projectable.toString();
+    @Override
+    public <RT> RT uniqueResult(Expr<RT> expr) {
+        return projectable.uniqueResult(expr);
     }
 
 }

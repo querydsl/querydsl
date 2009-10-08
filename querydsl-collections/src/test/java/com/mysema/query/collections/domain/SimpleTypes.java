@@ -5,30 +5,16 @@
  */
 package com.mysema.query.collections.domain;
 
-import static org.junit.Assert.fail;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
-
-import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryTransient;
 
 @QueryEntity
 public class SimpleTypes {
-
-    @Test
-    public void test() throws SecurityException {
-        try {
-            QSimpleTypes.class.getField("skipMe");
-            fail("Expected NoSuchFieldException");
-        } catch (NoSuchFieldException e) {
-            // expected
-        }
-    }
 
     transient int test;
 
