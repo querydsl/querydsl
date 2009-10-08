@@ -7,6 +7,8 @@ package com.mysema.query;
 
 import org.junit.runner.RunWith;
 
+import com.mysema.query.StandardTest.Target;
+
 
 /**
  * @author tiwe
@@ -16,5 +18,8 @@ import org.junit.runner.RunWith;
 @HibernateConfig("hsqldb.properties")
 public class HSQLDBStandardTest extends AbstractHibernateTest{
     
-    
+    @Override
+    protected Target getTarget() {
+        return Target.HSQLDB;
+    }
 }

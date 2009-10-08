@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import com.mysema.query.FilteringTestRunner;
 import com.mysema.query.Label;
 import com.mysema.query.ResourceCheck;
+import com.mysema.query.StandardTest.Target;
 
 /**
  * MySqlTest provides
@@ -26,7 +27,7 @@ import com.mysema.query.ResourceCheck;
  */
 @RunWith(FilteringTestRunner.class)
 @ResourceCheck("/mysql.run")
-@Label("mysql")
+@Label(Target.MYSQL)
 public class MySqlTest extends SqlQueryTest {
 
     @BeforeClass

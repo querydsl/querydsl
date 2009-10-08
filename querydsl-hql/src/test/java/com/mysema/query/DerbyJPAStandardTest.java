@@ -7,6 +7,8 @@ package com.mysema.query;
 
 import org.junit.runner.RunWith;
 
+import com.mysema.query.StandardTest.Target;
+
 
 /**
  * @author tiwe
@@ -15,5 +17,10 @@ import org.junit.runner.RunWith;
 @RunWith(JPATestRunner.class)
 @JPAConfig("derby")
 public class DerbyJPAStandardTest extends AbstractJPATest{
+
+    @Override
+    protected Target getTarget() {
+        return Target.DERBY;
+    }
     
 }

@@ -55,18 +55,23 @@ public class EDateTimeConst extends EDateTime<java.util.Date> implements Constan
     }
     
     @Override
-    public ENumber<Integer> getHours() {
+    public ENumber<Integer> getHour() {
         return ENumber.create(calendar.get(Calendar.HOUR_OF_DAY));
     }
     
     @Override
-    public ENumber<Integer> getMinutes() {
+    public ENumber<Integer> getMinute() {
         return ENumber.create(calendar.get(Calendar.MINUTE));
     }
     
     @Override
-    public ENumber<Integer> getSeconds() {
+    public ENumber<Integer> getSecond() {
         return ENumber.create(calendar.get(Calendar.SECOND));
+    }
+    
+    @Override
+    public ENumber<Integer> getMilliSecond() {
+        return ENumber.create(calendar.get(Calendar.MILLISECOND));
     }
 
     @Override

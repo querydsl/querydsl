@@ -13,6 +13,7 @@ import com.mysema.query.types.operation.Ops;
 
 /**
  * EDate represents Date expressions
+ * <p>The representation aims to be ISO 8601 compliant</p>
  * 
  * @author tiwe
  *
@@ -32,10 +33,9 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     }
 
     /**
-     * Create a day of month expression
+     * Create a day of month expression (range 1-31)
      * 
      * @return
-     * @see java.util.Date#getDate()
      */
     public ENumber<Integer> getDayOfMonth(){
         if (dayOfMonth == null){
@@ -57,7 +57,7 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a year expression
+     * Create a year expression 
      * 
      * @return
      */
@@ -68,14 +68,31 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
         return year;
     }
     
+    /**
+     * Create a day of week expression (range 1-7 / MON-SUN)     
+     * <p>NOT supported in JDOQL and not in Derby</p>
+     * 
+     * @return
+     */
     public ENumber<Integer> getDayOfWeek() {
         return ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_WEEK, this);
     }
 
+    /**
+     * Create a day of year expression (range 1-356)
+     * <p>NOT supported in JDOQL and not in Derby</p>
+     * 
+     * @return
+     */
     public ENumber<Integer> getDayOfYear() {
         return ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_YEAR, this);
     }
 
+    /**
+     * Create a week expression
+     * 
+     * @return
+     */
     public ENumber<Integer> getWeek() {
         return ONumber.create(Integer.class, Ops.DateTimeOps.WEEK,  this);
     }

@@ -28,10 +28,18 @@ public abstract class EDateOrTime<D extends Comparable> extends EComparable<D> {
         return gt(right);
     }
     
+    /**
+     * Use goe instead
+     */
+    @Deprecated
     public EBoolean aoe(D right) {
         return goe(right);
     }    
 
+    /**
+     * Use goe instead
+     */
+    @Deprecated
     public EBoolean aoe(Expr<D> right) {
         return goe(right);
     }
@@ -44,10 +52,18 @@ public abstract class EDateOrTime<D extends Comparable> extends EComparable<D> {
         return lt(right);
     }
     
+    /**
+     * Use loe instead
+     */
+    @Deprecated
     public EBoolean boe(D right) {
         return loe(right);
     }    
 
+    /**
+     * Use loe instead
+     */
+    @Deprecated
     public EBoolean boe(Expr<D> right) {
         return loe(right);
     }

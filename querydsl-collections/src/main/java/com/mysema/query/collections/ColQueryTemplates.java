@@ -5,6 +5,9 @@
  */
 package com.mysema.query.collections;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import com.mysema.query.serialization.JavaTemplates;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PathType;
@@ -33,13 +36,15 @@ public class ColQueryTemplates extends JavaTemplates {
         add(Ops.STRING_CAST, "String.valueOf({0})");
         
         // Date and Time
-        add(Ops.DateTimeOps.YEAR, "({0}.getYear() + 1900)"); // java.util.Date
-        add(Ops.DateTimeOps.MONTH, "({0}.getMonth() + 1)");  // java.util.Date
-        add(Ops.DateTimeOps.DAY_OF_MONTH, "{0}.getDate()");  // java.util.Date
-        add(Ops.DateTimeOps.DAY_OF_WEEK, "{0}.getDay()");    // java.util.Date
-        add(Ops.DateTimeOps.HOUR, "{0}.getHours()");         // java.util.Date
-        add(Ops.DateTimeOps.MINUTE, "{0}.getMinutes()");     // java.util.Date
-        add(Ops.DateTimeOps.SECOND, "{0}.getSeconds()");     // java.util.Date
+        add(Ops.DateTimeOps.YEAR,         functions + ".getYear({0})");
+        add(Ops.DateTimeOps.MONTH,        functions + ".getMonth({0})");
+        add(Ops.DateTimeOps.DAY_OF_WEEK,  functions + ".getDayOfWeek({0})");
+        add(Ops.DateTimeOps.DAY_OF_MONTH, functions + ".getDayOfMonth({0})");
+        add(Ops.DateTimeOps.DAY_OF_YEAR,  functions + ".getDayOfYear({0})");
+        add(Ops.DateTimeOps.HOUR,         functions + ".getHour({0})");
+        add(Ops.DateTimeOps.MINUTE,       functions + ".getMinute({0})");
+        add(Ops.DateTimeOps.SECOND,       functions + ".getSecond({0})");
+        add(Ops.DateTimeOps.MILLISECOND,  functions + ".getMilliSecond({0})");
         
         // String
         add(Ops.LIKE, functions + ".like({0},{1})");
@@ -67,6 +72,48 @@ public class ColQueryTemplates extends JavaTemplates {
 
     public static <A extends Comparable<? super A>> boolean between(A a, A b, A c) {
         return a.compareTo(b) > 0 && a.compareTo(c) < 0;
+    }
+    
+    public static int getYear(Date date){
+        return getField(date, Calendar.YEAR);
+    }
+    
+    public static int getMonth(Date date){
+        return getField(date, Calendar.MONTH) + 1;
+    }
+    
+    public static int getDayOfMonth(Date date){
+        return getField(date, Calendar.DAY_OF_MONTH);
+    }
+    
+    public static int getDayOfWeek(Date date){
+        return getField(date, Calendar.DAY_OF_WEEK);
+    }
+    
+    public static int getDayOfYear(Date date){
+        return getField(date, Calendar.DAY_OF_YEAR);
+    }
+    
+    public static int getHour(Date date){
+        return getField(date, Calendar.HOUR_OF_DAY);
+    }
+    
+    public static int getMinute(Date date){
+        return getField(date, Calendar.MINUTE);
+    }
+    
+    public static int getSecond(Date date){
+        return getField(date, Calendar.SECOND);
+    }
+    
+    public static int getMilliSecond(Date date){
+        return getField(date, Calendar.MILLISECOND);
+    }
+    
+    private static int getField(Date date, int field){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(field);
     }
 
 }

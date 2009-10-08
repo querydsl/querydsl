@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import com.mysema.query.StandardTest.Module;
+import com.mysema.query.StandardTest.Target;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EComparable;
@@ -27,8 +29,14 @@ public class Filters {
     
     private final Projections projections;
     
-    public Filters(Projections projections){
+    private final Module module;
+    
+    private final Target target;
+
+    public Filters(Projections projections, Module module, Target target) {
         this.projections = projections;
+        this.module = module;
+        this.target = target;
     }
 
     Collection<EBoolean> booleanFilters(EBoolean expr, EBoolean other){
@@ -89,14 +97,14 @@ public class Filters {
         rv.add(expr.getYear().eq(2000));
         rv.add(expr.getYear().eq(other.getYear()));
           
-        rv.add(expr.getHours().eq(1));
-        rv.add(expr.getHours().eq(other.getHours()));
+        rv.add(expr.getHour().eq(1));
+        rv.add(expr.getHour().eq(other.getHour()));
           
-        rv.add(expr.getMinutes().eq(1));
-        rv.add(expr.getMinutes().eq(other.getMinutes()));
+        rv.add(expr.getMinute().eq(1));
+        rv.add(expr.getMinute().eq(other.getMinute()));
           
-        rv.add(expr.getSeconds().eq(1));
-        rv.add(expr.getSeconds().eq(other.getSeconds()));
+        rv.add(expr.getSecond().eq(1));
+        rv.add(expr.getSecond().eq(other.getSecond()));
         return rv;
     }
 
@@ -201,8 +209,10 @@ public class Filters {
         rv.add(expr.indexOf("X", 1).gt(0));
         rv.add(expr.indexOf(knownValue).gt(0));
             
-//            expr.lastIndexOf(other).gt(0),
-//            expr.lastIndexOf(knownValue).gt(0),
+        if (!module.equals(Module.HQL) && !module.equals(Module.JDOQL)){
+            rv.add(expr.lastIndexOf(other).gt(0));
+            rv.add(expr.lastIndexOf(knownValue).gt(0));    
+        }        
             
         rv.add(expr.in("A","B","C"));
                         
@@ -231,9 +241,9 @@ public class Filters {
     <A extends Comparable> Collection<EBoolean> time(ETime<A> expr, ETime<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(comparable(expr, other, knownValue));
-        rv.add(expr.getHours().eq(other.getHours()));
-        rv.add(expr.getMinutes().eq(other.getMinutes()));
-        rv.add(expr.getSeconds().eq(other.getSeconds()));
+        rv.add(expr.getHour().eq(other.getHour()));
+        rv.add(expr.getMinute().eq(other.getMinute()));
+        rv.add(expr.getSecond().eq(other.getSecond()));
         return rv;
     }
     

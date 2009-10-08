@@ -21,8 +21,7 @@ public class EDateConst extends EDate<java.sql.Date> implements Constant<java.sq
 
     @Override
     public void accept(Visitor v) {
-        v.visit(this);
-        
+        v.visit(this);        
     }
     
     @Override

@@ -3,7 +3,8 @@ package com.mysema.query;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.mysema.query.types.expr.Constant;
+import com.mysema.query.StandardTest.Module;
+import com.mysema.query.StandardTest.Target;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EComparable;
@@ -15,13 +16,21 @@ import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.ETime;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.path.Path;
 
 /**
  * @author tiwe
  *
  */
 public class MatchingFilters {
+
+    private final Module module;
+    
+    private final Target target;
+
+    public MatchingFilters(Module module, Target target) {
+        this.module = module;
+        this.target = target;
+    }
 
     <A> Collection<EBoolean> collection(ECollection<A> expr,  ECollection<A> other, A knownElement, A missingElement){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
@@ -46,6 +55,10 @@ public class MatchingFilters {
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(comparable(expr, other));
         rv.add(expr.getDayOfMonth().eq(other.getDayOfMonth()));
+        if (!target.equals(Target.DERBY) && !module.equals(Module.JDOQL)){
+            rv.add(expr.getDayOfWeek().eq(other.getDayOfWeek ()));
+            rv.add(expr.getDayOfYear().eq(other.getDayOfYear()));    
+        }        
         rv.add(expr.getMonth().eq(other.getMonth()));
         rv.add(expr.getYear().eq(other.getYear()));
         return rv;
@@ -58,17 +71,20 @@ public class MatchingFilters {
         return rv;
     }
 
-    @SuppressWarnings("unchecked")
     Collection<EBoolean> dateTime(EDateTime<java.util.Date> expr, EDateTime<java.util.Date> other){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(comparable(expr, other));
-        if (other instanceof Path){
-         // NOTE : second(date) is fractional in Derby
-            rv.add(expr.getSeconds().eq(other.getSeconds()));    
-        }        
-        rv.add(expr.getMinutes().eq(other.getMinutes()));
-        rv.add(expr.getHours().eq(other.getHours()));
+        rv.add(expr.getMilliSecond().eq(other.getMilliSecond()));
+        rv.add(expr.getSecond().eq(other.getSecond()));     
+        rv.add(expr.getMinute().eq(other.getMinute()));
+        rv.add(expr.getHour().eq(other.getHour()));
         rv.add(expr.getDayOfMonth().eq(other.getDayOfMonth()));
+        
+        if (!target.equals(Target.DERBY) && !module.equals(Module.JDOQL)){
+            rv.add(expr.getDayOfWeek().eq(other.getDayOfWeek ()));
+            rv.add(expr.getDayOfYear().eq(other.getDayOfYear()));    
+        }  
+        
         rv.add(expr.getMonth().eq(other.getMonth()));
         rv.add(expr.getYear().eq(other.getYear()));
         return rv;
@@ -117,7 +133,6 @@ public class MatchingFilters {
         return rv;
     }
 
-    @SuppressWarnings("unchecked")
     Collection<EBoolean> string(EString expr, EString other){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(comparable(expr, other));
@@ -144,9 +159,13 @@ public class MatchingFilters {
             
         rv.add(expr.indexOf(other).eq(0));
         
-        if (other instanceof Constant){
-            rv.add(expr.indexOf(other.substring(1)).eq(1)); // NOTE : fails in Derby with paths
-            rv.add(expr.indexOf(other.substring(2)).eq(2)); // NOTE : fails in Derby with paths    
+        if (!module.equals(Module.HQL) && !module.equals(Module.JDOQL)){
+            rv.add(expr.lastIndexOf(other).eq(0));    
+        }        
+        
+        if (!target.equals(Target.DERBY)){
+            rv.add(expr.indexOf(other.substring(1)).eq(1)); 
+            rv.add(expr.indexOf(other.substring(2)).eq(2));     
         }        
             
         rv.add(expr.isEmpty().not());
@@ -195,9 +214,10 @@ public class MatchingFilters {
     Collection<EBoolean> time(ETime<java.sql.Time> expr,  ETime<java.sql.Time> other){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(comparable(expr, other));
-        rv.add(expr.getSeconds().eq(other.getSeconds()));
-        rv.add(expr.getMinutes().eq(other.getMinutes()));
-        rv.add(expr.getHours().eq(other.getHours()));
+        rv.add(expr.getMilliSecond().eq(other.getMilliSecond()));
+        rv.add(expr.getSecond().eq(other.getSecond()));
+        rv.add(expr.getMinute().eq(other.getMinute()));
+        rv.add(expr.getHour().eq(other.getHour()));
         return rv;
     }
     

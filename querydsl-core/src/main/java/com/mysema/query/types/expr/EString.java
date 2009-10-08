@@ -224,6 +224,7 @@ public abstract class EString extends EComparable<String> {
 
     /**
      * Expr : <code>this.lastIndexOf(right, third);</code>
+     * <p>NOT supported in JDOQL and not in HQL</p>
      * 
      * @param right
      * @param third
@@ -236,6 +237,7 @@ public abstract class EString extends EComparable<String> {
     
     /**
      * Expr : <code>this.lastIndexOf(right)</code>
+     * <p>NOT supported in JDOQL and not in HQL</p>
      * 
      * @param right
      * @return this.lastIndexOf(right)
@@ -247,6 +249,7 @@ public abstract class EString extends EComparable<String> {
     
     /**
      * Expr : <code>this.lastIndexOf(right)</code>
+     * <p>NOT supported in JDOQL and not in HQL</p>
      * 
      * @param right
      * @return this.lastIndexOf(right)

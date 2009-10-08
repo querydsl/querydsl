@@ -8,6 +8,8 @@ package com.mysema.query;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.mysema.query.StandardTest.Module;
+import com.mysema.query.StandardTest.Target;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EDate;
 import com.mysema.query.types.expr.EDateTime;
@@ -26,6 +28,15 @@ import com.mysema.query.types.expr.Expr;
  *
  */
 public class Projections {
+    
+    private final Module module;
+    
+    private final Target target;
+
+    public Projections(Module module, Target target) {
+        this.module = module;
+        this.target = target;
+    }
 
     <A> Collection<Expr<?>> collection(ECollection<A> expr, ECollection<A> other, A knownElement){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
@@ -48,9 +59,9 @@ public class Projections {
         rv.add(expr.getDayOfMonth());
         rv.add(expr.getMonth());
         rv.add(expr.getYear());
-        rv.add(expr.getHours());
-        rv.add(expr.getMinutes());
-        rv.add(expr.getSeconds());
+        rv.add(expr.getHour());
+        rv.add(expr.getMinute());
+        rv.add(expr.getSecond());
         return rv;
     }
 
@@ -124,9 +135,9 @@ public class Projections {
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<Expr<?>> time(ETime<A> expr, ETime<A> other, A knownValue){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
-        rv.add(expr.getHours());
-        rv.add(expr.getMinutes());
-        rv.add(expr.getSeconds());
+        rv.add(expr.getHour());
+        rv.add(expr.getMinute());
+        rv.add(expr.getSecond());
         return rv;
     }
         

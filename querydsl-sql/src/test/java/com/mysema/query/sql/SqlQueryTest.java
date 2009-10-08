@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import com.mysema.query.ExcludeIn;
 import com.mysema.query.IncludeIn;
+import static com.mysema.query.StandardTest.Target.*;
 import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
@@ -84,7 +85,7 @@ public abstract class SqlQueryTest {
     }
     
     @Test
-    @ExcludeIn("mysql")
+    @ExcludeIn(MYSQL)
     public void testDelete(){
         // TODO : FIXME
         long count = q().from(survey).count();
@@ -146,14 +147,14 @@ public abstract class SqlQueryTest {
     }
 
     @Test
-    @ExcludeIn( { "oracle", "derby" })
+    @ExcludeIn({ORACLE, DERBY})
     public void testSelectBooleanExpr() throws SQLException {
         // TODO : FIXME
         System.out.println(q().from(survey).list(survey.id.eq(0)));
     }
 
     @Test
-    @ExcludeIn( { "oracle", "derby" })
+    @ExcludeIn({ORACLE, DERBY})
     public void testSelectBooleanExpr2() throws SQLException {
         // TODO : FIXME
         System.out.println(q().from(survey).list(survey.id.gt(0)));
@@ -200,7 +201,7 @@ public abstract class SqlQueryTest {
     }
 
     @Test
-    @ExcludeIn( { "oracle", "derby" })
+    @ExcludeIn({ORACLE, DERBY})
     public void testLimitAndOffset() throws SQLException {
         // limit offset
         expectedQuery = "select employee.id from employee2 employee limit 4 offset 3";
@@ -208,7 +209,7 @@ public abstract class SqlQueryTest {
     }
 
     @Test
-    @IncludeIn("oracle")
+    @IncludeIn(ORACLE)
     public void testLimitAndOffsetInOracle() throws SQLException {
         String prefix = "select employee.id from employee employee ";
 
@@ -274,7 +275,7 @@ public abstract class SqlQueryTest {
     }
 
     @Test
-    @ExcludeIn( { "hsqldb", "derby" })
+    @ExcludeIn({HSQLDB, DERBY})
     public void testQueryWithoutFrom() throws SQLException {
 //        q().list(EConstant.create(1).add(1));
     }
@@ -287,7 +288,7 @@ public abstract class SqlQueryTest {
     }
 
     @Test
-    @ExcludeIn( { "derby" })
+    @ExcludeIn({DERBY})
     public void testMathFunctions() throws SQLException {
 //        Expr<Integer> i = ENumber.create(1);
         Expr<Double> d = ENumber.create(1.0);
@@ -325,7 +326,7 @@ public abstract class SqlQueryTest {
         }
     }
     @Test
-    @ExcludeIn( { "derby" })
+    @ExcludeIn({DERBY})
     public void testCasts() throws SQLException {
         ENumber<?> num = employee.id;
         Expr<?>[] expr = new Expr[] { num.byteValue(), num.doubleValue(),

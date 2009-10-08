@@ -18,6 +18,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import com.mysema.query.StandardTest.Module;
+import com.mysema.query.StandardTest.Target;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Operator;
@@ -28,11 +30,11 @@ import com.mysema.query.types.operation.Ops;
  */
 public class CoverageTest {
 
-    private MatchingFilters matchers = new MatchingFilters();
+    private MatchingFilters matchers = new MatchingFilters(Module.COLLECTIONS, Target.MEM);
     
-    private Projections projections = new Projections();
+    private Projections projections = new Projections(Module.COLLECTIONS, Target.MEM);
     
-    private Filters filters = new Filters(projections);
+    private Filters filters = new Filters(projections, Module.COLLECTIONS, Target.MEM);
     
     @SuppressWarnings("unchecked")
     @Test

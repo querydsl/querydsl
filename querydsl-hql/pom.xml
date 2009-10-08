@@ -53,7 +53,6 @@
       <artifactId>persistence-api</artifactId>
       <version>1.0</version>
     </dependency>
-
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
@@ -65,8 +64,8 @@
       <version>${project.parent.version}</version>
       <scope>provided</scope>
     </dependency>
+    
     <!-- test -->
-
     <dependency>
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>

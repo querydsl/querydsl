@@ -29,6 +29,22 @@ import com.mysema.query.types.expr.Expr;
  */
 public abstract class StandardTest {
     
+    public enum Module{
+        COLLECTIONS,
+        HQL,
+        JDOQL,
+        RDFBEAN,
+        SQL
+    }
+    
+    public enum Target{        
+        DERBY,
+        HSQLDB,
+        MEM,
+        MYSQL,
+        ORACLE
+    }
+    
     private final List<String> errors = new ArrayList<String>();
     
     private final List<String> failures = new ArrayList<String>();
@@ -43,10 +59,10 @@ public abstract class StandardTest {
     
     private int total;
     
-    public StandardTest(){
-        projections = new Projections();
-        filters = new Filters(projections);
-        matchers = new MatchingFilters();
+    public StandardTest(Module module, Target target){
+        projections = new Projections(module, target);
+        filters = new Filters(projections, module, target);
+        matchers = new MatchingFilters(module, target);
     }
     
     public StandardTest(Projections p, Filters f, MatchingFilters m){

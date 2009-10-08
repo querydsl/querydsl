@@ -82,6 +82,7 @@ public class HQLTemplates extends Templates {
         add(Ops.DateTimeOps.CURRENT_DATE, "current_date()");
         add(Ops.DateTimeOps.CURRENT_TIME, "current_time()");
         add(Ops.DateTimeOps.CURRENT_TIMESTAMP, "current_timestamp()");
+        add(Ops.DateTimeOps.MILLISECOND, "0"); // NOT supported in HQL
         add(Ops.DateTimeOps.SECOND, "second({0})");
         add(Ops.DateTimeOps.MINUTE, "minute({0})");
         add(Ops.DateTimeOps.HOUR, "hour({0})");

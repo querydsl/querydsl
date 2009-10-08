@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 
 import com.mysema.query.FilteringTestRunner;
 import com.mysema.query.Label;
+import com.mysema.query.StandardTest.Target;
 
 /**
  * HsqdlbTest provides
@@ -24,7 +25,7 @@ import com.mysema.query.Label;
  * @version $Id$
  */
 @RunWith(FilteringTestRunner.class)
-@Label("hsqldb")
+@Label(Target.HSQLDB)
 public class HsqldbTest extends SqlQueryTest {
 
     @BeforeClass

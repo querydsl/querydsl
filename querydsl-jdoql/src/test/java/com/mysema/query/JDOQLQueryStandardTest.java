@@ -6,6 +6,7 @@
 package com.mysema.query;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.jdo.PersistenceManager;
@@ -14,6 +15,8 @@ import javax.jdo.Transaction;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.mysema.query.StandardTest.Module;
+import com.mysema.query.StandardTest.Target;
 import com.mysema.query.jdoql.AbstractJDOTest;
 import com.mysema.query.jdoql.JDOQLQuery;
 import com.mysema.query.jdoql.testdomain.Product;
@@ -25,11 +28,20 @@ import com.mysema.query.types.expr.Expr;
 
 public class JDOQLQueryStandardTest extends AbstractJDOTest {
     
-    private static Date publicationDate = new Date();
+    private static final Date publicationDate;
     
-    private static java.sql.Date date = new java.sql.Date(publicationDate.getTime());
+    private static final java.sql.Date date;
     
-    private static java.sql.Time time = new java.sql.Time(publicationDate.getTime());
+    private static final java.sql.Time time;
+    
+    static{
+        Calendar cal = Calendar.getInstance();
+        cal.set(2000, 1, 2, 3, 4);
+        cal.set(Calendar.MILLISECOND, 0);
+        publicationDate = cal.getTime();
+        date = new java.sql.Date(cal.getTimeInMillis());
+        time = new java.sql.Time(cal.getTimeInMillis());
+    }
     
     private static String productName = "ABCD";
     private static String otherName = "ABC0";
@@ -69,7 +81,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
 
     }
     
-    private StandardTest standardTest = new StandardTest(){
+    private StandardTest standardTest = new StandardTest(Module.JDOQL, Target.HSQLDB){
         @Override
         public int executeFilter(EBoolean f) {
             JDOQLQuery query = query();

@@ -13,6 +13,7 @@ import com.mysema.query.types.operation.Ops;
 
 /**
  * EDateTime represents Date / Time expressions
+ * <p>The representation aims to be ISO 8601 compliant</p>
  * 
  * @author tiwe
  *
@@ -21,7 +22,7 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings({"unchecked","serial"})
 public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
 
-    private volatile ENumber<Integer> dayOfMonth, month, year, hours, minutes, seconds;
+    private volatile ENumber<Integer> dayOfMonth, month, year, hours, minutes, seconds, milliseconds;
     
     public static EDateTime<java.util.Date> create(java.util.Date date){
         return new EDateTimeConst(date);
@@ -32,10 +33,9 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a day of month expression
+     * Create a day of month expression (range 1-31)
      * 
      * @return
-     * @see java.util.Date#getDate()
      */
     public ENumber<Integer> getDayOfMonth(){
         if (dayOfMonth == null){
@@ -45,12 +45,11 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a hours expression
+     * Create a hours expression (range 0-23)
      * 
      * @return
-     * @see java.util.Date#getHours()
      */
-    public ENumber<Integer> getHours(){
+    public ENumber<Integer> getHour(){
         if (hours == null){
             hours = ONumber.create(Integer.class, Ops.DateTimeOps.HOUR, this);
         }
@@ -58,12 +57,11 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a minutes expression
+     * Create a minutes expression (range 0-59)
      * 
      * @return
-     * @see java.util.Date#getMinutes()
      */
-    public ENumber<Integer> getMinutes(){
+    public ENumber<Integer> getMinute(){
         if (minutes == null){
             minutes = ONumber.create(Integer.class, Ops.DateTimeOps.MINUTE, this);
         }
@@ -83,16 +81,28 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a seconds expression
+     * Create a seconds expression (range 0-59)
      * 
      * @return
-     * @see java.util.Date#getSeconds()
      */
-    public ENumber<Integer> getSeconds(){
+    public ENumber<Integer> getSecond(){
         if (seconds == null){
             seconds = ONumber.create(Integer.class, Ops.DateTimeOps.SECOND, this);
         }
         return seconds;
+    }
+    
+    /**
+     * Create a milliseconds expression (range 0-999)
+     * <p>Is always 0 in HQL and JDOQL modules</p>
+     * 
+     * @return
+     */
+    public ENumber<Integer> getMilliSecond(){
+        if (milliseconds == null){
+            milliseconds = ONumber.create(Integer.class, Ops.DateTimeOps.MILLISECOND, this);
+        }
+        return milliseconds;
     }
     
     /**
@@ -107,14 +117,31 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
         return year;
     }
     
+    /**
+     * Create a day of week expression (range 1-7 /  MON-SUN)
+     * <p>NOT supported in JDOQL and not in Derby</p>
+     * 
+     * @return
+     */
     public ENumber<Integer> getDayOfWeek() {
         return ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_WEEK, this);
     }
     
+    /**
+     * Create a day of year expression (range 1-356)
+     * <p>NOT supported in JDOQL and not in Derby</p>
+     * 
+     * @return
+     */
     public ENumber<Integer> getDayOfYear() {
         return ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_YEAR, this);
     }
 
+    /**
+     * Create a week expression
+     * 
+     * @return
+     */
     public ENumber<Integer> getWeek() {
         return ONumber.create(Integer.class, Ops.DateTimeOps.WEEK,  this);
     }

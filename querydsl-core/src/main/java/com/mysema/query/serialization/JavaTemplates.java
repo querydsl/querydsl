@@ -67,6 +67,7 @@ public class JavaTemplates extends Templates {
         add(Ops.DateTimeOps.HOUR, "{0}.getHour()");
         add(Ops.DateTimeOps.MINUTE, "{0}.getMinute()");
         add(Ops.DateTimeOps.MONTH, "{0}.getMonth()");
+        add(Ops.DateTimeOps.MILLISECOND, "{0}.getMilliSecond()");
         add(Ops.DateTimeOps.SECOND, "{0}.getSecond()");
         add(Ops.DateTimeOps.WEEK, "{0}.getWeek()");
         add(Ops.DateTimeOps.YEAR, "{0}.getYear()");

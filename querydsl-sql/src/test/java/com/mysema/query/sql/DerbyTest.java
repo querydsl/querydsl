@@ -17,9 +17,10 @@ import org.junit.runner.RunWith;
 
 import com.mysema.query.FilteringTestRunner;
 import com.mysema.query.Label;
+import com.mysema.query.StandardTest.Target;
 
 @RunWith(FilteringTestRunner.class)
-@Label("derby")
+@Label(Target.DERBY)
 public class DerbyTest extends SqlQueryTest {
 
     @BeforeClass

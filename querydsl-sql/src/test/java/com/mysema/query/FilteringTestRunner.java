@@ -24,7 +24,7 @@ public class FilteringTestRunner extends JUnit4ClassRunner {
 
     private boolean run = true;
 
-    private String label;
+    private StandardTest.Target label;
 
     private TestClass fTestClass;
 

@@ -9,6 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -17,6 +18,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mysema.query.StandardTest.Module;
+import com.mysema.query.StandardTest.Target;
 import com.mysema.query.hql.HQLQuery;
 import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.QCat;
@@ -29,20 +32,32 @@ import com.mysema.query.types.expr.Expr;
  *
  */
 public abstract class AbstractStandardTest {
-      
-    private Date birthDate = new Date();
+
+    private static final QCat cat = QCat.cat;
     
-    private java.sql.Date date = new java.sql.Date(birthDate.getTime());
+    private static final QCat otherCat = new QCat("otherCat");
+        
+    private final Date birthDate;    
     
-    private java.sql.Time time = new java.sql.Time(birthDate.getTime());
+    private final java.sql.Date date;
     
-    private static QCat cat = new QCat("cat");
+    private final java.sql.Time time;
     
-    private static QCat otherCat = new QCat("otherCat");
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.set(2000, 1, 2, 3, 4);
+        cal.set(Calendar.MILLISECOND, 0);
+        birthDate = cal.getTime();
+        date = new java.sql.Date(cal.getTimeInMillis());
+        time = new java.sql.Time(cal.getTimeInMillis());
+    }
     
-    private List<Cat> savedCats = new ArrayList<Cat>();
+    private final List<Cat> savedCats = new ArrayList<Cat>();
+
+
+    protected abstract Target getTarget();
     
-    private Projections projections = new Projections(){
+    private Projections projections = new Projections(Module.HQL, getTarget()){
         <A> Collection<Expr<?>> list(EList<A> expr, EList<A> other, A knownElement){
             // NOTE : expr.get(0) is only supported in the where clause
             return Collections.<Expr<?>>singleton(expr.size());
@@ -50,7 +65,7 @@ public abstract class AbstractStandardTest {
     };
     
     private StandardTest standardTest = new StandardTest(
-            projections, new Filters(projections), new MatchingFilters()){
+            projections, new Filters(projections, Module.HQL, getTarget()), new MatchingFilters(Module.HQL, getTarget())){
         @Override
         public int executeFilter(EBoolean f){
             return query().from(cat, otherCat).where(f).list(cat.name).size();
@@ -110,7 +125,6 @@ public abstract class AbstractStandardTest {
         standardTest.stringTests(cat.name, otherCat.name, "Bob");
         standardTest.timeTests(cat.timeField, otherCat.timeField, time);
         
-//        System.out.println("used date : " + birthDate);
         standardTest.report();        
     }
     

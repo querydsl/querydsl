@@ -11,6 +11,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.mysema.query.StandardTest.Module;
+import com.mysema.query.StandardTest.Target;
 import com.mysema.query.collections.MiniApi;
 import com.mysema.query.collections.domain.Cat;
 import com.mysema.query.collections.domain.QCat;
@@ -37,7 +39,7 @@ public class ColQueryStandardTest {
             new Cat("Mary", 5, birthDate)
     );
     
-    private StandardTest standardTest = new StandardTest(){
+    private StandardTest standardTest = new StandardTest(Module.COLLECTIONS, Target.MEM){
         @Override
         public int executeFilter(EBoolean f){
             return MiniApi.from(cat, data).from(otherCat, data).where(f).list(cat.name).size();
@@ -64,9 +66,4 @@ public class ColQueryStandardTest {
         standardTest.report();        
     }
         
-//    @Test
-//    public void testDate(){        
-//        System.out.println(EDateTime.create(new Date()).getYear());
-//    }
-
 }
