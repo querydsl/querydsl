@@ -183,7 +183,7 @@ public class MatchingFilters {
             
         rv.add(expr.lower().eq(other.lower()));
         
-        if (!module.equals(Module.SQL)){
+        if (!module.equals(Module.SQL) || (!target.equals(Target.HSQLDB) && !target.equals(Target.DERBY))){
             rv.add(expr.matches(other.substring(0,1).append(".*")));
             rv.add(expr.matches(other.substring(0,1).append(".").append(other.substring(2))));
             rv.add(expr.matches(other.substring(1).prepend(".*")));
