@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.path;
 
+import java.lang.reflect.InvocationTargetException;
+
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
@@ -142,6 +144,22 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
     @Override
     public void accept(Visitor v) {
         v.visit(this);        
+    }
+    
+    /**
+     * Cast the path to a subtype querytype
+     * 
+     * @param <T>
+     * @param clazz
+     * @return
+     */
+    public <T extends PEntity<? extends D>> T as(Class<T> clazz){
+        try {
+            // TODO : cache
+            return clazz.getConstructor(PathMetadata.class).newInstance(this.getMetadata());
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
     
     /**

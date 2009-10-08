@@ -1,4 +1,4 @@
-package com.mysema.query.apt.jpa.hibernate;
+package com.mysema.query.apt.hibernate;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;

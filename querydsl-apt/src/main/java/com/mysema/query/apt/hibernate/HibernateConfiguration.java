@@ -1,4 +1,4 @@
-package com.mysema.query.apt.jpa.hibernate;
+package com.mysema.query.apt.hibernate;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
