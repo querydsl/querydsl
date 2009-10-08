@@ -6,6 +6,7 @@
 package com.mysema.query;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 import com.mysema.query.StandardTest.Module;
@@ -91,14 +92,18 @@ public class Projections {
     }
     
     <A extends Number & Comparable<A>> Collection<ENumber<?>> numericCasts(ENumber<A> expr, ENumber<A> other, A knownValue){
-        HashSet<ENumber<?>> rv = new HashSet<ENumber<?>>();
-        rv.add(expr.byteValue());
-        rv.add(expr.doubleValue());
-        rv.add(expr.floatValue());
-        rv.add(expr.intValue());
-        rv.add(expr.longValue());
-        rv.add(expr.shortValue());     
-        return rv;
+        if (!target.equals(Target.MYSQL)){
+            HashSet<ENumber<?>> rv = new HashSet<ENumber<?>>();
+            rv.add(expr.byteValue());
+            rv.add(expr.doubleValue());
+            rv.add(expr.floatValue());
+            rv.add(expr.intValue());
+            rv.add(expr.longValue());
+            rv.add(expr.shortValue());     
+            return rv;    
+        }else{
+            return Collections.emptySet();
+        }        
     }
 
     Collection<EString> string(EString expr, EString other, String knownValue){

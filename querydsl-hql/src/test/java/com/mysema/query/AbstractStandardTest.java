@@ -88,11 +88,11 @@ public abstract class AbstractStandardTest {
     public void setUp(){
         Cat prev = null;
         for (Cat cat : Arrays.asList(
-                new Cat("Bob", 1),
-                new Cat("Ruth", 2),
-                new Cat("Felix", 3),
-                new Cat("Allen", 4),
-                new Cat("Mary", 5))){
+                new Cat("Bob123", 1),
+                new Cat("Ruth123", 2),
+                new Cat("Felix123", 3),
+                new Cat("Allen123", 4),
+                new Cat("Mary123", 5))){
             if (prev != null){
                 cat.getKittens().add(prev);
             }
@@ -122,7 +122,7 @@ public abstract class AbstractStandardTest {
 //        standardTest.mapTests(cat.kittensByName, otherCat.kittensByName, "Kitty", kitten);
         standardTest.numericCasts(cat.id, otherCat.id, 1);
         standardTest.numericTests(cat.id, otherCat.id, 1);
-        standardTest.stringTests(cat.name, otherCat.name, "Bob");
+        standardTest.stringTests(cat.name, otherCat.name, kitten.getName());
         standardTest.timeTests(cat.timeField, otherCat.timeField, time);
         
         standardTest.report();        
@@ -132,21 +132,29 @@ public abstract class AbstractStandardTest {
     public void testStringOperations(){
         // startsWith
         assertEquals(1, catQuery().where(cat.name.startsWith("R")).count());
-        assertEquals(0, catQuery().where(cat.name.startsWith("r")).count());
+        assertEquals(0, catQuery().where(cat.name.startsWith("X")).count());
         assertEquals(1, catQuery().where(cat.name.startsWith("r",false)).count());
         
         // endsWith
-        assertEquals(1, catQuery().where(cat.name.endsWith("h")).count());
-        assertEquals(0, catQuery().where(cat.name.endsWith("H")).count());
-        assertEquals(1, catQuery().where(cat.name.endsWith("H",false)).count());
+        assertEquals(1, catQuery().where(cat.name.endsWith("h123")).count());                    
+        assertEquals(0, catQuery().where(cat.name.endsWith("X")).count());
+        assertEquals(1, catQuery().where(cat.name.endsWith("H123",false)).count());
         
         // contains
         assertEquals(1, catQuery().where(cat.name.contains("eli")).count());
                 
         // indexOf
-        assertEquals(Integer.valueOf(0), catQuery().where(cat.name.eq("Bob")).uniqueResult(cat.name.indexOf("B")));
-        assertEquals(Integer.valueOf(1), catQuery().where(cat.name.eq("Bob")).uniqueResult(cat.name.indexOf("o")));
-        assertEquals(Integer.valueOf(2), catQuery().where(cat.name.eq("Bob")).uniqueResult(cat.name.indexOf("b")));        
+        assertEquals(Integer.valueOf(0), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("B")));
+        assertEquals(Integer.valueOf(1), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("o")));
+        
+        // case-sensitivity
+        
+        if (!getTarget().equals(Target.MYSQL)){ // NOTE : locate in MYSQL in case-insensitive
+            assertEquals(0, catQuery().where(cat.name.startsWith("r")).count());
+            assertEquals(0, catQuery().where(cat.name.endsWith("H123")).count());
+            assertEquals(Integer.valueOf(2), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("b")));
+        }
+                
     }
         
 

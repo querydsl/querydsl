@@ -38,6 +38,7 @@ public class ColQueryTemplates extends JavaTemplates {
         // Date and Time
         add(Ops.DateTimeOps.YEAR,         functions + ".getYear({0})");
         add(Ops.DateTimeOps.MONTH,        functions + ".getMonth({0})");
+        add(Ops.DateTimeOps.WEEK,         functions + ".getWeek({0})");
         add(Ops.DateTimeOps.DAY_OF_WEEK,  functions + ".getDayOfWeek({0})");
         add(Ops.DateTimeOps.DAY_OF_MONTH, functions + ".getDayOfMonth({0})");
         add(Ops.DateTimeOps.DAY_OF_YEAR,  functions + ".getDayOfYear({0})");
@@ -80,6 +81,10 @@ public class ColQueryTemplates extends JavaTemplates {
     
     public static int getMonth(Date date){
         return getField(date, Calendar.MONTH) + 1;
+    }
+    
+    public static int getWeek(Date date){
+        return getField(date, Calendar.WEEK_OF_YEAR);
     }
     
     public static int getDayOfMonth(Date date){

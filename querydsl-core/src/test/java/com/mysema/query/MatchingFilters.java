@@ -55,10 +55,13 @@ public class MatchingFilters {
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(comparable(expr, other));
         rv.add(expr.getDayOfMonth().eq(other.getDayOfMonth()));
+        
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDOQL)){
             rv.add(expr.getDayOfWeek().eq(other.getDayOfWeek ()));
-            rv.add(expr.getDayOfYear().eq(other.getDayOfYear()));    
+            rv.add(expr.getDayOfYear().eq(other.getDayOfYear()));
+            rv.add(expr.getWeek().eq(other.getWeek()));
         }        
+        
         rv.add(expr.getMonth().eq(other.getMonth()));
         rv.add(expr.getYear().eq(other.getYear()));
         return rv;
@@ -82,8 +85,9 @@ public class MatchingFilters {
         
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDOQL)){
             rv.add(expr.getDayOfWeek().eq(other.getDayOfWeek ()));
-            rv.add(expr.getDayOfYear().eq(other.getDayOfYear()));    
-        }  
+            rv.add(expr.getDayOfYear().eq(other.getDayOfYear()));
+            rv.add(expr.getWeek().eq(other.getWeek()));
+        }          
         
         rv.add(expr.getMonth().eq(other.getMonth()));
         rv.add(expr.getYear().eq(other.getYear()));
@@ -159,10 +163,6 @@ public class MatchingFilters {
             
         rv.add(expr.indexOf(other).eq(0));
         
-        if (!module.equals(Module.HQL) && !module.equals(Module.JDOQL)){
-            rv.add(expr.lastIndexOf(other).eq(0));    
-        }        
-        
         if (!target.equals(Target.DERBY)){
             rv.add(expr.indexOf(other.substring(1)).eq(1)); 
             rv.add(expr.indexOf(other.substring(2)).eq(2));     
@@ -170,7 +170,11 @@ public class MatchingFilters {
             
         rv.add(expr.isEmpty().not());
         rv.add(expr.isNotEmpty());
-            
+        
+        if (!module.equals(Module.HQL) && !module.equals(Module.JDOQL)){
+            rv.add(expr.lastIndexOf(other).eq(0));    
+        }   
+        
         rv.add(expr.length().eq(other.length()));
             
         rv.add(expr.like(other));

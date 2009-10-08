@@ -139,6 +139,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
 
     /**
      * Create a week expression
+     * <p>NOT supported in JDOQL and not in Derby</p>
      * 
      * @return
      */
