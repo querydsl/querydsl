@@ -182,8 +182,8 @@ public class MatchingFilters {
         rv.add(expr.like(other.substring(1,2).append("%").prepend("%")));
             
         rv.add(expr.lower().eq(other.lower()));
-            
-        if (!target.equals(Target.DERBY) && !target.equals(Target.HSQLDB)){
+        
+        if (!module.equals(Module.SQL)){
             rv.add(expr.matches(other.substring(0,1).append(".*")));
             rv.add(expr.matches(other.substring(0,1).append(".").append(other.substring(2))));
             rv.add(expr.matches(other.substring(1).prepend(".*")));
