@@ -96,8 +96,13 @@ public class SQLTemplates extends Templates {
     private String where = "\nwhere ";
 
     public SQLTemplates() {
-        add(Ops.NOT, "not {0}");
-
+        // boolean
+        add(Ops.AND, "{0} and {1}", 36);
+        add(Ops.NOT, "not {0}", 3);
+        add(Ops.OR, "{0} or {1}", 38);
+        add(Ops.XNOR, "{0} xnor {1}", 39);
+        add(Ops.XOR, "{0} xor {1}", 39);
+        
         // math
         add(Ops.MathOps.RANDOM, "rand()");
         add(Ops.MathOps.CEIL, "ceiling({0})");
@@ -108,19 +113,19 @@ public class SQLTemplates extends Templates {
         add(Ops.DateTimeOps.CURRENT_TIME, "current_timestamp");
 
         // string
-        add(Ops.SUBSTR_1ARG, "substr({0},{1})");
-        add(Ops.SUBSTR_2ARGS, "substr({0},{1},{2})");
-
-        add(Ops.STRING_CONTAINS, "{0} like {%1%}");
+        add(Ops.CHAR_AT, "cast(substr({0},{1}+1,1) as char)");
         add(Ops.ENDS_WITH, "{0} like {%1}");
         add(Ops.ENDS_WITH_IC, "{0l} like lower({%1})");
-        add(Ops.STARTS_WITH, "{0} like {1%}");
-        add(Ops.STARTS_WITH_IC, "{0l} like lower({1%})");        
-        
+        add(Ops.EQ_IGNORE_CASE, "{0l} = {1l}");
         add(Ops.INDEX_OF, "locate({1},{0})-1");
         add(Ops.INDEX_OF_2ARGS, "locate({1},{0},{2}+1)-1");
+        add(Ops.STARTS_WITH, "{0} like {1%}");
+        add(Ops.STARTS_WITH_IC, "{0l} like lower({1%})");       
+        add(Ops.STRING_CONTAINS, "{0} like {%1%}");
+        add(Ops.STRING_IS_EMPTY, "length({0}) = 0");       
+        add(Ops.SUBSTR_1ARG, "substr({0},{1}+1)");
+        add(Ops.SUBSTR_2ARGS, "substr({0},{1}+1,{2})");
         
-
         for (Class<?> cl : new Class[] { Boolean.class, Byte.class,
                 Double.class, Float.class, Integer.class, Long.class,
                 Short.class, String.class }) {

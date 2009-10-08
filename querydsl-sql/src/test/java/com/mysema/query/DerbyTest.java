@@ -3,47 +3,43 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.sql;
+package com.mysema.query;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
-import com.mysema.query.FilteringTestRunner;
-import com.mysema.query.Label;
 import com.mysema.query.StandardTest.Target;
+import com.mysema.query.sql.DerbyTemplates;
 
-/**
- * HsqdlbTest provides
- * 
- * @author tiwe
- * @version $Id$
- */
 @RunWith(FilteringTestRunner.class)
-@Label(Target.HSQLDB)
-public class HsqldbTest extends SqlQueryTest {
+@Label(Target.DERBY)
+public class DerbyTest extends AbstractSQLTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
         String sql;
-        Connection c = getHSQLConnection();
+        Connection c = getDerbyConnection();
         Statement stmt = c.createStatement();
 
         connHolder.set(c);
         stmtHolder.set(stmt);
 
         // survey
-        stmt.execute("drop table survey if exists");
-        stmt.execute("create table survey (id int,name varchar(30));");
-        stmt.execute("insert into survey values (1, 'Hello World');");
+        // stmt.execute("drop table survey if exists");
+        safeExecute(stmt, "drop table survey");
+        stmt.execute("create table survey (id int,name varchar(30))");
+        stmt.execute("insert into survey values (1, 'Hello World')");
 
         // test
-        stmt.execute("drop table test if exists");
+        // stmt.execute("drop table test if exists");
+        safeExecute(stmt, "drop table test");
         stmt.execute("create table test(name varchar(255))");
         sql = "insert into test values(?)";
         PreparedStatement pstmt = c.prepareStatement(sql);
@@ -58,7 +54,8 @@ public class HsqldbTest extends SqlQueryTest {
         }        
 
         // employee
-        stmt.execute("drop table employee2 if exists");
+        // stmt.execute("drop table employee if exists");
+        safeExecute(stmt, "drop table employee2");
         stmt.execute("create table employee2(id int, "
                 + "firstname VARCHAR(50), " + "lastname VARCHAR(50), "
                 + "salary decimal(10, 2), " + "superior_id int, "
@@ -81,29 +78,39 @@ public class HsqldbTest extends SqlQueryTest {
         addEmployee(23, "Barbara", "Hood", 30000, 2);
 
         // date_test and time_test
-        stmt.execute("drop table time_test if exists");
-        stmt.execute("drop table date_test if exists");
+        // stmt.execute("drop table time_test if exists");
+        // stmt.execute("drop table date_test if exists");
+        safeExecute(stmt, "drop table time_test");
+        safeExecute(stmt, "drop table date_test");
         stmt.execute("create table time_test(time_test time)");
         stmt.execute("create table date_test(date_test date)");
     }
 
+    private static void safeExecute(Statement stmt, String sql) {
+        try {
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            // do nothing
+        }
+    }
+
     @Before
     public void setUpForTest() {
-        dialect = new HSQLDBTemplates().newLineToSingleSpace();
+        dialect = new DerbyTemplates().newLineToSingleSpace();
     }
 
     private static void addEmployee(int id, String firstName, String lastName,
             double salary, int superiorId) throws Exception {
         stmtHolder.get().execute(
                 "insert into employee2 values(" + id + ", '" + firstName
-                        + "', '" + lastName + "', " + salary + ", "
-                        + (superiorId <= 0 ? "null" : ("" + superiorId)) + ")");
+                + "', '" + lastName + "', " + salary + ", "
+                + (superiorId <= 0 ? "null" : ("" + superiorId)) + ")");
     }
 
-    private static Connection getHSQLConnection() throws Exception {
-        Class.forName("org.hsqldb.jdbcDriver");
-        String url = "jdbc:hsqldb:data/tutorial";
-        return DriverManager.getConnection(url, "sa", "");
+    private static Connection getDerbyConnection() throws Exception {
+        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+        String url = "jdbc:derby:demoDB;create=true";
+        return DriverManager.getConnection(url, "", "");
     }
 
 }

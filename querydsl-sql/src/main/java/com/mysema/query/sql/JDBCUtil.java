@@ -29,16 +29,21 @@ public class JDBCUtil {
     }
     
     private static void setParameter(PreparedStatement stmt, int i, Object o) throws Exception {
-        Class<?> type = o.getClass();
+        Class<?> type = o.getClass();        
         String methodName = "set" + type.getSimpleName();
         if (methodName.equals("setInteger")) {
             methodName = "setInt";
-        }
-        type = ClassUtils.wrapperToPrimitive(type) != null ? ClassUtils.wrapperToPrimitive(type) : type;
-        if (methodName.equals("setDate") && type.equals(java.util.Date.class)) {
+        }else if (methodName.equals("setCharacter")){
+            methodName = "setString";
+            type = String.class;
+            o = o.toString();
+        }else if (methodName.equals("setDate") && type.equals(java.util.Date.class)) {
             type = java.sql.Date.class;
             o = new java.sql.Date(((java.util.Date) o).getTime());
         }
+        
+        type = ClassUtils.wrapperToPrimitive(type) != null ? ClassUtils.wrapperToPrimitive(type) : type;
+        
         // TODO : cache methods
         PreparedStatement.class.getMethod(methodName, int.class, type).invoke(stmt, i, o);
     }

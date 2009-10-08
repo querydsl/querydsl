@@ -7,6 +7,7 @@ package com.mysema.query.sql;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import com.mysema.query.JoinExpression;
@@ -213,10 +214,23 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void visit(Constant<?> expr) {
-        append("?");
-        constants.add(expr.getConstant());
+        if (expr.getConstant() instanceof Collection){
+            append("(");
+            boolean first = true;
+            for (Object o : ((Collection)expr.getConstant())){
+                if (!first) append(",");
+                append("?");
+                constants.add(o);
+                first = false;
+            }
+            append(")");
+        }else{
+            append("?");
+            constants.add(expr.getConstant());    
+        }        
     }
 
     private void visitCast(Operator<?> operator, Expr<?> source, Class<?> targetType) {

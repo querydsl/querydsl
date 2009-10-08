@@ -3,8 +3,12 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.sql;
+package com.mysema.query;
 
+import static com.mysema.query.StandardTest.Target.DERBY;
+import static com.mysema.query.StandardTest.Target.HSQLDB;
+import static com.mysema.query.StandardTest.Target.MYSQL;
+import static com.mysema.query.StandardTest.Target.ORACLE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
@@ -20,10 +24,12 @@ import javax.annotation.Nullable;
 import org.junit.AfterClass;
 import org.junit.Test;
 
-import com.mysema.query.ExcludeIn;
-import com.mysema.query.IncludeIn;
-import static com.mysema.query.StandardTest.Target.*;
+import com.mysema.query.StandardTest.Module;
 import com.mysema.query.functions.MathFunctions;
+import com.mysema.query.sql.SQLQuery;
+import com.mysema.query.sql.SQLQueryImpl;
+import com.mysema.query.sql.SQLSubQuery;
+import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.domain.QEMPLOYEE;
@@ -44,7 +50,7 @@ import com.mysema.query.types.query.ObjectSubQuery;
  * @version $Id$
  */
 @SuppressWarnings("unchecked")
-public abstract class SqlQueryTest {
+public abstract class AbstractSQLTest {
 
     protected static ThreadLocal<Connection> connHolder = new ThreadLocal<Connection>();
 
@@ -53,9 +59,13 @@ public abstract class SqlQueryTest {
     protected SQLTemplates dialect;
 
     protected final QEMPLOYEE employee = new QEMPLOYEE("employee");
+    
     protected final QEMPLOYEE employee2 = new QEMPLOYEE("employee2");
+    
     protected final QSURVEY survey = new QSURVEY("survey");
+    
     protected final QSURVEY survey2 = new QSURVEY("survey2");
+    
     protected final QTEST test = new QTEST("test");
 
     @Nullable
@@ -68,48 +78,73 @@ public abstract class SqlQueryTest {
         if (connHolder.get() != null)
             connHolder.get().close();
     }
+    
+    private StandardTest standardTest = new StandardTest(Module.SQL, getClass().getAnnotation(Label.class).value()){
+        @Override
+        public int executeFilter(EBoolean f){
+            return query().from(employee, employee2).where(f).list(employee.firstname).size();
+        }
+        @Override
+        public int executeProjection(Expr<?> pr){
+            return query().from(employee, employee2).list(pr).size();
+        }              
+    };
+    
+    @Test
+    public void standardTest(){
+        standardTest.booleanTests(employee.firstname.isNull(), employee2.lastname.isNotNull());
+        standardTest.numericCasts(employee.id, employee2.id, 1);
+        standardTest.numericTests(employee.id, employee2.id, 1);
+        standardTest.stringTests(employee.firstname, employee2.firstname, "Jennifer");
+        
+//      standardTest.dateTests(employee.dateField, employee2.dateField, date);
+//      standardTest.dateTimeTests(employee.birthdate, employee2.birthdate, birthDate);
+//      standardTest.timeTests(employee.timeField, employee2.timeField, time);
+        
+        standardTest.report();        
+    }
 
     @Test
     public void testUpdate(){        
         // original state
-        long count = q().from(survey).count();
-        assertEquals(0, q().from(survey).where(survey.name.eq("S")).count());
+        long count = query().from(survey).count();
+        assertEquals(0, query().from(survey).where(survey.name.eq("S")).count());
         
         // update call with 0 update count
         assertEquals(0, update(survey).where(survey.name.eq("XXX")).set(survey.name, "S").execute());
-        assertEquals(0, q().from(survey).where(survey.name.eq("S")).count());
+        assertEquals(0, query().from(survey).where(survey.name.eq("S")).count());
         
         // update call with full update count
         assertEquals(count, update(survey).set(survey.name, "S").execute());
-        assertEquals(count, q().from(survey).where(survey.name.eq("S")).count());
+        assertEquals(count, query().from(survey).where(survey.name.eq("S")).count());
     }
     
     @Test
     @ExcludeIn(MYSQL)
     public void testDelete(){
         // TODO : FIXME
-        long count = q().from(survey).count();
+        long count = query().from(survey).count();
         assertEquals(0, delete(survey).where(survey.name.eq("XXX")).execute());
         assertEquals(count, delete(survey).execute());
     }
     
     @Test
     public void testQuery1() throws Exception {
-        for (String s : q().from(survey).list(survey.name)) {
+        for (String s : query().from(survey).list(survey.name)) {
             System.out.println(s);
         }
     }
 
     @Test
     public void testQuery2() throws Exception {
-        for (Object[] row : q().from(survey).list(survey.id, survey.name)) {
+        for (Object[] row : query().from(survey).list(survey.id, survey.name)) {
             System.out.println(row[0] + ", " + row[1]);
         }
     }
 
     @Test
     public void testQueryWithConstant() throws Exception {
-        for (Object[] row : q().from(survey).where(survey.id.eq(1)).list(
+        for (Object[] row : query().from(survey).where(survey.id.eq(1)).list(
                 survey.id, survey.name)) {
             System.out.println(row[0] + ", " + row[1]);
         }
@@ -117,7 +152,7 @@ public abstract class SqlQueryTest {
 
     @Test
     public void testJoin() throws Exception {
-        for (String name : q().from(survey, survey2).where(
+        for (String name : query().from(survey, survey2).where(
                 survey.id.eq(survey2.id)).list(survey.name)) {
             System.out.println(name);
         }
@@ -125,7 +160,7 @@ public abstract class SqlQueryTest {
 
     @Test
     public void testConstructor() throws Exception {
-        for (IdName idName : q().from(survey).list(
+        for (IdName idName : query().from(survey).list(
                 new QIdName(survey.id, survey.name))) {
             System.out.println("id and name : " + idName.getId() + ","
                     + idName.getName());
@@ -134,15 +169,15 @@ public abstract class SqlQueryTest {
 
     @Test
     public void testVarious() throws SQLException {
-        System.out.println(q().from(survey).list(survey.name.lower()));
-        System.out.println(q().from(survey).list(survey.name.append("abc")));
+        System.out.println(query().from(survey).list(survey.name.lower()));
+        System.out.println(query().from(survey).list(survey.name.append("abc")));
         System.out
-                .println(q().from(survey).list(survey.id.sqrt()));
+                .println(query().from(survey).list(survey.id.sqrt()));
     }
 
     @Test
     public void testSelectConcat() throws SQLException {
-        System.out.println(q().from(survey)
+        System.out.println(query().from(survey)
                 .list(survey.name.append("Hello World")));
     }
 
@@ -150,37 +185,27 @@ public abstract class SqlQueryTest {
     @ExcludeIn({ORACLE, DERBY})
     public void testSelectBooleanExpr() throws SQLException {
         // TODO : FIXME
-        System.out.println(q().from(survey).list(survey.id.eq(0)));
+        System.out.println(query().from(survey).list(survey.id.eq(0)));
     }
 
     @Test
     @ExcludeIn({ORACLE, DERBY})
     public void testSelectBooleanExpr2() throws SQLException {
         // TODO : FIXME
-        System.out.println(q().from(survey).list(survey.id.gt(0)));
+        System.out.println(query().from(survey).list(survey.id.gt(0)));
     }
 
     @Test
     public void testSyntaxForEmployee() throws SQLException {
-        // EMPLOYEE
-        // "select avg(salary), max(id) from employee "
-        // + "group by superior_id " + "order by superior_id " + "";
-        q().from(employee).groupBy(employee.superiorId).orderBy(
+        query().from(employee).groupBy(employee.superiorId).orderBy(
                 employee.superiorId.asc()).list(employee.salary.avg(),
                 employee.id.max());
 
-        // "select avg(salary), max(id) from employee "
-        // + "group by superior_id " + "having max(id) > 5 "
-        // + "order by superior_id " + "";
-        q().from(employee).groupBy(employee.superiorId).having(
+        query().from(employee).groupBy(employee.superiorId).having(
                 employee.id.max().gt(5)).orderBy(employee.superiorId.asc())
                 .list(employee.salary.avg(), employee.id.max());
 
-        // "select avg(salary), max(id) from employee "
-        // + "group by superior_id "
-        // + "having superior_id is not null "
-        // + "order by superior_id " + "";
-        q().from(employee).groupBy(employee.superiorId).having(
+        query().from(employee).groupBy(employee.superiorId).having(
                 employee.superiorId.isNotNull()).orderBy(
                 employee.superiorId.asc()).list(employee.salary.avg(),
                 employee.id.max());
@@ -188,7 +213,7 @@ public abstract class SqlQueryTest {
 
     @Test
     public void testJoins() throws SQLException {
-        for (Object[] row : q().from(employee).innerJoin(employee2).on(
+        for (Object[] row : query().from(employee).innerJoin(employee2).on(
                 employee.superiorId.eq(employee2.superiorId)).where(
                 employee2.id.eq(10)).list(employee.id, employee2.id)) {
             System.out.println(row[0] + ", " + row[1]);
@@ -205,7 +230,7 @@ public abstract class SqlQueryTest {
     public void testLimitAndOffset() throws SQLException {
         // limit offset
         expectedQuery = "select employee.id from employee2 employee limit 4 offset 3";
-        q().from(employee).limit(4).offset(3).list(employee.id);
+        query().from(employee).limit(4).offset(3).list(employee.id);
     }
 
     @Test
@@ -215,15 +240,15 @@ public abstract class SqlQueryTest {
 
         // limit
         expectedQuery = prefix + "where rownum < 4";
-        q().from(employee).limit(4).list(employee.id);
+        query().from(employee).limit(4).list(employee.id);
 
         // offset
         expectedQuery = prefix + "where rownum > 3";
-        q().from(employee).offset(3).list(employee.id);
+        query().from(employee).offset(3).list(employee.id);
 
         // limit offset
         expectedQuery = prefix + "where rownum between 4 and 7";
-        q().from(employee).limit(4).offset(3).list(employee.id);
+        query().from(employee).limit(4).offset(3).list(employee.id);
     }
 
     @Test
@@ -232,7 +257,7 @@ public abstract class SqlQueryTest {
         expectedQuery = "select employee.id from employee2 employee "
                 + "where employee.id = (select max(employee.id) "
                 + "from employee2 employee)";
-        List<Integer> list = q().from(employee).where(
+        List<Integer> list = query().from(employee).where(
 //                employee.id.eq(select(Grammar.max(employee.id)).from(employee))).list(
                 employee.id.eq(s().from(employee).unique(employee.id.max()))).list(
                 employee.id);
@@ -244,7 +269,7 @@ public abstract class SqlQueryTest {
         ObjectSubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
         ObjectSubQuery<Integer> sq2 = s().from(employee).unique(employee.id.max());
         try {
-            q().from(employee).union(sq1, sq2).list();
+            query().from(employee).union(sq1, sq2).list();
             fail();
         } catch (IllegalArgumentException e) {
             // expected
@@ -258,11 +283,11 @@ public abstract class SqlQueryTest {
         // union
         ObjectSubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
         ObjectSubQuery<Integer> sq2 = s().from(employee).unique(employee.id.min());
-        List<Integer> list = q().union(sq1, sq2).list();
+        List<Integer> list = query().union(sq1, sq2).list();
         assertFalse(list.isEmpty());
 
         // variation 1
-        list = q().union(
+        list = query().union(
                 s().from(employee).unique(employee.id.max()),
                 s().from(employee).unique(employee.id.min())).list();
         assertFalse(list.isEmpty());
@@ -270,7 +295,7 @@ public abstract class SqlQueryTest {
         // union #2
         ObjectSubQuery<Object[]> sq3 = s().from(employee).unique(Expr.countAll(), employee.id.max());
         ObjectSubQuery<Object[]> sq4 = s().from(employee).unique(Expr.countAll(), employee.id.min());
-        List<Object[]> list2 = q().union(sq3, sq4).list();
+        List<Object[]> list2 = query().union(sq3, sq4).list();
         assertFalse(list2.isEmpty());
     }
 
@@ -283,8 +308,8 @@ public abstract class SqlQueryTest {
     @Test
     public void testWhereExists() throws SQLException {
         ObjectSubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
-        q().from(employee).where(sq1.exists()).count();
-        q().from(employee).where(sq1.exists().not()).count();
+        query().from(employee).where(sq1.exists()).count();
+        query().from(employee).where(sq1.exists().not()).count();
     }
 
     @Test
@@ -312,7 +337,7 @@ public abstract class SqlQueryTest {
                 MathFunctions.log(d),
 //                MathFunctions.floor(d), 
                 MathFunctions.exp(d))) {
-            q().from(employee).list((Expr<? extends Comparable>) e);
+            query().from(employee).list((Expr<? extends Comparable>) e);
         }
     }
 
@@ -322,7 +347,7 @@ public abstract class SqlQueryTest {
                 .startsWith("a"), employee.firstname.startsWith("a", false),
                 employee.firstname.endsWith("a"), employee.firstname.endsWith(
                         "a", false))) {
-            q().from(employee).where(where).list(employee.firstname);
+            query().from(employee).where(where).list(employee.firstname);
         }
     }
     @Test
@@ -334,7 +359,7 @@ public abstract class SqlQueryTest {
                 num.shortValue(), num.stringValue() };
 
         for (Expr<?> e : expr) {
-            q().from(employee).list(e);
+            query().from(employee).list(e);
         }
 
     }
@@ -359,7 +384,7 @@ public abstract class SqlQueryTest {
         return new SQLUpdateClause(connHolder.get(), dialect, e);
     }
     
-    protected final SQLQuery q() {
+    protected final SQLQuery query() {
         return new SQLQueryImpl(connHolder.get(), dialect) {
             @Override
             protected String buildQueryString(boolean countRow) {

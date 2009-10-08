@@ -167,8 +167,6 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         }
     }
 
-
-
     @Override
     public String toString() {
         if (queryString == null) {

@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.sql;
+package com.mysema.query;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,10 +14,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
-import com.mysema.query.FilteringTestRunner;
-import com.mysema.query.Label;
-import com.mysema.query.ResourceCheck;
 import com.mysema.query.StandardTest.Target;
+import com.mysema.query.sql.MySQLTemplates;
 
 /**
  * MySqlTest provides
@@ -28,7 +26,7 @@ import com.mysema.query.StandardTest.Target;
 @RunWith(FilteringTestRunner.class)
 @ResourceCheck("/mysql.run")
 @Label(Target.MYSQL)
-public class MySqlTest extends SqlQueryTest {
+public class MySqlTest extends AbstractSQLTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -98,8 +96,8 @@ public class MySqlTest extends SqlQueryTest {
             double salary, int superiorId) throws Exception {
         stmtHolder.get().execute(
                 "insert into employee2 values(" + id + ", '" + firstName
-                        + "', '" + lastName + "', " + salary + ", "
-                        + (superiorId <= 0 ? "null" : ("" + superiorId)) + ")");
+                + "', '" + lastName + "', " + salary + ", "
+                + (superiorId <= 0 ? "null" : ("" + superiorId)) + ")");
     }
 
     private static Connection getMysqlConnection() throws Exception {

@@ -209,7 +209,7 @@ public class Filters {
         rv.add(expr.indexOf("X", 1).gt(0));
         rv.add(expr.indexOf(knownValue).gt(0));
             
-        if (!module.equals(Module.HQL) && !module.equals(Module.JDOQL)){
+        if (!module.equals(Module.HQL) && !module.equals(Module.JDOQL) && !module.equals(Module.SQL)){
             rv.add(expr.lastIndexOf(other).gt(0));
             rv.add(expr.lastIndexOf(knownValue).gt(0));    
         }        
@@ -225,9 +225,11 @@ public class Filters {
         rv.add(expr.like("%"+knownValue.substring(1)));
         rv.add(expr.like("%"+knownValue.substring(1,2)+"%"));            
             
-        rv.add(expr.matches(knownValue.substring(0,1)+".*"));
-        rv.add(expr.matches(".*"+knownValue.substring(1)));
-        rv.add(expr.matches(".*"+knownValue.substring(1,2)+".*"));
+        if (!target.equals(Target.DERBY) && !target.equals(Target.HSQLDB)){
+            rv.add(expr.matches(knownValue.substring(0,1)+".*"));
+            rv.add(expr.matches(".*"+knownValue.substring(1)));
+            rv.add(expr.matches(".*"+knownValue.substring(1,2)+".*"));    
+        }        
             
         rv.add(expr.notIn("A","B","C"));
             

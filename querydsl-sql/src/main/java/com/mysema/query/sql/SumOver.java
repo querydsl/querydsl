@@ -20,6 +20,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
+@SuppressWarnings("serial")
 public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A> {
     
     private Expr<A> target;
