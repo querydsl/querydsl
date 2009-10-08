@@ -11,7 +11,7 @@ import com.mysema.query.StandardTest.Target;
 
 @RunWith(HibernateTestRunner.class)
 @HibernateConfig("mysql.properties")
-public class MySQLStandardTest extends AbstractHibernateTest{
+public abstract class MySQLStandardTest extends AbstractHibernateTest{
 
     @Override
     protected Target getTarget() {
