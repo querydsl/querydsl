@@ -15,12 +15,6 @@ public class DerbyTemplates extends SQLTemplates {
         
         add(Ops.CONCAT, "varchar({0} || {1})");
         add(Ops.MathOps.ROUND, "floor({0})");
-
-        add(Ops.DateTimeOps.YEAR, "year({0})");
-        add(Ops.DateTimeOps.MONTH, "month({0})");
-
-        add(Ops.DateTimeOps.HOUR, "hour({0})");
-        add(Ops.DateTimeOps.MINUTE, "minute({0})");
-        add(Ops.DateTimeOps.SECOND, "second({0})");
+        add(Ops.DateTimeOps.DAY_OF_MONTH, "day({0})");
     }
 }

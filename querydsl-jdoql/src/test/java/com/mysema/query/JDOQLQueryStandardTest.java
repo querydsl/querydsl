@@ -15,8 +15,6 @@ import javax.jdo.Transaction;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.mysema.query.StandardTest.Module;
-import com.mysema.query.StandardTest.Target;
 import com.mysema.query.jdoql.AbstractJDOTest;
 import com.mysema.query.jdoql.JDOQLQuery;
 import com.mysema.query.jdoql.testdomain.Product;

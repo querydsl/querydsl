@@ -9,8 +9,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
-import com.mysema.query.StandardTest.Module;
-import com.mysema.query.StandardTest.Target;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EDate;
 import com.mysema.query.types.expr.EDateTime;

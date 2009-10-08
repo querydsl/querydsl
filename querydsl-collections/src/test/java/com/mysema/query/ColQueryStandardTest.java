@@ -11,8 +11,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.StandardTest.Module;
-import com.mysema.query.StandardTest.Target;
 import com.mysema.query.collections.MiniApi;
 import com.mysema.query.collections.domain.Cat;
 import com.mysema.query.collections.domain.QCat;

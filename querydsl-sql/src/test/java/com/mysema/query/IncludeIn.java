@@ -21,5 +21,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Inherited
 public @interface IncludeIn {
-    com.mysema.query.StandardTest.Target[] value();
+    com.mysema.query.Target[] value();
 }

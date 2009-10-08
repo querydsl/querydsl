@@ -5,26 +5,27 @@
  */
 package com.mysema.query;
 
-import static com.mysema.query.StandardTest.Target.DERBY;
-import static com.mysema.query.StandardTest.Target.HSQLDB;
-import static com.mysema.query.StandardTest.Target.MYSQL;
-import static com.mysema.query.StandardTest.Target.ORACLE;
+import static com.mysema.query.Target.*;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.hsqldb.Types;
 import org.junit.AfterClass;
 import org.junit.Test;
 
-import com.mysema.query.StandardTest.Module;
 import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLQueryImpl;
@@ -56,6 +57,21 @@ public abstract class AbstractSQLTest {
 
     protected static ThreadLocal<Statement> stmtHolder = new ThreadLocal<Statement>();
 
+    static final Date dateTime;    
+    
+    static final java.sql.Date date;
+    
+    static final java.sql.Time time;
+    
+    static{
+        Calendar cal = Calendar.getInstance();
+        cal.set(2000, 1, 2, 3, 4);
+        cal.set(Calendar.MILLISECOND, 0);
+        dateTime = cal.getTime();
+        date = new java.sql.Date(cal.getTimeInMillis());
+        time = new java.sql.Time(cal.getTimeInMillis());
+    }
+    
     protected SQLTemplates dialect;
 
     protected final QEMPLOYEE employee = new QEMPLOYEE("employee");
@@ -73,10 +89,32 @@ public abstract class AbstractSQLTest {
 
     @AfterClass
     public static void tearDown() throws Exception {
-        if (stmtHolder.get() != null)
+        if (stmtHolder.get() != null){
             stmtHolder.get().close();
-        if (connHolder.get() != null)
+        }            
+        if (connHolder.get() != null){
             connHolder.get().close();
+        }            
+    }
+    
+    static void addEmployee(int id, String firstName, String lastName,
+            double salary, int superiorId) throws Exception {
+        String insert = "insert into employee2 (id, firstname, lastname, salary, datefield, timefield, superior_id) " +
+        		"values(?,?,?,?,?,?,?)";
+        PreparedStatement stmt = connHolder.get().prepareStatement(insert);
+        stmt.setInt(1, id);
+        stmt.setString(2, firstName);
+        stmt.setString(3,lastName);
+        stmt.setDouble(4, salary);        
+        stmt.setDate(5, date);
+        stmt.setTime(6, time);
+        if (superiorId <= 0){
+            stmt.setNull(7, Types.INTEGER);
+        }else{
+            stmt.setInt(7, superiorId);
+        }
+        stmt.execute();
+        stmt.close();
     }
     
     private StandardTest standardTest = new StandardTest(Module.SQL, getClass().getAnnotation(Label.class).value()){
@@ -93,14 +131,14 @@ public abstract class AbstractSQLTest {
     @Test
     public void standardTest(){
         standardTest.booleanTests(employee.firstname.isNull(), employee2.lastname.isNotNull());
+        standardTest.dateTests(employee.datefield, employee2.datefield, date);
         standardTest.numericCasts(employee.id, employee2.id, 1);
         standardTest.numericTests(employee.id, employee2.id, 1);
         standardTest.stringTests(employee.firstname, employee2.firstname, "Jennifer");
-        
-//      standardTest.dateTests(employee.dateField, employee2.dateField, date);
+        standardTest.timeTests(employee.timefield, employee2.timefield, time);
+
 //      standardTest.dateTimeTests(employee.birthdate, employee2.birthdate, birthDate);
-//      standardTest.timeTests(employee.timeField, employee2.timeField, time);
-        
+      
         standardTest.report();        
     }
 

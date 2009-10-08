@@ -3,8 +3,6 @@ package com.mysema.query;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.mysema.query.StandardTest.Module;
-import com.mysema.query.StandardTest.Target;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EComparable;
@@ -171,9 +169,9 @@ public class MatchingFilters {
         rv.add(expr.isEmpty().not());
         rv.add(expr.isNotEmpty());
         
-        if (!module.equals(Module.HQL) && !module.equals(Module.JDOQL) && !module.equals(Module.SQL)){
-            rv.add(expr.lastIndexOf(other).eq(0));    
-        }   
+//        if (!module.equals(Module.HQL) && !module.equals(Module.JDOQL) && !module.equals(Module.SQL)){
+//            rv.add(expr.lastIndexOf(other).eq(0));    
+//        }   
         
         rv.add(expr.length().eq(other.length()));
             

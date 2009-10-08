@@ -222,42 +222,42 @@ public abstract class EString extends EComparable<String> {
         return isEmpty().not();
     }
 
-    /**
-     * Expr : <code>this.lastIndexOf(right, third);</code>
-     * <p>NOT supported in JDOQL, HQL and SQL</p>
-     * 
-     * @param right
-     * @param third
-     * @return this.lastIndexOf(right, third)
-     * @see java.lang.String#lastIndexOf(String, int)
-     */
-    public ENumber<Integer> lastIndex(String right, int third) {
-        return ONumber.create(Integer.class, Ops.StringOps.LAST_INDEX_2ARGS, this, EString.create(right), ENumber.create(third));
-    }
-    
-    /**
-     * Expr : <code>this.lastIndexOf(right)</code>
-     * <p>NOT supported in JDOQL, HQL and SQL</p>
-     * 
-     * @param right
-     * @return this.lastIndexOf(right)
-     * @see java.lang.String#lastIndexOf(String)
-     */
-    public ENumber<Integer> lastIndexOf(Expr<String> right) {
-        return ONumber.create(Integer.class, Ops.StringOps.LAST_INDEX, this, right);
-    }
-    
-    /**
-     * Expr : <code>this.lastIndexOf(right)</code>
-     * <p>NOT supported in JDOQL, HQL and SQL</p>
-     * 
-     * @param right
-     * @return this.lastIndexOf(right)
-     * @see java.lang.String#lastIndexOf(String)
-     */
-    public ENumber<Integer> lastIndexOf(String right) {
-        return ONumber.create(Integer.class, Ops.StringOps.LAST_INDEX, this, EString.create(right));
-    }
+//    /**
+//     * Expr : <code>this.lastIndexOf(right, third);</code>
+//     * <p>NOT supported in JDOQL, HQL and SQL</p>
+//     * 
+//     * @param right
+//     * @param third
+//     * @return this.lastIndexOf(right, third)
+//     * @see java.lang.String#lastIndexOf(String, int)
+//     */
+//    public ENumber<Integer> lastIndex(String right, int third) {
+//        return ONumber.create(Integer.class, Ops.StringOps.LAST_INDEX_2ARGS, this, EString.create(right), ENumber.create(third));
+//    }
+//    
+//    /**
+//     * Expr : <code>this.lastIndexOf(right)</code>
+//     * <p>NOT supported in JDOQL, HQL and SQL</p>
+//     * 
+//     * @param right
+//     * @return this.lastIndexOf(right)
+//     * @see java.lang.String#lastIndexOf(String)
+//     */
+//    public ENumber<Integer> lastIndexOf(Expr<String> right) {
+//        return ONumber.create(Integer.class, Ops.StringOps.LAST_INDEX, this, right);
+//    }
+//    
+//    /**
+//     * Expr : <code>this.lastIndexOf(right)</code>
+//     * <p>NOT supported in JDOQL, HQL and SQL</p>
+//     * 
+//     * @param right
+//     * @return this.lastIndexOf(right)
+//     * @see java.lang.String#lastIndexOf(String)
+//     */
+//    public ENumber<Integer> lastIndexOf(String right) {
+//        return ONumber.create(Integer.class, Ops.StringOps.LAST_INDEX, this, EString.create(right));
+//    }
 
     /**
      * @return this.length()

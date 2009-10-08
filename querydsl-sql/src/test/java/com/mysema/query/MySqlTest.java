@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
-import com.mysema.query.StandardTest.Target;
 import com.mysema.query.sql.MySQLTemplates;
 
 /**
@@ -60,8 +59,12 @@ public class MySqlTest extends AbstractSQLTest {
         // employee
         stmt.execute("drop table if exists employee2");
         stmt.execute("create table employee2(id int, "
-                + "firstname VARCHAR(50), " + "lastname VARCHAR(50), "
-                + "salary decimal(10, 2), " + "superior_id int, "
+                + "firstname VARCHAR(50), " 
+                + "lastname VARCHAR(50), "
+                + "salary decimal(10, 2), "
+                + "datefield date, "
+                + "timefield time, "
+                + "superior_id int, "
                 + "CONSTRAINT PK_employee PRIMARY KEY (id), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) "
                 + "REFERENCES employee2(ID))");
@@ -90,14 +93,6 @@ public class MySqlTest extends AbstractSQLTest {
     @Before
     public void setUpForTest() {
         dialect = new MySQLTemplates().newLineToSingleSpace();
-    }
-
-    private static void addEmployee(int id, String firstName, String lastName,
-            double salary, int superiorId) throws Exception {
-        stmtHolder.get().execute(
-                "insert into employee2 values(" + id + ", '" + firstName
-                + "', '" + lastName + "', " + salary + ", "
-                + (superiorId <= 0 ? "null" : ("" + superiorId)) + ")");
     }
 
     private static Connection getMysqlConnection() throws Exception {

@@ -6,8 +6,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import com.mysema.query.StandardTest.Module;
-import com.mysema.query.StandardTest.Target;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EComparable;
@@ -209,10 +207,10 @@ public class Filters {
         rv.add(expr.indexOf("X", 1).gt(0));
         rv.add(expr.indexOf(knownValue).gt(0));
             
-        if (!module.equals(Module.HQL) && !module.equals(Module.JDOQL) && !module.equals(Module.SQL)){
-            rv.add(expr.lastIndexOf(other).gt(0));
-            rv.add(expr.lastIndexOf(knownValue).gt(0));    
-        }        
+//        if (!module.equals(Module.HQL) && !module.equals(Module.JDOQL) && !module.equals(Module.SQL)){
+//            rv.add(expr.lastIndexOf(other).gt(0));
+//            rv.add(expr.lastIndexOf(knownValue).gt(0));    
+//        }        
             
         rv.add(expr.in("A","B","C"));
                         

@@ -111,6 +111,7 @@ public class SQLTemplates extends Templates {
         // date time
         add(Ops.DateTimeOps.CURRENT_DATE, "current_date");
         add(Ops.DateTimeOps.CURRENT_TIME, "current_timestamp");
+        add(Ops.DateTimeOps.MILLISECOND, "0");
 
         // string
         add(Ops.CHAR_AT, "cast(substr({0},{1}+1,1) as char)");

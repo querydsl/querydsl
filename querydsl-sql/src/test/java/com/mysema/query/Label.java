@@ -21,5 +21,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Inherited
 public @interface Label {
-    com.mysema.query.StandardTest.Target value();
+    com.mysema.query.Target value();
 }

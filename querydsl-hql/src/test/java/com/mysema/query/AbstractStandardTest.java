@@ -18,8 +18,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.query.StandardTest.Module;
-import com.mysema.query.StandardTest.Target;
 import com.mysema.query.hql.HQLQuery;
 import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.QCat;

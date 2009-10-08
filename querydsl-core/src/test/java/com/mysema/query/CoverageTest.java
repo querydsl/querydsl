@@ -18,8 +18,6 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.mysema.query.StandardTest.Module;
-import com.mysema.query.StandardTest.Target;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Operator;

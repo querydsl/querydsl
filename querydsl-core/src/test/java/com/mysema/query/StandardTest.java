@@ -29,22 +29,6 @@ import com.mysema.query.types.expr.Expr;
  */
 public abstract class StandardTest {
     
-    public enum Module{
-        COLLECTIONS,
-        HQL,
-        JDOQL,
-        RDFBEAN,
-        SQL
-    }
-    
-    public enum Target{        
-        DERBY,
-        HSQLDB,
-        MEM,
-        MYSQL,
-        ORACLE
-    }
-    
     private final List<String> errors = new ArrayList<String>();
     
     private final List<String> failures = new ArrayList<String>();

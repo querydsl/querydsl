@@ -7,7 +7,6 @@ package com.mysema.query;
 
 import org.junit.runner.RunWith;
 
-import com.mysema.query.StandardTest.Target;
 
 
 /**
