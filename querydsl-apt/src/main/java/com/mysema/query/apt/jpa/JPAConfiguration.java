@@ -14,7 +14,6 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 
-import com.mysema.query.annotations.QueryPathDepth;
 import com.mysema.query.annotations.QueryType;
 import com.mysema.query.apt.Configuration;
 import com.mysema.query.apt.VisitorConfig;
@@ -40,7 +39,6 @@ public class JPAConfiguration extends Configuration {
     protected List<Class<? extends Annotation>> getAnnotations() throws ClassNotFoundException{
         List<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
         annotations.add(QueryType.class);
-        annotations.add(QueryPathDepth.class);
         for (String simpleName : Arrays.asList(
                 "Column",
                 "Embedded",

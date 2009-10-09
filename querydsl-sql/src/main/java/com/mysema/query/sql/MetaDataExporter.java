@@ -113,7 +113,7 @@ public class MetaDataExporter {
                 }
 
                 TypeModel typeModel = new ClassTypeModel(fieldType, clazz);
-                classModel.addProperty(new PropertyModel(classModel, name, typeModel, 2));
+                classModel.addProperty(new PropertyModel(classModel, name, typeModel));
             }
             columns.close();
             serialize(classModel);

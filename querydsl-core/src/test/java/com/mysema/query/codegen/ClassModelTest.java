@@ -32,7 +32,7 @@ public class ClassModelTest {
     @Test
     public void test() {        
         BeanModelFactory factory = new BeanModelFactory(new TypeModelFactory(QueryEntity.class));
-        BeanModel type = factory.create(TestType.class, "Q", 2);
+        BeanModel type = factory.create(TestType.class, "Q");
         assertEquals(1, type.getEntityMaps().size());
         assertEquals(1, type.getSimpleMaps().size());
         assertEquals(2, type.getEntityCollections().size());

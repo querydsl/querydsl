@@ -11,7 +11,6 @@ import java.lang.reflect.Modifier;
 
 import net.jcip.annotations.Immutable;
 
-import com.mysema.query.annotations.QueryPathDepth;
 import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.annotations.QueryType;
 
@@ -37,7 +36,7 @@ public class BeanModelFactory {
         this(typeModelFactory, QueryTransient.class);
     }
     
-    public BeanModel create(Class<?> key, String prefix, int defaultPathDepth){
+    public BeanModel create(Class<?> key, String prefix){
         BeanModel beanModel = new BeanModel(
                 prefix,
                 key.getSuperclass().getName(), 
@@ -47,7 +46,6 @@ public class BeanModelFactory {
         for (Field f : key.getDeclaredFields()) {
             if (isValidField(f)){
                 TypeModel typeModel = typeModelFactory.create(f.getType(), f.getGenericType());
-                int pathDepth = defaultPathDepth;
                 if (f.getAnnotation(QueryType.class) != null){
                     TypeCategory typeCategory = TypeCategory.get(f.getAnnotation(QueryType.class).value());
                     if (typeCategory == null){
@@ -55,10 +53,7 @@ public class BeanModelFactory {
                     }
                     typeModel = typeModel.as(typeCategory);
                 }
-                if (f.getAnnotation(QueryPathDepth.class) != null){
-                    pathDepth = f.getAnnotation(QueryPathDepth.class).value();
-                }
-                beanModel.addProperty(new PropertyModel(beanModel, f.getName(), typeModel, pathDepth));    
+                beanModel.addProperty(new PropertyModel(beanModel, f.getName(), typeModel));    
             }            
         }
         return beanModel;

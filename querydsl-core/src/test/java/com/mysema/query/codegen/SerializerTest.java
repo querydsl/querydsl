@@ -35,7 +35,7 @@ public class SerializerTest {
                 "com.mysema.query.DomainClass",
                 "DomainClass");
         
-        PropertyModel field = new PropertyModel(type, "field", typeFactory.create(String.class), 2);
+        PropertyModel field = new PropertyModel(type, "field", typeFactory.create(String.class));
         type.addProperty(field);
         ParameterModel param = new ParameterModel("name", new ClassTypeModel(TypeCategory.STRING, String.class));
         type.addConstructor(new ConstructorModel(Collections.singleton(param)));

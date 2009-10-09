@@ -174,7 +174,7 @@ public class Processor {
                 if((conf.getSuperTypeAnn() == null 
                     || superClass.getAnnotation(conf.getSuperTypeAnn()) != null)
                     || superClass.getAnnotation(conf.getEntityAnn()) != null){
-                    BeanModel type = classModelFactory.create(superClass, namePrefix, conf.getDefaultPathDepth());
+                    BeanModel type = classModelFactory.create(superClass, namePrefix);
                     // include fields of supertype
                     model.include(type);    
                 }            
