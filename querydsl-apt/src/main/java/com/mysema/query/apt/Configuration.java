@@ -26,6 +26,8 @@ public class Configuration {
     
     private boolean useFields = true, useGetters = true;
     
+    private int defaultPathDepth = 2;
+    
     public Configuration(
             Class<? extends Annotation> entityAnn, 
             Class<? extends Annotation> superTypeAnn,
@@ -95,6 +97,14 @@ public class Configuration {
     
     public void setUseFields(boolean b){
         this.useFields = b;
+    }
+
+    public int getDefaultPathDepth() {
+        return defaultPathDepth;
+    }
+
+    public void setDefaultPathDepth(int defaultPathDepth) {
+        this.defaultPathDepth = defaultPathDepth;
     }
     
 

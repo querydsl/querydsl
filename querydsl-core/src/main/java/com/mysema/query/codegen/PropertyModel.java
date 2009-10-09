@@ -28,10 +28,13 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     @Nullable
     private final String keyTypeName, valueTypeName, queryTypeName;
     
+    private final int pathDepth;
+    
     private final TypeModel type;
     
-    public PropertyModel(BeanModel classModel, String name, TypeModel type){
+    public PropertyModel(BeanModel classModel, String name, TypeModel type, int pathDepth){
         this.classModel = classModel;
+        this.pathDepth = pathDepth;
         this.name = Assert.notNull(name);
         this.escapedName = JavaSyntaxUtils.isReserved(name) ? (name + "_") : name;
         this.type = Assert.notNull(type);
@@ -60,7 +63,7 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     }
 
     public PropertyModel createCopy(BeanModel model){
-        return new PropertyModel(model, name, type);
+        return new PropertyModel(model, name, type, pathDepth);
     }
 
     public boolean equals(Object o) {

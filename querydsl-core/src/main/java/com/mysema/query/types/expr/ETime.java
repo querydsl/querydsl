@@ -13,7 +13,6 @@ import com.mysema.query.types.operation.Ops;
 
 /**
  * ETime represents Time expressions
- * <p>The representation aims to be ISO 8601 compliant</p>
  * 
  * @author tiwe
  *

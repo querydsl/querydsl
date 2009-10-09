@@ -35,20 +35,11 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
     
     private final Path<?> root;
 
-    public PEntity(Class<? extends D> type, @NotEmpty String entityName,
-            PathMetadata<?> metadata) {
+    public PEntity(Class<? extends D> type, @NotEmpty String entityName, PathMetadata<?> metadata) {
         super(type);
         this.entityName = entityName;
         this.metadata = metadata;
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
-    }
-
-    public PEntity(Class<? extends D> type, @NotEmpty String entityName, @NotEmpty String var) {
-        this(type, Assert.hasLength(entityName), PathMetadata.forVariable(var));
-    }
-
-    public PEntity(Class<? extends D> type, @NotEmpty String entityName, Path<?> parent, @NotEmpty String property) {
-        this(type, Assert.hasLength(entityName), PathMetadata.forProperty(parent, property));
     }
 
     protected PBoolean createBoolean(@NotEmpty String propertyName) {
@@ -68,7 +59,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
     }
 
     protected <A> PEntity<A> createEntity(@NotEmpty String property, @NotEmpty String entityName, Class<A> type) {
-        return new PEntity<A>(type, entityName, this,property);
+        return new PEntity<A>(type, entityName, PathMetadata.forProperty(this, property));
     }
 
     protected <A> PEntityCollection<A> createEntityCollection(@NotEmpty String property, Class<A> type, @NotEmpty String entityName) {

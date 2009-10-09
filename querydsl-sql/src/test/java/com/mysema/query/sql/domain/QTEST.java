@@ -16,7 +16,7 @@ public class QTEST extends PEntity<java.lang.Object> {
     public final PString name = createString("name");
 
     public QTEST(@NotEmpty java.lang.String path) {
-        super(java.lang.Object.class, "test", path);
+        super(java.lang.Object.class, "test", PathMetadata.forVariable(path));
     }
 
     public QTEST(PathMetadata<?> metadata) {

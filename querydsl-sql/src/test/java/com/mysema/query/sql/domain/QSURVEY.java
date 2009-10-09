@@ -19,7 +19,7 @@ public class QSURVEY extends PEntity<java.lang.Object> {
     public final PNumber<java.lang.Integer> id = createNumber("id", java.lang.Integer.class);
 
     public QSURVEY(@NotEmpty java.lang.String path) {
-        super(java.lang.Object.class, "survey", path);
+        super(java.lang.Object.class, "survey", PathMetadata.forVariable(path));
     }
 
     public QSURVEY(PathMetadata<?> metadata) {

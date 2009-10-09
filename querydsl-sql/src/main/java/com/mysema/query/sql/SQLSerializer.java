@@ -13,6 +13,7 @@ import java.util.List;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.SerializerBase;
+import com.mysema.query.sql.oracle.SumOver;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.Constant;

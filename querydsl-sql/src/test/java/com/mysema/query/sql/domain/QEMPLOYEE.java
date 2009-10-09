@@ -33,7 +33,7 @@ public class QEMPLOYEE extends PEntity<java.lang.Object> {
     public final PNumber<java.lang.Integer> superiorId = createNumber("superior_id", java.lang.Integer.class);
 
     public QEMPLOYEE(@NotEmpty java.lang.String path) {
-        super(java.lang.Object.class, "employee2", path);
+        super(java.lang.Object.class, "employee2", PathMetadata.forVariable(path));
     }
 
     public QEMPLOYEE(PathMetadata<?> metadata) {

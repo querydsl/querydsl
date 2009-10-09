@@ -7,7 +7,6 @@ package com.mysema.query.sql.oracle;
 
 import java.util.Date;
 
-import com.mysema.query.sql.SumOver;
 import com.mysema.query.types.expr.EComparableBase;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
@@ -26,22 +25,16 @@ public class OracleGrammar {
 
     // global columns
 
-    public static ENumber<Integer> level = new PNumber<Integer>(Integer.class, createVariable("level"));
+    public static ENumber<Integer> level = new PNumber<Integer>(Integer.class, PathMetadata.forVariable("level"));
 
-    public static ENumber<Integer> rownum = new PNumber<Integer>(Integer.class, createVariable("rownum"));
+    public static ENumber<Integer> rownum = new PNumber<Integer>(Integer.class, PathMetadata.forVariable("rownum"));
 
-    public static EComparableBase<Date> sysdate = new PComparable<Date>(Date.class, createVariable("sysdate"));
+    public static EComparableBase<Date> sysdate = new PComparable<Date>(Date.class, PathMetadata.forVariable("sysdate"));
 
     // custom functions
 
     public static <A extends Number & Comparable<? super A>> SumOver<A> sumOver(Expr<A> expr) {
         return new SumOver<A>(expr);
-    }
-
-    // internal
-
-    private static PathMetadata<String> createVariable(@NotEmpty String var) {
-        return PathMetadata.forVariable(var);
     }
 
 }

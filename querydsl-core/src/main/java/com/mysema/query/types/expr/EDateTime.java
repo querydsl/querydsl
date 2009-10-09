@@ -13,7 +13,6 @@ import com.mysema.query.types.operation.Ops;
 
 /**
  * EDateTime represents Date / Time expressions
- * <p>The representation aims to be ISO 8601 compliant</p>
  * 
  * @author tiwe
  *
@@ -118,7 +117,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a day of week expression (range 1-7 /  MON-SUN)
+     * Create a day of week expression (range 1-7 / SUN-SAT)
      * <p>NOT supported in JDOQL and not in Derby</p>
      * 
      * @return

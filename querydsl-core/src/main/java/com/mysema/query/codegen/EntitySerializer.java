@@ -156,9 +156,25 @@ public class EntitySerializer implements Serializer{
 
         builder.append("    public " + queryType + "(PEntity<? extends "+localName+"> entity) {\n");
         builder.append("        super(entity.getType(), entity.getEntityName(), entity.getMetadata());\n");
+        if (!model.getEntityProperties().isEmpty()){
+            builder.append("        if (entity.getMetadata().getParent() == null){\n");
+            for (PropertyModel entityField : model.getEntityProperties()){
+                builder.append("            _" + entityField.getName()+"();\n"); 
+            }
+            builder.append("        }\n");    
+        }
+        
+        
         builder.append("    }\n\n");        
         builder.append("    public " + queryType + "(PathMetadata<?> metadata) {\n");
         builder.append("        super("+ localName + ".class, \"" + simpleName + "\", metadata);\n");
+        if (!model.getEntityProperties().isEmpty()){
+            builder.append("        if (metadata.getParent() == null){\n");
+            for (PropertyModel entityField : model.getEntityProperties()){
+                builder.append("            _" + entityField.getName()+"();\n"); 
+            }
+            builder.append("        }\n");    
+        }        
         builder.append("    }\n\n");
         writer.append(builder.toString());
     }
@@ -168,15 +184,11 @@ public class EntitySerializer implements Serializer{
         final String queryType = model.getPrefix() + simpleName;
         final String localName = model.getLocalName();
         builder.append("    public " + queryType + "(@NotEmpty String variable) {\n");
-        builder.append("        this(" + localName + ".class, variable);\n");
-        builder.append("    }\n\n");
-        
-        builder.append("    public " + queryType + "(Class<? extends " + localName + "> cl, @NotEmpty String variable) {\n");
-        builder.append("        super(cl, \"" + simpleName + "\", variable);\n");
+        builder.append("        super(" + localName + ".class, \""+simpleName+"\", PathMetadata.forVariable(variable));\n");
         for (PropertyModel entityField : model.getEntityProperties()){
             builder.append("        _" + entityField.getName()+"();\n"); 
         }
-        builder.append("    }\n\n");
+        builder.append("    }\n\n");        
     }  
 
     protected void dateField(PropertyModel field, Writer writer) throws IOException {

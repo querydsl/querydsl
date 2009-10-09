@@ -3,12 +3,13 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.sql;
+package com.mysema.query.sql.oracle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;

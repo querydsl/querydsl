@@ -25,11 +25,12 @@ import net.jcip.annotations.Immutable;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.mysema.query.annotations.QueryPathDepth;
 import com.mysema.query.annotations.QueryType;
 import com.mysema.query.codegen.BeanModel;
 import com.mysema.query.codegen.ConstructorModel;
-import com.mysema.query.codegen.PropertyModel;
 import com.mysema.query.codegen.ParameterModel;
+import com.mysema.query.codegen.PropertyModel;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeModel;
 
@@ -89,7 +90,8 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
                 String name = field.getSimpleName().toString();
                 if (configuration.isValidField(field)){
                     try{                        
-                        TypeModel typeModel = typeFactory.create(field.asType(), elementUtils);                            
+                        TypeModel typeModel = typeFactory.create(field.asType(), elementUtils);            
+                        int pathDepth = configuration.getDefaultPathDepth();
                         if (field.getAnnotation(QueryType.class) != null){
                             TypeCategory typeCategory = TypeCategory.get(field.getAnnotation(QueryType.class).value());
                             if (typeCategory == null){
@@ -99,7 +101,10 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
                             typeModel = typeModel.as(typeCategory);
                             types.put(name, typeCategory);
                         }                        
-                        properties.put(name, new PropertyModel(classModel, name, typeModel));    
+                        if (field.getAnnotation(QueryPathDepth.class) != null){
+                            pathDepth = field.getAnnotation(QueryPathDepth.class).value();
+                        }
+                        properties.put(name, new PropertyModel(classModel, name, typeModel, pathDepth));    
                     }catch(IllegalArgumentException ex){
                         StringBuilder builder = new StringBuilder();
                         builder.append("Caught exception for field ");
@@ -128,6 +133,7 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
                 if (configuration.isValidGetter(method)){
                     try{
                         TypeModel typeModel = typeFactory.create(method.getReturnType(), elementUtils);
+                        int pathDepth = configuration.getDefaultPathDepth();
                         if (method.getAnnotation(QueryType.class) != null){
                             TypeCategory typeCategory = TypeCategory.get(method.getAnnotation(QueryType.class).value());
                             if (typeCategory == null){
@@ -140,7 +146,10 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
                         }else if (types.containsKey(name)){
                             typeModel = typeModel.as(types.get(name));
                         }
-                        properties.put(name, new PropertyModel(classModel, name, typeModel));    
+                        if (method.getAnnotation(QueryPathDepth.class) != null){
+                            pathDepth = method.getAnnotation(QueryPathDepth.class).value();
+                        }
+                        properties.put(name, new PropertyModel(classModel, name, typeModel, pathDepth));    
                         
                     }catch(IllegalArgumentException ex){
                         StringBuilder builder = new StringBuilder();
