@@ -94,7 +94,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @param right
      * @return this + right
      */
-    public ENumber<D> add(Expr<D> right) {
+    public <N extends Number & Comparable<?>> ENumber<D> add(Expr<N> right) {
         return ONumber.create(getType(), Ops.ADD, this, right);
     }
     
@@ -169,7 +169,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @param right
      * @return this / right
      */
-    public ENumber<Double> div(D right) {
+    public <N extends Number & Comparable<?>> ENumber<Double> div(N right) {
         return ONumber.create(Double.class, Ops.DIV, this, ENumber.create(right));
     }
 
@@ -177,7 +177,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @param right
      * @return this / right
      */
-    public ENumber<Double> div(Expr<D> right) {
+    public <N extends Number & Comparable<?>> ENumber<Double> div(Expr<N> right) {
         return ONumber.create(Double.class, Ops.DIV, this, right);
     }
 
@@ -361,7 +361,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @param right
      * @return this * right
      */
-    public ENumber<D> mult(Expr<D> right) {
+    public <N extends Number & Comparable<?>> ENumber<D> mult(Expr<N> right) {
         return ONumber.create(getType(), Ops.MULT, this, right);
     }
 
@@ -410,7 +410,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @param right
      * @return this - right
      */
-    public ENumber<D> sub(Expr<D> right) {
+    public <N extends Number & Comparable<?>> ENumber<D> sub(Expr<N> right) {
         return ONumber.create(getType(), Ops.SUB, this, right);
     }
 

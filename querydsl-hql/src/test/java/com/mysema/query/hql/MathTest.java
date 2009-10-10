@@ -8,9 +8,16 @@ package com.mysema.query.hql;
 import org.junit.Test;
 
 import com.mysema.query.hql.domain.QCat;
+import com.mysema.query.types.path.PNumber;
 
 public class MathTest extends AbstractQueryTest{
 
+    @Test
+    public void test(){
+        PNumber<Integer> path = QCat.cat.bodyWeight;
+        toString("(cat.bodyWeight - sum(cat.bodyWeight)) * cat.bodyWeight", path.sub(path.sum()).mult(path));
+    }
+    
     @Test
     public void testArithmeticOperationsInFunctionalWay() {
         toString("cat.bodyWeight + :a1", cat.bodyWeight.add(10));

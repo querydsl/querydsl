@@ -63,7 +63,7 @@ public class ENumberConst<D extends Number & Comparable<?>> extends ENumber<D> i
     
     @SuppressWarnings("unchecked")
     @Override
-    public ENumber<D> add(Expr<D> right) {
+    public <N extends Number & Comparable<?>> ENumber<D> add(Expr<N> right) {
         if (right instanceof Constant){
             return add(((Constant<Number>)right).getConstant());
         }else{
@@ -78,7 +78,7 @@ public class ENumberConst<D extends Number & Comparable<?>> extends ENumber<D> i
     
     @SuppressWarnings("unchecked")
     @Override
-    public ENumber<D> sub(Expr<D> right) {
+    public <N extends Number & Comparable<?>> ENumber<D> sub(Expr<N> right) {
         if (right instanceof Constant){
             return sub(((Constant<Number>)right).getConstant());
         }else{
