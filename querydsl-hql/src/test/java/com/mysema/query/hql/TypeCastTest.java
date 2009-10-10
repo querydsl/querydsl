@@ -22,7 +22,7 @@ public class TypeCastTest {
     @Test
     public void mappedSuperclass(){
         QInheritedProperties subClass = QInheritedProperties.inheritedProperties;
-        QSuperclass superClass = new QSuperclass(subClass);
+        QSuperclass<InheritedProperties> superClass = subClass;
         
         assertEquals(InheritedProperties.class, superClass.getType());
         assertEquals(InheritedProperties.class.getSimpleName(), superClass.getEntityName());

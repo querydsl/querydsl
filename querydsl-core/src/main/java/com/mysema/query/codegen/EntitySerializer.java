@@ -221,7 +221,7 @@ public class EntitySerializer implements Serializer{
     protected void intro(BeanModel model, Writer writer) throws IOException {        
         StringBuilder builder = new StringBuilder();        
         introPackage(builder, model);        
-        introImports(builder);        
+        introImports(builder, model);        
         introJavadoc(builder, model);        
         introClassHeader(builder, model);        
         introDefaultInstance(builder, model);        
@@ -231,18 +231,34 @@ public class EntitySerializer implements Serializer{
 
     private void introSuper(StringBuilder builder, BeanModel model) {
         if (model.getSuperModel() != null){
-            BeanModel _super = model.getSuperModel();
-            final String simpleName = _super.getSimpleName();
-            final String queryType = _super.getPrefix() + simpleName;
-            builder.append("    public final "+queryType+" _super = new " + queryType + "(this);\n\n");
+            BeanModel superModel = model.getSuperModel();
+            String superQueryType = superModel.getPrefix() + superModel.getSimpleName();
+            if (!superModel.getPackageName().equals(model.getPackageName())){
+                superQueryType = superModel.getPackageName() + "." + superQueryType;
+            }
+            
+            if (superModel.isEntityModel()){
+                builder.append("    public final "+superQueryType+" _super = new " + superQueryType + "(this);\n\n");    
+            }else{
+                builder.append("    public final "+superQueryType+"<"+model.getLocalName()+"> _super = this;\n\n");
+            }            
         }        
     }
 
     protected void introClassHeader(StringBuilder builder, BeanModel model) {
         final String queryType = model.getPrefix() + model.getSimpleName();
         final String localName = model.getLocalName();
-        builder.append("@SuppressWarnings(\"all\")\n");
-        builder.append("public class " + queryType + " extends PEntity<" + localName + "> {\n\n");
+        builder.append("@SuppressWarnings(\"serial\")\n");
+        if (model.getSuperModel() != null && !model.getSuperModel().isEntityModel()){
+            BeanModel superModel = model.getSuperModel();            
+            String superQueryType = superModel.getPrefix() + superModel.getSimpleName();
+            if (!superModel.getPackageName().equals(model.getPackageName())){
+                superQueryType = superModel.getPackageName() + "." + superQueryType;
+            }
+            builder.append("public class " + queryType + " extends "+superQueryType+"<" + localName + "> {\n\n");
+        }else{
+            builder.append("public class " + queryType + " extends PEntity<" + localName + "> {\n\n");    
+        }        
     }
 
     protected void introDefaultInstance(StringBuilder builder, BeanModel model) {
@@ -252,10 +268,12 @@ public class EntitySerializer implements Serializer{
         builder.append("    public static final " + queryType + " " + unscapSimpleName + " = new " + queryType + "(\"" + unscapSimpleName + "\");\n\n");
     }
 
-    protected void introImports(StringBuilder builder) {
+    protected void introImports(StringBuilder builder, BeanModel model) {
         builder.append("import com.mysema.query.util.*;\n");
         builder.append("import com.mysema.query.types.path.*;\n");
-        builder.append("import com.mysema.query.types.expr.*;\n");
+        if (!model.getConstructors().isEmpty()){
+            builder.append("import com.mysema.query.types.expr.*;\n");
+        }
     }
 
     protected void introJavadoc(StringBuilder builder, BeanModel model) {

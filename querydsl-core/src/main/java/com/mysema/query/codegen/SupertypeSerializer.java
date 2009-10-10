@@ -28,21 +28,37 @@ public class SupertypeSerializer extends EntitySerializer{
     }
     
     @Override
-    protected void introImports(StringBuilder builder) {
+    protected void introImports(StringBuilder builder, BeanModel model) {
         builder.append("import com.mysema.query.util.*;\n");
         builder.append("import com.mysema.query.types.path.*;\n\n");
+    }
+    
+    @Override
+    protected void introClassHeader(StringBuilder builder, BeanModel model) {
+        final String queryType = model.getPrefix() + model.getSimpleName();
+        final String localName = model.getLocalName();
+        builder.append("@SuppressWarnings(\"serial\")\n");        
+        if (model.getSuperModel() != null){
+            BeanModel superModel = model.getSuperModel();
+            String superQueryType = superModel.getPrefix() + superModel.getSimpleName();
+            if (!superModel.getPackageName().equals(model.getPackageName())){
+                superQueryType = superModel.getPackageName() + "." + superQueryType;
+            }
+            builder.append("public abstract class " + queryType + " extends "+superQueryType+"<" + localName + "> {\n\n");
+        }else{
+            builder.append("public abstract class " + queryType + "<T extends "+localName+"> extends PEntity<T> {\n\n");    
+        }        
     }
     
     @Override
     protected void constructors(BeanModel model, Writer writer) throws IOException {
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
-        final String localName = model.getLocalName();
         
         StringBuilder builder = new StringBuilder();
-        builder.append("    public " + queryType + "(PEntity<? extends "+localName+"> entity) {\n");
-        builder.append("        super(entity.getType(), entity.getEntityName(), entity.getMetadata());\n");
-        builder.append("    }\n\n");
+        builder.append("    public "+queryType+"(Class<? extends T> type, @NotEmpty String entityName, PathMetadata<?> metadata) {\n");
+        builder.append("        super(type, entityName, metadata);\n");
+        builder.append("     }\n");
         writer.append(builder.toString());
     }
 

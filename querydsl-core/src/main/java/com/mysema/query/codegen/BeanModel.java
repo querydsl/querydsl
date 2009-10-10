@@ -35,6 +35,8 @@ public final class BeanModel implements Comparable<BeanModel> {
     // mutable
     private int escapeSuffix = 1;
     
+    private boolean entityModel = true;
+    
     private final String simpleName, name, packageName, localName;
     
     private final String prefix;
@@ -202,6 +204,14 @@ public final class BeanModel implements Comparable<BeanModel> {
 
     public void setSuperModel(BeanModel superModel) {
         this.superModel = superModel;
+    }
+
+    public boolean isEntityModel() {
+        return entityModel;
+    }
+
+    public void setEntityModel(boolean entityModel) {
+        this.entityModel = entityModel;
     }
     
 }

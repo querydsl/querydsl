@@ -21,8 +21,7 @@ public class EmbeddableSerializer extends EntitySerializer{
     }
     
     @Override
-    protected void introImports(StringBuilder builder) {
-        builder.append("import com.mysema.query.util.*;\n");
+    protected void introImports(StringBuilder builder, BeanModel model) {
         builder.append("import com.mysema.query.types.path.*;\n\n");
     }
     

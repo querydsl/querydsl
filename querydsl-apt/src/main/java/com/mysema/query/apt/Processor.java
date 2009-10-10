@@ -77,6 +77,7 @@ public class Processor {
         if (conf.getSuperTypeAnn() != null) {
             for (Element element : roundEnv.getElementsAnnotatedWith(conf.getSuperTypeAnn())) {
                 BeanModel model = element.accept(entityVisitor, null);
+                model.setEntityModel(false);
                 superTypes.put(model.getName(), model);
             }
             // add supertype fields
@@ -158,8 +159,10 @@ public class Processor {
                     }
                     if (stype.equals(model.getSupertypeName())){
                         model.setSuperModel(sdecl);    
-                    }                
-                    model.include(sdecl);
+                    }               
+                    if (sdecl.isEntityModel()){
+                        model.include(sdecl);    
+                    }                    
                     stype = sdecl.getSupertypeName();
                 }
             } 
