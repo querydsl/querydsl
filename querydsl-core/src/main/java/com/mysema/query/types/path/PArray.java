@@ -31,11 +31,11 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>{
     
     protected final Class<D> componentType;
     
-    private EBoolean isnull, isnotnull;
+    private volatile EBoolean isnull, isnotnull;
     
     private final PathMetadata<?> metadata;
     
-    private ENumber<Integer> size;
+    private volatile ENumber<Integer> size;
     
     private final Path<?> root;
 

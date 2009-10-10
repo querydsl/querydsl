@@ -31,7 +31,7 @@ public class PComponentCollection<D> extends ECollectionBase<D> implements PColl
     
     private final PathMetadata<?> metadata;
     
-    private EBoolean isnull, isnotnull;    
+    private volatile EBoolean isnull, isnotnull;    
     
     @SuppressWarnings("unchecked")
     public PComponentCollection(Class<D> type, PathMetadata<?> metadata) {

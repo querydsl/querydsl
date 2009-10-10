@@ -34,7 +34,7 @@ public class PComponentMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {
     
     private final Path<?> root;
     
-    private EBoolean isnull, isnotnull;    
+    private volatile EBoolean isnull, isnotnull;    
 
     @SuppressWarnings("unchecked")
     public PComponentMap(Class<K> keyType, Class<V> valueType,

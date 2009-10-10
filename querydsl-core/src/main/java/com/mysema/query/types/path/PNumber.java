@@ -7,7 +7,6 @@ package com.mysema.query.types.path;
 
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EMapBase;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
@@ -23,7 +22,7 @@ import com.mysema.query.util.NotEmpty;
 @SuppressWarnings("serial")
 public class PNumber<D extends Number & Comparable<?>> extends ENumber<D> implements Path<D> {
     
-    private EBoolean isnull, isnotnull;
+    private volatile EBoolean isnull, isnotnull;
     
     private final PathMetadata<?> metadata;
     

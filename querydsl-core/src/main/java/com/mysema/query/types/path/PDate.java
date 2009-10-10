@@ -8,7 +8,6 @@ package com.mysema.query.types.path;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EDate;
-import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.util.NotEmpty;
@@ -21,7 +20,7 @@ import com.mysema.query.util.NotEmpty;
 @SuppressWarnings({"unchecked","serial"})
 public class PDate<D extends Comparable> extends EDate<D> implements Path<D>{
 
-    private EBoolean isnull, isnotnull;
+    private volatile EBoolean isnull, isnotnull;
     
     private final PathMetadata<?> metadata;
     

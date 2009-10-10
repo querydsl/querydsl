@@ -21,16 +21,38 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings({"unchecked","serial"})
 public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     
-    private volatile ENumber<Integer> dayOfMonth, month, year;
+    private static final EDate<Date> currentDate = currentDate(Date.class);
     
     public static EDate<java.sql.Date> create(java.sql.Date date){
         return new EDateConst(date);
     }
     
+    /**
+     * Get an expression representing the current date as a EDate instance
+     * 
+     * @return
+     */
+    public static EDate<Date> currentDate() {
+        return currentDate;
+    }
+
+    /**
+     * Get an expression representing the current date as a EDate instance
+     * 
+     * @return
+     */
+    public static <T extends Comparable> EDate<T> currentDate(Class<T> cl) {
+        return ODate.create(cl, Ops.DateTimeOps.CURRENT_DATE);
+    }
+    
+    private volatile ENumber<Integer> dayOfMonth, dayOfWeek, dayOfYear;
+    
+    private volatile ENumber<Integer> week, month, year;
+    
     public EDate(Class<? extends D> type) {
         super(type);
     }
-
+    
     /**
      * Create a day of month expression (range 1-31)
      * 
@@ -41,6 +63,32 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
             dayOfMonth = ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_MONTH, this);
         }
         return dayOfMonth;
+    }
+
+    /**
+     * Create a day of week expression (range 1-7 / SUN-SAT)     
+     * <p>NOT supported in JDOQL and not in Derby</p>
+     * 
+     * @return
+     */
+    public ENumber<Integer> getDayOfWeek() {
+        if (dayOfWeek == null){
+            dayOfWeek = ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_WEEK, this); 
+        }
+        return dayOfWeek; 
+    }
+
+    /**
+     * Create a day of year expression (range 1-356)
+     * <p>NOT supported in JDOQL and not in Derby</p>
+     * 
+     * @return
+     */
+    public ENumber<Integer> getDayOfYear() {
+        if (dayOfYear == null){
+            dayOfYear = ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_YEAR, this); 
+        }
+        return dayOfYear;
     }
     
     /**
@@ -56,6 +104,18 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
+     * Create a week expression
+     * 
+     * @return
+     */
+    public ENumber<Integer> getWeek() {
+        if (week == null){
+            week = ONumber.create(Integer.class, Ops.DateTimeOps.WEEK,  this); 
+        }
+        return week; 
+    }
+    
+    /**
      * Create a year expression 
      * 
      * @return
@@ -65,52 +125,5 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
             year = ONumber.create(Integer.class, Ops.DateTimeOps.YEAR, this);
         }
         return year;
-    }
-    
-    /**
-     * Create a day of week expression (range 1-7 / SUN-SAT)     
-     * <p>NOT supported in JDOQL and not in Derby</p>
-     * 
-     * @return
-     */
-    public ENumber<Integer> getDayOfWeek() {
-        return ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_WEEK, this);
-    }
-
-    /**
-     * Create a day of year expression (range 1-356)
-     * <p>NOT supported in JDOQL and not in Derby</p>
-     * 
-     * @return
-     */
-    public ENumber<Integer> getDayOfYear() {
-        return ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_YEAR, this);
-    }
-
-    /**
-     * Create a week expression
-     * 
-     * @return
-     */
-    public ENumber<Integer> getWeek() {
-        return ONumber.create(Integer.class, Ops.DateTimeOps.WEEK,  this);
-    }
-    
-    /**
-     * Get an expression representing the current date as a EDate instance
-     * 
-     * @return
-     */
-    public static EDate<Date> currentDate() {
-        return currentDate(Date.class);
-    }
-    
-    /**
-     * Get an expression representing the current date as a EDate instance
-     * 
-     * @return
-     */
-    public static <T extends Comparable> EDate<T> currentDate(Class<T> cl) {
-        return ODate.create(cl, Ops.DateTimeOps.CURRENT_DATE);
     }
 }

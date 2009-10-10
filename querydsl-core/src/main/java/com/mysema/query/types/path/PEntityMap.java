@@ -26,7 +26,7 @@ import com.mysema.query.util.NotEmpty;
 @SuppressWarnings("serial")
 public class PEntityMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {
     
-    private EBoolean isnull, isnotnull;
+    private volatile EBoolean isnull, isnotnull;
     
     private final Class<K> keyType;
     

@@ -7,7 +7,6 @@ package com.mysema.query.types.path;
 
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.util.NotEmpty;
@@ -22,7 +21,7 @@ import com.mysema.query.util.NotEmpty;
 @SuppressWarnings("serial")
 public class PBoolean extends EBoolean implements Path<Boolean> {
     
-    private EBoolean isnull, isnotnull;
+    private volatile EBoolean isnull, isnotnull;
     
     private final PathMetadata<?> metadata;
     

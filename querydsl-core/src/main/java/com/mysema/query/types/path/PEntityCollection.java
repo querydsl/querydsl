@@ -10,11 +10,10 @@ import java.util.Collection;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EDateTime;
-import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.EEntity;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
@@ -36,16 +35,12 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     
     protected final String entityName;
     
-    private EBoolean isnull, isnotnull;    
+    private volatile EBoolean isnull, isnotnull, empty;    
     
-    private ENumber<Integer> size;    
+    private volatile ENumber<Integer> size;    
     
     private final Path<?> root;
     
-    private EBoolean empty;
-    
-    private EBoolean notEmpty;
-
     @SuppressWarnings("unchecked")
     public PEntityCollection(Class<D> type, @NotEmpty String entityName, PathMetadata<?> metadata) {
         super((Class)Collection.class);
@@ -123,10 +118,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     
     @Override
     public EBoolean isNotEmpty() {
-        if (notEmpty == null){
-            notEmpty = isEmpty().not(); 
-        }
-        return notEmpty;
+        return isEmpty().not();
     }
 
     @Override

@@ -5,14 +5,10 @@
  */
 package com.mysema.query.types.path;
 
-import java.lang.reflect.InvocationTargetException;
-
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EDateTime;
-import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.EEntity;
+import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.util.NotEmpty;
@@ -29,7 +25,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
     
     private final String entityName;
     
-    private EBoolean isnull, isnotnull;
+    private volatile EBoolean isnull, isnotnull;
     
     private final PathMetadata<?> metadata;
     

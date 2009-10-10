@@ -32,15 +32,13 @@ public class PEntityList<D> extends PEntityCollection<D> implements PList<D> {
     
     @Override
     public PEntity<D> get(Expr<Integer> index) {
-        return new PEntity<D>(elementType, entityName, PathMetadata.forListAccess(
-                this, index));
+        return new PEntity<D>(elementType, entityName, PathMetadata.forListAccess(this, index));
     }
 
     @Override
     public PEntity<D> get(int index) {
         // TODO : cache
-        return new PEntity<D>(elementType, entityName, PathMetadata.forListAccess(
-                this, index));
+        return new PEntity<D>(elementType, entityName, PathMetadata.forListAccess(this, index));
     }
 
 }
