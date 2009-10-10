@@ -224,33 +224,35 @@ public class EntitySerializer implements Serializer{
         introImports(builder, model);        
         introJavadoc(builder, model);        
         introClassHeader(builder, model);        
-        introDefaultInstance(builder, model);        
-        introSuper(builder, model);
+        introDefaultInstance(builder, model);   
+        if (model.getSuperModel() != null){
+            introSuper(builder, model);    
+        }        
         writer.append(builder.toString());
     }
 
-    private void introSuper(StringBuilder builder, BeanModel model) {
-        if (model.getSuperModel() != null){
-            BeanModel superModel = model.getSuperModel();
-            String superQueryType = superModel.getPrefix() + superModel.getSimpleName();
-            if (!superModel.getPackageName().equals(model.getPackageName())){
-                superQueryType = superModel.getPackageName() + "." + superQueryType;
-            }
-            
-            if (superModel.isEntityModel()){
-                builder.append("    public final "+superQueryType+" _super = new " + superQueryType + "(this);\n\n");    
-            }else{
-                builder.append("    public final "+superQueryType+"<"+model.getLocalName()+"> _super = this;\n\n");
-            }            
-        }        
+    protected void introSuper(StringBuilder builder, BeanModel model) {
+        BeanModel superModel = model.getSuperModel();
+        String superQueryType = superModel.getPrefix() + superModel.getSimpleName();
+        if (!superModel.getPackageName().equals(model.getPackageName())){
+            superQueryType = superModel.getPackageName() + "." + superQueryType;
+        }            
+        if (superModel.isEntityModel()){
+            builder.append("    public final "+superQueryType+" _super = new " + superQueryType + "(this);\n\n");    
+        }else{
+            builder.append("    public final "+superQueryType+"<"+model.getLocalName()+"> _super = this;\n\n");
+        }              
     }
 
     protected void introClassHeader(StringBuilder builder, BeanModel model) {
         final String queryType = model.getPrefix() + model.getSimpleName();
         final String localName = model.getLocalName();
         builder.append("@SuppressWarnings(\"serial\")\n");
-        if (model.getSuperModel() != null && !model.getSuperModel().isEntityModel()){
-            BeanModel superModel = model.getSuperModel();            
+        BeanModel superModel = model.getSuperModel();
+        while (superModel != null && superModel.isEntityModel()){
+            superModel = superModel.getSuperModel();
+        }
+        if (superModel != null){            
             String superQueryType = superModel.getPrefix() + superModel.getSimpleName();
             if (!superModel.getPackageName().equals(model.getPackageName())){
                 superQueryType = superModel.getPackageName() + "." + superQueryType;
