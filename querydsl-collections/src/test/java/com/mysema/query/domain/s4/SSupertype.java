@@ -1,9 +1,9 @@
-package com.mysema.query.domain.hierarchy;
+package com.mysema.query.domain.s4;
 
 import com.mysema.query.annotations.QuerySupertype;
 
 @QuerySupertype
-public class Supertype {
+public class SSupertype {
 
     String supertypeField;
     

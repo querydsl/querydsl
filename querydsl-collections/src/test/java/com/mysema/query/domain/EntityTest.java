@@ -1,8 +1,12 @@
-package com.mysema.query.domain.hierarchy;
+package com.mysema.query.domain;
 
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import com.mysema.query.domain.hierarchy.QEntity2;
+import com.mysema.query.domain.hierarchy.QEntity3;
+import com.mysema.query.domain.hierarchy.QSupertype;
 
 public class EntityTest {
 

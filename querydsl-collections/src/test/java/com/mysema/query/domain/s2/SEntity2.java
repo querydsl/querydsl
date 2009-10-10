@@ -1,7 +1,7 @@
-package com.mysema.query.domain.hierarchy.s2;
+package com.mysema.query.domain.s2;
 
 import com.mysema.query.annotations.QueryEntity;
-import com.mysema.query.domain.hierarchy.s4.SSupertype;
+import com.mysema.query.domain.s4.SSupertype;
 
 @QueryEntity
 public class SEntity2 extends SSupertype{

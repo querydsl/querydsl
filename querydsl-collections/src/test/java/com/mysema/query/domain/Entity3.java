@@ -1,4 +1,4 @@
-package com.mysema.query.domain.hierarchy;
+package com.mysema.query.domain;
 
 import com.mysema.query.annotations.QueryEntity;
 
