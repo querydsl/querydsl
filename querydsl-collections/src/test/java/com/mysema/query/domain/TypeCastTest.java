@@ -1,6 +1,6 @@
-package com.mysema.query.collections.domain;
+package com.mysema.query.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Collections;
 
@@ -9,6 +9,10 @@ import org.junit.Test;
 import com.mysema.query.collections.ColQuery;
 import com.mysema.query.collections.MiniApi;
 import com.mysema.query.collections.impl.ColQueryImpl;
+import com.mysema.query.domain.animal.Animal;
+import com.mysema.query.domain.animal.Cat;
+import com.mysema.query.domain.animal.QAnimal;
+import com.mysema.query.domain.animal.QCat;
 
 public class TypeCastTest {
 

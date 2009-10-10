@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.domain;
+package com.mysema.query.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

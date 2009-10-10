@@ -1,4 +1,4 @@
-package com.mysema.query.collections.domain;
+package com.mysema.query.domain;
 
 import org.junit.Test;
 

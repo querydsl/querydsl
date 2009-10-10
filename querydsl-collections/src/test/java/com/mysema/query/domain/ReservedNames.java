@@ -1,4 +1,4 @@
-package com.mysema.query.collections.domain;
+package com.mysema.query.domain;
 
 import java.util.List;
 import java.util.Map;

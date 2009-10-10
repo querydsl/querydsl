@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.domain;
+package com.mysema.query.domain;
 
 import java.util.Collection;
 import java.util.List;
@@ -12,8 +12,8 @@ import java.util.Set;
 import java.util.SortedSet;
 
 import com.mysema.query.annotations.QueryEntity;
-import com.mysema.query.collections.domain.Host.Reference;
-import com.mysema.query.collections.domain2.RelationType2;
+import com.mysema.query.domain.Host.Reference;
+import com.mysema.query.domain.rel.RelationType2;
 
 @QueryEntity
 @SuppressWarnings("unchecked")

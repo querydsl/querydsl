@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.domain2;
+package com.mysema.query.domain.rel;
 
 import java.util.List;
 

@@ -13,8 +13,8 @@ import org.junit.Before;
 
 import com.mysema.query.alias.Alias;
 import com.mysema.query.collections.ColQueryTemplates;
-import com.mysema.query.collections.domain.Cat;
-import com.mysema.query.collections.domain.QCat;
+import com.mysema.query.domain.animal.Cat;
+import com.mysema.query.domain.animal.QCat;
 import com.mysema.query.types.expr.Expr;
 
 /**

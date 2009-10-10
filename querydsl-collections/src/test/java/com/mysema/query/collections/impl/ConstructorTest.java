@@ -2,7 +2,7 @@ package com.mysema.query.collections.impl;
 
 import org.junit.Test;
 
-import com.mysema.query.collections.domain.QCat;
+import com.mysema.query.domain.animal.QCat;
 
 
 public class ConstructorTest {

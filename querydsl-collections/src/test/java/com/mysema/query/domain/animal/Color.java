@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.domain;
+package com.mysema.query.domain.animal;
 
 public enum Color {
     BLACK, TABBY

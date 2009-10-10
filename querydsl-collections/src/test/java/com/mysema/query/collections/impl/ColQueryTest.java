@@ -15,7 +15,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.mysema.query.collections.domain.Cat;
+import com.mysema.query.domain.animal.Cat;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 
