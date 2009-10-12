@@ -11,9 +11,9 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.mysema.query.animal.Cat;
+import com.mysema.query.animal.QCat;
 import com.mysema.query.collections.MiniApi;
-import com.mysema.query.domain.animal.Cat;
-import com.mysema.query.domain.animal.QCat;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 

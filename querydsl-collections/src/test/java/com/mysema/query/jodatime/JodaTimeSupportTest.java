@@ -1,4 +1,4 @@
-package com.mysema.query.domain;
+package com.mysema.query.jodatime;
 
 import static org.junit.Assert.assertTrue;
 

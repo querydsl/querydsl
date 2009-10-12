@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.domain.animal;
+package com.mysema.query.animal;
 
 import java.util.Date;
 

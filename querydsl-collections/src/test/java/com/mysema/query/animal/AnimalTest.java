@@ -1,4 +1,4 @@
-package com.mysema.query.domain.animal;
+package com.mysema.query.animal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

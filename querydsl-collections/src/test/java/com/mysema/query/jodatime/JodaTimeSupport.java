@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.domain;
+package com.mysema.query.jodatime;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;

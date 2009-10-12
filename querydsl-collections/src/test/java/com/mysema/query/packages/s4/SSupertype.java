@@ -1,4 +1,4 @@
-package com.mysema.query.domain.s4;
+package com.mysema.query.packages.s4;
 
 import com.mysema.query.annotations.QuerySupertype;
 

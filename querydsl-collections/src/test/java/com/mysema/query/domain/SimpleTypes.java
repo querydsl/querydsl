@@ -12,6 +12,8 @@ import java.util.Locale;
 
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryTransient;
+import com.mysema.query.literals.CustomComparableLiteral;
+import com.mysema.query.literals.CustomLiteral;
 
 @QueryEntity
 public class SimpleTypes {
