@@ -18,8 +18,7 @@ public class TypeCastTest {
         QCat cat = new QCat(animal.getMetadata());
         System.out.println(cat);
 
-        ColQuery query = MiniApi.from(animal, Collections.<Animal> emptyList())
-                .from(cat, Collections.<Cat> emptyList());
+        ColQuery query = MiniApi.from(animal, Collections.<Animal> emptyList()).from(cat, Collections.<Cat> emptyList());
         assertEquals(1, ((ColQueryImpl) query).getMetadata().getJoins().size());
     }
 
