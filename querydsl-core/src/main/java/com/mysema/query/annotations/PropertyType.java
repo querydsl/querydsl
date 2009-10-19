@@ -39,8 +39,6 @@ public enum PropertyType {
     /**
      * for PTime fields
      */
-    TIME
-    
-    
+    TIME  
 
 }

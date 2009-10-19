@@ -1,9 +1,9 @@
-package com.mysema.query.domain;
+package com.mysema.query.domain.p1;
 
 import com.mysema.query.annotations.QueryEntity;
 
 @QueryEntity
-public class Entity1 {
+public class SEntity1 {
 
     String entity1Field;
 }

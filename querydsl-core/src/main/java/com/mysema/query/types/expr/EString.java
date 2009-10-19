@@ -23,6 +23,10 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings("serial")
 public abstract class EString extends EComparable<String> {
     
+    public static final EString emptyString = new EStringConst("");
+    
+    public static final EString percentString = new EStringConst("%");
+    
     /**
      * Factory method for constants
      * 
@@ -30,7 +34,13 @@ public abstract class EString extends EComparable<String> {
      * @return
      */
     public static final EString create(String str){
-        return new EStringConst(Assert.notNull(str));
+        if (str.equals("")){
+            return emptyString;
+        }else if (str.equals("%")){
+            return percentString;
+        }else{
+            return new EStringConst(Assert.notNull(str));    
+        }        
     }
     
     private volatile ENumber<Long> length;

@@ -27,6 +27,15 @@ import com.mysema.query.types.operation.Ops.MathOps;
 public abstract class ENumber<D extends Number & Comparable<?>> extends EComparableBase<D> {
     
     private static final ENumber<Double> random = ONumber.create(Double.class, MathOps.RANDOM);
+    
+    @SuppressWarnings("unchecked")
+    private static final ENumber<Integer>[] ints = new ENumber[256];
+    
+    static{
+        for (int i = 0; i < 256; i++){
+            ints[i] = new ENumberConst<Integer>(Integer.class, Integer.valueOf(i));
+        }
+    }
         
     /**
      * Factory method
@@ -37,7 +46,15 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      */    
     @SuppressWarnings("unchecked")
     public static <T extends Number & Comparable<?>> ENumber<T> create(T val){
-        return new ENumberConst<T>((Class<T>)val.getClass(),Assert.notNull(val,"val is null"));
+        return new ENumberConst<T>((Class<T>)val.getClass(), Assert.notNull(val,"val is null"));
+    }
+    
+    public static ENumber<Integer> create(int i){
+        if (i >= 0 && i < 256){
+            return ints[i];
+        }else{
+            return new ENumberConst<Integer>(Integer.class, Integer.valueOf(i));
+        }
     }
     
     /**

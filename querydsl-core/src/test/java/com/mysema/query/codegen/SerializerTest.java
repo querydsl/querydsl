@@ -29,11 +29,11 @@ public class SerializerTest {
     public SerializerTest() {
         TypeModelFactory typeFactory = new TypeModelFactory();
         type = new BeanModel(
-                "Q",
-                "com.mysema.query.DomainSuperClass",
+                "Q",                
                 "com.mysema.query", 
                 "com.mysema.query.DomainClass",
-                "DomainClass");
+                "DomainClass",
+                Collections.singleton("com.mysema.query.DomainSuperClass"));
         
         PropertyModel field = new PropertyModel(type, "field", typeFactory.create(String.class));
         type.addProperty(field);

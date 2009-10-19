@@ -146,31 +146,37 @@ public class Processor {
     }
         
     private void addSupertypeFields(BeanModel model, Map<String,BeanModel>... superTypes){
-        String stype = model.getSupertypeName();
-        // iterate over supertypes
-        for (Map<String,BeanModel> stypes : superTypes){
-            if (stypes.containsKey(stype)) {
-                while (true) {
-                    BeanModel sdecl;
-                    if (stypes.containsKey(stype)) {
-                        sdecl = stypes.get(stype);
-                    } else {
-                        break;
+        boolean singleSuperType = model.getSuperTypes().size() == 1;
+        for (String stype : model.getSuperTypes()){
+         // iterate over supertypes
+            for (Map<String,BeanModel> stypes : superTypes){
+                if (stypes.containsKey(stype)) {
+                    while (true) {
+                        BeanModel sdecl;
+                        if (stypes.containsKey(stype)) {
+                            sdecl = stypes.get(stype);
+                        } else {
+                            break;
+                        }
+                        if (singleSuperType && model.getSuperTypes().contains(stype)){
+                            model.setSuperModel(sdecl);
+                        }
+                        if (sdecl.isEntityModel()){
+                            model.include(sdecl);    
+                        }              
+                        if (sdecl.getSuperTypes().isEmpty()){
+                            stype = null;
+                        }else{
+                            stype = sdecl.getSuperTypes().iterator().next();    
+                        }                        
                     }
-                    if (stype.equals(model.getSupertypeName())){
-                        model.setSuperModel(sdecl);    
-                    }               
-                    if (sdecl.isEntityModel()){
-                        model.include(sdecl);    
-                    }                    
-                    stype = sdecl.getSupertypeName();
-                }
-            } 
-        }
+                } 
+            }
+        }        
         
         // create super class model via reflection
-        if (model.getSuperModel() == null){
-            stype = model.getSupertypeName();
+        if (model.getSuperModel() == null && model.getSuperTypes().size() == 1){
+            String stype = model.getSuperTypes().iterator().next();
             Class<?> superClass = safeClassForName(stype);
             if (superClass != null && !superClass.equals(Object.class)) {
                 // handle the supertype only, if it has the proper annotations
@@ -184,15 +190,15 @@ public class Processor {
             }
         }
     }
-    
-    private static Class<?> safeClassForName(String stype) {
+            
+    private Class<?> safeClassForName(String stype) {
         try {
-            return stype != null ? Class.forName(stype) : null;
+            return Class.forName(stype);
         } catch (ClassNotFoundException e) {
             return null;
         }
-    } 
-        
+    }
+
     private void serialize(Serializer serializer, Map<String, BeanModel> types) {
         Messager msg = env.getMessager();
         for (BeanModel type : types.values()) {

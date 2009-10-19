@@ -29,6 +29,11 @@ public class EStringConst extends EString implements Constant<String>{
         this.constant = constant;
     }
     
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
+    }
+    
     @SuppressWarnings("unchecked")
     @Override
     public EString append(Expr<String> s) {
@@ -48,12 +53,12 @@ public class EStringConst extends EString implements Constant<String>{
     public Expr<Character> charAt(int i) {
         return Expr.create(constant.charAt(i));
     }
-    
+
     @Override
     public EString concat(String s) {
         return append(s);
     }
-
+    
     @Override
     public EBoolean eq(String s){
         return EBoolean.create(constant.equals(s));
@@ -64,7 +69,7 @@ public class EStringConst extends EString implements Constant<String>{
     public boolean equals(Object o) {
         return o instanceof Constant ? ((Constant<?>) o).getConstant().equals(constant) : false;
     }
-    
+
     @Override
     public EBoolean equalsIgnoreCase(String str) {
         return EBoolean.create(constant.equalsIgnoreCase(str));
@@ -79,7 +84,7 @@ public class EStringConst extends EString implements Constant<String>{
     public int hashCode() {
         return constant.hashCode();
     }
-
+    
     @Override
     public EBoolean isEmpty(){
         return EBoolean.create(constant.isEmpty());
@@ -105,12 +110,12 @@ public class EStringConst extends EString implements Constant<String>{
         }
         return lower;
     }
-    
+
     @Override
     public EBoolean matches(String pattern){
         return EBoolean.create(constant.matches(pattern));
     }
-
+    
     @Override
     public EBoolean ne(String s){
         return EBoolean.create(!constant.equals(s));
@@ -132,10 +137,15 @@ public class EStringConst extends EString implements Constant<String>{
     }
     
     @Override
+    public Expr<String[]> split(String regex) {
+        return Expr.create(constant.split(regex));
+    }
+    
+    @Override
     public EString substring(int beginIndex) {
         return EString.create(constant.substring(beginIndex));
     }
-    
+
     @Override
     public EString substring(int beginIndex, int endIndex) {
         return EString.create(constant.substring(beginIndex, endIndex));
@@ -145,7 +155,7 @@ public class EStringConst extends EString implements Constant<String>{
     public EString toLowerCase() {
         return lower();
     }
-
+    
     @Override
     public EString toUpperCase() {
         return upper();
@@ -165,15 +175,5 @@ public class EStringConst extends EString implements Constant<String>{
             upper = EString.create(constant.toUpperCase()); 
         }
         return upper; 
-    }
-    
-    @Override
-    public Expr<String[]> split(String regex) {
-        return Expr.create(constant.split(regex));
-    }
-    
-    @Override
-    public void accept(Visitor v) {
-        v.visit(this);        
     }
 }

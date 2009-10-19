@@ -8,6 +8,9 @@ package com.mysema.query.codegen;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import net.jcip.annotations.Immutable;
 
@@ -37,12 +40,23 @@ public class BeanModelFactory {
     }
     
     public BeanModel create(Class<?> key, String prefix){
+        Collection<String> superTypes;
+        if (key.isInterface()){
+            superTypes = new ArrayList<String>();
+            for (Class<?> iface : key.getInterfaces()){
+                if (!iface.getName().startsWith("java")){
+                    superTypes.add(iface.getName());
+                }
+            }
+        }else{
+            superTypes = Collections.singleton(key.getSuperclass().getName());
+        }
         BeanModel beanModel = new BeanModel(
-                prefix,
-                key.getSuperclass().getName(), 
+                prefix, 
                 key.getPackage().getName(), 
                 key.getName(), 
-                key.getSimpleName());
+                key.getSimpleName(),
+                superTypes);
         for (Field f : key.getDeclaredFields()) {
             if (isValidField(f)){
                 TypeModel typeModel = typeModelFactory.create(f.getType(), f.getGenericType());

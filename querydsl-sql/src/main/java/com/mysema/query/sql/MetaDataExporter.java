@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Types;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -97,7 +98,7 @@ public class MetaDataExporter {
 //        ClassModelFactory factory = new ClassModelFactory(new TypeModelFactory());
         while (tables.next()) {
             String tableName = tables.getString(3);
-            BeanModel classModel = new BeanModel(namePrefix, null, "java.lang", "java.lang.Object", tableName);
+            BeanModel classModel = new BeanModel(namePrefix, "java.lang", "java.lang.Object", tableName, Collections.<String>emptySet());
             ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
             while (columns.next()) {
                 String name = columns.getString(4);

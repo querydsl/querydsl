@@ -1,15 +1,42 @@
-package com.mysema.query.jodatime;
+package com.mysema.query.domain;
 
 import static org.junit.Assert.assertTrue;
 
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+import org.joda.time.Instant;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
+import org.joda.time.Partial;
 import org.junit.Test;
 
+import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PTime;
 
 public class JodaTimeSupportTest {
+    
+    @QueryEntity
+    public static class JodaTimeSupport {
+
+        DateMidnight dateMidnight;
+
+        DateTime dateTime;
+
+        Instant instant;
+
+        LocalDate localDate;
+
+        LocalDateTime localDateTime;
+
+        LocalTime localTime;
+
+        Partial partial;
+
+    }
 
     @SuppressWarnings("unchecked")
     @Test

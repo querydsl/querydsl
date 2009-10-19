@@ -6,6 +6,8 @@
 package com.mysema.query.apt;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -14,9 +16,11 @@ import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.SimpleElementVisitor6;
@@ -32,6 +36,8 @@ import com.mysema.query.codegen.ParameterModel;
 import com.mysema.query.codegen.PropertyModel;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeModel;
+
+import javax.lang.model.type.TypeMirror;
 
 /**
  * @author tiwe
@@ -58,9 +64,22 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
     @Override
     public BeanModel visitType(TypeElement e, Void p) {
         Elements elementUtils = env.getElementUtils();
-        TypeModel sc = typeFactory.create(e.getSuperclass(), elementUtils);
+        Collection<String> superTypes;
+        if (e.getKind() == ElementKind.CLASS){
+            superTypes = Collections.singleton(typeFactory.create(e.getSuperclass(), elementUtils).getName());
+        }else{
+            superTypes = new ArrayList<String>(e.getInterfaces().size());
+            for (TypeMirror mirror : e.getInterfaces()){
+                TypeModel iface = typeFactory.create(mirror, elementUtils);
+                if (!iface.getName().startsWith("java")){
+                    superTypes.add(iface.getName());
+                }
+            }
+        }
         TypeModel c = typeFactory.create(e.asType(), elementUtils);
-        BeanModel classModel = new BeanModel(namePrefix, sc.getName(), c.getPackageName(), c.getName(), c.getSimpleName());
+        BeanModel classModel = new BeanModel(namePrefix, 
+                c.getPackageName(), c.getName(), c.getSimpleName(),
+                superTypes);
         List<? extends Element> elements = e.getEnclosedElements();
     
         // CONSTRUCTORS

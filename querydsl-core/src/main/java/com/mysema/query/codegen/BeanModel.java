@@ -41,8 +41,7 @@ public final class BeanModel implements Comparable<BeanModel> {
     
     private final String prefix;
     
-    @Nullable
-    private final String superType;
+    private final Collection<String> superTypes;
     
     private final Map<TypeCategory,Collection<PropertyModel>> typeToProperties = MapUtils.lazyMap(
             new HashMap<TypeCategory,Collection<PropertyModel>>(),
@@ -55,16 +54,17 @@ public final class BeanModel implements Comparable<BeanModel> {
 
     private String uncapSimpleName;
     
-    public BeanModel(String prefix, @Nullable String superType, String packageName, String name, String simpleName) {
-        this.prefix = Assert.notNull(prefix);
-        this.superType = superType;
+    public BeanModel(String prefix, String packageName, String name, String simpleName, Collection<String> superTypes) {
+        this.prefix = Assert.notNull(prefix);        
         this.packageName = Assert.notNull(packageName);
         this.name = Assert.notNull(name);
         this.simpleName = Assert.notNull(simpleName);
         this.uncapSimpleName = StringUtils.uncapitalize(simpleName);
         this.localName = name.substring(packageName.length()+1);
+        this.superTypes = superTypes;
     }
     
+
     public void addConstructor(ConstructorModel co) {
         constructors.add(co);
     }
@@ -159,8 +159,8 @@ public final class BeanModel implements Comparable<BeanModel> {
         return typeToProperties.get(TypeCategory.STRING);
     }
 
-    public String getSupertypeName() {
-        return superType;
+    public Collection<String> getSuperTypes() {
+        return superTypes;
     }
 
     public Collection<PropertyModel> getTimeProperties() {

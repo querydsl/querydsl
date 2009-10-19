@@ -35,14 +35,15 @@
       <version>${project.parent.version}</version>
       <scope>test</scope>
       <type>test-jar</type>
-    </dependency>    
+    </dependency>
+  <!-- 
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
       <version>1.6</version>
       <scope>test</scope>
     </dependency>
-
+  -->
   </dependencies>
 
   <build>
