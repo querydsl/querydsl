@@ -96,7 +96,7 @@ public class HsqldbTest extends AbstractSQLTest {
 
     private static Connection getHSQLConnection() throws Exception {
         Class.forName("org.hsqldb.jdbcDriver");
-        String url = "jdbc:hsqldb:data/tutorial";
+        String url = "jdbc:hsqldb:target/tutorial";
         return DriverManager.getConnection(url, "sa", "");
     }
 

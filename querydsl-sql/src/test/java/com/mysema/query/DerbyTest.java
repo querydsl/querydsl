@@ -21,6 +21,8 @@ import com.mysema.query.sql.DerbyTemplates;
 @Label(Target.DERBY)
 public class DerbyTest extends AbstractSQLTest {
 
+    
+    
     @BeforeClass
     public static void setUp() throws Exception {
         String sql;
@@ -102,7 +104,7 @@ public class DerbyTest extends AbstractSQLTest {
 
     private static Connection getDerbyConnection() throws Exception {
         Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-        String url = "jdbc:derby:demoDB;create=true";
+        String url = "jdbc:derby:target/demoDB;create=true";
         return DriverManager.getConnection(url, "", "");
     }
 
