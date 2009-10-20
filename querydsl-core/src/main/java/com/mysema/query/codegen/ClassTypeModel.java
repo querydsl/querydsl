@@ -17,11 +17,15 @@ public class ClassTypeModel implements TypeModel{
     private final Class<?> primitiveClass;
     
     public ClassTypeModel(TypeCategory typeCategory, Class<?> clazz){
+        this(typeCategory, clazz, ClassUtils.wrapperToPrimitive(clazz));
+    }
+    
+    public ClassTypeModel(TypeCategory typeCategory, Class<?> clazz, Class<?> primitiveClass){
         this.typeCategory = Assert.notNull(typeCategory);
         this.clazz = Assert.notNull(clazz);
-        this.primitiveClass = ClassUtils.wrapperToPrimitive(clazz);
+        this.primitiveClass = primitiveClass;
     }
-
+    
     @Override
     public TypeModel as(TypeCategory category) {
         if (typeCategory == category){

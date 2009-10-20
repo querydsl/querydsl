@@ -5,8 +5,6 @@
  */
 package com.mysema.query.codegen;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,9 +28,9 @@ public enum TypeCategory {
      */           
     SIMPLE(null),
     /**
-     * Comparable literal fields
+     * Comparable literal fields (? extends Comparable)
      */
-    COMPARABLE(SIMPLE, Comparable.class.getName(), Character.class.getName(), "org.joda.time.Partial"),
+    COMPARABLE(SIMPLE, Comparable.class.getName(),"org.joda.time.Partial"),
     /**
      * Boolean files
      */
@@ -68,12 +66,9 @@ public enum TypeCategory {
      */
     ENTITYMAP(null), 
     /**
-     * Numeric fields
+     * Numeric fields (? extends Number & Comparable)
      */
-    NUMERIC(COMPARABLE, 
-        Long.class.getName(), Integer.class.getName(), Byte.class.getName(), 
-        Double.class.getName(), Float.class.getName(), Short.class.getName(), 
-        BigDecimal.class.getName(), BigInteger.class.getName()),     
+    NUMERIC(COMPARABLE),     
     /**
      * Simple collection fields
      */

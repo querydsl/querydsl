@@ -204,34 +204,25 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
 
     @Override
     public TypeModel visitPrimitive(PrimitiveType t, Elements p) {
-        Class<?> cl = null;
         switch (t.getKind()) {
         case BOOLEAN:
-            cl = Boolean.class;
-            break;
+            return new ClassTypeModel(TypeCategory.BOOLEAN, Boolean.class, boolean.class);
         case BYTE:
-            cl = Byte.class;
-            break;
+            return new ClassTypeModel(TypeCategory.NUMERIC, Byte.class, byte.class);
         case CHAR:
-            cl = Character.class;
-            break;
+            return new ClassTypeModel(TypeCategory.COMPARABLE, Character.class, char.class);
         case DOUBLE:
-            cl = Double.class;
-            break;
+            return new ClassTypeModel(TypeCategory.NUMERIC, Double.class, double.class);
         case FLOAT:
-            cl = Float.class;
-            break;
+            return new ClassTypeModel(TypeCategory.NUMERIC, Float.class, float.class);
         case INT:
-            cl = Integer.class;
-            break;
+            return new ClassTypeModel(TypeCategory.NUMERIC, Integer.class, int.class);
         case LONG:
-            cl = Long.class;
-            break;
+            return new ClassTypeModel(TypeCategory.NUMERIC, Long.class, long.class);
         case SHORT:
-            cl = Short.class;
-            break;
+            return new ClassTypeModel(TypeCategory.NUMERIC, Short.class, short.class);
         }
-        return new ClassTypeModel(TypeCategory.get(cl.getName()), cl);
+        throw new IllegalArgumentException("Unsupported type " + t);
     }
 
     @Override
