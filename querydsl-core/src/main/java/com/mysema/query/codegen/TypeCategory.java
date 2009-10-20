@@ -30,7 +30,7 @@ public enum TypeCategory {
     /**
      * Comparable literal fields (? extends Comparable)
      */
-    COMPARABLE(SIMPLE, Comparable.class.getName(),"org.joda.time.Partial"),
+    COMPARABLE(SIMPLE),
     /**
      * Boolean files
      */
