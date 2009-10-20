@@ -1,7 +1,5 @@
 package com.mysema.query.domain;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -12,10 +10,13 @@ import org.junit.Test;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.types.path.PComparable;
+import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PSimple;
+import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.PTime;
 
-public class SimpleTypesTest {
+public class SimpleTypesTest extends AbstractTest{
     
     public static class CustomLiteral {
 
@@ -100,30 +101,80 @@ public class SimpleTypesTest {
         @QueryTransient
         String skipMe;
     }
+    
+    @Test
+    public void testSimpleTypes() throws SecurityException, NoSuchFieldException{
+        cl = QSimpleTypes.class;
+        match(PNumber.class, "id");
+        match(PNumber.class, "bigDecimal");
+        match(PNumber.class, "bbyte");
+        match(PNumber.class, "bbyte2");
+        match(PNumber.class, "ddouble");
+        match(PNumber.class, "ddouble2");
+        match(PNumber.class, "ffloat");
+        match(PNumber.class, "ffloat2");
+        match(PNumber.class, "iint");
+        match(PNumber.class, "iint2");        
+        match(PNumber.class, "llong");
+        match(PNumber.class, "llong2");
+        
+        match(PComparable.class, "cchar");
+        match(PComparable.class, "cchar2");
+        
+        match(PString.class, "sstring");
+        
+        match(PDateTime.class, "date");
+        match(PDateTime.class, "timestamp");
+        
+        match(PTime.class, "time");
+        
+        match(PSimple.class, "llocale");
+        match(PSimple.class, "serializable");
+        match(PSimple.class, "object");
+        match(PSimple.class, "clazz");
+        match(PSimple.class, "packageAsLiteral");
+        
+//        CustomLiteral customLiteral;
+//        CustomComparableLiteral customComparableLiteral;        
+//        CustomNumber customNumber;        
+//        CustomComparableNumber customComparableNumber;
+        
+        match(PSimple.class, "clob");
+        match(PSimple.class, "blob");
+    }
         
     @Test
     public void customLiteral() throws SecurityException, NoSuchFieldException{
-        assertEquals(PSimple.class, QSimpleTypes.class.getField("customLiteral").getType());
+        cl = QSimpleTypes.class;
+        match(PSimple.class, "customLiteral");
     }
     
     @Test
     public void customComparableLiteral() throws SecurityException, NoSuchFieldException{
-        assertEquals(PComparable.class, QSimpleTypes.class.getField("customComparableLiteral").getType());
+        cl = QSimpleTypes.class;
+        match(PComparable.class, "customComparableLiteral");
     }
     
     @Test
     public void customNumber() throws SecurityException, NoSuchFieldException{
-        assertEquals(PSimple.class, QSimpleTypes.class.getField("customNumber").getType());
+        cl = QSimpleTypes.class;
+        match(PSimple.class, "customNumber");
     }
     
     @Test
     public void customComparableNumber() throws SecurityException, NoSuchFieldException{
-        assertEquals(PNumber.class, QSimpleTypes.class.getField("customComparableNumber").getType());
+        cl = QSimpleTypes.class;
+        match(PNumber.class, "customComparableNumber");
     }
     
     @Test(expected=NoSuchFieldException.class)
-    public void skippedFields() throws SecurityException, NoSuchFieldException {
+    public void skippedField1() throws SecurityException, NoSuchFieldException {
         QSimpleTypes.class.getField("skipMe");
+    }
+    
+    @Test(expected=NoSuchFieldException.class)
+    public void skippedField2() throws SecurityException, NoSuchFieldException {
+        QSimpleTypes.class.getField("test");
     }
 
 }

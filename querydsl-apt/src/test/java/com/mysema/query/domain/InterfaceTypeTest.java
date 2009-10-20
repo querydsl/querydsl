@@ -1,7 +1,5 @@
 package com.mysema.query.domain;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.List;
 
 import org.junit.Test;
@@ -11,7 +9,7 @@ import com.mysema.query.types.path.PEntityList;
 import com.mysema.query.types.path.PNumber;
 
 
-public class InterfaceTypeTest {
+public class InterfaceTypeTest extends AbstractTest{
     
     @QueryEntity
     public interface InterfaceType {
@@ -56,22 +54,26 @@ public class InterfaceTypeTest {
     
     @Test
     public void QInterfaceType_reation() throws SecurityException, NoSuchFieldException{
-        assertEquals(QInterfaceType.class, QInterfaceType.class.getField("relation").getType());
+        cl = QInterfaceType.class;
+        match(QInterfaceType.class, "relation");
     }
     
     @Test
     public void QInterfaceType_reation2() throws SecurityException, NoSuchFieldException{
-        assertEquals(PEntityList.class,    QInterfaceType.class.getField("relation2").getType());
+        cl = QInterfaceType.class;
+        match(PEntityList.class, "relation2");
     }
     
     @Test
     public void QInterfaceType_reation3() throws SecurityException, NoSuchFieldException{
-        assertEquals(PEntityList.class,    QInterfaceType.class.getField("relation3").getType());
+        cl = QInterfaceType.class;
+        match(PEntityList.class, "relation3");
     }
     
     @Test
     public void QInterfaceType_reation4() throws SecurityException, NoSuchFieldException{
-        assertEquals(PNumber.class,     QInterfaceType.class.getField("relation4").getType());
+        cl = QInterfaceType.class;
+        match(PNumber.class, "relation4");
     }
     
     @Test
