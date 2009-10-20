@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import org.apache.commons.collections15.Factory;
 import org.apache.commons.collections15.MapUtils;
 import org.apache.commons.lang.StringUtils;

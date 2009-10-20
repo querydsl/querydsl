@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -41,8 +42,6 @@ public class Processor {
     
     private final APTModelFactory typeFactory;
     
-    private final String namePrefix = "Q";
-    
     private final Configuration conf;
     
     private final BeanModelFactory classModelFactory;
@@ -58,7 +57,7 @@ public class Processor {
         }
         this.env = Assert.notNull(env);        
         TypeModelFactory factory = new TypeModelFactory(anns);
-        this.typeFactory = new APTModelFactory(factory, anns);
+        this.typeFactory = new APTModelFactory(env, factory, anns);
         if (conf.getSkipAnn() != null){
             this.classModelFactory = new BeanModelFactory(factory, conf.getSkipAnn());
         }else{
@@ -71,7 +70,7 @@ public class Processor {
     public void process(RoundEnvironment roundEnv) {
         Map<String, BeanModel> superTypes = new HashMap<String, BeanModel>();
 
-        EntityElementVisitor entityVisitor = new EntityElementVisitor(env, conf, namePrefix, typeFactory);
+        EntityElementVisitor entityVisitor = new EntityElementVisitor(env, conf, typeFactory);
         
         // populate super type mappings
         if (conf.getSuperTypeAnn() != null) {
@@ -131,7 +130,7 @@ public class Processor {
         // DTOS (optional)
         
         if (conf.getDtoAnn() != null){
-            DTOElementVisitor dtoVisitor = new DTOElementVisitor(env, conf, namePrefix, typeFactory);
+            DTOElementVisitor dtoVisitor = new DTOElementVisitor(env, conf, typeFactory);
             Map<String, BeanModel> dtos = new HashMap<String, BeanModel>();
             for (Element element : roundEnv.getElementsAnnotatedWith(conf.getDtoAnn())) {
                 BeanModel model = element.accept(dtoVisitor, null);
@@ -151,31 +150,29 @@ public class Processor {
          // iterate over supertypes
             for (Map<String,BeanModel> stypes : superTypes){
                 if (stypes.containsKey(stype)) {
-                    while (true) {
-                        BeanModel sdecl;
-                        if (stypes.containsKey(stype)) {
-                            sdecl = stypes.get(stype);
-                        } else {
-                            break;
+                    Stack<String> stypeStack = new Stack<String>();
+                    stypeStack.push(stype);
+                    while (!stypeStack.isEmpty()){
+                        String top = stypeStack.pop();
+                        if (stypes.containsKey(top)){
+                            BeanModel sdecl = stypes.get(top);
+                            if (singleSuperType && model.getSuperTypes().contains(top)){
+                                model.setSuperModel(sdecl);
+                            }
+                            if (sdecl.isEntityModel()){
+                                model.include(sdecl);    
+                            }  
+                            for (String type : sdecl.getSuperTypes()){
+                                stypeStack.push(type);    
+                            }                            
                         }
-                        if (singleSuperType && model.getSuperTypes().contains(stype)){
-                            model.setSuperModel(sdecl);
-                        }
-                        if (sdecl.isEntityModel()){
-                            model.include(sdecl);    
-                        }              
-                        if (sdecl.getSuperTypes().isEmpty()){
-                            stype = null;
-                        }else{
-                            stype = sdecl.getSuperTypes().iterator().next();    
-                        }                        
-                    }
+                    }                    
                 } 
             }
         }        
         
         // create super class model via reflection
-        if (model.getSuperModel() == null && model.getSuperTypes().size() == 1){
+        if (model.getSuperModel() == null && singleSuperType){
             String stype = model.getSuperTypes().iterator().next();
             Class<?> superClass = safeClassForName(stype);
             if (superClass != null && !superClass.equals(Object.class)) {
@@ -183,7 +180,7 @@ public class Processor {
                 if((conf.getSuperTypeAnn() == null 
                     || superClass.getAnnotation(conf.getSuperTypeAnn()) != null)
                     || superClass.getAnnotation(conf.getEntityAnn()) != null){
-                    BeanModel type = classModelFactory.create(superClass, namePrefix);
+                    BeanModel type = classModelFactory.create(superClass, conf.getNamePrefix());
                     // include fields of supertype
                     model.include(type);    
                 }            
@@ -205,7 +202,7 @@ public class Processor {
             msg.printMessage(Kind.NOTE, type.getName() + " is processed");
             try {
                 String packageName = type.getPackageName();                    
-                String className = packageName + "." + namePrefix + type.getSimpleName();
+                String className = packageName + "." + conf.getNamePrefix() + type.getSimpleName();
                 JavaFileObject fileObject = env.getFiler().createSourceFile(className);
                 Writer writer = fileObject.openWriter();
                 try {

@@ -34,16 +34,13 @@ public final class DTOElementVisitor extends SimpleElementVisitor6<BeanModel, Vo
     
     private final ProcessingEnvironment env;
     
-    private final String namePrefix;
-    
     private final APTModelFactory typeFactory;
     
     private final Configuration configuration;
     
-    DTOElementVisitor(ProcessingEnvironment env, Configuration configuration, String namePrefix, APTModelFactory typeFactory){
+    DTOElementVisitor(ProcessingEnvironment env, Configuration configuration, APTModelFactory typeFactory){
         this.env = env;
         this.configuration = configuration;
-        this.namePrefix = namePrefix;
         this.typeFactory = typeFactory;
     }
     
@@ -52,7 +49,7 @@ public final class DTOElementVisitor extends SimpleElementVisitor6<BeanModel, Vo
         Elements elementUtils = env.getElementUtils();
         TypeModel c = typeFactory.create(e.asType(), elementUtils);
         BeanModel classModel = new BeanModel(
-                namePrefix, 
+                configuration.getNamePrefix(), 
                 c.getPackageName(), c.getName(), c.getSimpleName(), Collections.<String>emptySet());
         List<? extends Element> elements = e.getEnclosedElements();
         

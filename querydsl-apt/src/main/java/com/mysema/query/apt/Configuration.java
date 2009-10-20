@@ -22,6 +22,8 @@ import com.mysema.commons.lang.Assert;
  */
 public class Configuration {
     
+    private String namePrefix = "Q";
+    
     protected final Class<? extends Annotation> entityAnn, superTypeAnn, embeddableAnn, dtoAnn, skipAnn;
     
     private boolean useFields = true, useGetters = true;
@@ -97,4 +99,12 @@ public class Configuration {
         this.useFields = b;
     }
 
+    public String getNamePrefix() {
+        return namePrefix;
+    }
+
+    public void setNamePrefix(String namePrefix) {
+        this.namePrefix = namePrefix;
+    }
+    
 }

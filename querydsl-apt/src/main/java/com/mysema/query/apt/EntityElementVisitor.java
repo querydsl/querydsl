@@ -37,8 +37,6 @@ import com.mysema.query.codegen.PropertyModel;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeModel;
 
-import javax.lang.model.type.TypeMirror;
-
 /**
  * @author tiwe
  *
@@ -48,16 +46,13 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
     
     private final ProcessingEnvironment env;
     
-    private final String namePrefix;
-    
     private final APTModelFactory typeFactory;
     
     private final Configuration configuration;
     
-    EntityElementVisitor(ProcessingEnvironment env, Configuration conf, String namePrefix, APTModelFactory typeFactory){
+    EntityElementVisitor(ProcessingEnvironment env, Configuration conf, APTModelFactory typeFactory){
         this.env = env;
         this.configuration = conf;
-        this.namePrefix = namePrefix;
         this.typeFactory = typeFactory;
     }
     
@@ -77,7 +72,7 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
             }
         }
         TypeModel c = typeFactory.create(e.asType(), elementUtils);
-        BeanModel classModel = new BeanModel(namePrefix, 
+        BeanModel classModel = new BeanModel(configuration.getNamePrefix(), 
                 c.getPackageName(), c.getName(), c.getSimpleName(),
                 superTypes);
         List<? extends Element> elements = e.getEnclosedElements();

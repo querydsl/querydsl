@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
@@ -39,6 +40,8 @@ import com.mysema.query.util.TypeUtil;
  */
 public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
 
+    private final ProcessingEnvironment env;
+    
     private final TypeModelFactory factory;
     
     private final TypeModel defaultValue;
@@ -47,10 +50,15 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
     
     private final List<Class<? extends Annotation>> entityAnnotations;
     
-    public APTModelFactory(TypeModelFactory factory, List<Class<? extends Annotation>> annotations){
+    private final TypeElement numberType, comparableType;
+    
+    public APTModelFactory(ProcessingEnvironment env, TypeModelFactory factory, List<Class<? extends Annotation>> annotations){
+        this.env = env;
         this.factory = factory;
         this.defaultValue = factory.create(Object.class);       
         this.entityAnnotations = annotations;
+        this.numberType = env.getElementUtils().getTypeElement(Number.class.getName());
+        this.comparableType = env.getElementUtils().getTypeElement(Comparable.class.getName());        
     }
     
     public TypeModel create(TypeMirror type, Elements el){
@@ -95,6 +103,13 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
     }
 
     private TypeModel createInterfaceType(DeclaredType t, TypeElement typeElement, Elements p) {
+        // entity type
+        for (Class<? extends Annotation> entityAnn : entityAnnotations){
+            if (typeElement.getAnnotation(entityAnn) != null){
+                return create(typeElement, TypeCategory.ENTITY, p);
+            }
+        }       
+                
         String name = typeElement.getQualifiedName().toString();
         String simpleName = typeElement.getSimpleName().toString();
         Iterator<? extends TypeMirror> i = t.getTypeArguments().iterator();
@@ -136,16 +151,30 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
         // other
         String name = typeElement.getQualifiedName().toString();
         TypeCategory typeCategory = TypeCategory.get(name);
-        if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE)){
-            for(TypeMirror iface : typeElement.getInterfaces()){
-                if (iface.toString().contains("java.lang.Comparable")){
-                    typeCategory = TypeCategory.COMPARABLE;
-                }
-            }
+        
+        if (typeCategory != TypeCategory.NUMERIC
+                && isAssignable(typeElement, comparableType)
+                && isSubType(typeElement, numberType)){
+            typeCategory = TypeCategory.NUMERIC;
+            
+        }else if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE)
+                && isAssignable(typeElement, comparableType)){
+            typeCategory = TypeCategory.COMPARABLE;
         }
         return create(typeElement, typeCategory, p);
     }
 
+    private boolean isSubType(TypeElement type1, TypeElement type2) {
+        return env.getTypeUtils().isSubtype(type1.asType(), type2.asType());
+    }
+
+    private boolean isAssignable(TypeElement type1, TypeElement type2) {
+        TypeMirror t1 = type1.asType();
+        TypeMirror t2 = env.getTypeUtils().erasure(type2.asType());
+        return env.getTypeUtils().isAssignable(t1, t2);
+    }
+
+    
     private TypeModel create(TypeElement typeElement, TypeCategory category, Elements p) {
         String name = typeElement.getQualifiedName().toString();
         String simpleName = typeElement.getSimpleName().toString();

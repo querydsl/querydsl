@@ -81,6 +81,9 @@ public class TypeModelFactory {
                 TypeModel valueInfo = create(TypeUtil.getTypeParameter(genericType, 0));
                 value = createCollectionType(valueInfo);
                 
+            }else if (Number.class.isAssignableFrom(cl) && Comparable.class.isAssignableFrom(cl)){    
+                value = new ClassTypeModel(TypeCategory.NUMERIC, cl);
+                
             } else {    
                 TypeCategory typeCategory = TypeCategory.get(cl.getName());
                 if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)){

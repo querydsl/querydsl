@@ -56,8 +56,18 @@ public class ReservedNamesTest {
     }
     
     @Test
-    public void test(){
-        // TODO
+    public void test() throws SecurityException, NoSuchFieldException{
+        Class<?> cl = QReservedNames.class;
+        cl.getField("new_");
+        cl.getField("package_");
+        cl.getField("protected_");
+        cl.getField("if_");
+        cl.getField("else_");
+        cl.getField("try_");
+        cl.getField("catch_");
+        cl.getField("while_");
+        cl.getField("for_");
+        cl.getField("extends_");
     }
 
 }
