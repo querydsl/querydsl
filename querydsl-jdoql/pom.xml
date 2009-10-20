@@ -110,7 +110,9 @@
         </configuration>
         <executions>
           <execution>
-            <phase>process-test-classes</phase>
+            <!-- <phase>process-test-classes</phase>  -->
+            <!-- NOTE : workaround for hudson -->
+            <phase>test-compile</phase>
             <goals>
               <goal>enhance</goal>
             </goals>
