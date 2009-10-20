@@ -111,7 +111,7 @@
         <executions>
           <execution>
             <!-- <phase>process-test-classes</phase>  -->
-            <!-- NOTE : workaround for hudson -->
+            <!-- NOTE : workaround for hudson : https://hudson.dev.java.net/issues/show_bug.cgi?id=2226-->
             <phase>test-compile</phase>
             <goals>
               <goal>enhance</goal>
