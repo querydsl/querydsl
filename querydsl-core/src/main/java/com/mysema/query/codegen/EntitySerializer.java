@@ -134,27 +134,28 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void collectionOfEntity(PropertyModel field, Writer writer) throws IOException {
-        serialize(field, "PEntityCollection<" + field.getTypeName()+">", writer, "createEntityCollection", field.getTypeName()+".class", "\"" + field.getSimpleTypeName()+"\"");        
+        serialize(field, "PEntityCollection<" + field.getGenericTypeName()+">", writer, "createEntityCollection", field.getTypeName()+".class", "\"" + field.getSimpleTypeName()+"\"");        
     }
     
     protected void collectionOfSimple(PropertyModel field, Writer writer) throws IOException {
-        serialize(field, "PComponentCollection<" + field.getTypeName()+">", writer, "createSimpleCollection", field.getTypeName()+".class");        
+        serialize(field, "PComponentCollection<" + field.getGenericTypeName()+">", writer, "createSimpleCollection", field.getTypeName()+".class");        
     }
     
     
     protected void comparableField(PropertyModel field, Writer writer) throws IOException {        
-        serialize(field, "PComparable<" + field.getTypeName() + ">", writer, "createComparable", field.getTypeName() + ".class");
+        serialize(field, "PComparable<" + field.getGenericTypeName() + ">", writer, "createComparable", field.getTypeName() + ".class");
     }
     
     protected void constructors(BeanModel model, Writer writer) throws IOException {
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
         final String localName = model.getLocalName();
+        final String genericName = model.getGenericName();
         
         StringBuilder builder = new StringBuilder();
         constructorsForVariables(builder, model);    
 
-        builder.append("    public " + queryType + "(PEntity<? extends "+localName+"> entity) {\n");
+        builder.append("    public " + queryType + "(PEntity<? extends "+genericName+"> entity) {\n");
         builder.append("        super(entity.getType(), entity.getEntityName(), entity.getMetadata());\n");
         if (!model.getEntityProperties().isEmpty()){
             builder.append("        if (entity.getMetadata().getParent() == null){\n");
@@ -166,8 +167,15 @@ public class EntitySerializer implements Serializer{
         
         
         builder.append("    }\n\n");        
+        if (!localName.equals(genericName)){
+            builder.append("    @SuppressWarnings(\"unchecked\")\n");
+        }        
         builder.append("    public " + queryType + "(PathMetadata<?> metadata) {\n");
-        builder.append("        super("+ localName + ".class, \"" + simpleName + "\", metadata);\n");
+        builder.append("        super(");
+        if (!localName.equals(genericName)){
+            builder.append("(Class)");
+        }
+        builder.append(localName + ".class, \"" + simpleName + "\", metadata);\n");
         if (!model.getEntityProperties().isEmpty()){
             builder.append("        if (metadata.getParent() == null){\n");
             for (PropertyModel entityField : model.getEntityProperties()){
@@ -183,8 +191,17 @@ public class EntitySerializer implements Serializer{
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
         final String localName = model.getLocalName();
+        final String genericName = model.getGenericName();
+        
+        if (!localName.equals(genericName)){
+            builder.append("    @SuppressWarnings(\"unchecked\")\n");
+        }        
         builder.append("    public " + queryType + "(@NotEmpty String variable) {\n");
-        builder.append("        super(" + localName + ".class, \""+simpleName+"\", PathMetadata.forVariable(variable));\n");
+        builder.append("        super(");
+        if (!localName.equals(genericName)){
+            builder.append("(Class)");   
+        }
+        builder.append(localName + ".class, \""+simpleName+"\", PathMetadata.forVariable(variable));\n");
         for (PropertyModel entityField : model.getEntityProperties()){
             builder.append("        _" + entityField.getName()+"();\n"); 
         }
@@ -192,11 +209,11 @@ public class EntitySerializer implements Serializer{
     }  
 
     protected void dateField(PropertyModel field, Writer writer) throws IOException {
-        serialize(field, "PDate<" + field.getTypeName() + ">", writer, "createDate", field.getTypeName()+".class");
+        serialize(field, "PDate<" + field.getGenericTypeName() + ">", writer, "createDate", field.getTypeName()+".class");
     }
 
     protected void dateTimeField(PropertyModel field, Writer writer) throws IOException {
-        serialize(field, "PDateTime<" + field.getTypeName() + ">", writer, "createDateTime", field.getTypeName()+".class");        
+        serialize(field, "PDateTime<" + field.getGenericTypeName() + ">", writer, "createDateTime", field.getTypeName()+".class");        
     }
 
     protected void entityField(PropertyModel field, Writer writer) throws IOException {
@@ -246,7 +263,8 @@ public class EntitySerializer implements Serializer{
 
     protected void introClassHeader(StringBuilder builder, BeanModel model) {
         final String queryType = model.getPrefix() + model.getSimpleName();
-        final String localName = model.getLocalName();
+        final String localName = model.getGenericName();
+        
         builder.append("@SuppressWarnings(\"serial\")\n");
         BeanModel superModel = model.getSuperModel();
         while (superModel != null && superModel.isEntityModel()){
@@ -267,6 +285,7 @@ public class EntitySerializer implements Serializer{
         final String simpleName = model.getSimpleName();
         final String unscapSimpleName = model.getUncapSimpleName();
         final String queryType = model.getPrefix() + simpleName;
+        
         builder.append("    public static final " + queryType + " " + unscapSimpleName + " = new " + queryType + "(\"" + unscapSimpleName + "\");\n\n");
     }
 
@@ -281,6 +300,7 @@ public class EntitySerializer implements Serializer{
     protected void introJavadoc(StringBuilder builder, BeanModel model) {
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
+        
         builder.append("/**\n");
         builder.append(" * " + queryType + " is a Querydsl query type for " + simpleName + "\n");
         builder.append(" * \n");
@@ -292,14 +312,14 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void listOfEntity(PropertyModel field, Writer writer) throws IOException {
-        serialize(field, "PEntityList<" + field.getTypeName()+ ">", writer, "createEntityList", field.getTypeName()+".class", "\"" + field.getSimpleTypeName()+"\"");        
+        serialize(field, "PEntityList<" + field.getGenericTypeName()+ ">", writer, "createEntityList", field.getTypeName()+".class", "\"" + field.getSimpleTypeName()+"\"");        
     }
 
     protected void listOfEntityAccessor(PropertyModel field, Writer writer) throws IOException {
         final String escapedName = field.getEscapedName();
         final String queryType = field.getQueryTypeName();               
-        StringBuilder builder = new StringBuilder();
         
+        StringBuilder builder = new StringBuilder();        
         builder.append("    public " + queryType + " " + escapedName + "(int index) {\n");
         builder.append("        return new " + queryType + "(PathMetadata.forListAccess(" + escapedName+", index));\n");
         builder.append("    }\n\n");
@@ -311,9 +331,9 @@ public class EntitySerializer implements Serializer{
 
     protected void listOfSimpleAccessor(PropertyModel field, Writer writer) throws IOException { 
         final String escapedName = field.getEscapedName();
-        final String valueType = field.getValueTypeName();
-        StringBuilder builder = new StringBuilder();
+        final String valueType = field.getParameterName(0);
         
+        StringBuilder builder = new StringBuilder();        
         builder.append("    public PSimple<" + valueType + "> " + escapedName + "(int index) {\n");
         builder.append("        return new PSimple<" + valueType + ">("+valueType+".class, PathMetadata.forListAccess(" + escapedName+", index));\n");
         builder.append("    }\n\n");
@@ -329,10 +349,13 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void mapOfEntity(PropertyModel field, Writer writer) throws IOException{
-        final String keyType = field.getKeyTypeName();
-        final String valueType = field.getValueTypeName();
+        final String keyType = field.getParameterName(0);
+        final String valueType = field.getParameterName(1);
         final String simpleName = field.getSimpleTypeName();
-        serialize(field, "PEntityMap<"+keyType+","+valueType+">",
+        final String genericKey = field.getGenericParameterName(0);
+        final String genericValue = field.getGenericParameterName(1);
+        
+        serialize(field, "PEntityMap<"+genericKey+","+genericValue+">",
                 writer, "createEntityMap", keyType+".class", valueType+".class", "\""+simpleName+"\"");
         
     }
@@ -340,13 +363,14 @@ public class EntitySerializer implements Serializer{
     protected void mapOfEntityAccessor(PropertyModel field, Writer writer) throws IOException {
         final String escapedName = field.getEscapedName();
         final String queryType = field.getQueryTypeName();
-        final String keyType = field.getKeyTypeName();
-        StringBuilder builder = new StringBuilder();
+        final String keyType = field.getGenericParameterName(0);
+        final String genericKey = field.getGenericParameterName(0);
         
+        StringBuilder builder = new StringBuilder();        
         builder.append("    public " + queryType + " " + escapedName + "(" + keyType+ " key) {\n");
         builder.append("        return new " + queryType + "(PathMetadata.forMapAccess(" + escapedName+", key));\n");
         builder.append("    }\n\n");        
-        builder.append("    public " + queryType + " " + escapedName + "(com.mysema.query.types.expr.Expr<"+keyType+"> key) {\n");
+        builder.append("    public " + queryType + " " + escapedName + "(com.mysema.query.types.expr.Expr<"+genericKey+"> key) {\n");
         builder.append("        return new " + queryType + "(PathMetadata.forMapAccess(" + escapedName+", key));\n");
         builder.append("    }\n\n");
         writer.append(builder.toString());
@@ -354,24 +378,29 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void mapOfSimple(PropertyModel field, Writer writer) throws IOException {               
-        final String keyType = field.getKeyTypeName();
-        final String valueType = field.getValueTypeName();
+        final String keyType = field.getParameterName(0);
+        final String valueType = field.getParameterName(1);
+        final String genericKey = field.getGenericParameterName(0);
+        final String genericValue = field.getGenericParameterName(1);
         
-        serialize(field, "PComponentMap<"+keyType+","+valueType+">", writer, "createSimpleMap", keyType+".class", valueType+".class");
+        serialize(field, "PComponentMap<"+genericKey+","+genericValue+">", 
+            writer, "createSimpleMap", keyType+".class", valueType+".class");
         
     }
     
     protected void mapOfSimpleAccessor(PropertyModel field, Writer writer) throws IOException {
-//        final String fieldName = field.getName();     
         final String escapedName = field.getEscapedName();
-        final String keyType = field.getKeyTypeName();
-        final String valueType = field.getValueTypeName();
+//        final String keyType = field.getParameterName(0);
+        final String valueType = field.getParameterName(1);
+        final String genericKey = field.getGenericParameterName(0);
+        final String genericValue = field.getGenericParameterName(1);
+        
         StringBuilder builder = new StringBuilder();
         
-        builder.append("    public PSimple<" + valueType + "> " + escapedName + "(" + keyType + " key) {\n");
-        builder.append("        return new PSimple<" + valueType + ">("+valueType+".class, PathMetadata.forMapAccess(" + escapedName+", key));\n");
+        builder.append("    public PSimple<" + genericValue + "> " + escapedName + "(" + genericKey + " key) {\n");
+        builder.append("        return new PSimple<" + genericValue + ">("+valueType+".class, PathMetadata.forMapAccess(" + escapedName+", key));\n");
         builder.append("    }\n\n");
-        builder.append("    public PSimple<" + valueType + "> " + escapedName + "(com.mysema.query.types.expr.Expr<"+keyType+"> key) {\n");
+        builder.append("    public PSimple<" + genericValue + "> " + escapedName + "(com.mysema.query.types.expr.Expr<"+genericKey+"> key) {\n");
         builder.append("        return new PSimple<" + valueType + ">("+valueType+".class, PathMetadata.forMapAccess(" + escapedName+", key));\n");
         builder.append("    }\n\n");
         writer.append(builder.toString());
@@ -379,7 +408,7 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void numericField(PropertyModel field, Writer writer) throws IOException {
-        serialize(field, "PNumber<" + field.getTypeName() + ">", writer, "createNumber", field.getTypeName() +".class");        
+        serialize(field, "PNumber<" + field.getGenericTypeName() + ">", writer, "createNumber", field.getTypeName() +".class");        
     }
 
     protected void outro(BeanModel model, Writer writer) throws IOException {
@@ -414,7 +443,7 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void simpleField(PropertyModel field, Writer writer) throws IOException {
-        serialize(field, "PSimple<" + field.getTypeName()+">", writer, "createSimple", field.getTypeName()+".class");        
+        serialize(field, "PSimple<" + field.getGenericTypeName()+">", writer, "createSimple", field.getTypeName()+".class");        
     }
 
     protected void stringField(PropertyModel field, Writer writer) throws IOException {
@@ -422,7 +451,7 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void timeField(PropertyModel field, Writer writer) throws IOException {
-        serialize(field, "PTime<" + field.getTypeName() + ">", writer, "createTime", field.getTypeName()+".class");        
+        serialize(field, "PTime<" + field.getGenericTypeName() + ">", writer, "createTime", field.getTypeName()+".class");        
     }
 
 

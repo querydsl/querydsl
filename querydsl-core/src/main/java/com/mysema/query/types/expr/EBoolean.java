@@ -23,6 +23,10 @@ public abstract class EBoolean extends EComparable<Boolean> {
     
     public static final EBoolean TRUE = new EBooleanConst(Boolean.TRUE);
     
+    public static final EBoolean create(Boolean b){
+        return b.booleanValue() ? TRUE : FALSE;
+    }
+
     private volatile EBoolean not;
 
     public EBoolean() {
@@ -50,7 +54,7 @@ public abstract class EBoolean extends EComparable<Boolean> {
         }            
         return not;
     }
-
+    
     /**
      * Create a union of this and the given expression
      * 
@@ -59,9 +63,5 @@ public abstract class EBoolean extends EComparable<Boolean> {
      */
     public final EBoolean or(EBoolean right) {
         return OBoolean.create(Ops.OR, this, right);
-    }
-    
-    public static final EBoolean create(Boolean b){
-        return b.booleanValue() ? TRUE : FALSE;
     }
 }

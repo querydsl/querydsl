@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import org.apache.commons.lang.ClassUtils;
 
 import com.mysema.query.util.TypeUtil;
@@ -98,30 +96,31 @@ public class TypeModelFactory {
     }
     
     public TypeModel createArrayType(TypeModel valueType) {
-        return createComposite(null, valueType, TypeCategory.ENTITYCOLLECTION, TypeCategory.SIMPLECOLLECTION);
+        return createComposite(TypeCategory.ENTITYCOLLECTION, TypeCategory.SIMPLECOLLECTION, valueType);
     }
 
     public TypeModel createCollectionType(TypeModel valueType) {
-        return createComposite(null, valueType, TypeCategory.ENTITYCOLLECTION, TypeCategory.SIMPLECOLLECTION);
+        return createComposite(TypeCategory.ENTITYCOLLECTION, TypeCategory.SIMPLECOLLECTION, valueType);
     }
 
-    private TypeModel createComposite(@Nullable TypeModel key, TypeModel value, TypeCategory entity, TypeCategory simple) {
+    private TypeModel createComposite(TypeCategory entity, TypeCategory simple, TypeModel... parameters) {
         TypeCategory category;
+        TypeModel value = parameters[parameters.length -1];
         if (value.getTypeCategory() == TypeCategory.ENTITY) {
             category = entity;
         } else {
             category = simple;
         }
-        return new SimpleTypeModel(category, value.getName(), value.getPackageName(), value.getSimpleName(), key, value);
+        return new SimpleTypeModel(category, value.getName(), value.getPackageName(), value.getSimpleName(), parameters);
 
     }
 
     public TypeModel createListType(TypeModel valueType) {
-        return createComposite(null, valueType, TypeCategory.ENTITYLIST, TypeCategory.SIMPLELIST);
+        return createComposite(TypeCategory.ENTITYLIST, TypeCategory.SIMPLELIST, valueType);
     }
 
     public TypeModel createMapType(TypeModel keyType, TypeModel valueType) {
-        return createComposite(keyType, valueType, TypeCategory.ENTITYMAP, TypeCategory.SIMPLEMAP);
+        return createComposite(TypeCategory.ENTITYMAP, TypeCategory.SIMPLEMAP, keyType, valueType);
     }
 
 }

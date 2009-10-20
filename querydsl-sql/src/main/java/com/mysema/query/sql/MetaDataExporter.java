@@ -21,6 +21,7 @@ import com.mysema.query.codegen.ClassTypeModel;
 import com.mysema.query.codegen.PropertyModel;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.Serializers;
+import com.mysema.query.codegen.SimpleTypeModel;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeModel;
 import com.mysema.query.util.FileUtils;
@@ -98,7 +99,8 @@ public class MetaDataExporter {
 //        ClassModelFactory factory = new ClassModelFactory(new TypeModelFactory());
         while (tables.next()) {
             String tableName = tables.getString(3);
-            BeanModel classModel = new BeanModel(namePrefix, "java.lang", "java.lang.Object", tableName, Collections.<String>emptySet());
+            TypeModel classTypeModel = new SimpleTypeModel(TypeCategory.ENTITY, "java.lang.Object", "java.lang", tableName);
+            BeanModel classModel = new BeanModel(namePrefix, classTypeModel);
             ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
             while (columns.next()) {
                 String name = columns.getString(4);

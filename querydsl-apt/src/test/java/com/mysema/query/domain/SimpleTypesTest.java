@@ -2,6 +2,7 @@ package com.mysema.query.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -69,6 +70,7 @@ public class SimpleTypesTest extends AbstractTest{
     @QueryEntity
     public static class SimpleTypes {
         transient int test;
+        Calendar calendar;
         long id;
         BigDecimal bigDecimal;
         Byte bbyte;
@@ -124,6 +126,7 @@ public class SimpleTypesTest extends AbstractTest{
         match(PString.class, "sstring");
         
         match(PDateTime.class, "date");
+        match(PDateTime.class, "calendar");
         match(PDateTime.class, "timestamp");
         
         match(PTime.class, "time");

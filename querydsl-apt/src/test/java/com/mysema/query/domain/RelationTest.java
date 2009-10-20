@@ -10,8 +10,15 @@ import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.domain.rel.RelationType2;
+import com.mysema.query.types.path.PComponentCollection;
+import com.mysema.query.types.path.PComponentList;
+import com.mysema.query.types.path.PComponentMap;
+import com.mysema.query.types.path.PEntityCollection;
+import com.mysema.query.types.path.PEntityList;
+import com.mysema.query.types.path.PEntityMap;
+import com.mysema.query.types.path.PSimple;
 
-public class RelationTest {
+public class RelationTest extends AbstractTest{
     
     public enum MyEnum {
         VAR1, VAR2
@@ -70,8 +77,43 @@ public class RelationTest {
     }
     
     @Test
-    public void test(){
-        // TODO
+    public void test() throws SecurityException, NoSuchFieldException{
+        cl = QRelationType.class;
+        match(PSimple.class, "enumProperty");
+        match(PComponentList.class, "enumList");
+        match(PComponentMap.class, "enumMap1");
+        match(PComponentMap.class, "enumMap");
+        
+        match(PEntityList.class, "list");
+        match(PEntityList.class, "list2");
+        match(PComponentList.class, "list3");
+        match(PEntityList.class, "list4");
+        match(PEntityList.class, "list5");
+        
+        match(PEntityCollection.class, "set");
+        match(PEntityCollection.class, "sortedSet");
+        match(PComponentCollection.class, "set2");
+        match(PEntityCollection.class, "set3");
+        match(PEntityCollection.class, "set4");
+        
+        match(PComponentList.class, "listOfObjects");
+        match(PComponentCollection.class, "setOfObjects");
+        match(PEntityCollection.class, "setOfObjects2");
+        
+        match(PEntityCollection.class, "collection");
+        match(PEntityCollection.class, "collection2");
+        match(PComponentCollection.class, "collection3");
+        match(PEntityCollection.class, "collection4");
+        
+        match(PEntityMap.class, "map");
+        match(PEntityMap.class, "map2");
+        match(PComponentMap.class, "map3");
+        match(PEntityMap.class, "map4");
+        match(PEntityMap.class, "map5");
+        match(PComponentMap.class, "map6");
+        match(PEntityMap.class, "map7");
+        match(PEntityMap.class, "map8");
+        match(PComponentMap.class, "map9");
     }
 
 }

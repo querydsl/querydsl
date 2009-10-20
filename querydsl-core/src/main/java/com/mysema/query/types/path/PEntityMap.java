@@ -40,21 +40,21 @@ public class PEntityMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {
     private final Path<?> root;
 
     @SuppressWarnings("unchecked")
-    public PEntityMap(Class<K> keyType, Class<V> valueType, @NotEmpty String entityName,
+    public PEntityMap(Class<? super K> keyType, Class<? super V> valueType, @NotEmpty String entityName,
             PathMetadata<?> metadata) {
         super((Class)Map.class);
-        this.keyType = keyType;
-        this.valueType = valueType;
+        this.keyType = (Class<K>) keyType;
+        this.valueType = (Class<V>) valueType;
         this.entityName = entityName;
         this.metadata = metadata;
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    public PEntityMap(Class<K> keyType, Class<V> valueType, @NotEmpty String entityName, @NotEmpty String var) {
+    public PEntityMap(Class<? super K> keyType, Class<? super V> valueType, @NotEmpty String entityName, @NotEmpty String var) {
         this(keyType, valueType, entityName, PathMetadata.forVariable(var));
     }
     
-    public PEntityMap(Class<K> keyType, Class<V> valueType, @NotEmpty String entityName, Path<?> parent, @NotEmpty String var) {
+    public PEntityMap(Class<? super K> keyType, Class<? super V> valueType, @NotEmpty String entityName, Path<?> parent, @NotEmpty String var) {
         this(keyType, valueType, entityName, PathMetadata.forProperty(parent, var));
     }
 

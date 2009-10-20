@@ -37,20 +37,20 @@ public class PComponentMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {
     private volatile EBoolean isnull, isnotnull;    
 
     @SuppressWarnings("unchecked")
-    public PComponentMap(Class<K> keyType, Class<V> valueType,
+    public PComponentMap(Class<? super K> keyType, Class<? super V> valueType,
             PathMetadata<?> metadata) {
         super((Class)Map.class);
-        this.keyType = keyType;
-        this.valueType = valueType;
+        this.keyType = (Class<K>)keyType;
+        this.valueType = (Class<V>)valueType;
         this.metadata = metadata;
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    public PComponentMap(Class<K> keyType, Class<V> valueType, @NotEmpty String var) {
+    public PComponentMap(Class<? super K> keyType, Class<? super V> valueType, @NotEmpty String var) {
         this(keyType, valueType, PathMetadata.forVariable(var));
     }
     
-    public PComponentMap(Class<K> keyType, Class<V> valueType, Path<?> parent, @NotEmpty String property) {
+    public PComponentMap(Class<? super K> keyType, Class<? super V> valueType, Path<?> parent, @NotEmpty String property) {
         this(keyType, valueType, PathMetadata.forProperty(parent, property));
     }
 

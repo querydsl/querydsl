@@ -51,11 +51,8 @@ public class BeanModelFactory {
         }else{
             superTypes = Collections.singleton(key.getSuperclass().getName());
         }
-        BeanModel beanModel = new BeanModel(
-                prefix, 
-                key.getPackage().getName(), 
-                key.getName(), 
-                key.getSimpleName(),
+        BeanModel beanModel = new BeanModel(prefix, 
+                new ClassTypeModel(TypeCategory.ENTITY, key), 
                 superTypes);
         for (Field f : key.getDeclaredFields()) {
             if (isValidField(f)){

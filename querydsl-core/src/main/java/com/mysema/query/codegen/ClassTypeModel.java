@@ -1,5 +1,8 @@
 package com.mysema.query.codegen;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.commons.lang.ClassUtils;
 
 import com.mysema.commons.lang.Assert;
@@ -16,6 +19,8 @@ public class ClassTypeModel implements TypeModel{
     
     private final Class<?> primitiveClass;
     
+    private final List<TypeModel> parameters;
+    
     public ClassTypeModel(TypeCategory typeCategory, Class<?> clazz){
         this(typeCategory, clazz, ClassUtils.wrapperToPrimitive(clazz));
     }
@@ -24,6 +29,8 @@ public class ClassTypeModel implements TypeModel{
         this.typeCategory = Assert.notNull(typeCategory);
         this.clazz = Assert.notNull(clazz);
         this.primitiveClass = primitiveClass;
+        // TODO
+        this.parameters = Collections.emptyList();
     }
     
     @Override
@@ -33,11 +40,6 @@ public class ClassTypeModel implements TypeModel{
         }else{
             return new ClassTypeModel(category, clazz);
         }
-    }
-
-    @Override
-    public TypeModel getKeyType() {
-        return null;
     }
 
     @Override
@@ -71,13 +73,18 @@ public class ClassTypeModel implements TypeModel{
     }
 
     @Override
-    public TypeModel getValueType() {
-        return null;
+    public boolean isPrimitive() {
+        return primitiveClass != null;
     }
 
     @Override
-    public boolean isPrimitive() {
-        return primitiveClass != null;
+    public TypeModel getParameter(int i) {
+        return parameters.get(i);
+    }
+
+    @Override
+    public int getParameterCount() {
+        return parameters.size();
     }
 
 }

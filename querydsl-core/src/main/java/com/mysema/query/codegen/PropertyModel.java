@@ -26,7 +26,7 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     private final String name, escapedName, typeName;
     
     @Nullable
-    private final String keyTypeName, valueTypeName, queryTypeName;
+    private final String queryTypeName;
     
     private final TypeModel type;
     
@@ -35,9 +35,7 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         this.name = Assert.notNull(name);
         this.escapedName = JavaSyntaxUtils.isReserved(name) ? (name + "_") : name;
         this.type = Assert.notNull(type);
-        this.typeName = getLocalName(type);
-        this.keyTypeName = type.getKeyType() != null ? getLocalName(type.getKeyType()) : null;
-        this.valueTypeName = type.getValueType() != null ? getLocalName(type.getValueType()) : null;    
+        this.typeName = getLocalName(type);    
         if (type.getTypeCategory().isSubCategoryOf(TypeCategory.SIMPLE)){
             this.queryTypeName = null;
         }else if (isVisible(type)){
@@ -71,14 +69,28 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         return type.getTypeCategory();
     }
 
-    public String getKeyTypeName() {
-        return keyTypeName;
+    public String getGenericParameterName(int i){
+        if (i < type.getParameterCount()){
+            TypeModel typeModel = type.getParameter(i);
+            if (typeModel.getParameterCount() > 0){
+                return getGenericName(typeModel);    
+            }else{
+                return getLocalName(typeModel);
+            }
+            
+        }else{
+            return null;
+        }
     }
     
-    public String getValueTypeName() {
-        return valueTypeName;
+    public String getParameterName(int i){
+        if (i < type.getParameterCount()){
+            return getLocalName(type.getParameter(i));
+        }else{
+            return null;
+        }
     }
-
+    
     public String getName() {
         return name;
     }
@@ -97,6 +109,29 @@ public final class PropertyModel implements Comparable<PropertyModel> {
 
     public String getTypeName() {
         return typeName;
+    }
+    
+    public String getGenericTypeName(){
+        TypeModel base = type;
+        if (type.getTypeCategory().isSubCategoryOf(TypeCategory.COLLECTION)){
+            base = type.getParameter(0);
+        }else if (type.getTypeCategory().isSubCategoryOf(TypeCategory.MAP)){
+            base = type.getParameter(1);
+        }        
+        if (base.getParameterCount() > 0){
+            return getGenericName(base);
+        }else{
+            return typeName;
+        }        
+    }
+    
+    private String getGenericName(TypeModel typeModel){
+        StringBuilder builder = new StringBuilder(getLocalName(typeModel)).append("<");
+        for (int i = 0; i < typeModel.getParameterCount(); i++){
+            if (i > 0) builder.append(",");
+            builder.append("?");
+        }
+        return builder.append(">").toString();    
     }
     
     public String getTypePackage() {

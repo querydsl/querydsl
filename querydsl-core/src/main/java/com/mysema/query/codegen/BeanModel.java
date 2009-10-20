@@ -6,6 +6,7 @@
 package com.mysema.query.codegen;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -28,18 +29,18 @@ public final class BeanModel implements Comparable<BeanModel> {
     
     private final Collection<ConstructorModel> constructors = new HashSet<ConstructorModel>();
     
-    private BeanModel superModel;
+    private boolean entityModel = true;
     
     // mutable
     private int escapeSuffix = 1;
     
-    private boolean entityModel = true;
-    
-    private final String simpleName, name, packageName, localName;
-    
     private final String prefix;
     
+    private BeanModel superModel;
+    
     private final Collection<String> superTypes;
+    
+    private final TypeModel typeModel;
     
     private final Map<TypeCategory,Collection<PropertyModel>> typeToProperties = MapUtils.lazyMap(
             new HashMap<TypeCategory,Collection<PropertyModel>>(),
@@ -52,13 +53,14 @@ public final class BeanModel implements Comparable<BeanModel> {
 
     private String uncapSimpleName;
     
-    public BeanModel(String prefix, String packageName, String name, String simpleName, Collection<String> superTypes) {
+    public BeanModel(String prefix, TypeModel typeModel) {
+        this(prefix, typeModel, Collections.<String>emptyList());
+    }
+    
+    public BeanModel(String prefix, TypeModel typeModel, Collection<String> superTypes) {
         this.prefix = Assert.notNull(prefix);        
-        this.packageName = Assert.notNull(packageName);
-        this.name = Assert.notNull(name);
-        this.simpleName = Assert.notNull(simpleName);
-        this.uncapSimpleName = StringUtils.uncapitalize(simpleName);
-        this.localName = name.substring(packageName.length()+1);
+        this.typeModel = typeModel;
+        this.uncapSimpleName = StringUtils.uncapitalize(typeModel.getSimpleName());
         this.superTypes = superTypes;
     }
     
@@ -74,11 +76,11 @@ public final class BeanModel implements Comparable<BeanModel> {
     }
 
     public int compareTo(BeanModel o) {
-        return simpleName.compareTo(o.simpleName);
+        return typeModel.getSimpleName().compareTo(o.typeModel.getSimpleName());
     }
 
     public boolean equals(Object o) {
-        return o instanceof BeanModel && simpleName.equals(((BeanModel) o).simpleName);
+        return o instanceof BeanModel && typeModel.getName().equals(((BeanModel) o).typeModel.getName());
     }
 
     public Collection<PropertyModel> getBooleanProperties() {
@@ -105,10 +107,6 @@ public final class BeanModel implements Comparable<BeanModel> {
         return typeToProperties.get(TypeCategory.ENTITYCOLLECTION);
     }
     
-    public Collection<PropertyModel> getEntityProperties() {
-        return typeToProperties.get(TypeCategory.ENTITY);
-    }
-
     public Collection<PropertyModel> getEntityLists() {
         return typeToProperties.get(TypeCategory.ENTITYLIST);
     }
@@ -117,8 +115,29 @@ public final class BeanModel implements Comparable<BeanModel> {
         return typeToProperties.get(TypeCategory.ENTITYMAP);
     }
 
+    public Collection<PropertyModel> getEntityProperties() {
+        return typeToProperties.get(TypeCategory.ENTITY);
+    }
+
+    public String getLocalName() {
+        return typeModel.getLocalName();
+    }
+
     public String getName() {
-        return name;
+        return typeModel.getName();
+    }
+    
+    public String getGenericName(){
+        if (typeModel.getParameterCount() == 0){
+            return typeModel.getLocalName();
+        }else{
+            StringBuilder builder = new StringBuilder(typeModel.getLocalName()).append("<");
+            for (int i = 0; i < typeModel.getParameterCount(); i++){
+                if (i > 0) builder.append(",");
+                builder.append("?");
+            }
+            return builder.append(">").toString();    
+        }            
     }
 
     public Collection<PropertyModel> getNumericProperties() {
@@ -126,15 +145,15 @@ public final class BeanModel implements Comparable<BeanModel> {
     }
 
     public String getPackageName() {
-        return packageName;
-    }
-    
-    public Collection<PropertyModel> getSimpleCollections() {
-        return typeToProperties.get(TypeCategory.SIMPLECOLLECTION);
+        return typeModel.getPackageName();
     }
 
-    public Collection<PropertyModel> getSimpleProperties() {
-        return typeToProperties.get(TypeCategory.SIMPLE);
+    public String getPrefix(){
+        return prefix;
+    }
+
+    public Collection<PropertyModel> getSimpleCollections() {
+        return typeToProperties.get(TypeCategory.SIMPLECOLLECTION);
     }
 
     public Collection<PropertyModel> getSimpleLists() {
@@ -145,18 +164,22 @@ public final class BeanModel implements Comparable<BeanModel> {
         return typeToProperties.get(TypeCategory.SIMPLEMAP);
     }
 
-    public String getLocalName(){
-        return localName;
-    }
-    
     public String getSimpleName() {
-        return simpleName;
+        return typeModel.getSimpleName();
+    }
+
+    public Collection<PropertyModel> getSimpleProperties() {
+        return typeToProperties.get(TypeCategory.SIMPLE);
     }
 
     public Collection<PropertyModel> getStringProperties() {
         return typeToProperties.get(TypeCategory.STRING);
     }
-
+        
+    public BeanModel getSuperModel() {
+        return superModel;
+    }
+    
     public Collection<String> getSuperTypes() {
         return superTypes;
     }
@@ -170,7 +193,7 @@ public final class BeanModel implements Comparable<BeanModel> {
     }
 
     public int hashCode() {
-        return name.hashCode();
+        return typeModel.getName().hashCode();
     }
 
     public void include(BeanModel clazz) {
@@ -184,32 +207,28 @@ public final class BeanModel implements Comparable<BeanModel> {
             }            
         }        
     }
-        
-    private PropertyModel validateField(PropertyModel field) {
-        if (field.getName().equals(this.uncapSimpleName)) {
-            uncapSimpleName = StringUtils.uncapitalize(simpleName)+ (escapeSuffix++);
-        }
-        return field;
-    }
-    
-    public String getPrefix(){
-        return prefix;
-    }
 
-    public BeanModel getSuperModel() {
-        return superModel;
-    }
-
-    public void setSuperModel(BeanModel superModel) {
-        this.superModel = superModel;
-    }
 
     public boolean isEntityModel() {
         return entityModel;
     }
 
+
     public void setEntityModel(boolean entityModel) {
         this.entityModel = entityModel;
+    }
+
+
+    public void setSuperModel(BeanModel superModel) {
+        this.superModel = superModel;
+    }
+
+
+    private PropertyModel validateField(PropertyModel field) {
+        if (field.getName().equals(this.uncapSimpleName)) {
+            uncapSimpleName = StringUtils.uncapitalize(typeModel.getSimpleName())+ (escapeSuffix++);
+        }
+        return field;
     }
     
 }

@@ -18,15 +18,15 @@ import com.mysema.query.util.NotEmpty;
 @SuppressWarnings("serial")
 public class PEntityList<D> extends PEntityCollection<D> implements PList<D> {
     
-    public PEntityList(Class<D> elementType, @NotEmpty String entityName, PathMetadata<?> metadata) {
+    public PEntityList(Class<? super D> elementType, @NotEmpty String entityName, PathMetadata<?> metadata) {
         super(elementType, entityName, metadata);
     }
 
-    public PEntityList(Class<D> elementType, @NotEmpty String entityName, @NotEmpty String var) {
+    public PEntityList(Class<? super D> elementType, @NotEmpty String entityName, @NotEmpty String var) {
         super(elementType, entityName, PathMetadata.forVariable(var));
     }
 
-    public PEntityList(Class<D> elementType, @NotEmpty String entityName, Path<?> parent, @NotEmpty String property) {
+    public PEntityList(Class<? super D> elementType, @NotEmpty String entityName, Path<?> parent, @NotEmpty String property) {
         super(elementType, entityName, PathMetadata.forProperty(parent, property));
     }
     

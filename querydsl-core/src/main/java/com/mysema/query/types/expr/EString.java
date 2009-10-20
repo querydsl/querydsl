@@ -5,6 +5,12 @@
  */
 package com.mysema.query.types.expr;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.OComparable;
@@ -23,9 +29,21 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings("serial")
 public abstract class EString extends EComparable<String> {
     
-    public static final EString emptyString = new EStringConst("");
+    private static final Map<String,EString> cache;
     
-    public static final EString percentString = new EStringConst("%");
+    static{
+        List<String> strs = new ArrayList<String>();
+        strs.addAll(Arrays.asList("", ".", ".*", "%", "id", "name"));
+        for (int i = 0; i < 256; i++){
+            strs.add(String.valueOf(i));
+        }
+    
+        cache = new HashMap<String,EString>(strs.size());
+        for (String str : strs){
+            cache.put(str, new EStringConst(str));
+        }
+    }
+    
     
     /**
      * Factory method for constants
@@ -34,12 +52,10 @@ public abstract class EString extends EComparable<String> {
      * @return
      */
     public static final EString create(String str){
-        if (str.equals("")){
-            return emptyString;
-        }else if (str.equals("%")){
-            return percentString;
+        if (cache.containsKey(str)){
+            return cache.get(str);
         }else{
-            return new EStringConst(Assert.notNull(str));    
+            return new EStringConst(Assert.notNull(str));
         }        
     }
     

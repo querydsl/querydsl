@@ -7,21 +7,21 @@ import org.junit.Test;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerySupertype;
 
-public class EntityTest {
+public class EntityTest extends AbstractTest{
     
     @QueryEntity
     public static class Entity1 {
-        String entity1Field;
+        public String entity1Field;
     }
     
     @QueryEntity
     public static class Entity2 extends Supertype{        
-        String entity2Field;
+        public String entity2Field;
     }
     
     @QueryEntity
     public static class Entity3 extends Entity2{
-        String entity3Field;
+        public String entity3Field;
     }
     
     @QueryEntity
@@ -31,7 +31,7 @@ public class EntityTest {
     
     @QuerySupertype
     public static class Supertype {
-        String supertypeField;        
+        public String supertypeField;        
     }
     
     @QuerySupertype
@@ -39,10 +39,9 @@ public class EntityTest {
 
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void inheritance(){
-        assertTrue(QEntity2.entity2 instanceof QSupertype);
-        assertTrue(QEntity3.entity3 instanceof QSupertype);
+        assertTrue(QSupertype.class.isAssignableFrom(QEntity2.class));
+        assertTrue(QSupertype.class.isAssignableFrom(QEntity3.class));
     }
 }

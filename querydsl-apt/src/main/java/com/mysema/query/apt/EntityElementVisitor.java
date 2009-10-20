@@ -72,9 +72,7 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
             }
         }
         TypeModel c = typeFactory.create(e.asType(), elementUtils);
-        BeanModel classModel = new BeanModel(configuration.getNamePrefix(), 
-                c.getPackageName(), c.getName(), c.getSimpleName(),
-                superTypes);
+        BeanModel classModel = new BeanModel(configuration.getNamePrefix(), c, superTypes);
         List<? extends Element> elements = e.getEnclosedElements();
     
         // CONSTRUCTORS

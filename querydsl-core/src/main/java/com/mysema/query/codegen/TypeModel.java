@@ -11,8 +11,10 @@ public interface TypeModel {
     TypeModel as(TypeCategory category);
 
     @Nullable
-    TypeModel getKeyType();
+    TypeModel getParameter(int i);
 
+    int getParameterCount();
+    
     String getLocalName();
 
     String getName();
@@ -25,9 +27,6 @@ public interface TypeModel {
     String getSimpleName();
 
     TypeCategory getTypeCategory();
-
-    @Nullable
-    TypeModel getValueType();
 
     boolean isPrimitive();
 

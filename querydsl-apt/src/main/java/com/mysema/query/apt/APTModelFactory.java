@@ -66,6 +66,7 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
         if (cache.containsKey(key)){
             return cache.get(key);
         }else{
+            cache.put(key, null);
             TypeModel value = type.accept(this, el);
             cache.put(key, value);
             return value;
@@ -92,9 +93,9 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
         if (t.asElement() != null && t.asElement() instanceof TypeElement){
             TypeElement typeElement = (TypeElement)t.asElement();
             switch(typeElement.getKind()){
-            case CLASS: return createClassType(typeElement, p);
+            case CLASS: return createClassType(t, typeElement, p);
             case INTERFACE: return createInterfaceType(t, typeElement, p);
-            case ENUM: return create(typeElement, TypeCategory.SIMPLE, p);
+            case ENUM: return create(typeElement, TypeCategory.SIMPLE, p, t.getTypeArguments());
             }            
         }else{
             throw new IllegalArgumentException("Unsupported element type " + t.asElement());
@@ -106,7 +107,7 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
         // entity type
         for (Class<? extends Annotation> entityAnn : entityAnnotations){
             if (typeElement.getAnnotation(entityAnn) != null){
-                return create(typeElement, TypeCategory.ENTITY, p);
+                return create(typeElement, TypeCategory.ENTITY, p, t.getTypeArguments());
             }
         }       
                 
@@ -115,7 +116,7 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
         Iterator<? extends TypeMirror> i = t.getTypeArguments().iterator();
         Class<?> cl = TypeUtil.safeForName(name);
         if (cl == null) { // class not available
-            return create(typeElement, TypeCategory.get(name), p);
+            return create(typeElement, TypeCategory.get(name), p, t.getTypeArguments());
             
         }else if (Map.class.isAssignableFrom(cl)){
             if (!i.hasNext()){
@@ -136,15 +137,15 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
             return factory.createCollectionType(create(i.next(), p));
         
         }else{
-            return create(typeElement, TypeCategory.get(name), p);
+            return create(typeElement, TypeCategory.get(name), p, t.getTypeArguments());
         }
     }
 
-    private TypeModel createClassType(TypeElement typeElement, Elements p) {   
+    private TypeModel createClassType(DeclaredType t, TypeElement typeElement, Elements p) {   
         // entity type
         for (Class<? extends Annotation> entityAnn : entityAnnotations){
             if (typeElement.getAnnotation(entityAnn) != null){
-                return create(typeElement, TypeCategory.ENTITY, p);
+                return create(typeElement, TypeCategory.ENTITY, p, t.getTypeArguments());
             }
         }        
         
@@ -161,7 +162,7 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
                 && isAssignable(typeElement, comparableType)){
             typeCategory = TypeCategory.COMPARABLE;
         }
-        return create(typeElement, typeCategory, p);
+        return create(typeElement, typeCategory, p, t.getTypeArguments());
     }
 
     private boolean isSubType(TypeElement type1, TypeElement type2) {
@@ -175,11 +176,15 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
     }
 
     
-    private TypeModel create(TypeElement typeElement, TypeCategory category, Elements p) {
+    private TypeModel create(TypeElement typeElement, TypeCategory category, Elements p, List<? extends TypeMirror> typeArgs) {
         String name = typeElement.getQualifiedName().toString();
         String simpleName = typeElement.getSimpleName().toString();
         String packageName = p.getPackageOf(typeElement).getQualifiedName().toString();
-        return new SimpleTypeModel(category, name, packageName, simpleName, null, null);
+        TypeModel[] params = new TypeModel[typeArgs.size()];
+        for (int i = 0; i < params.length; i++){
+            params[i] = create(typeArgs.get(i), p);
+        }
+        return new SimpleTypeModel(category, name, packageName, simpleName, params);
     }
 
     @Override

@@ -58,15 +58,15 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
         return new PEntity<A>(type, entityName, PathMetadata.forProperty(this, property));
     }
 
-    protected <A> PEntityCollection<A> createEntityCollection(@NotEmpty String property, Class<A> type, @NotEmpty String entityName) {
+    protected <A> PEntityCollection<A> createEntityCollection(@NotEmpty String property, Class<? super A> type, @NotEmpty String entityName) {
         return new PEntityCollection<A>(type, entityName, this, property);
     }
 
-    protected <A> PEntityList<A> createEntityList(@NotEmpty String property, Class<A> type, @NotEmpty String entityName) {
+    protected <A> PEntityList<A> createEntityList(@NotEmpty String property, Class<? super A> type, @NotEmpty String entityName) {
         return new PEntityList<A>(type, entityName, this, property);
     }
 
-    protected <K, V> PEntityMap<K, V> createEntityMap(@NotEmpty String property, Class<K> key, Class<V> value, @NotEmpty String entityName) {
+    protected <K, V> PEntityMap<K, V> createEntityMap(@NotEmpty String property, Class<? super K> key, Class<? super V> value, @NotEmpty String entityName) {
         return new PEntityMap<K, V>(key, value, entityName, this, property);
     }
 
@@ -74,8 +74,9 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
         return new PNumber<A>(type, this, property);
     }
 
-    protected <A> PSimple<A> createSimple(@NotEmpty String path, Class<A> type) {
-        return new PSimple<A>(type, this, path);
+    @SuppressWarnings("unchecked")
+    protected <A> PSimple<A> createSimple(@NotEmpty String path, Class<? super A> type) {
+        return new PSimple<A>((Class<A>)type, this, path);
     }
 
     protected <A> PComponentCollection<A> createSimpleCollection(@NotEmpty String path, Class<A> type) {
@@ -86,7 +87,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
         return new PComponentList<A>(type, this, path);
     }
 
-    protected <K, V> PComponentMap<K, V> createSimpleMap(@NotEmpty String path, Class<K> key, Class<V> value) {
+    protected <K, V> PComponentMap<K, V> createSimpleMap(@NotEmpty String path, Class<? super K> key, Class<? super V> value) {
         return new PComponentMap<K, V>(key, value, this, path);
     }
 

@@ -6,7 +6,6 @@
 package com.mysema.query.apt;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -48,9 +47,7 @@ public final class DTOElementVisitor extends SimpleElementVisitor6<BeanModel, Vo
     public BeanModel visitType(TypeElement e, Void p) {
         Elements elementUtils = env.getElementUtils();
         TypeModel c = typeFactory.create(e.asType(), elementUtils);
-        BeanModel classModel = new BeanModel(
-                configuration.getNamePrefix(), 
-                c.getPackageName(), c.getName(), c.getSimpleName(), Collections.<String>emptySet());
+        BeanModel classModel = new BeanModel(configuration.getNamePrefix(), c);
         List<? extends Element> elements = e.getEnclosedElements();
         
         // CONSTRUCTOR

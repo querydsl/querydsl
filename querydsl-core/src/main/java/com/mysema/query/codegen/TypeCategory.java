@@ -24,6 +24,14 @@ import com.mysema.query.annotations.PropertyType;
 @Immutable
 public enum TypeCategory {
     /**
+     * 
+     */
+    MAP(null),
+    /**
+     * 
+     */
+    COLLECTION(null),
+    /**
      * Simple non-entity fields
      */           
     SIMPLE(null),
@@ -43,6 +51,7 @@ public enum TypeCategory {
      * Date/Time fields
      */
     DATETIME(COMPARABLE, 
+        java.util.Calendar.class.getName(),
         java.util.Date.class.getName(), 
         java.sql.Timestamp.class.getName(), 
         "org.joda.time.LocalDateTime", 
@@ -56,7 +65,7 @@ public enum TypeCategory {
     /**
      * Entity collection fields
      */
-    ENTITYCOLLECTION(null),
+    ENTITYCOLLECTION(COLLECTION),
     /**
      * Entity list fields
      */
@@ -64,7 +73,8 @@ public enum TypeCategory {
     /**
      * Entity map fields
      */
-    ENTITYMAP(null), 
+    ENTITYMAP(MAP),    
+    
     /**
      * Numeric fields (? extends Number & Comparable)
      */
@@ -72,7 +82,7 @@ public enum TypeCategory {
     /**
      * Simple collection fields
      */
-    SIMPLECOLLECTION(null), 
+    SIMPLECOLLECTION(COLLECTION), 
     /**
      * Simple list fields
      */
@@ -80,7 +90,7 @@ public enum TypeCategory {
     /**
      * Simple map fields
      */
-    SIMPLEMAP(null), 
+    SIMPLEMAP(MAP), 
     /**
      * String fields
      */

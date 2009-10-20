@@ -5,8 +5,6 @@
  */
 package com.mysema.query.codegen;
 
-import javax.annotation.Nullable;
-
 import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
@@ -21,8 +19,7 @@ import com.mysema.commons.lang.Assert;
 @Immutable
 public final class SimpleTypeModel implements TypeModel {
 
-    @Nullable
-    private final TypeModel keyType, valueType;
+    private final TypeModel[] parameters;
 
     private final String name, packageName, simpleName, localName;
 
@@ -33,63 +30,71 @@ public final class SimpleTypeModel implements TypeModel {
             String name,
             String packageName, 
             String simpleName, 
-            @Nullable TypeModel keyType,
-            @Nullable TypeModel valueType) {
+            TypeModel... parameters) {
         this.typeCategory = Assert.notNull(typeCategory,"typeCategory is null");
         this.name = Assert.notNull(name,"name is null");
         this.packageName = Assert.notNull(packageName,"packageName is null");
         this.simpleName = Assert.notNull(simpleName,"simpleName is null");
         this.localName = name.substring(packageName.length()+1);
-        this.keyType = keyType;
-        this.valueType = valueType;
+        this.parameters = Assert.notNull(parameters);
     }
 
     public SimpleTypeModel as(TypeCategory category) {
         if (typeCategory == category){
             return this;
         }else{
-            return new SimpleTypeModel(category, name, packageName, simpleName, keyType, valueType);
+            return new SimpleTypeModel(category, name, packageName, simpleName, parameters);
         }
     }
 
-    public TypeModel getKeyType() {
-        return keyType;
-    }
-
+    @Override
     public String getLocalName(){
         return localName;
     }
-
+    
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public String getPackageName() {
         return packageName;
     }
 
+    @Override
     public String getPrimitiveName(){
         return null;
     }
 
+    @Override
     public String getSimpleName() {
         return simpleName;
     }
 
+    @Override
     public TypeCategory getTypeCategory() {
         return typeCategory;
     }
 
-    public TypeModel getValueType() {
-        return valueType;
-    }
-
+    @Override
     public boolean isPrimitive() {
         return false;
     }
 
+    @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public TypeModel getParameter(int i) {
+        return parameters[i];
+    }
+
+    @Override
+    public int getParameterCount() {
+        return parameters.length;
     }
 
     
