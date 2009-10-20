@@ -26,12 +26,13 @@ import com.mysema.query.types.operation.Ops.MathOps;
 @SuppressWarnings("serial")
 public abstract class ENumber<D extends Number & Comparable<?>> extends EComparableBase<D> {
     
-    private static final ENumber<Double> random = ONumber.create(Double.class, MathOps.RANDOM);
+    private static final ENumber<Double> random;
     
     @SuppressWarnings("unchecked")
     private static final ENumber<Integer>[] ints = new ENumber[256];
     
     static{
+        random = ONumber.create(Double.class, MathOps.RANDOM);
         for (int i = 0; i < 256; i++){
             ints[i] = new ENumberConst<Integer>(Integer.class, Integer.valueOf(i));
         }

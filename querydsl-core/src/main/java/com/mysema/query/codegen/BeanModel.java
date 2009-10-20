@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.collections15.Factory;
 import org.apache.commons.collections15.MapUtils;
 import org.apache.commons.lang.StringUtils;
@@ -36,6 +38,7 @@ public final class BeanModel implements Comparable<BeanModel> {
     
     private final String prefix;
     
+    @Nullable
     private BeanModel superModel;
     
     private final Collection<String> superTypes;
@@ -176,6 +179,7 @@ public final class BeanModel implements Comparable<BeanModel> {
         return typeToProperties.get(TypeCategory.STRING);
     }
         
+    @Nullable
     public BeanModel getSuperModel() {
         return superModel;
     }

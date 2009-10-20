@@ -69,6 +69,7 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         return type.getTypeCategory();
     }
 
+    @Nullable
     public String getGenericParameterName(int i){
         if (i < type.getParameterCount()){
             TypeModel typeModel = type.getParameter(i);
@@ -83,6 +84,7 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         }
     }
     
+    @Nullable
     public String getParameterName(int i){
         if (i < type.getParameterCount()){
             return getLocalName(type.getParameter(i));

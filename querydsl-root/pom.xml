@@ -114,6 +114,20 @@
     <developerConnection>${svn.path}/${path.suffix}</developerConnection>
     <url>${viewvc.path}/${path.suffix}</url>
   </scm>
+  
+  <profiles>
+    <profile>
+      <id>hudson</id>
+      <modules>
+        <module>../querydsl-core</module>
+        <module>../querydsl-apt</module> 
+        <module>../querydsl-collections</module>    
+        <module>../querydsl-hql</module>
+        <module>../querydsl-sql</module>      
+      </modules>
+    </profile>
+  
+  </profiles>
 
   <build>
     <plugins>
