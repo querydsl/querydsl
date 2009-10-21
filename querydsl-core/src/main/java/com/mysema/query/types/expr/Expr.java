@@ -38,9 +38,7 @@ public abstract class Expr<D> implements Serializable{
      */
     @SuppressWarnings("unchecked")
     public static <T> Expr<T> create(T val){
-        if (val instanceof String){
-            return (Expr<T>)EString.create((String)val);
-        }else if (val instanceof Boolean){
+        if (val instanceof Boolean){
             return (Expr<T>)EBoolean.create((Boolean)val);            
         }else{
             return new ExprConst<T>(Assert.notNull(val,"val is null"));    

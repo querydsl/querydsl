@@ -17,9 +17,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.util.NotEmpty;
 
 /**
@@ -54,15 +52,17 @@ public final class PathMetadata<T> implements Serializable{
     }
 
     public static <KT> PathMetadata<KT> forMapAccess(PMap<?, ?> parent, KT key) {
-        return new PathMetadata<KT>(parent,ExprConst.create(key), PathType.MAPVALUE_CONSTANT);
+        return new PathMetadata<KT>(parent, Expr.create(key), PathType.MAPVALUE_CONSTANT);
     }
 
     public static PathMetadata<String> forProperty(Path<?> parent, @NotEmpty String property) {
-        return new PathMetadata<String>(parent, EString.create(Assert.hasLength(property)), PathType.PROPERTY);
+        // TODO : cache expressions ?
+        return new PathMetadata<String>(parent, Expr.create(Assert.hasLength(property)), PathType.PROPERTY);
     }
 
     public static PathMetadata<String> forVariable(@NotEmpty String variable) {
-        return new PathMetadata<String>(null, EString.create(Assert.hasLength(variable)), PathType.VARIABLE);
+        // TODO : cache expressions ?
+        return new PathMetadata<String>(null, Expr.create(Assert.hasLength(variable)), PathType.VARIABLE);
     }
 
     private final Expr<T> expression;
