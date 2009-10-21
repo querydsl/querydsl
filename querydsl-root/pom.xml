@@ -18,6 +18,7 @@
   <inceptionYear>2007</inceptionYear>
   
   <properties>    
+    <failIfNoTests>false</failIfNoTests>
     <svn.path>scm:svn:https://source.mysema.com/svn/mysema</svn.path>
     <viewvc.path>https://source.mysema.com/viewvc/mysema</viewvc.path>
     <path.suffix>projects/querydsl/trunk/${project.artifactId}</path.suffix>

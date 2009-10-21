@@ -17,9 +17,6 @@ public class EntitySerializer implements Serializer{
         // intro
         intro(model, writer);
         
-        // factory methods
-        factoryMethods(model, writer);        
-        
         // fields
         for (PropertyModel field : model.getStringProperties()){
             stringField(field, writer);
@@ -91,11 +88,10 @@ public class EntitySerializer implements Serializer{
         outro(model, writer);
     }
         
-    protected void factoryMethods(BeanModel model, Writer writer) throws IOException {
+    protected void factoryMethods(StringBuilder builder, BeanModel model) throws IOException {
         final String localName = model.getLocalName();
         final String genericName = model.getGenericName();
         
-        StringBuilder builder = new StringBuilder();
         for (ConstructorModel c : model.getConstructors()){
             // begin
             if (!localName.equals(genericName)){
@@ -132,9 +128,7 @@ public class EntitySerializer implements Serializer{
             // end
             builder.append(");\n");
             builder.append("    }\n\n");
-        }
-        writer.append(builder.toString());
-        
+        }        
     }
 
     protected void booleanField(PropertyModel field, Writer writer) throws IOException {
@@ -249,6 +243,7 @@ public class EntitySerializer implements Serializer{
         introImports(builder, model);        
         introJavadoc(builder, model);        
         introClassHeader(builder, model);        
+        factoryMethods(builder, model);   
         introDefaultInstance(builder, model);   
         if (model.getSuperModel() != null){
             introSuper(builder, model);    
@@ -435,17 +430,18 @@ public class EntitySerializer implements Serializer{
     protected void serialize(PropertyModel field, String type, Writer writer, String factoryMethod, String... args) throws IOException{
         // construct value
         StringBuilder value = new StringBuilder();
-        value.append(factoryMethod + "(\"" + field.getName() + "\"");
-        for (String arg : args){
-            value.append(", " + arg);
+        if (field.isInherited()){
+            value.append("_super.").append(field.getName());
+        }else{
+            value.append(factoryMethod + "(\"" + field.getName() + "\"");
+            for (String arg : args){
+                value.append(", " + arg);
+            }        
+            value.append(")");    
         }        
-        value.append(")");
         
         // serialize it
         StringBuilder builder = new StringBuilder();
-//        if (field.getDocString() != null){
-//            builder.append("    /** "  + field.getDocString() + " */\n");    
-//        }        
         builder.append("    public final " + type + " " + field.getEscapedName() + " = " + value + ";\n\n");
         writer.append(builder.toString());
     }

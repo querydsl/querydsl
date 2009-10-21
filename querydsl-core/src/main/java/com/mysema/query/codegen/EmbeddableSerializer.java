@@ -5,7 +5,7 @@
  */
 package com.mysema.query.codegen;
 
-import java.io.Writer;
+import java.io.IOException;
 
 
 public class EmbeddableSerializer extends EntitySerializer{
@@ -16,7 +16,7 @@ public class EmbeddableSerializer extends EntitySerializer{
     }
     
     @Override
-    protected void factoryMethods(BeanModel model, Writer writer) {
+    protected void factoryMethods(StringBuilder builder, BeanModel model) throws IOException {
         // no factory methods        
     }
     

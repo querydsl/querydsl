@@ -30,7 +30,7 @@ public class SupertypeSerializer extends EntitySerializer{
     }
     
     @Override
-    protected void factoryMethods(BeanModel model, Writer writer) {
+    protected void factoryMethods(StringBuilder builder, BeanModel model) throws IOException {
         // no factory methods        
     }
     
