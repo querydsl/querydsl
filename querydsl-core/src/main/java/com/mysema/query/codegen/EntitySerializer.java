@@ -93,11 +93,15 @@ public class EntitySerializer implements Serializer{
         
     protected void factoryMethods(BeanModel model, Writer writer) throws IOException {
         final String localName = model.getLocalName();
+        final String genericName = model.getGenericName();
         
         StringBuilder builder = new StringBuilder();
         for (ConstructorModel c : model.getConstructors()){
             // begin
-            builder.append("    public static EConstructor<" + localName + "> create(");
+            if (!localName.equals(genericName)){
+                builder.append("    @SuppressWarnings(\"unchecked\")\n");
+            }            
+            builder.append("    public static EConstructor<" + genericName + "> create(");
             boolean first = true;
             for (ParameterModel p : c.getParameters()){
                 if (!first) builder.append(", ");
@@ -107,7 +111,11 @@ public class EntitySerializer implements Serializer{
             builder.append("){\n");
             
             // body
-            builder.append("        return new EConstructor<" + localName + ">(" + localName + ".class");
+            builder.append("        return new EConstructor<" + genericName + ">(");
+            if (!localName.equals(genericName)){
+                builder.append("(Class)");
+            }
+            builder.append(localName + ".class");
             builder.append(", new Class[]{");
             first = true;
             for (ParameterModel p : c.getParameters()){
@@ -257,7 +265,7 @@ public class EntitySerializer implements Serializer{
         if (superModel.isEntityModel()){
             builder.append("    public final "+superQueryType+" _super = new " + superQueryType + "(this);\n\n");    
         }else{
-            builder.append("    public final "+superQueryType+"<"+model.getLocalName()+"> _super = this;\n\n");
+            builder.append("    public final "+superQueryType+"<"+model.getGenericName()+"> _super = this;\n\n");
         }              
     }
 
