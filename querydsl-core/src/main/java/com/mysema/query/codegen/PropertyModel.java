@@ -32,11 +32,13 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     
     private final TypeModel type;
     
-    public PropertyModel(BeanModel classModel, String name, TypeModel type){
-        this(classModel, name, type, false);
+    private final String[] inits;
+    
+    public PropertyModel(BeanModel classModel, String name, TypeModel type, String[] inits){
+        this(classModel, name, type, inits, false);
     }
     
-    public PropertyModel(BeanModel classModel, String name, TypeModel type, boolean inherited){
+    public PropertyModel(BeanModel classModel, String name, TypeModel type, String[] inits, boolean inherited){
         this.classModel = classModel;
         this.name = Assert.notNull(name);
         this.escapedName = JavaSyntaxUtils.isReserved(name) ? (name + "_") : name;
@@ -49,6 +51,7 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         }else{
             this.queryTypeName = type.getPackageName() + "." + classModel.getPrefix() + type.getSimpleName();
         }        
+        this.inits = inits;
         this.inherited = inherited;
     }
     
@@ -58,7 +61,7 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     
     public PropertyModel createCopy(BeanModel model){
         boolean inherited = model.getSuperModel() != null; 
-        return new PropertyModel(model, name, type, inherited);
+        return new PropertyModel(model, name, type, inits, inherited);
     }
     
     public boolean equals(Object o) {
@@ -105,6 +108,10 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         }else{
             return typeName;
         }        
+    }
+    
+    public String[] getInits(){
+        return inits;
     }
     
     private String getLocalName(TypeModel type){        

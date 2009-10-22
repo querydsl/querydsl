@@ -261,7 +261,7 @@ public class ParserTest implements Constants {
     @Test
     public void testDocoExamples97() throws Exception {
         // init deep path
-        account._owner()._pid();
+//        account._owner()._pid();
 
         // parse( "from eg.Cat as cat where cat.name='Fritz'" );
 //        query().from(cat).where(cat.name.like("Fritz")).parse();
@@ -320,7 +320,7 @@ public class ParserTest implements Constants {
     @Ignore
     public void testDocoExamples98() throws Exception {
         // init deep path
-        person._nationality()._calendar();
+//        person._nationality()._calendar();
 
         // parse( "from eg.DomesticCat cat where cat.name between 'A' and 'B'"
         // );

@@ -156,7 +156,6 @@ public enum TypeCategory {
             case COMPARABLE: return COMPARABLE;
             case DATE: return DATE;
             case DATETIME: return DATETIME;
-            case NUMERIC: return NUMERIC;
             case SIMPLE: return SIMPLE;            
             case TIME: return TIME;    
             case NONE: return null;

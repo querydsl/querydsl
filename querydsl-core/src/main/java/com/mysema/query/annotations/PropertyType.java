@@ -13,15 +13,15 @@ package com.mysema.query.annotations;
  */
 public enum PropertyType {
     /**
-     * for PComparable fields
+     * for PComparable fields 
      */
     COMPARABLE,
     /**
-     *  for PDate fields
+     *  for custom PDate fields 
      */
     DATE,
     /**
-     *  for PDateTime fields
+     *  for custom PDateTime fields
      */
     DATETIME,
     /**
@@ -29,15 +29,11 @@ public enum PropertyType {
      */
     NONE,
     /**
-     * for PNumber fields
-     */
-    NUMERIC,
-    /**
      * for PSimple fields
      */
     SIMPLE,
     /**
-     * for PTime fields
+     * for custom PTime fields
      */
     TIME  
 

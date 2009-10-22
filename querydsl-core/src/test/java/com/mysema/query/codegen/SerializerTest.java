@@ -31,7 +31,7 @@ public class SerializerTest {
         TypeModel typeModel = new SimpleTypeModel(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass");
         type = new BeanModel("Q", typeModel, Collections.singleton("com.mysema.query.DomainSuperClass"));
         
-        PropertyModel field = new PropertyModel(type, "field", typeFactory.create(String.class));
+        PropertyModel field = new PropertyModel(type, "field", typeFactory.create(String.class), new String[0]);
         type.addProperty(field);
         ParameterModel param = new ParameterModel("name", new ClassTypeModel(TypeCategory.STRING, String.class));
         type.addConstructor(new ConstructorModel(Collections.singleton(param)));

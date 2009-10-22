@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.mysema.query.annotations.QueryInit;
+
 
 /**
  * The Class Person.
@@ -21,6 +23,8 @@ public class Person {
     @ManyToOne
     PersonId pid;
     String name;
+    
     @ManyToOne
+    @QueryInit("calendar")
     Nationality nationality;
 }

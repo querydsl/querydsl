@@ -14,6 +14,7 @@ import java.util.Collections;
 
 import net.jcip.annotations.Immutable;
 
+import com.mysema.query.annotations.QueryInit;
 import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.annotations.QueryType;
 
@@ -64,7 +65,11 @@ public class BeanModelFactory {
                     }
                     typeModel = typeModel.as(typeCategory);
                 }
-                beanModel.addProperty(new PropertyModel(beanModel, f.getName(), typeModel));    
+                String[] inits = new String[0];
+                if (f.getAnnotation(QueryInit.class) != null){
+                    inits = f.getAnnotation(QueryInit.class).value();
+                }                
+                beanModel.addProperty(new PropertyModel(beanModel, f.getName(), typeModel, inits));    
             }            
         }
         return beanModel;

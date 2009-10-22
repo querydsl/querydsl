@@ -80,15 +80,12 @@ public class EntitySerializer implements Serializer{
         for (PropertyModel field : model.getEntityMaps()){
             mapOfEntityAccessor(field, writer);
         }        
-        for (PropertyModel field : model.getEntityProperties()){
-            entityFieldAccessor(field, writer);
-        }
         
         // outro
         outro(model, writer);
     }
         
-    protected void factoryMethods(StringBuilder builder, BeanModel model) throws IOException {
+    protected void introFactoryMethods(StringBuilder builder, BeanModel model) throws IOException {
         final String localName = model.getLocalName();
         final String genericName = model.getGenericName();
         
@@ -155,38 +152,67 @@ public class EntitySerializer implements Serializer{
         final String genericName = model.getGenericName();
         
         StringBuilder builder = new StringBuilder();
+        
+        boolean hasEntityFields = !model.getEntityProperties().isEmpty();
+        String thisOrSuper = hasEntityFields ? "this" : "super";
+        
+        // 1
         constructorsForVariables(builder, model);    
 
+        // 2
         builder.append("    public " + queryType + "(PEntity<? extends "+genericName+"> entity) {\n");
-        builder.append("        super(entity.getType(), entity.getEntityName(), entity.getMetadata());\n");
-        if (!model.getEntityProperties().isEmpty()){
-            builder.append("        if (entity.getMetadata().getParent() == null){\n");
-            for (PropertyModel entityField : model.getEntityProperties()){
-                builder.append("            _" + entityField.getName()+"();\n"); 
-            }
-            builder.append("        }\n");    
+        builder.append("        "+thisOrSuper+"(entity.getType(), entity.getEntityName(), entity.getMetadata()");
+        if (hasEntityFields){
+            builder.append(", entity.getMetadata().isRoot() ? inits : PathInits.DEFAULT");
         }
+        builder.append(");\n");
+        builder.append("    }\n\n");
         
+        // 3
+        builder.append("    public " + queryType + "(PathMetadata<?> metadata) {\n");
+        if (hasEntityFields){
+            builder.append("        this(metadata, metadata.isRoot() ? inits : PathInits.DEFAULT);\n");    
+        }else{
+            builder.append("        this(metadata, PathInits.DEFAULT);\n");
+        }        
+        builder.append("    }\n\n");
         
-        builder.append("    }\n\n");        
+        // 4
         if (!localName.equals(genericName)){
             builder.append("    @SuppressWarnings(\"unchecked\")\n");
         }        
-        builder.append("    public " + queryType + "(PathMetadata<?> metadata) {\n");
-        builder.append("        super(");
+        builder.append("    public " + queryType + "(PathMetadata<?> metadata, PathInits inits) {\n");
+        builder.append("        "+thisOrSuper+"(");
         if (!localName.equals(genericName)){
             builder.append("(Class)");
         }
-        builder.append(localName + ".class, \"" + simpleName + "\", metadata);\n");
-        if (!model.getEntityProperties().isEmpty()){
-            builder.append("        if (metadata.getParent() == null){\n");
-            for (PropertyModel entityField : model.getEntityProperties()){
-                builder.append("            _" + entityField.getName()+"();\n"); 
-            }
-            builder.append("        }\n");    
-        }        
+        builder.append(localName + ".class, \"" + simpleName + "\", metadata");
+        if (hasEntityFields){
+            builder.append(", inits");
+        }
+        builder.append(");\n");
         builder.append("    }\n\n");
+        
+        if (hasEntityFields){
+            // 5 (with entity field initialization)
+            builder.append("    public "+queryType+"(Class<? extends "+genericName+"> type, @NotEmpty String entityName, PathMetadata<?> metadata, PathInits inits) {\n");
+            builder.append("        super(type, entityName, metadata);\n");
+            if (!model.getEntityProperties().isEmpty()){
+                for (PropertyModel field : model.getEntityProperties()){
+                    if (field.isInherited()){
+                        builder.append("        " + field.getEscapedName() + " = _super."+field.getName()+";\n");   
+                    }else {
+                        builder.append("        " + field.getEscapedName() + " = ");
+                        builder.append("inits.isInitialized(\""+field.getName()+"\") ? ");
+                        builder.append("new " + field.getQueryTypeName() + "(PathMetadata.forProperty(this,\"" + field.getName() + "\"), inits.getInits(\""+field.getName()+"\")) : null;\n");    
+                    }        
+                }
+            }  
+            builder.append("    }\n\n"); 
+        }
+        
         writer.append(builder.toString());
+        
     }
     
     protected void constructorsForVariables(StringBuilder builder, BeanModel model) {
@@ -195,18 +221,22 @@ public class EntitySerializer implements Serializer{
         final String localName = model.getLocalName();
         final String genericName = model.getGenericName();
         
+        boolean hasEntityFields = !model.getEntityProperties().isEmpty();
+        String thisOrSuper = hasEntityFields ? "this" : "super";
+        
         if (!localName.equals(genericName)){
             builder.append("    @SuppressWarnings(\"unchecked\")\n");
         }        
         builder.append("    public " + queryType + "(@NotEmpty String variable) {\n");
-        builder.append("        super(");
+        builder.append("        "+thisOrSuper+"(");
         if (!localName.equals(genericName)){
             builder.append("(Class)");   
         }
-        builder.append(localName + ".class, \""+simpleName+"\", PathMetadata.forVariable(variable));\n");
-        for (PropertyModel entityField : model.getEntityProperties()){
-            builder.append("        _" + entityField.getName()+"();\n"); 
+        builder.append(localName + ".class, \""+simpleName+"\", PathMetadata.forVariable(variable)");
+        if (hasEntityFields){
+            builder.append(", inits");
         }
+        builder.append(");\n");
         builder.append("    }\n\n");        
     }  
 
@@ -222,33 +252,33 @@ public class EntitySerializer implements Serializer{
         serialize(field, field.getQueryTypeName(), writer);        
     }
 
-    protected void entityFieldAccessor(PropertyModel field, Writer writer) throws IOException {        
-        final String fieldName = field.getName();
-        final String escapedName = field.getEscapedName();
-        final String queryType = field.getQueryTypeName();
-        
-        StringBuilder builder = new StringBuilder();
-        builder.append("    public " + queryType + " _" + fieldName + "() {\n");
-        builder.append("        if (" + escapedName + " == null){\n");
-        builder.append("            " + escapedName + " = new " + queryType + "(PathMetadata.forProperty(this,\"" + fieldName + "\"));\n");
-        builder.append("        }\n");
-        builder.append("        return " + escapedName + ";\n");
-        builder.append("    }\n\n");
-        writer.append(builder.toString());
-    }
-
     protected void intro(BeanModel model, Writer writer) throws IOException {        
         StringBuilder builder = new StringBuilder();        
         introPackage(builder, model);        
         introImports(builder, model);        
         introJavadoc(builder, model);        
         introClassHeader(builder, model);        
-        factoryMethods(builder, model);   
+        introFactoryMethods(builder, model);   
+        introInits(builder, model);
         introDefaultInstance(builder, model);   
         if (model.getSuperModel() != null){
             introSuper(builder, model);    
         }        
         writer.append(builder.toString());
+    }
+
+    protected void introInits(StringBuilder builder, BeanModel model) {
+        if (!model.getEntityProperties().isEmpty()){
+            builder.append("    private static final PathInits inits = new PathInits(\"*\"");
+            for (PropertyModel property : model.getEntityProperties()){
+                if (!property.isInherited()){
+                    for (String init : property.getInits()){
+                        builder.append(", \"" + property.getEscapedName() + "." + init + "\"");    
+                    }                        
+                }
+            }        
+            builder.append(");\n\n");    
+        }               
     }
 
     protected void introSuper(StringBuilder builder, BeanModel model) {
@@ -423,7 +453,7 @@ public class EntitySerializer implements Serializer{
 //        if (field.getDocString() != null){
 //            builder.append("    /** "  + field.getDocString() + " */\n");    
 //        }        
-        builder.append("    public " + type + " " + field.getEscapedName()+";\n\n");
+        builder.append("    public final " + type + " " + field.getEscapedName()+";\n\n");
         writer.append(builder.toString());        
     }
 
@@ -457,7 +487,5 @@ public class EntitySerializer implements Serializer{
     protected void timeField(PropertyModel field, Writer writer) throws IOException {
         serialize(field, "PTime<" + field.getGenericTypeName() + ">", writer, "createTime", field.getTypeName()+".class");        
     }
-
-
 
 }

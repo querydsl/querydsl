@@ -29,6 +29,7 @@ import net.jcip.annotations.Immutable;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.mysema.query.annotations.QueryInit;
 import com.mysema.query.annotations.QueryType;
 import com.mysema.query.codegen.BeanModel;
 import com.mysema.query.codegen.ConstructorModel;
@@ -111,7 +112,11 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
                             typeModel = typeModel.as(typeCategory);
                             types.put(name, typeCategory);
                         }
-                        properties.put(name, new PropertyModel(classModel, name, typeModel));    
+                        String[] inits = new String[0];
+                        if (field.getAnnotation(QueryInit.class) != null){
+                            inits = field.getAnnotation(QueryInit.class).value();
+                        }
+                        properties.put(name, new PropertyModel(classModel, name, typeModel, inits));    
                     }catch(IllegalArgumentException ex){
                         StringBuilder builder = new StringBuilder();
                         builder.append("Caught exception for field ");
@@ -152,7 +157,11 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
                         }else if (types.containsKey(name)){
                             typeModel = typeModel.as(types.get(name));
                         }
-                        properties.put(name, new PropertyModel(classModel, name, typeModel));    
+                        String[] inits = new String[0];
+                        if (method.getAnnotation(QueryInit.class) != null){
+                            inits = method.getAnnotation(QueryInit.class).value();
+                        }
+                        properties.put(name, new PropertyModel(classModel, name, typeModel, inits));    
                         
                     }catch(IllegalArgumentException ex){
                         StringBuilder builder = new StringBuilder();

@@ -17,6 +17,8 @@ import javax.persistence.Transient;
 
 import org.junit.Test;
 
+import com.mysema.query.annotations.QueryInit;
+
 
 /**
  * The Class Account.
@@ -35,6 +37,7 @@ public class Account implements Serializable{
     long id;
     
     @ManyToOne
+    @QueryInit("pid")
     Person owner;
     
     @Embedded

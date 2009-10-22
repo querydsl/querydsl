@@ -32,8 +32,7 @@ public abstract class EString extends EComparable<String> {
     private static final Map<String,EString> cache;
     
     static{
-        List<String> strs = new ArrayList<String>();
-        strs.addAll(Arrays.asList("", ".", ".*", "%", "id", "name"));
+        List<String> strs = new ArrayList<String>(Arrays.asList("", ".", ".*", "%"));
         for (int i = 0; i < 256; i++){
             strs.add(String.valueOf(i));
         }
@@ -52,11 +51,17 @@ public abstract class EString extends EComparable<String> {
      * @return
      */
     public static final EString create(String str){
+        return create(str, false);
+    }
+    
+    public static EString create(String str, boolean populateCache) {
         if (cache.containsKey(str)){
-            return cache.get(str);
+            return cache.get(str);            
         }else{
-            return new EStringConst(Assert.notNull(str));
-        }        
+            EString rv = new EStringConst(Assert.notNull(str));
+            if (populateCache) cache.put(str, rv);                
+            return rv;
+        }
     }
     
     private volatile ENumber<Long> length;
@@ -444,5 +449,7 @@ public abstract class EString extends EComparable<String> {
         }
         return upper;
     }
+
+
     
 }

@@ -16,7 +16,7 @@ public class EmbeddableSerializer extends EntitySerializer{
     }
     
     @Override
-    protected void factoryMethods(StringBuilder builder, BeanModel model) throws IOException {
+    protected void introFactoryMethods(StringBuilder builder, BeanModel model) throws IOException {
         // no factory methods        
     }
     

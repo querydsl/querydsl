@@ -17,6 +17,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.util.NotEmpty;
 
@@ -28,9 +29,9 @@ import com.mysema.query.util.NotEmpty;
  */
 @Immutable
 public final class PathMetadata<T> implements Serializable{
-
+    
     private static final long serialVersionUID = -1055994185028970065L;
-
+    
     public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, Expr<Integer> index) {
         return new PathMetadata<Integer>(parent, index, PathType.ARRAYVALUE);
     }
@@ -56,13 +57,11 @@ public final class PathMetadata<T> implements Serializable{
     }
 
     public static PathMetadata<String> forProperty(Path<?> parent, @NotEmpty String property) {
-        // TODO : cache expressions ?
-        return new PathMetadata<String>(parent, Expr.create(Assert.hasLength(property)), PathType.PROPERTY);
+        return new PathMetadata<String>(parent, EString.create(Assert.hasLength(property), true), PathType.PROPERTY);
     }
 
     public static PathMetadata<String> forVariable(@NotEmpty String variable) {
-        // TODO : cache expressions ?
-        return new PathMetadata<String>(null, Expr.create(Assert.hasLength(variable)), PathType.VARIABLE);
+        return new PathMetadata<String>(null, EString.create(Assert.hasLength(variable), true), PathType.VARIABLE);
     }
 
     private final Expr<T> expression;
@@ -103,6 +102,10 @@ public final class PathMetadata<T> implements Serializable{
 
     public Path<?> getParent() {
         return parent;
+    }
+    
+    public boolean isRoot(){
+        return parent == null;
     }
 
     public PathType getPathType() {
