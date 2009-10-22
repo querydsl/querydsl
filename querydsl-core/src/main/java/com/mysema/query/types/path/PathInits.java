@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * PathInits defines path initializations that can be attached to 
+ * properties via QueryInit annotations
+ * 
  * @author tiwe
  *
  */
