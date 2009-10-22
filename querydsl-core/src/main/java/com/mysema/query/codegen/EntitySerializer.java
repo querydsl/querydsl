@@ -199,9 +199,7 @@ public class EntitySerializer implements Serializer{
             builder.append("        super(type, entityName, metadata);\n");
             if (!model.getEntityProperties().isEmpty()){
                 for (PropertyModel field : model.getEntityProperties()){
-                    if (field.isInherited()){
-                        builder.append("        this." + field.getEscapedName() + " = _super."+field.getName()+";\n");   
-                    }else {
+                    if (!field.isInherited()){
                         builder.append("        this." + field.getEscapedName() + " = ");
                         builder.append("inits.isInitialized(\""+field.getName()+"\") ? ");
                         builder.append("new " + field.getQueryTypeName() + "(PathMetadata.forProperty(this,\"" + field.getName() + "\"), inits.getInits(\""+field.getName()+"\")) : null;\n");    
@@ -249,7 +247,15 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void entityField(PropertyModel field, Writer writer) throws IOException {
-        serialize(field, field.getQueryTypeName(), writer);        
+        final String type = field.getQueryTypeName();
+        
+        StringBuilder builder = new StringBuilder();
+        builder.append("    public final " + type + " " + field.getEscapedName());
+        if (field.isInherited()){
+            builder.append(" = _super." + field.getEscapedName());    
+        }        
+        builder.append(";\n\n");
+        writer.append(builder.toString());
     }
 
     protected void intro(BeanModel model, Writer writer) throws IOException {        
@@ -448,14 +454,11 @@ public class EntitySerializer implements Serializer{
         writer.write("}\n");        
     }
 
-    protected void serialize(PropertyModel field, String type, Writer writer) throws IOException {
-        StringBuilder builder = new StringBuilder();
-//        if (field.getDocString() != null){
-//            builder.append("    /** "  + field.getDocString() + " */\n");    
-//        }        
-        builder.append("    public final " + type + " " + field.getEscapedName()+";\n\n");
-        writer.append(builder.toString());        
-    }
+//    protected void serialize(PropertyModel field, String type, Writer writer) throws IOException {
+//        StringBuilder builder = new StringBuilder();
+//        builder.append("    public final " + type + " " + field.getEscapedName()+";\n\n");
+//        writer.append(builder.toString());        
+//    }
 
     protected void serialize(PropertyModel field, String type, Writer writer, String factoryMethod, String... args) throws IOException{
         // construct value
