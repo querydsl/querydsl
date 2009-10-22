@@ -15,9 +15,8 @@ public class HibernateConfiguration extends JPAConfiguration{
     public HibernateConfiguration(Class<? extends Annotation> entityAnn,
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
-            Class<? extends Annotation> dtoAnn,
             Class<? extends Annotation> skipAnn) throws ClassNotFoundException {
-        super(entityAnn, superTypeAnn, embeddableAnn, dtoAnn, skipAnn);
+        super(entityAnn, superTypeAnn, embeddableAnn, skipAnn);
     }
     
     @SuppressWarnings("unchecked")

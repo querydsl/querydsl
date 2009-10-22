@@ -13,6 +13,7 @@ import java.util.Map;
 
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryEntity;
+import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QueryType;
 
 @QueryEntity
@@ -49,6 +50,7 @@ public class Cat extends Animal {
         this.name = name;
     }
     
+    @QueryProjection
     public Cat(String name, int id) {
         this(name);
         this.id = id;

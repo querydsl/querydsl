@@ -31,7 +31,7 @@ import com.mysema.query.annotations.QueryTransient;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class QuerydslAnnotationProcessor extends AbstractProcessor{
     
-    private Class<? extends Annotation> entity, superType, embeddable, dto, skip;
+    private Class<? extends Annotation> entity, superType, embeddable, skip;
     
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -39,10 +39,10 @@ public class QuerydslAnnotationProcessor extends AbstractProcessor{
         entity = QueryEntity.class;
         superType = QuerySupertype.class;
         embeddable = QueryEmbeddable.class;
-        dto = QueryProjection.class;
+//        dto = QueryProjection.class;
         skip = QueryTransient.class;
         
-        Configuration configuration = new Configuration(entity, superType, embeddable, dto, skip);
+        Configuration configuration = new Configuration(entity, superType, embeddable, skip);
         Processor processor = new Processor(processingEnv, configuration);
         processor.process(roundEnv);
         return true;

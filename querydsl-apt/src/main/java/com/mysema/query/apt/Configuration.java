@@ -15,6 +15,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.annotations.QueryProjection;
 
 /**
  * @author tiwe
@@ -24,7 +25,7 @@ public class Configuration {
     
     private String namePrefix = "Q";
     
-    protected final Class<? extends Annotation> entityAnn, superTypeAnn, embeddableAnn, dtoAnn, skipAnn;
+    protected final Class<? extends Annotation> entityAnn, superTypeAnn, embeddableAnn, skipAnn;
     
     private boolean useFields = true, useGetters = true;
     
@@ -32,12 +33,12 @@ public class Configuration {
             Class<? extends Annotation> entityAnn, 
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
-            Class<? extends Annotation> dtoAnn,
+//            Class<? extends Annotation> dtoAnn,
             Class<? extends Annotation> skipAnn) {
         this.entityAnn = Assert.notNull(entityAnn);
         this.superTypeAnn = superTypeAnn;
         this.embeddableAnn = embeddableAnn;
-        this.dtoAnn = dtoAnn;
+//        this.dtoAnn = dtoAnn;
         this.skipAnn = skipAnn;             
     }
     
@@ -47,6 +48,7 @@ public class Configuration {
     
     public boolean isValidConstructor(ExecutableElement constructor) {
         return constructor.getModifiers().contains(Modifier.PUBLIC)
+            && constructor.getAnnotation(QueryProjection.class) != null
             && !constructor.getParameters().isEmpty();
     }
     
@@ -75,9 +77,9 @@ public class Configuration {
         return embeddableAnn;
     }
     
-    public Class<? extends Annotation> getDtoAnn() {
-        return dtoAnn;
-    }
+//    public Class<? extends Annotation> getDtoAnn() {
+//        return dtoAnn;
+//    }
 
     public Class<? extends Annotation> getSkipAnn() {
         return skipAnn;

@@ -9,8 +9,10 @@ import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 import javax.annotation.processing.Messager;
@@ -23,6 +25,7 @@ import javax.tools.Diagnostic.Kind;
 import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.codegen.BeanModel;
 import com.mysema.query.codegen.BeanModelFactory;
 import com.mysema.query.codegen.Serializer;
@@ -129,18 +132,23 @@ public class Processor {
 
         // DTOS (optional)
         
-        if (conf.getDtoAnn() != null){
-            DTOElementVisitor dtoVisitor = new DTOElementVisitor(env, conf, typeFactory);
-            Map<String, BeanModel> dtos = new HashMap<String, BeanModel>();
-            for (Element element : roundEnv.getElementsAnnotatedWith(conf.getDtoAnn())) {
-                BeanModel model = element.accept(dtoVisitor, null);
-                dtos.put(model.getName(), model);
-            }
-            // serialize entity types
-            if (!dtos.isEmpty()) {
-                serialize(Serializers.DTO, dtos);
-            }    
-        }         
+        DTOElementVisitor dtoVisitor = new DTOElementVisitor(env, conf, typeFactory);
+        Map<String, BeanModel> dtos = new HashMap<String, BeanModel>();
+        Set<Element> visited = new HashSet<Element>();
+        for (Element element : roundEnv.getElementsAnnotatedWith(QueryProjection.class)) {
+            Element parent = element.getEnclosingElement();
+            if (parent.getAnnotation(conf.getEntityAnn()) == null
+                    && parent.getAnnotation(conf.getEmbeddableAnn()) == null
+                    && !visited.contains(parent)){
+                BeanModel model = parent.accept(dtoVisitor, null);
+                dtos.put(model.getName(), model);    
+                visited.add(parent);
+            }            
+        }
+        // serialize entity types
+        if (!dtos.isEmpty()) {
+            serialize(Serializers.DTO, dtos);
+        }     
         
     }
         

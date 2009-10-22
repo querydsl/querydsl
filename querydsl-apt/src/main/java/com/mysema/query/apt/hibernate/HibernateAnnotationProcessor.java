@@ -17,7 +17,7 @@ public class HibernateAnnotationProcessor extends JPAAnnotationProcessor{
     
     @Override
     protected Configuration createConfiguration() throws ClassNotFoundException {
-        return new HibernateConfiguration(entity, superType, embeddable, dto, skip);
+        return new HibernateConfiguration(entity, superType, embeddable, skip);
     } 
 
 }

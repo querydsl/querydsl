@@ -10,8 +10,9 @@ import com.mysema.query.annotations.QueryProjection;
 /**
  * The Class Family.
  */
-@QueryProjection
 public class Family {
+    
+    @QueryProjection
     public Family(Cat mother, Cat mate, Cat offspr) {
 
     }

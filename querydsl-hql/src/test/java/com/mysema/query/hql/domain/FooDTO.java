@@ -13,7 +13,6 @@ import org.hibernate.annotations.CollectionOfElements;
 
 import com.mysema.query.annotations.QueryProjection;
 
-@QueryProjection
 public class FooDTO {
     String bar;
     @Id
@@ -25,9 +24,11 @@ public class FooDTO {
     public FooDTO() {
     }
 
+    @QueryProjection
     public FooDTO(long l) {
     }
 
+    @QueryProjection
     public FooDTO(long l, long r) {
     }
 }

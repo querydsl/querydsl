@@ -16,7 +16,6 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
-import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.apt.Configuration;
 import com.mysema.query.apt.Processor;
 
@@ -28,7 +27,7 @@ import com.mysema.query.apt.Processor;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class JPAAnnotationProcessor extends AbstractProcessor{
     
-    protected Class<? extends Annotation> entity, superType, embeddable, dto, skip;
+    protected Class<? extends Annotation> entity, superType, embeddable, skip;
     
     @SuppressWarnings("unchecked")
     @Override
@@ -38,7 +37,6 @@ public class JPAAnnotationProcessor extends AbstractProcessor{
             entity = (Class)Class.forName("javax.persistence.Entity");
             superType = (Class)Class.forName("javax.persistence.MappedSuperclass");
             embeddable = (Class)Class.forName("javax.persistence.Embeddable");
-            dto = QueryProjection.class;
             skip = (Class)Class.forName("javax.persistence.Transient");
             
             Configuration configuration = createConfiguration();
@@ -52,7 +50,7 @@ public class JPAAnnotationProcessor extends AbstractProcessor{
     }
 
     protected Configuration createConfiguration() throws ClassNotFoundException {
-        return new JPAConfiguration(entity, superType, embeddable, dto, skip);
+        return new JPAConfiguration(entity, superType, embeddable, skip);
     }       
     
 }
