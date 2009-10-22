@@ -20,6 +20,10 @@ public class PathInitTest {
         
         @QueryInit("*")
         public E2 e222;
+        
+        public E2 type;
+        
+        public E2 inits;
     }
     
     @QueryEntity
