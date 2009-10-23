@@ -66,6 +66,9 @@ public class EntityTest extends AbstractTest{
         assertNotNull(entity3.superTypeEntityRef.entity2Ref);
         assertNotNull(entity3._super.superTypeEntityRef.entity2Ref);
         assertNotNull(entity3._super._super.superTypeEntityRef.entity2Ref);
+        
+        assertNotNull(QEntity4.entity4.supertypeField);
     }
+    
     
 }

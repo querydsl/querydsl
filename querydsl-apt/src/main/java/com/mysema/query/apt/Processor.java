@@ -69,7 +69,6 @@ public class Processor {
         
     }
     
-    @SuppressWarnings("unchecked")
     public void process(RoundEnvironment roundEnv) {
         Map<String, BeanModel> superTypes = new HashMap<String, BeanModel>();
 
@@ -100,9 +99,11 @@ public class Processor {
             BeanModel model = element.accept(entityVisitor, null);
             entityTypes.put(model.getName(), model);
         }
+        superTypes.putAll(entityTypes);
+        
         // add super type fields
         for (BeanModel entityType : entityTypes.values()) {
-            addSupertypeFields(entityType, superTypes, entityTypes);
+            addSupertypeFields(entityType, superTypes);
         }
         // serialize entity types
         if (!entityTypes.isEmpty()) {
@@ -119,10 +120,11 @@ public class Processor {
                 BeanModel model = element.accept(entityVisitor, null);
                 embeddables.put(model.getName(), model);
             }  
+            superTypes.putAll(embeddables);
             
             // add super type fields
             for (BeanModel embeddable : embeddables.values()) {
-                addSupertypeFields(embeddable, superTypes, embeddables);
+                addSupertypeFields(embeddable, superTypes);
             }
             // serialize entity types
             if (!embeddables.isEmpty()) {
@@ -152,44 +154,42 @@ public class Processor {
         
     }
         
-    private void addSupertypeFields(BeanModel model, Map<String,BeanModel>... superTypes){
+    private void addSupertypeFields(BeanModel model, Map<String, BeanModel> superTypes) {
         boolean singleSuperType = model.getSuperTypes().size() == 1;
-        for (String stype : model.getSuperTypes()){
-         // iterate over supertypes
-            for (Map<String,BeanModel> stypes : superTypes){
-                if (stypes.containsKey(stype)) {
-                    Stack<String> stypeStack = new Stack<String>();
-                    stypeStack.push(stype);
-                    while (!stypeStack.isEmpty()){
-                        String top = stypeStack.pop();
-                        if (stypes.containsKey(top)){
-                            BeanModel sdecl = stypes.get(top);
-                            if (singleSuperType && model.getSuperTypes().contains(top)){
-                                model.setSuperModel(sdecl);
-                            }
-                            model.include(sdecl);
-                            for (String type : sdecl.getSuperTypes()){
-                                stypeStack.push(type);    
-                            }                            
+        for (String stype : model.getSuperTypes()) {
+            // iterate over supertypes
+            if (superTypes.containsKey(stype)) {
+                Stack<String> stypeStack = new Stack<String>();
+                stypeStack.push(stype);
+                while (!stypeStack.isEmpty()) {
+                    String top = stypeStack.pop();
+                    if (superTypes.containsKey(top)) {
+                        BeanModel sdecl = superTypes.get(top);
+                        if (singleSuperType && model.getSuperTypes().contains(top)) {
+                            model.setSuperModel(sdecl);
                         }
-                    }                    
-                } 
+                        model.include(sdecl);
+                        for (String type : sdecl.getSuperTypes()) {
+                            stypeStack.push(type);
+                        }
+                    }
+                }
             }
-        }        
-        
+        }
+
         // create super class model via reflection
-        if (model.getSuperModel() == null && singleSuperType){
+        if (model.getSuperModel() == null && singleSuperType) {
             String stype = model.getSuperTypes().iterator().next();
             Class<?> superClass = safeClassForName(stype);
             if (superClass != null && !superClass.equals(Object.class)) {
                 // handle the supertype only, if it has the proper annotations
-                if((conf.getSuperTypeAnn() == null 
-                    || superClass.getAnnotation(conf.getSuperTypeAnn()) != null)
-                    || superClass.getAnnotation(conf.getEntityAnn()) != null){
+                if ((conf.getSuperTypeAnn() == null 
+                        || superClass.getAnnotation(conf.getSuperTypeAnn()) != null)
+                        || superClass.getAnnotation(conf.getEntityAnn()) != null) {
                     BeanModel type = classModelFactory.create(superClass, conf.getNamePrefix());
                     // include fields of supertype
-                    model.include(type);    
-                }            
+                    model.include(type);
+                }
             }
         }
     }

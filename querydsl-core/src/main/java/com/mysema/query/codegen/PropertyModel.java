@@ -118,6 +118,10 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         return isVisible(type) ? type.getLocalName() : type.getName();
     }
     
+    public BeanModel getBeanModel(){
+        return classModel;
+    }
+    
     public String getName() {
         return name;
     }
