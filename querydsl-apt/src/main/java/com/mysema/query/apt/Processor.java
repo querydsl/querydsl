@@ -167,9 +167,7 @@ public class Processor {
                             if (singleSuperType && model.getSuperTypes().contains(top)){
                                 model.setSuperModel(sdecl);
                             }
-                            if (sdecl.isEntityModel()){
-                                model.include(sdecl);    
-                            }  
+                            model.include(sdecl);
                             for (String type : sdecl.getSuperTypes()){
                                 stypeStack.push(type);    
                             }                            
@@ -221,6 +219,7 @@ public class Processor {
                     }
                 }                
             } catch (Exception e) {
+                e.printStackTrace();
                 msg.printMessage(Kind.ERROR, e.getMessage());
             }
         }

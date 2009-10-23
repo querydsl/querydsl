@@ -21,34 +21,27 @@ public class SupertypeSerializer extends EntitySerializer{
     protected void constructors(BeanModel model, Writer writer) throws IOException {
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
+        final String genericName = model.getGenericName();
         
         StringBuilder builder = new StringBuilder();
-        builder.append("    public "+queryType+"(Class<? extends T> type, @NotEmpty String entityName, PathMetadata<?> metadata) {\n");
-        builder.append("        super(type, entityName, metadata);\n");
-        builder.append("    }\n");
-        writer.append(builder.toString());
-    }
-    
-    @Override
-    protected void introFactoryMethods(StringBuilder builder, BeanModel model) throws IOException {
-        // no factory methods        
-    }
-    
-    @Override
-    protected void introClassHeader(StringBuilder builder, BeanModel model) {
-        final String queryType = model.getPrefix() + model.getSimpleName();
-        final String localName = model.getLocalName();
-        builder.append("@SuppressWarnings(\"serial\")\n");        
-        if (model.getSuperModel() != null){
-            BeanModel superModel = model.getSuperModel();
-            String superQueryType = superModel.getPrefix() + superModel.getSimpleName();
-            if (!superModel.getPackageName().equals(model.getPackageName())){
-                superQueryType = superModel.getPackageName() + "." + superQueryType;
-            }
-            builder.append("public abstract class " + queryType + "<T extends "+localName+"> extends "+superQueryType+"<T> {\n\n");
+        
+        if (model.getEntityProperties().isEmpty()){
+            builder.append("    public "+queryType+"(PEntity<? extends "+ genericName+"> entity){\n");
+            builder.append("        super(entity.getType(), entity.getEntityName(), entity.getMetadata());\n");
+            builder.append("    }\n\n");
+            
+            builder.append("    public "+queryType+"(Class<? extends "+genericName+"> type, @NotEmpty String entityName, PathMetadata<?> metadata) {\n");
+            builder.append("        super(type, entityName, metadata);\n");
+        
         }else{
-            builder.append("public abstract class " + queryType + "<T extends "+localName+"> extends PEntity<T> {\n\n");    
-        }        
+            builder.append("    public "+queryType+"(Class<? extends "+genericName+"> type, @NotEmpty String entityName, PathMetadata<?> metadata, PathInits inits) {\n");
+            builder.append("        super(type, entityName, metadata);\n");
+            if (!model.getEntityProperties().isEmpty()){
+                initEntityFields(builder, model);
+            }                
+        }
+        builder.append("    }\n");        
+        writer.append(builder.toString());
     }
     
     @Override
@@ -57,19 +50,19 @@ public class SupertypeSerializer extends EntitySerializer{
     }
     
     @Override
+    protected void introFactoryMethods(StringBuilder builder, BeanModel model) throws IOException {
+        // no factory methods        
+    }
+        
+    @Override
     protected void introImports(StringBuilder builder, BeanModel model) {
         builder.append("import com.mysema.query.util.*;\n");
         builder.append("import com.mysema.query.types.path.*;\n\n");
     }
     
     @Override
-    protected void introSuper(StringBuilder builder, BeanModel model) {
-        BeanModel superModel = model.getSuperModel();
-        String superQueryType = superModel.getPrefix() + superModel.getSimpleName();
-        if (!superModel.getPackageName().equals(model.getPackageName())){
-            superQueryType = superModel.getPackageName() + "." + superQueryType;
-        }            
-        builder.append("    public final "+superQueryType+"<T> _super = this;\n\n");
+    protected void introInits(StringBuilder builder, BeanModel model) {
+        // no PathInits instance
     }
 
 }
