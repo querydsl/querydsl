@@ -16,12 +16,11 @@ import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.QueryBaseWithProjection;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EEntity;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PEntityCollection;
 import com.mysema.query.types.path.PEntityMap;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PathMetadata;
@@ -57,12 +56,17 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
     }
 
     @SuppressWarnings("unchecked")
-    private <D> Expr<D> createAlias(EEntity<?> target, PEntity<D> alias){
+    private <D> Expr<D> createAlias(PEntity<?> target, PEntity<D> alias){
         return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
     }
     
     @SuppressWarnings("unchecked")
-    private <D> Expr<D> createAlias(PEntityMap<?,D> target, PEntity<D> alias){
+    private <D> Expr<D> createAlias(PCollection<?> target, PEntity<D> alias){
+        return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target.asExpr(), alias);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private <D> Expr<D> createAlias(PEntityMap<?,D,?> target, PEntity<D> alias){
         return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
     }
 
@@ -98,12 +102,12 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return _this;
     }
     
-    public <P> SubType fullJoin(PEntityCollection<P> target, PEntity<P> alias) {
+    public <P> SubType fullJoin(PCollection<P> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.FULLJOIN, createAlias(target, alias));
         return _this;
     }
     
-    public <P> SubType fullJoin(PEntityMap<?,P> target, PEntity<P> alias) {
+    public <P> SubType fullJoin(PEntityMap<?,P,?> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.FULLJOIN, createAlias(target, alias));
         return _this;
     }
@@ -117,12 +121,12 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return _this;
     }
 
-    public <P> SubType innerJoin(PEntityCollection<P> target, PEntity<P> alias) {
+    public <P> SubType innerJoin(PCollection<P> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return _this;
     }
     
-    public <P> SubType innerJoin(PEntityMap<?,P> target, PEntity<P> alias) {
+    public <P> SubType innerJoin(PEntityMap<?,P,?> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return _this;
     }
@@ -132,12 +136,12 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return _this;
     }
     
-    public <P> SubType join(PEntityCollection<P> target, PEntity<P> alias) {
+    public <P> SubType join(PCollection<P> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.JOIN, createAlias(target, alias));
         return _this;
     }
     
-    public <P> SubType join(PEntityMap<?,P> target, PEntity<P> alias) {
+    public <P> SubType join(PEntityMap<?,P,?> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.JOIN, createAlias(target, alias));
         return _this;
     }
@@ -147,12 +151,12 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return _this;
     }
     
-    public <P> SubType leftJoin(PEntityCollection<P> target, PEntity<P> alias) {
+    public <P> SubType leftJoin(PCollection<P> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
         return _this;
     }
     
-    public <P> SubType leftJoin(PEntityMap<?,P> target, PEntity<P> alias) {
+    public <P> SubType leftJoin(PEntityMap<?,P,?> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
         return _this;
     }

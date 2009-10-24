@@ -5,7 +5,11 @@
  */
 package com.mysema.query.jdoql.testdomain;
 
-import com.mysema.query.types.path.*;
+import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.PEntityCollection;
+import com.mysema.query.types.path.PEntityMap;
+import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.PathMetadata;
 
 /**
  * QStore is a Querydsl query type for Store
@@ -18,9 +22,9 @@ public class QStore extends PEntity<com.mysema.query.jdoql.testdomain.Store>{
     
     public final PString name = createString("name");
     
-    public final PEntityMap<String,Product> productsByName = createEntityMap("productsByName",String.class,Product.class,"Product");
+    public final PEntityMap<String,Product,QProduct> productsByName = createEntityMap("productsByName",String.class,Product.class,QProduct.class);
     
-    public final PEntityCollection<Product> products = createEntityCollection("products",Product.class, "Product");
+    public final PEntityCollection<Product> products = createEntityCollection("products",Product.class);
     
     public QProduct productsByName(String key) {
         return new QProduct(PathMetadata.forMapAccess(productsByName,key));

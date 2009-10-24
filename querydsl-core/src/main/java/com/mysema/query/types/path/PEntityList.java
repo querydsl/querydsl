@@ -6,7 +6,6 @@
 package com.mysema.query.types.path;
 
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.util.NotEmpty;
 
 /**
  * PEntityList represents entity list paths
@@ -16,29 +15,34 @@ import com.mysema.query.util.NotEmpty;
  * @param <D> component type
  */
 @SuppressWarnings("serial")
-public class PEntityList<D> extends PEntityCollection<D> implements PList<D> {
+public class PEntityList<D, E extends PEntity<D>> extends PEntityCollection<D> implements PList<D> {
     
-    public PEntityList(Class<? super D> elementType, @NotEmpty String entityName, PathMetadata<?> metadata) {
-        super(elementType, entityName, metadata);
-    }
-
-    public PEntityList(Class<? super D> elementType, @NotEmpty String entityName, @NotEmpty String var) {
-        super(elementType, entityName, PathMetadata.forVariable(var));
-    }
-
-    public PEntityList(Class<? super D> elementType, @NotEmpty String entityName, Path<?> parent, @NotEmpty String property) {
-        super(elementType, entityName, PathMetadata.forProperty(parent, property));
+    private final Class<E> queryType;
+    
+    public PEntityList(Class<? super D> elementType, Class<E> queryType, PathMetadata<?> metadata) {
+        super(elementType, elementType.getSimpleName(), metadata);
+        this.queryType = queryType;
     }
     
     @Override
-    public PEntity<D> get(Expr<Integer> index) {
-        return new PEntity<D>(elementType, entityName, PathMetadata.forListAccess(this, index));
+    public E get(Expr<Integer> index) {
+        PathMetadata<Integer> md = PathMetadata.forListAccess(this, index);
+        try {
+            return queryType.getConstructor(PathMetadata.class).newInstance(md);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
     @Override
-    public PEntity<D> get(int index) {
+    public E get(int index) {
         // TODO : cache
-        return new PEntity<D>(elementType, entityName, PathMetadata.forListAccess(this, index));
+        PathMetadata<Integer> md = PathMetadata.forListAccess(this, index);
+        try {
+            return queryType.getConstructor(PathMetadata.class).newInstance(md);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
 }

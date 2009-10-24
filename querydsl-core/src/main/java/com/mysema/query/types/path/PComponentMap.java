@@ -37,8 +37,7 @@ public class PComponentMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {
     private volatile EBoolean isnull, isnotnull;    
 
     @SuppressWarnings("unchecked")
-    public PComponentMap(Class<? super K> keyType, Class<? super V> valueType,
-            PathMetadata<?> metadata) {
+    public PComponentMap(Class<? super K> keyType, Class<? super V> valueType, PathMetadata<?> metadata) {
         super((Class)Map.class);
         this.keyType = (Class<K>)keyType;
         this.valueType = (Class<V>)valueType;
@@ -67,12 +66,12 @@ public class PComponentMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {
     }
 
     @Override
-    public Expr<V> get(Expr<K> key) {
+    public PSimple<V> get(Expr<K> key) {
         return new PSimple<V>(valueType, PathMetadata.forMapAccess(this, key));
     }
 
     @Override
-    public Expr<V> get(K key) {
+    public PSimple<V> get(K key) {
         return new PSimple<V>(valueType, PathMetadata.forMapAccess(this, key));
     }
 

@@ -24,15 +24,17 @@ import com.mysema.query.util.NotEmpty;
  * @param <V> value type
  */
 @SuppressWarnings("serial")
-public class PEntityMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {
+public class PEntityMap<K, V, E extends PEntity<V>> extends EMapBase<K, V> implements PMap<K, V> {
     
     private volatile EBoolean isnull, isnotnull;
     
     private final Class<K> keyType;
     
-    private final PathMetadata<?> metadata;
-    
     private final Class<V> valueType;
+    
+    private final Class<E> queryType;
+    
+    private final PathMetadata<?> metadata;
     
     @NotEmpty 
     private final String entityName;
@@ -40,22 +42,14 @@ public class PEntityMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {
     private final Path<?> root;
 
     @SuppressWarnings("unchecked")
-    public PEntityMap(Class<? super K> keyType, Class<? super V> valueType, @NotEmpty String entityName,
-            PathMetadata<?> metadata) {
+    public PEntityMap(Class<? super K> keyType, Class<? super V> valueType, Class<E> queryType, PathMetadata<?> metadata) {
         super((Class)Map.class);
         this.keyType = (Class<K>) keyType;
         this.valueType = (Class<V>) valueType;
-        this.entityName = entityName;
+        this.queryType = queryType;
+        this.entityName = valueType.getSimpleName();
         this.metadata = metadata;
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
-    }
-
-    public PEntityMap(Class<? super K> keyType, Class<? super V> valueType, @NotEmpty String entityName, @NotEmpty String var) {
-        this(keyType, valueType, entityName, PathMetadata.forVariable(var));
-    }
-    
-    public PEntityMap(Class<? super K> keyType, Class<? super V> valueType, @NotEmpty String entityName, Path<?> parent, @NotEmpty String var) {
-        this(keyType, valueType, entityName, PathMetadata.forProperty(parent, var));
     }
 
     @Override
@@ -71,15 +65,23 @@ public class PEntityMap<K, V> extends EMapBase<K, V> implements PMap<K, V> {
     }
 
     @Override
-    public PEntity<V> get(Expr<K> key) {
-        return new PEntity<V>(valueType, entityName, PathMetadata.forMapAccess(
-                this, key));
+    public E get(Expr<K> key) {
+        PathMetadata<K> md =  PathMetadata.forMapAccess(this, key);
+        try {
+            return queryType.getConstructor(PathMetadata.class).newInstance(md);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
     @Override
-    public PEntity<V> get(K key) {
-        return new PEntity<V>(valueType, entityName, PathMetadata.forMapAccess(
-                this, key));
+    public E get(K key) {
+        PathMetadata<K> md =  PathMetadata.forMapAccess(this, key);
+        try {
+            return queryType.getConstructor(PathMetadata.class).newInstance(md);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
     @Override

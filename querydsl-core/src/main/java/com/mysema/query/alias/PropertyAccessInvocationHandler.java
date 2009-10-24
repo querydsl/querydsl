@@ -33,12 +33,12 @@ import com.mysema.query.types.expr.EMap;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PBoolean;
 import com.mysema.query.types.path.PComparable;
+import com.mysema.query.types.path.PComponentList;
+import com.mysema.query.types.path.PComponentMap;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
-import com.mysema.query.types.path.PEntityList;
-import com.mysema.query.types.path.PEntityMap;
 import com.mysema.query.types.path.PList;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PNumber;
@@ -274,7 +274,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else if (List.class.isAssignableFrom(type)) {
             Class<?> elementType = getTypeParameter(genericType, 0);
-            path = new PEntityList(elementType, elementType.getSimpleName(), pm);
+            path = new PComponentList(elementType, pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
 
         } else if (Set.class.isAssignableFrom(type)) {
@@ -290,7 +290,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
         } else if (Map.class.isAssignableFrom(type)) {
             Class<?> keyType = getTypeParameter(genericType, 0);
             Class<?> valueType = getTypeParameter(genericType, 1);
-            path = new PEntityMap(keyType, valueType, valueType.getSimpleName(), pm);
+            path = new PComponentMap(keyType, valueType, pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
 
         } else if (Enum.class.isAssignableFrom(type)) {

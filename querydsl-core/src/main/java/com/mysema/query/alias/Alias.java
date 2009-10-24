@@ -18,12 +18,12 @@ import com.mysema.query.types.path.PBoolean;
 import com.mysema.query.types.path.PBooleanArray;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PComparableArray;
+import com.mysema.query.types.path.PComponentList;
+import com.mysema.query.types.path.PComponentMap;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
-import com.mysema.query.types.path.PEntityList;
-import com.mysema.query.types.path.PEntityMap;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
@@ -151,12 +151,12 @@ public final class Alias {
         return pathFactory.createTime(arg);
     }
 
-    public static <K, V> PEntityMap<K, V> $(Map<K, V> args) {
-        return pathFactory.createEntityMap(args);
+    public static <K, V> PComponentMap<K, V> $(Map<K, V> args) {
+        return pathFactory.createMap(args);
     }
 
-    public static <D> PEntityList<D> $(List<D> args) {
-        return pathFactory.createEntityList(args);
+    public static <D> PComponentList<D> $(List<D> args) {
+        return pathFactory.createList(args);
     }
 
     public static <D> PEntity<D> $(D arg) {

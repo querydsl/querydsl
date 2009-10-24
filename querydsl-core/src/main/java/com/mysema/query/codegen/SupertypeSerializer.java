@@ -30,17 +30,15 @@ public class SupertypeSerializer extends EntitySerializer{
             builder.append("        super(entity.getType(), entity.getEntityName(), entity.getMetadata());\n");
             builder.append("    }\n\n");
             
-            builder.append("    public "+queryType+"(Class<? extends "+genericName+"> type, @NotEmpty String entityName, PathMetadata<?> metadata) {\n");
-            builder.append("        super(type, entityName, metadata);\n");
-        
         }else{
             builder.append("    public "+queryType+"(Class<? extends "+genericName+"> type, @NotEmpty String entityName, PathMetadata<?> metadata, PathInits inits) {\n");
             builder.append("        super(type, entityName, metadata);\n");
             if (!model.getEntityProperties().isEmpty()){
                 initEntityFields(builder, model);
-            }                
+            }
+            builder.append("    }\n");
         }
-        builder.append("    }\n");        
+                
         writer.append(builder.toString());
     }
     
@@ -56,7 +54,9 @@ public class SupertypeSerializer extends EntitySerializer{
         
     @Override
     protected void introImports(StringBuilder builder, BeanModel model) {
-        builder.append("import com.mysema.query.util.*;\n");
+        if (!model.getEntityProperties().isEmpty()){
+            builder.append("import com.mysema.query.util.*;\n");    
+        }        
         builder.append("import com.mysema.query.types.path.*;\n\n");
     }
     

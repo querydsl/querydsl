@@ -14,12 +14,12 @@ import com.mysema.query.types.path.PBoolean;
 import com.mysema.query.types.path.PBooleanArray;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PComparableArray;
+import com.mysema.query.types.path.PComponentList;
+import com.mysema.query.types.path.PComponentMap;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
-import com.mysema.query.types.path.PEntityList;
-import com.mysema.query.types.path.PEntityMap;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PStringArray;
@@ -105,14 +105,14 @@ class AliasAwarePathFactory implements PathFactory {
         return rv != null ? rv : factory.createEntityCollection(arg);
     }
 
-    public <D> PEntityList<D> createEntityList(List<D> arg) {
-        PEntityList<D> rv = aliasFactory.<PEntityList<D>> getCurrentAndReset();
-        return rv != null ? rv : factory.createEntityList(arg);
+    public <D> PComponentList<D> createList(List<D> arg) {
+        PComponentList<D> rv = aliasFactory.<PComponentList<D>> getCurrentAndReset();
+        return rv != null ? rv : factory.createList(arg);
     }
 
-    public <K, V> PEntityMap<K, V> createEntityMap(Map<K, V> arg) {
-        PEntityMap<K, V> rv = aliasFactory.<PEntityMap<K, V>> getCurrentAndReset();
-        return rv != null ? rv : factory.createEntityMap(arg);
+    public <K, V> PComponentMap<K, V> createMap(Map<K, V> arg) {
+        PComponentMap<K, V> rv = aliasFactory.<PComponentMap<K, V>> getCurrentAndReset();
+        return rv != null ? rv : factory.createMap(arg);
     }
 
     public <D extends Number & Comparable<?>> PNumber<D> createNumber(D arg) {

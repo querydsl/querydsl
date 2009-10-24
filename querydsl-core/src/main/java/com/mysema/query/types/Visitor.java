@@ -145,9 +145,9 @@ public interface Visitor {
 
     void visit(PEntityCollection<?> expr);
 
-    void visit(PEntityList<?> expr);
+    void visit(PEntityList<?, ?> expr);
 
-    void visit(PEntityMap<?, ?> expr);
+    void visit(PEntityMap<?, ?, ?> expr);
 
     void visit(PList<?> expr);
 

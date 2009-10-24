@@ -1,5 +1,7 @@
 package com.mysema.query.domain;
 
+import static org.junit.Assert.*;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -114,6 +116,13 @@ public class RelationTest extends AbstractTest{
         match(PEntityMap.class, "map7");
         match(PEntityMap.class, "map8");
         match(PComponentMap.class, "map9");
+    }
+    
+    @Test
+    public void listUsage(){
+        String expected = "relationType.list.get(0).set"; 
+        assertEquals(expected, QRelationType.relationType.list.get(0).set.toString());
+        assertEquals(expected, QRelationType.relationType.list(0).set.toString());
     }
 
 }

@@ -254,12 +254,12 @@ public abstract class VisitorBase<SubType extends VisitorBase<SubType>> implemen
     }
 
     @Override
-    public void visit(PEntityList<?> expr) {
+    public void visit(PEntityList<?,?> expr) {
         visit((PList<?>) expr);
     }
 
     @Override
-    public void visit(PEntityMap<?, ?> expr) {
+    public void visit(PEntityMap<?, ?, ?> expr) {
         visit((PMap<?, ?>) expr);
     }
 
