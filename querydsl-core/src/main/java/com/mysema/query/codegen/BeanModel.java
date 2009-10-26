@@ -114,10 +114,6 @@ public final class BeanModel implements Comparable<BeanModel> {
         return typeModel.getName();
     }
 
-//    public Set<PropertyModel> getEntityProperties() {
-//        return entityProperties;
-//    }
-
     public Set<PropertyModel> getProperties() {
         return properties;
     }
