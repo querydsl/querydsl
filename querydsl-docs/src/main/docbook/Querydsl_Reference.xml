@@ -48,8 +48,9 @@
     <xi:include href="content/best-practices.xml"/>    
     <xi:include href="content/troubleshooting.xml"/>
     
+    <!-- 
     <xi:include href="content/internals.xml"/>
-    
+     -->
 
 </book>
 

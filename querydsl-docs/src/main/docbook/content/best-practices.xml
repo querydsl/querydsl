@@ -2,11 +2,28 @@
 
 <chapter id="best-practices" revision="1">
   <title>Best practices</title>
+ 
+  <sect1>
   
-<!-- 
-        * Interface based query usage
-        * Custom query extensions    
- -->
+    <title>Use default variable of the Query types</title>
+    
+    <para>Use the default variables of the query types as much as possible. The default variables
+    are available as static final fields in the query types. The name is always the decaptialized version
+    of the simple type name. For the type Account this would be account :</para>
+    
+<programlisting language="java"><![CDATA[     
+QAccount extends PEntity<Account>{
+      
+    public static final Account account = new QAccount("account");
+}
+]]></programlisting>      
+
+  <para>
+  Querydsl query types are safe to re-use, and by using Querydsl default variables you save initialization time
+  and memory.
+  </para>
+    
+  </sect1>
  
   <sect1>
   

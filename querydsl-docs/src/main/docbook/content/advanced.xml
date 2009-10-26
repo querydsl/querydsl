@@ -78,6 +78,45 @@ public class MyEntity{
     
     </sect1>
     
+    <sect1 id="type_inheritance">
+    
+      <title>Inheritance in Querydsl types</title>
+      
+      <para>
+      To avoid a generic signature in Querydsl query types the type hierarchies are flattened. The result is that
+      all generated query types are direct sublcasses of com.mysema.query.types.path.PEntity and cannot be directly cast
+      to their Querydsl supertypes.
+      </para>
+      
+      <para>
+      Instead of a direct Java cast, the supertype reference is accessible via the _super field. A _super-field is available
+      in all query types with a single supertype :
+      </para>
+      
+      <programlisting language="java"><![CDATA[
+// from Account
+QAccount extends PEntity<Account>{
+    // ...
+}
+
+// from BankAccount extends Account
+QBankAccount extends PEntity<BankAccount>{
+
+    public final QAccount _super = new QAccount(this);
+    
+    // ...
+}            
+]]></programlisting>      
+    
+    <para>To cast from a supertype to a subtype you can use the as-method of the PEntity class :</para>
+    
+    <programlisting language="java"><![CDATA[
+QAccount account = new QAccount("account");
+QBankAccount bankAccount = account.as(QBankAccount.class);    
+]]></programlisting>    
+    
+    </sect1>
+    
     <sect1 id="alias">
 
   <title>Alias usage</title>
