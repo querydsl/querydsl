@@ -47,7 +47,7 @@ public final class BeanModel implements Comparable<BeanModel> {
     
     private final TypeModel typeModel;
     
-    private String uncapSimpleName;
+    private String uncapSimpleName, genericName;
     
     public BeanModel(String prefix, TypeModel typeModel) {
         this(prefix, typeModel, Collections.<String>emptyList());
@@ -94,16 +94,19 @@ public final class BeanModel implements Comparable<BeanModel> {
     }
 
     public String getGenericName(){
-        if (typeModel.getParameterCount() == 0){
-            return typeModel.getLocalName();
-        }else{
-            StringBuilder builder = new StringBuilder(typeModel.getLocalName()).append("<");
-            for (int i = 0; i < typeModel.getParameterCount(); i++){
-                if (i > 0) builder.append(",");
-                builder.append("?");
-            }
-            return builder.append(">").toString();    
-        }            
+        if (genericName == null){
+            if (typeModel.getParameterCount() == 0){
+                genericName = typeModel.getLocalName();
+            }else{
+                StringBuilder builder = new StringBuilder(typeModel.getLocalName()).append("<");
+                for (int i = 0; i < typeModel.getParameterCount(); i++){
+                    if (i > 0) builder.append(",");
+                    builder.append("?");
+                }
+                genericName = builder.append(">").toString();    
+            }    
+        }
+        return genericName;            
     }
 
     public String getLocalName() {
