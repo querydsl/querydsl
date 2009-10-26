@@ -7,14 +7,12 @@ package com.mysema.query.codegen;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.collections15.Factory;
-import org.apache.commons.collections15.MapUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.commons.lang.Assert;
@@ -33,10 +31,16 @@ public final class BeanModel implements Comparable<BeanModel> {
     
     private boolean entityModel = true;
     
+    private final Set<PropertyModel> entityProperties = new TreeSet<PropertyModel>();
+    
     // mutable
     private int escapeSuffix = 1;
     
+    private boolean hasLists, hasMaps;
+    
     private final String prefix;
+    
+    private final Set<PropertyModel> properties = new TreeSet<PropertyModel>();
     
     @Nullable
     private BeanModel superModel;
@@ -45,15 +49,6 @@ public final class BeanModel implements Comparable<BeanModel> {
     
     private final TypeModel typeModel;
     
-    private final Map<TypeCategory,Collection<PropertyModel>> typeToProperties = MapUtils.lazyMap(
-            new HashMap<TypeCategory,Collection<PropertyModel>>(),
-            new Factory<Collection<PropertyModel>>(){
-                @Override
-                public Collection<PropertyModel> create() {
-                    return new HashSet<PropertyModel>();
-                }                
-            });
-
     private String uncapSimpleName;
     
     public BeanModel(String prefix, TypeModel typeModel) {
@@ -73,9 +68,19 @@ public final class BeanModel implements Comparable<BeanModel> {
     }
 
     public void addProperty(PropertyModel field) {
-        validateField(field);
-        Collection<PropertyModel> fields = typeToProperties.get(field.getTypeCategory());
-        fields.add(field);
+        properties.add(validateField(field));
+        switch(field.getTypeCategory()){
+        case ENTITYMAP:
+        case SIMPLEMAP: 
+            hasMaps = true; 
+            break;
+        case ENTITYLIST:
+        case SIMPLELIST: 
+            hasLists = true; 
+            break;
+        case ENTITY:    
+            entityProperties.add(field);            
+        }
     }
 
     public int compareTo(BeanModel o) {
@@ -86,50 +91,10 @@ public final class BeanModel implements Comparable<BeanModel> {
         return o instanceof BeanModel && typeModel.getName().equals(((BeanModel) o).typeModel.getName());
     }
 
-    public Collection<PropertyModel> getBooleanProperties() {
-        return typeToProperties.get(TypeCategory.BOOLEAN);
-    }
-
-    public Collection<PropertyModel> getComparableProperties() {
-        return typeToProperties.get(TypeCategory.COMPARABLE);
-    }
-
     public Collection<ConstructorModel> getConstructors() {
         return constructors;
     }
 
-    public Collection<PropertyModel> getDateProperties() {
-        return typeToProperties.get(TypeCategory.DATE);
-    }
-    
-    public Collection<PropertyModel> getDateTimeProperties() {
-        return typeToProperties.get(TypeCategory.DATETIME);
-    }
-    
-    public Collection<PropertyModel> getEntityCollections() {
-        return typeToProperties.get(TypeCategory.ENTITYCOLLECTION);
-    }
-    
-    public Collection<PropertyModel> getEntityLists() {
-        return typeToProperties.get(TypeCategory.ENTITYLIST);
-    }
-
-    public Collection<PropertyModel> getEntityMaps() {
-        return typeToProperties.get(TypeCategory.ENTITYMAP);
-    }
-
-    public Collection<PropertyModel> getEntityProperties() {
-        return typeToProperties.get(TypeCategory.ENTITY);
-    }
-
-    public String getLocalName() {
-        return typeModel.getLocalName();
-    }
-
-    public String getName() {
-        return typeModel.getName();
-    }
-    
     public String getGenericName(){
         if (typeModel.getParameterCount() == 0){
             return typeModel.getLocalName();
@@ -143,8 +108,20 @@ public final class BeanModel implements Comparable<BeanModel> {
         }            
     }
 
-    public Collection<PropertyModel> getNumericProperties() {
-        return typeToProperties.get(TypeCategory.NUMERIC);
+    public String getLocalName() {
+        return typeModel.getLocalName();
+    }
+    
+    public String getName() {
+        return typeModel.getName();
+    }
+
+    public Set<PropertyModel> getEntityProperties() {
+        return entityProperties;
+    }
+
+    public Set<PropertyModel> getProperties() {
+        return properties;
     }
 
     public String getPackageName() {
@@ -155,28 +132,8 @@ public final class BeanModel implements Comparable<BeanModel> {
         return prefix;
     }
 
-    public Collection<PropertyModel> getSimpleCollections() {
-        return typeToProperties.get(TypeCategory.SIMPLECOLLECTION);
-    }
-
-    public Collection<PropertyModel> getSimpleLists() {
-        return typeToProperties.get(TypeCategory.SIMPLELIST);
-    }
-
-    public Collection<PropertyModel> getSimpleMaps() {
-        return typeToProperties.get(TypeCategory.SIMPLEMAP);
-    }
-
     public String getSimpleName() {
         return typeModel.getSimpleName();
-    }
-
-    public Collection<PropertyModel> getSimpleProperties() {
-        return typeToProperties.get(TypeCategory.SIMPLE);
-    }
-
-    public Collection<PropertyModel> getStringProperties() {
-        return typeToProperties.get(TypeCategory.STRING);
     }
         
     @Nullable
@@ -188,27 +145,32 @@ public final class BeanModel implements Comparable<BeanModel> {
         return superTypes;
     }
 
-    public Collection<PropertyModel> getTimeProperties() {
-        return typeToProperties.get(TypeCategory.TIME);
-    }
-
     public String getUncapSimpleName() {
         return uncapSimpleName;
+    }
+
+    public boolean hasEntityFields() {
+        return !entityProperties.isEmpty();
     }
 
     public int hashCode() {
         return typeModel.getName().hashCode();
     }
 
+
+    public boolean hasLists() {
+        return hasLists;
+    }
+
+
+    public boolean hasMaps() {
+        return hasMaps;
+    }
+
+
     public void include(BeanModel clazz) {
-        for (TypeCategory category : TypeCategory.values()){
-            Collection<PropertyModel> source = clazz.typeToProperties.get(category);
-            if (!source.isEmpty()){
-                Collection<PropertyModel> target = typeToProperties.get(category);
-                for (PropertyModel field : source) {   
-                    target.add(validateField(field.createCopy(this)));
-                }    
-            }            
+        for (PropertyModel property : clazz.properties){
+            addProperty(property.createCopy(this));
         }        
     }
 
@@ -217,16 +179,13 @@ public final class BeanModel implements Comparable<BeanModel> {
         return entityModel;
     }
 
-
     public void setEntityModel(boolean entityModel) {
         this.entityModel = entityModel;
     }
 
-
     public void setSuperModel(BeanModel superModel) {
         this.superModel = superModel;
     }
-
 
     private PropertyModel validateField(PropertyModel field) {
         if (field.getName().equals(this.uncapSimpleName)) {
@@ -234,5 +193,6 @@ public final class BeanModel implements Comparable<BeanModel> {
         }
         return field;
     }
+    
     
 }

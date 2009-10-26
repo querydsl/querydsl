@@ -58,6 +58,9 @@ public class SupertypeSerializer extends EntitySerializer{
             builder.append("import com.mysema.query.util.*;\n");    
         }        
         builder.append("import com.mysema.query.types.path.*;\n\n");
+        if (model.hasLists() || model.hasMaps()){
+            builder.append("import com.mysema.query.types.expr.*;\n");
+        }
     }
     
     @Override

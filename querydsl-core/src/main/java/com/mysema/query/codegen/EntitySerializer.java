@@ -19,69 +19,37 @@ public class EntitySerializer implements Serializer{
         // intro
         intro(model, writer);
         
-        // fields
-        for (PropertyModel field : model.getStringProperties()){
-            stringField(field, writer);
-        }
-        for (PropertyModel field : model.getBooleanProperties()){
-            booleanField(field, writer);
-        }
-        for (PropertyModel field : model.getSimpleProperties()){
-            simpleField(field, writer);
-        }
-        for (PropertyModel field : model.getComparableProperties()){
-            comparableField(field, writer);
-        }
-        for (PropertyModel field : model.getDateProperties()){
-            dateField(field, writer);
-        }
-        for (PropertyModel field : model.getDateTimeProperties()){
-            dateTimeField(field, writer);
-        }
-        for (PropertyModel field : model.getTimeProperties()){
-            timeField(field, writer);
-        }
-        for (PropertyModel field : model.getNumericProperties()){
-            numericField(field, writer);
-        }
-        for (PropertyModel field : model.getSimpleCollections()){
-            collectionOfSimple(field, writer);
-        }
-        for (PropertyModel field : model.getEntityCollections()){
-            collectionOfEntity(field, writer);
-        }
-        for (PropertyModel field : model.getSimpleMaps()){
-            mapOfSimple(field, writer);
-        }
-        for (PropertyModel field : model.getEntityMaps()){
-            mapOfEntity(field, writer);
-        }
-        for (PropertyModel field : model.getSimpleLists()){
-            listSimple(field, writer);
-        }
-        for (PropertyModel field : model.getEntityLists()){
-            listOfEntity(field, writer);
-        }
-        for (PropertyModel field : model.getEntityProperties()){
-            entityField(field, writer);
+        for (PropertyModel property : model.getProperties()){
+            switch(property.getTypeCategory()){
+            case STRING: stringField(property, writer); break;
+            case BOOLEAN: booleanField(property, writer); break;
+            case SIMPLE: simpleField(property, writer); break;
+            case COMPARABLE: comparableField(property, writer); break;
+            case DATE: dateField(property, writer); break;
+            case DATETIME: dateTimeField(property, writer); break;
+            case TIME: timeField(property, writer); break;
+            case NUMERIC: numericField(property, writer); break;
+            case SIMPLECOLLECTION: collectionOfSimple(property, writer); break;
+            case ENTITYCOLLECTION: collectionOfEntity(property, writer); break;
+            case SIMPLEMAP: mapOfSimple(property, writer); break;
+            case ENTITYMAP: mapOfEntity(property, writer); break;
+            case SIMPLELIST: listOfSimple(property, writer); break;
+            case ENTITYLIST: listOfEntity(property, writer); break;
+            case ENTITY: entityField(property, writer); break;
+            }
         }
         
         // constructors
         constructors(model, writer);
         
-        // accessors
-        for (PropertyModel field : model.getSimpleLists()){
-            listOfSimpleAccessor(field, writer);
+        for (PropertyModel property : model.getProperties()){
+            switch(property.getTypeCategory()){
+            case SIMPLEMAP: mapOfSimpleAccessor(property, writer); break;
+            case ENTITYMAP: mapOfEntityAccessor(property, writer); break;
+            case SIMPLELIST: listOfSimpleAccessor(property, writer); break;
+            case ENTITYLIST: listOfEntityAccessor(property, writer); break;
+            }
         }
-        for (PropertyModel field : model.getEntityLists()){
-            listOfEntityAccessor(field, writer);
-        }
-        for (PropertyModel field : model.getSimpleMaps()){
-            mapOfSimpleAccessor(field, writer);
-        }
-        for (PropertyModel field : model.getEntityMaps()){
-            mapOfEntityAccessor(field, writer);
-        }        
         
         // outro
         outro(model, writer);
@@ -161,22 +129,31 @@ public class EntitySerializer implements Serializer{
         constructorsForVariables(builder, model);    
 
         // 2
-        builder.append("    public " + queryType + "(PEntity<? extends "+genericName+"> entity) {\n");
-        builder.append("        "+thisOrSuper+"(entity.getType(), entity.getEntityName(), entity.getMetadata()");
-        if (hasEntityFields){
-            builder.append(", entity.getMetadata().isRoot() ? __inits : PathInits.DEFAULT");
-        }
-        builder.append(");\n");
-        builder.append("    }\n\n");
+        if (!hasEntityFields){
+            builder.append("    public " + queryType + "(PEntity<? extends "+genericName+"> entity) {\n");
+            builder.append("        super(entity.getType(), entity.getEntityName(), entity.getMetadata()");
+            builder.append(");\n");
+            builder.append("    }\n\n");    
+        }        
         
         // 3        
-        builder.append("    public " + queryType + "(PathMetadata<?> metadata) {\n");
         if (hasEntityFields){
-            builder.append("        this(metadata, metadata.isRoot() ? __inits : PathInits.DEFAULT);\n");    
+            builder.append("    public " + queryType + "(PathMetadata<?> metadata) {\n");
+            builder.append("        this(metadata, metadata.isRoot() ? __inits : PathInits.DEFAULT);\n");
+            builder.append("    }\n\n");
         }else{
-            builder.append("        this(metadata, PathInits.DEFAULT);\n");
-        }        
-        builder.append("    }\n\n");
+            if (!localName.equals(genericName)){
+                builder.append("    @SuppressWarnings(\"unchecked\")\n");
+            }
+            builder.append("    public " + queryType + "(PathMetadata<?> metadata) {\n");
+            builder.append("        super(");
+            if (!localName.equals(genericName)){
+                builder.append("(Class)");
+            }
+            builder.append(localName+".class, \""+simpleName+"\", metadata);\n");
+            builder.append("    }\n\n");
+        }       
+        
         
         // 4
         if (!localName.equals(genericName)){
@@ -192,10 +169,10 @@ public class EntitySerializer implements Serializer{
             builder.append(", inits");
         }
         builder.append(");\n");
-        builder.append("    }\n\n");
+        builder.append("    }\n\n");       
         
-        if (hasEntityFields){
-            // 5 (with entity field initialization)
+        // 5 (with entity field initialization)
+        if (hasEntityFields){            
             builder.append("    public "+queryType+"(Class<? extends "+genericName+"> type, @NotEmpty String entityName, PathMetadata<?> metadata, PathInits inits) {\n");
             builder.append("        super(type, entityName, metadata);\n");
             initEntityFields(builder, model);
@@ -287,7 +264,7 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void introInits(StringBuilder builder, BeanModel model) {
-        if (!model.getEntityProperties().isEmpty()){
+        if (model.hasEntityFields()){
             List<String> inits = new ArrayList<String>();
             for (PropertyModel property : model.getEntityProperties()){
                 for (String init : property.getInits()){
@@ -313,7 +290,7 @@ public class EntitySerializer implements Serializer{
         if (!model.getPackageName().equals(superModel.getPackageName())){
             superQueryType = superModel.getPackageName() + "." + superQueryType;
         }
-        if (superModel.getEntityProperties().isEmpty()){
+        if (!superModel.hasEntityFields()){
             builder.append("    public final "+superQueryType+" _super = new " + superQueryType + "(this);\n\n");    
         }else{
             builder.append("    public final "+superQueryType+" _super;\n\n");    
@@ -339,7 +316,7 @@ public class EntitySerializer implements Serializer{
     protected void introImports(StringBuilder builder, BeanModel model) {
         builder.append("import com.mysema.query.util.*;\n");
         builder.append("import com.mysema.query.types.path.*;\n");
-        if (!model.getConstructors().isEmpty()){
+        if (!model.getConstructors().isEmpty() || model.hasLists() || model.hasMaps()){
             builder.append("import com.mysema.query.types.expr.*;\n");
         }
     }
@@ -372,7 +349,7 @@ public class EntitySerializer implements Serializer{
         builder.append("    public " + queryType + " " + escapedName + "(int index) {\n");
         builder.append("        return " + escapedName + ".get(index);\n");
         builder.append("    }\n\n");
-        builder.append("    public " + queryType + " " + escapedName + "(com.mysema.query.types.expr.Expr<Integer> index) {\n");
+        builder.append("    public " + queryType + " " + escapedName + "(Expr<Integer> index) {\n");
         builder.append("        return " + escapedName + ".get(index);\n");
         builder.append("    }\n\n");
         writer.append(builder.toString());
@@ -386,14 +363,14 @@ public class EntitySerializer implements Serializer{
         builder.append("    public PSimple<" + valueType + "> " + escapedName + "(int index) {\n");
         builder.append("        return " + escapedName + ".get(index);\n");
         builder.append("    }\n\n");
-        builder.append("    public PSimple<" + valueType + "> " + escapedName + "(com.mysema.query.types.expr.Expr<Integer> index) {\n");
+        builder.append("    public PSimple<" + valueType + "> " + escapedName + "(Expr<Integer> index) {\n");
         builder.append("        return " + escapedName + ".get(index);\n");
         builder.append("    }\n\n");
         writer.append(builder.toString());
         
     }
 
-    protected void listSimple(PropertyModel field, Writer writer) throws IOException {
+    protected void listOfSimple(PropertyModel field, Writer writer) throws IOException {
         serialize(field, "PComponentList<" + field.getTypeName()+">", writer, "createSimpleList", field.getTypeName()+".class");        
     }
 
@@ -422,7 +399,7 @@ public class EntitySerializer implements Serializer{
         builder.append("    public " + queryType + " " + escapedName + "(" + keyType+ " key) {\n");
         builder.append("        return " + escapedName + ".get(key);\n");
         builder.append("    }\n\n");        
-        builder.append("    public " + queryType + " " + escapedName + "(com.mysema.query.types.expr.Expr<"+genericKey+"> key) {\n");
+        builder.append("    public " + queryType + " " + escapedName + "(Expr<"+genericKey+"> key) {\n");
         builder.append("        return " + escapedName + ".get(key);\n");
         builder.append("    }\n\n");
         writer.append(builder.toString());
@@ -452,7 +429,7 @@ public class EntitySerializer implements Serializer{
         builder.append("    public PSimple<" + genericValue + "> " + escapedName + "(" + genericKey + " key) {\n");
         builder.append("        return " + escapedName + ".get(key);\n");
         builder.append("    }\n\n");
-        builder.append("    public PSimple<" + genericValue + "> " + escapedName + "(com.mysema.query.types.expr.Expr<"+genericKey+"> key) {\n");
+        builder.append("    public PSimple<" + genericValue + "> " + escapedName + "(Expr<"+genericKey+"> key) {\n");
         builder.append("        return " + escapedName + ".get(key);\n");
         builder.append("    }\n\n");
         writer.append(builder.toString());
@@ -471,7 +448,7 @@ public class EntitySerializer implements Serializer{
         BeanModel superModel = field.getBeanModel().getSuperModel();
         // construct value
         StringBuilder value = new StringBuilder();
-        if (field.isInherited() && superModel != null && superModel.getEntityProperties().isEmpty()){
+        if (field.isInherited() && superModel != null && !superModel.hasEntityFields()){
             // copy from super
             value.append("_super." + field.getEscapedName());
         }else{
