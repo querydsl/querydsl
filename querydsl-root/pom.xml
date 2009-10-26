@@ -131,10 +131,19 @@
     </plugins>
   </build>
   
+        
+  
   <reporting>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <links>
+            <link>http://java.sun.com/javase/6/docs/api/</link>
+            <link>http://www.hibernate.org/hib_docs/v3/api/</link>
+          </links>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
