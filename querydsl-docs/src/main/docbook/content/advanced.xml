@@ -1,0 +1,179 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<chapter id="advanced" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <title>Advanced usage</title>
+    
+    
+    <sect1 id="paths">
+      <title>Path initialization</title>
+    
+      <para>
+      By default Querydsl intializes only direct reference properties. In cases where longer initialization paths
+      are required, these have to be annotated in the domain types via com.mysema.query.annotations.QueryInit usage.
+      QueryInit is used on properties where deep initializations are needed. The following example demonstrates the
+      usage.       
+      </para>
+      
+      <programlisting language="java"><![CDATA[
+@Entity      
+class Event {
+    @QueryInit("customer")
+    Account account;
+}      
+
+@Entity
+class Account{
+    Customer customer;    
+}
+
+@Entity
+class Customer{
+    String name;
+    // ...
+}
+]]></programlisting>      
+    
+    <para>
+    This example enforces the initialization of the account.customer path, when an Event path is initialized
+    as a root path / variable. The path initialization format supports wildcards as well, e.g. "customer.*" or just "*".
+    </para>
+    
+    <para>
+    The declarative path initialization replaces the manual one, which required the entity fields to be nonfinal. The
+    declarative format has the benefit to be applied to all top level instances of a Query type and to enable the usage
+    of final entity fields. 
+    </para>
+    
+    </sect1>
+    
+    <sect1 id="custom_types">
+      <title>Custom type mappings</title>
+      
+      <para>
+      Custom type mappings can be used on properties to override the derived Path type. This can be useful in cases where
+      comparison and String operations should be blocked on certain String paths or Date / Time support for custom
+      types needs to be added. Support for Date / Time types of the Joda time API and JDK (java.util.Date, Calendar and subtypes) 
+      is built in, but other APIs might need to be supported using this feature.
+      </para>
+      
+      <para>The following example demonstrates the usage :</para>
+      
+      <programlisting language="java"><![CDATA[
+@Entity      
+public class MyEntity{      
+        @QueryType(PropertyType.SIMPLE)
+        public String stringAsSimple;
+        
+        @QueryType(PropertyType.COMPARABLE)
+        public String stringAsComparable;
+        
+        @QueryType(PropertyType.NONE)
+        public String stringNotInQuerydsl;    
+}        
+]]></programlisting>          
+    
+      <para>The value PropertyType.NONE can be used to skip a property in the Querydsl query type generation. This case is different
+      from @Transient or @QueryTransient annotated properties, where properties are not persisted. PropertyType.NONE just omits the
+      property from the Querydsl query type.</para>
+    
+    </sect1>
+    
+    <sect1 id="alias">
+
+  <title>Alias usage</title>
+
+  <para>
+    In cases where code generation is not an option, alias objects
+    can be used as path references for expression construction.
+  </para>
+
+  <para>
+    The following examples demonstrate how alias objects can be used
+    as replacements for expressions based on generated types.
+  </para>
+
+  <para>
+    At first an example query with APT generated domain types :
+  </para>
+
+  <programlisting language="java">
+QCat cat = new QCat("cat");
+for (String name : from(cat,cats)
+  .where(cat.kittens.size().gt(0))
+  .iterate(cat.name)){
+    System.out.println(name);
+}
+  </programlisting>
+
+  <para>
+    And now with an alias instance for the Cat class. The call
+    "c.getKittens()" inside the dollar-method is internally transformed
+    into the property path c.kittens.
+  </para>
+
+  <programlisting language="java">
+Cat c = alias(Cat.class, "cat");
+for (String name : from($(c),cats)
+  .where($(c.getKittens()).size().gt(0))
+  .iterate($(c.getName()))){
+    System.out.println(name);
+}
+  </programlisting>
+
+  <para>
+    To use the alias functionality in your code, add the following two
+    imports
+  </para>
+
+  <programlisting language="java">
+import static com.mysema.query.alias.Alias.$;
+import static com.mysema.query.alias.Alias.alias;
+  </programlisting>
+
+  <para>
+    The following example is a variation of the previous, where the access to
+    the list size happens inside the dollar-method invocation.
+  </para>
+
+  <programlisting language="java">
+Cat c = alias(Cat.class, "cat");
+for (String name : from($(c),cats)
+  .where($(c.getKittens().size()).gt(0))
+  .iterate($(c.getName()))){
+    System.out.println(name);
+}
+  </programlisting>
+
+  <para>
+    All non-primitive and non-String typed properties of aliases are aliases
+    themselves. So you may cascade method calls until you hit a
+    primitive or String type in the dollar-method scope.
+    e.g.
+  </para>
+
+  <programlisting language="java">
+$(c.getMate().getName())
+  </programlisting>
+
+  <para>
+    is transformed into *c.mate.name* internally, but
+  </para>
+
+  <programlisting language="java">
+$(c.getMate().getName().toLowerCase())
+  </programlisting>
+
+  <para>
+    is not transformed properly, since the toLowerCase() invocation is not
+    tracked.
+  </para>
+
+  <para>
+    Note also that you may only invoke getters, size(), contains(Object) and
+    get(int) on alias types. All other invocations throw exceptions.
+  </para>
+    
+    
+    </sect1>
+    
+</chapter>    

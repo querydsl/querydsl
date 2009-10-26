@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryInit;
 
-public class PathInitTest {
+public class QueryInitTest {
 
     private static final QPEntity e1 = QPEntity.pEntity;
     

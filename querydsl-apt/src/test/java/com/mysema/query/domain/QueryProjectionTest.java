@@ -6,7 +6,7 @@ import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.types.expr.EString;
 
-public class ProjectionTest {
+public class QueryProjectionTest {
 
     @QueryEntity
     public static class EntityWithProjection{
