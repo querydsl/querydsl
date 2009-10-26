@@ -31,12 +31,10 @@ public final class BeanModel implements Comparable<BeanModel> {
     
     private boolean entityModel = true;
     
-    private final Set<PropertyModel> entityProperties = new TreeSet<PropertyModel>();
-    
     // mutable
     private int escapeSuffix = 1;
     
-    private boolean hasLists, hasMaps;
+    private boolean hasLists, hasMaps, hasEntityFields;
     
     private final String prefix;
     
@@ -79,7 +77,7 @@ public final class BeanModel implements Comparable<BeanModel> {
             hasLists = true; 
             break;
         case ENTITY:    
-            entityProperties.add(field);            
+            hasEntityFields = true;            
         }
     }
 
@@ -116,9 +114,9 @@ public final class BeanModel implements Comparable<BeanModel> {
         return typeModel.getName();
     }
 
-    public Set<PropertyModel> getEntityProperties() {
-        return entityProperties;
-    }
+//    public Set<PropertyModel> getEntityProperties() {
+//        return entityProperties;
+//    }
 
     public Set<PropertyModel> getProperties() {
         return properties;
@@ -150,7 +148,7 @@ public final class BeanModel implements Comparable<BeanModel> {
     }
 
     public boolean hasEntityFields() {
-        return !entityProperties.isEmpty();
+        return hasEntityFields;
     }
 
     public int hashCode() {

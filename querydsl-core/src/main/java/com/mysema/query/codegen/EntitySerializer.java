@@ -122,7 +122,7 @@ public class EntitySerializer implements Serializer{
         
         StringBuilder builder = new StringBuilder();
         
-        boolean hasEntityFields = !model.getEntityProperties().isEmpty();
+        boolean hasEntityFields = model.hasEntityFields();
         String thisOrSuper = hasEntityFields ? "this" : "super";
         
         // 1
@@ -185,7 +185,7 @@ public class EntitySerializer implements Serializer{
 
     protected void initEntityFields(StringBuilder builder, BeanModel model) {
         BeanModel superModel = model.getSuperModel();
-        if (superModel != null && !superModel.getEntityProperties().isEmpty()){
+        if (superModel != null && superModel.hasEntityFields()){
             String superQueryType = superModel.getPrefix() + superModel.getSimpleName();
             if (!superModel.getPackageName().equals(model.getPackageName())){
                 superQueryType = superModel.getPackageName() + "." + superQueryType;
@@ -193,15 +193,20 @@ public class EntitySerializer implements Serializer{
             builder.append("        this._super = new " + superQueryType + "(type, entityName, metadata, inits);\n");            
         }
         
-        for (PropertyModel field : model.getEntityProperties()){
-            builder.append("        this." + field.getEscapedName() + " = ");
-            if (!field.isInherited()){
-                builder.append("inits.isInitialized(\""+field.getName()+"\") ? ");
-                builder.append("new " + field.getQueryTypeName() + "(PathMetadata.forProperty(this,\"" + field.getName() + "\"), inits.getInits(\""+field.getName()+"\")) : null;\n");    
-            }else{
-                builder.append("_super." + field.getEscapedName() +";\n");
+        for (PropertyModel field : model.getProperties()){            
+            if (field.getTypeCategory() == TypeCategory.ENTITY){
+                builder.append("        this." + field.getEscapedName() + " = ");
+                if (!field.isInherited()){
+                    builder.append("inits.isInitialized(\""+field.getName()+"\") ? ");
+                    builder.append("new " + field.getQueryTypeName() + "(PathMetadata.forProperty(this,\"" + field.getName() + "\"), inits.getInits(\""+field.getName()+"\")) : null;\n");    
+                }else{
+                    builder.append("_super." + field.getEscapedName() +";\n");
+                }   
+            }else if (field.isInherited() && superModel != null && superModel.hasEntityFields()){
+                builder.append("        this." + field.getEscapedName() + " = ");
+                builder.append("_super." + field.getEscapedName() + ";\n");
             }
-        }
+        }        
     }
     
     protected void constructorsForVariables(StringBuilder builder, BeanModel model) {
@@ -210,7 +215,7 @@ public class EntitySerializer implements Serializer{
         final String localName = model.getLocalName();
         final String genericName = model.getGenericName();
         
-        boolean hasEntityFields = !model.getEntityProperties().isEmpty();
+        boolean hasEntityFields = model.hasEntityFields();
         String thisOrSuper = hasEntityFields ? "this" : "super";
         
         if (!localName.equals(genericName)){
@@ -266,11 +271,14 @@ public class EntitySerializer implements Serializer{
     protected void introInits(StringBuilder builder, BeanModel model) {
         if (model.hasEntityFields()){
             List<String> inits = new ArrayList<String>();
-            for (PropertyModel property : model.getEntityProperties()){
-                for (String init : property.getInits()){
-                    inits.add(property.getEscapedName() + "." + init);    
+            for (PropertyModel property : model.getProperties()){
+                if (property.getTypeCategory() == TypeCategory.ENTITY){
+                    for (String init : property.getInits()){
+                        inits.add(property.getEscapedName() + "." + init);    
+                    }   
                 }
-            }                
+            }
+            
             if (!inits.isEmpty()){
                 builder.append("    private static final PathInits __inits = new PathInits(\"*\"");
                 for (String init : inits){
@@ -377,7 +385,6 @@ public class EntitySerializer implements Serializer{
     protected void mapOfEntity(PropertyModel field, Writer writer) throws IOException{
         final String keyType = field.getParameterName(0);
         final String valueType = field.getParameterName(1);
-//        final String simpleName = field.getSimpleTypeName();
         final String genericKey = field.getGenericParameterName(0);
         final String genericValue = field.getGenericParameterName(1);
         
@@ -419,8 +426,6 @@ public class EntitySerializer implements Serializer{
     
     protected void mapOfSimpleAccessor(PropertyModel field, Writer writer) throws IOException {
         final String escapedName = field.getEscapedName();
-//        final String keyType = field.getParameterName(0);
-//        final String valueType = field.getParameterName(1);
         final String genericKey = field.getGenericParameterName(0);
         final String genericValue = field.getGenericParameterName(1);
         
@@ -448,9 +453,10 @@ public class EntitySerializer implements Serializer{
         BeanModel superModel = field.getBeanModel().getSuperModel();
         // construct value
         StringBuilder value = new StringBuilder();
-        if (field.isInherited() && superModel != null && !superModel.hasEntityFields()){
-            // copy from super
-            value.append("_super." + field.getEscapedName());
+        if (field.isInherited() && superModel != null){
+            if (!superModel.hasEntityFields()){
+                value.append("_super." + field.getEscapedName());    
+            }            
         }else{
             value.append(factoryMethod + "(\"" + field.getName() + "\"");
             for (String arg : args){
@@ -464,7 +470,11 @@ public class EntitySerializer implements Serializer{
         if (field.isInherited()){
             builder.append("    // inherited\n");
         }        
-        builder.append("    public final " + type + " " + field.getEscapedName() + " = " + value + ";\n\n");
+        if (value.length() > 0){
+            builder.append("    public final " + type + " " + field.getEscapedName() + " = " + value + ";\n\n");    
+        }else{
+            builder.append("    public final " + type + " " + field.getEscapedName() + ";\n\n");
+        }        
         writer.append(builder.toString());
     }
 
