@@ -164,10 +164,11 @@ public final class BeanModel implements Comparable<BeanModel> {
 
     public void include(BeanModel clazz) {
         for (PropertyModel property : clazz.properties){
-            addProperty(property.createCopy(this));
+            if (!property.isInherited()){
+                addProperty(property.createCopy(this));    
+            }            
         }        
     }
-
 
     public boolean isEntityModel() {
         return entityModel;
