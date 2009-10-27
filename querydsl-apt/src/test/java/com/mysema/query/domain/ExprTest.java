@@ -18,7 +18,7 @@ import com.mysema.query.types.expr.Expr;
 public class ExprTest {
     
     @Test
-    public void test() throws Exception {
+    public void test() throws Throwable {
         List<Expr<?>> exprs = new ArrayList<Expr<?>>();
         exprs.add(QAnimal.animal);
         exprs.add(QCat.cat);
@@ -60,7 +60,18 @@ public class ExprTest {
         for (Expr<?> expr : exprs){
             for (Field field : expr.getClass().getFields()){
                 Object rv = field.get(expr);
-                if (rv instanceof Expr) toVisit.add((Expr<?>) rv);
+                if (rv instanceof Expr){
+                    if (rv instanceof EString){
+                        EString str = (EString)rv;
+                        toVisit.add(str.toLowerCase());
+                        toVisit.add(str.charAt(0));
+                        toVisit.add(str.isEmpty());
+                    }else if (rv instanceof EBoolean){
+                        EBoolean b = (EBoolean)rv; 
+                        toVisit.add(b.not());
+                    }
+                    toVisit.add((Expr<?>) rv);
+                }
             }
         }
         
@@ -68,6 +79,7 @@ public class ExprTest {
         
         for (Expr<?> expr : toVisit){
             for (Method method : expr.getClass().getMethods()){
+                if (method.getName().equals("getArg")) continue;
                 if (method.getReturnType() != void.class
                  && !method.getReturnType().isPrimitive()){
                     Class<?>[] types = method.getParameterTypes();
@@ -83,8 +95,8 @@ public class ExprTest {
                         
                     }else{
                         continue;
-                    }                        
-                    Object rv = method.invoke(expr, args);
+                    }
+                    Object rv = method.invoke(expr, args);   
                     if (method.invoke(expr, args) != rv){
                         failures.add(expr.getClass().getSimpleName()+"."+method.getName()+" is unstable");
                     }
