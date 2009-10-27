@@ -21,6 +21,8 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings({"unchecked","serial"})
 public abstract class ETime<D extends Comparable> extends EDateOrTime<D> {
     
+    private static final ETime<Date> currentTime = currentTime(Date.class);
+    
     private volatile ENumber<Integer> hours, minutes, seconds, milliseconds;
     
     public static ETime<java.sql.Time> create(java.sql.Time time){
@@ -87,7 +89,7 @@ public abstract class ETime<D extends Comparable> extends EDateOrTime<D> {
      * @return
      */
     public static ETime<Date> currentTime() {
-        return currentTime(Date.class);
+        return currentTime; 
     }
 
     /**

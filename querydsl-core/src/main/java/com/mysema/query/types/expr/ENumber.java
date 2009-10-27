@@ -31,10 +31,22 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     @SuppressWarnings("unchecked")
     private static final ENumber<Integer>[] ints = new ENumber[256];
     
+    @SuppressWarnings("unchecked")
+    private static final ENumber<Byte>[] bytes = new ENumber[256];
+    
+    @SuppressWarnings("unchecked")
+    private static final ENumber<Short>[] shorts = new ENumber[256];
+    
+    @SuppressWarnings("unchecked")
+    private static final ENumber<Long>[] longs = new ENumber[256];
+    
     static{
         random = ONumber.create(Double.class, MathOps.RANDOM);
         for (int i = 0; i < 256; i++){
             ints[i] = new ENumberConst<Integer>(Integer.class, Integer.valueOf(i));
+            shorts[i] = new ENumberConst<Short>(Short.class, Short.valueOf((short)i));
+            bytes[i] = new ENumberConst<Byte>(Byte.class, Byte.valueOf((byte)i));
+            longs[i] = new ENumberConst<Long>(Long.class, Long.valueOf(i));
         }
     }
         
@@ -48,6 +60,30 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     @SuppressWarnings("unchecked")
     public static <T extends Number & Comparable<?>> ENumber<T> create(T val){
         return new ENumberConst<T>((Class<T>)val.getClass(), Assert.notNull(val,"val is null"));
+    }
+    
+    public static ENumber<Byte> create(byte i){
+        if (i >= 0 && i < 256){
+            return bytes[i];
+        }else{
+            return new ENumberConst<Byte>(Byte.class, Byte.valueOf(i));
+        }
+    }
+    
+    public static ENumber<Short> create(short i){
+        if (i >= 0 && i < 256){
+            return shorts[i];
+        }else{
+            return new ENumberConst<Short>(Short.class, Short.valueOf(i));
+        }
+    }
+    
+    public static ENumber<Long> create(long i){
+        if (i >= 0 && i < 256){
+            return longs[(int)i];
+        }else{
+            return new ENumberConst<Long>(Long.class, Long.valueOf(i));
+        }
     }
     
     public static ENumber<Integer> create(int i){

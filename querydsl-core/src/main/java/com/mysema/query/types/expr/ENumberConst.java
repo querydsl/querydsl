@@ -86,4 +86,25 @@ public class ENumberConst<D extends Number & Comparable<?>> extends ENumber<D> i
         }
     }
     
+    public ENumber<Byte> byteValue() {
+        return ENumber.create(constant.byteValue());
+    }
+    
+    public ENumber<Double> doubleValue() {
+        return ENumber.create(constant.doubleValue());
+    }
+    
+    public ENumber<Float> floatValue() {
+        return ENumber.create(constant.floatValue());
+    }
+    
+    public ENumber<Long> longValue() {
+        return ENumber.create(constant.longValue());
+    }
+    
+    public ENumber<Short> shortValue() {
+        return ENumber.create(constant.shortValue());
+    }
+    
+    
 }

@@ -67,6 +67,8 @@ public abstract class EString extends EComparable<String> {
     private volatile ENumber<Long> length;
     
     private volatile EString lower, trim, upper;
+    
+    private volatile EBoolean isempty;
 
     public EString() {
         super(String.class);
@@ -242,7 +244,10 @@ public abstract class EString extends EComparable<String> {
      * @see java.lang.String#isEmpty()
      */
     public EBoolean isEmpty(){
-        return OBoolean.create(Ops.STRING_IS_EMPTY, this);
+        if (isempty == null){
+            isempty = OBoolean.create(Ops.STRING_IS_EMPTY, this); 
+        }
+        return isempty;
     }
 
     /**
