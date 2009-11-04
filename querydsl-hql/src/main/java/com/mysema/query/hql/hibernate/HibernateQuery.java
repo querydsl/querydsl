@@ -10,6 +10,7 @@ import org.hibernate.Session;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.hql.HQLQuery;
 import com.mysema.query.hql.HQLTemplates;
+import com.mysema.query.types.path.PEntityMap;
 
 
 /**

@@ -5,6 +5,9 @@
  */
 package com.mysema.query.types.path;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EEntity;
@@ -23,12 +26,14 @@ import com.mysema.query.util.NotEmpty;
 @SuppressWarnings("serial")
 public class PEntity<D> extends EEntity<D> implements Path<D> {
     
+    private final Map<Class<?>,Object> casts = new HashMap<Class<?>,Object>();
+    
     private final String entityName;
     
     private volatile EBoolean isnull, isnotnull;
     
     private final PathMetadata<?> metadata;
-    
+
     private final Path<?> root;
 
     public PEntity(Class<? extends D> type, @NotEmpty String entityName, PathMetadata<?> metadata) {
@@ -36,6 +41,39 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
         this.entityName = entityName;
         this.metadata = metadata;
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
+    }
+
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
+    }
+
+    /**
+     * Cast the path to a subtype querytype
+     * 
+     * @param <T>
+     * @param clazz
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends PEntity<? extends D>> T as(Class<T> clazz){
+        try {
+            if (!casts.containsKey(clazz)){
+                T rv = (T)clazz.getConstructor(PathMetadata.class).newInstance(this.getMetadata());
+                casts.put(clazz, rv);
+                return rv;
+            }else{
+                return (T)casts.get(clazz);    
+            }
+             
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public EEntity<D> asExpr() {
+        return this;
     }
 
     protected PBoolean createBoolean(@NotEmpty String propertyName) {
@@ -109,43 +147,22 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
     public String getEntityName() {
         return entityName;
     }
-
+    
     @Override
     public PathMetadata<?> getMetadata() {
         return metadata;
     }
-
+    
     @Override
     public Path<?> getRoot() {
         return root;
     }
-
+    
     @Override
     public int hashCode() {
         return metadata.hashCode();
     }
 
-    @Override
-    public void accept(Visitor v) {
-        v.visit(this);        
-    }
-    
-    /**
-     * Cast the path to a subtype querytype
-     * 
-     * @param <T>
-     * @param clazz
-     * @return
-     */
-    public <T extends PEntity<? extends D>> T as(Class<T> clazz){
-        try {
-            // TODO : cache
-            return clazz.getConstructor(PathMetadata.class).newInstance(this.getMetadata());
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
-    }
-    
     /**
      * Create an <code>this instanceOf type</code> expression
      * 
@@ -156,7 +173,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
     public <B extends D> EBoolean instanceOf(Class<B> type) {
         return OBoolean.create(Ops.INSTANCE_OF, this, ExprConst.create(type));
     }
-
+    
     @Override
     public EBoolean isNotNull() {
         if (isnotnull == null) {
@@ -171,10 +188,5 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
             isnull = OBoolean.create(Ops.IS_NULL, this);
         }
         return isnull;
-    }
-    
-    @Override
-    public EEntity<D> asExpr() {
-        return this;
     }
 }
