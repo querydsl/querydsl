@@ -26,19 +26,19 @@ import com.mysema.query.types.operation.Ops.MathOps;
 @SuppressWarnings("serial")
 public abstract class ENumber<D extends Number & Comparable<?>> extends EComparableBase<D> {
     
-    private static final ENumber<Double> random;
+    @SuppressWarnings("unchecked")
+    private static final ENumber<Byte>[] bytes = new ENumber[256];
     
     @SuppressWarnings("unchecked")
     private static final ENumber<Integer>[] ints = new ENumber[256];
     
     @SuppressWarnings("unchecked")
-    private static final ENumber<Byte>[] bytes = new ENumber[256];
+    private static final ENumber<Long>[] longs = new ENumber[256];
+    
+    private static final ENumber<Double> random;
     
     @SuppressWarnings("unchecked")
     private static final ENumber<Short>[] shorts = new ENumber[256];
-    
-    @SuppressWarnings("unchecked")
-    private static final ENumber<Long>[] longs = new ENumber[256];
     
     static{
         random = ONumber.create(Double.class, MathOps.RANDOM);
@@ -50,18 +50,6 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         }
     }
         
-    /**
-     * Factory method
-     * 
-     * @param <T>
-     * @param val
-     * @return
-     */    
-    @SuppressWarnings("unchecked")
-    public static <T extends Number & Comparable<?>> ENumber<T> create(T val){
-        return new ENumberConst<T>((Class<T>)val.getClass(), Assert.notNull(val,"val is null"));
-    }
-    
     public static ENumber<Byte> create(byte i){
         if (i >= 0 && i < 256){
             return bytes[i];
@@ -70,11 +58,11 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         }
     }
     
-    public static ENumber<Short> create(short i){
+    public static ENumber<Integer> create(int i){
         if (i >= 0 && i < 256){
-            return shorts[i];
+            return ints[i];
         }else{
-            return new ENumberConst<Short>(Short.class, Short.valueOf(i));
+            return new ENumberConst<Integer>(Integer.class, Integer.valueOf(i));
         }
     }
     
@@ -86,12 +74,24 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         }
     }
     
-    public static ENumber<Integer> create(int i){
+    public static ENumber<Short> create(short i){
         if (i >= 0 && i < 256){
-            return ints[i];
+            return shorts[i];
         }else{
-            return new ENumberConst<Integer>(Integer.class, Integer.valueOf(i));
+            return new ENumberConst<Short>(Short.class, Short.valueOf(i));
         }
+    }
+    
+    /**
+     * Factory method
+     * 
+     * @param <T>
+     * @param val
+     * @return
+     */    
+    @SuppressWarnings("unchecked")
+    public static <T extends Number & Comparable<?>> ENumber<T> create(T val){
+        return new ENumberConst<T>((Class<T>)val.getClass(), Assert.notNull(val,"val is null"));
     }
     
     /**
@@ -120,6 +120,8 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     
     private volatile ENumber<Double> avg, sqrt;
     
+    private volatile ENumber<D> negation;
+    
     private volatile ENumber<D> round, floor, ceil;
     
     public ENumber(Class<? extends D> type) {
@@ -140,18 +142,18 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @param right
      * @return this + right
      */
-    public ENumber<D> add(Number right) {
-        return ONumber.create(getType(), Ops.ADD, this, ENumber.create(right));
+    public <N extends Number & Comparable<?>> ENumber<D> add(Expr<N> right) {
+        return ONumber.create(getType(), Ops.ADD, this, right);
     }
     
     /**
      * @param right
      * @return this + right
      */
-    public <N extends Number & Comparable<?>> ENumber<D> add(Expr<N> right) {
-        return ONumber.create(getType(), Ops.ADD, this, right);
+    public ENumber<D> add(Number right) {
+        return ONumber.create(getType(), Ops.ADD, this, ENumber.create(right));
     }
-    
+
     /**
      *  @return avg(this)
      */
@@ -223,17 +225,18 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @param right
      * @return this / right
      */
-    public <N extends Number & Comparable<?>> ENumber<Double> div(N right) {
-        return ONumber.create(Double.class, Ops.DIV, this, ENumber.create(right));
+    public <N extends Number & Comparable<?>> ENumber<Double> div(Expr<N> right) {
+        return ONumber.create(Double.class, Ops.DIV, this, right);
     }
 
     /**
      * @param right
      * @return this / right
      */
-    public <N extends Number & Comparable<?>> ENumber<Double> div(Expr<N> right) {
-        return ONumber.create(Double.class, Ops.DIV, this, right);
+    public <N extends Number & Comparable<?>> ENumber<Double> div(N right) {
+        return ONumber.create(Double.class, Ops.DIV, this, ENumber.create(right));
     }
+
 
     /**
      * Get the double expression of this numeric expression
@@ -244,7 +247,6 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     public ENumber<Double> doubleValue() {
         return castToNum(Double.class);
     }
-
 
     /**
      * Get the float expression of this numeric expression
@@ -402,6 +404,14 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         }
         return min;
     }
+    
+    /**
+     * @param right
+     * @return this * right
+     */
+    public <N extends Number & Comparable<?>> ENumber<D> mult(Expr<N> right) {
+        return ONumber.create(getType(), Ops.MULT, this, right);
+    }
 
     /**
      * @param right
@@ -412,13 +422,17 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
     
     /**
-     * @param right
-     * @return this * right
+     * Get the negation of this expression
+     * 
+     * @return this * -1
      */
-    public <N extends Number & Comparable<?>> ENumber<D> mult(Expr<N> right) {
-        return ONumber.create(getType(), Ops.MULT, this, right);
+    public ENumber<D> negate(){
+        if (negation == null){
+            negation = mult(-1);
+        }
+        return negation;
     }
-
+    
     /**
      * @return round(this)
      * @see java.lang.Math#round(double)
@@ -451,6 +465,14 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         }
         return sqrt;
     }
+
+    /**
+     * @param right
+     * @return this - right
+     */
+    public <N extends Number & Comparable<?>> ENumber<D> sub(Expr<N> right) {
+        return ONumber.create(getType(), Ops.SUB, this, right);
+    }
     
     /**
      * @param right
@@ -460,14 +482,6 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         return ONumber.create(getType(), Ops.SUB, this, ENumber.create(right));
     }
     
-    /**
-     * @param right
-     * @return this - right
-     */
-    public <N extends Number & Comparable<?>> ENumber<D> sub(Expr<N> right) {
-        return ONumber.create(getType(), Ops.SUB, this, right);
-    }
-
     /**
      * @return sum(this)
      */
