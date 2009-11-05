@@ -39,7 +39,7 @@ public abstract class EBoolean extends EComparable<Boolean> {
      * @param right right hand side of the union
      * @return this && right
      */
-    public final EBoolean and(EBoolean right) {
+    public EBoolean and(EBoolean right) {
         return OBoolean.create(Ops.AND, this, right);
     }
 
@@ -61,7 +61,7 @@ public abstract class EBoolean extends EComparable<Boolean> {
      * @param right right hand side of the union
      * @return this || right
      */
-    public final EBoolean or(EBoolean right) {
+    public EBoolean or(EBoolean right) {
         return OBoolean.create(Ops.OR, this, right);
     }
 }

@@ -33,7 +33,7 @@ class SimpleAliasFactory implements AliasFactory {
         }
     };
 
-    // cahces top level proxies (class/var as key)
+    // caches top level proxies (class/var as key)
     private FactoryMap<ManagedObject> proxyCache = new FactoryMap<ManagedObject>() {
         @SuppressWarnings("unused")
         public ManagedObject create(Class<?> cl, Expr<?> path) {

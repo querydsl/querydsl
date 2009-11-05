@@ -7,6 +7,7 @@ package com.mysema.query;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
@@ -15,11 +16,13 @@ import com.mysema.query.types.expr.EBoolean;
  * @author tiwe
  * @version $Id$
  */
-public class CascadingBoolean {
+@SuppressWarnings("serial")
+public class CascadingBoolean extends EBoolean{
     
     @Nullable
     private EBoolean expr;
-
+    
+    @Override
     public CascadingBoolean and(EBoolean right) {
         if (expr == null){
             expr = right;
@@ -28,16 +31,23 @@ public class CascadingBoolean {
         }        
         return this;
     }
-
-    public void clear() {
-        expr = null;
+    
+    public CascadingBoolean andAny(EBoolean... args) {
+        if (args.length > 0){
+            EBoolean any = args[0];
+            for (int i = 1; i < args.length; i++){
+                any = any.or(args[i]);
+            }    
+            and(any);
+        }
+        return this;         
     }
 
     public CascadingBoolean not(EBoolean right) {
         return and(right.not());
     }
 
-
+    @Override
     public CascadingBoolean or(EBoolean right) {
         if (expr == null){
             expr = right;
@@ -46,16 +56,35 @@ public class CascadingBoolean {
         }
         return this;
     }
-
-    public EBoolean create() {
-        return expr;
+    
+    public CascadingBoolean orAll(EBoolean... args) {
+        if (args.length > 0){
+            EBoolean all = args[0];
+            for (int i = 1; i < args.length; i++){
+                all = all.and(args[i]);
+            }    
+            or(all);
+        }
+        return this;
+    }
+    
+    @Override
+    public CascadingBoolean not(){
+        expr = expr.not();
+        return this;
+    }
+    
+    public boolean hasValue(){
+        return expr != null;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        return expr != null ? expr.toString() : super.toString();
+    @Override
+    public void accept(Visitor v) {
+        if (expr != null){
+            expr.accept(v);
+        }else{
+            throw new RuntimeException("CascadingBoolean has no value");
+        }
     }
-
+    
 }

@@ -14,12 +14,12 @@ import com.mysema.query.types.path.PBoolean;
 import com.mysema.query.types.path.PBooleanArray;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PComparableArray;
-import com.mysema.query.types.path.PComponentList;
 import com.mysema.query.types.path.PComponentMap;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
+import com.mysema.query.types.path.PEntityList;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PStringArray;
@@ -105,8 +105,8 @@ class AliasAwarePathFactory implements PathFactory {
         return rv != null ? rv : factory.createEntityCollection(arg);
     }
 
-    public <D> PComponentList<D> createList(List<D> arg) {
-        PComponentList<D> rv = aliasFactory.<PComponentList<D>> getCurrentAndReset();
+    public <D> PEntityList<D,?> createList(List<D> arg) {
+        PEntityList<D,?> rv = aliasFactory.<PEntityList<D,?>> getCurrentAndReset();
         return rv != null ? rv : factory.createList(arg);
     }
 

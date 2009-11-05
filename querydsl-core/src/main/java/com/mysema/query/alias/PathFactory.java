@@ -14,12 +14,12 @@ import com.mysema.query.types.path.PBoolean;
 import com.mysema.query.types.path.PBooleanArray;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PComparableArray;
-import com.mysema.query.types.path.PComponentList;
 import com.mysema.query.types.path.PComponentMap;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
+import com.mysema.query.types.path.PEntityList;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PStringArray;
@@ -54,7 +54,7 @@ interface PathFactory {
 
     <D> PEntity<D> createEntity(D arg);
 
-    <D> PComponentList<D> createList(List<D> arg);
+    <D> PEntityList<D,?> createList(List<D> arg);
 
     <K, V> PComponentMap<K, V> createMap(Map<K, V> arg);
 

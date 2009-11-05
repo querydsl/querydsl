@@ -11,7 +11,7 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.QueryModifiers;
 
 /**
- * PagingIterator provides
+ * LimitingIterator provides
  * 
  * @author tiwe
  * @version $Id$

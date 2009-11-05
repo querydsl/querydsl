@@ -116,7 +116,7 @@ public class DefaultQueryMetadata implements QueryMetadata {
 
     @Override
     public EBoolean getHaving() {
-        return having.create();
+        return having.hasValue() ? having : null;
     }
 
     @Override
@@ -142,7 +142,7 @@ public class DefaultQueryMetadata implements QueryMetadata {
 
     @Override
     public EBoolean getWhere() {
-        return where.create();
+        return where.hasValue() ? where : null;
     }
 
     @Override

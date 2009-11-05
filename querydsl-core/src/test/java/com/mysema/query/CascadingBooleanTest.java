@@ -23,7 +23,6 @@ public class CascadingBooleanTest {
     public void test(){
         EBoolean etrue = Alias.$(true);
         EBoolean efalse = Alias.$(false);
-        new CascadingBoolean().and(etrue).or(efalse).create();
+        new CascadingBoolean().and(etrue).or(efalse);
     }
-
 }

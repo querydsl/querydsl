@@ -19,6 +19,12 @@ import com.mysema.query.types.path.PEntity;
  */
 public interface JDOQLQuery extends Query<JDOQLQuery>, Projectable, Closeable {
 
+    /**
+     * Add query sources
+     * 
+     * @param sources
+     * @return
+     */
     JDOQLQuery from(PEntity<?>... sources);
 
 }

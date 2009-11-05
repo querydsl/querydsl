@@ -20,13 +20,12 @@ import com.mysema.query.types.path.PBoolean;
 import com.mysema.query.types.path.PBooleanArray;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PComparableArray;
-import com.mysema.query.types.path.PComponentList;
 import com.mysema.query.types.path.PComponentMap;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
-import com.mysema.query.types.path.PEntityMap;
+import com.mysema.query.types.path.PEntityList;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PStringArray;
@@ -88,16 +87,23 @@ class SimplePathFactory implements PathFactory {
                 }
             });
 
-    private final Map<List<?>, PComponentList<?>> elToPath = new PathFactory<List<?>, PComponentList<?>>(
-            new Transformer<List<?>, PComponentList<?>>() {
-                @SuppressWarnings("unchecked")
-                public PComponentList<?> transform(List<?> arg) {
-                    if (!arg.isEmpty()) {
-                        Class<?> cl = arg.get(0).getClass();
-                        return new PComponentList(cl, md());
-                    } else {
-                        return new PComponentList(Object.class, md());
-                    }
+    private final Map<List<?>, PEntityList<?,?>> elToPath = new PathFactory<List<?>, PEntityList<?,?>>(
+            new Transformer<List<?>, PEntityList<?,?>>() {
+                @SuppressWarnings({ "unchecked", "serial" })
+                public PEntityList<?,?> transform(List<?> arg) {
+                    final Class<?> cl = arg.isEmpty() ?  Object.class : arg.get(0).getClass();
+                    return new PEntityList<Object,PEntity<Object>>(Object.class, null, md()){                        
+                        @Override
+                        public PEntity get(Expr<Integer> index) {
+                            return new PEntity(cl, cl.getSimpleName(), 
+                                    PathMetadata.forListAccess(this, index));
+                        }
+                        @Override
+                        public PEntity get(int index) {
+                            return new PEntity(cl, cl.getSimpleName(), 
+                                    PathMetadata.forListAccess(this, index));
+                        }
+                    };
                 }
             });
 
@@ -254,8 +260,8 @@ class SimplePathFactory implements PathFactory {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <D> PComponentList<D> createList(List<D> arg) {
-        return (PComponentList<D>) elToPath.get(arg);
+    public <D> PEntityList<D,?> createList(List<D> arg) {
+        return (PEntityList<D,?>) elToPath.get(arg);
     }
 
 }

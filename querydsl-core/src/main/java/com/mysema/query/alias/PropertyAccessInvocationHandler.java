@@ -33,12 +33,12 @@ import com.mysema.query.types.expr.EMap;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PBoolean;
 import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PComponentList;
 import com.mysema.query.types.path.PComponentMap;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PEntityCollection;
+import com.mysema.query.types.path.PEntityList;
 import com.mysema.query.types.path.PList;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PNumber;
@@ -213,7 +213,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
         return true;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "serial" })
     @Nullable
     private <T> T newInstance(Class<T> type, Type genericType, Object parent, Object propKey, PathMetadata<?> pm) {
         Expr<?> path;
@@ -273,8 +273,19 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             rv = (T) Boolean.TRUE;
 
         } else if (List.class.isAssignableFrom(type)) {
-            Class<?> elementType = getTypeParameter(genericType, 0);
-            path = new PComponentList(elementType, pm);
+            final Class<Object> elementType = (Class)getTypeParameter(genericType, 0);
+            path = new PEntityList<Object,PEntity<Object>>(elementType, null, pm){
+                @Override
+                public PEntity get(Expr<Integer> index) {
+                    return new PEntity(elementType, elementType.getSimpleName(), 
+                            PathMetadata.forListAccess(this, index));
+                }
+                @Override
+                public PEntity get(int index) {
+                    return new PEntity(elementType, elementType.getSimpleName(), 
+                            PathMetadata.forListAccess(this, index));
+                }
+            };
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
 
         } else if (Set.class.isAssignableFrom(type)) {

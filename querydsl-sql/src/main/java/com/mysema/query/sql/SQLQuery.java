@@ -16,20 +16,54 @@ import com.mysema.query.types.query.ObjectSubQuery;
  */
 public interface SQLQuery extends Query<SQLQuery>, Projectable {
     
+    /**
+     * @param o
+     * @return
+     */
     SQLQuery from(PEntity<?>... o);
 
+    /**
+     * @param o
+     * @return
+     */
     SQLQuery fullJoin(Expr<?> o);
 
+    /**
+     * @param o
+     * @return
+     */
     SQLQuery innerJoin(Expr<?> o);
 
+    /**
+     * @param o
+     * @return
+     */
     SQLQuery join(Expr<?> o);
 
+    /**
+     * @param o
+     * @return
+     */
     SQLQuery leftJoin(Expr<?> o);
     
-    SQLQuery on(EBoolean condition);
+    /**
+     * @param conditions
+     * @return
+     */
+    SQLQuery on(EBoolean... conditions);
     
+    /**
+     * @param <RT>
+     * @param sq
+     * @return
+     */
     <RT> Union<RT> union(ObjectSubQuery<RT>... sq);
     
+    /**
+     * @param <RT>
+     * @param sq
+     * @return
+     */
     <RT> Union<RT> union(ListSubQuery<RT>... sq);
 
 }

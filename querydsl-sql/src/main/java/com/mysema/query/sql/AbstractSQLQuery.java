@@ -297,8 +297,10 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         return _this;
     }
     
-    public SubType on(EBoolean condition){
-        getMetadata().addJoinCondition(condition);
+    public SubType on(EBoolean... conditions){
+        for (EBoolean condition : conditions){
+            getMetadata().addJoinCondition(condition);    
+        }        
         return _this;
     }
 }

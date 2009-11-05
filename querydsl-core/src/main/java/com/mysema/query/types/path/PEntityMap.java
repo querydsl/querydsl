@@ -13,7 +13,6 @@ import com.mysema.query.types.expr.EMapBase;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.util.NotEmpty;
 
 /**
  * PEntityMap represents entity map paths
@@ -36,8 +35,8 @@ public class PEntityMap<K, V, E extends PEntity<V>> extends EMapBase<K, V> imple
     
     private final PathMetadata<?> metadata;
     
-    @NotEmpty 
-    private final String entityName;
+//    @NotEmpty 
+//    private final String entityName;
     
     private final Path<?> root;
 
@@ -47,7 +46,7 @@ public class PEntityMap<K, V, E extends PEntity<V>> extends EMapBase<K, V> imple
         this.keyType = (Class<K>) keyType;
         this.valueType = (Class<V>) valueType;
         this.queryType = queryType;
-        this.entityName = valueType.getSimpleName();
+//        this.entityName = valueType.getSimpleName();
         this.metadata = metadata;
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
