@@ -131,8 +131,8 @@ public class MatchingFilters {
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.add(expr.eq(other));
         rv.add(expr.goe(other));
-        rv.add(expr.gt(other.sub(1)));                           
-        rv.add(expr.gt(other.sub(2)));
+        rv.add(expr.gt(other.subtract(1)));                           
+        rv.add(expr.gt(other.subtract(2)));
         rv.add(expr.loe(other));                
         rv.add(expr.lt(other.add(1)));                
         rv.add(expr.lt(other.add(2)));

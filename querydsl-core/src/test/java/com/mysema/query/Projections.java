@@ -82,10 +82,10 @@ public class Projections {
         HashSet<ENumber<?>> rv = new HashSet<ENumber<?>>();
         rv.add(expr.abs());
         rv.add(expr.add(other));
-        rv.add(expr.div(other));
-        rv.add(expr.mult(other));
+        rv.add(expr.divide(other));
+        rv.add(expr.multiply(other));
         rv.add(expr.sqrt());
-        rv.add(expr.sub(other));
+        rv.add(expr.subtract(other));
         return rv;
     }
     

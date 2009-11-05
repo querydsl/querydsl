@@ -15,32 +15,32 @@ public class MathTest extends AbstractQueryTest{
     @Test
     public void test(){
         PNumber<Integer> path = QCat.cat.bodyWeight;
-        toString("(cat.bodyWeight - sum(cat.bodyWeight)) * cat.bodyWeight", path.sub(path.sum()).mult(path));
+        toString("(cat.bodyWeight - sum(cat.bodyWeight)) * cat.bodyWeight", path.subtract(path.sum()).multiply(path));
     }
     
     @Test
     public void testArithmeticOperationsInFunctionalWay() {
         toString("cat.bodyWeight + :a1", cat.bodyWeight.add(10));
-        toString("cat.bodyWeight - :a1", cat.bodyWeight.sub(10));
-        toString("cat.bodyWeight * :a1", cat.bodyWeight.mult(10));
-        toString("cat.bodyWeight / :a1", cat.bodyWeight.div(10));
+        toString("cat.bodyWeight - :a1", cat.bodyWeight.subtract(10));
+        toString("cat.bodyWeight * :a1", cat.bodyWeight.multiply(10));
+        toString("cat.bodyWeight / :a1", cat.bodyWeight.divide(10));
 
         toString("cat.bodyWeight + :a1 < :a1", cat.bodyWeight.add(10).lt(10));
-        toString("cat.bodyWeight - :a1 < :a1", cat.bodyWeight.sub(10).lt(10));
-        toString("cat.bodyWeight * :a1 < :a1", cat.bodyWeight.mult(10).lt(10));
-        toString("cat.bodyWeight / :a1 < :a2", cat.bodyWeight.div(10).lt(10d));
+        toString("cat.bodyWeight - :a1 < :a1", cat.bodyWeight.subtract(10).lt(10));
+        toString("cat.bodyWeight * :a1 < :a1", cat.bodyWeight.multiply(10).lt(10));
+        toString("cat.bodyWeight / :a1 < :a2", cat.bodyWeight.divide(10).lt(10d));
 
-        toString("(cat.bodyWeight + :a1) * :a2", cat.bodyWeight.add(10).mult(20));
-        toString("(cat.bodyWeight - :a1) * :a2", cat.bodyWeight.sub(10).mult(20));
-        toString("cat.bodyWeight * :a1 + :a2", cat.bodyWeight.mult(10).add(20));
-        toString("cat.bodyWeight * :a1 - :a2", cat.bodyWeight.mult(10).sub(20));
+        toString("(cat.bodyWeight + :a1) * :a2", cat.bodyWeight.add(10).multiply(20));
+        toString("(cat.bodyWeight - :a1) * :a2", cat.bodyWeight.subtract(10).multiply(20));
+        toString("cat.bodyWeight * :a1 + :a2", cat.bodyWeight.multiply(10).add(20));
+        toString("cat.bodyWeight * :a1 - :a2", cat.bodyWeight.multiply(10).subtract(20));
 
         QCat c1 = new QCat("c1");
         QCat c2 = new QCat("c2");
         QCat c3 = new QCat("c3");
-        toString("c1.id + c2.id * c3.id", c1.id.add(c2.id.mult(c3.id)));
-        toString("c1.id * (c2.id + c3.id)", c1.id.mult(c2.id.add(c3.id)));
-        toString("(c1.id + c2.id) * c3.id", c1.id.add(c2.id).mult(c3.id));
+        toString("c1.id + c2.id * c3.id", c1.id.add(c2.id.multiply(c3.id)));
+        toString("c1.id * (c2.id + c3.id)", c1.id.multiply(c2.id.add(c3.id)));
+        toString("(c1.id + c2.id) * c3.id", c1.id.add(c2.id).multiply(c3.id));
     }
     
 
@@ -48,9 +48,9 @@ public class MathTest extends AbstractQueryTest{
     public void testMathematicalOperations() {
         // mathematical operators +, -, *, /
         cat.bodyWeight.add(kitten.bodyWeight);
-        cat.bodyWeight.sub(kitten.bodyWeight);
-        cat.bodyWeight.mult(kitten.bodyWeight);
-        cat.bodyWeight.div(kitten.bodyWeight);
+        cat.bodyWeight.subtract(kitten.bodyWeight);
+        cat.bodyWeight.multiply(kitten.bodyWeight);
+        cat.bodyWeight.divide(kitten.bodyWeight);
     }
     
 }

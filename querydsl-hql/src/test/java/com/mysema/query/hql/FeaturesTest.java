@@ -247,9 +247,9 @@ public class FeaturesTest extends AbstractQueryTest{
 //        toString("cat.kittens as kitten", cat.kittens.as(kitten));
 
         toString("cat.bodyWeight + :a1", cat.bodyWeight.add(10));
-        toString("cat.bodyWeight - :a1", cat.bodyWeight.sub(10));
-        toString("cat.bodyWeight * :a1", cat.bodyWeight.mult(10));
-        toString("cat.bodyWeight / :a1", cat.bodyWeight.div(10));
+        toString("cat.bodyWeight - :a1", cat.bodyWeight.subtract(10));
+        toString("cat.bodyWeight * :a1", cat.bodyWeight.multiply(10));
+        toString("cat.bodyWeight / :a1", cat.bodyWeight.divide(10));
 
 //        toString("cat.bodyWeight as bw", cat.bodyWeight.as("bw"));
 

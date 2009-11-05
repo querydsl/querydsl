@@ -116,19 +116,21 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         return random;
     }
     
-    private volatile ENumber<D> abs, sum, min, max;
+    private volatile ENumber<D> abs, sum, min, max, floor, ceil;
     
     private volatile ENumber<Double> avg, sqrt;
     
     private volatile ENumber<D> negation;
     
-    private volatile ENumber<D> round, floor, ceil;
+    private volatile ENumber<Integer> round;
     
     public ENumber(Class<? extends D> type) {
         super(type);
     }
     
     /**
+     * Get the absolute value of this expression
+     * 
      * @return abs(this)
      */
     public ENumber<D> abs() {
@@ -139,6 +141,8 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
     
     /**
+     * Get the sum of this and right
+     * 
      * @param right
      * @return this + right
      */
@@ -147,6 +151,8 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
     
     /**
+     * Get the sum of this and right
+     * 
      * @param right
      * @return this + right
      */
@@ -155,6 +161,8 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
 
     /**
+     * Get the average value of this expression (aggregation)
+     * 
      *  @return avg(this)
      */
     public ENumber<Double> avg(){
@@ -211,6 +219,10 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
 
     /**
+     * Returns the smallest (closest to negative infinity)
+     * <code>double</code> value that is greater than or equal to the
+     * argument and is equal to a mathematical integer
+     * 
      * @return ceil(this)
      * @see java.lang.Math#ceil(double)
      */
@@ -222,18 +234,22 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
 
     /**
+     * Get the result of the operation this / right
+     * 
      * @param right
      * @return this / right
      */
-    public <N extends Number & Comparable<?>> ENumber<Double> div(Expr<N> right) {
+    public <N extends Number & Comparable<?>> ENumber<Double> divide(Expr<N> right) {
         return ONumber.create(Double.class, Ops.DIV, this, right);
     }
 
     /**
+     * Get the result of the operation this / right
+     * 
      * @param right
      * @return this / right
      */
-    public <N extends Number & Comparable<?>> ENumber<Double> div(N right) {
+    public <N extends Number & Comparable<?>> ENumber<Double> divide(N right) {
         return ONumber.create(Double.class, Ops.DIV, this, ENumber.create(right));
     }
 
@@ -259,6 +275,10 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
 
     /**
+     * Returns the largest (closest to positive infinity)
+     * <code>double</code> value that is less than or equal to the
+     * argument and is equal to a mathematical integer.
+     * 
      * @return floor(this)
      * @see java.lang.Math#floor(double)
      */
@@ -386,6 +406,8 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
 
     /**
+     * Get the maximum value of this expression (aggregation)
+     * 
      * @return max(this)
      */
     public ENumber<D> max(){
@@ -396,6 +418,8 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
 
     /**
+     * Get the minimum value of this expression (aggregation)
+     * 
      * @return min(this)
      */
     public ENumber<D> min(){
@@ -406,18 +430,22 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
     
     /**
+     * Get the result of the operation this * right
+     * 
      * @param right
      * @return this * right
      */
-    public <N extends Number & Comparable<?>> ENumber<D> mult(Expr<N> right) {
+    public <N extends Number & Comparable<?>> ENumber<D> multiply(Expr<N> right) {
         return ONumber.create(getType(), Ops.MULT, this, right);
     }
 
     /**
+     * Get the result of the operation this * right
+     * 
      * @param right
      * @return this * right
      */
-    public ENumber<D> mult(Number right) {
+    public ENumber<D> multiply(Number right) {
         return ONumber.create(getType(), Ops.MULT, this, ENumber.create(right));
     }
     
@@ -428,19 +456,21 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      */
     public ENumber<D> negate(){
         if (negation == null){
-            negation = mult(-1);
+            negation = multiply(-1);
         }
         return negation;
     }
     
     /**
+     * Returns the closest <code>int</code> to the argument.
+     * 
      * @return round(this)
      * @see java.lang.Math#round(double)
      * @see java.lang.Math#round(float)
      */
-    public ENumber<D> round() {
+    public ENumber<Integer> round() {
         if (round == null){
-            round = ONumber.create(getType(), MathOps.ROUND, this); 
+            round = ONumber.create(Integer.class, MathOps.ROUND, this); 
         }
         return round;
     }
@@ -456,7 +486,8 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
     
     /**
-     * Returns the square root of this numeric expressions
+     * Get the square root of this numeric expressions
+     * 
      * @return sqrt(this)
      */
     public ENumber<Double> sqrt(){
@@ -467,22 +498,28 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
 
     /**
+     * Get the difference of this and right
+     * 
      * @param right
      * @return this - right
      */
-    public <N extends Number & Comparable<?>> ENumber<D> sub(Expr<N> right) {
+    public <N extends Number & Comparable<?>> ENumber<D> subtract(Expr<N> right) {
         return ONumber.create(getType(), Ops.SUB, this, right);
     }
-    
+       
     /**
+     * Get the difference of this and right
+     * 
      * @param right
      * @return this - right
      */
-    public ENumber<D> sub(Number right) {
+    public ENumber<D> subtract(Number right) {
         return ONumber.create(getType(), Ops.SUB, this, ENumber.create(right));
     }
     
     /**
+     * Get the sum of this expression (aggregation)
+     * 
      * @return sum(this)
      */
     public ENumber<D> sum(){

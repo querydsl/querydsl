@@ -397,7 +397,7 @@ public class ParserTest implements Constants {
         // parse( "select item from Item item, Order ord\n"
         // + "where ord.items[ size(ord.items) - 1 ] = item" );
         query().select(item).from(item, ord).where(
-                ord.items(ord.items.size().sub(1)).eq(item))
+                ord.items(ord.items.size().subtract(1)).eq(item))
                 .parse();
         //
         // parse( "from eg.DomesticCat cat where upper(cat.name) like 'FRI%'" );
@@ -681,7 +681,7 @@ public class ParserTest implements Constants {
         // parse( "from Animal an where sqrt(an.bodyWeight)/2 > 10" );
         query().from(an).where(an.bodyWeight.sqrt().gt(10.0)).parse();
 
-        query().from(an).where(an.bodyWeight.sqrt().div(2d).gt(10.0))
+        query().from(an).where(an.bodyWeight.sqrt().divide(2d).gt(10.0))
                 .parse();
         // parse(
         // "from Animal an where (an.bodyWeight > 10 and an.bodyWeight < 100) or an.bodyWeight is null"
@@ -708,7 +708,7 @@ public class ParserTest implements Constants {
         query().from(qat).orderBy(qat.toes.avg().asc()).parse();
 
         // parse( "from Animal an order by sqrt(an.bodyWeight)/2" );
-        query().from(qat).orderBy(an.bodyWeight.sqrt().div(2.0).asc()).parse();
+        query().from(qat).orderBy(an.bodyWeight.sqrt().divide(2.0).asc()).parse();
     }
 
     @Test

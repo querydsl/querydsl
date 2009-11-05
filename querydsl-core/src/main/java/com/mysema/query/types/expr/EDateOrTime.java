@@ -20,18 +20,42 @@ public abstract class EDateOrTime<D extends Comparable> extends EComparable<D> {
         super(type);
     }
     
+    /**
+     * Create a <code>this &gt; right</code> expression
+     * 
+     * @param right
+     * @return
+     */
     public EBoolean after(D right) {
         return gt(right);
     }    
 
+    /**
+     * Create a <code>this &gt; right</code> expression
+     * 
+     * @param right
+     * @return
+     */
     public EBoolean after(Expr<D> right) {
         return gt(right);
     }
         
+    /**
+     * Create a <code>this &lt; right</code> expression
+     * 
+     * @param right
+     * @return
+     */
     public EBoolean before(D right) {
         return lt(right);
     }    
 
+    /**
+     * Create a <code>this &lt; right</code> expression
+     * 
+     * @param right
+     * @return
+     */
     public EBoolean before(Expr<D> right) {
         return lt(right);
     }

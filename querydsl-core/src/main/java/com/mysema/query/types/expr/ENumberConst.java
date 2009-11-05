@@ -72,17 +72,17 @@ public class ENumberConst<D extends Number & Comparable<?>> extends ENumber<D> i
     }
     
     @Override
-    public ENumber<D> sub(Number right) {
+    public ENumber<D> subtract(Number right) {
         return ENumber.create(MathUtils.difference(constant, right));
     }
     
     @SuppressWarnings("unchecked")
     @Override
-    public <N extends Number & Comparable<?>> ENumber<D> sub(Expr<N> right) {
+    public <N extends Number & Comparable<?>> ENumber<D> subtract(Expr<N> right) {
         if (right instanceof Constant){
-            return sub(((Constant<Number>)right).getConstant());
+            return subtract(((Constant<Number>)right).getConstant());
         }else{
-            return super.sub(right);
+            return super.subtract(right);
         }
     }
     
