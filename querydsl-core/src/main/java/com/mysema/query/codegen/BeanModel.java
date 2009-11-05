@@ -159,11 +159,9 @@ public final class BeanModel implements Comparable<BeanModel> {
         return hasLists;
     }
 
-
     public boolean hasMaps() {
         return hasMaps;
     }
-
 
     public void include(BeanModel clazz) {
         for (PropertyModel property : clazz.properties){

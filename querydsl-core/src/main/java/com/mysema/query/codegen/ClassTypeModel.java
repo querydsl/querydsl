@@ -92,4 +92,14 @@ public class ClassTypeModel implements TypeModel{
         return parameters.size();
     }
 
+    @Override
+    public TypeModel getSelfOrValueType() {
+        if (parameters.isEmpty()){
+            return this;
+        }else{
+            TypeModel rv = parameters.get(parameters.size()-1);
+            return rv != null ? rv : this;
+        }
+    }
+
 }

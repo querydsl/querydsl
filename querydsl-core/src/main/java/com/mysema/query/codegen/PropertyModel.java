@@ -46,11 +46,14 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         this.typeName = getLocalName(type);    
         if (type.getTypeCategory().isSubCategoryOf(TypeCategory.SIMPLE)){
             this.queryTypeName = null;
-        }else if (isVisible(type)){
-            this.queryTypeName = classModel.getPrefix() + type.getSimpleName();
         }else{
-            this.queryTypeName = type.getPackageName() + "." + classModel.getPrefix() + type.getSimpleName();
-        }        
+            TypeModel valueType = type.getSelfOrValueType();
+            if (isVisible(valueType)){
+                this.queryTypeName = classModel.getPrefix() + valueType.getSimpleName();
+            }else{
+                this.queryTypeName = valueType.getPackageName() + "." + classModel.getPrefix() + valueType.getSimpleName();
+            }        
+        }   
         this.inits = inits;
         this.inherited = inherited;
     }

@@ -19,7 +19,7 @@ public class PComponentList<D> extends PComponentCollection<D> implements PList<
     
     private volatile PSimple<D> first, second;
     
-    public PComponentList(Class<D> type, PathMetadata<?> metadata) {
+    public PComponentList(Class<? super D> type, PathMetadata<?> metadata) {
         super(type, metadata);
     }
 

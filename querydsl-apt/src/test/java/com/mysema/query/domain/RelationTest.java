@@ -1,6 +1,6 @@
 package com.mysema.query.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Collection;
 import java.util.List;
@@ -45,6 +45,9 @@ public class RelationTest extends AbstractTest{
         List<String> list3;
         List<RelationType2<?>> list4;
         List<Reference> list5;
+        
+        List<List<Reference>> list6;
+        List<Collection<Reference>> list7;
 
         // set
         Set<RelationType> set;
@@ -52,17 +55,24 @@ public class RelationTest extends AbstractTest{
         Set<String> set2;
         Set<RelationType2<?>> set3;
         Set<Reference> set4;
+        
+        Set<List<Reference>> set5;
+        Set<Collection<Reference>> set6;
 
         // .. of Object
         List<Object> listOfObjects;
         Set<Object> setOfObjects;
-        Set<Reference> setOfObjects2;
+        Set<Reference> setOfObjects2;        
+        
 
         // collection
         Collection<RelationType> collection;
         Collection<RelationType2<?>> collection2;
         Collection<String> collection3;
         Collection<Reference> collection4;
+        
+        Collection<Collection<Reference>> col5;
+        Collection<List<Reference>> col6;
 
         // map
         Map<String, RelationType> map;
@@ -76,6 +86,9 @@ public class RelationTest extends AbstractTest{
         Map<String, Reference> map7;
         Map<Reference, Reference> map8;
         Map<Reference, String> map9;
+        
+        Map<String,List<String>> map10;
+        Map<List<String>,String> map11;
     }
     
     @Test

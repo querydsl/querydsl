@@ -103,11 +103,15 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void collectionOfEntity(PropertyModel field, Writer writer) throws IOException {
-        serialize(field, "PEntityCollection<" + field.getGenericTypeName()+">", writer, "createEntityCollection", field.getTypeName()+".class");        
+        String genericTypeName = field.getGenericParameterName(0);
+        String typeName = field.getParameterName(0);
+        serialize(field, "PEntityCollection<" + genericTypeName+">", writer, "createEntityCollection",typeName+".class");        
     }
     
     protected void collectionOfSimple(PropertyModel field, Writer writer) throws IOException {
-        serialize(field, "PComponentCollection<" + field.getGenericTypeName()+">", writer, "createSimpleCollection", field.getTypeName()+".class");        
+        String genericTypeName = field.getGenericParameterName(0);
+        String typeName = field.getParameterName(0);
+        serialize(field, "PComponentCollection<" + genericTypeName+">", writer, "createSimpleCollection", typeName+".class");        
     }
         
     protected void comparableField(PropertyModel field, Writer writer) throws IOException {        
@@ -344,8 +348,11 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void listOfEntity(PropertyModel field, Writer writer) throws IOException {
-        serialize(field, "PEntityList<" + field.getGenericTypeName()+ "," + field.getQueryTypeName() +  ">", writer, "createEntityList", 
-                field.getTypeName()+".class",
+        String genericTypeName = field.getGenericParameterName(0);
+        String typeName = field.getParameterName(0);
+        
+        serialize(field, "PEntityList<" + genericTypeName+ "," + field.getQueryTypeName() +  ">", writer, "createEntityList", 
+                typeName+".class",
                 field.getQueryTypeName() +".class");        
     }
 
@@ -365,7 +372,7 @@ public class EntitySerializer implements Serializer{
 
     protected void listOfSimpleAccessor(PropertyModel field, Writer writer) throws IOException { 
         final String escapedName = field.getEscapedName();
-        final String valueType = field.getParameterName(0);
+        final String valueType = field.getGenericParameterName(0);
         
         StringBuilder builder = new StringBuilder();        
         builder.append("    public PSimple<" + valueType + "> " + escapedName + "(int index) {\n");
@@ -379,7 +386,10 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void listOfSimple(PropertyModel field, Writer writer) throws IOException {
-        serialize(field, "PComponentList<" + field.getTypeName()+">", writer, "createSimpleList", field.getTypeName()+".class");        
+        String genericTypeName = field.getGenericParameterName(0);
+        String typeName = field.getParameterName(0);
+        
+        serialize(field, "PComponentList<" + genericTypeName+">", writer, "createSimpleList", typeName+".class");        
     }
 
     protected void mapOfEntity(PropertyModel field, Writer writer) throws IOException{

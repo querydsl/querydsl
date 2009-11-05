@@ -36,5 +36,7 @@ public interface TypeModel {
     boolean isPrimitive();
 
     String toString();
+    
+    TypeModel getSelfOrValueType();
 
 }

@@ -34,18 +34,18 @@ public class PComponentCollection<D> extends ECollectionBase<D> implements PColl
     private volatile EBoolean isnull, isnotnull;    
     
     @SuppressWarnings("unchecked")
-    public PComponentCollection(Class<D> type, PathMetadata<?> metadata) {
+    public PComponentCollection(Class<? super D> type, PathMetadata<?> metadata) {
         super((Class)Collection.class);
-        this.type = type;
+        this.type = (Class)type;
         this.metadata = metadata;
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    public PComponentCollection(Class<D> type, @NotEmpty String var) {
+    public PComponentCollection(Class<? super D> type, @NotEmpty String var) {
         this(type, PathMetadata.forVariable(var));
     }
     
-    public PComponentCollection(Class<D> type, Path<?> parent, @NotEmpty String property) {
+    public PComponentCollection(Class<? super D> type, Path<?> parent, @NotEmpty String property) {
         this(type, PathMetadata.forProperty(parent, property));
     }
 

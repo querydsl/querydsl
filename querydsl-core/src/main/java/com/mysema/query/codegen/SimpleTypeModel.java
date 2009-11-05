@@ -97,5 +97,15 @@ public final class SimpleTypeModel implements TypeModel {
         return parameters.length;
     }
 
+    @Override
+    public TypeModel getSelfOrValueType() {
+        if (parameters.length == 0){
+            return this;
+        }else{
+            TypeModel rv = parameters[parameters.length -1];
+            return rv != null ? rv : this;
+        }
+    }
+
     
 }

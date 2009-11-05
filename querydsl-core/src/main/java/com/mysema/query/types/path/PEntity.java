@@ -113,11 +113,11 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
         return new PSimple<A>((Class<A>)type, this, path);
     }
 
-    protected <A> PComponentCollection<A> createSimpleCollection(@NotEmpty String property, Class<A> type) {
+    protected <A> PComponentCollection<A> createSimpleCollection(@NotEmpty String property, Class<? super A> type) {
         return new PComponentCollection<A>(type, this, property);
     }
 
-    protected <A> PComponentList<A> createSimpleList(@NotEmpty String property, Class<A> type) {
+    protected <A> PComponentList<A> createSimpleList(@NotEmpty String property, Class<? super A> type) {
         return new PComponentList<A>(type, PathMetadata.forProperty(this, property));
     }
 
