@@ -31,8 +31,8 @@ public class CascadingBoolean extends EBoolean{
         }        
         return this;
     }
-    
-    public CascadingBoolean andAny(EBoolean... args) {
+
+    public CascadingBoolean andAnyOf(EBoolean... args) {
         if (args.length > 0){
             EBoolean any = args[0];
             for (int i = 1; i < args.length; i++){
@@ -57,7 +57,7 @@ public class CascadingBoolean extends EBoolean{
         return this;
     }
     
-    public CascadingBoolean orAll(EBoolean... args) {
+    public CascadingBoolean orAllOf(EBoolean... args) {
         if (args.length > 0){
             EBoolean all = args[0];
             for (int i = 1; i < args.length; i++){
