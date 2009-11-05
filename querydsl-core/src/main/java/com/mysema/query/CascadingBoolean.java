@@ -32,6 +32,13 @@ public class CascadingBoolean extends EBoolean{
         return this;
     }
 
+    /**
+     * Create the intersection of this and the union of the given args
+     * <p>(this && (arg1 || arg2 ... || argN))</p>
+     * 
+     * @param args
+     * @return
+     */
     public CascadingBoolean andAnyOf(EBoolean... args) {
         if (args.length > 0){
             EBoolean any = args[0];
@@ -57,6 +64,13 @@ public class CascadingBoolean extends EBoolean{
         return this;
     }
     
+    /**
+     * Create the union of this and the intersection of the given args
+     * <p>(this || (arg1 && arg2 ... && argN))</p>
+     * 
+     * @param args
+     * @return
+     */
     public CascadingBoolean orAllOf(EBoolean... args) {
         if (args.length > 0){
             EBoolean all = args[0];
