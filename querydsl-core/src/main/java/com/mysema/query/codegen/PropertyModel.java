@@ -79,7 +79,14 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         StringBuilder builder = new StringBuilder(getLocalName(typeModel)).append("<");
         for (int i = 0; i < typeModel.getParameterCount(); i++){
             if (i > 0) builder.append(",");
-            builder.append("?");
+//            builder.append("?");
+            TypeModel parameter = typeModel.getParameter(i);
+            if (parameter != null){
+                builder.append(parameter.getLocalName());    
+            }else{
+                builder.append("?");
+            }
+            
         }
         return builder.append(">").toString();    
     }

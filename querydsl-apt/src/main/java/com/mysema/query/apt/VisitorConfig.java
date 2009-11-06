@@ -18,10 +18,16 @@ public enum VisitorConfig {
      * 
      */
     FIELDS_ONLY(true,false),
+        
     /**
      * 
      */
-    METHODS_ONLY(false,true);
+    METHODS_ONLY(false,true),    
+
+    /**
+     * 
+     */
+    NONE(false,false);
     
     private final boolean fields, methods;
     

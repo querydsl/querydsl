@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>0.7.4-SNAPSHOT</version>
+    <version>0.7.5</version>
   </parent>
 
   <groupId>com.mysema.querydsl</groupId>
@@ -13,6 +13,10 @@
   <name>Querydsl - APT support</name>
   <description>source code generation for querydsl</description>
   <packaging>jar</packaging>
+
+  <properties>
+    <jdo.version>2.3-eb</jdo.version>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -34,7 +38,18 @@
       <version>1.6</version>
       <scope>test</scope>
     </dependency>
-    
+    <dependency>
+      <groupId>javax.jdo</groupId>
+      <artifactId>jdo2-api</artifactId>
+      <version>${jdo.version}</version>
+      <scope>test</scope>
+    </dependency>    
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-annotations</artifactId>
+      <version>3.2.1.ga</version>
+      <scope>test</scope>
+    </dependency>  
   </dependencies>
 
   <build>
@@ -43,15 +58,38 @@
         <groupId>com.mysema.maven</groupId>
         <artifactId>maven-apt-plugin</artifactId>
         <version>0.3.1</version>
+        <configuration>
+          <outputDirectory>target/generated-test-sources/java</outputDirectory>
+        </configuration>
         <executions>
           <execution>
+            <id>qd</id>
             <phase>generate-test-sources</phase>
             <goals>
               <goal>test-process</goal>
             </goals>
             <configuration>
-              <outputDirectory>target/generated-test-sources/java</outputDirectory>
               <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+            </configuration>
+          </execution>
+          <execution>
+            <id>jpa</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>test-process</goal>
+            </goals>
+            <configuration>
+              <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+            </configuration>
+          </execution>
+          <execution>
+            <id>jdo</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>test-process</goal>
+            </goals>
+            <configuration>
+              <processor>com.mysema.query.apt.jdo.JDOAnnotationProcessor</processor>
             </configuration>
           </execution>
         </executions>

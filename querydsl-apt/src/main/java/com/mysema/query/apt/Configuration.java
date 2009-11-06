@@ -33,17 +33,26 @@ public class Configuration {
             Class<? extends Annotation> entityAnn, 
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
-//            Class<? extends Annotation> dtoAnn,
             Class<? extends Annotation> skipAnn) {
         this.entityAnn = Assert.notNull(entityAnn);
         this.superTypeAnn = superTypeAnn;
         this.embeddableAnn = embeddableAnn;
-//        this.dtoAnn = dtoAnn;
         this.skipAnn = skipAnn;             
     }
     
     public VisitorConfig getConfig(TypeElement e, List<? extends Element> elements){
-        return VisitorConfig.ALL;
+        if (useFields){
+            if (useGetters){
+                return VisitorConfig.ALL;        
+            }else{
+                return VisitorConfig.FIELDS_ONLY;
+            }
+        }else if (useGetters){
+            return VisitorConfig.METHODS_ONLY;
+        }else{
+            return VisitorConfig.NONE;
+        }
+        
     }
     
     public boolean isValidConstructor(ExecutableElement constructor) {
@@ -53,15 +62,13 @@ public class Configuration {
     }
     
     public boolean isValidField(VariableElement field) {
-        return useFields
-            && field.getAnnotation(skipAnn) == null
+        return field.getAnnotation(skipAnn) == null
             && !field.getModifiers().contains(Modifier.TRANSIENT) 
             && !field.getModifiers().contains(Modifier.STATIC);
     }
 
     public boolean isValidGetter(ExecutableElement getter){
-        return useGetters
-            && getter.getAnnotation(skipAnn) == null
+        return getter.getAnnotation(skipAnn) == null
             && !getter.getModifiers().contains(Modifier.STATIC);
     }
 
@@ -76,21 +83,9 @@ public class Configuration {
     public Class<? extends Annotation> getEmbeddableAnn() {
         return embeddableAnn;
     }
-    
-//    public Class<? extends Annotation> getDtoAnn() {
-//        return dtoAnn;
-//    }
 
     public Class<? extends Annotation> getSkipAnn() {
         return skipAnn;
-    }
-
-    public boolean isUseFields() {
-        return useFields;
-    }
-
-    public boolean isUseGetters() {
-        return useGetters;
     }
 
     public void setUseGetters(boolean b) {
