@@ -42,6 +42,7 @@ public class EntitySerializer implements Serializer{
         // constructors
         constructors(model, writer);
         
+        // TODO : make this configurable
         for (PropertyModel property : model.getProperties()){
             switch(property.getTypeCategory()){
             case SIMPLEMAP: mapOfSimpleAccessor(property, writer); break;

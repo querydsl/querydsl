@@ -119,6 +119,14 @@
         <configuration>
           <targetJdk>1.6</targetJdk>   
           <includeTests>true</includeTests>     
+          <rulesets>
+            <ruleset>/rulesets/basic.xml</ruleset>
+            <ruleset>/rulesets/braces.xml</ruleset>
+            <ruleset>/rulesets/controversial.xml</ruleset>
+            <ruleset>/rulesets/design.xml</ruleset>  
+            <ruleset>/rulesets/naming.xml</ruleset>            
+          </rulesets>
+          
         </configuration>
       </plugin>      
     </plugins>
