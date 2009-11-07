@@ -29,7 +29,6 @@ import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.codegen.BeanModel;
 import com.mysema.query.codegen.BeanModelFactory;
 import com.mysema.query.codegen.Serializer;
-import com.mysema.query.codegen.Serializers;
 import com.mysema.query.codegen.TypeModelFactory;
 
 /**
@@ -45,12 +44,12 @@ public class Processor {
     
     private final APTModelFactory typeFactory;
     
-    private final Configuration conf;
+    private final SimpleConfiguration conf;
     
     private final BeanModelFactory classModelFactory;
     
     @SuppressWarnings("unchecked")
-    public Processor(ProcessingEnvironment env, Configuration configuration) {
+    public Processor(ProcessingEnvironment env, SimpleConfiguration configuration) {
         this.conf = configuration;
         List<Class<? extends Annotation>> anns ;
         if (conf.getEmbeddableAnn() != null){
@@ -87,7 +86,7 @@ public class Processor {
             }
             // serialize supertypes
             if (!superTypes.isEmpty()){
-                serialize(Serializers.SUPERTYPE, superTypes);
+                serialize(conf.getSupertypeSerializer(), superTypes);
             }
         }
 
@@ -107,7 +106,7 @@ public class Processor {
         }
         // serialize entity types
         if (!entityTypes.isEmpty()) {
-            serialize(Serializers.ENTITY, entityTypes);
+            serialize(conf.getEntitySerializer(), entityTypes);
         }
         
         // EMBEDDABLES (optional)
@@ -128,7 +127,7 @@ public class Processor {
             }
             // serialize entity types
             if (!embeddables.isEmpty()) {
-                serialize(Serializers.EMBEDDABLE, embeddables);
+                serialize(conf.getEmbeddableSerializer(), embeddables);
             }            
         }
 
@@ -149,7 +148,7 @@ public class Processor {
         }
         // serialize entity types
         if (!dtos.isEmpty()) {
-            serialize(Serializers.DTO, dtos);
+            serialize(conf.getDTOSerializer(), dtos);
         }     
         
     }

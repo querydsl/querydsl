@@ -28,7 +28,7 @@ public class ExprTest {
         exprs.add(QEntity2.entity2);
         exprs.add(QEntity3.entity3);
         exprs.add(QEntityWithEmbedded.entityWithEmbedded);
-        exprs.add(QGenericType.genericType);
+//        exprs.add(QGenericType.genericType);
         exprs.add(QInterfaceType.interfaceType);
         exprs.add(QInterfaceType2.interfaceType2);
         exprs.add(QInterfaceType3.interfaceType3);

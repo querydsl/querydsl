@@ -47,7 +47,7 @@ public final class BeanModel implements Comparable<BeanModel> {
     
     private final TypeModel typeModel;
     
-    private String uncapSimpleName, genericName;
+    private String uncapSimpleName;
     
     public BeanModel(String prefix, TypeModel typeModel) {
         this(prefix, typeModel, Collections.<String>emptyList());
@@ -86,7 +86,7 @@ public final class BeanModel implements Comparable<BeanModel> {
     }
 
     public boolean equals(Object o) {
-        return o instanceof BeanModel && typeModel.getName().equals(((BeanModel) o).typeModel.getName());
+        return o instanceof BeanModel && typeModel.getFullName().equals(((BeanModel) o).typeModel.getFullName());
     }
 
     public Collection<ConstructorModel> getConstructors() {
@@ -94,27 +94,15 @@ public final class BeanModel implements Comparable<BeanModel> {
     }
 
     public String getGenericName(){
-        if (genericName == null){
-            if (typeModel.getParameterCount() == 0){
-                genericName = typeModel.getLocalName();
-            }else{
-                StringBuilder builder = new StringBuilder(typeModel.getLocalName()).append("<");
-                for (int i = 0; i < typeModel.getParameterCount(); i++){
-                    if (i > 0) builder.append(",");
-                    builder.append("?");
-                }
-                genericName = builder.append(">").toString();    
-            }    
-        }
-        return genericName;            
+        return typeModel.getLocalGenericName(this);            
     }
 
     public String getLocalName() {
-        return typeModel.getLocalName();
+        return typeModel.getLocalRawName(this);
     }
     
     public String getName() {
-        return typeModel.getName();
+        return typeModel.getFullName();
     }
 
     public Set<PropertyModel> getProperties() {
@@ -151,7 +139,7 @@ public final class BeanModel implements Comparable<BeanModel> {
     }
 
     public int hashCode() {
-        return typeModel.getName().hashCode();
+        return typeModel.getFullName().hashCode();
     }
 
 

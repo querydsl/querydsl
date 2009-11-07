@@ -49,9 +49,9 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
     
     private final APTModelFactory typeFactory;
     
-    private final Configuration configuration;
+    private final SimpleConfiguration configuration;
     
-    EntityElementVisitor(ProcessingEnvironment env, Configuration conf, APTModelFactory typeFactory){
+    EntityElementVisitor(ProcessingEnvironment env, SimpleConfiguration conf, APTModelFactory typeFactory){
         this.env = env;
         this.configuration = conf;
         this.typeFactory = typeFactory;
@@ -62,13 +62,13 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
         Elements elementUtils = env.getElementUtils();
         Collection<String> superTypes;
         if (e.getKind() == ElementKind.CLASS){
-            superTypes = Collections.singleton(typeFactory.create(e.getSuperclass(), elementUtils).getName());
+            superTypes = Collections.singleton(typeFactory.create(e.getSuperclass(), elementUtils).getFullName());
         }else{
             superTypes = new ArrayList<String>(e.getInterfaces().size());
             for (TypeMirror mirror : e.getInterfaces()){
                 TypeModel iface = typeFactory.create(mirror, elementUtils);
-                if (!iface.getName().startsWith("java")){
-                    superTypes.add(iface.getName());
+                if (!iface.getFullName().startsWith("java")){
+                    superTypes.add(iface.getFullName());
                 }
             }
         }
@@ -83,7 +83,7 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
                 List<ParameterModel> parameters = new ArrayList<ParameterModel>(constructor.getParameters().size());
                 for (VariableElement var : constructor.getParameters()){
                     TypeModel varType = typeFactory.create(var.asType(), elementUtils);                    
-                    parameters.add(new ParameterModel(var.getSimpleName().toString(), varType));
+                    parameters.add(new ParameterModel(classModel, var.getSimpleName().toString(), varType));
                 }
                 classModel.addConstructor(new ConstructorModel(parameters));    
             }                
@@ -97,9 +97,11 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
         
         // FIELDS
         
+        // are fields visited ?
         if (config.isVisitFields()){
             for (VariableElement field : ElementFilter.fieldsIn(elements)){
                 String name = field.getSimpleName().toString();
+                // is particular field visited ?
                 if (configuration.isValidField(field)){
                     try{                        
                         TypeModel typeModel = typeFactory.create(field.asType(), elementUtils);            
@@ -120,7 +122,7 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
                     }catch(IllegalArgumentException ex){
                         StringBuilder builder = new StringBuilder();
                         builder.append("Caught exception for field ");
-                        builder.append(c.getName()).append("#").append(field.getSimpleName());
+                        builder.append(c.getFullName()).append("#").append(field.getSimpleName());
                         throw new RuntimeException(builder.toString(), ex);
                     }
                         
@@ -132,6 +134,7 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
         
         // METHODS
         
+        // are methods visited ?
         if (config.isVisitMethods()){
             for (ExecutableElement method : ElementFilter.methodsIn(elements)){
                 String name = method.getSimpleName().toString();
@@ -142,6 +145,8 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
                 }else{
                     continue;
                 }
+                
+                // is particular method visited ?
                 if (configuration.isValidGetter(method)){
                     try{
                         TypeModel typeModel = typeFactory.create(method.getReturnType(), elementUtils);
@@ -166,7 +171,7 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
                     }catch(IllegalArgumentException ex){
                         StringBuilder builder = new StringBuilder();
                         builder.append("Caught exception for method ");
-                        builder.append(c.getName()).append("#").append(method.getSimpleName());
+                        builder.append(c.getFullName()).append("#").append(method.getSimpleName());
                         throw new RuntimeException(builder.toString(), ex);
                     }
                 }else{

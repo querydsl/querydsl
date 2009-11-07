@@ -38,6 +38,8 @@ public class JDOTest extends AbstractTest {
     public void test() throws SecurityException, NoSuchFieldException {
         cl = QJDOEntity.class;
         match(PString.class, "prop");
+        assertMissing("skipped");
+        assertMissing("skippedEntity");
         
         cl = QJDOEntity2.class;
         match(PString.class, "stringField1");

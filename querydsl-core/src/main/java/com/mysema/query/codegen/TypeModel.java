@@ -9,25 +9,29 @@ import javax.annotation.Nullable;
 
 /**
  * @author tiwe
- *
+ * 
  */
 public interface TypeModel {
 
     TypeModel as(TypeCategory category);
 
-    @Nullable
-    TypeModel getParameter(int i);
-
-    int getParameterCount();
+    String getLocalRawName(BeanModel context);
     
-    String getLocalName();
+    String getLocalGenericName(BeanModel context);
 
-    String getName();
+    String getFullName();
 
     String getPackageName();
 
     @Nullable
+    TypeModel getParameter(int i);
+
+    int getParameterCount();
+
+    @Nullable
     String getPrimitiveName();
+
+    TypeModel getSelfOrValueType();
 
     String getSimpleName();
 
@@ -36,7 +40,5 @@ public interface TypeModel {
     boolean isPrimitive();
 
     String toString();
-    
-    TypeModel getSelfOrValueType();
 
 }

@@ -17,9 +17,9 @@ import java.util.Map;
 
 import com.mysema.query.codegen.BeanModel;
 import com.mysema.query.codegen.ClassTypeModel;
+import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.PropertyModel;
 import com.mysema.query.codegen.Serializer;
-import com.mysema.query.codegen.Serializers;
 import com.mysema.query.codegen.SimpleTypeModel;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeModel;
@@ -39,7 +39,7 @@ public class MetaDataExporter {
 
     private final String schemaPattern, tableNamePattern;
 
-    private static final Serializer serializer = Serializers.ENTITY;
+    private static final Serializer serializer = new EntitySerializer();
     
     public MetaDataExporter(String namePrefix, String packageName, String schemaPattern, String tableNamePattern, String targetFolder){
         this.namePrefix = namePrefix;

@@ -35,9 +35,9 @@ public final class DTOElementVisitor extends SimpleElementVisitor6<BeanModel, Vo
     
     private final APTModelFactory typeFactory;
     
-    private final Configuration configuration;
+    private final SimpleConfiguration configuration;
     
-    DTOElementVisitor(ProcessingEnvironment env, Configuration configuration, APTModelFactory typeFactory){
+    DTOElementVisitor(ProcessingEnvironment env, SimpleConfiguration configuration, APTModelFactory typeFactory){
         this.env = env;
         this.configuration = configuration;
         this.typeFactory = typeFactory;
@@ -56,7 +56,7 @@ public final class DTOElementVisitor extends SimpleElementVisitor6<BeanModel, Vo
                 List<ParameterModel> parameters = new ArrayList<ParameterModel>(constructor.getParameters().size());
                 for (VariableElement var : constructor.getParameters()){
                     TypeModel varType = typeFactory.create(var.asType(), elementUtils);
-                    parameters.add(new ParameterModel(var.getSimpleName().toString(), varType));
+                    parameters.add(new ParameterModel(classModel, var.getSimpleName().toString(), varType));
                 }
                 classModel.addConstructor(new ConstructorModel(parameters));    
             }                

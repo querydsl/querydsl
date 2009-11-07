@@ -16,7 +16,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
-import com.mysema.query.apt.Configuration;
+import com.mysema.query.apt.SimpleConfiguration;
 import com.mysema.query.apt.Processor;
 
 /**
@@ -39,7 +39,7 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
             embeddable = (Class)Class.forName("javax.jdo.annotations.EmbeddedOnly");
             skip = (Class)Class.forName("javax.jdo.annotations.NotPersistent");
             
-            Configuration configuration = new Configuration(entity, superType, embeddable, skip);
+            SimpleConfiguration configuration = new SimpleConfiguration(entity, superType, embeddable, skip);
             configuration.setUseGetters(false);
             Processor processor = new Processor(processingEnv, configuration);
             processor.process(roundEnv);

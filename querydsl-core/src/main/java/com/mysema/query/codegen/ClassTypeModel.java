@@ -18,13 +18,15 @@ import com.mysema.commons.lang.Assert;
  */
 public class ClassTypeModel implements TypeModel{
     
-    private final TypeCategory typeCategory;
-    
     private final Class<?> clazz;
+    
+    private final List<TypeModel> parameters;
     
     private final Class<?> primitiveClass;
     
-    private final List<TypeModel> parameters;
+    private final TypeCategory typeCategory;
+    
+    private final boolean visible;
     
     public ClassTypeModel(TypeCategory typeCategory, Class<?> clazz){
         this(typeCategory, clazz, ClassUtils.wrapperToPrimitive(clazz));
@@ -34,8 +36,8 @@ public class ClassTypeModel implements TypeModel{
         this.typeCategory = Assert.notNull(typeCategory);
         this.clazz = Assert.notNull(clazz);
         this.primitiveClass = primitiveClass;
-        // TODO
         this.parameters = Collections.emptyList();
+        this.visible = clazz.getPackage().getName().equals("java.lang");
     }
     
     @Override
@@ -48,13 +50,22 @@ public class ClassTypeModel implements TypeModel{
     }
 
     @Override
-    public String getLocalName() {
-        return clazz.getName().substring(clazz.getPackage().getName().length()+1);
+    public String getFullName() {
+        return clazz.getName();
     }
 
     @Override
-    public String getName() {
-        return clazz.getName();
+    public String getLocalGenericName(BeanModel context) {
+        return getLocalRawName(context);
+    }
+
+    @Override
+    public String getLocalRawName(BeanModel context) {
+        if (visible || context.getPackageName().equals(clazz.getPackage().getName())){
+            return clazz.getName().substring(clazz.getPackage().getName().length()+1);    
+        }else{
+            return clazz.getName();
+        }        
     }
 
     @Override
@@ -63,8 +74,28 @@ public class ClassTypeModel implements TypeModel{
     }
 
     @Override
+    public TypeModel getParameter(int i) {
+        return parameters.get(i);
+    }
+
+    @Override
+    public int getParameterCount() {
+        return parameters.size();
+    }
+
+    @Override
     public String getPrimitiveName() {
         return primitiveClass != null ? primitiveClass.getSimpleName() : null;
+    }
+
+    @Override
+    public TypeModel getSelfOrValueType() {
+        if (typeCategory.isSubCategoryOf(TypeCategory.COLLECTION) 
+         || typeCategory.isSubCategoryOf(TypeCategory.MAP)){
+            return parameters.get(parameters.size()-1);
+        }else{
+            return this;
+        }
     }
 
     @Override
@@ -80,26 +111,6 @@ public class ClassTypeModel implements TypeModel{
     @Override
     public boolean isPrimitive() {
         return primitiveClass != null;
-    }
-
-    @Override
-    public TypeModel getParameter(int i) {
-        return parameters.get(i);
-    }
-
-    @Override
-    public int getParameterCount() {
-        return parameters.size();
-    }
-
-    @Override
-    public TypeModel getSelfOrValueType() {
-        if (parameters.isEmpty()){
-            return this;
-        }else{
-            TypeModel rv = parameters.get(parameters.size()-1);
-            return rv != null ? rv : this;
-        }
     }
 
 }

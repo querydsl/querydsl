@@ -18,7 +18,7 @@ import org.junit.Test;
  * @version $Id$
  */
 public class SerializerTest {
-
+    
     private BeanModel type;
 
     private Writer writer = new StringWriter();
@@ -33,7 +33,7 @@ public class SerializerTest {
         
         PropertyModel field = new PropertyModel(type, "field", typeFactory.create(String.class), new String[0]);
         type.addProperty(field);
-        ParameterModel param = new ParameterModel("name", new ClassTypeModel(TypeCategory.STRING, String.class));
+        ParameterModel param = new ParameterModel(type, "name", new ClassTypeModel(TypeCategory.STRING, String.class));
         type.addConstructor(new ConstructorModel(Collections.singleton(param)));
     }
 
@@ -44,7 +44,7 @@ public class SerializerTest {
      */
     @Test
     public void testDomainTypesAsOuterClasses() throws Exception {
-        Serializers.ENTITY.serialize(type, writer);
+        new EntitySerializer().serialize(type, writer);
 //        System.out.println(writer);
     }
 

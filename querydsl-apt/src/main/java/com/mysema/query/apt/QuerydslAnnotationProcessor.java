@@ -18,7 +18,6 @@ import javax.tools.Diagnostic;
 
 import com.mysema.query.annotations.QueryEmbeddable;
 import com.mysema.query.annotations.QueryEntity;
-import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QuerySupertype;
 import com.mysema.query.annotations.QueryTransient;
 
@@ -42,7 +41,7 @@ public class QuerydslAnnotationProcessor extends AbstractProcessor{
 //        dto = QueryProjection.class;
         skip = QueryTransient.class;
         
-        Configuration configuration = new Configuration(entity, superType, embeddable, skip);
+        SimpleConfiguration configuration = new SimpleConfiguration(entity, superType, embeddable, skip);
         Processor processor = new Processor(processingEnv, configuration);
         processor.process(roundEnv);
         return true;

@@ -32,6 +32,24 @@ public class RelationTest extends AbstractTest{
     }
     
     @QueryEntity
+    public class GenericRelations{
+        Collection<Collection<Reference>> col1;
+        Collection<List<Reference>> col2;
+        Collection<Collection<? extends Reference>> col3;
+        Collection<List<? extends Reference>> col4;
+        
+        Set<List<Reference>> set1;
+        Set<Collection<Reference>> set2;
+        Set<List<? extends Reference>> set3;
+        Set<Collection<? extends Reference>> set4;
+        
+        Map<String,List<String>> map1;
+        Map<List<String>,String> map2;
+        Map<String,List<? extends String>> map3;
+        Map<List<? extends String>,String> map4;
+    }
+    
+    @QueryEntity
     public class RelationType {
 
         MyEnum enumProperty;
@@ -56,23 +74,16 @@ public class RelationTest extends AbstractTest{
         Set<RelationType2<?>> set3;
         Set<Reference> set4;
         
-        Set<List<Reference>> set5;
-        Set<Collection<Reference>> set6;
-
         // .. of Object
         List<Object> listOfObjects;
         Set<Object> setOfObjects;
         Set<Reference> setOfObjects2;        
-        
-
+       
         // collection
         Collection<RelationType> collection;
         Collection<RelationType2<?>> collection2;
         Collection<String> collection3;
         Collection<Reference> collection4;
-        
-        Collection<Collection<Reference>> col5;
-        Collection<List<Reference>> col6;
 
         // map
         Map<String, RelationType> map;
@@ -87,8 +98,6 @@ public class RelationTest extends AbstractTest{
         Map<Reference, Reference> map8;
         Map<Reference, String> map9;
         
-        Map<String,List<String>> map10;
-        Map<List<String>,String> map11;
     }
     
     @Test

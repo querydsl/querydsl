@@ -15,14 +15,14 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.apt.Configuration;
+import com.mysema.query.apt.SimpleConfiguration;
 import com.mysema.query.apt.VisitorConfig;
 
 /**
  * @author tiwe
  *
  */
-public class JPAConfiguration extends Configuration {
+public class JPAConfiguration extends SimpleConfiguration {
    
     private List<Class<? extends Annotation>> annotations;
     
@@ -57,15 +57,13 @@ public class JPAConfiguration extends Configuration {
     public VisitorConfig getConfig(TypeElement e, List<? extends Element> elements){
         boolean fields = false, methods = false;
         for (Element element : elements){
-            if (element.getKind().equals(ElementKind.FIELD) ){
-                if (!fields && hasRelevantAnnotation(element)){
+            if (hasRelevantAnnotation(element)){
+                if (!fields && element.getKind().equals(ElementKind.FIELD)){
                     fields = true;
-                }
-            }else if (element.getKind().equals(ElementKind.METHOD)){
-                if (!methods && hasRelevantAnnotation(element)){
+                }else if (!methods && element.getKind().equals(ElementKind.METHOD)){
                     methods = true;
-                }
-            }
+                }    
+            }            
         }    
         if (fields && !methods){
             return VisitorConfig.FIELDS_ONLY;

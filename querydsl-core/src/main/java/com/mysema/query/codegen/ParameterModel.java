@@ -18,9 +18,9 @@ public final class ParameterModel implements Comparable<ParameterModel> {
     
     private final String name, typeName, realTypeName;
 
-    public ParameterModel(String name, TypeModel type) {
+    public ParameterModel(BeanModel context, String name, TypeModel type) {
         this.name = name;
-        this.typeName = type.getPackageName().equals("java.lang") ? type.getLocalName() : type.getName();
+        this.typeName = type.getLocalRawName(context);
         this.realTypeName = type.isPrimitive() ? type.getPrimitiveName() : typeName;
     }
 

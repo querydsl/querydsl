@@ -21,6 +21,7 @@ import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.NoType;
 import javax.lang.model.type.NullType;
 import javax.lang.model.type.PrimitiveType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.TypeVisitor;
@@ -46,7 +47,7 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
     
     private final TypeModel defaultValue;
     
-    private final Map<String,TypeModel> cache = new HashMap<String,TypeModel>();
+    private final Map<CharSequence,TypeModel> cache = new HashMap<CharSequence,TypeModel>();
     
     private final List<Class<? extends Annotation>> entityAnnotations;
     
@@ -62,7 +63,19 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
     }
     
     public TypeModel create(TypeMirror type, Elements el){
-        String key = type.toString();
+        String key = type + " " + type.getKind();
+        if (type.getKind() == TypeKind.TYPEVAR){
+            TypeVariable t = (TypeVariable)type;
+            if (t.getUpperBound() != null){
+                key = t.getUpperBound() + " " + t.getUpperBound().getKind();    
+            }            
+        }else if (type.getKind() == TypeKind.WILDCARD){
+            WildcardType t = (WildcardType)type;
+            if (t.getExtendsBound() != null){
+                key = t.getExtendsBound() + " " + t.getExtendsBound().getKind();    
+            }            
+        }
+        
         if (cache.containsKey(key)){
             return cache.get(key);
         }else{
@@ -71,6 +84,7 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
             cache.put(key, value);
             return value;
         }
+        
     }
 
     @Override

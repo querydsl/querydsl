@@ -24,15 +24,15 @@ public class InspectingTypeModelTest {
     @Test
     public void test(){        
         TypeModel blob = factory.create(Blob.class);
-        assertEquals("Blob", blob.getLocalName());
+//        assertEquals("Blob", blob.getLocalName());
         assertEquals("Blob", blob.getSimpleName());
-        assertEquals("java.sql.Blob", blob.getName());
+        assertEquals("java.sql.Blob", blob.getFullName());
         assertEquals("java.sql", blob.getPackageName());
         
         TypeModel bo = factory.create(boolean.class);
-        assertEquals("Boolean", bo.getLocalName());
+//        assertEquals("Boolean", bo.getLocalName());
         assertEquals("Boolean", bo.getSimpleName());
-        assertEquals("java.lang.Boolean", bo.getName());
+        assertEquals("java.lang.Boolean", bo.getFullName());
         assertEquals("java.lang", bo.getPackageName());
     }
     

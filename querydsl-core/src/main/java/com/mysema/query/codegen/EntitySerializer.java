@@ -104,13 +104,13 @@ public class EntitySerializer implements Serializer{
 
     protected void collectionOfEntity(PropertyModel field, Writer writer) throws IOException {
         String genericTypeName = field.getGenericParameterName(0);
-        String typeName = field.getParameterName(0);
+        String typeName = field.getRawParameterName(0);
         serialize(field, "PEntityCollection<" + genericTypeName+">", writer, "createEntityCollection",typeName+".class");        
     }
     
     protected void collectionOfSimple(PropertyModel field, Writer writer) throws IOException {
         String genericTypeName = field.getGenericParameterName(0);
-        String typeName = field.getParameterName(0);
+        String typeName = field.getRawParameterName(0);
         serialize(field, "PComponentCollection<" + genericTypeName+">", writer, "createSimpleCollection", typeName+".class");        
     }
         
@@ -349,7 +349,7 @@ public class EntitySerializer implements Serializer{
 
     protected void listOfEntity(PropertyModel field, Writer writer) throws IOException {
         String genericTypeName = field.getGenericParameterName(0);
-        String typeName = field.getParameterName(0);
+        String typeName = field.getRawParameterName(0);
         
         serialize(field, "PEntityList<" + genericTypeName+ "," + field.getQueryTypeName() +  ">", writer, "createEntityList", 
                 typeName+".class",
@@ -387,14 +387,14 @@ public class EntitySerializer implements Serializer{
 
     protected void listOfSimple(PropertyModel field, Writer writer) throws IOException {
         String genericTypeName = field.getGenericParameterName(0);
-        String typeName = field.getParameterName(0);
+        String typeName = field.getRawParameterName(0);
         
         serialize(field, "PComponentList<" + genericTypeName+">", writer, "createSimpleList", typeName+".class");        
     }
 
     protected void mapOfEntity(PropertyModel field, Writer writer) throws IOException{
-        final String keyType = field.getParameterName(0);
-        final String valueType = field.getParameterName(1);
+        final String keyType = field.getRawParameterName(0);
+        final String valueType = field.getRawParameterName(1);
         final String genericKey = field.getGenericParameterName(0);
         final String genericValue = field.getGenericParameterName(1);
         
@@ -424,8 +424,8 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void mapOfSimple(PropertyModel field, Writer writer) throws IOException {               
-        final String keyType = field.getParameterName(0);
-        final String valueType = field.getParameterName(1);
+        final String keyType = field.getRawParameterName(0);
+        final String valueType = field.getRawParameterName(1);
         final String genericKey = field.getGenericParameterName(0);
         final String genericValue = field.getGenericParameterName(1);
         
