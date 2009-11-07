@@ -18,32 +18,22 @@ public enum JoinType {
     /**
      * 
      */
-    DEFAULT("JOIN"), 
+    DEFAULT, 
     /**
      * 
      */
-    INNERJOIN("INNER JOIN"),
+    INNERJOIN,
     /**
      * 
      */
-    JOIN("JOIN"),
+    JOIN,
     /**
      * 
      */
-    LEFTJOIN("LEFTJOIN"),
+    LEFTJOIN,
     /**
      * 
      */
-    FULLJOIN("FULL JOIN");
+    FULLJOIN;
     
-    private final String str;
-    
-    private JoinType(String str){
-        this.str = str;
-    }
-    
-    @Override 
-    public String toString(){
-        return str;
-    }
 }

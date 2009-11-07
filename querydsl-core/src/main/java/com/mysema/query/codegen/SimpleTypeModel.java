@@ -25,13 +25,14 @@ public final class SimpleTypeModel implements TypeModel {
 
     private final TypeCategory typeCategory;
     
-    private final boolean visible;
+    private final boolean visible, finalClass;
     
     public SimpleTypeModel(
             TypeCategory typeCategory, 
             String name,
             String packageName, 
             String simpleName, 
+            boolean finalClass,
             TypeModel... parameters) {
         this.typeCategory = Assert.notNull(typeCategory,"typeCategory is null");
         this.fullName = Assert.notNull(name,"name is null");
@@ -40,13 +41,14 @@ public final class SimpleTypeModel implements TypeModel {
         this.localName = name.substring(packageName.length()+1);
         this.parameters = Assert.notNull(parameters);
         this.visible = packageName.equals("java.lang");
+        this.finalClass = finalClass;
     }
 
     public SimpleTypeModel as(TypeCategory category) {
         if (typeCategory == category){
             return this;
         }else{
-            return new SimpleTypeModel(category, fullName, packageName, simpleName, parameters);
+            return new SimpleTypeModel(category, fullName, packageName, simpleName, finalClass, parameters);
         }
     }
 
@@ -151,6 +153,11 @@ public final class SimpleTypeModel implements TypeModel {
     @Override
     public int hashCode(){
         return fullName.hashCode();
+    }
+
+    @Override
+    public boolean isFinal() {
+        return finalClass;
     }
     
 }

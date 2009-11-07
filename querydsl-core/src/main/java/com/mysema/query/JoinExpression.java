@@ -18,9 +18,15 @@ import com.mysema.query.types.expr.Expr;
  * @version $Id$
  */
 public class JoinExpression {
+    
+    // mutable
     private EBoolean condition;
+
+    // mutable
     private boolean fetch;
+    
     private final Expr<?> target;
+    
     private final JoinType type;
 
     public JoinExpression(JoinType type, Expr<?> target) {

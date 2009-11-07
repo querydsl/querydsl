@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
@@ -197,8 +198,11 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
         TypeModel[] params = new TypeModel[typeArgs.size()];
         for (int i = 0; i < params.length; i++){
             params[i] = create(typeArgs.get(i), p);
-        }
-        return new SimpleTypeModel(category, name, packageName, simpleName, params);
+        }        
+        return new SimpleTypeModel(category, 
+            name, packageName, simpleName, 
+            typeElement.getModifiers().contains(Modifier.FINAL), 
+            params);
     }
 
     @Override

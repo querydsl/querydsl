@@ -5,6 +5,8 @@
  */
 package com.mysema.query.codegen;
 
+import java.util.Arrays;
+
 import javax.annotation.Nullable;
 
 import net.jcip.annotations.Immutable;
@@ -171,7 +173,7 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     }
     
     public int hashCode() {
-        return name.hashCode();
+        return Arrays.asList(name, type).hashCode();
     }
 
     /* (non-Javadoc)

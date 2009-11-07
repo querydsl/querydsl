@@ -16,18 +16,21 @@ import net.jcip.annotations.Immutable;
 @Immutable
 public final class ParameterModel implements Comparable<ParameterModel> {
     
-    private final String name, typeName, realTypeName;
+    private final String name;
+    
+    private final TypeModel type;
 
     public ParameterModel(BeanModel context, String name, TypeModel type) {
         this.name = name;
-        this.typeName = type.getLocalRawName(context);
-        this.realTypeName = type.isPrimitive() ? type.getPrimitiveName() : typeName;
+        this.type = type;
     }
 
+    @Override
     public int compareTo(ParameterModel o) {
         return name.compareTo(o.name);
     }
 
+    @Override
     public boolean equals(Object o) {
         return o instanceof ParameterModel && name.equals(((ParameterModel) o).name);
     }
@@ -36,15 +39,13 @@ public final class ParameterModel implements Comparable<ParameterModel> {
         return name;
     }
 
-    public String getTypeName() {
-        return typeName;
+    public TypeModel getType(){
+        return type;
     }
-
-    public String getRealTypeName() {
-        return realTypeName;
-    }
-
+    
+    @Override
     public int hashCode() {
         return name.hashCode();
     }
+    
 }

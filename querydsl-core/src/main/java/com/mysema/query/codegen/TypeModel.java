@@ -41,4 +41,5 @@ public interface TypeModel {
 
     String toString();
 
+    boolean isFinal();
 }

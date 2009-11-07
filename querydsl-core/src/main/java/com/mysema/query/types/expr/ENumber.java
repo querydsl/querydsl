@@ -95,6 +95,8 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
     
     /**
+     * Return the greater of the given values
+     * 
      * @return max(left, right)
      */
     public static <A extends Number & Comparable<?>> ENumber<A> max(Expr<A> left, Expr<A> right) {
@@ -102,6 +104,8 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     }
     
     /**
+     * Return the smaller of the given values
+     * 
      * @return min(left, right)
      */
     public static <A extends Number & Comparable<?>> ENumber<A> min(Expr<A> left, Expr<A> right) {

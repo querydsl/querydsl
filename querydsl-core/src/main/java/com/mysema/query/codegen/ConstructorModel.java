@@ -29,5 +29,9 @@ public final class ConstructorModel {
     public Collection<ParameterModel> getParameters() {
         return parameters;
     }
+    
+    public int hashCode(){
+        return parameters.hashCode();
+    }
 
 }

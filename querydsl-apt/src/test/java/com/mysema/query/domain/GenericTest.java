@@ -16,7 +16,16 @@ public class GenericTest {
     @QueryEntity
     public class GenericType2<T extends ItemType> {
         T itemType;
+        @SuppressWarnings("unchecked")
+        GenericSimpleType prop1;
+        GenericSimpleType<?> prop2;
+        GenericSimpleType<? extends GenericSimpleType<?>> prop3;
     }
+    
+    public class GenericSimpleType<T extends GenericSimpleType<T>>{
+        
+    }
+    
     
     @QueryEntity
     public class ItemType {    

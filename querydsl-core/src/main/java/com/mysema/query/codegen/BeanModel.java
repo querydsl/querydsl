@@ -24,29 +24,28 @@ import com.mysema.commons.lang.Assert;
  * @version $Id$
  */
 public final class BeanModel implements Comparable<BeanModel> {
-        
-    public static final String DEFAULT_PREFIX = "Q";
     
     private final Collection<ConstructorModel> constructors = new HashSet<ConstructorModel>();
     
-    private boolean entityModel = true;
-    
     // mutable
     private int escapeSuffix = 1;
-    
+
+    // mutable
     private boolean hasLists, hasMaps, hasEntityFields;
     
     private final String prefix;
     
     private final Set<PropertyModel> properties = new TreeSet<PropertyModel>();
     
+    // mutable
     @Nullable
     private BeanModel superModel;
     
     private final Collection<String> superTypes;
     
     private final TypeModel typeModel;
-    
+
+    // mutable
     private String uncapSimpleName;
     
     public BeanModel(String prefix, TypeModel typeModel) {
@@ -157,14 +156,6 @@ public final class BeanModel implements Comparable<BeanModel> {
                 addProperty(property.createCopy(this));    
             }            
         }        
-    }
-
-    public boolean isEntityModel() {
-        return entityModel;
-    }
-
-    public void setEntityModel(boolean entityModel) {
-        this.entityModel = entityModel;
     }
 
     public void setSuperModel(BeanModel superModel) {

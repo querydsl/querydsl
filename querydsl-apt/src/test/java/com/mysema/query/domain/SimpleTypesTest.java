@@ -55,7 +55,14 @@ public class SimpleTypesTest extends AbstractTest{
         public int compareTo(CustomComparableNumber o) {
             return 0;
         }
-        
+        @Override
+        public boolean equals(Object o){
+            return true;
+        }
+        @Override
+        public int hashCode(){
+            return 0;
+        }
     }
     
     public static class CustomComparableLiteral implements Comparable<CustomComparableLiteral> {
@@ -64,7 +71,14 @@ public class SimpleTypesTest extends AbstractTest{
         public int compareTo(CustomComparableLiteral o) {
             return 0;
         }
-
+        @Override
+        public boolean equals(Object o){
+            return true;
+        }
+        @Override
+        public int hashCode(){
+            return 0;
+        }
     }
     
     @QueryEntity

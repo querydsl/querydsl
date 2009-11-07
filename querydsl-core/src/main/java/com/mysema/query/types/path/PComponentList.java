@@ -5,6 +5,9 @@
  */
 package com.mysema.query.types.path;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -17,7 +20,7 @@ import com.mysema.query.types.expr.Expr;
 @SuppressWarnings("serial")
 public class PComponentList<D> extends PComponentCollection<D> implements PList<D> {
     
-    private volatile PSimple<D> first, second;
+    private final Map<Integer,PSimple<D>> cache = new HashMap<Integer,PSimple<D>>();
     
     public PComponentList(Class<? super D> type, PathMetadata<?> metadata) {
         super(type, metadata);
@@ -30,14 +33,12 @@ public class PComponentList<D> extends PComponentCollection<D> implements PList<
 
     @Override
     public PSimple<D> get(int index) {
-        if (index == 0){
-            if (first == null) first = create(0);
-            return first;
-        }else if (index == 1){
-            if (second == null) second = create(1);
-            return second;
+        if (cache.containsKey(index)){
+            return cache.get(index);
         }else{
-            return create(index);
+            PSimple<D> rv = create(index);
+            cache.put(index, rv);
+            return rv;
         }
     }
     

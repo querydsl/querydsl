@@ -56,8 +56,10 @@ public class PathInits {
     public PathInits getInits(String property){
         if (propertyToInits.containsKey(property)){
             return propertyToInits.get(property);    
+        }else if (initAllProps){
+            return DEFAULT;
         }else{
-            return initAllProps ? DEFAULT : null;
+            throw new IllegalArgumentException(property + " is not initialized");
         }
     }
 

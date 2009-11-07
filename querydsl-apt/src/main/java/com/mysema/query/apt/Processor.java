@@ -70,14 +70,12 @@ public class Processor {
     
     public void process(RoundEnvironment roundEnv) {
         Map<String, BeanModel> superTypes = new HashMap<String, BeanModel>();
-
         EntityElementVisitor entityVisitor = new EntityElementVisitor(env, conf, typeFactory);
         
         // populate super type mappings
         if (conf.getSuperTypeAnn() != null) {
             for (Element element : roundEnv.getElementsAnnotatedWith(conf.getSuperTypeAnn())) {
                 BeanModel model = element.accept(entityVisitor, null);
-                model.setEntityModel(false);
                 superTypes.put(model.getName(), model);
             }
             // add supertype fields
@@ -135,15 +133,16 @@ public class Processor {
         
         DTOElementVisitor dtoVisitor = new DTOElementVisitor(env, conf, typeFactory);
         Map<String, BeanModel> dtos = new HashMap<String, BeanModel>();
-        Set<Element> visited = new HashSet<Element>();
+        Set<Element> visitedDTOTypes = new HashSet<Element>();
         for (Element element : roundEnv.getElementsAnnotatedWith(QueryProjection.class)) {
             Element parent = element.getEnclosingElement();
             if (parent.getAnnotation(conf.getEntityAnn()) == null
                     && parent.getAnnotation(conf.getEmbeddableAnn()) == null
-                    && !visited.contains(parent)){
+                    && !visitedDTOTypes.contains(parent)){
                 BeanModel model = parent.accept(dtoVisitor, null);
                 dtos.put(model.getName(), model);    
-                visited.add(parent);
+                visitedDTOTypes.add(parent);
+                
             }            
         }
         // serialize entity types

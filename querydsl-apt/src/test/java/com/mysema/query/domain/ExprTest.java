@@ -17,6 +17,7 @@ import com.mysema.query.types.expr.Expr;
 
 public class ExprTest {
     
+    @SuppressWarnings("unchecked")
     @Test
     public void test() throws Throwable {
         List<Expr<?>> exprs = new ArrayList<Expr<?>>();
@@ -28,7 +29,7 @@ public class ExprTest {
         exprs.add(QEntity2.entity2);
         exprs.add(QEntity3.entity3);
         exprs.add(QEntityWithEmbedded.entityWithEmbedded);
-//        exprs.add(QGenericType.genericType);
+        exprs.add(QGenericType.genericType);
         exprs.add(QInterfaceType.interfaceType);
         exprs.add(QInterfaceType2.interfaceType2);
         exprs.add(QInterfaceType3.interfaceType3);
@@ -112,8 +113,7 @@ public class ExprTest {
         for (String failure : failures){
             System.err.println(failure);
         }
-                
-        
+                        
 //        assertTrue("Got "+failures.size()+" failures",failures.isEmpty());
     }
 

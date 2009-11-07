@@ -5,8 +5,11 @@
  */
 package com.mysema.query.codegen;
 
+import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.List;
+
+import net.jcip.annotations.Immutable;
 
 import org.apache.commons.lang.ClassUtils;
 
@@ -16,6 +19,7 @@ import com.mysema.commons.lang.Assert;
  * @author tiwe
  *
  */
+@Immutable
 public class ClassTypeModel implements TypeModel{
     
     private final Class<?> clazz;
@@ -112,5 +116,23 @@ public class ClassTypeModel implements TypeModel{
     public boolean isPrimitive() {
         return primitiveClass != null;
     }
+    
+    @Override
+    public boolean equals(Object o){
+        if (o instanceof TypeModel){
+            TypeModel t = (TypeModel)o;
+            return clazz.getName().equals(t.getFullName());
+        }else{
+            return false;
+        }
+    }
 
+    public int hashCode(){
+        return clazz.getName().hashCode();
+    }
+
+    @Override
+    public boolean isFinal() {
+        return Modifier.isFinal(clazz.getModifiers());
+    }
 }

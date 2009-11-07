@@ -88,6 +88,11 @@ public class CascadingBoolean extends EBoolean{
         return this;
     }
     
+    /**
+     * Returns true if the value is set, and false, if not
+     * 
+     * @return
+     */
     public boolean hasValue(){
         return expr != null;
     }

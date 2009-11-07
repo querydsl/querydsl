@@ -5,6 +5,9 @@
  */
 package com.mysema.query.types.path;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -19,7 +22,7 @@ public class PEntityList<D, E extends PEntity<D>> extends PEntityCollection<D> i
     
     private final Class<E> queryType;
     
-    private volatile E first, second;
+    private final Map<Integer,E> cache = new HashMap<Integer,E>();
     
     public PEntityList(Class<? super D> elementType, Class<E> queryType, PathMetadata<?> metadata) {
         super(elementType, elementType.getSimpleName(), metadata);
@@ -38,14 +41,12 @@ public class PEntityList<D, E extends PEntity<D>> extends PEntityCollection<D> i
 
     @Override
     public E get(int index) {
-        if (index == 0){
-            if (first == null) first = create(0);
-            return first;
-        }else if (index == 1){
-            if (second == null) second = create(1);
-            return second;
+        if (cache.containsKey(index)){
+            return cache.get(index);
         }else{
-            return create(index);
+            E rv = create(index);
+            cache.put(index, rv);
+            return rv;
         }        
     }
     

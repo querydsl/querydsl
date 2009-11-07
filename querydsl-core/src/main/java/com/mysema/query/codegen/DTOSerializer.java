@@ -28,8 +28,12 @@ public class DTOSerializer implements Serializer{
             builder.append("    public "+ queryType + "(");
             boolean first = true;
             for (ParameterModel p : c.getParameters()){
-                if (!first) builder.append(", ");
-                builder.append("Expr<" + p.getTypeName() + "> " + p.getName());
+                if (!first) builder.append(", ");                
+                builder.append("Expr<");
+                if (!p.getType().isFinal()){
+                    builder.append("? extends ");
+                }
+                builder.append(p.getType().getLocalGenericName(model) + "> " + p.getName());
                 first = false;
             }
             builder.append("){\n");
@@ -40,7 +44,11 @@ public class DTOSerializer implements Serializer{
             first = true;
             for (ParameterModel p : c.getParameters()){
                 if (!first) builder.append(",");
-                builder.append(p.getRealTypeName() + ".class");
+                if (p.getType().getPrimitiveName() != null){
+                    builder.append(p.getType().getPrimitiveName()+".class");
+                }else{
+                    builder.append(p.getType().getLocalRawName(model) + ".class");    
+                }                
                 first = false;
             }
             builder.append("}");
@@ -78,9 +86,9 @@ public class DTOSerializer implements Serializer{
         builder.append(" */ \n");
         
         // class header
-        builder.append("@SuppressWarnings(\"all\")\n");
+        //builder.append("@SuppressWarnings(\"all\")\n");
         builder.append("public class " + queryType + " extends EConstructor<" + localName + ">{\n\n");
-        
+        builder.append("    private static final long serialVersionUID = "+model.getConstructors().hashCode()+"L;\n\n");
         writer.append(builder.toString());
     }
     

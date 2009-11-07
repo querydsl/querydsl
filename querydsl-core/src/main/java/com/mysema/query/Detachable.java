@@ -18,6 +18,8 @@ import com.mysema.query.types.query.ObjectSubQuery;
 public interface Detachable {
 
     /**
+     * Return the count of matched rows as a subquery
+     * 
      * @return
      */
     ObjectSubQuery<Long> count();
