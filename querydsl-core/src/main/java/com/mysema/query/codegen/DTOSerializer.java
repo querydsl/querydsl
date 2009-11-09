@@ -86,9 +86,9 @@ public class DTOSerializer implements Serializer{
         builder.append(" */ \n");
         
         // class header
-        //builder.append("@SuppressWarnings(\"all\")\n");
+        builder.append("@SuppressWarnings(\"serial\")\n");
         builder.append("public class " + queryType + " extends EConstructor<" + localName + ">{\n\n");
-        builder.append("    private static final long serialVersionUID = "+model.getConstructors().hashCode()+"L;\n\n");
+//        builder.append("    private static final long serialVersionUID = "+model.getConstructors().hashCode()+"L;\n\n");
         writer.append(builder.toString());
     }
     

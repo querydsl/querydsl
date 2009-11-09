@@ -193,8 +193,9 @@ public class EntitySerializer implements Serializer{
         final String queryType = model.getPrefix() + model.getSimpleName();
         final String localName = model.getGenericName();
         
+        builder.append("@SuppressWarnings(\"serial\")\n");
         builder.append("public class " + queryType + " extends PEntity<" + localName + "> {\n\n");
-        builder.append("    private static final long serialVersionUID = "+model.getProperties().hashCode()+"L;\n\n");
+//        builder.append("    private static final long serialVersionUID = "+model.getProperties().hashCode()+"L;\n\n");
     }
 
     protected void introDefaultInstance(StringBuilder builder, BeanModel model) {
