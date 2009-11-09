@@ -107,6 +107,11 @@ public interface Ops {
     Operator<Boolean> STRING_CONTAINS = new OperatorImpl<Boolean>(String_x_2);
     Operator<Boolean> LIKE = new OperatorImpl<Boolean>(String_x_2);
         
+    // case
+    Operator<Object> CASE = new OperatorImpl<Object>(Object.class);
+    Operator<Object> CASE_WHEN = new OperatorImpl<Object>(Boolean.class, Object.class);
+    Operator<Object> CASE_ELSE = new OperatorImpl<Object>(Object.class);
+    
     // subquery operations
     Operator<Boolean> EXISTS = new OperatorImpl<Boolean>(Object.class);
 

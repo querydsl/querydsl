@@ -28,12 +28,12 @@ import com.mysema.query.types.expr.Expr;
  */
 public class Projections {
     
-    private final Module module;
+//    private final Module module;
     
     private final Target target;
 
     public Projections(Module module, Target target) {
-        this.module = module;
+//        this.module = module;
         this.target = target;
     }
 
@@ -86,6 +86,12 @@ public class Projections {
         rv.add(expr.multiply(other));
         rv.add(expr.sqrt());
         rv.add(expr.subtract(other));
+        
+//        CaseBuilder cases = new CaseBuilder();
+//        rv.add(ENumber.create(1).add(cases
+//            .when(expr.gt(0)).then(1)
+//            .otherwise(0)));
+        
         return rv;
     }
     
@@ -104,15 +110,15 @@ public class Projections {
         }        
     }
 
-    Collection<EString> string(EString expr, EString other, String knownValue){
-        HashSet<EString> rv = new HashSet<EString>();
+    Collection<Expr<String>> string(EString expr, EString other, String knownValue){
+        HashSet<Expr<String>> rv = new HashSet<Expr<String>>();
         rv.addAll(stringProjections(expr, other));
         rv.addAll(stringProjections(expr, EString.create(knownValue)));
         return rv;
     }
     
-    Collection<EString> stringProjections(EString expr, EString other){
-        HashSet<EString> rv = new HashSet<EString>();
+    Collection<Expr<String>> stringProjections(EString expr, EString other){
+        HashSet<Expr<String>> rv = new HashSet<Expr<String>>();
         rv.add(expr.append("Hello"));
         rv.add(expr.append(other));
             
@@ -128,6 +134,12 @@ public class Projections {
             
         rv.add(expr.substring(1));
         rv.add(expr.substring(0, 1));
+                
+//        CaseBuilder cases = new CaseBuilder();
+//        rv.add(cases.when(expr.eq("A")).then("a")
+//                    .when(expr.eq("B")).then("b")
+//                    .when(expr.eq("C")).then("c")
+//                    .otherwise("x"));
           
         rv.add(expr.trim());
             

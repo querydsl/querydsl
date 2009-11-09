@@ -163,6 +163,11 @@ public class Templates {
         add(PathType.LISTVALUE_CONSTANT, "{0}.get({1s})"); // serialized constant
         add(PathType.ARRAYVALUE_CONSTANT, "{0}[{1s}]");    // serialized constant
         
+        // case
+        add(Ops.CASE, "case {0} end");
+        add(Ops.CASE_WHEN,  "when {0} then {1}");
+        add(Ops.CASE_ELSE,  "else {0}");
+        
         // subquery
         add(Ops.EXISTS, "exists {0}");
         

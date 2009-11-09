@@ -32,13 +32,13 @@ public class Filters {
     
     private final Projections projections;
     
-    private final Module module;
+//    private final Module module;
     
     private final Target target;
 
     public Filters(Projections projections, Module module, Target target) {
         this.projections = projections;
-        this.module = module;
+//        this.module = module;
         this.target = target;
     }
 
@@ -186,7 +186,7 @@ public class Filters {
             rv.addAll(pathFilters((Path<String>)expr, (Path<String>)other, knownValue));
         }
         rv.addAll(comparable(expr, other, knownValue));        
-        for (EString eq : projections.string(expr, other, knownValue)){
+        for (Expr<String> eq : projections.string(expr, other, knownValue)){
             rv.add(eq.eq(other));
         }            
         rv.add(expr.between("A", "Z"));
