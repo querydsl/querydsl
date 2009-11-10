@@ -230,19 +230,23 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return _this;
     }
 
-    public String toCountRowsString() {
+    protected String toCountRowsString() {
         if (countRowsString == null) {
             countRowsString = buildQueryString(true);
         }
         return countRowsString;
     }
+    
+    protected String toQueryString(){
+      if (queryString == null) {
+          queryString = buildQueryString(false);
+      }
+      return queryString;
+    }
 
     @Override
     public String toString() {
-        if (queryString == null) {
-            queryString = buildQueryString(false);
-        }
-        return queryString;
+        return buildQueryString(false);
     }
 
 }

@@ -57,7 +57,7 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expr<RT> expr) {
         addToProjection(expr);
-        String queryString = toString();
+        String queryString = toQueryString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, getMetadata().getModifiers());
         return query.list();
@@ -67,7 +67,7 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
         addToProjection(expr1, expr2);
         addToProjection(rest);
-        String queryString = toString();
+        String queryString = toQueryString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, getMetadata().getModifiers());
         return query.list();
@@ -79,7 +79,7 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
         long total = (Long) query.uniqueResult();
         if (total > 0) {
             QueryModifiers modifiers = getMetadata().getModifiers();
-            String queryString = toString();
+            String queryString = toQueryString();
             logger.debug("query : {}", queryString);
             query = createQuery(queryString, modifiers);
             @SuppressWarnings("unchecked")
@@ -101,7 +101,7 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expr<RT> expr) {
         addToProjection(expr);
-        String queryString = toString();
+        String queryString = toQueryString();
         logger.debug("query : {}", queryString);
         Query query = createQuery(queryString, QueryModifiers.limit(1));
         return (RT) query.uniqueResult();
