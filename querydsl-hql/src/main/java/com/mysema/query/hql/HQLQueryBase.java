@@ -86,8 +86,8 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return expr;
     }
 
-    public SubType from(PEntity<?>... o) {
-        super.from(o);
+    public SubType from(PEntity<?>... args) {        
+        getMetadata().addFrom(args);
         return _this;
     }
     

@@ -3,6 +3,7 @@ package com.mysema.query.sql;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.QueryBaseWithDetach;
+import com.mysema.query.types.path.PEntity;
 
 /**
  * @author tiwe
@@ -18,7 +19,11 @@ public class SQLSubQuery extends QueryBaseWithDetach<SQLSubQuery>{
         super(new DefaultQueryMetadata());
     }
     
-//    SQLQuery from(PEntity<?>... o);
+    public SQLSubQuery from(PEntity<?>... o){
+        getMetadata().addFrom(o);
+        return _this;
+    }
+    
 //
 //    SQLQuery fullJoin(Expr<?> o);
 //

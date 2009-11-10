@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.Path;
 
 /**
  * DefaultQueryMetadata is the default implementation of the QueryMetadata interface
@@ -48,13 +49,24 @@ public class DefaultQueryMetadata implements QueryMetadata {
     private final CascadingBoolean where = new CascadingBoolean();
 
     @Override
-    public void addFrom(Expr<?>... o) {
-        for (Expr<?> expr : o) {
-            if (!exprInJoins.contains(expr)) {
-                joins.add(new JoinExpression(JoinType.DEFAULT, expr));
-                exprInJoins.add(expr);
+    public void addFrom(Expr<?>... args) {
+        for (Expr<?> arg : args) {
+            addJoinElement(arg);
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void addJoinElement(Expr<?> expr){
+        if (expr instanceof Path){
+            Path<?> path = (Path<?>)expr;
+            if (path.getMetadata().getParent() != null){
+                throw new IllegalArgumentException("Only root paths are allowed for from : " + path);
             }
         }
+        if (!exprInJoins.contains(expr)) {
+            joins.add(new JoinExpression(JoinType.DEFAULT, expr));
+            exprInJoins.add(expr);
+        }    
     }
 
     @Override

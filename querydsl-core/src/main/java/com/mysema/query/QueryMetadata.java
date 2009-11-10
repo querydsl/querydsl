@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.PEntity;
 
 /**
  * QueryMetadata defines query metadata such as query sources, filtering
@@ -23,7 +24,7 @@ import com.mysema.query.types.expr.Expr;
 public interface QueryMetadata {
 
     void addFrom(Expr<?>... o);
-
+    
     void addGroupBy(Expr<?>... o);
 
     void addHaving(EBoolean... o);

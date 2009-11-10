@@ -15,7 +15,7 @@ public class HQLSubQuery extends QueryBaseWithDetach<HQLSubQuery>{
     }
 
     public HQLSubQuery from(PEntity<?>... o) {
-        super.from(o);
+        getMetadata().addFrom(o);
         return _this;
     }
         

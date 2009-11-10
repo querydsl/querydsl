@@ -63,8 +63,8 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         return _this;
     }
 
-    public SubType from(PEntity<?>... o) {
-        super.from(o);
+    public SubType from(PEntity<?>... args) {
+        getMetadata().addFrom(args);
         return _this;
     }
 

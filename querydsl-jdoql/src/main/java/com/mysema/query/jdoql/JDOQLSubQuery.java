@@ -28,12 +28,12 @@ public class JDOQLSubQuery extends QueryBaseWithDetach<JDOQLSubQuery>{
     }
     
     public JDOQLSubQuery from(PEntity<?>... o) {
-        super.from(o);
+        getMetadata().addFrom(o);
         return _this;
     }
 
     public <P> JDOQLSubQuery from(PEntityCollection<P> target, PEntity<P> alias){
-        super.from(OSimple.create(alias.getType(), Ops.ALIAS, target, alias));
+        getMetadata().addFrom(OSimple.create(alias.getType(), Ops.ALIAS, target, alias));
         return _this;
     }
 }

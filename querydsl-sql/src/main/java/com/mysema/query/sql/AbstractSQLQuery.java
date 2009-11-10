@@ -273,8 +273,9 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         return !list.isEmpty() ? list.get(0) : null;
     }
 
-    public SubType from(PEntity<?>... o) {
-        return super.from(o);        
+    public SubType from(PEntity<?>... args) {
+        getMetadata().addFrom(args);
+        return _this;
     }
 
     public SubType fullJoin(Expr<?> o) {

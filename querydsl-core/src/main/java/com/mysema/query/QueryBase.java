@@ -22,19 +22,12 @@ public abstract class QueryBase<SubType extends QueryBase<SubType>> {
 
     private final QueryMetadata metadata;
 
-//    protected String toString;
-
     public QueryBase(QueryMetadata metadata) {
         this.metadata = metadata;
     }
 
     protected SubType addToProjection(Expr<?>... o) {
         metadata.addProjection(o);
-        return _this;
-    }
-
-    public SubType from(Expr<?>... o) {
-        metadata.addFrom(o);
         return _this;
     }
 
