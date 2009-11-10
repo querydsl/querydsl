@@ -143,6 +143,17 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
+    public void stateful(){
+        SQLQuery query = query();
+        
+        query.from(survey);
+        assertEquals(" from survey survey", query.toString());
+        
+        query.from(survey2);
+        assertEquals(" from survey survey, survey survey2", query.toString());
+    }
+    
+    @Test
     public void testUpdate(){        
         // original state
         long count = query().from(survey).count();
@@ -167,21 +178,21 @@ public abstract class AbstractSQLTest {
     }
     
     @Test
-    public void testQuery1() throws Exception {
+    public void query1() throws Exception {
         for (String s : query().from(survey).list(survey.name)) {
             System.out.println(s);
         }
     }
 
     @Test
-    public void testQuery2() throws Exception {
+    public void query2() throws Exception {
         for (Object[] row : query().from(survey).list(survey.id, survey.name)) {
             System.out.println(row[0] + ", " + row[1]);
         }
     }
 
     @Test
-    public void testQueryWithConstant() throws Exception {
+    public void queryWithConstant() throws Exception {
         for (Object[] row : query().from(survey).where(survey.id.eq(1)).list(
                 survey.id, survey.name)) {
             System.out.println(row[0] + ", " + row[1]);
@@ -206,7 +217,7 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    public void testVarious() throws SQLException {
+    public void various() throws SQLException {
         System.out.println(query().from(survey).list(survey.name.lower()));
         System.out.println(query().from(survey).list(survey.name.append("abc")));
         System.out
@@ -214,27 +225,27 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    public void testSelectConcat() throws SQLException {
+    public void selectConcat() throws SQLException {
         System.out.println(query().from(survey)
                 .list(survey.name.append("Hello World")));
     }
 
     @Test
     @ExcludeIn({ORACLE, DERBY})
-    public void testSelectBooleanExpr() throws SQLException {
+    public void selectBooleanExpr() throws SQLException {
         // TODO : FIXME
         System.out.println(query().from(survey).list(survey.id.eq(0)));
     }
 
     @Test
     @ExcludeIn({ORACLE, DERBY})
-    public void testSelectBooleanExpr2() throws SQLException {
+    public void selectBooleanExpr2() throws SQLException {
         // TODO : FIXME
         System.out.println(query().from(survey).list(survey.id.gt(0)));
     }
 
     @Test
-    public void testSyntaxForEmployee() throws SQLException {
+    public void syntaxForEmployee() throws SQLException {
         query().from(employee).groupBy(employee.superiorId).orderBy(
                 employee.superiorId.asc()).list(employee.salary.avg(),
                 employee.id.max());
@@ -259,13 +270,8 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    public void testIllegal() throws SQLException {
-        // q().from(employee).list(employee);
-    }
-
-    @Test
     @ExcludeIn({ORACLE, DERBY})
-    public void testLimitAndOffset() throws SQLException {
+    public void limitAndOffset() throws SQLException {
         // limit offset
         expectedQuery = "select employee.id from employee2 employee limit 4 offset 3";
         query().from(employee).limit(4).offset(3).list(employee.id);
@@ -273,7 +279,7 @@ public abstract class AbstractSQLTest {
 
     @Test
     @IncludeIn(ORACLE)
-    public void testLimitAndOffsetInOracle() throws SQLException {
+    public void limitAndOffsetInOracle() throws SQLException {
         String prefix = "select employee.id from employee employee ";
 
         // limit
@@ -290,7 +296,7 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    public void testSubQueries() throws SQLException {
+    public void subQueries() throws SQLException {
         // subquery in where block
         expectedQuery = "select employee.id from employee2 employee "
                 + "where employee.id = (select max(employee.id) "
@@ -303,7 +309,7 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    public void testIllegalUnion() throws SQLException {
+    public void illegalUnion() throws SQLException {
         ObjectSubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
         ObjectSubQuery<Integer> sq2 = s().from(employee).unique(employee.id.max());
         try {
@@ -338,13 +344,7 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    @ExcludeIn({HSQLDB, DERBY})
-    public void testQueryWithoutFrom() throws SQLException {
-//        q().list(EConstant.create(1).add(1));
-    }
-
-    @Test
-    public void testWhereExists() throws SQLException {
+    public void whereExists() throws SQLException {
         ObjectSubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
         query().from(employee).where(sq1.exists()).count();
         query().from(employee).where(sq1.exists().not()).count();
@@ -352,7 +352,7 @@ public abstract class AbstractSQLTest {
 
     @Test
     @ExcludeIn({DERBY})
-    public void testMathFunctions() throws SQLException {
+    public void mathFunctions() throws SQLException {
 //        Expr<Integer> i = ENumber.create(1);
         Expr<Double> d = ENumber.create(1.0);
         for (Expr<?> e : Arrays.<Expr<?>> asList(
@@ -380,7 +380,7 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    public void testStringFunctions2() throws SQLException {
+    public void stringFunctions2() throws SQLException {
         for (EBoolean where : Arrays.<EBoolean> asList(employee.firstname
                 .startsWith("a"), employee.firstname.startsWith("a", false),
                 employee.firstname.endsWith("a"), employee.firstname.endsWith(

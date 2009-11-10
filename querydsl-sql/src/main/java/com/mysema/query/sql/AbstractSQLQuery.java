@@ -39,22 +39,118 @@ import com.mysema.query.types.query.SubQuery;
 public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
         extends QueryBaseWithProjection<SubType>{
 
+    public class UnionBuilder<RT> implements Union<RT> {
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public List<RT> list() throws SQLException {
+            if (sq[0].getMetadata().getProjection().size() == 1) {
+                return AbstractSQLQuery.this.listSingle(null);
+            } else {
+                return (List<RT>) AbstractSQLQuery.this.listMultiple();
+            }
+        }
+
+        @Override
+        public UnionBuilder<RT> orderBy(OrderSpecifier<?>... o) {
+            AbstractSQLQuery.this.orderBy(o);
+            return this;
+        }
+
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
-
-    private String queryString;
-
-    private List<Object> constants;
 
     private final Connection conn;
 
-    protected final SQLTemplates templates;
+    private List<Object> constants;
 
     private SubQuery[] sq;
+
+    protected final SQLTemplates templates;
 
     public AbstractSQLQuery(Connection conn, SQLTemplates templates) {
         super(new DefaultQueryMetadata());
         this.conn = conn;
         this.templates = templates;
+    }
+
+    protected String buildQueryString(boolean forCountRow) {
+        SQLSerializer serializer = createSerializer();
+        if (sq != null) {
+            serializer.serializeUnion(sq, getMetadata().getOrderBy());
+        } else {
+            serializer.serialize(getMetadata(), forCountRow);
+        }
+        constants = serializer.getConstants();
+        return serializer.toString();
+    }
+    
+    public long count() {
+        try {
+            return unsafeCount();
+        } catch (SQLException e) {
+            String error = "Caught " + e.getClass().getName();
+            logger.error(error, e);
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    protected SQLSerializer createSerializer() {
+        return new SQLSerializer(templates);
+    }
+
+    public SubType from(PEntity<?>... args) {
+        getMetadata().addFrom(args);
+        return _this;
+    }
+
+    public SubType fullJoin(Expr<?> o) {
+        getMetadata().addJoin(JoinType.FULLJOIN, o);
+        return _this;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T get(ResultSet rs, int i, Class<T> type) throws Exception {
+        String methodName = "get" + type.getSimpleName();
+        if (methodName.equals("getInteger")) {
+            methodName = "getInt";
+        }
+        // TODO : cache methods
+        return (T) ResultSet.class.getMethod(methodName, int.class).invoke(rs, i);
+    }
+    
+    public SubType innerJoin(Expr<?> o) {
+        getMetadata().addJoin(JoinType.INNERJOIN, o);
+        return _this;
+    }
+    
+    private <RT> UnionBuilder<RT> innerUnion(SubQuery... sq) {
+        if (!getMetadata().getJoins().isEmpty()){
+            throw new IllegalArgumentException("Don't mix union and from");
+        }            
+        this.sq = sq;
+        return new UnionBuilder<RT>();
+    }
+
+    public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
+        // TODO : optimize
+        return list(e1, e2, rest).iterator();
+    }
+
+    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
+        // TODO : optimize
+        return list(projection).iterator();
+    }
+
+    public SubType join(Expr<?> o) {
+        getMetadata().addJoin(JoinType.JOIN, o);
+        return _this;
+    }
+
+    public SubType leftJoin(Expr<?> o) {
+        getMetadata().addJoin(JoinType.LEFTJOIN, o);
+        return _this;
     }
 
     public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
@@ -69,8 +165,19 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         }
     }
 
+    public <RT> List<RT> list(Expr<RT> expr) {
+        addToProjection(expr);
+        try {
+            return listSingle(expr);
+        } catch (SQLException e) {
+            String error = "Caught " + e.getClass().getName();
+            logger.error(error, e);
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
     private List<Object[]> listMultiple() throws SQLException {
-        String queryString = toString();
+        String queryString = buildQueryString(false);
         logger.debug("query : {}", queryString);
         PreparedStatement stmt = conn.prepareStatement(queryString);
         JDBCUtil.setParameters(stmt, constants);
@@ -94,27 +201,6 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
             }
         }
     }
-    
-    @SuppressWarnings("unchecked")
-    private <T> T get(ResultSet rs, int i, Class<T> type) throws Exception {
-        String methodName = "get" + type.getSimpleName();
-        if (methodName.equals("getInteger")) {
-            methodName = "getInt";
-        }
-        // TODO : cache methods
-        return (T) ResultSet.class.getMethod(methodName, int.class).invoke(rs, i);
-    }
-
-    public <RT> List<RT> list(Expr<RT> expr) {
-        addToProjection(expr);
-        try {
-            return listSingle(expr);
-        } catch (SQLException e) {
-            String error = "Caught " + e.getClass().getName();
-            logger.error(error, e);
-            throw new RuntimeException(e.getMessage(), e);
-        }
-    }
 
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
         addToProjection(expr);
@@ -129,7 +215,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
 
     @SuppressWarnings("unchecked")
     private <RT> List<RT> listSingle(Expr<RT> expr) throws SQLException {
-        String queryString = toString();
+        String queryString = buildQueryString(false);
         logger.debug("query : {}", queryString);
         PreparedStatement stmt = conn.prepareStatement(queryString);
         JDBCUtil.setParameters(stmt, constants);        
@@ -167,45 +253,31 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         }
     }
 
+    public SubType on(EBoolean... conditions){
+        for (EBoolean condition : conditions){
+            getMetadata().addJoinCondition(condition);    
+        }        
+        return _this;
+    }
+
     @Override
     public String toString() {
-        if (queryString == null) {
-            queryString = buildQueryString(false);
-        }
-        return queryString;
+        return buildQueryString(false);
     }
-    
-    public <RT> UnionBuilder<RT> union(ObjectSubQuery<RT>... sq) {
-        return innerUnion(sq);
-    }
-    
+
     public <RT> UnionBuilder<RT> union(ListSubQuery<RT>... sq) {
         return innerUnion(sq);
     }
 
-    private <RT> UnionBuilder<RT> innerUnion(SubQuery... sq) {
-        if (!getMetadata().getJoins().isEmpty()){
-            throw new IllegalArgumentException("Don't mix union and from");
-        }            
-        this.sq = sq;
-        return new UnionBuilder<RT>();
+    public <RT> UnionBuilder<RT> union(ObjectSubQuery<RT>... sq) {
+        return innerUnion(sq);
     }
 
-    protected SQLSerializer createSerializer() {
-        return new SQLSerializer(templates);
+    public <RT> RT uniqueResult(Expr<RT> expr) {
+        List<RT> list = list(expr);
+        return !list.isEmpty() ? list.get(0) : null;
     }
-
-    protected String buildQueryString(boolean forCountRow) {
-        SQLSerializer serializer = createSerializer();
-        if (sq != null) {
-            serializer.serializeUnion(sq, getMetadata().getOrderBy());
-        } else {
-            serializer.serialize(getMetadata(), forCountRow);
-        }
-        constants = serializer.getConstants();
-        return serializer.toString();
-    }
-
+    
     private long unsafeCount() throws SQLException {
         // forCountRow = true;
         String queryString = buildQueryString(true);
@@ -226,82 +298,5 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
                 stmt.close();
             }
         }
-    }
-
-    public long count() {
-        try {
-            return unsafeCount();
-        } catch (SQLException e) {
-            String error = "Caught " + e.getClass().getName();
-            logger.error(error, e);
-            throw new RuntimeException(e.getMessage(), e);
-        }
-    }
-
-    public class UnionBuilder<RT> implements Union<RT> {
-
-        @Override
-        public UnionBuilder<RT> orderBy(OrderSpecifier<?>... o) {
-            AbstractSQLQuery.this.orderBy(o);
-            return this;
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public List<RT> list() throws SQLException {
-            if (sq[0].getMetadata().getProjection().size() == 1) {
-                return AbstractSQLQuery.this.listSingle(null);
-            } else {
-                return (List<RT>) AbstractSQLQuery.this.listMultiple();
-            }
-        }
-
-    }
-
-    public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
-        // TODO : optimize
-        return list(e1, e2, rest).iterator();
-    }
-
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        // TODO : optimize
-        return list(projection).iterator();
-    }
-
-    public <RT> RT uniqueResult(Expr<RT> expr) {
-        List<RT> list = list(expr);
-        return !list.isEmpty() ? list.get(0) : null;
-    }
-
-    public SubType from(PEntity<?>... args) {
-        getMetadata().addFrom(args);
-        return _this;
-    }
-
-    public SubType fullJoin(Expr<?> o) {
-        getMetadata().addJoin(JoinType.FULLJOIN, o);
-        return _this;
-    }
-
-    public SubType innerJoin(Expr<?> o) {
-        getMetadata().addJoin(JoinType.INNERJOIN, o);
-        return _this;
-    }
-
-    public SubType join(Expr<?> o) {
-        getMetadata().addJoin(JoinType.JOIN, o);
-        return _this;
-    }
-
-    public SubType leftJoin(Expr<?> o) {
-        getMetadata().addJoin(JoinType.LEFTJOIN, o);
-        return _this;
-    }
-    
-    public SubType on(EBoolean... conditions){
-        for (EBoolean condition : conditions){
-            getMetadata().addJoinCondition(condition);    
-        }        
-        return _this;
     }
 }
