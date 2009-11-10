@@ -27,6 +27,22 @@ public class BasicsTest extends AbstractJDOTest {
     private QBook book = QBook.book;
 
     private QProduct product = QProduct.product;
+    
+    private QProduct product2 = new QProduct("product2");
+    
+    @Test
+    public void serialization() throws IOException{
+        JDOQLQuery query = query();
+        
+        assertEquals("\nFROM com.mysema.query.jdoql.testdomain.Product", query.from(product).toString());
+        assertEquals(
+            "\nFROM com.mysema.query.jdoql.testdomain.Product" +
+            "\nVARIABLES com.mysema.query.jdoql.testdomain.Product product2", 
+            query.from(product2).toString());
+        
+        query.where(product.ne(product2)).list(product, product2);
+        query.close();        
+    }
 
     @Test
     public void delete(){

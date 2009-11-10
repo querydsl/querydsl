@@ -152,4 +152,16 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
             query.closeAll();
         }        
     }
+    
+    @Override
+    public String toString(){
+        if (!getMetadata().getJoins().isEmpty()){
+            Expr<?> source = this.getMetadata().getJoins().get(0).getTarget();
+            JDOQLSerializer serializer = new JDOQLSerializer(templates, source);
+            serializer.serialize(getMetadata(), false, false);
+            return serializer.toString();
+        }else{
+            return super.toString();
+        }        
+    }
 }
