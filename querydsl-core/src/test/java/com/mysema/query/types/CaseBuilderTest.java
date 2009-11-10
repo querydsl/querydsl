@@ -33,6 +33,7 @@ public class CaseBuilderTest {
             .when($(c.getAnnualSpending()).gt(2000)).then("Silver")
             .otherwise("Bronze");
         
+        // NOTE : this is just a test serialization, not the real one
         assertEquals(
            "case " +
            "when customer.annualSpending > 10000 then Premier " +
