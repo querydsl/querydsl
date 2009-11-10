@@ -85,7 +85,7 @@ public class DefaultQueryMetadata implements QueryMetadata {
     @Override
     public void addJoin(JoinType joinType, Expr<?> expr) {
         if (!exprInJoins.contains(expr)) {
-            if (expr instanceof Path){
+            if (expr instanceof Path && joinType == JoinType.DEFAULT){
                 ensureRoot((Path<?>) expr);
             }
             joins.add(new JoinExpression(joinType, expr));

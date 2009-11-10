@@ -59,20 +59,38 @@ public class ParserTest implements Constants {
     protected HQLSubQuery sub(){
         return new HQLSubQuery();
     }
+    
+    @Test
+    public void serialization(){
+        TestQuery query = query();
+        
+        query.from(cat);
+        assertEquals("from Cat cat", query.toString());
+        
+        query.from(fatcat);
+        assertEquals("from Cat cat, Cat fatcat", query.toString());
+    }
 
     @Test
-    public void test() throws RecognitionException, TokenStreamException{
+    public void basic() throws RecognitionException, TokenStreamException{
         query().from(cat, fatcat).select(cat.name, fatcat.name).parse();
     }
     
     @Test
-    public void testBeforeAndAfter() throws RecognitionException,
+    public void beforeAndAfter() throws RecognitionException,
             TokenStreamException {
         
         EComparable<java.util.Date> ed = catalog.effectiveDate;
         query().from(catalog).where(ed.gt(EDate.currentDate()), ed.goe(EDate.currentDate()),
                 ed.lt(EDate.currentDate()), ed.loe(EDate.currentDate())).select(catalog)
                 .parse();
+    }
+    
+    @Test
+    public void joins() throws RecognitionException, TokenStreamException{
+        query().from(cat).join(cat.mate).select(cat).parse();
+        query().from(cat).innerJoin(cat.mate).select(cat).parse();
+        query().from(cat).leftJoin(cat.mate).select(cat).parse();
     }
 
     @Test
@@ -95,7 +113,7 @@ public class ParserTest implements Constants {
      * Section 9.2 - from *
      */
     @Test
-    public void testDocoExamples92() throws Exception {
+    public void docoExamples92() throws Exception {
         // parse( "from eg.Cat" );
         query().from(cat).parse();
 
@@ -116,7 +134,7 @@ public class ParserTest implements Constants {
      * Section 9.3 - Associations and joins *
      */
     @Test
-    public void testDocoExamples93() throws Exception {
+    public void docoExamples93() throws Exception {
         // parse(
         // "from eg.Cat as cat inner join cat.mate as mate left outer join cat.kittens as kitten"
         // );
@@ -141,7 +159,7 @@ public class ParserTest implements Constants {
     }
 
     @Test
-    public void testDocoExamples93_viaAlias() throws Exception {
+    public void docoExamples93_viaAlias() throws Exception {
         Cat c = alias(Cat.class, "cat");
         Cat k = alias(Cat.class, "kittens");
         Cat m = alias(Cat.class, "mate");
@@ -176,7 +194,7 @@ public class ParserTest implements Constants {
      * Section 9.4 - Select *
      */
     @Test
-    public void testDocoExamples94() throws Exception {
+    public void docoExamples94() throws Exception {
         // parse( "select mate from eg.Cat as cat inner join cat.mate as mate"
         // );
         query().select(cat.mate).from(cat).innerJoin(cat.mate, mate).parse();
@@ -215,7 +233,7 @@ public class ParserTest implements Constants {
      * Section 9.5 - Aggregate functions *
      */
     @Test
-    public void testDocoExamples95() throws Exception {
+    public void docoExamples95() throws Exception {
         // parse(
         // "select avg(cat.weight), sum(cat.weight), max(cat.weight), count(cat)\n"
         // + "from eg.Cat cat" );
@@ -238,7 +256,7 @@ public class ParserTest implements Constants {
     }
 
     @Test
-    public void test_own_DistinctEntities() throws Exception {
+    public void own_DistinctEntities() throws Exception {
         // q().select(distinct(cat)).from(cat).innerJoin(cat.kittens.as(kitten)).parse();
     }
 
@@ -246,7 +264,7 @@ public class ParserTest implements Constants {
      * Section 9.6 - Polymorphism *
      */
     @Test
-    public void testDocoExamples96() throws Exception {
+    public void docoExamples96() throws Exception {
         // parse( "from eg.Cat as cat" );
         query().from(cat).parse();
 
@@ -259,7 +277,7 @@ public class ParserTest implements Constants {
      * Section 9.7 - Where *
      */
     @Test
-    public void testDocoExamples97() throws Exception {
+    public void docoExamples97() throws Exception {
         // init deep path
 //        account._owner()._pid();
 
@@ -318,7 +336,7 @@ public class ParserTest implements Constants {
      */
     @Test
     @Ignore
-    public void testDocoExamples98() throws Exception {
+    public void docoExamples98() throws Exception {
         // init deep path
 //        person._nationality()._calendar();
 
@@ -425,7 +443,7 @@ public class ParserTest implements Constants {
     }
 
     @Test
-    public void testDocoExamples99() throws Exception {
+    public void docoExamples99() throws Exception {
         // parse( "from eg.DomesticCat cat\n"
         // + "order by cat.name asc, cat.weight desc, cat.birthdate" );
         query().from(cat).orderBy(cat.name.asc(), cat.weight.desc(),
@@ -433,13 +451,17 @@ public class ParserTest implements Constants {
     }
 
     @Test
-    public void testDocoExamples910() throws Exception {
+    public void docoExamples910() throws Exception {
         // parse( "select cat.color, sum(cat.weight), count(cat)\n"
         // + "from eg.Cat cat group by cat.color" );
         query().select(cat.color, sum(cat.weight), cat.count()).from(cat)
                 .groupBy(cat.color).parse();
+    }
 
-        // parse(
+
+    @Test
+    public void docoExamples910_2() throws Exception {
+     // parse(
         // "select foo.id, avg( elements(foo.names) ), max( indices(foo.names) )\n"
         // + "from eg.Foo foo group by foo.id" );
 
@@ -452,7 +474,11 @@ public class ParserTest implements Constants {
         query().select(cat.color, sum(cat.weight), cat.count()).from(cat)
                 .groupBy(cat.color).having(
                         cat.color.in(Color.TABBY, Color.BLACK)).parse();
-
+    }
+    
+    @Test    
+    @Ignore
+    public void docoExamples910_3() throws Exception {
         // parse( "select cat from eg.Cat cat join cat.kittens kitten\n"
         // + "group by cat having avg(kitten.weight) > 100\n"
         // + "order by count(kitten) asc, sum(kitten.weight) desc" );
@@ -460,10 +486,16 @@ public class ParserTest implements Constants {
                 .having(kitten.weight.avg().gt(100.0)).orderBy(
                         kitten.count().asc(), sum(kitten.weight).desc())
                 .parse();
+        
+//        select cat from Cat cat   
+//        join cat.kittens as kitten 
+//        group by cat 
+//        having avg(kitten.weight) > :a1 
+//        order by count(kitten) asc, sum(kitten.weight) desc
     }
-
+    
     @Test
-    public void testDocoExamples911() throws Exception {
+    public void docoExamples911() throws Exception {
         // parse( "from eg.Cat as fatcat where fatcat.weight > (\n"
         // + "select avg(cat.weight) from eg.DomesticCat cat)" );
         query().from(fatcat).where(
@@ -493,7 +525,7 @@ public class ParserTest implements Constants {
     }
 
     @Test
-    public void testDocoExamples912() throws Exception {
+    public void docoExamples912() throws Exception {
         // parse( "select ord.id, sum(price.amount), count(item)\n"
         // + "from Order as ord join ord.lineItems as item\n"
         // + "join item.product as product, Catalog as catalog\n"
@@ -611,20 +643,20 @@ public class ParserTest implements Constants {
 
     @Test
     @Ignore
-    public void testArrayExpr() throws Exception {
+    public void arrayExpr() throws Exception {
         // parse( "from Order ord where ord.items[0].id = 1234" );
         query().from(ord).where(ord.items(0).id.eq(1234l)).parse();
     }
 
     @Test
-    public void testMultipleFromClasses() throws Exception {
+    public void multipleFromClasses() throws Exception {
         // parse( "FROM eg.mypackage.Cat qat, com.toadstool.Foo f" );
         query().from(qat, foo).parse();
         // parse( "FROM eg.mypackage.Cat qat, org.jabberwocky.Dipstick" );
     }
 
     @Test
-    public void testFromWithJoin() throws Exception {
+    public void fromWithJoin() throws Exception {
         // parse(
         // "FROM eg.mypackage.Cat qat, com.toadstool.Foo f join net.sf.blurb.Blurb"
         // );
@@ -712,7 +744,7 @@ public class ParserTest implements Constants {
     }
 
     @Test
-    public void testDoubleLiteral() throws Exception {
+    public void dubleLiteral() throws Exception {
         // parse( "from eg.Cat as tinycat where fatcat.weight < 3.1415" );
         query().from(cat).where(cat.weight.lt((int) 3.1415)).parse();
 
@@ -721,7 +753,7 @@ public class ParserTest implements Constants {
     }
 
     @Test
-    public void testComplexConstructor() throws Exception {
+    public void complexConstructor() throws Exception {
         // parse( "select new Foo(count(bar)) from bar" );
         query().select(new QFooDTO(bar.count())).from(bar).parse();
 
@@ -736,7 +768,7 @@ public class ParserTest implements Constants {
     }
 
     @Test
-    public void testInNotIn() throws Exception {
+    public void inNotIn() throws Exception {
         // parse( "from foo where foo.bar in ('a' , 'b', 'c')" );
         query().from(foo).where(foo.bar.in("a", "b", "c")).parse();
 
@@ -745,7 +777,7 @@ public class ParserTest implements Constants {
     }
 
     @Test
-    public void testOperatorPrecedence() throws Exception {
+    public void operatorPrecedence() throws Exception {
         // parse( "from foo where foo.bar = 123 + foo.baz * foo.not" );
         // parse(
         // "from foo where foo.bar like 'testzzz' || foo.baz or foo.bar in ('duh', 'gob')"
@@ -753,21 +785,21 @@ public class ParserTest implements Constants {
     }
 
     @Test
-    public void testUnnamedParameter() throws Exception {
+    public void unnamedParameter() throws Exception {
         // parse(
         // "select foo, bar from org.hibernate.test.Foo foo left outer join foo.foo bar where foo = ?"
         // ); // Added '?' as a valid expression.
     }
 
     @Test
-    public void testInElements() throws Exception {
+    public void inElements() throws Exception {
         // parse(
         // "from bar in class org.hibernate.test.Bar, foo in elements(bar.baz.fooArray)"
         // ); // Added collectionExpr as a valid 'in' clause.
     }
 
     @Test
-    public void testDotElements() throws Exception {
+    public void dotElements() throws Exception {
         // parse(
         // "select distinct foo from baz in class org.hibernate.test.Baz, foo in elements(baz.fooArray)"
         // );
@@ -823,7 +855,7 @@ public class ParserTest implements Constants {
     }
 
     @Test
-    public void testEjbqlExtensions() throws Exception {
+    public void ejbqlExtensions() throws Exception {
         // parse(
         // "select object(a) from Animal a where a.mother member of a.offspring"
         // );
@@ -834,49 +866,49 @@ public class ParserTest implements Constants {
     }
 
     @Test
-    public void testHB1042() throws Exception {
+    public void hb1042() throws Exception {
         // parse(
         // "select x from fmc_web.pool.Pool x left join x.containers c0 where (upper(x.name) = upper(':') and c0.id = 1)"
         // );
     }
 
     @Test
-    public void testHHH354() throws Exception {
+    public void hhh354() throws Exception {
         // parse( "from Foo f where f.full = 'yep'");
     }
 
     @Test
-    public void testEjbqlKeywordsAsIdentifier() throws Exception {
+    public void ejbqlKeywordsAsIdentifier() throws Exception {
         // parse(
         // "from org.hibernate.test.Bar bar where bar.object.id = ? and bar.object.class = ?"
         // );
     }
 
     @Test
-    public void testConstructorIn() throws Exception {
+    public void constructorIn() throws Exception {
         // parse(
         // "from org.hibernate.test.Bar bar where (b.x, b.y, b.z) in (select foo, bar, baz from org.hibernate.test.Foo)"
         // );
     }
 
     @Test
-    public void testHHH719() throws Exception {
+    public void hhh719() throws Exception {
         // Some SQLs have function names with package qualifiers.
         // parse("from Foo f order by com.fooco.SpecialFunction(f.id)");
     }
 
     @Test
-    public void testHHH1107() throws Exception {
+    public void hhh1107() throws Exception {
         // parse("from Animal where zoo.address.street = '123 Bogus St.'");
     }
 
     @Test
-    public void testHHH1247() throws Exception {
+    public void hhh1247() throws Exception {
         // parse("select distinct user.party from com.itf.iceclaims.domain.party.user.UserImpl user inner join user.party.$RelatedWorkgroups relatedWorkgroups where relatedWorkgroups.workgroup.id = :workgroup and relatedWorkgroups.effectiveTime.start <= :datesnow and relatedWorkgroups.effectiveTime.end > :dateenow ");
     }
     
     @Test
-    public void testFetch() throws RecognitionException, TokenStreamException{
+    public void fetch() throws RecognitionException, TokenStreamException{
         // correct single invocation
         query().from(cat).innerJoin(cat.mate, mate).fetch().parse();
         // duplicate invocation doesn't break anything, but looks stupid
