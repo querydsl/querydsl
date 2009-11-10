@@ -10,7 +10,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.CascadingBoolean;
+import com.mysema.query.BooleanBuilder;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
@@ -72,7 +72,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
 
     protected EBoolean createQBECondition(PEntity<?> entity,
             Map<String, Object> map) {
-        CascadingBoolean expr = new CascadingBoolean();
+        BooleanBuilder expr = new BooleanBuilder();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             PathMetadata<String> md = PathMetadata.forProperty(entity, entry
                     .getKey());

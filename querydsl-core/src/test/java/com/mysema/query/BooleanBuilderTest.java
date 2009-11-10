@@ -16,7 +16,7 @@ import com.mysema.query.types.expr.EBoolean;
  * @author tiwe
  * @version $Id$
  */
-public class CascadingBooleanTest {
+public class BooleanBuilderTest {
 
     private EBoolean first = EBoolean.TRUE;
     
@@ -24,12 +24,12 @@ public class CascadingBooleanTest {
     
     @Test
     public void test(){
-        new CascadingBoolean().and(first).or(second);
+        new BooleanBuilder().and(first).or(second);
     }
     
     @Test
     public void advanced(){
-        CascadingBoolean builder = new CascadingBoolean();
+        BooleanBuilder builder = new BooleanBuilder();
         builder.andAnyOf(first, second, first);
         builder.orAllOf(first, second, first);
         System.out.println(builder);

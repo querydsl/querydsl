@@ -33,7 +33,7 @@ public class DefaultQueryMetadata implements QueryMetadata {
 
     private final List<Expr<?>> groupBy = new ArrayList<Expr<?>>();
 
-    private final CascadingBoolean having = new CascadingBoolean();
+    private final BooleanBuilder having = new BooleanBuilder();
 
     private final List<JoinExpression> joins = new ArrayList<JoinExpression>();
 
@@ -46,29 +46,28 @@ public class DefaultQueryMetadata implements QueryMetadata {
 
     private boolean unique;
 
-    private final CascadingBoolean where = new CascadingBoolean();
+    private final BooleanBuilder where = new BooleanBuilder();
 
+    @SuppressWarnings("unchecked")
     @Override
     public void addFrom(Expr<?>... args) {
         for (Expr<?> arg : args) {
-            addJoinElement(arg);
+            if (arg instanceof Path){
+                ensureRoot((Path<?>) arg);
+            }
+            if (!exprInJoins.contains(arg)) {
+                joins.add(new JoinExpression(JoinType.DEFAULT, arg));
+                exprInJoins.add(arg);
+            }   
         }
     }
     
-    @SuppressWarnings("unchecked")
-    private void addJoinElement(Expr<?> expr){
-        if (expr instanceof Path){
-            Path<?> path = (Path<?>)expr;
-            if (path.getMetadata().getParent() != null){
-                throw new IllegalArgumentException("Only root paths are allowed for from : " + path);
-            }
+    private void ensureRoot(Path<?> path){
+        if (path.getMetadata().getParent() != null){
+            throw new IllegalArgumentException("Only root paths are allowed for joins : " + path);
         }
-        if (!exprInJoins.contains(expr)) {
-            joins.add(new JoinExpression(JoinType.DEFAULT, expr));
-            exprInJoins.add(expr);
-        }    
     }
-
+    
     @Override
     public void addGroupBy(Expr<?>... o) {
         groupBy.addAll(Arrays.<Expr<?>> asList(o));
@@ -81,17 +80,14 @@ public class DefaultQueryMetadata implements QueryMetadata {
         }            
     }
 
-    @Override
-    public void addJoin(JoinExpression joinExpression) {
-        if (!exprInJoins.contains(joinExpression.getTarget())) {
-            joins.add(joinExpression);
-            exprInJoins.add(joinExpression.getTarget());
-        }
-    }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void addJoin(JoinType joinType, Expr<?> expr) {
         if (!exprInJoins.contains(expr)) {
+            if (expr instanceof Path){
+                ensureRoot((Path<?>) expr);
+            }
             joins.add(new JoinExpression(joinType, expr));
             exprInJoins.add(expr);
         }
