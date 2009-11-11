@@ -63,10 +63,8 @@ public class FeaturesTest extends AbstractQueryTest{
 
     @Test
     public void testBasicOperations() {
-        toString("cat.bodyWeight = kitten.bodyWeight", cat.bodyWeight
-                .eq(kitten.bodyWeight));
-        toString("cat.bodyWeight != kitten.bodyWeight", cat.bodyWeight
-                .ne(kitten.bodyWeight));
+        toString("cat.bodyWeight = kitten.bodyWeight", cat.bodyWeight.eq(kitten.bodyWeight));
+        toString("cat.bodyWeight != kitten.bodyWeight", cat.bodyWeight.ne(kitten.bodyWeight));
 
         toString("cat.bodyWeight + kitten.bodyWeight = kitten.bodyWeight", 
                 cat.bodyWeight.add(kitten.bodyWeight).eq(kitten.bodyWeight));
