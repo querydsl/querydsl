@@ -82,7 +82,6 @@ public class CoverageTest {
             Ops.XOR,
             Ops.XNOR,
             
-            Ops.CASE,
             Ops.CASE_WHEN,
             Ops.CASE_ELSE,
                 
