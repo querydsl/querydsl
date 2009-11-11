@@ -23,7 +23,7 @@ public class EDateConstTest {
         cal.set(Calendar.YEAR,  2000);    
         System.out.println(cal.getTime());
         
-        EDate<Date> date = EDate.create(new Date(cal.getTimeInMillis()));
+        EDate<Date> date = EDate.__create(new Date(cal.getTimeInMillis()));
         assertEquals("1",   date.getDayOfMonth().toString());
         assertEquals("1",   date.getMonth().toString());
         assertEquals("2000",date.getYear().toString());        

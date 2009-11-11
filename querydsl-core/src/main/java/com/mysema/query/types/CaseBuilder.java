@@ -42,7 +42,7 @@ public class CaseBuilder {
         }
 
         public Expr<A> otherwise(A constant) {
-            return otherwise(Expr.create(constant));
+            return otherwise(Expr.__create(constant));
         }
         
         public Expr<A> otherwise(Expr<A> expr) {
@@ -80,7 +80,7 @@ public class CaseBuilder {
         }
 
         public Cases<A> then(A constant) {
-            return then(Expr.create(constant));
+            return then(Expr.__create(constant));
         }
 
         public Cases<A> then(Expr<A> expr) {
@@ -97,7 +97,7 @@ public class CaseBuilder {
         }
 
         public <A> Cases<A> then(A constant) {
-            return then(Expr.create(constant));
+            return then(Expr.__create(constant));
         }
 
         @SuppressWarnings("unchecked")

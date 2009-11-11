@@ -16,6 +16,7 @@ import com.mysema.query.types.expr.EDateTime;
 import com.mysema.query.types.expr.EList;
 import com.mysema.query.types.expr.EMap;
 import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.ENumberConst;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.ETime;
 import com.mysema.query.types.expr.Expr;
@@ -73,7 +74,7 @@ public class MatchingFilters {
     Collection<EBoolean> date(EDate<java.sql.Date> expr, EDate<java.sql.Date> other, java.sql.Date knownValue){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(date(expr, other));
-        rv.addAll(date(expr, EDate.create(knownValue)));
+        rv.addAll(date(expr, EDate.__create(knownValue)));
         return rv;
     }
 
@@ -100,7 +101,7 @@ public class MatchingFilters {
     Collection<EBoolean> dateTime(EDateTime<java.util.Date> expr, EDateTime<java.util.Date> other, java.util.Date knownValue){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(dateTime(expr, other));
-        rv.addAll(dateTime(expr, EDateTime.create(knownValue)));
+        rv.addAll(dateTime(expr, EDateTime.__create(knownValue)));
         return rv;
     }
 
@@ -123,7 +124,7 @@ public class MatchingFilters {
     <A extends Number & Comparable<A>> Collection<EBoolean> numeric( ENumber<A> expr, ENumber<A> other, A knownValue){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(numeric(expr, other));
-        rv.addAll(numeric(expr, ENumber.create(knownValue)));
+        rv.addAll(numeric(expr, ENumber.__create(knownValue)));
         return rv;
     }
     
@@ -216,7 +217,7 @@ public class MatchingFilters {
     Collection<EBoolean> string(EString expr, EString other,  String knownValue){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(string(expr, other));
-        rv.addAll(string(expr, EString.create(knownValue)));
+        rv.addAll(string(expr, EString.__create(knownValue)));
         return rv;
     }
 
@@ -233,7 +234,7 @@ public class MatchingFilters {
     Collection<EBoolean> time(ETime<java.sql.Time> expr,  ETime<java.sql.Time> other, java.sql.Time knownValue){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(time(expr, other));
-        rv.addAll(time(expr, ETime.create(knownValue)));
+        rv.addAll(time(expr, ETime.__create(knownValue)));
         return rv;
     }
 }

@@ -31,7 +31,7 @@ public abstract class EComparable<D extends Comparable> extends EComparableBase<
      * @return
      */
     public final EBoolean between(D from, D to) {
-        return OBoolean.create(Ops.BETWEEN, this, ExprConst.create(from), ExprConst.create(to));
+        return OBoolean.create(Ops.BETWEEN, this, ExprConst.__create(from), ExprConst.__create(to));
     }
 
     /**
@@ -71,7 +71,7 @@ public abstract class EComparable<D extends Comparable> extends EComparableBase<
      * @see java.lang.Comparable#compareTo(Object)
      */
     public EBoolean gt(D right) {
-        return gt(ExprConst.create(right));
+        return gt(ExprConst.__create(right));
     }
     
     /**
@@ -93,7 +93,7 @@ public abstract class EComparable<D extends Comparable> extends EComparableBase<
      * @see java.lang.Comparable#compareTo(Object)
      */
     public EBoolean goe(D right) {
-        return goe(ExprConst.create(right));
+        return goe(ExprConst.__create(right));
     }
 
     /**
@@ -115,7 +115,7 @@ public abstract class EComparable<D extends Comparable> extends EComparableBase<
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean lt(D right) {
-        return lt(ExprConst.create(right));
+        return lt(ExprConst.__create(right));
     }
 
     /**
@@ -137,7 +137,7 @@ public abstract class EComparable<D extends Comparable> extends EComparableBase<
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final EBoolean loe(D right) {
-        return OBoolean.create(Ops.BOE, this, ExprConst.create(right));
+        return OBoolean.create(Ops.BOE, this, ExprConst.__create(right));
     }
 
     /**

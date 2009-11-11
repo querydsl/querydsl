@@ -171,7 +171,7 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
      * @return
      */
     public <B extends D> EBoolean instanceOf(Class<B> type) {
-        return OBoolean.create(Ops.INSTANCE_OF, this, ExprConst.create(type));
+        return OBoolean.create(Ops.INSTANCE_OF, this, ExprConst.__create(type));
     }
     
     @Override

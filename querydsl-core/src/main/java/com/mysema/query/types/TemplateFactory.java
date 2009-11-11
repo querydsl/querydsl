@@ -70,7 +70,7 @@ public class TemplateFactory {
             String str = ((Constant<String>) expr).getConstant();
             if (str.contains("%") || str.contains("_")){
                 str = str.replace("%", "\\%").replace("_", "\\_");
-                return EString.create(str);
+                return EString.__create(str);
             }                
         }        
         return expr;

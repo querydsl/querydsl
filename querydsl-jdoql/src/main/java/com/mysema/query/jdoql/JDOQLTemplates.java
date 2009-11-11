@@ -23,6 +23,8 @@ public class JDOQLTemplates extends JavaTemplates {
         add(Ops.STRING_IS_EMPTY, "{0} == \"\"", 25);
         add(Ops.LIKE, "{0}.like({1})");
         
+        add(Ops.STRING_CAST, "(String){0}");
+        
         // Date
         add(Ops.DateTimeOps.MONTH, "({0}.getMonth() + 1)"); // getMonth() in JDO returns a range from 0-11
         add(Ops.DateTimeOps.DAY_OF_MONTH, "{0}.getDay()");

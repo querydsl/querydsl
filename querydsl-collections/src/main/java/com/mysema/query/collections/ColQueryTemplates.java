@@ -61,8 +61,7 @@ public class ColQueryTemplates extends JavaTemplates {
         add(PathType.ARRAYVALUE, "{0}[{1}]");
         add(PathType.ARRAYVALUE_CONSTANT, "{0}[{1s}]");
         
-        // TEMPORARY FIXES
-        
+        // TEMPORARY FIXES        
         add(Ops.DIV, "(double)({0}/{1})");
     }
     

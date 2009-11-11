@@ -26,8 +26,8 @@ public class MathFunctionTest extends AbstractQueryTest {
     @Test
     public void test() {
         Cat c = alias(Cat.class, "c");
-        Expr<Integer> i = ENumber.create(1);
-        Expr<Double> d = ENumber.create(1.0);
+        Expr<Integer> i = ENumber.__create(1);
+        Expr<Double> d = ENumber.__create(1.0);
         from(c, cats).list( 
                 MathFunctions.acos(d),
                 MathFunctions.asin(d), 

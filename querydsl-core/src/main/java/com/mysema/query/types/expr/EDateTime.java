@@ -25,7 +25,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     
     private static final EDateTime<Date> currentTimestamp = currentTimestamp(Date.class);
     
-    public static EDateTime<java.util.Date> create(java.util.Date date){
+    public static EDateTime<java.util.Date> __create(java.util.Date date){
         return new EDateTimeConst(date);
     }
     

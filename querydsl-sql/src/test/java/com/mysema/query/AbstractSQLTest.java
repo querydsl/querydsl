@@ -365,7 +365,7 @@ public abstract class AbstractSQLTest {
     @ExcludeIn({DERBY})
     public void mathFunctions() throws SQLException {
 //        Expr<Integer> i = ENumber.create(1);
-        Expr<Double> d = ENumber.create(1.0);
+        Expr<Double> d = ENumber.__create(1.0);
         for (Expr<?> e : Arrays.<Expr<?>> asList(
 //                MathFunctions.abs(i),
                 MathFunctions.acos(d), 

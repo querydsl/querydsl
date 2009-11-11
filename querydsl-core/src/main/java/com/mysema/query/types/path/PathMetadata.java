@@ -37,7 +37,7 @@ public final class PathMetadata<T> implements Serializable{
     }
 
     public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, @Nonnegative int index) {
-        return new PathMetadata<Integer>(parent, ENumber.create(index), PathType.ARRAYVALUE_CONSTANT);
+        return new PathMetadata<Integer>(parent, ENumber.__create(index), PathType.ARRAYVALUE_CONSTANT);
     }
 
     public static PathMetadata<Integer> forListAccess(PList<?> parent, Expr<Integer> index) {
@@ -45,7 +45,7 @@ public final class PathMetadata<T> implements Serializable{
     }
 
     public static PathMetadata<Integer> forListAccess(PList<?> parent, @Nonnegative int index) {
-        return new PathMetadata<Integer>(parent, ENumber.create(index), PathType.LISTVALUE_CONSTANT);
+        return new PathMetadata<Integer>(parent, ENumber.__create(index), PathType.LISTVALUE_CONSTANT);
     }
 
     public static <KT> PathMetadata<KT> forMapAccess(PMap<?, ?> parent, Expr<KT> key) {
@@ -53,15 +53,15 @@ public final class PathMetadata<T> implements Serializable{
     }
 
     public static <KT> PathMetadata<KT> forMapAccess(PMap<?, ?> parent, KT key) {
-        return new PathMetadata<KT>(parent, Expr.create(key), PathType.MAPVALUE_CONSTANT);
+        return new PathMetadata<KT>(parent, Expr.__create(key), PathType.MAPVALUE_CONSTANT);
     }
 
     public static PathMetadata<String> forProperty(Path<?> parent, @NotEmpty String property) {
-        return new PathMetadata<String>(parent, EString.create(Assert.hasLength(property), true), PathType.PROPERTY);
+        return new PathMetadata<String>(parent, EString.__create(Assert.hasLength(property), true), PathType.PROPERTY);
     }
 
     public static PathMetadata<String> forVariable(@NotEmpty String variable) {
-        return new PathMetadata<String>(null, EString.create(Assert.hasLength(variable), true), PathType.VARIABLE);
+        return new PathMetadata<String>(null, EString.__create(Assert.hasLength(variable), true), PathType.VARIABLE);
     }
 
     private final Expr<T> expression;

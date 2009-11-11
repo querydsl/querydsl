@@ -31,6 +31,6 @@ public class EStringConstTest {
     }
     
     private EString expr(String str){
-        return EString.create(str);
+        return EString.__create(str);
     }
 }

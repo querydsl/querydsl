@@ -49,12 +49,12 @@ public class ExprConst<D> extends Expr<D> implements Constant<D> {
 
     @Override
     public EBoolean eq(D s){
-        return EBoolean.create(constant.equals(s));
+        return EBoolean.__create(constant.equals(s));
     }
     
     @Override
     public EBoolean ne(D s){
-        return EBoolean.create(!constant.equals(s));
+        return EBoolean.__create(!constant.equals(s));
     }
     
     @Override

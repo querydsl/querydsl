@@ -188,9 +188,6 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             handle(args.get(0)).append(" instanceof ");
             append(((Constant<Class<?>>) args.get(1)).getConstant().getName());
             
-        } else if (operator.equals(Ops.STRING_CAST)) {
-            append("(String)").handle(args.get(0));
-            
         } else if (operator.equals(Ops.MATCHES)){
             // switch from regex to like if the regex expression is an operation
             if (args.get(1) instanceof Operation){
@@ -211,6 +208,7 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         }
     }
     
+    @SuppressWarnings("unchecked")
     private Expr<?> regexToLike(Operation<?,?> operation) {
         List<Expr<?>> args = new ArrayList<Expr<?>>();
         for (Expr<?> arg : operation.getArgs()){
@@ -231,7 +229,7 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     }
 
     private Expr<?> regexToLike(String str){
-        return EString.create(str.replace(".*", "%").replace(".", "_"));
+        return EString.__create(str.replace(".*", "%").replace(".", "_"));
     }
 
     @Override

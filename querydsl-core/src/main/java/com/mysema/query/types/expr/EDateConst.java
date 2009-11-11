@@ -31,32 +31,32 @@ public class EDateConst extends EDate<java.sql.Date> implements Constant<java.sq
     
     @Override
     public ENumber<Integer> getDayOfMonth(){
-        return ENumber.create(calendar.get(Calendar.DAY_OF_MONTH));
+        return ENumber.__create(calendar.get(Calendar.DAY_OF_MONTH));
     }
     
     @Override
     public ENumber<Integer> getMonth(){
-        return ENumber.create(calendar.get(Calendar.MONTH) + 1);
+        return ENumber.__create(calendar.get(Calendar.MONTH) + 1);
     }
     
     @Override
     public ENumber<Integer> getYear(){
-        return ENumber.create(calendar.get(Calendar.YEAR));
+        return ENumber.__create(calendar.get(Calendar.YEAR));
     }
     
     @Override
     public ENumber<Integer> getDayOfWeek() {
-        return ENumber.create(calendar.get(Calendar.DAY_OF_WEEK));
+        return ENumber.__create(calendar.get(Calendar.DAY_OF_WEEK));
     }
     
     @Override
     public ENumber<Integer> getDayOfYear() {
-        return ENumber.create(calendar.get(Calendar.DAY_OF_YEAR));
+        return ENumber.__create(calendar.get(Calendar.DAY_OF_YEAR));
     }
     
     @Override
     public ENumber<Integer> getWeek() {
-        return ENumber.create(calendar.get(Calendar.WEEK_OF_YEAR));
+        return ENumber.__create(calendar.get(Calendar.WEEK_OF_YEAR));
     }
 
     @Override

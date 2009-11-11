@@ -23,7 +23,7 @@ public class ETimeConstTest {
         cal.set(Calendar.MILLISECOND,  3);
         System.out.println(cal.getTime());
         
-        ETime<Time> time = ETime.create(new Time(cal.getTimeInMillis()));
+        ETime<Time> time = ETime.__create(new Time(cal.getTimeInMillis()));
         assertEquals("13",   time.getHour().toString());
         assertEquals("30",   time.getMinute().toString());
         assertEquals("12",   time.getSecond().toString());

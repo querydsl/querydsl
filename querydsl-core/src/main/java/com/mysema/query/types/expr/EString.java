@@ -50,11 +50,11 @@ public abstract class EString extends EComparable<String> {
      * @param str
      * @return
      */
-    public static final EString create(String str){
-        return create(str, false);
+    public static final EString __create(String str){
+        return __create(str, false);
     }
     
-    public static EString create(String str, boolean populateCache) {
+    public static EString __create(String str, boolean populateCache) {
         if (cache.containsKey(str)){
             return cache.get(str);            
         }else{
@@ -91,7 +91,7 @@ public abstract class EString extends EComparable<String> {
      * @return this + str
      */
     public EString append(String str) {
-        return append(EString.create(str));
+        return append(EString.__create(str));
     }
     
     /**
@@ -113,7 +113,7 @@ public abstract class EString extends EComparable<String> {
      * @see java.lang.String#charAt(int)
      */
     public Expr<Character> charAt(int i) {
-        return charAt(ENumber.create(i));
+        return charAt(ENumber.__create(i));
     }
 
     /**
@@ -155,7 +155,7 @@ public abstract class EString extends EComparable<String> {
      * @see java.lang.String#contains(CharSequence)
      */
     public EBoolean contains(String str) {
-        return contains(EString.create(str));
+        return contains(EString.__create(str));
     }
 
     /**
@@ -193,7 +193,7 @@ public abstract class EString extends EComparable<String> {
      * @see java.lang.String#endsWith(String)
      */
     public EBoolean endsWith(String str) {
-        return endsWith(EString.create(str));
+        return endsWith(EString.__create(str));
     }
 
     /**
@@ -205,7 +205,7 @@ public abstract class EString extends EComparable<String> {
      * @see java.lang.String#endsWith(String)
      */
     public EBoolean endsWith(String str, boolean caseSensitive) {
-        return endsWith(EString.create(str), caseSensitive);
+        return endsWith(EString.__create(str), caseSensitive);
     }
 
     /**
@@ -229,7 +229,7 @@ public abstract class EString extends EComparable<String> {
      * @see java.lang.String#equalsIgnoreCase(String)
      */
     public EBoolean equalsIgnoreCase(String str) {
-        return equalsIgnoreCase(EString.create(str));
+        return equalsIgnoreCase(EString.__create(str));
     }
 
     /**
@@ -251,7 +251,7 @@ public abstract class EString extends EComparable<String> {
      * @see java.lang.String#indexOf(String)
      */
     public ENumber<Integer> indexOf(String str) {
-        return indexOf(EString.create(str));
+        return indexOf(EString.__create(str));
     }
 
     /**
@@ -263,7 +263,7 @@ public abstract class EString extends EComparable<String> {
      * @see java.lang.String#indexOf(String, int)
      */
     public ENumber<Integer> indexOf(String str, int i) {
-        return indexOf(EString.create(str), i);
+        return indexOf(EString.__create(str), i);
     }
 
     
@@ -275,7 +275,7 @@ public abstract class EString extends EComparable<String> {
      * @return
      */
     public ENumber<Integer> indexOf(Expr<String> str, int i) {
-        return ONumber.create(Integer.class, Ops.INDEX_OF_2ARGS, this, str, ENumber.create(i));
+        return ONumber.create(Integer.class, Ops.INDEX_OF_2ARGS, this, str, ENumber.__create(i));
     }
     
     /**
@@ -321,7 +321,7 @@ public abstract class EString extends EComparable<String> {
      * @return
      */
     public EBoolean like(String str){
-        return OBoolean.create(Ops.LIKE, this, EString.create(str));
+        return OBoolean.create(Ops.LIKE, this, EString.__create(str));
     }
     
     /**
@@ -366,7 +366,7 @@ public abstract class EString extends EComparable<String> {
      * @see java.lang.String#matches(String)
      */
     public EBoolean matches(String regex){
-        return matches(EString.create(regex));
+        return matches(EString.__create(regex));
     }
 
     /**
@@ -386,7 +386,7 @@ public abstract class EString extends EComparable<String> {
      * @return str + this
      */
     public EString prepend(String str) {
-        return prepend(EString.create(str));
+        return prepend(EString.__create(str));
     }
     
     /**
@@ -397,7 +397,7 @@ public abstract class EString extends EComparable<String> {
      * @see java.lang.String#split(String)
      */
     public Expr<String[]> split(String regex) {
-        return OSimple.create(String[].class, Ops.StringOps.SPLIT, this, EString.create(regex));
+        return OSimple.create(String[].class, Ops.StringOps.SPLIT, this, EString.__create(regex));
     }
     
     /**
@@ -435,7 +435,7 @@ public abstract class EString extends EComparable<String> {
      * @see java.lang.String#startsWith(String)
      */
     public EBoolean startsWith(String str) {
-        return startsWith(EString.create(str));
+        return startsWith(EString.__create(str));
     }
 
     /**
@@ -447,7 +447,7 @@ public abstract class EString extends EComparable<String> {
      * @see java.lang.String#startsWith(String)
      */
     public EBoolean startsWith(String str, boolean caseSensitive) {
-        return startsWith(EString.create(str), caseSensitive);
+        return startsWith(EString.__create(str), caseSensitive);
     }
 
     /* (non-Javadoc)
@@ -465,7 +465,7 @@ public abstract class EString extends EComparable<String> {
      * @see java.lang.String#substring(int)
      */
     public EString substring(int beginIndex) {
-        return OString.create(Ops.SUBSTR_1ARG, this, ENumber.create(beginIndex));
+        return OString.create(Ops.SUBSTR_1ARG, this, ENumber.__create(beginIndex));
     }
 
     /**
@@ -477,7 +477,7 @@ public abstract class EString extends EComparable<String> {
      * @see java.lang.String#substring(int, int)
      */
     public EString substring(int beginIndex, int endIndex) {
-        return OString.create(Ops.SUBSTR_2ARGS, this, ENumber.create(beginIndex), ENumber.create(endIndex));
+        return OString.create(Ops.SUBSTR_2ARGS, this, ENumber.__create(beginIndex), ENumber.__create(endIndex));
     }
 
     /**

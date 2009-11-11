@@ -47,9 +47,9 @@ public class ExprTest {
         exprs.add(QReservedNames.reservedNames);
         exprs.add(QSimpleTypes.simpleTypes);
         
-        exprs.add(EString.create("Hello World!"));
-        exprs.add(ENumber.create(1000));
-        exprs.add(ENumber.create(10l));
+        exprs.add(EString.__create("Hello World!"));
+        exprs.add(ENumber.__create(1000));
+        exprs.add(ENumber.__create(10l));
         exprs.add(EBoolean.TRUE);
         exprs.add(EBoolean.FALSE);
         

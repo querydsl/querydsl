@@ -31,22 +31,22 @@ public class ETimeConst extends ETime<java.sql.Time> implements Constant<java.sq
     
     @Override
     public ENumber<Integer> getHour() {
-        return ENumber.create(calendar.get(Calendar.HOUR_OF_DAY));
+        return ENumber.__create(calendar.get(Calendar.HOUR_OF_DAY));
     }
     
     @Override
     public ENumber<Integer> getMinute() {
-        return ENumber.create(calendar.get(Calendar.MINUTE));
+        return ENumber.__create(calendar.get(Calendar.MINUTE));
     }
     
     @Override
     public ENumber<Integer> getSecond() {
-        return ENumber.create(calendar.get(Calendar.SECOND));
+        return ENumber.__create(calendar.get(Calendar.SECOND));
     }
 
     @Override
     public ENumber<Integer> getMilliSecond() {
-        return ENumber.create(calendar.get(Calendar.MILLISECOND));
+        return ENumber.__create(calendar.get(Calendar.MILLISECOND));
     }
     
     @Override

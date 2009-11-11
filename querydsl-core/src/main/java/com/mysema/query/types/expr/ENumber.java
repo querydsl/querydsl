@@ -50,7 +50,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         }
     }
         
-    public static ENumber<Byte> create(byte i){
+    public static ENumber<Byte> __create(byte i){
         if (i >= 0 && i < 256){
             return bytes[i];
         }else{
@@ -58,7 +58,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         }
     }
     
-    public static ENumber<Integer> create(int i){
+    public static ENumber<Integer> __create(int i){
         if (i >= 0 && i < 256){
             return ints[i];
         }else{
@@ -66,7 +66,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         }
     }
     
-    public static ENumber<Long> create(long i){
+    public static ENumber<Long> __create(long i){
         if (i >= 0 && i < 256){
             return longs[(int)i];
         }else{
@@ -74,7 +74,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         }
     }
     
-    public static ENumber<Short> create(short i){
+    public static ENumber<Short> __create(short i){
         if (i >= 0 && i < 256){
             return shorts[i];
         }else{
@@ -90,7 +90,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @return
      */    
     @SuppressWarnings("unchecked")
-    public static <T extends Number & Comparable<?>> ENumber<T> create(T val){
+    public static <T extends Number & Comparable<?>> ENumber<T> __create(T val){
         return new ENumberConst<T>((Class<T>)val.getClass(), Assert.notNull(val,"val is null"));
     }
     
@@ -161,7 +161,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @return this + right
      */
     public ENumber<D> add(Number right) {
-        return ONumber.create(getType(), Ops.ADD, this, ENumber.create(right));
+        return ONumber.create(getType(), Ops.ADD, this, ENumber.__create(right));
     }
 
     /**
@@ -218,7 +218,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
             return (ENumber<A>) this;
         }else{
 //            return super.castToNum(type);
-            return ONumber.create(type, Ops.NUMCAST, this, ExprConst.create(type));
+            return ONumber.create(type, Ops.NUMCAST, this, ExprConst.__create(type));
         }
     }
 
@@ -254,7 +254,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @return this / right
      */
     public <N extends Number & Comparable<?>> ENumber<Double> divide(N right) {
-        return ONumber.create(Double.class, Ops.DIV, this, ENumber.create(right));
+        return ONumber.create(Double.class, Ops.DIV, this, ENumber.__create(right));
     }
 
 
@@ -302,7 +302,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean goe(A right) {
-        return goe(ENumber.create(cast(right)));
+        return goe(ENumber.__create(cast(right)));
     }
 
     /**
@@ -326,7 +326,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean gt(A right) {
-        return gt(ENumber.create(cast(right)));
+        return gt(ENumber.__create(cast(right)));
     }
     
     /**
@@ -338,7 +338,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @return
      */
     public final <A extends Number & Comparable<?>> EBoolean between(A from, A to) {
-        return OBoolean.create(Ops.BETWEEN, this, ExprConst.create(from), ExprConst.create(to));
+        return OBoolean.create(Ops.BETWEEN, this, ExprConst.__create(from), ExprConst.__create(to));
     }
 
     /**
@@ -402,7 +402,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean loe(A right) {
-        return loe(ENumber.create(cast(right)));
+        return loe(ENumber.__create(cast(right)));
     }
 
     /**
@@ -436,7 +436,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> EBoolean lt(A right) {
-        return lt(ENumber.create(cast(right)));
+        return lt(ENumber.__create(cast(right)));
     }
 
     /**
@@ -492,7 +492,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @return this * right
      */
     public ENumber<D> multiply(Number right) {
-        return ONumber.create(getType(), Ops.MULT, this, ENumber.create(right));
+        return ONumber.create(getType(), Ops.MULT, this, ENumber.__create(right));
     }
     
     /**
@@ -560,7 +560,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @return this - right
      */
     public ENumber<D> subtract(Number right) {
-        return ONumber.create(getType(), Ops.SUB, this, ENumber.create(right));
+        return ONumber.create(getType(), Ops.SUB, this, ENumber.__create(right));
     }
     
     /**

@@ -83,7 +83,7 @@ public class Projections {
     <A extends Number & Comparable<A>> Collection<ENumber<?>> numeric(ENumber<A> expr, ENumber<A> other, A knownValue){
         HashSet<ENumber<?>> rv = new HashSet<ENumber<?>>();
         rv.addAll(numeric(expr, other));
-        rv.addAll(numeric(expr, ENumber.create(knownValue)));
+        rv.addAll(numeric(expr, ENumber.__create(knownValue)));
         return rv;
     }
     
@@ -99,7 +99,7 @@ public class Projections {
         
         if (!(other instanceof Constant || module == Module.JDOQL)){
             CaseBuilder cases = new CaseBuilder();
-            rv.add(ENumber.create(1).add(cases
+            rv.add(ENumber.__create(1).add(cases
                 .when(expr.gt(10)).then(expr)
                 .when(expr.between(0, 10)).then((ENumber)other)
                 .otherwise((ENumber)other)));    
@@ -127,7 +127,7 @@ public class Projections {
     Collection<Expr<String>> string(EString expr, EString other, String knownValue){
         HashSet<Expr<String>> rv = new HashSet<Expr<String>>();
         rv.addAll(stringProjections(expr, other));
-        rv.addAll(stringProjections(expr, EString.create(knownValue)));
+        rv.addAll(stringProjections(expr, EString.__create(knownValue)));
         return rv;
     }
     

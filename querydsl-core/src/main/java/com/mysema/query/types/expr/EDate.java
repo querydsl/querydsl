@@ -23,7 +23,7 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     
     private static final EDate<Date> currentDate = currentDate(Date.class);
     
-    public static EDate<java.sql.Date> create(java.sql.Date date){
+    public static EDate<java.sql.Date> __create(java.sql.Date date){
         return new EDateConst(date);
     }
     

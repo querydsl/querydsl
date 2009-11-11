@@ -27,7 +27,7 @@ public class ENumberConst<D extends Number & Comparable<?>> extends ENumber<D> i
 
     @Override
     public EBoolean eq(D b){
-        return EBoolean.create(constant.equals(b));
+        return EBoolean.__create(constant.equals(b));
     }
     
     @SuppressWarnings("unchecked")
@@ -48,7 +48,7 @@ public class ENumberConst<D extends Number & Comparable<?>> extends ENumber<D> i
     
     @Override
     public EBoolean ne(D b){
-        return EBoolean.create(!constant.equals(b));
+        return EBoolean.__create(!constant.equals(b));
     }
     
     @Override
@@ -58,7 +58,7 @@ public class ENumberConst<D extends Number & Comparable<?>> extends ENumber<D> i
     
     @Override
     public ENumber<D> add(Number right) {
-        return ENumber.create(MathUtils.sum(constant, right));
+        return ENumber.__create(MathUtils.sum(constant, right));
     }
     
     @SuppressWarnings("unchecked")
@@ -73,7 +73,7 @@ public class ENumberConst<D extends Number & Comparable<?>> extends ENumber<D> i
     
     @Override
     public ENumber<D> subtract(Number right) {
-        return ENumber.create(MathUtils.difference(constant, right));
+        return ENumber.__create(MathUtils.difference(constant, right));
     }
     
     @SuppressWarnings("unchecked")
@@ -87,23 +87,23 @@ public class ENumberConst<D extends Number & Comparable<?>> extends ENumber<D> i
     }
     
     public ENumber<Byte> byteValue() {
-        return ENumber.create(constant.byteValue());
+        return ENumber.__create(constant.byteValue());
     }
     
     public ENumber<Double> doubleValue() {
-        return ENumber.create(constant.doubleValue());
+        return ENumber.__create(constant.doubleValue());
     }
     
     public ENumber<Float> floatValue() {
-        return ENumber.create(constant.floatValue());
+        return ENumber.__create(constant.floatValue());
     }
     
     public ENumber<Long> longValue() {
-        return ENumber.create(constant.longValue());
+        return ENumber.__create(constant.longValue());
     }
     
     public ENumber<Short> shortValue() {
-        return ENumber.create(constant.shortValue());
+        return ENumber.__create(constant.shortValue());
     }
     
     

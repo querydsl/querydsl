@@ -37,9 +37,9 @@ public abstract class Expr<D> implements Serializable{
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T> Expr<T> create(T val){
+    public static <T> Expr<T> __create(T val){
         if (val instanceof Boolean){
-            return (Expr<T>)EBoolean.create((Boolean)val);            
+            return (Expr<T>)EBoolean.__create((Boolean)val);            
         }else{
             return new ExprConst<T>(Assert.notNull(val,"val is null"));    
         }
@@ -84,7 +84,7 @@ public abstract class Expr<D> implements Serializable{
      * @return
      */
     public EBoolean eq(D right) {
-        return eq(ExprConst.create(right));
+        return eq(ExprConst.__create(right));
     }
 
     /**
@@ -125,7 +125,7 @@ public abstract class Expr<D> implements Serializable{
         if (right.size() == 1){
             return eq(right.iterator().next());
         }else{
-            return OBoolean.create(Ops.IN, this, ExprConst.create(right));    
+            return OBoolean.create(Ops.IN, this, ExprConst.__create(right));    
         }        
     }
 
@@ -139,7 +139,7 @@ public abstract class Expr<D> implements Serializable{
         if (right.length == 1){
             return eq(right[0]);
         }else{
-            return OBoolean.create(Ops.IN, this, ExprConst.create(Arrays.asList(right)));    
+            return OBoolean.create(Ops.IN, this, ExprConst.__create(Arrays.asList(right)));    
         }        
     }
 
@@ -160,7 +160,7 @@ public abstract class Expr<D> implements Serializable{
      * @return
      */
     public EBoolean ne(D right) {
-        return ne(ExprConst.create(right));
+        return ne(ExprConst.__create(right));
     }
 
     /**

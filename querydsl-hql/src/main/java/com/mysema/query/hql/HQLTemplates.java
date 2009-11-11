@@ -61,8 +61,8 @@ public class HQLTemplates extends Templates {
         add(Ops.CONCAT, "{0} || {1}", 37);
         add(Ops.MATCHES, "{0} like {1}", 27); // TODO : support real regexes 
         add(Ops.LOWER, "lower({0})");
-        add(Ops.SUBSTR_1ARG, "substring({0},{1})");
-        add(Ops.SUBSTR_2ARGS, "substring({0},{1},{2})");
+        add(Ops.SUBSTR_1ARG, "substring({0},{1}+1)");
+        add(Ops.SUBSTR_2ARGS, "substring({0},{1}+1,{2})");
         add(Ops.TRIM, "trim({0})");
         add(Ops.UPPER, "upper({0})");
         add(Ops.EQ_IGNORE_CASE, "{0l} = {1l}");
