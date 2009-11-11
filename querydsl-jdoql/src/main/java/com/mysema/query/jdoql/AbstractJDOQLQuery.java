@@ -159,7 +159,7 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
             Expr<?> source = this.getMetadata().getJoins().get(0).getTarget();
             JDOQLSerializer serializer = new JDOQLSerializer(templates, source);
             serializer.serialize(getMetadata(), false, false);
-            return serializer.toString();
+            return serializer.toString().trim();
         }else{
             return super.toString();
         }        

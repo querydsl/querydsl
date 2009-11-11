@@ -8,6 +8,7 @@ package com.mysema.query.jdoql;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.QueryBaseWithDetach;
+import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
@@ -18,6 +19,8 @@ import com.mysema.query.types.path.PEntityCollection;
  *
  */
 public class JDOQLSubQuery extends QueryBaseWithDetach<JDOQLSubQuery>{
+    
+    private static final JDOQLTemplates templates = new JDOQLTemplates();
 
     public JDOQLSubQuery(QueryMetadata metadata) {
         super(metadata);
@@ -35,5 +38,17 @@ public class JDOQLSubQuery extends QueryBaseWithDetach<JDOQLSubQuery>{
     public <P> JDOQLSubQuery from(PEntityCollection<P> target, PEntity<P> alias){
         getMetadata().addFrom(OSimple.create(alias.getType(), Ops.ALIAS, target, alias));
         return _this;
+    }
+    
+    @Override
+    public String toString(){
+        if (!getMetadata().getJoins().isEmpty()){
+            Expr<?> source = this.getMetadata().getJoins().get(0).getTarget();
+            JDOQLSerializer serializer = new JDOQLSerializer(templates, source);
+            serializer.serialize(getMetadata(), false, false);
+            return serializer.toString().trim();
+        }else{
+            return super.toString();
+        } 
     }
 }

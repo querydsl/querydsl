@@ -246,7 +246,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
 
     @Override
     public String toString() {
-        return buildQueryString(false);
+        return buildQueryString(false).trim();
     }
 
 }

@@ -71,6 +71,16 @@ public class ParserTest implements Constants {
         assertEquals("from Cat cat, Cat fatcat", query.toString());
     }
 
+    public void subQuerySerialization(){
+        HQLSubQuery query = sub();
+        
+        query.from(cat);
+        assertEquals("from Cat cat", query.toString());
+        
+        query.from(fatcat);
+        assertEquals("from Cat cat, Cat fatcat", query.toString());
+    }
+    
     @Test
     public void basic() throws RecognitionException, TokenStreamException{
         query().from(cat, fatcat).select(cat.name, fatcat.name).parse();

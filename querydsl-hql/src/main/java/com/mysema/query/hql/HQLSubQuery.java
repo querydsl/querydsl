@@ -9,6 +9,8 @@ import com.mysema.query.types.path.PEntity;
  *
  */
 public class HQLSubQuery extends QueryBaseWithDetach<HQLSubQuery>{
+    
+    private static final HQLTemplates templates = new HQLTemplates();
 
     public HQLSubQuery() {
         super(new DefaultQueryMetadata());
@@ -17,6 +19,16 @@ public class HQLSubQuery extends QueryBaseWithDetach<HQLSubQuery>{
     public HQLSubQuery from(PEntity<?>... o) {
         getMetadata().addFrom(o);
         return _this;
+    }
+    
+    public String toString(){
+        if (!getMetadata().getJoins().isEmpty()){
+            HQLSerializer serializer = new HQLSerializer(templates);
+            serializer.serialize(getMetadata(), false);
+            return serializer.toString().trim();    
+        }else{
+            return super.toString();
+        }        
     }
         
 }

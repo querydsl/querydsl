@@ -11,6 +11,8 @@ import com.mysema.query.types.path.PEntity;
  */
 public class SQLSubQuery extends QueryBaseWithDetach<SQLSubQuery>{
 
+    private static final SQLTemplates templates = new SQLTemplates();
+    
     public SQLSubQuery(QueryMetadata metadata) {
         super(metadata);
     }
@@ -22,6 +24,17 @@ public class SQLSubQuery extends QueryBaseWithDetach<SQLSubQuery>{
     public SQLSubQuery from(PEntity<?>... o){
         getMetadata().addFrom(o);
         return _this;
+    }
+    
+    @Override
+    public String toString(){
+        if (!getMetadata().getJoins().isEmpty()){
+            SQLSerializer serializer = new SQLSerializer(templates);
+            serializer.serialize(getMetadata(), false);
+            return serializer.toString().trim();
+        }else{
+            return super.toString();
+        }        
     }
     
 //

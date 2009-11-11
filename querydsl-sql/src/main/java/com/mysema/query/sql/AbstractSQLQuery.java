@@ -39,6 +39,8 @@ import com.mysema.query.types.query.SubQuery;
 public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
         extends QueryBaseWithProjection<SubType>{
 
+    private String queryString;
+    
     public class UnionBuilder<RT> implements Union<RT> {
 
         @Override
@@ -260,9 +262,16 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         return _this;
     }
 
+    protected String toQueryString(){
+        if (queryString == null){
+            queryString = buildQueryString(false);
+        }
+        return queryString;
+    }
+    
     @Override
     public String toString() {
-        return buildQueryString(false);
+        return buildQueryString(false).trim();
     }
 
     public <RT> UnionBuilder<RT> union(ListSubQuery<RT>... sq) {

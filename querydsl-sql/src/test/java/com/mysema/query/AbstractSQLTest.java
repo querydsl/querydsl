@@ -143,14 +143,25 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    public void stateful(){
+    public void serialization(){
         SQLQuery query = query();
         
         query.from(survey);
-        assertEquals(" from survey survey", query.toString());
+        assertEquals("from survey survey", query.toString());
         
         query.from(survey2);
-        assertEquals(" from survey survey, survey survey2", query.toString());
+        assertEquals("from survey survey, survey survey2", query.toString());
+    }
+    
+    @Test
+    public void subQuerySerialization(){
+        SQLSubQuery query = s();
+        
+        query.from(survey);
+        assertEquals("from survey survey", query.toString());
+        
+        query.from(survey2);
+        assertEquals("from survey survey, survey survey2", query.toString());
     }
     
     @Test

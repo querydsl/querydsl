@@ -1,7 +1,5 @@
 package com.mysema.query.hql;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 public class SubQueryTest extends AbstractQueryTest{
