@@ -71,6 +71,11 @@ public class JavaTemplates extends Templates {
         add(Ops.DateTimeOps.SECOND, "{0}.getSecond()");
         add(Ops.DateTimeOps.WEEK, "{0}.getWeek()");
         add(Ops.DateTimeOps.YEAR, "{0}.getYear()");
+        
+        // case
+        add(Ops.CASE, "({0})");
+        add(Ops.CASE_WHEN,  "({0}) ? ({1}) : ({2})");
+        add(Ops.CASE_ELSE,  "{0}");
 
         // Math
         try {

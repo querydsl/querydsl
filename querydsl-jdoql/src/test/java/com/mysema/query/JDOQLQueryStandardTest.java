@@ -133,7 +133,6 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
         standardTest.numericCasts(product.price, otherProduct.price, 200.0);
         standardTest.numericTests(product.amount, otherProduct.amount, 2);
         standardTest.stringTests(product.name, otherProduct.name, productName);
-        // timeTests too slow and causes OutOfMemoryError
         standardTest.timeTests(product.timeField, otherProduct.timeField, time);
         
         standardTest.report();        

@@ -41,7 +41,12 @@ public class CaseBuilderTest {
            "when customer.annualSpending > 2000 then Silver " +
            "else Bronze " +
            "end", cases.toString());
-        
+     
+        String rv =  c.getAnnualSpending() > 10000 ? "Premier" : 
+                    c.getAnnualSpending() > 5000 ? "Gold" : 
+                    c.getAnnualSpending() > 2000 ? "Silver" :
+                    "Bronze";    
+                            
     }
 
 }

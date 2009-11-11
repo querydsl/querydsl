@@ -20,11 +20,4 @@ public class SubQueryTest extends AbstractQueryTest{
         toString("exists (select cat from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).unique(cat).exists());
     }
     
-//    @Test
-//    public void stateful(){
-//        HQLSubQuery sub = sub();
-//        sub.from(cat);
-//        assertEquals("select cat from cat", sub.toString());
-//    }
-
 }

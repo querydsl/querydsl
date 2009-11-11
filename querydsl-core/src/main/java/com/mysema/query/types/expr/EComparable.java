@@ -21,6 +21,47 @@ public abstract class EComparable<D extends Comparable> extends EComparableBase<
     public EComparable(Class<? extends D> type) {
         super(type);
     }
+    
+
+    /**
+     * Create a <code>from &lt; this &lt; to</code> expression
+     * 
+     * @param from
+     * @param to
+     * @return
+     */
+    public final EBoolean between(D from, D to) {
+        return OBoolean.create(Ops.BETWEEN, this, ExprConst.create(from), ExprConst.create(to));
+    }
+
+    /**
+     * Create a <code>first &lt; this &lt; second</code> expression
+     * 
+     * @param from
+     * @param to
+     * @return
+     */
+    public final EBoolean between(Expr<D> from, Expr<D> to) {
+        return OBoolean.create(Ops.BETWEEN, this, from, to);
+    }
+    
+    /**
+     * @param from
+     * @param to
+     * @return
+     */
+    public final EBoolean notBetween(D from, D to) {
+        return between(from, to).not();
+    }
+
+    /**
+     * @param from
+     * @param to
+     * @return
+     */
+    public final EBoolean notBetween(Expr<D> from, Expr<D> to) {
+        return between(from, to).not();
+    }
 
     /**
      * Create a <code>this &gt; right</code> expression

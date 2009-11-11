@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
+import com.mysema.query.types.CaseBuilder;
+import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EDate;
 import com.mysema.query.types.expr.EDateTime;
@@ -28,12 +30,12 @@ import com.mysema.query.types.expr.Expr;
  */
 public class Projections {
     
-//    private final Module module;
+    private final Module module;
     
     private final Target target;
 
     public Projections(Module module, Target target) {
-//        this.module = module;
+        this.module = module;
         this.target = target;
     }
 
@@ -80,6 +82,14 @@ public class Projections {
 
     <A extends Number & Comparable<A>> Collection<ENumber<?>> numeric(ENumber<A> expr, ENumber<A> other, A knownValue){
         HashSet<ENumber<?>> rv = new HashSet<ENumber<?>>();
+        rv.addAll(numeric(expr, other));
+        rv.addAll(numeric(expr, ENumber.create(knownValue)));
+        return rv;
+    }
+    
+    @SuppressWarnings("unchecked")
+    private <A extends Number & Comparable<A>> Collection<ENumber<?>> numeric(ENumber<A> expr, ENumber<?> other){
+        HashSet<ENumber<?>> rv = new HashSet<ENumber<?>>();
         rv.add(expr.abs());
         rv.add(expr.add(other));
         rv.add(expr.divide(other));
@@ -87,10 +97,14 @@ public class Projections {
         rv.add(expr.sqrt());
         rv.add(expr.subtract(other));
         
-//        CaseBuilder cases = new CaseBuilder();
-//        rv.add(ENumber.create(1).add(cases
-//            .when(expr.gt(0)).then(1)
-//            .otherwise(0)));
+        if (!(other instanceof Constant || module == Module.JDOQL)){
+            CaseBuilder cases = new CaseBuilder();
+            rv.add(ENumber.create(1).add(cases
+                .when(expr.gt(10)).then(expr)
+                .when(expr.between(0, 10)).then((ENumber)other)
+                .otherwise((ENumber)other)));    
+        }
+        
         
         return rv;
     }
@@ -117,6 +131,7 @@ public class Projections {
         return rv;
     }
     
+    @SuppressWarnings("unchecked")
     Collection<Expr<String>> stringProjections(EString expr, EString other){
         HashSet<Expr<String>> rv = new HashSet<Expr<String>>();
         rv.add(expr.append("Hello"));
@@ -135,11 +150,12 @@ public class Projections {
         rv.add(expr.substring(1));
         rv.add(expr.substring(0, 1));
                 
-//        CaseBuilder cases = new CaseBuilder();
-//        rv.add(cases.when(expr.eq("A")).then("a")
-//                    .when(expr.eq("B")).then("b")
-//                    .when(expr.eq("C")).then("c")
-//                    .otherwise("x"));
+        if (!(other instanceof Constant || module == Module.JDOQL)){
+            CaseBuilder cases = new CaseBuilder();
+            rv.add(cases.when(expr.eq("A")).then(other)
+                        .when(expr.eq("B")).then(expr)
+                        .otherwise(other));    
+        }         
           
         rv.add(expr.trim());
             

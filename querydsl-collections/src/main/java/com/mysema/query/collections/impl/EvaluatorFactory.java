@@ -94,11 +94,11 @@ public class EvaluatorFactory {
             };
             
         } catch (CompileException e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw new RuntimeException(e.getMessage() + " with source " + javaSource, e);
         } catch (ParseException e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw new RuntimeException(e.getMessage() + " with source " + javaSource, e);
         } catch (ScanException e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw new RuntimeException(e.getMessage() + " with source " + javaSource, e);
         }
     }
     

@@ -66,7 +66,9 @@ public abstract class StandardTest {
                     System.err.println();
                 }catch(Throwable t){
                     t.printStackTrace();
-                    errors.add(pr + " failed : " + t.getMessage());
+                    errors.add(pr + " failed : \n" + 
+                            t.getClass().getName() + " : " +
+                            t.getMessage() + "\n");
                 }            
             }    
         }        
@@ -85,7 +87,9 @@ public abstract class StandardTest {
                     }    
                 }catch(Throwable t){
                     t.printStackTrace();
-                    errors.add(f + " failed : " + t.getMessage());
+                    errors.add(f + " failed : \n" +
+                            t.getClass().getName() + " : " +
+                            t.getMessage() +"\n");
                 }            
             }    
         }        

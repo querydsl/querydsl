@@ -63,7 +63,7 @@ public class ColQueryTemplates extends JavaTemplates {
         
         // TEMPORARY FIXES
         
-        add(Ops.DIV, "((double){0}) / ((double){1})");
+        add(Ops.DIV, "(double)({0}/{1})");
     }
     
     public static boolean like(String str, String like){

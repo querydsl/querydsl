@@ -7,7 +7,6 @@ package com.mysema.query.types.expr;
 
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.OString;
 import com.mysema.query.types.operation.Ops;
@@ -44,30 +43,7 @@ public abstract class EComparableBase<D extends Comparable> extends Expr<D> {
         }            
         return asc;
     }
-   
-    /**
-     * Create a <code>first &lt; this &lt; second</code> expression
-     * 
-     * @param first
-     * @param second
-     * @return
-     */
-    public final EBoolean between(D first, D second) {
-        return OBoolean.create(Ops.BETWEEN, this, ExprConst.create(first), ExprConst.create(second));
-    }
-
-    /**
-     * Create a <code>first &lt; this &lt; second</code> expression
-     * 
-     * @param first
-     * @param second
-     * @return
-     */
-    public final EBoolean between(Expr<D> first, Expr<D> second) {
-        return OBoolean.create(Ops.BETWEEN, this, first, second);
-    }
-
-    
+       
     /**
      * Create a cast expression to the given numeric type
      * 
@@ -89,24 +65,6 @@ public abstract class EComparableBase<D extends Comparable> extends Expr<D> {
             desc = new OrderSpecifier<D>(Order.DESC, this);
         }            
         return desc;
-    }
-
-    /**
-     * @param first
-     * @param second
-     * @return
-     */
-    public final EBoolean notBetween(D first, D second) {
-        return between(first, second).not();
-    }
-
-    /**
-     * @param first
-     * @param second
-     * @return
-     */
-    public final EBoolean notBetween(Expr<D> first, Expr<D> second) {
-        return between(first, second).not();
     }
 
     /**

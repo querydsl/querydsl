@@ -328,7 +328,49 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     public final <A extends Number & Comparable<?>> EBoolean gt(A right) {
         return gt(ENumber.create(cast(right)));
     }
+    
+    /**
+     * Create a <code>from &lt; this &lt; to</code> expression
+     * 
+     * @param <A>
+     * @param from
+     * @param to
+     * @return
+     */
+    public final <A extends Number & Comparable<?>> EBoolean between(A from, A to) {
+        return OBoolean.create(Ops.BETWEEN, this, ExprConst.create(from), ExprConst.create(to));
+    }
 
+    /**
+     * Create a <code>from &lt; this &lt; to</code> expression
+     * 
+     * @param <A>
+     * @param from
+     * @param to
+     * @return
+     */
+    public final <A extends Number & Comparable<?>> EBoolean between(Expr<A> from, Expr<A> to) {
+        return OBoolean.create(Ops.BETWEEN, this, from, to);
+    }
+    
+    /**
+     * @param from
+     * @param to
+     * @return
+     */
+    public final <A extends Number & Comparable<?>> EBoolean notBetween(A from, A to) {
+        return between(from, to).not();
+    }
+
+    /**
+     * @param from
+     * @param to
+     * @return
+     */
+    public final <A extends Number & Comparable<?>> EBoolean notBetween(Expr<A> from, Expr<A> to) {
+        return between(from, to).not();
+    }
+    
     /**
      * Create a <code>this &gt; right</code> expression
      * 

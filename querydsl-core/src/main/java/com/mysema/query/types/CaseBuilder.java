@@ -3,7 +3,6 @@ package com.mysema.query.types;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OSimple;
@@ -15,9 +14,21 @@ import com.mysema.query.types.operation.Ops;
  */
 public class CaseBuilder {
     
+    private class CaseElement<A> {
+        
+        final EBoolean condition;
+        
+        final Expr<A> target;
+        
+        public CaseElement(EBoolean condition, Expr<A> target){
+            this.condition = condition;
+            this.target = target;
+        }
+    }
+    
     public class Cases<A> {
 
-        private final List<Expr<?>> exprs = new ArrayList<Expr<?>>();
+        private final List<CaseElement<A>> cases = new ArrayList<CaseElement<A>>();
         
         private final Class<A> type;
 
@@ -26,17 +37,8 @@ public class CaseBuilder {
         }
 
         Cases<A> addCase(EBoolean condition, Expr<A> expr) {
-            exprs.add(OSimple.create(type, Ops.CASE_WHEN, condition, expr));
+            cases.add(0, new CaseElement<A>(condition, expr));
             return this;
-        }
-
-        private Expr<A> createChain(List<Expr<?>> exprs) {
-            StringBuilder builder = new StringBuilder(exprs.size() * 4);
-            for (int i = 0; i < exprs.size(); i++){
-                if (i > 0) builder.append(" ");
-                builder.append("{").append(i).append("}");
-            }
-            return new CSimple<A>(type, exprs, templateFactory.create(builder.toString()));
         }
 
         public Expr<A> otherwise(A constant) {
@@ -44,8 +46,20 @@ public class CaseBuilder {
         }
         
         public Expr<A> otherwise(Expr<A> expr) {
-            exprs.add(OSimple.create(type, Ops.CASE_ELSE, expr));
-            return OSimple.create(type, Ops.CASE, createChain(exprs));
+            cases.add(0, new CaseElement<A>(null, expr));
+            Expr<A> last = null;
+            for (CaseElement<A> element : cases){
+                if (last == null){
+                    last = OSimple.create(type, Ops.CASE_ELSE, 
+                            element.target);
+                }else{
+                    last = OSimple.create(type, Ops.CASE_WHEN, 
+                            element.condition, 
+                            element.target, 
+                            last);
+                }
+            }
+            return OSimple.create(type, Ops.CASE, last);
         }
 
         public CaseWhen<A> when(EBoolean b) {
@@ -66,7 +80,7 @@ public class CaseBuilder {
         }
 
         public Cases<A> then(A constant) {
-            return cases.addCase(b, Expr.create(constant));
+            return then(Expr.create(constant));
         }
 
         public Cases<A> then(Expr<A> expr) {
@@ -76,25 +90,21 @@ public class CaseBuilder {
 
     public class Initial {
         
-        private final EBoolean b;
+        private final EBoolean when;
 
         public Initial(EBoolean b) {
-            this.b = b;
+            this.when = b;
         }
 
-        @SuppressWarnings("unchecked")
         public <A> Cases<A> then(A constant) {
-            return new Cases<A>((Class) constant.getClass()).addCase(b, Expr.create(constant));
+            return then(Expr.create(constant));
         }
 
         @SuppressWarnings("unchecked")
         public <A> Cases<A> then(Expr<A> expr) {
-            return new Cases<A>((Class)expr.getType()).addCase(b, expr);
+            return new Cases<A>((Class)expr.getType()).addCase(when, expr);
         }
     }
-
-    private static final TemplateFactory templateFactory = new TemplateFactory();
-    
 
     public Initial when(EBoolean b) {
         return new Initial(b);

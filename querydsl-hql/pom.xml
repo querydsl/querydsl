@@ -14,17 +14,11 @@
   <description>Hibernate / HQL support for querydsl</description>
   <packaging>jar</packaging>
   
-  <properties>  
-    <hibernate.version>3.2.1.ga</hibernate.version>
-  </properties>
-  
-  <dependencies>
+  <dependencies>   
     <dependency>
       <groupId>org.hibernate</groupId>
-      <artifactId>hibernate</artifactId>
-      <version>3.2.6.ga</version>
-      <scope>provided</scope>
-      <!-- license : LGPL v2.1 -->
+      <artifactId>hibernate-annotations</artifactId>
+      <version>3.4.0.GA</version>
       <exclusions>
         <exclusion>
           <groupId>cglib</groupId>
@@ -34,20 +28,22 @@
           <groupId>asm</groupId>
           <artifactId>asm</artifactId>
         </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-annotations</artifactId>
-      <version>3.2.1.ga</version>
-      <scope>provided</scope>
-    </dependency>
+      </exclusions>      
+      <scope>provided</scope>      
+    </dependency>   
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
-      <version>3.2.1.ga</version>
+      <version>3.4.0.ga</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>3.1.0.GA</version>
+      <scope>provided</scope>
+    </dependency>    
+    
     <dependency>
       <groupId>javax.persistence</groupId>
       <artifactId>persistence-api</artifactId>
