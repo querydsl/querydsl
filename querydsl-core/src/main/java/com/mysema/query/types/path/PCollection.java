@@ -12,9 +12,9 @@ import com.mysema.query.types.expr.ECollection;
  * 
  * @author tiwe
  * 
- * @param <D>
+ * @param <E>
  * @see java.util.Collection
  */
-public interface PCollection<D> extends Path<java.util.Collection<D>>, ECollection<D> {
+public interface PCollection<E> extends Path<java.util.Collection<E>>, ECollection<E> {
    
 }

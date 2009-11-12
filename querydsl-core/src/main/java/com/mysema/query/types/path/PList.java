@@ -12,9 +12,9 @@ import com.mysema.query.types.expr.EList;
  * 
  * @author tiwe
  * 
- * @param <D> component type
+ * @param <E> component type
  * @see java.util.List
  */
-public interface PList<D> extends PCollection<D>, EList<D> {
+public interface PList<E> extends PCollection<E>, EList<E> {
     
 }

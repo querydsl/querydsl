@@ -15,34 +15,34 @@ import com.mysema.query.types.expr.Expr;
  * 
  * @author tiwe
  * 
- * @param <D> component type
+ * @param <E> component type
  */
 @SuppressWarnings("serial")
-public class PComponentList<D> extends PComponentCollection<D> implements PList<D> {
+public class PComponentList<E> extends PComponentCollection<E> implements PList<E> {
     
-    private final Map<Integer,PSimple<D>> cache = new HashMap<Integer,PSimple<D>>();
+    private final Map<Integer,PSimple<E>> cache = new HashMap<Integer,PSimple<E>>();
     
-    public PComponentList(Class<? super D> type, PathMetadata<?> metadata) {
+    public PComponentList(Class<? super E> type, PathMetadata<?> metadata) {
         super(type, metadata);
     }
 
     @Override
-    public PSimple<D> get(Expr<Integer> index) {
-        return new PSimple<D>(type, PathMetadata.forListAccess(this, index));
+    public PSimple<E> get(Expr<Integer> index) {
+        return new PSimple<E>(type, PathMetadata.forListAccess(this, index));
     }
 
     @Override
-    public PSimple<D> get(int index) {
+    public PSimple<E> get(int index) {
         if (cache.containsKey(index)){
             return cache.get(index);
         }else{
-            PSimple<D> rv = create(index);
+            PSimple<E> rv = create(index);
             cache.put(index, rv);
             return rv;
         }
     }
     
-    private PSimple<D> create(int index){
-        return new PSimple<D>(type, PathMetadata.forListAccess(this, index));
+    private PSimple<E> create(int index){
+        return new PSimple<E>(type, PathMetadata.forListAccess(this, index));
     }
 }

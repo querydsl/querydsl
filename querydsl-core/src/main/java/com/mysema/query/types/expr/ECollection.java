@@ -11,10 +11,10 @@ package com.mysema.query.types.expr;
  * 
  * @author tiwe
  * 
- * @param <D>
+ * @param <E>
  * @see java.util.Collection
  */
-public interface ECollection<D>{
+public interface ECollection<E>{
    
     /**
      * Get an expression for <code>this.contains(child)</code>
@@ -23,7 +23,7 @@ public interface ECollection<D>{
      * @return this.contains(child)
      * @see java.util.Collection#contains(Object)
      */
-    EBoolean contains(D child);
+    EBoolean contains(E child);
 
     /**
      * Get an expression for <code>this.contains(child)</code>
@@ -32,13 +32,13 @@ public interface ECollection<D>{
      * @return
      * @see java.util.Collection#contains(Object)
      */
-    EBoolean contains(Expr<D> child);
+    EBoolean contains(Expr<E> child);
 
     /**
      * Get the element type of this path
      * 
      */
-    Class<D> getElementType();
+    Class<E> getElementType();
 
     /**
      * Get an expression for <code>this.isEmpty()</code>

@@ -13,10 +13,10 @@ import javax.annotation.Nonnegative;
  * 
  * @author tiwe
  * 
- * @param <D> component type
+ * @param <E> component type
  * @see java.util.List
  */
-public interface EList<D> extends ECollection<D> {
+public interface EList<E> extends ECollection<E> {
     
     /**
      * Indexed access
@@ -25,7 +25,7 @@ public interface EList<D> extends ECollection<D> {
      * @return this.get(index)
      * @see java.util.List#get(int)
      */
-    Expr<D> get(Expr<Integer> index);
+    Expr<E> get(Expr<Integer> index);
 
     /**
      * Indexed access
@@ -34,5 +34,5 @@ public interface EList<D> extends ECollection<D> {
      * @return this.get(index)
      * @see java.util.List#get(int)
      */
-    Expr<D> get(@Nonnegative int index);
+    Expr<E> get(@Nonnegative int index);
 }

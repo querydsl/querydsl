@@ -15,22 +15,22 @@ import com.mysema.query.types.expr.Expr;
  * 
  * @author tiwe
  * 
- * @param <D> component type
+ * @param <E> component type
  */
 @SuppressWarnings("serial")
-public class PEntityList<D, E extends PEntity<D>> extends PEntityCollection<D> implements PList<D> {
+public class PEntityList<E, Q extends PEntity<E>> extends PEntityCollection<E> implements PList<E> {
     
-    private final Class<E> queryType;
+    private final Class<Q> queryType;
     
-    private final Map<Integer,E> cache = new HashMap<Integer,E>();
+    private final Map<Integer,Q> cache = new HashMap<Integer,Q>();
     
-    public PEntityList(Class<? super D> elementType, Class<E> queryType, PathMetadata<?> metadata) {
+    public PEntityList(Class<? super E> elementType, Class<Q> queryType, PathMetadata<?> metadata) {
         super(elementType, elementType.getSimpleName(), metadata);
         this.queryType = queryType;
     }
     
     @Override
-    public E get(Expr<Integer> index) {
+    public Q get(Expr<Integer> index) {
         PathMetadata<Integer> md = PathMetadata.forListAccess(this, index);
         try {
             return queryType.getConstructor(PathMetadata.class).newInstance(md);
@@ -40,17 +40,17 @@ public class PEntityList<D, E extends PEntity<D>> extends PEntityCollection<D> i
     }
 
     @Override
-    public E get(int index) {
+    public Q get(int index) {
         if (cache.containsKey(index)){
             return cache.get(index);
         }else{
-            E rv = create(index);
+            Q rv = create(index);
             cache.put(index, rv);
             return rv;
         }        
     }
     
-    private E create(int index){
+    private Q create(int index){
         PathMetadata<Integer> md = PathMetadata.forListAccess(this, index);
         try {
             return queryType.getConstructor(PathMetadata.class).newInstance(md);

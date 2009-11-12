@@ -24,14 +24,14 @@ import com.mysema.query.util.NotEmpty;
  * 
  * @author tiwe
  * 
- * @param <D> component type
+ * @param <E> component type
  */
 @SuppressWarnings("serial")
-public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> implements PCollection<D> {
+public class PEntityCollection<E> extends EEntity<java.util.Collection<E>> implements PCollection<E> {
     
     private final PathMetadata<?> metadata;
     
-    protected final Class<D> elementType;
+    protected final Class<E> elementType;
     
     protected final String entityName;
     
@@ -42,29 +42,29 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     private final Path<?> root;
     
     @SuppressWarnings("unchecked")
-    public PEntityCollection(Class<? super D> type, @NotEmpty String entityName, PathMetadata<?> metadata) {
+    public PEntityCollection(Class<? super E> type, @NotEmpty String entityName, PathMetadata<?> metadata) {
         super((Class)Collection.class);
-        this.elementType = (Class<D>) Assert.notNull(type,"type is null");
+        this.elementType = (Class<E>) Assert.notNull(type,"type is null");
         this.metadata = Assert.notNull(metadata,"metadata is null");
         this.entityName = Assert.notNull(entityName,"entityName is null");
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    public PEntityCollection(Class<? super D> type, @NotEmpty String entityName, @NotEmpty String var) {
+    public PEntityCollection(Class<? super E> type, @NotEmpty String entityName, @NotEmpty String var) {
         this(type, entityName, PathMetadata.forVariable(var));
     }
     
-    public PEntityCollection(Class<? super D> type, @NotEmpty String entityName, Path<?> parent, @NotEmpty String property) {
+    public PEntityCollection(Class<? super E> type, @NotEmpty String entityName, Path<?> parent, @NotEmpty String property) {
         this(type, entityName, PathMetadata.forProperty(parent, property));
     }
 
     @Override
-    public EBoolean contains(D child) {
+    public EBoolean contains(E child) {
         return OBoolean.create(Ops.IN, ExprConst.create(child), this);
     }
 
     @Override
-    public EBoolean contains(Expr<D> child) {
+    public EBoolean contains(Expr<E> child) {
         return OBoolean.create(Ops.IN, child, this);
     }
     
@@ -80,7 +80,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     }
 
     @Override
-    public Class<D> getElementType() {
+    public Class<E> getElementType() {
         return elementType;
     }
 
@@ -146,7 +146,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
     }
     
     @Override
-    public Expr<Collection<D>> asExpr() {
+    public Expr<Collection<E>> asExpr() {
         return this;
     }
 
