@@ -13,6 +13,10 @@ import com.mysema.query.types.Visitor;
 @SuppressWarnings("serial")
 public class ETimeConst extends ETime<java.sql.Time> implements Constant<java.sql.Time>{
     
+    public static ETime<java.sql.Time> create(java.sql.Time time){
+        return new ETimeConst(time);
+    }
+    
     private final Calendar calendar;
     
     private final Time time;
@@ -31,22 +35,22 @@ public class ETimeConst extends ETime<java.sql.Time> implements Constant<java.sq
     
     @Override
     public ENumber<Integer> getHour() {
-        return ENumber.__create(calendar.get(Calendar.HOUR_OF_DAY));
+        return ENumberConst.create(calendar.get(Calendar.HOUR_OF_DAY));
     }
     
     @Override
     public ENumber<Integer> getMinute() {
-        return ENumber.__create(calendar.get(Calendar.MINUTE));
+        return ENumberConst.create(calendar.get(Calendar.MINUTE));
     }
     
     @Override
     public ENumber<Integer> getSecond() {
-        return ENumber.__create(calendar.get(Calendar.SECOND));
+        return ENumberConst.create(calendar.get(Calendar.SECOND));
     }
 
     @Override
     public ENumber<Integer> getMilliSecond() {
-        return ENumber.__create(calendar.get(Calendar.MILLISECOND));
+        return ENumberConst.create(calendar.get(Calendar.MILLISECOND));
     }
     
     @Override

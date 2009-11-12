@@ -7,8 +7,8 @@ import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryProjection;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.ENumberConst;
+import com.mysema.query.types.expr.EStringConst;
 
 public class QueryProjectionTest {
 
@@ -57,11 +57,11 @@ public class QueryProjectionTest {
     
     @Test
     public void test() throws SecurityException, NoSuchMethodException{
-        QEntityWithProjection.project(EString.__create("")).getJavaConstructor();
-        QEntityWithProjection.project(ENumber.__create(0l), EString.__create("")).getJavaConstructor();
+        QEntityWithProjection.project(EStringConst.create("")).getJavaConstructor();
+        QEntityWithProjection.project(ENumberConst.create(0l), EStringConst.create("")).getJavaConstructor();
         
-        new QDTOWithProjection(EString.__create("")).getJavaConstructor();
-        new QDTOWithProjection(ENumber.__create(0l), EString.__create("")).getJavaConstructor();
+        new QDTOWithProjection(EStringConst.create("")).getJavaConstructor();
+        new QDTOWithProjection(ENumberConst.create(0l), EStringConst.create("")).getJavaConstructor();
         
     }
 }

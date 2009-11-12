@@ -28,23 +28,12 @@ import com.mysema.query.types.operation.Ops;
 public abstract class Expr<D> implements Serializable{
     
     private static final Templates templates = new Templates();
-    
+        
     /**
-     * Factory method for constants
+     * Get the <code>count(*)</code> expression
      * 
-     * @param <D>
-     * @param val
-     * @return
+     * @return count(*)
      */
-    @SuppressWarnings("unchecked")
-    public static <T> Expr<T> __create(T val){
-        if (val instanceof Boolean){
-            return (Expr<T>)EBoolean.__create((Boolean)val);            
-        }else{
-            return new ExprConst<T>(Assert.notNull(val,"val is null"));    
-        }
-    }
-    
     public static ENumber<Long> countAll() {
         return Ops.AggOps.COUNT_ALL_AGG_EXPR;
     }
@@ -68,6 +57,8 @@ public abstract class Expr<D> implements Serializable{
     public abstract void accept(Visitor v);
     
     /**
+     * Get the <code>count(this)</code> expression
+     * 
      * @return count(this)
      */
     public ENumber<Long> count(){
@@ -78,17 +69,17 @@ public abstract class Expr<D> implements Serializable{
     }
 
     /**
-     * Create a <code>this == right</code> expression
+     * Get a <code>this == right</code> expression
      * 
      * @param right rhs of the comparison
      * @return
      */
     public EBoolean eq(D right) {
-        return eq(ExprConst.__create(right));
+        return eq(ExprConst.create(right));
     }
 
     /**
-     * Create a <code>this == right</code> expression
+     * Get a <code>this == right</code> expression
      * 
      * @param right rhs of the comparison
      * @return
@@ -116,7 +107,7 @@ public abstract class Expr<D> implements Serializable{
     }
 
     /**
-     * Create a <code>this in right</code> expression
+     * Get a <code>this in right</code> expression
      * 
      * @param right rhs of the comparison
      * @return
@@ -125,12 +116,12 @@ public abstract class Expr<D> implements Serializable{
         if (right.size() == 1){
             return eq(right.iterator().next());
         }else{
-            return OBoolean.create(Ops.IN, this, ExprConst.__create(right));    
+            return OBoolean.create(Ops.IN, this, ExprConst.create(right));    
         }        
     }
 
     /**
-     * Create a <code>this in right</code> expression
+     * Get a <code>this in right</code> expression
      * 
      * @param right rhs of the comparison
      * @return
@@ -139,12 +130,12 @@ public abstract class Expr<D> implements Serializable{
         if (right.length == 1){
             return eq(right[0]);
         }else{
-            return OBoolean.create(Ops.IN, this, ExprConst.__create(Arrays.asList(right)));    
+            return OBoolean.create(Ops.IN, this, ExprConst.create(Arrays.asList(right)));    
         }        
     }
 
     /**
-     * Create a <code>this in right</code> expression
+     * Get a <code>this in right</code> expression
      * 
      * @param right rhs of the comparison
      * @return
@@ -154,17 +145,17 @@ public abstract class Expr<D> implements Serializable{
     }
 
     /**
-     * Create a <code>this &lt;&gt; right</code> expression
+     * Get a <code>this &lt;&gt; right</code> expression
      * 
      * @param right rhs of the comparison
      * @return
      */
     public EBoolean ne(D right) {
-        return ne(ExprConst.__create(right));
+        return ne(ExprConst.create(right));
     }
 
     /**
-     * Create a <code>this &lt;&gt; right</code> expression
+     * Get a <code>this &lt;&gt; right</code> expression
      * 
      * @param right rhs of the comparison
      * @return
@@ -178,7 +169,7 @@ public abstract class Expr<D> implements Serializable{
     }
 
     /**
-     * Create a <code>this not in right</code> expression
+     * Get a <code>this not in right</code> expression
      * 
      * @param right rhs of the comparison
      * @return
@@ -192,7 +183,7 @@ public abstract class Expr<D> implements Serializable{
     }
 
     /**
-     * Create a <code>this not in right</code> expression
+     * Get a <code>this not in right</code> expression
      * 
      * @param right rhs of the comparison
      * @return
@@ -206,7 +197,7 @@ public abstract class Expr<D> implements Serializable{
     }
     
     /**
-     * Create a <code>this not in right</code> expression
+     * Get a <code>this not in right</code> expression
      * 
      * @param right rhs of the comparison
      * @return

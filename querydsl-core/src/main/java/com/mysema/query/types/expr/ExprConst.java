@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.expr;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Visitor;
 
 
@@ -17,6 +18,23 @@ import com.mysema.query.types.Visitor;
  */
 @SuppressWarnings("serial")
 public class ExprConst<D> extends Expr<D> implements Constant<D> {
+    
+
+    /**
+     * Factory method for constants
+     * 
+     * @param <D>
+     * @param val
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Expr<T> create(T val){
+        if (val instanceof Boolean){
+            return (Expr<T>)EBooleanConst.create((Boolean)val);            
+        }else{
+            return new ExprConst<T>(Assert.notNull(val,"val is null"));    
+        }
+    }
     
     private final D constant;
 
@@ -49,12 +67,12 @@ public class ExprConst<D> extends Expr<D> implements Constant<D> {
 
     @Override
     public EBoolean eq(D s){
-        return EBoolean.__create(constant.equals(s));
+        return EBooleanConst.create(constant.equals(s));
     }
     
     @Override
     public EBoolean ne(D s){
-        return EBoolean.__create(!constant.equals(s));
+        return EBooleanConst.create(!constant.equals(s));
     }
     
     @Override

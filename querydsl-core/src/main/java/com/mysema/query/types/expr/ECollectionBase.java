@@ -32,7 +32,7 @@ public abstract class ECollectionBase<D> extends Expr<java.util.Collection<D>> i
     
     @Override
     public final EBoolean contains(D child) {
-        return contains(ExprConst.__create(child));        
+        return contains(ExprConst.create(child));        
     }
 
     @Override

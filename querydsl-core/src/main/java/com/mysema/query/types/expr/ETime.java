@@ -24,17 +24,13 @@ public abstract class ETime<D extends Comparable> extends EDateOrTime<D> {
     private static final ETime<Date> currentTime = currentTime(Date.class);
     
     private volatile ENumber<Integer> hours, minutes, seconds, milliseconds;
-    
-    public static ETime<java.sql.Time> __create(java.sql.Time time){
-        return new ETimeConst(time);
-    }
-    
+        
     public ETime(Class<? extends D> type) {
         super(type);
     }
     
     /**
-     * Create a hours expression (range 0-23)
+     * Get a hours expression (range 0-23)
      * 
      * @return
      */
@@ -46,7 +42,7 @@ public abstract class ETime<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a minutes expression (range 0-59)
+     * Get a minutes expression (range 0-59)
      * 
      * @return
      */
@@ -58,7 +54,7 @@ public abstract class ETime<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a seconds expression (range 0-59)
+     * Get a seconds expression (range 0-59)
      * 
      * @return
      */
@@ -71,7 +67,7 @@ public abstract class ETime<D extends Comparable> extends EDateOrTime<D> {
     
     
     /**
-     * Create a milliseconds expression (range 0-999)
+     * Get a milliseconds expression (range 0-999)
      * <p>Is always 0 in HQL and JDOQL modules</p>
      * 
      * @return

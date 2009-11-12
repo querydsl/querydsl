@@ -17,6 +17,7 @@ import net.jcip.annotations.Immutable;
 import com.mysema.query.types.Template.Element;
 import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.EStringConst;
 
 /**
  * @author tiwe
@@ -70,7 +71,7 @@ public class TemplateFactory {
             String str = ((Constant<String>) expr).getConstant();
             if (str.contains("%") || str.contains("_")){
                 str = str.replace("%", "\\%").replace("_", "\\_");
-                return EString.__create(str);
+                return EStringConst.create(str);
             }                
         }        
         return expr;

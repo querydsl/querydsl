@@ -12,6 +12,10 @@ import com.mysema.query.types.Visitor;
 
 @SuppressWarnings("serial")
 public class EDateConst extends EDate<java.sql.Date> implements Constant<java.sql.Date>{
+ 
+    public static EDate<java.sql.Date> create(java.sql.Date date){
+        return new EDateConst(date);
+    }
     
     private final Date date;
     
@@ -31,32 +35,32 @@ public class EDateConst extends EDate<java.sql.Date> implements Constant<java.sq
     
     @Override
     public ENumber<Integer> getDayOfMonth(){
-        return ENumber.__create(calendar.get(Calendar.DAY_OF_MONTH));
+        return ENumberConst.create(calendar.get(Calendar.DAY_OF_MONTH));
     }
     
     @Override
     public ENumber<Integer> getMonth(){
-        return ENumber.__create(calendar.get(Calendar.MONTH) + 1);
+        return ENumberConst.create(calendar.get(Calendar.MONTH) + 1);
     }
     
     @Override
     public ENumber<Integer> getYear(){
-        return ENumber.__create(calendar.get(Calendar.YEAR));
+        return ENumberConst.create(calendar.get(Calendar.YEAR));
     }
     
     @Override
     public ENumber<Integer> getDayOfWeek() {
-        return ENumber.__create(calendar.get(Calendar.DAY_OF_WEEK));
+        return ENumberConst.create(calendar.get(Calendar.DAY_OF_WEEK));
     }
     
     @Override
     public ENumber<Integer> getDayOfYear() {
-        return ENumber.__create(calendar.get(Calendar.DAY_OF_YEAR));
+        return ENumberConst.create(calendar.get(Calendar.DAY_OF_YEAR));
     }
     
     @Override
     public ENumber<Integer> getWeek() {
-        return ENumber.__create(calendar.get(Calendar.WEEK_OF_YEAR));
+        return ENumberConst.create(calendar.get(Calendar.WEEK_OF_YEAR));
     }
 
     @Override

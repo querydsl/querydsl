@@ -26,7 +26,7 @@ public class EDateTimeConstTest {
         cal.set(Calendar.MILLISECOND,  3);
         System.out.println(cal.getTime());
         
-        EDateTime<Date> date = EDateTime.__create(cal.getTime());
+        EDateTime<Date> date = EDateTimeConst.create(cal.getTime());
         assertEquals("1",    date.getDayOfMonth().toString());
         assertEquals("1",    date.getMonth().toString());
         assertEquals("2000", date.getYear().toString());        

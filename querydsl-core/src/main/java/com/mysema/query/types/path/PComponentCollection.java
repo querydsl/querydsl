@@ -52,8 +52,7 @@ public class PComponentCollection<D> extends ECollectionBase<D> implements PColl
     @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {
-        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
-                : false;
+        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata) : false;
     }
     
     @Override

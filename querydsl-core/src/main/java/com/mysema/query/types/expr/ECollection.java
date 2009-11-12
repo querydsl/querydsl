@@ -17,7 +17,7 @@ package com.mysema.query.types.expr;
 public interface ECollection<D>{
    
     /**
-     * Create an expression for <code>this.contains(child)</code>
+     * Get an expression for <code>this.contains(child)</code>
      * 
      * @param child
      * @return this.contains(child)
@@ -26,7 +26,7 @@ public interface ECollection<D>{
     EBoolean contains(D child);
 
     /**
-     * Create an expression for <code>this.contains(child)</code>
+     * Get an expression for <code>this.contains(child)</code>
      * 
      * @param child
      * @return
@@ -41,7 +41,7 @@ public interface ECollection<D>{
     Class<D> getElementType();
 
     /**
-     * Create an expression for <code>this.isEmpty()</code>
+     * Get an expression for <code>this.isEmpty()</code>
      * 
      * @return this.isEmpty()
      * @see java.util.Collection#isEmpty()
@@ -49,7 +49,7 @@ public interface ECollection<D>{
     EBoolean isEmpty();
 
     /**
-     * Create an expression for <code>!this.isEmpty()</code>
+     * Get an expression for <code>!this.isEmpty()</code>
      * 
      * @return !this.isEmpty()
      * @see java.util.Collection#isEmpty()
@@ -57,7 +57,7 @@ public interface ECollection<D>{
     EBoolean isNotEmpty();
 
     /**
-     * Create an expression for <code>this.size()</code>
+     * Get an expression for <code>this.size()</code>
      * 
      * @return this.size()
      * @see java.util.Collection#size()

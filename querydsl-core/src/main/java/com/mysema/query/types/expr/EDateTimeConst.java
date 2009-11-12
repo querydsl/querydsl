@@ -12,6 +12,10 @@ import com.mysema.query.types.Visitor;
 
 @SuppressWarnings("serial")
 public class EDateTimeConst extends EDateTime<java.util.Date> implements Constant<java.util.Date>{
+  
+    public static EDateTime<java.util.Date> create(java.util.Date date){
+        return new EDateTimeConst(date);
+    }
     
     private final Calendar calendar;
     
@@ -31,52 +35,52 @@ public class EDateTimeConst extends EDateTime<java.util.Date> implements Constan
     
     @Override
     public ENumber<Integer> getDayOfMonth(){
-        return ENumber.__create(calendar.get(Calendar.DAY_OF_MONTH));
+        return ENumberConst.create(calendar.get(Calendar.DAY_OF_MONTH));
     }
     
     @Override
     public ENumber<Integer> getMonth(){
-        return ENumber.__create(calendar.get(Calendar.MONTH) + 1);
+        return ENumberConst.create(calendar.get(Calendar.MONTH) + 1);
     }
     
     @Override
     public ENumber<Integer> getYear(){
-        return ENumber.__create(calendar.get(Calendar.YEAR));
+        return ENumberConst.create(calendar.get(Calendar.YEAR));
     }
     
     @Override
     public ENumber<Integer> getDayOfWeek() {
-        return ENumber.__create(calendar.get(Calendar.DAY_OF_WEEK));
+        return ENumberConst.create(calendar.get(Calendar.DAY_OF_WEEK));
     }
     
     @Override
     public ENumber<Integer> getDayOfYear() {
-        return ENumber.__create(calendar.get(Calendar.DAY_OF_YEAR));
+        return ENumberConst.create(calendar.get(Calendar.DAY_OF_YEAR));
     }
     
     @Override
     public ENumber<Integer> getWeek() {
-        return ENumber.__create(calendar.get(Calendar.WEEK_OF_YEAR));
+        return ENumberConst.create(calendar.get(Calendar.WEEK_OF_YEAR));
     }
     
     @Override
     public ENumber<Integer> getHour() {
-        return ENumber.__create(calendar.get(Calendar.HOUR_OF_DAY));
+        return ENumberConst.create(calendar.get(Calendar.HOUR_OF_DAY));
     }
     
     @Override
     public ENumber<Integer> getMinute() {
-        return ENumber.__create(calendar.get(Calendar.MINUTE));
+        return ENumberConst.create(calendar.get(Calendar.MINUTE));
     }
     
     @Override
     public ENumber<Integer> getSecond() {
-        return ENumber.__create(calendar.get(Calendar.SECOND));
+        return ENumberConst.create(calendar.get(Calendar.SECOND));
     }
     
     @Override
     public ENumber<Integer> getMilliSecond() {
-        return ENumber.__create(calendar.get(Calendar.MILLISECOND));
+        return ENumberConst.create(calendar.get(Calendar.MILLISECOND));
     }
 
     @Override

@@ -13,6 +13,7 @@ import org.junit.Test;
 import com.mysema.query.animal.Cat;
 import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.ENumberConst;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -26,8 +27,8 @@ public class MathFunctionTest extends AbstractQueryTest {
     @Test
     public void test() {
         Cat c = alias(Cat.class, "c");
-        Expr<Integer> i = ENumber.__create(1);
-        Expr<Double> d = ENumber.__create(1.0);
+        Expr<Integer> i = ENumberConst.create(1);
+        Expr<Double> d = ENumberConst.create(1.0);
         from(c, cats).list( 
                 MathFunctions.acos(d),
                 MathFunctions.asin(d), 

@@ -8,6 +8,7 @@ package com.mysema.query;
 import org.junit.Test;
 
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EBooleanConst;
 
 
 /**
@@ -18,9 +19,9 @@ import com.mysema.query.types.expr.EBoolean;
  */
 public class BooleanBuilderTest {
 
-    private EBoolean first = EBoolean.TRUE;
+    private EBoolean first = EBooleanConst.TRUE;
     
-    private EBoolean second = EBoolean.FALSE;
+    private EBoolean second = EBooleanConst.FALSE;
     
     @Test
     public void test(){

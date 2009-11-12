@@ -21,7 +21,7 @@ public abstract class EDateOrTime<D extends Comparable> extends EComparable<D> {
     }
     
     /**
-     * Create a <code>this &gt; right</code> expression
+     * Get a <code>this &gt; right</code> expression
      * 
      * @param right
      * @return
@@ -31,7 +31,7 @@ public abstract class EDateOrTime<D extends Comparable> extends EComparable<D> {
     }    
 
     /**
-     * Create a <code>this &gt; right</code> expression
+     * Get a <code>this &gt; right</code> expression
      * 
      * @param right
      * @return
@@ -41,7 +41,7 @@ public abstract class EDateOrTime<D extends Comparable> extends EComparable<D> {
     }
         
     /**
-     * Create a <code>this &lt; right</code> expression
+     * Get a <code>this &lt; right</code> expression
      * 
      * @param right
      * @return
@@ -51,7 +51,7 @@ public abstract class EDateOrTime<D extends Comparable> extends EComparable<D> {
     }    
 
     /**
-     * Create a <code>this &lt; right</code> expression
+     * Get a <code>this &lt; right</code> expression
      * 
      * @param right
      * @return

@@ -52,7 +52,7 @@ public abstract class EComparableBase<D extends Comparable> extends Expr<D> {
      * @return
      */
     public <A extends Number & Comparable<? super A>> ENumber<A> castToNum(Class<A> type) {
-        return ONumber.create(type, Ops.NUMCAST, this, ExprConst.__create(type));
+        return ONumber.create(type, Ops.NUMCAST, this, ExprConst.create(type));
     }
 
     /**

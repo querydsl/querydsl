@@ -11,8 +11,10 @@ import java.util.TreeSet;
 import org.junit.Test;
 
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.EBooleanConst;
+import com.mysema.query.types.expr.ENumberConst;
 import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.EStringConst;
 import com.mysema.query.types.expr.Expr;
 
 public class ExprTest {
@@ -47,11 +49,11 @@ public class ExprTest {
         exprs.add(QReservedNames.reservedNames);
         exprs.add(QSimpleTypes.simpleTypes);
         
-        exprs.add(EString.__create("Hello World!"));
-        exprs.add(ENumber.__create(1000));
-        exprs.add(ENumber.__create(10l));
-        exprs.add(EBoolean.TRUE);
-        exprs.add(EBoolean.FALSE);
+        exprs.add(EStringConst.create("Hello World!"));
+        exprs.add(ENumberConst.create(1000));
+        exprs.add(ENumberConst.create(10l));
+        exprs.add(EBooleanConst.TRUE);
+        exprs.add(EBooleanConst.FALSE);
         
         Set<Expr<?>> toVisit = new HashSet<Expr<?>>();
         

@@ -5,8 +5,9 @@
  */
 package com.mysema.query;
 
-import static com.mysema.query.Target.*;
-
+import static com.mysema.query.Target.DERBY;
+import static com.mysema.query.Target.MYSQL;
+import static com.mysema.query.Target.ORACLE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
@@ -40,6 +41,7 @@ import com.mysema.query.sql.dto.IdName;
 import com.mysema.query.sql.dto.QIdName;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.ENumberConst;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.query.ObjectSubQuery;
@@ -365,7 +367,7 @@ public abstract class AbstractSQLTest {
     @ExcludeIn({DERBY})
     public void mathFunctions() throws SQLException {
 //        Expr<Integer> i = ENumber.create(1);
-        Expr<Double> d = ENumber.__create(1.0);
+        Expr<Double> d = ENumberConst.create(1.0);
         for (Expr<?> e : Arrays.<Expr<?>> asList(
 //                MathFunctions.abs(i),
                 MathFunctions.acos(d), 

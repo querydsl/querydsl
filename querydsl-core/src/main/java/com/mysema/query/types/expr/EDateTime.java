@@ -24,11 +24,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     private static final EDateTime<Date> currentDate = currentDate(Date.class);
     
     private static final EDateTime<Date> currentTimestamp = currentTimestamp(Date.class);
-    
-    public static EDateTime<java.util.Date> __create(java.util.Date date){
-        return new EDateTimeConst(date);
-    }
-    
+        
     /**
      * Get an expression representing the current date as a EDateTime instance
      * 
@@ -74,7 +70,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a day of month expression (range 1-31)
+     * Get a day of month expression (range 1-31)
      * 
      * @return
      */
@@ -86,7 +82,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a day of week expression (range 1-7 / SUN-SAT)
+     * Get a day of week expression (range 1-7 / SUN-SAT)
      * <p>NOT supported in JDOQL and not in Derby</p>
      * 
      * @return
@@ -99,7 +95,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a day of year expression (range 1-356)
+     * Get a day of year expression (range 1-356)
      * <p>NOT supported in JDOQL and not in Derby</p>
      * 
      * @return
@@ -112,7 +108,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     }
 
     /**
-     * Create a hours expression (range 0-23)
+     * Get a hours expression (range 0-23)
      * 
      * @return
      */
@@ -124,7 +120,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a milliseconds expression (range 0-999)
+     * Get a milliseconds expression (range 0-999)
      * <p>Is always 0 in HQL and JDOQL modules</p>
      * 
      * @return
@@ -137,7 +133,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a minutes expression (range 0-59)
+     * Get a minutes expression (range 0-59)
      * 
      * @return
      */
@@ -149,7 +145,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a month expression (range 1-12)
+     * Get a month expression (range 1-12)
      * 
      * @return
      */
@@ -161,7 +157,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a seconds expression (range 0-59)
+     * Get a seconds expression (range 0-59)
      * 
      * @return
      */
@@ -173,7 +169,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     }
 
     /**
-     * Create a week expression
+     * Get a week expression
      * <p>NOT supported in JDOQL and not in Derby</p>
      * 
      * @return
@@ -186,7 +182,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a year expression
+     * Get a year expression
      * 
      * @return
      */

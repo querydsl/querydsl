@@ -25,7 +25,7 @@ public interface EMap<K, V> {
     EBoolean contains(Expr<K> key, Expr<V> value);
     
     /**
-     * Create a <code>this.containsKey(key)</code> expression
+     * Get a <code>this.containsKey(key)</code> expression
      * 
      * @param key
      * @return this.containsKey(key)
@@ -34,7 +34,7 @@ public interface EMap<K, V> {
     EBoolean containsKey(Expr<K> key);
 
     /**
-     * Create a <code>this.containsKey(key)</code> expression
+     * Get a <code>this.containsKey(key)</code> expression
      * 
      * @param key
      * @return this.containsKey(key)
@@ -43,7 +43,7 @@ public interface EMap<K, V> {
     EBoolean containsKey(K key);
 
     /**
-     * Create a <code>this.containsValue(value)</code> expression
+     * Get a <code>this.containsValue(value)</code> expression
      * 
      * @param value
      * @return this.containsValue(value)
@@ -52,7 +52,7 @@ public interface EMap<K, V> {
     EBoolean containsValue(Expr<V> value);
 
     /**
-     * Create a <code>this.containsValue(value)</code> expression
+     * Get a <code>this.containsValue(value)</code> expression
      * 
      * @param value
      * @return this.containsValue(value)
@@ -61,7 +61,7 @@ public interface EMap<K, V> {
     EBoolean containsValue(V value);
     
     /**
-     * Create a <code>this.get(key)</code> expression
+     * Get a <code>this.get(key)</code> expression
      * 
      * @param key
      * @return this.get(key)
@@ -70,7 +70,7 @@ public interface EMap<K, V> {
     Expr<V> get(Expr<K> key);
     
     /**
-     * Create a <code>this.get(key)</code> expression
+     * Get a <code>this.get(key)</code> expression
      * 
      * @param key
      * @return this.get(key)

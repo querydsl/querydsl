@@ -15,7 +15,7 @@ import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.EStringConst;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.Operation;
@@ -202,7 +202,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         // 
         if (operator.equals(Ops.INSTANCE_OF)) {
             args = new ArrayList<Expr<?>>(args);
-            args.set(1, EString.__create(((Class<?>) ((Constant<?>) args.get(1)).getConstant()).getName()));
+            args.set(1, EStringConst.create(((Class<?>) ((Constant<?>) args.get(1)).getConstant()).getName()));
             super.visitOperation(type, operator, args);
             
         } else if (operator.equals(Ops.NUMCAST)) {
@@ -246,7 +246,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     }
 
     private Expr<?> regexToLike(String str){
-        return EString.__create(str.replace(".*", "%").replace(".", "_"));
+        return EStringConst.create(str.replace(".*", "%").replace(".", "_"));
     }
 
 }

@@ -60,7 +60,7 @@ public class PEntityCollection<D> extends EEntity<java.util.Collection<D>> imple
 
     @Override
     public EBoolean contains(D child) {
-        return OBoolean.create(Ops.IN, ExprConst.__create(child), this);
+        return OBoolean.create(Ops.IN, ExprConst.create(child), this);
     }
 
     @Override

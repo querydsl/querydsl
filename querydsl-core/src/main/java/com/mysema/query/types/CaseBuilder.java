@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.Ops;
 
@@ -42,7 +43,7 @@ public class CaseBuilder {
         }
 
         public Expr<A> otherwise(A constant) {
-            return otherwise(Expr.__create(constant));
+            return otherwise(ExprConst.create(constant));
         }
         
         public Expr<A> otherwise(Expr<A> expr) {
@@ -80,7 +81,7 @@ public class CaseBuilder {
         }
 
         public Cases<A> then(A constant) {
-            return then(Expr.__create(constant));
+            return then(ExprConst.create(constant));
         }
 
         public Cases<A> then(Expr<A> expr) {
@@ -97,7 +98,7 @@ public class CaseBuilder {
         }
 
         public <A> Cases<A> then(A constant) {
-            return then(Expr.__create(constant));
+            return then(ExprConst.create(constant));
         }
 
         @SuppressWarnings("unchecked")

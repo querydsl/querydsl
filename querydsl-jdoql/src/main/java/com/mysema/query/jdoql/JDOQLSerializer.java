@@ -22,7 +22,7 @@ import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.EStringConst;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.Operation;
@@ -229,7 +229,7 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     }
 
     private Expr<?> regexToLike(String str){
-        return EString.__create(str.replace(".*", "%").replace(".", "_"));
+        return EStringConst.create(str.replace(".*", "%").replace(".", "_"));
     }
 
     @Override

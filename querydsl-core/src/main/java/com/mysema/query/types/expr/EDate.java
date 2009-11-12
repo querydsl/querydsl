@@ -22,11 +22,7 @@ import com.mysema.query.types.operation.Ops;
 public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     
     private static final EDate<Date> currentDate = currentDate(Date.class);
-    
-    public static EDate<java.sql.Date> __create(java.sql.Date date){
-        return new EDateConst(date);
-    }
-    
+        
     /**
      * Get an expression representing the current date as a EDate instance
      * 
@@ -54,7 +50,7 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a day of month expression (range 1-31)
+     * Get a day of month expression (range 1-31)
      * 
      * @return
      */
@@ -66,7 +62,7 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     }
 
     /**
-     * Create a day of week expression (range 1-7 / SUN-SAT)     
+     * Get a day of week expression (range 1-7 / SUN-SAT)     
      * <p>NOT supported in JDOQL and not in Derby</p>
      * 
      * @return
@@ -79,7 +75,7 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     }
 
     /**
-     * Create a day of year expression (range 1-356)
+     * Get a day of year expression (range 1-356)
      * <p>NOT supported in JDOQL and not in Derby</p>
      * 
      * @return
@@ -92,7 +88,7 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a month expression (range 1-12)
+     * Get a month expression (range 1-12)
      * 
      * @return
      */
@@ -104,7 +100,7 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a week expression
+     * Get a week expression
      * 
      * @return
      */
@@ -116,7 +112,7 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Create a year expression 
+     * Get a year expression 
      * 
      * @return
      */

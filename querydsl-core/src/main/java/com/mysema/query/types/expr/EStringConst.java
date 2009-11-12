@@ -5,6 +5,13 @@
  */
 package com.mysema.query.types.expr;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Visitor;
 
 
@@ -18,6 +25,41 @@ import com.mysema.query.types.Visitor;
  */
 @SuppressWarnings("serial")
 public class EStringConst extends EString implements Constant<String>{
+    
+    private static final Map<String,EString> cache;
+    
+    static{
+        List<String> strs = new ArrayList<String>(Arrays.asList("", ".", ".*", "%"));
+        for (int i = 0; i < 256; i++){
+            strs.add(String.valueOf(i));
+        }
+    
+        cache = new HashMap<String,EString>(strs.size());
+        for (String str : strs){
+            cache.put(str, new EStringConst(str));
+        }
+    }
+    
+    
+    /**
+     * Factory method for constants
+     * 
+     * @param str
+     * @return
+     */
+    public static final EString create(String str){
+        return create(str, false);
+    }
+    
+    public static EString create(String str, boolean populateCache) {
+        if (cache.containsKey(str)){
+            return cache.get(str);            
+        }else{
+            EString rv = new EStringConst(Assert.notNull(str));
+            if (populateCache) cache.put(str, rv);                
+            return rv;
+        }
+    }
     
     private final String constant;
     
@@ -46,12 +88,12 @@ public class EStringConst extends EString implements Constant<String>{
     
     @Override
     public EString append(String s) {
-        return EString.__create(constant + s);
+        return EStringConst.create(constant + s);
     }
     
     @Override
     public Expr<Character> charAt(int i) {
-        return Expr.__create(constant.charAt(i));
+        return ExprConst.create(constant.charAt(i));
     }
 
     @Override
@@ -61,7 +103,7 @@ public class EStringConst extends EString implements Constant<String>{
     
     @Override
     public EBoolean eq(String s){
-        return EBoolean.__create(constant.equals(s));
+        return EBooleanConst.create(constant.equals(s));
     }
     
     @SuppressWarnings("unchecked")
@@ -72,7 +114,7 @@ public class EStringConst extends EString implements Constant<String>{
 
     @Override
     public EBoolean equalsIgnoreCase(String str) {
-        return EBoolean.__create(constant.equalsIgnoreCase(str));
+        return EBooleanConst.create(constant.equalsIgnoreCase(str));
     }
 
     @Override
@@ -87,18 +129,18 @@ public class EStringConst extends EString implements Constant<String>{
     
     @Override
     public EBoolean isEmpty(){
-        return EBoolean.__create(constant.isEmpty());
+        return EBooleanConst.create(constant.isEmpty());
     }
     
     @Override
     public EBoolean isNotEmpty(){
-        return EBoolean.__create(!constant.isEmpty());
+        return EBooleanConst.create(!constant.isEmpty());
     }
     
     @Override
     public ENumber<Long> length() {
         if (length == null) {
-            length = ENumber.__create(Long.valueOf(constant.length()));
+            length = ENumberConst.create(Long.valueOf(constant.length()));
         }
         return length;
     }
@@ -106,19 +148,19 @@ public class EStringConst extends EString implements Constant<String>{
     @Override
     public EString lower() {
         if (lower == null) {
-            lower = EString.__create(constant.toLowerCase());
+            lower = EStringConst.create(constant.toLowerCase());
         }
         return lower;
     }
 
     @Override
     public EBoolean matches(String pattern){
-        return EBoolean.__create(constant.matches(pattern));
+        return EBooleanConst.create(constant.matches(pattern));
     }
     
     @Override
     public EBoolean ne(String s){
-        return EBoolean.__create(!constant.equals(s));
+        return EBooleanConst.create(!constant.equals(s));
     }
     
     @SuppressWarnings("unchecked")
@@ -133,22 +175,22 @@ public class EStringConst extends EString implements Constant<String>{
     
     @Override
     public EString prepend(String s) {
-        return EString.__create(s + constant);
+        return EStringConst.create(s + constant);
     }
     
     @Override
     public Expr<String[]> split(String regex) {
-        return Expr.__create(constant.split(regex));
+        return ExprConst.create(constant.split(regex));
     }
     
     @Override
     public EString substring(int beginIndex) {
-        return EString.__create(constant.substring(beginIndex));
+        return EStringConst.create(constant.substring(beginIndex));
     }
 
     @Override
     public EString substring(int beginIndex, int endIndex) {
-        return EString.__create(constant.substring(beginIndex, endIndex));
+        return EStringConst.create(constant.substring(beginIndex, endIndex));
     }
     
     @Override
@@ -164,7 +206,7 @@ public class EStringConst extends EString implements Constant<String>{
     @Override
     public EString trim() {
         if (trim == null) {
-            trim = EString.__create(constant.trim());
+            trim = EStringConst.create(constant.trim());
         }
         return trim;
     }
@@ -172,7 +214,7 @@ public class EStringConst extends EString implements Constant<String>{
     @Override
     public EString upper() {
         if (upper == null){
-            upper = EString.__create(constant.toUpperCase()); 
+            upper = EStringConst.create(constant.toUpperCase()); 
         }
         return upper; 
     }

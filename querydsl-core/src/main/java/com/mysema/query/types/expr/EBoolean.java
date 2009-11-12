@@ -19,14 +19,6 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings("serial")
 public abstract class EBoolean extends EComparable<Boolean> {
     
-    public static final EBoolean FALSE = new EBooleanConst(Boolean.FALSE);
-    
-    public static final EBoolean TRUE = new EBooleanConst(Boolean.TRUE);
-    
-    public static final EBoolean __create(Boolean b){
-        return b.booleanValue() ? TRUE : FALSE;
-    }
-
     private volatile EBoolean not;
 
     public EBoolean() {
@@ -34,7 +26,7 @@ public abstract class EBoolean extends EComparable<Boolean> {
     }
 
     /**
-     * Create an intersection of this and the given expression 
+     * Get an intersection of this and the given expression 
      * 
      * @param right right hand side of the union
      * @return this && right
@@ -44,7 +36,7 @@ public abstract class EBoolean extends EComparable<Boolean> {
     }
 
     /**
-     * Create a negation of this boolean expression
+     * Get a negation of this boolean expression
      * 
      * @return !this
      */
@@ -56,7 +48,7 @@ public abstract class EBoolean extends EComparable<Boolean> {
     }
     
     /**
-     * Create a union of this and the given expression
+     * Get a union of this and the given expression
      * 
      * @param right right hand side of the union
      * @return this || right
