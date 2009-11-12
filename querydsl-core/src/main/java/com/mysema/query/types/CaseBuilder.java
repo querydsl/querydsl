@@ -3,6 +3,8 @@ package com.mysema.query.types;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.expr.ExprConst;
@@ -15,13 +17,14 @@ import com.mysema.query.types.operation.Ops;
  */
 public class CaseBuilder {
     
-    private class CaseElement<A> {
+    private static class CaseElement<A> {
         
+        @Nullable
         final EBoolean condition;
         
         final Expr<A> target;
         
-        public CaseElement(EBoolean condition, Expr<A> target){
+        public CaseElement(@Nullable EBoolean condition, Expr<A> target){
             this.condition = condition;
             this.target = target;
         }

@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.EStringConst;
 
 public class PathMetadataTest {
     
@@ -24,7 +25,7 @@ public class PathMetadataTest {
     @SuppressWarnings("unchecked")
     @Test
     public void test() throws Exception{        
-        Field field = EString.class.getDeclaredField("cache");
+        Field field = EStringConst.class.getDeclaredField("cache");
         field.setAccessible(true);
         Map<String, EString> cache = (Map) field.get(null);
         System.out.println(cache.size() + " entries in EString cache");

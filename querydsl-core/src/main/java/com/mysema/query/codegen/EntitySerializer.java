@@ -454,6 +454,7 @@ public class EntitySerializer implements Serializer{
         
         // constructors
         constructors(model, writer);
+//        equalsAndHashcode(model, writer);
         
         // TODO : make this configurable
         for (PropertyModel property : model.getProperties()){
@@ -468,6 +469,24 @@ public class EntitySerializer implements Serializer{
         // outro
         outro(model, writer);
     }
+
+//    protected void equalsAndHashcode(BeanModel model, Writer writer) throws IOException {
+//        // NOTE : The following serializations are to satisfy Find Bugs checks
+//        StringBuilder builder = new StringBuilder();
+//        
+//        // equals
+//        builder.append("    @Override\n");
+//        builder.append("    public boolean equals(Object o){\n");
+//        builder.append("        return super.equals(o);\n");
+//        builder.append("    }\n\n");
+//        
+//        // hashCode
+//        builder.append("    @Override\n");
+//        builder.append("    public int hashCode(){\n");
+//        builder.append("        return super.hashCode();\n");
+//        builder.append("    }\n\n");
+//        writer.append(builder);
+//    }
 
     protected void serialize(PropertyModel field, String type, Writer writer, String factoryMethod, String... args) throws IOException{
         BeanModel superModel = field.getBeanModel().getSuperModel();

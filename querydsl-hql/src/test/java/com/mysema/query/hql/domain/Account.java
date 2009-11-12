@@ -23,12 +23,9 @@ import com.mysema.query.annotations.QueryInit;
 /**
  * The Class Account.
  */
+@SuppressWarnings("serial")
 @Entity
 public class Account implements Serializable{
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -8890536547873474437L;
     
     @Transient
     public int transientField;
