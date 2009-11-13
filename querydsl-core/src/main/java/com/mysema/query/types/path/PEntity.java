@@ -80,16 +80,19 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
         return new PBoolean(this, propertyName);
     }
 
-    protected <A extends Comparable<?>> PComparable<A> createComparable(@NotEmpty String property, Class<A> type) {
-        return new PComparable<A>(type, this, property);
+    @SuppressWarnings("unchecked")
+    protected <A extends Comparable> PComparable<A> createComparable(@NotEmpty String property, Class<? super A> type) {
+        return new PComparable<A>((Class)type, this, property);
     }
 
-    protected <A extends Comparable<?>> PDate<A> createDate(@NotEmpty String property, Class<A> type) {
-        return new PDate<A>(type, PathMetadata.forProperty(this, property));
+    @SuppressWarnings("unchecked")
+    protected <A extends Comparable> PDate<A> createDate(@NotEmpty String property, Class<? super A> type) {
+        return new PDate<A>((Class)type, PathMetadata.forProperty(this, property));
     }
 
-    protected <A extends Comparable<?>> PDateTime<A> createDateTime(@NotEmpty String property, Class<A> type) {
-        return new PDateTime<A>(type, this, property);
+    @SuppressWarnings("unchecked")
+    protected <A extends Comparable> PDateTime<A> createDateTime(@NotEmpty String property, Class<? super A> type) {
+        return new PDateTime<A>((Class)type, this, property);
     }
 
     protected <A> PEntityCollection<A> createEntityCollection(@NotEmpty String property, Class<? super A> type) {
@@ -104,8 +107,9 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
         return new PEntityMap<K, V, E>(key, value, queryType, PathMetadata.forProperty(this, property));
     }
 
-    protected <A extends Number & Comparable<?>> PNumber<A> createNumber(@NotEmpty String property, Class<A> type) {
-        return new PNumber<A>(type, this, property);
+    @SuppressWarnings("unchecked")
+    protected <A extends Number & Comparable<?>> PNumber<A> createNumber(@NotEmpty String property, Class<? super A> type) {
+        return new PNumber<A>((Class)type, this, property);
     }
 
     @SuppressWarnings("unchecked")
@@ -129,8 +133,9 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
         return new PString(this, property);
     }
 
-    protected <A extends Comparable<?>> PTime<A> createTime(@NotEmpty String property, Class<A> type) {
-        return new PTime<A>(type, this, property);
+    @SuppressWarnings("unchecked")
+    protected <A extends Comparable> PTime<A> createTime(@NotEmpty String property, Class<? super A> type) {
+        return new PTime<A>((Class)type, this, property);
     }
 
     @SuppressWarnings("unchecked")

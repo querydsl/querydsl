@@ -26,7 +26,7 @@ public final class SimpleTypeModel implements TypeModel {
     private final TypeCategory typeCategory;
     
     private final boolean visible, finalClass;
-    
+        
     public SimpleTypeModel(
             TypeCategory typeCategory, 
             String name,
@@ -68,6 +68,9 @@ public final class SimpleTypeModel implements TypeModel {
             for (int i = 0; i < parameters.length; i++){
                 if (i > 0) builder.append(",");
                 if (parameters[i] != null && !parameters[i].equals(this)){
+                    if (parameters[i].isExtendsType()){
+                        builder.append("? extends ");
+                    }                    
                     builder.append(parameters[i].getLocalGenericName(context));    
                 }else{
                     builder.append("?");
@@ -158,6 +161,25 @@ public final class SimpleTypeModel implements TypeModel {
     @Override
     public boolean isFinal() {
         return finalClass;
+    }
+
+    @Override
+    public TypeModel asAnySubtype() {
+        return new TypeModelAdapter(this){
+            @Override
+            public TypeModel asAnySubtype() {
+                return this;
+            }
+            @Override
+            public boolean isExtendsType() {
+                return true;
+            }
+        };
+    }
+    
+    @Override
+    public boolean isExtendsType(){
+        return false;
     }
     
 }

@@ -42,4 +42,8 @@ public interface TypeModel {
     String toString();
 
     boolean isFinal();
+
+    boolean isExtendsType();
+    
+    TypeModel asAnySubtype();
 }

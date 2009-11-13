@@ -135,4 +135,14 @@ public class ClassTypeModel implements TypeModel{
     public boolean isFinal() {
         return Modifier.isFinal(clazz.getModifiers());
     }
+
+    @Override
+    public TypeModel asAnySubtype() {
+        return this;
+    }
+
+    @Override
+    public boolean isExtendsType() {
+        return false;
+    }
 }

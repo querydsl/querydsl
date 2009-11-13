@@ -195,7 +195,6 @@ public class EntitySerializer implements Serializer{
         
         builder.append("@SuppressWarnings(\"serial\")\n");
         builder.append("public class " + queryType + " extends PEntity<" + localName + "> {\n\n");
-//        builder.append("    private static final long serialVersionUID = "+model.getProperties().hashCode()+"L;\n\n");
     }
 
     protected void introDefaultInstance(StringBuilder builder, BeanModel model) {

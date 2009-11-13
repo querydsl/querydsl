@@ -251,7 +251,7 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
     @Override
     public TypeModel visitTypeVariable(TypeVariable t, Elements p) {
         if (t.getUpperBound() != null){
-            return t.getUpperBound().accept(this, p);
+            return t.getUpperBound().accept(this, p).asAnySubtype();
         }else{
             return null;
         }
@@ -265,7 +265,7 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
     @Override
     public TypeModel visitWildcard(WildcardType t, Elements p) {
         if (t.getExtendsBound() != null){
-            return t.getExtendsBound().accept(this, p);
+            return t.getExtendsBound().accept(this, p).asAnySubtype();
         }else{
             return null;
         }
