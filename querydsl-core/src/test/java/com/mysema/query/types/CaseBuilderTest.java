@@ -1,11 +1,18 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.types;
 
 import static com.mysema.query.alias.Alias.$;
 import static com.mysema.query.alias.Alias.alias;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
 
 public class CaseBuilderTest {
@@ -18,7 +25,39 @@ public class CaseBuilderTest {
     }
     
     @Test
-    public void test(){
+    public void booleanTyped(){
+        Customer c = alias(Customer.class, "customer");
+        Expr<Boolean> cases = new CaseBuilder()
+            .when($(c.getAnnualSpending()).gt(10000)).then(true)
+            .otherwise(false);
+        
+        assertEquals(
+                "case " +
+                "when customer.annualSpending > 10000 then true " +
+                "else false " +
+                "end", cases.toString());
+    }
+    
+    @Test
+    public void numberTyped(){
+        Customer c = alias(Customer.class, "customer");
+        ENumber<Integer> cases = new CaseBuilder()
+            .when($(c.getAnnualSpending()).gt(10000)).then(1)
+            .when($(c.getAnnualSpending()).gt(5000)).then(2)
+            .when($(c.getAnnualSpending()).gt(2000)).then(3)
+            .otherwise(4);
+        
+        assertEquals(
+                "case " +
+                "when customer.annualSpending > 10000 then 1 " +
+                "when customer.annualSpending > 5000 then 2 " +
+                "when customer.annualSpending > 2000 then 3 " +
+                "else 4 " +
+                "end", cases.toString());
+    }
+    
+    @Test
+    public void stringTyped(){
 //        CASE                                         
 //          WHEN c.annualSpending > 10000 THEN 'Premier'
 //          WHEN c.annualSpending >  5000 THEN 'Gold'
@@ -27,7 +66,7 @@ public class CaseBuilderTest {
 //        END                                            
         
         Customer c = alias(Customer.class, "customer");
-        Expr<String> cases = new CaseBuilder()
+        EString cases = new CaseBuilder()
             .when($(c.getAnnualSpending()).gt(10000)).then("Premier")
             .when($(c.getAnnualSpending()).gt(5000)).then("Gold")
             .when($(c.getAnnualSpending()).gt(2000)).then("Silver")
@@ -42,10 +81,6 @@ public class CaseBuilderTest {
            "else Bronze " +
            "end", cases.toString());
      
-        String rv =  c.getAnnualSpending() > 10000 ? "Premier" : 
-                    c.getAnnualSpending() > 5000 ? "Gold" : 
-                    c.getAnnualSpending() > 2000 ? "Silver" :
-                    "Bronze";    
                             
     }
 
