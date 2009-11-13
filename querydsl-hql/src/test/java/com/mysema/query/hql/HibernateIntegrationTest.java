@@ -8,6 +8,8 @@ package com.mysema.query.hql;
 import static org.junit.Assert.assertEquals;
 
 import org.hibernate.Query;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +22,7 @@ import com.mysema.query.HibernateTestRunner;
 import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.hql.hibernate.HibernateDeleteClause;
+import com.mysema.query.hql.hibernate.HibernateQuery;
 import com.mysema.query.hql.hibernate.HibernateUpdateClause;
 import com.mysema.query.hql.hibernate.HibernateUtil;
 import com.mysema.query.types.path.PEntity;
@@ -81,6 +84,19 @@ public class HibernateIntegrationTest extends ParserTest {
     
     private HibernateUpdateClause update(PEntity<?> entity){
         return new HibernateUpdateClause(session, entity);
+    }
+    
+    @Test
+    public void testScroll(){
+        session.save(new Cat("Bob",10));
+        session.save(new Cat("Steve",11));
+        
+        HibernateQuery query = new HibernateQuery(session);
+        ScrollableResults results = query.from(QCat.cat).scroll(ScrollMode.SCROLL_INSENSITIVE, QCat.cat);
+        while (results.next()){
+            System.out.println(results.get(0));
+        }
+        results.close();
     }
     
     @Test

@@ -11,6 +11,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import org.hibernate.Query;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +60,7 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     public <RT> List<RT> list(Expr<RT> expr) {
         addToProjection(expr);
         String queryString = toQueryString();
-        logger.debug("query : {}", queryString);
+        
         Query query = createQuery(queryString, getMetadata().getModifiers());
         return query.list();
     }
@@ -68,10 +70,28 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
         addToProjection(expr1, expr2);
         addToProjection(rest);
         String queryString = toQueryString();
-        logger.debug("query : {}", queryString);
+        logQuery(queryString);
         Query query = createQuery(queryString, getMetadata().getModifiers());
         return query.list();
     }
+    
+    public ScrollableResults scroll(ScrollMode mode, Expr<?> expr) {
+        addToProjection(expr);
+        String queryString = toQueryString();
+        logQuery(queryString);
+        Query query = createQuery(queryString, getMetadata().getModifiers());
+        return query.scroll(mode);
+    }
+
+    public ScrollableResults scroll(ScrollMode mode, Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
+        addToProjection(expr1, expr2);
+        addToProjection(rest);
+        String queryString = toQueryString();
+        logQuery(queryString);
+        Query query = createQuery(queryString, getMetadata().getModifiers());
+        return query.scroll(mode);
+    }
+
 
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
         addToProjection(expr);
@@ -80,7 +100,7 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
         if (total > 0) {
             QueryModifiers modifiers = getMetadata().getModifiers();
             String queryString = toQueryString();
-            logger.debug("query : {}", queryString);
+            logQuery(queryString);
             query = createQuery(queryString, modifiers);
             @SuppressWarnings("unchecked")
             List<RT> list = query.list();
@@ -102,7 +122,7 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     public <RT> RT uniqueResult(Expr<RT> expr) {
         addToProjection(expr);
         String queryString = toQueryString();
-        logger.debug("query : {}", queryString);
+        logQuery(queryString);
         Query query = createQuery(queryString, QueryModifiers.limit(1));
         return (RT) query.uniqueResult();
     }
@@ -115,6 +135,12 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {
         // TODO : optimize
         return list(projection).iterator();
+    }
+    
+    protected void logQuery(String queryString){
+        if (logger.isDebugEnabled()){
+            logger.debug(queryString.replace('\n', ' '));    
+        }        
     }
 
 }

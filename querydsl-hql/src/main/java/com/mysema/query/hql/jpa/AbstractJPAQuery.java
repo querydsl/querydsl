@@ -58,7 +58,7 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
     public <RT> List<RT> list(Expr<RT> expr) {
         addToProjection(expr);
         String queryString = toString();
-        logger.debug("query : {}", queryString);
+        logQuery(queryString);
         Query query = createQuery(queryString, getMetadata().getModifiers());
         return query.getResultList();
     }
@@ -68,7 +68,7 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
         addToProjection(expr1, expr2);
         addToProjection(rest);
         String queryString = toString();
-        logger.debug("query : {}", queryString);
+        logQuery(queryString);
         Query query = createQuery(queryString, getMetadata().getModifiers());
         return query.getResultList();
     }
@@ -80,7 +80,7 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
         if (total > 0) {
             QueryModifiers modifiers = getMetadata().getModifiers();
             String queryString = toString();
-            logger.debug("query : {}", queryString);
+            logQuery(queryString);
             query = createQuery(queryString, modifiers);
             @SuppressWarnings("unchecked")
             List<RT> list = query.getResultList();
@@ -100,5 +100,11 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
 
     public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return list(first, second, rest).iterator();
+    }
+    
+    protected void logQuery(String queryString){
+        if (logger.isDebugEnabled()){
+            logger.debug(queryString.replace('\n', ' '));    
+        }        
     }
 }
