@@ -15,18 +15,16 @@ public class InheritanceTest {
     public abstract class Party<A extends PartyRole> extends Entity{
         
     }
-    
-    @QueryEntity
-    public interface PartyRole{
         
-    }
-    
     @QueryEntity
     public class Person extends Party<PersonRole>{
         
     }
     
-    @QueryEntity
+    public interface PartyRole{
+        
+    }
+    
     public interface PersonRole extends PartyRole{
         
     }
