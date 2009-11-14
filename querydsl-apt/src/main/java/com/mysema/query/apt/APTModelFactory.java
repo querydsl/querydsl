@@ -63,20 +63,44 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
         this.comparableType = env.getElementUtils().getTypeElement(Comparable.class.getName());        
     }
     
-    public TypeModel create(TypeMirror type, Elements el){
-        String key = type + " " + type.getKind();
+    private String getKey(TypeMirror type, boolean deep){
+        StringBuilder key = new StringBuilder(type.toString());
         if (type.getKind() == TypeKind.TYPEVAR){
             TypeVariable t = (TypeVariable)type;
             if (t.getUpperBound() != null){
-                key = t.getUpperBound() + " " + t.getUpperBound().getKind();    
+                key.append(";");
+                key.append(getKey(t.getUpperBound(), false));
             }            
+            if (t.getLowerBound() != null){
+                key.append(";");
+                key.append(getKey(t.getLowerBound(), false));
+            }
         }else if (type.getKind() == TypeKind.WILDCARD){
             WildcardType t = (WildcardType)type;
             if (t.getExtendsBound() != null){
-                key = t.getExtendsBound() + " " + t.getExtendsBound().getKind();    
-            }            
+                key.append(";");
+                key.append(getKey(t.getExtendsBound(), false));
+            }
+            if (t.getSuperBound() != null){
+                key.append(";");
+                key.append(getKey(t.getSuperBound(), false));
+            }
+        }else if (type.getKind() == TypeKind.DECLARED){
+            DeclaredType t = (DeclaredType)type;
+            for (TypeMirror arg : t.getTypeArguments()){
+                key.append(";");
+                if (deep){
+                    key.append(getKey(arg, false));
+                }else{
+                    key.append(arg.toString());
+                }                
+            }
         }
-        
+        return key.toString();
+    }
+    
+    public TypeModel create(TypeMirror type, Elements el){
+        String key = getKey(type, true);        
         if (cache.containsKey(key)){
             return cache.get(key);
         }else{

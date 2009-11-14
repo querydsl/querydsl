@@ -121,7 +121,7 @@ public class ClassTypeModel implements TypeModel{
     public boolean equals(Object o){
         if (o instanceof TypeModel){
             TypeModel t = (TypeModel)o;
-            return clazz.getName().equals(t.getFullName());
+            return clazz.getName().equals(t.getFullName()) && !t.isExtendsType();
         }else{
             return false;
         }

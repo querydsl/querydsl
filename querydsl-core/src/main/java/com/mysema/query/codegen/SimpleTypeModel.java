@@ -17,7 +17,7 @@ import com.mysema.commons.lang.Assert;
  *
  */
 @Immutable
-public final class SimpleTypeModel implements TypeModel {
+public class SimpleTypeModel implements TypeModel {
 
     private final String fullName, packageName, simpleName, localName;
 
@@ -59,29 +59,28 @@ public final class SimpleTypeModel implements TypeModel {
     
     @Override
     public String getLocalGenericName(BeanModel context) {
-        if (parameters.length > 0){
-            StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
+        if (isExtendsType()){
+            builder.append("? extends ");
+        }   
+        if (parameters.length > 0){                        
             if (!visible && !context.getPackageName().equals(packageName)){
                 builder.append(packageName).append(".");
             }
             builder.append(localName).append("<");
             for (int i = 0; i < parameters.length; i++){
                 if (i > 0) builder.append(",");
-                if (parameters[i] != null && !parameters[i].equals(this)){
-                    if (parameters[i].isExtendsType()){
-                        builder.append("? extends ");
-                    }                    
+                if (parameters[i] != null && !parameters[i].getFullName().equals(fullName)){
                     builder.append(parameters[i].getLocalGenericName(context));    
                 }else{
                     builder.append("?");
                 }                
             }            
-            builder.append(">");
-            return builder.toString();
-            
+            builder.append(">");                       
         }else{
-            return getLocalRawName(context);
+            builder.append(getLocalRawName(context));
         }
+        return builder.toString();
     }
 
     @Override
@@ -147,7 +146,7 @@ public final class SimpleTypeModel implements TypeModel {
     public boolean equals(Object o){
         if (o instanceof TypeModel){
             TypeModel t = (TypeModel)o;
-            return fullName.equals(t.getFullName());
+            return fullName.equals(t.getFullName()) && isExtendsType() == t.isExtendsType();
         }else{
             return false;
         }
@@ -165,13 +164,9 @@ public final class SimpleTypeModel implements TypeModel {
 
     @Override
     public TypeModel asAnySubtype() {
-        return new TypeModelAdapter(this){
+        return new SimpleTypeModel(typeCategory, fullName, packageName, simpleName, finalClass, parameters){
             @Override
-            public TypeModel asAnySubtype() {
-                return this;
-            }
-            @Override
-            public boolean isExtendsType() {
+            public boolean isExtendsType(){
                 return true;
             }
         };
