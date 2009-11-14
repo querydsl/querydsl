@@ -75,8 +75,10 @@ public class Processor {
         // populate super type mappings
         if (conf.getSuperTypeAnn() != null) {
             for (Element element : roundEnv.getElementsAnnotatedWith(conf.getSuperTypeAnn())) {
-                BeanModel model = element.accept(entityVisitor, null);
-                superTypes.put(model.getName(), model);
+                if (conf.getEmbeddableAnn() == null || element.getAnnotation(conf.getEmbeddableAnn()) == null){
+                    BeanModel model = element.accept(entityVisitor, null);
+                    superTypes.put(model.getName(), model);    
+                }                
             }
             // add supertype fields
             for (BeanModel superType : superTypes.values()) {
@@ -93,8 +95,10 @@ public class Processor {
         // populate entity type mappings
         Map<String, BeanModel> entityTypes = new HashMap<String, BeanModel>();
         for (Element element : roundEnv.getElementsAnnotatedWith(conf.getEntityAnn())) {
-            BeanModel model = element.accept(entityVisitor, null);
-            entityTypes.put(model.getName(), model);
+            if (conf.getEmbeddableAnn() == null || element.getAnnotation(conf.getEmbeddableAnn()) == null){
+                BeanModel model = element.accept(entityVisitor, null);
+                entityTypes.put(model.getName(), model);    
+            }            
         }
         superTypes.putAll(entityTypes);
         

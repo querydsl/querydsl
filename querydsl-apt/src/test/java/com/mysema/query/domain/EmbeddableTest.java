@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEmbeddable;
 import com.mysema.query.annotations.QueryEntity;
+import com.mysema.query.annotations.QuerySupertype;
 import com.mysema.query.domain.AnimalTest.Cat;
 
 public class EmbeddableTest {
@@ -48,6 +49,18 @@ public class EmbeddableTest {
         public List<Cat> cats;
         
         public String str3;
+        
+    }
+    
+    @QueryEntity
+    @QueryEmbeddable
+    public static class EntityAndEmbeddable{
+        
+    }
+    
+    @QuerySupertype
+    @QueryEmbeddable
+    public static class SuperclassAndEmbeddable{
         
     }
     

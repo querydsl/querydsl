@@ -38,7 +38,6 @@ public class QuerydslAnnotationProcessor extends AbstractProcessor{
         entity = QueryEntity.class;
         superType = QuerySupertype.class;
         embeddable = QueryEmbeddable.class;
-//        dto = QueryProjection.class;
         skip = QueryTransient.class;
         
         SimpleConfiguration configuration = new SimpleConfiguration(entity, superType, embeddable, skip);
