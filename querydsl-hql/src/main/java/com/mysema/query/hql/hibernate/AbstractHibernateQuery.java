@@ -35,15 +35,38 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     
     private static final Logger logger = LoggerFactory.getLogger(HibernateQuery.class);
     
-    private final Session session;
-    
     private int fetchSize = 0;
+    
+    private final Session session;
 
     public AbstractHibernateQuery(QueryMetadata md, Session session, HQLTemplates patterns) {
         super(md, patterns);
         this.session = session;
     }
 
+    public long count() {
+        return uniqueResult(Expr.countAll());
+    }
+    
+    public long count(Expr<?> expr) {
+        return uniqueResult(expr.count());
+    }    
+
+    private Query createQuery(Expr<?> expr){
+        addToProjection(expr);
+        String queryString = toQueryString();        
+        return createQuery(queryString, getMetadata().getModifiers());   
+    }
+    
+    private Query createQuery(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest){
+        addToProjection(expr1, expr2);
+        addToProjection(rest);
+        String queryString = toQueryString();
+        logQuery(queryString);
+        return createQuery(queryString, getMetadata().getModifiers());   
+    }   
+    
+    
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
         Query query = session.createQuery(queryString);
         HibernateUtil.setConstants(query, getConstants());
@@ -60,43 +83,26 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
         }
         return query;
     }
+    
+    @SuppressWarnings("unchecked")
+    public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
+        return  createQuery(e1, e2, rest).iterate();
+    }
 
     @SuppressWarnings("unchecked")
-    public <RT> List<RT> list(Expr<RT> expr) {
-        addToProjection(expr);
-        String queryString = toQueryString();
-        
-        Query query = createQuery(queryString, getMetadata().getModifiers());
-        return query.list();
+    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
+        return createQuery(projection).iterate();
     }
 
     @SuppressWarnings("unchecked")
     public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
-        addToProjection(expr1, expr2);
-        addToProjection(rest);
-        String queryString = toQueryString();
-        logQuery(queryString);
-        Query query = createQuery(queryString, getMetadata().getModifiers());
-        return query.list();
-    }
-    
-    public ScrollableResults scroll(ScrollMode mode, Expr<?> expr) {
-        addToProjection(expr);
-        String queryString = toQueryString();
-        logQuery(queryString);
-        Query query = createQuery(queryString, getMetadata().getModifiers());
-        return query.scroll(mode);
+        return createQuery(expr1, expr2, rest).list();
     }
 
-    public ScrollableResults scroll(ScrollMode mode, Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
-        addToProjection(expr1, expr2);
-        addToProjection(rest);
-        String queryString = toQueryString();
-        logQuery(queryString);
-        Query query = createQuery(queryString, getMetadata().getModifiers());
-        return query.scroll(mode);
+    @SuppressWarnings("unchecked")
+    public <RT> List<RT> list(Expr<RT> expr) {
+        return createQuery(expr).list();
     }
-
 
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
         addToProjection(expr);
@@ -115,12 +121,22 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
         }
     }
 
-    public long count() {
-        return uniqueResult(Expr.countAll());
+    protected void logQuery(String queryString){
+        if (logger.isDebugEnabled()){
+            logger.debug(queryString.replace('\n', ' '));    
+        }        
     }
 
-    public long count(Expr<?> expr) {
-        return uniqueResult(expr.count());
+    public ScrollableResults scroll(ScrollMode mode, Expr<?> expr) {
+        return createQuery(expr).scroll(mode);
+    }
+
+    public ScrollableResults scroll(ScrollMode mode, Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
+        return createQuery(expr1, expr2, rest).scroll(mode);
+    }
+    
+    public void setFetchSize(int fetchSize) {
+        this.fetchSize = fetchSize;
     }
 
     @SuppressWarnings("unchecked")
@@ -130,26 +146,6 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
         logQuery(queryString);
         Query query = createQuery(queryString, QueryModifiers.limit(1));
         return (RT) query.uniqueResult();
-    }
-
-    public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
-        // TODO : optimize
-        return list(e1, e2, rest).iterator();
-    }
-
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        // TODO : optimize
-        return list(projection).iterator();
-    }
-    
-    protected void logQuery(String queryString){
-        if (logger.isDebugEnabled()){
-            logger.debug(queryString.replace('\n', ' '));    
-        }        
-    }
-
-    public void setFetchSize(int fetchSize) {
-        this.fetchSize = fetchSize;
     }
     
     

@@ -40,6 +40,25 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
         this.em = em;
     }
 
+    public long count() {
+        return uniqueResult(Expr.countAll());
+    }
+    
+    private Query createQuery(Expr<?> expr){
+        addToProjection(expr);
+        String queryString = toString();
+        logQuery(queryString);
+        return createQuery(queryString, getMetadata().getModifiers());        
+    }
+    
+    private Query createQuery(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest){
+        addToProjection(expr1, expr2);
+        addToProjection(rest);
+        String queryString = toString();
+        logQuery(queryString);
+        return createQuery(queryString, getMetadata().getModifiers());
+    }
+
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
         Query query = em.createQuery(queryString);
         JPAUtil.setConstants(query, getConstants());
@@ -54,23 +73,22 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
         return query;
     }
 
-    @SuppressWarnings("unchecked")
-    public <RT> List<RT> list(Expr<RT> expr) {
-        addToProjection(expr);
-        String queryString = toString();
-        logQuery(queryString);
-        Query query = createQuery(queryString, getMetadata().getModifiers());
-        return query.getResultList();
+    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+        return list(first, second, rest).iterator();
+    }
+
+    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
+        return list(projection).iterator();
     }
 
     @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
-        addToProjection(expr1, expr2);
-        addToProjection(rest);
-        String queryString = toString();
-        logQuery(queryString);
-        Query query = createQuery(queryString, getMetadata().getModifiers());
-        return query.getResultList();
+    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {        
+        return createQuery(expr1, expr2, rest).getResultList();
+    }
+
+    @SuppressWarnings("unchecked")
+    public <RT> List<RT> list(Expr<RT> expr) {
+        return createQuery(expr).getResultList();
     }
 
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
@@ -88,18 +106,6 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
         } else {
             return SearchResults.emptyResults();
         }
-    }
-
-    public long count() {
-        return uniqueResult(Expr.countAll());
-    }
-
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        return list(projection).iterator();
-    }
-
-    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
-        return list(first, second, rest).iterator();
     }
     
     protected void logQuery(String queryString){
