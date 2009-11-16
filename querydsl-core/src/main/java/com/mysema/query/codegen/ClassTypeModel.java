@@ -59,17 +59,18 @@ public class ClassTypeModel implements TypeModel{
     }
 
     @Override
-    public String getLocalGenericName(BeanModel context) {
-        return getLocalRawName(context);
+    public StringBuilder getLocalGenericName(BeanModel context, StringBuilder builder, boolean asArgType) {
+        return getLocalRawName(context, builder);
     }
 
     @Override
-    public String getLocalRawName(BeanModel context) {
+    public StringBuilder getLocalRawName(BeanModel context, StringBuilder builder) {
         if (visible || context.getPackageName().equals(clazz.getPackage().getName())){
-            return clazz.getName().substring(clazz.getPackage().getName().length()+1);    
+            builder.append(clazz.getName().substring(clazz.getPackage().getName().length()+1));    
         }else{
-            return clazz.getName();
+            builder.append(clazz.getName());
         }        
+        return builder;
     }
 
     @Override
@@ -121,7 +122,7 @@ public class ClassTypeModel implements TypeModel{
     public boolean equals(Object o){
         if (o instanceof TypeModel){
             TypeModel t = (TypeModel)o;
-            return clazz.getName().equals(t.getFullName()) && !t.isExtendsType();
+            return clazz.getName().equals(t.getFullName());
         }else{
             return false;
         }
@@ -134,15 +135,5 @@ public class ClassTypeModel implements TypeModel{
     @Override
     public boolean isFinal() {
         return Modifier.isFinal(clazz.getModifiers());
-    }
-
-    @Override
-    public TypeModel asAnySubtype() {
-        return this;
-    }
-
-    @Override
-    public boolean isExtendsType() {
-        return false;
     }
 }

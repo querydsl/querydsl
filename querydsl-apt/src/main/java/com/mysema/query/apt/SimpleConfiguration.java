@@ -30,13 +30,13 @@ public class SimpleConfiguration implements Configuration {
     
     private String namePrefix = "Q";
     
-    private Serializer entitySerializer = new EntitySerializer();
+    private final Serializer entitySerializer = new EntitySerializer();
     
-    private Serializer supertypeSerializer = new SupertypeSerializer();
+    private final Serializer supertypeSerializer = new SupertypeSerializer();
     
-    private Serializer embeddableSerializer = new EmbeddableSerializer();
+    private final Serializer embeddableSerializer = new EmbeddableSerializer();
     
-    private Serializer dtoSerializer = new DTOSerializer();
+    private final Serializer dtoSerializer = new DTOSerializer();
     
     protected final Class<? extends Annotation> entityAnn, superTypeAnn, embeddableAnn, skipAnn;
     
@@ -145,8 +145,7 @@ public class SimpleConfiguration implements Configuration {
     public String getNamePrefix() {
         return namePrefix;
     }
-    
-    
+       
 
     /* (non-Javadoc)
      * @see com.mysema.query.apt.Configuration#getEntitySerializer()

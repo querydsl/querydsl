@@ -57,8 +57,8 @@ public class QueryProjectionTest {
     
     @Test
     public void test() throws SecurityException, NoSuchMethodException{
-        QEntityWithProjection.project(EStringConst.create("")).getJavaConstructor();
-        QEntityWithProjection.project(ENumberConst.create(0l), EStringConst.create("")).getJavaConstructor();
+        QEntityWithProjection.create(EStringConst.create("")).getJavaConstructor();
+        QEntityWithProjection.create(ENumberConst.create(0l), EStringConst.create("")).getJavaConstructor();
         
         new QDTOWithProjection(EStringConst.create("")).getJavaConstructor();
         new QDTOWithProjection(ENumberConst.create(0l), EStringConst.create("")).getJavaConstructor();

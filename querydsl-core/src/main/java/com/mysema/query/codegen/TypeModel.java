@@ -15,9 +15,9 @@ public interface TypeModel {
 
     TypeModel as(TypeCategory category);
 
-    String getLocalRawName(BeanModel context);
+    StringBuilder getLocalRawName(BeanModel context, StringBuilder builder);
     
-    String getLocalGenericName(BeanModel context);
+    StringBuilder getLocalGenericName(BeanModel context, StringBuilder builder, boolean asArgType);
 
     String getFullName();
 
@@ -42,8 +42,6 @@ public interface TypeModel {
     String toString();
 
     boolean isFinal();
-
-    boolean isExtendsType();
     
-    TypeModel asAnySubtype();
+    
 }

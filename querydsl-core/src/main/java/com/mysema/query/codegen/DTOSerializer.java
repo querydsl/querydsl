@@ -20,7 +20,7 @@ public class DTOSerializer implements Serializer{
         
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
-        final String localName = model.getLocalName();
+        final String localName = model.getLocalRawName();
         
         StringBuilder builder = new StringBuilder();
         for (ConstructorModel c : model.getConstructors()){
@@ -33,7 +33,8 @@ public class DTOSerializer implements Serializer{
                 if (!p.getType().isFinal()){
                     builder.append("? extends ");
                 }
-                builder.append(p.getType().getLocalGenericName(model) + "> " + p.getName());
+                builder = p.getType().getLocalGenericName(model, builder, false);
+                builder.append("> ").append(p.getName());
                 first = false;
             }
             builder.append("){\n");
@@ -47,7 +48,8 @@ public class DTOSerializer implements Serializer{
                 if (p.getType().getPrimitiveName() != null){
                     builder.append(p.getType().getPrimitiveName()+".class");
                 }else{
-                    builder.append(p.getType().getLocalRawName(model) + ".class");    
+                    builder = p.getType().getLocalRawName(model, builder);
+                    builder.append(".class");    
                 }                
                 first = false;
             }
@@ -70,7 +72,7 @@ public class DTOSerializer implements Serializer{
     protected void intro(BeanModel model, Writer writer) throws IOException {
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
-        final String localName = model.getLocalName();
+        final String localName = model.getLocalRawName();
         
         StringBuilder builder = new StringBuilder();        
         // package

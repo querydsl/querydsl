@@ -32,8 +32,10 @@ import javax.lang.model.util.Elements;
 import com.mysema.query.codegen.ClassTypeModel;
 import com.mysema.query.codegen.SimpleTypeModel;
 import com.mysema.query.codegen.TypeCategory;
+import com.mysema.query.codegen.TypeExtendsModel;
 import com.mysema.query.codegen.TypeModel;
 import com.mysema.query.codegen.TypeModelFactory;
+import com.mysema.query.codegen.TypeSuperModel;
 import com.mysema.query.util.TypeUtil;
 
 /**
@@ -68,32 +70,23 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
         if (type.getKind() == TypeKind.TYPEVAR){
             TypeVariable t = (TypeVariable)type;
             if (t.getUpperBound() != null){
-                key.append(";");
-                key.append(getKey(t.getUpperBound(), false));
+                key.append(";").append(getKey(t.getUpperBound(), false));
             }            
             if (t.getLowerBound() != null){
-                key.append(";");
-                key.append(getKey(t.getLowerBound(), false));
+                key.append(";").append(getKey(t.getLowerBound(), false));
             }
         }else if (type.getKind() == TypeKind.WILDCARD){
             WildcardType t = (WildcardType)type;
             if (t.getExtendsBound() != null){
-                key.append(";");
-                key.append(getKey(t.getExtendsBound(), false));
+                key.append(";").append(getKey(t.getExtendsBound(), false));
             }
             if (t.getSuperBound() != null){
-                key.append(";");
-                key.append(getKey(t.getSuperBound(), false));
+                key.append(";").append(getKey(t.getSuperBound(), false));
             }
         }else if (type.getKind() == TypeKind.DECLARED){
             DeclaredType t = (DeclaredType)type;
             for (TypeMirror arg : t.getTypeArguments()){
-                key.append(";");
-                if (deep){
-                    key.append(getKey(arg, false));
-                }else{
-                    key.append(arg.toString());
-                }                
+                key.append(";").append(deep ? getKey(arg, false) : arg.toString());
             }
         }
         return key.toString();
@@ -274,11 +267,15 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
 
     @Override
     public TypeModel visitTypeVariable(TypeVariable t, Elements p) {
+        // TODO : take variable name into account
         if (t.getUpperBound() != null){
-            return t.getUpperBound().accept(this, p).asAnySubtype();
+            return new TypeExtendsModel(t.getUpperBound().accept(this, p));
+        }else if (t.getLowerBound() != null && !(t.getLowerBound() instanceof NullType)){
+            return new TypeSuperModel(t.getLowerBound().accept(this, p));
         }else{
             return null;
         }
+        
     }
 
     @Override
@@ -287,12 +284,15 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
     }
 
     @Override
-    public TypeModel visitWildcard(WildcardType t, Elements p) {
+    public TypeModel visitWildcard(WildcardType t, Elements p) {        
         if (t.getExtendsBound() != null){
-            return t.getExtendsBound().accept(this, p).asAnySubtype();
-        }else{
+            return new TypeExtendsModel(t.getExtendsBound().accept(this, p));
+        }else if (t.getSuperBound() != null){
+            return new TypeSuperModel(t.getSuperBound().accept(this, p));
+        }else{            
             return null;
         }
+        
     }
     
 }

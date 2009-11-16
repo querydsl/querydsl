@@ -9,7 +9,7 @@ public class ConstructorTest {
     
     @Test
     public void test(){
-        QCat.project(QCat.cat.name, QCat.cat.id).getJavaConstructor();
+        QCat.create(QCat.cat.name, QCat.cat.id).getJavaConstructor();
     }
 
 }

@@ -45,7 +45,7 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         this.name = Assert.notNull(name);
         this.escapedName = JavaSyntaxUtils.isReserved(name) ? (name + "_") : name;
         this.type = Assert.notNull(type);
-        this.typeName = type.getLocalRawName(classModel);    
+        this.typeName = type.getLocalRawName(classModel, new StringBuilder()).toString();    
         if (type.getTypeCategory().isSubCategoryOf(TypeCategory.SIMPLE)){
             this.queryTypeName = null;
         }else{
@@ -64,9 +64,6 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         return name.compareToIgnoreCase(o.getName());
     }
     
-    /* (non-Javadoc)
-     * @see com.mysema.query.codegen.PropertyModel#createCopy(com.mysema.query.codegen.BeanModel)
-     */
     public PropertyModel createCopy(BeanModel model){
         boolean inherited = model.getSuperModel() != null; 
         return new PropertyModel(model, name, type, inits, inherited);
@@ -76,98 +73,66 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         return o instanceof PropertyModel && name.equals(((PropertyModel) o).name);
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.codegen.PropertyModel#getEscapedName()
-     */
     public String getEscapedName(){
         return escapedName;
     }
 
-
-    /* (non-Javadoc)
-     * @see com.mysema.query.codegen.PropertyModel#getGenericParameterName(int)
-     */
     @Nullable
     public String getGenericParameterName(int i){
+        return getGenericParameterName(i, false);
+    }
+    
+    @Nullable
+    public String getGenericParameterName(int i, boolean asArgType){
         if (i < type.getParameterCount()){
-            return type.getParameter(i).getLocalGenericName(context);
+            return type.getParameter(i).getLocalGenericName(context, new StringBuilder(), asArgType).toString();
             
         }else{
             return null;
         }
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.codegen.PropertyModel#getGenericTypeName()
-     */
     public String getGenericTypeName(){
-        return type.getLocalGenericName(context);   
+        return type.getLocalGenericName(context, new StringBuilder(), false).toString();   
     }
-    
-    /* (non-Javadoc)
-     * @see com.mysema.query.codegen.PropertyModel#getInits()
-     */
+
     public String[] getInits(){
         return inits;
     }
-    
-    /* (non-Javadoc)
-     * @see com.mysema.query.codegen.PropertyModel#getBeanModel()
-     */
+
     public BeanModel getBeanModel(){
         return context;
     }
-    
-    /* (non-Javadoc)
-     * @see com.mysema.query.codegen.PropertyModel#getName()
-     */
+
     public String getName() {
         return name;
     }
-    
-    /* (non-Javadoc)
-     * @see com.mysema.query.codegen.PropertyModel#getRawParameterName(int)
-     */
+
     @Nullable
     public String getRawParameterName(int i){
         if (i < type.getParameterCount()){            
-            return type.getParameter(i).getLocalRawName(context);
+            return type.getParameter(i).getLocalRawName(context, new StringBuilder()).toString();
         }else{
             return null;
         }
     }
-    
-    /* (non-Javadoc)
-     * @see com.mysema.query.codegen.PropertyModel#getQueryTypeName()
-     */
+
     public String getQueryTypeName() {
         return queryTypeName;
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.codegen.PropertyModel#getSimpleTypeName()
-     */
     public String getSimpleTypeName() {
         return type.getSimpleName();
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.codegen.PropertyModel#getTypeCategory()
-     */
     public TypeCategory getTypeCategory() {
         return type.getTypeCategory();
     }
-    
-    /* (non-Javadoc)
-     * @see com.mysema.query.codegen.PropertyModel#getTypeName()
-     */
+
     public String getTypeName() {
         return typeName;
     }
-    
-    /* (non-Javadoc)
-     * @see com.mysema.query.codegen.PropertyModel#getTypePackage()
-     */
+
     public String getTypePackage() {
         return type.getPackageName();
     }
@@ -176,9 +141,6 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         return Arrays.asList(name, type).hashCode();
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.codegen.PropertyModel#isInherited()
-     */
     public boolean isInherited() {
         return inherited;
     }

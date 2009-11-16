@@ -80,27 +80,29 @@ public final class BeanModel implements Comparable<BeanModel> {
         }
     }
 
+    @Override
     public int compareTo(BeanModel o) {
         return typeModel.getSimpleName().compareTo(o.typeModel.getSimpleName());
     }
 
+    @Override
     public boolean equals(Object o) {
-        return o instanceof BeanModel && typeModel.getFullName().equals(((BeanModel) o).typeModel.getFullName());
+        return o instanceof BeanModel && typeModel.equals(((BeanModel) o).typeModel);
     }
 
     public Collection<ConstructorModel> getConstructors() {
         return constructors;
     }
 
-    public String getGenericName(){
-        return typeModel.getLocalGenericName(this);            
+    public String getLocalGenericName(){
+        return typeModel.getLocalGenericName(this, new StringBuilder(), false).toString();            
     }
 
-    public String getLocalName() {
-        return typeModel.getLocalRawName(this);
+    public String getLocalRawName() {
+        return typeModel.getLocalRawName(this, new StringBuilder()).toString();
     }
     
-    public String getName() {
+    public String getFullName() {
         return typeModel.getFullName();
     }
 
@@ -137,10 +139,10 @@ public final class BeanModel implements Comparable<BeanModel> {
         return hasEntityFields;
     }
 
+    @Override
     public int hashCode() {
-        return typeModel.getFullName().hashCode();
+        return typeModel.hashCode();
     }
-
 
     public boolean hasLists() {
         return hasLists;
@@ -152,7 +154,7 @@ public final class BeanModel implements Comparable<BeanModel> {
 
     public void include(BeanModel clazz) {
         for (PropertyModel property : clazz.properties){
-            if (!property.isInherited()){
+            if (!property.isInherited()){                
                 addProperty(property.createCopy(this));    
             }            
         }        

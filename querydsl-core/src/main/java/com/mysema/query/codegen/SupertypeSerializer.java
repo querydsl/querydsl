@@ -21,7 +21,7 @@ public class SupertypeSerializer extends EntitySerializer{
     protected void constructors(BeanModel model, Writer writer) throws IOException {
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
-        final String genericName = model.getGenericName();
+        final String genericName = model.getLocalGenericName();
         
         StringBuilder builder = new StringBuilder();
         

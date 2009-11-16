@@ -72,32 +72,91 @@ public class Processor {
         Map<String, BeanModel> superTypes = new HashMap<String, BeanModel>();
         EntityElementVisitor entityVisitor = new EntityElementVisitor(env, conf, typeFactory);
         
-        // populate super type mappings
+        // supertypes
         if (conf.getSuperTypeAnn() != null) {
-            for (Element element : roundEnv.getElementsAnnotatedWith(conf.getSuperTypeAnn())) {
-                if (conf.getEmbeddableAnn() == null || element.getAnnotation(conf.getEmbeddableAnn()) == null){
-                    BeanModel model = element.accept(entityVisitor, null);
-                    superTypes.put(model.getName(), model);    
-                }                
-            }
-            // add supertype fields
-            for (BeanModel superType : superTypes.values()) {
-                addSupertypeFields(superType, superTypes);      
-            }
-            // serialize supertypes
-            if (!superTypes.isEmpty()){
-                serialize(conf.getSupertypeSerializer(), superTypes);
-            }
+            handleSupertypes(roundEnv, superTypes, entityVisitor);
+        }
+        
+        // entities
+        handleEntities(roundEnv, superTypes, entityVisitor);
+        
+        // embeddables
+        if (conf.getEmbeddableAnn() != null){
+            handleEmbeddables(roundEnv, superTypes, entityVisitor);            
         }
 
-        // ENTITIES
+        // projections
+        DTOElementVisitor dtoVisitor = new DTOElementVisitor(env, conf, typeFactory);
+        Map<String, BeanModel> dtos = new HashMap<String, BeanModel>();
+        Set<Element> visitedDTOTypes = new HashSet<Element>();
+        for (Element element : roundEnv.getElementsAnnotatedWith(QueryProjection.class)) {
+            Element parent = element.getEnclosingElement();
+            if (parent.getAnnotation(conf.getEntityAnn()) == null
+                    && parent.getAnnotation(conf.getEmbeddableAnn()) == null
+                    && !visitedDTOTypes.contains(parent)){
+                BeanModel model = parent.accept(dtoVisitor, null);
+                dtos.put(model.getFullName(), model);    
+                visitedDTOTypes.add(parent);
+                
+            }            
+        }
+        // serialize entity types
+        if (!dtos.isEmpty()) {
+            serialize(conf.getDTOSerializer(), dtos);
+        }     
         
+    }
+
+    private void handleSupertypes(RoundEnvironment roundEnv,
+            Map<String, BeanModel> superTypes,
+            EntityElementVisitor entityVisitor) {
+        for (Element element : roundEnv.getElementsAnnotatedWith(conf.getSuperTypeAnn())) {
+            if (conf.getEmbeddableAnn() == null || element.getAnnotation(conf.getEmbeddableAnn()) == null){
+                BeanModel model = element.accept(entityVisitor, null);
+                superTypes.put(model.getFullName(), model);    
+            }                
+        }
+        // add supertype fields
+        for (BeanModel superType : superTypes.values()) {
+            addSupertypeFields(superType, superTypes);      
+        }
+        // serialize supertypes
+        if (!superTypes.isEmpty()){
+            serialize(conf.getSupertypeSerializer(), superTypes);
+        }
+    }
+
+    private void handleEmbeddables(RoundEnvironment roundEnv,
+            Map<String, BeanModel> superTypes,
+            EntityElementVisitor entityVisitor) {
+        // populate entity type mappings
+        Map<String, BeanModel> embeddables = new HashMap<String, BeanModel>();
+        
+        for (Element element : roundEnv.getElementsAnnotatedWith(conf.getEmbeddableAnn())) {
+            BeanModel model = element.accept(entityVisitor, null);
+            embeddables.put(model.getFullName(), model);
+        }  
+        superTypes.putAll(embeddables);
+        
+        // add super type fields
+        for (BeanModel embeddable : embeddables.values()) {
+            addSupertypeFields(embeddable, superTypes);
+        }
+        // serialize entity types
+        if (!embeddables.isEmpty()) {
+            serialize(conf.getEmbeddableSerializer(), embeddables);
+        }
+    }
+
+    private void handleEntities(RoundEnvironment roundEnv,
+            Map<String, BeanModel> superTypes,
+            EntityElementVisitor entityVisitor) {
         // populate entity type mappings
         Map<String, BeanModel> entityTypes = new HashMap<String, BeanModel>();
         for (Element element : roundEnv.getElementsAnnotatedWith(conf.getEntityAnn())) {
             if (conf.getEmbeddableAnn() == null || element.getAnnotation(conf.getEmbeddableAnn()) == null){
                 BeanModel model = element.accept(entityVisitor, null);
-                entityTypes.put(model.getName(), model);    
+                entityTypes.put(model.getFullName(), model);    
             }            
         }
         superTypes.putAll(entityTypes);
@@ -110,50 +169,6 @@ public class Processor {
         if (!entityTypes.isEmpty()) {
             serialize(conf.getEntitySerializer(), entityTypes);
         }
-        
-        // EMBEDDABLES (optional)
-        
-        if (conf.getEmbeddableAnn() != null){
-            // populate entity type mappings
-            Map<String, BeanModel> embeddables = new HashMap<String, BeanModel>();
-            
-            for (Element element : roundEnv.getElementsAnnotatedWith(conf.getEmbeddableAnn())) {
-                BeanModel model = element.accept(entityVisitor, null);
-                embeddables.put(model.getName(), model);
-            }  
-            superTypes.putAll(embeddables);
-            
-            // add super type fields
-            for (BeanModel embeddable : embeddables.values()) {
-                addSupertypeFields(embeddable, superTypes);
-            }
-            // serialize entity types
-            if (!embeddables.isEmpty()) {
-                serialize(conf.getEmbeddableSerializer(), embeddables);
-            }            
-        }
-
-        // DTOS (optional)
-        
-        DTOElementVisitor dtoVisitor = new DTOElementVisitor(env, conf, typeFactory);
-        Map<String, BeanModel> dtos = new HashMap<String, BeanModel>();
-        Set<Element> visitedDTOTypes = new HashSet<Element>();
-        for (Element element : roundEnv.getElementsAnnotatedWith(QueryProjection.class)) {
-            Element parent = element.getEnclosingElement();
-            if (parent.getAnnotation(conf.getEntityAnn()) == null
-                    && parent.getAnnotation(conf.getEmbeddableAnn()) == null
-                    && !visitedDTOTypes.contains(parent)){
-                BeanModel model = parent.accept(dtoVisitor, null);
-                dtos.put(model.getName(), model);    
-                visitedDTOTypes.add(parent);
-                
-            }            
-        }
-        // serialize entity types
-        if (!dtos.isEmpty()) {
-            serialize(conf.getDTOSerializer(), dtos);
-        }     
-        
     }
         
     private void addSupertypeFields(BeanModel model, Map<String, BeanModel> superTypes) {
@@ -207,7 +222,7 @@ public class Processor {
     private void serialize(Serializer serializer, Map<String, BeanModel> types) {
         Messager msg = env.getMessager();
         for (BeanModel type : types.values()) {
-            msg.printMessage(Kind.NOTE, type.getName() + " is processed");
+            msg.printMessage(Kind.NOTE, type.getFullName() + " is processed");
             try {
                 String packageName = type.getPackageName();                    
                 String className = packageName + "." + conf.getNamePrefix() + type.getSimpleName();

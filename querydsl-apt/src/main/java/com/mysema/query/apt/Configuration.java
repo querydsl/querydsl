@@ -10,41 +10,44 @@ import javax.lang.model.element.VariableElement;
 
 import com.mysema.query.codegen.Serializer;
 
+/**
+ * @author tiwe
+ *
+ */
 public interface Configuration {
 
-    public VisitorConfig getConfig(TypeElement e,
-            List<? extends Element> elements);
+    VisitorConfig getConfig(TypeElement e, List<? extends Element> elements);
 
-    public boolean isValidConstructor(ExecutableElement constructor);
+    boolean isValidConstructor(ExecutableElement constructor);
 
-    public boolean isValidField(VariableElement field);
+    boolean isValidField(VariableElement field);
 
-    public boolean isValidGetter(ExecutableElement getter);
+    boolean isValidGetter(ExecutableElement getter);
 
-    public Class<? extends Annotation> getEntityAnn();
+    Class<? extends Annotation> getEntityAnn();
 
-    public Class<? extends Annotation> getSuperTypeAnn();
+    Class<? extends Annotation> getSuperTypeAnn();
 
-    public Class<? extends Annotation> getEmbeddableAnn();
+    Class<? extends Annotation> getEmbeddableAnn();
 
-    public Class<? extends Annotation> getSkipAnn();
+    Class<? extends Annotation> getSkipAnn();
 
-    public void setUseGetters(boolean b);
+    void setUseGetters(boolean b);
 
-    public void setUseFields(boolean b);
+    void setUseFields(boolean b);
 
-    public String getNamePrefix();
+    String getNamePrefix();
 
-    public Serializer getEntitySerializer();
+    Serializer getEntitySerializer();
 
-    public Serializer getSupertypeSerializer();
+    Serializer getSupertypeSerializer();
 
-    public Serializer getEmbeddableSerializer();
+    Serializer getEmbeddableSerializer();
 
-    public boolean isUseFields();
+    boolean isUseFields();
 
-    public boolean isUseGetters();
+    boolean isUseGetters();
 
-    public void setNamePrefix(String namePrefix);
+    void setNamePrefix(String namePrefix);
 
 }

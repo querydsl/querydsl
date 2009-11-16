@@ -36,6 +36,8 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     private static final Logger logger = LoggerFactory.getLogger(HibernateQuery.class);
     
     private final Session session;
+    
+    private int fetchSize = 0;
 
     public AbstractHibernateQuery(QueryMetadata md, Session session, HQLTemplates patterns) {
         super(md, patterns);
@@ -45,6 +47,9 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
         Query query = session.createQuery(queryString);
         HibernateUtil.setConstants(query, getConstants());
+        if (fetchSize > 0){
+            query.setFetchSize(fetchSize);
+        }        
         if (modifiers != null && modifiers.isRestricting()) {
             if (modifiers.getLimit() != null) {
                 query.setMaxResults(modifiers.getLimit().intValue());
@@ -142,5 +147,11 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
             logger.debug(queryString.replace('\n', ' '));    
         }        
     }
+
+    public void setFetchSize(int fetchSize) {
+        this.fetchSize = fetchSize;
+    }
+    
+    
 
 }

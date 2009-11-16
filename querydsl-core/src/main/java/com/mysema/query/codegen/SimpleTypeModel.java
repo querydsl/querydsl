@@ -26,7 +26,7 @@ public class SimpleTypeModel implements TypeModel {
     private final TypeCategory typeCategory;
     
     private final boolean visible, finalClass;
-        
+    
     public SimpleTypeModel(
             TypeCategory typeCategory, 
             String name,
@@ -58,38 +58,32 @@ public class SimpleTypeModel implements TypeModel {
     }
     
     @Override
-    public String getLocalGenericName(BeanModel context) {
-        StringBuilder builder = new StringBuilder();
-        if (isExtendsType()){
-            builder.append("? extends ");
-        }   
+    public StringBuilder getLocalGenericName(BeanModel context, StringBuilder builder, boolean asArgType) {
+        builder = getLocalRawName(context, builder);
         if (parameters.length > 0){                        
-            if (!visible && !context.getPackageName().equals(packageName)){
-                builder.append(packageName).append(".");
-            }
-            builder.append(localName).append("<");
+            builder.append("<");
             for (int i = 0; i < parameters.length; i++){
                 if (i > 0) builder.append(",");
                 if (parameters[i] != null && !parameters[i].getFullName().equals(fullName)){
-                    builder.append(parameters[i].getLocalGenericName(context));    
+                    builder = parameters[i].getLocalGenericName(context, builder, false);    
                 }else{
                     builder.append("?");
                 }                
             }            
-            builder.append(">");                       
-        }else{
-            builder.append(getLocalRawName(context));
+            builder.append(">");            
         }
-        return builder.toString();
+        return builder;
+        
     }
 
     @Override
-    public String getLocalRawName(BeanModel context){
+    public StringBuilder getLocalRawName(BeanModel context, StringBuilder builder){
         if (visible || context.getPackageName().equals(packageName)){
-            return localName;    
+            builder.append(localName);    
         }else{
-            return fullName;
+            builder.append(fullName);
         }        
+        return builder;
     }
 
     @Override
@@ -146,7 +140,7 @@ public class SimpleTypeModel implements TypeModel {
     public boolean equals(Object o){
         if (o instanceof TypeModel){
             TypeModel t = (TypeModel)o;
-            return fullName.equals(t.getFullName()) && isExtendsType() == t.isExtendsType();
+            return fullName.equals(t.getFullName());
         }else{
             return false;
         }
@@ -160,21 +154,6 @@ public class SimpleTypeModel implements TypeModel {
     @Override
     public boolean isFinal() {
         return finalClass;
-    }
-
-    @Override
-    public TypeModel asAnySubtype() {
-        return new SimpleTypeModel(typeCategory, fullName, packageName, simpleName, finalClass, parameters){
-            @Override
-            public boolean isExtendsType(){
-                return true;
-            }
-        };
-    }
-    
-    @Override
-    public boolean isExtendsType(){
-        return false;
     }
     
 }

@@ -20,7 +20,7 @@ public class EntitySerializer implements Serializer{
     }
         
     protected void collectionOfEntity(PropertyModel field, Writer writer) throws IOException {
-        String genericTypeName = field.getGenericParameterName(0);
+        String genericTypeName = field.getGenericParameterName(0,false);
         String typeName = field.getRawParameterName(0);
         serialize(field, "PEntityCollection<" + genericTypeName+">", writer, "createEntityCollection",typeName+".class");        
     }
@@ -38,8 +38,8 @@ public class EntitySerializer implements Serializer{
     protected void constructors(BeanModel model, Writer writer) throws IOException {
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
-        final String localName = model.getLocalName();
-        final String genericName = model.getGenericName();
+        final String localName = model.getLocalRawName();
+        final String genericName = model.getLocalGenericName();
         
         StringBuilder builder = new StringBuilder();
         
@@ -107,8 +107,8 @@ public class EntitySerializer implements Serializer{
     protected void constructorsForVariables(StringBuilder builder, BeanModel model) {
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
-        final String localName = model.getLocalName();
-        final String genericName = model.getGenericName();
+        final String localName = model.getLocalRawName();
+        final String genericName = model.getLocalGenericName();
         
         boolean hasEntityFields = model.hasEntityFields();
         String thisOrSuper = hasEntityFields ? "this" : "super";
@@ -191,7 +191,7 @@ public class EntitySerializer implements Serializer{
 
     protected void introClassHeader(StringBuilder builder, BeanModel model) {
         final String queryType = model.getPrefix() + model.getSimpleName();
-        final String localName = model.getGenericName();
+        final String localName = model.getLocalGenericName();
         
         builder.append("@SuppressWarnings(\"serial\")\n");
         builder.append("public class " + queryType + " extends PEntity<" + localName + "> {\n\n");
@@ -206,15 +206,15 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void introFactoryMethods(StringBuilder builder, BeanModel model) throws IOException {
-        final String localName = model.getLocalName();
-        final String genericName = model.getGenericName();
+        final String localName = model.getLocalRawName();
+        final String genericName = model.getLocalGenericName();
         
         for (ConstructorModel c : model.getConstructors()){
             // begin
             if (!localName.equals(genericName)){
                 builder.append("    @SuppressWarnings(\"unchecked\")\n");
             }            
-            builder.append("    public static EConstructor<" + genericName + "> project(");
+            builder.append("    public static EConstructor<" + genericName + "> create(");
             boolean first = true;
             for (ParameterModel p : c.getParameters()){
                 if (!first) builder.append(", ");
@@ -222,7 +222,8 @@ public class EntitySerializer implements Serializer{
                 if (!p.getType().isFinal()){
                     builder.append("? extends ");
                 }
-                builder.append(p.getType().getLocalGenericName(model) + "> " + p.getName());
+                builder = p.getType().getLocalGenericName(model, builder, false);
+                builder.append("> ").append(p.getName());
                 first = false;
             }
             builder.append("){\n");
@@ -240,7 +241,8 @@ public class EntitySerializer implements Serializer{
                 if (p.getType().getPrimitiveName() != null){
                     builder.append(p.getType().getPrimitiveName()+".class");
                 }else{
-                    builder.append(p.getType().getLocalRawName(model) + ".class");    
+                    builder = p.getType().getLocalRawName(model, builder);
+                    builder.append(".class");    
                 }                
                 first = false;
             }
@@ -347,7 +349,7 @@ public class EntitySerializer implements Serializer{
 
     protected void listOfSimpleAccessor(PropertyModel field, Writer writer) throws IOException { 
         final String escapedName = field.getEscapedName();
-        final String valueType = field.getGenericParameterName(0);
+        String valueType = field.getGenericParameterName(0);
         
         StringBuilder builder = new StringBuilder();        
         builder.append("    public PSimple<" + valueType + "> " + escapedName + "(int index) {\n");
@@ -394,7 +396,7 @@ public class EntitySerializer implements Serializer{
     protected void mapOfSimple(PropertyModel field, Writer writer) throws IOException {               
         final String keyType = field.getRawParameterName(0);
         final String valueType = field.getRawParameterName(1);
-        final String genericKey = field.getGenericParameterName(0);
+        final String genericKey = field.getGenericParameterName(0,true);
         final String genericValue = field.getGenericParameterName(1);
         
         serialize(field, "PComponentMap<"+genericKey+","+genericValue+">", 
@@ -407,9 +409,8 @@ public class EntitySerializer implements Serializer{
         final String genericKey = field.getGenericParameterName(0);
         final String genericValue = field.getGenericParameterName(1);
         
-        StringBuilder builder = new StringBuilder();
-        
-        builder.append("    public PSimple<" + genericValue + "> " + escapedName + "(" + genericKey + " key) {\n");
+        StringBuilder builder = new StringBuilder();        
+        builder.append("    public PSimple<" + genericValue + "> " + escapedName + "(" + field.getGenericParameterName(0,true) + " key) {\n");
         builder.append("        return " + escapedName + ".get(key);\n");
         builder.append("    }\n\n");
         builder.append("    public PSimple<" + genericValue + "> " + escapedName + "(Expr<"+genericKey+"> key) {\n");
