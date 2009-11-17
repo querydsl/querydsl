@@ -128,6 +128,15 @@
         <artifactId>maven-version-plugin</artifactId>
         <version>0.1.0</version>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.0-beta-7</version>
+        <configuration>
+          <tagBase>https://source.mysema.com/svn/mysema/projects/querydsl/tags</tagBase>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+        </configuration>
+      </plugin>      
     </plugins>
   </build>
   
