@@ -64,8 +64,7 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
         String queryString = toQueryString();
         logQuery(queryString);
         return createQuery(queryString, getMetadata().getModifiers());   
-    }   
-    
+    }       
     
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
         Query query = session.createQuery(queryString);
@@ -84,11 +83,27 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
         return query;
     }
     
+    /**
+     * Return the query results as an <tt>Iterator</tt>. If the query
+     * contains multiple results pre row, the results are returned in
+     * an instance of <tt>Object[]</tt>.<br>
+     * <br>
+     * Entities returned as results are initialized on demand. The first
+     * SQL query returns identifiers only.<br>
+     */
     @SuppressWarnings("unchecked")
     public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
         return  createQuery(e1, e2, rest).iterate();
     }
 
+    /**
+     * Return the query results as an <tt>Iterator</tt>. If the query
+     * contains multiple results pre row, the results are returned in
+     * an instance of <tt>Object[]</tt>.<br>
+     * <br>
+     * Entities returned as results are initialized on demand. The first
+     * SQL query returns identifiers only.<br>
+     */
     @SuppressWarnings("unchecked")
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {
         return createQuery(projection).iterate();
@@ -127,10 +142,30 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
         }        
     }
 
+    /**
+     * Return the query results as <tt>ScrollableResults</tt>. The
+     * scrollability of the returned results depends upon JDBC driver
+     * support for scrollable <tt>ResultSet</tt>s.<br>
+     * 
+     * @param mode
+     * @param expr
+     * @return
+     */
     public ScrollableResults scroll(ScrollMode mode, Expr<?> expr) {
         return createQuery(expr).scroll(mode);
     }
 
+    /**
+     * Return the query results as <tt>ScrollableResults</tt>. The
+     * scrollability of the returned results depends upon JDBC driver
+     * support for scrollable <tt>ResultSet</tt>s.<br>
+     * 
+     * @param mode
+     * @param expr1
+     * @param expr2
+     * @param rest
+     * @return
+     */
     public ScrollableResults scroll(ScrollMode mode, Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
         return createQuery(expr1, expr2, rest).scroll(mode);
     }
