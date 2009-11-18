@@ -274,8 +274,7 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
             return new TypeSuperModel(t.getLowerBound().accept(this, p));
         }else{
             return null;
-        }
-        
+        }        
     }
 
     @Override

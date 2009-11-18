@@ -90,9 +90,9 @@ public class EntitySerializer implements Serializer{
             builder.append(", inits");
         }
         builder.append(");\n");
-        builder.append("    }\n\n");       
+        builder.append("    }\n\n");                 
         
-        // 5 (with entity field initialization)
+        // 5 
         if (hasEntityFields){            
             builder.append("    public "+queryType+"(Class<? extends "+genericName+"> type, @NotEmpty String entityName, PathMetadata<?> metadata, PathInits inits) {\n");
             builder.append("        super(type, entityName, metadata);\n");
