@@ -189,7 +189,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         append(")");
     }
 
-    private void visitCast(Operator<?> operator, Expr<?> source, Class<?> targetType) {
+    private void visitCast(Expr<?> source, Class<?> targetType) {
         append("cast(").handle(source);
         append(" as ");
         append(targetType.getSimpleName().toLowerCase()).append(")");
@@ -206,7 +206,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             super.visitOperation(type, operator, args);
             
         } else if (operator.equals(Ops.NUMCAST)) {
-            visitCast(operator, args.get(0), (Class<?>) ((Constant<?>) args.get(1)).getConstant());
+            visitCast(args.get(0), (Class<?>) ((Constant<?>) args.get(1)).getConstant());
             
         } else if (operator.equals(Ops.MATCHES)){
             args = new ArrayList<Expr<?>>(args);

@@ -30,6 +30,12 @@ public final class ConstructorModel {
         return parameters;
     }
     
+    @Override
+    public boolean equals(Object o){
+        return o instanceof ConstructorModel && ((ConstructorModel)o).parameters.equals(parameters);
+    }
+    
+    @Override
     public int hashCode(){
         return parameters.hashCode();
     }

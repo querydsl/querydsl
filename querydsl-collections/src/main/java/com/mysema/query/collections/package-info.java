@@ -4,6 +4,10 @@
  * 
  */
 
+/**
+ * Query implementations for JavaBean collections
+ * 
+ */
 @DefaultAnnotation( { Nonnull.class })
 package com.mysema.query.collections;
 

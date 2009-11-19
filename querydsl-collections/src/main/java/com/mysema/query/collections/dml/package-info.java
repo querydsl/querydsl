@@ -3,6 +3,11 @@
  * All rights reserved.
  * 
  */
+
+/**
+ * DML operations for Querydsl Collections
+ * 
+ */
 @DefaultAnnotation( { Nonnull.class })
 package com.mysema.query.collections.dml;
 

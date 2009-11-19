@@ -4,6 +4,9 @@
  * 
  */
 
+/**
+ * Code generations models and serializers
+ */
 @DefaultAnnotation({ Nonnull.class })
 package com.mysema.query.codegen;
 

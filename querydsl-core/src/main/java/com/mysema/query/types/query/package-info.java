@@ -4,6 +4,10 @@
  * 
  */
 
+/**
+ * Subquery implementations
+ * 
+ */
 @DefaultAnnotation( { Nonnull.class })
 package com.mysema.query.types.query;
 

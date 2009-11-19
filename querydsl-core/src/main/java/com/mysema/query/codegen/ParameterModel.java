@@ -20,7 +20,7 @@ public final class ParameterModel implements Comparable<ParameterModel> {
     
     private final TypeModel type;
 
-    public ParameterModel(BeanModel context, String name, TypeModel type) {
+    public ParameterModel(BeanModel container, String name, TypeModel type) {
         this.name = name;
         this.type = type;
     }

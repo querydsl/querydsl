@@ -4,6 +4,10 @@
  * 
  */
 
+/**
+ * Various support classes
+ * 
+ */
 @DefaultAnnotation( { Nonnull.class })
 package com.mysema.query.support;
 

@@ -3,6 +3,10 @@
  * All rights reserved.
  * 
  */
+
+/**
+ * DML interfaces
+ */
 @DefaultAnnotation( { Nonnull.class })
 package com.mysema.query.dml;
 

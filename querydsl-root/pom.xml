@@ -122,12 +122,49 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.5</version>
+        <configuration>
+          <groups>
+            <group>
+              <title>Core</title>
+              <packages>com.mysema.query:com.mysema.query.alias:com.mysema.query.annotations:com.mysema.query.codegen:com.mysema.query.dml:com.mysema.query.functions:com.mysema.query.serialization:com.mysema.query.support:com.mysema.query.types*</packages>
+            </group>
+            <group>
+              <title>APT</title>
+              <packages>com.mysema.query.apt*</packages>
+            </group>
+            <group>
+              <title>Collections</title>
+              <packages>com.mysema.query.collections*</packages>
+            </group>
+            <group>
+              <title>HQL/JPAQL</title>
+              <packages>com.mysema.query.hql*</packages>
+            </group>
+            <group>
+              <title>JDOQL</title>
+              <packages>com.mysema.query.jdoql*</packages>
+            </group>
+            <group>
+              <title>SQL</title>
+              <packages>com.mysema.query.sql*</packages>
+            </group>
+          </groups>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>maven-version-plugin</artifactId>
         <version>0.1.0</version>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <targetJdk>1.6</targetJdk>   
+          <includeTests>true</includeTests>     
+        </configuration>
+      </plugin>            
       <!-- 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
