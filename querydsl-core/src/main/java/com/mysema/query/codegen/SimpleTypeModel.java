@@ -58,7 +58,7 @@ public class SimpleTypeModel implements TypeModel {
     }
     
     @Override
-    public StringBuilder getLocalGenericName(EntityModel context, StringBuilder builder, boolean asArgType) {
+    public StringBuilder getLocalGenericName(TypeModel context, StringBuilder builder, boolean asArgType) {
         builder = getLocalRawName(context, builder);
         if (parameters.length > 0){                        
             builder.append("<");
@@ -77,7 +77,7 @@ public class SimpleTypeModel implements TypeModel {
     }
 
     @Override
-    public StringBuilder getLocalRawName(EntityModel context, StringBuilder builder){
+    public StringBuilder getLocalRawName(TypeModel context, StringBuilder builder){
         if (visible || context.getPackageName().equals(packageName)){
             builder.append(localName);    
         }else{
@@ -159,6 +159,16 @@ public class SimpleTypeModel implements TypeModel {
     @Override
     public boolean hasEntityFields() {
         return false;
+    }
+
+    @Override
+    public String getQueryTypeName(EntityModel context){
+        TypeModel valueType = getSelfOrValueType();
+        if (valueType.getPackageName().equals(context.getPackageName())){
+            return context.getPrefix() + valueType.getSimpleName();
+        }else{
+            return valueType.getPackageName() + "." + context.getPrefix() + valueType.getSimpleName();
+        }   
     }
     
 }

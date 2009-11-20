@@ -7,5 +7,10 @@
 /**
  * APT JDO support
  */
+@DefaultAnnotation({ Nonnull.class })
 package com.mysema.query.apt.jdo;
+
+import javax.annotation.Nonnull;
+
+import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
 

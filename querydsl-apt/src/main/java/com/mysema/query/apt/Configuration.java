@@ -11,6 +11,8 @@ import javax.lang.model.element.VariableElement;
 import com.mysema.query.codegen.Serializer;
 
 /**
+ * Configuration defines the configuration options for APT based Querydsl code generation
+ * 
  * @author tiwe
  *
  */
@@ -42,6 +44,8 @@ public interface Configuration {
 
     Serializer getSupertypeSerializer();
 
+    Serializer getDTOSerializer();
+    
     Serializer getEmbeddableSerializer();
 
     boolean isUseFields();

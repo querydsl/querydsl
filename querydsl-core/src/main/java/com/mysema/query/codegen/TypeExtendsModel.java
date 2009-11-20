@@ -11,7 +11,7 @@ public class TypeExtendsModel extends TypeModelAdapter{
     }
 
     @Override
-    public StringBuilder getLocalGenericName(EntityModel context, StringBuilder builder, boolean asArgType) {
+    public StringBuilder getLocalGenericName(TypeModel context, StringBuilder builder, boolean asArgType) {
         if (!asArgType){
             builder.append("? extends ");    
         }            

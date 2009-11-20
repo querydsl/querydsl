@@ -27,7 +27,7 @@ import com.mysema.query.apt.Processor;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class JDOAnnotationProcessor extends AbstractProcessor{
     
-    private Class<? extends Annotation> entity, superType, embeddable, skip;
+    private Class<? extends Annotation> entity, embeddable, skip;
     
     @SuppressWarnings("unchecked")
     @Override
@@ -35,11 +35,10 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
         try {
             processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
             entity = (Class)Class.forName("javax.jdo.annotations.PersistenceCapable");
-            superType = null; // ?!?
             embeddable = (Class)Class.forName("javax.jdo.annotations.EmbeddedOnly");
             skip = (Class)Class.forName("javax.jdo.annotations.NotPersistent");
             
-            SimpleConfiguration configuration = new SimpleConfiguration(entity, superType, embeddable, skip);
+            SimpleConfiguration configuration = new SimpleConfiguration(entity, null, embeddable, skip);
             configuration.setUseGetters(false);
             Processor processor = new Processor(processingEnv, configuration);
             processor.process(roundEnv);

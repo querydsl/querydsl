@@ -6,13 +6,16 @@
 package com.mysema.query.apt;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
@@ -29,6 +32,7 @@ import javax.lang.model.type.TypeVisitor;
 import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.Elements;
 
+import com.mysema.query.codegen.EntityModel;
 import com.mysema.query.codegen.SimpleClassTypeModel;
 import com.mysema.query.codegen.SimpleTypeModel;
 import com.mysema.query.codegen.TypeCategory;
@@ -39,10 +43,15 @@ import com.mysema.query.codegen.TypeSuperModel;
 import com.mysema.query.util.TypeUtil;
 
 /**
+ * APTTypeModelFactory is a factory for APT inspection based TypeModel creation
+ * 
  * @author tiwe
  *
  */
-public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
+// TODO : simplify
+public class APTTypeModelFactory implements TypeVisitor<TypeModel,Elements> {
+    
+    private final Configuration configuration;
 
     private final ProcessingEnvironment env;
     
@@ -50,14 +59,18 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
     
     private final TypeModel defaultValue;
     
-    private final Map<CharSequence,TypeModel> cache = new HashMap<CharSequence,TypeModel>();
+    private final Map<List<String>,EntityModel> entityTypeCache = new HashMap<List<String>,EntityModel>();
+    
+    private final Map<List<String>,TypeModel> cache = new HashMap<List<String>,TypeModel>();
     
     private final List<Class<? extends Annotation>> entityAnnotations;
     
     private final TypeElement numberType, comparableType;
     
-    public APTModelFactory(ProcessingEnvironment env, TypeModelFactory factory, List<Class<? extends Annotation>> annotations){
+    public APTTypeModelFactory(ProcessingEnvironment env, Configuration configuration, 
+            TypeModelFactory factory, List<Class<? extends Annotation>> annotations){
         this.env = env;
+        this.configuration = configuration;
         this.factory = factory;
         this.defaultValue = factory.create(Object.class);       
         this.entityAnnotations = annotations;
@@ -65,44 +78,107 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
         this.comparableType = env.getElementUtils().getTypeElement(Comparable.class.getName());        
     }
     
-    private String getKey(TypeMirror type, boolean deep){
-        StringBuilder key = new StringBuilder(type.toString());
+    private List<String> getKey(TypeMirror type, boolean deep){
+        List<String> key = new ArrayList<String>();
+        key.add(type.toString());
         if (type.getKind() == TypeKind.TYPEVAR){
             TypeVariable t = (TypeVariable)type;
             if (t.getUpperBound() != null){
-                key.append(";").append(getKey(t.getUpperBound(), false));
+                key.addAll(getKey(t.getUpperBound(), false));
             }            
             if (t.getLowerBound() != null){
-                key.append(";").append(getKey(t.getLowerBound(), false));
+                key.addAll(getKey(t.getLowerBound(), false));
             }
         }else if (type.getKind() == TypeKind.WILDCARD){
             WildcardType t = (WildcardType)type;
             if (t.getExtendsBound() != null){
-                key.append(";").append(getKey(t.getExtendsBound(), false));
+                key.addAll(getKey(t.getExtendsBound(), false));
             }
             if (t.getSuperBound() != null){
-                key.append(";").append(getKey(t.getSuperBound(), false));
+                key.addAll(getKey(t.getSuperBound(), false));
             }
         }else if (type.getKind() == TypeKind.DECLARED){
             DeclaredType t = (DeclaredType)type;
             for (TypeMirror arg : t.getTypeArguments()){
-                key.append(";").append(deep ? getKey(arg, false) : arg.toString());
+                key.addAll(deep ? getKey(arg, false) : Collections.singleton(arg.toString()));
             }
         }
-        return key.toString();
+        return key;
+    }
+    
+    public EntityModel createEntityModel(TypeMirror type, Elements el){
+        List<String> key = getKey(type, true);
+        if (entityTypeCache.containsKey(key)){
+            return entityTypeCache.get(key);
+        
+        }else{
+            entityTypeCache.put(key, null);
+            TypeModel value = type.accept(this, el);
+            if (value != null){                
+                EntityModel entityModel = asEntityModel(type, el, value);
+                entityTypeCache.put(key, entityModel);
+                return entityModel;
+            }else{
+                return null;
+            }
+        }
     }
     
     public TypeModel create(TypeMirror type, Elements el){
-        String key = getKey(type, true);        
-        if (cache.containsKey(key)){
+        List<String> key = getKey(type, true);  
+        if (entityTypeCache.containsKey(key)){
+            return entityTypeCache.get(key);
+            
+        }else if (cache.containsKey(key)){
             return cache.get(key);
+            
         }else{
             cache.put(key, null);
             TypeModel value = type.accept(this, el);
-            cache.put(key, value);
+            if (value != null && value.getTypeCategory() == TypeCategory.ENTITY){                
+                value = asEntityModel(type, el, value);
+                entityTypeCache.put(key, (EntityModel)value);
+            }else{
+                cache.put(key, value);    
+            }            
             return value;
+        }        
+    }
+
+    private EntityModel asEntityModel(TypeMirror type, Elements el, TypeModel value) {                 
+        if (type.getKind() == TypeKind.TYPEVAR){
+            TypeVariable typeVar = (TypeVariable)type;
+            if (typeVar.getUpperBound() != null){
+                type = typeVar.getUpperBound();
+            }
+        }else if (type.getKind() == TypeKind.WILDCARD){
+            WildcardType wildcard = (WildcardType)type;
+            if (wildcard.getExtendsBound() != null){
+                type = wildcard.getExtendsBound();
+            }
         }
         
+        Collection<String> superTypes = Collections.emptySet();
+        if (type.getKind() == TypeKind.DECLARED){
+            DeclaredType declaredType = (DeclaredType)type;
+            TypeElement e = (TypeElement)declaredType.asElement();
+            if (e.getKind() == ElementKind.CLASS){
+                superTypes = Collections.singleton(create(e.getSuperclass(), el).getFullName());
+            }else{
+                superTypes = new ArrayList<String>(e.getInterfaces().size());
+                for (TypeMirror mirror : e.getInterfaces()){
+                    TypeModel iface = create(mirror, el);
+                    if (!iface.getFullName().startsWith("java")){
+                        superTypes.add(iface.getFullName());
+                    }
+                }
+            }
+            
+        }else{
+            throw new IllegalArgumentException("Unsupported type kind " + type.getKind());
+        }
+        
+        return new EntityModel(configuration.getNamePrefix(), value, superTypes);
     }
 
     @Override
@@ -208,7 +284,8 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
     }
 
     
-    private TypeModel create(TypeElement typeElement, TypeCategory category, Elements p, List<? extends TypeMirror> typeArgs) {
+    private TypeModel create(TypeElement typeElement, TypeCategory category, 
+            Elements p, List<? extends TypeMirror> typeArgs) {
         String name = typeElement.getQualifiedName().toString();
         String simpleName = typeElement.getSimpleName().toString();
         String packageName = p.getPackageOf(typeElement).getQualifiedName().toString();

@@ -8,6 +8,7 @@ package com.mysema.query.apt;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
@@ -23,6 +24,8 @@ import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SupertypeSerializer;
 
 /**
+ * SimpleConfiguration is a simple implementation of the Configuration interface
+ * 
  * @author tiwe
  *
  */
@@ -38,12 +41,16 @@ public class SimpleConfiguration implements Configuration {
     
     private final Serializer dtoSerializer = new DTOSerializer();
     
-    protected final Class<? extends Annotation> entityAnn, superTypeAnn, embeddableAnn, skipAnn;
+    protected final Class<? extends Annotation> entityAnn, embeddableAnn, skipAnn;
+    
+    @Nullable
+    protected final Class<? extends Annotation> superTypeAnn;
     
     private boolean useFields = true, useGetters = true;
     
     public SimpleConfiguration(
             Class<? extends Annotation> entityAnn, 
+            @Nullable
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
             Class<? extends Annotation> skipAnn) {
@@ -53,9 +60,7 @@ public class SimpleConfiguration implements Configuration {
         this.skipAnn = skipAnn;             
     }
     
-    /* (non-Javadoc)
-     * @see com.mysema.query.apt.Configuration#getConfig(javax.lang.model.element.TypeElement, java.util.List)
-     */
+    @Override
     public VisitorConfig getConfig(TypeElement e, List<? extends Element> elements){
         if (useFields){
             if (useGetters){
@@ -67,131 +72,95 @@ public class SimpleConfiguration implements Configuration {
             return VisitorConfig.METHODS_ONLY;
         }else{
             return VisitorConfig.NONE;
-        }
-        
+        }        
     }
-    
-    /* (non-Javadoc)
-     * @see com.mysema.query.apt.Configuration#isValidConstructor(javax.lang.model.element.ExecutableElement)
-     */
+
+    @Override
     public boolean isValidConstructor(ExecutableElement constructor) {
         return constructor.getModifiers().contains(Modifier.PUBLIC)
             && constructor.getAnnotation(QueryProjection.class) != null
             && !constructor.getParameters().isEmpty();
     }
-    
-    /* (non-Javadoc)
-     * @see com.mysema.query.apt.Configuration#isValidField(javax.lang.model.element.VariableElement)
-     */
+
+    @Override
     public boolean isValidField(VariableElement field) {
         return field.getAnnotation(skipAnn) == null
             && !field.getModifiers().contains(Modifier.TRANSIENT) 
             && !field.getModifiers().contains(Modifier.STATIC);
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.apt.Configuration#isValidGetter(javax.lang.model.element.ExecutableElement)
-     */
+    @Override
     public boolean isValidGetter(ExecutableElement getter){
         return getter.getAnnotation(skipAnn) == null
             && !getter.getModifiers().contains(Modifier.STATIC);
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.apt.Configuration#getEntityAnn()
-     */
+    @Override
     public Class<? extends Annotation> getEntityAnn() {
         return entityAnn;
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.apt.Configuration#getSuperTypeAnn()
-     */
+    @Override
     public Class<? extends Annotation> getSuperTypeAnn() {
         return superTypeAnn;
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.apt.Configuration#getEmbeddableAnn()
-     */
+    @Override
     public Class<? extends Annotation> getEmbeddableAnn() {
         return embeddableAnn;
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.apt.Configuration#getSkipAnn()
-     */
+    @Override
     public Class<? extends Annotation> getSkipAnn() {
         return skipAnn;
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.apt.Configuration#setUseGetters(boolean)
-     */
+    @Override
     public void setUseGetters(boolean b) {
         this.useGetters = b;        
     }
-    
-    /* (non-Javadoc)
-     * @see com.mysema.query.apt.Configuration#setUseFields(boolean)
-     */
+
+    @Override
     public void setUseFields(boolean b){
         this.useFields = b;
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.apt.Configuration#getNamePrefix()
-     */
+    @Override
     public String getNamePrefix() {
         return namePrefix;
     }
-       
-
-    /* (non-Javadoc)
-     * @see com.mysema.query.apt.Configuration#getEntitySerializer()
-     */
+ 
+    @Override
     public Serializer getEntitySerializer() {
         return entitySerializer;
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.apt.Configuration#getSupertypeSerializer()
-     */
+    @Override
     public Serializer getSupertypeSerializer() {
         return supertypeSerializer;
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.apt.Configuration#getEmbeddableSerializer()
-     */
+    @Override
     public Serializer getEmbeddableSerializer() {
         return embeddableSerializer;
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.apt.Configuration#isUseFields()
-     */
+    @Override
     public boolean isUseFields() {
         return useFields;
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.apt.Configuration#isUseGetters()
-     */
+    @Override
     public boolean isUseGetters() {
         return useGetters;
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.apt.Configuration#setNamePrefix(java.lang.String)
-     */
+    @Override
     public void setNamePrefix(String namePrefix) {
         this.namePrefix = namePrefix;
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.apt.Configuration#getDTOSerializer()
-     */
+    @Override
     public Serializer getDTOSerializer() {
         return dtoSerializer;
     }

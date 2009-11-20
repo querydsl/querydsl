@@ -32,7 +32,7 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     @Nullable
     private final String queryTypeName;
     
-    private final TypeModel type;
+    private final TypeModel propertyType;
     
     private final String[] inits;
     
@@ -44,20 +44,11 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         this.context = classModel;
         this.name = Assert.notNull(name);
         this.escapedName = JavaSyntaxUtils.isReserved(name) ? (name + "_") : name;
-        this.type = Assert.notNull(type);
-        this.typeName = type.getLocalRawName(classModel, new StringBuilder()).toString();    
-        if (type.getTypeCategory().isSubCategoryOf(TypeCategory.SIMPLE)){
-            this.queryTypeName = null;
-        }else{
-            TypeModel valueType = type.getSelfOrValueType();
-            if (valueType.getPackageName().equals(classModel.getPackageName())){
-                this.queryTypeName = classModel.getPrefix() + valueType.getSimpleName();
-            }else{
-                this.queryTypeName = valueType.getPackageName() + "." + classModel.getPrefix() + valueType.getSimpleName();
-            }        
-        }   
+        this.propertyType = Assert.notNull(type);
+        this.typeName = type.getLocalRawName(classModel, new StringBuilder()).toString();
         this.inits = inits;
         this.inherited = inherited;
+        this.queryTypeName = type.getQueryTypeName(context);
     }
     
     public int compareTo(PropertyModel o) {
@@ -66,7 +57,7 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     
     public PropertyModel createCopy(EntityModel model){
         boolean inherited = model.getSuperModel() != null; 
-        return new PropertyModel(model, name, type, inits, inherited);
+        return new PropertyModel(model, name, propertyType, inits, inherited);
     }
     
     public boolean equals(Object o) {
@@ -84,8 +75,8 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     
     @Nullable
     public String getGenericParameterName(int i, boolean asArgType){
-        if (i < type.getParameterCount()){
-            return type.getParameter(i).getLocalGenericName(context, new StringBuilder(), asArgType).toString();
+        if (i < propertyType.getParameterCount()){
+            return propertyType.getParameter(i).getLocalGenericName(context, new StringBuilder(), asArgType).toString();
             
         }else{
             return null;
@@ -93,7 +84,7 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     }
 
     public String getGenericTypeName(){
-        return type.getLocalGenericName(context, new StringBuilder(), false).toString();   
+        return propertyType.getLocalGenericName(context, new StringBuilder(), false).toString();   
     }
 
     public String[] getInits(){
@@ -110,8 +101,8 @@ public final class PropertyModel implements Comparable<PropertyModel> {
 
     @Nullable
     public String getRawParameterName(int i){
-        if (i < type.getParameterCount()){            
-            return type.getParameter(i).getLocalRawName(context, new StringBuilder()).toString();
+        if (i < propertyType.getParameterCount()){            
+            return propertyType.getParameter(i).getLocalRawName(context, new StringBuilder()).toString();
         }else{
             return null;
         }
@@ -122,11 +113,11 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     }
 
     public String getSimpleTypeName() {
-        return type.getSimpleName();
+        return propertyType.getSimpleName();
     }
 
     public TypeCategory getTypeCategory() {
-        return type.getTypeCategory();
+        return propertyType.getTypeCategory();
     }
 
     public String getTypeName() {
@@ -134,11 +125,11 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     }
 
     public String getTypePackage() {
-        return type.getPackageName();
+        return propertyType.getPackageName();
     }
     
     public int hashCode() {
-        return Arrays.asList(name, type).hashCode();
+        return Arrays.asList(name, propertyType).hashCode();
     }
 
     public boolean isInherited() {
@@ -146,7 +137,11 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     }
 
     public String toString() {
-        return type.getFullName() + " " + name;
+        return context.getFullName() + "." + name;
+    }
+
+    public boolean hasEntityFields() {
+        return propertyType.hasEntityFields();
     }
 
 }

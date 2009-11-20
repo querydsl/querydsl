@@ -6,26 +6,29 @@
 package com.mysema.query.apt;
 
 /**
+ * VisitorConfig defines the entity type specific visiting configuration
+ * 
  * @author tiwe
  *
  */
 public enum VisitorConfig {
     /**
-     * 
+     * visit both fields and getters 
      */
     ALL(true,true),
+    
     /**
-     * 
+     * visit fields only
      */
     FIELDS_ONLY(true,false),
         
     /**
-     * 
+     * visit methods only
      */
     METHODS_ONLY(false,true),    
 
     /**
-     * 
+     * visit none
      */
     NONE(false,false);
     
@@ -42,6 +45,11 @@ public enum VisitorConfig {
     
     public boolean isVisitMethods(){
         return methods;
+    }
+
+    public boolean isVisitConstructors() {
+        // TODO : parametrize!
+        return true;
     }
     
 }

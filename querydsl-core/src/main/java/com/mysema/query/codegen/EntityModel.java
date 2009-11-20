@@ -18,7 +18,7 @@ import org.apache.commons.lang.StringUtils;
 import com.mysema.commons.lang.Assert;
 
 /**
- * BeanModel represents the model of a query domain type with properties
+ * EntityModel represents a model of a query domain type with properties
  * 
  * @author tiwe
  * @version $Id$
@@ -146,6 +146,5 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
         }
         return field;
     }
-    
-    
+        
 }

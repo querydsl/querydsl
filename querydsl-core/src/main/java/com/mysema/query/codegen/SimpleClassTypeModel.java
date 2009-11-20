@@ -59,12 +59,12 @@ public class SimpleClassTypeModel implements TypeModel{
     }
 
     @Override
-    public StringBuilder getLocalGenericName(EntityModel context, StringBuilder builder, boolean asArgType) {
+    public StringBuilder getLocalGenericName(TypeModel context, StringBuilder builder, boolean asArgType) {
         return getLocalRawName(context, builder);
     }
 
     @Override
-    public StringBuilder getLocalRawName(EntityModel context, StringBuilder builder) {
+    public StringBuilder getLocalRawName(TypeModel context, StringBuilder builder) {
         if (visible || context.getPackageName().equals(clazz.getPackage().getName())){
             builder.append(clazz.getName().substring(clazz.getPackage().getName().length()+1));    
         }else{
@@ -140,5 +140,10 @@ public class SimpleClassTypeModel implements TypeModel{
     @Override
     public boolean hasEntityFields() {
         return false;
+    }
+
+    @Override
+    public String getQueryTypeName(EntityModel context) {
+        return null;
     }
 }

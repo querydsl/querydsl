@@ -77,20 +77,20 @@ public class EntitySerializer implements Serializer{
         
         
         // 4
-        if (!localName.equals(genericName)){
-            builder.append("    @SuppressWarnings(\"unchecked\")\n");
-        }        
-        builder.append("    public " + queryType + "(PathMetadata<?> metadata, PathInits inits) {\n");
-        builder.append("        "+thisOrSuper+"(");
-        if (!localName.equals(genericName)){
-            builder.append("(Class)");
-        }
-        builder.append(localName + ".class, \"" + simpleName + "\", metadata");
         if (hasEntityFields){
+            if (!localName.equals(genericName)){
+                builder.append("    @SuppressWarnings(\"unchecked\")\n");
+            }        
+            builder.append("    public " + queryType + "(PathMetadata<?> metadata, PathInits inits) {\n");
+            builder.append("        "+thisOrSuper+"(");
+            if (!localName.equals(genericName)){
+                builder.append("(Class)");
+            }
+            builder.append(localName + ".class, \"" + simpleName + "\", metadata");
             builder.append(", inits");
-        }
-        builder.append(");\n");
-        builder.append("    }\n\n");                 
+            builder.append(");\n");
+            builder.append("    }\n\n");    
+        }                         
         
         // 5 
         if (hasEntityFields){            
@@ -161,12 +161,17 @@ public class EntitySerializer implements Serializer{
         for (PropertyModel field : model.getProperties()){            
             if (field.getTypeCategory() == TypeCategory.ENTITY){
                 builder.append("        this." + field.getEscapedName() + " = ");
-                if (!field.isInherited()){
+                if (!field.isInherited()){                    
                     builder.append("inits.isInitialized(\""+field.getName()+"\") ? ");
-                    builder.append("new " + field.getQueryTypeName() + "(PathMetadata.forProperty(this,\"" + field.getName() + "\"), inits.getInits(\""+field.getName()+"\")) : null;\n");    
+                    builder.append("new " + field.getQueryTypeName() + "(PathMetadata.forProperty(this,\"" + field.getName() + "\")");
+                    if (field.hasEntityFields()){
+                        builder.append(", inits.getInits(\""+field.getName()+"\")");    
+                    }
+                    builder.append(") : null;\n");
                 }else{
                     builder.append("_super." + field.getEscapedName() +";\n");
                 }   
+                
             }else if (field.isInherited() && superModel != null && superModel.hasEntityFields()){
                 builder.append("        this." + field.getEscapedName() + " = ");
                 builder.append("_super." + field.getEscapedName() + ";\n");

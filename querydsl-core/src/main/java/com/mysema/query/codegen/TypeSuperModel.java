@@ -16,7 +16,7 @@ public class TypeSuperModel extends TypeModelAdapter{
     }
 
     @Override
-    public StringBuilder getLocalGenericName(EntityModel context, StringBuilder builder, boolean asArgType) {
+    public StringBuilder getLocalGenericName(TypeModel context, StringBuilder builder, boolean asArgType) {
         if (!asArgType){
             builder.append("? super ");
             return superModel.getLocalGenericName(context, builder, true);
