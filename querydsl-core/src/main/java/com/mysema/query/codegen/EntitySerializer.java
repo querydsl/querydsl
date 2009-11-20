@@ -35,7 +35,7 @@ public class EntitySerializer implements Serializer{
         serialize(field, "PComparable<" + field.getGenericTypeName() + ">", writer, "createComparable", field.getTypeName() + ".class");
     }
     
-    protected void constructors(BeanModel model, Writer writer) throws IOException {
+    protected void constructors(EntityModel model, Writer writer) throws IOException {
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
         final String localName = model.getLocalRawName();
@@ -104,7 +104,7 @@ public class EntitySerializer implements Serializer{
         
     }
         
-    protected void constructorsForVariables(StringBuilder builder, BeanModel model) {
+    protected void constructorsForVariables(StringBuilder builder, EntityModel model) {
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
         final String localName = model.getLocalRawName();
@@ -148,8 +148,8 @@ public class EntitySerializer implements Serializer{
         writer.append(builder.toString());
     }  
 
-    protected void initEntityFields(StringBuilder builder, BeanModel model) {
-        BeanModel superModel = model.getSuperModel();
+    protected void initEntityFields(StringBuilder builder, EntityModel model) {
+        EntityModel superModel = model.getSuperModel();
         if (superModel != null && superModel.hasEntityFields()){
             String superQueryType = superModel.getPrefix() + superModel.getSimpleName();
             if (!superModel.getPackageName().equals(model.getPackageName())){
@@ -174,7 +174,7 @@ public class EntitySerializer implements Serializer{
         }        
     }
 
-    protected void intro(BeanModel model, Writer writer) throws IOException {        
+    protected void intro(EntityModel model, Writer writer) throws IOException {        
         StringBuilder builder = new StringBuilder();        
         introPackage(builder, model);        
         introImports(builder, model);        
@@ -189,7 +189,7 @@ public class EntitySerializer implements Serializer{
         writer.append(builder.toString());
     }
 
-    protected void introClassHeader(StringBuilder builder, BeanModel model) {
+    protected void introClassHeader(StringBuilder builder, EntityModel model) {
         final String queryType = model.getPrefix() + model.getSimpleName();
         final String localName = model.getLocalGenericName();
         
@@ -197,7 +197,7 @@ public class EntitySerializer implements Serializer{
         builder.append("public class " + queryType + " extends PEntity<" + localName + "> {\n\n");
     }
 
-    protected void introDefaultInstance(StringBuilder builder, BeanModel model) {
+    protected void introDefaultInstance(StringBuilder builder, EntityModel model) {
         final String simpleName = model.getSimpleName();
         final String unscapSimpleName = model.getUncapSimpleName();
         final String queryType = model.getPrefix() + simpleName;
@@ -205,7 +205,7 @@ public class EntitySerializer implements Serializer{
         builder.append("    public static final " + queryType + " " + unscapSimpleName + " = new " + queryType + "(\"" + unscapSimpleName + "\");\n\n");
     }
 
-    protected void introFactoryMethods(StringBuilder builder, BeanModel model) throws IOException {
+    protected void introFactoryMethods(StringBuilder builder, EntityModel model) throws IOException {
         final String localName = model.getLocalRawName();
         final String genericName = model.getLocalGenericName();
         
@@ -258,7 +258,7 @@ public class EntitySerializer implements Serializer{
         }        
     }
 
-    protected void introImports(StringBuilder builder, BeanModel model) {
+    protected void introImports(StringBuilder builder, EntityModel model) {
         builder.append("import com.mysema.query.util.*;\n");
         builder.append("import com.mysema.query.types.path.*;\n");
         if (!model.getConstructors().isEmpty() || model.hasLists() || model.hasMaps()){
@@ -266,7 +266,7 @@ public class EntitySerializer implements Serializer{
         }
     }
 
-    protected void introInits(StringBuilder builder, BeanModel model) {
+    protected void introInits(StringBuilder builder, EntityModel model) {
         if (model.hasEntityFields()){
             List<String> inits = new ArrayList<String>();
             for (PropertyModel property : model.getProperties()){
@@ -290,7 +290,7 @@ public class EntitySerializer implements Serializer{
         }               
     }
 
-    protected void introJavadoc(StringBuilder builder, BeanModel model) {
+    protected void introJavadoc(StringBuilder builder, EntityModel model) {
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
         
@@ -300,12 +300,12 @@ public class EntitySerializer implements Serializer{
         builder.append(" */ \n");
     }
 
-    protected void introPackage(StringBuilder builder, BeanModel model) {
+    protected void introPackage(StringBuilder builder, EntityModel model) {
         builder.append("package " + model.getPackageName() + ";\n\n");
     }
 
-    protected void introSuper(StringBuilder builder, BeanModel model) {
-        BeanModel superModel = model.getSuperModel();
+    protected void introSuper(StringBuilder builder, EntityModel model) {
+        EntityModel superModel = model.getSuperModel();
         String superQueryType = superModel.getPrefix() + superModel.getSimpleName();
         if (!model.getPackageName().equals(superModel.getPackageName())){
             superQueryType = superModel.getPackageName() + "." + superQueryType;
@@ -424,11 +424,11 @@ public class EntitySerializer implements Serializer{
         serialize(field, "PNumber<" + field.getGenericTypeName() + ">", writer, "createNumber", field.getTypeName() +".class");        
     }
 
-    protected void outro(BeanModel model, Writer writer) throws IOException {
+    protected void outro(EntityModel model, Writer writer) throws IOException {
         writer.write("}\n");        
     }
 
-    public void serialize(BeanModel model, Writer writer) throws IOException{
+    public void serialize(EntityModel model, Writer writer) throws IOException{
         // intro
         intro(model, writer);
         
@@ -489,7 +489,7 @@ public class EntitySerializer implements Serializer{
 //    }
 
     protected void serialize(PropertyModel field, String type, Writer writer, String factoryMethod, String... args) throws IOException{
-        BeanModel superModel = field.getBeanModel().getSuperModel();
+        EntityModel superModel = field.getBeanModel().getSuperModel();
         // construct value
         StringBuilder value = new StringBuilder();
         if (field.isInherited() && superModel != null){

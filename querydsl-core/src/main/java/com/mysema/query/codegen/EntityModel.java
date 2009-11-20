@@ -23,7 +23,7 @@ import com.mysema.commons.lang.Assert;
  * @author tiwe
  * @version $Id$
  */
-public final class BeanModel implements Comparable<BeanModel> {
+public final class EntityModel extends TypeModelAdapter implements Comparable<EntityModel> {
     
     private final Collection<ConstructorModel> constructors = new HashSet<ConstructorModel>();
     
@@ -39,26 +39,23 @@ public final class BeanModel implements Comparable<BeanModel> {
     
     // mutable
     @Nullable
-    private BeanModel superModel;
+    private EntityModel superModel;
     
     private final Collection<String> superTypes;
-    
-    private final TypeModel typeModel;
 
     // mutable
     private String uncapSimpleName;
     
-    public BeanModel(String prefix, TypeModel typeModel) {
+    public EntityModel(String prefix, TypeModel typeModel) {
         this(prefix, typeModel, Collections.<String>emptyList());
     }
     
-    public BeanModel(String prefix, TypeModel typeModel, Collection<String> superTypes) {
+    public EntityModel(String prefix, TypeModel typeModel, Collection<String> superTypes) {
+        super(typeModel);
         this.prefix = Assert.notNull(prefix);        
-        this.typeModel = typeModel;
         this.uncapSimpleName = StringUtils.uncapitalize(typeModel.getSimpleName());
         this.superTypes = superTypes;
-    }
-    
+    }    
 
     public void addConstructor(ConstructorModel co) {
         constructors.add(co);
@@ -81,13 +78,8 @@ public final class BeanModel implements Comparable<BeanModel> {
     }
 
     @Override
-    public int compareTo(BeanModel o) {
+    public int compareTo(EntityModel o) {
         return typeModel.getSimpleName().compareTo(o.typeModel.getSimpleName());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return o instanceof BeanModel && typeModel.equals(((BeanModel) o).typeModel);
     }
 
     public Collection<ConstructorModel> getConstructors() {
@@ -102,28 +94,16 @@ public final class BeanModel implements Comparable<BeanModel> {
         return typeModel.getLocalRawName(this, new StringBuilder()).toString();
     }
     
-    public String getFullName() {
-        return typeModel.getFullName();
-    }
-
     public Set<PropertyModel> getProperties() {
         return properties;
-    }
-
-    public String getPackageName() {
-        return typeModel.getPackageName();
     }
 
     public String getPrefix(){
         return prefix;
     }
-
-    public String getSimpleName() {
-        return typeModel.getSimpleName();
-    }
         
     @Nullable
-    public BeanModel getSuperModel() {
+    public EntityModel getSuperModel() {
         return superModel;
     }
     
@@ -135,13 +115,9 @@ public final class BeanModel implements Comparable<BeanModel> {
         return uncapSimpleName;
     }
 
+    @Override
     public boolean hasEntityFields() {
         return hasEntityFields;
-    }
-
-    @Override
-    public int hashCode() {
-        return typeModel.hashCode();
     }
 
     public boolean hasLists() {
@@ -152,7 +128,7 @@ public final class BeanModel implements Comparable<BeanModel> {
         return hasMaps;
     }
 
-    public void include(BeanModel clazz) {
+    public void include(EntityModel clazz) {
         for (PropertyModel property : clazz.properties){
             if (!property.isInherited()){                
                 addProperty(property.createCopy(this));    
@@ -160,7 +136,7 @@ public final class BeanModel implements Comparable<BeanModel> {
         }        
     }
 
-    public void setSuperModel(BeanModel superModel) {
+    public void setSuperModel(EntityModel superModel) {
         this.superModel = superModel;
     }
 

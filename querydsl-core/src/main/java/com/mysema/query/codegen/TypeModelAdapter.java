@@ -30,12 +30,12 @@ public class TypeModelAdapter implements TypeModel{
     }
 
     @Override
-    public StringBuilder getLocalGenericName(BeanModel context, StringBuilder builder, boolean asArgType) {
+    public StringBuilder getLocalGenericName(EntityModel context, StringBuilder builder, boolean asArgType) {
         return typeModel.getLocalGenericName(context, builder, false);
     }
 
     @Override
-    public StringBuilder getLocalRawName(BeanModel context, StringBuilder builder) {
+    public StringBuilder getLocalRawName(EntityModel context, StringBuilder builder) {
         return typeModel.getLocalRawName(context, builder);
     }
 
@@ -97,5 +97,10 @@ public class TypeModelAdapter implements TypeModel{
     @Override
     public boolean equals(Object o){
         return typeModel.equals(o);
+    }
+
+    @Override
+    public boolean hasEntityFields() {
+        return typeModel.hasEntityFields();
     }
 }

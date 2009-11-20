@@ -18,7 +18,7 @@ import net.jcip.annotations.Immutable;
 public class SupertypeSerializer extends EntitySerializer{
 
     @Override
-    protected void constructors(BeanModel model, Writer writer) throws IOException {
+    protected void constructors(EntityModel model, Writer writer) throws IOException {
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
         final String genericName = model.getLocalGenericName();
@@ -43,17 +43,17 @@ public class SupertypeSerializer extends EntitySerializer{
     }
     
     @Override
-    protected void introDefaultInstance(StringBuilder builder, BeanModel model) {
+    protected void introDefaultInstance(StringBuilder builder, EntityModel model) {
         // no default instance
     }
     
     @Override
-    protected void introFactoryMethods(StringBuilder builder, BeanModel model) throws IOException {
+    protected void introFactoryMethods(StringBuilder builder, EntityModel model) throws IOException {
         // no factory methods        
     }
         
     @Override
-    protected void introImports(StringBuilder builder, BeanModel model) {
+    protected void introImports(StringBuilder builder, EntityModel model) {
         if (model.hasEntityFields()){
             builder.append("import com.mysema.query.util.*;\n");    
         }        
@@ -64,7 +64,7 @@ public class SupertypeSerializer extends EntitySerializer{
     }
     
     @Override
-    protected void introInits(StringBuilder builder, BeanModel model) {
+    protected void introInits(StringBuilder builder, EntityModel model) {
         // no PathInits instance
     }
 

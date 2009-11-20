@@ -11,17 +11,17 @@ import java.io.IOException;
 public class EmbeddableSerializer extends EntitySerializer{
     
     @Override
-    protected void constructorsForVariables(StringBuilder builder, BeanModel model) {
+    protected void constructorsForVariables(StringBuilder builder, EntityModel model) {
         // no root constructors
     }
     
     @Override
-    protected void introFactoryMethods(StringBuilder builder, BeanModel model) throws IOException {
+    protected void introFactoryMethods(StringBuilder builder, EntityModel model) throws IOException {
         // no factory methods        
     }
     
     @Override
-    protected void introImports(StringBuilder builder, BeanModel model) {
+    protected void introImports(StringBuilder builder, EntityModel model) {
         if (model.hasEntityFields()){
             builder.append("import com.mysema.query.util.*;\n");    
         }        
@@ -32,7 +32,7 @@ public class EmbeddableSerializer extends EntitySerializer{
     }
     
     @Override
-    protected void introDefaultInstance(StringBuilder builder, BeanModel model) {
+    protected void introDefaultInstance(StringBuilder builder, EntityModel model) {
         // no default instance
     }
 

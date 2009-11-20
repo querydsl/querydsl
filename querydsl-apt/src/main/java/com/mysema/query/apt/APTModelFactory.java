@@ -29,7 +29,7 @@ import javax.lang.model.type.TypeVisitor;
 import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.Elements;
 
-import com.mysema.query.codegen.ClassTypeModel;
+import com.mysema.query.codegen.SimpleClassTypeModel;
 import com.mysema.query.codegen.SimpleTypeModel;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeExtendsModel;
@@ -246,21 +246,21 @@ public class APTModelFactory implements TypeVisitor<TypeModel,Elements> {
     public TypeModel visitPrimitive(PrimitiveType t, Elements p) {
         switch (t.getKind()) {
         case BOOLEAN:
-            return new ClassTypeModel(TypeCategory.BOOLEAN, Boolean.class, boolean.class);
+            return new SimpleClassTypeModel(TypeCategory.BOOLEAN, Boolean.class, boolean.class);
         case BYTE:
-            return new ClassTypeModel(TypeCategory.NUMERIC, Byte.class, byte.class);
+            return new SimpleClassTypeModel(TypeCategory.NUMERIC, Byte.class, byte.class);
         case CHAR:
-            return new ClassTypeModel(TypeCategory.COMPARABLE, Character.class, char.class);
+            return new SimpleClassTypeModel(TypeCategory.COMPARABLE, Character.class, char.class);
         case DOUBLE:
-            return new ClassTypeModel(TypeCategory.NUMERIC, Double.class, double.class);
+            return new SimpleClassTypeModel(TypeCategory.NUMERIC, Double.class, double.class);
         case FLOAT:
-            return new ClassTypeModel(TypeCategory.NUMERIC, Float.class, float.class);
+            return new SimpleClassTypeModel(TypeCategory.NUMERIC, Float.class, float.class);
         case INT:
-            return new ClassTypeModel(TypeCategory.NUMERIC, Integer.class, int.class);
+            return new SimpleClassTypeModel(TypeCategory.NUMERIC, Integer.class, int.class);
         case LONG:
-            return new ClassTypeModel(TypeCategory.NUMERIC, Long.class, long.class);
+            return new SimpleClassTypeModel(TypeCategory.NUMERIC, Long.class, long.class);
         case SHORT:
-            return new ClassTypeModel(TypeCategory.NUMERIC, Short.class, short.class);
+            return new SimpleClassTypeModel(TypeCategory.NUMERIC, Short.class, short.class);
         }
         throw new IllegalArgumentException("Unsupported type " + t);
     }

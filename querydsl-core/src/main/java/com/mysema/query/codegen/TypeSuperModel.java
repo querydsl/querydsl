@@ -6,7 +6,7 @@ package com.mysema.query.codegen;
  */
 public class TypeSuperModel extends TypeModelAdapter{
     
-    private static final TypeModel objectModel = new ClassTypeModel(TypeCategory.SIMPLE, Object.class);
+    private static final TypeModel objectModel = new SimpleClassTypeModel(TypeCategory.SIMPLE, Object.class);
     
     private TypeModel superModel;
     
@@ -16,7 +16,7 @@ public class TypeSuperModel extends TypeModelAdapter{
     }
 
     @Override
-    public StringBuilder getLocalGenericName(BeanModel context, StringBuilder builder, boolean asArgType) {
+    public StringBuilder getLocalGenericName(EntityModel context, StringBuilder builder, boolean asArgType) {
         if (!asArgType){
             builder.append("? super ");
             return superModel.getLocalGenericName(context, builder, true);

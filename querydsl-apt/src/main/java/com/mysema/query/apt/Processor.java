@@ -26,8 +26,8 @@ import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.QueryProjection;
-import com.mysema.query.codegen.BeanModel;
-import com.mysema.query.codegen.BeanModelFactory;
+import com.mysema.query.codegen.EntityModel;
+import com.mysema.query.codegen.EntityModelFactory;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.TypeModelFactory;
 
@@ -46,7 +46,7 @@ public class Processor {
     
     private final SimpleConfiguration conf;
     
-    private final BeanModelFactory classModelFactory;
+    private final EntityModelFactory entityModelFactory;
     
     @SuppressWarnings("unchecked")
     public Processor(ProcessingEnvironment env, SimpleConfiguration configuration) {
@@ -61,15 +61,15 @@ public class Processor {
         TypeModelFactory factory = new TypeModelFactory(anns);
         this.typeFactory = new APTModelFactory(env, factory, anns);
         if (conf.getSkipAnn() != null){
-            this.classModelFactory = new BeanModelFactory(factory, conf.getSkipAnn());
+            this.entityModelFactory = new EntityModelFactory(factory, conf.getSkipAnn());
         }else{
-            this.classModelFactory = new BeanModelFactory(factory);
+            this.entityModelFactory = new EntityModelFactory(factory);
         }
         
     }
     
     public void process(RoundEnvironment roundEnv) {
-        Map<String, BeanModel> superTypes = new HashMap<String, BeanModel>();
+        Map<String, EntityModel> superTypes = new HashMap<String, EntityModel>();
         EntityElementVisitor entityVisitor = new EntityElementVisitor(env, conf, typeFactory);
         
         // supertypes
@@ -87,14 +87,14 @@ public class Processor {
 
         // projections
         DTOElementVisitor dtoVisitor = new DTOElementVisitor(env, conf, typeFactory);
-        Map<String, BeanModel> dtos = new HashMap<String, BeanModel>();
+        Map<String, EntityModel> dtos = new HashMap<String, EntityModel>();
         Set<Element> visitedDTOTypes = new HashSet<Element>();
         for (Element element : roundEnv.getElementsAnnotatedWith(QueryProjection.class)) {
             Element parent = element.getEnclosingElement();
             if (parent.getAnnotation(conf.getEntityAnn()) == null
                     && parent.getAnnotation(conf.getEmbeddableAnn()) == null
                     && !visitedDTOTypes.contains(parent)){
-                BeanModel model = parent.accept(dtoVisitor, null);
+                EntityModel model = parent.accept(dtoVisitor, null);
                 dtos.put(model.getFullName(), model);    
                 visitedDTOTypes.add(parent);
                 
@@ -108,16 +108,16 @@ public class Processor {
     }
 
     private void handleSupertypes(RoundEnvironment roundEnv,
-            Map<String, BeanModel> superTypes,
+            Map<String, EntityModel> superTypes,
             EntityElementVisitor entityVisitor) {
         for (Element element : roundEnv.getElementsAnnotatedWith(conf.getSuperTypeAnn())) {
             if (conf.getEmbeddableAnn() == null || element.getAnnotation(conf.getEmbeddableAnn()) == null){
-                BeanModel model = element.accept(entityVisitor, null);
+                EntityModel model = element.accept(entityVisitor, null);
                 superTypes.put(model.getFullName(), model);    
             }                
         }
         // add supertype fields
-        for (BeanModel superType : superTypes.values()) {
+        for (EntityModel superType : superTypes.values()) {
             addSupertypeFields(superType, superTypes);      
         }
         // serialize supertypes
@@ -127,19 +127,19 @@ public class Processor {
     }
 
     private void handleEmbeddables(RoundEnvironment roundEnv,
-            Map<String, BeanModel> superTypes,
+            Map<String, EntityModel> superTypes,
             EntityElementVisitor entityVisitor) {
         // populate entity type mappings
-        Map<String, BeanModel> embeddables = new HashMap<String, BeanModel>();
+        Map<String, EntityModel> embeddables = new HashMap<String, EntityModel>();
         
         for (Element element : roundEnv.getElementsAnnotatedWith(conf.getEmbeddableAnn())) {
-            BeanModel model = element.accept(entityVisitor, null);
+            EntityModel model = element.accept(entityVisitor, null);
             embeddables.put(model.getFullName(), model);
         }  
         superTypes.putAll(embeddables);
         
         // add super type fields
-        for (BeanModel embeddable : embeddables.values()) {
+        for (EntityModel embeddable : embeddables.values()) {
             addSupertypeFields(embeddable, superTypes);
         }
         // serialize entity types
@@ -149,20 +149,20 @@ public class Processor {
     }
 
     private void handleEntities(RoundEnvironment roundEnv,
-            Map<String, BeanModel> superTypes,
+            Map<String, EntityModel> superTypes,
             EntityElementVisitor entityVisitor) {
         // populate entity type mappings
-        Map<String, BeanModel> entityTypes = new HashMap<String, BeanModel>();
+        Map<String, EntityModel> entityTypes = new HashMap<String, EntityModel>();
         for (Element element : roundEnv.getElementsAnnotatedWith(conf.getEntityAnn())) {
             if (conf.getEmbeddableAnn() == null || element.getAnnotation(conf.getEmbeddableAnn()) == null){
-                BeanModel model = element.accept(entityVisitor, null);
+                EntityModel model = element.accept(entityVisitor, null);
                 entityTypes.put(model.getFullName(), model);    
             }            
         }
         superTypes.putAll(entityTypes);
         
         // add super type fields
-        for (BeanModel entityType : entityTypes.values()) {
+        for (EntityModel entityType : entityTypes.values()) {
             addSupertypeFields(entityType, superTypes);
         }
         // serialize entity types
@@ -171,7 +171,7 @@ public class Processor {
         }
     }
         
-    private void addSupertypeFields(BeanModel model, Map<String, BeanModel> superTypes) {
+    private void addSupertypeFields(EntityModel model, Map<String, EntityModel> superTypes) {
         boolean singleSuperType = model.getSuperTypes().size() == 1;
         for (String stype : model.getSuperTypes()) {
             // iterate over supertypes
@@ -181,7 +181,7 @@ public class Processor {
                 while (!stypeStack.isEmpty()) {
                     String top = stypeStack.pop();
                     if (superTypes.containsKey(top)) {
-                        BeanModel sdecl = superTypes.get(top);
+                        EntityModel sdecl = superTypes.get(top);
                         if (singleSuperType && model.getSuperTypes().contains(top)) {
                             model.setSuperModel(sdecl);
                         }
@@ -203,7 +203,7 @@ public class Processor {
                 if ((conf.getSuperTypeAnn() == null 
                         || superClass.getAnnotation(conf.getSuperTypeAnn()) != null)
                         || superClass.getAnnotation(conf.getEntityAnn()) != null) {
-                    BeanModel type = classModelFactory.create(superClass, conf.getNamePrefix());
+                    EntityModel type = entityModelFactory.create(superClass, conf.getNamePrefix());
                     // include fields of supertype
                     model.include(type);
                 }
@@ -219,9 +219,9 @@ public class Processor {
         }
     }
 
-    private void serialize(Serializer serializer, Map<String, BeanModel> types) {
+    private void serialize(Serializer serializer, Map<String, EntityModel> types) {
         Messager msg = env.getMessager();
-        for (BeanModel type : types.values()) {
+        for (EntityModel type : types.values()) {
             msg.printMessage(Kind.NOTE, type.getFullName() + " is processed");
             try {
                 String packageName = type.getPackageName();                    

@@ -25,22 +25,22 @@ import com.mysema.query.annotations.QueryType;
  *
  */
 @Immutable
-public class BeanModelFactory {
+public class EntityModelFactory {
     
     private final TypeModelFactory typeModelFactory;
     
     private final Class<? extends Annotation> skipAnn;
     
-    public BeanModelFactory(TypeModelFactory typeModelFactory, Class<? extends Annotation> skipAnn){
+    public EntityModelFactory(TypeModelFactory typeModelFactory, Class<? extends Annotation> skipAnn){
         this.typeModelFactory = typeModelFactory;
         this.skipAnn = skipAnn;
     }
     
-    public BeanModelFactory(TypeModelFactory typeModelFactory){
+    public EntityModelFactory(TypeModelFactory typeModelFactory){
         this(typeModelFactory, QueryTransient.class);
     }
     
-    public BeanModel create(Class<?> key, String prefix){
+    public EntityModel create(Class<?> key, String prefix){
         Collection<String> superTypes;
         if (key.isInterface()){
             superTypes = new ArrayList<String>();
@@ -52,8 +52,8 @@ public class BeanModelFactory {
         }else{
             superTypes = Collections.singleton(key.getSuperclass().getName());
         }
-        BeanModel beanModel = new BeanModel(prefix, 
-                new ClassTypeModel(TypeCategory.ENTITY, key), 
+        EntityModel entityModel = new EntityModel(prefix, 
+                new SimpleClassTypeModel(TypeCategory.ENTITY, key), 
                 superTypes);
         for (Field f : key.getDeclaredFields()) {
             if (isValidField(f)){
@@ -69,10 +69,10 @@ public class BeanModelFactory {
                 if (f.getAnnotation(QueryInit.class) != null){
                     inits = f.getAnnotation(QueryInit.class).value();
                 }                
-                beanModel.addProperty(new PropertyModel(beanModel, f.getName(), typeModel, inits));    
+                entityModel.addProperty(new PropertyModel(entityModel, f.getName(), typeModel, inits));    
             }            
         }
-        return beanModel;
+        return entityModel;
     }
 
     protected boolean isValidField(Field field) {

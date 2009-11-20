@@ -21,6 +21,6 @@ public interface Serializer {
      * @param writer serialization target
      * @throws IOException
      */
-    void serialize(BeanModel type, Writer writer) throws IOException;
+    void serialize(EntityModel type, Writer writer) throws IOException;
 
 }

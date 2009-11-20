@@ -14,7 +14,7 @@ import net.jcip.annotations.Immutable;
 public class DTOSerializer implements Serializer{
     
     @Override
-    public void serialize(BeanModel model, Writer writer) throws IOException{
+    public void serialize(EntityModel model, Writer writer) throws IOException{
         // intro
         intro(model, writer);
         
@@ -69,7 +69,7 @@ public class DTOSerializer implements Serializer{
         outro(model, writer);
     }
 
-    protected void intro(BeanModel model, Writer writer) throws IOException {
+    protected void intro(EntityModel model, Writer writer) throws IOException {
         final String simpleName = model.getSimpleName();
         final String queryType = model.getPrefix() + simpleName;
         final String localName = model.getLocalRawName();
@@ -94,7 +94,7 @@ public class DTOSerializer implements Serializer{
         writer.append(builder.toString());
     }
     
-    protected void outro(BeanModel model, Writer writer) throws IOException {
+    protected void outro(EntityModel model, Writer writer) throws IOException {
         writer.write("}\n");        
     }
     

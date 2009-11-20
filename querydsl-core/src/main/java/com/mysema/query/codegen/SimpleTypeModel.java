@@ -58,7 +58,7 @@ public class SimpleTypeModel implements TypeModel {
     }
     
     @Override
-    public StringBuilder getLocalGenericName(BeanModel context, StringBuilder builder, boolean asArgType) {
+    public StringBuilder getLocalGenericName(EntityModel context, StringBuilder builder, boolean asArgType) {
         builder = getLocalRawName(context, builder);
         if (parameters.length > 0){                        
             builder.append("<");
@@ -77,7 +77,7 @@ public class SimpleTypeModel implements TypeModel {
     }
 
     @Override
-    public StringBuilder getLocalRawName(BeanModel context, StringBuilder builder){
+    public StringBuilder getLocalRawName(EntityModel context, StringBuilder builder){
         if (visible || context.getPackageName().equals(packageName)){
             builder.append(localName);    
         }else{
@@ -154,6 +154,11 @@ public class SimpleTypeModel implements TypeModel {
     @Override
     public boolean isFinal() {
         return finalClass;
+    }
+
+    @Override
+    public boolean hasEntityFields() {
+        return false;
     }
     
 }

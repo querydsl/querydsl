@@ -15,9 +15,9 @@ public interface TypeModel {
 
     TypeModel as(TypeCategory category);
 
-    StringBuilder getLocalRawName(BeanModel context, StringBuilder builder);
+    StringBuilder getLocalRawName(EntityModel context, StringBuilder builder);
     
-    StringBuilder getLocalGenericName(BeanModel context, StringBuilder builder, boolean asArgType);
+    StringBuilder getLocalGenericName(EntityModel context, StringBuilder builder, boolean asArgType);
 
     String getFullName();
 
@@ -43,5 +43,6 @@ public interface TypeModel {
 
     boolean isFinal();
     
+    boolean hasEntityFields();
     
 }

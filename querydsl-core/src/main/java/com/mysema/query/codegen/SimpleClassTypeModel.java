@@ -20,7 +20,7 @@ import com.mysema.commons.lang.Assert;
  *
  */
 @Immutable
-public class ClassTypeModel implements TypeModel{
+public class SimpleClassTypeModel implements TypeModel{
     
     private final Class<?> clazz;
     
@@ -32,11 +32,11 @@ public class ClassTypeModel implements TypeModel{
     
     private final boolean visible;
     
-    public ClassTypeModel(TypeCategory typeCategory, Class<?> clazz){
+    public SimpleClassTypeModel(TypeCategory typeCategory, Class<?> clazz){
         this(typeCategory, clazz, ClassUtils.wrapperToPrimitive(clazz));
     }
     
-    public ClassTypeModel(TypeCategory typeCategory, Class<?> clazz, Class<?> primitiveClass){
+    public SimpleClassTypeModel(TypeCategory typeCategory, Class<?> clazz, Class<?> primitiveClass){
         this.typeCategory = Assert.notNull(typeCategory);
         this.clazz = Assert.notNull(clazz);
         this.primitiveClass = primitiveClass;
@@ -49,7 +49,7 @@ public class ClassTypeModel implements TypeModel{
         if (typeCategory == category){
             return this;
         }else{
-            return new ClassTypeModel(category, clazz);
+            return new SimpleClassTypeModel(category, clazz);
         }
     }
 
@@ -59,12 +59,12 @@ public class ClassTypeModel implements TypeModel{
     }
 
     @Override
-    public StringBuilder getLocalGenericName(BeanModel context, StringBuilder builder, boolean asArgType) {
+    public StringBuilder getLocalGenericName(EntityModel context, StringBuilder builder, boolean asArgType) {
         return getLocalRawName(context, builder);
     }
 
     @Override
-    public StringBuilder getLocalRawName(BeanModel context, StringBuilder builder) {
+    public StringBuilder getLocalRawName(EntityModel context, StringBuilder builder) {
         if (visible || context.getPackageName().equals(clazz.getPackage().getName())){
             builder.append(clazz.getName().substring(clazz.getPackage().getName().length()+1));    
         }else{
@@ -135,5 +135,10 @@ public class ClassTypeModel implements TypeModel{
     @Override
     public boolean isFinal() {
         return Modifier.isFinal(clazz.getModifiers());
+    }
+
+    @Override
+    public boolean hasEntityFields() {
+        return false;
     }
 }

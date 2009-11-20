@@ -23,7 +23,7 @@ import com.mysema.util.JavaSyntaxUtils;
 @Immutable
 public final class PropertyModel implements Comparable<PropertyModel> {
     
-    private final BeanModel context;
+    private final EntityModel context;
     
     private final boolean inherited;
     
@@ -36,11 +36,11 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     
     private final String[] inits;
     
-    public PropertyModel(BeanModel classModel, String name, TypeModel type, String[] inits){
+    public PropertyModel(EntityModel classModel, String name, TypeModel type, String[] inits){
         this(classModel, name, type, inits, false);
     }
     
-    public PropertyModel(BeanModel classModel, String name, TypeModel type, String[] inits, boolean inherited){
+    public PropertyModel(EntityModel classModel, String name, TypeModel type, String[] inits, boolean inherited){
         this.context = classModel;
         this.name = Assert.notNull(name);
         this.escapedName = JavaSyntaxUtils.isReserved(name) ? (name + "_") : name;
@@ -64,7 +64,7 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         return name.compareToIgnoreCase(o.getName());
     }
     
-    public PropertyModel createCopy(BeanModel model){
+    public PropertyModel createCopy(EntityModel model){
         boolean inherited = model.getSuperModel() != null; 
         return new PropertyModel(model, name, type, inits, inherited);
     }
@@ -100,7 +100,7 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         return inits;
     }
 
-    public BeanModel getBeanModel(){
+    public EntityModel getBeanModel(){
         return context;
     }
 

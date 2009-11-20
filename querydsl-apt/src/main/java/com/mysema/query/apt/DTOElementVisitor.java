@@ -19,7 +19,7 @@ import javax.lang.model.util.SimpleElementVisitor6;
 
 import net.jcip.annotations.Immutable;
 
-import com.mysema.query.codegen.BeanModel;
+import com.mysema.query.codegen.EntityModel;
 import com.mysema.query.codegen.ConstructorModel;
 import com.mysema.query.codegen.ParameterModel;
 import com.mysema.query.codegen.TypeModel;
@@ -29,7 +29,7 @@ import com.mysema.query.codegen.TypeModel;
  *
  */
 @Immutable
-public final class DTOElementVisitor extends SimpleElementVisitor6<BeanModel, Void>{
+public final class DTOElementVisitor extends SimpleElementVisitor6<EntityModel, Void>{
     
     private final ProcessingEnvironment env;
     
@@ -44,10 +44,10 @@ public final class DTOElementVisitor extends SimpleElementVisitor6<BeanModel, Vo
     }
     
     @Override
-    public BeanModel visitType(TypeElement e, Void p) {
+    public EntityModel visitType(TypeElement e, Void p) {
         Elements elementUtils = env.getElementUtils();
         TypeModel c = typeFactory.create(e.asType(), elementUtils);
-        BeanModel classModel = new BeanModel(configuration.getNamePrefix(), c);
+        EntityModel classModel = new EntityModel(configuration.getNamePrefix(), c);
         List<? extends Element> elements = e.getEnclosedElements();
         
         // CONSTRUCTOR

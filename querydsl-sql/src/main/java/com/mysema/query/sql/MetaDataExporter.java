@@ -15,8 +15,8 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.codegen.BeanModel;
-import com.mysema.query.codegen.ClassTypeModel;
+import com.mysema.query.codegen.EntityModel;
+import com.mysema.query.codegen.SimpleClassTypeModel;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.PropertyModel;
 import com.mysema.query.codegen.Serializer;
@@ -99,7 +99,7 @@ public class MetaDataExporter {
         while (tables.next()) {
             String tableName = tables.getString(3);
             TypeModel classTypeModel = new SimpleTypeModel(TypeCategory.ENTITY, "java.lang.Object", "java.lang", tableName, false);
-            BeanModel classModel = new BeanModel(namePrefix, classTypeModel);
+            EntityModel classModel = new EntityModel(namePrefix, classTypeModel);
             ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
             while (columns.next()) {
                 String name = columns.getString(4);
@@ -114,7 +114,7 @@ public class MetaDataExporter {
                     fieldType = TypeCategory.STRING;
                 }
 
-                TypeModel typeModel = new ClassTypeModel(fieldType, clazz);
+                TypeModel typeModel = new SimpleClassTypeModel(fieldType, clazz);
                 classModel.addProperty(new PropertyModel(classModel, name, typeModel, new String[0]));
             }
             columns.close();
@@ -123,7 +123,7 @@ public class MetaDataExporter {
         tables.close();
     }
 
-    private void serialize(BeanModel type) {
+    private void serialize(EntityModel type) {
         try {
             String path = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
             serializer.serialize(type, FileUtils.writerFor(new File(targetFolder, path)));

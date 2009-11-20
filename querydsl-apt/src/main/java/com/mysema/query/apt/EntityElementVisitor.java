@@ -31,7 +31,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.annotations.QueryInit;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.codegen.BeanModel;
+import com.mysema.query.codegen.EntityModel;
 import com.mysema.query.codegen.ConstructorModel;
 import com.mysema.query.codegen.ParameterModel;
 import com.mysema.query.codegen.PropertyModel;
@@ -43,7 +43,7 @@ import com.mysema.query.codegen.TypeModel;
  *
  */
 @Immutable
-public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel, Void>{
+public final class EntityElementVisitor extends SimpleElementVisitor6<EntityModel, Void>{
     
     private final ProcessingEnvironment env;
     
@@ -58,7 +58,7 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
     }
     
     @Override
-    public BeanModel visitType(TypeElement e, Void p) {
+    public EntityModel visitType(TypeElement e, Void p) {
         Elements elementUtils = env.getElementUtils();
         Collection<String> superTypes;
         if (e.getKind() == ElementKind.CLASS){
@@ -73,7 +73,7 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
             }
         }
         TypeModel c = typeFactory.create(e.asType(), elementUtils);
-        BeanModel classModel = new BeanModel(configuration.getNamePrefix(), c, superTypes);
+        EntityModel classModel = new EntityModel(configuration.getNamePrefix(), c, superTypes);
         List<? extends Element> elements = e.getEnclosedElements();
     
         // CONSTRUCTORS
@@ -179,8 +179,7 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<BeanModel,
                 }
             }   
         }
-               
-        
+                       
         for (Map.Entry<String,PropertyModel> entry : properties.entrySet()){
             if (!blockedProperties.contains(entry.getKey())){
                 classModel.addProperty(entry.getValue());
