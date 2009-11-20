@@ -70,6 +70,11 @@ public class Processor {
         
     }
     
+    /**
+     * Do the actual processing
+     * 
+     * @param roundEnv
+     */
     public void process(RoundEnvironment roundEnv) {
         Map<String, EntityModel> actualSupertypes  = new HashMap<String, EntityModel>();
         Map<String, EntityModel> allSupertypes = new HashMap<String, EntityModel>();

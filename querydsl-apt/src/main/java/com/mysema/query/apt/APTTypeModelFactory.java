@@ -78,6 +78,13 @@ public class APTTypeModelFactory implements TypeVisitor<TypeModel,Elements> {
         this.comparableType = env.getElementUtils().getTypeElement(Comparable.class.getName());        
     }
     
+    /**
+     * Create a cache key for the given TypeMirror
+     * 
+     * @param type
+     * @param deep inspect type arguments
+     * @return
+     */
     private List<String> getKey(TypeMirror type, boolean deep){
         List<String> key = new ArrayList<String>();
         key.add(type.toString());
@@ -106,6 +113,13 @@ public class APTTypeModelFactory implements TypeVisitor<TypeModel,Elements> {
         return key;
     }
     
+    /**
+     * Create an EntityModel for the given TypeMirror
+     * 
+     * @param type
+     * @param el
+     * @return
+     */
     public EntityModel createEntityModel(TypeMirror type, Elements el){
         List<String> key = getKey(type, true);
         if (entityTypeCache.containsKey(key)){
@@ -124,6 +138,13 @@ public class APTTypeModelFactory implements TypeVisitor<TypeModel,Elements> {
         }
     }
     
+    /**
+     * Create a TypeModel for the given TypeMirror
+     * 
+     * @param type
+     * @param el
+     * @return
+     */
     public TypeModel create(TypeMirror type, Elements el){
         List<String> key = getKey(type, true);  
         if (entityTypeCache.containsKey(key)){
