@@ -14,10 +14,12 @@ import javax.annotation.Nullable;
 public interface TypeModel {
 
     TypeModel as(TypeCategory category);
-    
-    String getQueryTypeName(EntityModel context);
 
+    String getLocalRawName(TypeModel context);
+    
     StringBuilder getLocalRawName(TypeModel context, StringBuilder builder);
+    
+    String getLocalGenericName(TypeModel context, boolean asArgType);
     
     StringBuilder getLocalGenericName(TypeModel context, StringBuilder builder, boolean asArgType);
 

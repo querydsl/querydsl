@@ -10,7 +10,7 @@ import java.util.Map;
 
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EEntity;
+import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
@@ -24,7 +24,7 @@ import com.mysema.query.util.NotEmpty;
  * @param <D> Java type
  */
 @SuppressWarnings("serial")
-public class PEntity<D> extends EEntity<D> implements Path<D> {
+public class PEntity<D> extends Expr<D> implements Path<D> {
     
     private final Map<Class<?>,Object> casts = new HashMap<Class<?>,Object>();
     
@@ -72,67 +72,125 @@ public class PEntity<D> extends EEntity<D> implements Path<D> {
     }
 
     @Override
-    public EEntity<D> asExpr() {
+    public Expr<D> asExpr() {
         return this;
     }
 
+    /**
+     * @param propertyName
+     * @return
+     */
     protected PBoolean createBoolean(@NotEmpty String propertyName) {
         return new PBoolean(this, propertyName);
     }
 
+    /**
+     * @param <A>
+     * @param property
+     * @param type
+     * @return
+     */
     @SuppressWarnings("unchecked")
     protected <A extends Comparable> PComparable<A> createComparable(@NotEmpty String property, Class<? super A> type) {
         return new PComparable<A>((Class)type, this, property);
     }
 
+    /**
+     * @param <A>
+     * @param property
+     * @param type
+     * @return
+     */
     @SuppressWarnings("unchecked")
     protected <A extends Comparable> PDate<A> createDate(@NotEmpty String property, Class<? super A> type) {
         return new PDate<A>((Class)type, PathMetadata.forProperty(this, property));
     }
 
+    /**
+     * @param <A>
+     * @param property
+     * @param type
+     * @return
+     */
     @SuppressWarnings("unchecked")
     protected <A extends Comparable> PDateTime<A> createDateTime(@NotEmpty String property, Class<? super A> type) {
         return new PDateTime<A>((Class)type, this, property);
     }
 
-    protected <A> PEntityCollection<A> createEntityCollection(@NotEmpty String property, Class<? super A> type) {
-        return new PEntityCollection<A>(type, type.getSimpleName(), this, property);
+    /**
+     * @param <A>
+     * @param property
+     * @param type
+     * @return
+     */
+    protected <A> PCollection<A> createCollection(@NotEmpty String property, Class<? super A> type) {
+        return new PCollection<A>(type, type.getSimpleName(), this, property);
     }
 
-    protected <A, E extends PEntity<A>> PEntityList<A, E> createEntityList(@NotEmpty String property, Class<? super A> type, Class<E> queryType) {
-        return new PEntityList<A, E>(type, queryType, PathMetadata.forProperty(this, property));
+    /**
+     * @param <A>
+     * @param <E>
+     * @param property
+     * @param type
+     * @param queryType
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    protected <A, E extends Expr<A>> PList<A, E> createList(@NotEmpty String property, Class<? super A> type, Class<? super E> queryType) {
+        return new PList<A, E>(type, (Class)queryType, PathMetadata.forProperty(this, property));
     }
 
-    protected <K, V, E extends PEntity<V>> PEntityMap<K, V, E> createEntityMap(@NotEmpty String property, Class<? super K> key, Class<? super V> value, Class<E> queryType) {
-        return new PEntityMap<K, V, E>(key, value, queryType, PathMetadata.forProperty(this, property));
+    /**
+     * @param <K>
+     * @param <V>
+     * @param <E>
+     * @param property
+     * @param key
+     * @param value
+     * @param queryType
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    protected <K, V, E extends Expr<V>> PMap<K, V, E> createMap(@NotEmpty String property, Class<? super K> key, Class<? super V> value, Class<? super E> queryType) {
+        return new PMap<K, V, E>(key, value, (Class)queryType, PathMetadata.forProperty(this, property));
     }
 
+    /**
+     * @param <A>
+     * @param property
+     * @param type
+     * @return
+     */
     @SuppressWarnings("unchecked")
     protected <A extends Number & Comparable<?>> PNumber<A> createNumber(@NotEmpty String property, Class<? super A> type) {
         return new PNumber<A>((Class)type, this, property);
     }
 
+    /**
+     * @param <A>
+     * @param path
+     * @param type
+     * @return
+     */
     @SuppressWarnings("unchecked")
     protected <A> PSimple<A> createSimple(@NotEmpty String path, Class<? super A> type) {
         return new PSimple<A>((Class<A>)type, this, path);
     }
 
-    protected <A> PComponentCollection<A> createSimpleCollection(@NotEmpty String property, Class<? super A> type) {
-        return new PComponentCollection<A>(type, this, property);
-    }
-
-    protected <A> PComponentList<A> createSimpleList(@NotEmpty String property, Class<? super A> type) {
-        return new PComponentList<A>(type, PathMetadata.forProperty(this, property));
-    }
-
-    protected <K, V> PComponentMap<K, V> createSimpleMap(@NotEmpty String property, Class<? super K> key, Class<? super V> value) {
-        return new PComponentMap<K, V>(key, value, this, property);
-    }
-
+    /**
+     * @param property
+     * @return
+     */
     protected PString createString(@NotEmpty String property) {
         return new PString(this, property);
     }
 
+    /**
+     * @param <A>
+     * @param property
+     * @param type
+     * @return
+     */
     @SuppressWarnings("unchecked")
     protected <A extends Comparable> PTime<A> createTime(@NotEmpty String property, Class<? super A> type) {
         return new PTime<A>((Class)type, this, property);

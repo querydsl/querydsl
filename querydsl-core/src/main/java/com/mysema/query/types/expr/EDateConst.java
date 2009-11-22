@@ -10,6 +10,10 @@ import java.util.Calendar;
 
 import com.mysema.query.types.Visitor;
 
+/**
+ * @author tiwe
+ *
+ */
 @SuppressWarnings("serial")
 public class EDateConst extends EDate<java.sql.Date> implements Constant<java.sql.Date>{
  

@@ -105,7 +105,13 @@ public class TypeModelAdapter implements TypeModel{
     }
 
     @Override
-    public String getQueryTypeName(EntityModel context) {
-        return typeModel.getQueryTypeName(context);
+    public String getLocalGenericName(TypeModel context, boolean asArgType) {
+        return typeModel.getLocalGenericName(context, asArgType);
     }
+
+    @Override
+    public String getLocalRawName(TypeModel context) {
+        return typeModel.getLocalRawName(context);
+    }
+
 }

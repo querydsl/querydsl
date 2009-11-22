@@ -15,19 +15,16 @@ import java.util.Map;
 
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PBoolean;
-import com.mysema.query.types.path.PBooleanArray;
 import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PComparableArray;
-import com.mysema.query.types.path.PComponentMap;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PEntityCollection;
-import com.mysema.query.types.path.PEntityList;
+import com.mysema.query.types.path.PCollection;
+import com.mysema.query.types.path.PList;
+import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PStringArray;
 import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.PathMetadata;
 
@@ -119,19 +116,7 @@ public final class Alias {
         return pathFactory.createString(arg);
     }
 
-    public static PBooleanArray $(Boolean[] args) {
-        return pathFactory.createBooleanArray(args);
-    }
-
-    public static <D extends Comparable<?>> PComparableArray<D> $(D[] args) {
-        return pathFactory.createComparableArray(args);
-    }
-
-    public static PStringArray $(String[] args) {
-        return pathFactory.createStringArray(args);
-    }
-
-    public static <D> PEntityCollection<D> $(Collection<D> args) {
+    public static <D> PCollection<D> $(Collection<D> args) {
         return pathFactory.createEntityCollection(args);
     }
     
@@ -151,11 +136,11 @@ public final class Alias {
         return pathFactory.createTime(arg);
     }
 
-    public static <K, V> PComponentMap<K, V> $(Map<K, V> args) {
+    public static <K, V> PMap<K, V,?> $(Map<K, V> args) {
         return pathFactory.createMap(args);
     }
 
-    public static <D> PEntityList<D,?> $(List<D> args) {
+    public static <D> PList<D,?> $(List<D> args) {
         return pathFactory.createList(args);
     }
 

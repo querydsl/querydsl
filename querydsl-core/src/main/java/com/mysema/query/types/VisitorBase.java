@@ -33,25 +33,16 @@ import com.mysema.query.types.operation.OTime;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.path.PArray;
 import com.mysema.query.types.path.PBoolean;
-import com.mysema.query.types.path.PBooleanArray;
-import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PComparableArray;
-import com.mysema.query.types.path.PComponentCollection;
-import com.mysema.query.types.path.PComponentList;
-import com.mysema.query.types.path.PComponentMap;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PEntityCollection;
-import com.mysema.query.types.path.PEntityList;
-import com.mysema.query.types.path.PEntityMap;
+import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PList;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PStringArray;
 import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.Path;
 import com.mysema.query.types.query.ListSubQuery;
@@ -199,38 +190,8 @@ public abstract class VisitorBase<SubType extends VisitorBase<SubType>> implemen
     }
 
     @Override
-    public void visit(PBooleanArray expr) {
-        visit((PArray<?>) expr);
-    }
-
-    @Override
-    public void visit(PCollection<?> expr) {
-        visit((Path<?>) expr);
-    }
-
-    @Override
     public void visit(PComparable<?> expr) {
         visit((Path<?>) expr);
-    }
-
-    @Override
-    public void visit(PComparableArray<?> expr) {
-        visit((PArray<?>) expr);
-    }
-
-    @Override
-    public void visit(PComponentCollection<?> expr) {
-        visit((PCollection<?>) expr);
-    }
-
-    @Override
-    public void visit(PComponentList<?> expr) {
-        visit((PList<?>) expr);
-    }
-
-    @Override
-    public void visit(PComponentMap<?, ?> expr) {
-        visit((PMap<?, ?>) expr);
     }
 
     @Override
@@ -249,27 +210,17 @@ public abstract class VisitorBase<SubType extends VisitorBase<SubType>> implemen
     }
 
     @Override
-    public void visit(PEntityCollection<?> expr) {
-        visit((PCollection<?>) expr);
+    public void visit(PCollection<?> expr) {
+        visit((Path<?>) expr);
     }
 
     @Override
-    public void visit(PEntityList<?,?> expr) {
-        visit((PList<?>) expr);
+    public void visit(PList<?,?> expr) {
+        visit((Path<?>) expr);
     }
 
     @Override
-    public void visit(PEntityMap<?, ?, ?> expr) {
-        visit((PMap<?, ?>) expr);
-    }
-
-    @Override
-    public void visit(PList<?> expr) {
-        visit((PCollection<?>) expr);
-    }
-        
-    @Override
-    public void visit(PMap<?, ?> expr) {
+    public void visit(PMap<?, ?, ?> expr) {
         visit((Path<?>) expr);
     }
     
@@ -286,11 +237,6 @@ public abstract class VisitorBase<SubType extends VisitorBase<SubType>> implemen
     @Override
     public void visit(PString expr) {
         visit((Path<?>) expr);
-    }
-
-    @Override
-    public void visit(PStringArray expr) {
-        visit((PArray<?>) expr);
     }
 
     @Override

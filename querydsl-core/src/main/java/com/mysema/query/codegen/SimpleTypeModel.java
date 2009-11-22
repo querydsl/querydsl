@@ -17,7 +17,7 @@ import com.mysema.commons.lang.Assert;
  *
  */
 @Immutable
-public class SimpleTypeModel implements TypeModel {
+public class SimpleTypeModel extends AbstractTypeModel {
 
     private final String fullName, packageName, simpleName, localName;
 
@@ -161,14 +161,5 @@ public class SimpleTypeModel implements TypeModel {
         return false;
     }
 
-    @Override
-    public String getQueryTypeName(EntityModel context){
-        TypeModel valueType = getSelfOrValueType();
-        if (valueType.getPackageName().equals(context.getPackageName())){
-            return context.getPrefix() + valueType.getSimpleName();
-        }else{
-            return valueType.getPackageName() + "." + context.getPrefix() + valueType.getSimpleName();
-        }   
-    }
     
 }

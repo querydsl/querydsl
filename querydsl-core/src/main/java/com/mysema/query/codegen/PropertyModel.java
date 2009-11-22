@@ -7,8 +7,6 @@ package com.mysema.query.codegen;
 
 import java.util.Arrays;
 
-import javax.annotation.Nullable;
-
 import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
@@ -27,12 +25,9 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     
     private final boolean inherited;
     
-    private final String name, escapedName, typeName;
+    private final String name, escapedName;
     
-    @Nullable
-    private final String queryTypeName;
-    
-    private final TypeModel propertyType;
+    private final TypeModel type;
     
     private final String[] inits;
     
@@ -44,11 +39,9 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         this.context = classModel;
         this.name = Assert.notNull(name);
         this.escapedName = JavaSyntaxUtils.isReserved(name) ? (name + "_") : name;
-        this.propertyType = Assert.notNull(type);
-        this.typeName = type.getLocalRawName(classModel, new StringBuilder()).toString();
+        this.type = Assert.notNull(type);
         this.inits = inits;
         this.inherited = inherited;
-        this.queryTypeName = type.getQueryTypeName(context);
     }
     
     public int compareTo(PropertyModel o) {
@@ -57,7 +50,7 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     
     public PropertyModel createCopy(EntityModel model){
         boolean inherited = model.getSuperModel() != null; 
-        return new PropertyModel(model, name, propertyType, inits, inherited);
+        return new PropertyModel(model, name, type, inits, inherited);
     }
     
     public boolean equals(Object o) {
@@ -68,68 +61,21 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         return escapedName;
     }
 
-    @Nullable
-    public String getGenericParameterName(int i){
-        return getGenericParameterName(i, false);
-    }
-    
-    @Nullable
-    public String getGenericParameterName(int i, boolean asArgType){
-        if (i < propertyType.getParameterCount()){
-            return propertyType.getParameter(i).getLocalGenericName(context, new StringBuilder(), asArgType).toString();
-            
-        }else{
-            return null;
-        }
-    }
-
-    public String getGenericTypeName(){
-        return propertyType.getLocalGenericName(context, new StringBuilder(), false).toString();   
-    }
-
     public String[] getInits(){
         return inits;
     }
 
-    public EntityModel getBeanModel(){
+    public EntityModel getEntityModel(){
         return context;
     }
 
     public String getName() {
         return name;
     }
-
-    @Nullable
-    public String getRawParameterName(int i){
-        if (i < propertyType.getParameterCount()){            
-            return propertyType.getParameter(i).getLocalRawName(context, new StringBuilder()).toString();
-        }else{
-            return null;
-        }
-    }
-
-    public String getQueryTypeName() {
-        return queryTypeName;
-    }
-
-    public String getSimpleTypeName() {
-        return propertyType.getSimpleName();
-    }
-
-    public TypeCategory getTypeCategory() {
-        return propertyType.getTypeCategory();
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public String getTypePackage() {
-        return propertyType.getPackageName();
-    }
+    
     
     public int hashCode() {
-        return Arrays.asList(name, propertyType).hashCode();
+        return Arrays.asList(name, type).hashCode();
     }
 
     public boolean isInherited() {
@@ -139,9 +85,14 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     public String toString() {
         return context.getFullName() + "." + name;
     }
-
-    public boolean hasEntityFields() {
-        return propertyType.hasEntityFields();
+    
+    public TypeModel getParameter(int i){
+        return type.getParameter(i);
     }
+
+    public TypeModel getType() {
+        return type;
+    }
+      
 
 }

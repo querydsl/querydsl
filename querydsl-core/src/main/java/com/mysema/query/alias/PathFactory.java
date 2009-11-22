@@ -11,18 +11,15 @@ import java.util.Map;
 
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PBoolean;
-import com.mysema.query.types.path.PBooleanArray;
 import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PComparableArray;
-import com.mysema.query.types.path.PComponentMap;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PEntityCollection;
-import com.mysema.query.types.path.PEntityList;
+import com.mysema.query.types.path.PCollection;
+import com.mysema.query.types.path.PList;
+import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PStringArray;
 import com.mysema.query.types.path.PTime;
 
 /**
@@ -46,11 +43,6 @@ interface PathFactory {
      */
     PBoolean createBoolean(Boolean arg);
 
-    /**
-     * @param args
-     * @return
-     */
-    PBooleanArray createBooleanArray(Boolean[] args);
 
     /**
      * @param <D>
@@ -102,7 +94,7 @@ interface PathFactory {
      * @param arg
      * @return
      */
-    <D> PEntityList<D,?> createList(List<D> arg);
+    <D> PList<D,?> createList(List<D> arg);
 
     /**
      * @param <K>
@@ -110,21 +102,14 @@ interface PathFactory {
      * @param arg
      * @return
      */
-    <K, V> PComponentMap<K, V> createMap(Map<K, V> arg);
+    <K, V> PMap<K, V,?> createMap(Map<K, V> arg);
 
     /**
      * @param <D>
      * @param arg
      * @return
      */
-    <D> PEntityCollection<D> createEntityCollection(Collection<D> arg);
-
-    /**
-     * @param <D>
-     * @param args
-     * @return
-     */
-    <D extends Comparable<?>> PComparableArray<D> createComparableArray(D[] args);
+    <D> PCollection<D> createEntityCollection(Collection<D> arg);
 
     /**
      * @param arg
@@ -132,10 +117,5 @@ interface PathFactory {
      */
     PString createString(String arg);
 
-    /**
-     * @param args
-     * @return
-     */
-    PStringArray createStringArray(String[] args);
 
 }

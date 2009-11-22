@@ -24,6 +24,10 @@ import com.mysema.query.annotations.PropertyType;
 @Immutable
 public enum TypeCategory {
     /**
+     * Simple non-entity fields
+     */           
+    SIMPLE(null),
+    /**
      * 
      */
     MAP(null),
@@ -32,9 +36,13 @@ public enum TypeCategory {
      */
     COLLECTION(null),
     /**
-     * Simple non-entity fields
-     */           
-    SIMPLE(null),
+     * 
+     */
+    LIST(COLLECTION),
+    /**
+     * 
+     */
+    ARRAY(null),
     /**
      * Comparable literal fields (? extends Comparable)
      */
@@ -62,35 +70,11 @@ public enum TypeCategory {
      * Entity fields
      */
     ENTITY(null),
-    /**
-     * Entity collection fields
-     */
-    ENTITYCOLLECTION(COLLECTION),
-    /**
-     * Entity list fields
-     */
-    ENTITYLIST(ENTITYCOLLECTION),      
-    /**
-     * Entity map fields
-     */
-    ENTITYMAP(MAP),    
     
     /**
      * Numeric fields (? extends Number & Comparable)
      */
     NUMERIC(COMPARABLE),     
-    /**
-     * Simple collection fields
-     */
-    SIMPLECOLLECTION(COLLECTION), 
-    /**
-     * Simple list fields
-     */
-    SIMPLELIST(SIMPLECOLLECTION),
-    /**
-     * Simple map fields
-     */
-    SIMPLEMAP(MAP), 
     /**
      * String fields
      */

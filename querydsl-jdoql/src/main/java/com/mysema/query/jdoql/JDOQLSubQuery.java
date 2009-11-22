@@ -11,8 +11,8 @@ import com.mysema.query.support.QueryBaseWithDetach;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PEntityCollection;
 
 /**
  * @author tiwe
@@ -35,7 +35,7 @@ public class JDOQLSubQuery extends QueryBaseWithDetach<JDOQLSubQuery>{
         return _this;
     }
 
-    public <P> JDOQLSubQuery from(PEntityCollection<P> target, PEntity<P> alias){
+    public <P> JDOQLSubQuery from(PCollection<P> target, PEntity<P> alias){
         getMetadata().addFrom(OSimple.create(alias.getType(), Ops.ALIAS, target, alias));
         return _this;
     }

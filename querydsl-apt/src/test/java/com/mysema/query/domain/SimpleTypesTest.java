@@ -2,6 +2,7 @@ package com.mysema.query.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -177,6 +178,24 @@ public class SimpleTypesTest extends AbstractTest{
         
         @QueryTransient
         String skipMe;
+    }
+    
+    @Test
+    public void listAccess(){
+        // date / time
+        QSimpleTypes.simpleTypes.dateList.get(0).after(new Date());
+        QSimpleTypes.simpleTypes.timeList.get(0).after(new Time(0l));
+        QSimpleTypes.simpleTypes.calendarList.get(0).before(Calendar.getInstance());
+
+        // numeric
+        QSimpleTypes.simpleTypes.bbyteList.get(0).abs();
+        
+        // string
+        QSimpleTypes.simpleTypes.sstringList.get(0).toLowerCase();
+        
+        // boolean
+//        QSimpleTypes.simpleTypes.b
+        
     }
     
     @Test

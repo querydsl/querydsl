@@ -20,7 +20,7 @@ import com.mysema.commons.lang.Assert;
  *
  */
 @Immutable
-public class SimpleClassTypeModel implements TypeModel{
+public class SimpleClassTypeModel extends AbstractTypeModel{
     
     private final Class<?> clazz;
     
@@ -142,8 +142,4 @@ public class SimpleClassTypeModel implements TypeModel{
         return false;
     }
 
-    @Override
-    public String getQueryTypeName(EntityModel context) {
-        return null;
-    }
 }

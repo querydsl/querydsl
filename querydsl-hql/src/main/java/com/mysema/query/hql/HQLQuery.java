@@ -9,8 +9,8 @@ import com.mysema.query.Projectable;
 import com.mysema.query.Query;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PEntityCollection;
-import com.mysema.query.types.path.PEntityMap;
+import com.mysema.query.types.path.PCollection;
+import com.mysema.query.types.path.PMap;
 
 /**
  * Query interface for HQL queries
@@ -57,7 +57,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param target
      * @return
      */
-    <P> HQLQuery innerJoin(PEntityCollection<P> target);
+    <P> HQLQuery innerJoin(PCollection<P> target);
     
     /**
      * Create an inner join with the given target and alias.
@@ -67,7 +67,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param alias
      * @return
      */
-    <P> HQLQuery innerJoin(PEntityCollection<P> target, PEntity<P> alias);
+    <P> HQLQuery innerJoin(PCollection<P> target, PEntity<P> alias);
 
     /**
      * Create an inner join with the given target.
@@ -77,7 +77,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param target
      * @return
      */
-    <P> HQLQuery innerJoin(PEntityMap<?, P, ?> target);    
+    <P> HQLQuery innerJoin(PMap<?, P, ?> target);    
     
     /**
      * Create an inner join with the given target and alias.
@@ -87,7 +87,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param alias
      * @return
      */
-    <P> HQLQuery innerJoin(PEntityMap<?, P, ?> target, PEntity<P> alias);
+    <P> HQLQuery innerJoin(PMap<?, P, ?> target, PEntity<P> alias);
 
     /**
      * Create an join with the given target.
@@ -117,7 +117,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param target
      * @return
      */
-    <P> HQLQuery join(PEntityCollection<P> target);
+    <P> HQLQuery join(PCollection<P> target);
     
     /**
      * @param <P>
@@ -125,7 +125,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param alias
      * @return
      */
-    <P> HQLQuery join(PEntityCollection<P> target, PEntity<P> alias);
+    <P> HQLQuery join(PCollection<P> target, PEntity<P> alias);
 
     /**
      * Create an join with the given target.
@@ -135,7 +135,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param target
      * @return
      */
-    <P> HQLQuery join(PEntityMap<?, P, ?> target);
+    <P> HQLQuery join(PMap<?, P, ?> target);
     
     /**
      * Create a join with the given target and alias.
@@ -145,7 +145,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param alias
      * @return
      */
-    <P> HQLQuery join(PEntityMap<?, P, ?> target, PEntity<P> alias);
+    <P> HQLQuery join(PMap<?, P, ?> target, PEntity<P> alias);
 
     /**
      * Create an left join with the given target.
@@ -175,7 +175,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param target
      * @return
      */
-    <P> HQLQuery leftJoin(PEntityCollection<P> target);
+    <P> HQLQuery leftJoin(PCollection<P> target);
     
     /**
      * Create a left join with the given target and alias.
@@ -185,7 +185,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param alias
      * @return
      */
-    <P> HQLQuery leftJoin(PEntityCollection<P> target, PEntity<P> alias);
+    <P> HQLQuery leftJoin(PCollection<P> target, PEntity<P> alias);
 
     /**
      * Create an left join with the given target.
@@ -195,7 +195,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param target
      * @return
      */
-    <P> HQLQuery leftJoin(PEntityMap<?, P, ?> target);
+    <P> HQLQuery leftJoin(PMap<?, P, ?> target);
     
     /**
      * Create a left join with the given target and alias.
@@ -205,7 +205,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param alias
      * @return
      */
-    <P> HQLQuery leftJoin(PEntityMap<?, P, ?> target, PEntity<P> alias);
+    <P> HQLQuery leftJoin(PMap<?, P, ?> target, PEntity<P> alias);
 
     /**
      * Create an full join with the given target.
@@ -235,7 +235,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param target
      * @return
      */
-    <P> HQLQuery fullJoin(PEntityCollection<P> target);
+    <P> HQLQuery fullJoin(PCollection<P> target);
     
     /**
      * Create a full join with the given target and alias.
@@ -245,7 +245,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param alias
      * @return
      */
-    <P> HQLQuery fullJoin(PEntityCollection<P> target, PEntity<P> alias);
+    <P> HQLQuery fullJoin(PCollection<P> target, PEntity<P> alias);
 
     /**
      * Create an full join with the given target.
@@ -255,7 +255,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param target
      * @return
      */
-    <P> HQLQuery fullJoin(PEntityMap<?, P, ?> target); 
+    <P> HQLQuery fullJoin(PMap<?, P, ?> target); 
     
     /**
      * Create a full join with the given target and alias.
@@ -265,7 +265,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param alias
      * @return
      */
-    <P> HQLQuery fullJoin(PEntityMap<?, P, ?> target, PEntity<P> alias);
+    <P> HQLQuery fullJoin(PMap<?, P, ?> target, PEntity<P> alias);
 
     /**
      * Add conditions to the with clause

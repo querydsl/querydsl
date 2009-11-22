@@ -11,18 +11,15 @@ import java.util.Map;
 
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PBoolean;
-import com.mysema.query.types.path.PBooleanArray;
 import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PComparableArray;
-import com.mysema.query.types.path.PComponentMap;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PEntityCollection;
-import com.mysema.query.types.path.PEntityList;
+import com.mysema.query.types.path.PCollection;
+import com.mysema.query.types.path.PList;
+import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PStringArray;
 import com.mysema.query.types.path.PTime;
 
 /**
@@ -59,19 +56,9 @@ class AliasAwarePathFactory implements PathFactory {
         return rv != null ? rv : factory.createBoolean(arg);
     }
 
-    public PBooleanArray createBooleanArray(Boolean[] args) {
-        PBooleanArray rv = aliasFactory.<PBooleanArray> getCurrentAndReset();
-        return rv != null ? rv : factory.createBooleanArray(args);
-    }
-
     public <D extends Comparable<?>> PComparable<D> createComparable(D arg) {
         PComparable<D> rv = aliasFactory.<PComparable<D>> getCurrentAndReset();
         return rv != null ? rv : factory.createComparable(arg);
-    }
-
-    public <D extends Comparable<?>> PComparableArray<D> createComparableArray(D[] args) {
-        PComparableArray<D> rv = aliasFactory.<PComparableArray<D>> getCurrentAndReset();
-        return rv != null ? rv : factory.createComparableArray(args);
     }
 
     @SuppressWarnings("unchecked")
@@ -100,18 +87,18 @@ class AliasAwarePathFactory implements PathFactory {
         }
     }
 
-    public <D> PEntityCollection<D> createEntityCollection(Collection<D> arg) {
-        PEntityCollection<D> rv = aliasFactory.<PEntityCollection<D>> getCurrentAndReset();
+    public <D> PCollection<D> createEntityCollection(Collection<D> arg) {
+        PCollection<D> rv = aliasFactory.<PCollection<D>> getCurrentAndReset();
         return rv != null ? rv : factory.createEntityCollection(arg);
     }
 
-    public <D> PEntityList<D,?> createList(List<D> arg) {
-        PEntityList<D,?> rv = aliasFactory.<PEntityList<D,?>> getCurrentAndReset();
+    public <D> PList<D,?> createList(List<D> arg) {
+        PList<D,?> rv = aliasFactory.<PList<D,?>> getCurrentAndReset();
         return rv != null ? rv : factory.createList(arg);
     }
 
-    public <K, V> PComponentMap<K, V> createMap(Map<K, V> arg) {
-        PComponentMap<K, V> rv = aliasFactory.<PComponentMap<K, V>> getCurrentAndReset();
+    public <K, V> PMap<K, V, ?> createMap(Map<K, V> arg) {
+        PMap<K, V, ?> rv = aliasFactory.<PMap<K, V, ?>> getCurrentAndReset();
         return rv != null ? rv : factory.createMap(arg);
     }
 
@@ -123,11 +110,6 @@ class AliasAwarePathFactory implements PathFactory {
     public PString createString(String arg) {
         PString rv = aliasFactory.<PString> getCurrentAndReset();
         return rv != null ? rv : factory.createString(arg);
-    }
-
-    public PStringArray createStringArray(String[] args) {
-        PStringArray rv = aliasFactory.<PStringArray> getCurrentAndReset();
-        return rv != null ? rv : factory.createStringArray(args);
     }
 
     @SuppressWarnings("unchecked")

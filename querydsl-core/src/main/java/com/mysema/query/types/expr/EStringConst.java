@@ -14,9 +14,6 @@ import java.util.Map;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Visitor;
 
-
-
-
 /**
  * EStringConst represents String constants
  * 

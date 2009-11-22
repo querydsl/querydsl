@@ -32,13 +32,11 @@ import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EMap;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PBoolean;
+import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PComponentMap;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PEntityCollection;
-import com.mysema.query.types.path.PEntityList;
 import com.mysema.query.types.path.PList;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PNumber;
@@ -126,7 +124,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {
-                PathMetadata<Integer> pm = PathMetadata.forListAccess((PList<?>) path, (Integer) args[0]);
+                PathMetadata<Integer> pm = PathMetadata.forListAccess((PList<?, ?>) path, (Integer) args[0]);
                 Class<?> elementType = ((ECollection<?>) path).getElementType();
                 if (elementType != null) {
                     rv = newInstance(elementType, elementType, proxy, propKey, pm);
@@ -141,7 +139,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {
-                PathMetadata<?> pm = PathMetadata.forMapAccess((PMap<?, ?>) path, args[0]);
+                PathMetadata<?> pm = PathMetadata.forMapAccess((PMap<?, ?, ?>) path, args[0]);
                 Class<?> valueType = ((EMap<?, ?>) path).getValueType();
                 if (valueType != null) {
                     rv = newInstance(valueType, valueType, proxy, propKey, pm);
@@ -274,7 +272,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else if (List.class.isAssignableFrom(type)) {
             final Class<Object> elementType = (Class)getTypeParameter(genericType, 0);
-            path = new PEntityList<Object,PEntity<Object>>(elementType, null, pm){
+            path = new PList<Object,PEntity<Object>>(elementType, null, pm){
                 @Override
                 public PEntity get(Expr<Integer> index) {
                     return new PEntity(elementType, elementType.getSimpleName(), 
@@ -290,18 +288,29 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else if (Set.class.isAssignableFrom(type)) {
             Class<?> elementType = getTypeParameter(genericType, 0);
-            path = new PEntityCollection(elementType, elementType.getName(), pm);
+            path = new PCollection(elementType, elementType.getName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
 
         } else if (Collection.class.isAssignableFrom(type)) {
             Class<?> elementType = getTypeParameter(genericType, 0);
-            path = new PEntityCollection(elementType, elementType.getSimpleName(), pm);
+            path = new PCollection(elementType, elementType.getSimpleName(), pm);
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
 
         } else if (Map.class.isAssignableFrom(type)) {
-            Class<?> keyType = getTypeParameter(genericType, 0);
-            Class<?> valueType = getTypeParameter(genericType, 1);
-            path = new PComponentMap(keyType, valueType, pm);
+            Class<Object> keyType = (Class)getTypeParameter(genericType, 0);
+            final Class<Object> valueType = (Class)getTypeParameter(genericType, 1);
+            path = new PMap<Object,Object,PEntity<Object>>(keyType, valueType, null, pm){
+                @Override
+                public PEntity get(Expr<Object> key) {
+                    return new PEntity(valueType, valueType.getSimpleName(), 
+                            PathMetadata.forMapAccess(this, key));
+                }
+                @Override
+                public PEntity get(Object key) {
+                    return new PEntity(valueType, valueType.getSimpleName(), 
+                            PathMetadata.forMapAccess(this, key));
+                }
+            };
             rv = (T) aliasFactory.createAliasForProp(type, parent, path);
 
         } else if (Enum.class.isAssignableFrom(type)) {

@@ -20,8 +20,8 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PEntityCollection;
-import com.mysema.query.types.path.PEntityMap;
+import com.mysema.query.types.path.PCollection;
+import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PathMetadata;
 
@@ -61,12 +61,12 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
     }
     
     @SuppressWarnings("unchecked")
-    private <D> Expr<D> createAlias(PEntityCollection<?> target, PEntity<D> alias){
+    private <D> Expr<D> createAlias(PCollection<?> target, PEntity<D> alias){
         return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target.asExpr(), alias);
     }
     
     @SuppressWarnings("unchecked")
-    private <D> Expr<D> createAlias(PEntityMap<?,D,?> target, PEntity<D> alias){
+    private <D> Expr<D> createAlias(PMap<?,D,?> target, PEntity<D> alias){
         return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
     }
 
@@ -107,22 +107,22 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return _this;
     }
     
-    public <P> SubType fullJoin(PEntityCollection<P> target) {
+    public <P> SubType fullJoin(PCollection<P> target) {
         getMetadata().addJoin(JoinType.FULLJOIN, target);
         return _this;
     }
     
-    public <P> SubType fullJoin(PEntityCollection<P> target, PEntity<P> alias) {
+    public <P> SubType fullJoin(PCollection<P> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.FULLJOIN, createAlias(target, alias));
         return _this;
     }
     
-    public <P> SubType fullJoin(PEntityMap<?,P,?> target) {
+    public <P> SubType fullJoin(PMap<?,P,?> target) {
         getMetadata().addJoin(JoinType.FULLJOIN, target);
         return _this;
     }
     
-    public <P> SubType fullJoin(PEntityMap<?,P,?> target, PEntity<P> alias) {
+    public <P> SubType fullJoin(PMap<?,P,?> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.FULLJOIN, createAlias(target, alias));
         return _this;
     }
@@ -141,22 +141,22 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return _this;
     }
 
-    public <P> SubType innerJoin(PEntityCollection<P> target) {
+    public <P> SubType innerJoin(PCollection<P> target) {
         getMetadata().addJoin(JoinType.INNERJOIN, target);
         return _this;
     }
     
-    public <P> SubType innerJoin(PEntityCollection<P> target, PEntity<P> alias) {
+    public <P> SubType innerJoin(PCollection<P> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return _this;
     }
     
-    public <P> SubType innerJoin(PEntityMap<?,P,?> target) {
+    public <P> SubType innerJoin(PMap<?,P,?> target) {
         getMetadata().addJoin(JoinType.INNERJOIN, target);
         return _this;
     }
     
-    public <P> SubType innerJoin(PEntityMap<?,P,?> target, PEntity<P> alias) {
+    public <P> SubType innerJoin(PMap<?,P,?> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return _this;
     }
@@ -171,22 +171,22 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return _this;
     }
     
-    public <P> SubType join(PEntityCollection<P> target) {
+    public <P> SubType join(PCollection<P> target) {
         getMetadata().addJoin(JoinType.JOIN, target);
         return _this;
     }
     
-    public <P> SubType join(PEntityCollection<P> target, PEntity<P> alias) {
+    public <P> SubType join(PCollection<P> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.JOIN, createAlias(target, alias));
         return _this;
     }
     
-    public <P> SubType join(PEntityMap<?,P,?> target) {
+    public <P> SubType join(PMap<?,P,?> target) {
         getMetadata().addJoin(JoinType.JOIN, target);
         return _this;
     }
     
-    public <P> SubType join(PEntityMap<?,P,?> target, PEntity<P> alias) {
+    public <P> SubType join(PMap<?,P,?> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.JOIN, createAlias(target, alias));
         return _this;
     }
@@ -201,22 +201,22 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return _this;
     }
     
-    public <P> SubType leftJoin(PEntityCollection<P> target) {
+    public <P> SubType leftJoin(PCollection<P> target) {
         getMetadata().addJoin(JoinType.LEFTJOIN, target);
         return _this;
     }
     
-    public <P> SubType leftJoin(PEntityCollection<P> target, PEntity<P> alias) {
+    public <P> SubType leftJoin(PCollection<P> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
         return _this;
     }
     
-    public <P> SubType leftJoin(PEntityMap<?,P,?> target, PEntity<P> alias) {
+    public <P> SubType leftJoin(PMap<?,P,?> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
         return _this;
     }
     
-    public <P> SubType leftJoin(PEntityMap<?,P,?> target) {
+    public <P> SubType leftJoin(PMap<?,P,?> target) {
         getMetadata().addJoin(JoinType.LEFTJOIN, target);
         return _this;
     }

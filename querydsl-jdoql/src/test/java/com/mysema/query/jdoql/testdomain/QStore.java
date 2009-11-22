@@ -5,9 +5,9 @@
  */
 package com.mysema.query.jdoql.testdomain;
 
+import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PEntityCollection;
-import com.mysema.query.types.path.PEntityMap;
+import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathMetadata;
 
@@ -22,9 +22,9 @@ public class QStore extends PEntity<com.mysema.query.jdoql.testdomain.Store>{
     
     public final PString name = createString("name");
     
-    public final PEntityMap<String,Product,QProduct> productsByName = createEntityMap("productsByName",String.class,Product.class,QProduct.class);
+    public final PMap<String,Product,QProduct> productsByName = this.<String,Product,QProduct>createMap("productsByName",String.class,Product.class,QProduct.class);
     
-    public final PEntityCollection<Product> products = createEntityCollection("products",Product.class);
+    public final PCollection<Product> products = createCollection("products",Product.class);
     
     public QProduct productsByName(String key) {
         return new QProduct(PathMetadata.forMapAccess(productsByName,key));

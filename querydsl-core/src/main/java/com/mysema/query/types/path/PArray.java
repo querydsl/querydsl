@@ -22,14 +22,14 @@ import com.mysema.query.util.NotEmpty;
  * 
  * @author tiwe
  * 
- * @param <D> component type
+ * @param <E> component type
  */
 @SuppressWarnings("serial")
-public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>{
+public abstract class PArray<E> extends Expr<E[]> implements Path<E[]>{
     
-    protected final Class<D[]> arrayType;
+    private final Class<E[]> arrayType;
     
-    protected final Class<D> componentType;
+    private final Class<E> componentType;
     
     private volatile EBoolean isnull, isnotnull;
     
@@ -40,15 +40,15 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>{
     private final Path<?> root;
 
     @SuppressWarnings("unchecked")
-    public PArray(Class<D> type, PathMetadata<?> metadata) {
+    public PArray(Class<E> type, PathMetadata<?> metadata) {
         super((Class)Object[].class);
-        this.arrayType = (Class<D[]>) Array.newInstance(type, 0).getClass();
+        this.arrayType = (Class<E[]>) Array.newInstance(type, 0).getClass();
         this.componentType = type;
         this.metadata = metadata;
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    public PArray(Class<D> type, @NotEmpty String var) {
+    public PArray(Class<E> type, @NotEmpty String var) {
         this(type, PathMetadata.forVariable(var));
     }
 
@@ -64,7 +64,7 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>{
      * @param index
      * @return
      */
-    public abstract Expr<D> get(Expr<Integer> index);
+    public abstract Expr<E> get(Expr<Integer> index);
 
     /**
      * Create a expression for indexed access
@@ -72,10 +72,10 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>{
      * @param index
      * @return
      */
-    public abstract Expr<D> get(@Nonnegative int index);
+    public abstract Expr<E> get(@Nonnegative int index);
 
 //    @Override
-    public Class<D> getElementType() {
+    public Class<E> getElementType() {
         return componentType;
     }
 
@@ -90,7 +90,7 @@ public abstract class PArray<D> extends Expr<D[]> implements Path<D[]>{
     }
 
     @Override
-    public Class<D[]> getType() {
+    public Class<E[]> getType() {
         return arrayType;
     }
 

@@ -97,22 +97,15 @@ public class TypeModelFactory {
     }
     
     public TypeModel createArrayType(TypeModel valueType) {
-        return createComposite(TypeCategory.ENTITYCOLLECTION, TypeCategory.SIMPLECOLLECTION, Collection.class, valueType);
+        return createComposite(TypeCategory.COLLECTION, Collection.class, valueType);
     }
 
     public TypeModel createCollectionType(TypeModel valueType) {
-        return createComposite(TypeCategory.ENTITYCOLLECTION, TypeCategory.SIMPLECOLLECTION, Collection.class, valueType);
+        return createComposite(TypeCategory.COLLECTION, Collection.class, valueType);
     }
 
-    private TypeModel createComposite(TypeCategory entity, TypeCategory simple, Class<?> containerType, TypeModel... parameters) {
-        TypeCategory category;
-        TypeModel value = parameters[parameters.length -1];
-        if (value.getTypeCategory() == TypeCategory.ENTITY) {
-            category = entity;
-        } else {
-            category = simple;
-        }
-        return new SimpleTypeModel(category, 
+    private TypeModel createComposite(TypeCategory container, Class<?> containerType, TypeModel... parameters) {
+        return new SimpleTypeModel(container, 
                 containerType.getName(), 
                 containerType.getPackage().getName(), 
                 containerType.getSimpleName(), 
@@ -122,11 +115,11 @@ public class TypeModelFactory {
     }
 
     public TypeModel createListType(TypeModel valueType) {
-        return createComposite(TypeCategory.ENTITYLIST, TypeCategory.SIMPLELIST, List.class, valueType);
+        return createComposite(TypeCategory.LIST, List.class, valueType);
     }
 
     public TypeModel createMapType(TypeModel keyType, TypeModel valueType) {
-        return createComposite(TypeCategory.ENTITYMAP, TypeCategory.SIMPLEMAP, Map.class, keyType, valueType);
+        return createComposite(TypeCategory.MAP, Map.class, keyType, valueType);
     }
 
 }

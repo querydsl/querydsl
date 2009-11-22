@@ -32,25 +32,16 @@ import com.mysema.query.types.operation.OTime;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.path.PArray;
 import com.mysema.query.types.path.PBoolean;
-import com.mysema.query.types.path.PBooleanArray;
-import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PComparableArray;
-import com.mysema.query.types.path.PComponentCollection;
-import com.mysema.query.types.path.PComponentList;
-import com.mysema.query.types.path.PComponentMap;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PEntityCollection;
-import com.mysema.query.types.path.PEntityList;
-import com.mysema.query.types.path.PEntityMap;
+import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PList;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PStringArray;
 import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.Path;
 import com.mysema.query.types.query.ListSubQuery;
@@ -127,31 +118,15 @@ public interface Visitor {
 
     void visit(PBoolean expr);
 
-    void visit(PBooleanArray expr);
-
-    void visit(PCollection<?> expr);
-
     void visit(PComparable<?> expr);
-
-    void visit(PComparableArray<?> expr);
-
-    void visit(PComponentCollection<?> expr);
-
-    void visit(PComponentList<?> expr);
-
-    void visit(PComponentMap<?, ?> expr);
 
     void visit(PEntity<?> expr);
 
-    void visit(PEntityCollection<?> expr);
+    void visit(PCollection<?> expr);
 
-    void visit(PEntityList<?, ?> expr);
+    void visit(PList<?, ?> expr);
 
-    void visit(PEntityMap<?, ?, ?> expr);
-
-    void visit(PList<?> expr);
-
-    void visit(PMap<?, ?> expr);
+    void visit(PMap<?, ?, ?> expr);
 
     void visit(PNumber<?> expr);
     
@@ -159,8 +134,6 @@ public interface Visitor {
 
     void visit(PString expr);
 
-    void visit(PStringArray expr);
-    
     void visit(PDate<?> expr);
     
     void visit(PDateTime<?> expr);

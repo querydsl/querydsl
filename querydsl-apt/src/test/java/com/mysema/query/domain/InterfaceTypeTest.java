@@ -5,7 +5,7 @@ import java.util.List;
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
-import com.mysema.query.types.path.PEntityList;
+import com.mysema.query.types.path.PList;
 import com.mysema.query.types.path.PNumber;
 
 
@@ -61,13 +61,13 @@ public class InterfaceTypeTest extends AbstractTest{
     @Test
     public void QInterfaceType_reation2() throws SecurityException, NoSuchFieldException{
         cl = QInterfaceType.class;
-        match(PEntityList.class, "relation2");
+        match(PList.class, "relation2");
     }
     
     @Test
     public void QInterfaceType_reation3() throws SecurityException, NoSuchFieldException{
         cl = QInterfaceType.class;
-        match(PEntityList.class, "relation3");
+        match(PList.class, "relation3");
     }
     
     @Test

@@ -12,12 +12,9 @@ import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.domain.rel.RelationType2;
-import com.mysema.query.types.path.PComponentCollection;
-import com.mysema.query.types.path.PComponentList;
-import com.mysema.query.types.path.PComponentMap;
-import com.mysema.query.types.path.PEntityCollection;
-import com.mysema.query.types.path.PEntityList;
-import com.mysema.query.types.path.PEntityMap;
+import com.mysema.query.types.path.PCollection;
+import com.mysema.query.types.path.PList;
+import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PSimple;
 
 public class RelationTest extends AbstractTest{
@@ -104,40 +101,40 @@ public class RelationTest extends AbstractTest{
     public void test() throws SecurityException, NoSuchFieldException{
         cl = QRelationType.class;
         match(PSimple.class, "enumProperty");
-        match(PComponentList.class, "enumList");
-        match(PComponentMap.class, "enumMap1");
-        match(PComponentMap.class, "enumMap");
+        match(PList.class, "enumList");
+        match(PMap.class, "enumMap1");
+        match(PMap.class, "enumMap");
         
-        match(PEntityList.class, "list");
-        match(PEntityList.class, "list2");
-        match(PComponentList.class, "list3");
-        match(PEntityList.class, "list4");
-        match(PEntityList.class, "list5");
+        match(PList.class, "list");
+        match(PList.class, "list2");
+        match(PList.class, "list3");
+        match(PList.class, "list4");
+        match(PList.class, "list5");
         
-        match(PEntityCollection.class, "set");
-        match(PEntityCollection.class, "sortedSet");
-        match(PComponentCollection.class, "set2");
-        match(PEntityCollection.class, "set3");
-        match(PEntityCollection.class, "set4");
+        match(PCollection.class, "set");
+        match(PCollection.class, "sortedSet");
+        match(PCollection.class, "set2");
+        match(PCollection.class, "set3");
+        match(PCollection.class, "set4");
         
-        match(PComponentList.class, "listOfObjects");
-        match(PComponentCollection.class, "setOfObjects");
-        match(PEntityCollection.class, "setOfObjects2");
+        match(PList.class, "listOfObjects");
+        match(PCollection.class, "setOfObjects");
+        match(PCollection.class, "setOfObjects2");
         
-        match(PEntityCollection.class, "collection");
-        match(PEntityCollection.class, "collection2");
-        match(PComponentCollection.class, "collection3");
-        match(PEntityCollection.class, "collection4");
+        match(PCollection.class, "collection");
+        match(PCollection.class, "collection2");
+        match(PCollection.class, "collection3");
+        match(PCollection.class, "collection4");
         
-        match(PEntityMap.class, "map");
-        match(PEntityMap.class, "map2");
-        match(PComponentMap.class, "map3");
-        match(PEntityMap.class, "map4");
-        match(PEntityMap.class, "map5");
-        match(PComponentMap.class, "map6");
-        match(PEntityMap.class, "map7");
-        match(PEntityMap.class, "map8");
-        match(PComponentMap.class, "map9");
+        match(PMap.class, "map");
+        match(PMap.class, "map2");
+        match(PMap.class, "map3");
+        match(PMap.class, "map4");
+        match(PMap.class, "map5");
+        match(PMap.class, "map6");
+        match(PMap.class, "map7");
+        match(PMap.class, "map8");
+        match(PMap.class, "map9");
     }
     
     @Test

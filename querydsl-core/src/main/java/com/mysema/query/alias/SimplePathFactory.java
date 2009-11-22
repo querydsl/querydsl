@@ -5,7 +5,6 @@
  */
 package com.mysema.query.alias;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -17,18 +16,15 @@ import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PBoolean;
-import com.mysema.query.types.path.PBooleanArray;
 import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PComparableArray;
-import com.mysema.query.types.path.PComponentMap;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PEntityCollection;
-import com.mysema.query.types.path.PEntityList;
+import com.mysema.query.types.path.PCollection;
+import com.mysema.query.types.path.PList;
+import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PStringArray;
 import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.PathMetadata;
 
@@ -53,71 +49,74 @@ class SimplePathFactory implements PathFactory {
 
     private final PString str = new PString(PathMetadata.forVariable("str"));
 
-    private final PBoolean btrue = new PBoolean(md()), bfalse = new PBoolean(
-            md());
+    private final PBoolean btrue = new PBoolean(md()), bfalse = new PBoolean(md());
 
     private long counter = 0;
 
-    private final Map<Object, PBooleanArray> baToPath = new PathFactory<Object, PBooleanArray>(
-            new Transformer<Object, PBooleanArray>() {
-                public PBooleanArray transform(Object arg) {
-                    return new PBooleanArray(md());
-                }
-            });
-
-    private final Map<Object, PComparableArray<?>> caToPath = new PathFactory<Object, PComparableArray<?>>(
-            new Transformer<Object, PComparableArray<?>>() {
+    private final Map<Collection<?>, PCollection<?>> ecToPath = new PathFactory<Collection<?>, PCollection<?>>(
+            new Transformer<Collection<?>, PCollection<?>>() {
                 @SuppressWarnings("unchecked")
-                public PComparableArray<?> transform(Object arg) {
-                    return new PComparableArray(((List) arg).get(0).getClass(),
-                            md());
-                }
-            });
-
-    private final Map<Collection<?>, PEntityCollection<?>> ecToPath = new PathFactory<Collection<?>, PEntityCollection<?>>(
-            new Transformer<Collection<?>, PEntityCollection<?>>() {
-                @SuppressWarnings("unchecked")
-                public PEntityCollection<?> transform(Collection<?> arg) {
+                public PCollection<?> transform(Collection<?> arg) {
                     if (!arg.isEmpty()) {
                         Class<?> cl = ((Collection) arg).iterator().next().getClass();
-                        return new PEntityCollection(cl, cl.getSimpleName(), md());
+                        return new PCollection(cl, cl.getSimpleName(), md());
                     } else {
-                        return new PEntityCollection(Object.class, "Object", md());
+                        return new PCollection(Object.class, "Object", md());
                     }
                 }
             });
 
-    private final Map<List<?>, PEntityList<?,?>> elToPath = new PathFactory<List<?>, PEntityList<?,?>>(
-            new Transformer<List<?>, PEntityList<?,?>>() {
+    private final Map<List<?>, PList<?,?>> elToPath = new PathFactory<List<?>, PList<?,?>>(
+            new Transformer<List<?>, PList<?,?>>() {
                 @SuppressWarnings({ "unchecked", "serial" })
-                public PEntityList<?,?> transform(List<?> arg) {
+                public PList<?,?> transform(List<?> arg) {
                     final Class<?> cl = arg.isEmpty() ?  Object.class : arg.get(0).getClass();
-                    return new PEntityList<Object,PEntity<Object>>(Object.class, null, md()){                        
+                    return new PList<Object,PEntity<Object>>(Object.class, null, md()){                        
                         @Override
                         public PEntity get(Expr<Integer> index) {
-                            return new PEntity(cl, cl.getSimpleName(), 
-                                    PathMetadata.forListAccess(this, index));
+                            return new PEntity(cl, cl.getSimpleName(), PathMetadata.forListAccess(this, index));
                         }
                         @Override
                         public PEntity get(int index) {
-                            return new PEntity(cl, cl.getSimpleName(), 
-                                    PathMetadata.forListAccess(this, index));
+                            return new PEntity(cl, cl.getSimpleName(), PathMetadata.forListAccess(this, index));
                         }
                     };
                 }
             });
 
-    private final Map<Map<?, ?>, PComponentMap<?, ?>> emToPath = new PathFactory<Map<?, ?>, PComponentMap<?, ?>>(
-            new Transformer<Map<?, ?>, PComponentMap<?, ?>>() {
+    private final Map<Map<?, ?>, PMap<?, ?, ?>> emToPath = new PathFactory<Map<?, ?>, PMap<?, ?, ?>>(
+            new Transformer<Map<?, ?>, PMap<?, ?, ?>>() {
                 @SuppressWarnings("unchecked")
-                public PComponentMap<?, ?> transform(Map<?, ?> arg) {
+                public PMap<?, ?, ?> transform(Map<?, ?> arg) {
                     if (!arg.isEmpty()) {
                         Map.Entry entry = arg.entrySet().iterator().next();
-                        Class<?> keyType = entry.getKey().getClass();
-                        Class<?> valueType = entry.getValue().getClass();
-                        return new PComponentMap(keyType, valueType, md());
+                        final Class<Object> keyType = (Class)entry.getKey().getClass();
+                        final Class<Object> valueType = (Class)entry.getValue().getClass();
+                        return new PMap<Object,Object,PEntity<Object>>(keyType, valueType, null, md()){
+                            @Override
+                            public PEntity get(Expr<Object> key) {
+                                return new PEntity(valueType, valueType.getSimpleName(), 
+                                        PathMetadata.forMapAccess(this, key));
+                            }
+                            @Override
+                            public PEntity get(Object key) {
+                                return new PEntity(valueType, valueType.getSimpleName(), 
+                                        PathMetadata.forMapAccess(this, key));
+                            }
+                        };
                     } else {
-                        return new PComponentMap(Object.class, Object.class, md());
+                        return new PMap<Object,Object,PEntity<Object>>(Object.class, Object.class, null, md()){
+                            @Override
+                            public PEntity get(Expr<Object> key) {
+                                return new PEntity(Object.class, Object.class.getSimpleName(), 
+                                        PathMetadata.forMapAccess(this, key));
+                            }
+                            @Override
+                            public PEntity get(Object key) {
+                                return new PEntity(Object.class, Object.class.getSimpleName(), 
+                                        PathMetadata.forMapAccess(this, key));
+                            }
+                        };
                     }
                 }
 
@@ -163,12 +162,6 @@ class SimplePathFactory implements PathFactory {
                 }
             });
 
-    private final Map<Object, PStringArray> saToPath = new PathFactory<Object, PStringArray>(
-            new Transformer<Object, PStringArray>() {
-                public PStringArray transform(Object arg) {
-                    return new PStringArray(md());
-                }
-            });
 
     private final Map<Object, PEntity<?>> entityToPath = new PathFactory<Object, PEntity<?>>(
             new Transformer<Object, PEntity<?>>() {
@@ -194,18 +187,9 @@ class SimplePathFactory implements PathFactory {
         return arg.booleanValue() ? btrue : bfalse;
     }
 
-    public PBooleanArray createBooleanArray(Boolean[] args) {
-        return baToPath.get(Arrays.asList(args));
-    }
-
     @SuppressWarnings("unchecked")
     public <D extends Comparable<?>> PComparable<D> createComparable(D arg) {
         return (PComparable<D>) comToPath.get(arg);
-    }
-
-    @SuppressWarnings("unchecked")
-    public <D extends Comparable<?>> PComparableArray<D> createComparableArray(D[] args) {
-        return (PComparableArray<D>) caToPath.get(Arrays.asList(args));
     }
 
     @SuppressWarnings("unchecked")
@@ -226,13 +210,13 @@ class SimplePathFactory implements PathFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public <D> PEntityCollection<D> createEntityCollection(Collection<D> arg) {
-        return (PEntityCollection<D>) ecToPath.get(arg);
+    public <D> PCollection<D> createEntityCollection(Collection<D> arg) {
+        return (PCollection<D>) ecToPath.get(arg);
     }
 
     @SuppressWarnings("unchecked")
-    public <K, V> PComponentMap<K, V> createMap(Map<K, V> arg) {
-        return (PComponentMap<K, V>) emToPath.get(arg);
+    public <K, V> PMap<K, V, ?> createMap(Map<K, V> arg) {
+        return (PMap<K, V, ?>) emToPath.get(arg);
     }
 
     @SuppressWarnings("unchecked")
@@ -242,10 +226,6 @@ class SimplePathFactory implements PathFactory {
 
     public PString createString(String arg) {
         return StringUtils.isEmpty(arg) ? str : strToPath.get(arg);
-    }
-
-    public PStringArray createStringArray(String[] args) {
-        return saToPath.get(Arrays.asList(args));
     }
 
     @SuppressWarnings("unchecked")
@@ -260,8 +240,8 @@ class SimplePathFactory implements PathFactory {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <D> PEntityList<D,?> createList(List<D> arg) {
-        return (PEntityList<D,?>) elToPath.get(arg);
+    public <D> PList<D,?> createList(List<D> arg) {
+        return (PList<D,?>) elToPath.get(arg);
     }
 
 }

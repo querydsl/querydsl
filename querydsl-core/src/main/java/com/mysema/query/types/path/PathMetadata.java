@@ -41,19 +41,19 @@ public final class PathMetadata<T> implements Serializable{
         return new PathMetadata<Integer>(parent, ENumberConst.create(index), PathType.ARRAYVALUE_CONSTANT);
     }
 
-    public static PathMetadata<Integer> forListAccess(PList<?> parent, Expr<Integer> index) {
+    public static PathMetadata<Integer> forListAccess(PList<?, ?> parent, Expr<Integer> index) {
         return new PathMetadata<Integer>(parent, index, PathType.LISTVALUE);
     }
 
-    public static PathMetadata<Integer> forListAccess(PList<?> parent, @Nonnegative int index) {
+    public static PathMetadata<Integer> forListAccess(PList<?, ?> parent, @Nonnegative int index) {
         return new PathMetadata<Integer>(parent, ENumberConst.create(index), PathType.LISTVALUE_CONSTANT);
     }
 
-    public static <KT> PathMetadata<KT> forMapAccess(PMap<?, ?> parent, Expr<KT> key) {
+    public static <KT> PathMetadata<KT> forMapAccess(PMap<?, ?, ?> parent, Expr<KT> key) {
         return new PathMetadata<KT>(parent, key, PathType.MAPVALUE);
     }
 
-    public static <KT> PathMetadata<KT> forMapAccess(PMap<?, ?> parent, KT key) {
+    public static <KT> PathMetadata<KT> forMapAccess(PMap<?, ?, ?> parent, KT key) {
         return new PathMetadata<KT>(parent, ExprConst.create(key), PathType.MAPVALUE_CONSTANT);
     }
 

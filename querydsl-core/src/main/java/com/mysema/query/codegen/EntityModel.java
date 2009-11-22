@@ -63,13 +63,11 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
 
     public void addProperty(PropertyModel field) {
         properties.add(validateField(field));
-        switch(field.getTypeCategory()){
-        case ENTITYMAP:
-        case SIMPLEMAP: 
+        switch(field.getType().getTypeCategory()){
+        case MAP: 
             hasMaps = true; 
             break;
-        case ENTITYLIST:
-        case SIMPLELIST: 
+        case LIST: 
             hasLists = true; 
             break;
         case ENTITY:    
@@ -94,12 +92,12 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
         return typeModel.getLocalRawName(this, new StringBuilder()).toString();
     }
     
-    public Set<PropertyModel> getProperties() {
-        return properties;
-    }
-
     public String getPrefix(){
         return prefix;
+    }
+
+    public Set<PropertyModel> getProperties() {
+        return properties;
     }
         
     @Nullable
