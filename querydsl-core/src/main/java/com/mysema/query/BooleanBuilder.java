@@ -96,6 +96,10 @@ public class BooleanBuilder extends EBoolean{
     public boolean hasValue(){
         return expr != null;
     }
+    
+    public EBoolean getValue(){
+        return expr;
+    }
 
     @Override
     public void accept(Visitor v) {

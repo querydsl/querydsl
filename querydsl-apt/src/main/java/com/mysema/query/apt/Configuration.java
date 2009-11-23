@@ -23,8 +23,12 @@ public interface Configuration {
     boolean isValidConstructor(ExecutableElement constructor);
 
     boolean isValidField(VariableElement field);
+    
+    boolean isBlockedField(VariableElement field);
 
     boolean isValidGetter(ExecutableElement getter);
+    
+    boolean isBlockedGetter(ExecutableElement getter);
 
     Class<? extends Annotation> getEntityAnn();
 

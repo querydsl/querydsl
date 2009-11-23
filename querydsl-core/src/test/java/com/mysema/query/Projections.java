@@ -99,7 +99,7 @@ public class Projections {
         rv.add(expr.sqrt());
         rv.add(expr.subtract(other));
         
-        if (!(other instanceof Constant || module == Module.JDOQL)){
+        if (!(other instanceof Constant || module == Module.JDOQL || module == Module.RDFBEAN)){
             CaseBuilder cases = new CaseBuilder();
             rv.add(ENumberConst.create(1).add(cases
                 .when(expr.gt(10)).then(expr)
@@ -152,7 +152,7 @@ public class Projections {
         rv.add(expr.substring(1));
         rv.add(expr.substring(0, 1));
                 
-        if (!(other instanceof Constant || module == Module.JDOQL)){
+        if (!(other instanceof Constant || module == Module.JDOQL || module == Module.RDFBEAN)){
             CaseBuilder cases = new CaseBuilder();
             rv.add(cases.when(expr.eq("A")).then(other)
                         .when(expr.eq("B")).then(expr)

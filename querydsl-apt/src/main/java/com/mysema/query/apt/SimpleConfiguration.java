@@ -94,6 +94,19 @@ public class SimpleConfiguration implements Configuration {
         return getter.getAnnotation(skipAnn) == null
             && !getter.getModifiers().contains(Modifier.STATIC);
     }
+    
+    @Override
+    public boolean isBlockedField(VariableElement field) {
+        return field.getAnnotation(skipAnn) != null
+            || field.getModifiers().contains(Modifier.TRANSIENT) 
+            || field.getModifiers().contains(Modifier.STATIC);
+    }
+
+    @Override
+    public boolean isBlockedGetter(ExecutableElement getter){
+        return getter.getAnnotation(skipAnn) != null
+            || getter.getModifiers().contains(Modifier.STATIC);
+    }
 
     @Override
     public Class<? extends Annotation> getEntityAnn() {

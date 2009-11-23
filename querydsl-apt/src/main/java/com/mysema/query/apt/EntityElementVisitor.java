@@ -116,37 +116,39 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<EntityMode
                 continue;
             }
             
-            if (!configuration.isValidGetter(method)){
+            if (configuration.isValidGetter(method)){
+                try{
+                    TypeModel propertyType = typeFactory.create(method.getReturnType(), elementUtils);
+                    if (method.getAnnotation(QueryType.class) != null){
+                        TypeCategory typeCategory = TypeCategory.get(method.getAnnotation(QueryType.class).value());
+                        if (typeCategory == null){
+                            blockedProperties.add(name);
+                            continue;
+                        }else if (blockedProperties.contains(name)){
+                            continue;
+                        }
+                        propertyType = propertyType.as(typeCategory);
+                    }else if (types.containsKey(name)){
+                        propertyType = propertyType.as(types.get(name));
+                    }
+                    String[] inits = new String[0];
+                    if (method.getAnnotation(QueryInit.class) != null){
+                        inits = method.getAnnotation(QueryInit.class).value();
+                    }
+                    properties.put(name, new PropertyModel(entityModel, name, propertyType, inits));    
+                    
+                }catch(IllegalArgumentException ex){
+                    StringBuilder builder = new StringBuilder();
+                    builder.append("Caught exception for method ");
+                    builder.append(entityModel.getFullName()).append("#").append(method.getSimpleName());
+                    throw new RuntimeException(builder.toString(), ex);
+                }
+                
+            }else if (configuration.isBlockedGetter(method)){
                 blockedProperties.add(name);
-                continue;
             }
             
-            try{
-                TypeModel propertyType = typeFactory.create(method.getReturnType(), elementUtils);
-                if (method.getAnnotation(QueryType.class) != null){
-                    TypeCategory typeCategory = TypeCategory.get(method.getAnnotation(QueryType.class).value());
-                    if (typeCategory == null){
-                        blockedProperties.add(name);
-                        continue;
-                    }else if (blockedProperties.contains(name)){
-                        continue;
-                    }
-                    propertyType = propertyType.as(typeCategory);
-                }else if (types.containsKey(name)){
-                    propertyType = propertyType.as(types.get(name));
-                }
-                String[] inits = new String[0];
-                if (method.getAnnotation(QueryInit.class) != null){
-                    inits = method.getAnnotation(QueryInit.class).value();
-                }
-                properties.put(name, new PropertyModel(entityModel, name, propertyType, inits));    
-                
-            }catch(IllegalArgumentException ex){
-                StringBuilder builder = new StringBuilder();
-                builder.append("Caught exception for method ");
-                builder.append(entityModel.getFullName()).append("#").append(method.getSimpleName());
-                throw new RuntimeException(builder.toString(), ex);
-            }
+            
         }
     }
 
@@ -156,34 +158,36 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<EntityMode
             Map<String, TypeCategory> types) {
         for (VariableElement field : ElementFilter.fieldsIn(elements)){
             String name = field.getSimpleName().toString();
-            // is particular field visited ?
-            if (!configuration.isValidField(field)){
+            
+            if (configuration.isValidField(field)){
+                try{                        
+                    TypeModel fieldType = typeFactory.create(field.asType(), elementUtils);            
+                    if (field.getAnnotation(QueryType.class) != null){
+                        TypeCategory typeCategory = TypeCategory.get(field.getAnnotation(QueryType.class).value());
+                        if (typeCategory == null){
+                            blockedProperties.add(name);
+                            continue;
+                        }
+                        fieldType = fieldType.as(typeCategory);
+                        types.put(name, typeCategory);
+                    }
+                    String[] inits = new String[0];
+                    if (field.getAnnotation(QueryInit.class) != null){
+                        inits = field.getAnnotation(QueryInit.class).value();
+                    }
+                    properties.put(name, new PropertyModel(entityModel, name, fieldType, inits));    
+                }catch(IllegalArgumentException ex){
+                    StringBuilder builder = new StringBuilder();
+                    builder.append("Caught exception for field ");
+                    builder.append(entityModel.getFullName()).append("#").append(field.getSimpleName());
+                    throw new RuntimeException(builder.toString(), ex);
+                }
+                
+            }else if (configuration.isBlockedField(field)){
                 blockedProperties.add(name);
-                continue;
             }
             
-            try{                        
-                TypeModel fieldType = typeFactory.create(field.asType(), elementUtils);            
-                if (field.getAnnotation(QueryType.class) != null){
-                    TypeCategory typeCategory = TypeCategory.get(field.getAnnotation(QueryType.class).value());
-                    if (typeCategory == null){
-                        blockedProperties.add(name);
-                        continue;
-                    }
-                    fieldType = fieldType.as(typeCategory);
-                    types.put(name, typeCategory);
-                }
-                String[] inits = new String[0];
-                if (field.getAnnotation(QueryInit.class) != null){
-                    inits = field.getAnnotation(QueryInit.class).value();
-                }
-                properties.put(name, new PropertyModel(entityModel, name, fieldType, inits));    
-            }catch(IllegalArgumentException ex){
-                StringBuilder builder = new StringBuilder();
-                builder.append("Caught exception for field ");
-                builder.append(entityModel.getFullName()).append("#").append(field.getSimpleName());
-                throw new RuntimeException(builder.toString(), ex);
-            }
+            
         }
     }
     
