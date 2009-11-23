@@ -215,4 +215,45 @@ $(c.getMate().getName().toLowerCase())
     
     </sect1>
     
+    <sect1>
+      <title>Complex boolean expressions</title>
+    
+    <para>
+    To construct complex boolean expressions, use the BooleanBuilder class. 
+    It extends EBoolean, but can be used in cascaded form : 
+    </para>
+    
+    <programlisting language="java"><![CDATA[
+public List<Customer> getCustomer(String... names){
+    QCustomer customer = QCustomer.customer;    
+    HibernateQuery qry = new HibernateQuery(session).from(customer);    
+    BooleanBuilder builder = new BoolenBuilder();
+    for (String name : names){
+        builder.or(customer.name.eq(name));
+    }
+    qry.where(builder); // customer.name eq name1 OR customer.name eq name2 OR ...  
+    return qry.list(customer);
+}
+]]></programlisting>    
+    
+    </sect1>
+    
+    <sect1>
+      <title>Case expressions</title>
+      
+    <para>To constructor if-then-else expressions of the CaseBuilder : </para>  
+    
+<programlisting language="java"><![CDATA[    
+QCustomer customer = QCustomer.customer;    
+Expr<String> cases = new CaseBuilder()
+    .when(customer.annualSpending.gt(10000)).then("Premier")
+    .when(customer.annualSpending.gt(5000)).then("Gold")
+    .when(customer.annualSpending.gt(2000)).then("Silver")
+    .otherwise("Bronze");
+// The cases expression can now be used in a projection or condition        
+]]></programlisting>     
+      
+    <para>Case expressions are not yet supported in JDOQL.</para>  
+      
+    </sect1>
 </chapter>    
