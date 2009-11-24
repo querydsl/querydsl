@@ -82,15 +82,15 @@ public class Projections {
         return rv;
     }
 
-    <A extends Number & Comparable<A>> Collection<ENumber<?>> numeric(ENumber<A> expr, ENumber<A> other, A knownValue){
+    <A extends Number & Comparable<A>> Collection<ENumber<?>> numeric(ENumber<A> expr, ENumber<A> other, A knownValue, boolean forFilter){
         HashSet<ENumber<?>> rv = new HashSet<ENumber<?>>();
-        rv.addAll(numeric(expr, other));
-        rv.addAll(numeric(expr, ENumberConst.create(knownValue)));
+        rv.addAll(numeric(expr, other, forFilter));
+        rv.addAll(numeric(expr, ENumberConst.create(knownValue), forFilter));
         return rv;
     }
     
     @SuppressWarnings("unchecked")
-    private <A extends Number & Comparable<A>> Collection<ENumber<?>> numeric(ENumber<A> expr, ENumber<?> other){
+    private <A extends Number & Comparable<A>> Collection<ENumber<?>> numeric(ENumber<A> expr, ENumber<?> other, boolean forFilter){
         HashSet<ENumber<?>> rv = new HashSet<ENumber<?>>();
         rv.add(expr.abs());
         rv.add(expr.add(other));
@@ -99,6 +99,13 @@ public class Projections {
         rv.add(expr.sqrt());
         rv.add(expr.subtract(other));
         
+        if (!forFilter && module != Module.COLLECTIONS){
+            rv.add(expr.min());
+            rv.add(expr.max());
+            rv.add(expr.avg());
+            rv.add(expr.count());
+        }
+                
         if (!(other instanceof Constant || module == Module.JDOQL || module == Module.RDFBEAN)){
             CaseBuilder cases = new CaseBuilder();
             rv.add(ENumberConst.create(1).add(cases

@@ -6,6 +6,7 @@
 package com.mysema.util;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class MathUtils {
 
@@ -30,6 +31,8 @@ public class MathUtils {
         else if (type.equals(Integer.class)) rv = num.intValue();
         else if (type.equals(Long.class)) rv = num.longValue();
         else if (type.equals(Short.class)) rv = num.shortValue();
+        else if (type.equals(BigDecimal.class)) rv = num;
+        else if (type.equals(BigInteger.class)) rv = num.toBigInteger();
         else throw new IllegalArgumentException(String.format("Illegal type : %s", type.getSimpleName()));
         return (D) rv;        
     }

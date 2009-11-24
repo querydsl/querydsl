@@ -13,7 +13,6 @@ import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.operation.Ops.MathOps;
 
-
 /**
  * ENumber represents a numeric expression
  * 
@@ -104,7 +103,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      */
     public ENumber<Double> avg(){
         if (avg == null){
-            avg = ONumber.create(Double.class, Ops.AggOps.AVG_AGG, this);
+            avg = ONumber.create(Double.class, Ops.AggOps.AVG_AGG, this);            
         }
         return avg;
     }

@@ -145,7 +145,7 @@ public class Filters {
     @SuppressWarnings("unchecked")
     <A extends Number & Comparable<A>> Collection<EBoolean> numeric(ENumber<A> expr, ENumber<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();        
-        for (ENumber<?> num : projections.numeric(expr, other, knownValue)){
+        for (ENumber<?> num : projections.numeric(expr, other, knownValue, true)){
             rv.add(num.lt(expr));
         }        
         rv.add(expr.ne(other));

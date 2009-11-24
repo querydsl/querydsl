@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+
 /**
  * Utility methods for JPA
  * 
@@ -11,7 +12,7 @@ import javax.persistence.Query;
  *
  */
 public final class JPAUtil {
-    
+        
     private JPAUtil(){}
     
     public static void setConstants(Query query, Map<Object,String> constants) {

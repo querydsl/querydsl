@@ -21,7 +21,6 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.Path;
@@ -76,8 +75,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
             Map<String, Object> map) {
         BooleanBuilder expr = new BooleanBuilder();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
-            PathMetadata<String> md = PathMetadata.forProperty(entity, entry
-                    .getKey());
+            PathMetadata<String> md = PathMetadata.forProperty(entity, entry.getKey());
             PSimple<Object> path = new PSimple<Object>(Object.class, md);
             if (entry.getValue() != null) {
                 expr.and(path.eq(entry.getValue()));

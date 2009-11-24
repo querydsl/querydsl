@@ -8,6 +8,10 @@ package com.mysema.query.hql.domain;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.Type;
+
+import com.mysema.query.ExtDoubleType;
+
 /**
  * The Class Animal.
  */
@@ -17,7 +21,11 @@ public class Animal {
 
     private java.util.Date birthdate;
 
-    private int bodyWeight, weight, toes;
+    private int weight, toes;
+    
+    // needed for JPA tests
+    @Type(type="com.mysema.query.ExtDoubleType")
+    private double bodyWeight;
 
     private Color color;
 
@@ -34,7 +42,7 @@ public class Animal {
         return birthdate;
     }
 
-    public int getBodyWeight() {
+    public double getBodyWeight() {
         return bodyWeight;
     }
 
@@ -78,7 +86,7 @@ public class Animal {
         this.birthdate = birthdate;
     }
 
-    public void setBodyWeight(int bodyWeight) {
+    public void setBodyWeight(double bodyWeight) {
         this.bodyWeight = bodyWeight;
     }
 

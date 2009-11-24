@@ -927,7 +927,7 @@ public class ParserTest implements Constants {
 
     @Test
     public void testCasts() throws Exception {
-        ENumber<Integer> bw = cat.bodyWeight;
+        ENumber<Double> bw = cat.bodyWeight;
         query().from(cat).select(bw.byteValue(), bw.doubleValue(), bw.floatValue(),
                 bw.intValue(), bw.longValue(), bw.shortValue(),
                 bw.stringValue()).parse();

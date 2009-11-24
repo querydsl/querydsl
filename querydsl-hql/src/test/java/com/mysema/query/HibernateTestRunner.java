@@ -5,6 +5,7 @@
  */
 package com.mysema.query;
 
+import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.Properties;

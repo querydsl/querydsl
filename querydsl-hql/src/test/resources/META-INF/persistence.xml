@@ -6,8 +6,8 @@
    http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
   version="1.0">
 
-
   <persistence-unit name="derby">
+  
 <!--   
   <provider>org.hibernate.ejb.HibernatePersistence</provider>
  -->  

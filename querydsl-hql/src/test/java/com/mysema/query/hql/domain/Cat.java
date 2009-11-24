@@ -19,6 +19,7 @@ import org.hibernate.annotations.IndexColumn;
  */
 @Entity
 public class Cat extends Animal {
+    
     private int breed;
     
     private Color eyecolor;
@@ -35,6 +36,11 @@ public class Cat extends Animal {
     public Cat(String name, int id){
         this.setId(id);
         this.setName( name);
+    }
+    
+    public Cat(String name, int id, double bodyWeight){
+        this(name, id);
+        this.setBodyWeight(bodyWeight);
     }
     
     public int getBreed() {

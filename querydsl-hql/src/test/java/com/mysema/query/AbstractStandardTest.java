@@ -86,11 +86,11 @@ public abstract class AbstractStandardTest {
     public void setUp(){
         Cat prev = null;
         for (Cat cat : Arrays.asList(
-                new Cat("Bob123", 1),
-                new Cat("Ruth123", 2),
-                new Cat("Felix123", 3),
-                new Cat("Allen123", 4),
-                new Cat("Mary123", 5))){
+                new Cat("Bob123", 1, 1.0),
+                new Cat("Ruth123", 2, 2.0),
+                new Cat("Felix123", 3, 3.0),
+                new Cat("Allen123", 4, 4.0),
+                new Cat("Mary123", 5, 5.0))){
             if (prev != null){
                 cat.getKittens().add(prev);
             }
@@ -102,7 +102,7 @@ public abstract class AbstractStandardTest {
             prev = cat;
         }
         
-        Cat cat = new Cat("Some",6);
+        Cat cat = new Cat("Some",6, 6.0);
         save(cat);
         savedCats.add(cat);
     }
@@ -118,8 +118,15 @@ public abstract class AbstractStandardTest {
         standardTest.dateTimeTests(cat.birthdate, otherCat.birthdate, birthDate);
         standardTest.listTests(cat.kittens, otherCat.kittens, kitten, noKitten);
 //        standardTest.mapTests(cat.kittensByName, otherCat.kittensByName, "Kitty", kitten);
+        
+        // int
         standardTest.numericCasts(cat.id, otherCat.id, 1);
         standardTest.numericTests(cat.id, otherCat.id, 1);
+        
+        // double
+        standardTest.numericCasts(cat.bodyWeight, otherCat.bodyWeight, 1.0);
+        standardTest.numericTests(cat.bodyWeight, otherCat.bodyWeight, 1.0);
+        
         standardTest.stringTests(cat.name, otherCat.name, kitten.getName());
         standardTest.timeTests(cat.timeField, otherCat.timeField, time);
         

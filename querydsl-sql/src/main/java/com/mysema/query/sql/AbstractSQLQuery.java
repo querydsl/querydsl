@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -216,7 +218,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     }
 
     @SuppressWarnings("unchecked")
-    private <RT> List<RT> listSingle(Expr<RT> expr) throws SQLException {
+    private <RT> List<RT> listSingle(@Nullable Expr<RT> expr) throws SQLException {
         String queryString = buildQueryString(false);
         logger.debug("query : {}", queryString);
         PreparedStatement stmt = conn.prepareStatement(queryString);
@@ -224,26 +226,33 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         ResultSet rs = stmt.executeQuery();
         try {
             List<RT> rv = new ArrayList<RT>();
-            if (expr instanceof EConstructor) {
-                EConstructor<RT> c = (EConstructor<RT>) expr;
-                java.lang.reflect.Constructor<RT> cc = c.getJavaConstructor();
-                while (rs.next()) {
-                    try {
+            try {
+                if (expr instanceof EConstructor) {
+                    EConstructor<RT> c = (EConstructor<RT>) expr;
+                    java.lang.reflect.Constructor<RT> cc = c.getJavaConstructor();
+                    while (rs.next()) {
                         List<Object> args = new ArrayList<Object>();
                         for (int i = 0; i < c.getArgs().size(); i++) {
                             args.add(get(rs, i + 1, c.getArg(i).getType()));
                         }
                         rv.add(cc.newInstance(args.toArray()));
-                    } catch (Exception e) {
-                        String error = "Caught " + e.getClass().getName();
-                        logger.error(error, e);
-                        throw new RuntimeException(e.getMessage(), e);
+
+                    }
+                    
+                } else if (expr != null){
+                    while (rs.next()) {
+                        rv.add(get(rs, 1, expr.getType()));
+                    }
+                    
+                }else{
+                    while (rs.next()) {
+                         rv.add((RT) rs.getObject(1));
                     }
                 }
-            } else {
-                while (rs.next()) {
-                    rv.add((RT) rs.getObject(1));
-                }
+            } catch (Exception e) {
+                String error = "Caught " + e.getClass().getName();
+                logger.error(error, e);
+                throw new RuntimeException(e.getMessage(), e);
             }
             return rv;
         } finally {

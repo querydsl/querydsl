@@ -41,7 +41,7 @@ public class CoverageTest {
         Set<Operator<?>> usedOperators = new HashSet<Operator<?>>();
         List<Expr<?>> exprs = new ArrayList<Expr<?>>();
         // numeric
-        exprs.addAll(projections.numeric($(0), $(1), 1));
+        exprs.addAll(projections.numeric($(0), $(1), 1, false));
         exprs.addAll(matchers.numeric($(0), $(1), 1));
         exprs.addAll(filters.numeric($(0), $(1), 1));        
         exprs.addAll(projections.numericCasts($(0), $(1), 1));

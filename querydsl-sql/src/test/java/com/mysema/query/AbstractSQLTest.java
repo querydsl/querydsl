@@ -12,6 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -134,8 +135,15 @@ public abstract class AbstractSQLTest {
     public void standardTest(){
         standardTest.booleanTests(employee.firstname.isNull(), employee2.lastname.isNotNull());
         standardTest.dateTests(employee.datefield, employee2.datefield, date);
+        
+        // int
         standardTest.numericCasts(employee.id, employee2.id, 1);
         standardTest.numericTests(employee.id, employee2.id, 1);
+        
+        // BigDecimal
+//        standardTest.numericCasts(employee.salary, employee2.salary, new BigDecimal("30000.00"));
+        standardTest.numericTests(employee.salary, employee2.salary, new BigDecimal("30000.00"));
+        
         standardTest.stringTests(employee.firstname, employee2.firstname, "Jennifer");
         standardTest.timeTests(employee.timefield, employee2.timefield, time);
 
@@ -362,12 +370,12 @@ public abstract class AbstractSQLTest {
         
         // uniqueResult
         assertEquals(min, query().from(employee).uniqueResult(employee.salary.min()).intValue());
-//        assertEquals(avg, query().from(employee).uniqueResult(employee.salary.avg()).intValue());
+        assertEquals(avg, query().from(employee).uniqueResult(employee.salary.avg()).intValue());
         assertEquals(max, query().from(employee).uniqueResult(employee.salary.max()).intValue());
         
         // list
         assertEquals(min, query().from(employee).list(employee.salary.min()).get(0).intValue());
-//        assertEquals(avg, query().from(employee).list(employee.salary.avg()).get(0).intValue());
+        assertEquals(avg, query().from(employee).list(employee.salary.avg()).get(0).intValue());
         assertEquals(max, query().from(employee).list(employee.salary.max()).get(0).intValue());
     }
 

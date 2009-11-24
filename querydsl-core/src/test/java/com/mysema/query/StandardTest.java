@@ -182,7 +182,7 @@ public abstract class StandardTest {
     public <A extends Number & Comparable<A>> void numericTests(ENumber<A> expr, ENumber<A> other, A knownValue){
         execute(matchers.numeric(expr, other, knownValue), true);
         execute(filters.numeric(expr, other, knownValue), false);
-        execute(projections.numeric(expr, other, knownValue));
+        execute(projections.numeric(expr, other, knownValue, false));
     }
 
     public void stringTests(EString expr, EString other, String knownValue){
