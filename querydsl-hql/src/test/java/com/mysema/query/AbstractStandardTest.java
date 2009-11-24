@@ -128,8 +128,13 @@ public abstract class AbstractStandardTest {
     
     @Test
     public void testAggregates(){
+        // uniqueResult
         assertEquals(Integer.valueOf(1), catQuery().uniqueResult(cat.id.min()));
         assertEquals(Integer.valueOf(6), catQuery().uniqueResult(cat.id.max()));
+        
+        // list
+        assertEquals(Integer.valueOf(1), catQuery().list(cat.id.min()).get(0));
+        assertEquals(Integer.valueOf(6), catQuery().list(cat.id.max()).get(0));
     }
     
     @Test

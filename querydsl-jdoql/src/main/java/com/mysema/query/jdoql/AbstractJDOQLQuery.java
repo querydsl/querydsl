@@ -7,6 +7,7 @@ package com.mysema.query.jdoql;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -102,7 +103,8 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
         addToProjection(expr1, expr2);
         addToProjection(rest);
-        return (List<Object[]>) execute(createQuery(false));
+        Object rv = execute(createQuery(false));
+        return (rv instanceof List) ? ((List<Object[]>)rv) : Collections.singletonList((Object[])rv);
     }
 
     private Object execute(Query query) {
@@ -119,7 +121,8 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expr<RT> expr) {
         addToProjection(expr);
-        return (List<RT>) execute(createQuery(false));
+        Object rv = execute(createQuery(false));
+        return rv instanceof List ? (List<RT>)rv : Collections.singletonList((RT)rv);
     }
 
     @SuppressWarnings("unchecked")
@@ -132,8 +135,7 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         if (total > 0) {
             QueryModifiers modifiers = getMetadata().getModifiers();
             Query query = createQuery(false);
-            return new SearchResults<RT>((List<RT>) execute(query), modifiers,
-                    total);
+            return new SearchResults<RT>((List<RT>) execute(query), modifiers, total);
         } else {
             return SearchResults.emptyResults();
         }

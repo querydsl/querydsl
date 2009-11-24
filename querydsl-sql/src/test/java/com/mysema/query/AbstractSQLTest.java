@@ -355,6 +355,21 @@ public abstract class AbstractSQLTest {
         List<Object[]> list2 = query().union(sq3, sq4).list();
         assertFalse(list2.isEmpty());
     }
+    
+    @Test
+    public void aggregate(){
+        int min = 30000, avg = 65000, max = 160000;
+        
+        // uniqueResult
+        assertEquals(min, query().from(employee).uniqueResult(employee.salary.min()).intValue());
+//        assertEquals(avg, query().from(employee).uniqueResult(employee.salary.avg()).intValue());
+        assertEquals(max, query().from(employee).uniqueResult(employee.salary.max()).intValue());
+        
+        // list
+        assertEquals(min, query().from(employee).list(employee.salary.min()).get(0).intValue());
+//        assertEquals(avg, query().from(employee).list(employee.salary.avg()).get(0).intValue());
+        assertEquals(max, query().from(employee).list(employee.salary.max()).get(0).intValue());
+    }
 
     @Test
     public void whereExists() throws SQLException {

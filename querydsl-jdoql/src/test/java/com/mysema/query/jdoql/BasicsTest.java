@@ -24,11 +24,11 @@ public class BasicsTest extends AbstractJDOTest {
 
     private static final JDOQLTemplates templates = new JDOQLTemplates();
     
-    private QBook book = QBook.book;
+    private final QBook book = QBook.book;
 
-    private QProduct product = QProduct.product;
+    private final QProduct product = QProduct.product;
     
-    private QProduct product2 = new QProduct("product2");
+    private final QProduct product2 = new QProduct("product2");
     
     @Test
     public void serialization() throws IOException{
