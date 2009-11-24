@@ -101,7 +101,7 @@ public class EntitySerializer extends AbstractSerializer{
         if (!localName.equals(genericName)){
             builder.append("(Class)");   
         }
-        builder.append(localName + ".class, \""+simpleName+"\", PathMetadata.forVariable(variable)");
+        builder.append(localName + ".class, \""+simpleName+"\", forVariable(variable)");
         if (hasEntityFields){
             builder.append(", INITS");
         }
@@ -137,7 +137,7 @@ public class EntitySerializer extends AbstractSerializer{
                 builder.append("        this." + field.getEscapedName() + " = ");
                 if (!field.isInherited()){                    
                     builder.append("inits.isInitialized(\""+field.getName()+"\") ? ");
-                    builder.append("new " + queryType + "(PathMetadata.forProperty(this,\"" + field.getName() + "\")");
+                    builder.append("new " + queryType + "(forProperty(this,\"" + field.getName() + "\")");
                     if (field.getType().hasEntityFields()){
                         builder.append(", inits.getInits(\""+field.getName()+"\")");    
                     }
@@ -236,9 +236,10 @@ public class EntitySerializer extends AbstractSerializer{
         }        
     }
 
-    protected void introImports(StringBuilder builder, EntityModel model) {
+    protected void introImports(StringBuilder builder, EntityModel model) {        
         builder.append("import com.mysema.query.util.*;\n");
         builder.append("import com.mysema.query.types.path.*;\n");
+        builder.append("import static com.mysema.query.types.path.PathMetadata.*;\n");
         if (!model.getConstructors().isEmpty() || model.hasLists() || model.hasMaps()){
             builder.append("import com.mysema.query.types.expr.*;\n");
         }
