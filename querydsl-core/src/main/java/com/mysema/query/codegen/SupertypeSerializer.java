@@ -19,8 +19,8 @@ public class SupertypeSerializer extends EntitySerializer{
 
     @Override
     protected void constructors(EntityModel model, Writer writer) throws IOException {
-        final String simpleName = model.getSimpleName();
-        final String queryType = model.getPrefix() + simpleName;
+//        final String simpleName = model.getSimpleName();
+        final String queryType = getQueryType(model, model, true);
         final String genericName = model.getLocalGenericName();
         
         StringBuilder builder = new StringBuilder();

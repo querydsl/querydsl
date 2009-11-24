@@ -17,6 +17,7 @@ import javax.lang.model.element.VariableElement;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.QueryProjection;
+import com.mysema.query.annotations.QueryType;
 import com.mysema.query.codegen.DTOSerializer;
 import com.mysema.query.codegen.EmbeddableSerializer;
 import com.mysema.query.codegen.EntitySerializer;
@@ -84,28 +85,44 @@ public class SimpleConfiguration implements Configuration {
 
     @Override
     public boolean isValidField(VariableElement field) {
-        return field.getAnnotation(skipAnn) == null
-            && !field.getModifiers().contains(Modifier.TRANSIENT) 
-            && !field.getModifiers().contains(Modifier.STATIC);
+        if (field.getAnnotation(QueryType.class) != null){
+            return true;
+        }else{
+            return field.getAnnotation(skipAnn) == null
+                && !field.getModifiers().contains(Modifier.TRANSIENT) 
+                && !field.getModifiers().contains(Modifier.STATIC);            
+        }        
     }
 
     @Override
     public boolean isValidGetter(ExecutableElement getter){
-        return getter.getAnnotation(skipAnn) == null
-            && !getter.getModifiers().contains(Modifier.STATIC);
+        if (getter.getAnnotation(QueryType.class) != null){
+            return true;
+        }else{
+            return getter.getAnnotation(skipAnn) == null
+                && !getter.getModifiers().contains(Modifier.STATIC);    
+        }        
     }
     
     @Override
     public boolean isBlockedField(VariableElement field) {
-        return field.getAnnotation(skipAnn) != null
+        if (field.getAnnotation(QueryType.class) != null){
+            return false;
+        }else{
+            return field.getAnnotation(skipAnn) != null
             || field.getModifiers().contains(Modifier.TRANSIENT) 
-            || field.getModifiers().contains(Modifier.STATIC);
+            || field.getModifiers().contains(Modifier.STATIC);    
+        }        
     }
 
     @Override
     public boolean isBlockedGetter(ExecutableElement getter){
-        return getter.getAnnotation(skipAnn) != null
-            || getter.getModifiers().contains(Modifier.STATIC);
+        if (getter.getAnnotation(QueryType.class) != null){
+            return false;
+        }else{
+            return getter.getAnnotation(skipAnn) != null
+                || getter.getModifiers().contains(Modifier.STATIC);    
+        }        
     }
 
     @Override

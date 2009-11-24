@@ -13,11 +13,11 @@ import java.util.List;
 import net.jcip.annotations.Immutable;
 
 @Immutable
-public class EntitySerializer implements Serializer{
+public class EntitySerializer extends AbstractSerializer{
     
     protected void constructors(EntityModel model, Writer writer) throws IOException {
         String simpleName = model.getSimpleName();
-        String queryType = model.getPrefix() + simpleName;
+        String queryType = getQueryType(model, model, true);
         String localName = model.getLocalRawName();
         String genericName = model.getLocalGenericName();
         
@@ -86,7 +86,7 @@ public class EntitySerializer implements Serializer{
         
     protected void constructorsForVariables(StringBuilder builder, EntityModel model) {
         String simpleName = model.getSimpleName();
-        String queryType = model.getPrefix() + simpleName;
+        String queryType = getQueryType(model, model, true);
         String localName = model.getLocalRawName();
         String genericName = model.getLocalGenericName();
         
@@ -169,7 +169,7 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void introClassHeader(StringBuilder builder, EntityModel model) {
-        String queryType = model.getPrefix() + model.getSimpleName();
+        String queryType = getQueryType(model, model, true);
         String localName = model.getLocalGenericName();
         
         builder.append("@SuppressWarnings(\"serial\")\n");
@@ -177,9 +177,8 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void introDefaultInstance(StringBuilder builder, EntityModel model) {
-        String simpleName = model.getSimpleName();
         String unscapSimpleName = model.getUncapSimpleName();
-        String queryType = model.getPrefix() + simpleName;
+        String queryType = getQueryType(model, model, true);
         
         builder.append("    public static final " + queryType + " " + unscapSimpleName + " = new " + queryType + "(\"" + unscapSimpleName + "\");\n\n");
     }
@@ -376,39 +375,6 @@ public class EntitySerializer implements Serializer{
         }
     }      
     
-    private String getQueryType(TypeModel type, EntityModel model, boolean raw){
-        String localGenericName = type.getLocalGenericName(model, true);
-        
-        switch(type.getTypeCategory()){
-        case STRING:     
-            return "PString";
-        case BOOLEAN:    
-            return "PBoolean";         
-        case COMPARABLE: 
-            return raw ? "PComparable" : "PComparable<" + localGenericName + ">";  
-        case DATE:       
-            return raw ? "PDate" : "PDate<" +localGenericName + ">"; 
-        case DATETIME:   
-            return raw ? "PDateTime" : "PDateTime<" + localGenericName + ">"; 
-        case TIME:       
-            return raw ? "PTime" : "PTime<" + localGenericName + ">"; 
-        case NUMERIC:    
-            return raw ? "PNumber" : "PNumber<" + localGenericName + ">";
-        case COLLECTION: 
-        case LIST:
-        case MAP:
-        case SIMPLE:     
-            return raw ? "PSimple" : "PSimple<" + localGenericName + ">";
-        case ENTITY: 
-            if (type.getPackageName().equals(model.getPackageName())){
-                return model.getPrefix() + type.getSimpleName();
-            }else{
-                return type.getPackageName() + "." + model.getPrefix() + type.getSimpleName();
-            } 
-        }
-        throw new IllegalArgumentException("Unsupported case " + type.getTypeCategory());
-    }
-
     private void serializeProperties(EntityModel model, Writer writer) throws IOException {
         for (PropertyModel property : model.getProperties()){
             String queryType = getQueryType(property.getType(), model, false);

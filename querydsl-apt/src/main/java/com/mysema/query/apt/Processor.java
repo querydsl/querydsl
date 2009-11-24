@@ -225,8 +225,9 @@ public class Processor {
         for (EntityModel type : types.values()) {
             msg.printMessage(Kind.NOTE, type.getFullName() + " is processed");
             try {
-                String packageName = type.getPackageName();                    
-                String className = packageName + "." + configuration.getNamePrefix() + type.getSimpleName();
+                String packageName = type.getPackageName();         
+                String localName = serializer.getQueryType(type, type, true);
+                String className = packageName + "." + localName;
                 JavaFileObject fileObject = env.getFiler().createSourceFile(className);
                 Writer writer = fileObject.openWriter();
                 try {

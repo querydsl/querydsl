@@ -35,6 +35,10 @@ public enum PropertyType {
     /**
      * for custom PTime fields
      */
-    TIME  
+    TIME,
+    /**
+     * 
+     */
+    ENTITY
 
 }

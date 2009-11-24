@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
+ * Serializer defines a common interface for EntityModel serializers
+ * 
  * @author tiwe
  *
  */
@@ -22,5 +24,13 @@ public interface Serializer {
      * @throws IOException
      */
     void serialize(EntityModel type, Writer writer) throws IOException;
+    
+    /**
+     * @param type
+     * @param model
+     * @param raw
+     * @return
+     */
+    public String getQueryType(TypeModel type, EntityModel model, boolean raw);
 
 }

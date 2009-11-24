@@ -57,6 +57,7 @@ public class SimpleTypeModel extends AbstractTypeModel {
         return fullName;
     }
     
+    // NOTE: Java serialization aspects mixed into model
     @Override
     public StringBuilder getLocalGenericName(TypeModel context, StringBuilder builder, boolean asArgType) {
         builder = getLocalRawName(context, builder);
