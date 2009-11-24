@@ -101,7 +101,6 @@ public abstract class QueryBaseWithProjection<SubType extends QueryBaseWithProje
     @Override
     public Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         getMetadata().setUnique(true);
-        limit(1l);
         Iterator<Object[]> it = iterate(first, second, rest);
         return it.hasNext() ? it.next() : null;
     }

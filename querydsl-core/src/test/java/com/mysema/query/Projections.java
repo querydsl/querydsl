@@ -41,7 +41,7 @@ public class Projections {
         this.target = target;
     }
 
-    <A> Collection<Expr<?>> collection(ECollection<A> expr, ECollection<A> other, A knownElement){
+    <A> Collection<Expr<?>> collection(ECollection<?,A> expr, ECollection<?,A> other, A knownElement){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
         rv.add(expr.size());
         return rv;

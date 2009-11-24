@@ -19,7 +19,7 @@ import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
 
 /**
- * PEntityMap represents entity map paths
+ * PMap represents map paths
  * 
  * @author tiwe
  * 

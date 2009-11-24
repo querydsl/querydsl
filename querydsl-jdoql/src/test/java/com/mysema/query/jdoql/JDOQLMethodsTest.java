@@ -44,7 +44,7 @@ public class JDOQLMethodsTest extends AbstractJDOTest {
 
     private <A,K,V> List<EBoolean> getFilters(
             EString str, EString other, String knownString,
-            ECollection<A> list, A element,
+            ECollection<?,A> list, A element,
             EMap<K,V> map, K key, V value,
             ENumber<Integer> number){
         return Arrays.<EBoolean>asList(

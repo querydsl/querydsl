@@ -5,6 +5,7 @@
  */
 package com.mysema.query.hql;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,7 @@ import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PSimple;
+import com.mysema.query.types.path.Path;
 import com.mysema.query.types.path.PathMetadata;
 
 /**
@@ -61,7 +63,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
     }
     
     @SuppressWarnings("unchecked")
-    private <D> Expr<D> createAlias(PCollection<?> target, PEntity<D> alias){
+    private <D> Expr<D> createAlias(Path<? extends Collection<D>> target, PEntity<D> alias){
         return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target.asExpr(), alias);
     }
     
@@ -107,12 +109,12 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return _this;
     }
     
-    public <P> SubType fullJoin(PCollection<P> target) {
-        getMetadata().addJoin(JoinType.FULLJOIN, target);
+    public <P> SubType fullJoin(Path<? extends Collection<P>> target) {
+        getMetadata().addJoin(JoinType.FULLJOIN, target.asExpr());
         return _this;
     }
     
-    public <P> SubType fullJoin(PCollection<P> target, PEntity<P> alias) {
+    public <P> SubType fullJoin(Path<? extends Collection<P>> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.FULLJOIN, createAlias(target, alias));
         return _this;
     }
@@ -141,12 +143,12 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return _this;
     }
 
-    public <P> SubType innerJoin(PCollection<P> target) {
-        getMetadata().addJoin(JoinType.INNERJOIN, target);
+    public <P> SubType innerJoin(Path<? extends Collection<P>> target) {
+        getMetadata().addJoin(JoinType.INNERJOIN, target.asExpr());
         return _this;
     }
     
-    public <P> SubType innerJoin(PCollection<P> target, PEntity<P> alias) {
+    public <P> SubType innerJoin(Path<? extends Collection<P>>target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return _this;
     }
@@ -171,12 +173,12 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return _this;
     }
     
-    public <P> SubType join(PCollection<P> target) {
-        getMetadata().addJoin(JoinType.JOIN, target);
+    public <P> SubType join(Path<? extends Collection<P>> target) {
+        getMetadata().addJoin(JoinType.JOIN, target.asExpr());
         return _this;
     }
     
-    public <P> SubType join(PCollection<P> target, PEntity<P> alias) {
+    public <P> SubType join(Path<? extends Collection<P>> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.JOIN, createAlias(target, alias));
         return _this;
     }
@@ -201,12 +203,12 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return _this;
     }
     
-    public <P> SubType leftJoin(PCollection<P> target) {
-        getMetadata().addJoin(JoinType.LEFTJOIN, target);
+    public <P> SubType leftJoin(Path<? extends Collection<P>> target) {
+        getMetadata().addJoin(JoinType.LEFTJOIN, target.asExpr());
         return _this;
     }
     
-    public <P> SubType leftJoin(PCollection<P> target, PEntity<P> alias) {
+    public <P> SubType leftJoin(Path<? extends Collection<P>> target, PEntity<P> alias) {
         getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
         return _this;
     }

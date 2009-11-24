@@ -52,7 +52,7 @@ public class Filters {
         return rv;
     }
 
-    <A> Collection<EBoolean> collection(ECollection<A> expr, ECollection<A> other, A knownElement){
+    <A> Collection<EBoolean> collection(ECollection<?,A> expr, ECollection<?,A> other, A knownElement){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.add(expr.contains(knownElement));
         rv.add(expr.isEmpty());

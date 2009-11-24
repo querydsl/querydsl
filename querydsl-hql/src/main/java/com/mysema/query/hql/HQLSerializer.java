@@ -21,8 +21,9 @@ import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PCollection;
+import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.PList;
 import com.mysema.query.types.path.Path;
 import com.mysema.query.types.path.PathType;
 import com.mysema.query.types.query.SubQuery;
@@ -171,6 +172,15 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
 
     @Override
     public void visit(PCollection<?> expr) {
+        visitCollection(expr);
+    }
+    
+    @Override
+    public void visit(PList<?,?> expr) {
+        visitCollection(expr);
+    }
+    
+    private void visitCollection(Path<?> expr){
         // only wrap a PathCollection, if it the pathType is PROPERTY
         boolean wrap = wrapElements && expr.getMetadata().getPathType().equals(PathType.PROPERTY);
         if (wrap) {

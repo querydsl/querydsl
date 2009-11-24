@@ -20,23 +20,23 @@ import com.mysema.query.types.operation.Ops;
  * @param <D>
  */
 @SuppressWarnings("serial")
-public abstract class ECollectionBase<D> extends Expr<java.util.Collection<D>> implements ECollection<D> {
+public abstract class ECollectionBase<C extends Collection<E>, E> extends Expr<C> implements ECollection<C,E> {
 
     private volatile EBoolean empty;
    
     private volatile ENumber<Integer> size;    
     
-    public ECollectionBase(Class<? extends Collection<D>> type) {
+    public ECollectionBase(Class<? extends C> type) {
         super(type);
     }
     
     @Override
-    public final EBoolean contains(D child) {
+    public final EBoolean contains(E child) {
         return contains(ExprConst.create(child));        
     }
 
     @Override
-    public final EBoolean contains(Expr<D> child) {
+    public final EBoolean contains(Expr<E> child) {
         return OBoolean.create(Ops.IN, child, this);
     }
     

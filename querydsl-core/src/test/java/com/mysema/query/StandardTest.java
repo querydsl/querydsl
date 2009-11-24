@@ -145,7 +145,7 @@ public abstract class StandardTest {
         execute(filters.booleanFilters(expr, other), false);
     }
 
-    public <A> void collectionTests(ECollection<A> expr, ECollection<A> other, A knownElement, A missingElement){
+    public <A> void collectionTests(ECollection<?,A> expr, ECollection<?,A> other, A knownElement, A missingElement){
         execute(matchers.collection(expr, other, knownElement, missingElement), true);
         execute(filters.collection(expr, other, knownElement), false);
         execute(projections.collection(expr, other, knownElement));

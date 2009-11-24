@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.expr;
 
+import java.util.Collection;
+
 
 /**
  * ECollection represents java.util.Collection typed expressions
@@ -14,7 +16,7 @@ package com.mysema.query.types.expr;
  * @param <E>
  * @see java.util.Collection
  */
-public interface ECollection<E>{
+public interface ECollection<C extends Collection<E>, E>{
    
     /**
      * Get an expression for <code>this.contains(child)</code>

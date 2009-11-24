@@ -108,6 +108,15 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
         }
     }
     
+    @SuppressWarnings("unchecked")
+    public <RT> RT uniqueResult(Expr<RT> expr) {
+        addToProjection(expr);
+        String queryString = toQueryString();
+        logQuery(queryString);
+        Query query = createQuery(queryString, null);
+        return (RT) query.getSingleResult();
+    }
+    
     protected void logQuery(String queryString){
         if (logger.isDebugEnabled()){
             logger.debug(queryString.replace('\n', ' '));    

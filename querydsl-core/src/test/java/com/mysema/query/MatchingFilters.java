@@ -40,7 +40,7 @@ public class MatchingFilters {
         this.target = target;
     }
 
-    <A> Collection<EBoolean> collection(ECollection<A> expr,  ECollection<A> other, A knownElement, A missingElement){
+    <A> Collection<EBoolean> collection(ECollection<?,A> expr,  ECollection<?,A> other, A knownElement, A missingElement){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.add(expr.contains(knownElement));
         rv.add(expr.contains(missingElement).not());          

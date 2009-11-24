@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.expr;
 
+import java.util.List;
+
 import javax.annotation.Nonnegative;
 
 
@@ -16,7 +18,7 @@ import javax.annotation.Nonnegative;
  * @param <E> component type
  * @see java.util.List
  */
-public interface EList<E> extends ECollection<E> {
+public interface EList<E> extends ECollection<List<E>,E> {
     
     /**
      * Indexed access

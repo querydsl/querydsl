@@ -17,20 +17,20 @@ import com.mysema.query.types.operation.Ops;
 import com.mysema.query.util.NotEmpty;
 
 /**
- * PEntityCollection represents an entity collection path
+ * PCollection represents collection paths
  * 
  * @author tiwe
  * 
  * @param <E> component type
  */
 @SuppressWarnings("serial")
-public class PCollection<E> extends ECollectionBase<E> implements Path<Collection<E>> {
+public class PCollection<E> extends ECollectionBase<Collection<E>,E> implements Path<Collection<E>> {
     
     private final PathMetadata<?> metadata;
     
-    protected final Class<E> elementType;
+    private final Class<E> elementType;
     
-    protected final String entityName;
+    private final String entityName;
     
     private volatile EBoolean isnull, isnotnull;    
     

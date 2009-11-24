@@ -453,6 +453,7 @@ public class EntitySerializer implements Serializer{
                 String valueType = property.getParameter(1).getLocalRawName(model);
                 queryType = getQueryType(property.getParameter(1), model, true);
                 
+                // this.<"+genericKey+","+genericValue+","+genericQueryType+"
                 serialize(property, "PMap<"+genericKey+","+genericValue+","+genericQueryType+">",
                         writer, "this.<"+genericKey+","+genericValue+","+genericQueryType+">createMap", 
                         keyType+".class", 

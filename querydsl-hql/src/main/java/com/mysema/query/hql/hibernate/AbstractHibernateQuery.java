@@ -179,7 +179,7 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
         addToProjection(expr);
         String queryString = toQueryString();
         logQuery(queryString);
-        Query query = createQuery(queryString, QueryModifiers.limit(1));
+        Query query = createQuery(queryString, null);
         return (RT) query.uniqueResult();
     }
     

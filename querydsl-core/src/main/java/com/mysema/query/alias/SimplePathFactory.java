@@ -71,7 +71,7 @@ class SimplePathFactory implements PathFactory {
                 @SuppressWarnings({ "unchecked", "serial" })
                 public PList<?,?> transform(List<?> arg) {
                     final Class<?> cl = arg.isEmpty() ?  Object.class : arg.get(0).getClass();
-                    return new PList<Object,PEntity<Object>>(Object.class, null, md()){                        
+                    return new PList<Object,PEntity<Object>>(Object.class, Object.class.getSimpleName(), null, md()){                        
                         @Override
                         public PEntity get(Expr<Integer> index) {
                             return new PEntity(cl, cl.getSimpleName(), PathMetadata.forListAccess(this, index));

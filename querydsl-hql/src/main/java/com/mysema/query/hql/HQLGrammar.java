@@ -23,27 +23,27 @@ import com.mysema.query.types.operation.Ops;
  */
 public class HQLGrammar {
 
-    public static <D> Expr<D> all(ECollection<D> col) {
+    public static <D> Expr<D> all(ECollection<?,D> col) {
         return OSimple.create(col.getElementType(), Ops.QuantOps.ALL, (Expr<?>)col);
     }
 
-    public static <D> Expr<D> any(ECollection<D> col) {
+    public static <D> Expr<D> any(ECollection<?,D> col) {
         return OSimple.create(col.getElementType(), Ops.QuantOps.ANY, (Expr<?>)col);
     }
 
-    public static <A extends Comparable<? super A>> EComparable<A> avg(ECollection<A> col) {
+    public static <A extends Comparable<? super A>> EComparable<A> avg(ECollection<?,A> col) {
         return OComparable.create(col.getElementType(), Ops.QuantOps.AVG_IN_COL, (Expr<?>)col);
     }
 
-    public static <A extends Comparable<? super A>> EComparable<A> max(ECollection<A> left) {
+    public static <A extends Comparable<? super A>> EComparable<A> max(ECollection<?,A> left) {
         return OComparable.create(left.getElementType(), Ops.QuantOps.MAX_IN_COL, (Expr<?>)left);
     }
 
-    public static <A extends Comparable<? super A>> EComparable<A> min(ECollection<A> left) {
+    public static <A extends Comparable<? super A>> EComparable<A> min(ECollection<?,A> left) {
         return OComparable.create(left.getElementType(), Ops.QuantOps.MIN_IN_COL, (Expr<?>)left);
     }
 
-    public static <D> Expr<D> some(ECollection<D> col) {
+    public static <D> Expr<D> some(ECollection<?,D> col) {
         return any(col);
     }
 

@@ -125,7 +125,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
                 rv = propToObj.get(propKey);
             } else {
                 PathMetadata<Integer> pm = PathMetadata.forListAccess((PList<?, ?>) path, (Integer) args[0]);
-                Class<?> elementType = ((ECollection<?>) path).getElementType();
+                Class<?> elementType = ((ECollection<?,?>) path).getElementType();
                 if (elementType != null) {
                     rv = newInstance(elementType, elementType, proxy, propKey, pm);
                 } else {
@@ -272,7 +272,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else if (List.class.isAssignableFrom(type)) {
             final Class<Object> elementType = (Class)getTypeParameter(genericType, 0);
-            path = new PList<Object,PEntity<Object>>(elementType, null, pm){
+            path = new PList<Object,PEntity<Object>>(elementType, elementType.getSimpleName(), null, pm){
                 @Override
                 public PEntity get(Expr<Integer> index) {
                     return new PEntity(elementType, elementType.getSimpleName(), 

@@ -140,7 +140,7 @@ public abstract class Expr<D> implements Serializable{
      * @param right rhs of the comparison
      * @return
      */
-    public final EBoolean in(ECollection<? extends D> right) {
+    public final EBoolean in(ECollection<?,? extends D> right) {
         return OBoolean.create(Ops.IN, this, (Expr<?>)right);
     }
 
@@ -202,7 +202,7 @@ public abstract class Expr<D> implements Serializable{
      * @param right rhs of the comparison
      * @return
      */
-    public final EBoolean notIn(ECollection<? extends D> right) {
+    public final EBoolean notIn(ECollection<?,? extends D> right) {
         return in(right).not();
     }
 

@@ -127,6 +127,12 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    public void testAggregates(){
+        assertEquals(Integer.valueOf(1), catQuery().uniqueResult(cat.id.min()));
+        assertEquals(Integer.valueOf(6), catQuery().uniqueResult(cat.id.max()));
+    }
+    
+    @Test
     public void testStringOperations(){
         // startsWith
         assertEquals(1, catQuery().where(cat.name.startsWith("R")).count());
