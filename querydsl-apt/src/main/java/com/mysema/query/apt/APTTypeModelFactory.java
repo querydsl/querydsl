@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
@@ -258,6 +259,13 @@ public class APTTypeModelFactory implements TypeVisitor<TypeModel,Elements> {
                 throw new TypeArgumentsException(simpleName);
             }                    
             return factory.createListType(create(i.next(), p));
+            
+        } else if (Set.class.isAssignableFrom(cl)) {
+            if (!i.hasNext()){
+                throw new TypeArgumentsException(simpleName);
+            }                    
+            return factory.createSetType(create(i.next(), p));
+            
             
         } else if (Collection.class.isAssignableFrom(cl)) {
             if (!i.hasNext()){

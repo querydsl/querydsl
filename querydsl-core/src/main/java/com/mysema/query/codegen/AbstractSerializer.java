@@ -31,6 +31,7 @@ public abstract class AbstractSerializer implements Serializer{
         case NUMERIC:    
             return raw ? "PNumber" : "PNumber<" + localGenericName + ">";
         case COLLECTION: 
+        case SET:
         case LIST:
         case MAP:
         case SIMPLE:     

@@ -44,7 +44,7 @@ public class DTOSerializer extends AbstractSerializer{
             builder.append(", new Class[]{");
             first = true;
             for (ParameterModel p : c.getParameters()){
-                if (!first) builder.append(",");
+                if (!first) builder.append(", ");
                 if (p.getType().getPrimitiveName() != null){
                     builder.append(p.getType().getPrimitiveName()+".class");
                 }else{

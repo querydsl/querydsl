@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.ClassUtils;
 
@@ -25,9 +26,9 @@ import com.mysema.query.util.TypeUtil;
  */
 public class TypeModelFactory {
 
-    private final Collection<Class<? extends Annotation>> entityAnnotations;
-    
     private final Map<List<Type>, TypeModel> cache = new HashMap<List<Type>, TypeModel>();
+    
+    private final Collection<Class<? extends Annotation>> entityAnnotations;
 
     @SuppressWarnings("unchecked")
     public TypeModelFactory(Class<?>... entityAnnotations){
@@ -76,6 +77,10 @@ public class TypeModelFactory {
                 TypeModel valueInfo = create(TypeUtil.getTypeParameter(genericType, 0));
                 value = createListType(valueInfo);
 
+            } else if (Set.class.isAssignableFrom(cl)) {
+                TypeModel valueInfo = create(TypeUtil.getTypeParameter(genericType, 0));
+                value = createSetType(valueInfo);
+                
             } else if (Collection.class.isAssignableFrom(cl)) {
                 TypeModel valueInfo = create(TypeUtil.getTypeParameter(genericType, 0));
                 value = createCollectionType(valueInfo);
@@ -97,7 +102,7 @@ public class TypeModelFactory {
     }
     
     public TypeModel createArrayType(TypeModel valueType) {
-        return createComposite(TypeCategory.COLLECTION, Collection.class, valueType);
+        return createComposite(TypeCategory.ARRAY, Object.class, valueType);
     }
 
     public TypeModel createCollectionType(TypeModel valueType) {
@@ -113,13 +118,17 @@ public class TypeModelFactory {
                 parameters);
 
     }
-
+    
     public TypeModel createListType(TypeModel valueType) {
         return createComposite(TypeCategory.LIST, List.class, valueType);
     }
 
     public TypeModel createMapType(TypeModel keyType, TypeModel valueType) {
         return createComposite(TypeCategory.MAP, Map.class, keyType, valueType);
+    }
+
+    public TypeModel createSetType(TypeModel valueType) {
+        return createComposite(TypeCategory.SET, Collection.class, valueType);
     }
 
 }

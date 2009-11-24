@@ -1,11 +1,7 @@
-/*
- * Copyright (c) 2009 Mysema Ltd.
- * All rights reserved.
- * 
- */
 package com.mysema.query.types.path;
 
 import java.util.Collection;
+import java.util.Set;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Visitor;
@@ -17,14 +13,14 @@ import com.mysema.query.types.operation.Ops;
 import com.mysema.query.util.NotEmpty;
 
 /**
- * PCollection represents collection paths
+ * PSet represents set paths
  * 
  * @author tiwe
  * 
  * @param <E> component type
  */
 @SuppressWarnings("serial")
-public class PCollection<E> extends ECollectionBase<Collection<E>,E> implements Path<Collection<E>> {
+public class PSet<E> extends ECollectionBase<Set<E>,E> implements Path<Set<E>> {
     
     private final PathMetadata<?> metadata;
     
@@ -37,21 +33,21 @@ public class PCollection<E> extends ECollectionBase<Collection<E>,E> implements 
     private final Path<?> root;
     
     @SuppressWarnings("unchecked")
-    public PCollection(Class<? super E> type, @NotEmpty String entityName, PathMetadata<?> metadata) {
-        super((Class)Collection.class);
+    public PSet(Class<? super E> type, @NotEmpty String entityName, PathMetadata<?> metadata) {
+        super((Class)Set.class);
         this.elementType = (Class<E>) Assert.notNull(type,"type is null");
         this.metadata = Assert.notNull(metadata,"metadata is null");
         this.entityName = Assert.notNull(entityName,"entityName is null");
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-//    public PCollection(Class<? super E> type, @NotEmpty String entityName, @NotEmpty String var) {
-//        this(type, entityName, PathMetadata.forVariable(var));
-//    }
-//    
-//    public PCollection(Class<? super E> type, @NotEmpty String entityName, Path<?> parent, @NotEmpty String property) {
-//        this(type, entityName, PathMetadata.forProperty(parent, property));
-//    }
+    public PSet(Class<? super E> type, @NotEmpty String entityName, @NotEmpty String var) {
+        this(type, entityName, PathMetadata.forVariable(var));
+    }
+    
+    public PSet(Class<? super E> type, @NotEmpty String entityName, Path<?> parent, @NotEmpty String property) {
+        this(type, entityName, PathMetadata.forProperty(parent, property));
+    }
 
     @Override
     public void accept(Visitor v) {
@@ -111,7 +107,7 @@ public class PCollection<E> extends ECollectionBase<Collection<E>,E> implements 
 
     
     @Override
-    public Expr<Collection<E>> asExpr() {
+    public Expr<Set<E>> asExpr() {
         return this;
     }
 

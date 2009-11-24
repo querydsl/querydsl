@@ -155,7 +155,7 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
     }
     
     @Override
-    public EMapBase<K,V> asExpr() {
+    public PMap<K,V,E> asExpr() {
         return this;
     }
     

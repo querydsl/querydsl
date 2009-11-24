@@ -124,7 +124,17 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
      * @return
      */
     protected <A> PCollection<A> createCollection(@NotEmpty String property, Class<? super A> type) {
-        return new PCollection<A>(type, type.getSimpleName(), this, property);
+        return new PCollection<A>(type, type.getSimpleName(), PathMetadata.forProperty(this, property));
+    }
+    
+    /**
+     * @param <A>
+     * @param property
+     * @param type
+     * @return
+     */
+    protected <A> PSet<A> createSet(@NotEmpty String property, Class<? super A> type) {
+        return new PSet<A>(type, type.getSimpleName(), PathMetadata.forProperty(this, property));
     }
 
     /**

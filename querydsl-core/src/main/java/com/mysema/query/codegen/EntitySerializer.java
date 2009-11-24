@@ -412,6 +412,11 @@ public class EntitySerializer extends AbstractSerializer{
                 localRawName = property.getParameter(0).getLocalRawName(model);
                 serialize(property, "PCollection<" + localGenericName+">", writer, "createCollection",localRawName+".class");
                 break;
+            case SET: 
+                localGenericName = property.getParameter(0).getLocalGenericName(model, true);
+                localRawName = property.getParameter(0).getLocalRawName(model);
+                serialize(property, "PSet<" + localGenericName+">", writer, "createSet",localRawName+".class");
+                break;
             case MAP:                 
                 String genericKey = property.getParameter(0).getLocalGenericName(model, true);
                 String genericValue = property.getParameter(1).getLocalGenericName(model, true);
@@ -420,9 +425,9 @@ public class EntitySerializer extends AbstractSerializer{
                 String valueType = property.getParameter(1).getLocalRawName(model);
                 queryType = getQueryType(property.getParameter(1), model, true);
                 
-                // this.<"+genericKey+","+genericValue+","+genericQueryType+"
-                serialize(property, "PMap<"+genericKey+","+genericValue+","+genericQueryType+">",
-                        writer, "this.<"+genericKey+","+genericValue+","+genericQueryType+">createMap", 
+                // this.<"+genericKey+", "+genericValue+", "+genericQueryType+"
+                serialize(property, "PMap<"+genericKey+", "+genericValue+", "+genericQueryType+">",
+                        writer, "this.<"+genericKey+", "+genericValue+", "+genericQueryType+">createMap", 
                         keyType+".class", 
                         valueType+".class", 
                         queryType+".class");
@@ -433,7 +438,7 @@ public class EntitySerializer extends AbstractSerializer{
                 localRawName = property.getParameter(0).getLocalRawName(model);
                 queryType = getQueryType(property.getParameter(0), model, true);
                 
-                serialize(property, "PList<" + localGenericName+ "," + genericQueryType +  ">", writer, "createList", localRawName+".class", queryType +".class");  
+                serialize(property, "PList<" + localGenericName+ ", " + genericQueryType +  ">", writer, "createList", localRawName+".class", queryType +".class");  
                 break;
             case ENTITY: 
                 entityField(property, writer); 

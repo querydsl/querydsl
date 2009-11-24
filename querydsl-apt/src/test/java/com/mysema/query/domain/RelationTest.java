@@ -15,6 +15,7 @@ import com.mysema.query.domain.rel.RelationType2;
 import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PList;
 import com.mysema.query.types.path.PMap;
+import com.mysema.query.types.path.PSet;
 import com.mysema.query.types.path.PSimple;
 
 public class RelationTest extends AbstractTest{
@@ -111,15 +112,15 @@ public class RelationTest extends AbstractTest{
         match(PList.class, "list4");
         match(PList.class, "list5");
         
-        match(PCollection.class, "set");
-        match(PCollection.class, "sortedSet");
-        match(PCollection.class, "set2");
-        match(PCollection.class, "set3");
-        match(PCollection.class, "set4");
+        match(PSet.class, "set");
+        match(PSet.class, "sortedSet");
+        match(PSet.class, "set2");
+        match(PSet.class, "set3");
+        match(PSet.class, "set4");
         
         match(PList.class, "listOfObjects");
-        match(PCollection.class, "setOfObjects");
-        match(PCollection.class, "setOfObjects2");
+        match(PSet.class, "setOfObjects");
+        match(PSet.class, "setOfObjects2");
         
         match(PCollection.class, "collection");
         match(PCollection.class, "collection2");
@@ -144,6 +145,7 @@ public class RelationTest extends AbstractTest{
         assertEquals(expected, QRelationType.relationType.list(0).set.toString());
         
         assertEquals(List.class, QRelationType.relationType.list.getType());
+        assertEquals(Set.class,  QRelationType.relationType.set.getType());
     }
 
 }

@@ -38,7 +38,11 @@ public enum TypeCategory {
     /**
      * 
      */
-    LIST(COLLECTION),
+    LIST(COLLECTION),    
+    /**
+     * 
+     */
+    SET(COLLECTION),
     /**
      * 
      */
