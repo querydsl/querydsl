@@ -24,12 +24,31 @@ public class BlockingTest extends AbstractTest{
         BlockingTestEntity blockedField;
     }
     
+    @QueryEntity
+    public abstract class BlockingTestEntity2{
+        
+        @QueryTransient
+        @QueryType(PropertyType.ENTITY)
+        public abstract BlockingTestEntity getField2();
+        
+        @QueryTransient
+        public abstract BlockingTestEntity getBlockedField();
+    }
+    
     @Test
     public void test(){
         assertTrue(QBlockingTestEntity.blockingTestEntity.field1 != null);
         assertTrue(QBlockingTestEntity.blockingTestEntity.field2 != null);
         
         cl = QBlockingTestEntity.class;
+        assertMissing("blockedField");
+    }
+    
+    @Test
+    public void test2(){
+        assertTrue(QBlockingTestEntity2.blockingTestEntity2.field2 != null);
+        
+        cl = QBlockingTestEntity2.class;
         assertMissing("blockedField");
     }
 }
