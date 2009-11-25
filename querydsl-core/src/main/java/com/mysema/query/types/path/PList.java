@@ -19,8 +19,6 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollectionBase;
 import com.mysema.query.types.expr.EList;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.OBoolean;
-import com.mysema.query.types.operation.Ops;
 import com.mysema.query.util.NotEmpty;
 
 /**
@@ -48,24 +46,19 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
     
     protected final String entityName;
     
-    private volatile EBoolean isnull, isnotnull;
+    private final Path<List<E>> pathMixin;
     
-    private final PathMetadata<?> metadata;
-    
-    private final Class<Q> queryType;
+    private final Class<Q> queryType;    
     
     private Constructor<Q> queryTypeConstructor;    
-    
-    private final Path<?> root;
     
     @SuppressWarnings("unchecked")
     public PList(Class<? super E> elementType, @NotEmpty String entityName, Class<Q> queryType, PathMetadata<?> metadata) {
         super((Class)List.class);
         this.elementType = (Class<E>) Assert.notNull(elementType,"type is null");
-        this.metadata = Assert.notNull(metadata,"metadata is null");
         this.entityName = Assert.notNull(entityName,"entityName is null");
         this.queryType = queryType;
-        this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
+        this.pathMixin = new PathMixin<List<E>>(this, metadata);
     }
     
     @Override
@@ -87,6 +80,11 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
         }
     }
     
+    @Override
+    public boolean equals(Object o) {
+        return pathMixin.equals(o);
+    }
+
     @Override
     public Q get(Expr<Integer> index) {
         PathMetadata<Integer> md = PathMetadata.forListAccess(this, index);        
@@ -112,31 +110,30 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
     public Class<E> getElementType() {
         return elementType;
     }
-
+    
     @Override
     public PathMetadata<?> getMetadata() {
-        return metadata;
+        return pathMixin.getMetadata();
+    }
+    
+    @Override
+    public Path<?> getRoot() {
+        return pathMixin.getRoot();
     }
 
     @Override
-    public Path<?> getRoot() {
-        return root;
+    public int hashCode() {
+        return pathMixin.hashCode();
     }
 
     @Override
     public EBoolean isNotNull() {
-        if (isnotnull == null) {
-            isnotnull = OBoolean.create(Ops.IS_NOT_NULL, this);
-        }
-        return isnotnull;
+        return pathMixin.isNotNull();
     }
 
     @Override
     public EBoolean isNull() {
-        if (isnull == null) {
-            isnull = OBoolean.create(Ops.IS_NULL, this);
-        }
-        return isnull;
+        return pathMixin.isNull();
     }
     
     private Q newInstance(PathMetadata<?> pm) throws Exception{

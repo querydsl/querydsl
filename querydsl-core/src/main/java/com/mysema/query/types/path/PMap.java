@@ -15,8 +15,6 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EMapBase;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.OBoolean;
-import com.mysema.query.types.operation.Ops;
 
 /**
  * PMap represents map paths
@@ -37,30 +35,24 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
             PSimple.class, 
             PTime.class            
             ));
-    
-    
-    private volatile EBoolean isnull, isnotnull;
-    
+        
     private final Class<K> keyType;
     
-    private final Class<V> valueType;
+    private final Path<Map<K,V>> pathMixin;
     
     private final Class<E> queryType;
     
     private Constructor<E> queryTypeConstructor; 
     
-    private final PathMetadata<?> metadata;
+    private final Class<V> valueType;
     
-    private final Path<?> root;
-
     @SuppressWarnings("unchecked")
     public PMap(Class<? super K> keyType, Class<? super V> valueType, Class<E> queryType, PathMetadata<?> metadata) {
         super((Class)Map.class);
         this.keyType = (Class<K>) keyType;
         this.valueType = (Class<V>) valueType;
         this.queryType = queryType;
-        this.metadata = metadata;
-        this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
+        this.pathMixin = new PathMixin<Map<K,V>>(this, metadata);
     }
 
     @Override
@@ -68,29 +60,14 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
         v.visit(this);        
     }
     
-    @SuppressWarnings("unchecked")
+    @Override
+    public PMap<K,V,E> asExpr() {
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
-        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata) : false;
-    }
-    
-    private E newInstance(PathMetadata<?> pm) throws Exception{
-        if (queryTypeConstructor == null){
-            try {
-                if (typedClasses.contains(queryType)){
-                    queryTypeConstructor = queryType.getConstructor(Class.class, PathMetadata.class);   
-                }else{
-                    queryTypeConstructor = queryType.getConstructor(PathMetadata.class);    
-                }                
-            } catch (Exception e) {
-                throw new RuntimeException(e.getMessage(), e);
-            }    
-        }
-        if (typedClasses.contains(queryType)){
-            return queryTypeConstructor.newInstance(getValueType(), pm);
-        }else{
-            return queryTypeConstructor.newInstance(pm);
-        }
+        return pathMixin.equals(o);
     }
 
     @Override
@@ -112,51 +89,59 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
             throw new RuntimeException(e.getMessage(), e);
         }
     }
-
+    
     @Override
     public Class<K> getKeyType() {
         return keyType;
     }
-    
+        
     @Override
     public PathMetadata<?> getMetadata() {
-        return metadata;
+        return pathMixin.getMetadata();
     }
-
+    
     @Override
     public Path<?> getRoot() {
-        return root;
+        return pathMixin.getRoot();
     }
-
+    
     @Override
     public Class<V> getValueType() {
         return valueType;
     }
-    
+
     @Override
     public int hashCode() {
-        return metadata.hashCode();
+        return pathMixin.hashCode();
     }
-    
+
     @Override
     public EBoolean isNotNull() {
-        if (isnotnull == null) {
-            isnotnull = OBoolean.create(Ops.IS_NOT_NULL, this);
-        }
-        return isnotnull;
+        return pathMixin.isNotNull();
     }
-    
+
     @Override
     public EBoolean isNull() {
-        if (isnull == null) {
-            isnull = OBoolean.create(Ops.IS_NULL, this);
-        }
-        return isnull;
+        return pathMixin.isNull();
     }
     
-    @Override
-    public PMap<K,V,E> asExpr() {
-        return this;
+    private E newInstance(PathMetadata<?> pm) throws Exception{
+        if (queryTypeConstructor == null){
+            try {
+                if (typedClasses.contains(queryType)){
+                    queryTypeConstructor = queryType.getConstructor(Class.class, PathMetadata.class);   
+                }else{
+                    queryTypeConstructor = queryType.getConstructor(PathMetadata.class);    
+                }                
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }    
+        }
+        if (typedClasses.contains(queryType)){
+            return queryTypeConstructor.newInstance(getValueType(), pm);
+        }else{
+            return queryTypeConstructor.newInstance(pm);
+        }
     }
     
 }

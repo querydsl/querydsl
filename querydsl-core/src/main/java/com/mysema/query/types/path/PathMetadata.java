@@ -67,12 +67,12 @@ public final class PathMetadata<T> implements Serializable{
 
     private final Expr<T> expression;
 
+    private final int hashCode;
+
     @Nullable
     private final Path<?> parent, root;
 
     private final PathType pathType;
-
-    private final int hashCode;
 
     private PathMetadata(@Nullable Path<?> parent, Expr<T> expression, PathType type) {
         this.parent = parent;
@@ -105,10 +105,6 @@ public final class PathMetadata<T> implements Serializable{
         return parent;
     }
     
-    public boolean isRoot(){
-        return parent == null;
-    }
-
     public PathType getPathType() {
         return pathType;
     }
@@ -120,6 +116,10 @@ public final class PathMetadata<T> implements Serializable{
     @Override
     public int hashCode() {
         return hashCode;
+    }
+
+    public boolean isRoot(){
+        return parent == null;
     }
 
 }

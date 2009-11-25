@@ -8,8 +8,6 @@ package com.mysema.query.types.path;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EString;
-import com.mysema.query.types.operation.OBoolean;
-import com.mysema.query.types.operation.Ops;
 import com.mysema.query.util.NotEmpty;
 
 /**
@@ -20,21 +18,19 @@ import com.mysema.query.util.NotEmpty;
  */
 @SuppressWarnings("serial")
 public class PString extends EString implements Path<String> {
-    
-    private volatile EBoolean isnull, isnotnull;
-    
-    private final PathMetadata<?> metadata;
 
-    public PString(PathMetadata<?> metadata) {
-        this.metadata = metadata;
-    }
-
-    public PString(@NotEmpty String var) {
-        this(PathMetadata.forVariable(var));
-    }
+    private final Path<String> pathMixin;
     
     public PString(Path<?> parent, @NotEmpty String property) {
         this(PathMetadata.forProperty(parent, property));
+    }
+
+    public PString(PathMetadata<?> metadata) {
+        this.pathMixin = new PathMixin<String>(this, metadata);
+    }
+    
+    public PString(@NotEmpty String var) {
+        this(PathMetadata.forVariable(var));
     }
 
     @Override
@@ -42,46 +38,38 @@ public class PString extends EString implements Path<String> {
         v.visit(this);        
     }
     
-    @SuppressWarnings("unchecked")
+    @Override
+    public EString asExpr() {
+        return this;
+    }
+    
     @Override
     public boolean equals(Object o) {
-        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
-                : false;
+        return pathMixin.equals(o);
     }
-
+    
     @Override
     public PathMetadata<?> getMetadata() {
-        return metadata;
+        return pathMixin.getMetadata();
     }
 
     @Override
     public Path<?> getRoot() {
-        return metadata.getRoot() != null ? metadata.getRoot() : this;
+        return pathMixin.getRoot();
     }
 
     @Override
     public int hashCode() {
-        return metadata.hashCode();
+        return pathMixin.hashCode();
     }
 
     @Override
     public EBoolean isNotNull() {
-        if (isnotnull == null) {
-            isnotnull = OBoolean.create(Ops.IS_NOT_NULL, this);
-        }
-        return isnotnull;
+        return pathMixin.isNotNull();
     }
     
     @Override
     public EBoolean isNull() {
-        if (isnull == null) {
-            isnull = OBoolean.create(Ops.IS_NULL, this);
-        }
-        return isnull;
-    }
-    
-    @Override
-    public EString asExpr() {
-        return this;
+        return pathMixin.isNull();
     }
 }

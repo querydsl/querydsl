@@ -8,8 +8,6 @@ package com.mysema.query.types.path;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
-import com.mysema.query.types.operation.OBoolean;
-import com.mysema.query.types.operation.Ops;
 import com.mysema.query.util.NotEmpty;
 
 /**
@@ -21,35 +19,25 @@ import com.mysema.query.util.NotEmpty;
  * @see java.util.Comparable
  */
 @SuppressWarnings({"unchecked","serial"})
-public class PComparable<D extends Comparable> extends EComparable<D> implements
-        Path<D> {
-    
-    private volatile EBoolean isnull, isnotnull;
-    
-    private final PathMetadata<?> metadata;
-    
-    private final Path<?> root;
+public class PComparable<D extends Comparable> extends EComparable<D> implements Path<D> {
 
-    public PComparable(Class<? extends D> type, PathMetadata<?> metadata) {
-        super(type);
-        this.metadata = metadata;
-        this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
-    }
-
-    public PComparable(Class<? extends D> type, @NotEmpty String var) {
-        this(type, PathMetadata.forVariable(var));
-    }
+    private final Path<D> pathMixin;
     
     public PComparable(Class<? extends D> type, Path<?> parent, @NotEmpty String property) {
         this(type, PathMetadata.forProperty(parent, property));
     }
+
+    public PComparable(Class<? extends D> type, PathMetadata<?> metadata) {
+        super(type);
+        this.pathMixin = new PathMixin<D>(this, metadata);
+    }
+    
+    public PComparable(Class<? extends D> type, @NotEmpty String var) {
+        this(type, PathMetadata.forVariable(var));
+    }
     
     public PComparable(Path<?> parent, @NotEmpty String property) {
         this((Class<? extends D>) Comparable.class, PathMetadata.forProperty(parent, property));
-    }
-
-    public boolean equals(Object o) {
-        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata) : false;
     }
     
     @Override
@@ -58,38 +46,37 @@ public class PComparable<D extends Comparable> extends EComparable<D> implements
     }
 
     @Override
+    public EComparable<D> asExpr() {
+        return this;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        return pathMixin.equals(o);
+    }
+    
+    @Override
     public PathMetadata<?> getMetadata() {
-        return metadata;
+        return pathMixin.getMetadata();
     }
 
     @Override
     public Path<?> getRoot() {
-        return root;
+        return pathMixin.getRoot();
     }
 
     @Override
     public int hashCode() {
-        return metadata.hashCode();
+        return pathMixin.hashCode();
     }
 
     @Override
     public EBoolean isNotNull() {
-        if (isnotnull == null) {
-            isnotnull = OBoolean.create(Ops.IS_NOT_NULL, this);
-        }
-        return isnotnull;
+        return pathMixin.isNotNull();
     }
     
     @Override
     public EBoolean isNull() {
-        if (isnull == null) {
-            isnull = OBoolean.create(Ops.IS_NULL, this);
-        }
-        return isnull;
-    }
-    
-    @Override
-    public EComparable<D> asExpr() {
-        return this;
+        return pathMixin.isNull();
     }
 }

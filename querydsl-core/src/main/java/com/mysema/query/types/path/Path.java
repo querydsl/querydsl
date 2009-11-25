@@ -16,6 +16,11 @@ import com.mysema.query.types.expr.Expr;
  */
 public interface Path<C> {
     /**
+     * @return
+     */
+    Expr<C> asExpr();
+
+    /**
      * Get the metadata for this path
      * 
      * @return
@@ -42,7 +47,7 @@ public interface Path<C> {
      * @return
      */
     EBoolean isNotNull();
-
+    
     /**
      * Create a <code>this is null</code> expression
      * 
@@ -50,10 +55,5 @@ public interface Path<C> {
      * @return
      */
     EBoolean isNull();
-    
-    /**
-     * @return
-     */
-    Expr<C> asExpr();
 
 }

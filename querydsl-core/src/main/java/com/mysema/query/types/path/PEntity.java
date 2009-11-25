@@ -30,17 +30,12 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
     
     private final String entityName;
     
-    private volatile EBoolean isnull, isnotnull;
+    private final Path<D> pathMixin;
     
-    private final PathMetadata<?> metadata;
-
-    private final Path<?> root;
-
     public PEntity(Class<? extends D> type, @NotEmpty String entityName, PathMetadata<?> metadata) {
         super(type);
+        this.pathMixin = new PathMixin<D>(this, metadata);
         this.entityName = entityName;
-        this.metadata = metadata;
-        this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
     @Override
@@ -77,6 +72,16 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
     }
 
     /**
+     * @param <A>
+     * @param property
+     * @param type
+     * @return
+     */
+    protected <A> PArray<A> createArray(@NotEmpty String property, Class<? super A> type) {
+        return new PArray<A>(type, PathMetadata.forProperty(this, property));
+    }
+
+    /**
      * @param propertyName
      * @return
      */
@@ -90,11 +95,21 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
      * @param type
      * @return
      */
+    protected <A> PCollection<A> createCollection(@NotEmpty String property, Class<? super A> type) {
+        return new PCollection<A>(type, type.getSimpleName(), PathMetadata.forProperty(this, property));
+    }
+
+    /**
+     * @param <A>
+     * @param property
+     * @param type
+     * @return
+     */
     @SuppressWarnings("unchecked")
     protected <A extends Comparable> PComparable<A> createComparable(@NotEmpty String property, Class<? super A> type) {
         return new PComparable<A>((Class)type, this, property);
     }
-
+    
     /**
      * @param <A>
      * @param property
@@ -117,36 +132,6 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
         return new PDateTime<A>((Class)type, this, property);
     }
     
-    /**
-     * @param <A>
-     * @param property
-     * @param type
-     * @return
-     */
-    protected <A> PArray<A> createArray(@NotEmpty String property, Class<? super A> type) {
-        return new PArray<A>(type, PathMetadata.forProperty(this, property));
-    }
-
-    /**
-     * @param <A>
-     * @param property
-     * @param type
-     * @return
-     */
-    protected <A> PCollection<A> createCollection(@NotEmpty String property, Class<? super A> type) {
-        return new PCollection<A>(type, type.getSimpleName(), PathMetadata.forProperty(this, property));
-    }
-    
-    /**
-     * @param <A>
-     * @param property
-     * @param type
-     * @return
-     */
-    protected <A> PSet<A> createSet(@NotEmpty String property, Class<? super A> type) {
-        return new PSet<A>(type, type.getSimpleName(), PathMetadata.forProperty(this, property));
-    }
-
     /**
      * @param <A>
      * @param <E>
@@ -188,6 +173,16 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
 
     /**
      * @param <A>
+     * @param property
+     * @param type
+     * @return
+     */
+    protected <A> PSet<A> createSet(@NotEmpty String property, Class<? super A> type) {
+        return new PSet<A>(type, type.getSimpleName(), PathMetadata.forProperty(this, property));
+    }
+
+    /**
+     * @param <A>
      * @param path
      * @param type
      * @return
@@ -216,11 +211,12 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
         return new PTime<A>((Class)type, this, property);
     }
 
-    @SuppressWarnings("unchecked")
+
     @Override
     public boolean equals(Object o) {
-        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata) : false;
+        return pathMixin.equals(o);
     }
+    
 
     /**
      * Get the entity name for this Entity path
@@ -233,17 +229,17 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
     
     @Override
     public PathMetadata<?> getMetadata() {
-        return metadata;
+        return pathMixin.getMetadata();
     }
     
     @Override
     public Path<?> getRoot() {
-        return root;
+        return pathMixin.getRoot();
     }
-    
+
     @Override
     public int hashCode() {
-        return metadata.hashCode();
+        return pathMixin.hashCode();
     }
 
     /**
@@ -256,20 +252,14 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
     public <B extends D> EBoolean instanceOf(Class<B> type) {
         return OBoolean.create(Ops.INSTANCE_OF, this, ExprConst.create(type));
     }
-    
+
     @Override
     public EBoolean isNotNull() {
-        if (isnotnull == null) {
-            isnotnull = OBoolean.create(Ops.IS_NOT_NULL, this);
-        }
-        return isnotnull;
+        return pathMixin.isNotNull();
     }
     
     @Override
     public EBoolean isNull() {
-        if (isnull == null) {
-            isnull = OBoolean.create(Ops.IS_NULL, this);
-        }
-        return isnull;
+        return pathMixin.isNull();
     }
 }

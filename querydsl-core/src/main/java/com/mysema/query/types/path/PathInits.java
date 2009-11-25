@@ -21,9 +21,9 @@ public class PathInits {
     
     public static final PathInits DIRECT  = new PathInits("*");
     
-    private final Map<String,PathInits> propertyToInits = new HashMap<String,PathInits>();
-    
     private boolean initAllProps = false;
+    
+    private final Map<String,PathInits> propertyToInits = new HashMap<String,PathInits>();
     
     public PathInits(String... inits){
         for (String init : inits){

@@ -14,7 +14,6 @@ import com.mysema.query.types.expr.EArray;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
 
@@ -32,31 +31,31 @@ public class PArray<E> extends Expr<E[]> implements Path<E[]>, EArray<E>{
     
     private final Class<E> componentType;
     
-    private volatile EBoolean isnull, isnotnull;
-    
-    private final PathMetadata<?> metadata;
+    private final Path<E[]> pathMixin;
     
     private volatile ENumber<Integer> size;
-    
-    private final Path<?> root;
 
     @SuppressWarnings("unchecked")
     public PArray(Class<? super E> type, PathMetadata<?> metadata) {
         super((Class)Object[].class);
+        this.pathMixin = new PathMixin<E[]>(this, metadata);
         this.arrayType = (Class<E[]>) Array.newInstance(type, 0).getClass();
         this.componentType = (Class<E>) type;
-        this.metadata = metadata;
-        this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-//    public PArray(Class<E> type, @NotEmpty String var) {
-//        this(type, PathMetadata.forVariable(var));
-//    }
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
+    }
 
-    @SuppressWarnings("unchecked")
+    @Override
+    public Expr<E[]> asExpr() {
+        return this;
+    }
+
+@Override
     public boolean equals(Object o) {
-        return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata)
-                : false;
+        return pathMixin.equals(o);
     }
 
     /**
@@ -70,6 +69,7 @@ public class PArray<E> extends Expr<E[]> implements Path<E[]>, EArray<E>{
         return new PSimple<E>(componentType, md);
     }
 
+
     /**
      * Create a expression for indexed access
      * 
@@ -81,21 +81,21 @@ public class PArray<E> extends Expr<E[]> implements Path<E[]>, EArray<E>{
         return new PSimple<E>(componentType, md);   
     }
 
-//    @Override
+    //    @Override
     public Class<E> getElementType() {
         return componentType;
     }
 
     @Override
     public PathMetadata<?> getMetadata() {
-        return metadata;
-    }
+        return pathMixin.getMetadata();
+    }    
 
     @Override
     public Path<?> getRoot() {
-        return root;
+        return pathMixin.getRoot();
     }
-
+    
     @Override
     public Class<E[]> getType() {
         return arrayType;
@@ -103,25 +103,19 @@ public class PArray<E> extends Expr<E[]> implements Path<E[]>, EArray<E>{
 
     @Override
     public int hashCode() {
-        return metadata.hashCode();
+        return pathMixin.hashCode();
     }
 
     @Override
     public EBoolean isNotNull() {
-        if (isnotnull == null) {
-            isnotnull = OBoolean.create(Ops.IS_NOT_NULL, this);
-        }
-        return isnotnull;
-    }
-    
-    @Override
-    public EBoolean isNull() {
-        if (isnull == null) {
-            isnull = OBoolean.create(Ops.IS_NULL, this);
-        }
-        return isnull;
+        return pathMixin.isNotNull();
     }
 
+    @Override
+    public EBoolean isNull() {
+        return pathMixin.isNull();
+    }
+    
     /**
      * Create an expression for the array size
      * 
@@ -133,14 +127,5 @@ public class PArray<E> extends Expr<E[]> implements Path<E[]>, EArray<E>{
         }
         return size;
     }
-
-    @Override
-    public void accept(Visitor v) {
-        v.visit(this);        
-    }
-
-    @Override
-    public Expr<E[]> asExpr() {
-        return this;
-    }
+    
 }
