@@ -10,6 +10,8 @@ import java.io.IOException;
 import net.jcip.annotations.Immutable;
 
 /**
+ * SupertypeSerializer is a Serializer implementation for supertypes
+ * 
  * @author tiwe
  *
  */

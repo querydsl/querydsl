@@ -6,6 +6,8 @@
 package com.mysema.query.codegen;
 
 /**
+ * AbstractSerializer is abstract base class for Serializer implementations
+ * 
  * @author tiwe
  *
  */

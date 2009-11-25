@@ -12,6 +12,12 @@ import java.util.List;
 
 import net.jcip.annotations.Immutable;
 
+/**
+ * EntitySerializer is a Serializer implementation for entity types
+ * 
+ * @author tiwe
+ *
+ */
 @Immutable
 public class EntitySerializer extends AbstractSerializer{
     
@@ -84,17 +90,6 @@ public class EntitySerializer extends AbstractSerializer{
         
     }
         
-    protected boolean hasOwnEntityProperties(EntityModel model){
-        if (model.hasEntityFields()){
-            for (PropertyModel property : model.getProperties()){
-                if (!property.isInherited() && property.getType().getCategory() == TypeCategory.ENTITY){
-                    return true;
-                }
-            }    
-        }        
-        return false;
-    }
-    
     protected void constructorsForVariables(StringBuilder builder, EntityModel model) {
         String simpleName = model.getSimpleName();
         String queryType = getQueryType(model, model, true);
@@ -119,8 +114,7 @@ public class EntitySerializer extends AbstractSerializer{
         builder.append(");\n");
         builder.append("    }\n\n");        
     }
-
-
+    
     protected void entityField(PropertyModel field, Writer writer) throws IOException {
         String queryType = getQueryType(field.getType(), field.getEntityModel(), false);
         
@@ -130,6 +124,18 @@ public class EntitySerializer extends AbstractSerializer{
         }       
         builder.append("    public final " + queryType + " " + field.getEscapedName() + ";\n\n");
         writer.append(builder.toString());
+    }
+
+
+    protected boolean hasOwnEntityProperties(EntityModel model){
+        if (model.hasEntityFields()){
+            for (PropertyModel property : model.getProperties()){
+                if (!property.isInherited() && property.getType().getCategory() == TypeCategory.ENTITY){
+                    return true;
+                }
+            }    
+        }        
+        return false;
     }
 
     protected void initEntityFields(StringBuilder builder, EntityModel model) {

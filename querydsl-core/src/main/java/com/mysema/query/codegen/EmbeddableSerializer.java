@@ -8,6 +8,12 @@ package com.mysema.query.codegen;
 import java.io.IOException;
 
 
+/**
+ * EmbeddableSerializer is a Serializer implementation for embeddable types
+ * 
+ * @author tiwe
+ *
+ */
 public class EmbeddableSerializer extends EntitySerializer{
     
     @Override

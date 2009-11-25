@@ -8,6 +8,8 @@ package com.mysema.query.codegen;
 import javax.annotation.Nullable;
 
 /**
+ * TypeModel represents Java types
+ * 
  * @author tiwe
  * 
  */

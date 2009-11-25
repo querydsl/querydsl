@@ -6,6 +6,8 @@
 package com.mysema.query.codegen;
 
 /**
+ * AbstractTypeModel is an abstract base class for TypeModel implementations
+ * 
  * @author tiwe
  *
  */

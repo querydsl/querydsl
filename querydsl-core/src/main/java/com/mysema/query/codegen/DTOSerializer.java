@@ -10,6 +10,12 @@ import java.io.Writer;
 
 import net.jcip.annotations.Immutable;
 
+/**
+ * DTOSerializer is a Serializer implementation for DTO types
+ * 
+ * @author tiwe
+ *
+ */
 @Immutable
 public class DTOSerializer extends AbstractSerializer{
     

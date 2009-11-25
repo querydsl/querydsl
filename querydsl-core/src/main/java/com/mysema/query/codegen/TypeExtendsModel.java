@@ -6,6 +6,8 @@
 package com.mysema.query.codegen;
 
 /**
+ * TypeExtendsModel is a TypeModel for type variables and wildcard types
+ * 
  * @author tiwe
  *
  */

@@ -16,6 +16,8 @@ import org.apache.commons.lang.ClassUtils;
 import com.mysema.commons.lang.Assert;
 
 /**
+ * SimpleClassTypeModel is a minimal implementation of the TypeModel interface
+ * 
  * @author tiwe
  *
  */

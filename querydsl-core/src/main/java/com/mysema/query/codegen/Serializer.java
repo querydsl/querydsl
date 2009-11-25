@@ -26,6 +26,9 @@ public interface Serializer {
     void serialize(EntityModel type, Writer writer) throws IOException;
     
     /**
+     * Get a String representation of the Querydsl type for the given TypeModel
+     * in tyhe given EntityModel context
+     * 
      * @param type
      * @param model
      * @param raw

@@ -24,7 +24,7 @@ import com.mysema.query.annotations.PropertyType;
 @Immutable
 public enum TypeCategory {
     /**
-     * Simple non-entity fields
+     * 
      */           
     SIMPLE(null),
     /**
@@ -48,19 +48,19 @@ public enum TypeCategory {
      */
     ARRAY(null),
     /**
-     * Comparable literal fields (? extends Comparable)
+     * 
      */
     COMPARABLE(SIMPLE),
     /**
-     * Boolean files
+     * 
      */
     BOOLEAN(COMPARABLE, Boolean.class.getName()),     
     /**
-     * Date fields
+     *  
      */
     DATE(COMPARABLE, java.sql.Date.class.getName(), "org.joda.time.LocalDate"),
     /**
-     * Date/Time fields
+     * 
      */
     DATETIME(COMPARABLE, 
         java.util.Calendar.class.getName(),
@@ -71,20 +71,20 @@ public enum TypeCategory {
         "org.joda.time.DateTime", 
         "org.joda.time.DateMidnight"),    
     /**
-     * Entity fields
+     * 
      */
     ENTITY(null),
     
     /**
-     * Numeric fields (? extends Number & Comparable)
+     * 
      */
     NUMERIC(COMPARABLE),     
     /**
-     * String fields
+     * 
      */
     STRING(COMPARABLE, String.class.getName()),
     /**
-     * Time fields
+     * 
      */
     TIME(COMPARABLE, java.sql.Time.class.getName(), "org.joda.time.LocalTime");
     

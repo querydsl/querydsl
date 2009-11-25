@@ -8,6 +8,8 @@ package com.mysema.query.codegen;
 import com.mysema.commons.lang.Assert;
 
 /**
+ * TypeModelAdapter is a basic adapter implementation for the TypeModel interface
+ * 
  * @author tiwe
  *
  */
