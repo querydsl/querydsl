@@ -5,7 +5,7 @@
  */
 package com.mysema.query.codegen;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 

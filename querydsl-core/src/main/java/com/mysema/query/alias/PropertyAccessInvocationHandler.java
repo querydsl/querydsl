@@ -40,6 +40,7 @@ import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PList;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PSet;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PTime;
@@ -284,17 +285,17 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
                             PathMetadata.forListAccess(this, index));
                 }
             };
-            rv = (T) aliasFactory.createAliasForProp(type, parent, path);
+            rv = (T) aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Set.class.isAssignableFrom(type)) {
             Class<?> elementType = getTypeParameter(genericType, 0);
-            path = new PCollection(elementType, elementType.getName(), pm);
-            rv = (T) aliasFactory.createAliasForProp(type, parent, path);
+            path = new PSet(elementType, elementType.getName(), pm);
+            rv = (T) aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Collection.class.isAssignableFrom(type)) {
             Class<?> elementType = getTypeParameter(genericType, 0);
             path = new PCollection(elementType, elementType.getSimpleName(), pm);
-            rv = (T) aliasFactory.createAliasForProp(type, parent, path);
+            rv = (T) aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Map.class.isAssignableFrom(type)) {
             Class<Object> keyType = (Class)getTypeParameter(genericType, 0);
@@ -311,7 +312,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
                             PathMetadata.forMapAccess(this, key));
                 }
             };
-            rv = (T) aliasFactory.createAliasForProp(type, parent, path);
+            rv = (T) aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Enum.class.isAssignableFrom(type)) {
             path = new PSimple<T>(type, pm);
@@ -319,7 +320,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else {
             path = new PEntity<T>((Class<T>) type, type.getSimpleName(), pm);
-            rv = (T) aliasFactory.createAliasForProp(type, parent, path);
+            rv = (T) aliasFactory.createAliasForProperty(type, parent, path);
         }
         propToObj.put(propKey, rv);
         propToExpr.put(propKey, path);

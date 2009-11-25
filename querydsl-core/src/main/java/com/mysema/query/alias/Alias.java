@@ -12,17 +12,19 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PBoolean;
+import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PList;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PSet;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PTime;
@@ -53,7 +55,7 @@ public final class Alias {
      * @return
      */
     public static <A> A alias(Class<A> cl, String var) {
-        return aliasFactory.createAliasForVar(cl, var);
+        return aliasFactory.createAliasForVariable(cl, var);
     }
 
     /**
@@ -117,7 +119,11 @@ public final class Alias {
     }
 
     public static <D> PCollection<D> $(Collection<D> args) {
-        return pathFactory.createEntityCollection(args);
+        return pathFactory.createCollection(args);
+    }
+    
+    public static <D> PSet<D> $(Set<D> args) {
+        return pathFactory.createSet(args);
     }
     
     public static PDateTime<java.util.Date> $(java.util.Date arg) {

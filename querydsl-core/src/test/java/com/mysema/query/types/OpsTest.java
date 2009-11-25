@@ -5,7 +5,7 @@
  */
 package com.mysema.query.types;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;

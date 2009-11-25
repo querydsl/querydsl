@@ -8,17 +8,21 @@ package com.mysema.query.alias;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import net.jcip.annotations.Immutable;
 
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PBoolean;
+import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PList;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PSet;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PTime;
 
@@ -29,11 +33,12 @@ import com.mysema.query.types.path.PTime;
  * @author tiwe
  * @version $Id$
  */
+@Immutable
 class AliasAwarePathFactory implements PathFactory {
 
-    private SimplePathFactory factory = new SimplePathFactory();
-    
     private final AliasFactory aliasFactory;
+    
+    private final SimplePathFactory factory = new SimplePathFactory();
 
     public AliasAwarePathFactory(AliasFactory aliasFactory) {
         this.aliasFactory = aliasFactory;
@@ -54,6 +59,16 @@ class AliasAwarePathFactory implements PathFactory {
     public PBoolean createBoolean(Boolean arg) {
         PBoolean rv = aliasFactory.<PBoolean> getCurrentAndReset();
         return rv != null ? rv : factory.createBoolean(arg);
+    }
+
+    public <D> PCollection<D> createCollection(Collection<D> arg) {
+        PCollection<D> rv = aliasFactory.<PCollection<D>> getCurrentAndReset();
+        return rv != null ? rv : factory.createCollection(arg);
+    }
+    
+    public <D> PSet<D> createSet(Set<D> arg) {
+        PSet<D> rv = aliasFactory.<PSet<D>> getCurrentAndReset();
+        return rv != null ? rv : factory.createSet(arg);
     }
 
     public <D extends Comparable<?>> PComparable<D> createComparable(D arg) {
@@ -85,11 +100,6 @@ class AliasAwarePathFactory implements PathFactory {
         } else {
             return factory.createEntity(arg);
         }
-    }
-
-    public <D> PCollection<D> createEntityCollection(Collection<D> arg) {
-        PCollection<D> rv = aliasFactory.<PCollection<D>> getCurrentAndReset();
-        return rv != null ? rv : factory.createEntityCollection(arg);
     }
 
     public <D> PList<D,?> createList(List<D> arg) {

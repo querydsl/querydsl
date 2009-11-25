@@ -41,13 +41,13 @@ class SimpleAliasFactory implements AliasFactory {
         }
     };
 
-    public <A> A createAliasForProp(Class<A> cl, Object parent, Expr<?> path) {
+    public <A> A createAliasForProperty(Class<A> cl, Object parent, Expr<?> path) {
         A proxy = createProxy(cl, path);
         return proxy;
     }
 
     @SuppressWarnings("unchecked")
-    public <A> A createAliasForVar(Class<A> cl, String var) {
+    public <A> A createAliasForVariable(Class<A> cl, String var) {
         Expr<?> path = pathCache.get(cl, var);
         A proxy = (A) proxyCache.get(cl, path);
         return proxy;

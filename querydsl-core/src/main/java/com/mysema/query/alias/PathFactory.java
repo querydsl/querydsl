@@ -8,17 +8,19 @@ package com.mysema.query.alias;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PBoolean;
+import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PList;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PSet;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PTime;
 
@@ -109,7 +111,14 @@ interface PathFactory {
      * @param arg
      * @return
      */
-    <D> PCollection<D> createEntityCollection(Collection<D> arg);
+    <D> PCollection<D> createCollection(Collection<D> arg);
+    
+    /**
+     * @param <D>
+     * @param arg
+     * @return
+     */
+    <D> PSet<D> createSet(Set<D> arg);
 
     /**
      * @param arg

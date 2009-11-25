@@ -23,7 +23,7 @@ interface AliasFactory {
      * @param path
      * @return
      */
-    <A> A createAliasForProp(Class<A> cl, Object parent, Expr<?> path);
+    <A> A createAliasForProperty(Class<A> cl, Object parent, Expr<?> path);
 
     /**
      * 
@@ -32,7 +32,7 @@ interface AliasFactory {
      * @param var
      * @return
      */
-    <A> A createAliasForVar(Class<A> cl, String var);
+    <A> A createAliasForVariable(Class<A> cl, String var);
 
     /**
      * 
