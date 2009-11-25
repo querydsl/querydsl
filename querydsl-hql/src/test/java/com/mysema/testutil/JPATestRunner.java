@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query;
+package com.mysema.testutil;
 
 import java.lang.reflect.Method;
 

@@ -50,7 +50,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class ParserTest implements Constants {
+public class HQLExamplesTest implements Constants {
 
     protected TestQuery query() {
         return new TestQuery();
@@ -99,7 +99,9 @@ public class ParserTest implements Constants {
     @Test
     public void joins() throws RecognitionException, TokenStreamException{
         query().from(cat).join(cat.mate).select(cat).parse();
+        
         query().from(cat).innerJoin(cat.mate).select(cat).parse();
+        
         query().from(cat).leftJoin(cat.mate).select(cat).parse();
     }
 

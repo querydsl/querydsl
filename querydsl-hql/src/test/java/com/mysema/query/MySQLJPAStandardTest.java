@@ -7,6 +7,9 @@ package com.mysema.query;
 
 import org.junit.runner.RunWith;
 
+import com.mysema.testutil.HibernateConfig;
+import com.mysema.testutil.HibernateTestRunner;
+
 
 @RunWith(HibernateTestRunner.class)
 @HibernateConfig("mysql.properties")

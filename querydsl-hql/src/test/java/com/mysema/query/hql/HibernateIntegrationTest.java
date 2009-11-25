@@ -17,8 +17,6 @@ import org.junit.runner.RunWith;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
-import com.mysema.query.HibernateConfig;
-import com.mysema.query.HibernateTestRunner;
 import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.hql.hibernate.HibernateDeleteClause;
@@ -26,6 +24,8 @@ import com.mysema.query.hql.hibernate.HibernateQuery;
 import com.mysema.query.hql.hibernate.HibernateUpdateClause;
 import com.mysema.query.hql.hibernate.HibernateUtil;
 import com.mysema.query.types.path.PEntity;
+import com.mysema.testutil.HibernateConfig;
+import com.mysema.testutil.HibernateTestRunner;
 
 /**
  * HibernatePersistenceTest provides.
@@ -35,26 +35,21 @@ import com.mysema.query.types.path.PEntity;
  */
 @RunWith(HibernateTestRunner.class)
 @HibernateConfig("hsqldb.properties")
-public class HibernateIntegrationTest extends ParserTest {
+public class HibernateIntegrationTest extends HQLExamplesTest {
 
     private Session session;
 
     protected TestQuery query() {
         return new TestQuery() {
-            public void parse() throws RecognitionException,
-                    TokenStreamException {
+            public void parse() throws RecognitionException, TokenStreamException {
                 try {
                     System.out.println("query : " + toString().replace('\n', ' '));
-
-                    // create Query and execute it
                     Query query = session.createQuery(toString());
                     HibernateUtil.setConstants(query, getConstants());
-                    try {
-                        query.list();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        throw new RuntimeException(e);
-                    }
+                    query.list();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 } finally {
                     System.out.println();
                 }

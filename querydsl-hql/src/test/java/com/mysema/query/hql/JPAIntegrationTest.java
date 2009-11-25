@@ -14,9 +14,9 @@ import org.junit.runner.RunWith;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
-import com.mysema.query.JPAConfig;
-import com.mysema.query.JPATestRunner;
 import com.mysema.query.hql.jpa.JPAUtil;
+import com.mysema.testutil.JPAConfig;
+import com.mysema.testutil.JPATestRunner;
 
 /**
  * HibernatePersistenceTest provides.
@@ -26,7 +26,7 @@ import com.mysema.query.hql.jpa.JPAUtil;
  */
 @RunWith(JPATestRunner.class)
 @JPAConfig("hsqldb")
-public class JPAIntegrationTest extends ParserTest {
+public class JPAIntegrationTest extends HQLExamplesTest {
 
     private EntityManager entityManager;
 
