@@ -70,8 +70,8 @@ public class TypeModelAdapter implements TypeModel{
     }
 
     @Override
-    public TypeCategory getTypeCategory() {
-        return typeModel.getTypeCategory();
+    public TypeCategory getCategory() {
+        return typeModel.getCategory();
     }
 
     @Override

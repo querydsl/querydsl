@@ -92,7 +92,7 @@ public abstract class AbstractStandardTest {
                 new Cat("Allen123", 4, 4.0),
                 new Cat("Mary123", 5, 5.0))){
             if (prev != null){
-                cat.getKittens().add(prev);
+                cat.addKitten(prev);
             }
             cat.setBirthdate(birthDate);
             cat.setDateField(date);
@@ -112,6 +112,7 @@ public abstract class AbstractStandardTest {
         Cat kitten = savedCats.get(0);        
         Cat noKitten = savedCats.get(savedCats.size()-1);
         
+        standardTest.arrayTests(cat.kittensArray, otherCat.kittensArray, kitten, noKitten);
         standardTest.booleanTests(cat.name.isNull(), otherCat.kittens.isEmpty());
         standardTest.collectionTests(cat.kittens, otherCat.kittens, kitten, noKitten);
         standardTest.dateTests(cat.dateField, otherCat.dateField, date);

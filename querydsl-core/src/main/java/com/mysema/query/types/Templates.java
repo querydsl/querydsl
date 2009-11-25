@@ -42,7 +42,7 @@ public class Templates {
         add(Ops.COL_SIZE, "size({0})");
         
         // array
-        add(Ops.ARRAY_SIZE, "empty({0})");
+        add(Ops.ARRAY_SIZE, "size({0})");
         
         // map
         add(Ops.MAP_SIZE, "size({0})");

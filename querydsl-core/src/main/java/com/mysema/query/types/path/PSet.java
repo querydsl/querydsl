@@ -41,14 +41,6 @@ public class PSet<E> extends ECollectionBase<Set<E>,E> implements Path<Set<E>> {
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    public PSet(Class<? super E> type, @NotEmpty String entityName, @NotEmpty String var) {
-        this(type, entityName, PathMetadata.forVariable(var));
-    }
-    
-    public PSet(Class<? super E> type, @NotEmpty String entityName, Path<?> parent, @NotEmpty String property) {
-        this(type, entityName, PathMetadata.forProperty(parent, property));
-    }
-
     @Override
     public void accept(Visitor v) {
         v.visit(this);        

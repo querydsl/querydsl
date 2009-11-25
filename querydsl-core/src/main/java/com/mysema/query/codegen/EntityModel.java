@@ -63,7 +63,7 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
 
     public void addProperty(PropertyModel field) {
         properties.add(validateField(field));
-        switch(field.getType().getTypeCategory()){
+        switch(field.getType().getCategory()){
         case MAP: 
             hasMaps = true; 
             break;

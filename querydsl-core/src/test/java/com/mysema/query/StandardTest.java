@@ -11,6 +11,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import com.mysema.query.types.expr.EArray;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EDate;
@@ -139,6 +140,12 @@ public abstract class StandardTest {
     public StandardTest noProjections() {
         runProjections = false;
         return this;
+    }
+    
+    public <A> void arrayTests(EArray<A> expr, EArray<A> other, A knownElement, A missingElement){
+        execute(matchers.array(expr, other, knownElement, missingElement), true);
+        execute(filters.array(expr, other, knownElement), false);
+        execute(projections.array(expr, other, knownElement));
     }
         
     public void booleanTests(EBoolean expr, EBoolean other){

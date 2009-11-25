@@ -45,14 +45,6 @@ public class PCollection<E> extends ECollectionBase<Collection<E>,E> implements 
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-//    public PCollection(Class<? super E> type, @NotEmpty String entityName, @NotEmpty String var) {
-//        this(type, entityName, PathMetadata.forVariable(var));
-//    }
-//    
-//    public PCollection(Class<? super E> type, @NotEmpty String entityName, Path<?> parent, @NotEmpty String property) {
-//        this(type, entityName, PathMetadata.forProperty(parent, property));
-//    }
-
     @Override
     public void accept(Visitor v) {
         v.visit(this);        

@@ -9,13 +9,14 @@ import java.lang.reflect.Array;
 
 import javax.annotation.Nonnegative;
 
+import com.mysema.query.types.Visitor;
+import com.mysema.query.types.expr.EArray;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.util.NotEmpty;
 
 /**
  * PArray represents an array typed path
@@ -25,7 +26,7 @@ import com.mysema.query.util.NotEmpty;
  * @param <E> component type
  */
 @SuppressWarnings("serial")
-public abstract class PArray<E> extends Expr<E[]> implements Path<E[]>{
+public class PArray<E> extends Expr<E[]> implements Path<E[]>, EArray<E>{
     
     private final Class<E[]> arrayType;
     
@@ -40,17 +41,17 @@ public abstract class PArray<E> extends Expr<E[]> implements Path<E[]>{
     private final Path<?> root;
 
     @SuppressWarnings("unchecked")
-    public PArray(Class<E> type, PathMetadata<?> metadata) {
+    public PArray(Class<? super E> type, PathMetadata<?> metadata) {
         super((Class)Object[].class);
         this.arrayType = (Class<E[]>) Array.newInstance(type, 0).getClass();
-        this.componentType = type;
+        this.componentType = (Class<E>) type;
         this.metadata = metadata;
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    public PArray(Class<E> type, @NotEmpty String var) {
-        this(type, PathMetadata.forVariable(var));
-    }
+//    public PArray(Class<E> type, @NotEmpty String var) {
+//        this(type, PathMetadata.forVariable(var));
+//    }
 
     @SuppressWarnings("unchecked")
     public boolean equals(Object o) {
@@ -64,7 +65,10 @@ public abstract class PArray<E> extends Expr<E[]> implements Path<E[]>{
      * @param index
      * @return
      */
-    public abstract Expr<E> get(Expr<Integer> index);
+    public PSimple<E> get(Expr<Integer> index){
+        PathMetadata<Integer> md = PathMetadata.forArrayAccess(this, index);        
+        return new PSimple<E>(componentType, md);
+    }
 
     /**
      * Create a expression for indexed access
@@ -72,7 +76,10 @@ public abstract class PArray<E> extends Expr<E[]> implements Path<E[]>{
      * @param index
      * @return
      */
-    public abstract Expr<E> get(@Nonnegative int index);
+    public PSimple<E> get(@Nonnegative int index){
+        PathMetadata<Integer> md = PathMetadata.forArrayAccess(this, index);        
+        return new PSimple<E>(componentType, md);   
+    }
 
 //    @Override
     public Class<E> getElementType() {
@@ -122,8 +129,18 @@ public abstract class PArray<E> extends Expr<E[]> implements Path<E[]>{
      */
     public ENumber<Integer> size() {
         if (size == null) {
-            size = ONumber.create(Integer.class, Ops.COL_SIZE, this);
+            size = ONumber.create(Integer.class, Ops.ARRAY_SIZE, this);
         }
         return size;
+    }
+
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
+    }
+
+    @Override
+    public Expr<E[]> asExpr() {
+        return this;
     }
 }

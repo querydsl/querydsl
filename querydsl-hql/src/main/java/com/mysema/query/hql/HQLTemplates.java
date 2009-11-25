@@ -56,6 +56,7 @@ public class HQLTemplates extends Templates {
         add(Ops.IN, "{0} in {1}");
         add(Ops.COL_IS_EMPTY, "{0} is empty");
         add(Ops.COL_SIZE, "{0}.size");
+        add(Ops.ARRAY_SIZE, "{0}.size");
         
         // string
         add(Ops.CONCAT, "{0} || {1}", 37);

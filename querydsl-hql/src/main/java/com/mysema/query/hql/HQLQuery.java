@@ -10,7 +10,6 @@ import java.util.Collection;
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.Path;

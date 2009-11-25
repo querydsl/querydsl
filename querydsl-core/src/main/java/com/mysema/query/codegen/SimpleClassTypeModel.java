@@ -109,7 +109,7 @@ public class SimpleClassTypeModel extends AbstractTypeModel{
     }
 
     @Override
-    public TypeCategory getTypeCategory() {
+    public TypeCategory getCategory() {
         return typeCategory;
     }
 

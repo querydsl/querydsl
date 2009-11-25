@@ -20,6 +20,7 @@ import org.apache.commons.lang.ClassUtils;
 import com.mysema.query.util.TypeUtil;
 
 /**
+ * TypeModelFactory is a factory class for TypeModel instances
  * 
  * @author tiwe
  * 

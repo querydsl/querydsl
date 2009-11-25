@@ -8,6 +8,7 @@ package com.mysema.query;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.mysema.query.types.expr.EArray;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EComparable;
@@ -40,6 +41,13 @@ public class MatchingFilters {
         this.target = target;
     }
 
+    <A> Collection<EBoolean> array(EArray<A> expr,  EArray<A> other, A knownElement, A missingElement){
+        HashSet<EBoolean> rv = new HashSet<EBoolean>();          
+//        rv.add(expr.isEmpty().not());          
+        rv.add(expr.size().gt(0));
+        return rv;
+    }
+    
     <A> Collection<EBoolean> collection(ECollection<?,A> expr,  ECollection<?,A> other, A knownElement, A missingElement){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.add(expr.contains(knownElement));

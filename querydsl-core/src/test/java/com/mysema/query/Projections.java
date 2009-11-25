@@ -11,6 +11,7 @@ import java.util.HashSet;
 
 import com.mysema.query.types.CaseBuilder;
 import com.mysema.query.types.expr.Constant;
+import com.mysema.query.types.expr.EArray;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EDate;
 import com.mysema.query.types.expr.EDateTime;
@@ -39,6 +40,12 @@ public class Projections {
     public Projections(Module module, Target target) {
         this.module = module;
         this.target = target;
+    }
+    
+    <A> Collection<Expr<?>> array(EArray<A> expr, EArray<A> other, A knownElement){
+        HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
+        rv.add(expr.size());
+        return rv;
     }
 
     <A> Collection<Expr<?>> collection(ECollection<?,A> expr, ECollection<?,A> other, A knownElement){

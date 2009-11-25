@@ -39,7 +39,7 @@ public interface TypeModel {
 
     String getSimpleName();
 
-    TypeCategory getTypeCategory();
+    TypeCategory getCategory();
 
     boolean isPrimitive();
 

@@ -15,7 +15,7 @@ public abstract class AbstractSerializer implements Serializer{
     public String getQueryType(TypeModel type, EntityModel model, boolean raw){
         String localGenericName = type.getLocalGenericName(model, true);
         
-        switch(type.getTypeCategory()){
+        switch(type.getCategory()){
         case STRING:     
             return "PString";
         case BOOLEAN:    
@@ -30,6 +30,7 @@ public abstract class AbstractSerializer implements Serializer{
             return raw ? "PTime" : "PTime<" + localGenericName + ">"; 
         case NUMERIC:    
             return raw ? "PNumber" : "PNumber<" + localGenericName + ">";
+        case ARRAY:
         case COLLECTION: 
         case SET:
         case LIST:
@@ -45,6 +46,6 @@ public abstract class AbstractSerializer implements Serializer{
                 return type.getPackageName() + "." + model.getPrefix() + suffix;
             } 
         }
-        throw new IllegalArgumentException("Unsupported case " + type.getTypeCategory());
+        throw new IllegalArgumentException("Unsupported case " + type.getCategory());
     }
 }

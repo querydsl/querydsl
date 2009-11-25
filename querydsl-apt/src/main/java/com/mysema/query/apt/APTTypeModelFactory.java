@@ -157,7 +157,7 @@ public class APTTypeModelFactory implements TypeVisitor<TypeModel,Elements> {
         }else{
             cache.put(key, null);
             TypeModel value = type.accept(this, el);
-            if (value != null && value.getTypeCategory() == TypeCategory.ENTITY){                
+            if (value != null && value.getCategory() == TypeCategory.ENTITY){                
                 value = asEntityModel(type, el, value);
                 entityTypeCache.put(key, (EntityModel)value);
             }else{

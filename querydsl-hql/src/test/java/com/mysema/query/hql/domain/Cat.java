@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -25,8 +26,14 @@ public class Cat extends Animal {
     private Color eyecolor;
     
     @OneToMany
+    @JoinTable(name="kittens")
     @IndexColumn(name = "ind")
     private List<Cat> kittens = new ArrayList<Cat>();
+    
+    @OneToMany
+    @JoinTable(name="kittens_array")
+    @IndexColumn(name = "arrayIndex")
+    private Cat[] kittensArray = new Cat[0];
     
     @ManyToOne
     private Cat mate;
@@ -58,4 +65,16 @@ public class Cat extends Animal {
     public Cat getMate() {
         return mate;
     }
+
+    public Cat[] getKittensArray() {
+        return kittensArray;
+    }
+
+    public void addKitten(Cat kitten) {
+        kittens.add(kitten);
+        kittensArray = new Cat[]{kitten};
+        
+    }
+    
+    
 }

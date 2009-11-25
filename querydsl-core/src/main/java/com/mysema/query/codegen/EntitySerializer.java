@@ -84,6 +84,17 @@ public class EntitySerializer extends AbstractSerializer{
         
     }
         
+    protected boolean hasOwnEntityProperties(EntityModel model){
+        if (model.hasEntityFields()){
+            for (PropertyModel property : model.getProperties()){
+                if (!property.isInherited() && property.getType().getCategory() == TypeCategory.ENTITY){
+                    return true;
+                }
+            }    
+        }        
+        return false;
+    }
+    
     protected void constructorsForVariables(StringBuilder builder, EntityModel model) {
         String simpleName = model.getSimpleName();
         String queryType = getQueryType(model, model, true);
@@ -132,7 +143,7 @@ public class EntitySerializer extends AbstractSerializer{
         }
         
         for (PropertyModel field : model.getProperties()){            
-            if (field.getType().getTypeCategory() == TypeCategory.ENTITY){
+            if (field.getType().getCategory() == TypeCategory.ENTITY){
                 String queryType = getQueryType(field.getType(), model, false);
                 builder.append("        this." + field.getEscapedName() + " = ");
                 if (!field.isInherited()){                    
@@ -249,7 +260,7 @@ public class EntitySerializer extends AbstractSerializer{
         if (model.hasEntityFields()){
             List<String> inits = new ArrayList<String>();
             for (PropertyModel property : model.getProperties()){
-                if (property.getType().getTypeCategory() == TypeCategory.ENTITY){
+                if (property.getType().getCategory() == TypeCategory.ENTITY){
                     for (String init : property.getInits()){
                         inits.add(property.getEscapedName() + "." + init);    
                     }   
@@ -369,7 +380,7 @@ public class EntitySerializer extends AbstractSerializer{
 
     private void serializeAccessors(EntityModel model, Writer writer) throws IOException {
         for (PropertyModel property : model.getProperties()){
-            switch(property.getType().getTypeCategory()){
+            switch(property.getType().getCategory()){
             case MAP: mapAccessor(property, writer); break;
             case LIST: listAccessor(property, writer); break;
             }
@@ -382,7 +393,7 @@ public class EntitySerializer extends AbstractSerializer{
             String localGenericName = property.getType().getLocalGenericName(model, true);
             String localRawName = property.getType().getLocalRawName(model);
             
-            switch(property.getType().getTypeCategory()){
+            switch(property.getType().getCategory()){
             case STRING: 
                 serialize(property, queryType, writer, "createString");
                 break;
@@ -406,6 +417,12 @@ public class EntitySerializer extends AbstractSerializer{
                 break;
             case NUMERIC: 
                 serialize(property, queryType, writer, "createNumber", localRawName +".class");
+                break;
+            case ARRAY:    
+                // TODO : support for typed arrays
+                localGenericName = property.getParameter(0).getLocalGenericName(model, true);
+                localRawName = property.getParameter(0).getLocalRawName(model);
+                serialize(property, "PArray<" + localGenericName+">", writer, "createArray",localRawName+".class");
                 break;
             case COLLECTION: 
                 localGenericName = property.getParameter(0).getLocalGenericName(model, true);

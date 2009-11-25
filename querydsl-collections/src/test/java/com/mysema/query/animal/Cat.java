@@ -26,6 +26,8 @@ public class Cat extends Animal {
     private Color eyecolor;
 
     private List<Cat> kittens;
+    
+    private Cat[] kittenArray;
 
     private Map<String, Cat> kittensByName;
 
@@ -46,6 +48,7 @@ public class Cat extends Animal {
     public Cat(String name) {
         Cat kitten = new Cat();
         this.kittens = Arrays.asList(kitten);
+        this.kittenArray = new Cat[]{kitten};
         this.kittensByName = Collections.singletonMap("Kitty", kitten);
         this.name = name;
     }
@@ -135,6 +138,14 @@ public class Cat extends Animal {
         this.timeField = timeField;
     }
     
+    public Cat[] getKittenArray() {
+        return kittenArray;
+    }
+
+    public void setKittenArray(Cat[] kittenArray) {
+        this.kittenArray = kittenArray;
+    }
+
     public String toString() {
         return name;
     }

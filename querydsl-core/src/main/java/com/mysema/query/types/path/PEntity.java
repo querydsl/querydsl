@@ -116,6 +116,16 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
     protected <A extends Comparable> PDateTime<A> createDateTime(@NotEmpty String property, Class<? super A> type) {
         return new PDateTime<A>((Class)type, this, property);
     }
+    
+    /**
+     * @param <A>
+     * @param property
+     * @param type
+     * @return
+     */
+    protected <A> PArray<A> createArray(@NotEmpty String property, Class<? super A> type) {
+        return new PArray<A>(type, PathMetadata.forProperty(this, property));
+    }
 
     /**
      * @param <A>

@@ -39,14 +39,14 @@ public class InspectingTypeModelTest {
     @Test
     public void getFieldType(){
         for (Class<?> cl : Arrays.<Class<?>>asList(Blob.class, Clob.class, Locale.class, Class.class, Serializable.class)){
-            assertEquals("wrong type for " + cl.getName(), TypeCategory.SIMPLE, factory.create(cl).getTypeCategory());
+            assertEquals("wrong type for " + cl.getName(), TypeCategory.SIMPLE, factory.create(cl).getCategory());
         }
         
         for (Class<?> cl : Arrays.<Class<?>>asList(Byte.class, Integer.class)){
-            assertEquals("wrong type for " + cl.getName(), TypeCategory.NUMERIC, factory.create(cl).getTypeCategory());
+            assertEquals("wrong type for " + cl.getName(), TypeCategory.NUMERIC, factory.create(cl).getCategory());
         }
         
-        assertEquals(TypeCategory.BOOLEAN, factory.create(boolean.class).getTypeCategory());
+        assertEquals(TypeCategory.BOOLEAN, factory.create(boolean.class).getCategory());
     }
 
 }

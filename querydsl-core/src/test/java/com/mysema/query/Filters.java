@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import com.mysema.query.types.expr.EArray;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EComparable;
@@ -22,6 +23,7 @@ import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.ETime;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.PArray;
 import com.mysema.query.types.path.Path;
 
 /**
@@ -58,6 +60,13 @@ public class Filters {
         rv.add(expr.isEmpty());
         rv.add(expr.isNotEmpty());
         rv.add(expr.size().gt(0));
+        return rv;
+    }
+    
+    <A> Collection<EBoolean> array(EArray<A> expr, EArray<A> other, A knownElement){
+        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+        rv.add(expr.size().gt(0));
+        rv.add(expr.get(0).eq(knownElement));
         return rv;
     }
 
