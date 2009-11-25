@@ -12,9 +12,15 @@ public class SuperclassTest {
         
     }
     
+    @QuerySupertype
+    public class SuperclassTestSuperclass2{
+        SuperclassTestEntity ref;
+    }
+    
     @QueryEntity
     public class SuperclassTestEntity{
         SuperclassTestSuperclass ref;
+        SuperclassTestSuperclass2 ref2;
     }
 
     @Test
