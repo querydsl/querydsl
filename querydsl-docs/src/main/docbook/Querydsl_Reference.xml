@@ -44,8 +44,7 @@
     
     <xi:include href="content/intro.xml" />
     <xi:include href="content/getting-started.xml"/>
-    <xi:include href="content/advanced.xml"/>             
-    <xi:include href="content/best-practices.xml"/>    
+    <xi:include href="content/advanced.xml"/>                
     <xi:include href="content/troubleshooting.xml"/>
     
     <!-- 

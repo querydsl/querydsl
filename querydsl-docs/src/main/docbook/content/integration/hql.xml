@@ -72,6 +72,12 @@
       javax.persistence.Entity annotation and generates query types for
       them.
     </para>
+    
+    <para>
+    If you use Hibernate annotations in your domain types you should use 
+    the APT processor com.mysema.query.apt.hibernate.HibernateAnnotationProcessor
+    instead.
+    </para>
 
     <para>
       Run mvn eclipse:eclipse or clean install and you will get your Query
@@ -99,24 +105,24 @@
     <programlisting language="java"><![CDATA[
 @Entity
 public class Customer {
-  private String firstName;
-  private String lastName;
+    private String firstName;
+    private String lastName;
 
-  public String getFirstName(){
-    return firstName;
-  }
+    public String getFirstName(){
+        return firstName;
+    }
 
-  public String getLastName(){
-    return lastName;
-  }
+    public String getLastName(){
+        return lastName;
+    }
 
-  public void setFirstName(String fn){
-    firstName = fn;
-  }
+    public void setFirstName(String fn){
+        firstName = fn;
+    }
 
-  public void setLastName(String ln)[
-    lastName = ln;
-  }
+    public void setLastName(String ln)[
+        lastName = ln;
+    }
 }
 ]]></programlisting>
 

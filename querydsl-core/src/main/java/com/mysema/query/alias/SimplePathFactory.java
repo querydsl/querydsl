@@ -38,9 +38,9 @@ class SimplePathFactory implements PathFactory {
 
     private final Map<Object,Path<?>> cache = new WeakHashMap<Object,Path<?>>();
     
-    private final PBoolean btrue = new PBoolean(md());
+    private final PBoolean btrue = new PBoolean(createMetadata());
     
-    private final PBoolean bfalse = new PBoolean(md());
+    private final PBoolean bfalse = new PBoolean(createMetadata());
 
     private long counter = 0;
 
@@ -61,9 +61,9 @@ class SimplePathFactory implements PathFactory {
         PCollection<D> rv;
         if (!arg.isEmpty()) {
             Class<?> cl = ((Collection) arg).iterator().next().getClass();
-            rv = new PCollection(cl, cl.getSimpleName(), md());
+            rv = new PCollection(cl, cl.getSimpleName(), createMetadata());
         } else {
-            rv = new PCollection(Object.class, "Object", md());
+            rv = new PCollection(Object.class, "Object", createMetadata());
         }    
         cache.put(arg, rv);
         return rv;
@@ -79,7 +79,7 @@ class SimplePathFactory implements PathFactory {
         if (cache.containsKey(arg)){
             return (PComparable<D>) cache.get(arg);
         }else{
-            return (PComparable<D>) cache(arg, new PComparable(arg.getClass(), md()));
+            return (PComparable<D>) cache(arg, new PComparable(arg.getClass(), createMetadata()));
         }
     }
 
@@ -89,7 +89,7 @@ class SimplePathFactory implements PathFactory {
         if (cache.containsKey(arg)){
             return (PDate<D>) cache.get(arg);
         }else{
-            return (PDate<D>) cache(arg, new PDate(arg.getClass(), md()));
+            return (PDate<D>) cache(arg, new PDate(arg.getClass(), createMetadata()));
         }
     }
 
@@ -99,7 +99,7 @@ class SimplePathFactory implements PathFactory {
         if (cache.containsKey(arg)){
             return (PDateTime<D>) cache.get(arg);
         }else{
-            return (PDateTime<D>) cache(arg, new PDateTime(arg.getClass(), md()));
+            return (PDateTime<D>) cache(arg, new PDateTime(arg.getClass(), createMetadata()));
         }
     }
 
@@ -109,18 +109,18 @@ class SimplePathFactory implements PathFactory {
             return (PEntity<D>) cache.get(arg);
         }else{
             return (PEntity<D>) cache(arg, 
-                new PEntity(arg.getClass(), arg.getClass().getSimpleName(), md()));    
+                new PEntity(arg.getClass(), arg.getClass().getSimpleName(), createMetadata()));    
         }        
     }
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "serial" })
     @Override
     public <D> PList<D,?> createList(List<D> arg) {
         if (cache.containsKey(arg)){
             return (PList<D, ?>) cache.get(arg);
         }        
         final Class<?> cl = arg.isEmpty() ?  Object.class : arg.get(0).getClass();
-        return (PList<D, ?>) cache(arg, new PList<D,PEntity<D>>(Object.class, Object.class.getSimpleName(), null, md()){                        
+        return (PList<D, ?>) cache(arg, new PList<D,PEntity<D>>(Object.class, Object.class.getSimpleName(), null, createMetadata()){                        
             @Override
             public PEntity get(Expr<Integer> index) {
                 return new PEntity(cl, cl.getSimpleName(), PathMetadata.forListAccess(this, index));
@@ -133,7 +133,7 @@ class SimplePathFactory implements PathFactory {
         
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "serial" })
     public <K, V> PMap<K, V, ?> createMap(Map<K, V> arg) {
         if (cache.containsKey(arg)){
             return (PMap<K, V, ?>) cache.get(arg);
@@ -143,7 +143,7 @@ class SimplePathFactory implements PathFactory {
             Map.Entry entry = arg.entrySet().iterator().next();
             final Class<Object> keyType = (Class)entry.getKey().getClass();
             final Class<Object> valueType = (Class)entry.getValue().getClass();
-            return cache(arg, new PMap<K,V,PEntity<V>>(keyType, valueType, null, md()){
+            return cache(arg, new PMap<K,V,PEntity<V>>(keyType, valueType, null, createMetadata()){
                 @Override
                 public PEntity get(Expr<K> key) {
                     return new PEntity(valueType, valueType.getSimpleName(), 
@@ -156,7 +156,7 @@ class SimplePathFactory implements PathFactory {
                 }
             });
         } else {
-            return cache(arg, new PMap<K,V,PEntity<V>>(Object.class, Object.class, null, md()){
+            return cache(arg, new PMap<K,V,PEntity<V>>(Object.class, Object.class, null, createMetadata()){
                 @Override
                 public PEntity get(Expr<K> key) {
                     return new PEntity(Object.class, Object.class.getSimpleName(), 
@@ -177,7 +177,7 @@ class SimplePathFactory implements PathFactory {
         if (cache.containsKey(arg)){
             return (PNumber<D>) cache.get(arg);
         }else{
-            return (PNumber<D>) cache(arg, new PNumber(arg.getClass(), md()));    
+            return (PNumber<D>) cache(arg, new PNumber(arg.getClass(), createMetadata()));    
         }
         
     }
@@ -191,7 +191,7 @@ class SimplePathFactory implements PathFactory {
             if (!arg.isEmpty()) {
                 cl = ((Set) arg).iterator().next().getClass();                
             }   
-            return (PSet<D>) cache(arg, new PSet(cl, cl.getSimpleName(), md()));
+            return (PSet<D>) cache(arg, new PSet(cl, cl.getSimpleName(), createMetadata()));
         }        
     }
 
@@ -199,7 +199,7 @@ class SimplePathFactory implements PathFactory {
         if (cache.containsKey(arg)){
             return (PString) cache.get(arg);
         }else{
-            return cache(arg, new PString(md()));    
+            return cache(arg, new PString(createMetadata()));    
         }
         
     }
@@ -210,12 +210,12 @@ class SimplePathFactory implements PathFactory {
         if (cache.containsKey(arg)){
             return (PTime<D>) cache.get(arg);
         }else{
-            return (PTime<D>) cache(arg, new PTime(arg.getClass(), md()));    
+            return (PTime<D>) cache(arg, new PTime(arg.getClass(), createMetadata()));    
         }
         
     }
 
-    private PathMetadata<String> md() {
+    private PathMetadata<String> createMetadata() {
         return PathMetadata.forVariable("v" + String.valueOf(++counter));
     }
 
