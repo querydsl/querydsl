@@ -223,14 +223,14 @@ public class APTTypeModelFactory implements TypeVisitor<TypeModel,Elements> {
         if (t.asElement() != null && t.asElement() instanceof TypeElement){
             TypeElement typeElement = (TypeElement)t.asElement();
             switch(typeElement.getKind()){
+            case ENUM:
             case CLASS: return createClassType(t, typeElement, p);
             case INTERFACE: return createInterfaceType(t, typeElement, p);
-            case ENUM: return create(typeElement, TypeCategory.SIMPLE, p, t.getTypeArguments());
+            default: throw new IllegalArgumentException("Illegal type " + typeElement);
             }            
         }else{
             throw new IllegalArgumentException("Unsupported element type " + t.asElement());
         }
-        return null;
     }
 
     private TypeModel createInterfaceType(DeclaredType t, TypeElement typeElement, Elements p) {

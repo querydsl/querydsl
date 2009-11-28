@@ -185,8 +185,7 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<EntityMode
                 
             }else if (configuration.isBlockedField(field)){
                 blockedProperties.add(name);
-            }
-            
+            }           
             
         }
     }
