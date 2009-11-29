@@ -13,10 +13,10 @@ import org.junit.Test;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.domain.rel.RelationType2;
 import com.mysema.query.types.path.PCollection;
-import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PList;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PSet;
+import com.mysema.query.types.path.PSimple;
 
 public class RelationTest extends AbstractTest{
     
@@ -101,7 +101,7 @@ public class RelationTest extends AbstractTest{
     @Test
     public void test() throws SecurityException, NoSuchFieldException{
         cl = QRelationType.class;
-        match(PComparable.class, "enumProperty");
+        match(PSimple.class, "enumProperty");
         match(PList.class, "enumList");
         match(PMap.class, "enumMap1");
         match(PMap.class, "enumMap");
