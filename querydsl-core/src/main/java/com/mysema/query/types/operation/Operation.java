@@ -17,6 +17,11 @@ import com.mysema.query.types.expr.Expr;
  */
 public interface Operation<OP, RT> {
     /**
+     * @return
+     */
+    Expr<RT> asExpr();
+
+    /**
      * Get the argument with the given index
      * 
      * @param index
@@ -37,17 +42,12 @@ public interface Operation<OP, RT> {
      * @return
      */
     Operator<OP> getOperator();
-
+    
     /**
      * Get the type of this operation
      * 
      * @return
      */
     Class<? extends RT> getType();
-    
-    /**
-     * @return
-     */
-    Expr<RT> asExpr();
 
 }

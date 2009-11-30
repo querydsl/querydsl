@@ -6,7 +6,6 @@
 package com.mysema.query.types.operation;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import com.mysema.query.types.Visitor;
@@ -26,17 +25,15 @@ public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
         return new OBoolean(op, args);
     }
     
-    private final List<Expr<?>> args;
 
-    private final Operator<Boolean> op;
-
+    private final Operation<Boolean, Boolean> opMixin;
+    
     OBoolean(Operator<Boolean> op, Expr<?>... args) {
         this(op, Arrays.asList(args));
     }
     
     OBoolean(Operator<Boolean> op, List<Expr<?>> args) {
-        this.op = op;
-        this.args = Collections.unmodifiableList(args);
+        opMixin = new OperationMixin<Boolean,Boolean>(this, op, args);
     }
 
     @Override
@@ -44,32 +41,34 @@ public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
         v.visit(this);        
     }
 
-    @Override
-    public Expr<?> getArg(int i) {
-        return args.get(i);
-    }
-
-    @Override
-    public List<Expr<?>> getArgs() {
-        return args;
-    }
     
-    @Override
-    public Operator<Boolean> getOperator() {
-        return op;
-    }
-    
-    @Override
-    public EBoolean not() {
-        if (op == Ops.NOT && args.get(0) instanceof EBoolean){
-            return (EBoolean) args.get(0);
-        }else{
-            return super.not();
-        }
-    }
-
     @Override
     public EBoolean asExpr() {
         return this;
     }
+
+    @Override
+    public Expr<?> getArg(int index) {
+        return opMixin.getArg(index);
+    }
+
+    @Override
+    public List<Expr<?>> getArgs() {
+        return opMixin.getArgs();
+    }
+
+    @Override
+    public Operator<Boolean> getOperator() {
+        return opMixin.getOperator();
+    }
+
+    @Override
+    public EBoolean not() {
+        if (opMixin.getOperator() == Ops.NOT && opMixin.getArg(0) instanceof EBoolean){
+            return (EBoolean) opMixin.getArg(0);
+        }else{
+            return super.not();
+        }
+    }
+    
 }

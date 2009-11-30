@@ -6,7 +6,6 @@
 package com.mysema.query.types.operation;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import com.mysema.query.types.Visitor;
@@ -39,18 +38,15 @@ public class OComparable<OpType, D extends Comparable<?>> extends
         return new OComparable<O,D>(type, op, args);
     }
     
-    private final List<Expr<?>> args;
-
-    private final Operator<OpType> op;
-
+    private final Operation<OpType, D> opMixin;
+    
     OComparable(Class<D> type, Operator<OpType> op, Expr<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
     OComparable(Class<D> type, Operator<OpType> op, List<Expr<?>> args) {
         super(type);
-        this.op = op;
-        this.args = Collections.unmodifiableList(args);
+        this.opMixin = new OperationMixin<OpType, D>(this, op, args);
     }
 
     @Override
@@ -59,22 +55,23 @@ public class OComparable<OpType, D extends Comparable<?>> extends
     }
 
     @Override
-    public Expr<?> getArg(int i) {
-        return args.get(i);
-    }
- 
-    @Override
-    public List<Expr<?>> getArgs() {
-        return args;
-    }
-    
-    @Override
-    public Operator<OpType> getOperator() {
-        return op;
-    }
-
-    @Override
     public EComparable<D> asExpr() {
         return this;
     }
+    
+    @Override
+    public Expr<?> getArg(int index) {
+        return opMixin.getArg(index);
+    }
+
+    @Override
+    public List<Expr<?>> getArgs() {
+        return opMixin.getArgs();
+    }
+
+    @Override
+    public Operator<OpType> getOperator() {
+        return opMixin.getOperator();
+    }
+    
 }

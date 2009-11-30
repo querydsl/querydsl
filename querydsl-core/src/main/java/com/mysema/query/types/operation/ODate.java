@@ -39,43 +39,40 @@ public class ODate <OpType extends Comparable<?>, D extends Comparable<?>> exten
         return new ODate<O,D>(type, op, args);
     }
     
-    private final List<Expr<?>> args;
-
-    private final Operator<OpType> op;
-
+    private final Operation<OpType, D> opMixin;
+    
     ODate(Class<D> type, Operator<OpType> op, Expr<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
     ODate(Class<D> type, Operator<OpType> op, List<Expr<?>> args) {
         super(type);
-        this.op = op;
-        this.args = Collections.unmodifiableList(args);
+        this.opMixin = new OperationMixin<OpType, D>(this, op, args);
     }
 
     @Override
     public void accept(Visitor v) {
         v.visit(this);        
     }
-
-    @Override
-    public Expr<?> getArg(int i) {
-        return args.get(i);
-    }
     
-    @Override
-    public List<Expr<?>> getArgs() {
-        return args;
-    }
-    
-    @Override
-    public Operator<OpType> getOperator() {
-        return op;
-    }
-
     @Override
     public EDate<D> asExpr() {
         return this;
+    }
+    
+    @Override
+    public Expr<?> getArg(int index) {
+        return opMixin.getArg(index);
+    }
+
+    @Override
+    public List<Expr<?>> getArgs() {
+        return opMixin.getArgs();
+    }
+
+    @Override
+    public Operator<OpType> getOperator() {
+        return opMixin.getOperator();
     }
 
 }

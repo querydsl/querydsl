@@ -26,17 +26,14 @@ public class OString extends EString implements Operation<String, String> {
         return new OString(op, args);
     }
     
-    private final List<Expr<?>> args;
-
-    private final Operator<String> op;
+    private final Operation<String, String> opMixin;
 
     OString(Operator<String> op, Expr<?>... args) {
         this(op, Arrays.asList(args));
     }
 
     OString(Operator<String> op, List<Expr<?>> args) {
-        this.op = op;
-        this.args = Collections.unmodifiableList(args);
+        this.opMixin = new OperationMixin<String, String>(this, op, args);
     }
 
     @Override
@@ -44,23 +41,24 @@ public class OString extends EString implements Operation<String, String> {
         v.visit(this);        
     }
 
-    @Override
-    public Expr<?> getArg(int i) {
-        return args.get(i);
-    }
-    
-    @Override
-    public List<Expr<?>> getArgs() {
-        return args;
-    }
-    
-    @Override
-    public Operator<String> getOperator() {
-        return op;
-    }
 
     @Override
     public EString asExpr() {
         return this;
+    }
+    
+    @Override
+    public Expr<?> getArg(int index) {
+        return opMixin.getArg(index);
+    }
+
+    @Override
+    public List<Expr<?>> getArgs() {
+        return opMixin.getArgs();
+    }
+
+    @Override
+    public Operator<String> getOperator() {
+        return opMixin.getOperator();
     }
 }

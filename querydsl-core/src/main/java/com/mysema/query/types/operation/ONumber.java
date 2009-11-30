@@ -39,18 +39,15 @@ public class ONumber<OpType extends Number, D extends Number & Comparable<?>>
         return new ONumber<O,D>(type, op, args);
     }
     
-    private final List<Expr<?>> args;
-
-    private final Operator<OpType> op;
-
+    private final Operation<OpType, D> opMixin;
+    
     ONumber(Class<? extends D> type, Operator<OpType> op, Expr<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
     ONumber(Class<? extends D> type, Operator<OpType> op, List<Expr<?>> args) {
         super(type);
-        this.op = op;
-        this.args = Collections.unmodifiableList(args);
+        this.opMixin = new OperationMixin<OpType, D>(this, op, args);
     }
 
     @Override
@@ -59,22 +56,22 @@ public class ONumber<OpType extends Number, D extends Number & Comparable<?>>
     }
 
     @Override
-    public Expr<?> getArg(int i) {
-        return args.get(i);
-    }
-    
-    @Override
-    public List<Expr<?>> getArgs() {
-        return args;
-    }
-    
-    @Override
-    public Operator<OpType> getOperator() {
-        return op;
+    public ENumber<D> asExpr() {
+        return this;
     }
 
     @Override
-    public ENumber<D> asExpr() {
-        return this;
+    public Expr<?> getArg(int index) {
+        return opMixin.getArg(index);
+    }
+
+    @Override
+    public List<Expr<?>> getArgs() {
+        return opMixin.getArgs();
+    }
+
+    @Override
+    public Operator<OpType> getOperator() {
+        return opMixin.getOperator();
     }
 }

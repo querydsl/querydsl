@@ -38,18 +38,15 @@ public class OTime<OpType, D extends Comparable<?>> extends ETime<D> implements 
         return new OTime<O,D>(type, op, args);
     }
     
-    private final List<Expr<?>> args;
-
-    private final Operator<OpType> op;
-
+    private final Operation<OpType, D> opMixin;
+    
     OTime(Class<D> type, Operator<OpType> op, Expr<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
     OTime(Class<D> type, Operator<OpType> op, List<Expr<?>> args) {
         super(type);
-        this.op = op;
-        this.args = Collections.unmodifiableList(args);
+        this.opMixin = new OperationMixin<OpType, D>(this, op, args);
     }
 
     @Override
@@ -58,22 +55,22 @@ public class OTime<OpType, D extends Comparable<?>> extends ETime<D> implements 
     }
 
     @Override
-    public Expr<?> getArg(int i) {
-        return args.get(i);
+    public ETime<D> asExpr() {
+        return this;
     }
     
     @Override
-    public List<Expr<?>> getArgs() {
-        return args;
-    }
-    
-    @Override
-    public Operator<OpType> getOperator() {
-        return op;
+    public Expr<?> getArg(int index) {
+        return opMixin.getArg(index);
     }
 
     @Override
-    public ETime<D> asExpr() {
-        return this;
+    public List<Expr<?>> getArgs() {
+        return opMixin.getArgs();
+    }
+
+    @Override
+    public Operator<OpType> getOperator() {
+        return opMixin.getOperator();
     }
 }

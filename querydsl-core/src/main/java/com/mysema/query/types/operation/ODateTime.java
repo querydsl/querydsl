@@ -38,19 +38,16 @@ EDateTime<D> implements Operation<OpType, D> {
     public static <O extends Comparable<?>,D extends Comparable<?>> EDateTime<D> create(Class<D> type, Operator<O> op, Expr<?>... args){
         return new ODateTime<O,D>(type, op, args);
     }
+
+    private final Operation<OpType, D> opMixin;
     
-    private final List<Expr<?>> args;
-
-    private final Operator<OpType> op;
-
     ODateTime(Class<D> type, Operator<OpType> op, Expr<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
     ODateTime(Class<D> type, Operator<OpType> op, List<Expr<?>> args) {
         super(type);
-        this.op = op;
-        this.args = Collections.unmodifiableList(args);
+        this.opMixin = new OperationMixin<OpType, D>(this, op, args);
     }
 
     @Override
@@ -59,22 +56,22 @@ EDateTime<D> implements Operation<OpType, D> {
     }
 
     @Override
-    public Expr<?> getArg(int i) {
-        return args.get(i);
+    public EDateTime<D> asExpr() {
+        return this;
     }
     
     @Override
-    public List<Expr<?>> getArgs() {
-        return args;
-    }
-    
-    @Override
-    public Operator<OpType> getOperator() {
-        return op;
+    public Expr<?> getArg(int index) {
+        return opMixin.getArg(index);
     }
 
     @Override
-    public EDateTime<D> asExpr() {
-        return this;
+    public List<Expr<?>> getArgs() {
+        return opMixin.getArgs();
+    }
+
+    @Override
+    public Operator<OpType> getOperator() {
+        return opMixin.getOperator();
     }
 }

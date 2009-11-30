@@ -37,9 +37,7 @@ public class OSimple<OpType, D> extends Expr<D> implements Operation<OpType, D> 
         return new OSimple<OpType,D>(type, op, args);
     }
     
-    private final List<Expr<?>> args;
-
-    private final Operator<OpType> op;
+    private final Operation<OpType, D> opMixin;
 
     OSimple(Class<? extends D> type, Operator<OpType> op, Expr<?>... args) {
         this(type, op, Arrays.asList(args));
@@ -47,8 +45,7 @@ public class OSimple<OpType, D> extends Expr<D> implements Operation<OpType, D> 
 
     OSimple(Class<? extends D> type, Operator<OpType> op, List<Expr<?>> args) {
         super(type);
-        this.op = op;
-        this.args = Collections.unmodifiableList(args);
+        this.opMixin = new OperationMixin<OpType, D>(this, op, args);
     }
 
     @Override
@@ -57,22 +54,22 @@ public class OSimple<OpType, D> extends Expr<D> implements Operation<OpType, D> 
     }
 
     @Override
-    public Expr<?> getArg(int i) {
-        return args.get(i);
+    public Expr<D> asExpr() {
+        return this;
     }
     
     @Override
-    public List<Expr<?>> getArgs() {
-        return args;
-    }
-    
-    @Override
-    public Operator<OpType> getOperator() {
-        return op;
+    public Expr<?> getArg(int index) {
+        return opMixin.getArg(index);
     }
 
     @Override
-    public Expr<D> asExpr() {
-        return this;
+    public List<Expr<?>> getArgs() {
+        return opMixin.getArgs();
+    }
+
+    @Override
+    public Operator<OpType> getOperator() {
+        return opMixin.getOperator();
     }
 }

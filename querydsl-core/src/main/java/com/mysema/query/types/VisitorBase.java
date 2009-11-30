@@ -28,7 +28,6 @@ import com.mysema.query.types.operation.ODateTime;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.OString;
-import com.mysema.query.types.operation.OStringArray;
 import com.mysema.query.types.operation.OTime;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.path.PArray;
@@ -166,11 +165,6 @@ public abstract class VisitorBase<SubType extends VisitorBase<SubType>> implemen
     
     @Override
     public void visit(OString expr) {
-        visit((Operation<?, ?>) expr);
-    }
-
-    @Override
-    public void visit(OStringArray expr) {
         visit((Operation<?, ?>) expr);
     }
 

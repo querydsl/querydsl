@@ -27,7 +27,6 @@ import com.mysema.query.types.operation.ODateTime;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.OString;
-import com.mysema.query.types.operation.OStringArray;
 import com.mysema.query.types.operation.OTime;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.path.PArray;
@@ -109,8 +108,6 @@ public interface Visitor {
     void visit(OSimple<?, ?> expr);
 
     void visit(OString expr);
-
-    void visit(OStringArray expr);
 
     void visit(PArray<?> expr);
 
