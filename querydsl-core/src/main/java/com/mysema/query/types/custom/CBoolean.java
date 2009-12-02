@@ -25,13 +25,10 @@ public class CBoolean extends EBoolean implements Custom<Boolean> {
         return new CBoolean(args, template);
     }
     
-    private final List<Expr<?>> args;
-    
-    private final Template template;
+    private final Custom<Boolean> customMixin;
     
     public CBoolean(List<Expr<?>> args, Template template){
-        this.args = args;
-        this.template = template;
+        customMixin = new CustomMixin<Boolean>(args, template);
     }
     
     @Override
@@ -41,16 +38,16 @@ public class CBoolean extends EBoolean implements Custom<Boolean> {
     
     @Override
     public Expr<?> getArg(int index) {
-        return getArgs().get(index);
+        return customMixin.getArg(index);
     }
 
     @Override
     public List<Expr<?>> getArgs() {
-        return args;
+        return customMixin.getArgs();
     }
 
     @Override
     public Template getTemplate() {
-        return template;
+        return customMixin.getTemplate();
     }
 }

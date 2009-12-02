@@ -26,14 +26,11 @@ public class CNumber<T extends Number & Comparable<?>> extends ENumber<T> implem
         return new CNumber<T>(type, args, template);
     }
     
-    private final List<Expr<?>> args;
-    
-    private final Template template;
+    private final Custom<T> customMixin;
     
     public CNumber(Class<T> type, List<Expr<?>> args, Template template) {
         super(type);
-        this.args = args;
-        this.template = template;
+        customMixin = new CustomMixin<T>(args, template);
     }
 
     @Override
@@ -43,16 +40,16 @@ public class CNumber<T extends Number & Comparable<?>> extends ENumber<T> implem
     
     @Override
     public Expr<?> getArg(int index) {
-        return getArgs().get(index);
+        return customMixin.getArg(index);
     }
 
     @Override
     public List<Expr<?>> getArgs() {
-        return args;
+        return customMixin.getArgs();
     }
-    
+
     @Override
     public Template getTemplate() {
-        return template;
+        return customMixin.getTemplate();
     }
 }

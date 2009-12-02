@@ -25,13 +25,10 @@ public class CString extends EString implements Custom<String> {
         return new CString(args, template);
     }
     
-    private final List<Expr<?>> args;
-    
-    private final Template template;
+    private final Custom<String> customMixin;
     
     public CString(List<Expr<?>> args, Template template){
-        this.args = args;
-        this.template = template;
+        customMixin = new CustomMixin<String>(args, template);
     }
     
     @Override
@@ -41,16 +38,16 @@ public class CString extends EString implements Custom<String> {
     
     @Override
     public Expr<?> getArg(int index) {
-        return getArgs().get(index);
+        return customMixin.getArg(index);
     }
 
     @Override
     public List<Expr<?>> getArgs() {
-        return args;
+        return customMixin.getArgs();
     }
-    
+
     @Override
     public Template getTemplate() {
-        return template;
+        return customMixin.getTemplate();
     }
 }

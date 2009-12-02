@@ -26,14 +26,11 @@ public class CComparable<T extends Comparable<?>> extends EComparable<T> impleme
         return new CComparable<T>(type, args, template);
     }
     
-    private final List<Expr<?>> args;
-    
-    private final Template template;
+    private final Custom<T> customMixin;
 
     public CComparable(Class<T> type, List<Expr<?>> args, Template template) {
         super(type);
-        this.args = args;
-        this.template = template;
+        customMixin = new CustomMixin<T>(args, template);
     }
     
     @Override
@@ -43,16 +40,17 @@ public class CComparable<T extends Comparable<?>> extends EComparable<T> impleme
     
     @Override
     public Expr<?> getArg(int index) {
-        return getArgs().get(index);
+        return customMixin.getArg(index);
     }
 
     @Override
     public List<Expr<?>> getArgs() {
-        return args;
+        return customMixin.getArgs();
     }
-    
+
     @Override
     public Template getTemplate() {
-        return template;
+        return customMixin.getTemplate();
     }
+    
 }
