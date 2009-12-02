@@ -130,6 +130,7 @@ public interface Ops {
         Operator<Number> MIN_AGG = new OperatorImpl<Number>(Number.class);
         Operator<Number> SUM_AGG = new OperatorImpl<Number>(Number.class);
         Operator<Number> COUNT_AGG = new OperatorImpl<Number>(Object.class);
+        Operator<Number> COUNT_DISTINCT_AGG = new OperatorImpl<Number>(Object.class);
         Operator<Number> COUNT_ALL_AGG = new OperatorImpl<Number>();
         ENumber<Long> COUNT_ALL_AGG_EXPR = ONumber.create(Long.class, COUNT_ALL_AGG);
     }

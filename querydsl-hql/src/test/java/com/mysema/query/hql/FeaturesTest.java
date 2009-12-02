@@ -254,11 +254,6 @@ public class FeaturesTest extends AbstractQueryTest{
         toString("kitten in elements(cat.kittens)", kitten.in(cat.kittens));
 
         // toString("distinct cat.bodyWeight", distinct(cat.bodyWeight));
-
-        toString("count(*)", Expr.countAll());
-        // toString("count(distinct cat.bodyWeight)",
-        // Grammar.count(distinct(cat.bodyWeight)));
-        toString("count(cat)", cat.count());
     }
 
     /**

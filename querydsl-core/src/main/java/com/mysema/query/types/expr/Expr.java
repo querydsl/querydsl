@@ -39,6 +39,8 @@ public abstract class Expr<D> implements Serializable{
     }
     
     private volatile ENumber<Long> count;
+    
+    private volatile ENumber<Long> countDistinct;
 
     private final boolean primitive;
     
@@ -66,6 +68,18 @@ public abstract class Expr<D> implements Serializable{
             count = ONumber.create(Long.class, Ops.AggOps.COUNT_AGG, this);
         }
         return count;
+    }
+
+    /**
+     * Get the <code>count(distinct this)</code> expression
+     *
+     * @return count(distinct this)
+     */
+    public ENumber<Long> countDistinct(){
+        if (countDistinct == null){
+          countDistinct = ONumber.create(Long.class, Ops.AggOps.COUNT_DISTINCT_AGG, this);
+        }
+        return countDistinct;
     }
 
     /**

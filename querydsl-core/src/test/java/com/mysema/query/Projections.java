@@ -111,6 +111,8 @@ public class Projections {
             rv.add(expr.max());
             rv.add(expr.avg());
             rv.add(expr.count());
+            rv.add(expr.countDistinct());
+            rv.add(Expr.countAll());
         }
                 
         if (!(other instanceof Constant || module == Module.JDOQL || module == Module.RDFBEAN)){
