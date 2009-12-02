@@ -49,6 +49,11 @@
     </para>   
     
     <para>
+    All query implementations are one-time-use queries. You create them, execute them and let the 
+    garbage collection do the rest.
+    </para>
+    
+    <para>
     To get an impression of the expressivity of the Querydsl query and expression types go to 
     the javadocs and explore
     com.mysema.query.Query, com.mysema.query.Projectable and com.mysema.query.types.expr.Expr.
