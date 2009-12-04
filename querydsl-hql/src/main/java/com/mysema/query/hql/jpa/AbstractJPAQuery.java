@@ -44,14 +44,26 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
         return uniqueResult(Expr.countAll());
     }
     
-    private Query createQuery(Expr<?> expr){
+    /**
+     * Expose the original JPA query for the given projection 
+     * 
+     * @param expr
+     * @return
+     */
+    public Query createQuery(Expr<?> expr){
         addToProjection(expr);
         String queryString = toString();
         logQuery(queryString);
         return createQuery(queryString, getMetadata().getModifiers());        
     }
     
-    private Query createQuery(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest){
+    /**
+     * Expose the original JPA query for the given projection 
+     * 
+     * @param expr
+     * @return
+     */
+    public Query createQuery(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest){
         addToProjection(expr1, expr2);
         addToProjection(rest);
         String queryString = toString();

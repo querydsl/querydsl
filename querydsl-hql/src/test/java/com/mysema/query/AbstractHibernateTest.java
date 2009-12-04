@@ -5,10 +5,16 @@
  */
 package com.mysema.query;
 
-import org.hibernate.Session;
+import static org.junit.Assert.*;
 
-import com.mysema.query.hql.HQLQuery;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.junit.Test;
+
 import com.mysema.query.hql.HQLTemplates;
+import com.mysema.query.hql.domain.Cat;
+import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.hql.hibernate.HibernateQuery;
 
 /**
@@ -21,7 +27,7 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
     
     private Session session;
     
-    protected HQLQuery query(){
+    protected HibernateQuery query(){
         return new HibernateQuery(session, templates);
     }
 
@@ -32,6 +38,16 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
     @Override
     protected void save(Object entity) {
         session.save(entity);        
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void queryExposure(){
+        save(new Cat());
+        
+        List results = query().from(QCat.cat).createQuery(QCat.cat).list();
+        assertNotNull(results);
+        assertFalse(results.isEmpty());
     }
 
 }

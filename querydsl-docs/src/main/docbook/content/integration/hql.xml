@@ -10,6 +10,11 @@
     technologies for Querydsl. This guide describes how to use Querydsl
     in combination with JPA/Hibernate.
     </para>
+    
+  <para>
+  Querydsl for JPA/Hibernate is an alternative to both HQL and Criteria queries. It combines the dynamic nature
+  of Criteria queries with the expressiveness of HQL and all that in a fully typesafe manner.  
+  </para>
 
   <sect2>
     <title>Maven integration</title>
@@ -382,7 +387,7 @@ new HibernateUpdateClause(session, cat).where(cat.name.eq("Bob"))
 <programlisting language="java"><![CDATA[
 query().from(department)
     .where(department.employees.size().eq(
-        new HQLSubQuery().from(d).unique(AggregationFunctions.max(d.employees.size()))
+        new HQLSubQuery().from(d).unique(d.employees.size().max())
      )).list(department);
 ]]></programlisting>   
 
@@ -398,5 +403,19 @@ query().from(employee)
 ]]></programlisting>  
 
   </sect2>      
+  
+  <sect2>
+    <title>Exposing the original query</title>
+    
+    <para>If you need to do tune the original Query before the execution of the query you can expose it like this :</para>
+    
+<programlisting language="java"><![CDATA[
+HibernateQuery query = new HibernateQuery(session);
+org.hibernate.Query hibQuery = query.from(employee).createQuery(employee);
+hibQuery.setResultTransformer(someTransformer);
+List results = hibQuery.list();
+]]></programlisting>      
+  
+  </sect2>
 
 </sect1>

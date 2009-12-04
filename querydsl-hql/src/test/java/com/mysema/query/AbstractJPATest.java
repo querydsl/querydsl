@@ -5,10 +5,18 @@
  */
 package com.mysema.query;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.List;
+
 import javax.persistence.EntityManager;
 
-import com.mysema.query.hql.HQLQuery;
+import org.junit.Test;
+
 import com.mysema.query.hql.HQLTemplates;
+import com.mysema.query.hql.domain.Cat;
+import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.hql.jpa.JPAQuery;
 
 /**
@@ -21,7 +29,7 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
     
     private EntityManager entityManager;
     
-    protected HQLQuery query(){
+    protected JPAQuery query(){
         return new JPAQuery(entityManager, templates);
     }
 
@@ -32,6 +40,16 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
     @Override
     protected void save(Object entity) {
         entityManager.persist(entity);
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void queryExposure(){
+        save(new Cat());
+        
+        List results = query().from(QCat.cat).createQuery(QCat.cat).getResultList();
+        assertNotNull(results);
+        assertFalse(results.isEmpty());
     }
 
 }

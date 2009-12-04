@@ -35,43 +35,65 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     
     private static final Logger logger = LoggerFactory.getLogger(HibernateQuery.class);
     
-    private int fetchSize = 0;
+    private Boolean cacheable, readOnly;
     
+    private String cacheRegion;
+
+    private int fetchSize = 0;
+
     private final Session session;
+    
+    private int timeout = 0;    
 
     public AbstractHibernateQuery(QueryMetadata md, Session session, HQLTemplates patterns) {
         super(md, patterns);
         this.session = session;
     }
-
+    
     public long count() {
         return uniqueResult(Expr.countAll());
-    }
+    }       
     
     public long count(Expr<?> expr) {
         return uniqueResult(expr.count());
-    }    
-
-    private Query createQuery(Expr<?> expr){
+    }
+    
+    /**
+     * Expose the original Hibernate query for the given projection 
+     * 
+     * @param expr
+     * @return
+     */
+    public Query createQuery(Expr<?> expr){
         addToProjection(expr);
         String queryString = toQueryString();        
         return createQuery(queryString, getMetadata().getModifiers());   
     }
-    
-    private Query createQuery(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest){
+
+    /**
+     * Expose the original Hibernate query for the given projection
+     * 
+     * @param expr1
+     * @param expr2
+     * @param rest
+     * @return
+     */
+    public Query createQuery(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest){
         addToProjection(expr1, expr2);
         addToProjection(rest);
         String queryString = toQueryString();
         logQuery(queryString);
         return createQuery(queryString, getMetadata().getModifiers());   
-    }       
-    
+    }
+
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
         Query query = session.createQuery(queryString);
         HibernateUtil.setConstants(query, getConstants());
-        if (fetchSize > 0){
-            query.setFetchSize(fetchSize);
-        }        
+        if (fetchSize > 0) query.setFetchSize(fetchSize);
+        if (timeout > 0) query.setTimeout(timeout);
+        if (cacheable != null) query.setCacheable(cacheable);        
+        if (cacheRegion != null) query.setCacheRegion(cacheRegion);
+        if (readOnly != null) query.setReadOnly(readOnly);
         if (modifiers != null && modifiers.isRestricting()) {
             if (modifiers.getLimit() != null) {
                 query.setMaxResults(modifiers.getLimit().intValue());
@@ -141,7 +163,7 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
             logger.debug(queryString.replace('\n', ' '));    
         }        
     }
-
+    
     /**
      * Return the query results as <tt>ScrollableResults</tt>. The
      * scrollability of the returned results depends upon JDBC driver
@@ -154,7 +176,7 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     public ScrollableResults scroll(ScrollMode mode, Expr<?> expr) {
         return createQuery(expr).scroll(mode);
     }
-
+    
     /**
      * Return the query results as <tt>ScrollableResults</tt>. The
      * scrollability of the returned results depends upon JDBC driver
@@ -169,9 +191,53 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     public ScrollableResults scroll(ScrollMode mode, Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
         return createQuery(expr1, expr2, rest).scroll(mode);
     }
+
+    /**
+     * Enable caching of this query result set.
+     * @param cacheable Should the query results be cacheable?
+     */
+    public SubType setCacheable(boolean cacheable){
+        this.cacheable = cacheable;
+        return _this;
+    }
+
+    /**
+     * Set the name of the cache region.
+     * @param cacheRegion the name of a query cache region, or <tt>null</tt>
+     * for the default query cache
+     */
+    public SubType setCacheRegion(String cacheRegion){
+        this.cacheRegion = cacheRegion;
+        return _this;
+    }
     
-    public void setFetchSize(int fetchSize) {
+    /**
+     * Set a fetch size for the underlying JDBC query.
+     * @param fetchSize the fetch size
+     */
+    public SubType setFetchSize(int fetchSize) {
         this.fetchSize = fetchSize;
+        return _this;
+    }
+    
+    /**
+     * Entities retrieved by this query will be loaded in 
+     * a read-only mode where Hibernate will never dirty-check
+     * them or make changes persistent.
+     *
+     */
+    public SubType setReadOnly(boolean readOnly){
+        this.readOnly = readOnly;
+        return _this;
+    }
+    
+    /**
+     * Set a timeout for the underlying JDBC query.
+     * @param timeout the timeout in seconds
+     */
+    public SubType setTimeout(int timeout){
+        this.timeout = timeout;
+        return _this;
     }
 
     @SuppressWarnings("unchecked")
