@@ -18,5 +18,11 @@ public class DerbyTemplates extends SQLTemplates {
         add(Ops.CONCAT, "varchar({0} || {1})");
         add(Ops.MathOps.ROUND, "floor({0})");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "day({0})");
+        
+        // case for eq
+        add(Ops.CASE_EQ, "case {1} end");
+        add(Ops.CASE_EQ_WHEN,  "when {0} = {1} then {2} {3}");
+        add(Ops.CASE_EQ_ELSE,  "else {0}");
+
     }
 }

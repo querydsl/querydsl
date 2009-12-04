@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.CaseForEqBuilder;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.ToStringVisitor;
 import com.mysema.query.types.Visitor;
@@ -226,6 +227,14 @@ public abstract class Expr<D> implements Serializable{
             toString = new ToStringVisitor(templates).handle(this).toString();
         }
         return toString;
+    }
+    
+    public CaseForEqBuilder<D> when(D other){
+        return new CaseForEqBuilder<D>(this, ExprConst.create(other));
+    }
+    
+    public CaseForEqBuilder<D> when(Expr<? extends D> other){
+        return new CaseForEqBuilder<D>(this, other);
     }
     
 }

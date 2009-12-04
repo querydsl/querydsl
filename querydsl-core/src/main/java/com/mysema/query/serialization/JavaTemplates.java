@@ -77,6 +77,12 @@ public class JavaTemplates extends Templates {
         add(Ops.CASE_WHEN,  "({0}) ? ({1}) : ({2})");
         add(Ops.CASE_ELSE,  "{0}");
 
+        // case eq
+        add(Ops.CASE_EQ, "({0})");
+        add(Ops.CASE_EQ_WHEN,  "({0} == {1}) ? ({2}) : ({3})");
+        add(Ops.CASE_EQ_ELSE,  "{0}");
+
+        
         // Math
         try {
             for (Field f : Ops.MathOps.class.getFields()) {

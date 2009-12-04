@@ -121,6 +121,10 @@ public class Projections {
                 .when(expr.gt(10)).then(expr)
                 .when(expr.between(0, 10)).then((ENumber)other)
                 .otherwise((ENumber)other)));    
+            
+            rv.add(expr
+                    .when((ENumber)other).then(expr)
+                    .otherwise((ENumber)other));
         }
         
         
@@ -173,6 +177,10 @@ public class Projections {
             rv.add(cases.when(expr.eq("A")).then(other)
                         .when(expr.eq("B")).then(expr)
                         .otherwise(other));    
+            
+            rv.add(expr.when("A").then(other)
+                       .when("B").then(expr)
+                       .otherwise(other));
         }         
           
         rv.add(expr.trim());

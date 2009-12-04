@@ -168,6 +168,11 @@ public class Templates {
         add(Ops.CASE_WHEN,  "when {0} then {1} {2}");
         add(Ops.CASE_ELSE,  "else {0}");
         
+        // case for
+        add(Ops.CASE_EQ, "case {0} {1} end");
+        add(Ops.CASE_EQ_WHEN,  "when {1} then {2} {3}");
+        add(Ops.CASE_EQ_ELSE,  "else {0}");
+        
         // subquery
         add(Ops.EXISTS, "exists {0}");
         

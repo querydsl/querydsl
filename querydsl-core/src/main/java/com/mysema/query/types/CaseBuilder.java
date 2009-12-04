@@ -29,7 +29,7 @@ import com.mysema.query.types.operation.Ops;
  * e.g.
  * 
  * <pre>
- * Expr<String> cases = new CaseBuilder()
+ * Expr&lt;String&gt; cases = new CaseBuilder()
  *     .when(c.annualSpending.gt(10000)).then("Premier")
  *     .when(c.annualSpending.gt(5000)).then("Gold")
  *     .when(c.annualSpending.gt(2000)).then("Silver")

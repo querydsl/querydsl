@@ -112,6 +112,11 @@ public interface Ops {
     Operator<Object> CASE_WHEN = new OperatorImpl<Object>(Boolean.class, Object.class);
     Operator<Object> CASE_ELSE = new OperatorImpl<Object>(Object.class);
     
+    // case for eq
+    Operator<Object> CASE_EQ = new OperatorImpl<Object>(Object.class);
+    Operator<Object> CASE_EQ_WHEN = new OperatorImpl<Object>(Object.class, Object.class, Object.class);
+    Operator<Object> CASE_EQ_ELSE = new OperatorImpl<Object>(Object.class);
+    
     // subquery operations
     Operator<Boolean> EXISTS = new OperatorImpl<Boolean>(Object.class);
 
