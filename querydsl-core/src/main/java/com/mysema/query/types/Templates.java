@@ -99,6 +99,7 @@ public class Templates {
         add(Ops.ENDS_WITH, "endsWith({0},{0}");
         add(Ops.ENDS_WITH_IC, "endsWithIgnoreCase({0},{1})");
         add(Ops.STRING_CONTAINS, "contains({0},{1})");
+        add(Ops.STRING_CONTAINS_IC, "containsIc({0},{1})");
         add(Ops.CHAR_AT, "charAt({0},{1})");
         add(Ops.STRING_LENGTH, "length({0})");
         add(Ops.INDEX_OF, "indexOf({0},{1})");

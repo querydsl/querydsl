@@ -117,6 +117,34 @@ public abstract class EString extends EComparable<String> {
     }
 
     /**
+     * Returns true if the given String is contained
+     * 
+     * @param str
+     * @param caseSensitive case sensitivity of operation
+     * @return this.contains(str)
+     * @see java.lang.String#contains(CharSequence)
+     */
+    public EBoolean contains(Expr<String> str, boolean caseSensitive) {
+        if (caseSensitive){
+            return contains(str);
+        }else{
+            return OBoolean.create(Ops.STRING_CONTAINS_IC, this, str);    
+        }        
+    }
+
+    /**
+     * Returns true if the given String is contained
+     * 
+     * @param str
+     * @param caseSensitive case sensitivity of operation
+     * @return this.contains(str)
+     * @see java.lang.String#contains(CharSequence)
+     */
+    public EBoolean contains(String str, boolean caseSensitive) {
+        return contains(EStringConst.create(str), caseSensitive);
+    }
+    
+    /**
      * Returns true if this ends with str
      * 
      * @param str

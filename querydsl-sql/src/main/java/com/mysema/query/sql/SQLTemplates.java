@@ -123,6 +123,7 @@ public class SQLTemplates extends Templates {
         add(Ops.STARTS_WITH, "{0} like {1%}");
         add(Ops.STARTS_WITH_IC, "{0l} like lower({1%})");       
         add(Ops.STRING_CONTAINS, "{0} like {%1%}");
+        add(Ops.STRING_CONTAINS_IC, "{0l} like lower({%1%})");
         add(Ops.STRING_IS_EMPTY, "length({0}) = 0");       
         add(Ops.SUBSTR_1ARG, "substr({0},{1}+1)");
         add(Ops.SUBSTR_2ARGS, "substr({0},{1}+1,{2})");

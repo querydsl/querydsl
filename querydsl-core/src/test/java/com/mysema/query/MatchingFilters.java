@@ -166,6 +166,15 @@ public class MatchingFilters {
         rv.add(expr.contains(other.substring(1,2)));
         rv.add(expr.contains(other.substring(1)));
         rv.add(expr.contains(other.substring(2)));
+        
+        rv.add(expr.contains(other, false));
+        rv.add(expr.contains(other.lower(), false));
+        rv.add(expr.contains(other.upper(), false));
+        rv.add(expr.contains(other.substring(0,1),false));
+        rv.add(expr.contains(other.substring(0,2).lower(),false));
+        rv.add(expr.contains(other.substring(1,2).upper(),false));
+        rv.add(expr.contains(other.substring(1).lower(),false));
+        rv.add(expr.contains(other.substring(2).upper(),false));
             
         rv.add(expr.endsWith(other));
         rv.add(expr.endsWith(other,false));

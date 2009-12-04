@@ -105,6 +105,7 @@ public interface Ops {
     Operator<Boolean> ENDS_WITH = new OperatorImpl<Boolean>(String_x_2);
     Operator<Boolean> ENDS_WITH_IC = new OperatorImpl<Boolean>(String_x_2);    
     Operator<Boolean> STRING_CONTAINS = new OperatorImpl<Boolean>(String_x_2);
+    Operator<Boolean> STRING_CONTAINS_IC = new OperatorImpl<Boolean>(String_x_2);
     Operator<Boolean> LIKE = new OperatorImpl<Boolean>(String_x_2);
         
     // case

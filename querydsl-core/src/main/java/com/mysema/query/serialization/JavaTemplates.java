@@ -49,6 +49,7 @@ public class JavaTemplates extends Templates {
         add(Ops.STRING_LENGTH, "{0}.length()");        
         add(Ops.STRING_IS_EMPTY, "{0}.isEmpty()");
         add(Ops.STRING_CONTAINS, "{0}.contains({1})");
+        add(Ops.STRING_CONTAINS_IC, "{0l}.contains({1l})");
         add(Ops.STARTS_WITH, "{0}.startsWith({1})");
         add(Ops.STARTS_WITH_IC, "{0l}.startsWith({1l})");         
         add(Ops.INDEX_OF, "{0}.indexOf({1})");

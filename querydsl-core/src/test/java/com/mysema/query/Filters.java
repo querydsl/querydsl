@@ -206,6 +206,10 @@ public class Filters {
         rv.add(expr.contains(other));
         rv.add(expr.contains(knownValue.substring(0,1)));
         rv.add(expr.contains(knownValue.substring(1,2)));
+        
+        rv.add(expr.contains(other, false));
+        rv.add(expr.contains(knownValue.substring(0,1), false));
+        rv.add(expr.contains(knownValue.substring(1,2), false));
             
         rv.add(expr.endsWith(other));
         rv.add(expr.endsWith(knownValue.substring(1)));
