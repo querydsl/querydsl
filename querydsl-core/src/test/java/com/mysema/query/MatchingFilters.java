@@ -78,9 +78,9 @@ public class MatchingFilters {
             rv.add(expr.getWeek().eq(other.getWeek()));
         }        
         
-        rv.add(expr.getYearMonth().eq(other.getYearMonth()));
         rv.add(expr.getMonth().eq(other.getMonth()));
         rv.add(expr.getYear().eq(other.getYear()));
+        rv.add(expr.getYearMonth().eq(other.getYearMonth()));
         return rv;
     }
     
@@ -108,6 +108,7 @@ public class MatchingFilters {
         
         rv.add(expr.getMonth().eq(other.getMonth()));
         rv.add(expr.getYear().eq(other.getYear()));
+        rv.add(expr.getYearMonth().eq(other.getYearMonth()));
         return rv;
     }
     
