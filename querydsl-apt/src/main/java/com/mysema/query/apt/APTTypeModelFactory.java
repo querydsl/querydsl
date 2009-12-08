@@ -384,11 +384,11 @@ public class APTTypeModelFactory implements TypeVisitor<TypeModel,Elements> {
 
     @Override
     public TypeModel visitTypeVariable(TypeVariable t, Elements p) {
-        // TODO : take variable name into account
+        String varName = t.toString();
         if (t.getUpperBound() != null){
-            return new TypeExtendsModel(t.getUpperBound().accept(this, p));
+            return new TypeExtendsModel(varName, t.getUpperBound().accept(this, p));
         }else if (t.getLowerBound() != null && !(t.getLowerBound() instanceof NullType)){
-            return new TypeSuperModel(t.getLowerBound().accept(this, p));
+            return new TypeSuperModel(varName, t.getLowerBound().accept(this, p));
         }else{
             return null;
         }        

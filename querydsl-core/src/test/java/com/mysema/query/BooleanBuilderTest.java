@@ -5,6 +5,8 @@
  */
 package com.mysema.query;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 import com.mysema.query.types.expr.EBoolean;
@@ -25,7 +27,9 @@ public class BooleanBuilderTest {
     
     @Test
     public void test(){
-        new BooleanBuilder().and(first).or(second);
+//        new BooleanBuilder().and(first).or(second);
+        assertEquals(first.or(second).toString(),
+            new BooleanBuilder().and(first).or(second).toString());
     }
     
     @Test

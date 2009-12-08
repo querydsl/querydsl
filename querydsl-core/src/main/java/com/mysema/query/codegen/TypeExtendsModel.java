@@ -5,6 +5,8 @@
  */
 package com.mysema.query.codegen;
 
+import javax.annotation.Nullable;
+
 /**
  * TypeExtendsModel is a TypeModel for type variables and wildcard types
  * 
@@ -12,9 +14,17 @@ package com.mysema.query.codegen;
  *
  */
 public class TypeExtendsModel extends TypeModelAdapter{
+
+    @Nullable
+    private String varName;
     
     public TypeExtendsModel(TypeModel typeModel) {
         super(typeModel);
+    }
+
+    public TypeExtendsModel(String varName, TypeModel typeModel) {
+        this(typeModel);
+        this.varName = varName;
     }
 
     @Override

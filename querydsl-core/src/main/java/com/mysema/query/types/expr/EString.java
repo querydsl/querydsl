@@ -93,7 +93,7 @@ public abstract class EString extends EComparable<String> {
     public EString concat(String str) {
         return append(str);
     }
-
+    
     /**
      * Returns true if the given String is contained
      * 
