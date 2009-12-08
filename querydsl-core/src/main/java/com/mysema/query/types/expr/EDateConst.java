@@ -53,6 +53,11 @@ public class EDateConst extends EDate<java.sql.Date> implements Constant<java.sq
     }
     
     @Override
+    public ENumber<Integer> getYearMonth(){
+        return ENumberConst.create(calendar.get(Calendar.YEAR) * 100 + calendar.get(Calendar.MONTH) + 1);
+    }
+    
+    @Override
     public ENumber<Integer> getDayOfWeek() {
         return ENumberConst.create(calendar.get(Calendar.DAY_OF_WEEK));
     }

@@ -91,6 +91,7 @@ public class HQLTemplates extends Templates {
         add(Ops.DateTimeOps.DAY_OF_MONTH, "day({0})");
         add(Ops.DateTimeOps.MONTH, "month({0})");
         add(Ops.DateTimeOps.YEAR, "year({0})");
+        add(Ops.DateTimeOps.YEAR_MONTH, "year({0}) * 100 + month({0})");
 
         // path types
         for (PathType type : new PathType[] { 

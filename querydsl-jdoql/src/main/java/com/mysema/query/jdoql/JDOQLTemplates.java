@@ -28,6 +28,7 @@ public class JDOQLTemplates extends JavaTemplates {
         
         // Date
         add(Ops.DateTimeOps.MONTH, "({0}.getMonth() + 1)"); // getMonth() in JDO returns a range from 0-11
+        add(Ops.DateTimeOps.YEAR_MONTH, "({0}.getYear() * 100 + {0}.getMonth() + 1)"); 
         add(Ops.DateTimeOps.DAY_OF_MONTH, "{0}.getDay()");
         add(Ops.DateTimeOps.MILLISECOND, "0"); // NOT supported in JDOQL
         

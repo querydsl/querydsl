@@ -155,6 +155,7 @@ public interface Ops {
         Operator<Integer> MILLISECOND = new OperatorImpl<Integer>(java.util.Date.class);
         Operator<java.util.Date> SYSDATE = new OperatorImpl<java.util.Date>();
         Operator<Integer> YEAR = new OperatorImpl<Integer>(java.util.Date.class);
+        Operator<Integer> YEAR_MONTH = new OperatorImpl<Integer>(java.util.Date.class);
         Operator<Integer> WEEK = new OperatorImpl<Integer>(java.util.Date.class);
         Operator<Integer> DAY_OF_WEEK = new OperatorImpl<Integer>(java.util.Date.class);
         Operator<Integer> DAY_OF_MONTH = new OperatorImpl<Integer>(java.util.Date.class);

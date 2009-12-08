@@ -43,7 +43,7 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     
     private volatile ENumber<Integer> dayOfMonth, dayOfWeek, dayOfYear;
     
-    private volatile ENumber<Integer> week, month, year;
+    private volatile ENumber<Integer> week, month, year, yearMonth;
     
     public EDate(Class<? extends D> type) {
         super(type);
@@ -121,5 +121,17 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
             year = ONumber.create(Integer.class, Ops.DateTimeOps.YEAR, this);
         }
         return year;
+    }
+    
+    /**
+     * Get a year / month expression 
+     * 
+     * @return
+     */
+    public ENumber<Integer> getYearMonth(){
+        if (yearMonth == null){
+            yearMonth = ONumber.create(Integer.class, Ops.DateTimeOps.YEAR_MONTH, this);
+        }
+        return yearMonth;
     }
 }

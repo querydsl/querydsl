@@ -25,9 +25,6 @@ import com.mysema.query.types.expr.ETime;
 import com.mysema.query.types.expr.Expr;
 
 /**
- * The Class Projections.
- */
-/**
  * @author tiwe
  *
  */
@@ -60,6 +57,7 @@ public class Projections {
         rv.add(expr.getDayOfMonth());
         rv.add(expr.getMonth());
         rv.add(expr.getYear());
+        rv.add(expr.getYearMonth());
         return rv;
     } 
 
@@ -69,6 +67,7 @@ public class Projections {
         rv.add(expr.getDayOfMonth());
         rv.add(expr.getMonth());
         rv.add(expr.getYear());
+        rv.add(expr.getYearMonth());
         rv.add(expr.getHour());
         rv.add(expr.getMinute());
         rv.add(expr.getSecond());

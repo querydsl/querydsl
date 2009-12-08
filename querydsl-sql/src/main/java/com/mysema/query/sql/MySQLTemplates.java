@@ -30,5 +30,6 @@ public class MySQLTemplates extends SQLTemplates {
         
         add(Ops.CONCAT, "concat({0}, {1})");
         add(Ops.MATCHES, "{0} regexp {1}");
+        add(Ops.DateTimeOps.YEAR_MONTH, "extract(year_month from {0})");
     }
 }

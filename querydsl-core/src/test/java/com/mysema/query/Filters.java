@@ -108,6 +108,8 @@ public class Filters {
         rv.add(expr.getYear().eq(2000));
         rv.add(expr.getYear().eq(other.getYear()));
           
+        rv.add(expr.getYearMonth().eq(other.getYearMonth()));
+        
         rv.add(expr.getHour().eq(1));
         rv.add(expr.getHour().eq(other.getHour()));
           
