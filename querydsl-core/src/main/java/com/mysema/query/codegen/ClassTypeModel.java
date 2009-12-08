@@ -16,13 +16,13 @@ import org.apache.commons.lang.ClassUtils;
 import com.mysema.commons.lang.Assert;
 
 /**
- * SimpleClassTypeModel is a minimal implementation of the TypeModel interface
+ * ClassTypeModel is a minimal implementation of the TypeModel interface
  * 
  * @author tiwe
  *
  */
 @Immutable
-public class SimpleClassTypeModel extends AbstractTypeModel{
+public class ClassTypeModel extends AbstractTypeModel{
     
     private final Class<?> clazz;
     
@@ -34,11 +34,11 @@ public class SimpleClassTypeModel extends AbstractTypeModel{
     
     private final boolean visible;
     
-    public SimpleClassTypeModel(TypeCategory typeCategory, Class<?> clazz){
+    public ClassTypeModel(TypeCategory typeCategory, Class<?> clazz){
         this(typeCategory, clazz, ClassUtils.wrapperToPrimitive(clazz));
     }
     
-    public SimpleClassTypeModel(TypeCategory typeCategory, Class<?> clazz, Class<?> primitiveClass){
+    public ClassTypeModel(TypeCategory typeCategory, Class<?> clazz, Class<?> primitiveClass){
         this.typeCategory = Assert.notNull(typeCategory);
         this.clazz = Assert.notNull(clazz);
         this.primitiveClass = primitiveClass;
@@ -51,7 +51,7 @@ public class SimpleClassTypeModel extends AbstractTypeModel{
         if (typeCategory == category){
             return this;
         }else{
-            return new SimpleClassTypeModel(category, clazz);
+            return new ClassTypeModel(category, clazz);
         }
     }
 

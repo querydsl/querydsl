@@ -95,7 +95,7 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<EntityMode
                 List<ParameterModel> parameters = new ArrayList<ParameterModel>(constructor.getParameters().size());
                 for (VariableElement var : constructor.getParameters()){
                     TypeModel varType = typeFactory.create(var.asType(), elementUtils);                    
-                    parameters.add(new ParameterModel(entityModel, var.getSimpleName().toString(), varType));
+                    parameters.add(new ParameterModel(var.getSimpleName().toString(), varType));
                 }
                 entityModel.addConstructor(new ConstructorModel(parameters));    
             }                

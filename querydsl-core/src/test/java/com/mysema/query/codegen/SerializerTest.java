@@ -33,7 +33,7 @@ public class SerializerTest {
         
         PropertyModel field = new PropertyModel(type, "field", typeFactory.create(String.class), new String[0]);
         type.addProperty(field);
-        ParameterModel param = new ParameterModel(type, "name", new SimpleClassTypeModel(TypeCategory.STRING, String.class));
+        ParameterModel param = new ParameterModel("name", new ClassTypeModel(TypeCategory.STRING, String.class));
         type.addConstructor(new ConstructorModel(Collections.singleton(param)));
     }
 

@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mysema.query.codegen.EntityModel;
-import com.mysema.query.codegen.SimpleClassTypeModel;
+import com.mysema.query.codegen.ClassTypeModel;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.PropertyModel;
 import com.mysema.query.codegen.Serializer;
@@ -114,7 +114,7 @@ public class MetaDataExporter {
                     fieldType = TypeCategory.STRING;
                 }
 
-                TypeModel typeModel = new SimpleClassTypeModel(fieldType, clazz);
+                TypeModel typeModel = new ClassTypeModel(fieldType, clazz);
                 classModel.addProperty(new PropertyModel(classModel, name, typeModel, new String[0]));
             }
             columns.close();

@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
  */
 public class TypeSuperModel extends TypeModelAdapter{
     
-    private static final TypeModel objectModel = new SimpleClassTypeModel(TypeCategory.SIMPLE, Object.class);
+    private static final TypeModel objectModel = new ClassTypeModel(TypeCategory.SIMPLE, Object.class);
     
     @Nullable
     private String varName;

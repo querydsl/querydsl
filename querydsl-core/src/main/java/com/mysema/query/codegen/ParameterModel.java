@@ -20,15 +20,10 @@ public final class ParameterModel {
     
     private final TypeModel type;
 
-    public ParameterModel(EntityModel container, String name, TypeModel type) {
+    public ParameterModel(String name, TypeModel type) {
         this.name = name;
         this.type = type;
     }
-//
-//    @Override
-//    public int compareTo(ParameterModel o) {
-//        return name.compareTo(o.name);
-//    }
 
     @Override
     public boolean equals(Object o) {

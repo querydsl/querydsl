@@ -53,7 +53,7 @@ public class EntityModelFactory {
             superTypes = Collections.singleton(key.getSuperclass().getName());
         }
         EntityModel entityModel = new EntityModel(prefix, 
-                new SimpleClassTypeModel(TypeCategory.ENTITY, key), 
+                new ClassTypeModel(TypeCategory.ENTITY, key), 
                 superTypes);
         for (Field f : key.getDeclaredFields()) {
             if (isValidField(f)){

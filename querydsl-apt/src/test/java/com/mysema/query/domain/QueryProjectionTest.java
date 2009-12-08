@@ -1,5 +1,7 @@
 package com.mysema.query.domain;
 
+import java.util.Map;
+
 import javax.jdo.annotations.PersistenceCapable;
 import javax.persistence.Entity;
 
@@ -58,6 +60,11 @@ public class QueryProjectionTest {
         }
         
         @QueryProjection
+        public DTOWithProjection(EntityWithProjection entity){
+            
+        }
+        
+        @QueryProjection
         public DTOWithProjection(long id, CharSequence name){
             
         }
@@ -69,6 +76,11 @@ public class QueryProjectionTest {
         
         @QueryProjection
         public DTOWithProjection(DTOWithProjection dto, long id, Long id2, String str, CharSequence c){
+            
+        }
+        
+        @QueryProjection
+        public DTOWithProjection(String id, CharSequence name, Map<Long,String> map1, Map<DTOWithProjection, Long> map2){
             
         }
     }
