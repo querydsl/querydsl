@@ -31,6 +31,19 @@ public class QueryProjectionTest {
         public EntityWithProjection(long id, CharSequence name){
             
         }
+        
+        @QueryProjection
+        public EntityWithProjection(String id, CharSequence name){
+            
+        }
+        
+    }
+    
+    @Test
+    public void entityCase(){
+        QEntityWithProjection.create(EStringConst.create("")).getJavaConstructor();
+        QEntityWithProjection.create(ENumberConst.create(0l), EStringConst.create("")).getJavaConstructor();
+        QEntityWithProjection.create(EStringConst.create(""), EStringConst.create("")).getJavaConstructor();
     }
     
     public static class DTOWithProjection {
@@ -50,18 +63,21 @@ public class QueryProjectionTest {
         }
         
         @QueryProjection
+        public DTOWithProjection(String id, CharSequence name){
+            
+        }
+        
+        @QueryProjection
         public DTOWithProjection(DTOWithProjection dto, long id, Long id2, String str, CharSequence c){
             
         }
     }
-    
-    @Test
-    public void test() throws SecurityException, NoSuchMethodException{
-        QEntityWithProjection.create(EStringConst.create("")).getJavaConstructor();
-        QEntityWithProjection.create(ENumberConst.create(0l), EStringConst.create("")).getJavaConstructor();
         
+    @Test
+    public void dtoCase() throws SecurityException, NoSuchMethodException{                
         new QDTOWithProjection(EStringConst.create("")).getJavaConstructor();
         new QDTOWithProjection(ENumberConst.create(0l), EStringConst.create("")).getJavaConstructor();
+        new QDTOWithProjection(EStringConst.create(""), EStringConst.create("")).getJavaConstructor();
         
     }
 }

@@ -34,6 +34,6 @@ public interface Serializer {
      * @param raw
      * @return
      */
-    public String getQueryType(TypeModel type, EntityModel model, boolean raw);
+    public String getPathType(TypeModel type, EntityModel model, boolean raw);
 
 }

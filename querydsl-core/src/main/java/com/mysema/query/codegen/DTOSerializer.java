@@ -34,13 +34,10 @@ public class DTOSerializer extends AbstractSerializer{
             builder.append("    public "+ queryType + "(");
             boolean first = true;
             for (ParameterModel p : c.getParameters()){
-                if (!first) builder.append(", ");                
-                builder.append("Expr<");
-                if (!p.getType().isFinal()){
-                    builder.append("? extends ");
-                }
-                builder = p.getType().getLocalGenericName(model, builder, false);
-                builder.append("> ").append(p.getName());
+                if (!first) builder.append(", ");                             
+                builder.append(getExprType(p.getType(), model, false));
+                builder.append(" ");
+                builder.append(p.getName());
                 first = false;
             }
             builder.append("){\n");

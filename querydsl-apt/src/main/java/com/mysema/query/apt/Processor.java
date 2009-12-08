@@ -226,7 +226,7 @@ public class Processor {
             msg.printMessage(Kind.NOTE, type.getFullName() + " is processed");
             try {
                 String packageName = type.getPackageName();         
-                String localName = serializer.getQueryType(type, type, true);
+                String localName = serializer.getPathType(type, type, true);
                 String className = packageName + "." + localName;
                 JavaFileObject fileObject = env.getFiler().createSourceFile(className);
                 Writer writer = fileObject.openWriter();

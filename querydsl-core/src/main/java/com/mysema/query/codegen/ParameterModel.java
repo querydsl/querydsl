@@ -14,7 +14,7 @@ import net.jcip.annotations.Immutable;
  * @version $Id$
  */
 @Immutable
-public final class ParameterModel implements Comparable<ParameterModel> {
+public final class ParameterModel {
     
     private final String name;
     
@@ -24,15 +24,16 @@ public final class ParameterModel implements Comparable<ParameterModel> {
         this.name = name;
         this.type = type;
     }
-
-    @Override
-    public int compareTo(ParameterModel o) {
-        return name.compareTo(o.name);
-    }
+//
+//    @Override
+//    public int compareTo(ParameterModel o) {
+//        return name.compareTo(o.name);
+//    }
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof ParameterModel && name.equals(((ParameterModel) o).name);
+        return o instanceof ParameterModel  && type.equals(((ParameterModel) o).type);
+            
     }
 
     public String getName() {
@@ -45,7 +46,7 @@ public final class ParameterModel implements Comparable<ParameterModel> {
     
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return type.hashCode();
     }
     
 }
