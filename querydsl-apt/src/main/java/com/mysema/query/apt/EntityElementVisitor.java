@@ -25,6 +25,7 @@ import net.jcip.annotations.Immutable;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryInit;
 import com.mysema.query.annotations.QueryType;
 import com.mysema.query.codegen.ConstructorModel;
@@ -93,9 +94,16 @@ public final class EntityElementVisitor extends SimpleElementVisitor6<EntityMode
         for (ExecutableElement constructor : ElementFilter.constructorsIn(elements)){
             if (configuration.isValidConstructor(constructor)){
                 List<ParameterModel> parameters = new ArrayList<ParameterModel>(constructor.getParameters().size());
-                for (VariableElement var : constructor.getParameters()){
-                    TypeModel varType = typeFactory.create(var.asType(), elementUtils);                    
-                    parameters.add(new ParameterModel(var.getSimpleName().toString(), varType));
+                for (VariableElement param : constructor.getParameters()){
+                    TypeModel paramType = typeFactory.create(param.asType(), elementUtils);              
+                    if (param.getAnnotation(QueryType.class) != null){
+                        QueryType qt = param.getAnnotation(QueryType.class);
+                        if (qt.value() != PropertyType.NONE){
+                            TypeCategory typeCategory = TypeCategory.get(qt.value());
+                            paramType = paramType.as(typeCategory);    
+                        }                        
+                    }
+                    parameters.add(new ParameterModel(param.getSimpleName().toString(), paramType));
                 }
                 entityModel.addConstructor(new ConstructorModel(parameters));    
             }                

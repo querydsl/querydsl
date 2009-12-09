@@ -19,8 +19,10 @@ import javax.lang.model.util.SimpleElementVisitor6;
 
 import net.jcip.annotations.Immutable;
 
-import com.mysema.query.codegen.EntityModel;
+import com.mysema.query.annotations.PropertyType;
+import com.mysema.query.annotations.QueryType;
 import com.mysema.query.codegen.ConstructorModel;
+import com.mysema.query.codegen.EntityModel;
 import com.mysema.query.codegen.ParameterModel;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeModel;
@@ -49,16 +51,23 @@ public final class DTOElementVisitor extends SimpleElementVisitor6<EntityModel, 
     @Override
     public EntityModel visitType(TypeElement e, Void p) {
         Elements elementUtils = env.getElementUtils();
-        TypeModel c = typeFactory.create(e.asType(), elementUtils);
+        TypeModel c = typeFactory.create(e.asType(), elementUtils);        
         EntityModel classModel = new EntityModel(configuration.getNamePrefix(), c.as(TypeCategory.ENTITY));
         List<? extends Element> elements = e.getEnclosedElements();
         
         for (ExecutableElement constructor : ElementFilter.constructorsIn(elements)){
             if (configuration.isValidConstructor(constructor)){
                 List<ParameterModel> parameters = new ArrayList<ParameterModel>(constructor.getParameters().size());
-                for (VariableElement var : constructor.getParameters()){
-                    TypeModel varType = typeFactory.create(var.asType(), elementUtils);
-                    parameters.add(new ParameterModel(var.getSimpleName().toString(), varType));
+                for (VariableElement param : constructor.getParameters()){
+                    TypeModel paramType = typeFactory.create(param.asType(), elementUtils);
+                    if (param.getAnnotation(QueryType.class) != null){
+                        QueryType qt = param.getAnnotation(QueryType.class);
+                        if (qt.value() != PropertyType.NONE){
+                            TypeCategory typeCategory = TypeCategory.get(qt.value());
+                            paramType = paramType.as(typeCategory);    
+                        }                        
+                    }
+                    parameters.add(new ParameterModel(param.getSimpleName().toString(), paramType));
                 }
                 classModel.addConstructor(new ConstructorModel(parameters));    
             }                
