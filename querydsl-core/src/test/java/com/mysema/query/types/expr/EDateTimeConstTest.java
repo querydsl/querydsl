@@ -27,15 +27,15 @@ public class EDateTimeConstTest {
         System.out.println(cal.getTime());
         
         EDateTime<Date> date = EDateTimeConst.create(cal.getTime());
-        assertEquals("1",    date.getDayOfMonth().toString());
-        assertEquals("1",    date.getMonth().toString());
-        assertEquals("2000", date.getYear().toString());        
-        assertEquals("7",    date.getDayOfWeek().toString());
-        assertEquals("1",    date.getDayOfYear().toString());
-        assertEquals("13",   date.getHour().toString());
-        assertEquals("30",   date.getMinute().toString());
-        assertEquals("12",   date.getSecond().toString());
-        assertEquals("3",    date.getMilliSecond().toString());
+        assertEquals("1",    date.dayOfMonth().toString());
+        assertEquals("1",    date.month().toString());
+        assertEquals("2000", date.year().toString());        
+        assertEquals("7",    date.dayOfWeek().toString());
+        assertEquals("1",    date.dayOfYear().toString());
+        assertEquals("13",   date.hour().toString());
+        assertEquals("30",   date.minute().toString());
+        assertEquals("12",   date.second().toString());
+        assertEquals("3",    date.milliSecond().toString());
     }
 
 }

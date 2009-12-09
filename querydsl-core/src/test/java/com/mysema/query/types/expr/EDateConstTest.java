@@ -24,11 +24,11 @@ public class EDateConstTest {
         System.out.println(cal.getTime());
         
         EDate<Date> date = EDateConst.create(new Date(cal.getTimeInMillis()));
-        assertEquals("1",   date.getDayOfMonth().toString());
-        assertEquals("1",   date.getMonth().toString());
-        assertEquals("2000",date.getYear().toString());        
-        assertEquals("7", date.getDayOfWeek().toString());
-        assertEquals("1", date.getDayOfYear().toString());
+        assertEquals("1",   date.dayOfMonth().toString());
+        assertEquals("1",   date.month().toString());
+        assertEquals("2000",date.year().toString());        
+        assertEquals("7", date.dayOfWeek().toString());
+        assertEquals("1", date.dayOfYear().toString());
     }
 
 }

@@ -21,12 +21,12 @@ public class DateTimeTest extends AbstractQueryTest {
         toString("current_time()", ETime.currentTime());
         toString("current_timestamp()", EDateTime.currentTimestamp());
         // second(...), minute(...), hour(...), day(...), month(...), year(...),
-        catalog.effectiveDate.getSecond();
-        catalog.effectiveDate.getMinute();
-        catalog.effectiveDate.getHour();
-        catalog.effectiveDate.getDayOfMonth();
-        catalog.effectiveDate.getMonth();
-        catalog.effectiveDate.getYear();
+        catalog.effectiveDate.second();
+        catalog.effectiveDate.minute();
+        catalog.effectiveDate.hour();
+        catalog.effectiveDate.dayOfMonth();
+        catalog.effectiveDate.month();
+        catalog.effectiveDate.year();
     }
 
 }

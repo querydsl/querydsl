@@ -34,7 +34,7 @@ public abstract class ETime<D extends Comparable> extends EDateOrTime<D> {
      * 
      * @return
      */
-    public ENumber<Integer> getHour(){
+    public ENumber<Integer> hour(){
         if (hours == null){
             hours = ONumber.create(Integer.class, Ops.DateTimeOps.HOUR, this);
         }
@@ -46,7 +46,7 @@ public abstract class ETime<D extends Comparable> extends EDateOrTime<D> {
      * 
      * @return
      */
-    public ENumber<Integer> getMinute(){
+    public ENumber<Integer> minute(){
         if (minutes == null){
             minutes = ONumber.create(Integer.class, Ops.DateTimeOps.MINUTE, this);
         }
@@ -58,7 +58,7 @@ public abstract class ETime<D extends Comparable> extends EDateOrTime<D> {
      * 
      * @return
      */
-    public ENumber<Integer> getSecond(){
+    public ENumber<Integer> second(){
         if (seconds == null){
             seconds = ONumber.create(Integer.class, Ops.DateTimeOps.SECOND, this);
         }
@@ -72,7 +72,7 @@ public abstract class ETime<D extends Comparable> extends EDateOrTime<D> {
      * 
      * @return
      */
-    public ENumber<Integer> getMilliSecond(){
+    public ENumber<Integer> milliSecond(){
         if (milliseconds == null){
             milliseconds = ONumber.create(Integer.class, Ops.DateTimeOps.MILLISECOND, this);
         }

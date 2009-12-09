@@ -74,7 +74,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
      * 
      * @return
      */
-    public ENumber<Integer> getDayOfMonth(){
+    public ENumber<Integer> dayOfMonth(){
         if (dayOfMonth == null){
             dayOfMonth = ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_MONTH, this);
         }
@@ -87,7 +87,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
      * 
      * @return
      */
-    public ENumber<Integer> getDayOfWeek() {
+    public ENumber<Integer> dayOfWeek() {
         if (dayOfWeek == null){
             dayOfWeek = ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_WEEK, this);
         }
@@ -100,7 +100,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
      * 
      * @return
      */
-    public ENumber<Integer> getDayOfYear() {
+    public ENumber<Integer> dayOfYear() {
         if (dayOfYear == null){
             dayOfYear = ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_YEAR, this);
         }
@@ -112,7 +112,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
      * 
      * @return
      */
-    public ENumber<Integer> getHour(){
+    public ENumber<Integer> hour(){
         if (hours == null){
             hours = ONumber.create(Integer.class, Ops.DateTimeOps.HOUR, this);
         }
@@ -125,7 +125,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
      * 
      * @return
      */
-    public ENumber<Integer> getMilliSecond(){
+    public ENumber<Integer> milliSecond(){
         if (milliseconds == null){
             milliseconds = ONumber.create(Integer.class, Ops.DateTimeOps.MILLISECOND, this);
         }
@@ -137,7 +137,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
      * 
      * @return
      */
-    public ENumber<Integer> getMinute(){
+    public ENumber<Integer> minute(){
         if (minutes == null){
             minutes = ONumber.create(Integer.class, Ops.DateTimeOps.MINUTE, this);
         }
@@ -149,7 +149,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
      * 
      * @return
      */
-    public ENumber<Integer> getMonth(){
+    public ENumber<Integer> month(){
         if (month == null){
             month = ONumber.create(Integer.class, Ops.DateTimeOps.MONTH, this);
         }
@@ -161,7 +161,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
      * 
      * @return
      */
-    public ENumber<Integer> getSecond(){
+    public ENumber<Integer> second(){
         if (seconds == null){
             seconds = ONumber.create(Integer.class, Ops.DateTimeOps.SECOND, this);
         }
@@ -174,7 +174,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
      * 
      * @return
      */
-    public ENumber<Integer> getWeek() {
+    public ENumber<Integer> week() {
         if (week == null){
             week = ONumber.create(Integer.class, Ops.DateTimeOps.WEEK,  this); 
         }
@@ -186,7 +186,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
      * 
      * @return
      */
-    public ENumber<Integer> getYear(){
+    public ENumber<Integer> year(){
         if (year == null){
             year = ONumber.create(Integer.class, Ops.DateTimeOps.YEAR, this);
         }
@@ -198,7 +198,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
      * 
      * @return
      */
-    public ENumber<Integer> getYearMonth(){
+    public ENumber<Integer> yearMonth(){
         if (yearMonth == null){
             yearMonth = ONumber.create(Integer.class, Ops.DateTimeOps.YEAR_MONTH, this);
         }

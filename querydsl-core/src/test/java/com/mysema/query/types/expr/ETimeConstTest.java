@@ -24,9 +24,9 @@ public class ETimeConstTest {
         System.out.println(cal.getTime());
         
         ETime<Time> time = ETimeConst.create(new Time(cal.getTimeInMillis()));
-        assertEquals("13",   time.getHour().toString());
-        assertEquals("30",   time.getMinute().toString());
-        assertEquals("12",   time.getSecond().toString());
+        assertEquals("13",   time.hour().toString());
+        assertEquals("30",   time.minute().toString());
+        assertEquals("12",   time.second().toString());
 //        assertEquals("3",    time.getMilliSecond().toString());
     }
 

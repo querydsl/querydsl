@@ -88,9 +88,9 @@ public class Filters {
     <A extends Comparable> Collection<EBoolean> date(EDate<A> expr, EDate<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(comparable(expr, other, knownValue));
-        rv.add(expr.getDayOfMonth().eq(other.getDayOfMonth()));
-        rv.add(expr.getMonth().eq(other.getMonth()));
-        rv.add(expr.getYear().eq(other.getYear()));    
+        rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
+        rv.add(expr.month().eq(other.month()));
+        rv.add(expr.year().eq(other.year()));    
         return rv;
     }
     
@@ -99,25 +99,25 @@ public class Filters {
     <A extends Comparable> Collection<EBoolean> dateTime(EDateTime<A> expr, EDateTime<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(comparable(expr, other, knownValue));
-        rv.add(expr.getDayOfMonth().eq(1));
-        rv.add(expr.getDayOfMonth().eq(other.getDayOfMonth()));
+        rv.add(expr.dayOfMonth().eq(1));
+        rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
           
-        rv.add(expr.getMonth().eq(1));
-        rv.add(expr.getMonth().eq(other.getMonth()));
+        rv.add(expr.month().eq(1));
+        rv.add(expr.month().eq(other.month()));
           
-        rv.add(expr.getYear().eq(2000));
-        rv.add(expr.getYear().eq(other.getYear()));
+        rv.add(expr.year().eq(2000));
+        rv.add(expr.year().eq(other.year()));
           
-        rv.add(expr.getYearMonth().eq(other.getYearMonth()));
+        rv.add(expr.yearMonth().eq(other.yearMonth()));
         
-        rv.add(expr.getHour().eq(1));
-        rv.add(expr.getHour().eq(other.getHour()));
+        rv.add(expr.hour().eq(1));
+        rv.add(expr.hour().eq(other.hour()));
           
-        rv.add(expr.getMinute().eq(1));
-        rv.add(expr.getMinute().eq(other.getMinute()));
+        rv.add(expr.minute().eq(1));
+        rv.add(expr.minute().eq(other.minute()));
           
-        rv.add(expr.getSecond().eq(1));
-        rv.add(expr.getSecond().eq(other.getSecond()));
+        rv.add(expr.second().eq(1));
+        rv.add(expr.second().eq(other.second()));
         return rv;
     }
 
@@ -260,9 +260,9 @@ public class Filters {
     <A extends Comparable> Collection<EBoolean> time(ETime<A> expr, ETime<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(comparable(expr, other, knownValue));
-        rv.add(expr.getHour().eq(other.getHour()));
-        rv.add(expr.getMinute().eq(other.getMinute()));
-        rv.add(expr.getSecond().eq(other.getSecond()));
+        rv.add(expr.hour().eq(other.hour()));
+        rv.add(expr.minute().eq(other.minute()));
+        rv.add(expr.second().eq(other.second()));
         return rv;
     }
     

@@ -54,23 +54,23 @@ public class Projections {
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<Expr<?>> date(EDate<A> expr, EDate<A> other, A knownValue){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
-        rv.add(expr.getDayOfMonth());
-        rv.add(expr.getMonth());
-        rv.add(expr.getYear());
-        rv.add(expr.getYearMonth());
+        rv.add(expr.dayOfMonth());
+        rv.add(expr.month());
+        rv.add(expr.year());
+        rv.add(expr.yearMonth());
         return rv;
     } 
 
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<Expr<?>> dateTime(EDateTime<A> expr, EDateTime<A> other, A knownValue){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
-        rv.add(expr.getDayOfMonth());
-        rv.add(expr.getMonth());
-        rv.add(expr.getYear());
-        rv.add(expr.getYearMonth());
-        rv.add(expr.getHour());
-        rv.add(expr.getMinute());
-        rv.add(expr.getSecond());
+        rv.add(expr.dayOfMonth());
+        rv.add(expr.month());
+        rv.add(expr.year());
+        rv.add(expr.yearMonth());
+        rv.add(expr.hour());
+        rv.add(expr.minute());
+        rv.add(expr.second());
         return rv;
     }
 
@@ -191,9 +191,9 @@ public class Projections {
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<Expr<?>> time(ETime<A> expr, ETime<A> other, A knownValue){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
-        rv.add(expr.getHour());
-        rv.add(expr.getMinute());
-        rv.add(expr.getSecond());
+        rv.add(expr.hour());
+        rv.add(expr.minute());
+        rv.add(expr.second());
         return rv;
     }
         

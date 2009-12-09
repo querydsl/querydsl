@@ -70,17 +70,17 @@ public class MatchingFilters {
     Collection<EBoolean> date(EDate<java.sql.Date> expr, EDate<java.sql.Date> other){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(comparable(expr, other));
-        rv.add(expr.getDayOfMonth().eq(other.getDayOfMonth()));
+        rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
         
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDOQL)){
-            rv.add(expr.getDayOfWeek().eq(other.getDayOfWeek ()));
-            rv.add(expr.getDayOfYear().eq(other.getDayOfYear()));
-            rv.add(expr.getWeek().eq(other.getWeek()));
+            rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
+            rv.add(expr.dayOfYear().eq(other.dayOfYear()));
+            rv.add(expr.week().eq(other.week()));
         }        
         
-        rv.add(expr.getMonth().eq(other.getMonth()));
-        rv.add(expr.getYear().eq(other.getYear()));
-        rv.add(expr.getYearMonth().eq(other.getYearMonth()));
+        rv.add(expr.month().eq(other.month()));
+        rv.add(expr.year().eq(other.year()));
+        rv.add(expr.yearMonth().eq(other.yearMonth()));
         return rv;
     }
     
@@ -94,21 +94,21 @@ public class MatchingFilters {
     Collection<EBoolean> dateTime(EDateTime<java.util.Date> expr, EDateTime<java.util.Date> other){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(comparable(expr, other));
-        rv.add(expr.getMilliSecond().eq(other.getMilliSecond()));
-        rv.add(expr.getSecond().eq(other.getSecond()));     
-        rv.add(expr.getMinute().eq(other.getMinute()));
-        rv.add(expr.getHour().eq(other.getHour()));
-        rv.add(expr.getDayOfMonth().eq(other.getDayOfMonth()));
+        rv.add(expr.milliSecond().eq(other.milliSecond()));
+        rv.add(expr.second().eq(other.second()));     
+        rv.add(expr.minute().eq(other.minute()));
+        rv.add(expr.hour().eq(other.hour()));
+        rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
         
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDOQL)){
-            rv.add(expr.getDayOfWeek().eq(other.getDayOfWeek ()));
-            rv.add(expr.getDayOfYear().eq(other.getDayOfYear()));
-            rv.add(expr.getWeek().eq(other.getWeek()));
+            rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
+            rv.add(expr.dayOfYear().eq(other.dayOfYear()));
+            rv.add(expr.week().eq(other.week()));
         }          
         
-        rv.add(expr.getMonth().eq(other.getMonth()));
-        rv.add(expr.getYear().eq(other.getYear()));
-        rv.add(expr.getYearMonth().eq(other.getYearMonth()));
+        rv.add(expr.month().eq(other.month()));
+        rv.add(expr.year().eq(other.year()));
+        rv.add(expr.yearMonth().eq(other.yearMonth()));
         return rv;
     }
     
@@ -247,10 +247,10 @@ public class MatchingFilters {
     Collection<EBoolean> time(ETime<java.sql.Time> expr,  ETime<java.sql.Time> other){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(comparable(expr, other));
-        rv.add(expr.getMilliSecond().eq(other.getMilliSecond()));
-        rv.add(expr.getSecond().eq(other.getSecond()));
-        rv.add(expr.getMinute().eq(other.getMinute()));
-        rv.add(expr.getHour().eq(other.getHour()));
+        rv.add(expr.milliSecond().eq(other.milliSecond()));
+        rv.add(expr.second().eq(other.second()));
+        rv.add(expr.minute().eq(other.minute()));
+        rv.add(expr.hour().eq(other.hour()));
         return rv;
     }
     

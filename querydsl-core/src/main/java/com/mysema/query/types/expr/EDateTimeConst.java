@@ -38,57 +38,57 @@ public class EDateTimeConst extends EDateTime<java.util.Date> implements Constan
     }
     
     @Override
-    public ENumber<Integer> getDayOfMonth(){
+    public ENumber<Integer> dayOfMonth(){
         return ENumberConst.create(calendar.get(Calendar.DAY_OF_MONTH));
     }
     
     @Override
-    public ENumber<Integer> getMonth(){
+    public ENumber<Integer> month(){
         return ENumberConst.create(calendar.get(Calendar.MONTH) + 1);
     }
     
     @Override
-    public ENumber<Integer> getYear(){
+    public ENumber<Integer> year(){
         return ENumberConst.create(calendar.get(Calendar.YEAR));
     }
     
     @Override
-    public ENumber<Integer> getYearMonth(){
+    public ENumber<Integer> yearMonth(){
         return ENumberConst.create(calendar.get(Calendar.YEAR) * 100 + calendar.get(Calendar.MONTH) + 1);
     }
     
     @Override
-    public ENumber<Integer> getDayOfWeek() {
+    public ENumber<Integer> dayOfWeek() {
         return ENumberConst.create(calendar.get(Calendar.DAY_OF_WEEK));
     }
     
     @Override
-    public ENumber<Integer> getDayOfYear() {
+    public ENumber<Integer> dayOfYear() {
         return ENumberConst.create(calendar.get(Calendar.DAY_OF_YEAR));
     }
     
     @Override
-    public ENumber<Integer> getWeek() {
+    public ENumber<Integer> week() {
         return ENumberConst.create(calendar.get(Calendar.WEEK_OF_YEAR));
     }
     
     @Override
-    public ENumber<Integer> getHour() {
+    public ENumber<Integer> hour() {
         return ENumberConst.create(calendar.get(Calendar.HOUR_OF_DAY));
     }
     
     @Override
-    public ENumber<Integer> getMinute() {
+    public ENumber<Integer> minute() {
         return ENumberConst.create(calendar.get(Calendar.MINUTE));
     }
     
     @Override
-    public ENumber<Integer> getSecond() {
+    public ENumber<Integer> second() {
         return ENumberConst.create(calendar.get(Calendar.SECOND));
     }
     
     @Override
-    public ENumber<Integer> getMilliSecond() {
+    public ENumber<Integer> milliSecond() {
         return ENumberConst.create(calendar.get(Calendar.MILLISECOND));
     }
 
