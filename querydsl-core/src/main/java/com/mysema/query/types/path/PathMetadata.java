@@ -20,7 +20,6 @@ import com.mysema.query.types.expr.ENumberConst;
 import com.mysema.query.types.expr.EStringConst;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.expr.ExprConst;
-import com.mysema.query.util.NotEmpty;
 
 /**
  * PathMetadata provides metadata for Path expressions.
@@ -57,11 +56,11 @@ public final class PathMetadata<T> implements Serializable{
         return new PathMetadata<KT>(parent, ExprConst.create(key), PathType.MAPVALUE_CONSTANT);
     }
 
-    public static PathMetadata<String> forProperty(Path<?> parent, @NotEmpty String property) {
+    public static PathMetadata<String> forProperty(Path<?> parent, String property) {
         return new PathMetadata<String>(parent, EStringConst.create(Assert.hasLength(property), true), PathType.PROPERTY);
     }
 
-    public static PathMetadata<String> forVariable(@NotEmpty String variable) {
+    public static PathMetadata<String> forVariable(String variable) {
         return new PathMetadata<String>(null, EStringConst.create(Assert.hasLength(variable), true), PathType.VARIABLE);
     }
 

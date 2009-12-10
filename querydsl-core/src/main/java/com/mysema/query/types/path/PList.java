@@ -19,7 +19,6 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollectionBase;
 import com.mysema.query.types.expr.EList;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.util.NotEmpty;
 
 /**
  * PList represents list paths
@@ -53,7 +52,7 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
     private Constructor<Q> queryTypeConstructor;    
     
     @SuppressWarnings("unchecked")
-    public PList(Class<? super E> elementType, @NotEmpty String entityName, Class<Q> queryType, PathMetadata<?> metadata) {
+    public PList(Class<? super E> elementType, String entityName, Class<Q> queryType, PathMetadata<?> metadata) {
         super((Class)List.class);
         this.elementType = (Class<E>) Assert.notNull(elementType,"type is null");
         this.entityName = Assert.notNull(entityName,"entityName is null");

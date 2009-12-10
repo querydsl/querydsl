@@ -7,7 +7,6 @@ package com.mysema.query.types.path;
 
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.util.NotEmpty;
 
 /**
  * PBoolean represents boolean path expressions
@@ -21,7 +20,7 @@ public class PBoolean extends EBoolean implements Path<Boolean> {
 
     private final Path<Boolean> pathMixin;
 
-    public PBoolean(Path<?> parent, @NotEmpty String property) {
+    public PBoolean(Path<?> parent, String property) {
         this(PathMetadata.forProperty(parent, property));
     }
 
@@ -29,7 +28,7 @@ public class PBoolean extends EBoolean implements Path<Boolean> {
         this.pathMixin = new PathMixin<Boolean>(this, metadata);
     }
     
-    public PBoolean(@NotEmpty String var) {
+    public PBoolean(String var) {
         this(PathMetadata.forVariable(var));
     }
     

@@ -35,9 +35,6 @@ public class SupertypeSerializer extends EntitySerializer{
         
     @Override
     protected void introImports(StringBuilder builder, EntityModel model) {
-        if (model.hasEntityFields()){
-            builder.append("import com.mysema.query.util.*;\n");    
-        }        
         builder.append("import com.mysema.query.types.path.*;\n\n");
         if (hasOwnEntityProperties(model)){
             builder.append("import static com.mysema.query.types.path.PathMetadata.*;\n");    

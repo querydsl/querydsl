@@ -14,7 +14,6 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.util.NotEmpty;
 
 /**
  * PEntity represents entity paths
@@ -32,10 +31,17 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
     
     private final Path<D> pathMixin;
     
-    public PEntity(Class<? extends D> type, @NotEmpty String entityName, PathMetadata<?> metadata) {
+    private final PathInits inits;
+    
+    public PEntity(Class<? extends D> type, String entityName, PathMetadata<?> metadata, PathInits inits) {
         super(type);
         this.pathMixin = new PathMixin<D>(this, metadata);
         this.entityName = entityName;
+        this.inits = inits;
+    }
+    
+    public PEntity(Class<? extends D> type, String entityName, PathMetadata<?> metadata) {
+        this(type, entityName, metadata, null);
     }
 
     @Override
@@ -54,7 +60,12 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
     public <T extends PEntity<? extends D>> T as(Class<T> clazz){
         try {
             if (!casts.containsKey(clazz)){
-                T rv = (T)clazz.getConstructor(PathMetadata.class).newInstance(this.getMetadata());
+                T rv;
+                if (inits != null){
+                    rv = clazz.getConstructor(PathMetadata.class, PathInits.class).newInstance(this.getMetadata(), inits);
+                }else{
+                    rv = (T)clazz.getConstructor(PathMetadata.class).newInstance(this.getMetadata());  
+                } 
                 casts.put(clazz, rv);
                 return rv;
             }else{
@@ -77,7 +88,7 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
      * @param type
      * @return
      */
-    protected <A> PArray<A> createArray(@NotEmpty String property, Class<? super A> type) {
+    protected <A> PArray<A> createArray(String property, Class<? super A> type) {
         return new PArray<A>(type, PathMetadata.forProperty(this, property));
     }
 
@@ -85,7 +96,7 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
      * @param propertyName
      * @return
      */
-    protected PBoolean createBoolean(@NotEmpty String propertyName) {
+    protected PBoolean createBoolean(String propertyName) {
         return new PBoolean(this, propertyName);
     }
 
@@ -95,7 +106,7 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
      * @param type
      * @return
      */
-    protected <A> PCollection<A> createCollection(@NotEmpty String property, Class<? super A> type) {
+    protected <A> PCollection<A> createCollection(String property, Class<? super A> type) {
         return new PCollection<A>(type, type.getSimpleName(), PathMetadata.forProperty(this, property));
     }
 
@@ -106,7 +117,7 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    protected <A extends Comparable> PComparable<A> createComparable(@NotEmpty String property, Class<? super A> type) {
+    protected <A extends Comparable> PComparable<A> createComparable(String property, Class<? super A> type) {
         return new PComparable<A>((Class)type, this, property);
     }
     
@@ -117,7 +128,7 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    protected <A extends Comparable> PDate<A> createDate(@NotEmpty String property, Class<? super A> type) {
+    protected <A extends Comparable> PDate<A> createDate(String property, Class<? super A> type) {
         return new PDate<A>((Class)type, PathMetadata.forProperty(this, property));
     }
 
@@ -128,7 +139,7 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    protected <A extends Comparable> PDateTime<A> createDateTime(@NotEmpty String property, Class<? super A> type) {
+    protected <A extends Comparable> PDateTime<A> createDateTime(String property, Class<? super A> type) {
         return new PDateTime<A>((Class)type, this, property);
     }
     
@@ -141,7 +152,7 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    protected <A, E extends Expr<A>> PList<A, E> createList(@NotEmpty String property, Class<? super A> type, Class<? super E> queryType) {
+    protected <A, E extends Expr<A>> PList<A, E> createList(String property, Class<? super A> type, Class<? super E> queryType) {
         return new PList<A, E>(type, type.getSimpleName(), (Class)queryType, PathMetadata.forProperty(this, property));
     }
 
@@ -156,7 +167,7 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    protected <K, V, E extends Expr<V>> PMap<K, V, E> createMap(@NotEmpty String property, Class<? super K> key, Class<? super V> value, Class<? super E> queryType) {
+    protected <K, V, E extends Expr<V>> PMap<K, V, E> createMap(String property, Class<? super K> key, Class<? super V> value, Class<? super E> queryType) {
         return new PMap<K, V, E>(key, value, (Class)queryType, PathMetadata.forProperty(this, property));
     }
 
@@ -167,7 +178,7 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    protected <A extends Number & Comparable<?>> PNumber<A> createNumber(@NotEmpty String property, Class<? super A> type) {
+    protected <A extends Number & Comparable<?>> PNumber<A> createNumber(String property, Class<? super A> type) {
         return new PNumber<A>((Class)type, this, property);
     }
 
@@ -177,7 +188,7 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
      * @param type
      * @return
      */
-    protected <A> PSet<A> createSet(@NotEmpty String property, Class<? super A> type) {
+    protected <A> PSet<A> createSet(String property, Class<? super A> type) {
         return new PSet<A>(type, type.getSimpleName(), PathMetadata.forProperty(this, property));
     }
 
@@ -188,7 +199,7 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    protected <A> PSimple<A> createSimple(@NotEmpty String path, Class<? super A> type) {
+    protected <A> PSimple<A> createSimple(String path, Class<? super A> type) {
         return new PSimple<A>((Class<A>)type, this, path);
     }
 
@@ -196,7 +207,7 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
      * @param property
      * @return
      */
-    protected PString createString(@NotEmpty String property) {
+    protected PString createString(String property) {
         return new PString(this, property);
     }
 
@@ -207,7 +218,7 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    protected <A extends Comparable> PTime<A> createTime(@NotEmpty String property, Class<? super A> type) {
+    protected <A extends Comparable> PTime<A> createTime(String property, Class<? super A> type) {
         return new PTime<A>((Class)type, this, property);
     }
 

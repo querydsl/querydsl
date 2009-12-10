@@ -12,7 +12,6 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollectionBase;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.util.NotEmpty;
 
 /**
  * PCollection represents collection paths
@@ -31,7 +30,7 @@ public class PCollection<E> extends ECollectionBase<Collection<E>,E> implements 
     private final Path<Collection<E>> pathMixin;
     
     @SuppressWarnings("unchecked")
-    public PCollection(Class<? super E> type, @NotEmpty String entityName, PathMetadata<?> metadata) {
+    public PCollection(Class<? super E> type, String entityName, PathMetadata<?> metadata) {
         super((Class)Collection.class);        
         this.elementType = (Class<E>) Assert.notNull(type,"type is null");
         this.entityName = Assert.notNull(entityName,"entityName is null");

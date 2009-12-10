@@ -8,7 +8,6 @@ package com.mysema.query.types.path;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.util.NotEmpty;
 
 /**
  * PSimple represents simple paths
@@ -22,7 +21,7 @@ public class PSimple<D> extends Expr<D> implements Path<D> {
     
     private final Path<D> pathMixin;
     
-    public PSimple(Class<? extends D> type, @NotEmpty Path<?> parent, String property) {
+    public PSimple(Class<? extends D> type, Path<?> parent, String property) {
         this(type, PathMetadata.forProperty(parent, property));
     }
 
@@ -31,7 +30,7 @@ public class PSimple<D> extends Expr<D> implements Path<D> {
         this.pathMixin = new PathMixin<D>(this, metadata);
     }
     
-    public PSimple(Class<? extends D> type, @NotEmpty String var) {
+    public PSimple(Class<? extends D> type, String var) {
         this(type, PathMetadata.forVariable(var));
     }
     

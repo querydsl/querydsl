@@ -13,7 +13,6 @@ import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.PathMetadata;
-import com.mysema.query.util.NotEmpty;
 
 @SuppressWarnings("all")
 public class QEMPLOYEE extends PEntity<java.lang.Object> {
@@ -32,7 +31,7 @@ public class QEMPLOYEE extends PEntity<java.lang.Object> {
     
     public final PNumber<java.lang.Integer> superiorId = createNumber("superior_id", java.lang.Integer.class);
 
-    public QEMPLOYEE(@NotEmpty java.lang.String path) {
+    public QEMPLOYEE(java.lang.String path) {
         super(java.lang.Object.class, "employee2", PathMetadata.forVariable(path));
     }
 

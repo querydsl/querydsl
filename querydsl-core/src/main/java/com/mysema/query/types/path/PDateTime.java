@@ -8,7 +8,6 @@ package com.mysema.query.types.path;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EDateTime;
-import com.mysema.query.util.NotEmpty;
 
 /**
  * @author tiwe
@@ -20,7 +19,7 @@ public class PDateTime<D extends Comparable> extends EDateTime<D> implements Pat
 
     private final Path<D> pathMixin;
     
-    public PDateTime(Class<? extends D> type, Path<?> parent, @NotEmpty String property) {
+    public PDateTime(Class<? extends D> type, Path<?> parent, String property) {
         this(type, PathMetadata.forProperty(parent, property));
     }
 
@@ -29,7 +28,7 @@ public class PDateTime<D extends Comparable> extends EDateTime<D> implements Pat
         this.pathMixin = new PathMixin<D>(this, metadata);
     }
 
-    public PDateTime(Class<? extends D> type, @NotEmpty String var) {
+    public PDateTime(Class<? extends D> type, String var) {
         this(type, PathMetadata.forVariable(var));
     }
 

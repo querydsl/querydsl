@@ -12,7 +12,6 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollectionBase;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.util.NotEmpty;
 
 /**
  * PSet represents set paths
@@ -31,7 +30,7 @@ public class PSet<E> extends ECollectionBase<Set<E>,E> implements Path<Set<E>> {
     private final Path<Set<E>> pathMixin;
     
     @SuppressWarnings("unchecked")
-    public PSet(Class<? super E> type, @NotEmpty String entityName, PathMetadata<?> metadata) {
+    public PSet(Class<? super E> type, String entityName, PathMetadata<?> metadata) {
         super((Class)Set.class);
         this.elementType = (Class<E>) Assert.notNull(type,"type is null");        
         this.entityName = Assert.notNull(entityName,"entityName is null");

@@ -8,7 +8,6 @@ package com.mysema.query.types.path;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
-import com.mysema.query.util.NotEmpty;
 
 /**
  * PComparable represents Comparable paths
@@ -23,7 +22,7 @@ public class PComparable<D extends Comparable> extends EComparable<D> implements
 
     private final Path<D> pathMixin;
     
-    public PComparable(Class<? extends D> type, Path<?> parent, @NotEmpty String property) {
+    public PComparable(Class<? extends D> type, Path<?> parent, String property) {
         this(type, PathMetadata.forProperty(parent, property));
     }
 
@@ -32,11 +31,11 @@ public class PComparable<D extends Comparable> extends EComparable<D> implements
         this.pathMixin = new PathMixin<D>(this, metadata);
     }
     
-    public PComparable(Class<? extends D> type, @NotEmpty String var) {
+    public PComparable(Class<? extends D> type, String var) {
         this(type, PathMetadata.forVariable(var));
     }
     
-    public PComparable(Path<?> parent, @NotEmpty String property) {
+    public PComparable(Path<?> parent, String property) {
         this((Class<? extends D>) Comparable.class, PathMetadata.forProperty(parent, property));
     }
     

@@ -8,7 +8,6 @@ package com.mysema.query.types.path;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.util.NotEmpty;
 
 /**
  * PNumber represents numeric paths
@@ -22,7 +21,7 @@ public class PNumber<D extends Number & Comparable<?>> extends ENumber<D> implem
     
     private final Path<D> pathMixin;
 
-    public PNumber(Class<? extends D> type, Path<?> parent, @NotEmpty String property) {
+    public PNumber(Class<? extends D> type, Path<?> parent, String property) {
         this(type, PathMetadata.forProperty(parent, property));
     }
 
@@ -31,7 +30,7 @@ public class PNumber<D extends Number & Comparable<?>> extends ENumber<D> implem
         this.pathMixin = new PathMixin<D>(this, metadata);
     }
     
-    public PNumber(Class<? extends D> type, @NotEmpty String var) {
+    public PNumber(Class<? extends D> type, String var) {
         this(type, PathMetadata.forVariable(var));
     }
 

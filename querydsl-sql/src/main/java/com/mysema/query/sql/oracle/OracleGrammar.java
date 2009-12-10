@@ -13,7 +13,6 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PathMetadata;
-import com.mysema.query.util.NotEmpty;
 
 /**
  * OracleGrammar provides Oracle specific extensions to the SqlGrammar

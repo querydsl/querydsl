@@ -80,8 +80,8 @@ public class EntitySerializer extends AbstractSerializer{
         
         // 5 
         if (hasEntityFields){            
-            builder.append("    public "+queryType+"(Class<? extends "+genericName+"> type, @NotEmpty String entityName, PathMetadata<?> metadata, PathInits inits) {\n");
-            builder.append("        super(type, entityName, metadata);\n");
+            builder.append("    public "+queryType+"(Class<? extends "+genericName+"> type, String entityName, PathMetadata<?> metadata, PathInits inits) {\n");
+            builder.append("        super(type, entityName, metadata, inits);\n");
             initEntityFields(builder, model);
             builder.append("    }\n\n"); 
         }
@@ -102,7 +102,7 @@ public class EntitySerializer extends AbstractSerializer{
         if (!localName.equals(genericName)){
             builder.append("    @SuppressWarnings(\"unchecked\")\n");
         }        
-        builder.append("    public " + queryType + "(@NotEmpty String variable) {\n");
+        builder.append("    public " + queryType + "(String variable) {\n");
         builder.append("        "+thisOrSuper+"(");
         if (!localName.equals(genericName)){
             builder.append("(Class)");   
@@ -250,7 +250,6 @@ public class EntitySerializer extends AbstractSerializer{
     }
 
     protected void introImports(StringBuilder builder, EntityModel model) {        
-        builder.append("import com.mysema.query.util.*;\n");
         builder.append("import com.mysema.query.types.path.*;\n");
         builder.append("import static com.mysema.query.types.path.PathMetadata.*;\n");
         if (!model.getConstructors().isEmpty() || model.hasLists() || model.hasMaps()){
