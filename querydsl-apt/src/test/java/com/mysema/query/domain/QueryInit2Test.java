@@ -23,7 +23,7 @@ public class QueryInit2Test {
     }
     
     @QueryEntity
-    public static class Withdrawal extends Event{
+    public static class Activation extends Event{
             
     }
     
@@ -41,7 +41,7 @@ public class QueryInit2Test {
     @Test
     public void test(){
         assertNotNull(QCategorization.categorization.event.account.owner);
-        assertNotNull(QCategorization.categorization.event.as(QWithdrawal.class).account.owner);
+        assertNotNull(QCategorization.categorization.event.as(QActivation.class).account.owner);
     }
 
 }
