@@ -7,6 +7,7 @@ package com.mysema.query.hql.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;
@@ -29,6 +30,10 @@ public class Cat extends Animal {
     @JoinTable(name="kittens")
     @IndexColumn(name = "ind")
     private List<Cat> kittens = new ArrayList<Cat>();
+    
+    @OneToMany
+    @JoinTable(name="kittens_set")
+    private Set<Cat> kittensSet;
     
     @OneToMany
     @JoinTable(name="kittens_array")
@@ -72,9 +77,18 @@ public class Cat extends Animal {
 
     public void addKitten(Cat kitten) {
         kittens.add(kitten);
-        kittensArray = new Cat[]{kitten};
-        
+        kittensArray = new Cat[]{kitten};        
     }
+
+    public Set<Cat> getKittensSet() {
+        return kittensSet;
+    }
+
+    public void setKittensSet(Set<Cat> kittensSet) {
+        this.kittensSet = kittensSet;
+    }
+    
+    
     
     
 }

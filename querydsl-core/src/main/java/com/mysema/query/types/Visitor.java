@@ -39,6 +39,7 @@ import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PList;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PSet;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PTime;
@@ -122,6 +123,8 @@ public interface Visitor {
     void visit(PCollection<?> expr);
 
     void visit(PList<?, ?> expr);
+
+    void visit(PSet<?> expr);
 
     void visit(PMap<?, ?, ?> expr);
 

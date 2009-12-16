@@ -40,6 +40,7 @@ import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PList;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PSet;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PTime;
@@ -210,6 +211,11 @@ public abstract class VisitorBase<SubType extends VisitorBase<SubType>> implemen
 
     @Override
     public void visit(PList<?,?> expr) {
+        visit((Path<?>) expr);
+    }
+
+    @Override
+    public void visit(PSet<?> expr) {
         visit((Path<?>) expr);
     }
 
