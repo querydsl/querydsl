@@ -56,6 +56,10 @@ public class JoinExpression {
         flags.add(flag);
     }
     
+    public void removeFlag(Object flag){
+        flags.remove(flag);
+    }
+    
     public boolean hasFlag(Object flag){
         return flags.contains(flag);
     }
