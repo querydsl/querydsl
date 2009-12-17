@@ -51,7 +51,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
             throw new IllegalArgumentException("No joins given");
         }
         HQLSerializer serializer = new HQLSerializer(templates);
-        serializer.serialize(getMetadata(), forCountRow);
+        serializer.serialize(getMetadata(), forCountRow, null);
         constants = serializer.getConstantToLabel();
         return serializer.toString();
     }

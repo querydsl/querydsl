@@ -29,7 +29,7 @@ public class HQLSubQuery extends QueryBaseWithDetach<HQLSubQuery>{
     public String toString(){
         if (!getMetadata().getJoins().isEmpty()){
             HQLSerializer serializer = new HQLSerializer(templates);
-            serializer.serialize(getMetadata(), false);
+            serializer.serialize(getMetadata(), false, null);
             return serializer.toString().trim();    
         }else{
             return super.toString();

@@ -70,17 +70,7 @@ public class FeaturesTest extends AbstractQueryTest{
                 cat.bodyWeight.add(kitten.bodyWeight).eq(kitten.bodyWeight));
     }
 
-    @Test
-    public void testBooleanOpeations() {
-        toString("cust is null or cat is null", cust.isNull().or(cat.isNull()));
-        toString("cust is null and cat is null", cust.isNull()
-                .and(cat.isNull()));
-        toString("not (cust is null)", cust.isNull().not());
-        cat.name.eq(cust.name.firstName).and(
-                cat.bodyWeight.eq(kitten.bodyWeight));
-        cat.name.eq(cust.name.firstName).or(
-                cat.bodyWeight.eq(kitten.bodyWeight));
-    }
+
 
     public static class MyCustomExpr extends CString {
 
@@ -142,11 +132,6 @@ public class FeaturesTest extends AbstractQueryTest{
     }
 
     @Test
-    public void testGrammarConstructs() {
-        cat.bodyWeight.add(kitten.bodyWeight);
-    }
-
-    @Test
     public void testGroupingOperationsAndNullChecks() {
         // in, not in, between, is null, is not null, is empty, is not empty,
         // member of and not member of
@@ -177,24 +162,6 @@ public class FeaturesTest extends AbstractQueryTest{
     @Test
     public void testIsNullAndIsNotNullInFunctionalWay() {
         toString("cat.bodyWeight is null", cat.bodyWeight.isNull());
-    }
-
-    @Test
-    public void testLogicalOperations() {
-        // logical operations and, or, not
-        toString("cat = kitten or kitten = cat", cat.eq(kitten).or(kitten.eq(cat)));
-        toString("cat = kitten and kitten = cat", cat.eq(kitten).and(kitten.eq(cat)));
-        toString("cat is null and (kitten is null or kitten.bodyWeight > :a1)",
-                cat.isNull().and(kitten.isNull().or(kitten.bodyWeight.gt(10))));
-    }
-
-
-    // Parentheses ( ), indicating grouping
-
-    @Test
-    public void testOrderExpressionInFunctionalWay() {
-        cat.bodyWeight.asc();
-        cat.bodyWeight.add(kitten.bodyWeight).asc();
     }
 
     @Test

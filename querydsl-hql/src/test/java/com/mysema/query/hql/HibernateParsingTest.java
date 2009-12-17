@@ -107,6 +107,10 @@ public class HibernateParsingTest implements Constants {
         query().from(cat).where(
                 sub().from(mate).where(mate.mate.eq(cat)).list(mate).notExists())
                 .parse();
+        
+        query().from(cat).where(
+                sub().from(mate).where(mate.mate.eq(cat)).exists())
+                .parse();
 
         query().from(cat).where(
                 cat.name.notIn(sub().from(name).list(name.nickName)))
@@ -144,19 +148,14 @@ public class HibernateParsingTest implements Constants {
 
     @Test
     public void docoExamples92() throws Exception {
-        // parse( "from eg.Cat" );
         query().from(cat).parse();
 
-        // parse( "from eg.Cat as cat" );
         query().from(cat).parse();
 
-        // parse( "from eg.Cat cat" );
         query().from(cat).parse();
 
-        // parse( "from Formula, Parameter" );
         query().from(form, param).parse();
 
-        // parse( "from Formula as form, Parameter as param" );
         query().from(form, param).parse();
     }
 

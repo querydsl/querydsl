@@ -33,9 +33,13 @@ public class SubQueryTest extends AbstractQueryTest{
     
     @Test
     public void exists(){
-        toString("exists (select cat from Cat cat)",                        sub().from(cat).exists());
-        toString("exists (select cat from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).exists());
-        toString("exists (select cat from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).unique(cat).exists());
+//        toString("exists (select cat from Cat cat)",                        sub().from(cat).exists());
+//        toString("exists (select cat from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).exists());
+//        toString("exists (select cat from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).unique(cat).exists());
+        
+        toString("exists (select 1 from Cat cat)",                        sub().from(cat).exists());
+        toString("exists (select 1 from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).exists());
+        toString("exists (select 1 from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).unique(cat).exists());
     }
     
 }

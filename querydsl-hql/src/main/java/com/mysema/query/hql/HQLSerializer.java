@@ -61,7 +61,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         }
     }
     
-    public void serialize(QueryMetadata metadata, boolean forCountRow) {
+    public void serialize(QueryMetadata metadata, boolean forCountRow, String projection) {
         List<? extends Expr<?>> select = metadata.getProjection();
         List<JoinExpression> joins = metadata.getJoins();
         EBoolean where = metadata.getWhere();
@@ -69,7 +69,9 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         EBoolean having = metadata.getHaving();
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
-        if (forCountRow) {
+        if (projection != null){
+            append("select ").append(projection).append("\n");
+        }else if (forCountRow) {
             append("select count(*)\n");
         } else if (!select.isEmpty()) {
             if (!metadata.isDistinct()) {
@@ -204,8 +206,8 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     
     @Override
     public void visit(SubQuery query) {
-        append("(");
-        serialize(query.getMetadata(), false);
+        append("(");       
+        serialize(query.getMetadata(), false, null);
         append(")");
     }
 
@@ -227,6 +229,12 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             
         } else if (operator.equals(Ops.NUMCAST)) {
             visitCast(args.get(0), (Class<?>) ((Constant<?>) args.get(1)).getConstant());
+            
+        } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQuery){
+            SubQuery subQuery = (SubQuery) args.get(0);            
+            append("exists (");
+            serialize(subQuery.getMetadata(), false, "1");
+            append(")");
             
         } else if (operator.equals(Ops.MATCHES)){
             args = new ArrayList<Expr<?>>(args);
