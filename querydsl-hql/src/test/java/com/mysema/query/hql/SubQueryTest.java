@@ -28,7 +28,17 @@ public class SubQueryTest extends AbstractQueryTest{
         assertEquals("from Cat cat", query.toString());
         
         query.from(fatcat);
-        assertEquals("from Cat cat, Cat fatcat", query.toString());
+        assertEquals("from Cat cat, Cat fatcat", query.toString());        
+    }
+    
+    @Test
+    public void uniqueProjection(){
+        assertToString("(select cat from Cat cat)", sub().from(cat).unique(cat));
+    }
+    
+    @Test
+    public void listProjection(){
+        assertToString("(select cat from Cat cat)", sub().from(cat).list(cat));
     }
     
     @Test
@@ -37,9 +47,9 @@ public class SubQueryTest extends AbstractQueryTest{
 //        toString("exists (select cat from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).exists());
 //        toString("exists (select cat from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).unique(cat).exists());
         
-        toString("exists (select 1 from Cat cat)",                        sub().from(cat).exists());
-        toString("exists (select 1 from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).exists());
-        toString("exists (select 1 from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).unique(cat).exists());
+        assertToString("exists (select 1 from Cat cat)",                        sub().from(cat).exists());
+        assertToString("exists (select 1 from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).exists());
+        assertToString("exists (select 1 from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).unique(cat).exists());
     }
     
 }

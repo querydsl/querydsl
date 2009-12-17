@@ -53,7 +53,7 @@ public class FeaturesTest extends AbstractQueryTest{
     @Test
     public void testArgumentHandling() {
         // Kitty is reused, so it should be used via one named parameter
-        toString(
+        assertToString(
                 "cat.name = :a1 or cust.name.firstName = :a2 or kitten.name = :a1",
                 cat.name.eq("Kitty").or(cust.name.firstName.eq("Hans")).or(
                         kitten.name.eq("Kitty")));
@@ -63,10 +63,10 @@ public class FeaturesTest extends AbstractQueryTest{
 
     @Test
     public void testBasicOperations() {
-        toString("cat.bodyWeight = kitten.bodyWeight", cat.bodyWeight.eq(kitten.bodyWeight));
-        toString("cat.bodyWeight != kitten.bodyWeight", cat.bodyWeight.ne(kitten.bodyWeight));
+        assertToString("cat.bodyWeight = kitten.bodyWeight", cat.bodyWeight.eq(kitten.bodyWeight));
+        assertToString("cat.bodyWeight != kitten.bodyWeight", cat.bodyWeight.ne(kitten.bodyWeight));
 
-        toString("cat.bodyWeight + kitten.bodyWeight = kitten.bodyWeight", 
+        assertToString("cat.bodyWeight + kitten.bodyWeight = kitten.bodyWeight", 
                 cat.bodyWeight.add(kitten.bodyWeight).eq(kitten.bodyWeight));
     }
 
@@ -83,7 +83,7 @@ public class FeaturesTest extends AbstractQueryTest{
 
     @Test
     public void testCustomExpressions() {
-        toString("myCustom(cust,cat)", new MyCustomExpr(cust, cat));
+        assertToString("myCustom(cust,cat)", new MyCustomExpr(cust, cat));
     }
 
     @Test
@@ -104,8 +104,8 @@ public class FeaturesTest extends AbstractQueryTest{
 //        maxelement(cat.kittens);
 //        minindex(cat.kittens);
 //        maxindex(cat.kittens);
-        toString("cat.kittens[0]", cat.kittens(0));
-        toString("cat.kittens[0]", cat.kittens.get(0));
+        assertToString("cat.kittens[0]", cat.kittens(0));
+        assertToString("cat.kittens[0]", cat.kittens.get(0));
 
         // some, all, exists, any, in.
     }
@@ -117,17 +117,17 @@ public class FeaturesTest extends AbstractQueryTest{
                 com.mysema.query.hql.domain.Cat.class,
                 new Class[]{String.class},
                 cat.name);
-        toString("new " + com.mysema.query.hql.domain.Cat.class.getName()
+        assertToString("new " + com.mysema.query.hql.domain.Cat.class.getName()
                 + "(cat.name)", c);
-        toString("new " + getClass().getName() + "$BookmarkDTO(cat.name)",
+        assertToString("new " + getClass().getName() + "$BookmarkDTO(cat.name)",
                 new _BookmarkDTO(cat.name));
     }
 
     @Test
     public void testEqualsAndNotEqualsForAllExpressions() {
-        toString("cat.name = cust.name.firstName", cat.name
+        assertToString("cat.name = cust.name.firstName", cat.name
                 .eq(cust.name.firstName));
-        toString("cat.name != cust.name.firstName", cat.name
+        assertToString("cat.name != cust.name.firstName", cat.name
                 .ne(cust.name.firstName));
     }
 
@@ -161,7 +161,7 @@ public class FeaturesTest extends AbstractQueryTest{
 
     @Test
     public void testIsNullAndIsNotNullInFunctionalWay() {
-        toString("cat.bodyWeight is null", cat.bodyWeight.isNull());
+        assertToString("cat.bodyWeight is null", cat.bodyWeight.isNull());
     }
 
     @Test
@@ -173,7 +173,7 @@ public class FeaturesTest extends AbstractQueryTest{
     @Test
     public void testStringConcatenations() {
         // string concatenation ...||... or concat(...,...)
-        toString("cat.name || kitten.name", cat.name.concat(kitten.name));
+        assertToString("cat.name || kitten.name", cat.name.concat(kitten.name));
     }
 
     // coalesce() and nullif()
@@ -181,37 +181,37 @@ public class FeaturesTest extends AbstractQueryTest{
     @Test
     public void testStringConversionOperations() {
         // str() for converting numeric or temporal values to a readable string
-        toString("str(cat.bodyWeight)", cat.bodyWeight.stringValue());
+        assertToString("str(cat.bodyWeight)", cat.bodyWeight.stringValue());
     }
 
     @Test
     public void testStringOperationsInFunctionalWay() {
-        toString("cat.name || cust.name.firstName", cat.name
+        assertToString("cat.name || cust.name.firstName", cat.name
                 .concat(cust.name.firstName));
 //        toString("cat.name like :a1", cat.name.like("A%"));
-        toString("lower(cat.name)", cat.name.lower());
+        assertToString("lower(cat.name)", cat.name.lower());
     }
 
     @Test
     public void testToString() {
-        toString("cat", cat);
-        toString("cat.alive", cat.alive);
-        toString("cat.bodyWeight", cat.bodyWeight);
-        toString("cat.name", cat.name);
+        assertToString("cat", cat);
+        assertToString("cat.alive", cat.alive);
+        assertToString("cat.bodyWeight", cat.bodyWeight);
+        assertToString("cat.name", cat.name);
 
-        toString("cust.name", cust.name);
-        toString("cust.name.firstName = :a1", cust.name.firstName.eq("Martin"));
+        assertToString("cust.name", cust.name);
+        assertToString("cust.name.firstName = :a1", cust.name.firstName.eq("Martin"));
 
 //        toString("cat.kittens as kitten", cat.kittens.as(kitten));
 
-        toString("cat.bodyWeight + :a1", cat.bodyWeight.add(10));
-        toString("cat.bodyWeight - :a1", cat.bodyWeight.subtract(10));
-        toString("cat.bodyWeight * :a1", cat.bodyWeight.multiply(10));
-        toString("cat.bodyWeight / :a1", cat.bodyWeight.divide(10));
+        assertToString("cat.bodyWeight + :a1", cat.bodyWeight.add(10));
+        assertToString("cat.bodyWeight - :a1", cat.bodyWeight.subtract(10));
+        assertToString("cat.bodyWeight * :a1", cat.bodyWeight.multiply(10));
+        assertToString("cat.bodyWeight / :a1", cat.bodyWeight.divide(10));
 
 //        toString("cat.bodyWeight as bw", cat.bodyWeight.as("bw"));
 
-        toString("kitten in elements(cat.kittens)", kitten.in(cat.kittens));
+        assertToString("kitten in elements(cat.kittens)", kitten.in(cat.kittens));
 
         // toString("distinct cat.bodyWeight", distinct(cat.bodyWeight));
     }
