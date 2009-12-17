@@ -70,11 +70,6 @@ public abstract class VisitorBase<SubType extends VisitorBase<SubType>> implemen
     }
     
     @Override
-    public void visit(EArrayConstructor<?> expr){
-        visit((EConstructor<?>)expr);
-    }
-    
-    @Override
     public void visit(CComparable<?> expr) {
         visit((Custom<?>) expr);
     }
@@ -87,6 +82,11 @@ public abstract class VisitorBase<SubType extends VisitorBase<SubType>> implemen
     @Override
     public void visit(CString expr) {
         visit((Custom<?>) expr);
+    }
+    
+    @Override
+    public void visit(EArrayConstructor<?> expr){
+        visit((EConstructor<?>)expr);
     }
     
     @Override
@@ -105,17 +105,17 @@ public abstract class VisitorBase<SubType extends VisitorBase<SubType>> implemen
     }
     
     @Override
-    public void visit(ETimeConst expr) {
-        visit((Constant<?>) expr);
-    }
-    
-    @Override
     public void visit(ENumberConst<?> expr) {
         visit((Constant<?>) expr);
     }
     
     @Override
     public void visit(EStringConst expr) {
+        visit((Constant<?>) expr);
+    }
+    
+    @Override
+    public void visit(ETimeConst expr) {
         visit((Constant<?>) expr);
     }
 
@@ -159,6 +159,8 @@ public abstract class VisitorBase<SubType extends VisitorBase<SubType>> implemen
         visit((Operation<?, ?>) expr);
     }
 
+    protected abstract void visit(Operation<?, ?> expr);
+
     @Override
     public void visit(OSimple<?, ?> expr) {
         visit((Operation<?, ?>) expr);
@@ -179,8 +181,15 @@ public abstract class VisitorBase<SubType extends VisitorBase<SubType>> implemen
         visit((Path<?>) expr);
     }
 
+    protected abstract void visit(Path<?> expr);
+
     @Override
     public void visit(PBoolean expr) {
+        visit((Path<?>) expr);
+    }
+
+    @Override
+    public void visit(PCollection<?> expr) {
         visit((Path<?>) expr);
     }
 
@@ -205,17 +214,7 @@ public abstract class VisitorBase<SubType extends VisitorBase<SubType>> implemen
     }
 
     @Override
-    public void visit(PCollection<?> expr) {
-        visit((Path<?>) expr);
-    }
-
-    @Override
     public void visit(PList<?,?> expr) {
-        visit((Path<?>) expr);
-    }
-
-    @Override
-    public void visit(PSet<?> expr) {
         visit((Path<?>) expr);
     }
 
@@ -223,9 +222,14 @@ public abstract class VisitorBase<SubType extends VisitorBase<SubType>> implemen
     public void visit(PMap<?, ?, ?> expr) {
         visit((Path<?>) expr);
     }
-    
+
     @Override
     public void visit(PNumber<?> expr) {
+        visit((Path<?>) expr);
+    }
+    
+    @Override
+    public void visit(PSet<?> expr) {
         visit((Path<?>) expr);
     }
     

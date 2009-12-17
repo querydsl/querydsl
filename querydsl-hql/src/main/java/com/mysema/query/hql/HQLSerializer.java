@@ -100,6 +100,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
                 }
                 append(sep);
             }
+            
             if (je.hasFlag(HQLFlags.FETCH) && !forCountRow){
                 append("fetch ");
             }            

@@ -104,15 +104,11 @@ public interface Visitor {
 
     void visit(ONumber<?, ?> expr);
     
-    void visit(Operation<?, ?> expr);
-
     void visit(OSimple<?, ?> expr);
 
     void visit(OString expr);
 
     void visit(PArray<?> expr);
-
-    void visit(Path<?> expr);
 
     void visit(PBoolean expr);
 

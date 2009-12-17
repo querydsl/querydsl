@@ -14,8 +14,7 @@ public class JoinFlagsTest implements Constants{
     @Test
     public void fetchAll(){
         QueryHelper query1 = query().from(cat).fetchAll().where(cat.name.isNotNull());
-        assertEquals("from Cat cat fetch all properties\n" +
-                "where cat.name is not null", query1.toString());
+        assertEquals("from Cat cat fetch all properties\nwhere cat.name is not null", query1.toString());
         
         QueryHelper query2 = query().from(cat).fetchAll().from(cat1).fetchAll(); 
         assertEquals("from Cat cat fetch all properties, Cat cat1 fetch all properties", query2.toString());
@@ -23,7 +22,8 @@ public class JoinFlagsTest implements Constants{
     
     @Test
     public void fetch(){
-        // TODO
+        QueryHelper query = query().from(cat).innerJoin(cat.mate, cat1).fetch();
+        assertEquals("from Cat cat\n  inner join fetch cat.mate as cat1", query.toString());
     }
     
 }
