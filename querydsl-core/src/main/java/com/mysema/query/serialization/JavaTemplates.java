@@ -12,6 +12,13 @@ import com.mysema.query.types.operation.OperatorImpl;
 import com.mysema.query.types.operation.Ops;
 
 
+/**
+ * JavaTemplates extends Template to provide Java syntax compliant serialization 
+ * of Querydsl expressions
+ * 
+ * @author tiwe
+ *
+ */
 public class JavaTemplates extends Templates {
     
     public JavaTemplates() {

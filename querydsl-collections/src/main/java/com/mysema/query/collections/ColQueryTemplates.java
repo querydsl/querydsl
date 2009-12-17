@@ -13,7 +13,7 @@ import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PathType;
 
 /**
- * JavaOps extends OperationPatterns to add Java syntax specific operation
+ * ColQueryTemplates extends JavaTemplates to add Java syntax specific operation
  * templates.
  * 
  * @author tiwe

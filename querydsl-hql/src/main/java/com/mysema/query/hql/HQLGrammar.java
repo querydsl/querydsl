@@ -23,26 +23,56 @@ import com.mysema.query.types.operation.Ops;
  */
 public class HQLGrammar {
 
+    /**
+     * @param <D>
+     * @param col
+     * @return
+     */
     public static <D> Expr<D> all(ECollection<?,D> col) {
         return OSimple.create(col.getElementType(), Ops.QuantOps.ALL, (Expr<?>)col);
     }
 
+    /**
+     * @param <D>
+     * @param col
+     * @return
+     */
     public static <D> Expr<D> any(ECollection<?,D> col) {
         return OSimple.create(col.getElementType(), Ops.QuantOps.ANY, (Expr<?>)col);
     }
 
+    /**
+     * @param <A>
+     * @param col
+     * @return
+     */
     public static <A extends Comparable<? super A>> EComparable<A> avg(ECollection<?,A> col) {
         return OComparable.create(col.getElementType(), Ops.QuantOps.AVG_IN_COL, (Expr<?>)col);
     }
 
+    /**
+     * @param <A>
+     * @param left
+     * @return
+     */
     public static <A extends Comparable<? super A>> EComparable<A> max(ECollection<?,A> left) {
         return OComparable.create(left.getElementType(), Ops.QuantOps.MAX_IN_COL, (Expr<?>)left);
     }
 
+    /**
+     * @param <A>
+     * @param left
+     * @return
+     */
     public static <A extends Comparable<? super A>> EComparable<A> min(ECollection<?,A> left) {
         return OComparable.create(left.getElementType(), Ops.QuantOps.MIN_IN_COL, (Expr<?>)left);
     }
 
+    /**
+     * @param <D>
+     * @param col
+     * @return
+     */
     public static <D> Expr<D> some(ECollection<?,D> col) {
         return any(col);
     }
@@ -64,10 +94,20 @@ public class HQLGrammar {
         return ONumber.create((Class<D>) type, Ops.AggOps.SUM_AGG, left);
     }
 
+    /**
+     * @param <D>
+     * @param left
+     * @return
+     */
     public static <D extends Number & Comparable<? super D>> ENumber<Long> sumAsLong(Expr<D> left) {
         return sum(left).longValue();
     }
 
+    /**
+     * @param <D>
+     * @param left
+     * @return
+     */
     public static <D extends Number & Comparable<? super D>> ENumber<Double> sumAsDouble(Expr<D> left) {
         return sum(left).doubleValue();
     }

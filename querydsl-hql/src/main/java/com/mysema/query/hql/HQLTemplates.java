@@ -15,7 +15,7 @@ import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PathType;
 
 /**
- * HQLPatterns extends OperationPatterns to provide operator patterns for HQL
+ * HQLTemplates extends Templates to provide operator patterns for HQL
  * serialization
  * 
  * @author tiwe

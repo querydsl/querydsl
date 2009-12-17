@@ -9,7 +9,7 @@ import com.mysema.query.serialization.JavaTemplates;
 import com.mysema.query.types.operation.Ops;
 
 /**
- * Operation patterns for JDOQL serialization
+ * JDOQLTemplates provides patterns for JDOQL serialization
  * 
  * @author tiwe
  * 
