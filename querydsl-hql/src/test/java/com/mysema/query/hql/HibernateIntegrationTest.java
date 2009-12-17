@@ -35,12 +35,12 @@ import com.mysema.testutil.HibernateTestRunner;
  */
 @RunWith(HibernateTestRunner.class)
 @HibernateConfig("hsqldb.properties")
-public class HibernateIntegrationTest extends HQLExamplesTest {
+public class HibernateIntegrationTest extends HibernateParsingTest {
 
     private Session session;
 
-    protected TestQuery query() {
-        return new TestQuery() {
+    protected QueryHelper query() {
+        return new QueryHelper() {
             public void parse() throws RecognitionException, TokenStreamException {
                 try {
                     System.out.println("query : " + toString().replace('\n', ' '));

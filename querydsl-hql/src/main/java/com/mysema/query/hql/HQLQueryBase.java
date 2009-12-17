@@ -91,12 +91,24 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return _this;
     }
     
+    /**
+     * @return
+     */
     public SubType fetch(){
         List<JoinExpression> joins = getMetadata().getJoins();
-        joins.get(joins.size()-1).setFetch(true);
+        joins.get(joins.size()-1).setFlag(HQLFlags.FETCH);
         return _this;
     }
-    
+
+    /**
+     * @return
+     */
+    public SubType fetchAll(){
+        List<JoinExpression> joins = getMetadata().getJoins();
+        joins.get(joins.size()-1).setFlag(HQLFlags.FETCH_ALL);
+        return _this;
+    }
+
     public <P> SubType fullJoin(PEntity<P> target) {
         getMetadata().addJoin(JoinType.FULLJOIN, target);
         return _this;

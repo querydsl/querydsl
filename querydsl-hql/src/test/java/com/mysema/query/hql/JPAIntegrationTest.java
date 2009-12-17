@@ -26,12 +26,12 @@ import com.mysema.testutil.JPATestRunner;
  */
 @RunWith(JPATestRunner.class)
 @JPAConfig("hsqldb")
-public class JPAIntegrationTest extends HQLExamplesTest {
+public class JPAIntegrationTest extends HibernateParsingTest {
 
     private EntityManager entityManager;
 
-    protected TestQuery query() {
-        return new TestQuery() {
+    protected QueryHelper query() {
+        return new QueryHelper() {
             public void parse() throws RecognitionException, TokenStreamException {
                 try {
                     System.out.println("query : " + toString().replace('\n', ' '));

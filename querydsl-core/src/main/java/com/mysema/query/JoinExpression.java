@@ -5,6 +5,9 @@
  */
 package com.mysema.query;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.mysema.commons.lang.Assert;
@@ -22,9 +25,8 @@ public class JoinExpression {
     // mutable
     private EBoolean condition;
 
-    // mutable
-    private boolean fetch;
-    
+    private final Set<Object> flags = new HashSet<Object>();
+
     private final Expr<?> target;
     
     private final JoinType type;
@@ -50,12 +52,12 @@ public class JoinExpression {
         return type;
     }
 
-    public boolean isFetch() {
-        return fetch;
+    public void setFlag(Object flag){
+        flags.add(flag);
     }
-
-    public void setFetch(boolean fetch) {
-        this.fetch = fetch;
+    
+    public boolean hasFlag(Object flag){
+        return flags.contains(flag);
     }
     
     public String toString() {

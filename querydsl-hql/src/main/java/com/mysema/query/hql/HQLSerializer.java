@@ -100,11 +100,14 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
                 }
                 append(sep);
             }
-            if (je.isFetch() && !forCountRow){
+            if (je.hasFlag(HQLFlags.FETCH) && !forCountRow){
                 append("fetch ");
-            }
-            
+            }            
             handleJoinTarget(je);
+            if (je.hasFlag(HQLFlags.FETCH_ALL) && !forCountRow){
+                append(" fetch all properties");
+            }
+
             if (je.getCondition() != null) {
                 append(" with ").handle(je.getCondition());
             }

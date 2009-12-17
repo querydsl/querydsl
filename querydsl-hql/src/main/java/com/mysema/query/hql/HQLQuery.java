@@ -284,4 +284,10 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      */
     HQLQuery fetch();
 
+    /**
+      * Add the "fetch all properties" statement to the last defined join.
+      * @return
+       */
+    HQLQuery fetchAll();
+    
 }
