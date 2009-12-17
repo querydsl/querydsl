@@ -11,12 +11,9 @@ import com.mysema.query.types.expr.Expr;
 
 public abstract class AbstractQueryTest implements Constants{
     
-    private HQLSerializer visitor = new HQLSerializer(new HQLTemplates());
-    
-    protected void assertToString(String expected, Expr<?> expr) {
-        assertEquals(expected, visitor.handle(expr).toString().replace("\n", " "));
-        // visitor.clear();
-        visitor = new HQLSerializer(new HQLTemplates());
+    protected static void assertToString(String expected, Expr<?> expr) {
+        HQLSerializer serializer = new HQLSerializer(new HQLTemplates());
+        assertEquals(expected, serializer.handle(expr).toString().replace("\n", " "));
     }
 
 }
