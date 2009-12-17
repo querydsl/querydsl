@@ -123,7 +123,7 @@ public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
 
     @Override
     public void visit(SubQuery expr) {
-        // TODO : select from (+joins) where group-by having order-by limit offset        
+        toString = expr.getMetadata().toString();        
     }
 
 }
