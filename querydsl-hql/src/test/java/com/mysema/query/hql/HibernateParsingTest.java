@@ -44,41 +44,11 @@ import com.mysema.query.types.expr.Expr;
  */
 public class HibernateParsingTest implements Constants {
 
-    protected QueryHelper query() {
-        return new QueryHelper();
-    }
-    
-    protected HQLSubQuery sub(){
-        return new HQLSubQuery();
-    }
-    
     @Test
-    public void serialization(){
-        QueryHelper query = query();
-        
-        query.from(cat);
-        assertEquals("from Cat cat", query.toString());
-        
-        query.from(fatcat);
-        assertEquals("from Cat cat, Cat fatcat", query.toString());
+    @Ignore
+    public void arrayExpr() throws Exception {
+        query().from(ord).where(ord.items(0).id.eq(1234l)).parse();
     }
-    
-
-    @Test
-    public void joinFlags1() throws RecognitionException, TokenStreamException{
-        query().from(cat).fetchAll().parse();        
-    }
-    
-    @Test
-    public void joinFlags2() throws RecognitionException, TokenStreamException{
-        query().from(cat).fetchAll().from(cat1).fetchAll().parse();        
-    }
-    
-    @Test
-    public void joinFlags3() throws RecognitionException, TokenStreamException{
-        query().from(cat).fetchAll().from(cat1).fetchAll().parse();        
-    }
-
     
     @Test
     public void basic() throws RecognitionException, TokenStreamException{
@@ -95,34 +65,83 @@ public class HibernateParsingTest implements Constants {
                 .parse();
     }
     
-    @Test
-    public void joins() throws RecognitionException, TokenStreamException{
-        query().from(cat).join(cat.mate).select(cat).parse();
-        
-        query().from(cat).innerJoin(cat.mate).select(cat).parse();
-        
-        query().from(cat).leftJoin(cat.mate).select(cat).parse();
-    }
 
     @Test
-    public void testSum() throws RecognitionException, TokenStreamException {
-        query().from(cat).select(sum(cat.kittens.size())).parse();
-
-        query().from(cat).where(sum(cat.kittens.size()).gt(0)).select(cat).parse();
-
-        query().from(cat).where(cat.kittens.isEmpty()).select(cat).parse();
-
-        query().from(cat).where(cat.kittens.isNotEmpty()).select(cat).parse();
-
-//        query().from(cat)
-//         .groupBy(cat.name)
-//         .having(sum(cat.bodyWeight).gt(0))
-//         .select(cat).parse();
+    public void complexConstructor() throws Exception {
+        query().select(new QFooDTO(bar.count())).from(bar).parse();
+    }
+    
+    @Test
+    public void docoExamples910() throws Exception {
+        query().select(cat.color, sum(cat.weight), cat.count()).from(cat)
+                .groupBy(cat.color).parse();
+    }
+    
+    @Test
+    public void docoExamples910_2() throws Exception {
+        query().select(cat.color, sum(cat.weight), cat.count()).from(cat)
+                .groupBy(cat.color).having(
+                        cat.color.in(Color.TABBY, Color.BLACK)).parse();
     }
 
-    /**
-     * Section 9.2 - from *
-     */
+    
+    @Test    
+    @Ignore
+    public void docoExamples910_3() throws Exception {
+        query().select(cat).from(cat).join(cat.kittens, kitten).groupBy(cat)
+                .having(kitten.weight.avg().gt(100.0)).orderBy(
+                        kitten.count().asc(), sum(kitten.weight).desc())
+                .parse();
+    }
+    
+    @Test
+    public void docoExamples911() throws Exception {
+        query().from(fatcat).where(
+                fatcat.weight.gt(sub().from(cat).unique(cat.weight.avg())))
+                .parse();
+
+        query().from(cat).where(
+                cat.name.eq(some(sub().from(name).list(name.nickName))))
+                .parse();
+
+        query().from(cat).where(
+                sub().from(mate).where(mate.mate.eq(cat)).list(mate).notExists())
+                .parse();
+
+        query().from(cat).where(
+                cat.name.notIn(sub().from(name).list(name.nickName)))
+                .parse();
+    }
+    
+    @Test
+    public void docoExamples912() throws Exception {
+        query().select(ord.id, sum(price.amount), item.count()).from(ord)
+                .join(ord.lineItems, item).join(item.product, product)
+                .from(catalog).join(catalog.prices, price).where(
+                        ord.paid.not().and(ord.customer.eq(cust)).and(
+                                price.product.eq(product)).and(
+                                catalog.effectiveDate.gt(EDate.currentDate())).and(
+                                catalog.effectiveDate.gt(all(                                        
+                                        sub().from(catalog).where(
+                                                catalog.effectiveDate.lt(EDate.currentDate()))
+                                             .list(catalog.effectiveDate)))))
+                .groupBy(ord).having(sum(price.amount).gt(0l)).orderBy(
+                        sum(price.amount).desc());
+
+        Customer c1 = new Customer();
+        Catalog c2 = new Catalog();
+
+        query().select(ord.id, sum(price.amount), item.count()).from(ord)
+                .join(ord.lineItems, item).join(item.product, product)
+                .from(catalog).join(catalog.prices, price).where(
+                        ord.paid.not().and(ord.customer.eq(c1)).and(
+                                price.product.eq(product)).and(catalog.eq(c2)))
+                .groupBy(ord).having(sum(price.amount).gt(0l)).orderBy(
+                        sum(price.amount).desc());
+
+
+    }
+
     @Test
     public void docoExamples92() throws Exception {
         // parse( "from eg.Cat" );
@@ -141,9 +160,6 @@ public class HibernateParsingTest implements Constants {
         query().from(form, param).parse();
     }
 
-    /**
-     * Section 9.3 - Associations and joins *
-     */
     @Test
     public void docoExamples93() throws Exception {
 
@@ -162,9 +178,6 @@ public class HibernateParsingTest implements Constants {
         Cat k = alias(Cat.class, "kittens");
         Cat m = alias(Cat.class, "mate");
 
-//        Formula f = alias(Formula.class, "formula");
-//        Parameter p = alias(Parameter.class, "param");
-
         query().from($(c)).innerJoin($(c.getMate()),$(m)).leftJoin($(c.getKittens()),$(k)).parse();
 
         query().from($(c)).leftJoin($(c.getMate().getKittens()),$(k)).parse();
@@ -174,9 +187,6 @@ public class HibernateParsingTest implements Constants {
         query().from($(c)).innerJoin($(c.getMate()),$(m)).leftJoin($(c.getKittens()),$(k)).parse();
     }
 
-    /**
-     * Section 9.4 - Select *
-     */
     @Test
     public void docoExamples94() throws Exception {
         query().select(cat.mate).from(cat).innerJoin(cat.mate, mate).parse();
@@ -196,9 +206,6 @@ public class HibernateParsingTest implements Constants {
             .leftJoin(mother.kittens, kitten).parse();
     }
 
-    /**
-     * Section 9.5 - Aggregate functions *
-     */
     @Test
     public void docoExamples95() throws Exception {
         query().select(cat.weight.avg(), cat.weight.sum(),
@@ -206,9 +213,6 @@ public class HibernateParsingTest implements Constants {
                 .parse();
     }
 
-    /**
-     * Section 9.6 - Polymorphism *
-     */
     @Test
     public void docoExamples96() throws Exception {
         query().from(cat).parse();
@@ -216,9 +220,6 @@ public class HibernateParsingTest implements Constants {
         query().from(m, n).where(n.name.eq(m.name)).parse();
     }
 
-    /**
-     * Section 9.7 - Where *
-     */
     @Test
     public void docoExamples97() throws Exception {
         query().select(foo).from(foo, bar).where(foo.startDate.eq(bar.date)).parse();
@@ -246,9 +247,6 @@ public class HibernateParsingTest implements Constants {
                 log.item.id.eq(payment.id)).parse();
     }
 
-    /**
-     * Section 9.8 - Expressions *
-     */
     @Test
     @Ignore
     public void docoExamples98() throws Exception {
@@ -305,80 +303,49 @@ public class HibernateParsingTest implements Constants {
     }
 
     @Test
-    public void docoExamples910() throws Exception {
-        query().select(cat.color, sum(cat.weight), cat.count()).from(cat)
-                .groupBy(cat.color).parse();
+    public void dubleLiteral() throws Exception {
+        query().from(cat).where(cat.weight.lt((int) 3.1415)).parse();
+
+        query().from(cat).where(cat.weight.gt((int) 3.1415e3)).parse();
+    }
+
+    @Test
+    public void fetch() throws RecognitionException, TokenStreamException{
+        query().from(cat).innerJoin(cat.mate, mate).fetch().parse();
+
+        query().from(cat).innerJoin(cat.mate, mate).fetch().fetch().parse();
     }
 
 
     @Test
-    public void docoExamples910_2() throws Exception {
-        query().select(cat.color, sum(cat.weight), cat.count()).from(cat)
-                .groupBy(cat.color).having(
-                        cat.color.in(Color.TABBY, Color.BLACK)).parse();
+    public void inNotIn() throws Exception {
+        query().from(foo).where(foo.bar.in("a", "b", "c")).parse();
+
+        query().from(foo).where(foo.bar.notIn("a", "b", "c")).parse();
     }
     
-    @Test    
-    @Ignore
-    public void docoExamples910_3() throws Exception {
-        query().select(cat).from(cat).join(cat.kittens, kitten).groupBy(cat)
-                .having(kitten.weight.avg().gt(100.0)).orderBy(
-                        kitten.count().asc(), sum(kitten.weight).desc())
-                .parse();
+    @Test
+    public void joinFlags1() throws RecognitionException, TokenStreamException{
+        query().from(cat).fetchAll().parse();        
     }
     
     @Test
-    public void docoExamples911() throws Exception {
-        query().from(fatcat).where(
-                fatcat.weight.gt(sub().from(cat).unique(cat.weight.avg())))
-                .parse();
-
-        query().from(cat).where(
-                cat.name.eq(some(sub().from(name).list(name.nickName))))
-                .parse();
-
-        query().from(cat).where(
-                sub().from(mate).where(mate.mate.eq(cat)).list(mate).notExists())
-                .parse();
-
-        query().from(cat).where(
-                cat.name.notIn(sub().from(name).list(name.nickName)))
-                .parse();
+    public void joinFlags2() throws RecognitionException, TokenStreamException{
+        query().from(cat).fetchAll().from(cat1).fetchAll().parse();        
     }
 
     @Test
-    public void docoExamples912() throws Exception {
-        query().select(ord.id, sum(price.amount), item.count()).from(ord)
-                .join(ord.lineItems, item).join(item.product, product)
-                .from(catalog).join(catalog.prices, price).where(
-                        ord.paid.not().and(ord.customer.eq(cust)).and(
-                                price.product.eq(product)).and(
-                                catalog.effectiveDate.gt(EDate.currentDate())).and(
-                                catalog.effectiveDate.gt(all(                                        
-                                        sub().from(catalog).where(
-                                                catalog.effectiveDate.lt(EDate.currentDate()))
-                                             .list(catalog.effectiveDate)                                ))))
-                .groupBy(ord).having(sum(price.amount).gt(0l)).orderBy(
-                        sum(price.amount).desc());
-
-        Customer c1 = new Customer();
-        Catalog c2 = new Catalog();
-
-        query().select(ord.id, sum(price.amount), item.count()).from(ord)
-                .join(ord.lineItems, item).join(item.product, product)
-                .from(catalog).join(catalog.prices, price).where(
-                        ord.paid.not().and(ord.customer.eq(c1)).and(
-                                price.product.eq(product)).and(catalog.eq(c2)))
-                .groupBy(ord).having(sum(price.amount).gt(0l)).orderBy(
-                        sum(price.amount).desc());
-
-
+    public void joinFlags3() throws RecognitionException, TokenStreamException{
+        query().from(cat).fetchAll().from(cat1).fetchAll().parse();        
     }
 
     @Test
-    @Ignore
-    public void arrayExpr() throws Exception {
-        query().from(ord).where(ord.items(0).id.eq(1234l)).parse();
+    public void joins() throws RecognitionException, TokenStreamException{
+        query().from(cat).join(cat.mate).select(cat).parse();
+        
+        query().from(cat).innerJoin(cat.mate).select(cat).parse();
+        
+        query().from(cat).leftJoin(cat.mate).select(cat).parse();
     }
 
     @Test
@@ -388,28 +355,33 @@ public class HibernateParsingTest implements Constants {
 
 
 
-    @Test
-    public void testSelect() throws Exception {
-        query().select(Expr.countAll()).from(qat).parse();
-
-        query().select(qat.weight.avg()).from(qat).parse();
+    protected QueryHelper query() {
+        return new QueryHelper();
     }
 
     @Test
-    public void testWhere() throws Exception {
-
-        query().from(qat).where(qat.name.in("crater", "bean", "fluffy")).parse();
-
-        query().from(qat).where(qat.name.notIn("crater", "bean", "fluffy")).parse();
-
-        query().from(an).where(an.bodyWeight.sqrt().gt(10.0)).parse();
-
-        query().from(an).where(an.bodyWeight.sqrt().divide(2d).gt(10.0)).parse();
+    public void serialization(){
+        QueryHelper query = query();
         
-        query().from(an).where(
-                an.bodyWeight.gt(10).and(
-                        an.bodyWeight.lt(100).or(an.bodyWeight.isNull())))
-                .parse();
+        query.from(cat);
+        assertEquals("from Cat cat", query.toString());
+        
+        query.from(fatcat);
+        assertEquals("from Cat cat, Cat fatcat", query.toString());
+    }
+
+    protected HQLSubQuery sub(){
+        return new HQLSubQuery();
+    }
+
+    @Test
+    public void testCasts() throws Exception {
+        ENumber<Double> bw = cat.bodyWeight;
+        query().from(cat).select(bw.byteValue(), bw.doubleValue(), bw.floatValue(),
+                bw.intValue(), bw.longValue(), bw.shortValue(),
+                bw.stringValue()).parse();
+
+        query().from(cat).select(bw.castToNum(Byte.class)).parse();
     }
 
     @Test
@@ -417,32 +389,6 @@ public class HibernateParsingTest implements Constants {
         query().from(qat).groupBy(qat.breed).parse();
 
         query().from(qat).groupBy(qat.breed, qat.eyecolor).parse();
-    }
-
-    @Test
-    public void testOrderBy() throws Exception {
-        query().from(qat).orderBy(qat.toes.avg().asc()).parse();
-
-        query().from(qat).orderBy(an.bodyWeight.sqrt().divide(2.0).asc()).parse();
-    }
-
-    @Test
-    public void dubleLiteral() throws Exception {
-        query().from(cat).where(cat.weight.lt((int) 3.1415)).parse();
-
-        query().from(cat).where(cat.weight.gt((int) 3.1415e3)).parse();
-    }
-
-    @Test
-    public void complexConstructor() throws Exception {
-        query().select(new QFooDTO(bar.count())).from(bar).parse();
-    }
-
-    @Test
-    public void inNotIn() throws Exception {
-        query().from(foo).where(foo.bar.in("a", "b", "c")).parse();
-
-        query().from(foo).where(foo.bar.notIn("a", "b", "c")).parse();
     }
 
     @Test
@@ -464,22 +410,52 @@ public class HibernateParsingTest implements Constants {
         query().from(cat).where(cat.kittens.size().loe(1).not().not().not()).parse();
     }
 
-    
     @Test
-    public void fetch() throws RecognitionException, TokenStreamException{
-        query().from(cat).innerJoin(cat.mate, mate).fetch().parse();
+    public void testOrderBy() throws Exception {
+        query().from(qat).orderBy(qat.toes.avg().asc()).parse();
 
-        query().from(cat).innerJoin(cat.mate, mate).fetch().fetch().parse();
+        query().from(qat).orderBy(an.bodyWeight.sqrt().divide(2.0).asc()).parse();
     }
 
     @Test
-    public void testCasts() throws Exception {
-        ENumber<Double> bw = cat.bodyWeight;
-        query().from(cat).select(bw.byteValue(), bw.doubleValue(), bw.floatValue(),
-                bw.intValue(), bw.longValue(), bw.shortValue(),
-                bw.stringValue()).parse();
+    public void testSelect() throws Exception {
+        query().select(Expr.countAll()).from(qat).parse();
 
-        query().from(cat).select(bw.castToNum(Byte.class)).parse();
+        query().select(qat.weight.avg()).from(qat).parse();
+    }
+
+    
+    @Test
+    public void testSum() throws RecognitionException, TokenStreamException {
+        query().from(cat).select(sum(cat.kittens.size())).parse();
+
+        query().from(cat).where(sum(cat.kittens.size()).gt(0)).select(cat).parse();
+
+        query().from(cat).where(cat.kittens.isEmpty()).select(cat).parse();
+
+        query().from(cat).where(cat.kittens.isNotEmpty()).select(cat).parse();
+
+//        query().from(cat)
+//         .groupBy(cat.name)
+//         .having(sum(cat.bodyWeight).gt(0))
+//         .select(cat).parse();
+    }
+
+    @Test
+    public void testWhere() throws Exception {
+
+        query().from(qat).where(qat.name.in("crater", "bean", "fluffy")).parse();
+
+        query().from(qat).where(qat.name.notIn("crater", "bean", "fluffy")).parse();
+
+        query().from(an).where(an.bodyWeight.sqrt().gt(10.0)).parse();
+
+        query().from(an).where(an.bodyWeight.sqrt().divide(2d).gt(10.0)).parse();
+        
+        query().from(an).where(
+                an.bodyWeight.gt(10).and(
+                        an.bodyWeight.lt(100).or(an.bodyWeight.isNull())))
+                .parse();
     }
 
 }

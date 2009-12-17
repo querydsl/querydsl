@@ -24,6 +24,7 @@ public class EJBQLTest extends AbstractQueryTest{
         // sqrt(),
         // bit_length(),
         // mod()
+        
         toString("trim(cat.name)", cat.name.trim());
         toString("lower(cat.name)", cat.name.lower());
         toString("upper(cat.name)", cat.name.upper());

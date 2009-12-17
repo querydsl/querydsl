@@ -82,13 +82,8 @@ public class FeaturesTest extends AbstractQueryTest{
                 cat.bodyWeight.eq(kitten.bodyWeight));
     }
 
-    /**
-     * The Class MyCustomExpr.
-     */
     public static class MyCustomExpr extends CString {
-        /**
-         * 
-         */
+
         private static final long serialVersionUID = 1L;
 
         public MyCustomExpr(Expr<?>... args) {
@@ -187,10 +182,8 @@ public class FeaturesTest extends AbstractQueryTest{
     @Test
     public void testLogicalOperations() {
         // logical operations and, or, not
-        toString("cat = kitten or kitten = cat", cat.eq(kitten).or(
-                kitten.eq(cat)));
-        toString("cat = kitten and kitten = cat", cat.eq(kitten).and(
-                kitten.eq(cat)));
+        toString("cat = kitten or kitten = cat", cat.eq(kitten).or(kitten.eq(cat)));
+        toString("cat = kitten and kitten = cat", cat.eq(kitten).and(kitten.eq(cat)));
         toString("cat is null and (kitten is null or kitten.bodyWeight > :a1)",
                 cat.isNull().and(kitten.isNull().or(kitten.bodyWeight.gt(10))));
     }
@@ -286,13 +279,8 @@ public class FeaturesTest extends AbstractQueryTest{
 
     }
 
-    /**
-     * The Class _BookmarkDTO.
-     */
     public static final class _BookmarkDTO extends EConstructor<BookmarkDTO> {
-        /**
-         * 
-         */
+
         private static final long serialVersionUID = 2664671413344744578L;
 
         public _BookmarkDTO(Expr<java.lang.String> address) {
@@ -300,9 +288,6 @@ public class FeaturesTest extends AbstractQueryTest{
         }
     }
 
-    /**
-     * The Class BookmarkDTO.
-     */
     public static final class BookmarkDTO {
 
     }
