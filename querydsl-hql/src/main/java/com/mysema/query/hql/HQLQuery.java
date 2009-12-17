@@ -278,14 +278,14 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
     HQLQuery with(EBoolean... condition);
 
     /**
-     * Set the fetch parameter to the last defined join
+     * Add the "fetch" flag to the last defined join
      * 
      * @return
      */
     HQLQuery fetch();
 
     /**
-      * Add the "fetch all properties" statement to the last defined join.
+      * Add the "fetch all properties" flag to the last defined join.
       * @return
        */
     HQLQuery fetchAll();
