@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.BooleanBuilder;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.VisitorBase;
@@ -159,16 +160,20 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
             }else{
                 int i = element.getIndex();
                 boolean wrap = false;
-                if (args.get(i) instanceof Operation){
-                    wrap = precedence < templates.getPrecedence(((Operation<?, ?>) args.get(i)).getOperator());
+                Expr arg = args.get(i);
+                if (arg instanceof BooleanBuilder){
+                    arg = ((BooleanBuilder)arg).getValue();
+                }                
+                if (arg instanceof Operation){
+                    wrap = precedence < templates.getPrecedence(((Operation<?, ?>) arg).getOperator());
                 }
                 if (wrap){
                     append("(");
                 }
                 if (element.hasConverter()){
-                    handle(element.convert(args.get(i)));
+                    handle(element.convert(arg));
                 }else{
-                    handle(args.get(i));                    
+                    handle(arg);                    
                 }
                 if (wrap){
                     append(")");
