@@ -76,7 +76,9 @@ public class DefaultQueryMetadata implements QueryMetadata {
     @Override
     public void addHaving(EBoolean... o) {
         for (EBoolean e : o){
-            having.and(e);
+            if (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue()){
+                having.and(e);    
+            }            
         }            
     }
 
@@ -113,7 +115,9 @@ public class DefaultQueryMetadata implements QueryMetadata {
     @Override
     public void addWhere(EBoolean... o) {
         for (EBoolean e : o){
-            where.and(e);
+            if (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue()){
+                where.and(e);    
+            }            
         }            
     }
 

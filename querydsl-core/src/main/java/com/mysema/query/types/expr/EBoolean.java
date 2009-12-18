@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.expr;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
 
@@ -31,8 +33,13 @@ public abstract class EBoolean extends EComparable<Boolean> {
      * @param right right hand side of the union
      * @return this && right
      */
-    public EBoolean and(EBoolean right) {
-        return OBoolean.create(Ops.AND, this, right);
+    public EBoolean and(@Nullable EBoolean right) {
+        if (right != null){
+            return OBoolean.create(Ops.AND, this, right);    
+        }else{
+            return this;
+        }
+        
     }
 
     /**
@@ -53,7 +60,12 @@ public abstract class EBoolean extends EComparable<Boolean> {
      * @param right right hand side of the union
      * @return this || right
      */
-    public EBoolean or(EBoolean right) {
-        return OBoolean.create(Ops.OR, this, right);
+    public EBoolean or(@Nullable EBoolean right) {
+        if (right != null){
+            return OBoolean.create(Ops.OR, this, right);    
+        }else{
+            return this;
+        }
+        
     }
 }

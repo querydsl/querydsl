@@ -13,17 +13,12 @@ import static org.junit.Assert.assertNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Arrays;
 
 import org.junit.Test;
 
 import com.mysema.query.hql.domain.QAccount;
 import com.mysema.query.hql.domain.QInheritedProperties;
-import com.mysema.query.types.TemplateFactory;
-import com.mysema.query.types.custom.CString;
-import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.Expr;
 
 /**
  * FeaturesTest provides.
@@ -31,7 +26,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class FeaturesTest extends AbstractQueryTest{
+public class FeaturesTest extends AbstractQueryTest {
 
     @Test
     public void testDomainConstruction() {
@@ -59,68 +54,16 @@ public class FeaturesTest extends AbstractQueryTest{
                         kitten.name.eq("Kitty")));
     }
 
-
-
     @Test
     public void testBasicOperations() {
-        assertToString("cat.bodyWeight = kitten.bodyWeight", cat.bodyWeight.eq(kitten.bodyWeight));
-        assertToString("cat.bodyWeight != kitten.bodyWeight", cat.bodyWeight.ne(kitten.bodyWeight));
+        assertToString("cat.bodyWeight = kitten.bodyWeight", cat.bodyWeight
+                .eq(kitten.bodyWeight));
+        assertToString("cat.bodyWeight != kitten.bodyWeight", cat.bodyWeight
+                .ne(kitten.bodyWeight));
 
-        assertToString("cat.bodyWeight + kitten.bodyWeight = kitten.bodyWeight", 
+        assertToString(
+                "cat.bodyWeight + kitten.bodyWeight = kitten.bodyWeight",
                 cat.bodyWeight.add(kitten.bodyWeight).eq(kitten.bodyWeight));
-    }
-
-
-
-    public static class MyCustomExpr extends CString {
-
-        private static final long serialVersionUID = 1L;
-
-        public MyCustomExpr(Expr<?>... args) {
-            super(Arrays.asList(args), new TemplateFactory().create("myCustom({0},{1})"));
-        }
-    }
-
-    @Test
-    public void testCustomExpressions() {
-        assertToString("myCustom(cust,cat)", new MyCustomExpr(cust, cat));
-    }
-
-    @Test
-    public void testCastOperations() {
-        // cast(... as ...), where the second argument is the name of a
-        // Hibernate type, and extract(... from ...) if ANSI cast() and
-        // extract() is supported by the underlying database
-    }
-
-    @Test
-    public void testCollectionOperations() {
-        // HQL functions that take collection-valued path expressions: size(),
-        // minelement(), maxelement(), minindex(), maxindex(), along with the
-        // special elements() and indices functions which may be quantified
-        // using some, all, exists, any, in.
-        cat.kittens.size();
-//        minelement(cat.kittens);
-//        maxelement(cat.kittens);
-//        minindex(cat.kittens);
-//        maxindex(cat.kittens);
-        assertToString("cat.kittens[0]", cat.kittens(0));
-        assertToString("cat.kittens[0]", cat.kittens.get(0));
-
-        // some, all, exists, any, in.
-    }
-
-    @Test
-    public void testConstructors() {
-        EConstructor<com.mysema.query.hql.domain.Cat> c = 
-                new EConstructor<com.mysema.query.hql.domain.Cat>(
-                com.mysema.query.hql.domain.Cat.class,
-                new Class[]{String.class},
-                cat.name);
-        assertToString("new " + com.mysema.query.hql.domain.Cat.class.getName()
-                + "(cat.name)", c);
-        assertToString("new " + getClass().getName() + "$BookmarkDTO(cat.name)",
-                new _BookmarkDTO(cat.name));
     }
 
     @Test
@@ -154,45 +97,6 @@ public class FeaturesTest extends AbstractQueryTest{
     }
 
     @Test
-    public void testHQLIndexOperations() {
-        // the HQL index() function, that applies to aliases of a joined indexed
-        // collection
-    }
-
-    @Test
-    public void testIsNullAndIsNotNullInFunctionalWay() {
-        assertToString("cat.bodyWeight is null", cat.bodyWeight.isNull());
-    }
-
-    @Test
-    public void testSQLScalarOperations() {
-        // Any database-supported SQL scalar function like sign(), trunc(),
-        // rtrim(), sin()
-    }
-
-    @Test
-    public void testStringConcatenations() {
-        // string concatenation ...||... or concat(...,...)
-        assertToString("cat.name || kitten.name", cat.name.concat(kitten.name));
-    }
-
-    // coalesce() and nullif()
-
-    @Test
-    public void testStringConversionOperations() {
-        // str() for converting numeric or temporal values to a readable string
-        assertToString("str(cat.bodyWeight)", cat.bodyWeight.stringValue());
-    }
-
-    @Test
-    public void testStringOperationsInFunctionalWay() {
-        assertToString("cat.name || cust.name.firstName", cat.name
-                .concat(cust.name.firstName));
-//        toString("cat.name like :a1", cat.name.like("A%"));
-        assertToString("lower(cat.name)", cat.name.lower());
-    }
-
-    @Test
     public void testToString() {
         assertToString("cat", cat);
         assertToString("cat.alive", cat.alive);
@@ -200,18 +104,20 @@ public class FeaturesTest extends AbstractQueryTest{
         assertToString("cat.name", cat.name);
 
         assertToString("cust.name", cust.name);
-        assertToString("cust.name.firstName = :a1", cust.name.firstName.eq("Martin"));
+        assertToString("cust.name.firstName = :a1", cust.name.firstName
+                .eq("Martin"));
 
-//        toString("cat.kittens as kitten", cat.kittens.as(kitten));
+        // toString("cat.kittens as kitten", cat.kittens.as(kitten));
 
         assertToString("cat.bodyWeight + :a1", cat.bodyWeight.add(10));
         assertToString("cat.bodyWeight - :a1", cat.bodyWeight.subtract(10));
         assertToString("cat.bodyWeight * :a1", cat.bodyWeight.multiply(10));
         assertToString("cat.bodyWeight / :a1", cat.bodyWeight.divide(10));
 
-//        toString("cat.bodyWeight as bw", cat.bodyWeight.as("bw"));
+        // toString("cat.bodyWeight as bw", cat.bodyWeight.as("bw"));
 
-        assertToString("kitten in elements(cat.kittens)", kitten.in(cat.kittens));
+        assertToString("kitten in elements(cat.kittens)", kitten
+                .in(cat.kittens));
 
         // toString("distinct cat.bodyWeight", distinct(cat.bodyWeight));
     }
@@ -243,19 +149,6 @@ public class FeaturesTest extends AbstractQueryTest{
 
         sum($(0)).gt(0);
         sum($(0)).intValue().gt(0);
-
-    }
-
-    public static final class _BookmarkDTO extends EConstructor<BookmarkDTO> {
-
-        private static final long serialVersionUID = 2664671413344744578L;
-
-        public _BookmarkDTO(Expr<java.lang.String> address) {
-            super(BookmarkDTO.class, new Class[]{String.class},address);
-        }
-    }
-
-    public static final class BookmarkDTO {
 
     }
 

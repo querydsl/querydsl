@@ -24,11 +24,13 @@ public class BooleanBuilder extends EBoolean{
     
     @Override
     public BooleanBuilder and(EBoolean right) {
-        if (expr == null){
-            expr = right;
-        }else{
-            expr = expr.and(right);
-        }        
+        if (right != null){
+            if (expr == null){
+                expr = right;
+            }else{
+                expr = expr.and(right);
+            }    
+        }                       
         return this;
     }
 
@@ -56,11 +58,13 @@ public class BooleanBuilder extends EBoolean{
 
     @Override
     public BooleanBuilder or(EBoolean right) {
-        if (expr == null){
-            expr = right;
-        }else{
-            expr = expr.or(right);
-        }
+        if (right != null){
+            if (expr == null){
+                expr = right;
+            }else{
+                expr = expr.or(right);
+            }    
+        }        
         return this;
     }
     
@@ -84,7 +88,9 @@ public class BooleanBuilder extends EBoolean{
     
     @Override
     public BooleanBuilder not(){
-        expr = expr.not();
+        if (expr != null){
+            expr = expr.not();    
+        }        
         return this;
     }
     

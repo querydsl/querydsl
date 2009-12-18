@@ -28,8 +28,6 @@ public interface QueryMetadata {
 
     void addHaving(EBoolean... o);
 
-//    void addJoin(JoinExpression joinExpression);
-
     void addJoin(JoinType joinType, Expr<?> expr);
 
     void addJoinCondition(EBoolean o);

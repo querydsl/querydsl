@@ -39,4 +39,19 @@ public class BooleanBuilderTest {
         builder.orAllOf(first, second, first);
         System.out.println(builder);
     }
+    
+    @Test
+    public void ifThenElse(){
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(null);
+        builder.or(null);
+        builder.and(second);        
+        assertEquals(second, builder.getValue());
+    }
+    
+    @Test
+    public void nullSupport(){
+        assertEquals(first, first.and(null));
+        assertEquals(first, first.or(null));
+    }
 }
