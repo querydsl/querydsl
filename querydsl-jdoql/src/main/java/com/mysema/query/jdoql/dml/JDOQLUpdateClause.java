@@ -24,8 +24,6 @@ import com.mysema.query.types.path.Path;
  */
 public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
     
-    private static final JDOQLTemplates DEFAULT_TEMPLATES = new JDOQLTemplates();
-    
     private final QueryMetadata md = new DefaultQueryMetadata();
     
     private final PersistenceManager pm;
@@ -33,7 +31,7 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
     private final JDOQLTemplates templates;
     
     public JDOQLUpdateClause(PersistenceManager pm, PEntity<?> entity){
-        this(pm, entity, DEFAULT_TEMPLATES);
+        this(pm, entity, JDOQLTemplates.DEFAULT);
     }
     
     public JDOQLUpdateClause(PersistenceManager pm, PEntity<?> entity, JDOQLTemplates templates){

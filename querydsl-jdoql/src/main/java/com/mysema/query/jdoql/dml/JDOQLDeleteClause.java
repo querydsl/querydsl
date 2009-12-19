@@ -28,8 +28,6 @@ import com.mysema.query.types.path.PEntity;
  */
 public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
 
-    private static final JDOQLTemplates DEFAULT_TEMPLATES = new JDOQLTemplates();
-    
     private final QueryMetadata md = new DefaultQueryMetadata();
     
     private final PersistenceManager pm;
@@ -39,7 +37,7 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
     private final PEntity<?> entity;
     
     public JDOQLDeleteClause(PersistenceManager pm, PEntity<?> entity){
-        this(pm, entity, DEFAULT_TEMPLATES);
+        this(pm, entity, JDOQLTemplates.DEFAULT);
     }
     
     public JDOQLDeleteClause(PersistenceManager pm, PEntity<?> entity, JDOQLTemplates templates){

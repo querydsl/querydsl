@@ -26,8 +26,6 @@ import com.mysema.query.types.path.PEntity;
  */
 public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause>{
 
-    private static final HQLTemplates DEFAULT_TEMPLATES = new HQLTemplates();
-    
     private final QueryMetadata md = new DefaultQueryMetadata();
     
     private final Session session;
@@ -35,7 +33,7 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
     private final HQLTemplates templates;
     
     public HibernateDeleteClause(Session session, PEntity<?> entity){
-        this(session, entity, DEFAULT_TEMPLATES);
+        this(session, entity, HQLTemplates.DEFAULT);
     }
     
     public HibernateDeleteClause(Session session, PEntity<?> entity, HQLTemplates templates){

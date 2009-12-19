@@ -21,6 +21,8 @@ import com.mysema.query.types.operation.Ops;
  */
 public class SQLTemplates extends Templates {
 
+    public static final SQLTemplates DEFAULT = new SQLTemplates();
+    
     private final Map<Class<?>, String> class2type = new HashMap<Class<?>, String>();
     
     private String asc = " asc";
@@ -95,7 +97,7 @@ public class SQLTemplates extends Templates {
 
     private String where = "\nwhere ";
 
-    public SQLTemplates() {
+    protected SQLTemplates() {
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
         add(Ops.NOT, "not {0}", 3);

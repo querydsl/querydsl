@@ -21,7 +21,9 @@ import com.mysema.query.types.path.PathType;
  */
 public class ColQueryTemplates extends JavaTemplates {
 
-    public ColQueryTemplates() {
+    public static final ColQueryTemplates DEFAULT = new ColQueryTemplates();
+    
+    protected ColQueryTemplates() {
         String functions = ColQueryTemplates.class.getName();
         add(Ops.EQ_OBJECT, "{0}.equals({1})");
         add(Ops.NE_OBJECT, "!{0}.equals({1})");

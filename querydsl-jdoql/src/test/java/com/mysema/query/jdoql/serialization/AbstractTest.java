@@ -13,15 +13,13 @@ import com.mysema.query.types.query.SubQuery;
 
 public abstract class AbstractTest {
 
-    private static final JDOQLTemplates templates = new JDOQLTemplates();
-    
     protected JDOQLSubQuery query(){
         return new JDOQLSubQuery();
     }
     
     protected String serialize(SubQuery expr) {
         Expr<?> source = expr.getMetadata().getJoins().get(0).getTarget();
-        JDOQLSerializer serializer = new JDOQLSerializer(templates, source);
+        JDOQLSerializer serializer = new JDOQLSerializer(JDOQLTemplates.DEFAULT, source);
         serializer.serialize(expr.getMetadata(), false, false);
         String rv = serializer.toString().replace('\n', ' ');
 //        System.out.println(rv);

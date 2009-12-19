@@ -23,6 +23,8 @@ import com.mysema.query.types.path.PathType;
  */
 public class HQLTemplates extends Templates {
 
+    public static final HQLTemplates DEFAULT = new HQLTemplates();
+    
     public static final List<Operator<?>> wrapCollectionsForOp;
 
     static {
@@ -34,7 +36,7 @@ public class HQLTemplates extends Templates {
             Ops.EXISTS));
     }
 
-    public HQLTemplates() {
+    protected HQLTemplates() {
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
         add(Ops.NOT, "not {0}", 3);

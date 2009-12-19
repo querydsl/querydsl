@@ -26,8 +26,6 @@ import com.mysema.query.types.path.PEntity;
  */
 public class JPADeleteClause implements DeleteClause<JPADeleteClause>{
 
-    private static final HQLTemplates DEFAULT_TEMPLATES = new HQLTemplates();
-    
     private final QueryMetadata md = new DefaultQueryMetadata();
     
     private final EntityManager em;
@@ -35,7 +33,7 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause>{
     private final HQLTemplates templates;
     
     public JPADeleteClause(EntityManager em, PEntity<?> entity){
-        this(em, entity, DEFAULT_TEMPLATES);
+        this(em, entity, HQLTemplates.DEFAULT);
     }
     
     public JPADeleteClause(EntityManager em, PEntity<?> entity, HQLTemplates templates){

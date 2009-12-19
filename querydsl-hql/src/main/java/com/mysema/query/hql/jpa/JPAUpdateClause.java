@@ -28,8 +28,6 @@ import com.mysema.query.types.path.Path;
  */
 public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
 
-    private static final HQLTemplates DEFAULT_TEMPLATES = new HQLTemplates();
-    
     private final QueryMetadata md = new DefaultQueryMetadata();
     
     private final EntityManager em;
@@ -37,7 +35,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
     private final HQLTemplates templates;
     
     public JPAUpdateClause(EntityManager session, PEntity<?> entity){
-        this(session, entity, DEFAULT_TEMPLATES);
+        this(session, entity, HQLTemplates.DEFAULT);
     }
     
     public JPAUpdateClause(EntityManager em, PEntity<?> entity, HQLTemplates templates){

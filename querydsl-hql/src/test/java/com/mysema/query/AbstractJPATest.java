@@ -25,12 +25,10 @@ import com.mysema.query.hql.jpa.JPAQuery;
  */
 public abstract class AbstractJPATest extends AbstractStandardTest{
     
-    private static final HQLTemplates templates = new HQLTemplates();
-    
     private EntityManager entityManager;
     
     protected JPAQuery query(){
-        return new JPAQuery(entityManager, templates);
+        return new JPAQuery(entityManager, HQLTemplates.DEFAULT);
     }
 
     public void setEntityManager(EntityManager entityManager) {

@@ -24,10 +24,8 @@ import com.mysema.query.types.path.Path;
 public final class MiniApi {
     
     private MiniApi(){}
-    
-    private static final ColQueryTemplates templates = new ColQueryTemplates();
 
-    private static final EvaluatorFactory evaluatorFactory = new EvaluatorFactory(templates);
+    private static final EvaluatorFactory evaluatorFactory = EvaluatorFactory.DEFAULT;
     
     private static ColQuery query(){
         return new ColQueryImpl(evaluatorFactory);

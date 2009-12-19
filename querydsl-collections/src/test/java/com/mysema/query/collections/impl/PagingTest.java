@@ -17,12 +17,11 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.collections.ColQuery;
-import com.mysema.query.collections.ColQueryTemplates;
 import com.mysema.query.types.path.PNumber;
 
 public class PagingTest extends AbstractQueryTest {
     
-    private static final EvaluatorFactory evaluatorFactory = new EvaluatorFactory(new ColQueryTemplates());
+    private static final EvaluatorFactory evaluatorFactory = EvaluatorFactory.DEFAULT;
 
     private List<Integer> ints = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
 

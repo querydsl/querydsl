@@ -20,8 +20,6 @@ import com.mysema.query.types.expr.Expr;
 
 public class ExprSerializationTest {
 
-    private static final JDOQLTemplates templates = new JDOQLTemplates();
-    
     private QBook book = QBook.book;
 
     private QProduct product = QProduct.product;
@@ -126,7 +124,7 @@ public class ExprSerializationTest {
     }
         
     private String serialize(Expr<?> expr) {
-        return new JDOQLSerializer(templates, book).handle(expr).toString();
+        return new JDOQLSerializer(JDOQLTemplates.DEFAULT, book).handle(expr).toString();
     }
 
 }

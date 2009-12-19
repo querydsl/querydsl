@@ -28,8 +28,6 @@ import com.mysema.query.types.path.Path;
  */
 public class HibernateUpdateClause implements UpdateClause<HibernateUpdateClause>{
 
-    private static final HQLTemplates DEFAULT_TEMPLATES = new HQLTemplates();
-    
     private final QueryMetadata md = new DefaultQueryMetadata();
     
     private final Session session;
@@ -37,7 +35,7 @@ public class HibernateUpdateClause implements UpdateClause<HibernateUpdateClause
     private final HQLTemplates templates;
     
     public HibernateUpdateClause(Session session, PEntity<?> entity){
-        this(session, entity, DEFAULT_TEMPLATES);
+        this(session, entity, HQLTemplates.DEFAULT);
     }
     
     public HibernateUpdateClause(Session session, PEntity<?> entity, HQLTemplates templates){

@@ -10,12 +10,12 @@ import com.mysema.query.support.QueryBaseWithDetach;
 import com.mysema.query.types.path.PEntity;
 
 /**
+ * HQLSubQuery is a subquery builder class for HQL/JPAQL
+ * 
  * @author tiwe
  *
  */
 public class HQLSubQuery extends QueryBaseWithDetach<HQLSubQuery>{
-    
-    private static final HQLTemplates templates = new HQLTemplates();
 
     public HQLSubQuery() {
         super(new DefaultQueryMetadata());
@@ -28,7 +28,7 @@ public class HQLSubQuery extends QueryBaseWithDetach<HQLSubQuery>{
     
     public String toString(){
         if (!getMetadata().getJoins().isEmpty()){
-            HQLSerializer serializer = new HQLSerializer(templates);
+            HQLSerializer serializer = new HQLSerializer(HQLTemplates.DEFAULT);
             serializer.serialize(getMetadata(), false, null);
             return serializer.toString().trim();    
         }else{

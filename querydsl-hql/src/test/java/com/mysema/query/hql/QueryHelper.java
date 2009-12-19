@@ -24,7 +24,7 @@ import com.mysema.query.types.expr.Expr;
 class QueryHelper extends HQLQueryBase<QueryHelper> {
 
     public QueryHelper() {
-        super(new DefaultQueryMetadata(), new HQLTemplates());
+        super(new DefaultQueryMetadata(), HQLTemplates.DEFAULT);
     }
 
     public long count() {

@@ -14,7 +14,6 @@ import org.junit.Before;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.animal.Cat;
 import com.mysema.query.animal.QCat;
-import com.mysema.query.collections.ColQueryTemplates;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -25,7 +24,7 @@ import com.mysema.query.types.expr.Expr;
  */
 public abstract class AbstractQueryTest {
 
-    private static final EvaluatorFactory evaluatorFactory = new EvaluatorFactory(new ColQueryTemplates());
+    private static final EvaluatorFactory evaluatorFactory = EvaluatorFactory.DEFAULT;
     
     protected Cat c1 = new Cat("Kitty");
 

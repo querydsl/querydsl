@@ -28,9 +28,11 @@ public class EvaluatorFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(EvaluatorFactory.class);
     
+    public static final EvaluatorFactory DEFAULT = new EvaluatorFactory(ColQueryTemplates.DEFAULT);
+    
     private final ColQueryTemplates templates;
     
-    public EvaluatorFactory(ColQueryTemplates templates){
+    protected EvaluatorFactory(ColQueryTemplates templates){
         this.templates = templates;
     }
     

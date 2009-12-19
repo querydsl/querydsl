@@ -23,12 +23,10 @@ import com.mysema.query.hql.hibernate.HibernateQuery;
  */
 public abstract class AbstractHibernateTest extends AbstractStandardTest{
     
-    private static final HQLTemplates templates = new HQLTemplates();
-    
     private Session session;
     
     protected HibernateQuery query(){
-        return new HibernateQuery(session, templates);
+        return new HibernateQuery(session, HQLTemplates.DEFAULT);
     }
 
     public void setSession(Session session) {

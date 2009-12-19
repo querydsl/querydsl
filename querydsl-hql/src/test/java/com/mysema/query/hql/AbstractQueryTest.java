@@ -12,7 +12,7 @@ import com.mysema.query.types.expr.Expr;
 public abstract class AbstractQueryTest implements Constants{
     
     protected static void assertToString(String expected, Expr<?> expr) {
-        HQLSerializer serializer = new HQLSerializer(new HQLTemplates());
+        HQLSerializer serializer = new HQLSerializer(HQLTemplates.DEFAULT);
         assertEquals(expected, serializer.handle(expr).toString().replace("\n", " "));
     }
 

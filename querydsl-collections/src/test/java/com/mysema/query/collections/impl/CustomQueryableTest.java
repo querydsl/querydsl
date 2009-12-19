@@ -28,7 +28,7 @@ public class CustomQueryableTest {
     
     private final List<String> strings = Arrays.asList("1", "2", "3");
 
-    private static final EvaluatorFactory evaluatorFactory = new EvaluatorFactory(new ColQueryTemplates());
+    private static final EvaluatorFactory evaluatorFactory = EvaluatorFactory.DEFAULT;
     
     private PString str = new PString("str");
 

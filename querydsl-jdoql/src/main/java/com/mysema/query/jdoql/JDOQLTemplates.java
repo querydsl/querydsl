@@ -16,7 +16,9 @@ import com.mysema.query.types.operation.Ops;
  */
 public class JDOQLTemplates extends JavaTemplates {
 
-    public JDOQLTemplates() {
+    public static final JDOQLTemplates DEFAULT = new JDOQLTemplates();
+    
+    protected JDOQLTemplates() {
         // String
         add(Ops.STRING_CONTAINS, "{0}.indexOf({1}) > -1", 25);
         add(Ops.STRING_CONTAINS_IC, "{0l}.indexOf({1l}) > -1", 25);
