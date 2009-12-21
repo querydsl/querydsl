@@ -40,8 +40,8 @@ public class QueryInit2Test {
     
     @Test
     public void test(){
-        assertNotNull(QCategorization.categorization.event.account.owner);
-        assertNotNull(QCategorization.categorization.event.as(QActivation.class).account.owner);
+        assertNotNull(QQueryInit2Test_Categorization.categorization.event.account.owner);
+        assertNotNull(QQueryInit2Test_Categorization.categorization.event.as(QQueryInit2Test_Activation.class).account.owner);
     }
 
 }

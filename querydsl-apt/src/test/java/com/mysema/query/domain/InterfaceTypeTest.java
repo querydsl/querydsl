@@ -54,31 +54,31 @@ public class InterfaceTypeTest extends AbstractTest{
     
     @Test
     public void QInterfaceType_reation() throws SecurityException, NoSuchFieldException{
-        cl = QInterfaceType.class;
-        match(QInterfaceType.class, "relation");
+        cl = QInterfaceTypeTest_InterfaceType.class;
+        match(QInterfaceTypeTest_InterfaceType.class, "relation");
     }
     
     @Test
     public void QInterfaceType_reation2() throws SecurityException, NoSuchFieldException{
-        cl = QInterfaceType.class;
+        cl = QInterfaceTypeTest_InterfaceType.class;
         match(PList.class, "relation2");
     }
     
     @Test
     public void QInterfaceType_reation3() throws SecurityException, NoSuchFieldException{
-        cl = QInterfaceType.class;
+        cl = QInterfaceTypeTest_InterfaceType.class;
         match(PList.class, "relation3");
     }
     
     @Test
     public void QInterfaceType_reation4() throws SecurityException, NoSuchFieldException{
-        cl = QInterfaceType.class;
+        cl = QInterfaceTypeTest_InterfaceType.class;
         match(PNumber.class, "relation4");
     }
     
     @Test
     public void testQInterfaceType3() throws SecurityException, NoSuchFieldException{
-        Class<?> cl = QInterfaceType3.class;
+        Class<?> cl = QInterfaceTypeTest_InterfaceType3.class;
         cl.getField("prop");
         cl.getField("prop2");
         cl.getField("prop3");
@@ -86,7 +86,7 @@ public class InterfaceTypeTest extends AbstractTest{
     
     @Test
     public void testQInterfaceType5() throws SecurityException, NoSuchFieldException{
-        Class<?> cl = QInterfaceType5.class;
+        Class<?> cl = QInterfaceTypeTest_InterfaceType5.class;
         cl.getField("prop");
         cl.getField("prop2");
         cl.getField("prop3");

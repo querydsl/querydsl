@@ -117,8 +117,9 @@ public abstract class AbstractSerializer implements Serializer{
         case MAP:
         case SIMPLE:     
             return typeName + "<" + localGenericName + ">";
-        case ENTITY: 
-            String suffix = type.getSimpleName();
+        case ENTITY:
+//            String suffix = type.getSimpleName();
+            String suffix = type.getFullName().substring(type.getPackageName().length()+1).replace('.', '_');            
             if (type.getPackageName().equals(model.getPackageName())){
                 return model.getPrefix() + suffix;
             }else{

@@ -45,13 +45,13 @@ public class Inheritance3Test extends AbstractTest{
     @Ignore
     public void test() throws SecurityException, NoSuchFieldException{
         // FIXME
-        cl = QGenericSupertype.class;
+        cl = QInheritance3Test_GenericSupertype.class;
         match(PSimple.class, "field");
         
-        cl = QGenericSupertypeC.class;
+        cl = QInheritance3Test_GenericSupertypeC.class;
         match(PComparable.class, "field");
         
-        cl = QGenericSupertypeS.class;
+        cl = QInheritance3Test_GenericSupertypeS.class;
         match(PString.class, "field");
     }
 

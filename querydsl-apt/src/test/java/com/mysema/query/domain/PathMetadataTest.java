@@ -16,10 +16,10 @@ public class PathMetadataTest {
     
     @Before
     public void setUp(){
-        assertNotNull(QAnimal.animal);
-        assertNotNull(QCat.cat);
-        assertNotNull(QCategory.category);
-        assertNotNull(QSimpleTypes.simpleTypes);
+        assertNotNull(QAnimalTest_Animal.animal);
+        assertNotNull(QAnimalTest_Cat.cat);
+        assertNotNull(QConstructorTest_Category.category);
+        assertNotNull(QSimpleTypesTest_SimpleTypes.simpleTypes);
     }
     
     @SuppressWarnings("unchecked")

@@ -57,7 +57,7 @@ public class ReservedNamesTest {
     
     @Test
     public void test() throws SecurityException, NoSuchFieldException{
-        Class<?> cl = QReservedNames.class;
+        Class<?> cl = QReservedNamesTest_ReservedNames.class;
         cl.getField("new_");
         cl.getField("package_");
         cl.getField("protected_");

@@ -42,7 +42,7 @@ public class ExtendsAndSuperTest {
     
     @Test
     public void validate(){
-        QExtendsAndSuper var = QExtendsAndSuper.extendsAndSuper;
+        QExtendsAndSuperTest_ExtendsAndSuper var = QExtendsAndSuperTest_ExtendsAndSuper.extendsAndSuper;
         assertEquals(Object.class, var.extendsCol.getElementType());
         assertEquals(CharSequence.class, var.extendsCol2.getElementType());
         
@@ -52,7 +52,7 @@ public class ExtendsAndSuperTest {
     
     @Test
     public void test(){
-        QExtendsAndSuper var = QExtendsAndSuper.extendsAndSuper;        
+        QExtendsAndSuperTest_ExtendsAndSuper var = QExtendsAndSuperTest_ExtendsAndSuper.extendsAndSuper;        
         ExtendsAndSuper<Object> entity = new ExtendsAndSuper<Object>();
         var.eq(entity);
         

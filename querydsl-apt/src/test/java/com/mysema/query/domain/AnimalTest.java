@@ -24,7 +24,8 @@ public class AnimalTest {
     
     @Test
     public void test(){
-        assertTrue("direct copy of PString field failed", QCat.cat.name == QCat.cat._super.name);
+        assertTrue("direct copy of PString field failed", 
+                QAnimalTest_Cat.cat.name == QAnimalTest_Cat.cat._super.name);
         
     }
     

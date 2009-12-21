@@ -41,13 +41,13 @@ public class Inheritance4Test extends AbstractTest{
     
     @Test
     public void test() throws SecurityException, NoSuchFieldException{
-        cl = QEntityWithComparable.class;
+        cl = QInheritance4Test_EntityWithComparable.class;
         match(PSimple.class, "field");
         
-        cl = QEntityWithNumber.class;
+        cl = QInheritance4Test_EntityWithNumber.class;
         match(PNumber.class, "field");
         
-        cl = QEntityWithString.class;
+        cl = QInheritance4Test_EntityWithString.class;
         match(PString.class, "field");
         
     }

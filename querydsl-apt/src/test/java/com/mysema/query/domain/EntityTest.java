@@ -12,7 +12,7 @@ import com.mysema.query.types.path.PathMetadata;
 
 public class EntityTest extends AbstractTest{
     
-    private static final QEntity3 entity3 = QEntity3.entity3;
+    private static final QEntityTest_Entity3 entity3 = QEntityTest_Entity3.entity3;
     
     @QueryEntity
     public static class EntityNoReferences {
@@ -74,26 +74,26 @@ public class EntityTest extends AbstractTest{
         assertNotNull(entity3._super.superTypeEntityRef.entity2Ref);
         assertNotNull(entity3._super._super.superTypeEntityRef.entity2Ref);
         
-        assertNotNull(QEntity4.entity4.supertypeField);
+        assertNotNull(QEntityTest_Entity4.entity4.supertypeField);
     }
     
     @SuppressWarnings("unchecked")
     @Test
     public void testConstructors() throws SecurityException, NoSuchMethodException{
         Class[] types = new Class[]{Class.class, String.class, PathMetadata.class, PathInits.class};        
-        QEntity1.class.getConstructor(types);
-        QEntity2.class.getConstructor(types);
-        QEntity3.class.getConstructor(types);
-        QEntity4.class.getConstructor(types);
-        QSupertype.class.getConstructor(types);
-        QSupertype2.class.getConstructor(types);
+        QEntityTest_Entity1.class.getConstructor(types);
+        QEntityTest_Entity2.class.getConstructor(types);
+        QEntityTest_Entity3.class.getConstructor(types);
+        QEntityTest_Entity4.class.getConstructor(types);
+        QEntityTest_Supertype.class.getConstructor(types);
+        QEntityTest_Supertype2.class.getConstructor(types);
     }
     
     @SuppressWarnings("unchecked")
     @Test(expected=NoSuchMethodException.class)
     public void testConstructors2() throws SecurityException, NoSuchMethodException{
         Class[] types = new Class[]{Class.class, String.class, PathMetadata.class, PathInits.class};
-        QEntityNoReferences.class.getConstructor(types);
+        QEntityTest_EntityNoReferences.class.getConstructor(types);
     }
     
 }

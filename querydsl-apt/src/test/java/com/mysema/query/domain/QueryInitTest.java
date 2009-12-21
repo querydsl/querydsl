@@ -9,9 +9,9 @@ import com.mysema.query.annotations.QueryInit;
 
 public class QueryInitTest {
 
-    private static final QPEntity e1 = QPEntity.pEntity;
+    private static final QQueryInitTest_PEntity e1 = QQueryInitTest_PEntity.pEntity;
     
-    private static final QPEntity2 e2 = QPEntity2.pEntity2;
+    private static final QQueryInitTest_PEntity2 e2 = QQueryInitTest_PEntity2.pEntity2;
     
     @QueryEntity
     public static class PEntity{

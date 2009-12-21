@@ -183,15 +183,15 @@ public class SimpleTypesTest extends AbstractTest{
     @Test
     public void listAccess(){
         // date / time
-        QSimpleTypes.simpleTypes.dateList.get(0).after(new Date());
-        QSimpleTypes.simpleTypes.timeList.get(0).after(new Time(0l));
-        QSimpleTypes.simpleTypes.calendarList.get(0).before(Calendar.getInstance());
+        QSimpleTypesTest_SimpleTypes.simpleTypes.dateList.get(0).after(new Date());
+        QSimpleTypesTest_SimpleTypes.simpleTypes.timeList.get(0).after(new Time(0l));
+        QSimpleTypesTest_SimpleTypes.simpleTypes.calendarList.get(0).before(Calendar.getInstance());
 
         // numeric
-        QSimpleTypes.simpleTypes.bbyteList.get(0).abs();
+        QSimpleTypesTest_SimpleTypes.simpleTypes.bbyteList.get(0).abs();
         
         // string
-        QSimpleTypes.simpleTypes.sstringList.get(0).toLowerCase();
+        QSimpleTypesTest_SimpleTypes.simpleTypes.sstringList.get(0).toLowerCase();
         
         // boolean
 //        QSimpleTypes.simpleTypes.b
@@ -200,7 +200,7 @@ public class SimpleTypesTest extends AbstractTest{
     
     @Test
     public void testSimpleTypes() throws SecurityException, NoSuchFieldException{
-        cl = QSimpleTypes.class;
+        cl = QSimpleTypesTest_SimpleTypes.class;
         match(PNumber.class, "id");
         match(PNumber.class, "bigDecimal");
         match(PNumber.class, "bbyte");
@@ -242,36 +242,36 @@ public class SimpleTypesTest extends AbstractTest{
         
     @Test
     public void customLiteral() throws SecurityException, NoSuchFieldException{
-        cl = QSimpleTypes.class;
+        cl = QSimpleTypesTest_SimpleTypes.class;
         match(PSimple.class, "customLiteral");
     }
     
     @Test
     public void customComparableLiteral() throws SecurityException, NoSuchFieldException{
-        cl = QSimpleTypes.class;
+        cl = QSimpleTypesTest_SimpleTypes.class;
         match(PComparable.class, "customComparableLiteral");
     }
     
     @Test
     public void customNumber() throws SecurityException, NoSuchFieldException{
-        cl = QSimpleTypes.class;
+        cl = QSimpleTypesTest_SimpleTypes.class;
         match(PSimple.class, "customNumber");
     }
     
     @Test
     public void customComparableNumber() throws SecurityException, NoSuchFieldException{
-        cl = QSimpleTypes.class;
+        cl = QSimpleTypesTest_SimpleTypes.class;
         match(PNumber.class, "customComparableNumber");
     }
     
     @Test(expected=NoSuchFieldException.class)
     public void skippedField1() throws SecurityException, NoSuchFieldException {
-        QSimpleTypes.class.getField("skipMe");
+        QSimpleTypesTest_SimpleTypes.class.getField("skipMe");
     }
     
     @Test(expected=NoSuchFieldException.class)
     public void skippedField2() throws SecurityException, NoSuchFieldException {
-        QSimpleTypes.class.getField("test");
+        QSimpleTypesTest_SimpleTypes.class.getField("test");
     }
 
 }

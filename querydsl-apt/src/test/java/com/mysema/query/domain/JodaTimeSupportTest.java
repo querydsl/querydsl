@@ -38,7 +38,7 @@ public class JodaTimeSupportTest extends AbstractTest{
 
     @Test
     public void test() throws SecurityException, NoSuchFieldException {
-        cl = QJodaTimeSupport.class;
+        cl = QJodaTimeSupportTest_JodaTimeSupport.class;
         match(PDateTime.class, "dateMidnight");
         match(PDateTime.class, "dateTime");
         match(PDateTime.class, "instant");

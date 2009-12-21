@@ -37,7 +37,7 @@ public class QueryTypeTest extends AbstractTest{
 
     @Test
     public void test() throws SecurityException, NoSuchFieldException{
-        cl = QQueryTypeEntity.class;
+        cl = QQueryTypeTest_QueryTypeEntity.class;
         match(PSimple.class, "stringAsSimple");
         match(PComparable.class, "stringAsComparable");
         match(PDate.class, "stringAsDate");

@@ -24,8 +24,7 @@ public class DTOSerializer extends AbstractSerializer{
         // intro
         intro(model, writer);
         
-        final String simpleName = model.getSimpleName();
-        final String queryType = model.getPrefix() + simpleName;
+        final String queryType = getPathType(model, model, false);
         final String localName = model.getLocalRawName();
         
         StringBuilder builder = new StringBuilder();
@@ -74,7 +73,7 @@ public class DTOSerializer extends AbstractSerializer{
 
     protected void intro(EntityModel model, Writer writer) throws IOException {
         final String simpleName = model.getSimpleName();
-        final String queryType = model.getPrefix() + simpleName;
+        final String queryType = getPathType(model, model, false);
         final String localName = model.getLocalRawName();
         
         StringBuilder builder = new StringBuilder();        

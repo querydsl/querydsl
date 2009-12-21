@@ -141,10 +141,7 @@ public class EntitySerializer extends AbstractSerializer{
     protected void initEntityFields(StringBuilder builder, EntityModel model) {
         EntityModel superModel = model.getSuperModel();
         if (superModel != null && superModel.hasEntityFields()){
-            String superQueryType = superModel.getPrefix() + superModel.getSimpleName();
-            if (!superModel.getPackageName().equals(model.getPackageName())){
-                superQueryType = superModel.getPackageName() + "." + superQueryType;
-            }   
+            String superQueryType = getPathType(superModel, model, false);
             builder.append("        this._super = new " + superQueryType + "(type, entityName, metadata, inits);\n");            
         }
         
@@ -297,10 +294,8 @@ public class EntitySerializer extends AbstractSerializer{
     
     protected void introSuper(StringBuilder builder, EntityModel model) {
         EntityModel superModel = model.getSuperModel();
-        String superQueryType = superModel.getPrefix() + superModel.getSimpleName();
-        if (!model.getPackageName().equals(superModel.getPackageName())){
-            superQueryType = superModel.getPackageName() + "." + superQueryType;
-        }
+        String superQueryType = getPathType(superModel, model, false);
+        
         if (!superModel.hasEntityFields()){
             builder.append("    public final "+superQueryType+" _super = new " + superQueryType + "(this);\n\n");    
         }else{

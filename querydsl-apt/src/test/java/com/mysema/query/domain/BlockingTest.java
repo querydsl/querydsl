@@ -12,43 +12,43 @@ import com.mysema.query.annotations.QueryType;
 public class BlockingTest extends AbstractTest{
 
     @QueryEntity
-    public class BlockingTestEntity{
+    public class Entity{
         
-        BlockingTestEntity field1;
+        Entity field1;
         
         @QueryTransient
         @QueryType(PropertyType.ENTITY)
-        BlockingTestEntity field2;
+        Entity field2;
         
         @QueryTransient
-        BlockingTestEntity blockedField;
+        Entity blockedField;
     }
     
     @QueryEntity
-    public abstract class BlockingTestEntity2{
+    public abstract class Entity2{
         
         @QueryTransient
         @QueryType(PropertyType.ENTITY)
-        public abstract BlockingTestEntity getField2();
+        public abstract Entity getField2();
         
         @QueryTransient
-        public abstract BlockingTestEntity getBlockedField();
+        public abstract Entity getBlockedField();
     }
     
     @Test
     public void test(){
-        assertTrue(QBlockingTestEntity.blockingTestEntity.field1 != null);
-        assertTrue(QBlockingTestEntity.blockingTestEntity.field2 != null);
+        assertTrue(QBlockingTest_Entity.entity.field1 != null);
+        assertTrue(QBlockingTest_Entity.entity.field2 != null);
         
-        cl = QBlockingTestEntity.class;
+        cl = QBlockingTest_Entity.class;
         assertMissing("blockedField");
     }
     
     @Test
     public void test2(){
-        assertTrue(QBlockingTestEntity2.blockingTestEntity2.field2 != null);
+        assertTrue(QBlockingTest_Entity2.entity2.field2 != null);
         
-        cl = QBlockingTestEntity2.class;
+        cl = QBlockingTest_Entity2.class;
         assertMissing("blockedField");
     }
 }
