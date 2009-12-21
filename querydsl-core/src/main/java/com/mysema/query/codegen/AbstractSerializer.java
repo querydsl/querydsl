@@ -118,7 +118,6 @@ public abstract class AbstractSerializer implements Serializer{
         case SIMPLE:     
             return typeName + "<" + localGenericName + ">";
         case ENTITY:
-//            String suffix = type.getSimpleName();
             String suffix = type.getFullName().substring(type.getPackageName().length()+1).replace('.', '_');            
             if (type.getPackageName().equals(model.getPackageName())){
                 return model.getPrefix() + suffix;
