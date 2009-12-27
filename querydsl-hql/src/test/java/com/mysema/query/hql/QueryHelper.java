@@ -48,7 +48,7 @@ class QueryHelper extends HQLQueryBase<QueryHelper> {
     }
 
     public QueryHelper select(Expr<?>... exprs) {
-        addToProjection(exprs);
+        queryMixin.addToProjection(exprs);
         return this;
     }
 

@@ -28,7 +28,7 @@ import com.mysema.query.types.path.Path;
  */
 public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
 
-    private final QueryMetadata md = new DefaultQueryMetadata();
+    private final QueryMetadata metadata = new DefaultQueryMetadata();
     
     private final EntityManager em;
     
@@ -41,13 +41,13 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
     public JPAUpdateClause(EntityManager em, PEntity<?> entity, HQLTemplates templates){
         this.em = em;
         this.templates = templates;
-        md.addFrom(entity);        
+        metadata.addFrom(entity);        
     }
     
     @Override
     public long execute() {
         HQLSerializer serializer = new HQLSerializer(templates);
-        serializer.serializeForUpdate(md);
+        serializer.serializeForUpdate(metadata);
         Map<Object,String> constants = serializer.getConstantToLabel();
 
         Query query = em.createQuery(serializer.toString());
@@ -58,13 +58,13 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
     @SuppressWarnings("unchecked")
     @Override
     public <T> JPAUpdateClause set(Path<T> path, T value) {
-        md.addProjection(((Expr<T>)path).eq(value));
+        metadata.addProjection(((Expr<T>)path).eq(value));
         return this;
     }
 
     @Override
     public JPAUpdateClause where(EBoolean... o) {
-        md.addWhere(o);
+        metadata.addWhere(o);
         return this;
     }
 

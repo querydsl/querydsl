@@ -32,6 +32,14 @@ public class SubQueryTest extends AbstractQueryTest{
     }
     
     @Test
+    public void joins(){
+        assertEquals("from Cat cat\n  inner join cat.mate", sub().from(cat).innerJoin(cat.mate).toString());
+        assertEquals("from Cat cat\n  left join cat.mate", sub().from(cat).leftJoin(cat.mate).toString());
+        assertEquals("from Cat cat\n  full join cat.mate", sub().from(cat).fullJoin(cat.mate).toString());
+        assertEquals("from Cat cat\n  join cat.mate", sub().from(cat).join(cat.mate).toString());
+    }
+    
+    @Test
     public void uniqueProjection(){
         assertToString("(select cat from Cat cat)", sub().from(cat).unique(cat));
     }
@@ -42,11 +50,7 @@ public class SubQueryTest extends AbstractQueryTest{
     }
     
     @Test
-    public void exists(){
-//        toString("exists (select cat from Cat cat)",                        sub().from(cat).exists());
-//        toString("exists (select cat from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).exists());
-//        toString("exists (select cat from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).unique(cat).exists());
-        
+    public void exists(){        
         assertToString("exists (select 1 from Cat cat)",                        sub().from(cat).exists());
         assertToString("exists (select 1 from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).exists());
         assertToString("exists (select 1 from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).unique(cat).exists());

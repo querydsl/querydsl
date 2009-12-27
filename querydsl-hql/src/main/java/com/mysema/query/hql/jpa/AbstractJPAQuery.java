@@ -51,10 +51,10 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
      * @return
      */
     public Query createQuery(Expr<?> expr){
-        addToProjection(expr);
+        queryMixin.addToProjection(expr);
         String queryString = toString();
         logQuery(queryString);
-        return createQuery(queryString, getMetadata().getModifiers());        
+        return createQuery(queryString, queryMixin.getMetadata().getModifiers());        
     }
     
     /**
@@ -64,11 +64,11 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
      * @return
      */
     public Query createQuery(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest){
-        addToProjection(expr1, expr2);
-        addToProjection(rest);
+        queryMixin.addToProjection(expr1, expr2);
+        queryMixin.addToProjection(rest);
         String queryString = toString();
         logQuery(queryString);
-        return createQuery(queryString, getMetadata().getModifiers());
+        return createQuery(queryString, queryMixin.getMetadata().getModifiers());
     }
 
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
@@ -104,11 +104,11 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
     }
 
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
-        addToProjection(expr);
+        queryMixin.addToProjection(expr);
         Query query = createQuery(toCountRowsString(), null);
         long total = (Long) query.getSingleResult();
         if (total > 0) {
-            QueryModifiers modifiers = getMetadata().getModifiers();
+            QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
             String queryString = toString();
             logQuery(queryString);
             query = createQuery(queryString, modifiers);
@@ -122,7 +122,7 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
     
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expr<RT> expr) {
-        addToProjection(expr);
+        queryMixin.addToProjection(expr);
         String queryString = toQueryString();
         logQuery(queryString);
         Query query = createQuery(queryString, null);

@@ -6,20 +6,14 @@
 package com.mysema.query.hql;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
 
 import com.mysema.query.BooleanBuilder;
-import com.mysema.query.JoinExpression;
-import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.QueryBaseWithProjection;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.OSimple;
-import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PSimple;
@@ -39,38 +33,28 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
     @Nullable
     private String countRowsString, queryString;
 
+    protected final HQLQueryMixin<SubType> queryMixin;
+    
     private final HQLTemplates templates;
     
+    @SuppressWarnings("unchecked")
     public HQLQueryBase(QueryMetadata md, HQLTemplates templates) {
-        super(md);
+        super(new HQLQueryMixin<SubType>(md));
+        super.queryMixin.setSelf((SubType) this);
+        this.queryMixin = (HQLQueryMixin) super.queryMixin;
         this.templates = templates;
     }
 
     private String buildQueryString(boolean forCountRow) {
-        if (getMetadata().getJoins().isEmpty()) {
+        if (queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("No joins given");
         }
         HQLSerializer serializer = new HQLSerializer(templates);
-        serializer.serialize(getMetadata(), forCountRow, null);
+        serializer.serialize(queryMixin.getMetadata(), forCountRow, null);
         constants = serializer.getConstantToLabel();
         return serializer.toString();
     }
-
-    @SuppressWarnings("unchecked")
-    private <D> Expr<D> createAlias(PEntity<?> target, PEntity<D> alias){
-        return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
-    }
     
-    @SuppressWarnings("unchecked")
-    private <D> Expr<D> createAlias(Path<? extends Collection<D>> target, PEntity<D> alias){
-        return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target.asExpr(), alias);
-    }
-    
-    @SuppressWarnings("unchecked")
-    private <D> Expr<D> createAlias(PMap<?,D,?> target, PEntity<D> alias){
-        return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
-    }
-
     protected EBoolean createQBECondition(PEntity<?> entity,
             Map<String, Object> map) {
         BooleanBuilder expr = new BooleanBuilder();
@@ -86,179 +70,140 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return expr;
     }
 
-    public SubType from(PEntity<?>... args) {        
-        getMetadata().addFrom(args);
-        return _this;
-    }
-    
-    /**
-     * @return
-     */
     public SubType fetch(){
-        List<JoinExpression> joins = getMetadata().getJoins();
-        joins.get(joins.size()-1).setFlag(HQLFlags.FETCH);
-        return _this;
+        return queryMixin.fetch();
     }
 
-    /**
-     * @return
-     */
     public SubType fetchAll(){
-        List<JoinExpression> joins = getMetadata().getJoins();
-        joins.get(joins.size()-1).setFlag(HQLFlags.FETCH_ALL);
-        return _this;
+        return queryMixin.fetchAll();
     }
 
-    public <P> SubType fullJoin(PEntity<P> target) {
-        getMetadata().addJoin(JoinType.FULLJOIN, target);
-        return _this;
+    public SubType from(PEntity<?>... args) {        
+        return queryMixin.from(args);
     }
-    
-    public <P> SubType fullJoin(PEntity<P> target, PEntity<P> alias) {
-        getMetadata().addJoin(JoinType.FULLJOIN, createAlias(target, alias));
-        return _this;
-    }
-    
+
     public <P> SubType fullJoin(Path<? extends Collection<P>> target) {
-        getMetadata().addJoin(JoinType.FULLJOIN, target.asExpr());
-        return _this;
+        return queryMixin.fullJoin(target);
     }
     
     public <P> SubType fullJoin(Path<? extends Collection<P>> target, PEntity<P> alias) {
-        getMetadata().addJoin(JoinType.FULLJOIN, createAlias(target, alias));
-        return _this;
+        return queryMixin.fullJoin(target, alias);
+    }
+    
+    public <P> SubType fullJoin(PEntity<P> target) {
+        return queryMixin.fullJoin(target);
+    }
+    
+    public <P> SubType fullJoin(PEntity<P> target, PEntity<P> alias) {
+        return queryMixin.fullJoin(target, alias);
     }
     
     public <P> SubType fullJoin(PMap<?,P,?> target) {
-        getMetadata().addJoin(JoinType.FULLJOIN, target);
-        return _this;
+        return queryMixin.fullJoin(target);
     }
     
     public <P> SubType fullJoin(PMap<?,P,?> target, PEntity<P> alias) {
-        getMetadata().addJoin(JoinType.FULLJOIN, createAlias(target, alias));
-        return _this;
+        return queryMixin.fullJoin(target, alias);
     }
     
     protected Map<Object,String> getConstants() {
         return constants;
     }
     
-    public <P> SubType innerJoin(PEntity<P> target) {
-        getMetadata().addJoin(JoinType.INNERJOIN, target);
-        return _this;
-    }
-    
-    public <P> SubType innerJoin(PEntity<P> target, PEntity<P> alias) {
-        getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
-        return _this;
-    }
-
     public <P> SubType innerJoin(Path<? extends Collection<P>> target) {
-        getMetadata().addJoin(JoinType.INNERJOIN, target.asExpr());
-        return _this;
+        return queryMixin.innerJoin(target);
     }
     
     public <P> SubType innerJoin(Path<? extends Collection<P>>target, PEntity<P> alias) {
-        getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
-        return _this;
+        return queryMixin.innerJoin(target, alias);
+    }
+
+    public <P> SubType innerJoin(PEntity<P> target) {
+        return queryMixin.innerJoin(target);
+    }
+    
+    public <P> SubType innerJoin(PEntity<P> target, PEntity<P> alias) {
+        return queryMixin.innerJoin(target, alias);
     }
     
     public <P> SubType innerJoin(PMap<?,P,?> target) {
-        getMetadata().addJoin(JoinType.INNERJOIN, target);
-        return _this;
+        return queryMixin.innerJoin(target);
     }
     
     public <P> SubType innerJoin(PMap<?,P,?> target, PEntity<P> alias) {
-        getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
-        return _this;
-    }
-    
-    public <P> SubType join(PEntity<P> target) {
-        getMetadata().addJoin(JoinType.JOIN, target);
-        return _this;
-    }
-    
-    public <P> SubType join(PEntity<P> target, PEntity<P> alias) {
-        getMetadata().addJoin(JoinType.JOIN, createAlias(target, alias));
-        return _this;
+        return queryMixin.innerJoin(target, alias);
     }
     
     public <P> SubType join(Path<? extends Collection<P>> target) {
-        getMetadata().addJoin(JoinType.JOIN, target.asExpr());
-        return _this;
+        return queryMixin.innerJoin(target);
     }
     
     public <P> SubType join(Path<? extends Collection<P>> target, PEntity<P> alias) {
-        getMetadata().addJoin(JoinType.JOIN, createAlias(target, alias));
-        return _this;
+        return queryMixin.innerJoin(target, alias);
+    }
+    
+    public <P> SubType join(PEntity<P> target) {
+        return queryMixin.innerJoin(target);
+    }
+    
+    public <P> SubType join(PEntity<P> target, PEntity<P> alias) {
+        return queryMixin.innerJoin(target, alias);
     }
     
     public <P> SubType join(PMap<?,P,?> target) {
-        getMetadata().addJoin(JoinType.JOIN, target);
-        return _this;
+        return queryMixin.join(target);
     }
     
     public <P> SubType join(PMap<?,P,?> target, PEntity<P> alias) {
-        getMetadata().addJoin(JoinType.JOIN, createAlias(target, alias));
-        return _this;
+        return queryMixin.join(target, alias);
     }
 
-    public <P> SubType leftJoin(PEntity<P> target) {
-        getMetadata().addJoin(JoinType.LEFTJOIN, target);
-        return _this;
-    }
-    
-    public <P> SubType leftJoin(PEntity<P> target, PEntity<P> alias) {
-        getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
-        return _this;
-    }
-    
     public <P> SubType leftJoin(Path<? extends Collection<P>> target) {
-        getMetadata().addJoin(JoinType.LEFTJOIN, target.asExpr());
-        return _this;
+        return queryMixin.leftJoin(target);
     }
     
     public <P> SubType leftJoin(Path<? extends Collection<P>> target, PEntity<P> alias) {
-        getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
-        return _this;
+        return queryMixin.leftJoin(target, alias);
     }
     
-    public <P> SubType leftJoin(PMap<?,P,?> target, PEntity<P> alias) {
-        getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
-        return _this;
+    public <P> SubType leftJoin(PEntity<P> target) {
+        return queryMixin.leftJoin(target);
+    }
+    
+    public <P> SubType leftJoin(PEntity<P> target, PEntity<P> alias) {
+        return queryMixin.leftJoin(target, alias);
     }
     
     public <P> SubType leftJoin(PMap<?,P,?> target) {
-        getMetadata().addJoin(JoinType.LEFTJOIN, target);
-        return _this;
+        return queryMixin.leftJoin(target);
     }
     
-    
-    
-    public SubType with(EBoolean... conditions){
-        for (EBoolean condition : conditions){
-            getMetadata().addJoinCondition(condition);    
-        }        
-        return _this;
+    public <P> SubType leftJoin(PMap<?,P,?> target, PEntity<P> alias) {
+        return queryMixin.leftJoin(target, alias);
     }
 
+    public SubType with(EBoolean... conditions){
+        return queryMixin.with(conditions);
+    }
+    
     protected String toCountRowsString() {
         if (countRowsString == null) {
             countRowsString = buildQueryString(true);
         }
         return countRowsString;
     }
-    
+
     protected String toQueryString(){
       if (queryString == null) {
           queryString = buildQueryString(false);
       }
       return queryString;
     }
-
+    
     @Override
     public String toString() {
         return buildQueryString(false).trim();
     }
+
 
 }
