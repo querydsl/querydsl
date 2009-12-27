@@ -65,9 +65,9 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
      * @return
      */
     public Query createQuery(Expr<?> expr){
-        addToProjection(expr);
+        queryMixin.addToProjection(expr);
         String queryString = toQueryString();        
-        return createQuery(queryString, getMetadata().getModifiers());   
+        return createQuery(queryString, queryMixin.getMetadata().getModifiers());   
     }
 
     /**
@@ -79,11 +79,11 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
      * @return
      */
     public Query createQuery(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest){
-        addToProjection(expr1, expr2);
-        addToProjection(rest);
+        queryMixin.addToProjection(expr1, expr2);
+        queryMixin.addToProjection(rest);
         String queryString = toQueryString();
         logQuery(queryString);
-        return createQuery(queryString, getMetadata().getModifiers());   
+        return createQuery(queryString, queryMixin.getMetadata().getModifiers());   
     }
 
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
@@ -142,11 +142,11 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     }
 
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
-        addToProjection(expr);
+        queryMixin.addToProjection(expr);
         Query query = createQuery(toCountRowsString(), null);
         long total = (Long) query.uniqueResult();
         if (total > 0) {
-            QueryModifiers modifiers = getMetadata().getModifiers();
+            QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
             String queryString = toQueryString();
             logQuery(queryString);
             query = createQuery(queryString, modifiers);
@@ -196,9 +196,10 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
      * Enable caching of this query result set.
      * @param cacheable Should the query results be cacheable?
      */
+    @SuppressWarnings("unchecked")
     public SubType setCacheable(boolean cacheable){
         this.cacheable = cacheable;
-        return _this;
+        return (SubType)this;
     }
 
     /**
@@ -206,18 +207,20 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
      * @param cacheRegion the name of a query cache region, or <tt>null</tt>
      * for the default query cache
      */
+    @SuppressWarnings("unchecked")
     public SubType setCacheRegion(String cacheRegion){
         this.cacheRegion = cacheRegion;
-        return _this;
+        return (SubType)this;
     }
     
     /**
      * Set a fetch size for the underlying JDBC query.
      * @param fetchSize the fetch size
      */
+    @SuppressWarnings("unchecked")
     public SubType setFetchSize(int fetchSize) {
         this.fetchSize = fetchSize;
-        return _this;
+        return (SubType)this;
     }
     
     /**
@@ -226,26 +229,29 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
      * them or make changes persistent.
      *
      */
+    @SuppressWarnings("unchecked")
     public SubType setReadOnly(boolean readOnly){
         this.readOnly = readOnly;
-        return _this;
+        return (SubType)this;
     }
     
     /**
      * Set a timeout for the underlying JDBC query.
      * @param timeout the timeout in seconds
      */
+    @SuppressWarnings("unchecked")
     public SubType setTimeout(int timeout){
         this.timeout = timeout;
-        return _this;
+        return (SubType)this;
     }
 
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expr<RT> expr) {
-        addToProjection(expr);
+        queryMixin.addToProjection(expr);
+        QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
         String queryString = toQueryString();
         logQuery(queryString);
-        Query query = createQuery(queryString, null);
+        Query query = createQuery(queryString, modifiers);
         return (RT) query.uniqueResult();
     }
     
