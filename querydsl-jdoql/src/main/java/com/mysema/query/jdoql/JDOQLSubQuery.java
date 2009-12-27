@@ -22,32 +22,31 @@ import com.mysema.query.types.path.Path;
  */
 public class JDOQLSubQuery extends QueryBaseWithDetach<JDOQLSubQuery>{
     
-    private static final JDOQLTemplates templates = new JDOQLTemplates();
 
-    public JDOQLSubQuery(QueryMetadata metadata) {
-        super(metadata);
-    }
-    
     public JDOQLSubQuery() {
-        super(new DefaultQueryMetadata());
+        this(new DefaultQueryMetadata());
     }
     
-    public JDOQLSubQuery from(PEntity<?>... o) {
-        getMetadata().addFrom(o);
-        return _this;
+    public JDOQLSubQuery(QueryMetadata metadata) {
+        super(new JDOQLQueryMixin<JDOQLSubQuery>(metadata));
+        this.queryMixin.setSelf(this);
+    }
+    
+    public JDOQLSubQuery from(PEntity<?>... args) {
+        return queryMixin.from(args);
     }
 
     public <P> JDOQLSubQuery from(Path<? extends Collection<P>> target, PEntity<P> alias){
-        getMetadata().addFrom(OSimple.create(alias.getType(), Ops.ALIAS, target.asExpr(), alias));
-        return _this;
+        queryMixin.getMetadata().addFrom(OSimple.create(alias.getType(), Ops.ALIAS, target.asExpr(), alias));
+        return this;
     }
     
     @Override
     public String toString(){
-        if (!getMetadata().getJoins().isEmpty()){
-            Expr<?> source = this.getMetadata().getJoins().get(0).getTarget();
-            JDOQLSerializer serializer = new JDOQLSerializer(templates, source);
-            serializer.serialize(getMetadata(), false, false);
+        if (!queryMixin.getMetadata().getJoins().isEmpty()){
+            Expr<?> source = queryMixin.getMetadata().getJoins().get(0).getTarget();
+            JDOQLSerializer serializer = new JDOQLSerializer(JDOQLTemplates.DEFAULT, source);
+            serializer.serialize(queryMixin.getMetadata(), false, false);
             return serializer.toString().trim();
         }else{
             return super.toString();

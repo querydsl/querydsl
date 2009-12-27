@@ -16,62 +16,43 @@ import com.mysema.query.types.expr.Expr;
  * @version $Id$
  */
 public abstract class QueryBase<SubType extends QueryBase<SubType>> {
+
+    protected final QueryMixin<SubType> queryMixin;
     
-    @SuppressWarnings("unchecked")
-    protected final SubType _this = (SubType) this;
-
-    private final QueryMetadata metadata;
-
-    public QueryBase(QueryMetadata metadata) {
-        this.metadata = metadata;
-    }
-
-    protected SubType addToProjection(Expr<?>... o) {
-        metadata.addProjection(o);
-        return _this;
-    }
-
-    public QueryMetadata getMetadata() {
-        return metadata;
+    public QueryBase(QueryMixin<SubType> queryMixin) {
+        this.queryMixin = queryMixin;
     }
 
     public SubType groupBy(Expr<?>... o) {
-        metadata.addGroupBy(o);
-        return _this;
+        return queryMixin.groupBy(o);
     }
 
     public SubType having(EBoolean... o) {
-        metadata.addHaving(o);
-        return _this;
+        return queryMixin.having(o);
     }
 
     public SubType orderBy(OrderSpecifier<?>... o) {
-        metadata.addOrderBy(o);
-        return _this;
+        return queryMixin.orderBy(o);
     }
 
     public SubType where(EBoolean... o) {
-        metadata.addWhere(o);
-        return _this;
+        return queryMixin.where(o);
     }
 
     public String toString() {
-        return metadata.toString();
+        return queryMixin.toString();
     }
     
     public SubType limit(long limit) {
-        metadata.setLimit(limit);
-        return _this;
+        return queryMixin.limit(limit);
     }
 
     public SubType offset(long offset) {
-        metadata.setOffset(offset);
-        return _this;
+        return queryMixin.offset(offset);
     }
 
     public SubType restrict(QueryModifiers modifiers) {
-        metadata.setModifiers(modifiers);
-        return _this;
+        return queryMixin.restrict(modifiers);
     }
 
 }

@@ -5,6 +5,7 @@
  */
 package com.mysema.query;
 
+import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.ObjectSubQuery;
@@ -64,6 +65,15 @@ public interface Detachable {
      * @return the result or null for an empty result
      */
     <RT> ObjectSubQuery<RT> unique(Expr<RT> projection);
-       
+    
+    /**
+     * @return
+     */
+    EBoolean exists();
+
+    /**
+     * @return
+     */
+    EBoolean notExists();  
 
 }

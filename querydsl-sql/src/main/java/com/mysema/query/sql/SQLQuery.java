@@ -8,7 +8,6 @@ package com.mysema.query.sql;
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.ObjectSubQuery;
@@ -31,25 +30,25 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
      * @param o
      * @return
      */
-    SQLQuery fullJoin(Expr<?> o);
+    SQLQuery fullJoin(PEntity<?> o);
 
     /**
      * @param o
      * @return
      */
-    SQLQuery innerJoin(Expr<?> o);
+    SQLQuery innerJoin(PEntity<?> o);
 
     /**
      * @param o
      * @return
      */
-    SQLQuery join(Expr<?> o);
+    SQLQuery join(PEntity<?> o);
 
     /**
      * @param o
      * @return
      */
-    SQLQuery leftJoin(Expr<?> o);
+    SQLQuery leftJoin(PEntity<?> o);
     
     /**
      * @param conditions

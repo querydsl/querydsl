@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.DefaultQueryMetadata;
-import com.mysema.query.JoinType;
+import com.mysema.query.QueryMixin;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.support.QueryBaseWithProjection;
@@ -73,8 +73,10 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
 
     protected final SQLTemplates templates;
 
+    @SuppressWarnings("unchecked")
     public AbstractSQLQuery(Connection conn, SQLTemplates templates) {
-        super(new DefaultQueryMetadata());
+        super(new QueryMixin<SubType>(new DefaultQueryMetadata()));
+        this.queryMixin.setSelf((SubType) this);
         this.conn = conn;
         this.templates = templates;
     }
@@ -82,9 +84,9 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     protected String buildQueryString(boolean forCountRow) {
         SQLSerializer serializer = createSerializer();
         if (sq != null) {
-            serializer.serializeUnion(sq, getMetadata().getOrderBy());
+            serializer.serializeUnion(sq, queryMixin.getMetadata().getOrderBy());
         } else {
-            serializer.serialize(getMetadata(), forCountRow);
+            serializer.serialize(queryMixin.getMetadata(), forCountRow);
         }
         constants = serializer.getConstants();
         return serializer.toString();
@@ -105,13 +107,11 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     }
 
     public SubType from(PEntity<?>... args) {
-        getMetadata().addFrom(args);
-        return _this;
+        return queryMixin.from(args);
     }
 
-    public SubType fullJoin(Expr<?> o) {
-        getMetadata().addJoin(JoinType.FULLJOIN, o);
-        return _this;
+    public SubType fullJoin(PEntity<?> target) {
+        return queryMixin.fullJoin(target);
     }
 
     @SuppressWarnings("unchecked")
@@ -124,13 +124,12 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         return (T) ResultSet.class.getMethod(methodName, int.class).invoke(rs, i);
     }
     
-    public SubType innerJoin(Expr<?> o) {
-        getMetadata().addJoin(JoinType.INNERJOIN, o);
-        return _this;
+    public SubType innerJoin(PEntity<?> target) {
+        return queryMixin.innerJoin(target);
     }
     
     private <RT> UnionBuilder<RT> innerUnion(SubQuery... sq) {
-        if (!getMetadata().getJoins().isEmpty()){
+        if (!queryMixin.getMetadata().getJoins().isEmpty()){
             throw new IllegalArgumentException("Don't mix union and from");
         }            
         this.sq = sq;
@@ -147,19 +146,17 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         return list(projection).iterator();
     }
 
-    public SubType join(Expr<?> o) {
-        getMetadata().addJoin(JoinType.JOIN, o);
-        return _this;
+    public SubType join(PEntity<?> target) {
+        return queryMixin.join(target);
     }
 
-    public SubType leftJoin(Expr<?> o) {
-        getMetadata().addJoin(JoinType.LEFTJOIN, o);
-        return _this;
+    public SubType leftJoin(PEntity<?> target) {
+        return queryMixin.leftJoin(target);
     }
 
     public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
-        addToProjection(expr1, expr2);
-        addToProjection(rest);
+        queryMixin.addToProjection(expr1, expr2);
+        queryMixin.addToProjection(rest);
         try {
             return listMultiple();
         } catch (SQLException e) {
@@ -170,7 +167,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     }
 
     public <RT> List<RT> list(Expr<RT> expr) {
-        addToProjection(expr);
+        queryMixin.addToProjection(expr);
         try {
             return listSingle(expr);
         } catch (SQLException e) {
@@ -207,10 +204,10 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     }
 
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
-        addToProjection(expr);
+        queryMixin.addToProjection(expr);
         long total = count();
         if (total > 0) {
-            QueryModifiers modifiers = getMetadata().getModifiers();
+            QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
             return new SearchResults<RT>(list(expr), modifiers, total);
         } else {
             return SearchResults.emptyResults();
@@ -265,10 +262,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     }
 
     public SubType on(EBoolean... conditions){
-        for (EBoolean condition : conditions){
-            getMetadata().addJoinCondition(condition);    
-        }        
-        return _this;
+        return queryMixin.on(conditions);
     }
 
     protected String toQueryString(){

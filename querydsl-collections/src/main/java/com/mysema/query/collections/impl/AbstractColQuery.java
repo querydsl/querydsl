@@ -22,6 +22,7 @@ import org.apache.commons.collections15.iterators.UniqueFilterIterator;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.QueryMixin;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.collections.ColQuery;
@@ -60,8 +61,10 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
 
     private final Map<Expr<?>, Iterable<?>> exprToIt = new HashMap<Expr<?>, Iterable<?>>();
 
+    @SuppressWarnings("unchecked")
     public AbstractColQuery(QueryMetadata metadata, EvaluatorFactory evaluatorFactory) {
-        super(metadata);
+        super(new QueryMixin<SubType>(metadata));
+        this.queryMixin.setSelf((SubType) this);
         this.evaluatorFactory = evaluatorFactory;
         this.iteratorFactory = new IteratorFactory(evaluatorFactory);
     }
@@ -70,12 +73,12 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
         try {
             List<Expr<?>> sources = new ArrayList<Expr<?>>();
             Iterator<?> it;
-            if (getMetadata().getJoins().size() == 1) {
+            if (queryMixin.getMetadata().getJoins().size() == 1) {
                 it = handleFromWhereSingleSource(sources);
             } else {
                 it = handleFromWhereMultiSource(sources);
             }
-            if (getMetadata().isDistinct()) {
+            if (queryMixin.isDistinct()) {
                 arrayProjection = true;
                 it = asDistinctIterator(it);
             }
@@ -91,7 +94,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
     }
 
     private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
-        QueryMetadata md = getMetadata();
+        QueryMetadata md = queryMixin.getMetadata();
         List<Expr<?>> sources = new ArrayList<Expr<?>>();
         // from / where
         Iterator<?> it;
@@ -128,19 +131,20 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
     
     private <RT> Iterator<RT> createPagedIterator(Expr<RT> projection) throws Exception {
         Iterator<RT> iterator = createIterator(projection);
-        return LimitingIterator.create(iterator, getMetadata().getModifiers());
+        return LimitingIterator.create(iterator, queryMixin.getMetadata().getModifiers());
     }
 
+    @SuppressWarnings("unchecked")
     public <A> SubType from(Path<A> entity, Iterable<? extends A> col) {
         exprToIt.put(entity.asExpr(), col);
-        getMetadata().addFrom(entity.asExpr());
-        return _this;
+        queryMixin.getMetadata().addFrom(entity.asExpr());
+        return (SubType)this;
     }
 
     @SuppressWarnings("unchecked")
     protected Iterator<?> handleFromWhereMultiSource(List<Expr<?>> sources) throws Exception {
-        EBoolean condition = getMetadata().getWhere();
-        List<JoinExpression> joins = new ArrayList<JoinExpression>(getMetadata().getJoins());
+        EBoolean condition = queryMixin.getMetadata().getWhere();
+        List<JoinExpression> joins = new ArrayList<JoinExpression>(queryMixin.getMetadata().getJoins());
         for (JoinExpression join : joins) {
             sources.add(join.getTarget());
         }                
@@ -156,8 +160,8 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
     }
 
     protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources) throws Exception {
-        EBoolean condition = getMetadata().getWhere();
-        JoinExpression join = getMetadata().getJoins().get(0);
+        EBoolean condition = queryMixin.getMetadata().getWhere();
+        JoinExpression join = queryMixin.getMetadata().getJoins().get(0);
         sources.add(join.getTarget());
         // source
         Iterator<?> it = exprToIt.get(join.getTarget()).iterator();
@@ -176,7 +180,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
     @SuppressWarnings("unchecked")
     protected Iterator<?> handleOrderBy(List<Expr<?>> sources, Iterator<?> it) throws Exception {
         // create a projection for the order
-        List<OrderSpecifier<?>> orderBy = getMetadata().getOrderBy();
+        List<OrderSpecifier<?>> orderBy = queryMixin.getMetadata().getOrderBy();
         Expr<Object>[] orderByExpr = new Expr[orderBy.size()];
         boolean[] directions = new boolean[orderBy.size()];
         for (int i = 0; i < orderBy.size(); i++) {
@@ -196,7 +200,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
     protected <RT> Iterator<RT> handleSelect(Iterator<?> it,
             List<Expr<?>> sources, Expr<RT> projection) throws Exception {
         Iterator<RT> rv = iteratorFactory.transform(it, sources, projection);
-        if (getMetadata().isDistinct()) {
+        if (queryMixin.isDistinct()) {
             rv = asDistinctIterator(rv);
         }
         return rv;
@@ -227,7 +231,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
     }
 
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        addToProjection(projection);
+        queryMixin.addToProjection(projection);
         try {
             return createPagedIterator(projection);
         } catch (Exception e) {
@@ -236,7 +240,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
     }
 
     public <RT> SearchResults<RT> listResults(Expr<RT> projection) {
-        QueryModifiers modifiers = getMetadata().getModifiers();
+        QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
         List<RT> list;
         try {
             list = IteratorUtils.toList(createIterator(projection));

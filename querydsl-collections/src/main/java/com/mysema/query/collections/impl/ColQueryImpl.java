@@ -26,4 +26,8 @@ public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQ
         super(metadata, evaluatorFactory);
     }
 
+    public QueryMetadata getMetadata() {
+        return queryMixin.getMetadata();
+    }
+
 }

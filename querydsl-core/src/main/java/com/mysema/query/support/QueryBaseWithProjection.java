@@ -14,7 +14,7 @@ import org.apache.commons.collections15.IteratorUtils;
 
 import com.mysema.query.Projectable;
 import com.mysema.query.QueryBase;
-import com.mysema.query.QueryMetadata;
+import com.mysema.query.QueryMixin;
 import com.mysema.query.SearchResults;
 import com.mysema.query.types.expr.Expr;
 
@@ -28,8 +28,8 @@ import com.mysema.query.types.expr.Expr;
 public abstract class QueryBaseWithProjection<SubType extends QueryBaseWithProjection<SubType>>
         extends QueryBase<SubType> implements Projectable {
 
-    public QueryBaseWithProjection(QueryMetadata metadata) {
-        super(metadata);
+    public QueryBaseWithProjection(QueryMixin<SubType> queryMixin) {
+        super(queryMixin);
     }
 
     protected <A> A[] asArray(A[] target, A first, A second, A... rest) {
@@ -41,20 +41,20 @@ public abstract class QueryBaseWithProjection<SubType extends QueryBaseWithProje
 
     @Override
     public long countDistinct() {
-        getMetadata().setDistinct(true);
+        queryMixin.setDistinct(true);
         return count();
     }
 
     @Override
     public final Iterator<Object[]> iterateDistinct(Expr<?> first,
             Expr<?> second, Expr<?>... rest) {
-        getMetadata().setDistinct(true);
+        queryMixin.setDistinct(true);
         return iterate(first, second, rest);
     }
 
     @Override
     public final <RT> Iterator<RT> iterateDistinct(Expr<RT> projection) {
-        getMetadata().setDistinct(true);
+        queryMixin.setDistinct(true);
         return iterate(projection);
     }
 
@@ -71,19 +71,19 @@ public abstract class QueryBaseWithProjection<SubType extends QueryBaseWithProje
     @Override
     public final List<Object[]> listDistinct(Expr<?> first, Expr<?> second,
             Expr<?>... rest) {
-        getMetadata().setDistinct(true);
+        queryMixin.setDistinct(true);
         return list(first, second, rest);
     }
 
     @Override
     public final <RT> List<RT> listDistinct(Expr<RT> projection) {
-        getMetadata().setDistinct(true);
+        queryMixin.setDistinct(true);
         return list(projection);
     }
 
     @Override
     public final <RT> SearchResults<RT> listDistinctResults(Expr<RT> projection){
-        getMetadata().setDistinct(true);
+        queryMixin.setDistinct(true);
         return listResults(projection);
     }
     
@@ -100,14 +100,14 @@ public abstract class QueryBaseWithProjection<SubType extends QueryBaseWithProje
     
     @Override
     public Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
-        getMetadata().setUnique(true);
+        queryMixin.setUnique(true);
         Iterator<Object[]> it = iterate(first, second, rest);
         return it.hasNext() ? it.next() : null;
     }
     
     @Override
     public <RT> RT uniqueResult(Expr<RT> expr) {
-        getMetadata().setUnique(true);
+        queryMixin.setUnique(true);
         limit(1l);
         Iterator<RT> it = iterate(expr);
         return it.hasNext() ? it.next() : null;

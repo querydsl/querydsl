@@ -17,8 +17,16 @@ import com.mysema.query.types.OrderSpecifier;
  */
 public interface Union<RT> {
     
+    /**
+     * @param o
+     * @return
+     */
     Union<RT> orderBy(OrderSpecifier<?>... o);
 
+    /**
+     * @return
+     * @throws SQLException
+     */
     List<RT> list() throws SQLException;
 
 }
