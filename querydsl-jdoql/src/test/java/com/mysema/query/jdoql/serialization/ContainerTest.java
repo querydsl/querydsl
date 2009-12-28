@@ -173,7 +173,7 @@ public class ContainerTest extends AbstractTest{
           "ORDER BY this.wardrobes.get(a1).model ASC",
                             
           serialize(query().from(gym)
-                   .orderBy(gym.wardrobes(wrd.getModel()).model.asc()).list(gym)));
+                   .orderBy(gym.wardrobes.get(wrd.getModel()).model.asc()).list(gym)));
     }
 
 
