@@ -1,3 +1,5 @@
-* Document @QueryType
+* document @QueryType
 
-* Document HibernateAnnotationProcessor
+* document HibernateAnnotationProcessor
+
+* document @QuerydslConfig
