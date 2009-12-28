@@ -20,10 +20,11 @@ public interface Serializer {
      * Serialize the given ClassModel 
      * 
      * @param type ClassModel to serialize
+     * @param serializerConfig TODO
      * @param writer serialization target
      * @throws IOException
      */
-    void serialize(EntityModel type, Writer writer) throws IOException;
+    void serialize(EntityModel type, SerializerConfig serializerConfig, Writer writer) throws IOException;
     
     /**
      * Get a String representation of the Querydsl type for the given TypeModel

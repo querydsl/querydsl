@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
@@ -26,11 +27,13 @@ public class JPAConfiguration extends SimpleConfiguration {
    
     private List<Class<? extends Annotation>> annotations;
     
-    public JPAConfiguration(Class<? extends Annotation> entityAnn,
+    public JPAConfiguration(
+            RoundEnvironment roundEnv,
+            Class<? extends Annotation> entityAnn,
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
             Class<? extends Annotation> skipAnn) throws ClassNotFoundException {
-        super(entityAnn, superTypeAnn, embeddableAnn, skipAnn);
+        super(roundEnv, entityAnn, superTypeAnn, embeddableAnn, skipAnn);
         this.annotations = getAnnotations();
     }
     

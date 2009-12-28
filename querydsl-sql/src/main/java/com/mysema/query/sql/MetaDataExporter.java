@@ -20,6 +20,7 @@ import com.mysema.query.codegen.ClassTypeModel;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.PropertyModel;
 import com.mysema.query.codegen.Serializer;
+import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.codegen.SimpleTypeModel;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeModel;
@@ -126,7 +127,7 @@ public class MetaDataExporter {
     private void serialize(EntityModel type) {
         try {
             String path = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
-            serializer.serialize(type, FileUtils.writerFor(new File(targetFolder, path)));
+            serializer.serialize(type, SimpleSerializerConfig.DEFAULT, FileUtils.writerFor(new File(targetFolder, path)));
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }

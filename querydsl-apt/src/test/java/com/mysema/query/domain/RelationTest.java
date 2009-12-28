@@ -11,6 +11,7 @@ import java.util.SortedSet;
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
+import com.mysema.query.annotations.QuerydslConfig;
 import com.mysema.query.domain.rel.RelationType2;
 import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PList;
@@ -48,6 +49,7 @@ public class RelationTest extends AbstractTest{
     }
     
     @QueryEntity
+    @QuerydslConfig(listAccessors=true, mapAccessors=true)
     public class RelationType {
 
         MyEnum enumProperty;

@@ -14,6 +14,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
+ * Defines the paths to be initialized for the annotated property
+ * 
  * @author tiwe
  *
  */
@@ -23,6 +25,8 @@ import java.lang.annotation.Target;
 public @interface QueryInit {
 
     /**
+     * Initialized paths
+     * 
      * @return
      */
     String[] value();

@@ -4,6 +4,8 @@ import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.processing.RoundEnvironment;
+
 import com.mysema.query.apt.jpa.JPAConfiguration;
 
 /**
@@ -12,11 +14,13 @@ import com.mysema.query.apt.jpa.JPAConfiguration;
  */
 public class HibernateConfiguration extends JPAConfiguration{
 
-    public HibernateConfiguration(Class<? extends Annotation> entityAnn,
+    public HibernateConfiguration(
+            RoundEnvironment roundEnv,
+            Class<? extends Annotation> entityAnn,
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
             Class<? extends Annotation> skipAnn) throws ClassNotFoundException {
-        super(entityAnn, superTypeAnn, embeddableAnn, skipAnn);
+        super(roundEnv, entityAnn, superTypeAnn, embeddableAnn, skipAnn);
     }
     
     @SuppressWarnings("unchecked")

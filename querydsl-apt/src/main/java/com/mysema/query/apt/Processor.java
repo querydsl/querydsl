@@ -30,6 +30,7 @@ import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.codegen.EntityModel;
 import com.mysema.query.codegen.EntityModelFactory;
 import com.mysema.query.codegen.Serializer;
+import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.TypeModelFactory;
 
 /**
@@ -220,18 +221,19 @@ public class Processor {
         }
     }
 
-    private void serialize(Serializer serializer, Map<String, EntityModel> types) {
+    private void serialize(Serializer serializer, Map<String, EntityModel> models) {
         Messager msg = env.getMessager();
-        for (EntityModel type : types.values()) {
-            msg.printMessage(Kind.NOTE, type.getFullName() + " is processed");
+        for (EntityModel model : models.values()) {
+            msg.printMessage(Kind.NOTE, model.getFullName() + " is processed");
             try {
-                String packageName = type.getPackageName();         
-                String localName = serializer.getPathType(type, type, true);
+                String packageName = model.getPackageName();         
+                String localName = serializer.getPathType(model, model, true);
                 String className = packageName + "." + localName;
                 JavaFileObject fileObject = env.getFiler().createSourceFile(className);
                 Writer writer = fileObject.openWriter();
                 try {
-                    serializer.serialize(type, writer);    
+                    SerializerConfig serializerConfig = configuration.getSerializerConfig(model);
+                    serializer.serialize(model, serializerConfig, writer);    
                 }finally{
                     if (writer != null) {
                         writer.close();

@@ -115,14 +115,33 @@ public class EntitySerializer extends AbstractSerializer{
         builder.append("    }\n\n");        
     }
     
-    protected void entityField(PropertyModel field, Writer writer) throws IOException {
+    protected void entityField(PropertyModel field, SerializerConfig config, Writer writer) throws IOException {
         String queryType = getPathType(field.getType(), field.getEntityModel(), false);
         
         StringBuilder builder = new StringBuilder();
         if (field.isInherited()){
             builder.append("    // inherited\n");
         }       
-        builder.append("    public final " + queryType + " " + field.getEscapedName() + ";\n\n");
+        if (config.useEntityAccessors()){
+            builder.append("    public ");
+        }else{
+            builder.append("    public final ");    
+        }        
+        builder.append(queryType + " " + field.getEscapedName() + ";\n\n");
+        writer.append(builder.toString());
+    }
+    
+
+    protected void entityAccessor(PropertyModel field, Writer writer) throws IOException {
+        String queryType = getPathType(field.getType(), field.getEntityModel(), false);
+        
+        StringBuilder builder = new StringBuilder();
+        builder.append("    public " + queryType + " " + field.getEscapedName() + "(){\n");
+        builder.append("        if (" + field.getEscapedName() + " == null){\n");
+        builder.append("            " + field.getEscapedName() + " = new " + queryType + "(forProperty(this,\"" + field.getName() + "\"));\n");
+        builder.append("        }\n");
+        builder.append("        return " + field.getEscapedName()+";\n");
+        builder.append("    }\n\n");
         writer.append(builder.toString());
     }
 
@@ -167,10 +186,10 @@ public class EntitySerializer extends AbstractSerializer{
         }        
     }
 
-    protected void intro(EntityModel model, Writer writer) throws IOException {        
+    protected void intro(EntityModel model, SerializerConfig config, Writer writer) throws IOException {        
         StringBuilder builder = new StringBuilder();        
         introPackage(builder, model);        
-        introImports(builder, model);        
+        introImports(builder, config, model);        
         introJavadoc(builder, model);        
         introClassHeader(builder, model);        
         introFactoryMethods(builder, model);   
@@ -246,10 +265,13 @@ public class EntitySerializer extends AbstractSerializer{
         }        
     }
 
-    protected void introImports(StringBuilder builder, EntityModel model) {        
+    protected void introImports(StringBuilder builder, SerializerConfig config, EntityModel model) {        
         builder.append("import com.mysema.query.types.path.*;\n");
-        builder.append("import static com.mysema.query.types.path.PathMetadata.*;\n");
-        if (!model.getConstructors().isEmpty() || model.hasLists() || model.hasMaps()){
+        builder.append("import static com.mysema.query.types.path.PathMetadata.*;\n");        
+        
+        if (!model.getConstructors().isEmpty() 
+                || (model.hasLists() && config.useListAccessors()) 
+                || (model.hasMaps() && config.useMapAccessors())){
             builder.append("import com.mysema.query.types.expr.*;\n");
         }
     }
@@ -337,13 +359,27 @@ public class EntitySerializer extends AbstractSerializer{
         writer.write("}\n");        
     }
 
-    public void serialize(EntityModel model, Writer writer) throws IOException{
-        intro(model, writer);        
-        serializeProperties(model, writer);        
+    public void serialize(EntityModel model, SerializerConfig config, Writer writer) throws IOException{
+        intro(model, config, writer);        
+        serializeProperties(model, config, writer);        
+        
+        // constructors
         constructors(model, writer);        
-        serializeAccessors(model, writer);
+
+        // accessors
+        for (PropertyModel property : model.getProperties()){
+            TypeCategory category = property.getType().getCategory();
+            if (category == TypeCategory.MAP && config.useMapAccessors()){
+                mapAccessor(property, writer);
+            }else if (category == TypeCategory.LIST && config.useListAccessors()){
+                listAccessor(property, writer);
+            }else if (category == TypeCategory.ENTITY && config.useEntityAccessors()){
+                entityAccessor(property, writer);
+            }
+        }
         outro(model, writer);
     }
+
 
     protected void serialize(PropertyModel field, String type, Writer writer, String factoryMethod, String... args) throws IOException{
         EntityModel superModel = field.getEntityModel().getSuperModel();
@@ -374,16 +410,7 @@ public class EntitySerializer extends AbstractSerializer{
         writer.append(builder.toString());
     }
 
-    private void serializeAccessors(EntityModel model, Writer writer) throws IOException {
-        for (PropertyModel property : model.getProperties()){
-            switch(property.getType().getCategory()){
-            case MAP: mapAccessor(property, writer); break;
-            case LIST: listAccessor(property, writer); break;
-            }
-        }
-    }      
-    
-    private void serializeProperties(EntityModel model, Writer writer) throws IOException {
+    private void serializeProperties(EntityModel model,  SerializerConfig config, Writer writer) throws IOException {
         for (PropertyModel property : model.getProperties()){
             String queryType = getPathType(property.getType(), model, false);
             String localGenericName = property.getType().getLocalGenericName(model, true);
@@ -454,7 +481,7 @@ public class EntitySerializer extends AbstractSerializer{
                 serialize(property, "PList<" + localGenericName+ ", " + genericQueryType +  ">", writer, "createList", localRawName+".class", queryType +".class");  
                 break;
             case ENTITY: 
-                entityField(property, writer); 
+                entityField(property, config, writer); 
                 break;
             }
         }

@@ -6,22 +6,30 @@
 package com.mysema.query.apt;
 
 import java.lang.annotation.Annotation;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
+import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QueryType;
+import com.mysema.query.annotations.QuerydslConfig;
 import com.mysema.query.codegen.DTOSerializer;
 import com.mysema.query.codegen.EmbeddableSerializer;
+import com.mysema.query.codegen.EntityModel;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.Serializer;
+import com.mysema.query.codegen.SerializerConfig;
+import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.codegen.SupertypeSerializer;
 
 /**
@@ -47,9 +55,14 @@ public class SimpleConfiguration implements Configuration {
     @Nullable
     protected final Class<? extends Annotation> superTypeAnn;
     
+    private final Map<String,SerializerConfig> packageToConfig = new HashMap<String,SerializerConfig>();
+    
+    private final Map<String,SerializerConfig> typeToConfig = new HashMap<String,SerializerConfig>();
+    
     private boolean useFields = true, useGetters = true;
     
     public SimpleConfiguration(
+            RoundEnvironment roundEnv,
             Class<? extends Annotation> entityAnn, 
             @Nullable
             Class<? extends Annotation> superTypeAnn,
@@ -58,7 +71,17 @@ public class SimpleConfiguration implements Configuration {
         this.entityAnn = Assert.notNull(entityAnn);
         this.superTypeAnn = superTypeAnn;
         this.embeddableAnn = embeddableAnn;
-        this.skipAnn = skipAnn;             
+        this.skipAnn = skipAnn;
+        for (Element element : roundEnv.getElementsAnnotatedWith(QuerydslConfig.class)){
+            SerializerConfig config = SimpleSerializerConfig.getConfig(element.getAnnotation(QuerydslConfig.class));
+            if (element instanceof PackageElement){
+                PackageElement packageElement = (PackageElement)element;
+                packageToConfig.put(packageElement.getQualifiedName().toString(), config);
+            }else if (element instanceof TypeElement){
+                TypeElement typeElement = (TypeElement)element;                
+                typeToConfig.put(typeElement.getQualifiedName().toString(), config);
+            }
+        }
     }
     
     @Override
@@ -193,6 +216,17 @@ public class SimpleConfiguration implements Configuration {
     @Override
     public Serializer getDTOSerializer() {
         return dtoSerializer;
+    }
+    
+    @Override
+    public SerializerConfig getSerializerConfig(EntityModel model) {
+        if (typeToConfig.containsKey(model.getFullName())){
+            return typeToConfig.get(model.getFullName());
+        }else if (packageToConfig.containsKey(model.getPackageName())){
+            return packageToConfig.get(model.getPackageName());
+        }else{
+            return SimpleSerializerConfig.DEFAULT;    
+        }        
     }
     
 }

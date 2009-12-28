@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryTransient;
+import com.mysema.query.annotations.QuerydslConfig;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PNumber;
@@ -79,6 +80,7 @@ public class SimpleTypesTest extends AbstractTest{
     }
     
     @QueryEntity
+    @QuerydslConfig(listAccessors=true)
     public static class SimpleTypes {
         transient int test;
         List<Integer> testList;

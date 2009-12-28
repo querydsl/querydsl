@@ -20,7 +20,7 @@ import net.jcip.annotations.Immutable;
 public class DTOSerializer extends AbstractSerializer{
     
     @Override
-    public void serialize(EntityModel model, Writer writer) throws IOException{
+    public void serialize(EntityModel model, SerializerConfig serializerConfig, Writer writer) throws IOException{
         // intro
         intro(model, writer);
         

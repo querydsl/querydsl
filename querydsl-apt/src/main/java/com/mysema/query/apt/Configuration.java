@@ -8,7 +8,9 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 
+import com.mysema.query.codegen.EntityModel;
 import com.mysema.query.codegen.Serializer;
+import com.mysema.query.codegen.SerializerConfig;
 
 /**
  * Configuration defines the configuration options for APT based Querydsl code generation
@@ -37,6 +39,8 @@ public interface Configuration {
     Class<? extends Annotation> getEmbeddableAnn();
 
     Class<? extends Annotation> getSkipAnn();
+    
+    SerializerConfig getSerializerConfig(EntityModel model);
 
     void setUseGetters(boolean b);
 
