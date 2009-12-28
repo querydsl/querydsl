@@ -19,7 +19,7 @@ import com.mysema.query.types.query.ObjectSubQuery;
 public interface Detachable {
 
     /**
-     * Return the count of matched rows as a subquery
+     * Return the count of matched rows as a sub query
      * 
      * @return
      */
@@ -67,11 +67,15 @@ public interface Detachable {
     <RT> ObjectSubQuery<RT> unique(Expr<RT> projection);
     
     /**
+     * Create an exists(this) expression
+     * 
      * @return
      */
     EBoolean exists();
 
     /**
+     * Create an not exists(this) expression
+     * 
      * @return
      */
     EBoolean notExists();  

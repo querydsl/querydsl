@@ -13,7 +13,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * QuerydslConfig defines serialization flags for annoted domain types and packages
+ * QuerydslConfig defines serialization flags for annotated domain types and packages
  * 
  * @author tiwe
  *

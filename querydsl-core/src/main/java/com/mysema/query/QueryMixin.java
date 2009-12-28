@@ -5,12 +5,15 @@
  */
 package com.mysema.query;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 
 /**
+ * Mixin style Query implementation
+ * 
  * @author tiwe
  *
  * @param <T>
@@ -22,12 +25,12 @@ public class QueryMixin<T>{
     protected final QueryMetadata metadata;
     
     public QueryMixin(QueryMetadata metadata){
-        this.metadata = metadata;
+        this.metadata = Assert.notNull(metadata);
     }
     
     public QueryMixin(T self, QueryMetadata metadata){
-        this.self = self;
-        this.metadata = metadata;
+        this.self = Assert.notNull(self);
+        this.metadata = Assert.notNull(metadata);
     }
     
     public T addToProjection(Expr<?>... o) {

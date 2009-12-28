@@ -5,6 +5,7 @@
  */
 package com.mysema.query.support;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.Detachable;
 import com.mysema.query.QueryMixin;
 import com.mysema.query.types.expr.EBoolean;
@@ -14,6 +15,8 @@ import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.ObjectSubQuery;
 
 /**
+ * Mixin style implementation fo the Detachable interface
+ * 
  * @author tiwe
  *
  */
@@ -22,7 +25,7 @@ public class DetachableMixin implements Detachable{
     private final QueryMixin<?> queryMixin;
     
     public DetachableMixin(QueryMixin<?> queryMixin){
-        this.queryMixin = queryMixin;
+        this.queryMixin = Assert.notNull(queryMixin);
     }
     
     @Override
@@ -38,6 +41,7 @@ public class DetachableMixin implements Detachable{
         return new ListSubQuery<Object[]>(queryMixin.getMetadata(), Object[].class);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <RT> ListSubQuery<RT> list(Expr<RT> projection) {
         queryMixin.addToProjection(projection);
@@ -52,6 +56,7 @@ public class DetachableMixin implements Detachable{
         return new ObjectSubQuery<Object[]>(queryMixin.getMetadata(), Object[].class);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <RT> ObjectSubQuery<RT> unique(Expr<RT> projection) {
         queryMixin.addToProjection(projection);
