@@ -21,7 +21,7 @@ import net.jcip.annotations.Immutable;
 @Immutable
 public class EntitySerializer extends AbstractSerializer{
     
-    protected void constructors(EntityModel model, Writer writer) throws IOException {
+    protected void constructors(EntityModel model, SerializerConfig config, Writer writer) throws IOException {
         String simpleName = model.getSimpleName();
         String queryType = getPathType(model, model, true);
         String localName = model.getLocalRawName();
@@ -82,7 +82,7 @@ public class EntitySerializer extends AbstractSerializer{
         if (hasEntityFields){            
             builder.append("    public "+queryType+"(Class<? extends "+genericName+"> type, String entityName, PathMetadata<?> metadata, PathInits inits) {\n");
             builder.append("        super(type, entityName, metadata, inits);\n");
-            initEntityFields(builder, model);
+            initEntityFields(builder, config, model);
             builder.append("    }\n\n"); 
         }
         
@@ -123,7 +123,7 @@ public class EntitySerializer extends AbstractSerializer{
             builder.append("    // inherited\n");
         }       
         if (config.useEntityAccessors()){
-            builder.append("    public ");
+            builder.append("    protected ");
         }else{
             builder.append("    public final ");    
         }        
@@ -157,7 +157,7 @@ public class EntitySerializer extends AbstractSerializer{
         return false;
     }
 
-    protected void initEntityFields(StringBuilder builder, EntityModel model) {
+    protected void initEntityFields(StringBuilder builder, SerializerConfig config, EntityModel model) {
         EntityModel superModel = model.getSuperModel();
         if (superModel != null && superModel.hasEntityFields()){
             String superQueryType = getPathType(superModel, model, false);
@@ -166,16 +166,17 @@ public class EntitySerializer extends AbstractSerializer{
         
         for (PropertyModel field : model.getProperties()){            
             if (field.getType().getCategory() == TypeCategory.ENTITY){
-                String queryType = getPathType(field.getType(), model, false);
-                builder.append("        this." + field.getEscapedName() + " = ");
+                String queryType = getPathType(field.getType(), model, false);                               
                 if (!field.isInherited()){                    
+                    builder.append("        this." + field.getEscapedName() + " = ");
                     builder.append("inits.isInitialized(\""+field.getName()+"\") ? ");
                     builder.append("new " + queryType + "(forProperty(this,\"" + field.getName() + "\")");
                     if (field.getType().hasEntityFields()){
                         builder.append(", inits.getInits(\""+field.getName()+"\")");    
                     }
                     builder.append(") : null;\n");
-                }else{
+                }else if (!config.useEntityAccessors()){
+                    builder.append("        this." + field.getEscapedName() + " = ");
                     builder.append("_super." + field.getEscapedName() +";\n");
                 }   
                 
@@ -364,7 +365,7 @@ public class EntitySerializer extends AbstractSerializer{
         serializeProperties(model, config, writer);        
         
         // constructors
-        constructors(model, writer);        
+        constructors(model, config, writer);        
 
         // accessors
         for (PropertyModel property : model.getProperties()){

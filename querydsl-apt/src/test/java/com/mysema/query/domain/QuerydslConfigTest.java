@@ -12,9 +12,16 @@ import com.mysema.query.annotations.QuerydslConfig;
 
 public class QuerydslConfigTest {
     
+    @QuerydslConfig(entityAccessors=true)
+    @QueryEntity
+    public static class Superclass{
+        
+        Entity prop3;
+    }
+    
     @QuerydslConfig(entityAccessors=true, listAccessors = true, mapAccessors= true)
     @QueryEntity
-    public static class Entity{
+    public static class Entity extends Superclass{
         
         Entity prop1;
         
