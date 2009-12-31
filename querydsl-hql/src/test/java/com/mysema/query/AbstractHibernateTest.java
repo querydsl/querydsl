@@ -5,14 +5,14 @@
  */
 package com.mysema.query;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
 import org.hibernate.Session;
 import org.junit.Test;
 
-import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.hql.hibernate.HibernateQuery;
@@ -26,7 +26,7 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
     private Session session;
     
     protected HibernateQuery query(){
-        return new HibernateQuery(session, HQLTemplates.DEFAULT);
+        return new HibernateQuery(session);
     }
 
     public void setSession(Session session) {

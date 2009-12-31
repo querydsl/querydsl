@@ -13,7 +13,6 @@ import javax.annotation.Nullable;
 import org.hibernate.Query;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
-import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,11 +40,11 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
 
     private int fetchSize = 0;
 
-    private final Session session;
+    private final SessionHolder session;
     
     private int timeout = 0;    
 
-    public AbstractHibernateQuery(QueryMetadata md, Session session, HQLTemplates patterns) {
+    public AbstractHibernateQuery(QueryMetadata md, SessionHolder session, HQLTemplates patterns) {
         super(md, patterns);
         this.session = session;
     }

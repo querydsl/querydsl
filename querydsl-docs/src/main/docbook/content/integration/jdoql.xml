@@ -234,7 +234,7 @@ query.form(customer)
   
   <para><emphasis>groupBy :</emphasis> Define the group by arguments in varargs form.</para>
   
-  <para><emphasis>having :</emphasis> Define the having filter of the "group by" grouping as an varags array of EBoolean expressions.</para>
+  <para><emphasis>having :</emphasis> Define the having filter of the "group by" grouping as an varargs array of EBoolean expressions.</para>
   
   <para><emphasis>orderBy :</emphasis> Define the ordering of the result as an varargs array of order expressions. Use asc() and desc() on numeric, string and other comparable expression to access the OrderSpecifier instances. </para>
   

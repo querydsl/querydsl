@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
@@ -28,15 +29,19 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
 
     private final QueryMetadata md = new DefaultQueryMetadata();
     
-    private final Session session;
+    private final SessionHolder session;
     
     private final HQLTemplates templates;
     
     public HibernateDeleteClause(Session session, PEntity<?> entity){
-        this(session, entity, HQLTemplates.DEFAULT);
+        this(new DefaultSessionHolder(session), entity, HQLTemplates.DEFAULT);
     }
     
-    public HibernateDeleteClause(Session session, PEntity<?> entity, HQLTemplates templates){
+    public HibernateDeleteClause(StatelessSession session, PEntity<?> entity){
+        this(new StatelessSessionHolder(session), entity, HQLTemplates.DEFAULT);
+    }
+    
+    public HibernateDeleteClause(SessionHolder session, PEntity<?> entity, HQLTemplates templates){
         this.session = session;
         this.templates = templates;
         md.addFrom(entity);        

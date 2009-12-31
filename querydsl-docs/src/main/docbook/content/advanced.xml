@@ -192,7 +192,7 @@ Expr<String> cases = customer.annualSpending
       <title>Path initialization</title>
     
       <para>
-      By default Querydsl intializes only direct reference properties. In cases where longer initialization paths
+      By default Querydsl initializes only direct reference properties. In cases where longer initialization paths
       are required, these have to be annotated in the domain types via com.mysema.query.annotations.QueryInit usage.
       QueryInit is used on properties where deep initializations are needed. The following example demonstrates the
       usage.       
@@ -223,7 +223,7 @@ class Customer{
     </para>
     
     <para>
-    The declarative path initialization replaces the manual one, which required the entity fields to be nonfinal. The
+    The declarative path initialization replaces the manual one, which required the entity fields to be non-final. The
     declarative format has the benefit to be applied to all top level instances of a Query type and to enable the usage
     of final entity fields. 
     </para>
@@ -268,7 +268,7 @@ public class MyEntity{
       
       <para>
       To avoid a generic signature in Querydsl query types the type hierarchies are flattened. The result is that
-      all generated query types are direct sublcasses of com.mysema.query.types.path.PEntity and cannot be directly cast
+      all generated query types are direct subclasses of com.mysema.query.types.path.PEntity and cannot be directly cast
       to their Querydsl supertypes.
       </para>
       
@@ -395,10 +395,7 @@ $(c.getMate().getName().toLowerCase())
     Note also that you may only invoke getters, size(), contains(Object) and
     get(int) on alias types. All other invocations throw exceptions.
   </para>
-    
-    
-    </sect1>
-    
-    
-            
+        
+  </sect1>
+                   
 </chapter>    

@@ -6,6 +6,7 @@
 package com.mysema.query.hql.hibernate;
 
 import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.hql.HQLQuery;
@@ -20,12 +21,18 @@ import com.mysema.query.hql.HQLTemplates;
  */
 public class HibernateQuery extends AbstractHibernateQuery<HibernateQuery> implements HQLQuery{
 
-    public HibernateQuery(Session session, HQLTemplates templates) {
+    public HibernateQuery(Session session) {
+        this(new DefaultSessionHolder(session), HQLTemplates.DEFAULT);
+    }    
+
+    public HibernateQuery(StatelessSession session) {
+        this(new StatelessSessionHolder(session), HQLTemplates.DEFAULT);
+    }
+        
+    public HibernateQuery(SessionHolder session, HQLTemplates templates) {
         super(new DefaultQueryMetadata(), session, templates);
     }
     
-    public HibernateQuery(Session session) {
-        super(new DefaultQueryMetadata(), session, HQLTemplates.DEFAULT);
-    }
+
 
 }
