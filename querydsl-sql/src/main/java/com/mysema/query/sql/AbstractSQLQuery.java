@@ -22,7 +22,7 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMixin;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.support.QueryBaseWithProjection;
+import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstructor;
@@ -39,7 +39,7 @@ import com.mysema.query.types.query.SubQuery;
  * @version $Id$
  */
 public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
-        extends QueryBaseWithProjection<SubType>{
+        extends ProjectableQuery<SubType>{
 
     private String queryString;
     

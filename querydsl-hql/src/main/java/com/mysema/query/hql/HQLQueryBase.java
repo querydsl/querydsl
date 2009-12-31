@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.support.QueryBaseWithProjection;
+import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PMap;
@@ -26,7 +26,7 @@ import com.mysema.query.types.path.PathMetadata;
  * @author tiwe
  * @version $Id$
  */
-public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extends QueryBaseWithProjection<SubType> {
+public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extends ProjectableQuery<SubType> {
 
     private Map<Object,String> constants;
 
@@ -55,8 +55,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return serializer.toString();
     }
     
-    protected EBoolean createQBECondition(PEntity<?> entity,
-            Map<String, Object> map) {
+    protected EBoolean createQBECondition(PEntity<?> entity, Map<String, Object> map) {
         BooleanBuilder expr = new BooleanBuilder();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             PathMetadata<String> md = PathMetadata.forProperty(entity, entry.getKey());

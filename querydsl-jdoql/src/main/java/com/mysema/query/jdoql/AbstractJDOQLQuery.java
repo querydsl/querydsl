@@ -19,7 +19,7 @@ import com.mysema.query.Projectable;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.support.QueryBaseWithProjection;
+import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 
@@ -30,7 +30,7 @@ import com.mysema.query.types.path.PEntity;
  *
  * @param <SubType>
  */
-public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubType>> extends QueryBaseWithProjection<SubType> implements Projectable {
+public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubType>> extends ProjectableQuery<SubType> implements Projectable {
     
     private List<Object> orderedConstants = new ArrayList<Object>();
 

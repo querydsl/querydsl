@@ -9,7 +9,7 @@ import java.util.Collection;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.support.QueryBaseWithDetach;
+import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.Ops;
@@ -20,7 +20,7 @@ import com.mysema.query.types.path.Path;
  * @author tiwe
  *
  */
-public class JDOQLSubQuery extends QueryBaseWithDetach<JDOQLSubQuery>{
+public class JDOQLSubQuery extends DetachableQuery<JDOQLSubQuery>{
     
 
     public JDOQLSubQuery() {

@@ -8,7 +8,7 @@ package com.mysema.query.sql;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryMixin;
-import com.mysema.query.support.QueryBaseWithDetach;
+import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 
@@ -16,7 +16,7 @@ import com.mysema.query.types.path.PEntity;
  * @author tiwe
  *
  */
-public class SQLSubQuery extends QueryBaseWithDetach<SQLSubQuery>{
+public class SQLSubQuery extends DetachableQuery<SQLSubQuery>{
 
     public SQLSubQuery() {
         this(new DefaultQueryMetadata());

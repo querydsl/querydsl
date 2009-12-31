@@ -19,16 +19,16 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.types.expr.Expr;
 
 /**
- * QueryBaseWithProjection extends the QueryBase class to provide default
+ * ProjectableQuery extends the QueryBase class to provide default
  * implementations of the methods of the Projectable interface
  * 
  * @author tiwe
  * @version $Id$
  */
-public abstract class QueryBaseWithProjection<SubType extends QueryBaseWithProjection<SubType>>
+public abstract class ProjectableQuery<SubType extends ProjectableQuery<SubType>>
         extends QueryBase<SubType> implements Projectable {
 
-    public QueryBaseWithProjection(QueryMixin<SubType> queryMixin) {
+    public ProjectableQuery(QueryMixin<SubType> queryMixin) {
         super(queryMixin);
     }
 

@@ -97,7 +97,6 @@ public class ProjectableAdapter implements Projectable {
         return projectable.toString();
     }
 
-
     @Override
     public Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return projectable.uniqueResult(first, second, rest);

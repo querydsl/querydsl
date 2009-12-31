@@ -18,11 +18,11 @@ import com.mysema.query.types.query.ObjectSubQuery;
  *
  * @param <SubType>
  */
-public abstract class QueryBaseWithDetach <SubType extends QueryBaseWithDetach<SubType>> extends QueryBase<SubType> implements Detachable {
+public abstract class DetachableQuery <SubType extends DetachableQuery<SubType>> extends QueryBase<SubType> implements Detachable {
 
     private final DetachableMixin detachableMixin;
     
-    public QueryBaseWithDetach(QueryMixin<SubType> queryMixin) {
+    public DetachableQuery(QueryMixin<SubType> queryMixin) {
         super(queryMixin);
         this.detachableMixin = new DetachableMixin(queryMixin);
     }

@@ -26,7 +26,7 @@ import com.mysema.query.QueryMixin;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.collections.ColQuery;
-import com.mysema.query.support.QueryBaseWithProjection;
+import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EArrayConstructor;
@@ -51,7 +51,7 @@ import com.mysema.util.MultiIterator;
  * @version $Id$
  */
 public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>> 
-    extends QueryBaseWithProjection<SubType> {
+    extends ProjectableQuery<SubType> {
     
     private final EvaluatorFactory evaluatorFactory;
     
