@@ -1,4 +1,12 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.types.path;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import com.mysema.query.types.expr.Expr;
 
@@ -9,6 +17,8 @@ import com.mysema.query.types.expr.Expr;
  */
 @SuppressWarnings("serial")
 public class PathBuilder<D> extends PEntity<D>{
+    
+    private final Map<String,PathBuilder<?>> properties = new HashMap<String,PathBuilder<?>>();
 
     /**
      * @param type
@@ -26,12 +36,24 @@ public class PathBuilder<D> extends PEntity<D>{
         super(type, PathMetadataFactory.forVariable(variable));
     }
     
+    @SuppressWarnings("unchecked")
     public PathBuilder<Object> get(String property) {
-        return get(property, Object.class);
+        PathBuilder<Object> path = (PathBuilder) properties.get(property);
+        if (path == null){
+            path = new PathBuilder<Object>(Object.class, forProperty(property));
+            properties.put(property, path);
+        }        
+        return path;
     }
 
+    @SuppressWarnings("unchecked")
     public <A> PathBuilder<A> get(String property, Class<A> type) {
-        return new PathBuilder<A>(type, forProperty(property));
+        PathBuilder<A> path = (PathBuilder<A>) properties.get(property);
+        if (path == null || !type.isAssignableFrom(path.getType())){
+            path = new PathBuilder<A>(type, forProperty(property));
+            properties.put(property, path);
+        }        
+        return path;
     }
 
     public <A> PArray<A> getArray(String property, Class<A> type) {
