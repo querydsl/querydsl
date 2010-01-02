@@ -3,3 +3,5 @@
 * document HibernateAnnotationProcessor
 
 * document @QuerydslConfig
+
+* document PathBuilder
