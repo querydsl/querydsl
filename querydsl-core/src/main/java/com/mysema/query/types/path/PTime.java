@@ -20,7 +20,7 @@ public class PTime<D extends Comparable> extends ETime<D> implements Path<D>{
     private final Path<D> pathMixin;
     
     public PTime(Class<? extends D> type, Path<?> parent, String property) {
-        this(type, PathMetadata.forProperty(parent, property));
+        this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
     public PTime(Class<? extends D> type, PathMetadata<?> metadata) {
@@ -29,7 +29,7 @@ public class PTime<D extends Comparable> extends ETime<D> implements Path<D>{
     }
     
     public PTime(Class<? extends D> type, String var) {
-        this(type, PathMetadata.forVariable(var));
+        this(type, PathMetadataFactory.forVariable(var));
     }    
     @Override
     public void accept(Visitor v) {

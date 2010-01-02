@@ -138,7 +138,7 @@ public class EntitySerializer extends AbstractSerializer{
         StringBuilder builder = new StringBuilder();
         builder.append("    public " + queryType + " " + field.getEscapedName() + "(){\n");
         builder.append("        if (" + field.getEscapedName() + " == null){\n");
-        builder.append("            " + field.getEscapedName() + " = new " + queryType + "(forProperty(this,\"" + field.getName() + "\"));\n");
+        builder.append("            " + field.getEscapedName() + " = new " + queryType + "(forProperty(\"" + field.getName() + "\"));\n");
         builder.append("        }\n");
         builder.append("        return " + field.getEscapedName()+";\n");
         builder.append("    }\n\n");
@@ -170,7 +170,7 @@ public class EntitySerializer extends AbstractSerializer{
                 if (!field.isInherited()){                    
                     builder.append("        this." + field.getEscapedName() + " = ");
                     builder.append("inits.isInitialized(\""+field.getName()+"\") ? ");
-                    builder.append("new " + queryType + "(forProperty(this,\"" + field.getName() + "\")");
+                    builder.append("new " + queryType + "(forProperty(\"" + field.getName() + "\")");
                     if (field.getType().hasEntityFields()){
                         builder.append(", inits.getInits(\""+field.getName()+"\")");    
                     }
@@ -268,7 +268,7 @@ public class EntitySerializer extends AbstractSerializer{
 
     protected void introImports(StringBuilder builder, SerializerConfig config, EntityModel model) {        
         builder.append("import com.mysema.query.types.path.*;\n");
-        builder.append("import static com.mysema.query.types.path.PathMetadata.*;\n");        
+        builder.append("import static com.mysema.query.types.path.PathMetadataFactory.*;\n");        
         
         if (!model.getConstructors().isEmpty() 
                 || (model.hasLists() && config.useListAccessors()) 

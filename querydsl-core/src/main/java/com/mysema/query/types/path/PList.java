@@ -31,12 +31,13 @@ import com.mysema.query.types.expr.Expr;
 public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> implements EList<E>, Path<List<E>>{
     
     private static final Set<Class<?>> typedClasses = new HashSet<Class<?>>(Arrays.<Class<?>>asList(
+            PathBuilder.class,
             PComparable.class,
             PDate.class,
             PDateTime.class,
             PNumber.class,
             PSimple.class, 
-            PTime.class            
+            PTime.class         
             ));
     
     private final Map<Integer,Q> cache = new HashMap<Integer,Q>();
@@ -71,7 +72,7 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
     }
 
     private Q create(int index){
-        PathMetadata<Integer> md = PathMetadata.forListAccess(this, index);
+        PathMetadata<Integer> md = PathMetadataFactory.forListAccess(this, index);
         try {
             return newInstance(md);
         } catch (Exception e) {
@@ -86,7 +87,7 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
 
     @Override
     public Q get(Expr<Integer> index) {
-        PathMetadata<Integer> md = PathMetadata.forListAccess(this, index);        
+        PathMetadata<Integer> md = PathMetadataFactory.forListAccess(this, index);        
         try {
             return newInstance(md);        
         } catch (Exception e) {

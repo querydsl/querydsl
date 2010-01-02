@@ -12,6 +12,7 @@ import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.PathMetadata;
+import com.mysema.query.types.path.PathMetadataFactory;
 
 /**
  * QProduct is a Querydsl query type for Product
@@ -40,7 +41,7 @@ public class QProduct extends PEntity<com.mysema.query.jdoql.testdomain.Product>
           this(com.mysema.query.jdoql.testdomain.Product.class, path);        
     }
     public QProduct(Class<? extends com.mysema.query.jdoql.testdomain.Product> cl, java.lang.String path) {
-          super(cl, "Product", PathMetadata.forVariable(path));
+          super(cl, "Product", PathMetadataFactory.forVariable(path));
     }    
     public QProduct(PathMetadata<?> metadata) {
          super(com.mysema.query.jdoql.testdomain.Product.class, "Product", metadata);

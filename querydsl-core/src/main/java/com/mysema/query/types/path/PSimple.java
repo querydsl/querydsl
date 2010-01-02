@@ -22,7 +22,7 @@ public class PSimple<D> extends Expr<D> implements Path<D> {
     private final Path<D> pathMixin;
     
     public PSimple(Class<? extends D> type, Path<?> parent, String property) {
-        this(type, PathMetadata.forProperty(parent, property));
+        this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
     public PSimple(Class<? extends D> type, PathMetadata<?> metadata) {
@@ -31,7 +31,7 @@ public class PSimple<D> extends Expr<D> implements Path<D> {
     }
     
     public PSimple(Class<? extends D> type, String var) {
-        this(type, PathMetadata.forVariable(var));
+        this(type, PathMetadataFactory.forVariable(var));
     }
     
     @Override

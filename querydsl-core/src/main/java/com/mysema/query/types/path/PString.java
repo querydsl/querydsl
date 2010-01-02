@@ -21,7 +21,7 @@ public class PString extends EString implements Path<String> {
     private final Path<String> pathMixin;
     
     public PString(Path<?> parent, String property) {
-        this(PathMetadata.forProperty(parent, property));
+        this(PathMetadataFactory.forProperty(parent, property));
     }
 
     public PString(PathMetadata<?> metadata) {
@@ -29,7 +29,7 @@ public class PString extends EString implements Path<String> {
     }
     
     public PString(String var) {
-        this(PathMetadata.forVariable(var));
+        this(PathMetadataFactory.forVariable(var));
     }
 
     @Override

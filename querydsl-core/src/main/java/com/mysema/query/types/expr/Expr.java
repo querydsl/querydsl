@@ -28,7 +28,7 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings("serial")
 public abstract class Expr<D> implements Serializable{
     
-    private static final Templates templates = new Templates();
+//    private static final Templates templates = new Templates();
         
     /**
      * Get the <code>count(*)</code> expression
@@ -224,15 +224,23 @@ public abstract class Expr<D> implements Serializable{
     @Override
     public final String toString() {
         if (toString == null) {
-            toString = new ToStringVisitor(templates).handle(this).toString();
+            toString = new ToStringVisitor(Templates.DEFAULT).handle(this).toString();
         }
         return toString;
     }
     
+    /**
+     * @param other
+     * @return
+     */
     public CaseForEqBuilder<D> when(D other){
         return new CaseForEqBuilder<D>(this, ExprConst.create(other));
     }
     
+    /**
+     * @param other
+     * @return
+     */
     public CaseForEqBuilder<D> when(Expr<? extends D> other){
         return new CaseForEqBuilder<D>(this, other);
     }

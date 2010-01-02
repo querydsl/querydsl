@@ -28,7 +28,7 @@ import com.mysema.query.types.path.PSet;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PTime;
-import com.mysema.query.types.path.PathMetadata;
+import com.mysema.query.types.path.PathMetadataFactory;
 
 /**
  * Alias provides alias factory methods
@@ -42,9 +42,7 @@ public final class Alias {
 
     private static final AliasFactory aliasFactory = new SimpleAliasFactory();
 
-    private static final PathFactory pathFactory = new AliasAwarePathFactory(aliasFactory);
-
-    private static final PSimple<Object> it = new PSimple<Object>(Object.class,PathMetadata.forVariable("it"));
+    private static final PSimple<Object> it = new PSimple<Object>(Object.class, PathMetadataFactory.forVariable("it"));
 
     /**
      * Create an alias for the given class with the given name
@@ -75,83 +73,91 @@ public final class Alias {
     }
 
     public static PBoolean $(Boolean arg) {
-        return pathFactory.createBoolean(arg);
+        return aliasFactory.<PBoolean> getCurrentAndReset();
     }
 
     public static <D extends Comparable<?>> PComparable<D> $(D arg) {
-        return pathFactory.createComparable(arg);
+        return aliasFactory.<PComparable<D>> getCurrentAndReset();
     }
 
     public static PNumber<BigDecimal> $(BigDecimal arg) {
-        return pathFactory.createNumber(arg);
+        return aliasFactory.<PNumber<BigDecimal>> getCurrentAndReset();
     }
 
     public static PNumber<BigInteger> $(BigInteger arg) {
-        return pathFactory.createNumber(arg);
+        return aliasFactory.<PNumber<BigInteger>> getCurrentAndReset();
     }
 
     public static PNumber<Byte> $(Byte arg) {
-        return pathFactory.createNumber(arg);
+        return aliasFactory.<PNumber<Byte>> getCurrentAndReset();
     }
 
     public static PNumber<Double> $(Double arg) {
-        return pathFactory.createNumber(arg);
+        return aliasFactory.<PNumber<Double>> getCurrentAndReset();
     }
 
     public static PNumber<Float> $(Float arg) {
-        return pathFactory.createNumber(arg);
+        return aliasFactory.<PNumber<Float>> getCurrentAndReset();
     }
 
     public static PNumber<Integer> $(Integer arg) {
-        return pathFactory.createNumber(arg);
+        return aliasFactory.<PNumber<Integer>> getCurrentAndReset();
     }
 
     public static PNumber<Long> $(Long arg) {
-        return pathFactory.createNumber(arg);
+        return aliasFactory.<PNumber<Long>> getCurrentAndReset();
     }
 
     public static PNumber<Short> $(Short arg) {
-        return pathFactory.createNumber(arg);
+        return aliasFactory.<PNumber<Short>> getCurrentAndReset();
     }
 
     public static PString $(String arg) {
-        return pathFactory.createString(arg);
+        return aliasFactory.<PString> getCurrentAndReset();
     }
 
     public static <D> PCollection<D> $(Collection<D> args) {
-        return pathFactory.createCollection(args);
+        return aliasFactory.<PCollection<D>> getCurrentAndReset();
     }
     
     public static <D> PSet<D> $(Set<D> args) {
-        return pathFactory.createSet(args);
+        return aliasFactory.<PSet<D>> getCurrentAndReset();
     }
     
     public static PDateTime<java.util.Date> $(java.util.Date arg) {
-        return pathFactory.createDateTime(arg);
+        return aliasFactory.<PDateTime<java.util.Date>> getCurrentAndReset();
     }
     
     public static PDate<java.sql.Date> $(java.sql.Date arg) {
-        return pathFactory.createDate(arg);
+        return aliasFactory.<PDate<java.sql.Date>> getCurrentAndReset();
     }
     
     public static PDateTime<Timestamp> $(Timestamp arg) {
-        return pathFactory.createDateTime(arg);
+        return aliasFactory.<PDateTime<Timestamp>> getCurrentAndReset();
     }
     
     public static PTime<Time> $(Time arg) {
-        return pathFactory.createTime(arg);
+        return aliasFactory.<PTime<Time>> getCurrentAndReset();
     }
 
     public static <K, V> PMap<K, V,?> $(Map<K, V> args) {
-        return pathFactory.createMap(args);
+        return aliasFactory.<PMap<K, V,?>> getCurrentAndReset();
     }
 
     public static <D> PList<D,?> $(List<D> args) {
-        return pathFactory.createList(args);
+        return aliasFactory.<PList<D,?>> getCurrentAndReset();
     }
 
+    @SuppressWarnings("unchecked")
     public static <D> PEntity<D> $(D arg) {
-        return pathFactory.createEntity(arg);
+        PEntity<D> rv = aliasFactory.<PEntity<D>> getCurrentAndReset();
+        if (rv != null) {
+            return rv;
+        } else if (arg instanceof ManagedObject) {
+            return (PEntity<D>) ((ManagedObject) arg).__mappedPath();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -161,8 +167,16 @@ public final class Alias {
      * @param arg
      * @return
      */
+    @SuppressWarnings("unchecked")
     public static <D> Expr<D> getAny(D arg) {
-        return pathFactory.createAny(arg);
+        Expr<D> current = (Expr<D>) aliasFactory.getCurrentAndReset();
+        if (current != null) {
+            return current;
+        } else if (arg instanceof ManagedObject) {
+            return (Expr<D>) ((ManagedObject) arg).__mappedPath();
+        } else {
+            throw new IllegalArgumentException("No path mapped to " + arg);
+        }
     }
 
     /**

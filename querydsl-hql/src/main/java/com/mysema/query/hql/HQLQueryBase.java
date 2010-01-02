@@ -10,15 +10,12 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.BooleanBuilder;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PMap;
-import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.Path;
-import com.mysema.query.types.path.PathMetadata;
 
 /**
  * HQLQueryBase is a base Query class for HQL
@@ -55,20 +52,6 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return serializer.toString();
     }
     
-    protected EBoolean createQBECondition(PEntity<?> entity, Map<String, Object> map) {
-        BooleanBuilder expr = new BooleanBuilder();
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            PathMetadata<String> md = PathMetadata.forProperty(entity, entry.getKey());
-            PSimple<Object> path = new PSimple<Object>(Object.class, md);
-            if (entry.getValue() != null) {
-                expr.and(path.eq(entry.getValue()));
-            } else {
-                expr.and(path.isNull());
-            }
-        }
-        return expr;
-    }
-
     public SubType fetch(){
         return queryMixin.fetch();
     }

@@ -15,6 +15,7 @@ import java.util.List;
 import org.junit.Test;
 
 import com.mysema.query.collections.MiniApi;
+import com.mysema.query.types.path.PString;
 
 /**
  * StringHandlingTest provides
@@ -30,28 +31,32 @@ public class StringHandlingTest extends AbstractQueryTest {
 
     private List<String> data = Arrays.asList("abc", "aBC", "def");
 
+    private final PString a = new PString("a");
+    
+    private final PString b = new PString("b");
+    
     @Test
     public void equalsIgnoreCase() {
         Iterator<String> res = Arrays.asList("petER - PETer",
                 "THomas - thOMAS", "joHAN - JOhan").iterator();
         for (Object[] arr : query()
-                .from($("a"), data1)
-                .from($("b"), data2)
-                .where($("a").equalsIgnoreCase($("b"))).list($("a"), $("b"))) {
+                .from(a, data1)
+                .from(b, data2)
+                .where(a.equalsIgnoreCase(b)).list(a, b)) {
             assertEquals(res.next(), arr[0] + " - " + arr[1]);
         }
     }
 
     @Test
     public void startsWithIgnoreCase() {
-        assertEquals(2, MiniApi.from($("a"), data).where($("a").startsWith("AB", false)).count());
-        assertEquals(2, MiniApi.from($("a"), data).where($("a").startsWith("ab", false)).count());
+        assertEquals(2, MiniApi.from(a, data).where(a.startsWith("AB", false)).count());
+        assertEquals(2, MiniApi.from(a, data).where(a.startsWith("ab", false)).count());
     }
 
     @Test
     public void endsWithIgnoreCase() {
-        assertEquals(2, MiniApi.from($("a"), data).where($("a").endsWith("BC", false)).count());
-        assertEquals(2, MiniApi.from($("a"), data).where($("a").endsWith("bc", false)).count());
+        assertEquals(2, MiniApi.from(a, data).where(a.endsWith("BC", false)).count());
+        assertEquals(2, MiniApi.from(a, data).where(a.endsWith("bc", false)).count());
     }
 
 }

@@ -11,13 +11,14 @@ import static org.junit.Assert.assertTrue;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Test;
 
+import com.mysema.query.alias.Alias;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Operator;
@@ -28,6 +29,22 @@ import com.mysema.query.types.operation.Ops;
  */
 public class CoverageTest {
 
+    public interface Entity{
+        
+        int getNum();
+
+        String getStr();
+
+        boolean isBool();
+
+        List<String> getList();
+
+        Set<String> getSet();
+
+        Map<String, String> getMap();        
+        
+    }
+    
     private MatchingFilters matchers = new MatchingFilters(Module.COLLECTIONS, Target.MEM);
     
     private Projections projections = new Projections(Module.COLLECTIONS, Target.MEM);
@@ -40,23 +57,25 @@ public class CoverageTest {
         // make sure all Operators are covered in expression factory methods
         Set<Operator<?>> usedOperators = new HashSet<Operator<?>>();
         List<Expr<?>> exprs = new ArrayList<Expr<?>>();
+        
+        Entity entity = Alias.alias(Entity.class, "entity");
         // numeric
-        exprs.addAll(projections.numeric($(0), $(1), 1, false));
-        exprs.addAll(matchers.numeric($(0), $(1), 1));
-        exprs.addAll(filters.numeric($(0), $(1), 1));        
-        exprs.addAll(projections.numericCasts($(0), $(1), 1));
+        exprs.addAll(projections.numeric($(entity.getNum()), $(entity.getNum()), 1, false));
+        exprs.addAll(matchers.numeric($(entity.getNum()), $(entity.getNum()), 1));
+        exprs.addAll(filters.numeric($(entity.getNum()), $(entity.getNum()), 1));        
+        exprs.addAll(projections.numericCasts($(entity.getNum()), $(entity.getNum()), 1));
         // string
-        exprs.addAll(projections.string($("a"), $("b"), "abc"));
-        exprs.addAll(matchers.string($("a"), $("b"), "abc"));        
-        exprs.addAll(filters.string($("a"), $("b"), "abc"));
+        exprs.addAll(projections.string($(entity.getStr()), $(entity.getStr()), "abc"));
+        exprs.addAll(matchers.string($(entity.getStr()), $(entity.getStr()), "abc"));        
+        exprs.addAll(filters.string($(entity.getStr()), $(entity.getStr()), "abc"));
         // boolean
-        exprs.addAll(filters.booleanFilters($(true), $(false)));                
+        exprs.addAll(filters.booleanFilters($(entity.isBool()), $(entity.isBool())));                
         // collection
-        exprs.addAll(projections.list($(new ArrayList<String>()), $(new ArrayList<String>()), ""));
-        exprs.addAll(filters.list($(new ArrayList<String>()), $(new ArrayList<String>()), ""));
+        exprs.addAll(projections.list($(entity.getList()), $(entity.getList()), ""));
+        exprs.addAll(filters.list($(entity.getList()), $(entity.getList()), ""));
         // map
-        exprs.addAll(projections.map($(new HashMap<String,String>()), $(new HashMap<String,String>()), "", ""));
-        exprs.addAll(filters.map($(new HashMap<String,String>()), $(new HashMap<String,String>()), "", ""));
+        exprs.addAll(projections.map($(entity.getMap()), $(entity.getMap()), "", ""));
+        exprs.addAll(filters.map($(entity.getMap()), $(entity.getMap()), "", ""));
         
         for (Expr<?> e : exprs){
             if (e instanceof Operation){

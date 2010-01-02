@@ -28,6 +28,7 @@ import com.mysema.query.types.expr.Expr;
 public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Path<Map<K, V>> {
     
     private static final Set<Class<?>> typedClasses = new HashSet<Class<?>>(Arrays.<Class<?>>asList(
+            PathBuilder.class,
             PComparable.class,
             PDate.class,
             PDateTime.class,
@@ -72,7 +73,7 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
 
     @Override
     public E get(Expr<K> key) {
-        PathMetadata<K> md =  PathMetadata.forMapAccess(this, key);
+        PathMetadata<K> md =  PathMetadataFactory.forMapAccess(this, key);
         try {
             return newInstance(md);
         } catch (Exception e) {
@@ -82,7 +83,7 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
 
     @Override
     public E get(K key) {
-        PathMetadata<K> md =  PathMetadata.forMapAccess(this, key);
+        PathMetadata<K> md =  PathMetadataFactory.forMapAccess(this, key);
         try {
             return newInstance(md);
         } catch (Exception e) {

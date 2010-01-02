@@ -15,7 +15,7 @@ import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.ObjectSubQuery;
 
 /**
- * Mixin style implementation fo the Detachable interface
+ * Mixin style implementation of the Detachable interface
  * 
  * @author tiwe
  *

@@ -18,7 +18,6 @@ import com.mysema.util.MathUtils;
  */
 @SuppressWarnings("serial")
 public class ENumberConst<D extends Number & Comparable<?>> extends ENumber<D> implements Constant<D>{
-
     
     @SuppressWarnings("unchecked")
     private static final ENumber<Byte>[] bytes = new ENumber[256];

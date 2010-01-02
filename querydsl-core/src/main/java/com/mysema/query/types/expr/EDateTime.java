@@ -21,9 +21,9 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings({"unchecked","serial"})
 public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
 
-    private static final EDateTime<Date> currentDate = currentDate(Date.class);
+    private static final EDateTime<Date> CURRENT_DATE = currentDate(Date.class);
     
-    private static final EDateTime<Date> currentTimestamp = currentTimestamp(Date.class);
+    private static final EDateTime<Date> CURRENT_TIMESTAMP = currentTimestamp(Date.class);
         
     /**
      * Get an expression representing the current date as a EDateTime instance
@@ -31,7 +31,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
      * @return
      */
     public static EDateTime<Date> currentDate() {
-        return currentDate;
+        return CURRENT_DATE;
     }
     
     /**
@@ -49,7 +49,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
      * @return
      */
     public static EDateTime<Date> currentTimestamp() {
-        return currentTimestamp;
+        return CURRENT_TIMESTAMP;
     }
 
     /**

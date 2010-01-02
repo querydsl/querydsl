@@ -21,7 +21,7 @@ public class PBoolean extends EBoolean implements Path<Boolean> {
     private final Path<Boolean> pathMixin;
 
     public PBoolean(Path<?> parent, String property) {
-        this(PathMetadata.forProperty(parent, property));
+        this(PathMetadataFactory.forProperty(parent, property));
     }
 
     public PBoolean(PathMetadata<?> metadata) {
@@ -29,7 +29,7 @@ public class PBoolean extends EBoolean implements Path<Boolean> {
     }
     
     public PBoolean(String var) {
-        this(PathMetadata.forVariable(var));
+        this(PathMetadataFactory.forVariable(var));
     }
     
     @Override

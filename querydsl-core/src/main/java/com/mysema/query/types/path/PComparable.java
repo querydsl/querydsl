@@ -23,7 +23,7 @@ public class PComparable<D extends Comparable> extends EComparable<D> implements
     private final Path<D> pathMixin;
     
     public PComparable(Class<? extends D> type, Path<?> parent, String property) {
-        this(type, PathMetadata.forProperty(parent, property));
+        this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
     public PComparable(Class<? extends D> type, PathMetadata<?> metadata) {
@@ -32,11 +32,11 @@ public class PComparable<D extends Comparable> extends EComparable<D> implements
     }
     
     public PComparable(Class<? extends D> type, String var) {
-        this(type, PathMetadata.forVariable(var));
+        this(type, PathMetadataFactory.forVariable(var));
     }
     
     public PComparable(Path<?> parent, String property) {
-        this((Class<? extends D>) Comparable.class, PathMetadata.forProperty(parent, property));
+        this((Class<? extends D>) Comparable.class, PathMetadataFactory.forProperty(parent, property));
     }
     
     @Override

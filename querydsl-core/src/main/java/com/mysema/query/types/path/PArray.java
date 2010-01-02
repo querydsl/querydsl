@@ -65,7 +65,7 @@ public class PArray<E> extends Expr<E[]> implements Path<E[]>, EArray<E>{
      * @return
      */
     public PSimple<E> get(Expr<Integer> index){
-        PathMetadata<Integer> md = PathMetadata.forArrayAccess(this, index);        
+        PathMetadata<Integer> md = PathMetadataFactory.forArrayAccess(this, index);        
         return new PSimple<E>(componentType, md);
     }
 
@@ -77,7 +77,7 @@ public class PArray<E> extends Expr<E[]> implements Path<E[]>, EArray<E>{
      * @return
      */
     public PSimple<E> get(@Nonnegative int index){
-        PathMetadata<Integer> md = PathMetadata.forArrayAccess(this, index);        
+        PathMetadata<Integer> md = PathMetadataFactory.forArrayAccess(this, index);        
         return new PSimple<E>(componentType, md);   
     }
 

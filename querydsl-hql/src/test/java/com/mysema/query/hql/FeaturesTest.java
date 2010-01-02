@@ -19,6 +19,7 @@ import org.junit.Test;
 import com.mysema.query.hql.domain.QAccount;
 import com.mysema.query.hql.domain.QInheritedProperties;
 import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.path.PNumber;
 
 /**
  * FeaturesTest provides.
@@ -129,27 +130,31 @@ public class FeaturesTest extends AbstractQueryTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testBug326650() {
-        assertEquals(Long.class, sum($((byte) 0)).getType());
-        assertEquals(Long.class, sum($((short) 0)).getType());
-        assertEquals(Long.class, sum($((int) 0)).getType());
-        assertEquals(Long.class, sum($((long) 0)).getType());
+        assertEquals(Long.class, sum(var(Byte.class)).getType());
+        assertEquals(Long.class, sum(var(Short.class)).getType());
+        assertEquals(Long.class, sum(var(Integer.class)).getType());
+        assertEquals(Long.class, sum(var(Long.class)).getType());
 
-        assertEquals(Double.class, sum($((float) 0)).getType());
-        assertEquals(Double.class, sum($((double) 0)).getType());
+        assertEquals(Double.class, sum(var(Float.class)).getType());
+        assertEquals(Double.class, sum(var(Double.class)).getType());
 
-        assertEquals(BigInteger.class, sum($(new BigInteger("0"))).getType());
-        assertEquals(BigDecimal.class, sum($(new BigDecimal("0"))).getType());
+        assertEquals(BigInteger.class, sum(var(BigInteger.class)).getType());
+        assertEquals(BigDecimal.class, sum(var(BigDecimal.class)).getType());
 
         // sum to var
-        ENumber<Long> sum = (ENumber) sum($(0)); // via Java level cast
-        sum = sum($(0)).longValue();
+        ENumber<Long> sum = (ENumber) sum(var(Integer.class)); // via Java level cast
+        sum = sum(var(Integer.class)).longValue();
         assertNotNull(sum);
 
         // sum comparison
 
-        sum($(0)).gt(0);
-        sum($(0)).intValue().gt(0);
+        sum(var(Integer.class)).gt(0);
+        sum(var(Integer.class)).intValue().gt(0);
 
+    }
+    
+    private <D extends Number & Comparable<?>> PNumber<D> var(Class<D> cl){
+        return new PNumber<D>(cl, "var");
     }
 
 }

@@ -10,7 +10,7 @@ import net.sf.cglib.proxy.MethodInterceptor;
 
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PathMetadata;
+import com.mysema.query.types.path.PathMetadataFactory;
 import com.mysema.query.util.FactoryMap;
 
 /**
@@ -28,7 +28,7 @@ class SimpleAliasFactory implements AliasFactory {
     private FactoryMap<PEntity<?>> pathCache = new FactoryMap<PEntity<?>>() {
         @SuppressWarnings("unused")
         public <A> PEntity<A> create(Class<A> cl, String var) {
-            return new PEntity<A>(cl, cl.getSimpleName(), PathMetadata.forVariable(var));
+            return new PEntity<A>(cl, cl.getSimpleName(), PathMetadataFactory.forVariable(var));
         }
     };
 
@@ -40,6 +40,11 @@ class SimpleAliasFactory implements AliasFactory {
         }
     };
 
+    @SuppressWarnings("unchecked")
+    public <A> A createAliasForExpr(Class<A> cl, Expr<? extends A> expr) {
+        return (A) proxyCache.get(cl, expr);
+    }
+
     public <A> A createAliasForProperty(Class<A> cl, Object parent, Expr<?> path) {
         A proxy = createProxy(cl, path);
         return proxy;
@@ -50,11 +55,6 @@ class SimpleAliasFactory implements AliasFactory {
         Expr<?> path = pathCache.get(cl, var);
         A proxy = (A) proxyCache.get(cl, path);
         return proxy;
-    }
-
-    @SuppressWarnings("unchecked")
-    public <A> A createAliasForExpr(Class<A> cl, Expr<? extends A> expr) {
-        return (A) proxyCache.get(cl, expr);
     }
 
     @SuppressWarnings("unchecked")

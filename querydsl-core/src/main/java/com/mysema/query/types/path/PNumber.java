@@ -22,7 +22,7 @@ public class PNumber<D extends Number & Comparable<?>> extends ENumber<D> implem
     private final Path<D> pathMixin;
 
     public PNumber(Class<? extends D> type, Path<?> parent, String property) {
-        this(type, PathMetadata.forProperty(parent, property));
+        this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
     public PNumber(Class<? extends D> type, PathMetadata<?> metadata) {
@@ -31,7 +31,7 @@ public class PNumber<D extends Number & Comparable<?>> extends ENumber<D> implem
     }
     
     public PNumber(Class<? extends D> type, String var) {
-        this(type, PathMetadata.forVariable(var));
+        this(type, PathMetadataFactory.forVariable(var));
     }
 
     @Override

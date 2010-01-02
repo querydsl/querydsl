@@ -30,7 +30,7 @@ public class EmbeddableSerializer extends EntitySerializer{
     protected void introImports(StringBuilder builder, SerializerConfig config, EntityModel model) {
         builder.append("import com.mysema.query.types.path.*;\n\n");
         if (hasOwnEntityProperties(model)){
-            builder.append("import static com.mysema.query.types.path.PathMetadata.*;\n");    
+            builder.append("import static com.mysema.query.types.path.PathMetadataFactory.*;\n");
         }      
         
         if ((model.hasLists() && config.useListAccessors()) || (model.hasMaps() && config.useMapAccessors())){

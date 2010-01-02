@@ -21,6 +21,8 @@ import org.junit.Test;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.animal.Cat;
 import com.mysema.query.animal.QCat;
+import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PString;
 
 /**
  * AliasTEst provides
@@ -145,8 +147,9 @@ public class AliasTest extends AbstractQueryTest {
 
     @Test
     public void testVarious1() {
-        for (String s : from($("str"), "a", "ab", "cd", "de").where(
-                $("str").startsWith("a")).list($("str"))) {
+        PString str = new PString("str");
+        for (String s : from(str, "a", "ab", "cd", "de").where(
+                str.startsWith("a")).list(str)) {
             assertTrue(s.equals("a") || s.equals("ab"));
             System.out.println(s);
         }
@@ -164,7 +167,8 @@ public class AliasTest extends AbstractQueryTest {
 
     @Test
     public void testVarious3() {
-        for (Integer i : from($(0), 1, 2, 3, 4).where($(0).lt(4)).list($(0))) {
+        PNumber<Integer> num = new PNumber<Integer>(Integer.class, "num");
+        for (Integer i : from(num, 1, 2, 3, 4).where(num.lt(4)).list(num)) {
             System.out.println(i);
         }
     }

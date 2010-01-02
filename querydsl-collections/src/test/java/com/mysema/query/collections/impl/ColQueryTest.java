@@ -18,6 +18,7 @@ import org.junit.Test;
 import com.mysema.query.animal.Cat;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.PString;
 
 /**
  * ColQueryTest provides
@@ -102,8 +103,11 @@ public class ColQueryTest extends AbstractQueryTest {
 
     @Test
     public void testVarious() {
-        for (Object[] strs : from($("a"), "aa", "bb", "cc")
-                .from($("b"), Arrays.asList("a","b")).where($("a").startsWith($("b"))).list($("a"), $("b"))) {
+        PString a = new PString("a");
+        PString b = new PString("b");
+        for (Object[] strs : from(a, "aa", "bb", "cc")
+                .from(b, Arrays.asList("a","b"))
+                .where(a.startsWith(b)).list(a, b)) {
             System.out.println(Arrays.asList(strs));
         }
 

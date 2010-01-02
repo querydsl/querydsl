@@ -46,6 +46,7 @@ import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.Path;
 import com.mysema.query.types.path.PathMetadata;
+import com.mysema.query.types.path.PathMetadataFactory;
 
 /**
  * PropertyAccessInvocationHandler is the main InvocationHandler class for the
@@ -95,8 +96,10 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
     public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
         Object rv = null;
-
-        if (isGetter(method)) {
+        
+        MethodType methodType = MethodType.get(method);
+       
+        if (methodType == MethodType.GETTER) {
             String ptyName = propertyNameForGetter(method);
             Class<?> ptyClass = method.getReturnType();
             Type genericType = method.getGenericReturnType();
@@ -104,12 +107,12 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             if (propToObj.containsKey(ptyName)) {
                 rv = propToObj.get(ptyName);
             } else {
-                PathMetadata<String> pm = PathMetadata.forProperty((Path<?>) path, ptyName);
+                PathMetadata<String> pm = PathMetadataFactory.forProperty((Path<?>) path, ptyName);
                 rv = newInstance(ptyClass, genericType, proxy, ptyName, pm);
             }
             aliasFactory.setCurrent(propToExpr.get(ptyName));
 
-//        } else if (isSizeAccessor(method)) {
+//        } else if (methodType == MethodType.SIZE) {
 //            Object propKey = "_size";
 //            if (propToObj.containsKey(propKey)) {
 //                rv = propToObj.get(propKey);
@@ -119,13 +122,13 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 //            }
 //            aliasFactory.setCurrent(propToExpr.get(propKey));
 
-        } else if (isListElementAccess(method)) {
+        } else if (methodType == MethodType.LIST_ACCESS) {
             // TODO : manage cases where the argument is based on a property invocation
-            Object propKey = Arrays.asList("_get_list", args[0]);
+            Object propKey = Arrays.asList(MethodType.LIST_ACCESS, args[0]);
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {
-                PathMetadata<Integer> pm = PathMetadata.forListAccess((PList<?, ?>) path, (Integer) args[0]);
+                PathMetadata<Integer> pm = PathMetadataFactory.forListAccess((PList<?, ?>) path, (Integer) args[0]);
                 Class<?> elementType = ((ECollection<?,?>) path).getElementType();
                 if (elementType != null) {
                     rv = newInstance(elementType, elementType, proxy, propKey, pm);
@@ -135,12 +138,12 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             }
             aliasFactory.setCurrent(propToExpr.get(propKey));
 
-        } else if (isMapElementAccess(method)) {
-            Object propKey = Arrays.asList("_get_map", args[0]);
+        } else if (methodType == MethodType.MAP_ACCESS) {
+            Object propKey = Arrays.asList(MethodType.MAP_ACCESS, args[0]);
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {
-                PathMetadata<?> pm = PathMetadata.forMapAccess((PMap<?, ?, ?>) path, args[0]);
+                PathMetadata<?> pm = PathMetadataFactory.forMapAccess((PMap<?, ?, ?>) path, args[0]);
                 Class<?> valueType = ((EMap<?, ?>) path).getValueType();
                 if (valueType != null) {
                     rv = newInstance(valueType, valueType, proxy, propKey, pm);
@@ -150,13 +153,13 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             }
             aliasFactory.setCurrent(propToExpr.get(propKey));
 
-        } else if (isToString(method)) {
+        } else if (methodType == MethodType.TO_STRING) {
             rv = path.toString();
 
-        } else if (isHashCode(method)) {
+        } else if (methodType == MethodType.HASH_CODE) {
             rv = path.hashCode();
 
-        } else if (isGetMappedPath(method)) {
+        } else if (methodType == MethodType.GET_MAPPED_PATH) {
             rv = path;
 
         } else {
@@ -165,58 +168,11 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
         return rv;
     }
 
-    private boolean isToString(Method method) {
-        return checkMethod(method, "toString", 0, String.class);
-    }
-
-    private boolean isGetMappedPath(Method method) {
-        return checkMethod(method, "__mappedPath", 0, PEntity.class);
-    }
-
-    private boolean isListElementAccess(Method method) {
-        return method.getName().equals("get")
-                && method.getParameterTypes().length == 1
-                && method.getParameterTypes()[0].equals(int.class);
-    }
-
-    private boolean isHashCode(Method method) {
-        return checkMethod(method, "hashCode", 0, int.class);
-    }
-
-    private boolean isMapElementAccess(Method method) {
-        return checkMethod(method, "get", 1, Object.class);
-    }
-
-    private boolean isGetter(Method method) {
-        if (method.getParameterTypes().length == 0) {
-            if (method.getName().startsWith("get")) {
-                return !method.getReturnType().equals(void.class);
-            } else if (method.getName().startsWith("is")) {
-                return (method.getReturnType().equals(boolean.class) || method.getReturnType().equals(Boolean.class));
-            }
-        }
-        return false;
-    }
-
-//    private boolean isSizeAccessor(Method method) {
-//        return checkMethod(method, "size", 0, int.class);
-//    }
-
-    private boolean checkMethod(Method method, String name, int paramCount, Class<?> returnType) {
-        if (!method.getName().equals(name))
-            return false;
-        if (!(method.getParameterTypes().length == paramCount))
-            return false;
-        if (!method.getReturnType().equals(returnType))
-            return false;
-        return true;
-    }
-
     @SuppressWarnings({ "unchecked", "serial" })
     @Nullable
     private <T> T newInstance(Class<T> type, Type genericType, Object parent, Object propKey, PathMetadata<?> pm) {
         Expr<?> path;
-        T rv;
+        Object rv;
 
         if (String.class.equals(type)) {
             path = new PString(pm);
@@ -225,51 +181,51 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else if (Integer.class.equals(type) || int.class.equals(type)) {
             path = new PNumber<Integer>(Integer.class, pm);
-            rv = (T) Integer.valueOf(42);
+            rv = Integer.valueOf(42);
 
         } else if (java.util.Date.class.equals(type)) {
             path = new PDateTime<Date>(Date.class, pm);
-            rv = (T) new Date();
+            rv = new Date();
             
         } else if (java.sql.Timestamp.class.equals(type)) {
             path = new PDateTime<Timestamp>(Timestamp.class, pm);
-            rv = (T) new Timestamp(System.currentTimeMillis());
+            rv = new Timestamp(System.currentTimeMillis());
             
         } else if (java.sql.Date.class.equals(type)) {
             path = new PDate<java.sql.Date>(java.sql.Date.class, pm);
-            rv = (T) new java.sql.Date(System.currentTimeMillis());
+            rv = new java.sql.Date(System.currentTimeMillis());
             
         } else if (java.sql.Time.class.equals(type)) {
             path = new PTime<java.sql.Time>(java.sql.Time.class, pm);
-            rv = (T) new java.sql.Time(System.currentTimeMillis());
+            rv = new java.sql.Time(System.currentTimeMillis());
 
         } else if (Long.class.equals(type) || long.class.equals(type)) {
             path = new PNumber<Long>(Long.class, pm);
-            rv = (T) Long.valueOf(42l);
+            rv = Long.valueOf(42l);
 
         } else if (Short.class.equals(type) || short.class.equals(type)) {
             path = new PComparable<Short>(Short.class, pm);
-            rv = (T) Short.valueOf((short) 42);
+            rv = Short.valueOf((short) 42);
 
         } else if (Double.class.equals(type) || double.class.equals(type)) {
             path = new PNumber<Double>(Double.class, pm);
-            rv = (T) Double.valueOf(42d);
+            rv = Double.valueOf(42d);
 
         } else if (Float.class.equals(type) || float.class.equals(type)) {
             path = new PNumber<Float>(Float.class, pm);
-            rv = (T) Float.valueOf(42f);
+            rv = Float.valueOf(42f);
 
         } else if (BigInteger.class.equals(type)) {
             path = new PNumber<BigInteger>(BigInteger.class, pm);
-            rv = (T) BigInteger.valueOf(42l);
+            rv = BigInteger.valueOf(42l);
 
         } else if (BigDecimal.class.equals(type)) {
             path = new PNumber<BigDecimal>(BigDecimal.class, pm);
-            rv = (T) BigDecimal.valueOf(42d);
+            rv = BigDecimal.valueOf(42d);
 
         } else if (Boolean.class.equals(type) || boolean.class.equals(type)) {
             path = new PBoolean(pm);
-            rv = (T) Boolean.TRUE;
+            rv = Boolean.TRUE;
 
         } else if (List.class.isAssignableFrom(type)) {
             final Class<Object> elementType = (Class)getTypeParameter(genericType, 0);
@@ -277,25 +233,25 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
                 @Override
                 public PEntity get(Expr<Integer> index) {
                     return new PEntity(elementType, elementType.getSimpleName(), 
-                            PathMetadata.forListAccess(this, index));
+                            PathMetadataFactory.forListAccess(this, index), null);
                 }
                 @Override
                 public PEntity get(int index) {
                     return new PEntity(elementType, elementType.getSimpleName(), 
-                            PathMetadata.forListAccess(this, index));
+                            PathMetadataFactory.forListAccess(this, index), null);
                 }
             };
-            rv = (T) aliasFactory.createAliasForProperty(type, parent, path);
+            rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Set.class.isAssignableFrom(type)) {
             Class<?> elementType = getTypeParameter(genericType, 0);
             path = new PSet(elementType, elementType.getName(), pm);
-            rv = (T) aliasFactory.createAliasForProperty(type, parent, path);
+            rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Collection.class.isAssignableFrom(type)) {
             Class<?> elementType = getTypeParameter(genericType, 0);
             path = new PCollection(elementType, elementType.getSimpleName(), pm);
-            rv = (T) aliasFactory.createAliasForProperty(type, parent, path);
+            rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Map.class.isAssignableFrom(type)) {
             Class<Object> keyType = (Class)getTypeParameter(genericType, 0);
@@ -304,27 +260,27 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
                 @Override
                 public PEntity get(Expr<Object> key) {
                     return new PEntity(valueType, valueType.getSimpleName(), 
-                            PathMetadata.forMapAccess(this, key));
+                            PathMetadataFactory.forMapAccess(this, key), null);
                 }
                 @Override
                 public PEntity get(Object key) {
                     return new PEntity(valueType, valueType.getSimpleName(), 
-                            PathMetadata.forMapAccess(this, key));
+                            PathMetadataFactory.forMapAccess(this, key), null);
                 }
             };
-            rv = (T) aliasFactory.createAliasForProperty(type, parent, path);
+            rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Enum.class.isAssignableFrom(type)) {
             path = new PSimple<T>(type, pm);
             rv = type.getEnumConstants()[0];
 
         } else {
-            path = new PEntity<T>((Class<T>) type, type.getSimpleName(), pm);
-            rv = (T) aliasFactory.createAliasForProperty(type, parent, path);
+            path = new PEntity<T>((Class<T>) type, type.getSimpleName(), pm, null);
+            rv = aliasFactory.createAliasForProperty(type, parent, path);
         }
         propToObj.put(propKey, rv);
         propToExpr.put(propKey, path);
-        return rv;
+        return (T) rv;
     }
 
     private String propertyNameForGetter(Method method) {

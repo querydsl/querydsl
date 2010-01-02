@@ -21,7 +21,7 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings({"unchecked","serial"})
 public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     
-    private static final EDate<Date> currentDate = currentDate(Date.class);
+    private static final EDate<Date> CURRENT_DATE = currentDate(Date.class);
         
     /**
      * Get an expression representing the current date as a EDate instance
@@ -29,7 +29,7 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
      * @return
      */
     public static EDate<Date> currentDate() {
-        return currentDate;
+        return CURRENT_DATE;
     }
 
     /**

@@ -24,7 +24,7 @@ import com.mysema.query.types.operation.Ops.MathOps;
 @SuppressWarnings("serial")
 public abstract class ENumber<D extends Number & Comparable<?>> extends EComparableBase<D> {
    
-    private static final ENumber<Double> random = ONumber.create(Double.class, MathOps.RANDOM);
+    private static final ENumber<Double> RANDOM = ONumber.create(Double.class, MathOps.RANDOM);
         
     /**
      * Return the greater of the given values
@@ -49,7 +49,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @return random()
      */
     public static ENumber<Double> random(){
-        return random;
+        return RANDOM;
     }
     
     private volatile ENumber<D> abs, sum, min, max, floor, ceil;

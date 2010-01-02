@@ -5,7 +5,12 @@
  */
 package com.mysema.query.jdoql.testdomain;
 
-import com.mysema.query.types.path.*;
+import com.mysema.query.types.path.PDateTime;
+import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.PathMetadata;
+import com.mysema.query.types.path.PathMetadataFactory;
 
 /**
  * QBook is a Querydsl query type for Book
@@ -36,7 +41,7 @@ public class QBook extends PEntity<com.mysema.query.jdoql.testdomain.Book>{
           this(com.mysema.query.jdoql.testdomain.Book.class, path);        
     }
     public QBook(Class<? extends com.mysema.query.jdoql.testdomain.Book> cl, java.lang.String path) {
-          super(cl, "Book", PathMetadata.forVariable(path));
+          super(cl, "Book", PathMetadataFactory.forVariable(path));
     }    
     public QBook(PathMetadata<?> metadata) {
          super(com.mysema.query.jdoql.testdomain.Book.class, "Book", metadata);
