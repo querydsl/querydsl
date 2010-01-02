@@ -28,20 +28,17 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
 
     private final Map<Class<?>, Object> casts = new HashMap<Class<?>, Object>();
 
-    private final String entityName;
-
     private final PathInits inits;
 
     private final Path<D> pathMixin;
 
-    public PEntity(Class<? extends D> type, String entityName, PathMetadata<?> metadata) {
-        this(type, entityName, metadata, null);
+    public PEntity(Class<? extends D> type, PathMetadata<?> metadata) {
+        this(type, metadata, null);
     }
 
-    public PEntity(Class<? extends D> type, String entityName, PathMetadata<?> metadata, PathInits inits) {
+    public PEntity(Class<? extends D> type, PathMetadata<?> metadata, PathInits inits) {
         super(type);
         this.pathMixin = new PathMixin<D>(this, metadata);
-        this.entityName = entityName;
         this.inits = inits;
     }
 
@@ -233,15 +230,6 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
 
     protected PathMetadata<?> forProperty(String property) {
         return PathMetadataFactory.forProperty(this, property);
-    }
-
-    /**
-     * Get the entity name for this Entity path
-     * 
-     * @return
-     */
-    public String getEntityName() {
-        return entityName;
     }
 
     @Override

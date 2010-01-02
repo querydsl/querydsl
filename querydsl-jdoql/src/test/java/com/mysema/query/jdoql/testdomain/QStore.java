@@ -39,9 +39,9 @@ public class QStore extends PEntity<com.mysema.query.jdoql.testdomain.Store>{
           this(Store.class, path);        
     }
     public QStore(Class<? extends Store> cl, String path) {
-          super(cl, "Store", PathMetadataFactory.forVariable(path));
+          super(cl, PathMetadataFactory.forVariable(path));
     }    
     public QStore(PathMetadata<?> metadata) {
-         super(Store.class, "Store", metadata);
+         super(Store.class, metadata);
     }
 }

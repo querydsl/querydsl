@@ -5,8 +5,7 @@
  */
 package com.mysema.query.collections.impl;
 
-import static com.mysema.query.alias.Alias.$;
-import static com.mysema.query.alias.Alias.alias;
+import static com.mysema.query.alias.Alias.*;
 import static com.mysema.query.collections.MiniApi.from;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -157,8 +156,8 @@ public class AliasTest extends AbstractQueryTest {
 
     @Test
     public void testVarious2() {
-        for (Object o : from($(), 1, 2, "abc", 5, 3).where($().ne("abc")).list(
-                $())) {
+        for (Object o : from(var(), 1, 2, "abc", 5, 3).where(var().ne("abc")).list(
+                var())) {
             int i = (Integer) o;
             assertTrue(i > 0 && i < 6);
             System.out.println(o);

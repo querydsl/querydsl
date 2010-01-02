@@ -187,7 +187,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (je.getTarget() instanceof PEntity && templates.isSupportsAlias()) {
             PEntity<?> pe = (PEntity<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
-                append(pe.getEntityName()).append(templates.getTableAlias());
+                String table = pe.getType().getAnnotation(Table.class).value();
+                append(table).append(templates.getTableAlias());
             }
         }
         handle(je.getTarget());

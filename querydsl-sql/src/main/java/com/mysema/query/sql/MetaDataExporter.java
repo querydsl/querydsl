@@ -99,7 +99,12 @@ public class MetaDataExporter {
 //        ClassModelFactory factory = new ClassModelFactory(new TypeModelFactory());
         while (tables.next()) {
             String tableName = tables.getString(3);
-            TypeModel classTypeModel = new SimpleTypeModel(TypeCategory.ENTITY, "java.lang.Object", "java.lang", tableName, false);
+            TypeModel classTypeModel = new SimpleTypeModel(
+                    TypeCategory.ENTITY, 
+                    "java.lang.Object", 
+                    "java.lang", 
+                    tableName, 
+                    false);
             EntityModel classModel = new EntityModel(namePrefix, classTypeModel);
             ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
             while (columns.next()) {

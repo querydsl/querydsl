@@ -15,7 +15,7 @@ public class PathBuilder<D> extends PEntity<D>{
      * @param pathMetadata
      */
     public PathBuilder(Class<? extends D> type, PathMetadata<?> pathMetadata) {
-        super(type, type.getSimpleName(), pathMetadata, null);
+        super(type, pathMetadata);
     }
     
     /**
@@ -23,7 +23,7 @@ public class PathBuilder<D> extends PEntity<D>{
      * @param variable
      */
     public PathBuilder(Class<? extends D> type, String variable) {
-        super(type, type.getSimpleName(), PathMetadataFactory.forVariable(variable), null);
+        super(type, PathMetadataFactory.forVariable(variable));
     }
     
     public PathBuilder<Object> get(String property) {

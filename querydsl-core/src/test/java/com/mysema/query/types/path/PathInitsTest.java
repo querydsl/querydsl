@@ -20,7 +20,7 @@ public class PathInitsTest {
 
     @Test
     public void test2(){
-        PathInits testInits = new PathInits("test.test2").getInits("test");
+        PathInits testInits = new PathInits("test.test2").get("test");
         assertFalse(testInits.isInitialized("test1"));
         assertTrue(testInits.isInitialized("test2"));
     }
@@ -32,7 +32,7 @@ public class PathInitsTest {
     
     @Test
     public void testWildcard2(){
-        PathInits testInits = new PathInits("test.*").getInits("test");
+        PathInits testInits = new PathInits("test.*").get("test");
         assertTrue(testInits.isInitialized("test1"));
         assertTrue(testInits.isInitialized("test2"));
     }

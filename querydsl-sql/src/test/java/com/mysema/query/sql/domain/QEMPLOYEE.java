@@ -7,6 +7,7 @@ package com.mysema.query.sql.domain;
 
 import java.math.BigDecimal;
 
+import com.mysema.query.sql.Table;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
@@ -16,7 +17,8 @@ import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 @SuppressWarnings("all")
-public class QEMPLOYEE extends PEntity<java.lang.Object> {
+@Table("employee2")
+public class QEMPLOYEE extends PEntity<QEMPLOYEE> {
 
     public final PNumber<java.lang.Integer> id = createNumber("id", java.lang.Integer.class);
     
@@ -33,10 +35,10 @@ public class QEMPLOYEE extends PEntity<java.lang.Object> {
     public final PNumber<java.lang.Integer> superiorId = createNumber("superior_id", java.lang.Integer.class);
 
     public QEMPLOYEE(java.lang.String path) {
-        super(java.lang.Object.class, "employee2", PathMetadataFactory.forVariable(path));
+        super(QEMPLOYEE.class, PathMetadataFactory.forVariable(path));
     }
 
     public QEMPLOYEE(PathMetadata<?> metadata) {
-        super(java.lang.Object.class, "employee2", metadata);
+        super(QEMPLOYEE.class, metadata);
     }
 }

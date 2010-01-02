@@ -232,13 +232,11 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             path = new PList<Object,PEntity<Object>>(elementType, elementType.getSimpleName(), null, pm){
                 @Override
                 public PEntity get(Expr<Integer> index) {
-                    return new PEntity(elementType, elementType.getSimpleName(), 
-                            PathMetadataFactory.forListAccess(this, index), null);
+                    return new PEntity(elementType, PathMetadataFactory.forListAccess(this, index), null);
                 }
                 @Override
                 public PEntity get(int index) {
-                    return new PEntity(elementType, elementType.getSimpleName(), 
-                            PathMetadataFactory.forListAccess(this, index), null);
+                    return new PEntity(elementType, PathMetadataFactory.forListAccess(this, index), null);
                 }
             };
             rv = aliasFactory.createAliasForProperty(type, parent, path);
@@ -259,13 +257,11 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             path = new PMap<Object,Object,PEntity<Object>>(keyType, valueType, null, pm){
                 @Override
                 public PEntity get(Expr<Object> key) {
-                    return new PEntity(valueType, valueType.getSimpleName(), 
-                            PathMetadataFactory.forMapAccess(this, key), null);
+                    return new PEntity(valueType, PathMetadataFactory.forMapAccess(this, key));
                 }
                 @Override
                 public PEntity get(Object key) {
-                    return new PEntity(valueType, valueType.getSimpleName(), 
-                            PathMetadataFactory.forMapAccess(this, key), null);
+                    return new PEntity(valueType, PathMetadataFactory.forMapAccess(this, key));
                 }
             };
             rv = aliasFactory.createAliasForProperty(type, parent, path);
@@ -275,7 +271,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             rv = type.getEnumConstants()[0];
 
         } else {
-            path = new PEntity<T>((Class<T>) type, type.getSimpleName(), pm, null);
+            path = new PEntity<T>((Class<T>) type, pm, null);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
         }
         propToObj.put(propKey, rv);

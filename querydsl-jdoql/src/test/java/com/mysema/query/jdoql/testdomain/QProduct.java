@@ -41,9 +41,9 @@ public class QProduct extends PEntity<com.mysema.query.jdoql.testdomain.Product>
           this(com.mysema.query.jdoql.testdomain.Product.class, path);        
     }
     public QProduct(Class<? extends com.mysema.query.jdoql.testdomain.Product> cl, java.lang.String path) {
-          super(cl, "Product", PathMetadataFactory.forVariable(path));
+          super(cl, PathMetadataFactory.forVariable(path));
     }    
     public QProduct(PathMetadata<?> metadata) {
-         super(com.mysema.query.jdoql.testdomain.Product.class, "Product", metadata);
+         super(com.mysema.query.jdoql.testdomain.Product.class, metadata);
     }
 }

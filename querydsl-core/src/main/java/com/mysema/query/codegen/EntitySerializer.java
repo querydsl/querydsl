@@ -22,7 +22,6 @@ import net.jcip.annotations.Immutable;
 public class EntitySerializer extends AbstractSerializer{
     
     protected void constructors(EntityModel model, SerializerConfig config, Writer writer) throws IOException {
-        String simpleName = model.getSimpleName();
         String queryType = getPathType(model, model, true);
         String localName = model.getLocalRawName();
         String genericName = model.getLocalGenericName();
@@ -38,7 +37,7 @@ public class EntitySerializer extends AbstractSerializer{
         // 2
         if (!hasEntityFields){
             builder.append("    public " + queryType + "(PEntity<? extends "+genericName+"> entity) {\n");
-            builder.append("        super(entity.getType(), entity.getEntityName(), entity.getMetadata()");
+            builder.append("        super(entity.getType(),entity.getMetadata()");
             builder.append(");\n");
             builder.append("    }\n\n");    
         }        
@@ -57,7 +56,7 @@ public class EntitySerializer extends AbstractSerializer{
             if (!localName.equals(genericName)){
                 builder.append("(Class)");
             }
-            builder.append(localName+".class, \""+simpleName+"\", metadata);\n");
+            builder.append(localName+".class, metadata);\n");
             builder.append("    }\n\n");
         }       
         
@@ -72,7 +71,7 @@ public class EntitySerializer extends AbstractSerializer{
             if (!localName.equals(genericName)){
                 builder.append("(Class)");
             }
-            builder.append(localName + ".class, \"" + simpleName + "\", metadata");
+            builder.append(localName + ".class, metadata");
             builder.append(", inits");
             builder.append(");\n");
             builder.append("    }\n\n");    
@@ -80,8 +79,8 @@ public class EntitySerializer extends AbstractSerializer{
         
         // 5 
         if (hasEntityFields){            
-            builder.append("    public "+queryType+"(Class<? extends "+genericName+"> type, String entityName, PathMetadata<?> metadata, PathInits inits) {\n");
-            builder.append("        super(type, entityName, metadata, inits);\n");
+            builder.append("    public "+queryType+"(Class<? extends "+genericName+"> type, PathMetadata<?> metadata, PathInits inits) {\n");
+            builder.append("        super(type, metadata, inits);\n");
             initEntityFields(builder, config, model);
             builder.append("    }\n\n"); 
         }
@@ -91,7 +90,6 @@ public class EntitySerializer extends AbstractSerializer{
     }
         
     protected void constructorsForVariables(StringBuilder builder, EntityModel model) {
-        String simpleName = model.getSimpleName();
         String queryType = getPathType(model, model, true);
         String localName = model.getLocalRawName();
         String genericName = model.getLocalGenericName();
@@ -107,7 +105,7 @@ public class EntitySerializer extends AbstractSerializer{
         if (!localName.equals(genericName)){
             builder.append("(Class)");   
         }
-        builder.append(localName + ".class, \""+simpleName+"\", forVariable(variable)");
+        builder.append(localName + ".class, forVariable(variable)");
         if (hasEntityFields){
             builder.append(", INITS");
         }
@@ -161,7 +159,7 @@ public class EntitySerializer extends AbstractSerializer{
         EntityModel superModel = model.getSuperModel();
         if (superModel != null && superModel.hasEntityFields()){
             String superQueryType = getPathType(superModel, model, false);
-            builder.append("        this._super = new " + superQueryType + "(type, entityName, metadata, inits);\n");            
+            builder.append("        this._super = new " + superQueryType + "(type, metadata, inits);\n");            
         }
         
         for (PropertyModel field : model.getProperties()){            
@@ -172,7 +170,7 @@ public class EntitySerializer extends AbstractSerializer{
                     builder.append("inits.isInitialized(\""+field.getName()+"\") ? ");
                     builder.append("new " + queryType + "(forProperty(\"" + field.getName() + "\")");
                     if (field.getType().hasEntityFields()){
-                        builder.append(", inits.getInits(\""+field.getName()+"\")");    
+                        builder.append(", inits.get(\""+field.getName()+"\")");    
                     }
                     builder.append(") : null;\n");
                 }else if (!config.useEntityAccessors()){

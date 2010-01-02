@@ -25,7 +25,7 @@ public class TypeCastTest {
         QSuperclass superClass = subClass._super;
         
         assertEquals(InheritedProperties.class, superClass.getType());
-        assertEquals(InheritedProperties.class.getSimpleName(), superClass.getEntityName());
+//        assertEquals(InheritedProperties.class.getSimpleName(), superClass.getEntityName());
         assertEquals("inheritedProperties", superClass.toString());
     }
     
@@ -45,7 +45,7 @@ public class TypeCastTest {
         QAnimal animal = new QAnimal(cat);
         
         assertEquals(Cat.class, animal.getType());
-        assertEquals(Cat.class.getSimpleName(), animal.getEntityName());
+//        assertEquals(Cat.class.getSimpleName(), animal.getEntityName());
         assertEquals("cat", animal.toString());
     }
     
@@ -55,7 +55,7 @@ public class TypeCastTest {
         QAnimal animal = new QAnimal(cat.getMetadata());
         
         assertEquals(Animal.class, animal.getType());
-        assertEquals(Animal.class.getSimpleName(), animal.getEntityName());
+//        assertEquals(Animal.class.getSimpleName(), animal.getEntityName());
         assertEquals("cat", animal.toString());
     }
     
@@ -65,7 +65,7 @@ public class TypeCastTest {
         QCat cat = new QCat(animal.getMetadata());
         
         assertEquals(Cat.class, cat.getType());
-        assertEquals(Cat.class.getSimpleName(), cat.getEntityName());
+//        assertEquals(Cat.class.getSimpleName(), cat.getEntityName());
         assertEquals("animal", cat.toString());
     }
     

@@ -53,7 +53,7 @@ public class PathInits {
         }                  
     }
     
-    public PathInits getInits(String property){
+    public PathInits get(String property){
         if (propertyToInits.containsKey(property)){
             return propertyToInits.get(property);    
         }else if (initAllProps){

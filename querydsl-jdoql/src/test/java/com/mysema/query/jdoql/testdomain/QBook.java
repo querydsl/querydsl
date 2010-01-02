@@ -41,9 +41,9 @@ public class QBook extends PEntity<com.mysema.query.jdoql.testdomain.Book>{
           this(com.mysema.query.jdoql.testdomain.Book.class, path);        
     }
     public QBook(Class<? extends com.mysema.query.jdoql.testdomain.Book> cl, java.lang.String path) {
-          super(cl, "Book", PathMetadataFactory.forVariable(path));
+          super(cl, PathMetadataFactory.forVariable(path));
     }    
     public QBook(PathMetadata<?> metadata) {
-         super(com.mysema.query.jdoql.testdomain.Book.class, "Book", metadata);
+         super(com.mysema.query.jdoql.testdomain.Book.class, metadata);
     }
 }
