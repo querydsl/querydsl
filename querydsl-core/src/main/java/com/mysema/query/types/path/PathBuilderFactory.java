@@ -11,6 +11,8 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 /**
+ * PathBuilderFactory is a factory class for PathBuilder creation
+ * 
  * @author tiwe
  *
  */

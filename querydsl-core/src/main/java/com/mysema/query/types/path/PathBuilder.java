@@ -11,6 +11,8 @@ import java.util.Map;
 import com.mysema.query.types.expr.Expr;
 
 /**
+ * PathBuilder is an extension to PEntity for dynamic path construction
+ * 
  * @author tiwe
  *
  * @param <D>

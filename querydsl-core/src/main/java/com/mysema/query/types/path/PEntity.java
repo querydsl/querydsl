@@ -154,7 +154,7 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
      */
     @SuppressWarnings("unchecked")
     protected <A, E extends Expr<A>> PList<A, E> createList(String property, Class<? super A> type, Class<? super E> queryType) {
-        return new PList<A, E>(type, type.getSimpleName(), (Class) queryType, forProperty(property));
+        return new PList<A, E>(type, (Class) queryType, forProperty(property));
     }
 
     /**

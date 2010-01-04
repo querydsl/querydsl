@@ -17,7 +17,7 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
 import com.mysema.query.apt.Processor;
-import com.mysema.query.apt.SimpleConfiguration;
+import com.mysema.query.apt.DefaultConfiguration;
 
 /**
  * @author tiwe
@@ -39,7 +39,7 @@ public class JPAAnnotationProcessor extends AbstractProcessor{
             embeddable = (Class)Class.forName("javax.persistence.Embeddable");
             skip = (Class)Class.forName("javax.persistence.Transient");
             
-            SimpleConfiguration configuration = createConfiguration(roundEnv);
+            DefaultConfiguration configuration = createConfiguration(roundEnv);
             Processor processor = new Processor(processingEnv, configuration);
             processor.process(roundEnv);
             return true;
@@ -49,7 +49,7 @@ public class JPAAnnotationProcessor extends AbstractProcessor{
         }        
     }
 
-    protected SimpleConfiguration createConfiguration(RoundEnvironment roundEnv) throws ClassNotFoundException {
+    protected DefaultConfiguration createConfiguration(RoundEnvironment roundEnv) throws ClassNotFoundException {
         return new JPAConfiguration(roundEnv, entity, superType, embeddable, skip);
     }       
     

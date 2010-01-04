@@ -5,7 +5,7 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 
-import com.mysema.query.apt.SimpleConfiguration;
+import com.mysema.query.apt.DefaultConfiguration;
 import com.mysema.query.apt.jpa.JPAAnnotationProcessor;
 
 /**
@@ -17,7 +17,7 @@ import com.mysema.query.apt.jpa.JPAAnnotationProcessor;
 public class HibernateAnnotationProcessor extends JPAAnnotationProcessor{
     
     @Override
-    protected SimpleConfiguration createConfiguration(RoundEnvironment roundEnv) throws ClassNotFoundException {
+    protected DefaultConfiguration createConfiguration(RoundEnvironment roundEnv) throws ClassNotFoundException {
         return new HibernateConfiguration(roundEnv, entity, superType, embeddable, skip);
     } 
 

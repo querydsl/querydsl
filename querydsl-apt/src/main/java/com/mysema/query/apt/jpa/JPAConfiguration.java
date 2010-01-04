@@ -16,14 +16,14 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.apt.SimpleConfiguration;
+import com.mysema.query.apt.DefaultConfiguration;
 import com.mysema.query.apt.VisitorConfig;
 
 /**
  * @author tiwe
  *
  */
-public class JPAConfiguration extends SimpleConfiguration {
+public class JPAConfiguration extends DefaultConfiguration {
    
     private List<Class<? extends Annotation>> annotations;
     

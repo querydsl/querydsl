@@ -229,14 +229,14 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else if (List.class.isAssignableFrom(type)) {
             final Class<Object> elementType = (Class)getTypeParameter(genericType, 0);
-            path = new PList<Object,PEntity<Object>>(elementType, elementType.getSimpleName(), null, pm){
+            path = new PList<Object,PEntity<Object>>(elementType, (Class)PEntity.class, pm){
                 @Override
                 public PEntity get(Expr<Integer> index) {
-                    return new PEntity(elementType, PathMetadataFactory.forListAccess(this, index), null);
+                    return new PEntity(elementType, forListAccess(index));
                 }
                 @Override
                 public PEntity get(int index) {
-                    return new PEntity(elementType, PathMetadataFactory.forListAccess(this, index), null);
+                    return new PEntity(elementType, forListAccess(index));
                 }
             };
             rv = aliasFactory.createAliasForProperty(type, parent, path);
@@ -257,11 +257,11 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             path = new PMap<Object,Object,PEntity<Object>>(keyType, valueType, null, pm){
                 @Override
                 public PEntity get(Expr<Object> key) {
-                    return new PEntity(valueType, PathMetadataFactory.forMapAccess(this, key));
+                    return new PEntity(valueType, forMapAccess(key));
                 }
                 @Override
                 public PEntity get(Object key) {
-                    return new PEntity(valueType, PathMetadataFactory.forMapAccess(this, key));
+                    return new PEntity(valueType, forMapAccess(key));
                 }
             };
             rv = aliasFactory.createAliasForProperty(type, parent, path);
@@ -271,7 +271,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             rv = type.getEnumConstants()[0];
 
         } else {
-            path = new PEntity<T>((Class<T>) type, pm, null);
+            path = new PEntity<T>((Class<T>) type, pm);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
         }
         propToObj.put(propKey, rv);

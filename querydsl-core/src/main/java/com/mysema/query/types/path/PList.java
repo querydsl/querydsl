@@ -44,19 +44,16 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
     
     protected final Class<E> elementType;
     
-    protected final String entityName;
-    
     private final Path<List<E>> pathMixin;
     
     private final Class<Q> queryType;    
     
-    private Constructor<Q> queryTypeConstructor;    
+    private Constructor<Q> constructor;    
     
     @SuppressWarnings("unchecked")
-    public PList(Class<? super E> elementType, String entityName, Class<Q> queryType, PathMetadata<?> metadata) {
+    public PList(Class<? super E> elementType, Class<Q> queryType, PathMetadata<?> metadata) {
         super((Class)List.class);
         this.elementType = (Class<E>) Assert.notNull(elementType,"type is null");
-        this.entityName = Assert.notNull(entityName,"entityName is null");
         this.queryType = queryType;
         this.pathMixin = new PathMixin<List<E>>(this, metadata);
     }
@@ -71,8 +68,17 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
         return this;
     }
 
+    protected PathMetadata<Integer> forListAccess(int index){
+        return PathMetadataFactory.forListAccess(this, index);
+    }
+    
+    protected PathMetadata<Integer> forListAccess(Expr<Integer> index){
+        return PathMetadataFactory.forListAccess(this, index);
+    }
+    
+    
     private Q create(int index){
-        PathMetadata<Integer> md = PathMetadataFactory.forListAccess(this, index);
+        PathMetadata<Integer> md = forListAccess(index);
         try {
             return newInstance(md);
         } catch (Exception e) {
@@ -87,7 +93,7 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
 
     @Override
     public Q get(Expr<Integer> index) {
-        PathMetadata<Integer> md = PathMetadataFactory.forListAccess(this, index);        
+        PathMetadata<Integer> md = forListAccess(index);        
         try {
             return newInstance(md);        
         } catch (Exception e) {
@@ -137,21 +143,21 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
     }
     
     private Q newInstance(PathMetadata<?> pm) throws Exception{
-        if (queryTypeConstructor == null){
+        if (constructor == null){
             try {
                 if (typedClasses.contains(queryType)){
-                    queryTypeConstructor = queryType.getConstructor(Class.class, PathMetadata.class);   
+                    constructor = queryType.getConstructor(Class.class, PathMetadata.class);   
                 }else{
-                    queryTypeConstructor = queryType.getConstructor(PathMetadata.class);    
+                    constructor = queryType.getConstructor(PathMetadata.class);    
                 }                
             } catch (Exception e) {
                 throw new RuntimeException(e.getMessage(), e);
             }    
         }
         if (typedClasses.contains(queryType)){
-            return queryTypeConstructor.newInstance(getElementType(), pm);
+            return constructor.newInstance(getElementType(), pm);
         }else{
-            return queryTypeConstructor.newInstance(pm);
+            return constructor.newInstance(pm);
         }
     }
 

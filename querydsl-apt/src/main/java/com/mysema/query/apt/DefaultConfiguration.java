@@ -38,17 +38,17 @@ import com.mysema.query.codegen.SupertypeSerializer;
  * @author tiwe
  *
  */
-public class SimpleConfiguration implements Configuration {
+public class DefaultConfiguration implements Configuration {
     
     private String namePrefix = "Q";
     
-    private final Serializer entitySerializer = new EntitySerializer();
+    private Serializer entitySerializer = new EntitySerializer();
     
-    private final Serializer supertypeSerializer = new SupertypeSerializer();
+    private Serializer supertypeSerializer = new SupertypeSerializer();
     
-    private final Serializer embeddableSerializer = new EmbeddableSerializer();
+    private Serializer embeddableSerializer = new EmbeddableSerializer();
     
-    private final Serializer dtoSerializer = new DTOSerializer();
+    private Serializer dtoSerializer = new DTOSerializer();
     
     protected final Class<? extends Annotation> entityAnn, embeddableAnn, skipAnn;
     
@@ -61,7 +61,7 @@ public class SimpleConfiguration implements Configuration {
     
     private boolean useFields = true, useGetters = true;
     
-    public SimpleConfiguration(
+    public DefaultConfiguration(
             RoundEnvironment roundEnv,
             Class<? extends Annotation> entityAnn, 
             @Nullable
@@ -73,7 +73,8 @@ public class SimpleConfiguration implements Configuration {
         this.embeddableAnn = embeddableAnn;
         this.skipAnn = skipAnn;
         for (Element element : roundEnv.getElementsAnnotatedWith(QuerydslConfig.class)){
-            SerializerConfig config = SimpleSerializerConfig.getConfig(element.getAnnotation(QuerydslConfig.class));
+            QuerydslConfig querydslConfig = element.getAnnotation(QuerydslConfig.class);
+            SerializerConfig config = SimpleSerializerConfig.getConfig(querydslConfig);
             if (element instanceof PackageElement){
                 PackageElement packageElement = (PackageElement)element;
                 packageToConfig.put(packageElement.getQualifiedName().toString(), config);

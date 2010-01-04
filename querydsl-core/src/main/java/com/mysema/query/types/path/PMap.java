@@ -43,7 +43,7 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
     
     private final Class<E> queryType;
     
-    private Constructor<E> queryTypeConstructor; 
+    private Constructor<E> constructor; 
     
     private final Class<V> valueType;
     
@@ -54,6 +54,14 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
         this.valueType = (Class<V>) valueType;
         this.queryType = queryType;
         this.pathMixin = new PathMixin<Map<K,V>>(this, metadata);
+    }
+    
+    protected PathMetadata<K> forMapAccess(K key){
+        return PathMetadataFactory.forMapAccess(this, key);
+    }
+    
+    protected PathMetadata<K> forMapAccess(Expr<K> key){
+        return PathMetadataFactory.forMapAccess(this, key);
     }
 
     @Override
@@ -73,7 +81,7 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
 
     @Override
     public E get(Expr<K> key) {
-        PathMetadata<K> md =  PathMetadataFactory.forMapAccess(this, key);
+        PathMetadata<K> md =  forMapAccess(key);
         try {
             return newInstance(md);
         } catch (Exception e) {
@@ -83,7 +91,7 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
 
     @Override
     public E get(K key) {
-        PathMetadata<K> md =  PathMetadataFactory.forMapAccess(this, key);
+        PathMetadata<K> md =  forMapAccess(key);
         try {
             return newInstance(md);
         } catch (Exception e) {
@@ -127,21 +135,21 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
     }
     
     private E newInstance(PathMetadata<?> pm) throws Exception{
-        if (queryTypeConstructor == null){
+        if (constructor == null){
             try {
                 if (typedClasses.contains(queryType)){
-                    queryTypeConstructor = queryType.getConstructor(Class.class, PathMetadata.class);   
+                    constructor = queryType.getConstructor(Class.class, PathMetadata.class);   
                 }else{
-                    queryTypeConstructor = queryType.getConstructor(PathMetadata.class);    
+                    constructor = queryType.getConstructor(PathMetadata.class);    
                 }                
             } catch (Exception e) {
                 throw new RuntimeException(e.getMessage(), e);
             }    
         }
         if (typedClasses.contains(queryType)){
-            return queryTypeConstructor.newInstance(getValueType(), pm);
+            return constructor.newInstance(getValueType(), pm);
         }else{
-            return queryTypeConstructor.newInstance(pm);
+            return constructor.newInstance(pm);
         }
     }
     
