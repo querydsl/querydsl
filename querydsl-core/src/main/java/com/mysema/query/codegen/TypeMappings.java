@@ -1,11 +1,5 @@
-/*
- * Copyright (c) 2009 Mysema Ltd.
- * All rights reserved.
- * 
- */
 package com.mysema.query.codegen;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,23 +31,21 @@ import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.Path;
 
 /**
- * AbstractSerializer is abstract base class for Serializer implementations
- * 
  * @author tiwe
  *
  */
-public abstract class AbstractSerializer implements Serializer{
-
-    @SuppressWarnings("unchecked")
-    private final Map<TypeCategory, Class<? extends Expr>> exprType = new HashMap<TypeCategory, Class<? extends Expr>>();
+public class TypeMappings {
     
     @SuppressWarnings("unchecked")
-    private final Map<TypeCategory, Class<? extends Path>> pathType = new HashMap<TypeCategory, Class<? extends Path>>();
+    private final Map<TypeCategory, Class<? extends Custom>> customTypes = new HashMap<TypeCategory, Class<? extends Custom>>();
     
     @SuppressWarnings("unchecked")
-    private final Map<TypeCategory, Class<? extends Custom>> customType = new HashMap<TypeCategory, Class<? extends Custom>>();
+    private final Map<TypeCategory, Class<? extends Expr>> exprTypes = new HashMap<TypeCategory, Class<? extends Expr>>();
     
-    public AbstractSerializer(){
+    @SuppressWarnings("unchecked")
+    private final Map<TypeCategory, Class<? extends Path>> pathTypes = new HashMap<TypeCategory, Class<? extends Path>>();
+    
+    public TypeMappings(){
         register(TypeCategory.STRING, EString.class, PString.class, CString.class);
         register(TypeCategory.BOOLEAN, EBoolean.class, PBoolean.class, CBoolean.class);
         register(TypeCategory.COMPARABLE, EComparable.class, PComparable.class, CComparable.class);
@@ -73,66 +65,68 @@ public abstract class AbstractSerializer implements Serializer{
     }
     
 
-    @SuppressWarnings("unchecked")
-    private void register(TypeCategory category, 
-            Class<? extends Expr> expr, 
-            Class<? extends Path> path,
-            Class<? extends Custom> custom){
-        exprType.put(category, expr);
-        pathType.put(category, path);
-        customType.put(category, custom);
+    public String getCustomType(TypeModel type, EntityModel model, boolean raw){
+        return getCustomType(type, model, raw, false, false);
     }
     
-    @Override
-    public String getPathType(TypeModel type, EntityModel model, boolean raw){
-        String typeName = pathType.get(type.getCategory()).getSimpleName();
-        return getQueryType(type, model, typeName, raw, false);
+    public String getCustomType(TypeModel type, EntityModel model, boolean raw, boolean rawParameters, boolean extend){
+        return getQueryType(customTypes, type, model, raw, rawParameters, extend);
     }
     
     public String getExprType(TypeModel type, EntityModel model, boolean raw){
-        String typeName = exprType.get(type.getCategory()).getSimpleName();
-        return getQueryType(type, model, typeName, raw, true);
+        return getExprType(type, model, raw, false, false);
     }
     
-    public String getCustomType(TypeModel type, EntityModel model, boolean raw){
-        String typeName = customType.get(type.getCategory()).getSimpleName();
-        return getQueryType(type, model, typeName, raw, true);
+    public String getExprType(TypeModel type, EntityModel model, boolean raw, boolean rawParameters, boolean extend){
+        return getQueryType(exprTypes, type, model, raw, rawParameters, extend);
     }
     
-    public String getQueryType(TypeModel type, EntityModel model, String typeName, boolean raw, boolean extend){
-        String localGenericName = null;         
+    public String getPathType(TypeModel type, EntityModel model, boolean raw){
+        return getPathType(type, model, raw, false, false);
+    }
+    
+    public String getPathType(TypeModel type, EntityModel model, boolean raw, boolean rawParameters, boolean extend){
+        return getQueryType(pathTypes, type, model, raw, rawParameters, extend);
+    }
+        
+    private String getQueryType(Map<TypeCategory, ? extends Class<?>> types, TypeModel type, EntityModel model, boolean raw, boolean rawParameters, boolean extend){
+        String typeName = types.get(type.getCategory()).getSimpleName();
+        return getQueryType(type, model, typeName, raw, rawParameters, extend);
+    }
+    
+    public String getQueryType(TypeModel type, EntityModel model, String typeName, boolean raw, boolean rawParameters, boolean extend){
+        String localName = null;        
         
         if (raw && type.getCategory() != TypeCategory.ENTITY){
             return typeName;
         }else{
-            localGenericName = type.getLocalGenericName(model, true);
+            if (rawParameters){
+                localName = type.getLocalRawName(model);
+            }else{
+                localName = type.getLocalGenericName(model, true);    
+            }            
             if (!type.isFinal() && extend){
-                localGenericName = "? extends " + localGenericName;
+                localName = "? extends " + localName;
             }
         }
         
         switch(type.getCategory()){
         case STRING:     
-            return typeName;
         case BOOLEAN:    
             return typeName;         
-        case COMPARABLE: 
-            return typeName + "<" + localGenericName + ">";  
-        case DATE:       
-            return typeName + "<" +localGenericName + ">"; 
-        case DATETIME:   
-            return typeName + "<" + localGenericName + ">"; 
-        case TIME:       
-            return typeName + "<" + localGenericName + ">"; 
+        case COMPARABLE:   
+        case DATE:        
+        case DATETIME:    
+        case TIME:        
         case NUMERIC:    
-            return typeName + "<" + localGenericName + ">";
+            return typeName + "<" + localName + ">";
         case ARRAY:
         case COLLECTION: 
         case SET:
         case LIST:
         case MAP:
         case SIMPLE:     
-            return typeName + "<" + localGenericName + ">";
+            return typeName + "<" + localName + ">";
         case ENTITY:
             String suffix = type.getFullName().substring(type.getPackageName().length()+1).replace('.', '_');            
             if (type.getPackageName().equals(model.getPackageName())){
@@ -143,4 +137,16 @@ public abstract class AbstractSerializer implements Serializer{
         }
         throw new IllegalArgumentException("Unsupported case " + type.getCategory());
     }
+
+    
+    @SuppressWarnings("unchecked")
+    private void register(TypeCategory category, 
+            Class<? extends Expr> expr, 
+            Class<? extends Path> path,
+            Class<? extends Custom> custom){
+        exprTypes.put(category, expr);
+        pathTypes.put(category, path);
+        customTypes.put(category, custom);
+    }
+
 }

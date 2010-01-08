@@ -18,6 +18,10 @@ import net.jcip.annotations.Immutable;
 @Immutable
 public class SupertypeSerializer extends EntitySerializer{
 
+    public SupertypeSerializer(TypeMappings typeMappings) {
+        super(typeMappings);
+    }
+
     @Override
     protected void constructorsForVariables(StringBuilder builder, EntityModel model) {
         // no constructors for variables

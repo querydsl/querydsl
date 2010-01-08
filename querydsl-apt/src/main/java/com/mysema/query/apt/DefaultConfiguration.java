@@ -31,6 +31,7 @@ import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.codegen.SupertypeSerializer;
+import com.mysema.query.codegen.TypeMappings;
 
 /**
  * SimpleConfiguration is a simple implementation of the Configuration interface
@@ -40,13 +41,15 @@ import com.mysema.query.codegen.SupertypeSerializer;
  */
 public class DefaultConfiguration implements Configuration {
     
-    private final Serializer dtoSerializer = new DTOSerializer();
+    private final TypeMappings typeMappings = new TypeMappings();
     
-    private final Serializer embeddableSerializer = new EmbeddableSerializer();
+    private final Serializer dtoSerializer = new DTOSerializer(typeMappings);
+    
+    private final Serializer embeddableSerializer = new EmbeddableSerializer(typeMappings);
     
     protected final Class<? extends Annotation> entityAnn, embeddableAnn, skipAnn;
     
-    private final Serializer entitySerializer = new EntitySerializer();
+    private final Serializer entitySerializer = new EntitySerializer(typeMappings);
     
     private String namePrefix = "Q";
     
@@ -55,7 +58,7 @@ public class DefaultConfiguration implements Configuration {
     @Nullable
     protected final Class<? extends Annotation> superTypeAnn;
     
-    private final Serializer supertypeSerializer = new SupertypeSerializer();
+    private final Serializer supertypeSerializer = new SupertypeSerializer(typeMappings);
     
     private final Map<String,SerializerConfig> typeToConfig = new HashMap<String,SerializerConfig>();
     
@@ -228,6 +231,11 @@ public class DefaultConfiguration implements Configuration {
     @Override
     public void setUseGetters(boolean b) {
         this.useGetters = b;        
+    }
+
+    @Override
+    public TypeMappings getTypeMappings() {
+        return typeMappings;
     }
     
 }

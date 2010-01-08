@@ -17,14 +17,20 @@ import net.jcip.annotations.Immutable;
  *
  */
 @Immutable
-public class DTOSerializer extends AbstractSerializer{
+public class DTOSerializer implements Serializer{
+    
+    private final TypeMappings typeMappings;
+    
+    public DTOSerializer(TypeMappings typeMappings){
+        this.typeMappings = typeMappings;
+    }
     
     @Override
     public void serialize(EntityModel model, SerializerConfig serializerConfig, Writer writer) throws IOException{
         // intro
         intro(model, writer);
         
-        final String queryType = getPathType(model, model, false);
+        final String queryType = typeMappings.getPathType(model, model, false);
         final String localName = model.getLocalRawName();
         
         StringBuilder builder = new StringBuilder();
@@ -34,7 +40,7 @@ public class DTOSerializer extends AbstractSerializer{
             boolean first = true;
             for (ParameterModel p : c.getParameters()){
                 if (!first) builder.append(", ");                             
-                builder.append(getExprType(p.getType(), model, false));
+                builder.append(typeMappings.getExprType(p.getType(), model, false, false, true));
                 builder.append(" ");
                 builder.append(p.getName());
                 first = false;
@@ -73,7 +79,7 @@ public class DTOSerializer extends AbstractSerializer{
 
     protected void intro(EntityModel model, Writer writer) throws IOException {
         final String simpleName = model.getSimpleName();
-        final String queryType = getPathType(model, model, false);
+        final String queryType = typeMappings.getPathType(model, model, false);
         final String localName = model.getLocalRawName();
         
         StringBuilder builder = new StringBuilder();        

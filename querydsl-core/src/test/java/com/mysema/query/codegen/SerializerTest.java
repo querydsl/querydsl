@@ -44,7 +44,8 @@ public class SerializerTest {
      */
     @Test
     public void testDomainTypesAsOuterClasses() throws Exception {
-        new EntitySerializer().serialize(type, SimpleSerializerConfig.DEFAULT, writer);
+        TypeMappings typeMappings = new TypeMappings();
+        new EntitySerializer(typeMappings).serialize(type, SimpleSerializerConfig.DEFAULT, writer);
 //        System.out.println(writer);
     }
 

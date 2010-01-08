@@ -16,6 +16,10 @@ import java.io.IOException;
  */
 public class EmbeddableSerializer extends EntitySerializer{
     
+    public EmbeddableSerializer(TypeMappings typeMappings) {
+        super(typeMappings);
+    }
+
     @Override
     protected void constructorsForVariables(StringBuilder builder, EntityModel model) {
         // no root constructors

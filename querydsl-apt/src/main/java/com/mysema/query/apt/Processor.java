@@ -19,15 +19,22 @@ import javax.annotation.Nullable;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementFilter;
 import javax.tools.JavaFileObject;
 import javax.tools.Diagnostic.Kind;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.annotations.QueryExtensions;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.codegen.EntityModel;
 import com.mysema.query.codegen.EntityModelFactory;
+import com.mysema.query.codegen.MethodModel;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.TypeModelFactory;
@@ -128,7 +135,10 @@ public class Processor {
         }
     }
 
-    public void process() {            
+    public void process() {
+        // query extensions
+        processExtensions();
+        
         // super types
         if (configuration.getSuperTypeAnn() != null) {
             processSupertypes();
@@ -152,6 +162,33 @@ public class Processor {
         serialize(configuration.getEmbeddableSerializer(), embeddables);
         serialize(configuration.getDTOSerializer(), dtos);
         
+    }
+
+    private void processExtensions() {
+        for (Element element : roundEnv.getElementsAnnotatedWith(QueryExtensions.class)){
+            // create entity model
+            EntityModel entityModel = null;
+            for (AnnotationMirror annotation : element.getAnnotationMirrors()){
+                if (annotation.getAnnotationType().asElement().getSimpleName().toString().equals(QueryExtensions.class.getSimpleName())){
+                    for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : annotation.getElementValues().entrySet()){
+                        if (entry.getKey().getSimpleName().toString().equals("value")){
+                            TypeMirror type = (TypeMirror)entry.getValue().getValue();
+                            entityModel = typeFactory.createEntityModel(type);        
+                        }
+                    }                    
+                }
+            }
+            
+            // handle methods
+            Map<String,MethodModel> queryMethods = new HashMap<String,MethodModel>();
+            for (ExecutableElement method : ElementFilter.methodsIn(element.getEnclosedElements())){
+                entityVisitor.handleQueryMethod(entityModel, method, queryMethods);
+            }            
+            for (MethodModel method : queryMethods.values()){
+                entityModel.addMethod(method);
+            }
+            embeddables.put(entityModel.getFullName(), entityModel); 
+        }        
     }
 
     private void processDTOs() {
@@ -227,7 +264,7 @@ public class Processor {
             msg.printMessage(Kind.NOTE, model.getFullName() + " is processed");
             try {
                 String packageName = model.getPackageName();         
-                String localName = serializer.getPathType(model, model, true);
+                String localName = configuration.getTypeMappings().getPathType(model, model, true);
                 String className = packageName + "." + localName;
                 JavaFileObject fileObject = env.getFiler().createSourceFile(className);
                 Writer writer = fileObject.openWriter();

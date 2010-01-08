@@ -15,14 +15,15 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.codegen.EntityModel;
 import com.mysema.query.codegen.ClassTypeModel;
+import com.mysema.query.codegen.EntityModel;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.PropertyModel;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.codegen.SimpleTypeModel;
 import com.mysema.query.codegen.TypeCategory;
+import com.mysema.query.codegen.TypeMappings;
 import com.mysema.query.codegen.TypeModel;
 import com.mysema.query.util.FileUtils;
 
@@ -40,7 +41,7 @@ public class MetaDataExporter {
 
     private final String schemaPattern, tableNamePattern;
 
-    private static final Serializer serializer = new EntitySerializer();
+    private static final Serializer serializer = new EntitySerializer(new TypeMappings());
     
     public MetaDataExporter(String namePrefix, String packageName, String schemaPattern, String tableNamePattern, String targetFolder){
         this.namePrefix = namePrefix;

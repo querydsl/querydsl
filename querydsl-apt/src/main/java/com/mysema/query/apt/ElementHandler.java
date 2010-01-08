@@ -64,7 +64,7 @@ public final class ElementHandler{
         return rv;
     }
     
-    private void handleConstructors(EntityModel entityModel, List<? extends Element> elements) {
+    public void handleConstructors(EntityModel entityModel, List<? extends Element> elements) {
         for (ExecutableElement constructor : ElementFilter.constructorsIn(elements)){
             if (configuration.isValidConstructor(constructor)){
                 List<ParameterModel> parameters = transformParams(constructor.getParameters());
@@ -73,7 +73,7 @@ public final class ElementHandler{
         }
     }
 
-    private void handleFieldProperty(EntityModel entityModel, VariableElement field,            
+    public void handleFieldProperty(EntityModel entityModel, VariableElement field,            
             Map<String, PropertyModel> properties,
             Set<String> blockedProperties,
             Map<String, TypeCategory> types) {
@@ -102,7 +102,7 @@ public final class ElementHandler{
         }
     }
 
-    private void handleMethodProperty(EntityModel entityModel, String propertyName, 
+    public void handleMethodProperty(EntityModel entityModel, String propertyName, 
             ExecutableElement method,            
             Map<String, PropertyModel> properties, Set<String> blockedProperties,
             Map<String, TypeCategory> types) {
@@ -211,7 +211,7 @@ public final class ElementHandler{
         return entityModel;
     }
     
-    private void handleQueryMethod(EntityModel entityModel, ExecutableElement method, Map<String,MethodModel> queryMethods) {
+    public void handleQueryMethod(EntityModel entityModel, ExecutableElement method, Map<String,MethodModel> queryMethods) {
         String name = method.getSimpleName().toString();
         QueryMethod queryMethod = method.getAnnotation(QueryMethod.class);
         TypeModel returnType = typeFactory.create(method.getReturnType());

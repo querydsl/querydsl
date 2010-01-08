@@ -10,9 +10,9 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringEscapeUtils;
-
 import net.jcip.annotations.Immutable;
+
+import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * EntitySerializer is a Serializer implementation for entity types
@@ -21,10 +21,16 @@ import net.jcip.annotations.Immutable;
  *
  */
 @Immutable
-public class EntitySerializer extends AbstractSerializer{
+public class EntitySerializer implements Serializer{
+    
+    private final TypeMappings typeMappings;
+    
+    public EntitySerializer(TypeMappings typeMappings){
+        this.typeMappings = typeMappings;
+    }
     
     protected void constructors(EntityModel model, SerializerConfig config, Writer writer) throws IOException {
-        String queryType = getPathType(model, model, true);
+        String queryType = typeMappings.getPathType(model, model, true);
         String localName = model.getLocalRawName();
         String genericName = model.getLocalGenericName();
         
@@ -92,7 +98,7 @@ public class EntitySerializer extends AbstractSerializer{
     }
         
     protected void constructorsForVariables(StringBuilder builder, EntityModel model) {
-        String queryType = getPathType(model, model, true);
+        String queryType = typeMappings.getPathType(model, model, true);
         String localName = model.getLocalRawName();
         String genericName = model.getLocalGenericName();
         
@@ -116,7 +122,7 @@ public class EntitySerializer extends AbstractSerializer{
     }
     
     protected void entityField(PropertyModel field, SerializerConfig config, Writer writer) throws IOException {
-        String queryType = getPathType(field.getType(), field.getContext(), false);
+        String queryType = typeMappings.getPathType(field.getType(), field.getContext(), false);
         
         StringBuilder builder = new StringBuilder();
         if (field.isInherited()){
@@ -133,7 +139,7 @@ public class EntitySerializer extends AbstractSerializer{
     
 
     protected void entityAccessor(PropertyModel field, Writer writer) throws IOException {
-        String queryType = getPathType(field.getType(), field.getContext(), false);
+        String queryType = typeMappings.getPathType(field.getType(), field.getContext(), false);
         
         StringBuilder builder = new StringBuilder();
         builder.append("    public " + queryType + " " + field.getEscapedName() + "(){\n");
@@ -160,13 +166,13 @@ public class EntitySerializer extends AbstractSerializer{
     protected void initEntityFields(StringBuilder builder, SerializerConfig config, EntityModel model) {
         EntityModel superModel = model.getSuperModel();
         if (superModel != null && superModel.hasEntityFields()){
-            String superQueryType = getPathType(superModel, model, false);
+            String superQueryType = typeMappings.getPathType(superModel, model, false);
             builder.append("        this._super = new " + superQueryType + "(type, metadata, inits);\n");            
         }
         
         for (PropertyModel field : model.getProperties()){            
             if (field.getType().getCategory() == TypeCategory.ENTITY){
-                String queryType = getPathType(field.getType(), model, false);                               
+                String queryType = typeMappings.getPathType(field.getType(), model, false);                               
                 if (!field.isInherited()){                    
                     builder.append("        this." + field.getEscapedName() + " = ");
                     builder.append("inits.isInitialized(\""+field.getName()+"\") ? ");
@@ -203,7 +209,7 @@ public class EntitySerializer extends AbstractSerializer{
     }
 
     protected void introClassHeader(StringBuilder builder, EntityModel model) {
-        String queryType = getPathType(model, model, true);
+        String queryType = typeMappings.getPathType(model, model, true);
         String localName = model.getLocalGenericName();
         
         builder.append("@SuppressWarnings(\"serial\")\n");
@@ -212,7 +218,7 @@ public class EntitySerializer extends AbstractSerializer{
 
     protected void introDefaultInstance(StringBuilder builder, EntityModel model) {
         String unscapSimpleName = model.getUncapSimpleName();
-        String queryType = getPathType(model, model, true);
+        String queryType = typeMappings.getPathType(model, model, true);
         
         builder.append("    public static final " + queryType + " " + unscapSimpleName + " = new " + queryType + "(\"" + unscapSimpleName + "\");\n\n");
     }
@@ -230,7 +236,7 @@ public class EntitySerializer extends AbstractSerializer{
             boolean first = true;
             for (ParameterModel p : c.getParameters()){
                 if (!first) builder.append(", ");
-                builder.append(getExprType(p.getType(), model, false));
+                builder.append(typeMappings.getExprType(p.getType(), model, false, false, true));
                 builder.append(" ").append(p.getName());
                 first = false;
             }
@@ -322,7 +328,7 @@ public class EntitySerializer extends AbstractSerializer{
     
     protected void introSuper(StringBuilder builder, EntityModel model) {
         EntityModel superModel = model.getSuperModel();
-        String superQueryType = getPathType(superModel, model, false);
+        String superQueryType = typeMappings.getPathType(superModel, model, false);
         
         if (!superModel.hasEntityFields()){
             builder.append("    public final "+superQueryType+" _super = new " + superQueryType + "(this);\n\n");    
@@ -333,7 +339,7 @@ public class EntitySerializer extends AbstractSerializer{
 
     protected void listAccessor(PropertyModel field, Writer writer) throws IOException {
         String escapedName = field.getEscapedName();
-        String queryType = getPathType(field.getParameter(0), field.getContext(), false);
+        String queryType = typeMappings.getPathType(field.getParameter(0), field.getContext(), false);
         
         StringBuilder builder = new StringBuilder();        
         builder.append("    public " + queryType + " " + escapedName + "(int index) {\n");
@@ -347,7 +353,7 @@ public class EntitySerializer extends AbstractSerializer{
 
     protected void mapAccessor(PropertyModel field, Writer writer) throws IOException {
         String escapedName = field.getEscapedName();
-        String queryType = getPathType(field.getParameter(1), field.getContext(), false);
+        String queryType = typeMappings.getPathType(field.getParameter(1), field.getContext(), false);
         String keyType = field.getParameter(0).getLocalGenericName(field.getContext(), false);
         String genericKey = field.getParameter(0).getLocalGenericName(field.getContext(), true);
         
@@ -396,18 +402,23 @@ public class EntitySerializer extends AbstractSerializer{
 
     protected void method(EntityModel model, MethodModel method, SerializerConfig config, Writer writer) throws IOException {
         StringBuilder builder = new StringBuilder();
-        String returnType = getExprType(method.getReturnType(), model, false);
-        builder.append("    public " + returnType + " " + method.getName() + "(");
+        // header
+        builder.append("    public ");
+        builder.append(typeMappings.getExprType(method.getReturnType(), model, false, true, false));
+        builder.append(" " + method.getName() + "(");
         boolean first = true;        
+        
         // parameters
         for (ParameterModel p : method.getParameters()){
             if (!first) builder.append(", ");
-            String paramType = getExprType(p.getType(), model, false);
+            String paramType = typeMappings.getExprType(p.getType(), model, false);
             builder.append(paramType + " " + p.getName());           
             first = false;
         }
         builder.append("){\n");
-        String customClass = getCustomType(method.getReturnType(), model, true);        
+        
+        // body start
+        String customClass = typeMappings.getCustomType(method.getReturnType(), model, true);        
         builder.append("        return " + customClass + ".create(");
         String fullName = method.getReturnType().getFullName();
         if (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName())){
@@ -420,6 +431,8 @@ public class EntitySerializer extends AbstractSerializer{
             builder.append(", " + p.getName());
         }        
         builder.append(");\n");
+
+        // body end
         builder.append("    }\n\n");
         writer.write(builder.toString());
     }
@@ -455,7 +468,7 @@ public class EntitySerializer extends AbstractSerializer{
 
     private void serializeProperties(EntityModel model,  SerializerConfig config, Writer writer) throws IOException {
         for (PropertyModel property : model.getProperties()){
-            String queryType = getPathType(property.getType(), model, false);
+            String queryType = typeMappings.getPathType(property.getType(), model, false);
             String localGenericName = property.getType().getLocalGenericName(model, true);
             String localRawName = property.getType().getLocalRawName(model);
             
@@ -503,10 +516,10 @@ public class EntitySerializer extends AbstractSerializer{
             case MAP:                 
                 String genericKey = property.getParameter(0).getLocalGenericName(model, true);
                 String genericValue = property.getParameter(1).getLocalGenericName(model, true);
-                String genericQueryType = getPathType(property.getParameter(1), model, false);
+                String genericQueryType = typeMappings.getPathType(property.getParameter(1), model, false);
                 String keyType = property.getParameter(0).getLocalRawName(model);
                 String valueType = property.getParameter(1).getLocalRawName(model);
-                queryType = getPathType(property.getParameter(1), model, true);
+                queryType = typeMappings.getPathType(property.getParameter(1), model, true);
                 
                 // this.<"+genericKey+", "+genericValue+", "+genericQueryType+"
                 serialize(property, "PMap<"+genericKey+", "+genericValue+", "+genericQueryType+">",
@@ -517,9 +530,9 @@ public class EntitySerializer extends AbstractSerializer{
                 break;
             case LIST:                 
                 localGenericName = property.getParameter(0).getLocalGenericName(model, true);                
-                genericQueryType = getPathType(property.getParameter(0), model, false);
+                genericQueryType = typeMappings.getPathType(property.getParameter(0), model, false);
                 localRawName = property.getParameter(0).getLocalRawName(model);
-                queryType = getPathType(property.getParameter(0), model, true);
+                queryType = typeMappings.getPathType(property.getParameter(0), model, true);
                 
                 serialize(property, "PList<" + localGenericName+ ", " + genericQueryType +  ">", writer, "createList", localRawName+".class", queryType +".class");  
                 break;

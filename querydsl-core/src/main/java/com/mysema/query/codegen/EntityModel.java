@@ -136,6 +136,11 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
         return hasMaps;
     }
 
+    @Override
+    public TypeCategory getCategory() {
+        return TypeCategory.ENTITY;
+    }
+    
     public void include(EntityModel clazz) {
         for (MethodModel method : clazz.methods){
             addMethod(method);

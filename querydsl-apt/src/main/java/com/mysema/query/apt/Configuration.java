@@ -11,6 +11,7 @@ import javax.lang.model.element.VariableElement;
 import com.mysema.query.codegen.EntityModel;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
+import com.mysema.query.codegen.TypeMappings;
 
 /**
  * Configuration defines the configuration options for APT based Querydsl code generation
@@ -20,6 +21,11 @@ import com.mysema.query.codegen.SerializerConfig;
  */
 public interface Configuration {
 
+    /**
+     * @return
+     */
+    TypeMappings getTypeMappings();
+    
     /**
      * @param e
      * @param elements
