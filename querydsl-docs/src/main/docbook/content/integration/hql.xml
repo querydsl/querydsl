@@ -80,7 +80,7 @@
     
     <para>
     If you use Hibernate annotations in your domain types you should use 
-    the APT processor com.mysema.query.apt.hibernate.HibernateAnnotationProcessor
+    the APT processor com.mysema.query.apt.hibernate.HibernateAnnotationProcessor>
     instead.
     </para>
 
