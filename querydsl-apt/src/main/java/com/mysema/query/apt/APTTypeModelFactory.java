@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
@@ -293,6 +294,7 @@ public class APTTypeModelFactory {
         return key;
     }
 
+    @Nullable
     private TypeModel handle(TypeMirror type) {
         if (type instanceof DeclaredType){
             DeclaredType t = (DeclaredType)type;

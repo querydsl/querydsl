@@ -31,6 +31,7 @@ import javax.tools.Diagnostic.Kind;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.QueryExtensions;
+import com.mysema.query.annotations.QueryMethod;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.codegen.EntityModel;
 import com.mysema.query.codegen.EntityModelFactory;
@@ -136,6 +137,9 @@ public class Processor {
     }
 
     public void process() {
+        // types without any type level annotations
+        processCustomTypes();        
+        
         // query extensions
         processExtensions();
         
@@ -164,31 +168,46 @@ public class Processor {
         
     }
 
+
     private void processExtensions() {
         for (Element element : roundEnv.getElementsAnnotatedWith(QueryExtensions.class)){
-            // create entity model
-            EntityModel entityModel = null;
             for (AnnotationMirror annotation : element.getAnnotationMirrors()){
                 if (annotation.getAnnotationType().asElement().getSimpleName().toString().equals(QueryExtensions.class.getSimpleName())){
                     for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : annotation.getElementValues().entrySet()){
                         if (entry.getKey().getSimpleName().toString().equals("value")){
                             TypeMirror type = (TypeMirror)entry.getValue().getValue();
-                            entityModel = typeFactory.createEntityModel(type);        
+                            handleExtensionType(type, element);
                         }
                     }                    
                 }
-            }
-            
-            // handle methods
-            Map<String,MethodModel> queryMethods = new HashMap<String,MethodModel>();
-            for (ExecutableElement method : ElementFilter.methodsIn(element.getEnclosedElements())){
-                entityVisitor.handleQueryMethod(entityModel, method, queryMethods);
             }            
-            for (MethodModel method : queryMethods.values()){
-                entityModel.addMethod(method);
-            }
-            embeddables.put(entityModel.getFullName(), entityModel); 
-        }        
+        }    
+    }
+    
+
+    private void handleExtensionType(TypeMirror type, Element element) {
+        EntityModel entityModel = typeFactory.createEntityModel(type);
+        // handle methods
+        Map<String,MethodModel> queryMethods = new HashMap<String,MethodModel>();
+        for (ExecutableElement method : ElementFilter.methodsIn(element.getEnclosedElements())){
+            entityVisitor.handleQueryMethod(entityModel, method, queryMethods);
+        }            
+        for (MethodModel method : queryMethods.values()){
+            entityModel.addMethod(method);
+        }
+        embeddables.put(entityModel.getFullName(), entityModel); 
+        
+    }
+
+    private void processCustomTypes() {
+        for (Element queryMethod : roundEnv.getElementsAnnotatedWith(QueryMethod.class)){
+            Element element = queryMethod.getEnclosingElement();
+            if (element.getAnnotation(QueryExtensions.class) != null) continue;
+            if (element.getAnnotation(configuration.getEntityAnn()) != null) continue;
+            if (configuration.getSuperTypeAnn() != null && element.getAnnotation(configuration.getSuperTypeAnn()) != null) continue;
+            if (configuration.getEmbeddableAnn() != null && element.getAnnotation(configuration.getEmbeddableAnn()) != null) continue;
+            handleExtensionType(element.asType(), element);
+        }
     }
 
     private void processDTOs() {
