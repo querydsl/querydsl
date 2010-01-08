@@ -7,8 +7,11 @@ package com.mysema.query.types;
 
 import com.mysema.query.types.custom.CBoolean;
 import com.mysema.query.types.custom.CComparable;
+import com.mysema.query.types.custom.CDate;
+import com.mysema.query.types.custom.CDateTime;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.custom.CString;
+import com.mysema.query.types.custom.CTime;
 import com.mysema.query.types.custom.Custom;
 import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EArrayConstructor;
@@ -71,6 +74,21 @@ public abstract class VisitorBase<SubType extends VisitorBase<SubType>> implemen
     
     @Override
     public void visit(CComparable<?> expr) {
+        visit((Custom<?>) expr);
+    }
+    
+    @Override
+    public void visit(CDate<?> expr) {
+        visit((Custom<?>) expr);
+    }
+    
+    @Override
+    public void visit(CDateTime<?> expr) {
+        visit((Custom<?>) expr);
+    }
+    
+    @Override
+    public void visit(CTime<?> expr) {
         visit((Custom<?>) expr);
     }
     

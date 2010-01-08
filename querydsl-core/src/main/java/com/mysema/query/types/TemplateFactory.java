@@ -28,6 +28,8 @@ public class TemplateFactory {
 
     private static final Pattern elementPattern = Pattern.compile("\\{%?\\d+[slu%]?\\}");
 
+    public static final TemplateFactory DEFAULT = new TemplateFactory();
+    
     private final Converter<EString,EString> toLowerCase = new Converter<EString,EString>(){
         @Override
         public EString convert(EString arg) {

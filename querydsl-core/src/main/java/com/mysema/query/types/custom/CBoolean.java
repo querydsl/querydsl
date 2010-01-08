@@ -5,9 +5,11 @@
  */
 package com.mysema.query.types.custom;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.mysema.query.types.Template;
+import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
@@ -21,13 +23,17 @@ import com.mysema.query.types.expr.Expr;
 @SuppressWarnings("serial")
 public class CBoolean extends EBoolean implements Custom<Boolean> {
     
-    public static EBoolean create(List<Expr<?>> args, Template template){
-        return new CBoolean(args, template);
+    public static EBoolean create(String template, Expr<?>... args){
+        return new CBoolean(TemplateFactory.DEFAULT.create(template), Arrays.<Expr<?>>asList(args));
+    }
+    
+    public static EBoolean create(Template template, Expr<?>... args){
+        return new CBoolean(template, Arrays.<Expr<?>>asList(args));
     }
     
     private final Custom<Boolean> customMixin;
     
-    public CBoolean(List<Expr<?>> args, Template template){
+    public CBoolean(Template template, List<Expr<?>> args){
         customMixin = new CustomMixin<Boolean>(args, template);
     }
     

@@ -40,22 +40,22 @@ import com.mysema.query.codegen.SupertypeSerializer;
  */
 public class DefaultConfiguration implements Configuration {
     
-    private String namePrefix = "Q";
+    private final Serializer dtoSerializer = new DTOSerializer();
     
-    private Serializer entitySerializer = new EntitySerializer();
-    
-    private Serializer supertypeSerializer = new SupertypeSerializer();
-    
-    private Serializer embeddableSerializer = new EmbeddableSerializer();
-    
-    private Serializer dtoSerializer = new DTOSerializer();
+    private final Serializer embeddableSerializer = new EmbeddableSerializer();
     
     protected final Class<? extends Annotation> entityAnn, embeddableAnn, skipAnn;
+    
+    private final Serializer entitySerializer = new EntitySerializer();
+    
+    private String namePrefix = "Q";
+    
+    private final Map<String,SerializerConfig> packageToConfig = new HashMap<String,SerializerConfig>();
     
     @Nullable
     protected final Class<? extends Annotation> superTypeAnn;
     
-    private final Map<String,SerializerConfig> packageToConfig = new HashMap<String,SerializerConfig>();
+    private final Serializer supertypeSerializer = new SupertypeSerializer();
     
     private final Map<String,SerializerConfig> typeToConfig = new HashMap<String,SerializerConfig>();
     
@@ -101,6 +101,93 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
+    public Serializer getDTOSerializer() {
+        return dtoSerializer;
+    }
+
+    @Override
+    public Class<? extends Annotation> getEmbeddableAnn() {
+        return embeddableAnn;
+    }
+
+    @Override
+    public Serializer getEmbeddableSerializer() {
+        return embeddableSerializer;
+    }
+    
+    @Override
+    public Class<? extends Annotation> getEntityAnn() {
+        return entityAnn;
+    }
+
+    @Override
+    public Serializer getEntitySerializer() {
+        return entitySerializer;
+    }
+
+    @Override
+    public String getNamePrefix() {
+        return namePrefix;
+    }
+
+    @Override
+    public SerializerConfig getSerializerConfig(EntityModel model) {
+        if (typeToConfig.containsKey(model.getFullName())){
+            return typeToConfig.get(model.getFullName());
+        }else if (packageToConfig.containsKey(model.getPackageName())){
+            return packageToConfig.get(model.getPackageName());
+        }else{
+            return SimpleSerializerConfig.DEFAULT;    
+        }        
+    }
+
+    @Override
+    public Class<? extends Annotation> getSkipAnn() {
+        return skipAnn;
+    }
+
+    @Override
+    public Class<? extends Annotation> getSuperTypeAnn() {
+        return superTypeAnn;
+    }
+
+    @Override
+    public Serializer getSupertypeSerializer() {
+        return supertypeSerializer;
+    }
+
+    @Override
+    public boolean isBlockedField(VariableElement field) {
+        if (field.getAnnotation(QueryType.class) != null){
+            return false;
+        }else{
+            return field.getAnnotation(skipAnn) != null
+            || field.getModifiers().contains(Modifier.TRANSIENT) 
+            || field.getModifiers().contains(Modifier.STATIC);    
+        }        
+    }
+
+    @Override
+    public boolean isBlockedGetter(ExecutableElement getter){
+        if (getter.getAnnotation(QueryType.class) != null){
+            return false;
+        }else{
+            return getter.getAnnotation(skipAnn) != null
+                || getter.getModifiers().contains(Modifier.STATIC);    
+        }        
+    }
+ 
+    @Override
+    public boolean isUseFields() {
+        return useFields;
+    }
+
+    @Override
+    public boolean isUseGetters() {
+        return useGetters;
+    }
+
+    @Override
     public boolean isValidConstructor(ExecutableElement constructor) {
         return constructor.getModifiers().contains(Modifier.PUBLIC)
             && constructor.getAnnotation(QueryProjection.class) != null
@@ -127,87 +214,6 @@ public class DefaultConfiguration implements Configuration {
                 && !getter.getModifiers().contains(Modifier.STATIC);    
         }        
     }
-    
-    @Override
-    public boolean isBlockedField(VariableElement field) {
-        if (field.getAnnotation(QueryType.class) != null){
-            return false;
-        }else{
-            return field.getAnnotation(skipAnn) != null
-            || field.getModifiers().contains(Modifier.TRANSIENT) 
-            || field.getModifiers().contains(Modifier.STATIC);    
-        }        
-    }
-
-    @Override
-    public boolean isBlockedGetter(ExecutableElement getter){
-        if (getter.getAnnotation(QueryType.class) != null){
-            return false;
-        }else{
-            return getter.getAnnotation(skipAnn) != null
-                || getter.getModifiers().contains(Modifier.STATIC);    
-        }        
-    }
-
-    @Override
-    public Class<? extends Annotation> getEntityAnn() {
-        return entityAnn;
-    }
-
-    @Override
-    public Class<? extends Annotation> getSuperTypeAnn() {
-        return superTypeAnn;
-    }
-
-    @Override
-    public Class<? extends Annotation> getEmbeddableAnn() {
-        return embeddableAnn;
-    }
-
-    @Override
-    public Class<? extends Annotation> getSkipAnn() {
-        return skipAnn;
-    }
-
-    @Override
-    public void setUseGetters(boolean b) {
-        this.useGetters = b;        
-    }
-
-    @Override
-    public void setUseFields(boolean b){
-        this.useFields = b;
-    }
-
-    @Override
-    public String getNamePrefix() {
-        return namePrefix;
-    }
- 
-    @Override
-    public Serializer getEntitySerializer() {
-        return entitySerializer;
-    }
-
-    @Override
-    public Serializer getSupertypeSerializer() {
-        return supertypeSerializer;
-    }
-
-    @Override
-    public Serializer getEmbeddableSerializer() {
-        return embeddableSerializer;
-    }
-
-    @Override
-    public boolean isUseFields() {
-        return useFields;
-    }
-
-    @Override
-    public boolean isUseGetters() {
-        return useGetters;
-    }
 
     @Override
     public void setNamePrefix(String namePrefix) {
@@ -215,19 +221,13 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
-    public Serializer getDTOSerializer() {
-        return dtoSerializer;
+    public void setUseFields(boolean b){
+        this.useFields = b;
     }
     
     @Override
-    public SerializerConfig getSerializerConfig(EntityModel model) {
-        if (typeToConfig.containsKey(model.getFullName())){
-            return typeToConfig.get(model.getFullName());
-        }else if (packageToConfig.containsKey(model.getPackageName())){
-            return packageToConfig.get(model.getPackageName());
-        }else{
-            return SimpleSerializerConfig.DEFAULT;    
-        }        
+    public void setUseGetters(boolean b) {
+        this.useGetters = b;        
     }
     
 }

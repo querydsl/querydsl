@@ -5,9 +5,11 @@
  */
 package com.mysema.query.types.custom;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.mysema.query.types.Template;
+import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.Expr;
@@ -21,13 +23,17 @@ import com.mysema.query.types.expr.Expr;
 @SuppressWarnings("serial")
 public class CString extends EString implements Custom<String> {
     
-    public static EString create(List<Expr<?>> args, Template template){
-        return new CString(args, template);
+    public static EString create(String template, Expr<?>... args){
+        return new CString(TemplateFactory.DEFAULT.create(template), Arrays.<Expr<?>>asList(args));
+    }
+    
+    public static EString create(Template template, Expr<?>... args){
+        return new CString(template, Arrays.<Expr<?>>asList(args));
     }
     
     private final Custom<String> customMixin;
     
-    public CString(List<Expr<?>> args, Template template){
+    public CString(Template template, List<Expr<?>> args){
         customMixin = new CustomMixin<String>(args, template);
     }
     

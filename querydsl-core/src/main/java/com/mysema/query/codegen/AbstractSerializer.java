@@ -5,9 +5,19 @@
  */
 package com.mysema.query.codegen;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mysema.query.types.custom.CBoolean;
+import com.mysema.query.types.custom.CComparable;
+import com.mysema.query.types.custom.CDate;
+import com.mysema.query.types.custom.CDateTime;
+import com.mysema.query.types.custom.CNumber;
+import com.mysema.query.types.custom.CSimple;
+import com.mysema.query.types.custom.CString;
+import com.mysema.query.types.custom.CTime;
+import com.mysema.query.types.custom.Custom;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.EDate;
@@ -40,36 +50,37 @@ public abstract class AbstractSerializer implements Serializer{
     @SuppressWarnings("unchecked")
     private final Map<TypeCategory, Class<? extends Path>> pathType = new HashMap<TypeCategory, Class<? extends Path>>();
     
+    @SuppressWarnings("unchecked")
+    private final Map<TypeCategory, Class<? extends Custom>> customType = new HashMap<TypeCategory, Class<? extends Custom>>();
+    
     public AbstractSerializer(){
-        pathType.put(TypeCategory.STRING, PString.class);
-        pathType.put(TypeCategory.BOOLEAN, PBoolean.class);
-        pathType.put(TypeCategory.COMPARABLE, PComparable.class);
-        pathType.put(TypeCategory.DATE, PDate.class);
-        pathType.put(TypeCategory.DATETIME, PDateTime.class);
-        pathType.put(TypeCategory.TIME, PTime.class);
-        pathType.put(TypeCategory.NUMERIC, PNumber.class);
-        pathType.put(TypeCategory.ARRAY, PSimple.class);
-        pathType.put(TypeCategory.COLLECTION, PSimple.class);
-        pathType.put(TypeCategory.SET, PSimple.class);
-        pathType.put(TypeCategory.LIST, PSimple.class);
-        pathType.put(TypeCategory.MAP, PSimple.class);
-        pathType.put(TypeCategory.SIMPLE, PSimple.class);
-        pathType.put(TypeCategory.ENTITY, Path.class);
+        register(TypeCategory.STRING, EString.class, PString.class, CString.class);
+        register(TypeCategory.BOOLEAN, EBoolean.class, PBoolean.class, CBoolean.class);
+        register(TypeCategory.COMPARABLE, EComparable.class, PComparable.class, CComparable.class);
+        register(TypeCategory.DATE, EDate.class, PDate.class, CDate.class);
+        register(TypeCategory.DATETIME, EDateTime.class, PDateTime.class, CDateTime.class);
+        register(TypeCategory.TIME, ETime.class, PTime.class, CTime.class);
+        register(TypeCategory.NUMERIC, ENumber.class, PNumber.class, CNumber.class);
+
+        register(TypeCategory.ARRAY, Expr.class, PSimple.class, CSimple.class);
+        register(TypeCategory.COLLECTION, Expr.class, PSimple.class, CSimple.class);
+        register(TypeCategory.SET, Expr.class, PSimple.class, CSimple.class);
+        register(TypeCategory.LIST, Expr.class, PSimple.class, CSimple.class);
+        register(TypeCategory.MAP, Expr.class, PSimple.class, CSimple.class);
+        register(TypeCategory.SIMPLE, Expr.class, PSimple.class, CSimple.class);
         
-        exprType.put(TypeCategory.STRING, EString.class);
-        exprType.put(TypeCategory.BOOLEAN, EBoolean.class);
-        exprType.put(TypeCategory.COMPARABLE, EComparable.class);
-        exprType.put(TypeCategory.DATE, EDate.class);
-        exprType.put(TypeCategory.DATETIME, EDateTime.class);
-        exprType.put(TypeCategory.TIME, ETime.class);
-        exprType.put(TypeCategory.NUMERIC, ENumber.class);
-        exprType.put(TypeCategory.ARRAY, Expr.class);
-        exprType.put(TypeCategory.COLLECTION, Expr.class);
-        exprType.put(TypeCategory.SET, Expr.class);
-        exprType.put(TypeCategory.LIST, Expr.class);
-        exprType.put(TypeCategory.MAP, Expr.class);
-        exprType.put(TypeCategory.SIMPLE, Expr.class);
-        exprType.put(TypeCategory.ENTITY, Expr.class);
+        register(TypeCategory.ENTITY, Expr.class, Path.class, CSimple.class);
+    }
+    
+
+    @SuppressWarnings("unchecked")
+    private void register(TypeCategory category, 
+            Class<? extends Expr> expr, 
+            Class<? extends Path> path,
+            Class<? extends Custom> custom){
+        exprType.put(category, expr);
+        pathType.put(category, path);
+        customType.put(category, custom);
     }
     
     @Override
@@ -80,6 +91,11 @@ public abstract class AbstractSerializer implements Serializer{
     
     public String getExprType(TypeModel type, EntityModel model, boolean raw){
         String typeName = exprType.get(type.getCategory()).getSimpleName();
+        return getQueryType(type, model, typeName, raw, true);
+    }
+    
+    public String getCustomType(TypeModel type, EntityModel model, boolean raw){
+        String typeName = customType.get(type.getCategory()).getSimpleName();
         return getQueryType(type, model, typeName, raw, true);
     }
     

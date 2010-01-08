@@ -25,7 +25,9 @@ import com.mysema.commons.lang.Assert;
  */
 public final class EntityModel extends TypeModelAdapter implements Comparable<EntityModel> {
     
-    private final Collection<ConstructorModel> constructors = new HashSet<ConstructorModel>();
+    private final Set<MethodModel> methods = new HashSet<MethodModel>();
+    
+    private final Set<ConstructorModel> constructors = new HashSet<ConstructorModel>();
     
     // mutable
     private int escapeSuffix = 1;
@@ -60,6 +62,10 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
     public void addConstructor(ConstructorModel co) {
         constructors.add(co);
     }
+    
+    public void addMethod(MethodModel method){
+        methods.add(method);
+    }
 
     public void addProperty(PropertyModel field) {
         properties.add(validateField(field));
@@ -80,10 +86,14 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
         return typeModel.getSimpleName().compareTo(o.typeModel.getSimpleName());
     }
 
-    public Collection<ConstructorModel> getConstructors() {
+    public Set<ConstructorModel> getConstructors() {
         return constructors;
     }
 
+    public Set<MethodModel> getMethods(){
+        return methods;
+    }
+    
     public String getLocalGenericName(){
         return typeModel.getLocalGenericName(this, new StringBuilder(), false).toString();            
     }
@@ -127,6 +137,10 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
     }
 
     public void include(EntityModel clazz) {
+        for (MethodModel method : clazz.methods){
+            addMethod(method);
+        }
+        
         for (PropertyModel property : clazz.properties){
             if (!property.isInherited()){                
                 addProperty(property.createCopy(this));    

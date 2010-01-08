@@ -20,7 +20,7 @@ public class CustomExpressionsTest extends AbstractQueryTest{
         private static final long serialVersionUID = 1L;
 
         public MyCustomExpr(Expr<?>... args) {
-            super(Arrays.asList(args), new TemplateFactory().create("myCustom({0},{1})"));
+            super(new TemplateFactory().create("myCustom({0},{1})"), Arrays.asList(args));
         }
     }
     

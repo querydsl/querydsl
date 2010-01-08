@@ -33,8 +33,14 @@ public class EmbeddableSerializer extends EntitySerializer{
             builder.append("import static com.mysema.query.types.path.PathMetadataFactory.*;\n");
         }      
         
-        if ((model.hasLists() && config.useListAccessors()) || (model.hasMaps() && config.useMapAccessors())){
+        if ((model.hasLists() && config.useListAccessors())
+                || !model.getMethods().isEmpty()
+                || (model.hasMaps() && config.useMapAccessors())){
             builder.append("import com.mysema.query.types.expr.*;\n");
+        }
+        
+        if (!model.getMethods().isEmpty()){
+            builder.append("import com.mysema.query.types.custom.*;\n");
         }
     }
     

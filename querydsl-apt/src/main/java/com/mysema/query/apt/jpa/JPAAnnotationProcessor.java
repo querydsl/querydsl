@@ -16,8 +16,8 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
-import com.mysema.query.apt.Processor;
 import com.mysema.query.apt.DefaultConfiguration;
+import com.mysema.query.apt.Processor;
 
 /**
  * @author tiwe
@@ -40,8 +40,8 @@ public class JPAAnnotationProcessor extends AbstractProcessor{
             skip = (Class)Class.forName("javax.persistence.Transient");
             
             DefaultConfiguration configuration = createConfiguration(roundEnv);
-            Processor processor = new Processor(processingEnv, configuration);
-            processor.process(roundEnv);
+            Processor processor = new Processor(processingEnv, roundEnv, configuration);
+            processor.process();
             return true;
             
         } catch (ClassNotFoundException e) {

@@ -42,8 +42,8 @@ public class QuerydslAnnotationProcessor extends AbstractProcessor{
         
         DefaultConfiguration configuration = new DefaultConfiguration(roundEnv, entity, superType, embeddable, skip);
         
-        Processor processor = new Processor(processingEnv, configuration);
-        processor.process(roundEnv);
+        Processor processor = new Processor(processingEnv, roundEnv, configuration);
+        processor.process();
         return true;
     }       
     

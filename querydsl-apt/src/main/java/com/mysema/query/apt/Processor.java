@@ -20,10 +20,9 @@ import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
 import javax.tools.Diagnostic.Kind;
-
-import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.QueryProjection;
@@ -39,19 +38,35 @@ import com.mysema.query.codegen.TypeModelFactory;
  * @author tiwe
  * 
  */
-@Immutable
 public class Processor {
+   
+    private final Map<String, EntityModel> actualSupertypes  = new HashMap<String, EntityModel>();
     
-    private final ProcessingEnvironment env;
-    
-    private final APTTypeModelFactory typeFactory;
+    private final Map<String, EntityModel> allSupertypes = new HashMap<String, EntityModel>();
     
     private final Configuration configuration;
     
+    private final Map<String, EntityModel> dtos = new HashMap<String, EntityModel>();
+    
+    private final Map<String,EntityModel> embeddables = new HashMap<String,EntityModel>();
+    
     private final EntityModelFactory entityModelFactory;
     
-    public Processor(ProcessingEnvironment env, Configuration configuration) {
-        this.configuration = configuration;
+    private final Map<String, EntityModel> entityTypes = new HashMap<String, EntityModel>();
+    
+    private final ElementHandler entityVisitor;
+    
+    private final ProcessingEnvironment env;
+    
+    private final RoundEnvironment roundEnv;
+    
+    private final APTTypeModelFactory typeFactory;
+    
+    public Processor(ProcessingEnvironment env, RoundEnvironment roundEnv, Configuration configuration) {
+        this.env = Assert.notNull(env);
+        this.roundEnv = Assert.notNull(roundEnv);
+        this.configuration = Assert.notNull(configuration);
+        
         List<Class<? extends Annotation>> anns = new ArrayList<Class<? extends Annotation>>();
         anns.add(configuration.getEntityAnn());
         if (configuration.getSuperTypeAnn() != null){
@@ -60,7 +75,7 @@ public class Processor {
         if (configuration.getEmbeddableAnn() != null){
             anns.add(configuration.getEmbeddableAnn());
         }
-        this.env = Assert.notNull(env);        
+                
         TypeModelFactory factory = new TypeModelFactory(anns);
         this.typeFactory = new APTTypeModelFactory(env, configuration, factory, anns);
         if (configuration.getSkipAnn() != null){
@@ -69,109 +84,10 @@ public class Processor {
             this.entityModelFactory = new EntityModelFactory(factory);
         }
         
+        this.entityVisitor = new ElementHandler(configuration, typeFactory);
+        
     }
     
-    /**
-     * Do the actual processing
-     * 
-     * @param roundEnv
-     */
-    public void process(RoundEnvironment roundEnv) {
-        Map<String, EntityModel> actualSupertypes  = new HashMap<String, EntityModel>();
-        Map<String, EntityModel> allSupertypes = new HashMap<String, EntityModel>();
-        Map<String, EntityModel> entityTypes = new HashMap<String, EntityModel>();
-        Map<String,EntityModel> embeddables = new HashMap<String,EntityModel>();
-        Map<String, EntityModel> dtos = new HashMap<String, EntityModel>();
-        
-        EntityElementVisitor entityVisitor = new EntityElementVisitor(env, configuration, typeFactory);
-        DTOElementVisitor dtoVisitor = new DTOElementVisitor(env, configuration, typeFactory);        
-        
-        // create models
-        if (configuration.getSuperTypeAnn() != null) {
-            handleSupertypes(roundEnv, actualSupertypes, entityVisitor);
-            allSupertypes.putAll(actualSupertypes);
-        }                        
-        handleEntities(roundEnv, allSupertypes, entityTypes, entityVisitor);               
-        if (configuration.getEmbeddableAnn() != null){
-            handleEmbeddables(roundEnv, allSupertypes, embeddables, entityVisitor);            
-        }           
-        handleDTOs(roundEnv, dtos, dtoVisitor);
-        
-        // serialize models
-        serialize(configuration.getSupertypeSerializer(), actualSupertypes);
-        serialize(configuration.getEntitySerializer(), entityTypes);
-        serialize(configuration.getEmbeddableSerializer(), embeddables);
-        serialize(configuration.getDTOSerializer(), dtos);
-        
-    }
-
-    private void handleDTOs(RoundEnvironment roundEnv,
-            Map<String, EntityModel> dtos, DTOElementVisitor dtoVisitor) {
-        Set<Element> visitedDTOTypes = new HashSet<Element>();
-        for (Element element : roundEnv.getElementsAnnotatedWith(QueryProjection.class)) {
-            Element parent = element.getEnclosingElement();
-            if (parent.getAnnotation(configuration.getEntityAnn()) == null
-                    && parent.getAnnotation(configuration.getEmbeddableAnn()) == null
-                    && !visitedDTOTypes.contains(parent)){
-                EntityModel model = parent.accept(dtoVisitor, null);
-                dtos.put(model.getFullName(), model);    
-                visitedDTOTypes.add(parent);
-                
-            }            
-        }
-    }
-
-    private void handleSupertypes(RoundEnvironment roundEnv,
-            Map<String, EntityModel> superTypes,
-            EntityElementVisitor entityVisitor) {
-        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getSuperTypeAnn())) {
-            if (configuration.getEmbeddableAnn() == null || element.getAnnotation(configuration.getEmbeddableAnn()) == null){
-                EntityModel model = element.accept(entityVisitor, null);
-                superTypes.put(model.getFullName(), model);    
-            }                
-        }
-        // add supertype fields
-        for (EntityModel superType : superTypes.values()) {
-            addSupertypeFields(superType, superTypes);      
-        }
-    }
-
-    private void handleEmbeddables(RoundEnvironment roundEnv,
-            Map<String, EntityModel> superTypes,
-            Map<String, EntityModel> embeddables,
-            EntityElementVisitor entityVisitor) {        
-        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnn())) {
-            EntityModel model = element.accept(entityVisitor, null);
-            embeddables.put(model.getFullName(), model);
-        }  
-        superTypes.putAll(embeddables);
-        
-        // add super type fields
-        for (EntityModel embeddable : embeddables.values()) {
-            addSupertypeFields(embeddable, superTypes);
-        }
-    }
-
-    private void handleEntities(RoundEnvironment roundEnv,
-            Map<String, EntityModel> superTypes,
-            Map<String, EntityModel> entityTypes,
-            EntityElementVisitor entityVisitor) {
-        // populate entity type mappings
-
-        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEntityAnn())) {
-            if (configuration.getEmbeddableAnn() == null || element.getAnnotation(configuration.getEmbeddableAnn()) == null){
-                EntityModel model = element.accept(entityVisitor, null);
-                entityTypes.put(model.getFullName(), model);    
-            }            
-        }
-        superTypes.putAll(entityTypes);
-        
-        // add super type fields
-        for (EntityModel entityType : entityTypes.values()) {
-            addSupertypeFields(entityType, superTypes);
-        }
-    }
-        
     private void addSupertypeFields(EntityModel model, Map<String, EntityModel> superTypes) {
         boolean singleSuperType = model.getSuperTypes().size() == 1;
         for (String stype : model.getSuperTypes()) {
@@ -209,6 +125,90 @@ public class Processor {
                     model.include(type);
                 }
             }
+        }
+    }
+
+    public void process() {            
+        // super types
+        if (configuration.getSuperTypeAnn() != null) {
+            processSupertypes();
+            allSupertypes.putAll(actualSupertypes);
+        }       
+        
+        // entities
+        processEntities();               
+        
+        // embeddables
+        if (configuration.getEmbeddableAnn() != null){
+            processEmbeddables();            
+        }           
+        
+        // dtos
+        processDTOs();
+        
+        // serialize models
+        serialize(configuration.getSupertypeSerializer(), actualSupertypes);
+        serialize(configuration.getEntitySerializer(), entityTypes);
+        serialize(configuration.getEmbeddableSerializer(), embeddables);
+        serialize(configuration.getDTOSerializer(), dtos);
+        
+    }
+
+    private void processDTOs() {
+        Set<Element> visitedDTOTypes = new HashSet<Element>();
+        for (Element element : roundEnv.getElementsAnnotatedWith(QueryProjection.class)) {
+            Element parent = element.getEnclosingElement();
+            if (parent.getAnnotation(configuration.getEntityAnn()) == null
+                    && parent.getAnnotation(configuration.getEmbeddableAnn()) == null
+                    && !visitedDTOTypes.contains(parent)){
+                EntityModel model = entityVisitor.handleProjectionType((TypeElement)parent);
+                dtos.put(model.getFullName(), model);    
+                visitedDTOTypes.add(parent);
+                
+            }            
+        }
+    }
+
+    private void processEmbeddables() {        
+        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnn())) {
+            EntityModel model = entityVisitor.handleNormalType((TypeElement) element);
+            embeddables.put(model.getFullName(), model);
+        }  
+        allSupertypes.putAll(embeddables);
+        
+        // add super type fields
+        for (EntityModel embeddable : embeddables.values()) {
+            addSupertypeFields(embeddable, allSupertypes);
+        }
+    }
+
+    private void processEntities() {
+        // populate entity type mappings
+
+        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEntityAnn())) {
+            if (configuration.getEmbeddableAnn() == null || element.getAnnotation(configuration.getEmbeddableAnn()) == null){
+                EntityModel model = entityVisitor.handleNormalType((TypeElement) element);
+                entityTypes.put(model.getFullName(), model);    
+            }            
+        }
+        allSupertypes.putAll(entityTypes);
+        
+        // add super type fields
+        for (EntityModel entityType : entityTypes.values()) {
+            addSupertypeFields(entityType, allSupertypes);
+        }
+    }
+       
+    private void processSupertypes() {
+        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getSuperTypeAnn())) {
+            if (configuration.getEmbeddableAnn() == null || element.getAnnotation(configuration.getEmbeddableAnn()) == null){
+                EntityModel model = entityVisitor.handleNormalType((TypeElement) element);
+                actualSupertypes.put(model.getFullName(), model);    
+            }                
+        }
+        // add supertype fields
+        for (EntityModel superType : actualSupertypes.values()) {
+            addSupertypeFields(superType, actualSupertypes);      
         }
     }
             

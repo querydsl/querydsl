@@ -39,17 +39,17 @@ public enum VisitorConfig {
         this.methods = methods;
     }
     
-    public boolean isVisitFields(){
-        return fields;
-    }
-    
-    public boolean isVisitMethods(){
-        return methods;
-    }
-
     public boolean isVisitConstructors() {
         // TODO : parametrize!
         return true;
+    }
+    
+    public boolean isVisitFields(){
+        return fields;
+    }
+
+    public boolean isVisitMethods(){
+        return methods;
     }
     
 }

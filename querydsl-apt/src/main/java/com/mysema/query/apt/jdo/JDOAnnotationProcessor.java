@@ -16,8 +16,8 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
-import com.mysema.query.apt.Processor;
 import com.mysema.query.apt.DefaultConfiguration;
+import com.mysema.query.apt.Processor;
 
 /**
  * @author tiwe
@@ -40,8 +40,8 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
             
             DefaultConfiguration configuration = new DefaultConfiguration(roundEnv, entity, null, embeddable, skip);
             configuration.setUseGetters(false);
-            Processor processor = new Processor(processingEnv, configuration);
-            processor.process(roundEnv);
+            Processor processor = new Processor(processingEnv, roundEnv, configuration);
+            processor.process();
             return true;
             
         } catch (ClassNotFoundException e) {

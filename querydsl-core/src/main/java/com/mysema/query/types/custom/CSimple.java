@@ -5,9 +5,11 @@
  */
 package com.mysema.query.types.custom;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.mysema.query.types.Template;
+import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.Expr;
 
@@ -21,13 +23,17 @@ import com.mysema.query.types.expr.Expr;
 @SuppressWarnings("serial")
 public class CSimple<T> extends Expr<T> implements Custom<T> {
     
-    public static <T> Expr<T> create(Class<? extends T> type, List<Expr<?>> args, Template template){
-        return new CSimple<T>(type, args, template);
+    public static <T> Expr<T> create(Class<? extends T> type, String template, Expr<?>... args){
+        return new CSimple<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expr<?>>asList(args));
+    }
+    
+    public static <T> Expr<T> create(Class<? extends T> type, Template template, Expr<?>... args){
+        return new CSimple<T>(type, template, Arrays.<Expr<?>>asList(args));
     }
     
     private final Custom<T> customMixin;
     
-    public CSimple(Class<? extends T> type, List<Expr<?>> args, Template template) {
+    public CSimple(Class<? extends T> type, Template template, List<Expr<?>> args) {
         super(type);
         customMixin = new CustomMixin<T>(args, template);
     }

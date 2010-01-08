@@ -10,6 +10,8 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import net.jcip.annotations.Immutable;
 
 /**
@@ -114,7 +116,7 @@ public class EntitySerializer extends AbstractSerializer{
     }
     
     protected void entityField(PropertyModel field, SerializerConfig config, Writer writer) throws IOException {
-        String queryType = getPathType(field.getType(), field.getEntityModel(), false);
+        String queryType = getPathType(field.getType(), field.getContext(), false);
         
         StringBuilder builder = new StringBuilder();
         if (field.isInherited()){
@@ -131,7 +133,7 @@ public class EntitySerializer extends AbstractSerializer{
     
 
     protected void entityAccessor(PropertyModel field, Writer writer) throws IOException {
-        String queryType = getPathType(field.getType(), field.getEntityModel(), false);
+        String queryType = getPathType(field.getType(), field.getContext(), false);
         
         StringBuilder builder = new StringBuilder();
         builder.append("    public " + queryType + " " + field.getEscapedName() + "(){\n");
@@ -268,10 +270,15 @@ public class EntitySerializer extends AbstractSerializer{
         builder.append("import com.mysema.query.types.path.*;\n");
         builder.append("import static com.mysema.query.types.path.PathMetadataFactory.*;\n");        
         
-        if (!model.getConstructors().isEmpty() 
+        if (!model.getConstructors().isEmpty()
+                || !model.getMethods().isEmpty()
                 || (model.hasLists() && config.useListAccessors()) 
                 || (model.hasMaps() && config.useMapAccessors())){
             builder.append("import com.mysema.query.types.expr.*;\n");
+        }
+        
+        if (!model.getMethods().isEmpty()){
+            builder.append("import com.mysema.query.types.custom.*;\n");
         }
     }
 
@@ -326,7 +333,7 @@ public class EntitySerializer extends AbstractSerializer{
 
     protected void listAccessor(PropertyModel field, Writer writer) throws IOException {
         String escapedName = field.getEscapedName();
-        String queryType = getPathType(field.getParameter(0), field.getEntityModel(), false);
+        String queryType = getPathType(field.getParameter(0), field.getContext(), false);
         
         StringBuilder builder = new StringBuilder();        
         builder.append("    public " + queryType + " " + escapedName + "(int index) {\n");
@@ -340,9 +347,9 @@ public class EntitySerializer extends AbstractSerializer{
 
     protected void mapAccessor(PropertyModel field, Writer writer) throws IOException {
         String escapedName = field.getEscapedName();
-        String queryType = getPathType(field.getParameter(1), field.getEntityModel(), false);
-        String keyType = field.getParameter(0).getLocalGenericName(field.getEntityModel(), false);
-        String genericKey = field.getParameter(0).getLocalGenericName(field.getEntityModel(), true);
+        String queryType = getPathType(field.getParameter(1), field.getContext(), false);
+        String keyType = field.getParameter(0).getLocalGenericName(field.getContext(), false);
+        String genericKey = field.getParameter(0).getLocalGenericName(field.getContext(), true);
         
         StringBuilder builder = new StringBuilder();        
         builder.append("    public " + queryType + " " + escapedName + "(" + keyType+ " key) {\n");
@@ -360,12 +367,19 @@ public class EntitySerializer extends AbstractSerializer{
 
     public void serialize(EntityModel model, SerializerConfig config, Writer writer) throws IOException{
         intro(model, config, writer);        
+        
+        // properties
         serializeProperties(model, config, writer);        
         
         // constructors
         constructors(model, config, writer);        
 
-        // accessors
+        // methods
+        for (MethodModel method : model.getMethods()){
+            method(model, method, config, writer);
+        }
+        
+        // property accessors
         for (PropertyModel property : model.getProperties()){
             TypeCategory category = property.getType().getCategory();
             if (category == TypeCategory.MAP && config.useMapAccessors()){
@@ -380,8 +394,38 @@ public class EntitySerializer extends AbstractSerializer{
     }
 
 
+    protected void method(EntityModel model, MethodModel method, SerializerConfig config, Writer writer) throws IOException {
+        StringBuilder builder = new StringBuilder();
+        String returnType = getExprType(method.getReturnType(), model, false);
+        builder.append("    public " + returnType + " " + method.getName() + "(");
+        boolean first = true;        
+        // parameters
+        for (ParameterModel p : method.getParameters()){
+            if (!first) builder.append(", ");
+            String paramType = getExprType(p.getType(), model, false);
+            builder.append(paramType + " " + p.getName());           
+            first = false;
+        }
+        builder.append("){\n");
+        String customClass = getCustomType(method.getReturnType(), model, true);        
+        builder.append("        return " + customClass + ".create(");
+        String fullName = method.getReturnType().getFullName();
+        if (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName())){
+            method.getReturnType().getLocalRawName(model, builder);
+            builder.append(".class, ");
+        }        
+        builder.append("\"" + StringEscapeUtils.escapeJava(method.getTemplate()) + "\"");
+        builder.append(", this");
+        for (ParameterModel p : method.getParameters()){
+            builder.append(", " + p.getName());
+        }        
+        builder.append(");\n");
+        builder.append("    }\n\n");
+        writer.write(builder.toString());
+    }
+
     protected void serialize(PropertyModel field, String type, Writer writer, String factoryMethod, String... args) throws IOException{
-        EntityModel superModel = field.getEntityModel().getSuperModel();
+        EntityModel superModel = field.getContext().getSuperModel();
         // construct value
         StringBuilder value = new StringBuilder();
         if (field.isInherited() && superModel != null){

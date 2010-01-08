@@ -7,8 +7,11 @@ package com.mysema.query.types;
 
 import com.mysema.query.types.custom.CBoolean;
 import com.mysema.query.types.custom.CComparable;
+import com.mysema.query.types.custom.CDate;
+import com.mysema.query.types.custom.CDateTime;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.custom.CString;
+import com.mysema.query.types.custom.CTime;
 import com.mysema.query.types.custom.Custom;
 import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EArrayConstructor;
@@ -63,6 +66,12 @@ public interface Visitor {
     void visit(CBoolean expr);
 
     void visit(CComparable<?> expr);
+    
+    void visit(CDate<?> expr);
+    
+    void visit(CDateTime<?> expr);
+    
+    void visit(CTime<?> expr);
 
     void visit(CSimple<?> expr);
 
