@@ -68,7 +68,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return queryMixin.fullJoin(target);
     }
     
-    public <P> SubType fullJoin(Path<? extends Collection<P>> target, PEntity<P> alias) {
+    public <P> SubType fullJoin(Path<? extends Collection<P>> target, Path<P> alias) {
         return queryMixin.fullJoin(target, alias);
     }
     
@@ -84,7 +84,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return queryMixin.fullJoin(target);
     }
     
-    public <P> SubType fullJoin(PMap<?,P,?> target, PEntity<P> alias) {
+    public <P> SubType fullJoin(PMap<?,P,?> target, Path<P> alias) {
         return queryMixin.fullJoin(target, alias);
     }
     
@@ -96,7 +96,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return queryMixin.innerJoin(target);
     }
     
-    public <P> SubType innerJoin(Path<? extends Collection<P>>target, PEntity<P> alias) {
+    public <P> SubType innerJoin(Path<? extends Collection<P>>target, Path<P> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
@@ -112,7 +112,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return queryMixin.innerJoin(target);
     }
     
-    public <P> SubType innerJoin(PMap<?,P,?> target, PEntity<P> alias) {
+    public <P> SubType innerJoin(PMap<?,P,?> target, Path<P> alias) {
         return queryMixin.innerJoin(target, alias);
     }
     
@@ -120,7 +120,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return queryMixin.innerJoin(target);
     }
     
-    public <P> SubType join(Path<? extends Collection<P>> target, PEntity<P> alias) {
+    public <P> SubType join(Path<? extends Collection<P>> target, Path<P> alias) {
         return queryMixin.innerJoin(target, alias);
     }
     
@@ -136,7 +136,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return queryMixin.join(target);
     }
     
-    public <P> SubType join(PMap<?,P,?> target, PEntity<P> alias) {
+    public <P> SubType join(PMap<?,P,?> target, Path<P> alias) {
         return queryMixin.join(target, alias);
     }
 
@@ -144,7 +144,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return queryMixin.leftJoin(target);
     }
     
-    public <P> SubType leftJoin(Path<? extends Collection<P>> target, PEntity<P> alias) {
+    public <P> SubType leftJoin(Path<? extends Collection<P>> target, Path<P> alias) {
         return queryMixin.leftJoin(target, alias);
     }
     
@@ -160,7 +160,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return queryMixin.leftJoin(target);
     }
     
-    public <P> SubType leftJoin(PMap<?,P,?> target, PEntity<P> alias) {
+    public <P> SubType leftJoin(PMap<?,P,?> target, Path<P> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 

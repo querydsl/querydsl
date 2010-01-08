@@ -37,8 +37,8 @@ public class HQLQueryMixin<T> extends QueryMixin<T> {
     
 
     @SuppressWarnings("unchecked")
-    private <D> Expr<D> createAlias(Path<? extends Collection<D>> target, PEntity<D> alias){
-        return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target.asExpr(), alias);
+    private <D> Expr<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias){
+        return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target.asExpr(), alias.asExpr());
     }
     
     @SuppressWarnings("unchecked")
@@ -47,8 +47,8 @@ public class HQLQueryMixin<T> extends QueryMixin<T> {
     }
     
     @SuppressWarnings("unchecked")
-    private <D> Expr<D> createAlias(PMap<?,D,?> target, PEntity<D> alias){
-        return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
+    private <D> Expr<D> createAlias(PMap<?,D,?> target, Path<D> alias){
+        return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias.asExpr());
     }
     
     public T fetch(){
@@ -69,7 +69,7 @@ public class HQLQueryMixin<T> extends QueryMixin<T> {
     }
     
 
-    public <P> T fullJoin(Path<? extends Collection<P>> target, PEntity<P> alias) {
+    public <P> T fullJoin(Path<? extends Collection<P>> target, Path<P> alias) {
         metadata.addJoin(JoinType.FULLJOIN, createAlias(target, alias));
         return self;
     }
@@ -84,7 +84,7 @@ public class HQLQueryMixin<T> extends QueryMixin<T> {
         return self;
     }
     
-    public <P> T fullJoin(PMap<?,P,?> target, PEntity<P> alias) {
+    public <P> T fullJoin(PMap<?,P,?> target, Path<P> alias) {
         metadata.addJoin(JoinType.FULLJOIN, createAlias(target, alias));
         return self;
     }
@@ -94,7 +94,7 @@ public class HQLQueryMixin<T> extends QueryMixin<T> {
         return self;
     }
     
-    public <P> T innerJoin(Path<? extends Collection<P>>target, PEntity<P> alias) {
+    public <P> T innerJoin(Path<? extends Collection<P>>target, Path<P> alias) {
         metadata.addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return self;
     }
@@ -109,7 +109,7 @@ public class HQLQueryMixin<T> extends QueryMixin<T> {
         return self;
     }
     
-    public <P> T innerJoin(PMap<?,P,?> target, PEntity<P> alias) {
+    public <P> T innerJoin(PMap<?,P,?> target, Path<P> alias) {
         metadata.addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return self;
     }
@@ -119,7 +119,7 @@ public class HQLQueryMixin<T> extends QueryMixin<T> {
         return self;
     }
 
-    public <P> T join(Path<? extends Collection<P>> target, PEntity<P> alias) {
+    public <P> T join(Path<? extends Collection<P>> target, Path<P> alias) {
         metadata.addJoin(JoinType.JOIN, createAlias(target, alias));
         return self;
     }
@@ -134,7 +134,7 @@ public class HQLQueryMixin<T> extends QueryMixin<T> {
         return self;
     }
     
-    public <P> T join(PMap<?,P,?> target, PEntity<P> alias) {
+    public <P> T join(PMap<?,P,?> target, Path<P> alias) {
         metadata.addJoin(JoinType.JOIN, createAlias(target, alias));
         return self;
     }
@@ -144,7 +144,7 @@ public class HQLQueryMixin<T> extends QueryMixin<T> {
         return self;
     }
     
-    public <P> T leftJoin(Path<? extends Collection<P>> target, PEntity<P> alias) {
+    public <P> T leftJoin(Path<? extends Collection<P>> target, Path<P> alias) {
         metadata.addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
         return self;
     }
@@ -159,7 +159,7 @@ public class HQLQueryMixin<T> extends QueryMixin<T> {
         return self;
     }
     
-    public <P> T leftJoin(PMap<?,P,?> target, PEntity<P> alias) {
+    public <P> T leftJoin(PMap<?,P,?> target, Path<P> alias) {
         metadata.addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
         return self;
     }

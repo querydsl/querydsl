@@ -69,7 +69,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param alias
      * @return
      */
-    <P> HQLQuery innerJoin(Path<? extends Collection<P>> target, PEntity<P> alias);
+    <P> HQLQuery innerJoin(Path<? extends Collection<P>> target, Path<P> alias);
 
     /**
      * Create an inner join with the given target.
@@ -89,7 +89,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param alias
      * @return
      */
-    <P> HQLQuery innerJoin(PMap<?, P, ?> target, PEntity<P> alias);
+    <P> HQLQuery innerJoin(PMap<?, P, ?> target, Path<P> alias);
 
     /**
      * Create an join with the given target.
@@ -127,7 +127,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param alias
      * @return
      */
-    <P> HQLQuery join(Path<? extends Collection<P>> target, PEntity<P> alias);
+    <P> HQLQuery join(Path<? extends Collection<P>> target, Path<P> alias);
 
     /**
      * Create an join with the given target.
@@ -147,7 +147,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param alias
      * @return
      */
-    <P> HQLQuery join(PMap<?, P, ?> target, PEntity<P> alias);
+    <P> HQLQuery join(PMap<?, P, ?> target, Path<P> alias);
 
     /**
      * Create an left join with the given target.
@@ -187,7 +187,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param alias
      * @return
      */
-    <P> HQLQuery leftJoin(Path<? extends Collection<P>> target, PEntity<P> alias);
+    <P> HQLQuery leftJoin(Path<? extends Collection<P>> target, Path<P> alias);
 
     /**
      * Create an left join with the given target.
@@ -207,7 +207,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param alias
      * @return
      */
-    <P> HQLQuery leftJoin(PMap<?, P, ?> target, PEntity<P> alias);
+    <P> HQLQuery leftJoin(PMap<?, P, ?> target, Path<P> alias);
 
     /**
      * Create an full join with the given target.
@@ -247,7 +247,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param alias
      * @return
      */
-    <P> HQLQuery fullJoin(Path<? extends Collection<P>> target, PEntity<P> alias);
+    <P> HQLQuery fullJoin(Path<? extends Collection<P>> target, Path<P> alias);
 
     /**
      * Create an full join with the given target.
@@ -267,7 +267,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
      * @param alias
      * @return
      */
-    <P> HQLQuery fullJoin(PMap<?, P, ?> target, PEntity<P> alias);
+    <P> HQLQuery fullJoin(PMap<?, P, ?> target, Path<P> alias);
 
     /**
      * Add conditions to the with clause
