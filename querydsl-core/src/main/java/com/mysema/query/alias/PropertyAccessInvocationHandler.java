@@ -254,7 +254,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
         } else if (Map.class.isAssignableFrom(type)) {
             Class<Object> keyType = (Class)getTypeParameter(genericType, 0);
             final Class<Object> valueType = (Class)getTypeParameter(genericType, 1);
-            path = new PMap<Object,Object,PEntity<Object>>(keyType, valueType, null, pm){
+            path = new PMap<Object,Object,PEntity<Object>>(keyType, valueType, (Class)PEntity.class, pm){
                 @Override
                 public PEntity get(Expr<Object> key) {
                     return new PEntity(valueType, forMapAccess(key));

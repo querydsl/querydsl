@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.custom;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.mysema.query.types.Template;
@@ -15,7 +16,8 @@ import com.mysema.query.types.expr.Expr;
  *
  * @param <T>
  */
-class CustomMixin<T> implements Custom<T> {
+@SuppressWarnings("serial")
+class CustomMixin<T> implements Custom<T>, Serializable {
     
     private final List<Expr<?>> args;
     

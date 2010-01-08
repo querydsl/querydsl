@@ -8,6 +8,8 @@ package com.mysema.query.types.path;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
@@ -28,6 +30,7 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
 
     private final Map<Class<?>, Object> casts = new HashMap<Class<?>, Object>();
 
+    @Nullable
     private final PathInits inits;
 
     private final Path<D> pathMixin;
@@ -36,7 +39,7 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
         this(type, metadata, null);
     }
 
-    public PEntity(Class<? extends D> type, PathMetadata<?> metadata, PathInits inits) {
+    public PEntity(Class<? extends D> type, PathMetadata<?> metadata, @Nullable PathInits inits) {
         super(type);
         this.pathMixin = new PathMixin<D>(this, metadata);
         this.inits = inits;

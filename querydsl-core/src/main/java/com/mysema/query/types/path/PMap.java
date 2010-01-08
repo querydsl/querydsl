@@ -43,7 +43,7 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
     
     private final Class<E> queryType;
     
-    private Constructor<E> constructor; 
+    private transient Constructor<E> constructor; 
     
     private final Class<V> valueType;
     

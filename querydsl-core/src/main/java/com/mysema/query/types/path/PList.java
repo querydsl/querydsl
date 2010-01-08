@@ -48,7 +48,7 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
     
     private final Class<Q> queryType;    
     
-    private Constructor<Q> constructor;    
+    private transient Constructor<Q> constructor;    
     
     @SuppressWarnings("unchecked")
     public PList(Class<? super E> elementType, Class<Q> queryType, PathMetadata<?> metadata) {

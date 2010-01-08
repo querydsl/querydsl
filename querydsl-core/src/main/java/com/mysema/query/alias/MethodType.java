@@ -7,6 +7,8 @@ package com.mysema.query.alias;
 
 import java.lang.reflect.Method;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.path.PEntity;
 
 /**
@@ -43,6 +45,7 @@ enum MethodType{
      */
     TO_STRING;
     
+    @Nullable
     public static MethodType get(Method method) {
         String name = method.getName();
         int paramCount = method.getParameterTypes().length;

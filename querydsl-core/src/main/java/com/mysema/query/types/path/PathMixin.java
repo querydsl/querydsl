@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.path;
 
+import java.io.Serializable;
+
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
@@ -18,7 +20,8 @@ import com.mysema.query.types.operation.Ops;
  *
  * @param <T>
  */
-class PathMixin<T> implements Path<T> {
+@SuppressWarnings("serial")
+class PathMixin<T> implements Path<T>, Serializable {
     
     private volatile EBoolean isnull, isnotnull;
     

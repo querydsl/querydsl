@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.path;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +16,8 @@ import java.util.Map;
  * @author tiwe
  *
  */
-public class PathInits {
+@SuppressWarnings("serial")
+public class PathInits implements Serializable{
 
     public static final PathInits DEFAULT = new PathInits();
     

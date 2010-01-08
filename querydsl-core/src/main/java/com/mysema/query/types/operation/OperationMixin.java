@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.operation;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,7 +17,8 @@ import com.mysema.query.types.expr.Expr;
  * @param <OP>
  * @param <RT>
  */
-public class OperationMixin<OP, RT> implements Operation<OP, RT> {
+@SuppressWarnings("serial")
+public class OperationMixin<OP, RT> implements Operation<OP, RT>, Serializable {
 
     private final List<Expr<?>> args;
     
