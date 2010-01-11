@@ -66,14 +66,9 @@ public class EntitySerializer implements Serializer{
                 writer.suppressWarnings("unchecked");
             }
             writer.beginConstructor("PathMetadata<?> metadata");
-            writer.append("        super(");
-            if (!localName.equals(genericName)){
-                writer.append("(Class)");
-            }
-            writer.append(localName+".class, metadata);\n");
+            writer.line("super(" + (localName.equals(genericName) ? "" : "(Class)") + localName + ".class, metadata);");
             writer.end();
-        }       
-        
+        }               
         
         // 4
         if (hasEntityFields){
@@ -81,11 +76,7 @@ public class EntitySerializer implements Serializer{
                 writer.suppressWarnings("unchecked");
             }        
             writer.beginConstructor("PathMetadata<?> metadata", "PathInits inits");
-            writer.append("        "+thisOrSuper+"(");
-            if (!localName.equals(genericName)){
-                writer.append("(Class)");
-            }
-            writer.append(localName + ".class, metadata, inits);\n"); 
+            writer.line(thisOrSuper + "(" + (localName.equals(genericName) ? "" : "(Class)") + localName + ".class, metadata, inits);");
             writer.end();
         }                         
         
@@ -110,7 +101,7 @@ public class EntitySerializer implements Serializer{
         if (!localName.equals(genericName)){
             writer.suppressWarnings("unchecked");
         }        
-        writer.beginConstructor("String variable");
+        writer.beginConstructor("String variable");        
         writer.append("        "+thisOrSuper+"(");
         if (!localName.equals(genericName)){
             writer.append("(Class)");   
