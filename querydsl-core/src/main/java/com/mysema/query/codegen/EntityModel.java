@@ -5,6 +5,7 @@
  */
 package com.mysema.query.codegen;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -25,15 +26,15 @@ import com.mysema.commons.lang.Assert;
  */
 public final class EntityModel extends TypeModelAdapter implements Comparable<EntityModel> {
     
-    private final Set<MethodModel> methods = new HashSet<MethodModel>();
-    
     private final Set<ConstructorModel> constructors = new HashSet<ConstructorModel>();
     
     // mutable
     private int escapeSuffix = 1;
-
+    
     // mutable
     private boolean hasLists, hasMaps, hasEntityFields;
+
+    private final Set<MethodModel> methods = new HashSet<MethodModel>();
     
     private final String prefix;
     
@@ -86,35 +87,51 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
         return typeModel.getSimpleName().compareTo(o.typeModel.getSimpleName());
     }
 
+    public TypeCategory getCategory() {
+        return TypeCategory.ENTITY;
+    }
+
     public Set<ConstructorModel> getConstructors() {
         return constructors;
     }
-
-    public Set<MethodModel> getMethods(){
-        return methods;
-    }
     
     public String getLocalGenericName(){
-        return typeModel.getLocalGenericName(this, new StringBuilder(), false).toString();            
+        try {
+            return typeModel.getLocalGenericName(this, new StringBuilder(), false).toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }            
     }
 
     public String getLocalRawName() {
-        return typeModel.getLocalRawName(this, new StringBuilder()).toString();
+        try {
+            return typeModel.getLocalRawName(this, new StringBuilder()).toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
     
+    public Set<MethodModel> getMethods(){
+        return methods;
+    }
+
+    public TypeCategory getOriginalCategory(){
+        return super.getCategory();
+    }
+        
     public String getPrefix(){
         return prefix;
     }
-
+    
     public Set<PropertyModel> getProperties() {
         return properties;
     }
-        
+
     @Nullable
     public EntityModel getSuperModel() {
         return superModel;
     }
-    
+
     public Collection<String> getSuperTypes() {
         return superTypes;
     }
@@ -123,7 +140,6 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
         return uncapSimpleName;
     }
 
-    @Override
     public boolean hasEntityFields() {
         return hasEntityFields;
     }
@@ -131,14 +147,9 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
     public boolean hasLists() {
         return hasLists;
     }
-
+    
     public boolean hasMaps() {
         return hasMaps;
-    }
-
-    @Override
-    public TypeCategory getCategory() {
-        return TypeCategory.ENTITY;
     }
     
     public void include(EntityModel clazz) {

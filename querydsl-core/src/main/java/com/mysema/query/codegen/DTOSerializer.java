@@ -10,6 +10,13 @@ import java.io.Writer;
 
 import net.jcip.annotations.Immutable;
 
+import org.apache.commons.collections15.Transformer;
+
+import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.expr.Expr;
+import com.mysema.util.CodeWriter;
+import com.mysema.util.JavaWriter;
+
 /**
  * DTOSerializer is a Serializer implementation for DTO types
  * 
@@ -22,88 +29,77 @@ public class DTOSerializer implements Serializer{
     private final TypeMappings typeMappings;
     
     public DTOSerializer(TypeMappings typeMappings){
-        this.typeMappings = typeMappings;
+        this.typeMappings = Assert.notNull(typeMappings);
     }
     
-    @Override
-    public void serialize(EntityModel model, SerializerConfig serializerConfig, Writer writer) throws IOException{
-        // intro
-        intro(model, writer);
-        
-        final String queryType = typeMappings.getPathType(model, model, false);
-        final String localName = model.getLocalRawName();
-        
-        StringBuilder builder = new StringBuilder();
-        for (ConstructorModel c : model.getConstructors()){
-            // begin
-            builder.append("    public "+ queryType + "(");
-            boolean first = true;
-            for (ParameterModel p : c.getParameters()){
-                if (!first) builder.append(", ");                             
-                builder.append(typeMappings.getExprType(p.getType(), model, false, false, true));
-                builder.append(" ");
-                builder.append(p.getName());
-                first = false;
-            }
-            builder.append("){\n");
-            
-            // body
-            builder.append("        super(" + localName + ".class");
-            builder.append(", new Class[]{");
-            first = true;
-            for (ParameterModel p : c.getParameters()){
-                if (!first) builder.append(", ");
-                if (p.getType().getPrimitiveName() != null){
-                    builder.append(p.getType().getPrimitiveName()+".class");
-                }else{
-                    builder = p.getType().getLocalRawName(model, builder);
-                    builder.append(".class");    
-                }                
-                first = false;
-            }
-            builder.append("}");
-            
-            for (ParameterModel p : c.getParameters()){
-                builder.append(", " + p.getName());
-            }
-            
-            // end
-            builder.append(");\n");
-            builder.append("    }\n\n");
-        }
-        writer.append(builder.toString());
-                
-        // outro
-        outro(model, writer);
-    }
-
-    protected void intro(EntityModel model, Writer writer) throws IOException {
+    protected void intro(EntityModel model, CodeWriter writer) throws IOException {
         final String simpleName = model.getSimpleName();
         final String queryType = typeMappings.getPathType(model, model, false);
         final String localName = model.getLocalRawName();
-        
-        StringBuilder builder = new StringBuilder();        
-        // package
-        builder.append("package " + model.getPackageName() + ";\n\n");
+                
+        // package        
+        writer.packageDecl(model.getPackageName());
         
         // imports
-        builder.append("import com.mysema.query.types.expr.*;\n\n");
+        writer.imports(Expr.class.getPackage());
+        writer.nl();
         
         // javadoc
-        builder.append("/**\n");
-        builder.append(" * " + queryType + " is a Querydsl DTO type for " + simpleName + "\n");
-        builder.append(" * \n");
-        builder.append(" */ \n");
+        writer.javadoc(queryType + " is a Querydsl DTO type for " + simpleName);
         
         // class header
-        builder.append("@SuppressWarnings(\"serial\")\n");
-        builder.append("public class " + queryType + " extends EConstructor<" + localName + ">{\n\n");
-//        builder.append("    private static final long serialVersionUID = "+model.getConstructors().hashCode()+"L;\n\n");
-        writer.append(builder.toString());
+        writer.suppressWarnings("serial");        
+        writer.beginClass(queryType, "EConstructor<" + localName + ">");
+    }
+
+    protected void outro(EntityModel model, CodeWriter writer) throws IOException {
+        writer.end();   
     }
     
-    protected void outro(EntityModel model, Writer writer) throws IOException {
-        writer.write("}\n");        
+    @Override
+    public void serialize(final EntityModel model, SerializerConfig serializerConfig, Writer w) throws IOException{
+        JavaWriter writer = new JavaWriter(w);
+        // intro
+        intro(model, writer);
+        
+        final String localName = model.getLocalRawName();
+        
+        for (ConstructorModel c : model.getConstructors()){
+            // begin
+            writer.beginConstructor(c.getParameters(), new Transformer<ParameterModel,String>(){
+                @Override
+                public String transform(ParameterModel p) {
+                    return typeMappings.getExprType(p.getType(), model, false, false, true) + " " + p.getName();
+                }                
+            });            
+            
+            // body
+            writer.append("        super(" + localName + ".class");
+            writer.append(", new Class[]{");
+            boolean first = true;
+            for (ParameterModel p : c.getParameters()){
+                if (!first) writer.append(", ");
+                if (p.getType().getPrimitiveName() != null){
+                    writer.append(p.getType().getPrimitiveName()+".class");
+                }else{
+                    writer = p.getType().getLocalRawName(model, writer);
+                    writer.append(".class");    
+                }                
+                first = false;
+            }
+            writer.append("}");
+            
+            for (ParameterModel p : c.getParameters()){
+                writer.append(", " + p.getName());
+            }
+            
+            // end
+            writer.append(");\n");
+            writer.end();
+        }
+                
+        // outro
+        outro(model, writer);
     }
     
 }

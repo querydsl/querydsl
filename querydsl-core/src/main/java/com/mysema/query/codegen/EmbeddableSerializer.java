@@ -7,6 +7,12 @@ package com.mysema.query.codegen;
 
 import java.io.IOException;
 
+import com.mysema.query.types.custom.Custom;
+import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.Path;
+import com.mysema.util.CodeWriter;
+import com.mysema.util.JavaWriter;
+
 
 /**
  * EmbeddableSerializer is a Serializer implementation for embeddable types
@@ -21,36 +27,32 @@ public class EmbeddableSerializer extends EntitySerializer{
     }
 
     @Override
-    protected void constructorsForVariables(StringBuilder builder, EntityModel model) {
+    protected void constructorsForVariables(JavaWriter writer, EntityModel model) {
         // no root constructors
     }
     
     @Override
-    protected void introFactoryMethods(StringBuilder builder, EntityModel model) throws IOException {
+    protected void introDefaultInstance(CodeWriter writer, EntityModel model) {
+        // no default instance
+    }
+    
+    @Override
+    protected void introFactoryMethods(JavaWriter writer, EntityModel model) throws IOException {
         // no factory methods        
     }
     
     @Override
-    protected void introImports(StringBuilder builder, SerializerConfig config, EntityModel model) {
-        builder.append("import com.mysema.query.types.path.*;\n\n");
-        if (hasOwnEntityProperties(model)){
-            builder.append("import static com.mysema.query.types.path.PathMetadataFactory.*;\n");
-        }      
-        
+    protected void introImports(CodeWriter writer, SerializerConfig config, EntityModel model) throws IOException {
+        writer.imports(Path.class.getPackage());        
         if ((model.hasLists() && config.useListAccessors())
                 || !model.getMethods().isEmpty()
                 || (model.hasMaps() && config.useMapAccessors())){
-            builder.append("import com.mysema.query.types.expr.*;\n");
+            writer.imports(Expr.class.getPackage());
         }
         
         if (!model.getMethods().isEmpty()){
-            builder.append("import com.mysema.query.types.custom.*;\n");
+            writer.imports(Custom.class.getPackage());
         }
-    }
-    
-    @Override
-    protected void introDefaultInstance(StringBuilder builder, EntityModel model) {
-        // no default instance
     }
 
 

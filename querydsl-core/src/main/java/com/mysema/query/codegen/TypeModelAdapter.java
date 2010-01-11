@@ -5,6 +5,8 @@
  */
 package com.mysema.query.codegen;
 
+import java.io.IOException;
+
 import com.mysema.commons.lang.Assert;
 
 /**
@@ -27,17 +29,37 @@ public class TypeModelAdapter implements TypeModel{
     }
 
     @Override
+    public boolean equals(Object o){
+        return typeModel.equals(o);
+    }
+
+    @Override
+    public TypeCategory getCategory() {
+        return typeModel.getCategory();
+    }
+
+    @Override
     public String getFullName() {
         return typeModel.getFullName();
     }
 
     @Override
-    public StringBuilder getLocalGenericName(TypeModel context, StringBuilder builder, boolean asArgType) {
+    public String getLocalGenericName(TypeModel context, boolean asArgType) {
+        return typeModel.getLocalGenericName(context, asArgType);
+    }
+
+    @Override
+    public <T extends Appendable> T getLocalGenericName(TypeModel context, T builder, boolean asArgType) throws IOException {
         return typeModel.getLocalGenericName(context, builder, false);
     }
 
     @Override
-    public StringBuilder getLocalRawName(TypeModel context, StringBuilder builder) {
+    public String getLocalRawName(TypeModel context) {
+        return typeModel.getLocalRawName(context);
+    }
+
+    @Override
+    public <T extends Appendable> T getLocalRawName(TypeModel context, T builder) throws IOException {
         return typeModel.getLocalRawName(context, builder);
     }
 
@@ -65,15 +87,20 @@ public class TypeModelAdapter implements TypeModel{
     public TypeModel getSelfOrValueType() {
         return typeModel.getSelfOrValueType();
     }
-
+    
     @Override
     public String getSimpleName() {
         return typeModel.getSimpleName();
     }
+    
+    @Override
+    public boolean hasEntityFields() {
+        return typeModel.hasEntityFields();
+    }
 
     @Override
-    public TypeCategory getCategory() {
-        return typeModel.getCategory();
+    public int hashCode(){
+        return typeModel.hashCode();
     }
 
     @Override
@@ -85,35 +112,10 @@ public class TypeModelAdapter implements TypeModel{
     public boolean isPrimitive() {
         return typeModel.isPrimitive();
     }
-
+    
     @Override
     public String toString() {
         return typeModel.toString();
-    }
-    
-    @Override
-    public int hashCode(){
-        return typeModel.hashCode();
-    }
-    
-    @Override
-    public boolean equals(Object o){
-        return typeModel.equals(o);
-    }
-
-    @Override
-    public boolean hasEntityFields() {
-        return typeModel.hasEntityFields();
-    }
-
-    @Override
-    public String getLocalGenericName(TypeModel context, boolean asArgType) {
-        return typeModel.getLocalGenericName(context, asArgType);
-    }
-
-    @Override
-    public String getLocalRawName(TypeModel context) {
-        return typeModel.getLocalRawName(context);
     }
 
 }

@@ -26,13 +26,13 @@ public final class ConstructorModel {
         parameters = Assert.notNull(params,"params was null");
     }
 
-    public Collection<ParameterModel> getParameters() {
-        return parameters;
-    }
-    
     @Override
     public boolean equals(Object o){
         return o instanceof ConstructorModel && ((ConstructorModel)o).parameters.equals(parameters);
+    }
+    
+    public Collection<ParameterModel> getParameters() {
+        return parameters;
     }
     
     @Override

@@ -27,17 +27,17 @@ import com.mysema.query.annotations.QueryType;
 @Immutable
 public class EntityModelFactory {
     
+    private final Class<? extends Annotation> skipAnn;
+    
     private final TypeModelFactory typeModelFactory;
     
-    private final Class<? extends Annotation> skipAnn;
+    public EntityModelFactory(TypeModelFactory typeModelFactory){
+        this(typeModelFactory, QueryTransient.class);
+    }
     
     public EntityModelFactory(TypeModelFactory typeModelFactory, Class<? extends Annotation> skipAnn){
         this.typeModelFactory = typeModelFactory;
         this.skipAnn = skipAnn;
-    }
-    
-    public EntityModelFactory(TypeModelFactory typeModelFactory){
-        this(typeModelFactory, QueryTransient.class);
     }
     
     public EntityModel create(Class<?> key, String prefix){

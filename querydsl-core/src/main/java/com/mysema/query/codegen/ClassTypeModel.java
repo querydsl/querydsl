@@ -5,6 +5,7 @@
  */
 package com.mysema.query.codegen;
 
+import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.List;
@@ -56,17 +57,32 @@ public class ClassTypeModel extends AbstractTypeModel{
     }
 
     @Override
+    public boolean equals(Object o){
+        if (o instanceof TypeModel){
+            TypeModel t = (TypeModel)o;
+            return clazz.getName().equals(t.getFullName());
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public TypeCategory getCategory() {
+        return typeCategory;
+    }
+
+    @Override
     public String getFullName() {
         return clazz.getName();
     }
 
     @Override
-    public StringBuilder getLocalGenericName(TypeModel context, StringBuilder builder, boolean asArgType) {
+    public <T extends Appendable> T getLocalGenericName(TypeModel context, T builder, boolean asArgType) throws IOException {
         return getLocalRawName(context, builder);
     }
 
     @Override
-    public StringBuilder getLocalRawName(TypeModel context, StringBuilder builder) {
+    public <T extends Appendable> T getLocalRawName(TypeModel context, T builder) throws IOException {
         if (visible || context.getPackageName().equals(clazz.getPackage().getName())){
             builder.append(clazz.getName().substring(clazz.getPackage().getName().length()+1));    
         }else{
@@ -104,30 +120,15 @@ public class ClassTypeModel extends AbstractTypeModel{
             return this;
         }
     }
-
+    
     @Override
     public String getSimpleName() {
         return clazz.getSimpleName();
     }
 
     @Override
-    public TypeCategory getCategory() {
-        return typeCategory;
-    }
-
-    @Override
-    public boolean isPrimitive() {
-        return primitiveClass != null;
-    }
-    
-    @Override
-    public boolean equals(Object o){
-        if (o instanceof TypeModel){
-            TypeModel t = (TypeModel)o;
-            return clazz.getName().equals(t.getFullName());
-        }else{
-            return false;
-        }
+    public boolean hasEntityFields() {
+        return false;
     }
 
     public int hashCode(){
@@ -140,8 +141,8 @@ public class ClassTypeModel extends AbstractTypeModel{
     }
 
     @Override
-    public boolean hasEntityFields() {
-        return false;
+    public boolean isPrimitive() {
+        return primitiveClass != null;
     }
 
 }

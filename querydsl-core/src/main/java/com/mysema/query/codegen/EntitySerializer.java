@@ -12,7 +12,16 @@ import java.util.List;
 
 import net.jcip.annotations.Immutable;
 
+import org.apache.commons.collections15.Transformer;
 import org.apache.commons.lang.StringEscapeUtils;
+
+import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.custom.Custom;
+import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.Path;
+import com.mysema.query.types.path.PathMetadataFactory;
+import com.mysema.util.CodeWriter;
+import com.mysema.util.JavaWriter;
 
 /**
  * EntitySerializer is a Serializer implementation for entity types
@@ -20,85 +29,78 @@ import org.apache.commons.lang.StringEscapeUtils;
  * @author tiwe
  *
  */
+// simplify
 @Immutable
 public class EntitySerializer implements Serializer{
     
     private final TypeMappings typeMappings;
     
-    public EntitySerializer(TypeMappings typeMappings){
-        this.typeMappings = typeMappings;
+    public EntitySerializer(TypeMappings mappings){
+        this.typeMappings = Assert.notNull(mappings);
     }
     
-    protected void constructors(EntityModel model, SerializerConfig config, Writer writer) throws IOException {
-        String queryType = typeMappings.getPathType(model, model, true);
+    protected void constructors(EntityModel model, SerializerConfig config, JavaWriter writer) throws IOException {
         String localName = model.getLocalRawName();
         String genericName = model.getLocalGenericName();
-        
-        StringBuilder builder = new StringBuilder();
         
         boolean hasEntityFields = model.hasEntityFields();
         String thisOrSuper = hasEntityFields ? "this" : "super";
         
         // 1
-        constructorsForVariables(builder, model);    
+        constructorsForVariables(writer, model);    
 
         // 2
         if (!hasEntityFields){
-            builder.append("    public " + queryType + "(PEntity<? extends "+genericName+"> entity) {\n");
-            builder.append("        super(entity.getType(),entity.getMetadata()");
-            builder.append(");\n");
-            builder.append("    }\n\n");    
+            writer.beginConstructor("PEntity<? extends "+genericName+"> entity");
+            writer.line("super(entity.getType(),entity.getMetadata());");
+            writer.end();                
         }        
         
         // 3        
         if (hasEntityFields){
-            builder.append("    public " + queryType + "(PathMetadata<?> metadata) {\n");
-            builder.append("        this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);\n");
-            builder.append("    }\n\n");
+            writer.beginConstructor("PathMetadata<?> metadata");
+            writer.line("this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);");
+            writer.end();
         }else{
             if (!localName.equals(genericName)){
-                builder.append("    @SuppressWarnings(\"unchecked\")\n");
+                writer.suppressWarnings("unchecked");
             }
-            builder.append("    public " + queryType + "(PathMetadata<?> metadata) {\n");
-            builder.append("        super(");
+            writer.beginConstructor("PathMetadata<?> metadata");
+            writer.append("        super(");
             if (!localName.equals(genericName)){
-                builder.append("(Class)");
+                writer.append("(Class)");
             }
-            builder.append(localName+".class, metadata);\n");
-            builder.append("    }\n\n");
+            writer.append(localName+".class, metadata);\n");
+            writer.end();
         }       
         
         
         // 4
         if (hasEntityFields){
             if (!localName.equals(genericName)){
-                builder.append("    @SuppressWarnings(\"unchecked\")\n");
+                writer.suppressWarnings("unchecked");
             }        
-            builder.append("    public " + queryType + "(PathMetadata<?> metadata, PathInits inits) {\n");
-            builder.append("        "+thisOrSuper+"(");
+            writer.beginConstructor("PathMetadata<?> metadata", "PathInits inits");
+            writer.append("        "+thisOrSuper+"(");
             if (!localName.equals(genericName)){
-                builder.append("(Class)");
+                writer.append("(Class)");
             }
-            builder.append(localName + ".class, metadata");
-            builder.append(", inits");
-            builder.append(");\n");
-            builder.append("    }\n\n");    
+            writer.append(localName + ".class, metadata, inits);\n"); 
+            writer.end();
         }                         
         
         // 5 
         if (hasEntityFields){            
-            builder.append("    public "+queryType+"(Class<? extends "+genericName+"> type, PathMetadata<?> metadata, PathInits inits) {\n");
-            builder.append("        super(type, metadata, inits);\n");
-            initEntityFields(builder, config, model);
-            builder.append("    }\n\n"); 
+            writer.beginConstructor("Class<? extends "+genericName+"> type", "PathMetadata<?> metadata", "PathInits inits");
+            writer.line("super(type, metadata, inits);");
+            initEntityFields(writer, config, model); 
+            writer.end();
         }
         
-        writer.append(builder.toString());
         
     }
         
-    protected void constructorsForVariables(StringBuilder builder, EntityModel model) {
-        String queryType = typeMappings.getPathType(model, model, true);
+    protected void constructorsForVariables(JavaWriter writer, EntityModel model) throws IOException {
         String localName = model.getLocalRawName();
         String genericName = model.getLocalGenericName();
         
@@ -106,49 +108,43 @@ public class EntitySerializer implements Serializer{
         String thisOrSuper = hasEntityFields ? "this" : "super";
         
         if (!localName.equals(genericName)){
-            builder.append("    @SuppressWarnings(\"unchecked\")\n");
+            writer.suppressWarnings("unchecked");
         }        
-        builder.append("    public " + queryType + "(String variable) {\n");
-        builder.append("        "+thisOrSuper+"(");
+        writer.beginConstructor("String variable");
+        writer.append("        "+thisOrSuper+"(");
         if (!localName.equals(genericName)){
-            builder.append("(Class)");   
+            writer.append("(Class)");   
         }
-        builder.append(localName + ".class, forVariable(variable)");
+        writer.append(localName + ".class, forVariable(variable)");
         if (hasEntityFields){
-            builder.append(", INITS");
+            writer.append(", INITS");
         }
-        builder.append(");\n");
-        builder.append("    }\n\n");        
+        writer.append(");\n");
+        writer.end();
     }
     
-    protected void entityField(PropertyModel field, SerializerConfig config, Writer writer) throws IOException {
+    protected void entityAccessor(PropertyModel field, CodeWriter writer) throws IOException {
         String queryType = typeMappings.getPathType(field.getType(), field.getContext(), false);
         
-        StringBuilder builder = new StringBuilder();
-        if (field.isInherited()){
-            builder.append("    // inherited\n");
-        }       
-        if (config.useEntityAccessors()){
-            builder.append("    protected ");
-        }else{
-            builder.append("    public final ");    
-        }        
-        builder.append(queryType + " " + field.getEscapedName() + ";\n\n");
-        writer.append(builder.toString());
+        writer.beginMethod(queryType, field.getEscapedName());
+        writer.lines("if (" + field.getEscapedName() + " == null){",
+                     "    " + field.getEscapedName() + " = new " + queryType + "(forProperty(\"" + field.getName() + "\"));",
+                     "}",
+                     "return " + field.getEscapedName()+";");
+        writer.end();
     }
     
 
-    protected void entityAccessor(PropertyModel field, Writer writer) throws IOException {
-        String queryType = typeMappings.getPathType(field.getType(), field.getContext(), false);
-        
-        StringBuilder builder = new StringBuilder();
-        builder.append("    public " + queryType + " " + field.getEscapedName() + "(){\n");
-        builder.append("        if (" + field.getEscapedName() + " == null){\n");
-        builder.append("            " + field.getEscapedName() + " = new " + queryType + "(forProperty(\"" + field.getName() + "\"));\n");
-        builder.append("        }\n");
-        builder.append("        return " + field.getEscapedName()+";\n");
-        builder.append("    }\n\n");
-        writer.append(builder.toString());
+    protected void entityField(PropertyModel field, SerializerConfig config, CodeWriter writer) throws IOException {
+        String queryType = typeMappings.getPathType(field.getType(), field.getContext(), false);        
+        if (field.isInherited()){
+            writer.line("// inherited");
+        }       
+        if (config.useEntityAccessors()){
+            writer.protectedField(queryType, field.getEscapedName());
+        }else{
+            writer.publicFinal(queryType, field.getEscapedName());    
+        }                
     }
 
 
@@ -163,132 +159,129 @@ public class EntitySerializer implements Serializer{
         return false;
     }
 
-    protected void initEntityFields(StringBuilder builder, SerializerConfig config, EntityModel model) {
+    protected void initEntityFields(JavaWriter writer, SerializerConfig config, EntityModel model) throws IOException {
         EntityModel superModel = model.getSuperModel();
         if (superModel != null && superModel.hasEntityFields()){
             String superQueryType = typeMappings.getPathType(superModel, model, false);
-            builder.append("        this._super = new " + superQueryType + "(type, metadata, inits);\n");            
+            writer.line("this._super = new " + superQueryType + "(type, metadata, inits);");            
         }
         
         for (PropertyModel field : model.getProperties()){            
             if (field.getType().getCategory() == TypeCategory.ENTITY){
                 String queryType = typeMappings.getPathType(field.getType(), model, false);                               
                 if (!field.isInherited()){                    
-                    builder.append("        this." + field.getEscapedName() + " = ");
-                    builder.append("inits.isInitialized(\""+field.getName()+"\") ? ");
-                    builder.append("new " + queryType + "(forProperty(\"" + field.getName() + "\")");
+                    writer.append("        this." + field.getEscapedName() + " = ");
+                    writer.append("inits.isInitialized(\""+field.getName()+"\") ? ");
+                    writer.append("new " + queryType + "(forProperty(\"" + field.getName() + "\")");
                     if (field.getType().hasEntityFields()){
-                        builder.append(", inits.get(\""+field.getName()+"\")");    
+                        writer.append(", inits.get(\""+field.getName()+"\")");    
                     }
-                    builder.append(") : null;\n");
+                    writer.append(") : null;\n");
                 }else if (!config.useEntityAccessors()){
-                    builder.append("        this." + field.getEscapedName() + " = ");
-                    builder.append("_super." + field.getEscapedName() +";\n");
+                    writer.append("        this." + field.getEscapedName() + " = ");
+                    writer.append("_super." + field.getEscapedName() +";\n");
                 }   
                 
             }else if (field.isInherited() && superModel != null && superModel.hasEntityFields()){
-                builder.append("        this." + field.getEscapedName() + " = ");
-                builder.append("_super." + field.getEscapedName() + ";\n");
+                writer.line("this." + field.getEscapedName() + " = _super." + field.getEscapedName() + ";");
             }
         }        
     }
 
-    protected void intro(EntityModel model, SerializerConfig config, Writer writer) throws IOException {        
-        StringBuilder builder = new StringBuilder();        
-        introPackage(builder, model);        
-        introImports(builder, config, model);        
-        introJavadoc(builder, model);        
-        introClassHeader(builder, model);        
-        introFactoryMethods(builder, model);   
-        introInits(builder, model);
-        introDefaultInstance(builder, model);   
+    protected void intro(EntityModel model, SerializerConfig config, JavaWriter writer) throws IOException {                
+        introPackage(writer, model);        
+        introImports(writer, config, model);
+        writer.nl();
+        
+        introJavadoc(writer, model);        
+        introClassHeader(writer, model);        
+        
+        introFactoryMethods(writer, model);   
+        introInits(writer, model);
+        introDefaultInstance(writer, model);   
         if (model.getSuperModel() != null){
-            introSuper(builder, model);    
+            introSuper(writer, model);    
         }        
-        writer.append(builder.toString());
     }
 
-    protected void introClassHeader(StringBuilder builder, EntityModel model) {
+    protected void introClassHeader(CodeWriter writer, EntityModel model) throws IOException {
         String queryType = typeMappings.getPathType(model, model, true);
         String localName = model.getLocalGenericName();
         
-        builder.append("@SuppressWarnings(\"serial\")\n");
-        builder.append("public class " + queryType + " extends PEntity<" + localName + "> {\n\n");
+        writer.suppressWarnings("serial");
+        writer.beginClass(queryType, "PEntity<" + localName + ">");
     }
 
-    protected void introDefaultInstance(StringBuilder builder, EntityModel model) {
-        String unscapSimpleName = model.getUncapSimpleName();
+    protected void introDefaultInstance(CodeWriter writer, EntityModel model) throws IOException {
+        String simpleName = model.getUncapSimpleName();
         String queryType = typeMappings.getPathType(model, model, true);
         
-        builder.append("    public static final " + queryType + " " + unscapSimpleName + " = new " + queryType + "(\"" + unscapSimpleName + "\");\n\n");
+        writer.publicStaticFinal(queryType, simpleName, "new " + queryType + "(\"" + simpleName + "\")");
     }
 
-    protected void introFactoryMethods(StringBuilder builder, EntityModel model) throws IOException {
+    protected void introFactoryMethods(JavaWriter writer, final EntityModel model) throws IOException {
         String localName = model.getLocalRawName();
         String genericName = model.getLocalGenericName();
         
         for (ConstructorModel c : model.getConstructors()){
             // begin
             if (!localName.equals(genericName)){
-                builder.append("    @SuppressWarnings(\"unchecked\")\n");
+                writer.suppressWarnings("unchecked");
             }            
-            builder.append("    public static EConstructor<" + genericName + "> create(");
-            boolean first = true;
-            for (ParameterModel p : c.getParameters()){
-                if (!first) builder.append(", ");
-                builder.append(typeMappings.getExprType(p.getType(), model, false, false, true));
-                builder.append(" ").append(p.getName());
-                first = false;
-            }
-            builder.append("){\n");
+            writer.beginStaticMethod("EConstructor<" + genericName + ">", "create", c.getParameters(), new Transformer<ParameterModel, String>(){
+                @Override
+                public String transform(ParameterModel p) {
+                    return typeMappings.getExprType(p.getType(), model, false, false, true) + " " + p.getName();
+                }                
+            });
             
             // body
-            builder.append("        return new EConstructor<" + genericName + ">(");
+            writer.append("        return new EConstructor<" + genericName + ">(");
             if (!localName.equals(genericName)){
-                builder.append("(Class)");
+                writer.append("(Class)");
             }
-            builder.append(localName + ".class");
-            builder.append(", new Class[]{");
-            first = true;
+            writer.append(localName + ".class");
+            writer.append(", new Class[]{");
+            boolean first = true;
             for (ParameterModel p : c.getParameters()){
-                if (!first) builder.append(", ");
+                if (!first) writer.append(", ");
                 if (p.getType().getPrimitiveName() != null){
-                    builder.append(p.getType().getPrimitiveName()+".class");
+                    writer.append(p.getType().getPrimitiveName()+".class");
                 }else{
-                    builder = p.getType().getLocalRawName(model, builder);
-                    builder.append(".class");    
+                    writer = p.getType().getLocalRawName(model, writer);
+                    writer.append(".class");    
                 }                
                 first = false;
             }
-            builder.append("}");
+            writer.append("}");
             
             for (ParameterModel p : c.getParameters()){
-                builder.append(", " + p.getName());
+                writer.append(", " + p.getName());
             }
             
             // end
-            builder.append(");\n");
-            builder.append("    }\n\n");
+            writer.append(");\n");
+            writer.end();
         }        
     }
 
-    protected void introImports(StringBuilder builder, SerializerConfig config, EntityModel model) {        
-        builder.append("import com.mysema.query.types.path.*;\n");
-        builder.append("import static com.mysema.query.types.path.PathMetadataFactory.*;\n");        
+    protected void introImports(CodeWriter writer, SerializerConfig config, EntityModel model) throws IOException {       
+        writer.imports(Path.class.getPackage());
+        writer.staticimports(PathMetadataFactory.class);        
         
         if (!model.getConstructors().isEmpty()
                 || !model.getMethods().isEmpty()
                 || (model.hasLists() && config.useListAccessors()) 
                 || (model.hasMaps() && config.useMapAccessors())){
-            builder.append("import com.mysema.query.types.expr.*;\n");
+            writer.imports(Expr.class.getPackage());
         }
         
         if (!model.getMethods().isEmpty()){
-            builder.append("import com.mysema.query.types.custom.*;\n");
+            writer.imports(Custom.class.getPackage());
         }
     }
 
-    protected void introInits(StringBuilder builder, EntityModel model) {
+    protected void introInits(JavaWriter writer, EntityModel model) throws IOException {
         if (model.hasEntityFields()){
             List<String> inits = new ArrayList<String>();
             for (PropertyModel property : model.getProperties()){
@@ -297,81 +290,98 @@ public class EntitySerializer implements Serializer{
                         inits.add(property.getEscapedName() + "." + init);    
                     }   
                 }
-            }
-            
+            }            
             if (!inits.isEmpty()){
-                builder.append("    private static final PathInits INITS = new PathInits(\"*\"");
-                for (String init : inits){
-                    builder.append(", \"" + init + "\"");    
-                }    
-                builder.append(");\n\n");    
+                inits.add(0, "*");
+                writer.privateStaticFinal("PathInits", "INITS", "new PathInits(" + writer.join("\"", "\"", inits) + ")"); 
             }else{
-                builder.append("    private static final PathInits INITS = PathInits.DIRECT;\n\n");
+                writer.privateStaticFinal("PathInits", "INITS", "PathInits.DIRECT");
             }
                 
         }               
     }
 
-    protected void introJavadoc(StringBuilder builder, EntityModel model) {
+    protected void introJavadoc(CodeWriter writer, EntityModel model) throws IOException {
         String simpleName = model.getSimpleName();
-        String queryType = model.getPrefix() + simpleName;
-        
-        builder.append("/**\n");
-        builder.append(" * " + queryType + " is a Querydsl query type for " + simpleName + "\n");
-        builder.append(" * \n");
-        builder.append(" */ \n");
+        String queryType = model.getPrefix() + simpleName;        
+        writer.javadoc(queryType + " is a Querydsl query type for " + simpleName);
     }
 
-    protected void introPackage(StringBuilder builder, EntityModel model) {
-        builder.append("package " + model.getPackageName() + ";\n\n");
+    protected void introPackage(CodeWriter writer, EntityModel model) throws IOException {
+        writer.packageDecl(model.getPackageName());
+        writer.nl();
     }
     
-    protected void introSuper(StringBuilder builder, EntityModel model) {
+    protected void introSuper(CodeWriter writer, EntityModel model) throws IOException {
         EntityModel superModel = model.getSuperModel();
         String superQueryType = typeMappings.getPathType(superModel, model, false);
         
         if (!superModel.hasEntityFields()){
-            builder.append("    public final "+superQueryType+" _super = new " + superQueryType + "(this);\n\n");    
+            writer.publicFinal(superQueryType, "_super", "new " + superQueryType + "(this)");    
         }else{
-            builder.append("    public final "+superQueryType+" _super;\n\n");    
+            writer.publicFinal(superQueryType, "_super");    
         }                  
     }  
 
-    protected void listAccessor(PropertyModel field, Writer writer) throws IOException {
+    protected void listAccessor(PropertyModel field, CodeWriter writer) throws IOException {
         String escapedName = field.getEscapedName();
         String queryType = typeMappings.getPathType(field.getParameter(0), field.getContext(), false);
+
+        writer.beginMethod(queryType, escapedName, "int index");
+        writer.line("return " + escapedName + ".get(index);").end();
         
-        StringBuilder builder = new StringBuilder();        
-        builder.append("    public " + queryType + " " + escapedName + "(int index) {\n");
-        builder.append("        return " + escapedName + ".get(index);\n");
-        builder.append("    }\n\n");
-        builder.append("    public " + queryType + " " + escapedName + "(Expr<Integer> index) {\n");
-        builder.append("        return " + escapedName + ".get(index);\n");
-        builder.append("    }\n\n");
-        writer.append(builder.toString());
+        writer.beginMethod(queryType, escapedName, "Expr<Integer> index");
+        writer.line("return " + escapedName +".get(index);").end();
     }
 
-    protected void mapAccessor(PropertyModel field, Writer writer) throws IOException {
+    protected void mapAccessor(PropertyModel field, CodeWriter writer) throws IOException {
         String escapedName = field.getEscapedName();
         String queryType = typeMappings.getPathType(field.getParameter(1), field.getContext(), false);
         String keyType = field.getParameter(0).getLocalGenericName(field.getContext(), false);
         String genericKey = field.getParameter(0).getLocalGenericName(field.getContext(), true);
         
-        StringBuilder builder = new StringBuilder();        
-        builder.append("    public " + queryType + " " + escapedName + "(" + keyType+ " key) {\n");
-        builder.append("        return " + escapedName + ".get(key);\n");
-        builder.append("    }\n\n");        
-        builder.append("    public " + queryType + " " + escapedName + "(Expr<"+genericKey+"> key) {\n");
-        builder.append("        return " + escapedName + ".get(key);\n");
-        builder.append("    }\n\n");
-        writer.append(builder.toString());        
+        writer.beginMethod(queryType, escapedName, keyType + " key");
+        writer.line("return " + escapedName + ".get(key);").end();
+        
+        writer.beginMethod(queryType, escapedName, "Expr<" + genericKey + "> key");
+        writer.line("return " + escapedName + ".get(key);").end();
     }
 
-    protected void outro(EntityModel model, Writer writer) throws IOException {
-        writer.write("}\n");        
+    protected void method(final EntityModel model, MethodModel method, SerializerConfig config, JavaWriter writer) throws IOException {
+        // header
+        String type = typeMappings.getExprType(method.getReturnType(), model, false, true, false);
+        writer.beginMethod(type, method.getName(), method.getParameters(), new Transformer<ParameterModel,String>(){
+            @Override
+            public String transform(ParameterModel p) {
+                return typeMappings.getExprType(p.getType(), model, false) + " " + p.getName();
+            }            
+        });
+        
+        // body start
+        String customClass = typeMappings.getCustomType(method.getReturnType(), model, true);        
+        writer.append("        return " + customClass + ".create(");
+        String fullName = method.getReturnType().getFullName();
+        if (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName())){
+            method.getReturnType().getLocalRawName(model, writer);
+            writer.append(".class, ");
+        }        
+        writer.append("\"" + StringEscapeUtils.escapeJava(method.getTemplate()) + "\"");
+        writer.append(", this");
+        for (ParameterModel p : method.getParameters()){
+            writer.append(", " + p.getName());
+        }        
+        writer.append(");\n");
+
+        // body end
+        writer.end();
     }
 
-    public void serialize(EntityModel model, SerializerConfig config, Writer writer) throws IOException{
+    protected void outro(EntityModel model, CodeWriter writer) throws IOException {
+        writer.end();        
+    }
+
+    public void serialize(EntityModel model, SerializerConfig config, Writer w) throws IOException{
+        JavaWriter writer = new JavaWriter(w);
         intro(model, config, writer);        
         
         // properties
@@ -399,45 +409,7 @@ public class EntitySerializer implements Serializer{
         outro(model, writer);
     }
 
-
-    protected void method(EntityModel model, MethodModel method, SerializerConfig config, Writer writer) throws IOException {
-        StringBuilder builder = new StringBuilder();
-        // header
-        builder.append("    public ");
-        builder.append(typeMappings.getExprType(method.getReturnType(), model, false, true, false));
-        builder.append(" " + method.getName() + "(");
-        boolean first = true;        
-        
-        // parameters
-        for (ParameterModel p : method.getParameters()){
-            if (!first) builder.append(", ");
-            String paramType = typeMappings.getExprType(p.getType(), model, false);
-            builder.append(paramType + " " + p.getName());           
-            first = false;
-        }
-        builder.append("){\n");
-        
-        // body start
-        String customClass = typeMappings.getCustomType(method.getReturnType(), model, true);        
-        builder.append("        return " + customClass + ".create(");
-        String fullName = method.getReturnType().getFullName();
-        if (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName())){
-            method.getReturnType().getLocalRawName(model, builder);
-            builder.append(".class, ");
-        }        
-        builder.append("\"" + StringEscapeUtils.escapeJava(method.getTemplate()) + "\"");
-        builder.append(", this");
-        for (ParameterModel p : method.getParameters()){
-            builder.append(", " + p.getName());
-        }        
-        builder.append(");\n");
-
-        // body end
-        builder.append("    }\n\n");
-        writer.write(builder.toString());
-    }
-
-    protected void serialize(PropertyModel field, String type, Writer writer, String factoryMethod, String... args) throws IOException{
+    protected void serialize(PropertyModel field, String type, JavaWriter writer, String factoryMethod, String... args) throws IOException{
         EntityModel superModel = field.getContext().getSuperModel();
         // construct value
         StringBuilder value = new StringBuilder();
@@ -454,19 +426,17 @@ public class EntitySerializer implements Serializer{
         }                 
         
         // serialize it
-        StringBuilder builder = new StringBuilder();
         if (field.isInherited()){
-            builder.append("    // inherited\n");
+            writer.line("//inherited");
         }        
         if (value.length() > 0){
-            builder.append("    public final " + type + " " + field.getEscapedName() + " = " + value + ";\n\n");    
+            writer.publicFinal(type, field.getEscapedName(), value.toString());    
         }else{
-            builder.append("    public final " + type + " " + field.getEscapedName() + ";\n\n");
+            writer.publicFinal(type, field.getEscapedName());
         }        
-        writer.append(builder.toString());
     }
 
-    private void serializeProperties(EntityModel model,  SerializerConfig config, Writer writer) throws IOException {
+    private void serializeProperties(EntityModel model,  SerializerConfig config, JavaWriter writer) throws IOException {
         for (PropertyModel property : model.getProperties()){
             String queryType = typeMappings.getPathType(property.getType(), model, false);
             String localGenericName = property.getType().getLocalGenericName(model, true);

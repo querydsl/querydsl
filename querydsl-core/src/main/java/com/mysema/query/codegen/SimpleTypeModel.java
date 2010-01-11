@@ -5,6 +5,8 @@
  */
 package com.mysema.query.codegen;
 
+import java.io.IOException;
+
 import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
@@ -53,13 +55,28 @@ public class SimpleTypeModel extends AbstractTypeModel {
     }
 
     @Override
+    public boolean equals(Object o){
+        if (o instanceof TypeModel){
+            TypeModel t = (TypeModel)o;
+            return fullName.equals(t.getFullName());
+        }else{
+            return false;
+        }
+    }
+    
+    @Override
+    public TypeCategory getCategory() {
+        return typeCategory;
+    }
+
+    @Override
     public String getFullName() {
         return fullName;
     }
-    
+
     // NOTE: Java serialization aspects mixed into model
     @Override
-    public StringBuilder getLocalGenericName(TypeModel context, StringBuilder builder, boolean asArgType) {
+    public <T extends Appendable> T getLocalGenericName(TypeModel context, T builder, boolean asArgType) throws IOException {
         builder = getLocalRawName(context, builder);
         if (parameters.length > 0){                        
             builder.append("<");
@@ -78,7 +95,7 @@ public class SimpleTypeModel extends AbstractTypeModel {
     }
 
     @Override
-    public StringBuilder getLocalRawName(TypeModel context, StringBuilder builder){
+    public <T extends Appendable> T  getLocalRawName(TypeModel context, T builder) throws IOException{
         if (visible || context.getPackageName().equals(packageName)){
             builder.append(localName);    
         }else{
@@ -123,28 +140,8 @@ public class SimpleTypeModel extends AbstractTypeModel {
     }
 
     @Override
-    public TypeCategory getCategory() {
-        return typeCategory;
-    }
-
-    @Override
-    public boolean isPrimitive() {
+    public boolean hasEntityFields() {
         return false;
-    }
-
-    @Override
-    public String toString() {
-        return fullName;
-    }
-
-    @Override
-    public boolean equals(Object o){
-        if (o instanceof TypeModel){
-            TypeModel t = (TypeModel)o;
-            return fullName.equals(t.getFullName());
-        }else{
-            return false;
-        }
     }
     
     @Override
@@ -158,9 +155,13 @@ public class SimpleTypeModel extends AbstractTypeModel {
     }
 
     @Override
-    public boolean hasEntityFields() {
+    public boolean isPrimitive() {
         return false;
     }
 
+    @Override
+    public String toString() {
+        return fullName;
+    }
     
 }

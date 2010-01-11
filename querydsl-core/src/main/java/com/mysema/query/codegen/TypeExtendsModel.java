@@ -5,6 +5,8 @@
  */
 package com.mysema.query.codegen;
 
+import java.io.IOException;
+
 import javax.annotation.Nullable;
 
 /**
@@ -18,17 +20,17 @@ public class TypeExtendsModel extends TypeModelAdapter{
     @Nullable
     private String varName;
     
-    public TypeExtendsModel(TypeModel typeModel) {
-        super(typeModel);
-    }
-
     public TypeExtendsModel(String varName, TypeModel typeModel) {
         this(typeModel);
         this.varName = varName;
     }
 
+    public TypeExtendsModel(TypeModel typeModel) {
+        super(typeModel);
+    }
+
     @Override
-    public StringBuilder getLocalGenericName(TypeModel context, StringBuilder builder, boolean asArgType) {
+    public <T extends Appendable> T getLocalGenericName(TypeModel context, T builder, boolean asArgType) throws IOException {
         if (!asArgType){
             builder.append("? extends ");    
         }            

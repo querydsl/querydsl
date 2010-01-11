@@ -25,11 +25,11 @@ public final class PropertyModel implements Comparable<PropertyModel> {
 
     private final boolean inherited;
 
+    private final String[] inits;
+
     private final String name, escapedName;
 
     private final TypeModel type;
-
-    private final String[] inits;
 
     public PropertyModel(EntityModel context, String name, TypeModel type, String[] inits) {
         this(context, name, type, inits, false);
@@ -57,6 +57,10 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         return o instanceof PropertyModel && name.equals(((PropertyModel) o).name);
     }
 
+    public EntityModel getContext() {
+        return context;
+    }
+
     public String getEscapedName() {
         return escapedName;
     }
@@ -65,12 +69,16 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         return inits;
     }
 
-    public EntityModel getContext() {
-        return context;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public TypeModel getParameter(int i) {
+        return type.getParameter(i);
+    }
+
+    public TypeModel getType() {
+        return type;
     }
 
     public int hashCode() {
@@ -83,14 +91,6 @@ public final class PropertyModel implements Comparable<PropertyModel> {
 
     public String toString() {
         return context.getFullName() + "." + name;
-    }
-
-    public TypeModel getParameter(int i) {
-        return type.getParameter(i);
-    }
-
-    public TypeModel getType() {
-        return type;
     }
 
 }

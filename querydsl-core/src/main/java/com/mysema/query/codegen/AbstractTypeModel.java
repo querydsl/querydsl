@@ -5,6 +5,8 @@
  */
 package com.mysema.query.codegen;
 
+import java.io.IOException;
+
 /**
  * AbstractTypeModel is an abstract base class for TypeModel implementations
  * 
@@ -14,13 +16,21 @@ package com.mysema.query.codegen;
 public abstract class AbstractTypeModel implements TypeModel{
     
     @Override
-    public String getLocalRawName(TypeModel context){
-        return getLocalRawName(context, new StringBuilder()).toString();
+    public String getLocalGenericName(TypeModel context, boolean asArgType){
+        try {
+            return getLocalGenericName(context, new StringBuilder(), asArgType).toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
     
     @Override
-    public String getLocalGenericName(TypeModel context, boolean asArgType){
-        return getLocalGenericName(context, new StringBuilder(), asArgType).toString();
+    public String getLocalRawName(TypeModel context){
+        try {
+            return getLocalRawName(context, new StringBuilder()).toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
 }

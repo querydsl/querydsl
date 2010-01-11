@@ -5,6 +5,8 @@
  */
 package com.mysema.query.codegen;
 
+import java.io.IOException;
+
 import javax.annotation.Nullable;
 
 /**
@@ -15,40 +17,103 @@ import javax.annotation.Nullable;
  */
 public interface TypeModel {
 
+    /**
+     * @param category
+     * @return
+     */
     TypeModel as(TypeCategory category);
 
-    String getLocalRawName(TypeModel context);
+    /**
+     * @return
+     */
+    TypeCategory getCategory();
     
-    StringBuilder getLocalRawName(TypeModel context, StringBuilder builder);
+    /**
+     * @return
+     */
+    String getFullName();
     
+    /**
+     * @param context
+     * @param asArgType
+     * @return
+     */
     String getLocalGenericName(TypeModel context, boolean asArgType);
     
-    StringBuilder getLocalGenericName(TypeModel context, StringBuilder builder, boolean asArgType);
+    /**
+     * @param context
+     * @param builder
+     * @param asArgType
+     * @return
+     * @throws IOException 
+     */
+    <T extends Appendable> T getLocalGenericName(TypeModel context, T builder, boolean asArgType) throws IOException;
 
-    String getFullName();
+    /**
+     * @param context
+     * @return
+     */
+    String getLocalRawName(TypeModel context);
 
+    /**
+     * @param context
+     * @param builder
+     * @return
+     * @throws IOException 
+     */
+    <T extends Appendable> T getLocalRawName(TypeModel context, T builder) throws IOException;
+
+    /**
+     * @return
+     */
     String getPackageName();
 
+    /**
+     * @param i
+     * @return
+     */
     @Nullable
     TypeModel getParameter(int i);
 
+    /**
+     * @return
+     */
     int getParameterCount();
 
+    /**
+     * @return
+     */
     @Nullable
     String getPrimitiveName();
 
+    /**
+     * @return
+     */
     TypeModel getSelfOrValueType();
-
+    
+    /**
+     * @return
+     */
     String getSimpleName();
 
-    TypeCategory getCategory();
-
-    boolean isPrimitive();
-
-    String toString();
-
-    boolean isFinal();
-    
+    /**
+     * @return
+     */
     boolean hasEntityFields();
+
+    /**
+     * @return
+     */
+    boolean isFinal();
+
+    /**
+     * @return
+     */
+    boolean isPrimitive();
+    
+    /**
+     * @return
+     */
+    String toString();
     
 }
