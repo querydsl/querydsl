@@ -75,7 +75,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
 
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(Connection conn, SQLTemplates templates) {
-        super(new QueryMixin<SubType>(new DefaultQueryMetadata()));
+        super(new QueryMixin<SubType>());
         this.queryMixin.setSelf((SubType) this);
         this.conn = conn;
         this.templates = templates;

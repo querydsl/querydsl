@@ -41,8 +41,8 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     private final PersistenceManager pm;
     
     @SuppressWarnings("unchecked")
-    public AbstractJDOQLQuery(QueryMetadata md, PersistenceManager pm, JDOQLTemplates templates) {
-        super(new JDOQLQueryMixin<SubType>(new DefaultQueryMetadata()));
+    public AbstractJDOQLQuery(PersistenceManager pm, JDOQLTemplates templates) {
+        super(new JDOQLQueryMixin<SubType>());
         this.queryMixin.setSelf((SubType) this);
         this.templates = templates;
         this.pm = pm;

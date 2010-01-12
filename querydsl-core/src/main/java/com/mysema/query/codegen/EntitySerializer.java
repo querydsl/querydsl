@@ -29,7 +29,6 @@ import com.mysema.util.JavaWriter;
  * @author tiwe
  *
  */
-// simplify
 @Immutable
 public class EntitySerializer implements Serializer{
     
@@ -66,7 +65,7 @@ public class EntitySerializer implements Serializer{
                 writer.suppressWarnings("unchecked");
             }
             writer.beginConstructor("PathMetadata<?> metadata");
-            writer.line("super(" + (localName.equals(genericName) ? "" : "(Class)") + localName + ".class, metadata);");
+            writer.line("super(",localName.equals(genericName) ? "" : "(Class)",localName,".class, metadata);");
             writer.end();
         }               
         
@@ -76,7 +75,7 @@ public class EntitySerializer implements Serializer{
                 writer.suppressWarnings("unchecked");
             }        
             writer.beginConstructor("PathMetadata<?> metadata", "PathInits inits");
-            writer.line(thisOrSuper + "(" + (localName.equals(genericName) ? "" : "(Class)") + localName + ".class, metadata, inits);");
+            writer.line(thisOrSuper, "(", localName.equals(genericName) ? "" : "(Class)", localName, ".class, metadata, inits);");
             writer.end();
         }                         
         
@@ -101,16 +100,9 @@ public class EntitySerializer implements Serializer{
         if (!localName.equals(genericName)){
             writer.suppressWarnings("unchecked");
         }        
-        writer.beginConstructor("String variable");        
-        writer.append("        "+thisOrSuper+"(");
-        if (!localName.equals(genericName)){
-            writer.append("(Class)");   
-        }
-        writer.append(localName + ".class, forVariable(variable)");
-        if (hasEntityFields){
-            writer.append(", INITS");
-        }
-        writer.append(");\n");
+        writer.beginConstructor("String variable");      
+        writer.line(thisOrSuper,"(", localName.equals(genericName) ? "" : "(Class)",
+                localName, ".class, forVariable(variable)", hasEntityFields ? ", INITS" : "", ");");
         writer.end();
     }
     
@@ -151,6 +143,8 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void initEntityFields(JavaWriter writer, SerializerConfig config, EntityModel model) throws IOException {
+        // TODO : to CodeWriter DSL
+        
         EntityModel superModel = model.getSuperModel();
         if (superModel != null && superModel.hasEntityFields()){
             String superQueryType = typeMappings.getPathType(superModel, model, false);
@@ -160,7 +154,8 @@ public class EntitySerializer implements Serializer{
         for (PropertyModel field : model.getProperties()){            
             if (field.getType().getCategory() == TypeCategory.ENTITY){
                 String queryType = typeMappings.getPathType(field.getType(), model, false);                               
-                if (!field.isInherited()){                    
+                if (!field.isInherited()){          
+//                    writer.line(
                     writer.append("        this." + field.getEscapedName() + " = ");
                     writer.append("inits.isInitialized(\""+field.getName()+"\") ? ");
                     writer.append("new " + queryType + "(forProperty(\"" + field.getName() + "\")");
@@ -169,8 +164,7 @@ public class EntitySerializer implements Serializer{
                     }
                     writer.append(") : null;\n");
                 }else if (!config.useEntityAccessors()){
-                    writer.append("        this." + field.getEscapedName() + " = ");
-                    writer.append("_super." + field.getEscapedName() +";\n");
+                    writer.line("this." + field.getEscapedName() + " = ", "_super." + field.getEscapedName() +";");
                 }   
                 
             }else if (field.isInherited() && superModel != null && superModel.hasEntityFields()){

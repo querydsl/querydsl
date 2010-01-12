@@ -37,7 +37,7 @@ public interface CodeWriter extends Appendable{
 
     CodeWriter javadoc(String... lines) throws IOException;
 
-    CodeWriter line(String line) throws IOException;
+    CodeWriter line(String... segments) throws IOException;
 
     CodeWriter lines(String... lines) throws IOException;
 

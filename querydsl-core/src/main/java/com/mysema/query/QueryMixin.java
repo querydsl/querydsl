@@ -28,6 +28,10 @@ public class QueryMixin<T>{
         this.metadata = Assert.notNull(metadata);
     }
     
+    public QueryMixin(){
+        this.metadata = new DefaultQueryMetadata();
+    }
+    
     public QueryMixin(T self, QueryMetadata metadata){
         this.self = Assert.notNull(self);
         this.metadata = Assert.notNull(metadata);

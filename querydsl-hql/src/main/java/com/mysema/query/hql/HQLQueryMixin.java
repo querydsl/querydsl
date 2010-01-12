@@ -27,6 +27,8 @@ import com.mysema.query.types.path.Path;
  */
 public class HQLQueryMixin<T> extends QueryMixin<T> {
 
+    public HQLQueryMixin() {}
+    
     public HQLQueryMixin(QueryMetadata metadata) {
         super(metadata);
     }

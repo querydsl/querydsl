@@ -121,10 +121,14 @@ public class JavaWriter implements Appendable, CodeWriter{
         return line(" */");
     }
 
-    public CodeWriter line(String line) throws IOException{
-        return append(indent + line + "\n");
+    public CodeWriter line(String... segments) throws IOException{
+        append(indent);
+        for (String segment : segments){
+            append(segment);
+        }        
+        return append("\n");
     }
-
+    
     public CodeWriter lines(String... lines) throws IOException{
         for (String line : lines){
             line(line);

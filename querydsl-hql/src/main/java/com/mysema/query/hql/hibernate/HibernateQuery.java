@@ -30,7 +30,7 @@ public class HibernateQuery extends AbstractHibernateQuery<HibernateQuery> imple
     }
         
     public HibernateQuery(SessionHolder session, HQLTemplates templates) {
-        super(new DefaultQueryMetadata(), session, templates);
+        super(session, templates);
     }
     
 
