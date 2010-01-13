@@ -25,6 +25,22 @@ import com.mysema.commons.lang.Assert;
 @Immutable
 public class ClassTypeModel extends AbstractTypeModel{
     
+    public static final ClassTypeModel BOOLEAN = new ClassTypeModel(TypeCategory.BOOLEAN, Boolean.class, boolean.class);
+    
+    public static final ClassTypeModel BYTE = new ClassTypeModel(TypeCategory.NUMERIC, Byte.class, byte.class);
+    
+    public static final ClassTypeModel CHAR = new ClassTypeModel(TypeCategory.COMPARABLE, Character.class, char.class);
+    
+    public static final ClassTypeModel DOUBLE = new ClassTypeModel(TypeCategory.NUMERIC, Double.class, double.class);
+    
+    public static final ClassTypeModel FLOAT = new ClassTypeModel(TypeCategory.NUMERIC, Float.class, float.class);
+    
+    public static final ClassTypeModel INT = new ClassTypeModel(TypeCategory.NUMERIC, Integer.class, int.class);
+    
+    public static final ClassTypeModel LONG = new ClassTypeModel(TypeCategory.NUMERIC, Long.class, long.class);
+    
+    public static final ClassTypeModel SHORT = new ClassTypeModel(TypeCategory.NUMERIC, Short.class, short.class);
+    
     private final Class<?> clazz;
     
     private final List<TypeModel> parameters;

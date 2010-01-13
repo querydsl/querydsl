@@ -338,22 +338,14 @@ public class APTTypeModelFactory {
         }else if (type instanceof PrimitiveType){
             PrimitiveType t = (PrimitiveType)type;
             switch (t.getKind()) {
-            case BOOLEAN:
-                return new ClassTypeModel(TypeCategory.BOOLEAN, Boolean.class, boolean.class);
-            case BYTE:
-                return new ClassTypeModel(TypeCategory.NUMERIC, Byte.class, byte.class);
-            case CHAR:
-                return new ClassTypeModel(TypeCategory.COMPARABLE, Character.class, char.class);
-            case DOUBLE:
-                return new ClassTypeModel(TypeCategory.NUMERIC, Double.class, double.class);
-            case FLOAT:
-                return new ClassTypeModel(TypeCategory.NUMERIC, Float.class, float.class);
-            case INT:
-                return new ClassTypeModel(TypeCategory.NUMERIC, Integer.class, int.class);
-            case LONG:
-                return new ClassTypeModel(TypeCategory.NUMERIC, Long.class, long.class);
-            case SHORT:
-                return new ClassTypeModel(TypeCategory.NUMERIC, Short.class, short.class);
+            case BOOLEAN: return ClassTypeModel.BOOLEAN;
+            case BYTE: return ClassTypeModel.BYTE;
+            case CHAR: return ClassTypeModel.CHAR;
+            case DOUBLE: return ClassTypeModel.DOUBLE;
+            case FLOAT: return ClassTypeModel.FLOAT;
+            case INT: return ClassTypeModel.INT;
+            case LONG: return ClassTypeModel.LONG;
+            case SHORT: return ClassTypeModel.SHORT;
             }
             throw new IllegalArgumentException("Unsupported type " + t.getKind());
 
