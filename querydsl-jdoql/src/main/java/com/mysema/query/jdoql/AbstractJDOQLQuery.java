@@ -7,6 +7,7 @@ package com.mysema.query.jdoql;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -14,9 +15,7 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.Projectable;
-import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.support.ProjectableQuery;
@@ -40,12 +39,15 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
 
     private final PersistenceManager pm;
     
+    private final boolean detach;
+    
     @SuppressWarnings("unchecked")
-    public AbstractJDOQLQuery(PersistenceManager pm, JDOQLTemplates templates) {
+    public AbstractJDOQLQuery(PersistenceManager pm, JDOQLTemplates templates, boolean detach) {
         super(new JDOQLQueryMixin<SubType>());
         this.queryMixin.setSelf((SubType) this);
         this.templates = templates;
         this.pm = pm;
+        this.detach = detach;
     }
 
     public SubType from(PEntity<?>... args) {
@@ -86,8 +88,17 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
         queryMixin.addToProjection(expr1, expr2);
         queryMixin.addToProjection(rest);
-        Object rv = execute(createQuery(false));
+        Object rv = execute(createQuery(false));        
         return (rv instanceof List) ? ((List<Object[]>)rv) : Collections.singletonList((Object[])rv);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private <T> T detach(T results){
+        if (results instanceof Collection){
+            return (T) pm.detachCopyAll(results);
+        }else{
+            return pm.detachCopy(results);
+        }
     }
 
     private Object execute(Query query) {
@@ -97,7 +108,9 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         } else {
             rv = query.execute();
         }
-        // query.closeAll();
+        if (detach){
+            rv = detach(rv);
+        }        
         return rv;
     }
 

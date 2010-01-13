@@ -68,7 +68,7 @@ public class BasicsTest extends AbstractJDOTest {
     
     @Test
     public void simpleTest() throws IOException{
-        JDOQLQuery query = new JDOQLQueryImpl(pm, templates);
+        JDOQLQuery query = new JDOQLQueryImpl(pm, templates, false);
         assertEquals("Sony Discman", query.from(product).where(product.name.eq("Sony Discman")).uniqueResult(product.name));
         query.close();
     }
@@ -86,6 +86,13 @@ public class BasicsTest extends AbstractJDOTest {
         assertEquals("list", 1, query().from(book).list(book).size());
         assertEquals("eq", 1, query(product, product.name.eq("Sony Discman")).size());
         assertEquals("instanceof ", 1, query(product,product.instanceOf(Book.class)).size());
+    }
+    
+    @Test
+    public void detachedResults(){
+        for (Product p : detachedQuery().from(product).list(product)){
+            System.out.println(p);
+        }
     }
 
     @Test

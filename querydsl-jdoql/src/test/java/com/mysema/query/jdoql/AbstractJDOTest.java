@@ -34,7 +34,11 @@ public abstract class AbstractJDOTest {
     protected Transaction tx;
 
     protected JDOQLQuery query() {
-        return new JDOQLQueryImpl(pm, templates);
+        return new JDOQLQueryImpl(pm, templates, false);
+    }
+    
+    protected JDOQLQuery detachedQuery() {
+        return new JDOQLQueryImpl(pm, templates, true);
     }
 
     protected JDOQLSubQuery sub(){
