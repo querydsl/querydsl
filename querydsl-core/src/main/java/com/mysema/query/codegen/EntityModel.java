@@ -24,6 +24,7 @@ import com.mysema.commons.lang.Assert;
  * @author tiwe
  * @version $Id$
  */
+// TODO : rename this
 public final class EntityModel extends TypeModelAdapter implements Comparable<EntityModel> {
     
     private final Set<ConstructorModel> constructors = new HashSet<ConstructorModel>();
