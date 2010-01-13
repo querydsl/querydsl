@@ -15,6 +15,12 @@ import java.sql.Connection;
  */
 public class SQLQueryImpl extends AbstractSQLQuery<SQLQueryImpl> implements SQLQuery{
 
+    /**
+     * Create a neq SQLQueryImpl instance
+     * 
+     * @param conn Connection to use
+     * @param templates SQLTemplates to use
+     */
     public SQLQueryImpl(Connection conn, SQLTemplates templates) {
         super(conn, templates);
     }
