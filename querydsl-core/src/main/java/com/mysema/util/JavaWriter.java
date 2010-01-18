@@ -125,6 +125,16 @@ public class JavaWriter implements Appendable, CodeWriter{
         }
         return line(" */");
     }
+    
+
+    @Override
+    public CodeWriter beginLine(String... segments) throws IOException {
+        append(indent);
+        for (String segment : segments){
+            append(segment);
+        }
+        return this;
+    }
 
     public CodeWriter line(String... segments) throws IOException{
         append(indent);
@@ -210,5 +220,6 @@ public class JavaWriter implements Appendable, CodeWriter{
         }
         return builder.toString();
     }
+
 
 }

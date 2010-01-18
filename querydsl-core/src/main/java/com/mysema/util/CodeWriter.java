@@ -28,6 +28,8 @@ public interface CodeWriter extends Appendable{
 
     <T> CodeWriter beginStaticMethod(String type, String name, Collection<T> params, Transformer<T, String> transformer) throws IOException;
     
+    CodeWriter beginLine(String... segments) throws IOException;
+    
     CodeWriter end() throws IOException;
 
     CodeWriter imports(Class<?>... imports) throws IOException;

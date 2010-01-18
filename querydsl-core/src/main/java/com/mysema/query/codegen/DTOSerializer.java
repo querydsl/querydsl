@@ -74,7 +74,7 @@ public class DTOSerializer implements Serializer{
             });            
             
             // body
-            writer.append("        super(" + localName + ".class");
+            writer.beginLine("super(" + localName + ".class");
             writer.append(", new Class[]{");
             boolean first = true;
             for (ParameterModel p : c.getParameters()){

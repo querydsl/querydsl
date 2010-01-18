@@ -233,7 +233,7 @@ public class EntitySerializer implements Serializer{
             });
             
             // body
-            writer.append("        return new EConstructor<" + genericName + ">(");
+            writer.beginLine("return new EConstructor<" + genericName + ">(");
             if (!localName.equals(genericName)){
                 writer.append("(Class)");
             }
@@ -356,7 +356,7 @@ public class EntitySerializer implements Serializer{
         
         // body start
         String customClass = typeMappings.getCustomType(method.getReturnType(), model, true);        
-        writer.append("        return " + customClass + ".create(");
+        writer.beginLine("return " + customClass + ".create(");
         String fullName = method.getReturnType().getFullName();
         if (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName())){
             method.getReturnType().getLocalRawName(model, writer);
