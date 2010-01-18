@@ -147,12 +147,12 @@ public final class ElementHandler{
         Map<String,TypeCategory> types = new HashMap<String,TypeCategory>();
         
         // constructors
-        if (config.isVisitConstructors()){
+        if (config.visitConstructors()){
             handleConstructors(entityModel, elements);    
         }          
         
         // fields
-        if (config.isVisitFields()){
+        if (config.visitFieldProperties()){
             for (VariableElement field : ElementFilter.fieldsIn(elements)){
                 String name = field.getSimpleName().toString();
                 if (configuration.isValidField(field)){
@@ -165,30 +165,28 @@ public final class ElementHandler{
         }
         
         // methods
-        if (config.isVisitMethods()){
-            for (ExecutableElement method : ElementFilter.methodsIn(elements)){
-                if (method.getAnnotation(QueryMethod.class) != null){
-                    handleQueryMethod(entityModel, method, queryMethods);
-                    
+        for (ExecutableElement method : ElementFilter.methodsIn(elements)){
+            if (method.getAnnotation(QueryMethod.class) != null){
+                handleQueryMethod(entityModel, method, queryMethods);
+                
+            }else if (config.visitMethodProperties()){
+                String name = method.getSimpleName().toString();
+                if (name.startsWith("get") && method.getParameters().isEmpty()){
+                    name = StringUtils.uncapitalize(name.substring(3));
+                }else if (name.startsWith("is") && method.getParameters().isEmpty()){
+                    name = StringUtils.uncapitalize(name.substring(2));
                 }else{
-                    String name = method.getSimpleName().toString();
-                    if (name.startsWith("get") && method.getParameters().isEmpty()){
-                        name = StringUtils.uncapitalize(name.substring(3));
-                    }else if (name.startsWith("is") && method.getParameters().isEmpty()){
-                        name = StringUtils.uncapitalize(name.substring(2));
-                    }else{
-                        continue;
-                    }
-                    
-                    if (configuration.isValidGetter(method)){
-                        handleMethodProperty(entityModel, name, method, properties, blockedProperties, types);                    
-                    }else if (configuration.isBlockedGetter(method)){
-                        blockedProperties.add(name);
-                    }    
+                    continue;
                 }
                 
-            }   
-        }
+                if (configuration.isValidGetter(method)){
+                    handleMethodProperty(entityModel, name, method, properties, blockedProperties, types);                    
+                }else if (configuration.isBlockedGetter(method)){
+                    blockedProperties.add(name);
+                }    
+            }
+            
+        } 
                        
         for (Map.Entry<String, MethodModel> entry : queryMethods.entrySet()){
             entityModel.addMethod(entry.getValue());

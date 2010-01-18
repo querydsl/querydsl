@@ -1,5 +1,7 @@
 package com.mysema.query.domain;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
@@ -13,7 +15,7 @@ public class LiteralEntityTest {
     
     @Test
     public void test(){
-        // TODO
+        assertNotNull(QLiteralEntityTest_EnumEntity.enumEntity);
     }
 
 }

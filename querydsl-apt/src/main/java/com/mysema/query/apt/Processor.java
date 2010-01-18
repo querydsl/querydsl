@@ -56,6 +56,8 @@ public class Processor {
     
     private final Map<String, EntityModel> dtos = new HashMap<String, EntityModel>();
     
+    private final Map<String,EntityModel> extensionTypes = new HashMap<String,EntityModel>();
+    
     private final Map<String,EntityModel> embeddables = new HashMap<String,EntityModel>();
     
     private final EntityModelFactory entityModelFactory;
@@ -160,9 +162,15 @@ public class Processor {
         // dtos
         processDTOs();
         
+        // remove entity types from embeddables
+        for (String key : entityTypes.keySet()){
+            extensionTypes.remove(key);
+        }
+        
         // serialize models
         serialize(configuration.getSupertypeSerializer(), actualSupertypes);
         serialize(configuration.getEntitySerializer(), entityTypes);
+        serialize(configuration.getEmbeddableSerializer(), extensionTypes);
         serialize(configuration.getEmbeddableSerializer(), embeddables);
         serialize(configuration.getDTOSerializer(), dtos);
         
@@ -197,7 +205,7 @@ public class Processor {
         for (MethodModel method : queryMethods.values()){
             entityModel.addMethod(method);
         }
-        embeddables.put(entityModel.getFullName(), entityModel); 
+        extensionTypes.put(entityModel.getFullName(), entityModel); 
         
     }
 

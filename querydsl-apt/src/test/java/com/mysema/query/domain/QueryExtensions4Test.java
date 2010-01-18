@@ -1,12 +1,11 @@
 package com.mysema.query.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryMethod;
-import com.mysema.query.domain.QueryExtensions2Test.Point;
 import com.mysema.query.types.path.PNumber;
 
 public class QueryExtensions4Test {
@@ -38,12 +37,13 @@ public class QueryExtensions4Test {
     @QueryEntity
     public static class Entity{
         
-        Point point;
+        CustomNumber number;
     }
     
     @Test
-    public void test(){
+    public void test_CustomNumber_has_right_type(){
         assertEquals(PNumber.class, QQueryExtensions4Test_CustomNumber.class.getSuperclass());
+        assertEquals(PNumber.class, QQueryExtensions4Test_Entity.entity.number.getClass().getSuperclass());
     }
 
 }

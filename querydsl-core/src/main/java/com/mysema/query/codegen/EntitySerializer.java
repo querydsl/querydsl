@@ -18,6 +18,12 @@ import org.apache.commons.lang.StringEscapeUtils;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.custom.Custom;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.PComparable;
+import com.mysema.query.types.path.PDate;
+import com.mysema.query.types.path.PDateTime;
+import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.Path;
 import com.mysema.query.types.path.PathMetadataFactory;
 import com.mysema.util.CodeWriter;
@@ -184,19 +190,23 @@ public class EntitySerializer implements Serializer{
         }        
     }
 
+    @SuppressWarnings("unchecked")
     protected void introClassHeader(CodeWriter writer, EntityModel model) throws IOException {
         String queryType = typeMappings.getPathType(model, model, true);
         String localName = model.getLocalGenericName();
         
         TypeCategory category = model.getOriginalCategory();
-        String name;
+        Class<? extends Path> pathType;
         switch(category){
-            case COMPARABLE : name = "PComparable<" + localName +">"; break;
-            case NUMERIC: name = "PNumber<" + localName + ">"; break;
-            default : name = "PEntity<" + localName + ">";
+            case COMPARABLE : pathType = PComparable.class; break;
+            case DATE: pathType = PDate.class; break;
+            case DATETIME: pathType = PDateTime.class; break;
+            case TIME: pathType = PTime.class; break;
+            case NUMERIC: pathType = PNumber.class; break;
+            default : pathType = PEntity.class;
         }        
         writer.suppressWarnings("serial");        
-        writer.beginClass(queryType, name);
+        writer.beginClass(queryType, pathType.getSimpleName() + "<" + localName + ">");
     }
 
     protected void introDefaultInstance(CodeWriter writer, EntityModel model) throws IOException {

@@ -32,24 +32,24 @@ public enum VisitorConfig {
      */
     NONE(false,false);
     
-    private final boolean fields, methods;
+    private final boolean visitFieldProperties, visitMethodProperties;
     
     VisitorConfig(boolean fields, boolean methods){
-        this.fields = fields;
-        this.methods = methods;
+        this.visitFieldProperties = fields;
+        this.visitMethodProperties = methods;
     }
     
-    public boolean isVisitConstructors() {
+    public boolean visitConstructors() {
         // TODO : parametrize!
         return true;
     }
     
-    public boolean isVisitFields(){
-        return fields;
+    public boolean visitFieldProperties(){
+        return visitFieldProperties;
     }
 
-    public boolean isVisitMethods(){
-        return methods;
+    public boolean visitMethodProperties(){
+        return visitMethodProperties;
     }
     
 }

@@ -23,9 +23,8 @@ public class AnimalTest {
     }
     
     @Test
-    public void test(){
-        assertTrue("direct copy of PString field failed", 
-                QAnimalTest_Cat.cat.name == QAnimalTest_Cat.cat._super.name);
+    public void properties_are_copied_from_super(){
+        assertTrue("direct copy of PString field failed",  QAnimalTest_Cat.cat.name == QAnimalTest_Cat.cat._super.name);
         
     }
     

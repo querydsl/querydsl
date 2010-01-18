@@ -40,7 +40,8 @@ public class QueryExtensions3Test {
     }
     
     @Test
-    public void superClass(){
+    public void test_Point_has_right_type(){
         assertEquals(PComparable.class, QQueryExtensions3Test_Point.class.getSuperclass());
+        assertEquals(PComparable.class, QQueryExtensions3Test_Entity.entity.point.getClass().getSuperclass());
     }
 }

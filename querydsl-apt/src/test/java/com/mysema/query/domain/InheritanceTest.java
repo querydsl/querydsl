@@ -1,5 +1,7 @@
 package com.mysema.query.domain;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
@@ -7,35 +9,17 @@ import com.mysema.query.annotations.QueryEntity;
 public class InheritanceTest {
     
     @QueryEntity
-    public abstract class Entity{
-        
-    }
-    
-    @QueryEntity
-    public abstract class Party<A extends PartyRole> extends Entity{
-        
-    }
-        
-    @QueryEntity
-    public class Person extends Party<PersonRole>{
-        
-    }
-    
-    public interface PartyRole{
-        
-    }
-    
-    public interface PersonRole extends PartyRole{
-        
-    }
-    
-    @QueryEntity
     public abstract class BobbinGenOperation<M extends FlexPlasticFilm> extends Operation<M>{
         
     }
     
     @QueryEntity
-    public abstract class Operation<M extends Merchandise> extends Entity{
+    public abstract class Entity{
+        
+    }
+        
+    @QueryEntity
+    public abstract class FlexPlastic extends Storable{
         
     }
     
@@ -45,20 +29,38 @@ public class InheritanceTest {
     }
     
     @QueryEntity
-    public abstract class FlexPlastic extends Storable{
-        
-    }
-    
-    public abstract class Storable extends Merchandise{
-        
-    }
-    
-    @QueryEntity
     public abstract class Merchandise extends Entity implements UnitConversionSupporter{
         
     }
     
+    @QueryEntity
+    public abstract class Operation<M extends Merchandise> extends Entity{
+        
+    }
+    
+    @QueryEntity
+    public abstract class Party<A extends PartyRole> extends Entity{
+        
+    }
+    
+    public interface PartyRole{
+        
+    }
+    
+    @QueryEntity
+    public class Person extends Party<PersonRole>{
+        
+    }
+    
+    public interface PersonRole extends PartyRole{
+        
+    }
+    
     public interface Rimmable{
+        
+    }
+    
+    public abstract class Storable extends Merchandise{
         
     }
     
@@ -68,7 +70,16 @@ public class InheritanceTest {
     
     @Test
     public void test(){
-        // TODO
+        assertNotNull(QInheritanceTest_BobbinGenOperation.bobbinGenOperation);
+        assertNotNull(QInheritanceTest_Entity.entity);
+        assertNotNull(QInheritanceTest_FlexPlastic.flexPlastic);
+        assertNotNull(QInheritanceTest_FlexPlasticFilm.flexPlasticFilm);
+        assertNotNull(QInheritanceTest_Merchandise.merchandise);
+        assertNotNull(QInheritanceTest_Operation.operation);
+        assertNotNull(QInheritanceTest_Party.party);
+        assertNotNull(QInheritanceTest_Person.person);
+        
+        
     }
 
 }

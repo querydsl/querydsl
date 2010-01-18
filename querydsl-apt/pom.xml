@@ -61,17 +61,7 @@
         <configuration>
           <outputDirectory>target/generated-test-sources/java</outputDirectory>
         </configuration>
-        <executions>
-          <execution>
-            <id>qd</id>
-            <phase>generate-test-sources</phase>
-            <goals>
-              <goal>test-process</goal>
-            </goals>
-            <configuration>
-              <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
-            </configuration>
-          </execution>
+        <executions>          
           <execution>
             <id>jpa</id>
             <phase>generate-test-sources</phase>
@@ -92,6 +82,16 @@
               <processor>com.mysema.query.apt.jdo.JDOAnnotationProcessor</processor>
             </configuration>
           </execution>
+          <execution>
+            <id>qd</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>test-process</goal>
+            </goals>
+            <configuration>
+              <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+            </configuration>
+          </execution>          
         </executions>
       </plugin>
       <plugin>

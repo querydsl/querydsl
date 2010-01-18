@@ -14,7 +14,7 @@ public class AnnotatedGettersTest {
     }
     
     @Test
-    public void test(){
+    public void annotated_getter_is_supported(){
         assertNotNull(QAnnotatedGettersTest_Entity.entity.name);
     }
 
