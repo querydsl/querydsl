@@ -5,6 +5,7 @@
  */
 package com.mysema.query.apt;
 
+import java.io.IOException;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
@@ -33,12 +35,15 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.QueryExtensions;
 import com.mysema.query.annotations.QueryMethod;
 import com.mysema.query.annotations.QueryProjection;
+import com.mysema.query.annotations.QuerydslVariables;
 import com.mysema.query.codegen.EntityModel;
 import com.mysema.query.codegen.EntityModelFactory;
 import com.mysema.query.codegen.MethodModel;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
+import com.mysema.query.codegen.TypeMappings;
 import com.mysema.query.codegen.TypeModelFactory;
+import com.mysema.util.JavaWriter;
 
 /**
  * Processor handles the actual work in the Querydsl APT module
@@ -174,6 +179,20 @@ public class Processor {
         serialize(configuration.getEmbeddableSerializer(), embeddables);
         serialize(configuration.getDTOSerializer(), dtos);
         
+        // serialize variable classes
+        for (Element element : roundEnv.getElementsAnnotatedWith(QuerydslVariables.class)){
+            if (element instanceof PackageElement){
+                QuerydslVariables vars = element.getAnnotation(QuerydslVariables.class);
+                PackageElement packageElement = (PackageElement)element;
+                List<EntityModel> models = new ArrayList<EntityModel>();
+                for (EntityModel model : entityTypes.values()){
+                    if (model.getPackageName().equals(packageElement.getQualifiedName().toString())){
+                        models.add(model);
+                    }
+                }
+                serializeVariableList(packageElement.getQualifiedName().toString(), vars.value(), models);
+            }
+        }        
     }
 
 
@@ -285,6 +304,33 @@ public class Processor {
         } catch (ClassNotFoundException e) {
             return null;
         }
+    }
+
+    private void serializeVariableList(String packageName, String localName, List<EntityModel> models){
+        String className = packageName + "." + localName;
+        TypeMappings typeMappings = configuration.getTypeMappings();             
+        try{
+            JavaFileObject fileObject = env.getFiler().createSourceFile(className);
+            Writer w = fileObject.openWriter();   
+            try{
+                JavaWriter writer = new JavaWriter(w);
+                writer.packageDecl(packageName);
+                writer.nl();
+                writer.beginClass(localName, null);
+                for (EntityModel model : models){
+                    String queryType = typeMappings.getPathType(model, model, true);          
+                    String simpleName = model.getUncapSimpleName();
+                    writer.publicStaticFinal(queryType, simpleName, "new " + queryType + "(\"" + simpleName + "\")");
+                }
+                writer.end();
+            }finally{
+                w.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            env.getMessager().printMessage(Kind.ERROR, e.getMessage());
+        }
+
     }
 
     private void serialize(Serializer serializer, Map<String, EntityModel> models) {
