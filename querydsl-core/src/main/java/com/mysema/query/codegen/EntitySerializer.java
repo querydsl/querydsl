@@ -142,9 +142,7 @@ public class EntitySerializer implements Serializer{
         return false;
     }
 
-    protected void initEntityFields(JavaWriter writer, SerializerConfig config, EntityModel model) throws IOException {
-        // TODO : to CodeWriter DSL
-        
+    protected void initEntityFields(JavaWriter writer, SerializerConfig config, EntityModel model) throws IOException {        
         EntityModel superModel = model.getSuperModel();
         if (superModel != null && superModel.hasEntityFields()){
             String superQueryType = typeMappings.getPathType(superModel, model, false);
@@ -155,14 +153,11 @@ public class EntitySerializer implements Serializer{
             if (field.getType().getCategory() == TypeCategory.ENTITY){
                 String queryType = typeMappings.getPathType(field.getType(), model, false);                               
                 if (!field.isInherited()){          
-//                    writer.line(
-                    writer.append("        this." + field.getEscapedName() + " = ");
-                    writer.append("inits.isInitialized(\""+field.getName()+"\") ? ");
-                    writer.append("new " + queryType + "(forProperty(\"" + field.getName() + "\")");
-                    if (field.getType().hasEntityFields()){
-                        writer.append(", inits.get(\""+field.getName()+"\")");    
-                    }
-                    writer.append(") : null;\n");
+                    writer.line("this." + field.getEscapedName() + " = ",
+                        "inits.isInitialized(\""+field.getName()+"\") ? ",
+                        "new " + queryType + "(forProperty(\"" + field.getName() + "\")",
+                        field.getType().hasEntityFields() ? (", inits.get(\""+field.getName()+"\")") : "",
+                        ") : null;");
                 }else if (!config.useEntityAccessors()){
                     writer.line("this." + field.getEscapedName() + " = ", "_super." + field.getEscapedName() +";");
                 }   
@@ -193,8 +188,15 @@ public class EntitySerializer implements Serializer{
         String queryType = typeMappings.getPathType(model, model, true);
         String localName = model.getLocalGenericName();
         
-        writer.suppressWarnings("serial");
-        writer.beginClass(queryType, "PEntity<" + localName + ">");
+        TypeCategory category = model.getOriginalCategory();
+        String name;
+        switch(category){
+            case COMPARABLE : name = "PComparable<" + localName +">"; break;
+            case NUMERIC: name = "PNumber<" + localName + ">"; break;
+            default : name = "PEntity<" + localName + ">";
+        }        
+        writer.suppressWarnings("serial");        
+        writer.beginClass(queryType, name);
     }
 
     protected void introDefaultInstance(CodeWriter writer, EntityModel model) throws IOException {

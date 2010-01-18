@@ -190,7 +190,9 @@ public class Processor {
         // handle methods
         Map<String,MethodModel> queryMethods = new HashMap<String,MethodModel>();
         for (ExecutableElement method : ElementFilter.methodsIn(element.getEnclosedElements())){
-            entityVisitor.handleQueryMethod(entityModel, method, queryMethods);
+            if (method.getAnnotation(QueryMethod.class) != null){
+                entityVisitor.handleQueryMethod(entityModel, method, queryMethods);    
+            }            
         }            
         for (MethodModel method : queryMethods.values()){
             entityModel.addMethod(method);

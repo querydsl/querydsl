@@ -30,13 +30,13 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.WildcardType;
 
-import com.mysema.query.codegen.ClassTypeModel;
 import com.mysema.query.codegen.EntityModel;
 import com.mysema.query.codegen.SimpleTypeModel;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeExtendsModel;
 import com.mysema.query.codegen.TypeModel;
 import com.mysema.query.codegen.TypeModelFactory;
+import com.mysema.query.codegen.TypeModels;
 import com.mysema.query.codegen.TypeSuperModel;
 import com.mysema.query.util.TypeUtil;
 
@@ -338,14 +338,14 @@ public class APTTypeModelFactory {
         }else if (type instanceof PrimitiveType){
             PrimitiveType t = (PrimitiveType)type;
             switch (t.getKind()) {
-            case BOOLEAN: return ClassTypeModel.BOOLEAN;
-            case BYTE: return ClassTypeModel.BYTE;
-            case CHAR: return ClassTypeModel.CHAR;
-            case DOUBLE: return ClassTypeModel.DOUBLE;
-            case FLOAT: return ClassTypeModel.FLOAT;
-            case INT: return ClassTypeModel.INT;
-            case LONG: return ClassTypeModel.LONG;
-            case SHORT: return ClassTypeModel.SHORT;
+            case BOOLEAN: return TypeModels.BOOLEAN;
+            case BYTE: return TypeModels.BYTE;
+            case CHAR: return TypeModels.CHAR;
+            case DOUBLE: return TypeModels.DOUBLE;
+            case FLOAT: return TypeModels.FLOAT;
+            case INT: return TypeModels.INT;
+            case LONG: return TypeModels.LONG;
+            case SHORT: return TypeModels.SHORT;
             }
             throw new IllegalArgumentException("Unsupported type " + t.getKind());
 
