@@ -13,6 +13,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
+ * QuerydslVariables defines that a Variables class or interface is to be serialized into the host package.
+ * The type will contain public static final constants for the entity types of the package.
+ * 
  * @author tiwe
  *
  */
@@ -22,11 +25,15 @@ import java.lang.annotation.Target;
 public @interface QuerydslVariables {
     
     /**
+     * Simple name of the variables class
+     * 
      * @return
      */
     String  value() default "Variables";
     
     /**
+     * Generate interface instead of class
+     * 
      * @return
      */
     boolean asInterface() default false;

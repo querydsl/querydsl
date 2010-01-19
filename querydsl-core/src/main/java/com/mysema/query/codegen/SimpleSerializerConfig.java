@@ -13,21 +13,27 @@ import com.mysema.query.annotations.QuerydslConfig;
  */
 public class SimpleSerializerConfig implements SerializerConfig{
     
-    public static final SerializerConfig DEFAULT = new SimpleSerializerConfig(false, false, false);
+    public static final SerializerConfig DEFAULT = new SimpleSerializerConfig(false, false, false, true);
 
     public static SerializerConfig getConfig(QuerydslConfig annotation){
         return new SimpleSerializerConfig(
                 annotation.entityAccessors(), 
                 annotation.listAccessors(), 
-                annotation.mapAccessors());
+                annotation.mapAccessors(),
+                annotation.createDefaultVariable());
     }
     
-    private final boolean entityAccessors, listAccessors, mapAccessors;
+    private final boolean entityAccessors, listAccessors, mapAccessors, createDefaultVariable;
     
-    private SimpleSerializerConfig(boolean entityAccessors, boolean listAccessors, boolean mapAccessors){
+    private SimpleSerializerConfig(
+            boolean entityAccessors, 
+            boolean listAccessors,
+            boolean mapAccessors,
+            boolean createDefaultVariable){
         this.entityAccessors = entityAccessors;
         this.listAccessors = listAccessors;
         this.mapAccessors = mapAccessors;
+        this.createDefaultVariable = createDefaultVariable;
     }
 
     @Override
@@ -44,5 +50,12 @@ public class SimpleSerializerConfig implements SerializerConfig{
     public boolean useMapAccessors() {
         return mapAccessors;
     }
+
+    @Override
+    public boolean createDefaultVariable() {
+        return createDefaultVariable;
+    }
+    
+    
 
 }

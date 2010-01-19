@@ -1,6 +1,6 @@
 package com.mysema.query.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
@@ -17,6 +17,7 @@ public class QuerydslConfig2Test {
         
     }
     
+    @QuerydslConfig(createDefaultVariable=false)
     @QueryEntity
     public static class Entity2 extends Superclass2{
         
@@ -40,6 +41,11 @@ public class QuerydslConfig2Test {
     @Test
     public void test(){
         assertNotNull(QQuerydslConfig2Test_Entity.entity);
-        assertNotNull(QQuerydslConfig2Test_Entity2.entity2);
+    }
+    
+    @Test(expected=NoSuchFieldException.class)
+    public void createDefaultVariable() throws SecurityException, NoSuchFieldException{
+        QQuerydslConfig2Test_Entity2.class.getField("entity2");
     }
 }
+    

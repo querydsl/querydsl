@@ -53,7 +53,7 @@ public class JavaWriter implements Appendable, CodeWriter{
         if (interfaces.length > 0){
             append(" implements ").params(interfaces);
         }
-        append("{\n\n");
+        append(" {\n\n");
         goIn();
         
         type = simpleName;
@@ -61,13 +61,13 @@ public class JavaWriter implements Appendable, CodeWriter{
         return this;
     }
 
-    public <T> CodeWriter  beginConstructor(Collection<T> parameters, Transformer<T,String> transformer) throws IOException {
-        append(indent + "public " + type + "(").params(parameters, transformer).append("){\n");
+    public <T> CodeWriter beginConstructor(Collection<T> parameters, Transformer<T,String> transformer) throws IOException {
+        append(indent + "public " + type + "(").params(parameters, transformer).append(") {\n");
         return goIn();        
     }
 
     public CodeWriter beginConstructor(String... parameters) throws IOException{
-        append(indent + "public " + type + "(").params(parameters).append("){\n");
+        append(indent + "public " + type + "(").params(parameters).append(") {\n");
         return goIn();
     }
  
@@ -76,7 +76,7 @@ public class JavaWriter implements Appendable, CodeWriter{
         if (interfaces.length > 0){
             append(" extends ").params(interfaces);
         }
-        append("{\n\n");
+        append(" {\n\n");
         goIn();
         
         type = simpleName;
@@ -95,17 +95,17 @@ public class JavaWriter implements Appendable, CodeWriter{
     }
     
     public <T> CodeWriter beginMethod(String returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException {
-        append(indent + "public " + returnType + " " + methodName + "(").params(parameters, transformer).append("){\n");
+        append(indent + "public " + returnType + " " + methodName + "(").params(parameters, transformer).append(") {\n");
         return goIn();
     }
  
     public CodeWriter beginMethod(String returnType, String methodName, String... args) throws IOException{
-        append(indent + "public " + returnType + " " + methodName + "(").params(args).append("){\n");
+        append(indent + "public " + returnType + " " + methodName + "(").params(args).append(") {\n");
         return goIn();
     }
     
     public <T> CodeWriter beginStaticMethod(String returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException {
-        append(indent + "public static " + returnType + " " + methodName + "(").params(parameters, transformer).append("){\n");
+        append(indent + "public static " + returnType + " " + methodName + "(").params(parameters, transformer).append(") {\n");
         return goIn();        
     }
     

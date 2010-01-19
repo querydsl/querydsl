@@ -16,5 +16,7 @@ public interface SerializerConfig {
     boolean useListAccessors();
     
     boolean useMapAccessors();
+    
+    boolean createDefaultVariable();
 
 }

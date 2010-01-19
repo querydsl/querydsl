@@ -184,7 +184,9 @@ public class EntitySerializer implements Serializer{
         
         introFactoryMethods(writer, model);   
         introInits(writer, model);
-        introDefaultInstance(writer, model);   
+        if (config.createDefaultVariable()){
+            introDefaultInstance(writer, model);    
+        }           
         if (model.getSuperModel() != null){
             introSuper(writer, model);    
         }        

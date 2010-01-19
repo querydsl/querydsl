@@ -43,5 +43,12 @@ public @interface QuerydslConfig {
      * @return
      */
     boolean mapAccessors() default false;
+    
+    /**
+     * Create default variable in query type
+     * 
+     * @return
+     */
+    boolean createDefaultVariable() default true;
 
 }
