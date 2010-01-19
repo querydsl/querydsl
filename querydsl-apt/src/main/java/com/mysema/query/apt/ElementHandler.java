@@ -142,9 +142,9 @@ public final class ElementHandler{
         VisitorConfig config = configuration.getConfig(e, elements);
         
         Set<String> blockedProperties = new HashSet<String>();
-        Map<String,PropertyModel> properties = new HashMap<String,PropertyModel>();
-        Map<String,MethodModel> queryMethods = new HashMap<String,MethodModel>();
+        Map<String,PropertyModel> properties = new HashMap<String,PropertyModel>();        
         Map<String,TypeCategory> types = new HashMap<String,TypeCategory>();
+        Set<MethodModel> queryMethods = new HashSet<MethodModel>();
         
         // constructors
         if (config.visitConstructors()){
@@ -188,8 +188,8 @@ public final class ElementHandler{
             
         } 
                        
-        for (Map.Entry<String, MethodModel> entry : queryMethods.entrySet()){
-            entityModel.addMethod(entry.getValue());
+        for (MethodModel entry : queryMethods){
+            entityModel.addMethod(entry);
         }
         
         for (Map.Entry<String,PropertyModel> entry : properties.entrySet()){
@@ -209,12 +209,12 @@ public final class ElementHandler{
         return entityModel;
     }
     
-    public void handleQueryMethod(EntityModel entityModel, ExecutableElement method, Map<String,MethodModel> queryMethods) {
+    public void handleQueryMethod(EntityModel entityModel, ExecutableElement method, Set<MethodModel> queryMethods) {
         String name = method.getSimpleName().toString();
         QueryMethod queryMethod = method.getAnnotation(QueryMethod.class);
         TypeModel returnType = typeFactory.create(method.getReturnType());
         MethodModel methodModel = new MethodModel(entityModel, name, queryMethod.value(), transformParams(method.getParameters()), returnType);        
-        queryMethods.put(name, methodModel);
+        queryMethods.add(methodModel);
     }
 
     private List<ParameterModel> transformParams(List<? extends VariableElement> params){

@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryExtensions;
 import com.mysema.query.annotations.QueryMethod;
+import com.mysema.query.types.expr.EStringConst;
 
 public class QueryExtensions5Test {
     
@@ -17,6 +18,11 @@ public class QueryExtensions5Test {
         
         @QueryMethod("{0}.method()")
         public int method(){
+            return 0;
+        }
+        
+        @QueryMethod("{0}.method({1})")
+        public int method(CharSequence arg){
             return 0;
         }
         
@@ -34,15 +40,23 @@ public class QueryExtensions5Test {
         
         @QueryMethod("{0}.method()")
         public int method();
+        
+        @QueryMethod("{0}.method()")
+        public int method(CharSequence str);
+        
+        @QueryMethod("{0}.method()")
+        public int method(String str);
     }
     
     @Test
     public void test_prop_and_method_available(){
         assertNotNull(QQueryExtensions5Test_Entity.entity.prop);
         assertNotNull(QQueryExtensions5Test_Entity.entity.method());
+        assertNotNull(QQueryExtensions5Test_Entity.entity.method(EStringConst.create("")));
         
         assertNotNull(QQueryExtensions5Test_Entity2.entity2.prop);
         assertNotNull(QQueryExtensions5Test_Entity2.entity2.method());
+        assertNotNull(QQueryExtensions5Test_Entity2.entity2.method(EStringConst.create("")));
     }
 
 }

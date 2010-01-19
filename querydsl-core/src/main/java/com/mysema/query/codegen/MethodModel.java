@@ -63,6 +63,6 @@ public class MethodModel {
 
     @Override
     public int hashCode() {
-        return parameters.hashCode();
+        return name.hashCode();
     }
 }

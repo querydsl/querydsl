@@ -17,6 +17,8 @@ import org.apache.commons.collections15.Transformer;
 public interface CodeWriter extends Appendable{
     
     CodeWriter beginClass(String simpleName, String superClass, String... interfaces) throws IOException;
+
+    CodeWriter beginInterface(String simpleName, String... interfaces) throws IOException;
     
     <T> CodeWriter beginConstructor(Collection<T> params, Transformer<T, String> transformer) throws IOException;
 

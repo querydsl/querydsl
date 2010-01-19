@@ -350,7 +350,7 @@ public class EntitySerializer implements Serializer{
         writer.beginMethod(type, method.getName(), method.getParameters(), new Transformer<ParameterModel,String>(){
             @Override
             public String transform(ParameterModel p) {
-                return typeMappings.getExprType(p.getType(), model, false) + " " + p.getName();
+                return typeMappings.getExprType(p.getType(), model, false, false, true) + " " + p.getName();
             }            
         });
         

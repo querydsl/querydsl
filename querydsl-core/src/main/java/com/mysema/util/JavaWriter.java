@@ -19,7 +19,7 @@ public class JavaWriter implements Appendable, CodeWriter{
     
     private final Appendable appendable;
     
-    private String clazz;
+    private String type;
     
     private String indent = "";
     
@@ -56,18 +56,46 @@ public class JavaWriter implements Appendable, CodeWriter{
         append("{\n\n");
         goIn();
         
-        clazz = simpleName;
-        if (clazz.contains("<")) clazz = clazz.substring(0, clazz.indexOf('<'));
+        type = simpleName;
+        if (type.contains("<")) type = type.substring(0, type.indexOf('<'));
         return this;
     }
 
     public <T> CodeWriter  beginConstructor(Collection<T> parameters, Transformer<T,String> transformer) throws IOException {
-        append(indent + "public " + clazz + "(").params(parameters, transformer).append("){\n");
+        append(indent + "public " + type + "(").params(parameters, transformer).append("){\n");
         return goIn();        
     }
 
     public CodeWriter beginConstructor(String... parameters) throws IOException{
-        append(indent + "public " + clazz + "(").params(parameters).append("){\n");
+        append(indent + "public " + type + "(").params(parameters).append("){\n");
+        return goIn();
+    }
+ 
+    public CodeWriter beginInterface(String simpleName, String... interfaces) throws IOException {
+        append(indent + "public interface " + simpleName);
+        if (interfaces.length > 0){
+            append(" extends ").params(interfaces);
+        }
+        append("{\n\n");
+        goIn();
+        
+        type = simpleName;
+        if (type.contains("<")) type = type.substring(0, type.indexOf('<'));
+        return this;
+        
+    }
+    
+    @Override
+    public CodeWriter beginLine(String... segments) throws IOException {
+        append(indent);
+        for (String segment : segments){
+            append(segment);
+        }
+        return this;
+    }
+    
+    public <T> CodeWriter beginMethod(String returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException {
+        append(indent + "public " + returnType + " " + methodName + "(").params(parameters, transformer).append("){\n");
         return goIn();
     }
  
@@ -76,33 +104,28 @@ public class JavaWriter implements Appendable, CodeWriter{
         return goIn();
     }
     
-    public <T> CodeWriter beginMethod(String returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException {
-        append(indent + "public " + returnType + " " + methodName + "(").params(parameters, transformer).append("){\n");
-        return goIn();
-    }
-    
     public <T> CodeWriter beginStaticMethod(String returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException {
         append(indent + "public static " + returnType + " " + methodName + "(").params(parameters, transformer).append("){\n");
         return goIn();        
     }
- 
+    
     public CodeWriter end() throws IOException{
         goOut();
         return line("}\n");
     }
-    
+
     private CodeWriter goIn(){
         indent += "    ";
         return this;
     }
-    
+
     private CodeWriter goOut(){
         if (indent.length() >= 4){
             indent = indent.substring(0, indent.length() - 4);
         }
         return this;
     }
-
+ 
     public CodeWriter imports(Class<?>... imports) throws IOException{
         for (Class<?> cl : imports) line("import " + cl.getName() + ";");
         return this;
@@ -112,11 +135,7 @@ public class JavaWriter implements Appendable, CodeWriter{
         for (Package p : imports) line("import " + p.getName() + ".*;");
         return this;
     }
- 
-    public CodeWriter staticimports(Class<?>... imports) throws IOException{
-        for (Class<?> cl : imports) line("import static " + cl.getName() + ".*;");
-        return this;
-    }
+    
 
     public CodeWriter javadoc(String... lines) throws IOException {
         line("/**");
@@ -125,15 +144,20 @@ public class JavaWriter implements Appendable, CodeWriter{
         }
         return line(" */");
     }
-    
 
-    @Override
-    public CodeWriter beginLine(String... segments) throws IOException {
-        append(indent);
-        for (String segment : segments){
-            append(segment);
+    public String join(String prefix, String suffix, Iterable<String> args) {
+        StringBuilder builder = new StringBuilder();
+        boolean first = true;
+        for (String arg : args){
+            if (!first) builder.append(", ");
+            builder.append(prefix).append(arg).append(suffix);
+            first = false;
         }
-        return this;
+        return builder.toString();
+    }
+    
+    public String join(String prefix, String suffix, String... args) {
+        return join(prefix, suffix, Arrays.asList(args));
     }
 
     public CodeWriter line(String... segments) throws IOException{
@@ -143,14 +167,14 @@ public class JavaWriter implements Appendable, CodeWriter{
         }        
         return append("\n");
     }
-    
+
     public CodeWriter lines(String... lines) throws IOException{
         for (String line : lines){
             line(line);
         }
         return this;
     }
-
+    
     public CodeWriter nl() throws IOException {
         return append("\n");        
     }
@@ -158,13 +182,13 @@ public class JavaWriter implements Appendable, CodeWriter{
     public CodeWriter packageDecl(String packageName) throws IOException{
         return line("package " + packageName + ";");
     }
-    
+
     private <T> CodeWriter params(Collection<T> parameters, Transformer<T,String> transformer) throws IOException{
         boolean first = true;
         for (T param : parameters){
             if (!first) append(", ");
             append(transformer.transform(param));
-            first= false;
+            first = false;
         }
         return this;
     }
@@ -202,23 +226,13 @@ public class JavaWriter implements Appendable, CodeWriter{
         return nl();        
     }
 
+    public CodeWriter staticimports(Class<?>... imports) throws IOException{
+        for (Class<?> cl : imports) line("import static " + cl.getName() + ".*;");
+        return this;
+    }
+
     public CodeWriter suppressWarnings(String type) throws IOException{
         return line("@SuppressWarnings(\"" + type +"\")");
-    }
-
-    public String join(String prefix, String suffix, String... args) {
-        return join(prefix, suffix, Arrays.asList(args));
-    }
-
-    public String join(String prefix, String suffix, Iterable<String> args) {
-        StringBuilder builder = new StringBuilder();
-        boolean first = true;
-        for (String arg : args){
-            if (!first) builder.append(", ");
-            builder.append(prefix).append(arg).append(suffix);
-            first = false;
-        }
-        return builder.toString();
     }
 
 

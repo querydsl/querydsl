@@ -5,7 +5,6 @@
  */
 package com.mysema.query.apt;
 
-import java.io.IOException;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -190,7 +189,7 @@ public class Processor {
                         models.add(model);
                     }
                 }
-                serializeVariableList(packageElement.getQualifiedName().toString(), vars.value(), models);
+                serializeVariableList(packageElement.getQualifiedName().toString(), vars, models);
             }
         }        
     }
@@ -215,13 +214,13 @@ public class Processor {
     private void handleExtensionType(TypeMirror type, Element element) {
         EntityModel entityModel = typeFactory.createEntityModel(type);
         // handle methods
-        Map<String,MethodModel> queryMethods = new HashMap<String,MethodModel>();
+        Set<MethodModel> queryMethods = new HashSet<MethodModel>();
         for (ExecutableElement method : ElementFilter.methodsIn(element.getEnclosedElements())){
             if (method.getAnnotation(QueryMethod.class) != null){
                 entityVisitor.handleQueryMethod(entityModel, method, queryMethods);    
             }            
         }            
-        for (MethodModel method : queryMethods.values()){
+        for (MethodModel method : queryMethods){
             entityModel.addMethod(method);
         }
         extensionTypes.put(entityModel.getFullName(), entityModel); 
@@ -306,8 +305,8 @@ public class Processor {
         }
     }
 
-    private void serializeVariableList(String packageName, String localName, List<EntityModel> models){
-        String className = packageName + "." + localName;
+    private void serializeVariableList(String packageName, QuerydslVariables vars, List<EntityModel> models){
+        String className = packageName + "." + vars.value();
         TypeMappings typeMappings = configuration.getTypeMappings();             
         try{
             JavaFileObject fileObject = env.getFiler().createSourceFile(className);
@@ -316,7 +315,11 @@ public class Processor {
                 JavaWriter writer = new JavaWriter(w);
                 writer.packageDecl(packageName);
                 writer.nl();
-                writer.beginClass(localName, null);
+                if (vars.asInterface()){
+                    writer.beginInterface(vars.value());
+                }else{
+                    writer.beginClass(vars.value(), null);    
+                }                
                 for (EntityModel model : models){
                     String queryType = typeMappings.getPathType(model, model, true);          
                     String simpleName = model.getUncapSimpleName();
