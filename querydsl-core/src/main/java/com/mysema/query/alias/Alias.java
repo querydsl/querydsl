@@ -144,7 +144,7 @@ public final class Alias {
     }
     
     public static <A> A alias(Class<A> cl) {
-        return aliasFactory.createAliasForVariable(cl, StringUtils.uncapitalize(cl.getSimpleName()));
+        return alias(cl, StringUtils.uncapitalize(cl.getSimpleName()));
     }
 
     public static <A> A alias(Class<A> cl, Expr<? extends A> expr) {

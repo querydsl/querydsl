@@ -6,6 +6,7 @@
 package com.mysema.query.alias;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
@@ -272,7 +273,11 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else {
             path = new PEntity<T>((Class<T>) type, pm);
-            rv = aliasFactory.createAliasForProperty(type, parent, path);
+            if (!Modifier.isFinal(type.getModifiers())){
+                rv = aliasFactory.createAliasForProperty(type, parent, path);    
+            }else{
+                rv = null;
+            }
         }
         propToObj.put(propKey, rv);
         propToExpr.put(propKey, path);
