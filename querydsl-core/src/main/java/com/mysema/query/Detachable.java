@@ -26,6 +26,13 @@ public interface Detachable {
     ObjectSubQuery<Long> count();
     
     /**
+     * Create an exists(this) expression
+     * 
+     * @return
+     */
+    EBoolean exists();
+    
+    /**
      * Create a projection expression for the given projection
      * 
      * @param first
@@ -35,7 +42,7 @@ public interface Detachable {
      * @return a List over the projection
      */
     ListSubQuery<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest);
-    
+
     /**
      * 
      * 
@@ -43,7 +50,7 @@ public interface Detachable {
      * @return
      */
     ListSubQuery<Object[]> list(Expr<?>[] args);
-
+    
     /**
      * Create a projection expression for the given projection
      * 
@@ -54,6 +61,13 @@ public interface Detachable {
      */
     <RT> ListSubQuery<RT> list(Expr<RT> projection);
     
+    /**
+     * Create an not exists(this) expression
+     * 
+     * @return
+     */
+    EBoolean notExists();
+
     /**
      * Create a projection expression for the given projection
      * 
@@ -80,20 +94,6 @@ public interface Detachable {
      * @param projection
      * @return the result or null for an empty result
      */
-    <RT> ObjectSubQuery<RT> unique(Expr<RT> projection);
-    
-    /**
-     * Create an exists(this) expression
-     * 
-     * @return
-     */
-    EBoolean exists();
-
-    /**
-     * Create an not exists(this) expression
-     * 
-     * @return
-     */
-    EBoolean notExists();  
+    <RT> ObjectSubQuery<RT> unique(Expr<RT> projection);  
 
 }

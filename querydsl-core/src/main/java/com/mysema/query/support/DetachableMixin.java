@@ -36,9 +36,11 @@ public class DetachableMixin implements Detachable{
     
 
     @Override
-    public ListSubQuery<Object[]> list(Expr<?>[] args) {
-        queryMixin.addToProjection(args);
-        return new ListSubQuery<Object[]>(queryMixin.getMetadata(), Object[].class);
+    public EBoolean exists(){
+        if (queryMixin.getMetadata().getJoins().isEmpty()){
+            throw new IllegalArgumentException("No sources given");
+        }
+        return unique(queryMixin.getMetadata().getJoins().get(0).getTarget()).exists();
     }
 
     @Override
@@ -48,19 +50,23 @@ public class DetachableMixin implements Detachable{
         return new ListSubQuery<Object[]>(queryMixin.getMetadata(), Object[].class);
     }
 
+    @Override
+    public ListSubQuery<Object[]> list(Expr<?>[] args) {
+        queryMixin.addToProjection(args);
+        return new ListSubQuery<Object[]>(queryMixin.getMetadata(), Object[].class);
+    }
+    
+
     @SuppressWarnings("unchecked")
     @Override
     public <RT> ListSubQuery<RT> list(Expr<RT> projection) {
         queryMixin.addToProjection(projection);
         return new ListSubQuery<RT>(queryMixin.getMetadata(), (Class)projection.getType());
     }
-    
 
     @Override
-    public ObjectSubQuery<Object[]> unique(Expr<?>[] args) {
-        queryMixin.addToProjection(args);
-        queryMixin.setUnique(true);
-        return new ObjectSubQuery<Object[]>(queryMixin.getMetadata(), Object[].class);
+    public EBoolean notExists(){        
+        return exists().not();
     }
 
     @Override
@@ -70,25 +76,19 @@ public class DetachableMixin implements Detachable{
         queryMixin.setUnique(true);
         return new ObjectSubQuery<Object[]>(queryMixin.getMetadata(), Object[].class);
     }
-
+    
+    @Override
+    public ObjectSubQuery<Object[]> unique(Expr<?>[] args) {
+        queryMixin.addToProjection(args);
+        queryMixin.setUnique(true);
+        return new ObjectSubQuery<Object[]>(queryMixin.getMetadata(), Object[].class);
+    }
+    
     @SuppressWarnings("unchecked")
     @Override
     public <RT> ObjectSubQuery<RT> unique(Expr<RT> projection) {
         queryMixin.addToProjection(projection);
         queryMixin.setUnique(true);
         return new ObjectSubQuery<RT>(queryMixin.getMetadata(), (Class)projection.getType());
-    }
-    
-    @Override
-    public EBoolean exists(){
-        if (queryMixin.getMetadata().getJoins().isEmpty()){
-            throw new IllegalArgumentException("No sources given");
-        }
-        return unique(queryMixin.getMetadata().getJoins().get(0).getTarget()).exists();
-    }
-    
-    @Override
-    public EBoolean notExists(){        
-        return exists().not();
     }
 }
