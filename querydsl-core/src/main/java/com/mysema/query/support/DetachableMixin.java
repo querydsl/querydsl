@@ -33,6 +33,13 @@ public class DetachableMixin implements Detachable{
         queryMixin.addToProjection(Ops.AggOps.COUNT_ALL_AGG_EXPR);
         return new ObjectSubQuery<Long>(queryMixin.getMetadata(), Long.class);
     }
+    
+
+    @Override
+    public ListSubQuery<Object[]> list(Expr<?>[] args) {
+        queryMixin.addToProjection(args);
+        return new ListSubQuery<Object[]>(queryMixin.getMetadata(), Object[].class);
+    }
 
     @Override
     public ListSubQuery<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest) {
@@ -46,6 +53,14 @@ public class DetachableMixin implements Detachable{
     public <RT> ListSubQuery<RT> list(Expr<RT> projection) {
         queryMixin.addToProjection(projection);
         return new ListSubQuery<RT>(queryMixin.getMetadata(), (Class)projection.getType());
+    }
+    
+
+    @Override
+    public ObjectSubQuery<Object[]> unique(Expr<?>[] args) {
+        queryMixin.addToProjection(args);
+        queryMixin.setUnique(true);
+        return new ObjectSubQuery<Object[]>(queryMixin.getMetadata(), Object[].class);
     }
 
     @Override

@@ -35,6 +35,14 @@ public interface Detachable {
      * @return a List over the projection
      */
     ListSubQuery<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest);
+    
+    /**
+     * 
+     * 
+     * @param args
+     * @return
+     */
+    ListSubQuery<Object[]> list(Expr<?>[] args);
 
     /**
      * Create a projection expression for the given projection
@@ -55,6 +63,14 @@ public interface Detachable {
      * @return
      */
     ObjectSubQuery<Object[]> unique(Expr<?> first, Expr<?> second, Expr<?>... rest);
+    
+    /**
+     * Create a projection expression for the given projection
+     * 
+     * @param args
+     * @return
+     */
+    ObjectSubQuery<Object[]> unique(Expr<?>[] args);
 
     /**
      * Create a projection expression for the given projection

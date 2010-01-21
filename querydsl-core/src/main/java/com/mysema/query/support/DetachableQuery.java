@@ -18,7 +18,7 @@ import com.mysema.query.types.query.ObjectSubQuery;
  *
  * @param <SubType>
  */
-public abstract class DetachableQuery <SubType extends DetachableQuery<SubType>> extends QueryBase<SubType> implements Detachable {
+public class DetachableQuery <SubType extends DetachableQuery<SubType>> extends QueryBase<SubType> implements Detachable {
 
     private final DetachableMixin detachableMixin;
     
@@ -60,6 +60,16 @@ public abstract class DetachableQuery <SubType extends DetachableQuery<SubType>>
     @Override
     public <RT> ObjectSubQuery<RT> unique(Expr<RT> projection) {
         return detachableMixin.unique(projection);
+    }
+
+    @Override
+    public ListSubQuery<Object[]> list(Expr<?>[] args) {
+        return detachableMixin.list(args);
+    }
+
+    @Override
+    public ObjectSubQuery<Object[]> unique(Expr<?>[] args) {
+        return detachableMixin.unique(args);
     }
 
 }
