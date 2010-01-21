@@ -84,6 +84,19 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
         logQuery(queryString);
         return createQuery(queryString, queryMixin.getMetadata().getModifiers());   
     }
+    
+    /**
+     * Expose the original Hibernate query for the given projection
+     * 
+     * @param args
+     * @return
+     */
+    public Query createQuery(Expr<?>[] args){
+        queryMixin.addToProjection(args);
+        String queryString = toQueryString();
+        logQuery(queryString);
+        return createQuery(queryString, queryMixin.getMetadata().getModifiers());   
+    }
 
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
         Query query = session.createQuery(queryString);
@@ -103,7 +116,7 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
         }
         return query;
     }
-    
+        
     /**
      * Return the query results as an <tt>Iterator</tt>. If the query
      * contains multiple results pre row, the results are returned in
@@ -113,8 +126,8 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
      * SQL query returns identifiers only.<br>
      */
     @SuppressWarnings("unchecked")
-    public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
-        return  createQuery(e1, e2, rest).iterate();
+    public Iterator<Object[]> iterate(Expr<?>[] args) {
+        return createQuery(args).iterate();
     }
 
     /**
@@ -131,8 +144,8 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     }
 
     @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
-        return createQuery(expr1, expr2, rest).list();
+    public List<Object[]> list(Expr<?>[] args) {
+        return createQuery(args).list();
     }
 
     @SuppressWarnings("unchecked")
@@ -189,6 +202,19 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
      */
     public ScrollableResults scroll(ScrollMode mode, Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
         return createQuery(expr1, expr2, rest).scroll(mode);
+    }
+    
+    /**
+     * Return the query results as <tt>ScrollableResults</tt>. The
+     * scrollability of the returned results depends upon JDBC driver
+     * support for scrollable <tt>ResultSet</tt>s.<br>
+     * 
+     * @param mode
+     * @param args
+     * @return
+     */
+    public ScrollableResults scroll(ScrollMode mode, Expr<?>[] args) {
+        return createQuery(args).scroll(mode);
     }
 
     /**

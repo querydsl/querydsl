@@ -33,9 +33,8 @@ class QueryHelper extends HQLQueryBase<QueryHelper> {
         return 0;
     }
 
-    @Nullable
-    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second,
-            Expr<?>... rest) {
+    @Override
+    public Iterator<Object[]> iterate(Expr<?>[] args) {
         return null;
     }
 
@@ -47,11 +46,6 @@ class QueryHelper extends HQLQueryBase<QueryHelper> {
     @Nullable
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
         return null;
-    }
-
-    public QueryHelper select(Expr<?>... exprs) {
-        queryMixin.addToProjection(exprs);
-        return this;
     }
 
     public void parse() throws RecognitionException, TokenStreamException {
@@ -70,5 +64,10 @@ class QueryHelper extends HQLQueryBase<QueryHelper> {
             // clear();
             System.out.println();
         }
+    }
+
+    public QueryHelper select(Expr<?>... exprs) {
+        queryMixin.addToProjection(exprs);
+        return this;
     }
 }

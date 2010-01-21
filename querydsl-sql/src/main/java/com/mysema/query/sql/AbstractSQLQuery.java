@@ -18,7 +18,6 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMixin;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -136,10 +135,10 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         return new UnionBuilder<RT>();
     }
 
-    public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
-        // TODO : optimize
-        return list(e1, e2, rest).iterator();
+    public Iterator<Object[]> iterate(Expr<?>[] args) {
+        return list(args).iterator();
     }
+    
 
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {
         // TODO : optimize
@@ -153,10 +152,9 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     public SubType leftJoin(PEntity<?> target) {
         return queryMixin.leftJoin(target);
     }
-
-    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
-        queryMixin.addToProjection(expr1, expr2);
-        queryMixin.addToProjection(rest);
+    
+    public List<Object[]> list(Expr<?>[] args) {
+        queryMixin.addToProjection(args);
         try {
             return listMultiple();
         } catch (SQLException e) {

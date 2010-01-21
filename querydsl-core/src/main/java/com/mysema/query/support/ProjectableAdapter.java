@@ -44,15 +44,25 @@ public class ProjectableAdapter implements Projectable {
     }
 
     @Override
+    public Iterator<Object[]> iterate(Expr<?>[] args) {
+        return projectable.iterate(args);
+    }
+
+    @Override
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {
         return projectable.iterate(projection);
     }
-
+    
     @Override
     public Iterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return projectable.iterateDistinct(first, second, rest);
     }
-    
+
+    @Override
+    public Iterator<Object[]> iterateDistinct(Expr<?>[] args) {
+        return projectable.iterateDistinct(args);
+    }
+
     @Override
     public <RT> Iterator<RT> iterateDistinct(Expr<RT> projection) {
         return projectable.iterateDistinct(projection);
@@ -64,6 +74,11 @@ public class ProjectableAdapter implements Projectable {
     }
 
     @Override
+    public List<Object[]> list(Expr<?>[] args) {
+        return projectable.list(args);
+    }
+    
+    @Override
     public <RT> List<RT> list(Expr<RT> projection) {
         return projectable.list(projection);
     }
@@ -74,10 +89,15 @@ public class ProjectableAdapter implements Projectable {
     }
 
     @Override
+    public List<Object[]> listDistinct(Expr<?>[] args) {
+        return projectable.listDistinct(args);
+    }
+    
+    @Override
     public <RT> List<RT> listDistinct(Expr<RT> projection) {
         return projectable.listDistinct(projection);
     }
-    
+
     @Override
     public <RT> SearchResults<RT> listDistinctResults(Expr<RT> expr) {
         return projectable.listDistinctResults(expr);
@@ -92,7 +112,7 @@ public class ProjectableAdapter implements Projectable {
     public <K, V> Map<K, V> map(Expr<K> key, Expr<V> value) {
         return projectable.map(key, value);
     }
-    
+
     public String toString() {
         return projectable.toString();
     }
@@ -100,6 +120,11 @@ public class ProjectableAdapter implements Projectable {
     @Override
     public Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return projectable.uniqueResult(first, second, rest);
+    }
+
+    @Override
+    public Object[] uniqueResult(Expr<?>[] args) {
+        return projectable.uniqueResult(args);
     }
 
     @Override

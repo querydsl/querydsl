@@ -89,8 +89,8 @@ public abstract class AbstractQueryTest {
         }
 
         @Override
-        public List<Object[]> list(Expr<?> p1, Expr<?> p2, Expr<?>... rest) {
-            List<Object[]> rv = super.list(p1, p2, rest);
+        public List<Object[]> list(Expr<?>[] args) {
+            List<Object[]> rv = super.list(args);
             for (Object[] o : rv) {
                 System.out.println(Arrays.asList(o));
                 res.add(o);

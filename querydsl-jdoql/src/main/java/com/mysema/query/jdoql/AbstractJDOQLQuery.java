@@ -73,10 +73,9 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         queries.add(query);               
         return query;
     }
-
-    public Iterator<Object[]> iterate(Expr<?> e1, Expr<?> e2, Expr<?>... rest) {
-        // TODO : optimize
-        return list(e1, e2, rest).iterator();
+    
+    public Iterator<Object[]> iterate(Expr<?>[] args) {
+        return list(args).iterator();
     }
 
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {
@@ -85,9 +84,8 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     }
 
     @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
-        queryMixin.addToProjection(expr1, expr2);
-        queryMixin.addToProjection(rest);
+    public List<Object[]> list(Expr<?>[] args) {
+        queryMixin.addToProjection(args);
         Object rv = execute(createQuery(false));        
         return (rv instanceof List) ? ((List<Object[]>)rv) : Collections.singletonList((Object[])rv);
     }

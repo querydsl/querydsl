@@ -70,6 +70,19 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
         logQuery(queryString);
         return createQuery(queryString, queryMixin.getMetadata().getModifiers());
     }
+    
+    /**
+     * Expose the original JPA query for the given projection
+     * 
+     * @param args
+     * @return
+     */
+    public Query createQuery(Expr<?>[] args){
+        queryMixin.addToProjection(args);
+        String queryString = toString();
+        logQuery(queryString);
+        return createQuery(queryString, queryMixin.getMetadata().getModifiers());
+    }
 
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
         Query query = em.createQuery(queryString);
@@ -85,17 +98,17 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
         return query;
     }
 
-    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
-        return list(first, second, rest).iterator();
+    public Iterator<Object[]> iterate(Expr<?>[] args) {
+        return list(args).iterator();
     }
 
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {
         return list(projection).iterator();
     }
-
+    
     @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {        
-        return createQuery(expr1, expr2, rest).getResultList();
+    public List<Object[]> list(Expr<?>[] args) {        
+        return createQuery(args).getResultList();
     }
 
     @SuppressWarnings("unchecked")

@@ -220,13 +220,11 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
             });
         }
     }
-
-
+    
     @SuppressWarnings("unchecked")
-    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public Iterator<Object[]> iterate(Expr<?>[] args) {
         arrayProjection = true;
-        Expr<?>[] full = asArray(new Expr[rest.length + 2], first, second, rest);
-        Expr<Object[]> projection = new EArrayConstructor(Object.class, full);
+        Expr<Object[]> projection = new EArrayConstructor(Object.class, args);
         return iterate(projection);
     }
 
