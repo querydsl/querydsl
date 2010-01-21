@@ -2,23 +2,28 @@ package com.mysema.query.alias;
 
 import org.junit.Test;
 
-public class FinalPropertyTest {
+public class ComparablePropertyTest {
     
     public static class Entity{
         
-        private Entity2 property;
+        private ComparableType property;
 
-        public Entity2 getProperty() {
+        public ComparableType getProperty() {
             return property;
         }
 
-        public void setProperty(Entity2 property) {
+        public void setProperty(ComparableType property) {
             this.property = property;
         }
         
     }
     
-    public static final class Entity2{
+    public static class ComparableType implements Comparable<ComparableType>{
+
+        @Override
+        public int compareTo(ComparableType o) {
+            return 0;
+        }
         
     }
     
@@ -27,4 +32,5 @@ public class FinalPropertyTest {
         Entity entity = Alias.alias(Entity.class);
         Alias.$(entity.getProperty());
     }
+
 }

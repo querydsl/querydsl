@@ -15,7 +15,7 @@ import com.mysema.query.types.expr.EComparable;
  * @author tiwe
  * 
  * @param <D>
- * @see java.util.Comparable
+ * @see java.util.ComparableType
  */
 @SuppressWarnings({"unchecked","serial"})
 public class PComparable<D extends Comparable> extends EComparable<D> implements Path<D> {

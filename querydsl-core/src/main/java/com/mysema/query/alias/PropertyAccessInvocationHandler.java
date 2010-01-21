@@ -205,7 +205,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             rv = Long.valueOf(42l);
 
         } else if (Short.class.equals(type) || short.class.equals(type)) {
-            path = new PComparable<Short>(Short.class, pm);
+            path = new PNumber<Short>(Short.class, pm);
             rv = Short.valueOf((short) 42);
 
         } else if (Double.class.equals(type) || double.class.equals(type)) {
@@ -270,9 +270,13 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
         } else if (Enum.class.isAssignableFrom(type)) {
             path = new PSimple<T>(type, pm);
             rv = type.getEnumConstants()[0];
-
+            
         } else {
-            path = new PEntity<T>((Class<T>) type, pm);
+            if (Comparable.class.isAssignableFrom(type)){
+                path = new PComparable(type, pm);
+            }else{
+                path = new PEntity<T>((Class<T>) type, pm);    
+            }                        
             if (!Modifier.isFinal(type.getModifiers())){
                 rv = aliasFactory.createAliasForProperty(type, parent, path);    
             }else{
