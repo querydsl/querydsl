@@ -28,9 +28,9 @@ import com.mysema.query.types.path.PEntity;
  */
 public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
 
-    private final QueryMetadata md = new DefaultQueryMetadata();
+    private final QueryMetadata metadata = new DefaultQueryMetadata();
     
-    private final PersistenceManager pm;
+    private final PersistenceManager persistenceManager;
     
     private final JDOQLTemplates templates;
     
@@ -40,19 +40,19 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
         this(pm, entity, JDOQLTemplates.DEFAULT);
     }
     
-    public JDOQLDeleteClause(PersistenceManager pm, PEntity<?> entity, JDOQLTemplates templates){
+    public JDOQLDeleteClause(PersistenceManager persistenceManager, PEntity<?> entity, JDOQLTemplates templates){
         this.entity = entity;
-        this.pm = pm;
+        this.persistenceManager = persistenceManager;
         this.templates = templates;
-        md.addFrom(entity);        
+        metadata.addFrom(entity);        
     }
     
     @Override
     public long execute() {
-        Query query = pm.newQuery(entity.getType());
-        if (md.getWhere() != null){            
+        Query query = persistenceManager.newQuery(entity.getType());
+        if (metadata.getWhere() != null){            
             JDOQLSerializer serializer = new JDOQLSerializer(templates, entity);
-            serializer.handle(md.getWhere());
+            serializer.handle(metadata.getWhere());
             query.setFilter(serializer.toString());
             Map<Object,String> constToLabel = serializer.getConstantToLabel();    
             
@@ -87,7 +87,7 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
 
     @Override
     public JDOQLDeleteClause where(EBoolean... o) {
-        md.addWhere(o);
+        metadata.addWhere(o);
         return this;
     }
 

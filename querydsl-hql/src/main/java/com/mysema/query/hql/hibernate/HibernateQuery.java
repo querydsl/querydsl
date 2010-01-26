@@ -8,7 +8,6 @@ package com.mysema.query.hql.hibernate;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 
-import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.hql.HQLQuery;
 import com.mysema.query.hql.HQLTemplates;
 

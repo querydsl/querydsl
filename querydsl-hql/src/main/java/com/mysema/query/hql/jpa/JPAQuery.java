@@ -19,11 +19,11 @@ import com.mysema.query.hql.HQLTemplates;
  */
 public class JPAQuery extends AbstractJPAQuery<JPAQuery> implements HQLQuery{
 
-    public JPAQuery(EntityManager em, HQLTemplates patterns) {
-        super(new DefaultQueryMetadata(), em, patterns);
+    public JPAQuery(EntityManager entityManager, HQLTemplates patterns) {
+        super(new DefaultQueryMetadata(), entityManager, patterns);
     }
 
-    public JPAQuery(EntityManager em) {
-        super(new DefaultQueryMetadata(), em, HQLTemplates.DEFAULT);
+    public JPAQuery(EntityManager entityManager) {
+        super(new DefaultQueryMetadata(), entityManager, HQLTemplates.DEFAULT);
     }
 }

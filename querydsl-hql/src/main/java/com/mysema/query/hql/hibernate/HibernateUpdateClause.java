@@ -29,7 +29,7 @@ import com.mysema.query.types.path.Path;
  */
 public class HibernateUpdateClause implements UpdateClause<HibernateUpdateClause>{
 
-    private final QueryMetadata md = new DefaultQueryMetadata();
+    private final QueryMetadata metadata = new DefaultQueryMetadata();
     
     private final SessionHolder session;
     
@@ -46,13 +46,13 @@ public class HibernateUpdateClause implements UpdateClause<HibernateUpdateClause
     public HibernateUpdateClause(SessionHolder session, PEntity<?> entity, HQLTemplates templates){
         this.session = session;
         this.templates = templates;
-        md.addFrom(entity);        
+        metadata.addFrom(entity);        
     }
     
     @Override
     public long execute() {
         HQLSerializer serializer = new HQLSerializer(templates);
-        serializer.serializeForUpdate(md);
+        serializer.serializeForUpdate(metadata);
         Map<Object,String> constants = serializer.getConstantToLabel();
 
         Query query = session.createQuery(serializer.toString());
@@ -63,13 +63,13 @@ public class HibernateUpdateClause implements UpdateClause<HibernateUpdateClause
     @SuppressWarnings("unchecked")
     @Override
     public <T> HibernateUpdateClause set(Path<T> path, T value) {
-        md.addProjection(((Expr<T>)path).eq(value));
+        metadata.addProjection(((Expr<T>)path).eq(value));
         return this;
     }
 
     @Override
     public HibernateUpdateClause where(EBoolean... o) {
-        md.addWhere(o);
+        metadata.addWhere(o);
         return this;
     }
 

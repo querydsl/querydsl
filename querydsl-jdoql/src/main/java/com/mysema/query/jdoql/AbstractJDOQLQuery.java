@@ -37,16 +37,16 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     
     private final JDOQLTemplates templates;
 
-    private final PersistenceManager pm;
+    private final PersistenceManager persistenceManager;
     
     private final boolean detach;
     
     @SuppressWarnings("unchecked")
-    public AbstractJDOQLQuery(PersistenceManager pm, JDOQLTemplates templates, boolean detach) {
+    public AbstractJDOQLQuery(PersistenceManager persistenceManager, JDOQLTemplates templates, boolean detach) {
         super(new JDOQLQueryMixin<SubType>());
         this.queryMixin.setSelf((SubType) this);
         this.templates = templates;
-        this.pm = pm;
+        this.persistenceManager = persistenceManager;
         this.detach = detach;
     }
 
@@ -68,7 +68,7 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         serializer.serialize(queryMixin.getMetadata(), forCount, false);
         
         // create Query 
-        Query query = pm.newQuery(serializer.toString());
+        Query query = persistenceManager.newQuery(serializer.toString());
         orderedConstants = serializer.getConstants();
         queries.add(query);               
         return query;
@@ -93,9 +93,9 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     @SuppressWarnings("unchecked")
     private <T> T detach(T results){
         if (results instanceof Collection){
-            return (T) pm.detachCopyAll(results);
+            return (T) persistenceManager.detachCopyAll(results);
         }else{
-            return pm.detachCopy(results);
+            return persistenceManager.detachCopy(results);
         }
     }
 

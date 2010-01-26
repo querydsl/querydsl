@@ -24,20 +24,20 @@ import com.mysema.query.types.path.Path;
  */
 public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
     
-    private final QueryMetadata md = new DefaultQueryMetadata();
+    private final QueryMetadata metadata = new DefaultQueryMetadata();
     
-    private final PersistenceManager pm;
+    private final PersistenceManager persistenceManager;
     
     private final JDOQLTemplates templates;
     
-    public JDOQLUpdateClause(PersistenceManager pm, PEntity<?> entity){
-        this(pm, entity, JDOQLTemplates.DEFAULT);
+    public JDOQLUpdateClause(PersistenceManager persistenceManager, PEntity<?> entity){
+        this(persistenceManager, entity, JDOQLTemplates.DEFAULT);
     }
     
-    public JDOQLUpdateClause(PersistenceManager pm, PEntity<?> entity, JDOQLTemplates templates){
-        this.pm = pm;
+    public JDOQLUpdateClause(PersistenceManager persistenceManager, PEntity<?> entity, JDOQLTemplates templates){
+        this.persistenceManager = persistenceManager;
         this.templates = templates;
-        md.addFrom(entity);        
+        metadata.addFrom(entity);        
     }
 
     @Override
@@ -49,13 +49,13 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
     @SuppressWarnings("unchecked")
     @Override
     public <T> JDOQLUpdateClause set(Path<T> path, T value) {
-        md.addProjection(((Expr<T>)path).eq(value));
+        metadata.addProjection(((Expr<T>)path).eq(value));
         return this;
     }
 
     @Override
     public JDOQLUpdateClause where(EBoolean... o) {
-        md.addWhere(o);
+        metadata.addWhere(o);
         return this;
     }
 

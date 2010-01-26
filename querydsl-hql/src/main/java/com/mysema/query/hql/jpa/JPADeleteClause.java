@@ -26,9 +26,9 @@ import com.mysema.query.types.path.PEntity;
  */
 public class JPADeleteClause implements DeleteClause<JPADeleteClause>{
 
-    private final QueryMetadata md = new DefaultQueryMetadata();
+    private final QueryMetadata metadata = new DefaultQueryMetadata();
     
-    private final EntityManager em;
+    private final EntityManager entityManager;
     
     private final HQLTemplates templates;
     
@@ -36,26 +36,26 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause>{
         this(em, entity, HQLTemplates.DEFAULT);
     }
     
-    public JPADeleteClause(EntityManager em, PEntity<?> entity, HQLTemplates templates){
-        this.em = em;
+    public JPADeleteClause(EntityManager entityManager, PEntity<?> entity, HQLTemplates templates){
+        this.entityManager = entityManager;
         this.templates = templates;
-        md.addFrom(entity);        
+        metadata.addFrom(entity);        
     }
     
     @Override
     public long execute() {
         HQLSerializer serializer = new HQLSerializer(templates);
-        serializer.serializeForDelete(md);
+        serializer.serializeForDelete(metadata);
         Map<Object,String> constants = serializer.getConstantToLabel();
 
-        Query query = em.createQuery(serializer.toString());
+        Query query = entityManager.createQuery(serializer.toString());
         JPAUtil.setConstants(query, constants);
         return query.executeUpdate();
     }
 
     @Override
     public JPADeleteClause where(EBoolean... o) {
-        md.addWhere(o);
+        metadata.addWhere(o);
         return this;
     }
 

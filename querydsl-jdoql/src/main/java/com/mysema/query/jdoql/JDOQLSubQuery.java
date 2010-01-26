@@ -22,7 +22,6 @@ import com.mysema.query.types.path.Path;
  */
 public class JDOQLSubQuery extends DetachableQuery<JDOQLSubQuery>{
     
-
     public JDOQLSubQuery() {
         this(new DefaultQueryMetadata());
     }

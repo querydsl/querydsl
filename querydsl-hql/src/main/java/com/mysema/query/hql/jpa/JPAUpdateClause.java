@@ -30,7 +30,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
     
-    private final EntityManager em;
+    private final EntityManager entityManager;
     
     private final HQLTemplates templates;
     
@@ -39,7 +39,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
     }
     
     public JPAUpdateClause(EntityManager em, PEntity<?> entity, HQLTemplates templates){
-        this.em = em;
+        this.entityManager = em;
         this.templates = templates;
         metadata.addFrom(entity);        
     }
@@ -50,7 +50,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
         serializer.serializeForUpdate(metadata);
         Map<Object,String> constants = serializer.getConstantToLabel();
 
-        Query query = em.createQuery(serializer.toString());
+        Query query = entityManager.createQuery(serializer.toString());
         JPAUtil.setConstants(query, constants);
         return query.executeUpdate();
     }

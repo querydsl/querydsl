@@ -33,11 +33,11 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
 
     private static final Logger logger = LoggerFactory.getLogger(JPAQuery.class);
     
-    private final EntityManager em;
+    private final EntityManager entityManager;
 
-    public AbstractJPAQuery(QueryMetadata md, EntityManager em, HQLTemplates patterns) {
-        super(md, patterns);
-        this.em = em;
+    public AbstractJPAQuery(QueryMetadata metadata, EntityManager entityManager, HQLTemplates patterns) {
+        super(metadata, patterns);
+        this.entityManager = entityManager;
     }
 
     public long count() {
@@ -85,7 +85,7 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
     }
 
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
-        Query query = em.createQuery(queryString);
+        Query query = entityManager.createQuery(queryString);
         JPAUtil.setConstants(query, getConstants());
         if (modifiers != null && modifiers.isRestricting()) {
             if (modifiers.getLimit() != null) {

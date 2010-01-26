@@ -20,30 +20,30 @@ public class JDOQLQueryImpl extends AbstractJDOQLQuery<JDOQLQueryImpl> implement
     /**
      * Create a new JDOQLQueryImpl instance
      * 
-     * @param pm PersistenceManager instance to use
+     * @param persistenceManager PersistenceManager instance to use
      * @param templates JDOQLTemplates to use
      * @param detach detached results or not
      */
-    public JDOQLQueryImpl(PersistenceManager pm, JDOQLTemplates templates, boolean detach) {
-        super(pm, templates, false);
+    public JDOQLQueryImpl(PersistenceManager persistenceManager, JDOQLTemplates templates, boolean detach) {
+        super(persistenceManager, templates, false);
     }
     
     /**
      * Create a new JDOQLQueryImpl instance
      * 
-     * @param pm PersistenceManager instance to use
+     * @param persistenceManager PersistenceManager instance to use
      * @param detach detached results or not
      */
-    public JDOQLQueryImpl(PersistenceManager pm, boolean detach) {
-        super(pm, JDOQLTemplates.DEFAULT, detach);
+    public JDOQLQueryImpl(PersistenceManager persistenceManager, boolean detach) {
+        super(persistenceManager, JDOQLTemplates.DEFAULT, detach);
     }
     
     /**
      * Create a new JDOQLQueryImpl instance
      * 
-     * @param pm PersistenceManager instance to use
+     * @param persistenceManager PersistenceManager instance to use
      */
-    public JDOQLQueryImpl(PersistenceManager pm) {
-        super(pm, JDOQLTemplates.DEFAULT, false);
+    public JDOQLQueryImpl(PersistenceManager persistenceManager) {
+        super(persistenceManager, JDOQLTemplates.DEFAULT, false);
     }
 }
