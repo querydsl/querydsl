@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.ClassUtils;
+
 import com.mysema.query.types.Visitor;
 
 /**
@@ -25,6 +27,27 @@ public class EConstructor<D> extends Expr<D> {
     private final List<Expr<?>> args;
 
     private final Class<?>[] parameterTypes;
+    
+    public static <D> EConstructor<D> create(Class<D> type, Expr<?>... args){
+        for (Constructor<?> c : type.getConstructors()){
+            Class<?>[] paramTypes = c.getParameterTypes();            
+            if (paramTypes.length == args.length){
+                boolean found = true;
+                for (int i = 0; i < paramTypes.length; i++){
+                    Class<?> paramType = paramTypes[i];
+                    if (paramType.isPrimitive()) paramType = ClassUtils.primitiveToWrapper(paramType);                    
+                    if (!paramType.isAssignableFrom(args[i].getType())){
+                        found = false;
+                        break;
+                    }
+                }
+                if (found){
+                    return new EConstructor<D>(type, paramTypes, args);    
+                }                
+            }            
+        }
+        throw new IllegalArgumentException("Got no matching constructor");        
+    }
 
     public EConstructor(Class<D> type, Class<?>[] paramTypes, Expr<?>... args) {
         super(type);
