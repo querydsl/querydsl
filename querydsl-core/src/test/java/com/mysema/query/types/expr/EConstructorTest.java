@@ -21,6 +21,10 @@ public class EConstructorTest {
         public Projection(long id, String text){
             
         }
+        
+        public Projection(CharSequence text){
+            
+        }
     }
 
     @Test
@@ -51,6 +55,13 @@ public class EConstructorTest {
     public void test_create3(){
         Constructor<?> c = EConstructor.create(Projection.class).getJavaConstructor();
         assertEquals(0, c.getParameterTypes().length);
+    }
+    
+    @Test
+    public void test_create4(){
+        EString stringVal = EStringConst.create("");
+        Constructor<?> c = EConstructor.create(Projection.class, stringVal).getJavaConstructor();
+        assertEquals(CharSequence.class, c.getParameterTypes()[0]);
     }
     
 }
