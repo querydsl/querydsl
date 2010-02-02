@@ -18,8 +18,7 @@
       Add the following dependencies to your Maven project and make sure that
       the Maven 2 repo of Mysema Source
       (http://source.mysema.com/maven2/releases) is accessible from your
-      POM if the version cannot yet be found in other public Maven repos
-      :
+      POM if the version cannot yet be found in other public Maven repos :
     </para>
 
     <programlisting language="xml"><![CDATA[
@@ -73,8 +72,16 @@
       The JDOAnnotationProcessor finds domain types annotated with the
       javax.jdo.annotations.PersistenceCapable annotation and generates
       Querydsl query types for them.
-      Run mvn eclipse:eclipse or clean install and you will get your Query
+    </para>
+    
+    <para>
+      Run clean install and you will get your Query
       types generated into target/generated-sources/java.
+    </para>
+    
+    <para>
+      If you use Eclipse, run mvn eclipse:eclipse to update your Eclipse project to include target/generated-sources/java
+      as a source folder. 
     </para>
 
     <para>
@@ -124,7 +131,7 @@ public class Customer {
     <para>
       Querydsl will generate a query type with the simple name QCustomer into the
       same package as Customer. QCustomer can be used as a statically
-      typed variable in Querydsl queries as a representative for the
+      typed variable in Querydsl as a representative for the
       Customer type.
   </para>
 
@@ -153,12 +160,6 @@ QCustomer customer = new QCustomer("myCustomer");
     <programlisting language="java"><![CDATA[
 customer.firstName;
 ]]></programlisting>
-
-    <para>
-      The generated Querydsl query types are based on a builtin expression
-      type system. The Querydsl expression archetypes are presented in
-      more detailed on this page : [Querydsl expressions].
-  </para>
 
   </sect2>
 
@@ -228,17 +229,22 @@ query.form(customer)
   
   <para>Use the the cascading methods of the JDOQLQuery method like this</para>
   
-  <para><emphasis>from :</emphasis> Define the query sources here, the first argument becomes the main source and the others are treated as variables.</para>
+  <para><emphasis>from :</emphasis> Define the query sources here, the first argument becomes the main source 
+  and the others are treated as variables.</para>
   
-  <para><emphasis>where :</emphasis> Define the query filters, either in varargs form separated via commas or cascaded via the and-operator.</para>
+  <para><emphasis>where :</emphasis> Define the query filters, either in varargs form separated via commas or 
+  cascaded via the and-operator.</para>
   
   <para><emphasis>groupBy :</emphasis> Define the group by arguments in varargs form.</para>
   
-  <para><emphasis>having :</emphasis> Define the having filter of the "group by" grouping as an varargs array of EBoolean expressions.</para>
+  <para><emphasis>having :</emphasis> Define the having filter of the "group by" grouping as an varargs array of 
+  EBoolean expressions.</para>
   
-  <para><emphasis>orderBy :</emphasis> Define the ordering of the result as an varargs array of order expressions. Use asc() and desc() on numeric, string and other comparable expression to access the OrderSpecifier instances. </para>
+  <para><emphasis>orderBy :</emphasis> Define the ordering of the result as an varargs array of order expressions. 
+  Use asc() and desc() on numeric, string and other comparable expression to access the OrderSpecifier instances. </para>
   
-  <para><emphasis>limit, offset, restrict :</emphasis> Define the paging of the result. Limit for max results, offset for skipping rows and restrict for defining both in one call.</para>
+  <para><emphasis>limit, offset, restrict :</emphasis> Define the paging of the result. Limit for max results, 
+  offset for skipping rows and restrict for defining both in one call.</para>
   
   </sect2>
   

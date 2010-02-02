@@ -17,15 +17,15 @@ public enum PropertyType {
      */
     COMPARABLE,
     /**
-     *  for custom PDate fields 
+     * for custom PDate fields 
      */
     DATE,
     /**
-     *  for custom PDateTime fields
+     * for custom PDateTime fields
      */
     DATETIME,
     /**
-     *  to skip properties
+     * to skip properties
      */
     NONE,
     /**

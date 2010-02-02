@@ -12,7 +12,7 @@
     <title>Use default variable of the Query types</title>
     
     <para>Use the default variables of the query types as much as possible. The default variables
-    are available as static final fields in the query types. The name is always the decaptialized version
+    are available as static final fields in the query types. The name is always the decapitalized version
     of the simple type name. For the type Account this would be account :</para>
     
 <programlisting language="java"><![CDATA[     
@@ -33,7 +33,7 @@ QAccount extends PEntity<Account>{
   
     <title>Interface based usage</title>
   
-    <para>Whenever possible, use interface based query references : JDOQLQuery for JDO and HQLQuery for HQL</para>
+    <para>Whenever possible, use interface based query references : e.g. JDOQLQuery for JDO and HQLQuery for HQL</para>
   
   </sect2>
   
@@ -129,6 +129,13 @@ QCustomer customer = QCustomer.customer;
 HQLQuery query = new HibernateQuery(session);
 List<Customer> dtos = qry.from(customer).list(new QCustomer.create(customer.id, customer.name));   
 ]]></programlisting>   
+    
+    <para>Alternatively, if code generation is not an option, you can create a constructor projection like this :</para>
+    
+<programlisting language="java"><![CDATA[
+List<Customer> dtos = qry.from(customer)
+    .list(EConstructor.create(Customer.class, customer.id, customer.name));   
+]]></programlisting>       
     
     </sect2>
     
@@ -231,6 +238,11 @@ class Customer{
     of final entity fields. 
     </para>
     
+    <para>
+    Declarative path initialization is the preferred initialization strategy, but manual initialization can be activated
+    via the QuerydslConfig annotation, which is described below.
+    </para>
+    
     </sect2>
     
     <sect2>
@@ -242,9 +254,10 @@ class Customer{
       </para>
       
       <para>
-      The serialization options are entityAccessors to generate accessor methods for entity paths instead of public final fields, 
-      listAccessors to generated listProperty(int index) style methods and mapAccessors to generate mapProperty(Key key) style
-      accessor methods.
+      The serialization options are 
+      <emphasis>entityAccessors</emphasis> to generate accessor methods for entity paths instead of public final fields, 
+      <emphasis>listAccessors</emphasis> to generate listProperty(int index) style methods and 
+      <emphasis>mapAccessors</emphasis> to generate mapProperty(Key key) style accessor methods.
       </para>
     
     </sect2>
@@ -253,7 +266,7 @@ class Customer{
       <title>Custom type mappings</title>
       
       <para>
-      Custom type mappings can be used on properties to override the derived Path type. This can be useful in cases where
+      Custom type mappings can be used on properties to override the derived Path type. This can be useful for example in cases where
       comparison and String operations should be blocked on certain String paths or Date / Time support for custom
       types needs to be added. Support for Date / Time types of the Joda time API and JDK (java.util.Date, Calendar and subtypes) 
       is built in, but other APIs might need to be supported using this feature.
@@ -307,13 +320,13 @@ public interface PointOperations {
 ]]></programlisting>
 
     <para>The first example describes indirect annotation via QueryExtensions usage. Let's assume that Point is a class of
-    an external library which has to be used as such without the possibility of customization.</para>
+    an external library which has to be used as such without the possibility of customization in source form.</para>
     
-    <para>To make a geoDistance(Point) method available in Querydsl query type for Point, a query extension interface is used.
+    <para>To make a geoDistance(Point) method available in the Querydsl query type for Point, a query extension interface is used.
     Via the QueryExtensions annotation the interface is bound to the Point class and via the QueryMethod annotation the geoDistance method
     is declared to be mirrored into the Point query type with a serialization pattern of "geo_distance({0}, {1})".</para>
     
-    <para>The serialization patterns of query methods have the host object it self always as the first argument and the method parameters
+    <para>The serialization patterns of query methods have the host object itself always as the first argument and the method parameters
     as further arguments.</para>
     
     <para>Example 2</para>

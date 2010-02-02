@@ -21,9 +21,7 @@
 
     <para>
       Add the following dependencies to your Maven project and make sure that
-      the Maven 2 repo of Mysema Source
-      (http://source.mysema.com/maven2/releases) is accessible from your
-      POM :
+      the Maven 2 repo of Mysema Source (http://source.mysema.com/maven2/releases) is accessible from your POM :
     </para>
 
     <programlisting language="xml"><![CDATA[
@@ -74,20 +72,26 @@
 
     <para>
       The JPAAnnotationProcessor finds domain types annotated with the
-      javax.persistence.Entity annotation and generates query types for
-      them.
+      javax.persistence.Entity annotation and generates query types for them.
     </para>
     
     <para>
     If you use Hibernate annotations in your domain types you should use 
-    the APT processor com.mysema.query.apt.hibernate.HibernateAnnotationProcessor>
+    the APT processor com.mysema.query.apt.hibernate.HibernateAnnotationProcessor
     instead.
     </para>
 
     <para>
-      Run mvn eclipse:eclipse or clean install and you will get your Query
+      Run clean install and you will get your Query
       types generated into target/generated-sources/java.
-
+    </para>
+    
+    <para>
+      If you use Eclipse, run mvn eclipse:eclipse to update your Eclipse project to include target/generated-sources/java
+      as a source folder. 
+    </para>
+    
+    <para>
       Now you are able to construct JPAQL/HQL query instances and instances of
       the query domain model.
     </para>
@@ -171,7 +175,7 @@ QCustomer customer = new QCustomer("myCustomer");
 HQLQuery query = new HibernateQuery (session); 
 ]]></programlisting>
 
-   <para>To use the JPA API instead of the Hibernate API, you can instantiate a HQLQuery like this :</para>
+   <para>To use the JPA API instead of the Hibernate API, you can instantiate a JPAQuery like this :</para>
 
     <programlisting language="java"><![CDATA[
 // where entityManager is a JPA EntityManager   
@@ -279,17 +283,22 @@ from Cat as cat
   
   <para><emphasis>from :</emphasis> Define the query sources here.</para>
   
-  <para><emphasis>innerJoin, join, leftJoin, fullJoin, on</emphasis> : Defined join elements using these constructs. For the join methods the first argument is the join expression and the second the shorter alias.</para>
+  <para><emphasis>innerJoin, join, leftJoin, fullJoin, on</emphasis> : Define join elements using these constructs. 
+  For the join methods the first argument is the join source and the second the target (alias).</para>
   
-  <para><emphasis>where :</emphasis> Define the query filters, either in varargs form separated via commas or cascaded via the and-operator.</para>
+  <para><emphasis>where :</emphasis> Define the query filters, either in varargs form separated via commas or 
+  cascaded via the and-operator.</para>
   
   <para><emphasis>groupBy :</emphasis> Define the group by arguments in varargs form.</para>
   
-  <para><emphasis>having :</emphasis> Define the having filter of the "group by" grouping as an varags array of EBoolean expressions.</para>
+  <para><emphasis>having :</emphasis> Define the having filter of the "group by" grouping as an varags array of 
+  EBoolean expressions.</para>
   
-  <para><emphasis>orderBy :</emphasis> Define the ordering of the result as an varargs array of order expressions. Use asc() and desc() on numeric, string and other comparable expression to access the OrderSpecifier instances. </para>
+  <para><emphasis>orderBy :</emphasis> Define the ordering of the result as an varargs array of order expressions. 
+  Use asc() and desc() on numeric, string and other comparable expression to access the OrderSpecifier instances. </para>
   
-  <para><emphasis>limit, offset, restrict :</emphasis> Define the paging of the result. Limit for max results, offset for skipping rows and restrict for defining both in one call.</para>
+  <para><emphasis>limit, offset, restrict :</emphasis> Define the paging of the result. Limit for max results, 
+  offset for skipping rows and restrict for defining both in one call.</para>
   
   </sect2>  
   

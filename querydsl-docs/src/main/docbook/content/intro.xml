@@ -7,30 +7,22 @@
     <title>Background</title>
 
     <para>
-      Querydsl was born out of the need to maintain HQL queries in a
-      typesafe way.
-      Incremental construction of HQL queries requires
-      String concatenation and results
-      in hard to read code. Unsafe references to domain types and properties
-      via plain Strings
-      were another issue with String based HQL
-      construction.
+      Querydsl was born out of the need to maintain HQL queries in a typesafe way.
+      Incremental construction of HQL queries requires String concatenation and results
+      in hard to read code. Unsafe references to domain types and properties 
+      via plain Strings were another issue with String based HQL construction.
       </para>
 
     <para>
       With a changing domain model type-safety brings huge benefits in
-      software development. Domain changes
-      are directly reflected in
-      queries and autocomplete in query construction makes query
-      construction
+      software development. Domain changes are directly reflected in
+      queries and autocomplete in query construction makes query construction
       faster and safer.
       </para>
 
     <para>
-      HQL for Hibernate was the first target language for
-      Querydsl, but nowadays it supports
-      Collections, JDO, JDBC and
-      RDFBean as backends.   
+      HQL for Hibernate was the first target language for Querydsl, but nowadays it supports
+      Collections, JDO, JDBC and RDFBean as backends.   
       </para>
 
   </sect1>
@@ -39,12 +31,12 @@
 
     <title>Principles</title>
 
-    <para>Type safety is the core principle of Querydsl. Queries are
+    <para><emphasis>Type safety</emphasis> is the core principle of Querydsl. Queries are
       constructed based on generated query types that
       reflect the properties of your domain types. Also function/method invocations are
       constructed in a fully type-safe manner.</para>
        
-    <para>Consistency is another important principle. The query paths and operations are the same
+    <para><emphasis>Consistency</emphasis> is another important principle. The query paths and operations are the same
     in all implementations and also the Query interfaces have a common base interface.
     </para>   
     

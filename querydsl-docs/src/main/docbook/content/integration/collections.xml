@@ -3,188 +3,65 @@
 <sect1 id="collections_integration" revision="1">
 
   <title>Querying Collections</title>
-
-  <para>
-    To use the querydsl-collections module with generated query
-    types, add
-    an appropriate APT configuration like in the querydsl-hql or querydsl-jdoql setup
-    setup.
-  </para>
+  
+  <para>The querydsl-collections module can be used with generated query types and without. 
+  The first section describes the usage without generated query types :</para>
 
   <sect2>
-    <title> Make the Querydsl collections API available in your class
-    </title>
+    <title>Usage without generated query types</title>
 
     <para>
-      Add the following static import :
+      To use querydsl-collections without generated query types you need to
+      use the Querydsl alias feature.
+      Here are some examples.
+    </para>
+    
+    <para>
+      To get started, add the following static imports :
   </para>
 
     <programlisting language="java"><![CDATA[
 import static com.mysema.query.collections.MiniApi.*;
 import static com.mysema.query.alias.Alias.*; // for alias usage
 ]]></programlisting>
-
-  </sect2>
-
-  <sect2>
-    <title>Use the simple API</title>
-
-    <programlisting language="java"><![CDATA[
-List<Cat> cats = ...; // some value
-QCat cat = new QCat("cat");
-for (Cat cat : select(cats, cat.kittens.size().gt(0))){
-    System.out.println(cat.getName());
-}
-]]></programlisting>
-
-  </sect2>
-  <sect2>
-    <title>Use the full API</title>
-
+    
     <para>
-      And here are some examples on using the full API
-  </para>
-
-    <programlisting language="java"><![CDATA[
-from(cat,cats).iterate(cat.name);
-from(cat,cats).iterate(cat.kittens);
-from(cat,cats).where(cat.kittens.size().gt(0)).iterate(cat.name);
-from(cat,cats).where(cat.name.eq("Kitty")).iterate(cat.name);
-from(cat,cats).where(cat.name.like("Kitt%")).iterate(cat.name);
-]]></programlisting>
-
-  </sect2>
-  <sect2>
-    <title>Use the factory methods</title>
-
-    <para>
-      If you use the MiniApi without available expressions you can
-      use the
-      factory methods of the MiniApi, which are accessible via
-      the
-      dollar-method, e.g.
-  </para>
-
-    <programlisting language="java"><![CDATA[
-for (String s : from($("str"), "a","ab","cd","de").where($("str").startsWith("a")).iterate($("str"))){
-    System.out.println(s);
-}
-]]></programlisting>
-
-    <para>
-      which prints out
-  </para>
-
-    <programlisting><![CDATA[
-a
-ab
-]]></programlisting>
-
-    <para>
-      For multiple variables the provided argument identifies the
-      created
-      path.
-  </para>
-    <para>
-      And here an example with a created integer path :
-  </para>
-
-    <programlisting language="java"><![CDATA[
-for (Integer i : from($(0),1,2,3,4).where($(0).lt(4)).iterate($(0))){
-    System.out.println(i);
-}
-]]></programlisting>
-
-    <para>
-      which prints out
-  </para>
-
-    <programlisting><![CDATA[
-1
-2
-3
-]]></programlisting>
-
-    <para>
-      And last but not least mixed arguments
-  </para>
-
-    <programlisting language="java"><![CDATA[
-for (Object o : from(1,2,"abc",5,3).where($().ne("abc")).iterate($())){
-    System.out.println(o);
-}
-{]]></programlisting>
-
-    <para>
-      which prints out
-  </para>
-
-    <programlisting><![CDATA[
-1
-2
-5
-3
-]]></programlisting>
-
-  </sect2>
-  <sect2>
-    <title>Use the alias features</title>
-
-    <para>
-      The alias usage builds on the factory methods for Expressions
-      and
-      extends them to support property access. Here are some
-      examples.
+      And now create an alias instance for the Cat class.
+    </para>  
+     
+    <para>  
+      The alias instance of type Cat and it's getter invocations are 
+      transformed into Querydsl paths by wrapping them into dollar method invocations. 
+       The call <emphasis>c.getKittens()</emphasis> for example is internally
+      transformed into the property path c.kittens inside the dollar method.
     </para>
-    <para>
-      At first an example query with APT generated domain types :
-    </para>
-
-    <programlisting language="java"><![CDATA[
-QCat cat = new QCat("cat");
-for (String name : from(cat,cats)
-  .where(cat.kittens.size().gt(0))
-  .iterate(cat.name)){
-    System.out.println(name);
-}
-]]></programlisting>
-
-    <para>
-      And now with an alias instance for the Cat class. The call
-      "c.getKittens()" inside the dollar-method is internally
-      transformed into the property path c.kittens.
-  </para>
 
     <programlisting language="java"><![CDATA[
 Cat c = alias(Cat.class, "cat");
 for (String name : from($(c),cats)
   .where($(c.getKittens()).size().gt(0))
-  .iterate($(c.getName()))){
+  .list($(c.getName()))){
     System.out.println(name);
 }
 ]]></programlisting>
 
     <para>
-      The following example is a variation of the previous, where
-      the access
-      to the list size happens inside the dollar-method
-      invocation.
+      The following example is a variation of the previous, where the access
+      to the list size happens inside the dollar-method invocation.
     </para>
 
     <programlisting language="java"><![CDATA[
 Cat c = alias(Cat.class, "cat");
 for (String name : from($(c),cats)
   .where($(c.getKittens().size()).gt(0))
-  .iterate($(c.getName()))){
+  .list($(c.getName()))){
     System.out.println(name);
 }
 ]]></programlisting>
 
     <para>
-      All non-primitive and non-String typed properties of aliases
-      are aliases
-      themselves. So you may cascade method calls until you
-      hit a
+      All non-primitive and non-String typed properties of aliases are aliases
+      themselves. So you may cascade method calls until you hit a
       primitive or String type in the dollar-method scope.
   </para>
     <para>
@@ -196,7 +73,7 @@ $(c.getMate().getName())
 ]]></programlisting>
 
     <para>
-      is transformed into *c.mate.name* internally, but
+      is transformed into <emphasis>c.mate.name</emphasis> internally, but
   </para>
 
     <programlisting language="java"><![CDATA[
@@ -204,17 +81,35 @@ $(c.getMate().getName().toLowerCase())
 ]]></programlisting>
 
     <para>
-      is not transformed properly, since the toLowerCase()
-      invocation is not
-      tracked.
+      is not transformed properly, since the toLowerCase() invocation is not tracked.
   </para>
     <para>
-      Note also that you may only invoke getters, size(),
-      contains(Object) and
-      get(int) on alias types. All other invocations
-      throw exceptions.
+      Note also that you may only invoke getters, size(), contains(Object) and
+      get(int) on alias types. All other invocations throw exceptions.
     </para>
 
+  </sect2>
+  
+  <sect2>
+    
+    <title>Usage with generated query types</title>
+    
+    <para>
+      The example above can be expressed like this with generated query types
+    </para>
+
+    <programlisting language="java"><![CDATA[
+QCat cat = new QCat("cat");
+for (String name : from(cat,cats)
+  .where(cat.kittens.size().gt(0))
+  .list(cat.name)){
+    System.out.println(name);
+}
+]]></programlisting>    
+
+   <para>When you use generated query types, you instantiate query types instead of alias instances and use the property
+   paths directly without any dollar-method wrapping.</para>
+ 
   </sect2>
 
 </sect1>
