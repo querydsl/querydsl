@@ -49,8 +49,10 @@ List<String> lastNames = query.from(customer)
     <emphasis>customer</emphasis> and the columns <emphasis>first_name</emphasis> and 
     <emphasis>last_name</emphasis> :</para>
     
-<programlisting language="sql"><![CDATA[     
-SELECT c.last_name FROM customer c WHERE c.first_name = 'Bob'
+<programlisting><![CDATA[     
+SELECT c.last_name 
+FROM customer c 
+WHERE c.first_name = 'Bob'
 ]]></programlisting>  
 
     <para>Internally Querydsl SQL uses PreparedStatements, though.</para>
@@ -60,6 +62,77 @@ SELECT c.last_name FROM customer c WHERE c.first_name = 'Bob'
     <emphasis>MySQLTemplates</emphasis> and <emphasis>OracleTemplates</emphasis>.</para>
     
   </sect2>
+  
+  <sect2>
+
+  <title>General usage</title>
+  
+  <para>Use the the cascading methods of the SQLQuery method like this</para>
+  
+  <para><emphasis>from :</emphasis> Define the query sources here.</para>
+  
+  <para><emphasis>innerJoin, join, leftJoin, fullJoin, on</emphasis> : Define join elements using these constructs. 
+  For the join methods the first argument is the join source and the second the target (alias).</para>
+  
+  <para><emphasis>where :</emphasis> Define the query filters, either in varargs form separated via commas or 
+  cascaded via the and-operator.</para>
+  
+  <para><emphasis>groupBy :</emphasis> Define the group by arguments in varargs form.</para>
+  
+  <para><emphasis>having :</emphasis> Define the having filter of the "group by" grouping as an varags array of 
+  EBoolean expressions.</para>
+  
+  <para><emphasis>orderBy :</emphasis> Define the ordering of the result as an varargs array of order expressions. 
+  Use asc() and desc() on numeric, string and other comparable expression to access the OrderSpecifier instances. </para>
+  
+  <para><emphasis>limit, offset, restrict :</emphasis> Define the paging of the result. Limit for max results, 
+  offset for skipping rows and restrict for defining both in one call.</para>
+  
+  </sect2>  
+  
+  <sect2>
+  
+  <title>Ordering</title>
+  
+  <para>The syntax for declaring ordering is </para>
+  
+<programlisting language="java"><![CDATA[ 
+query.from(customer)
+    .orderBy(customer.lastName.asc(), customer.firstName.asc())
+    .list(customer.firstName, customer.lastName);
+]]></programlisting>
+
+  <para>which is equivalent to the following native SQL</para>  
+
+<programlisting>  
+SELECT c.first_name, c.last_name
+FROM customer c 
+ORDER BY c.last_name ASC, c.first_name ASC
+</programlisting>
+  
+  </sect2>  
+
+  <sect2>
+  
+  <title>Grouping</title>
+  
+  <para>Grouping can be done in the following form</para>
+  
+<programlisting language="java"><![CDATA[ 
+query.from(customer)
+    .groupBy(customer.lastName)
+    .list(customer.lastName);
+]]></programlisting>
+
+  <para>which is equivalent to the following native SQL</para>  
+
+<programlisting>  
+SELECT customer.last_name 
+FROM customer c 
+GROUP BY c.last_name
+</programlisting>
+      
+  </sect2>    
   
   <sect2>
   
