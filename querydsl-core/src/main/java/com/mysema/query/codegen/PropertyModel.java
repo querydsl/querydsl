@@ -36,9 +36,13 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     }
 
     public PropertyModel(EntityModel context, String name, TypeModel type, String[] inits, boolean inherited) {
+        this(context, name, JavaSyntaxUtils.isReserved(name) ? (name + "_") : name, type, inits, inherited);
+    }
+    
+    public PropertyModel(EntityModel context, String name, String escapedName, TypeModel type, String[] inits, boolean inherited) {
         this.context = context;
         this.name = Assert.notNull(name);
-        this.escapedName = JavaSyntaxUtils.isReserved(name) ? (name + "_") : name;
+        this.escapedName = escapedName;
         this.type = Assert.notNull(type);
         this.inits = inits;
         this.inherited = inherited;

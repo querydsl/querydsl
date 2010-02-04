@@ -27,7 +27,7 @@ public class MetaDataExporterTest {
         try {
             st.execute("drop table survey if exists");
             st.execute("create table survey (id int,name varchar(30));");               
-            MetaDataExporter exporter = new MetaDataExporter("Q", "com.mysema.query.sql.domain", null, null, "target");
+            MetaDataExporter exporter = new MetaDataExporter("Q", "com.mysema.query.sql.domain2", null, null, "target");
             exporter.export(conn.getMetaData());
         } finally {
             st.close();

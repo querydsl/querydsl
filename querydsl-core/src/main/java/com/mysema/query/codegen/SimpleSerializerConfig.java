@@ -25,7 +25,7 @@ public class SimpleSerializerConfig implements SerializerConfig{
     
     private final boolean entityAccessors, listAccessors, mapAccessors, createDefaultVariable;
     
-    private SimpleSerializerConfig(
+    public SimpleSerializerConfig(
             boolean entityAccessors, 
             boolean listAccessors,
             boolean mapAccessors,

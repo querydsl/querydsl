@@ -6,20 +6,20 @@
 package com.mysema.query.sql;
 
 import java.io.File;
-import java.math.BigDecimal;
+import java.io.Writer;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
-import java.sql.Types;
-import java.util.HashMap;
-import java.util.Map;
 
+import net.jcip.annotations.Immutable;
+
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.codegen.ClassTypeModel;
 import com.mysema.query.codegen.EntityModel;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.PropertyModel;
 import com.mysema.query.codegen.Serializer;
+import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.codegen.SimpleTypeModel;
 import com.mysema.query.codegen.TypeCategory;
@@ -33,85 +33,61 @@ import com.mysema.query.util.FileUtils;
  * @author tiwe
  * @version $Id$
  */
+@Immutable
 public class MetaDataExporter {
 
-    private final Map<Integer, Class<?>> sqlToJavaType = new HashMap<Integer, Class<?>>();
+    private static final Serializer serializer = new EntitySerializer(new TypeMappings());
+    
+    private static final SQLTypeMapping typeMapping = new SQLTypeMapping();
+    
+    private static final SerializerConfig serializerConfig = new SimpleSerializerConfig(false, false, false, false);
 
     private final String namePrefix, targetFolder, packageName;
 
     private final String schemaPattern, tableNamePattern;
-
-    private static final Serializer serializer = new EntitySerializer(new TypeMappings());
     
-    public MetaDataExporter(String namePrefix, String packageName, String schemaPattern, String tableNamePattern, String targetFolder){
+    /**
+     * Create a new MetaDataExport instance
+     * 
+     * @param namePrefix name prefix to use
+     * @param packageName target package name for query types
+     * @param schemaPattern schema pattern for DatabaseMetaData.getTables or null
+     * @param tableNamePattern table name pattern for DatabaseMetaData.getTables or null
+     * @param targetFolder target folder for serialization
+     */
+    public MetaDataExporter(String namePrefix, 
+            String packageName, 
+            String schemaPattern, 
+            String tableNamePattern, 
+            String targetFolder){
         this.namePrefix = namePrefix;
         this.packageName = packageName;
         this.schemaPattern = schemaPattern;
         this.tableNamePattern = tableNamePattern;
-        this.targetFolder = targetFolder;
-        
-        // BOOLEAN
-        sqlToJavaType.put(Types.BIT, Boolean.class);
-        sqlToJavaType.put(Types.BOOLEAN, Boolean.class);
-
-        // NUMERIC
-        sqlToJavaType.put(Types.BIGINT, Long.class);
-        sqlToJavaType.put(Types.DOUBLE, Double.class);
-        sqlToJavaType.put(Types.INTEGER, Integer.class);
-        sqlToJavaType.put(Types.SMALLINT, Short.class);
-        sqlToJavaType.put(Types.TINYINT, Byte.class);
-        sqlToJavaType.put(Types.FLOAT, Float.class);
-        sqlToJavaType.put(Types.REAL, Float.class);
-        sqlToJavaType.put(Types.NUMERIC, BigDecimal.class);
-        sqlToJavaType.put(Types.DECIMAL, BigDecimal.class);
-
-        // DATE and TIME
-        sqlToJavaType.put(Types.DATE, java.util.Date.class);
-        sqlToJavaType.put(Types.TIME, Time.class);
-        sqlToJavaType.put(Types.TIMESTAMP, java.util.Date.class);
-
-        // TEXT
-        sqlToJavaType.put(Types.CHAR, Character.class);
-        sqlToJavaType.put(Types.CLOB, String.class);
-        sqlToJavaType.put(Types.VARCHAR, String.class);
-        sqlToJavaType.put(Types.LONGVARCHAR, String.class);
-
-        // OTHER
-        sqlToJavaType.put(Types.NULL, Object.class);
-        sqlToJavaType.put(Types.OTHER, Object.class);
-        sqlToJavaType.put(Types.REAL, Object.class);
-        sqlToJavaType.put(Types.REF, Object.class);
-        sqlToJavaType.put(Types.STRUCT, Object.class);
-        sqlToJavaType.put(Types.JAVA_OBJECT, Object.class);
-        sqlToJavaType.put(Types.BINARY, Object.class);
-        sqlToJavaType.put(Types.LONGVARBINARY, Object.class);
-        sqlToJavaType.put(Types.VARBINARY, Object.class);
-        sqlToJavaType.put(Types.BLOB, Object.class);
+        this.targetFolder = targetFolder;       
     }
 
-
     public void export(DatabaseMetaData md) throws SQLException {
-        if (targetFolder == null)
-            throw new IllegalArgumentException("targetFolder needs to be set");
-        if (packageName == null)
-            throw new IllegalArgumentException("packageName needs to be set");
+        Assert.notNull(targetFolder, "targetFolder needs to be set");
+        Assert.notNull(packageName, "packageName needs to be set");
 
         ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
         while (tables.next()) {
             String tableName = tables.getString(3);
-            System.err.println(tableName);
+            String simpleClassName = toClassName(tableName);
             TypeModel classTypeModel = new SimpleTypeModel(
                     TypeCategory.ENTITY, 
-                    "java.lang.Object", 
-                    "java.lang", 
-                    tableName, 
+                    packageName + "." + namePrefix + simpleClassName, 
+                    packageName, 
+                    namePrefix + simpleClassName, 
                     false);
-            EntityModel classModel = new EntityModel(namePrefix, classTypeModel);
+            EntityModel classModel = new EntityModel("", classTypeModel);
             classModel.addAnnotation(new TableImpl(tableName));
             ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
             while (columns.next()) {
-                String name = columns.getString(4);
-                Class<?> clazz = sqlToJavaType.get(columns.getInt(5));
+                String columnName = columns.getString(4);
+                String propertyName = toPropertyName(columnName);
+                Class<?> clazz = typeMapping.get(columns.getInt(5));
                 if (clazz == null){
                     throw new RuntimeException("No java type for " + columns.getString(6));
                 }                    
@@ -120,10 +96,18 @@ public class MetaDataExporter {
                     fieldType = TypeCategory.BOOLEAN;
                 } else if (clazz.equals(String.class)) {
                     fieldType = TypeCategory.STRING;
+                }else if (Number.class.isAssignableFrom(clazz)){
+                    fieldType = TypeCategory.NUMERIC;
                 }
 
                 TypeModel typeModel = new ClassTypeModel(fieldType, clazz);
-                classModel.addProperty(new PropertyModel(classModel, name, typeModel, new String[0]));
+                classModel.addProperty(new PropertyModel(
+                        classModel, 
+                        columnName, 
+                        propertyName, 
+                        typeModel, 
+                        new String[0], 
+                        false));
             }
             columns.close();
             serialize(classModel);
@@ -131,13 +115,39 @@ public class MetaDataExporter {
         tables.close();
     }
 
+    private String toPropertyName(String columnName){
+        return columnName.substring(0,1).toLowerCase() + toCamelCase(columnName.substring(1));
+    }
+    
+    private String toClassName(String tableName) {
+        return tableName.substring(0,1).toUpperCase() + toCamelCase(tableName.substring(1));
+    }
+    
+    private String toCamelCase(String str){
+        StringBuilder builder = new StringBuilder(str.length());
+        for (int i = 0; i < str.length(); i++){
+            if (str.charAt(i) == '_'){
+                builder.append(Character.toUpperCase(str.charAt(i+1)));
+                i += 1;
+            }else{
+                builder.append(Character.toLowerCase(str.charAt(i)));
+            }
+        }
+        return builder.toString();
+    }
+
     private void serialize(EntityModel type) {
-        try {
-            String path = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
-            serializer.serialize(type, SimpleSerializerConfig.DEFAULT, FileUtils.writerFor(new File(targetFolder, path)));
+        String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + ".java";
+        try {                        
+            Writer writer = FileUtils.writerFor(new File(targetFolder, path));
+            try{
+                serializer.serialize(type, serializerConfig, writer);    
+            }finally{
+                writer.close();
+            }            
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
-        }
+        }    
     }
 
 }
