@@ -4,6 +4,55 @@
   
   <title>Querying SQL/JDBC sources</title>
   
-  <para>TODO</para>
+  <para>The querydsl-sql module is still in Beta stage and hasn't been tested much, but it is functional and usable.</para>
+  
+  <para>This chapter describes the query type generation and querying functionality of the module.</para>
+  
+  <sect2>
+  
+    <title>Creating the Querydsl query types</title>
+  
+  <para>To get started export your schema into Querydsl query types like this :</para>
+  
+<programlisting language="java"><![CDATA[  
+java.sql.Connection conn; // connection of database containing the schema to use
+MetaDataExporter exporter = new MetaDataExporter("Q", "com.myproject.domain", "", "", "src/main/java");
+exporter.export(conn.getMetaData());
+]]></programlisting>
+
+  <para>This declares that the database schema is to be mirrored into the com.myproject.domain package in the src/main/java folder.</para>
+  
+  <para>This functionality might get packaged into an Maven plugin in the future.</para>
+
+  </sect2>
+  
+  <sect2>
+  
+    <title>Querying</title>
+  
+    <para>Querying with Querydsl SQL is as simple as this :</para>
+    
+<programlisting language="java"><![CDATA[ 
+QCustomer customer = QCustomer.customer; // query type
+
+SQLTemplates dialect = new HSQLDBTemplates(); // SQL-dialect
+SQLQuery query = SQLQueryImpl(connection, dialect); 
+List<String> lastNames = query.from(customer)
+    .where(customer.first_name.eq("Bob"))
+    .list(customer.last_name);
+]]></programlisting>  
+
+    <para>Querydsl uses SQL dialects to customize the SQL serialization needed for different relational databases. The
+    available dialects are DerbyTemplates, HSQLDBTemplates, MySQLTemplates and OracleTemplates.</para>
+    
+  </sect2>
+  
+  <sect2>
+  
+    <title>Using Data manipulation commands in Querydsl</title>
+    
+    <para>TODO</para>
+  
+  </sect2>
   
 </sect1>    
