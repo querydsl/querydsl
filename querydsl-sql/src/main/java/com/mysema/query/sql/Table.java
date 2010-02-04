@@ -13,6 +13,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
+ * Annotation to be used on Querydsl query types to declare the annotation to be used
+ * 
  * @author tiwe
  *
  */

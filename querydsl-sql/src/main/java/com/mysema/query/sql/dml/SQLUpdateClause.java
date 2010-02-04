@@ -21,10 +21,12 @@ import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.Path;
 
 /**
+ * SQLUpdateClause defines a UPDATE clause
+ * 
  * @author tiwe
  *
  */
-public class SQLUpdateClause extends AbstractDMLClause implements UpdateClause<SQLUpdateClause>{
+public class SQLUpdateClause implements UpdateClause<SQLUpdateClause>{
     
     private final QueryMetadata md = new DefaultQueryMetadata();
     
@@ -56,6 +58,14 @@ public class SQLUpdateClause extends AbstractDMLClause implements UpdateClause<S
                 close(stmt);    
             }                        
         }
+    }
+    
+    protected void close(PreparedStatement stmt) {
+        try {
+            stmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }        
     }
 
     @SuppressWarnings("unchecked")

@@ -11,6 +11,8 @@ import java.util.List;
 import com.mysema.query.types.OrderSpecifier;
 
 /**
+ * Union defines an interface for Union queries
+ * 
  * @author tiwe
  *
  * @param <RT>

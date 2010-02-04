@@ -8,6 +8,8 @@ package com.mysema.query.sql;
 import com.mysema.query.types.operation.Ops;
 
 /**
+ * HSQLDBTemplates is an SQL dialect for HSQLDB
+ * 
  * @author tiwe
  * 
  */

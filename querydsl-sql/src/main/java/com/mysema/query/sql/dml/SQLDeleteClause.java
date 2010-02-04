@@ -19,10 +19,12 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 
 /**
+ * SQLDeleteClause defines a DELETE clause
+ * 
  * @author tiwe
  *
  */
-public class SQLDeleteClause extends AbstractDMLClause implements DeleteClause<SQLDeleteClause>{
+public class SQLDeleteClause implements DeleteClause<SQLDeleteClause>{
 
     private final QueryMetadata md = new DefaultQueryMetadata();
     
@@ -54,6 +56,14 @@ public class SQLDeleteClause extends AbstractDMLClause implements DeleteClause<S
                 close(stmt);    
             }                        
         }
+    }
+    
+    protected void close(PreparedStatement stmt) {
+        try {
+            stmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }        
     }
 
     @Override

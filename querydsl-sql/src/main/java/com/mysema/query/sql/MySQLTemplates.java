@@ -11,6 +11,8 @@ import java.math.BigInteger;
 import com.mysema.query.types.operation.Ops;
 
 /**
+ * MySQLTemplates is an SQL dialect for MySQL
+ * 
  * @author tiwe
  *
  */
