@@ -7,6 +7,7 @@ package com.mysema.query.codegen;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -208,6 +209,9 @@ public class EntitySerializer implements Serializer{
             default : pathType = PEntity.class;
         }        
         writer.suppressWarnings("serial");        
+        for (Annotation annotation : model.getAnnotations()){
+            writer.annotation(annotation);
+        }        
         writer.beginClass(queryType, pathType.getSimpleName() + "<" + localName + ">");
     }
 

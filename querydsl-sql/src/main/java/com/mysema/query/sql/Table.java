@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.sql;
 
 import static java.lang.annotation.ElementType.TYPE;
@@ -16,6 +21,9 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface Table {
     
+    /**
+     * @return
+     */
     String value();
     
 }

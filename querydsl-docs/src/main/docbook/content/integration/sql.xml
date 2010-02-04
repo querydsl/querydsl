@@ -16,7 +16,7 @@
   
 <programlisting language="java"><![CDATA[  
 java.sql.Connection conn; // connection of database containing the schema to use
-MetaDataExporter exporter = new MetaDataExporter("Q", "com.myproject.domain", "", "", "src/main/java");
+MetaDataExporter exporter = new MetaDataExporter("Q", "com.myproject.domain", null, null, "src/main/java");
 exporter.export(conn.getMetaData());
 ]]></programlisting>
 

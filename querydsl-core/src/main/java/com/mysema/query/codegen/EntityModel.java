@@ -6,6 +6,7 @@
 package com.mysema.query.codegen;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -34,6 +35,8 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
     
     // mutable
     private boolean hasLists, hasMaps, hasEntityFields;
+    
+    private final Set<Annotation> annotations = new HashSet<Annotation>();
 
     private final Set<MethodModel> methods = new HashSet<MethodModel>();
     
@@ -63,6 +66,10 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
 
     public void addConstructor(ConstructorModel co) {
         constructors.add(co);
+    }
+    
+    public void addAnnotation(Annotation annotation){
+        annotations.add(annotation);
     }
     
     public void addMethod(MethodModel method){
@@ -153,6 +160,10 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
         return hasMaps;
     }
     
+    public Set<Annotation> getAnnotations() {
+        return annotations;
+    }
+
     public void include(EntityModel clazz) {
         for (MethodModel method : clazz.methods){
             addMethod(method);

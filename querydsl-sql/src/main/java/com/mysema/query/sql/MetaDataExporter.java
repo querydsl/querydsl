@@ -97,9 +97,9 @@ public class MetaDataExporter {
             throw new IllegalArgumentException("packageName needs to be set");
 
         ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
-//        ClassModelFactory factory = new ClassModelFactory(new TypeModelFactory());
         while (tables.next()) {
             String tableName = tables.getString(3);
+            System.err.println(tableName);
             TypeModel classTypeModel = new SimpleTypeModel(
                     TypeCategory.ENTITY, 
                     "java.lang.Object", 
@@ -107,6 +107,7 @@ public class MetaDataExporter {
                     tableName, 
                     false);
             EntityModel classModel = new EntityModel(namePrefix, classTypeModel);
+            classModel.addAnnotation(new TableImpl(tableName));
             ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
             while (columns.next()) {
                 String name = columns.getString(4);

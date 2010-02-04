@@ -24,10 +24,10 @@ public class MetaDataExporterTest {
     public void testGeneration() throws Exception {
         Connection conn = getHSQLConnection();
         Statement st = conn.createStatement();
-        st.execute("drop table survey if exists");
-        st.execute("create table survey (id int,name varchar(30));");
         try {
-            MetaDataExporter exporter = new MetaDataExporter("Q", "com.mysema.query.sql.domain", "", "", "target");
+            st.execute("drop table survey if exists");
+            st.execute("create table survey (id int,name varchar(30));");               
+            MetaDataExporter exporter = new MetaDataExporter("Q", "com.mysema.query.sql.domain", null, null, "target");
             exporter.export(conn.getMetaData());
         } finally {
             st.close();

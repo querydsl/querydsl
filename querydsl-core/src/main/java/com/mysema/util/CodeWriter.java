@@ -6,6 +6,7 @@
 package com.mysema.util;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.Collection;
 
 import org.apache.commons.collections15.Transformer;
@@ -16,22 +17,24 @@ import org.apache.commons.collections15.Transformer;
  */
 public interface CodeWriter extends Appendable{
     
-    CodeWriter beginClass(String simpleName, String superClass, String... interfaces) throws IOException;
+    CodeWriter annotation(Annotation annotation) throws IOException;
 
-    CodeWriter beginInterface(String simpleName, String... interfaces) throws IOException;
+    CodeWriter beginClass(String simpleName, String superClass, String... interfaces) throws IOException;
     
     <T> CodeWriter beginConstructor(Collection<T> params, Transformer<T, String> transformer) throws IOException;
 
     CodeWriter beginConstructor(String... params) throws IOException;
 
-    <T> CodeWriter beginMethod(String returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException;
+    CodeWriter beginInterface(String simpleName, String... interfaces) throws IOException;
 
-    CodeWriter beginMethod(String returnType, String methodName, String... args) throws IOException;
-
-    <T> CodeWriter beginStaticMethod(String type, String name, Collection<T> params, Transformer<T, String> transformer) throws IOException;
-    
     CodeWriter beginLine(String... segments) throws IOException;
+
+    <T> CodeWriter beginMethod(String returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException;
     
+    CodeWriter beginMethod(String returnType, String methodName, String... args) throws IOException;
+    
+    <T> CodeWriter beginStaticMethod(String type, String name, Collection<T> params, Transformer<T, String> transformer) throws IOException;
+
     CodeWriter end() throws IOException;
 
     CodeWriter imports(Class<?>... imports) throws IOException;
