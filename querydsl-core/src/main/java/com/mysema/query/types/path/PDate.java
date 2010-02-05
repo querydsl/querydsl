@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.path;
 
+import java.lang.reflect.AnnotatedElement;
+
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EDate;
@@ -70,6 +72,11 @@ public class PDate<D extends Comparable> extends EDate<D> implements Path<D>{
     @Override
     public EBoolean isNull() {
         return pathMixin.isNull();
+    }
+    
+    @Override
+    public AnnotatedElement getAnnotatedElement(){
+        return pathMixin.getAnnotatedElement();
     }
 
 }

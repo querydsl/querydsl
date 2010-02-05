@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.path;
 
+import java.lang.reflect.AnnotatedElement;
+
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
@@ -55,5 +57,15 @@ public interface Path<C> {
      * @return
      */
     EBoolean isNull();
+    
+    /**
+     * Return the annotated element related to the given path
+     * For property paths the annotated element contains the annotations of the
+     * related field and/or getter method and for all others paths the annotated element
+     * is the expression type. 
+     *  
+     * @return
+     */
+    AnnotatedElement getAnnotatedElement();
 
 }

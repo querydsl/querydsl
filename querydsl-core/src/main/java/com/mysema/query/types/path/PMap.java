@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.path;
 
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -132,6 +133,11 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
     @Override
     public EBoolean isNull() {
         return pathMixin.isNull();
+    }
+    
+    @Override
+    public AnnotatedElement getAnnotatedElement(){
+        return pathMixin.getAnnotatedElement();
     }
     
     private E newInstance(PathMetadata<?> pm) throws Exception{

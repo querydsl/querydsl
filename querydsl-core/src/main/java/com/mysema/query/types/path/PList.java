@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.path;
 
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -140,6 +141,11 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
     @Override
     public EBoolean isNull() {
         return pathMixin.isNull();
+    }
+    
+    @Override
+    public AnnotatedElement getAnnotatedElement(){
+        return pathMixin.getAnnotatedElement();
     }
     
     private Q newInstance(PathMetadata<?> pm) throws Exception{

@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.path;
 
+import java.lang.reflect.AnnotatedElement;
+
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 
@@ -70,6 +72,11 @@ public class PBoolean extends EBoolean implements Path<Boolean> {
     @Override
     public EBoolean isNull() {
         return pathMixin.isNull();
+    }
+    
+    @Override
+    public AnnotatedElement getAnnotatedElement(){
+        return pathMixin.getAnnotatedElement();
     }
     
 }

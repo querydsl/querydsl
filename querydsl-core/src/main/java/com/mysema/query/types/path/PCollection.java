@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.path;
 
+import java.lang.reflect.AnnotatedElement;
 import java.util.Collection;
 
 import com.mysema.commons.lang.Assert;
@@ -89,6 +90,11 @@ public class PCollection<E> extends ECollectionBase<Collection<E>,E> implements 
     @Override
     public EBoolean isNull() {
         return pathMixin.isNull();
+    }
+    
+    @Override
+    public AnnotatedElement getAnnotatedElement(){
+        return pathMixin.getAnnotatedElement();
     }
 
 }

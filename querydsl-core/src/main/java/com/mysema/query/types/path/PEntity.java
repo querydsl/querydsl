@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.path;
 
+import java.lang.reflect.AnnotatedElement;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -269,5 +270,10 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
     @Override
     public EBoolean isNull() {
         return pathMixin.isNull();
+    }
+    
+    @Override
+    public AnnotatedElement getAnnotatedElement(){
+        return pathMixin.getAnnotatedElement();
     }
 }

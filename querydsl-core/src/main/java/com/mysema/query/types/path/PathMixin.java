@@ -6,11 +6,13 @@
 package com.mysema.query.types.path;
 
 import java.io.Serializable;
+import java.lang.reflect.AnnotatedElement;
 
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.util.PropertyUtils;
 
 /**
  * PathMixin defines a mixin version of the Path interface which can be used 
@@ -30,6 +32,8 @@ class PathMixin<T> implements Path<T>, Serializable {
     private final Path<?> root;
     
     private final Expr<T> self;
+    
+    private AnnotatedElement annotatedElement;
     
     @SuppressWarnings("unchecked")
     public PathMixin(Expr<T> self, PathMetadata<?> metadata){
@@ -83,5 +87,21 @@ class PathMixin<T> implements Path<T>, Serializable {
         }
         return isnull;
     }
+
+    @Override
+    public AnnotatedElement getAnnotatedElement() {
+        if (annotatedElement == null){
+            if (metadata.getPathType() == PathType.PROPERTY){
+                Class<?> beanClass = metadata.getParent().getType();
+                String propertyName = metadata.getExpression().toString();
+                annotatedElement = PropertyUtils.getAnnotatedElement(beanClass, propertyName, self.getType());                
+                
+            }else{
+                annotatedElement = self.getType();
+            }
+        }
+        return annotatedElement;
+    }
+    
 
 }
