@@ -279,7 +279,7 @@ from Cat as cat
   
   <title>General usage</title>
   
-  <para>Use the the cascading methods of the HQLQuery method like this</para>
+  <para>Use the the cascading methods of the HQLQuery interface like this</para>
   
   <para><emphasis>from :</emphasis> Define the query sources here.</para>
   

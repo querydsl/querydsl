@@ -67,7 +67,7 @@ WHERE c.first_name = 'Bob'
 
   <title>General usage</title>
   
-  <para>Use the the cascading methods of the SQLQuery method like this</para>
+  <para>Use the the cascading methods of the SQLQuery interface like this</para>
   
   <para><emphasis>from :</emphasis> Define the query sources here.</para>
   

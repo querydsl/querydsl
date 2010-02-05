@@ -227,7 +227,7 @@ query.form(customer)
   
   <title>General usage</title>
   
-  <para>Use the the cascading methods of the JDOQLQuery method like this</para>
+  <para>Use the the cascading methods of the JDOQLQuery interface like this</para>
   
   <para><emphasis>from :</emphasis> Define the query sources here, the first argument becomes the main source 
   and the others are treated as variables.</para>
