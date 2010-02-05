@@ -6,6 +6,6 @@
 
 * document PathBuilder							DONE
 
-* document QueryExtensions and QueryMethod
+* document QueryExtensions and QueryMethod		DONE
 
 * document QuerydslVariables

@@ -6,6 +6,8 @@
 package com.mysema.query.types.path;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 
 import javax.annotation.Nullable;
 
@@ -35,6 +37,8 @@ public final class PathMetadata<T> implements Serializable{
     private final Path<?> parent, root;
 
     private final PathType pathType;
+    
+//    private transient AnnotatedElement annotatedElement;
 
     PathMetadata(@Nullable Path<?> parent, Expr<T> expression, PathType type) {
         this.parent = parent;
@@ -83,5 +87,35 @@ public final class PathMetadata<T> implements Serializable{
     public boolean isRoot(){
         return parent == null;
     }
+//    
+//    private AnnotatedElement getAnnotatedElement(){
+//        if (annotatedElement == null){
+//            if (pathType == PathType.VARIABLE){
+//                annotatedElement = 
+//            }
+//        }
+//        return annotatedElement;
+//    }
+//
+//    @SuppressWarnings("hiding")
+//    @Override
+//    public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
+//        return getAnnotatedElement().getAnnotation(annotationClass);
+//    }
+//
+//    @Override
+//    public Annotation[] getAnnotations() {
+//        return getAnnotatedElement().getAnnotations();
+//    }
+//
+//    @Override
+//    public Annotation[] getDeclaredAnnotations() {
+//        return getAnnotatedElement().getDeclaredAnnotations();
+//    }
+//
+//    @Override
+//    public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
+//        return getAnnotatedElement().isAnnotationPresent(annotationClass);
+//    }
 
 }
