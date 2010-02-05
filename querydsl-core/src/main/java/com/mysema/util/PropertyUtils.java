@@ -6,7 +6,8 @@ import java.lang.reflect.Method;
 
 import javax.annotation.Nullable;
 
-import com.sun.xml.internal.ws.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
+
 
 /**
  * @author tiwe
