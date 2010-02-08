@@ -54,7 +54,7 @@ public class PArray<E> extends Expr<E[]> implements Path<E[]>, EArray<E>{
         return this;
     }
 
-@Override
+    @Override
     public boolean equals(Object o) {
         return pathMixin.equals(o);
     }

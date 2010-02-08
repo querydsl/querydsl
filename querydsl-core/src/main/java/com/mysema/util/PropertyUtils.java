@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.util;
 
 import java.lang.reflect.AnnotatedElement;
@@ -15,14 +20,15 @@ import org.apache.commons.lang.StringUtils;
  */
 public final class PropertyUtils {
     
+    private static final AnnotatedElement EMPTY = new AnnotatedElementAdapter();
+    
     private PropertyUtils(){}
-
-    @Nullable
+    
     public static AnnotatedElement getAnnotatedElement(Class<?> beanClass, String propertyName, Class<?> propertyClass){
         Field field = getField(beanClass, propertyName);
         Method method = getGetter(beanClass, propertyName, propertyClass);
         if (field == null || field.getAnnotations().length == 0){
-            return method;
+            return (method != null && method.getAnnotations().length > 0) ? method : EMPTY;
         }else if (method == null || method.getAnnotations().length == 0){
             return field;
         }else{
@@ -32,7 +38,7 @@ public final class PropertyUtils {
     
     @Nullable
     private static Field getField(Class<?> beanClass, String propertyName){
-        while (!beanClass.equals(Object.class)){
+        while (beanClass != null && !beanClass.equals(Object.class)){
             try {
                 return beanClass.getDeclaredField(propertyName);
             } catch (SecurityException e) { // skip
@@ -46,7 +52,7 @@ public final class PropertyUtils {
     @Nullable
     private static Method getGetter(Class<?> beanClass, String name, Class<?> type){
         String methodName = (type.equals(Boolean.class) ? "is" : "get") + StringUtils.capitalize(name);
-        while(!beanClass.equals(Object.class)){
+        while(beanClass != null && !beanClass.equals(Object.class)){
             try {
                 return beanClass.getDeclaredMethod(methodName);                
             } catch (SecurityException e) { // skip

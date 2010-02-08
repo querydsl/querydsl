@@ -276,4 +276,5 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
     public AnnotatedElement getAnnotatedElement(){
         return pathMixin.getAnnotatedElement();
     }
+    
 }
