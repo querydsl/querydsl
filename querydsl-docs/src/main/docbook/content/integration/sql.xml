@@ -127,7 +127,7 @@ query.from(customer)
   <para>which is equivalent to the following native SQL</para>  
 
 <programlisting>  
-SELECT customer.last_name 
+SELECT c.last_name 
 FROM customer c 
 GROUP BY c.last_name
 </programlisting>
