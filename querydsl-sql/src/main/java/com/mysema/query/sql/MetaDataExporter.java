@@ -91,13 +91,15 @@ public class MetaDataExporter {
                 if (clazz == null){
                     throw new RuntimeException("No java type for " + columns.getString(6));
                 }                    
-                TypeCategory fieldType = TypeCategory.COMPARABLE;
+                TypeCategory fieldType = TypeCategory.SIMPLE;
                 if (clazz.equals(Boolean.class) || clazz.equals(boolean.class)) {
                     fieldType = TypeCategory.BOOLEAN;
                 } else if (clazz.equals(String.class)) {
                     fieldType = TypeCategory.STRING;
                 }else if (Number.class.isAssignableFrom(clazz)){
                     fieldType = TypeCategory.NUMERIC;
+                }else if (Comparable.class.isAssignableFrom(clazz)){
+                    fieldType = TypeCategory.COMPARABLE;
                 }
 
                 TypeModel typeModel = new ClassTypeModel(fieldType, clazz);

@@ -16,17 +16,65 @@
   
 <programlisting language="java"><![CDATA[  
 java.sql.Connection conn; // connection of database containing the schema to use
-MetaDataExporter exporter = new MetaDataExporter("Q", "com.myproject.domain", null, null, "src/main/java");
+// obtain Connection etc.
+
+MetaDataExporter exporter = new MetaDataExporter(
+  "Q",                              // namePrefix
+  "com.myproject.domain",           // target package
+  null,                             // schema name pattern 
+  null,                             // table name pattern 
+  "target/generated-sources/java"); // target source folder
 exporter.export(conn.getMetaData());
 ]]></programlisting>
 
   <para>This declares that the database schema is to be mirrored into the com.myproject.domain package in the src/main/java folder.</para>
   
-  <para>This functionality might get packaged into an Maven plugin in the future.</para>
+  <para>
+  The generated types have the table name transformed to mixed case as the class name and a similar mixed case transformation
+  applied to the columns which are available as property paths in the query type.
+  </para>
+    
+  <para>This functionality is also available as a Maven plugin. The presented example can be declared like this in the POM :</para>
   
-  <para>The generated types have the table name transformed to mixed case as the class name and a similar mixed case transformation
-  applied to the columns which are available as property paths in the query type.</para>
+<programlisting language="xml"><![CDATA[   
+<plugin>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-maven-plugin</artifactId>
+  <version>${querydsl.version}</version>
+  <executions>
+    <execution>
+      <goals>
+        <goal>export</goal>
+      </goals>
+    </execution>            
+  </executions>
+  <configuration>
+    <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
+    <jdbcUrl>jdbc:derby:target/demoDB;create=true</jdbcUrl>
+    <!--
+      optional elements :
+      * namePrefix
+      * jdbcUser
+      * jdbcPassword
+      * schemaPattern
+      * tableNamePattern    
+    -->    
+    <packageName>com.myproject.domain</packageName>
+    <targetFolder>target/generated-sources/java</targetFolder>
+  </configuration>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.derby</groupId>
+      <artifactId>derby</artifactId>
+      <version>${derby.version}</version>
+    </dependency>
+  </dependencies>
+</plugin>  
+]]></programlisting>  
 
+  <para>Use the goal <emphasis>test-export</emphasis> to add the targetFolder as a test compile source root
+  instead of a compile source root.</para>
+  
   </sect2>
   
   <sect2>

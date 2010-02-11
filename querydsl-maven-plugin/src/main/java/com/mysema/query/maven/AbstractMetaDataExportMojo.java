@@ -18,12 +18,9 @@ import com.mysema.query.sql.MetaDataExporter;
 /**
  * MetaDataExportMojo is a goal for MetaDataExporter usage
  * 
- * @goal export
- * @phase generate-sources
  * @author tiwe
- *
  */
-public class MetaDataExportMojo extends AbstractMojo{
+public class AbstractMetaDataExportMojo extends AbstractMojo{
     
     /**
      * @parameter expression="${project}" readonly=true required=true
@@ -77,7 +74,12 @@ public class MetaDataExportMojo extends AbstractMojo{
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        project.addCompileSourceRoot(targetFolder);
+        if (isForTest()){
+            project.addTestCompileSourceRoot(targetFolder);
+        }else{
+            project.addCompileSourceRoot(targetFolder);    
+        }
+        
         MetaDataExporter exporter = new MetaDataExporter(namePrefix, packageName, schemaPattern, tableNamePattern, targetFolder);
         try {
             Class.forName(jdbcDriver);
@@ -90,8 +92,14 @@ public class MetaDataExportMojo extends AbstractMojo{
                 }
             }
         } catch (Exception e) {
+            getLog().error(e);
             throw new MojoExecutionException(e.getMessage(), e);
         }
+    }
+    
+
+    protected boolean isForTest(){
+        return false;
     }
 
 }

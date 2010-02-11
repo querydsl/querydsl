@@ -35,6 +35,8 @@
     <module>../querydsl-jdoql</module>    
     <module>../querydsl-hql</module>
     <module>../querydsl-sql</module>
+    
+    <module>../querydsl-maven-plugin</module>
 <!--     
     <module>../querydsl-docs</module>
  -->    

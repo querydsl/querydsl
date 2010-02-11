@@ -77,6 +77,34 @@
           </execution>
         </executions>
       </plugin>
+      
+      <!-- 
+      <plugin>
+        <groupId>com.mysema.querydsl</groupId>
+        <artifactId>querydsl-maven-plugin</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-export</goal>
+            </goals>
+          </execution>            
+        </executions>
+        <configuration>
+          <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
+          <jdbcUrl>jdbc:derby:target/demoDB;create=true</jdbcUrl>
+          <packageName>com.mysema.query.sql.domain2</packageName>
+          <targetFolder>target/generated-test-sources/java</targetFolder>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>${derby.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+       -->
     </plugins>
   </build>
 
