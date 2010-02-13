@@ -26,7 +26,8 @@ import static com.mysema.query.alias.Alias.*; // for alias usage
 ]]></programlisting>
     
     <para>
-      And now create an alias instance for the Cat class.
+      And now create an alias instance for the Cat class. Alias instances can only be created for
+      classes with an empty constructor. Make sure your class has one.
     </para>  
      
     <para>  
@@ -109,6 +110,45 @@ for (String name : from(cat,cats)
 
    <para>When you use generated query types, you instantiate query types instead of alias instances and use the property
    paths directly without any dollar-method wrapping.</para>
+   
+  </sect2>
+  
+  <sect2>
+  
+   <title>Maven integration</title>   
+   
+   <para>
+   If you are not using JPA or JDO you can generate Querydsl query types for your domain types by annotating them
+   with the com.mysema.query.annotations.QueryEntity annotation and adding the following plugin configuration into your
+   Maven configuration (pom.xml) :
+   </para>
+ 
+    <programlisting language="xml"><![CDATA[
+<project>
+  <build>
+  <plugins>
+    ...
+    <plugin>
+      <groupId>com.mysema.maven</groupId>
+      <artifactId>maven-apt-plugin</artifactId>
+      <version>0.3.0</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>process</goal>
+          </goals>
+          <configuration>
+            <outputDirectory>target/generated-sources/java</outputDirectory>
+            <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+    ...
+  </plugins>
+  </build>
+</project>
+]]></programlisting> 
  
   </sect2>
 

@@ -6,6 +6,7 @@
 package com.mysema.query.hql.hibernate;
 
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import com.mysema.commons.lang.Assert;
@@ -25,6 +26,11 @@ public class DefaultSessionHolder implements SessionHolder{
     @Override
     public Query createQuery(String queryString) {
         return session.createQuery(queryString);
+    }    
+
+    @Override
+    public SQLQuery createSQLQuery(String queryString) {
+        return session.createSQLQuery(queryString);
     }
 
 }

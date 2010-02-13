@@ -32,11 +32,10 @@
     <module>../querydsl-core</module>
     <module>../querydsl-apt</module> 
     <module>../querydsl-collections</module>
-    <module>../querydsl-jdoql</module>    
-    <module>../querydsl-hql</module>
-    <module>../querydsl-sql</module>
-    
+    <module>../querydsl-jdoql</module>       
+    <module>../querydsl-sql</module>    
     <module>../querydsl-maven-plugin</module>
+    <module>../querydsl-hql</module>
 <!--     
     <module>../querydsl-docs</module>
  -->    

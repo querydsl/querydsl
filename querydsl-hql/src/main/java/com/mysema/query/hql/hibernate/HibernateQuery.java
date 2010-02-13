@@ -32,6 +32,4 @@ public class HibernateQuery extends AbstractHibernateQuery<HibernateQuery> imple
         super(session, templates);
     }
     
-
-
 }

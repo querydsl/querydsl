@@ -16,9 +16,10 @@
     of the simple type name. For the type Account this would be account :</para>
     
 <programlisting language="java"><![CDATA[     
-QAccount extends PEntity<Account>{
+public class QAccount extends PEntity<Account>{
       
-    public static final Account account = new QAccount("account");
+    public static final QAccount account = new QAccount("account");
+    
 }
 ]]></programlisting>      
 

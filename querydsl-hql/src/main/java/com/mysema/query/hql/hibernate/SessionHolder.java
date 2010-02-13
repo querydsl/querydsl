@@ -6,6 +6,7 @@
 package com.mysema.query.hql.hibernate;
 
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 
 /**
  * Abstraction for different Hibernate Session signatures
@@ -20,5 +21,11 @@ public interface SessionHolder {
      * @return
      */
     Query createQuery(String queryString);
+    
+    /**
+     * @param queryString
+     * @return
+     */
+    SQLQuery createSQLQuery(String queryString);
 
 }

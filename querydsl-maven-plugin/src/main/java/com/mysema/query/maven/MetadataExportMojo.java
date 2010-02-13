@@ -12,4 +12,7 @@ package com.mysema.query.maven;
  */
 public class MetadataExportMojo extends AbstractMetaDataExportMojo{
 
+    protected boolean isForTest(){
+        return false;
+    }
 }
