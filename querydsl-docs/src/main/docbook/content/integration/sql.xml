@@ -33,6 +33,12 @@ exporter.export(conn.getMetaData());
   The generated types have the table name transformed to mixed case as the class name and a similar mixed case transformation
   applied to the columns which are available as property paths in the query type.
   </para>
+  
+ </sect2>
+ 
+ <sect2>
+ 
+  <title>Maven integration</title> 
     
   <para>This functionality is also available as a Maven plugin. The presented example can be declared like this in the POM :</para>
   
