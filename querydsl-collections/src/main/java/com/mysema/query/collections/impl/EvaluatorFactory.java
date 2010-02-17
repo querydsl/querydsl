@@ -36,6 +36,7 @@ public class EvaluatorFactory {
         this.templates = templates;
     }
     
+    @SuppressWarnings("unchecked")
     public <T> Evaluator<T> create(List<? extends Expr<?>> sources, final Expr<T> projection) {
         ColQuerySerializer serializer = new ColQuerySerializer(templates);
         serializer.handle(projection);
@@ -68,12 +69,9 @@ public class EvaluatorFactory {
         }
 
         try {
-            // REPLACE START
             final ExpressionEvaluator evaluator = new ExpressionEvaluator(javaSource, projection.getType(), names, types);
-            // REPLACE END
             
-            return new Evaluator<T>(){
-                @SuppressWarnings("unchecked")
+            Evaluator<T> rv = new Evaluator<T>(){
                 @Override
                 public T evaluate(Object... args) {
                     try {
@@ -94,6 +92,7 @@ public class EvaluatorFactory {
                 }
                 
             };
+            return rv;
             
         } catch (CompileException e) {
             throw new RuntimeException(e.getMessage() + " with source " + javaSource, e);
