@@ -1,5 +1,6 @@
 package com.mysema.query.jdoql;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -51,6 +52,16 @@ public class QueryMutabilityTest extends AbstractJDOTest{
         query.uniqueResult(product,product);
         assertProjectionEmpty(query);
         
+    }
+    
+    @Test
+    public void testClone(){
+        QProduct product = QProduct.product;
+        JDOQLQueryImpl query = (JDOQLQueryImpl) query().from(product).where(product.name.isNotNull());        
+        JDOQLQueryImpl query2 = query.clone(pm);
+        assertEquals(query.getMetadata().getJoins(), query2.getMetadata().getJoins());
+        assertEquals(query.getMetadata().getWhere(), query2.getMetadata().getWhere());
+        query2.list(product);
     }
 
     private void assertProjectionEmpty(JDOQLQueryImpl query) throws IOException {

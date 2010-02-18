@@ -26,7 +26,7 @@ import com.mysema.query.types.path.Path;
  * @version $Id$
  */
 public class DefaultQueryMetadata implements QueryMetadata {
-
+    
     private boolean distinct;
     
     private final Set<Expr<?>> exprInJoins = new HashSet<Expr<?>>();
@@ -47,7 +47,7 @@ public class DefaultQueryMetadata implements QueryMetadata {
     private boolean unique;
 
     private final BooleanBuilder where = new BooleanBuilder();
-
+    
     @SuppressWarnings("unchecked")
     @Override
     public void addFrom(Expr<?>... args) {
@@ -113,6 +113,22 @@ public class DefaultQueryMetadata implements QueryMetadata {
                 where.and(e);    
             }            
         }            
+    }    
+
+    @Override
+    public QueryMetadata clone(){
+        DefaultQueryMetadata clone = new DefaultQueryMetadata();
+        clone.distinct = distinct;
+        clone.exprInJoins.addAll(exprInJoins);
+        clone.groupBy.addAll(groupBy);
+        clone.having.and(having.getValue());
+        clone.joins.addAll(joins);
+        clone.modifiers = modifiers; 
+        clone.orderBy.addAll(orderBy);
+        clone.projection.addAll(projection);
+        clone.unique = unique;
+        clone.where.and(where.getValue());
+        return clone;
     }
 
     private void ensureRoot(Path<?> path){

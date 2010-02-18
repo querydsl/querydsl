@@ -70,4 +70,6 @@ public interface QueryMetadata {
     void setUnique(boolean unique);
 
     void reset();
+
+    QueryMetadata clone();
 }

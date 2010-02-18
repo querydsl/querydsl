@@ -32,7 +32,7 @@ import com.mysema.query.types.path.PEntity;
  */
 public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubType>> extends ProjectableQuery<SubType> implements Projectable {
     
-    private final boolean detach;
+    protected final boolean detach;
 
     private List<Object> orderedConstants = new ArrayList<Object>();
     
@@ -40,11 +40,11 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
 
     private List<Query> queries = new ArrayList<Query>(2);
     
-    private final JDOQLTemplates templates;
-    
+    protected final JDOQLTemplates templates;
+
     @SuppressWarnings("unchecked")
-    public AbstractJDOQLQuery(PersistenceManager persistenceManager, JDOQLTemplates templates, boolean detach) {
-        super(new JDOQLQueryMixin<SubType>());
+    public AbstractJDOQLQuery(PersistenceManager persistenceManager, JDOQLTemplates templates, boolean detach, QueryMetadata metadata) {
+        super(new JDOQLQueryMixin<SubType>(metadata));
         this.queryMixin.setSelf((SubType) this);
         this.templates = templates;
         this.persistenceManager = persistenceManager;

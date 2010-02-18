@@ -8,6 +8,7 @@ package com.mysema.query.hql.jpa;
 import javax.persistence.EntityManager;
 
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.hql.HQLQuery;
 import com.mysema.query.hql.HQLTemplates;
 
@@ -19,11 +20,49 @@ import com.mysema.query.hql.HQLTemplates;
  */
 public class JPAQuery extends AbstractJPAQuery<JPAQuery> implements HQLQuery{
 
+    /**
+     * Creates a new detached query 
+     */
+    public JPAQuery(){
+        super(new NoSessionHolder(), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
+    }    
+
+    /**
+     * Creates a new EntityManager bound query
+     * 
+     * @param entityManager
+     */
+    public JPAQuery(EntityManager entityManager) {
+        super(new DefaultSessionHolder(entityManager), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
+    }
+    
+    /**
+     * Creates a new query
+     * 
+     * @param entityManager
+     * @param patterns
+     */
     public JPAQuery(EntityManager entityManager, HQLTemplates patterns) {
-        super(new DefaultQueryMetadata(), entityManager, patterns);
+        super(new DefaultSessionHolder(entityManager), patterns, new DefaultQueryMetadata());
+    }
+    
+    /**
+     * @param session
+     * @param templates
+     * @param metadata
+     */
+    protected JPAQuery(JPASessionHolder session, HQLTemplates templates, QueryMetadata metadata) {
+        super(session, templates, metadata);
+    }
+    
+    /**
+     * Clone the state of this query to a new HibernateQuery instance with the given Session
+     * 
+     * @param session
+     * @return
+     */
+    public JPAQuery clone(EntityManager entityManager){
+        return new JPAQuery(new DefaultSessionHolder(entityManager), templates, getMetadata().clone());
     }
 
-    public JPAQuery(EntityManager entityManager) {
-        super(new DefaultQueryMetadata(), entityManager, HQLTemplates.DEFAULT);
-    }
 }

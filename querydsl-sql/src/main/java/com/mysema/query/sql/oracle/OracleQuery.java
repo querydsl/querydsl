@@ -7,9 +7,11 @@ package com.mysema.query.sql.oracle;
 
 import java.sql.Connection;
 
+import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.AbstractSQLQuery;
-import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.SQLSerializer;
+import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
@@ -28,7 +30,11 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
     private EBoolean startWith;
 
     public OracleQuery(Connection conn, SQLTemplates patterns) {
-        super(conn, patterns);
+        super(conn, patterns, new DefaultQueryMetadata());
+    }
+    
+    protected OracleQuery(Connection conn, SQLTemplates patterns, QueryMetadata metadata) {
+        super(conn, patterns, metadata);
     }
 
     public OracleQuery connectByPrior(EBoolean cond) {
@@ -59,6 +65,16 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
     protected SQLSerializer createSerializer() {
         return new OracleSerializer(templates, connectBy, connectByNocyclePrior,
                 connectByPrior, orderSiblingsBy, startWith);
+    }
+    
+    /**
+     * Clone the state of this query to a new SQLQueryImpl instance with the given Connection
+     * 
+     * @param conn
+     * @return
+     */
+    public OracleQuery clone(Connection conn){
+        return new OracleQuery(conn, templates, getMetadata().clone());   
     }
 
     // TODO : connect by root

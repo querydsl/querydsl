@@ -1,5 +1,11 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 
 import javax.persistence.EntityManager;
@@ -67,6 +73,16 @@ public class JPAQueryMutabilityTest{
 //        query.uniqueResult(cat,cat);
 //        assertProjectionEmpty(query);
         
+    }
+    
+    @Test
+    public void testClone(){
+        QCat cat = QCat.cat;
+        JPAQuery query = query().from(cat).where(cat.name.isNotNull());        
+        JPAQuery query2 = query.clone(entityManager);
+        assertEquals(query.getMetadata().getJoins(), query2.getMetadata().getJoins());
+        assertEquals(query.getMetadata().getWhere(), query2.getMetadata().getWhere());
+        query2.list(cat);
     }
 
     private void assertProjectionEmpty(JPAQuery query) {

@@ -32,7 +32,7 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
 
     protected final HQLQueryMixin<SubType> queryMixin;
     
-    private final HQLTemplates templates;
+    protected final HQLTemplates templates;
     
     @SuppressWarnings("unchecked")
     public HQLQueryBase(QueryMetadata md, HQLTemplates templates) {

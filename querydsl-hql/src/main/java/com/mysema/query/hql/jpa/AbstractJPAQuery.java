@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nullable;
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.slf4j.Logger;
@@ -33,11 +32,11 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
 
     private static final Logger logger = LoggerFactory.getLogger(JPAQuery.class);
     
-    private final EntityManager entityManager;
+    private final JPASessionHolder sessionHolder;
 
-    public AbstractJPAQuery(QueryMetadata metadata, EntityManager entityManager, HQLTemplates patterns) {
+    public AbstractJPAQuery(JPASessionHolder sessionHolder, HQLTemplates patterns, QueryMetadata metadata) {
         super(metadata, patterns);
-        this.entityManager = entityManager;
+        this.sessionHolder = sessionHolder;
     }
 
     public long count() {
@@ -85,7 +84,7 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
     }
 
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
-        Query query = entityManager.createQuery(queryString);
+        Query query = sessionHolder.createQuery(queryString);
         JPAUtil.setConstants(query, getConstants());
         if (modifiers != null && modifiers.isRestricting()) {
             if (modifiers.getLimit() != null) {

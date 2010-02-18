@@ -16,7 +16,7 @@ import org.hibernate.ScrollableResults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.hql.HQLQueryBase;
@@ -44,8 +44,8 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     
     private int timeout = 0;    
 
-    public AbstractHibernateQuery(SessionHolder session, HQLTemplates patterns) {
-        super(new DefaultQueryMetadata(), patterns);
+    public AbstractHibernateQuery(SessionHolder session, HQLTemplates patterns, QueryMetadata metadata) {
+        super(metadata, patterns);
         this.session = session;
     }
     

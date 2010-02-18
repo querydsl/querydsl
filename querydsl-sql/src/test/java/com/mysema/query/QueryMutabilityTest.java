@@ -1,5 +1,6 @@
 package com.mysema.query;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -89,6 +90,16 @@ public class QueryMutabilityTest{
         query.uniqueResult(survey.id,survey.name);
         assertProjectionEmpty(query);
         
+    }
+    
+    @Test
+    public void testClone(){
+        QSURVEY survey = new QSURVEY("survey");
+        SQLQueryImpl query = new SQLQueryImpl(connection, new DerbyTemplates()).from(survey);        
+        SQLQueryImpl query2 = query.clone(connection);
+        assertEquals(query.getMetadata().getJoins(), query2.getMetadata().getJoins());
+        assertEquals(query.getMetadata().getWhere(), query2.getMetadata().getWhere());
+        query2.list(survey.id);
     }
 
     private void assertProjectionEmpty(SQLQueryImpl query) throws IOException {

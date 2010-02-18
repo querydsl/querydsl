@@ -7,6 +7,9 @@ package com.mysema.query.jdoql;
 
 import javax.jdo.PersistenceManager;
 
+import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.QueryMetadata;
+
 
 /**
  * Default implementation of the JDOQLQuery interface
@@ -25,7 +28,7 @@ public class JDOQLQueryImpl extends AbstractJDOQLQuery<JDOQLQueryImpl> implement
      * @param detach detached results or not
      */
     public JDOQLQueryImpl(PersistenceManager persistenceManager, JDOQLTemplates templates, boolean detach) {
-        super(persistenceManager, templates, false);
+        super(persistenceManager, templates, false, new DefaultQueryMetadata());
     }
     
     /**
@@ -35,7 +38,7 @@ public class JDOQLQueryImpl extends AbstractJDOQLQuery<JDOQLQueryImpl> implement
      * @param detach detached results or not
      */
     public JDOQLQueryImpl(PersistenceManager persistenceManager, boolean detach) {
-        super(persistenceManager, JDOQLTemplates.DEFAULT, detach);
+        super(persistenceManager, JDOQLTemplates.DEFAULT, detach, new DefaultQueryMetadata());
     }
     
     /**
@@ -44,6 +47,27 @@ public class JDOQLQueryImpl extends AbstractJDOQLQuery<JDOQLQueryImpl> implement
      * @param persistenceManager PersistenceManager instance to use
      */
     public JDOQLQueryImpl(PersistenceManager persistenceManager) {
-        super(persistenceManager, JDOQLTemplates.DEFAULT, false);
+        super(persistenceManager, JDOQLTemplates.DEFAULT, false, new DefaultQueryMetadata());
     }
+    
+    /**
+     * @param persistenceManager
+     * @param templates
+     * @param detach
+     * @param metadata
+     */
+    protected JDOQLQueryImpl(PersistenceManager persistenceManager, JDOQLTemplates templates, boolean detach, QueryMetadata metadata) {
+        super(persistenceManager, templates, false, metadata);
+    }
+    
+    /**
+     * Clone the state of this query to a new JDOQLQueryImpl instance with the given PersistenceManager
+     * 
+     * @param persistenceManager
+     * @return
+     */
+    public JDOQLQueryImpl clone(PersistenceManager persistenceManager){
+        return new JDOQLQueryImpl(persistenceManager, templates, detach, getMetadata().clone());
+    }
+    
 }
