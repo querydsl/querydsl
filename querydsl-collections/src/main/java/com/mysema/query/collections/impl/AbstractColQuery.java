@@ -69,6 +69,10 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
         this.iteratorFactory = new IteratorFactory(evaluatorFactory);
     }
     
+    private void reset(){
+        queryMixin.getMetadata().reset();
+    }
+    
     public long count() {
         try {
             List<Expr<?>> sources = new ArrayList<Expr<?>>();
@@ -90,6 +94,8 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
             return count;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
+        }finally{
+            reset();
         }
     }
 
@@ -228,13 +234,16 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
         return iterate(projection);
     }
 
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        queryMixin.addToProjection(projection);
+    public <RT> Iterator<RT> iterate(Expr<RT> projection) {        
         try {
+            queryMixin.addToProjection(projection);
             return createPagedIterator(projection);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
+        }finally{
+            reset();
         }
+        
     }
 
     public <RT> SearchResults<RT> listResults(Expr<RT> projection) {
@@ -247,10 +256,12 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
         }
         // empty results
         if (list.isEmpty()) {
+            reset();
             return SearchResults.emptyResults();
             
         // no restrictions    
         } else if (!modifiers.isRestricting()) {
+            reset();
             return new SearchResults<RT>(list, modifiers, list.size());
             
         } else {
@@ -260,12 +271,14 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
                 if (modifiers.getOffset() < list.size()) {
                     start = modifiers.getOffset().intValue();
                 } else {
-                    return new SearchResults<RT>(Collections.<RT> emptyList(),modifiers, list.size());
+                    reset();
+                    return new SearchResults<RT>(Collections.<RT> emptyList(), modifiers, list.size());
                 }
             }
             if (modifiers.getLimit() != null) {
                 end = (int) Math.min(start + modifiers.getLimit(), list.size());
             }
+            reset();
             return new SearchResults<RT>(list.subList(start, end), modifiers, list.size());
         }
     }

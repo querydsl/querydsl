@@ -18,6 +18,7 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryMixin;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -39,8 +40,6 @@ import com.mysema.query.types.query.SubQuery;
  */
 public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
         extends ProjectableQuery<SubType>{
-
-    private String queryString;
     
     public class UnionBuilder<RT> implements Union<RT> {
 
@@ -100,11 +99,11 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
             throw new RuntimeException(e.getMessage(), e);
         }
     }
-
+    
     protected SQLSerializer createSerializer() {
         return new SQLSerializer(templates);
     }
-
+    
     public SubType from(PEntity<?>... args) {
         return queryMixin.from(args);
     }
@@ -122,7 +121,11 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         // TODO : cache methods
         return (T) ResultSet.class.getMethod(methodName, int.class).invoke(rs, i);
     }
-    
+
+    public QueryMetadata getMetadata(){
+        return queryMixin.getMetadata();
+    }
+
     public SubType innerJoin(PEntity<?> target) {
         return queryMixin.innerJoin(target);
     }
@@ -134,16 +137,15 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         this.sq = sq;
         return new UnionBuilder<RT>();
     }
-
+    
     public Iterator<Object[]> iterate(Expr<?>[] args) {
         return list(args).iterator();
     }
-    
 
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        // TODO : optimize
         return list(projection).iterator();
     }
+    
 
     public SubType join(PEntity<?> target) {
         return queryMixin.join(target);
@@ -152,26 +154,30 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     public SubType leftJoin(PEntity<?> target) {
         return queryMixin.leftJoin(target);
     }
-    
-    public List<Object[]> list(Expr<?>[] args) {
-        queryMixin.addToProjection(args);
+
+    public List<Object[]> list(Expr<?>[] args) {        
         try {
+            queryMixin.addToProjection(args);
             return listMultiple();
         } catch (SQLException e) {
             String error = "Caught " + e.getClass().getName();
             logger.error(error, e);
             throw new RuntimeException(e.getMessage(), e);
+        }finally{
+            reset();
         }
     }
-
-    public <RT> List<RT> list(Expr<RT> expr) {
-        queryMixin.addToProjection(expr);
+    
+    public <RT> List<RT> list(Expr<RT> expr) {        
         try {
+            queryMixin.addToProjection(expr);
             return listSingle(expr);
         } catch (SQLException e) {
             String error = "Caught " + e.getClass().getName();
             logger.error(error, e);
             throw new RuntimeException(e.getMessage(), e);
+        }finally{
+            reset();
         }
     }
 
@@ -193,6 +199,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
             }
             return rv;
         } finally {
+            reset();
             try {
                 rs.close();
             } finally {
@@ -204,12 +211,16 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
         queryMixin.addToProjection(expr);
         long total = count();
-        if (total > 0) {
-            QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
-            return new SearchResults<RT>(list(expr), modifiers, total);
-        } else {
-            return SearchResults.emptyResults();
-        }
+        try{
+            if (total > 0) {
+                QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
+                return new SearchResults<RT>(list(expr), modifiers, total);
+            } else {
+                return SearchResults.emptyResults();
+            }    
+        }finally{
+            reset();
+        }        
     }
 
     @SuppressWarnings("unchecked")
@@ -251,6 +262,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
             }
             return rv;
         } finally {
+            reset();
             try {
                 rs.close();
             } finally {
@@ -263,13 +275,11 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         return queryMixin.on(conditions);
     }
 
-    protected String toQueryString(){
-        if (queryString == null){
-            queryString = buildQueryString(false);
-        }
-        return queryString;
+    private void reset(){
+        queryMixin.getMetadata().reset();
+        constants = null;
     }
-    
+
     @Override
     public String toString() {
         return buildQueryString(false).trim();

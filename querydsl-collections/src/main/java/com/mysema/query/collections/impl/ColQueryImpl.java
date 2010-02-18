@@ -18,7 +18,6 @@ import com.mysema.query.collections.ColQuery;
  */
 public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQuery{
     
-
     public ColQueryImpl() {
         super(new DefaultQueryMetadata(), EvaluatorFactory.DEFAULT);
     }

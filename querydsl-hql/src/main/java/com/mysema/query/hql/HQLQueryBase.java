@@ -52,6 +52,12 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return serializer.toString();
     }
     
+    protected void reset() {
+        queryMixin.getMetadata().reset();
+        countRowsString = null;
+        queryString = null;
+    }
+    
     public SubType fetch(){
         return queryMixin.fetch();
     }
@@ -187,5 +193,8 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
         return buildQueryString(false).trim();
     }
 
+    public QueryMetadata getMetadata(){
+        return queryMixin.getMetadata();
+    }
 
 }

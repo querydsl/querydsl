@@ -16,6 +16,7 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
 import com.mysema.query.Projectable;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.support.ProjectableQuery;
@@ -31,15 +32,15 @@ import com.mysema.query.types.path.PEntity;
  */
 public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubType>> extends ProjectableQuery<SubType> implements Projectable {
     
+    private final boolean detach;
+
     private List<Object> orderedConstants = new ArrayList<Object>();
+    
+    private final PersistenceManager persistenceManager;
 
     private List<Query> queries = new ArrayList<Query>(2);
     
     private final JDOQLTemplates templates;
-
-    private final PersistenceManager persistenceManager;
-    
-    private final boolean detach;
     
     @SuppressWarnings("unchecked")
     public AbstractJDOQLQuery(PersistenceManager persistenceManager, JDOQLTemplates templates, boolean detach) {
@@ -50,16 +51,19 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         this.detach = detach;
     }
 
-    public SubType from(PEntity<?>... args) {
-        return queryMixin.from(args);
+    public void close() throws IOException {
+        for (Query query : queries){
+            query.closeAll();
+        }        
     }
 
     public long count() {
         Query query = createQuery(true);
         query.setUnique(true);
+        reset();
         return (Long) execute(query);
     }
-
+    
     private Query createQuery(boolean forCount) {        
         Expr<?> source = queryMixin.getMetadata().getJoins().get(0).getTarget();
         
@@ -72,22 +76,6 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         orderedConstants = serializer.getConstants();
         queries.add(query);               
         return query;
-    }
-    
-    public Iterator<Object[]> iterate(Expr<?>[] args) {
-        return list(args).iterator();
-    }
-
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        // TODO : optimize
-        return list(projection).iterator();
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expr<?>[] args) {
-        queryMixin.addToProjection(args);
-        Object rv = execute(createQuery(false));        
-        return (rv instanceof List) ? ((List<Object[]>)rv) : Collections.singletonList((Object[])rv);
     }
     
     @SuppressWarnings("unchecked")
@@ -111,11 +99,36 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         }        
         return rv;
     }
+    
+    public SubType from(PEntity<?>... args) {
+        return queryMixin.from(args);
+    }
+
+    public QueryMetadata getMetadata(){
+        return queryMixin.getMetadata();
+    }
+
+    public Iterator<Object[]> iterate(Expr<?>[] args) {
+        return list(args).iterator();
+    }
+    
+    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
+        return list(projection).iterator();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Object[]> list(Expr<?>[] args) {
+        queryMixin.addToProjection(args);
+        Object rv = execute(createQuery(false));        
+        reset();
+        return (rv instanceof List) ? ((List<Object[]>)rv) : Collections.singletonList((Object[])rv);
+    }
 
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expr<RT> expr) {
         queryMixin.addToProjection(expr);
         Object rv = execute(createQuery(false));
+        reset();
         return rv instanceof List ? (List<RT>)rv : Collections.singletonList((RT)rv);
     }
 
@@ -129,26 +142,18 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         if (total > 0) {
             QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
             Query query = createQuery(false);
+            reset();
             return new SearchResults<RT>((List<RT>) execute(query), modifiers, total);
         } else {
+            reset();
             return SearchResults.emptyResults();
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public <RT> RT uniqueResult(Expr<RT> expr) {
-        queryMixin.addToProjection(expr);
-        Query query = createQuery(false);
-        query.setUnique(true);
-        return (RT) execute(query);
+    private void reset(){
+        queryMixin.getMetadata().reset();
     }
 
-    public void close() throws IOException {
-        for (Query query : queries){
-            query.closeAll();
-        }        
-    }
-    
     @Override
     public String toString(){
         if (!queryMixin.getMetadata().getJoins().isEmpty()){
@@ -159,5 +164,14 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         }else{
             return super.toString();
         }        
+    }
+    
+    @SuppressWarnings("unchecked")
+    public <RT> RT uniqueResult(Expr<RT> expr) {
+        queryMixin.addToProjection(expr);
+        Query query = createQuery(false);
+        query.setUnique(true);
+        reset();
+        return (RT) execute(query);
     }
 }

@@ -62,17 +62,11 @@ public class DefaultQueryMetadata implements QueryMetadata {
         }
     }
     
-    private void ensureRoot(Path<?> path){
-        if (path.getMetadata().getParent() != null){
-            throw new IllegalArgumentException("Only root paths are allowed for joins : " + path);
-        }
-    }
-    
     @Override
     public void addGroupBy(Expr<?>... o) {
         groupBy.addAll(Arrays.<Expr<?>> asList(o));
     }
-
+    
     @Override
     public void addHaving(EBoolean... o) {
         for (EBoolean e : o){
@@ -81,7 +75,6 @@ public class DefaultQueryMetadata implements QueryMetadata {
             }            
         }            
     }
-
 
     @SuppressWarnings("unchecked")
     @Override
@@ -94,6 +87,7 @@ public class DefaultQueryMetadata implements QueryMetadata {
             exprInJoins.add(expr);
         }
     }
+
 
     @Override
     public void addJoinCondition(EBoolean o) {
@@ -119,6 +113,12 @@ public class DefaultQueryMetadata implements QueryMetadata {
                 where.and(e);    
             }            
         }            
+    }
+
+    private void ensureRoot(Path<?> path){
+        if (path.getMetadata().getParent() != null){
+            throw new IllegalArgumentException("Only root paths are allowed for joins : " + path);
+        }
     }
 
     @Override
@@ -165,6 +165,12 @@ public class DefaultQueryMetadata implements QueryMetadata {
     @Override
     public boolean isUnique() {
         return unique;
+    }
+
+    @Override
+    public void reset() {
+        projection.clear();
+        modifiers = new QueryModifiers();
     }
 
     @Override

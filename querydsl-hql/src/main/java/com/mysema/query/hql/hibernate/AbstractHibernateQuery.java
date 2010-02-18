@@ -127,7 +127,9 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
      */
     @SuppressWarnings("unchecked")
     public Iterator<Object[]> iterate(Expr<?>[] args) {
-        return createQuery(args).iterate();
+        Query query = createQuery(args);
+        reset();
+        return query.iterate();
     }
 
     /**
@@ -140,33 +142,43 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
      */
     @SuppressWarnings("unchecked")
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        return createQuery(projection).iterate();
+        Query query = createQuery(projection);
+        reset();
+        return query.iterate();
     }
 
     @SuppressWarnings("unchecked")
     public List<Object[]> list(Expr<?>[] args) {
-        return createQuery(args).list();
+        Query query = createQuery(args);
+        reset();
+        return query.list();
     }
 
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expr<RT> expr) {
-        return createQuery(expr).list();
+        Query query = createQuery(expr);
+        reset();
+        return query.list();
     }
 
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
         queryMixin.addToProjection(expr);
         Query query = createQuery(toCountRowsString(), null);
         long total = (Long) query.uniqueResult();
-        if (total > 0) {
-            QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
-            String queryString = toQueryString();
-            logQuery(queryString);
-            query = createQuery(queryString, modifiers);
-            @SuppressWarnings("unchecked")
-            List<RT> list = query.list();
-            return new SearchResults<RT>(list, modifiers, total);
-        } else {
-            return SearchResults.emptyResults();
+        try{
+            if (total > 0) {
+                QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
+                String queryString = toQueryString();
+                logQuery(queryString);
+                query = createQuery(queryString, modifiers);
+                @SuppressWarnings("unchecked")
+                List<RT> list = query.list();
+                return new SearchResults<RT>(list, modifiers, total);
+            } else {
+                return SearchResults.emptyResults();
+            }   
+        }finally{
+            reset();
         }
     }
 
@@ -186,7 +198,9 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
      * @return
      */
     public ScrollableResults scroll(ScrollMode mode, Expr<?> expr) {
-        return createQuery(expr).scroll(mode);
+        Query query = createQuery(expr);
+        reset();
+        return query.scroll(mode);
     }
     
     /**
@@ -201,7 +215,9 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
      * @return
      */
     public ScrollableResults scroll(ScrollMode mode, Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
-        return createQuery(expr1, expr2, rest).scroll(mode);
+        Query query = createQuery(expr1, expr2, rest);
+        reset();
+        return query.scroll(mode);
     }
     
     /**
@@ -214,7 +230,9 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
      * @return
      */
     public ScrollableResults scroll(ScrollMode mode, Expr<?>[] args) {
-        return createQuery(args).scroll(mode);
+        Query query = createQuery(args);
+        reset();
+        return query.scroll(mode);
     }
 
     /**
@@ -277,6 +295,7 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
         String queryString = toQueryString();
         logQuery(queryString);
         Query query = createQuery(queryString, modifiers);
+        reset();
         return (RT) query.uniqueResult();
     }
     

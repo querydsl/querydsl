@@ -107,13 +107,17 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
     }
     
     @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expr<?>[] args) {        
-        return createQuery(args).getResultList();
+    public List<Object[]> list(Expr<?>[] args) {       
+        Query query = createQuery(args);
+        reset();
+        return query.getResultList();
     }
 
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expr<RT> expr) {
-        return createQuery(expr).getResultList();
+        Query query = createQuery(expr);
+        reset();
+        return query.getResultList();
     }
 
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
@@ -127,8 +131,10 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
             query = createQuery(queryString, modifiers);
             @SuppressWarnings("unchecked")
             List<RT> list = query.getResultList();
+            reset();
             return new SearchResults<RT>(list, modifiers, total);
         } else {
+            reset();
             return SearchResults.emptyResults();
         }
     }
@@ -139,6 +145,7 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
         String queryString = toQueryString();
         logQuery(queryString);
         Query query = createQuery(queryString, null);
+        reset();
         return (RT) query.getSingleResult();
     }
     

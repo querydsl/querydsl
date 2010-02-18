@@ -68,4 +68,6 @@ public interface QueryMetadata {
     void setOffset(@Nullable Long offset);
     
     void setUnique(boolean unique);
+
+    void reset();
 }
