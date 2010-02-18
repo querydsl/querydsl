@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.junit.After;
 import org.junit.Before;
@@ -25,9 +26,20 @@ public class QueryMutabilityTest{
         return DriverManager.getConnection(url, "", "");
     }
     
+    private static void safeExecute(Statement stmt, String sql) {
+        try {
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            // do nothing
+        }
+    }
+    
     @Before
     public void setUp() throws Exception{
         connection = getDerbyConnection();
+        Statement stmt = connection.createStatement();
+        safeExecute(stmt, "drop table survey");
+        stmt.execute("create table survey (id int,name varchar(30))");
     }
     
     @After
