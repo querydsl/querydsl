@@ -16,6 +16,11 @@ import com.mysema.query.types.path.Path;
  * @version $Id$
  */
 public interface ColQuery extends Query<ColQuery>, Projectable {
+    
+    /**
+     * @return
+     */
+    ColQuery clone();
 
     /**
      * Add a query source

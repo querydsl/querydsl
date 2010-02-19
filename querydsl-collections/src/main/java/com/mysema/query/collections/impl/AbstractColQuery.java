@@ -53,7 +53,7 @@ import com.mysema.util.MultiIterator;
 public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>> 
     extends ProjectableQuery<SubType> {
     
-    private final EvaluatorFactory evaluatorFactory;
+    protected final EvaluatorFactory evaluatorFactory;
     
     private final IteratorFactory iteratorFactory;
     

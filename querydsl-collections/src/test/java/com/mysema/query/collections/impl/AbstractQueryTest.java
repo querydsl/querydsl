@@ -24,8 +24,6 @@ import com.mysema.query.types.expr.Expr;
  */
 public abstract class AbstractQueryTest {
 
-    private static final EvaluatorFactory evaluatorFactory = EvaluatorFactory.DEFAULT;
-    
     protected Cat c1 = new Cat("Kitty");
 
     protected Cat c2 = new Cat("Bob");
@@ -71,9 +69,9 @@ public abstract class AbstractQueryTest {
     }
 
     static class TestQuery extends ColQueryImpl {
-        public TestQuery() {
-            super(evaluatorFactory);
-        }
+//        public TestQuery() {
+//            super(evaluatorFactory);
+//        }
 
         List<Object> res = new ArrayList<Object>();
 

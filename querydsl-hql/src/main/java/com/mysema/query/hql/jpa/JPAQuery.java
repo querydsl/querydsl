@@ -57,9 +57,9 @@ public class JPAQuery extends AbstractJPAQuery<JPAQuery> implements HQLQuery{
     }
     
     /**
-     * Clone the state of this query to a new HibernateQuery instance with the given Session
+     * Clone the state of this query to a new JPAQuery instance with the given EntityManager
      * 
-     * @param session
+     * @param entityManager
      * @return
      */
     public JPAQuery clone(EntityManager entityManager){
