@@ -7,6 +7,8 @@ package com.mysema.query.jdoql;
 
 import java.io.Closeable;
 
+import javax.jdo.PersistenceManager;
+
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
 import com.mysema.query.types.path.PEntity;
@@ -19,6 +21,12 @@ import com.mysema.query.types.path.PEntity;
  */
 public interface JDOQLQuery extends Query<JDOQLQuery>, Projectable, Closeable {
 
+    /**
+     * @param persistenceManager
+     * @return
+     */
+    JDOQLQuery clone(PersistenceManager persistenceManager);
+    
     /**
      * Add query sources
      * 

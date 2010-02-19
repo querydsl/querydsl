@@ -24,6 +24,7 @@ public class HibernateQuery extends AbstractHibernateQuery<HibernateQuery> imple
 
     /**
      * Creates a detached query
+     * The query can be attached via the clone method
      */
     public HibernateQuery() {
         this(NoSessionHolder.DEFAULT, HQLTemplates.DEFAULT);

@@ -22,6 +22,7 @@ public class JPAQuery extends AbstractJPAQuery<JPAQuery> implements HQLQuery{
 
     /**
      * Creates a new detached query 
+     * The query can be attached via the clone method
      */
     public JPAQuery(){
         super(new NoSessionHolder(), HQLTemplates.DEFAULT, new DefaultQueryMetadata());

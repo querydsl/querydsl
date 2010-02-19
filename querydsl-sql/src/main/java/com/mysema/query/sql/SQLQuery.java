@@ -5,6 +5,8 @@
  */
 package com.mysema.query.sql;
 
+import java.sql.Connection;
+
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
 import com.mysema.query.types.expr.EBoolean;
@@ -19,7 +21,7 @@ import com.mysema.query.types.query.ObjectSubQuery;
  *
  */
 public interface SQLQuery extends Query<SQLQuery>, Projectable {
-    
+  
     /**
      * @param o
      * @return
@@ -43,7 +45,7 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
      * @return
      */
     SQLQuery join(PEntity<?> o);
-
+    
     /**
      * @param o
      * @return
@@ -61,13 +63,13 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
      * @param sq
      * @return
      */
-    <RT> Union<RT> union(ObjectSubQuery<RT>... sq);
+    <RT> Union<RT> union(ListSubQuery<RT>... sq);
     
     /**
      * @param <RT>
      * @param sq
      * @return
      */
-    <RT> Union<RT> union(ListSubQuery<RT>... sq);
+    <RT> Union<RT> union(ObjectSubQuery<RT>... sq);
 
 }

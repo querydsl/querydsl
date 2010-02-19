@@ -63,6 +63,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
 
+    @Nullable
     private final Connection conn;
 
     private List<Object> constants;
@@ -72,7 +73,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     protected final SQLTemplates templates;
 
     @SuppressWarnings("unchecked")
-    public AbstractSQLQuery(Connection conn, SQLTemplates templates, QueryMetadata metadata) {
+    public AbstractSQLQuery(@Nullable Connection conn, SQLTemplates templates, QueryMetadata metadata) {
         super(new QueryMixin<SubType>(metadata));
         this.queryMixin.setSelf((SubType) this);
         this.conn = conn;

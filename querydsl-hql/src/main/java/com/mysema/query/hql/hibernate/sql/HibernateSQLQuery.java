@@ -5,6 +5,7 @@
  */
 package com.mysema.query.hql.hibernate.sql;
 
+import java.sql.Connection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -213,5 +214,6 @@ public class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery> imple
         org.hibernate.SQLQuery query = createQuery(queryString, modifiers);
         return (RT) query.uniqueResult();
     }
+
 
 }

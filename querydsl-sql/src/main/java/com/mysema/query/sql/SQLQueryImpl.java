@@ -17,6 +17,17 @@ import com.mysema.query.QueryMetadata;
  * @version $Id$
  */
 public class SQLQueryImpl extends AbstractSQLQuery<SQLQueryImpl> implements SQLQuery{
+    
+    /**
+     * Create a detached SQLQueryImpl instance
+     * The query can be attached via the clone method
+     * 
+     * @param conn Connection to use
+     * @param templates SQLTemplates to use
+     */
+    public SQLQueryImpl(SQLTemplates templates) {
+        super(null, templates, new DefaultQueryMetadata());
+    }
 
     /**
      * Create a new SQLQueryImpl instance

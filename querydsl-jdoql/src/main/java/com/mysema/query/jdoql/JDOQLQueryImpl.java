@@ -19,6 +19,16 @@ import com.mysema.query.QueryMetadata;
  * @param <A>
  */
 public class JDOQLQueryImpl extends AbstractJDOQLQuery<JDOQLQueryImpl> implements JDOQLQuery{
+    
+    /**
+     * Create a detached JDOQLQueryImpl instance
+     * The query can be attached via the clone method
+     * 
+     * @param persistenceManager
+     */
+    public JDOQLQueryImpl() {
+        super(null, JDOQLTemplates.DEFAULT, false, new DefaultQueryMetadata());
+    }
 
     /**
      * Create a new JDOQLQueryImpl instance

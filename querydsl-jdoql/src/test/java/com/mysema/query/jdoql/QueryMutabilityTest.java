@@ -57,7 +57,7 @@ public class QueryMutabilityTest extends AbstractJDOTest{
     @Test
     public void testClone(){
         QProduct product = QProduct.product;
-        JDOQLQueryImpl query = (JDOQLQueryImpl) query().from(product).where(product.name.isNotNull());        
+        JDOQLQueryImpl query = new JDOQLQueryImpl().from(product).where(product.name.isNotNull());        
         JDOQLQueryImpl query2 = query.clone(pm);
         assertEquals(query.getMetadata().getJoins(), query2.getMetadata().getJoins());
         assertEquals(query.getMetadata().getWhere(), query2.getMetadata().getWhere());

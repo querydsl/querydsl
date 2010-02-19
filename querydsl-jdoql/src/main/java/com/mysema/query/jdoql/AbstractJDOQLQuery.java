@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
@@ -36,6 +37,7 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
 
     private List<Object> orderedConstants = new ArrayList<Object>();
     
+    @Nullable
     private final PersistenceManager persistenceManager;
 
     private List<Query> queries = new ArrayList<Query>(2);
@@ -43,7 +45,7 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     protected final JDOQLTemplates templates;
 
     @SuppressWarnings("unchecked")
-    public AbstractJDOQLQuery(PersistenceManager persistenceManager, JDOQLTemplates templates, boolean detach, QueryMetadata metadata) {
+    public AbstractJDOQLQuery(@Nullable PersistenceManager persistenceManager, JDOQLTemplates templates, boolean detach, QueryMetadata metadata) {
         super(new JDOQLQueryMixin<SubType>(metadata));
         this.queryMixin.setSelf((SubType) this);
         this.templates = templates;
