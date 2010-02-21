@@ -10,6 +10,10 @@ package com.mysema.query.codegen;
  *
  */
 public interface TypeModels {   
+    
+    TypeModel OBJECTS = new ClassTypeModel(TypeCategory.SIMPLE, Object[].class);
+    
+    TypeModel OBJECT = new ClassTypeModel(TypeCategory.SIMPLE, Object.class);
 
     TypeModel BOOLEAN = new ClassTypeModel(TypeCategory.BOOLEAN, Boolean.class, boolean.class);
     

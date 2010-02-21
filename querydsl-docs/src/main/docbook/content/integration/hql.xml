@@ -464,31 +464,56 @@ List results = hibQuery.list();
 ]]></programlisting>  
 
   <para>When the query types have successfully been generated into the location of your choice, you can use them in your
-  queries :
+  queries.
   </para>
+  
+  <para>Single column query :</para>
   
 <programlisting language="java"><![CDATA[
 // serialization templates
 SQLTemplates templates = new DerbyTemplates(); 
-
 // query types (S* for SQL, Q* for domain types)
 SAnimal cat = new SAnimal("cat");   
 SAnimal mate = new SAnimal("mate"); 
 QCat catEntity = QCat.cat;          
  
-// query in SQL, but project as entity
 HibernateSQLQuery query = new HibernateSQLQuery(session, templates);
-List<Cat> cats = query.from(cat).orderBy(cat.name.asc()).list(catEntity);
+List<String> names = query.from(cat).list(cat.name);
+]]></programlisting>
 
-// query with joins
+  <para>Query multiple columns :</para>
+
+<programlisting language="java"><![CDATA[
+query = new HibernateSQLQuery(session, templates);
+List<Object[]> rows = query.from(cat).list(cat.id, cat.name);
+]]></programlisting>
+
+  <para>Query all columns :</para>
+
+<programlisting language="java"><![CDATA[
+List<Object[]> rows = query.from(cat).list(cat.all());
+ ]]></programlisting>
+
+  <para>Query in SQL, but project as entity : </para>
+
+<programlisting language="java"><![CDATA[
+query = new HibernateSQLQuery(session, templates);
+List<Cat> cats = query.from(cat).orderBy(cat.name.asc()).list(catEntity);
+]]></programlisting>
+
+  <para>Query with joins : </para>
+
+<programlisting language="java"><![CDATA[
 query = new HibernateSQLQuery(session, templates);
 cats = query.from(cat)
     .innerJoin(mate).on(cat.mateId.eq(mate.id))
     .where(cat.dtype.eq("Cat"), mate.dtype.eq("Cat"))
     .list(catEntity);
-assertTrue(cats.isEmpty());
+]]></programlisting>
 
-// query and project into DTO
+  <para>Query and project into DTO : </para>
+
+<programlisting language="java"><![CDATA[
 query = new HibernateSQLQuery(session, templates);
 List<CatDTO> catDTOs = query.from(cat)
     .orderBy(cat.name.asc())

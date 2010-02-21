@@ -47,7 +47,12 @@ public class ClassTypeModel extends AbstractTypeModel{
         this.clazz = Assert.notNull(clazz);
         this.primitiveClass = primitiveClass;
         this.parameters = Collections.emptyList();
-        this.visible = clazz.getPackage().getName().equals("java.lang");
+        if (clazz.isArray()){
+            this.visible = clazz.getComponentType().getPackage().getName().equals("java.lang");
+        }else{
+            this.visible = clazz.getPackage().getName().equals("java.lang");    
+        }
+        
     }
     
     @Override
@@ -86,13 +91,26 @@ public class ClassTypeModel extends AbstractTypeModel{
 
     @Override
     public <T extends Appendable> T getLocalRawName(TypeModel context, T builder) throws IOException {
-        if (visible || context.getPackageName().equals(clazz.getPackage().getName())){
-            builder.append(clazz.getName().substring(clazz.getPackage().getName().length()+1));    
+        String packageName; 
+        String name;
+        if (clazz.isArray()){
+            packageName = clazz.getComponentType().getPackage().getName();
+            name = clazz.getComponentType().getName();
         }else{
-            builder.append(clazz.getName());
-        }        
+            packageName = clazz.getPackage().getName();
+            name = clazz.getName();
+        }
+        if (visible || context.getPackageName().equals(packageName)){
+            builder.append(name.substring(packageName.length()+1));    
+        }else{
+            builder.append(name);
+        }     
+        if (clazz.isArray()){
+            builder.append("[]");
+        }
         return builder;
     }
+        
 
     @Override
     public String getPackageName() {

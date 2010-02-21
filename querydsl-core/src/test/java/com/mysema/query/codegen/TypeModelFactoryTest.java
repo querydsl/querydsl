@@ -17,7 +17,7 @@ import org.junit.Test;
 
 
 
-public class InspectingTypeModelTest {
+public class TypeModelFactoryTest {
     
     private TypeModelFactory factory = new TypeModelFactory();
     

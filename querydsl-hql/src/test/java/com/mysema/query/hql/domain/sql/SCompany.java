@@ -2,6 +2,8 @@ package com.mysema.query.hql.domain.sql;
 
 import com.mysema.query.types.path.*;
 import static com.mysema.query.types.path.PathMetadataFactory.*;
+import com.mysema.query.types.expr.*;
+import com.mysema.query.types.custom.*;
 
 /**
  * SCompany is a Querydsl query type for SCompany
@@ -26,6 +28,10 @@ public class SCompany extends PEntity<SCompany> {
 
     public SCompany(PathMetadata<?> metadata) {
         super(SCompany.class, metadata);
+    }
+
+    public Expr<Object[]> all() {
+        return CSimple.create(Object[].class, "{0}.*", this);
     }
 
 }

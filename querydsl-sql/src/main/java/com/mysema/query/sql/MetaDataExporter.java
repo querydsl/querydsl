@@ -10,6 +10,7 @@ import java.io.Writer;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 
 import net.jcip.annotations.Immutable;
 
@@ -17,6 +18,8 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.codegen.ClassTypeModel;
 import com.mysema.query.codegen.EntityModel;
 import com.mysema.query.codegen.EntitySerializer;
+import com.mysema.query.codegen.MethodModel;
+import com.mysema.query.codegen.ParameterModel;
 import com.mysema.query.codegen.PropertyModel;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
@@ -25,6 +28,7 @@ import com.mysema.query.codegen.SimpleTypeModel;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeMappings;
 import com.mysema.query.codegen.TypeModel;
+import com.mysema.query.codegen.TypeModels;
 import com.mysema.query.util.FileUtils;
 
 /**
@@ -41,7 +45,7 @@ public class MetaDataExporter {
     private static final SQLTypeMapping typeMapping = new SQLTypeMapping();
     
     private static final SerializerConfig serializerConfig = new SimpleSerializerConfig(false, false, false, false);
-
+    
     private final String namePrefix, targetFolder, packageName;
 
     private final String schemaPattern, tableNamePattern;
@@ -82,6 +86,9 @@ public class MetaDataExporter {
                     namePrefix + simpleClassName, 
                     false);
             EntityModel classModel = new EntityModel("", classTypeModel);
+            MethodModel wildcard = new MethodModel(classModel, "all", "{0}.*", 
+                    Collections.<ParameterModel>emptyList(), TypeModels.OBJECTS);
+            classModel.addMethod(wildcard);
             classModel.addAnnotation(new TableImpl(tableName));
             ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
             while (columns.next()) {

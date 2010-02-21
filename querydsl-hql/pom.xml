@@ -115,11 +115,11 @@
           </execution>
         </executions>
       </plugin>
-      <!-- 
       <plugin>
         <groupId>com.mysema.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
         <version>${project.version}</version>
+        <!-- 
         <executions>
           <execution>
             <goals>
@@ -127,11 +127,12 @@
             </goals>
           </execution>
         </executions>
+         -->
         <configuration>
           <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
           <jdbcUrl>jdbc:derby:target/derbydb;create=true</jdbcUrl>
           <packageName>com.mysema.query.hql.domain.sql</packageName>
-          <targetFolder>target/generated-test-sources/java</targetFolder>
+          <targetFolder>src/test/java</targetFolder>
           <namePrefix>S</namePrefix>
         </configuration>
         <dependencies>
@@ -141,8 +142,7 @@
             <version>${derby.version}</version>
           </dependency>
         </dependencies>
-      </plugin>
-       -->         
+      </plugin>    
     </plugins>
   </build>
 

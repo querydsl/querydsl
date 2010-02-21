@@ -23,9 +23,6 @@ public class SerializerTest {
 
     private Writer writer = new StringWriter();
 
-    /**
-     * Instantiates a new serializer test.
-     */
     public SerializerTest() {
         TypeModelFactory typeFactory = new TypeModelFactory();
         TypeModel typeModel = new SimpleTypeModel(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false);
@@ -37,11 +34,6 @@ public class SerializerTest {
         type.addConstructor(new ConstructorModel(Collections.singleton(param)));
     }
 
-    /**
-     * Test domain types as outer classes.
-     * 
-     * @throws Exception the exception
-     */
     @Test
     public void testDomainTypesAsOuterClasses() throws Exception {
         TypeMappings typeMappings = new TypeMappings();

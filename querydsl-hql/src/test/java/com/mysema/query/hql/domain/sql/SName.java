@@ -2,6 +2,8 @@ package com.mysema.query.hql.domain.sql;
 
 import com.mysema.query.types.path.*;
 import static com.mysema.query.types.path.PathMetadataFactory.*;
+import com.mysema.query.types.expr.*;
+import com.mysema.query.types.custom.*;
 
 /**
  * SName is a Querydsl query type for SName
@@ -28,6 +30,10 @@ public class SName extends PEntity<SName> {
 
     public SName(PathMetadata<?> metadata) {
         super(SName.class, metadata);
+    }
+
+    public Expr<Object[]> all() {
+        return CSimple.create(Object[].class, "{0}.*", this);
     }
 
 }

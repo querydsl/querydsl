@@ -2,6 +2,8 @@ package com.mysema.query.hql.domain.sql;
 
 import com.mysema.query.types.path.*;
 import static com.mysema.query.types.path.PathMetadataFactory.*;
+import com.mysema.query.types.expr.*;
+import com.mysema.query.types.custom.*;
 
 /**
  * SKittensArray is a Querydsl query type for SKittensArray
@@ -26,6 +28,10 @@ public class SKittensArray extends PEntity<SKittensArray> {
 
     public SKittensArray(PathMetadata<?> metadata) {
         super(SKittensArray.class, metadata);
+    }
+
+    public Expr<Object[]> all() {
+        return CSimple.create(Object[].class, "{0}.*", this);
     }
 
 }

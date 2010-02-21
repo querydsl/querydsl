@@ -13,7 +13,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -114,6 +113,19 @@ public class DerbySQLTest {
             .list(EConstructor.create(Cat.class, cat.name, cat.id));
         assertEquals(6, cats.size());
         for (Cat c : cats) System.out.println(c.getName());
+    }
+    
+    @Test
+    public void wildcard(){
+        SAnimal cat = new SAnimal("cat");
+        
+        List<Object[]> rows = query().from(cat).list(cat.all());
+        assertEquals(6, rows.size());
+        print(rows);
+        
+        rows = query().from(cat).list(cat.id, cat.all());
+        assertEquals(6, rows.size());
+        print(rows);
     }
     
     private void print(Iterable<Object[]> rows){
