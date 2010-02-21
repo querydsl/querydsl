@@ -5,6 +5,8 @@
  */
 package com.mysema.query.sql;
 
+import java.sql.Connection;
+
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
 import com.mysema.query.types.expr.EBoolean;
@@ -69,5 +71,11 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
      * @return
      */
     <RT> Union<RT> union(ObjectSubQuery<RT>... sq);
+    
+    /**
+     * @param conn
+     * @return
+     */
+    SQLQuery clone(Connection conn);
 
 }

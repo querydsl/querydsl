@@ -65,7 +65,8 @@ public class BooleanOperationsTest extends AbstractQueryTest {
     @Test
     public void booleanBuilderWithNull(){
         assertEquals("from Cat cat", sub().from(cat).where(new BooleanBuilder()).toString());
-        assertEquals("from Cat cat\ngroup by cat.name", sub().from(cat).groupBy(cat.name).having(new BooleanBuilder()).toString());
+        assertEquals("from Cat cat\ngroup by cat.name", 
+                sub().from(cat).groupBy(cat.name).having(new BooleanBuilder()).toString());
     }
     
 }

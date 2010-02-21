@@ -291,11 +291,35 @@ public abstract class AbstractSQLTest {
     }
 
     @Test
-    @ExcludeIn({ORACLE, DERBY})
+    @ExcludeIn({ORACLE,DERBY})
     public void limitAndOffset() throws SQLException {
         // limit offset
         expectedQuery = "select employee.id from employee2 employee limit 4 offset 3";
         query().from(employee).limit(4).offset(3).list(employee.id);
+        
+        // limit
+        expectedQuery = "select employee.id from employee2 employee limit 4";
+        query().from(employee).limit(4).list(employee.id);
+        
+        // offset
+//        expectedQuery = "select employee.id from employee2 employee offset 3";
+//        query().from(employee).offset(3).list(employee.id);
+    }
+    
+    @Test
+    @IncludeIn(DERBY)
+    public void limitAndOffsetInDerby() throws SQLException {
+        expectedQuery = "select employee.id from employee2 employee offset 3 rows fetch next 4 rows only";
+        query().from(employee).limit(4).offset(3).list(employee.id);
+        
+        // limit
+        expectedQuery = "select employee.id from employee2 employee fetch first 4 rows only";
+        query().from(employee).limit(4).list(employee.id);
+        
+        // offset
+        expectedQuery = "select employee.id from employee2 employee offset 3 rows";
+        query().from(employee).offset(3).list(employee.id);
+        
     }
 
     @Test

@@ -25,6 +25,11 @@ public class DerbyTemplates extends SQLTemplates {
         add(Ops.CASE_EQ, "case {1} end");
         add(Ops.CASE_EQ_WHEN,  "when {0} = {1} then {2} {3}");
         add(Ops.CASE_EQ_ELSE,  "else {0}");
+        
+        setLimitAndOffsetSymbols(false);
+        setLimitTemplate("fetch first %1$s rows only");
+        setOffsetTemplate("offset %1$s rows");
+        setLimitOffsetTemplate("offset %2$s rows fetch next %1$s rows only");
 
     }
 }

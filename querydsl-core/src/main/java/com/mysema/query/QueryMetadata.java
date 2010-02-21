@@ -22,54 +22,127 @@ import com.mysema.query.types.expr.Expr;
  */
 public interface QueryMetadata {
 
+    /**
+     * @param o
+     */
     void addFrom(Expr<?>... o);
     
+    /**
+     * @param o
+     */
     void addGroupBy(Expr<?>... o);
 
+    /**
+     * @param o
+     */
     void addHaving(EBoolean... o);
 
+    /**
+     * @param joinType
+     * @param expr
+     */
     void addJoin(JoinType joinType, Expr<?> expr);
 
+    /**
+     * @param o
+     */
     void addJoinCondition(EBoolean o);
 
+    /**
+     * @param o
+     */
     void addOrderBy(OrderSpecifier<?>... o);
 
+    /**
+     * @param o
+     */
     void addProjection(Expr<?>... o);
 
+    /**
+     * @param o
+     */
     void addWhere(EBoolean... o);
 
+    /**
+     * @return
+     */
     List<? extends Expr<?>> getGroupBy();
 
+    /**
+     * @return
+     */
     @Nullable
     EBoolean getHaving();
 
+    /**
+     * @return
+     */
     List<JoinExpression> getJoins();
 
+    /**
+     * @return
+     */
     @Nullable
     QueryModifiers getModifiers();
 
+    /**
+     * @return
+     */
     List<OrderSpecifier<?>> getOrderBy();
 
+    /**
+     * @return
+     */
     List<? extends Expr<?>> getProjection();
 
+    /**
+     * @return
+     */
     @Nullable
     EBoolean getWhere();
     
+    /**
+     * @return
+     */
     boolean isDistinct();
     
+    /**
+     * @return
+     */
     boolean isUnique();
     
+    /**
+     * @param distinct
+     */
     void setDistinct(boolean distinct);
     
+    /**
+     * @param limit
+     */
     void setLimit(@Nullable Long limit);
 
+    /**
+     * @param restriction
+     */
     void setModifiers(QueryModifiers restriction);
     
+    /**
+     * @param offset
+     */
     void setOffset(@Nullable Long offset);
     
+    /**
+     * @param unique
+     */
     void setUnique(boolean unique);
 
+    /**
+     * 
+     */
     void reset();
 
+    /**
+     * @return
+     */
     QueryMetadata clone();
 }

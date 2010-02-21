@@ -139,8 +139,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
         if (having != null) {
             if (groupBy.isEmpty()) {
-                throw new IllegalArgumentException(
-                        "having, but not groupBy was given");
+                throw new IllegalArgumentException("having, but not groupBy was given");
             }
             append(templates.getHaving()).handle(having);
         }
@@ -149,14 +148,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
         Long limit = metadata.getModifiers().getLimit();
         Long offset = metadata.getModifiers().getOffset();
-
-        if (!templates.isLimitAndOffsetSymbols()
-                && metadata.getModifiers().isRestricting() && !forCountRow) {
-            if (where == null){
-                append(templates.getWhere());
-            }                
-            append(templates.getLimitOffsetCondition(limit, offset));
-        }
 
         if (!orderBy.isEmpty() && !forCountRow) {
             append(templates.getOrderBy());
@@ -170,15 +161,21 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 first = false;
             }
         }
-        if (templates.isLimitAndOffsetSymbols()
-                && metadata.getModifiers().isRestricting() && !forCountRow) {
-            if (limit != null) {
-                append(templates.getLimit()).append(String.valueOf(limit));
-            }
-            if (offset != null) {
-                append(templates.getOffset()).append(String.valueOf(offset));
+        
+        if (metadata.getModifiers().isRestricting() && !forCountRow){            
+            if (!templates.isLimitAndOffsetSymbols()){
+                append(" ");
+                append(templates.getLimitOffsetCondition(limit, offset));
+            }else{
+                if (limit != null) {
+                    append(templates.getLimit()).append(String.valueOf(limit));
+                }
+                if (offset != null) {
+                    append(templates.getOffset()).append(String.valueOf(offset));
+                }   
             }
         }
+        
     }
 
     @SuppressWarnings("unchecked")

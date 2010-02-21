@@ -50,8 +50,8 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.DAY_OF_YEAR, "to_number(to_char({0},'DDD'))");
 
         setLimitAndOffsetSymbols(false);
-        setLimitTemplate("rownum < {0}");
-        setOffsetTemplate("rownum > {0}");
-        setLimitOffsetTemplate("rownum between {0} and {2}");
+        setLimitTemplate("rownum < %1$s");
+        setOffsetTemplate("rownum > %1$s");
+        setLimitOffsetTemplate("rownum between %1$s and %3$s");
     }
 }
