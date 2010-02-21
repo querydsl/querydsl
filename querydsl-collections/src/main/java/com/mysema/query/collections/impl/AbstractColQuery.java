@@ -193,7 +193,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
             orderByExpr[i] = (Expr) orderBy.get(i).getTarget();
             directions[i] = orderBy.get(i).getOrder() == Order.ASC;
         }
-        Expr<?> expr = new EArrayConstructor<Object>(Object.class, orderByExpr);
+        Expr<?> expr = new EArrayConstructor<Object>(Object[].class, orderByExpr);
         Evaluator ev = evaluatorFactory.create(sources, expr);
 
         // transform the iterator to list
@@ -230,7 +230,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
     @SuppressWarnings("unchecked")
     public Iterator<Object[]> iterate(Expr<?>[] args) {
         arrayProjection = true;
-        Expr<Object[]> projection = new EArrayConstructor(Object.class, args);
+        Expr<Object[]> projection = new EArrayConstructor(Object[].class, args);
         return iterate(projection);
     }
 

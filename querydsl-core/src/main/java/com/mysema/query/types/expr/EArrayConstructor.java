@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.expr;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Visitor;
 
 /**
@@ -20,9 +21,9 @@ public class EArrayConstructor<D> extends EConstructor<D[]> {
     private final Class<D> elementType;
 
     @SuppressWarnings("unchecked")
-    public EArrayConstructor(Class<D> type, Expr<D>... args) {
-        super((Class)Object.class, new Class[0], args);
-        this.elementType = type;
+    public EArrayConstructor(Class<D[]> type, Expr<D>... args) {
+        super(type, new Class[0], args);
+        this.elementType = (Class<D>) Assert.notNull(type.getComponentType());
     }
 
     public final Class<D> getElementType() {

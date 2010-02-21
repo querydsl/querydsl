@@ -88,7 +88,7 @@ public class StringTest {
         assertEquals("new SomeType(alias)", someType.toString());
         
         // EArrayConstructor
-        EArrayConstructor<SomeType> someTypeArray = new EArrayConstructor<SomeType>(SomeType.class,$(alias));
+        EArrayConstructor<SomeType> someTypeArray = new EArrayConstructor<SomeType>(SomeType[].class,$(alias));
         assertEquals("[alias]", someTypeArray.toString());
     }
     
