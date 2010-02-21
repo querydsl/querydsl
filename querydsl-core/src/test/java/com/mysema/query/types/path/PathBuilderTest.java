@@ -56,6 +56,14 @@ public class PathBuilderTest {
     }
     
     @Test
+    public void getArray(){
+        PathBuilder<User> entityPath = new PathBuilder<User>(User.class, "entity");
+        PArray<String> array = entityPath.getArray("array", String[].class);
+        assertEquals(String[].class, array.getType());
+        assertEquals(String.class, array.getElementType());
+    }
+    
+    @Test
     public void getList(){
         PathBuilder<User> entityPath = new PathBuilder<User>(User.class, "entity");
         entityPath.getList("list", String.class, PString.class).get(0).lower();

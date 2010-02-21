@@ -473,7 +473,7 @@ public class EntitySerializer implements Serializer{
             case ARRAY:    
                 // TODO : support for typed arrays
                 localGenericName = property.getParameter(0).getLocalGenericName(model, true);
-                localRawName = property.getParameter(0).getLocalRawName(model);
+//                localRawName = property.getParameter(0).getLocalRawName(model);
                 serialize(property, "PArray<" + localGenericName+">", writer, "createArray",localRawName+".class");
                 break;
             case COLLECTION: 

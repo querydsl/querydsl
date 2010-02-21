@@ -115,5 +115,10 @@ public interface TypeModel {
      * @return
      */
     String toString();
+
+    /**
+     * @return
+     */
+    TypeModel asArrayType();
     
 }

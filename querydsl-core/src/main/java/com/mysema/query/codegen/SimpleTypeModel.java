@@ -6,6 +6,7 @@
 package com.mysema.query.codegen;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import net.jcip.annotations.Immutable;
 
@@ -52,6 +53,11 @@ public class SimpleTypeModel extends AbstractTypeModel {
         }else{
             return new SimpleTypeModel(category, fullName, packageName, simpleName, finalClass, parameters);
         }
+    }
+    
+    @Override
+    public TypeModel asArrayType() {
+        return new SimpleTypeModel(TypeCategory.ARRAY, fullName+"[]", packageName, simpleName+"[]", finalClass, this);
     }
 
     @Override
@@ -163,5 +169,6 @@ public class SimpleTypeModel extends AbstractTypeModel {
     public String toString() {
         return fullName;
     }
+
     
 }

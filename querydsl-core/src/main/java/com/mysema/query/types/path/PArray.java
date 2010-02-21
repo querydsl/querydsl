@@ -6,10 +6,10 @@
 package com.mysema.query.types.path;
 
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Array;
 
 import javax.annotation.Nonnegative;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EArray;
 import com.mysema.query.types.expr.EBoolean;
@@ -28,8 +28,6 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings("serial")
 public class PArray<E> extends Expr<E[]> implements Path<E[]>, EArray<E>{
     
-    private final Class<E[]> arrayType;
-    
     private final Class<E> componentType;
     
     private final Path<E[]> pathMixin;
@@ -37,11 +35,10 @@ public class PArray<E> extends Expr<E[]> implements Path<E[]>, EArray<E>{
     private volatile ENumber<Integer> size;
 
     @SuppressWarnings("unchecked")
-    public PArray(Class<? super E> type, PathMetadata<?> metadata) {
-        super((Class)Object[].class);
+    public PArray(Class<? super E[]> type, PathMetadata<?> metadata) {
+        super((Class)type);
         this.pathMixin = new PathMixin<E[]>(this, metadata);
-        this.arrayType = (Class<E[]>) Array.newInstance(type, 0).getClass();
-        this.componentType = (Class<E>) type;
+        this.componentType = (Class<E>) Assert.notNull(type.getComponentType());
     }
 
     @Override
@@ -97,11 +94,6 @@ public class PArray<E> extends Expr<E[]> implements Path<E[]>, EArray<E>{
         return pathMixin.getRoot();
     }
     
-    @Override
-    public Class<E[]> getType() {
-        return arrayType;
-    }
-
     @Override
     public int hashCode() {
         return pathMixin.hashCode();

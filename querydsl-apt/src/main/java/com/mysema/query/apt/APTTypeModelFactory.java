@@ -333,7 +333,7 @@ public class APTTypeModelFactory {
             
         }else if (type instanceof ArrayType){
             ArrayType t = (ArrayType)type;
-            return factory.createArrayType(create(t.getComponentType()));
+            return create(t.getComponentType()).asArrayType();
             
         }else if (type instanceof PrimitiveType){
             PrimitiveType t = (PrimitiveType)type;

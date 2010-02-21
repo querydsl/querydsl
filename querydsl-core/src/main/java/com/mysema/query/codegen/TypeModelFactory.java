@@ -64,7 +64,7 @@ public class TypeModelFactory {
                 value = new ClassTypeModel(TypeCategory.ENTITY, cl);
                 
             }else if (cl.isArray()) {
-                value = createArrayType(create(cl.getComponentType()));
+                value = create(cl.getComponentType()).asArrayType();
 
             } else if (cl.isEnum()) {
                 value = new ClassTypeModel(TypeCategory.SIMPLE, cl);
@@ -102,10 +102,6 @@ public class TypeModelFactory {
         
     }
     
-    public TypeModel createArrayType(TypeModel valueType) {
-        return createComposite(TypeCategory.ARRAY, Object.class, valueType);
-    }
-
     public TypeModel createCollectionType(TypeModel valueType) {
         return createComposite(TypeCategory.COLLECTION, Collection.class, valueType);
     }

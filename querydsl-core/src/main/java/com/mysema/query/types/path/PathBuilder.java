@@ -58,7 +58,7 @@ public class PathBuilder<D> extends PEntity<D>{
         return path;
     }
 
-    public <A> PArray<A> getArray(String property, Class<A> type) {
+    public <A> PArray<A> getArray(String property, Class<A[]> type) {
         return super.createArray(property, type);
     }
 

@@ -101,7 +101,7 @@ public class QueryProjectionTest {
         
     @Test
     public void dtoCase() throws SecurityException, NoSuchMethodException{   
-        new QQueryProjectionTest_DTOWithProjection(ExprConst.create(0l)).getJavaConstructor();
+        new QQueryProjectionTest_DTOWithProjection(ExprConst.<Long>create(0l)).getJavaConstructor();
         new QQueryProjectionTest_DTOWithProjection(EStringConst.create("")).getJavaConstructor();
         new QQueryProjectionTest_DTOWithProjection(ENumberConst.create(0l), EStringConst.create("")).getJavaConstructor();
         new QQueryProjectionTest_DTOWithProjection(EStringConst.create(""), EStringConst.create("")).getJavaConstructor();

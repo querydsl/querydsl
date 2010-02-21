@@ -6,8 +6,9 @@
 package com.mysema.query.codegen;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Modifier;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -38,21 +39,25 @@ public class ClassTypeModel extends AbstractTypeModel{
     
     private final boolean visible;
     
-    public ClassTypeModel(TypeCategory typeCategory, Class<?> clazz){
-        this(typeCategory, clazz, ClassUtils.wrapperToPrimitive(clazz));
+    public ClassTypeModel(TypeCategory typeCategory, Class<?> clazz, TypeModel... params){
+        this(typeCategory, clazz, ClassUtils.wrapperToPrimitive(clazz), params);
     }
     
-    public ClassTypeModel(TypeCategory typeCategory, Class<?> clazz, @Nullable Class<?> primitiveClass){
+    public ClassTypeModel(TypeCategory typeCategory, Class<?> clazz, @Nullable Class<?> primitiveClass, TypeModel... params){
         this.typeCategory = Assert.notNull(typeCategory);
         this.clazz = Assert.notNull(clazz);
         this.primitiveClass = primitiveClass;
-        this.parameters = Collections.emptyList();
+        this.parameters = Arrays.asList(params);
         if (clazz.isArray()){
             this.visible = clazz.getComponentType().getPackage().getName().equals("java.lang");
         }else{
             this.visible = clazz.getPackage().getName().equals("java.lang");    
-        }
-        
+        }        
+    }
+    
+    @Override
+    public TypeModel asArrayType() {        
+        return new ClassTypeModel(TypeCategory.ARRAY, Array.newInstance(clazz, 0).getClass(), this);
     }
     
     @Override

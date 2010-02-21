@@ -14,10 +14,21 @@ import javax.annotation.Nonnegative;
  */
 public interface EArray<E> {
     
+    /**
+     * @return
+     */
     ENumber<Integer> size();
     
+    /**
+     * @param index
+     * @return
+     */
     Expr<E> get(Expr<Integer> index);
 
+    /**
+     * @param index
+     * @return
+     */
     Expr<E> get(@Nonnegative int index);
 
 }

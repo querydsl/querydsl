@@ -93,7 +93,7 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
      * @param type
      * @return
      */
-    protected <A> PArray<A> createArray(String property, Class<? super A> type) {
+    protected <A> PArray<A> createArray(String property, Class<? super A[]> type) {
         return new PArray<A>(type, forProperty(property));
     }
 

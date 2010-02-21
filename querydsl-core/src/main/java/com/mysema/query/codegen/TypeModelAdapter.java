@@ -118,4 +118,9 @@ public class TypeModelAdapter implements TypeModel{
         return typeModel.toString();
     }
 
+    @Override
+    public TypeModel asArrayType() {
+        return typeModel.asArrayType();
+    }
+
 }
