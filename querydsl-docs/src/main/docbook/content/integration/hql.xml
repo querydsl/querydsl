@@ -426,5 +426,77 @@ List results = hibQuery.list();
 ]]></programlisting>      
   
   </sect2>
+  
+  <sect2>
+    <title>Using Native SQL in Hibernate queries</title>
+    
+    <para>Querydsl supports Native SQL in Hibernate via the HibernateSQLQuery class.</para>
+    
+    <para>To use it, you must generate Querydsl query types for your SQL schema. This can be done for example
+    with the following Maven configuration : </para>
+    
+<programlisting language="xml"><![CDATA[
+<plugin>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-maven-plugin</artifactId>
+  <version>${project.version}</version>
+  <executions>
+    <execution>
+      <goals>
+        <goal>export</goal>
+      </goals>
+    </execution>            
+  </executions>
+  <configuration>
+    <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
+    <jdbcUrl>jdbc:derby:target/demoDB;create=true</jdbcUrl>
+    <packageName>com.mycompany.mydomain</packageName>
+    <targetFolder>target/generated-sources/java</targetFolder>
+  </configuration>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.derby</groupId>
+      <artifactId>derby</artifactId>
+      <version>${derby.version}</version>
+    </dependency>
+  </dependencies>
+</plugin>
+]]></programlisting>  
+
+  <para>When the query types have successfully been generated into the location of your choice, you can use them in your
+  queries :
+  </para>
+  
+<programlisting language="java"><![CDATA[
+// serialization templates
+SQLTemplates templates = new DerbyTemplates(); 
+
+// query types (S* for SQL, Q* for domain types)
+SAnimal cat = new SAnimal("cat");   
+SAnimal mate = new SAnimal("mate"); 
+QCat catEntity = QCat.cat;          
+ 
+// query in SQL, but project as entity
+HibernateSQLQuery query = new HibernateSQLQuery(session, templates);
+List<Cat> cats = query.from(cat).orderBy(cat.name.asc()).list(catEntity);
+
+// query with joins
+query = new HibernateSQLQuery(session, templates);
+cats = query.from(cat)
+    .innerJoin(mate).on(cat.mateId.eq(mate.id))
+    .where(cat.dtype.eq("Cat"), mate.dtype.eq("Cat"))
+    .list(catEntity);
+assertTrue(cats.isEmpty());
+
+// query and project into DTO
+query = new HibernateSQLQuery(session, templates);
+List<CatDTO> catDTOs = query.from(cat)
+    .orderBy(cat.name.asc())
+    .list(EConstructor.create(CatDTO.class, cat.id, cat.name));
+]]></programlisting>
+  
+  <para></para>
+  
+  </sect2>
 
 </sect1>
