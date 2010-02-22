@@ -27,7 +27,7 @@ public class JDOQLQueryImpl extends AbstractJDOQLQuery<JDOQLQueryImpl> implement
      * @param persistenceManager
      */
     public JDOQLQueryImpl() {
-        super(null, JDOQLTemplates.DEFAULT, false, new DefaultQueryMetadata());
+        super(null, JDOQLTemplates.DEFAULT, new DefaultQueryMetadata(), false);
     }
 
     /**
@@ -38,7 +38,7 @@ public class JDOQLQueryImpl extends AbstractJDOQLQuery<JDOQLQueryImpl> implement
      * @param detach detached results or not
      */
     public JDOQLQueryImpl(PersistenceManager persistenceManager, JDOQLTemplates templates, boolean detach) {
-        super(persistenceManager, templates, false, new DefaultQueryMetadata());
+        super(persistenceManager, templates, new DefaultQueryMetadata(), detach);
     }
     
     /**
@@ -48,7 +48,7 @@ public class JDOQLQueryImpl extends AbstractJDOQLQuery<JDOQLQueryImpl> implement
      * @param detach detached results or not
      */
     public JDOQLQueryImpl(PersistenceManager persistenceManager, boolean detach) {
-        super(persistenceManager, JDOQLTemplates.DEFAULT, detach, new DefaultQueryMetadata());
+        super(persistenceManager, JDOQLTemplates.DEFAULT, new DefaultQueryMetadata(), detach);
     }
     
     /**
@@ -57,17 +57,17 @@ public class JDOQLQueryImpl extends AbstractJDOQLQuery<JDOQLQueryImpl> implement
      * @param persistenceManager PersistenceManager instance to use
      */
     public JDOQLQueryImpl(PersistenceManager persistenceManager) {
-        super(persistenceManager, JDOQLTemplates.DEFAULT, false, new DefaultQueryMetadata());
+        super(persistenceManager, JDOQLTemplates.DEFAULT, new DefaultQueryMetadata(), false);
     }
     
     /**
      * @param persistenceManager
      * @param templates
-     * @param detach
      * @param metadata
+     * @param detach
      */
-    protected JDOQLQueryImpl(PersistenceManager persistenceManager, JDOQLTemplates templates, boolean detach, QueryMetadata metadata) {
-        super(persistenceManager, templates, false, metadata);
+    protected JDOQLQueryImpl(PersistenceManager persistenceManager, JDOQLTemplates templates, QueryMetadata metadata, boolean detach) {
+        super(persistenceManager, templates, metadata, detach);
     }
     
     /**
@@ -77,7 +77,7 @@ public class JDOQLQueryImpl extends AbstractJDOQLQuery<JDOQLQueryImpl> implement
      * @return
      */
     public JDOQLQueryImpl clone(PersistenceManager persistenceManager){
-        return new JDOQLQueryImpl(persistenceManager, templates, detach, getMetadata().clone());
+        return new JDOQLQueryImpl(persistenceManager, getTemplates(), getMetadata().clone(), isDetach());
     }
     
 }
