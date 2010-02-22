@@ -63,7 +63,7 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
     }
 
     protected SQLSerializer createSerializer() {
-        return new OracleSerializer(templates, connectBy, connectByNocyclePrior,
+        return new OracleSerializer(getTemplates(), connectBy, connectByNocyclePrior,
                 connectByPrior, orderSiblingsBy, startWith);
     }
     
@@ -74,7 +74,7 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
      * @return
      */
     public OracleQuery clone(Connection conn){
-        return new OracleQuery(conn, templates, getMetadata().clone());   
+        return new OracleQuery(conn, getTemplates(), getMetadata().clone());   
     }
 
     // TODO : connect by root

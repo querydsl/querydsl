@@ -69,6 +69,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         EBoolean having = metadata.getHaving();
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
+        // select
         if (projection != null){
             append("select ").append(projection).append("\n");
         }else if (forCountRow) {
@@ -81,6 +82,8 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             }
             handle(", ", select).append("\n");
         }
+        
+        // from
         append("from ");
         for (int i = 0; i < joins.size(); i++) {
             JoinExpression je = joins.get(i);
@@ -116,12 +119,17 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             }
         }
 
+        // where
         if (where != null) {
             append("\nwhere ").handle(where);
         }
+        
+        // group by
         if (!groupBy.isEmpty()) {
             append("\ngroup by ").handle(", ", groupBy);
         }
+        
+        // having
         if (having != null) {
             if (groupBy.isEmpty()) {
                 throw new IllegalArgumentException(
@@ -129,6 +137,8 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             }
             append("\nhaving ").handle(having);
         }
+        
+        // order by
         if (!orderBy.isEmpty() && !forCountRow) {
             append("\norder by ");
             boolean first = true;

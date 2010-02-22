@@ -39,6 +39,8 @@ import com.mysema.util.JavaWriter;
 @Immutable
 public class EntitySerializer implements Serializer{
     
+    private static final String PATH_METADATA = "PathMetadata<?> metadata";
+    
     private final TypeMappings typeMappings;
     
     public EntitySerializer(TypeMappings mappings){
@@ -64,14 +66,14 @@ public class EntitySerializer implements Serializer{
         
         // 3        
         if (hasEntityFields){
-            writer.beginConstructor("PathMetadata<?> metadata");
+            writer.beginConstructor(PATH_METADATA);
             writer.line("this(metadata, metadata.isRoot() ? INITS : PathInits.DEFAULT);");
             writer.end();
         }else{
             if (!localName.equals(genericName)){
                 writer.suppressWarnings("unchecked");
             }
-            writer.beginConstructor("PathMetadata<?> metadata");
+            writer.beginConstructor(PATH_METADATA);
             writer.line("super(",localName.equals(genericName) ? "" : "(Class)",localName,".class, metadata);");
             writer.end();
         }               
@@ -81,14 +83,14 @@ public class EntitySerializer implements Serializer{
             if (!localName.equals(genericName)){
                 writer.suppressWarnings("unchecked");
             }        
-            writer.beginConstructor("PathMetadata<?> metadata", "PathInits inits");
+            writer.beginConstructor(PATH_METADATA, "PathInits inits");
             writer.line(thisOrSuper, "(", localName.equals(genericName) ? "" : "(Class)", localName, ".class, metadata, inits);");
             writer.end();
         }                         
         
         // 5 
         if (hasEntityFields){            
-            writer.beginConstructor("Class<? extends "+genericName+"> type", "PathMetadata<?> metadata", "PathInits inits");
+            writer.beginConstructor("Class<? extends "+genericName+"> type", PATH_METADATA, "PathInits inits");
             writer.line("super(type, metadata, inits);");
             initEntityFields(writer, config, model); 
             writer.end();

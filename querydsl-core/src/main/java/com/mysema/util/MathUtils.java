@@ -8,7 +8,9 @@ package com.mysema.util;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public class MathUtils {
+public final class MathUtils {
+    
+    private MathUtils(){}
 
     @SuppressWarnings("unchecked")
     public static <D extends Number & Comparable<?>> D sum(D num1, Number num2){

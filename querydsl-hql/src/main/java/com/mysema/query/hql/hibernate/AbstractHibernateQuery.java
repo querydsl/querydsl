@@ -102,11 +102,21 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
         Query query = session.createQuery(queryString);
         HibernateUtil.setConstants(query, getConstants());
-        if (fetchSize > 0) query.setFetchSize(fetchSize);
-        if (timeout > 0) query.setTimeout(timeout);
-        if (cacheable != null) query.setCacheable(cacheable);        
-        if (cacheRegion != null) query.setCacheRegion(cacheRegion);
-        if (readOnly != null) query.setReadOnly(readOnly);
+        if (fetchSize > 0){
+            query.setFetchSize(fetchSize);
+        }
+        if (timeout > 0){
+            query.setTimeout(timeout);
+        }
+        if (cacheable != null){
+            query.setCacheable(cacheable);        
+        }
+        if (cacheRegion != null){
+            query.setCacheRegion(cacheRegion);
+        }
+        if (readOnly != null){
+            query.setReadOnly(readOnly);
+        }
         if (modifiers != null && modifiers.isRestricting()) {
             if (modifiers.getLimit() != null) {
                 query.setMaxResults(modifiers.getLimit().intValue());

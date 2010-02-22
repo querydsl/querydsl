@@ -19,6 +19,8 @@ import com.mysema.query.types.expr.ExprConst;
  */
 public final class PathMetadataFactory {
     
+    private PathMetadataFactory(){}
+    
     public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, Expr<Integer> index) {
         return new PathMetadata<Integer>(parent, index, PathType.ARRAYVALUE);
     }

@@ -21,7 +21,9 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @version $Id$
  */
-public class HQLGrammar {
+public final class HQLGrammar {
+    
+    private HQLGrammar(){}
 
     /**
      * @param <D>

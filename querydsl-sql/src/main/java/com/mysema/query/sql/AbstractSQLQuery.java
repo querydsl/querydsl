@@ -70,8 +70,8 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
 
     private SubQuery[] sq;
 
-    protected final SQLTemplates templates;
-
+    private final SQLTemplates templates;
+    
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(@Nullable Connection conn, SQLTemplates templates, QueryMetadata metadata) {
         super(new QueryMixin<SubType>(metadata));
@@ -90,7 +90,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         constants = serializer.getConstants();
         return serializer.toString();
     }
-    
+
     public long count() {
         try {
             return unsafeCount();
@@ -108,7 +108,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     public SubType from(PEntity<?>... args) {
         return queryMixin.from(args);
     }
-
+    
     public SubType fullJoin(PEntity<?> target) {
         return queryMixin.fullJoin(target);
     }
@@ -125,6 +125,10 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
 
     public QueryMetadata getMetadata(){
         return queryMixin.getMetadata();
+    }
+
+    protected SQLTemplates getTemplates(){
+        return templates;
     }
 
     public SubType innerJoin(PEntity<?> target) {
@@ -313,8 +317,9 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
             return rv;
         } finally {
             try {
-                if (rs != null)
+                if (rs != null){
                     rs.close();
+                }                    
             } finally {
                 stmt.close();
             }

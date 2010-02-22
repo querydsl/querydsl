@@ -55,7 +55,7 @@ public class SQLQueryImpl extends AbstractSQLQuery<SQLQueryImpl> implements SQLQ
      * @return
      */
     public SQLQueryImpl clone(Connection conn){
-        return new SQLQueryImpl(conn, templates, getMetadata().clone());   
+        return new SQLQueryImpl(conn, getTemplates(), getMetadata().clone());   
     }
     
 }

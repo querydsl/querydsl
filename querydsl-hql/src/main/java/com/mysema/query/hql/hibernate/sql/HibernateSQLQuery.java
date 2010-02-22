@@ -106,13 +106,12 @@ public class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>{
 
     public org.hibernate.SQLQuery createQuery(Expr<?>... args){
         queryMixin.addToProjection(args);
-        String queryString = toQueryString();
-        logQuery(queryString);
-        return createQuery(queryString, queryMixin.getMetadata().getModifiers());   
+        return createQuery(toQueryString());   
     }
 
     @SuppressWarnings("unchecked")
-    private org.hibernate.SQLQuery createQuery(String queryString, @Nullable QueryModifiers modifiers) {
+    private org.hibernate.SQLQuery createQuery(String queryString) {
+        logQuery(queryString);
         org.hibernate.SQLQuery query = session.createSQLQuery(queryString);
         // set constants
         HibernateUtil.setConstants(query, constants);
@@ -125,11 +124,21 @@ public class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>{
         if (projection.size() == 1 && projection.get(0) instanceof EConstructor){
             query.setResultTransformer(new ConstructorResultTransformer((EConstructor<?>) projection.get(0)));
         }
-        if (fetchSize > 0) query.setFetchSize(fetchSize);
-        if (timeout > 0) query.setTimeout(timeout);
-        if (cacheable != null) query.setCacheable(cacheable);        
-        if (cacheRegion != null) query.setCacheRegion(cacheRegion);
-        if (readOnly != null) query.setReadOnly(readOnly);        
+        if (fetchSize > 0){
+            query.setFetchSize(fetchSize);
+        }
+        if (timeout > 0){
+            query.setTimeout(timeout);
+        }
+        if (cacheable != null){
+            query.setCacheable(cacheable);        
+        }
+        if (cacheRegion != null){
+            query.setCacheRegion(cacheRegion);
+        }
+        if (readOnly != null){
+            query.setReadOnly(readOnly);        
+        }
         return query;
     }
     
@@ -187,13 +196,12 @@ public class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>{
     public <RT> SearchResults<RT> listResults(Expr<RT> projection) {
         // TODO : handle entity projections as well
         queryMixin.addToProjection(projection);
-        Query query = createQuery(toCountRowsString(), null);
+        Query query = createQuery(toCountRowsString());
         long total = ((Integer)query.uniqueResult()).longValue();
         if (total > 0) {
             QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
             String queryString = toQueryString();
-            logQuery(queryString);
-            query = createQuery(queryString, modifiers);
+            query = createQuery(queryString);
             @SuppressWarnings("unchecked")
             List<RT> list = query.list();
             reset();
@@ -238,11 +246,8 @@ public class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>{
 
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expr<RT> expr) {
-        // TODO : handle entity projections as well
         queryMixin.addToProjection(expr);
-        QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
-        String queryString = toQueryString();
-        org.hibernate.SQLQuery query = createQuery(queryString, modifiers);
+        org.hibernate.SQLQuery query = createQuery(toQueryString());
         reset();
         return (RT) query.uniqueResult();
     }

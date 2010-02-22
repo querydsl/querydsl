@@ -43,7 +43,7 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
     
     private final Map<Integer,Q> cache = new HashMap<Integer,Q>();
     
-    protected final Class<E> elementType;
+    private final Class<E> elementType;
     
     private final Path<List<E>> pathMixin;
     
