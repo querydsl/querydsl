@@ -48,7 +48,7 @@ class PathMixin<T> implements Path<T>, Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    public boolean equals(Object o) {
+    public boolean equals(Object o) {        
         return o instanceof Path ? ((Path<?>) o).getMetadata().equals(metadata) : false;
     }
 

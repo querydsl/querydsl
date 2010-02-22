@@ -27,18 +27,16 @@ import com.mysema.query.types.operation.Ops;
  */
 @SuppressWarnings("serial")
 public abstract class Expr<D> implements Serializable{
-    
-//    private static final Templates templates = new Templates();
-        
-    /**
-     * Get the <code>count(*)</code> expression
-     * 
-     * @return count(*)
-     */
-    public static ENumber<Long> countAll() {
-        return Ops.AggOps.COUNT_ALL_AGG_EXPR;
-    }
-    
+//    
+//    /**
+//     * Get the <code>count(*)</code> expression
+//     * 
+//     * @return count(*)
+//     */
+//    public static ENumber<Long> countAll() {
+//        return Ops.AggOps.COUNT_ALL_AGG_EXPR;
+//    }
+//    
     private volatile ENumber<Long> count;
     
     private volatile ENumber<Long> countDistinct;

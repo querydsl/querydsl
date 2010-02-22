@@ -23,6 +23,7 @@ import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.EStringConst;
 import com.mysema.query.types.expr.ETime;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.Ops;
 
 /**
  * @author tiwe
@@ -111,7 +112,7 @@ public class Projections {
             rv.add(expr.avg());
             rv.add(expr.count());
             rv.add(expr.countDistinct());
-            rv.add(Expr.countAll());
+            rv.add(Ops.AggOps.COUNT_ALL_AGG_EXPR);
         }
                 
         if (!(other instanceof Constant || module == Module.JDOQL || module == Module.RDFBEAN)){

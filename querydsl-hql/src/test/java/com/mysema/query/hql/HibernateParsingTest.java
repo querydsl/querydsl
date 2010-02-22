@@ -12,8 +12,6 @@ import static com.mysema.query.hql.HQLGrammar.some;
 import static com.mysema.query.hql.HQLGrammar.sum;
 import static org.junit.Assert.assertEquals;
 
-
-
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -34,7 +32,7 @@ import com.mysema.query.hql.domain.QProduct;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.EDate;
 import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.Ops;
 
 /**
  * HqlParserTest provides.
@@ -418,7 +416,7 @@ public class HibernateParsingTest implements Constants {
 
     @Test
     public void testSelect() throws Exception {
-        query().select(Expr.countAll()).from(qat).parse();
+        query().select(Ops.AggOps.COUNT_ALL_AGG_EXPR).from(qat).parse();
 
         query().select(qat.weight.avg()).from(qat).parse();
     }

@@ -58,7 +58,13 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     }
 
     public boolean equals(Object o) {
-        return o instanceof PropertyModel && name.equals(((PropertyModel) o).name);
+        if (o == this){
+            return true;
+        }else if (o instanceof ParameterModel){
+            return name.equals(((PropertyModel) o).name);            
+        }else{
+            return false;
+        }
     }
 
     public EntityModel getContext() {

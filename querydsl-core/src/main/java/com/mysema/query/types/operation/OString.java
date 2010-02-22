@@ -6,7 +6,6 @@
 package com.mysema.query.types.operation;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import com.mysema.query.types.Visitor;
@@ -40,7 +39,6 @@ public class OString extends EString implements Operation<String, String> {
     public void accept(Visitor v) {
         v.visit(this);        
     }
-
 
     @Override
     public EString asExpr() {

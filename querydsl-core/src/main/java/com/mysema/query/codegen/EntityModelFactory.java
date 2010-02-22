@@ -19,7 +19,7 @@ import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.annotations.QueryType;
 
 /**
- * A Reflection based Factory implementation for ClassModel instance
+ * A Reflection based Factory implementation for EntityModel instances
  * 
  * @author tiwe
  *

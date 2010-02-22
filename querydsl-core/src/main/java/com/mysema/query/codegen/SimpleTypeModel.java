@@ -6,7 +6,6 @@
 package com.mysema.query.codegen;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import net.jcip.annotations.Immutable;
 
@@ -62,7 +61,9 @@ public class SimpleTypeModel extends AbstractTypeModel {
 
     @Override
     public boolean equals(Object o){
-        if (o instanceof TypeModel){
+        if (o == this){
+            return true;
+        }else if (o instanceof TypeModel){
             TypeModel t = (TypeModel)o;
             return fullName.equals(t.getFullName());
         }else{

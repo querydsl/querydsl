@@ -26,7 +26,7 @@ public class EBooleanConst extends EBoolean implements Constant<Boolean>{
     
     private final Boolean constant;
     
-    EBooleanConst(Boolean b){
+    private EBooleanConst(Boolean b){
         this.constant = b;
     }
     

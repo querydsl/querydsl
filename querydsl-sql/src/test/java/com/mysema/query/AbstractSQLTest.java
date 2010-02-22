@@ -44,6 +44,7 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.ENumberConst;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.query.ObjectSubQuery;
 
@@ -382,8 +383,8 @@ public abstract class AbstractSQLTest {
         assertFalse(list.isEmpty());
 
         // union #2
-        ObjectSubQuery<Object[]> sq3 = s().from(employee).unique(Expr.countAll(), employee.id.max());
-        ObjectSubQuery<Object[]> sq4 = s().from(employee).unique(Expr.countAll(), employee.id.min());
+        ObjectSubQuery<Object[]> sq3 = s().from(employee).unique(Ops.AggOps.COUNT_ALL_AGG_EXPR, employee.id.max());
+        ObjectSubQuery<Object[]> sq4 = s().from(employee).unique(Ops.AggOps.COUNT_ALL_AGG_EXPR, employee.id.min());
         List<Object[]> list2 = query().union(sq3, sq4).list();
         assertFalse(list2.isEmpty());
     }

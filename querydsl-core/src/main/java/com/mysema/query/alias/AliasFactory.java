@@ -67,8 +67,7 @@ class AliasFactory {
             enhancer.setInterfaces(new Class[] { ManagedObject.class });
         }
         // creates one handler per proxy
-        MethodInterceptor handler = new PropertyAccessInvocationHandler(path,
-                this);
+        MethodInterceptor handler = new PropertyAccessInvocationHandler(path, this);
         enhancer.setCallback(handler);
         A rv = (A) enhancer.create();
         return rv;

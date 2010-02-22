@@ -28,7 +28,13 @@ public final class ConstructorModel {
 
     @Override
     public boolean equals(Object o){
-        return o instanceof ConstructorModel && ((ConstructorModel)o).parameters.equals(parameters);
+        if (o == this){
+            return true;
+        }else if (o instanceof ConstructorModel){
+            return ((ConstructorModel)o).parameters.equals(parameters);
+        }else{
+            return false;
+        }   
     }
     
     public Collection<ParameterModel> getParameters() {

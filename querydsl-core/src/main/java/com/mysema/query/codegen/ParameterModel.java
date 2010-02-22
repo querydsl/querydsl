@@ -27,8 +27,13 @@ public final class ParameterModel {
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof ParameterModel  && type.equals(((ParameterModel) o).type);
-            
+        if (o == this){
+            return true;
+        }else if (o instanceof ParameterModel){
+            return type.equals(((ParameterModel) o).type);    
+        }else{
+            return false;
+        }    
     }
 
     public String getName() {

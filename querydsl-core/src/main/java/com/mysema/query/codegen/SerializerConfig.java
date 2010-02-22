@@ -11,12 +11,24 @@ package com.mysema.query.codegen;
  */
 public interface SerializerConfig {
     
+    /**
+     * @return
+     */
     boolean useEntityAccessors();
     
+    /**
+     * @return
+     */
     boolean useListAccessors();
     
+    /**
+     * @return
+     */
     boolean useMapAccessors();
     
+    /**
+     * @return
+     */
     boolean createDefaultVariable();
 
 }

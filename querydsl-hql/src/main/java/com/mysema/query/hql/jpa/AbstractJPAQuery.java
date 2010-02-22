@@ -20,6 +20,7 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.hql.HQLQueryBase;
 import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.Ops;
 
 /**
  * Abstract base class for JPA API based implementations of the HQLQuery interface
@@ -40,7 +41,7 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
     }
 
     public long count() {
-        return uniqueResult(Expr.countAll());
+        return uniqueResult(Ops.AggOps.COUNT_ALL_AGG_EXPR);
     }
     
     /**

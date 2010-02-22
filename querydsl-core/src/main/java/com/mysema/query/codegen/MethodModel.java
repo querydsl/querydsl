@@ -38,7 +38,14 @@ public class MethodModel {
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof MethodModel && ((MethodModel) o).name.equals(name) && ((MethodModel) o).parameters.equals(parameters);
+        if (o == this){
+            return true;
+        }else if (o instanceof MethodModel){
+            MethodModel m = (MethodModel)o;
+            return m.name.equals(name) && m.parameters.equals(parameters);    
+        }else{
+            return false;
+        }        
     }
 
     public EntityModel getContext() {
@@ -65,4 +72,6 @@ public class MethodModel {
     public int hashCode() {
         return name.hashCode();
     }
+    
+    
 }
