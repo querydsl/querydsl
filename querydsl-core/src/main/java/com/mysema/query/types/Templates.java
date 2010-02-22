@@ -199,12 +199,12 @@ public class Templates {
         add(Ops.QuantOps.ALL, "all {0}");        
     }
 
-    protected void add(Operator<?> op, String pattern) {
+    protected final void add(Operator<?> op, String pattern) {
         Template template = templateFactory.create(pattern);
         templates.put(op, template);
     }
 
-    protected void add(Operator<?> op, String pattern, int pre) {
+    protected final void add(Operator<?> op, String pattern, int pre) {
         add(op, pattern);
         precedence.put(op, pre);
     }

@@ -44,14 +44,15 @@ public class CaseBuilder {
     private static class CaseElement<A> {
         
         @Nullable
-        final EBoolean condition;
+        private final EBoolean condition;
         
-        final Expr<A> target;
+        private final Expr<A> target;
         
         public CaseElement(@Nullable EBoolean condition, Expr<A> target){
             this.condition = condition;
             this.target = target;
         }
+        
     }
     
     /**

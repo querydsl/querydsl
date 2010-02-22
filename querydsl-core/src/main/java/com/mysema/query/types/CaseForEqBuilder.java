@@ -45,9 +45,9 @@ public class CaseForEqBuilder<D> {
     private static class CaseElement<D> {
         
         @Nullable
-        final Expr<? extends D> eq;
+        private final Expr<? extends D> eq;
         
-        final Expr<?> target;
+        private final Expr<?> target;
         
         public CaseElement(@Nullable Expr<? extends D> eq, Expr<?> target){
             this.eq = eq;
