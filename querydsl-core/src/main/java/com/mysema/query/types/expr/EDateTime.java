@@ -19,7 +19,7 @@ import com.mysema.query.types.operation.Ops;
  * @param <D>
  */
 @SuppressWarnings({"unchecked","serial"})
-public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
+public abstract class EDateTime<D extends Comparable> extends EDate<D> {
 
     private static final EDateTime<Date> CURRENT_DATE = currentDate(Date.class);
     
@@ -70,44 +70,6 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Get a day of month expression (range 1-31)
-     * 
-     * @return
-     */
-    public ENumber<Integer> dayOfMonth(){
-        if (dayOfMonth == null){
-            dayOfMonth = ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_MONTH, this);
-        }
-        return dayOfMonth;
-    }
-    
-    /**
-     * Get a day of week expression (range 1-7 / SUN-SAT)
-     * <p>NOT supported in JDOQL and not in Derby</p>
-     * 
-     * @return
-     */
-    public ENumber<Integer> dayOfWeek() {
-        if (dayOfWeek == null){
-            dayOfWeek = ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_WEEK, this);
-        }
-        return dayOfWeek;
-    }
-    
-    /**
-     * Get a day of year expression (range 1-356)
-     * <p>NOT supported in JDOQL and not in Derby</p>
-     * 
-     * @return
-     */
-    public ENumber<Integer> dayOfYear() {
-        if (dayOfYear == null){
-            dayOfYear = ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_YEAR, this);
-        }
-        return dayOfYear;
-    }
-
-    /**
      * Get a hours expression (range 0-23)
      * 
      * @return
@@ -143,19 +105,7 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
         }
         return minutes;
     }
-    
-    /**
-     * Get a month expression (range 1-12)
-     * 
-     * @return
-     */
-    public ENumber<Integer> month(){
-        if (month == null){
-            month = ONumber.create(Integer.class, Ops.DateTimeOps.MONTH, this);
-        }
-        return month;
-    }
-    
+        
     /**
      * Get a seconds expression (range 0-59)
      * 
@@ -181,27 +131,4 @@ public abstract class EDateTime<D extends Comparable> extends EDateOrTime<D> {
         return week;
     }
     
-    /**
-     * Get a year expression
-     * 
-     * @return
-     */
-    public ENumber<Integer> year(){
-        if (year == null){
-            year = ONumber.create(Integer.class, Ops.DateTimeOps.YEAR, this);
-        }
-        return year;
-    }
-    
-    /**
-     * Get a year / month expression 
-     * 
-     * @return
-     */
-    public ENumber<Integer> yearMonth(){
-        if (yearMonth == null){
-            yearMonth = ONumber.create(Integer.class, Ops.DateTimeOps.YEAR_MONTH, this);
-        }
-        return yearMonth;
-    }
 }

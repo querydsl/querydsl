@@ -5,7 +5,6 @@
  */
 package com.mysema.query.types.expr;
 
-import java.sql.Date;
 import java.util.Calendar;
 
 import com.mysema.query.types.Visitor;
@@ -15,18 +14,19 @@ import com.mysema.query.types.Visitor;
  *
  */
 @SuppressWarnings("serial")
-public class EDateConst extends EDate<java.sql.Date> implements Constant<java.sql.Date>{
+public class EDateConst<D extends java.util.Date> extends EDate<D> implements Constant<D>{
  
-    public static EDate<java.sql.Date> create(java.sql.Date date){
-        return new EDateConst(date);
+    public static <D extends java.util.Date> EDate<D> create(D date){
+        return new EDateConst<D>(date);
     }
     
-    private final Date date;
+    private final D date;
     
     private final Calendar calendar;
     
-    public EDateConst(java.sql.Date date) {
-        super(java.sql.Date.class);
+    @SuppressWarnings("unchecked")
+    public EDateConst(D date) {
+        super((Class<D>)date.getClass());
         this.date = date;
         this.calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -73,7 +73,7 @@ public class EDateConst extends EDate<java.sql.Date> implements Constant<java.sq
     }
 
     @Override
-    public Date getConstant() {
+    public D getConstant() {
         return date;
     }
 

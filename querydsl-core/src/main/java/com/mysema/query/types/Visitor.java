@@ -83,9 +83,9 @@ public interface Visitor {
 
     void visit(EArrayConstructor<?> expr);
     
-    void visit(EDateConst expr);
+    void visit(EDateConst<?> expr);
     
-    void visit(EDateTimeConst expr);
+    void visit(EDateTimeConst<?> expr);
     
     void visit(ENumberConst<?> expr);
     
