@@ -44,7 +44,7 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         this.name = Assert.notNull(name);
         this.escapedName = escapedName;
         this.type = Assert.notNull(type);
-        this.inits = inits;
+        this.inits = inits.clone();
         this.inherited = inherited;
     }
 

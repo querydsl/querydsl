@@ -51,7 +51,7 @@ public class EConstructor<D> extends Expr<D> {
 
     public EConstructor(Class<D> type, Class<?>[] paramTypes, Expr<?>... args) {
         super(type);
-        this.parameterTypes = paramTypes;
+        this.parameterTypes = paramTypes.clone();
         this.args = Collections.unmodifiableList(Arrays.asList(args));
     }
 
