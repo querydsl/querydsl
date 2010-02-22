@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringEscapeUtils;
  * @author tiwe
  *
  */
-public class JavaWriter implements Appendable, CodeWriter{
+public final class JavaWriter implements Appendable, CodeWriter{
     
     private final Appendable appendable;
     

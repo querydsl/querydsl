@@ -14,7 +14,7 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * 
  */
-public class JDOQLTemplates extends JavaTemplates {
+public final class JDOQLTemplates extends JavaTemplates {
 
     public static final JDOQLTemplates DEFAULT = new JDOQLTemplates();
     

@@ -9,8 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
@@ -45,7 +43,7 @@ import com.mysema.query.types.path.Path;
  * @author tiwe
  *
  */
-public class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>{
+public final class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>{
     
     private static final ENumber<Integer> COUNT_ALL_AGG_EXPR = ONumber.create(Integer.class, Ops.AggOps.COUNT_ALL_AGG);
     

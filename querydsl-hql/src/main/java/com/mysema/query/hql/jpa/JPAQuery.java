@@ -18,7 +18,7 @@ import com.mysema.query.hql.HQLTemplates;
  * @author tiwe
  *
  */
-public class JPAQuery extends AbstractJPAQuery<JPAQuery> implements HQLQuery{
+public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements HQLQuery{
 
     /**
      * Creates a new detached query 

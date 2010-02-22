@@ -20,7 +20,7 @@ import com.mysema.query.hql.HQLTemplates;
  * @author tiwe
  *
  */
-public class HibernateQuery extends AbstractHibernateQuery<HibernateQuery> implements HQLQuery{
+public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery> implements HQLQuery{
 
     /**
      * Creates a detached query

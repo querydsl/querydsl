@@ -21,7 +21,7 @@ import com.mysema.query.types.path.PathType;
  * @author tiwe
  * @version $Id$
  */
-public class HQLTemplates extends Templates {
+public final class HQLTemplates extends Templates {
 
     public static final HQLTemplates DEFAULT = new HQLTemplates();
     

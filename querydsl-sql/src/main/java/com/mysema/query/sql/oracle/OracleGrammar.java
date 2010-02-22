@@ -20,15 +20,17 @@ import com.mysema.query.types.path.PathMetadataFactory;
  * @author tiwe
  * @version $Id$
  */
-public class OracleGrammar {
+public final class OracleGrammar {
 
+    private OracleGrammar(){}
+    
     // global columns
 
-    public static ENumber<Integer> level = new PNumber<Integer>(Integer.class, PathMetadataFactory.forVariable("level"));
+    public static final ENumber<Integer> level = new PNumber<Integer>(Integer.class, PathMetadataFactory.forVariable("level"));
 
-    public static ENumber<Integer> rownum = new PNumber<Integer>(Integer.class, PathMetadataFactory.forVariable("rownum"));
+    public static final ENumber<Integer> rownum = new PNumber<Integer>(Integer.class, PathMetadataFactory.forVariable("rownum"));
 
-    public static EComparableBase<Date> sysdate = new PComparable<Date>(Date.class, PathMetadataFactory.forVariable("sysdate"));
+    public static final EComparableBase<Date> sysdate = new PComparable<Date>(Date.class, PathMetadataFactory.forVariable("sysdate"));
 
     // custom functions
 
