@@ -29,6 +29,7 @@ public class EDateTimeConst<D extends java.util.Date> extends EDateTime<D> imple
         super((Class<D>)date.getClass());
         this.calendar = Calendar.getInstance();
         this.date = date;
+        calendar.setMinimalDaysInFirstWeek(4);
         calendar.setTime(date);
     }
 

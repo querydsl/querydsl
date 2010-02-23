@@ -13,6 +13,7 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.jdoql.testdomain.Book;
@@ -89,6 +90,7 @@ public class BasicsTest extends AbstractJDOTest {
     }
     
     @Test
+    @Ignore
     public void detachedResults(){
         for (Product p : detachedQuery().from(product).list(product)){
             System.out.println(p);
