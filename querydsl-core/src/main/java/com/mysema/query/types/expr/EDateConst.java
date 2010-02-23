@@ -29,7 +29,6 @@ public class EDateConst<D extends java.util.Date> extends EDate<D> implements Co
         super((Class<D>)date.getClass());
         this.date = date;
         this.calendar = Calendar.getInstance();
-        calendar.setMinimalDaysInFirstWeek(4);
         calendar.setTime(date);
     }
 
