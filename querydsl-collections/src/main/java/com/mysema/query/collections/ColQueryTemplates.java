@@ -125,6 +125,7 @@ public final class ColQueryTemplates extends JavaTemplates {
     
     private static int getField(Date date, int field){
         Calendar cal = Calendar.getInstance();
+        cal.setMinimalDaysInFirstWeek(4);
         cal.setTime(date);
         return cal.get(field);
     }
