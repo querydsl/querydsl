@@ -61,9 +61,7 @@ public abstract class EDateTime<D extends Comparable> extends EDate<D> {
         return ODateTime.create(cl, Ops.DateTimeOps.CURRENT_TIMESTAMP);
     }
     
-    private volatile ENumber<Integer> dayOfMonth, dayOfWeek, dayOfYear;
-    
-    private volatile ENumber<Integer> year, month, week, hours, minutes, seconds, milliseconds, yearMonth;
+    private volatile ENumber<Integer> hours, minutes, seconds, milliseconds;
     
     public EDateTime(Class<? extends D> type) {
         super(type);
@@ -116,19 +114,6 @@ public abstract class EDateTime<D extends Comparable> extends EDate<D> {
             seconds = ONumber.create(Integer.class, Ops.DateTimeOps.SECOND, this);
         }
         return seconds;
-    }
-
-    /**
-     * Get a week expression
-     * <p>NOT supported in JDOQL and not in Derby</p>
-     * 
-     * @return
-     */
-    public ENumber<Integer> week() {
-        if (week == null){
-            week = ONumber.create(Integer.class, Ops.DateTimeOps.WEEK,  this); 
-        }
-        return week;
     }
     
 }
