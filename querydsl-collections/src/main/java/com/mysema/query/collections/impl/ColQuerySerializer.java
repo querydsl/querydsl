@@ -55,7 +55,7 @@ public class ColQuerySerializer extends SerializerBase<ColQuerySerializer> {
                 args.add((Expr<?>)path.getMetadata().getParent());
             }
             args.add(path.getMetadata().getExpression());            
-            Template template = templates.getTemplate(pathType);
+            Template template = getTemplate(pathType);
             for (Template.Element element : template.getElements()){
                 if (element.getStaticText() != null){
                     append(element.getStaticText());

@@ -22,10 +22,14 @@ import com.mysema.query.types.expr.Expr;
  */
 public class ProjectableAdapter implements Projectable {
 
-    protected final Projectable projectable;
+    private final Projectable projectable;
 
     public ProjectableAdapter(Projectable projectable) {
         this.projectable = Assert.notNull(projectable,"projectable is null");
+    }
+    
+    protected Projectable getProjectable(){
+        return projectable;
     }
 
     @Override

@@ -33,30 +33,38 @@ import com.mysema.query.types.path.PathType;
  */
 public abstract class SerializerBase<SubType extends SerializerBase<SubType>> extends VisitorBase<SubType> {
 
-    private final StringBuilder builder = new StringBuilder();
-
-    private final Map<Object,String> constantToLabel = new HashMap<Object,String>();
-    
-    protected String constantPrefix = "a";
-    
-    protected final Templates templates;
-
     @SuppressWarnings("unchecked")
     private final SubType _this = (SubType) this;
 
+    private final StringBuilder builder = new StringBuilder();
+    
+    private String constantPrefix = "a";
+    
+    private final Map<Object,String> constantToLabel = new HashMap<Object,String>();
+
+    private final Templates templates;
+
     public SerializerBase(Templates patterns) {
         this.templates = Assert.notNull(patterns,"patterns is null");
-    }
-    
+    }    
+
     public SubType append(String... str) {
         for (String s : str) {
             builder.append(s);
         }
         return _this;
     }
-
+    
+    protected String getConstantPrefix() {
+        return constantPrefix;
+    }
+    
     public Map<Object,String> getConstantToLabel() {
         return constantToLabel;
+    }
+
+    protected Template getTemplate(Operator<?> op) {
+        return templates.getTemplate(op);
     }
 
     public final SubType handle(String sep, List<? extends Expr<?>> expressions) {
@@ -81,6 +89,17 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
     }
 
     @Override
+    public void visit(Constant<?> expr) {        
+        if (!constantToLabel.containsKey(expr.getConstant())) {
+            String constLabel = constantPrefix + (constantToLabel.size() + 1);
+            constantToLabel.put(expr.getConstant(), constLabel);
+            append(constLabel);
+        } else {
+            append(constantToLabel.get(expr.getConstant()));
+        }
+    }
+
+    @Override
     public void visit(Custom<?> expr) {        
         for (Template.Element element : expr.getTemplate().getElements()){
             if (element.getStaticText() != null){
@@ -95,17 +114,6 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
     public void visit(EArrayConstructor<?> oa) {
         append("new ").append(oa.getElementType().getName()).append("[]{");
         handle(", ", oa.getArgs()).append("}");
-    }
-
-    @Override
-    public void visit(Constant<?> expr) {        
-        if (!constantToLabel.containsKey(expr.getConstant())) {
-            String constLabel = constantPrefix + (constantToLabel.size() + 1);
-            constantToLabel.put(expr.getConstant(), constLabel);
-            append(constLabel);
-        } else {
-            append(constantToLabel.get(expr.getConstant()));
-        }
     }
 
     @Override

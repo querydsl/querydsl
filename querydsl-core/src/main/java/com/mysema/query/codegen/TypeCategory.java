@@ -121,12 +121,13 @@ public enum TypeCategory {
      * @return
      */
     public boolean isSubCategoryOf(TypeCategory ancestor){
-        if (this == ancestor)
+        if (this == ancestor){
             return true;
-        else if (superType == null)
+        }else if (superType == null){
             return false;
-        else 
+        }else{
             return superType == ancestor || superType.isSubCategoryOf(ancestor);
+        }            
     }
     
     public static TypeCategory get(String className){

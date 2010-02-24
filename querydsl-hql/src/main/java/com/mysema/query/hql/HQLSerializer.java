@@ -176,7 +176,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         }
         append(":");
         if (!getConstantToLabel().containsKey(expr.getConstant())) {
-            String constLabel = constantPrefix + (getConstantToLabel().size()+1);
+            String constLabel = getConstantPrefix() + (getConstantToLabel().size()+1);
             getConstantToLabel().put(expr.getConstant(), constLabel);
             append(constLabel);
         } else {

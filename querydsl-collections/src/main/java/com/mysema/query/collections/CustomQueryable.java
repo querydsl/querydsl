@@ -29,7 +29,7 @@ public abstract class CustomQueryable<SubType extends CustomQueryable<SubType>> 
 
     public CustomQueryable(QueryMetadata metadata, EvaluatorFactory evaluatorFactory) {
         super(new ColQueryImpl(metadata, evaluatorFactory));
-        query = (ColQueryImpl) projectable;
+        query = (ColQueryImpl) getProjectable();
     }
 
     protected QueryMetadata getMetadata() {
