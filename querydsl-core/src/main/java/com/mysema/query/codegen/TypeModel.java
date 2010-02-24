@@ -18,50 +18,55 @@ import javax.annotation.Nullable;
 public interface TypeModel {
 
     /**
+     * @param context
+     * @param builder
+     * @param asArgType
+     * @return
+     * @throws IOException 
+     */
+    void appendLocalGenericName(TypeModel context, Appendable builder, boolean asArgType) throws IOException;
+
+    /**
+     * @param context
+     * @param builder
+     * @return
+     * @throws IOException 
+     */
+    void appendLocalRawName(TypeModel context, Appendable builder) throws IOException;
+    
+    /**
      * @param category
      * @return
      */
     TypeModel as(TypeCategory category);
-
+    
+    /**
+     * @return
+     */
+    TypeModel asArrayType();
+    
     /**
      * @return
      */
     TypeCategory getCategory();
-    
+
     /**
      * @return
      */
     String getFullName();
-    
+
     /**
      * @param context
      * @param asArgType
      * @return
      */
     String getLocalGenericName(TypeModel context, boolean asArgType);
-    
-    /**
-     * @param context
-     * @param builder
-     * @param asArgType
-     * @return
-     * @throws IOException 
-     */
-    void getLocalGenericName(TypeModel context, Appendable builder, boolean asArgType) throws IOException;
 
     /**
      * @param context
      * @return
      */
     String getLocalRawName(TypeModel context);
-
-    /**
-     * @param context
-     * @param builder
-     * @return
-     * @throws IOException 
-     */
-    void getLocalRawName(TypeModel context, Appendable builder) throws IOException;
 
     /**
      * @return
@@ -85,12 +90,12 @@ public interface TypeModel {
      */
     @Nullable
     String getPrimitiveName();
-
+    
     /**
      * @return
      */
     TypeModel getSelfOrValueType();
-    
+
     /**
      * @return
      */
@@ -105,20 +110,15 @@ public interface TypeModel {
      * @return
      */
     boolean isFinal();
-
-    /**
-     * @return
-     */
-    boolean isPrimitive();
     
     /**
      * @return
      */
-    String toString();
+    boolean isPrimitive();
 
     /**
      * @return
      */
-    TypeModel asArrayType();
+    String toString();
     
 }

@@ -19,7 +19,7 @@ public abstract class AbstractTypeModel implements TypeModel{
     public String getLocalGenericName(TypeModel context, boolean asArgType){
         try {
             StringBuilder builder = new StringBuilder();
-            getLocalGenericName(context, builder, asArgType);
+            appendLocalGenericName(context, builder, asArgType);
             return builder.toString();
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);
@@ -30,7 +30,7 @@ public abstract class AbstractTypeModel implements TypeModel{
     public String getLocalRawName(TypeModel context){
         try {
             StringBuilder builder = new StringBuilder();
-            getLocalRawName(context, builder);
+            appendLocalRawName(context, builder);
             return builder.toString();
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);

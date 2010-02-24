@@ -90,12 +90,12 @@ public class ClassTypeModel extends AbstractTypeModel{
     }
 
     @Override
-    public void getLocalGenericName(TypeModel context, Appendable builder, boolean asArgType) throws IOException {
-        getLocalRawName(context, builder);
+    public void appendLocalGenericName(TypeModel context, Appendable builder, boolean asArgType) throws IOException {
+        appendLocalRawName(context, builder);
     }
 
     @Override
-    public void getLocalRawName(TypeModel context, Appendable builder) throws IOException {
+    public void appendLocalRawName(TypeModel context, Appendable builder) throws IOException {
         String packageName; 
         String name;
         if (clazz.isArray()){

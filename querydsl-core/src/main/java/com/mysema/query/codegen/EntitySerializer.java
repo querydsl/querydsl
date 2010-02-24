@@ -257,7 +257,7 @@ public class EntitySerializer implements Serializer{
                 if (p.getType().getPrimitiveName() != null){
                     writer.append(p.getType().getPrimitiveName()+".class");
                 }else{
-                    p.getType().getLocalRawName(model, writer);
+                    p.getType().appendLocalRawName(model, writer);
                     writer.append(".class");    
                 }                
                 first = false;
@@ -371,7 +371,7 @@ public class EntitySerializer implements Serializer{
         writer.beginLine("return " + customClass + ".create(");
         String fullName = method.getReturnType().getFullName();
         if (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName())){
-            method.getReturnType().getLocalRawName(model, writer);
+            method.getReturnType().appendLocalRawName(model, writer);
             writer.append(".class, ");
         }        
         writer.append("\"" + StringEscapeUtils.escapeJava(method.getTemplate()) + "\"");

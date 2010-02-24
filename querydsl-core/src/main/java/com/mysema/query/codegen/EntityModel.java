@@ -106,7 +106,7 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
     public String getLocalGenericName(){
         try {
             StringBuilder builder = new StringBuilder();
-            getTypeModel().getLocalGenericName(this, builder, false);
+            getTypeModel().appendLocalGenericName(this, builder, false);
             return builder.toString();
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);
@@ -116,7 +116,7 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
     public String getLocalRawName() {
         try {
             StringBuilder builder = new StringBuilder();
-            getTypeModel().getLocalRawName(this, builder);
+            getTypeModel().appendLocalRawName(this, builder);
             return builder.toString();
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);

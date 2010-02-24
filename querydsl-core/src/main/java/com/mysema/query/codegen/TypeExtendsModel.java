@@ -30,11 +30,11 @@ public class TypeExtendsModel extends TypeModelAdapter{
     }
 
     @Override
-    public void getLocalGenericName(TypeModel context, Appendable builder, boolean asArgType) throws IOException {
+    public void appendLocalGenericName(TypeModel context, Appendable builder, boolean asArgType) throws IOException {
         if (!asArgType){
             builder.append("? extends ");    
         }            
-        getTypeModel().getLocalGenericName(context, builder, true);
+        getTypeModel().appendLocalGenericName(context, builder, true);
     }
 
 }
