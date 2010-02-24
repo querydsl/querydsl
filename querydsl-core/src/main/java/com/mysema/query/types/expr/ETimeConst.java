@@ -15,18 +15,18 @@ import com.mysema.query.types.Visitor;
  *
  */
 @SuppressWarnings("serial")
-public class ETimeConst extends ETime<java.sql.Time> implements Constant<java.sql.Time>{
+public class ETimeConst<D extends java.util.Date> extends ETime<D> implements Constant<D>{
     
-    public static ETime<java.sql.Time> create(java.sql.Time time){
-        return new ETimeConst(time);
+    public static <D extends java.util.Date> ETime<D> create(D time){
+        return new ETimeConst<D>(time);
     }
     
     private final Calendar calendar;
     
-    private final java.sql.Time time;
+    private final D time;
     
-    public ETimeConst(java.sql.Time time) {
-        super(java.sql.Time.class);
+    public ETimeConst(D time) {
+        super((Class<D>)time.getClass());
         this.calendar = Calendar.getInstance();
         this.time = time;
         calendar.setTime(time);
@@ -58,7 +58,7 @@ public class ETimeConst extends ETime<java.sql.Time> implements Constant<java.sq
     }
     
     @Override
-    public Time getConstant() {
+    public D getConstant() {
         return time;
     }
 

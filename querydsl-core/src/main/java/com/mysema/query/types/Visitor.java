@@ -97,7 +97,7 @@ public interface Visitor {
     
     void visit(ExprConst<?> expr);
     
-    void visit(ETimeConst expr);
+    void visit(ETimeConst<?> expr);
 
     void visit(OBoolean expr);
 
