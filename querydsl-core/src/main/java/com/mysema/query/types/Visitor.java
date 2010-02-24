@@ -57,32 +57,30 @@ import com.mysema.query.types.query.SubQuery;
  */
 public interface Visitor {
     
-    void visit(SubQuery query);
-    
-    void visit(ObjectSubQuery<?> expr);
-    
-    void visit(ListSubQuery<?> expr);
-      
     void visit(CBoolean expr);
-
+    
     void visit(CComparable<?> expr);
     
     void visit(CDate<?> expr);
-    
+      
     void visit(CDateTime<?> expr);
+
+    void visit(Constant<?> expr);
+    
+    void visit(CSimple<?> expr);
+    
+    void visit(CString expr);
     
     void visit(CTime<?> expr);
 
-    void visit(CSimple<?> expr);
-
-    void visit(CString expr);
-
     void visit(Custom<?> expr);
 
-    void visit(Constant<?> expr);
-
     void visit(EArrayConstructor<?> expr);
-    
+
+    void visit(EBooleanConst expr);
+
+    void visit(EConstructor<?> expr);
+
     void visit(EDateConst<?> expr);
     
     void visit(EDateTimeConst<?> expr);
@@ -91,55 +89,57 @@ public interface Visitor {
     
     void visit(EStringConst expr);
     
-    void visit(EBooleanConst expr);
-    
-    void visit(EConstructor<?> expr);
+    void visit(ETimeConst<?> expr);
     
     void visit(ExprConst<?> expr);
     
-    void visit(ETimeConst<?> expr);
-
+    void visit(ListSubQuery<?> expr);
+    
+    void visit(ObjectSubQuery<?> expr);
+    
     void visit(OBoolean expr);
 
     void visit(OComparable<?, ?> expr);
-    
+
     void visit(ODate<?, ?> expr);
     
     void visit(ODateTime<?, ?> expr);
     
-    void visit(OTime<?, ?> expr);
-
     void visit(ONumber<?, ?> expr);
     
     void visit(OSimple<?, ?> expr);
 
     void visit(OString expr);
+    
+    void visit(OTime<?, ?> expr);
 
     void visit(PArray<?> expr);
 
     void visit(PBoolean expr);
 
+    void visit(PCollection<?> expr);
+
     void visit(PComparable<?> expr);
+
+    void visit(PDate<?> expr);
+
+    void visit(PDateTime<?> expr);
 
     void visit(PEntity<?> expr);
 
-    void visit(PCollection<?> expr);
-
     void visit(PList<?, ?> expr);
-
-    void visit(PSet<?> expr);
 
     void visit(PMap<?, ?, ?> expr);
 
     void visit(PNumber<?> expr);
     
+    void visit(PSet<?> expr);
+
     void visit(PSimple<?> expr);
 
     void visit(PString expr);
-
-    void visit(PDate<?> expr);
-    
-    void visit(PDateTime<?> expr);
     
     void visit(PTime<?> expr);
+    
+    void visit(SubQuery query);
 }

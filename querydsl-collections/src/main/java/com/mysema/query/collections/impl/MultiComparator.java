@@ -34,8 +34,10 @@ public class MultiComparator implements Comparator<Object[]> {
     }
 
     public int compare(Object[] o1, Object[] o2) {
-        o1 = ev.evaluate(o1);
-        o2 = ev.evaluate(o2);
+        return innerCompare(ev.evaluate(o1), ev.evaluate(o2));
+    }
+    
+    private int innerCompare(Object[] o1, Object[] o2) {
         for (int i = 0; i < o1.length; i++) {
             int res = naturalOrder.compare(o1[i], o2[i]);
             if (res != 0) {
