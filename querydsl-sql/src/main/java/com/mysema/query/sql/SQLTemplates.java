@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mysema.query.JoinType;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.operation.Ops;
 
@@ -467,5 +468,15 @@ public class SQLTemplates extends Templates {
 
     public boolean isSupportsAlias() {
         return true;
+    }
+    
+    public String getJoinSymbol(JoinType joinType){
+        switch (joinType) {
+            case FULLJOIN:  return fullJoin;
+            case INNERJOIN: return innerJoin;
+            case JOIN:      return join;
+            case LEFTJOIN:  return leftJoin;
+        }
+        return ", ";
     }
 }

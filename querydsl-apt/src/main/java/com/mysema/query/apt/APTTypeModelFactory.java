@@ -298,7 +298,7 @@ public class APTTypeModelFactory {
     private TypeModel handle(TypeMirror type) {
         if (type instanceof DeclaredType){
             DeclaredType t = (DeclaredType)type;
-            if (t.asElement() != null && t.asElement() instanceof TypeElement){
+            if (t.asElement() instanceof TypeElement){
                 TypeElement typeElement = (TypeElement)t.asElement();
                 switch(typeElement.getKind()){
                 case ENUM:      return createEnumType(t, typeElement);
