@@ -23,7 +23,7 @@ public class ETimeConst extends ETime<java.sql.Time> implements Constant<java.sq
     
     private final Calendar calendar;
     
-    private final Time time;
+    private final java.sql.Time time;
     
     public ETimeConst(java.sql.Time time) {
         super(java.sql.Time.class);

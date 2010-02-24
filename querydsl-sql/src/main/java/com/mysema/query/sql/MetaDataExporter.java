@@ -76,52 +76,58 @@ public class MetaDataExporter {
         Assert.notNull(packageName, "packageName needs to be set");
 
         ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
-        while (tables.next()) {
-            String tableName = tables.getString(3);
-            String simpleClassName = toClassName(tableName);
-            TypeModel classTypeModel = new SimpleTypeModel(
-                    TypeCategory.ENTITY, 
-                    packageName + "." + namePrefix + simpleClassName, 
-                    packageName, 
-                    namePrefix + simpleClassName, 
-                    false);
-            EntityModel classModel = new EntityModel("", classTypeModel);
-            MethodModel wildcard = new MethodModel(classModel, "all", "{0}.*", 
-                    Collections.<ParameterModel>emptyList(), TypeModels.OBJECTS);
-            classModel.addMethod(wildcard);
-            classModel.addAnnotation(new TableImpl(tableName));
-            ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
-            while (columns.next()) {
-                String columnName = columns.getString(4);
-                String propertyName = toPropertyName(columnName);
-                Class<?> clazz = typeMapping.get(columns.getInt(5));
-                if (clazz == null){
-                    throw new RuntimeException("No java type for " + columns.getString(6));
-                }                    
-                TypeCategory fieldType = TypeCategory.SIMPLE;
-                if (clazz.equals(Boolean.class) || clazz.equals(boolean.class)) {
-                    fieldType = TypeCategory.BOOLEAN;
-                } else if (clazz.equals(String.class)) {
-                    fieldType = TypeCategory.STRING;
-                }else if (Number.class.isAssignableFrom(clazz)){
-                    fieldType = TypeCategory.NUMERIC;
-                }else if (Comparable.class.isAssignableFrom(clazz)){
-                    fieldType = TypeCategory.COMPARABLE;
-                }
+        try{
+            while (tables.next()) {
+                String tableName = tables.getString(3);
+                String simpleClassName = toClassName(tableName);
+                TypeModel classTypeModel = new SimpleTypeModel(
+                        TypeCategory.ENTITY, 
+                        packageName + "." + namePrefix + simpleClassName, 
+                        packageName, 
+                        namePrefix + simpleClassName, 
+                        false);
+                EntityModel classModel = new EntityModel("", classTypeModel);
+                MethodModel wildcard = new MethodModel(classModel, "all", "{0}.*", 
+                        Collections.<ParameterModel>emptyList(), TypeModels.OBJECTS);
+                classModel.addMethod(wildcard);
+                classModel.addAnnotation(new TableImpl(tableName));
+                ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
+                try{
+                    while (columns.next()) {
+                        String columnName = columns.getString(4);
+                        String propertyName = toPropertyName(columnName);
+                        Class<?> clazz = typeMapping.get(columns.getInt(5));
+                        if (clazz == null){
+                            throw new RuntimeException("No java type for " + columns.getString(6));
+                        }                    
+                        TypeCategory fieldType = TypeCategory.SIMPLE;
+                        if (clazz.equals(Boolean.class) || clazz.equals(boolean.class)) {
+                            fieldType = TypeCategory.BOOLEAN;
+                        } else if (clazz.equals(String.class)) {
+                            fieldType = TypeCategory.STRING;
+                        }else if (Number.class.isAssignableFrom(clazz)){
+                            fieldType = TypeCategory.NUMERIC;
+                        }else if (Comparable.class.isAssignableFrom(clazz)){
+                            fieldType = TypeCategory.COMPARABLE;
+                        }
 
-                TypeModel typeModel = new ClassTypeModel(fieldType, clazz);
-                classModel.addProperty(new PropertyModel(
-                        classModel, 
-                        columnName, 
-                        propertyName, 
-                        typeModel, 
-                        new String[0], 
-                        false));
+                        TypeModel typeModel = new ClassTypeModel(fieldType, clazz);
+                        classModel.addProperty(new PropertyModel(
+                                classModel, 
+                                columnName, 
+                                propertyName, 
+                                typeModel, 
+                                new String[0], 
+                                false));
+                    }
+                }finally{
+                    columns.close();
+                }
+                serialize(classModel);
             }
-            columns.close();
-            serialize(classModel);
+        }finally{
+            tables.close();    
         }
-        tables.close();
     }
 
     private String toPropertyName(String columnName){

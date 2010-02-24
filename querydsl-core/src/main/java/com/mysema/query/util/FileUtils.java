@@ -11,8 +11,10 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
-public class FileUtils {
-
+public final class FileUtils {
+    
+    private FileUtils(){}
+    
     public static Writer writerFor(File file) {
         if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
             System.err.println("Folder " + file.getParent() + " could not be created");
