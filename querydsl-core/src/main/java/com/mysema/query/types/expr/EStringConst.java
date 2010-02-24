@@ -109,12 +109,6 @@ public class EStringConst extends EString implements Constant<String>{
         return EBooleanConst.create(constant.equals(s));
     }
     
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean equals(Object o) {
-        return o instanceof Constant ? ((Constant<?>) o).getConstant().equals(constant) : false;
-    }
-
     @Override
     public EBoolean equalsIgnoreCase(String str) {
         return EBooleanConst.create(constant.equalsIgnoreCase(str));
@@ -220,5 +214,18 @@ public class EStringConst extends EString implements Constant<String>{
             upper = EStringConst.create(constant.toUpperCase()); 
         }
         return upper; 
+    }
+    
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object o) {
+        if (o == this){
+            return true;
+        }else if (o instanceof Constant){
+            return ((Constant)o).getConstant().equals(constant);
+        }else{
+            return false;
+        }
     }
 }

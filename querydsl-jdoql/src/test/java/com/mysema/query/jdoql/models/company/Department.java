@@ -23,9 +23,9 @@ public class Department {
     private Manager manager;
     private Set<Project> projects = new HashSet<Project>();
     private List<Employee> employees;
-    
-    public Department(){
-        
+
+    public Department() {
+
     }
 
     public Department(String name) {
@@ -67,6 +67,5 @@ public class Department {
     public List<Employee> getEmployees() {
         return employees;
     }
-    
-    
+
 }

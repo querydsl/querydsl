@@ -7,7 +7,6 @@ package com.mysema.query.jdoql.models.company;
 
 import com.mysema.query.annotations.QueryEntity;
 
-
 /**
  * Project in a company.
  * 
@@ -17,8 +16,9 @@ import com.mysema.query.annotations.QueryEntity;
 public class Project {
     String name; // PK when app id
     long budget;
-    
-    public Project(){}
+
+    public Project() {
+    }
 
     public Project(String name, long budget) {
         super();

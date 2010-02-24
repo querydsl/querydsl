@@ -29,16 +29,7 @@ import com.mysema.query.types.operation.Ops;
  */
 @SuppressWarnings("serial")
 public abstract class Expr<D> implements Serializable{
-//    
-//    /**
-//     * Get the <code>count(*)</code> expression
-//     * 
-//     * @return count(*)
-//     */
-//    public static ENumber<Long> countAll() {
-//        return Ops.AggOps.COUNT_ALL_AGG_EXPR;
-//    }
-//    
+
     @Nullable
     private volatile ENumber<Long> count;
     
@@ -115,15 +106,18 @@ public abstract class Expr<D> implements Serializable{
      * 
      * @return
      */
-    public Class<? extends D> getType() {
+    public final Class<? extends D> getType() {
         return type;
     }
 
     @Override
     public int hashCode() {
-        return type != null ? type.hashCode() : super.hashCode();
+        return type.hashCode();
     }
 
+    @Override
+    public abstract boolean equals(Object o);
+    
     /**
      * Get a <code>this in right</code> expression
      * 

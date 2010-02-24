@@ -25,7 +25,7 @@ import com.mysema.query.types.path.Path;
  * @author tiwe
  * @version $Id$
  */
-public class DefaultQueryMetadata implements QueryMetadata {
+public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     
     private boolean distinct;
     
@@ -48,11 +48,10 @@ public class DefaultQueryMetadata implements QueryMetadata {
 
     private final BooleanBuilder where = new BooleanBuilder();
     
-    @SuppressWarnings("unchecked")
     @Override
     public void addFrom(Expr<?>... args) {
         for (Expr<?> arg : args) {
-            if (arg instanceof Path){
+            if (arg instanceof Path<?>){
                 ensureRoot((Path<?>) arg);
             }
             if (!exprInJoins.contains(arg)) {

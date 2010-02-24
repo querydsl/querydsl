@@ -73,5 +73,14 @@ public class ODate <OpType extends Comparable<?>, D extends Comparable<?>> exten
     public Operator<OpType> getOperator() {
         return opMixin.getOperator();
     }
+    
+    @Override
+    public boolean equals(Object o){
+        return opMixin.equals(o);
+    }
 
+    @Override
+    public int hashCode(){
+        return getType().hashCode();
+    }
 }

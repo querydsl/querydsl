@@ -30,6 +30,22 @@ public class ComparablePropertyTest {
             return 0;
         }
         
+        @Override
+        public boolean equals(Object o){
+            if (o == this){
+                return true;
+            }else if (o instanceof ComparableType){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        
+        @Override
+        public int hashCode(){
+            return super.hashCode();
+        }
+        
     }
     
     @Test

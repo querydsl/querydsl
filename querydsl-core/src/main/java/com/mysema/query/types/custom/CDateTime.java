@@ -29,7 +29,7 @@ public class CDateTime<T extends Comparable<?>> extends EDateTime<T> implements 
 
     public CDateTime(Class<T> type, Template template, List<Expr<?>> args) {
         super(type);
-        customMixin = new CustomMixin<T>(args, template);
+        customMixin = new CustomMixin<T>(this, args, template);
     }
     
     @Override
@@ -50,6 +50,16 @@ public class CDateTime<T extends Comparable<?>> extends EDateTime<T> implements 
     @Override
     public Template getTemplate() {
         return customMixin.getTemplate();
+    }
+    
+    @Override
+    public boolean equals(Object o){
+        return customMixin.equals(o);
+    }
+    
+    @Override
+    public int hashCode(){
+        return getType().hashCode();
     }
     
 

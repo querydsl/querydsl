@@ -71,4 +71,14 @@ public class OSimple<OpType, D> extends Expr<D> implements Operation<OpType, D> 
     public Operator<OpType> getOperator() {
         return opMixin.getOperator();
     }
+    
+    @Override
+    public boolean equals(Object o){
+        return opMixin.equals(o);
+    }
+    
+    @Override
+    public int hashCode(){
+        return getType().hashCode();
+    }
 }

@@ -7,7 +7,6 @@ package com.mysema.query.jdoql.models.company;
 
 import com.mysema.query.annotations.QueryEntity;
 
-
 /**
  * Developer of software for a system.
  * 
@@ -40,4 +39,6 @@ public class Developer extends Employee {
     public void setSKILL(String skill) {
         SKILL = skill;
     }
+    
+    
 }

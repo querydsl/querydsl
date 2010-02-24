@@ -19,7 +19,7 @@ import com.mysema.query.types.expr.EConstructor;
 @SuppressWarnings("serial")
 public class ConstructorResultTransformer implements ResultTransformer{
 
-    private final Constructor<?> constructor;
+    private transient final Constructor<?> constructor;
     
     public ConstructorResultTransformer(EConstructor<?> constructor){
         this.constructor = constructor.getJavaConstructor();

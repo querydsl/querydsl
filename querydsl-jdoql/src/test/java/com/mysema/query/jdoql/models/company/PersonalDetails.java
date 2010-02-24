@@ -7,7 +7,6 @@ package com.mysema.query.jdoql.models.company;
 
 import com.mysema.query.annotations.QueryEntity;
 
-
 /**
  * Details of a person. Represents a subset of the information available from
  * Person, and so can be used as a ResultClass for SQL/JDOQL queries.
@@ -20,8 +19,9 @@ public class PersonalDetails {
     private String lastName;
     private int age;
 
-    public PersonalDetails(){}
-    
+    public PersonalDetails() {
+    }
+
     public PersonalDetails(String first, String last, int age) {
         firstName = first;
         lastName = last;

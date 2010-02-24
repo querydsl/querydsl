@@ -35,17 +35,17 @@ class QueryHelper extends HQLQueryBase<QueryHelper> {
 
     @Override
     public Iterator<Object[]> iterate(Expr<?>[] args) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Nullable
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Nullable
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     public void parse() throws RecognitionException, TokenStreamException {

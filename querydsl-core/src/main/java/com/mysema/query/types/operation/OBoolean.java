@@ -71,4 +71,14 @@ public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
         }
     }
     
+    @Override
+    public boolean equals(Object o){
+        return opMixin.equals(o);
+    }
+    
+    @Override
+    public int hashCode(){
+        return getType().hashCode();
+    }
+    
 }

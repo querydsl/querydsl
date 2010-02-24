@@ -43,13 +43,7 @@ public class ExprConst<D> extends Expr<D> implements Constant<D> {
         super((Class<D>) constant.getClass());
         this.constant = constant;
     }
-    
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean equals(Object o) {
-        return o instanceof Constant ? ((Constant<?>) o).getConstant().equals(constant) : false;
-    }
-    
+        
     @Override
     public int hashCode() {
         return constant.hashCode();
@@ -78,6 +72,18 @@ public class ExprConst<D> extends Expr<D> implements Constant<D> {
     @Override
     public void accept(Visitor v) {
         v.visit(this);        
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object o) {
+        if (o == this){
+            return true;
+        }else if (o instanceof Constant){
+            return ((Constant)o).getConstant().equals(constant);
+        }else{
+            return false;
+        }
     }
     
 }

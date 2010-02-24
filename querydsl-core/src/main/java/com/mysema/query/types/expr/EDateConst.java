@@ -76,5 +76,22 @@ public class EDateConst<D extends java.util.Date> extends EDate<D> implements Co
     public D getConstant() {
         return date;
     }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object o) {
+        if (o == this){
+            return true;
+        }else if (o instanceof Constant){
+            return ((Constant)o).getConstant().equals(date);
+        }else{
+            return false;
+        }
+    }
+    
+    @Override
+    public int hashCode(){
+        return date.hashCode();
+    }
 
 }

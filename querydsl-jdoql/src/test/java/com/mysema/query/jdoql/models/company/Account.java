@@ -7,7 +7,6 @@ package com.mysema.query.jdoql.models.company;
 
 import com.mysema.query.annotations.QueryEntity;
 
-
 /**
  * User account for a person.
  * 

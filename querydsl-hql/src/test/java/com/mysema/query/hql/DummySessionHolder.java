@@ -14,12 +14,12 @@ public class DummySessionHolder implements SessionHolder{
 
     @Override
     public Query createQuery(String queryString) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public SQLQuery createSQLQuery(String queryString) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
 }

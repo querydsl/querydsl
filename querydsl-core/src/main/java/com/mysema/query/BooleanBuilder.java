@@ -119,5 +119,21 @@ public class BooleanBuilder extends EBoolean{
             throw new RuntimeException("CascadingBoolean has no value");
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this){
+            return true;
+        }else if (o instanceof EBoolean){
+            return expr != null ? expr.equals(o) : false;    
+        }else{
+            return false;
+        }               
+    }
+    
+    @Override
+    public int hashCode(){
+        return Boolean.class.hashCode();
+    }
     
 }

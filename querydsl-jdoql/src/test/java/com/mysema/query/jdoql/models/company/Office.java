@@ -23,10 +23,10 @@ public class Office {
 
     private String description;
     private Set<Department> departments = new HashSet<Department>(); // 1-N uni
-                                                                     // relation
-                                                                     // using
-                                                                     // join
-                                                                     // table
+    // relation
+    // using
+    // join
+    // table
     private Date date;
 
     public Office() {

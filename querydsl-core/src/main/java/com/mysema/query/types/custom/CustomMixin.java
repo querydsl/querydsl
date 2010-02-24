@@ -19,11 +19,14 @@ import com.mysema.query.types.expr.Expr;
 @SuppressWarnings("serial")
 class CustomMixin<T> implements Custom<T>, Serializable {
     
+    private final Expr<T> self;
+    
     private final List<Expr<?>> args;
     
     private final Template template;
     
-    public CustomMixin(List<Expr<?>> args, Template template){
+    public CustomMixin(Expr<T> self, List<Expr<?>> args, Template template){
+        this.self = self;
         this.args = args;
         this.template = template;
     }
@@ -43,4 +46,27 @@ class CustomMixin<T> implements Custom<T>, Serializable {
         return template;
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object o) {
+       if (o == this){
+           return true;
+       }else if (o instanceof Custom){
+           Custom c = (Custom)o;
+           return c.getTemplate().equals(template) 
+               && c.getType().equals(self.getType());
+       }else{
+           return false;
+       }
+    }
+    
+    @Override
+    public int hashCode(){
+        return getType().hashCode();
+    }
+
+    @Override
+    public Class<? extends T> getType() {
+        return self.getType();
+    }
 }

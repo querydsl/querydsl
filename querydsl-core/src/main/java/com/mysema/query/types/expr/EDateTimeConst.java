@@ -93,5 +93,22 @@ public class EDateTimeConst<D extends java.util.Date> extends EDateTime<D> imple
     public D getConstant() {
         return date.getConstant();
     }
+    
+    @Override
+    public int hashCode(){
+        return date.hashCode();
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object o) {
+        if (o == this){
+            return true;
+        }else if (o instanceof Constant){
+            return ((Constant)o).getConstant().equals(date);
+        }else{
+            return false;
+        }
+    }
 
 }

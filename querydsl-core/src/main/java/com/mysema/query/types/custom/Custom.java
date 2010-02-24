@@ -40,5 +40,10 @@ public interface Custom<T> {
      * @return
      */
     Template getTemplate();
+    
+    /**
+     * @return
+     */
+    Class<? extends T> getType();
 
 }

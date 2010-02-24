@@ -36,7 +36,7 @@ public class CNumber<T extends Number & Comparable<?>> extends ENumber<T> implem
     
     public CNumber(Class<T> type, Template template, List<Expr<?>> args) {
         super(type);
-        customMixin = new CustomMixin<T>(args, template);
+        customMixin = new CustomMixin<T>(this, args, template);
     }
 
     @Override
@@ -57,5 +57,15 @@ public class CNumber<T extends Number & Comparable<?>> extends ENumber<T> implem
     @Override
     public Template getTemplate() {
         return customMixin.getTemplate();
+    }
+    
+    @Override
+    public boolean equals(Object o){
+        return customMixin.equals(o);
+    }
+    
+    @Override
+    public int hashCode(){
+        return getType().hashCode();
     }
 }

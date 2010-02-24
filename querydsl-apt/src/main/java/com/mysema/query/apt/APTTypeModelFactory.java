@@ -186,6 +186,7 @@ public class APTTypeModelFactory {
      * @param el
      * @return
      */
+    @Nullable
     public EntityModel createEntityModel(TypeMirror type){
         List<String> key = getKey(type, true);
         if (entityTypeCache.containsKey(key)){

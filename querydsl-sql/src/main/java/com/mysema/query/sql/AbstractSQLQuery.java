@@ -66,8 +66,10 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     @Nullable
     private final Connection conn;
 
+    @Nullable
     private List<Object> constants;
 
+    @Nullable
     private SubQuery[] sq;
 
     private final SQLTemplates templates;

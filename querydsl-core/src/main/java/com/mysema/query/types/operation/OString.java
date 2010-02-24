@@ -59,4 +59,14 @@ public class OString extends EString implements Operation<String, String> {
     public Operator<String> getOperator() {
         return opMixin.getOperator();
     }
+    
+    @Override
+    public boolean equals(Object o){
+        return opMixin.equals(o);
+    }
+    
+    @Override
+    public int hashCode(){
+        return getType().hashCode();
+    }
 }

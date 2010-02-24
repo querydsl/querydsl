@@ -24,7 +24,7 @@ import com.mysema.query.types.expr.Expr;
 @SuppressWarnings("serial")
 public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A> {
     
-    private Expr<A> target;
+    private final Expr<A> target;
     
     private Expr<?> partitionBy;
     
@@ -64,6 +64,26 @@ public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A
         }else{
             throw new IllegalArgumentException("Unsupported expression " + this);
         }        
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object o) {
+        if (o == this){
+            return true;
+        }else if (o instanceof SumOver){
+            SumOver so = (SumOver)o;
+            return so.getTarget().equals(target) 
+                && so.getPartitionBy().equals(partitionBy)
+                && so.getOrderBy().equals(orderBy);
+        }else{
+            return false;
+        }
+    }
+    
+    @Override
+    public int hashCode(){
+        return target.hashCode();
     }
     
 }

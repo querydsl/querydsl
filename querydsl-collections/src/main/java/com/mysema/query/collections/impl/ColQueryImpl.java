@@ -16,7 +16,7 @@ import com.mysema.query.collections.ColQuery;
  * @author tiwe
  *
  */
-public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQuery{
+public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQuery, Cloneable{
     
     public ColQueryImpl() {
         super(new DefaultQueryMetadata(), EvaluatorFactory.DEFAULT);

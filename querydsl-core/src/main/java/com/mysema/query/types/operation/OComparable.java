@@ -74,4 +74,13 @@ public class OComparable<OpType, D extends Comparable<?>> extends
         return opMixin.getOperator();
     }
     
+    @Override
+    public boolean equals(Object o){
+        return opMixin.equals(o);
+    }
+    
+    @Override
+    public int hashCode(){
+        return getType().hashCode();
+    }
 }

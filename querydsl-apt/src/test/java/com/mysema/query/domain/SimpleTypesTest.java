@@ -58,6 +58,16 @@ public class SimpleTypesTest extends AbstractTest{
         public int compareTo(CustomComparableNumber o) {
             return 0;
         }
+        
+        @Override
+        public int hashCode(){
+            return super.hashCode();
+        }
+        
+        @Override
+        public boolean equals(Object o){
+            return o instanceof CustomComparableNumber;
+        }
     }
     
     @SuppressWarnings("all")
@@ -66,6 +76,16 @@ public class SimpleTypesTest extends AbstractTest{
         @Override
         public int compareTo(CustomComparableLiteral o) {
             return 0;
+        }
+        
+        @Override
+        public int hashCode(){
+            return super.hashCode();
+        }
+        
+        @Override
+        public boolean equals(Object o){
+            return o instanceof CustomComparableLiteral;
         }
     }
     
@@ -77,6 +97,15 @@ public class SimpleTypesTest extends AbstractTest{
             return 0;
         }
         
+        @Override
+        public int hashCode(){
+            return super.hashCode();
+        }
+        
+        @Override
+        public boolean equals(Object o){
+            return o instanceof CustomGenericComparableLiteral;
+        }
     }
     
     @QueryEntity

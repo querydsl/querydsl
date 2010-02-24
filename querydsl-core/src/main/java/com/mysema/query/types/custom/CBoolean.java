@@ -34,7 +34,7 @@ public class CBoolean extends EBoolean implements Custom<Boolean> {
     private final Custom<Boolean> customMixin;
     
     public CBoolean(Template template, List<Expr<?>> args){
-        customMixin = new CustomMixin<Boolean>(args, template);
+        customMixin = new CustomMixin<Boolean>(this, args, template);
     }
     
     @Override
@@ -55,5 +55,15 @@ public class CBoolean extends EBoolean implements Custom<Boolean> {
     @Override
     public Template getTemplate() {
         return customMixin.getTemplate();
+    }
+    
+    @Override
+    public boolean equals(Object o){
+        return customMixin.equals(o);
+    }
+    
+    @Override
+    public int hashCode(){
+        return getType().hashCode();
     }
 }

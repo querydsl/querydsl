@@ -7,7 +7,6 @@ package com.mysema.query.jdoql.models.company;
 
 import com.mysema.query.annotations.QueryEntity;
 
-
 /**
  * Convenience class that can be used in query results for holding Person
  * objects.

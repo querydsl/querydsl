@@ -24,10 +24,6 @@ import com.mysema.query.types.Visitor;
 @SuppressWarnings("serial")
 public class EConstructor<D> extends Expr<D> {
     
-    private final List<Expr<?>> args;
-
-    private final Class<?>[] parameterTypes;
-    
     public static <D> EConstructor<D> create(Class<D> type, Expr<?>... args){
         for (Constructor<?> c : type.getConstructors()){
             Class<?>[] paramTypes = c.getParameterTypes();            
@@ -51,21 +47,41 @@ public class EConstructor<D> extends Expr<D> {
         throw new IllegalArgumentException("Got no matching constructor");        
     }
 
+    private final List<Expr<?>> args;
+    
+    private final Class<?>[] parameterTypes;
+
     public EConstructor(Class<D> type, Class<?>[] paramTypes, Expr<?>... args) {
         super(type);
         this.parameterTypes = paramTypes.clone();
         this.args = Collections.unmodifiableList(Arrays.asList(args));
     }
 
-    /**
-     * Get the constructor invocation arguments
-     * 
-     * @return
-     */
-    public final List<Expr<?>> getArgs() {
-        return args;
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this){
+            return true;
+        }else if (obj instanceof EConstructor){
+            EConstructor c = (EConstructor)obj;
+            return Arrays.equals(parameterTypes, c.parameterTypes)
+                && args.equals(c.args)
+                && getType().equals(c.getType());
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode(){
+        return getType().hashCode();
+    }
+    
     /**
      * Get the constructor invocation argument with the given index
      * 
@@ -75,7 +91,16 @@ public class EConstructor<D> extends Expr<D> {
     public final Expr<?> getArg(int index) {
         return args.get(index);
     }
-
+    
+    /**
+     * Get the constructor invocation arguments
+     * 
+     * @return
+     */
+    public final List<Expr<?>> getArgs() {
+        return args;
+    }
+    
     /**
      * Returns the "real" constructor that matches the Constructor expression
      * 
@@ -91,9 +116,5 @@ public class EConstructor<D> extends Expr<D> {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
-    
-    @Override
-    public void accept(Visitor v) {
-        v.visit(this);        
-    }
+
 }

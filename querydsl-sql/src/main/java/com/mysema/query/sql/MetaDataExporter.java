@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 
+import javax.annotation.Nullable;
+
 import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
@@ -48,6 +50,7 @@ public class MetaDataExporter {
     
     private final String namePrefix, targetFolder, packageName;
 
+    @Nullable
     private final String schemaPattern, tableNamePattern;
     
     /**
@@ -61,8 +64,8 @@ public class MetaDataExporter {
      */
     public MetaDataExporter(String namePrefix, 
             String packageName, 
-            String schemaPattern, 
-            String tableNamePattern, 
+            @Nullable String schemaPattern, 
+            @Nullable String tableNamePattern, 
             String targetFolder){
         this.namePrefix = namePrefix;
         this.packageName = packageName;

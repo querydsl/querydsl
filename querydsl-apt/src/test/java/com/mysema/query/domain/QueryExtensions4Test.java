@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryMethod;
+import com.mysema.query.domain.GenericTest.GenericNumberType;
 import com.mysema.query.types.path.PNumber;
 
 public class QueryExtensions4Test {
@@ -28,8 +29,20 @@ public class QueryExtensions4Test {
         public long longValue() {
             return 0;
         }
+        
+        @Override
         public int compareTo(CustomNumber o) {
             return 0;
+        }
+        
+        @Override
+        public int hashCode(){
+            return super.hashCode();
+        }
+        
+        @Override
+        public boolean equals(Object o){
+            return o instanceof CustomNumber;
         }
         
     }

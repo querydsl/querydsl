@@ -7,14 +7,13 @@ package com.mysema.query.jdoql.models.company;
 
 import com.mysema.query.annotations.QueryEntity;
 
-
 /**
  * Employee in a company.
  * 
  * @version $Revision: 1.3 $
  */
 @QueryEntity
-public class Employee extends Person  {
+public class Employee extends Person {
     private String serialNo;
     private float salary;
     private String salaryCurrency;
@@ -23,7 +22,7 @@ public class Employee extends Person  {
     private Account account;
     private int weeklyhours;
     private Department department;
-    
+
     /** Used for the querying of static fields. */
     public static final String FIRSTNAME = "Bart";
 
@@ -102,4 +101,5 @@ public class Employee extends Person  {
     }
     
     
+
 }

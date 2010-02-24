@@ -57,4 +57,20 @@ public class ObjectSubQuery<A> extends Expr<A> implements SubQuery{
     public EBoolean notExists() {
         return exists().not();
     }
+    
+    @Override
+    public boolean equals(Object o) {
+       if (o == this){
+           return true;
+       }else if (o instanceof SubQuery){
+           return ((SubQuery)o).getMetadata().equals(md);
+       }else{
+           return false;
+       }
+    }
+    
+    @Override
+    public int hashCode(){
+        return getType().hashCode();
+    }
 }

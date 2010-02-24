@@ -73,4 +73,14 @@ public class ONumber<OpType extends Number, D extends Number & Comparable<?>>
     public Operator<OpType> getOperator() {
         return opMixin.getOperator();
     }
+    
+    @Override
+    public boolean equals(Object o){
+        return opMixin.equals(o);
+    }
+    
+    @Override
+    public int hashCode(){
+        return getType().hashCode();
+    }
 }

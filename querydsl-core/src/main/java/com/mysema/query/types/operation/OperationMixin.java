@@ -56,5 +56,25 @@ public class OperationMixin<OP, RT> implements Operation<OP, RT>, Serializable {
     public Class<? extends RT> getType() {
         return self.getType();
     }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object o){
+        if (o == this || o == self){
+            return true;
+        }else if (o instanceof Operation){
+            Operation op = (Operation)o;
+            return op.getOperator().equals(operator) 
+                && op.getArgs().equals(args)
+                && op.getType().equals(self.getType());
+        }else{
+            return false;
+        }
+    }
+    
+    @Override
+    public int hashCode(){
+        return self.getType().hashCode();
+    }
 
 }

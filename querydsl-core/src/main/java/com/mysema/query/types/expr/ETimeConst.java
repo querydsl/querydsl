@@ -25,6 +25,7 @@ public class ETimeConst<D extends java.util.Date> extends ETime<D> implements Co
     
     private final D time;
     
+    @SuppressWarnings("unchecked")
     public ETimeConst(D time) {
         super((Class<D>)time.getClass());
         this.calendar = Calendar.getInstance();
@@ -60,6 +61,23 @@ public class ETimeConst<D extends java.util.Date> extends ETime<D> implements Co
     @Override
     public D getConstant() {
         return time;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object o) {
+        if (o == this){
+            return true;
+        }else if (o instanceof Constant){
+            return ((Constant)o).getConstant().equals(time);
+        }else{
+            return false;
+        }
+    }
+    
+    @Override
+    public int hashCode(){
+        return time.hashCode();
     }
 
 }

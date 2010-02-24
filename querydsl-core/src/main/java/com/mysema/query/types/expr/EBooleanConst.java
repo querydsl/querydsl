@@ -38,7 +38,14 @@ public final class EBooleanConst extends EBoolean implements Constant<Boolean>{
     @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {
-        return o instanceof Constant ? ((Constant<?>) o).getConstant().equals(constant) : false;
+        if (o == this){
+            return true;
+        }else if (o instanceof Constant){
+            Constant c = (Constant)o;
+            return c.getConstant().equals(constant);
+        }else{
+            return false;
+        }
     }
     
     @Override

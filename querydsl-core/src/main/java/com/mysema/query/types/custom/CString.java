@@ -34,7 +34,7 @@ public class CString extends EString implements Custom<String> {
     private final Custom<String> customMixin;
     
     public CString(Template template, List<Expr<?>> args){
-        customMixin = new CustomMixin<String>(args, template);
+        customMixin = new CustomMixin<String>(this, args, template);
     }
     
     @Override
@@ -55,5 +55,15 @@ public class CString extends EString implements Custom<String> {
     @Override
     public Template getTemplate() {
         return customMixin.getTemplate();
+    }
+    
+    @Override
+    public boolean equals(Object o){
+        return customMixin.equals(o);
+    }
+    
+    @Override
+    public int hashCode(){
+        return getType().hashCode();
     }
 }

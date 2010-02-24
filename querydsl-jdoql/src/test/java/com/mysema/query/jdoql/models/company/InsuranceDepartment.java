@@ -7,13 +7,13 @@ package com.mysema.query.jdoql.models.company;
 
 import com.mysema.query.annotations.QueryEntity;
 
-
 @QueryEntity
 public class InsuranceDepartment extends Department {
     private String someInfo1;
     private String someInfo2;
-    
-    public InsuranceDepartment(){}
+
+    public InsuranceDepartment() {
+    }
 
     public InsuranceDepartment(String name, String someInfo1, String someInfo2) {
         super(name);

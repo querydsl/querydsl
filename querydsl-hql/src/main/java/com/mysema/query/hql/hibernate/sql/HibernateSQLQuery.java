@@ -249,5 +249,53 @@ public final class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>
         reset();
         return (RT) query.uniqueResult();
     }
+    
+    /**
+     * Enable caching of this query result set.
+     * @param cacheable Should the query results be cacheable?
+     */
+    public HibernateSQLQuery setCacheable(boolean cacheable){
+        this.cacheable = cacheable;
+        return this;
+    }
+
+    /**
+     * Set the name of the cache region.
+     * @param cacheRegion the name of a query cache region, or <tt>null</tt>
+     * for the default query cache
+     */
+    public HibernateSQLQuery setCacheRegion(String cacheRegion){
+        this.cacheRegion = cacheRegion;
+        return this;
+    }
+    
+    /**
+     * Set a fetch size for the underlying JDBC query.
+     * @param fetchSize the fetch size
+     */
+    public HibernateSQLQuery setFetchSize(int fetchSize) {
+        this.fetchSize = fetchSize;
+        return this;
+    }
+    
+    /**
+     * Entities retrieved by this query will be loaded in 
+     * a read-only mode where Hibernate will never dirty-check
+     * them or make changes persistent.
+     *
+     */
+    public HibernateSQLQuery setReadOnly(boolean readOnly){
+        this.readOnly = readOnly;
+        return this;
+    }
+    
+    /**
+     * Set a timeout for the underlying JDBC query.
+     * @param timeout the timeout in seconds
+     */
+    public HibernateSQLQuery setTimeout(int timeout){
+        this.timeout = timeout;
+        return this;
+    }
 
 }

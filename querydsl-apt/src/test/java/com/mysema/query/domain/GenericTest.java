@@ -48,7 +48,12 @@ public class GenericTest {
         @Override
         public int compareTo(GenericComparableType<T> o) {
             return 0;
-        }        
+        }       
+        
+        @Override
+        public boolean equals(Object o){
+            return o instanceof GenericComparableType;
+        }
     }
     
     public class GenericNumberType<T> extends Number implements Comparable<GenericNumberType<T>>{
@@ -72,6 +77,16 @@ public class GenericTest {
         public int compareTo(GenericNumberType<T> o) {
             return 0;
         }        
+        
+        @Override
+        public int hashCode(){
+            return super.hashCode();
+        }
+        
+        @Override
+        public boolean equals(Object o){
+            return o instanceof GenericNumberType;
+        }
     }
     
     

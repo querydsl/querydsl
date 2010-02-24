@@ -7,7 +7,6 @@ package com.mysema.query.jdoql.models.company;
 
 import com.mysema.query.annotations.QueryEntity;
 
-
 /**
  * Phone number of a person.
  * 
@@ -18,8 +17,9 @@ public class PhoneNumber {
     long id; // PK when using app id
     String name;
     String number;
-    
-    public PhoneNumber(){}
+
+    public PhoneNumber() {
+    }
 
     public PhoneNumber(String name, String number) {
         this.name = name;

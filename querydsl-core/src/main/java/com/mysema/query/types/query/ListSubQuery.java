@@ -68,4 +68,21 @@ public class ListSubQuery<A> extends ECollectionBase<List<A>,A> implements SubQu
         return exists().not();
     }
 
+    @Override
+    public boolean equals(Object o) {
+       if (o == this){
+           return true;
+       }else if (o instanceof SubQuery){
+           SubQuery s = (SubQuery)o;
+           return s.getMetadata().equals(md);
+       }else{
+           return false;
+       }
+    }
+    
+    @Override
+    public int hashCode(){
+        return getType().hashCode();
+    }
+
 }

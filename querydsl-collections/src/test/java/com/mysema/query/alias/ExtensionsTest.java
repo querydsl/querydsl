@@ -58,7 +58,7 @@ public class ExtensionsTest {
         
         // querydsl style
         Person alias = Alias.alias(Person.class);
-        List<Person> oldFriends = MiniApi.from(alias, meAndMyFriends).where($(alias.getAge()).gt(30)).list($(alias));
+        MiniApi.from(alias, meAndMyFriends).where($(alias.getAge()).gt(30)).list($(alias));
         
         // lambdaj style
         MiniApi.from(alias, meAndMyFriends).where(having(alias.getAge(), gt(30))).list($(alias));
