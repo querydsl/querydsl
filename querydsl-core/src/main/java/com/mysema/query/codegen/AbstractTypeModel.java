@@ -18,7 +18,9 @@ public abstract class AbstractTypeModel implements TypeModel{
     @Override
     public String getLocalGenericName(TypeModel context, boolean asArgType){
         try {
-            return getLocalGenericName(context, new StringBuilder(), asArgType).toString();
+            StringBuilder builder = new StringBuilder();
+            getLocalGenericName(context, builder, asArgType);
+            return builder.toString();
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -27,7 +29,9 @@ public abstract class AbstractTypeModel implements TypeModel{
     @Override
     public String getLocalRawName(TypeModel context){
         try {
-            return getLocalRawName(context, new StringBuilder()).toString();
+            StringBuilder builder = new StringBuilder();
+            getLocalRawName(context, builder);
+            return builder.toString();
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);
         }

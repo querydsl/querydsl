@@ -82,7 +82,7 @@ public class DTOSerializer implements Serializer{
                 if (p.getType().getPrimitiveName() != null){
                     writer.append(p.getType().getPrimitiveName()+".class");
                 }else{
-                    writer = p.getType().getLocalRawName(model, writer);
+                    p.getType().getLocalRawName(model, writer);
                     writer.append(".class");    
                 }                
                 first = false;

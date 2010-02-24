@@ -83,8 +83,8 @@ public class SimpleTypeModel extends AbstractTypeModel {
 
     // NOTE: Java serialization aspects mixed into model
     @Override
-    public <T extends Appendable> T getLocalGenericName(TypeModel context, T builder, boolean asArgType) throws IOException {
-        builder = getLocalRawName(context, builder);
+    public void getLocalGenericName(TypeModel context, Appendable builder, boolean asArgType) throws IOException {
+        getLocalRawName(context, builder);
         if (parameters.length > 0){                        
             builder.append("<");
             for (int i = 0; i < parameters.length; i++){
@@ -92,25 +92,23 @@ public class SimpleTypeModel extends AbstractTypeModel {
                     builder.append(",");
                 }
                 if (parameters[i] != null && !parameters[i].getFullName().equals(fullName)){
-                    builder = parameters[i].getLocalGenericName(context, builder, false);    
+                    parameters[i].getLocalGenericName(context, builder, false);    
                 }else{
                     builder.append("?");
                 }                
             }            
             builder.append(">");            
         }
-        return builder;
         
     }
 
     @Override
-    public <T extends Appendable> T  getLocalRawName(TypeModel context, T builder) throws IOException{
+    public void  getLocalRawName(TypeModel context, Appendable builder) throws IOException{
         if (visible || context.getPackageName().equals(packageName)){
             builder.append(localName);    
         }else{
             builder.append(fullName);
         }        
-        return builder;
     }
 
     @Override

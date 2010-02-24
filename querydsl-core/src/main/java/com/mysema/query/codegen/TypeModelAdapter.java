@@ -54,8 +54,8 @@ public class TypeModelAdapter implements TypeModel{
     }
 
     @Override
-    public <T extends Appendable> T getLocalGenericName(TypeModel context, T builder, boolean asArgType) throws IOException {
-        return typeModel.getLocalGenericName(context, builder, false);
+    public void getLocalGenericName(TypeModel context, Appendable builder, boolean asArgType) throws IOException {
+        typeModel.getLocalGenericName(context, builder, false);
     }
 
     @Override
@@ -64,8 +64,8 @@ public class TypeModelAdapter implements TypeModel{
     }
 
     @Override
-    public <T extends Appendable> T getLocalRawName(TypeModel context, T builder) throws IOException {
-        return typeModel.getLocalRawName(context, builder);
+    public void getLocalRawName(TypeModel context, Appendable builder) throws IOException {
+        typeModel.getLocalRawName(context, builder);
     }
 
     @Override

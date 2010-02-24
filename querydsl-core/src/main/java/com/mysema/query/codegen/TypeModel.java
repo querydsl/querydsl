@@ -47,7 +47,7 @@ public interface TypeModel {
      * @return
      * @throws IOException 
      */
-    <T extends Appendable> T getLocalGenericName(TypeModel context, T builder, boolean asArgType) throws IOException;
+    void getLocalGenericName(TypeModel context, Appendable builder, boolean asArgType) throws IOException;
 
     /**
      * @param context
@@ -61,7 +61,7 @@ public interface TypeModel {
      * @return
      * @throws IOException 
      */
-    <T extends Appendable> T getLocalRawName(TypeModel context, T builder) throws IOException;
+    void getLocalRawName(TypeModel context, Appendable builder) throws IOException;
 
     /**
      * @return

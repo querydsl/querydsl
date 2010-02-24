@@ -35,12 +35,12 @@ public class TypeSuperModel extends TypeModelAdapter{
     }
 
     @Override
-    public <T extends Appendable> T getLocalGenericName(TypeModel context, T builder, boolean asArgType) throws IOException {
+    public void getLocalGenericName(TypeModel context, Appendable builder, boolean asArgType) throws IOException {
         if (!asArgType){
             builder.append("? super ");
-            return superModel.getLocalGenericName(context, builder, true);
+            superModel.getLocalGenericName(context, builder, true);
         }else{
-            return super.getLocalGenericName(context, builder, asArgType);
+            super.getLocalGenericName(context, builder, asArgType);
         }    
     }
 
