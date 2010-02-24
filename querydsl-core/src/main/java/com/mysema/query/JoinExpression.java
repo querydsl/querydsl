@@ -80,7 +80,9 @@ public class JoinExpression {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof JoinExpression) {
+        if (o == this){
+            return true;
+        }else if (o instanceof JoinExpression) {
             JoinExpression j = (JoinExpression) o;
             return new EqualsBuilder()
                 .append(condition, j.condition)
