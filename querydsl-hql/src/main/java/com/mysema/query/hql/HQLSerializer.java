@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.SerializerBase;
@@ -61,7 +63,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         }
     }
     
-    public void serialize(QueryMetadata metadata, boolean forCountRow, String projection) {
+    public void serialize(QueryMetadata metadata, boolean forCountRow, @Nullable String projection) {
         List<? extends Expr<?>> select = metadata.getProjection();
         List<JoinExpression> joins = metadata.getJoins();
         EBoolean where = metadata.getWhere();
