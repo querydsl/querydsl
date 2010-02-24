@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 
+import javax.annotation.Nullable;
+
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.CaseForEqBuilder;
 import com.mysema.query.types.Templates;
@@ -37,12 +39,15 @@ public abstract class Expr<D> implements Serializable{
 //        return Ops.AggOps.COUNT_ALL_AGG_EXPR;
 //    }
 //    
+    @Nullable
     private volatile ENumber<Long> count;
     
+    @Nullable
     private volatile ENumber<Long> countDistinct;
 
     private final boolean primitive;
     
+    @Nullable
     private volatile String toString;
     
     private final Class<? extends D> type;

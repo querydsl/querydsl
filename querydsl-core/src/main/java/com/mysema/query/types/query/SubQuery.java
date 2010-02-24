@@ -19,10 +19,19 @@ import com.mysema.query.types.expr.EBoolean;
  */
 public interface SubQuery{
 
+    /**
+     * @return
+     */
     QueryMetadata getMetadata();
  
+    /**
+     * @return
+     */
     EBoolean exists();
     
+    /**
+     * @return
+     */
     EBoolean notExists();
     
 }

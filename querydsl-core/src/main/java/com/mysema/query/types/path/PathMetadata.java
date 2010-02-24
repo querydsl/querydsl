@@ -64,6 +64,7 @@ public final class PathMetadata<T> implements Serializable{
         return expression;
     }
 
+    @Nullable
     public Path<?> getParent() {
         return parent;
     }
@@ -72,6 +73,7 @@ public final class PathMetadata<T> implements Serializable{
         return pathType;
     }
 
+    @Nullable
     public Path<?> getRoot() {
         return root;
     }

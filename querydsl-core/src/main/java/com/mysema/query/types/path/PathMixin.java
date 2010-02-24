@@ -8,6 +8,8 @@ package com.mysema.query.types.path;
 import java.io.Serializable;
 import java.lang.reflect.AnnotatedElement;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
@@ -25,6 +27,7 @@ import com.mysema.util.PropertyUtils;
 @SuppressWarnings("serial")
 class PathMixin<T> implements Path<T>, Serializable {
     
+    @Nullable
     private volatile EBoolean isnull, isnotnull;
     
     private final PathMetadata<?> metadata;

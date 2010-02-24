@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Visitor;
 
@@ -62,8 +64,10 @@ public class EStringConst extends EString implements Constant<String>{
     
     private final String constant;
     
+    @Nullable
     private volatile ENumber<Long> length;
 
+    @Nullable
     private volatile EString lower, trim, upper;
 
     EStringConst(String constant){

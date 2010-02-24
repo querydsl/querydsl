@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.expr;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.OComparable;
 import com.mysema.query.types.operation.ONumber;
@@ -22,10 +24,13 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings("serial")
 public abstract class EString extends EComparable<String> {
         
+    @Nullable
     private volatile ENumber<Long> length;
     
+    @Nullable
     private volatile EString lower, trim, upper;
     
+    @Nullable
     private volatile EBoolean isempty;
 
     public EString() {

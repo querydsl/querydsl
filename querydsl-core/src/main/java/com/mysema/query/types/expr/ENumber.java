@@ -8,6 +8,8 @@ package com.mysema.query.types.expr;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
@@ -52,12 +54,16 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         return RANDOM;
     }
     
+    @Nullable
     private volatile ENumber<D> abs, sum, min, max, floor, ceil;
     
+    @Nullable
     private volatile ENumber<Double> avg, sqrt;
     
+    @Nullable
     private volatile ENumber<D> negation;
     
+    @Nullable
     private volatile ENumber<Integer> round;
     
     public ENumber(Class<? extends D> type) {

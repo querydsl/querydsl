@@ -8,6 +8,7 @@ package com.mysema.query.types.path;
 import java.lang.reflect.AnnotatedElement;
 
 import javax.annotation.Nonnegative;
+import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Visitor;
@@ -32,6 +33,7 @@ public class PArray<E> extends Expr<E[]> implements Path<E[]>, EArray<E>{
     
     private final Path<E[]> pathMixin;
     
+    @Nullable
     private volatile ENumber<Integer> size;
 
     @SuppressWarnings("unchecked")

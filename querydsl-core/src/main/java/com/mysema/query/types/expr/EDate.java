@@ -7,6 +7,8 @@ package com.mysema.query.types.expr;
 
 import java.util.Date;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.operation.ODate;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
@@ -43,8 +45,10 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
         return ODate.create(cl, Ops.DateTimeOps.CURRENT_DATE);
     }
     
+    @Nullable
     private volatile ENumber<Integer> dayOfMonth, dayOfWeek, dayOfYear;
     
+    @Nullable
     private volatile ENumber<Integer> week, month, year, yearMonth;
     
     public EDate(Class<? extends D> type) {

@@ -60,7 +60,7 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     public boolean equals(Object o) {
         if (o == this){
             return true;
-        }else if (o instanceof ParameterModel){
+        }else if (o instanceof PropertyModel){
             return name.equals(((PropertyModel) o).name);            
         }else{
             return false;

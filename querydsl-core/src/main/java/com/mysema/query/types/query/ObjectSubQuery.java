@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.query;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
@@ -25,7 +27,8 @@ public class ObjectSubQuery<A> extends Expr<A> implements SubQuery{
 
     private final QueryMetadata md;
     
-    private EBoolean exists;
+    @Nullable
+    private volatile EBoolean exists;
     
     public ObjectSubQuery(QueryMetadata md, Class<A> type) {
         super(type);

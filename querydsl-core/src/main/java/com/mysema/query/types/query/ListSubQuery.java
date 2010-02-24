@@ -7,6 +7,8 @@ package com.mysema.query.types.query;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
@@ -29,7 +31,8 @@ public class ListSubQuery<A> extends ECollectionBase<List<A>,A> implements SubQu
     
     private final QueryMetadata md;
     
-    private EBoolean exists;
+    @Nullable
+    private volatile EBoolean exists;
     
     @SuppressWarnings("unchecked")
     public ListSubQuery(QueryMetadata md, Class<A> elementType) {
