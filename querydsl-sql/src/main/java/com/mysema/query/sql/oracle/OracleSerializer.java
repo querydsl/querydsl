@@ -38,6 +38,7 @@ public class OracleSerializer extends SQLSerializer {
 
     @Override
     protected void beforeOrderBy() {
+        SQLTemplates templates = getTemplates();
         if (startWith != null){
             append(templates.getStartWith()).handle(startWith);
         }            

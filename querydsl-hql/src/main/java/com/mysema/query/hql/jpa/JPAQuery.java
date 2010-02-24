@@ -63,7 +63,7 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements HQLQue
      * @return
      */
     public JPAQuery clone(EntityManager entityManager){
-        return new JPAQuery(new DefaultSessionHolder(entityManager), templates, getMetadata().clone());
+        return new JPAQuery(new DefaultSessionHolder(entityManager), getTemplates(), getMetadata().clone());
     }
 
 }

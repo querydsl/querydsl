@@ -72,7 +72,7 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
      * @return
      */
     public HibernateQuery clone(Session session){
-        return new HibernateQuery(new DefaultSessionHolder(session), templates, getMetadata().clone());
+        return new HibernateQuery(new DefaultSessionHolder(session), getTemplates(), getMetadata().clone());
     }
     
     

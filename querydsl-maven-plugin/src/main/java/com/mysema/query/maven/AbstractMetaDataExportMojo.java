@@ -25,7 +25,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     /**
      * @parameter expression="${project}" readonly=true required=true
      */
-    protected MavenProject project;
+    private MavenProject project;
     
     /**
      * @parameter required=true

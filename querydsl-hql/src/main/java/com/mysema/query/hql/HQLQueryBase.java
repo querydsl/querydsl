@@ -30,9 +30,17 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
     @Nullable
     private String countRowsString, queryString;
 
-    protected final HQLQueryMixin<SubType> queryMixin;
+    private final HQLQueryMixin<SubType> queryMixin;
     
-    protected final HQLTemplates templates;
+    private final HQLTemplates templates;
+    
+    protected HQLTemplates getTemplates(){
+        return templates;
+    }
+    
+    protected HQLQueryMixin<SubType> getQueryMixin(){
+        return queryMixin;
+    }
     
     @SuppressWarnings("unchecked")
     public HQLQueryBase(QueryMetadata md, HQLTemplates templates) {

@@ -35,7 +35,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     private final List<Object> constants = new ArrayList<Object>();
     
-    protected final SQLTemplates templates;
+    private final SQLTemplates templates;
 
     public SQLSerializer(SQLTemplates templates) {
         super(templates);
@@ -50,24 +50,23 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         return constants;
     }
     
-    public void serializeForDelete(QueryMetadata md) {
-        append(templates.getDeleteFrom());
-        handleJoinTarget(md.getJoins().get(0));        
-        if (md.getWhere() != null) {
-            append(templates.getWhere()).handle(md.getWhere());
-        }
-    }
-
-    public void serializeForUpdate(QueryMetadata md) {
-        append(templates.getUpdate());
-        handleJoinTarget(md.getJoins().get(0));
-        append("\nset ");
-        handle(", ", md.getProjection());
-        if (md.getWhere() != null) {
-            append(templates.getWhere()).handle(md.getWhere());
-        }
+    protected SQLTemplates getTemplates(){
+        return templates;
     }
     
+    @SuppressWarnings("unchecked")
+    private void handleJoinTarget(JoinExpression je) {
+        // type specifier
+        if (je.getTarget() instanceof PEntity && templates.isSupportsAlias()) {
+            PEntity<?> pe = (PEntity<?>) je.getTarget();
+            if (pe.getMetadata().getParent() == null) {
+                String table = pe.getType().getAnnotation(Table.class).value();
+                append(table).append(templates.getTableAlias());
+            }
+        }
+        handle(je.getTarget());
+    }
+
     @SuppressWarnings("unchecked")
     public void serialize(QueryMetadata metadata, boolean forCountRow) {
         List<? extends Expr<?>> select = metadata.getProjection();
@@ -169,18 +168,23 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
         
     }
-
-    @SuppressWarnings("unchecked")
-    private void handleJoinTarget(JoinExpression je) {
-        // type specifier
-        if (je.getTarget() instanceof PEntity && templates.isSupportsAlias()) {
-            PEntity<?> pe = (PEntity<?>) je.getTarget();
-            if (pe.getMetadata().getParent() == null) {
-                String table = pe.getType().getAnnotation(Table.class).value();
-                append(table).append(templates.getTableAlias());
-            }
+    
+    public void serializeForDelete(QueryMetadata md) {
+        append(templates.getDeleteFrom());
+        handleJoinTarget(md.getJoins().get(0));        
+        if (md.getWhere() != null) {
+            append(templates.getWhere()).handle(md.getWhere());
         }
-        handle(je.getTarget());
+    }
+
+    public void serializeForUpdate(QueryMetadata md) {
+        append(templates.getUpdate());
+        handleJoinTarget(md.getJoins().get(0));
+        append("\nset ");
+        handle(", ", md.getProjection());
+        if (md.getWhere() != null) {
+            append(templates.getWhere()).handle(md.getWhere());
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -224,26 +228,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }        
     }
 
-    private void visitCast(Operator<?> operator, Expr<?> source, Class<?> targetType) {
-        // TODO : move constants to SqlOps
-        append("cast(").handle(source);
-        append(" as ");
-        append(templates.getClass2Type().get(targetType)).append(")");
-
-    }
-
-    @Override
-    protected void visitOperation(Class<?> type, Operator<?> operator,
-            List<Expr<?>> args) {
-        if (operator.equals(Ops.STRING_CAST)) {
-            visitCast(operator, args.get(0), String.class);
-        } else if (operator.equals(Ops.NUMCAST)) {
-            visitCast(operator, args.get(0), (Class<?>) ((Constant<?>) args.get(1)).getConstant());
-        } else {
-            super.visitOperation(type, operator, args);
-        }
-    }
-    
     @Override
     public void visit(SubQuery query) {
         append("(");
@@ -262,6 +246,26 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             append(templates.getOrderBy()).handle(", ", expr.getOrderBy());
         }
         append(")");
+    }
+    
+    private void visitCast(Operator<?> operator, Expr<?> source, Class<?> targetType) {
+        // TODO : move constants to SqlOps
+        append("cast(").handle(source);
+        append(" as ");
+        append(templates.getClass2Type().get(targetType)).append(")");
+
+    }
+
+    @Override
+    protected void visitOperation(Class<?> type, Operator<?> operator,
+            List<Expr<?>> args) {
+        if (operator.equals(Ops.STRING_CAST)) {
+            visitCast(operator, args.get(0), String.class);
+        } else if (operator.equals(Ops.NUMCAST)) {
+            visitCast(operator, args.get(0), (Class<?>) ((Constant<?>) args.get(1)).getConstant());
+        } else {
+            super.visitOperation(type, operator, args);
+        }
     }
 
 
