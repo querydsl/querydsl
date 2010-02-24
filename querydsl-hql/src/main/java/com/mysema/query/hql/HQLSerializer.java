@@ -7,11 +7,14 @@ package com.mysema.query.hql;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
 import com.mysema.query.JoinExpression;
+import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.OrderSpecifier;
@@ -39,6 +42,16 @@ import com.mysema.query.types.query.SubQuery;
  */
 public class HQLSerializer extends SerializerBase<HQLSerializer> {
 
+    private static final Map<JoinType, String> joinTypes = new HashMap<JoinType, String>();
+    
+    static{
+        joinTypes.put(JoinType.DEFAULT, ", ");
+        joinTypes.put(JoinType.FULLJOIN, "\n  full join ");
+        joinTypes.put(JoinType.INNERJOIN, "\n  inner join ");
+        joinTypes.put(JoinType.JOIN, "\n  join ");
+        joinTypes.put(JoinType.LEFTJOIN, "\n  left join ");
+    }
+    
     private boolean wrapElements = false;
 
     public HQLSerializer(HQLTemplates patterns) {
@@ -87,39 +100,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         
         // from
         append("from ");
-        for (int i = 0; i < joins.size(); i++) {
-            JoinExpression je = joins.get(i);
-            if (i > 0) {
-                String sep = ", ";
-                switch (je.getType()) {
-                case FULLJOIN:
-                    sep = "\n  full join ";
-                    break;
-                case INNERJOIN:
-                    sep = "\n  inner join ";
-                    break;
-                case JOIN:
-                    sep = "\n  join ";
-                    break;
-                case LEFTJOIN:
-                    sep = "\n  left join ";
-                    break;
-                }
-                append(sep);
-            }
-            
-            if (je.hasFlag(HQLFlags.FETCH) && !forCountRow){
-                append("fetch ");
-            }            
-            handleJoinTarget(je);
-            if (je.hasFlag(HQLFlags.FETCH_ALL) && !forCountRow){
-                append(" fetch all properties");
-            }
-
-            if (je.getCondition() != null) {
-                append(" with ").handle(je.getCondition());
-            }
-        }
+        serializeSources(forCountRow, joins);
 
         // where
         if (where != null) {
@@ -151,6 +132,26 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
                 handle(os.getTarget());
                 append(" " + os.getOrder().toString().toLowerCase());
                 first = false;
+            }
+        }
+    }
+
+    private void serializeSources(boolean forCountRow, List<JoinExpression> joins) {
+        for (int i = 0; i < joins.size(); i++) {
+            JoinExpression je = joins.get(i);
+            if (i > 0) {
+                append(joinTypes.get(je.getType()));
+            }            
+            if (je.hasFlag(HQLFlags.FETCH) && !forCountRow){
+                append("fetch ");
+            }            
+            handleJoinTarget(je);
+            if (je.hasFlag(HQLFlags.FETCH_ALL) && !forCountRow){
+                append(" fetch all properties");
+            }
+
+            if (je.getCondition() != null) {
+                append(" with ").handle(je.getCondition());
             }
         }
     }

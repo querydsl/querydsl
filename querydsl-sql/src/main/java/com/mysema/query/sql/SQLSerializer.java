@@ -8,9 +8,12 @@ package com.mysema.query.sql;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.mysema.query.JoinExpression;
+import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.sql.oracle.SumOver;
@@ -32,7 +35,7 @@ import com.mysema.query.types.query.SubQuery;
  * @version $Id$
  */
 public class SQLSerializer extends SerializerBase<SQLSerializer> {
-
+    
     private final List<Object> constants = new ArrayList<Object>();
     
     private final SQLTemplates templates;
@@ -98,22 +101,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
         
         // from
-        append(templates.getFrom());
-        if (joins.isEmpty()) {
-            // TODO : disallow usage of dummy table ?!?
-            append(templates.getDummyTable());
-
-        }
-        for (int i = 0; i < joins.size(); i++) {
-            JoinExpression je = joins.get(i);
-            if (i > 0) {
-                append(templates.getJoinSymbol(je.getType()));
-            }
-            handleJoinTarget(je);            
-            if (je.getCondition() != null) {
-                append(templates.getOn()).handle(je.getCondition());
-            }
-        }
+        serializeSources(joins);
 
         //where 
         if (where != null) {
@@ -135,38 +123,64 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
         beforeOrderBy();
 
-        Long limit = metadata.getModifiers().getLimit();
-        Long offset = metadata.getModifiers().getOffset();
-
         // order by
         if (!orderBy.isEmpty() && !forCountRow) {
-            append(templates.getOrderBy());
-            boolean first = true;
-            for (OrderSpecifier<?> os : orderBy) {
-                if (!first){
-                    append(", ");
-                }                    
-                handle(os.getTarget());
-                append(os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc());
-                first = false;
-            }
+            serializeOrderBy(orderBy);
         }
         
         // limit & offset
-        if (metadata.getModifiers().isRestricting() && !forCountRow){            
-            if (!templates.isLimitAndOffsetSymbols()){
-                append(" ");
-                append(templates.getLimitOffsetCondition(limit, offset));
-            }else{
-                if (limit != null) {
-                    append(templates.getLimit()).append(String.valueOf(limit));
-                }
-                if (offset != null) {
-                    append(templates.getOffset()).append(String.valueOf(offset));
-                }   
-            }
+        if (metadata.getModifiers().isRestricting() && !forCountRow){
+            Long limit = metadata.getModifiers().getLimit();
+            Long offset = metadata.getModifiers().getOffset();
+            serializeModifiers(limit, offset);
         }
         
+    }
+
+    private void serializeSources(List<JoinExpression> joins) {
+        append(templates.getFrom());
+        if (joins.isEmpty()) {
+            // TODO : disallow usage of dummy table ?!?
+            append(templates.getDummyTable());
+
+        }
+        for (int i = 0; i < joins.size(); i++) {
+            JoinExpression je = joins.get(i);
+            if (i > 0) {
+                append(templates.getJoinSymbol(je.getType()));
+            }
+            handleJoinTarget(je);            
+            if (je.getCondition() != null) {
+                append(templates.getOn()).handle(je.getCondition());
+            }
+        }
+    }
+
+    private void serializeOrderBy(List<OrderSpecifier<?>> orderBy) {
+        append(templates.getOrderBy());
+        boolean first = true;
+        for (OrderSpecifier<?> os : orderBy) {
+            if (!first){
+                append(", ");
+            }                    
+            handle(os.getTarget());
+            append(os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc());
+            first = false;
+        }
+    }
+
+    private void serializeModifiers(Long limit, Long offset) {
+        if (!templates.isLimitAndOffsetSymbols()){
+            append(" ");
+            append(templates.getLimitOffsetCondition(limit, offset));
+        }else{
+            if (limit != null) {
+                append(templates.getLimit()).append(String.valueOf(limit));
+            }
+            if (offset != null) {
+                append(templates.getOffset()).append(String.valueOf(offset));
+            }   
+        }
     }
     
     public void serializeForDelete(QueryMetadata md) {

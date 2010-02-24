@@ -17,7 +17,6 @@ import org.apache.commons.lang.ClassUtils;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.QueryModifiers;
 import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.Constant;
@@ -65,7 +64,7 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         EBoolean having = metadata.getHaving();
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
-        //SELECT
+        // select 
         if (forCountRow) {
             append("SELECT count(this)\n");
         } else if (!select.isEmpty()) {
@@ -79,7 +78,7 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             handle(", ", select);
         }
         
-        // FROM        
+        // from        
         append("\nFROM ");
         if (source instanceof Operation && subquery){
             handle(source);
@@ -90,52 +89,27 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             }    
         }        
 
-        // WHERE
+        // where
         if (where != null) {
             append("\nWHERE ").handle(where);
         }
         
-        // VARIABLES
+        // variables
         if (joins.size() > 1){
-            append("\nVARIABLES ");
-            for (int i = 1; i < joins.size(); i++) {                
-                JoinExpression je = joins.get(i);
-                if (i > 1) {
-                    append("; ");
-                }
-                
-                // type specifier
-                if (je.getTarget() instanceof PEntity) {
-                    PEntity<?> pe = (PEntity<?>) je.getTarget();
-                    if (pe.getMetadata().getParent() == null) {
-                        append(pe.getType().getName()).append(" ");
-                    }
-                }
-                handle(je.getTarget());
-            }
+            serializeVariables(joins);
         }        
         
-        // PARAMETERS
+        // parameters
         if (!subquery && !getConstantToLabel().isEmpty()){
-            append("\nPARAMETERS ");
-            boolean first = true;
-            List<Map.Entry<Object, String>> entries = new ArrayList<Map.Entry<Object, String>>(getConstantToLabel().entrySet());
-            Collections.sort(entries, comparator);            
-            for (Map.Entry<Object, String> entry : entries){
-                if (!first){
-                    append(", ");
-                }
-                constants.add(entry.getKey());
-                append(entry.getKey().getClass().getName()).append(" ").append(entry.getValue());
-                first = false;
-            }    
+            serializeParameters();    
         }        
                 
-        // GROUP BY
+        // group by
         if (!groupBy.isEmpty()) {
             append("\nGROUP BY ").handle(", ", groupBy);
         }
-        // HAVING
+        
+        // having
         if (having != null) {
             if (groupBy.isEmpty()) {
                 throw new IllegalArgumentException(
@@ -143,7 +117,8 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             }
             append("\nHAVING ").handle(having);
         }
-        // ORDER BY
+        
+        // order by
         if (!orderBy.isEmpty() && !forCountRow) {
             append("\nORDER BY ");
             boolean first = true;
@@ -156,21 +131,61 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
                 first = false;
             }
         }
-        // RANGE
+        
+        // range
         if (!forCountRow && metadata.getModifiers().isRestricting()){
-            QueryModifiers modifiers = metadata.getModifiers();
-            append("\nRANGE ");
-            if (modifiers.getOffset() != null){
-                append(String.valueOf(modifiers.getOffset()));
-                if (modifiers.getLimit() != null){
-                    append(", ");
-                    append(String.valueOf(modifiers.getOffset() + modifiers.getLimit()));    
-                }                
-            }else{
-                append("0, ").append(String.valueOf(modifiers.getLimit()));
-            }
+            Long limit = metadata.getModifiers().getLimit();
+            Long offset = metadata.getModifiers().getOffset();
+            serializeModifiers(limit, offset);
         }
         
+    }
+
+    private void serializeVariables(List<JoinExpression> joins) {
+        append("\nVARIABLES ");
+        for (int i = 1; i < joins.size(); i++) {                
+            JoinExpression je = joins.get(i);
+            if (i > 1) {
+                append("; ");
+            }
+            
+            // type specifier
+            if (je.getTarget() instanceof PEntity) {
+                PEntity<?> pe = (PEntity<?>) je.getTarget();
+                if (pe.getMetadata().getParent() == null) {
+                    append(pe.getType().getName()).append(" ");
+                }
+            }
+            handle(je.getTarget());
+        }
+    }
+
+    private void serializeParameters() {
+        append("\nPARAMETERS ");
+        boolean first = true;
+        List<Map.Entry<Object, String>> entries = new ArrayList<Map.Entry<Object, String>>(getConstantToLabel().entrySet());
+        Collections.sort(entries, comparator);            
+        for (Map.Entry<Object, String> entry : entries){
+            if (!first){
+                append(", ");
+            }
+            constants.add(entry.getKey());
+            append(entry.getKey().getClass().getName()).append(" ").append(entry.getValue());
+            first = false;
+        }
+    }
+
+    private void serializeModifiers(Long limit, Long offset) {
+        append("\nRANGE ");
+        if (offset != null){
+            append(String.valueOf(offset));
+            if (limit != null){
+                append(", ");
+                append(String.valueOf(offset + limit));    
+            }                
+        }else{
+            append("0, ").append(String.valueOf(limit));
+        }
     }
     
     @Override
