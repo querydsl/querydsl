@@ -53,6 +53,15 @@ public class CaseForEqBuilder<D> {
             this.eq = eq;
             this.target = target;
         }
+
+        public Expr<? extends D> getEq() {
+            return eq;
+        }
+
+        public Expr<?> getTarget() {
+            return target;
+        }
+        
     }
     
     private final Expr<D> base;
@@ -131,12 +140,12 @@ public class CaseForEqBuilder<D> {
             for (CaseElement<D> element : caseElements){
                 if (last == null){
                     last = OSimple.create((Class<T>)type, Ops.CASE_EQ_ELSE, 
-                            element.target);
+                            element.getTarget());
                 }else{
                     last = OSimple.create((Class<T>)type, Ops.CASE_EQ_WHEN, 
                             base,
-                            element.eq, 
-                            element.target, 
+                            element.getEq(), 
+                            element.getTarget(), 
                             last);
                 }
             }

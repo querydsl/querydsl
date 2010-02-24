@@ -52,6 +52,14 @@ public class CaseBuilder {
             this.condition = condition;
             this.target = target;
         }
+
+        public EBoolean getCondition() {
+            return condition;
+        }
+
+        public Expr<A> getTarget() {
+            return target;
+        }
         
     }
     
@@ -89,11 +97,11 @@ public class CaseBuilder {
             for (CaseElement<A> element : cases){
                 if (last == null){
                     last = OSimple.create(type, Ops.CASE_ELSE, 
-                            element.target);
+                            element.getTarget());
                 }else{
                     last = OSimple.create(type, Ops.CASE_WHEN, 
-                            element.condition, 
-                            element.target, 
+                            element.getCondition(), 
+                            element.getTarget(), 
                             last);
                 }
             }
