@@ -1,6 +1,5 @@
 package com.mysema.query.collections.impl;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +35,6 @@ public class EvaluatorFactory {
         this.templates = templates;
     }
     
-    @SuppressWarnings("unchecked")
     public <T> Evaluator<T> create(List<? extends Expr<?>> sources, final Expr<T> projection) {
         ColQuerySerializer serializer = new ColQuerySerializer(templates);
         serializer.handle(projection);
@@ -69,30 +67,8 @@ public class EvaluatorFactory {
         }
 
         try {
-            final ExpressionEvaluator evaluator = new ExpressionEvaluator(javaSource, projection.getType(), names, types);
-            
-            Evaluator<T> rv = new Evaluator<T>(){
-                @Override
-                public T evaluate(Object... args) {
-                    try {
-                        args = combine(constArray.length + args.length, constArray, args);
-                        return (T) evaluator.evaluate(args);
-                    } catch (InvocationTargetException e) {
-                        StringBuilder builder = new StringBuilder();
-                        builder.append("Caught exception when evaluating '").append(javaSource);
-                        builder.append("' with arguments ");
-                        for (int i = 0; i < args.length; i++){
-                            builder.append(names[i]).append(" = ").append(args[i]);
-                            if (i < args.length -1){
-                                builder.append(", ");
-                            }
-                        }
-                        throw new RuntimeException(builder.toString(), e);
-                    }
-                }
-                
-            };
-            return rv;
+            ExpressionEvaluator evaluator = new ExpressionEvaluator(javaSource, projection.getType(), names, types);            
+            return new JaninoEvaluator<T>(javaSource, evaluator, names, constArray);
             
         } catch (CompileException e) {
             throw new RuntimeException(e.getMessage() + " with source " + javaSource, e);
@@ -103,7 +79,7 @@ public class EvaluatorFactory {
         }
     }
     
-    private static Object[] combine(int size, Object[]... arrays) {
+    static Object[] combine(int size, Object[]... arrays) {
         int offset = 0;
         Object[] target = new Object[size];
         for (Object[] arr : arrays) {

@@ -53,13 +53,13 @@ import com.mysema.util.MultiIterator;
 public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>> 
     extends ProjectableQuery<SubType> {
     
-    protected final EvaluatorFactory evaluatorFactory;
-    
-    private final IteratorFactory iteratorFactory;
-    
     private boolean arrayProjection = false;
-
+    
+    private final EvaluatorFactory evaluatorFactory;
+    
     private final Map<Expr<?>, Iterable<?>> exprToIt = new HashMap<Expr<?>, Iterable<?>>();
+
+    private final IteratorFactory iteratorFactory;
 
     @SuppressWarnings("unchecked")
     public AbstractColQuery(QueryMetadata metadata, EvaluatorFactory evaluatorFactory) {
@@ -69,8 +69,19 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
         this.iteratorFactory = new IteratorFactory(evaluatorFactory);
     }
     
-    private void reset(){
-        queryMixin.getMetadata().reset();
+    @SuppressWarnings("unchecked")
+    private <RT> Iterator<RT> asDistinctIterator(Iterator<RT> rv) {
+        if (!arrayProjection) {
+            return new UniqueFilterIterator<RT>(rv);
+        } else {
+            return new FilterIterator<RT>(rv, new Predicate() {
+                private Set<List<Object>> set = new HashSet<List<Object>>();
+
+                public boolean evaluate(Object object) {
+                    return set.add(Arrays.asList((Object[]) object));
+                }
+            });
+        }
     }
     
     public long count() {
@@ -98,7 +109,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
             reset();
         }
     }
-
+    
     private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
         QueryMetadata md = queryMixin.getMetadata();
         List<Expr<?>> sources = new ArrayList<Expr<?>>();
@@ -134,17 +145,21 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
         }
 
     }
-    
+
     private <RT> Iterator<RT> createPagedIterator(Expr<RT> projection) throws Exception {
         Iterator<RT> iterator = createIterator(projection);
         return LimitingIterator.create(iterator, queryMixin.getMetadata().getModifiers());
     }
-
+    
     @SuppressWarnings("unchecked")
     public <A> SubType from(Path<A> entity, Iterable<? extends A> col) {
         exprToIt.put(entity.asExpr(), col);
         queryMixin.getMetadata().addFrom(entity.asExpr());
         return (SubType)this;
+    }
+
+    protected EvaluatorFactory getEvaluatorFactory() {
+        return evaluatorFactory;
     }
 
     @SuppressWarnings("unchecked")
@@ -213,27 +228,12 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
     }
     
     @SuppressWarnings("unchecked")
-    private <RT> Iterator<RT> asDistinctIterator(Iterator<RT> rv) {
-        if (!arrayProjection) {
-            return new UniqueFilterIterator<RT>(rv);
-        } else {
-            return new FilterIterator<RT>(rv, new Predicate() {
-                private Set<List<Object>> set = new HashSet<List<Object>>();
-
-                public boolean evaluate(Object object) {
-                    return set.add(Arrays.asList((Object[]) object));
-                }
-            });
-        }
-    }
-    
-    @SuppressWarnings("unchecked")
     public Iterator<Object[]> iterate(Expr<?>[] args) {
         arrayProjection = true;
         Expr<Object[]> projection = new EArrayConstructor(Object[].class, args);
         return iterate(projection);
     }
-
+    
     public <RT> Iterator<RT> iterate(Expr<RT> projection) {        
         try {
             queryMixin.addToProjection(projection);
@@ -281,6 +281,10 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
             reset();
             return new SearchResults<RT>(list.subList(start, end), modifiers, list.size());
         }
+    }
+
+    private void reset(){
+        queryMixin.getMetadata().reset();
     }
 
 }

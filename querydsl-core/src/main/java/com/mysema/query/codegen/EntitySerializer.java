@@ -39,6 +39,8 @@ import com.mysema.util.JavaWriter;
 @Immutable
 public class EntitySerializer implements Serializer{
     
+    private static final String UNCHECKED = "unchecked";
+    
     private static final String PATH_METADATA = "PathMetadata<?> metadata";
     
     private final TypeMappings typeMappings;
@@ -71,7 +73,7 @@ public class EntitySerializer implements Serializer{
             writer.end();
         }else{
             if (!localName.equals(genericName)){
-                writer.suppressWarnings("unchecked");
+                writer.suppressWarnings(UNCHECKED);
             }
             writer.beginConstructor(PATH_METADATA);
             writer.line("super(",localName.equals(genericName) ? "" : "(Class)",localName,".class, metadata);");
@@ -81,7 +83,7 @@ public class EntitySerializer implements Serializer{
         // 4
         if (hasEntityFields){
             if (!localName.equals(genericName)){
-                writer.suppressWarnings("unchecked");
+                writer.suppressWarnings(UNCHECKED);
             }        
             writer.beginConstructor(PATH_METADATA, "PathInits inits");
             writer.line(thisOrSuper, "(", localName.equals(genericName) ? "" : "(Class)", localName, ".class, metadata, inits);");
@@ -107,7 +109,7 @@ public class EntitySerializer implements Serializer{
         String thisOrSuper = hasEntityFields ? "this" : "super";
         
         if (!localName.equals(genericName)){
-            writer.suppressWarnings("unchecked");
+            writer.suppressWarnings(UNCHECKED);
         }        
         writer.beginConstructor("String variable");      
         writer.line(thisOrSuper,"(", localName.equals(genericName) ? "" : "(Class)",
@@ -195,7 +197,7 @@ public class EntitySerializer implements Serializer{
         }        
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings(UNCHECKED)
     protected void introClassHeader(CodeWriter writer, EntityModel model) throws IOException {
         String queryType = typeMappings.getPathType(model, model, true);
         String localName = model.getLocalGenericName();
@@ -231,7 +233,7 @@ public class EntitySerializer implements Serializer{
         for (ConstructorModel c : model.getConstructors()){
             // begin
             if (!localName.equals(genericName)){
-                writer.suppressWarnings("unchecked");
+                writer.suppressWarnings(UNCHECKED);
             }            
             writer.beginStaticMethod("EConstructor<" + genericName + ">", "create", c.getParameters(), new Transformer<ParameterModel, String>(){
                 @Override
@@ -475,9 +477,7 @@ public class EntitySerializer implements Serializer{
                 serialize(property, queryType, writer, "createNumber", localRawName +".class");
                 break;
             case ARRAY:    
-                // TODO : support for typed arrays
                 localGenericName = property.getParameter(0).getLocalGenericName(model, true);
-//                localRawName = property.getParameter(0).getLocalRawName(model);
                 serialize(property, "PArray<" + localGenericName+">", writer, "createArray",localRawName+".class");
                 break;
             case COLLECTION: 
@@ -498,7 +498,6 @@ public class EntitySerializer implements Serializer{
                 String valueType = property.getParameter(1).getLocalRawName(model);
                 queryType = typeMappings.getPathType(property.getParameter(1), model, true);
                 
-                // this.<"+genericKey+", "+genericValue+", "+genericQueryType+"
                 serialize(property, "PMap<"+genericKey+", "+genericValue+", "+genericQueryType+">",
                         writer, "this.<"+genericKey+", "+genericValue+", "+genericQueryType+">createMap", 
                         keyType+".class", 

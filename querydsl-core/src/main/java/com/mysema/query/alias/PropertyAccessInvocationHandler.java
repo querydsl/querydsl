@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
 
@@ -28,6 +29,9 @@ import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.LoggerFactory;
+
+import sun.util.logging.resources.logging;
 
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EMap;
