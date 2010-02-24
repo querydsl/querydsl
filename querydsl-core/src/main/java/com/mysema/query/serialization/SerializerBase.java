@@ -35,7 +35,7 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
 
     private final StringBuilder builder = new StringBuilder();
 
-    protected Map<Object,String> constantToLabel = new HashMap<Object,String>();
+    private final Map<Object,String> constantToLabel = new HashMap<Object,String>();
     
     protected String constantPrefix = "a";
     

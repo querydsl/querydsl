@@ -54,123 +54,123 @@ public class HQLQueryMixin<T> extends QueryMixin<T> {
     }
     
     public T fetch(){
-        List<JoinExpression> joins = metadata.getJoins();
+        List<JoinExpression> joins = getMetadata().getJoins();
         joins.get(joins.size()-1).setFlag(HQLFlags.FETCH);
-        return self;
+        return getSelf();
     }
     
     public T fetchAll(){
-        List<JoinExpression> joins = metadata.getJoins();
+        List<JoinExpression> joins = getMetadata().getJoins();
         joins.get(joins.size()-1).setFlag(HQLFlags.FETCH_ALL);
-        return self;
+        return getSelf();
     }
     
     public <P> T fullJoin(Path<? extends Collection<P>> target) {
-        metadata.addJoin(JoinType.FULLJOIN, target.asExpr());
-        return self;
+        getMetadata().addJoin(JoinType.FULLJOIN, target.asExpr());
+        return getSelf();
     }
     
 
     public <P> T fullJoin(Path<? extends Collection<P>> target, Path<P> alias) {
-        metadata.addJoin(JoinType.FULLJOIN, createAlias(target, alias));
-        return self;
+        getMetadata().addJoin(JoinType.FULLJOIN, createAlias(target, alias));
+        return getSelf();
     }
     
     public <P> T fullJoin(PEntity<P> target, PEntity<P> alias) {
-        metadata.addJoin(JoinType.FULLJOIN, createAlias(target, alias));
-        return self;
+        getMetadata().addJoin(JoinType.FULLJOIN, createAlias(target, alias));
+        return getSelf();
     }
     
     public <P> T fullJoin(PMap<?,P,?> target) {
-        metadata.addJoin(JoinType.FULLJOIN, target);
-        return self;
+        getMetadata().addJoin(JoinType.FULLJOIN, target);
+        return getSelf();
     }
     
     public <P> T fullJoin(PMap<?,P,?> target, Path<P> alias) {
-        metadata.addJoin(JoinType.FULLJOIN, createAlias(target, alias));
-        return self;
+        getMetadata().addJoin(JoinType.FULLJOIN, createAlias(target, alias));
+        return getSelf();
     }
     
     public <P> T innerJoin(Path<? extends Collection<P>> target) {
-        metadata.addJoin(JoinType.INNERJOIN, target.asExpr());
-        return self;
+        getMetadata().addJoin(JoinType.INNERJOIN, target.asExpr());
+        return getSelf();
     }
     
     public <P> T innerJoin(Path<? extends Collection<P>>target, Path<P> alias) {
-        metadata.addJoin(JoinType.INNERJOIN, createAlias(target, alias));
-        return self;
+        getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
+        return getSelf();
     }
     
     public <P> T innerJoin(PEntity<P> target, PEntity<P> alias) {
-        metadata.addJoin(JoinType.INNERJOIN, createAlias(target, alias));
-        return self;
+        getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
+        return getSelf();
     }
     
     public <P> T innerJoin(PMap<?,P,?> target) {
-        metadata.addJoin(JoinType.INNERJOIN, target);
-        return self;
+        getMetadata().addJoin(JoinType.INNERJOIN, target);
+        return getSelf();
     }
     
     public <P> T innerJoin(PMap<?,P,?> target, Path<P> alias) {
-        metadata.addJoin(JoinType.INNERJOIN, createAlias(target, alias));
-        return self;
+        getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
+        return getSelf();
     }
     
     public <P> T join(Path<? extends Collection<P>> target) {
-        metadata.addJoin(JoinType.JOIN, target.asExpr());
-        return self;
+        getMetadata().addJoin(JoinType.JOIN, target.asExpr());
+        return getSelf();
     }
 
     public <P> T join(Path<? extends Collection<P>> target, Path<P> alias) {
-        metadata.addJoin(JoinType.JOIN, createAlias(target, alias));
-        return self;
+        getMetadata().addJoin(JoinType.JOIN, createAlias(target, alias));
+        return getSelf();
     }
     
     public <P> T join(PEntity<P> target, PEntity<P> alias) {
-        metadata.addJoin(JoinType.JOIN, createAlias(target, alias));
-        return self;
+        getMetadata().addJoin(JoinType.JOIN, createAlias(target, alias));
+        return getSelf();
     }
     
     public <P> T join(PMap<?,P,?> target) {
-        metadata.addJoin(JoinType.JOIN, target);
-        return self;
+        getMetadata().addJoin(JoinType.JOIN, target);
+        return getSelf();
     }
     
     public <P> T join(PMap<?,P,?> target, Path<P> alias) {
-        metadata.addJoin(JoinType.JOIN, createAlias(target, alias));
-        return self;
+        getMetadata().addJoin(JoinType.JOIN, createAlias(target, alias));
+        return getSelf();
     }
     
     public <P> T leftJoin(Path<? extends Collection<P>> target) {
-        metadata.addJoin(JoinType.LEFTJOIN, target.asExpr());
-        return self;
+        getMetadata().addJoin(JoinType.LEFTJOIN, target.asExpr());
+        return getSelf();
     }
     
     public <P> T leftJoin(Path<? extends Collection<P>> target, Path<P> alias) {
-        metadata.addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
-        return self;
+        getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
+        return getSelf();
     }
 
     public <P> T leftJoin(PEntity<P> target, PEntity<P> alias) {
-        metadata.addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
-        return self;
+        getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
+        return getSelf();
     }
 
     public <P> T leftJoin(PMap<?,P,?> target) {
-        metadata.addJoin(JoinType.LEFTJOIN, target);
-        return self;
+        getMetadata().addJoin(JoinType.LEFTJOIN, target);
+        return getSelf();
     }
     
     public <P> T leftJoin(PMap<?,P,?> target, Path<P> alias) {
-        metadata.addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
-        return self;
+        getMetadata().addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
+        return getSelf();
     }
     
     public T with(EBoolean... conditions){
         for (EBoolean condition : conditions){
-            metadata.addJoinCondition(condition);    
+            getMetadata().addJoinCondition(condition);    
         }        
-        return self;
+        return getSelf();
     }
 
 }

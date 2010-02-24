@@ -17,15 +17,20 @@ import com.mysema.commons.lang.Assert;
  */
 public class TypeModelAdapter implements TypeModel{
     
-    protected final TypeModel typeModel;
+    private final TypeModel typeModel;
     
     public TypeModelAdapter(TypeModel typeModel){
         this.typeModel = Assert.notNull(typeModel);
     }
-
+    
     @Override
     public TypeModel as(TypeCategory category) {
         return typeModel.as(category);
+    }
+
+    @Override
+    public TypeModel asArrayType() {
+        return typeModel.asArrayType();
     }
 
     @Override
@@ -93,6 +98,10 @@ public class TypeModelAdapter implements TypeModel{
         return typeModel.getSimpleName();
     }
     
+    protected TypeModel getTypeModel(){
+        return typeModel;
+    }
+
     @Override
     public boolean hasEntityFields() {
         return typeModel.hasEntityFields();
@@ -107,20 +116,15 @@ public class TypeModelAdapter implements TypeModel{
     public boolean isFinal() {
         return typeModel.isFinal();
     }
-
+    
     @Override
     public boolean isPrimitive() {
         return typeModel.isPrimitive();
     }
-    
+
     @Override
     public String toString() {
         return typeModel.toString();
-    }
-
-    @Override
-    public TypeModel asArrayType() {
-        return typeModel.asArrayType();
     }
 
 }

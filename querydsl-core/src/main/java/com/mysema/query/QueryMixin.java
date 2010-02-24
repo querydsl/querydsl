@@ -20,9 +20,9 @@ import com.mysema.query.types.path.PEntity;
  */
 public class QueryMixin<T>{
     
-    protected T self;
+    private T self;
     
-    protected final QueryMetadata metadata;
+    private final QueryMetadata metadata;
     
     public QueryMixin(QueryMetadata metadata){
         this.metadata = Assert.notNull(metadata);
@@ -132,6 +132,10 @@ public class QueryMixin<T>{
     public boolean isDistinct() {
         return metadata.isDistinct();
     }
+    
+    public T getSelf(){
+        return self;
+    }    
     
     public void setSelf(T self){
         this.self = self;

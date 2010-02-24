@@ -34,7 +34,7 @@ public class TypeExtendsModel extends TypeModelAdapter{
         if (!asArgType){
             builder.append("? extends ");    
         }            
-        return typeModel.getLocalGenericName(context, builder, true);
+        return getTypeModel().getLocalGenericName(context, builder, true);
     }
 
 }

@@ -92,7 +92,7 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
 
     @Override
     public int compareTo(EntityModel o) {
-        return typeModel.getSimpleName().compareTo(o.typeModel.getSimpleName());
+        return getTypeModel().getSimpleName().compareTo(o.getTypeModel().getSimpleName());
     }
 
     public TypeCategory getCategory() {
@@ -105,7 +105,7 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
     
     public String getLocalGenericName(){
         try {
-            return typeModel.getLocalGenericName(this, new StringBuilder(), false).toString();
+            return getTypeModel().getLocalGenericName(this, new StringBuilder(), false).toString();
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);
         }            
@@ -113,7 +113,7 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
 
     public String getLocalRawName() {
         try {
-            return typeModel.getLocalRawName(this, new StringBuilder()).toString();
+            return getTypeModel().getLocalRawName(this, new StringBuilder()).toString();
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -182,7 +182,7 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
 
     private PropertyModel validateField(PropertyModel field) {
         if (field.getName().equals(this.uncapSimpleName)) {
-            uncapSimpleName = StringUtils.uncapitalize(typeModel.getSimpleName())+ (escapeSuffix++);
+            uncapSimpleName = StringUtils.uncapitalize(getTypeModel().getSimpleName())+ (escapeSuffix++);
         }
         return field;
     }

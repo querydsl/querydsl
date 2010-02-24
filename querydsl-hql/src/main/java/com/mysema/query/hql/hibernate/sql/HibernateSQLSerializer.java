@@ -27,12 +27,12 @@ public class HibernateSQLSerializer extends SQLSerializer{
     
     @Override
     public void visit(Constant<?> expr) {        
-        if (!constantToLabel.containsKey(expr.getConstant())) {
-            String constLabel = constantPrefix + (constantToLabel.size() + 1);
-            constantToLabel.put(expr.getConstant(), constLabel);
+        if (!getConstantToLabel().containsKey(expr.getConstant())) {
+            String constLabel = constantPrefix + (getConstantToLabel().size() + 1);
+            getConstantToLabel().put(expr.getConstant(), constLabel);
             append(":"+constLabel);
         } else {
-            append(":"+constantToLabel.get(expr.getConstant()));
+            append(":"+getConstantToLabel().get(expr.getConstant()));
         }
     }
     

@@ -29,7 +29,7 @@ public class JDOQLQueryMixin<T> extends QueryMixin<T>{
                 super.addToProjection(expr);
             }
         }
-        return self;
+        return getSelf();
     }
 
 }
