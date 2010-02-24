@@ -13,10 +13,12 @@ import com.mysema.query.types.operation.Ops;
 
 /**
  * EDateTime represents Date / Time expressions
- * 
- * @author tiwe
+ * The date representation is compatible with the Gregorian calendar.
  *
  * @param <D>
+ *
+ * @author tiwe
+ * @see http://en.wikipedia.org/wiki/Gregorian_calendar
  */
 @SuppressWarnings({"unchecked","serial"})
 public abstract class EDateTime<D extends Comparable> extends EDate<D> {

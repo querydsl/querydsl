@@ -13,10 +13,12 @@ import com.mysema.query.types.operation.Ops;
 
 /**
  * EDate represents Date expressions
+ * The date representation is compatible with the Gregorian calendar.
+ * 
+ * @param <D>
  * 
  * @author tiwe
- *
- * @param <D>
+ * @see http://en.wikipedia.org/wiki/Gregorian_calendar
  */
 @SuppressWarnings({"unchecked","serial"})
 public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
@@ -88,7 +90,7 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     }
     
     /**
-     * Get a month expression (range 1-12)
+     * Get a month expression (range 1-12 / JAN-DEC)
      * 
      * @return
      */
