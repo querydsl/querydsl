@@ -36,7 +36,9 @@ public final class JavaWriter implements Appendable, CodeWriter{
         append(indent).append("@" + annotation.annotationType().getName()).append("(");
         boolean first = true;        
         for (Method method : annotation.annotationType().getDeclaredMethods()){
-            if (!first) append(",");
+            if (!first){
+                append(",");
+            }
             append(method.getName()+"=");
             try {
                 Object value = method.invoke(annotation);
@@ -104,7 +106,9 @@ public final class JavaWriter implements Appendable, CodeWriter{
         goIn();
         
         type = simpleName;
-        if (type.contains("<")) type = type.substring(0, type.indexOf('<'));
+        if (type.contains("<")){
+            type = type.substring(0, type.indexOf('<'));
+        }
         return this;
     }
  
@@ -127,7 +131,9 @@ public final class JavaWriter implements Appendable, CodeWriter{
         goIn();
         
         type = simpleName;
-        if (type.contains("<")) type = type.substring(0, type.indexOf('<'));
+        if (type.contains("<")){
+            type = type.substring(0, type.indexOf('<'));
+        }
         return this;
         
     }
@@ -175,12 +181,16 @@ public final class JavaWriter implements Appendable, CodeWriter{
     
 
     public CodeWriter imports(Class<?>... imports) throws IOException{
-        for (Class<?> cl : imports) line("import " + cl.getName() + ";");
+        for (Class<?> cl : imports){
+            line("import " + cl.getName() + ";");
+        }
         return this;
     }
 
     public CodeWriter imports(Package... imports) throws IOException {
-        for (Package p : imports) line("import " + p.getName() + ".*;");
+        for (Package p : imports){
+            line("import " + p.getName() + ".*;");
+        }
         return this;
     }
     
@@ -196,7 +206,9 @@ public final class JavaWriter implements Appendable, CodeWriter{
         StringBuilder builder = new StringBuilder();
         boolean first = true;
         for (String arg : args){
-            if (!first) builder.append(", ");
+            if (!first){
+                builder.append(", ");
+            }
             builder.append(prefix).append(arg).append(suffix);
             first = false;
         }
@@ -233,7 +245,9 @@ public final class JavaWriter implements Appendable, CodeWriter{
     private <T> CodeWriter params(Collection<T> parameters, Transformer<T,String> transformer) throws IOException{
         boolean first = true;
         for (T param : parameters){
-            if (!first) append(", ");
+            if (!first){
+                append(", ");
+            }
             append(transformer.transform(param));
             first = false;
         }
@@ -242,7 +256,9 @@ public final class JavaWriter implements Appendable, CodeWriter{
 
     private JavaWriter params(String... params) throws IOException{
         for (int i = 0; i < params.length; i++){
-            if (i > 0) append(", ");
+            if (i > 0){
+                append(", ");
+            }
             append(params[i]);
         }
         return this;
@@ -274,7 +290,9 @@ public final class JavaWriter implements Appendable, CodeWriter{
     }
 
     public CodeWriter staticimports(Class<?>... imports) throws IOException{
-        for (Class<?> cl : imports) line("import static " + cl.getName() + ".*;");
+        for (Class<?> cl : imports){
+            line("import static " + cl.getName() + ".*;");
+        }
         return this;
     }
     

@@ -35,7 +35,9 @@ public class EConstructor<D> extends Expr<D> {
                 boolean found = true;
                 for (int i = 0; i < paramTypes.length; i++){
                     Class<?> paramType = paramTypes[i];
-                    if (paramType.isPrimitive()) paramType = ClassUtils.primitiveToWrapper(paramType);                    
+                    if (paramType.isPrimitive()){
+                        paramType = ClassUtils.primitiveToWrapper(paramType);                    
+                    }
                     if (!paramType.isAssignableFrom(args[i].getType())){
                         found = false;
                         break;

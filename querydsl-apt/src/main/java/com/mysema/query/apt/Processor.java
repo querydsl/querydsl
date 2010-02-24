@@ -230,10 +230,18 @@ public class Processor {
     private void processCustomTypes() {
         for (Element queryMethod : roundEnv.getElementsAnnotatedWith(QueryMethod.class)){
             Element element = queryMethod.getEnclosingElement();
-            if (element.getAnnotation(QueryExtensions.class) != null) continue;
-            if (element.getAnnotation(configuration.getEntityAnn()) != null) continue;
-            if (configuration.getSuperTypeAnn() != null && element.getAnnotation(configuration.getSuperTypeAnn()) != null) continue;
-            if (configuration.getEmbeddableAnn() != null && element.getAnnotation(configuration.getEmbeddableAnn()) != null) continue;
+            if (element.getAnnotation(QueryExtensions.class) != null){
+                continue;
+            }
+            if (element.getAnnotation(configuration.getEntityAnn()) != null){
+                continue;
+            }
+            if (configuration.getSuperTypeAnn() != null && element.getAnnotation(configuration.getSuperTypeAnn()) != null){
+                continue;
+            }
+            if (configuration.getEmbeddableAnn() != null && element.getAnnotation(configuration.getEmbeddableAnn()) != null){
+                continue;
+            }
             handleExtensionType(element.asType(), element);
         }
     }

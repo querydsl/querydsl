@@ -53,7 +53,9 @@ public class EStringConst extends EString implements Constant<String>{
             return cache.get(str);            
         }else{
             EString rv = new EStringConst(Assert.notNull(str));
-            if (populateCache) cache.put(str, rv);                
+            if (populateCache){
+                cache.put(str, rv);                
+            }
             return rv;
         }
     }

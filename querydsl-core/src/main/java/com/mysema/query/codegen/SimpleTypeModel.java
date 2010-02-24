@@ -88,7 +88,9 @@ public class SimpleTypeModel extends AbstractTypeModel {
         if (parameters.length > 0){                        
             builder.append("<");
             for (int i = 0; i < parameters.length; i++){
-                if (i > 0) builder.append(",");
+                if (i > 0){
+                    builder.append(",");
+                }
                 if (parameters[i] != null && !parameters[i].getFullName().equals(fullName)){
                     builder = parameters[i].getLocalGenericName(context, builder, false);    
                 }else{

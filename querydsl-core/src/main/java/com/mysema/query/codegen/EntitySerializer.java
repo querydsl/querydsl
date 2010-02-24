@@ -249,7 +249,9 @@ public class EntitySerializer implements Serializer{
             writer.append(", new Class[]{");
             boolean first = true;
             for (ParameterModel p : c.getParameters()){
-                if (!first) writer.append(", ");
+                if (!first){
+                    writer.append(", ");
+                }
                 if (p.getType().getPrimitiveName() != null){
                     writer.append(p.getType().getPrimitiveName()+".class");
                 }else{
