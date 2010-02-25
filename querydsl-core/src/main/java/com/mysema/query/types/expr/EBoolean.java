@@ -21,6 +21,7 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings("serial")
 public abstract class EBoolean extends EComparable<Boolean> {
     
+    @Nullable 
     private volatile EBoolean not;
 
     public EBoolean() {

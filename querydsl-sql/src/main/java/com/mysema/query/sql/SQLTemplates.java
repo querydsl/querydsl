@@ -9,6 +9,8 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.JoinType;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.operation.Ops;
@@ -168,7 +170,7 @@ public class SQLTemplates extends Templates {
         return this;
     }
     
-    public String getLimitOffsetCondition(Long limit, Long offset) {
+    public String getLimitOffsetCondition(@Nullable Long limit, @Nullable Long offset) {
         if (offset == null) {
             return String.format(limitTemplate, limit);
         } else if (limit == null) {

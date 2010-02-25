@@ -7,6 +7,8 @@ package com.mysema.query.types.expr;
 
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
@@ -22,8 +24,10 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings("serial")
 public abstract class EMapBase<K,V> extends Expr<Map<K,V>> implements EMap<K,V> {
 
+    @Nullable 
     private volatile ENumber<Integer> size;    
     
+    @Nullable 
     private volatile EBoolean empty;
     
     public EMapBase(Class<? extends Map<K, V>> type) {

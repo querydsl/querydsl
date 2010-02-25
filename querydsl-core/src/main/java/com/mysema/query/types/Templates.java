@@ -8,6 +8,8 @@ package com.mysema.query.types;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import net.jcip.annotations.Immutable;
 
 import com.mysema.query.types.operation.Operator;
@@ -209,6 +211,7 @@ public class Templates {
         precedence.put(op, pre);
     }
 
+    @Nullable 
     public Template getTemplate(Operator<?> op) {
         return templates.get(op);
     }

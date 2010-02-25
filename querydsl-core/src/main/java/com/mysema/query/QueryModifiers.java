@@ -69,6 +69,7 @@ public final class QueryModifiers {
      * 
      * @return the limit
      */
+    @Nullable 
     public Long getLimit() {
         return limit;
     }
@@ -78,6 +79,7 @@ public final class QueryModifiers {
      * 
      * @return the offset
      */
+    @Nullable 
     public Long getOffset() {
         return offset;
     }

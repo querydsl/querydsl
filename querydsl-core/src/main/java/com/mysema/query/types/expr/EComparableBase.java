@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.expr;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.operation.ONumber;
@@ -23,8 +25,10 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings({"unchecked","serial"})
 public abstract class EComparableBase<D extends Comparable> extends Expr<D> {
 
+    @Nullable
     private volatile OrderSpecifier<D> asc, desc;
     
+    @Nullable
     private volatile EString stringCast;
 
     public EComparableBase(Class<? extends D> type) {

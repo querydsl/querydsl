@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang.ClassUtils;
 
 import com.mysema.query.JoinExpression;
@@ -175,7 +177,7 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         }
     }
 
-    private void serializeModifiers(Long limit, Long offset) {
+    private void serializeModifiers(@Nullable Long limit, @Nullable Long offset) {
         append("\nRANGE ");
         if (offset != null){
             append(String.valueOf(offset));

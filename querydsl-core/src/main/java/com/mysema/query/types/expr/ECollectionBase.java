@@ -7,6 +7,8 @@ package com.mysema.query.types.expr;
 
 import java.util.Collection;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
@@ -22,8 +24,10 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings("serial")
 public abstract class ECollectionBase<C extends Collection<E>, E> extends Expr<C> implements ECollection<C,E> {
 
+    @Nullable
     private volatile EBoolean empty;
    
+    @Nullable
     private volatile ENumber<Integer> size;    
     
     public ECollectionBase(Class<? extends C> type) {

@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
@@ -49,6 +51,7 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
     
     private final Class<Q> queryType;    
     
+    @Nullable 
     private transient Constructor<Q> constructor;    
     
     @SuppressWarnings("unchecked")

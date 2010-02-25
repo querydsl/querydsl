@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EMapBase;
@@ -44,6 +46,7 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
     
     private final Class<E> queryType;
     
+    @Nullable 
     private transient Constructor<E> constructor; 
     
     private final Class<V> valueType;

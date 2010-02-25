@@ -7,6 +7,8 @@ package com.mysema.query.types.expr;
 
 import java.util.Date;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.operation.ODateTime;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
@@ -63,6 +65,7 @@ public abstract class EDateTime<D extends Comparable> extends EDate<D> {
         return ODateTime.create(cl, Ops.DateTimeOps.CURRENT_TIMESTAMP);
     }
     
+    @Nullable
     private volatile ENumber<Integer> hours, minutes, seconds, milliseconds;
     
     public EDateTime(Class<? extends D> type) {

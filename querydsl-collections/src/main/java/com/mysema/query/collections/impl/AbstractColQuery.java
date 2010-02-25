@@ -184,11 +184,9 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
         EBoolean condition = queryMixin.getMetadata().getWhere();
         JoinExpression join = queryMixin.getMetadata().getJoins().get(0);
         sources.add(join.getTarget());
-        // source
-        Iterator<?> it = exprToIt.get(join.getTarget()).iterator();
         
-        // project to array
-        it = iteratorFactory.toArrayIterator(exprToIt.get(join.getTarget()).iterator());
+        // project source to array
+        Iterator<?> it = iteratorFactory.toArrayIterator(exprToIt.get(join.getTarget()).iterator());
         if (condition != null) {
             // where
             it = iteratorFactory.multiArgFilter(it, sources, condition);

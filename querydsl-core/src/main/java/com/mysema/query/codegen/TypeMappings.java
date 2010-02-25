@@ -124,7 +124,6 @@ public class TypeMappings {
         case DATETIME:    
         case TIME:        
         case NUMERIC:    
-            return typeName + "<" + localName + ">";
         case ARRAY:
         case COLLECTION: 
         case SET:
