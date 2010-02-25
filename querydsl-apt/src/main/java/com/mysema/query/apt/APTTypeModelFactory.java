@@ -38,7 +38,6 @@ import com.mysema.query.codegen.TypeModel;
 import com.mysema.query.codegen.TypeModelFactory;
 import com.mysema.query.codegen.TypeModels;
 import com.mysema.query.codegen.TypeSuperModel;
-import com.mysema.query.util.TypeUtil;
 
 /**
  * APTTypeModelFactory is a factory for APT inspection based TypeModel creation
@@ -216,6 +215,14 @@ public class APTTypeModelFactory {
         return create(typeElement, TypeCategory.SIMPLE, t.getTypeArguments());
     }
     
+    private static Class<?> safeForName(String name){
+        try {
+            return Class.forName(name);
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+    }
+    
     private TypeModel createInterfaceType(DeclaredType t, TypeElement typeElement) {
         // entity type
         for (Class<? extends Annotation> entityAnn : entityAnnotations){
@@ -227,7 +234,7 @@ public class APTTypeModelFactory {
         String name = typeElement.getQualifiedName().toString();
         String simpleName = typeElement.getSimpleName().toString();
         Iterator<? extends TypeMirror> i = t.getTypeArguments().iterator();
-        Class<?> cl = TypeUtil.safeForName(name);
+        Class<?> cl = safeForName(name);
         if (cl == null) { // class not available
             return create(typeElement, TypeCategory.get(name), t.getTypeArguments());
             

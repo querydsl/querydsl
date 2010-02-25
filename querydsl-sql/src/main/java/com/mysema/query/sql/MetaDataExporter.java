@@ -6,6 +6,9 @@
 package com.mysema.query.sql;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -31,7 +34,6 @@ import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeMappings;
 import com.mysema.query.codegen.TypeModel;
 import com.mysema.query.codegen.TypeModels;
-import com.mysema.query.util.FileUtils;
 
 /**
  * MetadataExporter exports JDBC metadata to Querydsl query types
@@ -157,7 +159,7 @@ public class MetaDataExporter {
     private void serialize(EntityModel type) {
         String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + ".java";
         try {                        
-            Writer writer = FileUtils.writerFor(new File(targetFolder, path));
+            Writer writer = writerFor(new File(targetFolder, path));
             try{
                 serializer.serialize(type, serializerConfig, writer);    
             }finally{
@@ -166,6 +168,17 @@ public class MetaDataExporter {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }    
+    }
+    
+    private static Writer writerFor(File file) {
+        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
+            System.err.println("Folder " + file.getParent() + " could not be created");
+        }
+        try {
+            return new OutputStreamWriter(new FileOutputStream(file));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
 }

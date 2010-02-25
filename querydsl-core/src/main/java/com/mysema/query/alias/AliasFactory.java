@@ -5,13 +5,19 @@
  */
 package com.mysema.query.alias;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 
+import org.apache.commons.collections15.Transformer;
+import org.apache.commons.collections15.map.LazyMap;
+
+import com.mysema.commons.lang.Pair;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PathMetadataFactory;
-import com.mysema.query.util.FactoryMap;
 
 /**
  * AliasFactory is a factory class for alias creation
@@ -19,43 +25,74 @@ import com.mysema.query.util.FactoryMap;
  * @author tiwe
  * @version $Id$
  */
-class AliasFactory {
+public class AliasFactory {
 
     private final ThreadLocal<Expr<?>> current = new ThreadLocal<Expr<?>>();
 
     // caches top level paths (class/var as key)
-    private FactoryMap<PEntity<?>> pathCache = new FactoryMap<PEntity<?>>() {
-        @SuppressWarnings("unused")
-        public <A> PEntity<A> create(Class<A> cl, String var) {
-            return new PEntity<A>(cl, PathMetadataFactory.forVariable(var));
-        }
-    };
+    private final Map<Pair<Class<?>,String>, PEntity<?>> pathCache =
+        LazyMap.decorate(
+            new HashMap<Pair<Class<?>,String>,PEntity<?>>(),
+            new Transformer<Pair<Class<?>,String>,PEntity<?>>(){
+                @SuppressWarnings("unchecked")
+                @Override
+                public PEntity<?> transform(Pair<Class<?>, String> input) {
+                    return new PEntity(input.getFirst(), PathMetadataFactory.forVariable(input.getSecond()));
+                }                
+            });
+            
+    private final Map<Pair<Class<?>,Expr<?>>, ManagedObject> proxyCache =
+        LazyMap.decorate(
+            new HashMap<Pair<Class<?>,Expr<?>>,ManagedObject>(),
+            new Transformer<Pair<Class<?>,Expr<?>>,ManagedObject>(){
+                @Override
+                public ManagedObject transform(Pair<Class<?>, Expr<?>> input) {
+                    return (ManagedObject) createProxy(input.getFirst(), input.getSecond());
+                }                
+            });    
 
-    // caches top level proxies (class/var as key)
-    private FactoryMap<ManagedObject> proxyCache = new FactoryMap<ManagedObject>() {
-        @SuppressWarnings("unused")
-        public ManagedObject create(Class<?> cl, Expr<?> path) {
-            return (ManagedObject) createProxy(cl, path);
-        }
-    };
-
+    /**
+     * @param <A>
+     * @param cl
+     * @param expr
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public <A> A createAliasForExpr(Class<A> cl, Expr<? extends A> expr) {
-        return (A) proxyCache.get(cl, expr);
+        return (A) proxyCache.get(Pair.of(cl, expr));
     }
 
+    /**
+     * @param <A>
+     * @param cl
+     * @param parent
+     * @param path
+     * @return
+     */
     public <A> A createAliasForProperty(Class<A> cl, Object parent, Expr<?> path) {
         A proxy = createProxy(cl, path);
         return proxy;
     }
 
+    /**
+     * @param <A>
+     * @param cl
+     * @param var
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public <A> A createAliasForVariable(Class<A> cl, String var) {
-        Expr<?> path = pathCache.get(cl, var);
-        A proxy = (A) proxyCache.get(cl, path);
+        Expr<?> path = pathCache.get(Pair.of(cl, var));
+        A proxy = (A) proxyCache.get(Pair.of(cl, path));
         return proxy;
     }
 
+    /**
+     * @param <A>
+     * @param cl
+     * @param path
+     * @return
+     */
     @SuppressWarnings("unchecked")
     private <A> A createProxy(Class<A> cl, Expr<?> path) {
         Enhancer enhancer = new Enhancer();
@@ -73,21 +110,35 @@ class AliasFactory {
         return rv;
     }
 
+    /**
+     * @param <A>
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public <A extends Expr<?>> A getCurrent() {
         return (A) current.get();
     }
 
+    /**
+     * @param <A>
+     * @return
+     */
     public <A extends Expr<?>> A getCurrentAndReset() {
         A rv = this.<A> getCurrent();
         reset();
         return rv;
     }
 
+    /**
+     * 
+     */
     public void reset() {
         current.set(null);
     }
 
+    /**
+     * @param path
+     */
     public void setCurrent(Expr<?> path) {
         current.set(path);
     }

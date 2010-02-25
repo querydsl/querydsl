@@ -100,46 +100,36 @@ public class TypeMappings {
     }
     
     public String getQueryType(TypeModel type, EntityModel model, String typeName, boolean raw, boolean rawParameters, boolean extend){
-        String localName = null;        
+        String localName = null;                
+        TypeCategory category = type.getCategory();
         
-        if (raw && type.getCategory() != TypeCategory.ENTITY){
+        if (raw && category != TypeCategory.ENTITY){
             return typeName;
-        }else{
-            if (rawParameters){
-                localName = type.getLocalRawName(model);
-            }else{
-                localName = type.getLocalGenericName(model, true);    
-            }            
-            if (!type.isFinal() && extend){
-                localName = "? extends " + localName;
-            }
         }
         
-        switch(type.getCategory()){
-        case STRING:     
-        case BOOLEAN:    
-            return typeName;         
-        case COMPARABLE:   
-        case DATE:        
-        case DATETIME:    
-        case TIME:        
-        case NUMERIC:    
-        case ARRAY:
-        case COLLECTION: 
-        case SET:
-        case LIST:
-        case MAP:
-        case SIMPLE:     
-            return typeName + "<" + localName + ">";
-        case ENTITY:
+        if (rawParameters){
+            localName = type.getLocalRawName(model);
+        }else{
+            localName = type.getLocalGenericName(model, true);    
+        }            
+        if (!type.isFinal() && extend){
+            localName = "? extends " + localName;
+        }
+        
+        if (category == TypeCategory.STRING || category == TypeCategory.BOOLEAN){
+            return typeName;
+            
+        }else if (category == TypeCategory.ENTITY){
             String suffix = type.getFullName().substring(type.getPackageName().length()+1).replace('.', '_');            
             if (type.getPackageName().equals(model.getPackageName())){
                 return model.getPrefix() + suffix;
             }else{
                 return type.getPackageName() + "." + model.getPrefix() + suffix;
-            } 
+            }
+            
+        }else{
+            return typeName + "<" + localName + ">";
         }
-        throw new IllegalArgumentException("Unsupported case " + type.getCategory());
     }
 
     

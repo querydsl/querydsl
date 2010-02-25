@@ -25,9 +25,13 @@ public class OracleSerializer extends SQLSerializer {
 
     private final EBoolean startWith;
 
-    public OracleSerializer(SQLTemplates patterns, EBoolean connectBy,
-            EBoolean connectByNocyclePrior, EBoolean connectByPrior,
-            Expr<?> orderSiblingsBy, EBoolean startWith) {
+    public OracleSerializer(
+            SQLTemplates patterns, 
+            EBoolean connectBy,
+            EBoolean connectByNocyclePrior, 
+            EBoolean connectByPrior,
+            Expr<?> orderSiblingsBy, 
+            EBoolean startWith) {
         super(patterns);
         this.connectBy = connectBy;
         this.connectByNocyclePrior = connectByNocyclePrior;

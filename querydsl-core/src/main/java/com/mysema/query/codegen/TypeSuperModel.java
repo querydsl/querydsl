@@ -15,25 +15,28 @@ import javax.annotation.Nullable;
  * @author tiwe
  *
  */
+// TODO : take varName into account
 public class TypeSuperModel extends TypeModelAdapter{
     
     private static final TypeModel objectModel = new ClassTypeModel(TypeCategory.SIMPLE, Object.class);
     
-    private TypeModel superModel;
+    private final TypeModel superModel;
     
     @Nullable
-    private String varName;
+    private final String varName;
     
     public TypeSuperModel(String varName, TypeModel typeModel) {
-        this(typeModel);
+        super(objectModel);        
+        this.superModel = typeModel;
         this.varName = varName;
     }
 
     public TypeSuperModel(TypeModel typeModel) {
         super(objectModel);
         this.superModel = typeModel;
+        this.varName = null;
     }
-
+    
     @Override
     public void appendLocalGenericName(TypeModel context, Appendable builder, boolean asArgType) throws IOException {
         if (!asArgType){
@@ -44,4 +47,7 @@ public class TypeSuperModel extends TypeModelAdapter{
         }    
     }
 
+    public String getVarName(){
+        return varName;
+    }
 }

@@ -159,8 +159,7 @@ public final class ElementHandler{
                     handleFieldProperty(entityModel, field, properties, blockedProperties, types);
                 }else if (configuration.isBlockedField(field)){
                     blockedProperties.add(name);
-                }   
-                
+                }                   
             }        
         }
         

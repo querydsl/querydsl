@@ -143,6 +143,7 @@ public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         
     }
 
+    @SuppressWarnings("unchecked")
     private void serializeVariables(List<JoinExpression> joins) {
         append("\nVARIABLES ");
         for (int i = 1; i < joins.size(); i++) {                

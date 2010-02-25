@@ -147,17 +147,17 @@ public class SQLTemplates extends Templates {
         class2type.put(String.class, "varchar");
     }
 
-    public Map<Class<?>, String> getClass2Type() {
+    public final Map<Class<?>, String> getClass2Type() {
         return class2type;
     }
     
-    public void addClass2TypeMappings(String type, Class<?>... classes) {
+    public final void addClass2TypeMappings(String type, Class<?>... classes) {
         for (Class<?> cl : classes) {
             class2type.put(cl, type);
         }
     }
     
-    public SQLTemplates newLineToSingleSpace() {
+    public final SQLTemplates newLineToSingleSpace() {
         for (Field field : SQLTemplates.class.getDeclaredFields()) {
             try {
                 if (field.getType().equals(String.class)) {
@@ -170,7 +170,7 @@ public class SQLTemplates extends Templates {
         return this;
     }
     
-    public String getLimitOffsetCondition(@Nullable Long limit, @Nullable Long offset) {
+    public final String getLimitOffsetCondition(@Nullable Long limit, @Nullable Long offset) {
         if (offset == null) {
             return String.format(limitTemplate, limit);
         } else if (limit == null) {
@@ -180,299 +180,299 @@ public class SQLTemplates extends Templates {
         }
     }
 
-    public String getAsc() {
+    public final String getAsc() {
         return asc;
     }
 
-    public void setAsc(String asc) {
+    public final void setAsc(String asc) {
         this.asc = asc;
     }
 
-    public String getColumnAlias() {
+    public final String getColumnAlias() {
         return columnAlias;
     }
 
-    public void setColumnAlias(String columnAlias) {
+    public final void setColumnAlias(String columnAlias) {
         this.columnAlias = columnAlias;
     }
 
-    public String getConnectBy() {
+    public final String getConnectBy() {
         return connectBy;
     }
 
-    public void setConnectBy(String connectBy) {
+    public final void setConnectBy(String connectBy) {
         this.connectBy = connectBy;
     }
 
-    public String getConnectByNocyclePrior() {
+    public final String getConnectByNocyclePrior() {
         return connectByNocyclePrior;
     }
 
-    public void setConnectByNocyclePrior(String connectByNocyclePrior) {
+    public final void setConnectByNocyclePrior(String connectByNocyclePrior) {
         this.connectByNocyclePrior = connectByNocyclePrior;
     }
 
-    public String getConnectByPrior() {
+    public final String getConnectByPrior() {
         return connectByPrior;
     }
 
-    public void setConnectByPrior(String connectByPrior) {
+    public final void setConnectByPrior(String connectByPrior) {
         this.connectByPrior = connectByPrior;
     }
 
-    public String getCount() {
+    public final String getCount() {
         return count;
     }
 
-    public void setCount(String count) {
+    public final void setCount(String count) {
         this.count = count;
     }
 
-    public String getCountStar() {
+    public final String getCountStar() {
         return countStar;
     }
 
-    public void setCountStar(String countStar) {
+    public final void setCountStar(String countStar) {
         this.countStar = countStar;
     }
 
-    public String getDeleteFrom() {
+    public final String getDeleteFrom() {
         return deleteFrom;
     }
 
-    public void setDeleteFrom(String deleteFrom) {
+    public final void setDeleteFrom(String deleteFrom) {
         this.deleteFrom = deleteFrom;
     }
 
-    public String getDesc() {
+    public final String getDesc() {
         return desc;
     }
 
-    public void setDesc(String desc) {
+    public final void setDesc(String desc) {
         this.desc = desc;
     }
 
-    public String getDummyTable() {
+    public final String getDummyTable() {
         return dummyTable;
     }
 
-    public void setDummyTable(String dummyTable) {
+    public final void setDummyTable(String dummyTable) {
         this.dummyTable = dummyTable;
     }
 
-    public String getFrom() {
+    public final String getFrom() {
         return from;
     }
 
-    public void setFrom(String from) {
+    public final void setFrom(String from) {
         this.from = from;
     }
 
-    public String getFullJoin() {
+    public final String getFullJoin() {
         return fullJoin;
     }
 
-    public void setFullJoin(String fullJoin) {
+    public final void setFullJoin(String fullJoin) {
         this.fullJoin = fullJoin;
     }
 
-    public String getGroupBy() {
+    public final String getGroupBy() {
         return groupBy;
     }
 
-    public void setGroupBy(String groupBy) {
+    public final void setGroupBy(String groupBy) {
         this.groupBy = groupBy;
     }
 
-    public String getHaving() {
+    public final String getHaving() {
         return having;
     }
 
-    public void setHaving(String having) {
+    public final void setHaving(String having) {
         this.having = having;
     }
 
-    public String getInnerJoin() {
+    public final String getInnerJoin() {
         return innerJoin;
     }
 
-    public void setInnerJoin(String innerJoin) {
+    public final void setInnerJoin(String innerJoin) {
         this.innerJoin = innerJoin;
     }
 
-    public String getJoin() {
+    public final String getJoin() {
         return join;
     }
 
-    public void setJoin(String join) {
+    public final void setJoin(String join) {
         this.join = join;
     }
 
-    public String getLeftJoin() {
+    public final String getLeftJoin() {
         return leftJoin;
     }
 
-    public void setLeftJoin(String leftJoin) {
+    public final void setLeftJoin(String leftJoin) {
         this.leftJoin = leftJoin;
     }
 
-    public String getLimit() {
+    public final String getLimit() {
         return limit;
     }
 
-    public void setLimit(String limit) {
+    public final void setLimit(String limit) {
         this.limit = limit;
     }
 
-    public boolean isLimitAndOffsetSymbols() {
+    public final boolean isLimitAndOffsetSymbols() {
         return limitAndOffsetSymbols;
     }
 
-    public void setLimitAndOffsetSymbols(boolean limitAndOffsetSymbols) {
+    public final void setLimitAndOffsetSymbols(boolean limitAndOffsetSymbols) {
         this.limitAndOffsetSymbols = limitAndOffsetSymbols;
     }
 
-    public String getLimitOffsetTemplate() {
+    public final String getLimitOffsetTemplate() {
         return limitOffsetTemplate;
     }
 
-    public void setLimitOffsetTemplate(String limitOffsetTemplate) {
+    public final void setLimitOffsetTemplate(String limitOffsetTemplate) {
         this.limitOffsetTemplate = limitOffsetTemplate;
     }
 
-    public String getLimitTemplate() {
+    public final String getLimitTemplate() {
         return limitTemplate;
     }
 
-    public void setLimitTemplate(String limitTemplate) {
+    public final void setLimitTemplate(String limitTemplate) {
         this.limitTemplate = limitTemplate;
     }
 
-    public String getOffset() {
+    public final String getOffset() {
         return offset;
     }
 
-    public void setOffset(String offset) {
+    public final void setOffset(String offset) {
         this.offset = offset;
     }
 
-    public String getOffsetTemplate() {
+    public final String getOffsetTemplate() {
         return offsetTemplate;
     }
 
-    public void setOffsetTemplate(String offsetTemplate) {
+    public final void setOffsetTemplate(String offsetTemplate) {
         this.offsetTemplate = offsetTemplate;
     }
 
-    public String getOn() {
+    public final String getOn() {
         return on;
     }
 
-    public void setOn(String on) {
+    public final void setOn(String on) {
         this.on = on;
     }
 
-    public String getOrderBy() {
+    public final String getOrderBy() {
         return orderBy;
     }
 
-    public void setOrderBy(String orderBy) {
+    public final void setOrderBy(String orderBy) {
         this.orderBy = orderBy;
     }
 
-    public String getOrderSiblingsBy() {
+    public final String getOrderSiblingsBy() {
         return orderSiblingsBy;
     }
 
-    public void setOrderSiblingsBy(String orderSiblingsBy) {
+    public final void setOrderSiblingsBy(String orderSiblingsBy) {
         this.orderSiblingsBy = orderSiblingsBy;
     }
 
-    public String getOver() {
+    public final String getOver() {
         return over;
     }
 
-    public void setOver(String over) {
+    public final void setOver(String over) {
         this.over = over;
     }
 
-    public String getPartitionBy() {
+    public final String getPartitionBy() {
         return partitionBy;
     }
 
-    public void setPartitionBy(String partitionBy) {
+    public final void setPartitionBy(String partitionBy) {
         this.partitionBy = partitionBy;
     }
 
-    public String getSelect() {
+    public final String getSelect() {
         return select;
     }
 
-    public void setSelect(String select) {
+    public final void setSelect(String select) {
         this.select = select;
     }
 
-    public String getSelectDistinct() {
+    public final String getSelectDistinct() {
         return selectDistinct;
     }
 
-    public void setSelectDistinct(String selectDistinct) {
+    public final void setSelectDistinct(String selectDistinct) {
         this.selectDistinct = selectDistinct;
     }
 
-    public String getStartWith() {
+    public final String getStartWith() {
         return startWith;
     }
 
-    public void setStartWith(String startWith) {
+    public final void setStartWith(String startWith) {
         this.startWith = startWith;
     }
 
-    public String getSum() {
+    public final String getSum() {
         return sum;
     }
 
-    public void setSum(String sum) {
+    public final void setSum(String sum) {
         this.sum = sum;
     }
 
-    public String getTableAlias() {
+    public final String getTableAlias() {
         return tableAlias;
     }
 
-    public void setTableAlias(String tableAlias) {
+    public final void setTableAlias(String tableAlias) {
         this.tableAlias = tableAlias;
     }
 
-    public String getUnion() {
+    public final String getUnion() {
         return union;
     }
 
-    public void setUnion(String union) {
+    public final void setUnion(String union) {
         this.union = union;
     }
 
-    public String getUpdate() {
+    public final String getUpdate() {
         return update;
     }
 
-    public void setUpdate(String update) {
+    public final void setUpdate(String update) {
         this.update = update;
     }
 
-    public String getWhere() {
+    public final String getWhere() {
         return where;
     }
 
-    public void setWhere(String where) {
+    public final void setWhere(String where) {
         this.where = where;
     }
 
-    public boolean isSupportsAlias() {
+    public final boolean isSupportsAlias() {
         return true;
     }
     
-    public String getJoinSymbol(JoinType joinType){
+    public final String getJoinSymbol(JoinType joinType){
         switch (joinType) {
             case FULLJOIN:  return fullJoin;
             case INNERJOIN: return innerJoin;

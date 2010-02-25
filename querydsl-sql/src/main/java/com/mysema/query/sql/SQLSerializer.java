@@ -8,12 +8,9 @@ package com.mysema.query.sql;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.mysema.query.JoinExpression;
-import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.sql.oracle.SumOver;
@@ -103,7 +100,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         // from
         serializeSources(joins);
 
-        //where 
+        // where 
         if (where != null) {
             append(templates.getWhere()).handle(where);
         }

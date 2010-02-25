@@ -61,20 +61,21 @@ enum MethodType{
                 return MAP_ACCESS;    
             }            
             
-        }else if (name.equals("hashCode") && paramCount == 0 && returnType.equals(int.class)){
-            return HASH_CODE;
+        }else if (paramCount == 0){
+            if (name.equals("hashCode") && returnType.equals(int.class)){
+                return HASH_CODE;
+                
+            }else if (name.equals("size") && returnType.equals(int.class)){
+                return SIZE;
+                
+            }else if (name.equals("toString") && returnType.equals(String.class)){
+                return TO_STRING;
+                
+            }else if (name.equals("__mappedPath") && returnType.equals(PEntity.class)){
+                return GET_MAPPED_PATH;    
+            }    
             
-        }else if (name.equals("size") && paramCount == 0 && returnType.equals(int.class)){
-            return SIZE;
-            
-        }else if (name.equals("toString") && paramCount == 0 && returnType.equals(String.class)){
-            return TO_STRING;
-            
-        }else if (name.equals("__mappedPath") && paramCount == 0 && returnType.equals(PEntity.class)){
-            return GET_MAPPED_PATH;
-                        
-        }else{
-            return null;
         }
+        return null;
     }
 }

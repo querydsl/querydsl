@@ -15,18 +15,20 @@ import javax.annotation.Nullable;
  * @author tiwe
  *
  */
+// TODO : take varName into account
 public class TypeExtendsModel extends TypeModelAdapter{
 
     @Nullable
-    private String varName;
+    private final String varName;
     
     public TypeExtendsModel(String varName, TypeModel typeModel) {
-        this(typeModel);
+        super(typeModel);
         this.varName = varName;
     }
 
     public TypeExtendsModel(TypeModel typeModel) {
         super(typeModel);
+        varName = null;
     }
 
     @Override
@@ -36,5 +38,10 @@ public class TypeExtendsModel extends TypeModelAdapter{
         }            
         getTypeModel().appendLocalGenericName(context, builder, true);
     }
+    
+    public String getVarName(){
+        return varName;
+    }
+    
 
 }
