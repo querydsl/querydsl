@@ -27,7 +27,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
 
     private static final String SPACE = " ";
 
-    private static final String NL = "\n";
+    private static final String NEWLINE = "\n";
 
     private static final String ASSIGN = " = ";
 
@@ -282,7 +282,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
         for (String segment : segments){
             append(segment);
         }        
-        return append(NL);
+        return append(NEWLINE);
     }
 
     @Override
@@ -295,7 +295,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
 
     @Override
     public CodeWriter nl() throws IOException {
-        return append(NL);        
+        return append(NEWLINE);        
     }
 
     @Override
@@ -336,27 +336,27 @@ public final class JavaWriter implements Appendable, CodeWriter{
 
     @Override
     public CodeWriter privateStaticFinal(String type, String name, String value) throws IOException {
-        return stmt(PRIVATE_STATIC_FINAL + type + SPACE + name + ASSIGN + value);
+        return stmt(PRIVATE_STATIC_FINAL + type + SPACE + name + ASSIGN + value).nl();
     }
     
     @Override
     public CodeWriter protectedField(String type, String name) throws IOException {
-        return stmt(PROTECTED + type + SPACE + name);        
+        return stmt(PROTECTED + type + SPACE + name).nl();        
     }
 
     @Override
     public CodeWriter publicFinal(String type, String name) throws IOException {
-        return stmt(PUBLIC_FINAL + type + SPACE + name);        
+        return stmt(PUBLIC_FINAL + type + SPACE + name).nl();        
     }
 
     @Override
     public CodeWriter publicFinal(String type, String name, String value) throws IOException {
-        return stmt(PUBLIC_FINAL + type + SPACE + name + ASSIGN + value);
+        return stmt(PUBLIC_FINAL + type + SPACE + name + ASSIGN + value).nl();
     }
 
     @Override
     public CodeWriter publicStaticFinal(String type, String name, String value) throws IOException {
-        return stmt(PUBLIC_STATIC_FINAL + type + SPACE + name + ASSIGN + value);
+        return stmt(PUBLIC_STATIC_FINAL + type + SPACE + name + ASSIGN + value).nl();
     }
 
     @Override
@@ -368,7 +368,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
     }
 
     private CodeWriter stmt(String stmt) throws IOException{
-        return line(stmt + SEMICOLON).nl();
+        return line(stmt + SEMICOLON);
     }
     
     @Override
