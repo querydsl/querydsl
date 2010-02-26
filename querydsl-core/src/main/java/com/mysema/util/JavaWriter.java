@@ -23,7 +23,47 @@ import com.mysema.commons.lang.Assert;
  */
 public final class JavaWriter implements Appendable, CodeWriter{
         
+    private static final String QUOTE = "\"";
+
+    private static final String SPACE = " ";
+
+    private static final String NL = "\n";
+
+    private static final String ASSIGN = " = ";
+
     private static final String COMMA = ", ";
+
+    private static final String DOT = ".";
+
+    private static final String EXTENDS = " extends ";
+
+    private static final String IMPLEMENTS = " implements ";
+
+    private static final String IMPORT = "import ";
+
+    private static final String IMPORT_STATIC = "import static ";
+
+    private static final String JAVA_LANG = "java.lang";
+
+    private static final String PACKAGE = "package ";
+
+    private static final String PRIVATE_STATIC_FINAL = "private static final ";
+
+    private static final String PROTECTED = "protected ";
+
+    private static final String PUBLIC = "public ";
+
+    private static final String PUBLIC_CLASS = "public class ";
+
+    private static final String PUBLIC_FINAL = "public final ";
+
+    private static final String PUBLIC_INTERFACE = "public interface ";
+
+    private static final String PUBLIC_STATIC = "public static ";
+
+    private static final String PUBLIC_STATIC_FINAL = "public static final ";
+
+    private static final String SEMICOLON = ";";
     
     private final Appendable appendable;
     
@@ -64,7 +104,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
     private void annotationConstant(Object value) throws IOException{
          if (value instanceof Class){
              Class<?> clazz = (Class)value;
-             if (!clazz.getPackage().getName().equals("java.lang")){
+             if (!clazz.getPackage().getName().equals(JAVA_LANG)){
                  append(clazz.getName()+".class");
              }else{
                  append(clazz.getSimpleName()+".class");
@@ -73,9 +113,9 @@ public final class JavaWriter implements Appendable, CodeWriter{
              append(value.toString());
          }else if (value instanceof Enum){
              Enum enumValue = (Enum)value;
-             append(enumValue.getDeclaringClass().getName()+"."+enumValue.name());
+             append(enumValue.getDeclaringClass().getName()+DOT+enumValue.name());
          }else if (value instanceof String){
-             append("\"" + StringEscapeUtils.escapeJava(value.toString())+"\"");
+             append(QUOTE + StringEscapeUtils.escapeJava(value.toString()) + QUOTE);
          }else{
              throw new IllegalArgumentException("Unsupported annotation value : " + value);
          }
@@ -101,12 +141,12 @@ public final class JavaWriter implements Appendable, CodeWriter{
 
     @Override
     public CodeWriter beginClass(String simpleName, String superClass, String... interfaces) throws IOException{
-        append(indent + "public class " + simpleName);
+        append(indent + PUBLIC_CLASS + simpleName);
         if (superClass != null){
-            append(" extends " + superClass);
+            append(EXTENDS + superClass);
         }
         if (interfaces.length > 0){
-            append(" implements ").params(interfaces);
+            append(IMPLEMENTS).join(COMMA, interfaces);
         }
         append(" {\n\n");
         goIn();
@@ -120,21 +160,21 @@ public final class JavaWriter implements Appendable, CodeWriter{
  
     @Override
     public <T> CodeWriter beginConstructor(Collection<T> parameters, Transformer<T,String> transformer) throws IOException {
-        append(indent + "public " + type + "(").params(parameters, transformer).append(") {\n");
+        append(indent + PUBLIC + type).params(parameters, transformer).append(" {\n");
         return goIn();        
     }
     
     @Override
     public CodeWriter beginConstructor(String... parameters) throws IOException{
-        append(indent + "public " + type + "(").params(parameters).append(") {\n");
+        append(indent + PUBLIC + type).params(parameters).append(" {\n");
         return goIn();
     }
     
     @Override
     public CodeWriter beginInterface(String simpleName, String... interfaces) throws IOException {
-        append(indent + "public interface " + simpleName);
+        append(indent + PUBLIC_INTERFACE + simpleName);
         if (interfaces.length > 0){
-            append(" extends ").params(interfaces);
+            append(EXTENDS).join(COMMA, interfaces);
         }
         append(" {\n\n");
         goIn();
@@ -158,19 +198,19 @@ public final class JavaWriter implements Appendable, CodeWriter{
     
     @Override
     public <T> CodeWriter beginMethod(String returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException {
-        append(indent + "public " + returnType + " " + methodName + "(").params(parameters, transformer).append(") {\n");
+        append(indent + PUBLIC + returnType + SPACE + methodName).params(parameters, transformer).append(" {\n");
         return goIn();
     }
     
     @Override
     public CodeWriter beginMethod(String returnType, String methodName, String... args) throws IOException{
-        append(indent + "public " + returnType + " " + methodName + "(").params(args).append(") {\n");
+        append(indent + PUBLIC + returnType + SPACE + methodName).params(args).append(" {\n");
         return goIn();
     }
 
     @Override
     public <T> CodeWriter beginStaticMethod(String returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException {
-        append(indent + "public static " + returnType + " " + methodName + "(").params(parameters, transformer).append(") {\n");
+        append(indent + PUBLIC_STATIC + returnType + SPACE + methodName).params(parameters, transformer).append(" {\n");
         return goIn();        
     }
 
@@ -195,7 +235,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
     @Override
     public CodeWriter imports(Class<?>... imports) throws IOException{
         for (Class<?> cl : imports){
-            line("import " + cl.getName() + ";");
+            line(IMPORT + cl.getName() + SEMICOLON);
         }
         return this;
     }
@@ -203,7 +243,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
     @Override
     public CodeWriter imports(Package... imports) throws IOException {
         for (Package p : imports){
-            line("import " + p.getName() + ".*;");
+            line(IMPORT + p.getName() + ".*;");
         }
         return this;
     }
@@ -242,7 +282,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
         for (String segment : segments){
             append(segment);
         }        
-        return append("\n");
+        return append(NL);
     }
 
     @Override
@@ -255,15 +295,16 @@ public final class JavaWriter implements Appendable, CodeWriter{
 
     @Override
     public CodeWriter nl() throws IOException {
-        return append("\n");        
+        return append(NL);        
     }
 
     @Override
     public CodeWriter packageDecl(String packageName) throws IOException{
-        return line("package " + packageName + ";");
+        return line(PACKAGE + packageName + SEMICOLON);
     }
 
     private <T> CodeWriter params(Collection<T> parameters, Transformer<T,String> transformer) throws IOException{
+        append("(");
         boolean first = true;
         for (T param : parameters){
             if (!first){
@@ -272,54 +313,62 @@ public final class JavaWriter implements Appendable, CodeWriter{
             append(transformer.transform(param));
             first = false;
         }
+        append(")");
         return this;
     }
 
     private JavaWriter params(String... params) throws IOException{
-        for (int i = 0; i < params.length; i++){
+        append("(");
+        join(COMMA, params);
+        append(")");
+        return this;
+    }
+    
+    private JavaWriter join(String sep, String... args) throws IOException{
+        for (int i = 0; i < args.length; i++){
             if (i > 0){
-                append(COMMA);
+                append(sep);
             }
-            append(params[i]);
+            append(args[i]);
         }
         return this;
     }
 
-    private CodeWriter stmt(String stmt) throws IOException{
-        return line(stmt + ";").nl();
+    @Override
+    public CodeWriter privateStaticFinal(String type, String name, String value) throws IOException {
+        return stmt(PRIVATE_STATIC_FINAL + type + SPACE + name + ASSIGN + value);
     }
     
     @Override
-    public CodeWriter privateStaticFinal(String type, String name, String value) throws IOException {
-        return stmt("private static final " + type + " " + name + " = " + value);
-    }
-
-    @Override
     public CodeWriter protectedField(String type, String name) throws IOException {
-        return stmt("protected " + type + " " + name);        
+        return stmt(PROTECTED + type + SPACE + name);        
     }
 
     @Override
     public CodeWriter publicFinal(String type, String name) throws IOException {
-        return stmt("public final " + type + " " + name);        
+        return stmt(PUBLIC_FINAL + type + SPACE + name);        
     }
 
     @Override
     public CodeWriter publicFinal(String type, String name, String value) throws IOException {
-        return stmt("public final " + type + " " + name + " = " + value);
+        return stmt(PUBLIC_FINAL + type + SPACE + name + ASSIGN + value);
     }
 
     @Override
     public CodeWriter publicStaticFinal(String type, String name, String value) throws IOException {
-        return stmt("public static final " + type + " " + name + " = " + value);
+        return stmt(PUBLIC_STATIC_FINAL + type + SPACE + name + ASSIGN + value);
     }
 
     @Override
     public CodeWriter staticimports(Class<?>... imports) throws IOException{
         for (Class<?> cl : imports){
-            line("import static " + cl.getName() + ".*;");
+            line(IMPORT_STATIC + cl.getName() + ".*;");
         }
         return this;
+    }
+
+    private CodeWriter stmt(String stmt) throws IOException{
+        return line(stmt + SEMICOLON).nl();
     }
     
     @Override
