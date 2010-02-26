@@ -46,10 +46,9 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
         throw new RuntimeException("Not yet implemented");
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> JDOQLUpdateClause set(Path<T> path, T value) {
-        metadata.addProjection(((Expr<T>)path).eq(value));
+        metadata.addProjection(path.asExpr().eq(value));
         return this;
     }
 

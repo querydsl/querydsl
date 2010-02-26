@@ -39,7 +39,7 @@ public class ColQuerySerializer extends SerializerBase<ColQuerySerializer> {
         
         if (pathType == PathType.PROPERTY){            
             String prefix = "get";
-            if (((Expr<?>) path).getType() != null && ((Expr<?>) path).getType().equals(Boolean.class)) {
+            if (path.getType() != null && path.getType().equals(Boolean.class)) {
                 prefix = "is";
             }
             handle((Expr<?>) path.getMetadata().getParent());

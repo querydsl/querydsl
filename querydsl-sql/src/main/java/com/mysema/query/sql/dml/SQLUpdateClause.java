@@ -68,10 +68,9 @@ public class SQLUpdateClause implements UpdateClause<SQLUpdateClause>{
         }        
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> SQLUpdateClause set(Path<T> path, T value) {
-        metadata.addProjection(((Expr<T>)path).eq(value));
+        metadata.addProjection(path.asExpr().eq(value));
         return this;
     }
 

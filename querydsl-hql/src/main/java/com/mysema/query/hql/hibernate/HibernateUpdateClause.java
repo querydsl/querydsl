@@ -60,10 +60,9 @@ public class HibernateUpdateClause implements UpdateClause<HibernateUpdateClause
         return query.executeUpdate();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> HibernateUpdateClause set(Path<T> path, T value) {
-        metadata.addProjection(((Expr<T>)path).eq(value));
+        metadata.addProjection(path.asExpr().eq(value));
         return this;
     }
 

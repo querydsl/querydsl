@@ -8,6 +8,8 @@ package com.mysema.query.alias;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 
@@ -115,6 +117,7 @@ public class AliasFactory {
      * @return
      */
     @SuppressWarnings("unchecked")
+    @Nullable
     public <A extends Expr<?>> A getCurrent() {
         return (A) current.get();
     }
@@ -123,6 +126,7 @@ public class AliasFactory {
      * @param <A>
      * @return
      */
+    @Nullable
     public <A extends Expr<?>> A getCurrentAndReset() {
         A rv = this.<A> getCurrent();
         reset();

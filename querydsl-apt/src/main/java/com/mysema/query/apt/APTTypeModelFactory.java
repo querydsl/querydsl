@@ -215,6 +215,7 @@ public class APTTypeModelFactory {
         return create(typeElement, TypeCategory.SIMPLE, t.getTypeArguments());
     }
     
+    @Nullable
     private static Class<?> safeForName(String name){
         try {
             return Class.forName(name);
