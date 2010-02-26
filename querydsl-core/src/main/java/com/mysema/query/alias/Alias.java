@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.types.expr.Expr;
@@ -80,6 +82,7 @@ public final class Alias {
     }
 
     @SuppressWarnings("unchecked")
+    @Nullable
     public static <D> PEntity<D> $(D arg) {
         PEntity<D> rv = aliasFactory.<PEntity<D>> getCurrentAndReset();
         if (rv != null) {

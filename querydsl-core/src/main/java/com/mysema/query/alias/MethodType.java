@@ -6,6 +6,10 @@
 package com.mysema.query.alias;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 
@@ -15,66 +19,60 @@ import com.mysema.query.types.path.PEntity;
  * @author tiwe
  *
  */
-enum MethodType{
+public enum MethodType{
     /**
      * 
      */
-    GET_MAPPED_PATH,
+    GET_MAPPED_PATH("__mappedPath", PEntity.class, ManagedObject.class),
     /**
      * 
      */
-    GETTER,
+    GETTER("(get|is).+", Object.class, Object.class),
     /**
      * 
      */
-    HASH_CODE,
+    HASH_CODE("hashCode", int.class, Object.class),
     /**
      * 
      */
-    LIST_ACCESS,
+    LIST_ACCESS("get", Object.class, List.class, int.class),
     /**
      * 
      */
-    MAP_ACCESS,    
+    MAP_ACCESS("get", Object.class, Map.class, Object.class),    
     /**
      * 
      */
-    SIZE,
+    SIZE("size", int.class, Object.class),
     /**
      * 
      */
-    TO_STRING;
+    TO_STRING("toString",String.class, Object.class);
+    
+    private final Pattern pattern; 
+    
+    private final Class<?> returnType;
+    
+    private final Class<?> ownerType;
+    
+    private final Class<?>[] paramTypes;
+    
+    private MethodType(String namePattern, Class<?> returnType, Class<?> ownerType, Class<?>... paramTypes){
+        this.pattern = Pattern.compile(namePattern);
+        this.returnType = returnType;
+        this.ownerType = ownerType;
+        this.paramTypes = paramTypes;
+    }
     
     @Nullable
     public static MethodType get(Method method) {
-        String name = method.getName();
-        int paramCount = method.getParameterTypes().length;
-        Class<?> returnType = method.getReturnType();
-        
-        if ((name.startsWith("get") || name.startsWith("is")) && paramCount == 0){
-            return GETTER;
-            
-        }else if (name.equals("get") && paramCount == 1){
-            if (method.getParameterTypes()[0].equals(int.class)){
-                return LIST_ACCESS;    
-            }else{
-                return MAP_ACCESS;    
-            }            
-            
-        }else if (paramCount == 0){
-            if (name.equals("hashCode") && returnType.equals(int.class)){
-                return HASH_CODE;
-                
-            }else if (name.equals("size") && returnType.equals(int.class)){
-                return SIZE;
-                
-            }else if (name.equals("toString") && returnType.equals(String.class)){
-                return TO_STRING;
-                
-            }else if (name.equals("__mappedPath") && returnType.equals(PEntity.class)){
-                return GET_MAPPED_PATH;    
-            }    
-            
+        for (MethodType methodType : values()){
+            if (methodType.pattern.matcher(method.getName()).matches() 
+                && (methodType.returnType == Object.class || methodType.returnType.isAssignableFrom(method.getReturnType()))
+                && (methodType.ownerType == Object.class || methodType.ownerType.isAssignableFrom(method.getDeclaringClass()))
+                && Arrays.equals(methodType.paramTypes, method.getParameterTypes())){
+                return methodType;
+            }
         }
         return null;
     }

@@ -7,10 +7,7 @@ package com.mysema.query.alias;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.lang.reflect.WildcardType;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -21,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
 
@@ -29,9 +25,6 @@ import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.LoggerFactory;
-
-import sun.util.logging.resources.logging;
 
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EMap;
@@ -52,6 +45,7 @@ import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.Path;
 import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.types.path.PathMetadataFactory;
+import com.mysema.util.ReflectionUtils;
 
 /**
  * PropertyAccessInvocationHandler is the main InvocationHandler class for the
@@ -73,30 +67,6 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
     public PropertyAccessInvocationHandler(Expr<?> path, AliasFactory aliasFactory) {
         this.path = path;
         this.aliasFactory = aliasFactory;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Nullable
-    private Class<?> getTypeParameter(Type type, int index) {
-        if (type instanceof ParameterizedType) {
-            ParameterizedType ptype = (ParameterizedType) type;
-            Type[] targs = ptype.getActualTypeArguments();
-            if (targs[index] instanceof WildcardType) {
-                WildcardType wildcardType = (WildcardType) targs[index];
-                return (Class<?>) wildcardType.getUpperBounds()[0];
-            } else if (targs[index] instanceof TypeVariable) {
-                return (Class<?>) ((TypeVariable) targs[index]).getGenericDeclaration();
-            } else if (targs[index] instanceof ParameterizedType) {
-                return (Class<?>) ((ParameterizedType) targs[index]).getRawType();
-            } else {
-                try {
-                    return (Class<?>) targs[index];
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return null;
     }
 
     public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
@@ -135,11 +105,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             } else {
                 PathMetadata<Integer> pm = PathMetadataFactory.forListAccess((PList<?, ?>) path, (Integer) args[0]);
                 Class<?> elementType = ((ECollection<?,?>) path).getElementType();
-                if (elementType != null) {
-                    rv = newInstance(elementType, elementType, proxy, propKey, pm);
-                } else {
-                    rv = newInstance(method.getReturnType(), method.getGenericReturnType(), proxy, propKey, pm);
-                }
+                rv = newInstance(elementType, elementType, proxy, propKey, pm);
             }
             aliasFactory.setCurrent(propToExpr.get(propKey));
 
@@ -150,11 +116,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             } else {
                 PathMetadata<?> pm = PathMetadataFactory.forMapAccess((PMap<?, ?, ?>) path, args[0]);
                 Class<?> valueType = ((EMap<?, ?>) path).getValueType();
-                if (valueType != null) {
-                    rv = newInstance(valueType, valueType, proxy, propKey, pm);
-                } else {
-                    rv = newInstance(method.getReturnType(), method.getGenericReturnType(), proxy, propKey, pm);
-                }
+                rv = newInstance(valueType, valueType, proxy, propKey, pm);
             }
             aliasFactory.setCurrent(propToExpr.get(propKey));
 
@@ -233,7 +195,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             rv = Boolean.TRUE;
 
         } else if (List.class.isAssignableFrom(type)) {
-            final Class<Object> elementType = (Class)getTypeParameter(genericType, 0);
+            final Class<Object> elementType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
             path = new PList<Object,PEntity<Object>>(elementType, (Class)PEntity.class, pm){
                 @Override
                 public PEntity get(Expr<Integer> index) {
@@ -247,18 +209,18 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Set.class.isAssignableFrom(type)) {
-            Class<?> elementType = getTypeParameter(genericType, 0);
+            Class<?> elementType = ReflectionUtils.getTypeParameter(genericType, 0);
             path = new PSet(elementType, elementType.getName(), pm);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Collection.class.isAssignableFrom(type)) {
-            Class<?> elementType = getTypeParameter(genericType, 0);
+            Class<?> elementType = ReflectionUtils.getTypeParameter(genericType, 0);
             path = new PCollection(elementType, elementType.getSimpleName(), pm);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Map.class.isAssignableFrom(type)) {
-            Class<Object> keyType = (Class)getTypeParameter(genericType, 0);
-            final Class<Object> valueType = (Class)getTypeParameter(genericType, 1);
+            Class<Object> keyType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
+            final Class<Object> valueType = (Class)ReflectionUtils.getTypeParameter(genericType, 1);
             path = new PMap<Object,Object,PEntity<Object>>(keyType, valueType, (Class)PEntity.class, pm){
                 @Override
                 public PEntity get(Expr<Object> key) {
