@@ -9,6 +9,10 @@ import org.hibernate.Hibernate;
 import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.dialect.function.SQLFunctionTemplate;
 
+/**
+ * @author tiwe
+ *
+ */
 public class ExtendedHSQLDialect extends HSQLDialect{
 
     public ExtendedHSQLDialect() {

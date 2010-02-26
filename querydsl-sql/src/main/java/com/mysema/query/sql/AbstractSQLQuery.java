@@ -31,6 +31,7 @@ import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.ObjectSubQuery;
 import com.mysema.query.types.query.SubQuery;
+import com.mysema.util.JDBCUtil;
 
 /**
  * AbstractSqlQuery is the base type for SQL query implementations

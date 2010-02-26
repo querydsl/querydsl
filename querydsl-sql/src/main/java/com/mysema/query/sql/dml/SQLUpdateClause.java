@@ -12,13 +12,13 @@ import java.sql.SQLException;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.UpdateClause;
-import com.mysema.query.sql.JDBCUtil;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.Path;
+import com.mysema.util.JDBCUtil;
 
 /**
  * SQLUpdateClause defines a UPDATE clause
@@ -28,7 +28,7 @@ import com.mysema.query.types.path.Path;
  */
 public class SQLUpdateClause implements UpdateClause<SQLUpdateClause>{
     
-    private final QueryMetadata md = new DefaultQueryMetadata();
+    private final QueryMetadata metadata = new DefaultQueryMetadata();
     
     private final Connection connection;
     
@@ -37,13 +37,13 @@ public class SQLUpdateClause implements UpdateClause<SQLUpdateClause>{
     public SQLUpdateClause(Connection connection, SQLTemplates templates, PEntity<?> entity){
         this.connection = connection;
         this.templates = templates;
-        md.addFrom(entity);        
+        metadata.addFrom(entity);        
     }
     
     @Override
     public long execute() {
         SQLSerializer serializer = new SQLSerializer(templates);
-        serializer.serializeForUpdate(md);
+        serializer.serializeForUpdate(metadata);
         String queryString = serializer.toString();
         
         PreparedStatement stmt = null;
@@ -71,13 +71,13 @@ public class SQLUpdateClause implements UpdateClause<SQLUpdateClause>{
     @SuppressWarnings("unchecked")
     @Override
     public <T> SQLUpdateClause set(Path<T> path, T value) {
-        md.addProjection(((Expr<T>)path).eq(value));
+        metadata.addProjection(((Expr<T>)path).eq(value));
         return this;
     }
 
     @Override
     public SQLUpdateClause where(EBoolean... o) {
-        md.addWhere(o);
+        metadata.addWhere(o);
         return this;
     }
 

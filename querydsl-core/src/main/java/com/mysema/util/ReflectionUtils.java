@@ -8,6 +8,9 @@ package com.mysema.util;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
 
 import javax.annotation.Nullable;
 
@@ -18,11 +21,11 @@ import org.apache.commons.lang.StringUtils;
  * @author tiwe
  *
  */
-public final class PropertyUtils {
+public final class ReflectionUtils {
     
     private static final AnnotatedElement EMPTY = new AnnotatedElementAdapter();
     
-    private PropertyUtils(){}
+    private ReflectionUtils(){}
     
     public static AnnotatedElement getAnnotatedElement(Class<?> beanClass, String propertyName, Class<?> propertyClass){
         Field field = getField(beanClass, propertyName);
@@ -62,6 +65,26 @@ public final class PropertyUtils {
         }
         return null;
         
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Nullable
+    public static Class<?> getTypeParameter(java.lang.reflect.Type type, int index) {
+        if (type instanceof ParameterizedType) {
+            ParameterizedType ptype = (ParameterizedType) type;
+            java.lang.reflect.Type[] targs = ptype.getActualTypeArguments();
+            if (targs[index] instanceof WildcardType) {
+                WildcardType wildcardType = (WildcardType) targs[index];
+                return (Class<?>) wildcardType.getUpperBounds()[0];
+            } else if (targs[index] instanceof TypeVariable) {
+                return (Class<?>) ((TypeVariable) targs[index]).getGenericDeclaration();
+            } else if (targs[index] instanceof ParameterizedType) {
+                return (Class<?>) ((ParameterizedType) targs[index]).getRawType();
+            } else {
+                return (Class<?>) targs[index];
+            }
+        }
+        return null;
     }
     
 }

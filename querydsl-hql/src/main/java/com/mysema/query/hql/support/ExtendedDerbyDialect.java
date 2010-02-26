@@ -15,6 +15,10 @@ import org.hibernate.dialect.function.CastFunction;
 import org.hibernate.dialect.function.VarArgsSQLFunction;
 import org.hibernate.engine.SessionFactoryImplementor;
 
+/**
+ * @author tiwe
+ *
+ */
 public class ExtendedDerbyDialect extends DerbyDialect{
     
     public ExtendedDerbyDialect(){

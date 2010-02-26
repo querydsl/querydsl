@@ -15,11 +15,15 @@ import java.util.Collection;
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.lang.StringEscapeUtils;
 
+import com.mysema.commons.lang.Assert;
+
 /**
  * @author tiwe
  *
  */
 public final class JavaWriter implements Appendable, CodeWriter{
+        
+    private static final String COMMA = ", ";
     
     private final Appendable appendable;
     
@@ -28,7 +32,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
     private String type;
     
     public JavaWriter(Appendable appendable){
-        this.appendable = appendable;
+        this.appendable = Assert.notNull(appendable);
     }
 
     @Override
@@ -37,7 +41,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
         boolean first = true;        
         for (Method method : annotation.annotationType().getDeclaredMethods()){
             if (!first){
-                append(",");
+                append(COMMA);
             }
             append(method.getName()+"=");
             try {
@@ -54,9 +58,10 @@ public final class JavaWriter implements Appendable, CodeWriter{
         }        
         return append(")").nl();
      }
-
+    
+    
     @SuppressWarnings("unchecked")
-     private void annotationConstant(Object value) throws IOException{
+    private void annotationConstant(Object value) throws IOException{
          if (value instanceof Class){
              Class<?> clazz = (Class)value;
              if (!clazz.getPackage().getName().equals("java.lang")){
@@ -94,6 +99,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
         return this;
     }
 
+    @Override
     public CodeWriter beginClass(String simpleName, String superClass, String... interfaces) throws IOException{
         append(indent + "public class " + simpleName);
         if (superClass != null){
@@ -112,16 +118,19 @@ public final class JavaWriter implements Appendable, CodeWriter{
         return this;
     }
  
+    @Override
     public <T> CodeWriter beginConstructor(Collection<T> parameters, Transformer<T,String> transformer) throws IOException {
         append(indent + "public " + type + "(").params(parameters, transformer).append(") {\n");
         return goIn();        
     }
     
+    @Override
     public CodeWriter beginConstructor(String... parameters) throws IOException{
         append(indent + "public " + type + "(").params(parameters).append(") {\n");
         return goIn();
     }
     
+    @Override
     public CodeWriter beginInterface(String simpleName, String... interfaces) throws IOException {
         append(indent + "public interface " + simpleName);
         if (interfaces.length > 0){
@@ -147,21 +156,25 @@ public final class JavaWriter implements Appendable, CodeWriter{
         return this;
     }
     
+    @Override
     public <T> CodeWriter beginMethod(String returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException {
         append(indent + "public " + returnType + " " + methodName + "(").params(parameters, transformer).append(") {\n");
         return goIn();
     }
     
+    @Override
     public CodeWriter beginMethod(String returnType, String methodName, String... args) throws IOException{
         append(indent + "public " + returnType + " " + methodName + "(").params(args).append(") {\n");
         return goIn();
     }
 
+    @Override
     public <T> CodeWriter beginStaticMethod(String returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException {
         append(indent + "public static " + returnType + " " + methodName + "(").params(parameters, transformer).append(") {\n");
         return goIn();        
     }
 
+    @Override
     public CodeWriter end() throws IOException{
         goOut();
         return line("}\n");
@@ -179,7 +192,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
         return this;
     }
     
-
+    @Override
     public CodeWriter imports(Class<?>... imports) throws IOException{
         for (Class<?> cl : imports){
             line("import " + cl.getName() + ";");
@@ -187,6 +200,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
         return this;
     }
 
+    @Override
     public CodeWriter imports(Package... imports) throws IOException {
         for (Package p : imports){
             line("import " + p.getName() + ".*;");
@@ -194,6 +208,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
         return this;
     }
     
+    @Override
     public CodeWriter javadoc(String... lines) throws IOException {
         line("/**");
         for (String line : lines){
@@ -202,12 +217,13 @@ public final class JavaWriter implements Appendable, CodeWriter{
         return line(" */");
     }
 
+    @Override
     public String join(String prefix, String suffix, Iterable<String> args) {
         StringBuilder builder = new StringBuilder();
         boolean first = true;
         for (String arg : args){
             if (!first){
-                builder.append(", ");
+                builder.append(COMMA);
             }
             builder.append(prefix).append(arg).append(suffix);
             first = false;
@@ -215,10 +231,12 @@ public final class JavaWriter implements Appendable, CodeWriter{
         return builder.toString();
     }
 
+    @Override
     public String join(String prefix, String suffix, String... args) {
         return join(prefix, suffix, Arrays.asList(args));
     }
     
+    @Override
     public CodeWriter line(String... segments) throws IOException{
         append(indent);
         for (String segment : segments){
@@ -227,6 +245,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
         return append("\n");
     }
 
+    @Override
     public CodeWriter lines(String... lines) throws IOException{
         for (String line : lines){
             line(line);
@@ -234,10 +253,12 @@ public final class JavaWriter implements Appendable, CodeWriter{
         return this;
     }
 
+    @Override
     public CodeWriter nl() throws IOException {
         return append("\n");        
     }
 
+    @Override
     public CodeWriter packageDecl(String packageName) throws IOException{
         return line("package " + packageName + ";");
     }
@@ -246,7 +267,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
         boolean first = true;
         for (T param : parameters){
             if (!first){
-                append(", ");
+                append(COMMA);
             }
             append(transformer.transform(param));
             first = false;
@@ -257,38 +278,43 @@ public final class JavaWriter implements Appendable, CodeWriter{
     private JavaWriter params(String... params) throws IOException{
         for (int i = 0; i < params.length; i++){
             if (i > 0){
-                append(", ");
+                append(COMMA);
             }
             append(params[i]);
         }
         return this;
     }
 
+    private CodeWriter stmt(String stmt) throws IOException{
+        return line(stmt + ";").nl();
+    }
+    
+    @Override
     public CodeWriter privateStaticFinal(String type, String name, String value) throws IOException {
-        line("private static final " + type + " " + name + " = " + value + ";");
-        return nl();        
+        return stmt("private static final " + type + " " + name + " = " + value);
     }
 
+    @Override
     public CodeWriter protectedField(String type, String name) throws IOException {
-        line("protected " + type + " " + name + ";");
-        return nl();        
+        return stmt("protected " + type + " " + name);        
     }
 
+    @Override
     public CodeWriter publicFinal(String type, String name) throws IOException {
-        line("public final " + type + " " + name + ";");
-        return nl();        
+        return stmt("public final " + type + " " + name);        
     }
 
+    @Override
     public CodeWriter publicFinal(String type, String name, String value) throws IOException {
-        line("public final " + type + " " + name + " = " + value + ";");
-        return nl();        
+        return stmt("public final " + type + " " + name + " = " + value);
     }
 
+    @Override
     public CodeWriter publicStaticFinal(String type, String name, String value) throws IOException {
-        line("public static final " + type + " " + name + " = " + value + ";");
-        return nl();        
+        return stmt("public static final " + type + " " + name + " = " + value);
     }
 
+    @Override
     public CodeWriter staticimports(Class<?>... imports) throws IOException{
         for (Class<?> cl : imports){
             line("import static " + cl.getName() + ".*;");
@@ -296,7 +322,8 @@ public final class JavaWriter implements Appendable, CodeWriter{
         return this;
     }
     
-     public CodeWriter suppressWarnings(String type) throws IOException{
+    @Override
+    public CodeWriter suppressWarnings(String type) throws IOException{
         return line("@SuppressWarnings(\"" + type +"\")");
     }
 

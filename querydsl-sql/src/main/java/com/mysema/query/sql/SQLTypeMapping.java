@@ -10,7 +10,7 @@ import java.util.Map;
  * @author tiwe
  *
  */
-public class SQLTypeMapping {
+public final class SQLTypeMapping {
     
     private final Map<Integer, Class<?>> sqlToJavaType = new HashMap<Integer, Class<?>>();
     

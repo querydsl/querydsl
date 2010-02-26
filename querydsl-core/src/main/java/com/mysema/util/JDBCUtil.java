@@ -3,14 +3,12 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.sql;
+package com.mysema.util;
 
 import java.sql.PreparedStatement;
 import java.util.Collection;
 
 import org.apache.commons.lang.ClassUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author tiwe
@@ -18,16 +16,12 @@ import org.slf4j.LoggerFactory;
  */
 public class JDBCUtil {
     
-    private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
-    
     public static void setParameters(PreparedStatement stmt, Collection<Object> objects){
         int counter = 1;
         for (Object o : objects) {
             try {
                 setParameter(stmt, counter++, o);
             } catch (Exception e) {
-                String error = "Caught " + e.getClass().getName();
-                logger.error(error, e);
                 throw new RuntimeException(e.getMessage(), e);
             }
         }

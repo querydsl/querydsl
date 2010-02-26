@@ -17,7 +17,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.ClassUtils;
 
-import com.mysema.query.util.TypeUtil;
+import com.mysema.util.ReflectionUtils;
 
 /**
  * TypeModelFactory is a factory class for TypeModel instances
@@ -70,20 +70,20 @@ public class TypeModelFactory {
                 value = new ClassTypeModel(TypeCategory.SIMPLE, cl);
 
             } else if (Map.class.isAssignableFrom(cl)) {
-                TypeModel keyInfo = create(TypeUtil.getTypeParameter(genericType, 0));
-                TypeModel valueInfo = create(TypeUtil.getTypeParameter(genericType, 1));
+                TypeModel keyInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
+                TypeModel valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 1));
                 value = createMapType(keyInfo, valueInfo);
 
             } else if (List.class.isAssignableFrom(cl)) {
-                TypeModel valueInfo = create(TypeUtil.getTypeParameter(genericType, 0));
+                TypeModel valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
                 value = createListType(valueInfo);
 
             } else if (Set.class.isAssignableFrom(cl)) {
-                TypeModel valueInfo = create(TypeUtil.getTypeParameter(genericType, 0));
+                TypeModel valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
                 value = createSetType(valueInfo);
                 
             } else if (Collection.class.isAssignableFrom(cl)) {
-                TypeModel valueInfo = create(TypeUtil.getTypeParameter(genericType, 0));
+                TypeModel valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
                 value = createCollectionType(valueInfo);
                 
             }else if (Number.class.isAssignableFrom(cl) && Comparable.class.isAssignableFrom(cl)){    
