@@ -6,6 +6,8 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 /**
  * @author tiwe
  *
@@ -54,6 +56,7 @@ public final class SQLTypeMapping {
         sqlToJavaType.put(Types.BLOB, Object.class);
     }
 
+    @Nullable
     public Class<?> get(int sqlType) {
         return sqlToJavaType.get(sqlType);
     }

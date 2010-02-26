@@ -3,6 +3,7 @@ package com.mysema.query.apt;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
@@ -41,6 +42,7 @@ public interface Configuration {
     /**
      * @return
      */
+    @Nullable
     Class<? extends Annotation> getEmbeddableAnn();
     
     /**
@@ -72,11 +74,13 @@ public interface Configuration {
     /**
      * @return
      */
+    @Nullable
     Class<? extends Annotation> getSkipAnn();
 
     /**
      * @return
      */
+    @Nullable
     Class<? extends Annotation> getSuperTypeAnn();
     
     /**

@@ -36,6 +36,7 @@ class PathMixin<T> implements Path<T>, Serializable {
     
     private final Expr<T> self;
     
+    @Nullable
     private AnnotatedElement annotatedElement;
     
     @SuppressWarnings("unchecked")
