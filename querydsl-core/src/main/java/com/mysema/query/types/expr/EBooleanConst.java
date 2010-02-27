@@ -13,9 +13,10 @@ import com.mysema.query.types.Visitor;
  * @author tiwe
  *
  */
-@SuppressWarnings("serial")
 public final class EBooleanConst extends EBoolean implements Constant<Boolean>{
        
+    private static final long serialVersionUID = -4106376704553234781L;
+
     public static final EBoolean FALSE = new EBooleanConst(Boolean.FALSE);
     
     public static final EBoolean TRUE = new EBooleanConst(Boolean.TRUE);

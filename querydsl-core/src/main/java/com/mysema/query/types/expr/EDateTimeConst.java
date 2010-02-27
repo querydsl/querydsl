@@ -11,9 +11,10 @@ import com.mysema.query.types.Visitor;
  * @author tiwe
  *
  */
-@SuppressWarnings("serial")
 public final class EDateTimeConst<D extends java.util.Date> extends EDateTime<D> implements Constant<D>{
   
+    private static final long serialVersionUID = 4578416585568476532L;
+
     public static <D extends java.util.Date> EDateTime<D> create(D date){
         return new EDateTimeConst<D>(date);
     }

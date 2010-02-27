@@ -16,8 +16,9 @@ import java.util.Map;
  * @author tiwe
  *
  */
-@SuppressWarnings("serial")
 public class PathInits implements Serializable{
+
+    private static final long serialVersionUID = -2173980858324141095L;
 
     public static final PathInits DEFAULT = new PathInits();
     

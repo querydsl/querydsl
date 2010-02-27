@@ -13,9 +13,11 @@ package com.mysema.query.types.expr;
  *
  * @param <D>
  */
-@SuppressWarnings({"unchecked","serial"})
+@SuppressWarnings({"unchecked"})
 public abstract class EDateOrTime<D extends Comparable> extends EComparable<D> {
     
+    private static final long serialVersionUID = 1137918766051524298L;
+
     public EDateOrTime(Class<? extends D> type) {
         super(type);
     }

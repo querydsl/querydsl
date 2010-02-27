@@ -18,8 +18,9 @@ import com.mysema.query.types.expr.Expr;
  * 
  * @param <D> Java type
  */
-@SuppressWarnings("serial")
 public class PSimple<D> extends Expr<D> implements Path<D> {
+    
+    private static final long serialVersionUID = 3088836955328191852L;
     
     private final Path<D> pathMixin;
     

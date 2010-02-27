@@ -14,9 +14,15 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EDateTime;
 import com.mysema.query.types.expr.Expr;
 
-@SuppressWarnings("serial")
+/**
+ * @author tiwe
+ *
+ * @param <T>
+ */
 public class CDateTime<T extends Comparable<?>> extends EDateTime<T> implements Custom<T> {
     
+    private static final long serialVersionUID = -2289699666347576749L;
+
     public static <T extends Comparable<?>> EDateTime<T> create(Class<T> type, String template, Expr<?>... args){
         return new CDateTime<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expr<?>>asList(args));
     }

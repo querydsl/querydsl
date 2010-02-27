@@ -27,9 +27,10 @@ import com.mysema.query.types.expr.Expr;
  * @param <K> key type
  * @param <V> value type
  */
-@SuppressWarnings("serial")
 public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Path<Map<K, V>> {
     
+    private static final long serialVersionUID = -9113333728412016832L;
+
     private static final Set<Class<?>> typedClasses = new HashSet<Class<?>>(Arrays.<Class<?>>asList(
             PathBuilder.class,
             PComparable.class,

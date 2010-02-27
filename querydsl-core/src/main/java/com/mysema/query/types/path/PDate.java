@@ -16,8 +16,10 @@ import com.mysema.query.types.expr.EDate;
  *
  * @param <D>
  */
-@SuppressWarnings({"unchecked","serial"})
+@SuppressWarnings({"unchecked"})
 public class PDate<D extends Comparable> extends EDate<D> implements Path<D>{
+
+    private static final long serialVersionUID = -6030609920388740246L;
 
     private final Path<D> pathMixin;
     

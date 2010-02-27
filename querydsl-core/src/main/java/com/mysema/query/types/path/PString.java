@@ -17,8 +17,9 @@ import com.mysema.query.types.expr.EString;
  * @author tiwe
  * 
  */
-@SuppressWarnings("serial")
 public class PString extends EString implements Path<String> {
+
+    private static final long serialVersionUID = 7983490925756833429L;
 
     private final Path<String> pathMixin;
     

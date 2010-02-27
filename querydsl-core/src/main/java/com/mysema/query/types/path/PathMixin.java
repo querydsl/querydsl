@@ -24,9 +24,10 @@ import com.mysema.util.ReflectionUtils;
  *
  * @param <T>
  */
-@SuppressWarnings("serial")
 public final class PathMixin<T> implements Path<T>, Serializable {
     
+    private static final long serialVersionUID = -2498447742798348162L;
+
     @Nullable
     private volatile EBoolean isnull, isnotnull;
     

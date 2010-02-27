@@ -18,9 +18,10 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * 
  */
-@SuppressWarnings("serial")
 public class OString extends EString implements Operation<String, String> {
     
+    private static final long serialVersionUID = 6846556373847139549L;
+
     public static EString create(Operator<String> op, Expr<?>... args){
         return new OString(op, args);
     }

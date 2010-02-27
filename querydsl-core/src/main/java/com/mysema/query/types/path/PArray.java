@@ -26,9 +26,10 @@ import com.mysema.query.types.operation.Ops;
  * 
  * @param <E> component type
  */
-@SuppressWarnings("serial")
 public class PArray<E> extends Expr<E[]> implements Path<E[]>, EArray<E>{
     
+    private static final long serialVersionUID = 7795049264874048226L;
+
     private final Class<E> componentType;
     
     private final Path<E[]> pathMixin;

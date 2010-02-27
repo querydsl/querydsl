@@ -17,8 +17,9 @@ import com.mysema.query.types.expr.Expr;
  *
  * @param <D>
  */
-@SuppressWarnings("serial")
 public final class PathBuilder<D> extends PEntity<D>{
+    
+    private static final long serialVersionUID = -1666357914232685088L;
     
     private final Map<String,PathBuilder<?>> properties = new HashMap<String,PathBuilder<?>>();
 

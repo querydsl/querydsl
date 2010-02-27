@@ -20,9 +20,11 @@ import com.mysema.query.types.expr.Expr;
  * @param <OpType>
  * @param <D>
  */
-@SuppressWarnings("serial")
+
 public class ODateTime<OpType extends Comparable<?>, D extends Comparable<?>> extends
-EDateTime<D> implements Operation<OpType, D> {
+    EDateTime<D> implements Operation<OpType, D> {
+
+    private static final long serialVersionUID = 6523293814317168556L;
 
     /**
      * Factory method

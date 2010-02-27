@@ -16,9 +16,10 @@ import com.mysema.util.MathUtils;
  *
  * @param <D>
  */
-@SuppressWarnings("serial")
 public final class ENumberConst<D extends Number & Comparable<?>> extends ENumber<D> implements Constant<D>{
     
+    private static final long serialVersionUID = 2958824808974260439L;
+
     @SuppressWarnings("unchecked")
     private static final ENumber<Byte>[] BYTES = new ENumber[256];
     

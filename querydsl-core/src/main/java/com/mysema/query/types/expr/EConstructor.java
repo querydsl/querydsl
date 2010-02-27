@@ -21,9 +21,10 @@ import com.mysema.query.types.Visitor;
  * 
  * @param <D> Java type
  */
-@SuppressWarnings("serial")
 public class EConstructor<D> extends Expr<D> {
     
+    private static final long serialVersionUID = -602747921848073175L;
+
     public static <D> EConstructor<D> create(Class<D> type, Expr<?>... args){
         for (Constructor<?> c : type.getConstructors()){
             Class<?>[] paramTypes = c.getParameterTypes();            

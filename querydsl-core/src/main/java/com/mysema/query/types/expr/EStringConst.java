@@ -22,9 +22,10 @@ import com.mysema.query.types.Visitor;
  * @author tiwe
  *
  */
-@SuppressWarnings("serial")
 public final class EStringConst extends EString implements Constant<String>{
     
+    private static final long serialVersionUID = 5182804405789674556L;
+
     private static final Map<String,EString> CACHE;
     
     static{

@@ -27,8 +27,9 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @version $Id$
  */
-@SuppressWarnings("serial")
 public abstract class Expr<D> implements Serializable{
+
+    private static final long serialVersionUID = 8049453060731070043L;
 
     @Nullable
     private volatile ENumber<Long> count;

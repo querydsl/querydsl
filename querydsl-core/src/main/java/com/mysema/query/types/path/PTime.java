@@ -16,8 +16,10 @@ import com.mysema.query.types.expr.ETime;
  *
  * @param <D>
  */
-@SuppressWarnings({"unchecked","serial"})
+@SuppressWarnings({"unchecked"})
 public class PTime<D extends Comparable> extends ETime<D> implements Path<D>{
+
+    private static final long serialVersionUID = -1432775001949467763L;
 
     private final Path<D> pathMixin;
     

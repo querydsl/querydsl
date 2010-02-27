@@ -26,8 +26,9 @@ import com.mysema.query.types.operation.Ops;
  * @param <D>
  *            Java type
  */
-@SuppressWarnings("serial")
 public class PEntity<D> extends Expr<D> implements Path<D> {
+
+    private static final long serialVersionUID = -1845524024957822731L;
 
     private final Map<Class<?>, Object> casts = new HashMap<Class<?>, Object>();
 

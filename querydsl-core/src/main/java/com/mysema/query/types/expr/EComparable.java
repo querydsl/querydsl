@@ -15,9 +15,11 @@ import com.mysema.query.types.operation.Ops;
  *
  * @param <D>
  */
-@SuppressWarnings({"unchecked","serial"})
+@SuppressWarnings({"unchecked"})
 public abstract class EComparable<D extends Comparable> extends EComparableBase<D> {
     
+    private static final long serialVersionUID = 5761359576767404270L;
+
     public EComparable(Class<? extends D> type) {
         super(type);
     }

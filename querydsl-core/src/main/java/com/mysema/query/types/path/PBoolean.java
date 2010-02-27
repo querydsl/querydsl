@@ -17,8 +17,9 @@ import com.mysema.query.types.expr.EBoolean;
  * @see java.lang.Boolean
  * 
  */
-@SuppressWarnings("serial")
 public class PBoolean extends EBoolean implements Path<Boolean> {
+
+    private static final long serialVersionUID = 6590516706769430565L;
 
     private final Path<Boolean> pathMixin;
 

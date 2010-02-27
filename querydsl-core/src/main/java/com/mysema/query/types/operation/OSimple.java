@@ -19,9 +19,10 @@ import com.mysema.query.types.expr.Expr;
  * @param <OpType>
  * @param <D>
  */
-@SuppressWarnings("serial")
 public class OSimple<OpType, D> extends Expr<D> implements Operation<OpType, D> {
     
+    private static final long serialVersionUID = -285668548371034230L;
+
     /**
      * Factory method
      * 

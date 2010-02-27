@@ -20,9 +20,10 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  *
  */
-@SuppressWarnings("serial")
 public class CString extends EString implements Custom<String> {
     
+    private static final long serialVersionUID = 3181686132439356614L;
+
     public static EString create(String template, Expr<?>... args){
         return new CString(TemplateFactory.DEFAULT.create(template), Arrays.<Expr<?>>asList(args));
     }

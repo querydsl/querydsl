@@ -22,9 +22,11 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @see http://en.wikipedia.org/wiki/Gregorian_calendar
  */
-@SuppressWarnings({"unchecked","serial"})
+@SuppressWarnings({"unchecked"})
 public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     
+    private static final long serialVersionUID = 6054664454254721302L;
+
     private static final EDate<Date> CURRENT_DATE = currentDate(Date.class);
         
     /**

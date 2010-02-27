@@ -19,10 +19,12 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-@SuppressWarnings({"unchecked","serial"})
+@SuppressWarnings({"unchecked"})
 @Immutable
 public class OrderSpecifier<A extends Comparable> implements Serializable {
     
+    private static final long serialVersionUID = 3427652988262514678L;
+
     private final Order order;
     
     private final Expr<A> target;

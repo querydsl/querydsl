@@ -16,8 +16,9 @@ import com.mysema.query.types.expr.EBoolean;
  * @author tiwe
  * @version $Id$
  */
-@SuppressWarnings("serial")
 public final class BooleanBuilder extends EBoolean implements Cloneable{
+    
+    private static final long serialVersionUID = -4129485177345542519L;
     
     @Nullable
     private EBoolean expr;

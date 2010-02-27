@@ -21,9 +21,10 @@ import com.mysema.query.types.expr.Expr;
  *
  * @param <T>
  */
-@SuppressWarnings("serial")
 public class CComparable<T extends Comparable<?>> extends EComparable<T> implements Custom<T> {
     
+    private static final long serialVersionUID = -6292853402028813007L;
+
     public static <T extends Comparable<?>> EComparable<T> create(Class<T> type, String template, Expr<?>... args){
         return new CComparable<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expr<?>>asList(args));
     }

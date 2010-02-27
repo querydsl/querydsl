@@ -23,9 +23,10 @@ import com.mysema.query.types.operation.Ops.MathOps;
  * @param <D> Java type
  * @see java.lang.Number
  */
-@SuppressWarnings("serial")
 public abstract class ENumber<D extends Number & Comparable<?>> extends EComparableBase<D> {
    
+    private static final long serialVersionUID = -5485902768703364888L;
+
     private static final ENumber<Double> RANDOM = ONumber.create(Double.class, MathOps.RANDOM);
         
     /**

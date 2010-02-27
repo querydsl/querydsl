@@ -20,9 +20,10 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  *
  */
-@SuppressWarnings("serial")
 public class CBoolean extends EBoolean implements Custom<Boolean> {
     
+    private static final long serialVersionUID = 5749369427497731719L;
+
     public static EBoolean create(String template, Expr<?>... args){
         return new CBoolean(TemplateFactory.DEFAULT.create(template), Arrays.<Expr<?>>asList(args));
     }

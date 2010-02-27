@@ -21,9 +21,10 @@ import com.mysema.query.types.expr.Expr;
  * 
  * @param <E> component type
  */
-@SuppressWarnings("serial")
 public class PCollection<E> extends ECollectionBase<Collection<E>,E> implements Path<Collection<E>> {
     
+    private static final long serialVersionUID = -4982311799113762600L;
+
     private final Class<E> elementType;
     
     private final String entityName;

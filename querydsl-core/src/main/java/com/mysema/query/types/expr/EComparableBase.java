@@ -22,8 +22,10 @@ import com.mysema.query.types.operation.Ops;
  * @param <D> Java type
  * @see java.lang.Comparable
  */
-@SuppressWarnings({"unchecked","serial"})
+@SuppressWarnings({"unchecked"})
 public abstract class EComparableBase<D extends Comparable> extends Expr<D> {
+
+    private static final long serialVersionUID = 1460921109546656911L;
 
     @Nullable
     private volatile OrderSpecifier<D> asc, desc;

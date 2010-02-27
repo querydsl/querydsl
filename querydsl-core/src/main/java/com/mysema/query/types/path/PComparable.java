@@ -19,8 +19,10 @@ import com.mysema.query.types.expr.EComparable;
  * @param <D>
  * @see java.util.ComparableType
  */
-@SuppressWarnings({"unchecked","serial"})
+@SuppressWarnings({"unchecked"})
 public class PComparable<D extends Comparable> extends EComparable<D> implements Path<D> {
+
+    private static final long serialVersionUID = -7434767743611671666L;
 
     private final Path<D> pathMixin;
     

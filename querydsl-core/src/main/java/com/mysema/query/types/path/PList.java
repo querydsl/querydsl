@@ -30,9 +30,10 @@ import com.mysema.query.types.expr.Expr;
  * 
  * @param <E> component type
  */
-@SuppressWarnings("serial")
 public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> implements EList<E>, Path<List<E>>{
     
+    private static final long serialVersionUID = 3302301599074388860L;
+
     private static final Set<Class<?>> typedClasses = new HashSet<Class<?>>(Arrays.<Class<?>>asList(
             PathBuilder.class,
             PComparable.class,

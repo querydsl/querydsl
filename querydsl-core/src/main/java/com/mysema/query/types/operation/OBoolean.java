@@ -18,14 +18,14 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * 
  */
-@SuppressWarnings("serial")
 public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
+
+    private static final long serialVersionUID = 7432281499861357581L;
 
     public static EBoolean create(Operator<Boolean> op, Expr<?>... args){
         return new OBoolean(op, args);
     }
-    
-
+   
     private final Operation<Boolean, Boolean> opMixin;
     
     OBoolean(Operator<Boolean> op, Expr<?>... args) {

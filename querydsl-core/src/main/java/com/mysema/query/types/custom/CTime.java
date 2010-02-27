@@ -15,9 +15,15 @@ import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.ETime;
 import com.mysema.query.types.expr.Expr;
 
-@SuppressWarnings("serial")
+/**
+ * @author tiwe
+ *
+ * @param <T>
+ */
 public class CTime<T extends Comparable<?>> extends ETime<T> implements Custom<T> {
     
+    private static final long serialVersionUID = -7684306954555037051L;
+
     public static <T extends Comparable<?>> EComparable<T> create(Class<T> type, String template, Expr<?>... args){
         return new CComparable<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expr<?>>asList(args));
     }

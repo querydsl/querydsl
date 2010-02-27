@@ -20,9 +20,11 @@ import com.mysema.query.types.operation.Ops;
  *
  * @param <D>
  */
-@SuppressWarnings({"unchecked","serial"})
+@SuppressWarnings({"unchecked"})
 public abstract class ETime<D extends Comparable> extends EDateOrTime<D> {
     
+    private static final long serialVersionUID = 7360552308332457990L;
+
     private static final ETime<Date> CURRENT_TIME = currentTime(Date.class);
     
     @Nullable

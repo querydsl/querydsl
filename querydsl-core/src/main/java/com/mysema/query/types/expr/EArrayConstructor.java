@@ -15,8 +15,9 @@ import com.mysema.query.types.Visitor;
  * 
  * @param <D> component type
  */
-@SuppressWarnings("serial")
 public class EArrayConstructor<D> extends EConstructor<D[]> {
+    
+    private static final long serialVersionUID = 8667880104290226505L;
     
     private final Class<D> elementType;
 

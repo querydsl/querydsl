@@ -16,9 +16,10 @@ import com.mysema.query.types.expr.Expr;
  *
  * @param <T>
  */
-@SuppressWarnings("serial")
 public final class CustomMixin<T> implements Custom<T>, Serializable {
     
+    private static final long serialVersionUID = 6951623726800809083L;
+
     private final Expr<T> self;
     
     private final List<Expr<?>> args;

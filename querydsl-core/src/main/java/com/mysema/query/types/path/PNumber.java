@@ -18,8 +18,9 @@ import com.mysema.query.types.expr.ENumber;
  * 
  * @param <D> Java type
  */
-@SuppressWarnings("serial")
 public class PNumber<D extends Number & Comparable<?>> extends ENumber<D> implements Path<D> {
+    
+    private static final long serialVersionUID = 338191992784020563L;
     
     private final Path<D> pathMixin;
 

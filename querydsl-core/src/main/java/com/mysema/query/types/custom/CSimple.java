@@ -20,9 +20,10 @@ import com.mysema.query.types.expr.Expr;
  *
  * @param <T>
  */
-@SuppressWarnings("serial")
 public class CSimple<T> extends Expr<T> implements Custom<T> {
     
+    private static final long serialVersionUID = -4697578522909045745L;
+
     public static <T> Expr<T> create(Class<? extends T> type, String template, Expr<?>... args){
         return new CSimple<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expr<?>>asList(args));
     }

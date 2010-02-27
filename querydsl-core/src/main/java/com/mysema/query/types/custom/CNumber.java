@@ -21,9 +21,10 @@ import com.mysema.query.types.expr.Expr;
  *
  * @param <T>
  */
-@SuppressWarnings("serial")
 public class CNumber<T extends Number & Comparable<?>> extends ENumber<T> implements Custom<T> {
     
+    private static final long serialVersionUID = 351057421752203377L;
+
     public static <T extends Number & Comparable<?>> ENumber<T> create(Class<T> type, String template, Expr<?>... args){
         return new CNumber<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expr<?>>asList(args));
     }

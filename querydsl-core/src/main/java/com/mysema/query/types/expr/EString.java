@@ -21,9 +21,10 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @see java.lang.String
  */
-@SuppressWarnings("serial")
 public abstract class EString extends EComparable<String> {
-        
+       
+    private static final long serialVersionUID = 1536955079961023361L;
+
     @Nullable
     private volatile ENumber<Long> length;
     

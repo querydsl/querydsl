@@ -17,8 +17,9 @@ import com.mysema.query.types.expr.Expr;
  * @param <OP>
  * @param <RT>
  */
-@SuppressWarnings("serial")
 public final class OperationMixin<OP, RT> implements Operation<OP, RT>, Serializable {
+
+    private static final long serialVersionUID = 4796432056083507588L;
 
     private final List<Expr<?>> args;
     

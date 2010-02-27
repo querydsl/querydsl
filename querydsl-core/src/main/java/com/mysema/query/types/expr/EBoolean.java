@@ -18,8 +18,9 @@ import com.mysema.query.types.operation.Ops;
  * @see java.lang.Boolean
  * 
  */
-@SuppressWarnings("serial")
 public abstract class EBoolean extends EComparable<Boolean> {
+    
+    private static final long serialVersionUID = 3797956062512074164L;
     
     @Nullable 
     private volatile EBoolean not;

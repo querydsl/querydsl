@@ -20,10 +20,11 @@ import com.mysema.query.types.expr.Expr;
  * @param <OpType>
  * @param <D>
  */
-@SuppressWarnings("serial")
 public class OComparable<OpType, D extends Comparable<?>> extends
         EComparable<D> implements Operation<OpType, D> {
     
+    private static final long serialVersionUID = 1129243977606098865L;
+
     /**
      * Factory method
      * 

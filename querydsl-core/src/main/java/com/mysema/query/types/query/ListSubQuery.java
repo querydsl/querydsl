@@ -24,8 +24,9 @@ import com.mysema.query.types.operation.Ops;
  * @param <JM>
  * @param <A>
  */
-@SuppressWarnings("serial")
 public final class ListSubQuery<A> extends ECollectionBase<List<A>,A> implements SubQuery{
+
+    private static final long serialVersionUID = 3399354334765602960L;
 
     private final Class<A> elementType;
     
