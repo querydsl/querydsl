@@ -107,6 +107,7 @@ public class BooleanBuilder extends EBoolean implements Cloneable{
         return expr != null;
     }
     
+    @Nullable
     public EBoolean getValue(){
         return expr;
     }
