@@ -20,7 +20,7 @@ public final class EBooleanConst extends EBoolean implements Constant<Boolean>{
     
     public static final EBoolean TRUE = new EBooleanConst(Boolean.TRUE);
     
-    public static final EBoolean create(Boolean b){
+    public static EBoolean create(Boolean b){
         return b.booleanValue() ? TRUE : FALSE;
     }
     

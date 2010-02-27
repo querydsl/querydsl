@@ -20,29 +20,29 @@ import com.mysema.util.MathUtils;
 public class ENumberConst<D extends Number & Comparable<?>> extends ENumber<D> implements Constant<D>{
     
     @SuppressWarnings("unchecked")
-    private static final ENumber<Byte>[] bytes = new ENumber[256];
+    private static final ENumber<Byte>[] BYTES = new ENumber[256];
     
     @SuppressWarnings("unchecked")
-    private static final ENumber<Integer>[] ints = new ENumber[256];
+    private static final ENumber<Integer>[] INTEGERS = new ENumber[256];
     
     @SuppressWarnings("unchecked")
-    private static final ENumber<Long>[] longs = new ENumber[256];
+    private static final ENumber<Long>[] LONGS = new ENumber[256];
     
     @SuppressWarnings("unchecked")
-    private static final ENumber<Short>[] shorts = new ENumber[256];
+    private static final ENumber<Short>[] SHORTS = new ENumber[256];
     
     static{
         for (int i = 0; i < 256; i++){
-            ints[i] = new ENumberConst<Integer>(Integer.class, Integer.valueOf(i));
-            shorts[i] = new ENumberConst<Short>(Short.class, Short.valueOf((short)i));
-            bytes[i] = new ENumberConst<Byte>(Byte.class, Byte.valueOf((byte)i));
-            longs[i] = new ENumberConst<Long>(Long.class, Long.valueOf(i));
+            INTEGERS[i] = new ENumberConst<Integer>(Integer.class, Integer.valueOf(i));
+            SHORTS[i] = new ENumberConst<Short>(Short.class, Short.valueOf((short)i));
+            BYTES[i] = new ENumberConst<Byte>(Byte.class, Byte.valueOf((byte)i));
+            LONGS[i] = new ENumberConst<Long>(Long.class, Long.valueOf(i));
         }
     }
         
     public static ENumber<Byte> create(byte i){
         if (i >= 0 && i < 256){
-            return bytes[i];
+            return BYTES[i];
         }else{
             return new ENumberConst<Byte>(Byte.class, Byte.valueOf(i));
         }
@@ -50,7 +50,7 @@ public class ENumberConst<D extends Number & Comparable<?>> extends ENumber<D> i
     
     public static ENumber<Integer> create(int i){
         if (i >= 0 && i < 256){
-            return ints[i];
+            return INTEGERS[i];
         }else{
             return new ENumberConst<Integer>(Integer.class, Integer.valueOf(i));
         }
@@ -58,7 +58,7 @@ public class ENumberConst<D extends Number & Comparable<?>> extends ENumber<D> i
     
     public static ENumber<Long> create(long i){
         if (i >= 0 && i < 256){
-            return longs[(int)i];
+            return LONGS[(int)i];
         }else{
             return new ENumberConst<Long>(Long.class, Long.valueOf(i));
         }
@@ -66,7 +66,7 @@ public class ENumberConst<D extends Number & Comparable<?>> extends ENumber<D> i
     
     public static ENumber<Short> create(short i){
         if (i >= 0 && i < 256){
-            return shorts[i];
+            return SHORTS[i];
         }else{
             return new ENumberConst<Short>(Short.class, Short.valueOf(i));
         }
