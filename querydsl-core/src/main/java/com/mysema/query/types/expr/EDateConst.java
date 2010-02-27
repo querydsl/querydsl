@@ -14,7 +14,7 @@ import com.mysema.query.types.Visitor;
  *
  */
 @SuppressWarnings("serial")
-public class EDateConst<D extends java.util.Date> extends EDate<D> implements Constant<D>{
+public final class EDateConst<D extends java.util.Date> extends EDate<D> implements Constant<D>{
  
     public static <D extends java.util.Date> EDate<D> create(D date){
         return new EDateConst<D>(date);

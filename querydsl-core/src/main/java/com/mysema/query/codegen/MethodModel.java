@@ -16,7 +16,7 @@ import com.mysema.commons.lang.Assert;
  * 
  */
 @Immutable
-public class MethodModel {
+public final class MethodModel {
 
     private final EntityModel context;
 

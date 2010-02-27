@@ -40,7 +40,7 @@ import com.mysema.query.types.query.SubQuery;
  * @author tiwe
  * @version $Id$
  */
-public class HQLSerializer extends SerializerBase<HQLSerializer> {
+public final class HQLSerializer extends SerializerBase<HQLSerializer> {
 
     private static final Map<JoinType, String> joinTypes = new HashMap<JoinType, String>();
     

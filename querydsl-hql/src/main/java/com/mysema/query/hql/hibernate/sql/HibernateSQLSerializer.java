@@ -17,7 +17,7 @@ import com.mysema.query.types.path.Path;
  * @author tiwe
  *
  */
-public class HibernateSQLSerializer extends SQLSerializer{
+public final class HibernateSQLSerializer extends SQLSerializer{
     
     private final List<Path<?>> entityPaths = new ArrayList<Path<?>>();
 

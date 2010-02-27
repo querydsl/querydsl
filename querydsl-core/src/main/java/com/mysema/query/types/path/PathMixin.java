@@ -25,7 +25,7 @@ import com.mysema.util.ReflectionUtils;
  * @param <T>
  */
 @SuppressWarnings("serial")
-class PathMixin<T> implements Path<T>, Serializable {
+public final class PathMixin<T> implements Path<T>, Serializable {
     
     @Nullable
     private volatile EBoolean isnull, isnotnull;

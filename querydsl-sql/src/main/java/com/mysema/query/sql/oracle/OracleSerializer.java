@@ -17,7 +17,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class OracleSerializer extends SQLSerializer {
+public final class OracleSerializer extends SQLSerializer {
 
     private final EBoolean connectBy, connectByPrior, connectByNocyclePrior;
 

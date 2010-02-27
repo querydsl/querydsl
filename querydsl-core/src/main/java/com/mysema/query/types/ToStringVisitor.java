@@ -20,7 +20,7 @@ import com.mysema.query.types.query.SubQuery;
  * @author tiwe
  * @version $Id$
  */
-public class ToStringVisitor extends VisitorBase<ToStringVisitor> {
+public final class ToStringVisitor extends VisitorBase<ToStringVisitor> {
 
     private final Templates templates;
 

@@ -22,7 +22,7 @@ import com.mysema.util.CodeWriter;
  *
  */
 @Immutable
-public class DTOSerializer implements Serializer{
+public final class DTOSerializer implements Serializer{
     
     private final TypeMappings typeMappings;
     

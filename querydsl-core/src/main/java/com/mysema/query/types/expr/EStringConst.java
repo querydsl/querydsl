@@ -23,9 +23,9 @@ import com.mysema.query.types.Visitor;
  *
  */
 @SuppressWarnings("serial")
-public class EStringConst extends EString implements Constant<String>{
+public final class EStringConst extends EString implements Constant<String>{
     
-    private static final Map<String,EString> cache;
+    private static final Map<String,EString> CACHE;
     
     static{
         List<String> strs = new ArrayList<String>(Arrays.asList("", ".", ".*", "%"));
@@ -33,9 +33,9 @@ public class EStringConst extends EString implements Constant<String>{
             strs.add(String.valueOf(i));
         }
     
-        cache = new HashMap<String,EString>(strs.size());
+        CACHE = new HashMap<String,EString>(strs.size());
         for (String str : strs){
-            cache.put(str, new EStringConst(str));
+            CACHE.put(str, new EStringConst(str));
         }
     }
     
@@ -51,12 +51,12 @@ public class EStringConst extends EString implements Constant<String>{
     }
     
     public static EString create(String str, boolean populateCache) {
-        if (cache.containsKey(str)){
-            return cache.get(str);            
+        if (CACHE.containsKey(str)){
+            return CACHE.get(str);            
         }else{
             EString rv = new EStringConst(Assert.notNull(str));
             if (populateCache){
-                cache.put(str, rv);                
+                CACHE.put(str, rv);                
             }
             return rv;
         }

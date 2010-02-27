@@ -16,7 +16,7 @@ import org.apache.commons.lang.StringUtils;
  * @author tiwe
  *
  */
-public class PathBuilderFactory {
+public final class PathBuilderFactory {
 
     private final Map<Class<?>, PathBuilder<?>> paths = new HashMap<Class<?>, PathBuilder<?>>();
     

@@ -17,7 +17,7 @@ import com.mysema.query.types.expr.Expr;
  * @param <T>
  */
 @SuppressWarnings("serial")
-class CustomMixin<T> implements Custom<T>, Serializable {
+public final class CustomMixin<T> implements Custom<T>, Serializable {
     
     private final Expr<T> self;
     

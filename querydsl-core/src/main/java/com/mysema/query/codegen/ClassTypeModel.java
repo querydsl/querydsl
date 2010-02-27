@@ -26,7 +26,7 @@ import com.mysema.commons.lang.Assert;
  *
  */
 @Immutable
-public class ClassTypeModel extends AbstractTypeModel{
+public final class ClassTypeModel extends AbstractTypeModel{
         
     private final Class<?> clazz;
     

@@ -21,7 +21,7 @@ import com.mysema.util.CodeWriter;
  *
  */
 @Immutable
-public class SupertypeSerializer extends EntitySerializer{
+public final class SupertypeSerializer extends EntitySerializer{
 
     public SupertypeSerializer(TypeMappings typeMappings) {
         super(typeMappings);

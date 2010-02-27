@@ -18,7 +18,7 @@ import com.mysema.query.types.expr.Expr;
  * @param <D>
  */
 @SuppressWarnings("serial")
-public class PathBuilder<D> extends PEntity<D>{
+public final class PathBuilder<D> extends PEntity<D>{
     
     private final Map<String,PathBuilder<?>> properties = new HashMap<String,PathBuilder<?>>();
 

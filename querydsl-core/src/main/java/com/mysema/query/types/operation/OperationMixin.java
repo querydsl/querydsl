@@ -18,7 +18,7 @@ import com.mysema.query.types.expr.Expr;
  * @param <RT>
  */
 @SuppressWarnings("serial")
-public class OperationMixin<OP, RT> implements Operation<OP, RT>, Serializable {
+public final class OperationMixin<OP, RT> implements Operation<OP, RT>, Serializable {
 
     private final List<Expr<?>> args;
     

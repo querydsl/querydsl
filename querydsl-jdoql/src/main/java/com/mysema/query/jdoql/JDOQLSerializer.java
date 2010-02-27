@@ -38,7 +38,7 @@ import com.mysema.query.types.query.SubQuery;
  * @author tiwe
  * 
  */
-public class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
+public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     
     private static Comparator<Map.Entry<Object,String>> comparator = new Comparator<Map.Entry<Object,String>>(){
         @Override

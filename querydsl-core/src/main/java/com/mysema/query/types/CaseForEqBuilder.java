@@ -40,7 +40,7 @@ import com.mysema.query.types.operation.Ops;
  *
  * @param <D>
  */
-public class CaseForEqBuilder<D> {
+public final class CaseForEqBuilder<D> {
     
     private static class CaseElement<D> {
         

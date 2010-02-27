@@ -10,7 +10,7 @@ import com.mysema.query.types.expr.Expr;
  *
  * @param <T>
  */
-public class JDOQLQueryMixin<T> extends QueryMixin<T>{
+public final class JDOQLQueryMixin<T> extends QueryMixin<T>{
 
     public JDOQLQueryMixin(QueryMetadata metadata) {
         super(metadata);

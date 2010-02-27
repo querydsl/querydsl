@@ -19,7 +19,7 @@ import com.mysema.commons.lang.Assert;
  *
  */
 @Immutable
-public class SimpleTypeModel extends AbstractTypeModel {
+public final class SimpleTypeModel extends AbstractTypeModel {
 
     private final String fullName, packageName, simpleName, localName;
 

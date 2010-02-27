@@ -39,7 +39,7 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * 
  */
-public class CaseBuilder {
+public final class CaseBuilder {
     
     private static class CaseElement<A> {
         

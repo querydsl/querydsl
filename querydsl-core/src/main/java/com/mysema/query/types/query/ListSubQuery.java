@@ -25,7 +25,7 @@ import com.mysema.query.types.operation.Ops;
  * @param <A>
  */
 @SuppressWarnings("serial")
-public class ListSubQuery<A> extends ECollectionBase<List<A>,A> implements SubQuery{
+public final class ListSubQuery<A> extends ECollectionBase<List<A>,A> implements SubQuery{
 
     private final Class<A> elementType;
     

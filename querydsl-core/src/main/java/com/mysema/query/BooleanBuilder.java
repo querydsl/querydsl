@@ -17,7 +17,7 @@ import com.mysema.query.types.expr.EBoolean;
  * @version $Id$
  */
 @SuppressWarnings("serial")
-public class BooleanBuilder extends EBoolean implements Cloneable{
+public final class BooleanBuilder extends EBoolean implements Cloneable{
     
     @Nullable
     private EBoolean expr;

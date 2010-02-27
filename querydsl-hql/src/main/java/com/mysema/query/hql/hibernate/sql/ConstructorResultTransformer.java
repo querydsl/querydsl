@@ -17,7 +17,7 @@ import com.mysema.query.types.expr.EConstructor;
  *
  */
 @SuppressWarnings("serial")
-public class ConstructorResultTransformer implements ResultTransformer{
+public final class ConstructorResultTransformer implements ResultTransformer{
 
     private transient final Constructor<?> constructor;
     

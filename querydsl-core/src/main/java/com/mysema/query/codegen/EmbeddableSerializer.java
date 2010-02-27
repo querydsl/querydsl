@@ -19,7 +19,7 @@ import com.mysema.util.CodeWriter;
  * @author tiwe
  *
  */
-public class EmbeddableSerializer extends EntitySerializer{
+public final class EmbeddableSerializer extends EntitySerializer{
     
     public EmbeddableSerializer(TypeMappings typeMappings) {
         super(typeMappings);

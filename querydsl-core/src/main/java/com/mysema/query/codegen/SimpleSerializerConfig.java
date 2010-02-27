@@ -11,7 +11,7 @@ import com.mysema.query.annotations.QuerydslConfig;
  * @author tiwe
  *
  */
-public class SimpleSerializerConfig implements SerializerConfig{
+public final class SimpleSerializerConfig implements SerializerConfig{
     
     public static final SerializerConfig DEFAULT = new SimpleSerializerConfig(false, false, false, true);
 

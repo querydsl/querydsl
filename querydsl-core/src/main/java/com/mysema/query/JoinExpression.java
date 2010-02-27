@@ -20,7 +20,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class JoinExpression {
+public final class JoinExpression {
     
     // mutable
     private EBoolean condition;

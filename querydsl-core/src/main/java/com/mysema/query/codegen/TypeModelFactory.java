@@ -25,7 +25,7 @@ import com.mysema.util.ReflectionUtils;
  * @author tiwe
  * 
  */
-public class TypeModelFactory {
+public final class TypeModelFactory {
 
     private final Map<List<Type>, TypeModel> cache = new HashMap<List<Type>, TypeModel>();
     

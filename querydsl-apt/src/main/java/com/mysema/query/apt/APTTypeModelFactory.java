@@ -45,7 +45,7 @@ import com.mysema.query.codegen.TypeSuperModel;
  * @author tiwe
  *
  */
-public class APTTypeModelFactory {
+public final class APTTypeModelFactory {
     
     private final Map<List<String>,TypeModel> cache = new HashMap<List<String>,TypeModel>();
 

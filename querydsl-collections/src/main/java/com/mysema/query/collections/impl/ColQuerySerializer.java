@@ -27,7 +27,7 @@ import com.mysema.query.types.query.SubQuery;
  * @author tiwe
  * @version $Id$
  */
-public class ColQuerySerializer extends SerializerBase<ColQuerySerializer> {
+public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer> {
 
     public ColQuerySerializer(ColQueryTemplates patterns) {
         super(patterns);
