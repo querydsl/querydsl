@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryMethod;
-import com.mysema.query.domain.GenericTest.GenericNumberType;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PathMetadataFactory;
 

@@ -6,7 +6,8 @@
 package com.mysema.query.codegen;
 
 import java.io.IOException;
-import java.io.Writer;
+
+import com.mysema.util.CodeWriter;
 
 /**
  * Serializer defines a common interface for EntityModel serializers
@@ -24,7 +25,7 @@ public interface Serializer {
      * @param writer serialization target
      * @throws IOException
      */
-    void serialize(EntityModel type, SerializerConfig serializerConfig, Writer writer) throws IOException;
+    void serialize(EntityModel type, SerializerConfig serializerConfig, CodeWriter writer) throws IOException;
     
 
 }

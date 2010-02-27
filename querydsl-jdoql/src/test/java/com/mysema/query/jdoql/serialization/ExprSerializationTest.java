@@ -9,8 +9,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.jdoql.JDOQLTemplates;
 import com.mysema.query.jdoql.JDOQLSerializer;
+import com.mysema.query.jdoql.JDOQLTemplates;
 import com.mysema.query.jdoql.testdomain.Book;
 import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QBook;

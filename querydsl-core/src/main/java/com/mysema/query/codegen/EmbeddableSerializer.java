@@ -11,7 +11,6 @@ import com.mysema.query.types.custom.Custom;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.Path;
 import com.mysema.util.CodeWriter;
-import com.mysema.util.JavaWriter;
 
 
 /**
@@ -27,7 +26,7 @@ public class EmbeddableSerializer extends EntitySerializer{
     }
 
     @Override
-    protected void constructorsForVariables(JavaWriter writer, EntityModel model) {
+    protected void constructorsForVariables(CodeWriter writer, EntityModel model) {
         // no root constructors
     }
     
@@ -37,7 +36,7 @@ public class EmbeddableSerializer extends EntitySerializer{
     }
     
     @Override
-    protected void introFactoryMethods(JavaWriter writer, EntityModel model) throws IOException {
+    protected void introFactoryMethods(CodeWriter writer, EntityModel model) throws IOException {
         // no factory methods        
     }
     

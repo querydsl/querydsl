@@ -12,7 +12,6 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.UpdateClause;
 import com.mysema.query.jdoql.JDOQLTemplates;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.Path;
 

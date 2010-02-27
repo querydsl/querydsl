@@ -34,7 +34,7 @@ import com.mysema.query.codegen.SupertypeSerializer;
 import com.mysema.query.codegen.TypeMappings;
 
 /**
- * SimpleConfiguration is a simple implementation of the Configuration interface
+ * DefaultConfiguration is a simple implementation of the Configuration interface
  * 
  * @author tiwe
  *
@@ -47,7 +47,7 @@ public class DefaultConfiguration implements Configuration {
     
     private final Serializer embeddableSerializer = new EmbeddableSerializer(typeMappings);
     
-    protected final Class<? extends Annotation> entityAnn, embeddableAnn, skipAnn;
+    protected final Class<? extends Annotation> entityAnn;
     
     private final Serializer entitySerializer = new EntitySerializer(typeMappings);
     
@@ -56,7 +56,7 @@ public class DefaultConfiguration implements Configuration {
     private final Map<String,SerializerConfig> packageToConfig = new HashMap<String,SerializerConfig>();
     
     @Nullable
-    protected final Class<? extends Annotation> superTypeAnn;
+    protected final Class<? extends Annotation> superTypeAnn, embeddableAnn, skipAnn;
     
     private final Serializer supertypeSerializer = new SupertypeSerializer(typeMappings);
     
@@ -67,10 +67,9 @@ public class DefaultConfiguration implements Configuration {
     public DefaultConfiguration(
             RoundEnvironment roundEnv,
             Class<? extends Annotation> entityAnn, 
-            @Nullable
-            Class<? extends Annotation> superTypeAnn,
-            Class<? extends Annotation> embeddableAnn,
-            Class<? extends Annotation> skipAnn) {
+            @Nullable Class<? extends Annotation> superTypeAnn,
+            @Nullable Class<? extends Annotation> embeddableAnn,
+            @Nullable Class<? extends Annotation> skipAnn) {
         this.entityAnn = Assert.notNull(entityAnn);
         this.superTypeAnn = superTypeAnn;
         this.embeddableAnn = embeddableAnn;
@@ -109,6 +108,7 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
+    @Nullable
     public Class<? extends Annotation> getEmbeddableAnn() {
         return embeddableAnn;
     }
@@ -145,11 +145,13 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
+    @Nullable
     public Class<? extends Annotation> getSkipAnn() {
         return skipAnn;
     }
 
     @Override
+    @Nullable
     public Class<? extends Annotation> getSuperTypeAnn() {
         return superTypeAnn;
     }

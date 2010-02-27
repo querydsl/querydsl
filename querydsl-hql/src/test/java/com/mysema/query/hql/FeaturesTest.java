@@ -5,7 +5,6 @@
  */
 package com.mysema.query.hql;
 
-import static com.mysema.query.alias.Alias.$;
 import static com.mysema.query.hql.HQLGrammar.sum;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

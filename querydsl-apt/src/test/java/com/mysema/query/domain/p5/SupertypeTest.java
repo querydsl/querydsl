@@ -1,7 +1,6 @@
 package com.mysema.query.domain.p5;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 

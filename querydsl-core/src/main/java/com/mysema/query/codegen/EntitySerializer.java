@@ -6,7 +6,6 @@
 package com.mysema.query.codegen;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,6 @@ import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.Path;
 import com.mysema.query.types.path.PathMetadataFactory;
 import com.mysema.util.CodeWriter;
-import com.mysema.util.JavaWriter;
 
 /**
  * EntitySerializer is a Serializer implementation for entity types
@@ -49,7 +47,7 @@ public class EntitySerializer implements Serializer{
         this.typeMappings = Assert.notNull(mappings);
     }
     
-    protected void constructors(EntityModel model, SerializerConfig config, JavaWriter writer) throws IOException {
+    protected void constructors(EntityModel model, SerializerConfig config, CodeWriter writer) throws IOException {
         String localName = model.getLocalRawName();
         String genericName = model.getLocalGenericName();
         
@@ -101,7 +99,7 @@ public class EntitySerializer implements Serializer{
         
     }
         
-    protected void constructorsForVariables(JavaWriter writer, EntityModel model) throws IOException {
+    protected void constructorsForVariables(CodeWriter writer, EntityModel model) throws IOException {
         String localName = model.getLocalRawName();
         String genericName = model.getLocalGenericName();
         
@@ -153,7 +151,7 @@ public class EntitySerializer implements Serializer{
         return false;
     }
 
-    protected void initEntityFields(JavaWriter writer, SerializerConfig config, EntityModel model) throws IOException {        
+    protected void initEntityFields(CodeWriter writer, SerializerConfig config, EntityModel model) throws IOException {        
         EntityModel superModel = model.getSuperModel();
         if (superModel != null && superModel.hasEntityFields()){
             String superQueryType = typeMappings.getPathType(superModel, model, false);
@@ -179,7 +177,7 @@ public class EntitySerializer implements Serializer{
         }        
     }
 
-    protected void intro(EntityModel model, SerializerConfig config, JavaWriter writer) throws IOException {                
+    protected void intro(EntityModel model, SerializerConfig config, CodeWriter writer) throws IOException {                
         introPackage(writer, model);        
         introImports(writer, config, model);
         writer.nl();
@@ -226,7 +224,7 @@ public class EntitySerializer implements Serializer{
         writer.publicStaticFinal(queryType, simpleName, "new " + queryType + "(\"" + simpleName + "\")");
     }
 
-    protected void introFactoryMethods(JavaWriter writer, final EntityModel model) throws IOException {
+    protected void introFactoryMethods(CodeWriter writer, final EntityModel model) throws IOException {
         String localName = model.getLocalRawName();
         String genericName = model.getLocalGenericName();
         
@@ -290,7 +288,7 @@ public class EntitySerializer implements Serializer{
         }
     }
 
-    protected void introInits(JavaWriter writer, EntityModel model) throws IOException {
+    protected void introInits(CodeWriter writer, EntityModel model) throws IOException {
         if (model.hasEntityFields()){
             List<String> inits = new ArrayList<String>();
             for (PropertyModel property : model.getProperties()){
@@ -356,7 +354,7 @@ public class EntitySerializer implements Serializer{
         writer.line("return " + escapedName + ".get(key);").end();
     }
 
-    protected void method(final EntityModel model, MethodModel method, SerializerConfig config, JavaWriter writer) throws IOException {
+    protected void method(final EntityModel model, MethodModel method, SerializerConfig config, CodeWriter writer) throws IOException {
         // header
         String type = typeMappings.getExprType(method.getReturnType(), model, false, true, false);
         writer.beginMethod(type, method.getName(), method.getParameters(), new Transformer<ParameterModel,String>(){
@@ -389,8 +387,7 @@ public class EntitySerializer implements Serializer{
         writer.end();        
     }
 
-    public void serialize(EntityModel model, SerializerConfig config, Writer w) throws IOException{
-        JavaWriter writer = new JavaWriter(w);
+    public void serialize(EntityModel model, SerializerConfig config, CodeWriter writer) throws IOException{
         intro(model, config, writer);        
         
         // properties
@@ -418,7 +415,7 @@ public class EntitySerializer implements Serializer{
         outro(model, writer);
     }
 
-    protected void serialize(PropertyModel field, String type, JavaWriter writer, String factoryMethod, String... args) throws IOException{
+    protected void serialize(PropertyModel field, String type, CodeWriter writer, String factoryMethod, String... args) throws IOException{
         EntityModel superModel = field.getContext().getSuperModel();
         // construct value
         StringBuilder value = new StringBuilder();
@@ -445,7 +442,7 @@ public class EntitySerializer implements Serializer{
         }        
     }
 
-    private void serializeProperties(EntityModel model,  SerializerConfig config, JavaWriter writer) throws IOException {
+    private void serializeProperties(EntityModel model,  SerializerConfig config, CodeWriter writer) throws IOException {
         for (PropertyModel property : model.getProperties()){
             String queryType = typeMappings.getPathType(property.getType(), model, false);
             String localGenericName = property.getType().getLocalGenericName(model, true);

@@ -34,6 +34,7 @@ import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeMappings;
 import com.mysema.query.codegen.TypeModel;
 import com.mysema.query.codegen.TypeModels;
+import com.mysema.util.JavaWriter;
 
 /**
  * MetadataExporter exports JDBC metadata to Querydsl query types
@@ -160,8 +161,8 @@ public class MetaDataExporter {
         String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + ".java";
         try {                        
             Writer writer = writerFor(new File(targetFolder, path));
-            try{
-                serializer.serialize(type, serializerConfig, writer);    
+            try{                
+                serializer.serialize(type, serializerConfig, new JavaWriter(writer));    
             }finally{
                 writer.close();
             }            

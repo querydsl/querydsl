@@ -14,6 +14,9 @@ import com.mysema.query.types.path.PEntity;
  */
 public interface ManagedObject {
 
+    /**
+     * @return
+     */
     PEntity<?> __mappedPath();
 
 }

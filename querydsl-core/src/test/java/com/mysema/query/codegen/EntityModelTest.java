@@ -12,6 +12,7 @@ import java.lang.annotation.Annotation;
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryExtensions;
+import com.mysema.util.JavaWriter;
 
 public class EntityModelTest {
 
@@ -43,7 +44,7 @@ public class EntityModelTest {
         TypeMappings typeMappings = new TypeMappings();
         EntitySerializer serializer = new EntitySerializer(typeMappings);
         StringWriter writer = new StringWriter();
-        serializer.serialize(entityModel, SimpleSerializerConfig.DEFAULT, writer);
+        serializer.serialize(entityModel, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         System.out.println(writer);
     }
 }

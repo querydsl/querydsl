@@ -3,7 +3,7 @@ package com.mysema.query.alias;
 import static com.mysema.query.alias.Alias.$;
 import static com.mysema.query.alias.Extensions.gt;
 import static com.mysema.query.alias.Extensions.having;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.List;

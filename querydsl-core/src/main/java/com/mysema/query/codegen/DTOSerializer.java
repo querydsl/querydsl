@@ -6,7 +6,6 @@
 package com.mysema.query.codegen;
 
 import java.io.IOException;
-import java.io.Writer;
 
 import net.jcip.annotations.Immutable;
 
@@ -15,7 +14,6 @@ import org.apache.commons.collections15.Transformer;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.util.CodeWriter;
-import com.mysema.util.JavaWriter;
 
 /**
  * DTOSerializer is a Serializer implementation for DTO types
@@ -33,9 +31,9 @@ public class DTOSerializer implements Serializer{
     }
     
     protected void intro(EntityModel model, CodeWriter writer) throws IOException {
-        final String simpleName = model.getSimpleName();
-        final String queryType = typeMappings.getPathType(model, model, false);
-        final String localName = model.getLocalRawName();
+        String simpleName = model.getSimpleName();
+        String queryType = typeMappings.getPathType(model, model, false);
+        String localName = model.getLocalRawName();
                 
         // package        
         writer.packageDecl(model.getPackageName());
@@ -57,8 +55,7 @@ public class DTOSerializer implements Serializer{
     }
     
     @Override
-    public void serialize(final EntityModel model, SerializerConfig serializerConfig, Writer w) throws IOException{
-        JavaWriter writer = new JavaWriter(w);
+    public void serialize(final EntityModel model, SerializerConfig serializerConfig, CodeWriter writer) throws IOException{
         // intro
         intro(model, writer);
         

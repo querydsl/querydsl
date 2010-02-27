@@ -10,8 +10,6 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.Type;
 
-import com.mysema.query.ExtDoubleType;
-
 /**
  * The Class Animal.
  */

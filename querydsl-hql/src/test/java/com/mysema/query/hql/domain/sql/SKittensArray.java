@@ -1,9 +1,12 @@
 package com.mysema.query.hql.domain.sql;
 
-import com.mysema.query.types.path.*;
-import static com.mysema.query.types.path.PathMetadataFactory.*;
-import com.mysema.query.types.expr.*;
-import com.mysema.query.types.custom.*;
+import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
+
+import com.mysema.query.types.custom.CSimple;
+import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PathMetadata;
 
 /**
  * SKittensArray is a Querydsl query type for SKittensArray

@@ -5,7 +5,6 @@
  */
 package com.mysema.query.types.expr;
 
-import java.sql.Time;
 import java.util.Calendar;
 
 import com.mysema.query.types.Visitor;

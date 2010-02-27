@@ -29,24 +29,24 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     
     private boolean distinct;
     
-    private final Set<Expr<?>> exprInJoins = new HashSet<Expr<?>>();
+    private Set<Expr<?>> exprInJoins = new HashSet<Expr<?>>();
 
-    private final List<Expr<?>> groupBy = new ArrayList<Expr<?>>();
+    private List<Expr<?>> groupBy = new ArrayList<Expr<?>>();
 
-    private final BooleanBuilder having = new BooleanBuilder();
+    private BooleanBuilder having = new BooleanBuilder();
 
-    private final List<JoinExpression> joins = new ArrayList<JoinExpression>();
+    private List<JoinExpression> joins = new ArrayList<JoinExpression>();
 
     @Nullable
     private QueryModifiers modifiers = new QueryModifiers();
 
-    private final List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
+    private List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
 
-    private final List<Expr<?>> projection = new ArrayList<Expr<?>>();
+    private List<Expr<?>> projection = new ArrayList<Expr<?>>();
 
     private boolean unique;
 
-    private final BooleanBuilder where = new BooleanBuilder();
+    private BooleanBuilder where = new BooleanBuilder();
     
     @Override
     public void addFrom(Expr<?>... args) {
@@ -116,18 +116,21 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public QueryMetadata clone(){
-        DefaultQueryMetadata clone = new DefaultQueryMetadata();
-        clone.distinct = distinct;
-        clone.exprInJoins.addAll(exprInJoins);
-        clone.groupBy.addAll(groupBy);
-        clone.having.and(having.getValue());
-        clone.joins.addAll(joins);
-        clone.modifiers = modifiers; 
-        clone.orderBy.addAll(orderBy);
-        clone.projection.addAll(projection);
-        clone.unique = unique;
-        clone.where.and(where.getValue());
-        return clone;
+        try {
+            DefaultQueryMetadata clone = (DefaultQueryMetadata) super.clone();
+            clone.exprInJoins = new HashSet<Expr<?>>(exprInJoins);
+            clone.groupBy = new ArrayList<Expr<?>>(groupBy);
+            clone.having = having.clone();
+            clone.joins = new ArrayList<JoinExpression>(joins); 
+            clone.modifiers = new QueryModifiers(modifiers);
+            clone.orderBy = new ArrayList<OrderSpecifier<?>>(orderBy);
+            clone.projection = new ArrayList<Expr<?>>(projection);
+            clone.where = where.clone();
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+        
     }
 
     private void ensureRoot(Path<?> path){

@@ -15,7 +15,6 @@ import com.mysema.query.dml.UpdateClause;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.Path;
 import com.mysema.util.JDBCUtil;

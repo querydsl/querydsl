@@ -17,11 +17,11 @@ import com.mysema.query.types.expr.EBoolean;
  * @version $Id$
  */
 @SuppressWarnings("serial")
-public class BooleanBuilder extends EBoolean{
+public class BooleanBuilder extends EBoolean implements Cloneable{
     
     @Nullable
     private EBoolean expr;
-    
+        
     @Override
     public BooleanBuilder and(@Nullable EBoolean right) {
         if (right != null){
@@ -134,6 +134,15 @@ public class BooleanBuilder extends EBoolean{
     @Override
     public int hashCode(){
         return Boolean.class.hashCode();
+    }
+    
+    @Override
+    public BooleanBuilder clone(){
+        try {
+            return (BooleanBuilder) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
     }
     
 }

@@ -12,7 +12,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.alias.Alias;
 import com.mysema.query.collections.MiniApi;
 import com.mysema.query.types.path.PNumber;
 

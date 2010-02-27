@@ -11,6 +11,8 @@ import java.util.Collections;
 
 import org.junit.Test;
 
+import com.mysema.util.JavaWriter;
+
 /**
  * SerializerTest provides.
  * 
@@ -37,7 +39,7 @@ public class SerializerTest {
     @Test
     public void testDomainTypesAsOuterClasses() throws Exception {
         TypeMappings typeMappings = new TypeMappings();
-        new EntitySerializer(typeMappings).serialize(type, SimpleSerializerConfig.DEFAULT, writer);
+        new EntitySerializer(typeMappings).serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
 //        System.out.println(writer);
     }
 

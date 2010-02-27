@@ -17,7 +17,7 @@ import net.jcip.annotations.Immutable;
  * @version $Id$
  */
 @Immutable
-public final class QueryModifiers {
+public final class QueryModifiers{
 
     /**
      * Limit.
@@ -62,6 +62,14 @@ public final class QueryModifiers {
     public QueryModifiers(@Nullable Long limit, @Nullable Long offset) {
         this.limit = limit;
         this.offset = offset;
+    }
+
+    /**
+     * @param modifiers
+     */
+    public QueryModifiers(QueryModifiers modifiers) {
+        this.limit = modifiers.getLimit();
+        this.offset = modifiers.getOffset();
     }
 
     /**

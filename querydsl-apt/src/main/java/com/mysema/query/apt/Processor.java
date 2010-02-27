@@ -356,7 +356,7 @@ public class Processor {
                 Writer writer = fileObject.openWriter();
                 try {
                     SerializerConfig serializerConfig = configuration.getSerializerConfig(model);
-                    serializer.serialize(model, serializerConfig, writer);    
+                    serializer.serialize(model, serializerConfig, new JavaWriter(writer));    
                 }finally{
                     if (writer != null) {
                         writer.close();

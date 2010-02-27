@@ -14,7 +14,6 @@ import org.junit.runner.RunWith;
 
 import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.hql.hibernate.HibernateQuery;
-import com.mysema.query.hql.jpa.JPAQuery;
 import com.mysema.testutil.HibernateConfig;
 import com.mysema.testutil.HibernateTestRunner;
 
