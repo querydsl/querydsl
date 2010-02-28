@@ -27,7 +27,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
    
     private static final long serialVersionUID = -5485902768703364888L;
 
-    private static final ENumber<Double> RANDOM = ONumber.create(Double.class, MathOps.RANDOM);
+    private static volatile ENumber<Double> RANDOM;
         
     /**
      * Return the greater of the given values
@@ -52,6 +52,9 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * @return random()
      */
     public static ENumber<Double> random(){
+        if (RANDOM == null){
+            RANDOM = ONumber.create(Double.class, MathOps.RANDOM);
+        }
         return RANDOM;
     }
     

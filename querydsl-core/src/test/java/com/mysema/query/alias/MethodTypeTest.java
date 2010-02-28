@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.alias;
 
 import static org.junit.Assert.assertEquals;
@@ -29,6 +34,6 @@ public class MethodTypeTest {
     }
 
     public String getVal(){
-        return null;
+        return "";
     }
 }

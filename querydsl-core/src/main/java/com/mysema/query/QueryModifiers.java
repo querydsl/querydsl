@@ -5,6 +5,8 @@
  */
 package com.mysema.query;
 
+import java.io.Serializable;
+
 import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 
@@ -17,7 +19,9 @@ import net.jcip.annotations.Immutable;
  * @version $Id$
  */
 @Immutable
-public final class QueryModifiers{
+public final class QueryModifiers implements Serializable{
+
+    private static final long serialVersionUID = 2934344588433680339L;
 
     /**
      * Limit.

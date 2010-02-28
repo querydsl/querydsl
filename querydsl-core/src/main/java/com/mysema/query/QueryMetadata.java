@@ -5,6 +5,7 @@
  */
 package com.mysema.query;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -20,7 +21,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public interface QueryMetadata {
+public interface QueryMetadata extends Serializable {
 
     /**
      * @param o

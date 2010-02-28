@@ -20,15 +20,15 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public class ProjectableAdapter implements Projectable {
+public class ProjectableAdapter<P extends Projectable> implements Projectable {
 
-    private final Projectable projectable;
+    private final P projectable;
 
-    public ProjectableAdapter(Projectable projectable) {
+    public ProjectableAdapter(P projectable) {
         this.projectable = Assert.notNull(projectable,"projectable is null");
     }
     
-    protected Projectable getProjectable(){
+    protected P getProjectable(){
         return projectable;
     }
 

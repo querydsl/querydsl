@@ -27,6 +27,8 @@ import com.mysema.query.types.path.Path;
  */
 public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     
+    private static final long serialVersionUID = 317736313966701232L;
+
     private boolean distinct;
     
     private Set<Expr<?>> exprInJoins = new HashSet<Expr<?>>();

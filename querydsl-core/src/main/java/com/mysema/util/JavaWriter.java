@@ -17,24 +17,14 @@ import org.apache.commons.lang.StringEscapeUtils;
 
 import com.mysema.commons.lang.Assert;
 
+import static com.mysema.util.Symbols.*;
+
 /**
  * @author tiwe
  *
  */
 public final class JavaWriter implements Appendable, CodeWriter{
         
-    private static final String QUOTE = "\"";
-
-    private static final String SPACE = " ";
-
-    private static final String NEWLINE = "\n";
-
-    private static final String ASSIGN = " = ";
-
-    private static final String COMMA = ", ";
-
-    private static final String DOT = ".";
-
     private static final String EXTENDS = " extends ";
 
     private static final String IMPLEMENTS = " implements ";
@@ -62,8 +52,6 @@ public final class JavaWriter implements Appendable, CodeWriter{
     private static final String PUBLIC_STATIC = "public static ";
 
     private static final String PUBLIC_STATIC_FINAL = "public static final ";
-
-    private static final String SEMICOLON = ";";
     
     private final Appendable appendable;
     
@@ -285,13 +273,6 @@ public final class JavaWriter implements Appendable, CodeWriter{
         return append(NEWLINE);
     }
 
-    @Override
-    public CodeWriter lines(String... lines) throws IOException{
-        for (String line : lines){
-            line(line);
-        }
-        return this;
-    }
 
     @Override
     public CodeWriter nl() throws IOException {

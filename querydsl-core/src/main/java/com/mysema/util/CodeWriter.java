@@ -49,8 +49,6 @@ public interface CodeWriter extends Appendable{
 
     CodeWriter line(String... segments) throws IOException;
 
-    CodeWriter lines(String... lines) throws IOException;
-
     CodeWriter nl() throws IOException;
 
     CodeWriter packageDecl(String packageName) throws IOException;
