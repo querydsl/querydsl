@@ -3,15 +3,15 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.hql.hibernate.sql;
+package com.mysema.query.hql.jpa.sql;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.StatelessSession;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,15 +21,12 @@ import com.mysema.query.QueryMixin;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.hql.HibernateSQLSerializer;
-import com.mysema.query.hql.hibernate.DefaultSessionHolder;
-import com.mysema.query.hql.hibernate.HibernateQuery;
-import com.mysema.query.hql.hibernate.HibernateUtil;
-import com.mysema.query.hql.hibernate.SessionHolder;
-import com.mysema.query.hql.hibernate.StatelessSessionHolder;
+import com.mysema.query.hql.jpa.DefaultSessionHolder;
+import com.mysema.query.hql.jpa.JPASessionHolder;
+import com.mysema.query.hql.jpa.JPAUtil;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.ONumber;
@@ -38,49 +35,38 @@ import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.Path;
 
 /**
- * HibernateSQLQuery is an SQLQuery implementation that uses Hibernate's Native SQL functionality 
+ * JPASQLQuery is an SQLQuery implementation that uses Hibernate's Native SQL functionality 
  * to execute queries
  * 
  * @author tiwe
  *
  */
-public final class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>{
+// TODO : add support for constructor projections
+public final class JPASQLQuery extends ProjectableQuery<JPASQLQuery>{
     
     private static final ENumber<Integer> COUNT_ALL_AGG_EXPR = ONumber.create(Integer.class, Ops.AggOps.COUNT_ALL_AGG);
     
-    private static final Logger logger = LoggerFactory.getLogger(HibernateQuery.class);
-    
-    private Boolean cacheable, readOnly;
-    
-    private String cacheRegion;    
-    
+    private static final Logger logger = LoggerFactory.getLogger(JPASQLQuery.class);
+        
     private Map<Object,String> constants;
     
     private List<Path<?>> entityPaths;
     
-    private int fetchSize = 0;
-    
     private String queryString, countRowsString;
 
-    private final SessionHolder session;
+    private final JPASessionHolder session;
     
     private final SQLTemplates sqlTemplates;    
-    
-    private int timeout = 0;
 
-    public HibernateSQLQuery(Session session, SQLTemplates sqlTemplates) {
-        this(new DefaultSessionHolder(session), sqlTemplates, new DefaultQueryMetadata());
+    public JPASQLQuery(EntityManager entityManager, SQLTemplates sqlTemplates) {
+        this(new DefaultSessionHolder(entityManager), sqlTemplates, new DefaultQueryMetadata());
     }
         
-    protected HibernateSQLQuery(SessionHolder session, SQLTemplates sqlTemplates, QueryMetadata metadata) {
-        super(new QueryMixin<HibernateSQLQuery>(metadata));
+    protected JPASQLQuery(JPASessionHolder session, SQLTemplates sqlTemplates, QueryMetadata metadata) {
+        super(new QueryMixin<JPASQLQuery>(metadata));
         this.queryMixin.setSelf(this);
         this.session = session;
         this.sqlTemplates = sqlTemplates;
-    }
-    
-    public HibernateSQLQuery(StatelessSession session, SQLTemplates sqlTemplates){
-        this(new StatelessSessionHolder(session), sqlTemplates, new DefaultQueryMetadata());
     }
     
     private String buildQueryString(boolean forCountRow) {
@@ -94,8 +80,8 @@ public final class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>
         return serializer.toString();
     }
 
-    public HibernateSQLQuery clone(Session session){
-        return new HibernateSQLQuery(new DefaultSessionHolder(session), sqlTemplates, getMetadata().clone());
+    public JPASQLQuery clone(EntityManager entityManager){
+        return new JPASQLQuery(new DefaultSessionHolder(entityManager), sqlTemplates, getMetadata().clone());
     }
 
     @Override
@@ -103,49 +89,36 @@ public final class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>
         return uniqueResult(COUNT_ALL_AGG_EXPR);
     }
 
-    public org.hibernate.SQLQuery createQuery(Expr<?>... args){
+    public Query createQuery(Expr<?>... args){
         queryMixin.addToProjection(args);
         return createQuery(toQueryString());   
     }
 
     @SuppressWarnings("unchecked")
-    private org.hibernate.SQLQuery createQuery(String queryString) {
+    private Query createQuery(String queryString) {
         logQuery(queryString);
-        org.hibernate.SQLQuery query = session.createSQLQuery(queryString);
-        // set constants
-        HibernateUtil.setConstants(query, constants);
-        // set entity paths
-        for (Path<?> path : entityPaths){
-            query.addEntity(path.toString(), path.getType());
-        }
-        // set result transformer, if projection is an EConstructor instance
         List<? extends Expr<?>> projection = queryMixin.getMetadata().getProjection();
-        if (projection.size() == 1 && projection.get(0) instanceof EConstructor){
-            query.setResultTransformer(new ConstructorResultTransformer((EConstructor<?>) projection.get(0)));
-        }
-        if (fetchSize > 0){
-            query.setFetchSize(fetchSize);
-        }
-        if (timeout > 0){
-            query.setTimeout(timeout);
-        }
-        if (cacheable != null){
-            query.setCacheable(cacheable);        
-        }
-        if (cacheRegion != null){
-            query.setCacheRegion(cacheRegion);
-        }
-        if (readOnly != null){
-            query.setReadOnly(readOnly);        
-        }
+        Query query;
+        if (projection.get(0) instanceof PEntity){
+            if (projection.size() == 1){
+                query = session.createSQLQuery(queryString, projection.get(0).getType());    
+            }else{
+                throw new IllegalArgumentException("Only single element entity projections are supported");
+            }
+            
+        }else{
+            query = session.createSQLQuery(queryString);
+        } 
+        // set constants
+        JPAUtil.setConstants(query, constants);        
         return query;
     }
     
-    public HibernateSQLQuery from(PEntity<?>... args) {
+    public JPASQLQuery from(PEntity<?>... args) {
         return queryMixin.from(args);
     }
 
-    public HibernateSQLQuery fullJoin(PEntity<?> o) {
+    public JPASQLQuery fullJoin(PEntity<?> o) {
         return queryMixin.fullJoin(o);
     }
 
@@ -153,7 +126,7 @@ public final class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>
         return queryMixin.getMetadata();
     }
 
-    public HibernateSQLQuery innerJoin(PEntity<?> o) {
+    public JPASQLQuery innerJoin(PEntity<?> o) {
         return queryMixin.innerJoin(o);
     }
 
@@ -167,11 +140,11 @@ public final class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>
         return list(projection).iterator();
     }
 
-    public HibernateSQLQuery join(PEntity<?> o) {
+    public JPASQLQuery join(PEntity<?> o) {
         return queryMixin.join(o);
     }
     
-    public HibernateSQLQuery leftJoin(PEntity<?> o) {
+    public JPASQLQuery leftJoin(PEntity<?> o) {
         return queryMixin.leftJoin(o);
     }
 
@@ -180,7 +153,7 @@ public final class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>
     public List<Object[]> list(Expr<?>[] args) {
         Query query = createQuery(args);
         reset();
-        return query.list();
+        return query.getResultList();
     }
 
     @SuppressWarnings("unchecked")
@@ -188,7 +161,7 @@ public final class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>
     public <RT> List<RT> list(Expr<RT> projection) {
         Query query = createQuery(projection);
         reset();
-        return query.list();
+        return query.getResultList();
     }
     
     @Override
@@ -196,13 +169,13 @@ public final class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>
         // TODO : handle entity projections as well
         queryMixin.addToProjection(projection);
         Query query = createQuery(toCountRowsString());
-        long total = ((Integer)query.uniqueResult()).longValue();
+        long total = ((Integer)query.getSingleResult()).longValue();
         if (total > 0) {
             QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
             String queryString = toQueryString();
             query = createQuery(queryString);
             @SuppressWarnings("unchecked")
-            List<RT> list = query.list();
+            List<RT> list = query.getResultList();
             reset();
             return new SearchResults<RT>(list, modifiers, total);
         } else {
@@ -217,7 +190,7 @@ public final class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>
         }        
     }
     
-    public HibernateSQLQuery on(EBoolean... conditions) {
+    public JPASQLQuery on(EBoolean... conditions) {
         return queryMixin.on(conditions);
     }
     
@@ -246,57 +219,10 @@ public final class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expr<RT> expr) {
         queryMixin.addToProjection(expr);
-        org.hibernate.SQLQuery query = createQuery(toQueryString());
+        Query query = createQuery(toQueryString());
         reset();
-        return (RT) query.uniqueResult();
+        return (RT) query.getSingleResult();
     }
     
-    /**
-     * Enable caching of this query result set.
-     * @param cacheable Should the query results be cacheable?
-     */
-    public HibernateSQLQuery setCacheable(boolean cacheable){
-        this.cacheable = cacheable;
-        return this;
-    }
-
-    /**
-     * Set the name of the cache region.
-     * @param cacheRegion the name of a query cache region, or <tt>null</tt>
-     * for the default query cache
-     */
-    public HibernateSQLQuery setCacheRegion(String cacheRegion){
-        this.cacheRegion = cacheRegion;
-        return this;
-    }
-    
-    /**
-     * Set a fetch size for the underlying JDBC query.
-     * @param fetchSize the fetch size
-     */
-    public HibernateSQLQuery setFetchSize(int fetchSize) {
-        this.fetchSize = fetchSize;
-        return this;
-    }
-    
-    /**
-     * Entities retrieved by this query will be loaded in 
-     * a read-only mode where Hibernate will never dirty-check
-     * them or make changes persistent.
-     *
-     */
-    public HibernateSQLQuery setReadOnly(boolean readOnly){
-        this.readOnly = readOnly;
-        return this;
-    }
-    
-    /**
-     * Set a timeout for the underlying JDBC query.
-     * @param timeout the timeout in seconds
-     */
-    public HibernateSQLQuery setTimeout(int timeout){
-        this.timeout = timeout;
-        return this;
-    }
 
 }

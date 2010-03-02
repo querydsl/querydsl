@@ -30,17 +30,17 @@ import org.hibernate.type.Type;
  */
 public final class HibernateUtil {
     
-    private static final Map<Class<?>,Type> types = new HashMap<Class<?>,Type>();
+    private static final Map<Class<?>,Type> TYPES = new HashMap<Class<?>,Type>();
     
     static{
-        types.put(Byte.class, new ByteType());
-        types.put(Short.class, new ShortType());
-        types.put(Integer.class, new IntegerType());
-        types.put(Long.class, new LongType());
-        types.put(BigInteger.class, new BigIntegerType());        
-        types.put(Double.class, new DoubleType());
-        types.put(Float.class, new FloatType());
-        types.put(BigDecimal.class, new BigDecimalType());        
+        TYPES.put(Byte.class, new ByteType());
+        TYPES.put(Short.class, new ShortType());
+        TYPES.put(Integer.class, new IntegerType());
+        TYPES.put(Long.class, new LongType());
+        TYPES.put(BigInteger.class, new BigIntegerType());        
+        TYPES.put(Double.class, new DoubleType());
+        TYPES.put(Float.class, new FloatType());
+        TYPES.put(BigDecimal.class, new BigDecimalType());        
     }
     
     private HibernateUtil(){}
@@ -58,8 +58,8 @@ public final class HibernateUtil {
                 // NOTE : parameter types should be given explicitly
                 query.setParameterList(key, (Object[]) val);
                 
-            }else if (types.containsKey(val.getClass())){
-                query.setParameter(key, val, types.get(val.getClass()));
+            }else if (TYPES.containsKey(val.getClass())){
+                query.setParameter(key, val, TYPES.get(val.getClass()));
                 
             } else {
                 // NOTE : parameter types should be given explicitly

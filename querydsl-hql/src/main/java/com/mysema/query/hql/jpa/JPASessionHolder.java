@@ -18,5 +18,18 @@ public interface JPASessionHolder {
      * @return
      */
     Query createQuery(String queryString);
+
+    /**
+     * @param queryString
+     * @return
+     */
+    Query createSQLQuery(String queryString);
+    
+    /**
+     * @param queryString
+     * @param resultClass
+     * @return
+     */
+    Query createSQLQuery(String queryString, Class<?> resultClass);
     
 }

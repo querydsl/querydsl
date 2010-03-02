@@ -25,4 +25,14 @@ public class DefaultSessionHolder implements JPASessionHolder{
         return entityManager.createQuery(queryString);
     }
 
+    @Override
+    public Query createSQLQuery(String sqlString) {
+        return entityManager.createNativeQuery(sqlString);
+    }
+
+    @Override
+    public Query createSQLQuery(String sqlString, Class<?> resultClass) {
+        return entityManager.createNativeQuery(sqlString, resultClass);
+    }
+
 }

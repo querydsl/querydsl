@@ -20,4 +20,14 @@ public class NoSessionHolder implements JPASessionHolder{
         throw new UnsupportedOperationException("No entityManager in detached Query available");
     }
 
+    @Override
+    public Query createSQLQuery(String queryString) {
+        throw new UnsupportedOperationException("No entityManager in detached Query available");
+    }
+
+    @Override
+    public Query createSQLQuery(String queryString, Class<?> resultClass) {
+        throw new UnsupportedOperationException("No entityManager in detached Query available");
+    }
+
 }

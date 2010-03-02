@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.hql.hibernate.sql;
+package com.mysema.query.hql;
 
 import java.util.ArrayList;
 import java.util.List;
