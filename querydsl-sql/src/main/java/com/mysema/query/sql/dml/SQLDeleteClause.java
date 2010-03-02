@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.sql.SQLSerializer;
@@ -50,7 +51,7 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause>{
             JDBCUtil.setParameters(stmt, serializer.getConstants());
             return stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
+            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
         }finally{
             if (stmt != null){
                 close(stmt);    
@@ -62,7 +63,7 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause>{
         try {
             stmt.close();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new QueryException(e);
         }        
     }
 

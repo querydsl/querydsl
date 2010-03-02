@@ -98,7 +98,7 @@ public final class ElementHandler{
             StringBuilder builder = new StringBuilder();
             builder.append("Caught exception for field ");
             builder.append(entityModel.getFullName()).append("#").append(field.getSimpleName());
-            throw new RuntimeException(builder.toString(), ex);
+            throw new APTException(builder.toString(), ex);
         }
     }
 
@@ -130,7 +130,7 @@ public final class ElementHandler{
             StringBuilder builder = new StringBuilder();
             builder.append("Caught exception for method ");
             builder.append(entityModel.getFullName()).append("#").append(method.getSimpleName());
-            throw new RuntimeException(builder.toString(), ex);
+            throw new APTException(builder.toString(), ex);
         }
     }
 

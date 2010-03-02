@@ -16,6 +16,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
+import com.mysema.query.apt.APTException;
 import com.mysema.query.apt.DefaultConfiguration;
 import com.mysema.query.apt.Processor;
 
@@ -45,7 +46,7 @@ public class JPAAnnotationProcessor extends AbstractProcessor{
             return true;
             
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw new APTException(e.getMessage(), e);
         }        
     }
 

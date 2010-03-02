@@ -21,6 +21,7 @@ import org.apache.commons.collections15.iterators.FilterIterator;
 import org.apache.commons.collections15.iterators.UniqueFilterIterator;
 
 import com.mysema.query.JoinExpression;
+import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryMixin;
 import com.mysema.query.QueryModifiers;
@@ -104,7 +105,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
             }
             return count;
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw new QueryException(e.getMessage(), e);
         }finally{
             reset();
         }
@@ -237,7 +238,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
             queryMixin.addToProjection(projection);
             return createPagedIterator(projection);
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw new QueryException(e.getMessage(), e);
         }finally{
             reset();
         }
@@ -250,7 +251,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
         try {
             list = IteratorUtils.toList(createIterator(projection));
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw new QueryException(e.getMessage(), e);
         }
         // empty results
         if (list.isEmpty()) {

@@ -11,7 +11,7 @@ import javax.lang.model.type.TypeMirror;
  * @author tiwe
  *
  */
-public class UnsupportedTypeException extends RuntimeException {
+public class UnsupportedTypeException extends APTException {
 
     private static final long serialVersionUID = 1082936662325717262L;
 

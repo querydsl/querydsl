@@ -18,6 +18,7 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryMixin;
 import com.mysema.query.QueryModifiers;
@@ -100,7 +101,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         } catch (SQLException e) {
             String error = "Caught " + e.getClass().getName();
             logger.error(error, e);
-            throw new RuntimeException(e.getMessage(), e);
+            throw new QueryException(e.getMessage(), e);
         }
     }
     
@@ -170,7 +171,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         } catch (SQLException e) {
             String error = "Caught " + e.getClass().getName();
             logger.error(error, e);
-            throw new RuntimeException(e.getMessage(), e);
+            throw new QueryException(e.getMessage(), e);
         }finally{
             reset();
         }
@@ -183,7 +184,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         } catch (SQLException e) {
             String error = "Caught " + e.getClass().getName();
             logger.error(error, e);
-            throw new RuntimeException(e.getMessage(), e);
+            throw new QueryException(e.getMessage(), e);
         }finally{
             reset();
         }
@@ -266,7 +267,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
             } catch (Exception e) {
                 String error = "Caught " + e.getClass().getName();
                 logger.error(error, e);
-                throw new RuntimeException(e.getMessage(), e);
+                throw new QueryException(e.getMessage(), e);
             }
             return rv;
         } finally {

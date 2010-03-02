@@ -15,6 +15,7 @@ import org.codehaus.janino.Scanner.ScanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.QueryException;
 import com.mysema.query.collections.ColQueryTemplates;
 import com.mysema.query.types.expr.Expr;
 
@@ -71,11 +72,11 @@ public class EvaluatorFactory {
             return new JaninoEvaluator<T>(javaSource, evaluator, names, constArray);
             
         } catch (CompileException e) {
-            throw new RuntimeException(e.getMessage() + " with source " + javaSource, e);
+            throw new QueryException(e.getMessage() + " with source " + javaSource, e);
         } catch (ParseException e) {
-            throw new RuntimeException(e.getMessage() + " with source " + javaSource, e);
+            throw new QueryException(e.getMessage() + " with source " + javaSource, e);
         } catch (ScanException e) {
-            throw new RuntimeException(e.getMessage() + " with source " + javaSource, e);
+            throw new QueryException(e.getMessage() + " with source " + javaSource, e);
         }
     }
     
