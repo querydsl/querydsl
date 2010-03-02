@@ -139,12 +139,8 @@ public final class BooleanBuilder extends EBoolean implements Cloneable{
     }
     
     @Override
-    public BooleanBuilder clone(){
-        try {
-            return (BooleanBuilder) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
+    public BooleanBuilder clone() throws CloneNotSupportedException{
+        return (BooleanBuilder) super.clone();
     }
     
 }
