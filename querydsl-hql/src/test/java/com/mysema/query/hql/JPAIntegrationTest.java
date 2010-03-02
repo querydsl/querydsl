@@ -26,7 +26,7 @@ import com.mysema.testutil.JPATestRunner;
  */
 @RunWith(JPATestRunner.class)
 @JPAConfig("hsqldb")
-public class JPAIntegrationTest extends HibernateParsingTest {
+public class JPAIntegrationTest extends ParsingTest {
 
     private EntityManager entityManager;
 

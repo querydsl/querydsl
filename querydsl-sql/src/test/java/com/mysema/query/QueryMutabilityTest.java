@@ -1,9 +1,9 @@
 package com.mysema.query;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -49,47 +49,13 @@ public class QueryMutabilityTest{
     }
     
     @Test
-    public void test() throws IOException{
+    public void test() throws IOException, SecurityException,
+            IllegalArgumentException, NoSuchMethodException,
+            IllegalAccessException, InvocationTargetException {
         QSURVEY survey = new QSURVEY("survey");
         SQLQueryImpl query = new SQLQueryImpl(connection, new DerbyTemplates());
         query.from(survey);
-        
-        query.count();
-        assertProjectionEmpty(query);
-        query.countDistinct();
-        assertProjectionEmpty(query);
-        
-        query.iterate(survey.id);
-        assertProjectionEmpty(query);
-        query.iterate(survey.id,survey.name);
-        assertProjectionEmpty(query);
-        query.iterateDistinct(survey.id);
-        assertProjectionEmpty(query);
-        query.iterateDistinct(survey.id,survey.name);
-        assertProjectionEmpty(query);
-        
-        query.list(survey.id);
-        assertProjectionEmpty(query);
-        query.list(survey.id,survey.id);
-        assertProjectionEmpty(query);
-        query.listDistinct(survey.id);
-        assertProjectionEmpty(query);
-        query.listDistinct(survey.id,survey.name);
-        assertProjectionEmpty(query);
-        
-        query.listResults(survey.id);
-        assertProjectionEmpty(query);
-        query.listDistinctResults(survey.id);
-        assertProjectionEmpty(query);
-        
-        query.map(survey.name, survey.id);
-        assertProjectionEmpty(query);
-        
-        query.uniqueResult(survey.id);
-        assertProjectionEmpty(query);
-        query.uniqueResult(survey.id,survey.name);
-        assertProjectionEmpty(query);
-        
+        Mutability.test(query, survey.id, survey.name);
     }
     
     @Test
@@ -102,8 +68,5 @@ public class QueryMutabilityTest{
         query2.list(survey.id);
     }
 
-    private void assertProjectionEmpty(SQLQueryImpl query) throws IOException {
-        assertTrue(query.getMetadata().getProjection().isEmpty());        
-    }
 
 }

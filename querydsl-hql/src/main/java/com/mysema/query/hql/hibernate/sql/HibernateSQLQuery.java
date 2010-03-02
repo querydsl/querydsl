@@ -5,7 +5,6 @@
  */
 package com.mysema.query.hql.hibernate.sql;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -17,9 +16,9 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.QueryMixin;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
+import com.mysema.query.hql.AbstractSQLQuery;
 import com.mysema.query.hql.HibernateSQLSerializer;
 import com.mysema.query.hql.hibernate.DefaultSessionHolder;
 import com.mysema.query.hql.hibernate.HibernateQuery;
@@ -27,14 +26,8 @@ import com.mysema.query.hql.hibernate.HibernateUtil;
 import com.mysema.query.hql.hibernate.SessionHolder;
 import com.mysema.query.hql.hibernate.StatelessSessionHolder;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.support.ProjectableQuery;
-import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstructor;
-import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.ONumber;
-import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.Path;
 
 /**
@@ -44,9 +37,7 @@ import com.mysema.query.types.path.Path;
  * @author tiwe
  *
  */
-public final class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>{
-    
-    private static final ENumber<Integer> COUNT_ALL_AGG_EXPR = ONumber.create(Integer.class, Ops.AggOps.COUNT_ALL_AGG);
+public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>{
     
     private static final Logger logger = LoggerFactory.getLogger(HibernateQuery.class);
     
@@ -73,8 +64,7 @@ public final class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>
     }
         
     protected HibernateSQLQuery(SessionHolder session, SQLTemplates sqlTemplates, QueryMetadata metadata) {
-        super(new QueryMixin<HibernateSQLQuery>(metadata));
-        this.queryMixin.setSelf(this);
+        super(metadata);
         this.session = session;
         this.sqlTemplates = sqlTemplates;
     }
@@ -96,11 +86,6 @@ public final class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>
 
     public HibernateSQLQuery clone(Session session){
         return new HibernateSQLQuery(new DefaultSessionHolder(session), sqlTemplates, getMetadata().clone());
-    }
-
-    @Override
-    public long count() {
-        return uniqueResult(COUNT_ALL_AGG_EXPR);
     }
 
     public org.hibernate.SQLQuery createQuery(Expr<?>... args){
@@ -141,44 +126,10 @@ public final class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>
         return query;
     }
     
-    public HibernateSQLQuery from(PEntity<?>... args) {
-        return queryMixin.from(args);
-    }
-
-    public HibernateSQLQuery fullJoin(PEntity<?> o) {
-        return queryMixin.fullJoin(o);
-    }
-
-    public QueryMetadata getMetadata(){
-        return queryMixin.getMetadata();
-    }
-
-    public HibernateSQLQuery innerJoin(PEntity<?> o) {
-        return queryMixin.innerJoin(o);
-    }
-
-    @Override
-    public Iterator<Object[]> iterate(Expr<?>[] args) {
-        return list(args).iterator();
-    }
-
-    @Override
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        return list(projection).iterator();
-    }
-
-    public HibernateSQLQuery join(PEntity<?> o) {
-        return queryMixin.join(o);
-    }
-    
-    public HibernateSQLQuery leftJoin(PEntity<?> o) {
-        return queryMixin.leftJoin(o);
-    }
-
     @SuppressWarnings("unchecked")
     @Override
-    public List<Object[]> list(Expr<?>[] args) {
-        Query query = createQuery(args);
+    public List<Object[]> list(Expr<?>[] projection) {
+        Query query = createQuery(projection);
         reset();
         return query.list();
     }
@@ -217,10 +168,6 @@ public final class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>
         }        
     }
     
-    public HibernateSQLQuery on(EBoolean... conditions) {
-        return queryMixin.on(conditions);
-    }
-    
     protected void reset() {
         queryMixin.getMetadata().reset();
         countRowsString = null;
@@ -245,8 +192,7 @@ public final class HibernateSQLQuery extends ProjectableQuery<HibernateSQLQuery>
 
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expr<RT> expr) {
-        queryMixin.addToProjection(expr);
-        org.hibernate.SQLQuery query = createQuery(toQueryString());
+        org.hibernate.SQLQuery query = createQuery(expr);
         reset();
         return (RT) query.uniqueResult();
     }

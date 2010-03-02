@@ -10,11 +10,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class SubQueryTest extends AbstractQueryTest{
-    
-    protected HQLSubQuery sub(){
-        return new HQLSubQuery();
-    }
-    
+        
     @Test(expected=IllegalArgumentException.class)
     public void wrongUsage(){
         sub().exists();

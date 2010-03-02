@@ -10,12 +10,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 
-public class JoinFlagsTest implements Constants{
+public class JoinFlagsTest extends AbstractQueryTest{
     
-    protected QueryHelper query() {
-        return new QueryHelper();
-    }
-
     @Test
     public void fetchAll(){
         QueryHelper query1 = query().from(cat).fetchAll().where(cat.name.isNotNull());

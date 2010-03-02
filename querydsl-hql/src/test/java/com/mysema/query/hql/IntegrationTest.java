@@ -7,6 +7,9 @@ package com.mysema.query.hql;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
@@ -28,14 +31,14 @@ import com.mysema.testutil.HibernateConfig;
 import com.mysema.testutil.HibernateTestRunner;
 
 /**
- * HibernatePersistenceTest provides.
+ * IntegrationTest provides.
  * 
  * @author tiwe
  * @version $Id$
  */
 @RunWith(HibernateTestRunner.class)
 @HibernateConfig("hsqldb.properties")
-public class HibernateIntegrationTest extends HibernateParsingTest {
+public class IntegrationTest extends ParsingTest {
 
     private Session session;
 
@@ -120,6 +123,20 @@ public class HibernateIntegrationTest extends HibernateParsingTest {
         assertEquals(1, amount);
             
         assertEquals(0l, query().from(cat).where(cat.name.eq("Bob")).count());
+    }
+    
+    @Test
+    public void testCollection() throws Exception{
+        List<Cat> cats = Arrays.asList(new Cat("Bob",10), new Cat("Steve",11));
+        for (Cat cat : cats){
+            session.save(cat);
+        }
+        
+        query().from(cat)
+            .innerJoin(cat.kittens, kitten)
+            .where(kitten.in(cats))
+            .parse();
+        
     }
     
     public void setSession(Session session) {

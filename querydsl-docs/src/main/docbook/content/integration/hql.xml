@@ -520,7 +520,8 @@ List<CatDTO> catDTOs = query.from(cat)
     .list(EConstructor.create(CatDTO.class, cat.id, cat.name));
 ]]></programlisting>
   
-  <para></para>
+  <para>If you are using the JPA API instead of the Hibernate API, then use
+  JPASQLQuery instead of HibernateSQLQuery</para>
   
   </sect2>
 

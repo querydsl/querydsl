@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.hql.domain.sql;
 
 import static com.mysema.query.types.path.PathMetadataFactory.forVariable;

@@ -12,11 +12,7 @@ import org.junit.Test;
 import com.mysema.query.BooleanBuilder;
 
 public class BooleanOperationsTest extends AbstractQueryTest {
-    
-    protected HQLSubQuery sub(){
-        return new HQLSubQuery();
-    }
-    
+        
     @Test
     public void testBooleanOperations() {
         assertToString("cust is null or cat is null", cust.isNull().or(cat.isNull()));

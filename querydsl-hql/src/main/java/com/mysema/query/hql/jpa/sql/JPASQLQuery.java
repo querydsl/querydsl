@@ -20,12 +20,12 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryMixin;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
+import com.mysema.query.hql.AbstractSQLQuery;
 import com.mysema.query.hql.HibernateSQLSerializer;
 import com.mysema.query.hql.jpa.DefaultSessionHolder;
 import com.mysema.query.hql.jpa.JPASessionHolder;
 import com.mysema.query.hql.jpa.JPAUtil;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
@@ -42,7 +42,7 @@ import com.mysema.query.types.path.Path;
  *
  */
 // TODO : add support for constructor projections
-public final class JPASQLQuery extends ProjectableQuery<JPASQLQuery>{
+public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery>{
     
     private static final ENumber<Integer> COUNT_ALL_AGG_EXPR = ONumber.create(Integer.class, Ops.AggOps.COUNT_ALL_AGG);
     
@@ -63,8 +63,7 @@ public final class JPASQLQuery extends ProjectableQuery<JPASQLQuery>{
     }
         
     protected JPASQLQuery(JPASessionHolder session, SQLTemplates sqlTemplates, QueryMetadata metadata) {
-        super(new QueryMixin<JPASQLQuery>(metadata));
-        this.queryMixin.setSelf(this);
+        super(metadata);
         this.session = session;
         this.sqlTemplates = sqlTemplates;
     }
@@ -82,11 +81,6 @@ public final class JPASQLQuery extends ProjectableQuery<JPASQLQuery>{
 
     public JPASQLQuery clone(EntityManager entityManager){
         return new JPASQLQuery(new DefaultSessionHolder(entityManager), sqlTemplates, getMetadata().clone());
-    }
-
-    @Override
-    public long count() {
-        return uniqueResult(COUNT_ALL_AGG_EXPR);
     }
 
     public Query createQuery(Expr<?>... args){
@@ -114,40 +108,6 @@ public final class JPASQLQuery extends ProjectableQuery<JPASQLQuery>{
         return query;
     }
     
-    public JPASQLQuery from(PEntity<?>... args) {
-        return queryMixin.from(args);
-    }
-
-    public JPASQLQuery fullJoin(PEntity<?> o) {
-        return queryMixin.fullJoin(o);
-    }
-
-    public QueryMetadata getMetadata(){
-        return queryMixin.getMetadata();
-    }
-
-    public JPASQLQuery innerJoin(PEntity<?> o) {
-        return queryMixin.innerJoin(o);
-    }
-
-    @Override
-    public Iterator<Object[]> iterate(Expr<?>[] args) {
-        return list(args).iterator();
-    }
-
-    @Override
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        return list(projection).iterator();
-    }
-
-    public JPASQLQuery join(PEntity<?> o) {
-        return queryMixin.join(o);
-    }
-    
-    public JPASQLQuery leftJoin(PEntity<?> o) {
-        return queryMixin.leftJoin(o);
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public List<Object[]> list(Expr<?>[] args) {
@@ -189,10 +149,7 @@ public final class JPASQLQuery extends ProjectableQuery<JPASQLQuery>{
             logger.debug(queryString.replace('\n', ' '));    
         }        
     }
-    
-    public JPASQLQuery on(EBoolean... conditions) {
-        return queryMixin.on(conditions);
-    }
+   
     
     protected void reset() {
         queryMixin.getMetadata().reset();
@@ -218,8 +175,7 @@ public final class JPASQLQuery extends ProjectableQuery<JPASQLQuery>{
 
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expr<RT> expr) {
-        queryMixin.addToProjection(expr);
-        Query query = createQuery(toQueryString());
+        Query query = createQuery(expr);
         reset();
         return (RT) query.getSingleResult();
     }

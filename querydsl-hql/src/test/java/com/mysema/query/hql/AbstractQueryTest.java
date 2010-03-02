@@ -10,6 +10,14 @@ import static org.junit.Assert.assertEquals;
 import com.mysema.query.types.expr.Expr;
 
 public abstract class AbstractQueryTest implements Constants{
+   
+    protected QueryHelper query() {
+        return new QueryHelper();
+    }
+    
+    protected HQLSubQuery sub(){
+        return new HQLSubQuery();
+    }
     
     protected static void assertToString(String expected, Expr<?> expr) {
         HQLSerializer serializer = new HQLSerializer(HQLTemplates.DEFAULT);

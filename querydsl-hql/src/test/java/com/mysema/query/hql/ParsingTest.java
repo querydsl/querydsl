@@ -35,12 +35,12 @@ import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.operation.Ops;
 
 /**
- * HqlParserTest provides.
+ * ParsingTest provides.
  * 
  * @author tiwe
  * @version $Id$
  */
-public class HibernateParsingTest implements Constants {
+public class ParsingTest extends AbstractQueryTest{
 
     @Test
     @Ignore
@@ -350,12 +350,6 @@ public class HibernateParsingTest implements Constants {
         query().from(qat, foo).parse();
     }
 
-
-
-    protected QueryHelper query() {
-        return new QueryHelper();
-    }
-
     @Test
     public void serialization(){
         QueryHelper query = query();
@@ -365,10 +359,6 @@ public class HibernateParsingTest implements Constants {
         
         query.from(fatcat);
         assertEquals("from Cat cat, Cat fatcat", query.toString());
-    }
-
-    protected HQLSubQuery sub(){
-        return new HQLSubQuery();
     }
 
     @Test
@@ -454,5 +444,6 @@ public class HibernateParsingTest implements Constants {
                         an.bodyWeight.lt(100).or(an.bodyWeight.isNull())))
                 .parse();
     }
+    
 
 }

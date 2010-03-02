@@ -16,8 +16,9 @@ import com.mysema.query.types.expr.EConstructor;
  * @author tiwe
  *
  */
-@SuppressWarnings("serial")
 public final class ConstructorResultTransformer implements ResultTransformer{
+
+    private static final long serialVersionUID = -3625957233853100239L;
 
     private transient final Constructor<?> constructor;
     
