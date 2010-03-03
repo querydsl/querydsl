@@ -154,17 +154,19 @@ public abstract class AbstractStandardTest {
     
     @Test
     public void testDistinctResults(){
-        // list results
+        System.out.println("-- list results");
         SearchResults<Date> res = catQuery().limit(2).listResults(cat.birthdate);
         assertEquals(2, res.getResults().size());
         assertEquals(6l, res.getTotal());
+        System.out.println();
         
-        // list distinct results
+        System.out.println("-- list distinct results"); 
         res = catQuery().limit(2).listDistinctResults(cat.birthdate);
         assertEquals(1, res.getResults().size());
-        assertEquals(1l, res.getTotal());
+        assertEquals(1l, res.getTotal());        
+        System.out.println();
         
-        // list distinct
+        System.out.println("-- list distinct");
         assertEquals(1, catQuery().listDistinct(cat.birthdate).size());
     }
     

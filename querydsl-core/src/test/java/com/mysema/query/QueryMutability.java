@@ -63,7 +63,7 @@ public final class QueryMutability {
         query.listDistinctResults(p1);
         assertProjectionEmpty(query, m);
 
-        System.err.println("listDistinctResults");
+        System.err.println("map");
         query.map(p1, p2);
         assertProjectionEmpty(query, m);
 
@@ -71,7 +71,6 @@ public final class QueryMutability {
         query.uniqueResult(p1);
         assertProjectionEmpty(query, m);
         
-        System.err.println("uniqueResult");
         query.uniqueResult(p1, p2);
         assertProjectionEmpty(query, m);
     }
