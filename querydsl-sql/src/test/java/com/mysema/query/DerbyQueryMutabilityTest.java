@@ -17,7 +17,9 @@ import com.mysema.query.sql.DerbyTemplates;
 import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.domain.QSURVEY;
 
-public class QueryMutabilityTest{
+public class DerbyQueryMutabilityTest{
+    
+    private static final QSURVEY survey = new QSURVEY("survey");
     
     private Connection connection;
     
@@ -31,7 +33,7 @@ public class QueryMutabilityTest{
         try {
             stmt.execute(sql);
         } catch (SQLException e) {
-            // do nothing
+            e.printStackTrace();
         }
     }
     
@@ -45,22 +47,22 @@ public class QueryMutabilityTest{
     
     @After
     public void tearDown() throws SQLException{
-        if (connection != null) connection.close();
+        if (connection != null){
+            connection.close();
+        }
     }
     
     @Test
     public void test() throws IOException, SecurityException,
             IllegalArgumentException, NoSuchMethodException,
             IllegalAccessException, InvocationTargetException {
-        QSURVEY survey = new QSURVEY("survey");
         SQLQueryImpl query = new SQLQueryImpl(connection, new DerbyTemplates());
         query.from(survey);
-        Mutability.test(query, survey.id, survey.name);
+        QueryMutability.test(query, survey.id, survey.name);
     }
     
     @Test
     public void testClone(){
-        QSURVEY survey = new QSURVEY("survey");
         SQLQueryImpl query = new SQLQueryImpl(new DerbyTemplates()).from(survey);        
         SQLQueryImpl query2 = query.clone(connection);
         assertEquals(query.getMetadata().getJoins(), query2.getMetadata().getJoins());

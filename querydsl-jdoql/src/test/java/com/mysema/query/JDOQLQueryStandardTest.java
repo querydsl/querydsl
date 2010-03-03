@@ -6,8 +6,10 @@
 package com.mysema.query;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
@@ -15,6 +17,7 @@ import javax.jdo.Transaction;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.mysema.commons.lang.Pair;
 import com.mysema.query.jdoql.AbstractJDOTest;
 import com.mysema.query.jdoql.JDOQLQuery;
 import com.mysema.query.jdoql.testdomain.Product;
@@ -79,33 +82,18 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
 
     }
     
-    private StandardTest standardTest = new StandardTest(Module.JDOQL, Target.HSQLDB){
+    private QueryExecution standardTest = new QueryExecution(Module.JDOQL, Target.HSQLDB){        
         @Override
-        public int executeFilter(EBoolean f) {
-            JDOQLQuery query = query();
-            try{
-                return query.from(store, product, otherProduct).where(f).list(store, product, otherProduct).size();
-            }finally{
-                try {
-                    query.close();
-                } catch (IOException e) {
-                    throw new RuntimeException(e.getMessage(), e);
-                }
-            }
+        protected Pair<Projectable, List<Expr<?>>> createQuery() {
+            return Pair.of(
+                (Projectable)query().from(store, product, otherProduct),
+                Arrays.<Expr<?>>asList(store, product, otherProduct));
         }
         @Override
-        public int executeProjection(Expr<?> pr) {
-            JDOQLQuery query = query();
-            try{
-                return query.from(store, product, otherProduct).list(pr, store, product, otherProduct).size();    
-            }finally{
-                try {
-                    query.close();
-                } catch (IOException e) {
-                    throw new RuntimeException(e.getMessage(), e);
-                }
-            }
-            
+        protected Pair<Projectable, List<Expr<?>>> createQuery(EBoolean filter) {
+            return Pair.of(
+                (Projectable)query().from(store, product, otherProduct).where(filter),
+                Arrays.<Expr<?>>asList(store, product, otherProduct));                
         }        
     };
     
@@ -122,18 +110,19 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
         Product p = query().from(product).where(product.name.eq(productName)).limit(1).uniqueResult(product);
         Product p2 = query().from(product).where(product.name.startsWith(otherName)).limit(1).uniqueResult(product);
         standardTest.noProjections();
+        standardTest.noCounts();
                 
-        standardTest.booleanTests(product.name.isNull(), otherProduct.price.lt(10.00));
-        standardTest.collectionTests(store.products, otherStore.products, p, p2);
-        standardTest.dateTests(product.dateField, otherProduct.dateField, date);
-        standardTest.dateTimeTests(product.publicationDate, otherProduct.publicationDate, publicationDate);
+        standardTest.runBooleanTests(product.name.isNull(), otherProduct.price.lt(10.00));
+        standardTest.runCollectionTests(store.products, otherStore.products, p, p2);
+        standardTest.runDateTests(product.dateField, otherProduct.dateField, date);
+        standardTest.runDateTimeTests(product.publicationDate, otherProduct.publicationDate, publicationDate);
         // NO list support in JDOQL
 //        testData.listTests(store.products, otherStore.products, p);
-        standardTest.mapTests(store.productsByName, otherStore.productsByName, productName, p, "X", p2);
-        standardTest.numericCasts(product.price, otherProduct.price, 200.0);
-        standardTest.numericTests(product.amount, otherProduct.amount, 2);
-        standardTest.stringTests(product.name, otherProduct.name, productName);
-        standardTest.timeTests(product.timeField, otherProduct.timeField, time);
+        standardTest.runMapTests(store.productsByName, otherStore.productsByName, productName, p, "X", p2);
+        standardTest.runNumericCasts(product.price, otherProduct.price, 200.0);
+        standardTest.runNumericTests(product.amount, otherProduct.amount, 2);
+        standardTest.runStringTests(product.name, otherProduct.name, productName);
+        standardTest.runTimeTests(product.timeField, otherProduct.timeField, time);
         
         standardTest.report();        
     }

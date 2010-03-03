@@ -42,10 +42,42 @@ import com.mysema.query.types.query.SubQuery;
  */
 public final class HQLSerializer extends SerializerBase<HQLSerializer> {
 
+    private static final String AS = " as ";
+
+    private static final String COMMA = ", ";
+
+    private static final String DELETE = "delete ";
+
+    private static final String FETCH = "fetch ";
+
+    private static final String FETCH_ALL_PROPERTIES = " fetch all properties";
+    
+    private static final String FROM = "from ";
+    
+    private static final String GROUP_BY = "\ngroup by ";
+    
+    private static final String HAVING = "\nhaving ";
+    
+    private static final String ORDER_BY = "\norder by ";
+    
+    private static final String SELECT = "select ";
+    
+    private static final String SELECT_COUNT_ALL = "select count(*)\n";
+    
+    private static final String SELECT_DISTINCT = "select distinct ";
+    
+    private static final String SET = "\nset ";
+    
+    private static final String UPDATE = "update ";
+    
+    private static final String WHERE = "\nwhere ";
+    
+    private static final String WITH = " with ";
+    
     private static final Map<JoinType, String> joinTypes = new HashMap<JoinType, String>();
     
     static{
-        joinTypes.put(JoinType.DEFAULT, ", ");
+        joinTypes.put(JoinType.DEFAULT, COMMA);
         joinTypes.put(JoinType.FULLJOIN, "\n  full join ");
         joinTypes.put(JoinType.INNERJOIN, "\n  inner join ");
         joinTypes.put(JoinType.JOIN, "\n  join ");
@@ -56,104 +88,6 @@ public final class HQLSerializer extends SerializerBase<HQLSerializer> {
 
     public HQLSerializer(HQLTemplates patterns) {
         super(patterns);
-    }
-
-    public void serializeForDelete(QueryMetadata md) {
-        append("delete ");
-        handleJoinTarget(md.getJoins().get(0));        
-        if (md.getWhere() != null) {
-            append("\nwhere ").handle(md.getWhere());
-        }
-    }
-
-    public void serializeForUpdate(QueryMetadata md) {
-        append("update ");
-        handleJoinTarget(md.getJoins().get(0));
-        append("\nset ");
-        handle(", ", md.getProjection());
-        if (md.getWhere() != null) {
-            append("\nwhere ").handle(md.getWhere());
-        }
-    }
-    
-    public void serialize(QueryMetadata metadata, boolean forCountRow, @Nullable String projection) {
-        List<? extends Expr<?>> select = metadata.getProjection();
-        List<JoinExpression> joins = metadata.getJoins();
-        EBoolean where = metadata.getWhere();
-        List<? extends Expr<?>> groupBy = metadata.getGroupBy();
-        EBoolean having = metadata.getHaving();
-        List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
-
-        // select
-        if (projection != null){
-            append("select ").append(projection).append("\n");
-        }else if (forCountRow) {
-            append("select count(*)\n");
-        } else if (!select.isEmpty()) {
-            if (!metadata.isDistinct()) {
-                append("select ");
-            } else {
-                append("select distinct ");
-            }
-            handle(", ", select).append("\n");
-        }
-        
-        // from
-        append("from ");
-        serializeSources(forCountRow, joins);
-
-        // where
-        if (where != null) {
-            append("\nwhere ").handle(where);
-        }
-        
-        // group by
-        if (!groupBy.isEmpty()) {
-            append("\ngroup by ").handle(", ", groupBy);
-        }
-        
-        // having
-        if (having != null) {
-            if (groupBy.isEmpty()) {
-                throw new IllegalArgumentException(
-                        "having, but not groupBy was given");
-            }
-            append("\nhaving ").handle(having);
-        }
-        
-        // order by
-        if (!orderBy.isEmpty() && !forCountRow) {
-            append("\norder by ");
-            boolean first = true;
-            for (OrderSpecifier<?> os : orderBy) {
-                if (!first){
-                    append(", ");
-                }                    
-                handle(os.getTarget());
-                append(" " + os.getOrder().toString().toLowerCase());
-                first = false;
-            }
-        }
-    }
-
-    private void serializeSources(boolean forCountRow, List<JoinExpression> joins) {
-        for (int i = 0; i < joins.size(); i++) {
-            JoinExpression je = joins.get(i);
-            if (i > 0) {
-                append(joinTypes.get(je.getType()));
-            }            
-            if (je.hasFlag(HQLFlags.FETCH) && !forCountRow){
-                append("fetch ");
-            }            
-            handleJoinTarget(je);
-            if (je.hasFlag(HQLFlags.FETCH_ALL) && !forCountRow){
-                append(" fetch all properties");
-            }
-
-            if (je.getCondition() != null) {
-                append(" with ").handle(je.getCondition());
-            }
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -170,6 +104,141 @@ public final class HQLSerializer extends SerializerBase<HQLSerializer> {
         handle(je.getTarget());
     }
 
+    // TODO : generalize this!
+    @SuppressWarnings("unchecked")
+    private Expr<?> regexToLike(Operation<?,?> operation) {
+        List<Expr<?>> args = new ArrayList<Expr<?>>();
+        for (Expr<?> arg : operation.getArgs()){
+            if (!arg.getType().equals(String.class)){
+                args.add(arg);
+            }else if (arg instanceof Constant){
+                args.add(regexToLike(arg.toString()));
+            }else if (arg instanceof Operation){
+                args.add(regexToLike((Operation)arg));
+            }else{
+                args.add(arg);
+            }
+        }
+        return OSimple.create(
+                operation.getType(),
+                operation.getOperator(), 
+                args.<Expr<?>>toArray(new Expr[args.size()]));
+    }
+    
+    private Expr<?> regexToLike(String str){
+        return EStringConst.create(str.replace(".*", "%").replace(".", "_"));
+    }
+
+    public void serialize(QueryMetadata metadata, boolean forCountRow, @Nullable String projection) {
+        List<? extends Expr<?>> select = metadata.getProjection();
+        List<JoinExpression> joins = metadata.getJoins();
+        EBoolean where = metadata.getWhere();
+        List<? extends Expr<?>> groupBy = metadata.getGroupBy();
+        EBoolean having = metadata.getHaving();
+        List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
+
+        // select
+        if (projection != null){
+            append(SELECT).append(projection).append("\n");
+            
+        }else if (forCountRow) {
+            if (!metadata.isDistinct()){
+                append(SELECT_COUNT_ALL);
+            }else{
+                append("select count(distinct ");
+                if(!select.isEmpty()){
+                    handle(COMMA, select);    
+                }else{
+                    handle(joins.get(0).getTarget());
+                }                
+                append(")\n"); 
+            }
+            
+        } else if (!select.isEmpty()) {
+            if (!metadata.isDistinct()) {
+                append(SELECT);
+            } else {
+                append(SELECT_DISTINCT);
+            }
+            handle(COMMA, select).append("\n");
+            
+        }
+        
+        // from
+        append(FROM);
+        serializeSources(forCountRow, joins);
+
+        // where
+        if (where != null) {
+            append(WHERE).handle(where);
+        }
+        
+        // group by
+        if (!groupBy.isEmpty()) {
+            append(GROUP_BY).handle(COMMA, groupBy);
+        }
+        
+        // having
+        if (having != null) {
+            if (groupBy.isEmpty()) {
+                throw new IllegalArgumentException("having, but not groupBy was given");
+            }
+            append(HAVING).handle(having);
+        }
+        
+        // order by
+        if (!orderBy.isEmpty() && !forCountRow) {
+            append(ORDER_BY);
+            boolean first = true;
+            for (OrderSpecifier<?> os : orderBy) {
+                if (!first){
+                    append(COMMA);
+                }                    
+                handle(os.getTarget());
+                append(" " + os.getOrder().toString().toLowerCase());
+                first = false;
+            }
+        }
+    }
+
+    public void serializeForDelete(QueryMetadata md) {
+        append(DELETE);
+        handleJoinTarget(md.getJoins().get(0));        
+        if (md.getWhere() != null) {
+            append(WHERE).handle(md.getWhere());
+        }
+    }
+
+    public void serializeForUpdate(QueryMetadata md) {
+        append(UPDATE);
+        handleJoinTarget(md.getJoins().get(0));
+        append(SET);
+        handle(COMMA, md.getProjection());
+        if (md.getWhere() != null) {
+            append(WHERE).handle(md.getWhere());
+        }
+    }
+
+    private void serializeSources(boolean forCountRow, List<JoinExpression> joins) {
+        for (int i = 0; i < joins.size(); i++) {
+            JoinExpression je = joins.get(i);
+            if (i > 0) {
+                append(joinTypes.get(je.getType()));
+            }            
+            if (je.hasFlag(HQLFlags.FETCH) && !forCountRow){
+                append(FETCH);
+            }            
+            handleJoinTarget(je);
+            if (je.hasFlag(HQLFlags.FETCH_ALL) && !forCountRow){
+                append(FETCH_ALL_PROPERTIES);
+            }
+
+            if (je.getCondition() != null) {
+                append(WITH).handle(je.getCondition());
+            }
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     @Override
     public void visit(Constant<?> expr) {
@@ -189,12 +258,12 @@ public final class HQLSerializer extends SerializerBase<HQLSerializer> {
             append(")");
         }
     }
-
+    
     @Override
     public void visit(PCollection<?> expr) {
         visitCollection(expr);
     }
-    
+
     @Override
     public void visit(PList<?,?> expr) {
         visitCollection(expr);
@@ -203,6 +272,19 @@ public final class HQLSerializer extends SerializerBase<HQLSerializer> {
     @Override
     public void visit(PSet<?> expr) {
         visitCollection(expr);
+    }
+
+    @Override
+    public void visit(SubQuery query) {
+        append("(");       
+        serialize(query.getMetadata(), false, null);
+        append(")");
+    }
+
+    private void visitCast(Expr<?> source, Class<?> targetType) {
+        append("cast(").handle(source);
+        append(AS);
+        append(targetType.getSimpleName().toLowerCase()).append(")");
     }
 
     private void visitCollection(Path<?> expr){
@@ -215,19 +297,6 @@ public final class HQLSerializer extends SerializerBase<HQLSerializer> {
         if (wrap) {
             append(")");
         }
-    }
-    
-    @Override
-    public void visit(SubQuery query) {
-        append("(");       
-        serialize(query.getMetadata(), false, null);
-        append(")");
-    }
-
-    private void visitCast(Expr<?> source, Class<?> targetType) {
-        append("cast(").handle(source);
-        append(" as ");
-        append(targetType.getSimpleName().toLowerCase()).append(")");
     }
 
     @SuppressWarnings("unchecked")
@@ -263,31 +332,6 @@ public final class HQLSerializer extends SerializerBase<HQLSerializer> {
         }
         //
         wrapElements = old;
-    }
-
-    // TODO : generalize this!
-    @SuppressWarnings("unchecked")
-    private Expr<?> regexToLike(Operation<?,?> operation) {
-        List<Expr<?>> args = new ArrayList<Expr<?>>();
-        for (Expr<?> arg : operation.getArgs()){
-            if (!arg.getType().equals(String.class)){
-                args.add(arg);
-            }else if (arg instanceof Constant){
-                args.add(regexToLike(arg.toString()));
-            }else if (arg instanceof Operation){
-                args.add(regexToLike((Operation)arg));
-            }else{
-                args.add(arg);
-            }
-        }
-        return OSimple.create(
-                operation.getType(),
-                operation.getOperator(), 
-                args.<Expr<?>>toArray(new Expr[args.size()]));
-    }
-
-    private Expr<?> regexToLike(String str){
-        return EStringConst.create(str.replace(".*", "%").replace(".", "_"));
     }
 
 }

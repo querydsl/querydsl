@@ -14,7 +14,7 @@ import org.hibernate.Session;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.mysema.query.Mutability;
+import com.mysema.query.QueryMutability;
 import com.mysema.query.hql.domain.sql.SAnimal;
 import com.mysema.query.sql.DerbyTemplates;
 import com.mysema.query.sql.SQLTemplates;
@@ -42,7 +42,7 @@ public class QueryMutabilityTest{
             InvocationTargetException, IOException {
         SAnimal cat = new SAnimal("cat");
         HibernateSQLQuery query = query().from(cat);
-        Mutability.test(query, cat.id, cat.name);
+        QueryMutability.test(query, cat.id, cat.name);
     }
 
     @Test

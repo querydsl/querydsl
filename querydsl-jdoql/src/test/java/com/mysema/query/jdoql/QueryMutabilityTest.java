@@ -7,7 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.junit.Test;
 
-import com.mysema.query.Mutability;
+import com.mysema.query.QueryMutability;
 import com.mysema.query.jdoql.testdomain.QProduct;
 
 public class QueryMutabilityTest extends AbstractJDOTest{
@@ -18,7 +18,7 @@ public class QueryMutabilityTest extends AbstractJDOTest{
             IllegalAccessException, InvocationTargetException {
         QProduct product = QProduct.product;
         JDOQLQueryImpl query = (JDOQLQueryImpl) query().from(product);
-        Mutability.test(query, product.name, product.description);
+        QueryMutability.test(query, product.name, product.description);
     }
     
     @Test

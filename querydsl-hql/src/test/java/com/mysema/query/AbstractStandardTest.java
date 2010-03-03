@@ -18,6 +18,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mysema.commons.lang.Pair;
 import com.mysema.query.hql.HQLQuery;
 import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.QCat;
@@ -39,6 +40,33 @@ public abstract class AbstractStandardTest {
     
     private final java.sql.Date date;
     
+    private Projections projections = new Projections(Module.HQL, getTarget()){
+        <A> Collection<Expr<?>> list(EList<A> expr, EList<A> other, A knownElement){
+            // NOTE : expr.get(0) is only supported in the where clause
+            return Collections.<Expr<?>>singleton(expr.size());
+        }          
+    };
+    
+    private final List<Cat> savedCats = new ArrayList<Cat>();
+    
+    private QueryExecution standardTest = new QueryExecution(
+            projections, new Filters(projections, Module.HQL, getTarget()), new MatchingFilters(Module.HQL, getTarget())){
+        
+        @Override
+        protected Pair<Projectable, List<Expr<?>>> createQuery() {
+            return Pair.of(
+                (Projectable)query().from(cat, otherCat),
+                Collections.<Expr<?>>emptyList());
+        }
+        @Override
+        protected Pair<Projectable, List<Expr<?>>> createQuery(EBoolean filter) {
+            return Pair.of(
+                (Projectable)query().from(cat, otherCat).where(filter),
+                Collections.<Expr<?>>singletonList(cat.name));
+        }              
+    };
+
+
     private final java.sql.Time time;
     
     {
@@ -50,35 +78,13 @@ public abstract class AbstractStandardTest {
         time = new java.sql.Time(cal.getTimeInMillis());
     }
     
-    private final List<Cat> savedCats = new ArrayList<Cat>();
-
-
-    protected abstract Target getTarget();
-    
-    private Projections projections = new Projections(Module.HQL, getTarget()){
-        <A> Collection<Expr<?>> list(EList<A> expr, EList<A> other, A knownElement){
-            // NOTE : expr.get(0) is only supported in the where clause
-            return Collections.<Expr<?>>singleton(expr.size());
-        }          
-    };
-    
-    private StandardTest standardTest = new StandardTest(
-            projections, new Filters(projections, Module.HQL, getTarget()), new MatchingFilters(Module.HQL, getTarget())){
-        @Override
-        public int executeFilter(EBoolean f){
-            return query().from(cat, otherCat).where(f).list(cat.name).size();
-        }
-        @Override
-        public int executeProjection(Expr<?> pr){
-            return query().from(cat, otherCat).list(pr).size();
-        }              
-    };
-    
-    protected abstract HQLQuery query();
-    
     protected HQLQuery catQuery(){
         return query().from(cat);
     }
+    
+    protected abstract Target getTarget();
+    
+    protected abstract HQLQuery query();
         
     protected abstract void save(Object entity);
 
@@ -103,6 +109,7 @@ public abstract class AbstractStandardTest {
         }
         
         Cat cat = new Cat("Some",6, 6.0);
+        cat.setBirthdate(birthDate);
         save(cat);
         savedCats.add(cat);
     }
@@ -112,24 +119,24 @@ public abstract class AbstractStandardTest {
         Cat kitten = savedCats.get(0);        
         Cat noKitten = savedCats.get(savedCats.size()-1);
         
-        standardTest.arrayTests(cat.kittensArray, otherCat.kittensArray, kitten, noKitten);
-        standardTest.booleanTests(cat.name.isNull(), otherCat.kittens.isEmpty());
-        standardTest.collectionTests(cat.kittens, otherCat.kittens, kitten, noKitten);
-        standardTest.dateTests(cat.dateField, otherCat.dateField, date);
-        standardTest.dateTimeTests(cat.birthdate, otherCat.birthdate, birthDate);
-        standardTest.listTests(cat.kittens, otherCat.kittens, kitten, noKitten);
+        standardTest.runArrayTests(cat.kittensArray, otherCat.kittensArray, kitten, noKitten);
+        standardTest.runBooleanTests(cat.name.isNull(), otherCat.kittens.isEmpty());
+        standardTest.runCollectionTests(cat.kittens, otherCat.kittens, kitten, noKitten);
+        standardTest.runDateTests(cat.dateField, otherCat.dateField, date);
+        standardTest.runDateTimeTests(cat.birthdate, otherCat.birthdate, birthDate);
+        standardTest.runListTests(cat.kittens, otherCat.kittens, kitten, noKitten);
 //        standardTest.mapTests(cat.kittensByName, otherCat.kittensByName, "Kitty", kitten);
         
         // int
-        standardTest.numericCasts(cat.id, otherCat.id, 1);
-        standardTest.numericTests(cat.id, otherCat.id, 1);
+        standardTest.runNumericCasts(cat.id, otherCat.id, 1);
+        standardTest.runNumericTests(cat.id, otherCat.id, 1);
         
         // double
-        standardTest.numericCasts(cat.bodyWeight, otherCat.bodyWeight, 1.0);
-        standardTest.numericTests(cat.bodyWeight, otherCat.bodyWeight, 1.0);
+        standardTest.runNumericCasts(cat.bodyWeight, otherCat.bodyWeight, 1.0);
+        standardTest.runNumericTests(cat.bodyWeight, otherCat.bodyWeight, 1.0);
         
-        standardTest.stringTests(cat.name, otherCat.name, kitten.getName());
-        standardTest.timeTests(cat.timeField, otherCat.timeField, time);
+        standardTest.runStringTests(cat.name, otherCat.name, kitten.getName());
+        standardTest.runTimeTests(cat.timeField, otherCat.timeField, time);
         
         standardTest.report();        
     }
@@ -143,6 +150,22 @@ public abstract class AbstractStandardTest {
         // list
         assertEquals(Integer.valueOf(1), catQuery().list(cat.id.min()).get(0));
         assertEquals(Integer.valueOf(6), catQuery().list(cat.id.max()).get(0));
+    }
+    
+    @Test
+    public void testDistinctResults(){
+        // list results
+        SearchResults<Date> res = catQuery().limit(2).listResults(cat.birthdate);
+        assertEquals(2, res.getResults().size());
+        assertEquals(6l, res.getTotal());
+        
+        // list distinct results
+        res = catQuery().limit(2).listDistinctResults(cat.birthdate);
+        assertEquals(1, res.getResults().size());
+        assertEquals(1l, res.getTotal());
+        
+        // list distinct
+        assertEquals(1, catQuery().listDistinct(cat.birthdate).size());
     }
     
     @Test
@@ -164,8 +187,7 @@ public abstract class AbstractStandardTest {
         assertEquals(Integer.valueOf(0), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("B")));
         assertEquals(Integer.valueOf(1), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("o")));
         
-        // case-sensitivity
-        
+        // case-sensitivity        
         if (!getTarget().equals(Target.MYSQL)){ // NOTE : locate in MYSQL in case-insensitive
             assertEquals(0, catQuery().where(cat.name.startsWith("r")).count());
             assertEquals(0, catQuery().where(cat.name.endsWith("H123")).count());

@@ -210,9 +210,13 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         } finally {
             reset();
             try {
-                rs.close();
+                if (rs != null){
+                    rs.close();    
+                }                
             } finally {
-                stmt.close();
+                if (stmt != null){
+                    stmt.close();    
+                }                
             }
         }
     }
@@ -236,10 +240,12 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     private <RT> List<RT> listSingle(@Nullable Expr<RT> expr) throws SQLException {
         String queryString = buildQueryString(false);
         logger.debug("query : {}", queryString);
-        PreparedStatement stmt = conn.prepareStatement(queryString);
-        JDBCUtil.setParameters(stmt, constants);        
-        ResultSet rs = stmt.executeQuery();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
         try {
+            stmt = conn.prepareStatement(queryString);
+            JDBCUtil.setParameters(stmt, constants);        
+            rs = stmt.executeQuery();    
             List<RT> rv = new ArrayList<RT>();
             try {
                 if (expr instanceof EConstructor) {
@@ -265,17 +271,20 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
                     }
                 }
             } catch (Exception e) {
-                String error = "Caught " + e.getClass().getName();
-                logger.error(error, e);
+                logger.error("Caught " + e.getClass().getName() + " for " + queryString, e);
                 throw new QueryException(e.getMessage(), e);
             }
             return rv;
         } finally {
             reset();
             try {
-                rs.close();
+                if (rs != null){
+                    rs.close();    
+                }                
             } finally {
-                stmt.close();
+                if (stmt != null){
+                    stmt.close();    
+                }                
             }
         }
     }
@@ -311,21 +320,27 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         // forCountRow = true;
         String queryString = buildQueryString(true);
         logger.debug("query : {}", queryString);        
-        PreparedStatement stmt = conn.prepareStatement(queryString);
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
+            stmt = conn.prepareStatement(queryString);
             JDBCUtil.setParameters(stmt, constants);            
             rs = stmt.executeQuery();
             rs.next();
             long rv = rs.getLong(1);
             return rv;
+        }catch(SQLException e){
+            logger.error("Caught " + e.getClass().getName() + " for : " + queryString);
+            throw new QueryException(e.getMessage(), e);
         } finally {
             try {
                 if (rs != null){
                     rs.close();
                 }                    
             } finally {
-                stmt.close();
+                if (stmt != null){
+                    stmt.close();
+                }
             }
         }
     }

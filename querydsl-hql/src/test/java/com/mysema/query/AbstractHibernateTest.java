@@ -10,6 +10,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
+import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.junit.Test;
 
@@ -46,6 +47,11 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
         List results = query().from(QCat.cat).createQuery(QCat.cat).list();
         assertNotNull(results);
         assertFalse(results.isEmpty());
+    }
+    
+    @Test
+    public void lockMode(){
+        query().from(QCat.cat).setLockMode(QCat.cat, LockMode.UPGRADE).list(QCat.cat);
     }
 
 }

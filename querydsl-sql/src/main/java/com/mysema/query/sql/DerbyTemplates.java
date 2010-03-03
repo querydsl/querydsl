@@ -30,6 +30,5 @@ public class DerbyTemplates extends SQLTemplates {
         setLimitTemplate("fetch first %1$s rows only");
         setOffsetTemplate("offset %1$s rows");
         setLimitOffsetTemplate("offset %2$s rows fetch next %1$s rows only");
-
     }
 }

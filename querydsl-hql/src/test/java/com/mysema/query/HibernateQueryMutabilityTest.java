@@ -6,7 +6,9 @@
 package com.mysema.query;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import org.hibernate.Session;
 import org.junit.Test;
@@ -32,46 +34,12 @@ public class HibernateQueryMutabilityTest{
     }
     
     @Test
-    public void test(){
+    public void test() throws SecurityException, IllegalArgumentException,
+            NoSuchMethodException, IllegalAccessException,
+            InvocationTargetException, IOException {
         QCat cat = QCat.cat;
         HibernateQuery query = query().from(cat);
-        
-        query.count();
-        assertProjectionEmpty(query);
-        query.countDistinct();
-        assertProjectionEmpty(query);
-        
-        query.iterate(cat);
-        assertProjectionEmpty(query);
-        query.iterate(cat,cat);
-        assertProjectionEmpty(query);
-        query.iterateDistinct(cat);
-        assertProjectionEmpty(query);
-        query.iterateDistinct(cat,cat);
-        assertProjectionEmpty(query);
-        
-        query.list(cat);
-        assertProjectionEmpty(query);
-        query.list(cat,cat);
-        assertProjectionEmpty(query);
-        query.listDistinct(cat);
-        assertProjectionEmpty(query);
-        query.listDistinct(cat,cat);
-        assertProjectionEmpty(query);
-        
-        query.listResults(cat);
-        assertProjectionEmpty(query);
-        query.listDistinctResults(cat);
-        assertProjectionEmpty(query);
-        
-        query.map(cat.name, cat);
-        assertProjectionEmpty(query);
-        
-        query.uniqueResult(cat);
-        assertProjectionEmpty(query);
-        query.uniqueResult(cat,cat);
-        assertProjectionEmpty(query);
-        
+        QueryMutability.test(query, cat, cat.name);
     }
     
     @Test
@@ -82,10 +50,6 @@ public class HibernateQueryMutabilityTest{
         assertEquals(query.getMetadata().getJoins(), query2.getMetadata().getJoins());
         assertEquals(query.getMetadata().getWhere(), query2.getMetadata().getWhere());
         query2.list(cat);
-    }
-
-    private void assertProjectionEmpty(HibernateQuery query) {
-        assertTrue(query.getMetadata().getProjection().isEmpty());        
     }
 
 }

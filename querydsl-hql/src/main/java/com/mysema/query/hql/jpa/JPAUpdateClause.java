@@ -54,7 +54,6 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
         return query.executeUpdate();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> JPAUpdateClause set(Path<T> path, T value) {
         metadata.addProjection(path.asExpr().eq(value));

@@ -42,6 +42,10 @@ public class SQLTemplates extends Templates {
     
     private String countStar = "count(*)";
     
+    private String distinctCountStart = "count(distinct ";
+    
+    private String distinctCountEnd = ")";
+    
     private String deleteFrom = "delete from ";
     
     private String desc = " desc";
@@ -234,6 +238,22 @@ public class SQLTemplates extends Templates {
 
     public final void setCountStar(String countStar) {
         this.countStar = countStar;
+    }
+
+    public final String getDistinctCountStart() {
+        return distinctCountStart;
+    }
+
+    public final void setDistinctCountStart(String distinctCountStart) {
+        this.distinctCountStart = distinctCountStart;
+    }
+
+    public final String getDistinctCountEnd() {
+        return distinctCountEnd;
+    }
+
+    public final void setDistinctCountEnd(String distinctCountEnd) {
+        this.distinctCountEnd = distinctCountEnd;
     }
 
     public final String getDeleteFrom() {

@@ -3,7 +3,9 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.sql.dto;
+package com.mysema.query.sql.domain;
+
+import com.mysema.query.annotations.QueryProjection;
 
 /**
  * IAndName provides
@@ -17,6 +19,7 @@ public class IdName {
 
     private String name;
 
+    @QueryProjection
     public IdName(int id, String name) {
         this.id = id;
         this.name = name;

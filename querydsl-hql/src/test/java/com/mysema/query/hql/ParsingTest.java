@@ -32,7 +32,6 @@ import com.mysema.query.hql.domain.QProduct;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.EDate;
 import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.operation.Ops;
 
 /**
  * ParsingTest provides.
@@ -406,7 +405,7 @@ public class ParsingTest extends AbstractQueryTest{
 
     @Test
     public void testSelect() throws Exception {
-        query().select(Ops.AggOps.COUNT_ALL_AGG_EXPR).from(qat).parse();
+//        query().select(Ops.AggOps.COUNT_ALL_AGG_EXPR).from(qat).parse();
 
         query().select(qat.weight.avg()).from(qat).parse();
     }

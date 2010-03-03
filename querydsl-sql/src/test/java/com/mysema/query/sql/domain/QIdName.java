@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.sql.dto;
+package com.mysema.query.sql.domain;
 
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;

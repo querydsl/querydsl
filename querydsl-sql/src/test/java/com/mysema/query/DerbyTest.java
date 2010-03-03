@@ -20,8 +20,6 @@ import com.mysema.query.sql.DerbyTemplates;
 @RunWith(FilteringTestRunner.class)
 @Label(Target.DERBY)
 public class DerbyTest extends AbstractSQLTest {
-
-    
     
     @BeforeClass
     public static void setUp() throws Exception {

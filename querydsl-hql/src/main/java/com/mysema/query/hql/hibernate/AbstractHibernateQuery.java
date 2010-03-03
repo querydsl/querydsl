@@ -57,7 +57,13 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     }
     
     public long count() {
-        return uniqueResult(Ops.AggOps.COUNT_ALL_AGG_EXPR);
+//        return uniqueResult(Ops.AggOps.COUNT_ALL_AGG_EXPR);
+        QueryModifiers modifiers = getMetadata().getModifiers();
+        String queryString = toCountRowsString();
+        logQuery(queryString);
+        Query query = createQuery(queryString, modifiers);
+        reset();
+        return (Long)query.uniqueResult();
     }       
     
     public long count(Expr<?> expr) {

@@ -5,12 +5,14 @@
  */
 package com.mysema.query.sql;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import com.mysema.query.JoinExpression;
+import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.sql.oracle.SumOver;
@@ -33,6 +35,8 @@ import com.mysema.query.types.query.SubQuery;
  */
 public class SQLSerializer extends SerializerBase<SQLSerializer> {
     
+    private static final String COMMA = ", ";
+
     private final List<Object> constants = new ArrayList<Object>();
     
     private final SQLTemplates templates;
@@ -76,25 +80,40 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         EBoolean having = metadata.getHaving();
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
+        List<Expr<?>> sqlSelect = new ArrayList<Expr<?>>();
+        for (Expr<?> selectExpr : select) {
+            if (selectExpr instanceof EConstructor) {
+                // transforms constructor arguments into individual select expressions
+                sqlSelect.addAll(((EConstructor<?>) selectExpr).getArgs());
+            } else {
+                sqlSelect.add(selectExpr);
+            }
+        }
+        
         // select 
-        if (forCountRow) {
-            append(templates.getSelect()).append(templates.getCountStar());
-        } else if (!select.isEmpty()) {
+        if (forCountRow) {            
+            append(templates.getSelect());
+            if (!metadata.isDistinct()){
+                append(templates.getCountStar());
+            }else{
+                append(templates.getDistinctCountStart());
+                if (sqlSelect.isEmpty()){                    
+                    List<Expr<?>> columns = getIdentifierColumns(joins);
+                    handle(columns.get(0));
+//                    handle(COMMA, columns);
+                }else{
+                    handle(COMMA, sqlSelect);    
+                }                
+                append(templates.getDistinctCountEnd());
+            }
+            
+        } else if (!sqlSelect.isEmpty()) {
             if (!metadata.isDistinct()) {
                 append(templates.getSelect());
             } else {
                 append(templates.getSelectDistinct());
-            }
-            List<Expr<?>> sqlSelect = new ArrayList<Expr<?>>();
-            for (Expr<?> selectExpr : select) {
-                if (selectExpr instanceof EConstructor) {
-                    // transforms constructor arguments into individual select expressions
-                    sqlSelect.addAll(((EConstructor<?>) selectExpr).getArgs());
-                } else {
-                    sqlSelect.add(selectExpr);
-                }
-            }
-            handle(", ", sqlSelect);
+            }            
+            handle(COMMA, sqlSelect);
         }
         
         // from
@@ -107,7 +126,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         
         // group by
         if (!groupBy.isEmpty()) {
-            append(templates.getGroupBy()).handle(", ", groupBy);
+            append(templates.getGroupBy()).handle(COMMA, groupBy);
         }
         
         // having
@@ -134,6 +153,27 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         
     }
 
+    private List<Expr<?>> getIdentifierColumns(List<JoinExpression> joins) {
+        // TODO : get only identifier columns, maybe from @Table annotation
+        try {
+            List<Expr<?>> columns = new ArrayList<Expr<?>>();
+            for (JoinExpression j : joins) {
+                for (Field field : j.getTarget().getClass().getFields()) {
+                    if (Expr.class.isAssignableFrom(field.getType())){
+                        Expr<?> column = (Expr<?>) field.get(j.getTarget());
+                        columns.add(column);    
+                    }                    
+                }
+            }
+            return columns;
+        } catch (IllegalArgumentException e) {
+            throw new QueryException(e);
+        } catch (IllegalAccessException e) {
+            throw new QueryException(e);
+        }
+            
+    }
+
     private void serializeSources(List<JoinExpression> joins) {
         append(templates.getFrom());
         if (joins.isEmpty()) {
@@ -158,7 +198,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         boolean first = true;
         for (OrderSpecifier<?> os : orderBy) {
             if (!first){
-                append(", ");
+                append(COMMA);
             }                    
             handle(os.getTarget());
             append(os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc());
@@ -192,7 +232,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         append(templates.getUpdate());
         handleJoinTarget(md.getJoins().get(0));
         append("\nset ");
-        handle(", ", md.getProjection());
+        handle(COMMA, md.getProjection());
         if (md.getWhere() != null) {
             append(templates.getWhere()).handle(md.getWhere());
         }
@@ -210,7 +250,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy) {
                 if (!first){
-                    append(", ");
+                    append(COMMA);
                 }                    
                 handle(os.getTarget());
                 append(os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc());
@@ -227,7 +267,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             append("(");
             boolean first = true;
             for (Object o : ((Collection)expr.getConstant())){
-                if (!first) append(",");
+                if (!first){
+                    append(COMMA);
+                }
                 append("?");
                 constants.add(o);
                 first = false;
@@ -254,7 +296,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             append(templates.getPartitionBy()).handle(expr.getPartitionBy());
         }
         if (!expr.getOrderBy().isEmpty()) {
-            append(templates.getOrderBy()).handle(", ", expr.getOrderBy());
+            append(templates.getOrderBy()).handle(COMMA, expr.getOrderBy());
         }
         append(")");
     }
