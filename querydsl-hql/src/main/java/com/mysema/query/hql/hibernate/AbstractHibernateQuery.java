@@ -5,11 +5,14 @@
  */
 package com.mysema.query.hql.hibernate;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
@@ -23,6 +26,7 @@ import com.mysema.query.hql.HQLQueryBase;
 import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.path.Path;
 
 /**
  * Abstract base class for Hibernate API based implementations of the HQLQuery interface
@@ -34,6 +38,8 @@ import com.mysema.query.types.operation.Ops;
 public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQuery<SubType>> extends HQLQueryBase<SubType>{
     
     private static final Logger logger = LoggerFactory.getLogger(HibernateQuery.class);
+
+    private Map<Path<?>,LockMode> lockModes = new HashMap<Path<?>,LockMode>();
     
     private Boolean cacheable, readOnly;
     
@@ -117,6 +123,10 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
         if (readOnly != null){
             query.setReadOnly(readOnly);
         }
+        for (Map.Entry<Path<?>, LockMode> entry : lockModes.entrySet()){
+            query.setLockMode(entry.getKey().toString(), entry.getValue());
+        }
+        
         if (modifiers != null && modifiers.isRestricting()) {
             if (modifiers.getLimit() != null) {
                 query.setMaxResults(modifiers.getLimit().intValue());
@@ -286,6 +296,15 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     @SuppressWarnings("unchecked")
     public SubType setReadOnly(boolean readOnly){
         this.readOnly = readOnly;
+        return (SubType)this;
+    }
+    
+    /**
+     * Set the lock mode for the given path.
+     */
+    @SuppressWarnings("unchecked")
+    public SubType setLockMode(Path<?> path, LockMode lockMode){
+        lockModes.put(path, lockMode);
         return (SubType)this;
     }
     
