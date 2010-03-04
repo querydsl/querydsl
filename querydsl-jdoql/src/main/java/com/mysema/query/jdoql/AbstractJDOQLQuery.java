@@ -16,7 +16,6 @@ import javax.annotation.Nullable;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import com.mysema.query.Projectable;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -31,7 +30,7 @@ import com.mysema.query.types.path.PEntity;
  *
  * @param <SubType>
  */
-public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubType>> extends ProjectableQuery<SubType> implements Projectable {
+public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubType>> extends ProjectableQuery<SubType>{
     
     private final boolean detach;
 
@@ -45,7 +44,10 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     private final JDOQLTemplates templates;
 
     @SuppressWarnings("unchecked")
-    public AbstractJDOQLQuery(@Nullable PersistenceManager persistenceManager, JDOQLTemplates templates, QueryMetadata metadata, boolean detach) {
+    public AbstractJDOQLQuery(
+            @Nullable PersistenceManager persistenceManager,
+            JDOQLTemplates templates, 
+            QueryMetadata metadata, boolean detach) {
         super(new JDOQLQueryMixin<SubType>(metadata));
         this.queryMixin.setSelf((SubType) this);
         this.templates = templates;

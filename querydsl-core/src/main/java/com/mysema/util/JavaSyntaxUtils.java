@@ -9,7 +9,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class JavaSyntaxUtils {
+public final class JavaSyntaxUtils {
+    
+    private JavaSyntaxUtils(){}
     
     private static final Set<String> reserved = new HashSet<String>(Arrays.asList(
     "abstract",    

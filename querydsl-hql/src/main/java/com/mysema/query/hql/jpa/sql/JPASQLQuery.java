@@ -44,8 +44,6 @@ import com.mysema.query.types.path.Path;
 // TODO : add support for constructor projections
 public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery>{
     
-    private static final ENumber<Integer> COUNT_ALL_AGG_EXPR = ONumber.create(Integer.class, Ops.AggOps.COUNT_ALL_AGG);
-    
     private static final Logger logger = LoggerFactory.getLogger(JPASQLQuery.class);
         
     private Map<Object,String> constants;

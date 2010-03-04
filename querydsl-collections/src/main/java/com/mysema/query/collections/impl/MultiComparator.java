@@ -5,6 +5,7 @@
  */
 package com.mysema.query.collections.impl;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import net.jcip.annotations.Immutable;
@@ -20,7 +21,9 @@ import org.apache.commons.collections15.comparators.ComparableComparator;
  * @version $Id$
  */
 @Immutable
-public class MultiComparator implements Comparator<Object[]> {
+public class MultiComparator implements Comparator<Object[]>, Serializable {
+
+    private static final long serialVersionUID = 1121416260773566299L;
 
     private static final Comparator<Object> naturalOrder = ComparableComparator.getInstance();
 

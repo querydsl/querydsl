@@ -42,7 +42,7 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
     @Override
     public long execute() {
         // TODO : implement
-        throw new RuntimeException("Not yet implemented");
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override

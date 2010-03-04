@@ -34,7 +34,7 @@ import com.mysema.query.types.path.PathType;
 public abstract class SerializerBase<SubType extends SerializerBase<SubType>> extends VisitorBase<SubType> {
 
     @SuppressWarnings("unchecked")
-    private final SubType _this = (SubType) this;
+    private final SubType self = (SubType) this;
 
     private final StringBuilder builder = new StringBuilder();
     
@@ -52,7 +52,7 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
         for (String s : str) {
             builder.append(s);
         }
-        return _this;
+        return self;
     }
     
     protected String getConstantPrefix() {
@@ -76,7 +76,7 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
             handle(expr);
             first = false;
         }
-        return _this;
+        return self;
     }
 
     public void setConstantPrefix(String prefix){

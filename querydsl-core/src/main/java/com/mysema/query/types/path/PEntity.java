@@ -6,6 +6,7 @@
 package com.mysema.query.types.path;
 
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,7 +80,13 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
                 return (T) casts.get(clazz);
             }
 
-        } catch (Exception e) {
+        } catch (InstantiationException e) {
+            throw new QueryException(e.getMessage(), e);
+        } catch (IllegalAccessException e) {
+            throw new QueryException(e.getMessage(), e);
+        } catch (InvocationTargetException e) {
+            throw new QueryException(e.getMessage(), e);
+        } catch (NoSuchMethodException e) {
             throw new QueryException(e.getMessage(), e);
         }
     }

@@ -14,7 +14,9 @@ import org.apache.commons.lang.ClassUtils;
  * @author tiwe
  *
  */
-public class JDBCUtil {
+public final class JDBCUtil {
+    
+    private JDBCUtil(){}
     
     public static void setParameters(PreparedStatement stmt, Collection<Object> objects){
         int counter = 1;

@@ -327,8 +327,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
             JDBCUtil.setParameters(stmt, constants);            
             rs = stmt.executeQuery();
             rs.next();
-            long rv = rs.getLong(1);
-            return rv;
+            return rs.getLong(1);
         }catch(SQLException e){
             logger.error("Caught " + e.getClass().getName() + " for : " + queryString);
             throw new QueryException(e.getMessage(), e);

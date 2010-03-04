@@ -72,8 +72,7 @@ public class AliasFactory {
      * @return
      */
     public <A> A createAliasForProperty(Class<A> cl, Object parent, Expr<?> path) {
-        A proxy = createProxy(cl, path);
-        return proxy;
+        return createProxy(cl, path);
     }
 
     /**
@@ -85,8 +84,7 @@ public class AliasFactory {
     @SuppressWarnings("unchecked")
     public <A> A createAliasForVariable(Class<A> cl, String var) {
         Expr<?> path = pathCache.get(Pair.of(cl, var));
-        A proxy = (A) proxyCache.get(Pair.of(cl, path));
-        return proxy;
+        return (A) proxyCache.get(Pair.of(cl, path));
     }
 
     /**
@@ -108,8 +106,7 @@ public class AliasFactory {
         // creates one handler per proxy
         MethodInterceptor handler = new PropertyAccessInvocationHandler(path, this);
         enhancer.setCallback(handler);
-        A rv = (A) enhancer.create();
-        return rv;
+        return (A) enhancer.create();
     }
 
     /**

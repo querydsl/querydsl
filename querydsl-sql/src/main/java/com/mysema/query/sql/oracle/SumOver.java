@@ -21,9 +21,10 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-@SuppressWarnings("serial")
 public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A> {
     
+    private static final long serialVersionUID = -4130672293308756779L;
+
     private final Expr<A> target;
     
     private Expr<?> partitionBy;
