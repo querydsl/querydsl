@@ -27,9 +27,6 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
 
     private Map<Object,String> constants;
 
-    @Nullable
-    private String countRowsString, queryString;
-
     private final HQLQueryMixin<SubType> queryMixin;
     
     private final HQLTemplates templates;
@@ -62,8 +59,6 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
     
     protected void reset() {
         queryMixin.getMetadata().reset();
-        countRowsString = null;
-        queryString = null;
     }
     
     public SubType fetch(){
@@ -183,17 +178,11 @@ public abstract class HQLQueryBase<SubType extends HQLQueryBase<SubType>> extend
     }
     
     protected String toCountRowsString() {
-        if (countRowsString == null) {
-            countRowsString = buildQueryString(true);
-        }
-        return countRowsString;
+        return buildQueryString(true);
     }
 
     protected String toQueryString(){
-      if (queryString == null) {
-          queryString = buildQueryString(false);
-      }
-      return queryString;
+        return buildQueryString(false);
     }
     
     @Override

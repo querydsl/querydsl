@@ -5,6 +5,7 @@
  */
 package com.mysema.query.sql;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -118,7 +119,8 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T get(ResultSet rs, int i, Class<T> type) throws Exception {
+    private <T> T get(ResultSet rs, int i, Class<T> type) throws SecurityException, 
+        IllegalAccessException, InvocationTargetException, NoSuchMethodException{
         String methodName = "get" + type.getSimpleName();
         if (methodName.equals("getInteger")) {
             methodName = "getInt";

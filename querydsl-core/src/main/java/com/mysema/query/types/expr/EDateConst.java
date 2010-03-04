@@ -28,7 +28,7 @@ public final class EDateConst<D extends java.util.Date> extends EDate<D> impleme
     @SuppressWarnings("unchecked")
     public EDateConst(D date) {
         super((Class<D>)date.getClass());
-        this.date = date;
+        this.date = (D) date.clone();
         this.calendar = Calendar.getInstance();
         calendar.setTime(date);
     }

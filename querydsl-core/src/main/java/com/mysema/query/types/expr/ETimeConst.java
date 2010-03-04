@@ -29,7 +29,7 @@ public final class ETimeConst<D extends java.util.Date> extends ETime<D> impleme
     public ETimeConst(D time) {
         super((Class<D>)time.getClass());
         this.calendar = Calendar.getInstance();
-        this.time = time;
+        this.time = (D) time.clone();
         calendar.setTime(time);
     }
 

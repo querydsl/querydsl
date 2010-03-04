@@ -53,8 +53,7 @@ public final class PropertyModel implements Comparable<PropertyModel> {
     }
 
     public PropertyModel createCopy(EntityModel model) {
-        boolean inherited = model.getSuperModel() != null;
-        return new PropertyModel(model, name, type, inits, inherited);
+        return new PropertyModel(model, name, type, inits, model.getSuperModel() != null);
     }
 
     public boolean equals(Object o) {

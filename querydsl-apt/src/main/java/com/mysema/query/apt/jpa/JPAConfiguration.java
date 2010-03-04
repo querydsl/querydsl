@@ -39,8 +39,8 @@ public class JPAConfiguration extends DefaultConfiguration {
     
     @SuppressWarnings("unchecked")
     protected List<Class<? extends Annotation>> getAnnotations() throws ClassNotFoundException{
-        List<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
-        annotations.add(QueryType.class);
+        List<Class<? extends Annotation>> rv = new ArrayList<Class<? extends Annotation>>();
+        rv.add(QueryType.class);
         for (String simpleName : Arrays.asList(
                 "Column",
                 "Embedded",
@@ -51,9 +51,9 @@ public class JPAConfiguration extends DefaultConfiguration {
                 "ManyToOne",
                 "OneToMany",
                 "PrimaryKeyJoinColumn")){
-            annotations.add((Class<? extends Annotation>) Class.forName("javax.persistence."+simpleName));
+            rv.add((Class<? extends Annotation>) Class.forName("javax.persistence."+simpleName));
         }
-        return annotations;
+        return rv;
     }
     
     @Override

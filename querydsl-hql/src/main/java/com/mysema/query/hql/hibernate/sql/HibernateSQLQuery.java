@@ -51,8 +51,6 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
     
     private int fetchSize = 0;
     
-    private String queryString, countRowsString;
-
     private final SessionHolder session;
     
     private final SQLTemplates sqlTemplates;    
@@ -170,24 +168,16 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
     
     protected void reset() {
         queryMixin.getMetadata().reset();
-        countRowsString = null;
-        queryString = null;
         entityPaths = null;
         constants = null;
     }
     
     protected String toCountRowsString() {
-        if (countRowsString == null) {
-            countRowsString = buildQueryString(true);
-        }
-        return countRowsString;
+        return buildQueryString(true);
     }
    
     protected String toQueryString(){
-      if (queryString == null) {
-          queryString = buildQueryString(false);
-      }
-      return queryString;
+        return buildQueryString(false);
     }
 
     @SuppressWarnings("unchecked")

@@ -5,10 +5,13 @@
  */
 package com.mysema.util;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.PreparedStatement;
 import java.util.Collection;
 
 import org.apache.commons.lang.ClassUtils;
+
+import com.mysema.query.QueryException;
 
 /**
  * @author tiwe
@@ -23,13 +26,18 @@ public final class JDBCUtil {
         for (Object o : objects) {
             try {
                 setParameter(stmt, counter++, o);
-            } catch (Exception e) {
-                throw new RuntimeException(e.getMessage(), e);
+            } catch (NoSuchMethodException e) {
+                throw new QueryException(e);
+            } catch (IllegalAccessException e) {
+                throw new QueryException(e);
+            } catch (InvocationTargetException e) {
+                throw new QueryException(e);
             }
         }
     }
     
-    private static void setParameter(PreparedStatement stmt, int i, Object o) throws Exception {
+    private static void setParameter(PreparedStatement stmt, int i, Object o) throws NoSuchMethodException, 
+        SecurityException, IllegalAccessException, InvocationTargetException {
         Class<?> type = o.getClass();        
         String methodName = "set" + type.getSimpleName();
         if (methodName.equals("setInteger")) {

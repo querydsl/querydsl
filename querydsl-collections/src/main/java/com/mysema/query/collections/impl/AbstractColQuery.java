@@ -111,7 +111,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
         }
     }
     
-    private <RT> Iterator<RT> createIterator(Expr<RT> projection) throws Exception {
+    private <RT> Iterator<RT> createIterator(Expr<RT> projection){
         QueryMetadata md = queryMixin.getMetadata();
         List<Expr<?>> sources = new ArrayList<Expr<?>>();
         // from / where
@@ -164,7 +164,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
     }
 
     @SuppressWarnings("unchecked")
-    protected Iterator<?> handleFromWhereMultiSource(List<Expr<?>> sources) throws Exception {
+    protected Iterator<?> handleFromWhereMultiSource(List<Expr<?>> sources) {
         EBoolean condition = queryMixin.getMetadata().getWhere();
         List<JoinExpression> joins = new ArrayList<JoinExpression>(queryMixin.getMetadata().getJoins());
         for (JoinExpression join : joins) {
@@ -181,7 +181,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
         return it;
     }
 
-    protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources) throws Exception {
+    protected Iterator<?> handleFromWhereSingleSource(List<Expr<?>> sources){
         EBoolean condition = queryMixin.getMetadata().getWhere();
         JoinExpression join = queryMixin.getMetadata().getJoins().get(0);
         sources.add(join.getTarget());
@@ -198,7 +198,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
     }
 
     @SuppressWarnings("unchecked")
-    protected Iterator<?> handleOrderBy(List<Expr<?>> sources, Iterator<?> it) throws Exception {
+    protected Iterator<?> handleOrderBy(List<Expr<?>> sources, Iterator<?> it){
         // create a projection for the order
         List<OrderSpecifier<?>> orderBy = queryMixin.getMetadata().getOrderBy();
         Expr<Object>[] orderByExpr = new Expr[orderBy.size()];
@@ -217,8 +217,7 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
         return it;
     }
 
-    protected <RT> Iterator<RT> handleSelect(Iterator<?> it,
-            List<Expr<?>> sources, Expr<RT> projection) throws Exception {
+    protected <RT> Iterator<RT> handleSelect(Iterator<?> it, List<Expr<?>> sources, Expr<RT> projection) {
         Iterator<RT> rv = iteratorFactory.transform(it, sources, projection);
         if (queryMixin.isDistinct()) {
             rv = asDistinctIterator(rv);

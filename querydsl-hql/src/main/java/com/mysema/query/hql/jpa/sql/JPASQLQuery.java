@@ -50,8 +50,6 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery>{
     
     private List<Path<?>> entityPaths;
     
-    private String queryString, countRowsString;
-
     private final JPASessionHolder session;
     
     private final SQLTemplates sqlTemplates;    
@@ -151,24 +149,16 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery>{
     
     protected void reset() {
         queryMixin.getMetadata().reset();
-        countRowsString = null;
-        queryString = null;
         entityPaths = null;
         constants = null;
     }
     
     protected String toCountRowsString() {
-        if (countRowsString == null) {
-            countRowsString = buildQueryString(true);
-        }
-        return countRowsString;
+        return buildQueryString(true);
     }
    
     protected String toQueryString(){
-      if (queryString == null) {
-          queryString = buildQueryString(false);
-      }
-      return queryString;
+        return buildQueryString(false);
     }
 
     @SuppressWarnings("unchecked")
