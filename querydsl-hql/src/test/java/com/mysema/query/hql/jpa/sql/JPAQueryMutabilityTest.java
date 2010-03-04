@@ -48,7 +48,7 @@ public class JPAQueryMutabilityTest{
 
         SAnimal cat = new SAnimal("cat");
         JPASQLQuery query = query().from(cat);
-        QueryMutability.test(query, cat.id, cat.name);
+        new QueryMutability(query).test(cat.id, cat.name);
     }
     
     @Test

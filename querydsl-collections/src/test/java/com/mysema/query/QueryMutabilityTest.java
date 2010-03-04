@@ -19,7 +19,7 @@ public class QueryMutabilityTest {
         QCat cat = QCat.cat;
         ColQueryImpl query = new ColQueryImpl();
         query.from(cat, Collections.<Cat> emptyList());
-        QueryMutability.test(query, cat.id, cat.name);
+        new QueryMutability(query).test(cat.id, cat.name);
 
     }
 

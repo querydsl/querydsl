@@ -58,7 +58,7 @@ public class DerbyQueryMutabilityTest{
             IllegalAccessException, InvocationTargetException {
         SQLQueryImpl query = new SQLQueryImpl(connection, new DerbyTemplates());
         query.from(survey);
-        QueryMutability.test(query, survey.id, survey.name);
+        new QueryMutability(query).test(survey.id, survey.name);
     }
     
     @Test

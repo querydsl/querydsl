@@ -5,80 +5,80 @@ import static org.junit.Assert.assertTrue;
 import java.io.Closeable;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import com.mysema.query.types.expr.Expr;
 
 public final class QueryMutability {
 
-    private QueryMutability() {}
+    private final Projectable query;
+    
+    private final QueryMetadata metadata;
 
-    public static void test(Projectable query, Expr<?> p1, Expr<?> p2)
-            throws SecurityException, NoSuchMethodException,
-            IllegalArgumentException, IllegalAccessException,
-            InvocationTargetException, IOException {
-        Method m = query.getClass().getMethod("getMetadata");
-        
+    public QueryMutability(Projectable query) throws SecurityException,
+            NoSuchMethodException, IllegalArgumentException,
+            IllegalAccessException, InvocationTargetException {
+        this.query = query;
+        this.metadata = (QueryMetadata) query.getClass().getMethod("getMetadata").invoke(query);
+    }
+
+    public void test(Expr<?> p1, Expr<?> p2) throws IOException {
         System.err.println("count");
         query.count();
-        assertProjectionEmpty(query, m);
+        assertProjectionEmpty();
         
         System.err.println("countDistinct");
         query.countDistinct();
-        assertProjectionEmpty(query, m);
+        assertProjectionEmpty();
 
         System.err.println("iterate");
         query.iterate(p1);
-        assertProjectionEmpty(query, m);
+        assertProjectionEmpty();
         
         query.iterate(p1, p2);
-        assertProjectionEmpty(query, m);
+        assertProjectionEmpty();
         
         System.err.println("iterateDistinct");
         query.iterateDistinct(p1);
-        assertProjectionEmpty(query, m);
+        assertProjectionEmpty();
         
         query.iterateDistinct(p1, p2);
-        assertProjectionEmpty(query, m);
+        assertProjectionEmpty();
 
         System.err.println("list");
         query.list(p1);
-        assertProjectionEmpty(query, m);
+        assertProjectionEmpty();
         
         query.list(p1, p2);
-        assertProjectionEmpty(query, m);
+        assertProjectionEmpty();
         
         System.err.println("listDistinct");
         query.listDistinct(p1);
-        assertProjectionEmpty(query, m);
+        assertProjectionEmpty();
         
         query.listDistinct(p1, p2);
-        assertProjectionEmpty(query, m);
+        assertProjectionEmpty();
 
         System.err.println("listResults");
         query.listResults(p1);
-        assertProjectionEmpty(query, m);
+        assertProjectionEmpty();
         
         System.err.println("listDistinctResults");
         query.listDistinctResults(p1);
-        assertProjectionEmpty(query, m);
+        assertProjectionEmpty();
 
         System.err.println("map");
         query.map(p1, p2);
-        assertProjectionEmpty(query, m);
+        assertProjectionEmpty();
 
         System.err.println("uniqueResult");
         query.uniqueResult(p1);
-        assertProjectionEmpty(query, m);
+        assertProjectionEmpty();
         
         query.uniqueResult(p1, p2);
-        assertProjectionEmpty(query, m);
+        assertProjectionEmpty();
     }
 
-    private static void assertProjectionEmpty(Projectable query, Method m)
-            throws IllegalArgumentException, IllegalAccessException,
-            InvocationTargetException, IOException {
-        QueryMetadata metadata = (QueryMetadata) m.invoke(query);
+    private void assertProjectionEmpty() throws IOException{
         assertTrue(metadata.getProjection().isEmpty());
         if (query instanceof Closeable){
             ((Closeable)query).close();

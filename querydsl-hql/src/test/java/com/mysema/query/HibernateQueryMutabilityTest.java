@@ -39,7 +39,7 @@ public class HibernateQueryMutabilityTest{
             InvocationTargetException, IOException {
         QCat cat = QCat.cat;
         HibernateQuery query = query().from(cat);
-        QueryMutability.test(query, cat, cat.name);
+        new QueryMutability(query).test(cat, cat.name);
     }
     
     @Test

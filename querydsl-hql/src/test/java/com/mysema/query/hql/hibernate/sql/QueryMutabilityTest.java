@@ -42,7 +42,7 @@ public class QueryMutabilityTest{
             InvocationTargetException, IOException {
         SAnimal cat = new SAnimal("cat");
         HibernateSQLQuery query = query().from(cat);
-        QueryMutability.test(query, cat.id, cat.name);
+        new QueryMutability(query).test(cat.id, cat.name);
     }
 
     @Test

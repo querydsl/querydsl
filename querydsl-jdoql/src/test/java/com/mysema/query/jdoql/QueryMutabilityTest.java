@@ -18,7 +18,7 @@ public class QueryMutabilityTest extends AbstractJDOTest{
             IllegalAccessException, InvocationTargetException {
         QProduct product = QProduct.product;
         JDOQLQueryImpl query = (JDOQLQueryImpl) query().from(product);
-        QueryMutability.test(query, product.name, product.description);
+        new QueryMutability(query).test(product.name, product.description);
     }
     
     @Test
