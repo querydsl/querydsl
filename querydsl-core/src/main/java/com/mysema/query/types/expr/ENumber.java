@@ -27,6 +27,7 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
    
     private static final long serialVersionUID = -5485902768703364888L;
 
+    @Nullable
     private static volatile ENumber<Double> RANDOM;
         
     /**
