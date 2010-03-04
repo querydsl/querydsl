@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.hibernate.transform.ResultTransformer;
 
+import com.mysema.query.QueryException;
 import com.mysema.query.types.expr.EConstructor;
 
 /**
@@ -37,7 +38,7 @@ public final class ConstructorResultTransformer implements ResultTransformer{
         try {
             return constructor.newInstance(tuple);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new QueryException(e);
         }
     }
 

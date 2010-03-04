@@ -7,6 +7,7 @@ package com.mysema.query.serialization;
 
 import java.lang.reflect.Field;
 
+import com.mysema.query.QueryException;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.operation.OperatorImpl;
 import com.mysema.query.types.operation.Ops;
@@ -98,8 +99,8 @@ public class JavaTemplates extends Templates {
                 OperatorImpl<?> op = (OperatorImpl<?>) f.get(null);
                 add(op, "Math." + getTemplate(op));
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
+        } catch (IllegalAccessException e) {
+            throw new QueryException(e.getMessage(), e);
         }
         add(Ops.MOD, "{0} % {0}");
         

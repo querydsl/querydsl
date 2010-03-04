@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.QueryException;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
@@ -79,7 +80,7 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
             }
 
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw new QueryException(e.getMessage(), e);
         }
     }
 

@@ -5,6 +5,7 @@
  */
 package com.mysema.query.apt;
 
+import java.io.IOException;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -337,7 +338,7 @@ public class Processor {
             }finally{
                 w.close();
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             env.getMessager().printMessage(Kind.ERROR, e.getMessage());
         }
@@ -362,7 +363,7 @@ public class Processor {
                         writer.close();
                     }
                 }                
-            } catch (Exception e) {
+            } catch (IOException e) {
                 e.printStackTrace();
                 msg.printMessage(Kind.ERROR, e.getMessage());
             }

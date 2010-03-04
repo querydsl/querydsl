@@ -22,7 +22,7 @@ public abstract class AbstractTypeModel implements TypeModel{
             appendLocalGenericName(context, builder, asArgType);
             return builder.toString();
         } catch (IOException e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw new CodeGenerationException(e.getMessage(), e);
         }
     }
     
@@ -33,7 +33,7 @@ public abstract class AbstractTypeModel implements TypeModel{
             appendLocalRawName(context, builder);
             return builder.toString();
         } catch (IOException e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw new CodeGenerationException(e.getMessage(), e);
         }
     }
 

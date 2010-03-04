@@ -8,6 +8,7 @@ package com.mysema.query.sql;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.sql.DatabaseMetaData;
@@ -166,7 +167,7 @@ public class MetaDataExporter {
             }finally{
                 writer.close();
             }            
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);
         }    
     }

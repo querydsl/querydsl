@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.apache.commons.lang.ClassUtils;
 
+import com.mysema.query.QueryException;
 import com.mysema.query.types.Visitor;
 
 /**
@@ -45,7 +46,7 @@ public class EConstructor<D> extends Expr<D> {
                 }                
             }            
         }
-        throw new IllegalArgumentException("Got no matching constructor");        
+        throw new QueryException("Got no matching constructor");        
     }
 
     private final List<Expr<?>> args;
@@ -112,9 +113,9 @@ public class EConstructor<D> extends Expr<D> {
         try {
             return (Constructor<D>) getType().getConstructor(parameterTypes);
         } catch (SecurityException e) {
-           throw new RuntimeException(e.getMessage(), e);
+           throw new QueryException(e.getMessage(), e);
         } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e.getMessage(), e);
+           throw new QueryException(e.getMessage(), e);
         }
     }
 

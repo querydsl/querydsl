@@ -7,6 +7,7 @@ package com.mysema.query.maven;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -91,7 +92,10 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
                     conn.close();
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            getLog().error(e);
+            throw new MojoExecutionException(e.getMessage(), e);
+        } catch (ClassNotFoundException e) {
             getLog().error(e);
             throw new MojoExecutionException(e.getMessage(), e);
         }

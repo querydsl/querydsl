@@ -130,7 +130,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             clone.where = where.clone();
             return clone;
         } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
+            throw new QueryException(e);
         }
         
     }

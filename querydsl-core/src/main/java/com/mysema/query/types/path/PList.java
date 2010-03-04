@@ -7,6 +7,7 @@ package com.mysema.query.types.path;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,6 +18,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.QueryException;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollectionBase;
@@ -82,12 +84,18 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
     }
     
     
-    private Q create(int index){
-        PathMetadata<Integer> md = forListAccess(index);
+    private Q create(int index){        
         try {
+            PathMetadata<Integer> md = forListAccess(index);
             return newInstance(md);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
+        } catch (NoSuchMethodException e) {
+            throw new QueryException(e);
+        } catch (InstantiationException e) {
+            throw new QueryException(e);
+        } catch (IllegalAccessException e) {
+            throw new QueryException(e);
+        } catch (InvocationTargetException e) {
+            throw new QueryException(e);
         }
     }
     
@@ -97,13 +105,19 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
     }
 
     @Override
-    public Q get(Expr<Integer> index) {
-        PathMetadata<Integer> md = forListAccess(index);        
+    public Q get(Expr<Integer> index) {                
         try {
-            return newInstance(md);        
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }            
+            PathMetadata<Integer> md = forListAccess(index);
+            return newInstance(md);
+        } catch (NoSuchMethodException e) {
+            throw new QueryException(e);
+        } catch (InstantiationException e) {
+            throw new QueryException(e);
+        } catch (IllegalAccessException e) {
+            throw new QueryException(e);
+        } catch (InvocationTargetException e) {
+            throw new QueryException(e);
+        }                    
     }
 
     @Override
@@ -152,17 +166,15 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
         return pathMixin.getAnnotatedElement();
     }
     
-    private Q newInstance(PathMetadata<?> pm) throws Exception{
-        if (constructor == null){
-            try {
-                if (typedClasses.contains(queryType)){
-                    constructor = queryType.getConstructor(Class.class, PathMetadata.class);   
-                }else{
-                    constructor = queryType.getConstructor(PathMetadata.class);    
-                }                
-            } catch (Exception e) {
-                throw new RuntimeException(e.getMessage(), e);
-            }    
+    private Q newInstance(PathMetadata<?> pm) throws NoSuchMethodException,
+            InstantiationException, IllegalAccessException,
+            InvocationTargetException {
+        if (constructor == null) {
+            if (typedClasses.contains(queryType)){
+                constructor = queryType.getConstructor(Class.class, PathMetadata.class);   
+            }else{
+                constructor = queryType.getConstructor(PathMetadata.class);    
+            }   
         }
         if (typedClasses.contains(queryType)){
             return constructor.newInstance(getElementType(), pm);

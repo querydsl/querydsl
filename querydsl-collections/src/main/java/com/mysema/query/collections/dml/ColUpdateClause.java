@@ -25,7 +25,7 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
     
     @Override
     public long execute() {
-        throw new RuntimeException("Not yet implemented");
+        throw new UnsupportedOperationException("Not yet implemented");
 //        int rv = 0;
 //        for (T match : query.list(expr.asExpr())){
 //            // TODO : update

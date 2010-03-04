@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.mysema.query.JoinType;
+import com.mysema.query.QueryException;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.operation.Ops;
 
@@ -167,8 +168,8 @@ public class SQLTemplates extends Templates {
                 if (field.getType().equals(String.class)) {
                     field.set(this, field.get(this).toString().replace('\n',' '));
                 }
-            } catch (Exception e) {
-                throw new RuntimeException(e.getMessage(), e);
+            } catch (IllegalAccessException e) {
+                throw new QueryException(e.getMessage(), e);
             }
         }
         return this;

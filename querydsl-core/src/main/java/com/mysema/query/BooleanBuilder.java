@@ -118,7 +118,7 @@ public final class BooleanBuilder extends EBoolean implements Cloneable{
         if (expr != null){
             expr.accept(v);
         }else{
-            throw new RuntimeException("CascadingBoolean has no value");
+            throw new QueryException("CascadingBoolean has no value");
         }
     }
 
