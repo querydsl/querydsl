@@ -37,7 +37,7 @@ public final class Template implements Serializable{
         private final String staticText;
         
         @Nullable
-        private transient final Converter<?,?> converter;
+        private final transient Converter<?,?> converter;
         
         private final boolean asString;
         

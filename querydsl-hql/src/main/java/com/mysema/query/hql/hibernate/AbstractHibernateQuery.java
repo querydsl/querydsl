@@ -25,7 +25,6 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.hql.HQLQueryBase;
 import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.Path;
 
 /**

@@ -5,7 +5,6 @@
  */
 package com.mysema.query.hql.jpa.sql;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +16,6 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.QueryMixin;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.hql.AbstractSQLQuery;
@@ -26,11 +24,7 @@ import com.mysema.query.hql.jpa.DefaultSessionHolder;
 import com.mysema.query.hql.jpa.JPASessionHolder;
 import com.mysema.query.hql.jpa.JPAUtil;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.ONumber;
-import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.Path;
 

@@ -47,7 +47,7 @@ public final class EStringConst extends EString implements Constant<String>{
      * @param str
      * @return
      */
-    public static final EString create(String str){
+    public static EString create(String str){
         return create(str, false);
     }
     

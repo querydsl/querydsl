@@ -8,8 +8,6 @@ package com.mysema.query.hql;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.expr.EBoolean;
