@@ -272,8 +272,13 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
                          rv.add((RT) rs.getObject(1));
                     }
                 }
-            } catch (Exception e) {
-                logger.error("Caught " + e.getClass().getName() + " for " + queryString, e);
+            } catch (IllegalAccessException e) {
+                throw new QueryException(e.getMessage(), e);
+            } catch (InvocationTargetException e) {
+                throw new QueryException(e.getMessage(), e);
+            } catch (NoSuchMethodException e) {
+                throw new QueryException(e.getMessage(), e);
+            } catch (InstantiationException e) {
                 throw new QueryException(e.getMessage(), e);
             }
             return rv;
@@ -331,7 +336,6 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
             rs.next();
             return rs.getLong(1);
         }catch(SQLException e){
-            logger.error("Caught " + e.getClass().getName() + " for : " + queryString);
             throw new QueryException(e.getMessage(), e);
         } finally {
             try {
