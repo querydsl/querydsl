@@ -8,24 +8,21 @@ package com.mysema.query.types.query;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.expr.EString;
 
 /**
  * Single result subquery
  * 
  * @author tiwe
- *
- * @param <A>
  */
-public final class ObjectSubQuery<A> extends Expr<A> implements SubQuery<A>{
+public final class StringSubQuery extends EString implements SubQuery<String>{
 
     private static final long serialVersionUID = -64156984110154969L;
 
-    private final SubQueryMixin<A> subQueryMixin;
+    private final SubQueryMixin<String> subQueryMixin;
     
-    public ObjectSubQuery(QueryMetadata md, Class<A> type) {
-        super(type);
-        subQueryMixin = new SubQueryMixin<A>(md);
+    public StringSubQuery(QueryMetadata md) {
+        subQueryMixin = new SubQueryMixin<String>(md);
         subQueryMixin.setSelf(this);
     }
     

@@ -9,11 +9,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nullable;
+import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -34,13 +36,16 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
     
     private final JPASessionHolder sessionHolder;
 
+    public AbstractJPAQuery(EntityManager em) {
+        this(new DefaultSessionHolder(em), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
+    }
+    
     public AbstractJPAQuery(JPASessionHolder sessionHolder, HQLTemplates patterns, QueryMetadata metadata) {
         super(metadata, patterns);
         this.sessionHolder = sessionHolder;
     }
 
     public long count() {
-//        return uniqueResult(Ops.AggOps.COUNT_ALL_AGG_EXPR);
         String queryString = toCountRowsString();
         logQuery(queryString);
         Query query = createQuery(queryString, null);
@@ -143,6 +148,12 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
         }
     }
     
+    protected void logQuery(String queryString){
+        if (logger.isDebugEnabled()){
+            logger.debug(queryString.replace('\n', ' '));    
+        }        
+    }
+    
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expr<RT> expr) {
         getQueryMixin().addToProjection(expr);
@@ -151,11 +162,5 @@ public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>
         Query query = createQuery(queryString, null);
         reset();
         return (RT) query.getSingleResult();
-    }
-    
-    protected void logQuery(String queryString){
-        if (logger.isDebugEnabled()){
-            logger.debug(queryString.replace('\n', ' '));    
-        }        
     }
 }

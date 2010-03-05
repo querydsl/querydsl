@@ -10,26 +10,33 @@ import com.mysema.query.types.expr.EBoolean;
 
 /**
  * 
- * SubQuery is a sub query
+ * SubQuery represents a sub query. The actual construction of a subquery
+ * is done via an Detachable instance.
  * 
  * @author tiwe
  * @version $Id$
  * 
- * @param <A>
+ * @param <T>
  */
-public interface SubQuery{
+public interface SubQuery<T>{
 
     /**
-     * @return
-     */
-    QueryMetadata getMetadata();
- 
-    /**
+     * Get an exists(this) expression for the subquery
+     * 
      * @return
      */
     EBoolean exists();
+ 
+    /**
+     * Get the query metadata for the subquery
+     * 
+     * @return
+     */
+    QueryMetadata getMetadata();
     
     /**
+     * Get a not exists(this) expression for the subquery
+     * 
      * @return
      */
     EBoolean notExists();

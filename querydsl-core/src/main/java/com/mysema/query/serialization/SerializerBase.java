@@ -14,7 +14,7 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.Templates;
-import com.mysema.query.types.VisitorBase;
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.custom.Custom;
 import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EArrayConstructor;
@@ -31,7 +31,11 @@ import com.mysema.query.types.path.PathType;
  * @author tiwe
  * @version $Id$
  */
-public abstract class SerializerBase<SubType extends SerializerBase<SubType>> extends VisitorBase<SubType> {
+public abstract class SerializerBase<SubType extends SerializerBase<SubType>> implements Visitor {
+
+    private static final String COMMA = ", ";
+
+    private static final String NEW = "new ";
 
     @SuppressWarnings("unchecked")
     private final SubType self = (SubType) this;
@@ -52,6 +56,11 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
         for (String s : str) {
             builder.append(s);
         }
+        return self;
+    }
+    
+    public SubType handle(Expr<?> expr) {
+        expr.accept(this);
         return self;
     }
     
@@ -112,14 +121,14 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> ex
 
     @Override
     public void visit(EArrayConstructor<?> oa) {
-        append("new ").append(oa.getElementType().getName()).append("[]{");
-        handle(", ", oa.getArgs()).append("}");
+        append(NEW).append(oa.getElementType().getName()).append("[]{");
+        handle(COMMA, oa.getArgs()).append("}");
     }
 
     @Override
     public void visit(EConstructor<?> expr) {
-        append("new ").append(expr.getType().getName()).append("(");
-        handle(", ", expr.getArgs()).append(")");
+        append(NEW).append(expr.getType().getName()).append("(");
+        handle(COMMA, expr.getArgs()).append(")");
     }
 
     @Override

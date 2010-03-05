@@ -16,23 +16,23 @@ import net.jcip.annotations.Immutable;
 @Immutable
 public enum JoinType {
     /**
-     * 
+     * cross join
      */
     DEFAULT, 
     /**
-     * 
+     * inner join
      */
     INNERJOIN,
     /**
-     * 
+     * join
      */
     JOIN,
     /**
-     * 
+     * left join
      */
     LEFTJOIN,
     /**
-     * 
+     * full join
      */
     FULLJOIN;
     

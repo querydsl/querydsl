@@ -1,11 +1,13 @@
-* document @QueryType							DONE
+* @QueryType						DONE
 
-* document HibernateAnnotationProcessor			DONE
+* HibernateAnnotationProcessor		DONE
 
-* document @QuerydslConfig						DONE
+* @QuerydslConfig					DONE
 
-* document PathBuilder							DONE
+* PathBuilder						DONE
 
-* document QueryExtensions and QueryMethod		DONE
+* QueryExtensions and QueryMethod	DONE
 
-* document QuerydslVariables
+* QuerydslVariables
+
+* custom query creation

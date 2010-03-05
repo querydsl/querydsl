@@ -6,9 +6,22 @@
 package com.mysema.query;
 
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EComparable;
+import com.mysema.query.types.expr.EDate;
+import com.mysema.query.types.expr.EDateTime;
+import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.ETime;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.query.BooleanSubQuery;
+import com.mysema.query.types.query.ComparableSubQuery;
+import com.mysema.query.types.query.DateSubQuery;
+import com.mysema.query.types.query.DateTimeSubQuery;
 import com.mysema.query.types.query.ListSubQuery;
+import com.mysema.query.types.query.NumberSubQuery;
 import com.mysema.query.types.query.ObjectSubQuery;
+import com.mysema.query.types.query.StringSubQuery;
+import com.mysema.query.types.query.TimeSubQuery;
 
 /**
  * Detachable defines methods for the construction of SubQuery instances
@@ -87,13 +100,76 @@ public interface Detachable {
     ObjectSubQuery<Object[]> unique(Expr<?>[] args);
 
     /**
-     * Create a projection expression for the given projection
+     * Create a subquery expression for the given projection
      * 
      * @param <RT>
      *            return type
      * @param projection
      * @return the result or null for an empty result
      */
-    <RT> ObjectSubQuery<RT> unique(Expr<RT> projection);  
+    <RT> ObjectSubQuery<RT> unique(Expr<RT> projection);
+    
+    /**
+     * Create a subquery expression for the given projection
+     * 
+     * @param projection
+     * @return
+     */
+    BooleanSubQuery unique(EBoolean projection);  
+    
+    /**
+     * Create a subquery expression for the given projection
+     * 
+     * @param projection
+     * @return
+     */
+    StringSubQuery unique(EString projection);
+    
+    /**
+     * Create a subquery expression for the given projection
+     * 
+     * @param <RT>
+     * @param projection
+     * @return
+     */
+    <RT extends Comparable<?>> ComparableSubQuery<RT> unique(EComparable<RT> projection);
+    
+    /**
+     * Create a subquery expression for the given projection
+     * 
+     * @param <RT>
+     * @param projection
+     * @return
+     */
+    <RT extends Comparable<?>> DateSubQuery<RT> unique(EDate<RT> projection);
+    
+    /**
+     * Create a subquery expression for the given projection
+     * 
+     * @param <RT>
+     * @param projection
+     * @return
+     */
+    <RT extends Comparable<?>> DateTimeSubQuery<RT> unique(EDateTime<RT> projection);
+    
+    /**
+     * Create a subquery expression for the given projection
+     * 
+     * @param <RT>
+     * @param projection
+     * @return
+     */
+    <RT extends Comparable<?>> TimeSubQuery<RT> unique(ETime<RT> projection);
+    
+    /**
+     * Create a subquery expression for the given projection
+     * 
+     * @param <RT>
+     * @param projection
+     * @return
+     */
+    <RT extends Number & Comparable<?>> NumberSubQuery<RT> unique(ENumber<RT> projection);
+    
+    
 
 }

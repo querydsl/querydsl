@@ -22,6 +22,8 @@ import com.mysema.query.types.path.PEntity;
 public interface JDOQLQuery extends Query<JDOQLQuery>, Projectable, Closeable {
 
     /**
+     * Clone the state of the query for the given PersistenceManager
+     * 
      * @param persistenceManager
      * @return
      */

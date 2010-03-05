@@ -46,6 +46,7 @@ import com.mysema.query.types.expr.ENumberConst;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.query.ObjectSubQuery;
+import com.mysema.query.types.query.SubQuery;
 
 /**
  * SqlQueryTest provides SQL query tests for different DB types
@@ -164,8 +165,8 @@ public abstract class AbstractSQLTest {
     
     @Test
     public void illegalUnion() throws SQLException {
-        ObjectSubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
-        ObjectSubQuery<Integer> sq2 = s().from(employee).unique(employee.id.max());
+        SubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
+        SubQuery<Integer> sq2 = s().from(employee).unique(employee.id.max());
         try {
             query().from(employee).union(sq1, sq2).list();
             fail();
@@ -449,8 +450,8 @@ public abstract class AbstractSQLTest {
     @Test
     public void testUnion() throws SQLException {
         // union
-        ObjectSubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
-        ObjectSubQuery<Integer> sq2 = s().from(employee).unique(employee.id.min());
+        SubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
+        SubQuery<Integer> sq2 = s().from(employee).unique(employee.id.min());
         List<Integer> list = query().union(sq1, sq2).list();
         assertFalse(list.isEmpty());
 
@@ -496,7 +497,7 @@ public abstract class AbstractSQLTest {
     
     @Test
     public void whereExists() throws SQLException {
-        ObjectSubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
+        SubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
         query().from(employee).where(sq1.exists()).count();
         query().from(employee).where(sq1.exists().not()).count();
     }

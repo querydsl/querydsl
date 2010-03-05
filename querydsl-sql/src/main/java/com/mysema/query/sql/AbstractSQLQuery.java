@@ -19,6 +19,7 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryMixin;
@@ -31,7 +32,6 @@ import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.query.ListSubQuery;
-import com.mysema.query.types.query.ObjectSubQuery;
 import com.mysema.query.types.query.SubQuery;
 import com.mysema.util.JDBCUtil;
 
@@ -76,6 +76,10 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     private SubQuery[] sq;
 
     private final SQLTemplates templates;
+    
+    public AbstractSQLQuery(@Nullable Connection conn, SQLTemplates templates) {
+        this(conn, templates, new DefaultQueryMetadata());
+    }
     
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(@Nullable Connection conn, SQLTemplates templates, QueryMetadata metadata) {
@@ -141,7 +145,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         return queryMixin.innerJoin(target);
     }
     
-    private <RT> UnionBuilder<RT> innerUnion(SubQuery... sq) {
+    private <RT> UnionBuilder<RT> innerUnion(SubQuery<?>... sq) {
         if (!queryMixin.getMetadata().getJoins().isEmpty()){
             throw new IllegalArgumentException("Don't mix union and from");
         }            
@@ -314,7 +318,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         return innerUnion(sq);
     }
 
-    public <RT> UnionBuilder<RT> union(ObjectSubQuery<RT>... sq) {
+    public <RT> UnionBuilder<RT> union(SubQuery<RT>... sq) {
         return innerUnion(sq);
     }
 

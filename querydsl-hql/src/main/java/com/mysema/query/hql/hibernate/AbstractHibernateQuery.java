@@ -16,9 +16,11 @@ import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -38,25 +40,28 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     
     private static final Logger logger = LoggerFactory.getLogger(HibernateQuery.class);
 
-    private Map<Path<?>,LockMode> lockModes = new HashMap<Path<?>,LockMode>();
-    
     private Boolean cacheable, readOnly;
     
     private String cacheRegion;
-
+    
     private int fetchSize = 0;
+
+    private Map<Path<?>,LockMode> lockModes = new HashMap<Path<?>,LockMode>();
 
     private final SessionHolder session;
     
     private int timeout = 0;    
 
+    public AbstractHibernateQuery(Session session) {
+        this(new DefaultSessionHolder(session), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
+    }
+    
     public AbstractHibernateQuery(SessionHolder session, HQLTemplates patterns, QueryMetadata metadata) {
         super(metadata, patterns);
         this.session = session;
     }
     
     public long count() {
-//        return uniqueResult(Ops.AggOps.COUNT_ALL_AGG_EXPR);
         QueryModifiers modifiers = getMetadata().getModifiers();
         String queryString = toCountRowsString();
         logQuery(queryString);
@@ -293,6 +298,15 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     }
     
     /**
+     * Set the lock mode for the given path.
+     */
+    @SuppressWarnings("unchecked")
+    public SubType setLockMode(Path<?> path, LockMode lockMode){
+        lockModes.put(path, lockMode);
+        return (SubType)this;
+    }
+    
+    /**
      * Entities retrieved by this query will be loaded in 
      * a read-only mode where Hibernate will never dirty-check
      * them or make changes persistent.
@@ -301,15 +315,6 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
     @SuppressWarnings("unchecked")
     public SubType setReadOnly(boolean readOnly){
         this.readOnly = readOnly;
-        return (SubType)this;
-    }
-    
-    /**
-     * Set the lock mode for the given path.
-     */
-    @SuppressWarnings("unchecked")
-    public SubType setLockMode(Path<?> path, LockMode lockMode){
-        lockModes.put(path, lockMode);
         return (SubType)this;
     }
     

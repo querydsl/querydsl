@@ -12,7 +12,7 @@ import com.mysema.query.Query;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.query.ListSubQuery;
-import com.mysema.query.types.query.ObjectSubQuery;
+import com.mysema.query.types.query.SubQuery;
 
 /**
  * Query interface for SQL queries
@@ -23,42 +23,56 @@ import com.mysema.query.types.query.ObjectSubQuery;
 public interface SQLQuery extends Query<SQLQuery>, Projectable {
   
     /**
+     * Defines the sources of the query
+     * 
      * @param o
      * @return
      */
     SQLQuery from(PEntity<?>... o);
 
     /**
+     * Adds a full join to the given target
+     * 
      * @param o
      * @return
      */
     SQLQuery fullJoin(PEntity<?> o);
 
     /**
+     * Adds an inner join to the given target
+     * 
      * @param o
      * @return
      */
     SQLQuery innerJoin(PEntity<?> o);
 
     /**
+     * Adds a join to the given target
+     * 
      * @param o
      * @return
      */
     SQLQuery join(PEntity<?> o);
     
     /**
+     * Adds a left join to the given target
+     * 
      * @param o
      * @return
      */
     SQLQuery leftJoin(PEntity<?> o);
     
     /**
+     * Defines a filter to the last added join
+     * 
      * @param conditions
      * @return
      */
     SQLQuery on(EBoolean... conditions);
     
     /**
+     * Creates an union expression for the given subqueries
+     * 
      * @param <RT>
      * @param sq
      * @return
@@ -66,13 +80,17 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
     <RT> Union<RT> union(ListSubQuery<RT>... sq);
     
     /**
+     * Creates an union expression for the given subqueries
+     * 
      * @param <RT>
      * @param sq
      * @return
      */
-    <RT> Union<RT> union(ObjectSubQuery<RT>... sq);
+    <RT> Union<RT> union(SubQuery<RT>... sq);
     
     /**
+     * Clone the state of the Query for the given Connection
+     * 
      * @param conn
      * @return
      */

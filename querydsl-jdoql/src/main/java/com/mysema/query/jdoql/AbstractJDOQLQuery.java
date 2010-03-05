@@ -16,6 +16,7 @@ import javax.annotation.Nullable;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -42,6 +43,10 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
     private List<Query> queries = new ArrayList<Query>(2);
     
     private final JDOQLTemplates templates;
+    
+    public AbstractJDOQLQuery(@Nullable PersistenceManager persistenceManager) {
+        this(persistenceManager, JDOQLTemplates.DEFAULT, new DefaultQueryMetadata(), false);
+    }
 
     @SuppressWarnings("unchecked")
     public AbstractJDOQLQuery(

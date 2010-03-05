@@ -222,7 +222,9 @@ public abstract class Expr<D> implements Serializable{
     @Override
     public final String toString() {
         if (toString == null) {
-            toString = new ToStringVisitor(Templates.DEFAULT).handle(this).toString();
+            Visitor visitor = new ToStringVisitor(Templates.DEFAULT);
+            this.accept(visitor);
+            toString = visitor.toString();
         }
         return toString;
     }

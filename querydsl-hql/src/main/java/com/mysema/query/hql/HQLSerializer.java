@@ -26,10 +26,7 @@ import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PList;
-import com.mysema.query.types.path.PSet;
 import com.mysema.query.types.path.Path;
 import com.mysema.query.types.path.PathType;
 import com.mysema.query.types.query.SubQuery;
@@ -260,21 +257,6 @@ public final class HQLSerializer extends SerializerBase<HQLSerializer> {
     }
     
     @Override
-    public void visit(PCollection<?> expr) {
-        visitCollection(expr);
-    }
-
-    @Override
-    public void visit(PList<?,?> expr) {
-        visitCollection(expr);
-    }
-    
-    @Override
-    public void visit(PSet<?> expr) {
-        visitCollection(expr);
-    }
-
-    @Override
     public void visit(SubQuery query) {
         append("(");       
         serialize(query.getMetadata(), false, null);
@@ -287,13 +269,16 @@ public final class HQLSerializer extends SerializerBase<HQLSerializer> {
         append(targetType.getSimpleName().toLowerCase()).append(")");
     }
 
-    private void visitCollection(Path<?> expr){
+    @Override
+    public void visit(Path<?> expr){
         // only wrap a PathCollection, if it the pathType is PROPERTY
-        boolean wrap = wrapElements && expr.getMetadata().getPathType().equals(PathType.PROPERTY);
+        boolean wrap = wrapElements 
+            && (Collection.class.isAssignableFrom(expr.getType()) || Map.class.isAssignableFrom(expr.getType()))
+            && expr.getMetadata().getPathType().equals(PathType.PROPERTY);
         if (wrap) {
             append("elements(");
         }
-        visit((Path<?>) expr);
+        super.visit((Path<?>) expr);
         if (wrap) {
             append(")");
         }

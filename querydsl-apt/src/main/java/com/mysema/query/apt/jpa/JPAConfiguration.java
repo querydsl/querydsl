@@ -61,9 +61,9 @@ public class JPAConfiguration extends DefaultConfiguration {
         boolean fields = false, methods = false;
         for (Element element : elements){
             if (hasRelevantAnnotation(element)){
-                if (!fields && element.getKind().equals(ElementKind.FIELD)){
+                if (element.getKind().equals(ElementKind.FIELD)){
                     fields = true;
-                }else if (!methods && element.getKind().equals(ElementKind.METHOD)){
+                }else if (element.getKind().equals(ElementKind.METHOD)){
                     methods = true;
                 }    
             }            
