@@ -3,8 +3,9 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query;
+package com.mysema.query.support;
 
+import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;

@@ -13,8 +13,6 @@ import java.util.Map;
 import org.apache.commons.collections15.IteratorUtils;
 
 import com.mysema.query.Projectable;
-import com.mysema.query.QueryBase;
-import com.mysema.query.QueryMixin;
 import com.mysema.query.SearchResults;
 import com.mysema.query.types.expr.Expr;
 

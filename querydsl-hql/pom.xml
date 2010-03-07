@@ -11,7 +11,7 @@
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-hql</artifactId>
   <name>Querydsl - HQL/JPAQL support</name>
-  <description>Hibernate / HQL support for querydsl</description>
+  <description>HQL/JPAQL support for querydsl</description>
   <packaging>jar</packaging>
   
   <dependencies>   

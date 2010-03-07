@@ -6,8 +6,6 @@
 package com.mysema.query.support;
 
 import com.mysema.query.Detachable;
-import com.mysema.query.QueryBase;
-import com.mysema.query.QueryMixin;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.EDate;
