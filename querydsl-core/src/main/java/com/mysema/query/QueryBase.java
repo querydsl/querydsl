@@ -15,27 +15,27 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public abstract class QueryBase<SubType extends QueryBase<SubType>> {
+public abstract class QueryBase<Q extends QueryBase<Q>> {
 
-    protected final QueryMixin<SubType> queryMixin;
+    protected final QueryMixin<Q> queryMixin;
     
-    public QueryBase(QueryMixin<SubType> queryMixin) {
+    public QueryBase(QueryMixin<Q> queryMixin) {
         this.queryMixin = queryMixin;
     }
 
-    public SubType groupBy(Expr<?>... o) {
+    public Q groupBy(Expr<?>... o) {
         return queryMixin.groupBy(o);
     }
 
-    public SubType having(EBoolean... o) {
+    public Q having(EBoolean... o) {
         return queryMixin.having(o);
     }
 
-    public SubType orderBy(OrderSpecifier<?>... o) {
+    public Q orderBy(OrderSpecifier<?>... o) {
         return queryMixin.orderBy(o);
     }
 
-    public SubType where(EBoolean... o) {
+    public Q where(EBoolean... o) {
         return queryMixin.where(o);
     }
 
@@ -43,15 +43,15 @@ public abstract class QueryBase<SubType extends QueryBase<SubType>> {
         return queryMixin.toString();
     }
     
-    public SubType limit(long limit) {
+    public Q limit(long limit) {
         return queryMixin.limit(limit);
     }
 
-    public SubType offset(long offset) {
+    public Q offset(long offset) {
         return queryMixin.offset(offset);
     }
 
-    public SubType restrict(QueryModifiers modifiers) {
+    public Q restrict(QueryModifiers modifiers) {
         return queryMixin.restrict(modifiers);
     }
 

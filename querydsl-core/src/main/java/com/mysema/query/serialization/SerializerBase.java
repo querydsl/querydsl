@@ -31,14 +31,14 @@ import com.mysema.query.types.path.PathType;
  * @author tiwe
  * @version $Id$
  */
-public abstract class SerializerBase<SubType extends SerializerBase<SubType>> implements Visitor {
+public abstract class SerializerBase<S extends SerializerBase<S>> implements Visitor {
 
     private static final String COMMA = ", ";
 
     private static final String NEW = "new ";
 
     @SuppressWarnings("unchecked")
-    private final SubType self = (SubType) this;
+    private final S self = (S) this;
 
     private final StringBuilder builder = new StringBuilder();
     
@@ -52,14 +52,14 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> im
         this.templates = Assert.notNull(patterns,"patterns is null");
     }    
 
-    public SubType append(String... str) {
+    public S append(String... str) {
         for (String s : str) {
             builder.append(s);
         }
         return self;
     }
     
-    public SubType handle(Expr<?> expr) {
+    public S handle(Expr<?> expr) {
         expr.accept(this);
         return self;
     }
@@ -76,7 +76,7 @@ public abstract class SerializerBase<SubType extends SerializerBase<SubType>> im
         return templates.getTemplate(op);
     }
 
-    public final SubType handle(String sep, List<? extends Expr<?>> expressions) {
+    public final S handle(String sep, List<? extends Expr<?>> expressions) {
         boolean first = true;
         for (Expr<?> expr : expressions) {
             if (!first) {

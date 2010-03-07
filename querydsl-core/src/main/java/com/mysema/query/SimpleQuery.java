@@ -5,6 +5,8 @@
  */
 package com.mysema.query;
 
+import javax.annotation.Nonnegative;
+
 import com.mysema.query.types.expr.EBoolean;
 
 /**
@@ -14,12 +16,36 @@ import com.mysema.query.types.expr.EBoolean;
  */
 public interface SimpleQuery<Q extends SimpleQuery<Q>> {
     
+    /**
+     * Defines the filter constraints
+     * 
+     * @param e
+     * @return
+     */
     Q where(EBoolean... e);
 
-    Q limit(long limit);
+    /**
+     * Defines the limit / max results for the query results
+     * 
+     * @param limit
+     * @return
+     */
+    Q limit(@Nonnegative long limit);
 
-    Q offset(long offset);
+    /**
+     * Defines the offset for the query results
+     * 
+     * @param offset
+     * @return
+     */
+    Q offset(@Nonnegative long offset);
 
+    /**
+     * Defines both limit and offset of the query results
+     * 
+     * @param modifiers
+     * @return
+     */
     Q restrict(QueryModifiers modifiers);
 
 }

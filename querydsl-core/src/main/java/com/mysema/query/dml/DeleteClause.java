@@ -12,9 +12,9 @@ import com.mysema.query.types.expr.EBoolean;
  * 
  * @author tiwe
  *
- * @param <SubType>
+ * @param <Q>
  */
-public interface DeleteClause<SubType extends DeleteClause<SubType>> {
+public interface DeleteClause<Q extends DeleteClause<Q>> {
 
     /**
      * Defines the filter constraints
@@ -22,7 +22,7 @@ public interface DeleteClause<SubType extends DeleteClause<SubType>> {
      * @param o
      * @return
      */
-    SubType where(EBoolean... o);
+    Q where(EBoolean... o);
     
     /**
      * Execute the delete clause and return the amount of deleted rows/items

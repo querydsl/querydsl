@@ -51,8 +51,8 @@ import com.mysema.util.MultiIterator;
  * @author tiwe
  * @version $Id$
  */
-public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>> 
-    extends ProjectableQuery<SubType> {
+public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>> 
+    extends ProjectableQuery<Q> {
     
     private boolean arrayProjection = false;
     
@@ -64,8 +64,8 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
 
     @SuppressWarnings("unchecked")
     public AbstractColQuery(QueryMetadata metadata, EvaluatorFactory evaluatorFactory) {
-        super(new QueryMixin<SubType>(metadata));
-        this.queryMixin.setSelf((SubType) this);
+        super(new QueryMixin<Q>(metadata));
+        this.queryMixin.setSelf((Q) this);
         this.evaluatorFactory = evaluatorFactory;
         this.iteratorFactory = new IteratorFactory(evaluatorFactory);
     }
@@ -153,10 +153,10 @@ public abstract class AbstractColQuery<SubType extends AbstractColQuery<SubType>
     }
     
     @SuppressWarnings("unchecked")
-    public <A> SubType from(Path<A> entity, Iterable<? extends A> col) {
+    public <A> Q from(Path<A> entity, Iterable<? extends A> col) {
         exprToIt.put(entity.asExpr(), col);
         queryMixin.getMetadata().addFrom(entity.asExpr());
-        return (SubType)this;
+        return (Q)this;
     }
 
     protected EvaluatorFactory getEvaluatorFactory() {

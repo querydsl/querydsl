@@ -13,9 +13,9 @@ import com.mysema.query.types.path.Path;
  * 
  * @author tiwe
  *
- * @param <SubType>
+ * @param <Q>
  */
-public interface UpdateClause<SubType extends UpdateClause<SubType>> {
+public interface UpdateClause<Q extends UpdateClause<Q>> {
     
     /**
      * Defines the filter constraints
@@ -23,7 +23,7 @@ public interface UpdateClause<SubType extends UpdateClause<SubType>> {
      * @param o
      * @return
      */
-    SubType where(EBoolean... o);
+    Q where(EBoolean... o);
     
     /**
      * Set the paths to be updated
@@ -33,7 +33,7 @@ public interface UpdateClause<SubType extends UpdateClause<SubType>> {
      * @param value value to set
      * @return
      */
-    <T> SubType set(Path<T> path, T value);
+    <T> Q set(Path<T> path, T value);
      
     /**
      * Execute the delete clause and return the amount of updated rows/items

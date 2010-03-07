@@ -25,10 +25,10 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public abstract class ProjectableQuery<SubType extends ProjectableQuery<SubType>>
-        extends QueryBase<SubType> implements Projectable {
+public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
+        extends QueryBase<Q> implements Projectable {
 
-    public ProjectableQuery(QueryMixin<SubType> queryMixin) {
+    public ProjectableQuery(QueryMixin<Q> queryMixin) {
         super(queryMixin);
     }
 

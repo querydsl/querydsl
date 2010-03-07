@@ -29,9 +29,9 @@ import com.mysema.query.types.path.PEntity;
  * 
  * @author tiwe
  *
- * @param <SubType>
+ * @param <Q>
  */
-public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubType>> extends ProjectableQuery<SubType>{
+public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extends ProjectableQuery<Q>{
     
     private final boolean detach;
 
@@ -53,8 +53,8 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
             @Nullable PersistenceManager persistenceManager,
             JDOQLTemplates templates, 
             QueryMetadata metadata, boolean detach) {
-        super(new JDOQLQueryMixin<SubType>(metadata));
-        this.queryMixin.setSelf((SubType) this);
+        super(new JDOQLQueryMixin<Q>(metadata));
+        this.queryMixin.setSelf((Q) this);
         this.templates = templates;
         this.persistenceManager = persistenceManager;
         this.detach = detach;
@@ -109,7 +109,7 @@ public abstract class AbstractJDOQLQuery<SubType extends AbstractJDOQLQuery<SubT
         return rv;
     }
 
-    public SubType from(PEntity<?>... args) {
+    public Q from(PEntity<?>... args) {
         return queryMixin.from(args);
     }
     

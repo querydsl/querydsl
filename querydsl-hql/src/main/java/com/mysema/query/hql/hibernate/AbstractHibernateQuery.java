@@ -34,9 +34,9 @@ import com.mysema.query.types.path.Path;
  * 
  * @author tiwe
  *
- * @param <SubType>
+ * @param <Q>
  */
-public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQuery<SubType>> extends HQLQueryBase<SubType>{
+public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>> extends HQLQueryBase<Q>{
     
     private static final Logger logger = LoggerFactory.getLogger(HibernateQuery.class);
 
@@ -271,9 +271,9 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
      * @param cacheable Should the query results be cacheable?
      */
     @SuppressWarnings("unchecked")
-    public SubType setCacheable(boolean cacheable){
+    public Q setCacheable(boolean cacheable){
         this.cacheable = cacheable;
-        return (SubType)this;
+        return (Q)this;
     }
 
     /**
@@ -282,9 +282,9 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
      * for the default query cache
      */
     @SuppressWarnings("unchecked")
-    public SubType setCacheRegion(String cacheRegion){
+    public Q setCacheRegion(String cacheRegion){
         this.cacheRegion = cacheRegion;
-        return (SubType)this;
+        return (Q)this;
     }
     
     /**
@@ -292,18 +292,18 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
      * @param fetchSize the fetch size
      */
     @SuppressWarnings("unchecked")
-    public SubType setFetchSize(int fetchSize) {
+    public Q setFetchSize(int fetchSize) {
         this.fetchSize = fetchSize;
-        return (SubType)this;
+        return (Q)this;
     }
     
     /**
      * Set the lock mode for the given path.
      */
     @SuppressWarnings("unchecked")
-    public SubType setLockMode(Path<?> path, LockMode lockMode){
+    public Q setLockMode(Path<?> path, LockMode lockMode){
         lockModes.put(path, lockMode);
-        return (SubType)this;
+        return (Q)this;
     }
     
     /**
@@ -313,9 +313,9 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
      *
      */
     @SuppressWarnings("unchecked")
-    public SubType setReadOnly(boolean readOnly){
+    public Q setReadOnly(boolean readOnly){
         this.readOnly = readOnly;
-        return (SubType)this;
+        return (Q)this;
     }
     
     /**
@@ -323,9 +323,9 @@ public abstract class AbstractHibernateQuery<SubType extends AbstractHibernateQu
      * @param timeout the timeout in seconds
      */
     @SuppressWarnings("unchecked")
-    public SubType setTimeout(int timeout){
+    public Q setTimeout(int timeout){
         this.timeout = timeout;
-        return (SubType)this;
+        return (Q)this;
     }
 
     @SuppressWarnings("unchecked")

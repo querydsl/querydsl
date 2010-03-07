@@ -28,9 +28,9 @@ import com.mysema.query.types.expr.Expr;
  * 
  * @author tiwe
  *
- * @param <SubType>
+ * @param <Q>
  */
-public abstract class AbstractJPAQuery<SubType extends AbstractJPAQuery<SubType>> extends HQLQueryBase<SubType> {
+public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQLQueryBase<Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(JPAQuery.class);
     

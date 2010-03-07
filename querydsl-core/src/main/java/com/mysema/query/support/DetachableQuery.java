@@ -29,13 +29,13 @@ import com.mysema.query.types.query.TimeSubQuery;
 /**
  * @author tiwe
  *
- * @param <SubType>
+ * @param <Q>
  */
-public class DetachableQuery <SubType extends DetachableQuery<SubType>> extends QueryBase<SubType> implements Detachable {
+public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q> implements Detachable {
 
     private final DetachableMixin detachableMixin;
     
-    public DetachableQuery(QueryMixin<SubType> queryMixin) {
+    public DetachableQuery(QueryMixin<Q> queryMixin) {
         super(queryMixin);
         this.detachableMixin = new DetachableMixin(queryMixin);
     }

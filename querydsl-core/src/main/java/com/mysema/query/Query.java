@@ -20,7 +20,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public interface Query<SubType extends Query<SubType>> {
+public interface Query<Q extends Query<Q>> {
     
     /**
      * Defines the filter constraints
@@ -28,7 +28,7 @@ public interface Query<SubType extends Query<SubType>> {
      * @param o
      * @return
      */
-    SubType where(EBoolean... o);
+    Q where(EBoolean... o);
 
     /**
      * Defines the grouping/aggregation expressions
@@ -36,7 +36,7 @@ public interface Query<SubType extends Query<SubType>> {
      * @param o
      * @return
      */
-    SubType groupBy(Expr<?>... o);
+    Q groupBy(Expr<?>... o);
 
     /**
      * Defines the filters for aggregation
@@ -44,7 +44,7 @@ public interface Query<SubType extends Query<SubType>> {
      * @param o
      * @return
      */
-    SubType having(EBoolean... o);
+    Q having(EBoolean... o);
 
     /**
      * Defines the order expressions
@@ -52,7 +52,7 @@ public interface Query<SubType extends Query<SubType>> {
      * @param o
      * @return
      */
-    SubType orderBy(OrderSpecifier<?>... o);
+    Q orderBy(OrderSpecifier<?>... o);
     
     /**
      * Defines the limit / max results for the query results
@@ -60,7 +60,7 @@ public interface Query<SubType extends Query<SubType>> {
      * @param limit
      * @return
      */
-    SubType limit(@Nonnegative long limit);
+    Q limit(@Nonnegative long limit);
     
     /**
      * Defines the offset for the query results
@@ -68,7 +68,7 @@ public interface Query<SubType extends Query<SubType>> {
      * @param offset
      * @return
      */
-    SubType offset(@Nonnegative long offset);
+    Q offset(@Nonnegative long offset);
         
     /**
      * Defines both limit and offset of the query results
@@ -76,6 +76,6 @@ public interface Query<SubType extends Query<SubType>> {
      * @param mod
      * @return
      */
-    SubType restrict(QueryModifiers mod);
+    Q restrict(QueryModifiers mod);
        
 }

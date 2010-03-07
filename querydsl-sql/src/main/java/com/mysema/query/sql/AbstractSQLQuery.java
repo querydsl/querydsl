@@ -41,8 +41,8 @@ import com.mysema.util.JDBCUtil;
  * @author tiwe
  * @version $Id$
  */
-public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>>
-        extends ProjectableQuery<SubType>{
+public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>>
+        extends ProjectableQuery<Q>{
     
     public class UnionBuilder<RT> implements Union<RT> {
 
@@ -83,8 +83,8 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(@Nullable Connection conn, SQLTemplates templates, QueryMetadata metadata) {
-        super(new QueryMixin<SubType>(metadata));
-        this.queryMixin.setSelf((SubType) this);
+        super(new QueryMixin<Q>(metadata));
+        this.queryMixin.setSelf((Q) this);
         this.conn = conn;
         this.templates = templates;
     }
@@ -114,11 +114,11 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         return new SQLSerializer(templates);
     }
     
-    public SubType from(PEntity<?>... args) {
+    public Q from(PEntity<?>... args) {
         return queryMixin.from(args);
     }
     
-    public SubType fullJoin(PEntity<?> target) {
+    public Q fullJoin(PEntity<?> target) {
         return queryMixin.fullJoin(target);
     }
 
@@ -141,7 +141,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         return templates;
     }
 
-    public SubType innerJoin(PEntity<?> target) {
+    public Q innerJoin(PEntity<?> target) {
         return queryMixin.innerJoin(target);
     }
     
@@ -162,11 +162,11 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
     }
     
 
-    public SubType join(PEntity<?> target) {
+    public Q join(PEntity<?> target) {
         return queryMixin.join(target);
     }
 
-    public SubType leftJoin(PEntity<?> target) {
+    public Q leftJoin(PEntity<?> target) {
         return queryMixin.leftJoin(target);
     }
 
@@ -300,7 +300,7 @@ public abstract class AbstractSQLQuery<SubType extends AbstractSQLQuery<SubType>
         }
     }
 
-    public SubType on(EBoolean... conditions){
+    public Q on(EBoolean... conditions){
         return queryMixin.on(conditions);
     }
 
