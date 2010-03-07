@@ -5,6 +5,14 @@
  */
 package com.mysema.util;
 
+import static com.mysema.util.Symbols.ASSIGN;
+import static com.mysema.util.Symbols.COMMA;
+import static com.mysema.util.Symbols.DOT;
+import static com.mysema.util.Symbols.NEWLINE;
+import static com.mysema.util.Symbols.QUOTE;
+import static com.mysema.util.Symbols.SEMICOLON;
+import static com.mysema.util.Symbols.SPACE;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -16,8 +24,6 @@ import org.apache.commons.collections15.Transformer;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import com.mysema.commons.lang.Assert;
-
-import static com.mysema.util.Symbols.*;
 
 /**
  * @author tiwe
