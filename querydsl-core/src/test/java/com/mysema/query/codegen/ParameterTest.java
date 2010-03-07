@@ -11,13 +11,13 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 
-public class ParameterModelTest {
+public class ParameterTest {
 
     @Test
     public void test(){
-        ParameterModel param1 = new ParameterModel("test", new ClassTypeModel(TypeCategory.STRING, String.class));
-        ParameterModel param2 = new ParameterModel("test2", new ClassTypeModel(TypeCategory.STRING, String.class));
-        ParameterModel param3 = new ParameterModel("test2", new ClassTypeModel(TypeCategory.NUMERIC, Integer.class));
+        Parameter param1 = new Parameter("test", new ClassType(TypeCategory.STRING, String.class));
+        Parameter param2 = new Parameter("test2", new ClassType(TypeCategory.STRING, String.class));
+        Parameter param3 = new Parameter("test2", new ClassType(TypeCategory.NUMERIC, Integer.class));
         
         assertTrue(param1.equals(param2));
         assertFalse(param1.equals(param3));

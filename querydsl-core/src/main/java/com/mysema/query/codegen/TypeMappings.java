@@ -70,36 +70,36 @@ public class TypeMappings {
     }
     
 
-    public String getCustomType(TypeModel type, EntityModel model, boolean raw){
+    public String getCustomType(Type type, EntityType model, boolean raw){
         return getCustomType(type, model, raw, false, false);
     }
     
-    public String getCustomType(TypeModel type, EntityModel model, boolean raw, boolean rawParameters, boolean extend){
+    public String getCustomType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
         return getQueryType(customTypes, type, model, raw, rawParameters, extend);
     }
     
-    public String getExprType(TypeModel type, EntityModel model, boolean raw){
+    public String getExprType(Type type, EntityType model, boolean raw){
         return getExprType(type, model, raw, false, false);
     }
     
-    public String getExprType(TypeModel type, EntityModel model, boolean raw, boolean rawParameters, boolean extend){
+    public String getExprType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
         return getQueryType(exprTypes, type, model, raw, rawParameters, extend);
     }
     
-    public String getPathType(TypeModel type, EntityModel model, boolean raw){
+    public String getPathType(Type type, EntityType model, boolean raw){
         return getPathType(type, model, raw, false, false);
     }
     
-    public String getPathType(TypeModel type, EntityModel model, boolean raw, boolean rawParameters, boolean extend){
+    public String getPathType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
         return getQueryType(pathTypes, type, model, raw, rawParameters, extend);
     }
         
-    private String getQueryType(Map<TypeCategory, ? extends Class<?>> types, TypeModel type, EntityModel model, boolean raw, boolean rawParameters, boolean extend){
+    private String getQueryType(Map<TypeCategory, ? extends Class<?>> types, Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
         String typeName = types.get(type.getCategory()).getSimpleName();
         return getQueryType(type, model, typeName, raw, rawParameters, extend);
     }
     
-    public String getQueryType(TypeModel type, EntityModel model, String typeName, boolean raw, boolean rawParameters, boolean extend){
+    public String getQueryType(Type type, EntityType model, String typeName, boolean raw, boolean rawParameters, boolean extend){
         String localName = null;                
         TypeCategory category = type.getCategory();
         

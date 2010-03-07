@@ -14,7 +14,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 
-import com.mysema.query.codegen.EntityModel;
+import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.TypeMappings;
@@ -74,7 +74,7 @@ public interface Configuration {
      * @param model
      * @return
      */
-    SerializerConfig getSerializerConfig(EntityModel model);
+    SerializerConfig getSerializerConfig(EntityType model);
 
     /**
      * @return

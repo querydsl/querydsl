@@ -12,17 +12,17 @@ import net.jcip.annotations.Immutable;
 import com.mysema.commons.lang.Assert;
 
 /**
- * ConstructorModel represents a constructor for a DTO query type.
+ * Constructor represents a constructor for a DTO query type.
  * 
  * @author tiwe
  * @version $Id$
  */
 @Immutable
-public final class ConstructorModel {
+public final class Constructor {
     
-    private final Collection<ParameterModel> parameters;
+    private final Collection<Parameter> parameters;
 
-    public ConstructorModel(Collection<ParameterModel> params) {
+    public Constructor(Collection<Parameter> params) {
         parameters = Assert.notNull(params,"params was null");
     }
 
@@ -30,14 +30,14 @@ public final class ConstructorModel {
     public boolean equals(Object o){
         if (o == this){
             return true;
-        }else if (o instanceof ConstructorModel){
-            return ((ConstructorModel)o).parameters.equals(parameters);
+        }else if (o instanceof Constructor){
+            return ((Constructor)o).parameters.equals(parameters);
         }else{
             return false;
         }   
     }
     
-    public Collection<ParameterModel> getParameters() {
+    public Collection<Parameter> getParameters() {
         return parameters;
     }
     

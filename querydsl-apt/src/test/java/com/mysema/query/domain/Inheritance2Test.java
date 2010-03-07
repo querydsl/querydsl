@@ -16,12 +16,12 @@ public class Inheritance2Test {
         Base2 base;
         Base2<?,?> base2;        
     }
-    
+        
     @QueryEntity
     public abstract class Base2<T extends Base2<T,U>,U extends IFace>{
         
     }
-    
+
     @QueryEntity
     public abstract class BaseSub extends Base<BaseSub>{
         

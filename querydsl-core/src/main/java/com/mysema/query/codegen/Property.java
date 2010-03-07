@@ -13,15 +13,15 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.util.JavaSyntaxUtils;
 
 /**
- * PropertyModel represents a property in a query domain type.
+ * Property represents a property in a query domain type.
  * 
  * @author tiwe
  * @version $Id$
  */
 @Immutable
-public final class PropertyModel implements Comparable<PropertyModel> {
+public final class Property implements Comparable<Property> {
 
-    private final EntityModel context;
+    private final EntityType context;
 
     private final boolean inherited;
 
@@ -29,17 +29,23 @@ public final class PropertyModel implements Comparable<PropertyModel> {
 
     private final String name, escapedName;
 
-    private final TypeModel type;
+    private final Type type;
 
-    public PropertyModel(EntityModel context, String name, TypeModel type, String[] inits) {
+    /**
+     * @param context
+     * @param name
+     * @param type
+     * @param inits
+     */
+    public Property(EntityType context, String name, Type type, String[] inits) {
         this(context, name, type, inits, false);
     }
 
-    public PropertyModel(EntityModel context, String name, TypeModel type, String[] inits, boolean inherited) {
+    public Property(EntityType context, String name, Type type, String[] inits, boolean inherited) {
         this(context, name, JavaSyntaxUtils.isReserved(name) ? (name + "_") : name, type, inits, inherited);
     }
-    
-    public PropertyModel(EntityModel context, String name, String escapedName, TypeModel type, String[] inits, boolean inherited) {
+
+    public Property(EntityType context, String name, String escapedName, Type type, String[] inits, boolean inherited) {
         this.context = context;
         this.name = Assert.notNull(name);
         this.escapedName = escapedName;
@@ -48,25 +54,25 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         this.inherited = inherited;
     }
 
-    public int compareTo(PropertyModel o) {
+    public int compareTo(Property o) {
         return name.compareToIgnoreCase(o.getName());
     }
 
-    public PropertyModel createCopy(EntityModel model) {
-        return new PropertyModel(model, name, type, inits, model.getSuperModel() != null);
+    public Property createCopy(EntityType model) {
+        return new Property(model, name, type, inits, model.getSuperType() != null);
     }
 
     public boolean equals(Object o) {
         if (o == this){
             return true;
-        }else if (o instanceof PropertyModel){
-            return name.equals(((PropertyModel) o).name);            
+        }else if (o instanceof Property){
+            return name.equals(((Property) o).name);            
         }else{
             return false;
         }
     }
 
-    public EntityModel getContext() {
+    public EntityType getContext() {
         return context;
     }
 
@@ -82,11 +88,11 @@ public final class PropertyModel implements Comparable<PropertyModel> {
         return name;
     }
 
-    public TypeModel getParameter(int i) {
+    public Type getParameter(int i) {
         return type.getParameter(i);
     }
 
-    public TypeModel getType() {
+    public Type getType() {
         return type;
     }
 

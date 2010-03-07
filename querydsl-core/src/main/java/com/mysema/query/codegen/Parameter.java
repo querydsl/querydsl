@@ -8,19 +8,19 @@ package com.mysema.query.codegen;
 import net.jcip.annotations.Immutable;
 
 /**
- * ParameterModel represents a parameter in a Constructor
+ * Parameter represents a parameter in a Constructor
  * 
  * @author tiwe
  * @version $Id$
  */
 @Immutable
-public final class ParameterModel {
+public final class Parameter {
     
     private final String name;
     
-    private final TypeModel type;
+    private final Type type;
 
-    public ParameterModel(String name, TypeModel type) {
+    public Parameter(String name, Type type) {
         this.name = name;
         this.type = type;
     }
@@ -29,8 +29,8 @@ public final class ParameterModel {
     public boolean equals(Object o) {
         if (o == this){
             return true;
-        }else if (o instanceof ParameterModel){
-            return type.equals(((ParameterModel) o).type);    
+        }else if (o instanceof Parameter){
+            return type.equals(((Parameter) o).type);    
         }else{
             return false;
         }    
@@ -40,7 +40,7 @@ public final class ParameterModel {
         return name;
     }
 
-    public TypeModel getType(){
+    public Type getType(){
         return type;
     }
     

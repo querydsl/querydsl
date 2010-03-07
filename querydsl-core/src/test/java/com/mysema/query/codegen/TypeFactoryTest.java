@@ -17,19 +17,19 @@ import org.junit.Test;
 
 
 
-public class TypeModelFactoryTest {
+public class TypeFactoryTest {
     
-    private TypeModelFactory factory = new TypeModelFactory();
+    private TypeFactory factory = new TypeFactory();
     
     @Test
     public void test(){        
-        TypeModel blob = factory.create(Blob.class);
+        Type blob = factory.create(Blob.class);
 //        assertEquals("Blob", blob.getLocalName());
         assertEquals("Blob", blob.getSimpleName());
         assertEquals("java.sql.Blob", blob.getFullName());
         assertEquals("java.sql", blob.getPackageName());
         
-        TypeModel bo = factory.create(boolean.class);
+        Type bo = factory.create(boolean.class);
 //        assertEquals("Boolean", bo.getLocalName());
         assertEquals("Boolean", bo.getSimpleName());
         assertEquals("java.lang.Boolean", bo.getFullName());

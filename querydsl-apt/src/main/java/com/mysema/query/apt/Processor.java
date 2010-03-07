@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import javax.annotation.Nullable;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -36,13 +35,12 @@ import com.mysema.query.annotations.QueryExtensions;
 import com.mysema.query.annotations.QueryMethod;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QuerydslVariables;
-import com.mysema.query.codegen.EntityModel;
-import com.mysema.query.codegen.EntityModelFactory;
-import com.mysema.query.codegen.MethodModel;
+import com.mysema.query.codegen.EntityType;
+import com.mysema.query.codegen.Method;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
+import com.mysema.query.codegen.TypeFactory;
 import com.mysema.query.codegen.TypeMappings;
-import com.mysema.query.codegen.TypeModelFactory;
 import com.mysema.util.JavaWriter;
 
 /**
@@ -53,29 +51,27 @@ import com.mysema.util.JavaWriter;
  */
 public class Processor {
    
-    private final Map<String, EntityModel> actualSupertypes  = new HashMap<String, EntityModel>();
+    private final Map<String, EntityType> actualSupertypes  = new HashMap<String, EntityType>();
     
-    private final Map<String, EntityModel> allSupertypes = new HashMap<String, EntityModel>();
+    private final Map<String, EntityType> allSupertypes = new HashMap<String, EntityType>();
     
     private final Configuration configuration;
     
-    private final Map<String, EntityModel> dtos = new HashMap<String, EntityModel>();
+    private final Map<String, EntityType> dtos = new HashMap<String, EntityType>();
     
-    private final Map<String,EntityModel> extensionTypes = new HashMap<String,EntityModel>();
+    private final Map<String,EntityType> extensionTypes = new HashMap<String,EntityType>();
     
-    private final Map<String,EntityModel> embeddables = new HashMap<String,EntityModel>();
+    private final Map<String,EntityType> embeddables = new HashMap<String,EntityType>();
     
-    private final EntityModelFactory entityModelFactory;
+    private final Map<String, EntityType> entityTypes = new HashMap<String, EntityType>();
     
-    private final Map<String, EntityModel> entityTypes = new HashMap<String, EntityModel>();
-    
-    private final ElementHandler entityVisitor;
+    private final ElementHandler elementHandler;
     
     private final ProcessingEnvironment env;
     
     private final RoundEnvironment roundEnv;
     
-    private final APTTypeModelFactory typeFactory;
+    private final APTTypeFactory typeModelFactory;
     
     public Processor(ProcessingEnvironment env, RoundEnvironment roundEnv, Configuration configuration) {
         this.env = Assert.notNull(env);
@@ -91,53 +87,21 @@ public class Processor {
             anns.add(configuration.getEmbeddableAnn());
         }
                 
-        TypeModelFactory factory = new TypeModelFactory(anns);
-        this.typeFactory = new APTTypeModelFactory(env, configuration, factory, anns);
-        if (configuration.getSkipAnn() != null){
-            this.entityModelFactory = new EntityModelFactory(factory, configuration.getSkipAnn());
-        }else{
-            this.entityModelFactory = new EntityModelFactory(factory);
-        }
-        
-        this.entityVisitor = new ElementHandler(configuration, typeFactory);
+        TypeFactory factory = new TypeFactory(anns);
+        this.typeModelFactory = new APTTypeFactory(env, configuration, factory, anns);        
+        this.elementHandler = new ElementHandler(configuration, typeModelFactory);
         
     }
     
-    private void addSupertypeFields(EntityModel model, Map<String, EntityModel> superTypes) {
-        boolean singleSuperType = model.getSuperTypes().size() == 1;
-        for (String stype : model.getSuperTypes()) {
-            // iterate over supertypes
-            if (superTypes.containsKey(stype)) {
-                Stack<String> stypeStack = new Stack<String>();
-                stypeStack.push(stype);
-                while (!stypeStack.isEmpty()) {
-                    String top = stypeStack.pop();
-                    if (superTypes.containsKey(top)) {
-                        EntityModel sdecl = superTypes.get(top);
-                        if (singleSuperType && model.getSuperTypes().contains(top)) {
-                            model.setSuperModel(sdecl);
-                        }
-                        model.include(sdecl);
-                        for (String type : sdecl.getSuperTypes()) {
-                            stypeStack.push(type);
-                        }
-                    }
-                }
-            }
-        }
-
-        // create super class model via reflection
-        if (model.getSuperModel() == null && singleSuperType) {
-            String stype = model.getSuperTypes().iterator().next();
-            Class<?> superClass = safeClassForName(stype);
-            if (superClass != null && !superClass.equals(Object.class)) {
-                // handle the supertype only, if it has the proper annotations
-                if ((configuration.getSuperTypeAnn() == null 
-                        || superClass.getAnnotation(configuration.getSuperTypeAnn()) != null)
-                        || superClass.getAnnotation(configuration.getEntityAnn()) != null) {
-                    EntityModel type = entityModelFactory.create(superClass, configuration.getNamePrefix());
-                    // include fields of supertype
-                    model.include(type);
+    private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes) {
+        Stack<EntityType> stypeStack = new Stack<EntityType>();
+        for (EntityType stype : model.getSuperTypes()) {
+            stypeStack.push(stype);
+            while (!stypeStack.isEmpty()) {
+                EntityType sdecl = stypeStack.pop();
+                model.include(sdecl);
+                for (EntityType type : sdecl.getSuperTypes()) {
+                    stypeStack.push(type);
                 }
             }
         }
@@ -184,8 +148,8 @@ public class Processor {
             if (element instanceof PackageElement){
                 QuerydslVariables vars = element.getAnnotation(QuerydslVariables.class);
                 PackageElement packageElement = (PackageElement)element;
-                List<EntityModel> models = new ArrayList<EntityModel>();
-                for (EntityModel model : entityTypes.values()){
+                List<EntityType> models = new ArrayList<EntityType>();
+                for (EntityType model : entityTypes.values()){
                     if (model.getPackageName().equals(packageElement.getQualifiedName().toString())){
                         models.add(model);
                     }
@@ -213,15 +177,15 @@ public class Processor {
     
 
     private void handleExtensionType(TypeMirror type, Element element) {
-        EntityModel entityModel = typeFactory.createEntityModel(type);
+        EntityType entityModel = typeModelFactory.createEntityType(type);
         // handle methods
-        Set<MethodModel> queryMethods = new HashSet<MethodModel>();
+        Set<Method> queryMethods = new HashSet<Method>();
         for (ExecutableElement method : ElementFilter.methodsIn(element.getEnclosedElements())){
             if (method.getAnnotation(QueryMethod.class) != null){
-                entityVisitor.handleQueryMethod(entityModel, method, queryMethods);    
+                elementHandler.handleQueryMethod(entityModel, method, queryMethods);    
             }            
         }            
-        for (MethodModel method : queryMethods){
+        for (Method method : queryMethods){
             entityModel.addMethod(method);
         }
         extensionTypes.put(entityModel.getFullName(), entityModel); 
@@ -254,7 +218,7 @@ public class Processor {
             if (parent.getAnnotation(configuration.getEntityAnn()) == null
                     && parent.getAnnotation(configuration.getEmbeddableAnn()) == null
                     && !visitedDTOTypes.contains(parent)){
-                EntityModel model = entityVisitor.handleProjectionType((TypeElement)parent);
+                EntityType model = elementHandler.handleProjectionType((TypeElement)parent);
                 dtos.put(model.getFullName(), model);    
                 visitedDTOTypes.add(parent);
                 
@@ -264,30 +228,44 @@ public class Processor {
 
     private void processEmbeddables() {        
         for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnn())) {
-            EntityModel model = entityVisitor.handleNormalType((TypeElement) element);
+            EntityType model = elementHandler.handleNormalType((TypeElement) element);
             embeddables.put(model.getFullName(), model);
         }  
         allSupertypes.putAll(embeddables);
         
         // add super type fields
-        for (EntityModel embeddable : embeddables.values()) {
+        for (EntityType embeddable : embeddables.values()) {
             addSupertypeFields(embeddable, allSupertypes);
         }
     }
 
     private void processEntities() {
         // populate entity type mappings
-
+        Set<EntityType> superTypes = new HashSet<EntityType>();
+        
         for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEntityAnn())) {
             if (configuration.getEmbeddableAnn() == null || element.getAnnotation(configuration.getEmbeddableAnn()) == null){
-                EntityModel model = entityVisitor.handleNormalType((TypeElement) element);
-                entityTypes.put(model.getFullName(), model);    
+                EntityType model = elementHandler.handleNormalType((TypeElement) element);
+                entityTypes.put(model.getFullName(), model);
+                if (model.getSuperType() != null){
+                    superTypes.add(model.getSuperType());
+                }
             }            
         }
+        
+        for (EntityType superType : superTypes){
+            if (!allSupertypes.containsKey(superType.getFullName()) 
+             && !entityTypes.containsKey(superType.getFullName())){
+                TypeElement typeElement = env.getElementUtils().getTypeElement(superType.getFullName());
+                elementHandler.handleNormalType(superType, typeElement);
+                entityTypes.put(superType.getFullName(), superType);
+            }
+        }        
+        
         allSupertypes.putAll(entityTypes);
         
         // add super type fields
-        for (EntityModel entityType : entityTypes.values()) {
+        for (EntityType entityType : entityTypes.values()) {
             addSupertypeFields(entityType, allSupertypes);
         }
     }
@@ -295,26 +273,17 @@ public class Processor {
     private void processSupertypes() {
         for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getSuperTypeAnn())) {
             if (configuration.getEmbeddableAnn() == null || element.getAnnotation(configuration.getEmbeddableAnn()) == null){
-                EntityModel model = entityVisitor.handleNormalType((TypeElement) element);
+                EntityType model = elementHandler.handleNormalType((TypeElement) element);
                 actualSupertypes.put(model.getFullName(), model);    
             }                
         }
         // add supertype fields
-        for (EntityModel superType : actualSupertypes.values()) {
+        for (EntityType superType : actualSupertypes.values()) {
             addSupertypeFields(superType, actualSupertypes);      
         }
     }
-            
-    @Nullable
-    private Class<?> safeClassForName(String stype) {
-        try {
-            return Class.forName(stype);
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-    }
-
-    private void serializeVariableList(String packageName, QuerydslVariables vars, List<EntityModel> models){
+      
+    private void serializeVariableList(String packageName, QuerydslVariables vars, List<EntityType> models){
         String className = packageName + "." + vars.value();
         TypeMappings typeMappings = configuration.getTypeMappings();             
         try{
@@ -329,7 +298,7 @@ public class Processor {
                 }else{
                     writer.beginClass(vars.value(), null);    
                 }                
-                for (EntityModel model : models){
+                for (EntityType model : models){
                     String queryType = typeMappings.getPathType(model, model, true);          
                     String simpleName = model.getUncapSimpleName();
                     writer.publicStaticFinal(queryType, simpleName, "new " + queryType + "(\"" + simpleName + "\")");
@@ -345,9 +314,9 @@ public class Processor {
 
     }
 
-    private void serialize(Serializer serializer, Map<String, EntityModel> models) {
+    private void serialize(Serializer serializer, Map<String, EntityType> models) {
         Messager msg = env.getMessager();
-        for (EntityModel model : models.values()) {
+        for (EntityType model : models.values()) {
             msg.printMessage(Kind.NOTE, model.getFullName() + " is processed");
             try {
                 String packageName = model.getPackageName();         

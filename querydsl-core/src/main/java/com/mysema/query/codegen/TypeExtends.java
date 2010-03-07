@@ -10,33 +10,33 @@ import java.io.IOException;
 import javax.annotation.Nullable;
 
 /**
- * TypeExtendsModel is a TypeModel for type variables and wildcard types
+ * TypeExtends is a Type implementation for type variables and wildcard types
  * 
  * @author tiwe
  *
  */
 // TODO : take varName into account
-public class TypeExtendsModel extends TypeModelAdapter{
+public class TypeExtends extends TypeAdapter{
 
     @Nullable
     private final String varName;
     
-    public TypeExtendsModel(String varName, TypeModel typeModel) {
-        super(typeModel);
+    public TypeExtends(String varName, Type type) {
+        super(type);
         this.varName = varName;
     }
 
-    public TypeExtendsModel(TypeModel typeModel) {
-        super(typeModel);
+    public TypeExtends(Type type) {
+        super(type);
         varName = null;
     }
 
     @Override
-    public void appendLocalGenericName(TypeModel context, Appendable builder, boolean asArgType) throws IOException {
+    public void appendLocalGenericName(Type context, Appendable builder, boolean asArgType) throws IOException {
         if (!asArgType){
             builder.append("? extends ");    
         }            
-        getTypeModel().appendLocalGenericName(context, builder, true);
+        getType().appendLocalGenericName(context, builder, true);
     }
     
     public String getVarName(){

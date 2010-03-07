@@ -65,6 +65,7 @@ public class InheritanceTest {
         
     }
     
+    @QueryEntity
     public abstract class Storable extends Merchandise{
         
     }

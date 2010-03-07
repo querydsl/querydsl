@@ -26,13 +26,13 @@ import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryInit;
 import com.mysema.query.annotations.QueryMethod;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.codegen.ConstructorModel;
-import com.mysema.query.codegen.EntityModel;
-import com.mysema.query.codegen.MethodModel;
-import com.mysema.query.codegen.ParameterModel;
-import com.mysema.query.codegen.PropertyModel;
+import com.mysema.query.codegen.Constructor;
+import com.mysema.query.codegen.EntityType;
+import com.mysema.query.codegen.Method;
+import com.mysema.query.codegen.Parameter;
+import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.TypeCategory;
-import com.mysema.query.codegen.TypeModel;
+import com.mysema.query.codegen.Type;
 
 /**
  * EntityElementVisitor is a an APT visitor for entity types
@@ -45,15 +45,15 @@ public final class ElementHandler{
     
     private final Configuration configuration;
     
-    private final APTTypeModelFactory typeFactory;
+    private final APTTypeFactory typeFactory;
     
-    public ElementHandler(Configuration configuration, APTTypeModelFactory typeFactory){
+    public ElementHandler(Configuration configuration, APTTypeFactory typeFactory){
         this.configuration = configuration;
         this.typeFactory = typeFactory;
     }
     
-    private TypeModel getType(VariableElement element){
-        TypeModel rv = typeFactory.create(element.asType());              
+    private Type getType(VariableElement element){
+        Type rv = typeFactory.create(element.asType());              
         if (element.getAnnotation(QueryType.class) != null){
             QueryType qt = element.getAnnotation(QueryType.class);
             if (qt.value() != PropertyType.NONE){
@@ -64,22 +64,22 @@ public final class ElementHandler{
         return rv;
     }
     
-    public void handleConstructors(EntityModel entityModel, List<? extends Element> elements) {
+    public void handleConstructors(EntityType entityModel, List<? extends Element> elements) {
         for (ExecutableElement constructor : ElementFilter.constructorsIn(elements)){
             if (configuration.isValidConstructor(constructor)){
-                List<ParameterModel> parameters = transformParams(constructor.getParameters());
-                entityModel.addConstructor(new ConstructorModel(parameters));    
+                List<Parameter> parameters = transformParams(constructor.getParameters());
+                entityModel.addConstructor(new Constructor(parameters));    
             }                
         }
     }
 
-    public void handleFieldProperty(EntityModel entityModel, VariableElement field,            
-            Map<String, PropertyModel> properties,
+    public void handleFieldProperty(EntityType entityModel, VariableElement field,            
+            Map<String, Property> properties,
             Set<String> blockedProperties,
             Map<String, TypeCategory> types) {
         String name = field.getSimpleName().toString();
         try{                        
-            TypeModel fieldType = typeFactory.create(field.asType());            
+            Type fieldType = typeFactory.create(field.asType());            
             if (field.getAnnotation(QueryType.class) != null){
                 TypeCategory typeCategory = TypeCategory.get(field.getAnnotation(QueryType.class).value());
                 if (typeCategory == null){
@@ -93,7 +93,7 @@ public final class ElementHandler{
             if (field.getAnnotation(QueryInit.class) != null){
                 inits = field.getAnnotation(QueryInit.class).value();
             }
-            properties.put(name, new PropertyModel(entityModel, name, fieldType, inits));    
+            properties.put(name, new Property(entityModel, name, fieldType, inits));    
         }catch(IllegalArgumentException ex){
             StringBuilder builder = new StringBuilder();
             builder.append("Caught exception for field ");
@@ -102,12 +102,12 @@ public final class ElementHandler{
         }
     }
 
-    public void handleMethodProperty(EntityModel entityModel, String propertyName, 
+    public void handleMethodProperty(EntityType entityModel, String propertyName, 
             ExecutableElement method,            
-            Map<String, PropertyModel> properties, Set<String> blockedProperties,
+            Map<String, Property> properties, Set<String> blockedProperties,
             Map<String, TypeCategory> types) {
         try{
-            TypeModel propertyType = typeFactory.create(method.getReturnType());
+            Type propertyType = typeFactory.create(method.getReturnType());
             if (method.getAnnotation(QueryType.class) != null){
                 TypeCategory typeCategory = TypeCategory.get(method.getAnnotation(QueryType.class).value());
                 if (typeCategory == null){
@@ -124,7 +124,7 @@ public final class ElementHandler{
             if (method.getAnnotation(QueryInit.class) != null){
                 inits = method.getAnnotation(QueryInit.class).value();
             }
-            properties.put(propertyName, new PropertyModel(entityModel, propertyName, propertyType, inits));    
+            properties.put(propertyName, new Property(entityModel, propertyName, propertyType, inits));    
             
         }catch(IllegalArgumentException ex){
             StringBuilder builder = new StringBuilder();
@@ -134,21 +134,24 @@ public final class ElementHandler{
         }
     }
 
+    public EntityType handleNormalType(TypeElement e) {
+        EntityType entityType = typeFactory.createEntityType(e.asType());
+        return handleNormalType(entityType, e);
+    }
     
-    public EntityModel handleNormalType(TypeElement e) {
-        EntityModel entityModel = typeFactory.createEntityModel(e.asType());
-        List<? extends Element> elements = e.getEnclosedElements();
     
+    public EntityType handleNormalType(EntityType entityType, TypeElement e) {
+        List<? extends Element> elements = e.getEnclosedElements();    
         VisitorConfig config = configuration.getConfig(e, elements);
         
         Set<String> blockedProperties = new HashSet<String>();
-        Map<String,PropertyModel> properties = new HashMap<String,PropertyModel>();        
+        Map<String,Property> properties = new HashMap<String,Property>();        
         Map<String,TypeCategory> types = new HashMap<String,TypeCategory>();
-        Set<MethodModel> queryMethods = new HashSet<MethodModel>();
+        Set<Method> queryMethods = new HashSet<Method>();
         
         // constructors
         if (config.visitConstructors()){
-            handleConstructors(entityModel, elements);    
+            handleConstructors(entityType, elements);    
         }          
         
         // fields
@@ -156,7 +159,7 @@ public final class ElementHandler{
             for (VariableElement field : ElementFilter.fieldsIn(elements)){
                 String name = field.getSimpleName().toString();
                 if (configuration.isValidField(field)){
-                    handleFieldProperty(entityModel, field, properties, blockedProperties, types);
+                    handleFieldProperty(entityType, field, properties, blockedProperties, types);
                 }else if (configuration.isBlockedField(field)){
                     blockedProperties.add(name);
                 }                   
@@ -166,7 +169,7 @@ public final class ElementHandler{
         // methods
         for (ExecutableElement method : ElementFilter.methodsIn(elements)){
             if (method.getAnnotation(QueryMethod.class) != null){
-                handleQueryMethod(entityModel, method, queryMethods);
+                handleQueryMethod(entityType, method, queryMethods);
                 
             }else if (config.visitMethodProperties()){
                 String name = method.getSimpleName().toString();
@@ -179,7 +182,7 @@ public final class ElementHandler{
                 }
                 
                 if (configuration.isValidGetter(method)){
-                    handleMethodProperty(entityModel, name, method, properties, blockedProperties, types);                    
+                    handleMethodProperty(entityType, name, method, properties, blockedProperties, types);                    
                 }else if (configuration.isBlockedGetter(method)){
                     blockedProperties.add(name);
                 }    
@@ -187,40 +190,40 @@ public final class ElementHandler{
             
         } 
                        
-        for (MethodModel entry : queryMethods){
-            entityModel.addMethod(entry);
+        for (Method entry : queryMethods){
+            entityType.addMethod(entry);
         }
         
-        for (Map.Entry<String,PropertyModel> entry : properties.entrySet()){
+        for (Map.Entry<String,Property> entry : properties.entrySet()){
             if (!blockedProperties.contains(entry.getKey())){
-                entityModel.addProperty(entry.getValue());
+                entityType.addProperty(entry.getValue());
             }
         }                
         
-        return entityModel;
+        return entityType;
     }
     
-    public EntityModel handleProjectionType(TypeElement e) {
-        TypeModel c = typeFactory.create(e.asType());        
-        EntityModel entityModel = new EntityModel(configuration.getNamePrefix(), c.as(TypeCategory.ENTITY));
+    public EntityType handleProjectionType(TypeElement e) {
+        Type c = typeFactory.create(e.asType());        
+        EntityType entityModel = new EntityType(configuration.getNamePrefix(), c.as(TypeCategory.ENTITY));
         List<? extends Element> elements = e.getEnclosedElements();
         handleConstructors(entityModel, elements);
         return entityModel;
     }
     
-    public void handleQueryMethod(EntityModel entityModel, ExecutableElement method, Set<MethodModel> queryMethods) {
+    public void handleQueryMethod(EntityType entityModel, ExecutableElement method, Set<Method> queryMethods) {
         String name = method.getSimpleName().toString();
         QueryMethod queryMethod = method.getAnnotation(QueryMethod.class);
-        TypeModel returnType = typeFactory.create(method.getReturnType());
-        MethodModel methodModel = new MethodModel(entityModel, name, queryMethod.value(), transformParams(method.getParameters()), returnType);        
+        Type returnType = typeFactory.create(method.getReturnType());
+        Method methodModel = new Method(entityModel, name, queryMethod.value(), transformParams(method.getParameters()), returnType);        
         queryMethods.add(methodModel);
     }
 
-    private List<ParameterModel> transformParams(List<? extends VariableElement> params){
-        List<ParameterModel> parameters = new ArrayList<ParameterModel>(params.size());
+    private List<Parameter> transformParams(List<? extends VariableElement> params){
+        List<Parameter> parameters = new ArrayList<Parameter>(params.size());
         for (VariableElement param : params){
-            TypeModel paramType = getType(param);
-            parameters.add(new ParameterModel(param.getSimpleName().toString(), paramType));
+            Type paramType = getType(param);
+            parameters.add(new Parameter(param.getSimpleName().toString(), paramType));
         }
         return parameters;
     }

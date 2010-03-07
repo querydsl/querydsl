@@ -21,19 +21,19 @@ import com.mysema.util.JavaWriter;
  */
 public class SerializerTest {
     
-    private EntityModel type;
+    private EntityType type;
 
     private Writer writer = new StringWriter();
 
     public SerializerTest() {
-        TypeModelFactory typeFactory = new TypeModelFactory();
-        TypeModel typeModel = new SimpleTypeModel(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false);
-        type = new EntityModel("Q", typeModel, Collections.singleton("com.mysema.query.DomainSuperClass"));
+        TypeFactory typeFactory = new TypeFactory();
+        Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false);
+        type = new EntityType("Q", typeModel);
         
-        PropertyModel field = new PropertyModel(type, "field", typeFactory.create(String.class), new String[0]);
+        Property field = new Property(type, "field", typeFactory.create(String.class), new String[0]);
         type.addProperty(field);
-        ParameterModel param = new ParameterModel("name", new ClassTypeModel(TypeCategory.STRING, String.class));
-        type.addConstructor(new ConstructorModel(Collections.singleton(param)));
+        Parameter param = new Parameter("name", new ClassType(TypeCategory.STRING, String.class));
+        type.addConstructor(new Constructor(Collections.singleton(param)));
     }
 
     @Test

@@ -8,15 +8,15 @@ package com.mysema.query.codegen;
 import java.io.IOException;
 
 /**
- * AbstractTypeModel is an abstract base class for TypeModel implementations
+ * AbstractType is an abstract base class for Type implementations
  * 
  * @author tiwe
  *
  */
-public abstract class AbstractTypeModel implements TypeModel{
+public abstract class AbstractType implements Type{
     
     @Override
-    public String getLocalGenericName(TypeModel context, boolean asArgType){
+    public String getLocalGenericName(Type context, boolean asArgType){
         try {
             StringBuilder builder = new StringBuilder();
             appendLocalGenericName(context, builder, asArgType);
@@ -27,7 +27,7 @@ public abstract class AbstractTypeModel implements TypeModel{
     }
     
     @Override
-    public String getLocalRawName(TypeModel context){
+    public String getLocalRawName(Type context){
         try {
             StringBuilder builder = new StringBuilder();
             appendLocalRawName(context, builder);

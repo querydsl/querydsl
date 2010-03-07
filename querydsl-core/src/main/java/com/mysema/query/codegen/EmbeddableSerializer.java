@@ -20,28 +20,28 @@ import com.mysema.util.CodeWriter;
  *
  */
 public final class EmbeddableSerializer extends EntitySerializer{
-    
+
     public EmbeddableSerializer(TypeMappings typeMappings) {
         super(typeMappings);
     }
 
     @Override
-    protected void constructorsForVariables(CodeWriter writer, EntityModel model) {
+    protected void constructorsForVariables(CodeWriter writer, EntityType model) {
         // no root constructors
     }
     
     @Override
-    protected void introDefaultInstance(CodeWriter writer, EntityModel model) {
+    protected void introDefaultInstance(CodeWriter writer, EntityType model) {
         // no default instance
     }
     
     @Override
-    protected void introFactoryMethods(CodeWriter writer, EntityModel model) throws IOException {
+    protected void introFactoryMethods(CodeWriter writer, EntityType model) throws IOException {
         // no factory methods        
     }
     
     @Override
-    protected void introImports(CodeWriter writer, SerializerConfig config, EntityModel model) throws IOException {
+    protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
         writer.imports(Path.class.getPackage());        
         if ((model.hasLists() && config.useListAccessors())
                 || !model.getMethods().isEmpty()

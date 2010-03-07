@@ -7,7 +7,6 @@ package com.mysema.query.codegen;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,39 +19,39 @@ import org.apache.commons.lang.ClassUtils;
 import com.mysema.util.ReflectionUtils;
 
 /**
- * TypeModelFactory is a factory class for TypeModel instances
+ * TypeFactory is a factory class for Type instances
  * 
  * @author tiwe
  * 
  */
-public final class TypeModelFactory {
+public final class TypeFactory {
 
-    private final Map<List<Type>, TypeModel> cache = new HashMap<List<Type>, TypeModel>();
+    private final Map<List<java.lang.reflect.Type>, Type> cache = new HashMap<List<java.lang.reflect.Type>, Type>();
     
     private final Collection<Class<? extends Annotation>> entityAnnotations;
 
     @SuppressWarnings("unchecked")
-    public TypeModelFactory(Class<?>... entityAnnotations){
+    public TypeFactory(Class<?>... entityAnnotations){
         this.entityAnnotations = (List)Arrays.asList(entityAnnotations);
     }
     
-    public TypeModelFactory(List<Class<? extends Annotation>> entityAnnotations){
+    public TypeFactory(List<Class<? extends Annotation>> entityAnnotations){
         this.entityAnnotations = entityAnnotations;
     }
     
-    public TypeModel create(Class<?> cl){
+    public Type create(Class<?> cl){
         return create(cl, cl);
     }
     
-    public TypeModel create(Class<?> cl, Type genericType) {
-        List<Type> key = Arrays.<Type> asList(cl, genericType);
+    public Type create(Class<?> cl, java.lang.reflect.Type genericType) {
+        List<java.lang.reflect.Type> key = Arrays.<java.lang.reflect.Type> asList(cl, genericType);
         if (cache.containsKey(key)) {
             return cache.get(key);
         }else{
             if (cl.isPrimitive()) {
                 cl = ClassUtils.primitiveToWrapper(cl);
             }
-            TypeModel value;
+            Type value;
             boolean entity= false;
             for (Class<? extends Annotation> clazz : entityAnnotations){
                 if (cl.getAnnotation(clazz) != null){
@@ -61,40 +60,40 @@ public final class TypeModelFactory {
                 }
             }            
             if (entity){
-                value = new ClassTypeModel(TypeCategory.ENTITY, cl);
+                value = new ClassType(TypeCategory.ENTITY, cl);
                 
             }else if (cl.isArray()) {
                 value = create(cl.getComponentType()).asArrayType();
 
             } else if (cl.isEnum()) {
-                value = new ClassTypeModel(TypeCategory.SIMPLE, cl);
+                value = new ClassType(TypeCategory.SIMPLE, cl);
 
             } else if (Map.class.isAssignableFrom(cl)) {
-                TypeModel keyInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
-                TypeModel valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 1));
+                Type keyInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
+                Type valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 1));
                 value = createMapType(keyInfo, valueInfo);
 
             } else if (List.class.isAssignableFrom(cl)) {
-                TypeModel valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
+                Type valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
                 value = createListType(valueInfo);
 
             } else if (Set.class.isAssignableFrom(cl)) {
-                TypeModel valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
+                Type valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
                 value = createSetType(valueInfo);
                 
             } else if (Collection.class.isAssignableFrom(cl)) {
-                TypeModel valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
+                Type valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
                 value = createCollectionType(valueInfo);
                 
             }else if (Number.class.isAssignableFrom(cl) && Comparable.class.isAssignableFrom(cl)){    
-                value = new ClassTypeModel(TypeCategory.NUMERIC, cl);
+                value = new ClassType(TypeCategory.NUMERIC, cl);
                 
             } else {    
                 TypeCategory typeCategory = TypeCategory.get(cl.getName());
                 if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)){
                     typeCategory = TypeCategory.COMPARABLE;
                 }
-                value = new ClassTypeModel(typeCategory, cl);
+                value = new ClassType(typeCategory, cl);
             }
             cache.put(key, value);
             return value;
@@ -102,12 +101,12 @@ public final class TypeModelFactory {
         
     }
     
-    public TypeModel createCollectionType(TypeModel valueType) {
+    public Type createCollectionType(Type valueType) {
         return createComposite(TypeCategory.COLLECTION, Collection.class, valueType);
     }
 
-    private TypeModel createComposite(TypeCategory container, Class<?> containerType, TypeModel... parameters) {
-        return new SimpleTypeModel(container, 
+    private Type createComposite(TypeCategory container, Class<?> containerType, Type... parameters) {
+        return new SimpleType(container, 
                 containerType.getName(), 
                 containerType.getPackage().getName(), 
                 containerType.getSimpleName(), 
@@ -116,15 +115,15 @@ public final class TypeModelFactory {
 
     }
     
-    public TypeModel createListType(TypeModel valueType) {
+    public Type createListType(Type valueType) {
         return createComposite(TypeCategory.LIST, List.class, valueType);
     }
 
-    public TypeModel createMapType(TypeModel keyType, TypeModel valueType) {
+    public Type createMapType(Type keyType, Type valueType) {
         return createComposite(TypeCategory.MAP, Map.class, keyType, valueType);
     }
 
-    public TypeModel createSetType(TypeModel valueType) {
+    public Type createSetType(Type valueType) {
         return createComposite(TypeCategory.SET, Collection.class, valueType);
     }
 

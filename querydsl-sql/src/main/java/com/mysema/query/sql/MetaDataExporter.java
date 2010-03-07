@@ -21,20 +21,20 @@ import javax.annotation.Nullable;
 import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.codegen.ClassTypeModel;
-import com.mysema.query.codegen.EntityModel;
+import com.mysema.query.codegen.ClassType;
+import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.EntitySerializer;
-import com.mysema.query.codegen.MethodModel;
-import com.mysema.query.codegen.ParameterModel;
-import com.mysema.query.codegen.PropertyModel;
+import com.mysema.query.codegen.Method;
+import com.mysema.query.codegen.Parameter;
+import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.SimpleSerializerConfig;
-import com.mysema.query.codegen.SimpleTypeModel;
+import com.mysema.query.codegen.SimpleType;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeMappings;
-import com.mysema.query.codegen.TypeModel;
-import com.mysema.query.codegen.TypeModels;
+import com.mysema.query.codegen.Type;
+import com.mysema.query.codegen.Types;
 import com.mysema.util.JavaWriter;
 
 /**
@@ -87,15 +87,15 @@ public class MetaDataExporter {
             while (tables.next()) {
                 String tableName = tables.getString(3);
                 String simpleClassName = toClassName(tableName);
-                TypeModel classTypeModel = new SimpleTypeModel(
+                Type classTypeModel = new SimpleType(
                         TypeCategory.ENTITY, 
                         packageName + "." + namePrefix + simpleClassName, 
                         packageName, 
                         namePrefix + simpleClassName, 
                         false);
-                EntityModel classModel = new EntityModel("", classTypeModel);
-                MethodModel wildcard = new MethodModel(classModel, "all", "{0}.*", 
-                        Collections.<ParameterModel>emptyList(), TypeModels.OBJECTS);
+                EntityType classModel = new EntityType("", classTypeModel);
+                Method wildcard = new Method(classModel, "all", "{0}.*", 
+                        Collections.<Parameter>emptyList(), Types.OBJECTS);
                 classModel.addMethod(wildcard);
                 classModel.addAnnotation(new TableImpl(tableName));
                 ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
@@ -118,8 +118,8 @@ public class MetaDataExporter {
                             fieldType = TypeCategory.COMPARABLE;
                         }
 
-                        TypeModel typeModel = new ClassTypeModel(fieldType, clazz);
-                        classModel.addProperty(new PropertyModel(
+                        Type typeModel = new ClassType(fieldType, clazz);
+                        classModel.addProperty(new Property(
                                 classModel, 
                                 columnName, 
                                 propertyName, 
@@ -158,7 +158,7 @@ public class MetaDataExporter {
         return builder.toString();
     }
 
-    private void serialize(EntityModel type) {
+    private void serialize(EntityType type) {
         String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + ".java";
         try {                        
             Writer writer = writerFor(new File(targetFolder, path));

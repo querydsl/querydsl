@@ -10,7 +10,7 @@ import java.io.IOException;
 import com.mysema.util.CodeWriter;
 
 /**
- * Serializer defines a common interface for EntityModel serializers
+ * Serializer defines a common interface for EntityType serializers
  * 
  * @author tiwe
  *
@@ -18,14 +18,14 @@ import com.mysema.util.CodeWriter;
 public interface Serializer {
 
     /**
-     * Serialize the given ClassModel 
+     * Serialize the given EntityType 
      * 
-     * @param type ClassModel to serialize
+     * @param type EntityType to serialize
      * @param serializerConfig TODO
      * @param writer serialization target
      * @throws IOException
      */
-    void serialize(EntityModel type, SerializerConfig serializerConfig, CodeWriter writer) throws IOException;
+    void serialize(EntityType type, SerializerConfig serializerConfig, CodeWriter writer) throws IOException;
     
 
 }

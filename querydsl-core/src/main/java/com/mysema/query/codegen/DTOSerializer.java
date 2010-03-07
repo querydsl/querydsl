@@ -25,12 +25,12 @@ import com.mysema.util.CodeWriter;
 public final class DTOSerializer implements Serializer{
     
     private final TypeMappings typeMappings;
-    
+
     public DTOSerializer(TypeMappings typeMappings){
         this.typeMappings = Assert.notNull(typeMappings);
     }
     
-    protected void intro(EntityModel model, CodeWriter writer) throws IOException {
+    protected void intro(EntityType model, CodeWriter writer) throws IOException {
         String simpleName = model.getSimpleName();
         String queryType = typeMappings.getPathType(model, model, false);
         String localName = model.getLocalRawName();
@@ -50,22 +50,22 @@ public final class DTOSerializer implements Serializer{
         writer.beginClass(queryType, "EConstructor<" + localName + ">");
     }
 
-    protected void outro(EntityModel model, CodeWriter writer) throws IOException {
+    protected void outro(EntityType model, CodeWriter writer) throws IOException {
         writer.end();   
     }
     
     @Override
-    public void serialize(final EntityModel model, SerializerConfig serializerConfig, CodeWriter writer) throws IOException{
+    public void serialize(final EntityType model, SerializerConfig serializerConfig, CodeWriter writer) throws IOException{
         // intro
         intro(model, writer);
         
         final String localName = model.getLocalRawName();
         
-        for (ConstructorModel c : model.getConstructors()){
+        for (Constructor c : model.getConstructors()){
             // begin
-            writer.beginConstructor(c.getParameters(), new Transformer<ParameterModel,String>(){
+            writer.beginConstructor(c.getParameters(), new Transformer<Parameter,String>(){
                 @Override
-                public String transform(ParameterModel p) {
+                public String transform(Parameter p) {
                     return typeMappings.getExprType(p.getType(), model, false, false, true) + " " + p.getName();
                 }                
             });            
@@ -74,7 +74,7 @@ public final class DTOSerializer implements Serializer{
             writer.beginLine("super(" + localName + ".class");
             writer.append(", new Class[]{");
             boolean first = true;
-            for (ParameterModel p : c.getParameters()){
+            for (Parameter p : c.getParameters()){
                 if (!first){
                     writer.append(", ");
                 }
@@ -88,7 +88,7 @@ public final class DTOSerializer implements Serializer{
             }
             writer.append("}");
             
-            for (ParameterModel p : c.getParameters()){
+            for (Parameter p : c.getParameters()){
                 writer.append(", " + p.getName());
             }
             

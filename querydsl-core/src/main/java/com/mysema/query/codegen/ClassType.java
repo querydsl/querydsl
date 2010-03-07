@@ -20,17 +20,17 @@ import org.apache.commons.lang.ClassUtils;
 import com.mysema.commons.lang.Assert;
 
 /**
- * ClassTypeModel is a minimal implementation of the TypeModel interface
+ * ClassType is a minimal implementation of the Type interface
  * 
  * @author tiwe
  *
  */
 @Immutable
-public final class ClassTypeModel extends AbstractTypeModel{
+public final class ClassType extends AbstractType{
         
     private final Class<?> clazz;
     
-    private final List<TypeModel> parameters;
+    private final List<Type> parameters;
     
     @Nullable
     private final Class<?> primitiveClass;
@@ -38,12 +38,12 @@ public final class ClassTypeModel extends AbstractTypeModel{
     private final TypeCategory typeCategory;
     
     private final boolean visible;
-    
-    public ClassTypeModel(TypeCategory typeCategory, Class<?> clazz, TypeModel... params){
+
+    public ClassType(TypeCategory typeCategory, Class<?> clazz, Type... params){
         this(typeCategory, clazz, ClassUtils.wrapperToPrimitive(clazz), params);
     }
-    
-    public ClassTypeModel(TypeCategory typeCategory, Class<?> clazz, @Nullable Class<?> primitiveClass, TypeModel... params){
+
+    public ClassType(TypeCategory typeCategory, Class<?> clazz, @Nullable Class<?> primitiveClass, Type... params){
         this.typeCategory = Assert.notNull(typeCategory);
         this.clazz = Assert.notNull(clazz);
         this.primitiveClass = primitiveClass;
@@ -56,23 +56,23 @@ public final class ClassTypeModel extends AbstractTypeModel{
     }
     
     @Override
-    public TypeModel asArrayType() {        
-        return new ClassTypeModel(TypeCategory.ARRAY, Array.newInstance(clazz, 0).getClass(), this);
+    public Type asArrayType() {        
+        return new ClassType(TypeCategory.ARRAY, Array.newInstance(clazz, 0).getClass(), this);
     }
     
     @Override
-    public TypeModel as(TypeCategory category) {
+    public Type as(TypeCategory category) {
         if (typeCategory == category){
             return this;
         }else{
-            return new ClassTypeModel(category, clazz);
+            return new ClassType(category, clazz);
         }
     }
 
     @Override
     public boolean equals(Object o){
-        if (o instanceof TypeModel){
-            TypeModel t = (TypeModel)o;
+        if (o instanceof Type){
+            Type t = (Type)o;
             return clazz.getName().equals(t.getFullName());
         }else{
             return false;
@@ -90,12 +90,12 @@ public final class ClassTypeModel extends AbstractTypeModel{
     }
 
     @Override
-    public void appendLocalGenericName(TypeModel context, Appendable builder, boolean asArgType) throws IOException {
+    public void appendLocalGenericName(Type context, Appendable builder, boolean asArgType) throws IOException {
         appendLocalRawName(context, builder);
     }
 
     @Override
-    public void appendLocalRawName(TypeModel context, Appendable builder) throws IOException {
+    public void appendLocalRawName(Type context, Appendable builder) throws IOException {
         String packageName; 
         String name;
         if (clazz.isArray()){
@@ -122,7 +122,7 @@ public final class ClassTypeModel extends AbstractTypeModel{
     }
 
     @Override
-    public TypeModel getParameter(int i) {
+    public Type getParameter(int i) {
         return parameters.get(i);
     }
 
@@ -137,7 +137,7 @@ public final class ClassTypeModel extends AbstractTypeModel{
     }
 
     @Override
-    public TypeModel getSelfOrValueType() {
+    public Type getSelfOrValueType() {
         if (typeCategory.isSubCategoryOf(TypeCategory.COLLECTION) 
          || typeCategory.isSubCategoryOf(TypeCategory.MAP)){
             return parameters.get(parameters.size()-1);

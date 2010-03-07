@@ -16,19 +16,19 @@ import com.mysema.commons.lang.Assert;
  * 
  */
 @Immutable
-public final class MethodModel {
+public final class Method {
 
-    private final EntityModel context;
+    private final EntityType context;
 
     private final String name;
 
-    private final List<ParameterModel> parameters;
+    private final List<Parameter> parameters;
 
-    private final TypeModel returnType;
+    private final Type returnType;
     
     private final String template;
 
-    public MethodModel(EntityModel context, String name, String template, List<ParameterModel> params, TypeModel returnType) {
+    public Method(EntityType context, String name, String template, List<Parameter> params, Type returnType) {
         this.context = Assert.notNull(context);
         this.name = Assert.notNull(name);
         this.template = Assert.notNull(template);
@@ -40,15 +40,15 @@ public final class MethodModel {
     public boolean equals(Object o) {
         if (o == this){
             return true;
-        }else if (o instanceof MethodModel){
-            MethodModel m = (MethodModel)o;
+        }else if (o instanceof Method){
+            Method m = (Method)o;
             return m.name.equals(name) && m.parameters.equals(parameters);    
         }else{
             return false;
         }        
     }
 
-    public EntityModel getContext() {
+    public EntityType getContext() {
         return context;
     }
 
@@ -56,11 +56,11 @@ public final class MethodModel {
         return name;
     }
 
-    public List<ParameterModel> getParameters() {
+    public List<Parameter> getParameters() {
         return parameters;
     }
 
-    public TypeModel getReturnType() {
+    public Type getReturnType() {
         return returnType;
     }
     

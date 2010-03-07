@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -30,14 +31,15 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.WildcardType;
 
-import com.mysema.query.codegen.EntityModel;
-import com.mysema.query.codegen.SimpleTypeModel;
+import com.mysema.query.codegen.EntityType;
+import com.mysema.query.codegen.SimpleType;
+import com.mysema.query.codegen.Type;
+import com.mysema.query.codegen.TypeAdapter;
 import com.mysema.query.codegen.TypeCategory;
-import com.mysema.query.codegen.TypeExtendsModel;
-import com.mysema.query.codegen.TypeModel;
-import com.mysema.query.codegen.TypeModelFactory;
-import com.mysema.query.codegen.TypeModels;
-import com.mysema.query.codegen.TypeSuperModel;
+import com.mysema.query.codegen.TypeExtends;
+import com.mysema.query.codegen.TypeFactory;
+import com.mysema.query.codegen.TypeSuper;
+import com.mysema.query.codegen.Types;
 
 /**
  * APTTypeModelFactory is a factory for APT inspection based TypeModel creation
@@ -45,26 +47,35 @@ import com.mysema.query.codegen.TypeSuperModel;
  * @author tiwe
  *
  */
-public final class APTTypeModelFactory {
+public final class APTTypeFactory {
     
-    private final Map<List<String>,TypeModel> cache = new HashMap<List<String>,TypeModel>();
+    @Nullable
+    private static Class<?> safeForName(String name){
+        try {
+            return Class.forName(name);
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+    }
 
+    private final Map<List<String>,Type> cache = new HashMap<List<String>,Type>();
+    
     private final Configuration configuration;
     
-    private final TypeModel defaultValue;
+    private final Type defaultValue;
     
     private final List<Class<? extends Annotation>> entityAnnotations;
     
-    private final Map<List<String>,EntityModel> entityTypeCache = new HashMap<List<String>,EntityModel>();
+    private final Map<List<String>,EntityType> entityTypeCache = new HashMap<List<String>,EntityType>();
     
     private final ProcessingEnvironment env;
     
-    private final TypeModelFactory factory;
+    private final TypeFactory factory;
     
     private final TypeElement numberType, comparableType;
     
-    public APTTypeModelFactory(ProcessingEnvironment env, Configuration configuration, 
-            TypeModelFactory factory, List<Class<? extends Annotation>> annotations){
+    public APTTypeFactory(ProcessingEnvironment env, Configuration configuration, 
+            TypeFactory factory, List<Class<? extends Annotation>> annotations){
         this.env = env;
         this.configuration = configuration;
         this.factory = factory;
@@ -74,67 +85,23 @@ public final class APTTypeModelFactory {
         this.comparableType = env.getElementUtils().getTypeElement(Comparable.class.getName());        
     }
     
-    private EntityModel asEntityModel(TypeMirror type, TypeModel value) {                 
-        if (type.getKind() == TypeKind.TYPEVAR){
-            TypeVariable typeVar = (TypeVariable)type;
-            if (typeVar.getUpperBound() != null){
-                type = typeVar.getUpperBound();
-            }
-        }else if (type.getKind() == TypeKind.WILDCARD){
-            WildcardType wildcard = (WildcardType)type;
-            if (wildcard.getExtendsBound() != null){
-                type = wildcard.getExtendsBound();
-            }
-        }
-        
-        Collection<String> superTypes = Collections.emptySet();
-        if (type.getKind() == TypeKind.DECLARED){
-            DeclaredType declaredType = (DeclaredType)type;
-            TypeElement e = (TypeElement)declaredType.asElement();
-            if (e.getKind() == ElementKind.CLASS){
-                superTypes = Collections.singleton(create(e.getSuperclass()).getFullName());
-            }else{
-                superTypes = new ArrayList<String>(e.getInterfaces().size());
-                for (TypeMirror mirror : e.getInterfaces()){
-                    TypeModel iface = create(mirror);
-                    if (!iface.getFullName().startsWith("java")){
-                        superTypes.add(iface.getFullName());
-                    }
-                }
-            }
-            
-        }else{
-            throw new IllegalArgumentException("Unsupported type kind " + type.getKind());
-        }
-        
-        return new EntityModel(configuration.getNamePrefix(), value, superTypes);
-    }
-    
-    private TypeModel create(TypeElement typeElement, TypeCategory category, 
-            List<? extends TypeMirror> typeArgs) {
+    private Type create(TypeElement typeElement, TypeCategory category, List<? extends TypeMirror> typeArgs) {
         String name = typeElement.getQualifiedName().toString();
         String simpleName = typeElement.getSimpleName().toString();
         String packageName = env.getElementUtils().getPackageOf(typeElement).getQualifiedName().toString();
-        TypeModel[] params = new TypeModel[typeArgs.size()];
+        Type[] params = new Type[typeArgs.size()];
         for (int i = 0; i < params.length; i++){
             params[i] = create(typeArgs.get(i));
         }        
-        return new SimpleTypeModel(category, 
+        return new SimpleType(category, 
             name, packageName, simpleName, 
             typeElement.getModifiers().contains(Modifier.FINAL), 
             params);
     }
-    
-    /**
-     * Create a TypeModel for the given TypeMirror
-     * 
-     * @param type
-     * @param el
-     * @return
-     */
+
     @Nullable
-    public TypeModel create(TypeMirror type){
-        List<String> key = getKey(type, true);  
+    public Type create(TypeMirror type){
+        List<String> key = createKey(type, true, true);  
         if (entityTypeCache.containsKey(key)){
             return entityTypeCache.get(key);
             
@@ -143,18 +110,19 @@ public final class APTTypeModelFactory {
             
         }else{
             cache.put(key, null);
-            TypeModel value = handle(type);
-            if (value != null && value.getCategory() == TypeCategory.ENTITY){                
-                value = asEntityModel(type, value);
-                entityTypeCache.put(key, (EntityModel)value);
+            Type typeModel = handle(type);
+            if (typeModel != null && typeModel.getCategory() == TypeCategory.ENTITY){
+                EntityType entityType = createEntityType(type);
+                cache.put(key, entityType);
+                return entityType;
             }else{
-                cache.put(key, value);    
-            }            
-            return value;
+                cache.put(key, typeModel);
+                return typeModel;
+            }                        
         }        
     }
 
-    private TypeModel createClassType(DeclaredType t, TypeElement typeElement) {   
+    private Type createClassType(DeclaredType t, TypeElement typeElement) {   
         // entity type
         for (Class<? extends Annotation> entityAnn : entityAnnotations){
             if (typeElement.getAnnotation(entityAnn) != null){
@@ -178,33 +146,31 @@ public final class APTTypeModelFactory {
         return create(typeElement, typeCategory, t.getTypeArguments());
     }
 
-    /**
-     * Create an EntityModel for the given TypeMirror
-     * 
-     * @param type
-     * @param el
-     * @return
-     */
     @Nullable
-    public EntityModel createEntityModel(TypeMirror type){
-        List<String> key = getKey(type, true);
+    public EntityType createEntityType(TypeMirror type){
+        List<String> key = createKey(type, false, true);
         if (entityTypeCache.containsKey(key)){
             return entityTypeCache.get(key);
         
-        }else{
+        }else{            
             entityTypeCache.put(key, null);
-            TypeModel value = handle(type);
+            Type value = handle(type);
             if (value != null){                
-                EntityModel entityModel = asEntityModel(type, value);
+                EntityType entityModel = new EntityType(configuration.getNamePrefix(), value);
+//                entityTypeCache.put(Collections.singletonList(value.getFullName()), entityModel);
                 entityTypeCache.put(key, entityModel);
+                cache.put(createKey(type, true, true), entityModel);
+                for (EntityType superType : getSupertypes(type, value)){
+                    entityModel.getSuperTypes().add(superType);
+                }
                 return entityModel;
             }else{
                 return null;
             }
         }
     }
-
-    private TypeModel createEnumType(DeclaredType t, TypeElement typeElement) {
+    
+    private Type createEnumType(DeclaredType t, TypeElement typeElement) {
         for (Class<? extends Annotation> entityAnn : entityAnnotations){
             if (typeElement.getAnnotation(entityAnn) != null){
                 return create(typeElement, TypeCategory.ENTITY, t.getTypeArguments());
@@ -215,16 +181,7 @@ public final class APTTypeModelFactory {
         return create(typeElement, TypeCategory.SIMPLE, t.getTypeArguments());
     }
     
-    @Nullable
-    private static Class<?> safeForName(String name){
-        try {
-            return Class.forName(name);
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-    }
-    
-    private TypeModel createInterfaceType(DeclaredType t, TypeElement typeElement) {
+    private Type createInterfaceType(DeclaredType t, TypeElement typeElement) {
         // entity type
         for (Class<? extends Annotation> entityAnn : entityAnnotations){
             if (typeElement.getAnnotation(entityAnn) != null){
@@ -269,43 +226,94 @@ public final class APTTypeModelFactory {
         }
     }
 
-    /**
-     * Create a cache key for the given TypeMirror
-     * 
-     * @param type
-     * @param deep inspect type arguments
-     * @return
-     */
-    private List<String> getKey(TypeMirror type, boolean deep){
+    private List<String> createKey(TypeMirror type, boolean useTypeArgs, boolean deep){
         List<String> key = new ArrayList<String>();
-        key.add(type.toString());
+        String name = type.toString();
+        if (name.contains("<")){
+            name = name.substring(0, name.indexOf('<'));
+        }        
+        key.add(name);
+        
         if (type.getKind() == TypeKind.TYPEVAR){
             TypeVariable t = (TypeVariable)type;
             if (t.getUpperBound() != null){
-                key.addAll(getKey(t.getUpperBound(), false));
+                key.addAll(createKey(t.getUpperBound(), useTypeArgs, false));
             }            
             if (t.getLowerBound() != null){
-                key.addAll(getKey(t.getLowerBound(), false));
+                key.addAll(createKey(t.getLowerBound(), useTypeArgs, false));
             }
+            
         }else if (type.getKind() == TypeKind.WILDCARD){
             WildcardType t = (WildcardType)type;
             if (t.getExtendsBound() != null){
-                key.addAll(getKey(t.getExtendsBound(), false));
+                key.addAll(createKey(t.getExtendsBound(), useTypeArgs, false));
             }
             if (t.getSuperBound() != null){
-                key.addAll(getKey(t.getSuperBound(), false));
+                key.addAll(createKey(t.getSuperBound(), useTypeArgs, false));
             }
-        }else if (type.getKind() == TypeKind.DECLARED){
+            
+        }else if (type.getKind() == TypeKind.DECLARED){                    
             DeclaredType t = (DeclaredType)type;
-            for (TypeMirror arg : t.getTypeArguments()){
-                key.addAll(deep ? getKey(arg, false) : Collections.singleton(arg.toString()));
+            if (useTypeArgs){
+                for (TypeMirror arg : t.getTypeArguments()){
+                    if (deep){
+                        key.addAll(createKey(arg, useTypeArgs, false));
+                    }else{
+                        key.add(arg.toString());
+                    }
+                }    
+            }            
+        }
+        return key;        
+    }
+
+    private Set<EntityType> getSupertypes(TypeMirror type, Type value) {                 
+        type = normalize(type);        
+        Set<EntityType> superTypes = Collections.emptySet();
+        if (type.getKind() == TypeKind.DECLARED){
+            DeclaredType declaredType = (DeclaredType)type;
+            TypeElement e = (TypeElement)declaredType.asElement();
+            if (e.getKind() == ElementKind.CLASS){
+                if (e.getSuperclass().getKind() != TypeKind.NONE){    
+                    TypeMirror supertype = normalize(e.getSuperclass());
+                    Type superClass = create(supertype);
+                    if (!superClass.getFullName().startsWith("java")){
+                        superTypes = Collections.singleton(createEntityType(supertype));    
+                    }                        
+                }                
+            }else{
+                superTypes = new HashSet<EntityType>(e.getInterfaces().size());
+                for (TypeMirror mirror : e.getInterfaces()){
+                    EntityType iface = createEntityType(mirror);
+                    if (!iface.getFullName().startsWith("java")){
+                        superTypes.add(iface);
+                    }
+                }
+            }
+            
+        }else{
+            throw new IllegalArgumentException("Unsupported type kind " + type.getKind());
+        }
+        return superTypes;
+    }
+
+    private TypeMirror normalize(TypeMirror type) {
+        if (type.getKind() == TypeKind.TYPEVAR){
+            TypeVariable typeVar = (TypeVariable)type;
+            if (typeVar.getUpperBound() != null){
+                type = typeVar.getUpperBound();
+            }
+        }else if (type.getKind() == TypeKind.WILDCARD){
+            WildcardType wildcard = (WildcardType)type;
+            if (wildcard.getExtendsBound() != null){
+                type = wildcard.getExtendsBound();
             }
         }
-        return key;
+        return type;
     }
 
     @Nullable
-    private TypeModel handle(TypeMirror type) {
+    private Type handle(TypeMirror type) {
         if (type instanceof DeclaredType){
             DeclaredType t = (DeclaredType)type;
             if (t.asElement() instanceof TypeElement){
@@ -324,9 +332,9 @@ public final class APTTypeModelFactory {
             TypeVariable t = (TypeVariable)type;
             String varName = t.toString();
             if (t.getUpperBound() != null){
-                return new TypeExtendsModel(varName, handle(t.getUpperBound()));
+                return new TypeExtends(varName, handle(t.getUpperBound()));
             }else if (t.getLowerBound() != null && !(t.getLowerBound() instanceof NullType)){
-                return new TypeSuperModel(varName, handle(t.getLowerBound()));
+                return new TypeSuper(varName, handle(t.getLowerBound()));
             }else{
                 return null;
             }              
@@ -334,9 +342,9 @@ public final class APTTypeModelFactory {
         }else if (type instanceof WildcardType){
             WildcardType t = (WildcardType)type;
             if (t.getExtendsBound() != null){
-                return new TypeExtendsModel(handle(t.getExtendsBound()));
+                return new TypeExtends(handle(t.getExtendsBound()));
             }else if (t.getSuperBound() != null){
-                return new TypeSuperModel(handle(t.getSuperBound()));
+                return new TypeSuper(handle(t.getSuperBound()));
             }else{            
                 return null;
             }
@@ -348,14 +356,14 @@ public final class APTTypeModelFactory {
         }else if (type instanceof PrimitiveType){
             PrimitiveType t = (PrimitiveType)type;
             switch (t.getKind()) {
-            case BOOLEAN: return TypeModels.BOOLEAN;
-            case BYTE: return TypeModels.BYTE;
-            case CHAR: return TypeModels.CHAR;
-            case DOUBLE: return TypeModels.DOUBLE;
-            case FLOAT: return TypeModels.FLOAT;
-            case INT: return TypeModels.INT;
-            case LONG: return TypeModels.LONG;
-            case SHORT: return TypeModels.SHORT;
+            case BOOLEAN: return Types.BOOLEAN;
+            case BYTE: return Types.BYTE;
+            case CHAR: return Types.CHAR;
+            case DOUBLE: return Types.DOUBLE;
+            case FLOAT: return Types.FLOAT;
+            case INT: return Types.INT;
+            case LONG: return Types.LONG;
+            case SHORT: return Types.SHORT;
             }
             throw new IllegalArgumentException("Unsupported type " + t.getKind());
 

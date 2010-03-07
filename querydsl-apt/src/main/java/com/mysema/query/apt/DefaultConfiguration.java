@@ -25,7 +25,7 @@ import com.mysema.query.annotations.QueryType;
 import com.mysema.query.annotations.QuerydslConfig;
 import com.mysema.query.codegen.DTOSerializer;
 import com.mysema.query.codegen.EmbeddableSerializer;
-import com.mysema.query.codegen.EntityModel;
+import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
@@ -134,7 +134,7 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
-    public SerializerConfig getSerializerConfig(EntityModel model) {
+    public SerializerConfig getSerializerConfig(EntityType model) {
         if (typeToConfig.containsKey(model.getFullName())){
             return typeToConfig.get(model.getFullName());
         }else if (packageToConfig.containsKey(model.getPackageName())){

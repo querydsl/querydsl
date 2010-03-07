@@ -10,12 +10,12 @@ import java.io.IOException;
 import javax.annotation.Nullable;
 
 /**
- * TypeModel represents Java types
+ * Type represents Java types
  * 
  * @author tiwe
  * 
  */
-public interface TypeModel {
+public interface Type {
 
     /**
      * @param context
@@ -24,7 +24,7 @@ public interface TypeModel {
      * @return
      * @throws IOException 
      */
-    void appendLocalGenericName(TypeModel context, Appendable builder, boolean asArgType) throws IOException;
+    void appendLocalGenericName(Type context, Appendable builder, boolean asArgType) throws IOException;
 
     /**
      * @param context
@@ -32,18 +32,18 @@ public interface TypeModel {
      * @return
      * @throws IOException 
      */
-    void appendLocalRawName(TypeModel context, Appendable builder) throws IOException;
+    void appendLocalRawName(Type context, Appendable builder) throws IOException;
     
     /**
      * @param category
      * @return
      */
-    TypeModel as(TypeCategory category);
+    Type as(TypeCategory category);
     
     /**
      * @return
      */
-    TypeModel asArrayType();
+    Type asArrayType();
     
     /**
      * @return
@@ -60,13 +60,13 @@ public interface TypeModel {
      * @param asArgType
      * @return
      */
-    String getLocalGenericName(TypeModel context, boolean asArgType);
+    String getLocalGenericName(Type context, boolean asArgType);
 
     /**
      * @param context
      * @return
      */
-    String getLocalRawName(TypeModel context);
+    String getLocalRawName(Type context);
 
     /**
      * @return
@@ -78,7 +78,7 @@ public interface TypeModel {
      * @return
      */
     @Nullable
-    TypeModel getParameter(int i);
+    Type getParameter(int i);
 
     /**
      * @return
@@ -94,7 +94,7 @@ public interface TypeModel {
     /**
      * @return
      */
-    TypeModel getSelfOrValueType();
+    Type getSelfOrValueType();
 
     /**
      * @return

@@ -9,11 +9,11 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class TypeModelTest {
+public class TypeTest {
     
     @Test
     public void arrayType(){
-        assertEquals("Object[]",TypeModels.OBJECTS.getLocalRawName(TypeModels.OBJECT));
+        assertEquals("Object[]",Types.OBJECTS.getLocalRawName(Types.OBJECT));
     }
 
 }

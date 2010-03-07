@@ -8,76 +8,68 @@ package com.mysema.query.codegen;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
-
-import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.commons.lang.Assert;
 
 /**
- * EntityModel represents a model of a query domain type with properties
+ * EntityType represents a model of a query domain type with properties
  * 
  * @author tiwe
  * @version $Id$
  */
-// TODO : rename this
-public final class EntityModel extends TypeModelAdapter implements Comparable<EntityModel> {
+public final class EntityType extends TypeAdapter implements Comparable<EntityType> {
     
-    private final Set<ConstructorModel> constructors = new HashSet<ConstructorModel>();
+    private final Set<Annotation> annotations = new HashSet<Annotation>();
+    
+    private final Set<Constructor> constructors = new HashSet<Constructor>();
     
     // mutable
     private int escapeSuffix = 1;
     
     // mutable
     private boolean hasLists, hasMaps, hasEntityFields;
-    
-    private final Set<Annotation> annotations = new HashSet<Annotation>();
 
-    private final Set<MethodModel> methods = new HashSet<MethodModel>();
+    private final Set<Method> methods = new HashSet<Method>();
     
     private final String prefix;
     
-    private final Set<PropertyModel> properties = new TreeSet<PropertyModel>();
+    private final Set<Property> properties = new TreeSet<Property>();
     
-    // mutable
-    @Nullable
-    private EntityModel superModel;
-    
-    private final Collection<String> superTypes;
+    private final Collection<EntityType> superTypes;
 
     // mutable
     private String uncapSimpleName;
-    
-    public EntityModel(String prefix, TypeModel typeModel) {
-        this(prefix, typeModel, Collections.<String>emptyList());
+
+    public EntityType(String prefix, Type type) {
+        this(prefix, type, new HashSet<EntityType>());
     }
-    
-    public EntityModel(String prefix, TypeModel typeModel, Collection<String> superTypes) {
-        super(typeModel);
+
+    public EntityType(String prefix, Type type, Set<EntityType> superTypes) {
+        super(type);
         this.prefix = Assert.notNull(prefix);        
-        this.uncapSimpleName = StringUtils.uncapitalize(typeModel.getSimpleName());
+        this.uncapSimpleName = StringUtils.uncapitalize(type.getSimpleName());
         this.superTypes = superTypes;
     }    
 
-    public void addConstructor(ConstructorModel co) {
-        constructors.add(co);
-    }
-    
     public void addAnnotation(Annotation annotation){
         annotations.add(annotation);
     }
     
-    public void addMethod(MethodModel method){
+    public void addConstructor(Constructor co) {
+        constructors.add(co);
+    }
+    
+    public void addMethod(Method method){
         methods.add(method);
     }
 
-    public void addProperty(PropertyModel field) {
-        properties.add(validateField(field));
+    public void addProperty(Property field) {
+        properties.add(validateField(field));        
         switch(field.getType().getCategory()){
         case MAP: 
             hasMaps = true; 
@@ -90,23 +82,31 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
         }
     }
 
-    @Override
-    public int compareTo(EntityModel o) {
-        return getTypeModel().getSimpleName().compareTo(o.getTypeModel().getSimpleName());
+    public void addSuperType(EntityType entityType){
+        superTypes.add(entityType);
     }
 
+    @Override
+    public int compareTo(EntityType o) {
+        return getType().getSimpleName().compareTo(o.getType().getSimpleName());
+    }
+
+    public Set<Annotation> getAnnotations() {
+        return annotations;
+    }
+    
     public TypeCategory getCategory() {
         return TypeCategory.ENTITY;
     }
 
-    public Set<ConstructorModel> getConstructors() {
+    public Set<Constructor> getConstructors() {
         return constructors;
     }
     
     public String getLocalGenericName(){
         try {
             StringBuilder builder = new StringBuilder();
-            getTypeModel().appendLocalGenericName(this, builder, false);
+            getType().appendLocalGenericName(this, builder, false);
             return builder.toString();
         } catch (IOException e) {
             throw new CodeGenerationException(e.getMessage(), e);
@@ -116,35 +116,34 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
     public String getLocalRawName() {
         try {
             StringBuilder builder = new StringBuilder();
-            getTypeModel().appendLocalRawName(this, builder);
+            getType().appendLocalRawName(this, builder);
             return builder.toString();
         } catch (IOException e) {
             throw new CodeGenerationException(e.getMessage(), e);
         }
     }
-    
-    public Set<MethodModel> getMethods(){
+        
+    public Set<Method> getMethods(){
         return methods;
     }
-
+    
     public TypeCategory getOriginalCategory(){
         return super.getCategory();
     }
-        
+
     public String getPrefix(){
         return prefix;
     }
     
-    public Set<PropertyModel> getProperties() {
+    public Set<Property> getProperties() {
         return properties;
     }
-
-    @Nullable
-    public EntityModel getSuperModel() {
-        return superModel;
+    
+    public EntityType getSuperType(){
+        return superTypes.size() == 1 ? superTypes.iterator().next() : null;
     }
 
-    public Collection<String> getSuperTypes() {
+    public Collection<EntityType> getSuperTypes() {
         return superTypes;
     }
 
@@ -155,7 +154,7 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
     public boolean hasEntityFields() {
         return hasEntityFields;
     }
-
+    
     public boolean hasLists() {
         return hasLists;
     }
@@ -163,30 +162,22 @@ public final class EntityModel extends TypeModelAdapter implements Comparable<En
     public boolean hasMaps() {
         return hasMaps;
     }
-    
-    public Set<Annotation> getAnnotations() {
-        return annotations;
-    }
 
-    public void include(EntityModel clazz) {
-        for (MethodModel method : clazz.methods){
+    public void include(EntityType clazz) {
+        for (Method method : clazz.methods){
             addMethod(method);
         }
         
-        for (PropertyModel property : clazz.properties){
+        for (Property property : clazz.properties){
             if (!property.isInherited()){                
                 addProperty(property.createCopy(this));    
             }            
         }        
     }
 
-    public void setSuperModel(EntityModel superModel) {
-        this.superModel = superModel;
-    }
-
-    private PropertyModel validateField(PropertyModel field) {
+    private Property validateField(Property field) {
         if (field.getName().equals(this.uncapSimpleName)) {
-            uncapSimpleName = StringUtils.uncapitalize(getTypeModel().getSimpleName())+ (escapeSuffix++);
+            uncapSimpleName = StringUtils.uncapitalize(getType().getSimpleName())+ (escapeSuffix++);
         }
         return field;
     }

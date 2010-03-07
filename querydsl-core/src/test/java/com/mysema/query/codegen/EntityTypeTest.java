@@ -14,7 +14,7 @@ import org.junit.Test;
 import com.mysema.query.annotations.QueryExtensions;
 import com.mysema.util.JavaWriter;
 
-public class EntityModelTest {
+public class EntityTypeTest {
 
     public static class QueryExt implements QueryExtensions{
         
@@ -37,8 +37,8 @@ public class EntityModelTest {
     @Test
     public void annotation() throws IOException{
         Annotation annotation = new QueryExt(Object.class);
-        ClassTypeModel typeModel = new ClassTypeModel(TypeCategory.ENTITY, Object.class);
-        EntityModel entityModel = new EntityModel("Q", typeModel);
+        ClassType typeModel = new ClassType(TypeCategory.ENTITY, Object.class);
+        EntityType entityModel = new EntityType("Q", typeModel);
         entityModel.addAnnotation(annotation);
         
         TypeMappings typeMappings = new TypeMappings();

@@ -13,29 +13,29 @@ import com.mysema.commons.lang.Assert;
 
 
 /**
- * SimpleTypeModel represents a java type
+ * SimpleType represents a java type
  * 
  * @author tiwe
  *
  */
 @Immutable
-public final class SimpleTypeModel extends AbstractTypeModel {
+public final class SimpleType extends AbstractType {
 
     private final String fullName, packageName, simpleName, localName;
 
-    private final TypeModel[] parameters;
+    private final Type[] parameters;
 
     private final TypeCategory typeCategory;
     
     private final boolean visible, finalClass;
     
-    public SimpleTypeModel(
+    public SimpleType(
             TypeCategory typeCategory, 
             String name,
             String packageName, 
             String simpleName, 
             boolean finalClass,
-            TypeModel... parameters) {
+            Type... parameters) {
         this.typeCategory = Assert.notNull(typeCategory,"typeCategory is null");
         this.fullName = Assert.notNull(name,"name is null");
         this.packageName = Assert.notNull(packageName,"packageName is null");
@@ -46,25 +46,25 @@ public final class SimpleTypeModel extends AbstractTypeModel {
         this.finalClass = finalClass;
     }
 
-    public SimpleTypeModel as(TypeCategory category) {
+    public SimpleType as(TypeCategory category) {
         if (typeCategory == category){
             return this;
         }else{
-            return new SimpleTypeModel(category, fullName, packageName, simpleName, finalClass, parameters);
+            return new SimpleType(category, fullName, packageName, simpleName, finalClass, parameters);
         }
     }
     
     @Override
-    public TypeModel asArrayType() {
-        return new SimpleTypeModel(TypeCategory.ARRAY, fullName+"[]", packageName, simpleName+"[]", finalClass, this);
+    public Type asArrayType() {
+        return new SimpleType(TypeCategory.ARRAY, fullName+"[]", packageName, simpleName+"[]", finalClass, this);
     }
 
     @Override
     public boolean equals(Object o){
         if (o == this){
             return true;
-        }else if (o instanceof TypeModel){
-            TypeModel t = (TypeModel)o;
+        }else if (o instanceof Type){
+            Type t = (Type)o;
             return fullName.equals(t.getFullName());
         }else{
             return false;
@@ -83,7 +83,7 @@ public final class SimpleTypeModel extends AbstractTypeModel {
 
     // NOTE: Java serialization aspects mixed into model
     @Override
-    public void appendLocalGenericName(TypeModel context, Appendable builder, boolean asArgType) throws IOException {
+    public void appendLocalGenericName(Type context, Appendable builder, boolean asArgType) throws IOException {
         appendLocalRawName(context, builder);
         if (parameters.length > 0){                        
             builder.append("<");
@@ -103,7 +103,7 @@ public final class SimpleTypeModel extends AbstractTypeModel {
     }
 
     @Override
-    public void  appendLocalRawName(TypeModel context, Appendable builder) throws IOException{
+    public void  appendLocalRawName(Type context, Appendable builder) throws IOException{
         if (visible || context.getPackageName().equals(packageName)){
             builder.append(localName);    
         }else{
@@ -117,7 +117,7 @@ public final class SimpleTypeModel extends AbstractTypeModel {
     }
 
     @Override
-    public TypeModel getParameter(int i) {
+    public Type getParameter(int i) {
         return parameters[i];
     }
 
@@ -132,7 +132,7 @@ public final class SimpleTypeModel extends AbstractTypeModel {
     }
 
     @Override
-    public TypeModel getSelfOrValueType() {
+    public Type getSelfOrValueType() {
         if (typeCategory.isSubCategoryOf(TypeCategory.COLLECTION) 
          || typeCategory.isSubCategoryOf(TypeCategory.MAP)){
             return parameters[parameters.length - 1];
