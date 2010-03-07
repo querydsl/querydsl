@@ -31,8 +31,8 @@ import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Method;
 import com.mysema.query.codegen.Parameter;
 import com.mysema.query.codegen.Property;
-import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.Type;
+import com.mysema.query.codegen.TypeCategory;
 
 /**
  * EntityElementVisitor is a an APT visitor for entity types

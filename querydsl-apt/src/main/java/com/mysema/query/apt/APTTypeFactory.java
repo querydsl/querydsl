@@ -34,7 +34,6 @@ import javax.lang.model.type.WildcardType;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.SimpleType;
 import com.mysema.query.codegen.Type;
-import com.mysema.query.codegen.TypeAdapter;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeExtends;
 import com.mysema.query.codegen.TypeFactory;
