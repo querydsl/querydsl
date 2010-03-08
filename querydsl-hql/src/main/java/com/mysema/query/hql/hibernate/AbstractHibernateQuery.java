@@ -20,6 +20,8 @@ import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
@@ -157,10 +159,10 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * SQL query returns identifiers only.<br>
      */
     @SuppressWarnings("unchecked")
-    public Iterator<Object[]> iterate(Expr<?>[] args) {
+    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
         Query query = createQuery(args);
         reset();
-        return query.iterate();
+        return new IteratorAdapter<Object[]>(query.iterate());
     }
 
     /**
@@ -172,10 +174,10 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * SQL query returns identifiers only.<br>
      */
     @SuppressWarnings("unchecked")
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
+    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
         Query query = createQuery(projection);
         reset();
-        return query.iterate();
+        return new IteratorAdapter<RT>(query.iterate());
     }
 
     @SuppressWarnings("unchecked")

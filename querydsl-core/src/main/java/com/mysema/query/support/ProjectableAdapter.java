@@ -5,11 +5,11 @@
  */
 package com.mysema.query.support;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.Projectable;
 import com.mysema.query.SearchResults;
 import com.mysema.query.types.expr.Expr;
@@ -43,32 +43,32 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
-    public Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public CloseableIterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return projectable.iterate(first, second, rest);
     }
 
     @Override
-    public Iterator<Object[]> iterate(Expr<?>[] args) {
+    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
         return projectable.iterate(args);
     }
 
     @Override
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
+    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
         return projectable.iterate(projection);
     }
     
     @Override
-    public Iterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public CloseableIterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return projectable.iterateDistinct(first, second, rest);
     }
 
     @Override
-    public Iterator<Object[]> iterateDistinct(Expr<?>[] args) {
+    public CloseableIterator<Object[]> iterateDistinct(Expr<?>[] args) {
         return projectable.iterateDistinct(args);
     }
 
     @Override
-    public <RT> Iterator<RT> iterateDistinct(Expr<RT> projection) {
+    public <RT> CloseableIterator<RT> iterateDistinct(Expr<RT> projection) {
         return projectable.iterateDistinct(projection);
     }
 

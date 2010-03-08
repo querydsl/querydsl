@@ -5,17 +5,18 @@
  */
 package com.mysema.query.jdoql;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nullable;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
@@ -23,6 +24,7 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
+import com.mysema.util.ResultIterator;
 
 /**
  * Abstract base class for custom implementations of the JDOQLQuery interface.
@@ -31,7 +33,7 @@ import com.mysema.query.types.path.PEntity;
  *
  * @param <Q>
  */
-public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extends ProjectableQuery<Q>{
+public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extends ProjectableQuery<Q> implements Closeable{
     
     private final boolean detach;
 
@@ -125,12 +127,12 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         return detach;
     }
     
-    public Iterator<Object[]> iterate(Expr<?>[] args) {
-        return list(args).iterator();
+    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
+        return new ResultIterator<Object[]>(list(args).iterator(), this);
     }
 
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        return list(projection).iterator();
+    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
+        return new ResultIterator<RT>(list(projection).iterator(), this);
     }
 
     @SuppressWarnings("unchecked")

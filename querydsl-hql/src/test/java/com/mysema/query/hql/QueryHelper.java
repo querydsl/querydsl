@@ -9,7 +9,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.Iterator;
 
 import javax.annotation.Nullable;
 
@@ -19,6 +18,7 @@ import antlr.RecognitionException;
 import antlr.TokenStreamException;
 import antlr.collections.AST;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.SearchResults;
 import com.mysema.query.types.expr.Expr;
@@ -34,12 +34,12 @@ class QueryHelper extends HQLQueryBase<QueryHelper> {
     }
 
     @Override
-    public Iterator<Object[]> iterate(Expr<?>[] args) {
+    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
         throw new UnsupportedOperationException();
     }
 
     @Nullable
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
+    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
         throw new UnsupportedOperationException();
     }
 

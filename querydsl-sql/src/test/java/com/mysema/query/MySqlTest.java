@@ -30,7 +30,7 @@ public class MySqlTest extends AbstractSQLTest {
     @BeforeClass
     public static void setUp() throws Exception {
         String sql;
-        Connection c = getMysqlConnection();
+        Connection c = Connections.getMySQL();
         Statement stmt = c.createStatement();
 
         connHolder.set(c);
@@ -95,9 +95,5 @@ public class MySqlTest extends AbstractSQLTest {
         dialect = new MySQLTemplates().newLineToSingleSpace();
     }
 
-    private static Connection getMysqlConnection() throws Exception {
-        Class.forName("com.mysql.jdbc.Driver");
-        String url = "jdbc:mysql://localhost:3306/querydsl";
-        return DriverManager.getConnection(url, "root", "");
-    }
+
 }

@@ -8,6 +8,8 @@ package com.mysema.query.sql.domain;
 import java.math.BigDecimal;
 
 import com.mysema.query.sql.Table;
+import com.mysema.query.types.custom.CSimple;
+import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
@@ -20,6 +22,10 @@ import com.mysema.query.types.path.PathMetadataFactory;
 @Table("employee2")
 public class QEMPLOYEE extends PEntity<QEMPLOYEE> {
 
+    public Expr<Object[]> all(){
+        return CSimple.create(Object[].class, "{0}.*", this);
+    }
+    
     public final PNumber<java.lang.Integer> id = createNumber("id", java.lang.Integer.class);
     
     public final PString firstname = createString("firstname");

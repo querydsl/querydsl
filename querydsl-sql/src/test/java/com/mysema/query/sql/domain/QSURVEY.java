@@ -6,6 +6,8 @@
 package com.mysema.query.sql.domain;
 
 import com.mysema.query.sql.Table;
+import com.mysema.query.types.custom.CSimple;
+import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
@@ -16,6 +18,10 @@ import com.mysema.query.types.path.PathMetadataFactory;
 @Table("survey")
 public class QSURVEY extends PEntity<QSURVEY> {
     
+    public Expr<Object[]> all(){
+        return CSimple.create(Object[].class, "{0}.*", this);
+    }
+        
     public final PString name = createString("name");
     
     public final PNumber<java.lang.Integer> id = createNumber("id", java.lang.Integer.class);

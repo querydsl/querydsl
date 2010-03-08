@@ -9,6 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
@@ -31,6 +34,8 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 @SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public class SQLUpdateClause implements UpdateClause<SQLUpdateClause>{
     
+    private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
+    
     private final QueryMetadata metadata = new DefaultQueryMetadata();
     
     private final Connection connection;
@@ -48,6 +53,7 @@ public class SQLUpdateClause implements UpdateClause<SQLUpdateClause>{
         SQLSerializer serializer = new SQLSerializer(templates);
         serializer.serializeForUpdate(metadata);
         String queryString = serializer.toString();
+        logger.debug(queryString);
         
         PreparedStatement stmt = null;
         try {

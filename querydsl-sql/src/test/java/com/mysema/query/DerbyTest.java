@@ -6,7 +6,6 @@
 package com.mysema.query;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -24,7 +23,7 @@ public class DerbyTest extends AbstractSQLTest {
     @BeforeClass
     public static void setUp() throws Exception {
         String sql;
-        Connection c = getDerbyConnection();
+        Connection c = Connections.getDerby();
         Statement stmt = c.createStatement();
 
         connHolder.set(c);
@@ -98,12 +97,6 @@ public class DerbyTest extends AbstractSQLTest {
     @Before
     public void setUpForTest() {
         dialect = new DerbyTemplates().newLineToSingleSpace();
-    }
-
-    private static Connection getDerbyConnection() throws Exception {
-        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-        String url = "jdbc:derby:target/demoDB;create=true";
-        return DriverManager.getConnection(url, "", "");
     }
 
 }

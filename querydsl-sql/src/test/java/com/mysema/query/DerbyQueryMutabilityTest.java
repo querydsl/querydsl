@@ -10,7 +10,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -28,12 +27,6 @@ public class DerbyQueryMutabilityTest{
     
     private Connection connection;
     
-    private static Connection getDerbyConnection() throws Exception {
-        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-        String url = "jdbc:derby:target/demoDB;create=true";
-        return DriverManager.getConnection(url, "", "");
-    }
-    
     private static void safeExecute(Statement stmt, String sql) {
         try {
             stmt.execute(sql);
@@ -44,7 +37,7 @@ public class DerbyQueryMutabilityTest{
     
     @Before
     public void setUp() throws Exception{
-        connection = getDerbyConnection();
+        connection = Connections.getDerby();
         Statement stmt = connection.createStatement();
         safeExecute(stmt, "drop table survey");
         stmt.execute("create table survey (id int,name varchar(30))");

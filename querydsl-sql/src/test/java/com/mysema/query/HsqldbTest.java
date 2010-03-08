@@ -6,7 +6,6 @@
 package com.mysema.query;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 
@@ -29,7 +28,7 @@ public class HsqldbTest extends AbstractSQLTest {
     @BeforeClass
     public static void setUp() throws Exception {
         String sql;
-        Connection c = getHSQLConnection();
+        Connection c = Connections.getHSQL();
         Statement stmt = c.createStatement();
 
         connHolder.set(c);
@@ -92,12 +91,6 @@ public class HsqldbTest extends AbstractSQLTest {
     @Before
     public void setUpForTest() {
         dialect = new HSQLDBTemplates().newLineToSingleSpace();
-    }
-
-    private static Connection getHSQLConnection() throws Exception {
-        Class.forName("org.hsqldb.jdbcDriver");
-        String url = "jdbc:hsqldb:target/tutorial";
-        return DriverManager.getConnection(url, "sa", "");
     }
 
 }

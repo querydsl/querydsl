@@ -11,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -19,6 +18,8 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
@@ -49,13 +50,14 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>>
     
     public class UnionBuilder<RT> implements Union<RT> {
 
+        @java.lang.SuppressWarnings("unchecked")
         @Override
         @SuppressWarnings("unchecked")
         public List<RT> list() throws SQLException {
             if (sq[0].getMetadata().getProjection().size() == 1) {
-                return AbstractSQLQuery.this.listSingle(null);
+                return (List<RT>) IteratorAdapter.asList(AbstractSQLQuery.this.iterateSingle(null));
             } else {
-                return (List<RT>) AbstractSQLQuery.this.listMultiple();
+                return (List<RT>) AbstractSQLQuery.this.iterateMultiple();
             }
         }
 
@@ -125,15 +127,25 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>>
         return queryMixin.fullJoin(target);
     }
 
+    @java.lang.SuppressWarnings("unchecked")
     @SuppressWarnings("unchecked")
-    private <T> T get(ResultSet rs, int i, Class<T> type) throws SecurityException, 
-        IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+    private <T> T get(ResultSet rs, int i, Class<T> type){
         String methodName = "get" + type.getSimpleName();
         if (methodName.equals("getInteger")) {
             methodName = "getInt";
         }
         // TODO : cache methods
-        return (T) ResultSet.class.getMethod(methodName, int.class).invoke(rs, i);
+        try {
+            return (T) ResultSet.class.getMethod(methodName, int.class).invoke(rs, i);
+        } catch (SecurityException e) {
+            throw new QueryException(e);
+        } catch (IllegalAccessException e) {
+            throw new QueryException(e);
+        } catch (InvocationTargetException e) {
+            throw new QueryException(e);
+        } catch (NoSuchMethodException e) {
+            throw new QueryException(e);
+        }
     }
 
     public QueryMetadata getMetadata(){
@@ -155,15 +167,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>>
         this.sq = sq;
         return new UnionBuilder<RT>();
     }
-    
-    public Iterator<Object[]> iterate(Expr<?>[] args) {
-        return list(args).iterator();
-    }
-
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        return list(projection).iterator();
-    }
-    
 
     public Q join(PEntity<?> target) {
         return queryMixin.join(target);
@@ -174,60 +177,61 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>>
     }
 
     public List<Object[]> list(Expr<?>[] args) {        
-        try {
-            queryMixin.addToProjection(args);
-            return listMultiple();
-        } catch (SQLException e) {
-            String error = "Caught " + e.getClass().getName();
-            logger.error(error, e);
-            throw new QueryException(e.getMessage(), e);
-        }finally{
-            reset();
-        }
+        return IteratorAdapter.asList(iterate(args));
     }
     
     public <RT> List<RT> list(Expr<RT> expr) {        
+        return IteratorAdapter.asList(iterate(expr));
+    }
+    
+    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
+        queryMixin.addToProjection(args);
+        return iterateMultiple();
+    }
+
+    @java.lang.SuppressWarnings("unchecked")
+    public <RT> CloseableIterator<RT> iterate(Expr<RT> expr) {
+        queryMixin.addToProjection(expr);
+        if (expr.getType().isArray()){
+            return (CloseableIterator<RT>) iterateMultiple();
+        }else{
+            return iterateSingle(expr);    
+        }        
+    }
+
+    private CloseableIterator<Object[]> iterateMultiple() {
+        String queryString = buildQueryString(false);
+        logger.debug("query : {}", queryString);
         try {
-            queryMixin.addToProjection(expr);
-            return listSingle(expr);
+            PreparedStatement stmt = conn.prepareStatement(queryString);
+            JDBCUtil.setParameters(stmt, constants);
+            ResultSet rs = stmt.executeQuery();
+            
+            return new SQLResultIterator<Object[]>(stmt, rs){
+
+                @Override
+                protected Object[] produceNext(ResultSet rs) {
+                    try{
+                        Object[] objects = new Object[rs.getMetaData().getColumnCount()];
+                        for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+                            objects[i] = rs.getObject(i + 1);
+                        }
+                        return objects;    
+                    }catch(SQLException e){
+                        close();
+                        throw new QueryException(e);
+                    }                    
+                }
+                
+            };
+            
         } catch (SQLException e) {
-            String error = "Caught " + e.getClass().getName();
-            logger.error(error, e);
-            throw new QueryException(e.getMessage(), e);
+            throw new QueryException(e);
+            
         }finally{
             reset();
         }
-    }
-
-    private List<Object[]> listMultiple() throws SQLException {
-        String queryString = buildQueryString(false);
-        logger.debug("query : {}", queryString);
-        PreparedStatement stmt = conn.prepareStatement(queryString);
-        JDBCUtil.setParameters(stmt, constants);
-        ResultSet rs = stmt.executeQuery();
-        try {
-            List<Object[]> rv = new ArrayList<Object[]>();
-            while (rs.next()) {
-                // TODO : take constructors into account
-                Object[] objects = new Object[rs.getMetaData().getColumnCount()];
-                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
-                    objects[i] = rs.getObject(i + 1);
-                }
-                rv.add(objects);
-            }
-            return rv;
-        } finally {
-            reset();
-            try {
-                if (rs != null){
-                    rs.close();    
-                }                
-            } finally {
-                if (stmt != null){
-                    stmt.close();    
-                }                
-            }
-        }
+        
     }
 
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
@@ -240,66 +244,65 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>>
             } else {
                 return SearchResults.emptyResults();
             }    
+            
         }finally{
             reset();
         }        
     }
 
     @SuppressWarnings("unchecked")
-    private <RT> List<RT> listSingle(@Nullable Expr<RT> expr) throws SQLException {
+    private <RT> CloseableIterator<RT> iterateSingle(final @Nullable Expr<RT> expr){
         String queryString = buildQueryString(false);
         logger.debug("query : {}", queryString);
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
         try {
-            stmt = conn.prepareStatement(queryString);
-            JDBCUtil.setParameters(stmt, constants);        
-            rs = stmt.executeQuery();    
-            List<RT> rv = new ArrayList<RT>();
-            try {
-                if (expr instanceof EConstructor) {
-                    EConstructor<RT> c = (EConstructor<RT>) expr;
-                    java.lang.reflect.Constructor<RT> cc = c.getJavaConstructor();
-                    while (rs.next()) {
-                        List<Object> args = new ArrayList<Object>();
-                        for (int i = 0; i < c.getArgs().size(); i++) {
-                            args.add(get(rs, i + 1, c.getArg(i).getType()));
-                        }
-                        rv.add(cc.newInstance(args.toArray()));
+            PreparedStatement stmt = conn.prepareStatement(queryString);
+            JDBCUtil.setParameters(stmt, constants);      
+            ResultSet rs = stmt.executeQuery();    
+            
+            return new SQLResultIterator<RT>(stmt, rs){
 
+                @java.lang.SuppressWarnings("unchecked")
+                @Override
+                public RT produceNext(ResultSet rs) {
+                    try{
+                        if (expr instanceof EConstructor) {
+                            EConstructor<RT> c = (EConstructor<RT>) expr;
+                            java.lang.reflect.Constructor<RT> cc = c.getJavaConstructor();
+                            List<Object> args = new ArrayList<Object>();
+                            for (int i = 0; i < c.getArgs().size(); i++) {
+                                args.add(get(rs, i + 1, c.getArg(i).getType()));
+                            }
+                            return cc.newInstance(args.toArray());
+                            
+                        }else if (expr != null){
+                            return get(rs, 1, expr.getType());
+                            
+                        }else{
+                            return (RT) rs.getObject(1);
+                        }
+                    } catch (IllegalAccessException e) {
+                        close();
+                        throw new QueryException(e);
+                    } catch (InvocationTargetException e) {
+                        close();
+                        throw new QueryException(e);
+                    } catch (InstantiationException e) {
+                        close();
+                        throw new QueryException(e);
+                    } catch (SQLException e) {
+                        close();
+                        throw new QueryException(e);
                     }
                     
-                } else if (expr != null){
-                    while (rs.next()) {
-                        rv.add(get(rs, 1, expr.getType()));
-                    }
-                    
-                }else{
-                    while (rs.next()) {
-                         rv.add((RT) rs.getObject(1));
-                    }
                 }
-            } catch (IllegalAccessException e) {
-                throw new QueryException(e.getMessage(), e);
-            } catch (InvocationTargetException e) {
-                throw new QueryException(e.getMessage(), e);
-            } catch (NoSuchMethodException e) {
-                throw new QueryException(e.getMessage(), e);
-            } catch (InstantiationException e) {
-                throw new QueryException(e.getMessage(), e);
-            }
-            return rv;
-        } finally {
+                
+            };
+            
+        } catch (SQLException e) {
+            throw new QueryException(e);
+        
+        }finally{
             reset();
-            try {
-                if (rs != null){
-                    rs.close();    
-                }                
-            } finally {
-                if (stmt != null){
-                    stmt.close();    
-                }                
-            }
         }
     }
 
@@ -331,7 +334,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>>
     }
     
     private long unsafeCount() throws SQLException {
-        // forCountRow = true;
         String queryString = buildQueryString(true);
         logger.debug("query : {}", queryString);        
         PreparedStatement stmt = null;
@@ -342,8 +344,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>>
             rs = stmt.executeQuery();
             rs.next();
             return rs.getLong(1);
+            
         }catch(SQLException e){
             throw new QueryException(e.getMessage(), e);
+            
         } finally {
             try {
                 if (rs != null){

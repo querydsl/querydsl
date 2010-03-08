@@ -20,6 +20,8 @@ import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.iterators.FilterIterator;
 import org.apache.commons.collections15.iterators.UniqueFilterIterator;
 
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
@@ -226,16 +228,16 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>
     }
     
     @SuppressWarnings("unchecked")
-    public Iterator<Object[]> iterate(Expr<?>[] args) {
+    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
         arrayProjection = true;
         Expr<Object[]> projection = new EArrayConstructor(Object[].class, args);
         return iterate(projection);
     }
     
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {        
+    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {        
         try {
             queryMixin.addToProjection(projection);
-            return createPagedIterator(projection);
+            return new IteratorAdapter<RT>(createPagedIterator(projection));
         } catch (Exception e) {
             throw new QueryException(e.getMessage(), e);
         }finally{

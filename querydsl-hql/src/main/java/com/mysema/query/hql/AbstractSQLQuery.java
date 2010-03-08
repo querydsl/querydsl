@@ -53,15 +53,15 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
         return queryMixin.innerJoin(o);
     }
     
-    @Override
-    public final Iterator<Object[]> iterate(Expr<?>[] args) {
-        return list(args).iterator();
-    }
-
-    @Override
-    public final <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        return list(projection).iterator();
-    }
+//    @Override
+//    public final Iterator<Object[]> iterate(Expr<?>[] args) {
+//        return list(args).iterator();
+//    }
+//
+//    @Override
+//    public final <RT> Iterator<RT> iterate(Expr<RT> projection) {
+//        return list(projection).iterator();
+//    }
 
     public final T join(PEntity<?> o) {
         return queryMixin.join(o);

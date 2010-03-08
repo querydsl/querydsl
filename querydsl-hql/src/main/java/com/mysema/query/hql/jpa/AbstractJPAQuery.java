@@ -5,7 +5,6 @@
  */
 package com.mysema.query.hql.jpa;
 
-import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -15,6 +14,8 @@ import javax.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
@@ -107,12 +108,12 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
         return query;
     }
 
-    public Iterator<Object[]> iterate(Expr<?>[] args) {
-        return list(args).iterator();
+    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
+        return new IteratorAdapter<Object[]>(list(args).iterator());
     }
 
-    public <RT> Iterator<RT> iterate(Expr<RT> projection) {
-        return list(projection).iterator();
+    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
+        return new IteratorAdapter<RT>(list(projection).iterator());
     }
     
     @SuppressWarnings("unchecked")

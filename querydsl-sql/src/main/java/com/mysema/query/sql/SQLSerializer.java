@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
@@ -238,7 +240,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
     }
 
-    public void serializeForInsert(PEntity<?> entity, List<Expr<?>> columns, List<Expr<?>> values) {
+    public void serializeForInsert(PEntity<?> entity, List<Expr<?>> columns, List<Expr<?>> values, @Nullable SubQuery<?> subQuery) {
         append(templates.getInsertInto());
         handle(entity);
         // columns
@@ -247,11 +249,17 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             handle(COMMA, columns);
             append(")");
         }
-        // values
-        append(templates.getValues());
-        append("(");
-        handle(COMMA, values);
-        append(")");
+        
+        if (subQuery != null){
+            append("\n");
+            serialize(subQuery.getMetadata(), false);
+        }else{            
+            // values
+            append(templates.getValues());
+            append("(");
+            handle(COMMA, values);
+            append(")");            
+        }
     }
 
 

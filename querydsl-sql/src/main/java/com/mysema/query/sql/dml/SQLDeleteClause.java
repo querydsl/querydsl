@@ -9,10 +9,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DeleteClause;
+import com.mysema.query.sql.AbstractSQLQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.expr.EBoolean;
@@ -29,6 +33,8 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
  */
 @SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public class SQLDeleteClause implements DeleteClause<SQLDeleteClause>{
+    
+    private static final Logger logger = LoggerFactory.getLogger(SQLDeleteClause.class);
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
     
@@ -47,6 +53,7 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause>{
         SQLSerializer serializer = new SQLSerializer(templates);
         serializer.serializeForDelete(metadata);
         String queryString = serializer.toString();
+        logger.debug(queryString);
         
         PreparedStatement stmt = null;
         try {

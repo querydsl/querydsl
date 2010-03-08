@@ -10,8 +10,10 @@ import static com.mysema.query.Target.MYSQL;
 import static com.mysema.query.Target.ORACLE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,6 +30,7 @@ import org.hsqldb.Types;
 import org.junit.AfterClass;
 import org.junit.Test;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.sql.SQLQuery;
@@ -35,6 +38,7 @@ import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.dml.SQLDeleteClause;
+import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QEMPLOYEE;
@@ -59,21 +63,17 @@ public abstract class AbstractSQLTest {
 
     static ThreadLocal<Connection> connHolder = new ThreadLocal<Connection>();
 
-    static ThreadLocal<Statement> stmtHolder = new ThreadLocal<Statement>();
-    
     private static final java.sql.Date date;
-
-//    private static final Date dateTime;    
     
     private static final QEMPLOYEE employee = new QEMPLOYEE("employee");
     
     private static final QEMPLOYEE employee2 = new QEMPLOYEE("employee2");
     
+    static ThreadLocal<Statement> stmtHolder = new ThreadLocal<Statement>();
+    
     private static final QSURVEY survey = new QSURVEY("survey");
 
     private static final QSURVEY survey2 = new QSURVEY("survey2");
-    
-//    private static final QTEST test = new QTEST("test");
     
     private static final java.sql.Time time;
     
@@ -81,7 +81,6 @@ public abstract class AbstractSQLTest {
         Calendar cal = Calendar.getInstance();
         cal.set(2000, 1, 2, 3, 4);
         cal.set(Calendar.MILLISECOND, 0);
-//        dateTime = cal.getTime();
         date = new java.sql.Date(cal.getTimeInMillis());
         time = new java.sql.Time(cal.getTimeInMillis());
     }
@@ -115,7 +114,7 @@ public abstract class AbstractSQLTest {
     }
 
     @AfterClass
-    public static void tearDown() throws Exception {
+    public static void tearDownAfterClass() throws Exception {
         if (stmtHolder.get() != null){
             stmtHolder.get().close();
         }            
@@ -255,6 +254,36 @@ public abstract class AbstractSQLTest {
         }
     }
 
+    @Test
+    public void projection() throws IOException{
+        CloseableIterator<Object[]> results = query().from(survey).iterate(survey.all());
+        assertTrue(results.hasNext());
+        while (results.hasNext()){
+            System.out.println(Arrays.asList(results.next()));
+        }
+        results.close();
+    }
+
+    @Test
+    public void projection2() throws IOException{
+        CloseableIterator<Object[]> results = query().from(survey).iterate(survey.id, survey.name);
+        assertTrue(results.hasNext());
+        while (results.hasNext()){
+            System.out.println(Arrays.asList(results.next()));
+        }
+        results.close();
+    }
+
+    @Test
+    public void projection3() throws IOException{
+        CloseableIterator<String> names = query().from(survey).iterate(survey.name);
+        assertTrue(names.hasNext());
+        while (names.hasNext()){
+            System.out.println(names.next());
+        }
+        names.close();
+    }
+
     protected final SQLQuery query() {
         return new SQLQueryImpl(connHolder.get(), dialect) {
             @Override
@@ -302,7 +331,7 @@ public abstract class AbstractSQLTest {
         // TODO : FIXME
         System.out.println(query().from(survey).list(survey.id.eq(0)));
     }
-
+    
     @Test
     @ExcludeIn({ORACLE, DERBY})
     public void selectBooleanExpr2() throws SQLException {
@@ -326,7 +355,7 @@ public abstract class AbstractSQLTest {
         query.from(survey2);
         assertEquals("from survey survey, survey survey2", query.toString());
     }
-    
+
     @Test
     public void standardTest(){
         standardTest.runBooleanTests(employee.firstname.isNull(), employee2.lastname.isNotNull());
@@ -348,6 +377,7 @@ public abstract class AbstractSQLTest {
         standardTest.report();        
     }
 
+    
     @Test
     public void stringFunctions2() throws SQLException {
         for (EBoolean where : Arrays.<EBoolean> asList(employee.firstname
@@ -357,7 +387,7 @@ public abstract class AbstractSQLTest {
             query().from(employee).where(where).list(employee.firstname);
         }
     }
-
+    
     @Test
     public void subQueries() throws SQLException {
         // subquery in where block
@@ -382,7 +412,6 @@ public abstract class AbstractSQLTest {
         assertEquals("from survey survey, survey survey2", query.toString());
     }
 
-    
     @Test
     public void syntaxForEmployee() throws SQLException {
         query().from(employee).groupBy(employee.superiorId).orderBy(
@@ -398,7 +427,7 @@ public abstract class AbstractSQLTest {
                 employee.superiorId.asc()).list(employee.salary.avg(),
                 employee.id.max());
     }
-    
+
     @Test
     @ExcludeIn({DERBY})
     public void testCasts() throws SQLException {
@@ -412,7 +441,6 @@ public abstract class AbstractSQLTest {
         }
 
     }
-
     @Test
     public void testConstructor() throws Exception {
         for (IdName idName : query().from(survey).list(
@@ -424,11 +452,15 @@ public abstract class AbstractSQLTest {
 
     @Test
     @ExcludeIn(MYSQL)
-    public void testDelete(){
-        // TODO : FIXME
-        long count = query().from(survey).count();
-        assertEquals(0, delete(survey).where(survey.name.eq("XXX")).execute());
-        assertEquals(count, delete(survey).execute());
+    public void testDelete() throws SQLException{
+        try{
+            // TODO : FIXME
+            long count = query().from(survey).count();
+            assertEquals(0, delete(survey).where(survey.name.eq("XXX")).execute());
+            assertEquals(count, delete(survey).execute());    
+        }finally{
+            stmtHolder.get().execute("insert into survey values (1, 'Hello World')");    
+        }
     }
 
     @Test
@@ -438,6 +470,7 @@ public abstract class AbstractSQLTest {
             System.out.println(name);
         }
     }
+    
     @Test
     public void testJoins() throws SQLException {
         for (Object[] row : query().from(employee).innerJoin(employee2).on(
@@ -446,7 +479,7 @@ public abstract class AbstractSQLTest {
             System.out.println(row[0] + ", " + row[1]);
         }
     }
-
+    
     @Test
     public void testUnion() throws SQLException {
         // union
@@ -467,7 +500,7 @@ public abstract class AbstractSQLTest {
         List<Object[]> list2 = query().union(sq3, sq4).list();
         assertFalse(list2.isEmpty());
     }
-
+    
     @Test
     public void testUpdate(){        
         // original state
@@ -483,8 +516,38 @@ public abstract class AbstractSQLTest {
         assertEquals(count, query().from(survey).where(survey.name.eq("S")).count());
     }
     
+    @Test
+    public void testInsert(){
+//        create table survey (id int,name varchar(30))
+        
+        // with columns
+        insert(survey)
+            .columns(survey.id, survey.name)
+            .values(3, "Hello").execute();
+        
+        // without columns
+        insert(survey)
+            .values(4, "Hello").execute();
+        
+        QSURVEY s2 = new QSURVEY("s2");
+        // with subquery
+        insert(survey)
+            .columns(survey.id, survey.name)
+            .select(s().from(s2).list(s2.id.add(1), s2.name))
+            .execute();
+        
+        // with subquery, without columns
+        insert(survey)
+            .select(s().from(s2).list(s2.id.add(10), s2.name))
+            .execute();
+    }
+
     protected SQLUpdateClause update(PEntity<?> e){
         return new SQLUpdateClause(connHolder.get(), dialect, e);
+    }
+    
+    protected SQLInsertClause insert(PEntity<?> e){
+        return new SQLInsertClause(connHolder.get(), dialect, e);
     }
     
     @Test
@@ -501,5 +564,4 @@ public abstract class AbstractSQLTest {
         query().from(employee).where(sq1.exists()).count();
         query().from(employee).where(sq1.exists().not()).count();
     }
-
 }

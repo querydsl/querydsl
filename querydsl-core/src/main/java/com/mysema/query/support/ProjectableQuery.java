@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.apache.commons.collections15.IteratorUtils;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.Projectable;
 import com.mysema.query.SearchResults;
 import com.mysema.query.types.expr.Expr;
@@ -37,24 +38,24 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
     
     @Override
-    public final Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public final CloseableIterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return iterate(merge(first, second, rest));
     }
 
     @Override
-    public final Iterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public final CloseableIterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         queryMixin.setDistinct(true);
         return iterate(first, second, rest);
     }
 
     @Override
-    public final Iterator<Object[]> iterateDistinct(Expr<?>[] args) {
+    public final CloseableIterator<Object[]> iterateDistinct(Expr<?>[] args) {
         queryMixin.setDistinct(true);
         return iterate(args);
     }
     
     @Override
-    public final <RT> Iterator<RT> iterateDistinct(Expr<RT> projection) {
+    public final <RT> CloseableIterator<RT> iterateDistinct(Expr<RT> projection) {
         queryMixin.setDistinct(true);
         return iterate(projection);
     }

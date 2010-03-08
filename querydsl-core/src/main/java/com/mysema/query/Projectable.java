@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.types.expr.Expr;
 
 /**
@@ -42,7 +43,7 @@ public interface Projectable {
      * @param rest
      * @return an Iterator over the projection
      */
-    Iterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest);
+    CloseableIterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest);
     
     /**
      * iterate over the results for the given projection
@@ -50,7 +51,7 @@ public interface Projectable {
      * @param args
      * @return
      */
-    Iterator<Object[]> iterate(Expr<?>[] args);
+    CloseableIterator<Object[]> iterate(Expr<?>[] args);
 
     /**
      * iterate over the results for the given projection
@@ -60,7 +61,7 @@ public interface Projectable {
      * @param projection
      * @return an Iterator over the projection
      */
-    <RT> Iterator<RT> iterate(Expr<RT> projection);
+    <RT> CloseableIterator<RT> iterate(Expr<RT> projection);
 
     /**
      * iterate over the distinct results for the given projection
@@ -70,7 +71,7 @@ public interface Projectable {
      * @param rest
      * @return an Iterator over the projection
      */
-    Iterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest);
+    CloseableIterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest);
     
     /**
      * iterate over the distinct results for the given projection
@@ -78,7 +79,7 @@ public interface Projectable {
      * @param args
      * @return
      */
-    Iterator<Object[]> iterateDistinct(Expr<?>[] args);
+    CloseableIterator<Object[]> iterateDistinct(Expr<?>[] args);
 
     /**
      * iterate over the distinct results for the given projection
@@ -88,7 +89,7 @@ public interface Projectable {
      * @param projection
      * @return an Iterator over the projection
      */
-    <RT> Iterator<RT> iterateDistinct(Expr<RT> projection);
+    <RT> CloseableIterator<RT> iterateDistinct(Expr<RT> projection);
 
     /**
      * list the results for the given projection

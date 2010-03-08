@@ -14,6 +14,8 @@ import org.hibernate.StatelessSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
@@ -138,6 +140,16 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
         Query query = createQuery(projection);
         reset();
         return query.list();
+    }
+
+    @Override
+    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
+        return new IteratorAdapter<Object[]>(list(args).iterator());
+    }
+
+    @Override
+    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
+        return new IteratorAdapter<RT>(list(projection).iterator());
     }
     
     @Override
