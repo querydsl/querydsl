@@ -54,6 +54,6 @@ public interface Visitor {
     /**
      * @param query
      */
-    void visit(SubQuery query);
+    void visit(SubQuery<?> query);
     
 }

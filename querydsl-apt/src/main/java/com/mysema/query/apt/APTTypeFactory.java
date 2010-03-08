@@ -265,8 +265,8 @@ public final class APTTypeFactory {
         return key;        
     }
 
-    private Set<EntityType> getSupertypes(TypeMirror type, Type value) {                 
-        type = normalize(type);        
+    private Set<EntityType> getSupertypes(TypeMirror t, Type value) {                 
+        TypeMirror type = normalize(t);        
         Set<EntityType> superTypes = Collections.emptySet();
         if (type.getKind() == TypeKind.DECLARED){
             DeclaredType declaredType = (DeclaredType)type;

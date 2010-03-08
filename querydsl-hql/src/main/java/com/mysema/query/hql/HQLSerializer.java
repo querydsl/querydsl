@@ -257,7 +257,7 @@ public final class HQLSerializer extends SerializerBase<HQLSerializer> {
     }
     
     @Override
-    public void visit(SubQuery query) {
+    public void visit(SubQuery<?> query) {
         append("(");       
         serialize(query.getMetadata(), false, null);
         append(")");
@@ -285,26 +285,26 @@ public final class HQLSerializer extends SerializerBase<HQLSerializer> {
     }
 
     @SuppressWarnings("unchecked")
-    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
+    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> a) {
         boolean old = wrapElements;
         wrapElements = HQLTemplates.wrapCollectionsForOp.contains(operator);
         // 
         if (operator.equals(Ops.INSTANCE_OF)) {
-            args = new ArrayList<Expr<?>>(args);
+            List<Expr<?>> args = new ArrayList<Expr<?>>(a);
             args.set(1, EStringConst.create(((Class<?>) ((Constant<?>) args.get(1)).getConstant()).getName()));
             super.visitOperation(type, operator, args);
             
         } else if (operator.equals(Ops.NUMCAST)) {
-            visitCast(args.get(0), (Class<?>) ((Constant<?>) args.get(1)).getConstant());
+            visitCast(a.get(0), (Class<?>) ((Constant<?>) a.get(1)).getConstant());
             
-        } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQuery){
-            SubQuery subQuery = (SubQuery) args.get(0);            
+        } else if (operator.equals(Ops.EXISTS) && a.get(0) instanceof SubQuery){
+            SubQuery subQuery = (SubQuery) a.get(0);            
             append("exists (");
             serialize(subQuery.getMetadata(), false, "1");
             append(")");
             
         } else if (operator.equals(Ops.MATCHES)){
-            args = new ArrayList<Expr<?>>(args);
+            List<Expr<?>> args = new ArrayList<Expr<?>>(a);
             if (args.get(1) instanceof Constant){
                 args.set(1, regexToLike(args.get(1).toString()));
             }else if (args.get(1) instanceof Operation){
@@ -313,7 +313,7 @@ public final class HQLSerializer extends SerializerBase<HQLSerializer> {
             super.visitOperation(type, operator, args);
             
         } else {
-            super.visitOperation(type, operator, args);
+            super.visitOperation(type, operator, a);
         }
         //
         wrapElements = old;
