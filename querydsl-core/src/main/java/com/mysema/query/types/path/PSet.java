@@ -12,7 +12,6 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollectionBase;
-import com.mysema.query.types.expr.Expr;
 
 /**
  * PSet represents set paths

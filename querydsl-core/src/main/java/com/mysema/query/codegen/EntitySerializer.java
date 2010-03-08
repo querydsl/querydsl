@@ -14,7 +14,6 @@ import static com.mysema.util.Symbols.NEW;
 import static com.mysema.util.Symbols.QUOTE;
 import static com.mysema.util.Symbols.RETURN;
 import static com.mysema.util.Symbols.SEMICOLON;
-import static com.mysema.util.Symbols.SERIAL;
 import static com.mysema.util.Symbols.SPACE;
 import static com.mysema.util.Symbols.STAR;
 import static com.mysema.util.Symbols.SUPER;

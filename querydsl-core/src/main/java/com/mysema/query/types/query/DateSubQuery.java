@@ -9,7 +9,6 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EDate;
-import com.mysema.query.types.expr.Expr;
 
 /**
  * Single result subquery
