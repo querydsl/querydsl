@@ -35,13 +35,15 @@ import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.SubQuery;
 import com.mysema.util.JDBCUtil;
 
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+
 /**
  * AbstractSqlQuery is the base type for SQL query implementations
  * 
  * @author tiwe
  * @version $Id$
  */
-@edu.umd.cs.findbugs.annotations.SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
+@SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>>
         extends ProjectableQuery<Q>{
     

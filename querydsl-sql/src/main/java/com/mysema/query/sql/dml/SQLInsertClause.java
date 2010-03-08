@@ -19,7 +19,9 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.util.JDBCUtil;
 
-@edu.umd.cs.findbugs.annotations.SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+
+@SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public class SQLInsertClause {
     
     private final PEntity<?> entity;
@@ -38,7 +40,6 @@ public class SQLInsertClause {
         this.entity = entity;    
     }
     
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
     public long execute() {
         SQLSerializer serializer = new SQLSerializer(templates);
         serializer.serializeForInsert(entity, columns, values);

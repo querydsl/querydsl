@@ -19,6 +19,8 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.Path;
 
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+
 /**
  * DefaultQueryMetadata is the default implementation of the QueryMetadata interface
  * 
@@ -51,11 +53,13 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     private BooleanBuilder where = new BooleanBuilder();
     
     @Override
+    @SuppressWarnings("GC_UNCHECKED_TYPE_IN_GENERIC_CALL")
     public void addFrom(Expr<?>... args) {
         for (Expr<?> arg : args) {
             if (arg instanceof Path<?>){
                 ensureRoot((Path<?>) arg);
             }
+            // NOTE : contains takes Object argument
             if (!exprInJoins.contains(arg)) {
                 joins.add(new JoinExpression(JoinType.DEFAULT, arg));
                 exprInJoins.add(arg);

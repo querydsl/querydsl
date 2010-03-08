@@ -25,7 +25,6 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.Path;
 import com.mysema.query.types.query.SubQuery;
 
 /**

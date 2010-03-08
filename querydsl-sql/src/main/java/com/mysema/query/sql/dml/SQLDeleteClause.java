@@ -19,13 +19,15 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.util.JDBCUtil;
 
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+
 /**
  * SQLDeleteClause defines a DELETE clause
  * 
  * @author tiwe
  *
  */
-@edu.umd.cs.findbugs.annotations.SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
+@SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public class SQLDeleteClause implements DeleteClause<SQLDeleteClause>{
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
