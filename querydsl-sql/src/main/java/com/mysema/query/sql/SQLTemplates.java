@@ -61,6 +61,8 @@ public class SQLTemplates extends Templates {
     
     private String having = "\nhaving ";
     
+    private String insertInto = "insert into ";
+    
     private String innerJoin = "\ninner join ";
     
     private String join = "\njoin ";
@@ -102,6 +104,8 @@ public class SQLTemplates extends Templates {
     private String union = "\nunion\n";
 
     private String update = "update ";
+    
+    private String values = "\nvalues ";
 
     private String where = "\nwhere ";
 
@@ -481,6 +485,14 @@ public class SQLTemplates extends Templates {
         this.update = update;
     }
 
+    public final String getValues() {
+        return values;
+    }
+
+    public final void setValues(String values) {
+        this.values = values;
+    }
+
     public final String getWhere() {
         return where;
     }
@@ -493,6 +505,14 @@ public class SQLTemplates extends Templates {
         return true;
     }
     
+    public final String getInsertInto() {
+        return insertInto;
+    }
+
+    public final void setInsertInto(String insertInto) {
+        this.insertInto = insertInto;
+    }
+
     public final String getJoinSymbol(JoinType joinType){
         switch (joinType) {
             case FULLJOIN:  return fullJoin;
@@ -502,4 +522,6 @@ public class SQLTemplates extends Templates {
         }
         return ", ";
     }
+
+    
 }

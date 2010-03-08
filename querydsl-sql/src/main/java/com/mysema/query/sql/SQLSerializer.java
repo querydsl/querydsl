@@ -25,6 +25,7 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.Path;
 import com.mysema.query.types.query.SubQuery;
 
 /**
@@ -238,6 +239,23 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
     }
 
+    public void serializeForInsert(PEntity<?> entity, List<Expr<?>> columns, List<Expr<?>> values) {
+        append(templates.getInsertInto());
+        handle(entity);
+        // columns
+        if (!columns.isEmpty()){
+            append("(");
+            handle(COMMA, columns);
+            append(")");
+        }
+        // values
+        append(templates.getValues());
+        append("(");
+        handle(COMMA, values);
+        append(")");
+    }
+
+
     @SuppressWarnings("unchecked")
     public void serializeUnion(SubQuery[] sqs,
             List<OrderSpecifier<?>> orderBy) {
@@ -320,6 +338,5 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             super.visitOperation(type, operator, args);
         }
     }
-
 
 }

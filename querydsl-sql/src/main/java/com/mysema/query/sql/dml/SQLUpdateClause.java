@@ -26,6 +26,7 @@ import com.mysema.util.JDBCUtil;
  * @author tiwe
  *
  */
+@edu.umd.cs.findbugs.annotations.SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public class SQLUpdateClause implements UpdateClause<SQLUpdateClause>{
     
     private final QueryMetadata metadata = new DefaultQueryMetadata();

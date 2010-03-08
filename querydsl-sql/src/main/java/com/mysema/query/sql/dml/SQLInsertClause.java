@@ -8,42 +8,40 @@ package com.mysema.query.sql.dml;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryException;
-import com.mysema.query.QueryMetadata;
-import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.util.JDBCUtil;
 
-/**
- * SQLDeleteClause defines a DELETE clause
- * 
- * @author tiwe
- *
- */
 @edu.umd.cs.findbugs.annotations.SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
-public class SQLDeleteClause implements DeleteClause<SQLDeleteClause>{
-
-    private final QueryMetadata metadata = new DefaultQueryMetadata();
+public class SQLInsertClause {
+    
+    private final PEntity<?> entity;
     
     private final Connection connection;
     
     private final SQLTemplates templates;
     
-    public SQLDeleteClause(Connection connection, SQLTemplates templates, PEntity<?> entity){
+    private final List<Expr<?>> columns = new ArrayList<Expr<?>>();
+    
+    private final List<Expr<?>> values = new ArrayList<Expr<?>>();
+    
+    public SQLInsertClause(Connection connection, SQLTemplates templates, PEntity<?> entity){
         this.connection = connection;
         this.templates = templates;
-        metadata.addFrom(entity);        
+        this.entity = entity;    
     }
     
-    @Override
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
     public long execute() {
         SQLSerializer serializer = new SQLSerializer(templates);
-        serializer.serializeForDelete(metadata);
+        serializer.serializeForInsert(entity, columns, values);
         String queryString = serializer.toString();
         
         PreparedStatement stmt = null;
@@ -60,6 +58,16 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause>{
         }
     }
     
+    public SQLInsertClause columns(Expr<?>... columns){
+        this.columns.addAll(Arrays.asList(columns));
+        return this;        
+    }
+    
+    public SQLInsertClause values(Expr<?>... values){
+        this.values.addAll(Arrays.asList(values));
+        return this;
+    }
+    
     protected void close(PreparedStatement stmt) {
         try {
             stmt.close();
@@ -68,10 +76,5 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause>{
         }        
     }
 
-    @Override
-    public SQLDeleteClause where(EBoolean... o) {
-        metadata.addWhere(o);
-        return this;
-    }
 
 }
