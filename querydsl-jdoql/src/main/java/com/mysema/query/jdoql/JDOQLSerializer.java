@@ -34,6 +34,7 @@ import com.mysema.query.types.path.Path;
 import com.mysema.query.types.query.SubQuery;
 
 /**
+ * JDOQLSerializer serializes Querydsl queries and expressions into JDOQL strings
  * 
  * @author tiwe
  * 
@@ -278,7 +279,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     }
 
     @Override
-    public void visit(SubQuery query) {
+    public void visit(SubQuery<?> query) {
         append("(");
         serialize(query.getMetadata(), false, true);
         append(")");
