@@ -28,12 +28,16 @@ public class QueryMixin<T>{
     
     private final QueryMetadata metadata;
     
+    public QueryMixin(){
+        this.metadata = new DefaultQueryMetadata();
+    }
+    
     public QueryMixin(QueryMetadata metadata){
         this.metadata = Assert.notNull(metadata);
     }
-    
-    public QueryMixin(){
-        this.metadata = new DefaultQueryMetadata();
+        
+    public QueryMixin(T self){
+        this(self, new DefaultQueryMetadata());
     }
     
     public QueryMixin(T self, QueryMetadata metadata){

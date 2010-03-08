@@ -73,11 +73,7 @@ public final class BooleanBuilder extends EBoolean implements Cloneable{
      */
     public BooleanBuilder andAnyOf(EBoolean... args) {
         if (args.length > 0){
-            EBoolean any = args[0];
-            for (int i = 1; i < args.length; i++){
-                any = any.or(args[i]);
-            }    
-            and(any);
+            and(anyOf(args));
         }
         return this;         
     }
@@ -148,13 +144,9 @@ public final class BooleanBuilder extends EBoolean implements Cloneable{
      * @param args
      * @return
      */
-    public BooleanBuilder orAllOf(EBoolean... args) {
+    public BooleanBuilder orAllOf(EBoolean... args) {        
         if (args.length > 0){
-            EBoolean all = args[0];
-            for (int i = 1; i < args.length; i++){
-                all = all.and(args[i]);
-            }    
-            or(all);
+            or(allOf(args));
         }
         return this;
     }
