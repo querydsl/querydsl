@@ -27,6 +27,8 @@ import com.mysema.util.JDBCUtil;
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 /**
+ * SQLInsertClause defines a INSERT INTO clause
+ * 
  * @author tiwe
  *
  */

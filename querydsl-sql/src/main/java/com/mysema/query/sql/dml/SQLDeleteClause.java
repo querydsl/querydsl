@@ -16,7 +16,6 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DeleteClause;
-import com.mysema.query.sql.AbstractSQLQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.expr.EBoolean;
