@@ -60,8 +60,4 @@ public final class ComparableSubQuery<A extends Comparable<?>> extends EComparab
         return subQueryMixin.notExists();
     }
 
-    @Override
-    public Expr<A> asExpr() {
-        return this;
-    }
 }

@@ -41,12 +41,6 @@ public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
         v.visit(this);        
     }
 
-    
-    @Override
-    public EBoolean asExpr() {
-        return this;
-    }
-
     @Override
     public Expr<?> getArg(int index) {
         return opMixin.getArg(index);

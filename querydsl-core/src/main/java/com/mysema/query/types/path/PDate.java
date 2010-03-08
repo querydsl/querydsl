@@ -40,11 +40,6 @@ public class PDate<D extends Comparable> extends EDate<D> implements Path<D>{
     public void accept(Visitor v) {
         v.visit(this);        
     }
-
-    @Override
-    public EDate<D> asExpr() {
-        return this;
-    }
     
     @Override
     public boolean equals(Object o) {

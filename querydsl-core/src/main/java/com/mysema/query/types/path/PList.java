@@ -70,11 +70,6 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
         v.visit(this);        
     }
     
-    @Override
-    public Expr<List<E>> asExpr() {
-        return this;
-    }
-
     protected PathMetadata<Integer> forListAccess(int index){
         return PathMetadataFactory.forListAccess(this, index);
     }

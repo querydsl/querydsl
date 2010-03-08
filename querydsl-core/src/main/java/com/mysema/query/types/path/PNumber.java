@@ -43,11 +43,6 @@ public class PNumber<D extends Number & Comparable<?>> extends ENumber<D> implem
     }
         
     @Override
-    public ENumber<D> asExpr() {
-        return this;
-    }
-    
-    @Override
     public boolean equals(Object o) {
         return pathMixin.equals(o);
     }

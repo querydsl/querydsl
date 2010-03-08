@@ -68,8 +68,4 @@ public class CString extends EString implements Custom<String> {
         return getType().hashCode();
     }
 
-    @Override
-    public Expr<String> asExpr() {
-        return this;
-    }
 }

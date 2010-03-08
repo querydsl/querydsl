@@ -43,11 +43,6 @@ public class PSimple<D> extends Expr<D> implements Path<D> {
     }
     
     @Override
-    public Expr<D> asExpr() {
-        return this;
-    }
-    
-    @Override
     public boolean equals(Object o) {
         return pathMixin.equals(o);
     }

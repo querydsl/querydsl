@@ -45,11 +45,6 @@ public class PCollection<E> extends ECollectionBase<Collection<E>,E> implements 
     }
 
     @Override
-    public Expr<Collection<E>> asExpr() {
-        return this;
-    }
-
-    @Override
     public boolean equals(Object o) {
         return pathMixin.equals(o);
     }

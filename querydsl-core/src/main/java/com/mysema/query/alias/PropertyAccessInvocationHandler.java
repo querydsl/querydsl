@@ -56,7 +56,7 @@ import com.mysema.util.ReflectionUtils;
  */
 class PropertyAccessInvocationHandler implements MethodInterceptor {
 
-    private final Expr<?> path;
+    private final Expr<?> hostExpression;
 
     private final AliasFactory aliasFactory;
 
@@ -64,12 +64,14 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
     private final Map<Object, Object> propToObj = new HashMap<Object, Object>();
 
-    public PropertyAccessInvocationHandler(Expr<?> path, AliasFactory aliasFactory) {
-        this.path = path;
+    public PropertyAccessInvocationHandler(Expr<?> host, AliasFactory aliasFactory) {
+        this.hostExpression = host;
         this.aliasFactory = aliasFactory;
     }
 
+    //CHECKSTYLE:OFF
     public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+    //CHECKSTYLE:ON
         Object rv = null;
         
         MethodType methodType = MethodType.get(method);
@@ -82,7 +84,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             if (propToObj.containsKey(ptyName)) {
                 rv = propToObj.get(ptyName);
             } else {
-                PathMetadata<String> pm = PathMetadataFactory.forProperty((Path<?>) path, ptyName);
+                PathMetadata<String> pm = PathMetadataFactory.forProperty((Path<?>) hostExpression, ptyName);
                 rv = newInstance(ptyClass, genericType, proxy, ptyName, pm);
             }
             aliasFactory.setCurrent(propToExpr.get(ptyName));
@@ -103,8 +105,8 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {
-                PathMetadata<Integer> pm = PathMetadataFactory.forListAccess((PList<?, ?>) path, (Integer) args[0]);
-                Class<?> elementType = ((ECollection<?,?>) path).getElementType();
+                PathMetadata<Integer> pm = PathMetadataFactory.forListAccess((PList<?, ?>) hostExpression, (Integer) args[0]);
+                Class<?> elementType = ((ECollection<?,?>) hostExpression).getElementType();
                 rv = newInstance(elementType, elementType, proxy, propKey, pm);
             }
             aliasFactory.setCurrent(propToExpr.get(propKey));
@@ -114,20 +116,20 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {
-                PathMetadata<?> pm = PathMetadataFactory.forMapAccess((PMap<?, ?, ?>) path, args[0]);
-                Class<?> valueType = ((EMap<?, ?>) path).getValueType();
+                PathMetadata<?> pm = PathMetadataFactory.forMapAccess((PMap<?, ?, ?>) hostExpression, args[0]);
+                Class<?> valueType = ((EMap<?, ?>) hostExpression).getValueType();
                 rv = newInstance(valueType, valueType, proxy, propKey, pm);
             }
             aliasFactory.setCurrent(propToExpr.get(propKey));
 
         } else if (methodType == MethodType.TO_STRING) {
-            rv = path.toString();
+            rv = hostExpression.toString();
 
         } else if (methodType == MethodType.HASH_CODE) {
-            rv = path.hashCode();
+            rv = hostExpression.hashCode();
 
         } else if (methodType == MethodType.GET_MAPPED_PATH) {
-            rv = path;
+            rv = hostExpression;
 
         } else {
             throw new IllegalArgumentException("Invocation of " + method.getName() + " not supported");

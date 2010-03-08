@@ -39,11 +39,6 @@ public class PTime<D extends Comparable> extends ETime<D> implements Path<D>{
     public void accept(Visitor v) {
         v.visit(this);        
     }
-
-    @Override
-    public ETime<D> asExpr() {
-        return this;
-    }
     
     @Override
     public boolean equals(Object o) {

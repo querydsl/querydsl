@@ -57,11 +57,6 @@ public class ODateTime<OpType extends Comparable<?>, D extends Comparable<?>> ex
     }
 
     @Override
-    public EDateTime<D> asExpr() {
-        return this;
-    }
-    
-    @Override
     public Expr<?> getArg(int index) {
         return opMixin.getArg(index);
     }

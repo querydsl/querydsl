@@ -40,11 +40,6 @@ public class OString extends EString implements Operation<String, String> {
     public void accept(Visitor v) {
         v.visit(this);        
     }
-
-    @Override
-    public EString asExpr() {
-        return this;
-    }
     
     @Override
     public Expr<?> getArg(int index) {

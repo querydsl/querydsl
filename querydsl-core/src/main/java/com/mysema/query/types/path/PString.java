@@ -41,11 +41,6 @@ public class PString extends EString implements Path<String> {
     }
     
     @Override
-    public EString asExpr() {
-        return this;
-    }
-    
-    @Override
     public boolean equals(Object o) {
         return pathMixin.equals(o);
     }

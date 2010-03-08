@@ -69,8 +69,4 @@ public class CSimple<T> extends Expr<T> implements Custom<T> {
         return getType().hashCode();
     }
 
-    @Override
-    public Expr<T> asExpr() {
-        return this;
-    }
 }

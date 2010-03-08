@@ -60,8 +60,4 @@ public final class DateSubQuery<A extends Comparable<?>> extends EDate<A> implem
         return subQueryMixin.notExists();
     }
 
-    @Override
-    public Expr<A> asExpr() {
-        return this;
-    }
 }

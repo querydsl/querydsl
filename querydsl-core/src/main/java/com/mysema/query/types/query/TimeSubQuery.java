@@ -60,8 +60,4 @@ public final class TimeSubQuery<A extends Comparable<?>> extends ETime<A> implem
         return subQueryMixin.notExists();
     }
 
-    @Override
-    public Expr<A> asExpr() {
-        return this;
-    }
 }

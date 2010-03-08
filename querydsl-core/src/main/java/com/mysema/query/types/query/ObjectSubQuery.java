@@ -59,8 +59,4 @@ public final class ObjectSubQuery<A> extends Expr<A> implements SubQuery<A>{
         return subQueryMixin.notExists();
     }
 
-    @Override
-    public Expr<A> asExpr() {
-        return this;
-    }
 }

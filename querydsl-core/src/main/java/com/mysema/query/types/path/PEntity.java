@@ -91,11 +91,6 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
         }
     }
 
-    @Override
-    public Expr<D> asExpr() {
-        return this;
-    }
-
     /**
      * @param <A>
      * @param property

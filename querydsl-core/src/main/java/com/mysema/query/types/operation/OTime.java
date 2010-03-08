@@ -53,11 +53,6 @@ public class OTime<OpType, D extends Comparable<?>> extends ETime<D> implements 
     public void accept(Visitor v) {
         v.visit(this);        
     }
-
-    @Override
-    public ETime<D> asExpr() {
-        return this;
-    }
     
     @Override
     public Expr<?> getArg(int index) {

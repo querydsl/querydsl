@@ -45,11 +45,6 @@ public class PSet<E> extends ECollectionBase<Set<E>,E> implements Path<Set<E>> {
     }
 
     @Override
-    public Expr<Set<E>> asExpr() {
-        return this;
-    }
-
-    @Override
     public boolean equals(Object o) {
         return pathMixin.equals(o);
     }

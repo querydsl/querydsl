@@ -56,11 +56,6 @@ public class ONumber<OpType extends Number, D extends Number & Comparable<?>>
     }
 
     @Override
-    public ENumber<D> asExpr() {
-        return this;
-    }
-
-    @Override
     public Expr<?> getArg(int index) {
         return opMixin.getArg(index);
     }

@@ -47,11 +47,6 @@ public class PComparable<D extends Comparable> extends EComparable<D> implements
     public void accept(Visitor v) {
         v.visit(this);        
     }
-
-    @Override
-    public EComparable<D> asExpr() {
-        return this;
-    }
     
     @Override
     public boolean equals(Object o) {

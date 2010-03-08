@@ -56,8 +56,4 @@ public final class BooleanSubQuery extends EBoolean implements SubQuery<Boolean>
         return subQueryMixin.notExists();
     }
 
-    @Override
-    public Expr<Boolean> asExpr() {
-        return this;
-    }
 }

@@ -77,11 +77,6 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
     }
     
     @Override
-    public PMap<K,V,E> asExpr() {
-        return this;
-    }
-
-    @Override
     public boolean equals(Object o) {
         return pathMixin.equals(o);
     }

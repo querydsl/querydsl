@@ -40,11 +40,6 @@ public class PDateTime<D extends Comparable> extends EDateTime<D> implements Pat
     public void accept(Visitor v) {
         v.visit(this);        
     }
-
-    @Override
-    public EDateTime<D> asExpr() {
-        return this;
-    }
     
     @Override
     public boolean equals(Object o) {

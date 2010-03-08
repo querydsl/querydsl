@@ -50,11 +50,6 @@ public class PArray<E> extends Expr<E[]> implements Path<E[]>, EArray<E>{
     }
 
     @Override
-    public Expr<E[]> asExpr() {
-        return this;
-    }
-
-    @Override
     public boolean equals(Object o) {
         return pathMixin.equals(o);
     }

@@ -68,10 +68,5 @@ public class CDateTime<T extends Comparable<?>> extends EDateTime<T> implements 
         return getType().hashCode();
     }
 
-    @Override
-    public Expr<T> asExpr() {
-        return this;
-    }
-    
 
 }

@@ -61,8 +61,4 @@ public final class NumberSubQuery<A extends Number & Comparable<?>> extends ENum
         return subQueryMixin.notExists();
     }
 
-    @Override
-    public Expr<A> asExpr() {
-        return this;
-    }
 }

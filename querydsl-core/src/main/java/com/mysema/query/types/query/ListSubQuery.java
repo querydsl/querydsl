@@ -70,9 +70,5 @@ public final class ListSubQuery<A> extends ECollectionBase<List<A>,A> implements
         return subQueryMixin.notExists();
     }
 
-    @Override
-    public Expr<List<A>> asExpr() {
-        return this;
-    }
 
 }

@@ -57,8 +57,4 @@ public final class StringSubQuery extends EString implements SubQuery<String>{
         return subQueryMixin.notExists();
     }
 
-    @Override
-    public Expr<String> asExpr() {
-        return this;
-    }
 }

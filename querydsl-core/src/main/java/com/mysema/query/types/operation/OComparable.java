@@ -56,11 +56,6 @@ public class OComparable<OpType, D extends Comparable<?>> extends
     }
 
     @Override
-    public EComparable<D> asExpr() {
-        return this;
-    }
-    
-    @Override
     public Expr<?> getArg(int index) {
         return opMixin.getArg(index);
     }

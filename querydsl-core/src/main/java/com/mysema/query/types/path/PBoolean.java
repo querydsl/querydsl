@@ -39,11 +39,6 @@ public class PBoolean extends EBoolean implements Path<Boolean> {
     public void accept(Visitor v) {
         v.visit(this);        
     } 
-
-    @Override
-    public EBoolean asExpr() {
-        return this;
-    }
     
     @Override
     public boolean equals(Object o) {

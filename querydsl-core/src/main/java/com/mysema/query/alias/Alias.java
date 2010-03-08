@@ -47,6 +47,8 @@ public final class Alias {
 
     private static final PSimple<Object> it = new PSimple<Object>(Object.class, PathMetadataFactory.forVariable("it"));
 
+    // exclude $-methods from Checkstyle checks
+    //CHECKSTYLE:OFF
     /**
      * Convert the given alias to an expression
      * 
@@ -145,6 +147,7 @@ public final class Alias {
     public static PDateTime<Timestamp> $(Timestamp arg) {
         return aliasFactory.<PDateTime<Timestamp>> getCurrentAndReset();
     }
+    //CHECKSTYLE:ON
     
     public static <A> A alias(Class<A> cl) {
         return alias(cl, StringUtils.uncapitalize(cl.getSimpleName()));

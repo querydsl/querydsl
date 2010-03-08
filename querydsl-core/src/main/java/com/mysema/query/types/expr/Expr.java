@@ -55,6 +55,13 @@ public abstract class Expr<D> implements Serializable{
     public abstract void accept(Visitor v);
     
     /**
+     * @return
+     */
+    public Expr<D> asExpr(){
+        return this;
+    }
+    
+    /**
      * Get the <code>count(this)</code> expression
      * 
      * @return count(this)

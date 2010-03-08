@@ -54,11 +54,6 @@ public class OSimple<OpType, D> extends Expr<D> implements Operation<OpType, D> 
     }
 
     @Override
-    public Expr<D> asExpr() {
-        return this;
-    }
-    
-    @Override
     public Expr<?> getArg(int index) {
         return opMixin.getArg(index);
     }
