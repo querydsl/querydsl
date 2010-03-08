@@ -69,4 +69,9 @@ public class CNumber<T extends Number & Comparable<?>> extends ENumber<T> implem
     public int hashCode(){
         return getType().hashCode();
     }
+
+    @Override
+    public Expr<T> asExpr() {
+        return this;
+    }
 }

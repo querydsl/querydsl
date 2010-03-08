@@ -13,7 +13,7 @@ public final class Types {
     
     private Types(){}
     
-    public static final Type OBJECTS = new ClassType(TypeCategory.SIMPLE, Object[].class);
+    public static final Type OBJECTS = new ClassType(TypeCategory.ARRAY, Object[].class);
     
     public static final Type OBJECT = new ClassType(TypeCategory.SIMPLE, Object.class);
 

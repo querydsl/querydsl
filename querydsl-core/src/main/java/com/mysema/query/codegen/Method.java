@@ -5,6 +5,7 @@
  */
 package com.mysema.query.codegen;
 
+import java.util.Collections;
 import java.util.List;
 
 import net.jcip.annotations.Immutable;
@@ -28,6 +29,10 @@ public final class Method {
     
     private final String template;
 
+    public Method(EntityType context, String name, String template, Type returnType) {
+        this(context, name, template, Collections.<Parameter>emptyList(), returnType);        
+    }
+    
     public Method(EntityType context, String name, String template, List<Parameter> params, Type returnType) {
         this.context = Assert.notNull(context);
         this.name = Assert.notNull(name);

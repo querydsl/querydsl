@@ -69,5 +69,10 @@ public class CComparable<T extends Comparable<?>> extends EComparable<T> impleme
     public int hashCode(){
         return getType().hashCode();
     }
+
+    @Override
+    public Expr<T> asExpr() {
+        return this;
+    }
     
 }

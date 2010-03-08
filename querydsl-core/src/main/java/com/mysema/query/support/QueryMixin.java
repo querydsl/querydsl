@@ -148,4 +148,5 @@ public class QueryMixin<T>{
     public void setSelf(T self){
         this.self = self;
     }
+    
 }

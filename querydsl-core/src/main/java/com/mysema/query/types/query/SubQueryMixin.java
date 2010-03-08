@@ -67,6 +67,11 @@ public class SubQueryMixin<T> implements SubQuery<T>{
     public void setSelf(Expr<T> self) {
         this.self = self;
     }
+
+    @Override
+    public Expr<T> asExpr() {
+        return self;
+    }
     
 
 }

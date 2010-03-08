@@ -223,11 +223,14 @@ public class EntitySerializer implements Serializer{
             case NUMERIC: pathType = PNumber.class; break;
             default : pathType = PEntity.class;
         }        
-        writer.suppressWarnings(SERIAL);        
+        
         for (Annotation annotation : model.getAnnotations()){
             writer.annotation(annotation);
         }        
         writer.beginClass(queryType, pathType.getSimpleName() + "<" + localName + ">");
+        
+        // TODO : generate proper serialVersionUID here
+        writer.privateStaticFinal("long", "serialVersionUID", String.valueOf(model.hashCode()));
     }
 
     protected void introDefaultInstance(CodeWriter writer, EntityType model) throws IOException {

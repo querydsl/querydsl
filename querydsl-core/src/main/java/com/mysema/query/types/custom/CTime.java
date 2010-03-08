@@ -69,4 +69,9 @@ public class CTime<T extends Comparable<?>> extends ETime<T> implements Custom<T
         return getType().hashCode();
     }
 
+    @Override
+    public Expr<T> asExpr() {
+        return this;
+    }
+
 }

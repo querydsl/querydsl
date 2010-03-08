@@ -14,7 +14,6 @@ import java.io.Writer;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collections;
 
 import javax.annotation.Nullable;
 
@@ -22,18 +21,17 @@ import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.codegen.ClassType;
-import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.EntitySerializer;
+import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Method;
-import com.mysema.query.codegen.Parameter;
 import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.codegen.SimpleType;
+import com.mysema.query.codegen.Type;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeMappings;
-import com.mysema.query.codegen.Type;
 import com.mysema.query.codegen.Types;
 import com.mysema.util.JavaWriter;
 
@@ -94,8 +92,7 @@ public class MetaDataExporter {
                         namePrefix + simpleClassName, 
                         false);
                 EntityType classModel = new EntityType("", classTypeModel);
-                Method wildcard = new Method(classModel, "all", "{0}.*", 
-                        Collections.<Parameter>emptyList(), Types.OBJECTS);
+                Method wildcard = new Method(classModel, "all", "{0}.*", Types.OBJECTS);
                 classModel.addMethod(wildcard);
                 classModel.addAnnotation(new TableImpl(tableName));
                 ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);

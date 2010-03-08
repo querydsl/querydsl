@@ -49,7 +49,7 @@ import com.mysema.query.codegen.Types;
 public final class APTTypeFactory {
     
     @Nullable
-    private static Class<?> safeForName(String name){
+    private static Class<?> safeClassForName(String name){
         try {
             return Class.forName(name);
         } catch (ClassNotFoundException e) {
@@ -156,7 +156,6 @@ public final class APTTypeFactory {
             Type value = handle(type);
             if (value != null){                
                 EntityType entityModel = new EntityType(configuration.getNamePrefix(), value);
-//                entityTypeCache.put(Collections.singletonList(value.getFullName()), entityModel);
                 entityTypeCache.put(key, entityModel);
                 cache.put(createKey(type, true, true), entityModel);
                 for (EntityType superType : getSupertypes(type, value)){
@@ -191,7 +190,7 @@ public final class APTTypeFactory {
         String name = typeElement.getQualifiedName().toString();
         String simpleName = typeElement.getSimpleName().toString();
         Iterator<? extends TypeMirror> i = t.getTypeArguments().iterator();
-        Class<?> cl = safeForName(name);
+        Class<?> cl = safeClassForName(name);
         if (cl == null) { // class not available
             return create(typeElement, TypeCategory.get(name), t.getTypeArguments());
             

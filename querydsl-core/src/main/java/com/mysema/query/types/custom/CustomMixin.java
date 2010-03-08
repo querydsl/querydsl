@@ -70,4 +70,9 @@ public final class CustomMixin<T> implements Custom<T>, Serializable {
     public Class<? extends T> getType() {
         return self.getType();
     }
+
+    @Override
+    public Expr<T> asExpr() {
+        return self;
+    }
 }

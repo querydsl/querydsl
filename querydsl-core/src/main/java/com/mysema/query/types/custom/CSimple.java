@@ -68,4 +68,9 @@ public class CSimple<T> extends Expr<T> implements Custom<T> {
     public int hashCode(){
         return getType().hashCode();
     }
+
+    @Override
+    public Expr<T> asExpr() {
+        return this;
+    }
 }

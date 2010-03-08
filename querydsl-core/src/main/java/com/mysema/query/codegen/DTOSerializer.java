@@ -46,8 +46,9 @@ public final class DTOSerializer implements Serializer{
         writer.javadoc(queryType + " is a Querydsl DTO type for " + simpleName);
         
         // class header
-        writer.suppressWarnings("serial");        
+//        writer.suppressWarnings("serial");        
         writer.beginClass(queryType, "EConstructor<" + localName + ">");
+        writer.privateStaticFinal("long", "serialVersionUID", String.valueOf(model.hashCode()));
     }
 
     protected void outro(EntityType model, CodeWriter writer) throws IOException {

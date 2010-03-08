@@ -9,6 +9,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * Single result subquery
@@ -58,5 +59,10 @@ public final class NumberSubQuery<A extends Number & Comparable<?>> extends ENum
     @Override
     public EBoolean notExists() {
         return subQueryMixin.notExists();
+    }
+
+    @Override
+    public Expr<A> asExpr() {
+        return this;
     }
 }

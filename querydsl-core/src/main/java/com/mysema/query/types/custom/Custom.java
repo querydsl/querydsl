@@ -45,5 +45,10 @@ public interface Custom<T> {
      * @return
      */
     Class<? extends T> getType();
+    
+    /**
+     * @return
+     */
+    Expr<T> asExpr();
 
 }

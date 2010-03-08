@@ -8,6 +8,7 @@ package com.mysema.query.types.query;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * Single result subquery
@@ -53,5 +54,10 @@ public final class BooleanSubQuery extends EBoolean implements SubQuery<Boolean>
     @Override
     public EBoolean notExists() {
         return subQueryMixin.notExists();
+    }
+
+    @Override
+    public Expr<Boolean> asExpr() {
+        return this;
     }
 }

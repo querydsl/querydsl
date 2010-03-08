@@ -67,4 +67,9 @@ public class CBoolean extends EBoolean implements Custom<Boolean> {
     public int hashCode(){
         return getType().hashCode();
     }
+
+    @Override
+    public Expr<Boolean> asExpr() {
+        return this;
+    }
 }

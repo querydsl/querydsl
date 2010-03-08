@@ -11,6 +11,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollectionBase;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * List result subquery
@@ -67,6 +68,11 @@ public final class ListSubQuery<A> extends ECollectionBase<List<A>,A> implements
     @Override
     public EBoolean notExists() {
         return subQueryMixin.notExists();
+    }
+
+    @Override
+    public Expr<List<A>> asExpr() {
+        return this;
     }
 
 }

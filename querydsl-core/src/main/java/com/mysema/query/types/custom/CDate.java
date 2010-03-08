@@ -68,4 +68,9 @@ public class CDate<T extends Comparable<?>> extends EDate<T> implements Custom<T
         return getType().hashCode();
     }
 
+    @Override
+    public Expr<T> asExpr() {
+        return this;
+    }
+
 }

@@ -9,6 +9,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ETime;
+import com.mysema.query.types.expr.Expr;
 
 /**
  * Single result subquery
@@ -57,5 +58,10 @@ public final class TimeSubQuery<A extends Comparable<?>> extends ETime<A> implem
     @Override
     public EBoolean notExists() {
         return subQueryMixin.notExists();
+    }
+
+    @Override
+    public Expr<A> asExpr() {
+        return this;
     }
 }
