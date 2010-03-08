@@ -11,6 +11,8 @@ import com.mysema.query.SimpleQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+
 /**
  * @author tiwe
  *
@@ -23,8 +25,10 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     private final Projectable projectable;
     
     private final Expr<T> projection;
-    
+
+    @SuppressWarnings("BC_UNCONFIRMED_CAST")
     public <Q extends Query<?> & Projectable> SimpleQueryAdapter(Q query, Expr<T> projection){
+        // NOTE : this is a correct cast which is not handled properly by FindBugs
         this(query, query, projection);
     }
     
