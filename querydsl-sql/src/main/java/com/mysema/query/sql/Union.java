@@ -20,12 +20,16 @@ import com.mysema.query.types.OrderSpecifier;
 public interface Union<RT> {
     
     /**
+     * Define the ordering of the query results
+     * 
      * @param o
      * @return
      */
     Union<RT> orderBy(OrderSpecifier<?>... o);
 
     /**
+     * Retrieve the results
+     * 
      * @return
      * @throws SQLException
      */

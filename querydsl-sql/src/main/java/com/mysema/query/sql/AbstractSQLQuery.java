@@ -38,7 +38,7 @@ import com.mysema.util.JDBCUtil;
 import com.mysema.util.ResultSetAdapter;
 
 /**
- * AbstractSqlQuery is the base type for SQL query implementations
+ * AbstractSQLQuery is the base type for SQL query implementations
  * 
  * @author tiwe
  * @version $Id$

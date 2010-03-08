@@ -40,6 +40,8 @@ public class SQLQueryImpl extends AbstractSQLQuery<SQLQueryImpl> implements SQLQ
     }
 
     /**
+     * Create a new SQLQueryImpl instance
+     * 
      * @param conn
      * @param templates
      * @param metadata

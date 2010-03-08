@@ -13,7 +13,7 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 
 /**
- * SQLSubQuery is a SubQuery implementation for SQL queries
+ * SQLSubQuery is a subquery implementation for SQL queries
  * 
  * @author tiwe
  *

@@ -14,6 +14,8 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 /**
+ * SQLTypeMapping defines a mapping from JDBC types to Java classes.
+ * 
  * @author tiwe
  *
  */
