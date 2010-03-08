@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.commons.lang.Assert;
@@ -139,6 +141,7 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         return properties;
     }
     
+    @Nullable
     public EntityType getSuperType(){
         return superTypes.size() == 1 ? superTypes.iterator().next() : null;
     }
