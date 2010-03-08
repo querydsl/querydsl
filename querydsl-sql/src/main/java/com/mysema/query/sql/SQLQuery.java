@@ -6,10 +6,12 @@
 package com.mysema.query.sql;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.SubQuery;
@@ -96,4 +98,11 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
      */
     SQLQuery clone(Connection conn);
 
+    /**
+     * Get the results as an JDBC result set
+     * 
+     * @param args
+     * @return
+     */
+    ResultSet getResults(Expr<?>... args);
 }

@@ -35,6 +35,7 @@ import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.SubQuery;
 import com.mysema.util.JDBCUtil;
+import com.mysema.util.ResultSetAdapter;
 
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
@@ -197,6 +198,34 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>>
         }else{
             return iterateSingle(expr);    
         }        
+    }
+    
+    public ResultSet getResults(Expr<?>...exprs){
+        queryMixin.addToProjection(exprs);
+        String queryString = buildQueryString(false);
+        logger.debug("query : {}", queryString);
+        
+        try {
+            final PreparedStatement stmt = conn.prepareStatement(queryString);
+            JDBCUtil.setParameters(stmt, constants);
+            ResultSet rs = stmt.executeQuery();
+            return new ResultSetAdapter(rs){
+                @Override
+                public void close() throws SQLException{
+                    try{
+                        super.close();    
+                    }finally{
+                        stmt.close();
+                    }
+                    
+                }
+            };
+        } catch (SQLException e) {
+            throw new QueryException(e);
+            
+        }finally{
+            reset();
+        }
     }
 
     private CloseableIterator<Object[]> iterateMultiple() {

@@ -81,6 +81,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         }            
     }
 
+    @java.lang.SuppressWarnings("unchecked")
     @SuppressWarnings("unchecked")
     @Override
     public void addJoin(JoinType joinType, Expr<?> expr) {
