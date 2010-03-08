@@ -40,8 +40,7 @@ public abstract class EBoolean extends EComparable<Boolean> {
             return OBoolean.create(Ops.AND, this, right);    
         }else{
             return this;
-        }
-        
+        }        
     }
 
     /**

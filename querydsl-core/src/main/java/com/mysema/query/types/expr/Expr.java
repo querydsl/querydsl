@@ -55,9 +55,11 @@ public abstract class Expr<D> implements Serializable{
     public abstract void accept(Visitor v);
     
     /**
+     * Used for safe casts from Path, SubQuery, Operation and Custom to Expr
+     * 
      * @return
      */
-    public Expr<D> asExpr(){
+    public final Expr<D> asExpr(){
         return this;
     }
     
@@ -237,6 +239,8 @@ public abstract class Expr<D> implements Serializable{
     }
     
     /**
+     * Get a case expression builder
+     * 
      * @param other
      * @return
      */
@@ -245,6 +249,8 @@ public abstract class Expr<D> implements Serializable{
     }
     
     /**
+     * Get a case expression builder
+     * 
      * @param other
      * @return
      */

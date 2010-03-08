@@ -45,8 +45,25 @@ public class ExprConst<D> extends Expr<D> implements Constant<D> {
     }
         
     @Override
-    public int hashCode() {
-        return constant.hashCode();
+    public void accept(Visitor v) {
+        v.visit(this);        
+    }
+    
+    @Override
+    public EBoolean eq(D s){
+        return EBooleanConst.create(constant.equals(s));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object o) {
+        if (o == this){
+            return true;
+        }else if (o instanceof Constant){
+            return ((Constant)o).getConstant().equals(constant);
+        }else{
+            return false;
+        }
     }
     
     /**
@@ -58,32 +75,15 @@ public class ExprConst<D> extends Expr<D> implements Constant<D> {
     public D getConstant() {
         return constant;
     }
-
+    
     @Override
-    public EBoolean eq(D s){
-        return EBooleanConst.create(constant.equals(s));
+    public int hashCode() {
+        return constant.hashCode();
     }
     
     @Override
     public EBoolean ne(D s){
         return EBooleanConst.create(!constant.equals(s));
-    }
-    
-    @Override
-    public void accept(Visitor v) {
-        v.visit(this);        
-    }
-    
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean equals(Object o) {
-        if (o == this){
-            return true;
-        }else if (o instanceof Constant){
-            return ((Constant)o).getConstant().equals(constant);
-        }else{
-            return false;
-        }
     }
     
 }

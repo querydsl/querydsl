@@ -24,9 +24,9 @@ import com.mysema.query.types.Visitor;
  */
 public final class EStringConst extends EString implements Constant<String>{
     
-    private static final long serialVersionUID = 5182804405789674556L;
-
     private static final Map<String,EString> CACHE;
+
+    private static final long serialVersionUID = 5182804405789674556L;
     
     static{
         List<String> strs = new ArrayList<String>(Arrays.asList("", ".", ".*", "%"));
@@ -110,6 +110,18 @@ public final class EStringConst extends EString implements Constant<String>{
         return EBooleanConst.create(constant.equals(s));
     }
     
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object o) {
+        if (o == this){
+            return true;
+        }else if (o instanceof Constant){
+            return ((Constant)o).getConstant().equals(constant);
+        }else{
+            return false;
+        }
+    }
+
     @Override
     public EBoolean equalsIgnoreCase(String str) {
         return EBooleanConst.create(constant.equalsIgnoreCase(str));
@@ -119,7 +131,7 @@ public final class EStringConst extends EString implements Constant<String>{
     public String getConstant() {
         return constant;
     }
-
+    
     @Override
     public int hashCode() {
         return constant.hashCode();
@@ -142,7 +154,7 @@ public final class EStringConst extends EString implements Constant<String>{
         }
         return length;
     }
-    
+
     @Override
     public EString lower() {
         if (lower == null) {
@@ -150,7 +162,7 @@ public final class EStringConst extends EString implements Constant<String>{
         }
         return lower;
     }
-
+    
     @Override
     public EBoolean matches(String pattern){
         return EBooleanConst.create(constant.matches(pattern));
@@ -180,12 +192,12 @@ public final class EStringConst extends EString implements Constant<String>{
     public Expr<String[]> split(String regex) {
         return ExprConst.create(constant.split(regex));
     }
-    
+
     @Override
     public EString substring(int beginIndex) {
         return EStringConst.create(constant.substring(beginIndex));
     }
-
+    
     @Override
     public EString substring(int beginIndex, int endIndex) {
         return EStringConst.create(constant.substring(beginIndex, endIndex));
@@ -209,24 +221,12 @@ public final class EStringConst extends EString implements Constant<String>{
         return trim;
     }
     
+    
     @Override
     public EString upper() {
         if (upper == null){
             upper = EStringConst.create(constant.toUpperCase()); 
         }
         return upper; 
-    }
-    
-    
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean equals(Object o) {
-        if (o == this){
-            return true;
-        }else if (o instanceof Constant){
-            return ((Constant)o).getConstant().equals(constant);
-        }else{
-            return false;
-        }
     }
 }

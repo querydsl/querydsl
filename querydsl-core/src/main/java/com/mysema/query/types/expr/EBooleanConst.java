@@ -15,9 +15,9 @@ import com.mysema.query.types.Visitor;
  */
 public final class EBooleanConst extends EBoolean implements Constant<Boolean>{
        
-    private static final long serialVersionUID = -4106376704553234781L;
-
     public static final EBoolean FALSE = new EBooleanConst(Boolean.FALSE);
+
+    private static final long serialVersionUID = -4106376704553234781L;
     
     public static final EBoolean TRUE = new EBooleanConst(Boolean.TRUE);
     
@@ -29,6 +29,11 @@ public final class EBooleanConst extends EBoolean implements Constant<Boolean>{
     
     private EBooleanConst(Boolean b){
         this.constant = b;
+    }
+    
+    @Override
+    public void accept(Visitor v) {
+        v.visit(this);        
     }
     
     @Override
@@ -48,12 +53,12 @@ public final class EBooleanConst extends EBoolean implements Constant<Boolean>{
             return false;
         }
     }
-    
+
     @Override
     public Boolean getConstant() {
         return constant;
     }
-
+    
     @Override
     public int hashCode() {
         return constant.hashCode();
@@ -63,15 +68,10 @@ public final class EBooleanConst extends EBoolean implements Constant<Boolean>{
     public EBoolean ne(Boolean b){
         return constant.equals(b) ? FALSE : TRUE;
     }
-    
+
     @Override
     public EBoolean not() {
         return constant.booleanValue() ? FALSE : TRUE;
-    }
-
-    @Override
-    public void accept(Visitor v) {
-        v.visit(this);        
     }
 
 }
