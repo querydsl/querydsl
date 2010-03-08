@@ -56,7 +56,7 @@ public class MetaDataExporter {
     private final String schemaPattern, tableNamePattern;
     
     /**
-     * Create a new MetaDataExport instance
+     * Create a new MetaDataExporter instance
      * 
      * @param namePrefix name prefix to use
      * @param packageName target package name for query types
@@ -83,55 +83,65 @@ public class MetaDataExporter {
         ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
         try{
             while (tables.next()) {
-                String tableName = tables.getString(3);
-                String simpleClassName = toClassName(tableName);
-                Type classTypeModel = new SimpleType(
-                        TypeCategory.ENTITY, 
-                        packageName + "." + namePrefix + simpleClassName, 
-                        packageName, 
-                        namePrefix + simpleClassName, 
-                        false);
-                EntityType classModel = new EntityType("", classTypeModel);
-                Method wildcard = new Method(classModel, "all", "{0}.*", Types.OBJECTS);
-                classModel.addMethod(wildcard);
-                classModel.addAnnotation(new TableImpl(tableName));
-                ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
-                try{
-                    while (columns.next()) {
-                        String columnName = columns.getString(4);
-                        String propertyName = toPropertyName(columnName);
-                        Class<?> clazz = typeMapping.get(columns.getInt(5));
-                        if (clazz == null){
-                            throw new RuntimeException("No java type for " + columns.getString(6));
-                        }                    
-                        TypeCategory fieldType = TypeCategory.SIMPLE;
-                        if (clazz.equals(Boolean.class) || clazz.equals(boolean.class)) {
-                            fieldType = TypeCategory.BOOLEAN;
-                        } else if (clazz.equals(String.class)) {
-                            fieldType = TypeCategory.STRING;
-                        }else if (Number.class.isAssignableFrom(clazz)){
-                            fieldType = TypeCategory.NUMERIC;
-                        }else if (Comparable.class.isAssignableFrom(clazz)){
-                            fieldType = TypeCategory.COMPARABLE;
-                        }
-
-                        Type typeModel = new ClassType(fieldType, clazz);
-                        classModel.addProperty(new Property(
-                                classModel, 
-                                columnName, 
-                                propertyName, 
-                                typeModel, 
-                                new String[0], 
-                                false));
-                    }
-                }finally{
-                    columns.close();
-                }
-                serialize(classModel);
+                handleTable(md, tables);
             }
         }finally{
             tables.close();    
         }
+    }
+
+    private void handleTable(DatabaseMetaData md, ResultSet tables)
+            throws SQLException {
+        String tableName = tables.getString(3);
+        String simpleClassName = toClassName(tableName);
+        Type classTypeModel = new SimpleType(
+                TypeCategory.ENTITY, 
+                packageName + "." + namePrefix + simpleClassName, 
+                packageName, 
+                namePrefix + simpleClassName, 
+                false);
+        EntityType classModel = new EntityType("", classTypeModel);
+        Method wildcard = new Method(classModel, "all", "{0}.*", Types.OBJECTS);
+        classModel.addMethod(wildcard);
+        classModel.addAnnotation(new TableImpl(tableName));
+        ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
+        try{
+            while (columns.next()) {
+                handleColumn(classModel, columns);
+            }
+        }finally{
+            columns.close();
+        }
+        serialize(classModel);
+    }
+
+    private void handleColumn(EntityType classModel, ResultSet columns)
+            throws SQLException {
+        String columnName = columns.getString(4);
+        String propertyName = toPropertyName(columnName);
+        Class<?> clazz = typeMapping.get(columns.getInt(5));
+        if (clazz == null){
+            throw new RuntimeException("No java type for " + columns.getString(6));
+        }                    
+        TypeCategory fieldType = TypeCategory.SIMPLE;
+        if (clazz.equals(Boolean.class) || clazz.equals(boolean.class)) {
+            fieldType = TypeCategory.BOOLEAN;
+        } else if (clazz.equals(String.class)) {
+            fieldType = TypeCategory.STRING;
+        }else if (Number.class.isAssignableFrom(clazz)){
+            fieldType = TypeCategory.NUMERIC;
+        }else if (Comparable.class.isAssignableFrom(clazz)){
+            fieldType = TypeCategory.COMPARABLE;
+        }
+
+        Type typeModel = new ClassType(fieldType, clazz);
+        classModel.addProperty(new Property(
+                classModel, 
+                columnName, 
+                propertyName, 
+                typeModel, 
+                new String[0], 
+                false));
     }
 
     private String toPropertyName(String columnName){

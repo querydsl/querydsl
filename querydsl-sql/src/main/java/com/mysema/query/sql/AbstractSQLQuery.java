@@ -37,21 +37,18 @@ import com.mysema.query.types.query.SubQuery;
 import com.mysema.util.JDBCUtil;
 import com.mysema.util.ResultSetAdapter;
 
-import edu.umd.cs.findbugs.annotations.SuppressWarnings;
-
 /**
  * AbstractSqlQuery is the base type for SQL query implementations
  * 
  * @author tiwe
  * @version $Id$
  */
-@SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
+@edu.umd.cs.findbugs.annotations.SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>>
         extends ProjectableQuery<Q>{
     
     public class UnionBuilder<RT> implements Union<RT> {
 
-        @java.lang.SuppressWarnings("unchecked")
         @Override
         @SuppressWarnings("unchecked")
         public List<RT> list() throws SQLException {
@@ -79,7 +76,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>>
     private List<Object> constants;
 
     @Nullable
-    private SubQuery[] sq;
+    private SubQuery<?>[] sq;
 
     private final SQLTemplates templates;
     
@@ -128,7 +125,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>>
         return queryMixin.fullJoin(target);
     }
 
-    @java.lang.SuppressWarnings("unchecked")
     @SuppressWarnings("unchecked")
     private <T> T get(ResultSet rs, int i, Class<T> type){
         String methodName = "get" + type.getSimpleName();
@@ -190,7 +186,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>>
         return iterateMultiple();
     }
 
-    @java.lang.SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     public <RT> CloseableIterator<RT> iterate(Expr<RT> expr) {
         queryMixin.addToProjection(expr);
         if (expr.getType().isArray()){
@@ -216,8 +212,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>>
                         super.close();    
                     }finally{
                         stmt.close();
-                    }
-                    
+                    }                    
                 }
             };
         } catch (SQLException e) {
@@ -290,7 +285,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>>
             
             return new SQLResultIterator<RT>(stmt, rs){
 
-                @java.lang.SuppressWarnings("unchecked")
                 @Override
                 public RT produceNext(ResultSet rs) {
                     try{

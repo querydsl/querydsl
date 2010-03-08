@@ -307,7 +307,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     @Override
-    public void visit(SubQuery query) {
+    public void visit(SubQuery<?> query) {
         append("(");
         serialize(query.getMetadata(), false);
         append(")");

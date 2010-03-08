@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
@@ -60,6 +61,12 @@ import com.mysema.query.types.query.SubQuery;
  */
 @SuppressWarnings("unchecked")
 public abstract class AbstractSQLTest {
+    
+    /**
+     * TODO : split this file into SelectBaseTest, InsertBaseTest, UpdateBaseTest and DeleteBaseTets
+     *        with subtypes        SelectDerbyTest, InsertDerbyTest, UpodateDerbyTest and DeleteDerbyTest
+     *                             SelectMySQLTest, ...
+     */
 
     static ThreadLocal<Connection> connHolder = new ThreadLocal<Connection>();
 
@@ -282,6 +289,15 @@ public abstract class AbstractSQLTest {
             System.out.println(names.next());
         }
         names.close();
+    }
+    
+    @Test
+    public void getResultSet() throws IOException, SQLException{
+        ResultSet results = query().from(survey).getResults(survey.id, survey.name);
+        while(results.next()){
+            System.out.println(results.getInt(1) +","+results.getString(2));
+        }
+        results.close();
     }
 
     protected final SQLQuery query() {
