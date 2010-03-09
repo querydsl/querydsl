@@ -1,0 +1,10 @@
+<testng-results>
+  <reporter-output>
+  </reporter-output>
+  <suite name="querydsl-sql by packages">
+    <groups>
+    </groups>
+    <test name="com.mysema.query">
+    </test>
+  </suite>
+</testng-results>

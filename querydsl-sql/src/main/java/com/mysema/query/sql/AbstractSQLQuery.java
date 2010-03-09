@@ -107,6 +107,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return serializer.toString();
     }
 
+    @Override
     public long count() {
         try {
             return unsafeCount();
@@ -137,8 +138,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         }
         // TODO : cache methods
         try {
-            return (T) ResultSet.class.getMethod(methodName, int.class).invoke(
-                    rs, i);
+            return (T) ResultSet.class.getMethod(methodName, int.class).invoke(rs, i);
         } catch (SecurityException e) {
             throw new QueryException(e);
         } catch (IllegalAccessException e) {
@@ -178,20 +178,24 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.leftJoin(target);
     }
 
+    @Override
     public List<Object[]> list(Expr<?>[] args) {
         return IteratorAdapter.asList(iterate(args));
     }
 
+    @Override
     public <RT> List<RT> list(Expr<RT> expr) {
         return IteratorAdapter.asList(iterate(expr));
     }
 
+    @Override
     public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
         queryMixin.addToProjection(args);
         return iterateMultiple();
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public <RT> CloseableIterator<RT> iterate(Expr<RT> expr) {
         queryMixin.addToProjection(expr);
         if (expr.getType().isArray()) {
@@ -263,6 +267,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     }
 
+    @Override
     public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
         queryMixin.addToProjection(expr);
         long total = count();
@@ -280,8 +285,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     }
 
     @SuppressWarnings("unchecked")
-    private <RT> CloseableIterator<RT> iterateSingle(
-            final @Nullable Expr<RT> expr) {
+    private <RT> CloseableIterator<RT> iterateSingle(final @Nullable Expr<RT> expr) {
         String queryString = buildQueryString(false);
         logger.debug("query : {}", queryString);
         try {
@@ -357,6 +361,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return innerUnion(sq);
     }
 
+    @Override
     public <RT> RT uniqueResult(Expr<RT> expr) {
         List<RT> list = list(expr);
         return !list.isEmpty() ? list.get(0) : null;

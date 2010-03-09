@@ -12,14 +12,14 @@ import java.sql.Statement;
 import java.util.Set;
 
 import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
 
 import junit.framework.Assert;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+
+import com.mysema.util.SimpleCompiler;
 
 
 /**
@@ -52,10 +52,7 @@ public class MetaDataExporterTest {
     }
     
     @Test
-    @Ignore
     public void testGeneration() throws Exception {
-        // TODO : how to get the same classpath as for this test in the compilation ?
-        
         NamingStrategy defaultNaming = new DefaultNamingStrategy();
         NamingStrategy originalNaming = new OriginalNamingStrategy();
         
@@ -84,7 +81,7 @@ public class MetaDataExporterTest {
         MetaDataExporter exporter = new MetaDataExporter(namePrefix, "test", null, null, target, namingStrategy);
         exporter.export(conn.getMetaData());   
         
-        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        JavaCompiler compiler = new SimpleCompiler();
         Set<String> classes = exporter.getClasses();
         int compilationResult = compiler.run(null, null, null, classes.toArray(new String[classes.size()]));
         if(compilationResult == 0){

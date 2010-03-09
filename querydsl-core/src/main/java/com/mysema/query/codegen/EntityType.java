@@ -29,11 +29,9 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     private final Set<Annotation> annotations = new HashSet<Annotation>();
     
     private final Set<Constructor> constructors = new HashSet<Constructor>();
-    
-    // mutable
+
     private int escapeSuffix = 1;
-    
-    // mutable
+
     private boolean hasLists, hasMaps, hasEntityFields;
 
     private final Set<Method> methods = new HashSet<Method>();
@@ -44,7 +42,6 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     
     private final Collection<EntityType> superTypes;
 
-    // mutable
     private String uncapSimpleName;
 
     public EntityType(String prefix, Type type) {
@@ -96,7 +93,7 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     public Set<Annotation> getAnnotations() {
         return annotations;
     }
-    
+
     public TypeCategory getCategory() {
         return TypeCategory.ENTITY;
     }
@@ -104,7 +101,7 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     public Set<Constructor> getConstructors() {
         return constructors;
     }
-    
+
     public String getLocalGenericName(){
         try {
             StringBuilder builder = new StringBuilder();
@@ -124,11 +121,11 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
             throw new CodeGenerationException(e.getMessage(), e);
         }
     }
-        
+
     public Set<Method> getMethods(){
         return methods;
     }
-    
+
     public TypeCategory getOriginalCategory(){
         return super.getCategory();
     }
@@ -136,11 +133,11 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     public String getPrefix(){
         return prefix;
     }
-    
+
     public Set<Property> getProperties() {
         return properties;
     }
-    
+
     @Nullable
     public EntityType getSuperType(){
         return superTypes.size() == 1 ? superTypes.iterator().next() : null;
@@ -157,21 +154,21 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     public boolean hasEntityFields() {
         return hasEntityFields;
     }
-    
+
     public boolean hasLists() {
         return hasLists;
     }
-    
+
     public boolean hasMaps() {
         return hasMaps;
     }
 
     public void include(EntityType clazz) {
-        for (Method method : clazz.methods){
+        for (Method method : clazz.getMethods()){
             addMethod(method);
         }
         
-        for (Property property : clazz.properties){
+        for (Property property : clazz.getProperties()){
             if (!property.isInherited()){                
                 addProperty(property.createCopy(this));    
             }            

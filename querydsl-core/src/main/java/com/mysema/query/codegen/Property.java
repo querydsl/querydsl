@@ -21,8 +21,8 @@ import com.mysema.util.JavaSyntaxUtils;
 @Immutable
 public final class Property implements Comparable<Property> {
 
-    private final EntityType context;
-
+    private final EntityType declaringType;
+    
     private final boolean inherited;
 
     private final String[] inits;
@@ -30,6 +30,8 @@ public final class Property implements Comparable<Property> {
     private final String name, escapedName;
 
     private final Type type;
+    
+    private TypeVariable[] typeVariables;
 
     /**
      * @param context
@@ -37,16 +39,16 @@ public final class Property implements Comparable<Property> {
      * @param type
      * @param inits
      */
-    public Property(EntityType context, String name, Type type, String[] inits) {
-        this(context, name, type, inits, false);
+    public Property(EntityType declaringType, String name, Type type, String[] inits) {
+        this(declaringType, name, type, inits, false);
     }
 
-    public Property(EntityType context, String name, Type type, String[] inits, boolean inherited) {
-        this(context, name, JavaSyntaxUtils.isReserved(name) ? (name + "_") : name, type, inits, inherited);
+    public Property(EntityType declaringType, String name, Type type, String[] inits, boolean inherited) {
+        this(declaringType, name, JavaSyntaxUtils.isReserved(name) ? (name + "_") : name, type, inits, inherited);
     }
 
-    public Property(EntityType context, String name, String escapedName, Type type, String[] inits, boolean inherited) {
-        this.context = context;
+    public Property(EntityType declaringType, String name, String escapedName, Type type, String[] inits, boolean inherited) {
+        this.declaringType = declaringType;
         this.name = Assert.notNull(name);
         this.escapedName = escapedName;
         this.type = Assert.notNull(type);
@@ -72,8 +74,8 @@ public final class Property implements Comparable<Property> {
         }
     }
 
-    public EntityType getContext() {
-        return context;
+    public EntityType getDeclaringType() {
+        return declaringType;
     }
 
     public String getEscapedName() {
@@ -105,7 +107,7 @@ public final class Property implements Comparable<Property> {
     }
 
     public String toString() {
-        return context.getFullName() + "." + name;
+        return declaringType.getFullName() + "." + name;
     }
 
 }

@@ -52,7 +52,6 @@ public class Inheritance5Test {
     @Test
     @Ignore
     public void test(){
-        // TODO : ensure that Entity.id is of type PNumber<Long>
         assertEquals(PNumber.class, QInheritance5Test_Entity.entity.id.getType());
     }
     

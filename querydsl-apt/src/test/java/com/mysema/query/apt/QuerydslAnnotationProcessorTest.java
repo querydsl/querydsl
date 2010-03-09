@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
 
 import junit.framework.Assert;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.Ignore;
 import org.junit.Test;
+
+import com.mysema.util.SimpleCompiler;
 
 public class QuerydslAnnotationProcessorTest {
     
@@ -25,7 +25,7 @@ public class QuerydslAnnotationProcessorTest {
             Assert.fail("Creation of " + out.getPath() + " failed");
         }
         
-        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        JavaCompiler compiler = new SimpleCompiler();
         System.out.println(compiler.getClass().getName());
         List<String> options = new ArrayList<String>(classes.size() + 3);
         options.add("-s");
@@ -43,7 +43,6 @@ public class QuerydslAnnotationProcessorTest {
     }
     
     @Test
-    @Ignore
     public void processAll() throws IOException{
         // works only in Eclipse for the moment
         List<String> classes = new ArrayList<String>();

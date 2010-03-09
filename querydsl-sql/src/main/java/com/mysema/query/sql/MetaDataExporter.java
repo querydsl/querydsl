@@ -94,33 +94,21 @@ public class MetaDataExporter {
             targetFolder, new DefaultNamingStrategy());
     }
 
-    /**
-     * Create a new MetaDataExporter instance
-     * 
-     * @param namePrefix name prefix to use
-     * @param packageName target package name for query types
-     * @param schemaPattern schema pattern for DatabaseMetaData.getTables or null
-     * @param tableNamePattern table name pattern for DatabaseMetaData.getTables or null
-     * @param targetFolder target folder for serialization
-     */
     public MetaDataExporter(String namePrefix, 
             String packageName, 
             @Nullable String schemaPattern, 
             @Nullable String tableNamePattern, 
             String targetFolder,
             NamingStrategy namingStrategy){
-        this.namePrefix = namePrefix;
-        this.packageName = packageName;
+        this.namePrefix = Assert.notNull(namePrefix);
+        this.packageName = Assert.notNull(packageName);
         this.schemaPattern = schemaPattern;
         this.tableNamePattern = tableNamePattern;
-        this.targetFolder = targetFolder;       
-        this.namingStrategy = namingStrategy;
+        this.targetFolder = Assert.notNull(targetFolder);       
+        this.namingStrategy = Assert.notNull(namingStrategy);
     }
 
     public void export(DatabaseMetaData md) throws SQLException {
-        Assert.notNull(targetFolder, "targetFolder needs to be set");
-        Assert.notNull(packageName, "packageName needs to be set");
-
         ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
         try{
             while (tables.next()) {

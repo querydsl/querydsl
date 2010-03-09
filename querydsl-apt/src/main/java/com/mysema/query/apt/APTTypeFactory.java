@@ -157,7 +157,6 @@ public final class APTTypeFactory {
             if (value != null){                
                 EntityType entityModel = new EntityType(configuration.getNamePrefix(), value);
                 entityTypeCache.put(key, entityModel);
-                cache.put(createKey(type, true, true), entityModel);
                 for (EntityType superType : getSupertypes(type, value)){
                     entityModel.getSuperTypes().add(superType);
                 }
@@ -265,9 +264,9 @@ public final class APTTypeFactory {
         return key;        
     }
 
-    private Set<EntityType> getSupertypes(TypeMirror t, Type value) {                 
-        TypeMirror type = normalize(t);        
+    private Set<EntityType> getSupertypes(TypeMirror type, Type value) {                         
         Set<EntityType> superTypes = Collections.emptySet();
+        type = normalize(type);
         if (type.getKind() == TypeKind.DECLARED){
             DeclaredType declaredType = (DeclaredType)type;
             TypeElement e = (TypeElement)declaredType.asElement();
