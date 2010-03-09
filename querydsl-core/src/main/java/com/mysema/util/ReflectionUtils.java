@@ -28,8 +28,8 @@ public final class ReflectionUtils {
     private ReflectionUtils(){}
     
     public static AnnotatedElement getAnnotatedElement(Class<?> beanClass, String propertyName, Class<?> propertyClass){
-        Field field = getField(beanClass, propertyName);
-        Method method = getGetter(beanClass, propertyName, propertyClass);
+        Field field = getFieldOrNull(beanClass, propertyName);
+        Method method = getGetterOrNull(beanClass, propertyName, propertyClass);
         if (field == null || field.getAnnotations().length == 0){
             return (method != null && method.getAnnotations().length > 0) ? method : EMPTY;
         }else if (method == null || method.getAnnotations().length == 0){
@@ -40,7 +40,7 @@ public final class ReflectionUtils {
     }
     
     @Nullable
-    private static Field getField(Class<?> beanClass, String propertyName){
+    private static Field getFieldOrNull(Class<?> beanClass, String propertyName){
         while (beanClass != null && !beanClass.equals(Object.class)){
             try {
                 return beanClass.getDeclaredField(propertyName);
@@ -53,7 +53,7 @@ public final class ReflectionUtils {
     }
     
     @Nullable
-    private static Method getGetter(Class<?> beanClass, String name, Class<?> type){
+    private static Method getGetterOrNull(Class<?> beanClass, String name, Class<?> type){
         String methodName = (type.equals(Boolean.class) ? "is" : "get") + StringUtils.capitalize(name);
         while(beanClass != null && !beanClass.equals(Object.class)){
             try {
