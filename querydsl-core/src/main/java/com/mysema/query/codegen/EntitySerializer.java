@@ -234,8 +234,7 @@ public class EntitySerializer implements Serializer{
 
     protected void introDefaultInstance(CodeWriter writer, EntityType model) throws IOException {
         String simpleName = model.getUncapSimpleName();
-        String queryType = typeMappings.getPathType(model, model, true);
-        
+        String queryType = typeMappings.getPathType(model, model, true);        
         writer.publicStaticFinal(queryType, simpleName, NEW + queryType + "(\"" + simpleName + "\")");
     }
 

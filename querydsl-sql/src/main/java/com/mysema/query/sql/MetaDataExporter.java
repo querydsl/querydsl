@@ -5,6 +5,8 @@
  */
 package com.mysema.query.sql;
 
+import static com.mysema.util.Symbols.NEW;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -17,6 +19,8 @@ import java.sql.SQLException;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringUtils;
+
 import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
@@ -26,13 +30,13 @@ import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Method;
 import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.Serializer;
-import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.codegen.SimpleType;
 import com.mysema.query.codegen.Type;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeMappings;
 import com.mysema.query.codegen.Types;
+import com.mysema.util.CodeWriter;
 import com.mysema.util.JavaWriter;
 
 /**
@@ -44,17 +48,35 @@ import com.mysema.util.JavaWriter;
 @Immutable
 public class MetaDataExporter {
 
-    private static final Serializer serializer = new EntitySerializer(new TypeMappings());
-    
-    private static final SQLTypeMapping typeMapping = new SQLTypeMapping();
-    
-    private static final SerializerConfig serializerConfig = new SimpleSerializerConfig(false, false, false, false);
+    private static Writer writerFor(File file) {
+        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
+            System.err.println("Folder " + file.getParent() + " could not be created");
+        }
+        try {
+            return new OutputStreamWriter(new FileOutputStream(file));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
     
     private final String namePrefix, targetFolder, packageName;
-
+    
     @Nullable
     private final String schemaPattern, tableNamePattern;
+
+    private final TypeMappings typeMappings = new TypeMappings();
     
+    private final Serializer serializer = new EntitySerializer(typeMappings){
+        @Override 
+        protected void introDefaultInstance(CodeWriter writer, EntityType model) throws IOException {
+            String simpleName = StringUtils.uncapitalize(model.getUncapSimpleName().substring(1));
+            String queryType = typeMappings.getPathType(model, model, true);            
+            writer.publicStaticFinal(queryType, simpleName, NEW + queryType + "(\"" + simpleName + "\")");
+        }
+    };
+    
+    private final SQLTypeMapping typeMapping = new SQLTypeMapping();
+
     /**
      * Create a new MetaDataExporter instance
      * 
@@ -90,31 +112,6 @@ public class MetaDataExporter {
         }
     }
 
-    private void handleTable(DatabaseMetaData md, ResultSet tables)
-            throws SQLException {
-        String tableName = tables.getString(3);
-        String simpleClassName = toClassName(tableName);
-        Type classTypeModel = new SimpleType(
-                TypeCategory.ENTITY, 
-                packageName + "." + namePrefix + simpleClassName, 
-                packageName, 
-                namePrefix + simpleClassName, 
-                false);
-        EntityType classModel = new EntityType("", classTypeModel);
-        Method wildcard = new Method(classModel, "all", "{0}.*", Types.OBJECTS);
-        classModel.addMethod(wildcard);
-        classModel.addAnnotation(new TableImpl(tableName));
-        ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
-        try{
-            while (columns.next()) {
-                handleColumn(classModel, columns);
-            }
-        }finally{
-            columns.close();
-        }
-        serialize(classModel);
-    }
-
     private void handleColumn(EntityType classModel, ResultSet columns)
             throws SQLException {
         String columnName = columns.getString(4);
@@ -144,12 +141,43 @@ public class MetaDataExporter {
                 false));
     }
 
-    private String toPropertyName(String columnName){
-        return columnName.substring(0,1).toLowerCase() + toCamelCase(columnName.substring(1));
+    private void handleTable(DatabaseMetaData md, ResultSet tables)
+            throws SQLException {
+        String tableName = tables.getString(3);
+        String simpleClassName = toClassName(tableName);
+        Type classTypeModel = new SimpleType(
+                TypeCategory.ENTITY, 
+                packageName + "." + namePrefix + simpleClassName, 
+                packageName, 
+                namePrefix + simpleClassName, 
+                false);
+        EntityType classModel = new EntityType("", classTypeModel);
+        Method wildcard = new Method(classModel, "all", "{0}.*", Types.OBJECTS);
+        classModel.addMethod(wildcard);
+        classModel.addAnnotation(new TableImpl(tableName));
+        ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
+        try{
+            while (columns.next()) {
+                handleColumn(classModel, columns);
+            }
+        }finally{
+            columns.close();
+        }
+        serialize(classModel);
     }
     
-    private String toClassName(String tableName) {
-        return tableName.substring(0,1).toUpperCase() + toCamelCase(tableName.substring(1));
+    private void serialize(EntityType type) {
+        String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + ".java";
+        try {                        
+            Writer writer = writerFor(new File(targetFolder, path));
+            try{                
+                serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));    
+            }finally{
+                writer.close();
+            }            
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }    
     }
     
     private String toCamelCase(String str){
@@ -165,29 +193,12 @@ public class MetaDataExporter {
         return builder.toString();
     }
 
-    private void serialize(EntityType type) {
-        String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + ".java";
-        try {                        
-            Writer writer = writerFor(new File(targetFolder, path));
-            try{                
-                serializer.serialize(type, serializerConfig, new JavaWriter(writer));    
-            }finally{
-                writer.close();
-            }            
-        } catch (IOException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }    
+    private String toClassName(String tableName) {
+        return tableName.substring(0,1).toUpperCase() + toCamelCase(tableName.substring(1));
     }
     
-    private static Writer writerFor(File file) {
-        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
-            System.err.println("Folder " + file.getParent() + " could not be created");
-        }
-        try {
-            return new OutputStreamWriter(new FileOutputStream(file));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
+    private String toPropertyName(String columnName){
+        return columnName.substring(0,1).toLowerCase() + toCamelCase(columnName.substring(1));
     }
 
 }
