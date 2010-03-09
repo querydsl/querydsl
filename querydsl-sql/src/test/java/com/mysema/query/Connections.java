@@ -22,7 +22,6 @@ public final class Connections {
     private static final String INSERT_INTO_EMPLOYEE = "insert into employee2 " +
         "(id, firstname, lastname, salary, datefield, timefield, superior_id) " +
         "values (?,?,?,?,?,?,?)";
-
     
     private static ThreadLocal<Connection> connHolder = new ThreadLocal<Connection>();
 

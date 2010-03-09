@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query;
 
 import static com.mysema.query.Connections.getConnection;
@@ -16,7 +21,7 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     }
     
     @Test
-    public void testInsert(){
+    public void insert(){
 //        create table survey (id int,name varchar(30))
         
         // with columns

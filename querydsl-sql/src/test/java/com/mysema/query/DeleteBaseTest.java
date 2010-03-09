@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2009 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query;
 
 import static com.mysema.query.Target.MYSQL;
@@ -21,7 +26,7 @@ public abstract class DeleteBaseTest extends AbstractBaseTest{
     
     @Test
     @ExcludeIn(MYSQL)
-    public void testDelete() throws SQLException{
+    public void delete() throws SQLException{
         try{
             // TODO : FIXME
             long count = query().from(survey).count();
