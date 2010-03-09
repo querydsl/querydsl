@@ -48,8 +48,7 @@ public class DetachableAdapter implements Detachable{
         return detachable;
     }
 
-    public ListSubQuery<Object[]> list(Expr<?> first, Expr<?> second,
-            Expr<?>... rest) {
+    public ListSubQuery<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return detachable.list(first, second, rest);
     }
 
@@ -69,23 +68,19 @@ public class DetachableAdapter implements Detachable{
         return detachable.unique(projection);
     }
 
-    public <RT extends Comparable<?>> ComparableSubQuery<RT> unique(
-            EComparable<RT> projection) {
+    public <RT extends Comparable<?>> ComparableSubQuery<RT> unique(EComparable<RT> projection) {
         return detachable.unique(projection);
     }
 
-    public <RT extends Comparable<?>> DateSubQuery<RT> unique(
-            EDate<RT> projection) {
+    public <RT extends Comparable<?>> DateSubQuery<RT> unique(EDate<RT> projection) {
         return detachable.unique(projection);
     }
 
-    public <RT extends Comparable<?>> DateTimeSubQuery<RT> unique(
-            EDateTime<RT> projection) {
+    public <RT extends Comparable<?>> DateTimeSubQuery<RT> unique(EDateTime<RT> projection) {
         return detachable.unique(projection);
     }
 
-    public <RT extends Number & Comparable<?>> NumberSubQuery<RT> unique(
-            ENumber<RT> projection) {
+    public <RT extends Number & Comparable<?>> NumberSubQuery<RT> unique(ENumber<RT> projection) {
         return detachable.unique(projection);
     }
 
@@ -93,13 +88,11 @@ public class DetachableAdapter implements Detachable{
         return detachable.unique(projection);
     }
 
-    public <RT extends Comparable<?>> TimeSubQuery<RT> unique(
-            ETime<RT> projection) {
+    public <RT extends Comparable<?>> TimeSubQuery<RT> unique(ETime<RT> projection) {
         return detachable.unique(projection);
     }
 
-    public ObjectSubQuery<Object[]> unique(Expr<?> first, Expr<?> second,
-            Expr<?>... rest) {
+    public ObjectSubQuery<Object[]> unique(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return detachable.unique(first, second, rest);
     }
 
