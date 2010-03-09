@@ -16,12 +16,12 @@ import java.io.Writer;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
-
-import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.codegen.ClassType;
@@ -45,7 +45,6 @@ import com.mysema.util.JavaWriter;
  * @author tiwe
  * @version $Id$
  */
-@Immutable
 public class MetaDataExporter {
 
     private static Writer writerFor(File file) {
@@ -59,23 +58,41 @@ public class MetaDataExporter {
         }
     }
     
+    private Set<String> classes = new HashSet<String>();
+    
     private final String namePrefix, targetFolder, packageName;
+
+    private final NamingStrategy namingStrategy;
     
     @Nullable
     private final String schemaPattern, tableNamePattern;
 
+    private final SQLTypeMapping typeMapping = new SQLTypeMapping();
+    
     private final TypeMappings typeMappings = new TypeMappings();
     
     private final Serializer serializer = new EntitySerializer(typeMappings){
         @Override 
         protected void introDefaultInstance(CodeWriter writer, EntityType model) throws IOException {
-            String simpleName = StringUtils.uncapitalize(model.getUncapSimpleName().substring(1));
+            String simpleName = model.getUncapSimpleName();
+            if (namePrefix.length() > 0){
+                // TODO : improve this
+                simpleName = StringUtils.uncapitalize(model.getUncapSimpleName().substring(namePrefix.length()));
+            }
             String queryType = typeMappings.getPathType(model, model, true);            
             writer.publicStaticFinal(queryType, simpleName, NEW + queryType + "(\"" + simpleName + "\")");
         }
     };
-    
-    private final SQLTypeMapping typeMapping = new SQLTypeMapping();
+
+    public MetaDataExporter(
+            String namePrefix, 
+            String packageName,
+            @Nullable String schemaPattern, 
+            @Nullable String tableNamePattern,
+            String targetFolder) {
+        this(namePrefix, packageName, schemaPattern, tableNamePattern,
+            targetFolder, new DefaultNamingStrategy());
+    }
 
     /**
      * Create a new MetaDataExporter instance
@@ -90,12 +107,14 @@ public class MetaDataExporter {
             String packageName, 
             @Nullable String schemaPattern, 
             @Nullable String tableNamePattern, 
-            String targetFolder){
+            String targetFolder,
+            NamingStrategy namingStrategy){
         this.namePrefix = namePrefix;
         this.packageName = packageName;
         this.schemaPattern = schemaPattern;
         this.tableNamePattern = tableNamePattern;
         this.targetFolder = targetFolder;       
+        this.namingStrategy = namingStrategy;
     }
 
     public void export(DatabaseMetaData md) throws SQLException {
@@ -112,10 +131,14 @@ public class MetaDataExporter {
         }
     }
 
+    public Set<String> getClasses() {
+        return classes;
+    }
+
     private void handleColumn(EntityType classModel, ResultSet columns)
             throws SQLException {
         String columnName = columns.getString(4);
-        String propertyName = toPropertyName(columnName);
+        String propertyName = namingStrategy.toPropertyName(columnName);
         Class<?> clazz = typeMapping.get(columns.getInt(5));
         if (clazz == null){
             throw new RuntimeException("No java type for " + columns.getString(6));
@@ -140,17 +163,16 @@ public class MetaDataExporter {
                 new String[0], 
                 false));
     }
-
-    private void handleTable(DatabaseMetaData md, ResultSet tables)
-            throws SQLException {
+    
+    private void handleTable(DatabaseMetaData md, ResultSet tables) throws SQLException {
         String tableName = tables.getString(3);
-        String simpleClassName = toClassName(tableName);
+        String className = namingStrategy.toClassName(namePrefix, tableName);
         Type classTypeModel = new SimpleType(
                 TypeCategory.ENTITY, 
-                packageName + "." + namePrefix + simpleClassName, 
+                packageName + "." + className, 
                 packageName, 
-                namePrefix + simpleClassName, 
-                false);
+                className, 
+                false);   
         EntityType classModel = new EntityType("", classTypeModel);
         Method wildcard = new Method(classModel, "all", "{0}.*", Types.OBJECTS);
         classModel.addMethod(wildcard);
@@ -165,11 +187,13 @@ public class MetaDataExporter {
         }
         serialize(classModel);
     }
-    
+
     private void serialize(EntityType type) {
         String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + ".java";
         try {                        
-            Writer writer = writerFor(new File(targetFolder, path));
+            File targetFile = new File(targetFolder, path);
+            classes.add(targetFile.getPath());
+            Writer writer = writerFor(targetFile);
             try{                
                 serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));    
             }finally{
@@ -178,27 +202,6 @@ public class MetaDataExporter {
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);
         }    
-    }
-    
-    private String toCamelCase(String str){
-        StringBuilder builder = new StringBuilder(str.length());
-        for (int i = 0; i < str.length(); i++){
-            if (str.charAt(i) == '_'){
-                builder.append(Character.toUpperCase(str.charAt(i+1)));
-                i += 1;
-            }else{
-                builder.append(Character.toLowerCase(str.charAt(i)));
-            }
-        }
-        return builder.toString();
-    }
-
-    private String toClassName(String tableName) {
-        return tableName.substring(0,1).toUpperCase() + toCamelCase(tableName.substring(1));
-    }
-    
-    private String toPropertyName(String columnName){
-        return columnName.substring(0,1).toLowerCase() + toCamelCase(columnName.substring(1));
     }
 
 }

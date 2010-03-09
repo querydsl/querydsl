@@ -7,8 +7,17 @@ package com.mysema.query.sql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Set;
 
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
+
+import junit.framework.Assert;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 
@@ -20,26 +29,66 @@ import org.junit.Test;
  */
 public class MetaDataExporterTest {
 
-    @Test
-    public void testGeneration() throws Exception {
-        Connection conn = getHSQLConnection();
-        Statement st = conn.createStatement();
-        try {
-            st.execute("drop table survey if exists");
-            st.execute("create table survey (id int,name varchar(30));");               
-            MetaDataExporter exporter = new MetaDataExporter("Q", "com.mysema.query.sql.domain2", null, null, "target");
-            exporter.export(conn.getMetaData());
-        } finally {
-            st.close();
-            conn.close();
-        }
-
-    }
-
-    private Connection getHSQLConnection() throws Exception {
+    private Connection conn;
+    
+    private Statement stmt;
+    
+    @Before
+    public void setUp() throws ClassNotFoundException, SQLException{
         Class.forName("org.hsqldb.jdbcDriver");
         String url = "jdbc:hsqldb:data/tutorial";
-        return DriverManager.getConnection(url, "sa", "");
+        conn = DriverManager.getConnection(url, "sa", "");
+        stmt = conn.createStatement();
     }
+    
+    @After
+    public void tearDown() throws SQLException{
+        try{
+            stmt.close();    
+        }finally{
+            conn.close();    
+        }
+    }
+    
+    @Test
+    public void testGeneration() throws Exception {
+        NamingStrategy defaultNaming = new DefaultNamingStrategy();
+        NamingStrategy originalNaming = new OriginalNamingStrategy();
+        
+        // normal settings
+        test("Q", defaultNaming, "target/1");
+        
+        // without prefix
+        test("", defaultNaming, "target/2");
+        
+        // with long prefix
+        test("QDSL", defaultNaming, "target/3");
+        
+        // with different namingStrategy
+        test("Q", originalNaming, "target/4");
+        
+        // without prefix
+        test("", originalNaming, "target/5");
+        
+        // with long prefix
+        test("QDSL", originalNaming, "target/6");
+    }
+    
+    private void test(String namePrefix, NamingStrategy namingStrategy, String target) throws SQLException{
+        stmt.execute("drop table survey if exists");
+        stmt.execute("create table survey (id int,name varchar(30));");               
+        MetaDataExporter exporter = new MetaDataExporter(namePrefix, "test", null, null, target, namingStrategy);
+        exporter.export(conn.getMetaData());   
+        
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        Set<String> classes = exporter.getClasses();
+        int compilationResult = compiler.run(null, null, null, classes.toArray(new String[classes.size()]));
+        if(compilationResult == 0){
+            System.out.println("Compilation is successful");
+        }else{
+            Assert.fail("Compilation Failed");
+        }
+    }
+    
 
 }
