@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.junit.After;
 import org.junit.Before;
@@ -27,27 +26,15 @@ public class DerbyQueryMutabilityTest{
     
     private Connection connection;
     
-    private static void safeExecute(Statement stmt, String sql) {
-        try {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    
     @Before
     public void setUp() throws Exception{
-        connection = Connections.getDerby();
-        Statement stmt = connection.createStatement();
-        safeExecute(stmt, "drop table survey");
-        stmt.execute("create table survey (id int,name varchar(30))");
+        Connections.initDerby();
+        connection = Connections.getConnection();
     }
     
     @After
     public void tearDown() throws SQLException{
-        if (connection != null){
-            connection.close();
-        }
+        Connections.close();
     }
     
     @Test

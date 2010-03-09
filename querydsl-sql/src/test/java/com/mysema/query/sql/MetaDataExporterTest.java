@@ -54,6 +54,8 @@ public class MetaDataExporterTest {
     @Test
     @Ignore
     public void testGeneration() throws Exception {
+        // TODO : how to get the same classpath as for this test in the compilation ?
+        
         NamingStrategy defaultNaming = new DefaultNamingStrategy();
         NamingStrategy originalNaming = new OriginalNamingStrategy();
         

@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query;
+package com.mysema.testutil;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -13,6 +13,8 @@ import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.internal.runners.TestClass;
 import org.junit.internal.runners.TestMethod;
 import org.junit.runner.notification.RunNotifier;
+
+import com.mysema.query.Target;
 
 /**
  * FilteringTestRunner provides

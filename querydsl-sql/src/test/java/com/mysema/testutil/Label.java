@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query;
+package com.mysema.testutil;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -12,7 +12,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * ResourceCheck provides
+ * Label provides
  * 
  * @author tiwe
  * @version $Id$
@@ -20,6 +20,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Inherited
-public @interface ResourceCheck {
-    public String value();
+public @interface Label {
+    com.mysema.query.Target value();
 }

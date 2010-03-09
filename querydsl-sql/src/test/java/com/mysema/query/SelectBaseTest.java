@@ -1,12 +1,6 @@
-/*
- * Copyright (c) 2009 Mysema Ltd.
- * All rights reserved.
- * 
- */
 package com.mysema.query;
 
 import static com.mysema.query.Target.DERBY;
-import static com.mysema.query.Target.MYSQL;
 import static com.mysema.query.Target.ORACLE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -15,125 +9,34 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
-import org.hsqldb.Types;
-import org.junit.AfterClass;
 import org.junit.Test;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.sql.SQLQuery;
-import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLSubQuery;
-import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.sql.dml.SQLDeleteClause;
-import com.mysema.query.sql.dml.SQLInsertClause;
-import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.domain.IdName;
-import com.mysema.query.sql.domain.QEMPLOYEE;
 import com.mysema.query.sql.domain.QIdName;
-import com.mysema.query.sql.domain.QSURVEY;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.ENumberConst;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.query.ObjectSubQuery;
 import com.mysema.query.types.query.SubQuery;
+import com.mysema.testutil.ExcludeIn;
+import com.mysema.testutil.IncludeIn;
+import com.mysema.testutil.Label;
 
-/**
- * SqlQueryTest provides SQL query tests for different DB types
- * 
- * @author tiwe
- * @version $Id$
- */
-@SuppressWarnings("unchecked")
-public abstract class AbstractSQLTest {
-    
-    /**
-     * TODO : split this file into SelectBaseTest, InsertBaseTest, UpdateBaseTest and DeleteBaseTets
-     *        with subtypes        SelectDerbyTest, InsertDerbyTest, UpodateDerbyTest and DeleteDerbyTest
-     *                             SelectMySQLTest, ...
-     */
+import static com.mysema.query.Constants.*;
 
-    static ThreadLocal<Connection> connHolder = new ThreadLocal<Connection>();
-
-    private static final java.sql.Date date;
-    
-    private static final QEMPLOYEE employee = new QEMPLOYEE("e");
-    
-    private static final QEMPLOYEE employee2 = new QEMPLOYEE("e2");
-    
-    static ThreadLocal<Statement> stmtHolder = new ThreadLocal<Statement>();
-    
-    private static final QSURVEY survey = new QSURVEY("s");
-
-    private static final QSURVEY survey2 = new QSURVEY("s2");
-    
-    private static final java.sql.Time time;
-    
-    static{
-        Calendar cal = Calendar.getInstance();
-        cal.set(2000, 1, 2, 3, 4);
-        cal.set(Calendar.MILLISECOND, 0);
-        date = new java.sql.Date(cal.getTimeInMillis());
-        time = new java.sql.Time(cal.getTimeInMillis());
-    }
-    
-    static void addEmployee(int id, String firstName, String lastName,
-            double salary, int superiorId) throws Exception {
-        String insert = "insert into employee2 (id, firstname, lastname, salary, datefield, timefield, superior_id) " +
-        		"values(?,?,?,?,?,?,?)";
-        PreparedStatement stmt = connHolder.get().prepareStatement(insert);
-        stmt.setInt(1, id);
-        stmt.setString(2, firstName);
-        stmt.setString(3,lastName);
-        stmt.setDouble(4, salary);        
-        stmt.setDate(5, date);
-        stmt.setTime(6, time);
-        if (superiorId <= 0){
-            stmt.setNull(7, Types.INTEGER);
-        }else{
-            stmt.setInt(7, superiorId);
-        }
-        stmt.execute();
-        stmt.close();
-    }
-
-    protected static void executeSafe(String sql) {
-        try {
-            stmtHolder.get().execute(sql);
-        } catch (SQLException e) {
-            // do nothing
-        }
-    }
-
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-        if (stmtHolder.get() != null){
-            stmtHolder.get().close();
-        }            
-        if (connHolder.get() != null){
-            connHolder.get().close();
-        }            
-    }
-    
-    protected SQLTemplates dialect;
-    
-    @Nullable
-    protected String expectedQuery;
+public abstract class SelectBaseTest extends AbstractBaseTest{
     
     private QueryExecution standardTest = new QueryExecution(Module.SQL, getClass().getAnnotation(Label.class).value()){        
         @Override
@@ -165,10 +68,40 @@ public abstract class AbstractSQLTest {
         assertEquals(max, query().from(employee).list(employee.salary.max()).get(0).intValue());
     }
     
-    protected SQLDeleteClause delete(PEntity<?> e){
-        return new SQLDeleteClause(connHolder.get(), dialect, e);
+    
+    @Test
+    @ExcludeIn({DERBY})
+    public void casts() throws SQLException {
+        ENumber<?> num = employee.id;
+        Expr<?>[] expr = new Expr[] { num.byteValue(), num.doubleValue(),
+                num.floatValue(), num.intValue(), num.longValue(),
+                num.shortValue(), num.stringValue() };
+
+        for (Expr<?> e : expr) {
+            query().from(employee).list(e);
+        }
+
     }
     
+    @Test
+    public void constructor() throws Exception {
+        for (IdName idName : query().from(survey).list(
+                new QIdName(survey.id, survey.name))) {
+            System.out.println("id and name : " + idName.getId() + ","
+                    + idName.getName());
+        }
+    }
+    
+    @Test
+    public void getResultSet() throws IOException, SQLException{
+        ResultSet results = query().from(survey).getResults(survey.id, survey.name);
+        while(results.next()){
+            System.out.println(results.getInt(1) +","+results.getString(2));
+        }
+        results.close();
+    }
+
+    @SuppressWarnings("unchecked")
     @Test
     public void illegalUnion() throws SQLException {
         SubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
@@ -181,7 +114,24 @@ public abstract class AbstractSQLTest {
         }
 
     }
-    
+
+    @Test
+    public void join() throws Exception {
+        for (String name : query().from(survey, survey2).where(
+                survey.id.eq(survey2.id)).list(survey.name)) {
+            System.out.println(name);
+        }
+    }
+
+    @Test
+    public void joins() throws SQLException {
+        for (Object[] row : query().from(employee).innerJoin(employee2).on(
+                employee.superiorId.eq(employee2.superiorId)).where(
+                employee2.id.eq(10)).list(employee.id, employee2.id)) {
+            System.out.println(row[0] + ", " + row[1]);
+        }
+    }
+
     @Test
     @ExcludeIn({ORACLE,DERBY})
     public void limitAndOffset() throws SQLException {
@@ -197,7 +147,7 @@ public abstract class AbstractSQLTest {
 //        expectedQuery = "select employee.id from employee2 employee offset 3";
 //        query().from(employee).offset(3).list(employee.id);
     }
-    
+
     @Test
     @IncludeIn(DERBY)
     public void limitAndOffsetInDerby() throws SQLException {
@@ -213,7 +163,7 @@ public abstract class AbstractSQLTest {
         query().from(employee).offset(3).list(employee.id);
         
     }
-
+    
     @Test
     @IncludeIn(ORACLE)
     public void limitAndOffsetInOracle() throws SQLException {
@@ -232,6 +182,7 @@ public abstract class AbstractSQLTest {
         query().from(employee).limit(4).offset(3).list(employee.id);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @ExcludeIn({DERBY})
     public void mathFunctions() throws SQLException {
@@ -292,30 +243,6 @@ public abstract class AbstractSQLTest {
     }
     
     @Test
-    public void getResultSet() throws IOException, SQLException{
-        ResultSet results = query().from(survey).getResults(survey.id, survey.name);
-        while(results.next()){
-            System.out.println(results.getInt(1) +","+results.getString(2));
-        }
-        results.close();
-    }
-
-    protected final SQLQuery query() {
-        return new SQLQueryImpl(connHolder.get(), dialect) {
-            @Override
-            protected String buildQueryString(boolean countRow) {
-                String rv = super.buildQueryString(countRow);
-                if (expectedQuery != null) {
-                    assertEquals(expectedQuery, rv);
-                    expectedQuery = null;
-                }
-                System.out.println(rv);
-                return rv;
-            }
-        };
-    }
-
-    @Test
     public void query1() throws Exception {
         for (String s : query().from(survey).list(survey.name)) {
             System.out.println(s);
@@ -337,16 +264,13 @@ public abstract class AbstractSQLTest {
         }
     }
 
-    protected SQLSubQuery s(){
-        return new SQLSubQuery();
-    }
-
     @Test
     @ExcludeIn({ORACLE, DERBY})
     public void selectBooleanExpr() throws SQLException {
         // TODO : FIXME
         System.out.println(query().from(survey).list(survey.id.eq(0)));
     }
+
     
     @Test
     @ExcludeIn({ORACLE, DERBY})
@@ -354,7 +278,7 @@ public abstract class AbstractSQLTest {
         // TODO : FIXME
         System.out.println(query().from(survey).list(survey.id.gt(0)));
     }
-
+    
     @Test
     public void selectConcat() throws SQLException {
         System.out.println(query().from(survey)
@@ -393,7 +317,6 @@ public abstract class AbstractSQLTest {
         standardTest.report();        
     }
 
-    
     @Test
     public void stringFunctions2() throws SQLException {
         for (EBoolean where : Arrays.<EBoolean> asList(employee.firstname
@@ -403,7 +326,6 @@ public abstract class AbstractSQLTest {
             query().from(employee).where(where).list(employee.firstname);
         }
     }
-    
     @Test
     public void subQueries() throws SQLException {
         // subquery in where block
@@ -426,7 +348,7 @@ public abstract class AbstractSQLTest {
         query.from(survey2);
         assertEquals("from survey s, survey s2", query.toString());
     }
-
+    
     @Test
     public void syntaxForEmployee() throws SQLException {
         query().from(employee).groupBy(employee.superiorId).orderBy(
@@ -442,61 +364,10 @@ public abstract class AbstractSQLTest {
                 employee.superiorId.asc()).list(employee.salary.avg(),
                 employee.id.max());
     }
-
-    @Test
-    @ExcludeIn({DERBY})
-    public void testCasts() throws SQLException {
-        ENumber<?> num = employee.id;
-        Expr<?>[] expr = new Expr[] { num.byteValue(), num.doubleValue(),
-                num.floatValue(), num.intValue(), num.longValue(),
-                num.shortValue(), num.stringValue() };
-
-        for (Expr<?> e : expr) {
-            query().from(employee).list(e);
-        }
-
-    }
-    @Test
-    public void testConstructor() throws Exception {
-        for (IdName idName : query().from(survey).list(
-                new QIdName(survey.id, survey.name))) {
-            System.out.println("id and name : " + idName.getId() + ","
-                    + idName.getName());
-        }
-    }
-
-    @Test
-    @ExcludeIn(MYSQL)
-    public void testDelete() throws SQLException{
-        try{
-            // TODO : FIXME
-            long count = query().from(survey).count();
-            assertEquals(0, delete(survey).where(survey.name.eq("XXX")).execute());
-            assertEquals(count, delete(survey).execute());    
-        }finally{
-            stmtHolder.get().execute("insert into survey values (1, 'Hello World')");    
-        }
-    }
-
-    @Test
-    public void testJoin() throws Exception {
-        for (String name : query().from(survey, survey2).where(
-                survey.id.eq(survey2.id)).list(survey.name)) {
-            System.out.println(name);
-        }
-    }
     
+    @SuppressWarnings("unchecked")
     @Test
-    public void testJoins() throws SQLException {
-        for (Object[] row : query().from(employee).innerJoin(employee2).on(
-                employee.superiorId.eq(employee2.superiorId)).where(
-                employee2.id.eq(10)).list(employee.id, employee2.id)) {
-            System.out.println(row[0] + ", " + row[1]);
-        }
-    }
-    
-    @Test
-    public void testUnion() throws SQLException {
+    public void union() throws SQLException {
         // union
         SubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
         SubQuery<Integer> sq2 = s().from(employee).unique(employee.id.min());
@@ -516,54 +387,7 @@ public abstract class AbstractSQLTest {
         assertFalse(list2.isEmpty());
     }
     
-    @Test
-    public void testUpdate(){        
-        // original state
-        long count = query().from(survey).count();
-        assertEquals(0, query().from(survey).where(survey.name.eq("S")).count());
-        
-        // update call with 0 update count
-        assertEquals(0, update(survey).where(survey.name.eq("XXX")).set(survey.name, "S").execute());
-        assertEquals(0, query().from(survey).where(survey.name.eq("S")).count());
-        
-        // update call with full update count
-        assertEquals(count, update(survey).set(survey.name, "S").execute());
-        assertEquals(count, query().from(survey).where(survey.name.eq("S")).count());
-    }
-    
-    @Test
-    public void testInsert(){
-//        create table survey (id int,name varchar(30))
-        
-        // with columns
-        insert(survey)
-            .columns(survey.id, survey.name)
-            .values(3, "Hello").execute();
-        
-        // without columns
-        insert(survey)
-            .values(4, "Hello").execute();
-        
-        // with subquery
-        insert(survey)
-            .columns(survey.id, survey.name)
-            .select(s().from(survey2).list(survey2.id.add(1), survey2.name))
-            .execute();
-        
-        // with subquery, without columns
-        insert(survey)
-            .select(s().from(survey2).list(survey2.id.add(10), survey2.name))
-            .execute();
-    }
 
-    protected SQLUpdateClause update(PEntity<?> e){
-        return new SQLUpdateClause(connHolder.get(), dialect, e);
-    }
-    
-    protected SQLInsertClause insert(PEntity<?> e){
-        return new SQLInsertClause(connHolder.get(), dialect, e);
-    }
-    
     @Test
     public void various() throws SQLException {
         System.out.println(query().from(survey).list(survey.name.lower()));
@@ -578,4 +402,5 @@ public abstract class AbstractSQLTest {
         query().from(employee).where(sq1.exists()).count();
         query().from(employee).where(sq1.exists().not()).count();
     }
+
 }

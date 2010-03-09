@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query;
+package com.mysema.testutil;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -12,14 +12,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Label provides
+ * ExcludeIn provides
  * 
  * @author tiwe
  * @version $Id$
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Inherited
-public @interface Label {
-    com.mysema.query.Target value();
+public @interface IncludeIn {
+    com.mysema.query.Target[] value();
 }
