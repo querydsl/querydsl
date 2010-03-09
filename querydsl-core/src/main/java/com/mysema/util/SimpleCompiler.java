@@ -50,6 +50,7 @@ public class SimpleCompiler implements JavaCompiler{
     private String classPath;
     
     private final JavaCompiler compiler;    
+    
     public SimpleCompiler(){
         this(ToolProvider.getSystemJavaCompiler(), Thread.currentThread().getContextClassLoader());
     }
