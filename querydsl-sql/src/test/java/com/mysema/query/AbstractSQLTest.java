@@ -72,15 +72,15 @@ public abstract class AbstractSQLTest {
 
     private static final java.sql.Date date;
     
-    private static final QEMPLOYEE employee = new QEMPLOYEE("employee");
+    private static final QEMPLOYEE employee = new QEMPLOYEE("e");
     
-    private static final QEMPLOYEE employee2 = new QEMPLOYEE("employee2");
+    private static final QEMPLOYEE employee2 = new QEMPLOYEE("e2");
     
     static ThreadLocal<Statement> stmtHolder = new ThreadLocal<Statement>();
     
-    private static final QSURVEY survey = new QSURVEY("survey");
+    private static final QSURVEY survey = new QSURVEY("s");
 
-    private static final QSURVEY survey2 = new QSURVEY("survey2");
+    private static final QSURVEY survey2 = new QSURVEY("s2");
     
     private static final java.sql.Time time;
     
@@ -186,11 +186,11 @@ public abstract class AbstractSQLTest {
     @ExcludeIn({ORACLE,DERBY})
     public void limitAndOffset() throws SQLException {
         // limit offset
-        expectedQuery = "select employee.id from employee2 employee limit 4 offset 3";
+        expectedQuery = "select e.id from employee2 e limit 4 offset 3";
         query().from(employee).limit(4).offset(3).list(employee.id);
         
         // limit
-        expectedQuery = "select employee.id from employee2 employee limit 4";
+        expectedQuery = "select e.id from employee2 e limit 4";
         query().from(employee).limit(4).list(employee.id);
         
         // offset
@@ -201,15 +201,15 @@ public abstract class AbstractSQLTest {
     @Test
     @IncludeIn(DERBY)
     public void limitAndOffsetInDerby() throws SQLException {
-        expectedQuery = "select employee.id from employee2 employee offset 3 rows fetch next 4 rows only";
+        expectedQuery = "select e.id from employee2 e offset 3 rows fetch next 4 rows only";
         query().from(employee).limit(4).offset(3).list(employee.id);
         
         // limit
-        expectedQuery = "select employee.id from employee2 employee fetch first 4 rows only";
+        expectedQuery = "select e.id from employee2 e fetch first 4 rows only";
         query().from(employee).limit(4).list(employee.id);
         
         // offset
-        expectedQuery = "select employee.id from employee2 employee offset 3 rows";
+        expectedQuery = "select e.id from employee2 e offset 3 rows";
         query().from(employee).offset(3).list(employee.id);
         
     }
@@ -366,10 +366,10 @@ public abstract class AbstractSQLTest {
         SQLQuery query = query();
         
         query.from(survey);
-        assertEquals("from survey survey", query.toString());
+        assertEquals("from survey s", query.toString());
         
         query.from(survey2);
-        assertEquals("from survey survey, survey survey2", query.toString());
+        assertEquals("from survey s, survey s2", query.toString());
     }
 
     @Test
@@ -407,11 +407,10 @@ public abstract class AbstractSQLTest {
     @Test
     public void subQueries() throws SQLException {
         // subquery in where block
-        expectedQuery = "select employee.id from employee2 employee "
-                + "where employee.id = (select max(employee.id) "
-                + "from employee2 employee)";
+        expectedQuery = "select e.id from employee2 e "
+                + "where e.id = (select max(e.id) "
+                + "from employee2 e)";
         List<Integer> list = query().from(employee).where(
-//                employee.id.eq(select(Grammar.max(employee.id)).from(employee))).list(
                 employee.id.eq(s().from(employee).unique(employee.id.max()))).list(
                 employee.id);
         assertFalse(list.isEmpty());
@@ -422,10 +421,10 @@ public abstract class AbstractSQLTest {
         SQLSubQuery query = s();
         
         query.from(survey);
-        assertEquals("from survey survey", query.toString());
+        assertEquals("from survey s", query.toString());
         
         query.from(survey2);
-        assertEquals("from survey survey, survey survey2", query.toString());
+        assertEquals("from survey s, survey s2", query.toString());
     }
 
     @Test
@@ -545,16 +544,15 @@ public abstract class AbstractSQLTest {
         insert(survey)
             .values(4, "Hello").execute();
         
-        QSURVEY s2 = new QSURVEY("s2");
         // with subquery
         insert(survey)
             .columns(survey.id, survey.name)
-            .select(s().from(s2).list(s2.id.add(1), s2.name))
+            .select(s().from(survey2).list(survey2.id.add(1), survey2.name))
             .execute();
         
         // with subquery, without columns
         insert(survey)
-            .select(s().from(s2).list(s2.id.add(10), s2.name))
+            .select(s().from(survey2).list(survey2.id.add(10), survey2.name))
             .execute();
     }
 

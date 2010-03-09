@@ -27,6 +27,7 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.Path;
 import com.mysema.query.types.query.SubQuery;
 
 /**
@@ -102,7 +103,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 if (sqlSelect.isEmpty()){                    
                     List<Expr<?>> columns = getIdentifierColumns(joins);
                     handle(columns.get(0));
-//                    handle(COMMA, columns);
                 }else{
                     handle(COMMA, sqlSelect);    
                 }                
@@ -241,12 +241,24 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     public void serializeForInsert(PEntity<?> entity, List<Expr<?>> columns, List<Expr<?>> values, @Nullable SubQuery<?> subQuery) {
-        append(templates.getInsertInto());
-        handle(entity);
+        append(templates.getInsertInto());        
+        append(entity.getAnnotatedElement().getAnnotation(Table.class).value());
         // columns
         if (!columns.isEmpty()){
             append("(");
-            handle(COMMA, columns);
+            boolean first = true;
+            for (Expr<?> column : columns){
+                if (!first){
+                    append(COMMA);                    
+                }                
+                if (column instanceof Path<?>){
+                    Path<?> path = (Path<?>)column;
+                    append(path.getMetadata().getExpression().toString());
+                }else{
+                    handle(column);
+                }
+                first = false;
+            }
             append(")");
         }
         
