@@ -18,12 +18,6 @@ import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 
-/**
- * SqlQueryTest provides SQL query tests for different DB types
- * 
- * @author tiwe
- * @version $Id$
- */
 public abstract class AbstractBaseTest {
    
     @AfterClass

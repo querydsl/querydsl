@@ -3,37 +3,37 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query;
+package com.mysema.query.hsqldb;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
-import com.mysema.query.sql.MySQLTemplates;
+import com.mysema.query.Connections;
+import com.mysema.query.SelectBaseTest;
+import com.mysema.query.Target;
+import com.mysema.query.sql.HSQLDBTemplates;
 import com.mysema.testutil.FilteringTestRunner;
 import com.mysema.testutil.Label;
-import com.mysema.testutil.ResourceCheck;
 
 /**
- * MySqlTest provides
+ * HsqdlbTest provides
  * 
  * @author tiwe
  * @version $Id$
  */
 @RunWith(FilteringTestRunner.class)
-@ResourceCheck("/mysql.run")
-@Label(Target.MYSQL)
-public class SelectMySqlTest extends SelectBaseTest {
+@Label(Target.HSQLDB)
+public class SelectHsqldbTest extends SelectBaseTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        Connections.initMySQL();
+        Connections.initHSQL();
     }
 
     @Before
     public void setUpForTest() {
-        dialect = new MySQLTemplates().newLineToSingleSpace();
+        dialect = new HSQLDBTemplates().newLineToSingleSpace();
     }
-
 
 }

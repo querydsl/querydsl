@@ -44,4 +44,5 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
             .select(s().from(survey2).list(survey2.id.add(10), survey2.name))
             .execute();
     }
+    
 }

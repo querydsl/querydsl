@@ -19,6 +19,18 @@ import org.hsqldb.Types;
  */
 public final class Connections {
     
+    private static final String DROP_TABLE_TEST = "drop table test";
+
+    private static final String DROP_TABLE_SURVEY = "drop table survey";
+
+    private static final String DROP_TABLE_DATETEST = "drop table date_test";
+
+    private static final String DROP_TABLE_TIMETEST = "drop table time_test";
+
+    private static final String CREATE_TABLE_TIMETEST = "create table time_test(time_test time)";
+
+    private static final String CREATE_TABLE_DATETEST = "create table date_test(date_test date)";
+
     private static final String INSERT_INTO_EMPLOYEE = "insert into employee2 " +
         "(id, firstname, lastname, salary, datefield, timefield, superior_id) " +
         "values (?,?,?,?,?,?,?)";
@@ -65,7 +77,6 @@ public final class Connections {
     }
     
     public static void initHSQL() throws Exception{
-        String sql;
         Connection c = getHSQL();
         connHolder.set(c);
         Statement stmt = c.createStatement();
@@ -79,7 +90,7 @@ public final class Connections {
         // test
         stmt.execute("drop table test if exists");
         stmt.execute("create table test(name varchar(255))");
-        sql = "insert into test values(?)";
+        String sql = "insert into test values(?)";
         PreparedStatement pstmt = c.prepareStatement(sql);
         try{
             for (int i = 0; i < 10000; i++) {
@@ -103,26 +114,13 @@ public final class Connections {
                 + "CONSTRAINT PK_employee PRIMARY KEY (id), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) "
                 + "REFERENCES employee2(ID))");
-        addEmployee(1, "Mike", "Smith", 160000, -1);
-        addEmployee(2, "Mary", "Smith", 140000, -1);
-
-        // Employee under Mike
-        addEmployee(10, "Joe", "Divis", 50000, 1);
-        addEmployee(11, "Peter", "Mason", 45000, 1);
-        addEmployee(12, "Steve", "Johnson", 40000, 1);
-        addEmployee(13, "Jim", "Hood", 35000, 1);
-
-        // Employee under Mike
-        addEmployee(20, "Jennifer", "Divis", 60000, 2);
-        addEmployee(21, "Helen", "Mason", 50000, 2);
-        addEmployee(22, "Daisy", "Johnson", 40000, 2);
-        addEmployee(23, "Barbara", "Hood", 30000, 2);
+        addEmployees();
 
         // date_test and time_test
         stmt.execute("drop table time_test if exists");
         stmt.execute("drop table date_test if exists");
-        stmt.execute("create table time_test(time_test time)");
-        stmt.execute("create table date_test(date_test date)");
+        stmt.execute(CREATE_TABLE_TIMETEST);
+        stmt.execute(CREATE_TABLE_DATETEST);
     }
     
     public static void initMySQL() throws Exception{
@@ -162,6 +160,16 @@ public final class Connections {
                 + "CONSTRAINT PK_employee PRIMARY KEY (id), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) "
                 + "REFERENCES employee2(ID))");
+        addEmployees();
+
+        // date_test and time_test
+        stmt.execute("drop table if exists time_test");
+        stmt.execute("drop table if exists date_test");
+        stmt.execute(CREATE_TABLE_TIMETEST);
+        stmt.execute(CREATE_TABLE_DATETEST);
+    }
+
+    private static void addEmployees() throws Exception {
         addEmployee(1, "Mike", "Smith", 160000, -1);
         addEmployee(2, "Mary", "Smith", 140000, -1);
 
@@ -176,12 +184,6 @@ public final class Connections {
         addEmployee(21, "Helen", "Mason", 50000, 2);
         addEmployee(22, "Daisy", "Johnson", 40000, 2);
         addEmployee(23, "Barbara", "Hood", 30000, 2);
-
-        // date_test and time_test
-        stmt.execute("drop table if exists time_test");
-        stmt.execute("drop table if exists date_test");
-        stmt.execute("create table time_test(time_test time)");
-        stmt.execute("create table date_test(date_test date)");
     }
     
     public static void initDerby() throws Exception{
@@ -190,15 +192,13 @@ public final class Connections {
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
         
-     // survey
-        // stmt.execute("drop table survey if exists");
-        safeExecute(stmt, "drop table survey");
+        // survey
+        safeExecute(stmt, DROP_TABLE_SURVEY);
         stmt.execute("create table survey (id int,name varchar(30))");
         stmt.execute("insert into survey values (1, 'Hello World')");
 
         // test
-        // stmt.execute("drop table test if exists");
-        safeExecute(stmt, "drop table test");
+        safeExecute(stmt, DROP_TABLE_TEST);
         stmt.execute("create table test(name varchar(255))");
         String sql = "insert into test values(?)";
         PreparedStatement pstmt = c.prepareStatement(sql);
@@ -225,26 +225,13 @@ public final class Connections {
                 + "CONSTRAINT PK_employee PRIMARY KEY (id), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) "
                 + "REFERENCES employee2(ID))");
-        addEmployee(1, "Mike", "Smith", 160000, -1);
-        addEmployee(2, "Mary", "Smith", 140000, -1);
-
-        // Employee under Mike
-        addEmployee(10, "Joe", "Divis", 50000, 1);
-        addEmployee(11, "Peter", "Mason", 45000, 1);
-        addEmployee(12, "Steve", "Johnson", 40000, 1);
-        addEmployee(13, "Jim", "Hood", 35000, 1);
-
-        // Employee under Mike
-        addEmployee(20, "Jennifer", "Divis", 60000, 2);
-        addEmployee(21, "Helen", "Mason", 50000, 2);
-        addEmployee(22, "Daisy", "Johnson", 40000, 2);
-        addEmployee(23, "Barbara", "Hood", 30000, 2);
+        addEmployees();
 
         // date_test and time_test
-        safeExecute(stmt, "drop table time_test");
-        safeExecute(stmt, "drop table date_test");
-        stmt.execute("create table time_test(time_test time)");
-        stmt.execute("create table date_test(date_test date)");
+        safeExecute(stmt, DROP_TABLE_TIMETEST);
+        safeExecute(stmt, DROP_TABLE_DATETEST);
+        stmt.execute(CREATE_TABLE_TIMETEST);
+        stmt.execute(CREATE_TABLE_DATETEST);
     }
     
     static void addEmployee(int id, String firstName, String lastName,
