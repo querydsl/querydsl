@@ -18,6 +18,7 @@ import junit.framework.Assert;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -51,6 +52,7 @@ public class MetaDataExporterTest {
     }
     
     @Test
+    @Ignore
     public void testGeneration() throws Exception {
         NamingStrategy defaultNaming = new DefaultNamingStrategy();
         NamingStrategy originalNaming = new OriginalNamingStrategy();
