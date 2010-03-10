@@ -48,7 +48,14 @@
       <artifactId>postgresql</artifactId>
       <version>8.4-701.jdbc4</version>
       <scope>test</scope>
-    </dependency>    
+    </dependency>
+    <dependency>
+      <groupId>oracle</groupId>
+      <artifactId>ojdbc5</artifactId>
+      <version>11.1.0.6</version>
+      <scope>test</scope>
+    </dependency>  
+    
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
@@ -56,6 +63,7 @@
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>    
+    
   </dependencies>
 
   <build>

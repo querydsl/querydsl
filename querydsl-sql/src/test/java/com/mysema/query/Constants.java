@@ -14,17 +14,17 @@ public final class Constants {
     
     private Constants(){}
 
-    static final java.sql.Date date;
+    public static final java.sql.Date date;
     
-    static final QEMPLOYEE employee = new QEMPLOYEE("e");
+    public static final QEMPLOYEE employee = new QEMPLOYEE("e");
     
-    static final QEMPLOYEE employee2 = new QEMPLOYEE("e2");
+    public static final QEMPLOYEE employee2 = new QEMPLOYEE("e2");
     
-    static final QSURVEY survey = new QSURVEY("s");
+    public static final QSURVEY survey = new QSURVEY("s");
 
-    static final QSURVEY survey2 = new QSURVEY("s2");
+    public static final QSURVEY survey2 = new QSURVEY("s2");
     
-    static final java.sql.Time time;
+    public static final java.sql.Time time;
     
     static{
         Calendar cal = Calendar.getInstance();

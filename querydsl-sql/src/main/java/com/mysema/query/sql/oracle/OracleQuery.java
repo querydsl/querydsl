@@ -21,7 +21,7 @@ import com.mysema.query.types.expr.Expr;
  * @author tiwe
  * @version $Id$
  */
-public final class OracleQuery extends AbstractSQLQuery<OracleQuery> {
+public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
 
     private EBoolean connectBy, connectByPrior, connectByNocyclePrior;
 

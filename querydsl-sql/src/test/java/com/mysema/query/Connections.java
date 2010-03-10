@@ -76,6 +76,12 @@ public final class Connections {
         return DriverManager.getConnection(url, "root", "");
     }
     
+    private static Connection getOracle() throws SQLException, ClassNotFoundException{
+        Class.forName("oracle.jdbc.driver.OracleDriver");
+        String url = "jdbc:oracle:thin:@localhost:1521:xe";
+        return DriverManager.getConnection(url, "querydsl", "querydsl");
+    }
+    
     private static Connection getPostgres() throws ClassNotFoundException, SQLException{
         Class.forName("org.postgresql.Driver");
         String url = "jdbc:postgresql://localhost:5432/querydsl";
@@ -86,7 +92,7 @@ public final class Connections {
         return stmtHolder.get();
     }
     
-    public static void initDerby() throws Exception{
+    public static void initDerby() throws SQLException, ClassNotFoundException{
         Connection c = getDerby();
         connHolder.set(c);
         Statement stmt = c.createStatement();
@@ -133,7 +139,7 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_DATETEST);
     }
     
-    public static void initHSQL() throws Exception{
+    public static void initHSQL() throws SQLException, ClassNotFoundException{
         Connection c = getHSQL();
         connHolder.set(c);
         Statement stmt = c.createStatement();
@@ -179,7 +185,7 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_DATETEST);
     }
     
-    public static void initMySQL() throws Exception{
+    public static void initMySQL() throws SQLException, ClassNotFoundException{
         Connection c = getMySQL();
         connHolder.set(c);
         Statement stmt = c.createStatement();
@@ -225,7 +231,46 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_DATETEST);
     }
     
-    public static void initPostgres() throws Exception{
+    public static void initOracle() throws SQLException, ClassNotFoundException{
+        Connection c = getOracle();
+        connHolder.set(c);
+        Statement stmt = c.createStatement();
+        stmtHolder.set(stmt);
+        
+        // survey
+        safeExecute(stmt, "drop table survey");
+        stmt.execute("create table survey (id number(10,0),name varchar(30))");
+        stmt.execute("insert into survey values (1, 'Hello World')");
+        
+        // test
+        safeExecute(stmt, "drop table test");
+        stmt.execute("create table test(name varchar(255))");
+        String sql  = "insert into test values(?)";
+        PreparedStatement pstmt = c.prepareStatement(sql);
+        for (int i = 0; i < 10000; i++) {
+            pstmt.setString(1, "name" + i);
+            pstmt.addBatch();
+        }
+        pstmt.executeBatch();
+        
+        // employee
+        safeExecute(stmt, "drop table employee");
+        stmt.execute("create table employee(id number(10,0), "
+                + "firstname VARCHAR(50), " + "lastname VARCHAR(50), "
+                + "salary decimal(10, 2), " + "superior_id number(10,0), "
+                + "CONSTRAINT PK_employee PRIMARY KEY (id), "
+                + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) "
+                + "REFERENCES employee(ID))");
+        addEmployees();
+        
+        // date_test and time_test
+//        executeSafe("drop table time_test");
+        safeExecute(stmt, "drop table date_test");
+//        stmt.execute("create table time_test(time_test time)");
+        stmt.execute("create table date_test(date_test date)");        
+    }
+    
+    public static void initPostgres() throws SQLException, ClassNotFoundException{
         Connection c = getPostgres();
         connHolder.set(c);
         Statement stmt = c.createStatement();
@@ -281,9 +326,8 @@ public final class Connections {
         }
     }
 
-
     static void addEmployee(int id, String firstName, String lastName,
-            double salary, int superiorId) throws Exception {
+            double salary, int superiorId) throws SQLException {
         PreparedStatement stmt = connHolder.get().prepareStatement(INSERT_INTO_EMPLOYEE);
         stmt.setInt(1, id);
         stmt.setString(2, firstName);
@@ -300,7 +344,7 @@ public final class Connections {
         stmt.close();
     }
     
-    private static void addEmployees() throws Exception {
+    private static void addEmployees() throws SQLException {
         addEmployee(1, "Mike", "Smith", 160000, -1);
         addEmployee(2, "Mary", "Smith", 140000, -1);
 
