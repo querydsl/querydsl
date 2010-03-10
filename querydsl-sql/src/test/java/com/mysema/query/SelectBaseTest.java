@@ -191,27 +191,18 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     @ExcludeIn({DERBY})
     public void mathFunctions() throws SQLException {
-//        Expr<Integer> i = ENumber.create(1);
         Expr<Double> d = ENumberConst.create(1.0);
         for (Expr<?> e : Arrays.<Expr<?>> asList(
-//                MathFunctions.abs(i),
                 MathFunctions.acos(d), 
                 MathFunctions.asin(d), 
                 MathFunctions.atan(d), 
-//                MathFunctions.ceil(d), 
                 MathFunctions.cos(d),
-                MathFunctions.tan(d),
-//                MathFunctions.sqrt(i), 
+                MathFunctions.tan(d), 
                 MathFunctions.sin(d),
-//                MathFunctions.round(d),
                 ENumber.random(), 
                 MathFunctions.pow(d, d),
-                // QMath.min(i,i),
-                // QMath.max(i,i),
-                // QMath.mod(i,i),
                 MathFunctions.log10(d), 
                 MathFunctions.log(d),
-//                MathFunctions.floor(d), 
                 MathFunctions.exp(d))) {
             query().from(employee).list((Expr<? extends Comparable>) e);
         }
@@ -286,8 +277,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     
     @Test
     public void selectConcat() throws SQLException {
-        System.out.println(query().from(survey)
-                .list(survey.name.append("Hello World")));
+        System.out.println(query().from(survey).list(survey.name.append("Hello World")));
     }
 
     @Test
@@ -397,8 +387,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     public void various() throws SQLException {
         System.out.println(query().from(survey).list(survey.name.lower()));
         System.out.println(query().from(survey).list(survey.name.append("abc")));
-        System.out
-                .println(query().from(survey).list(survey.id.sqrt()));
+        System.out.println(query().from(survey).list(survey.id.sqrt()));
     }
     
     @Test

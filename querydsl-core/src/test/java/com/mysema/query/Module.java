@@ -5,11 +5,30 @@
  */
 package com.mysema.query;
 
+/**
+ * @author tiwe
+ *
+ */
 public enum Module{
+    /**
+     * 
+     */
     COLLECTIONS,
+    /**
+     * 
+     */
     HQL,
+    /**
+     * 
+     */
     JDOQL,
+    /**
+     * 
+     */
     RDFBEAN,
+    /**
+     * 
+     */
     SQL;
     
 }

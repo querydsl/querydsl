@@ -20,6 +20,7 @@ import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.Path;
 import com.mysema.util.JDBCUtil;
 
@@ -79,7 +80,8 @@ public class SQLUpdateClause implements UpdateClause<SQLUpdateClause>{
 
     @Override
     public <T> SQLUpdateClause set(Path<T> path, T value) {
-        metadata.addProjection(path.asExpr().eq(value));
+        PSimple<T> columnPath = new PSimple<T>(path.getType(), path.getMetadata().getExpression().toString());
+        metadata.addProjection(columnPath.eq(value));
         return this;
     }
 

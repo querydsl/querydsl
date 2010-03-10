@@ -5,11 +5,34 @@
  */
 package com.mysema.query;
 
+/**
+ * @author tiwe
+ *
+ */
 public enum Target{        
+    /**
+     * 
+     */
     DERBY,
+    /**
+     * 
+     */
     HSQLDB,
+    /**
+     * 
+     */
     MEM,
+    /**
+     * 
+     */
     MYSQL,
-    ORACLE;
-
+    /**
+     * 
+     */
+    ORACLE,
+    /**
+     * 
+     */
+    POSTGRES;
+    
 }
