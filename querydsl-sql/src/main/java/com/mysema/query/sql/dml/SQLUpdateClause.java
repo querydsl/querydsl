@@ -30,57 +30,61 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
  * SQLUpdateClause defines a UPDATE clause
  * 
  * @author tiwe
- *
+ * 
  */
 @SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
-public class SQLUpdateClause implements UpdateClause<SQLUpdateClause>{
-    
-    private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
-    
-    private final QueryMetadata metadata = new DefaultQueryMetadata();
-    
+public class SQLUpdateClause implements UpdateClause<SQLUpdateClause> {
+
+    private static final Logger logger = LoggerFactory
+            .getLogger(SQLInsertClause.class);
+
     private final Connection connection;
-    
+
+    private final QueryMetadata metadata = new DefaultQueryMetadata();
+
     private final SQLTemplates templates;
-    
-    public SQLUpdateClause(Connection connection, SQLTemplates templates, PEntity<?> entity){
+
+    public SQLUpdateClause(Connection connection, SQLTemplates templates,
+            PEntity<?> entity) {
         this.connection = connection;
         this.templates = templates;
-        metadata.addFrom(entity);        
+        metadata.addFrom(entity);
     }
-    
+
+    protected void close(PreparedStatement stmt) {
+        try {
+            stmt.close();
+        } catch (SQLException e) {
+            throw new QueryException(e);
+        }
+    }
+
     @Override
     public long execute() {
         SQLSerializer serializer = new SQLSerializer(templates);
         serializer.serializeForUpdate(metadata);
         String queryString = serializer.toString();
         logger.debug(queryString);
-        
+
         PreparedStatement stmt = null;
         try {
             stmt = connection.prepareStatement(queryString);
             JDBCUtil.setParameters(stmt, serializer.getConstants());
             return stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
-        }finally{
-            if (stmt != null){
-                close(stmt);    
-            }                        
+            throw new QueryException("Caught " + e.getClass().getSimpleName()
+                    + " for " + queryString, e);
+        } finally {
+            if (stmt != null) {
+                close(stmt);
+            }
         }
-    }
-    
-    protected void close(PreparedStatement stmt) {
-        try {
-            stmt.close();
-        } catch (SQLException e) {
-            throw new QueryException(e);
-        }        
     }
 
     @Override
     public <T> SQLUpdateClause set(Path<T> path, T value) {
-        PSimple<T> columnPath = new PSimple<T>(path.getType(), path.getMetadata().getExpression().toString());
+        PSimple<T> columnPath = new PSimple<T>(path.getType(), path
+                .getMetadata().getExpression().toString());
         metadata.addProjection(columnPath.eq(value));
         return this;
     }

@@ -31,80 +31,82 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
  * SQLInsertClause defines a INSERT INTO clause
  * 
  * @author tiwe
- *
+ * 
  */
 @SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public class SQLInsertClause {
-    
-    private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
-    
+
+    private static final Logger logger = LoggerFactory
+            .getLogger(SQLInsertClause.class);
+
     private final List<Path<?>> columns = new ArrayList<Path<?>>();
-    
+
     private final Connection connection;
-    
+
     private final PEntity<?> entity;
-    
+
     private SubQuery<?> subQuery;
-    
+
     private final SQLTemplates templates;
-    
+
     private final List<Expr<?>> values = new ArrayList<Expr<?>>();
-    
-    public SQLInsertClause(Connection connection, SQLTemplates templates, PEntity<?> entity){
+
+    public SQLInsertClause(Connection connection, SQLTemplates templates,
+            PEntity<?> entity) {
         this.connection = connection;
         this.templates = templates;
-        this.entity = entity;    
+        this.entity = entity;
     }
-    
+
     protected void close(PreparedStatement stmt) {
         try {
             stmt.close();
         } catch (SQLException e) {
             throw new QueryException(e);
-        }        
+        }
     }
-    
-    public SQLInsertClause columns(Path<?>... columns){
+
+    public SQLInsertClause columns(Path<?>... columns) {
         this.columns.addAll(Arrays.asList(columns));
-        return this;        
+        return this;
     }
-    
+
     public long execute() {
         SQLSerializer serializer = new SQLSerializer(templates);
         serializer.serializeForInsert(entity, columns, values, subQuery);
         String queryString = serializer.toString();
         logger.debug(queryString);
-        
+
         PreparedStatement stmt = null;
         try {
             stmt = connection.prepareStatement(queryString);
             JDBCUtil.setParameters(stmt, serializer.getConstants());
             return stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
-        }finally{
-            if (stmt != null){
-                close(stmt);    
-            }                        
+            throw new QueryException("Caught " + e.getClass().getSimpleName()
+                    + " for " + queryString, e);
+        } finally {
+            if (stmt != null) {
+                close(stmt);
+            }
         }
     }
-    
-    public SQLInsertClause select(SubQuery<?> subQuery){
+
+    public SQLInsertClause select(SubQuery<?> subQuery) {
         this.subQuery = subQuery;
         return this;
     }
-    
+
     @java.lang.SuppressWarnings("unchecked")
-    public SQLInsertClause values(Object... v){
-        for (Object value : v){
-            if (value instanceof Expr){
-                values.add((Expr)value);
-            }else{
+    public SQLInsertClause values(Object... v) {
+        for (Object value : v) {
+            if (value instanceof Expr) {
+                values.add((Expr) value);
+            } else {
                 values.add(ExprConst.create(value));
             }
-        }        
+        }
         return this;
     }
-
 
 }
