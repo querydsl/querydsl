@@ -7,12 +7,11 @@ package com.mysema.query.sql.oracle;
 
 import java.util.Date;
 
-import com.mysema.query.types.expr.EComparableBase;
+import com.mysema.query.types.expr.EDate;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.path.PComparable;
+import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PathMetadataFactory;
 
 /**
  * OracleGrammar provides Oracle specific extensions to the SqlGrammar
@@ -26,11 +25,11 @@ public final class OracleGrammar {
     
     // global columns
 
-    public static final ENumber<Integer> level = new PNumber<Integer>(Integer.class, PathMetadataFactory.forVariable("level"));
+    public static final ENumber<Integer> level = new PNumber<Integer>(Integer.class, "level");
 
-    public static final ENumber<Integer> rownum = new PNumber<Integer>(Integer.class, PathMetadataFactory.forVariable("rownum"));
+    public static final ENumber<Integer> rownum = new PNumber<Integer>(Integer.class, "rownum");
 
-    public static final EComparableBase<Date> sysdate = new PComparable<Date>(Date.class, PathMetadataFactory.forVariable("sysdate"));
+    public static final EDate<Date> sysdate = new PDate<Date>(Date.class, "sysdate");
 
     // custom functions
 
