@@ -56,6 +56,8 @@ public class MetaDataExporterTest {
         NamingStrategy defaultNaming = new DefaultNamingStrategy();
         NamingStrategy originalNaming = new OriginalNamingStrategy();
         
+        // TODO : test for name conflicts
+        
         // normal settings
         test("Q", defaultNaming, "target/1");
         
