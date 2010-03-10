@@ -73,14 +73,11 @@ public class MetaDataExporter {
     
     private final Serializer serializer = new EntitySerializer(typeMappings){
         @Override 
-        protected void introDefaultInstance(CodeWriter writer, EntityType model) throws IOException {
-            String simpleName = model.getUncapSimpleName();
-            if (namePrefix.length() > 0){
-                // TODO : improve this
-                simpleName = StringUtils.uncapitalize(model.getUncapSimpleName().substring(namePrefix.length()));
-            }
-            String queryType = typeMappings.getPathType(model, model, true);            
-            writer.publicStaticFinal(queryType, simpleName, NEW + queryType + "(\"" + simpleName + "\")");
+        protected void introDefaultInstance(CodeWriter writer, EntityType entityType) throws IOException {
+            String variableName = namingStrategy.getDefaultVariableName(namePrefix, entityType);
+            String alias = namingStrategy.getDefaultAlias(namePrefix, entityType);
+            String queryType = typeMappings.getPathType(entityType, entityType, true);            
+            writer.publicStaticFinal(queryType, variableName, NEW + queryType + "(\"" + alias + "\")");
         }
     };
 
@@ -126,7 +123,7 @@ public class MetaDataExporter {
     private void handleColumn(EntityType classModel, ResultSet columns)
             throws SQLException {
         String columnName = columns.getString(4);
-        String propertyName = namingStrategy.toPropertyName(columnName);
+        String propertyName = namingStrategy.getPropertyName(columnName);
         Class<?> clazz = typeMapping.get(columns.getInt(5));
         if (clazz == null){
             throw new RuntimeException("No java type for " + columns.getString(6));
@@ -154,7 +151,7 @@ public class MetaDataExporter {
     
     private void handleTable(DatabaseMetaData md, ResultSet tables) throws SQLException {
         String tableName = tables.getString(3);
-        String className = namingStrategy.toClassName(namePrefix, tableName);
+        String className = namingStrategy.getClassName(namePrefix, tableName);
         Type classTypeModel = new SimpleType(
                 TypeCategory.ENTITY, 
                 packageName + "." + className, 

@@ -7,6 +7,7 @@ package com.mysema.query;
 
 import static com.mysema.query.Target.DERBY;
 import static com.mysema.query.Target.ORACLE;
+import static com.mysema.query.Target.SQLSERVER;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -138,7 +139,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({ORACLE,DERBY})
+    @ExcludeIn({ORACLE,DERBY,SQLSERVER})
     public void limitAndOffset() throws SQLException {
         // limit offset
         expectedQuery = "select e.id from employee2 e limit 4 offset 3";
@@ -261,7 +262,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({ORACLE, DERBY})
+    @ExcludeIn({ORACLE, DERBY, SQLSERVER})
     public void selectBooleanExpr() throws SQLException {
         // TODO : FIXME
         System.out.println(query().from(survey).list(survey.id.eq(0)));
@@ -269,7 +270,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     
     @Test
-    @ExcludeIn({ORACLE, DERBY})
+    @ExcludeIn({ORACLE, DERBY, SQLSERVER})
     public void selectBooleanExpr2() throws SQLException {
         // TODO : FIXME
         System.out.println(query().from(survey).list(survey.id.gt(0)));
@@ -314,10 +315,11 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     public void stringFunctions2() throws SQLException {
-        for (EBoolean where : Arrays.<EBoolean> asList(employee.firstname
-                .startsWith("a"), employee.firstname.startsWith("a", false),
-                employee.firstname.endsWith("a"), employee.firstname.endsWith(
-                        "a", false))) {
+        for (EBoolean where : Arrays.<EBoolean> asList(
+                employee.firstname.startsWith("a"), 
+                employee.firstname.startsWith("a", false),
+                employee.firstname.endsWith("a"), 
+                employee.firstname.endsWith("a", false))) {
             query().from(employee).where(where).list(employee.firstname);
         }
     }

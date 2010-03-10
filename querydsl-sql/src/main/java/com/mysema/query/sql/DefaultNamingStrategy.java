@@ -5,6 +5,12 @@
  */
 package com.mysema.query.sql;
 
+import java.lang.annotation.Annotation;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.mysema.query.codegen.EntityType;
+
 /**
  * DefaultNamingStrategy is the default implementation of the NamingStrategy interface
  * 
@@ -14,12 +20,12 @@ package com.mysema.query.sql;
 public class DefaultNamingStrategy implements NamingStrategy {
             
     @Override
-    public String toClassName(String namePrefix, String tableName) {
+    public String getClassName(String namePrefix, String tableName) {
         return namePrefix + tableName.substring(0,1).toUpperCase() + toCamelCase(tableName.substring(1));
     }
     
     @Override
-    public String toPropertyName(String columnName){
+    public String getPropertyName(String columnName){
         return columnName.substring(0,1).toLowerCase() + toCamelCase(columnName.substring(1));
     }
     
@@ -34,6 +40,25 @@ public class DefaultNamingStrategy implements NamingStrategy {
             }
         }
         return builder.toString();
+    }
+
+    @Override
+    public String getDefaultVariableName(String namePrefix, EntityType entityType) {
+        String simpleName = entityType.getUncapSimpleName();
+        if (namePrefix.length() > 0){
+            simpleName = StringUtils.uncapitalize(simpleName.substring(namePrefix.length()));
+        }
+        return simpleName;
+    }
+
+    @Override
+    public String getDefaultAlias(String namePrefix, EntityType entityType) {
+        for (Annotation ann : entityType.getAnnotations()){
+            if (ann.annotationType().equals(Table.class)){
+                return ((Table)ann).value();
+            }
+        }
+        return getDefaultVariableName(namePrefix, entityType);
     }
 
 }

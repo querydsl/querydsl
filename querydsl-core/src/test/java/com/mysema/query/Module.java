@@ -11,23 +11,23 @@ package com.mysema.query;
  */
 public enum Module{
     /**
-     * 
+     * querydsl-collections
      */
     COLLECTIONS,
     /**
-     * 
+     * querydsl-hql
      */
     HQL,
     /**
-     * 
+     * querydsl-jdoql
      */
     JDOQL,
     /**
-     * 
+     * rdfbean (external)
      */
     RDFBEAN,
     /**
-     * 
+     * querydsl-sql
      */
     SQL;
     

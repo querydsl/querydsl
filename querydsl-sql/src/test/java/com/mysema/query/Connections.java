@@ -19,6 +19,8 @@ import org.hsqldb.Types;
  */
 public final class Connections {
     
+    // TODO : make mssql work
+    
     private static ThreadLocal<Connection> connHolder = new ThreadLocal<Connection>();
 
     private static final String CREATE_TABLE_DATETEST = "create table date_test(date_test date)";
@@ -90,6 +92,12 @@ public final class Connections {
         return DriverManager.getConnection(url, "querydsl","querydsl");
     }
     
+    private static Connection getSQLServer() throws ClassNotFoundException, SQLException{
+        Class.forName("net.sourceforge.jtds.jdbc.Driver");
+        String url = "jdbc:jtds:sqlserver://localhost:1433/querydsl";
+        return DriverManager.getConnection(url, "querydsl","querydsl");
+    }
+    
     public static Statement getStatement(){
         return stmtHolder.get();
     }
@@ -128,6 +136,53 @@ public final class Connections {
                 + "salary decimal(10, 2), " 
                 + "datefield date, "
                 + "timefield time, "
+                + "superior_id int, "                
+                + "CONSTRAINT PK_employee PRIMARY KEY (id), "
+                + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) "
+                + "REFERENCES employee2(ID))");
+        addEmployees();
+
+        // date_test and time_test
+        safeExecute(stmt, DROP_TABLE_TIMETEST);
+        safeExecute(stmt, DROP_TABLE_DATETEST);
+        stmt.execute(CREATE_TABLE_TIMETEST);
+        stmt.execute(CREATE_TABLE_DATETEST);
+    }
+    
+    public static void initSQLServer() throws SQLException, ClassNotFoundException{
+        Connection c = getSQLServer();
+        connHolder.set(c);
+        Statement stmt = c.createStatement();
+        stmtHolder.set(stmt);
+        
+        // survey
+        safeExecute(stmt, DROP_TABLE_SURVEY);    
+        stmt.execute(CREATE_TABLE_SURVEY);
+        stmt.execute("insert into survey values (1, 'Hello World')");
+
+        // test
+        safeExecute(stmt, DROP_TABLE_TEST);
+        stmt.execute(CREATE_TABLE_TEST);
+        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
+        try{
+            for (int i = 0; i < 10000; i++) {
+                pstmt.setString(1, "name" + i);
+                pstmt.addBatch();
+            }
+            pstmt.executeBatch();    
+        }finally{
+            pstmt.close();
+        }        
+
+        // employee
+        // stmt.execute("drop table employee if exists");
+        safeExecute(stmt, DROP_TABLE_EMPLOYEE2);
+        stmt.execute("create table employee2(id int, "
+                + "firstname VARCHAR(50), " 
+                + "lastname VARCHAR(50), "
+                + "salary decimal(10, 2), " 
+                + "datefield date, "
+                + "timefield datetime, "
                 + "superior_id int, "                
                 + "CONSTRAINT PK_employee PRIMARY KEY (id), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) "

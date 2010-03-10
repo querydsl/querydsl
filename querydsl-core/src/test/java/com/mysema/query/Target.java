@@ -11,28 +11,32 @@ package com.mysema.query;
  */
 public enum Target{        
     /**
-     * 
+     * Derby
      */
     DERBY,
     /**
-     * 
+     * HSSQLDB
      */
     HSQLDB,
     /**
-     * 
+     * Memory (querydsl-collection)
      */
     MEM,
     /**
-     * 
+     * MySQL
      */
     MYSQL,
     /**
-     * 
+     * Oracle
      */
     ORACLE,
     /**
-     * 
+     * Postgres
      */
-    POSTGRES;
+    POSTGRES,
+    /**
+     * Microsoft SQL Server
+     */
+    SQLSERVER;
     
 }

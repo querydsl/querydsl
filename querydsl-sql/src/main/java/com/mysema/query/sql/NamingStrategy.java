@@ -5,12 +5,32 @@
  */
 package com.mysema.query.sql;
 
+import com.mysema.query.codegen.EntityType;
+
 /**
- * NamingStrategy defines a conversion strategy from table to class and column to property names
+ * NamingStrategy defines a conversion strategy from table to class and column
+ * to property names
  * 
  * @author tiwe
  */
 public interface NamingStrategy {
+    
+    /**
+     * Get the default variable name for the given EntityType
+     * 
+     * @param entityType
+     * @return
+     */
+    public String getDefaultVariableName(String namePrefix, EntityType entityType);
+    
+    /**
+     * Get the default alias for the given EntityType
+     * 
+     * @param namePrefix
+     * @param entityType
+     * @return
+     */
+    public String getDefaultAlias(String namePrefix, EntityType entityType);
 
     /**
      * Convert the given tableName to a simple class name with the given name prefix
@@ -19,7 +39,7 @@ public interface NamingStrategy {
      * @param tableName 
      * @return
      */
-    public String toClassName(String namePrefix, String tableName);
+    public String getClassName(String namePrefix, String tableName);
 
     /**
      * Convert the given column name to a property name
@@ -27,6 +47,6 @@ public interface NamingStrategy {
      * @param columnName
      * @return
      */
-    public String toPropertyName(String columnName);
+    public String getPropertyName(String columnName);
 
 }

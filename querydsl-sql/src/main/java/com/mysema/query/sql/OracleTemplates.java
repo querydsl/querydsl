@@ -54,7 +54,6 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.MINUTE, "to_number(to_char({0},'MI'))");
         add(Ops.DateTimeOps.SECOND, "to_number(to_char({0},'SS'))");
         
-        
         setLimitAndOffsetSymbols(false);
         setRequiresWhereForPagingSymbols(true);
         setLimitTemplate("rownum < %1$s");
