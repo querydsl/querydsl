@@ -55,7 +55,13 @@
       <version>11.1.0.6</version>
       <scope>test</scope>
     </dependency>  
-    
+    <dependency>
+      <groupId>net.sourceforge.jtds</groupId>
+      <artifactId>jtds</artifactId>
+      <version>1.2.4</version>
+      <scope>test</scope>
+    </dependency>
+        
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
