@@ -53,8 +53,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         @SuppressWarnings("unchecked")
         public List<RT> list() throws SQLException {
             if (sq[0].getMetadata().getProjection().size() == 1) {
-                return (List<RT>) IteratorAdapter.asList(AbstractSQLQuery.this
-                        .iterateSingle(null));
+                return (List<RT>) IteratorAdapter.asList(AbstractSQLQuery.this.iterateSingle(null));
             } else {
                 return (List<RT>) AbstractSQLQuery.this.iterateMultiple();
             }
@@ -98,8 +97,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     protected String buildQueryString(boolean forCountRow) {
         SQLSerializer serializer = createSerializer();
         if (sq != null) {
-            serializer
-                    .serializeUnion(sq, queryMixin.getMetadata().getOrderBy());
+            serializer.serializeUnion(sq, queryMixin.getMetadata().getOrderBy());
         } else {
             serializer.serialize(queryMixin.getMetadata(), forCountRow);
         }
