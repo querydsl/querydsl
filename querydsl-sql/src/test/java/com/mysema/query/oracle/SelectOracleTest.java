@@ -46,23 +46,22 @@ public class SelectOracleTest extends SelectBaseTest {
     
 
     @Test
-    public void testConnectByPrior() throws SQLException{
-        expectedQuery = 
-                "select employee.id, employee.lastname, employee.superior_id " +
-                        "from employee employee " +
-                        "connect by prior employee.id = employee.superior_id";
+    public void connectByPrior() throws SQLException{
+        expectedQuery =  "select e.id, e.lastname, e.superior_id " +
+                        "from employee2 e " +
+                        "connect by prior e.id = e.superior_id";
         qo().from(employee)
             .connectByPrior(employee.id.eq(employee.superiorId))
             .list(employee.id, employee.lastname, employee.superiorId);
     }
     
     @Test
-    public void testConnectByPrior2() throws SQLException{
+    public void connectByPrior2() throws SQLException{
         expectedQuery = 
-                "select employee.id, employee.lastname, employee.superior_id " +
-                "from employee employee " +
-                "start with employee.id = ? " +
-                "connect by prior employee.id = employee.superior_id";
+                "select e.id, e.lastname, e.superior_id " +
+                "from employee2 e " +
+                "start with e.id = ? " +
+                "connect by prior e.id = e.superior_id";
         qo().from(employee)
             .startWith(employee.id.eq(1))
             .connectByPrior(employee.id.eq(employee.superiorId))
@@ -70,13 +69,13 @@ public class SelectOracleTest extends SelectBaseTest {
     }
     
     @Test
-    public void testConnectByPrior3() throws SQLException{
+    public void connectByPrior3() throws SQLException{
         expectedQuery = 
-                "select employee.id, employee.lastname, employee.superior_id " +
-                "from employee employee " +
-                "start with employee.id = ? " +                
-                "connect by prior employee.id = employee.superior_id " +
-                "order siblings by employee.lastname";
+                "select e.id, e.lastname, e.superior_id " +
+                "from employee2 e " +
+                "start with e.id = ? " +                
+                "connect by prior e.id = e.superior_id " +
+                "order siblings by e.lastname";
         qo().from(employee)
             .startWith(employee.id.eq(1))
             .connectByPrior(employee.id.eq(employee.superiorId))
@@ -85,11 +84,11 @@ public class SelectOracleTest extends SelectBaseTest {
     }
     
     @Test
-    public void testConnectByPrior4() throws SQLException{
+    public void connectByPrior4() throws SQLException{
         expectedQuery = 
-                "select employee.id, employee.lastname, employee.superior_id " +
-                "from employee employee " +
-                "connect by nocycle prior employee.id = employee.superior_id";
+                "select e.id, e.lastname, e.superior_id " +
+                "from employee2 e " +
+                "connect by nocycle prior e.id = e.superior_id";
         qo().from(employee)
             .connectByNocyclePrior(employee.id.eq(employee.superiorId))
             .list(employee.id, employee.lastname, employee.superiorId);
@@ -97,7 +96,7 @@ public class SelectOracleTest extends SelectBaseTest {
     
     @Test
     @Ignore
-    public void testConnectBy() throws SQLException{
+    public void connectBy() throws SQLException{
         // TODO : come up with a legal case
         qo().from(employee)
             .where(level.eq(-1))
@@ -117,10 +116,10 @@ public class SelectOracleTest extends SelectBaseTest {
 //        8  sum(sal) over () TotSal
 //        9  from emp
 //       10  order by deptno, sal;
-        expectedQuery = "select employee.lastname, employee.salary, " +
-                        "sum(employee.salary) over (partition by employee.superior_id order by employee.lastname, employee.salary), " +
-                        "sum(employee.salary) over ( order by employee.superior_id, employee.salary), " +
-                        "sum(employee.salary) over () from employee employee order by employee.salary asc, employee.superior_id asc";
+        expectedQuery = "select e.lastname, e.salary, " +
+            "sum(e.salary) over (partition by e.superior_id order by e.lastname, e.salary), " +
+            "sum(e.salary) over ( order by e.superior_id, e.salary), " +
+            "sum(e.salary) over () from employee2 e order by e.salary asc, e.superior_id asc";
         qo().from(employee)
             .orderBy(employee.salary.asc(), employee.superiorId.asc())
             .list(

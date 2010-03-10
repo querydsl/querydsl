@@ -108,6 +108,8 @@ public class SQLTemplates extends Templates {
     private String values = "\nvalues ";
 
     private String where = "\nwhere ";
+    
+    private boolean requiresWhereForPagingSymbols = false;
 
     protected SQLTemplates() {
         // boolean
@@ -521,6 +523,15 @@ public class SQLTemplates extends Templates {
             case LEFTJOIN:  return leftJoin;
         }
         return ", ";
+    }
+
+    public final boolean isRequiresWhereForPagingSymbols() {
+        return requiresWhereForPagingSymbols;
+    }
+
+    public final void setRequiresWhereForPagingSymbols(
+            boolean requiresWhereForPagingSymbols) {
+        this.requiresWhereForPagingSymbols = requiresWhereForPagingSymbols;
     }
 
     

@@ -172,7 +172,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     @IncludeIn(ORACLE)
     public void limitAndOffsetInOracle() throws SQLException {
-        String prefix = "select employee.id from employee employee ";
+        String prefix = "select e.id from employee2 e ";
 
         // limit
         expectedQuery = prefix + "where rownum < 4";

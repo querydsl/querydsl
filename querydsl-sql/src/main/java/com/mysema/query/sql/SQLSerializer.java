@@ -150,7 +150,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (metadata.getModifiers().isRestricting() && !forCountRow){
             Long limit = metadata.getModifiers().getLimit();
             Long offset = metadata.getModifiers().getOffset();
-            serializeModifiers(limit, offset);
+            serializeModifiers(where, limit, offset);
         }
         
     }
@@ -208,9 +208,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
     }
 
-    private void serializeModifiers(Long limit, Long offset) {
+    private void serializeModifiers(@Nullable EBoolean where, Long limit, Long offset) {
         if (!templates.isLimitAndOffsetSymbols()){
-            append(" ");
+            if (where == null && templates.isRequiresWhereForPagingSymbols()){
+                append(templates.getWhere());
+            }else{
+                append(" ");    
+            }
             append(templates.getLimitOffsetCondition(limit, offset));
         }else{
             if (limit != null) {

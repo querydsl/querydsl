@@ -31,6 +31,8 @@ public final class Connections {
 
     private static final String DROP_TABLE_DATETEST = "drop table date_test";
 
+    private static final String DROP_TABLE_EMPLOYEE2 = "drop table employee2";
+    
     private static final String DROP_TABLE_SURVEY = "drop table survey";
 
     private static final String DROP_TABLE_TEST = "drop table test";
@@ -119,7 +121,7 @@ public final class Connections {
 
         // employee
         // stmt.execute("drop table employee if exists");
-        safeExecute(stmt, "drop table employee2");
+        safeExecute(stmt, DROP_TABLE_EMPLOYEE2);
         stmt.execute("create table employee2(id int, "
                 + "firstname VARCHAR(50), " 
                 + "lastname VARCHAR(50), "
@@ -238,12 +240,12 @@ public final class Connections {
         stmtHolder.set(stmt);
         
         // survey
-        safeExecute(stmt, "drop table survey");
+        safeExecute(stmt, DROP_TABLE_SURVEY);
         stmt.execute("create table survey (id number(10,0),name varchar(30))");
         stmt.execute("insert into survey values (1, 'Hello World')");
         
         // test
-        safeExecute(stmt, "drop table test");
+        safeExecute(stmt, DROP_TABLE_TEST);
         stmt.execute("create table test(name varchar(255))");
         String sql  = "insert into test values(?)";
         PreparedStatement pstmt = c.prepareStatement(sql);
@@ -254,19 +256,24 @@ public final class Connections {
         pstmt.executeBatch();
         
         // employee
-        safeExecute(stmt, "drop table employee");
-        stmt.execute("create table employee(id number(10,0), "
-                + "firstname VARCHAR(50), " + "lastname VARCHAR(50), "
-                + "salary decimal(10, 2), " + "superior_id number(10,0), "
+
+        safeExecute(stmt, DROP_TABLE_EMPLOYEE2);
+        stmt.execute("create table employee2(id number(10,0), "
+                + "firstname VARCHAR(50), " 
+                + "lastname VARCHAR(50), "
+                + "salary decimal(10, 2), " 
+                + "datefield date, "
+                + "timefield timestamp, "
+                + "superior_id number(10,0), "
                 + "CONSTRAINT PK_employee PRIMARY KEY (id), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) "
-                + "REFERENCES employee(ID))");
+                + "REFERENCES employee2(ID))");
         addEmployees();
         
         // date_test and time_test
-//        executeSafe("drop table time_test");
-        safeExecute(stmt, "drop table date_test");
-//        stmt.execute("create table time_test(time_test time)");
+//      executeSafe("drop table time_test");
+//      stmt.execute("create table time_test(time_test time)");
+        safeExecute(stmt, DROP_TABLE_DATETEST);
         stmt.execute("create table date_test(date_test date)");        
     }
     
@@ -298,7 +305,7 @@ public final class Connections {
 
         // employee
         // stmt.execute("drop table employee if exists");
-        safeExecute(stmt, "drop table employee2");
+        safeExecute(stmt, DROP_TABLE_EMPLOYEE2);
         stmt.execute("create table employee2(id int, "
                 + "firstname VARCHAR(50), " 
                 + "lastname VARCHAR(50), "

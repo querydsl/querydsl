@@ -12,6 +12,7 @@ import com.mysema.query.types.operation.Ops;
 
 /**
  * MySQLTemplates is an SQL dialect for MySQL
+ * tested with MySQL CE 5.1
  * 
  * @author tiwe
  *

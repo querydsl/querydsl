@@ -10,7 +10,9 @@ import java.math.BigInteger;
 import com.mysema.query.types.operation.Ops;
 
 /**
- * OracleDialect is an Oracle specific extension of SqlOps
+ * OracleTemplates is an SQL dialect for Oracle
+ * 
+ * tested with Oracle 10g XE
  * 
  * @author tiwe
  * @version $Id$
@@ -29,6 +31,9 @@ public class OracleTemplates extends SQLTemplates {
 
         // String
         add(Ops.CONCAT, "{0} || {1}");
+        add(Ops.INDEX_OF, "instrb({0},{1})-1");
+        add(Ops.INDEX_OF_2ARGS, "instrb({0},{1},{2}+1)-1");
+        add(Ops.MATCHES, "regexp_like({0},{1})");
         add(Ops.StringOps.SPACE, "lpad('',{0},' ')");
         
         // Number
@@ -39,16 +44,18 @@ public class OracleTemplates extends SQLTemplates {
 
         // Date / time
         add(Ops.DateTimeOps.YEAR, "extract(year from {0})");
+        add(Ops.DateTimeOps.YEAR_MONTH, "extract(year from {0}) * 100 + extract(month from {0})");
         add(Ops.DateTimeOps.MONTH, "extract(month from {0})");
         add(Ops.DateTimeOps.WEEK, "to_number(to_char({0},'WW'))");
         add(Ops.DateTimeOps.HOUR, "to_number(to_char({0},'HH24'))");
         add(Ops.DateTimeOps.MINUTE, "to_number(to_char({0},'MI'))");
         add(Ops.DateTimeOps.SECOND, "to_number(to_char({0},'SS'))");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "to_number(to_char({0},'DD'))");
-        add(Ops.DateTimeOps.DAY_OF_WEEK, "to_number(to_char({0},'D'))");
+        add(Ops.DateTimeOps.DAY_OF_WEEK, "to_number(to_char({0},'D')) + 1");
         add(Ops.DateTimeOps.DAY_OF_YEAR, "to_number(to_char({0},'DDD'))");
-
+        
         setLimitAndOffsetSymbols(false);
+        setRequiresWhereForPagingSymbols(true);
         setLimitTemplate("rownum < %1$s");
         setOffsetTemplate("rownum > %1$s");
         setLimitOffsetTemplate("rownum between %1$s and %3$s");
