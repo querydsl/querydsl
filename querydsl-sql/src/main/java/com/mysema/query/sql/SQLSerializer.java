@@ -240,23 +240,18 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
     }
 
-    public void serializeForInsert(PEntity<?> entity, List<Expr<?>> columns, List<Expr<?>> values, @Nullable SubQuery<?> subQuery) {
+    public void serializeForInsert(PEntity<?> entity, List<Path<?>> columns, List<Expr<?>> values, @Nullable SubQuery<?> subQuery) {
         append(templates.getInsertInto());        
         append(entity.getAnnotatedElement().getAnnotation(Table.class).value());
         // columns
         if (!columns.isEmpty()){
             append("(");
             boolean first = true;
-            for (Expr<?> column : columns){
+            for (Path<?> column : columns){
                 if (!first){
                     append(COMMA);                    
                 }                
-                if (column instanceof Path<?>){
-                    Path<?> path = (Path<?>)column;
-                    append(path.getMetadata().getExpression().toString());
-                }else{
-                    handle(column);
-                }
+                append(column.getMetadata().getExpression().toString());
                 first = false;
             }
             append(")");

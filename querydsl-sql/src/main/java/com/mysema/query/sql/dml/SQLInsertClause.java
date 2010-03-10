@@ -21,6 +21,7 @@ import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.Path;
 import com.mysema.query.types.query.SubQuery;
 import com.mysema.util.JDBCUtil;
 
@@ -37,7 +38,7 @@ public class SQLInsertClause {
     
     private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
     
-    private final List<Expr<?>> columns = new ArrayList<Expr<?>>();
+    private final List<Path<?>> columns = new ArrayList<Path<?>>();
     
     private final Connection connection;
     
@@ -63,7 +64,7 @@ public class SQLInsertClause {
         }        
     }
     
-    public SQLInsertClause columns(Expr<?>... columns){
+    public SQLInsertClause columns(Path<?>... columns){
         this.columns.addAll(Arrays.asList(columns));
         return this;        
     }
