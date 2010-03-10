@@ -39,6 +39,8 @@ import com.mysema.query.types.query.SubQuery;
  */
 public final class HQLSerializer extends SerializerBase<HQLSerializer> {
 
+    private static final String SELECT_COUNT_DISTINCT = "select count(distinct ";
+
     private static final String AS = " as ";
 
     private static final String COMMA = ", ";
@@ -142,7 +144,7 @@ public final class HQLSerializer extends SerializerBase<HQLSerializer> {
             if (!metadata.isDistinct()){
                 append(SELECT_COUNT_ALL);
             }else{
-                append("select count(distinct ");
+                append(SELECT_COUNT_DISTINCT);
                 if(!select.isEmpty()){
                     handle(COMMA, select);    
                 }else{

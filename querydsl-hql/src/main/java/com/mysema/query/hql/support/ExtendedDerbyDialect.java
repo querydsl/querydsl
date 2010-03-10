@@ -21,18 +21,20 @@ import org.hibernate.engine.SessionFactoryImplementor;
  */
 public class ExtendedDerbyDialect extends DerbyDialect{
     
+    private static final CastFunction castFunction = new CastFunction(){
+        @SuppressWarnings("unchecked")
+        public String render(List args, SessionFactoryImplementor factory) throws QueryException {
+            if (args.get(1).equals("string")){
+                return super.render(Arrays.<Object>asList("char("+args.get(0)+")",args.get(1)), factory);    
+            }else{
+                return super.render(args, factory);
+            }                
+        }
+    }; 
+    
     public ExtendedDerbyDialect(){
         registerFunction( "concat", new VarArgsSQLFunction( Hibernate.STRING, "cast ((","||",") as varchar(128))" ) );
-        registerFunction( "cast", new CastFunction(){
-            @SuppressWarnings("unchecked")
-            public String render(List args, SessionFactoryImplementor factory) throws QueryException {
-                if (args.get(1).equals("string")){
-                    return super.render(Arrays.<Object>asList("char("+args.get(0)+")",args.get(1)), factory);    
-                }else{
-                    return super.render(args, factory);
-                }                
-            }
-        } );
+        registerFunction( "cast", castFunction );
     }
 
 }

@@ -11,8 +11,6 @@ import java.util.List;
 import net.jcip.annotations.Immutable;
 
 import org.apache.commons.collections15.IteratorUtils;
-import org.apache.commons.collections15.Predicate;
-import org.apache.commons.collections15.Transformer;
 
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
@@ -38,11 +36,7 @@ public class IteratorFactory {
     }
 
     private <S> Iterator<S> multiArgFilter(Iterator<S> source, final Evaluator<Boolean> ev) {
-        return IteratorUtils.filteredIterator(source, new Predicate<S>() {
-            public boolean evaluate(S object) {
-                return ev.evaluate((Object[]) object).booleanValue();
-            }
-        });
+        return IteratorUtils.filteredIterator(source, new EvaluatorPredicate<S>(ev));
     }
 
     public <S, T> Iterator<T> transform(Iterator<S> source, List<Expr<?>> sources, Expr<T> projection) {
@@ -51,30 +45,15 @@ public class IteratorFactory {
     }
 
     private <S, T> Iterator<T> transform(Iterator<S> source, final Evaluator<T> ev) {
-        return IteratorUtils.transformedIterator(source,
-                new Transformer<S, T>() {
-                    public T transform(S input) {
-                        return ev.evaluate((Object[]) input);
-                    }
-                });
+        return IteratorUtils.transformedIterator(source, new EvaluatorTransformer<S, T>(ev));
     }
 
     public <S> Iterator<S> singleArgFilter(Iterator<S> source, final Evaluator<Boolean> ev) {
-        return IteratorUtils.filteredIterator(source, new Predicate<S>() {
-            public boolean evaluate(S object) {
-                return ev.evaluate(object);
-            }
-        });
+        return IteratorUtils.filteredIterator(source, new SingleArgEvaluatorPredicate<S>(ev));
     }
 
     public <S> Iterator<S[]> toArrayIterator(Iterator<S> source) {
-        return IteratorUtils.transformedIterator(source,
-                new Transformer<S, S[]>() {
-                    @SuppressWarnings("unchecked")
-                    public S[] transform(S input) {
-                        return (S[])new Object[]{input};
-                    }
-                });
+        return IteratorUtils.transformedIterator(source, new ArrayTransformer<S>());
     }
 
 }

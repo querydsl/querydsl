@@ -172,21 +172,25 @@ public class EntitySerializer implements Serializer{
         
         for (Property field : model.getProperties()){            
             if (field.getType().getCategory() == TypeCategory.ENTITY){
-                String queryType = typeMappings.getPathType(field.getType(), model, false);                               
-                if (!field.isInherited()){          
-                    writer.line("this." + field.getEscapedName() + ASSIGN,
-                        "inits.isInitialized(\""+field.getName()+"\") ? ",
-                        NEW + queryType + "(forProperty(\"" + field.getName() + "\")",
-                        field.getType().hasEntityFields() ? (", inits.get(\""+field.getName()+"\")") : EMPTY,
-                        ") : null;");
-                }else if (!config.useEntityAccessors()){
-                    writer.line("this.", field.getEscapedName(), ASSIGN, "_super.", field.getEscapedName(), SEMICOLON);
-                }   
+                initEntityField(writer, config, model, field);   
                 
             }else if (field.isInherited() && superType != null && superType.hasEntityFields()){
                 writer.line("this.", field.getEscapedName(), " = _super.", field.getEscapedName(), SEMICOLON);
             }
         }        
+    }
+
+    private void initEntityField(CodeWriter writer, SerializerConfig config, EntityType model, Property field) throws IOException {
+        String queryType = typeMappings.getPathType(field.getType(), model, false);                               
+        if (!field.isInherited()){          
+            writer.line("this." + field.getEscapedName() + ASSIGN,
+                "inits.isInitialized(\""+field.getName()+"\") ? ",
+                NEW + queryType + "(forProperty(\"" + field.getName() + "\")",
+                field.getType().hasEntityFields() ? (", inits.get(\""+field.getName()+"\")") : EMPTY,
+                ") : null;");
+        }else if (!config.useEntityAccessors()){
+            writer.line("this.", field.getEscapedName(), ASSIGN, "_super.", field.getEscapedName(), SEMICOLON);
+        }
     }
 
     protected void intro(EntityType model, SerializerConfig config, CodeWriter writer) throws IOException {                

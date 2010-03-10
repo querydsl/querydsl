@@ -5,6 +5,12 @@
  */
 package com.mysema.query.types;
 
+import static com.mysema.query.types.Converter.toContainsViaLike;
+import static com.mysema.query.types.Converter.toEndsWithViaLike;
+import static com.mysema.query.types.Converter.toLowerCase;
+import static com.mysema.query.types.Converter.toStartsWithViaLike;
+import static com.mysema.query.types.Converter.toUpperCase;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,9 +21,6 @@ import java.util.regex.Pattern;
 import net.jcip.annotations.Immutable;
 
 import com.mysema.query.types.Template.Element;
-import com.mysema.query.types.expr.Constant;
-import com.mysema.query.types.expr.EString;
-import com.mysema.query.types.expr.EStringConst;
 
 /**
  * @author tiwe
@@ -29,56 +32,9 @@ public class TemplateFactory {
     private static final Pattern elementPattern = Pattern.compile("\\{%?\\d+[slu%]?\\}");
 
     public static final TemplateFactory DEFAULT = new TemplateFactory();
-    
-    private final Converter<EString,EString> toLowerCase = new Converter<EString,EString>(){
-        @Override
-        public EString convert(EString arg) {
-            return arg.toLowerCase();
-        } 
-    };
-    
-    private final Converter<EString,EString> toUpperCase = new Converter<EString,EString>(){
-        @Override
-        public EString convert(EString arg) {
-            return arg.toUpperCase();
-        } 
-    };
-    
-    private final Converter<EString,EString> toStartsWithViaLike = new Converter<EString,EString>(){
-        @Override
-        public EString convert(EString arg) {
-            return escapeForLike(arg).append("%");
-        } 
-    };
-    
-    private final Converter<EString,EString> toEndsWithViaLike = new Converter<EString,EString>(){
-        @Override
-        public EString convert(EString arg) {
-            return escapeForLike(arg).prepend("%");
-        } 
-    };
-    
-    private final Converter<EString,EString> toContainsViaLike = new Converter<EString,EString>(){
-        @Override
-        public EString convert(EString arg) {
-            return escapeForLike(arg).prepend("%").append("%");
-        }
-    };
-    
+        
     private final Map<String,Template> cache = new HashMap<String,Template>();
-    
-    @SuppressWarnings("unchecked")
-    private EString escapeForLike(EString expr){
-        if (expr instanceof Constant){
-            String str = ((Constant<String>) expr).getConstant();
-            if (str.contains("%") || str.contains("_")){
-                str = str.replace("%", "\\%").replace("_", "\\_");
-                return EStringConst.create(str);
-            }                
-        }        
-        return expr;
-    }
-    
+        
     public Template create(String template){
         if (cache.containsKey(template)){
             return cache.get(template);
