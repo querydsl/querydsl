@@ -54,15 +54,4 @@ public class QuerydslAnnotationProcessorTest {
         process(classes);
     }
     
-//    @Test
-//    public void inheritance2Test() {
-//        process(Collections.singletonList(packagePath + "Inheritance2Test.java"));
-//    }
-//    
-//    @Test
-//    @Ignore
-//    public void inheritanceTest() {
-//        process(Collections.singletonList(packagePath + "InheritanceTest.java"));
-//    }
-
 }
