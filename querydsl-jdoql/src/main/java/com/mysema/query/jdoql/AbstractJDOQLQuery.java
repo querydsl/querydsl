@@ -18,6 +18,7 @@ import javax.jdo.Query;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -72,7 +73,12 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         Query query = createQuery(true);
         query.setUnique(true);
         reset();
-        return (Long) execute(query);
+        Long rv = (Long) execute(query);
+        if (rv != null){
+            return rv.longValue();
+        }else{
+            throw new QueryException("Query returned null");
+        }
     }
 
     private Query createQuery(boolean forCount) {        

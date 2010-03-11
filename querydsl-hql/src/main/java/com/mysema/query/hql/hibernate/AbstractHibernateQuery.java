@@ -6,7 +6,6 @@
 package com.mysema.query.hql.hibernate;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -63,18 +63,20 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         this.session = session;
     }
     
+    @Override
     public long count() {
         QueryModifiers modifiers = getMetadata().getModifiers();
         String queryString = toCountRowsString();
         logQuery(queryString);
         Query query = createQuery(queryString, modifiers);
         reset();
-        return (Long)query.uniqueResult();
+        Long rv = (Long)query.uniqueResult();
+        if (rv != null){
+            return rv.longValue();
+        }else{
+            throw new QueryException("Query returned null");
+        }
     }       
-    
-    public long count(Expr<?> expr) {
-        return uniqueResult(expr.count());
-    }
     
     /**
      * Expose the original Hibernate query for the given projection 
