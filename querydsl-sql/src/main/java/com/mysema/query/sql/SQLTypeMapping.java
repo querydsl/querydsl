@@ -69,8 +69,7 @@ public final class SQLTypeMapping {
         sqlToJavaType.put(Types.REF, Object.class);
         sqlToJavaType.put(Types.ROWID, Object.class);
         sqlToJavaType.put(Types.STRUCT, Object.class);
-        sqlToJavaType.put(Types.VARBINARY, Object.class);
-        
+        sqlToJavaType.put(Types.VARBINARY, Object.class);        
     }
 
     @Nullable

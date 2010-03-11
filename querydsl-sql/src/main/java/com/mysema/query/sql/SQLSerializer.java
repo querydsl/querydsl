@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mysema.commons.lang.Pair;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
@@ -24,6 +25,7 @@ import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
@@ -38,17 +40,36 @@ import com.mysema.query.types.query.SubQuery;
  */
 public class SQLSerializer extends SerializerBase<SQLSerializer> {
     
+    // TODO : improved table and column serialization
+    
     private static final String COMMA = ", ";
 
     private final List<Object> constants = new ArrayList<Object>();
     
+    private final boolean dml;
+    
+    private PEntity<?> entity;
+    
     private final SQLTemplates templates;
 
     public SQLSerializer(SQLTemplates templates) {
+        this(templates, false);
+    }
+    
+    public SQLSerializer(SQLTemplates templates, boolean dml) {
         super(templates);
         this.templates = templates;
+        this.dml = dml;
     }
 
+    private void appendAsColumnName(Path<?> path){
+        append(path.getMetadata().getExpression().toString());
+    }
+    
+    private void appendAsTableName(Path<?> path){
+        append(path.getAnnotatedElement().getAnnotation(Table.class).value());
+    }
+    
     protected void beforeOrderBy() {
         // template method, for subclasses do override
     }
@@ -56,11 +77,32 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     public List<Object> getConstants(){
         return constants;
     }
-    
+
+    private List<Expr<?>> getIdentifierColumns(List<JoinExpression> joins) {
+        // TODO : get only identifier columns, maybe from @Table annotation
+        try {
+            List<Expr<?>> columns = new ArrayList<Expr<?>>();
+            for (JoinExpression j : joins) {
+                for (Field field : j.getTarget().getClass().getFields()) {
+                    if (Expr.class.isAssignableFrom(field.getType())){
+                        Expr<?> column = (Expr<?>) field.get(j.getTarget());
+                        columns.add(column);    
+                    }                    
+                }
+            }
+            return columns;
+        } catch (IllegalArgumentException e) {
+            throw new QueryException(e);
+        } catch (IllegalAccessException e) {
+            throw new QueryException(e);
+        }
+            
+    }
+
     protected SQLTemplates getTemplates(){
         return templates;
     }
-    
+
     @SuppressWarnings("unchecked")
     private void handleJoinTarget(JoinExpression je) {
         // type specifier
@@ -73,7 +115,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
         handle(je.getTarget());
     }
-
+    
     @SuppressWarnings("unchecked")
     public void serialize(QueryMetadata metadata, boolean forCountRow) {
         List<? extends Expr<?>> select = metadata.getProjection();
@@ -154,26 +196,101 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
         
     }
-
-    private List<Expr<?>> getIdentifierColumns(List<JoinExpression> joins) {
-        // TODO : get only identifier columns, maybe from @Table annotation
-        try {
-            List<Expr<?>> columns = new ArrayList<Expr<?>>();
-            for (JoinExpression j : joins) {
-                for (Field field : j.getTarget().getClass().getFields()) {
-                    if (Expr.class.isAssignableFrom(field.getType())){
-                        Expr<?> column = (Expr<?>) field.get(j.getTarget());
-                        columns.add(column);    
-                    }                    
-                }
-            }
-            return columns;
-        } catch (IllegalArgumentException e) {
-            throw new QueryException(e);
-        } catch (IllegalAccessException e) {
-            throw new QueryException(e);
+    
+    public void serializeForDelete(PEntity<?> entity, EBoolean where) {
+        this.entity = entity;
+        append(templates.getDeleteFrom());
+        handle(entity);
+        if (where != null) {
+            append(templates.getWhere()).handle(where);
         }
-            
+    }
+
+    public void serializeForInsert(PEntity<?> entity, List<Path<?>> columns, 
+            List<Expr<?>> values, @Nullable SubQuery<?> subQuery) {
+        this.entity = entity;
+        append(templates.getInsertInto());        
+        handle(entity);
+        // columns
+        if (!columns.isEmpty()){
+            append("(");
+            boolean first = true;
+            for (Path<?> column : columns){
+                if (!first){
+                    append(COMMA);                    
+                }                
+                handle(column.asExpr());
+                first = false;
+            }
+            append(")");
+        }
+        
+        if (subQuery != null){
+            append("\n");
+            serialize(subQuery.getMetadata(), false);
+        }else{            
+            // values
+            append(templates.getValues());
+            append("(");
+            handle(COMMA, values);
+            append(")");            
+        }
+    }
+
+    public void serializeForUpdate(PEntity<?> entity, 
+            List<Pair<Path<?>, ?>> updates, EBoolean where) {
+        this.entity = entity;
+        append(templates.getUpdate());
+        handle(entity);
+        append("\nset ");
+        boolean first = true;
+        for (Pair<Path<?>,?> update : updates){
+            if (!first){
+                append(COMMA);
+            }
+            handle(update.getFirst().asExpr());
+            append(" = ");
+            if (update.getSecond() instanceof Expr<?>){
+                handle((Expr<?>)update.getSecond());
+            }else{
+                handle(ExprConst.create(update.getSecond()));
+            }
+            first = false;
+        }
+        if (where != null) {
+            append(templates.getWhere()).handle(where);
+        }
+    }
+    
+    private void serializeModifiers(@Nullable EBoolean where, Long limit, Long offset) {
+        if (!templates.isLimitAndOffsetSymbols()){
+            if (where == null && templates.isRequiresWhereForPagingSymbols()){
+                append(templates.getWhere());
+            }else{
+                append(" ");    
+            }
+            append(templates.getLimitOffsetCondition(limit, offset));
+        }else{
+            if (limit != null) {
+                append(templates.getLimit()).append(String.valueOf(limit));
+            }
+            if (offset != null) {
+                append(templates.getOffset()).append(String.valueOf(offset));
+            }   
+        }
+    }
+
+    private void serializeOrderBy(List<OrderSpecifier<?>> orderBy) {
+        append(templates.getOrderBy());
+        boolean first = true;
+        for (OrderSpecifier<?> os : orderBy) {
+            if (!first){
+                append(COMMA);
+            }                    
+            handle(os.getTarget());
+            append(os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc());
+            first = false;
+        }
     }
 
     private void serializeSources(List<JoinExpression> joins) {
@@ -195,88 +312,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
     }
 
-    private void serializeOrderBy(List<OrderSpecifier<?>> orderBy) {
-        append(templates.getOrderBy());
-        boolean first = true;
-        for (OrderSpecifier<?> os : orderBy) {
-            if (!first){
-                append(COMMA);
-            }                    
-            handle(os.getTarget());
-            append(os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc());
-            first = false;
-        }
-    }
-
-    private void serializeModifiers(@Nullable EBoolean where, Long limit, Long offset) {
-        if (!templates.isLimitAndOffsetSymbols()){
-            if (where == null && templates.isRequiresWhereForPagingSymbols()){
-                append(templates.getWhere());
-            }else{
-                append(" ");    
-            }
-            append(templates.getLimitOffsetCondition(limit, offset));
-        }else{
-            if (limit != null) {
-                append(templates.getLimit()).append(String.valueOf(limit));
-            }
-            if (offset != null) {
-                append(templates.getOffset()).append(String.valueOf(offset));
-            }   
-        }
-    }
-    
-    public void serializeForDelete(QueryMetadata md) {
-        append(templates.getDeleteFrom());
-        handleJoinTarget(md.getJoins().get(0));        
-        if (md.getWhere() != null) {
-            append(templates.getWhere()).handle(md.getWhere());
-        }
-    }
-
-    public void serializeForUpdate(QueryMetadata md) {
-        append(templates.getUpdate());
-        handleJoinTarget(md.getJoins().get(0));
-        append("\nset ");
-        handle(COMMA, md.getProjection());
-        if (md.getWhere() != null) {
-            append(templates.getWhere()).handle(md.getWhere());
-        }
-    }
-
-    public void serializeForInsert(PEntity<?> entity, List<Path<?>> columns, List<Expr<?>> values, @Nullable SubQuery<?> subQuery) {
-        append(templates.getInsertInto());        
-        append(entity.getAnnotatedElement().getAnnotation(Table.class).value());
-        // columns
-        if (!columns.isEmpty()){
-            append("(");
-            boolean first = true;
-            for (Path<?> column : columns){
-                if (!first){
-                    append(COMMA);                    
-                }                
-                append(column.getMetadata().getExpression().toString());
-                first = false;
-            }
-            append(")");
-        }
-        
-        if (subQuery != null){
-            append("\n");
-            serialize(subQuery.getMetadata(), false);
-        }else{            
-            // values
-            append(templates.getValues());
-            append("(");
-            handle(COMMA, values);
-            append(")");            
-        }
-    }
-
 
     @SuppressWarnings("unchecked")
-    public void serializeUnion(SubQuery[] sqs,
-            List<OrderSpecifier<?>> orderBy) {
+    public void serializeUnion(SubQuery[] sqs, List<OrderSpecifier<?>> orderBy) {
         // union
         handle(templates.getUnion(), (List)Arrays.asList(sqs));
 
@@ -315,6 +353,20 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             append("?");
             constants.add(expr.getConstant());    
         }        
+    }
+    
+    public void visit(Path<?> path) {
+        if (dml){
+            if (path.equals(entity)){
+                appendAsTableName(path);
+            }else if (entity.equals(path.getMetadata().getParent())){
+                appendAsColumnName(path);
+            }else{
+                super.visit(path);
+            }
+        }else{
+            super.visit(path);
+        }
     }
 
     @Override
@@ -356,5 +408,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             super.visitOperation(type, operator, args);
         }
     }
+
 
 }

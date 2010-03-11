@@ -79,9 +79,14 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @ExcludeIn({DERBY})
     public void casts() throws SQLException {
         ENumber<?> num = employee.id;
-        Expr<?>[] expr = new Expr[] { num.byteValue(), num.doubleValue(),
-                num.floatValue(), num.intValue(), num.longValue(),
-                num.shortValue(), num.stringValue() };
+        Expr<?>[] expr = new Expr[] { 
+                num.byteValue(), 
+                num.doubleValue(),
+                num.floatValue(), 
+                num.intValue(), 
+                num.longValue(),
+                num.shortValue(), 
+                num.stringValue() };
 
         for (Expr<?> e : expr) {
             query().from(employee).list(e);
@@ -91,10 +96,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     
     @Test
     public void constructor() throws Exception {
-        for (IdName idName : query().from(survey).list(
-                new QIdName(survey.id, survey.name))) {
-            System.out.println("id and name : " + idName.getId() + ","
-                    + idName.getName());
+        for (IdName idName : query().from(survey).list(new QIdName(survey.id, survey.name))) {
+            System.out.println("id and name : " + idName.getId() + ","+ idName.getName());
         }
     }
     
@@ -123,24 +126,34 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     public void join() throws Exception {
-        for (String name : query().from(survey, survey2).where(
-                survey.id.eq(survey2.id)).list(survey.name)) {
+        for (String name : query().from(survey, survey2)
+            .where(survey.id.eq(survey2.id)).list(survey.name)) {
             System.out.println(name);
         }
     }
 
     @Test
     public void joins() throws SQLException {
-        for (Object[] row : query().from(employee).innerJoin(employee2).on(
-                employee.superiorId.eq(employee2.superiorId)).where(
-                employee2.id.eq(10)).list(employee.id, employee2.id)) {
+        for (Object[] row : query().from(employee).innerJoin(employee2)
+                .on(employee.superiorId.eq(employee2.superiorId))
+                .where(employee2.id.eq(10))
+                .list(employee.id, employee2.id)) {
             System.out.println(row[0] + ", " + row[1]);
         }
+    }
+    
+    @Test
+    public void limitAndOffset() throws SQLException {
+        // limit offset
+        query().from(employee).limit(4).offset(3).list(employee.id);
+        
+        // limit
+        query().from(employee).limit(4).list(employee.id);
     }
 
     @Test
     @ExcludeIn({ORACLE,DERBY,SQLSERVER})
-    public void limitAndOffset() throws SQLException {
+    public void limitAndOffse2t() throws SQLException {
         // limit offset
         expectedQuery = "select e.id from employee2 e limit 4 offset 3";
         query().from(employee).limit(4).offset(3).list(employee.id);
@@ -255,8 +268,9 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     public void queryWithConstant() throws Exception {
-        for (Object[] row : query().from(survey).where(survey.id.eq(1)).list(
-                survey.id, survey.name)) {
+        for (Object[] row : query().from(survey)
+                .where(survey.id.eq(1))
+                .list(survey.id, survey.name)) {
             System.out.println(row[0] + ", " + row[1]);
         }
     }
@@ -329,9 +343,9 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         expectedQuery = "select e.id from employee2 e "
                 + "where e.id = (select max(e.id) "
                 + "from employee2 e)";
-        List<Integer> list = query().from(employee).where(
-                employee.id.eq(s().from(employee).unique(employee.id.max()))).list(
-                employee.id);
+        List<Integer> list = query().from(employee)
+            .where(employee.id.eq(s().from(employee).unique(employee.id.max())))
+            .list(employee.id);
         assertFalse(list.isEmpty());
     }
 
@@ -348,18 +362,19 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     
     @Test
     public void syntaxForEmployee() throws SQLException {
-        query().from(employee).groupBy(employee.superiorId).orderBy(
-                employee.superiorId.asc()).list(employee.salary.avg(),
-                employee.id.max());
+        query().from(employee).groupBy(employee.superiorId)
+            .orderBy(employee.superiorId.asc())
+            .list(employee.salary.avg(),employee.id.max());
 
-        query().from(employee).groupBy(employee.superiorId).having(
-                employee.id.max().gt(5)).orderBy(employee.superiorId.asc())
-                .list(employee.salary.avg(), employee.id.max());
+        query().from(employee).groupBy(employee.superiorId)
+            .having(employee.id.max().gt(5))
+            .orderBy(employee.superiorId.asc())
+            .list(employee.salary.avg(), employee.id.max());
 
-        query().from(employee).groupBy(employee.superiorId).having(
-                employee.superiorId.isNotNull()).orderBy(
-                employee.superiorId.asc()).list(employee.salary.avg(),
-                employee.id.max());
+        query().from(employee).groupBy(employee.superiorId)
+            .having(employee.superiorId.isNotNull())
+            .orderBy(employee.superiorId.asc())
+            .list(employee.salary.avg(),employee.id.max());
     }
     
     @SuppressWarnings("unchecked")

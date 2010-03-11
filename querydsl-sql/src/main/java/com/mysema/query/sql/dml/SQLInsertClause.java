@@ -72,7 +72,7 @@ public class SQLInsertClause {
     }
 
     public long execute() {
-        SQLSerializer serializer = new SQLSerializer(templates);
+        SQLSerializer serializer = new SQLSerializer(templates, true);
         serializer.serializeForInsert(entity, columns, values, subQuery);
         String queryString = serializer.toString();
         logger.debug(queryString);

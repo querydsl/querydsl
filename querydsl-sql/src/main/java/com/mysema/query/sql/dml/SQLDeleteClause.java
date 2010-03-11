@@ -12,9 +12,8 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.BooleanBuilder;
 import com.mysema.query.QueryException;
-import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
@@ -38,15 +37,17 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause> {
 
     private final Connection connection;
 
-    private final QueryMetadata metadata = new DefaultQueryMetadata();
-
+    private final PEntity<?> entity;
+    
+    private final BooleanBuilder where = new BooleanBuilder();
+    
     private final SQLTemplates templates;
 
     public SQLDeleteClause(Connection connection, SQLTemplates templates,
             PEntity<?> entity) {
         this.connection = connection;
         this.templates = templates;
-        metadata.addFrom(entity);
+        this.entity = entity;
     }
 
     protected void close(PreparedStatement stmt) {
@@ -59,8 +60,8 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause> {
 
     @Override
     public long execute() {
-        SQLSerializer serializer = new SQLSerializer(templates);
-        serializer.serializeForDelete(metadata);
+        SQLSerializer serializer = new SQLSerializer(templates, true);
+        serializer.serializeForDelete(entity, where.getValue());
         String queryString = serializer.toString();
         logger.debug(queryString);
 
@@ -81,7 +82,9 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause> {
 
     @Override
     public SQLDeleteClause where(EBoolean... o) {
-        metadata.addWhere(o);
+        for (EBoolean e : o){
+            where.and(e);
+        }
         return this;
     }
 
