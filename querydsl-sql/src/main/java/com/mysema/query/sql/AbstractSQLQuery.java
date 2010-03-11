@@ -283,7 +283,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     }
 
     @SuppressWarnings("unchecked")
-    private <RT> CloseableIterator<RT> iterateSingle(final @Nullable Expr<RT> expr) {
+    private <RT> CloseableIterator<RT> iterateSingle(@Nullable final Expr<RT> expr) {
         String queryString = buildQueryString(false);
         logger.debug("query : {}", queryString);
         try {

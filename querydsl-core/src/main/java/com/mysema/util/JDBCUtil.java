@@ -37,7 +37,7 @@ public final class JDBCUtil {
     }
     
     private static void setParameter(PreparedStatement stmt, int i, Object o) throws NoSuchMethodException, 
-        SecurityException, IllegalAccessException, InvocationTargetException {
+        IllegalAccessException, InvocationTargetException {
         Class<?> type = o.getClass();        
         String methodName = "set" + type.getSimpleName();
         if (methodName.equals("setInteger")) {

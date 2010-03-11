@@ -23,7 +23,7 @@ public class ExtendedDerbyDialect extends DerbyDialect{
     
     private static final CastFunction castFunction = new CastFunction(){
         @SuppressWarnings("unchecked")
-        public String render(List args, SessionFactoryImplementor factory) throws QueryException {
+        public String render(List args, SessionFactoryImplementor factory) {
             if (args.get(1).equals("string")){
                 return super.render(Arrays.<Object>asList("char("+args.get(0)+")",args.get(1)), factory);    
             }else{
