@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
@@ -73,9 +72,8 @@ public class Inheritance6Test {
     }
 
     @Test
-    @Ignore
     public void gloss_subtype_should_contain_id_from_top_superclass() {
-        assertEquals(PNumber.class, QInheritance6Test_Gloss.gloss.id.getType());
+        assertEquals(PNumber.class, QInheritance6Test_Gloss.gloss.id.getClass());
     }
 
 }

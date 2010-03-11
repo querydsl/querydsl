@@ -12,6 +12,17 @@ public class Inheritance7Test {
     }
     
     @QueryEntity
+    public static class SubCategory extends Category<SubCategory> {
+        
+        private SubCategory parent;
+
+        public SubCategory getParent() {
+            return parent;
+        }
+        
+    }
+    
+    @QueryEntity
     public static class Category<T extends Category<T>> implements Comparable<T>{
      
         private User owner;
@@ -27,16 +38,6 @@ public class Inheritance7Test {
         
     }
 
-    @QueryEntity
-    public static class SubCategory extends Category<SubCategory> {
-        
-        private SubCategory parent;
-
-        public SubCategory getParent() {
-            return parent;
-        }
-        
-    }
     
     @QueryEntity
     public static class SubCategory2 extends Category<SubCategory2> {

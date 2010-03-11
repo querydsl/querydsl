@@ -1,1 +1,1 @@
-* take generic type parameters of supertypes into account
+* TODO : supertype references need to preserve type parameters

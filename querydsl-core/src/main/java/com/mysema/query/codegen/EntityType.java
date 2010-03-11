@@ -40,15 +40,15 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     
     private final Set<Property> properties = new TreeSet<Property>();
     
-    private final Collection<EntityType> superTypes;
+    private final Collection<Supertype> superTypes;
 
     private String uncapSimpleName;
 
     public EntityType(String prefix, Type type) {
-        this(prefix, type, new HashSet<EntityType>());
+        this(prefix, type, new HashSet<Supertype>());
     }
 
-    public EntityType(String prefix, Type type, Set<EntityType> superTypes) {
+    public EntityType(String prefix, Type type, Set<Supertype> superTypes) {
         super(type);
         this.prefix = Assert.notNull(prefix);        
         this.uncapSimpleName = StringUtils.uncapitalize(type.getSimpleName());
@@ -81,7 +81,7 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         }
     }
 
-    public void addSuperType(EntityType entityType){
+    public void addSupertype(Supertype entityType){
         superTypes.add(entityType);
     }
 
@@ -139,11 +139,11 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     }
 
     @Nullable
-    public EntityType getSuperType(){
+    public Supertype getSuperType(){
         return superTypes.size() == 1 ? superTypes.iterator().next() : null;
     }
 
-    public Collection<EntityType> getSuperTypes() {
+    public Collection<Supertype> getSuperTypes() {
         return superTypes;
     }
 
@@ -163,12 +163,13 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         return hasMaps;
     }
 
-    public void include(EntityType clazz) {
-        for (Method method : clazz.getMethods()){
+    public void include(Supertype supertype) {
+        EntityType entityType = supertype.getEntityType();
+        for (Method method : entityType.getMethods()){
+            // TODO : take type arguments of parameters into account
             addMethod(method);
-        }
-        
-        for (Property property : clazz.getProperties()){
+        }        
+        for (Property property : entityType.getProperties()){
             if (!property.isInherited()){                
                 addProperty(property.createCopy(this));    
             }            

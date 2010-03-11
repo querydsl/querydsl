@@ -19,8 +19,6 @@ import org.hsqldb.Types;
  */
 public final class Connections {
     
-    // TODO : make mssql work
-    
     private static ThreadLocal<Connection> connHolder = new ThreadLocal<Connection>();
 
     private static final String CREATE_TABLE_DATETEST = "create table date_test(date_test date)";

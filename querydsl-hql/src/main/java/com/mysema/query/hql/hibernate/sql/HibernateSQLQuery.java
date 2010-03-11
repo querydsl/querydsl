@@ -88,13 +88,13 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
         return new HibernateSQLQuery(new DefaultSessionHolder(session), sqlTemplates, getMetadata().clone());
     }
 
-    public org.hibernate.SQLQuery createQuery(Expr<?>... args){
+    public Query createQuery(Expr<?>... args){
         queryMixin.addToProjection(args);
         return createQuery(toQueryString());   
     }
 
     @SuppressWarnings("unchecked")
-    private org.hibernate.SQLQuery createQuery(String queryString) {
+    private Query createQuery(String queryString) {
         logQuery(queryString);
         org.hibernate.SQLQuery query = session.createSQLQuery(queryString);
         // set constants
@@ -194,7 +194,7 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
 
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expr<RT> expr) {
-        org.hibernate.SQLQuery query = createQuery(expr);
+        Query query = createQuery(expr);
         reset();
         return (RT) query.uniqueResult();
     }

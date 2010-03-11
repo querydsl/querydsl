@@ -42,6 +42,8 @@ import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Method;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
+import com.mysema.query.codegen.Supertype;
+import com.mysema.query.codegen.Type;
 import com.mysema.query.codegen.TypeFactory;
 import com.mysema.query.codegen.TypeMappings;
 import com.mysema.util.JavaWriter;
@@ -54,8 +56,7 @@ import com.mysema.util.JavaWriter;
  */
 public class Processor {
     
-    private static final Logger logger = LoggerFactory
-        .getLogger(Processor.class);
+    private static final Logger logger = LoggerFactory.getLogger(Processor.class);
    
     private final Map<String, EntityType> actualSupertypes  = new HashMap<String, EntityType>();
     
@@ -100,15 +101,19 @@ public class Processor {
     }
     
     private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes) {
-        Stack<EntityType> stypeStack = new Stack<EntityType>();
-        for (EntityType stype : model.getSuperTypes()) {
+        Stack<Supertype> stypeStack = new Stack<Supertype>();
+        for (Supertype stype : model.getSuperTypes()) {
             stypeStack.push(stype);
             while (!stypeStack.isEmpty()) {
-                EntityType sdecl = stypeStack.pop();
-                model.include(sdecl);
-                for (EntityType type : sdecl.getSuperTypes()) {
-                    stypeStack.push(type);
-                }
+                Supertype sdecl = stypeStack.pop();
+                EntityType entityType = superTypes.get(sdecl.getType().getFullName());
+                if (entityType != null){
+                    sdecl.setEntityType(entityType);
+                    model.include(sdecl);
+                    for (Supertype type : sdecl.getEntityType().getSuperTypes()) {
+                        stypeStack.push(type);
+                    }
+                }                
             }
         }
     }
@@ -247,24 +252,24 @@ public class Processor {
 
     private void processEntities() {
         // populate entity type mappings
-        Set<EntityType> superTypes = new HashSet<EntityType>();
+        Set<Type> superTypes = new HashSet<Type>();
         
         for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEntityAnn())) {
             if (configuration.getEmbeddableAnn() == null || element.getAnnotation(configuration.getEmbeddableAnn()) == null){
                 EntityType model = elementHandler.handleNormalType((TypeElement) element);
                 entityTypes.put(model.getFullName(), model);
-                if (model.getSuperType() != null){
-                    superTypes.add(model.getSuperType());
+                if (model.getSuperType() != null){                    
+                    superTypes.add(model.getSuperType().getType());
                 }
             }            
         }
         
-        for (EntityType superType : superTypes){
+        for (Type superType : superTypes){
             if (!allSupertypes.containsKey(superType.getFullName()) 
              && !entityTypes.containsKey(superType.getFullName())){
                 TypeElement typeElement = env.getElementUtils().getTypeElement(superType.getFullName());
-                elementHandler.handleNormalType(superType, typeElement);
-                entityTypes.put(superType.getFullName(), superType);
+                EntityType entityType = elementHandler.handleNormalType(typeElement);
+                entityTypes.put(superType.getFullName(), entityType);
             }
         }        
         

@@ -136,11 +136,6 @@ public final class ElementHandler{
 
     public EntityType handleNormalType(TypeElement e) {
         EntityType entityType = typeFactory.createEntityType(e.asType());
-        return handleNormalType(entityType, e);
-    }
-    
-    
-    public EntityType handleNormalType(EntityType entityType, TypeElement e) {
         List<? extends Element> elements = e.getEnclosedElements();    
         VisitorConfig config = configuration.getConfig(e, elements);
         

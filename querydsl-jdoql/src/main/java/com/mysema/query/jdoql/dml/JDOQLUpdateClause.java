@@ -5,14 +5,10 @@
  */
 package com.mysema.query.jdoql.dml;
 
-import javax.jdo.PersistenceManager;
-
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.UpdateClause;
-import com.mysema.query.jdoql.JDOQLTemplates;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.Path;
 
 /**
@@ -25,19 +21,19 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
     
     private final QueryMetadata metadata = new DefaultQueryMetadata();
     
-    private final PersistenceManager persistenceManager;
+//    private final PersistenceManager persistenceManager;
+//    
+//    private final JDOQLTemplates templates;
     
-    private final JDOQLTemplates templates;
-    
-    public JDOQLUpdateClause(PersistenceManager persistenceManager, PEntity<?> entity){
-        this(persistenceManager, entity, JDOQLTemplates.DEFAULT);
-    }
-    
-    public JDOQLUpdateClause(PersistenceManager persistenceManager, PEntity<?> entity, JDOQLTemplates templates){
-        this.persistenceManager = persistenceManager;
-        this.templates = templates;
-        metadata.addFrom(entity);        
-    }
+//    public JDOQLUpdateClause(PersistenceManager persistenceManager, PEntity<?> entity){
+//        this(persistenceManager, entity, JDOQLTemplates.DEFAULT);
+//    }
+//    
+//    public JDOQLUpdateClause(PersistenceManager persistenceManager, PEntity<?> entity, JDOQLTemplates templates){
+//        this.persistenceManager = persistenceManager;
+//        this.templates = templates;
+//        metadata.addFrom(entity);        
+//    }
 
     @Override
     public long execute() {

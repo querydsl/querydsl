@@ -3,6 +3,7 @@ package com.mysema.query.apt;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.tools.JavaCompiler;
@@ -52,6 +53,11 @@ public class QuerydslAnnotationProcessorTest {
             }
         }
         process(classes);
+    }
+    
+    @Test
+    public void processGenericInheritance() throws IOException{
+        process(Collections.singletonList(packagePath + "Inheritance6Test.java"));
     }
     
 }

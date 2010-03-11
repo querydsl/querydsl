@@ -31,8 +31,6 @@ public final class Property implements Comparable<Property> {
 
     private final Type type;
     
-    private TypeVariable[] typeVariables;
-
     /**
      * @param context
      * @param name
@@ -60,7 +58,33 @@ public final class Property implements Comparable<Property> {
         return name.compareToIgnoreCase(o.getName());
     }
 
-    public Property createCopy(EntityType model) {
+    public Property createCopy(EntityType model) {        
+        if (type instanceof TypeExtends){
+            TypeExtends extendsType = (TypeExtends)type;
+            if (extendsType.getVarName() != null){
+                // TODO : externalize the type resolving
+                String var = extendsType.getVarName();
+                // get parameter index of var in declaring type
+                int index = -1;
+                for (int i = 0; i < declaringType.getParameterCount(); i++){
+                    Type param = declaringType.getParameter(i);
+                    if (param instanceof TypeExtends && ((TypeExtends)param).getVarName().equals(var)){
+                        index = i;
+                    }
+                }
+
+                // get binding of var via model supertype
+                Supertype type = model.getSuperType();
+                while (!type.getType().equals(declaringType)){                    
+                    type = type.getEntityType().getSuperType();
+                }
+                Type propertyType = type.getType().getParameter(index);
+                return new Property(model, name, propertyType, inits, false);
+            }
+            
+        }else if (type.getParameterCount() > 0){
+            // TODO : resolve parameters
+        }
         return new Property(model, name, type, inits, model.getSuperType() != null);
     }
 

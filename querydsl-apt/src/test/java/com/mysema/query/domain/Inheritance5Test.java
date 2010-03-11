@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
@@ -50,9 +49,8 @@ public class Inheritance5Test {
     }
     
     @Test
-    @Ignore
     public void test(){
-        assertEquals(PNumber.class, QInheritance5Test_Entity.entity.id.getType());
+        assertEquals(PNumber.class, QInheritance5Test_Entity.entity.id.getClass());
     }
     
 }

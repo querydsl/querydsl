@@ -164,9 +164,9 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void initEntityFields(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {        
-        EntityType superType = model.getSuperType();
-        if (superType != null && superType.hasEntityFields()){
-            String superQueryType = typeMappings.getPathType(superType, model, false);
+        Supertype superType = model.getSuperType();
+        if (superType != null && superType.getEntityType().hasEntityFields()){
+            String superQueryType = typeMappings.getPathType(superType.getEntityType(), model, false);
             writer.line("this._super = new " + superQueryType + "(type, metadata, inits);");            
         }
         
@@ -174,7 +174,7 @@ public class EntitySerializer implements Serializer{
             if (field.getType().getCategory() == TypeCategory.ENTITY){
                 initEntityField(writer, config, model, field);   
                 
-            }else if (field.isInherited() && superType != null && superType.hasEntityFields()){
+            }else if (field.isInherited() && superType != null && superType.getEntityType().hasEntityFields()){
                 writer.line("this.", field.getEscapedName(), " = _super.", field.getEscapedName(), SEMICOLON);
             }
         }        
@@ -338,7 +338,7 @@ public class EntitySerializer implements Serializer{
     }
     
     protected void introSuper(CodeWriter writer, EntityType model) throws IOException {
-        EntityType superType = model.getSuperType();
+        EntityType superType = model.getSuperType().getEntityType();
         String superQueryType = typeMappings.getPathType(superType, model, false);
         
         if (!superType.hasEntityFields()){
@@ -434,11 +434,11 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void serialize(EntityType model, Property field, String type, CodeWriter writer, String factoryMethod, String... args) throws IOException{
-        EntityType superType = model.getSuperType();
+        Supertype superType = model.getSuperType();
         // construct value
         StringBuilder value = new StringBuilder();
         if (field.isInherited() && superType != null){
-            if (!superType.hasEntityFields()){
+            if (!superType.getEntityType().hasEntityFields()){
                 value.append("_super." + field.getEscapedName());    
             }            
         }else{

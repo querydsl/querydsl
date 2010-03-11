@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
@@ -47,17 +46,12 @@ public class Inheritance3Test extends AbstractTest{
     }
     
     @Test
-    @Ignore
-    public void test() throws SecurityException, NoSuchFieldException{
-        // FIXME
+    public void test1() throws SecurityException, NoSuchFieldException{
         cl = QInheritance3Test_GenericSupertype.class;
         match(PSimple.class, "field");
-        
-        cl = QInheritance3Test_GenericSupertypeC.class;
-        match(PComparable.class, "field");
         
         cl = QInheritance3Test_GenericSupertypeS.class;
         match(PString.class, "field");
     }
-
+    
 }

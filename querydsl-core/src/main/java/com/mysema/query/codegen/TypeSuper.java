@@ -15,7 +15,6 @@ import javax.annotation.Nullable;
  * @author tiwe
  *
  */
-// TODO : take varName into account
 public class TypeSuper extends TypeAdapter{
     
     private final Type superType;

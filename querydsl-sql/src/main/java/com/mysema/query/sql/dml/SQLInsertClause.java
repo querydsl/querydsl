@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.QueryException;
+import com.mysema.query.dml.InsertClause;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.expr.Expr;
@@ -28,13 +29,13 @@ import com.mysema.util.JDBCUtil;
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 /**
- * SQLInsertClause defines a INSERT INTO clause
+ * SQLInsertClause defines an INSERT INTO clause
  * 
  * @author tiwe
  * 
  */
 @SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
-public class SQLInsertClause {
+public class SQLInsertClause implements InsertClause<SQLInsertClause> {
 
     private static final Logger logger = LoggerFactory
             .getLogger(SQLInsertClause.class);
@@ -66,11 +67,13 @@ public class SQLInsertClause {
         }
     }
 
+    @Override
     public SQLInsertClause columns(Path<?>... columns) {
         this.columns.addAll(Arrays.asList(columns));
         return this;
     }
 
+    @Override
     public long execute() {
         SQLSerializer serializer = new SQLSerializer(templates, true);
         serializer.serializeForInsert(entity, columns, values, subQuery);
@@ -92,11 +95,13 @@ public class SQLInsertClause {
         }
     }
 
+    @Override
     public SQLInsertClause select(SubQuery<?> subQuery) {
         this.subQuery = subQuery;
         return this;
     }
 
+    @Override
     @java.lang.SuppressWarnings("unchecked")
     public SQLInsertClause values(Object... v) {
         for (Object value : v) {
