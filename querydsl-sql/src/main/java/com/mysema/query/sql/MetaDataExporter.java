@@ -21,7 +21,8 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.codegen.ClassType;
@@ -46,10 +47,13 @@ import com.mysema.util.JavaWriter;
  * @version $Id$
  */
 public class MetaDataExporter {
-
+    
+    private static final Logger logger = LoggerFactory
+        .getLogger(MetaDataExporter.class);
+    
     private static Writer writerFor(File file) {
         if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
-            System.err.println("Folder " + file.getParent() + " could not be created");
+            logger.error("Folder " + file.getParent() + " could not be created");
         }
         try {
             return new OutputStreamWriter(new FileOutputStream(file));
