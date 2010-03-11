@@ -395,7 +395,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         append("cast(").handle(source);
         append(" as ");
         append(templates.getClass2Type().get(targetType)).append(")");
-
     }
 
     @Override
