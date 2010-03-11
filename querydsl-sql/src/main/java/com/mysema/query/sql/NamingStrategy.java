@@ -21,7 +21,7 @@ public interface NamingStrategy {
      * @param entityType
      * @return
      */
-    public String getDefaultVariableName(String namePrefix, EntityType entityType);
+    String getDefaultVariableName(String namePrefix, EntityType entityType);
     
     /**
      * Get the default alias for the given EntityType
@@ -30,7 +30,7 @@ public interface NamingStrategy {
      * @param entityType
      * @return
      */
-    public String getDefaultAlias(String namePrefix, EntityType entityType);
+    String getDefaultAlias(String namePrefix, EntityType entityType);
 
     /**
      * Convert the given tableName to a simple class name with the given name prefix
@@ -39,7 +39,7 @@ public interface NamingStrategy {
      * @param tableName 
      * @return
      */
-    public String getClassName(String namePrefix, String tableName);
+    String getClassName(String namePrefix, String tableName);
 
     /**
      * Convert the given column name to a property name
@@ -47,6 +47,6 @@ public interface NamingStrategy {
      * @param columnName
      * @return
      */
-    public String getPropertyName(String columnName);
+    String getPropertyName(String columnName);
 
 }
