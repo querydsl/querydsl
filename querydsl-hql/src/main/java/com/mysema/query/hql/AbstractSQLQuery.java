@@ -5,14 +5,11 @@
  */
 package com.mysema.query.hql;
 
-import java.util.Iterator;
-
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;

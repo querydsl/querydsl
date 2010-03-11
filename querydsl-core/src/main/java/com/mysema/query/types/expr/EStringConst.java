@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -158,7 +159,7 @@ public final class EStringConst extends EString implements Constant<String>{
     @Override
     public EString lower() {
         if (lower == null) {
-            lower = EStringConst.create(constant.toLowerCase());
+            lower = EStringConst.create(constant.toLowerCase(Locale.ENGLISH));
         }
         return lower;
     }
@@ -225,7 +226,7 @@ public final class EStringConst extends EString implements Constant<String>{
     @Override
     public EString upper() {
         if (upper == null){
-            upper = EStringConst.create(constant.toUpperCase()); 
+            upper = EStringConst.create(constant.toUpperCase(Locale.ENGLISH)); 
         }
         return upper; 
     }

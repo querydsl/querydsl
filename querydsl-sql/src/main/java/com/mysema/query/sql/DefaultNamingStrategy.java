@@ -6,6 +6,7 @@
 package com.mysema.query.sql;
 
 import java.lang.annotation.Annotation;
+import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -21,12 +22,12 @@ public class DefaultNamingStrategy implements NamingStrategy {
             
     @Override
     public String getClassName(String namePrefix, String tableName) {
-        return namePrefix + tableName.substring(0,1).toUpperCase() + toCamelCase(tableName.substring(1));
+        return namePrefix + tableName.substring(0,1).toUpperCase(Locale.ENGLISH) + toCamelCase(tableName.substring(1));
     }
     
     @Override
     public String getPropertyName(String columnName){
-        return columnName.substring(0,1).toLowerCase() + toCamelCase(columnName.substring(1));
+        return columnName.substring(0,1).toLowerCase(Locale.ENGLISH) + toCamelCase(columnName.substring(1));
     }
     
     protected String toCamelCase(String str){

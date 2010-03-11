@@ -130,7 +130,7 @@ public interface Ops {
     /**
      * Aggreation operators
      */
-    public interface AggOps{
+    interface AggOps{
         Operator<Number> AVG_AGG = new OperatorImpl<Number>(Number.class);
         Operator<Number> MAX_AGG = new OperatorImpl<Number>(Number.class);
         Operator<Number> MIN_AGG = new OperatorImpl<Number>(Number.class);
@@ -144,7 +144,7 @@ public interface Ops {
     /**
      * Date and time operators
      */
-    public interface DateTimeOps {
+    interface DateTimeOps {
         Operator<java.util.Date> CURRENT_DATE = new OperatorImpl<java.util.Date>();
         Operator<java.util.Date> CURRENT_TIME = new OperatorImpl<java.util.Date>();
         Operator<java.util.Date> CURRENT_TIMESTAMP = new OperatorImpl<java.util.Date>();
@@ -166,7 +166,7 @@ public interface Ops {
      * Math operators
      * 
      */
-    public interface MathOps {
+    interface MathOps {
         Operator<Number> ABS = new OperatorImpl<Number>(Number.class);
         Operator<Number> ACOS = new OperatorImpl<Number>(Number.class);
         Operator<Number> ASIN = new OperatorImpl<Number>(Number.class);
@@ -190,7 +190,7 @@ public interface Ops {
     /**
      * String operators
      */
-    public interface StringOps {
+    interface StringOps {
         Operator<String> LTRIM = new OperatorImpl<String>(String.class);
         Operator<String> RTRIM = new OperatorImpl<String>(String.class);
         Operator<String> SPACE = new OperatorImpl<String>(Integer.class);
@@ -203,7 +203,7 @@ public interface Ops {
     /**
      * Quantification operators
      */
-    public interface QuantOps {
+    interface QuantOps {
         Operator<Number> AVG_IN_COL = new OperatorImpl<Number>(Collection.class);
         Operator<Number> MAX_IN_COL = new OperatorImpl<Number>(Collection.class);
         Operator<Number> MIN_IN_COL = new OperatorImpl<Number>(Collection.class);

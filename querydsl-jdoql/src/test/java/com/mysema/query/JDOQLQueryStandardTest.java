@@ -5,7 +5,6 @@
  */
 package com.mysema.query;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,7 +18,6 @@ import org.junit.Test;
 
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.jdoql.AbstractJDOTest;
-import com.mysema.query.jdoql.JDOQLQuery;
 import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QProduct;
 import com.mysema.query.jdoql.testdomain.QStore;

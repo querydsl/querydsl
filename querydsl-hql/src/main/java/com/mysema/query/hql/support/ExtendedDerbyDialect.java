@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.hibernate.Hibernate;
-import org.hibernate.QueryException;
 import org.hibernate.dialect.DerbyDialect;
 import org.hibernate.dialect.function.CastFunction;
 import org.hibernate.dialect.function.VarArgsSQLFunction;

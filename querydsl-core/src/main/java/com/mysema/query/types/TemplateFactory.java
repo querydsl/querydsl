@@ -14,6 +14,7 @@ import static com.mysema.query.types.Converter.toUpperCase;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,7 +47,7 @@ public class TemplateFactory {
                 if (m.start() > end) {
                     elements.add(new Element(template.substring(end, m.start())));
                 }
-                String str = template.substring(m.start() + 1, m.end() - 1).toLowerCase();
+                String str = template.substring(m.start() + 1, m.end() - 1).toLowerCase(Locale.ENGLISH);
                 boolean asString = false;
                 Converter<?,?> converter = null;
                 if (str.charAt(0) == '%'){

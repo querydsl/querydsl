@@ -16,7 +16,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.query.QueryMutability;
 import com.mysema.query.sql.DerbyTemplates;
 import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.domain.QSURVEY;

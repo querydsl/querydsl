@@ -5,14 +5,13 @@
  */
 package com.mysema.query;
 
+import static com.mysema.query.Constants.survey;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.path.PEntity;
-
-import static com.mysema.query.Constants.*;
 
 public abstract class UpdateBaseTest extends AbstractBaseTest{
     

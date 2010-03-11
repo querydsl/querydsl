@@ -5,6 +5,12 @@
  */
 package com.mysema.query;
 
+import static com.mysema.query.Constants.date;
+import static com.mysema.query.Constants.employee;
+import static com.mysema.query.Constants.employee2;
+import static com.mysema.query.Constants.survey;
+import static com.mysema.query.Constants.survey2;
+import static com.mysema.query.Constants.time;
 import static com.mysema.query.Target.DERBY;
 import static com.mysema.query.Target.ORACLE;
 import static com.mysema.query.Target.SQLSERVER;
@@ -39,8 +45,6 @@ import com.mysema.query.types.query.SubQuery;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
 import com.mysema.testutil.Label;
-
-import static com.mysema.query.Constants.*;
 
 public abstract class SelectBaseTest extends AbstractBaseTest{
     

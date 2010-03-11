@@ -7,6 +7,7 @@ package com.mysema.query.sql;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -148,7 +149,7 @@ public class SQLTemplates extends Templates {
         for (Class<?> cl : new Class[] { Boolean.class, Byte.class,
                 Double.class, Float.class, Integer.class, Long.class,
                 Short.class, String.class }) {
-            class2type.put(cl, cl.getSimpleName().toLowerCase());
+            class2type.put(cl, cl.getSimpleName().toLowerCase(Locale.ENGLISH));
         }
 
         class2type.put(Boolean.class, "bit");

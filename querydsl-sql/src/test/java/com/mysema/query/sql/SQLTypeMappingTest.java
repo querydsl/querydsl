@@ -5,7 +5,7 @@
  */
 package com.mysema.query.sql;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
 

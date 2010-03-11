@@ -5,6 +5,7 @@
  */
 package com.mysema.query;
 
+import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Target.MYSQL;
 import static org.junit.Assert.assertEquals;
 
@@ -15,8 +16,6 @@ import org.junit.Test;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.testutil.ExcludeIn;
-
-import static com.mysema.query.Constants.*;
 
 public abstract class DeleteBaseTest extends AbstractBaseTest{
     

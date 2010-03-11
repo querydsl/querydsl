@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -194,7 +195,7 @@ public final class HQLSerializer extends SerializerBase<HQLSerializer> {
                     append(COMMA);
                 }                    
                 handle(os.getTarget());
-                append(" " + os.getOrder().toString().toLowerCase());
+                append(" " + os.getOrder().toString().toLowerCase(Locale.ENGLISH));
                 first = false;
             }
         }
@@ -268,7 +269,7 @@ public final class HQLSerializer extends SerializerBase<HQLSerializer> {
     private void visitCast(Expr<?> source, Class<?> targetType) {
         append("cast(").handle(source);
         append(AS);
-        append(targetType.getSimpleName().toLowerCase()).append(")");
+        append(targetType.getSimpleName().toLowerCase(Locale.ENGLISH)).append(")");
     }
 
     @Override
