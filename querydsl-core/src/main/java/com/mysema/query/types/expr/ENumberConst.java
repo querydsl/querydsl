@@ -20,17 +20,19 @@ public final class ENumberConst<D extends Number & Comparable<?>> extends ENumbe
     
     private static final long serialVersionUID = 2958824808974260439L;
 
-    @SuppressWarnings("unchecked")
-    private static final ENumber<Byte>[] BYTES = new ENumber[256];
+    private static final int CACHE_SIZE = 256;
     
     @SuppressWarnings("unchecked")
-    private static final ENumber<Integer>[] INTEGERS = new ENumber[256];
+    private static final ENumber<Byte>[] BYTES = new ENumber[CACHE_SIZE];
     
     @SuppressWarnings("unchecked")
-    private static final ENumber<Long>[] LONGS = new ENumber[256];
+    private static final ENumber<Integer>[] INTEGERS = new ENumber[CACHE_SIZE];
     
     @SuppressWarnings("unchecked")
-    private static final ENumber<Short>[] SHORTS = new ENumber[256];
+    private static final ENumber<Long>[] LONGS = new ENumber[CACHE_SIZE];
+    
+    @SuppressWarnings("unchecked")
+    private static final ENumber<Short>[] SHORTS = new ENumber[CACHE_SIZE];
     
     static{
         for (int i = 0; i < 256; i++){

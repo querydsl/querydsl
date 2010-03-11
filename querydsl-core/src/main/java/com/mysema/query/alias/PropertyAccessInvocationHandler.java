@@ -56,6 +56,8 @@ import com.mysema.util.ReflectionUtils;
  */
 class PropertyAccessInvocationHandler implements MethodInterceptor {
 
+    private final int RETURN_VALUE = 42;
+    
     private final Expr<?> hostExpression;
 
     private final AliasFactory aliasFactory;
@@ -150,7 +152,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else if (Integer.class.equals(type) || int.class.equals(type)) {
             path = new PNumber<Integer>(Integer.class, pm);
-            rv = Integer.valueOf(42);
+            rv = Integer.valueOf(RETURN_VALUE);
 
         } else if (java.util.Date.class.equals(type)) {
             path = new PDateTime<Date>(Date.class, pm);
@@ -170,27 +172,27 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else if (Long.class.equals(type) || long.class.equals(type)) {
             path = new PNumber<Long>(Long.class, pm);
-            rv = Long.valueOf(42l);
+            rv = Long.valueOf(RETURN_VALUE);
 
         } else if (Short.class.equals(type) || short.class.equals(type)) {
             path = new PNumber<Short>(Short.class, pm);
-            rv = Short.valueOf((short) 42);
+            rv = Short.valueOf((short) RETURN_VALUE);
 
         } else if (Double.class.equals(type) || double.class.equals(type)) {
             path = new PNumber<Double>(Double.class, pm);
-            rv = Double.valueOf(42d);
+            rv = Double.valueOf(RETURN_VALUE);
 
         } else if (Float.class.equals(type) || float.class.equals(type)) {
             path = new PNumber<Float>(Float.class, pm);
-            rv = Float.valueOf(42f);
+            rv = Float.valueOf(RETURN_VALUE);
 
         } else if (BigInteger.class.equals(type)) {
             path = new PNumber<BigInteger>(BigInteger.class, pm);
-            rv = BigInteger.valueOf(42l);
+            rv = BigInteger.valueOf(RETURN_VALUE);
 
         } else if (BigDecimal.class.equals(type)) {
             path = new PNumber<BigDecimal>(BigDecimal.class, pm);
-            rv = BigDecimal.valueOf(42d);
+            rv = BigDecimal.valueOf(RETURN_VALUE);
 
         } else if (Boolean.class.equals(type) || boolean.class.equals(type)) {
             path = new PBoolean(pm);
