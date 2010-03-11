@@ -37,6 +37,7 @@ public final class HQLTemplates extends Templates {
     }
 
     protected HQLTemplates() {
+        //CHECKSTYLE:OFF
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
         add(Ops.NOT, "not {0}", 3);
@@ -110,7 +111,7 @@ public final class HQLTemplates extends Templates {
         add(Ops.CASE_EQ, "case {1} end");
         add(Ops.CASE_EQ_WHEN,  "when {0} = {1} then {2} {3}");
         add(Ops.CASE_EQ_ELSE,  "else {0}");
-
+        //CHECKSTYLE:ON
     }
     
 }

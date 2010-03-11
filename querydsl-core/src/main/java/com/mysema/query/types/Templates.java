@@ -34,6 +34,7 @@ public class Templates {
     private final Map<Operator<?>, Integer> precedence = new HashMap<Operator<?>, Integer>();
 
     protected Templates() {
+        //CHECKSTYLE:OFF
         // boolean
         add(Ops.AND, "{0} && {1}", 36);
         add(Ops.NOT, "!{0}", 3);
@@ -199,6 +200,7 @@ public class Templates {
 
         add(Ops.QuantOps.ANY, "any {0}");
         add(Ops.QuantOps.ALL, "all {0}");        
+        //CHECKSTYLE:ON
     }
 
     protected final void add(Operator<?> op, String pattern) {

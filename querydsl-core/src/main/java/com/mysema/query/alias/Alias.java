@@ -41,6 +41,7 @@ import com.mysema.query.types.path.PathMetadataFactory;
  * @author tiwe
  * @version $Id$
  */
+@SuppressWarnings("PMD")
 public final class Alias {
     
     private static final AliasFactory aliasFactory = new AliasFactory();
