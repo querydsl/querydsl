@@ -357,6 +357,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     
     public void visit(Path<?> path) {
         if (dml){
+            // NOTE : this could be disabled for other than MSSQL
             if (path.equals(entity)){
                 appendAsTableName(path);
             }else if (entity.equals(path.getMetadata().getParent())){
