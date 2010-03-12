@@ -19,7 +19,7 @@ import com.mysema.query.types.path.PEntity;
  *
  */
 public class SQLSubQuery extends DetachableQuery<SQLSubQuery>{
-
+    
     public SQLSubQuery() {
         this(new DefaultQueryMetadata());
     }

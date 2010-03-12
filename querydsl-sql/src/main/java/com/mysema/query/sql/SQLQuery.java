@@ -30,7 +30,23 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
      * @param o
      * @return
      */
-    SQLQuery from(PEntity<?>... o);
+    SQLQuery from(Expr<?>... o);
+    
+    /**
+     * @param <T>
+     * @param source
+     * @param alias
+     * @return
+     */
+    <T> SQLQuery from(ListSubQuery<T> source, Expr<T> alias);
+    
+    /**
+     * @param <T>
+     * @param source
+     * @param alias
+     * @return
+     */
+    <T> SQLQuery from(SubQuery<T> source, Expr<T> alias);
 
     /**
      * Adds a full join to the given target

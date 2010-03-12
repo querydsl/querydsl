@@ -9,6 +9,8 @@ import java.sql.Connection;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.query.SubQuery;
 
 /**
  * SQLQueryImpl is a JDBC based implementation of the Querydsl SQLQuery interface
@@ -59,5 +61,6 @@ public class SQLQueryImpl extends AbstractSQLQuery<SQLQueryImpl> implements SQLQ
     public SQLQueryImpl clone(Connection conn){
         return new SQLQueryImpl(conn, getTemplates(), getMetadata().clone());   
     }
+
     
 }

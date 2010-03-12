@@ -54,7 +54,7 @@ public class QueryMixin<T>{
         return metadata;
     }
     
-    public T from(PEntity<?>... args) {        
+    public T from(Expr<?>... args) {        
         metadata.addFrom(args);
         return self;
     }

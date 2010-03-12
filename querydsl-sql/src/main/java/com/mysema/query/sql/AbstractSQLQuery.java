@@ -31,7 +31,10 @@ import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.operation.OSimple;
+import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.Path;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.SubQuery;
 import com.mysema.util.JDBCUtil;
@@ -116,12 +119,25 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private <D> Expr<D> createAlias(Expr<?> target, Expr<D> alias){
+        return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target.asExpr(), alias.asExpr());
+    }
+
     protected SQLSerializer createSerializer() {
         return new SQLSerializer(templates);
     }
 
-    public Q from(PEntity<?>... args) {
+    public Q from(Expr<?>... args) {
         return queryMixin.from(args);
+    }
+    
+    public <T> Q from(SubQuery<T> source, Expr<T> alias) {
+        return queryMixin.from(createAlias(source.asExpr(), alias));
+    }
+    
+    public <T> Q from(ListSubQuery<T> source, Expr<T> alias) {
+        return queryMixin.from(createAlias(source.asExpr(), alias));
     }
 
     public Q fullJoin(PEntity<?> target) {
@@ -152,57 +168,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.getMetadata();
     }
 
-    protected SQLTemplates getTemplates() {
-        return templates;
-    }
-
-    public Q innerJoin(PEntity<?> target) {
-        return queryMixin.innerJoin(target);
-    }
-
-    private <RT> UnionBuilder<RT> innerUnion(SubQuery<?>... sq) {
-        if (!queryMixin.getMetadata().getJoins().isEmpty()) {
-            throw new IllegalArgumentException("Don't mix union and from");
-        }
-        this.sq = sq;
-        return new UnionBuilder<RT>();
-    }
-
-    public Q join(PEntity<?> target) {
-        return queryMixin.join(target);
-    }
-
-    public Q leftJoin(PEntity<?> target) {
-        return queryMixin.leftJoin(target);
-    }
-
-    @Override
-    public List<Object[]> list(Expr<?>[] args) {
-        return IteratorAdapter.asList(iterate(args));
-    }
-
-    @Override
-    public <RT> List<RT> list(Expr<RT> expr) {
-        return IteratorAdapter.asList(iterate(expr));
-    }
-
-    @Override
-    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
-        queryMixin.addToProjection(args);
-        return iterateMultiple();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <RT> CloseableIterator<RT> iterate(Expr<RT> expr) {
-        queryMixin.addToProjection(expr);
-        if (expr.getType().isArray()) {
-            return (CloseableIterator<RT>) iterateMultiple();
-        } else {
-            return iterateSingle(expr);
-        }
-    }
-
     public ResultSet getResults(Expr<?>... exprs) {
         queryMixin.addToProjection(exprs);
         String queryString = buildQueryString(false);
@@ -227,6 +192,39 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
         } finally {
             reset();
+        }
+    }
+
+    protected SQLTemplates getTemplates() {
+        return templates;
+    }
+
+    public Q innerJoin(PEntity<?> target) {
+        return queryMixin.innerJoin(target);
+    }
+
+    private <RT> UnionBuilder<RT> innerUnion(SubQuery<?>... sq) {
+        if (!queryMixin.getMetadata().getJoins().isEmpty()) {
+            throw new IllegalArgumentException("Don't mix union and from");
+        }
+        this.sq = sq;
+        return new UnionBuilder<RT>();
+    }
+
+    @Override
+    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
+        queryMixin.addToProjection(args);
+        return iterateMultiple();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <RT> CloseableIterator<RT> iterate(Expr<RT> expr) {
+        queryMixin.addToProjection(expr);
+        if (expr.getType().isArray()) {
+            return (CloseableIterator<RT>) iterateMultiple();
+        } else {
+            return iterateSingle(expr);
         }
     }
 
@@ -263,23 +261,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
             reset();
         }
 
-    }
-
-    @Override
-    public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
-        queryMixin.addToProjection(expr);
-        long total = count();
-        try {
-            if (total > 0) {
-                QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
-                return new SearchResults<RT>(list(expr), modifiers, total);
-            } else {
-                return SearchResults.emptyResults();
-            }
-
-        } finally {
-            reset();
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -331,6 +312,41 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
         } catch (SQLException e) {
             throw new QueryException(e);
+
+        } finally {
+            reset();
+        }
+    }
+
+    public Q join(PEntity<?> target) {
+        return queryMixin.join(target);
+    }
+
+    public Q leftJoin(PEntity<?> target) {
+        return queryMixin.leftJoin(target);
+    }
+
+    @Override
+    public List<Object[]> list(Expr<?>[] args) {
+        return IteratorAdapter.asList(iterate(args));
+    }
+
+    @Override
+    public <RT> List<RT> list(Expr<RT> expr) {
+        return IteratorAdapter.asList(iterate(expr));
+    }
+
+    @Override
+    public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
+        queryMixin.addToProjection(expr);
+        long total = count();
+        try {
+            if (total > 0) {
+                QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
+                return new SearchResults<RT>(list(expr), modifiers, total);
+            } else {
+                return SearchResults.emptyResults();
+            }
 
         } finally {
             reset();
