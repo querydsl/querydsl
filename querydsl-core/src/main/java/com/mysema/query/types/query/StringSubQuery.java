@@ -9,6 +9,10 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.operation.OString;
+import com.mysema.query.types.operation.Operator;
+import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.path.Path;
 
 /**
  * Single result subquery
@@ -54,6 +58,12 @@ public final class StringSubQuery extends EString implements SubQuery<String>{
     @Override
     public EBoolean notExists() {
         return subQueryMixin.notExists();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public EString as(Path<String> alias) {
+        return OString.create((Operator)Ops.ALIAS, this, alias.asExpr());
     }
 
 }

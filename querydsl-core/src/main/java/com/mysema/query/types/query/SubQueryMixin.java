@@ -12,6 +12,7 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.path.Path;
 
 /**
  * @author tiwe
@@ -71,6 +72,11 @@ public class SubQueryMixin<T> implements SubQuery<T>{
     @Override
     public Expr<T> asExpr() {
         return self;
+    }
+
+    @Override
+    public Expr<T> as(Path<T> alias) {
+        throw new UnsupportedOperationException();
     }
     
 

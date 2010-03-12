@@ -9,6 +9,10 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EDate;
+import com.mysema.query.types.operation.ODate;
+import com.mysema.query.types.operation.Operator;
+import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.path.Path;
 
 /**
  * Single result subquery
@@ -57,6 +61,12 @@ public final class DateSubQuery<A extends Comparable<?>> extends EDate<A> implem
     @Override
     public EBoolean notExists() {
         return subQueryMixin.notExists();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public EDate<A> as(Path<A> alias) {
+        return ODate.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
     }
 
 }

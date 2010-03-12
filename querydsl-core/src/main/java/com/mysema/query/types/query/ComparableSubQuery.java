@@ -9,6 +9,10 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EComparable;
+import com.mysema.query.types.operation.OComparable;
+import com.mysema.query.types.operation.Operator;
+import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.path.Path;
 
 /**
  * Single result subquery
@@ -57,6 +61,12 @@ public final class ComparableSubQuery<A extends Comparable<?>> extends EComparab
     @Override
     public EBoolean notExists() {
         return subQueryMixin.notExists();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public EComparable<A> as(Path<A> alias) {
+        return OComparable.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
     }
 
 }

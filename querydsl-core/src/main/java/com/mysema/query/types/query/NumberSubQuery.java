@@ -9,6 +9,10 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.operation.ONumber;
+import com.mysema.query.types.operation.Operator;
+import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.path.Path;
 
 /**
  * Single result subquery
@@ -58,6 +62,12 @@ public final class NumberSubQuery<A extends Number & Comparable<?>> extends ENum
     @Override
     public EBoolean notExists() {
         return subQueryMixin.notExists();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public ENumber<A> as(Path<A> alias) {
+        return ONumber.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
     }
 
 }

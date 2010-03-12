@@ -6,6 +6,7 @@
 package com.mysema.query.mssql;
 
 import static com.mysema.query.Constants.employee;
+import static com.mysema.query.Constants.employee2;
 import static com.mysema.query.sql.mssql.SQLServerGrammar.rn;
 import static com.mysema.query.sql.mssql.SQLServerGrammar.rowNumber;
 
@@ -25,7 +26,7 @@ import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.query.ListSubQuery;
-import com.mysema.query.types.query.SubQuery;
+import com.mysema.query.types.query.ObjectSubQuery;
 import com.mysema.testutil.FilteringTestRunner;
 import com.mysema.testutil.Label;
 import com.mysema.testutil.ResourceCheck;
@@ -52,21 +53,34 @@ public class SelectMSSQLTest extends SelectBaseTest {
         Expr<Object[]> all = CSimple.create(Object[].class, "*");
         
         // simple
+        System.out.println("#1");
         for (Object[] row : query().from(employee).list(employee.firstname, employee.lastname, rowNumber)){
             System.out.println(Arrays.asList(row));
         }
+        System.out.println();
         
-        // with subquery
+        // with subquery, generic alias
+        System.out.println("#2");
         ListSubQuery<Object[]> sub = s().from(employee).list(employee.firstname, employee.lastname, rowNumber);
         PSimple<Object[]> subAlias = new PSimple<Object[]>(Object[].class, "s");
-        for (Object[] row : query().from(sub, subAlias).list(all)){
+        for (Object[] row : query().from(sub.as(subAlias)).list(all)){
             System.out.println(Arrays.asList(row));
         }
-        
+        System.out.println();
+                
         // with subquery, only row number
-        SubQuery<Long> sub2 = s().from(employee).unique(rowNumber);
+        System.out.println("#3");
+        ObjectSubQuery<Long> sub2 = s().from(employee).unique(rowNumber);
         PSimple<Long> subAlias2 = new PSimple<Long>(Long.class, "s");
-        for (Object[] row : query().from(sub2, subAlias2).list(all)){
+        for (Object[] row : query().from(sub2.as(subAlias2)).list(all)){
+            System.out.println(Arrays.asList(row));
+        }
+        System.out.println();
+        
+        // with subquery, specific alias
+        System.out.println("#4");
+        ListSubQuery<Object[]> sub3 = s().from(employee).list(employee.firstname, employee.lastname, rowNumber);
+        for (Object[] row : query().from(sub3.as(employee2)).list(employee2.firstname, employee2.lastname)){
             System.out.println(Arrays.asList(row));
         }
     }

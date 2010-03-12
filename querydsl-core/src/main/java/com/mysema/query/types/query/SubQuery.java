@@ -8,6 +8,7 @@ package com.mysema.query.types.query;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.path.Path;
 
 /**
  * 
@@ -46,5 +47,13 @@ public interface SubQuery<T>{
      * @return
      */
     Expr<T> asExpr();
+    
+    /**
+     * Create an alias for the query
+     * 
+     * @param alias
+     * @return
+     */
+    Expr<T> as(Path<T> alias);
     
 }

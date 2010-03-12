@@ -119,11 +119,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private <D> Expr<D> createAlias(Expr<?> target, Expr<D> alias){
-        return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target.asExpr(), alias.asExpr());
-    }
-
     protected SQLSerializer createSerializer() {
         return new SQLSerializer(templates);
     }
@@ -132,14 +127,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.from(args);
     }
     
-    public <T> Q from(SubQuery<T> source, Expr<T> alias) {
-        return queryMixin.from(createAlias(source.asExpr(), alias));
-    }
-    
-    public <T> Q from(ListSubQuery<T> source, Expr<T> alias) {
-        return queryMixin.from(createAlias(source.asExpr(), alias));
-    }
-
     public Q fullJoin(PEntity<?> target) {
         return queryMixin.fullJoin(target);
     }
