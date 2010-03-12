@@ -65,8 +65,7 @@ public final class Property implements Comparable<Property> {
             TypeExtends extendsType = (TypeExtends)newType;
             if (extendsType.getVarName() != null){
                 newType = extendsType.resolve(model, declaringType);
-            }
-            
+            }            
         }
         
         if(newType.getParameterCount() > 0){

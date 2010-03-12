@@ -8,13 +8,14 @@ package com.mysema.query.sql.mssql;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.custom.CNumber;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.Path;
 
 /**
  * RowNumber supports row_number constructs for MS SQL Server
@@ -30,6 +31,7 @@ public class RowNumber extends Expr<Long>{
     
     private final List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
     
+    @Nullable
     private PNumber<Long> target;
     
     public RowNumber() {
@@ -102,12 +104,17 @@ public class RowNumber extends Expr<Long>{
     }
     
     @Override
+    public int hashCode(){
+        return orderBy.hashCode();
+    }
+    
+    @Override
     public boolean equals(Object o) {
         if (o == this){
             return true;
         }else if (o instanceof RowNumber){
-            // TODO
-            return false;
+            RowNumber rn = (RowNumber)o;
+            return partitionBy.equals(rn.partitionBy) && orderBy.equals(rn.orderBy);
         }else{
             return false;
         }

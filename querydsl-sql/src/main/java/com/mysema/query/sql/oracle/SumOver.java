@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.custom.CNumber;
 import com.mysema.query.types.expr.ENumber;
@@ -28,6 +30,7 @@ public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A
     // TODO : change this to List<OrderSpecifier<?>>
     private List<Expr<?>> orderBy = new ArrayList<Expr<?>>();
     
+    @Nullable
     private Expr<?> partitionBy;
     
     private final Expr<A> target;
