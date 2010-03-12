@@ -42,5 +42,23 @@ public class TypeExtends extends TypeAdapter{
         return varName;
     }
     
+    public Type resolve(EntityType subtype, Type declaringType){
+        // get parameter index of var in declaring type
+        int index = -1;
+        for (int i = 0; i < declaringType.getParameterCount(); i++){
+            Type param = declaringType.getParameter(i);
+            if (param instanceof TypeExtends && ((TypeExtends)param).getVarName().equals(varName)){
+                index = i;
+            }
+        }
+
+        // get binding of var via model supertype
+        Supertype type = subtype.getSuperType();
+        while (!type.getType().equals(declaringType)){                    
+            type = type.getEntityType().getSuperType();
+        }
+        return type.getType().getParameter(index);
+    }
+    
 
 }

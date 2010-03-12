@@ -58,34 +58,41 @@ public final class Property implements Comparable<Property> {
         return name.compareToIgnoreCase(o.getName());
     }
 
-    public Property createCopy(EntityType model) {        
-        if (type instanceof TypeExtends){
-            TypeExtends extendsType = (TypeExtends)type;
+    public Property createCopy(EntityType model) {
+        // TODO : simplify
+        Type newType = type;
+        if (newType instanceof TypeExtends){
+            TypeExtends extendsType = (TypeExtends)newType;
             if (extendsType.getVarName() != null){
-                // TODO : externalize the type resolving
-                String var = extendsType.getVarName();
-                // get parameter index of var in declaring type
-                int index = -1;
-                for (int i = 0; i < declaringType.getParameterCount(); i++){
-                    Type param = declaringType.getParameter(i);
-                    if (param instanceof TypeExtends && ((TypeExtends)param).getVarName().equals(var)){
-                        index = i;
-                    }
-                }
-
-                // get binding of var via model supertype
-                Supertype type = model.getSuperType();
-                while (!type.getType().equals(declaringType)){                    
-                    type = type.getEntityType().getSuperType();
-                }
-                Type propertyType = type.getType().getParameter(index);
-                return new Property(model, name, propertyType, inits, false);
+                newType = extendsType.resolve(model, declaringType);
             }
             
-        }else if (type.getParameterCount() > 0){
-            // TODO : resolve parameters
         }
-        return new Property(model, name, type, inits, model.getSuperType() != null);
+        
+        if(newType.getParameterCount() > 0){
+            Type[] params = new Type[newType.getParameterCount()];
+            boolean transformed = false;
+            for (int i = 0; i < newType.getParameterCount(); i++){
+                Type param = newType.getParameter(i);
+                if (param instanceof TypeExtends && ((TypeExtends)param).getVarName() != null){
+                    param = ((TypeExtends)param).resolve(model, declaringType);
+                    transformed = true;
+                }
+                params[i] = param;
+            }
+            if (transformed){
+                newType = new SimpleType(newType.getCategory(), 
+                    newType.getFullName(), newType.getPackageName(), newType.getSimpleName(),
+                    newType.isFinal(), params);
+            }
+        }
+        
+        if (newType != type){
+            return new Property(model, name, newType, inits, false);
+        }else{
+            return new Property(model, name, type, inits, model.getSuperType() != null);    
+        }
+        
     }
 
     public boolean equals(Object o) {
