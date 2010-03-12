@@ -1,22 +1,13 @@
 package com.mysema.query.domain;
 
-import java.io.Serializable;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
-import com.mysema.query.annotations.QuerySupertype;
 import com.mysema.query.types.path.PNumber;
 
-import static org.junit.Assert.assertEquals;
-
 public class Inheritance8Test {
-
-    @QuerySupertype
-    public static class CommonIdentifiable<ID extends Serializable> extends CommonPersistence {
-        @SuppressWarnings("unused")
-        private ID id;
-    }
 
     @QueryEntity
     public static class SimpleSubclass extends CommonPersistence {

@@ -30,13 +30,7 @@ public final class Property implements Comparable<Property> {
     private final String name, escapedName;
 
     private final Type type;
-    
-    /**
-     * @param context
-     * @param name
-     * @param type
-     * @param inits
-     */
+
     public Property(EntityType declaringType, String name, Type type, String[] inits) {
         this(declaringType, name, type, inits, false);
     }
@@ -57,27 +51,37 @@ public final class Property implements Comparable<Property> {
     public int compareTo(Property o) {
         return name.compareToIgnoreCase(o.getName());
     }
+    
+    private Type transform(Type type, EntityType model){
+        if (type instanceof TypeExtends){
+            TypeExtends extendsType = (TypeExtends)type;
+            if (extendsType.getVarName() != null){
+                return extendsType.resolve(model, declaringType);
+            }            
+        }
+//        else if (type instanceof TypeAdapter){
+//            Type embedded = ((TypeAdapter)type).getType();
+//            Type transformed = transform(embedded, model);
+//            if (transformed != embedded){
+//                return transformed;
+//            }
+//        }
+        return type;
+    }
 
     public Property createCopy(EntityType model) {
         // TODO : simplify
-        Type newType = type;
-        if (newType instanceof TypeExtends){
-            TypeExtends extendsType = (TypeExtends)newType;
-            if (extendsType.getVarName() != null){
-                newType = extendsType.resolve(model, declaringType);
-            }            
-        }
+        Type newType = transform(type,model);
         
         if(newType.getParameterCount() > 0){
             Type[] params = new Type[newType.getParameterCount()];
             boolean transformed = false;
             for (int i = 0; i < newType.getParameterCount(); i++){
                 Type param = newType.getParameter(i);
-                if (param instanceof TypeExtends && ((TypeExtends)param).getVarName() != null){
-                    param = ((TypeExtends)param).resolve(model, declaringType);
+                params[i] = transform(param, model);
+                if (params[i] != param){
                     transformed = true;
                 }
-                params[i] = param;
             }
             if (transformed){
                 newType = new SimpleType(newType.getCategory(), 
