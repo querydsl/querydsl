@@ -56,7 +56,7 @@ import com.mysema.util.ReflectionUtils;
  */
 class PropertyAccessInvocationHandler implements MethodInterceptor {
 
-    private final int RETURN_VALUE = 42;
+    private static final int RETURN_VALUE = 42;
     
     private final Expr<?> hostExpression;
 
@@ -199,17 +199,8 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             rv = Boolean.TRUE;
 
         } else if (List.class.isAssignableFrom(type)) {
-            final Class<Object> elementType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
-            path = new PList<Object,PEntity<Object>>(elementType, (Class)PEntity.class, pm){
-                @Override
-                public PEntity get(Expr<Integer> index) {
-                    return new PEntity(elementType, forListAccess(index));
-                }
-                @Override
-                public PEntity get(int index) {
-                    return new PEntity(elementType, forListAccess(index));
-                }
-            };
+            Class<Object> elementType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
+            path = new PList<Object,PEntity<Object>>(elementType, (Class)PEntity.class, pm);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Set.class.isAssignableFrom(type)) {
@@ -224,17 +215,8 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else if (Map.class.isAssignableFrom(type)) {
             Class<Object> keyType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
-            final Class<Object> valueType = (Class)ReflectionUtils.getTypeParameter(genericType, 1);
-            path = new PMap<Object,Object,PEntity<Object>>(keyType, valueType, (Class)PEntity.class, pm){
-                @Override
-                public PEntity get(Expr<Object> key) {
-                    return new PEntity(valueType, forMapAccess(key));
-                }
-                @Override
-                public PEntity get(Object key) {
-                    return new PEntity(valueType, forMapAccess(key));
-                }
-            };
+            Class<Object> valueType = (Class)ReflectionUtils.getTypeParameter(genericType, 1);
+            path = new PMap<Object,Object,PEntity<Object>>(keyType, valueType, (Class)PEntity.class, pm);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Enum.class.isAssignableFrom(type)) {

@@ -38,6 +38,7 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
             PComparable.class,
             PDate.class,
             PDateTime.class,
+            PEntity.class,
             PNumber.class,
             PSimple.class, 
             PTime.class            

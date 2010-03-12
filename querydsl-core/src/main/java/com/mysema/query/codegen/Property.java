@@ -5,8 +5,6 @@
  */
 package com.mysema.query.codegen;
 
-import java.util.Arrays;
-
 import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
@@ -98,11 +96,22 @@ public final class Property implements Comparable<Property> {
         
     }
 
-    public boolean equals(Object o) {
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + name.hashCode();
+        result = prime * result + type.hashCode();
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object o){
         if (o == this){
             return true;
         }else if (o instanceof Property){
-            return name.equals(((Property) o).name);            
+            Property p = (Property)o;
+            return p.name.equals(name) && p.type.equals(type);
         }else{
             return false;
         }
@@ -130,10 +139,6 @@ public final class Property implements Comparable<Property> {
 
     public Type getType() {
         return type;
-    }
-
-    public int hashCode() {
-        return Arrays.asList(name, type).hashCode();
     }
 
     public boolean isInherited() {
