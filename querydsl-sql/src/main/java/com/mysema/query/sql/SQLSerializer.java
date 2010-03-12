@@ -376,19 +376,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         serialize(query.getMetadata(), false);
         append(")");
     }
-
-    public void visit(SumOver<?> expr) {
-        append(templates.getSum()).append("(").handle(expr.getTarget()).append(") ");
-        append(templates.getOver());
-        append(" (");
-        if (expr.getPartitionBy() != null) {
-            append(templates.getPartitionBy()).handle(expr.getPartitionBy());
-        }
-        if (!expr.getOrderBy().isEmpty()) {
-            append(templates.getOrderBy()).handle(COMMA, expr.getOrderBy());
-        }
-        append(")");
-    }
     
     private void visitCast(Operator<?> operator, Expr<?> source, Class<?> targetType) {
         // TODO : move constants to SqlOps

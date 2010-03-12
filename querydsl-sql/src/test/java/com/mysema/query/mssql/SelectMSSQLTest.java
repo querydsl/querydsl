@@ -31,6 +31,17 @@ public class SelectMSSQLTest extends SelectBaseTest {
     public void setUpForTest() {
         dialect = new SQLServerTemplates().newLineToSingleSpace();
     }
+    
+    /*
+     * 
+      SELECT <original projection>
+      FROM (
+        SELECT <original projection>, ROW_NUMBER() OVER ([PARTITION BY ... ] ORDER BY ...) AS rowNum
+        FROM table1
+      ) AS table2
+      WHERE table2.rowNum BETWEEN ? and ?
+     * 
+     */
 
 
 }

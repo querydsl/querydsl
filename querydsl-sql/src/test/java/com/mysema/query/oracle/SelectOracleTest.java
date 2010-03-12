@@ -118,8 +118,9 @@ public class SelectOracleTest extends SelectBaseTest {
 //       10  order by deptno, sal;
         expectedQuery = "select e.lastname, e.salary, " +
             "sum(e.salary) over (partition by e.superior_id order by e.lastname, e.salary), " +
-            "sum(e.salary) over ( order by e.superior_id, e.salary), " +
+            "sum(e.salary) over (order by e.superior_id, e.salary), " +
             "sum(e.salary) over () from employee2 e order by e.salary asc, e.superior_id asc";
+        
         qo().from(employee)
             .orderBy(employee.salary.asc(), employee.superiorId.asc())
             .list(
@@ -145,7 +146,7 @@ public class SelectOracleTest extends SelectBaseTest {
             protected String buildQueryString(boolean forCountRow) {
                 String rv = super.buildQueryString(forCountRow);
                 if (expectedQuery != null){
-                   Assert.assertEquals(expectedQuery, rv);
+                   Assert.assertEquals(expectedQuery, rv.replace('\n', ' '));
                    expectedQuery = null;
                 }
                 System.out.println(rv);

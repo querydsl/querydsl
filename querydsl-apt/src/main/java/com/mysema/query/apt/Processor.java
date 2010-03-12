@@ -127,8 +127,7 @@ public class Processor {
         
         // super types
         if (configuration.getSuperTypeAnn() != null) {
-            processSupertypes();
-            allSupertypes.putAll(actualSupertypes);
+            processSupertypes();            
         }       
         
         // entities
@@ -282,12 +281,28 @@ public class Processor {
     }
        
     private void processSupertypes() {
+        Set<Type> superTypes = new HashSet<Type>();        
+        
         for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getSuperTypeAnn())) {
             if (configuration.getEmbeddableAnn() == null || element.getAnnotation(configuration.getEmbeddableAnn()) == null){
                 EntityType model = elementHandler.handleNormalType((TypeElement) element);
                 actualSupertypes.put(model.getFullName(), model);    
+                if (model.getSuperType() != null){                    
+                    superTypes.add(model.getSuperType().getType());
+                }
             }                
         }
+        
+        for (Type superType : superTypes){
+            if (!actualSupertypes.containsKey(superType.getFullName())){
+                TypeElement typeElement = env.getElementUtils().getTypeElement(superType.getFullName());
+                EntityType entityType = elementHandler.handleNormalType(typeElement);
+                actualSupertypes.put(superType.getFullName(), entityType);
+            }
+        }    
+        
+        allSupertypes.putAll(actualSupertypes);
+        
         // add supertype fields
         for (EntityType superType : actualSupertypes.values()) {
             addSupertypeFields(superType, actualSupertypes);      

@@ -18,6 +18,16 @@ import com.mysema.query.types.expr.Expr;
  * @version $Id$
  */
 public final class OracleSerializer extends SQLSerializer {
+    
+    private static final String CONNECT_BY = "\nconnect by ";
+    
+    private static final String CONNECT_BY_NOCYCLE_PRIOR = "\nconnect by nocycle prior ";
+    
+    private static final String CONNECT_BY_PRIOR = "\nconnect by prior ";
+    
+    private static final String ORDER_SIBLINGS_BY = "\norder siblings by ";
+    
+    private static final String START_WITH = "\nstart with ";
 
     private final EBoolean connectBy, connectByPrior, connectByNocyclePrior;
 
@@ -42,21 +52,20 @@ public final class OracleSerializer extends SQLSerializer {
 
     @Override
     protected void beforeOrderBy() {
-        SQLTemplates templates = getTemplates();
         if (startWith != null){
-            append(templates.getStartWith()).handle(startWith);
+            append(START_WITH).handle(startWith);
         }            
         if (connectBy != null){
-            append(templates.getConnectBy()).handle(connectBy);
+            append(CONNECT_BY).handle(connectBy);
         }            
         if (connectByPrior != null){
-            append(templates.getConnectByPrior()).handle(connectByPrior);
+            append(CONNECT_BY_PRIOR).handle(connectByPrior);
         }            
         if (connectByNocyclePrior != null){
-            append(templates.getConnectByNocyclePrior()).handle(connectByNocyclePrior);
+            append(CONNECT_BY_NOCYCLE_PRIOR).handle(connectByNocyclePrior);
         }            
         if (orderSiblingsBy != null){
-            append(templates.getOrderSiblingsBy()).handle(orderSiblingsBy);
+            append(ORDER_SIBLINGS_BY).handle(orderSiblingsBy);
         }            
     }
 }

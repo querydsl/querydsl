@@ -47,6 +47,7 @@ public class JPAConfiguration extends DefaultConfiguration {
                 "EmbeddedId",
                 "GeneratedValue",
                 "Id",
+                "Version",
                 "JoinColumn",
                 "ManyToOne",
                 "OneToMany",

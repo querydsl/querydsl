@@ -34,12 +34,6 @@ public class SQLTemplates extends Templates {
 
     private String columnAlias = " ";
     
-    private String connectBy = "\nconnect by ";
-    
-    private String connectByNocyclePrior = "\nconnect by nocycle prior ";
-    
-    private String connectByPrior = "\nconnect by prior ";
-    
     private String count = "count ";
     
     private String countStar = "count(*)";
@@ -86,19 +80,9 @@ public class SQLTemplates extends Templates {
     
     private String orderBy = "\norder by ";
     
-    private String orderSiblingsBy = "\norder siblings by ";
-    
-    private String over = "over";
-    
-    private String partitionBy = "partition by ";
-    
     private String select = "select ";
     
     private String selectDistinct = "select distinct ";
-    
-    private String startWith = "\nstart with ";
-
-    private String sum = "sum";
     
     private String tableAlias = " ";
     
@@ -206,30 +190,6 @@ public class SQLTemplates extends Templates {
 
     public final void setColumnAlias(String columnAlias) {
         this.columnAlias = columnAlias;
-    }
-
-    public final String getConnectBy() {
-        return connectBy;
-    }
-
-    public final void setConnectBy(String connectBy) {
-        this.connectBy = connectBy;
-    }
-
-    public final String getConnectByNocyclePrior() {
-        return connectByNocyclePrior;
-    }
-
-    public final void setConnectByNocyclePrior(String connectByNocyclePrior) {
-        this.connectByNocyclePrior = connectByNocyclePrior;
-    }
-
-    public final String getConnectByPrior() {
-        return connectByPrior;
-    }
-
-    public final void setConnectByPrior(String connectByPrior) {
-        this.connectByPrior = connectByPrior;
     }
 
     public final String getCount() {
@@ -408,30 +368,6 @@ public class SQLTemplates extends Templates {
         this.orderBy = orderBy;
     }
 
-    public final String getOrderSiblingsBy() {
-        return orderSiblingsBy;
-    }
-
-    public final void setOrderSiblingsBy(String orderSiblingsBy) {
-        this.orderSiblingsBy = orderSiblingsBy;
-    }
-
-    public final String getOver() {
-        return over;
-    }
-
-    public final void setOver(String over) {
-        this.over = over;
-    }
-
-    public final String getPartitionBy() {
-        return partitionBy;
-    }
-
-    public final void setPartitionBy(String partitionBy) {
-        this.partitionBy = partitionBy;
-    }
-
     public final String getSelect() {
         return select;
     }
@@ -446,22 +382,6 @@ public class SQLTemplates extends Templates {
 
     public final void setSelectDistinct(String selectDistinct) {
         this.selectDistinct = selectDistinct;
-    }
-
-    public final String getStartWith() {
-        return startWith;
-    }
-
-    public final void setStartWith(String startWith) {
-        this.startWith = startWith;
-    }
-
-    public final String getSum() {
-        return sum;
-    }
-
-    public final void setSum(String sum) {
-        this.sum = sum;
     }
 
     public final String getTableAlias() {

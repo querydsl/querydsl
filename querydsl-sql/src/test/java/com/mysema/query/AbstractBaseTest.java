@@ -36,7 +36,7 @@ public abstract class AbstractBaseTest {
             protected String buildQueryString(boolean countRow) {
                 String rv = super.buildQueryString(countRow);
                 if (expectedQuery != null) {
-                    assertEquals(expectedQuery, rv);
+                    assertEquals(expectedQuery, rv.replace('\n', ' '));
                     expectedQuery = null;
                 }
                 System.out.println(rv);
