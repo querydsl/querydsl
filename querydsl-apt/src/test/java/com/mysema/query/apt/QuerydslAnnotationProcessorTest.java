@@ -56,8 +56,13 @@ public class QuerydslAnnotationProcessorTest {
     }
     
     @Test
-    public void processGenericInheritance() throws IOException{
+    public void processGenericInheritance1() throws IOException{
         process(Collections.singletonList(packagePath + "Inheritance6Test.java"));
+    }
+    
+    @Test
+    public void processGenericInheritance2() throws IOException{
+        process(Collections.singletonList(packagePath + "Inheritance7Test.java"));
     }
     
 }
