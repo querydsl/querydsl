@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  * 
  */
@@ -18,7 +18,6 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.SerializerBase;
-import com.mysema.query.sql.oracle.SumOver;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.Constant;
@@ -157,6 +156,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             } else {
                 append(templates.getSelectDistinct());
             }            
+            if (metadata.getModifiers().isRestricting() && !forCountRow && !templates.isPagingAfterOrder()){
+                Long limit = metadata.getModifiers().getLimit();
+                Long offset = metadata.getModifiers().getOffset();
+                serializeModifiers(where, limit, offset);
+            }
+            
             handle(COMMA, sqlSelect);
         }
         
@@ -189,7 +194,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
         
         // limit & offset
-        if (metadata.getModifiers().isRestricting() && !forCountRow){
+        if (metadata.getModifiers().isRestricting() && !forCountRow && templates.isPagingAfterOrder()){
             Long limit = metadata.getModifiers().getLimit();
             Long offset = metadata.getModifiers().getOffset();
             serializeModifiers(where, limit, offset);
@@ -266,10 +271,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!templates.isLimitAndOffsetSymbols()){
             if (where == null && templates.isRequiresWhereForPagingSymbols()){
                 append(templates.getWhere());
-            }else{
+            }else if (templates.isPagingAfterOrder()){
                 append(" ");    
             }
-            append(templates.getLimitOffsetCondition(limit, offset));
+            handle(templates.getLimitOffsetCondition(limit, offset));
         }else{
             if (limit != null) {
                 append(templates.getLimit()).append(String.valueOf(limit));

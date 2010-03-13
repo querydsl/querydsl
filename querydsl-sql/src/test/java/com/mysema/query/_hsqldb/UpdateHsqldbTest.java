@@ -1,0 +1,33 @@
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
+package com.mysema.query._hsqldb;
+
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
+
+import com.mysema.query.Connections;
+import com.mysema.query.Target;
+import com.mysema.query.UpdateBaseTest;
+import com.mysema.query.sql.HSQLDBTemplates;
+import com.mysema.testutil.FilteringTestRunner;
+import com.mysema.testutil.Label;
+
+@RunWith(FilteringTestRunner.class)
+@Label(Target.HSQLDB)
+public class UpdateHsqldbTest extends UpdateBaseTest{
+    
+    @BeforeClass
+    public static void setUp() throws Exception {
+        Connections.initHSQL();
+    }
+
+    @Before
+    public void setUpForTest() {
+        dialect = new HSQLDBTemplates().newLineToSingleSpace();
+    }
+
+}

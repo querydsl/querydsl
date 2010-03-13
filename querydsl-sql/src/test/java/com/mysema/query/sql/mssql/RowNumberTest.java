@@ -1,11 +1,16 @@
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.sql.mssql;
 
+import static com.mysema.query.Constants.employee;
+import static com.mysema.query.sql.mssql.SQLServerGrammar.rn;
+import static com.mysema.query.sql.mssql.SQLServerGrammar.rowNumber;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
-
-import static com.mysema.query.Constants.*;
-import static org.junit.Assert.*;
-
-import static com.mysema.query.sql.mssql.SQLServerGrammar.*;
 
 public class RowNumberTest {
     
@@ -18,6 +23,10 @@ public class RowNumberTest {
         assertEquals(
             "row_number() over (order by e.firstname)", 
             rowNumber().orderBy(employee.firstname.asc()).toString());
+        
+        assertEquals(
+            "row_number() over (order by e.firstname)", 
+            rowNumber().orderBy(employee.firstname).toString());
         
         assertEquals(
             "row_number() over (order by e.firstname) as rn", 

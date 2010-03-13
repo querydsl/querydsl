@@ -197,6 +197,21 @@ public abstract class AbstractStandardTest {
         }
                 
     }
+    
+    @Test
+    public void testPaging(){        
+        // limit
+        List<String> names1 = Arrays.asList("Allen123","Bob123");
+        assertEquals(names1, catQuery().orderBy(cat.name.asc()).limit(2).list(cat.name));
+        
+        // offset
+        List<String> names2 = Arrays.asList("Felix123","Mary123","Ruth123","Some");
+        assertEquals(names2, catQuery().orderBy(cat.name.asc()).offset(2).list(cat.name));
+        
+        // limit + offset
+        List<String> names3 = Arrays.asList("Felix123","Mary123");
+        assertEquals(names3, catQuery().orderBy(cat.name.asc()).limit(2).offset(2).list(cat.name));
+    }
         
 
 }

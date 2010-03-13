@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  * 
  */
@@ -15,6 +15,9 @@ import javax.annotation.Nullable;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
 import com.mysema.query.types.Templates;
+import com.mysema.query.types.custom.CSimple;
+import com.mysema.query.types.expr.ENumberConst;
+import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Ops;
 
 /**
@@ -95,7 +98,9 @@ public class SQLTemplates extends Templates {
     private String where = "\nwhere ";
     
     private boolean requiresWhereForPagingSymbols = false;
-
+    
+    private boolean pagingAfterOrder = true;
+    
     protected SQLTemplates() {
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
@@ -166,13 +171,16 @@ public class SQLTemplates extends Templates {
         return this;
     }
     
-    public final String getLimitOffsetCondition(@Nullable Long limit, @Nullable Long offset) {
+    public final Expr<Object> getLimitOffsetCondition(@Nullable Long limit, @Nullable Long offset) {
         if (offset == null) {
-            return String.format(limitTemplate, limit);
+            return CSimple.create(Object.class, limitTemplate, ENumberConst.create(limit));
         } else if (limit == null) {
-            return String.format(offsetTemplate, offset);
+            return CSimple.create(Object.class, offsetTemplate, ENumberConst.create(offset));
         } else {
-            return String.format(limitOffsetTemplate, limit, offset, limit + offset);
+            return CSimple.create(Object.class, limitOffsetTemplate, 
+                ENumberConst.create(limit), 
+                ENumberConst.create(offset), 
+                ENumberConst.create(limit + offset));
         }
     }
 
@@ -455,5 +463,12 @@ public class SQLTemplates extends Templates {
         this.requiresWhereForPagingSymbols = requiresWhereForPagingSymbols;
     }
 
-    
+    public final boolean isPagingAfterOrder() {
+        return pagingAfterOrder;
+    }
+
+    public final void setPagingAfterOrder(boolean pagingAfterOrder) {
+        this.pagingAfterOrder = pagingAfterOrder;
+    }
+
 }

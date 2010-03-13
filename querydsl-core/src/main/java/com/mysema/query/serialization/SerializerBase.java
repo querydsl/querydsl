@@ -37,14 +37,14 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     private static final String NEW = "new ";
 
-    @SuppressWarnings("unchecked")
-    private final S self = (S) this;
-
     private final StringBuilder builder = new StringBuilder();
-    
+
     private String constantPrefix = "a";
     
     private final Map<Object,String> constantToLabel = new HashMap<Object,String>();
+    
+    @SuppressWarnings("unchecked")
+    private final S self = (S) this;
 
     private final Templates templates;
 
@@ -59,11 +59,6 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return self;
     }
     
-    public S handle(Expr<?> expr) {
-        expr.accept(this);
-        return self;
-    }
-    
     protected String getConstantPrefix() {
         return constantPrefix;
     }
@@ -71,9 +66,14 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     public Map<Object,String> getConstantToLabel() {
         return constantToLabel;
     }
-
+    
     protected Template getTemplate(Operator<?> op) {
         return templates.getTemplate(op);
+    }
+
+    public S handle(Expr<?> expr) {
+        expr.accept(this);
+        return self;
     }
 
     public final S handle(String sep, List<? extends Expr<?>> expressions) {
@@ -88,14 +88,29 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return self;
     }
 
+    private void handleTemplate(Template template, List<Expr<?>> args){
+        for (Template.Element element : template.getElements()){
+            if (element.getStaticText() != null){
+                append(element.getStaticText());
+            }else if (element.isAsString()){
+                append(args.get(element.getIndex()).toString());
+            }else if (element.hasConverter()){    
+                handle(element.convert(args.get(element.getIndex())));
+            }else{
+                handle(args.get(element.getIndex()));    
+            }
+        }
+    }
+    
+    
     public void setConstantPrefix(String prefix){
         this.constantPrefix = prefix;
     }
-    
-    
+
     public String toString() {
         return builder.toString();
     }
+
 
     @Override
     public void visit(Constant<?> expr) {        
@@ -110,13 +125,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     @Override
     public void visit(Custom<?> expr) {        
-        for (Template.Element element : expr.getTemplate().getElements()){
-            if (element.getStaticText() != null){
-                append(element.getStaticText());
-            }else{
-                handle(expr.getArg(element.getIndex()));
-            }
-        }
+        handleTemplate(expr.getTemplate(), expr.getArgs());
     }
 
     @Override
@@ -130,12 +139,13 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         append(NEW).append(expr.getType().getName()).append("(");
         handle(COMMA, expr.getArgs()).append(")");
     }
+    
 
     @Override
     public void visit(Operation<?, ?> expr) {
         visitOperation(expr.getType(), expr.getOperator(), expr.getArgs());
     }
-
+    
     @Override
     public void visit(Path<?> path) {
         PathType pathType = path.getMetadata().getPathType();
@@ -145,21 +155,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
             args.add((Expr<?>) path.getMetadata().getParent());
         }
         args.add(path.getMetadata().getExpression());
-        
-        for (Template.Element element : template.getElements()){
-            if (element.getStaticText() != null){
-                append(element.getStaticText()); 
-            }else{
-                Expr<?> arg = args.get(element.getIndex());
-                if (element.isAsString()){
-                    append(arg.toString());
-                }else if (element.hasConverter()){    
-                    handle(element.convert(arg));
-                }else{
-                    handle(arg);    
-                }
-            }
-        }
+        handleTemplate(template, args);
     }
     
     @SuppressWarnings("unchecked")

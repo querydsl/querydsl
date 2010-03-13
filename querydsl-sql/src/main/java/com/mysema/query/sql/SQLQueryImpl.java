@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  * 
  */
@@ -9,8 +9,6 @@ import java.sql.Connection;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.query.SubQuery;
 
 /**
  * SQLQueryImpl is a JDBC based implementation of the Querydsl SQLQuery interface

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  * 
  */
@@ -27,8 +27,8 @@ public class DerbyTemplates extends SQLTemplates {
         add(Ops.CASE_EQ_ELSE,  "else {0}");
         
         setLimitAndOffsetSymbols(false);
-        setLimitTemplate("fetch first %1$s rows only");
-        setOffsetTemplate("offset %1$s rows");
-        setLimitOffsetTemplate("offset %2$s rows fetch next %1$s rows only");
+        setLimitTemplate("fetch first {0s} rows only");
+        setOffsetTemplate("offset {0s} rows");
+        setLimitOffsetTemplate("offset {1s} rows fetch next {0s} rows only");
     }
 }

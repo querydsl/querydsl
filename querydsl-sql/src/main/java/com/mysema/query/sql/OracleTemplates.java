@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  * 
  */
@@ -56,8 +56,8 @@ public class OracleTemplates extends SQLTemplates {
         
         setLimitAndOffsetSymbols(false);
         setRequiresWhereForPagingSymbols(true);
-        setLimitTemplate("rownum < %1$s");
-        setOffsetTemplate("rownum > %1$s");
-        setLimitOffsetTemplate("rownum between %1$s and %3$s");
+        setLimitTemplate("rownum < {0}");
+        setOffsetTemplate("rownum > {0}");
+        setLimitOffsetTemplate("rownum between {0} and {2}");
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  * 
  */
@@ -11,9 +11,7 @@ import static com.mysema.query.Constants.employee2;
 import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Constants.survey2;
 import static com.mysema.query.Constants.time;
-import static com.mysema.query.Target.DERBY;
-import static com.mysema.query.Target.ORACLE;
-import static com.mysema.query.Target.SQLSERVER;
+import static com.mysema.query.Target.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -148,16 +146,23 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     
     @Test
     public void limitAndOffset() throws SQLException {
-        // limit offset
-        query().from(employee).limit(4).offset(3).list(employee.id);
-        
         // limit
-        query().from(employee).limit(4).list(employee.id);
+        query().from(employee).limit(4).list(employee.id);        
+        
+        // limit and offset
+        query().from(employee).limit(4).offset(3).list(employee.id);
+    }
+    
+    @Test
+    @ExcludeIn({HSQLDB,MYSQL})
+    public void offsetOnly(){
+        // offset
+        query().from(employee).offset(3).list(employee.id);        
     }
 
     @Test
     @ExcludeIn({ORACLE,DERBY,SQLSERVER})
-    public void limitAndOffse2t() throws SQLException {
+    public void limitAndOffset2() throws SQLException {
         // limit offset
         expectedQuery = "select e.id from employee2 e limit 4 offset 3";
         query().from(employee).limit(4).offset(3).list(employee.id);
@@ -193,15 +198,15 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         String prefix = "select e.id from employee2 e ";
 
         // limit
-        expectedQuery = prefix + "where rownum < 4";
+        expectedQuery = prefix + "where rownum < ?";
         query().from(employee).limit(4).list(employee.id);
 
         // offset
-        expectedQuery = prefix + "where rownum > 3";
+        expectedQuery = prefix + "where rownum > ?";
         query().from(employee).offset(3).list(employee.id);
 
         // limit offset
-        expectedQuery = prefix + "where rownum between 4 and 7";
+        expectedQuery = prefix + "where rownum between ? and ?";
         query().from(employee).limit(4).offset(3).list(employee.id);
     }
 

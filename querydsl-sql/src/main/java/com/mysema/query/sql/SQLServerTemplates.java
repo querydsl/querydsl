@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  * 
  */
@@ -15,6 +15,7 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  *
  */
+// NOTE : under construction
 public class SQLServerTemplates extends SQLTemplates{
     {
         addClass2TypeMappings("decimal", Double.class);
@@ -23,7 +24,8 @@ public class SQLServerTemplates extends SQLTemplates{
         add(Ops.CHAR_AT, "cast(substring({0},{1}+1,1) as char)");
         add(Ops.INDEX_OF, "charindex({1},{0})-1");
         add(Ops.INDEX_OF_2ARGS, "charindex({1},{0},{2})-1");
-        add(Ops.MATCHES, "{0} like {1}"); // NOTE : needs to be replaced with real regular expression
+        // NOTE : needs to be replaced with real regular expression
+        add(Ops.MATCHES, "{0} like {1}"); 
         add(Ops.STRING_IS_EMPTY, "len({0}) = 0");
         add(Ops.STRING_LENGTH, "len({0})");
         add(Ops.SUBSTR_1ARG, "substring({0},{1}+1,255)");
@@ -41,5 +43,11 @@ public class SQLServerTemplates extends SQLTemplates{
         add(Ops.DateTimeOps.MINUTE, "datepart(minute, {0})");
         add(Ops.DateTimeOps.SECOND, "datepart(second, {0})");
         add(Ops.DateTimeOps.MILLISECOND, "datepart(millisecond, {0})");
+        
+        setLimitAndOffsetSymbols(false);
+        setPagingAfterOrder(false);
+        setLimitTemplate("top {0s} ");
+        setOffsetTemplate(""); // FIXME
+        setLimitOffsetTemplate("top {2s} "); // FIXME
     }
 }

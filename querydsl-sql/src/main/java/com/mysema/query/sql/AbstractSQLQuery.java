@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  * 
  */
@@ -31,10 +31,7 @@ import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.OSimple;
-import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.Path;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.SubQuery;
 import com.mysema.util.JDBCUtil;
@@ -154,7 +151,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     public QueryMetadata getMetadata() {
         return queryMixin.getMetadata();
     }
-
+    
     public ResultSet getResults(Expr<?>... exprs) {
         queryMixin.addToProjection(exprs);
         String queryString = buildQueryString(false);
@@ -164,6 +161,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
             final PreparedStatement stmt = conn.prepareStatement(queryString);
             JDBCUtil.setParameters(stmt, constants);
             ResultSet rs = stmt.executeQuery();
+            
             return new ResultSetAdapter(rs) {
                 @Override
                 public void close() throws SQLException {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  * 
  */
@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.custom.CNumber;
+import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PNumber;
@@ -44,33 +45,14 @@ public class RowNumber extends Expr<Long>{
         StringBuilder builder = new StringBuilder("row_number() over (");
         if (!partitionBy.isEmpty()){
             builder.append("partition by ");
-            boolean first = true;
-            for (Expr<?> expr : partitionBy){
-                if (!first){
-                    builder.append(", ");
-                }
-                builder.append("{"+args.size()+"}");
-                args.add(expr);
-                first = false;
-            }
+            appendPartition(args, builder);
         }
         if (!orderBy.isEmpty()){
             if (!partitionBy.isEmpty()){
                 builder.append(" ");
             }            
             builder.append("order by ");
-            boolean first = true;
-            for (OrderSpecifier<?> expr : orderBy){
-                if (!first){
-                    builder.append(", ");
-                }
-                builder.append("{" + args.size()+"}");
-                args.add(expr.getTarget());
-                if (!expr.isAscending()){
-                    builder.append(" desc");
-                }
-                first = false;
-            }
+            appendOrder(args, builder);
         }        
         builder.append(")");
         
@@ -83,10 +65,46 @@ public class RowNumber extends Expr<Long>{
                 args.toArray(new Expr[args.size()]));
         expr.accept(v);
     }
+
+    // TODO : externalize
+    private void appendPartition(List<Expr<?>> args, StringBuilder builder) {
+        boolean first = true;
+        for (Expr<?> expr : partitionBy){
+            if (!first){
+                builder.append(", ");
+            }
+            builder.append("{"+args.size()+"}");
+            args.add(expr);
+            first = false;
+        }
+    }
+
+    // TODO : externalize
+    private void appendOrder(List<Expr<?>> args, StringBuilder builder) {
+        boolean first = true;
+        for (OrderSpecifier<?> expr : orderBy){
+            if (!first){
+                builder.append(", ");
+            }
+            builder.append("{" + args.size()+"}");            
+            if (!expr.isAscending()){
+                builder.append(" desc");
+            }
+            args.add(expr.getTarget());
+            first = false;
+        }
+    }
     
     public RowNumber orderBy(OrderSpecifier<?>... order){
         for (OrderSpecifier<?> o : order){
             orderBy.add(o);
+        }
+        return this;
+    }
+    
+    public RowNumber orderBy(EComparable<?>... order){
+        for (EComparable<?> o : order){
+            orderBy.add(o.asc());
         }
         return this;
     }

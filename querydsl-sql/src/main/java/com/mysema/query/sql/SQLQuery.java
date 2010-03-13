@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  * 
  */
@@ -13,7 +13,6 @@ import com.mysema.query.Query;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.Path;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.SubQuery;
 

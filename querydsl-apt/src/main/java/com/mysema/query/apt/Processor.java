@@ -8,13 +8,14 @@ package com.mysema.query.apt;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -101,20 +102,18 @@ public class Processor {
     }
     
     private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes) {
-        Stack<Supertype> stypeStack = new Stack<Supertype>();
-        for (Supertype stype : model.getSuperTypes()) {
-            stypeStack.push(stype);
-            while (!stypeStack.isEmpty()) {
-                Supertype sdecl = stypeStack.pop();
-                EntityType entityType = superTypes.get(sdecl.getType().getFullName());
-                if (entityType != null){
-                    sdecl.setEntityType(entityType);
-                    model.include(sdecl);
-                    for (Supertype type : sdecl.getEntityType().getSuperTypes()) {
-                        stypeStack.push(type);
-                    }
-                }                
-            }
+        Deque<Supertype> stypeStack = new ArrayDeque<Supertype>();
+        stypeStack.addAll(model.getSuperTypes());        
+        while (!stypeStack.isEmpty()) {
+            Supertype sdecl = stypeStack.pop();
+            EntityType entityType = superTypes.get(sdecl.getType().getFullName());
+            if (entityType != null){
+                sdecl.setEntityType(entityType);
+                model.include(sdecl);
+                for (Supertype type : sdecl.getEntityType().getSuperTypes()) {
+                    stypeStack.push(type);
+                }
+            }                
         }
     }
 
@@ -136,26 +135,15 @@ public class Processor {
 
 
     public void process() {
-        // types without any type level annotations
-        processCustomTypes();        
-        
-        // query extensions
-        processExtensions();
-        
-        // super types
+        processCustomTypes();               
+        processExtensions();        
         if (configuration.getSuperTypeAnn() != null) {
             processSupertypes();            
-        }       
-        
-        // entities
-        processEntities();               
-        
-        // embeddables
+        }               
+        processEntities();                       
         if (configuration.getEmbeddableAnn() != null){
             processEmbeddables();            
-        }           
-        
-        // dtos
+        }                   
         processDTOs();
         
         // remove entity types from embeddables
@@ -188,8 +176,9 @@ public class Processor {
     
 
     private void process(Class<? extends Annotation> annotation, Map<String,EntityType> types){
-        Stack<Type> superTypes = new Stack<Type>();        
+        Deque<Type> superTypes = new ArrayDeque<Type>();        
         
+        // get annotated types
         for (Element element : roundEnv.getElementsAnnotatedWith(annotation)) {
             if (configuration.getEmbeddableAnn() == null || element.getAnnotation(configuration.getEmbeddableAnn()) == null){
                 EntityType model = elementHandler.handleNormalType((TypeElement) element);
@@ -200,10 +189,10 @@ public class Processor {
             }                
         }
         
-        while (!superTypes.empty()){
+        // get external supertypes
+        while (!superTypes.isEmpty()){
             Type superType = superTypes.pop();
-            if (!types.containsKey(superType.getFullName()) 
-                && !allSupertypes.containsKey(superType.getFullName())){
+            if (!types.containsKey(superType.getFullName())  && !allSupertypes.containsKey(superType.getFullName())){
                 TypeElement typeElement = env.getElementUtils().getTypeElement(superType.getFullName());
                 EntityType entityType = elementHandler.handleNormalType(typeElement);
                 if (entityType.getSuperType() != null){
@@ -216,8 +205,8 @@ public class Processor {
         allSupertypes.putAll(types);
         
         // add supertype fields
-        for (EntityType superType : types.values()) {
-            addSupertypeFields(superType, allSupertypes);      
+        for (EntityType type : types.values()) {
+            addSupertypeFields(type, allSupertypes);      
         }
     }
 
