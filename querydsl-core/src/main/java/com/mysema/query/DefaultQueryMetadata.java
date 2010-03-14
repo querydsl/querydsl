@@ -121,6 +121,18 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         }            
     }    
 
+    public void clearOrderBy(){
+        orderBy.clear();
+    }
+    
+    public void clearProjection(){
+        projection.clear();
+    }
+    
+    public void clearWhere(){
+        where = new BooleanBuilder();
+    }
+    
     @Override
     public QueryMetadata clone(){
         try {

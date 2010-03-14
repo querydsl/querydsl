@@ -14,7 +14,7 @@ import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PNumber;
 
 /**
- * OracleGrammar provides Oracle specific extensions to the SqlGrammar
+ * Convenience functions and constants for Oracle DB usage
  * 
  * @author tiwe
  * @version $Id$
@@ -22,16 +22,12 @@ import com.mysema.query.types.path.PNumber;
 public final class OracleGrammar {
 
     private OracleGrammar(){}
-    
-    // global columns
-
+   
     public static final ENumber<Integer> level = new PNumber<Integer>(Integer.class, "level");
 
     public static final ENumber<Integer> rownum = new PNumber<Integer>(Integer.class, "rownum");
-
+    
     public static final EDate<Date> sysdate = new PDate<Date>(Date.class, "sysdate");
-
-    // custom functions
 
     public static <A extends Number & Comparable<? super A>> SumOver<A> sumOver(Expr<A> expr) {
         return new SumOver<A>(expr);

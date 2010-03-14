@@ -75,7 +75,9 @@ public class MatchingFilters {
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDOQL)){
             rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
-            rv.add(expr.week().eq(other.week()));
+            if (!target.equals(Target.SQLSERVER)){
+                rv.add(expr.week().eq(other.week()));    
+            }            
         }        
         
         rv.add(expr.month().eq(other.month()));
@@ -103,7 +105,9 @@ public class MatchingFilters {
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDOQL)){
             rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
-            rv.add(expr.week().eq(other.week()));
+            if (!target.equals(Target.SQLSERVER)){
+                rv.add(expr.week().eq(other.week()));    
+            }            
         }          
         
         rv.add(expr.month().eq(other.month()));
@@ -212,7 +216,8 @@ public class MatchingFilters {
             
         rv.add(expr.lower().eq(other.lower()));
         
-        if (!module.equals(Module.SQL) || (!target.equals(Target.HSQLDB) && !target.equals(Target.DERBY))){
+        if (!module.equals(Module.SQL) 
+        || (!target.equals(Target.HSQLDB) && !target.equals(Target.DERBY) && !target.equals(Target.SQLSERVER))){
             rv.add(expr.matches(other.substring(0,1).append(".*")));
             rv.add(expr.matches(other.substring(0,1).append(".").append(other.substring(2))));
             rv.add(expr.matches(other.substring(1).prepend(".*")));

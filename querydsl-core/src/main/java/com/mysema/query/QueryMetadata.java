@@ -65,6 +65,26 @@ public interface QueryMetadata extends Serializable {
     void addWhere(EBoolean... o);
 
     /**
+     * 
+     */
+    void clearOrderBy();
+
+    /**
+     * 
+     */
+    void clearProjection();
+
+    /**
+     * 
+     */
+    void clearWhere();
+
+    /**
+     * @return
+     */
+    QueryMetadata clone();
+
+    /**
      * @return
      */
     List<? extends Expr<?>> getGroupBy();
@@ -79,29 +99,29 @@ public interface QueryMetadata extends Serializable {
      * @return
      */
     List<JoinExpression> getJoins();
-
+    
     /**
      * @return
      */
     @Nullable
     QueryModifiers getModifiers();
-
+    
     /**
      * @return
      */
     List<OrderSpecifier<?>> getOrderBy();
-
+    
     /**
      * @return
      */
     List<? extends Expr<?>> getProjection();
-
+    
     /**
      * @return
      */
     @Nullable
     EBoolean getWhere();
-    
+
     /**
      * @return
      */
@@ -113,15 +133,20 @@ public interface QueryMetadata extends Serializable {
     boolean isUnique();
     
     /**
+     * 
+     */
+    void reset();
+
+    /**
      * @param distinct
      */
     void setDistinct(boolean distinct);
-    
+
     /**
      * @param limit
      */
     void setLimit(@Nullable Long limit);
-
+    
     /**
      * @param restriction
      */
@@ -136,14 +161,4 @@ public interface QueryMetadata extends Serializable {
      * @param unique
      */
     void setUnique(boolean unique);
-
-    /**
-     * 
-     */
-    void reset();
-
-    /**
-     * @return
-     */
-    QueryMetadata clone();
 }

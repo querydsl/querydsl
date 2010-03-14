@@ -11,7 +11,11 @@ import static com.mysema.query.Constants.employee2;
 import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Constants.survey2;
 import static com.mysema.query.Constants.time;
-import static com.mysema.query.Target.*;
+import static com.mysema.query.Target.DERBY;
+import static com.mysema.query.Target.HSQLDB;
+import static com.mysema.query.Target.MYSQL;
+import static com.mysema.query.Target.ORACLE;
+import static com.mysema.query.Target.SQLSERVER;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -41,7 +45,6 @@ import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.query.ObjectSubQuery;
 import com.mysema.query.types.query.SubQuery;
 import com.mysema.testutil.ExcludeIn;
-import com.mysema.testutil.IncludeIn;
 import com.mysema.testutil.Label;
 
 public abstract class SelectBaseTest extends AbstractBaseTest{
@@ -147,67 +150,44 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     public void limitAndOffset() throws SQLException {
         // limit
-        query().from(employee).limit(4).list(employee.id);        
+        query().from(employee)
+            .orderBy(employee.firstname.asc())
+            .limit(4).list(employee.id);        
         
         // limit and offset
-        query().from(employee).limit(4).offset(3).list(employee.id);
+        query().from(employee)
+            .orderBy(employee.firstname.asc())
+            .limit(4).offset(3).list(employee.id);
     }
     
-    @Test
-    @ExcludeIn({HSQLDB,MYSQL})
-    public void offsetOnly(){
-        // offset
-        query().from(employee).offset(3).list(employee.id);        
-    }
-
     @Test
     @ExcludeIn({ORACLE,DERBY,SQLSERVER})
-    public void limitAndOffset2() throws SQLException {
+    public void limitAndOffset2() throws SQLException {        
+        // limit
+        expectedQuery = "select e.id from employee2 e limit ?";
+        query().from(employee).limit(4).list(employee.id);
+        
         // limit offset
-        expectedQuery = "select e.id from employee2 e limit 4 offset 3";
+        expectedQuery = "select e.id from employee2 e limit ? offset ?";
         query().from(employee).limit(4).offset(3).list(employee.id);
-        
-        // limit
-        expectedQuery = "select e.id from employee2 e limit 4";
-        query().from(employee).limit(4).list(employee.id);
-        
-        // offset
-//        expectedQuery = "select employee.id from employee2 employee offset 3";
-//        query().from(employee).offset(3).list(employee.id);
-    }
-
-    @Test
-    @IncludeIn(DERBY)
-    public void limitAndOffsetInDerby() throws SQLException {
-        expectedQuery = "select e.id from employee2 e offset 3 rows fetch next 4 rows only";
-        query().from(employee).limit(4).offset(3).list(employee.id);
-        
-        // limit
-        expectedQuery = "select e.id from employee2 e fetch first 4 rows only";
-        query().from(employee).limit(4).list(employee.id);
-        
-        // offset
-        expectedQuery = "select e.id from employee2 e offset 3 rows";
-        query().from(employee).offset(3).list(employee.id);
         
     }
     
     @Test
-    @IncludeIn(ORACLE)
-    public void limitAndOffsetInOracle() throws SQLException {
-        String prefix = "select e.id from employee2 e ";
-
+    public void limitAndOffsetAndOrder(){        
         // limit
-        expectedQuery = prefix + "where rownum < ?";
-        query().from(employee).limit(4).list(employee.id);
-
-        // offset
-        expectedQuery = prefix + "where rownum > ?";
-        query().from(employee).offset(3).list(employee.id);
-
-        // limit offset
-        expectedQuery = prefix + "where rownum between ? and ?";
-        query().from(employee).limit(4).offset(3).list(employee.id);
+        List<String> names1 = Arrays.asList("Barbara","Daisy","Helen","Jennifer");
+        assertEquals(names1, query().from(employee)
+                .orderBy(employee.firstname.asc())
+                .limit(4)
+                .list(employee.firstname));
+        
+        // limit + offset
+        List<String> names2 = Arrays.asList("Helen","Jennifer","Jim","Joe");
+        assertEquals(names2, query().from(employee)
+                .orderBy(employee.firstname.asc())
+                .limit(4).offset(2)
+                .list(employee.firstname));
     }
 
     @SuppressWarnings("unchecked")
@@ -229,6 +209,15 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
                 MathFunctions.exp(d))) {
             query().from(employee).list((Expr<? extends Comparable>) e);
         }
+    }
+
+    @Test
+    @ExcludeIn({HSQLDB,MYSQL})
+    public void offsetOnly(){
+        // offset
+        query().from(employee)
+            .orderBy(employee.firstname.asc())
+            .offset(3).list(employee.id);        
     }
 
     @Test

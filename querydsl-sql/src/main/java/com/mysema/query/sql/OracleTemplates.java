@@ -7,6 +7,8 @@ package com.mysema.query.sql;
 
 import java.math.BigInteger;
 
+import com.mysema.query.QueryMetadata;
+import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.operation.Ops;
 
 /**
@@ -18,6 +20,12 @@ import com.mysema.query.types.operation.Ops;
  * @version $Id$
  */
 public class OracleTemplates extends SQLTemplates {
+    
+    private String limitOffsetTemplate = "rn > {0s} and rn <= {1s}";
+    
+    private String limitTemplate = "rn <= {0}";
+    
+    private String offsetTemplate = "rn > {0}";
     
     public OracleTemplates(){
         // type mappings
@@ -54,10 +62,40 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.MINUTE, "to_number(to_char({0},'MI'))");
         add(Ops.DateTimeOps.SECOND, "to_number(to_char({0},'SS'))");
         
-        setLimitAndOffsetSymbols(false);
-        setRequiresWhereForPagingSymbols(true);
-        setLimitTemplate("rownum < {0}");
-        setOffsetTemplate("rownum > {0}");
-        setLimitOffsetTemplate("rownum between {0} and {2}");
+//        setLimitAndOffsetSymbols(false);
+//        setRequiresWhereForPagingSymbols(true);
+//        setLimitTemplate("rownum < {0}");
+//        setOffsetTemplate("rownum > {0}");
+//        setLimitOffsetTemplate("rownum between {0} and {2}");
     }
+    
+    @Override
+    public void serialize(QueryMetadata metadata, boolean forCountRow, SerializationContext context) {
+        if (!forCountRow && metadata.getModifiers().isRestricting()){
+            QueryModifiers mod = metadata.getModifiers();
+            
+            if (mod.getOffset() == null){
+                context.append("select * from (\n  ");
+                context.serialize(metadata, forCountRow);
+                context.handle("\n) where rownum <= {0}", mod.getLimit());            
+            }else{
+                context.append("select * from (\n");
+                context.append(" select a.*, rownum rn from (\n  ");
+                context.serialize(metadata, forCountRow);
+                context.append("\n ) a) where ");            
+                
+                if (mod.getLimit() == null){
+                    context.handle(offsetTemplate, mod.getOffset());
+                }else if (mod.getOffset() == null){
+                    context.handle(limitTemplate, mod.getLimit());
+                }else{
+                    context.handle(limitOffsetTemplate, mod.getOffset(), mod.getLimit() + mod.getOffset());
+                }
+            }
+              
+        }else{
+            context.serialize(metadata, forCountRow);    
+        }        
+    }
+    
 }

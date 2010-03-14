@@ -20,7 +20,7 @@ public abstract class UpdateBaseTest extends AbstractBaseTest{
     }
     
     @Test
-    public void testUpdate(){        
+    public void test(){        
         // original state
         long count = query().from(survey).count();
         assertEquals(0, query().from(survey).where(survey.name.eq("S")).count());

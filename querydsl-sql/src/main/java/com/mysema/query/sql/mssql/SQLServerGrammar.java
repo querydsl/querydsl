@@ -7,6 +7,12 @@ package com.mysema.query.sql.mssql;
 
 import com.mysema.query.types.path.PNumber;
 
+/**
+ * Convenience functions and constants for SQL Server usage
+ * 
+ * @author tiwe
+ *
+ */
 public final class SQLServerGrammar {
 
     private SQLServerGrammar(){}

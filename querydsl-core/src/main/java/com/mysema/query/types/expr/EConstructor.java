@@ -25,18 +25,22 @@ import com.mysema.query.types.Visitor;
 public class EConstructor<D> extends Expr<D> {
     
     private static final long serialVersionUID = -602747921848073175L;
+    
+    private static Class<?> normalize(Class<?> clazz){
+        if (clazz.isPrimitive()){
+            return ClassUtils.primitiveToWrapper(clazz);                    
+        }else{
+            return clazz;
+        }
+    }
 
     public static <D> EConstructor<D> create(Class<D> type, Expr<?>... args){
         for (Constructor<?> c : type.getConstructors()){
             Class<?>[] paramTypes = c.getParameterTypes();            
             if (paramTypes.length == args.length){
                 boolean found = true;
-                for (int i = 0; i < paramTypes.length; i++){
-                    Class<?> paramType = paramTypes[i];
-                    if (paramType.isPrimitive()){
-                        paramType = ClassUtils.primitiveToWrapper(paramType);                    
-                    }
-                    if (!paramType.isAssignableFrom(args[i].getType())){
+                for (int i = 0; i < paramTypes.length; i++){                    
+                    if (!normalize(paramTypes[i]).isAssignableFrom(args[i].getType())){
                         found = false;
                         break;
                     }

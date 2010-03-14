@@ -5,7 +5,12 @@
  */
 package com.mysema.query.sql;
 
+import com.mysema.query.QueryMetadata;
+import com.mysema.query.QueryModifiers;
+import com.mysema.query.sql.mssql.RowNumber;
+import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.path.PNumber;
 
 /**
  * SQLServerTemplates is an SQL dialect for Microsoft SQL Server
@@ -15,8 +20,16 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  *
  */
-// NOTE : under construction
 public class SQLServerTemplates extends SQLTemplates{
+    
+    private static final PNumber<Long> rowNumber = new PNumber<Long>(Long.class, "row_number");
+    
+    private String limitOffsetTemplate = "row_number > {0} and row_number <= {1}";
+    
+    private String limitTemplate = "row_number <= {0}";
+    
+    private String offsetTemplate = "row_number > {0}";
+    
     {
         addClass2TypeMappings("decimal", Double.class);
         
@@ -44,10 +57,44 @@ public class SQLServerTemplates extends SQLTemplates{
         add(Ops.DateTimeOps.SECOND, "datepart(second, {0})");
         add(Ops.DateTimeOps.MILLISECOND, "datepart(millisecond, {0})");
         
-        setLimitAndOffsetSymbols(false);
-        setPagingAfterOrder(false);
-        setLimitTemplate("top {0s} ");
-        setOffsetTemplate(""); // FIXME
-        setLimitOffsetTemplate("top {2s} "); // FIXME
+//        setLimitAndOffsetSymbols(false);
+//        setPagingAfterOrder(false);
+//        setLimitTemplate("top {0s} ");
+//        setOffsetTemplate(""); // FIXME
+//        setLimitOffsetTemplate("top {2s} "); // FIXME
+    }
+    
+    @Override
+    public void serialize(QueryMetadata metadata, boolean forCountRow, SerializationContext context) {
+        if (!forCountRow && metadata.getModifiers().isRestricting()){
+            context.append("with inner_query as \n");
+            context.append("(\n  ");
+            
+            metadata = metadata.clone();
+            RowNumber rn = new RowNumber();
+            for (OrderSpecifier<?> os : metadata.getOrderBy()){
+                rn.orderBy(os);
+            }            
+            metadata.addProjection(rn.as(rowNumber));
+            metadata.clearOrderBy();
+            context.serialize(metadata, forCountRow);
+            
+            context.append("\n)\n");
+            context.append("select * \n");
+            context.append("from inner_query\n");
+            context.append("where ");
+            
+            QueryModifiers mod = metadata.getModifiers();
+            if (mod.getLimit() == null){
+                context.handle(offsetTemplate, mod.getOffset());
+            }else if (mod.getOffset() == null){
+                context.handle(limitTemplate, mod.getLimit());
+            }else{
+                context.handle(limitOffsetTemplate, mod.getOffset(), mod.getLimit() + mod.getOffset());
+            }
+            
+        }else{
+            context.serialize(metadata, forCountRow);
+        }
     }
 }

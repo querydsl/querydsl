@@ -5,6 +5,8 @@
  */
 package com.mysema.query.sql;
 
+import com.mysema.query.QueryMetadata;
+import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.operation.Ops;
 
 /**
@@ -14,6 +16,13 @@ import com.mysema.query.types.operation.Ops;
  *
  */
 public class DerbyTemplates extends SQLTemplates {
+    
+    private String limitOffsetTemplate = "\noffset {1s} rows fetch next {0s} rows only";
+    
+    private String limitTemplate = "\nfetch first {0s} rows only";
+    
+    private String offsetTemplate = "\noffset {0s} rows";
+
     {
         addClass2TypeMappings("smallint", Byte.class);
         
@@ -26,9 +35,21 @@ public class DerbyTemplates extends SQLTemplates {
         add(Ops.CASE_EQ_WHEN,  "when {0} = {1} then {2} {3}");
         add(Ops.CASE_EQ_ELSE,  "else {0}");
         
-        setLimitAndOffsetSymbols(false);
-        setLimitTemplate("fetch first {0s} rows only");
-        setOffsetTemplate("offset {0s} rows");
-        setLimitOffsetTemplate("offset {1s} rows fetch next {0s} rows only");
+//        setLimitAndOffsetSymbols(false);
+//        setLimitTemplate("fetch first {0s} rows only");
+//        setOffsetTemplate("offset {0s} rows");
+//        setLimitOffsetTemplate("offset {1s} rows fetch next {0s} rows only");
     }
+    
+    protected void serializeModifiers(QueryMetadata metadata, SerializationContext context) {
+        QueryModifiers mod = metadata.getModifiers();
+        if (mod.getLimit() == null){
+            context.handle(offsetTemplate, mod.getOffset());
+        }else if (mod.getOffset() == null){
+            context.handle(limitTemplate, mod.getLimit());
+        }else{
+            context.handle(limitOffsetTemplate, mod.getLimit(), mod.getOffset());
+        }
+    }
+    
 }

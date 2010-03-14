@@ -25,7 +25,7 @@ public abstract class DeleteBaseTest extends AbstractBaseTest{
     
     @Test
     @ExcludeIn(MYSQL)
-    public void delete() throws SQLException{
+    public void test() throws SQLException{
         try{
             // TODO : FIXME
             long count = query().from(survey).count();

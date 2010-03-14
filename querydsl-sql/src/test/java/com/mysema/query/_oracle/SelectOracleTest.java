@@ -44,6 +44,21 @@ public class SelectOracleTest extends SelectBaseTest {
         dialect = new OracleTemplates().newLineToSingleSpace();
     }
     
+    @Test
+    public void limitAndOffsetInOracle() throws SQLException {
+        // limit
+        expectedQuery = "select * from (   select e.id from employee2 e ) where rownum <= ?";
+        query().from(employee).limit(4).list(employee.id);
+
+        // offset
+        expectedQuery = "select * from (  select a.*, rownum rn from (   select e.id from employee2 e  ) a) where rn > ?";
+        query().from(employee).offset(3).list(employee.id);
+
+        // limit offset
+        expectedQuery =  "select * from (  select a.*, rownum rn from (   select e.id from employee2 e  ) a) where rn > 3 and rn <= 7";
+        query().from(employee).limit(4).offset(3).list(employee.id);
+    }
+    
 
     @Test
     public void connectByPrior() throws SQLException{

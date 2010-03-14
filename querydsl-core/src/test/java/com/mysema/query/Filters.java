@@ -242,7 +242,9 @@ public class Filters {
         rv.add(expr.like("%"+knownValue.substring(1)));
         rv.add(expr.like("%"+knownValue.substring(1,2)+"%"));            
             
-        if (!target.equals(Target.DERBY) && !target.equals(Target.HSQLDB)){
+        if (!target.equals(Target.DERBY) 
+         && !target.equals(Target.HSQLDB)
+         && !target.equals(Target.SQLSERVER)){
             rv.add(expr.matches(knownValue.substring(0,1)+".*"));
             rv.add(expr.matches(".*"+knownValue.substring(1)));
             rv.add(expr.matches(".*"+knownValue.substring(1,2)+".*"));    

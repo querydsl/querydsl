@@ -47,7 +47,7 @@ public class SelectMSSQLTest extends SelectBaseTest {
     }
     
     @Test
-    public void testPaging(){
+    public void manualPaging(){
         RowNumber rowNumber = rowNumber().orderBy(employee.lastname.asc()).as(rn);
         // TODO : create a short cut for wild card
         Expr<Object[]> all = CSimple.create(Object[].class, "*");

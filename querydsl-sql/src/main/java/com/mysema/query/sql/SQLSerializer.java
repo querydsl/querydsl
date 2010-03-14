@@ -20,6 +20,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstructor;
@@ -39,7 +40,30 @@ import com.mysema.query.types.query.SubQuery;
  */
 public class SQLSerializer extends SerializerBase<SQLSerializer> {
     
-    // TODO : improved table and column serialization
+    private final SerializationContext context = new SerializationContext(){
+
+        @Override
+        public void serialize(QueryMetadata metadata, boolean forCountRow) {
+            SQLSerializer.this.serializeForQuery(metadata, forCountRow);            
+        }
+
+        @Override
+        public SerializationContext append(String str) {
+            SQLSerializer.this.append(str);
+            return this;            
+        }
+
+        @Override
+        public void handle(String template, Object... args) {
+            Expr<?>[] exprs = new Expr[args.length];
+            for (int i = 0; i < args.length; i++){
+                exprs[i] = ExprConst.create(args[i]);
+            }
+            SQLSerializer.this.handle(CSimple.create(Object.class, template, exprs));
+            
+        }
+        
+    };
     
     private static final String COMMA = ", ";
 
@@ -115,8 +139,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         handle(je.getTarget());
     }
     
+    public void serialize(QueryMetadata metadata, boolean forCountRow){
+        templates.serialize(metadata, forCountRow, context);
+    }
+    
     @SuppressWarnings("unchecked")
-    public void serialize(QueryMetadata metadata, boolean forCountRow) {
+    private void serializeForQuery(QueryMetadata metadata, boolean forCountRow) {
         List<? extends Expr<?>> select = metadata.getProjection();
         List<JoinExpression> joins = metadata.getJoins();
         EBoolean where = metadata.getWhere();
@@ -155,13 +183,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 append(templates.getSelect());
             } else {
                 append(templates.getSelectDistinct());
-            }            
-            if (metadata.getModifiers().isRestricting() && !forCountRow && !templates.isPagingAfterOrder()){
-                Long limit = metadata.getModifiers().getLimit();
-                Long offset = metadata.getModifiers().getOffset();
-                serializeModifiers(where, limit, offset);
-            }
-            
+            }  
             handle(COMMA, sqlSelect);
         }
         
@@ -191,13 +213,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         // order by
         if (!orderBy.isEmpty() && !forCountRow) {
             serializeOrderBy(orderBy);
-        }
-        
-        // limit & offset
-        if (metadata.getModifiers().isRestricting() && !forCountRow && templates.isPagingAfterOrder()){
-            Long limit = metadata.getModifiers().getLimit();
-            Long offset = metadata.getModifiers().getOffset();
-            serializeModifiers(where, limit, offset);
         }
         
     }
@@ -267,24 +282,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
     }
     
-    private void serializeModifiers(@Nullable EBoolean where, Long limit, Long offset) {
-        if (!templates.isLimitAndOffsetSymbols()){
-            if (where == null && templates.isRequiresWhereForPagingSymbols()){
-                append(templates.getWhere());
-            }else if (templates.isPagingAfterOrder()){
-                append(" ");    
-            }
-            handle(templates.getLimitOffsetCondition(limit, offset));
-        }else{
-            if (limit != null) {
-                append(templates.getLimit()).append(String.valueOf(limit));
-            }
-            if (offset != null) {
-                append(templates.getOffset()).append(String.valueOf(offset));
-            }   
-        }
-    }
-
     private void serializeOrderBy(List<OrderSpecifier<?>> orderBy) {
         append(templates.getOrderBy());
         boolean first = true;
