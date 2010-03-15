@@ -15,6 +15,7 @@ import com.mysema.query.codegen.EntityType;
  * @author tiwe
  *
  */
+// TODO : make sure all variable name escaping cases are covered
 public class OriginalNamingStrategy implements NamingStrategy{
 
     @Override

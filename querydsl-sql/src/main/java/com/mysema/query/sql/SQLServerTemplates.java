@@ -30,6 +30,10 @@ public class SQLServerTemplates extends SQLTemplates{
     
     private String offsetTemplate = "row_number > {0}";
     
+    private String outerQueryStart = "with inner_query as \n(\n  ";
+    
+    private String outerQueryEnd = "\n)\nselect * \nfrom inner_query\nwhere ";
+    
     {
         addClass2TypeMappings("decimal", Double.class);
         
@@ -69,9 +73,7 @@ public class SQLServerTemplates extends SQLTemplates{
         if (!forCountRow && metadata.getModifiers().isRestricting()){
             // TODO : provide simpler template for limit ?!?
             
-            context.append("with inner_query as \n");
-            context.append("(\n  ");
-            
+            context.append(outerQueryStart);            
             metadata = metadata.clone();
             RowNumber rn = new RowNumber();
             for (OrderSpecifier<?> os : metadata.getOrderBy()){
@@ -79,13 +81,8 @@ public class SQLServerTemplates extends SQLTemplates{
             }            
             metadata.addProjection(rn.as(rowNumber));
             metadata.clearOrderBy();
-            context.serialize(metadata, forCountRow);
-            
-            context.append("\n)\n");
-            context.append("select * \n");
-            context.append("from inner_query\n");
-            context.append("where ");
-            
+            context.serialize(metadata, forCountRow);            
+            context.append(outerQueryEnd);            
             QueryModifiers mod = metadata.getModifiers();
             if (mod.getLimit() == null){
                 context.handle(offsetTemplate, mod.getOffset());

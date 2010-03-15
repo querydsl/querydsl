@@ -74,6 +74,7 @@ public class OracleTemplates extends SQLTemplates {
         if (!forCountRow && metadata.getModifiers().isRestricting()){
             QueryModifiers mod = metadata.getModifiers();
             
+            // TODO : move template strings to instance fields
             if (mod.getOffset() == null){
                 context.append("select * from (\n  ");
                 context.serialize(metadata, forCountRow);
