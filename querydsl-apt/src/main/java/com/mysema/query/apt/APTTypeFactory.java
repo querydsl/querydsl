@@ -370,6 +370,7 @@ public final class APTTypeFactory {
         throw new IllegalArgumentException("Unsupported type " + t.getKind());
     }
 
+    @Nullable
     private Type handleTypeVariable(TypeVariable t) {
         String varName = t.toString();
         if (t.getUpperBound() != null){
@@ -381,6 +382,7 @@ public final class APTTypeFactory {
         }
     }
 
+    @Nullable
     private Type handleWildcard(WildcardType t) {
         if (t.getExtendsBound() != null){
             return new TypeExtends(handle(t.getExtendsBound()));
