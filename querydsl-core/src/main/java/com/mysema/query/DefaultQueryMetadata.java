@@ -122,11 +122,11 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }    
 
     public void clearOrderBy(){
-        orderBy.clear();
+        orderBy = new ArrayList<OrderSpecifier<?>>();
     }
     
     public void clearProjection(){
-        projection.clear();
+        projection = new ArrayList<Expr<?>>();
     }
     
     public void clearWhere(){
@@ -206,7 +206,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void reset() {
-        projection.clear();
+        clearProjection();
         modifiers = new QueryModifiers();
     }
 

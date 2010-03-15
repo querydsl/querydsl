@@ -16,6 +16,7 @@ import static com.mysema.query.Target.HSQLDB;
 import static com.mysema.query.Target.MYSQL;
 import static com.mysema.query.Target.ORACLE;
 import static com.mysema.query.Target.SQLSERVER;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -70,12 +71,16 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         
         // uniqueResult
         assertEquals(min, query().from(employee).uniqueResult(employee.salary.min()).intValue());
+        
         assertEquals(avg, query().from(employee).uniqueResult(employee.salary.avg()).intValue());
+        
         assertEquals(max, query().from(employee).uniqueResult(employee.salary.max()).intValue());
         
         // list
         assertEquals(min, query().from(employee).list(employee.salary.min()).get(0).intValue());
+        
         assertEquals(avg, query().from(employee).list(employee.salary.avg()).get(0).intValue());
+        
         assertEquals(max, query().from(employee).list(employee.salary.max()).get(0).intValue());
     }
     
@@ -401,14 +406,82 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     public void various() throws SQLException {
         System.out.println(query().from(survey).list(survey.name.lower()));
+        
         System.out.println(query().from(survey).list(survey.name.append("abc")));
+        
         System.out.println(query().from(survey).list(survey.id.sqrt()));
+        
+    }
+    
+    public void variousSingleProjections(){
+        // single column
+        for (String s : query().from(survey).list(survey.name)){
+            assertNotNull(s);
+        }
+        
+        // constructor projection
+        for (IdName idAndName : query().from(survey).list(new QIdName(survey.id, survey.name))){
+            assertNotNull(idAndName);
+            assertNotNull(idAndName.getId());
+            assertNotNull(idAndName.getName());
+        }
+        
+        // wildcard
+        for (Object[] row : query().from(survey).list(survey.all())){
+            assertNotNull(row);
+            assertEquals(2, row.length);
+            assertNotNull(row[0]);
+            assertNotNull(row[1]);
+        }
+           
+    }
+    
+    @Test
+    public void variousMultiProjections(){
+        // two columns
+        for (Object[] row : query().from(survey).list(survey.id, survey.name)){
+            assertEquals(2, row.length);
+            assertEquals(Integer.class, row[0].getClass());
+            assertEquals(String.class, row[1].getClass());
+        }
+        
+        // column and wildcard
+        for (Object[] row : query().from(survey).list(survey.id, survey.all())){
+            assertEquals(3, row.length);
+            assertEquals(Integer.class, row[0].getClass());
+            assertNotNull(row[1]);
+            assertNotNull(row[2]);
+        }
+        
+        // projection and wildcard
+        for (Object[] row : query().from(survey).list(new QIdName(survey.id, survey.name), survey.all())){
+            assertEquals(3, row.length);
+            assertEquals(IdName.class, row[0].getClass());
+        }
+        
+        // projection and two columns
+        for (Object[] row : query().from(survey).list(new QIdName(survey.id, survey.name), survey.id, survey.name)){
+            assertEquals(3, row.length);
+            assertEquals(IdName.class, row[0].getClass());
+            assertEquals(Integer.class, row[1].getClass());
+            assertEquals(String.class, row[2].getClass());
+        }
+        
+        // two columns and projection
+        for (Object[] row : query().from(survey).list(survey.id, survey.name, new QIdName(survey.id, survey.name))){
+            assertEquals(3, row.length);
+            assertEquals(Integer.class, row[0].getClass());
+            assertEquals(String.class, row[1].getClass());
+            assertEquals(IdName.class, row[2].getClass());
+        }
     }
     
     @Test
     public void whereExists() throws SQLException {
         SubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
+        
         query().from(employee).where(sq1.exists()).count();
+        
         query().from(employee).where(sq1.exists().not()).count();
     }
 

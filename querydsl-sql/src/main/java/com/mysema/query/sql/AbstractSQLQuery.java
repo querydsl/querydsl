@@ -218,19 +218,42 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         logger.debug("query : {}", queryString);
         try {
             PreparedStatement stmt = conn.prepareStatement(queryString);
+            final List<? extends Expr<?>> projection = getMetadata().getProjection();
             JDBCUtil.setParameters(stmt, constants);
             ResultSet rs = stmt.executeQuery();
 
             return new SQLResultIterator<Object[]>(stmt, rs) {
 
+                @SuppressWarnings("unchecked")
                 @Override
                 protected Object[] produceNext(ResultSet rs) {
                     try {
-                        Object[] objects = new Object[rs.getMetaData().getColumnCount()];
-                        for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
-                            objects[i] = rs.getObject(i + 1);
+                        List<Object> objects = new ArrayList<Object>(projection.size());
+                        int index = 0;
+                        for (int i = 0; i < projection.size(); i++){
+                            Expr<?> expr = projection.get(i);
+                            if (expr instanceof EConstructor){
+                                objects.add(newInstance((EConstructor)expr, rs, index));
+                                index += ((EConstructor)expr).getArgs().size();
+                            }else if (expr.getType().isArray()){
+                                for (int j = index; j < rs.getMetaData().getColumnCount(); j++){
+                                    objects.add(get(rs, index++ + 1, Object.class));                                    
+                                }
+                                i = objects.size();
+                            }else{
+                                objects.add(get(rs, index++ + 1, expr.getType()));
+                            }
                         }
-                        return objects;
+                        return objects.toArray();
+                    } catch (InstantiationException e) {
+                        close();
+                        throw new QueryException(e);
+                    } catch (IllegalAccessException e) {
+                        close();
+                        throw new QueryException(e);
+                    } catch (InvocationTargetException e) {
+                        close();
+                        throw new QueryException(e);
                     } catch (SQLException e) {
                         close();
                         throw new QueryException(e);
@@ -262,20 +285,18 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                 @Override
                 public RT produceNext(ResultSet rs) {
                     try {
-                        if (expr instanceof EConstructor) {
-                            EConstructor<RT> c = (EConstructor<RT>) expr;
-                            java.lang.reflect.Constructor<RT> cc = c.getJavaConstructor();
-                            List<Object> args = new ArrayList<Object>();
-                            for (int i = 0; i < c.getArgs().size(); i++) {
-                                args.add(get(rs, i + 1, c.getArg(i).getType()));
-                            }
-                            return cc.newInstance(args.toArray());
-
-                        } else if (expr != null) {
-                            return get(rs, 1, expr.getType());
-
-                        } else {
+                        if (expr == null){    
                             return (RT) rs.getObject(1);
+                        }else if (expr instanceof EConstructor) {
+                            return newInstance((EConstructor<RT>) expr, rs, 0);
+                        }else if (expr.getType().isArray()){
+                            Object[] rv = new Object[rs.getMetaData().getColumnCount()];
+                            for (int i = 0; i < rv.length; i++){
+                                rv[i] = rs.getObject(i);
+                            }
+                            return (RT) rv;
+                        } else{
+                            return (RT) get(rs, 1, expr != null ? expr.getType() : Object.class);
                         }
                     } catch (IllegalAccessException e) {
                         close();
@@ -290,7 +311,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                         close();
                         throw new QueryException(e);
                     }
-
                 }
 
             };
@@ -302,7 +322,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
             reset();
         }
     }
-
+    
     public Q join(PEntity<?> target) {
         return queryMixin.join(target);
     }
@@ -336,6 +356,15 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         } finally {
             reset();
         }
+    }
+
+    private <RT> RT newInstance(EConstructor<RT> c, ResultSet rs, int offset) 
+        throws InstantiationException, IllegalAccessException, InvocationTargetException{
+        Object[] args = new Object[c.getArgs().size()];
+        for (int i = 0; i < args.length; i++) {
+            args[i] = get(rs, offset + i + 1, c.getArg(i).getType());
+        }
+        return c.getJavaConstructor().newInstance(args);
     }
 
     public Q on(EBoolean... conditions) {
