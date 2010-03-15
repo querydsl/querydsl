@@ -44,14 +44,18 @@ public class MatchingFilters {
     <A> Collection<EBoolean> array(EArray<A> expr,  EArray<A> other, A knownElement, A missingElement){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();          
 //        rv.add(expr.isEmpty().not());          
-        rv.add(expr.size().gt(0));
+        if (!module.equals(Module.RDFBEAN)){
+            rv.add(expr.size().gt(0));    
+        }        
         return rv;
     }
     
     <A> Collection<EBoolean> collection(ECollection<?,A> expr,  ECollection<?,A> other, A knownElement, A missingElement){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
-        rv.add(expr.contains(knownElement));
-        rv.add(expr.contains(missingElement).not());          
+        if (!module.equals(Module.RDFBEAN)){
+            rv.add(expr.contains(knownElement));
+            rv.add(expr.contains(missingElement).not());    
+        }                  
         rv.add(expr.isEmpty().not());          
         rv.add(expr.isNotEmpty());
         return rv;

@@ -33,13 +33,13 @@ public class Filters {
     
     private final Projections projections;
     
-//    private final Module module;
+    private final Module module;
     
     private final Target target;
 
     public Filters(Projections projections, Module module, Target target) {
         this.projections = projections;
-//        this.module = module;
+        this.module = module;
         this.target = target;
     }
 
@@ -58,13 +58,17 @@ public class Filters {
         rv.add(expr.contains(knownElement));
         rv.add(expr.isEmpty());
         rv.add(expr.isNotEmpty());
-        rv.add(expr.size().gt(0));
+        if (!module.equals(Module.RDFBEAN)){
+            rv.add(expr.size().gt(0));    
+        }        
         return rv;
     }
     
     <A> Collection<EBoolean> array(EArray<A> expr, EArray<A> other, A knownElement){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
-        rv.add(expr.size().gt(0));
+        HashSet<EBoolean> rv = new HashSet<EBoolean>();        
+        if (!module.equals(Module.RDFBEAN)){
+            rv.add(expr.size().gt(0));    
+        }
         rv.add(expr.get(0).eq(knownElement));
         return rv;
     }
@@ -148,7 +152,9 @@ public class Filters {
         rv.add(expr.get(knownKey).ne(knownValue));
         rv.add(expr.isEmpty());
         rv.add(expr.isNotEmpty());
-        rv.add(expr.size().gt(0));
+        if (!module.equals(Module.RDFBEAN)){
+            rv.add(expr.size().gt(0));    
+        }        
         return rv;
     }
 

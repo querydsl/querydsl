@@ -67,6 +67,8 @@ public class SQLServerTemplates extends SQLTemplates{
     @Override
     public void serialize(QueryMetadata metadata, boolean forCountRow, SerializationContext context) {
         if (!forCountRow && metadata.getModifiers().isRestricting()){
+            // TODO : provide simpler template for limit ?!?
+            
             context.append("with inner_query as \n");
             context.append("(\n  ");
             

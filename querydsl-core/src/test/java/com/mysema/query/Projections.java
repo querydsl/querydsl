@@ -42,13 +42,17 @@ public class Projections {
     
     <A> Collection<Expr<?>> array(EArray<A> expr, EArray<A> other, A knownElement){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
-        rv.add(expr.size());
+        if (!module.equals(Module.RDFBEAN)){
+            rv.add(expr.size());    
+        }        
         return rv;
     }
 
     <A> Collection<Expr<?>> collection(ECollection<?,A> expr, ECollection<?,A> other, A knownElement){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
-        rv.add(expr.size());
+        if (!module.equals(Module.RDFBEAN)){
+            rv.add(expr.size());    
+        }        
         return rv;
     }
     
@@ -78,14 +82,18 @@ public class Projections {
     <A> Collection<Expr<?>> list(EList<A> expr, EList<A> other, A knownElement){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
         rv.add(expr.get(0));
-        rv.add(expr.size());
+        if (!module.equals(Module.RDFBEAN)){
+            rv.add(expr.size());    
+        }        
         return rv;
     }
 
     <K,V> Collection<Expr<?>> map(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue) {
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
         rv.add(expr.get(knownKey));
-        rv.add(expr.size());
+        if (!module.equals(Module.RDFBEAN)){
+            rv.add(expr.size());    
+        }        
         return rv;
     }
 
@@ -106,7 +114,7 @@ public class Projections {
         rv.add(expr.sqrt());
         rv.add(expr.subtract(other));
         
-        if (!forFilter && module != Module.COLLECTIONS){
+        if (!forFilter && module != Module.COLLECTIONS && module != Module.RDFBEAN){
             rv.add(expr.min());
             rv.add(expr.max());
             rv.add(expr.avg());
