@@ -16,9 +16,9 @@ import static com.mysema.query.Target.HSQLDB;
 import static com.mysema.query.Target.MYSQL;
 import static com.mysema.query.Target.ORACLE;
 import static com.mysema.query.Target.SQLSERVER;
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -99,7 +99,9 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
                 num.stringValue() };
 
         for (Expr<?> e : expr) {
-            query().from(employee).list(e);
+            for (Object o : query().from(employee).list(e)){
+                assertEquals(e.getType(), o.getClass());
+            }
         }
 
     }
@@ -121,17 +123,11 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @SuppressWarnings("unchecked")
-    @Test
+    @Test(expected=IllegalArgumentException.class)
     public void illegalUnion() throws SQLException {
         SubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
         SubQuery<Integer> sq2 = s().from(employee).unique(employee.id.max());
-        try {
-            query().from(employee).union(sq1, sq2).list();
-            fail();
-        } catch (IllegalArgumentException e) {
-            // expected
-        }
-
+        query().from(employee).union(sq1, sq2).list();
     }
 
     @Test
@@ -227,20 +223,22 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     public void projection() throws IOException{
+        // TODO : add assertions
         CloseableIterator<Object[]> results = query().from(survey).iterate(survey.all());
         assertTrue(results.hasNext());
         while (results.hasNext()){
-            System.out.println(Arrays.asList(results.next()));
+            assertEquals(2, results.next().length);
         }
         results.close();
     }
 
     @Test
     public void projection2() throws IOException{
+        // TODO : add assertions
         CloseableIterator<Object[]> results = query().from(survey).iterate(survey.id, survey.name);
         assertTrue(results.hasNext());
         while (results.hasNext()){
-            System.out.println(Arrays.asList(results.next()));
+            assertEquals(2, results.next().length);
         }
         results.close();
     }
@@ -405,9 +403,13 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     public void various() throws SQLException {
-        System.out.println(query().from(survey).list(survey.name.lower()));
+        for (String s : query().from(survey).list(survey.name.lower())){
+            assertEquals(s, s.toLowerCase());
+        }
         
-        System.out.println(query().from(survey).list(survey.name.append("abc")));
+        for (String s : query().from(survey).list(survey.name.append("abc"))){
+            assertTrue(s.endsWith("abc"));
+        }
         
         System.out.println(query().from(survey).list(survey.id.sqrt()));
         
