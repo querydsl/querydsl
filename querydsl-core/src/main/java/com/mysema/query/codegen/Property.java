@@ -50,50 +50,13 @@ public final class Property implements Comparable<Property> {
         return name.compareToIgnoreCase(o.getName());
     }
     
-    private Type transform(Type type, EntityType model){
-        if (type instanceof TypeExtends){
-            TypeExtends extendsType = (TypeExtends)type;
-            if (extendsType.getVarName() != null){
-                return extendsType.resolve(model, declaringType);
-            }            
-        }
-//        else if (type instanceof TypeAdapter){
-//            Type embedded = ((TypeAdapter)type).getType();
-//            Type transformed = transform(embedded, model);
-//            if (transformed != embedded){
-//                return transformed;
-//            }
-//        }
-        return type;
-    }
-
     public Property createCopy(EntityType model) {
-        // TODO : simplify
-        Type newType = transform(type,model);
-        
-        if(newType.getParameterCount() > 0){
-            Type[] params = new Type[newType.getParameterCount()];
-            boolean transformed = false;
-            for (int i = 0; i < newType.getParameterCount(); i++){
-                Type param = newType.getParameter(i);
-                params[i] = transform(param, model);
-                if (params[i] != param){
-                    transformed = true;
-                }
-            }
-            if (transformed){
-                newType = new SimpleType(newType.getCategory(), 
-                    newType.getFullName(), newType.getPackageName(), newType.getSimpleName(),
-                    newType.isFinal(), params);
-            }
-        }
-        
+        Type newType = TypeUtil.transform(type, declaringType, model);        
         if (newType != type){
             return new Property(model, name, newType, inits, false);
         }else{
             return new Property(model, name, type, inits, model.getSuperType() != null);    
-        }
-        
+        }        
     }
 
     @Override

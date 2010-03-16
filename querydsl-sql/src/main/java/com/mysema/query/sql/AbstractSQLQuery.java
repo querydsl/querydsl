@@ -292,11 +292,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                         }else if (expr.getType().isArray()){
                             Object[] rv = new Object[rs.getMetaData().getColumnCount()];
                             for (int i = 0; i < rv.length; i++){
-                                rv[i] = rs.getObject(i);
+                                rv[i] = rs.getObject(i+1);
                             }
                             return (RT) rv;
                         } else{
-                            return (RT) get(rs, 1, expr != null ? expr.getType() : Object.class);
+                            return (RT) get(rs, 1, expr.getType());
                         }
                     } catch (IllegalAccessException e) {
                         close();

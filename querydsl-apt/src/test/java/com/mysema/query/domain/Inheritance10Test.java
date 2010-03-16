@@ -1,12 +1,13 @@
 package com.mysema.query.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Map;
 
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
+import com.mysema.query.annotations.QueryMethod;
 
 public class Inheritance10Test {
 
@@ -21,6 +22,11 @@ public class Inheritance10Test {
 
         public void setFields(Map<K, V> fields) {
             this.fields = fields;
+        }
+        
+        @QueryMethod("{0}.get({1})")
+        public V get(K key){
+            return null;
         }
                 
     }
@@ -38,11 +44,9 @@ public class Inheritance10Test {
     @Test
     public void test(){
         assertEquals(Object.class, QInheritance10Test_Supertype.supertype.fields.getKeyType());
-        assertEquals(Object.class, QInheritance10Test_Supertype.supertype.fields.getValueType());
-        
+        assertEquals(Object.class, QInheritance10Test_Supertype.supertype.fields.getValueType());        
         assertEquals(Long.class, QInheritance10Test_Entity1.entity1.fields.getKeyType());
-        assertEquals(String.class, QInheritance10Test_Entity1.entity1.fields.getValueType());
-        
+        assertEquals(String.class, QInheritance10Test_Entity1.entity1.fields.getValueType());        
         assertEquals(Long.class, QInheritance10Test_Entity2.entity2.fields.getKeyType());
         assertEquals(Entity2.class, QInheritance10Test_Entity2.entity2.fields.getValueType());
     }

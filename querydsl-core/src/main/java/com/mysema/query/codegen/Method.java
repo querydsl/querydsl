@@ -19,7 +19,7 @@ import com.mysema.commons.lang.Assert;
 @Immutable
 public final class Method {
 
-    private final EntityType context;
+    private final Type declaringType;
 
     private final String name;
 
@@ -33,8 +33,8 @@ public final class Method {
         this(context, name, template, Collections.<Parameter>emptyList(), returnType);        
     }
     
-    public Method(EntityType context, String name, String template, List<Parameter> params, Type returnType) {
-        this.context = Assert.notNull(context);
+    public Method(Type declaringType, String name, String template, List<Parameter> params, Type returnType) {
+        this.declaringType = Assert.notNull(declaringType);
         this.name = Assert.notNull(name);
         this.template = Assert.notNull(template);
         this.parameters = Assert.notNull(params);
@@ -52,9 +52,14 @@ public final class Method {
             return false;
         }        
     }
+    
+    public Method createCopy(EntityType model) {
+        // TODO
+        return this;
+    }
 
-    public EntityType getContext() {
-        return context;
+    public Type getDeclaringType() {
+        return declaringType;
     }
 
     public String getName() {

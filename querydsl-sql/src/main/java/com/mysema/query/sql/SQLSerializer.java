@@ -208,6 +208,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             append(templates.getHaving()).handle(having);
         }
 
+        // TODO : this should be injectted
         beforeOrderBy();
 
         // order by

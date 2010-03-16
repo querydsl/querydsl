@@ -166,8 +166,7 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     public void include(Supertype supertype) {
         EntityType entityType = supertype.getEntityType();
         for (Method method : entityType.getMethods()){
-            // TODO : take type arguments of parameters into account
-            addMethod(method);
+            addMethod(method.createCopy(this));
         }        
         for (Property property : entityType.getProperties()){
             if (!property.isInherited()){                
