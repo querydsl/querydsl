@@ -23,14 +23,14 @@ public interface InsertClause<C extends InsertClause<C>> {
      * @param columns
      * @return
      */
-    public C columns(Path<?>... columns);
+    C columns(Path<?>... columns);
 
     /**
      * Execute the insert clause and return the amount of inserted rows/items
      * 
      * @return
      */
-    public long execute();
+    long execute();
 
     /**
      * Define the populate via subquery
@@ -38,7 +38,7 @@ public interface InsertClause<C extends InsertClause<C>> {
      * @param subQuery
      * @return
      */
-    public C select(SubQuery<?> subQuery);
+    C select(SubQuery<?> subQuery);
 
     /**
      * Define the value bindings
@@ -46,6 +46,6 @@ public interface InsertClause<C extends InsertClause<C>> {
      * @param v
      * @return
      */
-    public C values(Object... v);
+    C values(Object... v);
 
 }

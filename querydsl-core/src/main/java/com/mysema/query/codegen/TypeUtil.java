@@ -2,6 +2,7 @@ package com.mysema.query.codegen;
 
 public final class TypeUtil {
 
+    // FIXME
     public static Type transform(Type type, Type declaringType, EntityType context){
         if (type instanceof TypeExtends){
             TypeExtends extendsType = (TypeExtends)type;
