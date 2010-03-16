@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.mysema.querydsl</groupId>
+    <artifactId>querydsl-root</artifactId>
+    <version>1.3.3-SNAPSHOT</version>
+  </parent>
+
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-hibernate-search</artifactId>
+  <name>Querydsl - Hibernate Search support</name>
+  <description>Hibernate Search support for querydsl</description>
+  <packaging>jar</packaging>
+  
+  <dependencies>   
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-annotations</artifactId>
+      <version>3.4.0.GA</version>
+      <exclusions>
+        <exclusion>
+          <groupId>cglib</groupId>
+          <artifactId>cglib</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>asm</groupId>
+          <artifactId>asm</artifactId>
+        </exclusion>
+      </exclusions>      
+      <scope>provided</scope>      
+    </dependency>   
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>3.4.0.GA</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>3.1.0.GA</version>
+      <scope>provided</scope>
+    </dependency>    
+    
+    <dependency>
+      <groupId>javax.persistence</groupId>
+      <artifactId>persistence-api</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-core</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-apt</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>provided</scope>
+    </dependency>
+        
+    <!-- test -->
+    <dependency>
+      <groupId>hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>${hsqldb.version}</version>
+      <scope>test</scope>
+      <!-- license : TODO -->
+    </dependency>
+    <dependency>
+      <groupId>org.apache.derby</groupId>
+      <artifactId>derby</artifactId>
+      <version>${derby.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-core</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
+  </dependencies>
+
+
+</project>

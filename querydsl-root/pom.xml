@@ -34,7 +34,8 @@
     <module>../querydsl-sql</module>    
     <module>../querydsl-maven-plugin</module>
     <module>../querydsl-hql</module>
-    <module>../querydsl-jdoql</module>
+    <module>../querydsl-hibernate-search</module>
+    <module>../querydsl-jdoql</module>    
 <!--     
     <module>../querydsl-docs</module>
  -->    
