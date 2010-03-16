@@ -42,12 +42,15 @@ public class Inheritance10Test {
     }
     
     @Test
-    public void test(){
+    public void Supertype_fields(){
         assertEquals(Object.class, QInheritance10Test_Supertype.supertype.fields.getKeyType());
-        assertEquals(Object.class, QInheritance10Test_Supertype.supertype.fields.getValueType());        
+        assertEquals(Object.class, QInheritance10Test_Supertype.supertype.fields.getValueType());   
+        
         assertEquals(Long.class, QInheritance10Test_Entity1.entity1.fields.getKeyType());
         assertEquals(String.class, QInheritance10Test_Entity1.entity1.fields.getValueType());        
+        
         assertEquals(Long.class, QInheritance10Test_Entity2.entity2.fields.getKeyType());
         assertEquals(Entity2.class, QInheritance10Test_Entity2.entity2.fields.getValueType());
     }
+    
 }
