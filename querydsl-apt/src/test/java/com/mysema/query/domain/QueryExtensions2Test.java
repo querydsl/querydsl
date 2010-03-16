@@ -25,6 +25,9 @@ public class QueryExtensions2Test {
 
        @QueryMethod("geo_distance({0}, {1})")
        int geoDistance(Point otherPoint);
+       
+       @QueryMethod("")
+       Point getPoint();
 
     }
     

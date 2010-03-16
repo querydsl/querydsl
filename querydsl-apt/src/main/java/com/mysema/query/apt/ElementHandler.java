@@ -210,6 +210,9 @@ public final class ElementHandler{
         String name = method.getSimpleName().toString();
         QueryMethod queryMethod = method.getAnnotation(QueryMethod.class);
         Type returnType = typeFactory.create(method.getReturnType());
+        if (returnType.getCategory() == TypeCategory.ENTITY){
+            returnType = returnType.as(TypeCategory.SIMPLE);
+        }
         Method methodModel = new Method(entityModel, name, queryMethod.value(), transformParams(method.getParameters()), returnType);        
         queryMethods.add(methodModel);
     }

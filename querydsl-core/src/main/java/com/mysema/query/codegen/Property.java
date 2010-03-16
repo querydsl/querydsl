@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  * 
  */
@@ -51,7 +51,7 @@ public final class Property implements Comparable<Property> {
     }
     
     public Property createCopy(EntityType model) {
-        Type newType = TypeUtil.transform(type, declaringType, model);        
+        Type newType = TypeResolver.resolve(type, declaringType, model);        
         if (newType != type){
             return new Property(model, name, newType, inits, false);
         }else{

@@ -48,6 +48,16 @@ public class QueryExtensionsTest {
         public Date getDate(){
             return null;
         }
+        
+        @QueryMethod("")
+        public Point getPoint(){
+            return null;
+        }
+        
+        @QueryMethod("")
+        public Point getPoint(Point point, SubPoint subPoint){
+            return null;
+        }
                
     }
     

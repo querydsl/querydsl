@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  * 
  */
 package com.mysema.query.codegen;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,8 +30,8 @@ public final class Method {
     
     private final String template;
 
-    public Method(EntityType context, String name, String template, Type returnType) {
-        this(context, name, template, Collections.<Parameter>emptyList(), returnType);        
+    public Method(Type declaringType, String name, String template, Type returnType) {
+        this(declaringType, name, template, Collections.<Parameter>emptyList(), returnType);        
     }
     
     public Method(Type declaringType, String name, String template, List<Parameter> params, Type returnType) {
@@ -54,8 +55,21 @@ public final class Method {
     }
     
     public Method createCopy(EntityType model) {
-        // TODO
-        return this;
+        Type newReturnType = TypeResolver.resolve(returnType, declaringType, model);
+        if (newReturnType.getCategory() == TypeCategory.ENTITY){
+            newReturnType = newReturnType.as(TypeCategory.SIMPLE);
+        }
+        
+        List<Parameter> newParameters = new ArrayList<Parameter>();
+        for (Parameter param : parameters){
+            Type newType = TypeResolver.resolve(param.getType(), declaringType, model);
+            newParameters.add(new Parameter(param.getName(), newType));
+        }
+        if (!newReturnType.equals(returnType) || !newParameters.equals(parameters)){
+            return new Method(declaringType, name, template, newParameters, newReturnType);
+        }else{
+            return this;
+        }
     }
 
     public Type getDeclaringType() {
@@ -83,5 +97,9 @@ public final class Method {
         return name.hashCode();
     }
     
+    @Override
+    public String toString(){
+        return declaringType.getFullName() + "." + name + " " + parameters;
+    }
     
 }
