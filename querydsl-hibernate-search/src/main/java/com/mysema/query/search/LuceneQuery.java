@@ -18,7 +18,7 @@ import com.mysema.query.types.path.Path;
  * @param <T>
  */
 public class LuceneQuery<T> implements SimpleQuery<LuceneQuery<T>>, SimpleProjectable<T>{
-
+    
     private final Session session;
     
     private final Path<?> entityPath;
