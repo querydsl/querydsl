@@ -38,6 +38,7 @@ public class TypeExtends extends TypeAdapter{
         getType().appendLocalGenericName(context, builder, true);
     }
     
+    @Nullable
     public String getVarName(){
         return varName;
     }

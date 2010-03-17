@@ -15,7 +15,7 @@ import com.mysema.query.annotations.QueryMethod;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 public class QueryExtensions2Test {
-        
+    
     public static class Point{
         
     }
