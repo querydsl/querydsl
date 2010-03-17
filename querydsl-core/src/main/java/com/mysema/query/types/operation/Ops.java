@@ -131,9 +131,9 @@ public interface Ops {
      * Aggreation operators
      */
     interface AggOps{
-        Operator<Number> AVG_AGG = new OperatorImpl<Number>(Number.class);
-        Operator<Number> MAX_AGG = new OperatorImpl<Number>(Number.class);
-        Operator<Number> MIN_AGG = new OperatorImpl<Number>(Number.class);
+        Operator<Comparable<?>> MAX_AGG = new OperatorImpl<Comparable<?>>(Comparable.class);
+        Operator<Comparable<?>> MIN_AGG = new OperatorImpl<Comparable<?>>(Comparable.class);        
+        Operator<Number> AVG_AGG = new OperatorImpl<Number>(Number.class);        
         Operator<Number> SUM_AGG = new OperatorImpl<Number>(Number.class);
         Operator<Number> COUNT_AGG = new OperatorImpl<Number>(Object.class);
         Operator<Number> COUNT_DISTINCT_AGG = new OperatorImpl<Number>(Object.class);
@@ -199,7 +199,6 @@ public interface Ops {
         Operator<Number> LAST_INDEX = new OperatorImpl<Number>(STRING_X_2);
     }
     
-
     /**
      * Quantification operators
      */

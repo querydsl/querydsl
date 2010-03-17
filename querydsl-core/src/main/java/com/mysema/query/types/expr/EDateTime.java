@@ -25,11 +25,11 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings({"unchecked"})
 public abstract class EDateTime<D extends Comparable> extends EDate<D> {
 
-    private static final long serialVersionUID = -6879277113694148047L;
-
     private static final EDateTime<Date> CURRENT_DATE = currentDate(Date.class);
-    
+
     private static final EDateTime<Date> CURRENT_TIMESTAMP = currentTimestamp(Date.class);
+    
+    private static final long serialVersionUID = -6879277113694148047L;
         
     /**
      * Get an expression representing the current date as a EDateTime instance
@@ -70,6 +70,8 @@ public abstract class EDateTime<D extends Comparable> extends EDate<D> {
     @Nullable
     private volatile ENumber<Integer> hours, minutes, seconds, milliseconds;
     
+    private volatile EDateTime<D> min, max;
+    
     public EDateTime(Class<? extends D> type) {
         super(type);
     }
@@ -87,6 +89,19 @@ public abstract class EDateTime<D extends Comparable> extends EDate<D> {
     }
     
     /**
+     * Get the maximum value of this expression (aggregation)
+     * 
+     * @return max(this)
+     */
+    @Override
+    public EDateTime<D> max(){
+        if (max == null){
+            max = ODateTime.create((Class<D>)getType(), Ops.AggOps.MAX_AGG, this);
+        }
+        return max;
+    }
+        
+    /**
      * Get a milliseconds expression (range 0-999)
      * <p>Is always 0 in HQL and JDOQL modules</p>
      * 
@@ -100,6 +115,19 @@ public abstract class EDateTime<D extends Comparable> extends EDate<D> {
     }
     
     /**
+     * Get the minimum value of this expression (aggregation)
+     * 
+     * @return min(this)
+     */
+    @Override
+    public EDateTime<D> min(){
+        if (min == null){
+            min = ODateTime.create((Class<D>)getType(), Ops.AggOps.MIN_AGG, this);
+        }
+        return min;
+    }
+    
+    /**
      * Get a minutes expression (range 0-59)
      * 
      * @return
@@ -110,7 +138,7 @@ public abstract class EDateTime<D extends Comparable> extends EDate<D> {
         }
         return minutes;
     }
-        
+    
     /**
      * Get a seconds expression (range 0-59)
      * 

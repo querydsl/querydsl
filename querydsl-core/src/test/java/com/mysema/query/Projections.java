@@ -63,6 +63,12 @@ public class Projections {
         rv.add(expr.month());
         rv.add(expr.year());
         rv.add(expr.yearMonth());
+        
+        if (module != Module.COLLECTIONS && module != Module.RDFBEAN){
+            rv.add(expr.min());
+            rv.add(expr.max());         
+        }
+        
         return rv;
     } 
 
@@ -76,6 +82,12 @@ public class Projections {
         rv.add(expr.hour());
         rv.add(expr.minute());
         rv.add(expr.second());
+        
+        if (module != Module.COLLECTIONS && module != Module.RDFBEAN){
+            rv.add(expr.min());
+            rv.add(expr.max());         
+        }
+        
         return rv;
     }
 

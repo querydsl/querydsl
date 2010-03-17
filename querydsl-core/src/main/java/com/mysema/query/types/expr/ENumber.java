@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
+import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.operation.Ops.MathOps;
 
@@ -396,9 +397,10 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * 
      * @return max(this)
      */
+    @SuppressWarnings("unchecked")
     public ENumber<D> max(){
         if (max == null){
-            max = ONumber.create(getType(), Ops.AggOps.MAX_AGG, this);
+            max = ONumber.create(getType(), (Operator)Ops.AggOps.MAX_AGG, this);
         }
         return max;
     }
@@ -408,9 +410,10 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      * 
      * @return min(this)
      */
+    @SuppressWarnings("unchecked")
     public ENumber<D> min(){
         if (min == null){
-            min = ONumber.create(getType(), Ops.AggOps.MIN_AGG, this);
+            min = ONumber.create(getType(), (Operator)Ops.AggOps.MIN_AGG, this);
         }
         return min;
     }

@@ -25,9 +25,9 @@ import com.mysema.query.types.operation.Ops;
 @SuppressWarnings({"unchecked"})
 public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     
-    private static final long serialVersionUID = 6054664454254721302L;
-
     private static final EDate<Date> CURRENT_DATE = currentDate(Date.class);
+
+    private static final long serialVersionUID = 6054664454254721302L;
         
     /**
      * Get an expression representing the current date as a EDate instance
@@ -50,13 +50,15 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     @Nullable
     private volatile ENumber<Integer> dayOfMonth, dayOfWeek, dayOfYear;
     
+    private volatile EDate min, max;
+    
     @Nullable
     private volatile ENumber<Integer> week, month, year, yearMonth;
     
     public EDate(Class<? extends D> type) {
         super(type);
     }
-    
+
     /**
      * Get a day of month expression (range 1-31)
      * 
@@ -81,7 +83,7 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
         }
         return dayOfWeek; 
     }
-
+    
     /**
      * Get a day of year expression (range 1-356)
      * <p>NOT supported in JDOQL and not in Derby</p>
@@ -93,6 +95,30 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
             dayOfYear = ONumber.create(Integer.class, Ops.DateTimeOps.DAY_OF_YEAR, this); 
         }
         return dayOfYear;
+    }
+    
+    /**
+     * Get the maximum value of this expression (aggregation)
+     * 
+     * @return max(this)
+     */
+    public EDate<D> max(){
+        if (max == null){
+            max = ODate.create(getType(), Ops.AggOps.MAX_AGG, this);
+        }
+        return max;
+    }
+    
+    /**
+     * Get the minimum value of this expression (aggregation)
+     * 
+     * @return min(this)
+     */
+    public EDate<D> min(){
+        if (min == null){
+            min = ODate.create(getType(), Ops.AggOps.MIN_AGG, this);
+        }
+        return min;
     }
     
     /**
@@ -130,7 +156,7 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
         }
         return year;
     }
-    
+
     /**
      * Get a year / month expression 
      * 
