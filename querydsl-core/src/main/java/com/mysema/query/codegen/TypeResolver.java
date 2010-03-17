@@ -12,17 +12,19 @@ package com.mysema.query.codegen;
 public final class TypeResolver {
     
     public static Type resolve(Type type, Type declaringType, EntityType context){
+        Type resolved = type;
+        
         // handle generic types
-        if (type instanceof TypeExtends){
-            type = resolveTypeExtends((TypeExtends)type, declaringType, context);
+        if (resolved instanceof TypeExtends){
+            resolved = resolveTypeExtends((TypeExtends)resolved, declaringType, context);
         }
 
         // handle generic type parameters
-        if(type.getParameterCount() > 0){
-            type = resolveWithParameters(type, declaringType, context);
+        if(resolved.getParameterCount() > 0){
+            resolved = resolveWithParameters(resolved, declaringType, context);
         }
         
-        return type;
+        return resolved;
     }
 
     private static Type resolveTypeExtends(TypeExtends typeExtends, Type declaringType, EntityType subtype){
@@ -61,11 +63,12 @@ public final class TypeResolver {
             }                
         }
         if (transformed){
-            type = new SimpleType(type.getCategory(), 
+            return new SimpleType(type.getCategory(), 
                 type.getFullName(), type.getPackageName(), type.getSimpleName(),
                 type.isFinal(), params);
-        }
-        return type;
+        }else{
+            return type;    
+        }        
     }
     
     private TypeResolver(){}
