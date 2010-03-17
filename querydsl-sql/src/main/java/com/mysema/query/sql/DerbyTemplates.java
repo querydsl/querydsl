@@ -15,6 +15,7 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  *
  */
+// TODO : support quoting
 public class DerbyTemplates extends SQLTemplates {
     
     private String limitOffsetTemplate = "\noffset {1s} rows fetch next {0s} rows only";

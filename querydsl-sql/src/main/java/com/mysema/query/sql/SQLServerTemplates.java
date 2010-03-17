@@ -20,6 +20,7 @@ import com.mysema.query.types.path.PNumber;
  * @author tiwe
  *
  */
+//TODO : support quoting
 public class SQLServerTemplates extends SQLTemplates{
     
     private static final PNumber<Long> rowNumber = new PNumber<Long>(Long.class, "row_number");

@@ -13,6 +13,7 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * 
  */
+//TODO : support quoting
 public class HSQLDBTemplates extends SQLTemplates {
     {
         add(Ops.MathOps.ROUND, "round({0},0)");

@@ -6,6 +6,7 @@
 package com.mysema.query.sql;
 
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.path.PathType;
 
 /**
  * PostgresTemplates is an SQL dialect for Postgres
@@ -16,7 +17,13 @@ import com.mysema.query.types.operation.Ops;
  *
  */
 public class PostgresTemplates extends SQLTemplates{
-    {
+    
+    public PostgresTemplates(){
+        this(false);
+    }
+    
+    public PostgresTemplates(boolean quote){
+        super(quote ? "\"" : null);
         // type mappings
         addClass2TypeMappings("numeric(3,0)", Byte.class);
         addClass2TypeMappings("double precision", Double.class);
@@ -43,5 +50,11 @@ public class PostgresTemplates extends SQLTemplates{
         add(Ops.DateTimeOps.HOUR, "extract(hour from {0})");
         add(Ops.DateTimeOps.MINUTE, "extract(minute from {0})");
         add(Ops.DateTimeOps.SECOND, "extract(second from {0})");
+        
+        if (quote){
+            add(PathType.PROPERTY, "{0}.\"{1s}\"");
+            add(PathType.VARIABLE, "\"{0s}\"");            
+        }
     }
+        
 }

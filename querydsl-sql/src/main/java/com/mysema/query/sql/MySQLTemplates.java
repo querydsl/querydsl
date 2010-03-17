@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.path.PathType;
 
 /**
  * MySQLTemplates is an SQL dialect for MySQL
@@ -19,7 +20,13 @@ import com.mysema.query.types.operation.Ops;
  *
  */
 public class MySQLTemplates extends SQLTemplates {
-    {
+    
+    public MySQLTemplates(){
+        this(false);
+    }
+    
+    public MySQLTemplates(boolean quote){
+        super(quote ? "`" : null);
         addClass2TypeMappings("signed", 
                 Byte.class, 
                 Integer.class,
@@ -35,5 +42,11 @@ public class MySQLTemplates extends SQLTemplates {
         add(Ops.CONCAT, "concat({0}, {1})");
         add(Ops.MATCHES, "{0} regexp {1}");
         add(Ops.DateTimeOps.YEAR_MONTH, "extract(year_month from {0})");
+        
+        if (quote){
+            add(PathType.PROPERTY, "{0}.`{1s}`");
+            add(PathType.VARIABLE, "`{0s}`");            
+        }
     }
+        
 }

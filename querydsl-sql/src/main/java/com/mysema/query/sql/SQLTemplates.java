@@ -86,7 +86,15 @@ public class SQLTemplates extends Templates {
 
     private String where = "\nwhere ";
     
-    protected SQLTemplates() {
+    private String quoteStr;
+    
+    protected SQLTemplates(){
+        this(null);
+    }
+    
+    protected SQLTemplates(String quoteStr) {
+        this.quoteStr = quoteStr;
+        
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
         add(Ops.NOT, "not {0}", 3);
@@ -225,7 +233,11 @@ public class SQLTemplates extends Templates {
         for (Field field : SQLTemplates.class.getDeclaredFields()) {
             try {
                 if (field.getType().equals(String.class)) {
-                    field.set(this, field.get(this).toString().replace('\n',' '));
+                    Object val = field.get(this);
+                    if (val != null){
+                        field.set(this, val.toString().replace('\n',' '));    
+                    }
+                    
                 }
             } catch (IllegalAccessException e) {
                 throw new QueryException(e.getMessage(), e);
@@ -410,6 +422,23 @@ public class SQLTemplates extends Templates {
 
     public String getWhere() {
         return where;
+    }
+    
+    public final String quoteTableName(String table){
+        if (quoteStr != null){
+            return quoteStr + table + quoteStr;
+        }else{
+            return table;    
+        }        
+    }
+    
+    public final String quoteColumnName(String column){
+        if (quoteStr != null){
+            return quoteStr + column + quoteStr;
+        }else{
+            return column;
+        }
+        
     }
     
 }

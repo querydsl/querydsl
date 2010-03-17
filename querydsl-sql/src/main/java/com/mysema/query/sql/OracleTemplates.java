@@ -19,12 +19,19 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @version $Id$
  */
+//TODO : support quoting
 public class OracleTemplates extends SQLTemplates {
     
+    private String outerQueryEnd = "\n ) a) where ";
+
+    private String outerQueryStart = "select * from (\n select a.*, rownum rn from (\n  ";
+
+    private String limitQueryEnd = "\n) where rownum <= {0}";
+
+    private String limitQueryStart = "select * from (\n  ";
+
     private String limitOffsetTemplate = "rn > {0s} and rn <= {1s}";
-    
-    private String limitTemplate = "rn <= {0}";
-    
+        
     private String offsetTemplate = "rn > {0}";
     
     public OracleTemplates(){
@@ -74,21 +81,17 @@ public class OracleTemplates extends SQLTemplates {
         if (!forCountRow && metadata.getModifiers().isRestricting()){
             QueryModifiers mod = metadata.getModifiers();
             
-            // TODO : move template strings to instance fields
             if (mod.getOffset() == null){
-                context.append("select * from (\n  ");
+                context.append(limitQueryStart);
                 context.serialize(metadata, forCountRow);
-                context.handle("\n) where rownum <= {0}", mod.getLimit());            
+                context.handle(limitQueryEnd, mod.getLimit());            
             }else{
-                context.append("select * from (\n");
-                context.append(" select a.*, rownum rn from (\n  ");
+                context.append(outerQueryStart);
                 context.serialize(metadata, forCountRow);
-                context.append("\n ) a) where ");            
+                context.append(outerQueryEnd);            
                 
                 if (mod.getLimit() == null){
                     context.handle(offsetTemplate, mod.getOffset());
-                }else if (mod.getOffset() == null){
-                    context.handle(limitTemplate, mod.getLimit());
                 }else{
                     context.handle(limitOffsetTemplate, mod.getOffset(), mod.getLimit() + mod.getOffset());
                 }
@@ -98,5 +101,5 @@ public class OracleTemplates extends SQLTemplates {
             context.serialize(metadata, forCountRow);    
         }        
     }
-    
+        
 }

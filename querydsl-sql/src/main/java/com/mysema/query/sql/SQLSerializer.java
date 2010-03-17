@@ -86,11 +86,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     private void appendAsColumnName(Path<?> path){
-        append(path.getMetadata().getExpression().toString());
+        String column = path.getMetadata().getExpression().toString();
+        append(templates.quoteColumnName(column));
     }
     
     private void appendAsTableName(Path<?> path){
-        append(path.getAnnotatedElement().getAnnotation(Table.class).value());
+        String table = path.getAnnotatedElement().getAnnotation(Table.class).value();
+        append(templates.quoteTableName(table));
     }
     
     protected void beforeOrderBy() {
@@ -132,8 +134,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (je.getTarget() instanceof PEntity && templates.isSupportsAlias()) {
             PEntity<?> pe = (PEntity<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
-                String table = pe.getType().getAnnotation(Table.class).value();
-                append(table).append(templates.getTableAlias());
+                appendAsTableName(pe);
+                append(templates.getTableAlias());
             }
         }
         handle(je.getTarget());
