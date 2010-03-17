@@ -50,6 +50,7 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
     @Nullable
     private volatile ENumber<Integer> dayOfMonth, dayOfWeek, dayOfYear;
     
+    @Nullable
     private volatile EDate min, max;
     
     @Nullable

@@ -35,7 +35,7 @@ public final class ENumberConst<D extends Number & Comparable<?>> extends ENumbe
     private static final ENumber<Short>[] SHORTS = new ENumber[CACHE_SIZE];
     
     static{
-        for (int i = 0; i < 256; i++){
+        for (int i = 0; i < CACHE_SIZE; i++){
             INTEGERS[i] = new ENumberConst<Integer>(Integer.class, Integer.valueOf(i));
             SHORTS[i] = new ENumberConst<Short>(Short.class, Short.valueOf((short)i));
             BYTES[i] = new ENumberConst<Byte>(Byte.class, Byte.valueOf((byte)i));
@@ -44,7 +44,7 @@ public final class ENumberConst<D extends Number & Comparable<?>> extends ENumbe
     }
         
     public static ENumber<Byte> create(byte i){
-        if (i >= 0 && i < 256){
+        if (i >= 0 && i < CACHE_SIZE){
             return BYTES[i];
         }else{
             return new ENumberConst<Byte>(Byte.class, Byte.valueOf(i));
@@ -52,7 +52,7 @@ public final class ENumberConst<D extends Number & Comparable<?>> extends ENumbe
     }
     
     public static ENumber<Integer> create(int i){
-        if (i >= 0 && i < 256){
+        if (i >= 0 && i < CACHE_SIZE){
             return INTEGERS[i];
         }else{
             return new ENumberConst<Integer>(Integer.class, Integer.valueOf(i));
@@ -60,7 +60,7 @@ public final class ENumberConst<D extends Number & Comparable<?>> extends ENumbe
     }
     
     public static ENumber<Long> create(long i){
-        if (i >= 0 && i < 256){
+        if (i >= 0 && i < CACHE_SIZE){
             return LONGS[(int)i];
         }else{
             return new ENumberConst<Long>(Long.class, Long.valueOf(i));
@@ -68,7 +68,7 @@ public final class ENumberConst<D extends Number & Comparable<?>> extends ENumbe
     }
     
     public static ENumber<Short> create(short i){
-        if (i >= 0 && i < 256){
+        if (i >= 0 && i < CACHE_SIZE){
             return SHORTS[i];
         }else{
             return new ENumberConst<Short>(Short.class, Short.valueOf(i));

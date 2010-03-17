@@ -1,11 +1,8 @@
 package com.mysema.query.search;
 
-import java.util.List;
-
 import org.hibernate.Session;
 
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.SearchResults;
 import com.mysema.query.SimpleProjectable;
 import com.mysema.query.SimpleQuery;
 import com.mysema.query.support.QueryMixin;

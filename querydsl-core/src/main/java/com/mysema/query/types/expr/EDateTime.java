@@ -70,6 +70,7 @@ public abstract class EDateTime<D extends Comparable> extends EDate<D> {
     @Nullable
     private volatile ENumber<Integer> hours, minutes, seconds, milliseconds;
     
+    @Nullable
     private volatile EDateTime<D> min, max;
     
     public EDateTime(Class<? extends D> type) {

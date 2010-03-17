@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
@@ -86,13 +88,14 @@ public class SQLTemplates extends Templates {
 
     private String where = "\nwhere ";
     
+    @Nullable
     private String quoteStr;
     
     protected SQLTemplates(){
         this(null);
     }
     
-    protected SQLTemplates(String quoteStr) {
+    protected SQLTemplates(@Nullable String quoteStr) {
         this.quoteStr = quoteStr;
         
         // boolean
