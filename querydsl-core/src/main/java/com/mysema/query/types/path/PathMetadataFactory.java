@@ -19,14 +19,16 @@ import com.mysema.query.types.expr.ExprConst;
  */
 public final class PathMetadataFactory {
     
-    private PathMetadataFactory(){}
-    
     public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, Expr<Integer> index) {
         return new PathMetadata<Integer>(parent, index, PathType.ARRAYVALUE);
     }
-
+    
     public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, @Nonnegative int index) {
         return new PathMetadata<Integer>(parent, ENumberConst.create(index), PathType.ARRAYVALUE_CONSTANT);
+    }
+
+    public static <T> PathMetadata<T> forDelegate(Expr<T> target){
+        return new PathMetadata<T>(null, target, PathType.DELEGATE);
     }
 
     public static PathMetadata<Integer> forListAccess(PList<?, ?> parent, Expr<Integer> index) {
@@ -52,5 +54,7 @@ public final class PathMetadataFactory {
     public static PathMetadata<String> forVariable(String variable) {
         return new PathMetadata<String>(null, EStringConst.create(Assert.hasLength(variable), true), PathType.VARIABLE);
     }
+    
+    private PathMetadataFactory(){}
 
 }

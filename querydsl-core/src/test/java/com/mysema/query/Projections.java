@@ -24,6 +24,12 @@ import com.mysema.query.types.expr.EStringConst;
 import com.mysema.query.types.expr.ETime;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.path.PDate;
+import com.mysema.query.types.path.PDateTime;
+import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.PTime;
+import com.mysema.query.types.path.PathMetadataFactory;
 
 /**
  * @author tiwe
@@ -59,6 +65,7 @@ public class Projections {
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<Expr<?>> date(EDate<A> expr, EDate<A> other, A knownValue){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
+        rv.add(new PDate<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
         rv.add(expr.dayOfMonth());
         rv.add(expr.month());
         rv.add(expr.year());
@@ -75,6 +82,7 @@ public class Projections {
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<Expr<?>> dateTime(EDateTime<A> expr, EDateTime<A> other, A knownValue){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
+        rv.add(new PDateTime<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
         rv.add(expr.dayOfMonth());
         rv.add(expr.month());
         rv.add(expr.year());
@@ -119,6 +127,7 @@ public class Projections {
     @SuppressWarnings("unchecked")
     private <A extends Number & Comparable<A>> Collection<ENumber<?>> numeric(ENumber<A> expr, ENumber<?> other, boolean forFilter){
         HashSet<ENumber<?>> rv = new HashSet<ENumber<?>>();
+        rv.add(new PNumber<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
         rv.add(expr.abs());
         rv.add(expr.add(other));
         rv.add(expr.divide(other));
@@ -176,6 +185,8 @@ public class Projections {
     @SuppressWarnings("unchecked")
     Collection<Expr<String>> stringProjections(EString expr, EString other){
         HashSet<Expr<String>> rv = new HashSet<Expr<String>>();
+        rv.add(new PString(PathMetadataFactory.forDelegate(expr)));
+        
         rv.add(expr.append("Hello"));
         rv.add(expr.append(other));
             
@@ -212,6 +223,7 @@ public class Projections {
     @SuppressWarnings("unchecked")
     <A extends Comparable> Collection<Expr<?>> time(ETime<A> expr, ETime<A> other, A knownValue){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
+        rv.add(new PTime<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
         rv.add(expr.hour());
         rv.add(expr.minute());
         rv.add(expr.second());

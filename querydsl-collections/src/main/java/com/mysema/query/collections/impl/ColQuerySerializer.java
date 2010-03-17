@@ -6,6 +6,7 @@
 package com.mysema.query.collections.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -28,6 +29,13 @@ import com.mysema.query.types.query.SubQuery;
  * @version $Id$
  */
 public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer> {
+    
+    private static final List<PathType> nonGeneric = Arrays.asList(
+            PathType.ARRAYVALUE,
+            PathType.ARRAYVALUE_CONSTANT,
+            PathType.PROPERTY,
+            PathType.VARIABLE
+    );
 
     public ColQuerySerializer(ColQueryTemplates patterns) {
         super(patterns);
@@ -47,7 +55,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
             append(StringUtils.capitalize(path.getMetadata().getExpression().toString()) + "()");
             
         }else{
-            if (pathType.isGeneric()){
+            if (!nonGeneric.contains(pathType)){
                 append("((").append(path.getType().getName()).append(")");
             }        
             List<Expr<?>> args = new ArrayList<Expr<?>>(2);
@@ -65,7 +73,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
                     handle(args.get(element.getIndex()));
                 }
             }  
-            if (pathType.isGeneric()){
+            if (!nonGeneric.contains(pathType)){
                 append(")");
             }
         }
