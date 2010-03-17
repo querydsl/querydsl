@@ -15,7 +15,7 @@ public class SimpleTest {
         PathBuilder<Object> entityPath = new PathBuilder<Object>(Object.class, "obj");
         PString stringPath = entityPath.getString("prop");
         
-        LuceneQuery<Object> query = new LuceneQuery<Object>(session, entityPath);
+//        LuceneQuery<Object> query = new LuceneQuery<Object>(session, entityPath);
         
 //        Terms & Phrases
 //        "test" or "hello dolly"
