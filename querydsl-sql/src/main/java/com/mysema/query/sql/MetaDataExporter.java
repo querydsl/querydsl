@@ -48,9 +48,14 @@ import com.mysema.util.JavaWriter;
  */
 public class MetaDataExporter {
     
-    private static final Logger logger = LoggerFactory
-        .getLogger(MetaDataExporter.class);
+    private static final Logger logger = LoggerFactory.getLogger(MetaDataExporter.class);
     
+    private static final int COLUMN_NAME = 4;
+    
+    private static final int COLUMN_TYPE = 5;
+    
+    private static final int TABLE_NAME = 3;
+
     private static Writer writerFor(File file) {
         if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
             logger.error("Folder " + file.getParent() + " could not be created");
@@ -63,16 +68,14 @@ public class MetaDataExporter {
     }
     
     private Set<String> classes = new HashSet<String>();
-    
-    private final String namePrefix, targetFolder, packageName;
 
+    private final String namePrefix, targetFolder, packageName;
+    
     private final NamingStrategy namingStrategy;
     
     @Nullable
     private final String schemaPattern, tableNamePattern;
 
-    private final SQLTypeMapping typeMapping = new SQLTypeMapping();
-    
     private final TypeMappings typeMappings = new TypeMappings();
     
     private final Serializer serializer = new EntitySerializer(typeMappings){
@@ -85,6 +88,8 @@ public class MetaDataExporter {
         }
     };
 
+    private final SQLTypeMapping sqlTypeMapping = new SQLTypeMapping();
+
     public MetaDataExporter(
             String namePrefix, 
             String packageName,
@@ -94,7 +99,7 @@ public class MetaDataExporter {
         this(namePrefix, packageName, schemaPattern, tableNamePattern,
             targetFolder, new DefaultNamingStrategy());
     }
-
+    
     public MetaDataExporter(String namePrefix, 
             String packageName, 
             @Nullable String schemaPattern, 
@@ -119,16 +124,16 @@ public class MetaDataExporter {
             tables.close();    
         }
     }
-
+    
     public Set<String> getClasses() {
         return classes;
     }
-
+    
     private void handleColumn(EntityType classModel, ResultSet columns)
             throws SQLException {
-        String columnName = columns.getString(4);
+        String columnName = columns.getString(COLUMN_NAME);
         String propertyName = namingStrategy.getPropertyName(columnName);
-        Class<?> clazz = typeMapping.get(columns.getInt(5));
+        Class<?> clazz = sqlTypeMapping.get(columns.getInt(COLUMN_TYPE));
         if (clazz == null){
             throw new RuntimeException("No java type for " + columns.getString(6));
         }                    
@@ -154,7 +159,7 @@ public class MetaDataExporter {
     }
     
     private void handleTable(DatabaseMetaData md, ResultSet tables) throws SQLException {
-        String tableName = tables.getString(3);
+        String tableName = tables.getString(TABLE_NAME);
         String className = namingStrategy.getClassName(namePrefix, tableName);
         Type classTypeModel = new SimpleType(
                 TypeCategory.ENTITY, 
@@ -166,7 +171,7 @@ public class MetaDataExporter {
         Method wildcard = new Method(classModel, "all", "{0}.*", Types.OBJECTS);
         classModel.addMethod(wildcard);
         classModel.addAnnotation(new TableImpl(tableName));
-        ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(3), null);
+        ResultSet columns = md.getColumns(null, schemaPattern, tables.getString(TABLE_NAME), null);
         try{
             while (columns.next()) {
                 handleColumn(classModel, columns);

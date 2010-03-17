@@ -26,12 +26,14 @@ import com.mysema.query.types.Visitor;
 public final class EStringConst extends EString implements Constant<String>{
     
     private static final Map<String,EString> CACHE;
+    
+    private static final int CACHE_SIZE = 256;
 
     private static final long serialVersionUID = 5182804405789674556L;
     
     static{
         List<String> strs = new ArrayList<String>(Arrays.asList("", ".", ".*", "%"));
-        for (int i = 0; i < 256; i++){
+        for (int i = 0; i < CACHE_SIZE; i++){
             strs.add(String.valueOf(i));
         }
     
