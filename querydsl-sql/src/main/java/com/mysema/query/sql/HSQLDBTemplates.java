@@ -13,10 +13,16 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * 
  */
-//TODO : support quoting
 public class HSQLDBTemplates extends SQLTemplates {
-    {
+    
+    public HSQLDBTemplates(){
+        this(false);
+    }
+    
+    public HSQLDBTemplates(boolean quote){
+        super(quote ? "\"" : null);
         add(Ops.MathOps.ROUND, "round({0},0)");
         add(Ops.TRIM, "trim(both from {0})");
     }
+    
 }

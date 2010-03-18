@@ -51,10 +51,10 @@ public class PostgresTemplates extends SQLTemplates{
         add(Ops.DateTimeOps.MINUTE, "extract(minute from {0})");
         add(Ops.DateTimeOps.SECOND, "extract(second from {0})");
         
-        if (quote){
-            add(PathType.PROPERTY, "{0}.\"{1s}\"");
-            add(PathType.VARIABLE, "\"{0s}\"");            
-        }
+//        if (quote){
+//            add(PathType.PROPERTY, "{0}.\"{1s}\"");
+//            add(PathType.VARIABLE, "\"{0s}\"");            
+//        }
     }
         
 }

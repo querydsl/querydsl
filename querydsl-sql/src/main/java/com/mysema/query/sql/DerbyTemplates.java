@@ -15,7 +15,6 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  *
  */
-// TODO : support quoting
 public class DerbyTemplates extends SQLTemplates {
     
     private String limitOffsetTemplate = "\noffset {1s} rows fetch next {0s} rows only";
@@ -24,7 +23,12 @@ public class DerbyTemplates extends SQLTemplates {
     
     private String offsetTemplate = "\noffset {0s} rows";
 
-    {
+    public DerbyTemplates(){
+        this(false);
+    }
+    
+    public DerbyTemplates(boolean quote){
+        super(quote ? "\"" : null);
         addClass2TypeMappings("smallint", Byte.class);
         
         add(Ops.CONCAT, "varchar({0} || {1})");
@@ -35,6 +39,11 @@ public class DerbyTemplates extends SQLTemplates {
         add(Ops.CASE_EQ, "case {1} end");
         add(Ops.CASE_EQ_WHEN,  "when {0} = {1} then {2} {3}");
         add(Ops.CASE_EQ_ELSE,  "else {0}");
+        
+//        if (quote){
+//            add(PathType.PROPERTY, "{0}.\"{1s}\"");
+//            add(PathType.VARIABLE, "\"{0s}\"");            
+//        }
         
 //        setLimitAndOffsetSymbols(false);
 //        setLimitTemplate("fetch first {0s} rows only");

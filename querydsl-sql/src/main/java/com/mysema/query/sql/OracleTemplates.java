@@ -19,7 +19,6 @@ import com.mysema.query.types.operation.Ops;
  * @author tiwe
  * @version $Id$
  */
-//TODO : support quoting
 public class OracleTemplates extends SQLTemplates {
     
     private String outerQueryEnd = "\n ) a) where ";
@@ -35,6 +34,11 @@ public class OracleTemplates extends SQLTemplates {
     private String offsetTemplate = "rn > {0}";
     
     public OracleTemplates(){
+        this(false);
+    }
+    
+    public OracleTemplates(boolean quote){
+        super(quote ? "\"" : null);
         // type mappings
         addClass2TypeMappings("number(3,0)", Byte.class);
         addClass2TypeMappings("number(1,0)", Boolean.class);
@@ -68,7 +72,7 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.HOUR, "to_number(to_char({0},'HH24'))");
         add(Ops.DateTimeOps.MINUTE, "to_number(to_char({0},'MI'))");
         add(Ops.DateTimeOps.SECOND, "to_number(to_char({0},'SS'))");
-        
+                
 //        setLimitAndOffsetSymbols(false);
 //        setRequiresWhereForPagingSymbols(true);
 //        setLimitTemplate("rownum < {0}");

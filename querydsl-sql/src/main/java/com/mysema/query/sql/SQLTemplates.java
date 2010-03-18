@@ -427,7 +427,7 @@ public class SQLTemplates extends Templates {
         return where;
     }
     
-    public final String quoteTableName(String table){
+    public String quoteTableName(String table){
         if (quoteStr != null){
             return quoteStr + table + quoteStr;
         }else{
@@ -435,13 +435,12 @@ public class SQLTemplates extends Templates {
         }        
     }
     
-    public final String quoteColumnName(String column){
+    public String quoteColumnName(String column){
         if (quoteStr != null){
             return quoteStr + column + quoteStr;
         }else{
             return column;
-        }
-        
+        }        
     }
     
 }

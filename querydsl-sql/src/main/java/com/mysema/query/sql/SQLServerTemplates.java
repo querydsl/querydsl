@@ -11,6 +11,7 @@ import com.mysema.query.sql.mssql.RowNumber;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PathType;
 
 /**
  * SQLServerTemplates is an SQL dialect for Microsoft SQL Server
@@ -20,7 +21,6 @@ import com.mysema.query.types.path.PNumber;
  * @author tiwe
  *
  */
-//TODO : support quoting
 public class SQLServerTemplates extends SQLTemplates{
     
     private static final PNumber<Long> rowNumber = new PNumber<Long>(Long.class, "row_number");
@@ -35,7 +35,12 @@ public class SQLServerTemplates extends SQLTemplates{
     
     private String outerQueryEnd = "\n)\nselect * \nfrom inner_query\nwhere ";
     
-    {
+    public SQLServerTemplates(){
+        this(false);
+    }
+    
+    public SQLServerTemplates(boolean quote){
+        super(quote ? "\"" : null);
         addClass2TypeMappings("decimal", Double.class);
         
         // String        
@@ -61,6 +66,11 @@ public class SQLServerTemplates extends SQLTemplates{
         add(Ops.DateTimeOps.MINUTE, "datepart(minute, {0})");
         add(Ops.DateTimeOps.SECOND, "datepart(second, {0})");
         add(Ops.DateTimeOps.MILLISECOND, "datepart(millisecond, {0})");
+        
+//        if (quote){
+//            add(PathType.PROPERTY, "{0}.\"{1s}\"");
+//            add(PathType.VARIABLE, "\"{0s}\"");            
+//        }
         
 //        setLimitAndOffsetSymbols(false);
 //        setPagingAfterOrder(false);
