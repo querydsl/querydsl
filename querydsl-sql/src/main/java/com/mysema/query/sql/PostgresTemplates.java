@@ -6,7 +6,6 @@
 package com.mysema.query.sql;
 
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.path.PathType;
 
 /**
  * PostgresTemplates is an SQL dialect for Postgres

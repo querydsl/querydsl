@@ -11,7 +11,6 @@ import com.mysema.query.sql.mssql.RowNumber;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PathType;
 
 /**
  * SQLServerTemplates is an SQL dialect for Microsoft SQL Server

@@ -13,7 +13,6 @@ import java.util.Set;
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
-import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
 
