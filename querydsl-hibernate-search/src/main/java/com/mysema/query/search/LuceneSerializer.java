@@ -41,7 +41,7 @@ public class LuceneSerializer {
     }
 
     private Query toTwoHandSidedQuery(Operation<?, ?> operation, Occur occur) {
-        // TODO Flatten(?)
+        // TODO Flatten similar queries(?)
         Query lhs = toQuery(operation.getArg(0));
         Query rhs = toQuery(operation.getArg(1));
         BooleanQuery bq = new BooleanQuery();
@@ -51,7 +51,6 @@ public class LuceneSerializer {
     }
 
     private Query toNotQuery(Operation<?, ?> operation) {
-        // TODO Flatten(?)
         BooleanQuery bq = new BooleanQuery();
         bq.add(new BooleanClause(toQuery(operation.getArg(0)), Occur.MUST_NOT));
         return bq;
@@ -118,7 +117,7 @@ public class LuceneSerializer {
             }
             return new WildcardQuery(new Term(toField((PString) operation.getArg(0)), "*" + (lowerCase ? term.toLowerCase() : term) + "*"));
         } else if (op == Ops.ENDS_WITH) {
-            // TODO Speacial case of Ops.LIKE *...
+            // TODO Special case of Ops.LIKE *...
             if (!(operation.getArg(1) instanceof Constant<?>)) {
                 throw new IllegalArgumentException("operation argument was not of type Constant.");
             }
