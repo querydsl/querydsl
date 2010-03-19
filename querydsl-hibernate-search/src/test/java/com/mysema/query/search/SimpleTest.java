@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.search;
 
@@ -81,7 +81,7 @@ public class SimpleTest {
 
     @Test
     public void test_like() throws Exception {
-        Query q = serializer.toQuery(author.like("ichael"));
+        Query q = serializer.toQuery(author.like("*ichael*"));
         TopDocs docs = searcher.search(q, 100);
         assertEquals(1, docs.totalHits);
         assertEquals("author:*ichael*", q.toString());
@@ -92,12 +92,12 @@ public class SimpleTest {
         Query q = serializer.toQuery(author.like("Mi?hael"));
         TopDocs docs = searcher.search(q, 100);
         assertEquals(1, docs.totalHits);
-        assertEquals("author:*mi?hael*", q.toString());
+        assertEquals("author:mi?hael", q.toString());
     }
 
     @Test
     public void test_like_Custom_Wildcard_Multiple_Character() throws Exception {
-        Query q = serializer.toQuery(text.like("U*X"));
+        Query q = serializer.toQuery(text.like("*U*X*"));
         TopDocs docs = searcher.search(q, 100);
         assertEquals(1, docs.totalHits);
         assertEquals("text:*u*x*", q.toString());
@@ -115,18 +115,18 @@ public class SimpleTest {
 
     @Test
     public void test_like_or_like() throws Exception {
-        Query q = serializer.toQuery(title.like("House").or(year.like("99")));
+        Query q = serializer.toQuery(title.like("House").or(year.like("*99*")));
         TopDocs docs = searcher.search(q, 100);
         assertEquals(1, docs.totalHits);
-        assertEquals("title:*house* year:*99*", q.toString());
+        assertEquals("title:house year:*99*", q.toString());
     }
 
     @Test
     public void test_like_and_like() throws Exception {
-        Query q = serializer.toQuery(title.like("assic").and(year.like("99")));
+        Query q = serializer.toQuery(title.like("*assic*").and(year.like("199?")));
         TopDocs docs = searcher.search(q, 100);
         assertEquals(1, docs.totalHits);
-        assertEquals("+title:*assic* +year:*99*", q.toString());
+        assertEquals("+title:*assic* +year:199?", q.toString());
     }
 
     @Test
@@ -195,10 +195,10 @@ public class SimpleTest {
 
     @Test
     public void test_like_not_Does_Not_Find_Results() throws Exception {
-        Query q = serializer.toQuery(title.like("House").not());
+        Query q = serializer.toQuery(title.like("*H*e*").not());
         TopDocs docs = searcher.search(q, 100);
         assertEquals(0, docs.totalHits);
-        assertEquals("-title:*house*", q.toString());
+        assertEquals("-title:*h*e*", q.toString());
     }
 
     @Test

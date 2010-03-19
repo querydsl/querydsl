@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.search;
 
@@ -16,6 +16,7 @@ import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.WildcardQuery;
 import org.apache.lucene.search.BooleanClause.Occur;
 
+import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Operation;
 import com.mysema.query.types.operation.Operator;
@@ -24,8 +25,6 @@ import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.Path;
 
 public class LuceneSerializer {
-    private static final char WILDCARD_ALL = '*';
-
     private final boolean lowerCase;
 
     public LuceneSerializer(boolean lowerCase) {
@@ -69,36 +68,41 @@ public class LuceneSerializer {
         Operator<?> op = operation.getOperator();
         if (op == Ops.OR) {
             return toOrQuery(operation);
-            
+
         } else if (op == Ops.AND) {
             return toAndQuery(operation);
-            
+
         } else if (op == Ops.LIKE) {
+            if (!(operation.getArg(1) instanceof Constant<?>)) {
+                throw new IllegalArgumentException("operation argument was not of type Constant.");
+            }
             String[] terms = StringUtils.split(operation.getArg(1).toString());
             if (terms.length > 1) {
                 toPhraseQuery(operation, terms);
             }
             String term = operation.getArg(1).toString();
-            return new WildcardQuery(new Term(toField((PString) operation.getArg(0)), WILDCARD_ALL + (lowerCase ? term.toLowerCase() : term) + WILDCARD_ALL));
-            
+            return new WildcardQuery(new Term(toField((PString) operation.getArg(0)), lowerCase ? term.toLowerCase() : term));
         } else if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE) {
+            if (!(operation.getArg(1) instanceof Constant<?>)) {
+                throw new IllegalArgumentException("operation argument was not of type Constant.");
+            }
             String[] terms = StringUtils.split(operation.getArg(1).toString());
             if (terms.length > 1) {
                 return toPhraseQuery(operation, terms);
             }
-            // TODO : make sure second arg is constant
             String term = operation.getArg(1).toString();
             return new TermQuery(new Term(toField((PString) operation.getArg(0)), lowerCase ? term.toLowerCase() : term));
 
         } else if (op == Ops.NOT) {
             return toNotQuery(operation);
-        
-        } else if (op == Ops.STARTS_WITH) {
+        } else if (op == Ops.STARTS_WITH && operation.getArg(1) instanceof Constant<?>) {
+            if (!(operation.getArg(1) instanceof Constant<?>)) {
+                throw new IllegalArgumentException("operation argument was not of type Constant.");
+            }
             String[] terms = StringUtils.split(operation.getArg(1).toString());
             if (terms.length > 1) {
                 return toPhraseQuery(operation, terms);
             }
-            // TODO : make sure second arg is constant
             String term = operation.getArg(1).toString();
             return new PrefixQuery(new Term(toField((PString) operation.getArg(0)), lowerCase ? term.toLowerCase() : term));
         }
@@ -108,10 +112,8 @@ public class LuceneSerializer {
     public Query toQuery(Expr<?> expr) {
         if (expr instanceof Operation<?, ?>) {
             return toQuery((Operation<?, ?>) expr);
-        }else{
-            throw new IllegalArgumentException("expr was not of type Operation");    
         }
-        
+        throw new IllegalArgumentException("expr was not of type Operation");
     }
 
     public String toField(Path<?> path) {
