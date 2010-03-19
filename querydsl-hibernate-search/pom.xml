@@ -42,7 +42,12 @@
       <artifactId>hibernate-validator</artifactId>
       <version>3.1.0.GA</version>
       <scope>provided</scope>
-    </dependency>    
+    </dependency>   
+    <dependency>
+		<groupId>org.apache.lucene</groupId>
+		<artifactId>lucene-core</artifactId>
+		<version>3.0.0</version>
+	</dependency> 
     
     <dependency>
       <groupId>javax.persistence</groupId>
