@@ -66,7 +66,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
     private String type;
     
     public JavaWriter(Appendable appendable){
-        this.appendable = Assert.notNull(appendable);
+        this.appendable = Assert.notNull(appendable,"appendable");
     }
 
     @Override

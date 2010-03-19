@@ -82,9 +82,9 @@ public class Processor {
     private final APTTypeFactory typeModelFactory;
     
     public Processor(ProcessingEnvironment env, RoundEnvironment roundEnv, Configuration configuration) {
-        this.env = Assert.notNull(env);
-        this.roundEnv = Assert.notNull(roundEnv);
-        this.configuration = Assert.notNull(configuration);
+        this.env = Assert.notNull(env,"env");
+        this.roundEnv = Assert.notNull(roundEnv,"roundEnv");
+        this.configuration = Assert.notNull(configuration,"configuration");
         
         List<Class<? extends Annotation>> anns = new ArrayList<Class<? extends Annotation>>();
         anns.add(configuration.getEntityAnn());

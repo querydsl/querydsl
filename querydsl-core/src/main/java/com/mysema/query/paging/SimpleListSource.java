@@ -20,7 +20,7 @@ public class SimpleListSource<T> implements ListSource<T> {
     private final List<T> list;
     
     public SimpleListSource(List<T> list){
-        this.list = Assert.notNull(list);
+        this.list = Assert.notNull(list,"list");
     }
     
     public SimpleListSource(T... args){

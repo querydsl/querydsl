@@ -35,11 +35,11 @@ public final class Method {
     }
     
     public Method(Type declaringType, String name, String template, List<Parameter> params, Type returnType) {
-        this.declaringType = Assert.notNull(declaringType);
-        this.name = Assert.notNull(name);
-        this.template = Assert.notNull(template);
-        this.parameters = Assert.notNull(params);
-        this.returnType = Assert.notNull(returnType);
+        this.declaringType = Assert.notNull(declaringType,"declaringType");
+        this.name = Assert.notNull(name,"name");
+        this.template = Assert.notNull(template,"template");
+        this.parameters = Assert.notNull(params,"params");
+        this.returnType = Assert.notNull(returnType,"returnType");
     }
 
     @Override

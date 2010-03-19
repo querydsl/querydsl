@@ -57,7 +57,7 @@ public class EntitySerializer implements Serializer{
     private final TypeMappings typeMappings;
 
     public EntitySerializer(TypeMappings mappings){
-        this.typeMappings = Assert.notNull(mappings);
+        this.typeMappings = Assert.notNull(mappings,"mappings");
     }
     
     protected void constructors(EntityType model, SerializerConfig config, CodeWriter writer) throws IOException {

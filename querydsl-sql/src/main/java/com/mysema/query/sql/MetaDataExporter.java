@@ -106,12 +106,12 @@ public class MetaDataExporter {
             @Nullable String tableNamePattern, 
             String targetFolder,
             NamingStrategy namingStrategy){
-        this.namePrefix = Assert.notNull(namePrefix);
-        this.packageName = Assert.notNull(packageName);
+        this.namePrefix = Assert.notNull(namePrefix,"namePrefix");
+        this.packageName = Assert.notNull(packageName,"packageName");
         this.schemaPattern = schemaPattern;
         this.tableNamePattern = tableNamePattern;
-        this.targetFolder = Assert.notNull(targetFolder);       
-        this.namingStrategy = Assert.notNull(namingStrategy);
+        this.targetFolder = Assert.notNull(targetFolder,"targetFolder");       
+        this.namingStrategy = Assert.notNull(namingStrategy,"namingStrategy");
     }
 
     public void export(DatabaseMetaData md) throws SQLException {

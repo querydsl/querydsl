@@ -50,7 +50,7 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
 
     public EntityType(String prefix, Type type, Set<Supertype> superTypes) {
         super(type);
-        this.prefix = Assert.notNull(prefix);        
+        this.prefix = Assert.notNull(prefix,"prefix");        
         this.uncapSimpleName = StringUtils.uncapitalize(type.getSimpleName());
         this.superTypes = superTypes;
     }    

@@ -70,7 +70,7 @@ public class DefaultConfiguration implements Configuration {
             @Nullable Class<? extends Annotation> superTypeAnn,
             @Nullable Class<? extends Annotation> embeddableAnn,
             @Nullable Class<? extends Annotation> skipAnn) {
-        this.entityAnn = Assert.notNull(entityAnn);
+        this.entityAnn = Assert.notNull(entityAnn,"entityAnn");
         this.superTypeAnn = superTypeAnn;
         this.embeddableAnn = embeddableAnn;
         this.skipAnn = skipAnn;

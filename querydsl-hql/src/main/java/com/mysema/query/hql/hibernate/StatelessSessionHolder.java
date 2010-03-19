@@ -20,7 +20,7 @@ public class StatelessSessionHolder implements SessionHolder{
     private final StatelessSession session;
 
     public StatelessSessionHolder(StatelessSession session){
-        this.session = Assert.notNull(session);
+        this.session = Assert.notNull(session,"session");
     }
     
     @Override

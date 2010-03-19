@@ -58,7 +58,7 @@ public final class EStringConst extends EString implements Constant<String>{
         if (CACHE.containsKey(str)){
             return CACHE.get(str);            
         }else{
-            EString rv = new EStringConst(Assert.notNull(str));
+            EString rv = new EStringConst(Assert.notNull(str,"str"));
             if (populateCache){
                 CACHE.put(str, rv);                
             }

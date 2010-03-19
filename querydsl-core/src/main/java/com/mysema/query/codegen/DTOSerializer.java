@@ -27,7 +27,7 @@ public final class DTOSerializer implements Serializer{
     private final TypeMappings typeMappings;
 
     public DTOSerializer(TypeMappings typeMappings){
-        this.typeMappings = Assert.notNull(typeMappings);
+        this.typeMappings = Assert.notNull(typeMappings,"typeMappings");
     }
     
     protected void intro(EntityType model, CodeWriter writer) throws IOException {

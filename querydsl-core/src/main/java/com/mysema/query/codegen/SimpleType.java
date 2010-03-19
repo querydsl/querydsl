@@ -41,7 +41,7 @@ public final class SimpleType extends AbstractType {
         this.packageName = Assert.notNull(packageName,"packageName is null");
         this.simpleName = Assert.notNull(simpleName,"simpleName is null");
         this.localName = name.substring(packageName.length()+1);
-        this.parameters = Assert.notNull(parameters);
+        this.parameters = Assert.notNull(parameters,"parameters");
         this.visible = packageName.equals("java.lang");
         this.finalClass = finalClass;
     }

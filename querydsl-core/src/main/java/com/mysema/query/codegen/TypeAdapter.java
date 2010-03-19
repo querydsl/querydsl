@@ -20,7 +20,7 @@ public class TypeAdapter implements Type{
     private final Type type;
     
     public TypeAdapter(Type type){
-        this.type = Assert.notNull(type);
+        this.type = Assert.notNull(type,"type");
     }
     
     @Override

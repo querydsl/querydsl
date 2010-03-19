@@ -33,7 +33,7 @@ public class QueryMixin<T>{
     }
     
     public QueryMixin(QueryMetadata metadata){
-        this.metadata = Assert.notNull(metadata);
+        this.metadata = Assert.notNull(metadata,"metadata");
     }
         
     public QueryMixin(T self){
@@ -41,8 +41,8 @@ public class QueryMixin<T>{
     }
     
     public QueryMixin(T self, QueryMetadata metadata){
-        this.self = Assert.notNull(self);
-        this.metadata = Assert.notNull(metadata);
+        this.self = Assert.notNull(self,"self");
+        this.metadata = Assert.notNull(metadata,"metadata");
     }
     
     public T addToProjection(Expr<?>... o) {

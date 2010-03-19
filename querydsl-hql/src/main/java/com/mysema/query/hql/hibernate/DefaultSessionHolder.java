@@ -20,7 +20,7 @@ public class DefaultSessionHolder implements SessionHolder{
     private final Session session;
     
     public DefaultSessionHolder(Session session){
-        this.session = Assert.notNull(session);
+        this.session = Assert.notNull(session,"session");
     }
     
     @Override

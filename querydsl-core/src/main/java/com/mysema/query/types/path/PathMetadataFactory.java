@@ -48,11 +48,11 @@ public final class PathMetadataFactory {
     }
 
     public static PathMetadata<String> forProperty(Path<?> parent, String property) {
-        return new PathMetadata<String>(parent, EStringConst.create(Assert.hasLength(property), true), PathType.PROPERTY);
+        return new PathMetadata<String>(parent, EStringConst.create(Assert.hasLength(property,"property"), true), PathType.PROPERTY);
     }
 
     public static PathMetadata<String> forVariable(String variable) {
-        return new PathMetadata<String>(null, EStringConst.create(Assert.hasLength(variable), true), PathType.VARIABLE);
+        return new PathMetadata<String>(null, EStringConst.create(Assert.hasLength(variable,"variable"), true), PathType.VARIABLE);
     }
     
     private PathMetadataFactory(){}

@@ -24,7 +24,7 @@ public class EArrayConstructor<D> extends EConstructor<D[]> {
     @SuppressWarnings("unchecked")
     public EArrayConstructor(Class<D[]> type, Expr<D>... args) {
         super(type, new Class[0], args);
-        this.elementType = (Class<D>) Assert.notNull(type.getComponentType());
+        this.elementType = (Class<D>) Assert.notNull(type.getComponentType(),"componentType");
     }
 
     public final Class<D> getElementType() {

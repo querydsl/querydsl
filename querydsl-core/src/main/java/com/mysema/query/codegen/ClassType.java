@@ -44,8 +44,8 @@ public final class ClassType extends AbstractType{
     }
 
     public ClassType(TypeCategory typeCategory, Class<?> clazz, @Nullable Class<?> primitiveClass, Type... params){
-        this.typeCategory = Assert.notNull(typeCategory);
-        this.clazz = Assert.notNull(clazz);
+        this.typeCategory = Assert.notNull(typeCategory,"typeCategory");
+        this.clazz = Assert.notNull(clazz,"clazz");
         this.primitiveClass = primitiveClass;
         this.parameters = Arrays.asList(params);
         if (clazz.isArray()){

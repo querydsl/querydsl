@@ -41,7 +41,7 @@ public class PArray<E> extends Expr<E[]> implements Path<E[]>, EArray<E>{
     public PArray(Class<? super E[]> type, PathMetadata<?> metadata) {
         super((Class)type);
         this.pathMixin = new PathMixin<E[]>(this, metadata);
-        this.componentType = (Class<E>) Assert.notNull(type.getComponentType());
+        this.componentType = (Class<E>) Assert.notNull(type.getComponentType(),"componentType");
     }
 
     @Override
