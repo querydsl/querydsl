@@ -68,18 +68,17 @@ public class LuceneSerializer {
         Operator<?> op = operation.getOperator();
         if (op == Ops.OR) {
             return toOrQuery(operation);
-
         } else if (op == Ops.AND) {
             return toAndQuery(operation);
-
         } else if (op == Ops.LIKE) {
+            // TODO unify all of the following EQ, STARTS_WITH etc.
             if (!(operation.getArg(1) instanceof Constant<?>)) {
                 throw new IllegalArgumentException("operation argument was not of type Constant.");
             }
             String term = operation.getArg(1).toString();
             String[] terms = StringUtils.split(term);
             if (terms.length > 1) {
-                toPhraseQuery(operation, terms);
+                return toPhraseQuery(operation, terms);
             }
             return new WildcardQuery(new Term(toField((PString) operation.getArg(0)), lowerCase ? term.toLowerCase() : term));
         } else if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE) {
@@ -92,7 +91,6 @@ public class LuceneSerializer {
                 return toPhraseQuery(operation, terms);
             }
             return new TermQuery(new Term(toField((PString) operation.getArg(0)), lowerCase ? term.toLowerCase() : term));
-
         } else if (op == Ops.NOT) {
             return toNotQuery(operation);
         } else if (op == Ops.STARTS_WITH) {
@@ -106,25 +104,23 @@ public class LuceneSerializer {
             String term = operation.getArg(1).toString();
             return new PrefixQuery(new Term(toField((PString) operation.getArg(0)), lowerCase ? term.toLowerCase() : term));
         } else if (op == Ops.STRING_CONTAINS) {
-            // TODO This is basically a special case of Ops.LIKE *...*
             if (!(operation.getArg(1) instanceof Constant<?>)) {
                 throw new IllegalArgumentException("operation argument was not of type Constant.");
             }
             String term = QueryParser.escape(operation.getArg(1).toString());
             String[] terms = StringUtils.split(term);
             if (terms.length > 1) {
-                toPhraseQuery(operation, terms);
+                return toPhraseQuery(operation, terms);
             }
             return new WildcardQuery(new Term(toField((PString) operation.getArg(0)), "*" + (lowerCase ? term.toLowerCase() : term) + "*"));
         } else if (op == Ops.ENDS_WITH) {
-            // TODO Special case of Ops.LIKE *...
             if (!(operation.getArg(1) instanceof Constant<?>)) {
                 throw new IllegalArgumentException("operation argument was not of type Constant.");
             }
             String term = QueryParser.escape(operation.getArg(1).toString());
             String[] terms = StringUtils.split(term);
             if (terms.length > 1) {
-                toPhraseQuery(operation, terms);
+                return toPhraseQuery(operation, terms);
             }
             return new WildcardQuery(new Term(toField((PString) operation.getArg(0)), "*" + (lowerCase ? term.toLowerCase() : term)));
         }
