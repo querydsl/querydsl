@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.search;
 
 import org.apache.commons.lang.StringUtils;
@@ -64,8 +69,10 @@ public class LuceneSerializer {
         Operator<?> op = operation.getOperator();
         if (op == Ops.OR) {
             return toOrQuery(operation);
+            
         } else if (op == Ops.AND) {
             return toAndQuery(operation);
+            
         } else if (op == Ops.LIKE) {
             String[] terms = StringUtils.split(operation.getArg(1).toString());
             if (terms.length > 1) {
@@ -73,20 +80,25 @@ public class LuceneSerializer {
             }
             String term = operation.getArg(1).toString();
             return new WildcardQuery(new Term(toField((PString) operation.getArg(0)), WILDCARD_ALL + (lowerCase ? term.toLowerCase() : term) + WILDCARD_ALL));
+            
         } else if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE) {
             String[] terms = StringUtils.split(operation.getArg(1).toString());
             if (terms.length > 1) {
                 return toPhraseQuery(operation, terms);
             }
+            // TODO : make sure second arg is constant
             String term = operation.getArg(1).toString();
             return new TermQuery(new Term(toField((PString) operation.getArg(0)), lowerCase ? term.toLowerCase() : term));
+
         } else if (op == Ops.NOT) {
             return toNotQuery(operation);
+        
         } else if (op == Ops.STARTS_WITH) {
             String[] terms = StringUtils.split(operation.getArg(1).toString());
             if (terms.length > 1) {
                 return toPhraseQuery(operation, terms);
             }
+            // TODO : make sure second arg is constant
             String term = operation.getArg(1).toString();
             return new PrefixQuery(new Term(toField((PString) operation.getArg(0)), lowerCase ? term.toLowerCase() : term));
         }
@@ -96,8 +108,10 @@ public class LuceneSerializer {
     public Query toQuery(Expr<?> expr) {
         if (expr instanceof Operation<?, ?>) {
             return toQuery((Operation<?, ?>) expr);
+        }else{
+            throw new IllegalArgumentException("expr was not of type Operation");    
         }
-        throw new IllegalArgumentException();
+        
     }
 
     public String toField(Path<?> path) {
