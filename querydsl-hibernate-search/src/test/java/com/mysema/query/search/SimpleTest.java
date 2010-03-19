@@ -236,6 +236,23 @@ public class SimpleTest {
     }
 
     @Test
+    public void test_endsWith() throws Exception {
+        Query q = serializer.toQuery(title.endsWith("ark"));
+        TopDocs docs = searcher.search(q, 100);
+        assertEquals(1, docs.totalHits);
+        assertEquals("title:*ark", q.toString());
+    }
+
+    @Test
+    @Ignore
+    public void test_endsWith_Phrase() throws Exception {
+        Query q = serializer.toQuery(title.startsWith("Jurassic Par"));
+        TopDocs docs = searcher.search(q, 100);
+        assertEquals(1, docs.totalHits);
+        assertEquals("title:*sic park", q.toString());
+    }
+
+    @Test
     public void test_contains() throws Exception {
         Query q = serializer.toQuery(title.contains("rassi"));
         TopDocs docs = searcher.search(q, 100);
