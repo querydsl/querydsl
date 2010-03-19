@@ -253,6 +253,14 @@ public class SimpleTest {
     }
 
     @Test
+    public void test_contains_User_Inputted_Wildcards_Dont_Work() throws Exception {
+        Query q = serializer.toQuery(title.contains("r*i"));
+        TopDocs docs = searcher.search(q, 100);
+        assertEquals(0, docs.totalHits);
+        assertEquals("title:*r\\*i*", q.toString());
+    }
+
+    @Test
     public void specs(){
         Session session = null;
         PathBuilder<Object> entityPath = new PathBuilder<Object>(Object.class, "obj");

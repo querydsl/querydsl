@@ -7,6 +7,7 @@ package com.mysema.query.search;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.PhraseQuery;
@@ -76,21 +77,21 @@ public class LuceneSerializer {
             if (!(operation.getArg(1) instanceof Constant<?>)) {
                 throw new IllegalArgumentException("operation argument was not of type Constant.");
             }
-            String[] terms = StringUtils.split(operation.getArg(1).toString());
+            String term = operation.getArg(1).toString();
+            String[] terms = StringUtils.split(term);
             if (terms.length > 1) {
                 toPhraseQuery(operation, terms);
             }
-            String term = operation.getArg(1).toString();
             return new WildcardQuery(new Term(toField((PString) operation.getArg(0)), lowerCase ? term.toLowerCase() : term));
         } else if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE) {
             if (!(operation.getArg(1) instanceof Constant<?>)) {
                 throw new IllegalArgumentException("operation argument was not of type Constant.");
             }
-            String[] terms = StringUtils.split(operation.getArg(1).toString());
+            String term = operation.getArg(1).toString();
+            String[] terms = StringUtils.split(term);
             if (terms.length > 1) {
                 return toPhraseQuery(operation, terms);
             }
-            String term = operation.getArg(1).toString();
             return new TermQuery(new Term(toField((PString) operation.getArg(0)), lowerCase ? term.toLowerCase() : term));
 
         } else if (op == Ops.NOT) {
@@ -110,11 +111,11 @@ public class LuceneSerializer {
             if (!(operation.getArg(1) instanceof Constant<?>)) {
                 throw new IllegalArgumentException("operation argument was not of type Constant.");
             }
-            String[] terms = StringUtils.split(operation.getArg(1).toString());
+            String term = QueryParser.escape(operation.getArg(1).toString());
+            String[] terms = StringUtils.split(term);
             if (terms.length > 1) {
                 toPhraseQuery(operation, terms);
             }
-            String term = operation.getArg(1).toString();
             return new WildcardQuery(new Term(toField((PString) operation.getArg(0)), "*" + (lowerCase ? term.toLowerCase() : term) + "*"));
         }
         throw new UnsupportedOperationException();
