@@ -236,6 +236,23 @@ public class SimpleTest {
     }
 
     @Test
+    public void test_contains() throws Exception {
+        Query q = serializer.toQuery(title.contains("rassi"));
+        TopDocs docs = searcher.search(q, 100);
+        assertEquals(1, docs.totalHits);
+        assertEquals("title:*rassi*", q.toString());
+    }
+
+    @Test
+    @Ignore
+    public void test_contains_Phrase() throws Exception {
+        Query q = serializer.toQuery(title.contains("rassic Pa"));
+        TopDocs docs = searcher.search(q, 100);
+        assertEquals(1, docs.totalHits);
+        assertEquals("title:*rassic Pa*", q.toString());
+    }
+
+    @Test
     public void specs(){
         Session session = null;
         PathBuilder<Object> entityPath = new PathBuilder<Object>(Object.class, "obj");

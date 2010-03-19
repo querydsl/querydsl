@@ -95,7 +95,7 @@ public class LuceneSerializer {
 
         } else if (op == Ops.NOT) {
             return toNotQuery(operation);
-        } else if (op == Ops.STARTS_WITH && operation.getArg(1) instanceof Constant<?>) {
+        } else if (op == Ops.STARTS_WITH) {
             if (!(operation.getArg(1) instanceof Constant<?>)) {
                 throw new IllegalArgumentException("operation argument was not of type Constant.");
             }
@@ -105,6 +105,17 @@ public class LuceneSerializer {
             }
             String term = operation.getArg(1).toString();
             return new PrefixQuery(new Term(toField((PString) operation.getArg(0)), lowerCase ? term.toLowerCase() : term));
+        } else if (op == Ops.STRING_CONTAINS) {
+            // TODO This is basically a special case of Ops.LIKE
+            if (!(operation.getArg(1) instanceof Constant<?>)) {
+                throw new IllegalArgumentException("operation argument was not of type Constant.");
+            }
+            String[] terms = StringUtils.split(operation.getArg(1).toString());
+            if (terms.length > 1) {
+                toPhraseQuery(operation, terms);
+            }
+            String term = operation.getArg(1).toString();
+            return new WildcardQuery(new Term(toField((PString) operation.getArg(0)), "*" + (lowerCase ? term.toLowerCase() : term) + "*"));
         }
         throw new UnsupportedOperationException();
     }
