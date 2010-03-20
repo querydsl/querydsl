@@ -164,11 +164,11 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @ExcludeIn({ORACLE,DERBY,SQLSERVER})
     public void limitAndOffset2() throws SQLException {        
         // limit
-        expectedQuery = "select e.id from employee2 e limit ?";
+        expectedQuery = "select e.ID from EMPLOYEE2 e limit ?";
         query().from(employee).limit(4).list(employee.id);
         
         // limit offset
-        expectedQuery = "select e.id from employee2 e limit ? offset ?";
+        expectedQuery = "select e.ID from EMPLOYEE2 e limit ? offset ?";
         query().from(employee).limit(4).offset(3).list(employee.id);
         
     }
@@ -300,10 +300,10 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         SQLQuery query = query();
         
         query.from(survey);
-        assertEquals("from survey s", query.toString());
+        assertEquals("from SURVEY s", query.toString());
         
         query.from(survey2);
-        assertEquals("from survey s, survey s2", query.toString());
+        assertEquals("from SURVEY s, SURVEY s2", query.toString());
     }
 
     @Test
@@ -340,9 +340,9 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     public void subQueries() throws SQLException {
         // subquery in where block
-        expectedQuery = "select e.id from employee2 e "
-                + "where e.id = (select max(e.id) "
-                + "from employee2 e)";
+        expectedQuery = "select e.ID from EMPLOYEE2 e "
+                + "where e.ID = (select max(e.ID) "
+                + "from EMPLOYEE2 e)";
         List<Integer> list = query().from(employee)
             .where(employee.id.eq(s().from(employee).unique(employee.id.max())))
             .list(employee.id);
@@ -354,10 +354,10 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         SQLSubQuery query = s();
         
         query.from(survey);
-        assertEquals("from survey s", query.toString());
+        assertEquals("from SURVEY s", query.toString());
         
         query.from(survey2);
-        assertEquals("from survey s, survey s2", query.toString());
+        assertEquals("from SURVEY s, SURVEY s2", query.toString());
     }
     
     @Test

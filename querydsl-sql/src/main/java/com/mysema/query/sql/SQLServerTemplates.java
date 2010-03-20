@@ -65,12 +65,7 @@ public class SQLServerTemplates extends SQLTemplates{
         add(Ops.DateTimeOps.MINUTE, "datepart(minute, {0})");
         add(Ops.DateTimeOps.SECOND, "datepart(second, {0})");
         add(Ops.DateTimeOps.MILLISECOND, "datepart(millisecond, {0})");
-        
-//        if (quote){
-//            add(PathType.PROPERTY, "{0}.\"{1s}\"");
-//            add(PathType.VARIABLE, "\"{0s}\"");            
-//        }
-        
+                
 //        setLimitAndOffsetSymbols(false);
 //        setPagingAfterOrder(false);
 //        setLimitTemplate("top {0s} ");

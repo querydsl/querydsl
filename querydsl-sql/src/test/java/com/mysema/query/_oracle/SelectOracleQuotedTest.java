@@ -31,16 +31,7 @@ public class SelectOracleQuotedTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        dialect = new OracleTemplates(true){
-            @Override
-            public String quoteTableName(String table){
-                return super.quoteTableName(table).toUpperCase();        
-            }
-            @Override
-            public String quoteColumnName(String column){
-                return super.quoteColumnName(column).toUpperCase();        
-            }
-        }.newLineToSingleSpace();
+        dialect = new OracleTemplates(true).newLineToSingleSpace();
     }
     
     @Override

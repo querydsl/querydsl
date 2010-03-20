@@ -4,8 +4,6 @@
   
   <title>Querying SQL/JDBC sources</title>
   
-  <para>The querydsl-sql module is still in Beta stage and hasn't been tested much, but it is functional and usable.</para>
-  
   <para>This chapter describes the query type generation and querying functionality of the module.</para>
   
   <sect2>
@@ -112,8 +110,46 @@ WHERE c.first_name = 'Bob'
     <para>Internally Querydsl SQL uses PreparedStatements, though.</para>
 
     <para>Querydsl uses SQL dialects to customize the SQL serialization needed for different relational databases. The
-    available dialects are <emphasis>DerbyTemplates</emphasis>, <emphasis>HSQLDBTemplates</emphasis>, 
-    <emphasis>MySQLTemplates</emphasis> and <emphasis>OracleTemplates</emphasis>.</para>
+    available dialects are :</para>
+    
+    <itemizedlist>
+      <listitem>
+        <para>com.mysema.query.sql.DerbyTemplates</para>
+        <itemizedlist>
+          <listitem><para>tested with version 10.5.3</para></listitem>
+        </itemizedlist>        
+      </listitem>
+      <listitem>
+        <para>com.mysema.query.sql.HSQLDBTemplates</para>
+        <itemizedlist>
+          <listitem><para>tested with version 1.8.0.7</para></listitem>
+        </itemizedlist>        
+      </listitem>
+      <listitem>
+        <para>com.mysema.query.sql.MySQLTemplates</para>
+        <itemizedlist>
+          <listitem><para>tested with MySQL CE 5.1</para></listitem>
+        </itemizedlist>
+      </listitem>
+      <listitem>
+        <para>com.mysema.query.sql.OracleTemplates</para>
+        <itemizedlist>
+          <listitem><para>tested with Oracle 10g XE</para></listitem>
+        </itemizedlist>
+      </listitem>
+      <listitem>
+        <para>com.mysema.query.sql.PostgresTemplates</para>
+        <itemizedlist>
+          <listitem><para>tested with Postgres 8.4</para></listitem>
+        </itemizedlist>
+      </listitem>
+      <listitem>
+        <para>com.mysema.query.sql.SQLServerTemplates</para>
+        <itemizedlist>
+          <listitem><para>tested with SQL Server 2008</para></listitem>
+        </itemizedlist>
+      </listitem>
+    </itemizedlist>
     
   </sect2>
   
@@ -192,7 +228,59 @@ GROUP BY c.last_name
   
     <title>Using Data manipulation commands</title>
     
-    <para>TODO</para>
+    <para>Insert examples :</para>
+    
+<programlisting language="java"><![CDATA[    
+// with columns
+insert(survey)
+    .columns(survey.id, survey.name)
+    .values(3, "Hello").execute();
+
+// without columns
+insert(survey)
+    .values(4, "Hello").execute();
+
+// with subquery
+insert(survey)
+    .columns(survey.id, survey.name)
+    .select(s().from(survey2).list(survey2.id.add(1), survey2.name))
+    .execute();
+
+// with subquery, without columns
+insert(survey)
+    .select(s().from(survey2).list(survey2.id.add(10), survey2.name))
+    .execute();
+]]></programlisting>
+
+  <para>Using the following methods :</para>
+
+<programlisting language="java"><![CDATA[    
+    protected SQLInsertClause insert(PEntity<?> e){
+        return new SQLInsertClause(getConnection(), dialect, e);
+    }   
+    
+    protected SQLSubQuery s(){
+        return new SQLSubQuery();
+    }    
+]]></programlisting>    
+
+   <para>Update examples :</para> 
+  
+<programlisting language="java"><![CDATA[  
+// update with where
+update(survey).where(survey.name.eq("XXX")).set(survey.name, "S").execute();
+  
+// update without where
+update(survey).set(survey.name, "S").execute()  
+]]></programlisting>
+
+  <para>Using the following methods :</para>
+  
+<programlisting language="java"><![CDATA[  
+    protected SQLUpdateClause update(PEntity<?> e){
+        return new SQLUpdateClause(Connections.getConnection(), dialect, e);
+    }
+]]></programlisting>
   
   </sect2>
   

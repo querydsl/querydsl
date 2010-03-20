@@ -18,6 +18,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.path.PathType;
 
 /**
  * SQLTemplates extended Templates to provided SQL specific extensions
@@ -74,22 +75,22 @@ public class SQLTemplates extends Templates {
     
     private String orderBy = "\norder by ";
     
+    @Nullable
+    private String quoteStr;
+    
     private String select = "select ";
     
     private String selectDistinct = "select distinct ";
     
     private String tableAlias = " ";
-    
+
     private String union = "\nunion\n";
-
+    
     private String update = "update ";
-    
-    private String values = "\nvalues ";
 
-    private String where = "\nwhere ";
+    private String values = "\nvalues ";
     
-    @Nullable
-    private String quoteStr;
+    private String where = "\nwhere ";
     
     protected SQLTemplates(){
         this(null);
@@ -131,6 +132,11 @@ public class SQLTemplates extends Templates {
         add(Ops.SUBSTR_1ARG, "substr({0},{1}+1)");
         add(Ops.SUBSTR_2ARGS, "substr({0},{1}+1,{2})");
         
+        if (quoteStr != null){
+            add(PathType.PROPERTY, "{0}." + quoteStr + "{1s}" + quoteStr);
+            add(PathType.VARIABLE, quoteStr + "{0s}" + quoteStr);            
+        }
+        
         for (Class<?> cl : new Class[] { Boolean.class, Byte.class,
                 Double.class, Float.class, Integer.class, Long.class,
                 Short.class, String.class }) {
@@ -154,10 +160,14 @@ public class SQLTemplates extends Templates {
         return asc;
     }
     
-    public Map<Class<?>, String> getClass2Type() {
+    public Map<Class<?>, String> getClass2type() {
         return class2type;
     }
     
+    public Map<Class<?>, String> getClass2Type() {
+        return class2type;
+    }
+
     public String getColumnAlias() {
         return columnAlias;
     }
@@ -228,157 +238,6 @@ public class SQLTemplates extends Templates {
         return ", ";
     }
 
-    public boolean isSupportsAlias() {
-        return true;
-    }
-
-    public SQLTemplates newLineToSingleSpace() {
-        for (Field field : SQLTemplates.class.getDeclaredFields()) {
-            try {
-                if (field.getType().equals(String.class)) {
-                    Object val = field.get(this);
-                    if (val != null){
-                        field.set(this, val.toString().replace('\n',' '));    
-                    }
-                    
-                }
-            } catch (IllegalAccessException e) {
-                throw new QueryException(e.getMessage(), e);
-            }
-        }
-        return this;
-    }
-
-    public void serialize(QueryMetadata metadata, boolean forCountRow, SerializationContext context) {
-        context.serialize(metadata, forCountRow);
-        
-        if (!forCountRow && metadata.getModifiers().isRestricting()){
-            serializeModifiers(metadata, context);  
-        }        
-    }
-
-    protected void serializeModifiers(QueryMetadata metadata, SerializationContext context) {
-        QueryModifiers mod = metadata.getModifiers();
-        if (mod.getLimit() != null) {
-            context.handle(limitTemplate, mod.getLimit());
-        }
-        if (mod.getOffset() != null) {
-            context.handle(offsetTemplate, mod.getOffset());
-        }
-    }
-
-    public void setAsc(String asc) {
-        this.asc = asc;
-    }
-
-    public void setColumnAlias(String columnAlias) {
-        this.columnAlias = columnAlias;
-    }
-
-    public void setCount(String count) {
-        this.count = count;
-    }
-
-    public void setCountStar(String countStar) {
-        this.countStar = countStar;
-    }
-
-    public void setDeleteFrom(String deleteFrom) {
-        this.deleteFrom = deleteFrom;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
-    public void setDistinctCountEnd(String distinctCountEnd) {
-        this.distinctCountEnd = distinctCountEnd;
-    }
-
-    public void setDistinctCountStart(String distinctCountStart) {
-        this.distinctCountStart = distinctCountStart;
-    }
-
-    public void setDummyTable(String dummyTable) {
-        this.dummyTable = dummyTable;
-    }
-
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    public void setFullJoin(String fullJoin) {
-        this.fullJoin = fullJoin;
-    }
-
-    public void setGroupBy(String groupBy) {
-        this.groupBy = groupBy;
-    }
-
-    public void setHaving(String having) {
-        this.having = having;
-    }
-
-    public void setInnerJoin(String innerJoin) {
-        this.innerJoin = innerJoin;
-    }
-
-    public void setInsertInto(String insertInto) {
-        this.insertInto = insertInto;
-    }
-
-    public void setJoin(String join) {
-        this.join = join;
-    }
-
-    public void setLeftJoin(String leftJoin) {
-        this.leftJoin = leftJoin;
-    }
-
-    public void setOffsetTemplate(String offsetTemplate) {
-        this.offsetTemplate = offsetTemplate;
-    }
-
-    public void setOn(String on) {
-        this.on = on;
-    }
-
-    public void setOrderBy(String orderBy) {
-        this.orderBy = orderBy;
-    }
-
-    public void setSelect(String select) {
-        this.select = select;
-    }
-
-    public void setSelectDistinct(String selectDistinct) {
-        this.selectDistinct = selectDistinct;
-    }
-    
-    public void setTableAlias(String tableAlias) {
-        this.tableAlias = tableAlias;
-    }
-
-    public void setUnion(String union) {
-        this.union = union;
-    }
-
-    public void setUpdate(String update) {
-        this.update = update;
-    }
-
-    public void setValues(String values) {
-        this.values = values;
-    }
-
-    public void setWhere(String where) {
-        this.where = where;
-    }
-
-    public Map<Class<?>, String> getClass2type() {
-        return class2type;
-    }
-
     public String getLeftJoin() {
         return leftJoin;
     }
@@ -426,21 +285,168 @@ public class SQLTemplates extends Templates {
     public String getWhere() {
         return where;
     }
-    
-    public String quoteTableName(String table){
+
+    public boolean isSupportsAlias() {
+        return true;
+    }
+
+    public SQLTemplates newLineToSingleSpace() {
+        for (Field field : SQLTemplates.class.getDeclaredFields()) {
+            try {
+                if (field.getType().equals(String.class)) {
+                    Object val = field.get(this);
+                    if (val != null){
+                        field.set(this, val.toString().replace('\n',' '));    
+                    }
+                    
+                }
+            } catch (IllegalAccessException e) {
+                throw new QueryException(e.getMessage(), e);
+            }
+        }
+        return this;
+    }
+
+    public final String quoteColumnName(String column){
+        if (quoteStr != null){
+            return quoteStr + column + quoteStr;
+        }else{
+            return column;
+        }        
+    }
+
+    public final String quoteTableName(String table){
         if (quoteStr != null){
             return quoteStr + table + quoteStr;
         }else{
             return table;    
         }        
     }
-    
-    public String quoteColumnName(String column){
-        if (quoteStr != null){
-            return quoteStr + column + quoteStr;
-        }else{
-            return column;
+
+    public void serialize(QueryMetadata metadata, boolean forCountRow, SerializationContext context) {
+        context.serialize(metadata, forCountRow);
+        
+        if (!forCountRow && metadata.getModifiers().isRestricting()){
+            serializeModifiers(metadata, context);  
         }        
+    }
+
+    protected void serializeModifiers(QueryMetadata metadata, SerializationContext context) {
+        QueryModifiers mod = metadata.getModifiers();
+        if (mod.getLimit() != null) {
+            context.handle(limitTemplate, mod.getLimit());
+        }
+        if (mod.getOffset() != null) {
+            context.handle(offsetTemplate, mod.getOffset());
+        }
+    }
+
+    protected void setAsc(String asc) {
+        this.asc = asc;
+    }
+
+    protected void setColumnAlias(String columnAlias) {
+        this.columnAlias = columnAlias;
+    }
+
+    protected void setCount(String count) {
+        this.count = count;
+    }
+
+    protected void setCountStar(String countStar) {
+        this.countStar = countStar;
+    }
+
+    protected void setDeleteFrom(String deleteFrom) {
+        this.deleteFrom = deleteFrom;
+    }
+
+    protected void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    protected void setDistinctCountEnd(String distinctCountEnd) {
+        this.distinctCountEnd = distinctCountEnd;
+    }
+    
+    protected void setDistinctCountStart(String distinctCountStart) {
+        this.distinctCountStart = distinctCountStart;
+    }
+
+    protected void setDummyTable(String dummyTable) {
+        this.dummyTable = dummyTable;
+    }
+
+    protected void setFrom(String from) {
+        this.from = from;
+    }
+
+    protected void setFullJoin(String fullJoin) {
+        this.fullJoin = fullJoin;
+    }
+
+    protected void setGroupBy(String groupBy) {
+        this.groupBy = groupBy;
+    }
+
+    protected void setHaving(String having) {
+        this.having = having;
+    }
+
+    protected void setInnerJoin(String innerJoin) {
+        this.innerJoin = innerJoin;
+    }
+
+    protected void setInsertInto(String insertInto) {
+        this.insertInto = insertInto;
+    }
+
+    protected void setJoin(String join) {
+        this.join = join;
+    }
+
+    protected void setLeftJoin(String leftJoin) {
+        this.leftJoin = leftJoin;
+    }
+
+    protected void setOffsetTemplate(String offsetTemplate) {
+        this.offsetTemplate = offsetTemplate;
+    }
+
+    protected void setOn(String on) {
+        this.on = on;
+    }
+
+    protected void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    protected void setSelect(String select) {
+        this.select = select;
+    }
+
+    protected void setSelectDistinct(String selectDistinct) {
+        this.selectDistinct = selectDistinct;
+    }
+
+    protected void setTableAlias(String tableAlias) {
+        this.tableAlias = tableAlias;
+    }
+
+    protected void setUnion(String union) {
+        this.union = union;
+    }
+
+    protected void setUpdate(String update) {
+        this.update = update;
+    }
+    
+    protected void setValues(String values) {
+        this.values = values;
+    }
+    
+    protected void setWhere(String where) {
+        this.where = where;
     }
     
 }

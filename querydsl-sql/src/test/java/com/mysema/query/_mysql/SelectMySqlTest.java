@@ -17,12 +17,6 @@ import com.mysema.testutil.FilteringTestRunner;
 import com.mysema.testutil.Label;
 import com.mysema.testutil.ResourceCheck;
 
-/**
- * MySqlTest provides
- * 
- * @author tiwe
- * @version $Id$
- */
 @RunWith(FilteringTestRunner.class)
 @ResourceCheck("/mysql.run")
 @Label(Target.MYSQL)

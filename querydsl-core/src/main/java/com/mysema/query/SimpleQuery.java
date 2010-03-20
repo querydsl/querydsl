@@ -7,6 +7,7 @@ package com.mysema.query;
 
 import javax.annotation.Nonnegative;
 
+import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
@@ -47,5 +48,13 @@ public interface SimpleQuery<Q extends SimpleQuery<Q>> {
      * @return
      */
     Q restrict(QueryModifiers modifiers);
+    
+    /**
+     * Defines the order expressions
+     * 
+     * @param o
+     * @return
+     */
+    Q orderBy(OrderSpecifier<?>... o);
 
 }

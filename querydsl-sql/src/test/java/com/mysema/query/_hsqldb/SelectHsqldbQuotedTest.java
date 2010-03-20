@@ -18,12 +18,6 @@ import com.mysema.query.sql.HSQLDBTemplates;
 import com.mysema.testutil.FilteringTestRunner;
 import com.mysema.testutil.Label;
 
-/**
- * HsqdlbTest provides
- * 
- * @author tiwe
- * @version $Id$
- */
 @RunWith(FilteringTestRunner.class)
 @Label(Target.HSQLDB)
 public class SelectHsqldbQuotedTest extends SelectBaseTest {
@@ -35,16 +29,7 @@ public class SelectHsqldbQuotedTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        dialect = new HSQLDBTemplates(true){
-            @Override
-            public String quoteTableName(String table){
-                return super.quoteTableName(table).toUpperCase();        
-            }
-            @Override
-            public String quoteColumnName(String column){
-                return super.quoteColumnName(column).toUpperCase();        
-            }
-        }.newLineToSingleSpace();
+        dialect = new HSQLDBTemplates(true).newLineToSingleSpace();
     }
 
     @Override

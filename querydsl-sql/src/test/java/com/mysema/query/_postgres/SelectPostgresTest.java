@@ -17,14 +17,9 @@ import com.mysema.testutil.FilteringTestRunner;
 import com.mysema.testutil.Label;
 import com.mysema.testutil.ResourceCheck;
 
-/**
- * MySqlTest provides
- * 
- * @author tiwe
- * @version $Id$
- */
+// ignored, because the tables are created in upper case and Postgres normalizes unquoted identifiers to lower case
 @RunWith(FilteringTestRunner.class)
-@ResourceCheck("/postgres.run")
+@ResourceCheck("DO.NOT.RUN")
 @Label(Target.POSTGRES)
 public class SelectPostgresTest extends SelectBaseTest {
 

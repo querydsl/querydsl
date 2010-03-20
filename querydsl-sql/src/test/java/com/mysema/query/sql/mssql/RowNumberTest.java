@@ -21,27 +21,27 @@ public class RowNumberTest {
     @Test
     public void test(){
         assertEquals(
-            "row_number() over (order by e.firstname)", 
+            "row_number() over (order by e.FIRSTNAME)", 
             rowNumber().orderBy(employee.firstname.asc()).toString());
         
         assertEquals(
-            "row_number() over (order by e.firstname)", 
+            "row_number() over (order by e.FIRSTNAME)", 
             rowNumber().orderBy(employee.firstname).toString());
         
         assertEquals(
-            "row_number() over (order by e.firstname) as rn", 
+            "row_number() over (order by e.FIRSTNAME) as rn", 
             rowNumber().orderBy(employee.firstname.asc()).as(rn).toString());
         
         assertEquals(
-            "row_number() over (order by e.firstname desc)", 
+            "row_number() over (order by e.FIRSTNAME desc)", 
             rowNumber().orderBy(employee.firstname.desc()).toString());
         
         assertEquals(
-            "row_number() over (partition by e.lastname order by e.firstname)", 
+            "row_number() over (partition by e.LASTNAME order by e.FIRSTNAME)", 
             rowNumber().partitionBy(employee.lastname).orderBy(employee.firstname.asc()).toString());
         
         assertEquals(
-            "row_number() over (partition by e.lastname, e.firstname order by e.firstname)", 
+            "row_number() over (partition by e.LASTNAME, e.FIRSTNAME order by e.FIRSTNAME)", 
             rowNumber().partitionBy(employee.lastname, employee.firstname).orderBy(employee.firstname.asc()).toString());
     }
     

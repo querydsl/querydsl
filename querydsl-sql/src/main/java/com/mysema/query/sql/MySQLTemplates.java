@@ -42,10 +42,6 @@ public class MySQLTemplates extends SQLTemplates {
         add(Ops.MATCHES, "{0} regexp {1}");
         add(Ops.DateTimeOps.YEAR_MONTH, "extract(year_month from {0})");
         
-//        if (quote){
-//            add(PathType.PROPERTY, "{0}.`{1s}`");
-//            add(PathType.VARIABLE, "`{0s}`");            
-//        }
     }
         
 }

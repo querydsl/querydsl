@@ -407,7 +407,7 @@ query().from(employee)
     .where(employee.weeklyhours.gt(
         new HQLSubQuery().from(employee.department.employees, e)
         .where(e.manager.eq(employee.manager))
-        .unique(AggregationFunctions.avg(e.weeklyhours))
+        .unique(e.weeklyhours.avg())
     )).list(employee);
 ]]></programlisting>  
 

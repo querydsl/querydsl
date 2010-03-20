@@ -29,16 +29,7 @@ public class SelectDerbyQuotedTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        dialect = new DerbyTemplates(true){
-            @Override
-            public String quoteTableName(String table){
-                return super.quoteTableName(table).toUpperCase();        
-            }        
-            @Override
-            public String quoteColumnName(String column){
-                return super.quoteColumnName(column).toUpperCase();        
-            }
-        }.newLineToSingleSpace();
+        dialect = new DerbyTemplates(true).newLineToSingleSpace();
     }
 
     @Override

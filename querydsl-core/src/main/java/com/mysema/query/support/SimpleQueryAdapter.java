@@ -13,6 +13,7 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.SimpleProjectable;
 import com.mysema.query.SimpleQuery;
+import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 
@@ -25,11 +26,11 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
  */
 public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>, SimpleProjectable<T>{
 
-    private final Query<?> query;
-    
     private final Projectable projectable;
     
     private final Expr<T> projection;
+    
+    private final Query<?> query;
 
     @SuppressWarnings("BC_UNCONFIRMED_CAST")
     public <Q extends Query<?> & Projectable> SimpleQueryAdapter(Q query, Expr<T> projection){
@@ -44,30 +45,6 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     }
 
     @Override
-    public SimpleQueryAdapter<T> limit(long limit) {
-        query.limit(limit);
-        return this;
-    }
-
-    @Override
-    public SimpleQueryAdapter<T> offset(long offset) {
-        query.offset(offset);
-        return this;
-    }
-
-    @Override
-    public SimpleQueryAdapter<T> restrict(QueryModifiers modifiers) {
-        query.restrict(modifiers);
-        return this;
-    }
-
-    @Override
-    public SimpleQueryAdapter<T> where(EBoolean... e) {
-        query.where(e);
-        return this;
-    }
-
-    @Override
     public long count() {
         return projectable.count();
     }
@@ -75,6 +52,12 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     @Override
     public long countDistinct() {
         return projectable.countDistinct();
+    }
+
+    @Override
+    public SimpleQueryAdapter<T> limit(long limit) {
+        query.limit(limit);
+        return this;
     }
 
     @Override
@@ -98,13 +81,37 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     }
 
     @Override
-    public T uniqueResult() {
-        return projectable.uniqueResult(projection);
+    public SimpleQueryAdapter<T> offset(long offset) {
+        query.offset(offset);
+        return this;
     }
-    
+
+    @Override
+    public SimpleQueryAdapter<T> orderBy(OrderSpecifier<?>... o) {
+        query.orderBy(o);
+        return this;
+    }
+
+    @Override
+    public SimpleQueryAdapter<T> restrict(QueryModifiers modifiers) {
+        query.restrict(modifiers);
+        return this;
+    }
+
     @Override
     public String toString(){
         return query.toString();
+    }
+    
+    @Override
+    public T uniqueResult() {
+        return projectable.uniqueResult(projection);
+    }
+
+    @Override
+    public SimpleQueryAdapter<T> where(EBoolean... e) {
+        query.where(e);
+        return this;
     }
     
 }

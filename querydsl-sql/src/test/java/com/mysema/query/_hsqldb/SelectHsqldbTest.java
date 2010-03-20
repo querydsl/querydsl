@@ -16,12 +16,6 @@ import com.mysema.query.sql.HSQLDBTemplates;
 import com.mysema.testutil.FilteringTestRunner;
 import com.mysema.testutil.Label;
 
-/**
- * HsqdlbTest provides
- * 
- * @author tiwe
- * @version $Id$
- */
 @RunWith(FilteringTestRunner.class)
 @Label(Target.HSQLDB)
 public class SelectHsqldbTest extends SelectBaseTest {

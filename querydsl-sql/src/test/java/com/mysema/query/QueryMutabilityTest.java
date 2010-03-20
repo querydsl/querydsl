@@ -18,11 +18,11 @@ import org.junit.Test;
 
 import com.mysema.query.sql.DerbyTemplates;
 import com.mysema.query.sql.SQLQueryImpl;
-import com.mysema.query.sql.domain.QSURVEY;
+import com.mysema.query.sql.domain.QSurvey;
 
 public class QueryMutabilityTest{
     
-    private static final QSURVEY survey = new QSURVEY("survey");
+    private static final QSurvey survey = new QSurvey("survey");
     
     private Connection connection;
     
