@@ -12,6 +12,7 @@ import net.jcip.annotations.Immutable;
 import org.apache.commons.collections15.Transformer;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.util.CodeWriter;
 
@@ -39,6 +40,7 @@ public final class DTOSerializer implements Serializer{
         writer.packageDecl(model.getPackageName());
         
         // imports
+        writer.imports(Expr.class.getPackage());
         writer.imports(EConstructor.class.getPackage());
         writer.nl();
         
