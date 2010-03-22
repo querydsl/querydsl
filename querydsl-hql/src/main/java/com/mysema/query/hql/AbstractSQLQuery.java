@@ -11,7 +11,7 @@ import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.operation.ONumber;
+import com.mysema.query.types.expr.ONumber;
 import com.mysema.query.types.path.PEntity;
 
 /**

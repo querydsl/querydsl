@@ -13,7 +13,7 @@ import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.operation.OBoolean;
+import com.mysema.query.types.expr.OBoolean;
 
 /**
  * @author tiwe

@@ -13,7 +13,7 @@ import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.operation.ONumber;
+import com.mysema.query.types.expr.ONumber;
 
 /**
  * Single result subquery

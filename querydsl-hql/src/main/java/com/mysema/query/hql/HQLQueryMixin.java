@@ -16,7 +16,7 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.operation.OSimple;
+import com.mysema.query.types.expr.OSimple;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PMap;
 

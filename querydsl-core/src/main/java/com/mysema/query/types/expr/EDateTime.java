@@ -10,8 +10,6 @@ import java.util.Date;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Ops;
-import com.mysema.query.types.operation.ODateTime;
-import com.mysema.query.types.operation.ONumber;
 
 /**
  * EDateTime represents Date / Time expressions

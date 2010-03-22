@@ -8,7 +8,6 @@ package com.mysema.query.types.expr;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Ops;
-import com.mysema.query.types.operation.OBoolean;
 
 
 /**

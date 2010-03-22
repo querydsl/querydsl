@@ -19,7 +19,7 @@ import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.operation.ONumber;
+import com.mysema.query.types.expr.ONumber;
 
 /**
  * PArray represents an array typed path

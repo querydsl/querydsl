@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types.operation;
+package com.mysema.query.types.expr;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,42 +12,40 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.EDate;
 
 /**
- * ODate represents Date operations
+ * OSimple represents a simple operation expression
  * 
  * @author tiwe
- *
+ * 
  * @param <OpType>
  * @param <D>
  */
-public class ODate <OpType extends Comparable<?>, D extends Comparable<?>> extends
-    EDate<D> implements Operation<OpType, D> {
+public class OSimple<OpType, D> extends Expr<D> implements Operation<OpType, D> {
     
-    private static final long serialVersionUID = -7859020164194396995L;
+    private static final long serialVersionUID = -285668548371034230L;
 
     /**
      * Factory method
      * 
-     * @param <O>
+     * @param <OpType>
      * @param <D>
      * @param type
      * @param op
      * @param args
      * @return
      */
-    public static <O extends Comparable<?>,D extends Comparable<?>> EDate<D> create(Class<D> type, Operator<O> op, Expr<?>... args){
-        return new ODate<O,D>(type, op, args);
+    public static <OpType,D> Expr<D> create(Class<? extends D> type, Operator<OpType> op, Expr<?>... args){
+        return new OSimple<OpType,D>(type, op, args);
     }
     
     private final Operation<OpType, D> opMixin;
-    
-    ODate(Class<D> type, Operator<OpType> op, Expr<?>... args) {
+
+    OSimple(Class<? extends D> type, Operator<OpType> op, Expr<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    ODate(Class<D> type, Operator<OpType> op, List<Expr<?>> args) {
+    OSimple(Class<? extends D> type, Operator<OpType> op, List<Expr<?>> args) {
         super(type);
         this.opMixin = new OperationMixin<OpType, D>(this, op, args);
     }
@@ -56,7 +54,7 @@ public class ODate <OpType extends Comparable<?>, D extends Comparable<?>> exten
     public void accept(Visitor v) {
         v.visit(this);        
     }
-    
+
     @Override
     public Expr<?> getArg(int index) {
         return opMixin.getArg(index);
@@ -76,7 +74,7 @@ public class ODate <OpType extends Comparable<?>, D extends Comparable<?>> exten
     public boolean equals(Object o){
         return opMixin.equals(o);
     }
-
+    
     @Override
     public int hashCode(){
         return getType().hashCode();

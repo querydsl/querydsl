@@ -16,7 +16,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathType;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.operation.OBoolean;
+import com.mysema.query.types.expr.OBoolean;
 import com.mysema.util.ReflectionUtils;
 
 /**

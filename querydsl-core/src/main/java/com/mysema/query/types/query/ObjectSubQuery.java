@@ -13,7 +13,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.operation.OSimple;
+import com.mysema.query.types.expr.OSimple;
 
 /**
  * Single result subquery

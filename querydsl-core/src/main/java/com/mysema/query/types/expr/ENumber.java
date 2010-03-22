@@ -16,8 +16,6 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Ops.AggOps;
 import com.mysema.query.types.Ops.MathOps;
-import com.mysema.query.types.operation.OBoolean;
-import com.mysema.query.types.operation.ONumber;
 
 /**
  * ENumber represents a numeric expression

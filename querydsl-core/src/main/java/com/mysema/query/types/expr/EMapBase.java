@@ -13,8 +13,6 @@ import com.mysema.query.types.EMap;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.ExprConst;
 import com.mysema.query.types.Ops;
-import com.mysema.query.types.operation.OBoolean;
-import com.mysema.query.types.operation.ONumber;
 
 /**
  * EMapBase is an abstract base class for EMap implementations

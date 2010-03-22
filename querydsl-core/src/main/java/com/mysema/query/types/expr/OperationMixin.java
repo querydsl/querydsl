@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types.operation;
+package com.mysema.query.types.expr;
 
 import java.io.Serializable;
 import java.util.Collections;

@@ -14,8 +14,8 @@ import javax.annotation.Nullable;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.operation.OBoolean;
-import com.mysema.query.types.operation.ONumber;
+import com.mysema.query.types.expr.OBoolean;
+import com.mysema.query.types.expr.ONumber;
 
 /**
  * Expr represents a general typed expression in a Query instance. The generic type parameter

@@ -8,7 +8,7 @@
  * Operations represent typed operations with operator and arguments
  */
 @DefaultAnnotation( { Nonnull.class })
-package com.mysema.query.types.operation;
+package com.mysema.query.types.expr;
 
 import javax.annotation.Nonnull;
 

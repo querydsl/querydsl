@@ -8,7 +8,6 @@ package com.mysema.query.types.expr;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.ExprConst;
 import com.mysema.query.types.Ops;
-import com.mysema.query.types.operation.OBoolean;
 
 /**
  * EComparable extends EComparableBase to provide comparison methods. 

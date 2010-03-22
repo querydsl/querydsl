@@ -13,7 +13,7 @@ import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ETime;
-import com.mysema.query.types.operation.OTime;
+import com.mysema.query.types.expr.OTime;
 
 /**
  * Single result subquery

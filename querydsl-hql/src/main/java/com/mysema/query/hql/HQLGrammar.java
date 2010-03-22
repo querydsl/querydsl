@@ -10,9 +10,9 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.operation.OComparable;
-import com.mysema.query.types.operation.ONumber;
-import com.mysema.query.types.operation.OSimple;
+import com.mysema.query.types.expr.OComparable;
+import com.mysema.query.types.expr.ONumber;
+import com.mysema.query.types.expr.OSimple;
 
 /**
  * HQLGrammar provides factory methods for HQL specific operations

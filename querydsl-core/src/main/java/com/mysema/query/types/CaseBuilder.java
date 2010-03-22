@@ -15,9 +15,9 @@ import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.ENumberConst;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.EStringConst;
-import com.mysema.query.types.operation.ONumber;
-import com.mysema.query.types.operation.OSimple;
-import com.mysema.query.types.operation.OString;
+import com.mysema.query.types.expr.ONumber;
+import com.mysema.query.types.expr.OSimple;
+import com.mysema.query.types.expr.OString;
 
 /**
  * CaseBuilder enables the construction of typesafe case-when-then-else 

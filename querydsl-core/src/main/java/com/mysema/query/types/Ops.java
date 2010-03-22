@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.operation.ONumber;
+import com.mysema.query.types.expr.ONumber;
 
 /**
  * Ops provides the operators for the fluent query grammar.

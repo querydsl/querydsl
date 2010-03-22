@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types.operation;
+package com.mysema.query.types.expr;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +13,6 @@ import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.EBoolean;
 
 /**
  * OBoolean represents boolean operations

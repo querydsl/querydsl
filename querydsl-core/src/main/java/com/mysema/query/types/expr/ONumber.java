@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types.operation;
+package com.mysema.query.types.expr;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,20 +12,19 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.EComparable;
 
 /**
- * OComparable represents Comparable operations
+ * ONumber represents numeric operations
  * 
  * @author tiwe
  * 
  * @param <OpType>
  * @param <D>
  */
-public class OComparable<OpType, D extends Comparable<?>> extends
-        EComparable<D> implements Operation<OpType, D> {
+public class ONumber<OpType extends Number, D extends Number & Comparable<?>>
+        extends ENumber<D> implements Operation<OpType, D> {
     
-    private static final long serialVersionUID = 1129243977606098865L;
+    private static final long serialVersionUID = -3593040852095778453L;
 
     /**
      * Factory method
@@ -37,17 +36,17 @@ public class OComparable<OpType, D extends Comparable<?>> extends
      * @param args
      * @return
      */
-    public static <O,D extends Comparable<?>> EComparable<D> create(Class<D> type, Operator<O> op, Expr<?>... args){
-        return new OComparable<O,D>(type, op, args);
+    public static <O extends Number,D extends Number & Comparable<?>> ENumber<D> create(Class<? extends D> type, Operator<O> op, Expr<?>... args){
+        return new ONumber<O,D>(type, op, args);
     }
     
     private final Operation<OpType, D> opMixin;
     
-    OComparable(Class<D> type, Operator<OpType> op, Expr<?>... args) {
+    ONumber(Class<? extends D> type, Operator<OpType> op, Expr<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    OComparable(Class<D> type, Operator<OpType> op, List<Expr<?>> args) {
+    ONumber(Class<? extends D> type, Operator<OpType> op, List<Expr<?>> args) {
         super(type);
         this.opMixin = new OperationMixin<OpType, D>(this, op, args);
     }
