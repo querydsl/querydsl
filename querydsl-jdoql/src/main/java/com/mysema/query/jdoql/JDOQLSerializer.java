@@ -20,18 +20,18 @@ import org.apache.commons.lang.ClassUtils;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.SerializerBase;
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.Operation;
+import com.mysema.query.types.Operator;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.expr.Constant;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EStringConst;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OSimple;
-import com.mysema.query.types.operation.Operation;
-import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.Path;
-import com.mysema.query.types.query.SubQuery;
 
 /**
  * JDOQLSerializer serializes Querydsl queries and expressions into JDOQL strings

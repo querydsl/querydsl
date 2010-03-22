@@ -5,7 +5,6 @@
  */
 package com.mysema.query.types;
 
-import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.EStringConst;
 

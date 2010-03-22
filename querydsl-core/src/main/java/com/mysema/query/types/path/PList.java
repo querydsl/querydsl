@@ -19,6 +19,8 @@ import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.QueryException;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollectionBase;

@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.mysema.query.alias.Alias;
-import com.mysema.query.types.path.Path;
+import com.mysema.query.types.Path;
 
 /**
  * MiniApi provides static convenience methods for query construction

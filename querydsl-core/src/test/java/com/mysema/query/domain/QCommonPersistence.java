@@ -5,9 +5,9 @@
  */
 package com.mysema.query.domain;
 
+import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PathMetadata;
 
 /**
  * QCommonPersistence is a Querydsl query type for CommonPersistence

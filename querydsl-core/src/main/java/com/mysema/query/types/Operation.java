@@ -3,23 +3,25 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types.custom;
+package com.mysema.query.types;
 
 import java.util.List;
 
-import com.mysema.query.types.Template;
 import com.mysema.query.types.expr.Expr;
 
 /**
- * Custom provides base types for custom expresions with integrated
- * serialization templates
+ * Operation represents an operation with operator and arguments
  * 
  * @author tiwe
  * @version $Id$
  */
-public interface Custom<T> {
+public interface Operation<OP, RT> {
+    /**
+     * @return
+     */
+    Expr<RT> asExpr();
 
-    /** 
+    /**
      * Get the argument with the given index
      * 
      * @param index
@@ -28,27 +30,24 @@ public interface Custom<T> {
     Expr<?> getArg(int index);
 
     /**
-     * Get the arguments of the custom expression
+     * Get the arguments of this operation
      * 
      * @return
      */
     List<Expr<?>> getArgs();
 
     /**
-     * Get the serialization template for this custom expression
+     * Get the operator symbol for this operation
      * 
      * @return
      */
-    Template getTemplate();
+    Operator<OP> getOperator();
     
     /**
+     * Get the type of this operation
+     * 
      * @return
      */
-    Class<? extends T> getType();
-    
-    /**
-     * @return
-     */
-    Expr<T> asExpr();
+    Class<? extends RT> getType();
 
 }

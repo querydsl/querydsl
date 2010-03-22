@@ -9,9 +9,10 @@ import java.io.IOException;
 
 import net.jcip.annotations.Immutable;
 
-import com.mysema.query.types.custom.Custom;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.path.Path;
+import com.mysema.query.types.path.PSimple;
 import com.mysema.util.CodeWriter;
 
 /**
@@ -44,7 +45,9 @@ public final class SupertypeSerializer extends EntitySerializer{
         
     @Override
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
-        writer.imports(Path.class.getPackage());        
+        writer.imports(PathMetadata.class.getPackage());
+        writer.imports(PSimple.class.getPackage());        
+        
         if ((model.hasLists() && config.useListAccessors())
                 || !model.getMethods().isEmpty()
                 || (model.hasMaps() && config.useMapAccessors())){
@@ -52,7 +55,7 @@ public final class SupertypeSerializer extends EntitySerializer{
         }
         
         if (!model.getMethods().isEmpty()){
-            writer.imports(Custom.class.getPackage());
+            writer.imports(CSimple.class.getPackage());
         }
     }
 

@@ -5,11 +5,11 @@
  */
 package com.mysema.query.jdoql.testdomain;
 
+import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 /**

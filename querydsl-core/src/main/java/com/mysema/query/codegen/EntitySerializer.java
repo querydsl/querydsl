@@ -31,15 +31,17 @@ import org.apache.commons.collections15.Transformer;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.custom.Custom;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PTime;
-import com.mysema.query.types.path.Path;
 import com.mysema.query.types.path.PathMetadataFactory;
 import com.mysema.util.CodeWriter;
 
@@ -291,7 +293,8 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {       
-        writer.imports(Path.class.getPackage());
+        writer.imports(PathMetadata.class.getPackage());
+        writer.imports(PSimple.class.getPackage());
         writer.staticimports(PathMetadataFactory.class);        
         
         if (!model.getConstructors().isEmpty()
@@ -302,7 +305,7 @@ public class EntitySerializer implements Serializer{
         }
         
         if (!model.getMethods().isEmpty()){
-            writer.imports(Custom.class.getPackage());
+            writer.imports(CSimple.class.getPackage());
         }
     }
 

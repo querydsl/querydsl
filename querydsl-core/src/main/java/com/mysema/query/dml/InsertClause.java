@@ -5,8 +5,8 @@
  */
 package com.mysema.query.dml;
 
-import com.mysema.query.types.path.Path;
-import com.mysema.query.types.query.SubQuery;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.SubQuery;
 
 /**
  * InsertClause defines a generic extensible interface for Insert clauses

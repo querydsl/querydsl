@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types.path;
+package com.mysema.query.types;
 
 import java.lang.reflect.AnnotatedElement;
 
@@ -20,6 +20,7 @@ public interface Path<C> {
     /**
      * @return
      */
+    // Expr is in lower level package
     Expr<C> asExpr();
 
     /**
@@ -48,6 +49,7 @@ public interface Path<C> {
      * 
      * @return
      */
+    // TODO : move isNotNull to Expr ?!?
     EBoolean isNotNull();
     
     /**
@@ -56,6 +58,7 @@ public interface Path<C> {
      * 
      * @return
      */
+    // TODO : move isNull to Expr ?!?
     EBoolean isNull();
     
     /**

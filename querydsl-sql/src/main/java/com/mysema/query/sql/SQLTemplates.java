@@ -16,9 +16,9 @@ import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.types.PathType;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.path.PathType;
 
 /**
  * SQLTemplates extended Templates to provided SQL specific extensions

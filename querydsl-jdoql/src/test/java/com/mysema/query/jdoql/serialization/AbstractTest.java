@@ -8,8 +8,8 @@ package com.mysema.query.jdoql.serialization;
 import com.mysema.query.jdoql.JDOQLSerializer;
 import com.mysema.query.jdoql.JDOQLSubQuery;
 import com.mysema.query.jdoql.JDOQLTemplates;
+import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.query.SubQuery;
 
 public abstract class AbstractTest {
 

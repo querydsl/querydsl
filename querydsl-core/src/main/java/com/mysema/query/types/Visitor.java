@@ -5,13 +5,8 @@
  */
 package com.mysema.query.types;
 
-import com.mysema.query.types.custom.Custom;
-import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EConstructor;
-import com.mysema.query.types.operation.Operation;
-import com.mysema.query.types.path.Path;
-import com.mysema.query.types.query.SubQuery;
 
 /**
  * Visitor provides a dispatching Visitor for Expr instances.

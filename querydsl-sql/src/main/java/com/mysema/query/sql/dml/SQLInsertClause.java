@@ -19,11 +19,11 @@ import com.mysema.query.QueryException;
 import com.mysema.query.dml.InsertClause;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.Path;
-import com.mysema.query.types.query.SubQuery;
 import com.mysema.util.JDBCUtil;
 
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;

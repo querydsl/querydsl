@@ -3,8 +3,8 @@ package com.mysema.query.collections;
 import java.util.Collection;
 
 import com.mysema.query.dml.DeleteClause;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.Path;
 
 /**
  * @author tiwe

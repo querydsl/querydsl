@@ -26,6 +26,8 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EMap;
 import com.mysema.query.types.expr.Expr;
@@ -42,8 +44,6 @@ import com.mysema.query.types.path.PSet;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PTime;
-import com.mysema.query.types.path.Path;
-import com.mysema.query.types.path.PathMetadata;
 import com.mysema.query.types.path.PathMetadataFactory;
 import com.mysema.util.ReflectionUtils;
 

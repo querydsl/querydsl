@@ -10,6 +10,9 @@ import java.lang.reflect.AnnotatedElement;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathType;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.OBoolean;

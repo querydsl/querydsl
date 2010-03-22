@@ -12,8 +12,8 @@ import org.junit.Test;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryInit;
 import com.mysema.query.annotations.QuerySupertype;
+import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.PathInits;
-import com.mysema.query.types.path.PathMetadata;
 
 public class EntityTest extends AbstractTest{
     

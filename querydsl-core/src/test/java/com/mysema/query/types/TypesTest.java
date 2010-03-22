@@ -10,7 +10,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.path.Path;
 
 // TODO: Auto-generated Javadoc
 /**

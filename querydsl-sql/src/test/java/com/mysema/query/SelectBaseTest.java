@@ -38,12 +38,12 @@ import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QIdName;
+import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.ENumberConst;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.query.ObjectSubQuery;
-import com.mysema.query.types.query.SubQuery;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.Label;
 

@@ -7,6 +7,7 @@ package com.mysema.query.types.expr;
 
 import java.util.Calendar;
 
+import com.mysema.query.types.Constant;
 import com.mysema.query.types.Visitor;
 
 /**

@@ -10,8 +10,8 @@ import java.util.List;
 
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.expr.Constant;
-import com.mysema.query.types.path.Path;
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.Path;
 
 /**
  * @author tiwe

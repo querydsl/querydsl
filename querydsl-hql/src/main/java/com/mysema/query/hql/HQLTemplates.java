@@ -9,10 +9,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.PathType;
 import com.mysema.query.types.Templates;
-import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.path.PathType;
 
 /**
  * HQLTemplates extends Templates to provide operator patterns for HQL

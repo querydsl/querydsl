@@ -26,9 +26,9 @@ import com.mysema.query.hql.jpa.DefaultSessionHolder;
 import com.mysema.query.hql.jpa.JPASessionHolder;
 import com.mysema.query.hql.jpa.JPAUtil;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.Path;
 
 /**
  * JPASQLQuery is an SQLQuery implementation that uses Hibernate's Native SQL functionality 

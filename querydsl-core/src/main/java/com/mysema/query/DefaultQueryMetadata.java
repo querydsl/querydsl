@@ -15,9 +15,9 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.path.Path;
 
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 

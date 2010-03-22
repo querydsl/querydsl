@@ -7,13 +7,13 @@ package com.mysema.query.hql.domain.sql;
 
 import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 
+import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PathMetadata;
 
 /**
  * SSimpletypes is a Querydsl query type for SSimpletypes

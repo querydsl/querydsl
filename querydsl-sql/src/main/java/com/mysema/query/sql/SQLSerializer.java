@@ -18,19 +18,19 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.SerializerBase;
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.Operator;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.expr.ExprConst;
-import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.Path;
-import com.mysema.query.types.query.SubQuery;
 
 /**
  * SqlSerializer serializes Querydsl queries into SQL

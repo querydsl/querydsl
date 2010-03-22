@@ -10,11 +10,11 @@ import java.sql.ResultSet;
 
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
+import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.query.ListSubQuery;
-import com.mysema.query.types.query.SubQuery;
 
 /**
  * Query interface for SQL queries

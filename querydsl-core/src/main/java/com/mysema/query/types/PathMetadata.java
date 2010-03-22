@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types.path;
+package com.mysema.query.types;
 
 import java.io.Serializable;
 
@@ -27,6 +27,7 @@ public final class PathMetadata<T> implements Serializable{
     
     private static final long serialVersionUID = -1055994185028970065L;
 
+    // Expr is in lower level package
     private final Expr<T> expression;
 
     private final int hashCode;
@@ -36,7 +37,7 @@ public final class PathMetadata<T> implements Serializable{
 
     private final PathType pathType;
     
-    PathMetadata(@Nullable Path<?> parent, Expr<T> expression, PathType type) {
+    public PathMetadata(@Nullable Path<?> parent, Expr<T> expression, PathType type) {
         this.parent = parent;
         this.expression = expression;
         this.pathType = type;

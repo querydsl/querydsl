@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types.expr;
+package com.mysema.query.types;
 
 /**
  * Constant represents a general constant expression. 

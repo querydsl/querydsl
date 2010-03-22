@@ -11,6 +11,8 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EArray;
 import com.mysema.query.types.expr.EBoolean;

@@ -12,18 +12,18 @@ import java.util.Map;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.Custom;
+import com.mysema.query.types.Operation;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathType;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.custom.Custom;
-import com.mysema.query.types.expr.Constant;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.operation.Operation;
-import com.mysema.query.types.operation.Operator;
-import com.mysema.query.types.path.Path;
-import com.mysema.query.types.path.PathType;
 
 /**
  * SerializerBase is a stub for Serializer implementations

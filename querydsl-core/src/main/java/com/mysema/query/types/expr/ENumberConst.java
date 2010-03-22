@@ -6,6 +6,7 @@
 package com.mysema.query.types.expr;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.Constant;
 import com.mysema.query.types.Visitor;
 import com.mysema.util.MathUtils;
 

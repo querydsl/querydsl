@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EArray;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollection;
@@ -23,7 +24,6 @@ import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.ETime;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.path.Path;
 
 /**
  * @author tiwe

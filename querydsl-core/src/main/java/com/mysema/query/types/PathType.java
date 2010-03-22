@@ -3,12 +3,11 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types.path;
+package com.mysema.query.types;
 
 import java.util.Collections;
 import java.util.List;
 
-import com.mysema.query.types.operation.Operator;
 
 /**
  * PathType represents the relation of a path to its parent

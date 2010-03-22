@@ -12,9 +12,7 @@ import javax.annotation.Nullable;
 
 import net.jcip.annotations.Immutable;
 
-import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.Ops;
-import com.mysema.query.types.path.PathType;
 
 /**
  * OperationPatterns provides operator patterns for query expression serialization

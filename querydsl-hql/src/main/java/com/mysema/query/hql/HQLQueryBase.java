@@ -10,10 +10,10 @@ import java.util.Map;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.ProjectableQuery;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PMap;
-import com.mysema.query.types.path.Path;
 
 /**
  * HQLQueryBase is a base Query class for HQL

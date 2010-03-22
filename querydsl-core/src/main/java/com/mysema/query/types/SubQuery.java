@@ -3,12 +3,11 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types.query;
+package com.mysema.query.types;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.Expr;
-import com.mysema.query.types.path.Path;
 
 /**
  * 
@@ -27,6 +26,7 @@ public interface SubQuery<T>{
      * 
      * @return
      */
+    // Expr is in lower level package
     EBoolean exists();
  
     /**
@@ -41,11 +41,13 @@ public interface SubQuery<T>{
      * 
      * @return
      */
+    // Expr is in lower level package
     EBoolean notExists();
     
     /**
      * @return
      */
+    // Expr is in lower level package
     Expr<T> asExpr();
     
     /**

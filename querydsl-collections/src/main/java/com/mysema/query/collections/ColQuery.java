@@ -7,7 +7,7 @@ package com.mysema.query.collections;
 
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
-import com.mysema.query.types.path.Path;
+import com.mysema.query.types.Path;
 
 /**
  * Query interface for Collection queries

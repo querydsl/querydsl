@@ -19,7 +19,6 @@ import org.junit.Test;
 
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EConstructor;
-import com.mysema.query.types.operation.Operator;
 import com.mysema.query.types.operation.OperatorImpl;
 import com.mysema.query.types.operation.Ops;
 

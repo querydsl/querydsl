@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.expr;
 
+import com.mysema.query.types.Constant;
 import com.mysema.query.types.Visitor;
 
 /**

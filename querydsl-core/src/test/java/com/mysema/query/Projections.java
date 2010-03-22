@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.HashSet;
 
 import com.mysema.query.types.CaseBuilder;
-import com.mysema.query.types.expr.Constant;
+import com.mysema.query.types.Constant;
 import com.mysema.query.types.expr.EArray;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EDate;
