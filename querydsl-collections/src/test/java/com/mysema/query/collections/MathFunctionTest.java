@@ -12,9 +12,9 @@ import org.junit.Test;
 
 import com.mysema.query.animal.Cat;
 import com.mysema.query.functions.MathFunctions;
-import com.mysema.query.types.ENumber;
-import com.mysema.query.types.ENumberConst;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.ENumberConst;
 
 /**
  * MathFunctionTest provides

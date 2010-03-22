@@ -8,13 +8,13 @@ package com.mysema.query.types.path;
 import javax.annotation.Nonnegative;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.ENumberConst;
-import com.mysema.query.types.EStringConst;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.ExprConst;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathType;
+import com.mysema.query.types.expr.ENumberConst;
+import com.mysema.query.types.expr.EStringConst;
 
 /**
  * @author tiwe

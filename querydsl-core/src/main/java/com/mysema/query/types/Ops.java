@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.operation.ONumber;
 
 /**

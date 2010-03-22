@@ -10,6 +10,11 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.ENumberConst;
+import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.EStringConst;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.OString;

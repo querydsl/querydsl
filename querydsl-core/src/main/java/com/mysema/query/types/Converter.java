@@ -5,6 +5,9 @@
  */
 package com.mysema.query.types;
 
+import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.EStringEscape;
+
 
 /**
  * @author tiwe

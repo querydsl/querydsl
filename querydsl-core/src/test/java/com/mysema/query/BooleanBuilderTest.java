@@ -9,8 +9,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.types.EBoolean;
-import com.mysema.query.types.EBooleanConst;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EBooleanConst;
 
 
 /**

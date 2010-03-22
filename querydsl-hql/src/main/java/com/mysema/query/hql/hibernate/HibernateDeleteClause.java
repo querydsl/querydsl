@@ -16,7 +16,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.hql.HQLSerializer;
 import com.mysema.query.hql.HQLTemplates;
-import com.mysema.query.types.EBoolean;
+import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 
 /**

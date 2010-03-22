@@ -14,10 +14,10 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.expr.EBoolean;
 
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 

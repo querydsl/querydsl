@@ -7,6 +7,8 @@ package com.mysema.query.types;
 
 import javax.annotation.Nonnegative;
 
+import com.mysema.query.types.expr.ENumber;
+
 /**
  * @author tiwe
  *

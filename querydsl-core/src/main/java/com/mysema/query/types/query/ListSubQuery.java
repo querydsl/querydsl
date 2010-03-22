@@ -8,14 +8,14 @@ package com.mysema.query.types.query;
 import java.util.List;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.EBoolean;
-import com.mysema.query.types.ECollectionBase;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.Visitor;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ECollectionBase;
 import com.mysema.query.types.operation.OSimple;
 
 /**

@@ -5,6 +5,9 @@
  */
 package com.mysema.query.types;
 
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ENumber;
+
 
 /**
  * EMap represents java.util.Map typed expressions

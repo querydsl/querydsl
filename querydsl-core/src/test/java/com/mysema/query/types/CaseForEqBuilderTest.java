@@ -12,6 +12,9 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
+import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.EString;
+
 
 public class CaseForEqBuilderTest {
     

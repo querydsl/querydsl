@@ -3,10 +3,15 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types;
+package com.mysema.query.types.expr;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.Expr;
+import com.mysema.query.types.ExprConst;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.Order;
+import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.OString;
 

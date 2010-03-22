@@ -5,14 +5,14 @@
  */
 package com.mysema.query.types.query;
 
-import com.mysema.query.types.EBoolean;
-import com.mysema.query.types.EComparable;
-import com.mysema.query.types.EDate;
-import com.mysema.query.types.EDateTime;
-import com.mysema.query.types.ENumber;
-import com.mysema.query.types.EString;
-import com.mysema.query.types.ETime;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EComparable;
+import com.mysema.query.types.expr.EDate;
+import com.mysema.query.types.expr.EDateTime;
+import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.ETime;
 
 /**
  * Detachable defines methods for the construction of SubQuery instances

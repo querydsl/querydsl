@@ -7,9 +7,9 @@ package com.mysema.query.hql;
 
 import org.junit.Test;
 
-import com.mysema.query.types.EDate;
-import com.mysema.query.types.EDateTime;
-import com.mysema.query.types.ETime;
+import com.mysema.query.types.expr.EDate;
+import com.mysema.query.types.expr.EDateTime;
+import com.mysema.query.types.expr.ETime;
 
 public class DateTimeTest extends AbstractQueryTest {
     

@@ -10,9 +10,9 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.expr.EBoolean;
 
 /**
  * QueryMetadata defines query metadata such as query sources, filtering

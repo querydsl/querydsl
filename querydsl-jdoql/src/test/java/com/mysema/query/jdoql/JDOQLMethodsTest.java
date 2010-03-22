@@ -17,11 +17,11 @@ import org.junit.Test;
 import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QProduct;
 import com.mysema.query.jdoql.testdomain.QStore;
-import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.ECollection;
 import com.mysema.query.types.EMap;
-import com.mysema.query.types.ENumber;
-import com.mysema.query.types.EString;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.EString;
 
 public class JDOQLMethodsTest extends AbstractJDOTest {
 

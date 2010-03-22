@@ -17,7 +17,7 @@ import org.junit.Test;
 
 import com.mysema.query.hql.domain.QAccount;
 import com.mysema.query.hql.domain.QInheritedProperties;
-import com.mysema.query.types.ENumber;
+import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.path.PNumber;
 
 /**

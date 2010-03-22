@@ -29,9 +29,9 @@ import com.mysema.query.hql.domain.QFamily;
 import com.mysema.query.hql.domain.QFooDTO;
 import com.mysema.query.hql.domain.QItem;
 import com.mysema.query.hql.domain.QProduct;
-import com.mysema.query.types.EComparable;
-import com.mysema.query.types.EDate;
-import com.mysema.query.types.ENumber;
+import com.mysema.query.types.expr.EComparable;
+import com.mysema.query.types.expr.EDate;
+import com.mysema.query.types.expr.ENumber;
 
 /**
  * ParsingTest provides.

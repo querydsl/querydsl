@@ -16,8 +16,8 @@ import com.mysema.commons.lang.Pair;
 import com.mysema.query.animal.Cat;
 import com.mysema.query.animal.QCat;
 import com.mysema.query.collections.MiniApi;
-import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.expr.EBoolean;
 
 public class ColQueryStandardTest {
     

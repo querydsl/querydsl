@@ -12,8 +12,8 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.AbstractSQLQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.expr.EBoolean;
 
 /**
  * OracleQuery provides Oracle specific extensions to the base SQL query type

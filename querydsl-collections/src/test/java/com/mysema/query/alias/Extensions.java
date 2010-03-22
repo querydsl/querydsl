@@ -1,10 +1,10 @@
 package com.mysema.query.alias;
 
-import com.mysema.query.types.EBoolean;
-import com.mysema.query.types.EComparable;
-import com.mysema.query.types.ENumber;
-import com.mysema.query.types.EString;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EComparable;
+import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.EString;
 
 public final class Extensions {
     

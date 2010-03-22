@@ -8,11 +8,11 @@ package com.mysema.query.types.query;
 import javax.annotation.Nullable;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.operation.OBoolean;
 
 /**

@@ -14,8 +14,6 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Custom;
-import com.mysema.query.types.EArrayConstructor;
-import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
@@ -24,6 +22,8 @@ import com.mysema.query.types.PathType;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.Visitor;
+import com.mysema.query.types.expr.EArrayConstructor;
+import com.mysema.query.types.expr.EConstructor;
 
 /**
  * SerializerBase is a stub for Serializer implementations

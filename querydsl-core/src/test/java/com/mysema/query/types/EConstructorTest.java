@@ -11,9 +11,11 @@ import java.lang.reflect.Constructor;
 
 import org.junit.Test;
 
-import com.mysema.query.types.EConstructor;
-import com.mysema.query.types.ENumber;
-import com.mysema.query.types.EString;
+import com.mysema.query.types.expr.EConstructor;
+import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.ENumberConst;
+import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.EStringConst;
 
 public class EConstructorTest {
     

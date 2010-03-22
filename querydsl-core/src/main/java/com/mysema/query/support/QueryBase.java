@@ -6,9 +6,9 @@
 package com.mysema.query.support;
 
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.expr.EBoolean;
 
 /**
  * QueryBase provides a stub for Query implementations

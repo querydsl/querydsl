@@ -12,8 +12,8 @@ import net.jcip.annotations.Immutable;
 
 import org.apache.commons.collections15.IteratorUtils;
 
-import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.expr.EBoolean;
 
 /**
  * IteratorFactory provides Iterator utilities

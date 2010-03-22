@@ -12,7 +12,7 @@ import org.junit.Test;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryExtensions;
 import com.mysema.query.annotations.QueryMethod;
-import com.mysema.query.types.EStringConst;
+import com.mysema.query.types.expr.EStringConst;
 
 public class QueryExtensions5Test {
     

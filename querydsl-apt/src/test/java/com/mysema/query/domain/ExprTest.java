@@ -15,12 +15,12 @@ import java.util.TreeSet;
 
 import org.junit.Test;
 
-import com.mysema.query.types.EBoolean;
-import com.mysema.query.types.EBooleanConst;
-import com.mysema.query.types.ENumberConst;
-import com.mysema.query.types.EString;
-import com.mysema.query.types.EStringConst;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EBooleanConst;
+import com.mysema.query.types.expr.ENumberConst;
+import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.EStringConst;
 
 public class ExprTest {
     

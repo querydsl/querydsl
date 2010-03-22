@@ -12,7 +12,8 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-import com.mysema.query.types.EDate;
+import com.mysema.query.types.expr.EDate;
+import com.mysema.query.types.expr.EDateConst;
 
 public class EDateConstTest {
     

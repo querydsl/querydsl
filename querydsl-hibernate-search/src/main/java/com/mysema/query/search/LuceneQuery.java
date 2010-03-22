@@ -11,9 +11,9 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SimpleProjectable;
 import com.mysema.query.SimpleQuery;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.expr.EBoolean;
 
 /**
  * @author tiwe

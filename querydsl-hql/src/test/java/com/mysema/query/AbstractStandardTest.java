@@ -22,9 +22,9 @@ import com.mysema.commons.lang.Pair;
 import com.mysema.query.hql.HQLQuery;
 import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.QCat;
-import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.EList;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.expr.EBoolean;
 
 /**
  * @author tiwe

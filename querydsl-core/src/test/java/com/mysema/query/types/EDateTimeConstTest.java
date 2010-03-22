@@ -12,7 +12,8 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.mysema.query.types.EDateTime;
+import com.mysema.query.types.expr.EDateTime;
+import com.mysema.query.types.expr.EDateTimeConst;
 
 public class EDateTimeConstTest {
     

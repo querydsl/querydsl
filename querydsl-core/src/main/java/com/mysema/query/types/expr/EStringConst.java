@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types;
+package com.mysema.query.types.expr;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +15,10 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.Expr;
+import com.mysema.query.types.ExprConst;
+import com.mysema.query.types.Visitor;
 
 /**
  * EStringConst represents String constants

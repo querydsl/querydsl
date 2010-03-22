@@ -5,6 +5,9 @@
  */
 package com.mysema.query.types;
 
+import com.mysema.query.types.expr.EArrayConstructor;
+import com.mysema.query.types.expr.EConstructor;
+
 
 /**
  * Visitor provides a dispatching Visitor for Expr instances.

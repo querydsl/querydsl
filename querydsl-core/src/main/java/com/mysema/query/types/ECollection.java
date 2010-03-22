@@ -7,6 +7,9 @@ package com.mysema.query.types;
 
 import java.util.Collection;
 
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ENumber;
+
 
 /**
  * ECollection represents java.util.Collection typed expressions

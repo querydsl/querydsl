@@ -12,7 +12,8 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-import com.mysema.query.types.ETime;
+import com.mysema.query.types.expr.ETime;
+import com.mysema.query.types.expr.ETimeConst;
 
 public class ETimeConstTest {
     

@@ -22,8 +22,8 @@ import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QProduct;
 import com.mysema.query.jdoql.testdomain.QStore;
 import com.mysema.query.jdoql.testdomain.Store;
-import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.expr.EBoolean;
 
 public class JDOQLQueryStandardTest extends AbstractJDOTest {
     

@@ -12,11 +12,11 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.types.EBoolean;
-import com.mysema.query.types.EBooleanConst;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EBooleanConst;
 
 public class CustomTest {
     

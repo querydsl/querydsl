@@ -6,6 +6,8 @@
 package com.mysema.query.types;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EBooleanConst;
 
 
 /**
