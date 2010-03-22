@@ -9,8 +9,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.mysema.query.serialization.JavaTemplates;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.PathType;
-import com.mysema.query.types.operation.Ops;
 
 /**
  * ColQueryTemplates extends JavaTemplates to add Java syntax specific operation

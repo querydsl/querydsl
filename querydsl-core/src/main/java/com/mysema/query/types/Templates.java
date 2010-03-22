@@ -12,7 +12,6 @@ import javax.annotation.Nullable;
 
 import net.jcip.annotations.Immutable;
 
-import com.mysema.query.types.operation.Ops;
 
 /**
  * OperationPatterns provides operator patterns for query expression serialization

@@ -6,7 +6,6 @@
 package com.mysema.query.types;
 
 import com.mysema.query.types.operation.OBoolean;
-import com.mysema.query.types.operation.Ops;
 
 /**
  * EComparable extends EComparableBase to provide comparison methods. 

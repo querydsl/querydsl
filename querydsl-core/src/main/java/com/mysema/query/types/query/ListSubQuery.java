@@ -12,11 +12,11 @@ import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.ECollectionBase;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.operation.OSimple;
-import com.mysema.query.types.operation.Ops;
 
 /**
  * List result subquery

@@ -12,7 +12,6 @@ import com.mysema.query.types.operation.OComparable;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.OString;
-import com.mysema.query.types.operation.Ops;
 
 
 /**

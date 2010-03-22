@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.types.operation.ODate;
 import com.mysema.query.types.operation.ONumber;
-import com.mysema.query.types.operation.Ops;
 
 /**
  * EDate represents Date expressions

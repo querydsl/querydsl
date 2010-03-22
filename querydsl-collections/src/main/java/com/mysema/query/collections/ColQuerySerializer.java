@@ -15,11 +15,11 @@ import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathType;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.Template;
-import com.mysema.query.types.operation.Ops;
 
 /**
  * ColQuerySerializer is a Serializer implementation for the Java language

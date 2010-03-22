@@ -6,7 +6,7 @@
 package com.mysema.query.jdoql;
 
 import com.mysema.query.serialization.JavaTemplates;
-import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.Ops;
 
 /**
  * JDOQLTemplates provides patterns for JDOQL serialization

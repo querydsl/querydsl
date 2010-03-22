@@ -5,7 +5,7 @@
  */
 package com.mysema.query.sql;
 
-import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.Ops;
 
 /**
  * HSQLDBTemplates is an SQL dialect for HSQLDB

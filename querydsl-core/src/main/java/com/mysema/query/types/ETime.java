@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.OTime;
-import com.mysema.query.types.operation.Ops;
 
 /**
  * ETime represents Time expressions

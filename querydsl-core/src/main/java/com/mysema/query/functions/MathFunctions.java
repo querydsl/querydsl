@@ -7,8 +7,8 @@ package com.mysema.query.functions;
 
 import com.mysema.query.types.ENumber;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.Ops.MathOps;
 import com.mysema.query.types.operation.ONumber;
-import com.mysema.query.types.operation.Ops.MathOps;
 
 /**
  * MathFunctions provides additional math functions that are not available 

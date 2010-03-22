@@ -7,9 +7,9 @@ package com.mysema.query.serialization;
 
 import java.lang.reflect.Field;
 
+import com.mysema.query.types.OperatorImpl;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.Templates;
-import com.mysema.query.types.operation.OperatorImpl;
-import com.mysema.query.types.operation.Ops;
 
 
 /**

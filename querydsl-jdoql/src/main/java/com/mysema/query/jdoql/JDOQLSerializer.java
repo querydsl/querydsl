@@ -26,11 +26,11 @@ import com.mysema.query.types.EStringConst;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.operation.OSimple;
-import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
 
 /**

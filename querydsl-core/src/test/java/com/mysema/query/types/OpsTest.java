@@ -14,7 +14,6 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.mysema.query.types.operation.Ops;
 
 
 /**

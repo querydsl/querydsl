@@ -14,7 +14,7 @@ import com.mysema.query.types.ENumber;
 import com.mysema.query.types.EString;
 import com.mysema.query.types.ETime;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.query.BooleanSubQuery;
 import com.mysema.query.types.query.ComparableSubQuery;
 import com.mysema.query.types.query.DateSubQuery;

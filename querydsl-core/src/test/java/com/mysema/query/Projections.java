@@ -23,7 +23,7 @@ import com.mysema.query.types.EString;
 import com.mysema.query.types.EStringConst;
 import com.mysema.query.types.ETime;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PNumber;

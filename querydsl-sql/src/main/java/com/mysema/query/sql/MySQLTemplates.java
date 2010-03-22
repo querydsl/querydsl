@@ -8,7 +8,7 @@ package com.mysema.query.sql;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.Ops;
 
 /**
  * MySQLTemplates is an SQL dialect for MySQL

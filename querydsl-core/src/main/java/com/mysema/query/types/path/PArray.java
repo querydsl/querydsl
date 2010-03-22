@@ -15,11 +15,11 @@ import com.mysema.query.types.EArray;
 import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.ENumber;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.operation.ONumber;
-import com.mysema.query.types.operation.Ops;
 
 /**
  * PArray represents an array typed path

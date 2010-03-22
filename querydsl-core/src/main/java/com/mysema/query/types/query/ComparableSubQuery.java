@@ -9,11 +9,11 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.EComparable;
 import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.operation.OComparable;
-import com.mysema.query.types.operation.Ops;
 
 /**
  * Single result subquery

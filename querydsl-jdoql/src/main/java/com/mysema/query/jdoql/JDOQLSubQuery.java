@@ -11,9 +11,9 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.operation.OSimple;
-import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PEntity;
 
 /**

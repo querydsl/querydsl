@@ -9,7 +9,7 @@ import java.math.BigInteger;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.Ops;
 
 /**
  * OracleTemplates is an SQL dialect for Oracle

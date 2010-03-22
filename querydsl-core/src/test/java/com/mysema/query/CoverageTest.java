@@ -22,7 +22,7 @@ import com.mysema.query.alias.Alias;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
-import com.mysema.query.types.operation.Ops;
+import com.mysema.query.types.Ops;
 
 /**
  * The Class CoverageTest.

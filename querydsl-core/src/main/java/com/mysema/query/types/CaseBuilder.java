@@ -13,7 +13,6 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.OString;
-import com.mysema.query.types.operation.Ops;
 
 /**
  * CaseBuilder enables the construction of typesafe case-when-then-else 
