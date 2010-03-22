@@ -7,9 +7,9 @@ package com.mysema.query.codegen;
 
 import java.io.IOException;
 
-import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
+import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.util.CodeWriter;
 
@@ -49,7 +49,7 @@ public final class EmbeddableSerializer extends EntitySerializer{
         if ((model.hasLists() && config.useListAccessors())
                 || !model.getMethods().isEmpty()
                 || (model.hasMaps() && config.useMapAccessors())){
-            writer.imports(Expr.class.getPackage());
+            writer.imports(EComparable.class.getPackage());
         }
         
         if (!model.getMethods().isEmpty()){

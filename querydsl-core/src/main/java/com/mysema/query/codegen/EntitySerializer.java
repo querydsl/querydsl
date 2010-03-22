@@ -31,10 +31,10 @@ import org.apache.commons.collections15.Transformer;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
+import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
@@ -301,7 +301,7 @@ public class EntitySerializer implements Serializer{
                 || !model.getMethods().isEmpty()
                 || (model.hasLists() && config.useListAccessors()) 
                 || (model.hasMaps() && config.useMapAccessors())){
-            writer.imports(Expr.class.getPackage());
+            writer.imports(EComparable.class.getPackage());
         }
         
         if (!model.getMethods().isEmpty()){
