@@ -5,8 +5,8 @@
  */
 package com.mysema.query.search;
 
+import java.util.List;
 import java.util.Locale;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.QueryParser;
@@ -16,6 +16,7 @@ import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.search.WildcardQuery;
 import org.apache.lucene.search.BooleanClause.Occur;
 
@@ -34,34 +35,147 @@ public class LuceneSerializer {
         this.lowerCase = lowerCase;
     }
 
-    private String normalize(String term) {
-        return lowerCase ? term.toLowerCase(Locale.ENGLISH) : term;
+    private Query toQuery(Operation<?, ?> operation) {
+        Operator<?> op = operation.getOperator();
+        if (op == Ops.OR) {
+            return toTwoHandSidedQuery(operation, Occur.SHOULD);
+        } else if (op == Ops.AND) {
+            return toTwoHandSidedQuery(operation, Occur.MUST);
+        } else if (op == Ops.NOT) {
+            BooleanQuery bq = new BooleanQuery();
+            bq.add(new BooleanClause(toQuery(operation.getArg(0)), Occur.MUST_NOT));
+            return bq;
+        } else if (op == Ops.LIKE) {
+            return like(operation);
+        } else if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE) {
+            return eq(operation);
+        } else if (op == Ops.STARTS_WITH) {
+            return startsWith(operation);
+        } else if (op == Ops.STRING_CONTAINS) {
+            return stringContains(operation);
+        } else if (op == Ops.ENDS_WITH) {
+            return endsWith(operation);
+        } else if (op == Ops.BETWEEN) {
+            return between(operation);
+        }
+        throw new UnsupportedOperationException();
+    }
+    
+        private Query toTwoHandSidedQuery(Operation<?, ?> operation, Occur occur) {
+        // TODO Flatten similar queries(?)
+        Query lhs = toQuery(operation.getArg(0));
+        Query rhs = toQuery(operation.getArg(1));
+        BooleanQuery bq = new BooleanQuery();
+        bq.add(lhs, occur);
+        bq.add(rhs, occur);
+        return bq;
     }
 
-    private Query toAndQuery(Operation<?, ?> operation) {
-        return toTwoHandSidedQuery(operation, Occur.MUST);
+    private Query like(Operation<?, ?> operation) {
+        verifyArguments(operation);
+        String field = toField((PString) operation.getArg(0));
+        String[] terms = createTerms(operation.getArg(1));
+        if (terms.length > 1) {
+            BooleanQuery bq = new BooleanQuery();
+            for (String s : terms) {
+                bq.add(new WildcardQuery(new Term(field, "*" + normalize(s) + "*")), Occur.MUST);
+            }
+            return bq;
+        }
+        return new WildcardQuery(new Term(field, normalize(terms[0])));
+    }
+
+    private Query eq(Operation<?, ?> operation) {
+        verifyArguments(operation);
+        String field = toField((PString) operation.getArg(0));
+        String[] terms = createTerms(operation.getArg(1));
+        if (terms.length > 1) {
+            PhraseQuery pq = new PhraseQuery();
+            for (String s : terms) {
+                pq.add(new Term(field, normalize(s)));
+            }
+            return pq;
+        }
+        return new TermQuery(new Term(field, normalize(terms[0])));
+    }
+
+    private Query startsWith(Operation<?, ?> operation) {
+        verifyArguments(operation);
+        String field = toField((PString) operation.getArg(0));
+        String[] terms = createEscapedTerms(operation.getArg(1));
+        if (terms.length > 1) {
+            BooleanQuery bq = new BooleanQuery();
+            for (int i = 0; i < terms.length; ++i) {
+                String s = i == 0 ? terms[i] + "*" : "*" + terms[i] + "*";
+                bq.add(new WildcardQuery(new Term(field, normalize(s))), Occur.MUST);
+            }
+            return bq;
+        }
+        return new PrefixQuery(new Term(field, normalize(terms[0])));
+    }
+
+    private Query stringContains(Operation<?, ?> operation) {
+        verifyArguments(operation);
+        String field = toField((PString) operation.getArg(0));
+        String[] terms = createEscapedTerms(operation.getArg(1));
+        if (terms.length > 1) {
+            BooleanQuery bq = new BooleanQuery();
+            for (String s : terms) {
+                bq.add(new WildcardQuery(new Term(field, "*" + normalize(s) + "*")), Occur.MUST);
+            }
+            return bq;
+        }
+        return new WildcardQuery(new Term(field, "*" + normalize(terms[0]) + "*"));
+    }
+
+    private Query endsWith(Operation<?, ?> operation) {
+        verifyArguments(operation);
+        String field = toField((PString) operation.getArg(0));
+        String[] terms = createEscapedTerms(operation.getArg(1));
+        if (terms.length > 1) {
+            BooleanQuery bq = new BooleanQuery();
+            for (int i = 0; i < terms.length; ++i) {
+                String s = i == terms.length - 1 ? "*" + terms[i] : "*" + terms[i] + "*";
+                bq.add(new WildcardQuery(new Term(field, normalize(s))), Occur.MUST);
+            }
+            return bq;
+        }
+        return new WildcardQuery(new Term(field, "*" + normalize(terms[0])));
+    }
+
+    private Query between(Operation<?, ?> operation) {
+        verifyArguments(operation);
+        // TODO Phrase not properly supported
+        String field = toField((PString) operation.getArg(0));
+        String[] lowerTerms = createTerms(operation.getArg(1));
+        String[] upperTerms = createTerms(operation.getArg(2));
+        return new TermRangeQuery(field, normalize(lowerTerms[0]), normalize(upperTerms[0]), true,
+                true);
     }
 
     public String toField(Path<?> path) {
         return path.getMetadata().getExpression().toString();
     }
 
-    private Query toNotQuery(Operation<?, ?> operation) {
-        BooleanQuery bq = new BooleanQuery();
-        bq.add(new BooleanClause(toQuery(operation.getArg(0)), Occur.MUST_NOT));
-        return bq;
-    }
-
-    private Query toOrQuery(Operation<?, ?> operation) {
-        return toTwoHandSidedQuery(operation, Occur.SHOULD);
-    }
-
-    private Query toPhraseQuery(Operation<?, ?> operation, String[] terms) {
-        PhraseQuery pq = new PhraseQuery();
-        for (String term : terms) {
-            pq.add(new Term(toField((PString) operation.getArg(0)), normalize(term)));
+    private void verifyArguments(Operation<?, ?> operation) {
+        List<Expr<?>> arguments = operation.getArgs();
+        for (int i = 1; i < arguments.size(); ++i) {
+            if (!(arguments.get(i) instanceof Constant<?>)) {
+                throw new IllegalArgumentException("operation argument was not of type Constant.");
+            }
         }
-        return pq;
+    }
+
+    private String[] createTerms(Expr<?> expr) {
+        return StringUtils.split(expr.toString());
+    }
+
+    private String[] createEscapedTerms(Expr<?> expr) {
+        return StringUtils.split(QueryParser.escape(expr.toString()));
+    }
+
+    private String normalize(String s) {
+        return lowerCase ? s.toLowerCase(Locale.ENGLISH) : s;
     }
 
     public Query toQuery(Expr<?> expr) {
@@ -71,76 +185,4 @@ public class LuceneSerializer {
         throw new IllegalArgumentException("expr was not of type Operation");
     }
 
-    private Query toQuery(Operation<?, ?> operation) {
-        Operator<?> op = operation.getOperator();
-        if (op == Ops.OR) {
-            return toOrQuery(operation);
-        } else if (op == Ops.AND) {
-            return toAndQuery(operation);
-        } else if (op == Ops.LIKE) {
-            // TODO unify all of the following EQ, STARTS_WITH etc.
-            if (!(operation.getArg(1) instanceof Constant<?>)) {
-                throw new IllegalArgumentException("operation argument was not of type Constant.");
-            }
-            String term = operation.getArg(1).toString();
-            String[] terms = StringUtils.split(term);
-            if (terms.length > 1) {
-                return toPhraseQuery(operation, terms);
-            }
-            return new WildcardQuery(new Term(toField((PString) operation.getArg(0)), normalize(term)));
-        } else if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE) {
-            if (!(operation.getArg(1) instanceof Constant<?>)) {
-                throw new IllegalArgumentException("operation argument was not of type Constant.");
-            }
-            String term = operation.getArg(1).toString();
-            String[] terms = StringUtils.split(term);
-            if (terms.length > 1) {
-                return toPhraseQuery(operation, terms);
-            }
-            return new TermQuery(new Term(toField((PString) operation.getArg(0)), normalize(term)));
-        } else if (op == Ops.NOT) {
-            return toNotQuery(operation);
-        } else if (op == Ops.STARTS_WITH) {
-            if (!(operation.getArg(1) instanceof Constant<?>)) {
-                throw new IllegalArgumentException("operation argument was not of type Constant.");
-            }
-            String[] terms = StringUtils.split(operation.getArg(1).toString());
-            if (terms.length > 1) {
-                return toPhraseQuery(operation, terms);
-            }
-            String term = operation.getArg(1).toString();
-            return new PrefixQuery(new Term(toField((PString) operation.getArg(0)), normalize(term)));
-        } else if (op == Ops.STRING_CONTAINS) {
-            if (!(operation.getArg(1) instanceof Constant<?>)) {
-                throw new IllegalArgumentException("operation argument was not of type Constant.");
-            }
-            String term = QueryParser.escape(operation.getArg(1).toString());
-            String[] terms = StringUtils.split(term);
-            if (terms.length > 1) {
-                return toPhraseQuery(operation, terms);
-            }
-            return new WildcardQuery(new Term(toField((PString) operation.getArg(0)), "*" + (normalize(term)) + "*"));
-        } else if (op == Ops.ENDS_WITH) {
-            if (!(operation.getArg(1) instanceof Constant<?>)) {
-                throw new IllegalArgumentException("operation argument was not of type Constant.");
-            }
-            String term = QueryParser.escape(operation.getArg(1).toString());
-            String[] terms = StringUtils.split(term);
-            if (terms.length > 1) {
-                return toPhraseQuery(operation, terms);
-            }
-            return new WildcardQuery(new Term(toField((PString) operation.getArg(0)), "*" + (normalize(term))));
-        }
-        throw new UnsupportedOperationException();
-    }
-
-    private Query toTwoHandSidedQuery(Operation<?, ?> operation, Occur occur) {
-        // TODO Flatten similar queries(?)
-        Query lhs = toQuery(operation.getArg(0));
-        Query rhs = toQuery(operation.getArg(1));
-        BooleanQuery bq = new BooleanQuery();
-        bq.add(lhs, occur);
-        bq.add(rhs, occur);
-        return bq;
-    }
 }

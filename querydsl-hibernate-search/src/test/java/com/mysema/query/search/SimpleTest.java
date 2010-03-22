@@ -103,9 +103,8 @@ public class SimpleTest {
     }
 
     @Test
-    @Ignore
     public void like_Phrase() throws Exception {
-        testQuery(title.like("rassic Par"), "like:*\"rassic Par\"*", 1);
+        testQuery(title.like("*rassic Par*"), "+title:**rassic* +title:*par**", 1);
     }
 
     @Test
@@ -118,10 +117,14 @@ public class SimpleTest {
         testQuery(title.like("*assic*").and(year.like("199?")), "+title:*assic* +year:199?", 1);
     }
 
-
     @Test
     public void eq() throws Exception {
         testQuery(year.eq("1990"), "year:1990", 1);
+    }
+
+    @Test
+    public void eq_Should_Not_Find_Results_But_Lucene_Semantics_Differs_From_Querydsls() throws Exception {
+        testQuery(title.eq("Jurassic"), "title:jurassic", 1);
     }
 
     @Test
@@ -155,7 +158,12 @@ public class SimpleTest {
     }
 
     @Test
-    public void eq_Phrase_Does_Not_Find_Results() throws Exception {
+    public void eq_Phrase_Should_Not_Find_Results_But_Lucene_Semantics_Differs_From_Querydsls() throws Exception {
+        testQuery(text.eq("UNIX System"), "text:\"unix system\"", 1);
+    }
+
+    @Test
+    public void eq_Phrase_Does_Not_Find_Results_Because_Word_In_Middle() throws Exception {
         testQuery(title.eq("Jurassic Amusement Park"), "title:\"jurassic amusement park\"", 0);
     }
 
@@ -175,9 +183,8 @@ public class SimpleTest {
     }
 
     @Test
-    @Ignore
-    public void eq_and_eq_not() throws Exception {
-        testQuery(year.eq("1990").and(title.eq("House")), "+year:1990 +(-title:house)", 1);
+    public void eq_and_eq_not_Does_Not_Find_Results_Because_Second_Expression_Finds_Nothing() throws Exception {
+        testQuery(year.eq("1990").and(title.eq("House").not()), "+year:1990 +(-title:house)", 0);
     }
 
     @Test
@@ -186,9 +193,13 @@ public class SimpleTest {
     }
 
     @Test
-    @Ignore
     public void startsWith_Phrase() throws Exception {
-        testQuery(title.startsWith("Jurassic Par"), "title:jurassic par*", 1);
+        testQuery(title.startsWith("Jurassic Par"), "+title:jurassic* +title:*par*", 1);
+    }
+
+    @Test
+    public void startsWith_Phrase_Does_Not_Find_Results() throws Exception {
+        testQuery(title.startsWith("urassic Par"), "+title:urassic* +title:*par*", 0);
     }
 
     @Test
@@ -197,9 +208,13 @@ public class SimpleTest {
     }
 
     @Test
-    @Ignore
     public void endsWith_Phrase() throws Exception {
-        testQuery(title.startsWith("Jurassic Par"), "title:*sic park", 1);
+        testQuery(title.endsWith("sic Park"), "+title:*sic* +title:*park", 1);
+    }
+
+    @Test
+    public void endsWith_Phrase_Does_Not_Find_Results() throws Exception {
+        testQuery(title.endsWith("sic Par"), "+title:*sic* +title:*par", 0);
     }
 
     @Test
@@ -208,14 +223,44 @@ public class SimpleTest {
     }
 
     @Test
-    @Ignore
     public void contains_Phrase() throws Exception {
-        testQuery(title.contains("rassic Pa"), "title:*rassic Pa*", 1);
+        testQuery(title.contains("rassi Pa"), "+title:*rassi* +title:*pa*", 1);
     }
 
     @Test
     public void contains_User_Inputted_Wildcards_Dont_Work() throws Exception {
         testQuery(title.contains("r*i"), "title:*r\\*i*", 0);
+    }
+
+    @Test
+    public void between() throws Exception {
+        testQuery(title.between("Indiana", "Kundun"), "title:[indiana TO kundun]", 1);
+    }
+
+    @Test
+    public void between_Phrase() throws Exception {
+        testQuery(title.between("Jurassic Park", "Kundun"), "title:[jurassic TO kundun]", 1);
+    }
+
+    @Test
+    @Ignore
+    public void between_Phrase_Not_Split() throws Exception {
+        testQuery(title.between("Jurassic Park", "Kundun"), "title:[\"jurassic park\" TO kundun]", 1);
+    }
+
+    @Test
+    public void between_Is_Inclusive_From_Start() throws Exception {
+        testQuery(title.between("Jurassic", "Kundun"), "title:[jurassic TO kundun]", 1);
+    }
+
+    @Test
+    public void between_Is_Inclusive_To_End() throws Exception {
+        testQuery(title.between("Indiana", "Jurassic"), "title:[indiana TO jurassic]", 1);
+    }
+
+    @Test
+    public void between_Does_Not_Find_Results() throws Exception {
+        testQuery(title.between("Indiana", "Jurassib"), "title:[indiana TO jurassib]", 0);
     }
 
     @Test
