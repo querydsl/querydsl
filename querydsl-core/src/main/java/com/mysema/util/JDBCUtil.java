@@ -27,11 +27,11 @@ public final class JDBCUtil {
             try {
                 setParameter(stmt, counter++, o);
             } catch (NoSuchMethodException e) {
-                throw new QueryException(e);
+                throw new IllegalArgumentException(e);
             } catch (IllegalAccessException e) {
-                throw new QueryException(e);
+                throw new IllegalArgumentException(e);
             } catch (InvocationTargetException e) {
-                throw new QueryException(e);
+                throw new IllegalArgumentException(e);
             }
         }
     }
