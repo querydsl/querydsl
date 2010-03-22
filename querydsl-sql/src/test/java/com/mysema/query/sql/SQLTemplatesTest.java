@@ -10,9 +10,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.mysema.query.types.ENumberConst;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
-import com.mysema.query.types.constant.ENumberConst;
 import com.mysema.query.types.custom.CSimple;
 
 public class SQLTemplatesTest {

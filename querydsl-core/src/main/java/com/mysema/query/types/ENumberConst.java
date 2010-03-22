@@ -3,14 +3,9 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types.constant;
+package com.mysema.query.types;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.EBoolean;
-import com.mysema.query.types.ENumber;
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.Visitor;
 import com.mysema.util.MathUtils;
 
 /**

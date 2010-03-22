@@ -9,7 +9,6 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.constant.ExprConst;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;

@@ -7,8 +7,6 @@ package com.mysema.query.types;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.constant.ENumberConst;
-import com.mysema.query.types.constant.EStringConst;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.OComparable;
 import com.mysema.query.types.operation.ONumber;

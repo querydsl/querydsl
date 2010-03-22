@@ -16,9 +16,9 @@ import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.types.constant.ENumberConst;
-import com.mysema.query.types.constant.EStringConst;
-import com.mysema.query.types.constant.ExprConst;
+import com.mysema.query.types.ENumberConst;
+import com.mysema.query.types.EStringConst;
+import com.mysema.query.types.ExprConst;
 
 public class QueryProjectionTest {
 

@@ -7,7 +7,6 @@ package com.mysema.query.types;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.constant.ExprConst;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.OString;
 import com.mysema.query.types.operation.Ops;

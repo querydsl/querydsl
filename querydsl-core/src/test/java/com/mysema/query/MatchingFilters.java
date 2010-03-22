@@ -13,18 +13,18 @@ import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.ECollection;
 import com.mysema.query.types.EComparable;
 import com.mysema.query.types.EDate;
+import com.mysema.query.types.EDateConst;
 import com.mysema.query.types.EDateTime;
+import com.mysema.query.types.EDateTimeConst;
 import com.mysema.query.types.EList;
 import com.mysema.query.types.EMap;
 import com.mysema.query.types.ENumber;
+import com.mysema.query.types.ENumberConst;
 import com.mysema.query.types.EString;
+import com.mysema.query.types.EStringConst;
 import com.mysema.query.types.ETime;
+import com.mysema.query.types.ETimeConst;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.constant.EDateConst;
-import com.mysema.query.types.constant.EDateTimeConst;
-import com.mysema.query.types.constant.ENumberConst;
-import com.mysema.query.types.constant.EStringConst;
-import com.mysema.query.types.constant.ETimeConst;
 
 /**
  * @author tiwe

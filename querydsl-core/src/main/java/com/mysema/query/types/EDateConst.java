@@ -3,14 +3,10 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types.constant;
+package com.mysema.query.types;
 
 import java.util.Calendar;
 
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.EDate;
-import com.mysema.query.types.ENumber;
-import com.mysema.query.types.Visitor;
 
 /**
  * @author tiwe

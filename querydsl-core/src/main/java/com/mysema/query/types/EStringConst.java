@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types.constant;
+package com.mysema.query.types;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,12 +15,6 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.EBoolean;
-import com.mysema.query.types.ENumber;
-import com.mysema.query.types.EString;
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.Visitor;
 
 /**
  * EStringConst represents String constants

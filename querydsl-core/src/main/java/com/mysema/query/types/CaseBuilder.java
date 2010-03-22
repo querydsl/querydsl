@@ -10,9 +10,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.constant.ENumberConst;
-import com.mysema.query.types.constant.EStringConst;
-import com.mysema.query.types.constant.ExprConst;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.OSimple;
 import com.mysema.query.types.operation.OString;

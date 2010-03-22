@@ -16,11 +16,11 @@ import java.util.TreeSet;
 import org.junit.Test;
 
 import com.mysema.query.types.EBoolean;
+import com.mysema.query.types.EBooleanConst;
+import com.mysema.query.types.ENumberConst;
 import com.mysema.query.types.EString;
+import com.mysema.query.types.EStringConst;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.constant.EBooleanConst;
-import com.mysema.query.types.constant.ENumberConst;
-import com.mysema.query.types.constant.EStringConst;
 
 public class ExprTest {
     

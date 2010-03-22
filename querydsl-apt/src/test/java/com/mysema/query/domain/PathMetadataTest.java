@@ -15,7 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.types.EString;
-import com.mysema.query.types.constant.EStringConst;
+import com.mysema.query.types.EStringConst;
 
 public class PathMetadataTest {
     

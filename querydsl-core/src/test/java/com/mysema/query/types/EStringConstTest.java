@@ -10,7 +10,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.mysema.query.types.EString;
-import com.mysema.query.types.constant.EStringConst;
 
 
 public class EStringConstTest {

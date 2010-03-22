@@ -5,7 +5,6 @@
  */
 package com.mysema.query.types;
 
-import com.mysema.query.types.constant.ExprConst;
 import com.mysema.query.types.operation.OBoolean;
 import com.mysema.query.types.operation.Ops;
 

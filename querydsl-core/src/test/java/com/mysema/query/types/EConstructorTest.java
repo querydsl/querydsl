@@ -14,8 +14,6 @@ import org.junit.Test;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.ENumber;
 import com.mysema.query.types.EString;
-import com.mysema.query.types.constant.ENumberConst;
-import com.mysema.query.types.constant.EStringConst;
 
 public class EConstructorTest {
     
