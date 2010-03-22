@@ -30,8 +30,7 @@ public final class DateSubQuery<A extends Comparable<?>> extends EDate<A> implem
     
     public DateSubQuery(QueryMetadata md, Class<A> type) {
         super(type);
-        subQueryMixin = new SubQueryMixin<A>(md);
-        subQueryMixin.setSelf(this);
+        subQueryMixin = new SubQueryMixin<A>(this,md);
     }
     
     @Override

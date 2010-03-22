@@ -30,8 +30,7 @@ public final class ObjectSubQuery<A> extends Expr<A> implements SubQuery<A>{
     
     public ObjectSubQuery(QueryMetadata md, Class<A> type) {
         super(type);
-        subQueryMixin = new SubQueryMixin<A>(md);
-        subQueryMixin.setSelf(this);
+        subQueryMixin = new SubQueryMixin<A>(this,md);
     }
     
     @Override

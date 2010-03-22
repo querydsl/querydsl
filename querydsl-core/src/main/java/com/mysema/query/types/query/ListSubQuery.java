@@ -37,8 +37,7 @@ public final class ListSubQuery<A> extends ECollectionBase<List<A>,A> implements
     public ListSubQuery(QueryMetadata md, Class<A> elementType) {
         super((Class)List.class);
         this.elementType = elementType;
-        this.subQueryMixin = new SubQueryMixin<List<A>>(md);
-        subQueryMixin.setSelf(this);
+        this.subQueryMixin = new SubQueryMixin<List<A>>(this,md);
     }
     
     @Override

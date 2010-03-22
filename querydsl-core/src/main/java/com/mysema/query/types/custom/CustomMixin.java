@@ -27,8 +27,8 @@ public final class CustomMixin<T> implements Custom<T>, Serializable {
     
     private final Template template;
     
-    public CustomMixin(Expr<T> self, List<Expr<?>> args, Template template){
-        this.self = self;
+    public CustomMixin(Custom<T> self, List<Expr<?>> args, Template template){
+        this.self = self.asExpr();
         this.args = args;
         this.template = template;
     }

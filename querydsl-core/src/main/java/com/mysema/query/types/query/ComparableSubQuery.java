@@ -30,8 +30,7 @@ public final class ComparableSubQuery<A extends Comparable<?>> extends EComparab
     
     public ComparableSubQuery(QueryMetadata md, Class<A> type) {
         super(type);
-        subQueryMixin = new SubQueryMixin<A>(md);
-        subQueryMixin.setSelf(this);
+        subQueryMixin = new SubQueryMixin<A>(this,md);
     }
     
     @Override

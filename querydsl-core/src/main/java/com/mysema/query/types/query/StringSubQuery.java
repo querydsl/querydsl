@@ -27,8 +27,7 @@ public final class StringSubQuery extends EString implements SubQuery<String>{
     private final SubQueryMixin<String> subQueryMixin;
     
     public StringSubQuery(QueryMetadata md) {
-        subQueryMixin = new SubQueryMixin<String>(md);
-        subQueryMixin.setSelf(this);
+        subQueryMixin = new SubQueryMixin<String>(this,md);
     }
     
     @Override

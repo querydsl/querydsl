@@ -26,9 +26,10 @@ public class SubQueryMixin<T> implements SubQuery<T>{
     
     private final QueryMetadata metadata;
     
-    private Expr<T> self;
+    private final Expr<T> self;
     
-    public SubQueryMixin(QueryMetadata metadata){
+    public SubQueryMixin(SubQuery<T> self, QueryMetadata metadata){
+        this.self = self.asExpr();
         this.metadata = metadata;
     }
 
@@ -65,10 +66,10 @@ public class SubQueryMixin<T> implements SubQuery<T>{
     public EBoolean notExists() {
         return exists().not();
     }
-    
-    public void setSelf(Expr<T> self) {
-        this.self = self;
-    }
+//    
+//    public void setSelf(Expr<T> self) {
+//        this.self = self;
+//    }
 
     @Override
     public Expr<T> asExpr() {

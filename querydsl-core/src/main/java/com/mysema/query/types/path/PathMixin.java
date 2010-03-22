@@ -43,11 +43,10 @@ public final class PathMixin<T> implements Path<T>, Serializable {
     @Nullable
     private AnnotatedElement annotatedElement;
     
-    @SuppressWarnings("unchecked")
-    public PathMixin(Expr<T> self, PathMetadata<?> metadata){
-        this.self = self;
+    public PathMixin(Path<T> self, PathMetadata<?> metadata){
+        this.self = self.asExpr();
         this.metadata = metadata;
-        this.root = metadata.getRoot() != null ? metadata.getRoot() : (Path<T>)self;
+        this.root = metadata.getRoot() != null ? metadata.getRoot() : self;
     }
 
     @Override

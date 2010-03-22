@@ -29,8 +29,8 @@ public final class OperationMixin<OP, RT> implements Operation<OP, RT>, Serializ
     
     private final Expr<RT> self;
     
-    public OperationMixin(Expr<RT> self, Operator<OP> operator, List<Expr<?>> args){
-        this.self = self;
+    public OperationMixin(Operation<OP,RT> self, Operator<OP> operator, List<Expr<?>> args){
+        this.self = self.asExpr();
         this.operator = operator;
         this.args = Collections.unmodifiableList(args);
     }

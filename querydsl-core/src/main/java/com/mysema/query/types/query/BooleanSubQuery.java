@@ -26,8 +26,7 @@ public final class BooleanSubQuery extends EBoolean implements SubQuery<Boolean>
     private final SubQueryMixin<Boolean> subQueryMixin;
     
     public BooleanSubQuery(QueryMetadata md) {
-        subQueryMixin = new SubQueryMixin<Boolean>(md);
-        subQueryMixin.setSelf(this);
+        subQueryMixin = new SubQueryMixin<Boolean>(this, md);
     }
     
     @Override
