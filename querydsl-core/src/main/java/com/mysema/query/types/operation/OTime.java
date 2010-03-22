@@ -8,11 +8,11 @@ package com.mysema.query.types.operation;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mysema.query.types.ETime;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.ETime;
-import com.mysema.query.types.expr.Expr;
 
 /**
  * OTime represents Time functions

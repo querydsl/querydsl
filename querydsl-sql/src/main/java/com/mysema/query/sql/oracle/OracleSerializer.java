@@ -7,8 +7,8 @@ package com.mysema.query.sql.oracle;
 
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.EBoolean;
+import com.mysema.query.types.Expr;
 
 /**
  * OracleSerializer extended the SqlSerializer to support Oracle specific

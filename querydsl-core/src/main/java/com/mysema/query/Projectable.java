@@ -12,7 +12,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.Expr;
 
 /**
  * Projectable defines default projection methods for Query implementations.

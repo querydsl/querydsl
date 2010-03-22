@@ -28,9 +28,9 @@ import com.mysema.query.hql.hibernate.HibernateUtil;
 import com.mysema.query.hql.hibernate.SessionHolder;
 import com.mysema.query.hql.hibernate.StatelessSessionHolder;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.types.EConstructor;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.EConstructor;
-import com.mysema.query.types.expr.Expr;
 
 /**
  * HibernateSQLQuery is an SQLQuery implementation that uses Hibernate's Native SQL functionality 

@@ -5,8 +5,8 @@
  */
 package com.mysema.query.functions;
 
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.ENumber;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops.MathOps;
 

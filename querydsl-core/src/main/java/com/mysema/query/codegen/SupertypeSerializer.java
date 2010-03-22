@@ -9,9 +9,9 @@ import java.io.IOException;
 
 import net.jcip.annotations.Immutable;
 
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.util.CodeWriter;
 

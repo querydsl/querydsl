@@ -11,13 +11,13 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.EArray;
+import com.mysema.query.types.EBoolean;
+import com.mysema.query.types.ENumber;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.EArray;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.Ops;
 

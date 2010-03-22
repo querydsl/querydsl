@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.QueryException;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.Expr;
 
 /**
  * @author tiwe

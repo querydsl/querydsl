@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.types.expr.Expr;
 
 
 // TODO: Auto-generated Javadoc

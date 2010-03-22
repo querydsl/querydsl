@@ -21,10 +21,10 @@ import org.apache.lucene.search.WildcardQuery;
 import org.apache.lucene.search.BooleanClause.Occur;
 
 import com.mysema.query.types.Constant;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Ops;
 import com.mysema.query.types.path.PString;
 

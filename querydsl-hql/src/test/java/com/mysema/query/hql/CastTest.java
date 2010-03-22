@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.ENumber;
 import com.mysema.query.types.path.PNumber;
 
 public class CastTest extends AbstractQueryTest {

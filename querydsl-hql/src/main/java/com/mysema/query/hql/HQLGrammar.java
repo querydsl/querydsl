@@ -5,10 +5,10 @@
  */
 package com.mysema.query.hql;
 
-import com.mysema.query.types.expr.ECollection;
-import com.mysema.query.types.expr.EComparable;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.ECollection;
+import com.mysema.query.types.EComparable;
+import com.mysema.query.types.ENumber;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.operation.OComparable;
 import com.mysema.query.types.operation.ONumber;
 import com.mysema.query.types.operation.OSimple;

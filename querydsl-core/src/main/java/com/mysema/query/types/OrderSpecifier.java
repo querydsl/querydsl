@@ -10,7 +10,6 @@ import java.io.Serializable;
 import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.expr.Expr;
 
 /**
  * OrderSpecifier represents an order-by-element in a Query instance

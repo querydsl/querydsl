@@ -9,9 +9,9 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
-import com.mysema.query.types.expr.Expr;
 
 /**
  * @author tiwe

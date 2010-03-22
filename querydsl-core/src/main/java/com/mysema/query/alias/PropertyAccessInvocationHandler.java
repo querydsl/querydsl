@@ -26,11 +26,11 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.mysema.query.types.ECollection;
+import com.mysema.query.types.EMap;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.expr.ECollection;
-import com.mysema.query.types.expr.EMap;
-import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PBoolean;
 import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PComparable;

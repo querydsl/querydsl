@@ -21,7 +21,7 @@ import antlr.collections.AST;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.SearchResults;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.Expr;
 
 class QueryHelper extends HQLQueryBase<QueryHelper> {
 

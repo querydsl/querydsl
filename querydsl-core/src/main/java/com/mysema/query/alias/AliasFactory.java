@@ -17,7 +17,7 @@ import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.map.LazyMap;
 
 import com.mysema.commons.lang.Pair;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.path.PEntity;
 
 /**

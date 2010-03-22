@@ -15,7 +15,7 @@ import org.apache.commons.collections15.IteratorUtils;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.Projectable;
 import com.mysema.query.SearchResults;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.Expr;
 
 /**
  * ProjectableQuery extends the QueryBase class to provide default

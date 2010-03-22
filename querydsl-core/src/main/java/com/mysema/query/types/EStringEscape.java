@@ -5,8 +5,7 @@
  */
 package com.mysema.query.types;
 
-import com.mysema.query.types.expr.EString;
-import com.mysema.query.types.expr.EStringConst;
+import com.mysema.query.types.constant.EStringConst;
 
 // TODO : move somewhere else
 public final class EStringEscape {

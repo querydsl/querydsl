@@ -8,8 +8,8 @@ package com.mysema.query.jdoql.dml;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.UpdateClause;
+import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.EBoolean;
 
 /**
  * UpdateClause implementation for JDO

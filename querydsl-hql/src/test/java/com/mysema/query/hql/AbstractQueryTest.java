@@ -7,7 +7,7 @@ package com.mysema.query.hql;
 
 import static org.junit.Assert.assertEquals;
 
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.Expr;
 
 public abstract class AbstractQueryTest implements Constants{
    

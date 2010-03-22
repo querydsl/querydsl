@@ -16,12 +16,12 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.mysema.query.QueryException;
+import com.mysema.query.types.EBoolean;
+import com.mysema.query.types.EMapBase;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EMapBase;
-import com.mysema.query.types.expr.Expr;
 
 /**
  * PMap represents map paths

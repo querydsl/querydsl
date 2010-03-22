@@ -9,9 +9,9 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.custom.CString;
-import com.mysema.query.types.expr.Expr;
 
 public class CustomExpressionsTest extends AbstractQueryTest{
     

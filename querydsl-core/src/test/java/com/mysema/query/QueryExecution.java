@@ -14,17 +14,17 @@ import java.util.List;
 import junit.framework.Assert;
 
 import com.mysema.commons.lang.Pair;
-import com.mysema.query.types.expr.EArray;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.ECollection;
-import com.mysema.query.types.expr.EDate;
-import com.mysema.query.types.expr.EDateTime;
-import com.mysema.query.types.expr.EList;
-import com.mysema.query.types.expr.EMap;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.EString;
-import com.mysema.query.types.expr.ETime;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.EArray;
+import com.mysema.query.types.EBoolean;
+import com.mysema.query.types.ECollection;
+import com.mysema.query.types.EDate;
+import com.mysema.query.types.EDateTime;
+import com.mysema.query.types.EList;
+import com.mysema.query.types.EMap;
+import com.mysema.query.types.ENumber;
+import com.mysema.query.types.EString;
+import com.mysema.query.types.ETime;
+import com.mysema.query.types.Expr;
 
 /**
  * The Class StandardTest.

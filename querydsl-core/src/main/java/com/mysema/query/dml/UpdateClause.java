@@ -5,8 +5,8 @@
  */
 package com.mysema.query.dml;
 
+import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.EBoolean;
 
 /**
  * UpdateClause defines a generic extensible interface for Update clauses

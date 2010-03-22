@@ -1,8 +1,8 @@
 package com.mysema.query.collections;
 
 import com.mysema.query.dml.UpdateClause;
+import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.EBoolean;
 
 /**
  * @author tiwe

@@ -13,9 +13,9 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.SimpleProjectable;
 import com.mysema.query.SimpleQuery;
+import com.mysema.query.types.EBoolean;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.Expr;
 
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 

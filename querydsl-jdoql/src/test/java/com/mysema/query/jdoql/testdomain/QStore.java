@@ -31,7 +31,7 @@ public class QStore extends PEntity<com.mysema.query.jdoql.testdomain.Store>{
         return new QProduct(PathMetadataFactory.forMapAccess(productsByName,key));
     }
     
-    public QProduct productsByName(com.mysema.query.types.expr.Expr<String> key) {
+    public QProduct productsByName(com.mysema.query.types.Expr<String> key) {
         return new QProduct(PathMetadataFactory.forMapAccess(productsByName,key));
     }
     

@@ -26,8 +26,8 @@ import com.mysema.query.hql.jpa.DefaultSessionHolder;
 import com.mysema.query.hql.jpa.JPASessionHolder;
 import com.mysema.query.hql.jpa.JPAUtil;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PEntity;
 
 /**

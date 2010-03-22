@@ -7,9 +7,9 @@ package com.mysema.query;
 
 import javax.annotation.Nonnegative;
 
+import com.mysema.query.types.EBoolean;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.Expr;
 
 /**
  * Query provides a query interface of the fluent query DSL.

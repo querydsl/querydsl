@@ -5,8 +5,8 @@
  */
 package com.mysema.query.sql.domain;
 
-import com.mysema.query.types.expr.EConstructor;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.EConstructor;
+import com.mysema.query.types.Expr;
 
 @SuppressWarnings("all")
 public class QIdName extends EConstructor<IdName> {

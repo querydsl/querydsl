@@ -5,7 +5,7 @@
  */
 package com.mysema.query.dml;
 
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.EBoolean;
 
 /**
  * DeleteClause defines a generic extensible interface for Delete clauses

@@ -28,8 +28,8 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.hql.HQLQueryBase;
 import com.mysema.query.hql.HQLTemplates;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.Expr;
 
 /**
  * Abstract base class for Hibernate API based implementations of the HQLQuery interface

@@ -10,12 +10,12 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.EComparable;
+import com.mysema.query.types.ENumber;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.custom.CNumber;
-import com.mysema.query.types.expr.EComparable;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PNumber;
 
 /**

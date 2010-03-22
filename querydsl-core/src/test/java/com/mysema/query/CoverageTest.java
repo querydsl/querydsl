@@ -19,9 +19,9 @@ import java.util.Set;
 import org.junit.Test;
 
 import com.mysema.query.alias.Alias;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
-import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.operation.Ops;
 
 /**

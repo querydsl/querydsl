@@ -15,7 +15,7 @@ import com.mysema.query.alias.Alias;
 import com.mysema.query.animal.Cat;
 import com.mysema.query.animal.QCat;
 import com.mysema.query.collections.ColQueryImpl;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.Expr;
 
 /**
  * AbstractQueryTest provides

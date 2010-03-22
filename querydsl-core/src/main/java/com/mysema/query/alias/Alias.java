@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.path.PBoolean;
 import com.mysema.query.types.path.PCollection;
 import com.mysema.query.types.path.PComparable;

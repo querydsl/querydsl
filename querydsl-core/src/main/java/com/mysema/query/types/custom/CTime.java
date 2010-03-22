@@ -9,12 +9,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.mysema.query.types.Custom;
+import com.mysema.query.types.EComparable;
+import com.mysema.query.types.ETime;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.EComparable;
-import com.mysema.query.types.expr.ETime;
-import com.mysema.query.types.expr.Expr;
 
 /**
  * @author tiwe

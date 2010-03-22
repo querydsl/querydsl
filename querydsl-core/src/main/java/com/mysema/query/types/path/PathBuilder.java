@@ -8,8 +8,8 @@ package com.mysema.query.types.path;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.expr.Expr;
 
 /**
  * PathBuilder is an extension to PEntity for dynamic path construction

@@ -9,11 +9,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.mysema.query.types.Custom;
+import com.mysema.query.types.EBoolean;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.Expr;
 
 /**
  * CBoolean is a custom boolean expression

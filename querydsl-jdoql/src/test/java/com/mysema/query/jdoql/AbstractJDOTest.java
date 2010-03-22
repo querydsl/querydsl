@@ -19,7 +19,7 @@ import org.junit.Before;
 import com.mysema.query.jdoql.dml.JDOQLDeleteClause;
 import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.Store;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.path.PEntity;
 
 public abstract class AbstractJDOTest {

@@ -7,8 +7,8 @@ package com.mysema.query;
 
 import javax.annotation.Nonnegative;
 
+import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.expr.EBoolean;
 
 /**
  * @author tiwe

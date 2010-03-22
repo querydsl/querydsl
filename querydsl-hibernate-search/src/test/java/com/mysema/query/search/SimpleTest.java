@@ -26,7 +26,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathBuilder;
 

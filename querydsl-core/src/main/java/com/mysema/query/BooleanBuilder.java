@@ -7,8 +7,8 @@ package com.mysema.query;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.EBoolean;
 
 /**
  * BooleanBuilder is a cascading builder for Boolean expressions.

@@ -11,8 +11,8 @@ import java.util.Set;
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.EBoolean;
+import com.mysema.query.types.Expr;
 
 /**
  * JoinExpression is a join element in a Query instance. 

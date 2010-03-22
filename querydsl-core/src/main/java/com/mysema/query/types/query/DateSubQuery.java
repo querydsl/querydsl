@@ -6,12 +6,12 @@
 package com.mysema.query.types.query;
 
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.types.EBoolean;
+import com.mysema.query.types.EDate;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EDate;
 import com.mysema.query.types.operation.ODate;
 import com.mysema.query.types.operation.Ops;
 

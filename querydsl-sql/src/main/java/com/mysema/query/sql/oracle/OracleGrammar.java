@@ -7,9 +7,9 @@ package com.mysema.query.sql.oracle;
 
 import java.util.Date;
 
-import com.mysema.query.types.expr.EDate;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.EDate;
+import com.mysema.query.types.ENumber;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PNumber;
 

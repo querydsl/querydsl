@@ -22,7 +22,7 @@ import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.hql.domain.sql.SAnimal;
 import com.mysema.query.sql.DerbyTemplates;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.expr.EConstructor;
+import com.mysema.query.types.EConstructor;
 import com.mysema.testutil.HibernateConfig;
 import com.mysema.testutil.HibernateTestRunner;
 

@@ -11,7 +11,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.Expr;
 
 public final class QueryMutability {
 

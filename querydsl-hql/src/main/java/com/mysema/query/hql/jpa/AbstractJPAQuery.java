@@ -22,7 +22,7 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.hql.HQLQueryBase;
 import com.mysema.query.hql.HQLTemplates;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.Expr;
 
 /**
  * Abstract base class for JPA API based implementations of the HQLQuery interface

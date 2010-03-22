@@ -14,7 +14,6 @@ import net.jcip.annotations.Immutable;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import com.mysema.query.types.expr.Expr;
 
 /**
  * PathMetadata provides metadata for Path expressions.

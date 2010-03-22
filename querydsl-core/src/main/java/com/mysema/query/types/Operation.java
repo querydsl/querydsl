@@ -7,7 +7,6 @@ package com.mysema.query.types;
 
 import java.util.List;
 
-import com.mysema.query.types.expr.Expr;
 
 /**
  * Operation represents an operation with operator and arguments

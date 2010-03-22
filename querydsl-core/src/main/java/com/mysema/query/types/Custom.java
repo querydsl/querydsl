@@ -7,7 +7,6 @@ package com.mysema.query.types;
 
 import java.util.List;
 
-import com.mysema.query.types.expr.Expr;
 
 /**
  * Custom provides base types for custom expresions with integrated

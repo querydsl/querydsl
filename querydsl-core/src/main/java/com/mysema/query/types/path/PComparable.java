@@ -7,11 +7,11 @@ package com.mysema.query.types.path;
 
 import java.lang.reflect.AnnotatedElement;
 
+import com.mysema.query.types.EBoolean;
+import com.mysema.query.types.EComparable;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EComparable;
 
 /**
  * PComparable represents Comparable paths

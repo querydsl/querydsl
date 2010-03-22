@@ -7,8 +7,8 @@ package com.mysema.query.hql;
 
 import org.junit.Test;
 
-import com.mysema.query.types.expr.EConstructor;
-import com.mysema.query.types.expr.Expr;
+import com.mysema.query.types.EConstructor;
+import com.mysema.query.types.Expr;
 
 public class ConstructorsTest extends AbstractQueryTest{
 

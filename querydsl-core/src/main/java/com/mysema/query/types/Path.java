@@ -7,8 +7,6 @@ package com.mysema.query.types;
 
 import java.lang.reflect.AnnotatedElement;
 
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.Expr;
 
 /**
  * Path represents a path expression
