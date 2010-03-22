@@ -26,6 +26,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.mysema.query.types.expr.Expr;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathBuilder;
 
@@ -79,202 +80,142 @@ public class SimpleTest {
         searcher.close();
     }
 
-    @Test
-    public void test_like() throws Exception {
-        Query q = serializer.toQuery(author.like("*ichael*"));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("author:*ichael*", q.toString());
+    private void testQuery(Expr<?> expr, String expectedQuery, int expectedHits) throws Exception {
+        Query query = serializer.toQuery(expr);
+        TopDocs docs = searcher.search(query, 100);
+        assertEquals(expectedHits, docs.totalHits);
+        assertEquals(expectedQuery, query.toString());
     }
 
     @Test
-    public void test_like_Custom_Wildcard_Single_Character() throws Exception {
-        Query q = serializer.toQuery(author.like("Mi?hael"));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("author:mi?hael", q.toString());
+    public void like() throws Exception {
+        testQuery(author.like("*ichael*"), "author:*ichael*", 1);
     }
 
     @Test
-    public void test_like_Custom_Wildcard_Multiple_Character() throws Exception {
-        Query q = serializer.toQuery(text.like("*U*X*"));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("text:*u*x*", q.toString());
+    public void like_Custom_Wildcard_Single_Character() throws Exception {
+        testQuery(author.like("Mi?hael"), "author:mi?hael", 1);
     }
 
     @Test
-    @Ignore
-    public void test_like_Phrase() throws Exception {
-        Query q = serializer.toQuery(title.like("rassic Par"));
-        // TODO Wildcard phrases not supported by Lucene by default.
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("like:*\"rassic Par\"*", q.toString());
-    }
-
-    @Test
-    public void test_like_or_like() throws Exception {
-        Query q = serializer.toQuery(title.like("House").or(year.like("*99*")));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("title:house year:*99*", q.toString());
-    }
-
-    @Test
-    public void test_like_and_like() throws Exception {
-        Query q = serializer.toQuery(title.like("*assic*").and(year.like("199?")));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("+title:*assic* +year:199?", q.toString());
-    }
-
-    @Test
-    public void test_eq_or_eq() throws Exception {
-        Query q = serializer.toQuery(title.eq("House").or(year.eq("1990")));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("title:house year:1990", q.toString());
-    }
-
-    @Test
-    public void test_eq_and_eq() throws Exception {
-        Query q = serializer.toQuery(title.eq("Jurassic Park").and(year.eq("1990")));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("+title:\"jurassic park\" +year:1990", q.toString());
-    }
-
-    @Test
-    public void test_eq_and_eq_and_eq() throws Exception {
-        Query q = serializer.toQuery(title.eq("Jurassic Park").and(year.eq("1990")).and(author.eq("Michael Crichton")));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("+(+title:\"jurassic park\" +year:1990) +author:\"michael crichton\"", q.toString());
-    }
-
-    @Test
-    public void test_eq_and_eq_or_eq() throws Exception {
-        Query q = serializer.toQuery(title.eq("Jurassic Park").and(year.eq("190")).or(author.eq("Michael Crichton")));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("(+title:\"jurassic park\" +year:190) author:\"michael crichton\"", q.toString());
-    }
-
-    @Test
-    public void test_eq_or_eq_and_eq_Does_Not_Find_Results() throws Exception {
-        Query q = serializer.toQuery(title.eq("Jeeves").or(year.eq("1915")).and(author.eq("Michael Crichton")));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(0, docs.totalHits);
-        assertEquals("+(title:jeeves year:1915) +author:\"michael crichton\"", q.toString());
-    }
-
-    @Test
-    public void test_eq() throws Exception {
-        Query q = serializer.toQuery(year.eq("1990"));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("year:1990", q.toString());
-    }
-
-    @Test
-    public void test_eq_Phrase() throws Exception {
-        Query q = serializer.toQuery(title.eq("Jurassic Park"));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("title:\"jurassic park\"", q.toString());
-    }
-
-    @Test
-    public void test_eq_Phrase_Does_Not_Find_Results() throws Exception {
-        Query q = serializer.toQuery(title.eq("Jurassic Amusement Park"));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(0, docs.totalHits);
-        assertEquals("title:\"jurassic amusement park\"", q.toString());
-    }
-
-    @Test
-    public void test_like_not_Does_Not_Find_Results() throws Exception {
-        Query q = serializer.toQuery(title.like("*H*e*").not());
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(0, docs.totalHits);
-        assertEquals("-title:*h*e*", q.toString());
-    }
-
-    @Test
-    public void test_eq_not_Does_Not_Find_Results() throws Exception {
-        Query q = serializer.toQuery(title.eq("Jurassic Park").not());
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(0, docs.totalHits);
-        assertEquals("-title:\"jurassic park\"", q.toString());
+    public void like_Custom_Wildcard_Multiple_Character() throws Exception {
+        testQuery(text.like("*U*X*"), "text:*u*x*", 1);
     }
 
     @Test
     @Ignore
-    public void test_eq_and_eq_not() throws Exception {
-        Query q = serializer.toQuery(year.eq("1990").and(title.eq("House")));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("+year:1990 +(-title:house)", q.toString());
+    public void like_Phrase() throws Exception {
+        testQuery(title.like("rassic Par"), "like:*\"rassic Par\"*", 1);
     }
 
     @Test
-    public void test_startsWith() throws Exception {
-        Query q = serializer.toQuery(title.startsWith("Jurassi"));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("title:jurassi*", q.toString());
+    public void like_or_like() throws Exception {
+        testQuery(title.like("House").or(year.like("*99*")), "title:house year:*99*", 1);
+    }
+
+    @Test
+    public void like_and_like() throws Exception {
+        testQuery(title.like("*assic*").and(year.like("199?")), "+title:*assic* +year:199?", 1);
+    }
+
+
+    @Test
+    public void eq() throws Exception {
+        testQuery(year.eq("1990"), "year:1990", 1);
+    }
+
+    @Test
+    public void eq_or_eq() throws Exception {
+        testQuery(title.eq("House").or(year.eq("1990")), "title:house year:1990", 1);
+    }
+
+    @Test
+    public void eq_and_eq() throws Exception {
+        testQuery(title.eq("Jurassic Park").and(year.eq("1990")), "+title:\"jurassic park\" +year:1990", 1);
+    }
+
+    @Test
+    public void eq_and_eq_and_eq() throws Exception {
+        testQuery(title.eq("Jurassic Park").and(year.eq("1990")).and(author.eq("Michael Crichton")), "+(+title:\"jurassic park\" +year:1990) +author:\"michael crichton\"", 1);
+    }
+
+    @Test
+    public void eq_and_eq_or_eq() throws Exception {
+        testQuery(title.eq("Jurassic Park").and(year.eq("190")).or(author.eq("Michael Crichton")), "(+title:\"jurassic park\" +year:190) author:\"michael crichton\"", 1);
+    }
+
+    @Test
+    public void eq_or_eq_and_eq_Does_Not_Find_Results() throws Exception {
+        testQuery(title.eq("Jeeves").or(year.eq("1915")).and(author.eq("Michael Crichton")), "+(title:jeeves year:1915) +author:\"michael crichton\"", 0);
+    }
+
+    @Test
+    public void eq_Phrase() throws Exception {
+        testQuery(title.eq("Jurassic Park"), "title:\"jurassic park\"", 1);
+    }
+
+    @Test
+    public void eq_Phrase_Does_Not_Find_Results() throws Exception {
+        testQuery(title.eq("Jurassic Amusement Park"), "title:\"jurassic amusement park\"", 0);
+    }
+
+    @Test
+    public void like_not_Does_Not_Find_Results() throws Exception {
+        testQuery(title.like("*H*e*").not(), "-title:*h*e*", 0);
+    }
+
+    @Test
+    public void eq_not_or_eq() throws Exception {
+        testQuery(title.eq("House").not().or(year.eq("1990")), "(-title:house) year:1990", 1);
+    }
+
+    @Test
+    public void eq_not_Does_Not_Find_Results() throws Exception {
+        testQuery(title.eq("Jurassic Park").not(), "-title:\"jurassic park\"", 0);
     }
 
     @Test
     @Ignore
-    public void test_startsWith_Phrase() throws Exception {
-        Query q = serializer.toQuery(title.startsWith("Jurassic Par"));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("title:jurassic par*", q.toString());
+    public void eq_and_eq_not() throws Exception {
+        testQuery(year.eq("1990").and(title.eq("House")), "+year:1990 +(-title:house)", 1);
     }
 
     @Test
-    public void test_endsWith() throws Exception {
-        Query q = serializer.toQuery(title.endsWith("ark"));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("title:*ark", q.toString());
+    public void startsWith() throws Exception {
+        testQuery(title.startsWith("Jurassi"), "title:jurassi*", 1);
     }
 
     @Test
     @Ignore
-    public void test_endsWith_Phrase() throws Exception {
-        Query q = serializer.toQuery(title.startsWith("Jurassic Par"));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("title:*sic park", q.toString());
+    public void startsWith_Phrase() throws Exception {
+        testQuery(title.startsWith("Jurassic Par"), "title:jurassic par*", 1);
     }
 
     @Test
-    public void test_contains() throws Exception {
-        Query q = serializer.toQuery(title.contains("rassi"));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("title:*rassi*", q.toString());
+    public void endsWith() throws Exception {
+        testQuery(title.endsWith("ark"), "title:*ark", 1);
     }
 
     @Test
     @Ignore
-    public void test_contains_Phrase() throws Exception {
-        Query q = serializer.toQuery(title.contains("rassic Pa"));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(1, docs.totalHits);
-        assertEquals("title:*rassic Pa*", q.toString());
+    public void endsWith_Phrase() throws Exception {
+        testQuery(title.startsWith("Jurassic Par"), "title:*sic park", 1);
     }
 
     @Test
-    public void test_contains_User_Inputted_Wildcards_Dont_Work() throws Exception {
-        Query q = serializer.toQuery(title.contains("r*i"));
-        TopDocs docs = searcher.search(q, 100);
-        assertEquals(0, docs.totalHits);
-        assertEquals("title:*r\\*i*", q.toString());
+    public void contains() throws Exception {
+        testQuery(title.contains("rassi"), "title:*rassi*", 1);
+    }
+
+    @Test
+    @Ignore
+    public void contains_Phrase() throws Exception {
+        testQuery(title.contains("rassic Pa"), "title:*rassic Pa*", 1);
+    }
+
+    @Test
+    public void contains_User_Inputted_Wildcards_Dont_Work() throws Exception {
+        testQuery(title.contains("r*i"), "title:*r\\*i*", 0);
     }
 
     @Test
