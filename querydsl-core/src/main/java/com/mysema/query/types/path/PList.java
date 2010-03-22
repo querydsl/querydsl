@@ -18,11 +18,11 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.QueryException;
 import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.ECollectionBase;
 import com.mysema.query.types.EList;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.ExprException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
@@ -87,13 +87,13 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
             PathMetadata<Integer> md = forListAccess(index);
             return newInstance(md);
         } catch (NoSuchMethodException e) {
-            throw new QueryException(e);
+            throw new ExprException(e);
         } catch (InstantiationException e) {
-            throw new QueryException(e);
+            throw new ExprException(e);
         } catch (IllegalAccessException e) {
-            throw new QueryException(e);
+            throw new ExprException(e);
         } catch (InvocationTargetException e) {
-            throw new QueryException(e);
+            throw new ExprException(e);
         }
     }
     
@@ -108,13 +108,13 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
             PathMetadata<Integer> md = forListAccess(index);
             return newInstance(md);
         } catch (NoSuchMethodException e) {
-            throw new QueryException(e);
+            throw new ExprException(e);
         } catch (InstantiationException e) {
-            throw new QueryException(e);
+            throw new ExprException(e);
         } catch (IllegalAccessException e) {
-            throw new QueryException(e);
+            throw new ExprException(e);
         } catch (InvocationTargetException e) {
-            throw new QueryException(e);
+            throw new ExprException(e);
         }                    
     }
 

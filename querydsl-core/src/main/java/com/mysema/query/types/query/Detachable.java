@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query;
+package com.mysema.query.types.query;
 
 import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.EComparable;
@@ -13,15 +13,6 @@ import com.mysema.query.types.ENumber;
 import com.mysema.query.types.EString;
 import com.mysema.query.types.ETime;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.query.BooleanSubQuery;
-import com.mysema.query.types.query.ComparableSubQuery;
-import com.mysema.query.types.query.DateSubQuery;
-import com.mysema.query.types.query.DateTimeSubQuery;
-import com.mysema.query.types.query.ListSubQuery;
-import com.mysema.query.types.query.NumberSubQuery;
-import com.mysema.query.types.query.ObjectSubQuery;
-import com.mysema.query.types.query.StringSubQuery;
-import com.mysema.query.types.query.TimeSubQuery;
 
 /**
  * Detachable defines methods for the construction of SubQuery instances

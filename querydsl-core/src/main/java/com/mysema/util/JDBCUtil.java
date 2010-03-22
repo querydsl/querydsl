@@ -11,8 +11,6 @@ import java.util.Collection;
 
 import org.apache.commons.lang.ClassUtils;
 
-import com.mysema.query.QueryException;
-
 /**
  * @author tiwe
  *

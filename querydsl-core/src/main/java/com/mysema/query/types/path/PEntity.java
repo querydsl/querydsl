@@ -12,10 +12,10 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.QueryException;
 import com.mysema.query.types.EBoolean;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.ExprConst;
+import com.mysema.query.types.ExprException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
@@ -83,13 +83,13 @@ public class PEntity<D> extends Expr<D> implements Path<D> {
             }
 
         } catch (InstantiationException e) {
-            throw new QueryException(e.getMessage(), e);
+            throw new ExprException(e.getMessage(), e);
         } catch (IllegalAccessException e) {
-            throw new QueryException(e.getMessage(), e);
+            throw new ExprException(e.getMessage(), e);
         } catch (InvocationTargetException e) {
-            throw new QueryException(e.getMessage(), e);
+            throw new ExprException(e.getMessage(), e);
         } catch (NoSuchMethodException e) {
-            throw new QueryException(e.getMessage(), e);
+            throw new ExprException(e.getMessage(), e);
         }
     }
 
