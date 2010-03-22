@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.impl;
+package com.mysema.query.collections;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.mysema.query.collections.ColQueryTemplates;
 import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.expr.Constant;

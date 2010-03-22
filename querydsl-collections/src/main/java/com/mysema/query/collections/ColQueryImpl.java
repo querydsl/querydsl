@@ -3,11 +3,10 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.impl;
+package com.mysema.query.collections;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.collections.ColQuery;
 
 
 /**

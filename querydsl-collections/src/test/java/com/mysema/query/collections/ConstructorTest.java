@@ -1,4 +1,4 @@
-package com.mysema.query.collections.impl;
+package com.mysema.query.collections;
 
 import org.junit.Test;
 

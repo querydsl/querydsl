@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.mysema.query.collections.impl;
+package com.mysema.query.collections;
 
 import org.apache.commons.collections15.Predicate;
 

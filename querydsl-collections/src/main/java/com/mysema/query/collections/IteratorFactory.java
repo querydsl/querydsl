@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.impl;
+package com.mysema.query.collections;
 
 import java.util.Iterator;
 import java.util.List;

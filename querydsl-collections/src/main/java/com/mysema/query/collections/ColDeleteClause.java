@@ -1,10 +1,7 @@
-package com.mysema.query.collections.dml;
+package com.mysema.query.collections;
 
 import java.util.Collection;
 
-import com.mysema.query.collections.ColQuery;
-import com.mysema.query.collections.impl.ColQueryImpl;
-import com.mysema.query.collections.impl.EvaluatorFactory;
 import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.Path;

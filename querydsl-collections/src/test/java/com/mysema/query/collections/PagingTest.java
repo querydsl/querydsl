@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.impl;
+package com.mysema.query.collections;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,6 +16,8 @@ import org.junit.Test;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.collections.ColQuery;
+import com.mysema.query.collections.ColQueryImpl;
+import com.mysema.query.collections.EvaluatorFactory;
 import com.mysema.query.types.path.PNumber;
 
 public class PagingTest extends AbstractQueryTest {

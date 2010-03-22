@@ -1,4 +1,4 @@
-package com.mysema.query.collections.impl;
+package com.mysema.query.collections;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.QueryException;
-import com.mysema.query.collections.ColQueryTemplates;
 import com.mysema.query.types.expr.Expr;
 
 /**

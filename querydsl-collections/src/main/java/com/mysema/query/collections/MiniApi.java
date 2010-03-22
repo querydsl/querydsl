@@ -9,10 +9,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.mysema.query.alias.Alias;
-import com.mysema.query.collections.dml.ColDeleteClause;
-import com.mysema.query.collections.dml.ColUpdateClause;
-import com.mysema.query.collections.impl.ColQueryImpl;
-import com.mysema.query.collections.impl.EvaluatorFactory;
 import com.mysema.query.types.path.Path;
 
 /**

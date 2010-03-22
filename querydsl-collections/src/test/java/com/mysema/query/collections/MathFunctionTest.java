@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.impl;
+package com.mysema.query.collections;
 
 import static com.mysema.query.alias.Alias.alias;
 import static com.mysema.query.collections.MiniApi.from;

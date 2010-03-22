@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.mysema.query.collections.impl;
+package com.mysema.query.collections;
 
 import java.lang.reflect.InvocationTargetException;
 

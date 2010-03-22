@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.impl;
+package com.mysema.query.collections;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +14,7 @@ import org.junit.Before;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.animal.Cat;
 import com.mysema.query.animal.QCat;
+import com.mysema.query.collections.ColQueryImpl;
 import com.mysema.query.types.expr.Expr;
 
 /**
