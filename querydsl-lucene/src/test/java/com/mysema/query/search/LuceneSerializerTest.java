@@ -21,7 +21,6 @@ import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
-import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -284,7 +283,7 @@ public class LuceneSerializerTest {
 
     @Test
     public void specs(){
-        Session session = null;
+
         PathBuilder<Object> entityPath = new PathBuilder<Object>(Object.class, "obj");
         PString stringPath = entityPath.getString("prop");
 
