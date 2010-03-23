@@ -7,6 +7,7 @@ package com.mysema.query.search;
 
 import java.util.List;
 import java.util.Locale;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.QueryParser;
@@ -26,7 +27,6 @@ import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.path.PString;
 
 public class LuceneSerializer {
     private final boolean lowerCase;
@@ -60,8 +60,8 @@ public class LuceneSerializer {
         }
         throw new UnsupportedOperationException();
     }
-    
-        private Query toTwoHandSidedQuery(Operation<?, ?> operation, Occur occur) {
+
+    private Query toTwoHandSidedQuery(Operation<?, ?> operation, Occur occur) {
         // TODO Flatten similar queries(?)
         Query lhs = toQuery(operation.getArg(0));
         Query rhs = toQuery(operation.getArg(1));
@@ -73,7 +73,7 @@ public class LuceneSerializer {
 
     private Query like(Operation<?, ?> operation) {
         verifyArguments(operation);
-        String field = toField((PString) operation.getArg(0));
+        String field = toField((Path<?>) operation.getArg(0));
         String[] terms = createTerms(operation.getArg(1));
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
@@ -87,7 +87,7 @@ public class LuceneSerializer {
 
     private Query eq(Operation<?, ?> operation) {
         verifyArguments(operation);
-        String field = toField((PString) operation.getArg(0));
+        String field = toField((Path<?>) operation.getArg(0));
         String[] terms = createTerms(operation.getArg(1));
         if (terms.length > 1) {
             PhraseQuery pq = new PhraseQuery();
@@ -101,7 +101,7 @@ public class LuceneSerializer {
 
     private Query startsWith(Operation<?, ?> operation) {
         verifyArguments(operation);
-        String field = toField((PString) operation.getArg(0));
+        String field = toField((Path<?>) operation.getArg(0));
         String[] terms = createEscapedTerms(operation.getArg(1));
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
@@ -116,7 +116,7 @@ public class LuceneSerializer {
 
     private Query stringContains(Operation<?, ?> operation) {
         verifyArguments(operation);
-        String field = toField((PString) operation.getArg(0));
+        String field = toField((Path<?>) operation.getArg(0));
         String[] terms = createEscapedTerms(operation.getArg(1));
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
@@ -130,7 +130,7 @@ public class LuceneSerializer {
 
     private Query endsWith(Operation<?, ?> operation) {
         verifyArguments(operation);
-        String field = toField((PString) operation.getArg(0));
+        String field = toField((Path<?>) operation.getArg(0));
         String[] terms = createEscapedTerms(operation.getArg(1));
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
@@ -146,7 +146,7 @@ public class LuceneSerializer {
     private Query between(Operation<?, ?> operation) {
         verifyArguments(operation);
         // TODO Phrase not properly supported
-        String field = toField((PString) operation.getArg(0));
+        String field = toField((Path<?>) operation.getArg(0));
         String[] lowerTerms = createTerms(operation.getArg(1));
         String[] upperTerms = createTerms(operation.getArg(2));
         return new TermRangeQuery(field, normalize(lowerTerms[0]), normalize(upperTerms[0]), true,

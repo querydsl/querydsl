@@ -6,6 +6,7 @@
 package com.mysema.query.search;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.StringReader;
 
@@ -261,6 +262,24 @@ public class SimpleTest {
     @Test
     public void between_Does_Not_Find_Results() throws Exception {
         testQuery(title.between("Indiana", "Jurassib"), "title:[indiana TO jurassib]", 0);
+    }
+
+    @Test
+    @Ignore
+    public void fuzzy() throws Exception {
+        fail("Not yet implemented!");
+    }
+
+    @Test
+    @Ignore
+    public void proximity() throws Exception {
+        fail("Not yet implemented!");
+    }
+
+    @Test
+    @Ignore
+    public void boost() throws Exception {
+        fail("Not yet implemented!");
     }
 
     @Test
