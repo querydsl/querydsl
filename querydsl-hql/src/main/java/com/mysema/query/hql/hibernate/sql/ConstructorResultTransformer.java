@@ -11,7 +11,7 @@ import java.util.List;
 import org.hibernate.transform.ResultTransformer;
 
 import com.mysema.query.QueryException;
-import com.mysema.query.types.expr.EConstructor;
+import com.mysema.query.types.EConstructor;
 
 /**
  * @author tiwe

@@ -15,6 +15,7 @@ import com.mysema.query.types.expr.EDateTime;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.ETime;
+import com.mysema.query.types.expr.ONumber;
 import com.mysema.query.types.query.BooleanSubQuery;
 import com.mysema.query.types.query.ComparableSubQuery;
 import com.mysema.query.types.query.DateSubQuery;
@@ -34,6 +35,8 @@ import com.mysema.query.types.query.TimeSubQuery;
  */
 public class DetachableMixin implements Detachable{
 
+    private static final ENumber<Long> COUNT_ALL_AGG_EXPR = ONumber.create(Long.class, Ops.AggOps.COUNT_ALL_AGG);
+    
     private final QueryMixin<?> queryMixin;
     
     public DetachableMixin(QueryMixin<?> queryMixin){
@@ -42,7 +45,7 @@ public class DetachableMixin implements Detachable{
     
     @Override
     public ObjectSubQuery<Long> count() {
-        queryMixin.addToProjection(Ops.AggOps.COUNT_ALL_AGG_EXPR);
+        queryMixin.addToProjection(COUNT_ALL_AGG_EXPR);
         return new ObjectSubQuery<Long>(queryMixin.getMetadata(), Long.class);
     }
     

@@ -5,9 +5,9 @@
  */
 package com.mysema.query.hql;
 
-import com.mysema.query.types.ECollection;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.OComparable;

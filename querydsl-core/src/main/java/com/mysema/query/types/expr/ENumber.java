@@ -11,7 +11,6 @@ import java.math.BigInteger;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.ExprConst;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Ops.AggOps;

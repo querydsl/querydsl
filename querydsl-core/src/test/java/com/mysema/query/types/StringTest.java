@@ -17,8 +17,6 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.mysema.query.types.expr.EArrayConstructor;
-import com.mysema.query.types.expr.EConstructor;
 
 
 /**

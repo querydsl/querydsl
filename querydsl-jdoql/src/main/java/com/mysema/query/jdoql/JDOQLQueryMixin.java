@@ -2,8 +2,8 @@ package com.mysema.query.jdoql;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.QueryMixin;
+import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.expr.EConstructor;
 
 /**
  * @author tiwe

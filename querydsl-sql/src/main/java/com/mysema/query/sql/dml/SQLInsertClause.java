@@ -20,9 +20,9 @@ import com.mysema.query.dml.InsertClause;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.ExprConst;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.util.JDBCUtil;
 

@@ -15,6 +15,7 @@ import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.ENumberConst;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.EStringConst;
+import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.ONumber;
 import com.mysema.query.types.expr.OSimple;
 import com.mysema.query.types.expr.OString;

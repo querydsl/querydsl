@@ -13,7 +13,7 @@ import org.apache.commons.collections15.Transformer;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.expr.EConstructor;
+import com.mysema.query.types.expr.ENumber;
 import com.mysema.util.CodeWriter;
 
 /**
@@ -41,7 +41,7 @@ public final class DTOSerializer implements Serializer{
         
         // imports
         writer.imports(Expr.class.getPackage());
-        writer.imports(EConstructor.class.getPackage());
+        writer.imports(ENumber.class.getPackage());
         writer.nl();
         
         // javadoc

@@ -11,8 +11,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.ONumber;
 
 /**
  * Ops provides the operators for the fluent query grammar.
@@ -139,7 +137,7 @@ public interface Ops {
         Operator<Number> COUNT_AGG = new OperatorImpl<Number>(Object.class);
         Operator<Number> COUNT_DISTINCT_AGG = new OperatorImpl<Number>(Object.class);
         Operator<Number> COUNT_ALL_AGG = new OperatorImpl<Number>();
-        ENumber<Long> COUNT_ALL_AGG_EXPR = ONumber.create(Long.class, COUNT_ALL_AGG);
+//        ENumber<Long> COUNT_ALL_AGG_EXPR = ONumber.create(Long.class, COUNT_ALL_AGG);
     }
     
     /**

@@ -9,9 +9,7 @@ import java.util.Collection;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.ECollection;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.ExprConst;
 import com.mysema.query.types.Ops;
 
 

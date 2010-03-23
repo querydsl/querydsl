@@ -3,11 +3,9 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types.expr;
+package com.mysema.query.types;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.Visitor;
 
 /**
  * EArrayConstructor extends EConstructor to represent array initializers

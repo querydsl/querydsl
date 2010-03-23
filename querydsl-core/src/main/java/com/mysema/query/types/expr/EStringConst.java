@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.ExprConst;
 import com.mysema.query.types.Visitor;
 
 /**

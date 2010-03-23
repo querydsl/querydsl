@@ -3,10 +3,9 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types;
+package com.mysema.query.types.expr;
 
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.Expr;
 
 
 /**

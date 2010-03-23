@@ -11,7 +11,6 @@ import java.lang.reflect.Constructor;
 
 import org.junit.Test;
 
-import com.mysema.query.types.expr.EConstructor;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.ENumberConst;
 import com.mysema.query.types.expr.EString;

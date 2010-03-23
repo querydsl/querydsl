@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types.expr;
+package com.mysema.query.types;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
@@ -12,9 +12,6 @@ import java.util.List;
 
 import org.apache.commons.lang.ClassUtils;
 
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.ExprException;
-import com.mysema.query.types.Visitor;
 
 /**
  * EConstructor represents a constructor invocation

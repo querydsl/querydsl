@@ -13,7 +13,9 @@ import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.OBoolean;
 import com.mysema.query.types.expr.ONumber;
 

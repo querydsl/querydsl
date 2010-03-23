@@ -19,8 +19,8 @@ import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.Constant;
+import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.ExprConst;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Order;
@@ -29,7 +29,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EConstructor;
+import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.path.PEntity;
 
 /**
