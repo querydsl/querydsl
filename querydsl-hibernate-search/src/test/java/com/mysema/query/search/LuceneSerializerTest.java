@@ -32,7 +32,7 @@ import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathBuilder;
 
 
-public class SimpleTest {
+public class LuceneSerializerTest {
     private LuceneSerializer serializer;
     private PathBuilder<Object> entityPath;
     private PString title;

@@ -86,15 +86,14 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
         try {
             return searcher.search(createQuery(), MAX_RESULT_COUNT).totalHits;
         } catch (IOException e) {
-            // TODO
-            return 0;
+            throw new QueryException(e);
         }
     }
 
     @Override
     public long countDistinct() {
-        // TODO Auto-generated method stub
-        return 0;
+        queryMixin.getMetadata().setDistinct(true);
+        return count();
     }
 
     @Override
@@ -111,7 +110,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
                 documents.add(searcher.doc(scoreDoc.doc));
             }
         } catch (IOException e) {
-            // TODO ?
+            throw new QueryException(e);
         }
         return documents;
     }
@@ -133,21 +132,21 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
                 documents.add(searcher.doc(scoreDoc.doc));
             }
         } catch (IOException e) {
-            // TODO ?
+            throw new QueryException(e);
         }
         return documents;
     }
 
     @Override
     public List<Document> listDistinct() {
-        // TODO Auto-generated method stub
-        return null;
+        queryMixin.getMetadata().setDistinct(true);
+        return list();
     }
 
     @Override
     public SearchResults<Document> listDistinctResults() {
-        // TODO Auto-generated method stub
-        return null;
+        queryMixin.getMetadata().setDistinct(true);
+        return listResults();
     }
 
     @Override
@@ -165,8 +164,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
             }
             return searcher.doc(scoreDocs[0].doc);
         } catch (IOException e) {
-            // TODO ?
-            return null;
+            throw new QueryException(e);
         }
     }
 
