@@ -26,7 +26,6 @@ public final class PathMetadata<T> implements Serializable{
     
     private static final long serialVersionUID = -1055994185028970065L;
 
-    // Expr is in lower level package
     private final Expr<T> expression;
 
     private final int hashCode;
