@@ -19,6 +19,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ESimple;
 import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.OBoolean;
 
@@ -30,7 +31,7 @@ import com.mysema.query.types.expr.OBoolean;
  * @param <D>
  *            Java type
  */
-public class PEntity<D> extends Expr<D> implements Path<D> {
+public class PEntity<D> extends ESimple<D> implements Path<D> {
 
     private static final long serialVersionUID = -1845524024957822731L;
 

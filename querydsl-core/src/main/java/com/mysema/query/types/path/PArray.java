@@ -19,6 +19,7 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EArray;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.ESimple;
 import com.mysema.query.types.expr.ONumber;
 
 /**
@@ -28,7 +29,7 @@ import com.mysema.query.types.expr.ONumber;
  * 
  * @param <E> component type
  */
-public class PArray<E> extends Expr<E[]> implements Path<E[]>, EArray<E>{
+public class PArray<E> extends ESimple<E[]> implements Path<E[]>, EArray<E>{
     
     private static final long serialVersionUID = 7795049264874048226L;
 

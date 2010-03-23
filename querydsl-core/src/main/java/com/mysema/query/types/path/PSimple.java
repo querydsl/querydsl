@@ -7,11 +7,11 @@ package com.mysema.query.types.path;
 
 import java.lang.reflect.AnnotatedElement;
 
-import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ESimple;
 
 /**
  * PSimple represents simple paths
@@ -20,7 +20,7 @@ import com.mysema.query.types.expr.EBoolean;
  * 
  * @param <D> Java type
  */
-public class PSimple<D> extends Expr<D> implements Path<D> {
+public class PSimple<D> extends ESimple<D> implements Path<D> {
     
     private static final long serialVersionUID = 3088836955328191852L;
     

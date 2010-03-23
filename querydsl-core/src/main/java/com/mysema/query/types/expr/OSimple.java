@@ -21,7 +21,7 @@ import com.mysema.query.types.Visitor;
  * @param <OpType>
  * @param <D>
  */
-public class OSimple<OpType, D> extends Expr<D> implements Operation<OpType, D> {
+public class OSimple<OpType, D> extends ESimple<D> implements Operation<OpType, D> {
     
     private static final long serialVersionUID = -285668548371034230L;
 

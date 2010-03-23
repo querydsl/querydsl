@@ -16,6 +16,7 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.custom.CNumber;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.ESimple;
 import com.mysema.query.types.path.PNumber;
 
 /**
@@ -24,7 +25,7 @@ import com.mysema.query.types.path.PNumber;
  * @author tiwe
  *
  */
-public class RowNumber extends Expr<Long>{
+public class RowNumber extends ESimple<Long>{
 
     private static final long serialVersionUID = 3499501725767772281L;
 

@@ -18,7 +18,7 @@ import com.mysema.query.types.Visitor;
  * 
  * @param <D> Java type of constant
  */
-public class ExprConst<D> extends Expr<D> implements Constant<D> {
+public class ExprConst<D> extends ESimple<D> implements Constant<D> {
 
     private static final long serialVersionUID = -3211963259241932307L;
 

@@ -7,7 +7,6 @@ package com.mysema.query.types.expr;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Expr;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
@@ -22,7 +21,7 @@ import com.mysema.query.types.OrderSpecifier;
  * @see java.lang.Comparable
  */
 @SuppressWarnings({"unchecked"})
-public abstract class EComparableBase<D extends Comparable> extends Expr<D> {
+public abstract class EComparableBase<D extends Comparable> extends ESimple<D> {
 
     private static final long serialVersionUID = 1460921109546656911L;
 

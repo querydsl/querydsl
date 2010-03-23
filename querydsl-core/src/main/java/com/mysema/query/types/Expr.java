@@ -6,7 +6,6 @@
 package com.mysema.query.types;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Collection;
 
 import javax.annotation.Nullable;
@@ -15,9 +14,6 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.ExprConst;
-import com.mysema.query.types.expr.OBoolean;
-import com.mysema.query.types.expr.ONumber;
 
 /**
  * Expr represents a general typed expression in a Query instance. The generic type parameter
@@ -30,13 +26,8 @@ public abstract class Expr<D> implements Serializable{
 
     private static final long serialVersionUID = 8049453060731070043L;
 
-    @Nullable
-    private volatile ENumber<Long> count;
-    
-    @Nullable
-    private volatile ENumber<Long> countDistinct;
 
-    private final boolean primitive;
+    protected final boolean primitive;
     
     @Nullable
     private volatile String toString;
@@ -67,24 +58,14 @@ public abstract class Expr<D> implements Serializable{
      * 
      * @return count(this)
      */
-    public ENumber<Long> count(){
-        if (count == null){
-            count = ONumber.create(Long.class, Ops.AggOps.COUNT_AGG, this);
-        }
-        return count;
-    }
+    public abstract ENumber<Long> count();
 
     /**
      * Get the <code>count(distinct this)</code> expression
      *
      * @return count(distinct this)
      */
-    public ENumber<Long> countDistinct(){
-        if (countDistinct == null){
-          countDistinct = ONumber.create(Long.class, Ops.AggOps.COUNT_DISTINCT_AGG, this);
-        }
-        return countDistinct;
-    }
+    public abstract ENumber<Long> countDistinct();
 
     /**
      * Get a <code>this == right</code> expression
@@ -92,9 +73,7 @@ public abstract class Expr<D> implements Serializable{
      * @param right rhs of the comparison
      * @return
      */
-    public EBoolean eq(D right) {
-        return eq(ExprConst.create(right));
-    }
+    public abstract EBoolean eq(D right);
 
     /**
      * Get a <code>this == right</code> expression
@@ -102,13 +81,7 @@ public abstract class Expr<D> implements Serializable{
      * @param right rhs of the comparison
      * @return
      */
-    public final EBoolean eq(Expr<? super D> right) {
-        if (primitive) {
-            return OBoolean.create(Ops.EQ_PRIMITIVE, this, right);
-        } else {
-            return OBoolean.create(Ops.EQ_OBJECT, this, right);
-        }
-    }
+    public abstract EBoolean eq(Expr<? super D> right);
 
     /**
      * Get the Java type for this expression
@@ -133,13 +106,7 @@ public abstract class Expr<D> implements Serializable{
      * @param right rhs of the comparison
      * @return
      */
-    public final EBoolean in(Collection<? extends D> right) {
-        if (right.size() == 1){
-            return eq(right.iterator().next());
-        }else{
-            return OBoolean.create(Ops.IN, this, ExprConst.create(right));    
-        }        
-    }
+    public abstract EBoolean in(Collection<? extends D> right);
 
     /**
      * Get a <code>this in right</code> expression
@@ -147,13 +114,7 @@ public abstract class Expr<D> implements Serializable{
      * @param right rhs of the comparison
      * @return
      */
-    public final EBoolean in(D... right) {
-        if (right.length == 1){
-            return eq(right[0]);
-        }else{
-            return OBoolean.create(Ops.IN, this, ExprConst.create(Arrays.asList(right)));    
-        }        
-    }
+    public abstract EBoolean in(D... right);
 
     /**
      * Get a <code>this in right</code> expression
@@ -161,9 +122,7 @@ public abstract class Expr<D> implements Serializable{
      * @param right rhs of the comparison
      * @return
      */
-    public final EBoolean in(ECollection<?,? extends D> right) {
-        return OBoolean.create(Ops.IN, this, (Expr<?>)right);
-    }
+    public abstract EBoolean in(ECollection<?,? extends D> right);
 
     /**
      * Get a <code>this &lt;&gt; right</code> expression
@@ -171,9 +130,7 @@ public abstract class Expr<D> implements Serializable{
      * @param right rhs of the comparison
      * @return
      */
-    public EBoolean ne(D right) {
-        return ne(ExprConst.create(right));
-    }
+    public abstract EBoolean ne(D right);
 
     /**
      * Get a <code>this &lt;&gt; right</code> expression
@@ -181,13 +138,7 @@ public abstract class Expr<D> implements Serializable{
      * @param right rhs of the comparison
      * @return
      */
-    public final EBoolean ne(Expr<? super D> right) {
-        if (primitive) {
-            return OBoolean.create(Ops.NE_PRIMITIVE, this, right);
-        } else {
-            return OBoolean.create(Ops.NE_OBJECT, this, right);
-        }
-    }
+    public abstract EBoolean ne(Expr<? super D> right);
 
     /**
      * Get a <code>this not in right</code> expression
@@ -235,26 +186,6 @@ public abstract class Expr<D> implements Serializable{
             toString = visitor.toString();
         }
         return toString;
-    }
-    
-    /**
-     * Get a case expression builder
-     * 
-     * @param other
-     * @return
-     */
-    public CaseForEqBuilder<D> when(D other){
-        return new CaseForEqBuilder<D>(this, ExprConst.create(other));
-    }
-    
-    /**
-     * Get a case expression builder
-     * 
-     * @param other
-     * @return
-     */
-    public CaseForEqBuilder<D> when(Expr<? extends D> other){
-        return new CaseForEqBuilder<D>(this, other);
     }
     
 }

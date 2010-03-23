@@ -20,7 +20,7 @@ import com.mysema.query.types.Ops;
  * @param <K>
  * @param <V>
  */
-public abstract class EMapBase<K,V> extends Expr<Map<K,V>> implements EMap<K,V> {
+public abstract class EMapBase<K,V> extends ESimple<Map<K,V>> implements EMap<K,V> {
 
     private static final long serialVersionUID = 2856001983312366841L;
 

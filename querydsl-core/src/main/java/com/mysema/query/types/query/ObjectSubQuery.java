@@ -13,6 +13,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ESimple;
 import com.mysema.query.types.expr.OSimple;
 
 /**
@@ -22,7 +23,7 @@ import com.mysema.query.types.expr.OSimple;
  *
  * @param <A>
  */
-public final class ObjectSubQuery<A> extends Expr<A> implements SubQuery<A>{
+public final class ObjectSubQuery<A> extends ESimple<A> implements SubQuery<A>{
 
     private static final long serialVersionUID = -64156984110154969L;
 

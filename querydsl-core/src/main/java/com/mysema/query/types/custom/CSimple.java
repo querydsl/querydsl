@@ -13,6 +13,7 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Visitor;
+import com.mysema.query.types.expr.ESimple;
 
 /**
  * CSimple defines custom simple expressions
@@ -21,7 +22,7 @@ import com.mysema.query.types.Visitor;
  *
  * @param <T>
  */
-public class CSimple<T> extends Expr<T> implements Custom<T> {
+public class CSimple<T> extends ESimple<T> implements Custom<T> {
     
     private static final long serialVersionUID = -4697578522909045745L;
 

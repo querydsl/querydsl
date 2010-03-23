@@ -12,6 +12,8 @@ import java.util.List;
 
 import org.apache.commons.lang.ClassUtils;
 
+import com.mysema.query.types.expr.ESimple;
+
 
 /**
  * EConstructor represents a constructor invocation
@@ -20,7 +22,8 @@ import org.apache.commons.lang.ClassUtils;
  * 
  * @param <D> Java type
  */
-public class EConstructor<D> extends Expr<D> {
+// TODO : simple into interface and implementation
+public class EConstructor<D> extends ESimple<D> {
     
     private static final long serialVersionUID = -602747921848073175L;
     

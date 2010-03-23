@@ -14,6 +14,7 @@ import com.mysema.commons.lang.Assert;
  * 
  * @param <D> component type
  */
+// TODO : split into interface and implementation
 public class EArrayConstructor<D> extends EConstructor<D[]> {
     
     private static final long serialVersionUID = 8667880104290226505L;

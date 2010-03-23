@@ -20,7 +20,7 @@ import com.mysema.query.types.Ops;
  *
  * @param <D>
  */
-public abstract class ECollectionBase<C extends Collection<E>, E> extends Expr<C> implements ECollection<C,E> {
+public abstract class ECollectionBase<C extends Collection<E>, E> extends ESimple<C> implements ECollection<C,E> {
 
     private static final long serialVersionUID = 691230660037162054L;
 

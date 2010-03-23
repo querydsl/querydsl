@@ -3,21 +3,16 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types;
+package com.mysema.query.types.expr;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.ENumberConst;
-import com.mysema.query.types.expr.EString;
-import com.mysema.query.types.expr.EStringConst;
-import com.mysema.query.types.expr.ExprConst;
-import com.mysema.query.types.expr.ONumber;
-import com.mysema.query.types.expr.OSimple;
-import com.mysema.query.types.expr.OString;
+import com.mysema.query.types.Expr;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
 
 /**
  * CaseForEqBuilder enables the construction of typesafe case-when-then-else constructs
