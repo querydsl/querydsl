@@ -10,7 +10,6 @@ import java.util.Date;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Ops;
-import com.mysema.query.types.Ops.DateTimeOps;
 
 /**
  * ETime represents Time expressions
