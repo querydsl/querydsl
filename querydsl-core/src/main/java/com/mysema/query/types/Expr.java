@@ -26,7 +26,6 @@ public abstract class Expr<D> implements Serializable{
 
     private static final long serialVersionUID = 8049453060731070043L;
 
-
     protected final boolean primitive;
     
     @Nullable
