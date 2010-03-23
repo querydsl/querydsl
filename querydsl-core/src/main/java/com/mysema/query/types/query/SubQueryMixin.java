@@ -16,6 +16,8 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.OBoolean;
 
 /**
+ * Mixin implementation of the SubQuery interface
+ * 
  * @author tiwe
  *
  */

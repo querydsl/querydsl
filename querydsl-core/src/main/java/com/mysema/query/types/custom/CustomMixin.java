@@ -13,6 +13,8 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.Template;
 
 /**
+ * Mixin implementation of the Custom interface
+ * 
  * @author tiwe
  *
  * @param <T>
