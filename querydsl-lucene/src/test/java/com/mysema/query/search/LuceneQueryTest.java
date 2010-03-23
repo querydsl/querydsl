@@ -76,7 +76,7 @@ public class LuceneQueryTest {
         writer.close();
 
         searcher = new IndexSearcher(idx);
-        query = new LuceneQuery(null, new LuceneSerializer(true), searcher);
+        query = new LuceneQuery(new LuceneSerializer(true), searcher);
     }
 
     @After

@@ -28,6 +28,10 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 
+/**
+ * @author vema
+ *
+ */
 public class LuceneSerializer {
     private final boolean lowerCase;
 

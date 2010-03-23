@@ -28,13 +28,11 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
- * @author tiwe
- *
- * @param <Document>
+ * LuceneQuery is a Querydsl query implementation for Lucene queries
+ * 
+ * @author vema
  */
 public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<Document>{
-
-//    private final Path<?> entityPath;
 
     private final QueryMixin<LuceneQuery> queryMixin;
 
@@ -45,8 +43,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
     // TODO Is there an alternative for this?
     private static final int MAX_RESULT_COUNT = 30000;
 
-    public LuceneQuery(Path<?> entityPath, LuceneSerializer serializer, Searcher searcher) {
-//        this.entityPath = entityPath;
+    public LuceneQuery(LuceneSerializer serializer, Searcher searcher) {
         this.queryMixin = new QueryMixin<LuceneQuery>(this);
         this.serializer = serializer;
         this.searcher = searcher;
