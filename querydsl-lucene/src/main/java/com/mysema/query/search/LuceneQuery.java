@@ -89,7 +89,6 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
 
     @Override
     public long countDistinct() {
-        queryMixin.getMetadata().setDistinct(true);
         return count();
     }
 
@@ -136,20 +135,18 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
 
     @Override
     public List<Document> listDistinct() {
-        queryMixin.getMetadata().setDistinct(true);
         return list();
     }
 
     @Override
     public SearchResults<Document> listDistinctResults() {
-        queryMixin.getMetadata().setDistinct(true);
         return listResults();
     }
 
     @Override
     public SearchResults<Document> listResults() {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO : implement
+        throw new UnsupportedOperationException();
     }
 
     @Override
