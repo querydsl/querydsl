@@ -29,6 +29,8 @@ import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 
 /**
+ * Serializes Querydsl queries to Lucene queries.
+ *
  * @author vema
  *
  */

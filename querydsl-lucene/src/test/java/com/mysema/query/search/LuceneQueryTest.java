@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
+ *
+ */
 package com.mysema.query.search;
 
 import static org.junit.Assert.assertEquals;
@@ -26,8 +31,11 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathBuilder;
 
-/*
- * TODO Refactor SimpleTest and LuceneQuery into same test class, lot of the setUp stuff is similar?
+/**
+ * Tests for LuceneQuery
+ *
+ * @author vema
+ *
  */
 public class LuceneQueryTest {
     private LuceneQuery query;

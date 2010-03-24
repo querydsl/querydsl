@@ -28,7 +28,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
- * LuceneQuery is a Querydsl query implementation for Lucene queries
+ * LuceneQuery is a Querydsl query implementation for Lucene queries.
  *
  * @author vema
  */
