@@ -113,9 +113,10 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
             return listSorted(orderBys, limit, offset);
         }
 
-        List<Document> documents = new ArrayList<Document>(); // TODO : initialize List with proper size
+        List<Document> documents = null;
         try {
             ScoreDoc[] scoreDocs = searcher.search(createQuery(), limit + offset).scoreDocs;
+            documents = new ArrayList<Document>(scoreDocs.length - offset);
             for (int i = offset; i < scoreDocs.length; ++i) {
                 documents.add(searcher.doc(scoreDocs[i].doc));
             }
@@ -126,7 +127,6 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
     }
 
     private List<Document> listSorted(List<OrderSpecifier<?>> orderBys, int limit, int offset) {
-        List<Document> documents = new ArrayList<Document>(); // TODO : initialize List with proper size
         List<SortField> sortFields = new ArrayList<SortField>(orderBys.size());
         for (OrderSpecifier<?> orderSpecifier : orderBys) {
             if (!(orderSpecifier.getTarget() instanceof Path<?>)) {
@@ -136,8 +136,10 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
         }
         Sort sort = new Sort();
         sort.setSort(sortFields.toArray(new SortField[sortFields.size()]));
+        List<Document> documents = null;
         try {
             ScoreDoc[] scoreDocs = searcher.search(createQuery(), null, limit + offset, sort).scoreDocs;
+            documents = new ArrayList<Document>(scoreDocs.length - offset);
             for (int i = offset; i < scoreDocs.length; ++i) {
                 documents.add(searcher.doc(scoreDocs[i].doc));
             }
@@ -159,9 +161,8 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
 
     @Override
     public SearchResults<Document> listResults() {
-        // FIXME : SearchResults.total is number of total results, not amount of documents in paged view
         List<Document> documents = list();
-        return new SearchResults<Document>(documents, queryMixin.getMetadata().getModifiers(), documents.size());
+        return new SearchResults<Document>(documents, queryMixin.getMetadata().getModifiers(), count());
     }
 
     @Override

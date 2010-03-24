@@ -267,7 +267,7 @@ public class LuceneQueryTest {
         assertEquals("1990", results.getResults().get(1).get("year"));
         assertEquals(2, results.getLimit());
         assertEquals(1, results.getOffset());
-        assertEquals(2, results.getTotal());
+        assertEquals(4, results.getTotal());
     }
 
     @Test
@@ -280,7 +280,7 @@ public class LuceneQueryTest {
         assertEquals("1954", results.getResults().get(0).get("year"));
         assertEquals(1, results.getLimit());
         assertEquals(1, results.getOffset());
-        assertEquals(1, results.getTotal());
+        assertEquals(4, results.getTotal());
     }
 
     @Test(expected = IllegalArgumentException.class)
