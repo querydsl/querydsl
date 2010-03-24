@@ -21,6 +21,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.QueryException;
+import com.mysema.query.QueryModifiers;
+import com.mysema.query.SearchResults;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathBuilder;
 
@@ -84,6 +86,11 @@ public class LuceneQueryTest {
         searcher.close();
     }
 
+    @Test(expected = QueryException.class)
+    public void count_Empty_Where_Clause() {
+        query.count();
+    }
+
     @Test
     public void count() {
         query.where(title.eq("Jurassic Park"));
@@ -91,12 +98,78 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void list() {
+    public void countDistinct() {
+        query.where(year.like("19*").or(title.like("The Lord*")));
+        assertEquals(3, query.countDistinct());
+    }
+
+    @Test
+    public void list_Sorted_By_Year_Ascending() {
         query.where(year.between("1800", "2000"));
         query.orderBy(year.asc());
         List<Document> documents = query.list();
         assertFalse(documents.isEmpty());
         assertEquals(4, documents.size());
+    }
+
+    @Test
+    public void list_Not_Sorted() {
+        query.where(year.between("1800", "2000"));
+        List<Document> documents = query.list();
+        assertFalse(documents.isEmpty());
+        assertEquals(4, documents.size());
+    }
+
+    @Test
+    public void list_Not_Sorted_Limit_2() {
+        query.where(year.between("1800", "2000"));
+        query.limit(2);
+        List<Document> documents = query.list();
+        assertFalse(documents.isEmpty());
+        assertEquals(2, documents.size());
+    }
+
+    @Test
+    public void list_Sorted_By_Year_Limit_1() {
+        query.where(year.between("1800", "2000"));
+        query.limit(1);
+        query.orderBy(year.asc());
+        List<Document> documents = query.list();
+        assertFalse(documents.isEmpty());
+        assertEquals(1, documents.size());
+    }
+
+    @Test
+    public void list_Not_Sorted_Offset_2() {
+        query.where(year.between("1800", "2000"));
+        query.offset(2);
+        List<Document> documents = query.list();
+        assertFalse(documents.isEmpty());
+        assertEquals(2, documents.size());
+    }
+
+    @Test
+    public void list_Sorted_Ascending_By_Year_Offset_2() {
+        query.where(year.between("1800", "2000"));
+        query.offset(2);
+        query.orderBy(year.asc());
+        List<Document> documents = query.list();
+        assertFalse(documents.isEmpty());
+        assertEquals(2, documents.size());
+        assertEquals("1990", documents.get(0).get("year"));
+        assertEquals("1990", documents.get(1).get("year"));
+    }
+
+    @Test
+    public void list_Sorted_Ascending_By_Year_Restrict_Limit_2_Offset_1() {
+        query.where(year.between("1800", "2000"));
+        query.restrict(new QueryModifiers(2l, 1l));
+        query.orderBy(year.asc());
+        List<Document> documents = query.list();
+        assertFalse(documents.isEmpty());
+        assertEquals(2, documents.size());
+        assertEquals("1954", documents.get(0).get("year"));
+        assertEquals("1990", documents.get(1).get("year"));
     }
 
     @Test
@@ -166,4 +239,103 @@ public class LuceneQueryTest {
         query.uniqueResult();
     }
 
+    @Test
+    public void listDistinct() {
+        query.where(year.between("1900", "2000").or(title.startsWith("Jura")));
+        query.orderBy(year.asc());
+        List<Document> documents = query.listDistinct();
+        assertFalse(documents.isEmpty());
+        assertEquals(3, documents.size());
+    }
+
+    @Test
+    public void listResults() {
+        query.where(year.between("1800", "2000"));
+        query.restrict(new QueryModifiers(2l, 1l));
+        query.orderBy(year.asc());
+        SearchResults<Document> results = query.listResults();
+        assertFalse(results.isEmpty());
+        assertEquals("1954", results.getResults().get(0).get("year"));
+        assertEquals("1990", results.getResults().get(1).get("year"));
+        assertEquals(2, results.getLimit());
+        assertEquals(1, results.getOffset());
+        assertEquals(2, results.getTotal());
+    }
+
+    @Test
+    public void listDistinctResults() {
+        query.where(year.between("1800", "2000").or(title.eq("The Lord of the Rings")));
+        query.restrict(new QueryModifiers(1l, 1l));
+        query.orderBy(year.asc());
+        SearchResults<Document> results = query.listDistinctResults();
+        assertFalse(results.isEmpty());
+        assertEquals("1954", results.getResults().get(0).get("year"));
+        assertEquals(1, results.getLimit());
+        assertEquals(1, results.getOffset());
+        assertEquals(1, results.getTotal());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void list_Sorted_Ascending_Limit_Negative() {
+        query.where(year.between("1800", "2000"));
+        query.limit(-1);
+        query.orderBy(year.asc());
+        query.list();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void list_Not_Sorted_Limit_Negative() {
+        query.where(year.between("1800", "2000"));
+        query.limit(-1);
+        query.list();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void list_Sorted_Ascending_Limit_0() {
+        query.where(year.between("1800", "2000"));
+        query.limit(0);
+        query.orderBy(year.asc());
+        query.list();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void list_Not_Sorted_Limit_0() {
+        query.where(year.between("1800", "2000"));
+        query.limit(0);
+        query.list();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void list_Sorted_Ascending_Offset_Negative() {
+        query.where(year.between("1800", "2000"));
+        query.offset(-1);
+        query.orderBy(year.asc());
+        query.list();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void list_Not_Sorted_Offset_Negative() {
+        query.where(year.between("1800", "2000"));
+        query.offset(-1);
+        query.list();
+    }
+
+    @Test
+    public void list_Sorted_Ascending_Offset_0() {
+        query.where(year.between("1800", "2000"));
+        query.offset(0);
+        query.orderBy(year.asc());
+        List<Document> documents = query.list();
+        assertFalse(documents.isEmpty());
+        assertEquals(4, documents.size());
+    }
+
+    @Test
+    public void list_Not_Sorted_Offset_0() {
+        query.where(year.between("1800", "2000"));
+        query.offset(0);
+        List<Document> documents = query.list();
+        assertFalse(documents.isEmpty());
+        assertEquals(4, documents.size());
+    }
 }

@@ -29,7 +29,7 @@ import com.mysema.query.types.expr.EBoolean;
 
 /**
  * LuceneQuery is a Querydsl query implementation for Lucene queries
- * 
+ *
  * @author vema
  */
 public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<Document>{
@@ -39,9 +39,6 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
     private final LuceneSerializer serializer;
 
     private final Searcher searcher;
-
-    // TODO Is there an alternative for this?
-    private static final int MAX_RESULT_COUNT = 30000;
 
     public LuceneQuery(LuceneSerializer serializer, Searcher searcher) {
         this.queryMixin = new QueryMixin<LuceneQuery>(this);
@@ -75,13 +72,16 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
     }
 
     private Query createQuery() {
+        if (queryMixin.getMetadata().getWhere() == null) {
+            throw new QueryException("Where clause was null.");
+        }
         return serializer.toQuery(queryMixin.getMetadata().getWhere());
     }
 
     @Override
     public long count() {
         try {
-            return searcher.search(createQuery(), MAX_RESULT_COUNT).totalHits;
+            return searcher.search(createQuery(), searcher.maxDoc()).totalHits;
         } catch (IOException e) {
             throw new QueryException(e);
         }
@@ -95,15 +95,27 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
     @Override
     public List<Document> list() {
         List<OrderSpecifier<?>> orderBys = queryMixin.getMetadata().getOrderBy();
+        Long queryLimit = queryMixin.getMetadata().getModifiers().getLimit();
+        Long queryOffset = queryMixin.getMetadata().getModifiers().getOffset();
+        int limit;
+        int offset = queryOffset != null ? queryOffset.intValue() : 0;
+        try {
+            limit = searcher.maxDoc();
+        } catch (IOException e) {
+            throw new QueryException(e);
+        }
+        if (queryLimit != null && queryLimit.intValue() < limit) {
+            limit = queryLimit.intValue();
+        }
         if (!orderBys.isEmpty()) {
-            return listSorted(orderBys);
+            return listSorted(orderBys, limit, offset);
         }
 
         List<Document> documents = new ArrayList<Document>();
         try {
-            ScoreDoc[] scoreDocs = searcher.search(createQuery(), MAX_RESULT_COUNT).scoreDocs;
-            for (ScoreDoc scoreDoc : scoreDocs) {
-                documents.add(searcher.doc(scoreDoc.doc));
+            ScoreDoc[] scoreDocs = searcher.search(createQuery(), limit + offset).scoreDocs;
+            for (int i = offset; i < scoreDocs.length; ++i) {
+                documents.add(searcher.doc(scoreDocs[i].doc));
             }
         } catch (IOException e) {
             throw new QueryException(e);
@@ -111,7 +123,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
         return documents;
     }
 
-    private List<Document> listSorted(List<OrderSpecifier<?>> orderBys) {
+    private List<Document> listSorted(List<OrderSpecifier<?>> orderBys, int limit, int offset) {
         List<Document> documents = new ArrayList<Document>();
         List<SortField> sortFields = new ArrayList<SortField>();
         for (OrderSpecifier<?> orderSpecifier : orderBys) {
@@ -123,9 +135,9 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
         Sort sort = new Sort();
         sort.setSort(sortFields.toArray(new SortField[sortFields.size()]));
         try {
-            ScoreDoc[] scoreDocs = searcher.search(createQuery(), null, MAX_RESULT_COUNT, sort).scoreDocs;
-            for (ScoreDoc scoreDoc : scoreDocs) {
-                documents.add(searcher.doc(scoreDoc.doc));
+            ScoreDoc[] scoreDocs = searcher.search(createQuery(), null, limit + offset, sort).scoreDocs;
+            for (int i = offset; i < scoreDocs.length; ++i) {
+                documents.add(searcher.doc(scoreDocs[i].doc));
             }
         } catch (IOException e) {
             throw new QueryException(e);
@@ -145,14 +157,14 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
 
     @Override
     public SearchResults<Document> listResults() {
-        // TODO : implement
-        throw new UnsupportedOperationException();
+        List<Document> documents = list();
+        return new SearchResults<Document>(documents, queryMixin.getMetadata().getModifiers(), documents.size());
     }
 
     @Override
     public Document uniqueResult() {
         try {
-            ScoreDoc[] scoreDocs = searcher.search(createQuery(), MAX_RESULT_COUNT).scoreDocs;
+            ScoreDoc[] scoreDocs = searcher.search(createQuery(), searcher.maxDoc()).scoreDocs;
             if (scoreDocs.length > 1) {
                 throw new QueryException("More than one result found!");
             }
