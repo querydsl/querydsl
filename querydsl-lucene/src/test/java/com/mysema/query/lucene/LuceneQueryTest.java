@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.search;
+package com.mysema.query.lucene;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -28,8 +28,11 @@ import org.junit.Test;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
+import com.mysema.query.lucene.LuceneQuery;
+import com.mysema.query.lucene.LuceneSerializer;
+import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PathBuilder;
+import com.mysema.query.types.path.PathMetadataFactory;
 
 /**
  * Tests for LuceneQuery
@@ -38,8 +41,23 @@ import com.mysema.query.types.path.PathBuilder;
  *
  */
 public class LuceneQueryTest {
+    
+    public class QDocument extends PEntity<Document>{
+
+        private static final long serialVersionUID = -4872833626508344081L;
+        
+        public QDocument(String var) {
+            super(Document.class, PathMetadataFactory.forVariable(var));
+        }
+
+        public final PString year = createString("year");
+        
+        public final PString title = createString("title");
+        
+    }
+    
     private LuceneQuery query;
-    private PathBuilder<Object> entityPath;
+//    private PathBuilder<Object> entityPath;
     private PString title;
     private PString year;
 
@@ -60,9 +78,13 @@ public class LuceneQueryTest {
 
     @Before
     public void setUp() throws Exception {
-        entityPath = new PathBuilder<Object>(Object.class, "obj");
-        title = entityPath.getString("title");
-        year = entityPath.getString("year");
+//        entityPath = new PathBuilder<Object>(Object.class, "obj");
+//        title = entityPath.getString("title");
+//        year = entityPath.getString("year");
+        
+        QDocument entityPath = new QDocument("doc");
+        title = entityPath.title;
+        year = entityPath.year;
 
         idx = new RAMDirectory();
         writer = new IndexWriter(idx, new StandardAnalyzer(Version.LUCENE_CURRENT), true, MaxFieldLength.UNLIMITED);

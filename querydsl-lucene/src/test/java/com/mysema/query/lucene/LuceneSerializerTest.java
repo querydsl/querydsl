@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.search;
+package com.mysema.query.lucene;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -26,6 +26,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.mysema.query.lucene.LuceneSerializer;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathBuilder;

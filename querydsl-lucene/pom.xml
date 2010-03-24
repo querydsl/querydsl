@@ -19,19 +19,13 @@
 		<groupId>org.apache.lucene</groupId>
 		<artifactId>lucene-core</artifactId>
 		<version>3.0.0</version>
+        <scope>provided</scope>
 	</dependency> 
     
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.parent.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-core</artifactId>
-      <version>${project.parent.version}</version>
-      <scope>test</scope>
-      <type>test-jar</type>
     </dependency>
   </dependencies>
 

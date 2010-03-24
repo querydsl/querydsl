@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.search;
+package com.mysema.query.lucene;
 
 import java.io.IOException;
 import java.util.ArrayList;
