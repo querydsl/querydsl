@@ -64,7 +64,7 @@ public class LuceneSerializer {
         } else if (op == Ops.BETWEEN) {
             return between(operation);
         }
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Illegal operation " + operation);
     }
 
     private Query toTwoHandSidedQuery(Operation<?, ?> operation, Occur occur) {

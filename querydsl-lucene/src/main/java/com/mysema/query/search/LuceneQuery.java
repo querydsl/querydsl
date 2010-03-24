@@ -18,6 +18,7 @@ import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 
 import com.mysema.query.QueryException;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.SimpleProjectable;
@@ -94,9 +95,10 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
 
     @Override
     public List<Document> list() {
-        List<OrderSpecifier<?>> orderBys = queryMixin.getMetadata().getOrderBy();
-        Long queryLimit = queryMixin.getMetadata().getModifiers().getLimit();
-        Long queryOffset = queryMixin.getMetadata().getModifiers().getOffset();
+        QueryMetadata metadata = queryMixin.getMetadata();
+        List<OrderSpecifier<?>> orderBys = metadata.getOrderBy();
+        Long queryLimit = metadata.getModifiers().getLimit();
+        Long queryOffset = metadata.getModifiers().getOffset();
         int limit;
         int offset = queryOffset != null ? queryOffset.intValue() : 0;
         try {
@@ -111,7 +113,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
             return listSorted(orderBys, limit, offset);
         }
 
-        List<Document> documents = new ArrayList<Document>();
+        List<Document> documents = new ArrayList<Document>(); // TODO : initialize List with proper size
         try {
             ScoreDoc[] scoreDocs = searcher.search(createQuery(), limit + offset).scoreDocs;
             for (int i = offset; i < scoreDocs.length; ++i) {
@@ -124,8 +126,8 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
     }
 
     private List<Document> listSorted(List<OrderSpecifier<?>> orderBys, int limit, int offset) {
-        List<Document> documents = new ArrayList<Document>();
-        List<SortField> sortFields = new ArrayList<SortField>();
+        List<Document> documents = new ArrayList<Document>(); // TODO : initialize List with proper size
+        List<SortField> sortFields = new ArrayList<SortField>(orderBys.size());
         for (OrderSpecifier<?> orderSpecifier : orderBys) {
             if (!(orderSpecifier.getTarget() instanceof Path<?>)) {
                 throw new IllegalArgumentException("argument was not of type Path.");
@@ -157,6 +159,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
 
     @Override
     public SearchResults<Document> listResults() {
+        // FIXME : SearchResults.total is number of total results, not amount of documents in paged view
         List<Document> documents = list();
         return new SearchResults<Document>(documents, queryMixin.getMetadata().getModifiers(), documents.size());
     }
