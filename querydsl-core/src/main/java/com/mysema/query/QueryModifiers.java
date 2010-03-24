@@ -23,24 +23,10 @@ public final class QueryModifiers implements Serializable{
 
     private static final long serialVersionUID = 2934344588433680339L;
 
-    /**
-     * Limit.
-     *
-     * @param limit the limit
-     *
-     * @return the query modifiers
-     */
     public static QueryModifiers limit(@Nonnegative long limit) {
         return new QueryModifiers(Long.valueOf(limit), null);
     }
 
-    /**
-     * Offset.
-     *
-     * @param offset the offset
-     *
-     * @return the query modifiers
-     */
     public static QueryModifiers offset(@Nonnegative long offset) {
         return new QueryModifiers(null, Long.valueOf(offset));
     }
@@ -70,7 +56,7 @@ public final class QueryModifiers implements Serializable{
         }
         this.offset = offset;
         if (offset != null && offset < 0) {
-            throw new IllegalArgumentException("Limit must not be negative.");
+            throw new IllegalArgumentException("Offset must not be negative.");
         }
     }
 
