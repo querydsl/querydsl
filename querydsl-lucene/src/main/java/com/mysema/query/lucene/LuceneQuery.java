@@ -126,27 +126,18 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
         return documents;
     }
 
-    private List<Document> listSorted(List<OrderSpecifier<?>> orderBys, int limit, int offset) {
-        List<SortField> sortFields = new ArrayList<SortField>(orderBys.size());
-        for (OrderSpecifier<?> orderSpecifier : orderBys) {
-            if (!(orderSpecifier.getTarget() instanceof Path<?>)) {
-                throw new IllegalArgumentException("argument was not of type Path.");
-            }
-            sortFields.add(new SortField(serializer.toField((Path<?>)orderSpecifier.getTarget()), Locale.ENGLISH, !orderSpecifier.isAscending()));
-        }
-        Sort sort = new Sort();
-        sort.setSort(sortFields.toArray(new SortField[sortFields.size()]));
-        List<Document> documents = null;
+    private List<Document> listSorted(List<OrderSpecifier<?>> orderBys, int limit, int offset) {        
         try {
+            Sort sort = serializer.toSort(orderBys);
             ScoreDoc[] scoreDocs = searcher.search(createQuery(), null, limit + offset, sort).scoreDocs;
-            documents = new ArrayList<Document>(scoreDocs.length - offset);
+            List<Document> documents = new ArrayList<Document>(scoreDocs.length - offset);
             for (int i = offset; i < scoreDocs.length; ++i) {
                 documents.add(searcher.doc(scoreDocs[i].doc));
             }
+            return documents;
         } catch (IOException e) {
             throw new QueryException(e);
-        }
-        return documents;
+        }        
     }
 
     @Override

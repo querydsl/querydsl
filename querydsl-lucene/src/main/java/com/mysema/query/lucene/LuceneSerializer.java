@@ -5,6 +5,7 @@
  */
 package com.mysema.query.lucene;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -16,6 +17,8 @@ import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.search.WildcardQuery;
@@ -26,6 +29,7 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Path;
 
 /**
@@ -189,6 +193,21 @@ public class LuceneSerializer {
             return toQuery((Operation<?, ?>) expr);
         }
         throw new IllegalArgumentException("expr was not of type Operation");
+    }
+
+    public Sort toSort(List<OrderSpecifier<?>> orderBys){
+        List<SortField> sortFields = new ArrayList<SortField>(orderBys.size());
+        for (OrderSpecifier<?> orderSpecifier : orderBys) {
+            if (!(orderSpecifier.getTarget() instanceof Path<?>)) {
+                throw new IllegalArgumentException("argument was not of type Path.");
+            }
+            sortFields.add(new SortField(toField((Path<?>)orderSpecifier.getTarget()), 
+                    Locale.ENGLISH, 
+                    !orderSpecifier.isAscending()));
+        }
+        Sort sort = new Sort();
+        sort.setSort(sortFields.toArray(new SortField[sortFields.size()]));
+        return sort;
     }
 
 }
