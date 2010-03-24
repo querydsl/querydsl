@@ -132,7 +132,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
             if (!(orderSpecifier.getTarget() instanceof Path<?>)) {
                 throw new IllegalArgumentException("argument was not of type Path.");
             }
-            sortFields.add(new SortField(toField((Path<?>)orderSpecifier.getTarget()), Locale.ENGLISH, !orderSpecifier.isAscending()));
+            sortFields.add(new SortField(serializer.toField((Path<?>)orderSpecifier.getTarget()), Locale.ENGLISH, !orderSpecifier.isAscending()));
         }
         Sort sort = new Sort();
         sort.setSort(sortFields.toArray(new SortField[sortFields.size()]));
@@ -178,8 +178,5 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
         }
     }
 
-    public String toField(Path<?> path) {
-        return path.getMetadata().getExpression().toString();
-    }
 
 }
