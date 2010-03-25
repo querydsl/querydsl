@@ -49,7 +49,7 @@ public class Projections {
         this.target = target;
     }
     
-    <A> Collection<Expr<?>> array(EArray<A> expr, EArray<A> other, A knownElement){
+    public <A> Collection<Expr<?>> array(EArray<A> expr, EArray<A> other, A knownElement){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.size());    
@@ -57,7 +57,7 @@ public class Projections {
         return rv;
     }
 
-    <A> Collection<Expr<?>> collection(ECollection<?,A> expr, ECollection<?,A> other, A knownElement){
+    public <A> Collection<Expr<?>> collection(ECollection<?,A> expr, ECollection<?,A> other, A knownElement){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.size());    
@@ -66,7 +66,7 @@ public class Projections {
     }
     
     @SuppressWarnings("unchecked")
-    <A extends Comparable> Collection<Expr<?>> date(EDate<A> expr, EDate<A> other, A knownValue){
+    public <A extends Comparable> Collection<Expr<?>> date(EDate<A> expr, EDate<A> other, A knownValue){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
         rv.add(new PDate<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
         rv.add(expr.dayOfMonth());
@@ -83,7 +83,7 @@ public class Projections {
     } 
 
     @SuppressWarnings("unchecked")
-    <A extends Comparable> Collection<Expr<?>> dateTime(EDateTime<A> expr, EDateTime<A> other, A knownValue){
+    public <A extends Comparable> Collection<Expr<?>> dateTime(EDateTime<A> expr, EDateTime<A> other, A knownValue){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
         rv.add(new PDateTime<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
         rv.add(expr.dayOfMonth());
@@ -102,7 +102,7 @@ public class Projections {
         return rv;
     }
 
-    <A> Collection<Expr<?>> list(EList<A> expr, EList<A> other, A knownElement){
+    public <A> Collection<Expr<?>> list(EList<A> expr, EList<A> other, A knownElement){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
         rv.add(expr.get(0));
         if (!module.equals(Module.RDFBEAN)){
@@ -111,7 +111,7 @@ public class Projections {
         return rv;
     }
 
-    <K,V> Collection<Expr<?>> map(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue) {
+    public <K,V> Collection<Expr<?>> map(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue) {
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
         rv.add(expr.get(knownKey));
         if (!module.equals(Module.RDFBEAN)){
@@ -120,7 +120,7 @@ public class Projections {
         return rv;
     }
 
-    <A extends Number & Comparable<A>> Collection<ENumber<?>> numeric(ENumber<A> expr, ENumber<A> other, A knownValue, boolean forFilter){
+    public <A extends Number & Comparable<A>> Collection<ENumber<?>> numeric(ENumber<A> expr, ENumber<A> other, A knownValue, boolean forFilter){
         HashSet<ENumber<?>> rv = new HashSet<ENumber<?>>();
         rv.addAll(numeric(expr, other, forFilter));
         rv.addAll(numeric(expr, ENumberConst.create(knownValue), forFilter));
@@ -163,7 +163,7 @@ public class Projections {
         return rv;
     }
     
-    <A extends Number & Comparable<A>> Collection<ENumber<?>> numericCasts(ENumber<A> expr, ENumber<A> other, A knownValue){
+    public <A extends Number & Comparable<A>> Collection<ENumber<?>> numericCasts(ENumber<A> expr, ENumber<A> other, A knownValue){
         if (!target.equals(Target.MYSQL)){
             HashSet<ENumber<?>> rv = new HashSet<ENumber<?>>();
             rv.add(expr.byteValue());
@@ -178,7 +178,7 @@ public class Projections {
         }        
     }
 
-    Collection<Expr<String>> string(EString expr, EString other, String knownValue){
+    public Collection<Expr<String>> string(EString expr, EString other, String knownValue){
         HashSet<Expr<String>> rv = new HashSet<Expr<String>>();
         rv.addAll(stringProjections(expr, other));
         rv.addAll(stringProjections(expr, EStringConst.create(knownValue)));
@@ -186,7 +186,7 @@ public class Projections {
     }
     
     @SuppressWarnings("unchecked")
-    Collection<Expr<String>> stringProjections(EString expr, EString other){
+    public Collection<Expr<String>> stringProjections(EString expr, EString other){
         HashSet<Expr<String>> rv = new HashSet<Expr<String>>();
         rv.add(new PString(PathMetadataFactory.forDelegate(expr)));
         
@@ -224,7 +224,7 @@ public class Projections {
     }
         
     @SuppressWarnings("unchecked")
-    <A extends Comparable> Collection<Expr<?>> time(ETime<A> expr, ETime<A> other, A knownValue){
+    public <A extends Comparable> Collection<Expr<?>> time(ETime<A> expr, ETime<A> other, A knownValue){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
         rv.add(new PTime<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
         rv.add(expr.hour());

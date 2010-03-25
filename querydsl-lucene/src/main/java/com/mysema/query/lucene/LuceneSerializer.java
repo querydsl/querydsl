@@ -39,6 +39,7 @@ import com.mysema.query.types.Path;
  *
  */
 public class LuceneSerializer {
+    
     private final boolean lowerCase;
 
     public LuceneSerializer(boolean lowerCase) {
@@ -57,14 +58,16 @@ public class LuceneSerializer {
             return bq;
         } else if (op == Ops.LIKE) {
             return like(operation);
-        } else if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE) {
+        } else if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE || op == Ops.EQ_IGNORE_CASE) {
             return eq(operation);
-        } else if (op == Ops.STARTS_WITH) {
+        } else if (op == Ops.NE_OBJECT || op == Ops.NE_PRIMITIVE) {
+            return ne(operation);
+        } else if (op == Ops.STARTS_WITH || op == Ops.STARTS_WITH_IC) {
             return startsWith(operation);
-        } else if (op == Ops.STRING_CONTAINS) {
-            return stringContains(operation);
-        } else if (op == Ops.ENDS_WITH) {
+        } else if (op == Ops.ENDS_WITH || op == Ops.ENDS_WITH_IC) {
             return endsWith(operation);
+        } else if (op == Ops.STRING_CONTAINS || op == Ops.STRING_CONTAINS_IC) {
+            return stringContains(operation);        
         } else if (op == Ops.BETWEEN) {
             return between(operation);
         }
@@ -83,7 +86,7 @@ public class LuceneSerializer {
 
     private Query like(Operation<?, ?> operation) {
         verifyArguments(operation);
-        String field = toField((Path<?>) operation.getArg(0));
+        String field = toField(operation.getArg(0));
         String[] terms = createTerms(operation.getArg(1));
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
@@ -97,7 +100,7 @@ public class LuceneSerializer {
 
     private Query eq(Operation<?, ?> operation) {
         verifyArguments(operation);
-        String field = toField((Path<?>) operation.getArg(0));
+        String field = toField(operation.getArg(0));
         String[] terms = createTerms(operation.getArg(1));
         if (terms.length > 1) {
             PhraseQuery pq = new PhraseQuery();
@@ -108,10 +111,16 @@ public class LuceneSerializer {
         }
         return new TermQuery(new Term(field, normalize(terms[0])));
     }
+    
+    private Query ne(Operation<?, ?> operation) {
+        BooleanQuery bq = new BooleanQuery();
+        bq.add(new BooleanClause(eq(operation), Occur.MUST_NOT));
+        return bq;
+    }
 
     private Query startsWith(Operation<?, ?> operation) {
         verifyArguments(operation);
-        String field = toField((Path<?>) operation.getArg(0));
+        String field = toField(operation.getArg(0));
         String[] terms = createEscapedTerms(operation.getArg(1));
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
@@ -126,7 +135,7 @@ public class LuceneSerializer {
 
     private Query stringContains(Operation<?, ?> operation) {
         verifyArguments(operation);
-        String field = toField((Path<?>) operation.getArg(0));
+        String field = toField(operation.getArg(0));
         String[] terms = createEscapedTerms(operation.getArg(1));
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
@@ -140,7 +149,7 @@ public class LuceneSerializer {
 
     private Query endsWith(Operation<?, ?> operation) {
         verifyArguments(operation);
-        String field = toField((Path<?>) operation.getArg(0));
+        String field = toField(operation.getArg(0));
         String[] terms = createEscapedTerms(operation.getArg(1));
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
@@ -156,13 +165,26 @@ public class LuceneSerializer {
     private Query between(Operation<?, ?> operation) {
         verifyArguments(operation);
         // TODO Phrase not properly supported
-        String field = toField((Path<?>) operation.getArg(0));
+        String field = toField(operation.getArg(0));
         String[] lowerTerms = createTerms(operation.getArg(1));
         String[] upperTerms = createTerms(operation.getArg(2));
         return new TermRangeQuery(field, normalize(lowerTerms[0]), normalize(upperTerms[0]), true,
                 true);
     }
 
+    @SuppressWarnings("unchecked")
+    private String toField(Expr<?> expr){
+        if (expr instanceof Path){
+            return toField((Path<?>)expr);
+        }else if (expr instanceof Operation){
+            Operation<?,?> operation = (Operation<?, ?>) expr;
+            if (operation.getOperator() == Ops.LOWER || operation.getOperator() == Ops.UPPER){
+                return toField(operation.getArg(0));
+            }
+        }
+        throw new IllegalArgumentException("Unable to transform " + expr + " to field");
+    }
+    
     public String toField(Path<?> path) {
         return path.getMetadata().getExpression().toString();
     }

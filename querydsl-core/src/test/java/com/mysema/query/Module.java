@@ -29,6 +29,10 @@ public enum Module{
     /**
      * querydsl-sql
      */
-    SQL;
+    SQL,    
+    /**
+     * 
+     */
+    LUCENE;
     
 }

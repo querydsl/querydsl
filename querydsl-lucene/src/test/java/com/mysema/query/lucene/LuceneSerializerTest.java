@@ -26,8 +26,12 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.mysema.query.lucene.LuceneSerializer;
+import com.mysema.query.MatchingFilters;
+import com.mysema.query.Module;
+import com.mysema.query.Target;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.EStringConst;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathBuilder;
 
@@ -84,6 +88,12 @@ public class LuceneSerializerTest {
     @After
     public void tearDown() throws Exception {
         searcher.close();
+    }
+    
+    private void testQuery(Expr<?> expr, int expectedHits) throws Exception {
+        Query query = serializer.toQuery(expr);
+        TopDocs docs = searcher.search(query, 100);
+        assertEquals(expectedHits, docs.totalHits);
     }
 
     private void testQuery(Expr<?> expr, String expectedQuery, int expectedHits) throws Exception {
@@ -268,7 +278,7 @@ public class LuceneSerializerTest {
     public void between_Does_Not_Find_Results() throws Exception {
         testQuery(title.between("Indiana", "Jurassib"), "title:[indiana TO jurassib]", 0);
     }
-
+    
     @Test
     @Ignore
     public void fuzzy() throws Exception {
@@ -285,6 +295,25 @@ public class LuceneSerializerTest {
     @Ignore
     public void boost() throws Exception {
         fail("Not yet implemented!");
+    }
+    
+    @Test
+    public void various() throws Exception{
+        MatchingFilters filters = new MatchingFilters(Module.LUCENE, Target.LUCENE);
+        for (EBoolean filter : filters.string(title, EStringConst.create("Jurassic"))){
+            System.out.println(filter);
+            testQuery(filter, 1);
+        }
+        
+        for (EBoolean filter : filters.string(author, EStringConst.create("Michael Crichton"))){
+            System.out.println(filter);
+            testQuery(filter, 1);
+        }
+        
+        for (EBoolean filter : filters.string(title, EStringConst.create("1990"))){
+            System.out.println(filter);
+            testQuery(filter, 0);
+        }
     }
 
 }

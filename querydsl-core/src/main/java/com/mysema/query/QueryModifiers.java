@@ -31,7 +31,7 @@ public final class QueryModifiers implements Serializable{
         return new QueryModifiers(null, Long.valueOf(offset));
     }
 
-    /** The offset. */
+
     @Nullable
     private final Long limit, offset;
 

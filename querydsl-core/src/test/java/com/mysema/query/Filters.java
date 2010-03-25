@@ -43,7 +43,7 @@ public class Filters {
         this.target = target;
     }
 
-    Collection<EBoolean> booleanFilters(EBoolean expr, EBoolean other){
+    public Collection<EBoolean> booleanFilters(EBoolean expr, EBoolean other){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.add(expr.and(other));
         rv.add(expr.or(other));
@@ -53,7 +53,7 @@ public class Filters {
         return rv;
     }
 
-    <A> Collection<EBoolean> collection(ECollection<?,A> expr, ECollection<?,A> other, A knownElement){
+    public <A> Collection<EBoolean> collection(ECollection<?,A> expr, ECollection<?,A> other, A knownElement){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.add(expr.contains(knownElement));
         rv.add(expr.isEmpty());
@@ -64,7 +64,7 @@ public class Filters {
         return rv;
     }
     
-    <A> Collection<EBoolean> array(EArray<A> expr, EArray<A> other, A knownElement){
+    public <A> Collection<EBoolean> array(EArray<A> expr, EArray<A> other, A knownElement){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();        
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.size().gt(0));    
@@ -89,7 +89,7 @@ public class Filters {
     }
 
     @SuppressWarnings("unchecked")
-    <A extends Comparable> Collection<EBoolean> date(EDate<A> expr, EDate<A> other, A knownValue){
+    public <A extends Comparable> Collection<EBoolean> date(EDate<A> expr, EDate<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(comparable(expr, other, knownValue));
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
@@ -100,7 +100,7 @@ public class Filters {
     
 
     @SuppressWarnings("unchecked")
-    <A extends Comparable> Collection<EBoolean> dateTime(EDateTime<A> expr, EDateTime<A> other, A knownValue){
+    public <A extends Comparable> Collection<EBoolean> dateTime(EDateTime<A> expr, EDateTime<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(comparable(expr, other, knownValue));
         rv.add(expr.dayOfMonth().eq(1));
@@ -136,7 +136,7 @@ public class Filters {
         return rv;
     }
 
-    <A> Collection<EBoolean> list(EList<A> expr, EList<A> other, A knownElement){
+    public <A> Collection<EBoolean> list(EList<A> expr, EList<A> other, A knownElement){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(collection(expr, other, knownElement));
         rv.add(expr.get(0).eq(knownElement));
@@ -144,7 +144,7 @@ public class Filters {
     }
 
 
-    <K,V> Collection<EBoolean> map(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue) {
+    public <K,V> Collection<EBoolean> map(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue) {
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.add(expr.containsKey(knownKey));
         rv.add(expr.containsValue(knownValue));
@@ -159,7 +159,7 @@ public class Filters {
     }
 
     @SuppressWarnings("unchecked")
-    <A extends Number & Comparable<A>> Collection<EBoolean> numeric(ENumber<A> expr, ENumber<A> other, A knownValue){
+    public <A extends Number & Comparable<A>> Collection<EBoolean> numeric(ENumber<A> expr, ENumber<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();        
         for (ENumber<?> num : projections.numeric(expr, other, knownValue, true)){
             rv.add(num.lt(expr));
@@ -188,7 +188,7 @@ public class Filters {
         return rv;
     }
     
-    <A> Collection<EBoolean> pathFilters(Path<A> expr, Path<A> other, A knownValue){
+    public <A> Collection<EBoolean> pathFilters(Path<A> expr, Path<A> other, A knownValue){
         return Arrays.<EBoolean>asList(
              expr.isNull(),
              expr.isNotNull()
@@ -196,7 +196,7 @@ public class Filters {
     }
 
     @SuppressWarnings("unchecked")
-    Collection<EBoolean> string(EString expr, EString other, String knownValue){
+    public Collection<EBoolean> string(EString expr, EString other, String knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         if (expr instanceof Path && other instanceof Path){
             rv.addAll(pathFilters((Path<String>)expr, (Path<String>)other, knownValue));
@@ -265,7 +265,7 @@ public class Filters {
     }    
     
     @SuppressWarnings("unchecked")
-    <A extends Comparable> Collection<EBoolean> time(ETime<A> expr, ETime<A> other, A knownValue){
+    public <A extends Comparable> Collection<EBoolean> time(ETime<A> expr, ETime<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(comparable(expr, other, knownValue));
         rv.add(expr.hour().eq(other.hour()));

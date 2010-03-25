@@ -37,6 +37,10 @@ public enum Target{
     /**
      * Microsoft SQL Server
      */
-    SQLSERVER;
+    SQLSERVER,    
+    /**
+     * 
+     */
+    LUCENE;
     
 }

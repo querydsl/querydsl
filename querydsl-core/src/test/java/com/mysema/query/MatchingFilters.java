@@ -41,7 +41,7 @@ public class MatchingFilters {
         this.target = target;
     }
 
-    <A> Collection<EBoolean> array(EArray<A> expr,  EArray<A> other, A knownElement, A missingElement){
+    public <A> Collection<EBoolean> array(EArray<A> expr,  EArray<A> other, A knownElement, A missingElement){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();          
 //        rv.add(expr.isEmpty().not());          
         if (!module.equals(Module.RDFBEAN)){
@@ -50,7 +50,7 @@ public class MatchingFilters {
         return rv;
     }
     
-    <A> Collection<EBoolean> collection(ECollection<?,A> expr,  ECollection<?,A> other, A knownElement, A missingElement){
+    public <A> Collection<EBoolean> collection(ECollection<?,A> expr,  ECollection<?,A> other, A knownElement, A missingElement){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.contains(knownElement));
@@ -71,7 +71,7 @@ public class MatchingFilters {
         return rv;
     }
     
-    Collection<EBoolean> date(EDate<java.sql.Date> expr, EDate<java.sql.Date> other){
+    public Collection<EBoolean> date(EDate<java.sql.Date> expr, EDate<java.sql.Date> other){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(comparable(expr, other));
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
@@ -90,14 +90,14 @@ public class MatchingFilters {
         return rv;
     }
     
-    Collection<EBoolean> date(EDate<java.sql.Date> expr, EDate<java.sql.Date> other, java.sql.Date knownValue){
+    public Collection<EBoolean> date(EDate<java.sql.Date> expr, EDate<java.sql.Date> other, java.sql.Date knownValue){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(date(expr, other));
         rv.addAll(date(expr, EDateConst.create(knownValue)));
         return rv;
     }
 
-    Collection<EBoolean> dateTime(EDateTime<java.util.Date> expr, EDateTime<java.util.Date> other){
+    public Collection<EBoolean> dateTime(EDateTime<java.util.Date> expr, EDateTime<java.util.Date> other){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(comparable(expr, other));
         rv.add(expr.milliSecond().eq(other.milliSecond()));
@@ -120,18 +120,18 @@ public class MatchingFilters {
         return rv;
     }
     
-    Collection<EBoolean> dateTime(EDateTime<java.util.Date> expr, EDateTime<java.util.Date> other, java.util.Date knownValue){
+    public Collection<EBoolean> dateTime(EDateTime<java.util.Date> expr, EDateTime<java.util.Date> other, java.util.Date knownValue){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(dateTime(expr, other));
         rv.addAll(dateTime(expr, EDateTimeConst.create(knownValue)));
         return rv;
     }
 
-    <A> Collection<EBoolean> list(EList<A> expr, EList<A> other, A knownElement, A missingElement){
+    public <A> Collection<EBoolean> list(EList<A> expr, EList<A> other, A knownElement, A missingElement){
         return collection(expr, other, knownElement, missingElement);
     }
 
-    <K,V> Collection<EBoolean> map(EMap<K,V> expr, EMap<K,V> other,  K knownKey, V knownValue, K missingKey, V missingValue) {
+    public <K,V> Collection<EBoolean> map(EMap<K,V> expr, EMap<K,V> other,  K knownKey, V knownValue, K missingKey, V missingValue) {
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.add(expr.containsKey(knownKey));
         rv.add(expr.containsKey(missingKey).not());          
@@ -143,14 +143,14 @@ public class MatchingFilters {
         return rv;
     }
 
-    <A extends Number & Comparable<A>> Collection<EBoolean> numeric( ENumber<A> expr, ENumber<A> other, A knownValue){
+    public <A extends Number & Comparable<A>> Collection<EBoolean> numeric( ENumber<A> expr, ENumber<A> other, A knownValue){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(numeric(expr, other));
         rv.addAll(numeric(expr, ENumberConst.create(knownValue)));
         return rv;
     }
     
-    <A extends Number & Comparable<A>> Collection<EBoolean> numeric( ENumber<A> expr, ENumber<A> other){
+    public <A extends Number & Comparable<A>> Collection<EBoolean> numeric( ENumber<A> expr, ENumber<A> other){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.add(expr.eq(other));
         rv.add(expr.goe(other));
@@ -163,12 +163,14 @@ public class MatchingFilters {
         return rv;
     }
 
-    Collection<EBoolean> string(EString expr, EString other){
+    public Collection<EBoolean> string(EString expr, EString other){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
-        rv.addAll(comparable(expr, other));
-        
-        rv.add(expr.charAt(0).eq(other.charAt(0)));
-        rv.add(expr.charAt(1).eq(other.charAt(1)));
+        if (module != Module.LUCENE){
+            rv.addAll(comparable(expr, other));
+            
+            rv.add(expr.charAt(0).eq(other.charAt(0)));
+            rv.add(expr.charAt(1).eq(other.charAt(1)));    
+        }        
             
         rv.add(expr.contains(other));
         rv.add(expr.contains(other.substring(0,1)));
@@ -195,40 +197,48 @@ public class MatchingFilters {
             
         rv.add(expr.eq(other));
         rv.add(expr.equalsIgnoreCase(other));
-            
-        rv.add(expr.indexOf(other).eq(0));
         
-        if (!target.equals(Target.DERBY)){
+        if (module != Module.LUCENE){
+            rv.add(expr.indexOf(other).eq(0));    
+        }
+        
+        if (target != Target.DERBY && module != Module.LUCENE){
             rv.add(expr.indexOf(other.substring(1)).eq(1)); 
             rv.add(expr.indexOf(other.substring(2)).eq(2));     
         }        
             
-        rv.add(expr.isEmpty().not());
-        rv.add(expr.isNotEmpty());
+        if (module != Module.LUCENE){
+            rv.add(expr.isEmpty().not());
+            rv.add(expr.isNotEmpty());    
+        }        
         
 //        if (!module.equals(Module.HQL) && !module.equals(Module.JDOQL) && !module.equals(Module.SQL)){
 //            rv.add(expr.lastIndexOf(other).eq(0));    
 //        }   
         
-        rv.add(expr.length().eq(other.length()));
-            
-        rv.add(expr.like(other));
-        rv.add(expr.like(other.substring(0,1).append("%")));
-        rv.add(expr.like(other.substring(0,1).append("%").append(other.substring(2))));
-        rv.add(expr.like(other.substring(1).prepend("%")));
-        rv.add(expr.like(other.substring(1,2).append("%").prepend("%")));
+        if (module != Module.LUCENE){
+            rv.add(expr.length().eq(other.length()));    
+
+            rv.add(expr.like(other));
+            rv.add(expr.like(other.substring(0,1).append("%")));
+            rv.add(expr.like(other.substring(0,1).append("%").append(other.substring(2))));
+            rv.add(expr.like(other.substring(1).prepend("%")));
+            rv.add(expr.like(other.substring(1,2).append("%").prepend("%")));            
+        }        
             
         rv.add(expr.lower().eq(other.lower()));
         
-        if (!module.equals(Module.SQL) 
-        || (!target.equals(Target.HSQLDB) && !target.equals(Target.DERBY) && !target.equals(Target.SQLSERVER))){
-            rv.add(expr.matches(other.substring(0,1).append(".*")));
-            rv.add(expr.matches(other.substring(0,1).append(".").append(other.substring(2))));
-            rv.add(expr.matches(other.substring(1).prepend(".*")));
-            rv.add(expr.matches(other.substring(1,2).prepend(".*").append(".*")));    
-        }        
+        if (module != Module.LUCENE){
+            if (!module.equals(Module.SQL) 
+                    || (!target.equals(Target.HSQLDB) && !target.equals(Target.DERBY) && !target.equals(Target.SQLSERVER))){
+                        rv.add(expr.matches(other.substring(0,1).append(".*")));
+                        rv.add(expr.matches(other.substring(0,1).append(".").append(other.substring(2))));
+                        rv.add(expr.matches(other.substring(1).prepend(".*")));
+                        rv.add(expr.matches(other.substring(1,2).prepend(".*").append(".*")));    
+            }
             
-        rv.add(expr.ne(other));
+            rv.add(expr.ne(other));
+        }
             
         rv.add(expr.startsWith(other));
         rv.add(expr.startsWith(other,false));            
@@ -237,23 +247,25 @@ public class MatchingFilters {
         rv.add(expr.startsWith(other.substring(0,2)));                        
         rv.add(expr.startsWith(other.substring(0,2),false));
             
-        rv.add(expr.substring(0,1).eq(other.substring(0,1)));
-        rv.add(expr.substring(1).eq(other.substring(1)));
-                                                             
-        rv.add(expr.trim().eq(other.trim()));
+        if (module != Module.LUCENE){
+            rv.add(expr.substring(0,1).eq(other.substring(0,1)));
+            rv.add(expr.substring(1).eq(other.substring(1)));
+                                                                 
+            rv.add(expr.trim().eq(other.trim()));    
+        }        
             
         rv.add(expr.upper().eq(other.upper()));
         return rv;
     }
 
-    Collection<EBoolean> string(EString expr, EString other,  String knownValue){
+    public Collection<EBoolean> string(EString expr, EString other,  String knownValue){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(string(expr, other));
         rv.addAll(string(expr, EStringConst.create(knownValue)));
         return rv;
     }
 
-    Collection<EBoolean> time(ETime<java.sql.Time> expr,  ETime<java.sql.Time> other){
+    public Collection<EBoolean> time(ETime<java.sql.Time> expr,  ETime<java.sql.Time> other){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(comparable(expr, other));
         rv.add(expr.milliSecond().eq(other.milliSecond()));
@@ -263,7 +275,7 @@ public class MatchingFilters {
         return rv;
     }
     
-    Collection<EBoolean> time(ETime<java.sql.Time> expr,  ETime<java.sql.Time> other, java.sql.Time knownValue){
+    public Collection<EBoolean> time(ETime<java.sql.Time> expr,  ETime<java.sql.Time> other, java.sql.Time knownValue){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.addAll(time(expr, other));
         rv.addAll(time(expr, ETimeConst.create(knownValue)));

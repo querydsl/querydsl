@@ -41,7 +41,7 @@ public abstract class AbstractStandardTest {
     private final java.sql.Date date;
     
     private Projections projections = new Projections(Module.HQL, getTarget()){
-        <A> Collection<Expr<?>> list(EList<A> expr, EList<A> other, A knownElement){
+        public <A> Collection<Expr<?>> list(EList<A> expr, EList<A> other, A knownElement){
             // NOTE : expr.get(0) is only supported in the where clause
             return Collections.<Expr<?>>singleton(expr.size());
         }          
