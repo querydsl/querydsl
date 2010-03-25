@@ -8,14 +8,12 @@ package com.mysema.query.lucene;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.Sort;
-import org.apache.lucene.search.SortField;
 
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
@@ -25,7 +23,6 @@ import com.mysema.query.SimpleProjectable;
 import com.mysema.query.SimpleQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
@@ -126,7 +123,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
         return documents;
     }
 
-    private List<Document> listSorted(List<OrderSpecifier<?>> orderBys, int limit, int offset) {        
+    private List<Document> listSorted(List<OrderSpecifier<?>> orderBys, int limit, int offset) {
         try {
             Sort sort = serializer.toSort(orderBys);
             ScoreDoc[] scoreDocs = searcher.search(createQuery(), null, limit + offset, sort).scoreDocs;
@@ -137,7 +134,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
             return documents;
         } catch (IOException e) {
             throw new QueryException(e);
-        }        
+        }
     }
 
     @Override
