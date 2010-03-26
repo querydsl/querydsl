@@ -40,7 +40,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
 
     public LuceneQuery(boolean lowerCase, Searcher searcher) {
         this.queryMixin = new QueryMixin<LuceneQuery>(this);
-        this.serializer = new LuceneSerializer(lowerCase);
+        this.serializer = lowerCase ? LuceneSerializer.LOWERCASE : LuceneSerializer.DEFAULT;
         this.searcher = searcher;
     }
 

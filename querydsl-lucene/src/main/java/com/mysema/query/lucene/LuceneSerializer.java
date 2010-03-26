@@ -40,9 +40,13 @@ import com.mysema.query.types.Path;
  */
 public class LuceneSerializer {
     
+    public static final LuceneSerializer DEFAULT = new LuceneSerializer(false);
+    
+    public static final LuceneSerializer LOWERCASE = new LuceneSerializer(true);
+    
     private final boolean lowerCase;
 
-    public LuceneSerializer(boolean lowerCase) {
+    protected LuceneSerializer(boolean lowerCase) {
         this.lowerCase = lowerCase;
     }
 

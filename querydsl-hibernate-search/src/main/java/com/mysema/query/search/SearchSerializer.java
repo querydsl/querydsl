@@ -10,6 +10,10 @@ import org.hibernate.search.annotations.Field;
 import com.mysema.query.lucene.LuceneSerializer;
 import com.mysema.query.types.Path;
 
+/**
+ * @author tiwe
+ *
+ */
 public class SearchSerializer extends LuceneSerializer{
 
     public static final SearchSerializer DEFAULT = new SearchSerializer(false);
