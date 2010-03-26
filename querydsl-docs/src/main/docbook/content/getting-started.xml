@@ -12,5 +12,6 @@
     <xi:include href="integration/hql.xml" />
     <xi:include href="integration/collections.xml" />
     <xi:include href="integration/sql.xml" />
+    <xi:include href="integration/lucene.xml" />
     
 </chapter>    
