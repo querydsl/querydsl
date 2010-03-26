@@ -25,6 +25,8 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 
 /**
+ * SearchQuery is a Query implementation for Hibernate Search
+ * 
  * @author tiwe
  *
  * @param <T>
