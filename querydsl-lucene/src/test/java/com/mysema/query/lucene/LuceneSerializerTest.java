@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.lucene;
 
@@ -89,7 +89,7 @@ public class LuceneSerializerTest {
     public void tearDown() throws Exception {
         searcher.close();
     }
-    
+
     private void testQuery(Expr<?> expr, int expectedHits) throws Exception {
         Query query = serializer.toQuery(expr);
         TopDocs docs = searcher.search(query, 100);
@@ -204,6 +204,21 @@ public class LuceneSerializerTest {
     }
 
     @Test
+    public void ne_Does_Not_Find_Results() throws Exception {
+        testQuery(title.ne("House"), "-title:house", 0);
+    }
+
+    @Test
+    public void ne() throws Exception {
+        testQuery(title.ne("Jurassic Park"), "-title:\"jurassic park\"", 0);
+    }
+
+    @Test
+    public void ne_or_eq() throws Exception {
+        testQuery(title.ne("Jurassic Park").or(year.eq("1954")), "(-title:\"jurassic park\") year:1954", 0);
+    }
+
+    @Test
     public void startsWith() throws Exception {
         testQuery(title.startsWith("Jurassi"), "title:jurassi*", 1);
     }
@@ -278,7 +293,7 @@ public class LuceneSerializerTest {
     public void between_Does_Not_Find_Results() throws Exception {
         testQuery(title.between("Indiana", "Jurassib"), "title:[indiana TO jurassib]", 0);
     }
-    
+
     @Test
     @Ignore
     public void fuzzy() throws Exception {
@@ -296,7 +311,7 @@ public class LuceneSerializerTest {
     public void boost() throws Exception {
         fail("Not yet implemented!");
     }
-    
+
     @Test
     public void various() throws Exception{
         MatchingFilters filters = new MatchingFilters(Module.LUCENE, Target.LUCENE);
@@ -304,12 +319,12 @@ public class LuceneSerializerTest {
             System.out.println(filter);
             testQuery(filter, 1);
         }
-        
+
         for (EBoolean filter : filters.string(author, EStringConst.create("Michael Crichton"))){
             System.out.println(filter);
             testQuery(filter, 1);
         }
-        
+
         for (EBoolean filter : filters.string(title, EStringConst.create("1990"))){
             System.out.println(filter);
             testQuery(filter, 0);
