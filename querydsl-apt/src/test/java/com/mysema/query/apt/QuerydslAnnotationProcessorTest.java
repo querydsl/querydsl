@@ -3,9 +3,9 @@ package com.mysema.query.apt;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.processing.AbstractProcessor;
 import javax.tools.JavaCompiler;
 
 import junit.framework.Assert;
@@ -13,13 +13,16 @@ import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
+import com.mysema.query.apt.hibernate.HibernateAnnotationProcessor;
+import com.mysema.query.apt.jdo.JDOAnnotationProcessor;
+import com.mysema.query.apt.jpa.JPAAnnotationProcessor;
 import com.mysema.util.SimpleCompiler;
 
 public class QuerydslAnnotationProcessorTest {
     
     private static final String packagePath = "src/test/java/com/mysema/query/domain/";
 
-    private void process(List<String> classes) throws IOException{
+    private void process(Class<? extends AbstractProcessor> processorClass, List<String> classes) throws IOException{
         File out = new File("target/out");
         FileUtils.deleteDirectory(out);
         if (!out.mkdirs()){
@@ -33,7 +36,7 @@ public class QuerydslAnnotationProcessorTest {
         options.add("target/out");
         options.add("-proc:only");
         options.add("-processor");
-        options.add(QuerydslAnnotationProcessor.class.getName());        
+        options.add(processorClass.getName());        
         options.addAll(classes);        
         int compilationResult = compiler.run(null, null, null, options.toArray(new String[options.size()]));
         if(compilationResult == 0){
@@ -52,17 +55,18 @@ public class QuerydslAnnotationProcessorTest {
                 classes.add(file.getPath());
             }
         }
-        process(classes);
-    }
-    
-    @Test
-    public void processGenericInheritance1() throws IOException{
-        process(Collections.singletonList(packagePath + "Inheritance6Test.java"));
-    }
-    
-    @Test
-    public void processGenericInheritance2() throws IOException{
-        process(Collections.singletonList(packagePath + "Inheritance7Test.java"));
+        
+        // default processor
+        process(QuerydslAnnotationProcessor.class, classes);
+        
+        // JPA
+        process(JPAAnnotationProcessor.class, classes);
+        
+        // Hibernate
+        process(HibernateAnnotationProcessor.class, classes);
+        
+        // JDO
+        process(JDOAnnotationProcessor.class, classes);
     }
     
 }
