@@ -313,6 +313,12 @@ public class LuceneSerializerTest {
     }
 
     @Test
+    @Ignore
+    public void in() throws Exception {
+        fail("Not yet implemented!");
+    }
+
+    @Test
     public void various() throws Exception{
         MatchingFilters filters = new MatchingFilters(Module.LUCENE, Target.LUCENE);
         for (EBoolean filter : filters.string(title, EStringConst.create("Jurassic"))){
