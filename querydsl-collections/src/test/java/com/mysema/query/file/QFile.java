@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.file;
 
 import static com.mysema.query.types.path.PathMetadataFactory.forProperty;
@@ -6,6 +11,9 @@ import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 import java.io.File;
 
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.custom.CString;
+import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.EStringConst;
 import com.mysema.query.types.path.PBoolean;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PString;
@@ -16,10 +24,16 @@ import com.mysema.query.types.path.PString;
  */
 public class QFile extends PComparable<File>{
     
+    private static final long serialVersionUID = -7703329992523284173L;
+    
+    private static final String GET_CONTENT = "org.apache.commons.io.FileUtils.readFileToString({0}, {1})";
+
     public static final QFile any = new QFile("any");
     
-    private static final long serialVersionUID = -7703329992523284173L;
-
+    public static Iterable<File> walk(File dir){
+        return new DirectoryWalk(dir);
+    }
+    
     public final PBoolean absolute = new PBoolean(this, "absolute");
 
     private volatile  QFile absoluteFile, canonicalFile, parentFile;
@@ -64,6 +78,10 @@ public class QFile extends PComparable<File>{
             canonicalFile = new QFile(this, "canonicalFile");
         }
         return canonicalFile;
+    }
+    
+    public EString getContent(String encoding){
+        return CString.create(GET_CONTENT, this, EStringConst.create(encoding));
     }
     
     public QFile parentFile() {
