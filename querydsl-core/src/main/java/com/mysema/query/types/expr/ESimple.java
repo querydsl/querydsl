@@ -15,7 +15,7 @@ import com.mysema.query.types.Ops;
 
 /**
  * ESimple is the base class for Expr implementations. It provides default implementations
- * for most of the abstract methods in Expr
+ * for most of the abstract methods in {@link Expr}
  * 
  * @author tiwe
  *

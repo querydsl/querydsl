@@ -18,7 +18,7 @@ import com.mysema.query.types.Ops;
  * @param <D>
  *
  * @author tiwe
- * @see http://en.wikipedia.org/wiki/Gregorian_calendar
+ * @see <a href="http://en.wikipedia.org/wiki/Gregorian_calendar">Gregorian calendar</a>
  */
 @SuppressWarnings({"unchecked"})
 public abstract class EDateTime<D extends Comparable> extends EDate<D> {
