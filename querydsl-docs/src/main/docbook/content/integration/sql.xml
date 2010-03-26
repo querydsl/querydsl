@@ -4,7 +4,7 @@
   
   <title>Querying SQL/JDBC sources</title>
   
-  <para>This chapter describes the query type generation and querying functionality of the module.</para>
+  <para>This chapter describes the query type generation and querying functionality of the SQL module.</para>
   
   <sect2>
   
