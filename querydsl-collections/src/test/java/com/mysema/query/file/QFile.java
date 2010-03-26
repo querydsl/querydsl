@@ -26,7 +26,7 @@ public class QFile extends PComparable<File>{
     
     private static final long serialVersionUID = -7703329992523284173L;
     
-    private static final String GET_CONTENT = "org.apache.commons.io.FileUtils.readFileToString({0}, {1})";
+    private static final String GET_CONTENT = QFile.class.getName() + "Utils.readFileToString({0}, {1})";
 
     public static final QFile any = new QFile("any");
     

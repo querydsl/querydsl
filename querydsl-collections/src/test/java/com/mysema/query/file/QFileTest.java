@@ -41,7 +41,6 @@ public class QFileTest {
     @Test
     @Ignore
     public void getContent(){
-        // FIXME
         QFile anyFile = QFile.any;
         Map<File,String> rv = MiniApi
                 .from(anyFile, QFile.walk(new File("src/test")))
