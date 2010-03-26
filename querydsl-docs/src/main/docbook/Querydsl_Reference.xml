@@ -8,7 +8,7 @@
     <bookinfo>
         <title>Querydsl</title>
         <subtitle>Reference Documentation</subtitle>
-        <!-- Type-safe queries for Jav -->
+        <!-- Type-safe queries for Java -->
         <productname>Querydsl</productname>    
         <releaseinfo>&versionNumber;</releaseinfo>
         <authorgroup>
