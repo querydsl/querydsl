@@ -108,7 +108,7 @@ public class LuceneQueryTest {
         writer.close();
 
         searcher = new IndexSearcher(idx);
-        query = new LuceneQuery(LuceneQuery.LOWER_CASE, searcher);
+        query = new LuceneQuery(true, searcher);
     }
 
     @After
