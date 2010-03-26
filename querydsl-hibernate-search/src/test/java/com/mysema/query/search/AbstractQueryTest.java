@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -50,10 +51,17 @@ public abstract class AbstractQueryTest {
         return session;
     }
     
+    @SuppressWarnings("unchecked")
     @Before
     public void setUp(){        
         session = sessionFactory.openSession();
         session.beginTransaction();
+        
+        // clean up
+        List<User> users = session.createQuery("from User").list();
+        for (User user : users){
+            session.delete(user);
+        }
     }
     
     @After

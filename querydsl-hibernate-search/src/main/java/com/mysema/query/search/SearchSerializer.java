@@ -12,6 +12,8 @@ import com.mysema.query.types.Path;
 
 public class SearchSerializer extends LuceneSerializer{
 
+    public static final SearchSerializer DEFAULT = new SearchSerializer(false);
+    
     public SearchSerializer(boolean lowerCase) {
         super(lowerCase);
     }
