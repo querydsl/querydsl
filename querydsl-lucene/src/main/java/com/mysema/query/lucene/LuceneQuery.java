@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.lucene;
 
@@ -150,6 +150,10 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
     @Override
     public SearchResults<Document> listResults() {
         List<Document> documents = list();
+        /*
+         * TODO Get rid of count(). It could be implemented by iterating the
+         * list results in list* from n to m.
+         */
         return new SearchResults<Document>(documents, queryMixin.getMetadata().getModifiers(), count());
     }
 
