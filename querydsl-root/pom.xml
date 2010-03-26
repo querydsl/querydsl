@@ -91,16 +91,16 @@
       <email>samppa.saarela@mysema.com</email>
       <organization>Mysema Ltd</organization>
       <roles>
-        <role>Architect</role>
+        <role>Developer</role>
       </roles>
     </developer>
     <developer>
-      <id>laim</id>
-      <name>Lassi Immonen</name>
-      <email>lassi.immonen@mysema.com</email>
+      <id>vema</id>
+      <name>Vesa Marttila</name>
+      <email>vesa.marttila@mysema.com</email>
       <organization>Mysema Ltd</organization>
       <roles>
-        <role>Architect</role>
+        <role>Developer</role>
       </roles>
     </developer>
   </developers>
