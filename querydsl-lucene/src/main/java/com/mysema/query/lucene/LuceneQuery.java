@@ -31,6 +31,8 @@ import com.mysema.query.types.expr.EBoolean;
  * @author vema
  */
 public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<Document>{
+    public static final boolean DEFAULT = false;
+    public static final boolean LOWER_CASE = true;
 
     private final QueryMixin<LuceneQuery> queryMixin;
 
@@ -38,9 +40,9 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
 
     private final Searcher searcher;
 
-    public LuceneQuery(LuceneSerializer serializer, Searcher searcher) {
+    public LuceneQuery(boolean lowerCase, Searcher searcher) {
         this.queryMixin = new QueryMixin<LuceneQuery>(this);
-        this.serializer = serializer;
+        this.serializer = new LuceneSerializer(lowerCase);
         this.searcher = searcher;
     }
 

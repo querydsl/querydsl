@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.lucene;
 
@@ -41,21 +41,21 @@ import com.mysema.query.types.path.PathMetadataFactory;
  *
  */
 public class LuceneQueryTest {
-    
+
     public class QDocument extends PEntity<Document>{
 
         private static final long serialVersionUID = -4872833626508344081L;
-        
+
         public QDocument(String var) {
             super(Document.class, PathMetadataFactory.forVariable(var));
         }
 
         public final PString year = createString("year");
-        
+
         public final PString title = createString("title");
-        
+
     }
-    
+
     private LuceneQuery query;
 //    private PathBuilder<Object> entityPath;
     private PString title;
@@ -81,7 +81,7 @@ public class LuceneQueryTest {
 //        entityPath = new PathBuilder<Object>(Object.class, "obj");
 //        title = entityPath.getString("title");
 //        year = entityPath.getString("year");
-        
+
         QDocument entityPath = new QDocument("doc");
         title = entityPath.title;
         year = entityPath.year;
@@ -108,7 +108,7 @@ public class LuceneQueryTest {
         writer.close();
 
         searcher = new IndexSearcher(idx);
-        query = new LuceneQuery(new LuceneSerializer(true), searcher);
+        query = new LuceneQuery(LuceneQuery.LOWER_CASE, searcher);
     }
 
     @After
@@ -303,6 +303,12 @@ public class LuceneQueryTest {
         assertEquals(1, results.getLimit());
         assertEquals(1, results.getOffset());
         assertEquals(4, results.getTotal());
+    }
+
+    @Test
+    public void list_All() {
+        List<Document> results = query.where(title.like("*")).orderBy(title.asc(), year.desc()).list();
+        assertEquals(4, results.size());
     }
 
     @Test(expected = IllegalArgumentException.class)
