@@ -11,9 +11,12 @@ import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
+ * SimpleQuery defines a simple querying interface than {@link Query}
+ * 
  * @author tiwe
  *
  * @param <Q>
+ * @see Query
  */
 public interface SimpleQuery<Q extends SimpleQuery<Q>> {
     

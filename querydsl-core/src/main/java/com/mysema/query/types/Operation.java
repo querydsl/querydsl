@@ -16,6 +16,8 @@ import java.util.List;
  */
 public interface Operation<OP, RT> {
     /**
+     * Cast to {@link Expr}
+     * 
      * @return
      */
     Expr<RT> asExpr();

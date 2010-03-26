@@ -15,11 +15,12 @@ import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.types.Expr;
 
 /**
- * Projectable defines default projection methods for Query implementations.
- * All Querydsl query implementations should implement this interface.
+ * Projectable defines default projection methods for {@link Query} implementations.
+ * All Querydsl query implementations should implement either this interface or 
+ * {@link SimpleProjectable}.
  * 
  * @author tiwe
- * @version $Id$
+ * @see SimpleProjectable
  */
 public interface Projectable {
     /**

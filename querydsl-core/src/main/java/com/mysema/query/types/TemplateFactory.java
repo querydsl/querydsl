@@ -24,6 +24,8 @@ import net.jcip.annotations.Immutable;
 import com.mysema.query.types.Template.Element;
 
 /**
+ * TemplateFactory is a factory for {@link Template} instances
+ * 
  * @author tiwe
  *
  */

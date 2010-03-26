@@ -14,7 +14,7 @@ import java.util.List;
 import net.jcip.annotations.Immutable;
 
 /**
- * OperatorImpl is the default implementation of the Operator interface
+ * OperatorImpl is the default implementation of the {@link Operator}  interface
  */
 @Immutable
 public class OperatorImpl<RT> implements Operator<RT> {

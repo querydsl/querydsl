@@ -9,7 +9,7 @@ import java.util.List;
 
 
 /**
- * Custom provides base types for custom expresions with integrated
+ * Custom provides base types for custom expressions with integrated
  * serialization templates
  * 
  * @author tiwe
@@ -45,6 +45,8 @@ public interface Custom<T> {
     Class<? extends T> getType();
     
     /**
+     * Cast to {@link Expr}
+     * 
      * @return
      */
     Expr<T> asExpr();

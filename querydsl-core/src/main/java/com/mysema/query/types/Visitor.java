@@ -8,7 +8,7 @@ package com.mysema.query.types;
 
 
 /**
- * Visitor provides a dispatching Visitor for Expr instances.
+ * Visitor defines a Visitor signature for {@link Expr} instances.
  * 
  * @author tiwe
  * @version $Id$

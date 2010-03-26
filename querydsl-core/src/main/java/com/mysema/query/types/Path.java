@@ -18,6 +18,8 @@ import com.mysema.query.types.expr.EBoolean;
  */
 public interface Path<C> {
     /**
+     * Cast to {@link Expr}
+     * 
      * @return
      */
     Expr<C> asExpr();

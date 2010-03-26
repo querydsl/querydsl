@@ -16,7 +16,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 
 /**
- * PathMetadata provides metadata for Path expressions.
+ * PathMetadata provides metadata for {@link Path} expressions.
  * 
  * @author tiwe
  * @version $Id$

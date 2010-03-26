@@ -11,7 +11,7 @@ import com.mysema.query.types.expr.EBoolean;
 /**
  * 
  * SubQuery represents a sub query. The actual construction of a subquery
- * is done via an Detachable instance.
+ * is done via an {@link Detachable} instance.
  * 
  * @author tiwe
  * @version $Id$
@@ -25,7 +25,6 @@ public interface SubQuery<T>{
      * 
      * @return
      */
-    // Expr is in lower level package
     EBoolean exists();
  
     /**
@@ -40,13 +39,13 @@ public interface SubQuery<T>{
      * 
      * @return
      */
-    // Expr is in lower level package
     EBoolean notExists();
     
     /**
+     * Cast to {@link Expr}
+     * 
      * @return
      */
-    // Expr is in lower level package
     Expr<T> asExpr();
     
     /**

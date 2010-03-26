@@ -15,8 +15,7 @@ import net.jcip.annotations.Immutable;
 /**
  * SearchResults bundles data for paged search results
  * 
- * @author Timo Westkamper
- * @version $Id$
+ * @author tiwe
  */
 @Immutable
 public final class SearchResults<T> {
@@ -41,22 +40,41 @@ public final class SearchResults<T> {
         this(results, mod.getLimit(), mod.getOffset(), total);
     }
 
+    /**
+     * Get the results in List form
+     * 
+     * @return
+     */
     public List<T> getResults() {
         return results;
     }
 
+    /**
+     * Get the number of total results
+     * 
+     * @return
+     */
     public long getTotal() {
         return total;
     }
 
+    /**
+     * @return
+     */
     public boolean isEmpty() {
         return results.isEmpty();
     }
 
+    /**
+     * @return
+     */
     public long getLimit() {
         return limit;
     }
 
+    /**
+     * @return
+     */
     public long getOffset() {
         return offset;
     }

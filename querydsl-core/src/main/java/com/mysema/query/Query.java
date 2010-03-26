@@ -18,7 +18,7 @@ import com.mysema.query.types.expr.EBoolean;
  * specific variants of it.</p>
  * 
  * @author tiwe
- * @version $Id$
+ * @see SimpleQuery
  */
 public interface Query<Q extends Query<Q>> {
     

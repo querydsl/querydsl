@@ -11,10 +11,9 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
- * BooleanBuilder is a cascading builder for Boolean expressions.
+ * BooleanBuilder is a cascading builder for {@link EBoolean} expressions.
  * 
  * @author tiwe
- * @version $Id$
  */
 public final class BooleanBuilder extends EBoolean implements Cloneable{
     

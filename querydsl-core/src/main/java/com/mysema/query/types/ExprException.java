@@ -5,6 +5,10 @@
  */
 package com.mysema.query.types;
 
+/**
+ * @author tiwe
+ *
+ */
 public class ExprException extends RuntimeException{
 
     private static final long serialVersionUID = 6031724386976562965L;

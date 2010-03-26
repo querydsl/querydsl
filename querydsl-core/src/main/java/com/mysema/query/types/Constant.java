@@ -7,7 +7,6 @@ package com.mysema.query.types;
 
 /**
  * Constant represents a general constant expression. 
- * EConst is default implementation class.
  * 
  * @author tiwe
  *
@@ -16,8 +15,17 @@ package com.mysema.query.types;
 public interface Constant<D> {
     
     /**
+     * Get the constant
+     * 
      * @return
      */
     D getConstant();
+    
+    /**
+     * Cast to {@link Expr}
+     * 
+     * @return
+     */
+    Expr<D> asExpr();
 
 }

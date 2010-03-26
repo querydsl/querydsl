@@ -8,7 +8,7 @@ package com.mysema.query.types;
 
 
 /**
- * ToStringVisitor is used for toString() serialization in Expr implementations.
+ * ToStringVisitor is used for toString() serialization in {@link Expr} implementations.
  * 
  * @author tiwe
  * @version $Id$

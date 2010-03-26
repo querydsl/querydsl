@@ -11,7 +11,6 @@ import net.jcip.annotations.Immutable;
  * JoinType defines the supported join types
  * 
  * @author tiwe
- * @version $Id$
  */
 @Immutable
 public enum JoinType {

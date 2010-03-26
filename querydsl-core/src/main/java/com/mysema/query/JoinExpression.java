@@ -15,10 +15,9 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
- * JoinExpression is a join element in a Query instance. 
+ * JoinExpression is a join element in a {@link Query} instance. 
  * 
  * @author tiwe
- * @version $Id$
  */
 public final class JoinExpression {
     

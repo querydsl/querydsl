@@ -15,8 +15,7 @@ import net.jcip.annotations.Immutable;
 /**
  * QueryModifiers combines limit and offset info into a single type.
  *
- * @author Timo Westkamper
- * @version $Id$
+ * @author tiwe
  */
 @Immutable
 public final class QueryModifiers implements Serializable{

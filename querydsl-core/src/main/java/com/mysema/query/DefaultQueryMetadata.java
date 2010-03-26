@@ -22,10 +22,9 @@ import com.mysema.query.types.expr.EBoolean;
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 /**
- * DefaultQueryMetadata is the default implementation of the QueryMetadata interface
+ * DefaultQueryMetadata is the default implementation of the {@link QueryMetadata} interface
  * 
  * @author tiwe
- * @version $Id$
  */
 public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     

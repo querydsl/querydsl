@@ -17,7 +17,7 @@ import com.mysema.query.types.expr.ENumber;
 
 /**
  * Expr represents a general typed expression in a Query instance. The generic type parameter
- * is a reference to the type the expression instance is bound to.
+ * is a reference to the type the expression is bound to.
  * 
  * @author tiwe
  * @version $Id$

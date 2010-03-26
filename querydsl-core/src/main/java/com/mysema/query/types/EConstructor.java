@@ -22,7 +22,7 @@ import com.mysema.query.types.expr.ESimple;
  * 
  * @param <D> Java type
  */
-// TODO : simple into interface and implementation
+// TODO : split into interface and implementation
 public class EConstructor<D> extends ESimple<D> {
     
     private static final long serialVersionUID = -602747921848073175L;

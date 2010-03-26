@@ -15,7 +15,7 @@ import net.jcip.annotations.Immutable;
 
 
 /**
- * Template for operation and path serialization
+ * Template for {@link Operation}, {@link Custom} and {@link Path} serialization
  * 
  * @author tiwe
  * 

@@ -10,7 +10,7 @@ import java.util.List;
 
 
 /**
- * PathType represents the relation of a path to its parent
+ * PathType represents the relation of a {@link Path} to its parent
  */
 public enum PathType implements Operator<Path<?>> {
     /**

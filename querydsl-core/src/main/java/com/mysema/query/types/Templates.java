@@ -14,7 +14,7 @@ import net.jcip.annotations.Immutable;
 
 
 /**
- * OperationPatterns provides operator patterns for query expression serialization
+ * Templates provides operator patterns for query expression serialization
  * 
  * @author tiwe
  * @version $Id$

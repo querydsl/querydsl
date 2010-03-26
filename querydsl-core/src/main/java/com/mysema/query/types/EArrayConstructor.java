@@ -8,7 +8,7 @@ package com.mysema.query.types;
 import com.mysema.commons.lang.Assert;
 
 /**
- * EArrayConstructor extends EConstructor to represent array initializers
+ * EArrayConstructor extends {@link EConstructor} to represent array initializers
  * 
  * @author tiwe
  * 
