@@ -42,7 +42,7 @@ public class User implements Serializable {
     private String middleName;
 
     @NaturalId
-    @Field(index = Index.UN_TOKENIZED, store = Store.YES)
+    @Field(name="email", index = Index.UN_TOKENIZED, store = Store.YES)
     private String emailAddress;
 
     @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "applicant")

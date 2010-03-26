@@ -39,15 +39,15 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
 
     private final PEntity<T> path;
     
-    public SearchQuery(Session session, PEntity<T> path, LuceneSerializer serializer) {
-        this(Search.getFullTextSession(session), path, serializer);
+    public SearchQuery(Session session, PEntity<T> path, boolean lower) {
+        this(Search.getFullTextSession(session), path, lower);
     }
     
-    public SearchQuery(FullTextSession session, PEntity<T> path, LuceneSerializer serializer) {
+    public SearchQuery(FullTextSession session, PEntity<T> path, boolean lower) {
         this.queryMixin = new QueryMixin<SearchQuery<T>>(this);
         this.session = Assert.notNull(session,"session");
         this.path = Assert.notNull(path,"path");
-        this.serializer = Assert.notNull(serializer,"serializer");        
+        this.serializer = new SearchSerializer(lower);        
     }
     
     @Override

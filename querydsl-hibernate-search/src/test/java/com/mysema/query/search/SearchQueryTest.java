@@ -12,8 +12,6 @@ public class SearchQueryTest extends AbstractQueryTest{
     
     private QUser user = new QUser("user");
     
-    private LuceneSerializer luceneSerializer = new LuceneSerializer(true);
-    
     public void setUp(){
         super.setUp();
         Session session = getSession();
@@ -36,7 +34,7 @@ public class SearchQueryTest extends AbstractQueryTest{
     }
     
     private SearchQuery<User> query(){        
-        return new SearchQuery<User>(getSession(), user, luceneSerializer);
+        return new SearchQuery<User>(getSession(), user, true);
     }
 
 }
