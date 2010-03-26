@@ -48,7 +48,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     
     private int fetchSize = 0;
 
-    private Map<Path<?>,LockMode> lockModes = new HashMap<Path<?>,LockMode>();
+    private final Map<Path<?>,LockMode> lockModes = new HashMap<Path<?>,LockMode>();
 
     private final SessionHolder session;
     
