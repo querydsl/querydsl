@@ -10,8 +10,6 @@ import static org.junit.Assert.assertEquals;
 import org.hibernate.Session;
 import org.junit.Test;
 
-import com.mysema.query.lucene.LuceneSerializer;
-
 
 public class SearchQueryTest extends AbstractQueryTest{
     
