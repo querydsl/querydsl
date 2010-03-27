@@ -14,7 +14,7 @@ import com.mysema.query.types.expr.EStringEscape;
  *
  * @param <D>
  */
-interface Converter<Source extends Expr<?>, Target extends Expr<?>>{
+interface Converter<S extends Expr<?>, T extends Expr<?>>{
     
     Converter<EString,EString> toLowerCase = new Converter<EString,EString>(){
         @Override
@@ -55,5 +55,5 @@ interface Converter<Source extends Expr<?>, Target extends Expr<?>>{
      * @param arg
      * @return
      */
-    Target convert(Source arg); 
+    T convert(S arg); 
 }
