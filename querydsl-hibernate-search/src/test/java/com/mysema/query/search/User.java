@@ -50,10 +50,6 @@ public class User implements Serializable {
     @Field(name="email", index = Index.UN_TOKENIZED, store = Store.YES)
     private String emailAddress;
 
-    @OneToMany(cascade = { CascadeType.ALL }, mappedBy = "applicant")
-    @ContainedIn
-    private Set<Resume> resumes;
-
     public Long getId() {
         return id;
     }
@@ -92,14 +88,6 @@ public class User implements Serializable {
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
-    }
-
-    public Set<Resume> getResumes() {
-        return resumes;
-    }
-
-    public void setResumes(Set<Resume> resumes) {
-        this.resumes = resumes;
     }
 
 }

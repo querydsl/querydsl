@@ -32,7 +32,6 @@ public abstract class AbstractQueryTest {
         FileUtils.deleteDirectory(new File("target/lucene"));
         AnnotationConfiguration cfg = new AnnotationConfiguration();
         cfg.addAnnotatedClass(User.class);
-        cfg.addAnnotatedClass(Resume.class);
         Properties props = new Properties();
         InputStream is = SearchQueryTest.class.getResourceAsStream("/derby.properties");  
         props.load(is);
