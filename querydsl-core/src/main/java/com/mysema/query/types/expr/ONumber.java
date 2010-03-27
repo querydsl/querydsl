@@ -18,37 +18,35 @@ import com.mysema.query.types.Visitor;
  * 
  * @author tiwe
  * 
- * @param <OpType>
  * @param <D>
  */
-public class ONumber<OpType extends Number, D extends Number & Comparable<?>>
-        extends ENumber<D> implements Operation<OpType, D> {
+public class ONumber<D extends Number & Comparable<?>>
+        extends ENumber<D> implements Operation<D> {
     
     private static final long serialVersionUID = -3593040852095778453L;
 
     /**
      * Factory method
      * 
-     * @param <O>
      * @param <D>
      * @param type
      * @param op
      * @param args
      * @return
      */
-    public static <O extends Number,D extends Number & Comparable<?>> ENumber<D> create(Class<? extends D> type, Operator<O> op, Expr<?>... args){
-        return new ONumber<O,D>(type, op, args);
+    public static <D extends Number & Comparable<?>> ENumber<D> create(Class<? extends D> type, Operator<? super D> op, Expr<?>... args){
+        return new ONumber<D>(type, op, args);
     }
     
-    private final Operation<OpType, D> opMixin;
+    private final Operation<D> opMixin;
     
-    ONumber(Class<? extends D> type, Operator<OpType> op, Expr<?>... args) {
+    ONumber(Class<? extends D> type, Operator<? super D> op, Expr<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    ONumber(Class<? extends D> type, Operator<OpType> op, List<Expr<?>> args) {
+    ONumber(Class<? extends D> type, Operator<? super D> op, List<Expr<?>> args) {
         super(type);
-        this.opMixin = new OperationMixin<OpType, D>(this, op, args);
+        this.opMixin = new OperationMixin<D>(this, op, args);
     }
 
     @Override
@@ -67,7 +65,7 @@ public class ONumber<OpType extends Number, D extends Number & Comparable<?>>
     }
 
     @Override
-    public Operator<OpType> getOperator() {
+    public Operator<? super D> getOperator() {
         return opMixin.getOperator();
     }
     

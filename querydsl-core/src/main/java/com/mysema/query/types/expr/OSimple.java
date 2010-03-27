@@ -18,36 +18,34 @@ import com.mysema.query.types.Visitor;
  * 
  * @author tiwe
  * 
- * @param <OpType>
  * @param <D>
  */
-public class OSimple<OpType, D> extends ESimple<D> implements Operation<OpType, D> {
+public class OSimple<D> extends ESimple<D> implements Operation<D> {
     
     private static final long serialVersionUID = -285668548371034230L;
 
     /**
      * Factory method
      * 
-     * @param <OpType>
      * @param <D>
      * @param type
      * @param op
      * @param args
      * @return
      */
-    public static <OpType,D> Expr<D> create(Class<? extends D> type, Operator<OpType> op, Expr<?>... args){
-        return new OSimple<OpType,D>(type, op, args);
+    public static <D> Expr<D> create(Class<D> type, Operator<? super D> op, Expr<?>... args){
+        return new OSimple<D>(type, op, args);
     }
     
-    private final Operation<OpType, D> opMixin;
+    private final Operation< D> opMixin;
 
-    OSimple(Class<? extends D> type, Operator<OpType> op, Expr<?>... args) {
+    OSimple(Class<D> type, Operator<? super D> op, Expr<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    OSimple(Class<? extends D> type, Operator<OpType> op, List<Expr<?>> args) {
+    OSimple(Class<D> type, Operator<? super D> op, List<Expr<?>> args) {
         super(type);
-        this.opMixin = new OperationMixin<OpType, D>(this, op, args);
+        this.opMixin = new OperationMixin<D>(this, op, args);
     }
 
     @Override
@@ -66,7 +64,7 @@ public class OSimple<OpType, D> extends ESimple<D> implements Operation<OpType, 
     }
 
     @Override
-    public Operator<OpType> getOperator() {
+    public Operator<? super D> getOperator() {
         return opMixin.getOperator();
     }
     

@@ -142,7 +142,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     
 
     @Override
-    public void visit(Operation<?, ?> expr) {
+    public void visit(Operation<?> expr) {
         visitOperation(expr.getType(), expr.getOperator(), expr.getArgs());
     }
     
@@ -178,7 +178,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                     arg = ((BooleanBuilder)arg).getValue();
                 }                
                 if (arg instanceof Operation){
-                    wrap = precedence < templates.getPrecedence(((Operation<?, ?>) arg).getOperator());
+                    wrap = precedence < templates.getPrecedence(((Operation<?>) arg).getOperator());
                 }
                 if (wrap){
                     append("(");

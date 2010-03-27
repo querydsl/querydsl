@@ -19,7 +19,7 @@ import com.mysema.query.types.Visitor;
  * @author tiwe
  * 
  */
-public class OString extends EString implements Operation<String, String> {
+public class OString extends EString implements Operation<String> {
     
     private static final long serialVersionUID = 6846556373847139549L;
 
@@ -27,14 +27,14 @@ public class OString extends EString implements Operation<String, String> {
         return new OString(op, args);
     }
     
-    private final Operation<String, String> opMixin;
+    private final Operation<String> opMixin;
 
     OString(Operator<String> op, Expr<?>... args) {
         this(op, Arrays.asList(args));
     }
 
     OString(Operator<String> op, List<Expr<?>> args) {
-        this.opMixin = new OperationMixin<String, String>(this, op, args);
+        this.opMixin = new OperationMixin<String>(this, op, args);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class OString extends EString implements Operation<String, String> {
     }
 
     @Override
-    public Operator<String> getOperator() {
+    public Operator<? super String> getOperator() {
         return opMixin.getOperator();
     }
     

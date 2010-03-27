@@ -18,38 +18,36 @@ import com.mysema.query.types.Visitor;
  * 
  * @author tiwe
  *
- * @param <OpType>
  * @param <D>
  */
 
-public class ODateTime<OpType extends Comparable<?>, D extends Comparable<?>> extends
-    EDateTime<D> implements Operation<OpType, D> {
+public class ODateTime<D extends Comparable<?>> extends
+    EDateTime<D> implements Operation<D> {
 
     private static final long serialVersionUID = 6523293814317168556L;
 
     /**
      * Factory method
      * 
-     * @param <O>
      * @param <D>
      * @param type
      * @param op
      * @param args
      * @return
      */
-    public static <O extends Comparable<?>,D extends Comparable<?>> EDateTime<D> create(Class<D> type, Operator<O> op, Expr<?>... args){
-        return new ODateTime<O,D>(type, op, args);
+    public static <D extends Comparable<?>> EDateTime<D> create(Class<D> type, Operator<? super D> op, Expr<?>... args){
+        return new ODateTime<D>(type, op, args);
     }
 
-    private final Operation<OpType, D> opMixin;
+    private final Operation<D> opMixin;
     
-    ODateTime(Class<D> type, Operator<OpType> op, Expr<?>... args) {
+    ODateTime(Class<D> type, Operator<? super D> op, Expr<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    ODateTime(Class<D> type, Operator<OpType> op, List<Expr<?>> args) {
+    ODateTime(Class<D> type, Operator<? super D> op, List<Expr<?>> args) {
         super(type);
-        this.opMixin = new OperationMixin<OpType, D>(this, op, args);
+        this.opMixin = new OperationMixin<D>(this, op, args);
     }
 
     @Override
@@ -68,7 +66,7 @@ public class ODateTime<OpType extends Comparable<?>, D extends Comparable<?>> ex
     }
 
     @Override
-    public Operator<OpType> getOperator() {
+    public Operator<? super D> getOperator() {
         return opMixin.getOperator();
     }
     

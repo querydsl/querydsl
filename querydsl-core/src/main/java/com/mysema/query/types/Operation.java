@@ -14,7 +14,7 @@ import java.util.List;
  * @author tiwe
  * @version $Id$
  */
-public interface Operation<OP, RT> {
+public interface Operation<RT> {
     /**
      * Cast to {@link Expr}
      * 
@@ -42,7 +42,7 @@ public interface Operation<OP, RT> {
      * 
      * @return
      */
-    Operator<OP> getOperator();
+    Operator<? super RT> getOperator();
     
     /**
      * Get the type of this operation

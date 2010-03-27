@@ -73,7 +73,7 @@ public final class ToStringVisitor implements Visitor{
     }
 
     @Override
-    public void visit(Operation<?, ?> o) {
+    public void visit(Operation<?> o) {
         Template template = templates.getTemplate(o.getOperator());
         if (template != null) {
             StringBuilder builder = new StringBuilder();

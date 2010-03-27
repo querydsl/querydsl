@@ -44,7 +44,7 @@ public abstract class EDateTime<D extends Comparable> extends EDate<D> {
      * @return
      */
     public static <T extends Comparable> EDateTime<T> currentDate(Class<T> cl) {
-        return ODateTime.create(cl, Ops.DateTimeOps.CURRENT_DATE);
+        return ODateTime.<T>create(cl, Ops.DateTimeOps.CURRENT_DATE);
     }
     
     /**

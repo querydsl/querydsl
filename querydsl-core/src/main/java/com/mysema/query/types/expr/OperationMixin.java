@@ -16,20 +16,19 @@ import com.mysema.query.types.Operator;
 /**
  * @author tiwe
  *
- * @param <OP>
  * @param <RT>
  */
-public final class OperationMixin<OP, RT> implements Operation<OP, RT>, Serializable {
+public final class OperationMixin<RT> implements Operation<RT>, Serializable {
 
     private static final long serialVersionUID = 4796432056083507588L;
 
     private final List<Expr<?>> args;
     
-    private final Operator<OP> operator;
+    private final Operator<? super RT> operator;
     
     private final Expr<RT> self;
     
-    public OperationMixin(Operation<OP,RT> self, Operator<OP> operator, List<Expr<?>> args){
+    public OperationMixin(Operation<RT> self, Operator<? super RT> operator, List<Expr<?>> args){
         this.self = self.asExpr();
         this.operator = operator;
         this.args = Collections.unmodifiableList(args);
@@ -51,7 +50,7 @@ public final class OperationMixin<OP, RT> implements Operation<OP, RT>, Serializ
     }
     
     @Override
-    public Operator<OP> getOperator() {
+    public Operator<? super RT> getOperator() {
         return operator;
     }
 

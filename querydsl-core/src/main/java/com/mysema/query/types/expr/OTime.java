@@ -18,36 +18,34 @@ import com.mysema.query.types.Visitor;
  * 
  * @author tiwe
  *
- * @param <OpType>
  * @param <D>
  */
-public class OTime<OpType, D extends Comparable<?>> extends ETime<D> implements Operation<OpType, D> {
+public class OTime<D extends Comparable<?>> extends ETime<D> implements Operation<D> {
 
     private static final long serialVersionUID = 9051606798649239240L;
 
     /**
      * Factory method
      * 
-     * @param <O>
      * @param <D>
      * @param type
      * @param op
      * @param args
      * @return
      */
-    public static <O,D extends Comparable<?>> ETime<D> create(Class<D> type, Operator<O> op, Expr<?>... args){
-        return new OTime<O,D>(type, op, args);
+    public static <D extends Comparable<?>> ETime<D> create(Class<D> type, Operator<? super D> op, Expr<?>... args){
+        return new OTime<D>(type, op, args);
     }
     
-    private final Operation<OpType, D> opMixin;
+    private final Operation<D> opMixin;
     
-    OTime(Class<D> type, Operator<OpType> op, Expr<?>... args) {
+    OTime(Class<D> type, Operator<? super D> op, Expr<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    OTime(Class<D> type, Operator<OpType> op, List<Expr<?>> args) {
+    OTime(Class<D> type, Operator<? super D> op, List<Expr<?>> args) {
         super(type);
-        this.opMixin = new OperationMixin<OpType, D>(this, op, args);
+        this.opMixin = new OperationMixin<D>(this, op, args);
     }
 
     @Override
@@ -66,7 +64,7 @@ public class OTime<OpType, D extends Comparable<?>> extends ETime<D> implements 
     }
 
     @Override
-    public Operator<OpType> getOperator() {
+    public Operator<? super D> getOperator() {
         return opMixin.getOperator();
     }
     

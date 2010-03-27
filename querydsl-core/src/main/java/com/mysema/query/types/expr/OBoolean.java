@@ -20,7 +20,7 @@ import com.mysema.query.types.Visitor;
  * @author tiwe
  * 
  */
-public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
+public class OBoolean extends EBoolean implements Operation<Boolean> {
 
     private static final long serialVersionUID = 7432281499861357581L;
 
@@ -28,14 +28,14 @@ public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
         return new OBoolean(op, args);
     }
    
-    private final Operation<Boolean, Boolean> opMixin;
+    private final Operation<Boolean> opMixin;
     
     OBoolean(Operator<Boolean> op, Expr<?>... args) {
         this(op, Arrays.asList(args));
     }
     
     OBoolean(Operator<Boolean> op, List<Expr<?>> args) {
-        opMixin = new OperationMixin<Boolean,Boolean>(this, op, args);
+        opMixin = new OperationMixin<Boolean>(this, op, args);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class OBoolean extends EBoolean implements Operation<Boolean, Boolean> {
     }
 
     @Override
-    public Operator<Boolean> getOperator() {
+    public Operator<? super Boolean> getOperator() {
         return opMixin.getOperator();
     }
 

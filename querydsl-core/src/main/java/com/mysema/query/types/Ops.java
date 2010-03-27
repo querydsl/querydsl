@@ -37,12 +37,12 @@ public interface Ops {
     Operator<Boolean> EQ_OBJECT = new OperatorImpl<Boolean>(OBJECT_X_2);
     Operator<Boolean> IS_NOT_NULL = new OperatorImpl<Boolean>(Object.class);
     Operator<Boolean> IS_NULL = new OperatorImpl<Boolean>(Object.class);
-    Operator<Boolean> INSTANCE_OF = new OperatorImpl<Boolean>(Object.class, Class.class);
+    Operator<Boolean> INSTANCE_OF = new OperatorImpl<Boolean>();
     Operator<Boolean> NE_PRIMITIVE = new OperatorImpl<Boolean>(OBJECT_X_2);
     Operator<Boolean> NE_OBJECT = new OperatorImpl<Boolean>(OBJECT_X_2);
-    Operator<Number> NUMCAST = new OperatorImpl<Number>(Number.class, Class.class);
+    Operator<Number> NUMCAST = new OperatorImpl<Number>();
     Operator<String> STRING_CAST = new OperatorImpl<String>(Object.class);
-    Operator<Object> ALIAS = new OperatorImpl<Object>(Object.class, Object.class);
+    Operator<Object> ALIAS = new OperatorImpl<Object>();
         
     // collection
     Operator<Boolean> IN = new OperatorImpl<Boolean>(OBJECT_X_2); // cmp. contains
@@ -86,11 +86,11 @@ public interface Ops {
     Operator<Number> MOD = new OperatorImpl<Number>(NUMBER_X_2);
 
     // String
-    Operator<Character> CHAR_AT = new OperatorImpl<Character>(String.class, Integer.class);
+    Operator<Character> CHAR_AT = new OperatorImpl<Character>();
     Operator<String> CONCAT = new OperatorImpl<String>(STRING_X_2);
     Operator<String> LOWER = new OperatorImpl<String>(String.class);
-    Operator<String> SUBSTR_1ARG = new OperatorImpl<String>(String.class, Integer.class);
-    Operator<String> SUBSTR_2ARGS = new OperatorImpl<String>(String.class, Integer.class, Integer.class);
+    Operator<String> SUBSTR_1ARG = new OperatorImpl<String>();
+    Operator<String> SUBSTR_2ARGS = new OperatorImpl<String>();
     Operator<String> TRIM = new OperatorImpl<String>(String.class);
     Operator<String> UPPER = new OperatorImpl<String>(String.class);
     Operator<Boolean> MATCHES = new OperatorImpl<Boolean>(STRING_X_2);
@@ -98,8 +98,8 @@ public interface Ops {
     Operator<Boolean> STRING_IS_EMPTY = new OperatorImpl<Boolean>(String.class);
     Operator<Boolean> STARTS_WITH = new OperatorImpl<Boolean>(STRING_X_2);
     Operator<Boolean> STARTS_WITH_IC = new OperatorImpl<Boolean>(STRING_X_2);
-    Operator<Number> INDEX_OF_2ARGS = new OperatorImpl<Number>(String.class, String.class, Integer.class);
-    Operator<Number> INDEX_OF = new OperatorImpl<Number>(String.class, String.class);
+    Operator<Number> INDEX_OF_2ARGS = new OperatorImpl<Number>();
+    Operator<Number> INDEX_OF = new OperatorImpl<Number>();
     Operator<Boolean> EQ_IGNORE_CASE = new OperatorImpl<Boolean>(STRING_X_2);
     Operator<Boolean> ENDS_WITH = new OperatorImpl<Boolean>(STRING_X_2);
     Operator<Boolean> ENDS_WITH_IC = new OperatorImpl<Boolean>(STRING_X_2);    
@@ -109,12 +109,12 @@ public interface Ops {
         
     // case
     Operator<Object> CASE = new OperatorImpl<Object>(Object.class);
-    Operator<Object> CASE_WHEN = new OperatorImpl<Object>(Boolean.class, Object.class);
+    Operator<Object> CASE_WHEN = new OperatorImpl<Object>();
     Operator<Object> CASE_ELSE = new OperatorImpl<Object>(Object.class);
     
     // case for eq
     Operator<Object> CASE_EQ = new OperatorImpl<Object>(Object.class);
-    Operator<Object> CASE_EQ_WHEN = new OperatorImpl<Object>(Object.class, Object.class, Object.class);
+    Operator<Object> CASE_EQ_WHEN = new OperatorImpl<Object>();
     Operator<Object> CASE_EQ_ELSE = new OperatorImpl<Object>(Object.class);
     
     // subquery operations
@@ -129,9 +129,10 @@ public interface Ops {
     /**
      * Aggreation operators
      */
+    @SuppressWarnings("unchecked")
     interface AggOps{
-        Operator<Comparable<?>> MAX_AGG = new OperatorImpl<Comparable<?>>(Comparable.class);
-        Operator<Comparable<?>> MIN_AGG = new OperatorImpl<Comparable<?>>(Comparable.class);        
+        Operator<Comparable> MAX_AGG = new OperatorImpl<Comparable>(Comparable.class);
+        Operator<Comparable> MIN_AGG = new OperatorImpl<Comparable>(Comparable.class);        
         Operator<Number> AVG_AGG = new OperatorImpl<Number>(Number.class);        
         Operator<Number> SUM_AGG = new OperatorImpl<Number>(Number.class);
         Operator<Number> COUNT_AGG = new OperatorImpl<Number>(Object.class);
@@ -143,16 +144,17 @@ public interface Ops {
     /**
      * Date and time operators
      */
-    interface DateTimeOps {
-        Operator<java.util.Date> CURRENT_DATE = new OperatorImpl<java.util.Date>();
-        Operator<java.util.Date> CURRENT_TIME = new OperatorImpl<java.util.Date>();
-        Operator<java.util.Date> CURRENT_TIMESTAMP = new OperatorImpl<java.util.Date>();
+    @SuppressWarnings("unchecked")
+    interface DateTimeOps {        
+        Operator<Comparable> CURRENT_DATE = new OperatorImpl<Comparable>();
+        Operator<Comparable> CURRENT_TIME = new OperatorImpl<Comparable>();
+        Operator<Comparable> CURRENT_TIMESTAMP = new OperatorImpl<Comparable>();
         Operator<Integer> HOUR = new OperatorImpl<Integer>(java.util.Date.class);
         Operator<Integer> MINUTE = new OperatorImpl<Integer>(java.util.Date.class);
         Operator<Integer> MONTH = new OperatorImpl<Integer>(java.util.Date.class);
         Operator<Integer> SECOND = new OperatorImpl<Integer>(java.util.Date.class);
         Operator<Integer> MILLISECOND = new OperatorImpl<Integer>(java.util.Date.class);
-        Operator<java.util.Date> SYSDATE = new OperatorImpl<java.util.Date>();
+        Operator<Comparable> SYSDATE = new OperatorImpl<Comparable>();
         Operator<Integer> YEAR = new OperatorImpl<Integer>(java.util.Date.class);
         Operator<Integer> YEAR_MONTH = new OperatorImpl<Integer>(java.util.Date.class);
         Operator<Integer> WEEK = new OperatorImpl<Integer>(java.util.Date.class);
@@ -193,18 +195,19 @@ public interface Ops {
         Operator<String> LTRIM = new OperatorImpl<String>(String.class);
         Operator<String> RTRIM = new OperatorImpl<String>(String.class);
         Operator<String> SPACE = new OperatorImpl<String>(Integer.class);
-        Operator<String> SPLIT = new OperatorImpl<String>(STRING_X_2);
-        Operator<Number> LAST_INDEX_2ARGS = new OperatorImpl<Number>(String.class, String.class, Integer.class);
+        Operator<String[]> SPLIT = new OperatorImpl<String[]>(STRING_X_2);
+        Operator<Number> LAST_INDEX_2ARGS = new OperatorImpl<Number>();
         Operator<Number> LAST_INDEX = new OperatorImpl<Number>(STRING_X_2);
     }
     
     /**
      * Quantification operators
      */
+    @SuppressWarnings("unchecked")
     interface QuantOps {
-        Operator<Number> AVG_IN_COL = new OperatorImpl<Number>(Collection.class);
-        Operator<Number> MAX_IN_COL = new OperatorImpl<Number>(Collection.class);
-        Operator<Number> MIN_IN_COL = new OperatorImpl<Number>(Collection.class);
+        Operator<Comparable> AVG_IN_COL = new OperatorImpl<Comparable>(Collection.class);
+        Operator<Comparable> MAX_IN_COL = new OperatorImpl<Comparable>(Collection.class);
+        Operator<Comparable> MIN_IN_COL = new OperatorImpl<Comparable>(Collection.class);
 
         // some / any = true for any
         // all = true for all

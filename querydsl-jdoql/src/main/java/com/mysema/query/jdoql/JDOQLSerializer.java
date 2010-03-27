@@ -96,7 +96,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     }
 
     @SuppressWarnings("unchecked")
-    private Expr<?> regexToLike(Operation<?,?> operation) {
+    private <T> Expr<?> regexToLike(Operation<T> operation) {
         List<Expr<?>> args = new ArrayList<Expr<?>>();
         for (Expr<?> arg : operation.getArgs()){
             if (!arg.getType().equals(String.class)){
@@ -297,7 +297,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             // switch from regex to like if the regex expression is an operation
             if (args.get(1) instanceof Operation){
                 operator = Ops.LIKE;
-                args = Arrays.asList(args.get(0), regexToLike((Operation<?, ?>) args.get(1)));                
+                args = Arrays.asList(args.get(0), regexToLike((Operation<?>) args.get(1)));                
             }
             super.visitOperation(type, operator, args);
             

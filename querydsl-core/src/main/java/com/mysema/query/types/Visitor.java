@@ -38,7 +38,7 @@ public interface Visitor {
     /**
      * @param expr
      */
-    void visit(Operation<?, ?> expr);
+    void visit(Operation<?> expr);
 
     /**
      * @param expr

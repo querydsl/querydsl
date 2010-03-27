@@ -106,7 +106,7 @@ public final class HQLSerializer extends SerializerBase<HQLSerializer> {
 
     // TODO : generalize this!
     @SuppressWarnings("unchecked")
-    private Expr<?> regexToLike(Operation<?,?> operation) {
+    private <T> Expr<?> regexToLike(Operation<T> operation) {
         List<Expr<?>> args = new ArrayList<Expr<?>>();
         for (Expr<?> arg : operation.getArgs()){
             if (!arg.getType().equals(String.class)){
