@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.collections;
 
 import java.util.Collection;
@@ -18,6 +23,10 @@ public class ColDeleteClause<T> implements DeleteClause<ColDeleteClause<T>>{
     private final Path<T> expr;
     
     private final Collection<? extends T> col;
+    
+    public ColDeleteClause(Path<T> expr, Collection<? extends T> col){
+        this(EvaluatorFactory.DEFAULT, expr, col);
+    }
     
     public ColDeleteClause(EvaluatorFactory ef, Path<T> expr, Collection<? extends T> col){
         this.query = new ColQueryImpl(ef).from(expr, col);

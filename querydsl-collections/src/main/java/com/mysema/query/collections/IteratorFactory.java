@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  * 
  */
@@ -14,6 +14,7 @@ import org.apache.commons.collections15.IteratorUtils;
 
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.util.ArrayTransformer;
 
 /**
  * IteratorFactory provides Iterator utilities
@@ -35,7 +36,7 @@ public class IteratorFactory {
         return multiArgFilter(source, ev);
     }
 
-    private <S> Iterator<S> multiArgFilter(Iterator<S> source, final Evaluator<Boolean> ev) {
+    private <S> Iterator<S> multiArgFilter(Iterator<S> source, Evaluator<Boolean> ev) {
         return IteratorUtils.filteredIterator(source, new EvaluatorPredicate<S>(ev));
     }
 
@@ -44,11 +45,11 @@ public class IteratorFactory {
         return transform(source, ev);
     }
 
-    private <S, T> Iterator<T> transform(Iterator<S> source, final Evaluator<T> ev) {
+    private <S, T> Iterator<T> transform(Iterator<S> source, Evaluator<T> ev) {
         return IteratorUtils.transformedIterator(source, new EvaluatorTransformer<S, T>(ev));
     }
 
-    public <S> Iterator<S> singleArgFilter(Iterator<S> source, final Evaluator<Boolean> ev) {
+    public <S> Iterator<S> singleArgFilter(Iterator<S> source, Evaluator<Boolean> ev) {
         return IteratorUtils.filteredIterator(source, new SingleArgEvaluatorPredicate<S>(ev));
     }
 

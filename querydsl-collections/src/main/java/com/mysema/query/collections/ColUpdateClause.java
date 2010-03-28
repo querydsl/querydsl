@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.collections;
 
 import com.mysema.query.dml.UpdateClause;
@@ -14,6 +19,10 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
     private final ColQuery query;
     
     private final Path<T> expr;
+    
+    public ColUpdateClause(Path<T> expr, Iterable<? extends T> col){
+        this(EvaluatorFactory.DEFAULT, expr, col);
+    }
     
     public ColUpdateClause(EvaluatorFactory ef, Path<T> expr, Iterable<? extends T> col){
         this.query = new ColQueryImpl(ef).from(expr, col);

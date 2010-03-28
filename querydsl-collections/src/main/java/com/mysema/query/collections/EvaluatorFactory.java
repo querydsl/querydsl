@@ -1,6 +1,11 @@
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.collections;
 
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -8,12 +13,7 @@ import java.util.Set;
 
 import net.jcip.annotations.Immutable;
 
-import org.codehaus.janino.CompileException;
-import org.codehaus.janino.ExpressionEvaluator;
-import org.codehaus.janino.Parser.ParseException;
-import org.codehaus.janino.Scanner.ScanException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.lang.ClassUtils;
 
 import com.mysema.query.QueryException;
 import com.mysema.query.types.Expr;
@@ -25,8 +25,6 @@ import com.mysema.query.types.Expr;
 @Immutable
 public class EvaluatorFactory {
 
-    private static final Logger logger = LoggerFactory.getLogger(EvaluatorFactory.class);
-    
     public static final EvaluatorFactory DEFAULT = new EvaluatorFactory(ColQueryTemplates.DEFAULT);
     
     private final ColQueryTemplates templates;
@@ -39,10 +37,10 @@ public class EvaluatorFactory {
         ColQuerySerializer serializer = new ColQuerySerializer(templates);
         serializer.handle(projection);
         Map<Object,String> constantToLabel = serializer.getConstantToLabel();
-        final String javaSource = serializer.toString();
-        final Object[] constArray = constantToLabel.keySet().toArray();        
-        final Class<?>[] types = new Class<?>[constArray.length + sources.size()];
-        final String[] names = new String[constArray.length + sources.size()];
+        String javaSource = serializer.toString();
+        Object[] constArray = constantToLabel.keySet().toArray();        
+        Class<?>[] types = new Class<?>[constArray.length + sources.size()];
+        String[] names = new String[constArray.length + sources.size()];
         for (int i = 0; i < constArray.length; i++) {
             if (List.class.isAssignableFrom(constArray[i].getClass())){
                 types[i] = List.class;
@@ -61,21 +59,24 @@ public class EvaluatorFactory {
             types[off + i] = sources.get(i).getType();
             names[off + i] = sources.get(i).toString();
         }
-
-        if (logger.isInfoEnabled()) {
-            logger.info(javaSource + " " + Arrays.asList(names) + " " + Arrays.asList(types));
+        
+        // normalize types
+        for (int i = 0; i < types.length; i++){
+            if (ClassUtils.wrapperToPrimitive(types[i]) != null){
+                types[i] = ClassUtils.wrapperToPrimitive(types[i]);
+            }
         }
 
         try {
-            ExpressionEvaluator evaluator = new ExpressionEvaluator(javaSource, projection.getType(), names, types);            
-            return new JaninoEvaluator<T>(javaSource, evaluator, names, constArray);
-            
-        } catch (CompileException e) {
-            throw new QueryException(e.getMessage() + " with source " + javaSource, e);
-        } catch (ParseException e) {
-            throw new QueryException(e.getMessage() + " with source " + javaSource, e);
-        } catch (ScanException e) {
-            throw new QueryException(e.getMessage() + " with source " + javaSource, e);
+            return new SimpleEvaluator<T>(javaSource, projection.getType(), names, types, constArray);
+        } catch (IOException e) {
+            throw new QueryException(e);
+        } catch (SecurityException e) {
+            throw new QueryException(e);
+        } catch (ClassNotFoundException e) {
+            throw new QueryException(e);
+        } catch (NoSuchMethodException e) {
+            throw new QueryException(e);
         }
     }
     

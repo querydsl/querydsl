@@ -26,9 +26,9 @@ public class QFile extends PComparable<File>{
     
     private static final long serialVersionUID = -7703329992523284173L;
     
-    private static final String GET_CONTENT = QFile.class.getName() + "Utils.readFileToString({0}, {1})";
-
     public static final QFile any = new QFile("any");
+    
+    private static final String GET_CONTENT = QFile.class.getName() + "Utils.readFileToString({0}, {1})";
     
     public static Iterable<File> walk(File dir){
         return new DirectoryWalk(dir);

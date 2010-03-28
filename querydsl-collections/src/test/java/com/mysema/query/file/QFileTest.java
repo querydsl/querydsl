@@ -8,7 +8,6 @@ package com.mysema.query.file;
 import java.io.File;
 import java.util.Map;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.collections.MiniApi;
@@ -39,7 +38,6 @@ public class QFileTest {
     }
     
     @Test
-    @Ignore
     public void getContent(){
         QFile anyFile = QFile.any;
         Map<File,String> rv = MiniApi

@@ -1,16 +1,16 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections;
+package com.mysema.util;
 
 import java.io.Serializable;
 import java.util.Comparator;
 
-import net.jcip.annotations.Immutable;
-
 import org.apache.commons.collections15.comparators.ComparableComparator;
+
+import com.mysema.query.collections.Evaluator;
 
 
 
@@ -20,7 +20,6 @@ import org.apache.commons.collections15.comparators.ComparableComparator;
  * @author tiwe
  * @version $Id$
  */
-@Immutable
 public class MultiComparator implements Comparator<Object[]>, Serializable {
 
     private static final long serialVersionUID = 1121416260773566299L;

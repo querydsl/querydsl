@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  * 
  */
@@ -58,7 +58,7 @@ public class LimitingIterator<E> implements Iterator<E> {
 
     @Override
     public void remove() {
-
+        throw new UnsupportedOperationException();
     }
 
 }

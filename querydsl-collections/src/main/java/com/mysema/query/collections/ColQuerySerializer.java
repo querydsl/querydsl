@@ -1,12 +1,11 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  * 
  */
 package com.mysema.query.collections;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -28,13 +27,6 @@ import com.mysema.query.types.Template;
  * @version $Id$
  */
 public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer> {
-    
-    private static final List<PathType> nonGeneric = Arrays.asList(
-            PathType.ARRAYVALUE,
-            PathType.ARRAYVALUE_CONSTANT,
-            PathType.PROPERTY,
-            PathType.VARIABLE
-    );
 
     public ColQuerySerializer(ColQueryTemplates patterns) {
         super(patterns);
@@ -44,7 +36,8 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
     public void visit(Path<?> path) {
         PathType pathType = path.getMetadata().getPathType();
         
-        if (pathType == PathType.PROPERTY){            
+        if (pathType == PathType.PROPERTY){      
+            // TODO : move this to PathMetadata ?!?
             String prefix = "get";
             if (path.getType() != null && path.getType().equals(Boolean.class)) {
                 prefix = "is";
@@ -54,9 +47,6 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
             append(StringUtils.capitalize(path.getMetadata().getExpression().toString()) + "()");
             
         }else{
-            if (!nonGeneric.contains(pathType)){
-                append("((").append(path.getType().getName()).append(")");
-            }        
             List<Expr<?>> args = new ArrayList<Expr<?>>(2);
             if (path.getMetadata().getParent() != null){
                 args.add((Expr<?>)path.getMetadata().getParent());
@@ -71,10 +61,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
                 }else{
                     handle(args.get(element.getIndex()));
                 }
-            }  
-            if (!nonGeneric.contains(pathType)){
-                append(")");
-            }
+            } 
         }
         
     }
@@ -109,9 +96,29 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
 
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
-        if (operator.equals(Ops.STRING_CAST)) {
+        if (args.size() == 2 
+            && Number.class.isAssignableFrom(args.get(0).getType())
+            && Number.class.isAssignableFrom(args.get(1).getType())){
+        
+            if (operator == Ops.AFTER){
+                handle(args.get(0)).append(" > ").handle(args.get(1));
+                return;
+            }else if (operator == Ops.BEFORE){
+                handle(args.get(0)).append(" < ").handle(args.get(1));
+                return;
+            }else if (operator == Ops.AOE){
+                handle(args.get(0)).append(" >= ").handle(args.get(1));
+                return;
+            }else if (operator == Ops.BOE){
+                handle(args.get(0)).append(" <= ").handle(args.get(1));
+                return;
+            }
+            // TODO : Ops.BETWEEN
+        }
+        
+        if (operator == Ops.STRING_CAST) {
             visitCast(operator, args.get(0), String.class);
-        } else if (operator.equals(Ops.NUMCAST)) {
+        } else if (operator == Ops.NUMCAST) {
             visitCast(operator, args.get(0), (Class<?>) ((Constant<?>) args.get(1)).getConstant());
         } else {
             super.visitOperation(type, operator, args);
@@ -119,7 +126,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
     }
 
     @Override
-    public void visit(SubQuery expr) {
+    public void visit(SubQuery<?> expr) {
         throw new IllegalArgumentException("Not supported");        
     }
 

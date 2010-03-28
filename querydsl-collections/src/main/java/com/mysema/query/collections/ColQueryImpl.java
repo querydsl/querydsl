@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  * 
  */
@@ -17,14 +17,28 @@ import com.mysema.query.QueryMetadata;
  */
 public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQuery, Cloneable{
     
+    /**
+     * Create a new ColQueryImpl instance
+     */
     public ColQueryImpl() {
         super(new DefaultQueryMetadata(), EvaluatorFactory.DEFAULT);
     }
     
+    /**
+     * Create a new ColQueryImpl instance
+     * 
+     * @param evaluatorFactory
+     */
     public ColQueryImpl(EvaluatorFactory evaluatorFactory) {
         super(new DefaultQueryMetadata(), evaluatorFactory);
     }
     
+    /**
+     * Create a new ColQueryImpl instance
+     * 
+     * @param metadata
+     * @param evaluatorFactory
+     */
     public ColQueryImpl(QueryMetadata metadata, EvaluatorFactory evaluatorFactory) {
         super(metadata, evaluatorFactory);
     }

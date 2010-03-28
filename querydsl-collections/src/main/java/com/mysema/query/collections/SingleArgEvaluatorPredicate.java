@@ -1,10 +1,17 @@
-/**
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
  * 
  */
 package com.mysema.query.collections;
 
 import org.apache.commons.collections15.Predicate;
 
+/**
+ * @author tiwe
+ *
+ * @param <S>
+ */
 public final class SingleArgEvaluatorPredicate<S> implements Predicate<S> {
     
     private final Evaluator<Boolean> ev;
