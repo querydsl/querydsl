@@ -37,6 +37,9 @@ public final class ColQueryTemplates extends JavaTemplates {
         add(Ops.BETWEEN, functions + ".between({0},{1},{2})");
         add(Ops.STRING_CAST, "String.valueOf({0})");
         
+        // Number
+        add(Ops.DIV, "(double)({0}/{1})");
+        
         // Date and Time
         add(Ops.DateTimeOps.YEAR,         functions + ".getYear({0})");
         add(Ops.DateTimeOps.YEAR_MONTH,   functions + ".getYearMonth({0})");
@@ -60,12 +63,11 @@ public final class ColQueryTemplates extends JavaTemplates {
                 PathType.MAPVALUE_CONSTANT }) {
             add(type, "{0}.get({1})");
         }
-        add(PathType.LISTVALUE_CONSTANT, "{0}.get({1s})");
+        add(PathType.LISTVALUE_CONSTANT, "{0}.get({1})");
         add(PathType.ARRAYVALUE, "{0}[{1}]");
-        add(PathType.ARRAYVALUE_CONSTANT, "{0}[{1s}]");
+        add(PathType.ARRAYVALUE_CONSTANT, "{0}[{1}]");
+         
         
-        // TEMPORARY FIXES        
-        add(Ops.DIV, "(double)({0}/{1})");
     }
     
     public static boolean like(String str, String like){

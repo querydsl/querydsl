@@ -9,27 +9,38 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import javax.tools.JavaCompiler;
+import javax.tools.SimpleJavaFileObject;
 import javax.tools.ToolProvider;
-
-import org.apache.commons.io.FileUtils;
+import javax.tools.JavaCompiler.CompilationTask;
 
 import com.mysema.query.QueryException;
+import com.mysema.util.JavaObjectFromString;
 import com.mysema.util.JavaWriter;
 import com.mysema.util.SimpleCompiler;
 
 /**
+ * SimpleEvaluator is a Java Compiler API based implementation of the Evaluator interface
+ * 
  * @author tiwe
  *
  */
 public class SimpleEvaluator<T> implements Evaluator<T>{
+    
+    // 16secs
         
+    // TODO : make this location configurable
     private static final File dir;
     
     private static final ClassLoader loader;
@@ -37,6 +48,8 @@ public class SimpleEvaluator<T> implements Evaluator<T>{
     private static final String classpath;
     
     private static final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+    
+    private static final List<String> compilationOptions;
     
     static{                
         try {
@@ -46,6 +59,8 @@ public class SimpleEvaluator<T> implements Evaluator<T>{
             URLClassLoader parent = (URLClassLoader) SimpleEvaluator.class.getClassLoader();
             classpath = SimpleCompiler.getClassPath(parent);
             loader = new URLClassLoader(new URL[]{dir.toURI().toURL()}, parent);
+            
+            compilationOptions = Arrays.asList("-classpath",classpath,"-d",dir.getAbsolutePath(),"-g:none");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         } catch (MalformedURLException e) {
@@ -70,29 +85,9 @@ public class SimpleEvaluator<T> implements Evaluator<T>{
         String id = toId(source, projectionType, types);
                
         // compile
-        File javaFile = new File(dir, id+".java");
-        if (!new File(dir, id+".class").exists()){     
-//            long start = System.currentTimeMillis();
-            // create source
-            StringWriter writer = new StringWriter();
-            JavaWriter javaw = new JavaWriter(writer);
-            javaw.beginClass(id, null); 
-            String[] params = new String[names.length];
-            for (int i = 0; i < params.length; i++){
-                params[i] = toName(types[i]) + " " + names[i];
-            }
-            
-            javaw.beginStaticMethod(toName(projectionType), "eval", params);
-            javaw.line("return ", source, ";");
-            javaw.end();
-            javaw.end();
-            
-            FileUtils.writeByteArrayToFile(javaFile, writer.toString().getBytes("ISO-8859-1"));
-            compiler.run(null, null, null, "-classpath", classpath, javaFile.getAbsolutePath());
-            // source file is not needed anymore
-            javaFile.delete();
-//            long duration = System.currentTimeMillis() - start;
-//            System.out.println("- " + duration + ": " + source);
+        File classFile = new File(dir, id+".class");
+        if (!classFile.exists()){
+            compile(source, projectionType, names, types, id);
         }        
         
         // load class        
@@ -100,12 +95,46 @@ public class SimpleEvaluator<T> implements Evaluator<T>{
         method = cl.getMethod("eval", types);
     }
 
-    private static String toId(String source, Class<?> projectionType, Class<?>[] types) {
+    private void compile(String source, Class<? extends T> projectionType,
+            String[] names, Class<?>[] types, String id)
+            throws IOException, UnsupportedEncodingException {
+        // create source
+        StringWriter writer = new StringWriter();
+        JavaWriter javaw = new JavaWriter(writer);
+        javaw.beginClass(id, null); 
+        String[] params = new String[names.length];
+        for (int i = 0; i < params.length; i++){
+            params[i] = toName(types[i]) + " " + names[i];
+        }
+        
+        javaw.beginStaticMethod(toName(projectionType), "eval", params);
+        javaw.line("return ", source, ";");
+        javaw.end();
+        javaw.end();
+        
+        // compile
+        try {
+            SimpleJavaFileObject javaFileObject = new JavaObjectFromString(id, writer.toString());
+            Writer out = new StringWriter();
+            
+            CompilationTask task = compiler.getTask(out, null, null, 
+                    compilationOptions, null, 
+                    Collections.singletonList(javaFileObject));
+            if (!task.call().booleanValue()){
+                throw new QueryException("Compilation of " + source + " failed.\n" + out.toString());
+            }
+        } catch (URISyntaxException e) {
+            throw new IOException(e);
+        }
+           
+    }
+
+    public static String toId(String source, Class<?> returnType, Class<?>... types) {
         StringBuilder b = new StringBuilder("Q");
         b.append("_").append(Math.abs(source.hashCode()));
-        b.append("_").append(Math.abs(projectionType.hashCode()));
+        b.append("_").append(Math.abs(returnType.getName().hashCode()));
         for (Class<?> type : types){
-            b.append("_").append(Math.abs(type.hashCode()));
+            b.append("_").append(Math.abs(type.getName().hashCode()));
         }
         return b.toString();        
     }
