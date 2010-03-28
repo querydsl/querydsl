@@ -207,6 +207,12 @@ public final class JavaWriter implements Appendable, CodeWriter{
         append(indent + PUBLIC_STATIC + returnType + SPACE + methodName).params(parameters, transformer).append(" {\n");
         return goIn();        
     }
+    
+    @Override
+    public CodeWriter beginStaticMethod(String returnType, String methodName, String... args) throws IOException{
+        append(indent + PUBLIC_STATIC + returnType + SPACE + methodName).params(args).append(" {\n");
+        return goIn();
+    }
 
     @Override
     public CodeWriter end() throws IOException{

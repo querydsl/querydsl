@@ -33,7 +33,7 @@ import javax.tools.ToolProvider;
  */
 public class SimpleCompiler implements JavaCompiler{
     
-    private static String getClassPath(URLClassLoader classLoader) throws UnsupportedEncodingException {
+    public static String getClassPath(URLClassLoader classLoader) throws UnsupportedEncodingException {
         StringBuilder path = new StringBuilder();
         for (URL url : ((URLClassLoader)classLoader).getURLs()){
             if (path.length() > 0){
