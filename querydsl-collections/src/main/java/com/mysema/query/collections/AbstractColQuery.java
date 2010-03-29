@@ -35,7 +35,6 @@ import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.util.MultiComparator;
 import com.mysema.util.MultiIterator;
 
 /**

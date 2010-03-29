@@ -14,7 +14,6 @@ import org.apache.commons.collections15.IteratorUtils;
 
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.util.ArrayTransformer;
 
 /**
  * IteratorFactory provides Iterator utilities

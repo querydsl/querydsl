@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.util;
+package com.mysema.query.collections;
 
 import org.apache.commons.collections15.Transformer;
 

@@ -3,14 +3,13 @@
  * All rights reserved.
  * 
  */
-package com.mysema.util;
+package com.mysema.query.collections;
 
 import java.io.Serializable;
 import java.util.Comparator;
 
 import org.apache.commons.collections15.comparators.ComparableComparator;
 
-import com.mysema.query.collections.Evaluator;
 
 
 
