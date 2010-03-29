@@ -56,7 +56,7 @@ public interface NamingStrategy {
      * @param tableName
      * @return
      */
-    String getTableName(String tableName);
+    String normalizeTableName(String tableName);
     
     /**
      * Convert the given column name and provide the opportunity to add quoted identifiers
@@ -64,6 +64,6 @@ public interface NamingStrategy {
      * @param columnName
      * @return
      */
-    String getColumnName(String columnName);
+    String normalizeColumnName(String columnName);
 
 }

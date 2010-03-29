@@ -151,7 +151,7 @@ public class MetaDataExporter {
         Type typeModel = new ClassType(fieldType, clazz);
         classModel.addProperty(new Property(
                 classModel, 
-                namingStrategy.getColumnName(columnName), 
+                namingStrategy.normalizeColumnName(columnName), 
                 propertyName, 
                 typeModel, 
                 new String[0], 
@@ -170,7 +170,7 @@ public class MetaDataExporter {
         EntityType classModel = new EntityType("", classTypeModel);
         Method wildcard = new Method(classModel, "all", "{0}.*", Types.OBJECTS);
         classModel.addMethod(wildcard);
-        classModel.addAnnotation(new TableImpl(namingStrategy.getTableName(tableName)));
+        classModel.addAnnotation(new TableImpl(namingStrategy.normalizeTableName(tableName)));
         ResultSet columns = md.getColumns(null, schemaPattern, tableName, null);
         try{
             while (columns.next()) {

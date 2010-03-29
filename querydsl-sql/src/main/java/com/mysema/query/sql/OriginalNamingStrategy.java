@@ -13,9 +13,9 @@ import com.mysema.query.codegen.EntityType;
  * OriginalNamingStrategy preserves the table and column names in the conversion
  * 
  * @author tiwe
- *
+ * 
  */
-public class OriginalNamingStrategy implements NamingStrategy{
+public class OriginalNamingStrategy implements NamingStrategy {
 
     @Override
     public String getClassName(String namePrefix, String tableName) {
@@ -23,34 +23,36 @@ public class OriginalNamingStrategy implements NamingStrategy{
     }
 
     @Override
-    public String getPropertyName(String columnName, String namePrefix, EntityType entityType) {
+    public String getPropertyName(String columnName, String namePrefix,
+            EntityType entityType) {
         return columnName;
     }
 
     @Override
-    public String getDefaultVariableName(String namePrefix, EntityType entityType) {
+    public String getDefaultVariableName(String namePrefix,
+            EntityType entityType) {
         // TODO : escape
         return entityType.getSimpleName();
     }
 
     @Override
     public String getDefaultAlias(String namePrefix, EntityType entityType) {
-        for (Annotation ann : entityType.getAnnotations()){
-            if (ann.annotationType().equals(Table.class)){
-                return ((Table)ann).value();
+        for (Annotation ann : entityType.getAnnotations()) {
+            if (ann.annotationType().equals(Table.class)) {
+                return ((Table) ann).value();
             }
         }
         return getDefaultVariableName(namePrefix, entityType);
     }
 
-	@Override
-	public String getColumnName(String columnName) {
-		return columnName;
-	}
+    @Override
+    public String normalizeColumnName(String columnName) {
+        return columnName;
+    }
 
-	@Override
-	public String getTableName(String tableName) {
-		return tableName;
-	}
+    @Override
+    public String normalizeTableName(String tableName) {
+        return tableName;
+    }
 
 }
