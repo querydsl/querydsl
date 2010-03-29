@@ -320,7 +320,6 @@ public class Processor {
             try{
                 JavaWriter writer = new JavaWriter(w);
                 writer.packageDecl(packageName);
-                writer.nl();
                 if (vars.asInterface()){
                     writer.beginInterface(vars.value());
                 }else{
