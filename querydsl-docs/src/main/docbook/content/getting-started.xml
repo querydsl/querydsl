@@ -13,5 +13,6 @@
     <xi:include href="integration/collections.xml" />
     <xi:include href="integration/sql.xml" />
     <xi:include href="integration/lucene.xml" />
+    <xi:include href="integration/hibernate-search.xml" />
     
 </chapter>    
