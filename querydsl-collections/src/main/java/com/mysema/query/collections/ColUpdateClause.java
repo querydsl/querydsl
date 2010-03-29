@@ -5,6 +5,11 @@
  */
 package com.mysema.query.collections;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.collections15.BeanMap;
+
 import com.mysema.query.dml.UpdateClause;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
@@ -20,6 +25,8 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
     
     private final Path<T> expr;
     
+    private final Map<Path<?>,Object> paths = new HashMap<Path<?>,Object>();
+    
     public ColUpdateClause(Path<T> expr, Iterable<? extends T> col){
         this(EvaluatorFactory.DEFAULT, expr, col);
     }
@@ -31,18 +38,22 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
     
     @Override
     public long execute() {
-        throw new UnsupportedOperationException("Not yet implemented");
-//        int rv = 0;
-//        for (T match : query.list(expr.asExpr())){
-//            // TODO : update
-//            rv++;
-//        }
-//        return rv;
+        int rv = 0;
+        for (T match : query.list(expr.asExpr())){
+            BeanMap beanMap = new BeanMap(match);
+            for (Map.Entry<Path<?>,Object> entry : paths.entrySet()){
+                // TODO : support deep updates as well
+                String propertyName = entry.getKey().getMetadata().getExpression().toString();
+                beanMap.put(propertyName, entry.getValue());
+            }
+            rv++;
+        }
+        return rv;
     }
 
     @Override
     public <U> ColUpdateClause<T> set(Path<U> path, U value) {
-        // TODO Auto-generated method stub
+        paths.put(path, value);
         return this;
     }
 
