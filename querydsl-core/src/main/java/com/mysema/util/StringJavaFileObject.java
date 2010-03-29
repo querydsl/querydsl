@@ -15,11 +15,11 @@ import javax.tools.SimpleJavaFileObject;
  * @author tiwe
  *
  */
-public class JavaObjectFromString extends SimpleJavaFileObject {
+public class StringJavaFileObject extends SimpleJavaFileObject {
     
     private final String contents;
 
-    public JavaObjectFromString(String className, String contents) throws URISyntaxException{
+    public StringJavaFileObject(String className, String contents) throws URISyntaxException{
         super(new URI(className), Kind.SOURCE);
         this.contents = contents;
     }

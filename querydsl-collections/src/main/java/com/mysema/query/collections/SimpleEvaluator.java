@@ -26,7 +26,7 @@ import javax.tools.ToolProvider;
 import javax.tools.JavaCompiler.CompilationTask;
 
 import com.mysema.query.QueryException;
-import com.mysema.util.JavaObjectFromString;
+import com.mysema.util.StringJavaFileObject;
 import com.mysema.util.JavaWriter;
 import com.mysema.util.SimpleCompiler;
 
@@ -114,7 +114,7 @@ public class SimpleEvaluator<T> implements Evaluator<T>{
         
         // compile
         try {
-            SimpleJavaFileObject javaFileObject = new JavaObjectFromString(id, writer.toString());
+            SimpleJavaFileObject javaFileObject = new StringJavaFileObject(id, writer.toString());
             Writer out = new StringWriter();
             
             CompilationTask task = compiler.getTask(out, null, null, 
