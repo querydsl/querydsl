@@ -40,7 +40,7 @@ QDocument doc = new QDocument("doc");
 
 IndexSearcher searcher = new IndexSearher(index);
 LuceneQuery query = new LuceneQuery(LuceneQuery.LOWER_CASE, searcher); 
-List<Document> documents = query.from(doc)
+List<Document> documents = query
     .where(doc.year.between("1800", "2000").and(doc.title.startsWith("Huckle"))
     .list();
 ]]></programlisting>  
@@ -79,7 +79,7 @@ List<Document> documents = query.from(doc)
   <para>The syntax for declaring ordering is </para>
   
 <programlisting language="java"><![CDATA[ 
-query.from(doc)
+query
     .where(doc.title.like("*"))
     .orderBy(doc.title.asc(), doc.year.desc())
     .list();
@@ -101,7 +101,7 @@ title:*
   <para>The syntax for declaring a limit is </para>
   
 <programlisting language="java"><![CDATA[ 
-query.from(doc)
+query
     .where(doc.title.like("*"))
     .limit(10)
     .list()
@@ -115,7 +115,7 @@ query.from(doc)
   <para>The syntax for declaring an offset is </para>
   
 <programlisting language="java"><![CDATA[ 
-query.from(doc)
+query
     .where(doc.title.like("*"))
     .offset(3)
     .list()
