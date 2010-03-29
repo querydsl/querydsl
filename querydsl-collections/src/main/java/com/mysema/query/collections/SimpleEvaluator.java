@@ -131,12 +131,12 @@ public class SimpleEvaluator<T> implements Evaluator<T>{
 
     public static String toId(String source, Class<?> returnType, Class<?>... types) {
         StringBuilder b = new StringBuilder("Q");
-        b.append("_").append(Math.abs(source.hashCode()));
-        b.append("_").append(Math.abs(returnType.getName().hashCode()));
+        b.append("_").append(source.hashCode());
+        b.append("_").append(returnType.getName().hashCode());
         for (Class<?> type : types){
-            b.append("_").append(Math.abs(type.getName().hashCode()));
+            b.append("_").append(type.getName().hashCode());
         }
-        return b.toString();        
+        return b.toString().replace('-', '0');        
     }
     
     private static String toName(Class<?> cl){
