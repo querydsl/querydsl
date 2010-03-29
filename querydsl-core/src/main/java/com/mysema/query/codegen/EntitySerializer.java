@@ -337,7 +337,6 @@ public class EntitySerializer implements Serializer{
 
     protected void introPackage(CodeWriter writer, EntityType model) throws IOException {
         writer.packageDecl(model.getPackageName());
-        writer.nl();
     }
     
     protected void introSuper(CodeWriter writer, EntityType model) throws IOException {

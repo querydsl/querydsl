@@ -293,7 +293,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
 
     @Override
     public CodeWriter packageDecl(String packageName) throws IOException{
-        return line(PACKAGE + packageName + SEMICOLON);
+        return line(PACKAGE + packageName + SEMICOLON).nl();
     }
 
     private <T> CodeWriter params(Collection<T> parameters, Transformer<T,String> transformer) throws IOException{
