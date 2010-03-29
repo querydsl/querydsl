@@ -26,7 +26,7 @@ public class DefaultNamingStrategy implements NamingStrategy {
     }
     
     @Override
-    public String getPropertyName(String columnName){
+    public String getPropertyName(String columnName, String namePrefix, EntityType entityType){
         return columnName.substring(0,1).toLowerCase(Locale.ENGLISH) + toCamelCase(columnName.substring(1));
     }
     
@@ -61,5 +61,15 @@ public class DefaultNamingStrategy implements NamingStrategy {
         }
         return getDefaultVariableName(namePrefix, entityType);
     }
+
+	@Override
+	public String getColumnName(String columnName) {
+		return columnName;
+	}
+
+	@Override
+	public String getTableName(String tableName) {
+		return tableName;
+	}
 
 }

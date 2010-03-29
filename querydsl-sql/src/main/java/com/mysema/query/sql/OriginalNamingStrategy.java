@@ -23,7 +23,7 @@ public class OriginalNamingStrategy implements NamingStrategy{
     }
 
     @Override
-    public String getPropertyName(String columnName) {
+    public String getPropertyName(String columnName, String namePrefix, EntityType entityType) {
         return columnName;
     }
 
@@ -42,5 +42,15 @@ public class OriginalNamingStrategy implements NamingStrategy{
         }
         return getDefaultVariableName(namePrefix, entityType);
     }
+
+	@Override
+	public String getColumnName(String columnName) {
+		return columnName;
+	}
+
+	@Override
+	public String getTableName(String tableName) {
+		return tableName;
+	}
 
 }
