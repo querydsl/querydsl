@@ -104,7 +104,7 @@ title:*
 query
     .where(doc.title.like("*"))
     .limit(10)
-    .list()
+    .list();
 ]]></programlisting>
   
   </sect2>
@@ -118,7 +118,7 @@ query
 query
     .where(doc.title.like("*"))
     .offset(3)
-    .list()
+    .list();
 ]]></programlisting>
   
   </sect2>
