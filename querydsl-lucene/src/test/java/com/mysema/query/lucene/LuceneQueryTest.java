@@ -28,8 +28,6 @@ import org.junit.Test;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.lucene.LuceneQuery;
-import com.mysema.query.lucene.LuceneSerializer;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathMetadataFactory;
