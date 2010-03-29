@@ -2,7 +2,7 @@
 <sect1 id="hibernate_search_integration" revision="1">
 	<title>Querying Hibernate Search sources</title>
 
-	<para>This chapter describes the query type querying functionality of
+	<para>This chapter describes the querying functionality of
 		the Hibernate Search module.</para>
 
 	<sect2>
@@ -40,6 +40,13 @@ List<User> list = query
 			For general usage instructions see
 			<link linkend="lucene_integration">Querying Lucene sources</link>.
 		</para>
+    
+        <para>
+          In the query serialization the only difference to the Querydsl Lucene module is that
+          paths are treated differently.
+          For <emphasis>org.hibernate.search.annotations.Field</emphasis> annotated properties the name attribute is used 
+          with the property name as fallback for the field name.
+        </para>
 
 	</sect2>
 </sect1>
