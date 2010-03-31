@@ -8,6 +8,7 @@ package com.mysema.query.hql;
 import java.util.Collection;
 
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
@@ -24,8 +25,18 @@ public class HQLSubQuery extends DetachableQuery<HQLSubQuery>{
 
     private final HQLQueryMixin<HQLSubQuery> queryMixin;
     
+    /**
+     * 
+     */
     public HQLSubQuery() {
-        super(new HQLQueryMixin<HQLSubQuery>(new DefaultQueryMetadata()));
+        this(new DefaultQueryMetadata());
+    }
+    
+    /**
+     * @param metadata
+     */
+    public HQLSubQuery(QueryMetadata metadata) {
+        super(new HQLQueryMixin<HQLSubQuery>(metadata));
         super.queryMixin.setSelf(this);
         this.queryMixin = (HQLQueryMixin<HQLSubQuery>) super.queryMixin;
     }

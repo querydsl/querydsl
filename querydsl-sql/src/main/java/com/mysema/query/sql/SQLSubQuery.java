@@ -20,10 +20,16 @@ import com.mysema.query.types.path.PEntity;
  */
 public class SQLSubQuery extends DetachableQuery<SQLSubQuery>{
     
+    /**
+     * 
+     */
     public SQLSubQuery() {
         this(new DefaultQueryMetadata());
     }
     
+    /**
+     * @param metadata
+     */
     public SQLSubQuery(QueryMetadata metadata) {
         super(new QueryMixin<SQLSubQuery>(metadata));
         this.queryMixin.setSelf(this);

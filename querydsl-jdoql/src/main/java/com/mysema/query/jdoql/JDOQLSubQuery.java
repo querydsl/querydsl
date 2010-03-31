@@ -24,10 +24,16 @@ import com.mysema.query.types.path.PEntity;
  */
 public class JDOQLSubQuery extends DetachableQuery<JDOQLSubQuery>{
     
+    /**
+     * 
+     */
     public JDOQLSubQuery() {
         this(new DefaultQueryMetadata());
     }
     
+    /**
+     * @param metadata
+     */
     public JDOQLSubQuery(QueryMetadata metadata) {
         super(new JDOQLQueryMixin<JDOQLSubQuery>(metadata));
         this.queryMixin.setSelf(this);
