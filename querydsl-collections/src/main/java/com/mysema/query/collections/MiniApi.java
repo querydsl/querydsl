@@ -21,7 +21,7 @@ public final class MiniApi {
     
     private MiniApi(){}
 
-    private static final EvaluatorFactory evaluatorFactory = EvaluatorFactory.DEFAULT;
+    private static final ExprEvaluatorFactory evaluatorFactory = ExprEvaluatorFactory.DEFAULT;
     
     private static ColQuery query(){
         return new ColQueryImpl(evaluatorFactory);

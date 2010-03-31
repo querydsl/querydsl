@@ -35,6 +35,7 @@ import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.util.Evaluator;
 import com.mysema.util.MultiIterator;
 
 /**
@@ -57,14 +58,14 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>
     
     private boolean arrayProjection = false;
     
-    private final EvaluatorFactory evaluatorFactory;
+    private final ExprEvaluatorFactory evaluatorFactory;
     
     private final Map<Expr<?>, Iterable<?>> exprToIt = new HashMap<Expr<?>, Iterable<?>>();
 
     private final IteratorFactory iteratorFactory;
 
     @SuppressWarnings("unchecked")
-    public AbstractColQuery(QueryMetadata metadata, EvaluatorFactory evaluatorFactory) {
+    public AbstractColQuery(QueryMetadata metadata, ExprEvaluatorFactory evaluatorFactory) {
         super(new QueryMixin<Q>(metadata));
         this.queryMixin.setSelf((Q) this);
         this.evaluatorFactory = evaluatorFactory;
@@ -160,7 +161,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>
         return (Q)this;
     }
 
-    protected EvaluatorFactory getEvaluatorFactory() {
+    protected ExprEvaluatorFactory getEvaluatorFactory() {
         return evaluatorFactory;
     }
 

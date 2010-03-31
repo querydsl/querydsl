@@ -21,7 +21,7 @@ public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQ
      * Create a new ColQueryImpl instance
      */
     public ColQueryImpl() {
-        super(new DefaultQueryMetadata(), EvaluatorFactory.DEFAULT);
+        super(new DefaultQueryMetadata(), ExprEvaluatorFactory.DEFAULT);
     }
     
     /**
@@ -29,7 +29,7 @@ public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQ
      * 
      * @param evaluatorFactory
      */
-    public ColQueryImpl(EvaluatorFactory evaluatorFactory) {
+    public ColQueryImpl(ExprEvaluatorFactory evaluatorFactory) {
         super(new DefaultQueryMetadata(), evaluatorFactory);
     }
     
@@ -39,7 +39,7 @@ public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQ
      * @param metadata
      * @param evaluatorFactory
      */
-    public ColQueryImpl(QueryMetadata metadata, EvaluatorFactory evaluatorFactory) {
+    public ColQueryImpl(QueryMetadata metadata, ExprEvaluatorFactory evaluatorFactory) {
         super(metadata, evaluatorFactory);
     }
 

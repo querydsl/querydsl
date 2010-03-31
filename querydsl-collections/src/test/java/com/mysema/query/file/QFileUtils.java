@@ -23,5 +23,5 @@ public final class QFileUtils {
             throw new QueryException(e);
         }
     }
-
+    
 }

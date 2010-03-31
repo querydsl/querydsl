@@ -40,6 +40,7 @@ import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QIdName;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.expr.Coalesce;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.ENumberConst;
@@ -83,6 +84,11 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         assertEquals(max, query().from(employee).list(employee.salary.max()).get(0).intValue());
     }
     
+    @Test
+    public void coalesce(){
+        Coalesce<String> c = new Coalesce<String>(employee.firstname, employee.lastname).add("xxx");
+        query().from(employee).where(c.eq("xxx")).list(employee.id);
+    }
     
     @Test
     @ExcludeIn({DERBY})

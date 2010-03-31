@@ -5,9 +5,6 @@
  */
 package com.mysema.query.collections;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import com.mysema.query.serialization.JavaTemplates;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.PathType;
@@ -24,7 +21,7 @@ public final class ColQueryTemplates extends JavaTemplates {
     public static final ColQueryTemplates DEFAULT = new ColQueryTemplates();
     
     protected ColQueryTemplates() {
-        String functions = ColQueryTemplates.class.getName();
+        String functions = ColQueryFunctions.class.getName();
         add(Ops.EQ_OBJECT, "{0}.equals({1})");
         add(Ops.NE_OBJECT, "!{0}.equals({1})");
         add(Ops.INSTANCE_OF, "{1}.isInstance({0})");
@@ -67,68 +64,10 @@ public final class ColQueryTemplates extends JavaTemplates {
         add(PathType.ARRAYVALUE, "{0}[{1}]");
         add(PathType.ARRAYVALUE_CONSTANT, "{0}[{1}]");
          
+        // coalesce
+        add(Ops.COALESCE, functions + ".coalesce({0})");
         
     }
     
-    public static boolean like(String str, String like){
-        // TODO : better escaping
-        return str.matches(like.replace("%", ".*").replace('_', '.'));
-    }
-
-    public static <A extends Comparable<? super A>> boolean between(A a, A b, A c) {
-        return a.compareTo(b) > 0 && a.compareTo(c) < 0;
-    }
-    
-    public static int getYear(Date date){
-        return getField(date, Calendar.YEAR);
-    }
-    
-    public static int getYearMonth(Date date){
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        return cal.get(Calendar.YEAR) * 100 + cal.get(Calendar.MONTH) + 1;
-    }
-    
-    public static int getMonth(Date date){
-        return getField(date, Calendar.MONTH) + 1;
-    }
-    
-    public static int getWeek(Date date){
-        return getField(date, Calendar.WEEK_OF_YEAR);
-    }
-    
-    public static int getDayOfMonth(Date date){
-        return getField(date, Calendar.DAY_OF_MONTH);
-    }
-    
-    public static int getDayOfWeek(Date date){
-        return getField(date, Calendar.DAY_OF_WEEK);
-    }
-    
-    public static int getDayOfYear(Date date){
-        return getField(date, Calendar.DAY_OF_YEAR);
-    }
-    
-    public static int getHour(Date date){
-        return getField(date, Calendar.HOUR_OF_DAY);
-    }
-    
-    public static int getMinute(Date date){
-        return getField(date, Calendar.MINUTE);
-    }
-    
-    public static int getSecond(Date date){
-        return getField(date, Calendar.SECOND);
-    }
-    
-    public static int getMilliSecond(Date date){
-        return getField(date, Calendar.MILLISECOND);
-    }
-    
-    private static int getField(Date date, int field){
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        return cal.get(field);
-    }
 
 }

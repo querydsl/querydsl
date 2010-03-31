@@ -3,15 +3,15 @@
  * All rights reserved.
  * 
  */
-package com.mysema.util;
+package com.mysema.util.codegen;
 
-import static com.mysema.util.Symbols.ASSIGN;
-import static com.mysema.util.Symbols.COMMA;
-import static com.mysema.util.Symbols.DOT;
-import static com.mysema.util.Symbols.NEWLINE;
-import static com.mysema.util.Symbols.QUOTE;
-import static com.mysema.util.Symbols.SEMICOLON;
-import static com.mysema.util.Symbols.SPACE;
+import static com.mysema.util.codegen.Symbols.ASSIGN;
+import static com.mysema.util.codegen.Symbols.COMMA;
+import static com.mysema.util.codegen.Symbols.DOT;
+import static com.mysema.util.codegen.Symbols.NEWLINE;
+import static com.mysema.util.codegen.Symbols.QUOTE;
+import static com.mysema.util.codegen.Symbols.SEMICOLON;
+import static com.mysema.util.codegen.Symbols.SPACE;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;

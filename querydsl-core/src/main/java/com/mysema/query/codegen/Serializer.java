@@ -7,7 +7,7 @@ package com.mysema.query.codegen;
 
 import java.io.IOException;
 
-import com.mysema.util.CodeWriter;
+import com.mysema.util.codegen.CodeWriter;
 
 /**
  * Serializer defines a common interface for EntityType serializers

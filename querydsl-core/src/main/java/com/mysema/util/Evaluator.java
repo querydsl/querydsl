@@ -3,14 +3,14 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections;
+package com.mysema.util;
 
 
 /**
- * Evaluator defines an interface for evaluating Querydsl expressions
+ * SimpleEvaluator is a Java Compiler API based implementation of the Evaluator interface
  * 
  * @author tiwe
- * @version $Id$
+ *
  */
 public interface Evaluator<T> {
     

@@ -106,6 +106,9 @@ public class CoverageTest {
             
             Ops.CASE_EQ_WHEN,
             Ops.CASE_EQ_ELSE,
+            
+            Ops.LIST,
+            Ops.COALESCE,
                 
             // aggregation
             Ops.AggOps.AVG_AGG,

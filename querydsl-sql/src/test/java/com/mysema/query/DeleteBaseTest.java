@@ -11,6 +11,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.sql.SQLException;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.sql.dml.SQLDeleteClause;
@@ -23,17 +25,27 @@ public abstract class DeleteBaseTest extends AbstractBaseTest{
         return new SQLDeleteClause(Connections.getConnection(), dialect, e);
     }
     
+    private void reset() throws SQLException{
+        delete(survey).where(survey.name.isNotNull()).execute();
+        Connections.getStatement().execute("insert into survey values (1, 'Hello World')");   
+    }
+    
+    @Before
+    public void setUp() throws SQLException{
+        reset();
+    }
+    
+    @After
+    public void tearDown() throws SQLException{
+        reset();
+    }
+    
     @Test
     @ExcludeIn(MYSQL)
     public void test() throws SQLException{
-        try{
-            // TODO : FIXME
-            long count = query().from(survey).count();
-            assertEquals(0, delete(survey).where(survey.name.eq("XXX")).execute());
-            assertEquals(count, delete(survey).execute());    
-        }finally{
-            Connections.getStatement().execute("insert into survey values (1, 'Hello World')");    
-        }
+        long count = query().from(survey).count();
+        assertEquals(0, delete(survey).where(survey.name.eq("XXX")).execute());
+        assertEquals(count, delete(survey).execute());    
     }
 
 }

@@ -149,6 +149,14 @@
               <title>SQL</title>
               <packages>com.mysema.query.sql*</packages>
             </group>
+            <group>
+              <title>Lucene</title>
+              <packages>com.mysema.query.lucene</packages>
+            </group>
+            <group>
+              <title>Hibernate Search</title>
+              <packages>com.mysema.query.search</packages>
+            </group>
           </groups>
         </configuration>
       </plugin>

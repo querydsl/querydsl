@@ -5,6 +5,8 @@
  */
 package com.mysema.query._oracle;
 
+import java.sql.SQLException;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -23,13 +25,14 @@ import com.mysema.testutil.ResourceCheck;
 public class UpdateOracleTest extends UpdateBaseTest{
     
     @BeforeClass
-    public static void setUp() throws Exception {
+    public static void setUpClass() throws Exception {
         Connections.initOracle();
     }
 
     @Before
-    public void setUpForTest() {
+    public void setUp() throws SQLException {
         dialect = new OracleTemplates().newLineToSingleSpace();
+        super.setUp();
     }
 
 }

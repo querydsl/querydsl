@@ -47,7 +47,7 @@ import com.mysema.query.codegen.Supertype;
 import com.mysema.query.codegen.Type;
 import com.mysema.query.codegen.TypeFactory;
 import com.mysema.query.codegen.TypeMappings;
-import com.mysema.util.JavaWriter;
+import com.mysema.util.codegen.JavaWriter;
 
 /**
  * Processor handles the actual work in the Querydsl APT module

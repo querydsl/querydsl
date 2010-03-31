@@ -25,10 +25,10 @@ public class ColDeleteClause<T> implements DeleteClause<ColDeleteClause<T>>{
     private final Collection<? extends T> col;
     
     public ColDeleteClause(Path<T> expr, Collection<? extends T> col){
-        this(EvaluatorFactory.DEFAULT, expr, col);
+        this(ExprEvaluatorFactory.DEFAULT, expr, col);
     }
     
-    public ColDeleteClause(EvaluatorFactory ef, Path<T> expr, Collection<? extends T> col){
+    public ColDeleteClause(ExprEvaluatorFactory ef, Path<T> expr, Collection<? extends T> col){
         this.query = new ColQueryImpl(ef).from(expr, col);
         this.expr = expr;
         this.col = col;

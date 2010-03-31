@@ -5,7 +5,7 @@
  */
 package com.mysema.query.sql;
 
-import static com.mysema.util.Symbols.NEW;
+import static com.mysema.util.codegen.Symbols.NEW;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -37,8 +37,8 @@ import com.mysema.query.codegen.Type;
 import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeMappings;
 import com.mysema.query.codegen.Types;
-import com.mysema.util.CodeWriter;
-import com.mysema.util.JavaWriter;
+import com.mysema.util.codegen.CodeWriter;
+import com.mysema.util.codegen.JavaWriter;
 
 /**
  * MetadataExporter exports JDBC metadata to Querydsl query types

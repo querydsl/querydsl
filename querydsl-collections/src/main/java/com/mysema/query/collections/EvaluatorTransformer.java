@@ -7,6 +7,8 @@ package com.mysema.query.collections;
 
 import org.apache.commons.collections15.Transformer;
 
+import com.mysema.util.Evaluator;
+
 /**
  * @author tiwe
  *

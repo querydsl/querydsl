@@ -43,6 +43,7 @@ public interface Ops {
     Operator<Number> NUMCAST = new OperatorImpl<Number>();
     Operator<String> STRING_CAST = new OperatorImpl<String>(Object.class);
     Operator<Object> ALIAS = new OperatorImpl<Object>();
+    Operator<Object> LIST = new OperatorImpl<Object>();
         
     // collection
     Operator<Boolean> IN = new OperatorImpl<Boolean>(OBJECT_X_2); // cmp. contains
@@ -116,6 +117,9 @@ public interface Ops {
     Operator<Object> CASE_EQ = new OperatorImpl<Object>(Object.class);
     Operator<Object> CASE_EQ_WHEN = new OperatorImpl<Object>();
     Operator<Object> CASE_EQ_ELSE = new OperatorImpl<Object>(Object.class);
+    
+    // coalesce
+    Operator<Object> COALESCE = new OperatorImpl<Object>(Object.class);
     
     // subquery operations
     Operator<Boolean> EXISTS = new OperatorImpl<Boolean>(Object.class);

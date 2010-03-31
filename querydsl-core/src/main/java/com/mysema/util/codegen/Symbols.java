@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.util;
+package com.mysema.util.codegen;
 
 /**
  * @author tiwe

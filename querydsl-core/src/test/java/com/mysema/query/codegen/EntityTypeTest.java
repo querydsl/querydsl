@@ -12,7 +12,7 @@ import java.lang.annotation.Annotation;
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryExtensions;
-import com.mysema.util.JavaWriter;
+import com.mysema.util.codegen.JavaWriter;
 
 public class EntityTypeTest {
 

@@ -14,6 +14,7 @@ import org.apache.commons.collections15.IteratorUtils;
 
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.util.Evaluator;
 
 /**
  * IteratorFactory provides Iterator utilities
@@ -24,9 +25,9 @@ import com.mysema.query.types.expr.EBoolean;
 @Immutable
 public class IteratorFactory {
     
-    private final EvaluatorFactory evaluatorFactory;
+    private final ExprEvaluatorFactory evaluatorFactory;
     
-    public IteratorFactory(EvaluatorFactory evaluatorFactory){
+    public IteratorFactory(ExprEvaluatorFactory evaluatorFactory){
         this.evaluatorFactory = evaluatorFactory;
     }
     

@@ -5,6 +5,8 @@
  */
 package com.mysema.query._derby;
 
+import java.sql.SQLException;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -21,13 +23,14 @@ import com.mysema.testutil.Label;
 public class InsertDerbyTest extends InsertBaseTest{
     
     @BeforeClass
-    public static void setUp() throws Exception {
+    public static void setUpClass() throws Exception {
         Connections.initDerby();
     }
 
     @Before
-    public void setUpForTest() {
+    public void setUp() throws SQLException {
         dialect = new DerbyTemplates().newLineToSingleSpace();
+        super.setUp();
     }
 
 }

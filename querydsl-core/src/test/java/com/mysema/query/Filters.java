@@ -13,6 +13,7 @@ import java.util.List;
 
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.expr.Coalesce;
 import com.mysema.query.types.expr.EArray;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollection;
@@ -260,6 +261,11 @@ public class Filters {
             
         rv.add(expr.notBetween("A", "Z"));
         rv.add(expr.notBetween(other, other));
+        
+        if (!target.equals(Target.DERBY) && !module.equals(Module.JDOQL)){
+            // https://issues.apache.org/jira/browse/DERBY-4389
+            rv.add(new Coalesce<String>(String.class, expr, other).eq("xxx"));
+        }        
             
         return rv;
     }    

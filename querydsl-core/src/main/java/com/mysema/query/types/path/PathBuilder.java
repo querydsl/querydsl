@@ -25,6 +25,8 @@ public final class PathBuilder<D> extends PEntity<D>{
     private final Map<String,PathBuilder<?>> properties = new HashMap<String,PathBuilder<?>>();
 
     /**
+     * Creates a new PathBuilder instance
+     * 
      * @param type
      * @param pathMetadata
      */
@@ -33,6 +35,8 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
     
     /**
+     * Creates a new PathBuilder instance
+     * 
      * @param type
      * @param variable
      */
@@ -41,7 +45,9 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
     
     /**
-     * @param property
+     * Get a PathBuilder instance for the given property
+     * 
+     * @param property property name
      * @return
      */
     @SuppressWarnings("unchecked")
@@ -55,8 +61,10 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
 
     /**
+     * Get a PathBuilder for the given property with the given type
+     * 
      * @param <A>
-     * @param property
+     * @param property property name
      * @param type
      * @return
      */
@@ -71,8 +79,10 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
 
     /**
+     * Get a PArray instance for the given property and the given array type
+     * 
      * @param <A>
-     * @param property
+     * @param property property name
      * @param type
      * @return
      */
@@ -81,7 +91,9 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
 
     /**
-     * @param propertyName
+     * Get a new Boolean typed path
+     * 
+     * @param propertyName property name
      * @return
      */
     public PBoolean getBoolean(String propertyName) {
@@ -89,8 +101,10 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
 
     /**
+     * Get a new Collection typed path
+     * 
      * @param <A>
-     * @param property
+     * @param property property name
      * @param type
      * @return
      */
@@ -99,8 +113,10 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
 
     /**
+     * Get a new Comparable typed path
+     * 
      * @param <A>
-     * @param property
+     * @param property property name
      * @param type
      * @return
      */
@@ -109,8 +125,10 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
 
     /**
+     * Get a new Date path
+     * 
      * @param <A>
-     * @param property
+     * @param property property name
      * @param type
      * @return
      */
@@ -119,8 +137,10 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
     
     /**
+     * Get a new DateTime path
+     * 
      * @param <A>
-     * @param property
+     * @param property property name
      * @param type
      * @return
      */
@@ -129,8 +149,10 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
 
     /**
+     * Get a new List typed path
+     * 
      * @param <A>
-     * @param property
+     * @param property property name
      * @param type
      * @return
      */
@@ -139,9 +161,11 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
     
     /**
+     * Get a new List typed path
+     * 
      * @param <A>
      * @param <E>
-     * @param property
+     * @param property property name
      * @param type
      * @param queryType
      * @return
@@ -151,9 +175,11 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
 
     /**
+     * Get a new Map typed path
+     * 
      * @param <K>
      * @param <V>
-     * @param property
+     * @param property property name
      * @param key
      * @param value
      * @return
@@ -163,10 +189,12 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
 
     /**
+     * Get a new Map typed path
+     * 
      * @param <K>
      * @param <V>
      * @param <E>
-     * @param property
+     * @param property property name
      * @param key
      * @param value
      * @param queryType
@@ -177,8 +205,10 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
     
     /**
+     * Get a new Number typed path
+     * 
      * @param <A>
-     * @param property
+     * @param property property name
      * @param type
      * @return
      */
@@ -187,8 +217,10 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
 
     /**
+     * Get a new Set typed path
+     * 
      * @param <A>
-     * @param property
+     * @param property property name
      * @param type
      * @return
      */
@@ -197,8 +229,10 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
     
     /**
+     * Get a new Simple path
+     * 
      * @param <A>
-     * @param property
+     * @param property property name
      * @param type
      * @return
      */
@@ -207,7 +241,9 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
 
     /**
-     * @param property
+     * Get a new String typed path
+     * 
+     * @param property property name
      * @return
      */
     public PString getString(String property) {
@@ -215,8 +251,10 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
 
     /**
+     * Get a new Time typed path
+     * 
      * @param <A>
-     * @param property
+     * @param property property name
      * @param type
      * @return
      */

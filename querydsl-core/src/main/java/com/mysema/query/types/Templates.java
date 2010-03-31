@@ -32,6 +32,9 @@ public class Templates {
 
     protected Templates() {
         //CHECKSTYLE:OFF
+        
+        add(Ops.LIST, "{0}, {1}");
+        
         // boolean
         add(Ops.AND, "{0} && {1}", 36);
         add(Ops.NOT, "!{0}", 3);
@@ -177,6 +180,9 @@ public class Templates {
         add(Ops.CASE_EQ, "case {0} {1} end");
         add(Ops.CASE_EQ_WHEN,  "when {1} then {2} {3}");
         add(Ops.CASE_EQ_ELSE,  "else {0}");
+        
+        // coalesce
+        add(Ops.COALESCE, "coalesce({0})");
         
         // subquery
         add(Ops.EXISTS, "exists {0}");

@@ -83,7 +83,7 @@ public class QFile extends PComparable<File>{
     public EString getContent(String encoding){
         return CString.create(GET_CONTENT, this, EStringConst.create(encoding));
     }
-    
+        
     public QFile parentFile() {
         if (parentFile == null){
             parentFile = new QFile(this, "parentFile");

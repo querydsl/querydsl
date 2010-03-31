@@ -5,20 +5,20 @@
  */
 package com.mysema.query.codegen;
 
-import static com.mysema.util.Symbols.ASSIGN;
-import static com.mysema.util.Symbols.COMMA;
-import static com.mysema.util.Symbols.DOT;
-import static com.mysema.util.Symbols.DOT_CLASS;
-import static com.mysema.util.Symbols.EMPTY;
-import static com.mysema.util.Symbols.NEW;
-import static com.mysema.util.Symbols.QUOTE;
-import static com.mysema.util.Symbols.RETURN;
-import static com.mysema.util.Symbols.SEMICOLON;
-import static com.mysema.util.Symbols.SPACE;
-import static com.mysema.util.Symbols.STAR;
-import static com.mysema.util.Symbols.SUPER;
-import static com.mysema.util.Symbols.THIS;
-import static com.mysema.util.Symbols.UNCHECKED;
+import static com.mysema.util.codegen.Symbols.ASSIGN;
+import static com.mysema.util.codegen.Symbols.COMMA;
+import static com.mysema.util.codegen.Symbols.DOT;
+import static com.mysema.util.codegen.Symbols.DOT_CLASS;
+import static com.mysema.util.codegen.Symbols.EMPTY;
+import static com.mysema.util.codegen.Symbols.NEW;
+import static com.mysema.util.codegen.Symbols.QUOTE;
+import static com.mysema.util.codegen.Symbols.RETURN;
+import static com.mysema.util.codegen.Symbols.SEMICOLON;
+import static com.mysema.util.codegen.Symbols.SPACE;
+import static com.mysema.util.codegen.Symbols.STAR;
+import static com.mysema.util.codegen.Symbols.SUPER;
+import static com.mysema.util.codegen.Symbols.THIS;
+import static com.mysema.util.codegen.Symbols.UNCHECKED;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -43,7 +43,7 @@ import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.PathMetadataFactory;
-import com.mysema.util.CodeWriter;
+import com.mysema.util.codegen.CodeWriter;
 
 /**
  * EntitySerializer is a Serializer implementation for entity types

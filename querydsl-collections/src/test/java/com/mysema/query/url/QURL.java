@@ -23,6 +23,8 @@ import com.mysema.query.types.path.PathMetadataFactory;
 public class QURL extends PEntity<URL>{
     
     private static final long serialVersionUID = 9048088068716893900L;
+    
+    // TODO : website walk
 
     public final PString authority = createString("authority");
 

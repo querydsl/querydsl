@@ -32,24 +32,28 @@ import javax.tools.ToolProvider;
  *
  */
 public class SimpleCompiler implements JavaCompiler{
-    
-    public static String getClassPath(URLClassLoader classLoader) throws UnsupportedEncodingException {
-        StringBuilder path = new StringBuilder();
-        for (URL url : ((URLClassLoader)classLoader).getURLs()){
-            if (path.length() > 0){
-                path.append(File.pathSeparator);
-            }
-            String decodedPath = URLDecoder.decode(url.getPath(),"UTF-8");
-            path.append(new File(decodedPath).getAbsolutePath());
-        }
-        return  path.toString();
-    }
-    
+        
     private final ClassLoader classLoader;
     
     private String classPath;
     
     private final JavaCompiler compiler;    
+    
+    public static String getClassPath(URLClassLoader classLoader) {
+        try{
+            StringBuilder path = new StringBuilder();
+            for (URL url : ((URLClassLoader)classLoader).getURLs()){
+                if (path.length() > 0){
+                    path.append(File.pathSeparator);
+                }
+                String decodedPath = URLDecoder.decode(url.getPath(),"UTF-8");
+                path.append(new File(decodedPath).getAbsolutePath());
+            }
+            return  path.toString();    
+        }catch(UnsupportedEncodingException e){
+            throw new RuntimeException(e);
+        }        
+    }
     
     public SimpleCompiler(){
         this(ToolProvider.getSystemJavaCompiler(), Thread.currentThread().getContextClassLoader());
@@ -61,18 +65,14 @@ public class SimpleCompiler implements JavaCompiler{
     }
     
     private String getClasspath(){        
-        try{
-            if (classPath == null){                
-                if (classLoader instanceof URLClassLoader){
-                    classPath = getClassPath((URLClassLoader)classLoader);
-                }else{
-                    throw new IllegalArgumentException("Unsupported ClassLoader " + classLoader);
-                }                                
-            }
-            return classPath;    
-        }catch(UnsupportedEncodingException e){
-            throw new RuntimeException(e);
-        }        
+        if (classPath == null){                
+            if (classLoader instanceof URLClassLoader){
+                classPath = getClassPath((URLClassLoader)classLoader);
+            }else{
+                throw new IllegalArgumentException("Unsupported ClassLoader " + classLoader);
+            }                                
+        }
+        return classPath;          
     }
 
     @Override

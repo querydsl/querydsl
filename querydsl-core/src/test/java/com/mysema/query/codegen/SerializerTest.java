@@ -11,7 +11,7 @@ import java.util.Collections;
 
 import org.junit.Test;
 
-import com.mysema.util.JavaWriter;
+import com.mysema.util.codegen.JavaWriter;
 
 /**
  * SerializerTest provides.

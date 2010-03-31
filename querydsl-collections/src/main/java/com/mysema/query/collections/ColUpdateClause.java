@@ -28,10 +28,10 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
     private final Map<Path<?>,Object> paths = new HashMap<Path<?>,Object>();
     
     public ColUpdateClause(Path<T> expr, Iterable<? extends T> col){
-        this(EvaluatorFactory.DEFAULT, expr, col);
+        this(ExprEvaluatorFactory.DEFAULT, expr, col);
     }
     
-    public ColUpdateClause(EvaluatorFactory ef, Path<T> expr, Iterable<? extends T> col){
+    public ColUpdateClause(ExprEvaluatorFactory ef, Path<T> expr, Iterable<? extends T> col){
         this.query = new ColQueryImpl(ef).from(expr, col);
         this.expr = expr;
     }
