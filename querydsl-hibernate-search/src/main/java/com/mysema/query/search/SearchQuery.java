@@ -41,10 +41,18 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
 
     private final PEntity<T> path;
     
+    /**
+     * @param session
+     * @param path
+     */
     public SearchQuery(Session session, PEntity<T> path) {
         this(Search.getFullTextSession(session), path);
     }
     
+    /**
+     * @param session
+     * @param path
+     */
     public SearchQuery(FullTextSession session, PEntity<T> path) {
         this.queryMixin = new QueryMixin<SearchQuery<T>>(this);
         this.session = Assert.notNull(session,"session");
