@@ -25,9 +25,9 @@ public final class MathUtils {
     }
     
     @SuppressWarnings("unchecked")
-    private static <D extends Number & Comparable<?>> D cast(BigDecimal num, Class<D> type){
+    public static <D extends Number & Comparable<?>> D cast(Number num, Class<D> type){
         Number rv;
-        if (type.equals(Double.class)){
+        if (type.equals(Byte.class)){
             rv = num.byteValue();
         }else if (type.equals(Double.class)){
             rv = num.doubleValue();
@@ -40,9 +40,20 @@ public final class MathUtils {
         }else if (type.equals(Short.class)){
             rv = num.shortValue();
         }else if (type.equals(BigDecimal.class)){
+            if (num instanceof BigDecimal){
+                rv = num;
+            }else{
+                rv = new BigDecimal(num.toString());
+            }
             rv = num;
         }else if (type.equals(BigInteger.class)){
-            rv = num.toBigInteger();
+            if (num instanceof BigInteger){
+                rv = num;
+            }else if (num instanceof BigDecimal){
+                rv = ((BigDecimal)num).toBigInteger();
+            }else{
+                rv = new BigInteger(num.toString());
+            }
         }else{
             throw new IllegalArgumentException(String.format("Illegal type : %s", type.getSimpleName()));
         }

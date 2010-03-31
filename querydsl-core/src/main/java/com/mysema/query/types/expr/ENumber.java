@@ -7,6 +7,8 @@ package com.mysema.query.types.expr;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -14,6 +16,7 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Ops.MathOps;
+import com.mysema.util.MathUtils;
 
 /**
  * ENumber represents a numeric expression
@@ -196,7 +199,6 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     public <N extends Number & Comparable<?>> ENumber<Double> divide(N right) {
         return ONumber.create(Double.class, Ops.DIV, this, ENumberConst.create(right));
     }
-
 
     /**
      * Get the double expression of this numeric expression
@@ -515,6 +517,24 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
             sum = ONumber.create(getType(), Ops.AggOps.SUM_AGG, this); 
         }
         return sum;
+    }
+    
+    @Override
+    public EBoolean in(Number... numbers){
+        return super.in(convert(numbers));
+    }
+
+    @Override
+    public EBoolean notIn(Number... numbers){
+        return super.notIn(convert(numbers));
+    }
+    
+    private List<D> convert(Number... numbers){
+        List<D> list = new ArrayList<D>(numbers.length);
+        for (int i = 0; i < numbers.length; i++){
+            list.add(MathUtils.cast(numbers[i], getType()));
+        }
+        return list;
     }
     
 }

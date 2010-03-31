@@ -159,7 +159,7 @@ public abstract class Expr<D> implements Serializable{
      * @param right rhs of the comparison
      * @return
      */
-    public final EBoolean notIn(D... right) {
+    public EBoolean notIn(D... right) {
         if (right.length == 1){
             return ne(right[0]);
         }else{
