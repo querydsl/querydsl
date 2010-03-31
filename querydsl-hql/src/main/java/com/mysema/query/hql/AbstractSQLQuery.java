@@ -30,45 +30,35 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     }
 
     @Override
-    public final long count() {
+    public long count() {
         return uniqueResult(COUNT_ALL_AGG_EXPR);
     }
     
-    public final T from(PEntity<?>... args) {
+    public T from(PEntity<?>... args) {
         return queryMixin.from(args);
     }
 
-    public final T fullJoin(PEntity<?> o) {
+    public T fullJoin(PEntity<?> o) {
         return queryMixin.fullJoin(o);
     }
 
-    public final QueryMetadata getMetadata(){
+    public QueryMetadata getMetadata(){
         return queryMixin.getMetadata();
     }
 
-    public final T innerJoin(PEntity<?> o) {
+    public T innerJoin(PEntity<?> o) {
         return queryMixin.innerJoin(o);
     }
     
-//    @Override
-//    public final Iterator<Object[]> iterate(Expr<?>[] args) {
-//        return list(args).iterator();
-//    }
-//
-//    @Override
-//    public final <RT> Iterator<RT> iterate(Expr<RT> projection) {
-//        return list(projection).iterator();
-//    }
-
-    public final T join(PEntity<?> o) {
+    public T join(PEntity<?> o) {
         return queryMixin.join(o);
     }
     
-    public final T leftJoin(PEntity<?> o) {
+    public T leftJoin(PEntity<?> o) {
         return queryMixin.leftJoin(o);
     }
     
-    public final T on(EBoolean... conditions) {
+    public T on(EBoolean... conditions) {
         return queryMixin.on(conditions);
     }
 }

@@ -6,6 +6,7 @@
 package com.mysema.query.hql.hibernate.sql;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.hibernate.transform.ResultTransformer;
@@ -37,7 +38,11 @@ public final class ConstructorResultTransformer implements ResultTransformer{
     public Object transformTuple(Object[] tuple, String[] aliases) {
         try {
             return constructor.newInstance(tuple);
-        } catch (Exception e) {
+        } catch (InstantiationException e) {
+            throw new QueryException(e);
+        } catch (IllegalAccessException e) {
+            throw new QueryException(e);
+        } catch (InvocationTargetException e) {
             throw new QueryException(e);
         }
     }
