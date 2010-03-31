@@ -48,7 +48,8 @@ public final class Template implements Serializable{
             this.index = index;            
             this.staticText = null;
             this.toString = String.valueOf(index);
-        }        
+        }       
+        
         Element(int index, boolean asString) {
             this.asString = asString;
             this.converter = null;
@@ -56,6 +57,7 @@ public final class Template implements Serializable{
             this.staticText = null;
             this.toString = index + (asString ? "s" : "");
         }
+        
         Element(String text) {
             this.asString = false;
             this.converter = null;
