@@ -45,7 +45,6 @@ public final class MathUtils {
             }else{
                 rv = new BigDecimal(num.toString());
             }
-            rv = num;
         }else if (type.equals(BigInteger.class)){
             if (num instanceof BigInteger){
                 rv = num;

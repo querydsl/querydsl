@@ -23,17 +23,17 @@ public class OString extends EString implements Operation<String> {
     
     private static final long serialVersionUID = 6846556373847139549L;
 
-    public static EString create(Operator<String> op, Expr<?>... args){
+    public static EString create(Operator<? super String> op, Expr<?>... args){
         return new OString(op, args);
     }
     
     private final Operation<String> opMixin;
 
-    OString(Operator<String> op, Expr<?>... args) {
+    OString(Operator<? super String> op, Expr<?>... args) {
         this(op, Arrays.asList(args));
     }
 
-    OString(Operator<String> op, List<Expr<?>> args) {
+    OString(Operator<? super String> op, List<Expr<?>> args) {
         this.opMixin = new OperationMixin<String>(this, op, args);
     }
 

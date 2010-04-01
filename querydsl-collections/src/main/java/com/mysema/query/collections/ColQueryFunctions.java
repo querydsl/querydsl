@@ -3,10 +3,17 @@ package com.mysema.query.collections;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.annotation.Nullable;
+
+/**
+ * @author tiwe
+ *
+ */
 public final class ColQueryFunctions {
     
     private ColQueryFunctions(){}
     
+    @Nullable
     public static <T> T coalesce(T... args){
         for (T arg : args){
             if (arg != null){

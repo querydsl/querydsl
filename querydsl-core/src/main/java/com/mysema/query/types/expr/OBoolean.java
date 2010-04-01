@@ -24,17 +24,17 @@ public class OBoolean extends EBoolean implements Operation<Boolean> {
 
     private static final long serialVersionUID = 7432281499861357581L;
 
-    public static EBoolean create(Operator<Boolean> op, Expr<?>... args){
+    public static EBoolean create(Operator<? super Boolean> op, Expr<?>... args){
         return new OBoolean(op, args);
     }
    
     private final Operation<Boolean> opMixin;
     
-    OBoolean(Operator<Boolean> op, Expr<?>... args) {
+    OBoolean(Operator<? super Boolean> op, Expr<?>... args) {
         this(op, Arrays.asList(args));
     }
     
-    OBoolean(Operator<Boolean> op, List<Expr<?>> args) {
+    OBoolean(Operator<? super Boolean> op, List<Expr<?>> args) {
         opMixin = new OperationMixin<Boolean>(this, op, args);
     }
 
