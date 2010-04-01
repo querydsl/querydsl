@@ -18,27 +18,7 @@ import com.mysema.query.types.expr.EBoolean;
 public final class BooleanBuilder extends EBoolean implements Cloneable{
     
     private static final long serialVersionUID = -4129485177345542519L;
-    
-    // move to EBoolean ?!?
-    @Nullable
-    public static EBoolean allOf(EBoolean... exprs){
-        EBoolean rv = null;
-        for (EBoolean b : exprs){
-            rv = rv == null ? b : rv.and(b);
-        }
-        return rv;
-    }
-
-    // move to EBoolean ?!?
-    @Nullable
-    public static EBoolean anyOf(EBoolean... exprs){
-        EBoolean rv = null;
-        for (EBoolean b : exprs){
-            rv = rv == null ? b : rv.or(b);
-        }
-        return rv;
-    }
-    
+        
     @Nullable
     private EBoolean expr;
         

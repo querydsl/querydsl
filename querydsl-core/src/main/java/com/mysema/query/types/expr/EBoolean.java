@@ -21,6 +21,24 @@ public abstract class EBoolean extends EComparable<Boolean> {
     
     private static final long serialVersionUID = 3797956062512074164L;
     
+    @Nullable
+    public static EBoolean allOf(EBoolean... exprs){
+        EBoolean rv = null;
+        for (EBoolean b : exprs){
+            rv = rv == null ? b : rv.and(b);
+        }
+        return rv;
+    }
+
+    @Nullable
+    public static EBoolean anyOf(EBoolean... exprs){
+        EBoolean rv = null;
+        for (EBoolean b : exprs){
+            rv = rv == null ? b : rv.or(b);
+        }
+        return rv;
+    }
+    
     @Nullable 
     private volatile EBoolean not;
 
