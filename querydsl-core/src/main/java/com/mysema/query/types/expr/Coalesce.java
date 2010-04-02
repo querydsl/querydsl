@@ -95,17 +95,17 @@ public class Coalesce<T extends Comparable> extends EComparable<T>{
         }
     }
 
-    @Override
-    public int hashCode(){
-        return exprs.hashCode();
-    }
-    
     private Expr<?> getExpressionList(){
         Expr<?> arg = exprs.get(0);
         for (int i = 1; i < exprs.size(); i++){
             arg = OSimple.create(List.class, Ops.LIST, arg, exprs.get(i));
         }
         return arg;
+    }
+    
+    @Override
+    public int hashCode(){
+        return exprs.hashCode();
     }
 
 }
