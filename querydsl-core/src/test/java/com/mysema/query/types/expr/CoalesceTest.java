@@ -6,12 +6,11 @@ import org.junit.Test;
 
 import com.mysema.query.types.path.PString;
 
-@SuppressWarnings("unchecked")
 public class CoalesceTest {
     
-    PString firstname = new PString("firstname");
+    private final PString firstname = new PString("firstname");
     
-    PString lastname = new PString("lastname");
+    private final PString lastname = new PString("lastname");
     
     @Test
     public void withList(){        
@@ -35,5 +34,11 @@ public class CoalesceTest {
     public void asString(){
         Coalesce<String> c = new Coalesce<String>(firstname, lastname);
         c.asString().lower();
+    }
+    
+    @Test
+    public void withoutWarnings() {
+        Coalesce<String> c = new Coalesce<String>(String.class).add(firstname).add(lastname);
+        assertEquals("coalesce(firstname, lastname)", c.toString());
     }
 }

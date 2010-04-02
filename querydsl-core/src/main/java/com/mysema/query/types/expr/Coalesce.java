@@ -28,12 +28,23 @@ public class Coalesce<T extends Comparable> extends EComparable<T>{
     
     private final List<Expr<? extends T>> exprs = new ArrayList<Expr<? extends T>>();
     
-    public Coalesce(Class<? extends T> type, Expr<T> ...exprs){
+    /**
+     * @param type
+     * @param exprs
+     */
+    public Coalesce(Class<? extends T> type, Expr...exprs){
+        // NOTE : type parameters for the varargs, would result in compiler warnings
         super(type);
-        add(exprs);
+        for (Expr expr : exprs){
+            add(expr);    
+        }        
     }
 
-    public Coalesce(Expr<T> ...exprs){
+    /**
+     * @param exprs
+     */   
+    public Coalesce(Expr... exprs){
+        // NOTE : type parameters for the varargs, would result in compiler warnings
         this((Class<T>)(exprs.length > 0 ? exprs[0].getType() : Object.class), exprs);
     }
     
@@ -42,10 +53,8 @@ public class Coalesce<T extends Comparable> extends EComparable<T>{
         OSimple.create(getType(), Ops.COALESCE, getExpressionList()).accept(v);
     }
     
-    public Coalesce<T> add(Expr<T>... exprs){
-        for (Expr<T> expr : exprs){
-            this.exprs.add(expr);
-        }
+    public Coalesce<T> add(Expr<T> expr){
+        this.exprs.add(expr);
         return this;
     }
      
