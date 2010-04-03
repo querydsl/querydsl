@@ -20,6 +20,7 @@ import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.iterators.FilterIterator;
 import org.apache.commons.collections15.iterators.UniqueFilterIterator;
 
+import com.mysema.codegen.Evaluator;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.JoinExpression;
@@ -35,7 +36,6 @@ import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.util.Evaluator;
 import com.mysema.util.MultiIterator;
 
 /**

@@ -18,9 +18,9 @@ import net.jcip.annotations.Immutable;
 
 import org.apache.commons.lang.ClassUtils;
 
+import com.mysema.codegen.Evaluator;
+import com.mysema.codegen.EvaluatorFactory;
 import com.mysema.query.types.Expr;
-import com.mysema.util.Evaluator;
-import com.mysema.util.EvaluatorFactory;
 
 /**
  * @author tiwe

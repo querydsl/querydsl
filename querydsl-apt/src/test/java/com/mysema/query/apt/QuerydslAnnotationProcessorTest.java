@@ -16,7 +16,7 @@ import org.junit.Test;
 import com.mysema.query.apt.hibernate.HibernateAnnotationProcessor;
 import com.mysema.query.apt.jdo.JDOAnnotationProcessor;
 import com.mysema.query.apt.jpa.JPAAnnotationProcessor;
-import com.mysema.util.SimpleCompiler;
+import com.mysema.codegen.SimpleCompiler;
 
 public class QuerydslAnnotationProcessorTest {
     

@@ -19,7 +19,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.util.SimpleCompiler;
+import com.mysema.codegen.SimpleCompiler;
 
 
 /**

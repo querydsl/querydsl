@@ -30,6 +30,11 @@
       <artifactId>mysema-commons-lang</artifactId>
       <version>0.1.7</version>
     </dependency>
+    <dependency>
+      <groupId>com.mysema.codegen</groupId>
+      <artifactId>codegen</artifactId>
+      <version>0.1.0</version>
+    </dependency>
     
     <dependency>
       <groupId>net.sourceforge.findbugs</groupId>

@@ -9,11 +9,11 @@ import java.io.IOException;
 
 import net.jcip.annotations.Immutable;
 
+import com.mysema.codegen.CodeWriter;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.path.PSimple;
-import com.mysema.util.codegen.CodeWriter;
 
 /**
  * SupertypeSerializer is a Serializer implementation for supertypes

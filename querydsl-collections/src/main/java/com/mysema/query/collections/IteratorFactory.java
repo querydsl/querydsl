@@ -12,9 +12,9 @@ import net.jcip.annotations.Immutable;
 
 import org.apache.commons.collections15.IteratorUtils;
 
+import com.mysema.codegen.Evaluator;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.util.Evaluator;
 
 /**
  * IteratorFactory provides Iterator utilities

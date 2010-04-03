@@ -11,10 +11,10 @@ import net.jcip.annotations.Immutable;
 
 import org.apache.commons.collections15.Transformer;
 
+import com.mysema.codegen.CodeWriter;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.expr.ENumber;
-import com.mysema.util.codegen.CodeWriter;
 
 /**
  * DTOSerializer is a Serializer implementation for DTO types

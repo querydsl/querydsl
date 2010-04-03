@@ -5,20 +5,20 @@
  */
 package com.mysema.query.codegen;
 
-import static com.mysema.util.codegen.Symbols.ASSIGN;
-import static com.mysema.util.codegen.Symbols.COMMA;
-import static com.mysema.util.codegen.Symbols.DOT;
-import static com.mysema.util.codegen.Symbols.DOT_CLASS;
-import static com.mysema.util.codegen.Symbols.EMPTY;
-import static com.mysema.util.codegen.Symbols.NEW;
-import static com.mysema.util.codegen.Symbols.QUOTE;
-import static com.mysema.util.codegen.Symbols.RETURN;
-import static com.mysema.util.codegen.Symbols.SEMICOLON;
-import static com.mysema.util.codegen.Symbols.SPACE;
-import static com.mysema.util.codegen.Symbols.STAR;
-import static com.mysema.util.codegen.Symbols.SUPER;
-import static com.mysema.util.codegen.Symbols.THIS;
-import static com.mysema.util.codegen.Symbols.UNCHECKED;
+import static com.mysema.codegen.Symbols.ASSIGN;
+import static com.mysema.codegen.Symbols.COMMA;
+import static com.mysema.codegen.Symbols.DOT;
+import static com.mysema.codegen.Symbols.DOT_CLASS;
+import static com.mysema.codegen.Symbols.EMPTY;
+import static com.mysema.codegen.Symbols.NEW;
+import static com.mysema.codegen.Symbols.QUOTE;
+import static com.mysema.codegen.Symbols.RETURN;
+import static com.mysema.codegen.Symbols.SEMICOLON;
+import static com.mysema.codegen.Symbols.SPACE;
+import static com.mysema.codegen.Symbols.STAR;
+import static com.mysema.codegen.Symbols.SUPER;
+import static com.mysema.codegen.Symbols.THIS;
+import static com.mysema.codegen.Symbols.UNCHECKED;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -43,7 +43,7 @@ import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.PathMetadataFactory;
-import com.mysema.util.codegen.CodeWriter;
+import com.mysema.codegen.CodeWriter;
 
 /**
  * EntitySerializer is a Serializer implementation for entity types
@@ -132,7 +132,7 @@ public class EntitySerializer implements Serializer{
     
     protected void entityAccessor(EntityType model, Property field, CodeWriter writer) throws IOException {
         String queryType = typeMappings.getPathType(field.getType(), model, false);        
-        writer.beginMethod(queryType, field.getEscapedName());
+        writer.beginPublicMethod(queryType, field.getEscapedName());
         writer.line("if (", field.getEscapedName(), " == null){");
         writer.line("    ", field.getEscapedName(), " = new ", queryType, "(forProperty(\"", field.getName(), "\"));");
         writer.line("}");
@@ -354,10 +354,10 @@ public class EntitySerializer implements Serializer{
         String escapedName = field.getEscapedName();
         String queryType = typeMappings.getPathType(field.getParameter(0), model, false);
 
-        writer.beginMethod(queryType, escapedName, "int index");
+        writer.beginPublicMethod(queryType, escapedName, "int index");
         writer.line(RETURN + escapedName + ".get(index);").end();
         
-        writer.beginMethod(queryType, escapedName, "Expr<Integer> index");
+        writer.beginPublicMethod(queryType, escapedName, "Expr<Integer> index");
         writer.line(RETURN + escapedName +".get(index);").end();
     }
 
@@ -367,17 +367,17 @@ public class EntitySerializer implements Serializer{
         String keyType = field.getParameter(0).getLocalGenericName(model, false);
         String genericKey = field.getParameter(0).getLocalGenericName(model, true);
         
-        writer.beginMethod(queryType, escapedName, keyType + " key");
+        writer.beginPublicMethod(queryType, escapedName, keyType + " key");
         writer.line(RETURN + escapedName + ".get(key);").end();
         
-        writer.beginMethod(queryType, escapedName, "Expr<" + genericKey + "> key");
+        writer.beginPublicMethod(queryType, escapedName, "Expr<" + genericKey + "> key");
         writer.line(RETURN + escapedName + ".get(key);").end();
     }
 
     protected void method(final EntityType model, Method method, SerializerConfig config, CodeWriter writer) throws IOException {
         // header
         String type = typeMappings.getExprType(method.getReturnType(), model, false, true, false);
-        writer.beginMethod(type, method.getName(), method.getParameters(), new Transformer<Parameter,String>(){
+        writer.beginPublicMethod(type, method.getName(), method.getParameters(), new Transformer<Parameter,String>(){
             @Override
             public String transform(Parameter p) {
                 return typeMappings.getExprType(p.getType(), model, false, false, true) + SPACE + p.getName();

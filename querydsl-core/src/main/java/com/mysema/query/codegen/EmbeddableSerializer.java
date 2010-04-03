@@ -7,11 +7,11 @@ package com.mysema.query.codegen;
 
 import java.io.IOException;
 
+import com.mysema.codegen.CodeWriter;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.EComparable;
 import com.mysema.query.types.path.PSimple;
-import com.mysema.util.codegen.CodeWriter;
 
 
 /**
