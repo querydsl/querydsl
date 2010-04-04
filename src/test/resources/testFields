@@ -1,0 +1,16 @@
+
+public class FieldTests {
+
+    private String privateField;
+
+    private static final String privateStaticFinal = "val";
+
+    protected String protectedField;
+
+    String field;
+
+    public String publicField;
+
+    public static final String publicStaticFinal = "val";
+
+}

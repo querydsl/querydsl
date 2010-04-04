@@ -25,8 +25,6 @@ import java.util.Set;
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.lang.StringEscapeUtils;
 
-import com.mysema.commons.lang.Assert;
-
 /**
  * @author tiwe
  *
@@ -72,8 +70,11 @@ public final class JavaWriter implements Appendable, CodeWriter{
     private String type;
     
     public JavaWriter(Appendable appendable){
-        this.appendable = Assert.notNull(appendable,"appendable");
-        importedPackages.add(Object.class.getPackage());
+        if (appendable == null){
+            throw new IllegalArgumentException("appendable is null");
+        }
+        this.appendable = appendable;
+        this.importedPackages.add(Object.class.getPackage());
     }
     
     @Override
@@ -156,7 +157,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
     
     @Override
     public JavaWriter beginClass(String simpleName, String superClass, String... interfaces) throws IOException{
-        nl().append(indent + PUBLIC_CLASS + simpleName);
+        append(indent + PUBLIC_CLASS + simpleName);
         if (superClass != null){
             append(EXTENDS + superClass);
         }
@@ -187,7 +188,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
     
     @Override
     public JavaWriter beginInterface(String simpleName, String... interfaces) throws IOException {
-        nl().append(indent + PUBLIC_INTERFACE + simpleName);
+        append(indent + PUBLIC_INTERFACE + simpleName);
         if (interfaces.length > 0){
             append(EXTENDS).join(COMMA, interfaces);
         }
@@ -265,6 +266,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
             importedClasses.add(cl);
             line(IMPORT + cl.getName() + SEMICOLON);
         }
+        nl();
         return this;
     }
     
@@ -274,6 +276,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
             importedPackages.add(p);
             line(IMPORT + p.getName() + ".*;");
         }
+        nl();
         return this;
     }
 
@@ -332,6 +335,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
 
     @Override
     public JavaWriter packageDecl(String packageName) throws IOException{
+        importedPackages.add(Package.getPackage(packageName));
         return line(PACKAGE + packageName + SEMICOLON).nl();
     }
     
