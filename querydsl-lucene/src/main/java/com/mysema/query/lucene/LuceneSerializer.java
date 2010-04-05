@@ -6,6 +6,7 @@
 package com.mysema.query.lucene;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -74,6 +75,8 @@ public class LuceneSerializer {
             return stringContains(operation);        
         } else if (op == Ops.BETWEEN) {
             return between(operation);
+        } else if (op == Ops.IN){
+            return in(operation);
         }
         throw new UnsupportedOperationException("Illegal operation " + operation);
     }
@@ -106,6 +109,10 @@ public class LuceneSerializer {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
         String[] terms = createTerms(operation.getArg(1));
+        return eq(field, terms);
+    }
+    
+    private Query eq(String field, String[] terms){
         if (terms.length > 1) {
             PhraseQuery pq = new PhraseQuery();
             for (String s : terms) {
@@ -113,8 +120,20 @@ public class LuceneSerializer {
             }
             return pq;
         }
-        return new TermQuery(new Term(field, normalize(terms[0])));
+        return new TermQuery(new Term(field, normalize(terms[0])));    
     }
+    
+    @SuppressWarnings("unchecked")
+    private Query in(Operation<?> operation){
+        String field = toField(operation.getArg(0));
+        Collection values = (Collection) ((Constant)operation.getArg(1)).getConstant(); 
+        BooleanQuery bq = new BooleanQuery();
+        for (Object value : values){
+            bq.add(eq(field, StringUtils.split(value.toString())), Occur.SHOULD);
+        }
+        return bq;
+    }
+    
     
     private Query ne(Operation<?> operation) {
         BooleanQuery bq = new BooleanQuery();
