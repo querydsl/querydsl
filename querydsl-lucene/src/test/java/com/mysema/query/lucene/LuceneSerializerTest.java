@@ -9,6 +9,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.StringReader;
+import java.util.Arrays;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -295,6 +296,13 @@ public class LuceneSerializerTest {
     }
 
     @Test
+    public void in() throws Exception {        
+        testQuery(title.in(Arrays.asList("Jurassic","Park")), "title:jurassic title:park", 1);
+        testQuery(title.in("Jurassic","Park"), "title:jurassic title:park", 1);
+        testQuery(title.eq("Jurassic").or(title.eq("Park")), "title:jurassic title:park", 1);
+    }
+    
+    @Test
     @Ignore
     public void fuzzy() throws Exception {
         fail("Not yet implemented!");
@@ -312,11 +320,6 @@ public class LuceneSerializerTest {
         fail("Not yet implemented!");
     }
 
-    @Test
-    @Ignore
-    public void in() throws Exception {
-        fail("Not yet implemented!");
-    }
 
     @Test
     public void various() throws Exception{
