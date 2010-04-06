@@ -47,6 +47,7 @@ import com.mysema.query.codegen.Types;
  * @author tiwe
  *
  */
+// TODO : improved entityTypeCache and cache usage
 public final class APTTypeFactory {
     
     @Nullable
@@ -189,11 +190,21 @@ public final class APTTypeFactory {
             return entityTypeCache.get(key);
         
         }else{            
-            entityTypeCache.put(key, null);
+            entityTypeCache.put(key, null);            
             Type value = handle(type);
             if (value != null){                
                 EntityType entityModel = new EntityType(configuration.getNamePrefix(), value);
                 entityTypeCache.put(key, entityModel);
+                if (key.size() > 1 && key.get(0).equals(entityModel.getFullName())){
+                    List<String> newKey = new ArrayList<String>();
+                    newKey.add(entityModel.getFullName());
+                    for (int i = 0; i < entityModel.getParameterCount(); i++){
+                        newKey.add("?");
+                    }
+                    if (!entityTypeCache.containsKey(newKey)){
+                        entityTypeCache.put(newKey, entityModel);
+                    }
+                }                
                 for (Type superType : getSupertypes(type, value)){
                     entityModel.addSupertype(new Supertype(superType));
                 }

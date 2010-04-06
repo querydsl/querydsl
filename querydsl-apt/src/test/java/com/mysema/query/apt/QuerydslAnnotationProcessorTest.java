@@ -3,6 +3,7 @@ package com.mysema.query.apt;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -44,6 +45,12 @@ public class QuerydslAnnotationProcessorTest {
         }else{
             Assert.fail("Compilation Failed");
         }
+    }
+    
+    @Test
+    public void process() throws IOException{
+        File file = new File(packagePath, "AbstractEntityTest.java");
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(file.getPath()));
     }
     
     @Test

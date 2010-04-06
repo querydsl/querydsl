@@ -42,12 +42,17 @@ public final class TypeResolver {
             }
         }
 
-        // get binding of var via model supertype
-        Supertype type = subtype.getSuperType();
-        while (!type.getType().equals(declaringType)){                    
-            type = type.getEntityType().getSuperType();
-        }
-        return type.getType().getParameter(index);
+        if (index > -1){
+            // get binding of var via model supertype
+            Supertype type = subtype.getSuperType();
+            while (!type.getType().equals(declaringType)){                    
+                type = type.getEntityType().getSuperType();
+            }
+            return type.getType().getParameter(index);            
+        }else{
+            // TODO : error
+            return typeExtends;
+        }        
     }
 
     private static Type resolveWithParameters(Type type, Type declaringType, EntityType context) {
