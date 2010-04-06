@@ -178,6 +178,13 @@ public class Processor {
     private void process(Class<? extends Annotation> annotation, Map<String,EntityType> types){
         Deque<Type> superTypes = new ArrayDeque<Type>();        
         
+        // FIXME        
+        for (Element element : roundEnv.getElementsAnnotatedWith(annotation)) {
+            if (configuration.getEmbeddableAnn() == null || element.getAnnotation(configuration.getEmbeddableAnn()) == null){
+                typeModelFactory.createEntityType(element.asType());
+            }
+        }    
+        
         // get annotated types
         for (Element element : roundEnv.getElementsAnnotatedWith(annotation)) {
             if (configuration.getEmbeddableAnn() == null || element.getAnnotation(configuration.getEmbeddableAnn()) == null){
@@ -245,7 +252,12 @@ public class Processor {
     }
 
     private void processEmbeddables() {        
+        // FIXME
         for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnn())) {
+            typeModelFactory.create(element.asType());
+        }        
+        
+        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnn())) {                       
             EntityType model = elementHandler.handleNormalType((TypeElement) element);
             embeddables.put(model.getFullName(), model);
         }  

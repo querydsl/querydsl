@@ -9,6 +9,7 @@ import com.mysema.query.annotations.QueryInit;
 
 public class AbstractEntityTest {
     
+    
     @QueryEntity
     public static abstract class Category<T extends Category<T>> {
         
@@ -23,6 +24,7 @@ public class AbstractEntityTest {
         public Category<?> category;
                 
     }
+
     
     @Test
     public void test(){

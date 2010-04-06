@@ -75,6 +75,8 @@ public final class APTTypeFactory {
     
     private final TypeElement numberType, comparableType;
     
+    private boolean doubleIndexEntities = true;
+    
     public APTTypeFactory(ProcessingEnvironment env, Configuration configuration, 
             TypeFactory factory, List<Class<? extends Annotation>> annotations){
         this.env = env;
@@ -195,16 +197,19 @@ public final class APTTypeFactory {
             if (value != null){                
                 EntityType entityModel = new EntityType(configuration.getNamePrefix(), value);
                 entityTypeCache.put(key, entityModel);
-                if (key.size() > 1 && key.get(0).equals(entityModel.getFullName())){
+                
+                if (key.size() > 1 && key.get(0).equals(entityModel.getFullName()) && doubleIndexEntities){                    
                     List<String> newKey = new ArrayList<String>();
                     newKey.add(entityModel.getFullName());
                     for (int i = 0; i < entityModel.getParameterCount(); i++){
                         newKey.add("?");
                     }
+                    System.err.println("double indexing " + key + " to " + newKey);
                     if (!entityTypeCache.containsKey(newKey)){
-                        entityTypeCache.put(newKey, entityModel);
-                    }
-                }                
+                        entityTypeCache.put(newKey, entityModel);    
+                    }                    
+                }
+                
                 for (Type superType : getSupertypes(type, value)){
                     entityModel.addSupertype(new Supertype(superType));
                 }
@@ -274,6 +279,9 @@ public final class APTTypeFactory {
         }else if (type.getKind() == TypeKind.DECLARED){                    
             appendToKey(key, (DeclaredType)type, deep);              
         }
+        if (key.toString().contains("Category")){
+            System.err.println(key);    
+        }        
         return key;        
     }
 
@@ -301,7 +309,9 @@ public final class APTTypeFactory {
         return factory.createSetType(create(i.next()));
     }
 
-    private Set<Type> getSupertypes(TypeMirror type, Type value) {                         
+    private Set<Type> getSupertypes(TypeMirror type, Type value) {              
+        boolean doubleIndex = doubleIndexEntities;
+        doubleIndexEntities = false;
         Set<Type> superTypes = Collections.emptySet();
         type = normalize(type);
         if (type.getKind() == TypeKind.DECLARED){
@@ -330,6 +340,7 @@ public final class APTTypeFactory {
         }else{
             throw new IllegalArgumentException("Unsupported type kind " + type.getKind());
         }
+        doubleIndexEntities = doubleIndex;
         return superTypes;
     }
 
