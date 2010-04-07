@@ -204,7 +204,6 @@ public final class APTTypeFactory {
                     for (int i = 0; i < entityModel.getParameterCount(); i++){
                         newKey.add("?");
                     }
-                    System.err.println("double indexing " + key + " to " + newKey);
                     if (!entityTypeCache.containsKey(newKey)){
                         entityTypeCache.put(newKey, entityModel);    
                     }                    
@@ -278,9 +277,6 @@ public final class APTTypeFactory {
             appendToKey(key, (WildcardType)type);            
         }else if (type.getKind() == TypeKind.DECLARED){                    
             appendToKey(key, (DeclaredType)type, deep);              
-        }
-        if (key.toString().contains("Category")){
-            System.err.println(key);    
         }        
         return key;        
     }
