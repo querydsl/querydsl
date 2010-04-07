@@ -33,12 +33,6 @@ import javax.tools.ToolProvider;
  */
 public class SimpleCompiler implements JavaCompiler{
         
-    private final ClassLoader classLoader;
-    
-    private String classPath;
-    
-    private final JavaCompiler compiler;    
-    
     public static String getClassPath(URLClassLoader classLoader) {
         try{
             StringBuilder path = new StringBuilder();
@@ -54,6 +48,12 @@ public class SimpleCompiler implements JavaCompiler{
             throw new RuntimeException(e);
         }        
     }
+    
+    private final ClassLoader classLoader;
+    
+    private String classPath;    
+    
+    private final JavaCompiler compiler;
     
     public SimpleCompiler(){
         this(ToolProvider.getSystemJavaCompiler(), Thread.currentThread().getContextClassLoader());

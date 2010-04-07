@@ -17,13 +17,13 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author tiwe
@@ -162,7 +162,8 @@ public final class JavaWriter implements Appendable, CodeWriter{
             append(EXTENDS + superClass);
         }
         if (interfaces.length > 0){
-            append(IMPLEMENTS).join(COMMA, interfaces);
+            append(IMPLEMENTS);//.join(COMMA, interfaces);
+            append(StringUtils.join(interfaces, COMMA));
         }
         append(" {").nl().nl();
         goIn();
@@ -190,7 +191,8 @@ public final class JavaWriter implements Appendable, CodeWriter{
     public JavaWriter beginInterface(String simpleName, String... interfaces) throws IOException {
         append(indent + PUBLIC_INTERFACE + simpleName);
         if (interfaces.length > 0){
-            append(EXTENDS).join(COMMA, interfaces);
+            append(EXTENDS);
+            append(StringUtils.join(interfaces, COMMA));
         }
         append(" {").nl().nl();
         goIn();
@@ -212,29 +214,29 @@ public final class JavaWriter implements Appendable, CodeWriter{
         return this;
     }
     
-    private JavaWriter beginMethod(String returnType, String modifiers, String methodName, String... args) throws IOException{
+    private JavaWriter beginMethod(String modifiers, String returnType, String methodName, String... args) throws IOException{
         append(indent + modifiers + returnType + SPACE + methodName).params(args).append(" {").nl();
         return goIn();
     }
     
     @Override
     public <T> JavaWriter beginPublicMethod(String returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException {
-        return beginMethod(returnType, PUBLIC, methodName, transform(parameters, transformer));
+        return beginMethod(PUBLIC, returnType, methodName, transform(parameters, transformer));
     }
 
     @Override
     public JavaWriter beginPublicMethod(String returnType, String methodName, String... args) throws IOException{
-        return beginMethod(returnType, PUBLIC, methodName, args);
+        return beginMethod(PUBLIC, returnType, methodName, args);
     }
     
     @Override
     public <T> JavaWriter beginStaticMethod(String returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException {
-        return beginMethod(returnType, PUBLIC_STATIC, methodName, transform(parameters, transformer));
+        return beginMethod(PUBLIC_STATIC, returnType, methodName, transform(parameters, transformer));
     }
 
     @Override
     public JavaWriter beginStaticMethod(String returnType, String methodName, String... args) throws IOException{
-        return beginMethod(returnType, PUBLIC_STATIC, methodName, args);
+        return beginMethod(PUBLIC_STATIC, returnType, methodName, args);
     }
     
     @Override
@@ -289,36 +291,6 @@ public final class JavaWriter implements Appendable, CodeWriter{
         return line(" */");
     }
 
-    private JavaWriter join(String sep, String... args) throws IOException{
-        for (int i = 0; i < args.length; i++){
-            if (i > 0){
-                append(sep);
-            }
-            append(args[i]);
-        }
-        return this;
-    }
-    
-    @Override
-    public String join(String prefix, String suffix, Iterable<String> args) {
-        StringBuilder builder = new StringBuilder();
-        boolean first = true;
-        for (String arg : args){
-            if (!first){
-                builder.append(COMMA);
-            }
-            builder.append(prefix).append(arg).append(suffix);
-            first = false;
-        }
-        return builder.toString();
-    }
-
-
-    @Override
-    public String join(String prefix, String suffix, String... args) {
-        return join(prefix, suffix, Arrays.asList(args));
-    }
-
     @Override
     public JavaWriter line(String... segments) throws IOException{
         append(indent);
@@ -355,46 +327,54 @@ public final class JavaWriter implements Appendable, CodeWriter{
     
     private JavaWriter params(String... params) throws IOException{
         append("(");
-        join(COMMA, params);
+        append(StringUtils.join(params, COMMA));
         append(")");
         return this;
     }
 
     @Override
     public JavaWriter privateField(String type, String name) throws IOException {
-        return stmt(PRIVATE + type + SPACE + name).nl();
+        return field(PRIVATE, type, name);
     }
     
     @Override
     public JavaWriter privateStaticFinal(String type, String name, String value) throws IOException {
-        return stmt(PRIVATE_STATIC_FINAL + type + SPACE + name + ASSIGN + value).nl();
+        return field(PRIVATE_STATIC_FINAL, type, name, value);
     }
     
     @Override
     public JavaWriter protectedField(String type, String name) throws IOException {
-        return stmt(PROTECTED + type + SPACE + name).nl();        
+        return field(PROTECTED, type, name);        
     }
         
     @Override
     public JavaWriter publicField(String type, String name) throws IOException {
-        return stmt(PUBLIC + type + SPACE + name).nl();
+        return field(PUBLIC, type, name);
     }
     
     @Override
     public JavaWriter publicFinal(String type, String name) throws IOException {
-        return stmt(PUBLIC_FINAL + type + SPACE + name).nl();        
+        return field(PUBLIC_FINAL, type, name);        
     }
 
     @Override
     public JavaWriter publicFinal(String type, String name, String value) throws IOException {
-        return stmt(PUBLIC_FINAL + type + SPACE + name + ASSIGN + value).nl();
+        return field(PUBLIC_FINAL, type, name, value);
     }
 
     @Override
     public JavaWriter publicStaticFinal(String type, String name, String value) throws IOException {
-        return stmt(PUBLIC_STATIC_FINAL + type + SPACE + name + ASSIGN + value).nl();
+        return field(PUBLIC_STATIC_FINAL, type, name, value);
     }
-
+    
+    private JavaWriter field(String modifier, String type, String name) throws IOException{
+        return stmt(modifier + type + SPACE + name).nl();
+    }
+    
+    private JavaWriter field(String modifier, String type, String name, String value) throws IOException{
+        return stmt(modifier + type + SPACE + name + ASSIGN + value).nl();
+    }
+    
     @Override
     public JavaWriter staticimports(Class<?>... imports) throws IOException{
         for (Class<?> cl : imports){

@@ -5,16 +5,12 @@
  */
 package com.mysema.codegen;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,6 +18,8 @@ import java.util.List;
 
 import javax.tools.JavaCompiler;
 import javax.tools.SimpleJavaFileObject;
+import javax.tools.StandardLocation;
+import javax.tools.ToolProvider;
 import javax.tools.JavaCompiler.CompilationTask;
 
 
@@ -33,36 +31,26 @@ import javax.tools.JavaCompiler.CompilationTask;
  */
 public class EvaluatorFactory {
 
-    private final File classDir;
-
-    private final ClassLoader loader;
-
+    private final MemFileManager fileManager;
+    
     private final String classpath;
-
-    private final JavaCompiler compiler;
 
     private final List<String> compilationOptions;
 
-    public EvaluatorFactory(JavaCompiler compiler, File classDir,
-            URLClassLoader parent) {
-        try {
-            this.compiler = compiler;
-            this.classDir = classDir;
-            if (!classDir.exists()){
-                if (!classDir.mkdirs()){
-                    throw new IllegalArgumentException(
-                            classDir.getAbsolutePath() + " could not be created");
-                }
-            }            
-            this.classpath = SimpleCompiler.getClassPath(parent);
-            this.loader = new URLClassLoader(new URL[] { classDir.toURI().toURL() }, parent);
-            this.compilationOptions = Arrays.asList(
-                    "-classpath", classpath,
-                    "-d", classDir.getAbsolutePath(), 
-                    "-g:none");
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+    private final JavaCompiler compiler;
+
+    private final ClassLoader loader;
+
+    public EvaluatorFactory(URLClassLoader parent){
+        this(parent, ToolProvider.getSystemJavaCompiler());
+    }
+    
+    public EvaluatorFactory(URLClassLoader parent, JavaCompiler compiler) {
+        this.fileManager = new MemFileManager(compiler.getStandardFileManager(null, null, null));
+        this.compiler = compiler;                        
+        this.classpath = SimpleCompiler.getClassPath(parent);
+        this.loader = fileManager.getClassLoader(StandardLocation.CLASS_OUTPUT);
+        this.compilationOptions = Arrays.asList("-classpath", classpath, "-g:none");
     }
 
     private void compile(String source, Class<?> projectionType,
@@ -74,48 +62,29 @@ public class EvaluatorFactory {
         javaw.beginClass(id, null);
         String[] params = new String[names.length];
         for (int i = 0; i < params.length; i++) {
-            params[i] = toName(types[i]) + " " + names[i];
+            params[i] = ClassUtils.getName(types[i]) + " " + names[i];
         }
 
-        javaw.beginStaticMethod(toName(projectionType), "eval", params);
+        javaw.beginStaticMethod(ClassUtils.getName(projectionType), "eval", params);
         javaw.line("return ", source, ";");
         javaw.end();
         javaw.end();
 
         // compile
-        try {
-            SimpleJavaFileObject javaFileObject = new StringJavaFileObject(id, writer.toString());
-            Writer out = new StringWriter();
+        SimpleJavaFileObject javaFileObject = new MemSourceFileObject(id, writer.toString());
+        Writer out = new StringWriter();
 
-            CompilationTask task = compiler.getTask(out, null, null,
-                    compilationOptions, null, Collections.singletonList(javaFileObject));
-            if (!task.call().booleanValue()) {
-                throw new RuntimeException("Compilation of " + source + " failed.\n" + out.toString());
-            }
-        } catch (URISyntaxException e) {
-            throw new IOException(e);
+        CompilationTask task = compiler.getTask(
+                out, 
+                fileManager,
+                null,                     
+                compilationOptions, 
+                null, 
+                Collections.singletonList(javaFileObject));
+        if (!task.call().booleanValue()) {
+            throw new RuntimeException("Compilation of " + source + " failed.\n" + out.toString());
         }
 
-    }
-
-    protected String toId(String source, Class<?> returnType, Class<?>... types) {
-        StringBuilder b = new StringBuilder("Q");
-        b.append("_").append(source.hashCode());
-        b.append("_").append(returnType.getName().hashCode());
-        for (Class<?> type : types) {
-            b.append("_").append(type.getName().hashCode());
-        }
-        return b.toString().replace('-', '0');
-    }
-
-    protected String toName(Class<?> cl) {
-        if (cl.isArray()) {
-            return toName(cl.getComponentType()) + "[]";
-        } else if (cl.getPackage() == null || cl.getPackage().getName().equals("java.lang")) {
-            return cl.getSimpleName();
-        } else {
-            return cl.getName().replace('$', '.');
-        }
     }
 
     public <T> Evaluator<T> createEvaluator(String source,
@@ -123,11 +92,15 @@ public class EvaluatorFactory {
 
         try {
             String id = toId(source, projectionType, types);
-            if (!new File(classDir, id + ".class").exists()) {
+            Class<?> clazz;
+            try{
+                clazz = loader.loadClass(id);
+            }catch(ClassNotFoundException e){
                 compile(source, projectionType, names, types, id);
+                // reload
+                clazz = loader.loadClass(id);
             }
 
-            Class<?> clazz = loader.loadClass(id);
             final Method method = clazz.getMethod("eval", types);
             return new Evaluator<T>() {
                 @SuppressWarnings("unchecked")
@@ -154,6 +127,16 @@ public class EvaluatorFactory {
             throw new RuntimeException(e);
         }
 
+    }
+
+    protected String toId(String source, Class<?> returnType, Class<?>... types) {
+        StringBuilder b = new StringBuilder("Q");
+        b.append("_").append(source.hashCode());
+        b.append("_").append(returnType.getName().hashCode());
+        for (Class<?> type : types) {
+            b.append("_").append(type.getName().hashCode());
+        }
+        return b.toString().replace('-', '0');
     }
 
 }

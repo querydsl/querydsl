@@ -51,10 +51,6 @@ public interface CodeWriter extends Appendable{
 
     CodeWriter javadoc(String... lines) throws IOException;
 
-    String join(String prefix, String suffix, Iterable<String> args);
-
-    String join(String prefix, String suffix, String... args);
-
     CodeWriter line(String... segments) throws IOException;
 
     CodeWriter nl() throws IOException;
