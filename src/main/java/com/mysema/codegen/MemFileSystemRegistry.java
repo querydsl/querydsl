@@ -17,7 +17,7 @@ import javax.tools.JavaFileManager;
  * @author tiwe
  *
  */
-public class MemFileSystemRegistry {
+public final class MemFileSystemRegistry {
     
     public static final MemFileSystemRegistry DEFAULT = new MemFileSystemRegistry();
     
@@ -31,9 +31,9 @@ public class MemFileSystemRegistry {
     
     private MemFileSystemRegistry() {
         String pkgName = MemFileSystemRegistry.class.getPackage().getName();
-        protocolName = pkgName.substring(pkgName.lastIndexOf(".") + 1);
+        protocolName = pkgName.substring(pkgName.lastIndexOf('.') + 1);
         String pkgs = System.getProperty("java.protocol.handler.pkgs");
-        String parentPackage = pkgName.substring(0,pkgName.lastIndexOf("."));
+        String parentPackage = pkgName.substring(0,pkgName.lastIndexOf('.'));
         pkgs = pkgs == null ? parentPackage : pkgs + "|" + parentPackage;
         System.setProperty("java.protocol.handler.pkgs",pkgs);
     }

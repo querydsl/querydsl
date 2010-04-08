@@ -54,8 +54,7 @@ public class EvaluatorFactory {
     }
 
     private void compile(String source, Class<?> projectionType,
-            String[] names, Class<?>[] types, String id) throws IOException,
-            UnsupportedEncodingException {
+            String[] names, Class<?>[] types, String id) throws IOException {
         // create source
         StringWriter writer = new StringWriter();
         JavaWriter javaw = new JavaWriter(writer);
