@@ -1,5 +1,14 @@
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.codegen;
 
+/**
+ * @author tiwe
+ *
+ */
 public class CodegenException extends RuntimeException{
 
     private static final long serialVersionUID = -8704782349669898467L;
