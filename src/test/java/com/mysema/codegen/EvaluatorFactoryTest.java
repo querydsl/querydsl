@@ -8,6 +8,7 @@ package com.mysema.codegen;
 import java.io.IOException;
 import java.net.URLClassLoader;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
@@ -16,6 +17,20 @@ import org.junit.Test;
 
 
 public class EvaluatorFactoryTest {
+    
+    public static class TestEntity {
+
+        private final String name;
+
+        public TestEntity(String name){
+            this.name = name;
+        }
+        
+        public String getName() {
+            return name;
+        }
+        
+    }
     
     private EvaluatorFactory factory;
     
@@ -53,6 +68,14 @@ public class EvaluatorFactoryTest {
         
         // int + int
         test("a + b", int.class, names, ints, Arrays.asList(1,2), 3);
+    }
+    
+    @Test
+    public void testCustomType(){
+        test("a.getName()", String.class, 
+                Collections.singletonList("a"), Collections.singletonList(TestEntity.class),
+                Arrays.asList(new TestEntity("Hello World")), "Hello World");
+                
     }
     
     private void test(String source, Class<?> projectionType, List<String> names, List<? extends Class<?>> types, List<?> args, Object expectedResult){

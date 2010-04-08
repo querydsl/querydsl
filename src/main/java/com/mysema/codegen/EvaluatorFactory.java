@@ -46,7 +46,7 @@ public class EvaluatorFactory {
     }
     
     public EvaluatorFactory(URLClassLoader parent, JavaCompiler compiler) {
-        this.fileManager = new MemFileManager(compiler.getStandardFileManager(null, null, null));
+        this.fileManager = new MemFileManager(parent, compiler.getStandardFileManager(null, null, null));
         this.compiler = compiler;                        
         this.classpath = SimpleCompiler.getClassPath(parent);
         this.loader = fileManager.getClassLoader(StandardLocation.CLASS_OUTPUT);

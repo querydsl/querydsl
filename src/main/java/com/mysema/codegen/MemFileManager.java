@@ -36,12 +36,12 @@ public class MemFileManager extends ForwardingJavaFileManager<JavaFileManager> {
     
     private final String urlPrefix;
     
-    public MemFileManager(StandardJavaFileManager sjfm) {
+    public MemFileManager(ClassLoader parent, StandardJavaFileManager sjfm) {
         super(sjfm);
         ramFileSystem = new HashMap<LocationAndKind,Map<String,JavaFileObject>>();
         Map<String,JavaFileObject> classLoaderContent = new HashMap<String,JavaFileObject>();
         ramFileSystem.put(new LocationAndKind(StandardLocation.CLASS_OUTPUT, Kind.CLASS),classLoaderContent);
-        classLoader = new MemClassLoader(ramFileSystem);
+        classLoader = new MemClassLoader(parent, ramFileSystem);
         urlPrefix = MemFileSystemRegistry.DEFAULT.getUrlPrefix(this);
     }
     

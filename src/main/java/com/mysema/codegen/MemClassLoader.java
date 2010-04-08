@@ -36,7 +36,8 @@ public final class MemClassLoader extends ClassLoader {
     
     private final Map<LocationAndKind, Map<String, JavaFileObject>> memFileSystem;
     
-    public MemClassLoader(Map<LocationAndKind, Map<String, JavaFileObject>> ramFileSystem) {
+    public MemClassLoader(ClassLoader parent, Map<LocationAndKind, Map<String, JavaFileObject>> ramFileSystem) {
+        super(parent);
         this.memFileSystem = ramFileSystem;
     }
     
