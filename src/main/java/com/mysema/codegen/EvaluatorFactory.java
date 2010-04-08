@@ -86,6 +86,16 @@ public class EvaluatorFactory {
 
     }
 
+    /**
+     * Create a new Evaluator instance
+     * 
+     * @param <T> projection type
+     * @param source expression in Java source code form
+     * @param projectionType type of the source expression
+     * @param names names of the arguments
+     * @param types types of the arguments
+     * @return
+     */
     public <T> Evaluator<T> createEvaluator(String source,
             Class<? extends T> projectionType, String[] names, Class<?>[] types) {
 
