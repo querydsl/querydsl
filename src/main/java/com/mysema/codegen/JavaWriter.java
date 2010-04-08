@@ -90,11 +90,11 @@ public final class JavaWriter implements Appendable, CodeWriter{
                 Object value = method.invoke(annotation);
                 annotationConstant(value);
             } catch (IllegalArgumentException e) {
-                throw new RuntimeException(e);
+                throw new CodegenException(e);
             } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
+                throw new CodegenException(e);
             } catch (InvocationTargetException e) {
-                throw new RuntimeException(e);
+                throw new CodegenException(e);
             }
             first = false;
         }        

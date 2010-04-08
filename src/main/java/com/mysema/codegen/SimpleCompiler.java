@@ -45,7 +45,7 @@ public class SimpleCompiler implements JavaCompiler{
             }
             return  path.toString();    
         }catch(UnsupportedEncodingException e){
-            throw new RuntimeException(e);
+            throw new CodegenException(e);
         }        
     }
     

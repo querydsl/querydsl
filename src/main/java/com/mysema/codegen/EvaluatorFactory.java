@@ -81,7 +81,7 @@ public class EvaluatorFactory {
                 null, 
                 Collections.singletonList(javaFileObject));
         if (!task.call().booleanValue()) {
-            throw new RuntimeException("Compilation of " + source + " failed.\n" + out.toString());
+            throw new CodegenException("Compilation of " + source + " failed.\n" + out.toString());
         }
 
     }
@@ -115,15 +115,15 @@ public class EvaluatorFactory {
                 }
             };
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new CodegenException(e);
         } catch (SecurityException e) {
-            throw new RuntimeException(e);
+            throw new CodegenException(e);
         } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
+            throw new CodegenException(e);
         } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+            throw new CodegenException(e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new CodegenException(e);
         }
 
     }
