@@ -134,13 +134,14 @@ public class MemFileManager extends ForwardingJavaFileManager<JavaFileManager> {
             LocationAndKind key = new LocationAndKind(location,kind);
             if(ramFileSystem.containsKey(key)) {
                 Map<String, JavaFileObject> locatedFiles = ramFileSystem.get(key);
-                for(String name : locatedFiles.keySet()) {
+                for (Map.Entry<String,JavaFileObject> entry : locatedFiles.entrySet()){                    
+                    String name = entry.getKey();
                     String packageName = "";
                     if (name.indexOf('.') > -1){
                         packageName = name.substring(0,name.lastIndexOf('.'));
                     }
                     if(recurse ? packageName.startsWith(pkg) : packageName.equals(pkg)) {
-                        JavaFileObject candidate = locatedFiles.get(name);
+                        JavaFileObject candidate = entry.getValue();
                         if(kinds.contains(candidate.getKind())) {
                             result.add(candidate);
                         }

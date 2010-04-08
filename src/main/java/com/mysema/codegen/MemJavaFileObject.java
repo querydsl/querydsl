@@ -52,7 +52,7 @@ public class MemJavaFileObject extends SimpleJavaFileObject {
 
     @Override
     public InputStream openInputStream() throws IOException, IllegalStateException, UnsupportedOperationException {
-        if(baos != null){
+        if(baos == null){
             throw new FileNotFoundException(name);
         }
         return new ByteArrayInputStream(baos.toByteArray());
