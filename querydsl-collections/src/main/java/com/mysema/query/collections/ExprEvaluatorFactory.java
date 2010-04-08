@@ -5,14 +5,11 @@
  */
 package com.mysema.query.collections;
 
-import java.io.File;
 import java.net.URLClassLoader;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.tools.ToolProvider;
 
 import net.jcip.annotations.Immutable;
 
@@ -37,11 +34,8 @@ public class ExprEvaluatorFactory {
     
     protected ExprEvaluatorFactory(ColQueryTemplates templates){
         this.templates = templates;
-        this.factory = new EvaluatorFactory(
-                ToolProvider.getSystemJavaCompiler(),
-                new File(System.getProperty("java.io.tmpdir"), "classes"),
-                (URLClassLoader)Thread.currentThread().getContextClassLoader()
-        );
+        // TODO : which ClassLoader to pick ?!?
+        this.factory = new EvaluatorFactory((URLClassLoader)getClass().getClassLoader());
     }
     
     public <T> Evaluator<T> create(List<? extends Expr<?>> sources, final Expr<T> projection) {
@@ -83,7 +77,9 @@ public class ExprEvaluatorFactory {
             return new Evaluator<T>(){
                 @Override
                 public T evaluate(Object... args) {
-                    args = combine(args.length + constants.length, constants, args);
+                    if (constants.length > 0){
+                        args = combine(args.length + constants.length, constants, args);    
+                    }                    
                     return evaluator.evaluate(args);
                 }                
             };    

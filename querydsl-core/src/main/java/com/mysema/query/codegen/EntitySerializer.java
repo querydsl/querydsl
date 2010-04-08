@@ -29,6 +29,7 @@ import net.jcip.annotations.Immutable;
 
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Path;
@@ -321,7 +322,8 @@ public class EntitySerializer implements Serializer{
             }            
             if (!inits.isEmpty()){
                 inits.add(0, STAR);
-                writer.privateStaticFinal("PathInits", "INITS", "new PathInits(" + writer.join(QUOTE, QUOTE, inits) + ")"); 
+                String initsAsString = QUOTE + StringUtils.join(inits, "\", \"") + QUOTE;
+                writer.privateStaticFinal("PathInits", "INITS", "new PathInits(" + initsAsString + ")"); 
             }else{
                 writer.privateStaticFinal("PathInits", "INITS", "PathInits.DIRECT");
             }
