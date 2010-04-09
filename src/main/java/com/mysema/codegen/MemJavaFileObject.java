@@ -33,8 +33,7 @@ public class MemJavaFileObject extends SimpleJavaFileObject {
     }
     
     @Override
-    public CharSequence getCharContent(boolean ignoreEncodingErrors)
-        throws IOException, UnsupportedOperationException {
+    public CharSequence getCharContent(boolean ignoreEncodingErrors) throws IOException {
         if(baos == null){
             throw new FileNotFoundException(name);
         }
@@ -51,7 +50,7 @@ public class MemJavaFileObject extends SimpleJavaFileObject {
     }
 
     @Override
-    public InputStream openInputStream() throws IOException, UnsupportedOperationException {
+    public InputStream openInputStream() throws IOException {
         if(baos == null){
             throw new FileNotFoundException(name);
         }
@@ -59,7 +58,7 @@ public class MemJavaFileObject extends SimpleJavaFileObject {
     }
     
     @Override
-    public OutputStream openOutputStream() throws IOException, UnsupportedOperationException {
+    public OutputStream openOutputStream() throws IOException {
         if (baos == null){
             baos = new ByteArrayOutputStream();
         }
