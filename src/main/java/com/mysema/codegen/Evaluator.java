@@ -19,5 +19,10 @@ public interface Evaluator<T> {
      * @return
      */
     T evaluate(Object... args);
+    
+    /**
+     * @return
+     */
+    Class<? extends T> getType();
 
 }

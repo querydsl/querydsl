@@ -97,7 +97,7 @@ public class EvaluatorFactory {
      * @return
      */
     public <T> Evaluator<T> createEvaluator(String source,
-            Class<? extends T> projectionType, String[] names, Class<?>[] types) {
+            final Class<? extends T> projectionType, String[] names, Class<?>[] types) {
 
         try {
             String id = toId(source, projectionType, types);
@@ -122,6 +122,11 @@ public class EvaluatorFactory {
                     } catch (InvocationTargetException e) {
                         throw new IllegalArgumentException(e);
                     }
+                }
+
+                @Override
+                public Class<? extends T> getType() {
+                    return projectionType;
                 }
             };
         } catch (ClassNotFoundException e) {
