@@ -21,19 +21,19 @@ import com.mysema.query.types.expr.EBoolean;
  */
 public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
 
-    private final ColQuery query;
-    
     private final Path<T> expr;
     
     private final Map<Path<?>,Object> paths = new HashMap<Path<?>,Object>();
     
-    public ColUpdateClause(Path<T> expr, Iterable<? extends T> col){
-        this(ExprEvaluatorFactory.DEFAULT, expr, col);
-    }
+    private final ColQuery query;
     
     public ColUpdateClause(ExprEvaluatorFactory ef, Path<T> expr, Iterable<? extends T> col){
         this.query = new ColQueryImpl(ef).from(expr, col);
         this.expr = expr;
+    }
+    
+    public ColUpdateClause(Path<T> expr, Iterable<? extends T> col){
+        this(ExprEvaluatorFactory.DEFAULT, expr, col);
     }
     
     @Override

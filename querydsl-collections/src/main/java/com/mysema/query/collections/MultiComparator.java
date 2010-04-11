@@ -12,32 +12,34 @@ import org.apache.commons.collections15.comparators.ComparableComparator;
 
 import com.mysema.codegen.Evaluator;
 
-
-
-
 /**
  * MultiComparator compares
  * 
  * @author tiwe
  * @version $Id$
  */
-public class MultiComparator implements Comparator<Object[]>, Serializable {
-
-    private static final long serialVersionUID = 1121416260773566299L;
+public class MultiComparator<T> implements Comparator<T>, Serializable {
 
     private static final Comparator<Object> naturalOrder = ComparableComparator.getInstance();
 
-    private final Evaluator<Object[]> ev;
+    private static final long serialVersionUID = 1121416260773566299L;
 
     private final boolean[] asc;
+
+    private final Evaluator<Object[]> ev;
 
     public MultiComparator(Evaluator<Object[]> ev, boolean[] directions) {
         this.ev = ev;
         this.asc = directions.clone();
     }
 
-    public int compare(Object[] o1, Object[] o2) {
-        return innerCompare(ev.evaluate(o1), ev.evaluate(o2));
+    public int compare(T o1, T o2) {
+        if (o1.getClass().isArray()){
+            return innerCompare(ev.evaluate((Object[])o1), ev.evaluate((Object[])o2));    
+        }else{
+            return innerCompare(ev.evaluate(o1), ev.evaluate(o2));
+        }
+        
     }
     
     private int innerCompare(Object[] o1, Object[] o2) {

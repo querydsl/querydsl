@@ -28,9 +28,19 @@ public class ExprEvaluatorFactory {
 
     public static final ExprEvaluatorFactory DEFAULT = new ExprEvaluatorFactory(ColQueryTemplates.DEFAULT);
     
-    private final ColQueryTemplates templates;
+    static Object[] combine(int size, Object[]... arrays) {
+        int offset = 0;
+        Object[] target = new Object[size];
+        for (Object[] arr : arrays) {
+            System.arraycopy(arr, 0, target, offset, arr.length);
+            offset += arr.length;
+        }
+        return target;
+    }
     
     private final EvaluatorFactory factory;
+    
+    private final ColQueryTemplates templates;
     
     protected ExprEvaluatorFactory(ColQueryTemplates templates){
         this.templates = templates;
@@ -87,16 +97,6 @@ public class ExprEvaluatorFactory {
             return evaluator;
         }
         
-    }
-    
-    static Object[] combine(int size, Object[]... arrays) {
-        int offset = 0;
-        Object[] target = new Object[size];
-        for (Object[] arr : arrays) {
-            System.arraycopy(arr, 0, target, offset, arr.length);
-            offset += arr.length;
-        }
-        return target;
     }
 
     

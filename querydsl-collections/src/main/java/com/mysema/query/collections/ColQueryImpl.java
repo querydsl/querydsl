@@ -43,15 +43,18 @@ public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQ
         super(metadata, evaluatorFactory);
     }
 
-    public QueryMetadata getMetadata() {
-        return queryMixin.getMetadata();
-    }
-
     /**
      * Clone the state of this query to a new ColQueryImpl instance
      */
     public ColQueryImpl clone(){
         return new ColQueryImpl(queryMixin.getMetadata(), getEvaluatorFactory());
+    }
+
+    /**
+     * @return
+     */
+    public QueryMetadata getMetadata() {
+        return queryMixin.getMetadata();
     }
 
 }

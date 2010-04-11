@@ -66,6 +66,11 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
         
     }
 
+    @Override
+    public void visit(SubQuery<?> expr) {
+        throw new IllegalArgumentException("Not supported");        
+    }
+
     private void visitCast(Operator<?> operator, Expr<?> source, Class<?> targetType) {
         if (Number.class.isAssignableFrom(source.getType()) && !Constant.class.isInstance(source)) {
             append("new ").append(source.getType().getSimpleName()).append("(");
@@ -123,11 +128,6 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
         } else {
             super.visitOperation(type, operator, args);
         }
-    }
-
-    @Override
-    public void visit(SubQuery<?> expr) {
-        throw new IllegalArgumentException("Not supported");        
     }
 
 }
