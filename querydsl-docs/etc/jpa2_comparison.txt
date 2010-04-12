@@ -1,0 +1,279 @@
+Below is a comparison of JPA 2 Criteria and Querydsl HQL queries.
+
+The purpose of this comparison is to show the benefits of using a dynamic metamodel like the Querydsl metamodel compared to a static metamodel like the JPA 2 Criteria metamodel.
+
+Feel free to ask for more JPA 2 -> Querydsl translations in the comments of this post.
+
+The differences of the metamodels themselves are not discussed here. Both Querydsl and JPA 2 use APT for metamodel generation, so the configuration 
+overhead is comparable.
+
+
+[b]Selecting an entity[/b]
+
+[code]
+CriteriaQuery<Person> criteria = builder.createQuery( Person.class );
+Root<Person> personRoot = criteria.from( Person.class );
+criteria.select( personRoot );
+criteria.where( builder.equal( personRoot.get( Person_.eyeColor ), "brown" ) );
+List<Person> people = em.createQuery( criteria ).getResultList();
+[/code]
+
+becomes
+
+[code]
+JPAQuery query = new JPAQuery(em);
+QPerson person = QPerson.person;
+List<Person> people = query.from(person).where(person.eyeColor.eq("brown"))
+  .list(person);
+[/code]
+
+
+[b]Selecting an attribute[/b]
+
+[code]
+CriteriaQuery<Integer> criteria = builder.createQuery( Integer.class );
+Root<Person> personRoot = criteria.from( Person.class );
+criteria.select( personRoot.get( Person_.age ) );
+criteria.where( builder.equal( personRoot.get( Person_.eyeColor ), "brown" ) );
+List<Integer> ages = em.createQuery( criteria ).getResultList();
+[/code]
+
+becomes
+
+[code]
+JPAQuery query = new JPAQuery(em);
+QPerson person = QPerson.person;
+List<Integer> ages = query.from(person).where(person.eyeColor.eq("brown"))
+  .list(person.age);
+[/code]
+
+
+[b]Select an expression[/b]
+
+
+[code]
+CriteriaQuery<Integer> criteria = builder.createQuery( Integer.class );
+Root<Person> personRoot = criteria.from( Person.class );
+criteria.select( builder.max( personRoot.get( Person_.age ) ) );
+criteria.where( builder.equal( personRoot.get( Person_.eyeColor ), "brown" ) );
+Integer maxAge = em.createQuery( criteria ).getSingleResult();
+[/code]
+
+becomes
+
+[code]
+JPAQuery query = new JPAQuery(em);
+QPerson person = QPerson.person;
+Integer maxAge = query.from(person)
+    .where(person.eyeColor.eq("brown"))
+    .uniqueResult(person.age.max());
+[/code]
+
+[b]Selecting an array[/b]
+
+[code]
+CriteriaQuery<Object[]> criteria = builder.createQuery( Object[].class );
+Root<Person> personRoot = criteria.from( Person.class );
+Path<Long> idPath = personRoot.get( Person_.id );
+Path<Integer> agePath = personRoot.get( Person_.age );
+criteria.select( builder.array( idPath, agePath ) );
+criteria.where( builder.equal( personRoot.get( Person_.eyeColor ), "brown" ) );
+List<Object[]> valueArray = em.createQuery( criteria ).getResultList();
+[/code]
+
+becomes
+
+[code]
+JPAQuery query = new JPAQuery(em);
+QPerson person = QPerson.person;
+List<Object[]> valueArray = query.from(person)
+    .where(person.eyeColor.eq("brown"))
+    .list(person.id, person.age);
+[/code]
+
+
+[b]Selecting an array (2)[/b]
+
+[code]
+CriteriaQuery<Object[]> criteria = builder.createQuery( Object[].class );
+Root<Person> personRoot = criteria.from( Person.class );
+Path<Long> idPath = personRoot.get( Person_.id );
+Path<Integer> agePath = personRoot.get( Person_.age );
+criteria.multiselect( idPath, agePath );
+criteria.where( builder.equal( personRoot.get( Person_.eyeColor ), "brown" ) );
+List<Object[]> valueArray = em.createQuery( criteria ).getResultList();
+[/code]
+
+becomes
+
+[code]
+JPAQuery query = new JPAQuery(em);
+QPerson person = QPerson.person;
+List<Object[]> valueArray = query.from(person)
+  .where(person.eyeColor.eq("brown"))
+  .list(person.id, person.age);
+[/code]
+
+[b]Selecting an wrapper[/b]
+
+[code]
+CriteriaQuery<PersonWrapper> criteria = builder.createQuery( PersonWrapper.class);
+Root<Person> personRoot = criteria.from( Person.class );
+criteria.select(
+    builder.construct(
+      PersonWrapper.class,
+      personRoot.get( Person_.id ),
+      personRoot.get( Person_.age )
+    ));
+criteria.where( builder.equal( personRoot.get( Person_.eyeColor ), "brown" ) );
+List<PersonWrapper> people = em.createQuery( criteria ).getResultList();
+[/code]
+
+becomes
+
+[code]
+JPAQuery query = new JPAQuery(em);
+QPerson person = QPerson.person;
+List<PersonWrapper> people = query.from(person)
+    .where(person.eyeColor.eq("brown"))
+    .list(new QPersonWrapper(person.id, person.age))
+[/code]
+
+[b]Selecting a tuple[/b]
+
+[code]
+CriteriaQuery<Tuple> criteria = builder.createTupleQuery();
+Root<Person> personRoot = criteria.from( Person.class );
+Path<Long> idPath = personRoot.get( Person_.id );
+Path<Integer> agePath = personRoot.get( Person_.age );
+criteria.multiselect( idPath, agePath );
+criteria.where( builder.equal( personRoot.get( Person_.eyeColor ), "brown" ) );
+List<Tuple> tuples = em.createQuery( criteria ).getResultList();
+[/code]
+
+Not supported in Querydsl. Feel free to provide snippets how this could be done.
+
+
+[b]Using parameters[/b]
+
+[code]
+CriteriaQuery<Person> criteria = builder.createQuery( Person.class );
+Root<Person> personRoot = criteria.from( Person.class );
+criteria.select( personRoot );
+ParameterExpression<String> eyeColorParam = builder.parameter( String.class );
+criteria.where( builder.equal( personRoot.get( Person_.eyeColor ), eyeColorParam ) );
+TypedQuery<Person> query = em.createQuery( criteria );
+query.setParameter( eyeColorParam, "brown" );
+List<Person> people = em.createQuery( query).getResultList();
+[/code]
+
+becomes
+
+[code]
+JPAQuery query = new JPAQuery(em);
+QPerson person = QPerson.person;
+List<Person> people = query.from(person)
+  .where(person.eyeColor.eq("brown"))
+  .list(person);
+[/code]
+
+
+[b]Multiple roots[/b]
+
+[code]
+CriteriaQuery query = builder.createQuery();
+Root<Person> men = query.from( Person.class );
+Root<Person> women = query.from( Person.class );
+Predicate menRestriction = builder.and(
+    builder.equal( men.get( Person_.gender ), Gender.MALE ),
+    builder.equal( men.get( Person_.relationshipStatus ), 
+RelationshipStatus.SINGLE )
+);
+Predicate womenRestriction = builder.and(
+    builder.equal( women.get( Person_.gender ), Gender.FEMALE ),
+    builder.equal( women.get( Person_.relationshipStatus ), 
+RelationshipStatus.SINGLE )
+);
+query.where( builder.and( menRestriction, womenRestriction ) );
+[/code]
+
+becomes
+
+[code]
+JPAQuery query = new JPAQuery(em);
+QPerson men = new QPerson("men");
+QPerson women = new QPerson("women");
+query.from(men, women).where(
+      men.gender.eq(Gender.MALE),
+      men.relationshipStatus.eq(RelationshipStatsu.SINGLE),
+      women.gender.eq(Gender.FEMALE),
+      women.relationshipStatsu.eq(RelationshipStatsu.SINGLE));    
+[/code]
+
+[b]Fetch joins[/b]
+
+[code]
+CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
+Root<Employee> emp = query.from(Employee.class);
+emp.fetch("address");
+query.select(emp);
+List<Employee> employees = em.createQuery( query).getResultList();
+[/code]
+
+becomes
+
+[code]
+JPAQuery query = new JPAQuery(em);
+QEmployee employee = QEmployee.employee;
+List<Employee> employees = query.from(employee).join(employee.address).fetch()
+    .list(employee);
+[/code]
+
+[b]Left join[/b]
+
+[code]
+CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
+Root<Employee> emp = query.from(Employee.class);
+emp.fetch(Empoyee_.phones, JoinType.LEFT);
+query.select(emp).distinct(true);
+List<Employee> employees = em.createQuery( query).getResultList();
+[/code]
+
+becomes
+
+[code]
+JPAQuery query = new JPAQuery(em);
+QEmployee employee = QEmployee.employee;
+List<Employee> employees = query.from(employee)
+    .leftJoin(employee.phones).fetch()
+    .listDistinct(employee);
+[/code]
+
+[b]Subquery[/b]
+
+[code]
+CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
+Root<Employee> emp = query.from(Employee.class);
+Subquery<Project> sq = query.subquery(Project.class);
+Root<Project> projecti sq.from(Project.class);
+Join<Project,Employeee> sqEmp = project.join(Project_.employees);
+sq.select(project)
+  .where(cb.equals(sqEmp, emp),
+         cb.eqauls(project.get(Project_.name),
+                   cb.parameter(String.class,"project")));
+criteria.add(cb.exists());
+[/code]
+
+becomes
+
+[code]
+JPAQuery query = new JPAQuery(em);
+QEmployee employee = QEmployee.employee;
+QEmployee emp = new QEmployee("emp");
+QProject project = QProject.project;
+query.from(employee).where(
+    new HQLSubQuery().from(project).join(project.employees, emp)
+      .where(emp.eq(employee), project.name.eq("some name"))
+      .list(project).exists()
+  ).list(employee);
+[/code]
