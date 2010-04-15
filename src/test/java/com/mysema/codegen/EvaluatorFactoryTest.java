@@ -5,11 +5,15 @@
  */
 package com.mysema.codegen;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -50,11 +54,11 @@ public class EvaluatorFactoryTest {
     @Test
     public void testSimple(){               
         for (String expr : Arrays.asList("a.equals(b)", "a.startsWith(b)", "a.equalsIgnoreCase(b)")){
-            test(expr, boolean.class, names, strings, Arrays.asList("a","b"));    
+            evaluate(expr, boolean.class, names, strings, Arrays.asList("a","b"), Collections.<String,Object>emptyMap());    
         }
         
         for (String expr : Arrays.asList("a != b", "a < b", "a > b", "a <= b", "a >= b")){
-            test(expr, boolean.class, names, ints, Arrays.asList(0,1));    
+            evaluate(expr, boolean.class, names, ints, Arrays.asList(0,1), Collections.<String,Object>emptyMap());    
         }        
     }
     
@@ -71,23 +75,34 @@ public class EvaluatorFactoryTest {
     }
     
     @Test
+    public void testWithConstants(){
+        Map<String,Object> constants = new HashMap<String,Object>();
+        constants.put("x", "Hello World");
+        List<Class<?>> types = Arrays.<Class<?>>asList(String.class);
+        List<String> names = Arrays.asList("a");
+        assertEquals(Boolean.TRUE, evaluate("a.equals(x)", boolean.class, names, types, Arrays.asList("Hello World"), constants));
+        assertEquals(Boolean.FALSE, evaluate("a.equals(x)", boolean.class, names, types, Arrays.asList("Hello"), constants));
+    }
+    
+    @Test
     public void testCustomType(){
         test("a.getName()", String.class, 
-                Collections.singletonList("a"), Collections.singletonList(TestEntity.class),
+                Collections.singletonList("a"), Collections.<Class<?>>singletonList(TestEntity.class),
                 Arrays.asList(new TestEntity("Hello World")), "Hello World");
                 
     }
     
-    private void test(String source, Class<?> projectionType, List<String> names, List<? extends Class<?>> types, List<?> args, Object expectedResult){
-        Assert.assertEquals(expectedResult, test(source, projectionType, names, types, args));
+    private void test(String source, Class<?> projectionType, List<String> names, List<Class<?>> types, List<?> args, Object expectedResult){
+        Assert.assertEquals(expectedResult, evaluate(source, projectionType, names, types, args, Collections.<String,Object>emptyMap()));
     }
     
-    private Object test(String source, Class<?> projectionType, List<String> names, List<? extends Class<?>> types, List<?> args) {
+    private Object evaluate(String source, Class<?> projectionType, List<String> names, List<Class<?>> types, List<?> args, Map<String,Object> constants) {
         Evaluator<?> evaluator = factory.createEvaluator(
                 source, 
                 projectionType, 
                 names.toArray(new String[names.size()]), 
-                types.toArray(new Class[types.size()]));
+                types.toArray(new Class[types.size()]),
+                constants);
         return evaluator.evaluate(args.toArray());
     }
 
