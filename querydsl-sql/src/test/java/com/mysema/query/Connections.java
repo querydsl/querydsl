@@ -46,6 +46,8 @@ public final class Connections {
     private static final String INSERT_INTO_TEST_VALUES = "insert into TEST values(?)";
 
     private static ThreadLocal<Statement> stmtHolder = new ThreadLocal<Statement>();
+    
+    private static boolean derbyInited, sqlServerInited, hsqlInited, mysqlInited, oracleInited, postgresInited;
         
     public static void close() throws SQLException{
         if (stmtHolder.get() != null){
@@ -100,11 +102,15 @@ public final class Connections {
         return stmtHolder.get();
     }
     
-    public static void initDerby() throws SQLException, ClassNotFoundException{
+    public static void initDerby() throws SQLException, ClassNotFoundException{        
         Connection c = getDerby();
         connHolder.set(c);
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
+        
+        if (derbyInited){
+            return;
+        }
         
         // survey
         safeExecute(stmt, DROP_TABLE_SURVEY);    
@@ -146,13 +152,18 @@ public final class Connections {
         safeExecute(stmt, DROP_TABLE_DATETEST);
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
+        derbyInited = true;
     }
     
-    public static void initSQLServer() throws SQLException, ClassNotFoundException{
+    public static void initSQLServer() throws SQLException, ClassNotFoundException{        
         Connection c = getSQLServer();
         connHolder.set(c);
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
+        
+        if (sqlServerInited){
+            return;
+        }
         
         // survey
         safeExecute(stmt, DROP_TABLE_SURVEY);    
@@ -194,13 +205,18 @@ public final class Connections {
         safeExecute(stmt, DROP_TABLE_DATETEST);
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
+        sqlServerInited = true;
     }
     
-    public static void initHSQL() throws SQLException, ClassNotFoundException{
+    public static void initHSQL() throws SQLException, ClassNotFoundException{        
         Connection c = getHSQL();
         connHolder.set(c);
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
+        
+        if (hsqlInited){
+            return;
+        }
 
         // survey
         stmt.execute("drop table SURVEY if exists");
@@ -241,13 +257,18 @@ public final class Connections {
         stmt.execute("drop table DATE_TEST if exists");
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
+        hsqlInited = true;
     }
     
-    public static void initMySQL() throws SQLException, ClassNotFoundException{
+    public static void initMySQL() throws SQLException, ClassNotFoundException{        
         Connection c = getMySQL();
         connHolder.set(c);
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
+        
+        if (mysqlInited){
+            return;
+        }
         
         // survey
         stmt.execute("drop table if exists SURVEY");
@@ -288,13 +309,18 @@ public final class Connections {
         stmt.execute("drop table if exists DATE_TEST");
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
+        mysqlInited = true;
     }
     
-    public static void initOracle() throws SQLException, ClassNotFoundException{
+    public static void initOracle() throws SQLException, ClassNotFoundException{       
         Connection c = getOracle();
         connHolder.set(c);
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
+        
+        if (oracleInited){
+            return;
+        }
         
         // survey
         safeExecute(stmt, DROP_TABLE_SURVEY);
@@ -333,14 +359,19 @@ public final class Connections {
 //      stmt.execute("create table time_test(time_test time)");
         safeExecute(stmt, DROP_TABLE_DATETEST);
         stmt.execute("create table date_test(date_test date)");        
+        oracleInited = true;
     }
     
-    public static void initPostgres() throws SQLException, ClassNotFoundException{
+    public static void initPostgres() throws SQLException, ClassNotFoundException{        
         // NOTE : unquoted identifiers are converted to lower case in Postgres
         Connection c = getPostgres();
         connHolder.set(c);
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
+        
+        if (postgresInited){
+            return;
+        }
         
         // survey
         safeExecute(stmt, quote(DROP_TABLE_SURVEY,"SURVEY"));
@@ -385,6 +416,7 @@ public final class Connections {
         safeExecute(stmt, quote(DROP_TABLE_DATETEST,"DATE_TEST"));
         stmt.execute(quote(CREATE_TABLE_TIMETEST, "TIME_TEST"));
         stmt.execute(quote(CREATE_TABLE_DATETEST, "DATE_TEST"));
+        postgresInited = true;
     }
     
     private static void safeExecute(Statement stmt, String sql) {
