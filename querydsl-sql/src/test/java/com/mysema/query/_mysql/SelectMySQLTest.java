@@ -20,7 +20,7 @@ import com.mysema.testutil.ResourceCheck;
 @RunWith(FilteringTestRunner.class)
 @ResourceCheck("/mysql.run")
 @Label(Target.MYSQL)
-public class SelectMySqlTest extends SelectBaseTest {
+public class SelectMySQLTest extends SelectBaseTest {
 
     @BeforeClass
     public static void setUp() throws Exception {

@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.hsqldb.Types;
 
 /**
@@ -18,6 +19,8 @@ import org.hsqldb.Types;
  *
  */
 public final class Connections {
+    
+    public static final int TEST_ROW_COUNT = 100;
     
     private static ThreadLocal<Connection> connHolder = new ThreadLocal<Connection>();
 
@@ -102,7 +105,8 @@ public final class Connections {
         return stmtHolder.get();
     }
     
-    public static void initDerby() throws SQLException, ClassNotFoundException{        
+    public static void initDerby() throws SQLException, ClassNotFoundException{     
+        StopWatch watch = new StopWatch();
         Connection c = getDerby();
         connHolder.set(c);
         Statement stmt = c.createStatement();
@@ -113,16 +117,22 @@ public final class Connections {
         }
         
         // survey
+        watch.start();
         safeExecute(stmt, DROP_TABLE_SURVEY);    
         stmt.execute(CREATE_TABLE_SURVEY);
         stmt.execute("insert into SURVEY values (1, 'Hello World')");
+        watch.stop();
+        System.err.println("survey " + watch.getTime());
 
         // test
+        watch.reset();
+        watch.start();
         safeExecute(stmt, DROP_TABLE_TEST);
         stmt.execute(CREATE_TABLE_TEST);
+        stmt.execute("create index test_name on test(name)");
         PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
         try{
-            for (int i = 0; i < 10000; i++) {
+            for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
@@ -130,8 +140,12 @@ public final class Connections {
         }finally{
             pstmt.close();
         }        
+        watch.stop();
+        System.err.println("test " + watch.getTime());
 
         // employee
+        watch.reset();
+        watch.start();
         // stmt.execute("drop table employee if exists");
         safeExecute(stmt, DROP_TABLE_EMPLOYEE2);
         stmt.execute("create table EMPLOYEE2("
@@ -145,13 +159,27 @@ public final class Connections {
                 + "CONSTRAINT PK_employee PRIMARY KEY (ID), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (SUPERIOR_ID) "
                 + "REFERENCES EMPLOYEE2(ID))");
+        stmt.execute("create index employee_id on employee2(id)");
+        stmt.execute("create index employee_firstname on employee2(firstname)");
+        
         addEmployees(INSERT_INTO_EMPLOYEE);
+        watch.stop();
+        System.err.println("employee2 " + watch.getTime());
 
         // date_test and time_test
+        watch.reset();
+        watch.start();
         safeExecute(stmt, DROP_TABLE_TIMETEST);
-        safeExecute(stmt, DROP_TABLE_DATETEST);
         stmt.execute(CREATE_TABLE_TIMETEST);
+        watch.stop();
+        System.err.println("timetest " + watch.getTime());
+        
+        watch.reset();
+        watch.start();
+        safeExecute(stmt, DROP_TABLE_DATETEST);        
         stmt.execute(CREATE_TABLE_DATETEST);
+        watch.stop();
+        System.err.println("datetest " + watch.getTime());
         derbyInited = true;
     }
     
@@ -175,7 +203,7 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_TEST);
         PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
         try{
-            for (int i = 0; i < 10000; i++) {
+            for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
@@ -228,7 +256,7 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_TEST);
         PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
         try{
-            for (int i = 0; i < 10000; i++) {
+            for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
@@ -280,7 +308,7 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_TEST);
         PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
         try{
-            for (int i = 0; i < 10000; i++) {
+            for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
@@ -301,7 +329,7 @@ public final class Connections {
                 + "SUPERIOR_ID int, "
                 + "CONSTRAINT PK_employee PRIMARY KEY (ID), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (SUPERIOR_ID) "
-                + "REFERENCES EMPLOYEE2(ID))");
+                + "REFERENCES EMPLOYEE2(ID))");        
         addEmployees(INSERT_INTO_EMPLOYEE);
 
         // date_test and time_test
@@ -332,7 +360,7 @@ public final class Connections {
         stmt.execute("create table TEST(name varchar(255))");
         String sql  = "insert into TEST values(?)";
         PreparedStatement pstmt = c.prepareStatement(sql);
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < TEST_ROW_COUNT; i++) {
             pstmt.setString(1, "name" + i);
             pstmt.addBatch();
         }
@@ -384,7 +412,7 @@ public final class Connections {
         String sql = quote(INSERT_INTO_TEST_VALUES,"TEST");
         PreparedStatement pstmt = c.prepareStatement(sql);
         try{
-            for (int i = 0; i < 10000; i++) {
+            for (int i = 0; i < TEST_ROW_COUNT; i++) {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
