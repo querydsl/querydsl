@@ -322,14 +322,11 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         standardTest.runNumericTests(employee.id, employee2.id, 1);
         
         // BigDecimal
-//        standardTest.numericCasts(employee.salary, employee2.salary, new BigDecimal("30000.00"));
         standardTest.runNumericTests(employee.salary, employee2.salary, new BigDecimal("30000.00"));
         
         standardTest.runStringTests(employee.firstname, employee2.firstname, "Jennifer");
         standardTest.runTimeTests(employee.timefield, employee2.timefield, time);
-
-//      standardTest.dateTimeTests(employee.birthdate, employee2.birthdate, birthDate);
-      
+                
         standardTest.report();        
     }
 

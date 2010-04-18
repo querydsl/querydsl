@@ -106,7 +106,6 @@ public final class Connections {
     }
     
     public static void initDerby() throws SQLException, ClassNotFoundException{     
-        StopWatch watch = new StopWatch();
         Connection c = getDerby();
         connHolder.set(c);
         Statement stmt = c.createStatement();
@@ -117,16 +116,11 @@ public final class Connections {
         }
         
         // survey
-        watch.start();
         safeExecute(stmt, DROP_TABLE_SURVEY);    
         stmt.execute(CREATE_TABLE_SURVEY);
         stmt.execute("insert into SURVEY values (1, 'Hello World')");
-        watch.stop();
-        System.err.println("survey " + watch.getTime());
 
         // test
-        watch.reset();
-        watch.start();
         safeExecute(stmt, DROP_TABLE_TEST);
         stmt.execute(CREATE_TABLE_TEST);
         stmt.execute("create index test_name on test(name)");
@@ -140,12 +134,8 @@ public final class Connections {
         }finally{
             pstmt.close();
         }        
-        watch.stop();
-        System.err.println("test " + watch.getTime());
 
         // employee
-        watch.reset();
-        watch.start();
         // stmt.execute("drop table employee if exists");
         safeExecute(stmt, DROP_TABLE_EMPLOYEE2);
         stmt.execute("create table EMPLOYEE2("
@@ -159,27 +149,17 @@ public final class Connections {
                 + "CONSTRAINT PK_employee PRIMARY KEY (ID), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (SUPERIOR_ID) "
                 + "REFERENCES EMPLOYEE2(ID))");
-        stmt.execute("create index employee_id on employee2(id)");
-        stmt.execute("create index employee_firstname on employee2(firstname)");
+//        stmt.execute("create index employee_id on employee2(id)");
+//        stmt.execute("create index employee_firstname on employee2(firstname)");
         
         addEmployees(INSERT_INTO_EMPLOYEE);
-        watch.stop();
-        System.err.println("employee2 " + watch.getTime());
 
         // date_test and time_test
-        watch.reset();
-        watch.start();
         safeExecute(stmt, DROP_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_TIMETEST);
-        watch.stop();
-        System.err.println("timetest " + watch.getTime());
         
-        watch.reset();
-        watch.start();
         safeExecute(stmt, DROP_TABLE_DATETEST);        
         stmt.execute(CREATE_TABLE_DATETEST);
-        watch.stop();
-        System.err.println("datetest " + watch.getTime());
         derbyInited = true;
     }
     
