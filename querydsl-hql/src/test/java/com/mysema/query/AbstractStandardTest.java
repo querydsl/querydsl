@@ -119,7 +119,7 @@ public abstract class AbstractStandardTest {
         Cat kitten = savedCats.get(0);        
         Cat noKitten = savedCats.get(savedCats.size()-1);
         
-        standardTest.runArrayTests(cat.kittensArray, otherCat.kittensArray, kitten, noKitten);
+//        standardTest.runArrayTests(cat.kittensArray, otherCat.kittensArray, kitten, noKitten);
         standardTest.runBooleanTests(cat.name.isNull(), otherCat.kittens.isEmpty());
         standardTest.runCollectionTests(cat.kittens, otherCat.kittens, kitten, noKitten);
         standardTest.runDateTests(cat.dateField, otherCat.dateField, date);

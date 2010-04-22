@@ -35,10 +35,10 @@ public class Cat extends Animal {
     @JoinTable(name="kittens_set")
     private Set<Cat> kittensSet;
     
-    @OneToMany
-    @JoinTable(name="kittens_array")
-    @IndexColumn(name = "arrayIndex")
-    private Cat[] kittensArray = new Cat[0];
+//    @OneToMany
+//    @JoinTable(name="kittens_array")
+//    @IndexColumn(name = "arrayIndex")
+//    private Cat[] kittensArray = new Cat[0];
     
     @ManyToOne
     private Cat mate;
@@ -71,13 +71,13 @@ public class Cat extends Animal {
         return mate;
     }
 
-    public Cat[] getKittensArray() {
-        return kittensArray;
-    }
+//    public Cat[] getKittensArray() {
+//        return kittensArray;
+//    }
 
     public void addKitten(Cat kitten) {
         kittens.add(kitten);
-        kittensArray = new Cat[]{kitten};        
+//        kittensArray = new Cat[]{kitten};        
     }
 
     public Set<Cat> getKittensSet() {

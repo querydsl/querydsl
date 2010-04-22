@@ -71,7 +71,7 @@ public final class EStringConst extends EString implements Constant<String>{
     private final String constant;
     
     @Nullable
-    private volatile ENumber<Long> length;
+    private volatile ENumber<Integer> length;
 
     @Nullable
     private volatile EString lower, trim, upper;
@@ -153,9 +153,9 @@ public final class EStringConst extends EString implements Constant<String>{
     }
     
     @Override
-    public ENumber<Long> length() {
+    public ENumber<Integer> length() {
         if (length == null) {
-            length = ENumberConst.create(Long.valueOf(constant.length()));
+            length = ENumberConst.create(Integer.valueOf(constant.length()));
         }
         return length;
     }

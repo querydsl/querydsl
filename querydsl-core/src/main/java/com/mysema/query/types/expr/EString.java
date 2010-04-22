@@ -22,7 +22,7 @@ public abstract class EString extends EComparable<String> {
     private static final long serialVersionUID = 1536955079961023361L;
 
     @Nullable
-    private volatile ENumber<Long> length;
+    private volatile ENumber<Integer> length;
     
     @Nullable
     private volatile EString lower, trim, upper;
@@ -295,9 +295,9 @@ public abstract class EString extends EComparable<String> {
      * @return this.length()
      * @see java.lang.String#length()
      */
-    public ENumber<Long> length() {
+    public ENumber<Integer> length() {
         if (length == null) {
-            length = ONumber.create(Long.class, Ops.STRING_LENGTH, this);
+            length = ONumber.create(Integer.class, Ops.STRING_LENGTH, this);
         }
         return length;
     }

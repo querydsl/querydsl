@@ -6,11 +6,14 @@
 package com.mysema.query.hql;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -29,8 +32,10 @@ import com.mysema.query.types.PathType;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EStringConst;
+import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.OSimple;
 import com.mysema.query.types.path.PEntity;
+import com.mysema.util.MathUtils;
 
 /**
  * HQLSerializer serializes querydsl expressions into HQL syntax.
@@ -40,6 +45,11 @@ import com.mysema.query.types.path.PEntity;
  */
 public final class HQLSerializer extends SerializerBase<HQLSerializer> {
 
+    private static final Set<Operator<?>> NUMERIC = new HashSet<Operator<?>>(Arrays.<Operator<?>>asList(
+            Ops.ADD, Ops.SUB, Ops.MULT, Ops.DIV,
+            Ops.LT, Ops.LOE, Ops.GT, Ops.GOE, Ops.BETWEEN,
+            Ops.BEFORE, Ops.AFTER, Ops.BOE, Ops.AOE));
+    
     private static final String SELECT_COUNT_DISTINCT = "select count(distinct ";
 
     private static final String AS = " as ";
@@ -288,38 +298,71 @@ public final class HQLSerializer extends SerializerBase<HQLSerializer> {
     }
 
     @SuppressWarnings("unchecked")
-    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> a) {
+    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
         boolean old = wrapElements;
         wrapElements = HQLTemplates.wrapCollectionsForOp.contains(operator);
         // 
         if (operator.equals(Ops.INSTANCE_OF)) {
-            List<Expr<?>> args = new ArrayList<Expr<?>>(a);
-            args.set(1, EStringConst.create(((Class<?>) ((Constant<?>) args.get(1)).getConstant()).getName()));
-            super.visitOperation(type, operator, args);
+            List<Expr<?>> newArgs = new ArrayList<Expr<?>>(args);
+            newArgs.set(1, EStringConst.create(((Class<?>) ((Constant<?>) newArgs.get(1)).getConstant()).getName()));
+            super.visitOperation(type, operator, newArgs);
             
         } else if (operator.equals(Ops.NUMCAST)) {
-            visitCast(a.get(0), (Class<?>) ((Constant<?>) a.get(1)).getConstant());
+            visitCast(args.get(0), (Class<?>) ((Constant<?>) args.get(1)).getConstant());
             
-        } else if (operator.equals(Ops.EXISTS) && a.get(0) instanceof SubQuery){
-            SubQuery subQuery = (SubQuery) a.get(0);            
+        } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQuery){
+            SubQuery subQuery = (SubQuery) args.get(0);            
             append("exists (");
             serialize(subQuery.getMetadata(), false, "1");
             append(")");
             
         } else if (operator.equals(Ops.MATCHES)){
-            List<Expr<?>> args = new ArrayList<Expr<?>>(a);
-            if (args.get(1) instanceof Constant){
-                args.set(1, regexToLike(args.get(1).toString()));
-            }else if (args.get(1) instanceof Operation){
-                args.set(1, regexToLike((Operation)args.get(1)));
+            List<Expr<?>> newArgs = new ArrayList<Expr<?>>(args);
+            if (newArgs.get(1) instanceof Constant){
+                newArgs.set(1, regexToLike(newArgs.get(1).toString()));
+            }else if (newArgs.get(1) instanceof Operation){
+                newArgs.set(1, regexToLike((Operation)newArgs.get(1)));
             }
-            super.visitOperation(type, operator, args);
+            super.visitOperation(type, operator, newArgs);
+            
+        }else if(NUMERIC.contains(operator)){
+            super.visitOperation(type, operator, normalizeNumericArgs(args));
             
         } else {
-            super.visitOperation(type, operator, a);
+            super.visitOperation(type, operator, args);
         }
         //
         wrapElements = old;
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<Expr<?>> normalizeNumericArgs(List<Expr<?>> args) {
+        boolean hasConstants = false;
+        Class<? extends Number> numType = null;
+        for (Expr<?> arg : args){
+            if (Number.class.isAssignableFrom(arg.getType())){
+                if (arg instanceof Constant){
+                    hasConstants = true;
+                }else{
+                    numType = (Class<? extends Number>) arg.getType();
+                }
+            }
+        }
+        if (hasConstants && numType != null){
+            List<Expr<?>> newArgs = new ArrayList<Expr<?>>(args.size());
+            for (Expr<?> arg : args){
+                if (arg instanceof Constant && Number.class.isAssignableFrom(arg.getType())
+                    && !arg.getType().equals(numType)){
+                    Number number = (Number) ((Constant)arg).getConstant();
+                    newArgs.add(ExprConst.create(MathUtils.cast(number, (Class)numType)));
+                }else{
+                    newArgs.add(arg);    
+                }                
+            }
+            return newArgs;
+        }else{
+            return args;
+        }
     }
 
 }
