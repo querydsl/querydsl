@@ -15,6 +15,10 @@ public enum Target{
      */
     DERBY,
     /**
+     * 
+     */
+    H2,
+    /**
      * HSSQLDB
      */
     HSQLDB,

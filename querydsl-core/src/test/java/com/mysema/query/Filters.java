@@ -254,6 +254,7 @@ public class Filters {
             
         if (!target.equals(Target.DERBY) 
          && !target.equals(Target.HSQLDB)
+         && !target.equals(Target.H2)
          && !target.equals(Target.SQLSERVER)){
             rv.add(expr.matches(knownValue.substring(0,1)+".*"));
             rv.add(expr.matches(".*"+knownValue.substring(1)));

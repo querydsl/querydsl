@@ -13,6 +13,7 @@ import static com.mysema.query.Constants.survey2;
 import static com.mysema.query.Constants.time;
 import static com.mysema.query.Target.DERBY;
 import static com.mysema.query.Target.HSQLDB;
+import static com.mysema.query.Target.H2;
 import static com.mysema.query.Target.MYSQL;
 import static com.mysema.query.Target.ORACLE;
 import static com.mysema.query.Target.SQLSERVER;
@@ -218,7 +219,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({HSQLDB,MYSQL})
+    @ExcludeIn({HSQLDB,H2,MYSQL})
     public void offsetOnly(){
         // offset
         query().from(employee)

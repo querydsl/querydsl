@@ -50,7 +50,7 @@ public final class Connections {
 
     private static ThreadLocal<Statement> stmtHolder = new ThreadLocal<Statement>();
     
-    private static boolean derbyInited, sqlServerInited, hsqlInited, mysqlInited, oracleInited, postgresInited;
+    private static boolean derbyInited, sqlServerInited, h2Inited, hsqlInited, mysqlInited, oracleInited, postgresInited;
         
     public static void close() throws SQLException{
         if (stmtHolder.get() != null){
@@ -74,6 +74,12 @@ public final class Connections {
     private static Connection getHSQL() throws SQLException, ClassNotFoundException {
         Class.forName("org.hsqldb.jdbcDriver");
         String url = "jdbc:hsqldb:target/tutorial";
+        return DriverManager.getConnection(url, "sa", "");
+    }
+    
+    private static Connection getH2() throws SQLException, ClassNotFoundException{
+        Class.forName("org.h2.Driver");
+        String url = "jdbc:h2:target/h2";
         return DriverManager.getConnection(url, "sa", "");
     }
     
@@ -214,6 +220,58 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
         sqlServerInited = true;
+    }
+    
+    public static void initH2() throws SQLException, ClassNotFoundException{        
+        Connection c = getH2();
+        connHolder.set(c);
+        Statement stmt = c.createStatement();
+        stmtHolder.set(stmt);
+        
+        if (h2Inited){
+            return;
+        }
+
+        // survey
+        stmt.execute("drop table SURVEY if exists");
+        stmt.execute(CREATE_TABLE_SURVEY);
+        stmt.execute("insert into SURVEY values (1, 'Hello World');");
+
+        // test
+        stmt.execute("drop table TEST if exists");
+        stmt.execute(CREATE_TABLE_TEST);
+        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
+        try{
+            for (int i = 0; i < TEST_ROW_COUNT; i++) {
+                pstmt.setString(1, "name" + i);
+                pstmt.addBatch();
+            }
+            pstmt.executeBatch();    
+        }finally{
+            pstmt.close();
+        }        
+
+        // employee
+        stmt.execute("drop table EMPLOYEE2 if exists");
+        stmt.execute("create table EMPLOYEE2(" 
+                + "ID int, "
+                + "FIRSTNAME VARCHAR(50), " 
+                + "LASTNAME VARCHAR(50), "
+                + "SALARY decimal(10, 2), "
+                + "DATEFIELD date, "
+                + "TIMEFIELD time, "
+                + "SUPERIOR_ID int, "
+                + "CONSTRAINT PK_employee PRIMARY KEY (ID), "
+                + "CONSTRAINT FK_superior FOREIGN KEY (SUPERIOR_ID) "
+                + "REFERENCES EMPLOYEE2(ID))");
+        addEmployees(INSERT_INTO_EMPLOYEE);
+
+        // date_test and time_test
+        stmt.execute("drop table TIME_TEST if exists");
+        stmt.execute("drop table DATE_TEST if exists");
+        stmt.execute(CREATE_TABLE_TIMETEST);
+        stmt.execute(CREATE_TABLE_DATETEST);
+        h2Inited = true;
     }
     
     public static void initHSQL() throws SQLException, ClassNotFoundException{        

@@ -230,11 +230,14 @@ public class MatchingFilters {
         
         if (module != Module.LUCENE){
             if (!module.equals(Module.SQL) 
-                    || (!target.equals(Target.HSQLDB) && !target.equals(Target.DERBY) && !target.equals(Target.SQLSERVER))){
-                        rv.add(expr.matches(other.substring(0,1).append(".*")));
-                        rv.add(expr.matches(other.substring(0,1).append(".").append(other.substring(2))));
-                        rv.add(expr.matches(other.substring(1).prepend(".*")));
-                        rv.add(expr.matches(other.substring(1,2).prepend(".*").append(".*")));    
+            || (!target.equals(Target.HSQLDB) 
+            && !target.equals(Target.H2) 
+            && !target.equals(Target.DERBY) 
+            && !target.equals(Target.SQLSERVER))){
+                rv.add(expr.matches(other.substring(0,1).append(".*")));
+                rv.add(expr.matches(other.substring(0,1).append(".").append(other.substring(2))));
+                rv.add(expr.matches(other.substring(1).prepend(".*")));
+                rv.add(expr.matches(other.substring(1,2).prepend(".*").append(".*")));    
             }
             
             rv.add(expr.ne(other));
