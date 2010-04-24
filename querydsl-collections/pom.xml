@@ -42,9 +42,16 @@
   <build>
     <plugins>
       <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>src/main/assembly.xml</descriptor>
+          </descriptors>
+        </configuration>
+      </plugin>      
+      <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>maven-apt-plugin</artifactId>
-        <version>0.3.1</version>
         <executions>
           <execution>
             <goals>

@@ -31,6 +31,11 @@
       <artifactId>querydsl-core</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-apt</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>        
 
     <!-- test -->
 
@@ -60,14 +65,8 @@
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>
-    <dependency>
-      <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-apt</artifactId>
-      <version>${project.parent.version}</version>
-      <scope>provided</scope>
-    </dependency>    
-  </dependencies>
 
+  </dependencies>
 
   <repositories>
     <repository>
@@ -94,9 +93,17 @@
       </snapshots>
     </pluginRepository>  
   </pluginRepositories>
-
+  
   <build>
     <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>src/main/assembly.xml</descriptor>
+          </descriptors>
+        </configuration>
+      </plugin>      
       <!-- this plugin does the JDO class enhancement -->
       <plugin>
         <groupId>org.datanucleus</groupId>
@@ -122,7 +129,6 @@
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>maven-apt-plugin</artifactId>
-        <version>0.3.1</version>
         <executions>
           <execution>
             <goals>

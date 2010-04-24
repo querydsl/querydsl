@@ -116,14 +116,36 @@
     <connection>${svn.path}/${path.suffix}</connection>
     <developerConnection>${svn.path}/${path.suffix}</developerConnection>
   </scm>
-
+ 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>2.2-beta-5</version>
+        </plugin>
+        <plugin>
+          <groupId>com.mysema.maven</groupId>
+          <artifactId>maven-apt-plugin</artifactId>
+          <version>0.3.1</version>
+        </plugin>
+      </plugins>      
+    </pluginManagement>
     <plugins>
+      <plugin>       
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2-beta-5</version>
+        <configuration>
+          <outputDirectory>../querydsl-root/target/dist</outputDirectory>
+        </configuration>
+      </plugin>     
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.5</version>
         <configuration>
+          <outputDirectory>${project.build.directory}/dist/apidocs</outputDirectory>
           <groups>
             <group>
               <title>Core</title>
@@ -174,17 +196,7 @@
           <includeTests>true</includeTests>     
         </configuration>
       </plugin>            
-      <!-- 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.0-beta-7</version>
-        <configuration>
-          <tagBase>https://source.mysema.com/svn/mysema/projects/querydsl/tags</tagBase>
-          <autoVersionSubmodules>true</autoVersionSubmodules>
-        </configuration>
-      </plugin>
-       -->      
+    
     </plugins>
   </build>
   
