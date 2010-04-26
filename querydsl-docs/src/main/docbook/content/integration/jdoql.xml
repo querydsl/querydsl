@@ -94,12 +94,29 @@
   <sect2>
   
     <title>Ant integration</title>
+      
+    <para>Place the jar files from the full-deps bundle on your classpath and use the following tasks for Querydsl code generation :</para>
     
-    <para>
-    See the following page on how to run APT processors with ANT : <ulink url="http://ant.apache.org/manual/CoreTasks/apt.html">Apt Task</ulink>.
-    Replace com.mycom.MyAnnotationProcessorFactory with com.mysema.query.apt.QuerydslAnnotationProcessor.
-    </para>
-  
+<programlisting language="xml"><![CDATA[
+    <!-- APT based code generation -->
+    <javac srcdir="${src}" classpathref="cp">
+      <compilerarg value="-proc:only"/>      
+      <compilerarg value="-processor"/>
+      <compilerarg value="com.mysema.query.apt.jdo.JDOAnnotationProcessor"/>
+      <compilerarg value="-s"/>
+      <compilerarg value="${generated}"/>
+    </javac>
+    
+    <!-- compilation -->
+    <javac classpathref="cp" destdir="${build}">      
+      <src path="${src}"/>
+      <src path="${generated}"/>
+    </javac>    
+]]></programlisting>
+
+    <para>Replace <emphasis>src</emphasis> with your main source folder, <emphasis>generated</emphasis> with your folder for generated sources 
+    and <emphasis>build</emphasis> with your target folder.</para>        
+    
   </sect2>  
 
   <sect2>
