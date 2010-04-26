@@ -37,10 +37,12 @@ public class MemSourceFileObject extends SimpleJavaFileObject {
         contents.append(content);        
     }
 
+    @Override
     public CharSequence getCharContent(boolean ignoreEncodingErrors) {
         return contents;
     }
     
+    @Override
     public Writer openWriter() {
         return new Writer() {
             @Override
