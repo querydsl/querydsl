@@ -151,5 +151,16 @@ for (String name : from(cat,cats)
 ]]></programlisting> 
  
   </sect2>
+  
+  <sect2>
+  
+    <title>Ant integration</title>
+    
+    <para>
+    See the following page on how to run APT processors with ANT : <link linkend="http://ant.apache.org/manual/CoreTasks/apt.html">Apt Task</link>.
+    Replace com.mycom.MyAnnotationProcessorFactory with com.mysema.query.apt.QuerydslAnnotationProcessor.
+    </para>
+  
+  </sect2>
 
 </sect1>
