@@ -1,13 +1,13 @@
 #!/bin/sh
+echo "Creating javadocs"
 mvn javadoc:aggregate
 
+echo "Creating release bundles"
+mvn -Passembly assembly:assembly
+
+echo "Creating reference documentation"
 cd ../querydsl-docs
 ./build.sh
-
-for module in "collections hibernate-search hql jdoql lucene sql"
-do
-  cd ../querydsl-$module
-  mvn assembly:assembly
-done
-
 cd ../querydsl-root
+
+echo "done."
