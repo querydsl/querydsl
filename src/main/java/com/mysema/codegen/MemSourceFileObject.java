@@ -14,6 +14,8 @@ import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
 
 /**
+ * MemSourceFileObject defines a in-memory Java source file object
+ * 
  * @author tiwe
  *
  */

@@ -26,6 +26,8 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 /**
+ * JavaWriter is the default implementation of the CodeWriter interface
+ * 
  * @author tiwe
  *
  */

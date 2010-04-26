@@ -25,6 +25,8 @@ import javax.tools.JavaFileObject.Kind;
 
 
 /**
+ * MemFileManager is a memory based implementation of the JavaFileManager interface
+ * 
  * @author tiwe
  *
  */

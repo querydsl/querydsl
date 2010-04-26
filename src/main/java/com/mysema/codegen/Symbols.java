@@ -6,6 +6,8 @@
 package com.mysema.codegen;
 
 /**
+ * Defines general String constants
+ * 
  * @author tiwe
  *
  */

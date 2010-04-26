@@ -11,6 +11,8 @@ import javax.tools.JavaFileManager.Location;
 import javax.tools.JavaFileObject.Kind;
 
 /**
+ * LocationAndKind defines a pair of Location and Kind
+ * 
  * @author tiwe
  *
  */

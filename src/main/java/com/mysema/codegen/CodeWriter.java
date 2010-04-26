@@ -12,6 +12,8 @@ import java.util.Collection;
 import org.apache.commons.collections15.Transformer;
 
 /**
+ * CodeWriter defines an interface for serializing Java source code
+ * 
  * @author tiwe
  *
  */

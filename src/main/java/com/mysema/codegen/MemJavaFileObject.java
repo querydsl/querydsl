@@ -18,6 +18,8 @@ import java.net.URI;
 import javax.tools.SimpleJavaFileObject;
 
 /**
+ * MemJavaFileObject defines an in memory compiled Java file
+ * 
  * @author tiwe
  *
  */

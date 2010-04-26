@@ -28,6 +28,9 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
 /**
+ * SimpleCompiler provides a convenience wrapper of the JavaCompiler interface with automatic
+ * classpath generation
+ * 
  * @author tiwe
  *
  */

@@ -23,6 +23,8 @@ import javax.tools.JavaFileObject.Kind;
 
 
 /**
+ * MemClassLoader is a mmemory based implementation of the ClassLoader interface
+ * 
  * @author tiwe
  *
  */
