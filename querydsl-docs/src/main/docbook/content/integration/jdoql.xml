@@ -96,7 +96,7 @@
     <title>Ant integration</title>
     
     <para>
-    See the following page on how to run APT processors with ANT : <link linkend="http://ant.apache.org/manual/CoreTasks/apt.html">Apt Task</link>.
+    See the following page on how to run APT processors with ANT : <ulink url="http://ant.apache.org/manual/CoreTasks/apt.html">Apt Task</ulink>.
     Replace com.mycom.MyAnnotationProcessorFactory with com.mysema.query.apt.QuerydslAnnotationProcessor.
     </para>
   

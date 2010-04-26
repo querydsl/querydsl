@@ -1,4 +1,7 @@
 #!/bin/sh
+rm -rf target/dist
+mkdir target/dist
+
 echo "Creating javadocs"
 mvn javadoc:aggregate
 
@@ -15,6 +18,5 @@ mvn -Dxslthl.config=http://docbook.sourceforge.net/release/xsl/current/highlight
 mkdir ../querydsl-root/target/dist/reference
 cp -R target/docbook/publish/en-US/* ../querydsl-root/target/dist/reference/
 cd ../querydsl-root
-
 
 echo "done."
