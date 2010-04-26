@@ -32,6 +32,8 @@ import org.apache.commons.lang.StringUtils;
  *
  */
 public final class JavaWriter implements Appendable, CodeWriter{
+    
+    private static final int INDENT_SPACES = 4;
         
     private static final String EXTENDS = " extends ";
 
@@ -260,8 +262,8 @@ public final class JavaWriter implements Appendable, CodeWriter{
     }
     
     private JavaWriter goOut(){
-        if (indent.length() >= 4){
-            indent = indent.substring(0, indent.length() - 4);
+        if (indent.length() >= INDENT_SPACES){
+            indent = indent.substring(0, indent.length() - INDENT_SPACES);
         }
         return this;
     }
