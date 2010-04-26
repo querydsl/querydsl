@@ -3,11 +3,15 @@ echo "Creating javadocs"
 mvn javadoc:aggregate
 
 echo "Creating release bundles"
-mvn -Passembly assembly:assembly
+for module in collections hibernate-search hql jdoql lucene sql
+do
+  cd ../querydsl-$module
+  mvn -Dtest= clean package assembly:assembly
+done
 
 echo "Creating reference documentation"
 cd ../querydsl-docs
-./build.sh
+mvn -Dxslthl.config=http://docbook.sourceforge.net/release/xsl/current/highlighting/xslthl-config.xml clean package
 cd ../querydsl-root
 
 echo "done."
