@@ -81,13 +81,15 @@ public final class JavaWriter implements Appendable, CodeWriter{
     public JavaWriter annotation(Annotation annotation) throws IOException {
         append(indent).append("@").appendType(annotation.annotationType()).append("(");
         boolean first = true;        
-        for (Method method : annotation.annotationType().getDeclaredMethods()){
-            if (!first){
-                append(COMMA);
-            }
-            append(method.getName()+"=");
+        for (Method method : annotation.annotationType().getDeclaredMethods()){            
             try {
                 Object value = method.invoke(annotation);
+                if (value == null){
+                    continue;
+                }else if (!first){
+                    append(COMMA);
+                }
+                append(method.getName()+"=");                
                 annotationConstant(value);
             } catch (IllegalArgumentException e) {
                 throw new CodegenException(e);
