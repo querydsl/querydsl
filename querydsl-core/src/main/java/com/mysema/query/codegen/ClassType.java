@@ -105,7 +105,7 @@ public final class ClassType extends AbstractType{
             packageName = clazz.getPackage().getName();
             name = clazz.getName();
         }
-        if (visible || context.getPackageName().equals(packageName)){
+        if ((visible || context.getPackageName().equals(packageName)) && !packageName.isEmpty()){
             builder.append(name.substring(packageName.length()+1));    
         }else{
             builder.append(name);

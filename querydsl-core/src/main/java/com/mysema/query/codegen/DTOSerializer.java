@@ -37,13 +37,13 @@ public final class DTOSerializer implements Serializer{
         String localName = model.getLocalRawName();
                 
         // package        
-        writer.packageDecl(model.getPackageName());
+        if (!model.getPackageName().isEmpty()){
+            writer.packageDecl(model.getPackageName());    
+        }        
         
         // imports
-        writer.imports(Expr.class.getPackage());
-        writer.imports(ENumber.class.getPackage());
-        writer.nl();
-        
+        writer.imports(Expr.class.getPackage(), ENumber.class.getPackage());
+                
         // javadoc
         writer.javadoc(queryType + " is a Querydsl DTO type for " + simpleName);
         

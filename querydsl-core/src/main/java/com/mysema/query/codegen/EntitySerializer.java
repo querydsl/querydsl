@@ -294,8 +294,7 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {       
-        writer.imports(PathMetadata.class.getPackage());
-        writer.imports(PSimple.class.getPackage());
+        writer.imports(PathMetadata.class.getPackage(), PSimple.class.getPackage());
         writer.staticimports(PathMetadataFactory.class);        
         
         if (!model.getConstructors().isEmpty()
@@ -338,7 +337,9 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void introPackage(CodeWriter writer, EntityType model) throws IOException {
-        writer.packageDecl(model.getPackageName());
+        if (!model.getPackageName().isEmpty()){
+            writer.packageDecl(model.getPackageName());    
+        }        
     }
     
     protected void introSuper(CodeWriter writer, EntityType model) throws IOException {

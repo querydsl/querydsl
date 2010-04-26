@@ -299,7 +299,7 @@ public class Processor {
             try {
                 String packageName = model.getPackageName();         
                 String localName = configuration.getTypeMappings().getPathType(model, model, true);
-                String className = packageName + "." + localName;
+                String className = packageName.length() > 0 ? (packageName + "." + localName) : localName;
                 
                 if (env.getElementUtils().getTypeElement(className) == null){
                     JavaFileObject fileObject = env.getFiler().createSourceFile(className);

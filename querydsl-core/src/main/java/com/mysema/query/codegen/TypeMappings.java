@@ -120,8 +120,13 @@ public class TypeMappings {
             return typeName;
             
         }else if (category == TypeCategory.ENTITY){
-            String suffix = type.getFullName().substring(type.getPackageName().length()+1).replace('.', '_');            
-            if (type.getPackageName().equals(model.getPackageName())){
+            String suffix;
+            if (!type.getPackageName().isEmpty()){
+                suffix = type.getFullName().substring(type.getPackageName().length()+1).replace('.', '_');                
+            }else{
+                suffix = type.getFullName().replace('.', '_');    
+            }                        
+            if (type.getPackageName().equals(model.getPackageName()) || type.getPackageName().isEmpty()){
                 return model.getPrefix() + suffix;
             }else{
                 return type.getPackageName() + "." + model.getPrefix() + suffix;
