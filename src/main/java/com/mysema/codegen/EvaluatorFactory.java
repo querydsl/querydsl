@@ -10,7 +10,6 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLClassLoader;
 import java.util.Arrays;
@@ -133,24 +132,7 @@ public class EvaluatorFactory {
             }
 
             final Method method = clazz.getMethod("eval", types);
-            return new Evaluator<T>() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public T evaluate(Object... args) {
-                    try {
-                        return (T) method.invoke(object, args);
-                    } catch (IllegalAccessException e) {
-                        throw new IllegalArgumentException(e);
-                    } catch (InvocationTargetException e) {
-                        throw new IllegalArgumentException(e);
-                    }
-                }
-
-                @Override
-                public Class<? extends T> getType() {
-                    return projectionType;
-                }
-            };
+            return new MethodEvaluator<T>(method, object, projectionType);
         } catch (ClassNotFoundException e) {
             throw new CodegenException(e);
         } catch (SecurityException e) {
