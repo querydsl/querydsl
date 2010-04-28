@@ -79,7 +79,13 @@ public class MetaDataExporterTest {
     
     private void test(String namePrefix, NamingStrategy namingStrategy, String target) throws SQLException{
         stmt.execute("drop table survey if exists");
-        stmt.execute("create table survey (id int,name varchar(30));");               
+        stmt.execute("create table survey (id int, name varchar(30))");
+        
+        stmt.execute("drop table date_test if exists");
+        stmt.execute("create table date_test (d date)");
+        
+        stmt.execute("drop table date_time_test if exists");
+        stmt.execute("create table date_time_test (dt datetime)");
         MetaDataExporter exporter = new MetaDataExporter(namePrefix, "test", null, null, target, namingStrategy);
         exporter.export(conn.getMetaData());   
         

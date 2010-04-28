@@ -137,17 +137,10 @@ public class MetaDataExporter {
         if (clazz == null){
             throw new RuntimeException("No java type for " + columns.getString(6));
         }                    
-        TypeCategory fieldType = TypeCategory.SIMPLE;
-        if (clazz.equals(Boolean.class) || clazz.equals(boolean.class)) {
-            fieldType = TypeCategory.BOOLEAN;
-        } else if (clazz.equals(String.class)) {
-            fieldType = TypeCategory.STRING;
-        }else if (Number.class.isAssignableFrom(clazz)){
+        TypeCategory fieldType = TypeCategory.get(clazz.getName());
+        if (Number.class.isAssignableFrom(clazz)){
             fieldType = TypeCategory.NUMERIC;
-        }else if (Comparable.class.isAssignableFrom(clazz)){
-            fieldType = TypeCategory.COMPARABLE;
         }
-
         Type typeModel = new ClassType(fieldType, clazz);
         classModel.addProperty(new Property(
                 classModel, 

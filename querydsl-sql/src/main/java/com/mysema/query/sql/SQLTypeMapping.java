@@ -6,7 +6,6 @@
 package com.mysema.query.sql;
 
 import java.math.BigDecimal;
-import java.sql.Time;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,8 +39,8 @@ public final class SQLTypeMapping {
         sqlToJavaType.put(Types.TINYINT, Byte.class);
         
         // DATE and TIME
-        sqlToJavaType.put(Types.DATE, java.util.Date.class);
-        sqlToJavaType.put(Types.TIME, Time.class);
+        sqlToJavaType.put(Types.DATE, java.sql.Date.class);
+        sqlToJavaType.put(Types.TIME, java.sql.Time.class);
         sqlToJavaType.put(Types.TIMESTAMP, java.util.Date.class);
 
         // TEXT
