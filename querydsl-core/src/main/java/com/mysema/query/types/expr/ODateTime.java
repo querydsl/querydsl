@@ -11,6 +11,8 @@ import java.util.List;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.Visitor;
 
 /**
@@ -78,5 +80,11 @@ public class ODateTime<D extends Comparable<?>> extends
     @Override
     public int hashCode(){
         return getType().hashCode();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public EDateTime<D> as(Path<D> alias) {
+        return ODateTime.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
     }
 }

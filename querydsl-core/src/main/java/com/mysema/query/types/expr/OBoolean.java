@@ -12,6 +12,7 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.Visitor;
 
 /**
@@ -75,6 +76,11 @@ public class OBoolean extends EBoolean implements Operation<Boolean> {
     @Override
     public int hashCode(){
         return getType().hashCode();
+    }
+
+    @Override
+    public Expr<Boolean> as(Path<Boolean> alias) {
+        return OBoolean.create((Operator)Ops.ALIAS, this, alias.asExpr());
     }
     
 }

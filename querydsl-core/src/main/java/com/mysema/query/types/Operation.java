@@ -16,6 +16,13 @@ import java.util.List;
  */
 public interface Operation<RT> {
     /**
+     * Create an alias for the operation
+     * 
+     * @return
+     */
+    Expr<RT> as(Path<RT> alias);
+    
+    /**
      * Cast to {@link Expr}
      * 
      * @return

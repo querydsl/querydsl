@@ -11,6 +11,8 @@ import java.util.List;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.Visitor;
 
 /**
@@ -76,5 +78,11 @@ public class OSimple<D> extends ESimple<D> implements Operation<D> {
     @Override
     public int hashCode(){
         return getType().hashCode();
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public Expr<D> as(Path<D> alias) {
+        return OSimple.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
     }
 }

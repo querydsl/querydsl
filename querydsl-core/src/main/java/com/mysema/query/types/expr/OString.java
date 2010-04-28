@@ -11,6 +11,8 @@ import java.util.List;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.Visitor;
 
 /**
@@ -65,5 +67,10 @@ public class OString extends EString implements Operation<String> {
     @Override
     public int hashCode(){
         return getType().hashCode();
+    }
+    
+    @Override
+    public EString as(Path<String> alias) {
+        return OString.create((Operator)Ops.ALIAS, this, alias.asExpr());
     }
 }
