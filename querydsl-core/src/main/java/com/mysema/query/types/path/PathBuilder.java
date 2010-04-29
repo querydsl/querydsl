@@ -96,7 +96,7 @@ public final class PathBuilder<D> extends PEntity<D>{
      * @return
      */
     public PBoolean get(PBoolean path){
-        return getBoolean(path.toString());
+        return getBoolean(toString(path));
     }
     
     /**
@@ -128,7 +128,7 @@ public final class PathBuilder<D> extends PEntity<D>{
      */
     @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> PComparable<A> get(PComparable<A> path){
-        return getComparable(path.toString(), (Class<A>)path.getType());
+        return getComparable(toString(path), (Class<A>)path.getType());
     }
     
     /**
@@ -150,7 +150,7 @@ public final class PathBuilder<D> extends PEntity<D>{
      */
     @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> PDate<A> get(PDate<A> path){
-        return getDate(path.toString(), (Class<A>)path.getType());
+        return getDate(toString(path), (Class<A>)path.getType());
     }
     
     /**
@@ -172,7 +172,7 @@ public final class PathBuilder<D> extends PEntity<D>{
      */
     @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> PDateTime<A> get(PDateTime<A> path){
-        return getDateTime(path.toString(), (Class<A>)path.getType());
+        return getDateTime(toString(path), (Class<A>)path.getType());
     }
     
     /**
@@ -250,7 +250,7 @@ public final class PathBuilder<D> extends PEntity<D>{
      */
     @SuppressWarnings("unchecked")
     public <A extends Number & Comparable<?>> PNumber<A> get(PNumber<A> path){
-        return getNumber(path.toString(), (Class<A>)path.getType());
+        return getNumber(toString(path), (Class<A>)path.getType());
     }
     
     
@@ -285,7 +285,7 @@ public final class PathBuilder<D> extends PEntity<D>{
      */
     @SuppressWarnings("unchecked")
     public <A> Path<A> get(Path<A> path){
-        return getSimple(path.toString(), (Class<A>)path.getType());
+        return getSimple(toString(path), (Class<A>)path.getType());
     }
     
     /**
@@ -305,7 +305,7 @@ public final class PathBuilder<D> extends PEntity<D>{
      * @return
      */
     public PString get(PString path){
-        return getString(path.toString());
+        return getString(toString(path));
     }
     
     /**
@@ -324,7 +324,7 @@ public final class PathBuilder<D> extends PEntity<D>{
      */
     @SuppressWarnings("unchecked")
     public <A extends Comparable<?>> PTime<A> get(PTime<A> path){
-        return getTime(path.toString(), (Class<A>)path.getType());
+        return getTime(toString(path), (Class<A>)path.getType());
     }
 
     /**
@@ -337,6 +337,14 @@ public final class PathBuilder<D> extends PEntity<D>{
      */
     public <A extends Comparable<?>> PTime<A> getTime(String property, Class<A> type) {
         return super.createTime(property, type);
+    }
+    
+    /**
+     * @param path
+     * @return
+     */
+    private String toString(Path<?> path){
+        return path.getMetadata().getExpression().toString();
     }
 
 }

@@ -101,6 +101,8 @@ public class PathBuilderTest {
         assertEquals("entity.int", entity.get(intPath).toString());
         assertEquals("entity.str", entity.get(strPath).toString());
         assertEquals("entity.boolean", entity.get(booleanPath).toString());
+        
+        assertEquals("entity.int", entity.get(entity.get(intPath)).toString());
     }
     
 }
