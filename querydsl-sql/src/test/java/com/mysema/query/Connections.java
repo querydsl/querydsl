@@ -11,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.apache.commons.lang.time.StopWatch;
 import org.hsqldb.Types;
 
 /**
