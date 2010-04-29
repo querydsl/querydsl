@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 
 /**
@@ -91,6 +92,14 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
 
     /**
+     * @param path
+     * @return
+     */
+    public PBoolean get(PBoolean path){
+        return getBoolean(path.toString());
+    }
+    
+    /**
      * Get a new Boolean typed path
      * 
      * @param propertyName property name
@@ -113,6 +122,16 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
 
     /**
+     * @param <A>
+     * @param path
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public <A extends Comparable<?>> PComparable<A> get(PComparable<A> path){
+        return getComparable(path.toString(), (Class<A>)path.getType());
+    }
+    
+    /**
      * Get a new Comparable typed path
      * 
      * @param <A>
@@ -125,6 +144,16 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
 
     /**
+     * @param <A>
+     * @param path
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public <A extends Comparable<?>> PDate<A> get(PDate<A> path){
+        return getDate(path.toString(), (Class<A>)path.getType());
+    }
+    
+    /**
      * Get a new Date path
      * 
      * @param <A>
@@ -134,6 +163,16 @@ public final class PathBuilder<D> extends PEntity<D>{
      */
     public <A extends Comparable<?>> PDate<A> getDate(String property, Class<A> type) {
         return super.createDate(property, type);
+    }
+    
+    /**
+     * @param <A>
+     * @param path
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public <A extends Comparable<?>> PDateTime<A> get(PDateTime<A> path){
+        return getDateTime(path.toString(), (Class<A>)path.getType());
     }
     
     /**
@@ -205,6 +244,17 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
     
     /**
+     * @param <A>
+     * @param path
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public <A extends Number & Comparable<?>> PNumber<A> get(PNumber<A> path){
+        return getNumber(path.toString(), (Class<A>)path.getType());
+    }
+    
+    
+    /**
      * Get a new Number typed path
      * 
      * @param <A>
@@ -229,6 +279,16 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
     
     /**
+     * @param <A>
+     * @param path
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public <A> Path<A> get(Path<A> path){
+        return getSimple(path.toString(), (Class<A>)path.getType());
+    }
+    
+    /**
      * Get a new Simple path
      * 
      * @param <A>
@@ -241,6 +301,14 @@ public final class PathBuilder<D> extends PEntity<D>{
     }
 
     /**
+     * @param path
+     * @return
+     */
+    public PString get(PString path){
+        return getString(path.toString());
+    }
+    
+    /**
      * Get a new String typed path
      * 
      * @param property property name
@@ -248,6 +316,15 @@ public final class PathBuilder<D> extends PEntity<D>{
      */
     public PString getString(String property) {
         return super.createString(property);
+    }
+    
+    /**
+     * @param <A>
+     * @param path
+     */
+    @SuppressWarnings("unchecked")
+    public <A extends Comparable<?>> PTime<A> get(PTime<A> path){
+        return getTime(path.toString(), (Class<A>)path.getType());
     }
 
     /**

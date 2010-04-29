@@ -91,4 +91,16 @@ public class PathBuilderTest {
         return conditions;
     }
     
+    @Test
+    public void get(){
+        PathBuilder<User> entity = new PathBuilder<User>(User.class, "entity");
+        PNumber<Integer> intPath = new PNumber<Integer>(Integer.class, "int");
+        PString strPath = new PString("str");
+        PBoolean booleanPath = new PBoolean("boolean");
+        
+        assertEquals("entity.int", entity.get(intPath).toString());
+        assertEquals("entity.str", entity.get(strPath).toString());
+        assertEquals("entity.boolean", entity.get(booleanPath).toString());
+    }
+    
 }

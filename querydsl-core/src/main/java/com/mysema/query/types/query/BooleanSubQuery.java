@@ -6,13 +6,9 @@
 package com.mysema.query.types.query;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.OBoolean;
 
 /**
  * Single result subquery
@@ -57,12 +53,6 @@ public final class BooleanSubQuery extends EBoolean implements SubQuery<Boolean>
     @Override
     public EBoolean notExists() {
         return subQueryMixin.notExists();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public EBoolean as(Path<Boolean> alias) {
-        return OBoolean.create((Operator)Ops.ALIAS, this, alias.asExpr());
     }
 
 }

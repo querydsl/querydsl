@@ -48,6 +48,8 @@ public class OracleTemplates extends SQLTemplates {
         addClass2TypeMappings("double precision", Double.class);
         addClass2TypeMappings("varchar(4000 char)", String.class);
 
+        add(Ops.ALIAS, "{0} {1}");
+        
         // String
         add(Ops.CONCAT, "{0} || {1}");
         add(Ops.INDEX_OF, "instrb({0},{1})-1");

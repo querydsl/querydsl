@@ -81,9 +81,4 @@ public class ODate<D extends Comparable<?>> extends
         return getType().hashCode();
     }
     
-    @SuppressWarnings("unchecked")
-    @Override
-    public EDate<D> as(Path<D> alias) {
-        return ODate.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
-    }
 }

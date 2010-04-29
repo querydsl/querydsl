@@ -11,7 +11,9 @@ import java.util.Collection;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
 
 /**
  * ESimple is the base class for Expr implementations. It provides default implementations
@@ -121,6 +123,16 @@ public abstract class ESimple<D> extends Expr<D> {
      */
     public CaseForEqBuilder<D> when(Expr<? extends D> other){
         return new CaseForEqBuilder<D>(this, other);
+    }
+    
+    /**
+     * Create an alias for the operation
+     * 
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public Expr<D> as(Path<D> alias) {
+        return OSimple.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
     }
 
 }

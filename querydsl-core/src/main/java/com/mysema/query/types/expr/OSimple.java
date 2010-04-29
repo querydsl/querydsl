@@ -80,9 +80,5 @@ public class OSimple<D> extends ESimple<D> implements Operation<D> {
         return getType().hashCode();
     }
     
-    @SuppressWarnings("unchecked")
-    @Override
-    public Expr<D> as(Path<D> alias) {
-        return OSimple.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
-    }
+
 }

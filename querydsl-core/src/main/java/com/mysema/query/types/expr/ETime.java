@@ -9,7 +9,9 @@ import java.util.Date;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
 
 /**
  * ETime represents Time expressions
@@ -30,6 +32,11 @@ public abstract class ETime<D extends Comparable> extends EDateOrTime<D> {
         
     public ETime(Class<? extends D> type) {
         super(type);
+    }
+    
+    @Override
+    public ETime<D> as(Path<D> alias) {
+        return OTime.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
     }
     
     /**

@@ -11,8 +11,6 @@ import java.util.List;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Path;
 import com.mysema.query.types.Visitor;
 
 /**
@@ -80,9 +78,4 @@ public class OTime<D extends Comparable<?>> extends ETime<D> implements Operatio
         return getType().hashCode();
     }
     
-    @SuppressWarnings("unchecked")
-    @Override
-    public ETime<D> as(Path<D> alias) {
-        return OTime.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
-    }
 }

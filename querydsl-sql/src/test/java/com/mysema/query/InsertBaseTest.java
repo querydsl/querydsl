@@ -60,12 +60,12 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
         // with subquery
         insert(survey)
             .columns(survey.id, survey.name)
-            .select(s().from(survey2).list(survey2.id.add(1), survey2.name))
+            .select(sq().from(survey2).list(survey2.id.add(1), survey2.name))
             .execute();
         
         // with subquery, without columns
         insert(survey)
-            .select(s().from(survey2).list(survey2.id.add(10), survey2.name))
+            .select(sq().from(survey2).list(survey2.id.add(10), survey2.name))
             .execute();
     }
     

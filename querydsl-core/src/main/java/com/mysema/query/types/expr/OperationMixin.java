@@ -12,7 +12,6 @@ import java.util.List;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
-import com.mysema.query.types.Path;
 
 /**
  * @author tiwe
@@ -80,9 +79,4 @@ public final class OperationMixin<RT> implements Operation<RT>, Serializable {
         return self.getType().hashCode();
     }
     
-    @Override
-    public Expr<RT> as(Path<RT> alias) {
-        throw new UnsupportedOperationException();
-    }
-
 }

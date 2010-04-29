@@ -46,7 +46,7 @@ public abstract class AbstractBaseTest {
     }
     
 
-    protected SQLSubQuery s(){
+    protected SQLSubQuery sq(){
         return new SQLSubQuery();
     }
 

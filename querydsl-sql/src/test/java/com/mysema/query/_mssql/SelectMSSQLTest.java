@@ -61,7 +61,7 @@ public class SelectMSSQLTest extends SelectBaseTest {
         
         // with subquery, generic alias
         System.out.println("#2");
-        ListSubQuery<Object[]> sub = s().from(employee).list(employee.firstname, employee.lastname, rowNumber);
+        ListSubQuery<Object[]> sub = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
         PSimple<Object[]> subAlias = new PSimple<Object[]>(Object[].class, "s");
         for (Object[] row : query().from(sub.as(subAlias)).list(all)){
             System.out.println(Arrays.asList(row));
@@ -70,7 +70,7 @@ public class SelectMSSQLTest extends SelectBaseTest {
                 
         // with subquery, only row number
         System.out.println("#3");
-        ObjectSubQuery<Long> sub2 = s().from(employee).unique(rowNumber);
+        ObjectSubQuery<Long> sub2 = sq().from(employee).unique(rowNumber);
         PSimple<Long> subAlias2 = new PSimple<Long>(Long.class, "s");
         for (Object[] row : query().from(sub2.as(subAlias2)).list(all)){
             System.out.println(Arrays.asList(row));
@@ -79,7 +79,7 @@ public class SelectMSSQLTest extends SelectBaseTest {
         
         // with subquery, specific alias
         System.out.println("#4");
-        ListSubQuery<Object[]> sub3 = s().from(employee).list(employee.firstname, employee.lastname, rowNumber);
+        ListSubQuery<Object[]> sub3 = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
         for (Object[] row : query().from(sub3.as(employee2)).list(employee2.firstname, employee2.lastname)){
             System.out.println(Arrays.asList(row));
         }

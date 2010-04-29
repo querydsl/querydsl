@@ -77,10 +77,5 @@ public class OBoolean extends EBoolean implements Operation<Boolean> {
     public int hashCode(){
         return getType().hashCode();
     }
-
-    @Override
-    public Expr<Boolean> as(Path<Boolean> alias) {
-        return OBoolean.create((Operator)Ops.ALIAS, this, alias.asExpr());
-    }
     
 }

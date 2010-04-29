@@ -69,8 +69,4 @@ public class OString extends EString implements Operation<String> {
         return getType().hashCode();
     }
     
-    @Override
-    public EString as(Path<String> alias) {
-        return OString.create((Operator)Ops.ALIAS, this, alias.asExpr());
-    }
 }

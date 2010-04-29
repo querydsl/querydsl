@@ -7,7 +7,9 @@ package com.mysema.query.types.expr;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
 
 
 /**
@@ -44,6 +46,12 @@ public abstract class EBoolean extends EComparable<Boolean> {
 
     public EBoolean() {
         super(Boolean.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public EBoolean as(Path<Boolean> alias) {
+        return OBoolean.create((Operator)Ops.ALIAS, this, alias.asExpr());
     }
 
     /**

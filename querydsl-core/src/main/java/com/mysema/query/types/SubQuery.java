@@ -48,12 +48,4 @@ public interface SubQuery<T>{
      */
     Expr<T> asExpr();
     
-    /**
-     * Create an alias for the query
-     * 
-     * @param alias
-     * @return
-     */
-    Expr<T> as(Path<T> alias);
-    
 }

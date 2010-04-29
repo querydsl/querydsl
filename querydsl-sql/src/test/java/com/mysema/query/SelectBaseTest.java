@@ -12,8 +12,8 @@ import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Constants.survey2;
 import static com.mysema.query.Constants.time;
 import static com.mysema.query.Target.DERBY;
-import static com.mysema.query.Target.HSQLDB;
 import static com.mysema.query.Target.H2;
+import static com.mysema.query.Target.HSQLDB;
 import static com.mysema.query.Target.MYSQL;
 import static com.mysema.query.Target.ORACLE;
 import static com.mysema.query.Target.SQLSERVER;
@@ -36,7 +36,9 @@ import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.sql.SQLQuery;
+import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLSubQuery;
+import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QIdName;
 import com.mysema.query.types.Expr;
@@ -45,6 +47,8 @@ import com.mysema.query.types.expr.Coalesce;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.ENumberConst;
+import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.query.ObjectSubQuery;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.Label;
@@ -131,8 +135,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @SuppressWarnings("unchecked")
     @Test(expected=IllegalArgumentException.class)
     public void illegalUnion() throws SQLException {
-        SubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
-        SubQuery<Integer> sq2 = s().from(employee).unique(employee.id.max());
+        SubQuery<Integer> sq1 = sq().from(employee).unique(employee.id.max());
+        SubQuery<Integer> sq2 = sq().from(employee).unique(employee.id.max());
         query().from(employee).union(sq1, sq2).list();
     }
 
@@ -348,20 +352,47 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
                 + "where e.ID = (select max(e.ID) "
                 + "from EMPLOYEE2 e)";
         List<Integer> list = query().from(employee)
-            .where(employee.id.eq(s().from(employee).unique(employee.id.max())))
+            .where(employee.id.eq(sq().from(employee).unique(employee.id.max())))
             .list(employee.id);
         assertFalse(list.isEmpty());
     }
 
     @Test
     public void subQuerySerialization(){
-        SQLSubQuery query = s();
+        SQLSubQuery query = sq();
         
         query.from(survey);
         assertEquals("from SURVEY s", query.toString());
         
         query.from(survey2);
         assertEquals("from SURVEY s, SURVEY s2", query.toString());
+        
+        PNumber<BigDecimal> sal = new PNumber<BigDecimal>(BigDecimal.class, "sal");
+        PathBuilder<Object[]> sq = new PathBuilder<Object[]>(Object[].class, "sq");
+        SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
+        serializer.handle(sq().from(employee)
+            .list(employee.salary.add(employee.salary).add(employee.salary).as(sal)).as(sq));
+        assertEquals("(select (e.SALARY + e.SALARY + e.SALARY) as sal\nfrom EMPLOYEE2 e) as sq", serializer.toString());
+    }
+    
+    @Test
+    public void complexSubQuery(){
+//        query.from(
+//            subQuery.from(Table.table)
+//            .list(Table.table.field1.add(Table.table.field2).add(Table.table.field3).as("myCalculation"))).
+//            list(myCalculation.avg(), myCalculation.min(). myCalculation.max());
+        
+        // alias for the salary
+        PNumber<BigDecimal> sal = new PNumber<BigDecimal>(BigDecimal.class, "sal");
+        // alias for the subquery
+        PathBuilder<Object[]> sq = new PathBuilder<Object[]>(Object[].class, "sq");
+        // query execution
+        query().from(
+                sq().from(employee)
+                .list(employee.salary.add(employee.salary).add(employee.salary).as(sal)).as(sq)
+              ).list(sq.get(sal).avg(), sq.get(sal).min(), sq.get(sal).max());
+        
+//        select avg(sq.sal), min(sq.sal), max(sq.sal) from (select (e.SALARY + e.SALARY + e.SALARY) as sal from EMPLOYEE2 e) as sq
     }
     
     @Test
@@ -385,20 +416,20 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     public void union() throws SQLException {
         // union
-        SubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
-        SubQuery<Integer> sq2 = s().from(employee).unique(employee.id.min());
+        SubQuery<Integer> sq1 = sq().from(employee).unique(employee.id.max());
+        SubQuery<Integer> sq2 = sq().from(employee).unique(employee.id.min());
         List<Integer> list = query().union(sq1, sq2).list();
         assertFalse(list.isEmpty());
 
         // variation 1
         list = query().union(
-                s().from(employee).unique(employee.id.max()),
-                s().from(employee).unique(employee.id.min())).list();
+                sq().from(employee).unique(employee.id.max()),
+                sq().from(employee).unique(employee.id.min())).list();
         assertFalse(list.isEmpty());
 
         // union #2
-        ObjectSubQuery<Object[]> sq3 = s().from(employee).unique(new Expr[]{employee.id.max()});
-        ObjectSubQuery<Object[]> sq4 = s().from(employee).unique(new Expr[]{employee.id.min()});
+        ObjectSubQuery<Object[]> sq3 = sq().from(employee).unique(new Expr[]{employee.id.max()});
+        ObjectSubQuery<Object[]> sq4 = sq().from(employee).unique(new Expr[]{employee.id.min()});
         List<Object[]> list2 = query().union(sq3, sq4).list();
         assertFalse(list2.isEmpty());
     }
@@ -483,7 +514,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     
     @Test
     public void whereExists() throws SQLException {
-        SubQuery<Integer> sq1 = s().from(employee).unique(employee.id.max());
+        SubQuery<Integer> sq1 = sq().from(employee).unique(employee.id.max());
         
         query().from(employee).where(sq1.exists()).count();
         

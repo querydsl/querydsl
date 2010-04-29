@@ -8,7 +8,9 @@ package com.mysema.query.types.expr;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
 
 
 /**
@@ -32,6 +34,12 @@ public abstract class EString extends EComparable<String> {
 
     public EString() {
         super(String.class);
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public EString as(Path<String> alias) {
+        return OString.create((Operator)Ops.ALIAS, this, alias.asExpr());
     }
 
     /**

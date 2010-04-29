@@ -74,15 +74,14 @@ public final class ListSubQuery<A> extends ECollectionBase<List<A>,A> implements
         return subQueryMixin.notExists();
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public Expr<List<A>> as(Path<List<A>> alias) {
-        return OSimple.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
-    }
+//    @SuppressWarnings("unchecked")
+//    @Override
+//    public Expr<List<A>> as(Path<List<A>> alias) {
+//        return OSimple.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
+//    }
 
     @SuppressWarnings("unchecked")
     public Expr<?> as(Expr<?> alias) {
-        // TODO : improve this signature
         return OSimple.create(alias.getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
     }
 

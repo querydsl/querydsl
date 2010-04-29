@@ -82,9 +82,4 @@ public class ODateTime<D extends Comparable<?>> extends
         return getType().hashCode();
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public EDateTime<D> as(Path<D> alias) {
-        return ODateTime.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
-    }
 }

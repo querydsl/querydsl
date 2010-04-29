@@ -81,9 +81,4 @@ public class OComparable<D extends Comparable<?>> extends
         return getType().hashCode();
     }
     
-    @SuppressWarnings("unchecked")
-    @Override
-    public EComparable<D> as(Path<D> alias) {
-        return OComparable.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
-    }
 }

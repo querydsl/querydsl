@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>1.6.1-SNAPSHOT</version>
+    <version>1.6.2</version>
   </parent>
 
   <groupId>com.mysema.querydsl</groupId>
@@ -28,7 +28,7 @@
     <dependency>
       <groupId>com.mysema.commons</groupId>
       <artifactId>mysema-commons-lang</artifactId>
-      <version>0.1.7</version>
+      <version>0.1.8</version>
     </dependency>
     <dependency>
       <groupId>com.mysema.codegen</groupId>

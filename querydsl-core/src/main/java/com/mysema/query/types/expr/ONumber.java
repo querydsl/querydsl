@@ -81,9 +81,4 @@ public class ONumber<D extends Number & Comparable<?>>
         return getType().hashCode();
     }
     
-    @SuppressWarnings("unchecked")
-    @Override
-    public ENumber<D> as(Path<D> alias) {
-        return ONumber.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
-    }
 }

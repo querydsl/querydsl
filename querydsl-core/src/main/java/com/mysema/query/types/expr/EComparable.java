@@ -6,7 +6,9 @@
 package com.mysema.query.types.expr;
 
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
 
 /**
  * EComparable extends EComparableBase to provide comparison methods. 
@@ -24,6 +26,11 @@ public abstract class EComparable<D extends Comparable> extends EComparableBase<
         super(type);
     }
     
+    @SuppressWarnings("unchecked")
+    @Override
+    public EComparable<D> as(Path<D> alias) {
+        return OComparable.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
+    }
 
     /**
      * Get a <code>from &lt; this &lt; to</code> expression

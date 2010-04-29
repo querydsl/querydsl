@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.Ops.MathOps;
 import com.mysema.util.MathUtils;
 
@@ -73,6 +74,12 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     
     public ENumber(Class<? extends D> type) {
         super(type);
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public ENumber<D> as(Path<D> alias) {
+        return ONumber.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
     }
     
     /**
