@@ -20,5 +20,12 @@ public class MemSourceFileObjectTest {
         obj.openWriter().write("Hello World");
         assertEquals("Hello World", obj.getCharContent(true).toString());
     }
+    
+    @Test
+    public void testOpenWriter2() throws IOException {
+        MemSourceFileObject obj = new MemSourceFileObject("Test");
+        obj.openWriter().append("Hello World");
+        assertEquals("Hello World", obj.getCharContent(true).toString());
+    }
 
 }

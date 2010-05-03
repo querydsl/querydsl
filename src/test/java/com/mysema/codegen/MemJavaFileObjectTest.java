@@ -12,7 +12,7 @@ import org.junit.Test;
 public class MemJavaFileObjectTest {
 
     @Test
-    public void testOpenOutputStream() throws IOException {
+    public void getCharContent() throws IOException {
         MemJavaFileObject obj = new MemJavaFileObject("mem","Test",Kind.SOURCE);
         Writer writer = obj.openWriter();
         writer.write("Hello World");
@@ -22,8 +22,9 @@ public class MemJavaFileObjectTest {
     }
     
     @Test
-    public void testOpenInputStream() throws IOException {
+    public void openInputStream() throws IOException {
         MemJavaFileObject obj = new MemJavaFileObject("mem","Test",Kind.SOURCE);
+        obj.openWriter().write("test");
         obj.openInputStream().close();
     }
 
