@@ -12,20 +12,31 @@ import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 public class JavaWriterTest {
+    
+    private StringWriter w;
+    
+    private CodeWriter writer;
 
     private static void match(String resource, String text) throws IOException{
+        // TODO : try to compile ?
         String expected = IOUtils.toString(JavaWriterTest.class.getResourceAsStream(resource),"UTF-8").replace("\r\n", "\n").trim();
         String actual = text.trim();
         assertEquals(expected, actual);
     }
+
+    @Before
+    public void setUp(){
+        w = new StringWriter();
+        writer = new JavaWriter(w);   
+    }
+
     
     @Test
-    public void testBasic() throws IOException {
-        StringWriter w = new StringWriter();
-        CodeWriter writer = new JavaWriter(w);
+    public void testBasic() throws IOException {        
         writer.packageDecl("com.mysema.codegen");
         writer.imports(IOException.class, StringWriter.class, Test.class);
         writer.beginClass("JavaWriterTest");
@@ -39,9 +50,23 @@ public class JavaWriterTest {
     }
     
     @Test
+    public void testExtends() throws IOException{
+        writer.beginClass("Test", "Superclass");
+        writer.end();
+        
+        match("/testExtends", w.toString());
+    }
+    
+    @Test
+    public void testImplements() throws IOException{
+        writer.beginClass("Test", null, "TestInterface1","TestInterface2");
+        writer.end();
+        
+        match("/testImplements", w.toString());
+    }
+    
+    @Test
     public void testInterface() throws IOException{
-        StringWriter w = new StringWriter();
-        CodeWriter writer = new JavaWriter(w);
         writer.packageDecl("com.mysema.codegen");
         writer.imports(IOException.class, StringWriter.class, Test.class);
         writer.beginInterface("JavaWriterTest");
@@ -51,9 +76,15 @@ public class JavaWriterTest {
     }
     
     @Test
+    public void testInterface2() throws IOException{
+        writer.beginInterface("Test", "Test1");
+        writer.end();
+        
+        match("/testInterface2", w.toString());
+    }
+    
+    @Test
     public void testJavadoc() throws IOException{
-        StringWriter w = new StringWriter();
-        CodeWriter writer = new JavaWriter(w);
         writer.packageDecl("com.mysema.codegen");
         writer.imports(IOException.class, StringWriter.class, Test.class);
         writer.javadoc("JavaWriterTest is a test class");
@@ -62,11 +93,10 @@ public class JavaWriterTest {
                 
         match("/testJavadoc", w.toString());
     }
+
     
     @Test
     public void testAnnotations() throws IOException{
-        StringWriter w = new StringWriter();
-        CodeWriter writer = new JavaWriter(w);
         writer.packageDecl("com.mysema.codegen");
         writer.imports(IOException.class, StringWriter.class);
         writer.annotation(Entity.class);
@@ -81,8 +111,6 @@ public class JavaWriterTest {
     
     @Test
     public void testAnnotations2() throws IOException{
-        StringWriter w = new StringWriter();
-        CodeWriter writer = new JavaWriter(w);
         writer.packageDecl("com.mysema.codegen");
         writer.imports(IOException.class.getPackage(), StringWriter.class.getPackage());
         writer.annotation(Entity.class);
@@ -111,8 +139,6 @@ public class JavaWriterTest {
     
     @Test
     public void testFields() throws IOException{
-        StringWriter w = new StringWriter();
-        CodeWriter writer = new JavaWriter(w);
         writer.beginClass("FieldTests");
         // private
         writer.privateField("String", "privateField");
@@ -131,8 +157,6 @@ public class JavaWriterTest {
     
     @Test
     public void testMethods() throws IOException{
-        StringWriter w = new StringWriter();
-        CodeWriter writer = new JavaWriter(w);
         writer.beginClass("MethodTests");
         // private
         
