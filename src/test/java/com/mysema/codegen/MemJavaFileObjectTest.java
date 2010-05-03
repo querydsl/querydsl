@@ -20,5 +20,11 @@ public class MemJavaFileObjectTest {
         writer.close();
         assertEquals("Hello World", obj.getCharContent(true).toString());
     }
+    
+    @Test
+    public void testOpenInputStream() throws IOException {
+        MemJavaFileObject obj = new MemJavaFileObject("mem","Test",Kind.SOURCE);
+        obj.openInputStream().close();
+    }
 
 }

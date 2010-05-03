@@ -2,7 +2,13 @@ package com.mysema.codegen;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -17,6 +23,13 @@ public class ClassUtilsTest {
         assertEquals("void", ClassUtils.getName(void.class));
         assertEquals("java.util.Locale", ClassUtils.getName(Locale.class));
         assertEquals("java.util.Locale[]", ClassUtils.getName(Locale[].class));
+    }
+    
+    @Test
+    public void testNormalize(){
+        assertEquals(List.class, ClassUtils.normalize(ArrayList.class));
+        assertEquals(Set.class, ClassUtils.normalize(HashSet.class));
+        assertEquals(Map.class, ClassUtils.normalize(HashMap.class));
     }
 
 }

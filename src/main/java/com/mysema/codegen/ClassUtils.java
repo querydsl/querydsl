@@ -8,6 +8,7 @@ package com.mysema.codegen;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -37,6 +38,8 @@ public final class ClassUtils {
             return Set.class;
         }else if (Collection.class.isAssignableFrom(clazz)){
             return Collection.class;
+        }else if (Map.class.isAssignableFrom(clazz)){    
+            return Map.class;
         }else{
             return clazz;    
         }
