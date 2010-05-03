@@ -8,9 +8,15 @@ import javax.tools.JavaCompiler;
 
 import junit.framework.Assert;
 
+import org.junit.After;
 import org.junit.Test;
 
 public class SimpleCompilerTest {
+    
+    @After
+    public void tearDown(){
+        new File("src/test/java/com/mysema/codegen/SimpleCompilerTest.class").delete();
+    }
 
     @Test
     public void testRun() {
