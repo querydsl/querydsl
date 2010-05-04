@@ -44,8 +44,8 @@ public final class SQLTypeMapping {
         sqlToJavaType.put(Types.TIMESTAMP, java.util.Date.class);
 
         // TEXT
-        sqlToJavaType.put(Types.CHAR, Character.class);
-        sqlToJavaType.put(Types.NCHAR, Character.class);
+        sqlToJavaType.put(Types.CHAR, String.class);
+        sqlToJavaType.put(Types.NCHAR, String.class);
         sqlToJavaType.put(Types.CLOB, String.class);
         sqlToJavaType.put(Types.NCLOB, String.class);        
         sqlToJavaType.put(Types.LONGVARCHAR, String.class);
