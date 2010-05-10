@@ -118,7 +118,8 @@ public class PathBuilderTest {
         entity.getList("list", User.class);
         entity.getMap("map", String.class, User.class);
         entity.getNumber("number", Integer.class);
-        entity.getSimple("simple", Object.class);
+        entity.getSet("set", User.class);
+        entity.getSimple("simple", Object.class);        
         entity.getString("string");
         entity.getTime("time", Time.class);
     }
