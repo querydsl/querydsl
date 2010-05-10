@@ -7,6 +7,8 @@ package com.mysema.query.types.path;
 
 import static org.junit.Assert.assertEquals;
 
+import java.sql.Time;
+import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.collections15.BeanMap;
@@ -103,6 +105,22 @@ public class PathBuilderTest {
         assertEquals("entity.boolean", entity.get(booleanPath).toString());
         
         assertEquals("entity.int", entity.get(entity.get(intPath)).toString());
+    }
+    
+    @Test
+    public void various(){
+        PathBuilder<User> entity = new PathBuilder<User>(User.class, "entity");
+        entity.getBoolean("boolean");
+        entity.getCollection("col", User.class);
+        entity.getComparable("comparable", Comparable.class);
+        entity.getDate("date", Date.class);
+        entity.getDateTime("dateTime", Date.class);
+        entity.getList("list", User.class);
+        entity.getMap("map", String.class, User.class);
+        entity.getNumber("number", Integer.class);
+        entity.getSimple("simple", Object.class);
+        entity.getString("string");
+        entity.getTime("time", Time.class);
     }
     
 }
