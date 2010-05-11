@@ -13,6 +13,7 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.jdoql.JDOQLSerializer;
@@ -44,7 +45,7 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
         this.entity = entity;
         this.persistenceManager = persistenceManager;
         this.templates = templates;
-        metadata.addFrom(entity);        
+        metadata.addJoin(JoinType.DEFAULT, entity);        
     }
     
     @Override

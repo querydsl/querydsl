@@ -46,7 +46,7 @@ public class DetachableMixin implements Detachable{
     @Override
     public ObjectSubQuery<Long> count() {
         queryMixin.addToProjection(COUNT_ALL_AGG_EXPR);
-        return new ObjectSubQuery<Long>(queryMixin.getMetadata(), Long.class);
+        return new ObjectSubQuery<Long>(Long.class, queryMixin.getMetadata());
     }
     
     @Override
@@ -61,13 +61,13 @@ public class DetachableMixin implements Detachable{
     public ListSubQuery<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         queryMixin.addToProjection(first, second);
         queryMixin.addToProjection(rest);
-        return new ListSubQuery<Object[]>(queryMixin.getMetadata(), Object[].class);
+        return new ListSubQuery<Object[]>(Object[].class, queryMixin.getMetadata());
     }
 
     @Override
     public ListSubQuery<Object[]> list(Expr<?>[] args) {
         queryMixin.addToProjection(args);
-        return new ListSubQuery<Object[]>(queryMixin.getMetadata(), Object[].class);
+        return new ListSubQuery<Object[]>(Object[].class, queryMixin.getMetadata());
     }
     
 
@@ -75,7 +75,7 @@ public class DetachableMixin implements Detachable{
     @Override
     public <RT> ListSubQuery<RT> list(Expr<RT> projection) {
         queryMixin.addToProjection(projection);
-        return new ListSubQuery<RT>(queryMixin.getMetadata(), (Class)projection.getType());
+        return new ListSubQuery<RT>((Class)projection.getType(), queryMixin.getMetadata());
     }
 
     @Override
@@ -98,28 +98,28 @@ public class DetachableMixin implements Detachable{
     @Override
     public <RT extends Comparable<?>> ComparableSubQuery<RT> unique(EComparable<RT> projection) {
         setUniqueProjection(projection);
-        return new ComparableSubQuery<RT>(queryMixin.getMetadata(), (Class)projection.getType());
+        return new ComparableSubQuery<RT>((Class)projection.getType(), queryMixin.getMetadata());
     }
     
     @SuppressWarnings("unchecked")
     @Override
     public <RT extends Comparable<?>> DateSubQuery<RT> unique(EDate<RT> projection) {
         setUniqueProjection(projection);
-        return new DateSubQuery<RT>(queryMixin.getMetadata(), (Class)projection.getType());
+        return new DateSubQuery<RT>((Class)projection.getType(), queryMixin.getMetadata());
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <RT extends Comparable<?>> DateTimeSubQuery<RT> unique(EDateTime<RT> projection) {
         setUniqueProjection(projection);
-        return new DateTimeSubQuery<RT>(queryMixin.getMetadata(), (Class)projection.getType());
+        return new DateTimeSubQuery<RT>((Class)projection.getType(), queryMixin.getMetadata());
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <RT extends Number & Comparable<?>> NumberSubQuery<RT> unique(ENumber<RT> projection) {
         setUniqueProjection(projection);
-        return new NumberSubQuery<RT>(queryMixin.getMetadata(), (Class)projection.getType());
+        return new NumberSubQuery<RT>((Class)projection.getType(), queryMixin.getMetadata());
     }
 
     @Override
@@ -132,7 +132,7 @@ public class DetachableMixin implements Detachable{
     @Override
     public <RT extends Comparable<?>> TimeSubQuery<RT> unique(ETime<RT> projection) {
         setUniqueProjection(projection);
-        return new TimeSubQuery<RT>(queryMixin.getMetadata(), (Class)projection.getType());
+        return new TimeSubQuery<RT>((Class)projection.getType(), queryMixin.getMetadata());
     }
 
     @Override
@@ -140,20 +140,20 @@ public class DetachableMixin implements Detachable{
         queryMixin.addToProjection(first, second);
         queryMixin.addToProjection(rest);
         queryMixin.setUnique(true);
-        return new ObjectSubQuery<Object[]>(queryMixin.getMetadata(), Object[].class);
+        return new ObjectSubQuery<Object[]>(Object[].class, queryMixin.getMetadata());
     }
 
     @Override
     public ObjectSubQuery<Object[]> unique(Expr<?>[] args) {
         queryMixin.addToProjection(args);
         queryMixin.setUnique(true);
-        return new ObjectSubQuery<Object[]>(queryMixin.getMetadata(), Object[].class);
+        return new ObjectSubQuery<Object[]>(Object[].class, queryMixin.getMetadata());
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <RT> ObjectSubQuery<RT> unique(Expr<RT> projection) {
         setUniqueProjection(projection);
-        return new ObjectSubQuery<RT>(queryMixin.getMetadata(), (Class)projection.getType());
+        return new ObjectSubQuery<RT>((Class)projection.getType(), queryMixin.getMetadata());
     }
 }

@@ -54,4 +54,25 @@ public class BooleanBuilderTest {
         assertEquals(first, first.and(null));
         assertEquals(first, first.or(null));
     }
+    
+    @Test
+    public void andNot(){
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(first).andNot(second);        
+        assertEquals(first.and(second.not()), builder.getValue());        
+    }
+    
+    @Test
+    public void orNot(){
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(first).orNot(second);        
+        assertEquals(first.or(second.not()), builder.getValue());        
+    }
+    
+    @Test
+    public void not(){
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(first).not();
+        assertEquals(first.not(), builder.getValue());
+    }
 }

@@ -50,22 +50,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     private boolean unique;
 
     private BooleanBuilder where = new BooleanBuilder();
-    
-    @Override
-    @SuppressWarnings("GC_UNCHECKED_TYPE_IN_GENERIC_CALL")
-    public void addFrom(Expr<?>... args) {
-        for (Expr<?> arg : args) {
-            if (arg instanceof Path<?>){
-                ensureRoot((Path<?>) arg);
-            }
-            // NOTE : contains takes Object argument
-            if (!exprInJoins.contains(arg)) {
-                joins.add(new JoinExpression(JoinType.DEFAULT, arg));
-                exprInJoins.add(arg);
-            }   
-        }
-    }
-    
+        
     @Override
     public void addGroupBy(Expr<?>... o) {
         groupBy.addAll(Arrays.<Expr<?>> asList(o));

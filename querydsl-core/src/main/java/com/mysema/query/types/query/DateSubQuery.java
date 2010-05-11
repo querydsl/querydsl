@@ -24,7 +24,7 @@ public final class DateSubQuery<A extends Comparable<?>> extends EDate<A> implem
 
     private final SubQueryMixin<A> subQueryMixin;
     
-    public DateSubQuery(QueryMetadata md, Class<A> type) {
+    public DateSubQuery(Class<A> type, QueryMetadata md) {
         super(type);
         subQueryMixin = new SubQueryMixin<A>(this,md);
     }

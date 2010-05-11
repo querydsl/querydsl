@@ -26,7 +26,6 @@ public abstract class EComparable<D extends Comparable> extends EComparableBase<
         super(type);
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     public EComparable<D> as(Path<D> alias) {
         return OComparable.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());

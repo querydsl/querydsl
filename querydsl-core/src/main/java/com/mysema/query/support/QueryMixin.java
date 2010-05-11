@@ -54,8 +54,10 @@ public class QueryMixin<T>{
         return metadata;
     }
     
-    public T from(Expr<?>... args) {        
-        metadata.addFrom(args);
+    public T from(Expr<?>... args) {
+        for (Expr<?> arg : args){
+            metadata.addJoin(JoinType.DEFAULT, arg);
+        }
         return self;
     }
 

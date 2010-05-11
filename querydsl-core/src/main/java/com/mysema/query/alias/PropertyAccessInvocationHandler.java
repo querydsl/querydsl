@@ -139,7 +139,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
         return rv;
     }
 
-    @SuppressWarnings({ "unchecked", "serial" })
+    @SuppressWarnings({ "unchecked"})
     @Nullable
     private <T> T newInstance(Class<T> type, Type genericType, Object parent, Object propKey, PathMetadata<?> pm) {
         Expr<?> path;

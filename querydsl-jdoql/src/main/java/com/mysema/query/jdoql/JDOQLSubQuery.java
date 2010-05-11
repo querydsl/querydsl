@@ -8,6 +8,7 @@ package com.mysema.query.jdoql;
 import java.util.Collection;
 
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.types.Expr;
@@ -44,7 +45,7 @@ public class JDOQLSubQuery extends DetachableQuery<JDOQLSubQuery>{
     }
 
     public <P> JDOQLSubQuery from(Path<? extends Collection<P>> target, PEntity<P> alias){
-        queryMixin.getMetadata().addFrom(OSimple.create(alias.getType(), Ops.ALIAS, target.asExpr(), alias));
+        queryMixin.getMetadata().addJoin(JoinType.DEFAULT, OSimple.create(alias.getType(), Ops.ALIAS, target.asExpr(), alias));
         return this;
     }
     

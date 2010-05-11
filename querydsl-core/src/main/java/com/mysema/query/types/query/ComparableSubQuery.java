@@ -24,7 +24,7 @@ public final class ComparableSubQuery<A extends Comparable<?>> extends EComparab
 
     private final SubQueryMixin<A> subQueryMixin;
     
-    public ComparableSubQuery(QueryMetadata md, Class<A> type) {
+    public ComparableSubQuery(Class<A> type, QueryMetadata md) {
         super(type);
         subQueryMixin = new SubQueryMixin<A>(this,md);
     }

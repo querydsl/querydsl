@@ -28,7 +28,7 @@ public final class TimeSubQuery<A extends Comparable<?>> extends ETime<A> implem
 
     private final SubQueryMixin<A> subQueryMixin;
     
-    public TimeSubQuery(QueryMetadata md, Class<A> type) {
+    public TimeSubQuery(Class<A> type, QueryMetadata md) {
         super(type);
         subQueryMixin = new SubQueryMixin<A>(this,md);
     }

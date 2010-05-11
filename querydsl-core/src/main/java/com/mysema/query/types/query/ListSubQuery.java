@@ -34,7 +34,7 @@ public final class ListSubQuery<A> extends ECollectionBase<List<A>,A> implements
     private final SubQueryMixin<List<A>> subQueryMixin;
     
     @SuppressWarnings("unchecked")
-    public ListSubQuery(QueryMetadata md, Class<A> elementType) {
+    public ListSubQuery(Class<A> elementType, QueryMetadata md) {
         super((Class)List.class);
         this.elementType = elementType;
         this.subQueryMixin = new SubQueryMixin<List<A>>(this,md);

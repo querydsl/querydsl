@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.hql.HQLSerializer;
@@ -44,7 +45,7 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
     public HibernateDeleteClause(SessionHolder session, PEntity<?> entity, HQLTemplates templates){
         this.session = session;
         this.templates = templates;
-        md.addFrom(entity);        
+        md.addJoin(JoinType.DEFAULT, entity);        
     }
     
     @Override

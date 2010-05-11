@@ -24,7 +24,7 @@ public final class ObjectSubQuery<A> extends ESimple<A> implements SubQuery<A>{
 
     private final SubQueryMixin<A> subQueryMixin;
     
-    public ObjectSubQuery(QueryMetadata md, Class<A> type) {
+    public ObjectSubQuery(Class<A> type, QueryMetadata md) {
         super(type);
         subQueryMixin = new SubQueryMixin<A>(this,md);
     }

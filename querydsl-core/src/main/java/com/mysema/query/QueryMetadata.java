@@ -21,13 +21,6 @@ import com.mysema.query.types.expr.EBoolean;
  * @author tiwe
  */
 public interface QueryMetadata extends Serializable {
-
-    /**
-     * Add the given query sources
-     * 
-     * @param o
-     */
-    void addFrom(Expr<?>... o);
     
     /**
      * Add the given group by expressions

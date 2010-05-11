@@ -15,6 +15,7 @@ import org.apache.commons.collections15.IteratorUtils;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
+import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
@@ -94,7 +95,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
     @SuppressWarnings("unchecked")
     public <A> Q from(Path<A> entity, Iterable<? extends A> col) {
         iterables.put(entity.asExpr(), col);
-        queryMixin.getMetadata().addFrom(entity.asExpr());
+        queryMixin.getMetadata().addJoin(JoinType.DEFAULT, entity.asExpr());
         return (Q)this;
     }
 

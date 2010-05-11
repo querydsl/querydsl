@@ -25,7 +25,7 @@ public final class NumberSubQuery<A extends Number & Comparable<?>> extends ENum
 
     private final SubQueryMixin<A> subQueryMixin;
     
-    public NumberSubQuery(QueryMetadata md, Class<A> type) {
+    public NumberSubQuery(Class<A> type, QueryMetadata md) {
         super(type);
         subQueryMixin = new SubQueryMixin<A>(this,md);
     }

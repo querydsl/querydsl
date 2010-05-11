@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.UpdateClause;
 import com.mysema.query.hql.HQLSerializer;
@@ -40,7 +41,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
     public JPAUpdateClause(EntityManager em, PEntity<?> entity, HQLTemplates templates){
         this.entityManager = em;
         this.templates = templates;
-        metadata.addFrom(entity);        
+        metadata.addJoin(JoinType.DEFAULT, entity);        
     }
     
     @Override

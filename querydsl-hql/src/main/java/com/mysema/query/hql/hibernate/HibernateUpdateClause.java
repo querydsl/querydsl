@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.UpdateClause;
 import com.mysema.query.hql.HQLSerializer;
@@ -45,7 +46,7 @@ public class HibernateUpdateClause implements UpdateClause<HibernateUpdateClause
     public HibernateUpdateClause(SessionHolder session, PEntity<?> entity, HQLTemplates templates){
         this.session = session;
         this.templates = templates;
-        metadata.addFrom(entity);        
+        metadata.addJoin(JoinType.DEFAULT, entity);
     }
     
     @Override
