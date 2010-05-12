@@ -74,4 +74,25 @@ public class DefaultQueryMetadataTest {
         assertTrue(md.isUnique());
     }
 
+    @Test
+    public void testClone(){
+        md.addGroupBy(str);
+        md.addHaving(str.isNotNull());
+        md.addJoin(JoinType.DEFAULT, str);
+        QueryModifiers modifiers = new QueryModifiers(1l,2l);
+        md.setModifiers(modifiers);
+        md.addOrderBy(str.asc());
+        md.addProjection(str, str.append("abc"));
+        md.addWhere(str.eq("b"), str.isNotEmpty());
+        
+        QueryMetadata clone = md.clone();
+        assertEquals(md.getGroupBy(), clone.getGroupBy());
+        assertEquals(md.getHaving(), clone.getHaving());
+        assertEquals(md.getJoins(), clone.getJoins());
+        assertEquals(md.getModifiers(), clone.getModifiers());
+        assertEquals(md.getOrderBy(), clone.getOrderBy());
+        assertEquals(md.getProjection(), clone.getProjection());
+        assertEquals(md.getWhere(), clone.getWhere());
+        
+    }
 }

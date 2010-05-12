@@ -10,6 +10,8 @@ import java.io.Serializable;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.ObjectUtils;
+
 import net.jcip.annotations.Immutable;
 
 /**
@@ -96,4 +98,26 @@ public final class QueryModifiers implements Serializable{
         return limit != null || offset != null;
     }
 
+    @Override
+    public boolean equals(Object o){
+        if (o == this){
+            return true;
+        }else if (o instanceof QueryModifiers){
+            QueryModifiers qm = (QueryModifiers)o;
+            return ObjectUtils.equals(qm.getLimit(), limit) && ObjectUtils.equals(qm.getOffset(), offset);            
+        }else{
+            return false;
+        }
+    }
+    
+    @Override
+    public int hashCode(){
+        if (limit != null){
+            return limit.hashCode();
+        }else if (offset != null){
+            return offset.hashCode();
+        }else{
+            return 0;
+        }
+    }
 }

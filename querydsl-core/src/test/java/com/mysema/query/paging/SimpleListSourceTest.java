@@ -13,6 +13,8 @@ public class SimpleListSourceTest {
         ListSource<String> strings = new SimpleListSource<String>("a","b","c","d","e","f");
         assertEquals(Arrays.asList("a","b"), strings.getResults(0, 2));
         assertEquals(Arrays.asList("c","d"), strings.getResults(2, 4));
+        assertFalse(strings.isEmpty());
+        assertEquals(6, strings.size());
     }
 
 }
