@@ -236,8 +236,10 @@ public class LuceneSerializer {
     public Query toQuery(Expr<?> expr) {
         if (expr instanceof Operation<?>) {
             return toQuery((Operation<?>) expr);
+        }else if (expr instanceof QueryElement){
+            return ((QueryElement)expr).getQuery();
         }
-        throw new IllegalArgumentException("expr was not of type Operation");
+        throw new IllegalArgumentException("expr was not of type Operation or QueryElement");
     }
 
     public Sort toSort(List<OrderSpecifier<?>> orderBys){

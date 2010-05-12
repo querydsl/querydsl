@@ -103,6 +103,18 @@ public class LuceneSerializerTest {
         assertEquals(expectedHits, docs.totalHits);
         assertEquals(expectedQuery, query.toString());
     }
+    
+    @Test
+    public void queryElement() throws Exception{
+        Query query1 = serializer.toQuery(author.like("Michael"));
+        Query query2 = serializer.toQuery(text.like("Text"));
+        
+        EBoolean query = EBoolean.anyOf(
+            new QueryElement(query1),
+            new QueryElement(query2)
+        );
+        testQuery(query, "author:michael text:text", 1);
+    }
 
     @Test
     public void like() throws Exception {
