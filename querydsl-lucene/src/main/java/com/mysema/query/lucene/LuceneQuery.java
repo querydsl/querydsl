@@ -167,8 +167,12 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
             ScoreDoc[] scoreDocs = searcher.search(createQuery(), searcher.maxDoc()).scoreDocs;
             if (scoreDocs.length > 1) {
                 throw new QueryException("More than one result found!");
-            }
-            return searcher.doc(scoreDocs[0].doc);
+            }else if (scoreDocs.length == 1){
+                return searcher.doc(scoreDocs[0].doc);    
+            }else{
+                return null;
+            }            
+            
         } catch (IOException e) {
             throw new QueryException(e);
         }

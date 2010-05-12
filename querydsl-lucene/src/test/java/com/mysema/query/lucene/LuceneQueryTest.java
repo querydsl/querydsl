@@ -5,6 +5,7 @@
  */
 package com.mysema.query.lucene;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -265,6 +266,12 @@ public class LuceneQueryTest {
     public void uniqueResult_Finds_More_Than_One_Result() {
         query.where(year.eq("1990"));
         query.uniqueResult();
+    }
+    
+    @Test
+    public void uniqueResult_Finds_No_Results() {
+        query.where(year.eq("2200"));
+        assertNull(query.uniqueResult());
     }
 
     @Test
