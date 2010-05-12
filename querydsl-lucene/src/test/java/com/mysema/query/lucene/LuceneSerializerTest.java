@@ -68,7 +68,7 @@ public class LuceneSerializerTest {
     @Before
     public void setUp() throws Exception {
         // TODO Tests for non lower case
-        serializer = new LuceneSerializer(true);
+        serializer = new LuceneSerializer(true,true);
         entityPath = new PathBuilder<Object>(Object.class, "obj");
         title = entityPath.getString("title");
         author = entityPath.getString("author");

@@ -41,14 +41,15 @@ import com.mysema.query.types.Path;
  */
 public class LuceneSerializer {
     
-    public static final LuceneSerializer DEFAULT = new LuceneSerializer(false);
-    
-    public static final LuceneSerializer LOWERCASE = new LuceneSerializer(true);
+    public static final LuceneSerializer DEFAULT = new LuceneSerializer(false,true);
     
     private final boolean lowerCase;
+    
+    private final boolean splitTerms;
 
-    protected LuceneSerializer(boolean lowerCase) {
+    protected LuceneSerializer(boolean lowerCase, boolean splitTerms) {
         this.lowerCase = lowerCase;
+        this.splitTerms = splitTerms;
     }
 
     private Query toQuery(Operation<?> operation) {
@@ -222,11 +223,12 @@ public class LuceneSerializer {
     }
 
     private String[] createTerms(Expr<?> expr) {
-        return StringUtils.split(expr.toString());
+        return splitTerms ? StringUtils.split(expr.toString()) : new String[]{expr.toString()};
     }
 
     private String[] createEscapedTerms(Expr<?> expr) {
-        return StringUtils.split(QueryParser.escape(expr.toString()));
+        String escaped = QueryParser.escape(expr.toString());
+        return splitTerms ? StringUtils.split(escaped) : new String[]{escaped};
     }
 
     private String normalize(String s) {

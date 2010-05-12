@@ -106,8 +106,8 @@ public class LuceneQueryTest {
         writer.optimize();
         writer.close();
 
-        searcher = new IndexSearcher(idx);
-        query = new LuceneQuery(true, searcher);
+        searcher = new IndexSearcher(idx);        
+        query = new LuceneQuery(new LuceneSerializer(true,true), searcher);
     }
 
     @After
