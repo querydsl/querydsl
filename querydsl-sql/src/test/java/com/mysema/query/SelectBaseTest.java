@@ -449,11 +449,16 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         
     }
     
+    @Test
     public void variousSingleProjections(){
         // single column
         for (String s : query().from(survey).list(survey.name)){
             assertNotNull(s);
         }
+        
+        // unique single
+        String s = query().from(survey).uniqueResult(survey.name);
+        assertNotNull(s);
         
         // constructor projection
         for (IdName idAndName : query().from(survey).list(new QIdName(survey.id, survey.name))){
@@ -462,6 +467,12 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             assertNotNull(idAndName.getName());
         }
         
+        // unique constructor projection
+        IdName idAndName = query().from(survey).uniqueResult(new QIdName(survey.id, survey.name));
+        assertNotNull(idAndName);
+        assertNotNull(idAndName.getId());
+        assertNotNull(idAndName.getName());
+        
         // wildcard
         for (Object[] row : query().from(survey).list(survey.all())){
             assertNotNull(row);
@@ -469,6 +480,13 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             assertNotNull(row[0]);
             assertNotNull(row[1]);
         }
+        
+        // unique wildcard
+        Object[] row = query().from(survey).uniqueResult(survey.all());
+        assertNotNull(row);
+        assertEquals(2, row.length);
+        assertNotNull(row[0]);
+        assertNotNull(row[1]);
            
     }
     
