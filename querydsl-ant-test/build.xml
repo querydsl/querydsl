@@ -1,0 +1,55 @@
+<project name="MyProject" default="dist" basedir=".">
+    <description>
+        simple example build file
+    </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="dist"  location="dist"/>
+  <property name="generated" location="generated"/>
+
+    <path id="cp">
+      <fileset dir="lib">
+        <include name="*.jar"/>
+      </fileset>
+    </path>
+
+
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${build}"/>
+    <mkdir dir="${generated}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source " >
+        
+    <javac srcdir="${src}" classpathref="cp">
+      <compilerarg value="-proc:only"/>      
+      <compilerarg value="-processor"/>
+      <compilerarg value="com.mysema.query.apt.QuerydslAnnotationProcessor"/>
+      <compilerarg value="-s"/>
+      <compilerarg value="${generated}"/>
+    </javac>
+    
+    <javac classpathref="cp" destdir="${build}">      
+      <src path="${src}"/>
+      <src path="${generated}"/>
+    </javac>
+    
+  </target>
+
+  <target name="dist" depends="compile"
+        description="generate the distribution" >
+    <mkdir dir="${dist}/lib"/>
+    <jar jarfile="${dist}/lib/MyProject-${DSTAMP}.jar" basedir="${build}"/>
+  </target>
+
+  <target name="clean"
+        description="clean up" >
+    <delete dir="${build}"/>
+    <delete dir="${generated}"/>
+    <delete dir="${dist}"/>
+  </target>
+  
+</project>
