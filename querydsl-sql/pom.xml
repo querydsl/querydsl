@@ -50,9 +50,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>oracle</groupId>
+      <groupId>com.oracle</groupId>
       <artifactId>ojdbc5</artifactId>
-      <version>11.1.0.6</version>
+      <version>11.1.0.7.0</version>
       <scope>test</scope>
     </dependency>  
     <dependency>
@@ -133,5 +133,18 @@
        -->
     </plugins>
   </build>
+  
+  <repositories>
+    <repository>
+      <id>jahia</id>
+      <url>http://maven.jahia.org/maven2</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
 </project>
