@@ -45,10 +45,11 @@ public interface NamingStrategy {
      * Convert the given column name to a property name
      *
      * @param columnName
+     * @param namePrefix NOTE : is used in some custom NamingStrategy implementations
      * @param entityType 
      * @return
      */
-    String getPropertyName(String columnName, EntityType entityType);
+    String getPropertyName(String columnName, String namePrefix, EntityType entityType);
     
     /**
      * Convert the given table name and provide the opportunity to add quoted identifiers

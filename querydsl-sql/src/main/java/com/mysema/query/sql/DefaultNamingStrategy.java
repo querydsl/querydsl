@@ -40,7 +40,7 @@ public class DefaultNamingStrategy implements NamingStrategy {
     }
 
     @Override
-    public String getPropertyName(String columnName, EntityType entityType) {
+    public String getPropertyName(String columnName, String namePrefix, EntityType entityType) {
     	String propertyName = columnName.substring(0, 1).toLowerCase(Locale.ENGLISH) + toCamelCase(columnName.substring(1));
     	if (JavaSyntaxUtils.isReserved(propertyName)){
     	    propertyName += reservedSuffix;

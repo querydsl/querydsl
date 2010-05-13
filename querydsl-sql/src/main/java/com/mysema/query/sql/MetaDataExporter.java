@@ -132,7 +132,7 @@ public class MetaDataExporter {
     private void handleColumn(EntityType classModel, ResultSet columns)
             throws SQLException {
         String columnName = columns.getString(COLUMN_NAME);
-        String propertyName = namingStrategy.getPropertyName(columnName, classModel);
+        String propertyName = namingStrategy.getPropertyName(columnName, namePrefix, classModel);
         Class<?> clazz = sqlTypeMapping.get(columns.getInt(COLUMN_TYPE));
         if (clazz == null){
             throw new RuntimeException("No java type for " + columns.getString(6));

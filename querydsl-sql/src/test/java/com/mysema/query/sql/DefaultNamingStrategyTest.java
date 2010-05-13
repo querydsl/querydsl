@@ -21,9 +21,9 @@ public class DefaultNamingStrategyTest {
     public void testGetPropertyName() {
         ClassType typeModel = new ClassType(TypeCategory.ENTITY, Object.class);
         EntityType entityModel = new EntityType("Q", typeModel);
-        assertEquals("whileCol", namingStrategy.getPropertyName("while", entityModel));
-        assertEquals("name", namingStrategy.getPropertyName("name", entityModel));
-        assertEquals("userId", namingStrategy.getPropertyName("user_id", entityModel));
+        assertEquals("whileCol", namingStrategy.getPropertyName("while", "Q", entityModel));
+        assertEquals("name", namingStrategy.getPropertyName("name", "Q", entityModel));
+        assertEquals("userId", namingStrategy.getPropertyName("user_id", "Q", entityModel));
     }
 
 }
