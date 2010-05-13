@@ -7,6 +7,7 @@ package com.mysema.query.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
@@ -161,6 +162,8 @@ public class SimpleTypesTest extends AbstractTest{
         
         long llong2;
         
+        BigInteger bigInteger;
+        
         String sstring;
         List<String> sstringList;
         
@@ -239,6 +242,7 @@ public class SimpleTypesTest extends AbstractTest{
         cl = QSimpleTypesTest_SimpleTypes.class;
         match(PNumber.class, "id");
         match(PNumber.class, "bigDecimal");
+        match(PNumber.class, "bigInteger");
         match(PNumber.class, "bbyte");
         match(PNumber.class, "bbyte2");
         match(PNumber.class, "ddouble");
