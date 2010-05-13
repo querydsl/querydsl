@@ -5,17 +5,7 @@
  */
 package com.mysema.query.jdoql;
 
-import java.util.Collection;
-
-import com.mysema.query.DefaultQueryMetadata;
-import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.support.DetachableQuery;
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.OSimple;
-import com.mysema.query.types.path.PEntity;
 
 /**
  * JDOQLSubQuery is subquery implementation for JDOQL
@@ -23,41 +13,14 @@ import com.mysema.query.types.path.PEntity;
  * @author tiwe
  *
  */
-public class JDOQLSubQuery extends DetachableQuery<JDOQLSubQuery>{
+public class JDOQLSubQuery extends AbstractJDOQLSubQuery<JDOQLSubQuery>{
     
-    /**
-     * 
-     */
     public JDOQLSubQuery() {
-        this(new DefaultQueryMetadata());
+        super();
     }
     
-    /**
-     * @param metadata
-     */
     public JDOQLSubQuery(QueryMetadata metadata) {
-        super(new JDOQLQueryMixin<JDOQLSubQuery>(metadata));
-        this.queryMixin.setSelf(this);
+        super(metadata);
     }
     
-    public JDOQLSubQuery from(PEntity<?>... args) {
-        return queryMixin.from(args);
-    }
-
-    public <P> JDOQLSubQuery from(Path<? extends Collection<P>> target, PEntity<P> alias){
-        queryMixin.getMetadata().addJoin(JoinType.DEFAULT, OSimple.create(alias.getType(), Ops.ALIAS, target.asExpr(), alias));
-        return this;
-    }
-    
-    @Override
-    public String toString(){
-        if (!queryMixin.getMetadata().getJoins().isEmpty()){
-            Expr<?> source = queryMixin.getMetadata().getJoins().get(0).getTarget();
-            JDOQLSerializer serializer = new JDOQLSerializer(JDOQLTemplates.DEFAULT, source);
-            serializer.serialize(queryMixin.getMetadata(), false, false);
-            return serializer.toString().trim();
-        }else{
-            return super.toString();
-        } 
-    }
 }
