@@ -23,14 +23,12 @@ public class OriginalNamingStrategy implements NamingStrategy {
     }
 
     @Override
-    public String getPropertyName(String columnName, String namePrefix,
-            EntityType entityType) {
+    public String getPropertyName(String columnName, EntityType entityType) {
         return columnName;
     }
 
     @Override
-    public String getDefaultVariableName(String namePrefix,
-            EntityType entityType) {
+    public String getDefaultVariableName(String namePrefix, EntityType entityType) {
         // TODO : escape
         return entityType.getSimpleName();
     }

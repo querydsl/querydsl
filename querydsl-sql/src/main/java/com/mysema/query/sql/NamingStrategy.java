@@ -48,7 +48,7 @@ public interface NamingStrategy {
      * @param entityType 
      * @return
      */
-    String getPropertyName(String columnName, String namePrefix, EntityType entityType);
+    String getPropertyName(String columnName, EntityType entityType);
     
     /**
      * Convert the given table name and provide the opportunity to add quoted identifiers
