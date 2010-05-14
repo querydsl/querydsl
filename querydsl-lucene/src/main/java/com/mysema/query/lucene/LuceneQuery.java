@@ -30,8 +30,8 @@ import com.mysema.query.types.expr.EBoolean;
  *
  * @author vema
  */
-public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<Document>{
-    
+public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<Document> {
+
     private final QueryMixin<LuceneQuery> queryMixin;
 
     private final LuceneSerializer serializer;
@@ -45,13 +45,13 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
     public LuceneQuery(Searcher searcher) {
         this(LuceneSerializer.DEFAULT, searcher);
     }
-    
+
     /**
      * @param serializer
      * @param searcher
      */
     public LuceneQuery(LuceneSerializer serializer, Searcher searcher) {
-        this.queryMixin = new QueryMixin<LuceneQuery>(this);
+        queryMixin = new QueryMixin<LuceneQuery>(this);
         this.serializer = serializer;
         this.searcher = searcher;
     }
@@ -166,25 +166,28 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
          * TODO Get rid of count(). It could be implemented by iterating the
          * list results in list* from n to m.
          */
-        return new SearchResults<Document>(documents, queryMixin.getMetadata().getModifiers(), count());
+        return new SearchResults<Document>(documents, queryMixin.getMetadata().getModifiers(),
+                count());
     }
 
     @Override
     public Document uniqueResult() {
         try {
-            ScoreDoc[] scoreDocs = searcher.search(createQuery(), searcher.maxDoc()).scoreDocs;
+            int maxDoc = searcher.maxDoc();
+            if (maxDoc == 0) {
+                return null;
+            }
+            ScoreDoc[] scoreDocs = searcher.search(createQuery(), maxDoc).scoreDocs;
             if (scoreDocs.length > 1) {
                 throw new QueryException("More than one result found!");
-            }else if (scoreDocs.length == 1){
-                return searcher.doc(scoreDocs[0].doc);    
-            }else{
+            } else if (scoreDocs.length == 1) {
+                return searcher.doc(scoreDocs[0].doc);
+            } else {
                 return null;
-            }            
-            
+            }
         } catch (IOException e) {
             throw new QueryException(e);
         }
     }
-
 
 }

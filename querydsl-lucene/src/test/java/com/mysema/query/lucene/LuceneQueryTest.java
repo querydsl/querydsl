@@ -5,10 +5,15 @@
  */
 package com.mysema.query.lucene;
 
-import static org.junit.Assert.*;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.createMockBuilder;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -77,10 +82,6 @@ public class LuceneQueryTest {
 
     @Before
     public void setUp() throws Exception {
-//        entityPath = new PathBuilder<Object>(Object.class, "obj");
-//        title = entityPath.getString("title");
-//        year = entityPath.getString("year");
-
         QDocument entityPath = new QDocument("doc");
         title = entityPath.title;
         year = entityPath.year;
@@ -106,7 +107,7 @@ public class LuceneQueryTest {
         writer.optimize();
         writer.close();
 
-        searcher = new IndexSearcher(idx);        
+        searcher = new IndexSearcher(idx);
         query = new LuceneQuery(new LuceneSerializer(true,true), searcher);
     }
 
@@ -267,11 +268,21 @@ public class LuceneQueryTest {
         query.where(year.eq("1990"));
         query.uniqueResult();
     }
-    
+
     @Test
     public void uniqueResult_Finds_No_Results() {
         query.where(year.eq("2200"));
         assertNull(query.uniqueResult());
+    }
+
+    @Test
+    public void uniqueResult_Finds_No_Results_Because_No_Documents_In_Index() throws IOException {
+        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod("maxDoc").createMock();
+        query = new LuceneQuery(new LuceneSerializer(true,true), searcher);
+        expect(searcher.maxDoc()).andReturn(0);
+        replay(searcher);
+        assertNull(query.where(year.eq("3000")).uniqueResult());
+        verify(searcher);
     }
 
     @Test
