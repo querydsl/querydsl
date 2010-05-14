@@ -10,6 +10,7 @@ import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,6 +35,7 @@ import javax.tools.Diagnostic.Kind;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.codegen.JavaWriter;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.QueryExtensions;
 import com.mysema.query.annotations.QueryMethod;
@@ -47,7 +49,6 @@ import com.mysema.query.codegen.Supertype;
 import com.mysema.query.codegen.Type;
 import com.mysema.query.codegen.TypeFactory;
 import com.mysema.query.codegen.TypeMappings;
-import com.mysema.codegen.JavaWriter;
 
 /**
  * Processor handles the actual work in the Querydsl APT module
@@ -154,15 +155,15 @@ public class Processor {
         // serialize models
         Messager msg = env.getMessager();
         msg.printMessage(Kind.NOTE, "serializing super types");
-        serialize(configuration.getSupertypeSerializer(), actualSupertypes);
+        serialize(configuration.getSupertypeSerializer(), actualSupertypes.values());
         msg.printMessage(Kind.NOTE, "serializing entity types");
-        serialize(configuration.getEntitySerializer(), entityTypes);
+        serialize(configuration.getEntitySerializer(), entityTypes.values());
         msg.printMessage(Kind.NOTE, "serializing extension types");
-        serialize(configuration.getEmbeddableSerializer(), extensionTypes);
+        serialize(configuration.getEmbeddableSerializer(), extensionTypes.values());
         msg.printMessage(Kind.NOTE, "serializing embeddables");
-        serialize(configuration.getEmbeddableSerializer(), embeddables);
+        serialize(configuration.getEmbeddableSerializer(), embeddables.values());
         msg.printMessage(Kind.NOTE, "serializing dtos");
-        serialize(configuration.getDTOSerializer(), dtos);
+        serialize(configuration.getDTOSerializer(), dtos.values());
         
         // serialize variable classes
         for (Element element : roundEnv.getElementsAnnotatedWith(QuerydslVariables.class)){
@@ -299,9 +300,9 @@ public class Processor {
         }    
     }
           
-    private void serialize(Serializer serializer, Map<String, EntityType> models) {
+    private void serialize(Serializer serializer, Collection<EntityType> models) {
         Messager msg = env.getMessager();
-        for (EntityType model : models.values()) {
+        for (EntityType model : models) {
             msg.printMessage(Kind.NOTE, model.getFullName() + " is processed");
             try {
                 String packageName = model.getPackageName();         
