@@ -418,6 +418,7 @@ public final class APTTypeFactory {
             if (name.contains("<")){
                 name = name.substring(0, name.indexOf("<"));
             }
+            // interface is directly implemented
             if (name.equals(iface.getQualifiedName().toString())){
                 return true;
             }
