@@ -154,16 +154,26 @@ public class Processor {
         
         // serialize models
         Messager msg = env.getMessager();
-        msg.printMessage(Kind.NOTE, "serializing super types");
-        serialize(configuration.getSupertypeSerializer(), actualSupertypes.values());
-        msg.printMessage(Kind.NOTE, "serializing entity types");
-        serialize(configuration.getEntitySerializer(), entityTypes.values());
-        msg.printMessage(Kind.NOTE, "serializing extension types");
-        serialize(configuration.getEmbeddableSerializer(), extensionTypes.values());
-        msg.printMessage(Kind.NOTE, "serializing embeddables");
-        serialize(configuration.getEmbeddableSerializer(), embeddables.values());
-        msg.printMessage(Kind.NOTE, "serializing dtos");
-        serialize(configuration.getDTOSerializer(), dtos.values());
+        if (!actualSupertypes.isEmpty()){
+            msg.printMessage(Kind.NOTE, "serializing super types");
+            serialize(configuration.getSupertypeSerializer(), actualSupertypes.values());    
+        }
+        if (!entityTypes.isEmpty()){
+            msg.printMessage(Kind.NOTE, "serializing entity types");
+            serialize(configuration.getEntitySerializer(), entityTypes.values());    
+        }
+        if (!extensionTypes.isEmpty()){
+            msg.printMessage(Kind.NOTE, "serializing extension types");
+            serialize(configuration.getEmbeddableSerializer(), extensionTypes.values());    
+        }        
+        if (!embeddables.isEmpty()){
+            msg.printMessage(Kind.NOTE, "serializing embeddable types");
+            serialize(configuration.getEmbeddableSerializer(), embeddables.values());    
+        }
+        if (!dtos.isEmpty()){
+            msg.printMessage(Kind.NOTE, "serializing dto types");
+            serialize(configuration.getDTOSerializer(), dtos.values());    
+        }        
         
         // serialize variable classes
         for (Element element : roundEnv.getElementsAnnotatedWith(QuerydslVariables.class)){
@@ -179,9 +189,7 @@ public class Processor {
                 serializeVariableList(packageElement.getQualifiedName().toString(), vars, models);
             }
         }        
-    }
-    
-
+    }   
 
     private void processCustomTypes() {
         for (Element queryMethod : roundEnv.getElementsAnnotatedWith(QueryMethod.class)){
@@ -192,10 +200,12 @@ public class Processor {
             if (element.getAnnotation(configuration.getEntityAnn()) != null){
                 continue;
             }
-            if (configuration.getSuperTypeAnn() != null && element.getAnnotation(configuration.getSuperTypeAnn()) != null){
+            if (configuration.getSuperTypeAnn() != null 
+                    && element.getAnnotation(configuration.getSuperTypeAnn()) != null){
                 continue;
             }
-            if (configuration.getEmbeddableAnn() != null && element.getAnnotation(configuration.getEmbeddableAnn()) != null){
+            if (configuration.getEmbeddableAnn() != null 
+                    && element.getAnnotation(configuration.getEmbeddableAnn()) != null){
                 continue;
             }
             handleExtensionType(element.asType(), element);
@@ -248,14 +258,16 @@ public class Processor {
         
         // FIXME        
         for (Element element : roundEnv.getElementsAnnotatedWith(annotation)) {
-            if (configuration.getEmbeddableAnn() == null || element.getAnnotation(configuration.getEmbeddableAnn()) == null){
+            if (configuration.getEmbeddableAnn() == null 
+                    || element.getAnnotation(configuration.getEmbeddableAnn()) == null){
                 typeModelFactory.createEntityType(element.asType());
             }
         }    
         
         // get annotated types
         for (Element element : roundEnv.getElementsAnnotatedWith(annotation)) {
-            if (configuration.getEmbeddableAnn() == null || element.getAnnotation(configuration.getEmbeddableAnn()) == null){
+            if (configuration.getEmbeddableAnn() == null 
+                    || element.getAnnotation(configuration.getEmbeddableAnn()) == null){
                 EntityType model = elementHandler.handleNormalType((TypeElement) element);
                 types.put(model.getFullName(), model);    
                 if (model.getSuperType() != null){                    

@@ -166,12 +166,12 @@ public final class APTTypeFactory {
         TypeCategory typeCategory = TypeCategory.get(name);
         
         if (typeCategory != TypeCategory.NUMERIC
-                && isAssignable(typeElement, comparableType)
+                && isImplemented(typeElement, comparableType)
                 && isSubType(typeElement, numberType)){
             typeCategory = TypeCategory.NUMERIC;
             
         }else if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE)
-                && isAssignable(typeElement, comparableType)){
+                && isImplemented(typeElement, comparableType)){
             typeCategory = TypeCategory.COMPARABLE;
         }
         return create(typeElement, typeCategory, t.getTypeArguments());
@@ -411,9 +411,31 @@ public final class APTTypeFactory {
         }
     }
 
-    // FIXME : this fails with the Eclipse compiler
-    private boolean isAssignable(TypeElement type1, TypeElement type2) {
-        return env.getTypeUtils().isAssignable(type1.asType(), env.getTypeUtils().erasure(type2.asType()));        
+    // TODO : simplify this
+    private boolean isImplemented(TypeElement type, TypeElement iface) {
+        for (TypeMirror t : type.getInterfaces()){
+            String name = t.toString();
+            if (name.contains("<")){
+                name = name.substring(0, name.indexOf("<"));
+            }
+            if (name.equals(iface.getQualifiedName().toString())){
+                return true;
+            }
+        }
+        if (type.getSuperclass() != null){
+            TypeElement superType = (TypeElement) env.getTypeUtils().asElement(type.getSuperclass());
+            if (superType != null){
+                return isImplemented(superType, iface);
+            }
+            superType = env.getElementUtils().getTypeElement(type.getSuperclass().toString());
+            if (superType != null){
+                return isImplemented(superType, iface);
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
     }
     
     private boolean isSubType(TypeElement type1, TypeElement type2) {

@@ -1,4 +1,4 @@
-package com.mysema.query.eclipse;
+package com.mysema.query.apt;
 
 import static org.junit.Assert.assertTrue;
 
@@ -18,15 +18,15 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.codegen.SimpleCompiler;
-import com.mysema.query.apt.QuerydslAnnotationProcessor;
 
 public class EclipseCompilationTest {
     
-    private static final String packagePath = "src/test/java/com/mysema/query/eclipse/";
+    private static final String packagePath = "src/test/apt/com/mysema/query/eclipse/";
     
     @Test
     @Ignore
     public void test() throws IOException{
+        System.setProperty("jdt.compiler.useSingleThread", "true");
         // select classes
         List<String> classes = new ArrayList<String>();
         for (File file : new File(packagePath).listFiles()){
@@ -56,6 +56,7 @@ public class EclipseCompilationTest {
         options.add("1.6");
         options.add("-verbose");
         options.addAll(classes);        
+        
         int compilationResult = compiler.run(null, System.out, System.err, options.toArray(new String[options.size()]));
         if(compilationResult == 0){
             System.out.println("Compilation is successful");
