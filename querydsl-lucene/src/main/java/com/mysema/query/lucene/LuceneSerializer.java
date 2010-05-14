@@ -216,19 +216,27 @@ public class LuceneSerializer {
     private void verifyArguments(Operation<?> operation) {
         List<Expr<?>> arguments = operation.getArgs();
         for (int i = 1; i < arguments.size(); ++i) {
-            if (!(arguments.get(i) instanceof Constant<?>)) {
-                throw new IllegalArgumentException("operation argument was not of type Constant.");
+            if (!(arguments.get(i) instanceof Constant<?>) && !(arguments.get(i) instanceof PhraseElement)) {
+                throw new IllegalArgumentException("operation argument was not of type Constant nor PhraseElement.");
             }
         }
     }
 
     private String[] createTerms(Expr<?> expr) {
-        return splitTerms ? StringUtils.split(expr.toString()) : new String[]{expr.toString()};
+        if (splitTerms || expr instanceof PhraseElement){
+            return StringUtils.split(expr.toString());
+        }else{
+            return new String[]{expr.toString()};   
+        }
     }
 
     private String[] createEscapedTerms(Expr<?> expr) {
         String escaped = QueryParser.escape(expr.toString());
-        return splitTerms ? StringUtils.split(escaped) : new String[]{escaped};
+        if (splitTerms || expr instanceof PhraseElement){
+            return StringUtils.split(escaped);
+        }else{
+            return new String[]{escaped};
+        }
     }
 
     private String normalize(String s) {
