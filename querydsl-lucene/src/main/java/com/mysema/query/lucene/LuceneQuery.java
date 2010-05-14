@@ -91,7 +91,11 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
     @Override
     public long count() {
         try {
-            return searcher.search(createQuery(), searcher.maxDoc()).totalHits;
+            int maxDoc = searcher.maxDoc();
+            if (maxDoc == 0) {
+                return 0;
+            }
+            return searcher.search(createQuery(), maxDoc).totalHits;
         } catch (IOException e) {
             throw new QueryException(e);
         }

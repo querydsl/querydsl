@@ -286,6 +286,16 @@ public class LuceneQueryTest {
     }
 
     @Test
+    public void count_Returns_0_Because_No_Documents_In_Index() throws IOException {
+        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod("maxDoc").createMock();
+        query = new LuceneQuery(new LuceneSerializer(true,true), searcher);
+        expect(searcher.maxDoc()).andReturn(0);
+        replay(searcher);
+        assertEquals(0, query.where(year.eq("3000")).count());
+        verify(searcher);
+    }
+
+    @Test
     public void listDistinct() {
         query.where(year.between("1900", "2000").or(title.startsWith("Jura")));
         query.orderBy(year.asc());
