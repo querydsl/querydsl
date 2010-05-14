@@ -411,16 +411,14 @@ public final class APTTypeFactory {
         }
     }
 
+    // FIXME : this fails with the Eclipse compiler
     private boolean isAssignable(TypeElement type1, TypeElement type2) {
-        TypeMirror t1 = type1.asType();
-        TypeMirror t2 = env.getTypeUtils().erasure(type2.asType());
-        return env.getTypeUtils().isAssignable(t1, t2);
+        return env.getTypeUtils().isAssignable(type1.asType(), env.getTypeUtils().erasure(type2.asType()));        
     }
-
+    
     private boolean isSubType(TypeElement type1, TypeElement type2) {
         return env.getTypeUtils().isSubtype(type1.asType(), type2.asType());
     }
-
     
     private TypeMirror normalize(TypeMirror type) {
         if (type.getKind() == TypeKind.TYPEVAR){

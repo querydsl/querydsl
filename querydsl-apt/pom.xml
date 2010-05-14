@@ -56,7 +56,16 @@
       <version>${project.parent.version}</version>
       <scope>test</scope>
       <type>test-jar</type>
-    </dependency>    
+    </dependency>
+	
+    <dependency>
+      <groupId>org.eclipse.jdt.core.compiler</groupId>
+      <artifactId>ecj</artifactId>
+      <version>3.5.1</version>
+	  <scope>test</scope>
+    </dependency>
+	    
+	
   </dependencies>
 
   <build>
