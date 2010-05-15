@@ -21,13 +21,19 @@ public final class BooleanBuilder extends EBoolean implements Cloneable{
         
     @Nullable
     private EBoolean expr;
-        
+
+    public BooleanBuilder() {}
+    
+    public BooleanBuilder(EBoolean initial){
+	expr = initial;
+    }
+    
     @Override
     public void accept(Visitor v) {
         if (expr != null){
             expr.accept(v);
         }else{
-            throw new QueryException("CascadingBoolean has no value");
+            throw new QueryException("BooleanBuilder has no value");
         }
     }
 
@@ -70,8 +76,8 @@ public final class BooleanBuilder extends EBoolean implements Cloneable{
     public boolean equals(Object o) {
         if (o == this){
             return true;
-        }else if (o instanceof EBoolean){
-            return expr != null ? expr.equals(o) : false;    
+        }else if (o instanceof BooleanBuilder){
+            return ((BooleanBuilder)o).getValue().equals(expr);    
         }else{
             return false;
         }               
@@ -84,7 +90,7 @@ public final class BooleanBuilder extends EBoolean implements Cloneable{
     
     @Override
     public int hashCode(){
-        return Boolean.class.hashCode();
+        return expr != null ? expr.hashCode() : super.hashCode();
     }
     
     /**

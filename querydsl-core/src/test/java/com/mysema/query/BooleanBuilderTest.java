@@ -6,6 +6,7 @@
 package com.mysema.query;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
@@ -74,5 +75,17 @@ public class BooleanBuilderTest {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(first).not();
         assertEquals(first.not(), builder.getValue());
+    }
+    
+    @Test
+    public void equals(){
+	assertEquals(new BooleanBuilder(first), new BooleanBuilder(first));
+	assertFalse(first.equals(new BooleanBuilder(first)));
+	assertFalse(new BooleanBuilder(first).equals(first));	
+    }
+    
+    @Test
+    public void testHashCode(){
+	assertEquals(new BooleanBuilder(first).hashCode(), new BooleanBuilder(first).hashCode());
     }
 }

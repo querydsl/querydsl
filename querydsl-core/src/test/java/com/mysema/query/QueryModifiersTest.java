@@ -38,4 +38,16 @@ public class QueryModifiersTest {
         assertNull(modifiers.getOffset());
         assertFalse(modifiers.isRestricting());
     }
+    
+    @Test
+    public void testHashCode(){
+	QueryModifiers modifiers1 = new QueryModifiers(null, null);
+	QueryModifiers modifiers2 = new QueryModifiers(1l, null);
+	QueryModifiers modifiers3 = new QueryModifiers(null, 1l);
+	
+	assertEquals(modifiers1.hashCode(), new QueryModifiers().hashCode());
+	assertEquals(modifiers2.hashCode(), QueryModifiers.limit(1l).hashCode());
+	assertEquals(modifiers3.hashCode(), QueryModifiers.offset(1l).hashCode());
+	
+    }
 }

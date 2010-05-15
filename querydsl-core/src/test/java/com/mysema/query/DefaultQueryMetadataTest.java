@@ -41,6 +41,7 @@ public class DefaultQueryMetadataTest {
         assertEquals(modifiers, md.getModifiers());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testGetOrderBy() {
         md.addOrderBy(str.asc());

@@ -153,6 +153,10 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
         } else if (Integer.class.equals(type) || int.class.equals(type)) {
             path = new PNumber<Integer>(Integer.class, pm);
             rv = Integer.valueOf(RETURN_VALUE);
+            
+        } else if (Byte.class.equals(type) || byte.class.equals(type)) {
+            path = new PNumber<Byte>(Byte.class, pm);
+            rv = Byte.valueOf((byte)RETURN_VALUE);
 
         } else if (java.util.Date.class.equals(type)) {
             path = new PDateTime<Date>(Date.class, pm);

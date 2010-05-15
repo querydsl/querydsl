@@ -8,14 +8,20 @@ package com.mysema.query.alias;
 import static com.mysema.query.alias.Alias.$;
 import static org.junit.Assert.assertEquals;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Test;
 
 public class AliasTest {
     
-    public interface Person{
+    public interface DomainType{
         
         String getFirstName();
         
@@ -23,18 +29,61 @@ public class AliasTest {
         
         int getAge();
         
-        List<Person> getList();
+        List<DomainType> getList();
         
-        Map<String,Person> getMap();
+        Map<String,DomainType> getMap();
+        
+        BigDecimal getBigDecimal();
+        
+        BigInteger getBigInteger();
+        
+        Byte getByte();
+        
+        Collection<DomainType> getCollection();
+        
+        Double getDouble();
+        
+        Float getFloat();
+        
+        java.sql.Date getDate();
+        
+        java.util.Date getDate2();
+        
+        Set<DomainType> getSet();
+        
+        Short getShort();
+        
+        Time getTime();
+        
+        Timestamp getTimestamp();
+        
     }
     
     @Test
     public void basicUsage(){
-        Person person = Alias.alias(Person.class);
-        assertEquals("lower(person.firstName)", $(person.getFirstName()).lower().toString());
-        assertEquals("person.age", $(person.getAge()).toString());
-        assertEquals("person.map.get(a)", $(person.getMap().get("a")).toString());
-        assertEquals("person.list.get(0)", $(person.getList().get(0)).toString());
+        DomainType domainType = Alias.alias(DomainType.class);
+        assertEquals("lower(domainType.firstName)", $(domainType.getFirstName()).lower().toString());
+        assertEquals("domainType.age", $(domainType.getAge()).toString());
+        assertEquals("domainType.map.get(a)", $(domainType.getMap().get("a")).toString());
+        assertEquals("domainType.list.get(0)", $(domainType.getList().get(0)).toString());
+        
+        assertEquals("domainType.bigDecimal", $(domainType.getBigDecimal()).toString());
+        assertEquals("domainType.bigInteger", $(domainType.getBigInteger()).toString());
+        assertEquals("domainType.byte", $(domainType.getByte()).toString());
+        assertEquals("domainType.collection", $(domainType.getCollection()).toString());
+        assertEquals("domainType.double", $(domainType.getDouble()).toString());
+        assertEquals("domainType.float", $(domainType.getFloat()).toString());
+        assertEquals("domainType.date", $(domainType.getDate()).toString());
+        assertEquals("domainType.date2", $(domainType.getDate2()).toString());
+        assertEquals("domainType.set", $(domainType.getSet()).toString());
+        assertEquals("domainType.short", $(domainType.getShort()).toString());
+        assertEquals("domainType.time", $(domainType.getTime()).toString());
+        assertEquals("domainType.timestamp", $(domainType.getTimestamp()).toString());
     }
 
+    @Test
+    public void otherMethods(){
+	DomainType domainType = Alias.alias(DomainType.class);
+	assertEquals("domainType", domainType.toString());	
+    }
 }
