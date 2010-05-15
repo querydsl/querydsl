@@ -5,6 +5,7 @@
  */
 package com.mysema.query.alias;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
@@ -214,6 +215,10 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             path = new PComparable(type, pm);
             rv = type.getEnumConstants()[0];
             
+        } else if (type.isArray()){            
+            path = new PArray(type, pm);
+	    rv = Array.newInstance(type.getComponentType(), 5);
+	    
         } else {
             if (Comparable.class.isAssignableFrom(type)){
                 path = new PComparable(type, pm);
