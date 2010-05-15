@@ -178,7 +178,7 @@ public class Filters {
         
         rv.add(expr.in(1,2,3));
         rv.add(expr.in(1l,2l,3l));
-
+        
         if (expr.getType().equals(Integer.class)){
             ENumber<Integer> eint = (ENumber)expr;
             rv.add(eint.between(1, 2));

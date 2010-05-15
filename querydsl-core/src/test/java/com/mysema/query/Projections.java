@@ -134,6 +134,7 @@ public class Projections {
         rv.add(expr.abs());
         rv.add(expr.add(other));
         rv.add(expr.divide(other));
+        
         rv.add(expr.multiply(other));
         rv.add(expr.sqrt());
         rv.add(expr.subtract(other));
