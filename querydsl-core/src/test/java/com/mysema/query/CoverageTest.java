@@ -41,7 +41,13 @@ public class CoverageTest {
 
         Set<String> getSet();
 
-        Map<String, String> getMap();        
+        Map<String, String> getMap();       
+        
+        java.util.Date getDateTime();
+        
+        java.sql.Date getDate();
+        
+        java.sql.Time getTime();
         
     }
     
@@ -68,6 +74,20 @@ public class CoverageTest {
         exprs.addAll(projections.string($(entity.getStr()), $(entity.getStr()), "abc"));
         exprs.addAll(matchers.string($(entity.getStr()), $(entity.getStr()), "abc"));        
         exprs.addAll(filters.string($(entity.getStr()), $(entity.getStr()), "abc"));
+        
+        // date
+        exprs.addAll(projections.date($(entity.getDate()), $(entity.getDate()), new java.sql.Date(0)));
+        exprs.addAll(matchers.date($(entity.getDate()), $(entity.getDate()), new java.sql.Date(0)));        
+        exprs.addAll(filters.date($(entity.getDate()), $(entity.getDate()), new java.sql.Date(0)));
+        // dateTime
+        exprs.addAll(projections.dateTime($(entity.getDateTime()), $(entity.getDateTime()), new java.util.Date(0)));
+        exprs.addAll(matchers.dateTime($(entity.getDateTime()), $(entity.getDateTime()), new java.util.Date(0)));        
+        exprs.addAll(filters.dateTime($(entity.getDateTime()), $(entity.getDateTime()), new java.util.Date(0)));
+        // time
+        exprs.addAll(projections.time($(entity.getTime()), $(entity.getTime()), new java.sql.Time(0)));
+        exprs.addAll(matchers.time($(entity.getTime()), $(entity.getTime()), new java.sql.Time(0)));        
+        exprs.addAll(filters.time($(entity.getTime()), $(entity.getTime()), new java.sql.Time(0)));
+        
         // boolean
         exprs.addAll(filters.booleanFilters($(entity.isBool()), $(entity.isBool())));                
         // collection
