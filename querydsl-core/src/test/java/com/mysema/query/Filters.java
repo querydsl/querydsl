@@ -13,18 +13,7 @@ import java.util.List;
 
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.Coalesce;
-import com.mysema.query.types.expr.EArray;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.ECollection;
-import com.mysema.query.types.expr.EComparable;
-import com.mysema.query.types.expr.EDate;
-import com.mysema.query.types.expr.EDateTime;
-import com.mysema.query.types.expr.EList;
-import com.mysema.query.types.expr.EMap;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.EString;
-import com.mysema.query.types.expr.ETime;
+import com.mysema.query.types.expr.*;
 
 /**
  * @author tiwe
@@ -88,11 +77,21 @@ public class Filters {
         return rv;
 
     }
+    
+    private <A extends Comparable<A>> Collection<EBoolean> dateOrTime(EDateOrTime<A> expr, EDateOrTime<A> other, A knownValue){
+	List<EBoolean> rv = new ArrayList<EBoolean>();
+	rv.add(expr.after(other));
+        rv.add(expr.after(knownValue));
+        rv.add(expr.before(other));
+        rv.add(expr.before(knownValue));
+	return rv;
+    }
 
     @SuppressWarnings("unchecked")
     public <A extends Comparable> Collection<EBoolean> date(EDate<A> expr, EDate<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(comparable(expr, other, knownValue));
+        rv.addAll(dateOrTime(expr, other, knownValue));
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
         rv.add(expr.month().eq(other.month()));
         rv.add(expr.year().eq(other.year()));    
@@ -104,6 +103,7 @@ public class Filters {
     public <A extends Comparable> Collection<EBoolean> dateTime(EDateTime<A> expr, EDateTime<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(comparable(expr, other, knownValue));
+        rv.addAll(dateOrTime(expr, other, knownValue));
         rv.add(expr.dayOfMonth().eq(1));
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
           
@@ -278,6 +278,7 @@ public class Filters {
     public <A extends Comparable> Collection<EBoolean> time(ETime<A> expr, ETime<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
         rv.addAll(comparable(expr, other, knownValue));
+        rv.addAll(dateOrTime(expr, other, knownValue));
         rv.add(expr.hour().eq(other.hour()));
         rv.add(expr.minute().eq(other.minute()));
         rv.add(expr.second().eq(other.second()));

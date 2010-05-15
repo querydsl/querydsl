@@ -49,6 +49,7 @@ public class CoverageTest {
         
         java.sql.Time getTime();
         
+        String[] getArray();
     }
     
     private MatchingFilters matchers = new MatchingFilters(Module.COLLECTIONS, Target.MEM);
@@ -93,6 +94,9 @@ public class CoverageTest {
         // collection
         exprs.addAll(projections.list($(entity.getList()), $(entity.getList()), ""));
         exprs.addAll(filters.list($(entity.getList()), $(entity.getList()), ""));
+        // array
+        exprs.addAll(projections.array($(entity.getArray()), $(entity.getArray()), ""));
+        exprs.addAll(filters.array($(entity.getArray()), $(entity.getArray()), ""));
         // map
         exprs.addAll(projections.map($(entity.getMap()), $(entity.getMap()), "", ""));
         exprs.addAll(filters.map($(entity.getMap()), $(entity.getMap()), "", ""));
