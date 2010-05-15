@@ -12,7 +12,8 @@ public class TemplatesTest {
 	new MySQLTemplates();
 	new OracleTemplates();
 	new PostgresTemplates();
-	new SQLTemplates();	
+	new SQLTemplates();
+	new SQLServerTemplates();
     }
 
 }
