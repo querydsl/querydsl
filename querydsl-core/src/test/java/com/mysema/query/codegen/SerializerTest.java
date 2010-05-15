@@ -9,8 +9,10 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
@@ -43,7 +45,10 @@ public class SerializerTest {
          
         // property
         type.addProperty(new Property(type, "entityField", type, new String[0]));
+        type.addProperty(new Property(type, "collection", new ClassType(TypeCategory.COLLECTION, Collection.class, typeModel), new String[0]));
         type.addProperty(new Property(type, "listField", new ClassType(TypeCategory.LIST, List.class, typeModel), new String[0]));
+        type.addProperty(new Property(type, "setField", new ClassType(TypeCategory.SET, Set.class, typeModel), new String[0]));
+        type.addProperty(new Property(type, "arrayField", new ClassType(TypeCategory.ARRAY, String[].class, typeModel), new String[0]));
         type.addProperty(new Property(type, "mapField", new ClassType(TypeCategory.MAP, List.class, typeModel, typeModel), new String[0]));
         
         for (Class<?> cl : Arrays.asList(Boolean.class, Comparable.class, Integer.class, Date.class, java.sql.Date.class, java.sql.Time.class)){

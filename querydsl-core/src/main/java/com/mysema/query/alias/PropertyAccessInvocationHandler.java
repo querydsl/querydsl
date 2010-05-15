@@ -31,20 +31,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.expr.ECollection;
 import com.mysema.query.types.expr.EMap;
-import com.mysema.query.types.path.PBoolean;
-import com.mysema.query.types.path.PCollection;
-import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PDate;
-import com.mysema.query.types.path.PDateTime;
-import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PList;
-import com.mysema.query.types.path.PMap;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PSet;
-import com.mysema.query.types.path.PSimple;
-import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PTime;
-import com.mysema.query.types.path.PathMetadataFactory;
+import com.mysema.query.types.path.*;
 import com.mysema.util.ReflectionUtils;
 
 /**
@@ -224,7 +211,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Enum.class.isAssignableFrom(type)) {
-            path = new PSimple<T>(type, pm);
+            path = new PComparable(type, pm);
             rv = type.getEnumConstants()[0];
             
         } else {
