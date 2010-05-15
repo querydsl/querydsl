@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
+
 import net.jcip.annotations.Immutable;
 
 import org.apache.commons.lang.ClassUtils;
@@ -41,10 +44,14 @@ public class ExprEvaluatorFactory {
     
     private final ColQueryTemplates templates;
     
-    protected ExprEvaluatorFactory(ColQueryTemplates templates){
-        this.templates = templates;
+    public ExprEvaluatorFactory(ColQueryTemplates templates){
         // TODO : which ClassLoader to pick ?!?
-        this.factory = new EvaluatorFactory((URLClassLoader)getClass().getClassLoader());
+	this(templates, (URLClassLoader)ExprEvaluatorFactory.class.getClassLoader(), ToolProvider.getSystemJavaCompiler());
+    }
+    
+    public ExprEvaluatorFactory(ColQueryTemplates templates, URLClassLoader classLoader, JavaCompiler compiler){
+        this.templates = templates;
+        this.factory = new EvaluatorFactory(classLoader, compiler);
     }
     
     public <T> Evaluator<T> create(List<? extends Expr<?>> sources, final Expr<T> projection) {
