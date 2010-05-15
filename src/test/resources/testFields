@@ -1,4 +1,3 @@
-
 public class FieldTests {
 
     private String privateField;
@@ -12,5 +11,9 @@ public class FieldTests {
     public String publicField;
 
     public static final String publicStaticFinal = "val";
+
+    public final String publicFinalField;
+
+    public final String publicFinalField2 = "val";
 
 }

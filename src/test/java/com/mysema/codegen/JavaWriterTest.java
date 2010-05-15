@@ -10,17 +10,26 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
 
+import org.apache.commons.collections15.Transformer;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 public class JavaWriterTest {
+
+    private static final Transformer<String,String> transformer = new Transformer<String,String>(){
+	@Override
+        public String transform(String input) {
+	    return input;
+        }	
+    };
     
     private StringWriter w;
     
     private CodeWriter writer;
-
+    
     private static void match(String resource, String text) throws IOException{
         // TODO : try to compile ?
         String expected = IOUtils.toString(JavaWriterTest.class.getResourceAsStream(resource),"UTF-8").replace("\r\n", "\n").trim();
@@ -150,6 +159,9 @@ public class JavaWriterTest {
         // public
         writer.publicField("String","publicField");
         writer.publicStaticFinal("String", "publicStaticFinal", "\"val\"");
+        writer.publicFinal("String", "publicFinalField");
+        writer.publicFinal("String", "publicFinalField2", "\"val\"");
+        
         writer.end();
         
         match("/testFields", w.toString());
@@ -165,10 +177,48 @@ public class JavaWriterTest {
         // method
         
         // public
+        writer.beginPublicMethod("String", "publicMethod", Arrays.asList("String a"), transformer);
+        writer.line("return null;");
+        writer.end();
+        
+        writer.beginStaticMethod("String", "staticMethod", Arrays.asList("String a"), transformer);
+        writer.line("return null;");
+        writer.end();
         
         writer.end();
         
         match("/testMethods", w.toString());
+    }
+    
+    @Test
+    public void testConstructors() throws IOException{
+	writer.beginClass("ConstructorTests");
+	
+	writer.beginConstructor(Arrays.asList("String a","String b"), transformer);
+	writer.end();
+	
+	writer.beginConstructor("String a");
+	writer.end();
+	
+	writer.end();
+        
+        match("/testConstructors", w.toString());
+	
+    }
+    
+    @Test
+    public void testImports() throws IOException{
+	writer.staticimports(Arrays.class);
+	
+        match("/testImports", w.toString());
+    }
+    
+    @Test
+    public void testSuppressWarnings() throws IOException{
+	writer.suppressWarnings("unused");
+        writer.privateField("String", "test");
+        
+        match("/testSuppressWarnings", w.toString());
     }
     
 }

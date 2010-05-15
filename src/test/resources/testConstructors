@@ -1,0 +1,9 @@
+public class ConstructorTests {
+
+    public ConstructorTests(String a, String b) {
+    }
+
+    public ConstructorTests(String a) {
+    }
+
+}
