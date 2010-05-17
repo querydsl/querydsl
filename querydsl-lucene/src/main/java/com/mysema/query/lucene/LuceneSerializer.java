@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.lucene;
 
@@ -15,6 +15,7 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
@@ -24,6 +25,7 @@ import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.search.WildcardQuery;
 import org.apache.lucene.search.BooleanClause.Occur;
+import org.apache.lucene.util.NumericUtils;
 
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Expr;
@@ -39,12 +41,13 @@ import com.mysema.query.types.Path;
  * @author vema
  *
  */
+// TODO Add support for longs, floats etc.
 public class LuceneSerializer {
-    
-    public static final LuceneSerializer DEFAULT = new LuceneSerializer(false,true);
-    
+
+    public static final LuceneSerializer DEFAULT = new LuceneSerializer(false, true);
+
     private final boolean lowerCase;
-    
+
     private final boolean splitTerms;
 
     protected LuceneSerializer(boolean lowerCase, boolean splitTerms) {
@@ -73,11 +76,19 @@ public class LuceneSerializer {
         } else if (op == Ops.ENDS_WITH || op == Ops.ENDS_WITH_IC) {
             return endsWith(operation);
         } else if (op == Ops.STRING_CONTAINS || op == Ops.STRING_CONTAINS_IC) {
-            return stringContains(operation);        
+            return stringContains(operation);
         } else if (op == Ops.BETWEEN) {
             return between(operation);
-        } else if (op == Ops.IN){
+        } else if (op == Ops.IN) {
             return in(operation);
+        } else if (op == Ops.LT || op == Ops.BEFORE) {
+            return lt(operation);
+        } else if (op == Ops.GT || op == Ops.AFTER) {
+            return gt(operation);
+        } else if (op == Ops.LOE || op == Ops.BOE) {
+            return le(operation);
+        } else if (op == Ops.GOE || op == Ops.AOE) {
+            return ge(operation);
         }
         throw new UnsupportedOperationException("Illegal operation " + operation);
     }
@@ -109,11 +120,17 @@ public class LuceneSerializer {
     private Query eq(Operation<?> operation) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
-        String[] terms = createTerms(operation.getArg(1));
-        return eq(field, terms);
+        if (operation.getArg(1).getType().equals(Integer.class)) {
+            return new TermQuery(new Term(field, NumericUtils
+                    .intToPrefixCoded(((Constant<Integer>) operation.getArg(1)).getConstant())));
+        } else if (operation.getArg(1).getType().equals(Double.class)) {
+            return new TermQuery(new Term(field, NumericUtils
+                    .doubleToPrefixCoded(((Constant<Double>) operation.getArg(1)).getConstant())));
+        }
+        return eq(field, createTerms(operation.getArg(1)));
     }
-    
-    private Query eq(String field, String[] terms){
+
+    private Query eq(String field, String[] terms) {
         if (terms.length > 1) {
             PhraseQuery pq = new PhraseQuery();
             for (String s : terms) {
@@ -121,21 +138,20 @@ public class LuceneSerializer {
             }
             return pq;
         }
-        return new TermQuery(new Term(field, normalize(terms[0])));    
+        return new TermQuery(new Term(field, normalize(terms[0])));
     }
-    
+
     @SuppressWarnings("unchecked")
-    private Query in(Operation<?> operation){
+    private Query in(Operation<?> operation) {
         String field = toField(operation.getArg(0));
-        Collection values = (Collection) ((Constant)operation.getArg(1)).getConstant(); 
+        Collection values = (Collection) ((Constant) operation.getArg(1)).getConstant();
         BooleanQuery bq = new BooleanQuery();
-        for (Object value : values){
+        for (Object value : values) {
             bq.add(eq(field, StringUtils.split(value.toString())), Occur.SHOULD);
         }
         return bq;
     }
-    
-    
+
     private Query ne(Operation<?> operation) {
         BooleanQuery bq = new BooleanQuery();
         bq.add(new BooleanClause(eq(operation), Occur.MUST_NOT));
@@ -189,26 +205,75 @@ public class LuceneSerializer {
     private Query between(Operation<?> operation) {
         verifyArguments(operation);
         // TODO Phrase not properly supported
-        String field = toField(operation.getArg(0));
-        String[] lowerTerms = createTerms(operation.getArg(1));
-        String[] upperTerms = createTerms(operation.getArg(2));
-        return new TermRangeQuery(field, normalize(lowerTerms[0]), normalize(upperTerms[0]), true,
-                true);
+        return range(toField(operation.getArg(0)), operation.getArg(1), operation.getArg(2), true, true);
+    }
+
+    private Query lt(Operation<?> operation) {
+        verifyArguments(operation);
+        return range(toField(operation.getArg(0)), null, operation.getArg(1), false, false);
+    }
+
+    private Query gt(Operation<?> operation) {
+        verifyArguments(operation);
+        return range(toField(operation.getArg(0)), operation.getArg(1), null, false, false);
+    }
+
+    private Query le(Operation<?> operation) {
+        verifyArguments(operation);
+        return range(toField(operation.getArg(0)), null, operation.getArg(1), true, true);
+    }
+
+    private Query ge(Operation<?> operation) {
+        verifyArguments(operation);
+        return range(toField(operation.getArg(0)), operation.getArg(1), null, true, true);
+    }
+
+    // TODO Simplify(?)
+    // TODO Timo: Check if the the annotation is necessary, thanks! -vema
+    @SuppressWarnings("unchecked")
+    private Query range(String field, Expr<?> min, Expr<?> max, boolean minInc, boolean maxInc) {
+        if (min != null && min.getType().equals(Integer.class) || max != null && max.getType().equals(Integer.class)) {
+            return integerRange(field, min == null ? null : ((Constant<Integer>) min).getConstant(), max == null ? null : ((Constant<Integer>) max).getConstant(), minInc, maxInc);
+        } else if (min != null && min.getType().equals(Double.class) || max != null && max.getType().equals(Double.class)) {
+            return doubleRange(field, min == null ? null : ((Constant<Double>) min).getConstant(), max == null ? null : ((Constant<Double>) max).getConstant(), minInc, maxInc);
+        } else {
+            return stringRange(field, min, max, minInc, maxInc);
+        }
+    }
+
+    private Query integerRange(String field, Integer min, Integer max, boolean minInc, boolean maxInc) {
+        return NumericRangeQuery.newIntRange(field, min, max, minInc, maxInc);
+    }
+
+    private Query doubleRange(String field, Double min, Double max, boolean minInc, boolean maxInc) {
+        return NumericRangeQuery.newDoubleRange(field, min, max, minInc, maxInc);
+    }
+
+    private Query stringRange(String field, Expr<?> min, Expr<?> max, boolean minInc, boolean maxInc) {
+        if (min == null) {
+            return new TermRangeQuery(field, null, normalize(createTerms(max)[0]), minInc,
+                    maxInc);
+        } else if (max == null) {
+            return new TermRangeQuery(field, normalize(createTerms(min)[0]), null, minInc,
+                    maxInc);
+        }
+        return new TermRangeQuery(field, normalize(createTerms(min)[0]), normalize(createTerms(max)[0]), minInc,
+                maxInc);
     }
 
     @SuppressWarnings("unchecked")
-    private String toField(Expr<?> expr){
-        if (expr instanceof Path){
-            return toField((Path<?>)expr);
-        }else if (expr instanceof Operation){
+    private String toField(Expr<?> expr) {
+        if (expr instanceof Path) {
+            return toField((Path<?>) expr);
+        } else if (expr instanceof Operation) {
             Operation<?> operation = (Operation<?>) expr;
-            if (operation.getOperator() == Ops.LOWER || operation.getOperator() == Ops.UPPER){
+            if (operation.getOperator() == Ops.LOWER || operation.getOperator() == Ops.UPPER) {
                 return toField(operation.getArg(0));
             }
         }
         throw new IllegalArgumentException("Unable to transform " + expr + " to field");
     }
-    
+
     public String toField(Path<?> path) {
         return path.getMetadata().getExpression().toString();
     }
@@ -216,27 +281,27 @@ public class LuceneSerializer {
     private void verifyArguments(Operation<?> operation) {
         List<Expr<?>> arguments = operation.getArgs();
         for (int i = 1; i < arguments.size(); ++i) {
-            if (!(arguments.get(i) instanceof Constant<?>) && !(arguments.get(i) instanceof PhraseElement)) {
-                throw new IllegalArgumentException("operation argument was not of type Constant nor PhraseElement.");
+            if (!(arguments.get(i) instanceof Constant<?>)
+                    && !(arguments.get(i) instanceof PhraseElement)) {
+                throw new IllegalArgumentException(
+                        "operation argument was not of type Constant nor PhraseElement.");
             }
         }
     }
 
     private String[] createTerms(Expr<?> expr) {
-        if (splitTerms || expr instanceof PhraseElement){
+        if (splitTerms || expr instanceof PhraseElement) {
             return StringUtils.split(expr.toString());
-        }else{
-            return new String[]{expr.toString()};   
         }
+        return new String[] { expr.toString() };
     }
 
     private String[] createEscapedTerms(Expr<?> expr) {
         String escaped = QueryParser.escape(expr.toString());
-        if (splitTerms || expr instanceof PhraseElement){
+        if (splitTerms || expr instanceof PhraseElement) {
             return StringUtils.split(escaped);
-        }else{
-            return new String[]{escaped};
         }
+        return new String[] { escaped };
     }
 
     private String normalize(String s) {
@@ -246,25 +311,32 @@ public class LuceneSerializer {
     public Query toQuery(Expr<?> expr) {
         if (expr instanceof Operation<?>) {
             return toQuery((Operation<?>) expr);
-        }else if (expr instanceof QueryElement){
-            return ((QueryElement)expr).getQuery();
+        } else if (expr instanceof QueryElement) {
+            return ((QueryElement) expr).getQuery();
         }
         throw new IllegalArgumentException("expr was not of type Operation or QueryElement");
     }
 
-    public Sort toSort(List<OrderSpecifier<?>> orderBys){
+    // TODO Add support for sorting floats, longs etc.
+    public Sort toSort(List<OrderSpecifier<?>> orderBys) {
         List<SortField> sortFields = new ArrayList<SortField>(orderBys.size());
         for (OrderSpecifier<?> orderSpecifier : orderBys) {
             if (!(orderSpecifier.getTarget() instanceof Path<?>)) {
                 throw new IllegalArgumentException("argument was not of type Path.");
             }
-            sortFields.add(new SortField(toField((Path<?>)orderSpecifier.getTarget()), 
-                    Locale.ENGLISH, 
-                    !orderSpecifier.isAscending()));
+            if (orderSpecifier.getTarget().getType().equals(Integer.class)) {
+                sortFields.add(new SortField(toField((Path<?>) orderSpecifier.getTarget()),
+                        SortField.INT, !orderSpecifier.isAscending()));
+            } else if (orderSpecifier.getTarget().getType().equals(Double.class)) {
+                sortFields.add(new SortField(toField((Path<?>) orderSpecifier.getTarget()),
+                        SortField.DOUBLE, !orderSpecifier.isAscending()));
+            } else {
+                sortFields.add(new SortField(toField((Path<?>) orderSpecifier.getTarget()),
+                        Locale.ENGLISH, !orderSpecifier.isAscending()));
+            }
         }
         Sort sort = new Sort();
         sort.setSort(sortFields.toArray(new SortField[sortFields.size()]));
         return sort;
     }
-
 }

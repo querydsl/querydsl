@@ -14,6 +14,8 @@ import java.util.Arrays;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.NumericField;
+import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriter.MaxFieldLength;
 import org.apache.lucene.search.IndexSearcher;
@@ -21,6 +23,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.util.NumericUtils;
 import org.apache.lucene.util.Version;
 import org.junit.After;
 import org.junit.Before;
@@ -33,6 +36,7 @@ import com.mysema.query.Target;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EStringConst;
+import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathBuilder;
 
@@ -48,7 +52,12 @@ public class LuceneSerializerTest {
     private PString title;
     private PString author;
     private PString text;
-    private PString year;
+    private PString rating;
+    private PNumber<Integer> year;
+    private PNumber<Double> gross;
+
+    private static final String YEAR_PREFIX_CODED = NumericUtils.intToPrefixCoded(1990);
+    private static final String GROSS_PREFIX_CODED = NumericUtils.doubleToPrefixCoded(900.00);
 
     private RAMDirectory idx;
     private IndexWriter writer;
@@ -60,7 +69,9 @@ public class LuceneSerializerTest {
         doc.add(new Field("title", new StringReader("Jurassic Park")));
         doc.add(new Field("author", new StringReader("Michael Crichton")));
         doc.add(new Field("text", new StringReader("It's a UNIX system! I know this!")));
-        doc.add(new Field("year", new StringReader("1990")));
+        doc.add(new Field("rating", new StringReader("Good")));
+        doc.add(new NumericField("year", Store.YES, true).setIntValue(1990));
+        doc.add(new NumericField("gross", Store.YES, true).setDoubleValue(900.00));
 
         return doc;
     }
@@ -73,7 +84,9 @@ public class LuceneSerializerTest {
         title = entityPath.getString("title");
         author = entityPath.getString("author");
         text = entityPath.getString("text");
-        year = entityPath.getString("year");
+        year = entityPath.getNumber("year", Integer.class);
+        rating = entityPath.getString("rating");
+        gross = entityPath.getNumber("gross", Double.class);
 
         idx = new RAMDirectory();
         writer = new IndexWriter(idx, new StandardAnalyzer(Version.LUCENE_CURRENT), true, MaxFieldLength.UNLIMITED);
@@ -103,12 +116,12 @@ public class LuceneSerializerTest {
         assertEquals(expectedHits, docs.totalHits);
         assertEquals(expectedQuery, query.toString());
     }
-    
+
     @Test
     public void queryElement() throws Exception{
         Query query1 = serializer.toQuery(author.like("Michael"));
         Query query2 = serializer.toQuery(text.like("Text"));
-        
+
         EBoolean query = EBoolean.anyOf(
             new QueryElement(query1),
             new QueryElement(query2)
@@ -138,17 +151,27 @@ public class LuceneSerializerTest {
 
     @Test
     public void like_or_like() throws Exception {
-        testQuery(title.like("House").or(year.like("*99*")), "title:house year:*99*", 1);
+        testQuery(title.like("House").or(author.like("*ichae*")), "title:house author:*ichae*", 1);
     }
 
     @Test
     public void like_and_like() throws Exception {
-        testQuery(title.like("*assic*").and(year.like("199?")), "+title:*assic* +year:199?", 1);
+        testQuery(title.like("*assic*").and(rating.like("G?od")), "+title:*assic* +rating:g?od", 1);
     }
 
     @Test
     public void eq() throws Exception {
-        testQuery(year.eq("1990"), "year:1990", 1);
+        testQuery(rating.eq("Good"), "rating:good", 1);
+    }
+
+    @Test
+    public void eq_Numeric_Integer() throws Exception {
+        testQuery(year.eq(1990), "year:" + YEAR_PREFIX_CODED, 1);
+    }
+
+    @Test
+    public void eq_Numeric_Double() throws Exception {
+        testQuery(gross.eq(900.00), "gross:" + GROSS_PREFIX_CODED, 1);
     }
 
     @Test
@@ -158,27 +181,27 @@ public class LuceneSerializerTest {
 
     @Test
     public void eq_or_eq() throws Exception {
-        testQuery(title.eq("House").or(year.eq("1990")), "title:house year:1990", 1);
+        testQuery(title.eq("House").or(year.eq(1990)), "title:house year:" + YEAR_PREFIX_CODED, 1);
     }
 
     @Test
     public void eq_and_eq() throws Exception {
-        testQuery(title.eq("Jurassic Park").and(year.eq("1990")), "+title:\"jurassic park\" +year:1990", 1);
+        testQuery(title.eq("Jurassic Park").and(year.eq(1990)), "+title:\"jurassic park\" +year:" + YEAR_PREFIX_CODED, 1);
     }
 
     @Test
     public void eq_and_eq_and_eq() throws Exception {
-        testQuery(title.eq("Jurassic Park").and(year.eq("1990")).and(author.eq("Michael Crichton")), "+(+title:\"jurassic park\" +year:1990) +author:\"michael crichton\"", 1);
+        testQuery(title.eq("Jurassic Park").and(year.eq(1990)).and(author.eq("Michael Crichton")), "+(+title:\"jurassic park\" +year:" + YEAR_PREFIX_CODED + ") +author:\"michael crichton\"", 1);
     }
 
     @Test
     public void eq_and_eq_or_eq() throws Exception {
-        testQuery(title.eq("Jurassic Park").and(year.eq("190")).or(author.eq("Michael Crichton")), "(+title:\"jurassic park\" +year:190) author:\"michael crichton\"", 1);
+        testQuery(title.eq("Jurassic Park").and(rating.eq("Bad")).or(author.eq("Michael Crichton")), "(+title:\"jurassic park\" +rating:bad) author:\"michael crichton\"", 1);
     }
 
     @Test
     public void eq_or_eq_and_eq_Does_Not_Find_Results() throws Exception {
-        testQuery(title.eq("Jeeves").or(year.eq("1915")).and(author.eq("Michael Crichton")), "+(title:jeeves year:1915) +author:\"michael crichton\"", 0);
+        testQuery(title.eq("Jeeves").or(rating.eq("Superb")).and(author.eq("Michael Crichton")), "+(title:jeeves rating:superb) +author:\"michael crichton\"", 0);
     }
 
     @Test
@@ -203,7 +226,7 @@ public class LuceneSerializerTest {
 
     @Test
     public void eq_not_or_eq() throws Exception {
-        testQuery(title.eq("House").not().or(year.eq("1990")), "(-title:house) year:1990", 1);
+        testQuery(title.eq("House").not().or(rating.eq("Good")), "(-title:house) rating:good", 1);
     }
 
     @Test
@@ -213,7 +236,7 @@ public class LuceneSerializerTest {
 
     @Test
     public void eq_and_eq_not_Does_Not_Find_Results_Because_Second_Expression_Finds_Nothing() throws Exception {
-        testQuery(year.eq("1990").and(title.eq("House").not()), "+year:1990 +(-title:house)", 0);
+        testQuery(rating.eq("Superb").and(title.eq("House").not()), "+rating:superb +(-title:house)", 0);
     }
 
     @Test
@@ -228,7 +251,7 @@ public class LuceneSerializerTest {
 
     @Test
     public void ne_or_eq() throws Exception {
-        testQuery(title.ne("Jurassic Park").or(year.eq("1954")), "(-title:\"jurassic park\") year:1954", 0);
+        testQuery(title.ne("Jurassic Park").or(rating.eq("Lousy")), "(-title:\"jurassic park\") rating:lousy", 0);
     }
 
     @Test
@@ -282,6 +305,16 @@ public class LuceneSerializerTest {
     }
 
     @Test
+    public void between_Numeric_Integer() throws Exception {
+        testQuery(year.between(1980, 2000), "year:[1980 TO 2000]", 1);
+    }
+
+    @Test
+    public void between_Numeric_Double() throws Exception {
+        testQuery(gross.between(10.00, 19030.00), "gross:[10.0 TO 19030.0]", 1);
+    }
+
+    @Test
     public void between_Phrase() throws Exception {
         testQuery(title.between("Jurassic Park", "Kundun"), "title:[jurassic TO kundun]", 1);
     }
@@ -308,12 +341,163 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void in() throws Exception {        
+    public void in() throws Exception {
         testQuery(title.in(Arrays.asList("Jurassic","Park")), "title:jurassic title:park", 1);
         testQuery(title.in("Jurassic","Park"), "title:jurassic title:park", 1);
         testQuery(title.eq("Jurassic").or(title.eq("Park")), "title:jurassic title:park", 1);
     }
-    
+
+    @Test
+    public void lt() throws Exception {
+        testQuery(rating.lt("Superb"), "rating:{* TO superb}", 1);
+    }
+
+    @Test
+    public void lt_Numeric_Integer() throws Exception {
+        testQuery(year.lt(1991), "year:{* TO 1991}", 1);
+    }
+
+    @Test
+    public void lt_Numeric_Double() throws Exception {
+        testQuery(gross.lt(10000.0), "gross:{* TO 10000.0}", 1);
+    }
+
+    @Test
+    public void lt_Not_In_Range_Because_Equal() throws Exception {
+        testQuery(rating.lt("Good"), "rating:{* TO good}", 0);
+    }
+
+    @Test
+    public void lt_Numeric_Integer_Not_In_Range_Because_Equal() throws Exception {
+        testQuery(year.lt(1990), "year:{* TO 1990}", 0);
+    }
+
+    @Test
+    public void lt_Numeric_Double_Not_In_Range_Because_Equal() throws Exception {
+        testQuery(gross.lt(900.0), "gross:{* TO 900.0}", 0);
+    }
+
+    @Test
+    public void loe() throws Exception {
+        testQuery(rating.loe("Superb"), "rating:[* TO superb]", 1);
+    }
+
+    @Test
+    public void loe_Numeric_Integer() throws Exception {
+        testQuery(year.loe(1991), "year:[* TO 1991]", 1);
+    }
+
+    @Test
+    public void loe_Numeric_Double() throws Exception {
+        testQuery(gross.loe(903.0), "gross:[* TO 903.0]", 1);
+    }
+
+    @Test
+    public void loe_Equal() throws Exception {
+        testQuery(rating.loe("Good"), "rating:[* TO good]", 1);
+    }
+
+    @Test
+    public void loe_Numeric_Integer_Equal() throws Exception {
+        testQuery(year.loe(1990), "year:[* TO 1990]", 1);
+    }
+
+    @Test
+    public void loe_Numeric_Double_Equal() throws Exception {
+        testQuery(gross.loe(900.0), "gross:[* TO 900.0]", 1);
+    }
+
+    @Test
+    public void loe_Not_Found() throws Exception {
+        testQuery(rating.loe("Bad"), "rating:[* TO bad]", 0);
+    }
+
+    @Test
+    public void loe_Numeric_Integer_Not_Found() throws Exception {
+        testQuery(year.loe(1989), "year:[* TO 1989]", 0);
+    }
+
+    @Test
+    public void loe_Numeric_Double_Not_Found() throws Exception {
+        testQuery(gross.loe(899.9), "gross:[* TO 899.9]", 0);
+    }
+
+    @Test
+    public void gt() throws Exception {
+        testQuery(rating.gt("Bad"), "rating:{bad TO *}", 1);
+    }
+
+    @Test
+    public void gt_Numeric_Integer() throws Exception {
+        testQuery(year.gt(1989), "year:{1989 TO *}", 1);
+    }
+
+    @Test
+    public void gt_Numeric_Double() throws Exception {
+        testQuery(gross.gt(100.00), "gross:{100.0 TO *}", 1);
+    }
+
+    @Test
+    public void gt_Not_In_Range_Because_Equal() throws Exception {
+        testQuery(rating.gt("Good"), "rating:{good TO *}", 0);
+    }
+
+    @Test
+    public void gt_Numeric_Integer_Not_In_Range_Because_Equal() throws Exception {
+        testQuery(year.gt(1990), "year:{1990 TO *}", 0);
+    }
+
+    @Test
+    public void gt_Numeric_Double_Not_In_Range_Because_Equal() throws Exception {
+        testQuery(gross.gt(900.00), "gross:{900.0 TO *}", 0);
+    }
+
+
+    @Test
+    public void ge() throws Exception {
+        testQuery(rating.goe("Bad"), "rating:[bad TO *]", 1);
+    }
+
+    @Test
+    public void goe_Numeric_Integer() throws Exception {
+        testQuery(year.goe(1989), "year:[1989 TO *]", 1);
+    }
+
+    @Test
+    public void goe_Numeric_Double() throws Exception {
+        testQuery(gross.goe(320.50), "gross:[320.5 TO *]", 1);
+    }
+
+    @Test
+    public void goe_Equal() throws Exception {
+        testQuery(rating.goe("Good"), "rating:[good TO *]", 1);
+    }
+
+    @Test
+    public void goe_Numeric_Integer_Equal() throws Exception {
+        testQuery(year.goe(1990), "year:[1990 TO *]", 1);
+    }
+
+    @Test
+    public void goe_Numeric_Double_Equal() throws Exception {
+        testQuery(gross.goe(900.00), "gross:[900.0 TO *]", 1);
+    }
+
+    @Test
+    public void goe_Not_Found() throws Exception {
+        testQuery(rating.goe("Hood"), "rating:[hood TO *]", 0);
+    }
+
+    @Test
+    public void goe_Numeric_Integer_Not_Found() throws Exception {
+        testQuery(year.goe(1991), "year:[1991 TO *]", 0);
+    }
+
+    @Test
+    public void goe_Numeric_Double_Not_Found() throws Exception {
+        testQuery(gross.goe(900.10), "gross:[900.1 TO *]", 0);
+    }
+
     @Test
     @Ignore
     public void fuzzy() throws Exception {
