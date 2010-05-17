@@ -96,6 +96,23 @@
   
   <build>
     <plugins>
+      <plugin>
+      	  <groupId>org.apache.maven.plugins</groupId>
+      	  <artifactId>maven-jar-plugin</artifactId>
+		  <executions>
+		  	<execution>
+		  	  <id>apt</id>
+			  <goals>
+			  	<goal>jar</goal>				
+			  </goals>	
+			  <configuration>
+			    <classifier>apt</classifier>
+				<classesDirectory>src/apt</classesDirectory>									
+			  </configuration>			  
+		   </execution>			
+	      </executions>
+      </plugin> 
+		
       <!-- this plugin does the JDO class enhancement -->
       <plugin>
         <groupId>org.datanucleus</groupId>
