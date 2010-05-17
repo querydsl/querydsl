@@ -5,18 +5,18 @@ import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.EStringConst;
 
 /**
- * PhraseElement represents the embedded String as a phrase
+ * TermElement represents the embedded String as a term
  * 
  * @author tiwe
  *
  */
-public class PhraseElement extends EString{
+public class TermElement extends EString{
 
     private static final long serialVersionUID = 2350215644019186076L;
 
     private final EStringConst string;
     
-    public PhraseElement(String str) {
+    public TermElement(String str) {
         this.string = (EStringConst) EStringConst.create(str);
     }
     
@@ -29,8 +29,8 @@ public class PhraseElement extends EString{
     public boolean equals(Object o) {
         if (o == this){
             return true;
-        }else if (o instanceof PhraseElement){
-            return ((PhraseElement)o).string.equals(string);
+        }else if (o instanceof TermElement){
+            return ((TermElement)o).string.equals(string);
         }else{
             return false;
         }

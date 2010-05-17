@@ -30,6 +30,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.mysema.query.BooleanBuilder;
 import com.mysema.query.MatchingFilters;
 import com.mysema.query.Module;
 import com.mysema.query.Target;
@@ -55,9 +56,18 @@ public class LuceneSerializerTest {
     private PString rating;
     private PNumber<Integer> year;
     private PNumber<Double> gross;
+    
+    private PNumber<Long> longField;
+    private PNumber<Short> shortField;
+    private PNumber<Byte> byteField;
+    private PNumber<Float> floatField;
 
     private static final String YEAR_PREFIX_CODED = NumericUtils.intToPrefixCoded(1990);
     private static final String GROSS_PREFIX_CODED = NumericUtils.doubleToPrefixCoded(900.00);
+    private static final String LONG_PREFIX_CODED = NumericUtils.longToPrefixCoded(1);
+    private static final String SHORT_PREFIX_CODED = NumericUtils.intToPrefixCoded(1);
+    private static final String BYTE_PREFIX_CODED = NumericUtils.intToPrefixCoded(1);
+    private static final String FLOAT_PREFIX_CODED = NumericUtils.floatToPrefixCoded((float)1.0);
 
     private RAMDirectory idx;
     private IndexWriter writer;
@@ -72,6 +82,11 @@ public class LuceneSerializerTest {
         doc.add(new Field("rating", new StringReader("Good")));
         doc.add(new NumericField("year", Store.YES, true).setIntValue(1990));
         doc.add(new NumericField("gross", Store.YES, true).setDoubleValue(900.00));
+        
+        doc.add(new NumericField("longField", Store.YES, true).setLongValue(1));
+        doc.add(new NumericField("shortField", Store.YES, true).setIntValue(1));
+        doc.add(new NumericField("byteField", Store.YES, true).setIntValue(1));
+        doc.add(new NumericField("floatField", Store.YES, true).setFloatValue(1));
 
         return doc;
     }
@@ -87,6 +102,11 @@ public class LuceneSerializerTest {
         year = entityPath.getNumber("year", Integer.class);
         rating = entityPath.getString("rating");
         gross = entityPath.getNumber("gross", Double.class);
+        
+        longField = entityPath.getNumber("longField", Long.class);
+        shortField = entityPath.getNumber("shortField", Short.class);
+        byteField = entityPath.getNumber("byteField", Byte.class);
+        floatField = entityPath.getNumber("floatField", Float.class);
 
         idx = new RAMDirectory();
         writer = new IndexWriter(idx, new StandardAnalyzer(Version.LUCENE_CURRENT), true, MaxFieldLength.UNLIMITED);
@@ -172,6 +192,14 @@ public class LuceneSerializerTest {
     @Test
     public void eq_Numeric_Double() throws Exception {
         testQuery(gross.eq(900.00), "gross:" + GROSS_PREFIX_CODED, 1);
+    }
+    
+    @Test
+    public void eq_Numeric() throws Exception{
+	testQuery(longField.eq(1l), "longField:" + LONG_PREFIX_CODED, 1);
+	testQuery(shortField.eq((short)1), "shortField:" + SHORT_PREFIX_CODED, 1);
+	testQuery(byteField.eq((byte)1), "byteField:" + BYTE_PREFIX_CODED, 1);
+	testQuery(floatField.eq((float)1.0), "floatField:" + FLOAT_PREFIX_CODED, 1);
     }
 
     @Test
@@ -314,6 +342,15 @@ public class LuceneSerializerTest {
         testQuery(gross.between(10.00, 19030.00), "gross:[10.0 TO 19030.0]", 1);
     }
 
+    @Test
+    public void between_Numeric() throws Exception{
+	testQuery(longField.between(0l,2l), "longField:[0 TO 2]", 1);
+	testQuery(shortField.between((short)0,(short)2), "shortField:[0 TO 2]", 1);
+	testQuery(byteField.between((byte)0,(byte)2), "byteField:[0 TO 2]", 1);
+	testQuery(floatField.between((float)0.0,(float)2.0), "floatField:[0.0 TO 2.0]", 1);
+    }
+
+    
     @Test
     public void between_Phrase() throws Exception {
         testQuery(title.between("Jurassic Park", "Kundun"), "title:[jurassic TO kundun]", 1);
@@ -497,6 +534,12 @@ public class LuceneSerializerTest {
     public void goe_Numeric_Double_Not_Found() throws Exception {
         testQuery(gross.goe(900.10), "gross:[900.1 TO *]", 0);
     }
+    
+    @Test
+    public void booleanBuilder() throws Exception{
+	testQuery(new BooleanBuilder(gross.goe(900.10)), "gross:[900.1 TO *]", 0);
+    }
+    
 
     @Test
     @Ignore
