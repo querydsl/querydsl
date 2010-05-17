@@ -5,8 +5,15 @@
  */
 package com.mysema.query;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.Expr;
+import com.mysema.query.types.Operation;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.PathType;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 
@@ -15,14 +22,14 @@ import com.mysema.query.types.expr.EBoolean;
  * 
  * @author tiwe
  */
-public final class BooleanBuilder extends EBoolean implements Cloneable{
+public final class BooleanBuilder extends EBoolean implements Cloneable, Operation<Boolean>{
     
     private static final long serialVersionUID = -4129485177345542519L;
         
     @Nullable
     private EBoolean expr;
 
-    public BooleanBuilder() {}
+    public BooleanBuilder() {  }
     
     public BooleanBuilder(EBoolean initial){
 	expr = initial;
@@ -83,11 +90,27 @@ public final class BooleanBuilder extends EBoolean implements Cloneable{
         }               
     }
     
+    @Override
+    public Expr<?> getArg(int index) {
+	return expr;
+    }
+    
+    @Override
+    public List<Expr<?>> getArgs() {
+	return Collections.<Expr<?>>singletonList(expr);
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public Operator<? super Boolean> getOperator() {
+	return (Operator)PathType.DELEGATE;
+    }
+
     @Nullable
     public EBoolean getValue(){
         return expr;
     }
-    
+
     @Override
     public int hashCode(){
         return expr != null ? expr.hashCode() : super.hashCode();
@@ -101,7 +124,7 @@ public final class BooleanBuilder extends EBoolean implements Cloneable{
     public boolean hasValue(){
         return expr != null;
     }
-
+    
     @Override
     public BooleanBuilder not(){
         if (expr != null){
@@ -121,7 +144,7 @@ public final class BooleanBuilder extends EBoolean implements Cloneable{
         }        
         return this;
     }
-    
+
     /**
      * Create the union of this and the intersection of the given args
      * <p>(this || (arg1 && arg2 ... && argN))</p>
@@ -135,7 +158,7 @@ public final class BooleanBuilder extends EBoolean implements Cloneable{
         }
         return this;
     }
-    
+
     public BooleanBuilder orNot(EBoolean right){
         return or(right.not());
     }
