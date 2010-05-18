@@ -30,6 +30,7 @@ import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.QueryException;
@@ -42,9 +43,9 @@ import com.mysema.query.types.path.PathMetadataFactory;
 
 /**
  * Tests for LuceneQuery
- *
+ * 
  * @author vema
- *
+ * 
  */
 public class LuceneQueryTest {
 
@@ -129,6 +130,17 @@ public class LuceneQueryTest {
     public void count() {
         query.where(title.eq("Jurassic Park"));
         assertEquals(1, query.count());
+    }
+
+    @Test(expected = QueryException.class)
+    public void count_Index_Problem() throws IOException {
+        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod("maxDoc").createMock();
+        query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
+        expect(searcher.maxDoc()).andThrow(new IOException());
+        replay(searcher);
+        query.where(title.eq("Jurassic Park"));
+        query.count();
+        verify(searcher);
     }
 
     @Test
@@ -273,6 +285,31 @@ public class LuceneQueryTest {
         assertEquals("Introduction to Algorithms", documents.get(1).get("title"));
     }
 
+    @Ignore
+    @Test(expected = QueryException.class)
+    public void list_Index_Problem_In_Max_Doc() throws IOException {
+        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod("maxDoc").createMock();
+        query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
+        expect(searcher.maxDoc()).andThrow(new IOException());
+        replay(searcher);
+        query.where(title.eq("Jurassic Park"));
+        query.list();
+        verify(searcher);
+    }
+
+    @Ignore
+    @Test(expected = QueryException.class)
+    public void list_Sorted_Index_Problem_In_Max_Doc() throws IOException {
+        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod("maxDoc").createMock();
+        query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
+        expect(searcher.maxDoc()).andThrow(new IOException());
+        replay(searcher);
+        query.where(title.eq("Jurassic Park"));
+        query.orderBy(title.asc());
+        query.list();
+        verify(searcher);
+    }
+
     @Test
     public void uniqueResult() {
         query.where(title.startsWith("Nummi"));
@@ -299,6 +336,17 @@ public class LuceneQueryTest {
         expect(searcher.maxDoc()).andReturn(0);
         replay(searcher);
         assertNull(query.where(year.eq(3000)).uniqueResult());
+        verify(searcher);
+    }
+
+    @Test(expected = QueryException.class)
+    public void uniqueResult_Sorted_Index_Problem_In_Max_Doc() throws IOException {
+        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod("maxDoc").createMock();
+        query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
+        expect(searcher.maxDoc()).andThrow(new IOException());
+        replay(searcher);
+        query.where(title.eq("Jurassic Park"));
+        query.uniqueResult();
         verify(searcher);
     }
 
