@@ -67,7 +67,7 @@ public class LuceneSerializer {
 
     private final boolean splitTerms;
 
-    protected LuceneSerializer(boolean lowerCase, boolean splitTerms) {
+    public LuceneSerializer(boolean lowerCase, boolean splitTerms) {
         this.lowerCase = lowerCase;
         this.splitTerms = splitTerms;
     }
