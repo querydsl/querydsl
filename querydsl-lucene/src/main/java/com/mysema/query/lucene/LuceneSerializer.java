@@ -17,7 +17,17 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.*;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.NumericRangeQuery;
+import org.apache.lucene.search.PhraseQuery;
+import org.apache.lucene.search.PrefixQuery;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
+import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.TermRangeQuery;
+import org.apache.lucene.search.WildcardQuery;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.util.NumericUtils;
 
@@ -37,18 +47,18 @@ import com.mysema.query.types.PathType;
  *
  */
 public class LuceneSerializer {
-    
-    private static final Map<Class<?>,Integer> sortFields = new HashMap<Class<?>,Integer>();
-    
-    static{
-	sortFields.put(Integer.class, SortField.INT);
-	sortFields.put(Float.class, SortField.FLOAT);
-	sortFields.put(Long.class, SortField.LONG);
-	sortFields.put(Double.class, SortField.DOUBLE);
-	sortFields.put(Short.class, SortField.SHORT);
-	sortFields.put(Byte.class, SortField.BYTE);
-	sortFields.put(BigDecimal.class, SortField.DOUBLE);
-	sortFields.put(BigInteger.class, SortField.LONG);
+
+    private static final Map<Class<?>, Integer> sortFields = new HashMap<Class<?>, Integer>();
+
+    static {
+        sortFields.put(Integer.class, SortField.INT);
+        sortFields.put(Float.class, SortField.FLOAT);
+        sortFields.put(Long.class, SortField.LONG);
+        sortFields.put(Double.class, SortField.DOUBLE);
+        sortFields.put(Short.class, SortField.SHORT);
+        sortFields.put(Byte.class, SortField.BYTE);
+        sortFields.put(BigDecimal.class, SortField.DOUBLE);
+        sortFields.put(BigInteger.class, SortField.LONG);
     }
 
     public static final LuceneSerializer DEFAULT = new LuceneSerializer(false, true);
@@ -96,20 +106,34 @@ public class LuceneSerializer {
             return le(operation);
         } else if (op == Ops.GOE || op == Ops.AOE) {
             return ge(operation);
-        } else if (op == PathType.DELEGATE){
+        } else if (op == PathType.DELEGATE) {
             return toQuery(operation.getArg(0));
         }
         throw new UnsupportedOperationException("Illegal operation " + operation);
     }
 
     private Query toTwoHandSidedQuery(Operation<?> operation, Occur occur) {
-        // TODO Flatten similar queries(?)
         Query lhs = toQuery(operation.getArg(0));
         Query rhs = toQuery(operation.getArg(1));
         BooleanQuery bq = new BooleanQuery();
-        bq.add(lhs, occur);
-        bq.add(rhs, occur);
+        bq.add(createBooleanClause(lhs, occur));
+        bq.add(createBooleanClause(rhs, occur));
         return bq;
+    }
+
+    /**
+     * If the query is a BooleanQuery and it contains a single Occur.MUST_NOT
+     * clause it will be returned as is. Otherwise it will be wrapped in a
+     * BooleanClause with the given Occur.
+     */
+    private BooleanClause createBooleanClause(Query query, Occur occur) {
+        if (query instanceof BooleanQuery) {
+            BooleanClause[] clauses = ((BooleanQuery) query).getClauses();
+            if (clauses.length == 1 && clauses[0].getOccur().equals(Occur.MUST_NOT)) {
+                return clauses[0];
+            }
+        }
+        return new BooleanClause(query, occur);
     }
 
     private Query like(Operation<?> operation) {
@@ -125,38 +149,39 @@ public class LuceneSerializer {
         }
         return new WildcardQuery(new Term(field, normalize(terms[0])));
     }
-    
+
     @SuppressWarnings("unchecked")
     private Query eq(Operation<?> operation) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
-        if (Number.class.isAssignableFrom(operation.getArg(1).getType())){
-            return new TermQuery(new Term(field, convertNumber(((Constant<Number>)operation.getArg(1)).getConstant())));
-        }else{
-            return eq(field, createTerms(operation.getArg(1)));    
+        if (Number.class.isAssignableFrom(operation.getArg(1).getType())) {
+            return new TermQuery(new Term(field, convertNumber(((Constant<Number>) operation
+                    .getArg(1)).getConstant())));
         }
+        return eq(field, createTerms(operation.getArg(1)));
     }
-    
-    private String convertNumber(Number number){
-	if (Integer.class.isInstance(number)){
-	    return NumericUtils.intToPrefixCoded(number.intValue());
-	}else if (Double.class.isInstance(number)){
-	    return NumericUtils.doubleToPrefixCoded(number.doubleValue());
-	}else if (Long.class.isInstance(number)){
-	    return NumericUtils.longToPrefixCoded(number.longValue());
-	}else if (Float.class.isInstance(number)){
-	    return NumericUtils.floatToPrefixCoded(number.floatValue());
-	}else if (Byte.class.isInstance(number)){
-	    return NumericUtils.intToPrefixCoded(number.intValue());
-	}else if (Short.class.isInstance(number)){
-	    return NumericUtils.intToPrefixCoded(number.intValue());
-	}else if (BigDecimal.class.isInstance(number)){
-	    return NumericUtils.doubleToPrefixCoded(number.doubleValue());	    
-	}else if (BigInteger.class.isInstance(number)){
-	    return NumericUtils.longToPrefixCoded(number.longValue());
-	}else{
-	    throw new IllegalArgumentException("Unsupported numeric type " + number.getClass().getName());
-	}
+
+    private String convertNumber(Number number) {
+        if (Integer.class.isInstance(number)) {
+            return NumericUtils.intToPrefixCoded(number.intValue());
+        } else if (Double.class.isInstance(number)) {
+            return NumericUtils.doubleToPrefixCoded(number.doubleValue());
+        } else if (Long.class.isInstance(number)) {
+            return NumericUtils.longToPrefixCoded(number.longValue());
+        } else if (Float.class.isInstance(number)) {
+            return NumericUtils.floatToPrefixCoded(number.floatValue());
+        } else if (Byte.class.isInstance(number)) {
+            return NumericUtils.intToPrefixCoded(number.intValue());
+        } else if (Short.class.isInstance(number)) {
+            return NumericUtils.intToPrefixCoded(number.intValue());
+        } else if (BigDecimal.class.isInstance(number)) {
+            return NumericUtils.doubleToPrefixCoded(number.doubleValue());
+        } else if (BigInteger.class.isInstance(number)) {
+            return NumericUtils.longToPrefixCoded(number.longValue());
+        } else {
+            throw new IllegalArgumentException("Unsupported numeric type "
+                    + number.getClass().getName());
+        }
     }
 
     private Query eq(String field, String[] terms) {
@@ -234,7 +259,8 @@ public class LuceneSerializer {
     private Query between(Operation<?> operation) {
         verifyArguments(operation);
         // TODO Phrase not properly supported
-        return range(toField(operation.getArg(0)), operation.getArg(1), operation.getArg(2), true, true);
+        return range(toField(operation.getArg(0)), operation.getArg(1), operation.getArg(2), true,
+                true);
     }
 
     private Query lt(Operation<?> operation) {
@@ -259,33 +285,34 @@ public class LuceneSerializer {
 
     @SuppressWarnings("unchecked")
     private Query range(String field, Expr<?> min, Expr<?> max, boolean minInc, boolean maxInc) {
-        if (min != null && Number.class.isAssignableFrom(min.getType()) || max != null && Number.class.isAssignableFrom(max.getType())) {
-            Class<? extends Number> numType = (Class)(min != null ? min.getType() : max.getType());
-            return numericRange((Class)numType, field, 
-        	    (Number)(min == null ? null : ((Constant) min).getConstant()), 
-        	    (Number)(max == null ? null : ((Constant) max).getConstant()),
-        	    minInc, maxInc);
-        } else {
-            return stringRange(field, min, max, minInc, maxInc);
+        if (min != null && Number.class.isAssignableFrom(min.getType()) || max != null
+                && Number.class.isAssignableFrom(max.getType())) {
+            Class<? extends Number> numType = (Class) (min != null ? min.getType() : max.getType());
+            return numericRange((Class) numType, field, (Number) (min == null ? null
+                    : ((Constant) min).getConstant()), (Number) (max == null ? null
+                    : ((Constant) max).getConstant()), minInc, maxInc);
         }
+        return stringRange(field, min, max, minInc, maxInc);
     }
-    
-    private <N extends Number> NumericRangeQuery<?> numericRange(Class<N> clazz, String field, N min, N max, boolean minInc, boolean maxInc){
-	if (clazz.equals(Integer.class)){
-	    return NumericRangeQuery.newIntRange(field, (Integer)min, (Integer)max, minInc, maxInc);
-	}else if (clazz.equals(Double.class)){
-	    return NumericRangeQuery.newDoubleRange(field, (Double)min, (Double)max, minInc, minInc);
-	}else if (clazz.equals(Float.class)){
-	    return NumericRangeQuery.newFloatRange(field, (Float)min, (Float)max, minInc, minInc);
-	}else if (clazz.equals(Long.class)){
-	    return NumericRangeQuery.newLongRange(field, (Long)min, (Long)max, minInc, minInc);
-	}else if (clazz.equals(Byte.class) || clazz.equals(Short.class)){
-	    return NumericRangeQuery.newIntRange(field, 
-		    min != null ? min.intValue() : null, 
-	            max != null ? max.intValue() : null, minInc, maxInc);
-	}else{
-	    throw new IllegalArgumentException("Unsupported numeric type " + clazz.getName());
-	}
+
+    private <N extends Number> NumericRangeQuery<?> numericRange(Class<N> clazz, String field,
+            N min, N max, boolean minInc, boolean maxInc) {
+        if (clazz.equals(Integer.class)) {
+            return NumericRangeQuery.newIntRange(field, (Integer) min, (Integer) max, minInc,
+                    maxInc);
+        } else if (clazz.equals(Double.class)) {
+            return NumericRangeQuery.newDoubleRange(field, (Double) min, (Double) max, minInc,
+                    minInc);
+        } else if (clazz.equals(Float.class)) {
+            return NumericRangeQuery.newFloatRange(field, (Float) min, (Float) max, minInc, minInc);
+        } else if (clazz.equals(Long.class)) {
+            return NumericRangeQuery.newLongRange(field, (Long) min, (Long) max, minInc, minInc);
+        } else if (clazz.equals(Byte.class) || clazz.equals(Short.class)) {
+            return NumericRangeQuery.newIntRange(field, min != null ? min.intValue() : null,
+                    max != null ? max.intValue() : null, minInc, maxInc);
+        } else {
+            throw new IllegalArgumentException("Unsupported numeric type " + clazz.getName());
+        }
     }
 
     private Query stringRange(String field, Expr<?> min, Expr<?> max, boolean minInc, boolean maxInc) {
@@ -293,9 +320,10 @@ public class LuceneSerializer {
             return new TermRangeQuery(field, null, normalize(createTerms(max)[0]), minInc, maxInc);
         } else if (max == null) {
             return new TermRangeQuery(field, normalize(createTerms(min)[0]), null, minInc, maxInc);
-        }else{
-            return new TermRangeQuery(field, normalize(createTerms(min)[0]), normalize(createTerms(max)[0]), minInc, maxInc);    
-        }        
+        } else {
+            return new TermRangeQuery(field, normalize(createTerms(min)[0]),
+                    normalize(createTerms(max)[0]), minInc, maxInc);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -319,31 +347,32 @@ public class LuceneSerializer {
         List<Expr<?>> arguments = operation.getArgs();
         for (int i = 1; i < arguments.size(); ++i) {
             if (!(arguments.get(i) instanceof Constant<?>)
-             && !(arguments.get(i) instanceof PhraseElement)
-             && !(arguments.get(i) instanceof TermElement)) {
-                throw new IllegalArgumentException("operand was of unsupported type " + arguments.get(i).getClass().getName());
+                    && !(arguments.get(i) instanceof PhraseElement)
+                    && !(arguments.get(i) instanceof TermElement)) {
+                throw new IllegalArgumentException("operand was of unsupported type "
+                        + arguments.get(i).getClass().getName());
             }
         }
     }
 
     private String[] createTerms(Expr<?> expr) {
-	return split(expr, expr.toString());
+        return split(expr, expr.toString());
     }
 
     private String[] createEscapedTerms(Expr<?> expr) {
         return split(expr, QueryParser.escape(expr.toString()));
     }
-    
-    private String[] split(Expr<?> expr, String str){
-	if (expr instanceof PhraseElement){
-	    return StringUtils.split(str);
-	}else if (expr instanceof TermElement){
-	    return new String[] {str};
-	}else if (splitTerms){
-	    return StringUtils.split(str);
-	}else{
-	    return new String[] {str};    
-	}        
+
+    private String[] split(Expr<?> expr, String str) {
+        if (expr instanceof PhraseElement) {
+            return StringUtils.split(str);
+        } else if (expr instanceof TermElement) {
+            return new String[] { str };
+        } else if (splitTerms) {
+            return StringUtils.split(str);
+        } else {
+            return new String[] { str };
+        }
     }
 
     private String normalize(String s) {
@@ -356,7 +385,8 @@ public class LuceneSerializer {
         } else if (expr instanceof QueryElement) {
             return ((QueryElement) expr).getQuery();
         }
-        throw new IllegalArgumentException("expr was of unsupported type " + expr.getClass().getName());
+        throw new IllegalArgumentException("expr was of unsupported type "
+                + expr.getClass().getName());
     }
 
     public Sort toSort(List<OrderSpecifier<?>> orderBys) {
@@ -368,9 +398,9 @@ public class LuceneSerializer {
             Class<?> type = order.getTarget().getType();
             boolean reverse = !order.isAscending();
             if (Number.class.isAssignableFrom(type)) {
-        	sorts.add(new SortField(toField(order.getTarget()),sortFields.get(type),reverse));
+                sorts.add(new SortField(toField(order.getTarget()), sortFields.get(type), reverse));
             } else {
-                sorts.add(new SortField(toField(order.getTarget()),Locale.ENGLISH, reverse));
+                sorts.add(new SortField(toField(order.getTarget()), Locale.ENGLISH, reverse));
             }
         }
         Sort sort = new Sort();

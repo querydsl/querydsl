@@ -56,7 +56,7 @@ public class LuceneSerializerTest {
     private PString rating;
     private PNumber<Integer> year;
     private PNumber<Double> gross;
-    
+
     private PNumber<Long> longField;
     private PNumber<Short> shortField;
     private PNumber<Byte> byteField;
@@ -82,7 +82,7 @@ public class LuceneSerializerTest {
         doc.add(new Field("rating", new StringReader("Good")));
         doc.add(new NumericField("year", Store.YES, true).setIntValue(1990));
         doc.add(new NumericField("gross", Store.YES, true).setDoubleValue(900.00));
-        
+
         doc.add(new NumericField("longField", Store.YES, true).setLongValue(1));
         doc.add(new NumericField("shortField", Store.YES, true).setIntValue(1));
         doc.add(new NumericField("byteField", Store.YES, true).setIntValue(1));
@@ -102,7 +102,7 @@ public class LuceneSerializerTest {
         year = entityPath.getNumber("year", Integer.class);
         rating = entityPath.getString("rating");
         gross = entityPath.getNumber("gross", Double.class);
-        
+
         longField = entityPath.getNumber("longField", Long.class);
         shortField = entityPath.getNumber("shortField", Short.class);
         byteField = entityPath.getNumber("byteField", Byte.class);
@@ -193,7 +193,7 @@ public class LuceneSerializerTest {
     public void eq_Numeric_Double() throws Exception {
         testQuery(gross.eq(900.00), "gross:" + GROSS_PREFIX_CODED, 1);
     }
-    
+
     @Test
     public void eq_Numeric() throws Exception{
 	testQuery(longField.eq(1l), "longField:" + LONG_PREFIX_CODED, 1);
@@ -254,7 +254,7 @@ public class LuceneSerializerTest {
 
     @Test
     public void eq_not_or_eq() throws Exception {
-        testQuery(title.eq("House").not().or(rating.eq("Good")), "(-title:house) rating:good", 1);
+        testQuery(title.eq("House").not().or(rating.eq("Good")), "-title:house rating:good", 1);
     }
 
     @Test
@@ -264,7 +264,7 @@ public class LuceneSerializerTest {
 
     @Test
     public void eq_and_eq_not_Does_Not_Find_Results_Because_Second_Expression_Finds_Nothing() throws Exception {
-        testQuery(rating.eq("Superb").and(title.eq("House").not()), "+rating:superb +(-title:house)", 0);
+        testQuery(rating.eq("Superb").and(title.eq("House").not()), "+rating:superb -title:house", 0);
     }
 
     @Test
@@ -279,7 +279,7 @@ public class LuceneSerializerTest {
 
     @Test
     public void ne_or_eq() throws Exception {
-        testQuery(title.ne("Jurassic Park").or(rating.eq("Lousy")), "(-title:\"jurassic park\") rating:lousy", 0);
+        testQuery(title.ne("Jurassic Park").or(rating.eq("Lousy")), "-title:\"jurassic park\" rating:lousy", 0);
     }
 
     @Test
@@ -350,7 +350,7 @@ public class LuceneSerializerTest {
 	testQuery(floatField.between((float)0.0,(float)2.0), "floatField:[0.0 TO 2.0]", 1);
     }
 
-    
+
     @Test
     public void between_Phrase() throws Exception {
         testQuery(title.between("Jurassic Park", "Kundun"), "title:[jurassic TO kundun]", 1);
@@ -534,12 +534,12 @@ public class LuceneSerializerTest {
     public void goe_Numeric_Double_Not_Found() throws Exception {
         testQuery(gross.goe(900.10), "gross:[900.1 TO *]", 0);
     }
-    
+
     @Test
     public void booleanBuilder() throws Exception{
 	testQuery(new BooleanBuilder(gross.goe(900.10)), "gross:[900.1 TO *]", 0);
     }
-    
+
 
     @Test
     @Ignore
