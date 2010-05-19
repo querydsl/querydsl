@@ -312,8 +312,5 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             super.visitOperation(type, operator, args);
         }
     }
-
-
-    
-    
+       
 }

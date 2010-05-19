@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 public class Item {
     @Id
     long id;
+    
     @ManyToOne
     Product product;
 }

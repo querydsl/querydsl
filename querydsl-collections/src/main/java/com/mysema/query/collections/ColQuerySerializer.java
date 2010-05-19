@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.Constant;
+import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
@@ -19,6 +20,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathType;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.Template;
+import com.mysema.query.types.expr.ExprConst;
 
 /**
  * ColQuerySerializer is a Serializer implementation for the Java language
@@ -128,6 +130,14 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
         } else {
             super.visitOperation(type, operator, args);
         }
+    }
+
+    @Override
+    public void visit(EConstructor<?> expr) {
+	handle(ExprConst.create(expr));
+	append(".newInstance(");
+	handle(", ", expr.getArgs());
+	append(")");
     }
 
 }

@@ -115,8 +115,7 @@ public class JPADerbySQLTest {
         // not yet supported
         SAnimal cat = new SAnimal("cat");
         
-        List<Cat> cats = query().from(cat).orderBy(cat.name.asc())
-            .list(EConstructor.create(Cat.class, cat.name, cat.id));
+        List<Cat> cats = query().from(cat).orderBy(cat.name.asc()).list(EConstructor.create(Cat.class, cat.name, cat.id));
         assertEquals(6, cats.size());
         for (Cat c : cats){
             System.out.println(c.getName());

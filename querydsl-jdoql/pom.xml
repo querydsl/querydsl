@@ -14,10 +14,10 @@
   <description>JDOQL support for querydsl</description>
   <packaging>jar</packaging>
 
-  <properties>    
-    <datanucleus.classDir>target/test-classes</datanucleus.classDir>
-    <jdo.version>2.3-eb</jdo.version>
-    <dn.version>1.1.5</dn.version>
+  <properties>   
+    <jdo.version>2.3-ec</jdo.version>
+    <dn.version>2.0.4</dn.version>
+	<dn.plugin.version>2.0.1</dn.plugin.version>
   </properties>
 
   <dependencies>
@@ -117,12 +117,13 @@
       <plugin>
         <groupId>org.datanucleus</groupId>
         <artifactId>maven-datanucleus-plugin</artifactId>
-        <version>1.1.4</version>
+        <version>${dn.plugin.version}</version>
         <configuration>
-          <mappingIncludes>com/mysema/query/jdoql/testdomain/*.class</mappingIncludes>
-          <log4jConfiguration>src/test/resources/log4j.properties</log4jConfiguration>
-          <verbose>true</verbose>
-          <props>src/test/resources/datanucleus.properties</props>
+        	<metadataDirectory>target/test-classes</metadataDirectory>
+            <metadataIncludes>com/mysema/query/jdoql/testdomain/*.class</metadataIncludes>
+            <log4jConfiguration>src/test/resources/log4j.properties</log4jConfiguration>
+            <verbose>true</verbose>
+            <props>src/test/resources/datanucleus.properties</props>
         </configuration>
         <executions>
           <execution>

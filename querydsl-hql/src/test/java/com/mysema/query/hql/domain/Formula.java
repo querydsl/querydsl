@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 public class Formula {
     @Id
     int id;
+    
     @ManyToOne
     Parameter parameter;
 

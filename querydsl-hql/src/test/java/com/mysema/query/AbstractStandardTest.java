@@ -6,6 +6,8 @@
 package com.mysema.query;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,9 +24,12 @@ import com.mysema.commons.lang.Pair;
 import com.mysema.query.hql.HQLQuery;
 import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.QCat;
+import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EList;
+import com.mysema.query.types.expr.QTuple;
 
 /**
  * @author tiwe
@@ -32,6 +37,13 @@ import com.mysema.query.types.expr.EList;
  */
 public abstract class AbstractStandardTest {
 
+    public static class Projection {
+	
+	public Projection(String str, Cat cat) {
+        }
+	
+    }
+    
     private static final QCat cat = QCat.cat;
     
     private static final QCat otherCat = new QCat("otherCat");
@@ -211,6 +223,35 @@ public abstract class AbstractStandardTest {
         // limit + offset
         List<String> names3 = Arrays.asList("Felix123","Mary123");
         assertEquals(names3, catQuery().orderBy(cat.name.asc()).limit(2).offset(2).list(cat.name));
+    }
+    
+    
+    @Test
+    public void tupleProjection(){
+	List<Tuple> tuples = query().from(cat).list(new QTuple(cat.name, cat));
+	assertFalse(tuples.isEmpty());
+	for (Tuple tuple : tuples){
+	    assertNotNull(tuple.get(cat.name));
+	    assertNotNull(tuple.get(cat));
+	}
+    }
+    
+    @Test
+    public void arrayProjection(){
+	List<String[]> results = query().from(cat).list(new EArrayConstructor<String>(String[].class, cat.name));
+	assertFalse(results.isEmpty());
+	for (String[] result : results){
+	    assertNotNull(result[0]);
+	}
+    }
+    
+    @Test
+    public void constructorProjection(){
+	List<Projection> projections = query().from(cat).list(EConstructor.create(Projection.class, cat.name, cat));
+	assertFalse(projections.isEmpty());
+	for (Projection projection : projections){
+	    assertNotNull(projection);
+	}
     }
         
 

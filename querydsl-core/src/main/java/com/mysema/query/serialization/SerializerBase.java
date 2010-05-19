@@ -12,18 +12,7 @@ import java.util.Map;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.BooleanBuilder;
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.Custom;
-import com.mysema.query.types.EArrayConstructor;
-import com.mysema.query.types.EConstructor;
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathType;
-import com.mysema.query.types.Template;
-import com.mysema.query.types.Templates;
-import com.mysema.query.types.Visitor;
+import com.mysema.query.types.*;
 
 /**
  * SerializerBase is a stub for Serializer implementations
@@ -32,10 +21,6 @@ import com.mysema.query.types.Visitor;
  * @version $Id$
  */
 public abstract class SerializerBase<S extends SerializerBase<S>> implements Visitor {
-
-    private static final String COMMA = ", ";
-
-    private static final String NEW = "new ";
 
     private final StringBuilder builder = new StringBuilder();
 
@@ -129,18 +114,10 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     @Override
-    public void visit(EArrayConstructor<?> oa) {
-        append(NEW).append(oa.getElementType().getName()).append("[]{");
-        handle(COMMA, oa.getArgs()).append("}");
-    }
-
-    @Override
     public void visit(EConstructor<?> expr) {
-        append(NEW).append(expr.getType().getName()).append("(");
-        handle(COMMA, expr.getArgs()).append(")");
+	handle(", ", expr.getArgs());
     }
     
-
     @Override
     public void visit(Operation<?> expr) {
         visitOperation(expr.getType(), expr.getOperator(), expr.getArgs());

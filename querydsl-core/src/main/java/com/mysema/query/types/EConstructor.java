@@ -6,6 +6,7 @@
 package com.mysema.query.types;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +23,6 @@ import com.mysema.query.types.expr.ESimple;
  * 
  * @param <D> Java type
  */
-// TODO : split into interface and implementation
 public class EConstructor<D> extends ESimple<D> {
     
     private static final long serialVersionUID = -602747921848073175L;
@@ -69,13 +69,12 @@ public class EConstructor<D> extends ESimple<D> {
         v.visit(this);        
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object obj) {
         if (obj == this){
             return true;
-        }else if (obj instanceof EConstructor){
-            EConstructor c = (EConstructor)obj;
+        }else if (obj instanceof EConstructor<?>){
+            EConstructor<?> c = (EConstructor<?>)obj;
             return Arrays.equals(parameterTypes, c.parameterTypes)
                 && args.equals(c.args)
                 && getType().equals(c.getType());
@@ -90,16 +89,6 @@ public class EConstructor<D> extends ESimple<D> {
     }
     
     /**
-     * Get the constructor invocation argument with the given index
-     * 
-     * @param index
-     * @return
-     */
-    public final Expr<?> getArg(int index) {
-        return args.get(index);
-    }
-    
-    /**
      * Get the constructor invocation arguments
      * 
      * @return
@@ -107,20 +96,26 @@ public class EConstructor<D> extends ESimple<D> {
     public final List<Expr<?>> getArgs() {
         return args;
     }
-    
+        
     /**
-     * Returns the "real" constructor that matches the Constructor expression
+     * Create a projection with the given arguments
      * 
+     * @param args
      * @return
      */
-    @SuppressWarnings("unchecked")
-    public Constructor<D> getJavaConstructor() {
+    public D newInstance(Object... args){
         try {
-            return (Constructor<D>) getType().getConstructor(parameterTypes);
+            return (D) getType().getConstructor(parameterTypes).newInstance(args);
         } catch (SecurityException e) {
            throw new ExprException(e.getMessage(), e);
         } catch (NoSuchMethodException e) {
            throw new ExprException(e.getMessage(), e);
+        } catch (InstantiationException e) {
+            throw new ExprException(e.getMessage(), e);
+        } catch (IllegalAccessException e) {
+            throw new ExprException(e.getMessage(), e);
+        } catch (InvocationTargetException e) {
+            throw new ExprException(e.getMessage(), e);
         }
     }
 

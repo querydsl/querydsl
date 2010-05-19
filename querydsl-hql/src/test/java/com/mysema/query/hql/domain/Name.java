@@ -14,6 +14,7 @@ import javax.persistence.Id;
 @Entity
 public class Name {
     String firstName, lastName, nickName;
+    
     @Id
     long id;
 }

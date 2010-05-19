@@ -9,6 +9,8 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The Class Document.
@@ -19,5 +21,7 @@ public class Document {
     int id;
     
     String name;
+    
+    @Temporal(TemporalType.DATE)
     Date validTo;
 }

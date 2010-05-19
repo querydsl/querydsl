@@ -23,7 +23,11 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.support.ProjectableQuery;
+import com.mysema.query.support.QueryMixin;
+import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.expr.EArrayConstructor;
+import com.mysema.query.types.expr.QTuple;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.util.ResultIterator;
 
@@ -56,7 +60,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
             @Nullable PersistenceManager persistenceManager,
             JDOQLTemplates templates, 
             QueryMetadata metadata, boolean detach) {
-        super(new JDOQLQueryMixin<Q>(metadata));
+        super(new QueryMixin<Q>(metadata));
         this.queryMixin.setSelf((Q) this);
         this.templates = templates;
         this.persistenceManager = persistenceManager;
@@ -92,6 +96,17 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         Query query = persistenceManager.newQuery(serializer.toString());
         orderedConstants = serializer.getConstants();
         queries.add(query);               
+        
+        if (!forCount){
+            List<? extends Expr<?>> projection = queryMixin.getMetadata().getProjection();
+            Class<?> exprType = projection.get(0).getClass();
+            if (exprType.equals(QTuple.class)){
+        	query.setResultClass(JDOTuple.class);
+            } else if (exprType.equals(EConstructor.class)){
+            	query.setResultClass(projection.get(0).getType());
+            }
+        }
+        
         return query;
     }
     

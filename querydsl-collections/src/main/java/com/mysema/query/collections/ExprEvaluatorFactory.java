@@ -19,6 +19,7 @@ import org.apache.commons.lang.ClassUtils;
 
 import com.mysema.codegen.Evaluator;
 import com.mysema.codegen.EvaluatorFactory;
+import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 
 /**
@@ -76,6 +77,11 @@ public class ExprEvaluatorFactory {
                 types[i] = ClassUtils.wrapperToPrimitive(types[i]);
             }
         }
+        
+        if (projection instanceof EConstructor<?>){
+            javaSource = "("+com.mysema.codegen.ClassUtils.getName(projection.getType())+")(" + javaSource+")";
+        }
+        
         return factory.createEvaluator(javaSource, projection.getType(), names, types, constants);        
     }
 

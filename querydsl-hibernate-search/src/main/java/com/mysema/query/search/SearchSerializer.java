@@ -16,11 +16,7 @@ import com.mysema.query.types.Path;
  */
 public class SearchSerializer extends LuceneSerializer{
 
-    public static final SearchSerializer DEFAULT = new SearchSerializer();
-    
-    public SearchSerializer() {
-        super(false, true);
-    }
+    public static final SearchSerializer DEFAULT = new SearchSerializer(false,true);
     
     public SearchSerializer(boolean lowerCase, boolean splitTerms){
         super(lowerCase, splitTerms);

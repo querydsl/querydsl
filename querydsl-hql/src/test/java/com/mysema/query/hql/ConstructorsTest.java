@@ -5,6 +5,7 @@
  */
 package com.mysema.query.hql;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.types.EConstructor;
@@ -26,6 +27,7 @@ public class ConstructorsTest extends AbstractQueryTest{
     }
     
     @Test
+    @Ignore
     public void testConstructors() {
         EConstructor<com.mysema.query.hql.domain.Cat> c = 
                 new EConstructor<com.mysema.query.hql.domain.Cat>(

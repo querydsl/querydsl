@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.IndexColumn;
@@ -19,10 +21,14 @@ import org.hibernate.annotations.IndexColumn;
 @Entity
 public class Foo {
     String bar;
+    
     @Id
     int id;
+    
     @CollectionOfElements
     @IndexColumn(name = "_index")
     List<String> names;
+    
+    @Temporal(TemporalType.DATE)
     java.util.Date startDate;
 }

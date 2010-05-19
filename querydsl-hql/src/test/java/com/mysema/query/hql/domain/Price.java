@@ -13,10 +13,13 @@ import javax.persistence.ManyToOne;
  * The Class Price.
  */
 @Entity
-public class Price {
+public class Price{
     long amount;
+    
     @Id
     long id;
+    
     @ManyToOne
     Product product;
+
 }

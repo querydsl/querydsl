@@ -41,37 +41,31 @@ public class EConstructorTest {
     public void test_Constructor(){
         ENumber<Long> longVal = ENumberConst.create(1l);
         EString stringVal = EStringConst.create("");
-        new EConstructor<Projection>(Projection.class, new Class[]{long.class, String.class}, longVal, stringVal)
-            .getJavaConstructor();
+        new EConstructor<Projection>(Projection.class, new Class[]{long.class, String.class}, longVal, stringVal).newInstance(0l,"");
     }
         
     @Test
     public void test_create(){
         ENumber<Long> longVal = ENumberConst.create(1l);
         EString stringVal = EStringConst.create("");
-        Constructor<?> c = EConstructor.create(Projection.class, longVal, stringVal).getJavaConstructor();
-        assertEquals(long.class, c.getParameterTypes()[0]);
-        assertEquals(String.class, c.getParameterTypes()[1]);
+        EConstructor.create(Projection.class, longVal, stringVal).newInstance(0l,"");        
     }
     
     @Test
     public void test_create2(){
         ENumber<Long> longVal = ENumberConst.create(1l);
-        Constructor<?> c = EConstructor.create(Projection.class, longVal).getJavaConstructor();
-        assertEquals(Long.class, c.getParameterTypes()[0]);
+        EConstructor.create(Projection.class, longVal).newInstance(0l);        
     }
     
     @Test
     public void test_create3(){
-        Constructor<?> c = EConstructor.create(Projection.class).getJavaConstructor();
-        assertEquals(0, c.getParameterTypes().length);
+        EConstructor.create(Projection.class).newInstance();
     }
     
     @Test
     public void test_create4(){
         EString stringVal = EStringConst.create("");
-        Constructor<?> c = EConstructor.create(Projection.class, stringVal).getJavaConstructor();
-        assertEquals(CharSequence.class, c.getParameterTypes()[0]);
+        EConstructor.create(Projection.class, stringVal).newInstance("");
     }
     
 }

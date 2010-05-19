@@ -7,6 +7,8 @@ package com.mysema.query.hql.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Type;
 
@@ -17,6 +19,7 @@ import org.hibernate.annotations.Type;
 public class Animal {
     private boolean alive;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private java.util.Date birthdate;
 
     private int weight, toes;
@@ -27,6 +30,7 @@ public class Animal {
 
     private Color color;
 
+//    @Temporal(TemporalType.DATE)
     private java.sql.Date dateField;
 
     @Id

@@ -7,14 +7,12 @@ package com.mysema.query.collections;
 
 import org.junit.Test;
 
-import com.mysema.query.animal.QCat;
-
 
 public class ConstructorTest {
     
     @Test
     public void test(){
-        QCat.create(QCat.cat.name, QCat.cat.id).getJavaConstructor();
+//        QCat.create(QCat.cat.name, QCat.cat.id).getJavaConstructor();
     }
 
 }

@@ -15,5 +15,6 @@ import javax.persistence.Id;
 public class Location {
     @Id
     long id;
+    
     String name;
 }

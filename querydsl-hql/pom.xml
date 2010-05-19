@@ -66,8 +66,15 @@
       <artifactId>querydsl-sql</artifactId>
       <version>${project.parent.version}</version>
     </dependency>    
-    
+	
     <!-- test -->
+	<dependency>
+	  <groupId>org.eclipse.persistence</groupId>
+	  <artifactId>eclipselink</artifactId>
+	  <version>2.1.0-M7</version>
+	  <scope>test</scope>
+    </dependency>
+		
     <dependency>
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
@@ -113,6 +120,11 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
+	
+    <repository>
+      <id>EclipseLink Repo</id>
+      <url>http://www.eclipse.org/downloads/download.php?r=1&amp;nf=1&amp;file=/rt/eclipselink/maven.repo</url>
+    </repository>    	
   </repositories>  
 
   <build>

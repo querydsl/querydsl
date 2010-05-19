@@ -401,5 +401,4 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
     }
 
-
 }

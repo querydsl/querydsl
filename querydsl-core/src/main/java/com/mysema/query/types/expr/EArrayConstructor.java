@@ -3,9 +3,14 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.types;
+package com.mysema.query.types.expr;
+
+import java.lang.reflect.Array;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.EConstructor;
+import com.mysema.query.types.Expr;
+import com.mysema.query.types.Visitor;
 
 /**
  * EArrayConstructor extends {@link EConstructor} to represent array initializers
@@ -14,7 +19,6 @@ import com.mysema.commons.lang.Assert;
  * 
  * @param <D> component type
  */
-// TODO : split into interface and implementation
 public class EArrayConstructor<D> extends EConstructor<D[]> {
     
     private static final long serialVersionUID = 8667880104290226505L;
@@ -33,5 +37,17 @@ public class EArrayConstructor<D> extends EConstructor<D[]> {
     
     public void accept(Visitor v){
         v.visit(this);
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public D[] newInstance(Object... args){
+	if (args.getClass().getComponentType().equals(elementType)){
+	    return (D[])args;
+	}else{
+	    D[] rv = (D[]) Array.newInstance(elementType, args.length);
+	    System.arraycopy(args, 0, rv, 0, args.length);
+	    return rv;
+	}
     }
 }

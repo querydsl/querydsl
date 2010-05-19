@@ -5,8 +5,6 @@
  */
 package com.mysema.query.types;
 
-
-
 /**
  * ToStringVisitor is used for toString() serialization in {@link Expr} implementations.
  * 
@@ -41,19 +39,6 @@ public final class ToStringVisitor implements Visitor{
     }
 
     @Override
-    public void visit(EArrayConstructor<?> e) {
-        StringBuilder builder = new StringBuilder("[");
-        for (int i = 0; i < e.getArgs().size(); i++) {
-            if (i > 0){
-                builder.append(", ");
-            }                
-            builder.append(e.getArg(i));
-        }
-        builder.append("]");
-        toString = builder.toString();
-    }
-
-    @Override
     public void visit(Constant<?> e) {
         toString = e.getConstant().toString();
     }
@@ -62,11 +47,13 @@ public final class ToStringVisitor implements Visitor{
     public void visit(EConstructor<?> e) {
         StringBuilder builder = new StringBuilder();
         builder.append("new ").append(e.getType().getSimpleName()).append("(");
-        for (int i = 0; i < e.getArgs().size(); i++) {
-            if (i > 0){
-                builder.append(", ");
-            }                
-            builder.append(e.getArg(i));
+        boolean first = true;
+        for (Expr<?> arg : e.getArgs()){
+            if (!first){
+        	builder.append(", ");
+            }
+            builder.append(arg);
+            first = false;
         }
         builder.append(")");
         toString = builder.toString();

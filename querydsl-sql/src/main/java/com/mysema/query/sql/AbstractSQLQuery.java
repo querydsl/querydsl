@@ -202,15 +202,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return iterateMultiple();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <RT> CloseableIterator<RT> iterate(Expr<RT> expr) {
         queryMixin.addToProjection(expr);
-        if (expr.getType().isArray()) {
-            return (CloseableIterator<RT>) iterateMultiple();
-        } else {
-            return iterateSingle(expr);
-        }
+        return iterateSingle(expr);
     }
 
     private CloseableIterator<Object[]> iterateMultiple() {
@@ -362,9 +357,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         throws InstantiationException, IllegalAccessException, InvocationTargetException{
         Object[] args = new Object[c.getArgs().size()];
         for (int i = 0; i < args.length; i++) {
-            args[i] = get(rs, offset + i + 1, c.getArg(i).getType());
+            args[i] = get(rs, offset + i + 1, c.getArgs().get(i).getType());
         }
-        return c.getJavaConstructor().newInstance(args);
+        return c.newInstance(args);
     }
 
     public Q on(EBoolean... conditions) {

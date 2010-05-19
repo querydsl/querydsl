@@ -20,8 +20,10 @@ import javax.persistence.OneToMany;
 public class Store {
     @OneToMany
     List<Customer> customers;
+    
     @Id
     long id;
+    
     @ManyToOne
     Location location;
 }

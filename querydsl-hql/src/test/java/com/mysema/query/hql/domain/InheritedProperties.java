@@ -12,5 +12,6 @@ import javax.persistence.Id;
 public class InheritedProperties extends Superclass {
     @Id
     long id;
+    
     String classProperty;
 }

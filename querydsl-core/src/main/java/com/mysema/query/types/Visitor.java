@@ -7,6 +7,7 @@ package com.mysema.query.types;
 
 
 
+
 /**
  * Visitor defines a Visitor signature for {@link Expr} instances.
  * 
@@ -24,11 +25,6 @@ public interface Visitor {
      * @param expr
      */
     void visit(Custom<?> expr);
-    
-    /**
-     * @param expr
-     */
-    void visit(EArrayConstructor<?> expr);
 
     /**
      * @param expr

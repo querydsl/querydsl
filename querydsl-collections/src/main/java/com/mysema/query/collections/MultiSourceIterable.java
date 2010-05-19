@@ -16,10 +16,10 @@ import org.apache.commons.collections15.IteratorUtils;
 import com.mysema.codegen.Evaluator;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.EArrayConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.util.MultiIterator;
 
 /**

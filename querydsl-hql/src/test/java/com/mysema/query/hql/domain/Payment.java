@@ -18,7 +18,9 @@ import javax.persistence.OneToMany;
 public class Payment extends Item {
     @ManyToOne
     Status currentStatus, status;
+    
     PaymentStatus name;
+    
     @OneToMany
     Collection<StatusChange> statusChanges;
 }

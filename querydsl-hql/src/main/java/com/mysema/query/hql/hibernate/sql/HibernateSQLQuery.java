@@ -22,6 +22,7 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.hql.AbstractSQLQuery;
 import com.mysema.query.hql.HibernateSQLSerializer;
+import com.mysema.query.hql.hibernate.ConstructorTransformer;
 import com.mysema.query.hql.hibernate.DefaultSessionHolder;
 import com.mysema.query.hql.hibernate.HibernateQuery;
 import com.mysema.query.hql.hibernate.HibernateUtil;
@@ -107,7 +108,7 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
         // set result transformer, if projection is an EConstructor instance
         List<? extends Expr<?>> projection = queryMixin.getMetadata().getProjection();
         if (projection.size() == 1 && projection.get(0) instanceof EConstructor){
-            query.setResultTransformer(new ConstructorResultTransformer((EConstructor<?>) projection.get(0)));
+            query.setResultTransformer(new ConstructorTransformer((EConstructor<?>) projection.get(0)));
         }
         if (fetchSize > 0){
             query.setFetchSize(fetchSize);

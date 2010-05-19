@@ -19,6 +19,7 @@ import org.hibernate.annotations.CollectionOfElements;
 public class Show {
     @CollectionOfElements
     Map<String, String> acts;
+    
     @Id
     int id;
 }

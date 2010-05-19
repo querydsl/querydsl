@@ -7,6 +7,8 @@ package com.mysema.query.hql.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The Class StatusChange.
@@ -15,5 +17,7 @@ import javax.persistence.Id;
 public class StatusChange {
     @Id
     long id;
+    
+    @Temporal(TemporalType.TIMESTAMP)
     java.util.Date timeStamp;
 }

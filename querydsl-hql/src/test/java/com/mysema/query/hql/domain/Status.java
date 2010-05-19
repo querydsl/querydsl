@@ -15,5 +15,6 @@ import javax.persistence.Id;
 public class Status {
     @Id
     long id;
+    
     String name;
 }

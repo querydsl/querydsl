@@ -21,7 +21,19 @@
      <property name="hibernate.hbm2ddl.auto" value="update"/>
    </properties>
   </persistence-unit>
-
+  
+    <persistence-unit name="derby-eclipselink" transaction-type="RESOURCE_LOCAL">
+      <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+      <exclude-unlisted-classes>false</exclude-unlisted-classes>
+      <properties>
+        <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+        <property name="javax.persistence.jdbc.url" value="jdbc:derby:target/derbydb2;create=true"/>
+  	    <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+		<property name="eclipselink.ddl-generation.output-mode" value="database" />
+		
+      </properties>
+    </persistence-unit>
+ 
   <persistence-unit name="hsqldb">
    <properties>
      <property name="hibernate.archive.autodetection" value="class" />
@@ -47,5 +59,18 @@
      <property name="hibernate.hbm2ddl.auto" value="update"/>
    </properties>
   </persistence-unit>
+  
+    <persistence-unit name="mysql-eclipselink" transaction-type="RESOURCE_LOCAL">
+      <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+      <exclude-unlisted-classes>false</exclude-unlisted-classes>
+      <properties>
+        <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+        <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/querydsl"/>
+		<property name="javax.persistence.jdbc.user" value="root"/>
+		
+  	    <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+		<property name="eclipselink.ddl-generation.output-mode" value="database" />		
+      </properties>
+    </persistence-unit>  
   
 </persistence>

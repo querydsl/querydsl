@@ -5,6 +5,9 @@
  */
 package com.mysema.query;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,6 +17,7 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.commons.lang.Pair;
@@ -22,10 +26,20 @@ import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QProduct;
 import com.mysema.query.jdoql.testdomain.QStore;
 import com.mysema.query.jdoql.testdomain.Store;
+import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.QTuple;
 
 public class JDOQLQueryStandardTest extends AbstractJDOTest {
+    
+    public static class Projection {
+	
+	public Projection(String str) {
+        }
+	
+    }
     
     private static final Date publicationDate;
     
@@ -125,6 +139,38 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
         standardTest.report();        
     }
     
-
+    @Test
+    public void tupleProjection(){
+	List<Tuple> tuples = query().from(product).list(new QTuple(product.name, product.price));
+	assertFalse(tuples.isEmpty());
+	for (Tuple tuple : tuples){
+	    assertNotNull(tuple);
+	    assertNotNull(tuple.get(product.name));
+	    assertNotNull(tuple.get(product.price));
+	    assertNotNull(tuple.get(0,String.class));
+	    assertNotNull(tuple.get(1,Double.class));
+	}
+    }
+    
+    @Test
+    @Ignore
+    public void arrayProjection(){
+	// typed array not supported
+	List<String[]> results = query().from(store).list(new EArrayConstructor<String>(String[].class, store.name));
+	assertFalse(results.isEmpty());
+	for (String[] result : results){
+	    assertNotNull(result);
+	    assertNotNull(result[0]);
+	}
+    }
+    
+    @Test
+    public void constructorProjection(){
+	List<Projection> projections = query().from(store).list(EConstructor.create(Projection.class, store.name));
+	assertFalse(projections.isEmpty());
+	for (Projection projection : projections){
+	    assertNotNull(projection);
+	}
+    }
     
 }

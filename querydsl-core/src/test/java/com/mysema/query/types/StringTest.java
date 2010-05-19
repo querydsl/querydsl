@@ -17,6 +17,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import com.mysema.query.types.expr.EArrayConstructor;
+
 
 
 /**
@@ -85,7 +87,7 @@ public class StringTest {
         
         // EArrayConstructor
         EArrayConstructor<SomeType> someTypeArray = new EArrayConstructor<SomeType>(SomeType[].class,$(alias));
-        assertEquals("[alias]", someTypeArray.toString());
+        assertEquals("new SomeType[](alias)", someTypeArray.toString());
     }
     
     /**

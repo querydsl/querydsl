@@ -56,10 +56,10 @@ public class QueryProjectionTest {
     
     @Test
     public void entityCase(){
-        QQueryProjectionTest_EntityWithProjection.create(ExprConst.create(0l)).getJavaConstructor();
-        QQueryProjectionTest_EntityWithProjection.create(EStringConst.create("")).getJavaConstructor();
-        QQueryProjectionTest_EntityWithProjection.create(ENumberConst.create(0l), EStringConst.create("")).getJavaConstructor();
-        QQueryProjectionTest_EntityWithProjection.create(EStringConst.create(""), EStringConst.create("")).getJavaConstructor();
+        QQueryProjectionTest_EntityWithProjection.create(ExprConst.create(0l)).newInstance(0l);
+        QQueryProjectionTest_EntityWithProjection.create(EStringConst.create("")).newInstance("");
+        QQueryProjectionTest_EntityWithProjection.create(ENumberConst.create(0l), EStringConst.create("")).newInstance(0l,"");
+        QQueryProjectionTest_EntityWithProjection.create(EStringConst.create(""), EStringConst.create("")).newInstance("","");
     }
     
     public static class DTOWithProjection {
@@ -106,10 +106,10 @@ public class QueryProjectionTest {
         
     @Test
     public void dtoCase() throws SecurityException, NoSuchMethodException{   
-        new QQueryProjectionTest_DTOWithProjection(ExprConst.<Long>create(0l)).getJavaConstructor();
-        new QQueryProjectionTest_DTOWithProjection(EStringConst.create("")).getJavaConstructor();
-        new QQueryProjectionTest_DTOWithProjection(ENumberConst.create(0l), EStringConst.create("")).getJavaConstructor();
-        new QQueryProjectionTest_DTOWithProjection(EStringConst.create(""), EStringConst.create("")).getJavaConstructor();
+        new QQueryProjectionTest_DTOWithProjection(ExprConst.<Long>create(0l)).newInstance(0l);
+        new QQueryProjectionTest_DTOWithProjection(EStringConst.create("")).newInstance("");
+        new QQueryProjectionTest_DTOWithProjection(ENumberConst.create(0l), EStringConst.create("")).newInstance(0l,"");
+        new QQueryProjectionTest_DTOWithProjection(EStringConst.create(""), EStringConst.create("")).newInstance("","");
         
     }
 }

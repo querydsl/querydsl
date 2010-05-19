@@ -41,12 +41,15 @@ import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QIdName;
+import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.Coalesce;
+import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.ENumberConst;
+import com.mysema.query.types.expr.QTuple;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.query.ObjectSubQuery;
@@ -54,6 +57,13 @@ import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.Label;
 
 public abstract class SelectBaseTest extends AbstractBaseTest{
+    
+    public static class Projection {
+	
+	public Projection(String str, String str2) {
+        }
+	
+    }
     
     private QueryExecution standardTest = new QueryExecution(Module.SQL, getClass().getAnnotation(Label.class).value()){        
         @Override
@@ -538,5 +548,33 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         
         query().from(employee).where(sq1.exists().not()).count();
     }
-
+    
+    @Test
+    public void tupleProjection(){
+	List<Tuple> tuples = query().from(employee).list(new QTuple(employee.firstname, employee.lastname));
+	assertFalse(tuples.isEmpty());
+	for (Tuple tuple : tuples){
+	    assertNotNull(tuple.get(employee.firstname));
+	    assertNotNull(tuple.get(employee.lastname));
+	}
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void arrayProjection(){
+	List<String[]> results = query().from(employee).list(new EArrayConstructor<String>(String[].class, employee.firstname));
+	assertFalse(results.isEmpty());
+	for (String[] result : results){
+	    assertNotNull(result[0]);
+	}
+    }
+    
+    @Test
+    public void constructorProjection(){
+	List<Projection> projections =query().from(employee).list(EConstructor.create(Projection.class, employee.firstname, employee.lastname));
+	assertFalse(projections.isEmpty());
+	for (Projection projection : projections){
+	    assertNotNull(projection);
+	}
+    }
 }
