@@ -21,6 +21,7 @@
     <failIfNoTests>false</failIfNoTests>
     <svn.path>scm:svn:https://source.mysema.com/svn/mysema</svn.path>
     <path.suffix>projects/querydsl/trunk/${project.artifactId}</path.suffix>
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     
     <!-- deps -->
     <derby.version>10.5.3.0_1</derby.version>
