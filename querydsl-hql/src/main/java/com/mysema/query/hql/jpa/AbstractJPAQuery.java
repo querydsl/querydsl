@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.hibernate.ejb.HibernateQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,8 +22,6 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.hql.HQLQueryBase;
 import com.mysema.query.hql.HQLTemplates;
-import com.mysema.query.hql.hibernate.ConstructorTransformer;
-import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 
 /**
@@ -56,7 +53,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
         reset();
         return (Long) query.getSingleResult();
     }
-    
+      
     /**
      * Expose the original JPA query for the given projection 
      * 
@@ -111,16 +108,16 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
         
 
         // set transformer, if necessary
-        List<? extends Expr<?>> projection = getMetadata().getProjection();
-        if (projection.size() == 1){
-            Expr<?> expr = projection.get(0);
-            if (expr instanceof EConstructor<?>  && !(expr.getClass().equals(EConstructor.class))){
-        	if (query instanceof HibernateQuery){
-        	    ((HibernateQuery)query).getHibernateQuery().setResultTransformer(
-        		    new ConstructorTransformer((EConstructor<?>) projection.get(0)));
-        	}
-            }
-        }
+//        List<? extends Expr<?>> projection = getMetadata().getProjection();
+//        if (projection.size() == 1){
+//            Expr<?> expr = projection.get(0);
+//            if (expr instanceof EConstructor<?>  && !(expr.getClass().equals(EConstructor.class))){
+//        	if (query instanceof HibernateQuery){
+//        	    ((HibernateQuery)query).getHibernateQuery().setResultTransformer(
+//        		    new ConstructorTransformer((EConstructor<?>) projection.get(0)));
+//        	}
+//            }
+//        }
         
         return query;
     }

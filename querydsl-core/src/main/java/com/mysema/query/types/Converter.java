@@ -37,6 +37,13 @@ interface Converter<S extends Expr<?>, T extends Expr<?>>{
         } 
     };
     
+    Converter<EString,EString> toStartsWithViaLikeLower = new Converter<EString,EString>(){
+        @Override
+        public EString convert(EString arg) {
+            return EStringEscape.escapeForLike(arg).append("%").lower();
+        } 
+    };
+    
     Converter<EString,EString> toEndsWithViaLike = new Converter<EString,EString>(){
         @Override
         public EString convert(EString arg) {
@@ -44,10 +51,24 @@ interface Converter<S extends Expr<?>, T extends Expr<?>>{
         } 
     };
     
+    Converter<EString,EString> toEndsWithViaLikeLower = new Converter<EString,EString>(){
+        @Override
+        public EString convert(EString arg) {
+            return EStringEscape.escapeForLike(arg).prepend("%").lower();
+        } 
+    };
+    
     Converter<EString,EString> toContainsViaLike = new Converter<EString,EString>(){
         @Override
         public EString convert(EString arg) {
             return EStringEscape.escapeForLike(arg).prepend("%").append("%");
+        }
+    };
+    
+    Converter<EString,EString> toContainsViaLikeLower = new Converter<EString,EString>(){
+        @Override
+        public EString convert(EString arg) {
+            return EStringEscape.escapeForLike(arg).prepend("%").append("%").lower();
         }
     };
     

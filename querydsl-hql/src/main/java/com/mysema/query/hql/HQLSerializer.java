@@ -35,7 +35,7 @@ import com.mysema.util.MathUtils;
  * @author tiwe
  * @version $Id$
  */
-public final class HQLSerializer extends SerializerBase<HQLSerializer> {
+public class HQLSerializer extends SerializerBase<HQLSerializer> {
 
     private static final Set<Operator<?>> NUMERIC = new HashSet<Operator<?>>(Arrays.<Operator<?>>asList(
             Ops.ADD, Ops.SUB, Ops.MULT, Ops.DIV,
@@ -64,7 +64,7 @@ public final class HQLSerializer extends SerializerBase<HQLSerializer> {
     
     private static final String SELECT = "select ";
     
-    private static final String SELECT_COUNT_ALL = "select count(*)\n";
+    private static final String SELECT_COUNT = "select count(\n";
     
     private static final String SELECT_DISTINCT = "select distinct ";
     
@@ -145,16 +145,16 @@ public final class HQLSerializer extends SerializerBase<HQLSerializer> {
             
         }else if (forCountRow) {
             if (!metadata.isDistinct()){
-                append(SELECT_COUNT_ALL);
+                append(SELECT_COUNT);
             }else{
-                append(SELECT_COUNT_DISTINCT);
-                if(!select.isEmpty()){
-                    handle(COMMA, select);    
-                }else{
-                    handle(joins.get(0).getTarget());
-                }                
-                append(")\n"); 
+                append(SELECT_COUNT_DISTINCT);                
             }
+            if(!select.isEmpty()){
+                handle(COMMA, select);    
+            }else{
+                handle(joins.get(0).getTarget());
+            }                
+            append(")\n"); 
             
         } else if (!select.isEmpty()) {
             if (!metadata.isDistinct()) {

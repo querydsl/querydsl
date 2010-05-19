@@ -236,6 +236,7 @@ public abstract class AbstractStandardTest {
 	}
     }
     
+    @SuppressWarnings("unchecked")
     @Test
     public void arrayProjection(){
 	List<String[]> results = query().from(cat).list(new EArrayConstructor<String>(String[].class, cat.name));

@@ -45,7 +45,7 @@ public abstract class HQLQueryBase<Q extends HQLQueryBase<Q>> extends Projectabl
         this.templates = templates;
     }
 
-    private String buildQueryString(boolean forCountRow) {
+    protected String buildQueryString(boolean forCountRow) {
         if (queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("No joins given");
         }
@@ -173,6 +173,10 @@ public abstract class HQLQueryBase<Q extends HQLQueryBase<Q>> extends Projectabl
 
     public Q with(EBoolean... conditions){
         return queryMixin.with(conditions);
+    }
+    
+    protected void setConstants(Map<Object, String> constants) {
+        this.constants = constants;
     }
     
     protected String toCountRowsString() {

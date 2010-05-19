@@ -74,11 +74,11 @@ public final class HQLTemplates extends Templates {
         add(Ops.STRING_IS_EMPTY, "length({0}) = 0");
         
         add(Ops.STRING_CONTAINS, "{0} like {%1%}");
-        add(Ops.STRING_CONTAINS_IC, "{0l} like lower({%1%})");
+        add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%}");
         add(Ops.ENDS_WITH, "{0} like {%1}");
-        add(Ops.ENDS_WITH_IC, "{0l} like lower({%1})");
+        add(Ops.ENDS_WITH_IC, "{0l} like {%%1}");
         add(Ops.STARTS_WITH, "{0} like {1%}");
-        add(Ops.STARTS_WITH_IC, "{0l} like lower({1%})");        
+        add(Ops.STARTS_WITH_IC, "{0l} like {1%%}");        
         add(Ops.INDEX_OF, "locate({1},{0})-1");
         add(Ops.INDEX_OF_2ARGS, "locate({1},{0},{2}+1)-1");
         
