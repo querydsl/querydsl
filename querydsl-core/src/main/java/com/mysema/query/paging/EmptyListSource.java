@@ -30,4 +30,9 @@ public class EmptyListSource<T> implements ListSource<T> {
         return 0l;
     }
 
+    @Override
+    public T getResult(int index) {
+        return null;
+    }
+
 }

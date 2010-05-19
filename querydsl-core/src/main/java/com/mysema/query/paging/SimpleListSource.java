@@ -42,4 +42,9 @@ public class SimpleListSource<T> implements ListSource<T> {
         return list.size();
     }
 
+    @Override
+    public T getResult(int index) {
+        return list.get(index);
+    }
+
 }

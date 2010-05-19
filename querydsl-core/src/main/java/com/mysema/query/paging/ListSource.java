@@ -38,4 +38,9 @@ public interface ListSource<T>{
      */
     List<T> getResults(int fromIndex, int toIndex);
 
+    /**
+     * @param index
+     * @return
+     */
+    T getResult(int index);
 }
