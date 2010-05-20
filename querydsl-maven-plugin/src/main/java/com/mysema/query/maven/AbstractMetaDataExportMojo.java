@@ -5,6 +5,7 @@
  */
 package com.mysema.query.maven;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -81,7 +82,12 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             project.addCompileSourceRoot(targetFolder);    
         }
         
-        MetaDataExporter exporter = new MetaDataExporter(namePrefix, packageName, schemaPattern, tableNamePattern, targetFolder);
+        MetaDataExporter exporter = new MetaDataExporter(
+        	namePrefix, 
+        	packageName, 
+        	schemaPattern,
+        	tableNamePattern,
+        	new File(targetFolder));
         try {
             Class.forName(jdbcDriver);
             Connection conn = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
