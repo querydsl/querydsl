@@ -58,9 +58,9 @@ import com.mysema.testutil.Label;
 
 public abstract class SelectBaseTest extends AbstractBaseTest{
     
-    public static class Projection {
+    public static class SimpleProjection {
 	
-	public Projection(String str, String str2) {
+	public SimpleProjection(String str, String str2) {
         }
 	
     }
@@ -559,6 +559,18 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 	}
     }
     
+    @Test
+    public void customProjection(){
+	List<Projection> tuples = query().from(employee).list(new QProjection(employee.firstname, employee.lastname));
+	assertFalse(tuples.isEmpty());
+	for (Projection tuple : tuples){
+	    assertNotNull(tuple.get(employee.firstname));
+	    assertNotNull(tuple.get(employee.lastname));
+	    assertNotNull(tuple.getExpr(employee.firstname));
+	    assertNotNull(tuple.getExpr(employee.lastname));
+	}
+    }
+    
     @SuppressWarnings("unchecked")
     @Test
     public void arrayProjection(){
@@ -571,9 +583,9 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     
     @Test
     public void constructorProjection(){
-	List<Projection> projections =query().from(employee).list(EConstructor.create(Projection.class, employee.firstname, employee.lastname));
+	List<SimpleProjection> projections =query().from(employee).list(EConstructor.create(SimpleProjection.class, employee.firstname, employee.lastname));
 	assertFalse(projections.isEmpty());
-	for (Projection projection : projections){
+	for (SimpleProjection projection : projections){
 	    assertNotNull(projection);
 	}
     }
