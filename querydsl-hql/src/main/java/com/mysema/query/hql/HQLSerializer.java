@@ -64,7 +64,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     
     private static final String SELECT = "select ";
     
-    private static final String SELECT_COUNT = "select count(\n";
+    private static final String SELECT_COUNT = "select count(";
     
     private static final String SELECT_DISTINCT = "select distinct ";
     

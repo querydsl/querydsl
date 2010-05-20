@@ -62,7 +62,7 @@ public final class HQLTemplates extends Templates {
         add(Ops.ARRAY_SIZE, "{0}.size");
         
         // string
-        add(Ops.CONCAT, "{0} || {1}", 37);
+        add(Ops.CONCAT, "concat({0},{1})", 37);
         add(Ops.MATCHES, "{0} like {1}", 27); // TODO : support real regexes 
         add(Ops.LOWER, "lower({0})");
         add(Ops.SUBSTR_1ARG, "substring({0},{1}+1)");

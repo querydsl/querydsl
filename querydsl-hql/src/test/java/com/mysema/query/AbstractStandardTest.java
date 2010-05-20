@@ -67,14 +67,14 @@ public abstract class AbstractStandardTest {
         @Override
         protected Pair<Projectable, List<Expr<?>>> createQuery() {
             return Pair.of(
-                (Projectable)query().from(cat, otherCat),
-                Collections.<Expr<?>>emptyList());
+                (Projectable)query().from(cat, otherCat).where(cat.isNotNull(),otherCat.isNotNull()),
+                Arrays.<Expr<?>>asList());
         }
         @Override
         protected Pair<Projectable, List<Expr<?>>> createQuery(EBoolean filter) {
             return Pair.of(
                 (Projectable)query().from(cat, otherCat).where(filter),
-                Collections.<Expr<?>>singletonList(cat.name));
+                Arrays.<Expr<?>>asList(cat.name, otherCat.name));
         }              
     };
 
