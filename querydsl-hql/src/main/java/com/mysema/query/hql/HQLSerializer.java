@@ -318,6 +318,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         if (operator.equals(Ops.INSTANCE_OF)) {
             List<Expr<?>> newArgs = new ArrayList<Expr<?>>(args);
             Class<?> cl = ((Class<?>) ((Constant<?>) newArgs.get(1)).getConstant());
+            // use discriminator value instead of fqnm
             if (cl.getAnnotation(DiscriminatorValue.class) != null){
                 newArgs.set(1, EStringConst.create(cl.getAnnotation(DiscriminatorValue.class).value()));
             }else{
