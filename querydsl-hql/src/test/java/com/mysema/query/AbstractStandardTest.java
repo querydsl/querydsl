@@ -23,6 +23,7 @@ import org.junit.Test;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.hql.HQLQuery;
 import com.mysema.query.hql.domain.Cat;
+import com.mysema.query.hql.domain.DomesticCat;
 import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
@@ -223,6 +224,12 @@ public abstract class AbstractStandardTest {
         // limit + offset
         List<String> names3 = Arrays.asList("Felix123","Mary123");
         assertEquals(names3, catQuery().orderBy(cat.name.asc()).limit(2).offset(2).list(cat.name));
+    }
+    
+    @Test
+    public void testInstanceOf(){
+        assertEquals(6l, query().from(cat).where(cat.instanceOf(Cat.class)).count());
+        assertEquals(0l, query().from(cat).where(cat.instanceOf(DomesticCat.class)).count());
     }
     
     

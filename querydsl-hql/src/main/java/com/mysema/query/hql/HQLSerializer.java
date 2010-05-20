@@ -16,12 +16,22 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nullable;
+import javax.persistence.DiscriminatorValue;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.SerializerBase;
-import com.mysema.query.types.*;
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.EConstructor;
+import com.mysema.query.types.Expr;
+import com.mysema.query.types.Operation;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathType;
+import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EStringConst;
 import com.mysema.query.types.expr.ExprConst;
@@ -307,7 +317,12 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         // 
         if (operator.equals(Ops.INSTANCE_OF)) {
             List<Expr<?>> newArgs = new ArrayList<Expr<?>>(args);
-            newArgs.set(1, EStringConst.create(((Class<?>) ((Constant<?>) newArgs.get(1)).getConstant()).getName()));
+            Class<?> cl = ((Class<?>) ((Constant<?>) newArgs.get(1)).getConstant());
+            if (cl.getAnnotation(DiscriminatorValue.class) != null){
+                newArgs.set(1, EStringConst.create(cl.getAnnotation(DiscriminatorValue.class).value()));
+            }else{
+                newArgs.set(1, EStringConst.create(cl.getName()));    
+            }            
             super.visitOperation(type, operator, newArgs);
             
         } else if (operator.equals(Ops.NUMCAST)) {

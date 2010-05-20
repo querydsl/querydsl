@@ -58,13 +58,13 @@ public class DerbySQLTest {
         SAnimal cat = new SAnimal("cat");
 
         // count
-        assertEquals(6l, query().from(cat).where(cat.dtype.eq("Cat")).count());
+        assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).count());
         
         // countDistinct
-        assertEquals(6l, query().from(cat).where(cat.dtype.eq("Cat")).countDistinct());
+        assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).countDistinct());
         
         // list
-        assertEquals(6, query().from(cat).where(cat.dtype.eq("Cat")).list(cat.id).size());
+        assertEquals(6, query().from(cat).where(cat.dtype.eq("C")).list(cat.id).size());
         
         // list with limit
         assertEquals(3, query().from(cat).limit(3).list(cat.id).size());
@@ -76,7 +76,7 @@ public class DerbySQLTest {
         assertEquals(3, query().from(cat).offset(3).limit(3).list(cat.id).size());
         
         // list multiple
-        print(query().from(cat).where(cat.dtype.eq("Cat")).list(cat.id, cat.name, cat.bodyweight));
+        print(query().from(cat).where(cat.dtype.eq("C")).list(cat.id, cat.name, cat.bodyweight));
         
         // listResults
         SearchResults<String> results = query().from(cat).limit(3).orderBy(cat.name.asc()).listResults(cat.name);
@@ -99,7 +99,7 @@ public class DerbySQLTest {
         // 2
         cats = query().from(cat)
             .innerJoin(mate).on(cat.mateId.eq(mate.id))
-            .where(cat.dtype.eq("Cat"), mate.dtype.eq("Cat"))
+            .where(cat.dtype.eq("C"), mate.dtype.eq("C"))
             .list(catEntity);
         assertTrue(cats.isEmpty());
     }

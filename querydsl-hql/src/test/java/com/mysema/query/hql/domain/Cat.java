@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
@@ -20,6 +21,7 @@ import org.hibernate.annotations.IndexColumn;
  * The Class Cat.
  */
 @Entity
+@DiscriminatorValue("C")
 public class Cat extends Animal {
     
     private int breed;

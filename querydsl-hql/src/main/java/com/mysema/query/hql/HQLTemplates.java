@@ -55,6 +55,9 @@ public final class HQLTemplates extends Templates {
         add(Ops.IS_NULL, "{0} is null", 26);
         add(Ops.IS_NOT_NULL, "{0} is not null", 26);
         
+        // NOTE : the following is the JPQL standard way
+//        add(Ops.INSTANCE_OF, "type({0}) = {1}");
+        
         // collection
         add(Ops.IN, "{0} in {1}");
         add(Ops.COL_IS_EMPTY, "{0} is empty");
