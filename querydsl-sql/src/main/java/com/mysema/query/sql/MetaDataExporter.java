@@ -5,7 +5,6 @@
  */
 package com.mysema.query.sql;
 
-import static com.mysema.codegen.Symbols.NEW;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,21 +23,9 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysema.commons.lang.Assert;
-import com.mysema.query.codegen.ClassType;
-import com.mysema.query.codegen.EntitySerializer;
-import com.mysema.query.codegen.EntityType;
-import com.mysema.query.codegen.Method;
-import com.mysema.query.codegen.Property;
-import com.mysema.query.codegen.Serializer;
-import com.mysema.query.codegen.SimpleSerializerConfig;
-import com.mysema.query.codegen.SimpleType;
-import com.mysema.query.codegen.Type;
-import com.mysema.query.codegen.TypeCategory;
-import com.mysema.query.codegen.TypeMappings;
-import com.mysema.query.codegen.Types;
-import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
+import com.mysema.commons.lang.Assert;
+import com.mysema.query.codegen.*;
 
 /**
  * MetadataExporter exports JDBC metadata to Querydsl query types
@@ -69,24 +56,18 @@ public class MetaDataExporter {
     
     private Set<String> classes = new HashSet<String>();
 
-    private final String namePrefix, targetFolder, packageName;
+    private final File targetFolder;
+    
+    private final String packageName;
+
+    private final String namePrefix;
     
     private final NamingStrategy namingStrategy;
     
     @Nullable
     private final String schemaPattern, tableNamePattern;
-
-    private final TypeMappings typeMappings = new TypeMappings();
     
-    private final Serializer serializer = new EntitySerializer(typeMappings){
-        @Override 
-        protected void introDefaultInstance(CodeWriter writer, EntityType entityType) throws IOException {
-            String variableName = namingStrategy.getDefaultVariableName(namePrefix, entityType);
-            String alias = namingStrategy.getDefaultAlias(namePrefix, entityType);
-            String queryType = typeMappings.getPathType(entityType, entityType, true);            
-            writer.publicStaticFinal(queryType, variableName, NEW + queryType + "(\"" + alias + "\")");
-        }
-    };
+    private final Serializer serializer;
 
     private final SQLTypeMapping sqlTypeMapping = new SQLTypeMapping();
 
@@ -95,25 +76,57 @@ public class MetaDataExporter {
             String packageName,
             @Nullable String schemaPattern, 
             @Nullable String tableNamePattern,
-            String targetFolder) {
-        this(namePrefix, packageName, schemaPattern, tableNamePattern,
-            targetFolder, new DefaultNamingStrategy());
+            File targetFolder) {
+	this.namePrefix = Assert.notNull(namePrefix,"namePrefix");
+        this.packageName = Assert.notNull(packageName,"packageName");
+        this.schemaPattern = schemaPattern;
+        this.tableNamePattern = tableNamePattern;
+        this.targetFolder = Assert.notNull(targetFolder,"targetFolder");       
+        this.namingStrategy = new DefaultNamingStrategy();
+        this.serializer = new MetaDataSerializer(namePrefix, namingStrategy);
     }
-    
+        
     public MetaDataExporter(String namePrefix, 
             String packageName, 
             @Nullable String schemaPattern, 
             @Nullable String tableNamePattern, 
-            String targetFolder,
-            NamingStrategy namingStrategy){
+            File targetFolder,
+            NamingStrategy namingStrategy,
+            MetaDataSerializer serializer){
         this.namePrefix = Assert.notNull(namePrefix,"namePrefix");
         this.packageName = Assert.notNull(packageName,"packageName");
         this.schemaPattern = schemaPattern;
         this.tableNamePattern = tableNamePattern;
         this.targetFolder = Assert.notNull(targetFolder,"targetFolder");       
         this.namingStrategy = Assert.notNull(namingStrategy,"namingStrategy");
+        this.serializer = Assert.notNull(serializer, "serializer");
     }
 
+    protected EntityType createEntityType(String tableName, String className) {
+	Type classTypeModel = new SimpleType(
+                TypeCategory.ENTITY, 
+                packageName + "." + className, 
+                packageName, 
+                className, 
+                false);   
+        EntityType classModel = new EntityType("", classTypeModel);
+        Method wildcard = new Method(classModel, "all", "{0}.*", Types.OBJECTS);
+        classModel.addMethod(wildcard);
+        classModel.addAnnotation(new TableImpl(namingStrategy.normalizeTableName(tableName)));
+	return classModel;
+    }
+    
+    protected Property createProperty(EntityType classModel, String columnName,
+            String propertyName, Type typeModel) {
+	return new Property(
+                classModel, 
+                namingStrategy.normalizeColumnName(columnName), 
+                propertyName, 
+                typeModel, 
+                new String[0], 
+                false);
+    }
+    
     public void export(DatabaseMetaData md) throws SQLException {
         ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
         try{
@@ -124,13 +137,12 @@ public class MetaDataExporter {
             tables.close();    
         }
     }
-    
+
     public Set<String> getClasses() {
         return classes;
     }
     
-    private void handleColumn(EntityType classModel, ResultSet columns)
-            throws SQLException {
+    private void handleColumn(EntityType classModel, ResultSet columns) throws SQLException {
         String columnName = columns.getString(COLUMN_NAME);
         String propertyName = namingStrategy.getPropertyName(columnName, namePrefix, classModel);
         Class<?> clazz = sqlTypeMapping.get(columns.getInt(COLUMN_TYPE));
@@ -142,28 +154,14 @@ public class MetaDataExporter {
             fieldType = TypeCategory.NUMERIC;
         }
         Type typeModel = new ClassType(fieldType, clazz);
-        classModel.addProperty(new Property(
-                classModel, 
-                namingStrategy.normalizeColumnName(columnName), 
-                propertyName, 
-                typeModel, 
-                new String[0], 
-                false));
+        classModel.addProperty(createProperty(classModel, columnName, propertyName, typeModel));
     }
-    
+
     private void handleTable(DatabaseMetaData md, ResultSet tables) throws SQLException {
         String tableName = tables.getString(TABLE_NAME);
         String className = namingStrategy.getClassName(namePrefix, tableName);
-        Type classTypeModel = new SimpleType(
-                TypeCategory.ENTITY, 
-                packageName + "." + className, 
-                packageName, 
-                className, 
-                false);   
-        EntityType classModel = new EntityType("", classTypeModel);
-        Method wildcard = new Method(classModel, "all", "{0}.*", Types.OBJECTS);
-        classModel.addMethod(wildcard);
-        classModel.addAnnotation(new TableImpl(namingStrategy.normalizeTableName(tableName)));
+        EntityType classModel = createEntityType(tableName, className);
+        
         ResultSet columns = md.getColumns(null, schemaPattern, tableName, null);
         try{
             while (columns.next()) {

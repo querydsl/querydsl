@@ -57,7 +57,7 @@ public class EntitySerializer implements Serializer{
 
     private static final String PATH_METADATA = "PathMetadata<?> metadata";
     
-    private final TypeMappings typeMappings;
+    protected final TypeMappings typeMappings;
 
     public EntitySerializer(TypeMappings mappings){
         this.typeMappings = Assert.notNull(mappings,"mappings");
@@ -183,7 +183,7 @@ public class EntitySerializer implements Serializer{
         }        
     }
 
-    private void initEntityField(CodeWriter writer, SerializerConfig config, EntityType model, Property field) throws IOException {
+    protected void initEntityField(CodeWriter writer, SerializerConfig config, EntityType model, Property field) throws IOException {
         String queryType = typeMappings.getPathType(field.getType(), model, false);                               
         if (!field.isInherited()){          
             writer.line("this." + field.getEscapedName() + ASSIGN,
@@ -465,7 +465,7 @@ public class EntitySerializer implements Serializer{
         }        
     }
 
-    private void serializeProperties(EntityType model,  SerializerConfig config, CodeWriter writer) throws IOException {
+    protected void serializeProperties(EntityType model,  SerializerConfig config, CodeWriter writer) throws IOException {
         for (Property property : model.getProperties()){
             String queryType = typeMappings.getPathType(property.getType(), model, false);
             String localGenericName = property.getType().getLocalGenericName(model, true);

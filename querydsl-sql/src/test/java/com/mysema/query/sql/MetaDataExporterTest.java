@@ -5,6 +5,7 @@
  */
 package com.mysema.query.sql;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -86,7 +87,9 @@ public class MetaDataExporterTest {
         
         stmt.execute("drop table date_time_test if exists");
         stmt.execute("create table date_time_test (dt datetime)");
-        MetaDataExporter exporter = new MetaDataExporter(namePrefix, "test", null, null, target, namingStrategy);
+        
+        MetaDataSerializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);
+        MetaDataExporter exporter = new MetaDataExporter(namePrefix, "test", null, null, new File(target), namingStrategy, serializer);
         exporter.export(conn.getMetaData());   
         
         JavaCompiler compiler = new SimpleCompiler();
