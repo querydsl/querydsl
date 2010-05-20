@@ -1,5 +1,7 @@
 package com.mysema.query;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.Expr;
 
 /**
@@ -18,6 +20,7 @@ public interface Tuple {
      * @param type
      * @return
      */
+    @Nullable
     <T> T get(int index, Class<T> type); 
 
     /**
@@ -27,6 +30,7 @@ public interface Tuple {
      * @param expr
      * @return
      */
+    @Nullable
     <T> T get(Expr<T> expr); 
 
     /**
