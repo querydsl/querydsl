@@ -256,11 +256,74 @@ class Customer{
       
       <para>
       The serialization options are 
-      <emphasis>entityAccessors</emphasis> to generate accessor methods for entity paths instead of public final fields, 
-      <emphasis>listAccessors</emphasis> to generate listProperty(int index) style methods and 
-      <emphasis>mapAccessors</emphasis> to generate mapProperty(Key key) style accessor methods.
+      <emphasis>entityAccessors</emphasis> to generate accessor methods for entity paths instead of public final fields (default : false)), 
+      <emphasis>listAccessors</emphasis> to generate listProperty(int index) style methods (default : false), 
+      <emphasis>mapAccessors</emphasis> to generate mapProperty(Key key) style accessor methods (default : false) and
+	  <emphasis>createDefaultVariable</emphasis> to generate the default variable (default : true).
       </para>
+	  
+	  <para>Examples</para>
+	  
+	  <para>Customization of Entity type serialization</para>
+	  
+	  <programlisting language="java"><![CDATA[
+@QuerydslConfig(entityAccessors=true)
+@Entity
+public class User {
+	//...
+}  	  
+]]></programlisting>
+
+    <para>Customization of package</para>
+	
+     <programlisting language="java"><![CDATA[
+@QuerydslConfig(listAccessors=true)
+package com.mysema.query.domain.rel;
+
+import com.mysema.query.annotations.QuerydslConfig;
+]]></programlisting>
+
+    <para>
+    If you want to customize the serializer configuration globally, you can do this via the APT options 
+	<emphasis>querydsl.entityAccessors</emphasis>, 
+	<emphasis>querydsl.listAccessors</emphasis>, 
+	<emphasis>querydsl.mapAccessors</emphasis> and
+	<emphasis>querydsl.createDefaultVariable</emphasis>.
+	</para>
     
+	<para>Using the Maven APT plugin this works for example like this : </para>
+	
+    <programlisting language="xml"><![CDATA[
+<project>
+  <build>
+  <plugins>
+    ...
+    <plugin>
+      <groupId>com.mysema.maven</groupId>
+      <artifactId>maven-apt-plugin</artifactId>
+      <version>0.3.2</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>process</goal>
+          </goals>
+          <configuration>
+            <outputDirectory>target/generated-sources/java</outputDirectory>
+            <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+            <options>
+              <querydsl.entityAccessors>true</querydsl.entityAccessors>
+            </options>			
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+    ...
+  </plugins>
+  </build>
+</project>
+]]></programlisting>	
+	
+	
     </sect2>
     
     <sect2 id="custom_types">

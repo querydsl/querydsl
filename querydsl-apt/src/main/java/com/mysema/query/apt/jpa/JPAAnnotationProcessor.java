@@ -51,7 +51,7 @@ public class JPAAnnotationProcessor extends AbstractProcessor{
     }
 
     protected DefaultConfiguration createConfiguration(RoundEnvironment roundEnv) throws ClassNotFoundException {
-        return new JPAConfiguration(roundEnv, entity, superType, embeddable, skip);
+        return new JPAConfiguration(roundEnv, processingEnv.getOptions(), entity, superType, embeddable, skip);
     }       
     
 }

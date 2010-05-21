@@ -62,10 +62,13 @@ public class DefaultConfiguration implements Configuration {
     
     private final Map<String,SerializerConfig> typeToConfig = new HashMap<String,SerializerConfig>();
     
+    private final SerializerConfig defaultSerializerConfig;
+    
     private boolean useFields = true, useGetters = true;
     
     public DefaultConfiguration(
             RoundEnvironment roundEnv,
+            Map<String, String> options, 
             Class<? extends Annotation> entityAnn, 
             @Nullable Class<? extends Annotation> superTypeAnn,
             @Nullable Class<? extends Annotation> embeddableAnn,
@@ -85,6 +88,24 @@ public class DefaultConfiguration implements Configuration {
                 typeToConfig.put(typeElement.getQualifiedName().toString(), config);
             }
         }
+        boolean entityAccessors = false;
+        boolean listAccessors = false;
+        boolean mapAccessors = false;
+        boolean createDefaultVariable = true;
+        if (options.containsKey("querydsl.entityAccessors")){
+            entityAccessors = Boolean.valueOf(options.get("querydsl.entityAccessors"));
+        }
+        if (options.containsKey("querydsl.listAccessors")){
+            listAccessors = Boolean.valueOf(options.get("querydsl.listAccessors"));
+        }
+        if (options.containsKey("querydsl.mapAccessors")){
+            mapAccessors = Boolean.valueOf(options.get("querydsl.mapAccessors"));
+        }
+        if (options.containsKey("querydsl.createDefaultVariable")){
+            createDefaultVariable = Boolean.valueOf(options.get("querydsl.createDefaultVariable"));
+        }        
+        defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors, mapAccessors, createDefaultVariable);
+        
     }
     
     @Override
@@ -140,7 +161,7 @@ public class DefaultConfiguration implements Configuration {
         }else if (packageToConfig.containsKey(model.getPackageName())){
             return packageToConfig.get(model.getPackageName());
         }else{
-            return SimpleSerializerConfig.DEFAULT;    
+            return defaultSerializerConfig;    
         }        
     }
 

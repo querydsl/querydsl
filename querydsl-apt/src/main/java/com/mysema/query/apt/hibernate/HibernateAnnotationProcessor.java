@@ -23,7 +23,7 @@ public class HibernateAnnotationProcessor extends JPAAnnotationProcessor{
     
     @Override
     protected DefaultConfiguration createConfiguration(RoundEnvironment roundEnv) throws ClassNotFoundException {
-        return new HibernateConfiguration(roundEnv, entity, superType, embeddable, skip);
+        return new HibernateConfiguration(roundEnv, processingEnv.getOptions(), entity, superType, embeddable, skip);
     } 
 
 }

@@ -24,7 +24,7 @@ public class EclipseCompilationTest {
     private static final String packagePath = "src/test/apt/com/mysema/query/eclipse/";
     
     @Test
-    @Ignore
+//    @Ignore
     public void test() throws IOException{
         System.setProperty("jdt.compiler.useSingleThread", "true");
         // select classes
@@ -50,6 +50,7 @@ public class EclipseCompilationTest {
         options.add("-proc:only");
         options.add("-processor");
         options.add(QuerydslAnnotationProcessor.class.getName());
+        options.add("-Aquerydsl.entityAccessors=true");        
         options.add("-cp");
         options.add(classPath);
         options.add("-source");

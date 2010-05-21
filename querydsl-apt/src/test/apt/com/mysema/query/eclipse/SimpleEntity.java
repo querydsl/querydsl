@@ -18,6 +18,8 @@ public class SimpleEntity {
     BigDecimal bigDecimalProp;
     
     String stringProp;
+    
+    SimpleEntity entityProp;
 
 }
 
