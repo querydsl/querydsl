@@ -15,8 +15,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
+import com.mysema.query.sql.domain.QEmployee;
+import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.path.PEntity;
 
 public abstract class InsertBaseTest extends AbstractBaseTest{
@@ -69,4 +72,20 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
             .execute();
     }
     
+    @Test
+    public void complex1(){
+        // related to #584795 
+        QSurvey survey = new QSurvey("survey");
+        QEmployee emp1 = new QEmployee("emp1");
+        QEmployee emp2 = new QEmployee("emp2");
+        SQLInsertClause insert = insert(survey);
+        insert.columns(survey.id, survey.name);
+        insert.select(new SQLSubQuery().from(survey)
+          .innerJoin(emp1)
+           .on(survey.id.eq(emp1.id))
+          .innerJoin(emp2)
+           .on(emp1.superiorId.eq(emp2.superiorId), emp1.firstname.eq(emp2.firstname))
+          .list(survey.id, emp2.firstname));
+        insert.execute();
+    }
 }
