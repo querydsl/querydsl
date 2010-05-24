@@ -5,6 +5,8 @@
  */
 package com.mysema.query.sql.oracle;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expr;
@@ -29,19 +31,22 @@ public final class OracleSerializer extends SQLSerializer {
     
     private static final String START_WITH = "\nstart with ";
 
+    @Nullable
     private final EBoolean connectBy, connectByPrior, connectByNocyclePrior;
 
+    @Nullable
     private final Expr<?> orderSiblingsBy;
 
+    @Nullable
     private final EBoolean startWith;
 
     public OracleSerializer(
             SQLTemplates patterns, 
-            EBoolean connectBy,
-            EBoolean connectByNocyclePrior, 
-            EBoolean connectByPrior,
-            Expr<?> orderSiblingsBy, 
-            EBoolean startWith) {
+            @Nullable EBoolean connectBy,
+            @Nullable EBoolean connectByNocyclePrior, 
+            @Nullable EBoolean connectByPrior,
+            @Nullable Expr<?> orderSiblingsBy, 
+            @Nullable EBoolean startWith) {
         super(patterns);
         this.connectBy = connectBy;
         this.connectByNocyclePrior = connectByNocyclePrior;
