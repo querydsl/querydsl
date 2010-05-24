@@ -17,11 +17,11 @@ java.sql.Connection conn; // connection of database containing the schema to use
 // obtain Connection etc.
 
 MetaDataExporter exporter = new MetaDataExporter(
-  "Q",                              // namePrefix
-  "com.myproject.domain",           // target package
-  null,                             // schema name pattern 
-  null,                             // table name pattern 
-  "target/generated-sources/java"); // target source folder
+  "Q",                                        // namePrefix
+  "com.myproject.domain",                     // target package
+  null,                                       // schema name pattern 
+  null,                                       // table name pattern 
+  new File("target/generated-sources/java")); // target source folder
 exporter.export(conn.getMetaData());
 ]]></programlisting>
 
