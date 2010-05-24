@@ -24,7 +24,7 @@ public class EclipseCompilationTest {
     private static final String packagePath = "src/test/apt/com/mysema/query/eclipse/";
     
     @Test
-//    @Ignore
+    @Ignore
     public void test() throws IOException{
         System.setProperty("jdt.compiler.useSingleThread", "true");
         // select classes
