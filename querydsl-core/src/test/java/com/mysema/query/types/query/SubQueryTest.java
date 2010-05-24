@@ -10,13 +10,17 @@ import org.junit.Test;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.serialization.JavaTemplates;
 import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.ToStringVisitor;
+import com.mysema.query.types.Visitor;
 
 public class SubQueryTest {
     
     @SuppressWarnings("unchecked")
     @Test
     public void test(){
+        Visitor visitor = new ToStringVisitor(new JavaTemplates());
         QueryMetadata metadata = new DefaultQueryMetadata();
         List<SubQuery> subQueries = Arrays.<SubQuery>asList(
                 new BooleanSubQuery(metadata),
@@ -29,11 +33,19 @@ public class SubQueryTest {
                 new StringSubQuery(metadata),
                 new TimeSubQuery(Date.class,metadata)
         );
+        SubQuery prev = null;
         for (SubQuery sq : subQueries){
             assertNotNull(sq.asExpr());
             assertNotNull(sq.exists());
             assertNotNull(sq.getMetadata());
             assertNotNull(sq.notExists());
+            assertEquals(sq, sq);
+            if (prev != null){
+                assertEquals(sq, prev);
+            }
+            assertEquals(sq.asExpr().getType().hashCode(), sq.hashCode());
+            sq.asExpr().accept(visitor);
+            prev = sq;
         }
     }
 
