@@ -335,6 +335,16 @@ public final class JavaWriter implements Appendable, CodeWriter{
     }
     
     @Override
+    public JavaWriter privateFinal(String type, String name) throws IOException {
+        return field(PRIVATE, type, name);        
+    }
+
+    @Override
+    public JavaWriter privateFinal(String type, String name, String value) throws IOException {
+        return field(PRIVATE, type, name, value);
+    }
+    
+    @Override
     public JavaWriter privateStaticFinal(String type, String name, String value) throws IOException {
         return field(PRIVATE_STATIC_FINAL, type, name, value);
     }
@@ -342,6 +352,16 @@ public final class JavaWriter implements Appendable, CodeWriter{
     @Override
     public JavaWriter protectedField(String type, String name) throws IOException {
         return field(PROTECTED, type, name);        
+    }
+    
+    @Override
+    public JavaWriter protectedFinal(String type, String name) throws IOException {
+        return field(PROTECTED, type, name);        
+    }
+
+    @Override
+    public JavaWriter protectedFinal(String type, String name, String value) throws IOException {
+        return field(PROTECTED, type, name, value);
     }
         
     @Override
