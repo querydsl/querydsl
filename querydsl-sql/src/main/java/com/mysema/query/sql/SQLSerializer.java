@@ -71,6 +71,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     
     private final boolean dml;
     
+    private boolean skipParent;
+    
     private PEntity<?> entity;
     
     private final SQLTemplates templates;
@@ -225,7 +227,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         append(templates.getDeleteFrom());
         handle(entity);
         if (where != null) {
+            skipParent = true;
             append(templates.getWhere()).handle(where);
+            skipParent = false;
         }
     }
 
@@ -238,6 +242,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!columns.isEmpty()){
             append("(");
             boolean first = true;
+            skipParent = true;
             for (Path<?> column : columns){
                 if (!first){
                     append(COMMA);                    
@@ -245,6 +250,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 handle(column.asExpr());
                 first = false;
             }
+            skipParent = false;
             append(")");
         }
         
@@ -362,10 +368,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     
     public void visit(Path<?> path) {
         if (dml){
-            // NOTE : this could be disabled for other than MSSQL
             if (path.equals(entity)){
                 appendAsTableName(path);
-            }else if (entity.equals(path.getMetadata().getParent())){
+            }else if (entity.equals(path.getMetadata().getParent()) && skipParent){
                 appendAsColumnName(path);
             }else{
                 super.visit(path);
