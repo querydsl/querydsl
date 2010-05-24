@@ -92,11 +92,20 @@ public class SQLUpdateClause implements UpdateClause<SQLUpdateClause> {
     }
 
     @Override
+    public SQLUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
+        for (int i = 0; i < paths.size(); i++){
+            updates.add(Pair.<Path<?>,Object>of(paths.get(i), values.get(i)));
+        }
+        return this;
+    }
+
+    @Override
     public SQLUpdateClause where(EBoolean... o) {
         for (EBoolean e : o){
             where.and(e);
         }
         return this;
     }
+
 
 }

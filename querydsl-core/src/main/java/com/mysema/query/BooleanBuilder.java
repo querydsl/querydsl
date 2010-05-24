@@ -92,7 +92,11 @@ public final class BooleanBuilder extends EBoolean implements Cloneable, Operati
     
     @Override
     public Expr<?> getArg(int index) {
-        return index == 0 ? expr : null;
+        if (index == 0){
+            return expr;
+        }else{
+            throw new IndexOutOfBoundsException();
+        }
     }
     
     @Override

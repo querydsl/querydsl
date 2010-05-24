@@ -5,6 +5,7 @@
  */
 package com.mysema.query.hql.jpa;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -16,6 +17,8 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.UpdateClause;
 import com.mysema.query.hql.HQLSerializer;
 import com.mysema.query.hql.HQLTemplates;
+import com.mysema.query.hql.hibernate.HibernateUpdateClause;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
@@ -58,6 +61,15 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
     @Override
     public <T> JPAUpdateClause set(Path<T> path, T value) {
         metadata.addProjection(path.asExpr().eq(value));
+        return this;
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public JPAUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
+        for (int i = 0; i < paths.size(); i++){
+            metadata.addProjection(((Expr)paths.get(i).asExpr()).eq(values.get(i)));
+        }
         return this;
     }
 

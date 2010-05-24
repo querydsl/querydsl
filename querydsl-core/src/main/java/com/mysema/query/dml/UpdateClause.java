@@ -5,6 +5,8 @@
  */
 package com.mysema.query.dml;
 
+import java.util.List;
+
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 
@@ -26,7 +28,7 @@ public interface UpdateClause<C extends UpdateClause<C>> {
     C where(EBoolean... o);
     
     /**
-     * Set the paths to be updated
+     * Set the path to be updated
      * 
      * @param <T>
      * @param path path to be updated
@@ -35,6 +37,15 @@ public interface UpdateClause<C extends UpdateClause<C>> {
      */
     <T> C set(Path<T> path, T value);
      
+    /**
+     * Set the paths to be updated
+     * 
+     * @param paths
+     * @param values
+     * @return
+     */
+    C set(List<? extends Path<?>> paths, List<?> values);
+    
     /**
      * Execute the delete clause and return the amount of updated rows/items
      * 

@@ -6,6 +6,7 @@
 package com.mysema.query.collections;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections15.BeanMap;
@@ -58,9 +59,18 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
     }
 
     @Override
+    public ColUpdateClause<T> set(List<? extends Path<?>> p, List<?> v) {
+        for (int i = 0; i < p.size(); i++){
+            paths.put(p.get(i), v.get(i));
+        }
+        return this;
+    }
+    
+    @Override
     public ColUpdateClause<T> where(EBoolean... o) {
         query.where(o);
         return this;
     }
+
 
 }

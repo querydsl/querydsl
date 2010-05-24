@@ -9,6 +9,9 @@ import static com.mysema.query.Constants.survey;
 import static org.junit.Assert.assertEquals;
 
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -16,6 +19,7 @@ import org.junit.Test;
 
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.path.PEntity;
 
 public abstract class UpdateBaseTest extends AbstractBaseTest{
@@ -56,6 +60,26 @@ public abstract class UpdateBaseTest extends AbstractBaseTest{
         
         // update call with full update count
         assertEquals(count, update(survey).set(survey.name, "S").execute());
+        assertEquals(count, query().from(survey).where(survey.name.eq("S")).count());
+        
+        
+    }
+    
+    @Test
+    public void test2() throws SQLException{        
+        List<Path<?>> paths = Collections.<Path<?>>singletonList(survey.name);
+        List<?> values = Collections.singletonList("S");
+        
+        // original state
+        long count = query().from(survey).count();
+        assertEquals(0, query().from(survey).where(survey.name.eq("S")).count());
+        
+        // update call with 0 update count
+        assertEquals(0, update(survey).where(survey.name.eq("XXX")).set(paths, values).execute());
+        assertEquals(0, query().from(survey).where(survey.name.eq("S")).count());
+        
+        // update call with full update count
+        assertEquals(count, update(survey).set(paths, values).execute());
         assertEquals(count, query().from(survey).where(survey.name.eq("S")).count());
         
         
