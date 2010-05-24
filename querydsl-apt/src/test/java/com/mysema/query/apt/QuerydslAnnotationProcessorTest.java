@@ -24,7 +24,7 @@ public class QuerydslAnnotationProcessorTest {
     private static final String packagePath = "src/test/java/com/mysema/query/domain/";
 
     private void process(Class<? extends AbstractProcessor> processorClass, List<String> classes) throws IOException{
-        File out = new File("target/out");
+        File out = new File("target/" + processorClass.getSimpleName());
         FileUtils.deleteDirectory(out);
         if (!out.mkdirs()){
             Assert.fail("Creation of " + out.getPath() + " failed");
@@ -34,7 +34,7 @@ public class QuerydslAnnotationProcessorTest {
         System.out.println(compiler.getClass().getName());
         List<String> options = new ArrayList<String>(classes.size() + 3);
         options.add("-s");
-        options.add("target/out");
+        options.add("target/" + processorClass.getSimpleName());
         options.add("-proc:only");
         options.add("-processor");
         options.add(processorClass.getName());        
