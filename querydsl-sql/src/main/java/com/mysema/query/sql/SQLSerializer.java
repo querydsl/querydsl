@@ -273,6 +273,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         handle(entity);
         append("\nset ");
         boolean first = true;
+        skipParent = true;
         for (Pair<Path<?>,?> update : updates){
             if (!first){
                 append(COMMA);
@@ -286,6 +287,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
             first = false;
         }
+        skipParent = false;
         if (where != null) {
             append(templates.getWhere()).handle(where);
         }
