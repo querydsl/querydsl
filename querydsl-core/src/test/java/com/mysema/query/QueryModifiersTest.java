@@ -47,7 +47,16 @@ public class QueryModifiersTest {
 	
 	assertEquals(modifiers1.hashCode(), new QueryModifiers().hashCode());
 	assertEquals(modifiers2.hashCode(), QueryModifiers.limit(1l).hashCode());
-	assertEquals(modifiers3.hashCode(), QueryModifiers.offset(1l).hashCode());
-	
+	assertEquals(modifiers3.hashCode(), QueryModifiers.offset(1l).hashCode());	
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void illegalLimit(){
+        QueryModifiers.limit(-1);
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void illegalOffset(){
+        QueryModifiers.offset(-1);
     }
 }

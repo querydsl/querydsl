@@ -1,8 +1,11 @@
 package com.mysema.query;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -38,4 +41,16 @@ public class SearchResultsTest {
     public void getOffset(){
 	assertEquals(0l, results.getOffset());
     }
+    
+    @Test
+    public void emptyResults(){
+        SearchResults<Object> empty = SearchResults.emptyResults();
+        assertTrue(empty.isEmpty());
+        assertEquals(Long.MAX_VALUE, empty.getLimit());
+        assertEquals(0l, empty.getOffset());
+        assertEquals(0l, empty.getTotal());
+        assertEquals(Collections.emptyList(), empty.getResults());
+    }
+    
+    
 }

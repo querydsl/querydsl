@@ -40,6 +40,26 @@ public class DefaultQueryMetadataTest {
         md.setModifiers(modifiers);
         assertEquals(modifiers, md.getModifiers());
     }
+    
+    @Test
+    public void setLimit(){
+        QueryModifiers modifiers = new QueryModifiers(1l,2l);
+        md.setModifiers(modifiers);
+        md.setLimit(3l);
+        
+        assertEquals(Long.valueOf(3l), md.getModifiers().getLimit());
+        assertEquals(Long.valueOf(2l), md.getModifiers().getOffset());
+    }
+    
+    @Test
+    public void setOffset(){
+        QueryModifiers modifiers = new QueryModifiers(1l,1l);
+        md.setModifiers(modifiers);
+        md.setOffset(2l);
+        
+        assertEquals(Long.valueOf(1l), md.getModifiers().getLimit());
+        assertEquals(Long.valueOf(2l), md.getModifiers().getOffset());
+    }
 
     @SuppressWarnings("unchecked")
     @Test

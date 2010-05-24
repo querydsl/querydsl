@@ -8,10 +8,12 @@ package com.mysema.query;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EBooleanConst;
+import com.mysema.query.types.path.PBoolean;
 
 
 /**
@@ -87,5 +89,15 @@ public class BooleanBuilderTest {
     @Test
     public void testHashCode(){
 	assertEquals(new BooleanBuilder(first).hashCode(), new BooleanBuilder(first).hashCode());
+    }
+    
+    @Test
+    @Ignore // FIXME
+    public void testToString(){
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(first);
+        assertEquals("true", builder.toString());
+        builder.or(new PBoolean("condition"));
+        assertEquals("true || condition", builder.toString());
     }
 }

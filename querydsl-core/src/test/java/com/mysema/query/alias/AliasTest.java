@@ -107,5 +107,6 @@ public class AliasTest {
 	assertEquals("it", Alias.var().toString());
 	assertEquals("varInteger1", Alias.var(1).toString());
 	assertEquals("X", Alias.var("X").toString());
+//	assertEquals("", Alias.var(new Object()).toString());
     }
 }
