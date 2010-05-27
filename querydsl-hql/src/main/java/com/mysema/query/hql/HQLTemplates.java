@@ -6,10 +6,12 @@
 package com.mysema.query.hql;
 
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
+import com.mysema.query.types.Constant;
 import com.mysema.query.types.Operator;
+import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.PathType;
 import com.mysema.query.types.Templates;
@@ -21,23 +23,20 @@ import com.mysema.query.types.Templates;
  * @author tiwe
  * @version $Id$
  */
-public final class HQLTemplates extends Templates {
+public class HQLTemplates extends Templates {
+    
+    public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>(Object.class, Object.class);
 
     public static final HQLTemplates DEFAULT = new HQLTemplates();
     
-    public static final List<Operator<?>> wrapCollectionsForOp;
-
-    static {
-        wrapCollectionsForOp = Collections.<Operator<?>> unmodifiableList(Arrays.<Operator<?>> asList(
-            Ops.IN, 
+    private final List<Operator<?>> wrapElements = Arrays.<Operator<?>> asList(
             Ops.QuantOps.ALL, 
             Ops.QuantOps.ANY,
             Ops.QuantOps.AVG_IN_COL, 
-            Ops.EXISTS));
-    }
+            Ops.EXISTS);
 
     protected HQLTemplates() {
-        //CHECKSTYLE:OFF
+	//CHECKSTYLE:OFF
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
         add(Ops.NOT, "not {0}", 3);
@@ -55,17 +54,16 @@ public final class HQLTemplates extends Templates {
         add(Ops.IS_NULL, "{0} is null", 26);
         add(Ops.IS_NOT_NULL, "{0} is not null", 26);
         
-        // NOTE : the following is the JPQL standard way
-//        add(Ops.INSTANCE_OF, "type({0}) = {1}");
-        
         // collection
+        add(MEMBER_OF, "{0} member of {1}");        
+        
         add(Ops.IN, "{0} in {1}");
         add(Ops.COL_IS_EMPTY, "{0} is empty");
-        add(Ops.COL_SIZE, "{0}.size");
-        add(Ops.ARRAY_SIZE, "{0}.size");
+        add(Ops.COL_SIZE, "size({0})");
+        add(Ops.ARRAY_SIZE, "size({0})");
         
         // string
-        add(Ops.CONCAT, "concat({0},{1})", 37);
+        add(Ops.CONCAT, "concat({0},{1})", 0);
         add(Ops.MATCHES, "{0} like {1}", 27); // TODO : support real regexes 
         add(Ops.LOWER, "lower({0})");
         add(Ops.SUBSTR_1ARG, "substring({0},{1}+1)");
@@ -115,6 +113,19 @@ public final class HQLTemplates extends Templates {
         add(Ops.CASE_EQ_WHEN,  "when {0} = {1} then {2} {3}");
         add(Ops.CASE_EQ_ELSE,  "else {0}");
         //CHECKSTYLE:ON
+    }
+ 
+    public boolean wrapElements(Operator<?> operator){
+	return wrapElements.contains(operator);
+    }
+
+    public boolean wrapConstant(Constant<?> expr) {
+	Class<?> type = expr.asExpr().getType();
+	return type.isArray() || Collection.class.isAssignableFrom(type);
+    }
+
+    public boolean isTypeAsString() {
+	return true;
     }
     
 }

@@ -38,7 +38,7 @@ public class MySQLTemplates extends SQLTemplates {
                 BigDecimal.class);
         addClass2TypeMappings("char(256)", String.class);
         
-        add(Ops.CONCAT, "concat({0}, {1})");
+        add(Ops.CONCAT, "concat({0}, {1})",0);
         add(Ops.MATCHES, "{0} regexp {1}");
         add(Ops.DateTimeOps.YEAR_MONTH, "extract(year_month from {0})");
         

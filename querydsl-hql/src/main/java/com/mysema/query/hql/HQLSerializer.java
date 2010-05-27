@@ -88,6 +88,8 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     
     private static final Map<JoinType, String> joinTypes = new HashMap<JoinType, String>();
     
+    private final HQLTemplates templates;
+    
     static{
         joinTypes.put(JoinType.DEFAULT, COMMA);
         joinTypes.put(JoinType.FULLJOIN, "\n  full join ");
@@ -98,8 +100,9 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     
     private boolean wrapElements = false;
 
-    public HQLSerializer(HQLTemplates patterns) {
-        super(patterns);
+    public HQLSerializer(HQLTemplates templates) {
+        super(templates);
+        this.templates = templates;
     }
 
     @SuppressWarnings("unchecked")
@@ -251,10 +254,9 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         }
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     public void visit(Constant<?> expr) {
-        boolean wrap = expr.getConstant().getClass().isArray() || expr.getConstant() instanceof Collection;
+        boolean wrap = templates.wrapConstant(expr);
         if (wrap) {
             append("(");
         }
@@ -313,18 +315,29 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     @SuppressWarnings("unchecked")
     protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
         boolean old = wrapElements;
-        wrapElements = HQLTemplates.wrapCollectionsForOp.contains(operator);
-        // 
-        if (operator.equals(Ops.INSTANCE_OF)) {
-            List<Expr<?>> newArgs = new ArrayList<Expr<?>>(args);
-            Class<?> cl = ((Class<?>) ((Constant<?>) newArgs.get(1)).getConstant());
-            // use discriminator value instead of fqnm
-            if (cl.getAnnotation(DiscriminatorValue.class) != null){
-                newArgs.set(1, EStringConst.create(cl.getAnnotation(DiscriminatorValue.class).value()));
+        wrapElements = templates.wrapElements(operator);
+        
+        if (operator.equals(Ops.IN)){
+            if (args.get(1) instanceof Path){
+        	super.visitOperation(type, HQLTemplates.MEMBER_OF, args);
             }else{
-                newArgs.set(1, EStringConst.create(cl.getName()));    
-            }            
-            super.visitOperation(type, operator, newArgs);
+        	super.visitOperation(type, operator, args);
+            }
+            
+        } else if (operator.equals(Ops.INSTANCE_OF)) {
+            if (templates.isTypeAsString()){
+        	List<Expr<?>> newArgs = new ArrayList<Expr<?>>(args);
+                Class<?> cl = ((Class<?>) ((Constant<?>) newArgs.get(1)).getConstant());
+                // use discriminator value instead of fqnm
+                if (cl.getAnnotation(DiscriminatorValue.class) != null){
+                    newArgs.set(1, EStringConst.create(cl.getAnnotation(DiscriminatorValue.class).value()));
+                }else{
+                    newArgs.set(1, EStringConst.create(cl.getName()));    
+                }            
+                super.visitOperation(type, operator, newArgs);
+            }else{
+        	super.visitOperation(type, operator, args);
+            }
             
         } else if (operator.equals(Ops.NUMCAST)) {
             visitCast(args.get(0), (Class<?>) ((Constant<?>) args.get(1)).getConstant());

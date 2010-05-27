@@ -49,6 +49,10 @@ public abstract class AbstractStandardTest {
     
     private static final QCat otherCat = new QCat("otherCat");
         
+    private static final EBoolean cond1 = cat.name.length().gt(0);
+    
+    private static final EBoolean cond2 = otherCat.name.length().gt(0);
+    
     private final Date birthDate;    
     
     private final java.sql.Date date;
@@ -67,14 +71,16 @@ public abstract class AbstractStandardTest {
         
         @Override
         protected Pair<Projectable, List<Expr<?>>> createQuery() {
+            // NOTE : EclipseLink needs extra conditions cond1 and code2
             return Pair.of(
-                (Projectable)query().from(cat, otherCat).where(cat.isNotNull(),otherCat.isNotNull()),
+                (Projectable)query().from(cat, otherCat).where(cond1, cond2),
                 Arrays.<Expr<?>>asList());
         }
         @Override
         protected Pair<Projectable, List<Expr<?>>> createQuery(EBoolean filter) {
+            // NOTE : EclipseLink needs extra conditions cond1 and code2
             return Pair.of(
-                (Projectable)query().from(cat, otherCat).where(filter),
+                (Projectable)query().from(cat, otherCat).where(cond1, cond2, filter),
                 Arrays.<Expr<?>>asList(cat.name, otherCat.name));
         }              
     };
@@ -197,13 +203,16 @@ public abstract class AbstractStandardTest {
         
         // contains
         assertEquals(1, catQuery().where(cat.name.contains("eli")).count());
+        
+        // length
+        assertEquals(6, catQuery().where(cat.name.length().gt(0)).count());
                 
         // indexOf
         assertEquals(Integer.valueOf(0), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("B")));
         assertEquals(Integer.valueOf(1), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("o")));
         
         // case-sensitivity        
-        if (!getTarget().equals(Target.MYSQL)){ // NOTE : locate in MYSQL in case-insensitive
+        if (!getTarget().equals(Target.MYSQL)){ // NOTE : locate in MYSQL is case-insensitive
             assertEquals(0, catQuery().where(cat.name.startsWith("r")).count());
             assertEquals(0, catQuery().where(cat.name.endsWith("H123")).count());
             assertEquals(Integer.valueOf(2), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("b")));
@@ -231,7 +240,6 @@ public abstract class AbstractStandardTest {
         assertEquals(6l, query().from(cat).where(cat.instanceOf(Cat.class)).count());
         assertEquals(0l, query().from(cat).where(cat.instanceOf(DomesticCat.class)).count());
     }
-    
     
     @Test
     public void tupleProjection(){

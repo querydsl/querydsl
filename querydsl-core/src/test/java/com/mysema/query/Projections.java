@@ -11,20 +11,7 @@ import java.util.HashSet;
 
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.expr.CaseBuilder;
-import com.mysema.query.types.expr.EArray;
-import com.mysema.query.types.expr.ECollection;
-import com.mysema.query.types.expr.EDate;
-import com.mysema.query.types.expr.EDateTime;
-import com.mysema.query.types.expr.EList;
-import com.mysema.query.types.expr.EMap;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.ENumberConst;
-import com.mysema.query.types.expr.EString;
-import com.mysema.query.types.expr.EStringConst;
-import com.mysema.query.types.expr.ETime;
-import com.mysema.query.types.expr.ONumber;
+import com.mysema.query.types.expr.*;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PNumber;
@@ -37,8 +24,6 @@ import com.mysema.query.types.path.PathMetadataFactory;
  *
  */
 public class Projections {
-    
-    private static final ENumber<Long> COUNT_ALL_AGG_EXPR = ONumber.create(Long.class, Ops.AggOps.COUNT_ALL_AGG);
     
     private final Module module;
     
@@ -145,7 +130,6 @@ public class Projections {
             rv.add(expr.avg());
             rv.add(expr.count());
             rv.add(expr.countDistinct());
-            rv.add(COUNT_ALL_AGG_EXPR);
         }
                 
         if (!(other instanceof Constant || module == Module.JDOQL || module == Module.RDFBEAN)){

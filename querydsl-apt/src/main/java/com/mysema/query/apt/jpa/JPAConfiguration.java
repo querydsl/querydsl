@@ -8,6 +8,7 @@ package com.mysema.query.apt.jpa;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -25,12 +26,27 @@ import com.mysema.query.apt.VisitorConfig;
  *
  */
 public class JPAConfiguration extends DefaultConfiguration {
+    
+    private static final List<String> keywords = Arrays.asList(   
+	"ABS","ALL","AND","ANY","AS","ASC","AVG","BETWEEN",
+	"BIT_LENGTH[51]","BOTH","BY","CASE","CHAR_LENGTH",
+	"CHARACTER_LENGTH","CLASS",
+	"COALESCE","CONCAT","COUNT","CURRENT_DATE","CURRENT_TIME",
+	"CURRENT_TIMESTAMP",
+	"DELETE","DESC","DISTINCT","ELSE","EMPTY","END","ENTRY",
+	"ESCAPE","EXISTS","FALSE","FETCH",
+	"FROM","GROUP","HAVING","IN","INDEX","INNER","IS","JOIN",
+	"KEY","LEADING","LEFT","LENGTH","LIKE",
+	"LOCATE","LOWER","MAX","MEMBER","MIN","MOD","NEW","NOT",
+	"NULL","NULLIF","OBJECT","OF","OR",
+	"ORDER","OUTER","POSITION","SELECT","SET","SIZE","SOME",
+	"SQRT","SUBSTRING","SUM","THEN",
+	"TRAILING","TRIM","TRUE","TYPE","UNKNOWN","UPDATE","UPPER",
+	"VALUE","WHEN","WHERE");
    
     private List<Class<? extends Annotation>> annotations;
     
-    public JPAConfiguration(
-            RoundEnvironment roundEnv,
-            Map<String,String> options,
+    public JPAConfiguration(RoundEnvironment roundEnv,Map<String,String> options,
             Class<? extends Annotation> entityAnn,
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
@@ -88,6 +104,11 @@ public class JPAConfiguration extends DefaultConfiguration {
             }
         }        
         return false;
+    }
+    
+    @Override
+    public Collection<String> getKeywords(){
+	return keywords;
     }
 
 }

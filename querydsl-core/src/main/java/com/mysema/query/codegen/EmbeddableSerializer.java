@@ -6,6 +6,7 @@
 package com.mysema.query.codegen;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import com.mysema.codegen.CodeWriter;
 import com.mysema.query.types.PathMetadata;
@@ -22,8 +23,8 @@ import com.mysema.query.types.path.PSimple;
  */
 public final class EmbeddableSerializer extends EntitySerializer{
 
-    public EmbeddableSerializer(TypeMappings typeMappings) {
-        super(typeMappings);
+    public EmbeddableSerializer(TypeMappings typeMappings, Collection<String> keywords) {
+        super(typeMappings, keywords);
     }
 
     @Override

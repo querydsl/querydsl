@@ -6,6 +6,7 @@
 package com.mysema.query.apt;
 
 import java.lang.annotation.Annotation;
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -147,5 +148,10 @@ public interface Configuration {
      * @param b
      */
     void setUseGetters(boolean b);
+    
+    /**
+     * @return
+     */
+    Collection<String> getKeywords();
 
 }

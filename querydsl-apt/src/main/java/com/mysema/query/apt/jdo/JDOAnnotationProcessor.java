@@ -50,4 +50,8 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
         }
     }       
     
+    protected DefaultConfiguration createConfiguration(RoundEnvironment roundEnv) throws ClassNotFoundException {
+        return new JDOConfiguration(roundEnv, processingEnv.getOptions(), entity, null, embeddable, skip);
+    }    
+    
 }

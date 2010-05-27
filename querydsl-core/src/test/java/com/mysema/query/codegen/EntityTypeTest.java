@@ -8,6 +8,7 @@ package com.mysema.query.codegen;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
+import java.util.Collections;
 
 import org.junit.Test;
 
@@ -42,7 +43,7 @@ public class EntityTypeTest {
         entityModel.addAnnotation(annotation);
         
         TypeMappings typeMappings = new TypeMappings();
-        EntitySerializer serializer = new EntitySerializer(typeMappings);
+        EntitySerializer serializer = new EntitySerializer(typeMappings,Collections.<String>emptyList());
         StringWriter writer = new StringWriter();
         serializer.serialize(entityModel, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         System.out.println(writer);

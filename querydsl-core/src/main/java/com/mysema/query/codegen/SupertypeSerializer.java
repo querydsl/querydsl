@@ -6,6 +6,7 @@
 package com.mysema.query.codegen;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import net.jcip.annotations.Immutable;
 
@@ -24,8 +25,8 @@ import com.mysema.query.types.path.PSimple;
 @Immutable
 public final class SupertypeSerializer extends EntitySerializer{
 
-    public SupertypeSerializer(TypeMappings typeMappings) {
-        super(typeMappings);
+    public SupertypeSerializer(TypeMappings typeMappings, Collection<String> keywords) {
+        super(typeMappings, keywords);
     }
 
     @Override

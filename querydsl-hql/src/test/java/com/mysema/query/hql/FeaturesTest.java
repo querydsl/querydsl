@@ -104,8 +104,7 @@ public class FeaturesTest extends AbstractQueryTest {
         assertToString("cat.name", cat.name);
 
         assertToString("cust.name", cust.name);
-        assertToString("cust.name.firstName = :a1", cust.name.firstName
-                .eq("Martin"));
+        assertToString("cust.name.firstName = :a1", cust.name.firstName.eq("Martin"));
 
         // toString("cat.kittens as kitten", cat.kittens.as(kitten));
 
@@ -116,8 +115,7 @@ public class FeaturesTest extends AbstractQueryTest {
 
         // toString("cat.bodyWeight as bw", cat.bodyWeight.as("bw"));
 
-        assertToString("kitten in elements(cat.kittens)", kitten
-                .in(cat.kittens));
+        assertToString("kitten member of cat.kittens", kitten.in(cat.kittens));
 
         // toString("distinct cat.bodyWeight", distinct(cat.bodyWeight));
     }

@@ -6,6 +6,8 @@
 package com.mysema.query.apt;
 
 import java.lang.annotation.Annotation;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,28 +43,36 @@ import com.mysema.query.codegen.TypeMappings;
  */
 public class DefaultConfiguration implements Configuration {
     
+    private static final String QUERYDSL_CREATE_DEFAULT_VARIABLE = "querydsl.createDefaultVariable";
+
+    private static final String QUERYDSL_MAP_ACCESSORS = "querydsl.mapAccessors";
+
+    private static final String QUERYDSL_LIST_ACCESSORS = "querydsl.listAccessors";
+
+    private static final String QUERYDSL_ENTITY_ACCESSORS = "querydsl.entityAccessors";
+
     private final TypeMappings typeMappings = new TypeMappings();
+    
+    private final SerializerConfig defaultSerializerConfig;
     
     private final Serializer dtoSerializer = new DTOSerializer(typeMappings);
     
-    private final Serializer embeddableSerializer = new EmbeddableSerializer(typeMappings);
+    private final Serializer embeddableSerializer = new EmbeddableSerializer(typeMappings, getKeywords());
     
-    protected final Class<? extends Annotation> entityAnn;
+    private final Serializer entitySerializer = new EntitySerializer(typeMappings,getKeywords());
     
-    private final Serializer entitySerializer = new EntitySerializer(typeMappings);
+    private final Serializer supertypeSerializer = new SupertypeSerializer(typeMappings,getKeywords());
     
     private String namePrefix = "Q";
     
     private final Map<String,SerializerConfig> packageToConfig = new HashMap<String,SerializerConfig>();
     
+    protected final Class<? extends Annotation> entityAnn;
+    
     @Nullable
     protected final Class<? extends Annotation> superTypeAnn, embeddableAnn, skipAnn;
     
-    private final Serializer supertypeSerializer = new SupertypeSerializer(typeMappings);
-    
     private final Map<String,SerializerConfig> typeToConfig = new HashMap<String,SerializerConfig>();
-    
-    private final SerializerConfig defaultSerializerConfig;
     
     private boolean useFields = true, useGetters = true;
     
@@ -92,17 +102,17 @@ public class DefaultConfiguration implements Configuration {
         boolean listAccessors = false;
         boolean mapAccessors = false;
         boolean createDefaultVariable = true;
-        if (options.containsKey("querydsl.entityAccessors")){
-            entityAccessors = Boolean.valueOf(options.get("querydsl.entityAccessors"));
+        if (options.containsKey(QUERYDSL_ENTITY_ACCESSORS)){
+            entityAccessors = Boolean.valueOf(options.get(QUERYDSL_ENTITY_ACCESSORS));
         }
-        if (options.containsKey("querydsl.listAccessors")){
-            listAccessors = Boolean.valueOf(options.get("querydsl.listAccessors"));
+        if (options.containsKey(QUERYDSL_LIST_ACCESSORS)){
+            listAccessors = Boolean.valueOf(options.get(QUERYDSL_LIST_ACCESSORS));
         }
-        if (options.containsKey("querydsl.mapAccessors")){
-            mapAccessors = Boolean.valueOf(options.get("querydsl.mapAccessors"));
+        if (options.containsKey(QUERYDSL_MAP_ACCESSORS)){
+            mapAccessors = Boolean.valueOf(options.get(QUERYDSL_MAP_ACCESSORS));
         }
-        if (options.containsKey("querydsl.createDefaultVariable")){
-            createDefaultVariable = Boolean.valueOf(options.get("querydsl.createDefaultVariable"));
+        if (options.containsKey(QUERYDSL_CREATE_DEFAULT_VARIABLE)){
+            createDefaultVariable = Boolean.valueOf(options.get(QUERYDSL_CREATE_DEFAULT_VARIABLE));
         }        
         defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors, mapAccessors, createDefaultVariable);
         
@@ -259,6 +269,11 @@ public class DefaultConfiguration implements Configuration {
     @Override
     public TypeMappings getTypeMappings() {
         return typeMappings;
+    }
+    
+    @Override
+    public Collection<String> getKeywords(){
+	return Collections.emptyList();
     }
     
 }

@@ -6,6 +6,7 @@ package com.mysema.query.sql;
 import static com.mysema.codegen.Symbols.NEW;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import com.mysema.codegen.CodeWriter;
 import com.mysema.query.codegen.EntitySerializer;
@@ -26,7 +27,8 @@ public class MetaDataSerializer extends EntitySerializer {
     private final NamingStrategy namingStrategy;
 
     public MetaDataSerializer(String namePrefix, NamingStrategy namingStrategy) {
-        super(new TypeMappings());
+	// TODO : supply reserved SQL keywords
+        super(new TypeMappings(),Collections.<String>emptyList());
         this.namePrefix = namePrefix;
         this.namingStrategy = namingStrategy;
     }

@@ -176,7 +176,7 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     }
 
     private Property validateField(Property field) {
-        if (field.getName().equals(this.uncapSimpleName)) {
+        if (field.getName().equals(uncapSimpleName)) {
             uncapSimpleName = StringUtils.uncapitalize(getType().getSimpleName())+ (escapeSuffix++);
         }
         return field;

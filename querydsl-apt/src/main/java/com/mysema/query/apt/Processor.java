@@ -360,7 +360,11 @@ public class Processor {
                 for (EntityType model : models){
                     String queryType = typeMappings.getPathType(model, model, true);          
                     String simpleName = model.getUncapSimpleName();
-                    writer.publicStaticFinal(queryType, simpleName, "new " + queryType + "(\"" + simpleName + "\")");
+                    String alias = simpleName;
+                    if (configuration.getKeywords().contains(simpleName.toUpperCase())){
+                	alias += "1";
+                    }
+                    writer.publicStaticFinal(queryType, simpleName, "new " + queryType + "(\"" + alias + "\")");
                 }
                 writer.end();
             }finally{

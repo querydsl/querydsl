@@ -14,6 +14,7 @@ import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.junit.Test;
 
+import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.hql.hibernate.HibernateQuery;
@@ -27,7 +28,11 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
     private Session session;
     
     protected HibernateQuery query(){
-        return new HibernateQuery(session);
+        return new HibernateQuery(session, getTemplates());
+    }
+    
+    protected HQLTemplates getTemplates(){
+	return HQLTemplates.DEFAULT;
     }
 
     public void setSession(Session session) {

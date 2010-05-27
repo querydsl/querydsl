@@ -23,6 +23,7 @@ import static com.mysema.codegen.Symbols.UNCHECKED;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import net.jcip.annotations.Immutable;
@@ -58,9 +59,12 @@ public class EntitySerializer implements Serializer{
     private static final String PATH_METADATA = "PathMetadata<?> metadata";
     
     protected final TypeMappings typeMappings;
+    
+    protected final Collection<String> keywords;
 
-    public EntitySerializer(TypeMappings mappings){
+    public EntitySerializer(TypeMappings mappings, Collection<String> keywords){
         this.typeMappings = Assert.notNull(mappings,"mappings");
+        this.keywords = Assert.notNull(keywords,"keywords");
     }
     
     protected void constructors(EntityType model, SerializerConfig config, CodeWriter writer) throws IOException {
@@ -241,8 +245,13 @@ public class EntitySerializer implements Serializer{
 
     protected void introDefaultInstance(CodeWriter writer, EntityType model) throws IOException {
         String simpleName = model.getUncapSimpleName();
-        String queryType = typeMappings.getPathType(model, model, true);        
-        writer.publicStaticFinal(queryType, simpleName, NEW + queryType + "(\"" + simpleName + "\")");
+        String queryType = typeMappings.getPathType(model, model, true);
+        String alias = simpleName;
+        if (keywords.contains(simpleName.toUpperCase())){
+            alias += "1";    
+        }
+        writer.publicStaticFinal(queryType, simpleName, NEW + queryType + "(\"" + alias + "\")");
+        
     }
 
     protected void introFactoryMethods(CodeWriter writer, final EntityType model) throws IOException {

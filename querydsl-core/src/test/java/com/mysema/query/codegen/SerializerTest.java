@@ -10,6 +10,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -70,22 +71,22 @@ public class SerializerTest {
 
     @Test
     public void EntitySerializer() throws Exception {        
-        new EntitySerializer(typeMappings).serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        new EntitySerializer(typeMappings,Collections.<String>emptyList()).serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
     }
     
     @Test
     public void EntitySerializer2() throws Exception {        
-        new EntitySerializer(typeMappings).serialize(type, new SimpleSerializerConfig(true,true,true,true), new JavaWriter(writer));
+        new EntitySerializer(typeMappings,Collections.<String>emptyList()).serialize(type, new SimpleSerializerConfig(true,true,true,true), new JavaWriter(writer));
     }    
     
     @Test
     public void EmbeddableSerializer() throws Exception {        
-        new EmbeddableSerializer(typeMappings).serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        new EmbeddableSerializer(typeMappings,Collections.<String>emptyList()).serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
     }
     
     @Test
     public void SupertypeSerializer() throws IOException{
-        new SupertypeSerializer(typeMappings).serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        new SupertypeSerializer(typeMappings,Collections.<String>emptyList()).serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
     }
 
     @Test

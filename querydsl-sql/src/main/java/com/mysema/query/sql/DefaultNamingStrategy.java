@@ -62,8 +62,7 @@ public class DefaultNamingStrategy implements NamingStrategy {
     }
 
     @Override
-    public String getDefaultVariableName(String namePrefix,
-            EntityType entityType) {
+    public String getDefaultVariableName(String namePrefix, EntityType entityType) {
         String simpleName = entityType.getUncapSimpleName();
         if (namePrefix.length() > 0) {
             simpleName = StringUtils.uncapitalize(simpleName.substring(namePrefix.length()));

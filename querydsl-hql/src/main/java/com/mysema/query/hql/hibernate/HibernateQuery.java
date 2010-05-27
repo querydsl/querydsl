@@ -40,6 +40,17 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
     }    
 
     /**
+     * Creates a new Session bound query
+     * 
+     * @param session
+     * @param templates
+     */
+    public HibernateQuery(Session session, HQLTemplates templates) {
+	this(new DefaultSessionHolder(session), templates);
+    }
+
+    
+    /**
      * Creates a new Stateless session bound query
      * 
      * @param session
@@ -65,6 +76,7 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
         super(session, templates, metadata);
     }
     
+
     /**
      * Clone the state of this query to a new HibernateQuery instance with the given Session
      * 
