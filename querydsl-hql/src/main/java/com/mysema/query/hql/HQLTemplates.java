@@ -51,6 +51,8 @@ public class HQLTemplates extends Templates {
         add(Ops.MathOps.SQRT, "sqrt({0})");
 
         // various        
+        add(Ops.NE_PRIMITIVE, "{0} <> {1}", 25);
+        add(Ops.NE_OBJECT, "{0} <> {1}", 25);
         add(Ops.IS_NULL, "{0} is null", 26);
         add(Ops.IS_NOT_NULL, "{0} is not null", 26);
         

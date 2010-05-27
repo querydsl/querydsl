@@ -17,7 +17,7 @@ public class ComparableTest extends AbstractQueryTest{
         assertToString("cat.bodyWeight > kitten.bodyWeight",  cat.bodyWeight.gt(kitten.bodyWeight));
         assertToString("cat.bodyWeight <= kitten.bodyWeight", cat.bodyWeight.loe(kitten.bodyWeight));
         assertToString("cat.bodyWeight < kitten.bodyWeight",  cat.bodyWeight.lt(kitten.bodyWeight));
-        assertToString("cat.bodyWeight != kitten.bodyWeight", cat.bodyWeight.ne(kitten.bodyWeight));
+        assertToString("cat.bodyWeight <> kitten.bodyWeight", cat.bodyWeight.ne(kitten.bodyWeight));
 //        toString("cat.name like :a1", cat.name.like("Kitty"));
     }
 

@@ -58,7 +58,7 @@ public class FeaturesTest extends AbstractQueryTest {
     public void testBasicOperations() {
         assertToString("cat.bodyWeight = kitten.bodyWeight", cat.bodyWeight
                 .eq(kitten.bodyWeight));
-        assertToString("cat.bodyWeight != kitten.bodyWeight", cat.bodyWeight
+        assertToString("cat.bodyWeight <> kitten.bodyWeight", cat.bodyWeight
                 .ne(kitten.bodyWeight));
 
         assertToString(
@@ -70,7 +70,7 @@ public class FeaturesTest extends AbstractQueryTest {
     public void testEqualsAndNotEqualsForAllExpressions() {
         assertToString("cat.name = cust.name.firstName", cat.name
                 .eq(cust.name.firstName));
-        assertToString("cat.name != cust.name.firstName", cat.name
+        assertToString("cat.name <> cust.name.firstName", cat.name
                 .ne(cust.name.firstName));
     }
 
