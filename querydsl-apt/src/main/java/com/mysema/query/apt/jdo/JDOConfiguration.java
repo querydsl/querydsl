@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
 import javax.annotation.processing.RoundEnvironment;
 
 import com.mysema.query.apt.DefaultConfiguration;
@@ -29,7 +30,7 @@ public class JDOConfiguration extends DefaultConfiguration{
 
     public JDOConfiguration(RoundEnvironment roundEnv,Map<String,String> options,
             Class<? extends Annotation> entityAnn,
-            Class<? extends Annotation> superTypeAnn,
+            @Nullable Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
             Class<? extends Annotation> skipAnn) throws ClassNotFoundException {
         super(roundEnv, options, entityAnn, superTypeAnn, embeddableAnn, skipAnn);
