@@ -1,6 +1,6 @@
 package com.mysema.query.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import javax.jdo.annotations.PersistenceCapable;
 import javax.persistence.Entity;
@@ -14,6 +14,11 @@ public class KeywordsTest {
         
     }
     
+    @Entity
+    public static class NonKeyword {
+                
+    }
+    
     @PersistenceCapable
     public static class Distinct {
         
@@ -24,6 +29,7 @@ public class KeywordsTest {
     @Test
     public void test(){
         assertEquals("order1",QKeywordsTest_Order.order.toString());
+        assertEquals("nonKeyword",QKeywordsTest_NonKeyword.nonKeyword.toString());
         assertEquals("distinct1",QKeywordsTest_Distinct.distinct1.toString());
     }
 
