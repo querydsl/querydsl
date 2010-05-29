@@ -15,6 +15,13 @@ public class KeywordsTest {
     }
     
     @Entity
+    public static class From {
+        
+        String from1;
+    }
+                              
+    
+    @Entity
     public static class NonKeyword {
                 
     }
@@ -29,7 +36,11 @@ public class KeywordsTest {
     @Test
     public void test(){
         assertEquals("order1",QKeywordsTest_Order.order.toString());
+        
+        assertEquals("from1", QKeywordsTest_From.from.from1.toString());
+        
         assertEquals("nonKeyword",QKeywordsTest_NonKeyword.nonKeyword.toString());
+        
         assertEquals("distinct1",QKeywordsTest_Distinct.distinct1.toString());
     }
 
