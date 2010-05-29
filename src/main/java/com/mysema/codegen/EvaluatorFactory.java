@@ -109,8 +109,11 @@ public class EvaluatorFactory {
      */
     public <T> Evaluator<T> createEvaluator(
             String source,
-            final Class<? extends T> projectionType, 
-            String[] names, Class<?>[] types, 
+         // TODO : support for generic projection types
+            Class<? extends T> projectionType, 
+            String[] names, 
+         // TODO : support for generic argument type
+            Class<?>[] types,  
             Map<String,Object> constants) {
 
         try {
@@ -124,14 +127,14 @@ public class EvaluatorFactory {
                 clazz = loader.loadClass(id);
             }
             
-            final Object object = !constants.isEmpty() ? clazz.newInstance() : null;
+            Object object = !constants.isEmpty() ? clazz.newInstance() : null;
             
             for (Map.Entry<String, Object> entry : constants.entrySet()){
                 Field field = clazz.getField(entry.getKey());
                 field.set(object, entry.getValue());
             }
 
-            final Method method = clazz.getMethod("eval", types);
+            Method method = clazz.getMethod("eval", types);
             return new MethodEvaluator<T>(method, object, projectionType);
         } catch (ClassNotFoundException e) {
             throw new CodegenException(e);
