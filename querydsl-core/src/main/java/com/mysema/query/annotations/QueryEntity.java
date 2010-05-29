@@ -19,4 +19,5 @@ import java.lang.annotation.Target;
  * Annotation for APT based Domain query type generation. Annotate Domain types with this annotation.
  */
 public @interface QueryEntity {
+    
 }
