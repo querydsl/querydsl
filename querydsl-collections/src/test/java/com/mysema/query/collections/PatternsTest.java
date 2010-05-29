@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 import org.junit.Test;
 
 
-public class ColQueryPatternsTest {
+public class PatternsTest {
     
     @Test
     public void matches(){
