@@ -85,7 +85,7 @@ public final class Connections {
     private static Connection getMySQL() throws SQLException, ClassNotFoundException {
         Class.forName("com.mysql.jdbc.Driver");
         String url = "jdbc:mysql://localhost:3306/querydsl";
-        return DriverManager.getConnection(url, "root", "");
+        return DriverManager.getConnection(url, "querydsl", "querydsl");
     }
     
     private static Connection getOracle() throws SQLException, ClassNotFoundException{

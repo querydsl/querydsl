@@ -40,12 +40,38 @@
      <property name="hibernate.dialect" value="com.mysema.query.hql.support.ExtendedHSQLDialect"/>
      <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver"/>
      <property name="hibernate.connection.url" value="jdbc:hsqldb:file:target/testdb"/>
-     <property name="hibernate.connection.username" value="sa"/>
+     <property name="hibernate.connection.user" value="sa"/>
      <property name="hibernate.show_sql" value="true"/>
      <property name="hibernate.flushMode" value="FLUSH_AUTO"/>
      <property name="hibernate.hbm2ddl.auto" value="update"/>
    </properties>
   </persistence-unit>
+
+    <persistence-unit name="hsqldb-eclipselink" transaction-type="RESOURCE_LOCAL">
+      <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+      <exclude-unlisted-classes>false</exclude-unlisted-classes>
+      <properties>
+        <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
+        <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:target/testdb2"/>
+		<property name="javax.persistence.jdbc.user" value="sa"/>
+  	    <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+		<property name="eclipselink.ddl-generation.output-mode" value="database" />
+		
+      </properties>
+    </persistence-unit>
+	
+	<persistence-unit name="h2-eclipselink" transaction-type="RESOURCE_LOCAL">
+      <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+      <exclude-unlisted-classes>false</exclude-unlisted-classes>
+      <properties>
+        <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+        <property name="javax.persistence.jdbc.url" value="jdbc:h2:target/h2"/>
+		<property name="javax.persistence.jdbc.user" value="sa"/>
+  	    <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+		<property name="eclipselink.ddl-generation.output-mode" value="database" />
+		
+      </properties>
+    </persistence-unit>
 
   <persistence-unit name="mysql">
    <properties>

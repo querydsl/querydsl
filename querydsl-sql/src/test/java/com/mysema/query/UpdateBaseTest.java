@@ -9,7 +9,6 @@ import static com.mysema.query.Constants.survey;
 import static org.junit.Assert.assertEquals;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,24 +16,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.query.sql.dml.SQLDeleteClause;
-import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.path.PEntity;
 
 public abstract class UpdateBaseTest extends AbstractBaseTest{
     
-    protected SQLUpdateClause update(PEntity<?> e){
-        return new SQLUpdateClause(Connections.getConnection(), dialect, e);
-    }
-    
-    protected SQLDeleteClause delete(PEntity<?> e){
-        return new SQLDeleteClause(Connections.getConnection(), dialect, e);
-    }
-    
-    private void reset() throws SQLException{
+    protected void reset() throws SQLException{
         delete(survey).where(survey.name.isNotNull()).execute();
-        Connections.getStatement().execute("insert into survey values (1, 'Hello World')");   
+        insert(survey).values(1, "Hello World").execute();
     }
     
     @Before

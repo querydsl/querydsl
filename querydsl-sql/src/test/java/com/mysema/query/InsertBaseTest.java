@@ -5,7 +5,6 @@
  */
 package com.mysema.query;
 
-import static com.mysema.query.Connections.getConnection;
 import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Constants.survey2;
 
@@ -16,25 +15,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.sql.SQLSubQuery;
-import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
-import com.mysema.query.types.path.PEntity;
 
 public abstract class InsertBaseTest extends AbstractBaseTest{
-
-    protected SQLInsertClause insert(PEntity<?> e){
-        return new SQLInsertClause(getConnection(), dialect, e);
-    }
-    
-    protected SQLDeleteClause delete(PEntity<?> e){
-        return new SQLDeleteClause(Connections.getConnection(), dialect, e);
-    }
         
     private void reset() throws SQLException{
         delete(survey).where(survey.name.isNotNull()).execute();
-        Connections.getStatement().execute("insert into survey values (1, 'Hello World')");   
+        insert(survey).values(1, "Hello World").execute();   
     }
     
     @Before

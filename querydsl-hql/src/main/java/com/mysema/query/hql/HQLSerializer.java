@@ -281,6 +281,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     }
 
     private void visitCast(Expr<?> source, Class<?> targetType) {
+        // NOT : this is not supported in JPQL, only HQL
         append("cast(").handle(source);
         append(AS);
         append(targetType.getSimpleName().toLowerCase(Locale.ENGLISH)).append(")");

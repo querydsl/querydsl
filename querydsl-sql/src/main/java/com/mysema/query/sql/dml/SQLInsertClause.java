@@ -52,8 +52,7 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
 
     private final List<Expr<?>> values = new ArrayList<Expr<?>>();
 
-    public SQLInsertClause(Connection connection, SQLTemplates templates,
-            PEntity<?> entity) {
+    public SQLInsertClause(Connection connection, SQLTemplates templates, PEntity<?> entity) {
         this.connection = connection;
         this.templates = templates;
         this.entity = entity;

@@ -17,6 +17,10 @@ import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.dml.SQLDeleteClause;
+import com.mysema.query.sql.dml.SQLInsertClause;
+import com.mysema.query.sql.dml.SQLUpdateClause;
+import com.mysema.query.types.path.PEntity;
 
 public abstract class AbstractBaseTest {
    
@@ -29,7 +33,19 @@ public abstract class AbstractBaseTest {
     
     @Nullable
     protected String expectedQuery;    
-
+    
+    protected SQLUpdateClause update(PEntity<?> e){
+        return new SQLUpdateClause(Connections.getConnection(), dialect, e);
+    }
+    
+    protected SQLInsertClause insert(PEntity<?> e){
+        return new SQLInsertClause(Connections.getConnection(), dialect, e);
+    }
+    
+    protected SQLDeleteClause delete(PEntity<?> e){
+        return new SQLDeleteClause(Connections.getConnection(), dialect, e);
+    }
+    
     protected SQLQuery query() {
         return new SQLQueryImpl(Connections.getConnection(), dialect) {
             @Override

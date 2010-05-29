@@ -71,7 +71,7 @@
 	<dependency>
 	  <groupId>org.eclipse.persistence</groupId>
 	  <artifactId>eclipselink</artifactId>
-	  <version>2.1.0-M7</version>
+	  <version>2.1.0-SNAPSHOT</version>
 	  <scope>test</scope>
     </dependency>
 		
@@ -82,6 +82,13 @@
       <scope>test</scope>
       <!-- license : TODO -->
     </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.2.133</version>
+      <scope>test</scope>
+    </dependency>
+	
     <dependency>
       <groupId>org.apache.derby</groupId>
       <artifactId>derby</artifactId>

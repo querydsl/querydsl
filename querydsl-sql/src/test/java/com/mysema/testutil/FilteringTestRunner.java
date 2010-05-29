@@ -45,8 +45,9 @@ public class FilteringTestRunner extends JUnit4ClassRunner {
 
     @Override
     public void run(final RunNotifier notifier) {
-        if (run)
+        if (run){
             super.run(notifier);
+        }                   
     }
 
     protected TestMethod wrapMethod(Method method) {
