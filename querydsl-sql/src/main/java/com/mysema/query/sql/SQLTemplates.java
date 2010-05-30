@@ -16,6 +16,8 @@ import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.PathType;
 import com.mysema.query.types.Templates;
@@ -28,6 +30,8 @@ import com.mysema.query.types.Templates;
  * @version $Id$
  */
 public class SQLTemplates extends Templates {
+    
+    public static final Operator<Object> CAST = new OperatorImpl<Object>(Object.class, Object.class);
     
     public static final SQLTemplates DEFAULT = new SQLTemplates();
     
@@ -137,6 +141,8 @@ public class SQLTemplates extends Templates {
             add(PathType.VARIABLE, quoteStr + "{0s}" + quoteStr);            
         }
         
+        add(CAST, "cast({0} as {1s})");
+        
         for (Class<?> cl : new Class[] { Boolean.class, Byte.class,
                 Double.class, Float.class, Integer.class, Long.class,
                 Short.class, String.class }) {
@@ -159,15 +165,11 @@ public class SQLTemplates extends Templates {
     public String getAsc() {
         return asc;
     }
-    
-    public Map<Class<?>, String> getClass2type() {
-        return class2type;
-    }
-    
-    public Map<Class<?>, String> getClass2Type() {
-        return class2type;
-    }
 
+    public String getTypeForClass(Class<?> cl){
+        return class2type.get(cl);
+    }
+    
     public String getColumnAlias() {
         return columnAlias;
     }

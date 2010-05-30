@@ -25,6 +25,8 @@ import com.mysema.query.types.Templates;
  */
 public class HQLTemplates extends Templates {
     
+    public static final Operator<Object> CAST = new OperatorImpl<Object>(Object.class, Object.class); 
+    
     public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>(Object.class, Object.class);
 
     public static final HQLTemplates DEFAULT = new HQLTemplates();
@@ -51,6 +53,7 @@ public class HQLTemplates extends Templates {
         add(Ops.MathOps.SQRT, "sqrt({0})");
 
         // various        
+        add(CAST, "cast({0} as {1s})");
         add(Ops.NE_PRIMITIVE, "{0} <> {1}", 25);
         add(Ops.NE_OBJECT, "{0} <> {1}", 25);
         add(Ops.IS_NULL, "{0} is null", 26);

@@ -388,21 +388,18 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         serialize(query.getMetadata(), false);
         append(")");
     }
-    
-    private void visitCast(Operator<?> operator, Expr<?> source, Class<?> targetType) {
-        // TODO : move constants to SqlOps
-        append("cast(").handle(source);
-        append(" as ");
-        append(templates.getClass2Type().get(targetType)).append(")");
-    }
 
     @Override
-    protected void visitOperation(Class<?> type, Operator<?> operator,
-            List<Expr<?>> args) {
+    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
         if (operator.equals(Ops.STRING_CAST)) {
-            visitCast(operator, args.get(0), String.class);
+            String typeName = templates.getTypeForClass(String.class);
+            visitOperation(String.class, SQLTemplates.CAST, Arrays.<Expr<?>>asList(args.get(0), ExprConst.create(typeName)));
+        
         } else if (operator.equals(Ops.NUMCAST)) {
-            visitCast(operator, args.get(0), (Class<?>) ((Constant<?>) args.get(1)).getConstant());
+            Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
+            String typeName = templates.getTypeForClass(targetType);
+            visitOperation(targetType, SQLTemplates.CAST, Arrays.<Expr<?>>asList(args.get(0), ExprConst.create(typeName)));
+        
         } else {
             super.visitOperation(type, operator, args);
         }

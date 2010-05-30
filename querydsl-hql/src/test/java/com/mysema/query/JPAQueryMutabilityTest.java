@@ -66,13 +66,7 @@ public class JPAQueryMutabilityTest{
         assertProjectionEmpty(query);
         
         query.map(cat.name, cat);
-        assertProjectionEmpty(query);
-        
-//        query.uniqueResult(cat);
-//        assertProjectionEmpty(query);
-//        query.uniqueResult(cat,cat);
-//        assertProjectionEmpty(query);
-        
+        assertProjectionEmpty(query);        
     }
     
     @Test

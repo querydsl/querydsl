@@ -22,16 +22,7 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.serialization.SerializerBase;
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.EConstructor;
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathType;
-import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.*;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EStringConst;
 import com.mysema.query.types.expr.ExprConst;
@@ -53,8 +44,6 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             Ops.BEFORE, Ops.AFTER, Ops.BOE, Ops.AOE));
     
     private static final String SELECT_COUNT_DISTINCT = "select count(distinct ";
-
-    private static final String AS = " as ";
 
     private static final String COMMA = ", ";
 
@@ -280,13 +269,6 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         append(")");
     }
 
-    private void visitCast(Expr<?> source, Class<?> targetType) {
-        // NOT : this is not supported in JPQL, only HQL
-        append("cast(").handle(source);
-        append(AS);
-        append(targetType.getSimpleName().toLowerCase(Locale.ENGLISH)).append(")");
-    }
-
     @Override
     public void visit(Path<?> expr){
         // only wrap a PathCollection, if it the pathType is PROPERTY
@@ -309,6 +291,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
 	    handle(", ", expr.getArgs());
 	    append(")");
 	}else{
+	    // serialize arguments only
 	    super.visit(expr);
 	}	
     }
@@ -340,9 +323,11 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         	super.visitOperation(type, operator, args);
             }
             
-        } else if (operator.equals(Ops.NUMCAST)) {
-            visitCast(args.get(0), (Class<?>) ((Constant<?>) args.get(1)).getConstant());
-            
+        } else if (operator.equals(Ops.NUMCAST)) {            
+            Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
+            String typeName = targetType.getSimpleName().toLowerCase(Locale.ENGLISH);
+            visitOperation(targetType, HQLTemplates.CAST, Arrays.<Expr<?>>asList(args.get(0), ExprConst.create(typeName)));
+                        
         } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQuery){
             SubQuery subQuery = (SubQuery) args.get(0);            
             append("exists (");
