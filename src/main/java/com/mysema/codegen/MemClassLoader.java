@@ -73,15 +73,17 @@ public final class MemClassLoader extends ClassLoader {
         }
     }
     
-    private JavaFileObject getFileObject(String name) {
+    private JavaFileObject getFileObject(String n) {
         LocationAndKind key;
-        if(name.endsWith(Kind.CLASS.extension)) {
-            name = name.replace('.','/') + Kind.CLASS.extension;
+        String name;                
+        if(n.endsWith(Kind.CLASS.extension)) {
+            name = n.replace('.','/') + Kind.CLASS.extension;
             key = CLASS_KEY;
-        } else if(name.endsWith(Kind.SOURCE.extension)) {
-            name = name.replace('.','/') + Kind.SOURCE.extension;
+        } else if(n.endsWith(Kind.SOURCE.extension)) {
+            name = n.replace('.','/') + Kind.SOURCE.extension;
             key = SOURCE_KEY;
         }else{
+            name = n;
             key = OTHER_KEY;
         }
         if(memFileSystem.containsKey(key)) {
