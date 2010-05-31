@@ -54,11 +54,17 @@ public class EvaluatorFactoryTest {
     @Test
     public void testSimple(){               
         for (String expr : Arrays.asList("a.equals(b)", "a.startsWith(b)", "a.equalsIgnoreCase(b)")){
-            evaluate(expr, boolean.class, names, strings, Arrays.asList("a","b"), Collections.<String,Object>emptyMap());    
+            long start = System.currentTimeMillis();
+            evaluate(expr, boolean.class, names, strings, Arrays.asList("a","b"), Collections.<String,Object>emptyMap());
+            long duration = System.currentTimeMillis() - start;
+            System.err.println(expr + " took " + duration + "ms\n");
         }
         
         for (String expr : Arrays.asList("a != b", "a < b", "a > b", "a <= b", "a >= b")){
-            evaluate(expr, boolean.class, names, ints, Arrays.asList(0,1), Collections.<String,Object>emptyMap());    
+            long start = System.currentTimeMillis();
+            evaluate(expr, boolean.class, names, ints, Arrays.asList(0,1), Collections.<String,Object>emptyMap());
+            long duration = System.currentTimeMillis() - start;
+            System.err.println(expr + " took " + duration + "ms\n");
         }        
     }
     
