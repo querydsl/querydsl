@@ -210,6 +210,15 @@ public final class JavaWriter implements Appendable, CodeWriter{
         return this;
         
     }
+ 
+    @Override
+    public JavaWriter beginLine(String... segments) throws IOException {
+        append(indent);
+        for (String segment : segments){
+            append(segment);
+        }
+        return this;
+    }
     
     private JavaWriter beginMethod(String modifiers, String returnType, String methodName, String... args) throws IOException{
         append(indent + modifiers + returnType + SPACE + methodName).params(args).append(" {").nl();

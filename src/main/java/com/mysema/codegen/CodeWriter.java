@@ -33,6 +33,8 @@ public interface CodeWriter extends Appendable{
 
     CodeWriter beginInterface(String simpleName, String... interfaces) throws IOException;
 
+    JavaWriter beginLine(String[] segments) throws IOException;
+
     <T> CodeWriter beginPublicMethod(String returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException;
 
     CodeWriter beginPublicMethod(String returnType, String methodName, String... args) throws IOException;
@@ -56,9 +58,9 @@ public interface CodeWriter extends Appendable{
     CodeWriter nl() throws IOException;
 
     CodeWriter packageDecl(String packageName) throws IOException;
-
-    CodeWriter privateField(String type, String name) throws IOException;
     
+    CodeWriter privateField(String type, String name) throws IOException;
+
     CodeWriter privateFinal(String type, String name) throws IOException;
 
     CodeWriter privateFinal(String type, String name, String value) throws IOException;
@@ -70,9 +72,9 @@ public interface CodeWriter extends Appendable{
     CodeWriter protectedFinal(String type, String name) throws IOException;
 
     CodeWriter protectedFinal(String type, String name, String value) throws IOException;
-
-    CodeWriter publicField(String type, String name) throws IOException;
     
+    CodeWriter publicField(String type, String name) throws IOException;
+
     CodeWriter publicFinal(String type, String name) throws IOException;
 
     CodeWriter publicFinal(String type, String name, String value) throws IOException;
