@@ -54,8 +54,8 @@ public class EvaluatorFactory {
         this.compilationOptions = Arrays.asList("-classpath", classpath, "-g:none");
     }
 
-    private void compile(String source, Class<?> projectionType,
-            String[] names, Class<?>[] types, String id, Map<String,Object> constants) throws IOException {
+    private void compile(String source, Type<?> projectionType,
+            String[] names, Type<?>[] types, String id, Map<String,Object> constants) throws IOException {
         // create source
         StringWriter writer = new StringWriter();
         JavaWriter javaw = new JavaWriter(writer);
@@ -75,7 +75,7 @@ public class EvaluatorFactory {
         }else{
             javaw.beginPublicMethod(ClassUtils.getName(projectionType), "eval", params);
         }        
-        javaw.line("return ", source, ";");
+        javaw.append(source);
         javaw.end();
         javaw.end();
 
@@ -95,34 +95,46 @@ public class EvaluatorFactory {
         }
 
     }
+    
+    @SuppressWarnings("unchecked")
+    public <T> Evaluator<T> createEvaluator(
+            String source,
+            Class<? extends T> projectionType, 
+            String[] names, 
+            Class<?>[] classes,  
+            Map<String,Object> constants) {
+        Type<?>[] types = new Type[classes.length];
+        for (int i = 0; i < types.length; i++){
+            types[i] = new Type(classes[i]);
+        }
+        return createEvaluator(source, new Type(projectionType), names, types, classes, constants);
+    }
 
     /**
      * Create a new Evaluator instance
      * 
      * @param <T> projection type
      * @param source expression in Java source code form
-     * @param projectionType type of the source expression
+     * @param projection type of the source expression
      * @param names names of the arguments
      * @param types types of the arguments
      * @param constants
      * @return
      */
     public <T> Evaluator<T> createEvaluator(
-            String source,
-         // TODO : support for generic projection types
-            Class<? extends T> projectionType, 
-            String[] names, 
-         // TODO : support for generic argument type
-            Class<?>[] types,  
-            Map<String,Object> constants) {
-
+                String source,
+                Type<? extends T> projection, 
+                String[] names, 
+                Type<?>[] types,  
+                Class<?>[] classes,
+                Map<String,Object> constants) {
         try {
-            String id = toId(source, projectionType, types);
+            String id = toId(source, projection, types);
             Class<?> clazz;
             try{
                 clazz = loader.loadClass(id);
             }catch(ClassNotFoundException e){
-                compile(source, projectionType, names, types, id, constants);
+                compile(source, projection, names, types, id, constants);
                 // reload
                 clazz = loader.loadClass(id);
             }
@@ -134,8 +146,8 @@ public class EvaluatorFactory {
                 field.set(object, entry.getValue());
             }
 
-            Method method = clazz.getMethod("eval", types);
-            return new MethodEvaluator<T>(method, object, projectionType);
+            Method method = clazz.getMethod("eval", classes);
+            return new MethodEvaluator<T>(method, object, projection.getJavaClass());
         } catch (ClassNotFoundException e) {
             throw new CodegenException(e);
         } catch (SecurityException e) {
@@ -156,11 +168,11 @@ public class EvaluatorFactory {
 
     }
     
-    protected String toId(String source, Class<?> returnType, Class<?>... types) {
+    protected String toId(String source, Type<?> returnType, Type<?>... types) {
         StringBuilder b = new StringBuilder("Q");
         b.append("_").append(source.hashCode());
         b.append("_").append(returnType.getName().hashCode());
-        for (Class<?> type : types) {
+        for (Type<?> type : types) {
             b.append("_").append(type.getName().hashCode());
         }
         return b.toString().replace('-', '0');

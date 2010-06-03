@@ -5,7 +5,7 @@
  */
 package com.mysema.codegen;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.URLClassLoader;
@@ -94,22 +94,23 @@ public class EvaluatorFactoryTest {
     public void testCustomType(){
         test("a.getName()", String.class, 
                 Collections.singletonList("a"), Collections.<Class<?>>singletonList(TestEntity.class),
-                Arrays.asList(new TestEntity("Hello World")), "Hello World");
-                
+                Arrays.asList(new TestEntity("Hello World")), "Hello World");                
     }
-    
+        
     private void test(String source, Class<?> projectionType, List<String> names, List<Class<?>> types, List<?> args, Object expectedResult){
         Assert.assertEquals(expectedResult, evaluate(source, projectionType, names, types, args, Collections.<String,Object>emptyMap()));
     }
     
     private Object evaluate(String source, Class<?> projectionType, List<String> names, List<Class<?>> types, List<?> args, Map<String,Object> constants) {
         Evaluator<?> evaluator = factory.createEvaluator(
-                source, 
+                "return " + source + ";", 
                 projectionType, 
                 names.toArray(new String[names.size()]), 
                 types.toArray(new Class[types.size()]),
                 constants);
         return evaluator.evaluate(args.toArray());
     }
+    
+    
 
 }
