@@ -34,6 +34,8 @@ public abstract class AbstractQueryTest {
     protected Cat c4 = new Cat("Francis");
 
     protected QCat cat = new QCat("cat");
+    
+    protected QCat kitten = new QCat("kitten");
 
     protected List<Cat> cats = Arrays.asList(c1, c2, c3, c4);
 

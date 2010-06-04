@@ -3,6 +3,7 @@ package com.mysema.query.collections;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.Tuple;
@@ -21,6 +22,7 @@ public class SerializationTest extends AbstractQueryTest{
     public void oneSource_list(){
         query().from(cat, cats).list(cat);
     }    
+    
     public List<Cat> oneSource_list(List<Cat> cat_){
         return cat_;
     }
@@ -29,6 +31,7 @@ public class SerializationTest extends AbstractQueryTest{
     public void twoSources_list(){
         query().from(cat,cats).from(otherCat, cats).list(cat);
     }    
+    
     public List<Cat> twoSources_list(List<Cat> cat_, List<Cat> otherCat_){
         return cat_;
     }
@@ -37,6 +40,7 @@ public class SerializationTest extends AbstractQueryTest{
     public void oneSource_filteredList(){
         query().from(cat, cats).where(cat.name.eq("Kitty")).list(cat);
     }
+    
     public List<Cat> oneSource_filteredList(List<Cat> cat_){
         List<Cat> rv = new ArrayList<Cat>();
         for (Cat cat : cats){                   // from
@@ -51,6 +55,7 @@ public class SerializationTest extends AbstractQueryTest{
     public void oneSource_projectedList(){
         query().from(cat, cats).list(cat.name);
     }
+    
     public List<String> oneSource_projectedList(List<Cat> cat_){
         List<String> rv = new ArrayList<String>();
         for (Cat cat : cat_){                   // from
@@ -63,6 +68,7 @@ public class SerializationTest extends AbstractQueryTest{
     public void oneSource_filtered_projectedList(){
         query().from(cat, cats).where(cat.name.eq("Kitty")).list(cat.name);
     }
+    
     public List<String> oneSource_filtered_projectedList(List<Cat> cat_){
         List<String> rv = new ArrayList<String>();
         for (Cat cat : cat_){                   // from
@@ -77,6 +83,7 @@ public class SerializationTest extends AbstractQueryTest{
     public void oneSource_filtered_projectedUnique(){
         query().from(cat, cats).where(cat.name.eq("Kitty")).uniqueResult(cat.name);
     }
+    
     public String oneSource_filtered_projectedUnique(List<Cat> cat_){
         for (Cat cat : cat_){                   // from
             if (cat.getName().equals("Kitty")){ // where
@@ -87,8 +94,9 @@ public class SerializationTest extends AbstractQueryTest{
     }
     
     @Test
+    @Ignore
     public void join_list(){
-        // query().from(cat).innerJoin(cat.kittens, kitten).where(kitten.name.eq("Kitty")).list(cat);
+        query().from(cat, cats).innerJoin(cat.kittens, kitten).where(kitten.name.eq("Kitty")).list(cat);
     }
     
     public List<Cat> join_list(List<Cat> cat_){
@@ -104,7 +112,8 @@ public class SerializationTest extends AbstractQueryTest{
     }
     
     public List<Object[]> pairs(List<Cat> cat_, List<Cat> otherCat_){
-        // query().from(cat, cats).from(otherCat, cats).where(cat.name.eq(otherCat.name)).list(cat, otherCat)
+        query().from(cat, cats).from(otherCat, cats).where(cat.name.eq(otherCat.name)).list(cat, otherCat);
+        
         List<Object[]> rv = new ArrayList<Object[]>();
         for (Cat cat : cat_){                                  // from  
             for (Cat otherCat : otherCat_){                    // from   
@@ -117,7 +126,8 @@ public class SerializationTest extends AbstractQueryTest{
     }
     
     public List<Tuple> pairsAsTuple(List<Cat> cat_, List<Cat> otherCat_){
-        // query().from(cat, cats).from(otherCat, cats).where(cat.name.eq(otherCat.name)).list(new QTuple(cat, otherCat))
+        query().from(cat, cats).from(otherCat, cats).where(cat.name.eq(otherCat.name)).list(new QTuple(cat, otherCat));
+        
         List<Tuple> rv = new ArrayList<Tuple>();
         for (Cat cat : cat_){                                  // from
             for (Cat otherCat : otherCat_){                    // from 
