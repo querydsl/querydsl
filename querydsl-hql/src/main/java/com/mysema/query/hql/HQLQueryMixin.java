@@ -37,7 +37,6 @@ public class HQLQueryMixin<T> extends QueryMixin<T> {
         super(self, metadata);
     }
     
-
     @SuppressWarnings("unchecked")
     private <D> Expr<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias){
         return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target.asExpr(), alias.asExpr());

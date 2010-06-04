@@ -5,6 +5,7 @@
  */
 package com.mysema.query.collections;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,8 +24,10 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EArrayConstructor;
+import com.mysema.query.types.expr.OSimple;
 
 /**
  * AbstractColQuery provides a base class for Collection query implementations.
@@ -97,6 +100,17 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
         iterables.put(entity.asExpr(), col);
         queryMixin.getMetadata().addJoin(JoinType.DEFAULT, entity.asExpr());
         return (Q)this;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public <P> Q innerJoin(Path<? extends Collection<P>> target, Path<P> alias) {
+        queryMixin.getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
+        return (Q)this;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <D> Expr<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias){
+        return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target.asExpr(), alias.asExpr());
     }
 
     protected ExprEvaluatorFactory getEvaluatorFactory() {

@@ -15,12 +15,13 @@ import org.apache.commons.collections15.IteratorUtils;
 
 import com.mysema.codegen.Evaluator;
 import com.mysema.query.JoinExpression;
+import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.Operation;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EArrayConstructor;
-import com.mysema.util.MultiIterator;
 
 /**
  * @author tiwe
@@ -32,6 +33,7 @@ public class MultiSourceIterable<T> extends AbstractIterable<Object[],T>{
     
     private final List<Expr<?>> sources = new ArrayList<Expr<?>>();
     
+    @SuppressWarnings("unchecked")
     public MultiSourceIterable(QueryMetadata metadata, 
             ExprEvaluatorFactory evaluatorFactory,
             IteratorFactory iteratorFactory, 
@@ -40,22 +42,27 @@ public class MultiSourceIterable<T> extends AbstractIterable<Object[],T>{
         super(metadata, evaluatorFactory, iteratorFactory, forCount);
         this.iterableMap = iterables;
         for (JoinExpression join : metadata.getJoins()){
-            sources.add(join.getTarget());
+            if (join.getType() == JoinType.DEFAULT){
+                sources.add(join.getTarget());    
+            }else{
+                Operation target = (Operation) join.getTarget();
+                sources.add(target.getArg(1));
+            }
+            
         }
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected Iterator<Object[]> initialIterator() {
-        List<Iterable<?>> iterableList = new ArrayList<Iterable<?>>(sources.size());
-        for (Expr<?> expr : sources){
-            iterableList.add(iterableMap.get(expr));
+        Evaluator ev = evaluatorFactory.createEvaluator(metadata.getJoins(), metadata.getWhere());
+        List<Iterable<?>> iterableList = new ArrayList<Iterable<?>>(metadata.getJoins().size());
+        for (JoinExpression join : metadata.getJoins()){
+            if (join.getType() == JoinType.DEFAULT){
+                iterableList.add(iterableMap.get(join.getTarget()));
+            }
         }
-        Iterator<Object[]> it = new MultiIterator(iterableList);
-        if (metadata.getWhere() != null) {
-            it = iteratorFactory.multiArgFilter(it, sources, metadata.getWhere());
-        }
-        return it;
+        return ((Iterable)ev.evaluate(iterableList.toArray())).iterator();
     }
 
     @SuppressWarnings("unchecked")

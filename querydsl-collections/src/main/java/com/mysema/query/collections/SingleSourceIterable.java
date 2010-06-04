@@ -44,12 +44,12 @@ public class SingleSourceIterable<I,T> extends AbstractIterable<I,T> {
     @SuppressWarnings("unchecked")
     @Override
     protected Iterator<I> initialIterator() {
-        Iterator<I> it = iterable.iterator();
-        if (metadata.getWhere() != null) {
-            // where
-            it = iteratorFactory.singleArgFilter(it, (Expr<I>)sources.get(0), metadata.getWhere());
+        if (metadata.getWhere() != null){
+            Evaluator ev = evaluatorFactory.createEvaluator(sources.get(0), metadata.getWhere());
+            return ((Iterable)ev.evaluate(iterable)).iterator();
+        }else{
+            return iterable.iterator();
         }        
-        return it;
     }
 
     @SuppressWarnings("unchecked")

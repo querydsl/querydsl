@@ -96,6 +96,7 @@ public class ColQueryStandardTest {
 	}
     }
     
+    @SuppressWarnings("unchecked")
     @Test
     public void arrayProjection(){
 	List<String[]> results =  MiniApi.from(cat, data).list(new EArrayConstructor<String>(String[].class, cat.name));

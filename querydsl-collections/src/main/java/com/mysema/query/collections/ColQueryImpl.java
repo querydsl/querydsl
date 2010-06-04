@@ -57,4 +57,6 @@ public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQ
         return queryMixin.getMetadata();
     }
 
+
+
 }
