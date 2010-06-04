@@ -62,6 +62,37 @@ public class ExprEvaluatorFactory {
         this.factory = new EvaluatorFactory(classLoader, compiler);
     }
     
+    public <T> Evaluator<T> create(List<? extends Expr<?>> sources, Expr<T> projection) {
+        ColQuerySerializer serializer = new ColQuerySerializer(templates);
+        serializer.handle(projection);
+        
+        Map<Object,String> constantToLabel = serializer.getConstantToLabel();
+        Map<String,Object> constants = new HashMap<String,Object>();
+        for (Map.Entry<Object,String> entry : constantToLabel.entrySet()){
+            constants.put(entry.getValue(), entry.getKey());
+        }
+        Class<?>[] types = new Class<?>[sources.size()];
+        String[] names = new String[sources.size()];
+        for (int i = 0; i < sources.size(); i++) {
+            types[i] = sources.get(i).getType();
+            names[i] = sources.get(i).toString();
+        }
+        
+        // normalize types
+        for (int i = 0; i < types.length; i++){
+            if (ClassUtils.wrapperToPrimitive(types[i]) != null){
+                types[i] = ClassUtils.wrapperToPrimitive(types[i]);
+            }
+        }
+        
+        String javaSource = serializer.toString();
+        if (projection instanceof EConstructor<?>){
+            javaSource = "("+com.mysema.codegen.ClassUtils.getName(projection.getType())+")(" + javaSource+")";
+        }
+        
+        return factory.createEvaluator("return " + javaSource +";", projection.getType(), names, types, constants);        
+    }
+    
     @SuppressWarnings("unchecked")
     public <T> Evaluator<List<T>> createEvaluator(Expr<? extends T> source, EBoolean filter){
         String typeName = com.mysema.codegen.ClassUtils.getName(source.getType());
@@ -100,6 +131,8 @@ public class ExprEvaluatorFactory {
         StringBuilder vars = new StringBuilder();
         ColQuerySerializer ser = new ColQuerySerializer(templates);        
         ser.append("java.util.List<Object[]> rv = new java.util.ArrayList<Object[]>();\n");
+        
+        // creating context
         for (JoinExpression join : joins){
             Expr<?> target = join.getTarget();
             String typeName = com.mysema.codegen.ClassUtils.getName(target.getType());
@@ -127,6 +160,7 @@ public class ExprEvaluatorFactory {
             }
         }
         
+        // filter
         if (filter != null){
             ser.append("if (").handle(filter).append("){\n");
             ser.append("    rv.add(new Object[]{"+vars+"});\n");
@@ -135,6 +169,7 @@ public class ExprEvaluatorFactory {
             ser.append("rv.add(new Object[]{"+vars+"});\n");
         }
         
+        // closing context
         for (int i = 0; i < joins.size(); i++){
             ser.append("}\n");    
         }        
@@ -154,37 +189,6 @@ public class ExprEvaluatorFactory {
                 sourceTypes.toArray(new Type[sourceTypes.size()]), 
                 sourceClasses.toArray(new Class[sourceClasses.size()]), 
                 constants);
-    }
-    
-    public <T> Evaluator<T> create(List<? extends Expr<?>> sources, Expr<T> projection) {
-        ColQuerySerializer serializer = new ColQuerySerializer(templates);
-        serializer.handle(projection);
-        
-        Map<Object,String> constantToLabel = serializer.getConstantToLabel();
-        Map<String,Object> constants = new HashMap<String,Object>();
-        for (Map.Entry<Object,String> entry : constantToLabel.entrySet()){
-            constants.put(entry.getValue(), entry.getKey());
-        }
-        Class<?>[] types = new Class<?>[sources.size()];
-        String[] names = new String[sources.size()];
-        for (int i = 0; i < sources.size(); i++) {
-            types[i] = sources.get(i).getType();
-            names[i] = sources.get(i).toString();
-        }
-        
-        // normalize types
-        for (int i = 0; i < types.length; i++){
-            if (ClassUtils.wrapperToPrimitive(types[i]) != null){
-                types[i] = ClassUtils.wrapperToPrimitive(types[i]);
-            }
-        }
-        
-        String javaSource = serializer.toString();
-        if (projection instanceof EConstructor<?>){
-            javaSource = "("+com.mysema.codegen.ClassUtils.getName(projection.getType())+")(" + javaSource+")";
-        }
-        
-        return factory.createEvaluator("return " + javaSource +";", projection.getType(), names, types, constants);        
     }
 
     
