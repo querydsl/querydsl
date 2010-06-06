@@ -24,20 +24,16 @@ public final class MiniApi {
     }
     
     public static <A> ColQuery from(A alias, Iterable<A> col) {
-        return query().from(Alias.$(alias), col);
+        return new ColQueryImpl().from(Alias.$(alias), col);
     }
     
     public static <A> ColQuery from(Path<A> path, A... arr) {
-        return query().from(path, Arrays.asList(arr));
+        return new ColQueryImpl().from(path, Arrays.asList(arr));
     }
     
     public static <A> ColQuery from(Path<A> path, Iterable<A> col) {
-        return query().from(path, col);
-    }
-    
-    private static ColQuery query(){
-        return new ColQueryImpl();
-    }
+        return new ColQueryImpl().from(path, col);
+    }    
 
     public static <A> ColUpdateClause<A> update(Path<A> path, Iterable<A> col){
         return new ColUpdateClause<A>(path, col);
