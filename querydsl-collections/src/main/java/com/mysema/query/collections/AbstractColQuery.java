@@ -7,7 +7,6 @@ package com.mysema.query.collections;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -90,18 +89,16 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
         return (Q)this;
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
-        return iterate(new EArrayConstructor(Object[].class, args));
+        return iterate(new EArrayConstructor<Object>(args));
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {        
         try {
             queryMixin.addToProjection(projection);
-            return new IteratorAdapter<RT>((Iterator<RT>) queryEngine.list(getMetadata(), iterables).iterator());
+            return new IteratorAdapter<RT>(queryEngine.list(getMetadata(), iterables, projection).iterator());
         } catch (Exception e) {
             throw new QueryException(e.getMessage(), e);
         }finally{
@@ -109,18 +106,16 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
         }        
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     public List<Object[]> list(Expr<?>[] args) {
-        return list(new EArrayConstructor(Object[].class, args));
+        return list(new EArrayConstructor<Object>(args));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <RT> List<RT> list(Expr<RT> projection) {
         try {
             queryMixin.addToProjection(projection);
-            return (List<RT>) queryEngine.list(getMetadata(), iterables);
+            return queryEngine.list(getMetadata(), iterables, projection);
         } catch (Exception e) {
             throw new QueryException(e.getMessage(), e);
         }finally{
@@ -128,14 +123,19 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
         } 
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <RT> SearchResults<RT> listResults(Expr<RT> projection) {
         queryMixin.addToProjection(projection);
         long count = queryEngine.count(getMetadata(), iterables);
-        List<RT> list = (List<RT>) queryEngine.list(getMetadata(), iterables);        
-        reset();        
-        return new SearchResults<RT>(list, getMetadata().getModifiers(), count);
+        if (count > 0l){
+            List<RT> list = queryEngine.list(getMetadata(), iterables, projection);        
+            reset();        
+            return new SearchResults<RT>(list, getMetadata().getModifiers(), count);    
+        }else{
+            reset();
+            return SearchResults.<RT>emptyResults();
+        }
+        
     }
     
     private void reset(){

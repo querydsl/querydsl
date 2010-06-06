@@ -29,6 +29,6 @@ public interface QueryEngine {
      * @param iterables
      * @return
      */
-    List<?> list(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables);        
+    <T> List<T> list(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables, Expr<T> projection);        
 
 }

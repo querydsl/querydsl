@@ -44,8 +44,8 @@ public class DefaultQueryEngine implements QueryEngine {
         }
     }
     
-    private List<?> distinct(List<?> list, boolean array) {
-        if (array){
+    private List<?> distinct(List<?> list) {
+        if (!list.isEmpty() && list.get(0).getClass().isArray()){
             Set set = new HashSet();
             List rv = new ArrayList();
             for (Object o : list){
@@ -96,9 +96,8 @@ public class DefaultQueryEngine implements QueryEngine {
         }
         
         // distinct
-        if (metadata.isDistinct()){
-            boolean array = !list.isEmpty() ? list.get(0).getClass().isArray() : false;            
-            list = distinct(list, array);
+        if (metadata.isDistinct()){            
+            list = distinct(list);
         }                
         
         return list;
@@ -144,9 +143,8 @@ public class DefaultQueryEngine implements QueryEngine {
         
 
         // distinct
-        if (metadata.isDistinct()){
-            boolean array = !list.isEmpty() ? list.get(0).getClass().isArray() : false;
-            list = distinct(list, array);
+        if (metadata.isDistinct()){            
+            list = distinct(list);
         }
         
         return list;
@@ -154,7 +152,7 @@ public class DefaultQueryEngine implements QueryEngine {
     }
 
     @Override
-    public List<?> list(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables){        
+    public <T> List<T> list(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables, Expr<T> projection){        
         if (metadata.getJoins().size() == 1){
             return evaluateSingleSource(metadata, iterables, false);
         }else{
