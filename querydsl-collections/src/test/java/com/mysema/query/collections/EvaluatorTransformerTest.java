@@ -9,8 +9,6 @@ import org.junit.Test;
 import com.mysema.codegen.Evaluator;
 import com.mysema.query.animal.Cat;
 import com.mysema.query.animal.QCat;
-import com.mysema.query.collections.engine.DefaultEvaluatorFactory;
-import com.mysema.query.collections.engine.EvaluatorTransformer;
 
 public class EvaluatorTransformerTest {
     

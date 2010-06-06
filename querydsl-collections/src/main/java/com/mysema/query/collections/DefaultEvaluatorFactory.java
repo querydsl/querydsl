@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.engine;
+package com.mysema.query.collections;
 
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -24,8 +24,6 @@ import com.mysema.codegen.EvaluatorFactory;
 import com.mysema.codegen.Type;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
-import com.mysema.query.collections.ColQuerySerializer;
-import com.mysema.query.collections.ColQueryTemplates;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;

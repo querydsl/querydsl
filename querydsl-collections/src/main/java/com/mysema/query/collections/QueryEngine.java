@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.collections.engine.DefaultEvaluatorFactory;
-import com.mysema.query.collections.engine.DefaultQueryEngine;
 import com.mysema.query.types.Expr;
 
 /**

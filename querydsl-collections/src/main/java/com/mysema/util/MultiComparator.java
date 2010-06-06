@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections.engine;
+package com.mysema.util;
 
 import java.io.Serializable;
 import java.util.Comparator;

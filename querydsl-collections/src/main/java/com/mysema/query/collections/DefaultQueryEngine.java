@@ -1,4 +1,4 @@
-package com.mysema.query.collections.engine;
+package com.mysema.query.collections;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,12 +15,12 @@ import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.collections.QueryEngine;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EArrayConstructor;
+import com.mysema.util.MultiComparator;
 
 /**
  * @author tiwe
